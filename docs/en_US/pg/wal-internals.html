@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Write-Ahead Logging (WAL)"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,21 +96,21 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="WAL-INTERNALS"
->25.4. Internals</A
+>25.3. Internals</A
 ></H1
 ><P
 >   <ACRONYM
 CLASS="ACRONYM"
 >WAL</ACRONYM
 > is automatically enabled; no action is
-   required from the administrator except ensuring that the additional
-   disk-space requirements of the <ACRONYM
+   required from the administrator except ensuring that the
+   disk-space requirements for the <ACRONYM
 CLASS="ACRONYM"
 >WAL</ACRONYM
 > logs are met,
    and that any necessary tuning is done (see <A
 HREF="wal-configuration.html"
->Section 25.3</A
+>Section 25.2</A
 >).
   </P
 ><P
@@ -122,8 +122,8 @@ CLASS="ACRONYM"
 CLASS="FILENAME"
 >pg_xlog</TT
 > under the data directory, as a set of
-   segment files, each 16 MB in size.  Each segment is divided into 8
-   kB pages. The log record headers are described in
+   segment files, normally each 16 MB in size.  Each segment is divided into
+   pages, normally 8 KB each.  The log record headers are described in
    <TT
 CLASS="FILENAME"
 >access/xlog.h</TT
@@ -132,9 +132,9 @@ CLASS="FILENAME"
    ever-increasing numbers as names, starting at
    <TT
 CLASS="FILENAME"
->0000000000000000</TT
+>000000010000000000000000</TT
 >.  The numbers do not wrap, at
-   present, but it should take a very long time to exhaust the
+   present, but it should take a very very long time to exhaust the
    available stock of numbers.
   </P
 ><P
@@ -168,10 +168,11 @@ CLASS="ACRONYM"
 >, to ensure that the log is
    written before database records are altered, may be subverted by
    disk drives<A
-NAME="AEN19657"
+NAME="AEN20972"
 ></A
-> that falsely report a successful write to the kernel,
-   when, in fact, they have only cached the data and not yet stored it
+> that falsely report a
+   successful write to the kernel, 
+   when in fact they have only cached the data and not yet stored it
    on the disk.  A power failure in such a situation may still lead to
    irrecoverable data corruption.  Administrators should try to ensure
    that disks holding <SPAN
@@ -202,18 +203,28 @@ CLASS="FILENAME"
    state.
   </P
 ><P
->   Using <TT
+>   To deal with the case where <TT
 CLASS="FILENAME"
 >pg_control</TT
-> to get the checkpoint
-   position speeds up the recovery process, but to handle possible
-   corruption of <TT
+> is
+   corrupted, we should support the possibility of scanning existing log
+   segments in reverse order -- newest to oldest -- in order to find the
+   latest checkpoint.  This has not been implemented yet.
+   <TT
 CLASS="FILENAME"
 >pg_control</TT
->, we should actually
-   implement the reading of existing log segments in reverse order --
-   newest to oldest -- in order to find the last checkpoint.  This has
-   not been implemented, yet.
+> is small enough (less than one disk page)
+   that it is not subject to partial-write problems, and as of this writing
+   there have been no reports of database failures due solely to inability
+   to read <TT
+CLASS="FILENAME"
+>pg_control</TT
+> itself.  So while it is
+   theoretically a weak spot, <TT
+CLASS="FILENAME"
+>pg_control</TT
+> does not
+   seem to be a problem in practice.
   </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Documentation"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -113,7 +113,7 @@ TARGET="_top"
 ><DD
 ><P
 >       This is the definition of DocBook itself.  We currently use
-       version 3.1; you cannot use later or earlier versions.  Note
+       version 4.2; you cannot use later or earlier versions.  Note
        that there is also an <ACRONYM
 CLASS="ACRONYM"
 >XML</ACRONYM
@@ -258,7 +258,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN65648"
+NAME="AEN68336"
 >G.2.1. <SPAN
 CLASS="PRODUCTNAME"
 >Linux</SPAN
@@ -305,7 +305,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN65660"
+NAME="AEN68348"
 >G.2.2. FreeBSD Installation</A
 ></H2
 ><P
@@ -338,13 +338,6 @@ CLASS="FILENAME"
 ><P
 ><TT
 CLASS="FILENAME"
->textproc/docbook-310</TT
-></P
-></LI
-><LI
-><P
-><TT
-CLASS="FILENAME"
 >textproc/iso8879</TT
 ></P
 ></LI
@@ -357,7 +350,11 @@ CLASS="FILENAME"
 ></LI
 ></UL
 ><P>
-    A number of things from <TT
+    Apparently, there is no port for the DocBook V4.2 SGML DTD
+    available right now.  You will need to install it manually.
+   </P
+><P
+>    A number of things from <TT
 CLASS="FILENAME"
 >/usr/ports/print</TT
 >
@@ -379,7 +376,7 @@ CLASS="FILENAME"
     have the following line in there:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CATALOG "/usr/local/share/sgml/docbook/3.1/catalog"</PRE
+>CATALOG "/usr/local/share/sgml/docbook/4.2/docbook.cat"</PRE
 ><P>
     If you do not want to edit the file you can also set the
     environment variable <TT
@@ -403,7 +400,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN65689"
+NAME="AEN68375"
 >G.2.3. Debian Packages</A
 ></H2
 ><P
@@ -426,7 +423,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN65694"
+NAME="AEN68380"
 >G.2.4. Manual Installation from Source</A
 ></H2
 ><P
@@ -448,7 +445,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN65699"
+NAME="AEN68385"
 >G.2.4.1. Installing OpenJade</A
 ></H3
 ><DIV
@@ -458,9 +455,9 @@ TYPE="1"
 ><LI
 ><P
 >        The installation of OpenJade offers a GNU-style
-        <VAR
+        <TT
 CLASS="LITERAL"
->./configure; make; make install</VAR
+>./configure; make; make install</TT
 > build
         process.  Details can be found in the OpenJade source
         distribution. In a nutshell:
@@ -553,7 +550,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN65723"
+NAME="AEN68409"
 >G.2.4.2. Installing the <SPAN
 CLASS="PRODUCTNAME"
 >DocBook</SPAN
@@ -569,10 +566,10 @@ TYPE="1"
 ><LI
 ><P
 >       Obtain the <A
-HREF="http://www.oasis-open.org/docbook/sgml/3.1/docbk31.zip"
+HREF="http://www.docbook.org/sgml/4.2/docbook-4.2.zip"
 TARGET="_top"
 >DocBook
-       V3.1</A
+       V4.2</A
 > distribution.
       </P
 ></LI
@@ -581,7 +578,7 @@ TARGET="_top"
 >       Create the directory
        <TT
 CLASS="FILENAME"
->/usr/local/share/sgml/docbook31</TT
+>/usr/local/share/sgml/docbook-4.2</TT
 > and change
        to it. (The exact location is irrelevant, but this one is
        reasonable within the layout we are following here.)
@@ -592,14 +589,14 @@ CLASS="PROMPT"
 >$ </SAMP
 ><KBD
 CLASS="USERINPUT"
->mkdir /usr/local/share/sgml/docbook31</KBD
+>mkdir /usr/local/share/sgml/docbook-4.2</KBD
 >
 <SAMP
 CLASS="PROMPT"
 >$ </SAMP
 ><KBD
 CLASS="USERINPUT"
->cd /usr/local/share/sgml/docbook31</KBD
+>cd /usr/local/share/sgml/docbook-4.2</KBD
 ></PRE
 ><P>
       </P
@@ -614,7 +611,7 @@ CLASS="PROMPT"
 >$ </SAMP
 ><KBD
 CLASS="USERINPUT"
->unzip -a ...../docbk31.zip</KBD
+>unzip -a ...../docbook-4.2.zip</KBD
 ></PRE
 ><P>
        (The archive will unpack its files into the current directory.)
@@ -631,26 +628,8 @@ CLASS="FILENAME"
        into it:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CATALOG "docbook31/docbook.cat"</PRE
+>CATALOG "docbook-4.2/docbook.cat"</PRE
 ><P>
-      </P
-></LI
-><LI
-><P
->       Optionally, you can edit the file
-       <TT
-CLASS="FILENAME"
->docbook.cat</TT
-> and comment out or remove the
-       line containing <VAR
-CLASS="LITERAL"
->DTDDECL</VAR
->.  If you do not then
-       you will get warnings from <SPAN
-CLASS="APPLICATION"
->jade</SPAN
->, but
-       there is no further harm.
       </P
 ></LI
 ><LI
@@ -669,7 +648,7 @@ CLASS="PROMPT"
 >$ </SAMP
 ><KBD
 CLASS="USERINPUT"
->cd /usr/local/share/sgml/docbook31</KBD
+>cd /usr/local/share/sgml/docbook-4.2</KBD
 >
 <SAMP
 CLASS="PROMPT"
@@ -701,7 +680,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN65764"
+NAME="AEN68445"
 >G.2.4.3. Installing the DocBook <ACRONYM
 CLASS="ACRONYM"
 >DSSSL</ACRONYM
@@ -748,7 +727,7 @@ CLASS="FILENAME"
      made:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CATALOG "docbook-dsssl--1.<VAR
+>CATALOG "docbook-dsssl-1.<VAR
 CLASS="REPLACEABLE"
 >xx</VAR
 >/catalog</PRE
@@ -771,7 +750,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN65782"
+NAME="AEN68463"
 >G.2.4.4. Installing <SPAN
 CLASS="PRODUCTNAME"
 >JadeTeX</SPAN
@@ -976,7 +955,7 @@ CLASS="SCREEN"
 CLASS="COMPUTEROUTPUT"
 >checking for onsgmls... onsgmls
 checking for openjade... openjade
-checking for DocBook V3.1... yes
+checking for DocBook V4.2... yes
 checking for DocBook stylesheets... /usr/lib/sgml/stylesheets/nwalsh-modular
 checking for sgmlspl... sgmlspl</SAMP
 ></PRE
@@ -995,7 +974,7 @@ CLASS="FILENAME"
 > is part of the Jade
    package.  If <SPAN
 CLASS="QUOTE"
->"DocBook V3.1"</SPAN
+>"DocBook V4.2"</SPAN
 > was not found then you did
    not install the DocBook DTD kit in a place where jade can find it,
    or you have not set up the catalog files correctly.  See the

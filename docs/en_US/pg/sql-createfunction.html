@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATEFUNCTION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN36947"
+NAME="AEN36989"
 ></A
 ><H2
 >Name</H2
 >CREATE FUNCTION&nbsp;--&nbsp;define a new function</DIV
 ><A
-NAME="AEN36950"
+NAME="AEN36992"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN36952"
+NAME="AEN36994"
 ></A
 ><H2
 >Synopsis</H2
@@ -115,7 +115,10 @@ CLASS="SYNOPSIS"
 >CREATE [ OR REPLACE ] FUNCTION <VAR
 CLASS="REPLACEABLE"
 >name</VAR
-> ( [ <VAR
+> ( [ [ <VAR
+CLASS="REPLACEABLE"
+>argname</VAR
+> ] <VAR
 CLASS="REPLACEABLE"
 >argtype</VAR
 > [, ...] ] )
@@ -129,7 +132,7 @@ CLASS="REPLACEABLE"
 >
     | IMMUTABLE | STABLE | VOLATILE
     | CALLED ON NULL INPUT | RETURNS NULL ON NULL INPUT | STRICT
-    | [EXTERNAL] SECURITY INVOKER | [EXTERNAL] SECURITY DEFINER
+    | [ EXTERNAL ] SECURITY INVOKER | [ EXTERNAL ] SECURITY DEFINER
     | AS '<VAR
 CLASS="REPLACEABLE"
 >definition</VAR
@@ -183,13 +186,13 @@ CLASS="COMMAND"
 >CREATE OR REPLACE FUNCTION</TT
 >.  It is not possible
    to change the name or argument types of a function this way (if you
-   tried, you'd just be creating a new, distinct function).  Also,
-   <TT
+   tried, you would actually be creating a new, distinct function).
+   Also, <TT
 CLASS="COMMAND"
 >CREATE OR REPLACE FUNCTION</TT
-> will not let you
-   change the return type of an existing function.  To do that, you
-   must drop and recreate the function.
+> will not let
+   you change the return type of an existing function.  To do that,
+   you must drop and recreate the function.
   </P
 ><P
 >   If you drop and then recreate a function, the new function is not
@@ -208,7 +211,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36975"
+NAME="AEN37018"
 ></A
 ><H2
 >Parameters</H2
@@ -230,6 +233,18 @@ CLASS="REPLACEABLE"
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
+>argname</VAR
+></DT
+><DD
+><P
+>       The name of an argument. Some languages (currently only PL/pgSQL) let
+       you use the name in the function body.  For other languages the
+       argument name is just extra documentation.
+      </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
 >argtype</VAR
 ></DT
 ><DD
@@ -240,7 +255,7 @@ CLASS="REPLACEABLE"
       </P
 ><P
 >       The type of a column is referenced by writing
-       <VAR
+       <TT
 CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
@@ -248,7 +263,7 @@ CLASS="REPLACEABLE"
 >.<VAR
 CLASS="REPLACEABLE"
 >columnname</VAR
->%TYPE</VAR
+>%TYPE</TT
 >;
        using this can sometimes help make a function independent from
        changes to the definition of a table.
@@ -276,9 +291,9 @@ CLASS="REPLACEABLE"
 >       The return data type (optionally schema-qualified). The return type 
        may be a base type, complex type, or a domain,
        or may be specified to copy the type of an existing column. See the description
-       under <VAR
+       under <TT
 CLASS="LITERAL"
->argtype</VAR
+>argtype</TT
 > above on how to reference the type
        of an existing column.
       </P
@@ -291,9 +306,9 @@ CLASS="QUOTE"
 CLASS="TYPE"
 >cstring</TT
 >.
-       The <VAR
+       The <TT
 CLASS="LITERAL"
->SETOF</VAR
+>SETOF</TT
 >
        modifier indicates that the function will return a set of
        items, rather than a single item.
@@ -307,16 +322,16 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >       The name of the language that the function is implemented in.
-       May be <VAR
+       May be <TT
 CLASS="LITERAL"
->SQL</VAR
->, <VAR
+>SQL</TT
+>, <TT
 CLASS="LITERAL"
->C</VAR
+>C</TT
 >,
-       <VAR
+       <TT
 CLASS="LITERAL"
->internal</VAR
+>internal</TT
 >, or the name of a user-defined
        procedural language.  (See also <A
 HREF="app-createlang.html"
@@ -330,15 +345,15 @@ HREF="app-createlang.html"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->IMMUTABLE</VAR
-><BR><VAR
+>IMMUTABLE</TT
+><BR><TT
 CLASS="LITERAL"
->STABLE</VAR
-><BR><VAR
+>STABLE</TT
+><BR><TT
 CLASS="LITERAL"
->VOLATILE</VAR
+>VOLATILE</TT
 ></DT
 ><DD
 ><P
@@ -346,15 +361,15 @@ CLASS="LITERAL"
        replace multiple evaluations of the function with a single
        evaluation, for run-time optimization.  At most one choice
        should be specified.  If none of these appear,
-       <VAR
+       <TT
 CLASS="LITERAL"
->VOLATILE</VAR
+>VOLATILE</TT
 > is the default assumption.
       </P
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->IMMUTABLE</VAR
+>IMMUTABLE</TT
 > indicates that the function always
        returns the same result when given the same argument values; that
        is, it does not do database lookups or otherwise use information not
@@ -363,9 +378,9 @@ CLASS="LITERAL"
        immediately replaced with the function value.
       </P
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->STABLE</VAR
+>STABLE</TT
 > indicates that within a single table scan
        the function will consistently
        return the same result for the same argument values, but that its
@@ -379,47 +394,47 @@ CLASS="FUNCTION"
        as stable, since their values do not change within a transaction.
       </P
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->VOLATILE</VAR
+>VOLATILE</TT
 > indicates that the function value can
        change even within a single table scan, so no optimizations can be
        made.  Relatively few database functions are volatile in this sense;
-       some examples are <VAR
+       some examples are <TT
 CLASS="LITERAL"
->random()</VAR
->, <VAR
+>random()</TT
+>, <TT
 CLASS="LITERAL"
->currval()</VAR
+>currval()</TT
 >,
-       <VAR
+       <TT
 CLASS="LITERAL"
->timeofday()</VAR
+>timeofday()</TT
 >.  Note that any function that has side-effects
        must be classified volatile, even if its result is quite predictable,
        to prevent calls from being optimized away; an example is
-       <VAR
+       <TT
 CLASS="LITERAL"
->setval()</VAR
+>setval()</TT
 >.
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CALLED ON NULL INPUT</VAR
-><BR><VAR
+>CALLED ON NULL INPUT</TT
+><BR><TT
 CLASS="LITERAL"
->RETURNS NULL ON NULL INPUT</VAR
-><BR><VAR
+>RETURNS NULL ON NULL INPUT</TT
+><BR><TT
 CLASS="LITERAL"
->STRICT</VAR
+>STRICT</TT
 ></DT
 ><DD
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->CALLED ON NULL INPUT</VAR
+>CALLED ON NULL INPUT</TT
 > (the default) indicates
        that the function will be called normally when some of its
        arguments are null.  It is then the function author's
@@ -427,13 +442,13 @@ CLASS="LITERAL"
        appropriately.
       </P
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->RETURNS NULL ON NULL INPUT</VAR
+>RETURNS NULL ON NULL INPUT</TT
 > or
-       <VAR
+       <TT
 CLASS="LITERAL"
->STRICT</VAR
+>STRICT</TT
 > indicates that the function always
        returns null whenever any of its arguments are null.  If this
        parameter is specified, the function is not executed when there
@@ -442,37 +457,37 @@ CLASS="LITERAL"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >[<SPAN
 CLASS="OPTIONAL"
 >EXTERNAL</SPAN
->] SECURITY INVOKER</VAR
-><BR><VAR
+>] SECURITY INVOKER</TT
+><BR><TT
 CLASS="LITERAL"
 >[<SPAN
 CLASS="OPTIONAL"
 >EXTERNAL</SPAN
->] SECURITY DEFINER</VAR
+>] SECURITY DEFINER</TT
 ></DT
 ><DD
 ><P
->      <VAR
+>      <TT
 CLASS="LITERAL"
->SECURITY INVOKER</VAR
+>SECURITY INVOKER</TT
 > indicates that the function
       is to be executed with the privileges of the user that calls it.
-      That is the default.  <VAR
+      That is the default.  <TT
 CLASS="LITERAL"
->SECURITY DEFINER</VAR
+>SECURITY DEFINER</TT
 >
       specifies that the function is to be executed with the
       privileges of the user that created it.
      </P
 ><P
->      The key word <VAR
+>      The key word <TT
 CLASS="LITERAL"
->EXTERNAL</VAR
+>EXTERNAL</TT
 > is present for SQL
       conformance but is optional since, unlike in SQL, this feature
       does not only apply to external functions.
@@ -487,11 +502,20 @@ CLASS="REPLACEABLE"
 ><P
 >       A string defining the function; the meaning depends on the
        language.  It may be an internal function name, the path to an
-       object file, an SQL command, or text in a procedural language.
+       object file, an SQL command, or text in a procedural
+       language. When this string contains the text of a procedural
+       language function definition, it may be helpful to use dollar
+       quoting to specify this string, rather than the normal single
+       quote syntax (this avoids the need to escape any single quotes
+       that occur in the function definition itself). For more
+       information on dollar quoting, see <A
+HREF="sql-syntax.html#SQL-SYNTAX-STRINGS"
+>Section 4.1.2.1</A
+>.
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
@@ -499,13 +523,13 @@ CLASS="REPLACEABLE"
 >, <VAR
 CLASS="REPLACEABLE"
 >link_symbol</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->       This form of the <VAR
+>       This form of the <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 > clause is used for
        dynamically loadable C language functions when the function name
        in the C language source code is not the same as the name of
@@ -539,35 +563,35 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->isStrict</VAR
+>isStrict</TT
 ></DT
 ><DD
 ><P
->          Equivalent to <VAR
+>          Equivalent to <TT
 CLASS="LITERAL"
->STRICT</VAR
-> or <VAR
+>STRICT</TT
+> or <TT
 CLASS="LITERAL"
->RETURNS NULL ON NULL INPUT</VAR
+>RETURNS NULL ON NULL INPUT</TT
 >
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->isCachable</VAR
+>isCachable</TT
 ></DT
 ><DD
 ><P
->          <VAR
+>          <TT
 CLASS="LITERAL"
->isCachable</VAR
+>isCachable</TT
 > is an obsolete equivalent of
-          <VAR
+          <TT
 CLASS="LITERAL"
->IMMUTABLE</VAR
+>IMMUTABLE</TT
 >; it's still accepted for
           backwards-compatibility reasons.
          </P
@@ -592,7 +616,7 @@ NAME="SQL-CREATEFUNCTION-NOTES"
 ><P
 >    Refer to <A
 HREF="xfunc.html"
->Section 33.3</A
+>Section 31.3</A
 > for further information on writing
     functions.
    </P
@@ -643,21 +667,23 @@ HREF="sql-load.html"
 > command.
    </P
 ><P
->    Use <TT
-CLASS="COMMAND"
->DROP FUNCTION</TT
->
-    to remove user-defined functions.
+>    Use <A
+HREF="sql-dropfunction.html"
+><I
+>DROP FUNCTION</I
+></A
+> to remove user-defined
+    functions.
    </P
 ><P
->   Any single quotes or backslashes in the function definition must be
-   escaped by doubling them.
+>   Unless dollar quoting is used, any single quotes or backslashes in
+   the function definition must be escaped by doubling them.
   </P
 ><P
 >    To be able to define a function, the user must have the
-    <VAR
+    <TT
 CLASS="LITERAL"
->USAGE</VAR
+>USAGE</TT
 > privilege on the language.
    </P
 ></DIV
@@ -672,15 +698,26 @@ NAME="SQL-CREATEFUNCTION-EXAMPLES"
 >   Here is a trivial example to help you get started.  For more
    information and examples, see <A
 HREF="xfunc.html"
->Section 33.3</A
+>Section 31.3</A
 >.
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE FUNCTION add(integer, integer) RETURNS integer
-    AS 'select $1 + $2;'
+    AS $$select $1 + $2;$$
     LANGUAGE SQL
     IMMUTABLE
     RETURNS NULL ON NULL INPUT;</PRE
+><P>
+  </P
+><P
+>   Increment an integer, making use of an argument name, in PL/PgSQL:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE OR REPLACE FUNCTION increment(i integer) RETURNS integer AS '
+	BEGIN
+		RETURN i + 1;
+	END;' LANGUAGE plpgsql;</PRE
 ><P>
   </P
 ></DIV

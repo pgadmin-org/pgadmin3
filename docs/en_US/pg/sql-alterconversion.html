@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-ALTERCONVERSION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN34641"
+NAME="AEN34277"
 ></A
 ><H2
 >Name</H2
 >ALTER CONVERSION&nbsp;--&nbsp;change the definition of a conversion</DIV
 ><A
-NAME="AEN34644"
+NAME="AEN34280"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN34646"
+NAME="AEN34282"
 ></A
 ><H2
 >Synopsis</H2
@@ -118,12 +118,19 @@ CLASS="REPLACEABLE"
 > RENAME TO <VAR
 CLASS="REPLACEABLE"
 >newname</VAR
+>
+ALTER CONVERSION <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> OWNER TO <VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
 ></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34650"
+NAME="AEN34288"
 ></A
 ><H2
 >Description</H2
@@ -132,14 +139,13 @@ NAME="AEN34650"
 CLASS="COMMAND"
 >ALTER CONVERSION</TT
 > changes the definition of a
-   conversion.  The only currently available functionality is to rename the
    conversion.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34654"
+NAME="AEN34292"
 ></A
 ><H2
 >Parameters</H2
@@ -168,35 +174,60 @@ CLASS="REPLACEABLE"
 >      The new name of the conversion.
      </P
 ></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
+></DT
+><DD
+><P
+>      The new owner of the conversion. To change the owner of a conversion,
+      you must be a superuser.
+     </P
+></DD
 ></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34667"
+NAME="AEN34310"
 ></A
 ><H2
 >Examples</H2
 ><P
->   To rename the conversion <VAR
+>   To rename the conversion <TT
 CLASS="LITERAL"
->iso_8859_1_to_utf_8</VAR
+>iso_8859_1_to_utf_8</TT
 > to
-   <VAR
+   <TT
 CLASS="LITERAL"
->latin1_to_unicode</VAR
+>latin1_to_unicode</TT
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >ALTER CONVERSION iso_8859_1_to_utf_8 RENAME TO latin1_to_unicode;</PRE
 ><P>
   </P
+><P
+>   To change the owner of the conversion <TT
+CLASS="LITERAL"
+>iso_8859_1_to_utf_8</TT
+> to
+   <TT
+CLASS="LITERAL"
+>joe</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER CONVERSION iso_8859_1_to_utf_8 OWNER TO joe;</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34673"
+NAME="AEN34320"
 ></A
 ><H2
 >Compatibility</H2
@@ -211,7 +242,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34677"
+NAME="AEN34324"
 ></A
 ><H2
 >See Also</H2

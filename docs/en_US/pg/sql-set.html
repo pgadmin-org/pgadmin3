@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-SET"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42299"
+NAME="AEN42862"
 ></A
 ><H2
 >Name</H2
 >SET&nbsp;--&nbsp;change a run-time parameter</DIV
 ><A
-NAME="AEN42302"
+NAME="AEN42865"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42304"
+NAME="AEN42867"
 ></A
 ><H2
 >Synopsis</H2
@@ -130,7 +130,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42310"
+NAME="AEN42873"
 ></A
 ><H2
 >Description</H2
@@ -212,7 +212,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42330"
+NAME="AEN42893"
 ></A
 ><H2
 >Parameters</H2
@@ -222,27 +222,27 @@ NAME="AEN42330"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SESSION</VAR
+>SESSION</TT
 ></DT
 ><DD
 ><P
 >      Specifies that the command takes effect for the current session.
-      (This is the default if neither <VAR
+      (This is the default if neither <TT
 CLASS="LITERAL"
->SESSION</VAR
+>SESSION</TT
 > nor
-      <VAR
+      <TT
 CLASS="LITERAL"
->LOCAL</VAR
+>LOCAL</TT
 > appears.)
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->LOCAL</VAR
+>LOCAL</TT
 ></DT
 ><DD
 ><P
@@ -289,9 +289,9 @@ CLASS="REPLACEABLE"
 ><P
 >      New value of parameter.  Values can be specified as string
       constants, identifiers, numbers, or comma-separated lists of
-      these.  <VAR
+      these.  <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 > can be used to specify
       resetting the parameter to its default value.
      </P
@@ -315,32 +315,32 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->NAMES</VAR
+>NAMES</TT
 ></DT
 ><DD
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
 >SET NAMES <VAR
 CLASS="REPLACEABLE"
 >value</VAR
-></VAR
+></TT
 > is an alias for
-       <VAR
+       <TT
 CLASS="LITERAL"
 >SET client_encoding TO <VAR
 CLASS="REPLACEABLE"
 >value</VAR
-></VAR
+></TT
 >.
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SEED</VAR
+>SEED</TT
 ></DT
 ><DD
 ><P
@@ -370,32 +370,32 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TIME ZONE</VAR
+>TIME ZONE</TT
 ></DT
 ><DD
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
 >SET TIME ZONE <VAR
 CLASS="REPLACEABLE"
 >value</VAR
-></VAR
+></TT
 > is an alias
-       for <VAR
+       for <TT
 CLASS="LITERAL"
 >SET timezone TO <VAR
 CLASS="REPLACEABLE"
 >value</VAR
-></VAR
+></TT
 >.  The
-       syntax <VAR
+       syntax <TT
 CLASS="LITERAL"
->SET TIME ZONE</VAR
+>SET TIME ZONE</TT
 > allows special syntax
        for the time zone specification.  Here are examples of valid
-       values (but note some are accepted only on some platforms):
+       values:
 
        <P
 ></P
@@ -403,9 +403,9 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->'PST8PDT'</VAR
+>'PST8PDT'</TT
 ></DT
 ><DD
 ><P
@@ -413,19 +413,9 @@ CLASS="LITERAL"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->'Portugal'</VAR
-></DT
-><DD
-><P
->           The time zone for Portugal.
-          </P
-></DD
-><DT
-><VAR
-CLASS="LITERAL"
->'Europe/Rome'</VAR
+>'Europe/Rome'</TT
 ></DT
 ><DD
 ><P
@@ -433,9 +423,9 @@ CLASS="LITERAL"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->-7</VAR
+>-7</TT
 ></DT
 ><DD
 ><P
@@ -444,9 +434,9 @@ CLASS="LITERAL"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->INTERVAL '-08:00' HOUR TO MINUTE</VAR
+>INTERVAL '-08:00' HOUR TO MINUTE</TT
 ></DT
 ><DD
 ><P
@@ -455,12 +445,12 @@ CLASS="LITERAL"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->LOCAL</VAR
-><BR><VAR
+>LOCAL</TT
+><BR><TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 ></DT
 ><DD
 ><P
@@ -476,7 +466,11 @@ CLASS="LITERAL"
 HREF="datatype-datetime.html"
 >Section 8.5</A
 > for more information
-       about time zones.
+       about time zones.  Also, <A
+HREF="datetime-appendix.html"
+>Appendix B</A
+>
+       has a list of the recognized names for time zones.
       </P
 ></DD
 ></DL
@@ -487,7 +481,7 @@ HREF="datatype-datetime.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42429"
+NAME="AEN42988"
 ></A
 ><H2
 >Notes</H2
@@ -497,15 +491,15 @@ CLASS="FUNCTION"
 >set_config</CODE
 > provides equivalent
    functionality. See <A
-HREF="functions-misc.html"
->Section 9.13</A
+HREF="functions-admin.html"
+>Section 9.20</A
 >.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42434"
+NAME="AEN42993"
 ></A
 ><H2
 >Examples</H2
@@ -532,39 +526,40 @@ CLASS="SCREEN"
 ><P>
   </P
 ><P
->   Set the time zone for Berkeley, California, using quotes to
-   preserve the uppercase spelling of the time zone name:
+>   Set the time zone for Berkeley, California:
 </P><PRE
 CLASS="SCREEN"
->SET TIME ZONE 'PST8PDT';
-SELECT current_timestamp AS today;
-
-             today
--------------------------------
- 2003-04-29 15:02:01.218622-07</PRE
+>SET TIME ZONE 'PST8PDT';</PRE
+><P>
+  </P
+><P
+>   Set the time zone for Italy:
+</P><PRE
+CLASS="SCREEN"
+>SET TIME ZONE 'Europe/Rome';</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42444"
+NAME="AEN43005"
 ></A
 ><H2
 >Compatibility</H2
 ><P
->   <VAR
+>   <TT
 CLASS="LITERAL"
->SET TIME ZONE</VAR
+>SET TIME ZONE</TT
 > extends syntax defined in the SQL
    standard.  The standard allows only numeric time zone offsets while
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > allows more flexible
-   time-zone specifications.  All other <VAR
+   time-zone specifications.  All other <TT
 CLASS="LITERAL"
->SET</VAR
+>SET</TT
 >
    features are <SPAN
 CLASS="PRODUCTNAME"
@@ -575,7 +570,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42451"
+NAME="AEN43012"
 ></A
 ><H2
 >See Also</H2

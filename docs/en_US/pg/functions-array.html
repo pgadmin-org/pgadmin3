@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
 HREF="functions.html"><LINK
 REL="PREVIOUS"
-TITLE="Miscellaneous Functions"
-HREF="functions-misc.html"><LINK
+TITLE="Conditional Expressions"
+HREF="functions-conditional.html"><LINK
 REL="NEXT"
 TITLE="Aggregate Functions"
 HREF="functions-aggregate.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="functions-misc.html"
+HREF="functions-conditional.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -98,7 +98,7 @@ NAME="FUNCTIONS-ARRAY"
 ><P
 >   <A
 HREF="functions-array.html#ARRAY-OPERATORS-TABLE"
->Table 9-41</A
+>Table 9-35</A
 > shows the operators
    available for <TT
 CLASS="TYPE"
@@ -112,7 +112,7 @@ NAME="ARRAY-OPERATORS-TABLE"
 ></A
 ><P
 ><B
->Table 9-41. <TT
+>Table 9-35. <TT
 CLASS="TYPE"
 >array</TT
 > Operators</B
@@ -135,192 +135,192 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 > </TD
 ><TD
 >equal</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3]</VAR
+>ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
+>&lt;&gt;</TT
 > </TD
 ><TD
 >not equal</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[1,2,3] &lt;&gt; ARRAY[1,2,4]</VAR
+>ARRAY[1,2,3] &lt;&gt; ARRAY[1,2,4]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&lt;</VAR
+>&lt;</TT
 > </TD
 ><TD
 >less than</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[1,2,3] &lt; ARRAY[1,2,4]</VAR
+>ARRAY[1,2,3] &lt; ARRAY[1,2,4]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 > </TD
 ><TD
 >greater than</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[1,4,3] &gt; ARRAY[1,2,4]</VAR
+>ARRAY[1,4,3] &gt; ARRAY[1,2,4]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&lt;=</VAR
+>&lt;=</TT
 > </TD
 ><TD
 >less than or equal</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[1,2,3] &lt;= ARRAY[1,2,3]</VAR
+>ARRAY[1,2,3] &lt;= ARRAY[1,2,3]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&gt;=</VAR
+>&gt;=</TT
 > </TD
 ><TD
 >greater than or equal</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[1,4,3] &gt;= ARRAY[1,4,3]</VAR
+>ARRAY[1,4,3] &gt;= ARRAY[1,4,3]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->||</VAR
+>||</TT
 > </TD
 ><TD
 >array-to-array concatenation</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[1,2,3] || ARRAY[4,5,6]</VAR
+>ARRAY[1,2,3] || ARRAY[4,5,6]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->{1,2,3,4,5,6}</VAR
+>{1,2,3,4,5,6}</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->||</VAR
+>||</TT
 > </TD
 ><TD
 >array-to-array concatenation</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[1,2,3] || ARRAY[[4,5,6],[7,8,9]]</VAR
+>ARRAY[1,2,3] || ARRAY[[4,5,6],[7,8,9]]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->{{1,2,3},{4,5,6},{7,8,9}}</VAR
+>{{1,2,3},{4,5,6},{7,8,9}}</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->||</VAR
+>||</TT
 > </TD
 ><TD
 >element-to-array concatenation</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->3 || ARRAY[4,5,6]</VAR
+>3 || ARRAY[4,5,6]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->{3,4,5,6}</VAR
+>{3,4,5,6}</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->||</VAR
+>||</TT
 > </TD
 ><TD
 >array-to-element concatenation</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ARRAY[4,5,6] || 7</VAR
+>ARRAY[4,5,6] || 7</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->{4,5,6,7}</VAR
+>{4,5,6,7}</TT
 ></TD
 ></TR
 ></TBODY
@@ -336,7 +336,7 @@ HREF="arrays.html"
 ><P
 >   <A
 HREF="functions-array.html#ARRAY-FUNCTIONS-TABLE"
->Table 9-42</A
+>Table 9-36</A
 > shows the functions
    available for use with array types. See <A
 HREF="arrays.html"
@@ -351,7 +351,7 @@ NAME="ARRAY-FUNCTIONS-TABLE"
 ></A
 ><P
 ><B
->Table 9-42. <TT
+>Table 9-36. <TT
 CLASS="TYPE"
 >array</TT
 > Functions</B
@@ -376,7 +376,7 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
->     <VAR
+>     <TT
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
@@ -389,7 +389,7 @@ CLASS="TYPE"
 CLASS="TYPE"
 >anyarray</TT
 >)
-     </VAR
+     </TT
 >
     </TD
 ><TD
@@ -398,29 +398,29 @@ CLASS="TYPE"
 >anyarray</TT
 ></TD
 ><TD
->     concatenate two arrays, returning <VAR
+>     concatenate two arrays, returning <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 >
-     for <VAR
+     for <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > inputs
     </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->array_cat(ARRAY[1,2,3], ARRAY[4,5])</VAR
+>array_cat(ARRAY[1,2,3], ARRAY[4,5])</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->{1,2,3,4,5}</VAR
+>{1,2,3,4,5}</TT
 ></TD
 ></TR
 ><TR
 ><TD
->     <VAR
+>     <TT
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
@@ -433,7 +433,7 @@ CLASS="TYPE"
 CLASS="TYPE"
 >anyelement</TT
 >)
-     </VAR
+     </TT
 >
     </TD
 ><TD
@@ -443,28 +443,28 @@ CLASS="TYPE"
 ></TD
 ><TD
 >     append an element to the end of an array, returning
-     <VAR
+     <TT
 CLASS="LITERAL"
->NULL</VAR
-> for <VAR
+>NULL</TT
+> for <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > inputs
     </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->array_append(ARRAY[1,2], 3)</VAR
+>array_append(ARRAY[1,2], 3)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->{1,2,3}</VAR
+>{1,2,3}</TT
 ></TD
 ></TR
 ><TR
 ><TD
->     <VAR
+>     <TT
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
@@ -477,7 +477,7 @@ CLASS="TYPE"
 CLASS="TYPE"
 >anyarray</TT
 >)
-     </VAR
+     </TT
 >
     </TD
 ><TD
@@ -487,28 +487,28 @@ CLASS="TYPE"
 ></TD
 ><TD
 >     append an element to the beginning of an array, returning
-     <VAR
+     <TT
 CLASS="LITERAL"
->NULL</VAR
-> for <VAR
+>NULL</TT
+> for <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > inputs
     </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->array_prepend(1, ARRAY[2,3])</VAR
+>array_prepend(1, ARRAY[2,3])</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->{1,2,3}</VAR
+>{1,2,3}</TT
 ></TD
 ></TR
 ><TR
 ><TD
->     <VAR
+>     <TT
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
@@ -518,7 +518,7 @@ CLASS="FUNCTION"
 CLASS="TYPE"
 >anyarray</TT
 >)
-     </VAR
+     </TT
 >
     </TD
 ><TD
@@ -528,25 +528,25 @@ CLASS="TYPE"
 ></TD
 ><TD
 >     returns a text representation of array dimension lower and upper bounds,
-     generating an ERROR for <VAR
+     generating an ERROR for <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > inputs
     </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->array_dims(array[[1,2,3], [4,5,6]])</VAR
+>array_dims(array[[1,2,3], [4,5,6]])</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->[1:2][1:3]</VAR
+>[1:2][1:3]</TT
 ></TD
 ></TR
 ><TR
 ><TD
->     <VAR
+>     <TT
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
@@ -559,7 +559,7 @@ CLASS="TYPE"
 CLASS="TYPE"
 >integer</TT
 >)
-     </VAR
+     </TT
 >
     </TD
 ><TD
@@ -569,28 +569,28 @@ CLASS="TYPE"
 ></TD
 ><TD
 >     returns lower bound of the requested array dimension, returning
-     <VAR
+     <TT
 CLASS="LITERAL"
->NULL</VAR
-> for <VAR
+>NULL</TT
+> for <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > inputs
     </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->array_lower(array_prepend(0, ARRAY[1,2,3]), 1)</VAR
+>array_lower(array_prepend(0, ARRAY[1,2,3]), 1)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->0</VAR
+>0</TT
 ></TD
 ></TR
 ><TR
 ><TD
->     <VAR
+>     <TT
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
@@ -603,7 +603,7 @@ CLASS="TYPE"
 CLASS="TYPE"
 >integer</TT
 >)
-     </VAR
+     </TT
 >
     </TD
 ><TD
@@ -613,28 +613,28 @@ CLASS="TYPE"
 ></TD
 ><TD
 >     returns upper bound of the requested array dimension, returning
-     <VAR
+     <TT
 CLASS="LITERAL"
->NULL</VAR
-> for <VAR
+>NULL</TT
+> for <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > inputs
     </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->array_upper(ARRAY[1,2,3,4], 1)</VAR
+>array_upper(ARRAY[1,2,3,4], 1)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->4</VAR
+>4</TT
 ></TD
 ></TR
 ><TR
 ><TD
->     <VAR
+>     <TT
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
@@ -647,7 +647,7 @@ CLASS="TYPE"
 CLASS="TYPE"
 >text</TT
 >)
-     </VAR
+     </TT
 >
     </TD
 ><TD
@@ -657,28 +657,28 @@ CLASS="TYPE"
 ></TD
 ><TD
 >     concatenates array elements using provided delimiter, returning
-     <VAR
+     <TT
 CLASS="LITERAL"
->NULL</VAR
-> for <VAR
+>NULL</TT
+> for <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > inputs
     </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->array_to_string(array[1, 2, 3], '~^~')</VAR
+>array_to_string(array[1, 2, 3], '~^~')</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->1~^~2~^~3</VAR
+>1~^~2~^~3</TT
 ></TD
 ></TR
 ><TR
 ><TD
->     <VAR
+>     <TT
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
@@ -691,7 +691,7 @@ CLASS="TYPE"
 CLASS="TYPE"
 >text</TT
 >)
-     </VAR
+     </TT
 >
     </TD
 ><TD
@@ -701,23 +701,23 @@ CLASS="TYPE"
 ></TD
 ><TD
 >     splits string into array elements using provided delimiter, returning
-     <VAR
+     <TT
 CLASS="LITERAL"
->NULL</VAR
-> for <VAR
+>NULL</TT
+> for <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > inputs
     </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->string_to_array( 'xx~^~yy~^~zz', '~^~')</VAR
+>string_to_array( 'xx~^~yy~^~zz', '~^~')</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->{xx,yy,zz}</VAR
+>{xx,yy,zz}</TT
 ></TD
 ></TR
 ></TBODY
@@ -740,7 +740,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="functions-misc.html"
+HREF="functions-conditional.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -768,7 +768,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Miscellaneous Functions</TD
+>Conditional Expressions</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

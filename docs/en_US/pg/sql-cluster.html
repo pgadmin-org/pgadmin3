@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CLUSTER"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35864"
+NAME="AEN35765"
 ></A
 ><H2
 >Name</H2
 >CLUSTER&nbsp;--&nbsp;cluster a table according to an index</DIV
 ><A
-NAME="AEN35867"
+NAME="AEN35768"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35869"
+NAME="AEN35770"
 ></A
 ><H2
 >Synopsis</H2
@@ -128,7 +128,7 @@ CLUSTER</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35874"
+NAME="AEN35775"
 ></A
 ><H2
 >Description</H2
@@ -194,10 +194,10 @@ CLASS="COMMAND"
    transaction or function.
   </P
 ><P
->   When a table is being clustered, an <VAR
+>   When a table is being clustered, an <TT
 CLASS="LITERAL"
 >ACCESS
-   EXCLUSIVE</VAR
+   EXCLUSIVE</TT
 > lock is acquired on it. This prevents any other
    database operations (both reads and writes) from operating on the
    table until the <TT
@@ -209,7 +209,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35893"
+NAME="AEN35794"
 ></A
 ><H2
 >Parameters</H2
@@ -244,7 +244,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35906"
+NAME="AEN35807"
 ></A
 ><H2
 >Notes</H2
@@ -287,12 +287,14 @@ CLASS="COMMAND"
     are periodically reclustered.
    </P
 ><P
->    Because the planner records statistics about the ordering of tables, it
-    is advisable to run <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> on the newly clustered
-    table.  Otherwise, the planner may make poor choices of query plans.
+>    Because the planner records statistics about the ordering of
+    tables, it is advisable to run <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+> on the newly clustered table.
+    Otherwise, the planner may make poor choices of query plans.
    </P
 ><P
 >    There is another way to cluster data. The
@@ -333,9 +335,9 @@ CLASS="REPLACEABLE"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > sorting code in 
-    the <VAR
+    the <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause to create the desired order; this is usually much
     faster than an index scan for
     unordered data. You then drop the old table, use
@@ -356,18 +358,18 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35929"
+NAME="AEN35830"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Cluster the table <VAR
+>   Cluster the table <TT
 CLASS="LITERAL"
->employees</VAR
+>employees</TT
 > on the basis of
-   its index <VAR
+   its index <TT
 CLASS="LITERAL"
->emp_ind</VAR
+>emp_ind</TT
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -375,10 +377,10 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Cluster the <VAR
+>   Cluster the <TT
 CLASS="LITERAL"
->employees</VAR
-> relation using the same
+>employees</TT
+> table using the same
    index that was used before:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -396,7 +398,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35940"
+NAME="AEN35841"
 ></A
 ><H2
 >Compatibility</H2
@@ -410,7 +412,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35944"
+NAME="AEN35845"
 ></A
 ><H2
 >See Also</H2

@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Memory Management"
 HREF="spi-memory.html"><LINK
 REL="PREVIOUS"
-TITLE="SPI_copytupleintoslot"
-HREF="spi-spi-copytupleintoslot.html"><LINK
+TITLE="SPI_returntuple"
+HREF="spi-spi-returntuple.html"><LINK
 REL="NEXT"
 TITLE="SPI_freetuple"
 HREF="spi-spi-freetuple.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="spi-spi-copytupleintoslot.html"
+HREF="spi-spi-returntuple.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="spi-spi-copytupleintoslot.html"
+HREF="spi-spi-returntuple.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -95,47 +95,47 @@ NAME="SPI-SPI-MODIFYTUPLE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN34317"
+NAME="AEN33940"
 ></A
 ><H2
 >Name</H2
 >SPI_modifytuple&nbsp;--&nbsp;create a row by replacing selected fields of a given row</DIV
 ><A
-NAME="AEN34320"
+NAME="AEN33943"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN34322"
+NAME="AEN33945"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->HeapTuple SPI_modifytuple(Relation <VAR
+>HeapTuple SPI_modifytuple(Relation <TT
 CLASS="PARAMETER"
->rel</VAR
->, HeapTuple <VAR
+>rel</TT
+>, HeapTuple <TT
 CLASS="PARAMETER"
->row</VAR
->, <VAR
+>row</TT
+>, <TT
 CLASS="PARAMETER"
->ncols</VAR
->, <VAR
+>ncols</TT
+>, <TT
 CLASS="PARAMETER"
->colnum</VAR
->, Datum * <VAR
+>colnum</TT
+>, Datum * <TT
 CLASS="PARAMETER"
->values</VAR
->, const char * <VAR
+>values</TT
+>, const char * <TT
 CLASS="PARAMETER"
->nulls</VAR
+>nulls</TT
 >)</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34330"
+NAME="AEN33953"
 ></A
 ><H2
 >Description</H2
@@ -151,7 +151,7 @@ CLASS="FUNCTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34334"
+NAME="AEN33957"
 ></A
 ><H2
 >Arguments</H2
@@ -161,12 +161,12 @@ NAME="AEN34334"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->Relation <VAR
+>Relation <TT
 CLASS="PARAMETER"
->rel</VAR
-></VAR
+>rel</TT
+></TT
 ></DT
 ><DD
 ><P
@@ -176,12 +176,12 @@ CLASS="PARAMETER"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->HeapTuple <VAR
+>HeapTuple <TT
 CLASS="PARAMETER"
->row</VAR
-></VAR
+>row</TT
+></TT
 ></DT
 ><DD
 ><P
@@ -189,29 +189,29 @@ CLASS="PARAMETER"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->int <VAR
+>int <TT
 CLASS="PARAMETER"
->ncols</VAR
-></VAR
+>ncols</TT
+></TT
 ></DT
 ><DD
 ><P
 >      number of column numbers in the array
-      <VAR
+      <TT
 CLASS="PARAMETER"
->colnum</VAR
+>colnum</TT
 >
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->int * <VAR
+>int * <TT
 CLASS="PARAMETER"
->colnum</VAR
-></VAR
+>colnum</TT
+></TT
 ></DT
 ><DD
 ><P
@@ -220,12 +220,12 @@ CLASS="PARAMETER"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->Datum * <VAR
+>Datum * <TT
 CLASS="PARAMETER"
->values</VAR
-></VAR
+>values</TT
+></TT
 ></DT
 ><DD
 ><P
@@ -233,12 +233,12 @@ CLASS="PARAMETER"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->const char * <VAR
+>const char * <TT
 CLASS="PARAMETER"
->Nulls</VAR
-></VAR
+>Nulls</TT
+></TT
 ></DT
 ><DD
 ><P
@@ -254,7 +254,7 @@ CLASS="FUNCTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34375"
+NAME="AEN33998"
 ></A
 ><H2
 >Return Value</H2
@@ -263,9 +263,9 @@ NAME="AEN34375"
    context; <TT
 CLASS="SYMBOL"
 >NULL</TT
-> only if <VAR
+> only if <TT
 CLASS="PARAMETER"
->row</VAR
+>row</TT
 >
    is <TT
 CLASS="SYMBOL"
@@ -273,9 +273,9 @@ CLASS="SYMBOL"
 >
   </P
 ><P
->   On error, <VAR
+>   On error, <TT
 CLASS="VARNAME"
->SPI_result</VAR
+>SPI_result</TT
 > is set as follows:
    <P
 ></P
@@ -289,33 +289,33 @@ CLASS="SYMBOL"
 ></DT
 ><DD
 ><P
->       if <VAR
+>       if <TT
 CLASS="PARAMETER"
->rel</VAR
+>rel</TT
 > is <TT
 CLASS="SYMBOL"
 >NULL</TT
 >, or if
-       <VAR
+       <TT
 CLASS="PARAMETER"
->row</VAR
+>row</TT
 > is <TT
 CLASS="SYMBOL"
 >NULL</TT
->, or if <VAR
+>, or if <TT
 CLASS="PARAMETER"
->ncols</VAR
+>ncols</TT
 >
-       is less than or equal to 0, or if <VAR
+       is less than or equal to 0, or if <TT
 CLASS="PARAMETER"
->colnum</VAR
+>colnum</TT
 > is
        <TT
 CLASS="SYMBOL"
 >NULL</TT
->, or if <VAR
+>, or if <TT
 CLASS="PARAMETER"
->values</VAR
+>values</TT
 > is <TT
 CLASS="SYMBOL"
 >NULL</TT
@@ -329,14 +329,14 @@ CLASS="SYMBOL"
 ></DT
 ><DD
 ><P
->       if <VAR
+>       if <TT
 CLASS="PARAMETER"
->colnum</VAR
+>colnum</TT
 > contains an invalid column number (less
        than or equal to 0 or greater than the number of column in
-       <VAR
+       <TT
 CLASS="PARAMETER"
->row</VAR
+>row</TT
 >)
       </P
 ></DD
@@ -361,7 +361,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="spi-spi-copytupleintoslot.html"
+HREF="spi-spi-returntuple.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -389,7 +389,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->SPI_copytupleintoslot</TD
+>SPI_returntuple</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Information Schema"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="information-schema.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 32. The Information Schema</TD
+>Chapter 30. The Information Schema</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,26 +93,26 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-ELEMENT-TYPES"
->32.16. <VAR
+>30.16. <TT
 CLASS="LITERAL"
->element_types</VAR
+>element_types</TT
 ></A
 ></H1
 ><P
->   The view <VAR
+>   The view <TT
 CLASS="LITERAL"
->element_types</VAR
+>element_types</TT
 > contains the data type
    descriptors of the elements of arrays.  When a table column,
    domain, function parameter, or function return value is defined to
    be of an array type, the respective information schema view only
-   contains <VAR
+   contains <TT
 CLASS="LITERAL"
->ARRAY</VAR
+>ARRAY</TT
 > in the column
-   <VAR
+   <TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 >.  To obtain information on the element
    type of the array, you can join the respective view with this view.
    For example, to show the columns of a table with data types and
@@ -132,13 +132,13 @@ ORDER BY c.ordinal_position;</PRE
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN26322"
+NAME="AEN25436"
 ></A
 ><P
 ><B
->Table 32-14. <VAR
+>Table 30-14. <TT
 CLASS="LITERAL"
->element_types</VAR
+>element_types</TT
 > Columns</B
 ></P
 ><TABLE
@@ -157,9 +157,9 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->object_catalog</VAR
+>object_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -173,9 +173,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->object_schema</VAR
+>object_schema</TT
 ></TD
 ><TD
 ><TT
@@ -189,9 +189,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->object_name</VAR
+>object_name</TT
 ></TD
 ><TD
 ><TT
@@ -204,9 +204,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->object_type</VAR
+>object_type</TT
 ></TD
 ><TD
 ><TT
@@ -215,26 +215,26 @@ CLASS="TYPE"
 ></TD
 ><TD
 >       The type of the object that uses the array being described: one
-       of <VAR
+       of <TT
 CLASS="LITERAL"
->TABLE</VAR
+>TABLE</TT
 > (the array is used by a column of
-       that table), <VAR
+       that table), <TT
 CLASS="LITERAL"
->DOMAIN</VAR
+>DOMAIN</TT
 > (the array is used by
-       that domain), <VAR
+       that domain), <TT
 CLASS="LITERAL"
->ROUTINE</VAR
+>ROUTINE</TT
 > (the array is used by
        a parameter or the return data type of that function).
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->array_type_identifier</VAR
+>array_type_identifier</TT
 ></TD
 ><TD
 ><TT
@@ -244,18 +244,18 @@ CLASS="TYPE"
 ><TD
 >       The identifier of the data type descriptor of the array being
        described.  Use this to join with the
-       <VAR
+       <TT
 CLASS="LITERAL"
->dtd_identifier</VAR
+>dtd_identifier</TT
 > columns of other information
        schema views.
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 ></TD
 ><TD
 ><TT
@@ -264,22 +264,22 @@ CLASS="TYPE"
 ></TD
 ><TD
 >       Data type of the array elements, if it is a built-in type, else
-       <VAR
+       <TT
 CLASS="LITERAL"
->USER-DEFINED</VAR
+>USER-DEFINED</TT
 > (in that case, the type is
-       identified in <VAR
+       identified in <TT
 CLASS="LITERAL"
->udt_name</VAR
+>udt_name</TT
 > and associated
        columns).
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_maximum_length</VAR
+>character_maximum_length</TT
 ></TD
 ><TD
 ><TT
@@ -287,13 +287,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to array element data types in PostgreSQL</TD
+>Always null, since this information is not applied to array element data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_octet_length</VAR
+>character_octet_length</TT
 ></TD
 ><TD
 ><TT
@@ -301,13 +304,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to array element data types in PostgreSQL</TD
+>Always null, since this information is not applied to array element data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_catalog</VAR
+>character_set_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -315,13 +321,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_schema</VAR
+>character_set_schema</TT
 ></TD
 ><TD
 ><TT
@@ -329,13 +338,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_name</VAR
+>character_set_name</TT
 ></TD
 ><TD
 ><TT
@@ -343,13 +355,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_catalog</VAR
+>collation_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -357,13 +372,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_schema</VAR
+>collation_schema</TT
 ></TD
 ><TD
 ><TT
@@ -371,13 +389,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_name</VAR
+>collation_name</TT
 ></TD
 ><TD
 ><TT
@@ -385,13 +406,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_precision</VAR
+>numeric_precision</TT
 ></TD
 ><TD
 ><TT
@@ -399,13 +423,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to array element data types in PostgreSQL</TD
+>Always null, since this information is not applied to array element data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_precision_radix</VAR
+>numeric_precision_radix</TT
 ></TD
 ><TD
 ><TT
@@ -413,13 +440,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to array element data types in PostgreSQL</TD
+>Always null, since this information is not applied to array element data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_scale</VAR
+>numeric_scale</TT
 ></TD
 ><TD
 ><TT
@@ -427,13 +457,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to array element data types in PostgreSQL</TD
+>Always null, since this information is not applied to array element data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->datetime_precision</VAR
+>datetime_precision</TT
 ></TD
 ><TD
 ><TT
@@ -441,13 +474,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to array element data types in PostgreSQL</TD
+>Always null, since this information is not applied to array element data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->interval_type</VAR
+>interval_type</TT
 ></TD
 ><TD
 ><TT
@@ -455,13 +491,16 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Always null, since this information is not applied to array element data types in PostgreSQL</TD
+>Always null, since this information is not applied to array element data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->interval_precision</VAR
+>interval_precision</TT
 ></TD
 ><TD
 ><TT
@@ -469,13 +508,16 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Always null, since this information is not applied to array element data types in PostgreSQL</TD
+>Always null, since this information is not applied to array element data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->domain_default</VAR
+>domain_default</TT
 ></TD
 ><TD
 ><TT
@@ -487,9 +529,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_catalog</VAR
+>udt_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -503,9 +545,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_schema</VAR
+>udt_schema</TT
 ></TD
 ><TD
 ><TT
@@ -519,9 +561,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_name</VAR
+>udt_name</TT
 ></TD
 ><TD
 ><TT
@@ -534,9 +576,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_catalog</VAR
+>scope_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -544,13 +586,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_schema</VAR
+>scope_schema</TT
 ></TD
 ><TD
 ><TT
@@ -558,13 +603,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_name</VAR
+>scope_name</TT
 ></TD
 ><TD
 ><TT
@@ -572,13 +620,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->maximum_cardinality</VAR
+>maximum_cardinality</TT
 ></TD
 ><TD
 ><TT
@@ -586,13 +637,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, because arrays always have unlimited maximum cardinality in PostgreSQL</TD
+>Always null, because arrays always have unlimited maximum cardinality in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->dtd_identifier</VAR
+>dtd_identifier</TT
 ></TD
 ><TD
 ><TT
@@ -652,9 +706,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->domains</VAR
+>domains</TT
 ></TD
 ><TD
 WIDTH="34%"
@@ -669,9 +723,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->enabled_roles</VAR
+>enabled_roles</TT
 ></TD
 ></TR
 ></TABLE

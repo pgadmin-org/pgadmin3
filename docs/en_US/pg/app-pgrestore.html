@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="pg_dumpall"
 HREF="app-pg-dumpall.html"><LINK
 REL="NEXT"
-TITLE="pgtclsh"
-HREF="app-pgtclsh.html"><LINK
+TITLE="psql"
+HREF="app-psql.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-pgtclsh.html"
+HREF="app-psql.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-pgtclsh.html"
+HREF="app-psql.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -95,7 +95,7 @@ NAME="APP-PGRESTORE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44987"
+NAME="AEN45656"
 ></A
 ><H2
 >Name</H2
@@ -105,12 +105,12 @@ CLASS="PRODUCTNAME"
 > database from an archive file created by pg_dump
   </DIV
 ><A
-NAME="AEN44991"
+NAME="AEN45660"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44993"
+NAME="AEN45662"
 ></A
 ><H2
 >Synopsis</H2
@@ -231,12 +231,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-a</VAR
-><BR><VAR
+>-a</TT
+><BR><TT
 CLASS="OPTION"
->--data-only</VAR
+>--data-only</TT
 ></DT
 ><DD
 ><P
@@ -244,12 +244,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-c</VAR
-><BR><VAR
+>-c</TT
+><BR><TT
 CLASS="OPTION"
->--clean</VAR
+>--clean</TT
 ></DT
 ><DD
 ><P
@@ -257,41 +257,41 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-C</VAR
-><BR><VAR
+>-C</TT
+><BR><TT
 CLASS="OPTION"
->--create</VAR
+>--create</TT
 ></DT
 ><DD
 ><P
 >        Create the database before restoring into it.  (When this
-        option is used, the database named with <VAR
+        option is used, the database named with <TT
 CLASS="OPTION"
->-d</VAR
+>-d</TT
 > is
-        used only to issue the initial <VAR
-CLASS="LITERAL"
->CREATE DATABASE</VAR
+        used only to issue the initial <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
 >
         command.  All data is restored into the database name that
         appears in the archive.)
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-d <VAR
 CLASS="REPLACEABLE"
 >dbname</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--dbname=<VAR
 CLASS="REPLACEABLE"
 >dbname</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -303,42 +303,42 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-f <VAR
 CLASS="REPLACEABLE"
 >filename</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--file=<VAR
 CLASS="REPLACEABLE"
 >filename</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
 >        Specify output file for generated script, or for the listing
-        when used with <VAR
+        when used with <TT
 CLASS="OPTION"
->-l</VAR
+>-l</TT
 >. Default is the standard
         output.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-F <VAR
 CLASS="REPLACEABLE"
 >format</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--format=<VAR
 CLASS="REPLACEABLE"
 >format</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -356,9 +356,9 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 ></DT
 ><DD
 ><P
@@ -372,9 +372,9 @@ CLASS="COMMAND"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 ></DT
 ><DD
 ><P
@@ -394,12 +394,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-i</VAR
-><BR><VAR
+>-i</TT
+><BR><TT
 CLASS="OPTION"
->--ignore-version</VAR
+>--ignore-version</TT
 ></DT
 ><DD
 ><P
@@ -407,18 +407,18 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-I <VAR
 CLASS="REPLACEABLE"
 >index</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--index=<VAR
 CLASS="REPLACEABLE"
 >index</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -426,36 +426,36 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-l</VAR
-><BR><VAR
+>-l</TT
+><BR><TT
 CLASS="OPTION"
->--list</VAR
+>--list</TT
 ></DT
 ><DD
 ><P
 >        List the contents of the archive. The output of this operation
-        can be used with the <VAR
+        can be used with the <TT
 CLASS="OPTION"
->-L</VAR
+>-L</TT
 > option to restrict
         and reorder the items that are restored.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-L <VAR
 CLASS="REPLACEABLE"
 >list-file</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--use-list=<VAR
 CLASS="REPLACEABLE"
 >list-file</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -464,76 +464,20 @@ CLASS="REPLACEABLE"
 >list-file</VAR
 > only, and in the
         order they appear in the file. Lines can be moved and may also
-        be commented out by placing a <VAR
+        be commented out by placing a <TT
 CLASS="LITERAL"
->;</VAR
+>;</TT
 > at the
         start of the line.  (See below for examples.)
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-N</VAR
-><BR><VAR
+>-O</TT
+><BR><TT
 CLASS="OPTION"
->--orig-order</VAR
-></DT
-><DD
-><P
->        Restore items in the order they were originally generated within
-        <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->.  This option has no known
-	practical use, since <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> generates
-	the items in an order convenient to it, which is unlikely to be a
-	safe order for restoring them.  (This is <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> the order
-	in which the items are ultimately listed in the archive's table of
-	contents.)  See also <VAR
-CLASS="OPTION"
->-r</VAR
->.
-       </P
-></DD
-><DT
-><VAR
-CLASS="OPTION"
->-o</VAR
-><BR><VAR
-CLASS="OPTION"
->--oid-order</VAR
-></DT
-><DD
-><P
->        Restore items in order by OID.  This option is of limited usefulness,
-	since OID is only an approximate indication of original creation
-	order.  This option overrides <VAR
-CLASS="OPTION"
->-N</VAR
-> if both are specified.
-	See also <VAR
-CLASS="OPTION"
->-r</VAR
->.
-       </P
-></DD
-><DT
-><VAR
-CLASS="OPTION"
->-O</VAR
-><BR><VAR
-CLASS="OPTION"
->--no-owner</VAR
+>--no-owner</TT
 ></DT
 ><DD
 ><P
@@ -551,26 +495,26 @@ CLASS="COMMAND"
 	These statements will fail unless the initial connection to the
 	database is made by a superuser
 	(or the same user that owns all of the objects in the script).
-	With <VAR
+	With <TT
 CLASS="OPTION"
->-O</VAR
+>-O</TT
 >, any user name can be used for the
 	initial connection, and this user will own all the created objects.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-P <VAR
 CLASS="REPLACEABLE"
 >function-name(argtype [, ...])</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--function=<VAR
 CLASS="REPLACEABLE"
 >function-name(argtype [, ...])</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -580,71 +524,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-r</VAR
-><BR><VAR
+>-R</TT
+><BR><TT
 CLASS="OPTION"
->--rearrange</VAR
-></DT
-><DD
-><P
->        Rearrange items by object type (this occurs after the sorting
-	specified by <VAR
-CLASS="OPTION"
->-N</VAR
-> or <VAR
-CLASS="OPTION"
->-o</VAR
->, if
-	given).  The rearrangement is intended to give the best possible
-	restore performance.
-       </P
-><P
->        When none of <VAR
-CLASS="OPTION"
->-N</VAR
->, <VAR
-CLASS="OPTION"
->-o</VAR
->, and
-	<VAR
-CLASS="OPTION"
->-r</VAR
-> appear, <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> restores
-	items in the order they appear in the dump's table of contents,
-	or in the order they appear in the  <VAR
-CLASS="REPLACEABLE"
->list-file</VAR
-> if <VAR
-CLASS="OPTION"
->-L</VAR
-> is
-	given.  The combination of <VAR
-CLASS="OPTION"
->-o</VAR
-> and <VAR
-CLASS="OPTION"
->-r</VAR
->
-	duplicates the sorting done by <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->
-	before creating the dump's table of contents,
-	and so it is normally unnecessary to specify it.
-       </P
-></DD
-><DT
-><VAR
-CLASS="OPTION"
->-R</VAR
-><BR><VAR
-CLASS="OPTION"
->--no-reconnect</VAR
+>--no-reconnect</TT
 ></DT
 ><DD
 ><P
@@ -653,12 +538,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-s</VAR
-><BR><VAR
+>-s</TT
+><BR><TT
 CLASS="OPTION"
->--schema-only</VAR
+>--schema-only</TT
 ></DT
 ><DD
 ><P
@@ -667,41 +552,41 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-S <VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--superuser=<VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
 >        Specify the superuser user name to use when disabling triggers.
-	This is only relevant if <VAR
+	This is only relevant if <TT
 CLASS="OPTION"
->--disable-triggers</VAR
+>--disable-triggers</TT
 > is used.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-t <VAR
 CLASS="REPLACEABLE"
 >table</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--table=<VAR
 CLASS="REPLACEABLE"
 >table</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -709,18 +594,18 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-T <VAR
 CLASS="REPLACEABLE"
 >trigger</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--trigger=<VAR
 CLASS="REPLACEABLE"
 >trigger</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -728,12 +613,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-v</VAR
-><BR><VAR
+>-v</TT
+><BR><TT
 CLASS="OPTION"
->--verbose</VAR
+>--verbose</TT
 ></DT
 ><DD
 ><P
@@ -741,15 +626,15 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-x</VAR
-><BR><VAR
+>-x</TT
+><BR><TT
 CLASS="OPTION"
->--no-privileges</VAR
-><BR><VAR
+>--no-privileges</TT
+><BR><TT
 CLASS="OPTION"
->--no-acl</VAR
+>--no-acl</TT
 ></DT
 ><DD
 ><P
@@ -757,31 +642,28 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-X use-set-session-authorization</VAR
-><BR><VAR
+>-X use-set-session-authorization</TT
+><BR><TT
 CLASS="OPTION"
->--use-set-session-authorization</VAR
+>--use-set-session-authorization</TT
 ></DT
 ><DD
 ><P
->        This option is obsolete but still accepted for backwards
-	compatibility.
-        <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> now always behaves in the
-	way formerly selected by this option.
+>	Output SQL standard SET SESSION AUTHORIZATION commands instead
+	of OWNER TO commands.  This makes the dump more standards compatible,
+	but depending on the history of the objects in the dump, may not
+	restore properly.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-X disable-triggers</VAR
-><BR><VAR
+>-X disable-triggers</TT
+><BR><TT
 CLASS="OPTION"
->--disable-triggers</VAR
+>--disable-triggers</TT
 ></DT
 ><DD
 ><P
@@ -797,13 +679,13 @@ CLASS="APPLICATION"
        </P
 ><P
 >        Presently, the commands emitted for
-	<VAR
+	<TT
 CLASS="OPTION"
->--disable-triggers</VAR
+>--disable-triggers</TT
 > must be done as superuser.  So, you
-	should also specify a superuser name with <VAR
+	should also specify a superuser name with <TT
 CLASS="OPTION"
->-S</VAR
+>-S</TT
 >, or
 	preferably run <SPAN
 CLASS="APPLICATION"
@@ -832,18 +714,18 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-h <VAR
 CLASS="REPLACEABLE"
 >host</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--host=<VAR
 CLASS="REPLACEABLE"
 >host</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -858,18 +740,18 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-p <VAR
 CLASS="REPLACEABLE"
 >port</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--port=<VAR
 CLASS="REPLACEABLE"
 >port</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -883,12 +765,12 @@ CLASS="ENVAR"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-U <VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -896,9 +778,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-W</VAR
+>-W</TT
 ></DT
 ><DD
 ><P
@@ -914,7 +796,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45299"
+NAME="AEN45928"
 ></A
 ><H2
 >Environment</H2
@@ -951,9 +833,9 @@ NAME="APP-PGRESTORE-DIAGNOSTICS"
 >Diagnostics</H2
 ><P
 >   When a direct database connection is specified using the
-   <VAR
+   <TT
 CLASS="OPTION"
->-d</VAR
+>-d</TT
 > option, <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
@@ -967,9 +849,12 @@ CLASS="APPLICATION"
 >pg_restore</SPAN
 >, make sure
    you are able to select information from the database using, for
-   example, <SPAN
+   example, <A
+HREF="app-psql.html"
+><SPAN
 CLASS="APPLICATION"
 >psql</SPAN
+></A
 >.
   </P
 ></DIV
@@ -982,9 +867,9 @@ NAME="APP-PGRESTORE-NOTES"
 >Notes</H2
 ><P
 >   If your installation has any local additions to the
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > database, be careful to load the output of
    <SPAN
 CLASS="APPLICATION"
@@ -992,12 +877,12 @@ CLASS="APPLICATION"
 > into a truly empty database;
    otherwise you are likely to get errors due to duplicate definitions
    of the added objects.  To make an empty database without any local
-   additions, copy from <VAR
+   additions, copy from <TT
 CLASS="LITERAL"
->template0</VAR
-> not <VAR
+>template0</TT
+> not <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1016,9 +901,9 @@ CLASS="APPLICATION"
 ><LI
 ><P
 >      When restoring data to a pre-existing table and the option
-      <VAR
+      <TT
 CLASS="OPTION"
->--disable-triggers</VAR
+>--disable-triggers</TT
 > is used,
       <SPAN
 CLASS="APPLICATION"
@@ -1067,9 +952,9 @@ NAME="APP-PGRESTORE-EXAMPLES"
 ><H2
 >Examples</H2
 ><P
->   To dump a database called <VAR
+>   To dump a database called <TT
 CLASS="LITERAL"
->mydb</VAR
+>mydb</TT
 > that contains
    large objects to a <TT
 CLASS="FILENAME"
@@ -1089,9 +974,9 @@ CLASS="USERINPUT"
   </P
 ><P
 >   To reload this database (with large objects) to an
-   existing database called <VAR
+   existing database called <TT
 CLASS="LITERAL"
->newdb</VAR
+>newdb</TT
 >:
 
 </P><PRE
@@ -1178,7 +1063,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45366"
+NAME="AEN45995"
 ></A
 ><H2
 >History</H2
@@ -1196,7 +1081,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45371"
+NAME="AEN46000"
 ></A
 ><H2
 >See Also</H2
@@ -1250,7 +1135,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-pgtclsh.html"
+HREF="app-psql.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -1277,7 +1162,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pgtclsh</TD
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></TD
 ></TR
 ></TABLE
 ></DIV

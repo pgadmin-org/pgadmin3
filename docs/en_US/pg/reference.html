@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="PREVIOUS"
 TITLE="Examples"
@@ -21,7 +21,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="PART"
 ><DIV
@@ -37,7 +37,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -97,7 +97,7 @@ CLASS="TITLE"
 ><DIV
 CLASS="PARTINTRO"
 ><A
-NAME="AEN34519"
+NAME="AEN34142"
 ></A
 ><P
 >   The entries in this Reference are meant to provide in reasonable
@@ -175,6 +175,11 @@ HREF="sql-alterlanguage.html"
 >&nbsp;--&nbsp;change the definition of a procedural language</DT
 ><DT
 ><A
+HREF="sql-alteroperator.html"
+>ALTER OPERATOR</A
+>&nbsp;--&nbsp;change the definition of an operator</DT
+><DT
+><A
 HREF="sql-alteropclass.html"
 >ALTER OPERATOR CLASS</A
 >&nbsp;--&nbsp;change the definition of an operator class</DT
@@ -196,9 +201,20 @@ HREF="sql-altertable.html"
 >&nbsp;--&nbsp;change the definition of a table</DT
 ><DT
 ><A
+HREF="sql-altertablespace.html"
+>ALTER TABLESPACE</A
+>&nbsp;--&nbsp;change the definition of a tablespace</DT
+><DT
+><A
 HREF="sql-altertrigger.html"
 >ALTER TRIGGER</A
 >&nbsp;--&nbsp;change the definition of a trigger</DT
+><DT
+><A
+HREF="sql-altertype.html"
+>ALTER TYPE</A
+>&nbsp;--&nbsp;   change the definition of a type
+  </DT
 ><DT
 ><A
 HREF="sql-alteruser.html"
@@ -331,6 +347,11 @@ HREF="sql-createtableas.html"
 >&nbsp;--&nbsp;create a new table from the results of a query</DT
 ><DT
 ><A
+HREF="sql-createtablespace.html"
+>CREATE TABLESPACE</A
+>&nbsp;--&nbsp;define a new tablespace</DT
+><DT
+><A
 HREF="sql-createtrigger.html"
 >CREATE TRIGGER</A
 >&nbsp;--&nbsp;define a new trigger</DT
@@ -441,6 +462,11 @@ HREF="sql-droptable.html"
 >&nbsp;--&nbsp;remove a table</DT
 ><DT
 ><A
+HREF="sql-droptablespace.html"
+>DROP TABLESPACE</A
+>&nbsp;--&nbsp;remove a tablespace</DT
+><DT
+><A
 HREF="sql-droptrigger.html"
 >DROP TRIGGER</A
 >&nbsp;--&nbsp;remove a trigger</DT
@@ -526,6 +552,11 @@ HREF="sql-reindex.html"
 >&nbsp;--&nbsp;rebuild indexes</DT
 ><DT
 ><A
+HREF="sql-release-savepoint.html"
+>RELEASE SAVEPOINT</A
+>&nbsp;--&nbsp;destroy a previously defined savepoint</DT
+><DT
+><A
 HREF="sql-reset.html"
 >RESET</A
 >&nbsp;--&nbsp;restore the value of a run-time parameter to the default value</DT
@@ -539,6 +570,16 @@ HREF="sql-revoke.html"
 HREF="sql-rollback.html"
 >ROLLBACK</A
 >&nbsp;--&nbsp;abort the current transaction</DT
+><DT
+><A
+HREF="sql-rollback-to.html"
+>ROLLBACK TO SAVEPOINT</A
+>&nbsp;--&nbsp;roll back to a savepoint</DT
+><DT
+><A
+HREF="sql-savepoint.html"
+>SAVEPOINT</A
+>&nbsp;--&nbsp;define a new savepoint within the current transaction</DT
 ><DT
 ><A
 HREF="sql-select.html"
@@ -732,30 +773,6 @@ CLASS="PRODUCTNAME"
   </DT
 ><DT
 ><A
-HREF="app-pgtclsh.html"
->pgtclsh</A
->&nbsp;--&nbsp;   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> <SPAN
-CLASS="APPLICATION"
->Tcl</SPAN
-> shell client
-  </DT
-><DT
-><A
-HREF="app-pgtksh.html"
->pgtksh</A
->&nbsp;--&nbsp;   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> <SPAN
-CLASS="APPLICATION"
->Tcl/Tk</SPAN
-> shell client
-  </DT
-><DT
-><A
 HREF="app-psql.html"
 ><SPAN
 CLASS="APPLICATION"
@@ -794,17 +811,6 @@ HREF="app-initdb.html"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database cluster</DT
-><DT
-><A
-HREF="app-initlocation.html"
-><SPAN
-CLASS="APPLICATION"
->initlocation</SPAN
-></A
->&nbsp;--&nbsp;create a secondary <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database storage area</DT
 ><DT
 ><A
 HREF="app-ipcclean.html"

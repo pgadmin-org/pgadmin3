@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -102,7 +102,7 @@ NAME="POSTMASTER-START"
 CLASS="COMMAND"
 >postmaster</TT
 >.<A
-NAME="AEN15235"
+NAME="AEN15922"
 ></A
 >
    The <TT
@@ -110,9 +110,9 @@ CLASS="COMMAND"
 >postmaster</TT
 > must know where to
    find the data it is supposed to use. This is done with the
-   <VAR
+   <TT
 CLASS="OPTION"
->-D</VAR
+>-D</TT
 > option. Thus, the simplest way to start the
    server is:
 </P><PRE
@@ -127,22 +127,22 @@ CLASS="USERINPUT"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user
-   account. Without <VAR
+   account. Without <TT
 CLASS="OPTION"
->-D</VAR
+>-D</TT
 >, the server will try to use
-   the data directory in the environment variable <TT
+   the data directory named by the environment variable <TT
 CLASS="ENVAR"
 >PGDATA</TT
 >.
-   If neither of these succeed, it will fail.
+   If that variable is not provided either, it will fail.
   </P
 ><P
->   To start the <TT
+>   Normally it is better to start the <TT
 CLASS="COMMAND"
 >postmaster</TT
 > in the
-   background, use the usual shell syntax:
+   background.  For this, use the usual shell syntax:
 </P><PRE
 CLASS="SCREEN"
 >$ <KBD
@@ -150,7 +150,7 @@ CLASS="USERINPUT"
 >postmaster -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;</KBD
 ></PRE
 ><P>
-   It is an important to store the server's <SPAN
+   It is important to store the server's <SPAN
 CLASS="SYSTEMITEM"
 >stdout</SPAN
 > and
@@ -173,17 +173,7 @@ CLASS="COMMAND"
    and <A
 HREF="runtime-config.html"
 >Section 16.4</A
-> below. In particular, in order
-   for the server to accept
-   TCP/IP<A
-NAME="AEN15254"
-></A
-> connections
-   (rather than just Unix-domain socket ones), you must specify the
-   <VAR
-CLASS="OPTION"
->-i</VAR
-> option.
+> below.
   </P
 ><P
 >   This shell syntax can get tedious quickly.  Therefore the shell
@@ -192,7 +182,7 @@ CLASS="OPTION"
 CLASS="COMMAND"
 >pg_ctl</TT
 ><A
-NAME="AEN15259"
+NAME="AEN15943"
 ></A
 >
    is provided to simplify some tasks.  For example:
@@ -201,9 +191,9 @@ CLASS="PROGRAMLISTING"
 >pg_ctl start -l logfile</PRE
 ><P>
    will start the server in the background and put the output into the
-   named log file. The <VAR
+   named log file. The <TT
 CLASS="OPTION"
->-D</VAR
+>-D</TT
 > option has the same meaning
    here as in the <TT
 CLASS="COMMAND"
@@ -217,10 +207,10 @@ CLASS="COMMAND"
 ><P
 >   Normally, you will want to start the database server when the
    computer boots.<A
-NAME="AEN15266"
+NAME="AEN15950"
 ></A
-> Autostart scripts are operating
-   system-specific.  There are a few distributed with
+> Autostart scripts are operating-system-specific.
+   There are a few distributed with
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -228,8 +218,8 @@ CLASS="PRODUCTNAME"
    <TT
 CLASS="FILENAME"
 >contrib/start-scripts</TT
-> directory. This may require root
-   privileges.
+> directory. Installing one will require
+   root privileges.
   </P
 ><P
 >   Different systems have different conventions for starting up daemons
@@ -257,10 +247,10 @@ CLASS="EMPHASIS"
 >and not by root</I
 ></SPAN
 > or any other user. Therefore you
-   probably should form your commands using <VAR
+   probably should form your commands using <TT
 CLASS="LITERAL"
 >su -c '...'
-   postgres</VAR
+   postgres</TT
 >.  For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -268,9 +258,9 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Here are a few more operating system specific suggestions. (Always
-   replace these with the proper installation directory and the user
-   name.)
+>   Here are a few more operating-system-specific suggestions. (In each
+   case be sure to use the proper installation directory and user
+   name where we show generic values.)
 
    <P
 ></P
@@ -290,7 +280,7 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > source distribution.
       <A
-NAME="AEN15286"
+NAME="AEN15970"
 ></A
 >
      </P
@@ -306,7 +296,7 @@ CLASS="FILENAME"
 >/etc/rc.local</TT
 >:
       <A
-NAME="AEN15293"
+NAME="AEN15977"
 ></A
 >
 </P><PRE
@@ -325,7 +315,7 @@ CLASS="PRODUCTNAME"
 >Linux</SPAN
 > systems either add
       <A
-NAME="AEN15300"
+NAME="AEN15984"
 ></A
 >
 </P><PRE
@@ -361,7 +351,7 @@ CLASS="PRODUCTNAME"
 >Linux</SPAN
 > start scripts, depending on
       preference. <A
-NAME="AEN15312"
+NAME="AEN15996"
 ></A
 >
      </P
@@ -378,7 +368,7 @@ CLASS="FILENAME"
 > that contains
       the following line:
       <A
-NAME="AEN15319"
+NAME="AEN16003"
 ></A
 >
 </P><PRE
@@ -463,7 +453,7 @@ CLASS="COMMAND"
 CLASS="SCREEN"
 >$ <KBD
 CLASS="USERINPUT"
->postmaster -i -p 666</KBD
+>postmaster -p 666</KBD
 >
 LOG:  could not bind IPv4 socket: Permission denied
 HINT:  Is another postmaster already running on port 666? If not, wait a few seconds and retry.
@@ -486,9 +476,9 @@ CLASS="PRODUCTNAME"
      mean that you do not have System-V-style shared memory support
      configured into your kernel at all. As a temporary workaround, you
      can try starting the server with a smaller-than-normal number
-     of buffers (<VAR
+     of buffers (<TT
 CLASS="OPTION"
->-B</VAR
+>-B</TT
 > switch). You will eventually want
      to reconfigure your kernel to increase the allowed shared memory
      size. You may also see this message when trying to start multiple
@@ -519,9 +509,9 @@ CLASS="PRODUCTNAME"
 > wants to create. As above,
      you may be able to work around the problem by starting the
      server with a reduced number of allowed connections
-     (<VAR
+     (<TT
 CLASS="OPTION"
->-N</VAR
+>-N</TT
 > switch), but you'll eventually want to
      increase the kernel limit.
     </P

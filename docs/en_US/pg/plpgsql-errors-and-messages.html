@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 37. <SPAN
+>Chapter 35. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-ERRORS-AND-MESSAGES"
->37.9. Errors and Messages</A
+>35.9. Errors and Messages</A
 ></H1
 ><P
 >    Use the <TT
@@ -128,43 +128,43 @@ CLASS="OPTIONAL"
 >];</PRE
 ><P>
 
-    Possible levels are <VAR
+    Possible levels are <TT
 CLASS="LITERAL"
->DEBUG</VAR
+>DEBUG</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->LOG</VAR
->, <VAR
+>LOG</TT
+>, <TT
 CLASS="LITERAL"
->INFO</VAR
+>INFO</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->NOTICE</VAR
->, <VAR
+>NOTICE</TT
+>, <TT
 CLASS="LITERAL"
->WARNING</VAR
+>WARNING</TT
 >,
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->EXCEPTION</VAR
+>EXCEPTION</TT
 >.
-    <VAR
+    <TT
 CLASS="LITERAL"
->EXCEPTION</VAR
-> raises an error and aborts the current
-    transaction; the other levels only generate messages of different
+>EXCEPTION</TT
+> raises an error (which normally aborts the
+    current transaction); the other levels only generate messages of different
     priority levels.
     Whether messages of a particular priority are reported to the client,
     written to the server log, or both is controlled by the
-    <VAR
+    <TT
 CLASS="VARNAME"
->log_min_messages</VAR
+>log_min_messages</TT
 > and
-    <VAR
+    <TT
 CLASS="VARNAME"
->client_min_messages</VAR
+>client_min_messages</TT
 > configuration
     variables. See <A
 HREF="runtime-config.html"
@@ -173,69 +173,60 @@ HREF="runtime-config.html"
     information.
    </P
 ><P
->    Inside the format string, <VAR
+>    Inside the format string, <TT
 CLASS="LITERAL"
->%</VAR
+>%</TT
 > is replaced by the
     next optional argument's string representation. Write
-    <VAR
+    <TT
 CLASS="LITERAL"
->%%</VAR
-> to emit a literal <VAR
+>%%</TT
+> to emit a literal <TT
 CLASS="LITERAL"
->%</VAR
+>%</TT
 >. Note
     that the optional arguments must presently be simple variables,
     not expressions, and the format must be a simple string literal.
    </P
 ><P
->    In this example, the value of <VAR
+>    In this example, the value of <TT
 CLASS="LITERAL"
->v_job_id</VAR
+>v_job_id</TT
 > will replace the
-    <VAR
+    <TT
 CLASS="LITERAL"
->%</VAR
+>%</TT
 > in the string:
 </P><PRE
 CLASS="PROGRAMLISTING"
->RAISE NOTICE ''Calling cs_create_job(%)'', v_job_id;</PRE
+>RAISE NOTICE 'Calling cs_create_job(%)', v_job_id;</PRE
 ><P>
    </P
 ><P
 >    This example will abort the transaction with the given error message:
 </P><PRE
 CLASS="PROGRAMLISTING"
->RAISE EXCEPTION ''Inexistent ID --&#62; %'', user_id;</PRE
+>RAISE EXCEPTION 'Nonexistent ID --&#62; %', user_id;</PRE
 ><P>
    </P
 ><P
->     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not have a very smart
-     exception handling model. Whenever the parser, planner/optimizer
-     or executor decide that a statement cannot be processed any longer,
-     the whole transaction gets aborted and the system jumps back
-     into the main loop to get the next command from the client application.
-    </P
-><P
->     It is possible to hook into the error mechanism to notice that this
-     happens. But currently it is impossible to tell what really
-     caused the abort (data type format error, floating-point
-     error, parse error, etc.). And it is possible that the database server
-     is in an inconsistent state at this point so returning to the upper
-     executor or issuing more commands might corrupt the whole database.
-    </P
-><P
->     Thus, the only thing <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->
-     currently does when it encounters an abort during execution of a
-     function or trigger procedure is to add some fields to the message
-     telling in which function and where (line number and type of statement)
-     the error happened.  The error always stops execution of the function.
+>     <TT
+CLASS="COMMAND"
+>RAISE EXCEPTION</TT
+> presently always generates
+     the same SQLSTATE code, <TT
+CLASS="LITERAL"
+>P0001</TT
+>, no matter what message
+     it is invoked with.  It is possible to trap this exception with
+     <TT
+CLASS="LITERAL"
+>EXCEPTION ... WHEN RAISE_EXCEPTION THEN ...</TT
+> but there
+     is no way to tell one <TT
+CLASS="COMMAND"
+>RAISE</TT
+> from another.
     </P
 ></DIV
 ><DIV

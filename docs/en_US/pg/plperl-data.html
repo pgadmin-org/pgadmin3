@@ -9,22 +9,22 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Perl - Perl Procedural Language"
 HREF="plperl.html"><LINK
 REL="PREVIOUS"
-TITLE="PL/Perl - Perl Procedural Language"
-HREF="plperl.html"><LINK
-REL="NEXT"
 TITLE="Database Access from PL/Perl"
 HREF="plperl-database.html"><LINK
+REL="NEXT"
+TITLE="Global Values in PL/Perl"
+HREF="plperl-global.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="plperl.html"
+HREF="plperl-database.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -64,7 +64,7 @@ HREF="plperl.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 39. PL/Perl - Perl Procedural Language</TD
+>Chapter 37. PL/Perl - Perl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plperl-database.html"
+HREF="plperl-global.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,22 +93,88 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPERL-DATA"
->39.2. Data Values in PL/Perl</A
+>37.3. Data Values in PL/Perl</A
 ></H1
 ><P
 >   The argument values supplied to a PL/Perl function's code are
    simply the input arguments converted to text form (just as if they
-   had been displayed by a <VAR
-CLASS="LITERAL"
->SELECT</VAR
+   had been displayed by a <TT
+CLASS="COMMAND"
+>SELECT</TT
 > statement).
-   Conversely, the <VAR
+   Conversely, the <TT
 CLASS="LITERAL"
->return</VAR
+>return</TT
 > command will accept any string
    that is acceptable input format for the function's declared return
    type.  So, the PL/Perl programmer can manipulate data values as if
    they were just text.
+  </P
+><P
+>   PL/Perl can now return rowsets and composite types, and rowsets of
+composite types.
+  </P
+><P
+>   Here is an example of a PL/Perl function returning a rowset of a row type:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE test (
+       i int,
+       v varchar
+);
+
+INSERT INTO test (i, v) VALUES (1,'first line');
+INSERT INTO test (i, v) VALUES (2,'second line');
+INSERT INTO test (i, v) VALUES (3,'third line');
+INSERT INTO test (i, v) VALUES (4,'immortal');
+
+create function test_munge() returns setof test language plperl as $$
+    my $res = [];
+    my $rv = spi_exec_query('select i,v from test;');
+    my $status = $rv-&#62;{status};
+    my $rows = @{$rv-&#62;{rows}};
+    my $processed = $rv-&#62;{processed};
+    foreach my $rn (0..$rows-1) {
+        my $row = $rv-&#62;{rows}[$rn];
+        $row-&#62;{i} += 200 if defined($row-&#62;{i});
+        $row-&#62;{v} =~ tr/A-Za-z/a-zA-Z/ if (defined($row-&#62;{v}));
+        push @$res,$row;
+    }
+    return $res;
+$$;
+
+select * from test_munge();</PRE
+><P>
+  </P
+><P
+>   Here is an example of a PL/Perl function returning a composite type:
+  </P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TYPE testrowperl AS (f1 integer, f2 text, f3 text);
+
+CREATE OR REPLACE FUNCTION perl_row() RETURNS testrowperl AS $$
+
+ return {f2 =&#62; 'hello', f1 =&#62; 1, f3 =&#62; 'world'};
+
+$$ LANGUAGE plperl;
+  </PRE
+><P>
+  </P
+><P
+>  Here is an example of a PL/Perl function returning a rowset of a composite type.
+  </P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TYPE testsetperl AS (f1 integer, f2 text, f3 text);
+
+CREATE OR REPLACE FUNCTION perl_set() RETURNS SETOF testsetperl AS $$
+ return[
+        {f1 =&#62; 1, f2 =&#62; 'hello', f3 =&#62;  'world'},
+        {f1 =&#62; 2, f2 =&#62; 'hello', f3 =&#62;  'postgres'},
+        {f1 =&#62; 3, f2 =&#62; 'hello', f3 =&#62;  'plperl'}
+       ];
+$$  LANGUAGE plperl;
+  </PRE
+><P>
   </P
 ></DIV
 ><DIV
@@ -127,7 +193,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="plperl.html"
+HREF="plperl-database.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -145,7 +211,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plperl-database.html"
+HREF="plperl-global.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -155,7 +221,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->PL/Perl - Perl Procedural Language</TD
+>Database Access from PL/Perl</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -169,7 +235,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Database Access from PL/Perl</TD
+>Global Values in PL/Perl</TD
 ></TR
 ></TABLE
 ></DIV

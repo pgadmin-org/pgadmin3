@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="extend.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. Extending <ACRONYM
+>Chapter 31. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
@@ -96,13 +96,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XFUNC-SQL"
->33.4. Query Language (<ACRONYM
+>31.4. Query Language (<ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 >) Functions</A
 ></H1
 ><A
-NAME="AEN28726"
+NAME="AEN27935"
 ></A
 ><P
 >    SQL functions execute an arbitrary list of SQL statements, returning
@@ -113,28 +113,28 @@ NAME="AEN28726"
 CLASS="QUOTE"
 >"the first row"</SPAN
 > of a multirow
-    result is not well-defined unless you use <VAR
+    result is not well-defined unless you use <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 >.)
     If the last query happens
     to return no rows at all, the null value will be returned.
    </P
 ><P
 >    <A
-NAME="AEN28734"
+NAME="AEN27943"
 ></A
 > Alternatively,
     an SQL function may be declared to return a set, by specifying the
-    function's return type as <VAR
+    function's return type as <TT
 CLASS="LITERAL"
 >SETOF
     <VAR
 CLASS="REPLACEABLE"
 >sometype</VAR
-></VAR
+></TT
 >.<A
-NAME="AEN28739"
+NAME="AEN27948"
 ></A
 >
     In this case all rows of the last query's result are returned.
@@ -142,46 +142,46 @@ NAME="AEN28739"
    </P
 ><P
 >    The body of an SQL function should be a list of one or more SQL
-    statements separated by semicolons.  Note that because the syntax
-    of the <TT
+    statements separated by semicolons.  Although dollar quoting
+    obviates this, note that because the syntax of the <TT
 CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command requires the body of the
-    function to be enclosed in single quotes, single quote marks
-    (<VAR
+>CREATE
+    FUNCTION</TT
+> command, if you choose not to use dollar
+    quoting, i.e. the body of the function is enclosed in single quotes,
+    you must escape single quote marks (<TT
 CLASS="LITERAL"
->'</VAR
->) used
-    in the body of the function must be escaped, by writing two single
-    quotes (<VAR
+>'</TT
+>) used in the body of
+    the function, either by writing two single quotes (<TT
 CLASS="LITERAL"
->''</VAR
->) or a backslash (<VAR
+>''</TT
+>) or
+    with a backslash (<TT
 CLASS="LITERAL"
->\'</VAR
->) where each
-    quote is desired.
+>\'</TT
+>) where you desire each quote to be.
    </P
 ><P
 >    Arguments to the SQL function may be referenced in the function
-    body using the syntax <VAR
+    body using the syntax <TT
 CLASS="LITERAL"
 >$<VAR
 CLASS="REPLACEABLE"
 >n</VAR
-></VAR
->: <VAR
+></TT
+>: <TT
 CLASS="LITERAL"
->$1</VAR
+>$1</TT
 > refers to
-    the first argument, <VAR
+    the first argument, <TT
 CLASS="LITERAL"
->$2</VAR
+>$2</TT
 > to the second, and so on.  If an argument
     is of a composite type, then the dot notation,
-    e.g., <VAR
+    e.g., <TT
 CLASS="LITERAL"
->$1.name</VAR
+>$1.name</TT
 >, may be used to access attributes
     of the argument.
    </P
@@ -190,8 +190,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28752"
->33.4.1. <ACRONYM
+NAME="AEN27961"
+>31.4.1. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions on Base Types</A
@@ -208,7 +208,12 @@ CLASS="TYPE"
      
 </P><PRE
 CLASS="SCREEN"
->CREATE FUNCTION one() RETURNS integer AS '
+>CREATE FUNCTION one() RETURNS integer AS $$
+    SELECT 1 AS result;
+$$ LANGUAGE SQL;
+
+-- Alternative syntax:
+CREATE FUNCTION one() RETURNS integer AS '
     SELECT 1 AS result;
 ' LANGUAGE SQL;
 
@@ -221,17 +226,17 @@ SELECT one();
     </P
 ><P
 >     Notice that we defined a column alias within the function body for the result of the function
-     (with  the  name <VAR
+     (with  the  name <TT
 CLASS="LITERAL"
->result</VAR
+>result</TT
 >),  but this column alias is not visible
-     outside the function.  Hence,  the  result  is labeled <VAR
+     outside the function.  Hence,  the  result  is labeled <TT
 CLASS="LITERAL"
->one</VAR
+>one</TT
 >
-     instead of <VAR
+     instead of <TT
 CLASS="LITERAL"
->result</VAR
+>result</TT
 >.
     </P
 ><P
@@ -240,20 +245,20 @@ CLASS="ACRONYM"
 >SQL</ACRONYM
 > functions  
      that take base types as arguments.  In the example below, notice
-     how we refer to the arguments within the function as <VAR
+     how we refer to the arguments within the function as <TT
 CLASS="LITERAL"
->$1</VAR
+>$1</TT
 >
-     and <VAR
+     and <TT
 CLASS="LITERAL"
->$2</VAR
+>$2</TT
 >.
 
 </P><PRE
 CLASS="SCREEN"
->CREATE FUNCTION add_em(integer, integer) RETURNS integer AS '
+>CREATE FUNCTION add_em(integer, integer) RETURNS integer AS $$
     SELECT $1 + $2;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT add_em(1, 2) AS answer;
 
@@ -268,12 +273,12 @@ SELECT add_em(1, 2) AS answer;
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION tf1 (integer, numeric) RETURNS integer AS '
+>CREATE FUNCTION tf1 (integer, numeric) RETURNS integer AS $$
     UPDATE bank 
         SET balance = balance - $2
         WHERE accountno = $1;
     SELECT 1;
-' LANGUAGE SQL;</PRE
+$$ LANGUAGE SQL;</PRE
 ><P>
 
      A user could execute this function to debit account 17 by $100.00 as
@@ -291,12 +296,12 @@ CLASS="PROGRAMLISTING"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION tf1 (integer, numeric) RETURNS numeric AS '
+>CREATE FUNCTION tf1 (integer, numeric) RETURNS numeric AS $$
     UPDATE bank 
         SET balance = balance - $2
         WHERE accountno = $1;
     SELECT balance FROM bank WHERE accountno = $1;
-' LANGUAGE SQL;</PRE
+$$ LANGUAGE SQL;</PRE
 ><P>
 
      which adjusts the balance and returns the new balance.
@@ -341,10 +346,10 @@ CLASS="COMMAND"
 
 </P><PRE
 CLASS="SCREEN"
->CREATE FUNCTION clean_emp() RETURNS void AS '
+>CREATE FUNCTION clean_emp() RETURNS void AS $$
     DELETE FROM emp
         WHERE salary &lt;= 0;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT clean_emp();
 
@@ -360,23 +365,24 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28783"
->33.4.2. <ACRONYM
+NAME="AEN27992"
+>31.4.2. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions on Composite Types</A
 ></H2
 ><P
->     When  specifying  functions with arguments of composite
+>     When writing  functions with arguments of composite
      types, we must  not  only  specify  which
-     argument  we  want (as we did above with <VAR
+     argument  we  want (as we did above with <TT
 CLASS="LITERAL"
->$1</VAR
-> and <VAR
+>$1</TT
+> and <TT
 CLASS="LITERAL"
->$2</VAR
+>$2</TT
 >) but
-     also the attributes of  that  argument.   For  example, suppose that
+     also the desired attribute (field) of  that  argument.   For  example,
+     suppose that 
      <TT
 CLASS="TYPE"
 >emp</TT
@@ -392,16 +398,16 @@ CLASS="FUNCTION"
 CLASS="SCREEN"
 >CREATE TABLE emp (
     name        text,
-    salary      integer,
+    salary      numeric,
     age         integer,
     cubicle     point
 );
 
-CREATE FUNCTION double_salary(emp) RETURNS integer AS '
+CREATE FUNCTION double_salary(emp) RETURNS numeric AS $$
     SELECT $1.salary * 2 AS salary;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
-SELECT name, double_salary(emp) AS dream
+SELECT name, double_salary(emp.*) AS dream
     FROM emp
     WHERE emp.cubicle ~= point '(2,1)';
 
@@ -411,24 +417,42 @@ SELECT name, double_salary(emp) AS dream
 ><P>
     </P
 ><P
->     Notice the use of the syntax <VAR
+>     Notice the use of the syntax <TT
 CLASS="LITERAL"
->$1.salary</VAR
+>$1.salary</TT
 >
      to select one field of the argument row value.  Also notice
      how the calling <TT
 CLASS="COMMAND"
 >SELECT</TT
-> command uses a table name to denote
-     the entire current row of that table as a composite value.  The table
-     row can alternatively be referenced like this:
+> command uses <TT
+CLASS="LITERAL"
+>*</TT
+>
+     to select
+     the entire current row of a table as a composite value.  The table
+     row can alternatively be referenced using just the table name,
+     like this:
 </P><PRE
 CLASS="SCREEN"
->SELECT name, double_salary(emp.*) AS dream
+>SELECT name, double_salary(emp) AS dream
     FROM emp
     WHERE emp.cubicle ~= point '(2,1)';</PRE
 ><P>
-     which emphasizes its row nature.
+     but this usage is deprecated since it's easy to get confused.
+    </P
+><P
+>     Sometimes it is handy to construct a composite argument value
+     on-the-fly.  This can be done with the <TT
+CLASS="LITERAL"
+>ROW</TT
+> construct.
+     For example, we could adjust the data being passed to the function:
+</P><PRE
+CLASS="SCREEN"
+>SELECT name, double_salary(row(name, salary*1.1, age, cubicle)) AS dream
+    FROM emp;</PRE
+><P>
     </P
 ><P
 >     It is also possible to build a function that returns a composite type.
@@ -440,12 +464,12 @@ CLASS="TYPE"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION new_emp() RETURNS emp AS '
-    SELECT text ''None'' AS name,
+>CREATE FUNCTION new_emp() RETURNS emp AS $$
+    SELECT text 'None' AS name,
         1000 AS salary,
         25 AS age,
-        point ''(2,2)'' AS cubicle;
-' LANGUAGE SQL;</PRE
+        point '(2,2)' AS cubicle;
+$$ LANGUAGE SQL;</PRE
 ><P>
 
      In this example we have specified each of  the  attributes
@@ -513,12 +537,12 @@ ERROR:  syntax error at or near "." at character 17</PRE
 >     Another option is to use
      functional notation for extracting an attribute.  The  simple  way 
      to explain this is that we can use the
-     notations <VAR
+     notations <TT
 CLASS="LITERAL"
->attribute(table)</VAR
->  and  <VAR
+>attribute(table)</TT
+>  and  <TT
 CLASS="LITERAL"
->table.attribute</VAR
+>table.attribute</TT
 >
      interchangeably.
 
@@ -552,9 +576,9 @@ SELECT name(emp) AS youngster
 
 </P><PRE
 CLASS="SCREEN"
->CREATE FUNCTION getname(emp) RETURNS text AS '
+>CREATE FUNCTION getname(emp) RETURNS text AS $$
     SELECT $1.name;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT getname(new_emp());
  getname
@@ -569,16 +593,16 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28818"
->33.4.3. <ACRONYM
+NAME="AEN28031"
+>31.4.3. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions as Table Sources</A
 ></H2
 ><P
->     All SQL functions may be used in the <VAR
+>     All SQL functions may be used in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause of a query,
      but it is particularly useful for functions returning composite types.
      If the function is defined to return a base type, the table function
@@ -596,9 +620,9 @@ INSERT INTO foo VALUES (1, 1, 'Joe');
 INSERT INTO foo VALUES (1, 2, 'Ed');
 INSERT INTO foo VALUES (2, 1, 'Mary');
 
-CREATE FUNCTION getfoo(int) RETURNS foo AS '
+CREATE FUNCTION getfoo(int) RETURNS foo AS $$
     SELECT * FROM foo WHERE fooid = $1;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT *, upper(fooname) FROM getfoo(1) AS t1;
 
@@ -613,9 +637,9 @@ SELECT *, upper(fooname) FROM getfoo(1) AS t1;
     </P
 ><P
 >     Note that we only got one row out of the function.  This is because
-     we did not use <VAR
+     we did not use <TT
 CLASS="LITERAL"
->SETOF</VAR
+>SETOF</TT
 >.  This is described in the next section.
     </P
 ></DIV
@@ -624,20 +648,20 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28827"
->33.4.4. <ACRONYM
+NAME="AEN28040"
+>31.4.4. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions Returning Sets</A
 ></H2
 ><P
->     When an SQL function is declared as returning <VAR
+>     When an SQL function is declared as returning <TT
 CLASS="LITERAL"
 >SETOF
      <VAR
 CLASS="REPLACEABLE"
 >sometype</VAR
-></VAR
+></TT
 >, the function's final
      <TT
 CLASS="COMMAND"
@@ -646,22 +670,22 @@ CLASS="COMMAND"
      outputs is returned as an element of the result set.
     </P
 ><P
->     This feature is normally used when calling the function in the <VAR
+>     This feature is normally used when calling the function in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >
      clause.  In this case each row returned by the function becomes
      a row of the table seen by the query.  For example, assume that
-     table <VAR
+     table <TT
 CLASS="LITERAL"
->foo</VAR
+>foo</TT
 > has the same contents as above, and we say:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION getfoo(int) RETURNS SETOF foo AS '
+>CREATE FUNCTION getfoo(int) RETURNS SETOF foo AS $$
     SELECT * FROM foo WHERE fooid = $1;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT * FROM getfoo(1) AS t1;</PRE
 ><P>
@@ -687,9 +711,9 @@ CLASS="SCREEN"
 
 </P><PRE
 CLASS="SCREEN"
->CREATE FUNCTION listchildren(text) RETURNS SETOF text AS
-'SELECT name FROM nodes WHERE parent = $1'
-LANGUAGE SQL;
+>CREATE FUNCTION listchildren(text) RETURNS SETOF text AS $$
+    SELECT name FROM nodes WHERE parent = $1
+$$ LANGUAGE SQL;
 
 SELECT * FROM nodes;
    name    | parent
@@ -725,12 +749,12 @@ SELECT name, listchildren(name) FROM nodes;
 CLASS="COMMAND"
 >SELECT</TT
 >,
-     notice that no output row appears for <VAR
+     notice that no output row appears for <TT
 CLASS="LITERAL"
->Child2</VAR
->, <VAR
+>Child2</TT
+>, <TT
 CLASS="LITERAL"
->Child3</VAR
+>Child3</TT
 >, etc.
      This happens because <CODE
 CLASS="FUNCTION"
@@ -744,8 +768,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28845"
->33.4.5. Polymorphic <ACRONYM
+NAME="AEN28058"
+>31.4.5. Polymorphic <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions</A
@@ -764,7 +788,7 @@ CLASS="TYPE"
 >anyarray</TT
 >.  See <A
 HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 33.2.5</A
+>Section 31.2.5</A
 > for a more detailed
      explanation of polymorphic functions. Here is a polymorphic
      function <CODE
@@ -774,9 +798,9 @@ CLASS="FUNCTION"
      from two arbitrary data type elements:
 </P><PRE
 CLASS="SCREEN"
->CREATE FUNCTION make_array(anyelement, anyelement) RETURNS anyarray AS '
+>CREATE FUNCTION make_array(anyelement, anyelement) RETURNS anyarray AS $$
     SELECT ARRAY[$1, $2];
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT make_array(1, 2) AS intarray, make_array('a'::text, 'b') AS textarray;
  intarray | textarray
@@ -786,9 +810,9 @@ SELECT make_array(1, 2) AS intarray, make_array('a'::text, 'b') AS textarray;
 ><P>
     </P
 ><P
->     Notice the use of the typecast <VAR
+>     Notice the use of the typecast <TT
 CLASS="LITERAL"
->'a'::text</VAR
+>'a'::text</TT
 >
      to specify that the argument is of type <TT
 CLASS="TYPE"
@@ -818,9 +842,9 @@ CLASS="COMPUTEROUTPUT"
      return type, but the converse is not. For example:
 </P><PRE
 CLASS="SCREEN"
->CREATE FUNCTION is_greater(anyelement, anyelement) RETURNS boolean AS '
+>CREATE FUNCTION is_greater(anyelement, anyelement) RETURNS boolean AS $$
     SELECT $1 &#62; $2;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT is_greater(1, 2);
  is_greater
@@ -828,9 +852,9 @@ SELECT is_greater(1, 2);
  f
 (1 row)
 
-CREATE FUNCTION invalid_func() RETURNS anyelement AS '
+CREATE FUNCTION invalid_func() RETURNS anyelement AS $$
     SELECT 1;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 ERROR:  cannot determine result data type
 DETAIL:  A function returning "anyarray" or "anyelement" must have at least one argument of either type.</PRE
 ><P>

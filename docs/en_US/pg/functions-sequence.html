@@ -2,14 +2,14 @@
 <HTML
 ><HEAD
 ><TITLE
->Sequence-Manipulation Functions</TITLE
+>Sequence Manipulation Functions</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,19 +93,19 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-SEQUENCE"
->9.11. Sequence-Manipulation Functions</A
+>9.12. Sequence Manipulation Functions</A
 ></H1
 ><A
-NAME="AEN11237"
+NAME="AEN11616"
 ></A
 ><A
-NAME="AEN11239"
+NAME="AEN11618"
 ></A
 ><A
-NAME="AEN11241"
+NAME="AEN11620"
 ></A
 ><A
-NAME="AEN11243"
+NAME="AEN11622"
 ></A
 ><P
 >   This section describes <SPAN
@@ -155,7 +155,7 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -163,7 +163,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >text</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -175,7 +175,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -183,7 +183,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >text</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -198,7 +198,7 @@ CLASS="FUNCTION"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -209,7 +209,7 @@ CLASS="TYPE"
 >, <TT
 CLASS="TYPE"
 >bigint</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -221,7 +221,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -235,7 +235,7 @@ CLASS="TYPE"
 >, <TT
 CLASS="TYPE"
 >boolean</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -243,9 +243,9 @@ CLASS="TYPE"
 >bigint</TT
 ></TD
 ><TD
->Set sequence's current value and <VAR
+>Set sequence's current value and <TT
 CLASS="LITERAL"
->is_called</VAR
+>is_called</TT
 > flag</TD
 ></TR
 ></TBODY
@@ -259,28 +259,28 @@ CLASS="LITERAL"
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > names, the sequence functions convert their
-   argument to lower case unless the string is double-quoted.  Thus
+   argument to lowercase unless the string is double-quoted.  Thus
 </P><PRE
 CLASS="PROGRAMLISTING"
 >nextval('foo')      <I
 CLASS="LINEANNOTATION"
->operates on sequence <VAR
+>operates on sequence <TT
 CLASS="LITERAL"
->foo</VAR
+>foo</TT
 ></I
 >
 nextval('FOO')      <I
 CLASS="LINEANNOTATION"
->operates on sequence <VAR
+>operates on sequence <TT
 CLASS="LITERAL"
->foo</VAR
+>foo</TT
 ></I
 >
 nextval('"Foo"')    <I
 CLASS="LINEANNOTATION"
->operates on sequence <VAR
+>operates on sequence <TT
 CLASS="LITERAL"
->Foo</VAR
+>Foo</TT
 ></I
 ></PRE
 ><P>
@@ -289,9 +289,9 @@ CLASS="LITERAL"
 CLASS="PROGRAMLISTING"
 >nextval('myschema.foo')     <I
 CLASS="LINEANNOTATION"
->operates on <VAR
+>operates on <TT
 CLASS="LITERAL"
->myschema.foo</VAR
+>myschema.foo</TT
 ></I
 >
 nextval('"myschema".foo')   <I
@@ -300,9 +300,9 @@ CLASS="LINEANNOTATION"
 >
 nextval('foo')              <I
 CLASS="LINEANNOTATION"
->searches search path for <VAR
+>searches search path for <TT
 CLASS="LITERAL"
->foo</VAR
+>foo</TT
 ></I
 ></PRE
 ><P>
@@ -365,35 +365,35 @@ CLASS="FUNCTION"
 ><DD
 ><P
 >        Reset the sequence object's counter value.  The two-parameter
-	form sets the sequence's <VAR
+	form sets the sequence's <TT
 CLASS="LITERAL"
->last_value</VAR
+>last_value</TT
 > field to the specified
-	value and sets its <VAR
+	value and sets its <TT
 CLASS="LITERAL"
->is_called</VAR
-> field to <VAR
+>is_called</TT
+> field to <TT
 CLASS="LITERAL"
->true</VAR
+>true</TT
 >,
 	meaning that the next <CODE
 CLASS="FUNCTION"
 >nextval</CODE
 > will advance the sequence
 	before returning a value.  In the three-parameter form,
-	<VAR
+	<TT
 CLASS="LITERAL"
->is_called</VAR
-> may be set either <VAR
+>is_called</TT
+> may be set either <TT
 CLASS="LITERAL"
->true</VAR
+>true</TT
 > or
-	<VAR
+	<TT
 CLASS="LITERAL"
->false</VAR
->.  If it's set to <VAR
+>false</TT
+>.  If it's set to <TT
 CLASS="LITERAL"
->false</VAR
+>false</TT
 >,
 	the next <CODE
 CLASS="FUNCTION"

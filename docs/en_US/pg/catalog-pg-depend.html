@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. System Catalogs</TD
+>Chapter 41. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-DEPEND"
->43.13. <TT
+>41.13. <TT
 CLASS="STRUCTNAME"
 >pg_depend</TT
 ></A
 ></H1
 ><A
-NAME="AEN50073"
+NAME="AEN50716"
 ></A
 ><P
 >   The catalog <TT
@@ -123,11 +123,11 @@ CLASS="COMMAND"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN50080"
+NAME="AEN50723"
 ></A
 ><P
 ><B
->Table 43-13. <TT
+>Table 41-13. <TT
 CLASS="STRUCTNAME"
 >pg_depend</TT
 > Columns</B
@@ -160,7 +160,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-class.html"
@@ -168,7 +168,7 @@ HREF="catalog-pg-class.html"
 CLASS="STRUCTNAME"
 >pg_class</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >The OID of the system catalog the dependent object is in</TD
@@ -227,7 +227,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-class.html"
@@ -235,7 +235,7 @@ HREF="catalog-pg-class.html"
 CLASS="STRUCTNAME"
 >pg_class</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >The OID of the system catalog the referenced object is in</TD
@@ -323,18 +323,18 @@ CLASS="VARIABLELIST"
 ><TT
 CLASS="SYMBOL"
 >DEPENDENCY_NORMAL</TT
-> (<VAR
+> (<TT
 CLASS="LITERAL"
->n</VAR
+>n</TT
 >)</DT
 ><DD
 ><P
 >       A normal relationship between separately-created objects.  The
        dependent object may be dropped without affecting the
        referenced object.  The referenced object may only be dropped
-       by specifying <VAR
+       by specifying <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 >, in which case the dependent
        object is dropped, too.  Example: a table column has a normal
        dependency on its data type.
@@ -344,20 +344,20 @@ CLASS="LITERAL"
 ><TT
 CLASS="SYMBOL"
 >DEPENDENCY_AUTO</TT
-> (<VAR
+> (<TT
 CLASS="LITERAL"
->a</VAR
+>a</TT
 >)</DT
 ><DD
 ><P
 >       The dependent object can be dropped separately from the
        referenced object, and should be automatically dropped
-       (regardless of <VAR
+       (regardless of <TT
 CLASS="LITERAL"
->RESTRICT</VAR
-> or <VAR
+>RESTRICT</TT
+> or <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 >
        mode) if the referenced object is dropped.  Example: a named
        constraint on a table is made autodependent on the table, so
@@ -368,9 +368,9 @@ CLASS="LITERAL"
 ><TT
 CLASS="SYMBOL"
 >DEPENDENCY_INTERNAL</TT
-> (<VAR
+> (<TT
 CLASS="LITERAL"
->i</VAR
+>i</TT
 >)</DT
 ><DD
 ><P
@@ -406,9 +406,9 @@ CLASS="STRUCTNAME"
 ><TT
 CLASS="SYMBOL"
 >DEPENDENCY_PIN</TT
-> (<VAR
+> (<TT
 CLASS="LITERAL"
->p</VAR
+>p</TT
 >)</DT
 ><DD
 ><P

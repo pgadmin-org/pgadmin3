@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="ecpg.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 30. <SPAN
+>Chapter 29. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
 > - Embedded <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-ERRORS"
->30.9. Error Handling</A
+>29.9. Error Handling</A
 ></H1
 ><P
 >   This section describes how you can handle exceptional conditions
@@ -111,8 +111,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23638"
->30.9.1. Setting Callbacks</A
+NAME="AEN23911"
+>29.9.1. Setting Callbacks</A
 ></H2
 ><P
 >    One simple method to catch errors and warnings is to set a
@@ -141,9 +141,9 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SQLERROR</VAR
+>SQLERROR</TT
 ></DT
 ><DD
 ><P
@@ -152,9 +152,9 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SQLWARNING</VAR
+>SQLWARNING</TT
 ></DT
 ><DD
 ><P
@@ -163,9 +163,9 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->NOT FOUND</VAR
+>NOT FOUND</TT
 ></DT
 ><DD
 ><P
@@ -190,9 +190,9 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CONTINUE</VAR
+>CONTINUE</TT
 ></DT
 ><DD
 ><P
@@ -201,32 +201,32 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >GOTO <VAR
 CLASS="REPLACEABLE"
 >label</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="LITERAL"
 >GO TO <VAR
 CLASS="REPLACEABLE"
 >label</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->        Jump to the specified label (using a C <VAR
+>        Jump to the specified label (using a C <TT
 CLASS="LITERAL"
->goto</VAR
+>goto</TT
 >
         statement).
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SQLPRINT</VAR
+>SQLPRINT</TT
 ></DT
 ><DD
 ><P
@@ -236,38 +236,38 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->STOP</VAR
+>STOP</TT
 ></DT
 ><DD
 ><P
->        Call <VAR
+>        Call <TT
 CLASS="LITERAL"
->exit(1)</VAR
+>exit(1)</TT
 >, which will terminate the
         program.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->BREAK</VAR
+>BREAK</TT
 ></DT
 ><DD
 ><P
->        Execute the C statement <VAR
+>        Execute the C statement <TT
 CLASS="LITERAL"
->break</VAR
+>break</TT
 >.  This should
-        only be used in loops or <VAR
+        only be used in loops or <TT
 CLASS="LITERAL"
->switch</VAR
+>switch</TT
 > statements.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >CALL <VAR
 CLASS="REPLACEABLE"
@@ -275,8 +275,8 @@ CLASS="REPLACEABLE"
 > (<VAR
 CLASS="REPLACEABLE"
 >args</VAR
->)</VAR
-><BR><VAR
+>)</TT
+><BR><TT
 CLASS="LITERAL"
 >DO <VAR
 CLASS="REPLACEABLE"
@@ -284,7 +284,7 @@ CLASS="REPLACEABLE"
 > (<VAR
 CLASS="REPLACEABLE"
 >args</VAR
->)</VAR
+>)</TT
 ></DT
 ><DD
 ><P
@@ -296,16 +296,16 @@ CLASS="REPLACEABLE"
 ><P>
 
     The SQL standard only provides for the actions
-    <VAR
+    <TT
 CLASS="LITERAL"
->CONTINUE</VAR
-> and <VAR
+>CONTINUE</TT
+> and <TT
 CLASS="LITERAL"
->GOTO</VAR
+>GOTO</TT
 > (and
-    <VAR
+    <TT
 CLASS="LITERAL"
->GO TO</VAR
+>GO TO</TT
 >).
    </P
 ><P
@@ -319,17 +319,17 @@ EXEC SQL WHENEVER SQLERROR STOP;</PRE
 ><P>
    </P
 ><P
->    The statement <VAR
+>    The statement <TT
 CLASS="LITERAL"
->EXEC SQL WHENEVER</VAR
+>EXEC SQL WHENEVER</TT
 > is a directive
     of the SQL preprocessor, not a C statement.  The error or warning
     actions that it sets apply to all embedded SQL statements that
     appear below the point where the handler is set, unless a
     different action was set for the same condition between the first
-    <VAR
+    <TT
 CLASS="LITERAL"
->EXEC SQL WHENEVER</VAR
+>EXEC SQL WHENEVER</TT
 > and the SQL statement causing
     the condition, regardless of the flow of control in the C program.
     So neither of the two following C program excerpts will have the
@@ -377,14 +377,14 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23719"
->30.9.2. sqlca</A
+NAME="AEN23992"
+>29.9.2. sqlca</A
 ></H2
 ><P
 >    For a more powerful error handling, the embedded SQL interface
-    provides a global variable with the name <VAR
+    provides a global variable with the name <TT
 CLASS="VARNAME"
->sqlca</VAR
+>sqlca</TT
 >
     that has the following structure:
 </P><PRE
@@ -406,25 +406,25 @@ CLASS="PROGRAMLISTING"
 } sqlca;</PRE
 ><P>
     (In a multithreaded program, every thread automatically gets its
-    own copy of <VAR
+    own copy of <TT
 CLASS="VARNAME"
->sqlca</VAR
+>sqlca</TT
 >.  This works similar to the
     handling of the standard C global variable
-    <VAR
+    <TT
 CLASS="VARNAME"
->errno</VAR
+>errno</TT
 >.)
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="VARNAME"
->sqlca</VAR
+>sqlca</TT
 > covers both warnings and errors.  If
     multiple warnings or errors occur during the execution of a
-    statement, then <VAR
+    statement, then <TT
 CLASS="VARNAME"
->sqlca</VAR
+>sqlca</TT
 > will only contain
     information about the last one.
    </P
@@ -433,72 +433,72 @@ CLASS="VARNAME"
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > statement,
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlcode</VAR
+>sqlca.sqlcode</TT
 > will be 0 and
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlstate</VAR
+>sqlca.sqlstate</TT
 > will be
-    <VAR
+    <TT
 CLASS="LITERAL"
->"00000"</VAR
+>"00000"</TT
 >.  If a warning or error occurred, then
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlcode</VAR
+>sqlca.sqlcode</TT
 > will be negative and
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlstate</VAR
+>sqlca.sqlstate</TT
 > will be different from
-    <VAR
+    <TT
 CLASS="LITERAL"
->"00000"</VAR
+>"00000"</TT
 >.  A positive
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlcode</VAR
+>sqlca.sqlcode</TT
 > indicates a harmless condition,
     such as that the last query returned zero rows.
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlcode</VAR
-> and <VAR
+>sqlcode</TT
+> and <TT
 CLASS="LITERAL"
->sqlstate</VAR
+>sqlstate</TT
 > are two
     different error code schemes; details appear below.
    </P
 ><P
 >    If the last SQL statement was successful, then
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlerrd[1]</VAR
+>sqlca.sqlerrd[1]</TT
 > contains the OID of the
     processed row, if applicable, and
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlerrd[2]</VAR
+>sqlca.sqlerrd[2]</TT
 > contains the number of
     processed or returned rows, if applicable to the command.
    </P
 ><P
 >    In case of an error or warning,
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlerrm.sqlerrmc</VAR
+>sqlca.sqlerrm.sqlerrmc</TT
 > will contain a string
     that describes the error.  The field
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlerrm.sqlerrml</VAR
+>sqlca.sqlerrm.sqlerrml</TT
 > contains the length of
     the error message that is stored in
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlerrm.sqlerrmc</VAR
+>sqlca.sqlerrm.sqlerrmc</TT
 > (the result of
     <CODE
 CLASS="FUNCTION"
@@ -507,33 +507,33 @@ CLASS="FUNCTION"
     programmer).
    </P
 ><P
->    In case of a warning, <VAR
+>    In case of a warning, <TT
 CLASS="LITERAL"
->sqlca.sqlwarn[2]</VAR
+>sqlca.sqlwarn[2]</TT
 > is set
-    to <VAR
+    to <TT
 CLASS="LITERAL"
->W</VAR
+>W</TT
 >.  (In all other cases, it is set to
-    something different from <VAR
+    something different from <TT
 CLASS="LITERAL"
->W</VAR
+>W</TT
 >.)  If
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlwarn[1]</VAR
+>sqlca.sqlwarn[1]</TT
 > is set to
-    <VAR
+    <TT
 CLASS="LITERAL"
->W</VAR
+>W</TT
 >, then a value was truncated when it was
-    stored in a host variable.  <VAR
+    stored in a host variable.  <TT
 CLASS="LITERAL"
->sqlca.sqlwarn[0]</VAR
+>sqlca.sqlwarn[0]</TT
 > is
-    set to <VAR
+    set to <TT
 CLASS="LITERAL"
->W</VAR
+>W</TT
 > if any of the other elements are set
     to indicate a warning.
    </P
@@ -561,9 +561,9 @@ CLASS="STRUCTFIELD"
     information.
    </P
 ><P
->    The structure <VAR
+>    The structure <TT
 CLASS="VARNAME"
->sqlca</VAR
+>sqlca</TT
 > is not defined in the SQL
     standard, but is implemented in several other SQL database
     systems.  The definitions are similar in the core, but if you want
@@ -576,65 +576,65 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23764"
->30.9.3. <VAR
+NAME="AEN24037"
+>29.9.3. <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
-> vs <VAR
+>SQLSTATE</TT
+> vs <TT
 CLASS="LITERAL"
->SQLCODE</VAR
+>SQLCODE</TT
 ></A
 ></H2
 ><P
->    The fields <VAR
+>    The fields <TT
 CLASS="LITERAL"
->sqlca.sqlstate</VAR
+>sqlca.sqlstate</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->sqlca.sqlcode</VAR
+>sqlca.sqlcode</TT
 > are two different schemes that
     provide error codes.  Both are specified in the SQL standard, but
-    <VAR
+    <TT
 CLASS="LITERAL"
->SQLCODE</VAR
+>SQLCODE</TT
 > has been marked deprecated in the 1992
     edition of the standard and has been dropped in the 1999 edition.
     Therefore, new applications are strongly encouraged to use
-    <VAR
+    <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
+>SQLSTATE</TT
 >.
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
+>SQLSTATE</TT
 > is a five-character array.  The five
     characters contain digits or upper-case letters that represent
     codes of various error and warning conditions.
-    <VAR
+    <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
+>SQLSTATE</TT
 > has a hierarchical scheme: the first
     two characters indicate the general class of the condition, the
     last three characters indicate a subclass of the general
     condition.  A successful state is indicated by the code
-    <VAR
+    <TT
 CLASS="LITERAL"
->00000</VAR
->.  The <VAR
+>00000</TT
+>.  The <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
+>SQLSTATE</TT
 > codes are for
     the most part defined in the SQL standard.  The
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server natively supports
-    <VAR
+    <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
+>SQLSTATE</TT
 > error codes; therefore a high degree
     of consistency can be achieved by using this error code scheme
     throughout all applications.  For further information see
@@ -644,9 +644,9 @@ HREF="errcodes-appendix.html"
 >.
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->SQLCODE</VAR
+>SQLCODE</TT
 >, the deprecated error code scheme, is a
     simple integer.  A value of 0 indicates success, a positive value
     indicates success with additional information, a negative value
@@ -659,26 +659,26 @@ CLASS="LITERAL"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > has assigned
-    some specific <VAR
+    some specific <TT
 CLASS="LITERAL"
->SQLCODE</VAR
+>SQLCODE</TT
 > values for its use, which
     are listed below with their numeric value and their symbolic name.
     Remember that these are not portable to other SQL implementations.
     To simplify the porting of applications to the
-    <VAR
+    <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
+>SQLSTATE</TT
 > scheme, the corresponding
-    <VAR
+    <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
+>SQLSTATE</TT
 > is also listed.  There is, however, no
     one-to-one or one-to-many mapping between the two schemes (indeed
     it is many-to-many), so you should consult the global
-    <VAR
+    <TT
 CLASS="LITERAL"
->SQLSTATE</VAR
+>SQLSTATE</TT
 > listing in <A
 HREF="errcodes-appendix.html"
 >Appendix A</A
@@ -686,9 +686,9 @@ HREF="errcodes-appendix.html"
     in each case.
    </P
 ><P
->    These are the assigned <VAR
+>    These are the assigned <TT
 CLASS="LITERAL"
->SQLCODE</VAR
+>SQLCODE</TT
 > values:
 
     <P
@@ -834,13 +834,13 @@ CLASS="SYMBOL"
 CLASS="TYPE"
 >bool</TT
 > and
-       the datum in the database is neither <VAR
+       the datum in the database is neither <TT
 CLASS="LITERAL"
->'t'</VAR
+>'t'</TT
 > nor
-       <VAR
+       <TT
 CLASS="LITERAL"
->'f'</VAR
+>'f'</TT
 >.  (SQLSTATE 42804)
       </P
 ></DD

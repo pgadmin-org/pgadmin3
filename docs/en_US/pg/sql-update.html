@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-UPDATE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42839"
+NAME="AEN43437"
 ></A
 ><H2
 >Name</H2
 >UPDATE&nbsp;--&nbsp;update rows of a table</DIV
 ><A
-NAME="AEN42842"
+NAME="AEN43440"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42844"
+NAME="AEN43442"
 ></A
 ><H2
 >Synopsis</H2
@@ -134,7 +134,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42851"
+NAME="AEN43449"
 ></A
 ><H2
 >Description</H2
@@ -144,11 +144,11 @@ CLASS="COMMAND"
 >UPDATE</TT
 > changes the values of the specified
    columns in all rows that satisfy the condition. Only the columns to
-   be modified need be mentioned in the statement; columns not explicitly
-   <VAR
+   be modified need be mentioned in the <TT
 CLASS="LITERAL"
->SET</VAR
-> retain their previous values.
+>SET</TT
+> clause;
+   columns not explicitly modified retain their previous values.
   </P
 ><P
 >   By default, <TT
@@ -156,20 +156,30 @@ CLASS="COMMAND"
 >UPDATE</TT
 > will update rows in the
    specified table and all its subtables. If you wish to only update
-   the specific table mentioned, you must use the <VAR
+   the specific table mentioned, you must use the <TT
 CLASS="LITERAL"
->ONLY</VAR
+>ONLY</TT
 >
    clause.
   </P
 ><P
->   You must have the <VAR
+>   There are two ways to modify a table using information contained in
+   other tables in the database: using sub-selects, or specifying
+   additional tables in the <TT
 CLASS="LITERAL"
->UPDATE</VAR
+>FROM</TT
+> clause. Which
+   technique is more appropriate depends on the specific
+   circumstances.
+  </P
+><P
+>   You must have the <TT
+CLASS="LITERAL"
+>UPDATE</TT
 > privilege on the table
-   to update it, as well as the <VAR
+   to update it, as well as the <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 >
    privilege to any table whose values are read in the
    <VAR
@@ -185,7 +195,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42864"
+NAME="AEN43464"
 ></A
 ><H2
 >Parameters</H2
@@ -215,6 +225,8 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >table</VAR
 >.
+      The column name can be qualified with a subfield name or array
+      subscript, if needed.
      </P
 ></DD
 ><DT
@@ -229,9 +241,9 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 ></DT
 ><DD
 ><P
@@ -247,10 +259,24 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >      A list of table expressions, allowing columns from other tables
-      to appear in the <VAR
+      to appear in the <TT
 CLASS="LITERAL"
->WHERE</VAR
-> condition and the update expressions.
+>WHERE</TT
+> condition and the update
+      expressions. This is similar to the list of tables that can be
+      specified in the <A
+HREF="sql-select.html#SQL-FROM"
+><I
+><I
+>FROM</I
+> Clause</I
+></A
+> of a <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+      statement; for example, an alias for the table name can be
+      specified.
      </P
 ></DD
 ><DT
@@ -264,9 +290,9 @@ CLASS="REPLACEABLE"
 CLASS="TYPE"
 >boolean</TT
 >.
-      Only rows for which this expression returns <VAR
+      Only rows for which this expression returns <TT
 CLASS="LITERAL"
->true</VAR
+>true</TT
 >
       will be updated.
      </P
@@ -277,7 +303,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42901"
+NAME="AEN43503"
 ></A
 ><H2
 >Outputs</H2
@@ -312,24 +338,24 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42910"
+NAME="AEN43512"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Change the word <VAR
+>   Change the word <TT
 CLASS="LITERAL"
->Drama</VAR
-> to <VAR
+>Drama</TT
+> to <TT
 CLASS="LITERAL"
->Dramatic</VAR
+>Dramatic</TT
 > in the
    column <TT
 CLASS="STRUCTFIELD"
 >kind</TT
-> of the table <VAR
-CLASS="LITERAL"
->films</VAR
+> of the table <TT
+CLASS="STRUCTNAME"
+>films</TT
 >:
 
 </P><PRE
@@ -339,9 +365,9 @@ CLASS="PROGRAMLISTING"
   </P
 ><P
 >   Adjust temperature entries and reset precipitation to its default
-   value in one row of the table <VAR
-CLASS="LITERAL"
->weather</VAR
+   value in one row of the table <TT
+CLASS="STRUCTNAME"
+>weather</TT
 >:
 
 </P><PRE
@@ -350,19 +376,61 @@ CLASS="PROGRAMLISTING"
   WHERE city = 'San Francisco' AND date = '2003-07-03';</PRE
 ><P>
   </P
+><P
+>   Increment the sales count of the salesperson who manages the
+   account for Acme Corporation, using the <TT
+CLASS="LITERAL"
+>FROM</TT
+>
+   clause syntax:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE employees SET sales_count = sales_count + 1 FROM accounts
+  WHERE accounts.name = 'Acme Corporation'
+  AND employees.id = accounts.sales_person;</PRE
+><P>
+
+   Perform the same operation, using a sub-select in the
+   <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE employees SET sales_count = sales_count + 1 WHERE id =
+  (SELECT sales_person FROM accounts WHERE name = 'Acme Corporation');</PRE
+><P>
+
+   Attempt to insert a new stock item along with the quantity of stock. If
+   the item exists, update the stock count of the existing item. To do this,
+   use savepoints.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
+SAVEPOINT sp1;
+INSERT INTO wines VALUES('Chateau Lafite 2003', '24');
+-- Check for unique violation on name
+ROLLBACK TO sp1;
+UPDATE wines SET stock = stock + 24 WHERE winename='Chateau Lafite 2003';
+COMMIT;</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42921"
+NAME="AEN43529"
 ></A
 ><H2
 >Compatibility</H2
 ><P
->   This command conforms to the SQL standard.  The
-   <VAR
+>   This command conforms to the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard.  The
+   <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause is a
    <SPAN
 CLASS="PRODUCTNAME"

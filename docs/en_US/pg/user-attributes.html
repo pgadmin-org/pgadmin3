@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Database Users and Privileges"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -106,65 +106,65 @@ CLASS="VARIABLELIST"
 ><DL
 ><DT
 >superuser<A
-NAME="AEN17235"
+NAME="AEN18332"
 ></A
 ></DT
 ><DD
 ><P
 >        A database superuser bypasses all permission checks. Also,
         only a superuser can create new users. To create a database
-        superuser, use <VAR
+        superuser, use <TT
 CLASS="LITERAL"
 >CREATE USER <VAR
 CLASS="REPLACEABLE"
 >name</VAR
 >
-        CREATEUSER</VAR
+        CREATEUSER</TT
 >.
        </P
 ></DD
 ><DT
 >database creation<A
-NAME="AEN17243"
+NAME="AEN18340"
 ></A
 ></DT
 ><DD
 ><P
 >        A user must be explicitly given permission to create databases
         (except for superusers, since those bypass all permission
-        checks). To create such a user, use <VAR
+        checks). To create such a user, use <TT
 CLASS="LITERAL"
 >CREATE USER
         <VAR
 CLASS="REPLACEABLE"
 >name</VAR
-> CREATEDB</VAR
+> CREATEDB</TT
 >.
        </P
 ></DD
 ><DT
 >password<A
-NAME="AEN17252"
+NAME="AEN18349"
 ></A
 ></DT
 ><DD
 ><P
 >        A password is only significant if the client authentication
         method requires the user to supply a password when connecting
-        to the database. The <VAR
+        to the database. The <TT
 CLASS="OPTION"
->password</VAR
+>password</TT
 >,
-        <VAR
+        <TT
 CLASS="OPTION"
->md5</VAR
->, and <VAR
+>md5</TT
+>, and <TT
 CLASS="OPTION"
->crypt</VAR
+>crypt</TT
 > authentication methods
         make use of passwords. Database passwords are separate from
         operating system passwords. Specify a password upon user
-        creation with <VAR
+        creation with <TT
 CLASS="LITERAL"
 >CREATE USER
         <VAR
@@ -173,7 +173,7 @@ CLASS="REPLACEABLE"
 > PASSWORD '<VAR
 CLASS="REPLACEABLE"
 >string</VAR
->'</VAR
+>'</TT
 >. 
        </P
 ></DD
@@ -186,17 +186,20 @@ CLASS="REPLACEABLE"
 CLASS="COMMAND"
 >ALTER USER</TT
 >.<A
-NAME="AEN17263"
+NAME="AEN18360"
 ></A
 >
-    See the reference pages for <TT
-CLASS="COMMAND"
->CREATE USER</TT
-> and
-    <TT
-CLASS="COMMAND"
->ALTER USER</TT
-> for details.
+    See the reference pages for the <A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+> and <A
+HREF="sql-alteruser.html"
+><I
+>ALTER USER</I
+></A
+> commands for details.
    </P
 ><P
 >   A user can also set personal defaults for many of the run-time
@@ -211,13 +214,13 @@ CLASS="PROGRAMLISTING"
 >ALTER USER myname SET enable_indexscan TO off;</PRE
 ><P>
    This will save the setting (but not set it immediately) and in
-   subsequent connections it will appear as though <VAR
+   subsequent connections it will appear as though <TT
 CLASS="LITERAL"
 >SET enable_indexscan
-   TO off;</VAR
+   TO off;</TT
 > had been called right before the session started.
    You can still alter this setting during the session; it will only
-   be the default. To undo any such setting, use <VAR
+   be the default. To undo any such setting, use <TT
 CLASS="LITERAL"
 >ALTER USER
    <VAR
@@ -226,7 +229,7 @@ CLASS="REPLACEABLE"
 > RESET <VAR
 CLASS="REPLACEABLE"
 >varname</VAR
->;</VAR
+>;</TT
 >.
   </P
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Preface"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -116,7 +116,7 @@ CLASS="PRODUCTNAME"
 ><P
 >  The following suggestions are intended to assist you in forming bug reports
   that can be handled in an effective fashion. No one is required to follow
-  them but it tends to be to everyone's advantage.
+  them but doing so tends to be to everyone's advantage.
  </P
 ><P
 >  We cannot promise to fix every bug right away. If the bug is obvious, critical,
@@ -332,18 +332,18 @@ CLASS="NOTE"
        form of the message.  In <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
->, say <VAR
+>, say <TT
 CLASS="LITERAL"
 >\set
-       VERBOSITY verbose</VAR
+       VERBOSITY verbose</TT
 > beforehand.  If you are extracting the message
        from the server log, set the run-time parameter
-       <VAR
-CLASS="VARNAME"
->log_error_verbosity</VAR
-> to <VAR
+       <A
+HREF="runtime-config.html#GUC-LOG-ERROR-VERBOSITY"
+>log_error_verbosity</A
+> to <TT
 CLASS="LITERAL"
->verbose</VAR
+>verbose</TT
 > so that all
        details are logged.
       </P
@@ -392,16 +392,18 @@ CLASS="ACRONYM"
 ></LI
 ><LI
 ><P
->      Any command line options and other start-up options, including concerned
-      environment variables or configuration files that you changed from the
-      default. Again, be exact. If you are using a prepackaged
-      distribution that starts the database server at boot time, you should try
-      to find out how that is done.
+>      Any command line options and other start-up options, including
+      any relevant environment variables or configuration files that
+      you changed from the default. Again, please provide exact
+      information. If you are using a prepackaged distribution that
+      starts the database server at boot time, you should try to find
+      out how that is done.
      </P
 ></LI
 ><LI
 ><P
->      Anything you did at all differently from the installation instructions.
+>      Anything you did at all differently from the installation
+      instructions.
      </P
 ></LI
 ><LI
@@ -410,21 +412,21 @@ CLASS="ACRONYM"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > version. You can run the command
-      <VAR
+      <TT
 CLASS="LITERAL"
->SELECT version();</VAR
+>SELECT version();</TT
 > to
       find out the version of the server you are connected to.  Most executable
-      programs also support a <VAR
+      programs also support a <TT
 CLASS="OPTION"
->--version</VAR
+>--version</TT
 > option; at least
-      <VAR
+      <TT
 CLASS="LITERAL"
->postmaster --version</VAR
-> and <VAR
+>postmaster --version</TT
+> and <TT
 CLASS="LITERAL"
->psql --version</VAR
+>psql --version</TT
 >
       should work.
       If the function or the options do not exist then your version is
@@ -434,24 +436,37 @@ CLASS="LITERAL"
       snapshot, mention that, including its date and time.
      </P
 ><P
->      If your version is older than 7.4 we will almost certainly tell
-      you to upgrade. There are tons
-      of bug fixes in each new release, that is why we make new releases.
+>      If your version is older than 8.0.0beta1 we will almost certainly
+      tell you to upgrade. There are many bug fixes and improvements
+      in each new release, so it is quite possible that a bug you have
+      encountered in an older release of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+      has already been fixed. We can only provide limited support for
+      sites using older releases of PostgreSQL; if you require more
+      than we can provide, consider acquiring a commercial support
+      contract.
      </P
 ><P
 >     </P
 ></LI
 ><LI
 ><P
->      Platform information. This includes the kernel name and version, C library,
-      processor, memory information. In most cases it is sufficient to report
-      the vendor and version, but do not assume everyone knows what exactly
-      <SPAN
+>      Platform information. This includes the kernel name and version,
+      C library, processor, memory information, and so on. In most
+      cases it is sufficient to report the vendor and version, but do
+      not assume everyone knows what exactly <SPAN
 CLASS="QUOTE"
 >"Debian"</SPAN
-> contains or that everyone runs on Pentiums. If
-      you have installation problems then information about compilers, make,
-      etc. is also necessary.
+>
+      contains or that everyone runs on Pentiums. If you have
+      installation problems then information about the toolchain on
+      your machine (compiler, <SPAN
+CLASS="APPLICATION"
+>make</SPAN
+>, and so
+      on) is also necessary.
      </P
 ></LI
 ></UL
@@ -470,7 +485,7 @@ CLASS="QUOTE"
    guessing why the bug exists. We will find that out soon enough.
   </P
 ><P
->   When writing a bug report, please choose non-confusing terminology.
+>   When writing a bug report, please avoid confusing terminology.
    The software package in total is called <SPAN
 CLASS="QUOTE"
 >"PostgreSQL"</SPAN
@@ -509,7 +524,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN347"
+NAME="AEN349"
 >Where to report bugs</A
 ></H2
 ><P
@@ -585,9 +600,9 @@ CLASS="PRODUCTNAME"
 >, and it would be nice
    if we could keep the bug reports separate. We might choose to take up a
    discussion
-   about your bug report on <VAR
+   about your bug report on <TT
 CLASS="LITERAL"
->pgsql-hackers</VAR
+>pgsql-hackers</TT
 >, if the problem needs more review.
   </P
 ><P
@@ -629,9 +644,9 @@ CLASS="NOTE"
     subscribed to a list to be allowed to post on it.  (You need not be
     subscribed to use the bug-report web form, however.)
     If you would like to send mail but do not want to receive list traffic,
-    you can subscribe and set your subscription option to <VAR
+    you can subscribe and set your subscription option to <TT
 CLASS="LITERAL"
->nomail</VAR
+>nomail</TT
 >.
     For more information send mail to
     <CODE
@@ -641,9 +656,9 @@ HREF="mailto:majordomo@postgresql.org"
 >majordomo@postgresql.org</A
 >&#62;</CODE
 >
-    with the single word <VAR
+    with the single word <TT
 CLASS="LITERAL"
->help</VAR
+>help</TT
 > in the body of the message.
    </P
 ></BLOCKQUOTE

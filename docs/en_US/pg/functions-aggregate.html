@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="FUNCTIONS-AGGREGATE"
 >9.15. Aggregate Functions</A
 ></H1
 ><A
-NAME="AEN12292"
+NAME="AEN12062"
 ></A
 ><P
 >   <I
@@ -105,7 +105,7 @@ CLASS="FIRSTTERM"
 > compute a single result
    value from a set of input values.  <A
 HREF="functions-aggregate.html#FUNCTIONS-AGGREGATE-TABLE"
->Table 9-43</A
+>Table 9-37</A
 > shows the built-in aggregate
    functions.  The special syntax considerations for aggregate
    functions are explained in <A
@@ -125,7 +125,7 @@ NAME="FUNCTIONS-AGGREGATE-TABLE"
 ></A
 ><P
 ><B
->Table 9-43. Aggregate Functions</B
+>Table 9-37. Aggregate Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -146,7 +146,7 @@ CLASS="CALSTABLE"
 ><TR
 ><TD
 >       <A
-NAME="AEN12312"
+NAME="AEN12082"
 ></A
 >
        <CODE
@@ -199,6 +199,136 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
+>       <A
+NAME="AEN12100"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>bit_and(<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>, <TT
+CLASS="TYPE"
+>bigint</TT
+>, or
+       <TT
+CLASS="TYPE"
+>bit</TT
+>
+      </TD
+><TD
+>        same as argument data type
+      </TD
+><TD
+>the bitwise AND of all non-null input values, or null if none</TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12113"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>bit_or(<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>, <TT
+CLASS="TYPE"
+>bigint</TT
+>, or
+       <TT
+CLASS="TYPE"
+>bit</TT
+>
+      </TD
+><TD
+>        same as argument data type
+      </TD
+><TD
+>the bitwise OR of all non-null input values, or null if none</TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12126"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>bool_and(<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>true if all input values are true, otherwise false</TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12137"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>bool_or(<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>true if at least one input value is true, otherwise false</TD
+></TR
+><TR
+><TD
 ><CODE
 CLASS="FUNCTION"
 >count(*)</CODE
@@ -235,6 +365,38 @@ CLASS="REPLACEABLE"
 >expression</VAR
 > is not null
       </TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12164"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>every(<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>equivalent to <CODE
+CLASS="FUNCTION"
+>bool_and</CODE
+></TD
 ></TR
 ><TR
 ><TD
@@ -281,7 +443,7 @@ CLASS="REPLACEABLE"
 ><TR
 ><TD
 >       <A
-NAME="AEN12362"
+NAME="AEN12192"
 ></A
 >
        <CODE
@@ -398,7 +560,7 @@ CLASS="REPLACEABLE"
 ><TR
 ><TD
 >       <A
-NAME="AEN12400"
+NAME="AEN12230"
 ></A
 >
        <CODE
@@ -468,6 +630,59 @@ CLASS="FUNCTION"
 CLASS="NOTE"
 ><BLOCKQUOTE
 CLASS="NOTE"
+><A
+NAME="AEN12250"
+></A
+><A
+NAME="AEN12252"
+></A
+><P
+><B
+>Note: </B
+>      Boolean aggregates <CODE
+CLASS="FUNCTION"
+>bool_and</CODE
+> and 
+      <CODE
+CLASS="FUNCTION"
+>bool_or</CODE
+> correspond to standard SQL aggregates
+      <CODE
+CLASS="FUNCTION"
+>every</CODE
+> and <CODE
+CLASS="FUNCTION"
+>any</CODE
+> or
+      <CODE
+CLASS="FUNCTION"
+>some</CODE
+>. 
+      As for <CODE
+CLASS="FUNCTION"
+>any</CODE
+> and <CODE
+CLASS="FUNCTION"
+>some</CODE
+>, 
+      it seems that there is an ambiguity built into the standard syntax:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT b1 = ANY((SELECT b2 FROM t2 ...)) FROM t1 ...;</PRE
+><P>
+      Here <CODE
+CLASS="FUNCTION"
+>ANY</CODE
+> can be considered both as leading
+      to a subquery or as an aggregate if the select expression returns 1 row.
+      Thus the standard name cannot be given to these aggregates.
+    </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
 ><P
 ><B
 >Note: </B
@@ -479,9 +694,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > when the aggregate is
     applied to the entire table (in other words, no
-    <VAR
+    <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause is specified). In particular, a
     query like
 </P><PRE
@@ -545,13 +760,13 @@ CLASS="FUNCTION"
 CLASS="PROGRAMLISTING"
 >SELECT col FROM sometable ORDER BY col ASC LIMIT 1;</PRE
 ><P>
-    A similar query (obtained by substituting <VAR
+    A similar query (obtained by substituting <TT
 CLASS="LITERAL"
->DESC</VAR
+>DESC</TT
 >
-    for <VAR
+    for <TT
 CLASS="LITERAL"
->ASC</VAR
+>ASC</TT
 > in the query above) can be used in the
     place of <CODE
 CLASS="FUNCTION"

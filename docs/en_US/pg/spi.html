@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="SPI"
 ></A
->Chapter 41. Server Programming Interface</H1
+>Chapter 39. Server Programming Interface</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,7 +102,7 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->41.1. <A
+>39.1. <A
 HREF="spi.html#SPI-INTERFACE"
 >Interface Functions</A
 ></DT
@@ -120,6 +120,16 @@ HREF="spi-spi-finish.html"
 >&nbsp;--&nbsp;disconnect a procedure from the SPI manager</DT
 ><DT
 ><A
+HREF="spi-spi-push.html"
+>SPI_push</A
+>&nbsp;--&nbsp;pushes SPI stack to allow recursive SPI calls</DT
+><DT
+><A
+HREF="spi-spi-pop.html"
+>SPI_pop</A
+>&nbsp;--&nbsp;pops SPI stack to allow recursive SPI calls</DT
+><DT
+><A
 HREF="spi-spi-exec.html"
 >SPI_exec</A
 >&nbsp;--&nbsp;execute a command</DT
@@ -128,6 +138,40 @@ HREF="spi-spi-exec.html"
 HREF="spi-spi-prepare.html"
 >SPI_prepare</A
 >&nbsp;--&nbsp;prepare a plan for a command, without executing it yet</DT
+><DT
+><A
+HREF="spi-spi-getargcount.html"
+>SPI_getargcount</A
+>&nbsp;--&nbsp;returns the number of arguments needed when executing a plan
+  prepared by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+></DT
+><DT
+><A
+HREF="spi-spi-getargtypeid.html"
+>SPI_getargtypeid</A
+>&nbsp;--&nbsp;returns the expected typeid for the specified argument when
+  executing a plan prepared by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+></DT
+><DT
+><A
+HREF="spi-spi-is-cursor-plan.html"
+>SPI_is_cursor_plan</A
+>&nbsp;--&nbsp;returns <TT
+CLASS="SYMBOL"
+>true</TT
+> if a plan
+  prepared by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+> can be passed
+  as an argument to <CODE
+CLASS="FUNCTION"
+>SPI_cursor_open</CODE
+></DT
 ><DT
 ><A
 HREF="spi-spi-execp.html"
@@ -172,7 +216,7 @@ HREF="spi-spi-saveplan.html"
 ></DL
 ></DD
 ><DT
->41.2. <A
+>39.2. <A
 HREF="spi-interface-support.html"
 >Interface Support Functions</A
 ></DT
@@ -219,7 +263,7 @@ HREF="spi-spi-getrelname.html"
 ></DL
 ></DD
 ><DT
->41.3. <A
+>39.3. <A
 HREF="spi-memory.html"
 >Memory Management</A
 ></DT
@@ -247,14 +291,9 @@ HREF="spi-spi-copytuple.html"
 >&nbsp;--&nbsp;make a copy of a row in the upper executor context</DT
 ><DT
 ><A
-HREF="spi-spi-copytupledesc.html"
->SPI_copytupledesc</A
->&nbsp;--&nbsp;make a copy of a row descriptor in the upper executor context</DT
-><DT
-><A
-HREF="spi-spi-copytupleintoslot.html"
->SPI_copytupleintoslot</A
->&nbsp;--&nbsp;make a copy of a row and descriptor in the upper executor context</DT
+HREF="spi-spi-returntuple.html"
+>SPI_returntuple</A
+>&nbsp;--&nbsp;prepare to return a tuple as a Datum</DT
 ><DT
 ><A
 HREF="spi-spi-modifytuple.html"
@@ -281,19 +320,19 @@ HREF="spi-spi-freeplan.html"
 ></DL
 ></DD
 ><DT
->41.4. <A
+>39.4. <A
 HREF="spi-visibility.html"
 >Visibility of Data Changes</A
 ></DT
 ><DT
->41.5. <A
+>39.5. <A
 HREF="spi-examples.html"
 >Examples</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN33142"
+NAME="AEN32645"
 ></A
 ><P
 >  The <I
@@ -381,9 +420,9 @@ CLASS="ACRONYM"
 >SPI</ACRONYM
 > functions return a nonnegative result on
   success (either via a returned integer value or in the global
-  variable <VAR
+  variable <TT
 CLASS="VARNAME"
->SPI_result</VAR
+>SPI_result</TT
 >, as described below).  On
   error, a negative result or <TT
 CLASS="SYMBOL"
@@ -403,7 +442,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SPI-INTERFACE"
->41.1. Interface Functions</A
+>39.1. Interface Functions</A
 ></H1
 ><DIV
 CLASS="TOC"
@@ -424,6 +463,16 @@ HREF="spi-spi-finish.html"
 >&nbsp;--&nbsp;disconnect a procedure from the SPI manager</DT
 ><DT
 ><A
+HREF="spi-spi-push.html"
+>SPI_push</A
+>&nbsp;--&nbsp;pushes SPI stack to allow recursive SPI calls</DT
+><DT
+><A
+HREF="spi-spi-pop.html"
+>SPI_pop</A
+>&nbsp;--&nbsp;pops SPI stack to allow recursive SPI calls</DT
+><DT
+><A
 HREF="spi-spi-exec.html"
 >SPI_exec</A
 >&nbsp;--&nbsp;execute a command</DT
@@ -432,6 +481,40 @@ HREF="spi-spi-exec.html"
 HREF="spi-spi-prepare.html"
 >SPI_prepare</A
 >&nbsp;--&nbsp;prepare a plan for a command, without executing it yet</DT
+><DT
+><A
+HREF="spi-spi-getargcount.html"
+>SPI_getargcount</A
+>&nbsp;--&nbsp;returns the number of arguments needed when executing a plan
+  prepared by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+></DT
+><DT
+><A
+HREF="spi-spi-getargtypeid.html"
+>SPI_getargtypeid</A
+>&nbsp;--&nbsp;returns the expected typeid for the specified argument when
+  executing a plan prepared by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+></DT
+><DT
+><A
+HREF="spi-spi-is-cursor-plan.html"
+>SPI_is_cursor_plan</A
+>&nbsp;--&nbsp;returns <TT
+CLASS="SYMBOL"
+>true</TT
+> if a plan
+  prepared by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+> can be passed
+  as an argument to <CODE
+CLASS="FUNCTION"
+>SPI_cursor_open</CODE
+></DT
 ><DT
 ><A
 HREF="spi-spi-execp.html"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-LOCK"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41092"
+NAME="AEN41433"
 ></A
 ><H2
 >Name</H2
 >LOCK&nbsp;--&nbsp;lock a table</DIV
 ><A
-NAME="AEN41095"
+NAME="AEN41436"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41097"
+NAME="AEN41438"
 ></A
 ><H2
 >Synopsis</H2
@@ -118,7 +118,7 @@ CLASS="REPLACEABLE"
 > [, ...] [ IN <VAR
 CLASS="REPLACEABLE"
 >lockmode</VAR
-> MODE ]
+> MODE ] [ NOWAIT ]
 
 where <VAR
 CLASS="REPLACEABLE"
@@ -131,7 +131,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41102"
+NAME="AEN41443"
 ></A
 ><H2
 >Description</H2
@@ -139,14 +139,24 @@ NAME="AEN41102"
 >   <TT
 CLASS="COMMAND"
 >LOCK TABLE</TT
-> obtains a table-level lock, waiting if
-   necessary for any conflicting locks to be released.  Once obtained,
-   the lock is held for the remainder of the current transaction.
-   (There is no <TT
+> obtains a table-level lock, waiting
+   if necessary for any conflicting locks to be released.  If
+   <TT
+CLASS="LITERAL"
+>NOWAIT</TT
+> is specified, <TT
 CLASS="COMMAND"
->UNLOCK TABLE</TT
-> command; locks are always
-   released at transaction end.)
+>LOCK
+   TABLE</TT
+> does not wait to acquire the desired lock: if it
+   cannot be immediately acquired, the transaction is aborted and an
+   error is emitted.  Once obtained, the lock is held for the
+   remainder of the current transaction.  (There is no <TT
+CLASS="COMMAND"
+>UNLOCK
+   TABLE</TT
+> command; locks are always released at transaction
+   end.)
   </P
 ><P
 >   When acquiring locks automatically for commands that reference
@@ -162,19 +172,19 @@ CLASS="COMMAND"
    For example, suppose an application runs a transaction at the
    isolation level read committed and needs to ensure that data in a
    table remains stable for the duration of the transaction. To
-   achieve this you could obtain <VAR
+   achieve this you could obtain <TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 > lock mode over the
    table before querying. This will prevent concurrent data changes
    and ensure subsequent reads of the table see a stable view of
-   committed data, because <VAR
+   committed data, because <TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 > lock mode conflicts with
-   the <VAR
+   the <TT
 CLASS="LITERAL"
->ROW EXCLUSIVE</VAR
+>ROW EXCLUSIVE</TT
 > lock acquired by writers, and your
    <TT
 CLASS="COMMAND"
@@ -183,10 +193,10 @@ CLASS="REPLACEABLE"
 >name</VAR
 > IN SHARE MODE</TT
 >
-   statement will wait until any concurrent holders of <VAR
+   statement will wait until any concurrent holders of <TT
 CLASS="LITERAL"
 >ROW
-   EXCLUSIVE</VAR
+   EXCLUSIVE</TT
 > mode locks commit or roll back. Thus, once you
    obtain the lock, there are no uncommitted writes outstanding;
    furthermore none can begin until you release the lock.
@@ -209,35 +219,35 @@ CLASS="COMMAND"
   </P
 ><P
 >   If a transaction of this sort is going to change the data in the
-   table, then it should use <VAR
+   table, then it should use <TT
 CLASS="LITERAL"
->SHARE ROW EXCLUSIVE</VAR
+>SHARE ROW EXCLUSIVE</TT
 > lock mode
-   instead of <VAR
+   instead of <TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 > mode.  This ensures that only one
    transaction of this type runs at a time.  Without this, a deadlock
-   is possible: two transactions might both acquire <VAR
+   is possible: two transactions might both acquire <TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 >
-   mode, and then be unable to also acquire <VAR
+   mode, and then be unable to also acquire <TT
 CLASS="LITERAL"
->ROW EXCLUSIVE</VAR
+>ROW EXCLUSIVE</TT
 >
    mode to actually perform their updates.  (Note that a transaction's
-   own locks never conflict, so a transaction can acquire <VAR
+   own locks never conflict, so a transaction can acquire <TT
 CLASS="LITERAL"
 >ROW
-   EXCLUSIVE</VAR
-> mode when it holds <VAR
+   EXCLUSIVE</TT
+> mode when it holds <TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 > mode --- but not
-   if anyone else holds <VAR
+   if anyone else holds <TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 > mode.)  To avoid deadlocks,
    make sure all transactions acquire locks on the same objects in the
    same order, and if multiple lock modes are involved for a single
@@ -255,7 +265,7 @@ HREF="explicit-locking.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41129"
+NAME="AEN41472"
 ></A
 ><H2
 >Parameters</H2
@@ -275,17 +285,18 @@ CLASS="REPLACEABLE"
       lock.
      </P
 ><P
->      The command <VAR
+>      The command <TT
 CLASS="LITERAL"
->LOCK a, b;</VAR
+>LOCK TABLE a, b;</TT
 > is equivalent to
-      <VAR
+      <TT
 CLASS="LITERAL"
->LOCK a; LOCK b;</VAR
->. The tables are locked one-by-one in
-      the order specified in the <TT
+>LOCK TABLE a; LOCK TABLE b;</TT
+>. The tables are locked
+      one-by-one in the order specified in the <TT
 CLASS="COMMAND"
->LOCK</TT
+>LOCK
+      TABLE</TT
 > command.
      </P
 ></DD
@@ -303,11 +314,27 @@ HREF="explicit-locking.html"
 >.
      </P
 ><P
->      If no lock mode is specified, then <VAR
+>      If no lock mode is specified, then <TT
 CLASS="LITERAL"
 >ACCESS
-      EXCLUSIVE</VAR
+      EXCLUSIVE</TT
 >, the most restrictive mode, is used.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>NOWAIT</TT
+></DT
+><DD
+><P
+>      Specifies that <TT
+CLASS="COMMAND"
+>LOCK TABLE</TT
+> should not wait for
+      any conflicting locks to be released: if the specified lock
+      cannot be immediately acquired without waiting, the transaction
+      is aborted.
      </P
 ></DD
 ></DL
@@ -316,83 +343,100 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41149"
+NAME="AEN41498"
 ></A
 ><H2
 >Notes</H2
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->LOCK ... IN ACCESS SHARE MODE</VAR
-> requires <VAR
+>LOCK TABLE ... IN ACCESS SHARE MODE</TT
+> requires <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 >
     privileges on the target table.  All other forms of <TT
 CLASS="COMMAND"
 >LOCK</TT
 >
-    require <VAR
+    require <TT
 CLASS="LITERAL"
->UPDATE</VAR
-> and/or <VAR
+>UPDATE</TT
+> and/or <TT
 CLASS="LITERAL"
->DELETE</VAR
+>DELETE</TT
 > privileges.
    </P
 ><P
 >    <TT
 CLASS="COMMAND"
->LOCK</TT
-> is useful only inside a transaction block
-    (<TT
+>LOCK TABLE</TT
+> is useful only inside a transaction
+    block (<TT
 CLASS="COMMAND"
 >BEGIN</TT
 >/<TT
 CLASS="COMMAND"
 >COMMIT</TT
-> pair), since the lock is dropped
-    as soon as the transaction ends.  A <TT
+> pair), since the lock
+    is dropped as soon as the transaction ends.  A <TT
 CLASS="COMMAND"
->LOCK</TT
-> command appearing
-    outside any transaction block forms a self-contained transaction, so the
-    lock will be dropped as soon as it is obtained.
+>LOCK
+    TABLE</TT
+> command appearing outside any transaction block forms a
+    self-contained transaction, so the lock will be dropped as soon as
+    it is obtained.
    </P
 ><P
 >   <TT
 CLASS="COMMAND"
 >LOCK TABLE</TT
 > only deals with table-level locks, and so
-   the mode names involving <VAR
+   the mode names involving <TT
 CLASS="LITERAL"
->ROW</VAR
+>ROW</TT
 > are all misnomers.  These
    mode names should generally be read as indicating the intention of
    the user to acquire row-level locks within the locked table.  Also,
-   <VAR
+   <TT
 CLASS="LITERAL"
->ROW EXCLUSIVE</VAR
+>ROW EXCLUSIVE</TT
 > mode is a sharable table lock.  Keep in
    mind that all the lock modes have identical semantics so far as
    <TT
 CLASS="COMMAND"
 >LOCK TABLE</TT
 > is concerned, differing only in the rules
-   about which modes conflict with which.
+   about which modes conflict with which. For information on how to
+   acquire an actual row-level lock, see <A
+HREF="explicit-locking.html#LOCKING-ROWS"
+>Section 12.3.2</A
+>
+   and the <A
+HREF="sql-select.html#SQL-FOR-UPDATE"
+><I
+><I
+>FOR UPDATE</I
+> Clause</I
+></A
+> in the <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+   reference documentation.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41167"
+NAME="AEN41519"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Obtain a <VAR
+>   Obtain a <TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 > lock on a primary key table when going to perform
    inserts into a foreign key table:
 
@@ -409,9 +453,9 @@ COMMIT WORK;</PRE
 ><P>
   </P
 ><P
->   Take a <VAR
+>   Take a <TT
 CLASS="LITERAL"
->SHARE ROW EXCLUSIVE</VAR
+>SHARE ROW EXCLUSIVE</TT
 > lock on a primary key table when going to perform
    a delete operation:
 
@@ -429,7 +473,7 @@ COMMIT WORK;</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41175"
+NAME="AEN41527"
 ></A
 ><H2
 >Compatibility</H2
@@ -454,16 +498,16 @@ HREF="sql-set-transaction.html"
 > for details.
   </P
 ><P
->   Except for <VAR
+>   Except for <TT
 CLASS="LITERAL"
->ACCESS SHARE</VAR
->, <VAR
+>ACCESS SHARE</TT
+>, <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 >,
-   and <VAR
+   and <TT
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</VAR
+>SHARE UPDATE EXCLUSIVE</TT
 > lock modes, the
    <SPAN
 CLASS="PRODUCTNAME"

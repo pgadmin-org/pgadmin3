@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Managing Databases"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Template Databases"
 HREF="manage-ag-templatedbs.html"><LINK
 REL="NEXT"
-TITLE="Alternative Locations"
-HREF="manage-ag-alternate-locs.html"><LINK
+TITLE="Destroying a Database"
+HREF="manage-ag-dropdb.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="manage-ag-alternate-locs.html"
+HREF="manage-ag-dropdb.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -114,25 +114,25 @@ CLASS="ACRONYM"
 >GEQO</ACRONYM
 > optimizer for a given database, you'd
    ordinarily have to either disable it for all databases or make sure
-   that every connecting client is careful to issue <VAR
+   that every connecting client is careful to issue <TT
 CLASS="LITERAL"
 >SET geqo
-   TO off;</VAR
->.  To make this setting the default you can
-   execute the command
+   TO off;</TT
+>.  To make this setting the default within a particular
+   database, you can execute the command
 </P><PRE
 CLASS="PROGRAMLISTING"
 >ALTER DATABASE mydb SET geqo TO off;</PRE
 ><P>
    This will save the setting (but not set it immediately) and in
-   subsequent connections it will appear as though <VAR
+   subsequent connections it will appear as though <TT
 CLASS="LITERAL"
 >SET geqo
-   TO off;</VAR
+   TO off;</TT
 > had been called right before the session started.
    Note that users can still alter this setting during the session; it
    will only be the default.  To undo any such setting, use
-   <VAR
+   <TT
 CLASS="LITERAL"
 >ALTER DATABASE <VAR
 CLASS="REPLACEABLE"
@@ -141,7 +141,7 @@ CLASS="REPLACEABLE"
    <VAR
 CLASS="REPLACEABLE"
 >varname</VAR
->;</VAR
+>;</TT
 >.
   </P
 ></DIV
@@ -179,7 +179,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="manage-ag-alternate-locs.html"
+HREF="manage-ag-dropdb.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -203,7 +203,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Alternative Locations</TD
+>Destroying a Database</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47718"
+NAME="AEN48300"
 ></A
 ><H2
 >Name</H2
@@ -109,7 +109,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47722"
+NAME="AEN48304"
 ></A
 ><H2
 >Synopsis</H2
@@ -186,9 +186,9 @@ CLASS="COMMAND"
 CLASS="FILENAME"
 >pg_control</TT
 >, you can force it to proceed anyway
-   by specifying the <VAR
+   by specifying the <TT
 CLASS="LITERAL"
->-f</VAR
+>-f</TT
 > (force) switch.  In this case plausible
    values will be substituted for the missing data.  Most of the fields can be
    expected to match, but manual assistance may be needed for the next OID,
@@ -207,9 +207,9 @@ CLASS="COMMAND"
 >initdb</TT
 > was run in.
    If you are not able to determine correct values for all these fields,
-   <VAR
+   <TT
 CLASS="LITERAL"
->-f</VAR
+>-f</TT
 > can still be used, but
    the recovered database must be treated with even more suspicion than
    usual: an immediate dump and reload is imperative.  <SPAN
@@ -223,15 +223,15 @@ CLASS="EMPHASIS"
    as any such action is likely to make the corruption worse.
   </P
 ><P
->   The <VAR
+>   The <TT
 CLASS="LITERAL"
->-o</VAR
->, <VAR
+>-o</TT
+>, <TT
 CLASS="LITERAL"
->-x</VAR
->, and <VAR
+>-x</TT
+>, and <TT
 CLASS="LITERAL"
->-l</VAR
+>-l</TT
 > switches allow
    the next OID, next transaction ID, and WAL starting address values to
    be set manually.  These are only needed when
@@ -257,9 +257,9 @@ CLASS="FILENAME"
    in <TT
 CLASS="FILENAME"
 >pg_clog</TT
->, <VAR
+>, <TT
 CLASS="LITERAL"
->-x 0x1200000</VAR
+>-x 0x1200000</TT
 > will work (five trailing
    zeroes provide the proper multiplier).
    The WAL starting address should be
@@ -275,18 +275,18 @@ CLASS="FILENAME"
    largest entry in <TT
 CLASS="FILENAME"
 >pg_xlog</TT
->, <VAR
+>, <TT
 CLASS="LITERAL"
->-l 0xFF,0x3B</VAR
+>-l 0xFF,0x3B</TT
 > will work.
    There is no comparably easy way to determine a next OID that's beyond
    the largest one in the database, but fortunately it is not critical to
    get the next-OID setting right.
   </P
 ><P
->   The <VAR
+>   The <TT
 CLASS="LITERAL"
->-n</VAR
+>-n</TT
 > (no operation) switch instructs
    <TT
 CLASS="COMMAND"
@@ -306,7 +306,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47774"
+NAME="AEN48356"
 ></A
 ><H2
 >Notes</H2

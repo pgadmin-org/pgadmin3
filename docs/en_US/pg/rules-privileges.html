@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Rule System"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="rules.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 34. The Rule System</TD
+>Chapter 32. The Rule System</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RULES-PRIVILEGES"
->34.4. Rules and Privileges</A
+>32.4. Rules and Privileges</A
 ></H1
 ><A
-NAME="AEN30886"
+NAME="AEN30214"
 ></A
 ><A
-NAME="AEN30889"
+NAME="AEN30217"
 ></A
 ><P
 >    Due to rewriting of queries by the <SPAN
@@ -136,9 +136,9 @@ GRANT SELECT ON phone_number TO secretary;</PRE
 ><P>
     
     Nobody except him (and the database superusers) can access the
-    <VAR
+    <TT
 CLASS="LITERAL"
->phone_data</VAR
+>phone_data</TT
 > table. But because of the <TT
 CLASS="COMMAND"
 >GRANT</TT
@@ -147,41 +147,41 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SELECT</TT
 > on the
-    <VAR
+    <TT
 CLASS="LITERAL"
->phone_number</VAR
+>phone_number</TT
 > view. The rule system will rewrite the
     <TT
 CLASS="COMMAND"
 >SELECT</TT
-> from <VAR
+> from <TT
 CLASS="LITERAL"
->phone_number</VAR
+>phone_number</TT
 > into a
     <TT
 CLASS="COMMAND"
 >SELECT</TT
-> from <VAR
+> from <TT
 CLASS="LITERAL"
->phone_data</VAR
+>phone_data</TT
 > and add the
-    qualification that only entries where <VAR
+    qualification that only entries where <TT
 CLASS="LITERAL"
->private</VAR
+>private</TT
 > is false
     are wanted. Since the user is the owner of
-    <VAR
+    <TT
 CLASS="LITERAL"
->phone_number</VAR
+>phone_number</TT
 > and therefore the owner of the rule, the
-    read access to <VAR
+    read access to <TT
 CLASS="LITERAL"
->phone_data</VAR
+>phone_data</TT
 > is now checked against his
     privileges and the query is permitted. The check for accessing
-    <VAR
+    <TT
 CLASS="LITERAL"
->phone_number</VAR
+>phone_number</TT
 > is also performed, but this is done
     against the invoking user, so nobody but the user and the
     secretary can use it.</P
@@ -189,28 +189,28 @@ CLASS="LITERAL"
 >    The privileges are checked rule by rule. So the secretary is for now the
     only one who can see the public phone numbers. But the secretary can setup
     another view and grant access to that to the public. Then, anyone
-    can see the <VAR
+    can see the <TT
 CLASS="LITERAL"
->phone_number</VAR
+>phone_number</TT
 > data through the secretary's view.
     What the secretary cannot do is to create a view that directly
-    accesses <VAR
+    accesses <TT
 CLASS="LITERAL"
->phone_data</VAR
+>phone_data</TT
 >.  (Actually he can, but it will not work since
     every access will be denied during the permission checks.)
     And as soon as the user will notice, that the secretary opened
-    his <VAR
+    his <TT
 CLASS="LITERAL"
->phone_number</VAR
+>phone_number</TT
 > view, he can revoke his access. Immediately, any
     access to the secretary's view would fail.</P
 ><P
 >    One might think that this rule-by-rule checking is a security
     hole, but in fact it isn't.   But if it did not work this way, the secretary
-    could set up a table with the same columns as <VAR
+    could set up a table with the same columns as <TT
 CLASS="LITERAL"
->phone_number</VAR
+>phone_number</TT
 > and
     copy the data to there once per day. Then it's his own data and
     he can grant access to everyone he wants. A
@@ -229,30 +229,30 @@ CLASS="COMMAND"
 ><P
 >    This mechanism also works for update rules. In the examples of
     the previous section, the owner of the tables in the example
-    database could grant the privileges <VAR
+    database could grant the privileges <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->INSERT</VAR
->, <VAR
+>INSERT</TT
+>, <TT
 CLASS="LITERAL"
->UPDATE</VAR
->, and <VAR
+>UPDATE</TT
+>, and <TT
 CLASS="LITERAL"
->DELETE</VAR
+>DELETE</TT
 > on
-    the <VAR
+    the <TT
 CLASS="LITERAL"
->shoelace</VAR
+>shoelace</TT
 > view to someone else, but only
-    <VAR
+    <TT
 CLASS="LITERAL"
->SELECT</VAR
-> on <VAR
+>SELECT</TT
+> on <TT
 CLASS="LITERAL"
->shoelace_log</VAR
+>shoelace_log</TT
 >. The rule action to
     write log entries will still be executed successfully, and that
     other user could see the log entries.  But he cannot create fake

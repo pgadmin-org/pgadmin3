@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
 HREF="sql-commands.html"><LINK
 REL="PREVIOUS"
-TITLE="ALTER TRIGGER"
-HREF="sql-altertrigger.html"><LINK
+TITLE="ALTER TYPE"
+HREF="sql-altertype.html"><LINK
 REL="NEXT"
 TITLE="ANALYZE"
 HREF="sql-analyze.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-altertrigger.html"
+HREF="sql-altertype.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-altertrigger.html"
+HREF="sql-altertype.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-ALTERUSER"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35519"
+NAME="AEN35405"
 ></A
 ><H2
 >Name</H2
 >ALTER USER&nbsp;--&nbsp;change a database user account</DIV
 ><A
-NAME="AEN35522"
+NAME="AEN35408"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35524"
+NAME="AEN35410"
 ></A
 ><H2
 >Synopsis</H2
@@ -165,7 +165,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35538"
+NAME="AEN35424"
 ></A
 ><H2
 >Description</H2
@@ -191,6 +191,15 @@ CLASS="PRODUCTNAME"
 >   The second variant changes the name of the user.  Only a database
    superuser can rename user accounts.  The session user cannot be
    renamed.  (Connect as a different user if you need to do that.)
+   Because <TT
+CLASS="LITERAL"
+>MD5</TT
+>-encrypted passwords use the username as
+   cryptographic salt, renaming a user clears their <TT
+CLASS="LITERAL"
+>MD5</TT
+>
+   password.
   </P
 ><P
 >   The third and the fourth variant change a user's session default for
@@ -211,7 +220,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35548"
+NAME="AEN35436"
 ></A
 ><H2
 >Parameters</H2
@@ -241,19 +250,19 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ENCRYPTED</VAR
-><BR><VAR
+>ENCRYPTED</TT
+><BR><TT
 CLASS="LITERAL"
->UNENCRYPTED</VAR
+>UNENCRYPTED</TT
 ></DT
 ><DD
 ><P
 >	These key words control whether the password is stored
-	encrypted in <VAR
+	encrypted in <TT
 CLASS="LITERAL"
->pg_shadow</VAR
+>pg_shadow</TT
 >.  (See
 	<A
 HREF="sql-createuser.html"
@@ -265,35 +274,35 @@ HREF="sql-createuser.html"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CREATEDB</VAR
-><BR><VAR
+>CREATEDB</TT
+><BR><TT
 CLASS="LITERAL"
->NOCREATEDB</VAR
+>NOCREATEDB</TT
 ></DT
 ><DD
 ><P
 >	These clauses define a user's ability to create databases.  If
-	<VAR
+	<TT
 CLASS="LITERAL"
->CREATEDB</VAR
+>CREATEDB</TT
 > is specified, the user
 	will be allowed to create his own databases. Using
-	<VAR
+	<TT
 CLASS="LITERAL"
->NOCREATEDB</VAR
+>NOCREATEDB</TT
 > will deny a user the ability to
 	create databases.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CREATEUSER</VAR
-><BR><VAR
+>CREATEUSER</TT
+><BR><TT
 CLASS="LITERAL"
->NOCREATEUSER</VAR
+>NOCREATEUSER</TT
 ></DT
 ><DD
 ><P
@@ -311,9 +320,9 @@ CLASS="REPLACEABLE"
 ><P
 >	The date (and, optionally, the time)
 	at which this user's password is to expire.  To set the password
-	never to expire, use <VAR
+	never to expire, use <TT
 CLASS="LITERAL"
->'infinity'</VAR
+>'infinity'</TT
 >.
        </P
 ></DD
@@ -342,19 +351,19 @@ CLASS="REPLACEABLE"
         <VAR
 CLASS="REPLACEABLE"
 >value</VAR
-> is <VAR
+> is <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 >
-        or, equivalently, <VAR
+        or, equivalently, <TT
 CLASS="LITERAL"
->RESET</VAR
+>RESET</TT
 > is used, the
         user-specific variable setting is removed and the user will
         inherit the system-wide default setting in new sessions.  Use
-        <VAR
+        <TT
 CLASS="LITERAL"
->RESET ALL</VAR
+>RESET ALL</TT
 > to clear all settings.
        </P
 ><P
@@ -376,7 +385,7 @@ HREF="runtime-config.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35611"
+NAME="AEN35499"
 ></A
 ><H2
 >Notes</H2
@@ -420,7 +429,7 @@ HREF="sql-alterdatabase.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35621"
+NAME="AEN35509"
 ></A
 ><H2
 >Examples</H2
@@ -471,7 +480,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35634"
+NAME="AEN35522"
 ></A
 ><H2
 >Compatibility</H2
@@ -490,7 +499,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35639"
+NAME="AEN35527"
 ></A
 ><H2
 >See Also</H2
@@ -526,7 +535,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-altertrigger.html"
+HREF="sql-altertype.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -554,7 +563,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->ALTER TRIGGER</TD
+>ALTER TYPE</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

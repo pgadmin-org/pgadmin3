@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
 HREF="functions.html"><LINK
 REL="PREVIOUS"
-TITLE="Binary String Functions and Operators"
-HREF="functions-binarystring.html"><LINK
+TITLE="Bit String Functions and Operators"
+HREF="functions-bitstring.html"><LINK
 REL="NEXT"
 TITLE="Data Type Formatting Functions"
 HREF="functions-formatting.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="functions-binarystring.html"
+HREF="functions-bitstring.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -93,10 +93,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-MATCHING"
->9.6. Pattern Matching</A
+>9.7. Pattern Matching</A
 ></H1
 ><A
-NAME="AEN7988"
+NAME="AEN8333"
 ></A
 ><P
 >    There are three separate approaches to pattern matching provided by
@@ -152,13 +152,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="FUNCTIONS-LIKE"
->9.6.1. <CODE
+>9.7.1. <CODE
 CLASS="FUNCTION"
 >LIKE</CODE
 ></A
 ></H2
 ><A
-NAME="AEN8004"
+NAME="AEN8349"
 ></A
 ><PRE
 CLASS="SYNOPSIS"
@@ -214,7 +214,7 @@ CLASS="FUNCTION"
 >LIKE</CODE
 > returns true, and vice versa.
      An equivalent expression is
-     <VAR
+     <TT
 CLASS="LITERAL"
 >NOT (<VAR
 CLASS="REPLACEABLE"
@@ -223,7 +223,7 @@ CLASS="REPLACEABLE"
       <VAR
 CLASS="REPLACEABLE"
 >pattern</VAR
->)</VAR
+>)</TT
 >.)
     </P
 ><P
@@ -236,17 +236,17 @@ CLASS="REPLACEABLE"
 CLASS="FUNCTION"
 >LIKE</CODE
 > acts like the
-     equals operator.  An underscore (<VAR
+     equals operator.  An underscore (<TT
 CLASS="LITERAL"
->_</VAR
+>_</TT
 >) in
      <VAR
 CLASS="REPLACEABLE"
 >pattern</VAR
 > stands for (matches) any single
-     character; a percent sign (<VAR
+     character; a percent sign (<TT
 CLASS="LITERAL"
->%</VAR
+>%</TT
 >) matches any string
      of zero or more characters.
     </P
@@ -289,9 +289,9 @@ CLASS="REPLACEABLE"
 > must be 
     preceded by the escape character.  The default escape
     character is the backslash but a different one may be selected by
-    using the <VAR
+    using the <TT
 CLASS="LITERAL"
->ESCAPE</VAR
+>ESCAPE</TT
 > clause.  To match the escape
     character itself, write two escape characters.
    </P
@@ -301,9 +301,9 @@ CLASS="LITERAL"
     you must write two backslashes in an SQL statement.  Thus, writing a pattern
     that actually matches a literal backslash means writing four backslashes
     in the statement.  You can avoid this by selecting a different escape
-    character with <VAR
+    character with <TT
 CLASS="LITERAL"
->ESCAPE</VAR
+>ESCAPE</TT
 >; then a backslash is not special
     to <CODE
 CLASS="FUNCTION"
@@ -313,9 +313,9 @@ CLASS="FUNCTION"
    </P
 ><P
 >    It's also possible to select no escape character by writing
-    <VAR
+    <TT
 CLASS="LITERAL"
->ESCAPE ''</VAR
+>ESCAPE ''</TT
 >.  This effectively disables the
     escape mechanism, which makes it impossible to turn off the
     special meaning of underscore and percent signs in the pattern.
@@ -339,27 +339,27 @@ CLASS="PRODUCTNAME"
 > extension.
    </P
 ><P
->    The operator <VAR
+>    The operator <TT
 CLASS="LITERAL"
->~~</VAR
+>~~</TT
 > is equivalent to
     <CODE
 CLASS="FUNCTION"
 >LIKE</CODE
->, and <VAR
+>, and <TT
 CLASS="LITERAL"
->~~*</VAR
+>~~*</TT
 > corresponds to
     <CODE
 CLASS="FUNCTION"
 >ILIKE</CODE
 >.  There are also
-    <VAR
+    <TT
 CLASS="LITERAL"
->!~~</VAR
-> and <VAR
+>!~~</TT
+> and <TT
 CLASS="LITERAL"
->!~~*</VAR
+>!~~*</TT
 > operators that
     represent <CODE
 CLASS="FUNCTION"
@@ -381,7 +381,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="FUNCTIONS-SQL99-REGEXP"
->9.6.2. <CODE
+>9.7.2. <CODE
 CLASS="FUNCTION"
 >SIMILAR TO</CODE
 > and <ACRONYM
@@ -391,13 +391,13 @@ CLASS="ACRONYM"
      Regular Expressions</A
 ></H2
 ><A
-NAME="AEN8066"
+NAME="AEN8411"
 ></A
 ><A
-NAME="AEN8068"
+NAME="AEN8413"
 ></A
 ><A
-NAME="AEN8070"
+NAME="AEN8415"
 ></A
 ><PRE
 CLASS="SYNOPSIS"
@@ -471,20 +471,20 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >SIMILAR TO</CODE
 > uses
-     <VAR
+     <TT
 CLASS="LITERAL"
->_</VAR
-> and <VAR
+>_</TT
+> and <TT
 CLASS="LITERAL"
->%</VAR
+>%</TT
 > as wildcard characters denoting
      any single character and any string, respectively (these are
-     comparable to <VAR
+     comparable to <TT
 CLASS="LITERAL"
->.</VAR
-> and <VAR
+>.</TT
+> and <TT
 CLASS="LITERAL"
->.*</VAR
+>.*</TT
 > in POSIX regular
      expressions).
     </P
@@ -504,44 +504,44 @@ CLASS="FUNCTION"
 ></P><UL
 ><LI
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->|</VAR
+>|</TT
 > denotes alternation (either of two alternatives).
       </P
 ></LI
 ><LI
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > denotes repetition of the previous item zero
        or more times.
       </P
 ></LI
 ><LI
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->+</VAR
+>+</TT
 > denotes repetition of the previous item one
        or more times.
       </P
 ></LI
 ><LI
 ><P
->       Parentheses <VAR
+>       Parentheses <TT
 CLASS="LITERAL"
->()</VAR
+>()</TT
 > may be used to group items into
        a single logical item.
       </P
 ></LI
 ><LI
 ><P
->       A bracket expression <VAR
+>       A bracket expression <TT
 CLASS="LITERAL"
->[...]</VAR
+>[...]</TT
 > specifies a character
        class, just as in POSIX regular expressions.
       </P
@@ -549,16 +549,16 @@ CLASS="LITERAL"
 ></UL
 ><P>
 
-     Notice that bounded repetition (<VAR
+     Notice that bounded repetition (<TT
 CLASS="LITERAL"
->?</VAR
-> and <VAR
+>?</TT
+> and <TT
 CLASS="LITERAL"
->{...}</VAR
+>{...}</TT
 >)
-     are not provided, though they exist in POSIX.  Also, the dot (<VAR
+     are not provided, though they exist in POSIX.  Also, the dot (<TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 >)
      is not a metacharacter.
     </P
@@ -568,9 +568,9 @@ CLASS="FUNCTION"
 >LIKE</CODE
 >, a backslash disables the special meaning
      of any of these metacharacters; or a different escape character can
-     be specified with <VAR
+     be specified with <TT
 CLASS="LITERAL"
->ESCAPE</VAR
+>ESCAPE</TT
 >.
     </P
 ><P
@@ -602,9 +602,9 @@ CLASS="FUNCTION"
 > function with three parameters,
      <CODE
 CLASS="FUNCTION"
->substring(<VAR
+>substring(<TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 > from
      <VAR
 CLASS="REPLACEABLE"
@@ -619,17 +619,17 @@ CLASS="REPLACEABLE"
 CLASS="ACRONYM"
 >SQL99</ACRONYM
 >
-     regular expression pattern.  As with <VAR
+     regular expression pattern.  As with <TT
 CLASS="LITERAL"
->SIMILAR TO</VAR
+>SIMILAR TO</TT
 >, the
      specified pattern must match to the entire data string, else the
      function fails and returns null.  To indicate the part of the
      pattern that should be returned on success, the pattern must contain
      two occurrences of the escape character followed by a double quote
-     (<VAR
+     (<TT
 CLASS="LITERAL"
->"</VAR
+>"</TT
 >).  The text matching the portion of the pattern
      between these markers is returned.
     </P
@@ -654,13 +654,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="FUNCTIONS-POSIX-REGEXP"
->9.6.3. <ACRONYM
+>9.7.3. <ACRONYM
 CLASS="ACRONYM"
 >POSIX</ACRONYM
 > Regular Expressions</A
 ></H2
 ><A
-NAME="AEN8143"
+NAME="AEN8488"
 ></A
 ><P
 >    <A
@@ -694,58 +694,58 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->~</VAR
+>~</TT
 > </TD
 ><TD
 >Matches regular expression, case sensitive</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'thomas' ~ '.*thomas.*'</VAR
+>'thomas' ~ '.*thomas.*'</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->~*</VAR
+>~*</TT
 > </TD
 ><TD
 >Matches regular expression, case insensitive</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'thomas' ~* '.*Thomas.*'</VAR
+>'thomas' ~* '.*Thomas.*'</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->!~</VAR
+>!~</TT
 > </TD
 ><TD
 >Does not match regular expression, case sensitive</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'thomas' !~ '.*Thomas.*'</VAR
+>'thomas' !~ '.*Thomas.*'</TT
 ></TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->!~*</VAR
+>!~*</TT
 > </TD
 ><TD
 >Does not match regular expression, case insensitive</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'thomas' !~* '.*vadim.*'</VAR
+>'thomas' !~* '.*vadim.*'</TT
 ></TD
 ></TR
 ></TBODY
@@ -833,9 +833,9 @@ CLASS="FUNCTION"
 > function with two parameters,
      <CODE
 CLASS="FUNCTION"
->substring(<VAR
+>substring(<TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 > from
      <VAR
 CLASS="REPLACEABLE"
@@ -880,7 +880,7 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="POSIX-SYNTAX-DETAILS"
->9.6.3.1. Regular Expression Details</A
+>9.7.3.1. Regular Expression Details</A
 ></H3
 ><P
 >    Regular expressions (<ACRONYM
@@ -953,27 +953,23 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     The form of regular expressions accepted by <SPAN
+>     The form of regular expressions accepted by
+     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->
-     can be chosen by setting the <VAR
-CLASS="VARNAME"
->regex_flavor</VAR
-> run-time parameter
-     (described in <A
-HREF="runtime-config.html"
->Section 16.4</A
->).  The usual setting is
-     <VAR
+> can be chosen by setting the <A
+HREF="runtime-config.html#GUC-REGEX-FLAVOR"
+>regex_flavor</A
+> run-time parameter.  The usual
+     setting is <TT
 CLASS="LITERAL"
->advanced</VAR
->, but one might choose <VAR
+>advanced</TT
+>, but one might choose
+     <TT
 CLASS="LITERAL"
->extended</VAR
-> for
-     maximum backwards compatibility with pre-7.4 releases of
-     <SPAN
+>extended</TT
+> for maximum backwards compatibility with
+     pre-7.4 releases of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.
@@ -986,9 +982,9 @@ CLASS="PRODUCTNAME"
 CLASS="FIRSTTERM"
 >branches</I
 >, separated by
-    <VAR
+    <TT
 CLASS="LITERAL"
->|</VAR
+>|</TT
 >.  It matches anything that matches one of the
     branches.
    </P
@@ -1066,15 +1062,15 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->(</VAR
+>(</TT
 ><VAR
 CLASS="REPLACEABLE"
 >re</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 > </TD
 ><TD
 > (where <VAR
@@ -1089,15 +1085,15 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->(?:</VAR
+>(?:</TT
 ><VAR
 CLASS="REPLACEABLE"
 >re</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 > </TD
 ><TD
 > as above, but the match is not noted for reporting
@@ -1109,24 +1105,24 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 > </TD
 ><TD
 > matches any single character </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->[</VAR
+>[</TT
 ><VAR
 CLASS="REPLACEABLE"
 >chars</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->]</VAR
+>]</TT
 > </TD
 ><TD
 > a <I
@@ -1139,14 +1135,14 @@ CLASS="REPLACEABLE"
 > (see
        <A
 HREF="functions-matching.html#POSIX-BRACKET-EXPRESSIONS"
->Section 9.6.3.2</A
+>Section 9.7.3.2</A
 > for more detail) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 ><VAR
 CLASS="REPLACEABLE"
 >k</VAR
@@ -1157,16 +1153,16 @@ CLASS="REPLACEABLE"
 >k</VAR
 > is a non-alphanumeric character)
        matches that character taken as an ordinary character,
-       e.g. <VAR
+       e.g. <TT
 CLASS="LITERAL"
->\\</VAR
+>\\</TT
 > matches a backslash character </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 ><VAR
 CLASS="REPLACEABLE"
 >c</VAR
@@ -1182,7 +1178,7 @@ CLASS="FIRSTTERM"
 >escape</I
 >, see <A
 HREF="functions-matching.html#POSIX-ESCAPE-SEQUENCES"
->Section 9.6.3.3</A
+>Section 9.7.3.3</A
 >
        (AREs only; in EREs and BREs, this matches <VAR
 CLASS="REPLACEABLE"
@@ -1191,15 +1187,15 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 > </TD
 ><TD
 > when followed by a character other than a digit,
-       matches the left-brace character <VAR
+       matches the left-brace character <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 >;
        when followed by a digit, it is the beginning of a
        <VAR
@@ -1224,9 +1220,9 @@ CLASS="REPLACEABLE"
 ></TABLE
 ></DIV
 ><P
->    An RE may not end with <VAR
+>    An RE may not end with <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 >.
    </P
 ><DIV
@@ -1236,9 +1232,9 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     Remember that the backslash (<VAR
+>     Remember that the backslash (<TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 >) already has a special
      meaning in <SPAN
 CLASS="PRODUCTNAME"
@@ -1272,42 +1268,42 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > </TD
 ><TD
 > a sequence of 0 or more matches of the atom </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->+</VAR
+>+</TT
 > </TD
 ><TD
 > a sequence of 1 or more matches of the atom </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->?</VAR
+>?</TT
 > </TD
 ><TD
 > a sequence of 0 or 1 matches of the atom </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}</VAR
+>}</TT
 > </TD
 ><TD
 > a sequence of exactly <VAR
@@ -1317,15 +1313,15 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->,}</VAR
+>,}</TT
 > </TD
 ><TD
 > a sequence of <VAR
@@ -1335,21 +1331,21 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
->       <VAR
+>       <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->,</VAR
+>,</TT
 ><VAR
 CLASS="REPLACEABLE"
 >n</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}</VAR
+>}</TT
 > </TD
 ><TD
 > a sequence of <VAR
@@ -1370,137 +1366,137 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->*?</VAR
+>*?</TT
 > </TD
 ><TD
-> non-greedy version of <VAR
+> non-greedy version of <TT
 CLASS="LITERAL"
->*</VAR
-> </TD
-></TR
-><TR
-><TD
-> <VAR
-CLASS="LITERAL"
->+?</VAR
-> </TD
-><TD
-> non-greedy version of <VAR
-CLASS="LITERAL"
->+</VAR
+>*</TT
 > </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->??</VAR
+>+?</TT
 > </TD
 ><TD
-> non-greedy version of <VAR
+> non-greedy version of <TT
 CLASS="LITERAL"
->?</VAR
-> </TD
-></TR
-><TR
-><TD
-> <VAR
-CLASS="LITERAL"
->{</VAR
-><VAR
-CLASS="REPLACEABLE"
->m</VAR
-><VAR
-CLASS="LITERAL"
->}?</VAR
-> </TD
-><TD
-> non-greedy version of <VAR
-CLASS="LITERAL"
->{</VAR
-><VAR
-CLASS="REPLACEABLE"
->m</VAR
-><VAR
-CLASS="LITERAL"
->}</VAR
+>+</TT
 > </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->{</VAR
-><VAR
-CLASS="REPLACEABLE"
->m</VAR
-><VAR
-CLASS="LITERAL"
->,}?</VAR
+>??</TT
 > </TD
 ><TD
-> non-greedy version of <VAR
+> non-greedy version of <TT
 CLASS="LITERAL"
->{</VAR
-><VAR
-CLASS="REPLACEABLE"
->m</VAR
-><VAR
-CLASS="LITERAL"
->,}</VAR
+>?</TT
 > </TD
 ></TR
 ><TR
 ><TD
->       <VAR
+> <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->,</VAR
+>}?</TT
+> </TD
+><TD
+> non-greedy version of <TT
+CLASS="LITERAL"
+>{</TT
+><VAR
+CLASS="REPLACEABLE"
+>m</VAR
+><TT
+CLASS="LITERAL"
+>}</TT
+> </TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>{</TT
+><VAR
+CLASS="REPLACEABLE"
+>m</VAR
+><TT
+CLASS="LITERAL"
+>,}?</TT
+> </TD
+><TD
+> non-greedy version of <TT
+CLASS="LITERAL"
+>{</TT
+><VAR
+CLASS="REPLACEABLE"
+>m</VAR
+><TT
+CLASS="LITERAL"
+>,}</TT
+> </TD
+></TR
+><TR
+><TD
+>       <TT
+CLASS="LITERAL"
+>{</TT
+><VAR
+CLASS="REPLACEABLE"
+>m</VAR
+><TT
+CLASS="LITERAL"
+>,</TT
 ><VAR
 CLASS="REPLACEABLE"
 >n</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}?</VAR
+>}?</TT
 > </TD
 ><TD
-> non-greedy version of <VAR
+> non-greedy version of <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->,</VAR
+>,</TT
 ><VAR
 CLASS="REPLACEABLE"
 >n</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}</VAR
+>}</TT
 > </TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->    The forms using <VAR
+>    The forms using <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >...</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}</VAR
+>}</TT
 >
     are known as <I
 CLASS="FIRSTTERM"
@@ -1528,7 +1524,7 @@ CLASS="FIRSTTERM"
      number of matches.
      See <A
 HREF="functions-matching.html#POSIX-MATCHING-RULES"
->Section 9.6.3.5</A
+>Section 9.7.3.5</A
 > for more detail.
    </P
 ><DIV
@@ -1541,12 +1537,12 @@ CLASS="NOTE"
 >     A quantifier cannot immediately follow another quantifier.
      A quantifier cannot
      begin an expression or subexpression or follow
-     <VAR
+     <TT
 CLASS="LITERAL"
->^</VAR
-> or <VAR
+>^</TT
+> or <TT
 CLASS="LITERAL"
->|</VAR
+>|</TT
 >.
     </P
 ></BLOCKQUOTE
@@ -1574,33 +1570,33 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 > </TD
 ><TD
 > matches at the beginning of the string </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->$</VAR
+>$</TT
 > </TD
 ><TD
 > matches at the end of the string </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->(?=</VAR
+>(?=</TT
 ><VAR
 CLASS="REPLACEABLE"
 >re</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 > </TD
 ><TD
 > <I
@@ -1615,15 +1611,15 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->(?!</VAR
+>(?!</TT
 ><VAR
 CLASS="REPLACEABLE"
 >re</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 > </TD
 ><TD
 > <I
@@ -1646,7 +1642,7 @@ CLASS="FIRSTTERM"
 >
     (see <A
 HREF="functions-matching.html#POSIX-ESCAPE-SEQUENCES"
->Section 9.6.3.3</A
+>Section 9.7.3.3</A
 >),
     and all parentheses within them are considered non-capturing.
    </P
@@ -1657,21 +1653,21 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="POSIX-BRACKET-EXPRESSIONS"
->9.6.3.2. Bracket Expressions</A
+>9.7.3.2. Bracket Expressions</A
 ></H3
 ><P
 >    A <I
 CLASS="FIRSTTERM"
 >bracket expression</I
 > is a list of
-    characters enclosed in <VAR
+    characters enclosed in <TT
 CLASS="LITERAL"
->[]</VAR
+>[]</TT
 >.  It normally matches
     any single character from the list (but see below).  If the list
-    begins with <VAR
+    begins with <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 >, it matches any single character
     <SPAN
 CLASS="emphasis"
@@ -1681,62 +1677,62 @@ CLASS="EMPHASIS"
 ></SPAN
 > from the rest of the list.
     If two characters
-    in the list are separated by <VAR
+    in the list are separated by <TT
 CLASS="LITERAL"
->-</VAR
+>-</TT
 >, this is
     shorthand for the full range of characters between those two
     (inclusive) in the collating sequence,
-    e.g. <VAR
+    e.g. <TT
 CLASS="LITERAL"
->[0-9]</VAR
+>[0-9]</TT
 > in <ACRONYM
 CLASS="ACRONYM"
 >ASCII</ACRONYM
 > matches
     any decimal digit.  It is illegal for two ranges to share an
-    endpoint, e.g.  <VAR
+    endpoint, e.g.  <TT
 CLASS="LITERAL"
->a-c-e</VAR
+>a-c-e</TT
 >.  Ranges are very
     collating-sequence-dependent, so portable programs should avoid
     relying on them.
    </P
 ><P
->    To include a literal <VAR
+>    To include a literal <TT
 CLASS="LITERAL"
->]</VAR
+>]</TT
 > in the list, make it the
-    first character (following a possible <VAR
+    first character (following a possible <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 >).  To
-    include a literal <VAR
+    include a literal <TT
 CLASS="LITERAL"
->-</VAR
+>-</TT
 >, make it the first or last
     character, or the second endpoint of a range.  To use a literal
-    <VAR
+    <TT
 CLASS="LITERAL"
->-</VAR
+>-</TT
 > as the first endpoint of a range, enclose it
-    in <VAR
+    in <TT
 CLASS="LITERAL"
->[.</VAR
-> and <VAR
+>[.</TT
+> and <TT
 CLASS="LITERAL"
->.]</VAR
+>.]</TT
 > to make it a
     collating element (see below).  With the exception of these characters,
-    some combinations using <VAR
+    some combinations using <TT
 CLASS="LITERAL"
->[</VAR
+>[</TT
 >
     (see next paragraphs), and escapes (AREs only), all other special
     characters lose their special significance within a bracket expression.
-    In particular, <VAR
+    In particular, <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > is not special when following
     ERE or BRE rules, though it is special (as introducing an escape)
     in AREs.
@@ -1745,28 +1741,28 @@ CLASS="LITERAL"
 >    Within a bracket expression, a collating element (a character, a
     multiple-character sequence that collates as if it were a single
     character, or a collating-sequence name for either) enclosed in
-    <VAR
+    <TT
 CLASS="LITERAL"
->[.</VAR
-> and <VAR
+>[.</TT
+> and <TT
 CLASS="LITERAL"
->.]</VAR
+>.]</TT
 > stands for the
     sequence of characters of that collating element.  The sequence is
     a single element of the bracket expression's list.  A bracket
     expression containing a multiple-character collating element can thus
     match more than one character, e.g. if the collating sequence
-    includes a <VAR
+    includes a <TT
 CLASS="LITERAL"
->ch</VAR
+>ch</TT
 > collating element, then the RE
-    <VAR
+    <TT
 CLASS="LITERAL"
->[[.ch.]]*c</VAR
+>[[.ch.]]*c</TT
 > matches the first five characters of
-    <VAR
+    <TT
 CLASS="LITERAL"
->chchcc</VAR
+>chchcc</TT
 >.
    </P
 ><DIV
@@ -1786,96 +1782,96 @@ CLASS="PRODUCTNAME"
 ></DIV
 ><P
 >    Within a bracket expression, a collating element enclosed in
-    <VAR
+    <TT
 CLASS="LITERAL"
->[=</VAR
-> and <VAR
+>[=</TT
+> and <TT
 CLASS="LITERAL"
->=]</VAR
+>=]</TT
 > is an equivalence
     class, standing for the sequences of characters of all collating
     elements equivalent to that one, including itself.  (If there are
     no other equivalent collating elements, the treatment is as if the
-    enclosing delimiters were <VAR
+    enclosing delimiters were <TT
 CLASS="LITERAL"
->[.</VAR
+>[.</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->.]</VAR
->.)  For example, if <VAR
+>.]</TT
+>.)  For example, if <TT
 CLASS="LITERAL"
->o</VAR
+>o</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 > are the members of an equivalence class, then
-    <VAR
+    <TT
 CLASS="LITERAL"
->[[=o=]]</VAR
->, <VAR
+>[[=o=]]</TT
+>, <TT
 CLASS="LITERAL"
->[[=^=]]</VAR
+>[[=^=]]</TT
 >, and
-    <VAR
+    <TT
 CLASS="LITERAL"
->[o^]</VAR
+>[o^]</TT
 > are all synonymous.  An equivalence class
     may not be an endpoint of a range.
    </P
 ><P
 >    Within a bracket expression, the name of a character class
-    enclosed in <VAR
+    enclosed in <TT
 CLASS="LITERAL"
->[:</VAR
-> and <VAR
+>[:</TT
+> and <TT
 CLASS="LITERAL"
->:]</VAR
+>:]</TT
 > stands
     for the list of all characters belonging to that class.  Standard
-    character class names are: <VAR
+    character class names are: <TT
 CLASS="LITERAL"
->alnum</VAR
+>alnum</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->alpha</VAR
->, <VAR
+>alpha</TT
+>, <TT
 CLASS="LITERAL"
->blank</VAR
+>blank</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->cntrl</VAR
->, <VAR
+>cntrl</TT
+>, <TT
 CLASS="LITERAL"
->digit</VAR
+>digit</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->graph</VAR
->, <VAR
+>graph</TT
+>, <TT
 CLASS="LITERAL"
->lower</VAR
+>lower</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->print</VAR
->, <VAR
+>print</TT
+>, <TT
 CLASS="LITERAL"
->punct</VAR
+>punct</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->space</VAR
->, <VAR
+>space</TT
+>, <TT
 CLASS="LITERAL"
->upper</VAR
+>upper</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->xdigit</VAR
+>xdigit</TT
 >.  These stand for the character classes
     defined in
     <SPAN
@@ -1890,20 +1886,20 @@ CLASS="REFENTRYTITLE"
    </P
 ><P
 >    There are two special cases of bracket expressions:  the bracket
-    expressions <VAR
+    expressions <TT
 CLASS="LITERAL"
->[[:&lt;:]]</VAR
+>[[:&lt;:]]</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->[[:&gt;:]]</VAR
+>[[:&gt;:]]</TT
 > are constraints,
     matching empty strings at the beginning
     and end of a word respectively.  A word is defined as a sequence
     of word characters that is neither preceded nor followed by word
-    characters.  A word character is an <VAR
+    characters.  A word character is an <TT
 CLASS="LITERAL"
->alnum</VAR
+>alnum</TT
 > character (as
     defined by
     <SPAN
@@ -1929,32 +1925,32 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="POSIX-ESCAPE-SEQUENCES"
->9.6.3.3. Regular Expression Escapes</A
+>9.7.3.3. Regular Expression Escapes</A
 ></H3
 ><P
 >    <I
 CLASS="FIRSTTERM"
 >Escapes</I
-> are special sequences beginning with <VAR
+> are special sequences beginning with <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 >
     followed by an alphanumeric character. Escapes come in several varieties:
     character entry, class shorthands, constraint escapes, and back references.
-    A <VAR
+    A <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > followed by an alphanumeric character but not constituting
     a valid escape is illegal in AREs.
     In EREs, there are no escapes: outside a bracket expression,
-    a <VAR
+    a <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > followed by an alphanumeric character merely stands for
     that character as an ordinary character, and inside a bracket expression,
-    <VAR
+    <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > is an ordinary character.
     (The latter is the one actual incompatibility between EREs and AREs.)
    </P
@@ -1996,9 +1992,9 @@ HREF="functions-matching.html#POSIX-CONSTRAINT-ESCAPES-TABLE"
 >    A <I
 CLASS="FIRSTTERM"
 >back reference</I
-> (<VAR
+> (<TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 ><VAR
 CLASS="REPLACEABLE"
 >n</VAR
@@ -2012,22 +2008,22 @@ CLASS="REPLACEABLE"
 HREF="functions-matching.html#POSIX-CONSTRAINT-BACKREF-TABLE"
 >Table 9-18</A
 >).  For example,
-    <VAR
+    <TT
 CLASS="LITERAL"
->([bc])\1</VAR
-> matches <VAR
+>([bc])\1</TT
+> matches <TT
 CLASS="LITERAL"
->bb</VAR
-> or <VAR
+>bb</TT
+> or <TT
 CLASS="LITERAL"
->cc</VAR
+>cc</TT
 >
-    but not <VAR
+    but not <TT
 CLASS="LITERAL"
->bc</VAR
-> or <VAR
+>bc</TT
+> or <TT
 CLASS="LITERAL"
->cb</VAR
+>cb</TT
 >.
     The subexpression must entirely precede the back reference in the RE.
     Subexpressions are numbered in the order of their leading parentheses.
@@ -2040,11 +2036,18 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     Keep in mind that an escape's leading <VAR
+>     Keep in mind that an escape's leading <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > will need to be
-     doubled when entering the pattern as an SQL string constant.
+     doubled when entering the pattern as an SQL string constant.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>'123' ~ '^\\d{3}' <I
+CLASS="LINEANNOTATION"
+>true</I
+></PRE
+><P>
     </P
 ></BLOCKQUOTE
 ></DIV
@@ -2071,40 +2074,40 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\a</VAR
+>\a</TT
 > </TD
 ><TD
 > alert (bell) character, as in C </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\b</VAR
+>\b</TT
 > </TD
 ><TD
 > backspace, as in C </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\B</VAR
+>\B</TT
 > </TD
 ><TD
-> synonym for <VAR
+> synonym for <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > to help reduce the need for backslash
        doubling </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\c</VAR
+>\c</TT
 ><VAR
 CLASS="REPLACEABLE"
 >X</VAR
@@ -2122,59 +2125,59 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\e</VAR
+>\e</TT
 > </TD
 ><TD
 > the character whose collating-sequence name
-       is <VAR
+       is <TT
 CLASS="LITERAL"
->ESC</VAR
+>ESC</TT
 >,
        or failing that, the character with octal value 033 </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\f</VAR
+>\f</TT
 > </TD
 ><TD
 > form feed, as in C </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\n</VAR
+>\n</TT
 > </TD
 ><TD
 > newline, as in C </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\r</VAR
+>\r</TT
 > </TD
 ><TD
 > carriage return, as in C </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\t</VAR
+>\t</TT
 > </TD
 ><TD
 > horizontal tab, as in C </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\u</VAR
+>\u</TT
 ><VAR
 CLASS="REPLACEABLE"
 >wxyz</VAR
@@ -2184,9 +2187,9 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >wxyz</VAR
 > is exactly four hexadecimal digits)
-       the Unicode character <VAR
+       the Unicode character <TT
 CLASS="LITERAL"
->U+</VAR
+>U+</TT
 ><VAR
 CLASS="REPLACEABLE"
 >wxyz</VAR
@@ -2195,9 +2198,9 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\U</VAR
+>\U</TT
 ><VAR
 CLASS="REPLACEABLE"
 >stuvwxyz</VAR
@@ -2213,18 +2216,18 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\v</VAR
+>\v</TT
 > </TD
 ><TD
 > vertical tab, as in C </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\x</VAR
+>\x</TT
 ><VAR
 CLASS="REPLACEABLE"
 >hhh</VAR
@@ -2236,9 +2239,9 @@ CLASS="REPLACEABLE"
 > is any sequence of hexadecimal
        digits)
        the character whose hexadecimal value is
-       <VAR
+       <TT
 CLASS="LITERAL"
->0x</VAR
+>0x</TT
 ><VAR
 CLASS="REPLACEABLE"
 >hhh</VAR
@@ -2248,21 +2251,21 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\0</VAR
+>\0</TT
 > </TD
 ><TD
-> the character whose value is <VAR
+> the character whose value is <TT
 CLASS="LITERAL"
->0</VAR
+>0</TT
 > </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 ><VAR
 CLASS="REPLACEABLE"
 >xy</VAR
@@ -2277,9 +2280,9 @@ CLASS="FIRSTTERM"
 >back reference</I
 >)
        the character whose octal value is
-       <VAR
+       <TT
 CLASS="LITERAL"
->0</VAR
+>0</TT
 ><VAR
 CLASS="REPLACEABLE"
 >xy</VAR
@@ -2287,9 +2290,9 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 ><VAR
 CLASS="REPLACEABLE"
 >xyz</VAR
@@ -2304,9 +2307,9 @@ CLASS="FIRSTTERM"
 >back reference</I
 >)
        the character whose octal value is
-       <VAR
+       <TT
 CLASS="LITERAL"
->0</VAR
+>0</TT
 ><VAR
 CLASS="REPLACEABLE"
 >xyz</VAR
@@ -2316,46 +2319,46 @@ CLASS="REPLACEABLE"
 ></TABLE
 ></DIV
 ><P
->    Hexadecimal digits are <VAR
+>    Hexadecimal digits are <TT
 CLASS="LITERAL"
->0</VAR
->-<VAR
+>0</TT
+>-<TT
 CLASS="LITERAL"
->9</VAR
+>9</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->a</VAR
->-<VAR
+>a</TT
+>-<TT
 CLASS="LITERAL"
->f</VAR
->, and <VAR
+>f</TT
+>, and <TT
 CLASS="LITERAL"
->A</VAR
->-<VAR
+>A</TT
+>-<TT
 CLASS="LITERAL"
->F</VAR
+>F</TT
 >.
-    Octal digits are <VAR
+    Octal digits are <TT
 CLASS="LITERAL"
->0</VAR
->-<VAR
+>0</TT
+>-<TT
 CLASS="LITERAL"
->7</VAR
+>7</TT
 >.
    </P
 ><P
 >    The character-entry escapes are always taken as ordinary characters.
-    For example, <VAR
+    For example, <TT
 CLASS="LITERAL"
->\135</VAR
-> is <VAR
+>\135</TT
+> is <TT
 CLASS="LITERAL"
->]</VAR
+>]</TT
 > in ASCII, but
-    <VAR
+    <TT
 CLASS="LITERAL"
->\135</VAR
+>\135</TT
 > does not terminate a bracket expression.
    </P
 ><DIV
@@ -2381,75 +2384,75 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\d</VAR
+>\d</TT
 > </TD
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->[[:digit:]]</VAR
-> </TD
-></TR
-><TR
-><TD
-> <VAR
-CLASS="LITERAL"
->\s</VAR
-> </TD
-><TD
-> <VAR
-CLASS="LITERAL"
->[[:space:]]</VAR
+>[[:digit:]]</TT
 > </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\w</VAR
+>\s</TT
 > </TD
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->[[:alnum:]_]</VAR
+>[[:space:]]</TT
+> </TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>\w</TT
+> </TD
+><TD
+> <TT
+CLASS="LITERAL"
+>[[:alnum:]_]</TT
 >
        (note underscore is included) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\D</VAR
+>\D</TT
 > </TD
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->[^[:digit:]]</VAR
-> </TD
-></TR
-><TR
-><TD
-> <VAR
-CLASS="LITERAL"
->\S</VAR
-> </TD
-><TD
-> <VAR
-CLASS="LITERAL"
->[^[:space:]]</VAR
+>[^[:digit:]]</TT
 > </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\W</VAR
+>\S</TT
 > </TD
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->[^[:alnum:]_]</VAR
+>[^[:space:]]</TT
+> </TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>\W</TT
+> </TD
+><TD
+> <TT
+CLASS="LITERAL"
+>[^[:alnum:]_]</TT
 >
        (note underscore is included) </TD
 ></TR
@@ -2457,42 +2460,42 @@ CLASS="LITERAL"
 ></TABLE
 ></DIV
 ><P
->    Within bracket expressions, <VAR
+>    Within bracket expressions, <TT
 CLASS="LITERAL"
->\d</VAR
->, <VAR
+>\d</TT
+>, <TT
 CLASS="LITERAL"
->\s</VAR
+>\s</TT
 >,
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->\w</VAR
+>\w</TT
 > lose their outer brackets,
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->\D</VAR
->, <VAR
+>\D</TT
+>, <TT
 CLASS="LITERAL"
->\S</VAR
->, and <VAR
+>\S</TT
+>, and <TT
 CLASS="LITERAL"
->\W</VAR
+>\W</TT
 > are illegal.
-    (So, for example, <VAR
+    (So, for example, <TT
 CLASS="LITERAL"
->[a-c\d]</VAR
+>[a-c\d]</TT
 > is equivalent to
-    <VAR
+    <TT
 CLASS="LITERAL"
->[a-c[:digit:]]</VAR
+>[a-c[:digit:]]</TT
 >.
-    Also, <VAR
+    Also, <TT
 CLASS="LITERAL"
->[a-c\D]</VAR
+>[a-c\D]</TT
 >, which is equivalent to
-    <VAR
+    <TT
 CLASS="LITERAL"
->[a-c^[:digit:]]</VAR
+>[a-c^[:digit:]]</TT
 >, is illegal.)
    </P
 ><DIV
@@ -2518,53 +2521,53 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\A</VAR
+>\A</TT
 > </TD
 ><TD
 > matches only at the beginning of the string
        (see <A
 HREF="functions-matching.html#POSIX-MATCHING-RULES"
->Section 9.6.3.5</A
+>Section 9.7.3.5</A
 > for how this differs from
-       <VAR
+       <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 >) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\m</VAR
+>\m</TT
 > </TD
 ><TD
 > matches only at the beginning of a word </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\M</VAR
+>\M</TT
 > </TD
 ><TD
 > matches only at the end of a word </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\y</VAR
+>\y</TT
 > </TD
 ><TD
 > matches only at the beginning or end of a word </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\Y</VAR
+>\Y</TT
 > </TD
 ><TD
 > matches only at a point that is not the beginning or end of a
@@ -2572,19 +2575,19 @@ CLASS="LITERAL"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\Z</VAR
+>\Z</TT
 > </TD
 ><TD
 > matches only at the end of the string
        (see <A
 HREF="functions-matching.html#POSIX-MATCHING-RULES"
->Section 9.6.3.5</A
+>Section 9.7.3.5</A
 > for how this differs from
-       <VAR
+       <TT
 CLASS="LITERAL"
->$</VAR
+>$</TT
 >) </TD
 ></TR
 ></TBODY
@@ -2592,12 +2595,12 @@ CLASS="LITERAL"
 ></DIV
 ><P
 >    A word is defined as in the specification of
-    <VAR
+    <TT
 CLASS="LITERAL"
->[[:&lt;:]]</VAR
-> and <VAR
+>[[:&lt;:]]</TT
+> and <TT
 CLASS="LITERAL"
->[[:&gt;:]]</VAR
+>[[:&gt;:]]</TT
 > above.
     Constraint escapes are illegal within bracket expressions.
    </P
@@ -2624,9 +2627,9 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
@@ -2643,9 +2646,9 @@ CLASS="REPLACEABLE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 ><VAR
 CLASS="REPLACEABLE"
 >mnn</VAR
@@ -2699,7 +2702,7 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="POSIX-METASYNTAX"
->9.6.3.4. Regular Expression Metasyntax</A
+>9.7.3.4. Regular Expression Metasyntax</A
 ></H3
 ><P
 >    In addition to the main syntax described above, there are some special
@@ -2707,22 +2710,22 @@ NAME="POSIX-METASYNTAX"
    </P
 ><P
 >    Normally the flavor of RE being used is determined by
-    <VAR
+    <TT
 CLASS="VARNAME"
->regex_flavor</VAR
+>regex_flavor</TT
 >.
     However, this can be overridden by a <I
 CLASS="FIRSTTERM"
 >director</I
 > prefix.
-    If an RE of any flavor begins with <VAR
+    If an RE of any flavor begins with <TT
 CLASS="LITERAL"
->***:</VAR
+>***:</TT
 >,
     the rest of the RE is taken as an ARE.
-    If an RE of any flavor begins with <VAR
+    If an RE of any flavor begins with <TT
 CLASS="LITERAL"
->***=</VAR
+>***=</TT
 >,
     the rest of the RE is taken to be a literal string,
     with all characters considered ordinary characters.
@@ -2732,15 +2735,15 @@ CLASS="LITERAL"
 CLASS="FIRSTTERM"
 >embedded options</I
 >:
-    a sequence <VAR
+    a sequence <TT
 CLASS="LITERAL"
->(?</VAR
+>(?</TT
 ><VAR
 CLASS="REPLACEABLE"
 >xyz</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 >
     (where <VAR
 CLASS="REPLACEABLE"
@@ -2778,87 +2781,87 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->b</VAR
+>b</TT
 > </TD
 ><TD
 > rest of RE is a BRE </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 > </TD
 ><TD
 > case-sensitive matching (overrides operator type) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->e</VAR
+>e</TT
 > </TD
 ><TD
 > rest of RE is an ERE </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->i</VAR
+>i</TT
 > </TD
 ><TD
 > case-insensitive matching (see
        <A
 HREF="functions-matching.html#POSIX-MATCHING-RULES"
->Section 9.6.3.5</A
+>Section 9.7.3.5</A
 >) (overrides operator type) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->m</VAR
+>m</TT
 > </TD
 ><TD
-> historical synonym for <VAR
+> historical synonym for <TT
 CLASS="LITERAL"
->n</VAR
+>n</TT
 > </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->n</VAR
+>n</TT
 > </TD
 ><TD
 > newline-sensitive matching (see
        <A
 HREF="functions-matching.html#POSIX-MATCHING-RULES"
->Section 9.6.3.5</A
+>Section 9.7.3.5</A
 >) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->p</VAR
+>p</TT
 > </TD
 ><TD
 > partial newline-sensitive matching (see
        <A
 HREF="functions-matching.html#POSIX-MATCHING-RULES"
->Section 9.6.3.5</A
+>Section 9.7.3.5</A
 >) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->q</VAR
+>q</TT
 > </TD
 ><TD
 > rest of RE is a literal (<SPAN
@@ -2869,27 +2872,27 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->s</VAR
+>s</TT
 > </TD
 ><TD
 > non-newline-sensitive matching (default) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 > </TD
 ><TD
 > tight syntax (default; see below) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->w</VAR
+>w</TT
 > </TD
 ><TD
 > inverse partial newline-sensitive (<SPAN
@@ -2898,14 +2901,14 @@ CLASS="QUOTE"
 >) matching
        (see <A
 HREF="functions-matching.html#POSIX-MATCHING-RULES"
->Section 9.6.3.5</A
+>Section 9.7.3.5</A
 >) </TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->x</VAR
+>x</TT
 > </TD
 ><TD
 > expanded syntax (see below) </TD
@@ -2914,9 +2917,9 @@ CLASS="LITERAL"
 ></TABLE
 ></DIV
 ><P
->    Embedded options take effect at the <VAR
+>    Embedded options take effect at the <TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 > terminating the sequence.
     They are available only at the start of an ARE,
     and may not be used later within it.
@@ -2930,15 +2933,15 @@ CLASS="FIRSTTERM"
 CLASS="FIRSTTERM"
 >expanded</I
 > syntax,
-    available by specifying the embedded <VAR
+    available by specifying the embedded <TT
 CLASS="LITERAL"
->x</VAR
+>x</TT
 > option.
     In the expanded syntax,
     white-space characters in the RE are ignored, as are
-    all characters between a <VAR
+    all characters between a <TT
 CLASS="LITERAL"
->#</VAR
+>#</TT
 >
     and the following newline (or the end of the RE).  This
     permits paragraphing and commenting a complex RE.
@@ -2949,33 +2952,33 @@ CLASS="LITERAL"
 ></P><UL
 ><LI
 ><P
->       a white-space character or <VAR
+>       a white-space character or <TT
 CLASS="LITERAL"
->#</VAR
-> preceded by <VAR
+>#</TT
+> preceded by <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > is
        retained
       </P
 ></LI
 ><LI
 ><P
->       white space or <VAR
+>       white space or <TT
 CLASS="LITERAL"
->#</VAR
+>#</TT
 > within a bracket expression is retained
       </P
 ></LI
 ><LI
 ><P
 >       white space and comments are illegal within multi-character symbols,
-       like the ARE <VAR
+       like the ARE <TT
 CLASS="LITERAL"
->(?:</VAR
-> or the BRE <VAR
+>(?:</TT
+> or the BRE <TT
 CLASS="LITERAL"
->\(</VAR
+>\(</TT
 >
       </P
 ></LI
@@ -2990,28 +2993,28 @@ CLASS="REPLACEABLE"
    </P
 ><P
 >    Finally, in an ARE, outside bracket expressions, the sequence
-    <VAR
+    <TT
 CLASS="LITERAL"
->(?#</VAR
+>(?#</TT
 ><VAR
 CLASS="REPLACEABLE"
 >ttt</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 >
     (where <VAR
 CLASS="REPLACEABLE"
 >ttt</VAR
-> is any text not containing a <VAR
+> is any text not containing a <TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 >)
     is a comment, completely ignored.
     Again, this is not allowed between the characters of
-    multi-character symbols, like <VAR
+    multi-character symbols, like <TT
 CLASS="LITERAL"
->(?:</VAR
+>(?:</TT
 >.
     Such comments are more a historical artifact than a useful facility,
     and their use is deprecated; use the expanded syntax instead.
@@ -3024,9 +3027,9 @@ CLASS="EMPHASIS"
 >None</I
 ></SPAN
 > of these metasyntax extensions is available if
-    an initial <VAR
+    an initial <TT
 CLASS="LITERAL"
->***=</VAR
+>***=</TT
 > director
     has specified that the user's input be treated as a literal string
     rather than as an RE.
@@ -3038,7 +3041,7 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="POSIX-MATCHING-RULES"
->9.6.3.5. Regular Expression Matching Rules</A
+>9.7.3.5. Regular Expression Matching Rules</A
 ></H3
 ><P
 >    In the event that an RE could match more than one substring of a given
@@ -3054,44 +3057,44 @@ CLASS="FIRSTTERM"
 >    Most atoms, and all constraints, have no preference.
     A parenthesized RE has the same preference (possibly none) as the RE.
     A quantified atom with quantifier
-    <VAR
+    <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}</VAR
+>}</TT
 >
     or
-    <VAR
+    <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}?</VAR
+>}?</TT
 >
     has the same preference (possibly none) as the atom itself.
     A quantified atom with other normal quantifiers (including
-    <VAR
+    <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->,</VAR
+>,</TT
 ><VAR
 CLASS="REPLACEABLE"
 >n</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}</VAR
+>}</TT
 >
     with <VAR
 CLASS="REPLACEABLE"
@@ -3102,21 +3105,21 @@ CLASS="REPLACEABLE"
 >)
     prefers longest match.
     A quantified atom with other non-greedy quantifiers (including
-    <VAR
+    <TT
 CLASS="LITERAL"
->{</VAR
+>{</TT
 ><VAR
 CLASS="REPLACEABLE"
 >m</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->,</VAR
+>,</TT
 ><VAR
 CLASS="REPLACEABLE"
 >n</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->}?</VAR
+>}?</TT
 >
     with <VAR
 CLASS="REPLACEABLE"
@@ -3129,9 +3132,9 @@ CLASS="REPLACEABLE"
     A branch has the same preference as the first quantified atom in it
     which has a preference.
     An RE consisting of two or more branches connected by the
-    <VAR
+    <TT
 CLASS="LITERAL"
->|</VAR
+>|</TT
 > operator prefers longest match.
    </P
 ><P
@@ -3144,12 +3147,12 @@ CLASS="LITERAL"
     their component subexpressions.
    </P
 ><P
->    The quantifiers <VAR
+>    The quantifiers <TT
 CLASS="LITERAL"
->{1,1}</VAR
-> and <VAR
+>{1,1}</TT
+> and <TT
 CLASS="LITERAL"
->{1,1}?</VAR
+>{1,1}?</TT
 >
     can be used to force longest and shortest preference, respectively,
     on a subexpression or a whole RE.
@@ -3158,37 +3161,37 @@ CLASS="LITERAL"
 >    Match lengths are measured in characters, not collating elements.
     An empty string is considered longer than no match at all.
     For example:
-    <VAR
+    <TT
 CLASS="LITERAL"
->bb*</VAR
+>bb*</TT
 >
-    matches the three middle characters of <VAR
+    matches the three middle characters of <TT
 CLASS="LITERAL"
->abbbc</VAR
+>abbbc</TT
 >;
-    <VAR
+    <TT
 CLASS="LITERAL"
->(week|wee)(night|knights)</VAR
+>(week|wee)(night|knights)</TT
 >
-    matches all ten characters of <VAR
+    matches all ten characters of <TT
 CLASS="LITERAL"
->weeknights</VAR
+>weeknights</TT
 >;
-    when <VAR
+    when <TT
 CLASS="LITERAL"
->(.*).*</VAR
+>(.*).*</TT
 >
-    is matched against <VAR
+    is matched against <TT
 CLASS="LITERAL"
->abc</VAR
+>abc</TT
 > the parenthesized subexpression
     matches all three characters; and when
-    <VAR
+    <TT
 CLASS="LITERAL"
->(a*)*</VAR
-> is matched against <VAR
+>(a*)*</TT
+> is matched against <TT
 CLASS="LITERAL"
->bc</VAR
+>bc</TT
 >
     both the whole RE and the parenthesized
     subexpression match an empty string.
@@ -3200,58 +3203,58 @@ CLASS="LITERAL"
     When an alphabetic that exists in multiple cases appears as an
     ordinary character outside a bracket expression, it is effectively
     transformed into a bracket expression containing both cases,
-    e.g. <VAR
+    e.g. <TT
 CLASS="LITERAL"
->x</VAR
-> becomes <VAR
+>x</TT
+> becomes <TT
 CLASS="LITERAL"
->[xX]</VAR
+>[xX]</TT
 >.
     When it appears inside a bracket expression, all case counterparts
     of it are added to the bracket expression, e.g.
-    <VAR
+    <TT
 CLASS="LITERAL"
->[x]</VAR
-> becomes <VAR
+>[x]</TT
+> becomes <TT
 CLASS="LITERAL"
->[xX]</VAR
+>[xX]</TT
 >
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->[^x]</VAR
-> becomes <VAR
+>[^x]</TT
+> becomes <TT
 CLASS="LITERAL"
->[^xX]</VAR
+>[^xX]</TT
 >.
    </P
 ><P
->    If newline-sensitive matching is specified, <VAR
+>    If newline-sensitive matching is specified, <TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 >
-    and bracket expressions using <VAR
+    and bracket expressions using <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 >
     will never match the newline character
     (so that matches will never cross newlines unless the RE
     explicitly arranges it)
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->^</VAR
->and <VAR
+>^</TT
+>and <TT
 CLASS="LITERAL"
->$</VAR
+>$</TT
 >
     will match the empty string after and before a newline
     respectively, in addition to matching at beginning and end of string
     respectively.
-    But the ARE escapes <VAR
+    But the ARE escapes <TT
 CLASS="LITERAL"
->\A</VAR
-> and <VAR
+>\A</TT
+> and <TT
 CLASS="LITERAL"
->\Z</VAR
+>\Z</TT
 >
     continue to match beginning or end of string <SPAN
 CLASS="emphasis"
@@ -3263,31 +3266,31 @@ CLASS="EMPHASIS"
    </P
 ><P
 >    If partial newline-sensitive matching is specified,
-    this affects <VAR
+    this affects <TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 > and bracket expressions
-    as with newline-sensitive matching, but not <VAR
+    as with newline-sensitive matching, but not <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 >
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->$</VAR
+>$</TT
 >.
    </P
 ><P
 >    If inverse partial newline-sensitive matching is specified,
-    this affects <VAR
+    this affects <TT
 CLASS="LITERAL"
->^</VAR
-> and <VAR
+>^</TT
+> and <TT
 CLASS="LITERAL"
->$</VAR
+>$</TT
 >
-    as with newline-sensitive matching, but not <VAR
+    as with newline-sensitive matching, but not <TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 >
     and bracket expressions.
     This isn't very useful but is provided for symmetry.
@@ -3299,7 +3302,7 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="POSIX-LIMITS-COMPATIBILITY"
->9.6.3.6. Limits and Compatibility</A
+>9.7.3.6. Limits and Compatibility</A
 ></H3
 ><P
 >    No particular limit is imposed on the length of REs in this
@@ -3310,28 +3313,28 @@ NAME="POSIX-LIMITS-COMPATIBILITY"
    </P
 ><P
 >    The only feature of AREs that is actually incompatible with
-    POSIX EREs is that <VAR
+    POSIX EREs is that <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > does not lose its special
     significance inside bracket expressions.
     All other ARE features use syntax which is illegal or has
     undefined or unspecified effects in POSIX EREs;
-    the <VAR
+    the <TT
 CLASS="LITERAL"
->***</VAR
+>***</TT
 > syntax of directors likewise is outside the POSIX
     syntax for both BREs and EREs.
    </P
 ><P
 >    Many of the ARE extensions are borrowed from Perl, but some have
     been changed to clean them up, and a few Perl extensions are not present.
-    Incompatibilities of note include <VAR
+    Incompatibilities of note include <TT
 CLASS="LITERAL"
->\b</VAR
->, <VAR
+>\b</TT
+>, <TT
 CLASS="LITERAL"
->\B</VAR
+>\B</TT
 >,
     the lack of special treatment for a trailing newline,
     the addition of complemented bracket expressions to the things
@@ -3352,9 +3355,9 @@ CLASS="PRODUCTNAME"
 ></P><UL
 ><LI
 ><P
->       In AREs, <VAR
+>       In AREs, <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > followed by an alphanumeric character is either
        an escape or an error, while in previous releases, it was just another
        way of writing the alphanumeric.
@@ -3364,20 +3367,20 @@ CLASS="LITERAL"
 ></LI
 ><LI
 ><P
->       In AREs, <VAR
+>       In AREs, <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > remains a special character within
-       <VAR
+       <TT
 CLASS="LITERAL"
->[]</VAR
->, so a literal <VAR
+>[]</TT
+>, so a literal <TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 > within a bracket
-       expression must be written <VAR
+       expression must be written <TT
 CLASS="LITERAL"
->\\</VAR
+>\\</TT
 >.
       </P
 ></LI
@@ -3386,12 +3389,12 @@ CLASS="LITERAL"
 
     While these differences are unlikely to create a problem for most
     applications, you can avoid them if necessary by
-    setting <VAR
+    setting <TT
 CLASS="VARNAME"
->regex_flavor</VAR
-> to <VAR
+>regex_flavor</TT
+> to <TT
 CLASS="LITERAL"
->extended</VAR
+>extended</TT
 >.
    </P
 ></DIV
@@ -3401,87 +3404,87 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="POSIX-BASIC-REGEXES"
->9.6.3.7. Basic Regular Expressions</A
+>9.7.3.7. Basic Regular Expressions</A
 ></H3
 ><P
 >    BREs differ from EREs in several respects.
-    <VAR
+    <TT
 CLASS="LITERAL"
->|</VAR
->, <VAR
+>|</TT
+>, <TT
 CLASS="LITERAL"
->+</VAR
->, and <VAR
+>+</TT
+>, and <TT
 CLASS="LITERAL"
->?</VAR
+>?</TT
 >
     are ordinary characters and there is no equivalent
     for their functionality.
     The delimiters for bounds are
-    <VAR
+    <TT
 CLASS="LITERAL"
->\{</VAR
-> and <VAR
+>\{</TT
+> and <TT
 CLASS="LITERAL"
->\}</VAR
+>\}</TT
 >,
-    with <VAR
+    with <TT
 CLASS="LITERAL"
->{</VAR
-> and <VAR
+>{</TT
+> and <TT
 CLASS="LITERAL"
->}</VAR
+>}</TT
 >
     by themselves ordinary characters.
     The parentheses for nested subexpressions are
-    <VAR
+    <TT
 CLASS="LITERAL"
->\(</VAR
-> and <VAR
+>\(</TT
+> and <TT
 CLASS="LITERAL"
->\)</VAR
+>\)</TT
 >,
-    with <VAR
+    with <TT
 CLASS="LITERAL"
->(</VAR
-> and <VAR
+>(</TT
+> and <TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 > by themselves ordinary characters.
-    <VAR
+    <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 > is an ordinary character except at the beginning of the
     RE or the beginning of a parenthesized subexpression,
-    <VAR
+    <TT
 CLASS="LITERAL"
->$</VAR
+>$</TT
 > is an ordinary character except at the end of the
     RE or the end of a parenthesized subexpression,
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > is an ordinary character if it appears at the beginning
     of the RE or the beginning of a parenthesized subexpression
-    (after a possible leading <VAR
+    (after a possible leading <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 >).
     Finally, single-digit back references are available, and
-    <VAR
+    <TT
 CLASS="LITERAL"
->\&lt;</VAR
-> and <VAR
+>\&lt;</TT
+> and <TT
 CLASS="LITERAL"
->\&gt;</VAR
+>\&gt;</TT
 >
     are synonyms for
-    <VAR
+    <TT
 CLASS="LITERAL"
->[[:&lt;:]]</VAR
-> and <VAR
+>[[:&lt;:]]</TT
+> and <TT
 CLASS="LITERAL"
->[[:&gt;:]]</VAR
+>[[:&gt;:]]</TT
 >
     respectively; no other escapes are available.
    </P
@@ -3504,7 +3507,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="functions-binarystring.html"
+HREF="functions-bitstring.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -3532,7 +3535,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Binary String Functions and Operators</TD
+>Bit String Functions and Operators</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

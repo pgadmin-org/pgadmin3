@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Frontend/Backend Protocol"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="protocol.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 44. Frontend/Backend Protocol</TD
+>Chapter 42. Frontend/Backend Protocol</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,29 +93,32 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PROTOCOL-FLOW"
->44.2. Message Flow</A
+>42.2. Message Flow</A
 ></H1
 ><P
 >   This section describes the message flow and the semantics of each
    message type.  (Details of the exact representation of each message
    appear in <A
 HREF="protocol-message-formats.html"
->Section 44.4</A
->.)
-   There are several different sub-protocols
-   depending on the state of the connection: start-up,
-   query, function call, COPY, and termination.  There are also special
-   provisions for asynchronous operations (including
-   notification responses and command cancellation),
-   which can occur at any time after the start-up phase.
+>Section 42.4</A
+>.)  There are
+   several different sub-protocols depending on the state of the
+   connection: start-up, query, function call,
+   <TT
+CLASS="COMMAND"
+>COPY</TT
+>, and termination.  There are also special
+   provisions for asynchronous operations (including notification
+   responses and command cancellation), which can occur at any time
+   after the start-up phase.
   </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52527"
->44.2.1. Start-Up</A
+NAME="AEN53314"
+>42.2.1. Start-Up</A
 ></H2
 ><P
 >    To begin a session, a frontend opens a connection to the server and sends
@@ -283,21 +286,21 @@ CLASS="VARIABLELIST"
 ><DD
 ><P
 >        This message informs the frontend about the current (initial)
-	setting of backend parameters, such as <VAR
-CLASS="VARNAME"
->client_encoding</VAR
->
-	or <VAR
-CLASS="VARNAME"
->DateStyle</VAR
->.  The frontend may ignore this message,
-	or record the settings for its future use; see
-	<A
+         setting of backend parameters, such as <A
+HREF="runtime-config.html#GUC-CLIENT-ENCODING"
+>client_encoding</A
+> or <A
+HREF="runtime-config.html#GUC-DATESTYLE"
+>datestyle</A
+>.
+         The frontend may ignore this message, or record the settings
+         for its future use; see <A
 HREF="protocol-flow.html#PROTOCOL-ASYNC"
->Section 44.2.6</A
-> for more detail.
-        The frontend should not respond to this message, but should
-        continue listening for a ReadyForQuery message.
+>Section 42.2.6</A
+> for
+         more details.  The frontend should not respond to this
+         message, but should continue listening for a ReadyForQuery
+         message.
        </P
 ></DD
 ><DT
@@ -341,8 +344,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52596"
->44.2.2. Simple Query</A
+NAME="AEN53383"
+>42.2.2. Simple Query</A
 ></H2
 ><P
 >    A simple query cycle is initiated by the frontend sending a Query message
@@ -379,7 +382,7 @@ CLASS="VARIABLELIST"
 >        The backend is ready to copy data from the frontend to a
         table; see <A
 HREF="protocol-flow.html#PROTOCOL-COPY"
->Section 44.2.5</A
+>Section 42.2.5</A
 >.
        </P
 ></DD
@@ -390,7 +393,7 @@ HREF="protocol-flow.html#PROTOCOL-COPY"
 >        The backend is ready to copy data from a table to the
         frontend; see <A
 HREF="protocol-flow.html#PROTOCOL-COPY"
->Section 44.2.5</A
+>Section 42.2.5</A
 >.
        </P
 ></DD
@@ -484,7 +487,7 @@ CLASS="COMMAND"
 > to or from the frontend invokes special protocol
     as described in <A
 HREF="protocol-flow.html#PROTOCOL-COPY"
->Section 44.2.5</A
+>Section 42.2.5</A
 >.
     All other query types normally produce only
     a CommandComplete message.
@@ -513,9 +516,9 @@ HREF="protocol-flow.html#PROTOCOL-COPY"
 CLASS="COMMAND"
 >FETCH</TT
 > from a cursor
-    declared with the <VAR
+    declared with the <TT
 CLASS="LITERAL"
->BINARY</VAR
+>BINARY</TT
 > option.  In that case, the
     retrieved values are in binary format.  The format codes given in
     the RowDescription message tell which format is being used.
@@ -525,7 +528,7 @@ CLASS="LITERAL"
     NoticeResponse messages whenever it is expecting any other type of
     message.  See also <A
 HREF="protocol-flow.html#PROTOCOL-ASYNC"
->Section 44.2.6</A
+>Section 42.2.6</A
 > concerning messages
     that the backend may generate due to outside events.
    </P
@@ -540,8 +543,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52658"
->44.2.3. Extended Query</A
+NAME="AEN53445"
+>42.2.3. Extended Query</A
 ></H2
 ><P
 >    The extended query protocol breaks down the above-described simple
@@ -616,11 +619,53 @@ CLASS="NOTE"
 >Note: </B
 >     The choice between text and binary output is determined by the format
      codes given in Bind, regardless of the SQL command involved.  The
-     <VAR
+     <TT
 CLASS="LITERAL"
->BINARY</VAR
+>BINARY</TT
 > attribute in cursor declarations is irrelevant when
      using extended query protocol.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Query planning for named prepared-statement objects occurs when the Parse
+    message is received. If a query will be repeatedly executed with
+    different parameters, it may be beneficial to send a single Parse message
+    containing a parameterized query, followed by multiple Bind
+    and Execute messages. This will avoid replanning the query on each
+    execution.
+   </P
+><P
+>    The unnamed prepared statement is likewise planned during Parse processing
+    if the Parse message defines no parameters.  But if there are parameters,
+    query planning is delayed until the first Bind message for the statement
+    is received. The planner will consider the actual values of the parameters
+    provided in the Bind message when planning the query.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Query plans generated from a parameterized query may be less
+     efficient than query plans generated from an equivalent query with actual
+     parameter values substituted. The query planner cannot make decisions
+     based on actual parameter values (for example, index selectivity) when
+     planning a parameterized query assigned to a named prepared-statement
+     object.  This possible penalty is avoided when using the unnamed
+     statement, since it is not planned until actual parameter values are
+     available.
+    </P
+><P
+>     If a second or subsequent Bind referencing the unnamed prepared-statement
+     object is received without an intervening Parse, the query is
+     not replanned. The parameter values used in the first Bind message may
+     produce a query plan that is only efficient for a subset of possible
+     parameter values. To force replanning of the query for a fresh set of
+     parameters, send another Parse message to replace the unnamed
+     prepared-statement object. 
     </P
 ></BLOCKQUOTE
 ></DIV
@@ -792,8 +837,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52694"
->44.2.4. Function Call</A
+NAME="AEN53486"
+>42.2.4. Function Call</A
 ></H2
 ><P
 >    The Function Call sub-protocol allows the client to request a direct
@@ -813,9 +858,9 @@ CLASS="NOTE"
 >Note: </B
 >     The Function Call sub-protocol is a legacy feature that is probably best
      avoided in new code.  Similar results can be accomplished by setting up
-     a prepared statement that does <VAR
+     a prepared statement that does <TT
 CLASS="LITERAL"
->SELECT function($1, ...)</VAR
+>SELECT function($1, ...)</TT
 >.
      The Function Call cycle can then be replaced with Bind/Execute.
     </P
@@ -883,7 +928,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PROTOCOL-COPY"
->44.2.5. COPY Operations</A
+>42.2.5. COPY Operations</A
 ></H2
 ><P
 >    The <TT
@@ -987,7 +1032,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PROTOCOL-ASYNC"
->44.2.6. Asynchronous Operations</A
+>42.2.6. Asynchronous Operations</A
 ></H2
 ><P
 >    There are several cases in which the backend will send messages that
@@ -1009,45 +1054,50 @@ CLASS="QUOTE"
     messages, even when the connection is nominally idle.
    </P
 ><P
->    ParameterStatus messages will be generated whenever the active value
-    changes for any of the parameters the backend believes the frontend
-    should know about.  Most commonly this occurs in response to a
-    <TT
+>    ParameterStatus messages will be generated whenever the active
+    value changes for any of the parameters the backend believes the
+    frontend should know about.  Most commonly this occurs in response
+    to a <TT
 CLASS="COMMAND"
 >SET</TT
-> SQL command executed by the frontend, and this case
-    is effectively synchronous --- but it is also possible for parameter
-    status changes to occur because the administrator changed a configuration
-    file and then sent the <SPAN
+> SQL command executed by the frontend, and
+    this case is effectively synchronous --- but it is also possible
+    for parameter status changes to occur because the administrator
+    changed a configuration file and then sent the
+    <SPAN
 CLASS="SYSTEMITEM"
 >SIGHUP</SPAN
-> signal to the postmaster.  Also, if a SET command is
-    rolled back, an appropriate ParameterStatus message will be generated
-    to report the current effective value.
+> signal to the postmaster.  Also,
+    if a <TT
+CLASS="COMMAND"
+>SET</TT
+> command is rolled back, an appropriate
+    ParameterStatus message will be generated to report the current
+    effective value.
    </P
 ><P
 >    At present there is a hard-wired set of parameters for which
     ParameterStatus will be generated: they are
-    <VAR
+    <TT
 CLASS="LITERAL"
->server_version</VAR
+>server_version</TT
 > (a pseudo-parameter that cannot change after
     startup);
-    <VAR
+    <TT
 CLASS="LITERAL"
->client_encoding</VAR
+>client_encoding</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->is_superuser</VAR
+>is_superuser</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->session_authorization</VAR
+>session_authorization</TT
 >, and
-    <VAR
+    <TT
 CLASS="LITERAL"
->DateStyle</VAR
+>DateStyle</TT
 >.
     This set might change in the future, or even become configurable.
     Accordingly, a frontend should simply ignore ParameterStatus for
@@ -1088,8 +1138,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52758"
->44.2.7. Cancelling Requests in Progress</A
+NAME="AEN53551"
+>42.2.7. Cancelling Requests in Progress</A
 ></H2
 ><P
 >    During the processing of a query, the frontend may request
@@ -1151,8 +1201,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52766"
->44.2.8. Termination</A
+NAME="AEN53559"
+>42.2.8. Termination</A
 ></H2
 ><P
 >    The normal, graceful termination procedure is that the frontend
@@ -1179,18 +1229,21 @@ NAME="AEN52766"
 ><P
 >    For either normal or abnormal termination, any open transaction is
     rolled back, not committed.  One should note however that if a
-    frontend disconnects while a non-SELECT query is being processed,
-    the backend will probably finish the query before noticing the
-    disconnection.
-    If the query is outside any transaction block (<TT
+    frontend disconnects while a non-<TT
+CLASS="COMMAND"
+>SELECT</TT
+> query
+    is being processed, the backend will probably finish the query
+    before noticing the disconnection.  If the query is outside any
+    transaction block (<TT
 CLASS="COMMAND"
 >BEGIN</TT
->
-    ... <TT
+> ... <TT
 CLASS="COMMAND"
 >COMMIT</TT
-> sequence) then its results may be committed
-    before the disconnection is recognized.
+>
+    sequence) then its results may be committed before the
+    disconnection is recognized.
    </P
 ></DIV
 ><DIV
@@ -1198,53 +1251,99 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52774"
->44.2.9. SSL Session Encryption</A
+NAME="AEN53568"
+>42.2.9. <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> Session Encryption</A
 ></H2
 ><P
 >    If <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> was built with SSL support, frontend/backend
-    communications can be encrypted using SSL.  This provides communication
-    security in environments where attackers might be able to capture the
-    session traffic.
+> was built with
+    <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> support, frontend/backend communications
+    can be encrypted using <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>.  This provides
+    communication security in environments where attackers might be
+    able to capture the session traffic. For more information on
+    encrypting <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sessions with
+    <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>, see <A
+HREF="ssl-tcp.html"
+>Section 16.7</A
+>.
    </P
 ><P
->    To initiate an SSL-encrypted connection, the frontend initially sends
-    an SSLRequest message rather than a StartupMessage.  The server then
-    responds with a single byte containing <VAR
+>    To initiate an <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>-encrypted connection, the
+    frontend initially sends an SSLRequest message rather than a
+    StartupMessage.  The server then responds with a single byte
+    containing <TT
 CLASS="LITERAL"
->S</VAR
-> or <VAR
+>S</TT
+> or <TT
 CLASS="LITERAL"
->N</VAR
+>N</TT
+>, indicating that it is
+    willing or unwilling to perform <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
 >,
-    indicating that it is willing or unwilling to perform SSL, respectively.
-    The frontend may close the connection at this point if it is dissatisfied
-    with the response.  To continue after <VAR
+    respectively.  The frontend may close the connection at this point
+    if it is dissatisfied with the response.  To continue after
+    <TT
 CLASS="LITERAL"
->S</VAR
->, perform an SSL
-    startup handshake (not described here, part of the SSL specification)
-    with the server.  If this is successful, continue with
-    sending the usual StartupMessage.  In this case the StartupMessage and
-    all subsequent data will be SSL-encrypted.  To continue after
-    <VAR
+>S</TT
+>, perform an <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> startup handshake
+    (not described here, part of the <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>
+    specification) with the server.  If this is successful, continue
+    with sending the usual StartupMessage.  In this case the
+    StartupMessage and all subsequent data will be
+    <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>-encrypted.  To continue after
+    <TT
 CLASS="LITERAL"
->N</VAR
+>N</TT
 >, send the usual StartupMessage and proceed without
     encryption.
    </P
 ><P
->    The frontend should also be prepared to handle an ErrorMessage response
-    to SSLRequest from the server.  This would only occur if the server
-    predates the addition of SSL support to <SPAN
+>    The frontend should also be prepared to handle an ErrorMessage
+    response to SSLRequest from the server.  This would only occur if
+    the server predates the addition of <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> support
+    to <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
+>.  In this case the connection must
+    be closed, but the frontend may choose to open a fresh connection
+    and proceed without requesting <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
 >.
-    In this case the connection must be closed, but the frontend may choose
-    to open a fresh connection and proceed without requesting SSL.
    </P
 ><P
 >    An initial SSLRequest may also be used in a connection that is being
@@ -1252,8 +1351,12 @@ CLASS="PRODUCTNAME"
    </P
 ><P
 >    While the protocol itself does not provide a way for the server to
-    force SSL encryption, the administrator may configure the server to
-    reject unencrypted sessions as a byproduct of authentication checking.
+    force <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> encryption, the administrator may
+    configure the server to reject unencrypted sessions as a byproduct
+    of authentication checking.
    </P
 ></DIV
 ></DIV

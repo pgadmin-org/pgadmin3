@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ NAME="APP-PGDUMP"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44408"
+NAME="AEN45024"
 ></A
 ><H2
 >Name</H2
@@ -105,12 +105,12 @@ CLASS="PRODUCTNAME"
 > database into a script file or other archive file 
   </DIV
 ><A
-NAME="AEN44412"
+NAME="AEN45028"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44414"
+NAME="AEN45030"
 ></A
 ><H2
 >Synopsis</H2
@@ -202,18 +202,18 @@ CLASS="APPLICATION"
    the <SPAN
 CLASS="QUOTE"
 >"custom"</SPAN
-> format (<VAR
+> format (<TT
 CLASS="OPTION"
->-Fc</VAR
+>-Fc</TT
 >). It allows
    for selection and reordering of all archived items, and is compressed
    by default. The <SPAN
 CLASS="APPLICATION"
 >tar</SPAN
 > format
-   (<VAR
+   (<TT
 CLASS="OPTION"
->-Ft</VAR
+>-Ft</TT
 >) is not compressed and it is not possible to
    reorder data when loading, but it is otherwise quite flexible;
    moreover, it can be manipulated with other tools such as
@@ -263,16 +263,16 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-a</VAR
-><BR><VAR
+>-a</TT
+><BR><TT
 CLASS="OPTION"
->--data-only</VAR
+>--data-only</TT
 ></DT
 ><DD
 ><P
->	Dump only the data, not the schema (data definitions).
+>	Dump only the data, not the object definitions (schema)
        </P
 ><P
 >        This option is only meaningful for the plain-text format.  For
@@ -284,12 +284,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-b</VAR
-><BR><VAR
+>-b</TT
+><BR><TT
 CLASS="OPTION"
->--blobs</VAR
+>--blobs</TT
 ></DT
 ><DD
 ><P
@@ -297,12 +297,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-c</VAR
-><BR><VAR
+>-c</TT
+><BR><TT
 CLASS="OPTION"
->--clean</VAR
+>--clean</TT
 ></DT
 ><DD
 ><P
@@ -319,12 +319,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-C</VAR
-><BR><VAR
+>-C</TT
+><BR><TT
 CLASS="OPTION"
->--create</VAR
+>--create</TT
 ></DT
 ><DD
 ><P
@@ -343,12 +343,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-d</VAR
-><BR><VAR
+>-d</TT
+><BR><TT
 CLASS="OPTION"
->--inserts</VAR
+>--inserts</TT
 ></DT
 ><DD
 ><P
@@ -365,15 +365,15 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-D</VAR
-><BR><VAR
+>-D</TT
+><BR><TT
 CLASS="OPTION"
->--column-inserts</VAR
-><BR><VAR
+>--column-inserts</TT
+><BR><TT
 CLASS="OPTION"
->--attribute-inserts</VAR
+>--attribute-inserts</TT
 ></DT
 ><DD
 ><P
@@ -381,7 +381,7 @@ CLASS="OPTION"
 CLASS="COMMAND"
 >INSERT</TT
 > commands with explicit
-	column names (<VAR
+	column names (<TT
 CLASS="LITERAL"
 >INSERT INTO
 	<VAR
@@ -392,24 +392,24 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >column</VAR
 >, ...) VALUES
-	...</VAR
+	...</TT
 >).  This will make restoration very slow,
 	but it is necessary if you desire to rearrange the column ordering.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-f <VAR
 CLASS="REPLACEABLE"
 >file</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--file=<VAR
 CLASS="REPLACEABLE"
 >file</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -418,18 +418,18 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-F <VAR
 CLASS="REPLACEABLE"
 >format</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--format=<VAR
 CLASS="REPLACEABLE"
 >format</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -445,9 +445,9 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->p</VAR
+>p</TT
 ></DT
 ><DD
 ><P
@@ -458,9 +458,9 @@ CLASS="ACRONYM"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 ></DT
 ><DD
 ><P
@@ -472,15 +472,15 @@ CLASS="COMMAND"
 CLASS="APPLICATION"
 >pg_restore</SPAN
 >. Using this archive format 
-         allows reordering and/or exclusion of schema elements 
+         allows reordering and/or exclusion of database objects
          at the time the database is restored. It is also possible to limit 
          which data is reloaded at restore time.
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 ></DT
 ><DD
 ><P
@@ -489,8 +489,8 @@ CLASS="LITERAL"
 CLASS="APPLICATION"
 >pg_restore</SPAN
 >. This is the most flexible 
-         format in that it allows reordering of data load as well 
-         as schema elements. This format is also compressed by default.
+         format in that it allows reordering of loading data as well 
+         as object definitions. This format is also compressed by default.
           </P
 ></DD
 ></DL
@@ -499,12 +499,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-i</VAR
-><BR><VAR
+>-i</TT
+><BR><TT
 CLASS="OPTION"
->--ignore-version</VAR
+>--ignore-version</TT
 ></DT
 ><DD
 ><P
@@ -533,18 +533,18 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-n <VAR
 CLASS="REPLACEABLE"
 >namespace</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--schema=<VAR
 CLASS="REPLACEABLE"
 >schema</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -575,12 +575,12 @@ CLASS="APPLICATION"
 ></DIV
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-o</VAR
-><BR><VAR
+>-o</TT
+><BR><TT
 CLASS="OPTION"
->--oids</VAR
+>--oids</TT
 ></DT
 ><DD
 ><P
@@ -597,12 +597,12 @@ CLASS="ACRONYM"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-O</VAR
-><BR><VAR
+>-O</TT
+><BR><TT
 CLASS="OPTION"
->--no-owner</VAR
+>--no-owner</TT
 ></DT
 ><DD
 ><P
@@ -616,14 +616,14 @@ CLASS="APPLICATION"
 CLASS="COMMAND"
 >SET SESSION AUTHORIZATION</TT
 >
-	statements to set ownership of created schema elements.
+	statements to set ownership of created database objects.
 	These statements
 	will fail when the script is run unless it is started by a superuser
 	(or the same user that owns all of the objects in the script).
 	To make a script that can be restored by any user, but will give
-	that user ownership of all the objects, specify <VAR
+	that user ownership of all the objects, specify <TT
 CLASS="OPTION"
->-O</VAR
+>-O</TT
 >.
        </P
 ><P
@@ -636,12 +636,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-R</VAR
-><BR><VAR
+>-R</TT
+><BR><TT
 CLASS="OPTION"
->--no-reconnect</VAR
+>--no-reconnect</TT
 ></DT
 ><DD
 ><P
@@ -650,56 +650,56 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-s</VAR
-><BR><VAR
+>-s</TT
+><BR><TT
 CLASS="OPTION"
->--schema-only</VAR
+>--schema-only</TT
 ></DT
 ><DD
 ><P
->	Dump only the schema (data definitions), no data.
+>	Dump only the object definitions (schema), not data.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-S <VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--superuser=<VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
 >        Specify the superuser user name to use when disabling triggers.
-	This is only relevant if <VAR
+	This is only relevant if <TT
 CLASS="OPTION"
->--disable-triggers</VAR
+>--disable-triggers</TT
 > is used.
 	(Usually, it's better to leave this out, and instead start the
 	resulting script as superuser.)
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-t <VAR
 CLASS="REPLACEABLE"
 >table</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--table=<VAR
 CLASS="REPLACEABLE"
 >table</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -710,12 +710,12 @@ CLASS="REPLACEABLE"
 	only. It is possible for there to be
 	multiple tables with the same name in different schemas; if that
 	is the case, all matching tables will be dumped.  Specify both
-	<VAR
+	<TT
 CLASS="OPTION"
->--schema</VAR
-> and <VAR
+>--schema</TT
+> and <TT
 CLASS="OPTION"
->--table</VAR
+>--table</TT
 > to select just one table.
        </P
 ><DIV
@@ -738,12 +738,12 @@ CLASS="APPLICATION"
 ></DIV
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-v</VAR
-><BR><VAR
+>-v</TT
+><BR><TT
 CLASS="OPTION"
->--verbose</VAR
+>--verbose</TT
 ></DT
 ><DD
 ><P
@@ -751,20 +751,21 @@ CLASS="OPTION"
 	<SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> to print progress messages
-	to standard error.
+> to output detailed object
+        comments and start/stop times to the dump file, and progress 
+        messages to standard error.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-x</VAR
-><BR><VAR
+>-x</TT
+><BR><TT
 CLASS="OPTION"
->--no-privileges</VAR
-><BR><VAR
+>--no-privileges</TT
+><BR><TT
 CLASS="OPTION"
->--no-acl</VAR
+>--no-acl</TT
 ></DT
 ><DD
 ><P
@@ -772,55 +773,50 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-X use-set-session-authorization</VAR
-><BR><VAR
+>-X disable-dollar-quoting</TT
+><BR><TT
 CLASS="OPTION"
->--use-set-session-authorization</VAR
+>--disable-dollar-quoting</TT
 ></DT
 ><DD
 ><P
->        This option is obsolete but still accepted for backwards
-	compatibility.
-        <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> now always behaves in the
-	way formerly selected by this option.
+>        This option disables the use of dollar quoting for function bodies,
+        and forces them to be quoted using SQL standard string syntax.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-X disable-triggers</VAR
-><BR><VAR
+>-X disable-triggers</TT
+><BR><TT
 CLASS="OPTION"
->--disable-triggers</VAR
+>--disable-triggers</TT
 ></DT
 ><DD
 ><P
 >        This option is only relevant when creating a data-only dump.
-	It instructs <SPAN
+        It instructs <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > to include commands
-	to temporarily disable triggers on the target tables while
-	the data is reloaded.  Use this if you have referential
-	integrity checks or other triggers on the tables that you
-	do not want to invoke during data reload.
+        to temporarily disable triggers on the target tables while
+        the data is reloaded.  Use this if you have referential
+        integrity checks or other triggers on the tables that you
+        do not want to invoke during data reload.
        </P
 ><P
->        Presently, the commands emitted for <VAR
+>        Presently, the commands emitted for <TT
 CLASS="OPTION"
->--disable-triggers</VAR
+>--disable-triggers</TT
 >
-	must be done as superuser.  So, you should also specify
-	a superuser name with <VAR
+        must be done as superuser.  So, you should also specify
+        a superuser name with <TT
 CLASS="OPTION"
->-S</VAR
+>-S</TT
 >, or preferably be careful to
-	start the resulting script as a superuser.
+        start the resulting script as a superuser.
        </P
 ><P
 >        This option is only meaningful for the plain-text format.  For
@@ -832,24 +828,40 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
+CLASS="OPTION"
+>-X use-set-session-authorization</TT
+><BR><TT
+CLASS="OPTION"
+>--use-set-session-authorization</TT
+></DT
+><DD
+><P
+>	Output SQL standard SET SESSION AUTHORIZATION commands instead
+	of OWNER TO commands.  This makes the dump more standards compatible,
+	but depending on the history of the objects in the dump, may not
+	restore properly.
+       </P
+></DD
+><DT
+><TT
 CLASS="OPTION"
 >-Z <VAR
 CLASS="REPLACEABLE"
 >0..9</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--compress=<VAR
 CLASS="REPLACEABLE"
 >0..9</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->	Specify the compression level to use in archive formats that
-	support compression.  (Currently only the custom archive
-	format supports compression.)
+>        Specify the compression level to use in archive formats that
+        support compression.  (Currently only the custom archive
+        format supports compression.)
        </P
 ></DD
 ></DL
@@ -865,18 +877,18 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-h <VAR
 CLASS="REPLACEABLE"
 >host</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--host=<VAR
 CLASS="REPLACEABLE"
 >host</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -891,18 +903,18 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-p <VAR
 CLASS="REPLACEABLE"
 >port</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--port=<VAR
 CLASS="REPLACEABLE"
 >port</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -916,12 +928,12 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-U <VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -929,9 +941,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-W</VAR
+>-W</TT
 ></DT
 ><DD
 ><P
@@ -947,7 +959,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44714"
+NAME="AEN45336"
 ></A
 ><H2
 >Environment</H2
@@ -1015,9 +1027,9 @@ NAME="PG-DUMP-NOTES"
 ><H2
 >Notes</H2
 ><P
->   If your database cluster has any local additions to the <VAR
+>   If your database cluster has any local additions to the <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > database,
    be careful to restore the output of <SPAN
 CLASS="APPLICATION"
@@ -1025,12 +1037,12 @@ CLASS="APPLICATION"
 > into a
    truly empty database; otherwise you are likely to get errors due to
    duplicate definitions of the added objects.  To make an empty database
-   without any local additions, copy from <VAR
+   without any local additions, copy from <TT
 CLASS="LITERAL"
->template0</VAR
-> not <VAR
+>template0</TT
+> not <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >,
    for example:
 </P><PRE
@@ -1060,9 +1072,9 @@ CLASS="APPLICATION"
 ><LI
 ><P
 >      When a data-only dump is chosen and the option
-      <VAR
+      <TT
 CLASS="OPTION"
->--disable-triggers</VAR
+>--disable-triggers</TT
 > is used,
       <SPAN
 CLASS="APPLICATION"
@@ -1086,11 +1098,17 @@ CLASS="APPLICATION"
    operating system.
   </P
 ><P
->   Once restored, it is wise to run <TT
+>   The dump file produced by <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> does
+   not contain the statistics used by the optimizer to make query
+   planning decisions.  Therefore, it is wise to run
+   <TT
 CLASS="COMMAND"
 >ANALYZE</TT
-> on each
-   restored table so the optimizer has useful statistics.
+> after restoring from a dump file to
+   ensure good performance.
   </P
 ></DIV
 ><DIV
@@ -1127,9 +1145,9 @@ CLASS="USERINPUT"
 ><P>
   </P
 ><P
->   To dump a database called <VAR
+>   To dump a database called <TT
 CLASS="LITERAL"
->mydb</VAR
+>mydb</TT
 > that contains
    large objects to a <TT
 CLASS="FILENAME"
@@ -1149,9 +1167,9 @@ CLASS="USERINPUT"
   </P
 ><P
 >   To reload this database (with large objects) to an
-   existing database called <VAR
+   existing database called <TT
 CLASS="LITERAL"
->newdb</VAR
+>newdb</TT
 >:
 
 </P><PRE
@@ -1169,7 +1187,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44777"
+NAME="AEN45400"
 ></A
 ><H2
 >History</H2
@@ -1192,7 +1210,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44783"
+NAME="AEN45406"
 ></A
 ><H2
 >See Also</H2

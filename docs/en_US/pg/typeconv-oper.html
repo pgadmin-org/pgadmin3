@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Type Conversion"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="TYPECONV-OPER"
 >10.2. Operators</A
 ></H1
 ><A
-NAME="AEN12834"
+NAME="AEN13509"
 ></A
 ><P
 >   The specific operator to be used in an operator invocation is determined
@@ -233,7 +233,7 @@ then fail.</P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN12872"
+NAME="AEN13547"
 ></A
 ><P
 ><B
@@ -272,7 +272,7 @@ CLASS="SCREEN"
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN12879"
+NAME="AEN13554"
 ></A
 ><P
 ><B
@@ -329,20 +329,20 @@ type to resolve the unknown literals to.</P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN12891"
+NAME="AEN13566"
 ></A
 ><P
 ><B
->Example 10-3. Absolute-Value and Factorial Operator Type Resolution</B
+>Example 10-3. Absolute-Value and Negation Operator Type Resolution</B
 ></P
 ><P
 >The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > operator catalog has several
-entries for the prefix operator <VAR
+entries for the prefix operator <TT
 CLASS="LITERAL"
->@</VAR
+>@</TT
 >, all of which implement
 absolute-value operations for various numeric data types.  One of these
 entries is for type <TT
@@ -381,39 +381,39 @@ CLASS="SCREEN"
 ERROR:  "-4.5e500" is out of range for type double precision</PRE
 ><P></P
 ><P
->On the other hand, the postfix operator <VAR
+>On the other hand, the prefix operator <TT
 CLASS="LITERAL"
->!</VAR
-> (factorial)
+>~</TT
+> (bitwise negation)
 is defined only for integer data types, not for <TT
 CLASS="TYPE"
 >float8</TT
 >.  So, if we
-try a similar case with <VAR
+try a similar case with <TT
 CLASS="LITERAL"
->!</VAR
+>~</TT
 >, we get:
 </P><PRE
 CLASS="SCREEN"
->SELECT '20' ! AS "factorial";
+>SELECT ~ '20' AS "negation";
 
-ERROR:  operator is not unique: "unknown" !
+ERROR:  operator is not unique: ~ "unknown"
 HINT:  Could not choose a best candidate operator. You may need to add explicit
 type casts.</PRE
 ><P>
 This happens because the system can't decide which of the several
-possible <VAR
+possible <TT
 CLASS="LITERAL"
->!</VAR
+>~</TT
 > operators should be preferred.  We can help
 it out with an explicit cast:
 </P><PRE
 CLASS="SCREEN"
->SELECT CAST('20' AS int8) ! AS "factorial";
+>SELECT ~ CAST('20' AS int8) AS "negation";
 
-      factorial
----------------------
- 2432902008176640000
+ negation
+----------
+      -21
 (1 row)</PRE
 ><P></P
 ></DIV

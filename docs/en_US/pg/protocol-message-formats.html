@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Frontend/Backend Protocol"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="protocol.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 44. Frontend/Backend Protocol</TD
+>Chapter 42. Frontend/Backend Protocol</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PROTOCOL-MESSAGE-FORMATS"
->44.4. Message Formats</A
+>42.4. Message Formats</A
 ></H1
 ><P
 >This section describes the detailed format of each message.  Each is marked to
@@ -560,12 +560,12 @@ CLASS="VARIABLELIST"
 ><DD
 ><P
 >                The cancel request code.  The value is chosen to contain
-                <VAR
+                <TT
 CLASS="LITERAL"
->1234</VAR
-> in the most significant 16 bits, and <VAR
+>1234</TT
+> in the most significant 16 bits, and <TT
 CLASS="LITERAL"
->5678</VAR
+>5678</TT
 > in the
                 least 16 significant bits.  (To avoid confusion, this code
                 must not be the same as any protocol version number.)</P
@@ -611,13 +611,13 @@ CLASS="VARIABLELIST"
 >Byte1</DT
 ><DD
 ><P
->                '<VAR
+>                '<TT
 CLASS="LITERAL"
->S</VAR
+>S</TT
 >' to close a prepared statement; or
-                '<VAR
+                '<TT
 CLASS="LITERAL"
->P</VAR
+>P</TT
 >' to close a portal.</P
 ></DD
 ><DT
@@ -690,7 +690,7 @@ CLASS="VARIABLELIST"
 CLASS="COMMAND"
 >INSERT</TT
 > command, the tag is
-        <VAR
+        <TT
 CLASS="LITERAL"
 >INSERT <VAR
 CLASS="REPLACEABLE"
@@ -699,7 +699,7 @@ CLASS="REPLACEABLE"
         <VAR
 CLASS="REPLACEABLE"
 >rows</VAR
-></VAR
+></TT
 >, where
         <VAR
 CLASS="REPLACEABLE"
@@ -724,12 +724,12 @@ CLASS="REPLACEABLE"
 CLASS="COMMAND"
 >DELETE</TT
 > command, the tag is
-	<VAR
+	<TT
 CLASS="LITERAL"
 >DELETE <VAR
 CLASS="REPLACEABLE"
 >rows</VAR
-></VAR
+></TT
 > where
         <VAR
 CLASS="REPLACEABLE"
@@ -741,12 +741,12 @@ CLASS="REPLACEABLE"
 CLASS="COMMAND"
 >UPDATE</TT
 > command, the tag is
-	<VAR
+	<TT
 CLASS="LITERAL"
 >UPDATE <VAR
 CLASS="REPLACEABLE"
 >rows</VAR
-></VAR
+></TT
 > where
         <VAR
 CLASS="REPLACEABLE"
@@ -758,12 +758,12 @@ CLASS="REPLACEABLE"
 CLASS="COMMAND"
 >MOVE</TT
 > command, the tag is
-        <VAR
+        <TT
 CLASS="LITERAL"
 >MOVE <VAR
 CLASS="REPLACEABLE"
 >rows</VAR
-></VAR
+></TT
 > where
         <VAR
 CLASS="REPLACEABLE"
@@ -776,12 +776,12 @@ CLASS="REPLACEABLE"
 CLASS="COMMAND"
 >FETCH</TT
 > command, the tag is
-        <VAR
+        <TT
 CLASS="LITERAL"
 >FETCH <VAR
 CLASS="REPLACEABLE"
 >rows</VAR
-></VAR
+></TT
 > where
         <VAR
 CLASS="REPLACEABLE"
@@ -806,7 +806,10 @@ CLASS="VARIABLELIST"
 >Byte1('d')</DT
 ><DD
 ><P
->                Identifies the message as COPY data.</P
+>                Identifies the message as <TT
+CLASS="COMMAND"
+>COPY</TT
+> data.</P
 ></DD
 ><DT
 >Int32</DT
@@ -846,7 +849,10 @@ CLASS="VARIABLELIST"
 >Byte1('c')</DT
 ><DD
 ><P
->                Identifies the message as a COPY-complete indicator.</P
+>                Identifies the message as a <TT
+CLASS="COMMAND"
+>COPY</TT
+>-complete indicator.</P
 ></DD
 ><DT
 >Int32(4)</DT
@@ -871,7 +877,10 @@ CLASS="VARIABLELIST"
 >Byte1('f')</DT
 ><DD
 ><P
->                Identifies the message as a COPY-failure indicator.</P
+>                Identifies the message as a <TT
+CLASS="COMMAND"
+>COPY</TT
+>-failure indicator.</P
 ></DD
 ><DT
 >Int32</DT
@@ -916,7 +925,10 @@ CLASS="VARIABLELIST"
 >Int8</DT
 ><DD
 ><P
->                0 indicates the overall copy format is textual (rows
+>                0 indicates the overall <TT
+CLASS="COMMAND"
+>COPY</TT
+> format is textual (rows
 		separated by newlines, columns separated by separator
 		characters, etc).
 		1 indicates the overall copy format is binary (similar
@@ -980,18 +992,19 @@ CLASS="VARIABLELIST"
 >Int8</DT
 ><DD
 ><P
->                0 indicates the overall copy format is textual (rows
-		separated by newlines, columns separated by separator
-		characters, etc).
-		1 indicates the overall copy format is binary (similar
-		to DataRow format).
-		See <A
+>                0 indicates the overall <TT
+CLASS="COMMAND"
+>COPY</TT
+> format
+                is textual (rows separated by newlines, columns
+                separated by separator characters, etc). 1 indicates
+                the overall copy format is binary (similar to DataRow
+                format). See <A
 HREF="sql-copy.html"
 ><I
 >COPY</I
 ></A
->
-		for more information.</P
+> for more information. </P
 ></DD
 ><DT
 >Int16</DT
@@ -1106,13 +1119,13 @@ CLASS="VARIABLELIST"
 >Byte1</DT
 ><DD
 ><P
->                '<VAR
+>                '<TT
 CLASS="LITERAL"
->S</VAR
+>S</TT
 >' to describe a prepared statement; or
-                '<VAR
+                '<TT
 CLASS="LITERAL"
->P</VAR
+>P</TT
 >' to describe a portal.</P
 ></DD
 ><DT
@@ -1194,7 +1207,7 @@ CLASS="VARIABLELIST"
 		The presently defined field types are listed in
 		<A
 HREF="protocol-error-fields.html"
->Section 44.5</A
+>Section 42.5</A
 >.
 		Since more field types may be added in future,
 		frontends should silently ignore fields of unrecognized
@@ -1503,7 +1516,7 @@ CLASS="VARIABLELIST"
 		The presently defined field types are listed in
 		<A
 HREF="protocol-error-fields.html"
->Section 44.5</A
+>Section 42.5</A
 >.
 		Since more field types may be added in future,
 		frontends should silently ignore fields of unrecognized
@@ -1854,17 +1867,17 @@ CLASS="VARIABLELIST"
 ><DD
 ><P
 >                Current backend transaction status indicator.
-		Possible values are '<VAR
+		Possible values are '<TT
 CLASS="LITERAL"
->I</VAR
+>I</TT
 >' if idle (not in
-		a transaction block); '<VAR
+		a transaction block); '<TT
 CLASS="LITERAL"
->T</VAR
+>T</TT
 >' if in a transaction
-		block; or '<VAR
+		block; or '<TT
 CLASS="LITERAL"
->E</VAR
+>E</TT
 >' if in a failed transaction
 		block (queries will be rejected until block is ended).</P
 ></DD
@@ -1938,9 +1951,9 @@ CLASS="VARIABLELIST"
 >Int16</DT
 ><DD
 ><P
->                The data type size (see <VAR
+>                The data type size (see <TT
 CLASS="VARNAME"
->pg_type.typlen</VAR
+>pg_type.typlen</TT
 >).
 		Note that negative values denote variable-width types.</P
 ></DD
@@ -1948,9 +1961,9 @@ CLASS="VARNAME"
 >Int32</DT
 ><DD
 ><P
->                The type modifier (see <VAR
+>                The type modifier (see <TT
 CLASS="VARNAME"
->pg_attribute.atttypmod</VAR
+>pg_attribute.atttypmod</TT
 >).
 		The meaning of the modifier is type-specific.</P
 ></DD
@@ -1986,13 +1999,16 @@ CLASS="VARIABLELIST"
 >Int32(80877103)</DT
 ><DD
 ><P
->                The SSL request code.  The value is chosen to contain
-                <VAR
+>                The <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> request code.  The value is chosen to contain
+                <TT
 CLASS="LITERAL"
->1234</VAR
-> in the most significant 16 bits, and <VAR
+>1234</TT
+> in the most significant 16 bits, and <TT
 CLASS="LITERAL"
->5679</VAR
+>5679</TT
 > in the
                 least 16 significant bits.  (To avoid confusion, this code
                 must not be the same as any protocol version number.)</P
@@ -2032,9 +2048,9 @@ CLASS="VARIABLELIST"
 	parameter name and value strings.  A zero byte is required as a
 	terminator after the last name/value pair.
 	Parameters can appear in any
-	order.  <VAR
+	order.  <TT
 CLASS="LITERAL"
->user</VAR
+>user</TT
 > is required, others are optional.
 	Each parameter is specified as:
 <P
@@ -2054,9 +2070,9 @@ CLASS="VARIABLELIST"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->user</VAR
+>user</TT
 ></DT
 ><DD
 ><P
@@ -2064,18 +2080,18 @@ CLASS="LITERAL"
 			there is no default.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->database</VAR
+>database</TT
 ></DT
 ><DD
 ><P
 >                        The database to connect to.  Defaults to the user name.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->options</VAR
+>options</TT
 ></DT
 ><DD
 ><P

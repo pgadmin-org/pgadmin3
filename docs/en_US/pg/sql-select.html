@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
 HREF="sql-commands.html"><LINK
 REL="PREVIOUS"
-TITLE="ROLLBACK"
-HREF="sql-rollback.html"><LINK
+TITLE="SAVEPOINT"
+HREF="sql-savepoint.html"><LINK
 REL="NEXT"
 TITLE="SELECT INTO"
 HREF="sql-selectinto.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-rollback.html"
+HREF="sql-savepoint.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-rollback.html"
+HREF="sql-savepoint.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-SELECT"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41651"
+NAME="AEN42203"
 ></A
 ><H2
 >Name</H2
 >SELECT&nbsp;--&nbsp;retrieve rows from a table or view</DIV
 ><A
-NAME="AEN41654"
+NAME="AEN42206"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41656"
+NAME="AEN42208"
 ></A
 ><H2
 >Synopsis</H2
@@ -234,7 +234,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41691"
+NAME="AEN42243"
 ></A
 ><H2
 >Description</H2
@@ -254,18 +254,18 @@ CLASS="COMMAND"
 TYPE="1"
 ><LI
 ><P
->      All elements in the <VAR
+>      All elements in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > list are computed.
-      (Each element in the <VAR
+      (Each element in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > list is a real or
       virtual table.)  If more than one element is specified in the
-      <VAR
+      <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > list, they are cross-joined together.
       (See <A
 HREF="sql-select.html#SQL-FROM"
@@ -279,9 +279,9 @@ HREF="sql-select.html#SQL-FROM"
 ></LI
 ><LI
 ><P
->      If the <VAR
+>      If the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause is specified, all rows
       that do not satisfy the condition are eliminated from the
       output.  (See <A
@@ -296,14 +296,14 @@ HREF="sql-select.html#SQL-WHERE"
 ></LI
 ><LI
 ><P
->      If the <VAR
+>      If the <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > clause is specified, the
       output is divided into groups of rows that match on one or more
-      values.  If the <VAR
+      values.  If the <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clause is present, it
       eliminates groups that do not satisfy the given condition.  (See
       <A
@@ -326,40 +326,40 @@ HREF="sql-select.html#SQL-HAVING"
 ></LI
 ><LI
 ><P
->      Using the operators <VAR
+>      Using the operators <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 >,
-      <VAR
+      <TT
 CLASS="LITERAL"
->INTERSECT</VAR
->, and <VAR
+>INTERSECT</TT
+>, and <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 >, the
       output of more than one <TT
 CLASS="COMMAND"
 >SELECT</TT
 > statement can
       be combined to form a single result set.  The
-      <VAR
+      <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 > operator returns all rows that are in
       one or both of the result sets.  The
-      <VAR
+      <TT
 CLASS="LITERAL"
->INTERSECT</VAR
+>INTERSECT</TT
 > operator returns all rows that are
-      strictly in both result sets.  The <VAR
+      strictly in both result sets.  The <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 >
       operator returns the rows that are in the first result set but
       not in the second.  In all three cases, duplicate rows are
-      eliminated unless <VAR
+      eliminated unless <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > is specified. (See
       <A
 HREF="sql-select.html#SQL-UNION"
@@ -407,14 +407,14 @@ HREF="sql-select.html#SQL-SELECT-LIST"
 ></LI
 ><LI
 ><P
->      If the <VAR
+>      If the <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause is specified, the
       returned rows are sorted in the specified order.  If
-      <VAR
+      <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > is not given, the rows are returned
       in whatever order the system finds fastest to produce.  (See
       <A
@@ -429,17 +429,17 @@ HREF="sql-select.html#SQL-ORDERBY"
 ></LI
 ><LI
 ><P
->      <VAR
+>      <TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 > eliminates duplicate rows from the
-      result.  <VAR
+      result.  <TT
 CLASS="LITERAL"
->DISTINCT ON</VAR
+>DISTINCT ON</TT
 > eliminates rows that
-      match on all the specified expressions.  <VAR
+      match on all the specified expressions.  <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 >
       (the default) will return all candidate rows, including
       duplicates.  (See <A
@@ -454,12 +454,12 @@ HREF="sql-select.html#SQL-DISTINCT"
 ></LI
 ><LI
 ><P
->      If the <VAR
+>      If the <TT
 CLASS="LITERAL"
->LIMIT</VAR
-> or <VAR
+>LIMIT</TT
+> or <TT
 CLASS="LITERAL"
->OFFSET</VAR
+>OFFSET</TT
 >
       clause is specified, the <TT
 CLASS="COMMAND"
@@ -477,9 +477,9 @@ HREF="sql-select.html#SQL-LIMIT"
 ></LI
 ><LI
 ><P
->      The <VAR
+>      The <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > clause causes the
       <TT
 CLASS="COMMAND"
@@ -499,24 +499,24 @@ HREF="sql-select.html#SQL-FOR-UPDATE"
 ><P>
   </P
 ><P
->   You must have <VAR
+>   You must have <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 > privilege on a table to
-   read its values.  The use of <VAR
+   read its values.  The use of <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > requires
-   <VAR
+   <TT
 CLASS="LITERAL"
->UPDATE</VAR
+>UPDATE</TT
 > privilege as well.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41756"
+NAME="AEN42308"
 ></A
 ><H2
 >Parameters</H2
@@ -526,14 +526,14 @@ CLASS="REFSECT2"
 NAME="SQL-FROM"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > Clause</H3
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause specifies one or more source
     tables for the <TT
 CLASS="COMMAND"
@@ -545,10 +545,11 @@ CLASS="COMMAND"
     Cartesian product.
    </P
 ><P
->    <VAR
+>    The <TT
 CLASS="LITERAL"
->FROM</VAR
->-clause elements can contain:
+>FROM</TT
+> clause can contain the following
+    elements:
 
     <P
 ></P
@@ -563,29 +564,28 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >        The name (optionally schema-qualified) of an existing table or
-        view.  If <VAR
+        view.  If <TT
 CLASS="LITERAL"
->ONLY</VAR
+>ONLY</TT
 > is specified, only that table is
-        scanned.  If <VAR
+        scanned.  If <TT
 CLASS="LITERAL"
->ONLY</VAR
+>ONLY</TT
 > is not specified, the table and
-        all its descendant tables (if any) are scanned.  <VAR
+        all its descendant tables (if any) are scanned.  <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 >
         can be appended to the table name to indicate that descendant
         tables are to be scanned, but in the current version, this is
         the default behavior.  (In releases before 7.1,
-        <VAR
+        <TT
 CLASS="LITERAL"
->ONLY</VAR
+>ONLY</TT
 > was the default behavior.)  The default
-        behavior can be modified by changing the
-        <VAR
-CLASS="VARNAME"
->sql_interitance</VAR
+        behavior can be modified by changing the <A
+HREF="runtime-config.html#GUC-SQL-INHERITANCE"
+>sql_inheritance</A
 > configuration option.
        </P
 ></DD
@@ -596,31 +596,31 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->        A substitute name for the <VAR
+>        A substitute name for the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > item containing the
         alias.  An alias is used for brevity or to eliminate ambiguity
         for self-joins (where the same table is scanned multiple
         times).  When an alias is provided, it completely hides the
         actual name of the table or function; for example given
-        <VAR
+        <TT
 CLASS="LITERAL"
->FROM foo AS f</VAR
+>FROM foo AS f</TT
 >, the remainder of the
         <TT
 CLASS="COMMAND"
 >SELECT</TT
-> must refer to this <VAR
+> must refer to this <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >
-        item as <VAR
+        item as <TT
 CLASS="LITERAL"
->f</VAR
-> not <VAR
+>f</TT
+> not <TT
 CLASS="LITERAL"
->foo</VAR
+>foo</TT
 >.  If an alias is
         written, a column alias list can also be written to provide
         substitute names for one or more columns of the table.
@@ -637,9 +637,9 @@ CLASS="REPLACEABLE"
 CLASS="COMMAND"
 >SELECT</TT
 > can appear in the
-        <VAR
+        <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause.  This acts as though its
         output were created as a temporary table for the duration of
         this single <TT
@@ -667,9 +667,9 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->        Function calls can appear in the <VAR
+>        Function calls can appear in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >
         clause.  (This is especially useful for functions that return
         result sets, but any function can be used.)  This acts as
@@ -685,12 +685,12 @@ CLASS="COMMAND"
 CLASS="TYPE"
 >record</TT
 >
-        data type, then an alias or the key word <VAR
+        data type, then an alias or the key word <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 > must
         be present, followed by a column definition list in the form
-        <VAR
+        <TT
 CLASS="LITERAL"
 >( <VAR
 CLASS="REPLACEABLE"
@@ -702,7 +702,7 @@ CLASS="REPLACEABLE"
 CLASS="OPTIONAL"
 >, ... </SPAN
 >]
-        )</VAR
+        )</TT
 >.  The column definition list must match the actual
         number and types of columns returned by the function.
        </P
@@ -720,162 +720,162 @@ CLASS="REPLACEABLE"
 ></P><UL
 ><LI
 ><P
-><VAR
+><TT
 CLASS="LITERAL"
->[ INNER ] JOIN</VAR
+>[ INNER ] JOIN</TT
 ></P
 ></LI
 ><LI
 ><P
-><VAR
+><TT
 CLASS="LITERAL"
->LEFT [ OUTER ] JOIN</VAR
+>LEFT [ OUTER ] JOIN</TT
 ></P
 ></LI
 ><LI
 ><P
-><VAR
+><TT
 CLASS="LITERAL"
->RIGHT [ OUTER ] JOIN</VAR
+>RIGHT [ OUTER ] JOIN</TT
 ></P
 ></LI
 ><LI
 ><P
-><VAR
+><TT
 CLASS="LITERAL"
->FULL [ OUTER ] JOIN</VAR
+>FULL [ OUTER ] JOIN</TT
 ></P
 ></LI
 ><LI
 ><P
-><VAR
+><TT
 CLASS="LITERAL"
->CROSS JOIN</VAR
+>CROSS JOIN</TT
 ></P
 ></LI
 ></UL
 ><P>
 
-        For the <VAR
+        For the <TT
 CLASS="LITERAL"
->INNER</VAR
-> and <VAR
+>INNER</TT
+> and <TT
 CLASS="LITERAL"
->OUTER</VAR
+>OUTER</TT
 > join types, a
         join condition must be specified, namely exactly one of
-        <VAR
+        <TT
 CLASS="LITERAL"
->NATURAL</VAR
->, <VAR
+>NATURAL</TT
+>, <TT
 CLASS="LITERAL"
 >ON <VAR
 CLASS="REPLACEABLE"
 >join_condition</VAR
-></VAR
+></TT
 >, or
-        <VAR
+        <TT
 CLASS="LITERAL"
 >USING (<VAR
 CLASS="REPLACEABLE"
 >join_column</VAR
-> [, ...])</VAR
+> [, ...])</TT
 >.
-        See below for the meaning.  For <VAR
+        See below for the meaning.  For <TT
 CLASS="LITERAL"
->CROSS JOIN</VAR
+>CROSS JOIN</TT
 >,
         none of these clauses may appear.
        </P
 ><P
->        A <VAR
+>        A <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > clause combines two
-        <VAR
+        <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > items.  Use parentheses if necessary to
         determine the order of nesting.  In the absence of parentheses,
-	<VAR
+        <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 >s nest left-to-right.  In any case
-	<VAR
+        <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > binds more tightly than the commas
-	separating <VAR
+        separating <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > items.
        </P
 ><P
->        <VAR
+>        <TT
 CLASS="LITERAL"
->CROSS JOIN</VAR
-> and <VAR
+>CROSS JOIN</TT
+> and <TT
 CLASS="LITERAL"
->INNER JOIN</VAR
+>INNER JOIN</TT
 >
         produce a simple Cartesian product, the same result as you get from
-        listing the two items at the top level of <VAR
+        listing the two items at the top level of <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >,
-	but restricted by the join condition (if any).
-        <VAR
+        but restricted by the join condition (if any).
+        <TT
 CLASS="LITERAL"
->CROSS JOIN</VAR
-> is equivalent to <VAR
+>CROSS JOIN</TT
+> is equivalent to <TT
 CLASS="LITERAL"
 >INNER JOIN ON
-        (TRUE)</VAR
+        (TRUE)</TT
 >, that is, no rows are removed by qualification.
         These join types are just a notational convenience, since they
-        do nothing you couldn't do with plain <VAR
+        do nothing you couldn't do with plain <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > and
-        <VAR
+        <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >.
        </P
 ><P
->        <VAR
+>        <TT
 CLASS="LITERAL"
->LEFT OUTER JOIN</VAR
+>LEFT OUTER JOIN</TT
 > returns all rows in the qualified
         Cartesian product (i.e., all combined rows that pass its join
         condition), plus one copy of each row in the left-hand table
         for which there was no right-hand row that passed the join
         condition.  This left-hand row is extended to the full width
         of the joined table by inserting null values for the
-        right-hand columns.  Note that only the <VAR
+        right-hand columns.  Note that only the <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 >
         clause's own condition is considered while deciding which rows
         have matches.  Outer conditions are applied afterwards.
        </P
 ><P
->        Conversely, <VAR
+>        Conversely, <TT
 CLASS="LITERAL"
->RIGHT OUTER JOIN</VAR
+>RIGHT OUTER JOIN</TT
 > returns all the
         joined rows, plus one row for each unmatched right-hand row
         (extended with nulls on the left).  This is just a notational
-        convenience, since you could convert it to a <VAR
+        convenience, since you could convert it to a <TT
 CLASS="LITERAL"
 >LEFT
-        OUTER JOIN</VAR
+        OUTER JOIN</TT
 > by switching the left and right inputs.
        </P
 ><P
->        <VAR
+>        <TT
 CLASS="LITERAL"
->FULL OUTER JOIN</VAR
+>FULL OUTER JOIN</TT
 > returns all the joined rows, plus
         one row for each unmatched left-hand row (extended with nulls
         on the right), plus one row for each unmatched right-hand row
@@ -883,12 +883,12 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >ON <VAR
 CLASS="REPLACEABLE"
 >join_condition</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -900,55 +900,55 @@ CLASS="REPLACEABLE"
         <TT
 CLASS="TYPE"
 >boolean</TT
-> (similar to a <VAR
+> (similar to a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >
         clause) that specifies which rows in a join are considered to
         match.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >USING (<VAR
 CLASS="REPLACEABLE"
 >join_column</VAR
-> [, ...])</VAR
+> [, ...])</TT
 ></DT
 ><DD
 ><P
->        A clause of the form <VAR
+>        A clause of the form <TT
 CLASS="LITERAL"
->USING ( a, b, ... )</VAR
+>USING ( a, b, ... )</TT
 > is
-        shorthand for <VAR
+        shorthand for <TT
 CLASS="LITERAL"
 >ON left_table.a = right_table.a AND
-        left_table.b = right_table.b ...</VAR
+        left_table.b = right_table.b ...</TT
 >.  Also,
-        <VAR
+        <TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 > implies that only one of each pair of
         equivalent columns will be included in the join output, not
         both.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->NATURAL</VAR
+>NATURAL</TT
 ></DT
 ><DD
 ><P
->        <VAR
+>        <TT
 CLASS="LITERAL"
->NATURAL</VAR
+>NATURAL</TT
 > is shorthand for a
-        <VAR
+        <TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 > list that mentions all columns in the two
         tables that have the same names.
        </P
@@ -964,14 +964,14 @@ CLASS="REFSECT2"
 NAME="SQL-WHERE"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > Clause</H3
 ><P
->    The optional <VAR
+>    The optional <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause has the general form
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1000,14 +1000,14 @@ CLASS="REFSECT2"
 NAME="SQL-GROUPBY"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > Clause</H3
 ><P
->    The optional <VAR
+>    The optional <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > clause has the general form
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1018,9 +1018,9 @@ CLASS="REPLACEABLE"
 ><P>
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > will condense into a single row all
     selected rows that share the same values for the grouped
     expressions.  <VAR
@@ -1033,23 +1033,23 @@ CLASS="COMMAND"
 >SELECT</TT
 > list item), or an arbitrary
     expression formed from input-column values.  In case of ambiguity,
-    a <VAR
+    a <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > name will be interpreted as an
     input-column name rather than an output column name.
    </P
 ><P
 >    Aggregate functions, if any are used, are computed across all rows
     making up each group, producing a separate value for each group
-    (whereas without <VAR
+    (whereas without <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 >, an aggregate
     produces a single value computed across all the selected rows).
-    When <VAR
+    When <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > is present, it is not valid for
     the <TT
 CLASS="COMMAND"
@@ -1066,14 +1066,14 @@ CLASS="REFSECT2"
 NAME="SQL-HAVING"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > Clause</H3
 ><P
->    The optional <VAR
+>    The optional <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clause has the general form
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1086,38 +1086,38 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >condition</VAR
 > is
-    the same as specified for the <VAR
+    the same as specified for the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause.
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > eliminates group rows that do not
-    satisfy the condition.  <VAR
+    satisfy the condition.  <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > is different
-    from <VAR
+    from <TT
 CLASS="LITERAL"
->WHERE</VAR
->: <VAR
+>WHERE</TT
+>: <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > filters
-    individual rows before the application of <VAR
+    individual rows before the application of <TT
 CLASS="LITERAL"
 >GROUP
-    BY</VAR
->, while <VAR
+    BY</TT
+>, while <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > filters group rows
-    created by <VAR
+    created by <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 >.  Each column referenced in
     <VAR
 CLASS="REPLACEABLE"
@@ -1133,14 +1133,14 @@ CLASS="REFSECT2"
 NAME="SQL-UNION"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 > Clause</H3
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 > clause has this general form:
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1159,36 +1159,36 @@ CLASS="REPLACEABLE"
     any <TT
 CLASS="COMMAND"
 >SELECT</TT
-> statement without an <VAR
+> statement without an <TT
 CLASS="LITERAL"
 >ORDER
-    BY</VAR
->, <VAR
+    BY</TT
+>, <TT
 CLASS="LITERAL"
->LIMIT</VAR
->, or <VAR
+>LIMIT</TT
+>, or <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > clause.
-    (<VAR
+    (<TT
 CLASS="LITERAL"
->ORDER BY</VAR
-> and <VAR
+>ORDER BY</TT
+> and <TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 > can be attached to a
     subexpression if it is enclosed in parentheses.  Without
     parentheses, these clauses will be taken to apply to the result of
-    the <VAR
+    the <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 >, not to its right-hand input
     expression.)
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 > operator computes the set union of
     the rows returned by the involved <TT
 CLASS="COMMAND"
@@ -1200,31 +1200,31 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SELECT</TT
 > statements that represent the direct
-    operands of the <VAR
+    operands of the <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 > must produce the same
     number of columns, and corresponding columns must be of compatible
     data types.
    </P
 ><P
->    The result of <VAR
+>    The result of <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 > does not contain any duplicate
-    rows unless the <VAR
+    rows unless the <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > option is specified.
-    <VAR
+    <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > prevents elimination of duplicates.
    </P
 ><P
->    Multiple <VAR
+>    Multiple <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 > operators in the same
     <TT
 CLASS="COMMAND"
@@ -1233,16 +1233,16 @@ CLASS="COMMAND"
     unless otherwise indicated by parentheses.
    </P
 ><P
->    Currently, <VAR
+>    Currently, <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > may not be specified either for
-    a <VAR
+    a <TT
 CLASS="LITERAL"
->UNION</VAR
-> result or for any input of a <VAR
+>UNION</TT
+> result or for any input of a <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 >.
    </P
 ></DIV
@@ -1252,14 +1252,14 @@ CLASS="REFSECT2"
 NAME="SQL-INTERSECT"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->INTERSECT</VAR
+>INTERSECT</TT
 > Clause</H3
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->INTERSECT</VAR
+>INTERSECT</TT
 > clause has this general form:
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1278,22 +1278,22 @@ CLASS="REPLACEABLE"
     any <TT
 CLASS="COMMAND"
 >SELECT</TT
-> statement without an <VAR
+> statement without an <TT
 CLASS="LITERAL"
 >ORDER
-    BY</VAR
->, <VAR
+    BY</TT
+>, <TT
 CLASS="LITERAL"
->LIMIT</VAR
->, or <VAR
+>LIMIT</TT
+>, or <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > clause.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->INTERSECT</VAR
+>INTERSECT</TT
 > operator computes the set
     intersection of the rows returned by the involved
     <TT
@@ -1303,46 +1303,46 @@ CLASS="COMMAND"
     intersection of two result sets if it appears in both result sets.
    </P
 ><P
->    The result of <VAR
+>    The result of <TT
 CLASS="LITERAL"
->INTERSECT</VAR
+>INTERSECT</TT
 > does not contain any
-    duplicate rows unless the <VAR
+    duplicate rows unless the <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > option is specified.
-    With <VAR
+    With <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 >, a row that has m duplicates in the left
     table and n duplicates in the right table will appear min(m,n)
     times in the result set.
    </P
 ><P
->    Multiple <VAR
+>    Multiple <TT
 CLASS="LITERAL"
->INTERSECT</VAR
+>INTERSECT</TT
 > operators in the same
     <TT
 CLASS="COMMAND"
 >SELECT</TT
 > statement are evaluated left to right,
     unless parentheses dictate otherwise.
-    <VAR
+    <TT
 CLASS="LITERAL"
->INTERSECT</VAR
+>INTERSECT</TT
 > binds more tightly than
-    <VAR
+    <TT
 CLASS="LITERAL"
->UNION</VAR
->.  That is, <VAR
+>UNION</TT
+>.  That is, <TT
 CLASS="LITERAL"
 >A UNION B INTERSECT
-    C</VAR
-> will be read as <VAR
+    C</TT
+> will be read as <TT
 CLASS="LITERAL"
 >A UNION (B INTERSECT
-    C)</VAR
+    C)</TT
 >.
    </P
 ></DIV
@@ -1352,14 +1352,14 @@ CLASS="REFSECT2"
 NAME="SQL-EXCEPT"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 > Clause</H3
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 > clause has this general form:
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1378,22 +1378,22 @@ CLASS="REPLACEABLE"
     any <TT
 CLASS="COMMAND"
 >SELECT</TT
-> statement without an <VAR
+> statement without an <TT
 CLASS="LITERAL"
 >ORDER
-    BY</VAR
->, <VAR
+    BY</TT
+>, <TT
 CLASS="LITERAL"
->LIMIT</VAR
->, or <VAR
+>LIMIT</TT
+>, or <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > clause.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 > operator computes the set of rows
     that are in the result of the left <TT
 CLASS="COMMAND"
@@ -1402,37 +1402,37 @@ CLASS="COMMAND"
     statement but not in the result of the right one.
    </P
 ><P
->    The result of <VAR
+>    The result of <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 > does not contain any
-    duplicate rows unless the <VAR
+    duplicate rows unless the <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > option is specified.
-    With <VAR
+    With <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 >, a row that has m duplicates in the left
     table and n duplicates in the right table will appear max(m-n,0)
     times in the result set.
    </P
 ><P
->    Multiple <VAR
+>    Multiple <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 > operators in the same
     <TT
 CLASS="COMMAND"
 >SELECT</TT
 > statement are evaluated left to right,
-    unless parentheses dictate otherwise.  <VAR
+    unless parentheses dictate otherwise.  <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 > binds at
-    the same level as <VAR
+    the same level as <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 >.
    </P
 ></DIV
@@ -1451,60 +1451,60 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SELECT</TT
 > list (between the key words
-    <VAR
+    <TT
 CLASS="LITERAL"
->SELECT</VAR
-> and <VAR
+>SELECT</TT
+> and <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >) specifies expressions
     that form the output rows of the <TT
 CLASS="COMMAND"
 >SELECT</TT
 >
     statement.  The expressions can (and usually do) refer to columns
-    computed in the <VAR
+    computed in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause.  Using the clause
-    <VAR
+    <TT
 CLASS="LITERAL"
 >AS <VAR
 CLASS="REPLACEABLE"
 >output_name</VAR
-></VAR
+></TT
 >, another
     name can be specified for an output column.  This name is
     primarily used to label the column for display.  It can also be
-    used to refer to the column's value in <VAR
+    used to refer to the column's value in <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->GROUP BY</VAR
-> clauses, but not in the <VAR
+>GROUP BY</TT
+> clauses, but not in the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > or
-    <VAR
+    <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clauses; there you must write out the
     expression instead.
    </P
 ><P
->    Instead of an expression, <VAR
+>    Instead of an expression, <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > can be written in
     the output list as a shorthand for all the columns of the selected
-    rows.  Also, one can write <VAR
+    rows.  Also, one can write <TT
 CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
 >table_name</VAR
->.*</VAR
+>.*</TT
 > as a
     shorthand for the columns coming from just that table.
    </P
@@ -1515,14 +1515,14 @@ CLASS="REFSECT2"
 NAME="SQL-ORDERBY"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > Clause</H3
 ><P
->    The optional <VAR
+>    The optional <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause has this general form:
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1546,9 +1546,9 @@ CLASS="COMMAND"
     expression formed from input-column values.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause causes the result rows to
     be sorted according to the specified expressions.  If two rows are
     equal according to the leftmost expression, the are compared
@@ -1562,16 +1562,16 @@ CLASS="LITERAL"
     ordering on the basis of a column that does not have a unique
     name.  This is never absolutely necessary because it is always
     possible to assign a name to a result column using the
-    <VAR
+    <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 > clause.
    </P
 ><P
 >    It is also possible to use arbitrary expressions in the
-    <VAR
+    <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause, including columns that do not
     appear in the <TT
 CLASS="COMMAND"
@@ -1582,74 +1582,74 @@ CLASS="COMMAND"
 CLASS="PROGRAMLISTING"
 >SELECT name FROM distributors ORDER BY code;</PRE
 ><P>
-    A limitation of this feature is that an <VAR
+    A limitation of this feature is that an <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 >
-    clause applying to the result of a <VAR
+    clause applying to the result of a <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->INTERSECT</VAR
->, or <VAR
+>INTERSECT</TT
+>, or <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 > clause may only
     specify an output column name or number, not an expression.
    </P
 ><P
->    If an <VAR
+>    If an <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > expression is a simple name that
     matches both a result column name and an input column name,
-    <VAR
+    <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > will interpret it as the result column name.
-    This is the opposite of the choice that <VAR
+    This is the opposite of the choice that <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > will
     make in the same situation.  This inconsistency is made to be
     compatible with the SQL standard.
    </P
 ><P
->    Optionally one may add the key word <VAR
+>    Optionally one may add the key word <TT
 CLASS="LITERAL"
->ASC</VAR
+>ASC</TT
 > (ascending) or
-    <VAR
+    <TT
 CLASS="LITERAL"
->DESC</VAR
+>DESC</TT
 > (descending) after any expression in the
-    <VAR
+    <TT
 CLASS="LITERAL"
->ORDER BY</VAR
-> clause.  If not specified, <VAR
+>ORDER BY</TT
+> clause.  If not specified, <TT
 CLASS="LITERAL"
->ASC</VAR
+>ASC</TT
 > is
     assumed by default.  Alternatively, a specific ordering operator
-    name may be specified in the <VAR
+    name may be specified in the <TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 > clause.
-    <VAR
+    <TT
 CLASS="LITERAL"
->ASC</VAR
-> is usually equivalent to <VAR
+>ASC</TT
+> is usually equivalent to <TT
 CLASS="LITERAL"
->USING &lt;</VAR
+>USING &lt;</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->DESC</VAR
-> is usually equivalent to <VAR
+>DESC</TT
+> is usually equivalent to <TT
 CLASS="LITERAL"
->USING &gt;</VAR
+>USING &gt;</TT
 >.
     (But the creator of a user-defined data type can define exactly what the
     default sort ordering is, and it might correspond to operators with other
@@ -1672,14 +1672,14 @@ CLASS="REFSECT2"
 NAME="SQL-LIMIT"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 > Clause</H3
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 > clause consists of two independent
     sub-clauses:
 </P><PRE
@@ -1712,42 +1712,42 @@ CLASS="REPLACEABLE"
 > rows to be returned.
    </P
 ><P
->    When using <VAR
+>    When using <TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 >, it is a good idea to use an
-    <VAR
+    <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause that constrains the result rows into a
     unique order.  Otherwise you will get an unpredictable subset of
     the query's rows---you may be asking for the tenth through
     twentieth rows, but tenth through twentieth in what ordering?  You
-    don't know what ordering unless you specify <VAR
+    don't know what ordering unless you specify <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 >.
    </P
 ><P
->    The query planner takes <VAR
+>    The query planner takes <TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 > into account when
     generating a query plan, so you are very likely to get different
     plans (yielding different row orders) depending on what you use
-    for <VAR
+    for <TT
 CLASS="LITERAL"
->LIMIT</VAR
-> and <VAR
+>LIMIT</TT
+> and <TT
 CLASS="LITERAL"
->OFFSET</VAR
+>OFFSET</TT
 >.  Thus, using
-    different <VAR
+    different <TT
 CLASS="LITERAL"
->LIMIT</VAR
->/<VAR
+>LIMIT</TT
+>/<TT
 CLASS="LITERAL"
->OFFSET</VAR
+>OFFSET</TT
 > values to select
     different subsets of a query result <SPAN
 CLASS="emphasis"
@@ -1757,15 +1757,15 @@ CLASS="EMPHASIS"
     inconsistent results</I
 ></SPAN
 > unless you enforce a predictable
-    result ordering with <VAR
+    result ordering with <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 >.  This is not a bug; it
     is an inherent consequence of the fact that SQL does not promise
     to deliver the results of a query in any particular order unless
-    <VAR
+    <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > is used to constrain the order.
    </P
 ></DIV
@@ -1775,47 +1775,47 @@ CLASS="REFSECT2"
 NAME="SQL-DISTINCT"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 > Clause</H3
 ><P
->    If <VAR
+>    If <TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 > is specified, all duplicate rows are
     removed from the result set (one row is kept from each group of
-    duplicates).  <VAR
+    duplicates).  <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > specifies the opposite: all rows are
     kept; that is the default.
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
 >DISTINCT ON ( <VAR
 CLASS="REPLACEABLE"
 >expression</VAR
-> [, ...] )</VAR
+> [, ...] )</TT
 >
     keeps only the first row of each set of rows where the given
-    expressions evaluate to equal.  The <VAR
+    expressions evaluate to equal.  The <TT
 CLASS="LITERAL"
->DISTINCT ON</VAR
+>DISTINCT ON</TT
 >
     expressions are interpreted using the same rules as for
-    <VAR
+    <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > (see above).  Note that the <SPAN
 CLASS="QUOTE"
 >"first
     row"</SPAN
-> of each set is unpredictable unless <VAR
+> of each set is unpredictable unless <TT
 CLASS="LITERAL"
 >ORDER
-    BY</VAR
+    BY</TT
 > is used to ensure that the desired row appears first.  For
     example,
 </P><PRE
@@ -1825,29 +1825,29 @@ CLASS="PROGRAMLISTING"
     ORDER BY location, time DESC;</PRE
 ><P>
     retrieves the most recent weather report for each location.  But
-    if we had not used <VAR
+    if we had not used <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > to force descending order
     of time values for each location, we'd have gotten a report from
     an unpredictable time for each location.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->DISTINCT ON</VAR
+>DISTINCT ON</TT
 > expression(s) must match the leftmost
-    <VAR
+    <TT
 CLASS="LITERAL"
->ORDER BY</VAR
-> expression(s).  The <VAR
+>ORDER BY</TT
+> expression(s).  The <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause
     will normally contain additional expression(s) that determine the
-    desired precedence of rows within each <VAR
+    desired precedence of rows within each <TT
 CLASS="LITERAL"
->DISTINCT ON</VAR
+>DISTINCT ON</TT
 > group.
    </P
 ></DIV
@@ -1857,14 +1857,14 @@ CLASS="REFSECT2"
 NAME="SQL-FOR-UPDATE"
 ></A
 ><H3
-><VAR
+><TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > Clause</H3
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > clause has this form:
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1875,9 +1875,9 @@ CLASS="REPLACEABLE"
 ><P>
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > causes the rows retrieved by the
     <TT
 CLASS="COMMAND"
@@ -1920,9 +1920,9 @@ HREF="mvcc.html"
 >.
    </P
 ><P
->    If specific tables are named in <VAR
+>    If specific tables are named in <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 >,
     then only rows coming from those tables are locked; any other
     tables used in the <TT
@@ -1932,29 +1932,29 @@ CLASS="COMMAND"
     usual.
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > cannot be used in contexts where
     returned rows can't be clearly identified with individual table
     rows; for example it can't be used with aggregation.
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 > may appear before
-    <VAR
+    <TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 > for compatibility with
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > versions before 7.3.  It
-    effectively executes after <VAR
+    effectively executes after <TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 >, however, and
     so that is the recommended place to write it.
    </P
@@ -1963,18 +1963,18 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42144"
+NAME="AEN42696"
 ></A
 ><H2
 >Examples</H2
 ><P
->   To join the table <VAR
+>   To join the table <TT
 CLASS="LITERAL"
->films</VAR
+>films</TT
 > with the table
-   <VAR
+   <TT
 CLASS="LITERAL"
->distributors</VAR
+>distributors</TT
 >:
 
 </P><PRE
@@ -1991,13 +1991,13 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   To sum the column <VAR
+>   To sum the column <TT
 CLASS="LITERAL"
->len</VAR
+>len</TT
 > of all films and group
-   the results by <VAR
+   the results by <TT
 CLASS="LITERAL"
->kind</VAR
+>kind</TT
 >:
 
 </P><PRE
@@ -2014,13 +2014,13 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   To sum the column <VAR
+>   To sum the column <TT
 CLASS="LITERAL"
->len</VAR
+>len</TT
 > of all films, group
-   the results by <VAR
+   the results by <TT
 CLASS="LITERAL"
->kind</VAR
+>kind</TT
 > and show those group totals
    that are less than 5 hours:
 
@@ -2040,9 +2040,9 @@ CLASS="PROGRAMLISTING"
 ><P
 >   The following two examples are identical ways of sorting the individual
    results according to the contents of the second column
-   (<VAR
+   (<TT
 CLASS="LITERAL"
->name</VAR
+>name</TT
 >):
 
 </P><PRE
@@ -2069,18 +2069,18 @@ SELECT * FROM distributors ORDER BY 2;
   </P
 ><P
 >   The next example shows how to obtain the union of the tables
-   <VAR
+   <TT
 CLASS="LITERAL"
->distributors</VAR
+>distributors</TT
 > and
-   <VAR
+   <TT
 CLASS="LITERAL"
->actors</VAR
+>actors</TT
 >, restricting the results to those that begin
    with the letter W in each table.  Only distinct rows are wanted, so the
-   key word <VAR
+   key word <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > is omitted.
 
 </P><PRE
@@ -2112,26 +2112,26 @@ SELECT actors.name
 ><P>
   </P
 ><P
->   This example shows how to use a function in the <VAR
+>   This example shows how to use a function in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >
    clause, both with and without a column definition list:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION distributors(int) RETURNS SETOF distributors AS '
+>CREATE FUNCTION distributors(int) RETURNS SETOF distributors AS $$
     SELECT * FROM distributors WHERE did = $1;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT * FROM distributors(111);
  did |    name
 -----+-------------
  111 | Walt Disney
 
-CREATE FUNCTION distributors_2(int) RETURNS SETOF record AS '
+CREATE FUNCTION distributors_2(int) RETURNS SETOF record AS $$
     SELECT * FROM distributors WHERE did = $1;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
  f1  |     f2
@@ -2143,7 +2143,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42169"
+NAME="AEN42721"
 ></A
 ><H2
 >Compatibility</H2
@@ -2158,21 +2158,21 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN42173"
+NAME="AEN42725"
 ></A
 ><H3
->Omitted <VAR
+>Omitted <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > Clauses</H3
 ><P
 >    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > allows one to omit the
-    <VAR
+    <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause.  It has a straightforward use to
     compute the results of simple expressions:
 </P><PRE
@@ -2207,18 +2207,18 @@ CLASS="PROGRAMLISTING"
 -----+----------
  108 | Westward</PRE
 ><P>
-    This works because an implicit <VAR
+    This works because an implicit <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > item is
     added for each table that is referenced in other parts of the
     <TT
 CLASS="COMMAND"
 >SELECT</TT
 > statement but not mentioned in
-    <VAR
+    <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >.
    </P
 ><P
@@ -2243,42 +2243,42 @@ CLASS="PROGRAMLISTING"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > will warn if the
-    implicit-<VAR
+    implicit-<TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > feature is used in a
     <TT
 CLASS="COMMAND"
 >SELECT</TT
 > statement that also contains an explicit
-    <VAR
+    <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause.  Also, it is possible to disable
-    the implicit-<VAR
+    the implicit-<TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > feature by setting the
-    <VAR
-CLASS="VARNAME"
->ADD_MISSING_FROM</VAR
+    <A
+HREF="runtime-config.html#GUC-ADD-MISSING-FROM"
+>add_missing_from</A
 > parameter to false.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN42198"
+NAME="AEN42750"
 ></A
 ><H3
->The <VAR
+>The <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 > Key Word</H3
 ><P
->    In the SQL standard, the optional key word <VAR
+>    In the SQL standard, the optional key word <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 > is just
     noise and can be omitted without affecting the meaning.  The
     <SPAN
@@ -2287,12 +2287,12 @@ CLASS="PRODUCTNAME"
 > parser requires this key
     word when renaming output columns because the type extensibility
     features lead to parsing ambiguities without it.
-    <VAR
+    <TT
 CLASS="LITERAL"
->AS</VAR
-> is optional in <VAR
+>AS</TT
+> is optional in <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >
     items, however.
    </P
@@ -2300,25 +2300,25 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN42206"
+NAME="AEN42758"
 ></A
 ><H3
->Namespace Available to <VAR
+>Namespace Available to <TT
 CLASS="LITERAL"
->GROUP BY</VAR
-> and <VAR
+>GROUP BY</TT
+> and <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 ></H3
 ><P
->    In the SQL92 standard, an <VAR
+>    In the SQL92 standard, an <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause may
-    only use result column names or numbers, while a <VAR
+    only use result column names or numbers, while a <TT
 CLASS="LITERAL"
 >GROUP
-    BY</VAR
+    BY</TT
 > clause may only use expressions based on input column
     names.  <SPAN
 CLASS="PRODUCTNAME"
@@ -2341,34 +2341,34 @@ CLASS="PRODUCTNAME"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-    will interpret an <VAR
+    will interpret an <TT
 CLASS="LITERAL"
->ORDER BY</VAR
-> or <VAR
+>ORDER BY</TT
+> or <TT
 CLASS="LITERAL"
 >GROUP
-    BY</VAR
+    BY</TT
 > expression the same way SQL99 does.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN42219"
+NAME="AEN42771"
 ></A
 ><H3
 >Nonstandard Clauses</H3
 ><P
->    The clauses <VAR
+>    The clauses <TT
 CLASS="LITERAL"
->DISTINCT ON</VAR
+>DISTINCT ON</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->LIMIT</VAR
->, and <VAR
+>LIMIT</TT
+>, and <TT
 CLASS="LITERAL"
->OFFSET</VAR
+>OFFSET</TT
 > are not
     defined in the SQL standard.
    </P
@@ -2390,7 +2390,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-rollback.html"
+HREF="sql-savepoint.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -2418,7 +2418,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->ROLLBACK</TD
+>SAVEPOINT</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

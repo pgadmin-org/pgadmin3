@@ -457,6 +457,11 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             else
                 collection->UpdateChildCount(browser);
         }
+        else if (GetName().IsEmpty())
+        {
+            // CreateObject didn't return a new pgObject; refresh the complete collection
+            mainForm->Refresh(collection);
+        }
         return true;
     }
     return false;

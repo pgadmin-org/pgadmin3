@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -142,56 +142,71 @@ HREF="runtime-config.html"
 ><DL
 ><DT
 >16.4.1. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CONFIGURATION-FILES"
+>Configuration Files</A
+></DT
+><DT
+>16.4.2. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-CONNECTION"
 >Connections and Authentication</A
 ></DT
 ><DT
->16.4.2. <A
+>16.4.3. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE"
 >Resource Consumption</A
 ></DT
 ><DT
->16.4.3. <A
+>16.4.4. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-WAL"
 >Write Ahead Log</A
 ></DT
 ><DT
->16.4.4. <A
+>16.4.5. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-QUERY"
 >Query Planning</A
 ></DT
 ><DT
->16.4.5. <A
+>16.4.6. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-LOGGING"
 >Error Reporting and Logging</A
 ></DT
 ><DT
->16.4.6. <A
+>16.4.7. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-STATISTICS"
 >Runtime Statistics</A
 ></DT
 ><DT
->16.4.7. <A
+>16.4.8. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-CLIENT"
 >Client Connection Defaults</A
 ></DT
 ><DT
->16.4.8. <A
+>16.4.9. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-LOCKS"
 >Lock Management</A
 ></DT
 ><DT
->16.4.9. <A
+>16.4.10. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-COMPATIBLE"
 >Version and Platform Compatibility</A
 ></DT
 ><DT
->16.4.10. <A
+>16.4.11. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-COMPILER"
+>Compiled-in Options</A
+></DT
+><DT
+>16.4.12. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CUSTOM"
+>Customized Options</A
+></DT
+><DT
+>16.4.13. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-DEVELOPER"
 >Developer Options</A
 ></DT
 ><DT
->16.4.11. <A
+>16.4.14. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-SHORT"
 >Short Options</A
 ></DT
@@ -211,12 +226,12 @@ HREF="kernel-resources.html#SYSVIPC"
 ></DT
 ><DT
 >16.5.2. <A
-HREF="kernel-resources.html#AEN17028"
+HREF="kernel-resources.html#AEN18125"
 >Resource Limits</A
 ></DT
 ><DT
 >16.5.3. <A
-HREF="kernel-resources.html#AEN17060"
+HREF="kernel-resources.html#AEN18157"
 >Linux Memory Overcommit</A
 ></DT
 ></DL
@@ -257,7 +272,7 @@ CLASS="PRODUCTNAME"
 > User Account</A
 ></H1
 ><A
-NAME="AEN15154"
+NAME="AEN15840"
 ></A
 ><P
 >   As with any other server daemon that is connected to outside world,
@@ -267,12 +282,12 @@ CLASS="PRODUCTNAME"
 > under a
    separate user account. This user account should only own the data
    that is managed by the server, and should not be shared with other
-   daemons. (For example, using the user <VAR
+   daemons. (For example, using the user <TT
 CLASS="LITERAL"
->nobody</VAR
+>nobody</TT
 > is a bad
-   idea.) It is not advisable to install executables owned by
-   this user because compromised systems could then modify their own 
+   idea.) It is not advisable to install executables owned by this 
+   user because compromised systems could then modify their own 
    binaries.
   </P
 ><P

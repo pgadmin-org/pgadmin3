@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Coding Conventions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="source.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 45. PostgreSQL Coding Conventions</TD
+>Chapter 43. PostgreSQL Coding Conventions</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ERROR-MESSAGE-REPORTING"
->45.2. Reporting Errors Within the Server</A
+>43.2. Reporting Errors Within the Server</A
 ></H1
 ><A
-NAME="AEN53906"
+NAME="AEN54740"
 ></A
 ><A
-NAME="AEN53908"
+NAME="AEN54742"
 ></A
 ><P
 >    Error, warning, and log messages generated within the server code
@@ -115,12 +115,12 @@ CLASS="FUNCTION"
    </P
 ><P
 >    There are two required elements for every message: a severity level
-    (ranging from <VAR
+    (ranging from <TT
 CLASS="LITERAL"
->DEBUG</VAR
-> to <VAR
+>DEBUG</TT
+> to <TT
 CLASS="LITERAL"
->PANIC</VAR
+>PANIC</TT
 >) and a primary
     message text.  In addition there are optional elements, the most
     common of which is an error identifier code that follows the SQL spec's
@@ -156,9 +156,9 @@ CLASS="PROGRAMLISTING"
             (errcode(ERRCODE_DIVISION_BY_ZERO),
              errmsg("division by zero")));</PRE
 ><P>
-    This specifies error severity level <VAR
+    This specifies error severity level <TT
 CLASS="LITERAL"
->ERROR</VAR
+>ERROR</TT
 > (a run-of-the-mill
     error).  The <CODE
 CLASS="FUNCTION"
@@ -209,27 +209,27 @@ CLASS="FUNCTION"
 >(sqlerrcode) specifies the SQLSTATE error identifier
      code for the condition.  If this routine is not called, the error
      identifier defaults to
-     <VAR
+     <TT
 CLASS="LITERAL"
->ERRCODE_INTERNAL_ERROR</VAR
+>ERRCODE_INTERNAL_ERROR</TT
 > when the error severity level is
-     <VAR
+     <TT
 CLASS="LITERAL"
->ERROR</VAR
-> or higher, <VAR
+>ERROR</TT
+> or higher, <TT
 CLASS="LITERAL"
->ERRCODE_WARNING</VAR
+>ERRCODE_WARNING</TT
 > when the
-     error level is <VAR
+     error level is <TT
 CLASS="LITERAL"
->WARNING</VAR
->, otherwise (for <VAR
+>WARNING</TT
+>, otherwise (for <TT
 CLASS="LITERAL"
->NOTICE</VAR
+>NOTICE</TT
 >
-     and below) <VAR
+     and below) <TT
 CLASS="LITERAL"
->ERRCODE_SUCCESSFUL_COMPLETION</VAR
+>ERRCODE_SUCCESSFUL_COMPLETION</TT
 >.
      While these defaults are often convenient, always think whether they
      are appropriate before omitting the <CODE
@@ -253,28 +253,28 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >sprintf</CODE
 >, the format
-     code <VAR
+     code <TT
 CLASS="LITERAL"
->%m</VAR
+>%m</TT
 > can be used to insert the error message returned
      by <CODE
 CLASS="FUNCTION"
 >strerror</CODE
-> for the current value of <VAR
+> for the current value of <TT
 CLASS="LITERAL"
->errno</VAR
+>errno</TT
 >.
      <A
-NAME="AEN53951"
-HREF="#FTN.AEN53951"
+NAME="AEN54785"
+HREF="#FTN.AEN54785"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN
 ></A
 >
-     <VAR
+     <TT
 CLASS="LITERAL"
->%m</VAR
+>%m</TT
 > does not require any
      corresponding entry in the parameter list for <CODE
 CLASS="FUNCTION"
@@ -352,9 +352,9 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >ereport</CODE
 > message site; rather it is used
-     in <VAR
+     in <TT
 CLASS="LITERAL"
->error_context_stack</VAR
+>error_context_stack</TT
 > callback functions to provide
      information about the context in which an error occurred, such as the
      current location in a PL function.
@@ -389,13 +389,13 @@ CLASS="FUNCTION"
 >() is a convenience function that
      selects an appropriate SQLSTATE error identifier for a failure in a
      file-access-related system call.  It uses the saved
-     <VAR
+     <TT
 CLASS="LITERAL"
->errno</VAR
+>errno</TT
 > to determine which error code to generate.
-     Usually this should be used in combination with <VAR
+     Usually this should be used in combination with <TT
 CLASS="LITERAL"
->%m</VAR
+>%m</TT
 > in the
      primary error message text.
     </P
@@ -456,7 +456,7 @@ CLASS="FUNCTION"
 >    Advice about writing good error messages can be found in
     <A
 HREF="error-style-guide.html"
->Section 45.3</A
+>Section 43.3</A
 >.
    </P
 ></DIV
@@ -473,8 +473,8 @@ ALIGN="LEFT"
 VALIGN="TOP"
 WIDTH="5%"
 ><A
-NAME="FTN.AEN53951"
-HREF="error-message-reporting.html#AEN53951"
+NAME="FTN.AEN54785"
+HREF="error-message-reporting.html#AEN54785"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN
@@ -489,14 +489,14 @@ WIDTH="95%"
 CLASS="FUNCTION"
 >ereport</CODE
 > call
-       was reached; changes of <VAR
+       was reached; changes of <TT
 CLASS="LITERAL"
->errno</VAR
+>errno</TT
 > within the auxiliary reporting
        routines will not affect it.  That would not be true if you were to
-       write <VAR
+       write <TT
 CLASS="LITERAL"
->strerror(errno)</VAR
+>strerror(errno)</TT
 > explicitly in <CODE
 CLASS="FUNCTION"
 >errmsg</CODE

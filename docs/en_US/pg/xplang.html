@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,9 +93,9 @@ CLASS="CHAPTER"
 ><A
 NAME="XPLANG"
 ></A
->Chapter 36. Procedural Languages</H1
+>Chapter 34. Procedural Languages</H1
 ><A
-NAME="AEN31199"
+NAME="AEN30537"
 ></A
 ><P
 >   <SPAN
@@ -129,7 +129,7 @@ CLASS="PRODUCTNAME"
 >   Writing a handler for a new procedural language is described in
    <A
 HREF="plhandler.html"
->Chapter 47</A
+>Chapter 45</A
 >.  Several procedural languages are
    available in the standard <SPAN
 CLASS="PRODUCTNAME"
@@ -143,7 +143,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XPLANG-INSTALL"
->36.1. Installing Procedural Languages</A
+>34.1. Installing Procedural Languages</A
 ></H1
 ><P
 >    A procedural language must be <SPAN
@@ -151,9 +151,9 @@ CLASS="QUOTE"
 >"installed"</SPAN
 > into each
     database where it is to be used.  But procedural languages installed in
-    the database <VAR
+    the database <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > are automatically available in all
     subsequently created databases. So the database administrator can
     decide which languages are available in which databases and can make
@@ -171,9 +171,9 @@ CLASS="COMMAND"
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > into the database
-    <VAR
+    <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, use
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -216,7 +216,7 @@ TYPE="1"
       way as building and installing modules with regular user-defined C
       functions does; see <A
 HREF="xfunc-c.html#DFUNC"
->Section 33.7.6</A
+>Section 31.7.6</A
 >.
      </P
 ></LI
@@ -277,16 +277,16 @@ CLASS="REPLACEABLE"
 >handler_function_name</VAR
 >;</PRE
 ><P>
-      The optional key word <VAR
+      The optional key word <TT
 CLASS="LITERAL"
->TRUSTED</VAR
+>TRUSTED</TT
 > specifies that
       ordinary database users that have no superuser privileges should
       be allowed to use this language to create functions and trigger
       procedures. Since PL functions are executed inside the database
-      server, the <VAR
+      server, the <TT
 CLASS="LITERAL"
->TRUSTED</VAR
+>TRUSTED</TT
 > flag should only be given
       for languages that do not allow access to database server
       internals or the file system. The languages
@@ -330,7 +330,7 @@ CLASS="EMPHASIS"
 ><P
 >    <A
 HREF="xplang.html#XPLANG-INSTALL-EXAMPLE"
->Example 36-1</A
+>Example 34-1</A
 > shows how the manual
     installation procedure would work with the language
     <SPAN
@@ -345,7 +345,7 @@ NAME="XPLANG-INSTALL-EXAMPLE"
 ></A
 ><P
 ><B
->Example 36-1. Manual Installation of <SPAN
+>Example 34-1. Manual Installation of <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 ></B
@@ -372,9 +372,9 @@ CLASS="PROGRAMLISTING"
 ><P>
       then defines that the previously declared call handler function
       should be invoked for functions and trigger procedures where the
-      language attribute is <VAR
+      language attribute is <TT
 CLASS="LITERAL"
->plpgsql</VAR
+>plpgsql</TT
 >.
      </P
 ></DIV

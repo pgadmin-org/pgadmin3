@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="ecpg.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 30. <SPAN
+>Chapter 29. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
 > - Embedded <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-SET-CONNECTION"
->30.5. Choosing a Connection</A
+>29.5. Choosing a Connection</A
 ></H1
 ><P
 >   The SQL statements shown in the previous section are executed on
@@ -119,6 +119,12 @@ CLASS="REPLACEABLE"
 ><P>
    This option is particularly suitable if the application needs to
    use several connections in mixed order.
+      </P
+><P
+>      If your application uses multiple threads of execution, they cannot share a
+      connection concurrently. You must either explicitly control access to the connection
+      (using mutexes) or use a connection for each thread. If each thread uses its own connection,
+      you will need to use the AT clause to specify which connection the thread will use.
   </P
 ><P
 >   The second option is to execute a statement to switch the current
@@ -131,7 +137,7 @@ CLASS="REPLACEABLE"
 >;</PRE
 ><P>
    This option is particularly convenient if many statements are to be
-   executed on the same connection.
+   executed on the same connection.  It is not thread-aware.
   </P
 ></DIV
 ><DIV

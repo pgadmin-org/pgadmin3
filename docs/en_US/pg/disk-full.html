@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Monitoring Disk Usage"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -107,21 +107,10 @@ NAME="DISK-FULL"
   </P
 ><P
 >   If you cannot free up additional space on the disk by deleting
-   other things you can move some of the database files to other file
-   systems and create a symlink from the original location.  But
-   note that <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> cannot save the location layout
-   information of such a setup; a restore would put everything back in
-   one place.  To avoid running out of disk space, you can place the
-   WAL files or individual databases in other locations while creating
-   them.  See the <TT
-CLASS="COMMAND"
->initdb</TT
-> documentation and <A
-HREF="manage-ag-alternate-locs.html"
->Section 18.5</A
+   other things, you can move some of the database files to other file
+   systems by making use of tablespaces. See <A
+HREF="manage-ag-tablespaces.html"
+>Section 18.6</A
 > for more information about that.
   </P
 ><DIV
@@ -132,7 +121,7 @@ CLASS="TIP"
 ><B
 >Tip: </B
 >    Some file systems perform badly when they are almost full, so do
-    not wait until the disk is full to take action.
+    not wait until the disk is completely full to take action.
    </P
 ></BLOCKQUOTE
 ></DIV

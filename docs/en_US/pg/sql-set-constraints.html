@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-SET-CONSTRAINTS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42462"
+NAME="AEN43023"
 ></A
 ><H2
 >Name</H2
 >SET CONSTRAINTS&nbsp;--&nbsp;set the constraint mode of the current transaction</DIV
 ><A
-NAME="AEN42465"
+NAME="AEN43026"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42467"
+NAME="AEN43028"
 ></A
 ><H2
 >Synopsis</H2
@@ -120,7 +120,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42470"
+NAME="AEN43031"
 ></A
 ><H2
 >Description</H2
@@ -130,27 +130,27 @@ CLASS="COMMAND"
 >SET CONSTRAINTS</TT
 > sets the behavior of constraint
    evaluation in the current transaction. In
-   <VAR
+   <TT
 CLASS="LITERAL"
->IMMEDIATE</VAR
+>IMMEDIATE</TT
 > mode, constraints are checked at the
-   end of each statement. In <VAR
+   end of each statement. In <TT
 CLASS="LITERAL"
->DEFERRED</VAR
+>DEFERRED</TT
 > mode,
    constraints are not checked until transaction commit.
   </P
 ><P
 >   When you change the mode of a constraint to be
-   <VAR
+   <TT
 CLASS="LITERAL"
->IMMEDIATE</VAR
+>IMMEDIATE</TT
 >, the new constraint mode takes effect
    retroactively: any outstanding data modifications that would have
    been checked at the end of the transaction (when using
-   <VAR
+   <TT
 CLASS="LITERAL"
->DEFERRED</VAR
+>DEFERRED</TT
 >) are instead checked during the
    execution of the <TT
 CLASS="COMMAND"
@@ -159,17 +159,17 @@ CLASS="COMMAND"
   </P
 ><P
 >   Upon creation, a constraint is always give one of three
-   characteristics: <VAR
+   characteristics: <TT
 CLASS="LITERAL"
->INITIALLY DEFERRED</VAR
+>INITIALLY DEFERRED</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->INITIALLY IMMEDIATE DEFERRABLE</VAR
+>INITIALLY IMMEDIATE DEFERRABLE</TT
 >, or
-   <VAR
+   <TT
 CLASS="LITERAL"
->INITIALLY IMMEDIATE NOT DEFERRABLE</VAR
+>INITIALLY IMMEDIATE NOT DEFERRABLE</TT
 >. The third
    class is not affected by the <TT
 CLASS="COMMAND"
@@ -186,7 +186,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42486"
+NAME="AEN43047"
 ></A
 ><H2
 >Notes</H2
@@ -207,20 +207,20 @@ CLASS="COMMAND"
 >SET
    CONSTRAINTS</TT
 > command in every transaction, specify
-   <VAR
+   <TT
 CLASS="LITERAL"
->INITIALLY DEFERRED</VAR
-> or <VAR
+>INITIALLY DEFERRED</TT
+> or <TT
 CLASS="LITERAL"
 >INITIALLY
-   IMMEDIATE</VAR
+   IMMEDIATE</TT
 > when you create the constraint.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42494"
+NAME="AEN43055"
 ></A
 ><H2
 >Compatibility</H2

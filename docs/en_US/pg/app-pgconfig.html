@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ NAME="APP-PGCONFIG"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44320"
+NAME="AEN44930"
 ></A
 ><H2
 >Name</H2
@@ -104,12 +104,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 ></DIV
 ><A
-NAME="AEN44324"
+NAME="AEN44934"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44326"
+NAME="AEN44936"
 ></A
 ><H2
 >Synopsis</H2
@@ -117,12 +117,12 @@ NAME="AEN44326"
 ><TT
 CLASS="COMMAND"
 >pg_config</TT
-> {--bindir | --includedir | --includedir-server | --libdir | --pkglibdir | --configure | --version}...</P
+> {--bindir | --includedir | --includedir-server | --libdir | --pkglibdir | --pgxs | --configure | --version}...</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44337"
+NAME="AEN44948"
 ></A
 ><H2
 >Description</H2
@@ -146,7 +146,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44343"
+NAME="AEN44954"
 ></A
 ><H2
 >Options</H2
@@ -161,9 +161,9 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--bindir</VAR
+>--bindir</TT
 ></DT
 ><DD
 ><P
@@ -179,9 +179,9 @@ CLASS="FILENAME"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--includedir</VAR
+>--includedir</TT
 ></DT
 ><DD
 ><P
@@ -189,9 +189,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--includedir-server</VAR
+>--includedir-server</TT
 ></DT
 ><DD
 ><P
@@ -200,9 +200,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--libdir</VAR
+>--libdir</TT
 ></DT
 ><DD
 ><P
@@ -210,9 +210,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--pkglibdir</VAR
+>--pkglibdir</TT
 ></DT
 ><DD
 ><P
@@ -223,9 +223,19 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--configure</VAR
+>--pgxs</TT
+></DT
+><DD
+><P
+>       Print the location of extension makefiles.
+     </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>--configure</TT
 ></DT
 ><DD
 ><P
@@ -244,9 +254,9 @@ CLASS="PRODUCTNAME"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--version</VAR
+>--version</TT
 ></DT
 ><DD
 ><P
@@ -260,9 +270,9 @@ CLASS="PRODUCTNAME"
 ></DIV
 ><P>
 
-   If more than one option (except for <VAR
+   If more than one option (except for <TT
 CLASS="OPTION"
->--version</VAR
+>--version</TT
 >) is given, the
    information is printed in that order, one item per line.
   </P
@@ -270,23 +280,23 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44389"
+NAME="AEN45005"
 ></A
 ><H2
 >Notes</H2
 ><P
->   The option <VAR
+>   The option <TT
 CLASS="OPTION"
->--includedir-server</VAR
+>--includedir-server</TT
 > was new in
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 7.2.  In prior releases, the server include files were
    installed in the same location as the client headers, which could
-   be queried with the option <VAR
+   be queried with the option <TT
 CLASS="OPTION"
->--includedir</VAR
+>--includedir</TT
 >.  To make your
    package handle both cases, try the newer option first and test the
    exit status to see whether it succeeded.
@@ -306,7 +316,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44398"
+NAME="AEN45014"
 ></A
 ><H2
 >History</H2

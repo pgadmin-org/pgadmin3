@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="DDL-DEPEND"
 >5.10. Dependency Tracking</A
 ></H1
 ><A
-NAME="AEN2403"
+NAME="AEN2501"
 ></A
 ><A
-NAME="AEN2406"
+NAME="AEN2504"
 ></A
 ><P
 >   When you create complex database structures involving many tables
@@ -124,7 +124,7 @@ HREF="ddl-constraints.html#DDL-CONSTRAINTS-FK"
 CLASS="SCREEN"
 >DROP TABLE products;
 
-NOTICE:  constraint $1 on table orders depends on table products
+NOTICE:  constraint orders_product_no_fkey on table orders depends on table products
 ERROR:  cannot drop table products because other objects depend on it
 HINT:  Use DROP ... CASCADE to drop the dependent objects too.</PRE
 ><P>
@@ -136,19 +136,19 @@ CLASS="SCREEN"
 ><P>
    and all the dependent objects will be removed.  In this case, it
    doesn't remove the orders table, it only removes the foreign key
-   constraint.  (If you want to check what <VAR
+   constraint.  (If you want to check what <TT
 CLASS="LITERAL"
->DROP ... CASCADE</VAR
+>DROP ... CASCADE</TT
 > will do,
    run <TT
 CLASS="COMMAND"
 >DROP</TT
-> without <VAR
+> without <TT
 CLASS="LITERAL"
->CASCADE</VAR
-> and read the <VAR
+>CASCADE</TT
+> and read the <TT
 CLASS="LITERAL"
->NOTICE</VAR
+>NOTICE</TT
 > messages.)
   </P
 ><P
@@ -156,18 +156,18 @@ CLASS="LITERAL"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > support
-   specifying <VAR
+   specifying <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 >.  Of course, the nature of
    the possible dependencies varies with the type of the object.  You
-   can also write <VAR
+   can also write <TT
 CLASS="LITERAL"
->RESTRICT</VAR
+>RESTRICT</TT
 > instead of
-   <VAR
+   <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 > to get the default behavior, which is to
    prevent drops of objects that other objects depend on.
   </P
@@ -179,21 +179,21 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >    According to the SQL standard, specifying either
-    <VAR
+    <TT
 CLASS="LITERAL"
->RESTRICT</VAR
-> or <VAR
+>RESTRICT</TT
+> or <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 > is
     required.  No database system actually implements it that way, but
-    whether the default behavior is <VAR
+    whether the default behavior is <TT
 CLASS="LITERAL"
->RESTRICT</VAR
+>RESTRICT</TT
 > or
-    <VAR
+    <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 > varies across systems.
    </P
 ></BLOCKQUOTE

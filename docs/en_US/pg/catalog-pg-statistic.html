@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="pg_shadow"
 HREF="catalog-pg-shadow.html"><LINK
 REL="NEXT"
-TITLE="pg_trigger"
-HREF="catalog-pg-trigger.html"><LINK
+TITLE="pg_tablespace"
+HREF="catalog-pg-tablespace.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. System Catalogs</TD
+>Chapter 41. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="catalog-pg-trigger.html"
+HREF="catalog-pg-tablespace.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,20 +93,20 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-STATISTIC"
->43.27. <TT
+>41.27. <TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
 ></A
 ></H1
 ><A
-NAME="AEN51260"
+NAME="AEN51920"
 ></A
 ><P
 >   The catalog <TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
-> stores statistical data about
-   the contents of the database.  Entries are created by
+> stores statistical data
+   about the contents of the database.  Entries are created by
    <TT
 CLASS="COMMAND"
 >ANALYZE</TT
@@ -114,6 +114,20 @@ CLASS="COMMAND"
    There is one entry for each table column that has been analyzed.
    Note that all the statistical data is inherently approximate,
    even assuming that it is up-to-date.
+  </P
+><P
+>   <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> also stores statistical data about
+   the values of index expressions.  These are described as if they were
+   actual data columns; in particular, <TT
+CLASS="STRUCTFIELD"
+>starelid</TT
+>
+   references the index.  No entry is made for an ordinary non-expression
+   index column, however, since it would be redundant with the entry
+   for the underlying table column.
   </P
 ><P
 >   Since different kinds of statistics may be appropriate for different
@@ -130,8 +144,8 @@ CLASS="STRUCTNAME"
    is stored in <SPAN
 CLASS="QUOTE"
 >"slots"</SPAN
->, which are groups of associated columns whose
-   content is identified by a code number in one of the slot's columns.
+>, which are groups of associated columns
+   whose content is identified by a code number in one of the slot's columns.
    For more information see
    <TT
 CLASS="FILENAME"
@@ -163,11 +177,11 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN51275"
+NAME="AEN51938"
 ></A
 ><P
 ><B
->Table 43-27. <TT
+>Table 41-27. <TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
 > Columns</B
@@ -200,7 +214,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-class.html"
@@ -208,10 +222,10 @@ HREF="catalog-pg-class.html"
 CLASS="STRUCTNAME"
 >pg_class</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
->The table that the described column belongs to</TD
+>The table or index that the described column belongs to</TD
 ></TR
 ><TR
 ><TD
@@ -225,7 +239,7 @@ CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-attribute.html"
@@ -233,7 +247,7 @@ HREF="catalog-pg-attribute.html"
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 ></A
->.attnum</VAR
+>.attnum</TT
 ></TD
 ><TD
 >The number of the described column</TD
@@ -341,7 +355,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-operator.html"
@@ -349,7 +363,7 @@ HREF="catalog-pg-operator.html"
 CLASS="STRUCTNAME"
 >pg_operator</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >       An operator used to derive the statistics stored in the
@@ -360,9 +374,9 @@ CLASS="REPLACEABLE"
 CLASS="QUOTE"
 >"slot"</SPAN
 >.  For example, a
-       histogram slot would show the <VAR
+       histogram slot would show the <TT
 CLASS="LITERAL"
->&lt;</VAR
+>&lt;</TT
 > operator
        that defines the sort order of the data.
       </TD
@@ -467,7 +481,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="catalog-pg-trigger.html"
+HREF="catalog-pg-tablespace.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -496,7 +510,7 @@ ALIGN="right"
 VALIGN="top"
 ><TT
 CLASS="STRUCTNAME"
->pg_trigger</TT
+>pg_tablespace</TT
 ></TD
 ></TR
 ></TABLE

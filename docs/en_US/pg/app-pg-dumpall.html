@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44798"
+NAME="AEN45421"
 ></A
 ><H2
 >Name</H2
@@ -107,12 +107,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database cluster into a script file</DIV
 ><A
-NAME="AEN44802"
+NAME="AEN45425"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44804"
+NAME="AEN45427"
 ></A
 ><H2
 >Synopsis</H2
@@ -225,7 +225,7 @@ CLASS="FILENAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44832"
+NAME="AEN45455"
 ></A
 ><H2
 >Options</H2
@@ -239,12 +239,12 @@ NAME="AEN44832"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-a</VAR
-><BR><VAR
+>-a</TT
+><BR><TT
 CLASS="OPTION"
->--data-only</VAR
+>--data-only</TT
 ></DT
 ><DD
 ><P
@@ -252,12 +252,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-c</VAR
-><BR><VAR
+>-c</TT
+><BR><TT
 CLASS="OPTION"
->--clean</VAR
+>--clean</TT
 ></DT
 ><DD
 ><P
@@ -266,12 +266,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-d</VAR
-><BR><VAR
+>-d</TT
+><BR><TT
 CLASS="OPTION"
->--inserts</VAR
+>--inserts</TT
 ></DT
 ><DD
 ><P
@@ -288,15 +288,15 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-D</VAR
-><BR><VAR
+>-D</TT
+><BR><TT
 CLASS="OPTION"
->--column-inserts</VAR
-><BR><VAR
+>--column-inserts</TT
+><BR><TT
 CLASS="OPTION"
->--attribute-inserts</VAR
+>--attribute-inserts</TT
 ></DT
 ><DD
 ><P
@@ -304,7 +304,7 @@ CLASS="OPTION"
 CLASS="COMMAND"
 >INSERT</TT
 > commands with explicit
-	column names (<VAR
+	column names (<TT
 CLASS="LITERAL"
 >INSERT INTO
 	<VAR
@@ -315,18 +315,18 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >column</VAR
 >, ...) VALUES
-	...</VAR
+	...</TT
 >).  This will make restoration very slow,
 	but it is necessary if you desire to rearrange column ordering.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-g</VAR
-><BR><VAR
+>-g</TT
+><BR><TT
 CLASS="OPTION"
->--globals-only</VAR
+>--globals-only</TT
 ></DT
 ><DD
 ><P
@@ -334,12 +334,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-i</VAR
-><BR><VAR
+>-i</TT
+><BR><TT
 CLASS="OPTION"
->--ignore-version</VAR
+>--ignore-version</TT
 ></DT
 ><DD
 ><P
@@ -368,12 +368,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-o</VAR
-><BR><VAR
+>-o</TT
+><BR><TT
 CLASS="OPTION"
->--oids</VAR
+>--oids</TT
 ></DT
 ><DD
 ><P
@@ -387,12 +387,43 @@ CLASS="ACRONYM"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-s</VAR
-><BR><VAR
+>-O</TT
+><BR><TT
 CLASS="OPTION"
->--schema-only</VAR
+>--no-owner</TT
+></DT
+><DD
+><P
+>        Do not output commands to set
+	ownership of objects to match the original database.
+	By default, <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> issues
+	<TT
+CLASS="COMMAND"
+>SET SESSION AUTHORIZATION</TT
+>
+	statements to set ownership of created schema elements.
+	These statements
+	will fail when the script is run unless it is started by a superuser
+	(or the same user that owns all of the objects in the script).
+	To make a script that can be restored by any user, but will give
+	that user ownership of all the objects, specify <TT
+CLASS="OPTION"
+>-O</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-s</TT
+><BR><TT
+CLASS="OPTION"
+>--schema-only</TT
 ></DT
 ><DD
 ><P
@@ -400,12 +431,37 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-v</VAR
-><BR><VAR
+>-S <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></TT
+><BR><TT
 CLASS="OPTION"
->--verbose</VAR
+>--superuser=<VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></TT
+></DT
+><DD
+><P
+>        Specify the superuser user name to use when disabling triggers.
+	This is only relevant if <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+> is used.
+	(Usually, it's better to leave this out, and instead start the
+	resulting script as superuser.)
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-v</TT
+><BR><TT
+CLASS="OPTION"
+>--verbose</TT
 ></DT
 ><DD
 ><P
@@ -413,24 +469,91 @@ CLASS="OPTION"
 	<SPAN
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
-> to print progress
-	messages to standard error.
+> to output start/stop
+        times to the dump file, and progress messages to standard error.
+        It will also enable verbose output in <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-x</VAR
-><BR><VAR
+>-x</TT
+><BR><TT
 CLASS="OPTION"
->--no-privileges</VAR
-><BR><VAR
+>--no-privileges</TT
+><BR><TT
 CLASS="OPTION"
->--no-acl</VAR
+>--no-acl</TT
 ></DT
 ><DD
 ><P
 >	Prevent dumping of access privileges (grant/revoke commands).
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X disable-dollar-quoting</TT
+><BR><TT
+CLASS="OPTION"
+>--disable-dollar-quoting</TT
+></DT
+><DD
+><P
+>        This option disables the use of dollar quoting for function bodies,
+        and forces them to be quoted using SQL standard string syntax.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X disable-triggers</TT
+><BR><TT
+CLASS="OPTION"
+>--disable-triggers</TT
+></DT
+><DD
+><P
+>        This option is only relevant when creating a data-only dump.
+        It instructs <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> to include commands
+        to temporarily disable triggers on the target tables while
+        the data is reloaded.  Use this if you have referential
+        integrity checks or other triggers on the tables that you
+        do not want to invoke during data reload.
+       </P
+><P
+>        Presently, the commands emitted for <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+>
+        must be done as superuser.  So, you should also specify
+        a superuser name with <TT
+CLASS="OPTION"
+>-S</TT
+>, or preferably be careful to
+        start the resulting script as a superuser.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X use-set-session-authorization</TT
+><BR><TT
+CLASS="OPTION"
+>--use-set-session-authorization</TT
+></DT
+><DD
+><P
+>	Output SQL standard SET SESSION AUTHORIZATION commands instead
+	of OWNER TO commands.  This makes the dump more standards compatible,
+	but depending on the history of the objects in the dump, may not
+	restore properly.
        </P
 ></DD
 ></DL
@@ -504,7 +627,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44946"
+NAME="AEN45615"
 ></A
 ><H2
 >Environment</H2
@@ -535,7 +658,7 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44958"
+NAME="AEN45627"
 ></A
 ><H2
 >Notes</H2
@@ -611,7 +734,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44978"
+NAME="AEN45647"
 ></A
 ><H2
 >See Also</H2

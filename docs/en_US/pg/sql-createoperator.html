@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATEOPERATOR"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37424"
+NAME="AEN37489"
 ></A
 ><H2
 >Name</H2
 >CREATE OPERATOR&nbsp;--&nbsp;define a new operator</DIV
 ><A
-NAME="AEN37427"
+NAME="AEN37492"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37429"
+NAME="AEN37494"
 ></A
 ><H2
 >Synopsis</H2
@@ -161,7 +161,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37443"
+NAME="AEN37508"
 ></A
 ><H2
 >Description</H2
@@ -195,38 +195,38 @@ CLASS="LITERALLAYOUT"
 ></P><UL
 ><LI
 ><P
->     <VAR
+>     <TT
 CLASS="LITERAL"
->--</VAR
-> and <VAR
+>--</TT
+> and <TT
 CLASS="LITERAL"
->/*</VAR
+>/*</TT
 > cannot appear anywhere in an operator name,
      since they will be taken as the start of a comment.
      </P
 ></LI
 ><LI
 ><P
->     A multicharacter operator name cannot end in <VAR
+>     A multicharacter operator name cannot end in <TT
 CLASS="LITERAL"
->+</VAR
+>+</TT
 > or
-     <VAR
+     <TT
 CLASS="LITERAL"
->-</VAR
+>-</TT
 >,
      unless the name also contains at least one of these characters:
 <P
 CLASS="LITERALLAYOUT"
 >~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?</P
 >
-     For example, <VAR
+     For example, <TT
 CLASS="LITERAL"
->@-</VAR
+>@-</TT
 > is an allowed operator name,
-     but <VAR
+     but <TT
 CLASS="LITERAL"
->*-</VAR
+>*-</TT
 > is not.
      This restriction allows <SPAN
 CLASS="PRODUCTNAME"
@@ -239,32 +239,32 @@ CLASS="PRODUCTNAME"
 ><P>
   </P
 ><P
->   The operator <VAR
+>   The operator <TT
 CLASS="LITERAL"
->!=</VAR
+>!=</TT
 > is mapped to
-   <VAR
+   <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
+>&lt;&gt;</TT
 > on input, so these two names are always
    equivalent.
   </P
 ><P
->   At least one of <VAR
+>   At least one of <TT
 CLASS="LITERAL"
->LEFTARG</VAR
-> and <VAR
+>LEFTARG</TT
+> and <TT
 CLASS="LITERAL"
->RIGHTARG</VAR
+>RIGHTARG</TT
 > must be defined.  For
    binary operators, both must be defined. For right  unary
-   operators, only <VAR
+   operators, only <TT
 CLASS="LITERAL"
->LEFTARG</VAR
+>LEFTARG</TT
 > should be defined, while for left
-   unary operators only <VAR
+   unary operators only <TT
 CLASS="LITERAL"
->RIGHTARG</VAR
+>RIGHTARG</TT
 > should be defined.
   </P
 ><P
@@ -283,14 +283,14 @@ CLASS="COMMAND"
 >   The other clauses specify optional operator optimization clauses.
    Their meaning is detailed in <A
 HREF="xoper.html"
->Section 33.11</A
+>Section 31.11</A
 >.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37477"
+NAME="AEN37542"
 ></A
 ><H2
 >Parameters</H2
@@ -306,16 +306,16 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The name of the operator to be defined. See above for allowable
-	characters.  The name may be schema-qualified, for example
-	<VAR
+>        The name of the operator to be defined. See above for allowable
+        characters.  The name may be schema-qualified, for example
+        <TT
 CLASS="LITERAL"
->CREATE OPERATOR myschema.+ (...)</VAR
+>CREATE OPERATOR myschema.+ (...)</TT
 >.  If not, then
-	the operator is created in the current schema.  Two operators
-	in the same schema can have the same name if they operate on
-	different data types.  This is called
-	<I
+        the operator is created in the current schema.  Two operators
+        in the same schema can have the same name if they operate on
+        different data types.  This is called
+        <I
 CLASS="FIRSTTERM"
 >overloading</I
 >.
@@ -328,7 +328,7 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The function used to implement this operator.
+>        The function used to implement this operator.
        </P
 ></DD
 ><DT
@@ -338,8 +338,8 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The type of the left-hand argument of the operator, if any.
-	This option would be omitted for a left-unary operator.
+>        The data type of the operator's left operand, if any.
+        This option would be omitted for a left-unary operator.
        </P
 ></DD
 ><DT
@@ -349,8 +349,8 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The type of the right-hand argument of the operator, if any.
-	This option would be omitted for a right-unary operator.
+>        The data type of the operator's right operand, if any.
+        This option would be omitted for a right-unary operator.
        </P
 ></DD
 ><DT
@@ -360,7 +360,7 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The commutator of this operator.
+>        The commutator of this operator.
        </P
 ></DD
 ><DT
@@ -370,7 +370,7 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The negator of this operator.
+>        The negator of this operator.
        </P
 ></DD
 ><DT
@@ -380,7 +380,7 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The restriction selectivity estimator function for this operator.
+>        The restriction selectivity estimator function for this operator.
        </P
 ></DD
 ><DT
@@ -390,13 +390,13 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The join selectivity estimator function for this operator.
+>        The join selectivity estimator function for this operator.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->HASHES</VAR
+>HASHES</TT
 ></DT
 ><DD
 ><P
@@ -404,9 +404,9 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->MERGES</VAR
+>MERGES</TT
 ></DT
 ><DD
 ><P
@@ -420,8 +420,8 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	If this operator can support a merge join, the less-than
-	operator that sorts the left-hand data type of this operator.
+>        If this operator can support a merge join, the less-than
+        operator that sorts the left-hand data type of this operator.
        </P
 ></DD
 ><DT
@@ -431,8 +431,8 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	If this operator can support a merge join, the less-than
-	operator that sorts the right-hand data type of this operator.
+>        If this operator can support a merge join, the less-than
+        operator that sorts the right-hand data type of this operator.
        </P
 ></DD
 ><DT
@@ -442,8 +442,8 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	If this operator can support a merge join, the less-than
-	operator that compares the input data types of this operator.
+>        If this operator can support a merge join, the less-than
+        operator that compares the input data types of this operator.
        </P
 ></DD
 ><DT
@@ -453,8 +453,8 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	If this operator can support a merge join, the greater-than
-	operator that compares the input data types of this operator.
+>        If this operator can support a merge join, the greater-than
+        operator that compares the input data types of this operator.
        </P
 ></DD
 ></DL
@@ -464,9 +464,9 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >com_op</VAR
 > or the other optional
-   arguments, use the <VAR
+   arguments, use the <TT
 CLASS="LITERAL"
->OPERATOR()</VAR
+>OPERATOR()</TT
 > syntax, for example
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -477,14 +477,14 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37556"
+NAME="AEN37621"
 ></A
 ><H2
 >Notes</H2
 ><P
 >   Refer to <A
 HREF="xoper.html"
->Section 33.11</A
+>Section 31.11</A
 > for further information.
   </P
 ><P
@@ -492,13 +492,17 @@ HREF="xoper.html"
 CLASS="COMMAND"
 >DROP OPERATOR</TT
 > to delete user-defined
-   operators from a database.
+   operators from a database.  Use <TT
+CLASS="COMMAND"
+>ALTER OPERATOR</TT
+>
+   to modify operators in a database.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37562"
+NAME="AEN37628"
 ></A
 ><H2
 >Examples</H2
@@ -530,7 +534,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37567"
+NAME="AEN37633"
 ></A
 ><H2
 >Compatibility</H2

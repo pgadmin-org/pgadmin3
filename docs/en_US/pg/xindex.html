@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="extend.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. Extending <ACRONYM
+>Chapter 31. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
@@ -96,10 +96,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XINDEX"
->33.13. Interfacing Extensions To Indexes</A
+>31.13. Interfacing Extensions To Indexes</A
 ></H1
 ><A
-NAME="AEN30062"
+NAME="AEN29376"
 ></A
 ><P
 >   The procedures described thus far let you define new types, new
@@ -151,7 +151,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-IM"
->33.13.1. Index Methods and Operator Classes</A
+>31.13.1. Index Methods and Operator Classes</A
 ></H2
 ><P
 >   The <CODE
@@ -183,15 +183,15 @@ CLASS="FIRSTTERM"
 >operator
    class</I
 ><A
-NAME="AEN30083"
+NAME="AEN29397"
 ></A
 >
    identifies the set of operations that the index method needs to use
    to work with a particular data type.  Operator classes are so
    called because one thing they specify is the set of
-   <VAR
+   <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >-clause operators that can be used with an index
    (i.e., can be converted into an index-scan qualification).  An
    operator class may also specify some <I
@@ -200,9 +200,9 @@ CLASS="FIRSTTERM"
    procedures</I
 > that are needed by the internal operations of the
    index method, but do not directly correspond to any
-   <VAR
+   <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >-clause operator that can be used with the index.
   </P
 ><P
@@ -222,9 +222,9 @@ CLASS="LITERAL"
 >   The same operator class name
    can be used for several different index methods (for example, both B-tree
    and hash index methods have operator classes named
-   <VAR
+   <TT
 CLASS="LITERAL"
->oid_ops</VAR
+>int4_ops</TT
 >), but each such class is an independent
    entity and must be defined separately.
   </P
@@ -235,7 +235,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-STRATEGIES"
->33.13.2. Index Method Strategies</A
+>31.13.2. Index Method Strategies</A
 ></H2
 ><P
 >   The operators associated with an operator class are identified by
@@ -262,12 +262,12 @@ CLASS="PRODUCTNAME"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > cannot look at the name of an operator
-   (e.g., <VAR
+   (e.g., <TT
 CLASS="LITERAL"
->&lt;</VAR
-> or <VAR
+>&lt;</TT
+> or <TT
 CLASS="LITERAL"
->&gt;=</VAR
+>&gt;=</TT
 >) and tell what kind of
    comparison it is.  Instead, the index method defines a set of
    <SPAN
@@ -281,7 +281,7 @@ CLASS="QUOTE"
 ><P
 >   The B-tree index method defines five strategies, shown in <A
 HREF="xindex.html#XINDEX-BTREE-STRAT-TABLE"
->Table 33-2</A
+>Table 31-2</A
 >.
   </P
 ><DIV
@@ -291,7 +291,7 @@ NAME="XINDEX-BTREE-STRAT-TABLE"
 ></A
 ><P
 ><B
->Table 33-2. B-tree Strategies</B
+>Table 31-2. B-tree Strategies</B
 ></P
 ><TABLE
 BORDER="1"
@@ -342,7 +342,7 @@ CLASS="CALSTABLE"
 >   Hash indexes express only bitwise equality, and so they use only one
    strategy, shown in <A
 HREF="xindex.html#XINDEX-HASH-STRAT-TABLE"
->Table 33-3</A
+>Table 31-3</A
 >.
   </P
 ><DIV
@@ -352,7 +352,7 @@ NAME="XINDEX-HASH-STRAT-TABLE"
 ></A
 ><P
 ><B
->Table 33-3. Hash Strategies</B
+>Table 31-3. Hash Strategies</B
 ></P
 ><TABLE
 BORDER="1"
@@ -379,7 +379,7 @@ CLASS="CALSTABLE"
 >   R-tree indexes express rectangle-containment relationships.
    They use eight strategies, shown in <A
 HREF="xindex.html#XINDEX-RTREE-STRAT-TABLE"
->Table 33-4</A
+>Table 31-4</A
 >.
   </P
 ><DIV
@@ -389,7 +389,7 @@ NAME="XINDEX-RTREE-STRAT-TABLE"
 ></A
 ><P
 ><B
->Table 33-4. R-tree Strategies</B
+>Table 31-4. R-tree Strategies</B
 ></P
 ><TABLE
 BORDER="1"
@@ -470,9 +470,9 @@ CLASS="QUOTE"
 CLASS="TYPE"
 >boolean</TT
 >, since they must appear at the top
-   level of a <VAR
+   level of a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause to be used with an index.
   </P
 ><P
@@ -506,7 +506,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-SUPPORT"
->33.13.3. Index Method Support Routines</A
+>31.13.3. Index Method Support Routines</A
 ></H2
 ><P
 >   Strategies aren't usually enough information for the system to figure
@@ -533,7 +533,7 @@ CLASS="QUOTE"
 ><P
 >   B-trees require a single support function, shown in <A
 HREF="xindex.html#XINDEX-BTREE-SUPPORT-TABLE"
->Table 33-5</A
+>Table 31-5</A
 >.
   </P
 ><DIV
@@ -543,7 +543,7 @@ NAME="XINDEX-BTREE-SUPPORT-TABLE"
 ></A
 ><P
 ><B
->Table 33-5. B-tree Support Functions</B
+>Table 31-5. B-tree Support Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -572,7 +572,7 @@ CLASS="CALSTABLE"
 ><P
 >   Hash indexes likewise require one support function, shown in <A
 HREF="xindex.html#XINDEX-HASH-SUPPORT-TABLE"
->Table 33-6</A
+>Table 31-6</A
 >.
   </P
 ><DIV
@@ -582,7 +582,7 @@ NAME="XINDEX-HASH-SUPPORT-TABLE"
 ></A
 ><P
 ><B
->Table 33-6. Hash Support Functions</B
+>Table 31-6. Hash Support Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -609,7 +609,7 @@ CLASS="CALSTABLE"
 >   R-tree indexes require three support functions,
    shown in <A
 HREF="xindex.html#XINDEX-RTREE-SUPPORT-TABLE"
->Table 33-7</A
+>Table 31-7</A
 >.
   </P
 ><DIV
@@ -619,7 +619,7 @@ NAME="XINDEX-RTREE-SUPPORT-TABLE"
 ></A
 ><P
 ><B
->Table 33-7. R-tree Support Functions</B
+>Table 31-7. R-tree Support Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -658,7 +658,7 @@ CLASS="CALSTABLE"
 >   GiST indexes require seven support functions,
    shown in <A
 HREF="xindex.html#XINDEX-GIST-SUPPORT-TABLE"
->Table 33-8</A
+>Table 31-8</A
 >.
   </P
 ><DIV
@@ -668,7 +668,7 @@ NAME="XINDEX-GIST-SUPPORT-TABLE"
 ></A
 ><P
 ><B
->Table 33-8. GiST Support Functions</B
+>Table 31-8. GiST Support Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -739,7 +739,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-EXAMPLE"
->33.13.4. An Example</A
+>31.13.4. An Example</A
 ></H2
 ><P
 >   Now that we have seen the ideas, here is the promised example of
@@ -756,14 +756,14 @@ CLASS="FILENAME"
    distribution.)
    The operator class encapsulates
    operators that sort complex numbers in absolute value order, so we
-   choose the name <VAR
+   choose the name <TT
 CLASS="LITERAL"
->complex_abs_ops</VAR
+>complex_abs_ops</TT
 >.  First, we need
    a set of operators.  The procedure for defining operators was
    discussed in <A
 HREF="xoper.html"
->Section 33.11</A
+>Section 31.11</A
 >.  For an operator class on
    B-trees, the operators we require are:
 
@@ -871,25 +871,25 @@ CREATE OPERATOR &lt; (
 ></P><UL
 ><LI
 ><P
->     There can only be one operator named, say, <VAR
+>     There can only be one operator named, say, <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 >
      and taking type <TT
 CLASS="TYPE"
 >complex</TT
 > for both operands.  In this
-     case we don't have any other operator <VAR
+     case we don't have any other operator <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 > for
      <TT
 CLASS="TYPE"
 >complex</TT
 >, but if we were building a practical data
-     type we'd probably want <VAR
+     type we'd probably want <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 > to be the ordinary
      equality operation for complex numbers (and not the equality of
      the absolute values).  In that case, we'd need to use some other
@@ -1001,9 +1001,9 @@ CLASS="PROGRAMLISTING"
 CLASS="TYPE"
 >complex</TT
 > data type.
-   If you don't, just leave out the word <VAR
+   If you don't, just leave out the word <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 >.
   </P
 ></DIV
@@ -1012,11 +1012,97 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
+NAME="XINDEX-OPCLASS-CROSSTYPE"
+>31.13.5. Cross-Data-Type Operator Classes</A
+></H2
+><P
+>   So far we have implicitly assumed that an operator class deals with
+   only one data type.  While there certainly can be only one data type in
+   a particular index column, it is often useful to index operations that
+   compare an indexed column to a value of a different data type.  This is
+   presently supported by the B-tree and GiST index methods.
+  </P
+><P
+>   B-trees require the left-hand operand of each operator to be the indexed
+   data type, but the right-hand operand can be of a different type.  There
+   must be a support function having a matching signature.  For example,
+   the built-in operator class for type <TT
+CLASS="TYPE"
+>bigint</TT
+> (<TT
+CLASS="TYPE"
+>int8</TT
+>)
+   allows cross-type comparisons to <TT
+CLASS="TYPE"
+>int4</TT
+> and <TT
+CLASS="TYPE"
+>int2</TT
+>.  It
+   could be duplicated by this definition:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE OPERATOR CLASS int8_ops
+DEFAULT FOR TYPE int8 USING btree AS
+  -- standard int8 comparisons
+  OPERATOR 1 &lt; ,
+  OPERATOR 2 &lt;= ,
+  OPERATOR 3 = ,
+  OPERATOR 4 &gt;= ,
+  OPERATOR 5 &gt; ,
+  FUNCTION 1 btint8cmp(int8, int8) ,
+
+  -- cross-type comparisons to int2 (smallint)
+  OPERATOR 1 &lt; (int8, int2) ,
+  OPERATOR 2 &lt;= (int8, int2) ,
+  OPERATOR 3 = (int8, int2) ,
+  OPERATOR 4 &gt;= (int8, int2) ,
+  OPERATOR 5 &gt; (int8, int2) ,
+  FUNCTION 1 btint82cmp(int8, int2) ,
+
+  -- cross-type comparisons to int4 (integer)
+  OPERATOR 1 &lt; (int8, int4) ,
+  OPERATOR 2 &lt;= (int8, int4) ,
+  OPERATOR 3 = (int8, int4) ,
+  OPERATOR 4 &gt;= (int8, int4) ,
+  OPERATOR 5 &gt; (int8, int4) ,
+  FUNCTION 1 btint84cmp(int8, int4) ;</PRE
+><P>
+
+   Notice that this definition <SPAN
+CLASS="QUOTE"
+>"overloads"</SPAN
+> the operator strategy and
+   support function numbers.  This is allowed (for B-tree operator classes
+   only) so long as each instance of a particular number has a different
+   right-hand data type.  The instances that are not cross-type are the
+   default or primary operators of the operator class.
+  </P
+><P
+>   GiST indexes do not allow overloading of strategy or support function
+   numbers, but it is still possible to get the effect of supporting
+   multiple right-hand data types, by assigning a distinct strategy number
+   to each operator that needs to be supported.  The <TT
+CLASS="LITERAL"
+>consistent</TT
+>
+   support function must determine what it needs to do based on the strategy
+   number, and must be prepared to accept comparison values of the appropriate
+   data types.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
 NAME="XINDEX-OPCLASS-DEPENDENCIES"
->33.13.5. System Dependencies on Operator Classes</A
+>31.13.6. System Dependencies on Operator Classes</A
 ></H2
 ><A
-NAME="AEN30326"
+NAME="AEN29652"
 ></A
 ><P
 >   <SPAN
@@ -1028,13 +1114,13 @@ CLASS="PRODUCTNAME"
    even if you have no intention of indexing any columns of your data type.
   </P
 ><P
->   In particular, there are SQL features such as <VAR
+>   In particular, there are SQL features such as <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > and
-   <VAR
+   <TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 > that require comparison and sorting of values.
    To implement these features on a user-defined data type,
    <SPAN
@@ -1046,16 +1132,16 @@ CLASS="QUOTE"
 >"equals"</SPAN
 > member of this operator
    class defines the system's notion of equality of values for
-   <VAR
+   <TT
 CLASS="LITERAL"
->GROUP BY</VAR
-> and <VAR
+>GROUP BY</TT
+> and <TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 >, and the sort ordering
-   imposed by the operator class defines the default <VAR
+   imposed by the operator class defines the default <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 >
    ordering.
   </P
@@ -1089,15 +1175,15 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > versions before 7.4,
      sorting and grouping operations would implicitly use operators named
-     <VAR
+     <TT
 CLASS="LITERAL"
->=</VAR
->, <VAR
+>=</TT
+>, <TT
 CLASS="LITERAL"
->&lt;</VAR
->, and <VAR
+>&lt;</TT
+>, and <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 >.  The new
      behavior of relying on default operator classes avoids having to make
      any assumption about the behavior of operators with particular names.
@@ -1111,7 +1197,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-OPCLASS-FEATURES"
->33.13.6. Special Features of Operator Classes</A
+>31.13.7. Special Features of Operator Classes</A
 ></H2
 ><P
 >   There are two special features of operator classes that we have
@@ -1121,9 +1207,9 @@ NAME="XINDEX-OPCLASS-FEATURES"
 ><P
 >   Normally, declaring an operator as a member of an operator class means
    that the index method can retrieve exactly the set of rows
-   that satisfy a <VAR
+   that satisfy a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > condition using the operator.  For example,
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1132,9 +1218,9 @@ CLASS="PROGRAMLISTING"
    can be satisfied exactly by a B-tree index on the integer column.
    But there are cases where an index is useful as an inexact guide to
    the matching rows.  For example, if an R-tree index stores only
-   bounding boxes for objects, then it cannot exactly satisfy a <VAR
+   bounding boxes for objects, then it cannot exactly satisfy a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >
    condition that tests overlap between nonrectangular objects such as
    polygons.  Yet we could use the index to find objects whose bounding
@@ -1144,20 +1230,20 @@ CLASS="LITERAL"
 CLASS="QUOTE"
 >"lossy"</SPAN
 > for the
-   operator, and we add <VAR
+   operator, and we add <TT
 CLASS="LITERAL"
->RECHECK</VAR
-> to the <VAR
+>RECHECK</TT
+> to the <TT
 CLASS="LITERAL"
->OPERATOR</VAR
+>OPERATOR</TT
 > clause
    in the <TT
 CLASS="COMMAND"
 >CREATE OPERATOR CLASS</TT
 > command.
-   <VAR
+   <TT
 CLASS="LITERAL"
->RECHECK</VAR
+>RECHECK</TT
 > is valid if the index is guaranteed to return
    all the required rows, plus perhaps some additional rows, which
    can be eliminated by performing the original operator invocation.
@@ -1170,9 +1256,9 @@ CLASS="LITERAL"
    <TT
 CLASS="TYPE"
 >box</TT
->.  This situation is expressed by the <VAR
+>.  This situation is expressed by the <TT
 CLASS="LITERAL"
->STORAGE</VAR
+>STORAGE</TT
 >
    option in <TT
 CLASS="COMMAND"
@@ -1188,20 +1274,20 @@ CLASS="PROGRAMLISTING"
 ><P>
 
    At present, only the GiST index method supports a
-   <VAR
+   <TT
 CLASS="LITERAL"
->STORAGE</VAR
+>STORAGE</TT
 > type that's different from the column data type.
-   The GiST <VAR
+   The GiST <TT
 CLASS="LITERAL"
->compress</VAR
-> and <VAR
+>compress</TT
+> and <TT
 CLASS="LITERAL"
->decompress</VAR
+>decompress</TT
 > support
-   routines must deal with data-type conversion when <VAR
+   routines must deal with data-type conversion when <TT
 CLASS="LITERAL"
->STORAGE</VAR
+>STORAGE</TT
 >
    is used.
   </P

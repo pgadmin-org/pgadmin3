@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="DATATYPE-BINARY"
 >8.4. Binary Data Types</A
 ></H1
 ><A
-NAME="AEN3820"
+NAME="AEN3924"
 ></A
 ><A
-NAME="AEN3822"
+NAME="AEN3926"
 ></A
 ><P
 >    The <TT
@@ -156,9 +156,10 @@ CLASS="TYPE"
 CLASS="QUOTE"
 >"non-printable"</SPAN
 >
-    octets.  Second, operations on binary strings process the actual
-    bytes, whereas the encoding and processing of character strings
-    depends on locale settings.
+    octets (defined as octets outside the range 32 to 126).
+    Second, operations on binary strings process the actual bytes,
+    whereas the encoding and processing of character strings depends
+    on locale settings.
    </P
 ><P
 >    When entering <TT
@@ -228,19 +229,19 @@ CLASS="CALSTABLE"
 ><TD
 >zero octet</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'\\000'</VAR
+>'\\000'</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->SELECT '\\000'::bytea;</VAR
+>SELECT '\\000'::bytea;</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\000</VAR
+>\000</TT
 ></TD
 ></TR
 ><TR
@@ -249,22 +250,22 @@ CLASS="LITERAL"
 ><TD
 >single quote</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'\''</VAR
-> or <VAR
+>'\''</TT
+> or <TT
 CLASS="LITERAL"
->'\\047'</VAR
+>'\\047'</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->SELECT '\''::bytea;</VAR
+>SELECT '\''::bytea;</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'</VAR
+>'</TT
 ></TD
 ></TR
 ><TR
@@ -273,34 +274,67 @@ CLASS="LITERAL"
 ><TD
 >backslash</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'\\\\'</VAR
-> or <VAR
+>'\\\\'</TT
+> or <TT
 CLASS="LITERAL"
->'\\134'</VAR
+>'\\134'</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->SELECT '\\\\'::bytea;</VAR
+>SELECT '\\\\'::bytea;</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\\</VAR
+>\\</TT
+></TD
+></TR
+><TR
+><TD
+>0 to 31 and 127 to 255</TD
+><TD
+><SPAN
+CLASS="QUOTE"
+>"non-printable"</SPAN
+> octets</TD
+><TD
+><TT
+CLASS="LITERAL"
+>'\\<VAR
+CLASS="REPLACEABLE"
+>xxx'</VAR
+></TT
+> (octal value)</TD
+><TD
+><TT
+CLASS="LITERAL"
+>SELECT '\\001'::bytea;</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>\001</TT
 ></TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->    Note that the result in each of the examples in <A
+>    The requirement to escape <SPAN
+CLASS="QUOTE"
+>"non-printable"</SPAN
+> octets actually
+    varies depending on locale settings. In some instances you can get away
+    with leaving them unescaped. Note that the result in each of the examples
+    in <A
 HREF="datatype-binary.html#DATATYPE-BINARY-SQLESC"
 >Table 8-7</A
-> was exactly one
-    octet in length, even though the output representation of the zero
-    octet and backslash are more than one character.
+> was exactly one octet in
+    length, even though the output representation of the zero octet and
+    backslash are more than one character.
    </P
 ><P
 >    The reason that you have to write so many backslashes, as shown in
@@ -322,17 +356,17 @@ CLASS="TYPE"
 > input function as starting
     either a three digit octal value or escaping another backslash.
     For example, a string literal passed to the server as
-    <VAR
+    <TT
 CLASS="LITERAL"
->'\\001'</VAR
-> becomes <VAR
+>'\\001'</TT
+> becomes <TT
 CLASS="LITERAL"
->\001</VAR
+>\001</TT
 > after
     passing through the string-literal parser. The
-    <VAR
+    <TT
 CLASS="LITERAL"
->\001</VAR
+>\001</TT
 > is then sent to the <TT
 CLASS="TYPE"
 >bytea</TT
@@ -405,19 +439,19 @@ CLASS="CALSTABLE"
 ><TD
 >backslash</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\\</VAR
+>\\</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->SELECT '\\134'::bytea;</VAR
+>SELECT '\\134'::bytea;</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\\</VAR
+>\\</TT
 ></TD
 ></TR
 ><TR
@@ -429,22 +463,22 @@ CLASS="QUOTE"
 >"non-printable"</SPAN
 > octets</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 >\<VAR
 CLASS="REPLACEABLE"
 >xxx</VAR
-></VAR
+></TT
 > (octal value)</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->SELECT '\\001'::bytea;</VAR
+>SELECT '\\001'::bytea;</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\001</VAR
+>\001</TT
 ></TD
 ></TR
 ><TR
@@ -456,16 +490,16 @@ CLASS="QUOTE"
 >"printable"</SPAN
 > octets</TD
 ><TD
->ASCII representation</TD
+>client character set representation</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->SELECT '\\176'::bytea;</VAR
+>SELECT '\\176'::bytea;</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->~</VAR
+>~</TT
 ></TD
 ></TR
 ></TBODY

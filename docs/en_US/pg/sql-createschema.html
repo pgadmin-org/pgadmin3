@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATESCHEMA"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37817"
+NAME="AEN37903"
 ></A
 ><H2
 >Name</H2
 >CREATE SCHEMA&nbsp;--&nbsp;define a new schema</DIV
 ><A
-NAME="AEN37820"
+NAME="AEN37906"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37822"
+NAME="AEN37908"
 ></A
 ><H2
 >Synopsis</H2
@@ -118,6 +118,9 @@ CLASS="REPLACEABLE"
 > [ AUTHORIZATION <VAR
 CLASS="REPLACEABLE"
 >username</VAR
+> ] [ TABLESPACE <VAR
+CLASS="REPLACEABLE"
+>tablespace</VAR
 > ] [ <VAR
 CLASS="REPLACEABLE"
 >schema_element</VAR
@@ -125,7 +128,10 @@ CLASS="REPLACEABLE"
 CREATE SCHEMA AUTHORIZATION <VAR
 CLASS="REPLACEABLE"
 >username</VAR
-> [ <VAR
+> [ TABLESPACE <VAR
+CLASS="REPLACEABLE"
+>tablespace</VAR
+> ] [ <VAR
 CLASS="REPLACEABLE"
 >schema_element</VAR
 > [ ... ] ]</PRE
@@ -133,7 +139,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37829"
+NAME="AEN37917"
 ></A
 ><H2
 >Description</H2
@@ -169,9 +175,9 @@ CLASS="COMMAND"
 > can include subcommands
    to create objects within the new schema.  The subcommands are treated
    essentially the same as separate commands issued after creating the
-   schema, except that if the <VAR
+   schema, except that if the <TT
 CLASS="LITERAL"
->AUTHORIZATION</VAR
+>AUTHORIZATION</TT
 > clause is used,
    all the created objects will be owned by that user.
   </P
@@ -179,7 +185,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37839"
+NAME="AEN37927"
 ></A
 ><H2
 >Parameters</H2
@@ -195,8 +201,13 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The name of a schema to be created.  If this is omitted, the user name
-	is used as the schema name.
+>        The name of a schema to be created.  If this is omitted, the user name
+        is used as the schema name.  The name cannot
+        begin with <TT
+CLASS="LITERAL"
+>pg_</TT
+>, as such names
+        are reserved for system schemas.
        </P
 ></DD
 ><DT
@@ -207,8 +218,20 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >        The name of the user who will own the schema.  If omitted,
-	defaults to the user executing the command.  Only superusers
-	may create schemas owned by users other than themselves.
+        defaults to the user executing the command.  Only superusers
+        may create schemas owned by users other than themselves.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>tablespace</VAR
+></DT
+><DD
+><P
+>        The name of the tablespace that is to be the default tablespace
+        for all new objects created in the schema. If not supplied, the schema
+        will inherit the default tablespace of the database.
        </P
 ></DD
 ><DT
@@ -218,23 +241,34 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->        An SQL statement defining an object to be created within the schema.
-	Currently, only <TT
+>        An SQL statement defining an object to be created within the
+        schema. Currently, only <TT
 CLASS="COMMAND"
->CREATE TABLE</TT
+>CREATE
+        TABLE</TT
 >, <TT
 CLASS="COMMAND"
 >CREATE VIEW</TT
->, 
-	and <TT
+>, <TT
+CLASS="COMMAND"
+>CREATE
+        INDEX</TT
+>, <TT
+CLASS="COMMAND"
+>CREATE SEQUENCE</TT
+>, <TT
+CLASS="COMMAND"
+>CREATE
+        TRIGGER</TT
+> and <TT
 CLASS="COMMAND"
 >GRANT</TT
-> are accepted as clauses within
-	<TT
+> are accepted as clauses
+        within <TT
 CLASS="COMMAND"
 >CREATE SCHEMA</TT
->.  Other kinds of objects may be created
-	in separate commands after the schema is created.
+>. Other kinds of objects may
+        be created in separate commands after the schema is created.
        </P
 ></DD
 ></DL
@@ -243,23 +277,31 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37861"
+NAME="AEN37958"
 ></A
 ><H2
 >Notes</H2
 ><P
->   To create a schema, the invoking user must have <VAR
+>   To create a schema, the invoking user must have the
+   <TT
 CLASS="LITERAL"
->CREATE</VAR
->
-   privilege for the current database.  (Of course, superusers bypass
-   this check.)
+>CREATE</TT
+> privilege for the current database.
+   Also, the <TT
+CLASS="LITERAL"
+>TABLESPACE</TT
+> option requires having
+   <TT
+CLASS="LITERAL"
+>CREATE</TT
+> privilege for the specified tablespace.
+   (Of course, superusers bypass these checks.)
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37865"
+NAME="AEN37964"
 ></A
 ><H2
 >Examples</H2
@@ -271,13 +313,13 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Create a schema for user <VAR
+>   Create a schema for user <TT
 CLASS="LITERAL"
->joe</VAR
+>joe</TT
 >; the schema will also be
-   named <VAR
+   named <TT
 CLASS="LITERAL"
->joe</VAR
+>joe</TT
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -305,18 +347,33 @@ CREATE VIEW hollywood.winners AS
     SELECT title, release FROM hollywood.films WHERE awards IS NOT NULL;</PRE
 ><P>
   </P
+><P
+>   Create a schema <TT
+CLASS="LITERAL"
+>sales</TT
+> whose tables, indexes and sequences
+   will be stored in the tablespace <TT
+CLASS="LITERAL"
+>mirrorspace</TT
+> by default:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SCHEMA sales TABLESPACE mirrorspace;</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37877"
+NAME="AEN37980"
 ></A
 ><H2
 >Compatibility</H2
 ><P
->   The SQL standard allows a <VAR
+>   The SQL standard allows a <TT
 CLASS="LITERAL"
->DEFAULT CHARACTER SET</VAR
+>DEFAULT CHARACTER SET</TT
 > clause
    in <TT
 CLASS="COMMAND"
@@ -339,8 +396,8 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > implementation does not
    handle all cases of forward references in subcommands; it may
-   sometimes be necessary to reorder the subcommands to avoid forward
-   references.
+   sometimes be necessary to reorder the subcommands in order to avoid
+   forward references.
   </P
 ><P
 >   According to the SQL standard, the owner of a schema always owns
@@ -350,16 +407,16 @@ CLASS="PRODUCTNAME"
 >
    allows schemas to contain objects owned by users other than the
    schema owner.  This can happen only if the schema owner grants the
-   <VAR
+   <TT
 CLASS="LITERAL"
->CREATE</VAR
+>CREATE</TT
 > privilege on his schema to someone else.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37889"
+NAME="AEN37992"
 ></A
 ><H2
 >See Also</H2
@@ -372,6 +429,11 @@ HREF="sql-alterschema.html"
 HREF="sql-dropschema.html"
 ><I
 >DROP SCHEMA</I
+></A
+>, <A
+HREF="sql-createtablespace.html"
+><I
+>CREATE TABLESPACE</I
 ></A
 ></DIV
 ><DIV

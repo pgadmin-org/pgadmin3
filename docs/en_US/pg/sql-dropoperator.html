@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-DROPOPERATOR"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN39795"
+NAME="AEN40067"
 ></A
 ><H2
 >Name</H2
 >DROP OPERATOR&nbsp;--&nbsp;remove an operator</DIV
 ><A
-NAME="AEN39798"
+NAME="AEN40070"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN39800"
+NAME="AEN40072"
 ></A
 ><H2
 >Synopsis</H2
@@ -115,18 +115,18 @@ CLASS="SYNOPSIS"
 >DROP OPERATOR <VAR
 CLASS="REPLACEABLE"
 >name</VAR
-> ( <VAR
+> ( { <VAR
 CLASS="REPLACEABLE"
 >lefttype</VAR
-> | NONE , <VAR
+> | NONE } , { <VAR
 CLASS="REPLACEABLE"
 >righttype</VAR
-> | NONE ) [ CASCADE | RESTRICT ]</PRE
+> | NONE } ) [ CASCADE | RESTRICT ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39805"
+NAME="AEN40077"
 ></A
 ><H2
 >Description</H2
@@ -142,7 +142,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39809"
+NAME="AEN40081"
 ></A
 ><H2
 >Parameters</H2
@@ -169,9 +169,9 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >      The data type of the operator's left operand; write
-      <VAR
+      <TT
 CLASS="LITERAL"
->NONE</VAR
+>NONE</TT
 > if the operator has no left operand.
      </P
 ></DD
@@ -183,16 +183,16 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >      The data type of the operator's right operand; write
-      <VAR
+      <TT
 CLASS="LITERAL"
->NONE</VAR
+>NONE</TT
 > if the operator has no right operand.
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 ></DT
 ><DD
 ><P
@@ -200,9 +200,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->RESTRICT</VAR
+>RESTRICT</TT
 ></DT
 ><DD
 ><P
@@ -216,14 +216,14 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39839"
+NAME="AEN40111"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Remove the power operator <VAR
+>   Remove the power operator <TT
 CLASS="LITERAL"
->a^b</VAR
+>a^b</TT
 > for type <TT
 CLASS="TYPE"
 >integer</TT
@@ -235,9 +235,9 @@ CLASS="PROGRAMLISTING"
   </P
 ><P
 >   Remove the left unary bitwise complement operator
-   <VAR
+   <TT
 CLASS="LITERAL"
->~b</VAR
+>~b</TT
 > for type <TT
 CLASS="TYPE"
 >bit</TT
@@ -248,24 +248,24 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Remove the right unary factorial operator <VAR
+>   Remove the right unary factorial operator <TT
 CLASS="LITERAL"
->x!</VAR
+>x!</TT
 >
    for type <TT
 CLASS="TYPE"
->integer</TT
+>bigint</TT
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
->DROP OPERATOR ! (integer, none);</PRE
+>DROP OPERATOR ! (bigint, none);</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39853"
+NAME="AEN40125"
 ></A
 ><H2
 >Compatibility</H2
@@ -279,7 +279,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39857"
+NAME="AEN40129"
 ></A
 ><H2
 >See Also</H2
@@ -287,6 +287,11 @@ NAME="AEN39857"
 HREF="sql-createoperator.html"
 ><I
 >CREATE OPERATOR</I
+></A
+>, <A
+HREF="sql-alteroperator.html"
+><I
+>ALTER OPERATOR</I
 ></A
 ></DIV
 ><DIV

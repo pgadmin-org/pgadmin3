@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-ANALYZE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35652"
+NAME="AEN35540"
 ></A
 ><H2
 >Name</H2
 >ANALYZE&nbsp;--&nbsp;collect statistics about a database</DIV
 ><A
-NAME="AEN35655"
+NAME="AEN35543"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35657"
+NAME="AEN35545"
 ></A
 ><H2
 >Synopsis</H2
@@ -123,7 +123,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35661"
+NAME="AEN35549"
 ></A
 ><H2
 >Description</H2
@@ -133,9 +133,9 @@ CLASS="COMMAND"
 >ANALYZE</TT
 > collects statistics about the contents
    of tables in the database, and stores the results in the system
-   table <VAR
+   table <TT
 CLASS="LITERAL"
->pg_statistic</VAR
+>pg_statistic</TT
 >.  Subsequently, the query
    planner uses these statistics to help determine the most efficient
    execution plans for queries.
@@ -156,7 +156,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35669"
+NAME="AEN35557"
 ></A
 ><H2
 >Parameters</H2
@@ -166,9 +166,9 @@ NAME="AEN35669"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->VERBOSE</VAR
+>VERBOSE</TT
 ></DT
 ><DD
 ><P
@@ -202,14 +202,14 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35687"
+NAME="AEN35575"
 ></A
 ><H2
 >Outputs</H2
 ><P
->    When <VAR
+>    When <TT
 CLASS="LITERAL"
->VERBOSE</VAR
+>VERBOSE</TT
 > is specified, <TT
 CLASS="COMMAND"
 >ANALYZE</TT
@@ -221,7 +221,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35692"
+NAME="AEN35580"
 ></A
 ><H2
 >Notes</H2
@@ -305,10 +305,10 @@ CLASS="COMMAND"
   </P
 ><P
 >   The extent of analysis can be controlled by adjusting the
-   <VAR
-CLASS="VARNAME"
->DEFAULT_STATISTICS_TARGET</VAR
-> parameter variable, or
+   <A
+HREF="runtime-config.html#GUC-DEFAULT-STATISTICS-TARGET"
+>default_statistics_target</A
+> configuration variable, or
    on a column-by-column basis by setting the per-column statistics
    target with <TT
 CLASS="COMMAND"
@@ -328,22 +328,22 @@ HREF="sql-altertable.html"
 CLASS="COMMAND"
 >ANALYZE</TT
 > and the amount of space occupied in
-   <VAR
+   <TT
 CLASS="LITERAL"
->pg_statistic</VAR
+>pg_statistic</TT
 >.  In particular, setting the
    statistics target to zero disables collection of statistics for
    that column.  It may be useful to do that for columns that are
-   never used as part of the <VAR
+   never used as part of the <TT
 CLASS="LITERAL"
->WHERE</VAR
->, <VAR
+>WHERE</TT
+>, <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 >,
-   or <VAR
+   or <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clauses of queries, since the planner will
    have no use for statistics on such columns.
   </P
@@ -360,7 +360,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35722"
+NAME="AEN35610"
 ></A
 ><H2
 >Compatibility</H2

@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
 HREF="datatype.html"><LINK
 REL="PREVIOUS"
-TITLE="Arrays"
-HREF="arrays.html"><LINK
+TITLE="Composite Types"
+HREF="rowtypes.html"><LINK
 REL="NEXT"
 TITLE="Pseudo-Types"
 HREF="datatype-pseudo.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="arrays.html"
+HREF="rowtypes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -93,57 +93,62 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DATATYPE-OID"
->8.11. Object Identifier Types</A
+>8.12. Object Identifier Types</A
 ></H1
 ><A
-NAME="AEN5278"
+NAME="AEN5498"
 ></A
 ><A
-NAME="AEN5281"
+NAME="AEN5501"
 ></A
 ><A
-NAME="AEN5283"
+NAME="AEN5503"
 ></A
 ><A
-NAME="AEN5285"
+NAME="AEN5505"
 ></A
 ><A
-NAME="AEN5287"
+NAME="AEN5507"
 ></A
 ><A
-NAME="AEN5289"
+NAME="AEN5509"
 ></A
 ><A
-NAME="AEN5291"
+NAME="AEN5511"
 ></A
 ><A
-NAME="AEN5293"
+NAME="AEN5513"
 ></A
 ><A
-NAME="AEN5295"
+NAME="AEN5515"
 ></A
 ><A
-NAME="AEN5297"
+NAME="AEN5517"
 ></A
 ><A
-NAME="AEN5299"
+NAME="AEN5519"
 ></A
 ><P
 >    Object identifiers (OIDs) are used internally by
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> as primary keys for various system
-    tables.  Also, an OID system column is added to user-created tables
-    (unless <VAR
+> as primary keys for various
+    system tables.  An OID system column is also added to user-created
+    tables, unless <TT
 CLASS="LITERAL"
->WITHOUT OIDS</VAR
-> is specified at table creation time).
-    Type <TT
+>WITHOUT OIDS</TT
+> is specified when
+    the table is created, or the <A
+HREF="runtime-config.html#GUC-DEFAULT-WITH-OIDS"
+>default_with_oids</A
+>
+    configuration variable is set to false.  Type <TT
 CLASS="TYPE"
 >oid</TT
-> represents an object identifier.  There are also
-    several alias types for <TT
+>
+    represents an object identifier.  There are also several alias
+    types for <TT
 CLASS="TYPE"
 >oid</TT
 >: <TT
@@ -162,26 +167,66 @@ CLASS="TYPE"
 >, <TT
 CLASS="TYPE"
 >regclass</TT
->,
-    and <TT
+>, and
+    <TT
 CLASS="TYPE"
 >regtype</TT
 >. <A
 HREF="datatype-oid.html#DATATYPE-OID-TABLE"
 >Table 8-19</A
-> shows an overview.
+> shows an
+    overview.
    </P
 ><P
 >    The <TT
 CLASS="TYPE"
 >oid</TT
-> type is currently implemented as an unsigned four-byte
-    integer.
-    Therefore, it is not large enough to provide database-wide uniqueness
-    in large databases, or even in large individual tables.  So, using a
-    user-created table's OID column as a primary key is discouraged.
-    OIDs are best used only for references to system tables.
+> type is currently implemented as an unsigned
+    four-byte integer.  Therefore, it is not large enough to provide
+    database-wide uniqueness in large databases, or even in large
+    individual tables.  So, using a user-created table's OID column as
+    a primary key is discouraged.  OIDs are best used only for
+    references to system tables.
    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     OIDs are included by default in user-created tables in
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0.0beta1. However, this
+     behavior is likely to change in a future version of
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. Eventually, user-created
+     tables will not include an OID system column unless <TT
+CLASS="LITERAL"
+>WITH
+     OIDS</TT
+> is specified when the table is created, or the
+     <TT
+CLASS="VARNAME"
+>default_with_oids</TT
+> configuration variable is set
+     to true. If your application requires the presence of an OID
+     system column in a table, it should specify <TT
+CLASS="LITERAL"
+>WITH
+     OIDS</TT
+> when that table is created to ensure compatibility
+     with future releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+    </P
+></BLOCKQUOTE
+></DIV
 ><P
 >    The <TT
 CLASS="TYPE"
@@ -201,25 +246,25 @@ CLASS="TYPE"
 >oid</TT
 > would use.  The alias
     types allow simplified lookup of OID values for objects: for example,
-    one may write <VAR
+    one may write <TT
 CLASS="LITERAL"
->'mytable'::regclass</VAR
+>'mytable'::regclass</TT
 > to get the OID of table
-    <VAR
+    <TT
 CLASS="LITERAL"
->mytable</VAR
->, rather than <VAR
+>mytable</TT
+>, rather than <TT
 CLASS="LITERAL"
 >SELECT oid FROM pg_class WHERE
-    relname = 'mytable'</VAR
+    relname = 'mytable'</TT
 >.  (In reality, a much more complicated <TT
 CLASS="COMMAND"
 >SELECT</TT
 > would
     be needed to deal with selecting the right OID when there are multiple
-    tables named <VAR
+    tables named <TT
 CLASS="LITERAL"
->mytable</VAR
+>mytable</TT
 > in different schemas.)
    </P
 ><DIV
@@ -258,9 +303,9 @@ CLASS="TYPE"
 ><TD
 >numeric object identifier</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->564182</VAR
+>564182</TT
 ></TD
 ></TR
 ><TR
@@ -277,9 +322,9 @@ CLASS="STRUCTNAME"
 ><TD
 >function name</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->sum</VAR
+>sum</TT
 ></TD
 ></TR
 ><TR
@@ -296,9 +341,9 @@ CLASS="STRUCTNAME"
 ><TD
 >function with argument types</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->sum(int4)</VAR
+>sum(int4)</TT
 ></TD
 ></TR
 ><TR
@@ -315,9 +360,9 @@ CLASS="STRUCTNAME"
 ><TD
 >operator name</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->+</VAR
+>+</TT
 ></TD
 ></TR
 ><TR
@@ -334,12 +379,12 @@ CLASS="STRUCTNAME"
 ><TD
 >operator with argument types</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->*(integer,integer)</VAR
-> or <VAR
+>*(integer,integer)</TT
+> or <TT
 CLASS="LITERAL"
->-(NONE,integer)</VAR
+>-(NONE,integer)</TT
 ></TD
 ></TR
 ><TR
@@ -356,9 +401,9 @@ CLASS="STRUCTNAME"
 ><TD
 >relation name</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->pg_type</VAR
+>pg_type</TT
 ></TD
 ></TR
 ><TR
@@ -375,9 +420,9 @@ CLASS="STRUCTNAME"
 ><TD
 >data type name</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->integer</VAR
+>integer</TT
 ></TD
 ></TR
 ></TBODY
@@ -406,9 +451,9 @@ CLASS="TYPE"
 CLASS="TYPE"
 >regoperator</TT
 >,
-    unary operators are identified by writing <VAR
+    unary operators are identified by writing <TT
 CLASS="LITERAL"
->NONE</VAR
+>NONE</TT
 > for the unused
     operand.
    </P
@@ -479,7 +524,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="arrays.html"
+HREF="rowtypes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -507,7 +552,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Arrays</TD
+>Composite Types</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Information Schema"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="information-schema.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 32. The Information Schema</TD
+>Chapter 30. The Information Schema</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,15 +93,15 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-TRIGGERS"
->32.37. <VAR
+>30.37. <TT
 CLASS="LITERAL"
->triggers</VAR
+>triggers</TT
 ></A
 ></H1
 ><P
->   The view <VAR
+>   The view <TT
 CLASS="LITERAL"
->triggers</VAR
+>triggers</TT
 > contains all triggers defined
    in the current database that are owned by the current user.  (The
    owner of the table is the owner of the trigger.)
@@ -109,13 +109,13 @@ CLASS="LITERAL"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN28221"
+NAME="AEN27426"
 ></A
 ><P
 ><B
->Table 32-35. <VAR
+>Table 30-35. <TT
 CLASS="LITERAL"
->triggers</VAR
+>triggers</TT
 > Columns</B
 ></P
 ><TABLE
@@ -134,9 +134,9 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->trigger_catalog</VAR
+>trigger_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -148,9 +148,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->trigger_schema</VAR
+>trigger_schema</TT
 ></TD
 ><TD
 ><TT
@@ -162,9 +162,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->trigger_name</VAR
+>trigger_name</TT
 ></TD
 ><TD
 ><TT
@@ -176,9 +176,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->event_manipulation</VAR
+>event_manipulation</TT
 ></TD
 ><TD
 ><TT
@@ -186,24 +186,24 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->       Event that fires the trigger (<VAR
+>       Event that fires the trigger (<TT
 CLASS="LITERAL"
->INSERT</VAR
+>INSERT</TT
 >,
-       <VAR
+       <TT
 CLASS="LITERAL"
->UPDATE</VAR
->, or <VAR
+>UPDATE</TT
+>, or <TT
 CLASS="LITERAL"
->DELETE</VAR
+>DELETE</TT
 >)
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->event_object_catalog</VAR
+>event_object_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -217,9 +217,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->event_object_schema</VAR
+>event_object_schema</TT
 ></TD
 ><TD
 ><TT
@@ -231,9 +231,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->event_object_name</VAR
+>event_object_name</TT
 ></TD
 ><TD
 ><TT
@@ -245,9 +245,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->action_order</VAR
+>action_order</TT
 ></TD
 ><TD
 ><TT
@@ -259,9 +259,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->action_condition</VAR
+>action_condition</TT
 ></TD
 ><TD
 ><TT
@@ -269,13 +269,16 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->action_statement</VAR
+>action_statement</TT
 ></TD
 ><TD
 ><TT
@@ -284,21 +287,21 @@ CLASS="TYPE"
 ></TD
 ><TD
 >       Statement that is executed by the trigger (currently always
-       <VAR
+       <TT
 CLASS="LITERAL"
 >EXECUTE PROCEDURE
        <VAR
 CLASS="REPLACEABLE"
 >function</VAR
->(...)</VAR
+>(...)</TT
 >)
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->action_orientation</VAR
+>action_orientation</TT
 ></TD
 ><TD
 ><TT
@@ -307,21 +310,21 @@ CLASS="TYPE"
 ></TD
 ><TD
 >       Identifies whether the trigger fires once for each processed
-       row or once for each statement (<VAR
+       row or once for each statement (<TT
 CLASS="LITERAL"
->ROW</VAR
+>ROW</TT
 > or
-       <VAR
+       <TT
 CLASS="LITERAL"
->STATEMENT</VAR
+>STATEMENT</TT
 >)
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->condition_timing</VAR
+>condition_timing</TT
 ></TD
 ><TD
 ><TT
@@ -329,21 +332,21 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->       Time at which the trigger fires (<VAR
+>       Time at which the trigger fires (<TT
 CLASS="LITERAL"
->BEFORE</VAR
+>BEFORE</TT
 > or
-       <VAR
+       <TT
 CLASS="LITERAL"
->AFTER</VAR
+>AFTER</TT
 >)
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->condition_reference_old_table</VAR
+>condition_reference_old_table</TT
 ></TD
 ><TD
 ><TT
@@ -351,13 +354,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->condition_reference_new_table</VAR
+>condition_reference_new_table</TT
 ></TD
 ><TD
 ><TT
@@ -365,7 +371,10 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ></TBODY
 ></TABLE
@@ -383,39 +392,39 @@ CLASS="PRODUCTNAME"
 >, rather
    than independent schema objects.  Therefore there may be duplicate
    trigger names defined in one schema, as long as they belong to
-   different tables.  (<VAR
+   different tables.  (<TT
 CLASS="LITERAL"
->trigger_catalog</VAR
+>trigger_catalog</TT
 > and
-   <VAR
+   <TT
 CLASS="LITERAL"
->trigger_schema</VAR
+>trigger_schema</TT
 > are really the values pertaining
    to the table that the trigger is defined on.)  Second, triggers can
    be defined to fire on multiple events in
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> (e.g., <VAR
+> (e.g., <TT
 CLASS="LITERAL"
 >ON INSERT OR
-   UPDATE</VAR
+   UPDATE</TT
 >), whereas the SQL standard only allows one.  If a
    trigger is defined to fire on multiple events, it is represented as
    multiple rows in the information schema, one for each type of
    event.  As a consequence of these two issues, the primary key of
-   the view <VAR
+   the view <TT
 CLASS="LITERAL"
->triggers</VAR
+>triggers</TT
 > is really
-   <VAR
+   <TT
 CLASS="LITERAL"
 >(trigger_catalog, trigger_schema, trigger_name,
-   event_object_name, event_manipulation)</VAR
+   event_object_name, event_manipulation)</TT
 > instead of
-   <VAR
+   <TT
 CLASS="LITERAL"
->(trigger_catalog, trigger_schema, trigger_name)</VAR
+>(trigger_catalog, trigger_schema, trigger_name)</TT
 >,
    which is what the SQL standard specifies.  Nonetheless, if you
    define your triggers in a manner that conforms with the SQL
@@ -467,9 +476,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->tables</VAR
+>tables</TT
 ></TD
 ><TD
 WIDTH="34%"
@@ -484,9 +493,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->usage_privileges</VAR
+>usage_privileges</TT
 ></TD
 ></TR
 ></TABLE

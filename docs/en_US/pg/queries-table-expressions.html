@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Queries"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,48 +96,48 @@ NAME="QUERIES-TABLE-EXPRESSIONS"
 >7.2. Table Expressions</A
 ></H1
 ><A
-NAME="AEN2546"
+NAME="AEN2644"
 ></A
 ><P
 >   A <I
 CLASS="FIRSTTERM"
 >table expression</I
 > computes a table.  The
-   table expression contains a <VAR
+   table expression contains a <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause that is
-   optionally followed by <VAR
+   optionally followed by <TT
 CLASS="LITERAL"
->WHERE</VAR
->, <VAR
+>WHERE</TT
+>, <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 >, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clauses.  Trivial table expressions simply refer
    to a table on disk, a so-called base table, but more complex
    expressions can be used to modify or combine base tables in various
    ways.
   </P
 ><P
->   The optional <VAR
+>   The optional <TT
 CLASS="LITERAL"
->WHERE</VAR
->, <VAR
+>WHERE</TT
+>, <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 >, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clauses in the table expression specify a
    pipeline of successive transformations performed on the table
-   derived in the <VAR
+   derived in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause.  All these transformations
    produce a virtual table that provides the rows that are passed to
    the select list to compute the output rows of the query.
@@ -148,17 +148,22 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="QUERIES-FROM"
->7.2.1. The <VAR
+>7.2.1. The <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > Clause</A
 ></H2
 ><P
->    The <VAR
-CLASS="LITERAL"
->FROM</VAR
-> clause derives a table from one or more other
-    tables given in a comma-separated table reference list.
+>    The <A
+HREF="sql-select.html#SQL-FROM"
+><I
+><I
+>FROM</I
+> Clause</I
+></A
+> derives a
+    table from one or more other tables given in a comma-separated
+    table reference list.
 </P><PRE
 CLASS="SYNOPSIS"
 >FROM <VAR
@@ -179,34 +184,34 @@ CLASS="OPTIONAL"
     A table reference may be a table name (possibly schema-qualified),
     or a derived table such as a subquery, a table join, or complex
     combinations of these.  If more than one table reference is listed
-    in the <VAR
+    in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause they are cross-joined (see below)
     to form the intermediate virtual table that may then be subject to
-    transformations by the <VAR
+    transformations by the <TT
 CLASS="LITERAL"
->WHERE</VAR
->, <VAR
+>WHERE</TT
+>, <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 >,
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clauses and is finally the result of the
     overall table expression.
    </P
 ><A
-NAME="AEN2573"
+NAME="AEN2671"
 ></A
 ><P
 >    When a table reference names a table that is the supertable of a
     table inheritance hierarchy, the table reference produces rows of
     not only that table but all of its subtable successors, unless the
-    key word <VAR
+    key word <TT
 CLASS="LITERAL"
->ONLY</VAR
+>ONLY</TT
 > precedes the table name.  However, the
     reference produces only the columns that appear in the named table
     --- any columns added in subtables are ignored.
@@ -220,7 +225,7 @@ NAME="QUERIES-JOIN"
 >7.2.1.1. Joined Tables</A
 ></H3
 ><A
-NAME="AEN2579"
+NAME="AEN2677"
 ></A
 ><P
 >     A joined table is a table derived from two other (real or
@@ -270,7 +275,7 @@ CLASS="REPLACEABLE"
         table will have N * M rows.
        </P
 ><P
->        <VAR
+>        <TT
 CLASS="LITERAL"
 >FROM <VAR
 CLASS="REPLACEABLE"
@@ -279,9 +284,9 @@ CLASS="REPLACEABLE"
         <VAR
 CLASS="REPLACEABLE"
 >T2</VAR
-></VAR
+></TT
 > is equivalent to
-        <VAR
+        <TT
 CLASS="LITERAL"
 >FROM <VAR
 CLASS="REPLACEABLE"
@@ -290,9 +295,9 @@ CLASS="REPLACEABLE"
         <VAR
 CLASS="REPLACEABLE"
 >T2</VAR
-></VAR
+></TT
 >.  It is also equivalent to
-        <VAR
+        <TT
 CLASS="LITERAL"
 >FROM <VAR
 CLASS="REPLACEABLE"
@@ -301,7 +306,7 @@ CLASS="REPLACEABLE"
         <VAR
 CLASS="REPLACEABLE"
 >T2</VAR
-> ON TRUE</VAR
+> ON TRUE</TT
 > (see below).
        </P
 ></DD
@@ -356,28 +361,28 @@ CLASS="REPLACEABLE"
 >T2</VAR
 ></PRE
 ><P
->        The words <VAR
+>        The words <TT
 CLASS="LITERAL"
->INNER</VAR
+>INNER</TT
 > and
-        <VAR
+        <TT
 CLASS="LITERAL"
->OUTER</VAR
+>OUTER</TT
 > are optional in all forms.
-        <VAR
+        <TT
 CLASS="LITERAL"
->INNER</VAR
+>INNER</TT
 > is the default;
-        <VAR
+        <TT
 CLASS="LITERAL"
->LEFT</VAR
->, <VAR
+>LEFT</TT
+>, <TT
 CLASS="LITERAL"
->RIGHT</VAR
+>RIGHT</TT
 >, and
-        <VAR
+        <TT
 CLASS="LITERAL"
->FULL</VAR
+>FULL</TT
 > imply an outer join.
        </P
 ><P
@@ -385,16 +390,16 @@ CLASS="LITERAL"
 CLASS="FIRSTTERM"
 >join condition</I
 > is specified in the
-        <VAR
+        <TT
 CLASS="LITERAL"
->ON</VAR
-> or <VAR
+>ON</TT
+> or <TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 > clause, or implicitly by
-        the word <VAR
+        the word <TT
 CLASS="LITERAL"
->NATURAL</VAR
+>NATURAL</TT
 >.  The join condition determines
         which rows from the two source tables are considered to
         <SPAN
@@ -403,14 +408,14 @@ CLASS="QUOTE"
 >, as explained in detail below.
        </P
 ><P
->        The <VAR
+>        The <TT
 CLASS="LITERAL"
->ON</VAR
+>ON</TT
 > clause is the most general kind of join
         condition: it takes a Boolean value expression of the same
-        kind as is used in a <VAR
+        kind as is used in a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause.  A pair of rows
         from <VAR
 CLASS="REPLACEABLE"
@@ -419,76 +424,76 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >T2</VAR
 > match if the
-        <VAR
+        <TT
 CLASS="LITERAL"
->ON</VAR
+>ON</TT
 > expression evaluates to true for them.
        </P
 ><P
->        <VAR
+>        <TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 > is a shorthand notation: it takes a
         comma-separated list of column names, which the joined tables
         must have in common, and forms a join condition specifying
         equality of each of these pairs of columns.  Furthermore, the
-        output of a <VAR
+        output of a <TT
 CLASS="LITERAL"
->JOIN USING</VAR
+>JOIN USING</TT
 > has one column for each of
         the equated pairs of input columns, followed by all of the
-        other columns from each table.  Thus, <VAR
+        other columns from each table.  Thus, <TT
 CLASS="LITERAL"
 >USING (a, b,
-        c)</VAR
-> is equivalent to <VAR
+        c)</TT
+> is equivalent to <TT
 CLASS="LITERAL"
 >ON (t1.a = t2.a AND
-        t1.b = t2.b AND t1.c = t2.c)</VAR
+        t1.b = t2.b AND t1.c = t2.c)</TT
 > with the exception that
-        if <VAR
+        if <TT
 CLASS="LITERAL"
->ON</VAR
+>ON</TT
 > is used there will be two columns
-        <VAR
+        <TT
 CLASS="LITERAL"
->a</VAR
->, <VAR
+>a</TT
+>, <TT
 CLASS="LITERAL"
->b</VAR
->, and <VAR
+>b</TT
+>, and <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 > in the result,
-        whereas with <VAR
+        whereas with <TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 > there will be only one of each.
        </P
 ><P
 >        <A
-NAME="AEN2663"
+NAME="AEN2761"
 ></A
 >
         <A
-NAME="AEN2666"
+NAME="AEN2764"
 ></A
 >
-        Finally, <VAR
+        Finally, <TT
 CLASS="LITERAL"
->NATURAL</VAR
+>NATURAL</TT
 > is a shorthand form of
-        <VAR
+        <TT
 CLASS="LITERAL"
->USING</VAR
->: it forms a <VAR
+>USING</TT
+>: it forms a <TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 > list
         consisting of exactly those column names that appear in both
-        input tables.  As with <VAR
+        input tables.  As with <TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 >, these columns appear
         only once in the output table.
        </P
@@ -501,9 +506,9 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->INNER JOIN</VAR
+>INNER JOIN</TT
 ></DT
 ><DD
 ><P
@@ -512,9 +517,9 @@ CLASS="LITERAL"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->LEFT OUTER JOIN</VAR
+>LEFT OUTER JOIN</TT
 ></DT
 ><DD
 ><P
@@ -526,9 +531,9 @@ CLASS="LITERAL"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->RIGHT OUTER JOIN</VAR
+>RIGHT OUTER JOIN</TT
 ></DT
 ><DD
 ><P
@@ -540,9 +545,9 @@ CLASS="LITERAL"
           </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->FULL OUTER JOIN</VAR
+>FULL OUTER JOIN</TT
 ></DT
 ><DD
 ><P
@@ -571,20 +576,20 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >T2</VAR
 > may be joined tables.  Parentheses
-     may be used around <VAR
+     may be used around <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > clauses to control the join
-     order.  In the absence of parentheses, <VAR
+     order.  In the absence of parentheses, <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > clauses
      nest left-to-right.
     </P
 ><P
->     To put this together, assume we have tables <VAR
+>     To put this together, assume we have tables <TT
 CLASS="LITERAL"
->t1</VAR
+>t1</TT
 >
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -594,9 +599,9 @@ CLASS="PROGRAMLISTING"
    2 | b
    3 | c</PRE
 ><P>
-     and <VAR
+     and <TT
 CLASS="LITERAL"
->t2</VAR
+>t2</TT
 >
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -727,9 +732,9 @@ CLASS="USERINPUT"
 ><P>
     </P
 ><P
->     The join condition specified with <VAR
+>     The join condition specified with <TT
 CLASS="LITERAL"
->ON</VAR
+>ON</TT
 > can also contain
      conditions that do not relate directly to the join.  This can
      prove useful for some queries but needs to be thought out
@@ -761,10 +766,10 @@ NAME="QUERIES-TABLE-ALIASES"
 >7.2.1.2. Table and Column Aliases</A
 ></H3
 ><A
-NAME="AEN2738"
+NAME="AEN2836"
 ></A
 ><A
-NAME="AEN2741"
+NAME="AEN2839"
 ></A
 ><P
 >     A temporary name can be given to tables and complex table
@@ -798,9 +803,9 @@ CLASS="REPLACEABLE"
 >alias</VAR
 ></PRE
 ><P>
-     The <VAR
+     The <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 > key word is noise.
      <VAR
 CLASS="REPLACEABLE"
@@ -830,9 +835,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > extension to the standard)
      is that an implicit table reference is added to the
-     <VAR
+     <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause, so the query is processed as if
      it were written as
 </P><PRE
@@ -857,9 +862,9 @@ HREF="queries-table-expressions.html#QUERIES-SUBQUERIES"
     </P
 ><P
 >     Parentheses are used to resolve ambiguities.  The following
-     statement will assign the alias <VAR
+     statement will assign the alias <TT
 CLASS="LITERAL"
->b</VAR
+>b</TT
 > to the
      result of the join, unlike the previous example:
 </P><PRE
@@ -899,14 +904,14 @@ CLASS="OPTIONAL"
      especially useful for self-joins or subqueries.
     </P
 ><P
->     When an alias is applied to the output of a <VAR
+>     When an alias is applied to the output of a <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 >
      clause, using any of these forms, the alias hides the original
-     names within the <VAR
+     names within the <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 >.  For example,
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -917,13 +922,13 @@ CLASS="PROGRAMLISTING"
 CLASS="PROGRAMLISTING"
 >SELECT a.* FROM (my_table AS a JOIN your_table AS b ON ...) AS c</PRE
 ><P>
-     is not valid: the table alias <VAR
+     is not valid: the table alias <TT
 CLASS="LITERAL"
->a</VAR
+>a</TT
 > is not visible
-     outside the alias <VAR
+     outside the alias <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 >.
     </P
 ></DIV
@@ -936,7 +941,7 @@ NAME="QUERIES-SUBQUERIES"
 >7.2.1.3. Subqueries</A
 ></H3
 ><A
-NAME="AEN2786"
+NAME="AEN2884"
 ></A
 ><P
 >     Subqueries specifying a derived table must be enclosed in
@@ -958,10 +963,10 @@ CLASS="PROGRAMLISTING"
 ><P>
     </P
 ><P
->     This example is equivalent to <VAR
+>     This example is equivalent to <TT
 CLASS="LITERAL"
 >FROM table1 AS
-     alias_name</VAR
+     alias_name</TT
 >.  More interesting cases, which can't be
      reduced to a plain join, arise when the subquery involves
      grouping or aggregation.
@@ -976,29 +981,29 @@ NAME="QUERIES-TABLEFUNCTIONS"
 >7.2.1.4. Table Functions</A
 ></H3
 ><A
-NAME="AEN2796"
+NAME="AEN2894"
 ></A
 ><A
-NAME="AEN2798"
+NAME="AEN2896"
 ></A
 ><P
 >     Table functions are functions that produce a set of rows, made up
      of either base data types (scalar types) or composite data types
      (table rows).  They are used like a table, view, or subquery in
-     the <VAR
+     the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause of a query. Columns returned by table
-     functions may be included in <VAR
+     functions may be included in <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 >,
-     <VAR
+     <TT
 CLASS="LITERAL"
->JOIN</VAR
->, or <VAR
+>JOIN</TT
+>, or <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clauses in the same manner
      as a table, view, or subquery column.
     </P
@@ -1009,14 +1014,14 @@ CLASS="LITERAL"
      individual attributes of the type.
     </P
 ><P
->     A table function may be aliased in the <VAR
+>     A table function may be aliased in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause,
      but it also may be left unaliased. If a function is used in the
-     <VAR
+     <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause with no alias, the function name is used
      as the resulting table name.
     </P
@@ -1026,9 +1031,9 @@ CLASS="LITERAL"
 CLASS="PROGRAMLISTING"
 >CREATE TABLE foo (fooid int, foosubid int, fooname text);
 
-CREATE FUNCTION getfoo(int) RETURNS SETOF foo AS '
+CREATE FUNCTION getfoo(int) RETURNS SETOF foo AS $$
     SELECT * FROM foo WHERE fooid = $1;
-' LANGUAGE SQL;
+$$ LANGUAGE SQL;
 
 SELECT * FROM getfoo(1) AS t1;
 
@@ -1058,9 +1063,9 @@ CLASS="PROGRAMLISTING"
       AS t1(proname name, prosrc text)
     WHERE proname LIKE 'bytea%';</PRE
 ><P>
-     The <VAR
+     The <TT
 CLASS="LITERAL"
->dblink</VAR
+>dblink</TT
 > function executes a remote query (see
      <TT
 CLASS="FILENAME"
@@ -1071,9 +1076,9 @@ CLASS="TYPE"
 >record</TT
 > since it might be used for any kind of query.
      The actual column set must be specified in the calling query so
-     that the parser knows, for example, what <VAR
+     that the parser knows, for example, what <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > should
      expand to.
     </P
@@ -1085,18 +1090,22 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="QUERIES-WHERE"
->7.2.2. The <VAR
+>7.2.2. The <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > Clause</A
 ></H2
 ><A
-NAME="AEN2822"
+NAME="AEN2920"
 ></A
 ><P
->    The syntax of the <VAR
-CLASS="LITERAL"
->WHERE</VAR
+>    The syntax of the <A
+HREF="sql-select.html#SQL-WHERE"
+><I
+><I
+>WHERE</I
+> Clause</I
+></A
 > clause is
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1119,22 +1128,22 @@ CLASS="TYPE"
 >.
    </P
 ><P
->    After the processing of the <VAR
+>    After the processing of the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause is done, each
     row of the derived virtual table is checked against the search
     condition.  If the result of the condition is true, the row is
     kept in the output table, otherwise (that is, if the result is
     false or null) it is discarded.  The search condition typically
     references at least some column in the table generated in the
-    <VAR
+    <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause; this is not required, but otherwise the
-    <VAR
+    <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause will be fairly useless.
    </P
 ><DIV
@@ -1144,14 +1153,14 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     Before the implementation of the <VAR
+>     Before the implementation of the <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > syntax, it was
      necessary to put the join condition of an inner join in the
-     <VAR
+     <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause.  For example, these table expressions
      are equivalent:
 </P><PRE
@@ -1169,24 +1178,24 @@ CLASS="PROGRAMLISTING"
 >FROM a NATURAL JOIN b WHERE b.val &gt; 5</PRE
 ><P>
      Which one of these you use is mainly a matter of style.  The
-     <VAR
+     <TT
 CLASS="LITERAL"
->JOIN</VAR
-> syntax in the <VAR
+>JOIN</TT
+> syntax in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause is
      probably not as portable to other SQL database management systems.  For
      outer joins there is no choice in any case: they must be done in
-     the <VAR
+     the <TT
 CLASS="LITERAL"
->FROM</VAR
-> clause.  An <VAR
+>FROM</TT
+> clause.  An <TT
 CLASS="LITERAL"
->ON</VAR
->/<VAR
+>ON</TT
+>/<TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 >
      clause of an outer join is <SPAN
 CLASS="emphasis"
@@ -1195,9 +1204,9 @@ CLASS="EMPHASIS"
 >not</I
 ></SPAN
 > equivalent to a
-     <VAR
+     <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > condition, because it determines the addition
      of rows (for unmatched input rows) as well as the removal of rows
      from the final result.
@@ -1205,9 +1214,9 @@ CLASS="LITERAL"
 ></BLOCKQUOTE
 ></DIV
 ><P
->    Here are some examples of <VAR
+>    Here are some examples of <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clauses:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1223,38 +1232,38 @@ SELECT ... FROM fdt WHERE c1 BETWEEN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10) 
 
 SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &#62; fdt.c1)</PRE
 ><P>
-    <VAR
+    <TT
 CLASS="LITERAL"
->fdt</VAR
+>fdt</TT
 > is the table derived in the
-    <VAR
+    <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause. Rows that do not meet the search
-    condition of the <VAR
+    condition of the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause are eliminated from
-    <VAR
+    <TT
 CLASS="LITERAL"
->fdt</VAR
+>fdt</TT
 >. Notice the use of scalar subqueries as
     value expressions.  Just like any other query, the subqueries can
     employ complex table expressions.  Notice also how
-    <VAR
+    <TT
 CLASS="LITERAL"
->fdt</VAR
+>fdt</TT
 > is referenced in the subqueries.
-    Qualifying <VAR
+    Qualifying <TT
 CLASS="LITERAL"
->c1</VAR
-> as <VAR
+>c1</TT
+> as <TT
 CLASS="LITERAL"
->fdt.c1</VAR
+>fdt.c1</TT
 > is only necessary
-    if <VAR
+    if <TT
 CLASS="LITERAL"
->c1</VAR
+>c1</TT
 > is also the name of a column in the derived
     input table of the subquery.  But qualifying the column name adds
     clarity even when it is not needed.  This example shows how the column
@@ -1267,32 +1276,32 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="QUERIES-GROUP"
->7.2.3. The <VAR
+>7.2.3. The <TT
 CLASS="LITERAL"
->GROUP BY</VAR
-> and <VAR
+>GROUP BY</TT
+> and <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > Clauses</A
 ></H2
 ><A
-NAME="AEN2864"
+NAME="AEN2962"
 ></A
 ><A
-NAME="AEN2866"
+NAME="AEN2964"
 ></A
 ><P
->    After passing the <VAR
+>    After passing the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > filter, the derived input
-    table may be subject to grouping, using the <VAR
+    table may be subject to grouping, using the <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 >
-    clause, and elimination of group rows using the <VAR
+    clause, and elimination of group rows using the <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 >
     clause.
    </P
@@ -1318,16 +1327,21 @@ CLASS="REPLACEABLE"
 ></SPAN
 >]...</PRE
 ><P
->    The <VAR
-CLASS="LITERAL"
->GROUP BY</VAR
-> clause is used to group together those rows in
-    a table that share the same values in all the columns listed. The
-    order in which the columns are listed does not matter.  The
-    purpose is to reduce each group of rows sharing common values into
-    one group row that is representative of all rows in the group.
-    This is done to eliminate redundancy in the output and/or compute
-    aggregates that apply to these groups.  For instance:
+>    The <A
+HREF="sql-select.html#SQL-GROUPBY"
+><I
+><I
+>GROUP BY</I
+> Clause</I
+></A
+> is
+    used to group together those rows in a table that share the same
+    values in all the columns listed. The order in which the columns
+    are listed does not matter.  The purpose is to reduce each group
+    of rows sharing common values into one group row that is
+    representative of all rows in the group.  This is done to
+    eliminate redundancy in the output and/or compute aggregates that
+    apply to these groups.  For instance:
 </P><PRE
 CLASS="SCREEN"
 ><SAMP
@@ -1361,14 +1375,14 @@ CLASS="USERINPUT"
 ><P>
    </P
 ><P
->    In the second query, we could not have written <VAR
+>    In the second query, we could not have written <TT
 CLASS="LITERAL"
 >SELECT *
-    FROM test1 GROUP BY x</VAR
+    FROM test1 GROUP BY x</TT
 >, because there is no single value
-    for the column <VAR
+    for the column <TT
 CLASS="LITERAL"
->y</VAR
+>y</TT
 > that could be associated with each
     group.  The grouped-by columns can be referenced in the select list since
     they have a known constant value per group.
@@ -1393,9 +1407,9 @@ CLASS="USERINPUT"
  c |   2
 (3 rows)</PRE
 ><P>
-    Here <VAR
+    Here <TT
 CLASS="LITERAL"
->sum</VAR
+>sum</TT
 > is an aggregate function that
     computes a single value over the entire group.  More information
     about the available aggregate functions can be found in <A
@@ -1412,9 +1426,9 @@ CLASS="TIP"
 >Tip: </B
 >     Grouping without aggregate expressions effectively calculates the
      set of distinct values in a column.  This can also be achieved
-     using the <VAR
+     using the <TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 > clause (see <A
 HREF="queries-select-lists.html#QUERIES-DISTINCT"
 >Section 7.3.3</A
@@ -1431,72 +1445,72 @@ CLASS="PROGRAMLISTING"
     FROM products p LEFT JOIN sales s USING (product_id)
     GROUP BY product_id, p.name, p.price;</PRE
 ><P>
-    In this example, the columns <VAR
+    In this example, the columns <TT
 CLASS="LITERAL"
->product_id</VAR
+>product_id</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->p.name</VAR
->, and <VAR
+>p.name</TT
+>, and <TT
 CLASS="LITERAL"
->p.price</VAR
+>p.price</TT
 > must be
-    in the <VAR
+    in the <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > clause since they are referenced in
     the query select list.  (Depending on how exactly the products
     table is set up, name and price may be fully dependent on the
     product ID, so the additional groupings could theoretically be
     unnecessary, but this is not implemented yet.)  The column
-    <VAR
+    <TT
 CLASS="LITERAL"
->s.units</VAR
-> does not have to be in the <VAR
+>s.units</TT
+> does not have to be in the <TT
 CLASS="LITERAL"
 >GROUP
-    BY</VAR
+    BY</TT
 > list since it is only used in an aggregate expression
-    (<VAR
+    (<TT
 CLASS="LITERAL"
->sum(...)</VAR
+>sum(...)</TT
 >), which represents the sales
     of a product.  For each product, the query returns a summary row about
     all sales of the product.
    </P
 ><P
->    In strict SQL, <VAR
+>    In strict SQL, <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > can only group by columns of
     the source table but <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > extends
-    this to also allow <VAR
+    this to also allow <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 > to group by columns in the
     select list.  Grouping by value expressions instead of simple
     column names is also allowed.
    </P
 ><A
-NAME="AEN2911"
+NAME="AEN3009"
 ></A
 ><P
->    If a table has been grouped using a <VAR
+>    If a table has been grouped using a <TT
 CLASS="LITERAL"
->GROUP BY</VAR
+>GROUP BY</TT
 >
     clause, but then only certain groups are of interest, the
-    <VAR
+    <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clause can be used, much like a
-    <VAR
+    <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause, to eliminate groups from a grouped
     table.  The syntax is:
 </P><PRE
@@ -1512,9 +1526,9 @@ CLASS="REPLACEABLE"
 >boolean_expression</VAR
 ></PRE
 ><P>
-    Expressions in the <VAR
+    Expressions in the <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clause can refer both to
     grouped expressions and to ungrouped expressions (which necessarily
     involve an aggregate function).
@@ -1560,14 +1574,14 @@ CLASS="PROGRAMLISTING"
     GROUP BY product_id, p.name, p.price, p.cost
     HAVING sum(p.price * s.units) &#62; 5000;</PRE
 ><P>
-    In the example above, the <VAR
+    In the example above, the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause is selecting
     rows by a column that is not grouped (the expression is only true for
-    sales during the last four weeks), while the <VAR
+    sales during the last four weeks), while the <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 >
     clause restricts the output to groups with total gross sales over
     5000.  Note that the aggregate expressions do not necessarily need

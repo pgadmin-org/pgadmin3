@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="INDEXES-EXPRESSIONAL"
 >11.5. Indexes on Expressions</A
 ></H1
 ><A
-NAME="AEN13243"
+NAME="AEN13918"
 ></A
 ><P
 >   An index column need not be just a column of the underlying table,
@@ -115,9 +115,9 @@ CLASS="PROGRAMLISTING"
 >SELECT * FROM test1 WHERE lower(col1) = 'value';</PRE
 ><P>
    This query can use an index, if one has been
-   defined on the result of the <VAR
+   defined on the result of the <TT
 CLASS="LITERAL"
->lower(col1)</VAR
+>lower(col1)</TT
 >
    operation:
 </P><PRE
@@ -126,17 +126,17 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   If we were to declare this index <VAR
+>   If we were to declare this index <TT
 CLASS="LITERAL"
->UNIQUE</VAR
+>UNIQUE</TT
 >, it would prevent
-   creation of rows whose <VAR
+   creation of rows whose <TT
 CLASS="LITERAL"
->col1</VAR
+>col1</TT
 > values differ only in case,
-   as well as rows whose <VAR
+   as well as rows whose <TT
 CLASS="LITERAL"
->col1</VAR
+>col1</TT
 > values are actually identical.
    Thus, indexes on expressions can be used to enforce constraints that
    are not definable as simple unique constraints.

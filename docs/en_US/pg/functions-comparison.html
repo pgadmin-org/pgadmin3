@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="FUNCTIONS-COMPARISON"
 >9.2. Comparison Operators</A
 ></H1
 ><A
-NAME="AEN5619"
+NAME="AEN5848"
 ></A
 ><P
 >    The usual comparison operators are available, shown in <A
@@ -127,57 +127,57 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&lt;</VAR
+>&lt;</TT
 > </TD
 ><TD
 >less than</TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 > </TD
 ><TD
 >greater than</TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&lt;=</VAR
+>&lt;=</TT
 > </TD
 ><TD
 >less than or equal to</TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&gt;=</VAR
+>&gt;=</TT
 > </TD
 ><TD
 >greater than or equal to</TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 > </TD
 ><TD
 >equal</TD
 ></TR
 ><TR
 ><TD
-> <VAR
+> <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
-> or <VAR
+>&lt;&gt;</TT
+> or <TT
 CLASS="LITERAL"
->!=</VAR
+>!=</TT
 > </TD
 ><TD
 >not equal</TD
@@ -192,21 +192,21 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     The <VAR
+>     The <TT
 CLASS="LITERAL"
->!=</VAR
+>!=</TT
 > operator is converted to
-     <VAR
+     <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
+>&lt;&gt;</TT
 > in the parser stage.  It is not
-     possible to implement <VAR
+     possible to implement <TT
 CLASS="LITERAL"
->!=</VAR
+>!=</TT
 > and
-     <VAR
+     <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
+>&lt;&gt;</TT
 > operators that do different things.
     </P
 ></BLOCKQUOTE
@@ -218,22 +218,22 @@ CLASS="LITERAL"
 CLASS="TYPE"
 >boolean</TT
 >; expressions like
-    <VAR
+    <TT
 CLASS="LITERAL"
->1 &lt; 2 &lt; 3</VAR
+>1 &lt; 2 &lt; 3</TT
 > are not valid (because there is
-    no <VAR
+    no <TT
 CLASS="LITERAL"
->&lt;</VAR
+>&lt;</TT
 > operator to compare a Boolean value with
-    <VAR
+    <TT
 CLASS="LITERAL"
->3</VAR
+>3</TT
 >).
    </P
 ><P
 >    <A
-NAME="AEN5669"
+NAME="AEN5898"
 ></A
 >
     In addition to the comparison operators, the special
@@ -241,7 +241,7 @@ NAME="AEN5669"
 CLASS="TOKEN"
 >BETWEEN</TT
 > construct is available.<A
-NAME="AEN5672"
+NAME="AEN5901"
 ></A
 >
 </P><PRE
@@ -338,7 +338,7 @@ CLASS="REPLACEABLE"
 > NOTNULL</PRE
 ><P>
     <A
-NAME="AEN5700"
+NAME="AEN5929"
 ></A
 >
    </P
@@ -350,61 +350,63 @@ CLASS="EMPHASIS"
 >not</I
 ></SPAN
 > write
-    <VAR
+    <TT
 CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
 >expression</VAR
-> = NULL</VAR
+> = NULL</TT
 >
-    because <VAR
+    because <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > is not <SPAN
 CLASS="QUOTE"
 >"equal to"</SPAN
 >
-    <VAR
+    <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 >.  (The null value represents an unknown value,
-    and it is not known whether two unknown values are equal.)
+    and it is not known whether two unknown values are equal.) This
+    behavior conforms to the SQL standard.
    </P
 ><P
->    Some applications may (incorrectly) require that
-    <VAR
+>    Some applications may expect that
+    <TT
 CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
 >expression</VAR
-> = NULL</VAR
+> = NULL</TT
 >
     returns true if <VAR
 CLASS="REPLACEABLE"
 >expression</VAR
 > evaluates to
-    the null value.  To support these applications, the run-time option
-    <VAR
-CLASS="VARNAME"
->transform_null_equals</VAR
-> can be turned on (e.g.,
-    <VAR
-CLASS="LITERAL"
->SET transform_null_equals TO ON;</VAR
->).
+    the null value.  It is highly recommended that these applications
+    be modified to comply with the SQL standard. However, if that
+    cannot be done the <A
+HREF="runtime-config.html#GUC-TRANSFORM-NULL-EQUALS"
+>transform_null_equals</A
+>
+    configuration variable is available. If it is enabled,
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> will then convert
-    <VAR
+> will convert <TT
 CLASS="LITERAL"
->x = NULL</VAR
-> clauses to
-    <VAR
+>x =
+    NULL</TT
+> clauses to <TT
 CLASS="LITERAL"
->x IS NULL</VAR
->.  This was 
-    the default behavior in releases 6.5 through 7.1.
+>x IS NULL</TT
+>.  This was
+    the default behavior in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    releases 6.5 through 7.1.
    </P
 ><P
 >    Boolean values can also be tested using the constructs
@@ -435,9 +437,9 @@ CLASS="REPLACEABLE"
 >expression</VAR
 > IS NOT UNKNOWN</PRE
 ><P>
-    These are similar to <VAR
+    These are similar to <TT
 CLASS="LITERAL"
->IS NULL</VAR
+>IS NULL</TT
 > in that they will
     always return true or false, never a null value, even when the operand is null.
     A null input is treated as the logical value <SPAN

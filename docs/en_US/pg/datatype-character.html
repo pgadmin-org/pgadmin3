@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,25 +96,25 @@ NAME="DATATYPE-CHARACTER"
 >8.3. Character Types</A
 ></H1
 ><A
-NAME="AEN3685"
+NAME="AEN3775"
 ></A
 ><A
-NAME="AEN3688"
+NAME="AEN3778"
 ></A
 ><A
-NAME="AEN3691"
+NAME="AEN3781"
 ></A
 ><A
-NAME="AEN3693"
+NAME="AEN3783"
 ></A
 ><A
-NAME="AEN3695"
+NAME="AEN3785"
 ></A
 ><A
-NAME="AEN3697"
+NAME="AEN3787"
 ></A
 ><A
-NAME="AEN3699"
+NAME="AEN3789"
 ></A
 ><DIV
 CLASS="TABLE"
@@ -350,6 +350,41 @@ CLASS="ACRONYM"
     management systems have it as well.
    </P
 ><P
+>    Values of type <TT
+CLASS="TYPE"
+>character</TT
+> are physically padded
+    with spaces to the specified width <VAR
+CLASS="REPLACEABLE"
+>n</VAR
+>, and are
+    stored and displayed that way.  However, the padding spaces are
+    treated as semantically insignificant.  Trailing spaces are
+    disregarded when comparing two values of type <TT
+CLASS="TYPE"
+>character</TT
+>,
+    and they will be removed when converting a <TT
+CLASS="TYPE"
+>character</TT
+> value
+    to one of the other string types.  Note that trailing spaces
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>are</I
+></SPAN
+> semantically significant in
+    <TT
+CLASS="TYPE"
+>character varying</TT
+> and <TT
+CLASS="TYPE"
+>text</TT
+> values.
+   </P
+><P
 >    The storage requirement for data of these types is 4 bytes plus the
     actual string, and in case of <TT
 CLASS="TYPE"
@@ -386,7 +421,26 @@ CLASS="TIP"
 >Tip: </B
 >     There are no performance differences between these three types,
      apart from the increased storage size when using the blank-padded
-     type.
+     type.  While <TT
+CLASS="TYPE"
+>character(<VAR
+CLASS="REPLACEABLE"
+>n</VAR
+>)</TT
+> has performance
+     advantages in some other database systems, it has no such advantages in
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  In most situations
+     <TT
+CLASS="TYPE"
+>text</TT
+> or <TT
+CLASS="TYPE"
+>character varying</TT
+> should be used
+     instead.
     </P
 ></BLOCKQUOTE
 ></DIV
@@ -399,12 +453,18 @@ HREF="sql-syntax.html#SQL-SYNTAX-STRINGS"
 HREF="functions.html"
 >Chapter 9</A
 >
-    for information about available operators and functions.
+    for information about available operators and functions. The
+    database character set determines the character set used to store
+    textual values; for more information on character set support,
+    refer to <A
+HREF="multibyte.html"
+>Section 20.2</A
+>.
    </P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN3779"
+NAME="AEN3883"
 ></A
 ><P
 ><B
@@ -424,7 +484,7 @@ NAME="CO.DATATYPE-CHAR"
 CLASS="COMPUTEROUTPUT"
 >  a   | char_length
 ------+-------------
- ok   |           4</SAMP
+ ok   |           2</SAMP
 >
 
 CREATE TABLE test2 (b varchar(5));

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 37. <SPAN
+>Chapter 35. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-STATEMENTS"
->37.6. Basic Statements</A
+>35.6. Basic Statements</A
 ></H1
 ><P
 >    In this section and the following ones, we describe all the statement
@@ -138,7 +138,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-ASSIGNMENT"
->37.6.1. Assignment</A
+>35.6.1. Assignment</A
 ></H2
 ><P
 >     An assignment of a value to a variable or row/record field is
@@ -191,13 +191,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-SELECT-INTO"
->37.6.2. <TT
+>35.6.2. <TT
 CLASS="COMMAND"
 >SELECT INTO</TT
 ></A
 ></H2
 ><A
-NAME="AEN31660"
+NAME="AEN31018"
 ></A
 ><P
 >     The result of a <TT
@@ -238,9 +238,9 @@ CLASS="PRODUCTNAME"
      <TT
 CLASS="COMMAND"
 >SELECT INTO</TT
->, where the <VAR
+>, where the <TT
 CLASS="LITERAL"
->INTO</VAR
+>INTO</TT
 > target
      is a newly created table.  If you want to create a table from a
      <TT
@@ -263,9 +263,9 @@ CLASS="COMMAND"
      configures itself to the row type of the query result columns.
     </P
 ><P
->     Except for the <VAR
+>     Except for the <TT
 CLASS="LITERAL"
->INTO</VAR
+>INTO</TT
 > clause, the <TT
 CLASS="COMMAND"
 >SELECT</TT
@@ -284,57 +284,45 @@ CLASS="COMMAND"
 CLASS="QUOTE"
 >"the first row"</SPAN
 > is not well-defined unless you've
-     used <VAR
+     used <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 >.)
     </P
 ><P
->     At present, the <VAR
+>     The <TT
 CLASS="LITERAL"
->INTO</VAR
+>INTO</TT
 > clause can appear almost anywhere in the <TT
 CLASS="COMMAND"
 >SELECT</TT
 >
-     statement, but it is recommended to place it immediately after the <VAR
-CLASS="LITERAL"
->SELECT</VAR
->
-     key word as depicted above.  Future versions of
-     <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> may be less forgiving about
-     placement of the <VAR
-CLASS="LITERAL"
->INTO</VAR
-> clause.
+     statement.
     </P
 ><P
->     You can use <VAR
+>     You can use <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > immediately after a <TT
 CLASS="COMMAND"
 >SELECT
      INTO</TT
 > statement to determine whether the assignment was successful
      (that is, at least one row was was returned by the query). For example:
-  
+
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT INTO myrec * FROM emp WHERE empname = myname;
 IF NOT FOUND THEN
-    RAISE EXCEPTION ''employee % not found'', myname;
+    RAISE EXCEPTION 'employee % not found', myname;
 END IF;</PRE
 ><P>
     </P
 ><P
 >     To test for whether a record/row result is null, you can use the
-     <VAR
+     <TT
 CLASS="LITERAL"
->IS NULL</VAR
+>IS NULL</TT
 > conditional.  There is, however, no
      way to tell whether any additional rows might have been
      discarded.  Here is an example that handles the case where no
@@ -343,13 +331,12 @@ CLASS="LITERAL"
 CLASS="PROGRAMLISTING"
 >DECLARE
     users_rec RECORD;
-    full_name varchar;
 BEGIN
     SELECT INTO users_rec * FROM users WHERE user_id=3;
 
     IF users_rec.homepage IS NULL THEN
         -- user entered no homepage, return "http://"
-        RETURN ''http://'';
+        RETURN 'http://';
     END IF;
 END;</PRE
 ><P>
@@ -361,7 +348,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-PERFORM"
->37.6.3. Executing an Expression or Query With No Result</A
+>35.6.3. Executing an Expression or Query With No Result</A
 ></H2
 ><P
 >     Sometimes one wishes to evaluate an expression or query but
@@ -397,9 +384,9 @@ CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > variables are
      substituted in the query as usual.  Also, the special variable
-     <VAR
+     <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > is set to true if the query produced at
      least one row or false if it produced no rows.
     </P
@@ -414,9 +401,9 @@ CLASS="NOTE"
 CLASS="COMMAND"
 >SELECT</TT
 > with no
-      <VAR
+      <TT
 CLASS="LITERAL"
->INTO</VAR
+>INTO</TT
 > clause would accomplish this result, but at
       present the only accepted way to do it is
       <TT
@@ -430,7 +417,7 @@ CLASS="COMMAND"
 >     An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->PERFORM create_mv(''cs_session_page_requests_mv'', my_query);</PRE
+>PERFORM create_mv('cs_session_page_requests_mv', my_query);</PRE
 ><P>
     </P
 ></DIV
@@ -440,7 +427,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-EXECUTING-DYN"
->37.6.4. Executing Dynamic Commands</A
+>35.6.4. Executing Dynamic Commands</A
 ></H2
 ><P
 >     Oftentimes you will want to generate dynamic commands inside your
@@ -488,16 +475,15 @@ CLASS="APPLICATION"
      be inserted in the command string as it is constructed.
     </P
 ><P
->    When working with dynamic commands you will have to face
-    escaping of single quotes in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->. Please refer to the
+>    When working with dynamic commands you will often have to handle escaping
+    of single quotes.  The recommended method for quoting fixed text in your
+    function body is dollar quoting.  If you have legacy code which does
+    not use dollar quoting, please refer to the
     overview in <A
 HREF="plpgsql-development-tips.html#PLPGSQL-QUOTE-TIPS"
->Section 37.2.1</A
->,
-    which can save you some effort.
+>Section 35.2.1</A
+>, which can save you
+    some effort when translating said code to a more reasonable scheme.
     </P
 ><P
 >     Unlike all other commands in <SPAN
@@ -529,17 +515,22 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >EXECUTE</TT
 >.
-     There are two ways to extract a result from a dynamically-created
+     So there is no way to extract a result from a dynamically-created
      <TT
 CLASS="COMMAND"
 >SELECT</TT
->: one is to use the <TT
+> using the plain <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>
+     command.  There are two other ways to do it, however: one is to use the
+     <TT
 CLASS="COMMAND"
 >FOR-IN-EXECUTE</TT
 >
      loop form described in <A
 HREF="plpgsql-control-structures.html#PLPGSQL-RECORDS-ITERATING"
->Section 37.7.4</A
+>Section 35.7.4</A
 >,
      and the other is to use a cursor with <TT
 CLASS="COMMAND"
@@ -547,18 +538,19 @@ CLASS="COMMAND"
 >, as
      described in <A
 HREF="plpgsql-cursors.html#PLPGSQL-CURSOR-OPENING"
->Section 37.8.2</A
+>Section 35.8.2</A
 >.
     </P
 ><P
->     An example:
+>     An example (this assumes that you are using dollar quoting, so the
+     quote marks need not be doubled):
 </P><PRE
 CLASS="PROGRAMLISTING"
->EXECUTE ''UPDATE tbl SET ''
+>EXECUTE 'UPDATE tbl SET '
         || quote_ident(colname)
-        || '' = ''
+        || ' = '
         || quote_literal(newvalue)
-        || '' WHERE ...'';</PRE
+        || ' WHERE ...';</PRE
 ><P>
     </P
 ><P
@@ -577,10 +569,10 @@ CLASS="TYPE"
 >text</TT
 >)</CODE
 >.<A
-NAME="AEN31751"
+NAME="AEN31106"
 ></A
 ><A
-NAME="AEN31754"
+NAME="AEN31109"
 ></A
 > For safety, variables containing column and
      table identifiers should be passed to function
@@ -598,41 +590,50 @@ CLASS="FUNCTION"
      properly escaped.
     </P
 ><P
->     Here is a much larger example of a dynamic command and
+>     Note that dollar quoting is only useful for quoting fixed text.
+     It would be a very bad idea to try to do the above example as
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXECUTE 'UPDATE tbl SET '
+        || quote_ident(colname)
+        || ' = $$'
+        || newvalue
+        || '$$ WHERE ...';</PRE
+><P>
+     because it would break if the contents of <TT
+CLASS="LITERAL"
+>newvalue</TT
+>
+     happened to contain <TT
+CLASS="LITERAL"
+>$$</TT
+>.  The same objection would
+     apply to any other dollar-quoting delimiter you might pick.
+     So, to safely quote text that is not known in advance, you
+     <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> use <CODE
+CLASS="FUNCTION"
+>quote_literal</CODE
+>.
+    </P
+><P
+>     A much larger example of a dynamic command and
      <TT
 CLASS="COMMAND"
 >EXECUTE</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION cs_update_referrer_type_proc() RETURNS integer AS '
-DECLARE
-    referrer_keys RECORD;  -- declare a generic record to be used in a FOR
-    a_output varchar(4000);
-BEGIN 
-    a_output := ''CREATE FUNCTION cs_find_referrer_type(varchar, varchar, varchar) 
-                  RETURNS varchar AS '''' 
-                     DECLARE 
-                         v_host ALIAS FOR $1; 
-                         v_domain ALIAS FOR $2; 
-                         v_url ALIAS FOR $3;
-                     BEGIN ''; 
-
-    -- Notice how we scan through the results of a query in a FOR loop
-    -- using the FOR &lt;record&gt; construct.
-
-    FOR referrer_keys IN SELECT * FROM cs_referrer_keys ORDER BY try_order LOOP
-        a_output := a_output || '' IF v_'' || referrer_keys.kind || '' LIKE '''''''''' 
-                 || referrer_keys.key_string || '''''''''' THEN RETURN '''''' 
-                 || referrer_keys.referrer_type || ''''''; END IF;''; 
-    END LOOP; 
-  
-    a_output := a_output || '' RETURN NULL; END; '''' LANGUAGE plpgsql;''; 
- 
-    EXECUTE a_output; 
-END; 
-' LANGUAGE plpgsql;</PRE
-><P>
+> can be seen in <A
+HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX2"
+>Example 35-3</A
+>, which builds and executes a
+     <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command to define a new function.
     </P
 ></DIV
 ><DIV
@@ -641,15 +642,15 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-DIAGNOSTICS"
->37.6.5. Obtaining the Result Status</A
+>35.6.5. Obtaining the Result Status</A
 ></H2
 ><P
->         There are several ways to determine the effect of a command. The
-         first method is to use the <TT
+>     There are several ways to determine the effect of a command. The
+     first method is to use the <TT
 CLASS="COMMAND"
 >GET DIAGNOSTICS</TT
 >
-         command, which has the form:
+     command, which has the form:
 
 </P><PRE
 CLASS="SYNOPSIS"
@@ -672,9 +673,9 @@ CLASS="REPLACEABLE"
 > is a key word identifying a state
      value to be assigned to the specified variable (which should be
      of the right data type to receive it).  The currently available
-     status items are <VAR
+     status items are <TT
 CLASS="VARNAME"
->ROW_COUNT</VAR
+>ROW_COUNT</TT
 >, the number of rows
      processed by the last <ACRONYM
 CLASS="ACRONYM"
@@ -683,17 +684,17 @@ CLASS="ACRONYM"
      the <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> engine, and <VAR
+> engine, and <TT
 CLASS="VARNAME"
->RESULT_OID</VAR
+>RESULT_OID</TT
 >,
      the OID of the last row inserted by the most recent
      <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> command.  Note that <VAR
+> command.  Note that <TT
 CLASS="VARNAME"
->RESULT_OID</VAR
+>RESULT_OID</TT
 >
      is only useful after an <TT
 CLASS="COMMAND"
@@ -709,16 +710,16 @@ CLASS="PROGRAMLISTING"
     </P
 ><P
 >     The second method to determine the effects of a command is to check the
-     special variable named <VAR
+     special variable named <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 >, which is of
      type <TT
 CLASS="TYPE"
 >boolean</TT
->.  <VAR
+>.  <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > starts out
      false within each <SPAN
 CLASS="APPLICATION"
@@ -734,9 +735,9 @@ CLASS="APPLICATION"
 CLASS="COMMAND"
 >SELECT INTO</TT
 > statement sets
-                <VAR
+                <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > true if it returns a row, false if no
                 row is returned.
            </P
@@ -746,9 +747,9 @@ CLASS="LITERAL"
 >                A <TT
 CLASS="COMMAND"
 >PERFORM</TT
-> statement sets <VAR
+> statement sets <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 >
                 true if it produces (and discards) a row, false if no row is
                 produced.
@@ -766,9 +767,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >DELETE</TT
 >
-                statements set <VAR
+                statements set <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > true if at least one
                 row is affected, false if no row is affected.
            </P
@@ -778,9 +779,9 @@ CLASS="LITERAL"
 >                A <TT
 CLASS="COMMAND"
 >FETCH</TT
-> statement sets <VAR
+> statement sets <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 >
                 true if it returns a row, false if no row is returned.
            </P
@@ -790,9 +791,9 @@ CLASS="LITERAL"
 >                A <TT
 CLASS="COMMAND"
 >FOR</TT
-> statement sets <VAR
+> statement sets <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > true
                 if it iterates one or more times, else false.  This applies to
                 all three variants of the <TT
@@ -810,17 +811,17 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >FOR</TT
 >
-                loops). <VAR
+                loops). <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > is only set when the
                 <TT
 CLASS="COMMAND"
 >FOR</TT
 > loop exits: inside the execution of the loop,
-                <VAR
+                <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > is not modified by the
                 <TT
 CLASS="COMMAND"
@@ -831,9 +832,9 @@ CLASS="COMMAND"
 ></LI
 ></UL
 ><P>
-     <VAR
+     <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > is a local variable; any changes
      to it affect only the current <SPAN
 CLASS="APPLICATION"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -138,7 +138,7 @@ HREF="logfile-maintenance.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN18677"
+NAME="AEN19788"
 ></A
 ><P
 >   There are a few routine maintenance chores that must be performed on
@@ -205,7 +205,7 @@ NAME="ROUTINE-VACUUMING"
 >21.1. Routine Vacuuming</A
 ></H1
 ><A
-NAME="AEN18694"
+NAME="AEN19805"
 ></A
 ><P
 >   <SPAN
@@ -269,7 +269,7 @@ CLASS="COMMAND"
 > can run in parallel with normal database operations
    (selects, inserts, updates, deletes, but not changes to table definitions).
    Routine vacuuming is therefore not nearly as intrusive as it was in prior
-   releases, and it's not as critical to try to schedule it at low-usage
+   releases, and it is not as critical to try to schedule it at low-usage
    times of day.
   </P
 ><DIV
@@ -281,7 +281,7 @@ NAME="VACUUM-FOR-SPACE-RECOVERY"
 >21.1.1. Recovering disk space</A
 ></H2
 ><A
-NAME="AEN18715"
+NAME="AEN19826"
 ></A
 ><P
 >    In normal <SPAN
@@ -317,49 +317,127 @@ CLASS="COMMAND"
 CLASS="APPLICATION"
 >cron</SPAN
 > tasks that
-    vacuum only selected tables, skipping tables that are known not to
+    <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> only selected tables, skipping tables that are known not to
     change often. This is only likely to be helpful if you have both
     large heavily-updated tables and large seldom-updated tables --- the
     extra cost of vacuuming a small table isn't enough to be worth
     worrying about.
    </P
 ><P
+>    There are two variants of the <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>
+    command. The first form, known as <SPAN
+CLASS="QUOTE"
+>"lazy vacuum"</SPAN
+> or
+    just <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>, marks expired data in tables and
+    indexes for future reuse; it does <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> attempt
+    to reclaim the space used by this expired data
+    immediately. Therefore, the table file is not shortened, and any
+    unused space in the file is not returned to the operating
+    system. This variant of <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> can be run
+    concurrently with normal database operations.
+   </P
+><P
+>    The second form is the <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+>
+    command. This uses a more aggressive algorithm for reclaiming the
+    space consumed by expired row versions. Any space that is freed by
+    <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+> is immediately returned to the
+    operating system. Unfortunately, this variant of the
+    <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> command acquires an exclusive lock on
+    each table while <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+> is processing
+    it. Therefore, frequently using <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+> can
+    have an extremely negative effect on the performance of concurrent
+    database queries.
+   </P
+><P
 >    The standard form of <TT
 CLASS="COMMAND"
 >VACUUM</TT
-> is best used with the goal of
-    maintaining a fairly level steady-state usage of disk space.  The standard
-    form finds old row versions and makes their space available for re-use within
-    the table, but it does not try very hard to shorten the table file and
-    return disk space to the operating system.  If you need to return disk
-    space to the operating system you can use <TT
+> is best used with the goal
+    of maintaining a fairly level steady-state usage of disk space. If
+    you need to return disk space to the operating system you can use
+    <TT
 CLASS="COMMAND"
 >VACUUM FULL</TT
-> ---
-    but what's the point of releasing disk space that will only have to be
-    allocated again soon?  Moderately frequent standard <TT
+> --- but what's the point of releasing disk
+    space that will only have to be allocated again soon?  Moderately
+    frequent standard <TT
 CLASS="COMMAND"
 >VACUUM</TT
-> runs
-    are a better approach than infrequent <TT
+> runs are a better approach
+    than infrequent <TT
 CLASS="COMMAND"
 >VACUUM FULL</TT
-> runs for
-    maintaining heavily-updated tables.
+> runs for maintaining
+    heavily-updated tables.
    </P
 ><P
 >    Recommended practice for most sites is to schedule a database-wide
     <TT
 CLASS="COMMAND"
 >VACUUM</TT
-> once a day at a low-usage time of day, supplemented
-    by more frequent vacuuming of heavily-updated tables if necessary.
-    (If you have multiple databases in a cluster, don't forget to
-    vacuum each one; the program <TT
+> once a day at a low-usage time of day,
+    supplemented by more frequent vacuuming of heavily-updated tables
+    if necessary. In fact, some installations with an extremely high
+    rate of data modification <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> some tables as
+    often as once very five minutes.  (If you have multiple databases
+    in a cluster, don't forget to <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> each one;
+    the program <TT
 CLASS="FILENAME"
 >vacuumdb</TT
 > may be helpful.)
-    Use plain <TT
+   </P
+><P
+>    <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+> is recommended for cases where you know
+    you have deleted the majority of rows in a table, so that the
+    steady-state size of the table can be shrunk substantially with
+    <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+>'s more aggressive approach.  Use plain
+    <TT
 CLASS="COMMAND"
 >VACUUM</TT
 >, not <TT
@@ -369,30 +447,31 @@ CLASS="COMMAND"
     vacuuming for space recovery.
    </P
 ><P
->    <TT
-CLASS="COMMAND"
->VACUUM FULL</TT
-> is recommended for cases where you know you have
-    deleted the majority of rows in a table, so that the steady-state size
-    of the table can be shrunk substantially with <TT
-CLASS="COMMAND"
->VACUUM FULL</TT
->'s
-    more aggressive approach.
-   </P
-><P
->    If you have a table whose contents are deleted completely every so often,
-    consider doing it with <TT
+>    If you have a table whose contents are deleted on a periodic
+    basis, consider doing it with <TT
 CLASS="COMMAND"
 >TRUNCATE</TT
-> rather than using
-    <TT
+> rather
+    than using <TT
 CLASS="COMMAND"
 >DELETE</TT
-> followed by <TT
+> followed by
+    <TT
 CLASS="COMMAND"
 >VACUUM</TT
->.
+>. <TT
+CLASS="COMMAND"
+>TRUNCATE</TT
+> removes the
+    entire content of the table immediately, without recquiring a
+    subsequent <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> or <TT
+CLASS="COMMAND"
+>VACUUM
+    FULL</TT
+> to reclaim the now-unused disk space.
    </P
 ></DIV
 ><DIV
@@ -404,10 +483,10 @@ NAME="VACUUM-FOR-STATISTICS"
 >21.1.2. Updating planner statistics</A
 ></H2
 ><A
-NAME="AEN18744"
+NAME="AEN19873"
 ></A
 ><A
-NAME="AEN18747"
+NAME="AEN19876"
 ></A
 ><P
 >    The <SPAN
@@ -481,9 +560,9 @@ CLASS="COMMAND"
      <TT
 CLASS="COMMAND"
 >ANALYZE</TT
->.  Columns that are heavily used in <VAR
+>.  Columns that are heavily used in <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clauses
      and have highly irregular data distributions may require a finer-grain
      data histogram than other columns.  See <TT
@@ -521,7 +600,7 @@ NAME="VACUUM-FOR-WRAPAROUND"
 >21.1.3. Preventing transaction ID wraparound failures</A
 ></H2
 ><A
-NAME="AEN18771"
+NAME="AEN19900"
 ></A
 ><P
 >    <SPAN
@@ -587,13 +666,13 @@ CLASS="COMMAND"
    </P
 ><P
 >    The new approach to XID comparison distinguishes two special XIDs,
-    numbers 1 and 2 (<VAR
+    numbers 1 and 2 (<TT
 CLASS="LITERAL"
->BootstrapXID</VAR
+>BootstrapXID</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->FrozenXID</VAR
+>FrozenXID</TT
 >). These two XIDs are always considered older
     than every normal XID. Normal XIDs (those greater than 2) are
     compared using modulo-2<SUP
@@ -617,9 +696,9 @@ CLASS="QUOTE"
     talking about. If the row version still exists after more than two billion
     transactions, it will suddenly appear to be in the future. To
     prevent data loss, old row versions must be reassigned the XID
-    <VAR
+    <TT
 CLASS="LITERAL"
->FrozenXID</VAR
+>FrozenXID</TT
 > sometime before they reach the
     two-billion-transactions-old mark. Once they are assigned this
     special XID, they will appear to be <SPAN
@@ -637,9 +716,9 @@ CLASS="COMMAND"
 >    <TT
 CLASS="COMMAND"
 >VACUUM</TT
->'s normal policy is to reassign <VAR
+>'s normal policy is to reassign <TT
 CLASS="LITERAL"
->FrozenXID</VAR
+>FrozenXID</TT
 >
     to any row version with a normal XID more than one billion transactions in the
     past.  This policy preserves the original insertion XID until it is not
@@ -669,19 +748,22 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >VACUUM</TT
 > stores transaction ID
-    statistics in the system table <VAR
+    statistics in the system table <TT
 CLASS="LITERAL"
->pg_database</VAR
+>pg_database</TT
 >.  In particular,
-    the <VAR
+    the <TT
 CLASS="LITERAL"
->datfrozenxid</VAR
+>datfrozenxid</TT
 > column of a database's
-    <VAR
+    <TT
 CLASS="LITERAL"
->pg_database</VAR
+>pg_database</TT
 > row is updated at the completion of any
-    database-wide vacuum operation (i.e., <TT
+    database-wide <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> operation (i.e., <TT
 CLASS="COMMAND"
 >VACUUM</TT
 > that does not
@@ -691,9 +773,9 @@ CLASS="COMMAND"
 >VACUUM</TT
 > command.  All normal
     XIDs older than this cutoff XID are guaranteed to have been replaced by
-    <VAR
+    <TT
 CLASS="LITERAL"
->FrozenXID</VAR
+>FrozenXID</TT
 > within that database.  A convenient way to
     examine this information is to execute the query
 
@@ -702,36 +784,39 @@ CLASS="PROGRAMLISTING"
 >SELECT datname, age(datfrozenxid) FROM pg_database;</PRE
 ><P>
 
-    The <VAR
+    The <TT
 CLASS="LITERAL"
->age</VAR
+>age</TT
 > column measures the number of transactions from the
     cutoff XID to the current transaction's XID.
    </P
 ><P
->    With the standard freezing policy, the <VAR
+>    With the standard freezing policy, the <TT
 CLASS="LITERAL"
->age</VAR
+>age</TT
 > column will start
-    at one billion for a freshly-vacuumed database.  When the <VAR
+    at one billion for a freshly-vacuumed database.  When the <TT
 CLASS="LITERAL"
->age</VAR
+>age</TT
 >
     approaches two billion, the database must be vacuumed again to avoid
-    risk of wraparound failures.  Recommended practice is to vacuum each
+    risk of wraparound failures.  Recommended practice is to <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> each
     database at least once every half-a-billion (500 million) transactions,
     so as to provide plenty of safety margin.  To help meet this rule,
     each database-wide <TT
 CLASS="COMMAND"
 >VACUUM</TT
 > automatically delivers a warning
-    if there are any <VAR
+    if there are any <TT
 CLASS="LITERAL"
->pg_database</VAR
+>pg_database</TT
 > entries showing an
-    <VAR
+    <TT
 CLASS="LITERAL"
->age</VAR
+>age</TT
 > of more than 1.5 billion transactions, for example:
 
 </P><PRE
@@ -769,37 +854,40 @@ CLASS="EMPHASIS"
     <TT
 CLASS="COMMAND"
 >initdb</TT
-> to prepare the <VAR
+> to prepare the <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 > database.
     It should also be used to prepare any user-created databases that
-    are to be marked <VAR
+    are to be marked <TT
 CLASS="LITERAL"
->datallowconn</VAR
-> = <VAR
+>datallowconn</TT
+> = <TT
 CLASS="LITERAL"
->false</VAR
+>false</TT
 > in
-    <VAR
+    <TT
 CLASS="LITERAL"
->pg_database</VAR
+>pg_database</TT
 >, since there isn't any convenient way to
-    vacuum a database that you can't connect to. Note that
+    <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> a database that you can't connect to. Note that
     <TT
 CLASS="COMMAND"
 >VACUUM</TT
 >'s automatic warning message about
-    unvacuumed databases will ignore <VAR
+    unvacuumed databases will ignore <TT
 CLASS="LITERAL"
->pg_database</VAR
+>pg_database</TT
 > entries
-    with <VAR
+    with <TT
 CLASS="LITERAL"
->datallowconn</VAR
-> = <VAR
+>datallowconn</TT
+> = <TT
 CLASS="LITERAL"
->false</VAR
+>false</TT
 >, so as to avoid
     giving false warnings about these databases; therefore it's up to
     you to ensure that such databases are frozen correctly.

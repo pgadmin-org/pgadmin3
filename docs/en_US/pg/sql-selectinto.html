@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-SELECTINTO"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42229"
+NAME="AEN42781"
 ></A
 ><H2
 >Name</H2
 >SELECT INTO&nbsp;--&nbsp;create a new table from the results of a query</DIV
 ><A
-NAME="AEN42232"
+NAME="AEN42784"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42234"
+NAME="AEN42786"
 ></A
 ><H2
 >Synopsis</H2
@@ -170,7 +170,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42250"
+NAME="AEN42802"
 ></A
 ><H2
 >Description</H2
@@ -194,7 +194,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42256"
+NAME="AEN42808"
 ></A
 ><H2
 >Parameters</H2
@@ -204,12 +204,12 @@ NAME="AEN42256"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TEMPORARY</VAR
-> or <VAR
+>TEMPORARY</TT
+> or <TT
 CLASS="LITERAL"
->TEMP</VAR
+>TEMP</TT
 ></DT
 ><DD
 ><P
@@ -246,7 +246,7 @@ HREF="sql-select.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42273"
+NAME="AEN42825"
 ></A
 ><H2
 >Notes</H2
@@ -256,44 +256,89 @@ HREF="sql-createtableas.html"
 ><I
 >CREATE TABLE AS</I
 ></A
->
-   is functionally equivalent to <TT
-CLASS="COMMAND"
->SELECT INTO</TT
->.
+> is functionally similar to
    <TT
 CLASS="COMMAND"
->CREATE TABLE AS</TT
-> is the recommended syntax, since
-   this form of <TT
-CLASS="COMMAND"
 >SELECT INTO</TT
-> is not available in
-   <SPAN
+>.  <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+>
+   is the recommended syntax, since this form of <TT
+CLASS="COMMAND"
+>SELECT
+   INTO</TT
+> is not available in <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
-> or
-   <SPAN
+>
+   or <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 >, because they interpret the
-   <VAR
+   <TT
 CLASS="LITERAL"
->INTO</VAR
-> clause differently.
+>INTO</TT
+> clause differently. Furthermore,
+   <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> offers a superset of the
+   functionality provided by <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+>.
+  </P
+><P
+>   Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0, the table created by
+   <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> always included OIDs. Furthermore,
+   these OIDs were newly generated: they were distinct from the OIDs
+   of any of the rows in the source tables of the <TT
+CLASS="COMMAND"
+>SELECT
+   INTO</TT
+> statement. Therefore, if <TT
+CLASS="COMMAND"
+>SELECT
+   INTO</TT
+> was frequently executed, the OID counter would be
+   rapidly incremented. As of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0, the
+   inclusion of OIDs in the table created by <TT
+CLASS="COMMAND"
+>SELECT
+   INTO</TT
+> is controlled by the
+   <A
+HREF="runtime-config.html#GUC-DEFAULT-WITH-OIDS"
+>default_with_oids</A
+> configuration variable. This
+   variable currently defaults to true, but will likely default to
+   false in a future release of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42283"
+NAME="AEN42846"
 ></A
 ><H2
 >Compatibility</H2
 ><P
 >   The SQL standard uses <TT
 CLASS="COMMAND"
->SELECT ... INTO</TT
+>SELECT INTO</TT
 > to
    represent selecting values into scalar variables of a host program,
    rather than creating a new table.  This indeed is the usage found
@@ -302,14 +347,14 @@ CLASS="APPLICATION"
 >ECPG</SPAN
 > (see <A
 HREF="ecpg.html"
->Chapter 30</A
+>Chapter 29</A
 >) and
    <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > (see <A
 HREF="plpgsql.html"
->Chapter 37</A
+>Chapter 35</A
 >).
    The <SPAN
 CLASS="PRODUCTNAME"

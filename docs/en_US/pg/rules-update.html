@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Rule System"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="rules.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 34. The Rule System</TD
+>Chapter 32. The Rule System</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RULES-UPDATE"
->34.3. Rules on <TT
+>32.3. Rules on <TT
 CLASS="COMMAND"
 >INSERT</TT
 >, <TT
@@ -105,13 +105,13 @@ CLASS="COMMAND"
 ></A
 ></H1
 ><A
-NAME="AEN30661"
+NAME="AEN29987"
 ></A
 ><A
-NAME="AEN30664"
+NAME="AEN29990"
 ></A
 ><A
-NAME="AEN30667"
+NAME="AEN29993"
 ></A
 ><P
 >    Rules that are defined on <TT
@@ -146,20 +146,23 @@ CLASS="COMMAND"
 ></LI
 ><LI
 ><P
->	    They can be <VAR
+>	    They can be <TT
 CLASS="LITERAL"
->INSTEAD</VAR
-> or not.
+>INSTEAD</TT
+> or <TT
+CLASS="LITERAL"
+>ALSO</TT
+> (default).
 	</P
 ></LI
 ><LI
 ><P
->	    The pseudorelations <VAR
+>	    The pseudorelations <TT
 CLASS="LITERAL"
->NEW</VAR
-> and <VAR
+>NEW</TT
+> and <TT
 CLASS="LITERAL"
->OLD</VAR
+>OLD</TT
 > become useful.
 	</P
 ></LI
@@ -179,8 +182,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30689"
->34.3.1. How Update Rules Work</A
+NAME="AEN30016"
+>32.3.1. How Update Rules Work</A
 ></H2
 ><P
 >    Keep the syntax
@@ -201,7 +204,7 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >rule_qualification</VAR
 >]
-    DO [INSTEAD] [<VAR
+    DO [ALSO|INSTEAD] [<VAR
 CLASS="REPLACEABLE"
 >action</VAR
 > | (<VAR
@@ -234,24 +237,27 @@ CLASS="COMMAND"
 > command.
     For update rules, the rule system creates a list of query trees.
     Initially the query-tree list is empty.
-    There can be zero (<VAR
+    There can be zero (<TT
 CLASS="LITERAL"
->NOTHING</VAR
+>NOTHING</TT
 > key word), one, or multiple actions.
     To simplify, we will look at a rule with one action. This rule
-    can have a qualification or not and it can be <VAR
+    can have a qualification or not and it can be <TT
 CLASS="LITERAL"
->INSTEAD</VAR
-> or not.</P
+>INSTEAD</TT
+> or <TT
+CLASS="LITERAL"
+>ALSO</TT
+> (default).</P
 ><P
 >    What is a rule qualification? It is a restriction that tells
     when the actions of the rule should be done and when not. This
-    qualification can only reference the pseudorelations <VAR
+    qualification can only reference the pseudorelations <TT
 CLASS="LITERAL"
->NEW</VAR
-> and/or <VAR
+>NEW</TT
+> and/or <TT
 CLASS="LITERAL"
->OLD</VAR
+>OLD</TT
 >,
     which basically represent the relation that was given as object (but with a
     special meaning).</P
@@ -265,9 +271,9 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->No qualification and not <VAR
+>No qualification and <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>ALSO</TT
 ></DT
 ><DD
 ><P
@@ -276,9 +282,9 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
->No qualification but <VAR
+>No qualification but <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 ></DT
 ><DD
 ><P
@@ -287,9 +293,9 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
->Qualification given and not <VAR
+>Qualification given and <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>ALSO</TT
 ></DT
 ><DD
 ><P
@@ -299,9 +305,9 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
->Qualification given and <VAR
+>Qualification given and <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 ></DT
 ><DD
 ><P
@@ -315,32 +321,32 @@ CLASS="LITERAL"
 ></DIV
 ><P>
 
-    Finally, if the rule is not <VAR
+    Finally, if the rule is <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>ALSO</TT
 >, the unchanged original query tree is
-    added to the list. Since only qualified <VAR
+    added to the list. Since only qualified <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rules already add the
     original query tree, we end up with either one or two output query trees
     for a rule with one action.</P
 ><P
->    For <VAR
+>    For <TT
 CLASS="LITERAL"
->ON INSERT</VAR
-> rules, the original query (if not suppressed by <VAR
+>ON INSERT</TT
+> rules, the original query (if not suppressed by <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 >)
     is done before any actions added by rules.  This allows the actions to
-    see the inserted row(s).  But for <VAR
+    see the inserted row(s).  But for <TT
 CLASS="LITERAL"
->ON UPDATE</VAR
-> and <VAR
+>ON UPDATE</TT
+> and <TT
 CLASS="LITERAL"
 >ON
-    DELETE</VAR
+    DELETE</TT
 > rules, the original query is done after the actions added by rules.
     This ensures that the actions can see the to-be-updated or to-be-deleted
     rows; otherwise, the actions might do nothing because they find no rows
@@ -362,25 +368,25 @@ CLASS="STRUCTNAME"
 >pg_rewrite</TT
 > system catalog are only
     templates. Since they can reference the range-table entries for
-    <VAR
+    <TT
 CLASS="LITERAL"
->NEW</VAR
-> and <VAR
+>NEW</TT
+> and <TT
 CLASS="LITERAL"
->OLD</VAR
+>OLD</TT
 >, some substitutions have to be made before they can be
-    used. For any reference to <VAR
+    used. For any reference to <TT
 CLASS="LITERAL"
->NEW</VAR
+>NEW</TT
 >, the target list of the original
     query is searched for a corresponding entry. If found, that
-    entry's expression replaces the reference. Otherwise, <VAR
+    entry's expression replaces the reference. Otherwise, <TT
 CLASS="LITERAL"
->NEW</VAR
+>NEW</TT
 > means the
-    same as <VAR
+    same as <TT
 CLASS="LITERAL"
->OLD</VAR
+>OLD</TT
 > (for an <TT
 CLASS="COMMAND"
 >UPDATE</TT
@@ -388,9 +394,9 @@ CLASS="COMMAND"
     a null value (for an <TT
 CLASS="COMMAND"
 >INSERT</TT
->). Any reference to <VAR
+>). Any reference to <TT
 CLASS="LITERAL"
->OLD</VAR
+>OLD</TT
 > is
     replaced by a reference to the range-table entry that is the
     result relation.</P
@@ -403,26 +409,26 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN30751"
->34.3.1.1. A First Rule Step by Step</A
+NAME="AEN30079"
+>32.3.1.1. A First Rule Step by Step</A
 ></H3
 ><P
->    Say we want to trace changes to the <VAR
+>    Say we want to trace changes to the <TT
 CLASS="LITERAL"
->sl_avail</VAR
+>sl_avail</TT
 > column in the
-    <VAR
+    <TT
 CLASS="LITERAL"
->shoelace_data</VAR
+>shoelace_data</TT
 > relation. So we set up a log table
     and a rule that conditionally writes a log entry when an
     <TT
 CLASS="COMMAND"
 >UPDATE</TT
 > is performed on
-    <VAR
+    <TT
 CLASS="LITERAL"
->shoelace_data</VAR
+>shoelace_data</TT
 >.
 
 </P><PRE
@@ -474,12 +480,12 @@ CLASS="PROGRAMLISTING"
  WHERE shoelace_data.sl_name = 'sl7';</PRE
 ><P>
 
-    There is a rule <VAR
+    There is a rule <TT
 CLASS="LITERAL"
->log_shoelace</VAR
-> that is <VAR
+>log_shoelace</TT
+> that is <TT
 CLASS="LITERAL"
->ON UPDATE</VAR
+>ON UPDATE</TT
 > with the rule
     qualification expression
 
@@ -499,20 +505,20 @@ CLASS="PROGRAMLISTING"
 ><P>
 
     (This looks a little strange since you can't normally write
-    <VAR
+    <TT
 CLASS="LITERAL"
->INSERT ... VALUES ... FROM</VAR
->.  The <VAR
+>INSERT ... VALUES ... FROM</TT
+>.  The <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 >
     clause here is just to indicate that there are range-table entries
-    in the query tree for <VAR
+    in the query tree for <TT
 CLASS="LITERAL"
->*NEW*</VAR
-> and <VAR
+>*NEW*</TT
+> and <TT
 CLASS="LITERAL"
->*OLD*</VAR
+>*OLD*</TT
 >.
     These are needed so that they can be referenced by variables in
     the <TT
@@ -520,9 +526,9 @@ CLASS="COMMAND"
 >INSERT</TT
 > command's query tree.)</P
 ><P
->    The rule is a qualified non-<VAR
+>    The rule is a qualified <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>ALSO</TT
 > rule, so the rule system
     has to return two query trees: the modified rule action and the original
     query tree. In step 1, the range table of the original query is
@@ -541,9 +547,9 @@ CLASS="EMPHASIS"
 ><P>
 
     In step 2, the rule qualification is added to it, so the result set
-    is restricted to rows where <VAR
+    is restricted to rows where <TT
 CLASS="LITERAL"
->sl_avail</VAR
+>sl_avail</TT
 > changes:
 
 </P><PRE
@@ -559,18 +565,18 @@ CLASS="EMPHASIS"
 >;</PRE
 ><P>
 
-    (This looks even stranger, since <VAR
+    (This looks even stranger, since <TT
 CLASS="LITERAL"
->INSERT ... VALUES</VAR
+>INSERT ... VALUES</TT
 > doesn't have
-    a <VAR
+    a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause either, but the planner and executor will have no
     difficulty with it.  They need to support this same functionality
-    anyway for <VAR
+    anyway for <TT
 CLASS="LITERAL"
->INSERT ... SELECT</VAR
+>INSERT ... SELECT</TT
 >.)
    </P
 ><P
@@ -593,9 +599,9 @@ CLASS="EMPHASIS"
 ><P>
    </P
 ><P
->    Step 4 replaces references to <VAR
+>    Step 4 replaces references to <TT
 CLASS="LITERAL"
->NEW</VAR
+>NEW</TT
 > by the target list entries from the
     original query tree or by the matching variable references
     from the result relation:
@@ -622,9 +628,9 @@ CLASS="EMPHASIS"
 
    </P
 ><P
->    Step 5 changes <VAR
+>    Step 5 changes <TT
 CLASS="LITERAL"
->OLD</VAR
+>OLD</TT
 > references into result relation references:
 
 </P><PRE
@@ -642,9 +648,9 @@ CLASS="EMPHASIS"
 ><P>
    </P
 ><P
->    That's it.  Since the rule is not <VAR
+>    That's it.  Since the rule is <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>ALSO</TT
 >, we also output the
     original query tree.  In short, the output from the rule system
     is a list of two query trees that correspond to these statements:
@@ -677,16 +683,16 @@ CLASS="PROGRAMLISTING"
 
     no log entry would get written.  In that case, the original query
     tree does not contain a target list entry for
-    <VAR
+    <TT
 CLASS="LITERAL"
->sl_avail</VAR
->, so <VAR
+>sl_avail</TT
+>, so <TT
 CLASS="LITERAL"
->NEW.sl_avail</VAR
+>NEW.sl_avail</TT
 > will get
-    replaced by <VAR
+    replaced by <TT
 CLASS="LITERAL"
->shoelace_data.sl_avail</VAR
+>shoelace_data.sl_avail</TT
 >.  Thus, the extra
     command generated by the rule is
 
@@ -718,25 +724,25 @@ CLASS="PROGRAMLISTING"
  WHERE sl_color = 'black';</PRE
 ><P>
 
-    four rows in fact get updated (<VAR
+    four rows in fact get updated (<TT
 CLASS="LITERAL"
->sl1</VAR
->, <VAR
+>sl1</TT
+>, <TT
 CLASS="LITERAL"
->sl2</VAR
->, <VAR
+>sl2</TT
+>, <TT
 CLASS="LITERAL"
->sl3</VAR
->, and <VAR
+>sl3</TT
+>, and <TT
 CLASS="LITERAL"
->sl4</VAR
+>sl4</TT
 >).
-    But <VAR
+    But <TT
 CLASS="LITERAL"
->sl3</VAR
-> already has <VAR
+>sl3</TT
+> already has <TT
 CLASS="LITERAL"
->sl_avail = 0</VAR
+>sl_avail = 0</TT
 >.   In this case, the original
     query trees qualification is different and that results
     in the extra query tree
@@ -767,9 +773,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >INSERT</TT
 > would not find any row where
-    <VAR
+    <TT
 CLASS="LITERAL"
->0 &lt;&gt; shoelace_data.sl_avail</VAR
+>0 &lt;&gt; shoelace_data.sl_avail</TT
 >.</P
 ></DIV
 ></DIV
@@ -779,10 +785,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="RULES-UPDATE-VIEWS"
->34.3.2. Cooperation with Views</A
+>32.3.2. Cooperation with Views</A
 ></H2
 ><A
-NAME="AEN30823"
+NAME="AEN30151"
 ></A
 ><P
 >    A simple way to protect view relations from the mentioned
@@ -810,14 +816,14 @@ CREATE RULE shoe_del_protect AS ON DELETE TO shoe
 ><P>
 
     If someone now tries to do any of these operations on the view
-    relation <VAR
+    relation <TT
 CLASS="LITERAL"
->shoe</VAR
+>shoe</TT
 >, the rule system will
     apply these rules. Since the rules have
-    no actions and are <VAR
+    no actions and are <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 >, the resulting list of
     query trees will be empty and the whole query will become
     nothing because there is nothing left to be optimized or
@@ -826,9 +832,9 @@ CLASS="LITERAL"
 >    A more sophisticated way to use the rule system is to
     create rules that rewrite the query tree into one that
     does the right operation on the real tables. To do that
-    on the <VAR
+    on the <TT
 CLASS="LITERAL"
->shoelace</VAR
+>shoelace</TT
 > view, we create
     the following rules:
 
@@ -863,9 +869,9 @@ CREATE RULE shoelace_del AS ON DELETE TO shoelace
 ><P
 >    Now assume that once in a while, a pack of shoelaces arrives at
     the shop and a big parts list along with it.  But you don't want
-    to manually update the <VAR
+    to manually update the <TT
 CLASS="LITERAL"
->shoelace</VAR
+>shoelace</TT
 > view every
     time.  Instead we setup two little tables: one where you can
     insert the items from the part list, and one with a special
@@ -890,9 +896,9 @@ CREATE RULE shoelace_ok_ins AS ON INSERT TO shoelace_ok
      WHERE sl_name = NEW.ok_name;</PRE
 ><P>
 
-    Now you can fill the table <VAR
+    Now you can fill the table <TT
 CLASS="LITERAL"
->shoelace_arrive</VAR
+>shoelace_arrive</TT
 > with
     the data from the parts list:
 
@@ -964,9 +970,9 @@ SELECT * FROM shoelace_log;
 ><P>
    </P
 ><P
->    It's a long way from the one <VAR
+>    It's a long way from the one <TT
 CLASS="LITERAL"
->INSERT ... SELECT</VAR
+>INSERT ... SELECT</TT
 >
     to these results. And the description of the query-tree
     transformation will be the last in this chapter.  First, there is
@@ -979,9 +985,9 @@ SELECT shoelace_arrive.arr_name, shoelace_arrive.arr_quant
   FROM shoelace_arrive shoelace_arrive, shoelace_ok shoelace_ok;</PRE
 ><P>
 
-    Now the first rule <VAR
+    Now the first rule <TT
 CLASS="LITERAL"
->shoelace_ok_ins</VAR
+>shoelace_ok_ins</TT
 > is applied and turns this
     into
 
@@ -999,14 +1005,14 @@ CLASS="PROGRAMLISTING"
 CLASS="COMMAND"
 >INSERT</TT
 > on
-    <VAR
+    <TT
 CLASS="LITERAL"
->shoelace_ok</VAR
+>shoelace_ok</TT
 >.  This rewritten query is passed to
     the rule system again, and the second applied rule
-    <VAR
+    <TT
 CLASS="LITERAL"
->shoelace_upd</VAR
+>shoelace_upd</TT
 > produces
 
 </P><PRE
@@ -1025,18 +1031,18 @@ CLASS="PROGRAMLISTING"
    AND shoelace_data.sl_name = shoelace.sl_name;</PRE
 ><P>
 
-    Again it's an <VAR
+    Again it's an <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rule and the previous query tree is trashed.
-    Note that this query still uses the view <VAR
+    Note that this query still uses the view <TT
 CLASS="LITERAL"
->shoelace</VAR
+>shoelace</TT
 >.
     But the rule system isn't finished with this step, so it continues
-    and applies the <VAR
+    and applies the <TT
 CLASS="LITERAL"
->_RETURN</VAR
+>_RETURN</TT
 > rule on it, and we get
 
 </P><PRE
@@ -1057,9 +1063,9 @@ CLASS="PROGRAMLISTING"
    AND shoelace_data.sl_name = s.sl_name;</PRE
 ><P>
 
-    Finally, the rule <VAR
+    Finally, the rule <TT
 CLASS="LITERAL"
->log_shoelace</VAR
+>log_shoelace</TT
 > gets applied,
     producing the extra query tree
 
@@ -1121,9 +1127,9 @@ UPDATE shoelace_data
     gets reduced into two queries.</P
 ><P
 >    There is a little detail that's a bit ugly. Looking at the two
-    queries, it turns out that the <VAR
+    queries, it turns out that the <TT
 CLASS="LITERAL"
->shoelace_data</VAR
+>shoelace_data</TT
 >
     relation appears twice in the range table where it could
     definitely be reduced to one. The planner does not handle it and
@@ -1161,9 +1167,9 @@ CLASS="LITERALLAYOUT"
 
     which produces exactly the same entries in the log table.  Thus,
     the rule system caused one extra scan on the table
-    <VAR
+    <TT
 CLASS="LITERAL"
->shoelace_data</VAR
+>shoelace_data</TT
 > that is absolutely not
     necessary. And the same redundant scan is done once more in the
     <TT
@@ -1187,9 +1193,9 @@ INSERT INTO shoelace VALUES ('sl10', 1000, 'magenta', 40.0, 'inch', 0.0);</PRE
 ><P>
 
     We would like to make a view to check which
-    <VAR
+    <TT
 CLASS="LITERAL"
->shoelace</VAR
+>shoelace</TT
 > entries do not fit any shoe in color.
     The view for this is
 

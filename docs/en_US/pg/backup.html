@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -119,9 +119,9 @@ HREF="backup.html#BACKUP-DUMP-RESTORE"
 ><DT
 >22.1.2. <A
 HREF="backup.html#BACKUP-DUMP-ALL"
->Using <TT
-CLASS="COMMAND"
->pg_dumpall</TT
+>Using <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
 ></A
 ></DT
 ><DT
@@ -143,13 +143,47 @@ HREF="backup-file.html"
 ></DT
 ><DT
 >22.3. <A
+HREF="backup-online.html"
+>On-line backup and point-in-time recovery</A
+></DT
+><DD
+><DL
+><DT
+>22.3.1. <A
+HREF="backup-online.html#BACKUP-ARCHIVING-WAL"
+>Setting up WAL archiving</A
+></DT
+><DT
+>22.3.2. <A
+HREF="backup-online.html#BACKUP-BASE-BACKUP"
+>Making a Base Backup</A
+></DT
+><DT
+>22.3.3. <A
+HREF="backup-online.html#BACKUP-PITR-RECOVERY"
+>Recovering with an On-line Backup</A
+></DT
+><DT
+>22.3.4. <A
+HREF="backup-online.html#BACKUP-TIMELINES"
+>Timelines</A
+></DT
+><DT
+>22.3.5. <A
+HREF="backup-online.html#BACKUP-ONLINE-CAVEATS"
+>Caveats</A
+></DT
+></DL
+></DD
+><DT
+>22.4. <A
 HREF="migration.html"
 >Migration Between Releases</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN18875"
+NAME="AEN20023"
 ></A
 ><P
 >  As everything that contains valuable data, <SPAN
@@ -161,7 +195,7 @@ CLASS="PRODUCTNAME"
   the underlying techniques and assumptions.
  </P
 ><P
->  There are two fundamentally different approaches to backing up
+>  There are three fundamentally different approaches to backing up
   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -180,8 +214,13 @@ CLASS="ACRONYM"
 ><P
 >File system level backup</P
 ></LI
+><LI
+><P
+>On-line backup</P
+></LI
 ></UL
 ><P>
+  Each has its own strengths and weaknesses.
  </P
 ><DIV
 CLASS="SECT1"
@@ -202,9 +241,9 @@ CLASS="ACRONYM"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > provides the utility program
-   <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
+   <A
+HREF="app-pgdump.html"
+>pg_dump</A
 > for this purpose. The basic usage of this
    command is:
 </P><PRE
@@ -246,19 +285,19 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > should
-   contact, use the command line options <VAR
+   contact, use the command line options <TT
 CLASS="OPTION"
 >-h
    <VAR
 CLASS="REPLACEABLE"
 >host</VAR
-></VAR
-> and <VAR
+></TT
+> and <TT
 CLASS="OPTION"
 >-p <VAR
 CLASS="REPLACEABLE"
 >port</VAR
-></VAR
+></TT
 >. The
    default host is the local host or whatever your
    <TT
@@ -283,9 +322,9 @@ CLASS="APPLICATION"
 >pg_dump</SPAN
 > will by default connect with the database
    user name that is equal to the current operating system user name. To override
-   this, either specify the <VAR
+   this, either specify the <TT
 CLASS="OPTION"
->-U</VAR
+>-U</TT
 > option or set the
    environment variable <TT
 CLASS="ENVAR"
@@ -332,19 +371,19 @@ CLASS="IMPORTANT"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > to dump the OIDs
-    as well. To do this, use the <VAR
+    as well. To do this, use the <TT
 CLASS="OPTION"
->-o</VAR
+>-o</TT
 > command line
     option.  <SPAN
 CLASS="QUOTE"
 >"Large objects"</SPAN
-> are not dumped by default, either.
-    See <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->'s command reference page if you use
-    large objects.
+> are not dumped by default,
+    either.  See <A
+HREF="app-pgdump.html"
+>pg_dump</A
+>'s reference page if you
+    use large objects.
    </P
 ></BLOCKQUOTE
 ></DIV
@@ -384,27 +423,27 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >outfile</VAR
 >
-    for the <TT
-CLASS="COMMAND"
->pg_dump</TT
+    for the <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
 > command. The database <VAR
 CLASS="REPLACEABLE"
 >dbname</VAR
 > will not be created by this
-    command, you must create it yourself from <VAR
+    command, you must create it yourself from <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 > before executing
     <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
-> (e.g., with <VAR
+> (e.g., with <TT
 CLASS="LITERAL"
 >createdb -T template0
     <VAR
 CLASS="REPLACEABLE"
 >dbname</VAR
-></VAR
+></TT
 >).
     <SPAN
 CLASS="APPLICATION"
@@ -430,19 +469,24 @@ CLASS="APPLICATION"
     authentication settings.
    </P
 ><P
->    Once restored, it is wise to run <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> on each
-    database so the optimizer has useful statistics. You
-    can also run <TT
+>    Once restored, it is wise to run <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+> on each database so the optimizer has
+    useful statistics. You can also run <TT
 CLASS="COMMAND"
 >vacuumdb -a -z</TT
-> to <TT
+> to
+    <TT
 CLASS="COMMAND"
->ANALYZE</TT
-> all
-    databases.
+>VACUUM ANALYZE</TT
+> all databases; this is equivalent to
+    running <TT
+CLASS="COMMAND"
+>VACUUM ANALYZE</TT
+> manually.
    </P
 ><P
 >    The ability of <SPAN
@@ -482,48 +526,40 @@ CLASS="IMPORTANT"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > are relative to
-     <VAR
+     <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 >. This means that any languages, procedures,
-     etc. added to <VAR
+     etc. added to <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > will also be dumped by
      <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
 >. As a result, when restoring, if you are
-     using a customized <VAR
+     using a customized <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, you must create the
-     empty database from <VAR
+     empty database from <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 >, as in the example
      above.
     </P
 ></BLOCKQUOTE
 ></DIV
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
 ><P
-><B
->Tip: </B
->    Restore performance can be improved by increasing the
-    configuration parameter <VAR
-CLASS="VARNAME"
->sort_mem</VAR
-> (see <A
-HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE-MEMORY"
->Section 16.4.2.1</A
->).
-    </P
-></BLOCKQUOTE
-></DIV
+>    For advice on how to load large amounts of data into
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> efficiently, refer to <A
+HREF="populate.html"
+>Section 13.4</A
+>.
+   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
@@ -531,28 +567,26 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="BACKUP-DUMP-ALL"
->22.1.2. Using <TT
-CLASS="COMMAND"
->pg_dumpall</TT
+>22.1.2. Using <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
 ></A
 ></H2
 ><P
 >    The above mechanism is cumbersome and inappropriate when backing
-    up an entire database cluster. For this reason the
-    <SPAN
+    up an entire database cluster. For this reason the <A
+HREF="app-pg-dumpall.html"
+><SPAN
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
+></A
 > program is provided.
     <SPAN
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
 > backs up each database in a given
-    cluster, and also preserves cluster-wide data such as
-    users and groups. The call sequence for
-    <SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
-> is simply
+    cluster, and also preserves cluster-wide data such as users and
+    groups. The basic usage of this command is:
 </P><PRE
 CLASS="SYNOPSIS"
 >pg_dumpall &gt; <VAR
@@ -572,9 +606,9 @@ CLASS="REPLACEABLE"
 ></PRE
 ><P>
     (Actually, you can specify any existing database name to start from,
-    but if you are reloading in an empty cluster then <VAR
+    but if you are reloading in an empty cluster then <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >
     is the only available choice.)  It is always necessary to have
     database superuser access when restoring a <SPAN
@@ -599,7 +633,7 @@ CLASS="PRODUCTNAME"
 > allows tables larger
     than the maximum file size on your system, it can be problematic
     to dump such a table to a file, since the resulting file will likely
-    be larger than the maximum size allowed by your system. As
+    be larger than the maximum size allowed by your system. Since
     <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
@@ -736,12 +770,12 @@ CLASS="REPLACEABLE"
 ></PRE
 ><P>
 
-     See the <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> and <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
+     See the <A
+HREF="app-pgdump.html"
+>pg_dump</A
+> and <A
+HREF="app-pgrestore.html"
+>pg_restore</A
 > reference pages for details.
     </P
 ></DIV
@@ -755,41 +789,18 @@ NAME="BACKUP-DUMP-CAVEATS"
 >22.1.4. Caveats</A
 ></H2
 ><P
->    <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> (and by implication
-    <SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
->) has a few limitations which stem from
-    the difficulty of reconstructing certain information from the system
-    catalogs.
-   </P
-><P
->    Specifically, the order in which <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> writes
-    the objects is not very sophisticated. This can lead to problems
-    for example when functions are used as column default values. The
-    only answer is to manually reorder the dump. If you created
-    circular dependencies in your schema then you will have more work
-    to do.
-   </P
-><P
 >    For reasons of backward compatibility, <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
 >
     does not dump large objects by default.<A
-NAME="AEN19036"
+NAME="AEN20180"
 ></A
 > To dump
-    large objects you must use either the custom or the TAR output
-    format, and use the <VAR
+    large objects you must use either the custom or the tar output
+    format, and use the <TT
 CLASS="OPTION"
->-b</VAR
+>-b</TT
 > option in
     <SPAN
 CLASS="APPLICATION"
@@ -806,14 +817,11 @@ CLASS="PRODUCTNAME"
     that can dump large objects.
    </P
 ><P
->    Please familiarize yourself with the
-    <SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->pg_dump</SPAN
-></SPAN
-> reference page.
+>    Please familiarize yourself with the <A
+HREF="app-pgdump.html"
+>pg_dump</A
+>
+    reference page.
    </P
 ></DIV
 ></DIV

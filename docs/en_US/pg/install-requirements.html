@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -129,7 +129,7 @@ CLASS="PRODUCTNAME"
 ><LI
 ><P
 >      <A
-NAME="AEN14004"
+NAME="AEN14708"
 ></A
 >
 
@@ -222,7 +222,7 @@ CLASS="APPLICATION"
 ><LI
 ><P
 >      <A
-NAME="AEN14031"
+NAME="AEN14735"
 ></A
 >
 
@@ -235,9 +235,9 @@ CLASS="PRODUCTNAME"
 > library (for
       comfortable line editing and command history retrieval) will be
       used by default.  If you don't want to use it then you must
-      specify the <VAR
+      specify the <TT
 CLASS="OPTION"
->--without-readline</VAR
+>--without-readline</TT
 > option for
       <TT
 CLASS="FILENAME"
@@ -263,7 +263,7 @@ CLASS="FILENAME"
 ><LI
 ><P
 >      <A
-NAME="AEN14043"
+NAME="AEN14747"
 ></A
 >
 
@@ -312,7 +312,7 @@ CLASS="FILENAME"
 > library and the header files.
       Since PL/Perl will be a shared library, the
       <A
-NAME="AEN14057"
+NAME="AEN14761"
 ></A
 >
       <TT
@@ -357,7 +357,7 @@ CLASS="PRODUCTNAME"
       Python installation, including the header files.  Since
       PL/Python will be a shared library, the
       <A
-NAME="AEN14067"
+NAME="AEN14771"
 ></A
 >
       <TT
@@ -385,20 +385,17 @@ CLASS="SCREEN"
       installation to supply this shared library.
      </P
 ><P
->      The catch is that the Python distribution or the Python
-      maintainers do not provide any direct way to do this.  The
-      closest thing we can offer you is the information in <A
-HREF="http://www.python.org/doc/FAQ.html#3.30"
-TARGET="_top"
->Python FAQ
-      3.30</A
->.  On some operating systems you don't really have
-      to build a shared library, but then you will have to convince
-      the <SPAN
+>      If you have problems, run Python 2.3 or later's configure using the 
+      <TT
+CLASS="LITERAL"
+>--enable-shared</TT
+> flag.  On some operating systems you 
+      don't have to build a shared library, but you will have 
+      to convince the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> build system of this.  Consult
-      the <TT
+> build system of this.
+      Consult the <TT
 CLASS="FILENAME"
 >Makefile</TT
 > in the
@@ -413,78 +410,6 @@ CLASS="FILENAME"
 >      If you want to build Tcl or Tk components (clients and the
       PL/Tcl language) you of course need a Tcl installation.
      </P
-></LI
-><LI
-><P
->      To build the JDBC driver, you need
-      <SPAN
-CLASS="APPLICATION"
->Ant</SPAN
-> 1.5 or higher and a
-      <ACRONYM
-CLASS="ACRONYM"
->JDK</ACRONYM
->.  <SPAN
-CLASS="APPLICATION"
->Ant</SPAN
-> is a
-      special tool for building Java-based packages.  It can be
-      downloaded from the <A
-HREF="http://jakarta.apache.org/ant/index.html"
-TARGET="_top"
-><SPAN
-CLASS="APPLICATION"
->Ant</SPAN
->
-      web site</A
->.
-     </P
-><P
->      If you have several Java compilers installed, it depends on the
-      Ant configuration which one gets used.  Precompiled
-      <SPAN
-CLASS="APPLICATION"
->Ant</SPAN
-> distributions are typically set
-      up to read a file <TT
-CLASS="FILENAME"
->.antrc</TT
-> in the current
-      user's home directory for configuration.  For example, to use a
-      different <ACRONYM
-CLASS="ACRONYM"
->JDK</ACRONYM
-> than the default, this may
-      work:
-</P><PRE
-CLASS="PROGRAMLISTING"
->JAVA_HOME=/usr/local/sun-jdk1.3
-JAVACMD=$JAVA_HOME/bin/java</PRE
-><P>
-     </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->       Do not try to build the driver by calling
-       <TT
-CLASS="COMMAND"
->ant</TT
-> or even <TT
-CLASS="COMMAND"
->javac</TT
->
-       directly.  This will not work.  Run <TT
-CLASS="COMMAND"
->gmake</TT
->
-       normally as described below.
-      </P
-></BLOCKQUOTE
-></DIV
 ></LI
 ><LI
 ><P
@@ -513,9 +438,9 @@ CLASS="SYSTEMITEM"
 >Solaris</SPAN
 >), for other systems you
       can download an add-on package from here: <A
-HREF="http://www.postgresql.org/~petere/gettext.html"
+HREF="http://developer.postgresql.org/~petere/bsd-gettext/"
 TARGET="_top"
->http://www.postgresql.org/~petere/gettext.html</A
+>http://developer.postgresql.org/~petere/bsd-gettext/</A
 >.
       If you are using the <SPAN
 CLASS="APPLICATION"
@@ -539,7 +464,7 @@ CLASS="PRODUCTNAME"
 CLASS="APPLICATION"
 >Kerberos</SPAN
 >, <SPAN
-CLASS="APPLICATION"
+CLASS="PRODUCTNAME"
 >OpenSSL</SPAN
 >, or <SPAN
 CLASS="APPLICATION"
@@ -565,15 +490,15 @@ CLASS="ACRONYM"
 ><LI
 ><P
 >      <A
-NAME="AEN14119"
+NAME="AEN14806"
 ></A
 >
       <A
-NAME="AEN14121"
+NAME="AEN14808"
 ></A
 >
       <A
-NAME="AEN14123"
+NAME="AEN14810"
 ></A
 >
 

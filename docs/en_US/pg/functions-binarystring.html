@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="String Functions and Operators"
 HREF="functions-string.html"><LINK
 REL="NEXT"
-TITLE="Pattern Matching"
-HREF="functions-matching.html"><LINK
+TITLE="Bit String Functions and Operators"
+HREF="functions-bitstring.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="functions-matching.html"
+HREF="functions-bitstring.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -96,7 +96,7 @@ NAME="FUNCTIONS-BINARYSTRING"
 >9.5. Binary String Functions and Operators</A
 ></H1
 ><A
-NAME="AEN7744"
+NAME="AEN7984"
 ></A
 ><P
 >    This section describes functions and operators for examining and
@@ -115,13 +115,13 @@ CLASS="ACRONYM"
     arguments.  Details are in
     <A
 HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-SQL"
->Table 9-9</A
+>Table 9-8</A
 >.
     Some functions are also implemented using the regular syntax for
     function invocation.
     (See <A
 HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-OTHER"
->Table 9-10</A
+>Table 9-9</A
 >.)
    </P
 ><DIV
@@ -131,7 +131,7 @@ NAME="FUNCTIONS-BINARYSTRING-SQL"
 ></A
 ><P
 ><B
->Table 9-9. <ACRONYM
+>Table 9-8. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Binary String Functions and Operators</B
@@ -156,19 +156,19 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
-><VAR
+><TT
 CLASS="PARAMETER"
->string</VAR
-> <VAR
+>string</TT
+> <TT
 CLASS="LITERAL"
->||</VAR
+>||</TT
 >
-        <VAR
+        <TT
 CLASS="PARAMETER"
->string</VAR
-></VAR
+>string</TT
+></TT
 ></TD
 ><TD
 > <TT
@@ -178,32 +178,32 @@ CLASS="TYPE"
 ><TD
 >        String concatenation
         <A
-NAME="AEN7774"
+NAME="AEN8014"
 ></A
 >
        </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->'\\\\Post'::bytea || '\\047gres\\000'::bytea</VAR
+>'\\\\Post'::bytea || '\\047gres\\000'::bytea</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\\Post'gres\000</VAR
+>\\Post'gres\000</TT
 ></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >octet_length</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
->)</VAR
+>string</TT
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -213,30 +213,30 @@ CLASS="TYPE"
 ><TD
 >Number of bytes in binary string</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->octet_length( 'jo\\000se'::bytea)</VAR
+>octet_length( 'jo\\000se'::bytea)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->5</VAR
+>5</TT
 ></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >position</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->substring</VAR
-> in <VAR
+>substring</TT
+> in <TT
 CLASS="PARAMETER"
->string</VAR
->)</VAR
+>string</TT
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -246,26 +246,26 @@ CLASS="TYPE"
 ><TD
 >Location of specified substring</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->position('\\000om'::bytea in 'Th\\000omas'::bytea)</VAR
+>position('\\000om'::bytea in 'Th\\000omas'::bytea)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->3</VAR
+>3</TT
 ></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >substring</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 > [<SPAN
 CLASS="OPTIONAL"
 >from <TT
@@ -278,7 +278,7 @@ CLASS="OPTIONAL"
 CLASS="TYPE"
 >integer</TT
 ></SPAN
->])</VAR
+>])</TT
 ></TD
 ><TD
 ><TT
@@ -288,24 +288,24 @@ CLASS="TYPE"
 ><TD
 >        Extract substring
         <A
-NAME="AEN7818"
+NAME="AEN8058"
 ></A
 >
        </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->substring('Th\\000omas'::bytea from 2 for 3)</VAR
+>substring('Th\\000omas'::bytea from 2 for 3)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->h\000o</VAR
+>h\000o</TT
 ></TD
 ></TR
 ><TR
 ><TD
->        <VAR
+>        <TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -314,14 +314,14 @@ CLASS="FUNCTION"
 CLASS="OPTIONAL"
 >both</SPAN
 >]
-        <VAR
+        <TT
 CLASS="PARAMETER"
->bytes</VAR
+>bytes</TT
 > from
-        <VAR
+        <TT
 CLASS="PARAMETER"
->string</VAR
->)</VAR
+>string</TT
+>)</TT
 >
        </TD
 ><TD
@@ -331,24 +331,24 @@ CLASS="TYPE"
 ></TD
 ><TD
 >        Remove the longest string containing only the bytes in
-        <VAR
+        <TT
 CLASS="PARAMETER"
->bytes</VAR
+>bytes</TT
 > from the start
-        and end of <VAR
+        and end of <TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 >
        </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->trim('\\000'::bytea from '\\000Tom\\000'::bytea)</VAR
+>trim('\\000'::bytea from '\\000Tom\\000'::bytea)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->Tom</VAR
+>Tom</TT
 ></TD
 ></TR
 ><TR
@@ -356,12 +356,12 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >get_byte</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
->, <VAR
+>string</TT
+>, <TT
 CLASS="PARAMETER"
->offset</VAR
+>offset</TT
 >)</TD
 ><TD
 ><TT
@@ -371,19 +371,19 @@ CLASS="TYPE"
 ><TD
 >        Extract byte from string.
         <A
-NAME="AEN7848"
+NAME="AEN8088"
 ></A
 >
        </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->get_byte('Th\\000omas'::bytea, 4)</VAR
+>get_byte('Th\\000omas'::bytea, 4)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->109</VAR
+>109</TT
 ></TD
 ></TR
 ><TR
@@ -391,16 +391,16 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >set_byte</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 >,
-       <VAR
+       <TT
 CLASS="PARAMETER"
->offset</VAR
->, <VAR
+>offset</TT
+>, <TT
 CLASS="PARAMETER"
->newvalue</VAR
+>newvalue</TT
 >)</TD
 ><TD
 ><TT
@@ -410,19 +410,19 @@ CLASS="TYPE"
 ><TD
 >        Set byte in string.
         <A
-NAME="AEN7863"
+NAME="AEN8103"
 ></A
 >
        </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->set_byte('Th\\000omas'::bytea, 4, 64)</VAR
+>set_byte('Th\\000omas'::bytea, 4, 64)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->Th\000o@as</VAR
+>Th\000o@as</TT
 ></TD
 ></TR
 ><TR
@@ -430,12 +430,12 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >get_bit</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
->, <VAR
+>string</TT
+>, <TT
 CLASS="PARAMETER"
->offset</VAR
+>offset</TT
 >)</TD
 ><TD
 ><TT
@@ -445,19 +445,19 @@ CLASS="TYPE"
 ><TD
 >        Extract bit from string.
         <A
-NAME="AEN7877"
+NAME="AEN8117"
 ></A
 >
        </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->get_bit('Th\\000omas'::bytea, 45)</VAR
+>get_bit('Th\\000omas'::bytea, 45)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->1</VAR
+>1</TT
 ></TD
 ></TR
 ><TR
@@ -465,16 +465,16 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >set_bit</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 >,
-       <VAR
+       <TT
 CLASS="PARAMETER"
->offset</VAR
->, <VAR
+>offset</TT
+>, <TT
 CLASS="PARAMETER"
->newvalue</VAR
+>newvalue</TT
 >)</TD
 ><TD
 ><TT
@@ -484,19 +484,19 @@ CLASS="TYPE"
 ><TD
 >        Set bit in string.
         <A
-NAME="AEN7892"
+NAME="AEN8132"
 ></A
 >
        </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->set_bit('Th\\000omas'::bytea, 45, 0)</VAR
+>set_bit('Th\\000omas'::bytea, 45, 0)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->Th\000omAs</VAR
+>Th\000omAs</TT
 ></TD
 ></TR
 ></TBODY
@@ -506,7 +506,7 @@ CLASS="LITERAL"
 >    Additional binary string manipulation functions are available and
     are listed in <A
 HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-OTHER"
->Table 9-10</A
+>Table 9-9</A
 >.  Some
     of them are used internally to implement the
     <ACRONYM
@@ -514,7 +514,7 @@ CLASS="ACRONYM"
 >SQL</ACRONYM
 >-standard string functions listed in <A
 HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-SQL"
->Table 9-9</A
+>Table 9-8</A
 >.
    </P
 ><DIV
@@ -524,7 +524,7 @@ NAME="FUNCTIONS-BINARYSTRING-OTHER"
 ></A
 ><P
 ><B
->Table 9-10. Other Binary String Functions</B
+>Table 9-9. Other Binary String Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -546,25 +546,25 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >btrim</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 >
         <TT
 CLASS="TYPE"
 >bytea</TT
-> <VAR
+>, <TT
 CLASS="PARAMETER"
->bytes</VAR
+>bytes</TT
 > <TT
 CLASS="TYPE"
 >bytea</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -573,37 +573,37 @@ CLASS="TYPE"
 ></TD
 ><TD
 >        Remove the longest string consisting only of bytes
-        in <VAR
+        in <TT
 CLASS="PARAMETER"
->bytes</VAR
+>bytes</TT
 > from the start and end of
-        <VAR
+        <TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 >.
       </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->btrim('\\000trim\\000'::bytea, '\\000'::bytea)</VAR
+>btrim('\\000trim\\000'::bytea, '\\000'::bytea)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->trim</VAR
+>trim</TT
 ></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >length</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
->)</VAR
+>string</TT
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -613,46 +613,46 @@ CLASS="TYPE"
 ><TD
 >       Length of binary string
        <A
-NAME="AEN7938"
+NAME="AEN8178"
 ></A
 >
        <A
-NAME="AEN7941"
+NAME="AEN8181"
 ></A
 >
       </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->length('jo\\000se'::bytea)</VAR
+>length('jo\\000se'::bytea)</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->5</VAR
+>5</TT
 ></TD
 ></TR
 ><TR
 ><TD
->       <VAR
+>       <TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >decode</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 > <TT
 CLASS="TYPE"
 >text</TT
 >,
-              <VAR
+              <TT
 CLASS="PARAMETER"
->type</VAR
+>type</TT
 > <TT
 CLASS="TYPE"
 >text</TT
->)</VAR
+>)</TT
 >
       </TD
 ><TD
@@ -661,50 +661,50 @@ CLASS="TYPE"
 >bytea</TT
 ></TD
 ><TD
->       Decode binary string from <VAR
+>       Decode binary string from <TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 > previously 
-       encoded with <VAR
+       encoded with <TT
 CLASS="LITERAL"
->encode</VAR
->.  Parameter type is same as in <VAR
+>encode</TT
+>.  Parameter type is same as in <TT
 CLASS="LITERAL"
->encode</VAR
+>encode</TT
 >.
       </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->decode('123\\000456', 'escape')</VAR
+>decode('123\\000456', 'escape')</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->123\000456</VAR
+>123\000456</TT
 ></TD
 ></TR
 ><TR
 ><TD
->       <VAR
+>       <TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >encode</CODE
->(<VAR
+>(<TT
 CLASS="PARAMETER"
->string</VAR
+>string</TT
 > <TT
 CLASS="TYPE"
 >bytea</TT
 >,
-              <VAR
+              <TT
 CLASS="PARAMETER"
->type</VAR
+>type</TT
 > <TT
 CLASS="TYPE"
 >text</TT
->)</VAR
+>)</TT
 >
       </TD
 ><TD
@@ -717,26 +717,26 @@ CLASS="TYPE"
 CLASS="ACRONYM"
 >ASCII</ACRONYM
 >-only representation.  Supported
-       types are: <VAR
+       types are: <TT
 CLASS="LITERAL"
->base64</VAR
->, <VAR
+>base64</TT
+>, <TT
 CLASS="LITERAL"
->hex</VAR
->, <VAR
+>hex</TT
+>, <TT
 CLASS="LITERAL"
->escape</VAR
+>escape</TT
 >.
       </TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->encode('123\\000456'::bytea, 'escape')</VAR
+>encode('123\\000456'::bytea, 'escape')</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->123\000456</VAR
+>123\000456</TT
 ></TD
 ></TR
 ></TBODY
@@ -777,7 +777,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="functions-matching.html"
+HREF="functions-bitstring.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -801,7 +801,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Pattern Matching</TD
+>Bit String Functions and Operators</TD
 ></TR
 ></TABLE
 ></DIV

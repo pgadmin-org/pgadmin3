@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATEAGGREGATE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN36376"
+NAME="AEN36405"
 ></A
 ><H2
 >Name</H2
 >CREATE AGGREGATE&nbsp;--&nbsp;define a new aggregate function</DIV
 ><A
-NAME="AEN36379"
+NAME="AEN36408"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN36381"
+NAME="AEN36410"
 ></A
 ><H2
 >Synopsis</H2
@@ -141,7 +141,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36389"
+NAME="AEN36418"
 ></A
 ><H2
 >Description</H2
@@ -149,27 +149,23 @@ NAME="AEN36389"
 >   <TT
 CLASS="COMMAND"
 >CREATE AGGREGATE</TT
-> defines a new aggregate function. Some aggregate functions
-   for base types such as <CODE
-CLASS="FUNCTION"
->min(integer)</CODE
->
-   and <CODE
-CLASS="FUNCTION"
->avg(double precision)</CODE
-> are already provided in the standard
-   distribution. If one defines new types or needs an aggregate function not
-   already provided, then <TT
+> defines a new aggregate
+   function. Some basic and commonly-used aggregate functions are
+   included with the distribution; they are documented in <A
+HREF="functions-aggregate.html"
+>Section 9.15</A
+>. If one defines new types or needs
+   an aggregate function not already provided, then <TT
 CLASS="COMMAND"
->CREATE AGGREGATE</TT
->
-   can be used to provide the desired features.
+>CREATE
+   AGGREGATE</TT
+> can be used to provide the desired features.
   </P
 ><P
->   If a schema name is given (for example, <VAR
+>   If a schema name is given (for example, <TT
 CLASS="LITERAL"
 >CREATE AGGREGATE
-   myschema.myagg ...</VAR
+   myschema.myagg ...</TT
 >) then the aggregate function is created in the
    specified schema.  Otherwise it is created in the current schema.
   </P
@@ -288,7 +284,7 @@ CLASS="FUNCTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36419"
+NAME="AEN36447"
 ></A
 ><H2
 >Parameters</H2
@@ -316,9 +312,9 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >      The input data type on which this aggregate function operates.
-      This can be specified as <VAR
+      This can be specified as <TT
 CLASS="LITERAL"
->"ANY"</VAR
+>"ANY"</TT
 > for an aggregate that
       does not examine its input values (an example is
       <CODE
@@ -420,21 +416,21 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36464"
+NAME="AEN36492"
 ></A
 ><H2
 >Examples</H2
 ><P
 >   See <A
 HREF="xaggr.html"
->Section 33.9</A
+>Section 31.9</A
 >.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36468"
+NAME="AEN36496"
 ></A
 ><H2
 >Compatibility</H2
@@ -453,7 +449,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36473"
+NAME="AEN36501"
 ></A
 ><H2
 >See Also</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Managing Databases"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -101,20 +101,20 @@ CLASS="COMMAND"
 >CREATE DATABASE</TT
 > actually works by copying an existing
    database.  By default, it copies the standard system database named
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >.<A
-NAME="AEN17412"
+NAME="AEN18509"
 ></A
 > Thus that
    database is the <SPAN
 CLASS="QUOTE"
 >"template"</SPAN
 > from which new databases are
-   made.  If you add objects to <VAR
+   made.  If you add objects to <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, these objects
    will be copied into subsequently created user databases.  This
    behavior allows site-local modifications to the standard set of
@@ -122,34 +122,34 @@ CLASS="LITERAL"
    language <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> in <VAR
+> in <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, it will
    automatically be available in user databases without any extra
    action being taken when those databases are made.
   </P
 ><P
 >   There is a second standard system database named
-   <VAR
+   <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 >.<A
-NAME="AEN17420"
+NAME="AEN18517"
 ></A
 > This
    database contains the same data as the initial contents of
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, that is, only the standard objects
    predefined by your version of
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->.  <VAR
+>.  <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 >
    should never be changed after <TT
 CLASS="COMMAND"
@@ -158,37 +158,37 @@ CLASS="COMMAND"
    <TT
 CLASS="COMMAND"
 >CREATE DATABASE</TT
-> to copy <VAR
+> to copy <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 > instead
-   of <VAR
+   of <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, you can create a <SPAN
 CLASS="QUOTE"
 >"virgin"</SPAN
 > user
    database that contains none of the site-local additions in
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >.  This is particularly handy when restoring a
-   <VAR
+   <TT
 CLASS="LITERAL"
->pg_dump</VAR
+>pg_dump</TT
 > dump: the dump script should be restored in a
    virgin database to ensure that one recreates the correct contents
    of the dumped database, without any conflicts with additions that
-   may now be present in <VAR
+   may now be present in <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >.
   </P
 ><P
->   To create a database by copying <VAR
+>   To create a database by copying <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 >, use
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -236,23 +236,23 @@ CLASS="COMMAND"
    we recommend that databases used as templates be treated as read-only.
   </P
 ><P
->   Two useful flags exist in <VAR
+>   Two useful flags exist in <TT
 CLASS="LITERAL"
->pg_database</VAR
+>pg_database</TT
 ><A
-NAME="AEN17446"
+NAME="AEN18543"
 ></A
 > for each
-   database: the columns <VAR
+   database: the columns <TT
 CLASS="LITERAL"
->datistemplate</VAR
+>datistemplate</TT
 > and
-   <VAR
+   <TT
 CLASS="LITERAL"
->datallowconn</VAR
->.  <VAR
+>datallowconn</TT
+>.  <TT
 CLASS="LITERAL"
->datistemplate</VAR
+>datistemplate</TT
 >
    may be set to indicate that a database is intended as a template for
    <TT
@@ -260,34 +260,34 @@ CLASS="COMMAND"
 >CREATE DATABASE</TT
 >.  If this flag is set, the database may be
    cloned by 
-   any user with <VAR
+   any user with <TT
 CLASS="LITERAL"
->CREATEDB</VAR
+>CREATEDB</TT
 > privileges; if it is not set, only superusers
    and the owner of the database may clone it.
-   If <VAR
+   If <TT
 CLASS="LITERAL"
->datallowconn</VAR
+>datallowconn</TT
 > is false, then no new connections
    to that database will be allowed (but existing sessions are not killed
-   simply by setting the flag false).  The <VAR
+   simply by setting the flag false).  The <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 >
-   database is normally marked <VAR
+   database is normally marked <TT
 CLASS="LITERAL"
->datallowconn = false</VAR
+>datallowconn = false</TT
 > to prevent modification of it.
-   Both <VAR
+   Both <TT
 CLASS="LITERAL"
->template0</VAR
-> and <VAR
+>template0</TT
+> and <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >
-   should always be marked with <VAR
+   should always be marked with <TT
 CLASS="LITERAL"
->datistemplate = true</VAR
+>datistemplate = true</TT
 >.
   </P
 ><P
@@ -307,9 +307,9 @@ CLASS="QUOTE"
 >"frozen"</SPAN
 > and will not be subject to transaction
    ID wraparound problems.  This is particularly important for a database
-   that will have <VAR
+   that will have <TT
 CLASS="LITERAL"
->datallowconn</VAR
+>datallowconn</TT
 > set to false, since it
    will be impossible to do routine maintenance <TT
 CLASS="COMMAND"
@@ -328,16 +328,16 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->    <VAR
+>    <TT
 CLASS="LITERAL"
->template1</VAR
-> and <VAR
+>template1</TT
+> and <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 > do not have any special
-    status beyond the fact that the name <VAR
+    status beyond the fact that the name <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > is the default
     source database name for <TT
 CLASS="COMMAND"
@@ -347,18 +347,18 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >createdb</TT
 >.
-    For example, one could drop <VAR
+    For example, one could drop <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > and recreate it from
-    <VAR
+    <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 > without any ill effects.  This course of action
     might be advisable if one has carelessly added a bunch of junk in
-    <VAR
+    <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >.
    </P
 ></BLOCKQUOTE

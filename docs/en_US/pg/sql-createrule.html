@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATERULE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37699"
+NAME="AEN37765"
 ></A
 ><H2
 >Name</H2
 >CREATE RULE&nbsp;--&nbsp;define a new rewrite rule</DIV
 ><A
-NAME="AEN37702"
+NAME="AEN37768"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37704"
+NAME="AEN37770"
 ></A
 ><H2
 >Synopsis</H2
@@ -126,7 +126,7 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >condition</VAR
 > ]
-    DO [ INSTEAD ] { NOTHING | <VAR
+    DO [ ALSO | INSTEAD ] { NOTHING | <VAR
 CLASS="REPLACEABLE"
 >command</VAR
 > | ( <VAR
@@ -140,7 +140,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37713"
+NAME="AEN37779"
 ></A
 ><H2
 >Description</H2
@@ -165,35 +165,38 @@ CLASS="PRODUCTNAME"
    define an alternate action to be performed on insertions, updates,
    or deletions in database tables.  Roughly speaking, a rule causes
    additional commands to be executed when a given command on a given
-   table is executed.  Alternatively, a rule can replace a given
-   command by another, or cause a command not to be executed at all.
-   Rules are used to implement table views as well.  It is important
-   to realize that a rule is really a command transformation
-   mechanism, or command macro.  The transformation happens before the
-   execution of the commands starts.  If you actually want an
-   operation that fires independently for each physical row, you
-   probably want to use a trigger, not a rule.  More information about
-   the rules system is in <A
+   table is executed.  Alternatively, an <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+>
+   rule can replace a given command by another, or cause a command
+   not to be executed at all.  Rules are used to implement table
+   views as well.  It is important to realize that a rule is really
+   a command transformation mechanism, or command macro.  The
+   transformation happens before the execution of the commands starts.
+   If you actually want an operation that fires independently for each
+   physical row, you probably want to use a trigger, not a rule.
+   More information about the rules system is in <A
 HREF="rules.html"
->Chapter 34</A
+>Chapter 32</A
 >.
   </P
 ><P
->   Presently, <VAR
+>   Presently, <TT
 CLASS="LITERAL"
->ON SELECT</VAR
+>ON SELECT</TT
 > rules must be unconditional
-   <VAR
+   <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rules and must have actions that consist
    of a single <TT
 CLASS="COMMAND"
 >SELECT</TT
 > command.  Thus, an
-   <VAR
+   <TT
 CLASS="LITERAL"
->ON SELECT</VAR
+>ON SELECT</TT
 > rule effectively turns the table into
    a view, whose visible contents are the rows returned by the rule's
    <TT
@@ -205,23 +208,23 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >CREATE VIEW</TT
 > command than to create a
-   real table and define an <VAR
+   real table and define an <TT
 CLASS="LITERAL"
->ON SELECT</VAR
+>ON SELECT</TT
 > rule for it.
   </P
 ><P
 >   You can create the illusion of an updatable view by defining
-   <VAR
+   <TT
 CLASS="LITERAL"
->ON INSERT</VAR
->, <VAR
+>ON INSERT</TT
+>, <TT
 CLASS="LITERAL"
->ON UPDATE</VAR
+>ON UPDATE</TT
 >, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->ON DELETE</VAR
+>ON DELETE</TT
 > rules (or any subset of those that's
    sufficient for your purposes) to replace update actions on the view
    with appropriate updates on other tables.
@@ -235,39 +238,39 @@ CLASS="EMPHASIS"
 >must</I
 ></SPAN
 > be an unconditional
-   <VAR
+   <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rule for each action you wish to allow
    on the view.  If the rule is conditional, or is not
-   <VAR
+   <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 >, then the system will still reject
    attempts to perform the update action, because it thinks it might
    end up trying to perform the action on the dummy table of the view
    in some cases.  If you want to handle all the useful cases in
-   conditional rules, you can; just add an unconditional <VAR
+   conditional rules, you can; just add an unconditional <TT
 CLASS="LITERAL"
 >DO
-   INSTEAD NOTHING</VAR
+   INSTEAD NOTHING</TT
 > rule to ensure that the system
    understands it will never be called on to update the dummy table.
-   Then make the conditional rules not <VAR
+   Then make the conditional rules not <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 >; in
    the cases where they are applied, they add to the default
-   <VAR
+   <TT
 CLASS="LITERAL"
->INSTEAD NOTHING</VAR
+>INSTEAD NOTHING</TT
 > action.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37740"
+NAME="AEN37807"
 ></A
 ><H2
 >Parameters</H2
@@ -296,20 +299,20 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->      The even is one of <VAR
+>      The event is one of <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 >,
-      <VAR
+      <TT
 CLASS="LITERAL"
->INSERT</VAR
->, <VAR
+>INSERT</TT
+>, <TT
 CLASS="LITERAL"
->UPDATE</VAR
+>UPDATE</TT
 >, or
-      <VAR
+      <TT
 CLASS="LITERAL"
->DELETE</VAR
+>DELETE</TT
 >.
      </P
 ></DD
@@ -331,19 +334,77 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->      Any SQL conditional expression (returning <TT
+>      Any <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> conditional expression (returning
+      <TT
 CLASS="TYPE"
 >boolean</TT
->).
-      The condition expression may not refer to any tables except
-      <VAR
+>).  The condition expression may not refer
+      to any tables except <TT
 CLASS="LITERAL"
->NEW</VAR
-> and <VAR
+>NEW</TT
+> and <TT
 CLASS="LITERAL"
->OLD</VAR
->, and may not
-      contain aggregate functions.
+>OLD</TT
+>, and
+      may not contain aggregate functions.
+     </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>INSTEAD</TT
+></DT
+><DD
+><P
+>      <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> indicates that the commands should be
+      executed <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>instead of</I
+></SPAN
+> the original command.
+     </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>ALSO</TT
+></DT
+><DD
+><P
+>      <TT
+CLASS="LITERAL"
+>ALSO</TT
+> indicates that the commands should be
+      executed <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>in addition to</I
+></SPAN
+> the original
+      command.
+     </P
+><P
+>      If neither <TT
+CLASS="LITERAL"
+>ALSO</TT
+> nor
+      <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> is specified, <TT
+CLASS="LITERAL"
+>ALSO</TT
+>
+      is the default.
      </P
 ></DD
 ><DT
@@ -354,23 +415,23 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >      The command or commands that make up the rule action.  Valid
-      commands are <VAR
-CLASS="LITERAL"
->SELECT</VAR
+      commands are <TT
+CLASS="COMMAND"
+>SELECT</TT
 >,
-      <VAR
-CLASS="LITERAL"
->INSERT</VAR
->, <VAR
-CLASS="LITERAL"
->UPDATE</VAR
+      <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
 >,
-      <VAR
-CLASS="LITERAL"
->DELETE</VAR
->, or <VAR
-CLASS="LITERAL"
->NOTIFY</VAR
+      <TT
+CLASS="COMMAND"
+>DELETE</TT
+>, or <TT
+CLASS="COMMAND"
+>NOTIFY</TT
 >.
      </P
 ></DD
@@ -385,35 +446,35 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >command</VAR
 >, the special
-   table names <VAR
+   table names <TT
 CLASS="LITERAL"
->NEW</VAR
-> and <VAR
+>NEW</TT
+> and <TT
 CLASS="LITERAL"
->OLD</VAR
+>OLD</TT
 > may
    be used to refer to values in the referenced table.
-   <VAR
+   <TT
 CLASS="LITERAL"
->NEW</VAR
-> is valid in <VAR
+>NEW</TT
+> is valid in <TT
 CLASS="LITERAL"
->ON INSERT</VAR
+>ON INSERT</TT
 > and
-   <VAR
+   <TT
 CLASS="LITERAL"
->ON UPDATE</VAR
+>ON UPDATE</TT
 > rules to refer to the new row being
-   inserted or updated.  <VAR
+   inserted or updated.  <TT
 CLASS="LITERAL"
->OLD</VAR
+>OLD</TT
 > is valid in
-   <VAR
+   <TT
 CLASS="LITERAL"
->ON UPDATE</VAR
-> and <VAR
+>ON UPDATE</TT
+> and <TT
 CLASS="LITERAL"
->ON DELETE</VAR
+>ON DELETE</TT
 > rules
    to refer to the existing row being updated or deleted.
   </P
@@ -421,14 +482,14 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37791"
+NAME="AEN37877"
 ></A
 ><H2
 >Notes</H2
 ><P
->   You must have the privilege <VAR
+>   You must have the privilege <TT
 CLASS="LITERAL"
->RULE</VAR
+>RULE</TT
 > on a table to
    be allowed to define a rule on it.
   </P
@@ -481,7 +542,7 @@ CLASS="COMMAND"
    to.  For example, in
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE RULE notify_me AS ON UPDATE TO mytable DO NOTIFY mytable;
+>CREATE RULE notify_me AS ON UPDATE TO mytable DO ALSO NOTIFY mytable;
 
 UPDATE mytable SET name = 'foo' WHERE id = 42;</PRE
 ><P>
@@ -492,18 +553,18 @@ CLASS="COMMAND"
    <TT
 CLASS="COMMAND"
 >UPDATE</TT
->, whether or not there are any rows with
-   <VAR
+>, whether or not there are any rows that
+   match the condition <TT
 CLASS="LITERAL"
->id = 42</VAR
->.  This is an implementation restriction
-   that may be fixed in future releases.
+>id = 42</TT
+>.  This is an
+   implementation restriction that may be fixed in future releases.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37808"
+NAME="AEN37894"
 ></A
 ><H2
 >Compatibility</H2
@@ -516,7 +577,7 @@ CLASS="COMMAND"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > language extension, as is the
-   entire rules system.
+   entire query rewrite system.
   </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="PostgreSQL Server Applications"
 HREF="reference-server.html"><LINK
 REL="NEXT"
-TITLE="initlocation"
-HREF="app-initlocation.html"><LINK
+TITLE="ipcclean"
+HREF="app-ipcclean.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="reference-server.html#AEN47167"
+HREF="reference-server.html#AEN47760"
 >Fast Backward</A
 ></TD
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-initlocation.html"
+HREF="app-ipcclean.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-initlocation.html"
+HREF="app-ipcclean.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -95,7 +95,7 @@ NAME="APP-INITDB"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47176"
+NAME="AEN47769"
 ></A
 ><H2
 >Name</H2
@@ -104,12 +104,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database cluster</DIV
 ><A
-NAME="AEN47180"
+NAME="AEN47773"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47182"
+NAME="AEN47775"
 ></A
 ><H2
 >Synopsis</H2
@@ -149,14 +149,14 @@ CLASS="PRODUCTNAME"
 >   Creating a database cluster consists of creating the directories in which
    the database data will live, generating the shared catalog tables 
    (tables that belong to the whole cluster rather than to any particular
-   database), and creating the <VAR
+   database), and creating the <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >
    database.  When you later create a new database, everything in the
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > database is copied.
    It contains catalog tables filled in for things like the
    built-in types.
@@ -187,23 +187,23 @@ CLASS="FILENAME"
 CLASS="COMMAND"
 >initdb</TT
 > uses, see the description of the
-   <VAR
+   <TT
 CLASS="OPTION"
->--locale</VAR
+>--locale</TT
 > option.  The character set encoding can
    be set separately for each database as it is created.
    <TT
 CLASS="COMMAND"
 >initdb</TT
 > determines the encoding for the
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > database, which will serve as the
    default for all other databases.  To alter the default encoding use
-   the <VAR
+   the <TT
 CLASS="OPTION"
->--encoding</VAR
+>--encoding</TT
 > option.
   </P
 ><P
@@ -249,7 +249,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47218"
+NAME="AEN47811"
 ></A
 ><H2
 >Options</H2
@@ -260,18 +260,49 @@ NAME="AEN47218"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
+CLASS="OPTION"
+>-A <VAR
+CLASS="REPLACEABLE"
+>authmethod</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--auth=<VAR
+CLASS="REPLACEABLE"
+>authmethod</VAR
+></TT
+></DT
+><DD
+><P
+>        This option specifies the authentication method for local users
+        used in <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+>.  Do not use <TT
+CLASS="LITERAL"
+>trust</TT
+>
+        unless you trust all local users on your system.  <TT
+CLASS="LITERAL"
+>Trust</TT
+> 
+        is the default for ease of installation.
+       </P
+></DD
+><DT
+><TT
 CLASS="OPTION"
 >-D <VAR
 CLASS="REPLACEABLE"
 >directory</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--pgdata=<VAR
 CLASS="REPLACEABLE"
 >directory</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -294,36 +325,45 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-E <VAR
 CLASS="REPLACEABLE"
 >encoding</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--encoding=<VAR
 CLASS="REPLACEABLE"
 >encoding</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
 >        Selects the encoding of the template database. This will also
-        be the default encoding of any database you create later, unless you
-        override it there.  The default is <VAR
+        be the default encoding of any database you create later,
+        unless you override it there.  The default is derived from the locale, or
+        <TT
 CLASS="LITERAL"
->SQL_ASCII</VAR
+>SQL_ASCII</TT
+> if that does not work. The character sets supported by
+        the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server are described
+        in <A
+HREF="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED"
+>Section 20.2.1</A
 >.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--locale=<VAR
 CLASS="REPLACEABLE"
 >locale</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -332,69 +372,73 @@ CLASS="REPLACEABLE"
         environment that <TT
 CLASS="COMMAND"
 >initdb</TT
-> runs in.
+> runs in. Locale
+        support is described in <A
+HREF="charset.html#LOCALE"
+>Section 20.1</A
+>.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--lc-collate=<VAR
 CLASS="REPLACEABLE"
 >locale</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--lc-ctype=<VAR
 CLASS="REPLACEABLE"
 >locale</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--lc-messages=<VAR
 CLASS="REPLACEABLE"
 >locale</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--lc-monetary=<VAR
 CLASS="REPLACEABLE"
 >locale</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--lc-numeric=<VAR
 CLASS="REPLACEABLE"
 >locale</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--lc-time=<VAR
 CLASS="REPLACEABLE"
 >locale</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->        Like <VAR
+>        Like <TT
 CLASS="OPTION"
->--locale</VAR
+>--locale</TT
 >, but only sets the locale in
         the specified category.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-U <VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--username=<VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -413,12 +457,12 @@ CLASS="SYSTEMITEM"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-W</VAR
-><BR><VAR
+>-W</TT
+><BR><TT
 CLASS="OPTION"
->--pwprompt</VAR
+>--pwprompt</TT
 ></DT
 ><DD
 ><P
@@ -430,6 +474,23 @@ CLASS="COMMAND"
         authentication, this is not important.  Otherwise you won't be
         able to use password authentication until you have a password
         set up.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>--pwfile=<VAR
+CLASS="REPLACEABLE"
+>filename</VAR
+></TT
+></DT
+><DD
+><P
+>        Makes <TT
+CLASS="COMMAND"
+>initdb</TT
+> read the database superuser's password
+        from a file.  The first line of the file is taken as the password.
        </P
 ></DD
 ></DL
@@ -445,12 +506,12 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-d</VAR
-><BR><VAR
+>-d</TT
+><BR><TT
 CLASS="OPTION"
->--debug</VAR
+>--debug</TT
 ></DT
 ><DD
 ><P
@@ -465,12 +526,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-L <VAR
 CLASS="REPLACEABLE"
 >directory</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -484,12 +545,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-n</VAR
-><BR><VAR
+>-n</TT
+><BR><TT
 CLASS="OPTION"
->--noclean</VAR
+>--noclean</TT
 ></DT
 ><DD
 ><P
@@ -511,7 +572,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47317"
+NAME="AEN47932"
 ></A
 ><H2
 >Environment</H2
@@ -528,9 +589,9 @@ CLASS="ENVAR"
 ><DD
 ><P
 >      Specifies the directory where the database cluster is to be
-      stored; may be overridden using the <VAR
+      stored; may be overridden using the <TT
 CLASS="OPTION"
->-D</VAR
+>-D</TT
 > option.
      </P
 ></DD
@@ -540,7 +601,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47326"
+NAME="AEN47941"
 ></A
 ><H2
 >See Also</H2
@@ -591,7 +652,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-initlocation.html"
+HREF="app-ipcclean.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -617,7 +678,7 @@ ALIGN="right"
 VALIGN="top"
 ><SPAN
 CLASS="APPLICATION"
->initlocation</SPAN
+>ipcclean</SPAN
 ></TD
 ></TR
 ></TABLE

@@ -47,6 +47,8 @@
 WX_DEFINE_LIST(windowList);
 
 // Icons
+#include "images/pgAdmin3.xpm"
+#include "images/elephant32.xpm"
 #include "images/aggregate.xpm"
 #include "images/baddatabase.xpm"
 #include "images/check.xpm"
@@ -68,7 +70,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/namespace.xpm"
 #include "images/operator.xpm"
 #include "images/operatorclass.xpm"
-#include "images/pgAdmin3.xpm"
 #include "images/properties.xpm"
 #include "images/property.xpm"
 #include "images/public.xpm"
@@ -141,7 +142,10 @@ frmMain::frmMain(const wxString& title)
     denyCollapseItem=wxTreeItemId();
 
     // Icon
-    SetIcon(wxIcon(pgAdmin3_xpm));
+    wxIconBundle icons;
+    icons.AddIcon(wxIcon(pgAdmin3_xpm));
+    icons.AddIcon(wxIcon(elephant32_xpm));
+    SetIcons(icons);
 
     // Build menus
     menuBar = new wxMenuBar();
@@ -392,7 +396,7 @@ void frmMain::Refresh(pgObject *data)
     browser->Freeze();
 
     wxTreeItemId currentItem=data->GetId();
-    browser->DeleteChildren(data->GetId());
+    browser->DeleteChildren(currentItem);
 
 	// refresh information about the object
 

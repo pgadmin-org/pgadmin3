@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,42 +95,53 @@ NAME="SQL-START-TRANSACTION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42702"
+NAME="AEN43285"
 ></A
 ><H2
 >Name</H2
 >START TRANSACTION&nbsp;--&nbsp;start a transaction block</DIV
 ><A
-NAME="AEN42705"
+NAME="AEN43288"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42707"
+NAME="AEN43290"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->START TRANSACTION [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ] [ READ WRITE | READ ONLY ]</PRE
+>START TRANSACTION [ <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> [, ...] ]
+
+where <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> is one of:
+
+    ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
+    READ WRITE | READ ONLY</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42709"
+NAME="AEN43294"
 ></A
 ><H2
 >Description</H2
 ><P
->   This command begins a new transaction. If the isolation level or
+>   This command begins a new transaction block. If the isolation level or
    read/write mode is specified, the new transaction has those
    characteristics, as if <A
 HREF="sql-set-transaction.html"
 ><I
 >SET TRANSACTION</I
 ></A
-> was executed. In all other
-   respects, the behavior of this command is identical to the <A
+> was executed. This is the same
+   as the <A
 HREF="sql-begin.html"
 ><I
 >BEGIN</I
@@ -141,30 +152,68 @@ HREF="sql-begin.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42714"
+NAME="AEN43299"
 ></A
 ><H2
 >Parameters</H2
 ><P
->   See under <A
+>   Refer to <A
 HREF="sql-set-transaction.html"
 ><I
 >SET TRANSACTION</I
 ></A
-> about the meaning of the
-   parameters.
+> for information on the meaning
+   of the parameters to this statement.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42718"
+NAME="AEN43303"
 ></A
 ><H2
 >Compatibility</H2
 ><P
->   This command conforms to the SQL standard; but see also the
-   compatibility section of <A
+>   In the standard, it is not necessary to issue <TT
+CLASS="COMMAND"
+>START TRANSACTION</TT
+>
+   to start a transaction block: any SQL command implicitly begins a block.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s behavior can be seen as implicitly
+   issuing a <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> after each command that does not
+   follow <TT
+CLASS="COMMAND"
+>START TRANSACTION</TT
+> (or <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>),
+   and it is therefore often called <SPAN
+CLASS="QUOTE"
+>"autocommit"</SPAN
+>.
+   Other relational database systems may offer an autocommit feature
+   as a convenience.
+  </P
+><P
+>   The SQL standard requires commas between successive <VAR
+CLASS="REPLACEABLE"
+>transaction_modes</VAR
+>, but for historical
+   reasons <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows the commas to be
+   omitted.
+  </P
+><P
+>   See also the compatibility section of <A
 HREF="sql-set-transaction.html"
 ><I
 >SET TRANSACTION</I
@@ -175,7 +224,7 @@ HREF="sql-set-transaction.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42722"
+NAME="AEN43317"
 ></A
 ><H2
 >See Also</H2
@@ -198,6 +247,11 @@ HREF="sql-rollback.html"
 HREF="sql-set-transaction.html"
 ><I
 >SET TRANSACTION</I
+></A
+>, <A
+HREF="sql-savepoint.html"
+><I
+>SAVEPOINT</I
 ></A
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Queries"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="QUERIES-ORDER"
 >7.5. Sorting Rows</A
 ></H1
 ><A
-NAME="AEN3068"
+NAME="AEN3166"
 ></A
 ><A
-NAME="AEN3070"
+NAME="AEN3168"
 ></A
 ><P
 >   After a query has produced an output table (after the select list
@@ -111,9 +111,9 @@ NAME="AEN3070"
    chosen.
   </P
 ><P
->   The <VAR
+>   The <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > clause specifies the sort order:
 </P><PRE
 CLASS="SYNOPSIS"
@@ -169,9 +169,9 @@ CLASS="PRODUCTNAME"
 CLASS="PROGRAMLISTING"
 >SELECT a, b FROM table1 ORDER BY a + b;</PRE
 ><P>
-   References to column names in the <VAR
+   References to column names in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause that are
    renamed in the select list are also allowed:
 </P><PRE
@@ -179,47 +179,47 @@ CLASS="PROGRAMLISTING"
 >SELECT a AS b FROM table1 ORDER BY a;</PRE
 ><P>
    But these extensions do not work in queries involving
-   <VAR
+   <TT
 CLASS="LITERAL"
->UNION</VAR
->, <VAR
+>UNION</TT
+>, <TT
 CLASS="LITERAL"
->INTERSECT</VAR
->, or <VAR
+>INTERSECT</TT
+>, or <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 >,
    and are not portable to other SQL databases.
   </P
 ><P
 >   Each column specification may be followed by an optional
-   <VAR
+   <TT
 CLASS="LITERAL"
->ASC</VAR
-> or <VAR
+>ASC</TT
+> or <TT
 CLASS="LITERAL"
->DESC</VAR
+>DESC</TT
 > to set the sort direction to
-   ascending or descending.  <VAR
+   ascending or descending.  <TT
 CLASS="LITERAL"
->ASC</VAR
+>ASC</TT
 > order is the default.
    Ascending order puts smaller values first, where
    <SPAN
 CLASS="QUOTE"
 >"smaller"</SPAN
 > is defined in terms of the
-   <VAR
+   <TT
 CLASS="LITERAL"
->&lt;</VAR
+>&lt;</TT
 > operator.  Similarly, descending order is
-   determined with the <VAR
+   determined with the <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 > operator.
     <A
-NAME="AEN3101"
-HREF="#FTN.AEN3101"
+NAME="AEN3199"
+HREF="#FTN.AEN3199"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN
@@ -245,8 +245,8 @@ ALIGN="LEFT"
 VALIGN="TOP"
 WIDTH="5%"
 ><A
-NAME="FTN.AEN3101"
-HREF="queries-order.html#AEN3101"
+NAME="FTN.AEN3199"
+HREF="queries-order.html#AEN3199"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN
@@ -265,20 +265,20 @@ CLASS="FIRSTTERM"
 >default B-tree
       operator class</I
 > for the column's data type to determine the sort
-      ordering for <VAR
+      ordering for <TT
 CLASS="LITERAL"
->ASC</VAR
-> and <VAR
+>ASC</TT
+> and <TT
 CLASS="LITERAL"
->DESC</VAR
+>DESC</TT
 >.  Conventionally,
-      data types will be set up so that the <VAR
+      data types will be set up so that the <TT
 CLASS="LITERAL"
->&lt;</VAR
+>&lt;</TT
 > and
-      <VAR
+      <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 > operators correspond to this sort ordering,
       but a user-defined data type's designer could choose to do something
       different.
@@ -344,12 +344,12 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->LIMIT</VAR
-> and <VAR
+>LIMIT</TT
+> and <TT
 CLASS="LITERAL"
->OFFSET</VAR
+>OFFSET</TT
 ></TD
 ></TR
 ></TABLE

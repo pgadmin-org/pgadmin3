@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Write-Ahead Logging (WAL)"
 HREF="wal.html"><LINK
 REL="PREVIOUS"
-TITLE="Future Benefits"
-HREF="wal-benefits-later.html"><LINK
+TITLE="Write-Ahead Logging (WAL)"
+HREF="wal.html"><LINK
 REL="NEXT"
 TITLE="Internals"
 HREF="wal-internals.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="wal-benefits-later.html"
+HREF="wal.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -96,7 +96,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="WAL-CONFIGURATION"
->25.3. <ACRONYM
+>25.2. <ACRONYM
 CLASS="ACRONYM"
 >WAL</ACRONYM
 > Configuration</A
@@ -110,46 +110,40 @@ CLASS="ACRONYM"
    Consult <A
 HREF="runtime-config.html"
 >Section 16.4</A
-> for details about setting
-   configuration parameters.
+> for general information about
+   setting server configuration parameters.
   </P
 ><P
 >   <I
 CLASS="FIRSTTERM"
 >Checkpoints</I
 ><A
-NAME="AEN19587"
+NAME="AEN20900"
 ></A
 > are points in the sequence of
    transactions at which it is guaranteed that the data files have
    been updated with all information logged before the checkpoint.  At
    checkpoint time, all dirty data pages are flushed to disk and a
    special checkpoint record is written to the log file. As result, in
-   the event of a crash, the recoverer knows from what record in the
+   the event of a crash, the recoverer knows from what point in the
    log (known as the redo record) it should start the REDO operation,
    since any changes made to data files before that record are already
    on disk. After a checkpoint has been made, any log segments written
-   before the redo records are no longer needed and can be recycled or
+   before the redo record are no longer needed and can be recycled or
    removed. (When <ACRONYM
 CLASS="ACRONYM"
 >WAL</ACRONYM
->-based <ACRONYM
-CLASS="ACRONYM"
->BAR</ACRONYM
-> is
-   implemented, the log segments would be archived before being recycled
-   or removed.)
+> archiving is being done, the
+   log segments must be archived before being recycled or removed.)
   </P
 ><P
->   The server spawns a special process every so often
-   to create the next checkpoint.  A checkpoint is created every
-   <VAR
-CLASS="VARNAME"
->checkpoint_segments</VAR
-> log segments, or every
-   <VAR
-CLASS="VARNAME"
->checkpoint_timeout</VAR
+>   The server's background writer process will automatically perform
+   a checkpoint every so often.  A checkpoint is created every <A
+HREF="runtime-config.html#GUC-CHECKPOINT-SEGMENTS"
+>checkpoint_segments</A
+> log segments, or every <A
+HREF="runtime-config.html#GUC-CHECKPOINT-TIMEOUT"
+>checkpoint_timeout</A
 > seconds, whichever comes first.
    The default settings are 3 segments and 300 seconds respectively.
    It is also possible to force a checkpoint by using the SQL command
@@ -159,13 +153,13 @@ CLASS="COMMAND"
 >.
   </P
 ><P
->   Reducing <VAR
+>   Reducing <TT
 CLASS="VARNAME"
->checkpoint_segments</VAR
+>checkpoint_segments</TT
 > and/or
-   <VAR
+   <TT
 CLASS="VARNAME"
->checkpoint_timeout</VAR
+>checkpoint_timeout</TT
 > causes checkpoints to be done
    more often. This allows faster after-crash recovery (since less work
    will need to be redone). However, one must balance this against the
@@ -173,22 +167,50 @@ CLASS="VARNAME"
    to ensure data page consistency, the first modification of a data
    page after each checkpoint results in logging the entire page
    content. Thus a smaller checkpoint interval increases the volume of
-   output to the log, partially negating the goal of using a smaller
+   output to the WAL log, partially negating the goal of using a smaller
    interval, and in any case causing more disk I/O.
   </P
 ><P
->   There will be at least one 16 MB segment file, and will normally
-   not be more than 2 * <VAR
+>   Checkpoints are fairly expensive, first because they require writing
+   out all currently dirty buffers, and second because they result in
+   extra subsequent WAL traffic as discussed above.  It is therefore
+   wise to set the checkpointing parameters high enough that checkpoints
+   don't happen too often.  As a simple sanity check on your checkpointing
+   parameters, you can set the <A
+HREF="runtime-config.html#GUC-CHECKPOINT-WARNING"
+>checkpoint_warning</A
+>
+   parameter.  If checkpoints happen closer together than
+   <TT
 CLASS="VARNAME"
->checkpoint_segments</VAR
+>checkpoint_warning</TT
+> seconds, 
+   a message will be output to the server log recommending increasing 
+   <TT
+CLASS="VARNAME"
+>checkpoint_segments</TT
+>.  Occasional appearance of such
+   a message is not cause for alarm, but if it appears often then the
+   checkpoint control parameters should be increased.
+  </P
+><P
+>   There will be at least one WAL segment file, and will normally
+   not be more than 2 * <TT
+CLASS="VARNAME"
+>checkpoint_segments</TT
 > + 1
-   files.  You can use this to estimate space requirements for WAL.
+   files.  Each segment file is normally 16 MB (though this size can be
+   altered when building the server).  You can use this to estimate space
+   requirements for <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>.
    Ordinarily, when old log segment files are no longer needed, they
    are recycled (renamed to become the next segments in the numbered
    sequence). If, due to a short-term peak of log output rate, there
-   are more than 2 * <VAR
+   are more than 2 * <TT
 CLASS="VARNAME"
->checkpoint_segments</VAR
+>checkpoint_segments</TT
 > + 1
    segment files, the unneeded segment files will be deleted instead
    of recycled until the system gets back under this limit.
@@ -225,14 +247,14 @@ CLASS="ACRONYM"
 CLASS="FUNCTION"
 >LogInsert</CODE
 >
-   is used on every database low level modification (for example,
-   row insertion) at a time when an exclusive lock is held on
-   affected data pages, so the operation needs to be as fast as
-   possible.  What is worse, writing <ACRONYM
+   is used on every database low level modification (for example, row
+   insertion) at a time when an exclusive lock is held on affected
+   data pages, so the operation needs to be as fast as possible.  What
+   is worse, writing <ACRONYM
 CLASS="ACRONYM"
 >WAL</ACRONYM
-> buffers may
-   also force the creation of a new log segment, which takes even more
+> buffers may also force the
+   creation of a new log segment, which takes even more
    time. Normally, <ACRONYM
 CLASS="ACRONYM"
 >WAL</ACRONYM
@@ -247,50 +269,34 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >LogFlush</CODE
 > requests may
-   not occur often enough to prevent <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
-> buffers
-   being written by <CODE
+   not occur often enough to prevent <CODE
 CLASS="FUNCTION"
 >LogInsert</CODE
->. On such systems
+>
+   from having to do writes.  On such systems
    one should increase the number of <ACRONYM
 CLASS="ACRONYM"
 >WAL</ACRONYM
 > buffers by
-   modifying the configuration parameter <VAR
-CLASS="VARNAME"
->wal_buffers</VAR
->.
-   The default number of <ACRONYM
+   modifying the configuration parameter <A
+HREF="runtime-config.html#GUC-WAL-BUFFERS"
+>wal_buffers</A
+>.  The default number of <ACRONYM
 CLASS="ACRONYM"
->   WAL</ACRONYM
-> buffers is 8.  Increasing this value will 
-   correspondingly increase shared memory usage.
+>WAL</ACRONYM
+>
+   buffers is 8.  Increasing this value will
+   correspondingly increase shared memory usage.  (It should be noted
+   that there is presently little evidence to suggest that increasing
+   <TT
+CLASS="VARNAME"
+>wal_buffers</TT
+> beyond the default is worthwhile.)
   </P
 ><P
->   Checkpoints are fairly expensive because they force all dirty kernel
-   buffers to disk using the operating system <VAR
-CLASS="LITERAL"
->sync()</VAR
-> call.
-   Busy servers may fill checkpoint segment files too quickly,
-   causing excessive checkpointing. If such forced checkpoints happen
-   more frequently than <VAR
-CLASS="VARNAME"
->checkpoint_warning</VAR
-> seconds, 
-   a message, will be output to the server logs recommending increasing 
-   <VAR
-CLASS="VARNAME"
->checkpoint_segments</VAR
->.
-  </P
-><P
->   The <VAR
-CLASS="VARNAME"
->commit_delay</VAR
+>   The <A
+HREF="runtime-config.html#GUC-COMMIT-DELAY"
+>commit_delay</A
 > parameter defines for how many
    microseconds the server process will sleep after writing a commit
    record to the log with <CODE
@@ -303,62 +309,68 @@ CLASS="FUNCTION"
 >. This delay allows other
    server processes to add their commit records to the log so as to have all
    of them flushed with a single log sync. No sleep will occur if
-   <VAR
-CLASS="VARNAME"
->fsync</VAR
+   <A
+HREF="runtime-config.html#GUC-FSYNC"
+>fsync</A
 >
-   is not enabled, nor if fewer than <VAR
-CLASS="VARNAME"
->commit_siblings</VAR
+   is not enabled, nor if fewer than <A
+HREF="runtime-config.html#GUC-COMMIT-SIBLINGS"
+>commit_siblings</A
 >
    other sessions are currently in active transactions; this avoids
    sleeping when it's unlikely that any other session will commit soon.
    Note that on most platforms, the resolution of a sleep request is
-   ten milliseconds, so that any nonzero <VAR
+   ten milliseconds, so that any nonzero <TT
 CLASS="VARNAME"
->commit_delay</VAR
+>commit_delay</TT
 >
    setting between 1 and 10000 microseconds would have the same effect.
    Good values for these parameters are not yet clear; experimentation
    is encouraged.
   </P
 ><P
->   The <VAR
-CLASS="VARNAME"
->wal_sync_method</VAR
+>   The <A
+HREF="runtime-config.html#GUC-WAL-SYNC-METHOD"
+>wal_sync_method</A
 > parameter determines how
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > will ask the kernel to force
-    WAL updates out to disk. 
+    <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> updates out to disk. 
    All the options should be the same as far as reliability goes,
    but it's quite platform-specific which one will be the fastest.
-   Note that this parameter is irrelevant if <VAR
+   Note that this parameter is irrelevant if <TT
 CLASS="VARNAME"
->fsync</VAR
+>fsync</TT
 >
    has been turned off.
   </P
 ><P
->   Setting the <VAR
-CLASS="VARNAME"
->wal_debug</VAR
-> parameter to any nonzero
-   value will result in each <CODE
-CLASS="FUNCTION"
->LogInsert</CODE
-> and
+>   Enabling the <A
+HREF="runtime-config.html#GUC-WAL-DEBUG"
+>wal_debug</A
+> configuration parameter
+   (provided that <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has been
+   compiled with support for it) will result in each
    <CODE
 CLASS="FUNCTION"
+>LogInsert</CODE
+> and <CODE
+CLASS="FUNCTION"
 >LogFlush</CODE
-> <ACRONYM
+>
+   <ACRONYM
 CLASS="ACRONYM"
 >WAL</ACRONYM
-> call being
-   logged to the server log.  At present, it makes no difference what
-   the nonzero value is.  This option may be replaced by a more
-   general mechanism in the future.
+> call being logged to the server log. This
+   option may be replaced by a more general mechanism in the future.
   </P
 ></DIV
 ><DIV
@@ -377,7 +389,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="wal-benefits-later.html"
+HREF="wal.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -405,7 +417,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Future Benefits</TD
+>Write-Ahead Logging (<ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>)</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

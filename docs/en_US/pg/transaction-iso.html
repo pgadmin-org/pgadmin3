@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="TRANSACTION-ISO"
 >12.2. Transaction Isolation</A
 ></H1
 ><A
-NAME="AEN13415"
+NAME="AEN14090"
 ></A
 ><P
 >    The <ACRONYM
@@ -115,7 +115,7 @@ CLASS="VARIABLELIST"
 ><DT
 >dirty read
        <A
-NAME="AEN13422"
+NAME="AEN14097"
 ></A
 ></DT
 ><DD
@@ -126,7 +126,7 @@ NAME="AEN13422"
 ><DT
 >nonrepeatable read
        <A
-NAME="AEN13428"
+NAME="AEN14103"
 ></A
 ></DT
 ><DD
@@ -139,7 +139,7 @@ NAME="AEN13428"
 ><DT
 >phantom read
        <A
-NAME="AEN13434"
+NAME="AEN14109"
 ></A
 ></DT
 ><DD
@@ -155,7 +155,7 @@ NAME="AEN13434"
    </P
 ><P
 >    <A
-NAME="AEN13439"
+NAME="AEN14114"
 ></A
 >
     The four transaction isolation levels and the corresponding
@@ -256,11 +256,33 @@ CLASS="CALSTABLE"
 ></TABLE
 ></DIV
 ><P
->    <SPAN
+>    In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, you can use all four
+    possible transaction isolation levels.  Internally, there are only
+    two distinct isolation levels, which correspond to the levels Read
+    Committed and Serializable.  When you select the level Read
+    Uncommitted you really get Read Committed, and when you select
+    Repeatable Read you really get Serializable, so the actual
+    isolation level may be stricter than what you select.  This is
+    permitted by the SQL standard: the four isolation levels only
+    define which phenomena must not happen, they do not define which
+    phenomena must happen.  The reason that <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-    offers the Read Committed and Serializable isolation levels.
+    only provides two isolation levels is that this is the only
+    sensible way to map the isolation levels to the multiversion
+    concurrency control architecture.  The behavior of the available
+    isolation levels is detailed in the following subsections.
+   </P
+><P
+>    To set the transaction isolation level of a transaction, use the
+    command <A
+HREF="sql-set-transaction.html"
+>SET TRANSACTION</A
+>.
    </P
 ><DIV
 CLASS="SECT2"
@@ -271,7 +293,7 @@ NAME="XACT-READ-COMMITTED"
 >12.2.1. Read Committed Isolation Level</A
 ></H2
 ><A
-NAME="AEN13477"
+NAME="AEN14155"
 ></A
 ><P
 >    <I
@@ -335,9 +357,9 @@ CLASS="COMMAND"
     updating the originally found row.  If the first updater commits, the
     second updater will ignore the row if the first updater deleted it,
     otherwise it will attempt to apply its operation to the updated version of
-    the row.  The search condition of the command (the <VAR
+    the row.  The search condition of the command (the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause) is
     re-evaluated to see if the updated version of the row still matches the
     search condition.  If so, the second updater proceeds with its operation,
@@ -398,7 +420,7 @@ NAME="XACT-SERIALIZABLE"
 >12.2.2. Serializable Isolation Level</A
 ></H2
 ><A
-NAME="AEN13501"
+NAME="AEN14179"
 ></A
 ><P
 >    The level <I

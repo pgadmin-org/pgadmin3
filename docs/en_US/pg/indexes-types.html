@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -103,11 +103,11 @@ CLASS="PRODUCTNAME"
    B-tree, R-tree, GiST, and Hash.  Each index type uses a different
    algorithm that is best suited to different types of queries.
    <A
-NAME="AEN13114"
+NAME="AEN13789"
 ></A
 >
    <A
-NAME="AEN13117"
+NAME="AEN13792"
 ></A
 >
    By default, the <TT
@@ -124,39 +124,39 @@ CLASS="PRODUCTNAME"
    will consider using a B-tree index whenever an indexed column is
    involved in a comparison using one of these operators:
 
-   <VAR
+   <TT
 CLASS="LITERAL"
->&lt;</VAR
->, <VAR
+>&lt;</TT
+>, <TT
 CLASS="LITERAL"
->&lt;=</VAR
->, <VAR
+>&lt;=</TT
+>, <TT
 CLASS="LITERAL"
->=</VAR
->, <VAR
+>=</TT
+>, <TT
 CLASS="LITERAL"
->&gt;=</VAR
->, <VAR
+>&gt;=</TT
+>, <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 >
   </P
 ><P
 >   The optimizer can also use a B-tree index for queries involving the
-   pattern matching operators <VAR
+   pattern matching operators <TT
 CLASS="LITERAL"
->LIKE</VAR
+>LIKE</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->ILIKE</VAR
->, <VAR
+>ILIKE</TT
+>, <TT
 CLASS="LITERAL"
->~</VAR
+>~</TT
 >, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->~*</VAR
+>~*</TT
 >, <SPAN
 CLASS="emphasis"
 ><I
@@ -164,17 +164,17 @@ CLASS="EMPHASIS"
 >if</I
 ></SPAN
 > the pattern is
-   anchored to the beginning of the string, e.g., <VAR
+   anchored to the beginning of the string, e.g., <TT
 CLASS="LITERAL"
 >col LIKE
-   'foo%'</VAR
-> or <VAR
+   'foo%'</TT
+> or <TT
 CLASS="LITERAL"
->col ~ '^foo'</VAR
+>col ~ '^foo'</TT
 >, but not
-   <VAR
+   <TT
 CLASS="LITERAL"
->col LIKE '%bar'</VAR
+>col LIKE '%bar'</TT
 >.  However, if your server does
    not use the C locale you will need to create the index with a
    special operator class.  See <A
@@ -185,11 +185,11 @@ HREF="indexes-opclass.html"
   </P
 ><P
 >   <A
-NAME="AEN13144"
+NAME="AEN13819"
 ></A
 >
    <A
-NAME="AEN13147"
+NAME="AEN13822"
 ></A
 >
    R-tree indexes are suited for queries on spatial data.  To create
@@ -214,49 +214,49 @@ CLASS="PRODUCTNAME"
    consider using an R-tree index whenever an indexed column is
    involved in a comparison using one of these operators:
 
-   <VAR
+   <TT
 CLASS="LITERAL"
->&lt;&lt;</VAR
->, <VAR
+>&lt;&lt;</TT
+>, <TT
 CLASS="LITERAL"
->&amp;&lt;</VAR
->, <VAR
+>&amp;&lt;</TT
+>, <TT
 CLASS="LITERAL"
->&amp;&gt;</VAR
->, <VAR
+>&amp;&gt;</TT
+>, <TT
 CLASS="LITERAL"
->&gt;&gt;</VAR
->, <VAR
+>&gt;&gt;</TT
+>, <TT
 CLASS="LITERAL"
->@</VAR
->, <VAR
+>@</TT
+>, <TT
 CLASS="LITERAL"
->~=</VAR
->, <VAR
+>~=</TT
+>, <TT
 CLASS="LITERAL"
->&amp;&amp;</VAR
+>&amp;&amp;</TT
 >
    (Refer to <A
 HREF="functions-geometry.html"
->Section 9.9</A
+>Section 9.10</A
 > about the meaning of
    these operators.)
   </P
 ><P
 >   <A
-NAME="AEN13172"
+NAME="AEN13847"
 ></A
 >
    <A
-NAME="AEN13175"
+NAME="AEN13850"
 ></A
 >
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
-   <VAR
+   <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 > operator.  The following command is used to
    create a hash index:
 </P><PRE

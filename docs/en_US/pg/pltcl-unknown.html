@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Tcl - Tcl Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="pltcl.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 38. PL/Tcl - Tcl Procedural Language</TD
+>Chapter 36. PL/Tcl - Tcl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,29 +93,29 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLTCL-UNKNOWN"
->38.7. Modules and the <CODE
+>36.7. Modules and the <CODE
 CLASS="FUNCTION"
 >unknown</CODE
 > command</A
 ></H1
 ><P
 >	PL/Tcl has support for autoloading Tcl code when used.
-	It recognizes a special table, <VAR
+	It recognizes a special table, <TT
 CLASS="LITERAL"
->pltcl_modules</VAR
+>pltcl_modules</TT
 >, which
 	is presumed to contain modules of Tcl code.  If this table
-	exists, the module <VAR
+	exists, the module <TT
 CLASS="LITERAL"
->unknown</VAR
+>unknown</TT
 > is fetched from the table
 	and loaded into the Tcl interpreter immediately after creating
 	the interpreter.
        </P
 ><P
->        While the <VAR
+>        While the <TT
 CLASS="LITERAL"
->unknown</VAR
+>unknown</TT
 > module could actually contain any
 	initialization script you need, it normally defines a Tcl
 	<CODE
@@ -126,16 +126,16 @@ CLASS="FUNCTION"
 CLASS="APPLICATION"
 >PL/Tcl</SPAN
 >'s standard version
-	of this procedure tries to find a module in <VAR
+	of this procedure tries to find a module in <TT
 CLASS="LITERAL"
->pltcl_modules</VAR
+>pltcl_modules</TT
 >
 	that will define the required procedure.  If one is found, it is
 	loaded into the interpreter, and then execution is allowed to
 	proceed with the originally attempted procedure call.  A
-	secondary table <VAR
+	secondary table <TT
 CLASS="LITERAL"
->pltcl_modfuncs</VAR
+>pltcl_modfuncs</TT
 > provides an index of
 	which functions are defined by which modules, so that the lookup
 	is reasonably quick.
@@ -157,9 +157,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >pltcl_delmod</TT
 >, as well as source for the standard
-	<VAR
+	<TT
 CLASS="LITERAL"
->unknown</VAR
+>unknown</TT
 > module in <TT
 CLASS="FILENAME"
 >share/unknown.pltcl</TT
@@ -168,12 +168,12 @@ CLASS="FILENAME"
 	into each database initially to support the autoloading mechanism.
        </P
 ><P
->        The tables <VAR
+>        The tables <TT
 CLASS="LITERAL"
->pltcl_modules</VAR
-> and <VAR
+>pltcl_modules</TT
+> and <TT
 CLASS="LITERAL"
->pltcl_modfuncs</VAR
+>pltcl_modfuncs</TT
 >
 	must be readable by all, but it is wise to make them owned and
 	writable only by the database administrator.

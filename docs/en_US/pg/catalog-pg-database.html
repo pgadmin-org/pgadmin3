@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. System Catalogs</TD
+>Chapter 41. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-DATABASE"
->43.12. <TT
+>41.12. <TT
 CLASS="STRUCTNAME"
 >pg_database</TT
 ></A
 ></H1
 ><A
-NAME="AEN49965"
+NAME="AEN50603"
 ></A
 ><P
 >   The catalog <TT
@@ -132,11 +132,11 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN49974"
+NAME="AEN50612"
 ></A
 ><P
 ><B
->Table 43-12. <TT
+>Table 41-12. <TT
 CLASS="STRUCTNAME"
 >pg_database</TT
 > Columns</B
@@ -185,7 +185,7 @@ CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-shadow.html"
@@ -193,7 +193,7 @@ HREF="catalog-pg-shadow.html"
 CLASS="STRUCTNAME"
 >pg_shadow</TT
 ></A
->.usesysid</VAR
+>.usesysid</TT
 ></TD
 ><TD
 >Owner of the database, usually the user who created it</TD
@@ -229,9 +229,9 @@ CLASS="TYPE"
 >&nbsp;</TD
 ><TD
 >       If true then this database can be used in the
-       <VAR
+       <TT
 CLASS="LITERAL"
->TEMPLATE</VAR
+>TEMPLATE</TT
 > clause of <TT
 CLASS="COMMAND"
 >CREATE
@@ -255,9 +255,9 @@ CLASS="TYPE"
 >&nbsp;</TD
 ><TD
 >       If false then no one can connect to this database.  This is
-       used to protect the <VAR
+       used to protect the <TT
 CLASS="LITERAL"
->template0</VAR
+>template0</TT
 > database from being altered.
       </TD
 ></TR
@@ -328,19 +328,36 @@ CLASS="QUOTE"
 ><TD
 ><TT
 CLASS="STRUCTFIELD"
->datpath</TT
+>dattablespace</TT
 ></TD
 ><TD
 ><TT
 CLASS="TYPE"
->text</TT
+>oid</TT
 ></TD
 ><TD
->&nbsp;</TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-tablespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+></A
+>.oid</TT
+></TD
 ><TD
->       If the database is stored at an alternative location then this
-       records the location.  It's either an environment variable name
-       or an absolute path, depending how it was entered.
+>       The default tablespace for the database.
+       Within this database, all tables for which
+       <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+>.<TT
+CLASS="STRUCTFIELD"
+>reltablespace</TT
+> is zero
+       will be stored in this tablespace; in particular, all the non-shared
+       system catalogs will be there.
       </TD
 ></TR
 ><TR

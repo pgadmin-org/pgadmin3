@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
 HREF="sql-commands.html"><LINK
 REL="PREVIOUS"
-TITLE="ALTER LANGUAGE"
-HREF="sql-alterlanguage.html"><LINK
+TITLE="ALTER OPERATOR"
+HREF="sql-alteroperator.html"><LINK
 REL="NEXT"
 TITLE="ALTER SCHEMA"
 HREF="sql-alterschema.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-alterlanguage.html"
+HREF="sql-alteroperator.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-alterlanguage.html"
+HREF="sql-alteroperator.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-ALTEROPCLASS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35018"
+NAME="AEN34747"
 ></A
 ><H2
 >Name</H2
 >ALTER OPERATOR CLASS&nbsp;--&nbsp;change the definition of an operator class</DIV
 ><A
-NAME="AEN35021"
+NAME="AEN34750"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35023"
+NAME="AEN34752"
 ></A
 ><H2
 >Synopsis</H2
@@ -121,12 +121,22 @@ CLASS="REPLACEABLE"
 > RENAME TO <VAR
 CLASS="REPLACEABLE"
 >newname</VAR
+>
+ALTER OPERATOR CLASS <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> USING <VAR
+CLASS="REPLACEABLE"
+>index_method</VAR
+> OWNER TO <VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
 ></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35028"
+NAME="AEN34760"
 ></A
 ><H2
 >Description</H2
@@ -135,14 +145,13 @@ NAME="AEN35028"
 CLASS="COMMAND"
 >ALTER OPERATOR CLASS</TT
 > changes the definition of
-   an operator class.  The only functionality is to rename the
-   operator class.
+   an operator class.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35032"
+NAME="AEN34764"
 ></A
 ><H2
 >Parameters</H2
@@ -182,13 +191,24 @@ CLASS="REPLACEABLE"
 >      The new name of the operator class.
      </P
 ></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
+></DT
+><DD
+><P
+>      The new owner of the operator class.
+      You must be a superuser to change the owner of an operator class.
+     </P
+></DD
 ></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35050"
+NAME="AEN34787"
 ></A
 ><H2
 >Compatibility</H2
@@ -203,7 +223,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35054"
+NAME="AEN34791"
 ></A
 ><H2
 >See Also</H2
@@ -234,7 +254,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-alterlanguage.html"
+HREF="sql-alteroperator.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -262,7 +282,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->ALTER LANGUAGE</TD
+>ALTER OPERATOR</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

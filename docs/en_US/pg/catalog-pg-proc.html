@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. System Catalogs</TD
+>Chapter 41. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-PROC"
->43.24. <TT
+>41.24. <TT
 CLASS="STRUCTNAME"
 >pg_proc</TT
 ></A
 ></H1
 ><A
-NAME="AEN50941"
+NAME="AEN51594"
 ></A
 ><P
 >   The catalog <TT
@@ -112,7 +112,7 @@ CLASS="COMMAND"
 > and
    <A
 HREF="xfunc.html"
->Section 33.3</A
+>Section 31.3</A
 > contain more information about the meaning of
    some columns.
   </P
@@ -130,11 +130,11 @@ CLASS="STRUCTFIELD"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN50950"
+NAME="AEN51603"
 ></A
 ><P
 ><B
->Table 43-24. <TT
+>Table 41-24. <TT
 CLASS="STRUCTNAME"
 >pg_proc</TT
 > Columns</B
@@ -183,7 +183,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-namespace.html"
@@ -191,7 +191,7 @@ HREF="catalog-pg-namespace.html"
 CLASS="STRUCTNAME"
 >pg_namespace</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >       The OID of the namespace that contains this function
@@ -209,7 +209,7 @@ CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-shadow.html"
@@ -217,7 +217,7 @@ HREF="catalog-pg-shadow.html"
 CLASS="STRUCTNAME"
 >pg_shadow</TT
 ></A
->.usesysid</VAR
+>.usesysid</TT
 ></TD
 ><TD
 >Owner of the function</TD
@@ -234,15 +234,15 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-language.html"
 ><TT
 CLASS="STRUCTNAME"
->pg_langauge</TT
+>pg_language</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >Implementation language or call interface of this function</TD
@@ -343,32 +343,32 @@ CLASS="STRUCTFIELD"
 > tells whether the function's
        result depends only on its input arguments, or is affected by outside
        factors.
-       It is <VAR
+       It is <TT
 CLASS="LITERAL"
->i</VAR
+>i</TT
 > for <SPAN
 CLASS="QUOTE"
 >"immutable"</SPAN
 > functions,
        which always deliver the same result for the same inputs.
-       It is <VAR
+       It is <TT
 CLASS="LITERAL"
->s</VAR
+>s</TT
 > for <SPAN
 CLASS="QUOTE"
 >"stable"</SPAN
 > functions,
        whose results (for fixed inputs) do not change within a scan.
-       It is <VAR
+       It is <TT
 CLASS="LITERAL"
->v</VAR
+>v</TT
 > for <SPAN
 CLASS="QUOTE"
 >"volatile"</SPAN
 > functions,
-       whose results may change at any time.  (Use <VAR
+       whose results may change at any time.  (Use <TT
 CLASS="LITERAL"
->v</VAR
+>v</TT
 > also
        for functions with side-effects, so that calls to them cannot get
        optimized away.)
@@ -402,7 +402,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-type.html"
@@ -410,7 +410,7 @@ HREF="catalog-pg-type.html"
 CLASS="STRUCTNAME"
 >pg_type</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >Data type of the return value</TD
@@ -427,7 +427,7 @@ CLASS="TYPE"
 >oidvector</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-type.html"
@@ -435,10 +435,29 @@ HREF="catalog-pg-type.html"
 CLASS="STRUCTNAME"
 >pg_type</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >An array with the data types of the function arguments</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proargnames</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text[]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>        An array with the names of the function arguments.
+        Arguments without a name are set to empty strings in the array.
+        If none of the arguments have a name, this field may be null.
+      </TD
 ></TR
 ><TR
 ><TD

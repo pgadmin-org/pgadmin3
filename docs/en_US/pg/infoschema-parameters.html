@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Information Schema"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="information-schema.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 32. The Information Schema</TD
+>Chapter 30. The Information Schema</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,30 +93,30 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-PARAMETERS"
->32.19. <VAR
+>30.19. <TT
 CLASS="LITERAL"
->parameters</VAR
+>parameters</TT
 ></A
 ></H1
 ><P
->   The view <VAR
+>   The view <TT
 CLASS="LITERAL"
->parameters</VAR
+>parameters</TT
 > contains information about
-   the parameters (arguments) all functions in the current database.
+   the parameters (arguments) of all functions in the current database.
    Only those functions are shown that the current user has access to
    (by way of being the owner or having some privilege).
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN26602"
+NAME="AEN25734"
 ></A
 ><P
 ><B
->Table 32-17. <VAR
+>Table 30-17. <TT
 CLASS="LITERAL"
->parameters</VAR
+>parameters</TT
 > Columns</B
 ></P
 ><TABLE
@@ -135,9 +135,9 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->specific_catalog</VAR
+>specific_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -149,9 +149,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->specific_schema</VAR
+>specific_schema</TT
 ></TD
 ><TD
 ><TT
@@ -163,9 +163,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->specific_name</VAR
+>specific_name</TT
 ></TD
 ><TD
 ><TT
@@ -178,15 +178,15 @@ CLASS="QUOTE"
 >"specific name"</SPAN
 > of the function.  See <A
 HREF="infoschema-routines.html"
->Section 32.26</A
+>Section 30.26</A
 > for more information.
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ordinal_position</VAR
+>ordinal_position</TT
 ></TD
 ><TD
 ><TT
@@ -200,9 +200,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->parameter_mode</VAR
+>parameter_mode</TT
 ></TD
 ><TD
 ><TT
@@ -210,18 +210,18 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->       Always <VAR
+>       Always <TT
 CLASS="LITERAL"
->IN</VAR
->, meaning input parameter (In the
-       future there might be other parameter modes.)
+>IN</TT
+>, meaning input parameter (in the
+       future there might be other parameter modes)
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->is_result</VAR
+>is_result</TT
 ></TD
 ><TD
 ><TT
@@ -229,13 +229,16 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->as_locator</VAR
+>as_locator</TT
 ></TD
 ><TD
 ><TT
@@ -243,13 +246,16 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->parameter_name</VAR
+>parameter_name</TT
 ></TD
 ><TD
 ><TT
@@ -257,13 +263,13 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Always null, since PostgreSQL does not support named parameters</TD
+>Name of the parameter, or null if the parameter has no name</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 ></TD
 ><TD
 ><TT
@@ -272,30 +278,30 @@ CLASS="TYPE"
 ></TD
 ><TD
 >       Data type of the parameter, if it is a built-in type, or
-       <VAR
+       <TT
 CLASS="LITERAL"
->ARRAY</VAR
+>ARRAY</TT
 > if it is some array (in that case, see
-       the view <VAR
+       the view <TT
 CLASS="LITERAL"
->element_types</VAR
+>element_types</TT
 >), else
-       <VAR
+       <TT
 CLASS="LITERAL"
->USER-DEFINED</VAR
+>USER-DEFINED</TT
 > (in that case, the type is
-       identified in <VAR
+       identified in <TT
 CLASS="LITERAL"
->udt_name</VAR
+>udt_name</TT
 > and associated
        columns).
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_maximum_length</VAR
+>character_maximum_length</TT
 ></TD
 ><TD
 ><TT
@@ -303,13 +309,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to parameter data types in PostgreSQL</TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_octet_length</VAR
+>character_octet_length</TT
 ></TD
 ><TD
 ><TT
@@ -317,13 +326,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to parameter data types in PostgreSQL</TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_catalog</VAR
+>character_set_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -331,13 +343,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_schema</VAR
+>character_set_schema</TT
 ></TD
 ><TD
 ><TT
@@ -345,13 +360,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_name</VAR
+>character_set_name</TT
 ></TD
 ><TD
 ><TT
@@ -359,13 +377,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_catalog</VAR
+>collation_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -373,13 +394,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_schema</VAR
+>collation_schema</TT
 ></TD
 ><TD
 ><TT
@@ -387,13 +411,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_name</VAR
+>collation_name</TT
 ></TD
 ><TD
 ><TT
@@ -401,13 +428,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_precision</VAR
+>numeric_precision</TT
 ></TD
 ><TD
 ><TT
@@ -415,13 +445,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to parameter data types in PostgreSQL</TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_precision_radix</VAR
+>numeric_precision_radix</TT
 ></TD
 ><TD
 ><TT
@@ -429,13 +462,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to parameter data types in PostgreSQL</TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_scale</VAR
+>numeric_scale</TT
 ></TD
 ><TD
 ><TT
@@ -443,13 +479,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to parameter data types in PostgreSQL</TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->datetime_precision</VAR
+>datetime_precision</TT
 ></TD
 ><TD
 ><TT
@@ -457,13 +496,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, since this information is not applied to parameter data types in PostgreSQL</TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->interval_type</VAR
+>interval_type</TT
 ></TD
 ><TD
 ><TT
@@ -471,13 +513,16 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Always null, since this information is not applied to parameter data types in PostgreSQL</TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->interval_precision</VAR
+>interval_precision</TT
 ></TD
 ><TD
 ><TT
@@ -485,13 +530,16 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Always null, since this information is not applied to parameter data types in PostgreSQL</TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_catalog</VAR
+>udt_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -505,9 +553,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_schema</VAR
+>udt_schema</TT
 ></TD
 ><TD
 ><TT
@@ -521,9 +569,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_name</VAR
+>udt_name</TT
 ></TD
 ><TD
 ><TT
@@ -536,9 +584,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_catalog</VAR
+>scope_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -546,13 +594,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_schema</VAR
+>scope_schema</TT
 ></TD
 ><TD
 ><TT
@@ -560,13 +611,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_name</VAR
+>scope_name</TT
 ></TD
 ><TD
 ><TT
@@ -574,13 +628,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->maximum_cardinality</VAR
+>maximum_cardinality</TT
 ></TD
 ><TD
 ><TT
@@ -588,13 +645,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, because arrays always have unlimited maximum cardinality in PostgreSQL</TD
+>Always null, because arrays always have unlimited maximum cardinality in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->dtd_identifier</VAR
+>dtd_identifier</TT
 ></TD
 ><TD
 ><TT
@@ -658,9 +718,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->key_column_usage</VAR
+>key_column_usage</TT
 ></TD
 ><TD
 WIDTH="34%"
@@ -675,9 +735,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->referential_constraints</VAR
+>referential_constraints</TT
 ></TD
 ></TR
 ></TABLE

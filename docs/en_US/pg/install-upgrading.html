@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="INSTALL-UPGRADING"
 >14.4. If You Are Upgrading</A
 ></H1
 ><A
-NAME="AEN14150"
+NAME="AEN14837"
 ></A
 ><P
 >   The internal data storage format changes with new releases of
@@ -107,7 +107,7 @@ CLASS="PRODUCTNAME"
    existing installation that does not have a version number
    <SPAN
 CLASS="QUOTE"
->"7.4.x"</SPAN
+>"8.0.x"</SPAN
 >, you must back up and restore your
    data as shown here. These instructions assume that your existing
    installation is under the <TT
@@ -140,7 +140,7 @@ CLASS="FILENAME"
 ><LI
 ><P
 >     <A
-NAME="AEN14163"
+NAME="AEN14850"
 ></A
 >
 
@@ -156,19 +156,19 @@ CLASS="REPLACEABLE"
 ></PRE
 ><P>
      If you need to preserve OIDs (such as when using them as
-     foreign keys), then use the <VAR
+     foreign keys), then use the <TT
 CLASS="OPTION"
->-o</VAR
+>-o</TT
 > option when running
-     <TT
-CLASS="COMMAND"
->pg_dumpall</TT
+     <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
 >.
     </P
 ><P
->     <TT
-CLASS="COMMAND"
->pg_dumpall</TT
+>     <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
 > does not
      save large objects.  Check
      
@@ -179,19 +179,19 @@ HREF="backup.html#BACKUP-DUMP-CAVEATS"
      if you need to do this.
     </P
 ><P
->     To make the backup, you can use the <TT
-CLASS="COMMAND"
->pg_dumpall</TT
+>     To make the backup, you can use the <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
 >
      command from the version you are currently running.  For best
-     results, however, try to use the <TT
-CLASS="COMMAND"
->pg_dumpall</TT
+     results, however, try to use the <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
 >
      command from <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> 7.4,
+> 8.0.0beta1,
      since this version contains bug fixes and improvements over older
      versions.  While this advice might seem idiosyncratic since you
      haven't installed the new version yet, it is advisable to follow
@@ -210,7 +210,7 @@ CLASS="PRODUCTNAME"
 CLASS="SCREEN"
 ><KBD
 CLASS="USERINPUT"
->kill -INT `cat /usr/local/pgsql/data/postmaster.pid`</KBD
+>kill -INT `cat /usr/local/pgsql/data/postmaster.pid | sed 1q`</KBD
 ></PRE
 ><P>
      Versions prior to 7.0 do not have this
@@ -272,7 +272,7 @@ CLASS="USERINPUT"
 >   After you have installed <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> 7.4, create a new database
+> 8.0.0beta1, create a new database
    directory and start the new server. Remember that you must execute
    these commands while logged in to the special database user account
    (which you already have if you are upgrading).
@@ -312,7 +312,7 @@ CLASS="APPLICATION"
 ><P
 >   These topics are discussed at length in  <A
 HREF="migration.html"
->Section 22.3</A
+>Section 22.4</A
 >, which you are encouraged to read in any
    case.
   </P

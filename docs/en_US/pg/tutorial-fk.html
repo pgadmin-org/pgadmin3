@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Advanced Features"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="TUTORIAL-FK"
 >3.3. Foreign Keys</A
 ></H1
 ><A
-NAME="AEN897"
+NAME="AEN902"
 ></A
 ><A
-NAME="AEN899"
+NAME="AEN904"
 ></A
 ><P
 >    Recall the <CODE
@@ -149,16 +149,16 @@ CLASS="PRODUCTNAME"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE cities (
- 	city     varchar(80) primary key,
-	 location point
+        city     varchar(80) primary key,
+        location point
 );
 
 CREATE TABLE weather (
-	city      varchar(80) references cities,
-	temp_lo   int,
-	temp_hi   int,
-	prcp      real,
-	date      date
+        city      varchar(80) references cities(city),
+        temp_lo   int,
+        temp_hi   int,
+        prcp      real,
+        date      date
 );</PRE
 ><P>
 
@@ -171,7 +171,7 @@ CLASS="PROGRAMLISTING"
 
 </P><PRE
 CLASS="SCREEN"
->ERROR:  insert or update on table "weather" violates foreign key constraint "$1"
+>ERROR:  insert or update on table "weather" violates foreign key constraint "weather_city_fkey"
 DETAIL:  Key (city)=(Berkeley) is not present in table "cities".</PRE
 ><P>
    </P

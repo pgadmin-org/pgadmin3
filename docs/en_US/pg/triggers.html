@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="TRIGGERS"
 ></A
->Chapter 35. Triggers</H1
+>Chapter 33. Triggers</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,29 +102,29 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->35.1. <A
+>33.1. <A
 HREF="triggers.html#TRIGGER-DEFINITION"
 >Overview of Trigger Behavior</A
 ></DT
 ><DT
->35.2. <A
+>33.2. <A
 HREF="trigger-datachanges.html"
 >Visibility of Data Changes</A
 ></DT
 ><DT
->35.3. <A
+>33.3. <A
 HREF="trigger-interface.html"
 >Writing Trigger Functions in C</A
 ></DT
 ><DT
->35.4. <A
+>33.4. <A
 HREF="trigger-example.html"
 >A Complete Example</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN31000"
+NAME="AEN30329"
 ></A
 ><P
 >   This chapter describes how to write trigger functions.  Trigger
@@ -138,7 +138,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRIGGER-DEFINITION"
->35.1. Overview of Trigger Behavior</A
+>33.1. Overview of Trigger Behavior</A
 ></H1
 ><P
 >    A trigger can be defined to execute before or after an
@@ -163,9 +163,9 @@ CLASS="ACRONYM"
 ><P
 >    The trigger function must be defined before the trigger itself can be
     created.  The trigger function must be declared as a 
-    function taking no arguments and returning type <VAR
+    function taking no arguments and returning type <TT
 CLASS="LITERAL"
->trigger</VAR
+>trigger</TT
 >.
     (The trigger function receives its input through a specially-passed
     <TT
@@ -186,77 +186,110 @@ HREF="sql-createtrigger.html"
     The same trigger function can be used for multiple triggers.
    </P
 ><P
->    Trigger functions return a table row (a value of type
-    <TT
+>    There are two types of triggers: per-row triggers and
+    per-statement triggers. In a per-row trigger, the trigger function
+    is invoked once for every row that is affected by the statement
+    that fired the trigger. In contrast, a per-statement trigger is
+    invoked only once when an appropriate statement is executed,
+    regardless of the number of rows affected by that statement. In
+    particular, a statement that affects zero rows will still result
+    in the execution of any applicable per-statement triggers. These
+    two types of triggers are sometimes called <SPAN
+CLASS="QUOTE"
+>"row-level
+    triggers"</SPAN
+> and <SPAN
+CLASS="QUOTE"
+>"statement-level triggers"</SPAN
+>,
+    respectively.
+   </P
+><P
+>    Trigger functions invoked by per-statement triggers should always
+    return <TT
+CLASS="SYMBOL"
+>NULL</TT
+>. Trigger functions invoked by per-row
+    triggers can return a table row (a value of
+    type <TT
 CLASS="STRUCTNAME"
 >HeapTuple</TT
->) to the calling executor.
-    A trigger fired before an operation has the following choices:
+>) to the calling executor,
+    if they choose.  A row-level trigger fired before an operation has
+    the following choices:
 
     <P
 ></P
 ></P><UL
 ><LI
 ><P
->       It can return a <TT
+>       It can return <TT
 CLASS="SYMBOL"
 >NULL</TT
-> pointer to skip the operation
-       for the current row (and so the row will not be
-       inserted/updated/deleted).
+> to skip the operation for the
+       current row. This instructs the executor to not perform the
+       row-level operation that invoked the trigger (the insertion or
+       modification of a particular table row).
       </P
 ></LI
 ><LI
 ><P
->       For <TT
+>       For row-level <TT
+CLASS="COMMAND"
+>INSERT</TT
+>
+       and <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> triggers only, the returned row
+       becomes the row that will be inserted or will replace the row
+       being updated.  This allows the trigger function to modify the
+       row being inserted or updated.
+      </P
+></LI
+></UL
+><P>
+
+    A row-level before trigger that does not intend to cause either of
+    these behaviors must be careful to return as its result the same
+    row that was passed in (that is, the <TT
+CLASS="VARNAME"
+>NEW</TT
+> row
+    for <TT
 CLASS="COMMAND"
 >INSERT</TT
 > and <TT
 CLASS="COMMAND"
 >UPDATE</TT
 >
-       triggers only, the returned row becomes the row that will
-       be inserted or will replace the row being updated.  This
-       allows the trigger function to modify the row being inserted or
-       updated.
-      </P
-></LI
-></UL
-><P>
-
-    A before trigger that does not intend to cause either of these
-    behaviors must be careful to return as its result the same row that was
-    passed in (that is, the NEW row for <TT
-CLASS="COMMAND"
->INSERT</TT
-> and
-    <TT
-CLASS="COMMAND"
->UPDATE</TT
-> triggers, the OLD row for
+    triggers, the <TT
+CLASS="VARNAME"
+>OLD</TT
+> row for
     <TT
 CLASS="COMMAND"
 >DELETE</TT
 > triggers).
    </P
 ><P
->    The return
-    value is ignored for triggers fired after an operation, and so
-    they may as well return <TT
+>    The return value is ignored for row-level triggers fired after an
+    operation, and so they may as well return <TT
 CLASS="SYMBOL"
 >NULL</TT
 >.
    </P
 ><P
 >    If more than one trigger is defined for the same event on the same
-    relation, the triggers will be fired in alphabetical order by trigger
-    name.  In the case of before triggers, the possibly-modified row
-    returned by each trigger becomes the input to the next trigger.
-    If any before trigger returns a <TT
+    relation, the triggers will be fired in alphabetical order by
+    trigger name.  In the case of before triggers, the
+    possibly-modified row returned by each trigger becomes the input
+    to the next trigger.  If any before trigger returns
+    <TT
 CLASS="SYMBOL"
 >NULL</TT
-> pointer, the
-    operation is abandoned and subsequent triggers are not fired.
+>, the operation is abandoned and subsequent
+    triggers are not fired.
    </P
 ><P
 >    If a trigger function executes SQL commands then these
@@ -278,7 +311,7 @@ CLASS="COMMAND"
 ><P
 >    When a trigger is being defined, arguments can be specified for
     it.<A
-NAME="AEN31036"
+NAME="AEN30371"
 ></A
 > The purpose of including arguments in the
     trigger definition is to allow different triggers with similar

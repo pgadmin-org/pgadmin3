@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-COMMENT"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35953"
+NAME="AEN35854"
 ></A
 ><H2
 >Name</H2
 >COMMENT&nbsp;--&nbsp;define or change the comment of an object</DIV
 ><A
-NAME="AEN35956"
+NAME="AEN35857"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35958"
+NAME="AEN35859"
 ></A
 ><H2
 >Synopsis</H2
@@ -132,12 +132,23 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >agg_type</VAR
 >) |
+  CAST (<VAR
+CLASS="REPLACEABLE"
+>sourcetype</VAR
+> AS <VAR
+CLASS="REPLACEABLE"
+>targettype</VAR
+>) |
   CONSTRAINT <VAR
 CLASS="REPLACEABLE"
 >constraint_name</VAR
 > ON <VAR
 CLASS="REPLACEABLE"
 >table_name</VAR
+> |
+  CONVERSION <VAR
+CLASS="REPLACEABLE"
+>object_name</VAR
 > |
   DATABASE <VAR
 CLASS="REPLACEABLE"
@@ -161,6 +172,10 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >object_name</VAR
 > |
+  LARGE OBJECT <VAR
+CLASS="REPLACEABLE"
+>large_object_oid</VAR
+> |
   OPERATOR <VAR
 CLASS="REPLACEABLE"
 >op</VAR
@@ -171,6 +186,17 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >rightoperand_type</VAR
 >) |
+  OPERATOR CLASS <VAR
+CLASS="REPLACEABLE"
+>object_name</VAR
+> USING <VAR
+CLASS="REPLACEABLE"
+>index_method</VAR
+> |
+  [ PROCEDURAL ] LANGUAGE <VAR
+CLASS="REPLACEABLE"
+>object_name</VAR
+> |
   RULE <VAR
 CLASS="REPLACEABLE"
 >rule_name</VAR
@@ -209,7 +235,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35985"
+NAME="AEN35893"
 ></A
 ><H2
 >Description</H2
@@ -252,9 +278,9 @@ CLASS="COMMAND"
 >COMMENT</TT
 > command for the
     same object.  Only one comment string is stored for each object.
-    To remove a comment, write <VAR
+    To remove a comment, write <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 > in place of the text
     string.
     Comments are automatically dropped when the object is dropped.
@@ -263,7 +289,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35999"
+NAME="AEN35907"
 ></A
 ><H2
 >Parameters</H2
@@ -281,7 +307,7 @@ CLASS="REPLACEABLE"
 >table_name.column_name</VAR
 ><BR><VAR
 CLASS="REPLACEABLE"
->aggname</VAR
+>agg_name</VAR
 ><BR><VAR
 CLASS="REPLACEABLE"
 >constraint_name</VAR
@@ -300,10 +326,64 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->      The name of the object to be be commented.  Names of tables,
-      aggregates, domains, functions, indexes, operators, sequences,
-      types, and views may be schema-qualified.
+>      The name of the object to be commented.  Names of tables,
+      aggregates, domains, functions, indexes, operators, operator classes,
+      sequences, types, and views may be schema-qualified.
      </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>agg_type</VAR
+></DT
+><DD
+><P
+>      The argument data type of the aggregate function, or
+      <TT
+CLASS="LITERAL"
+>*</TT
+> if the function accepts any data type.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>large_object_oid</VAR
+></DT
+><DD
+><P
+>      The OID of the large object.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>PROCEDURAL</TT
+></DT
+><DD
+><P
+>       This is a noise word.
+      </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>sourcetype</VAR
+></DT
+><DD
+><P
+>       The name of the source data type of the cast.
+      </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>targettype</VAR
+></DT
+><DD
+><P
+>       The name of the target data type of the cast.
+      </P
 ></DD
 ><DT
 ><VAR
@@ -321,10 +401,14 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36026"
+NAME="AEN35960"
 ></A
 ><H2
 >Notes</H2
+><P
+>   A comment for a database can only be created in that database,
+   and will only be visible in that database, not in other databases.
+  </P
 ><P
 >   There is presently no security mechanism for comments: any user
    connected to a database can see all the comments for objects in
@@ -336,14 +420,14 @@ NAME="AEN36026"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36029"
+NAME="AEN35964"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Attach a comment to the table <VAR
+>   Attach a comment to the table <TT
 CLASS="LITERAL"
->mytable</VAR
+>mytable</TT
 >:
 
 </P><PRE
@@ -364,13 +448,18 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >COMMENT ON AGGREGATE my_aggregate (double precision) IS 'Computes sample variance';
+COMMENT ON CAST (text AS int4) IS 'Allow casts from text to int4';
 COMMENT ON COLUMN my_table.my_column IS 'Employee ID number';
+COMMENT ON CONVERSION my_conv IS 'Conversion to Unicode';
 COMMENT ON DATABASE my_database IS 'Development Database';
 COMMENT ON DOMAIN my_domain IS 'Email Address Domain';
 COMMENT ON FUNCTION my_function (timestamp) IS 'Returns Roman Numeral';
 COMMENT ON INDEX my_index IS 'Enforces uniqueness on employee ID';
+COMMENT ON LANGUAGE plpython IS 'Python support for stored procedures';
+COMMENT ON LARGE OBJECT 346344 IS 'Planning document';
 COMMENT ON OPERATOR ^ (text, text) IS 'Performs intersection of two texts';
 COMMENT ON OPERATOR ^ (NONE, text) IS 'This is a prefix operator on text';
+COMMENT ON OPERATOR CLASS int4ops USING btree IS '4 byte integer operators for btrees';
 COMMENT ON RULE my_rule ON my_table IS 'Logs updates of employee records';
 COMMENT ON SCHEMA my_schema IS 'Departmental data';
 COMMENT ON SEQUENCE my_sequence IS 'Used to generate primary keys';
@@ -384,7 +473,7 @@ COMMENT ON VIEW my_view IS 'View of departmental costs';</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36037"
+NAME="AEN35972"
 ></A
 ><H2
 >Compatibility</H2

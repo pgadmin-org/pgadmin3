@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 37. <SPAN
+>Chapter 35. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,10 +99,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-TRIGGER"
->37.10. Trigger Procedures</A
+>35.10. Trigger Procedures</A
 ></H1
 ><A
-NAME="AEN32220"
+NAME="AEN31646"
 ></A
 ><P
 >        <SPAN
@@ -123,9 +123,9 @@ CLASS="TYPE"
 CLASS="COMMAND"
 >CREATE TRIGGER</TT
 > ---
-        trigger arguments are passed via <VAR
+        trigger arguments are passed via <TT
 CLASS="VARNAME"
->TG_ARGV</VAR
+>TG_ARGV</TT
 >, as described
         below.
   </P
@@ -136,16 +136,16 @@ CLASS="APPLICATION"
 > function is called as a
    trigger, several special variables are created automatically in the 
    top-level block. They are:
-   
+
    <P
 ></P
 ></P><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->NEW</VAR
+>NEW</TT
 ></DT
 ><DD
 ><P
@@ -160,13 +160,16 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >UPDATE</TT
 > operations in row-level
-       triggers. This variable is null in statement-level triggers.
+       triggers. This variable is <TT
+CLASS="SYMBOL"
+>NULL</TT
+> in statement-level triggers.
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->OLD</VAR
+>OLD</TT
 ></DT
 ><DD
 ><P
@@ -181,13 +184,16 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >DELETE</TT
 > operations in row-level
-       triggers. This variable is null in statement-level triggers.
+       triggers. This variable is <TT
+CLASS="SYMBOL"
+>NULL</TT
+> in statement-level triggers.
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->TG_NAME</VAR
+>TG_NAME</TT
 ></DT
 ><DD
 ><P
@@ -199,9 +205,9 @@ CLASS="TYPE"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->TG_WHEN</VAR
+>TG_WHEN</TT
 ></DT
 ><DD
 ><P
@@ -209,20 +215,20 @@ CLASS="VARNAME"
 CLASS="TYPE"
 >text</TT
 >; a string of either 
-              <VAR
+              <TT
 CLASS="LITERAL"
->BEFORE</VAR
-> or <VAR
+>BEFORE</TT
+> or <TT
 CLASS="LITERAL"
->AFTER</VAR
-> 
+>AFTER</TT
+>
               depending on the trigger's definition.
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->TG_LEVEL</VAR
+>TG_LEVEL</TT
 ></DT
 ><DD
 ><P
@@ -230,20 +236,20 @@ CLASS="VARNAME"
 CLASS="TYPE"
 >text</TT
 >; a string of either
-       <VAR
+       <TT
 CLASS="LITERAL"
->ROW</VAR
-> or <VAR
+>ROW</TT
+> or <TT
 CLASS="LITERAL"
->STATEMENT</VAR
+>STATEMENT</TT
 >
        depending on the trigger's definition.
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->TG_OP</VAR
+>TG_OP</TT
 ></DT
 ><DD
 ><P
@@ -251,24 +257,24 @@ CLASS="VARNAME"
 CLASS="TYPE"
 >text</TT
 >; a string of
-       <VAR
+       <TT
 CLASS="LITERAL"
->INSERT</VAR
->, <VAR
+>INSERT</TT
+>, <TT
 CLASS="LITERAL"
->UPDATE</VAR
+>UPDATE</TT
 >, or
-       <VAR
+       <TT
 CLASS="LITERAL"
->DELETE</VAR
+>DELETE</TT
 > telling for which operation the
        trigger was fired.
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->TG_RELID</VAR
+>TG_RELID</TT
 ></DT
 ><DD
 ><P
@@ -280,9 +286,9 @@ CLASS="TYPE"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->TG_RELNAME</VAR
+>TG_RELNAME</TT
 ></DT
 ><DD
 ><P
@@ -294,9 +300,9 @@ CLASS="TYPE"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->TG_NARGS</VAR
+>TG_NARGS</TT
 ></DT
 ><DD
 ><P
@@ -311,9 +317,9 @@ CLASS="COMMAND"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->TG_ARGV[]</VAR
+>TG_ARGV[]</TT
 ></DT
 ><DD
 ><P
@@ -326,9 +332,9 @@ CLASS="COMMAND"
 >CREATE TRIGGER</TT
 > statement.
        The index counts from 0. Invalid
-       indices (less than 0 or greater than or equal to <VAR
+       indices (less than 0 or greater than or equal to <TT
 CLASS="VARNAME"
->tg_nargs</VAR
+>tg_nargs</TT
 >) result in a null value.
       </P
 ></DD
@@ -337,14 +343,17 @@ CLASS="VARNAME"
 ><P>
   </P
 ><P
->    A trigger function must return either null or a record/row value
-    having exactly the structure of the table the trigger was fired
-    for.
+>    A trigger function must return either <TT
+CLASS="SYMBOL"
+>NULL</TT
+> or a
+    record/row value having exactly the structure of the table the
+    trigger was fired for.
    </P
 ><P
->    Row-level triggers fired <VAR
+>    Row-level triggers fired <TT
 CLASS="LITERAL"
->BEFORE</VAR
+>BEFORE</TT
 > may return null to signal the
     trigger manager to skip the rest of the operation for this row
     (i.e., subsequent triggers are not fired, and the
@@ -361,35 +370,35 @@ CLASS="COMMAND"
     for this row).  If a nonnull 
     value is returned then the operation proceeds with that row value.
     Returning a row value different from the original value
-    of <VAR
+    of <TT
 CLASS="VARNAME"
->NEW</VAR
+>NEW</TT
 > alters the row that will be inserted or updated
     (but has no direct effect in the <TT
 CLASS="COMMAND"
 >DELETE</TT
 > case).
     To alter the row to be stored, it is possible to replace single values
-    directly in <VAR
+    directly in <TT
 CLASS="VARNAME"
->NEW</VAR
-> and return the modified <VAR
+>NEW</TT
+> and return the modified <TT
 CLASS="VARNAME"
->NEW</VAR
+>NEW</TT
 >,
     or to build a complete new record/row to return.
    </P
 ><P
->    The return value of a <VAR
+>    The return value of a <TT
 CLASS="LITERAL"
->BEFORE</VAR
-> or <VAR
+>BEFORE</TT
+> or <TT
 CLASS="LITERAL"
->AFTER</VAR
+>AFTER</TT
 >
-    statement-level trigger or an <VAR
+    statement-level trigger or an <TT
 CLASS="LITERAL"
->AFTER</VAR
+>AFTER</TT
 > row-level trigger is
     always ignored; it may as well be null. However, any of these types of
     triggers can still abort the entire operation by raising an error.
@@ -397,7 +406,7 @@ CLASS="LITERAL"
 ><P
 >    <A
 HREF="plpgsql-trigger.html#PLPGSQL-TRIGGER-EXAMPLE"
->Example 37-1</A
+>Example 35-1</A
 > shows an example of a
     trigger procedure in <SPAN
 CLASS="APPLICATION"
@@ -411,7 +420,7 @@ NAME="PLPGSQL-TRIGGER-EXAMPLE"
 ></A
 ><P
 ><B
->Example 37-1. A <SPAN
+>Example 35-1. A <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > Trigger Procedure</B
@@ -431,27 +440,27 @@ CLASS="PROGRAMLISTING"
     last_user text
 );
 
-CREATE FUNCTION emp_stamp() RETURNS trigger AS '
+CREATE FUNCTION emp_stamp() RETURNS trigger AS $emp_stamp$
     BEGIN
         -- Check that empname and salary are given
         IF NEW.empname IS NULL THEN
-            RAISE EXCEPTION ''empname cannot be null'';
+            RAISE EXCEPTION 'empname cannot be null';
         END IF;
         IF NEW.salary IS NULL THEN
-            RAISE EXCEPTION ''% cannot have null salary'', NEW.empname;
+            RAISE EXCEPTION '% cannot have null salary', NEW.empname;
         END IF;
 
         -- Who works for us when she must pay for it?
         IF NEW.salary &lt; 0 THEN
-            RAISE EXCEPTION ''% cannot have a negative salary'', NEW.empname;
+            RAISE EXCEPTION '% cannot have a negative salary', NEW.empname;
         END IF;
 
         -- Remember who changed the payroll when
-        NEW.last_date := ''now'';
+        NEW.last_date := 'now';
         NEW.last_user := current_user;
         RETURN NEW;
     END;
-' LANGUAGE plpgsql;
+$emp_stamp$ LANGUAGE plpgsql;
 
 CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
     FOR EACH ROW EXECUTE PROCEDURE emp_stamp();</PRE

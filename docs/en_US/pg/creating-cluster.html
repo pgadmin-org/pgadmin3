@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="CREATING-CLUSTER"
 >16.2. Creating a Database Cluster</A
 ></H1
 ><A
-NAME="AEN15165"
+NAME="AEN15851"
 ></A
 ><A
-NAME="AEN15167"
+NAME="AEN15853"
 ></A
 ><P
 >   Before you can do anything, you must initialize a database storage
@@ -114,9 +114,9 @@ CLASS="ACRONYM"
    database cluster is a collection of databases is accessible by a
    single instance of a running database server. After initialization, a
    database cluster will contain a database named
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >. As the name suggests, this will be used
    as a template for subsequently created databases; it should not be
    used for actual work.  (See <A
@@ -149,7 +149,7 @@ CLASS="FILENAME"
 CLASS="COMMAND"
 >initdb</TT
 >,<A
-NAME="AEN15181"
+NAME="AEN15867"
 ></A
 > which is
    installed with <SPAN
@@ -157,9 +157,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >. The desired
    file system location of your database system is indicated by the
-   <VAR
+   <TT
 CLASS="OPTION"
->-D</VAR
+>-D</TT
 > option, for example
 </P><PRE
 CLASS="SCREEN"
@@ -185,16 +185,16 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->    As an alternative to the <VAR
+>    As an alternative to the <TT
 CLASS="OPTION"
->-D</VAR
+>-D</TT
 > option, you can set
     the environment variable <TT
 CLASS="ENVAR"
 >PGDATA</TT
 >.
     <A
-NAME="AEN15193"
+NAME="AEN15879"
 ></A
 >
    </P
@@ -257,20 +257,23 @@ CLASS="PRODUCTNAME"
 >   However, while the directory contents are secure, the default
    client authentication setup allows any local user to connect to the
    database and even become the database superuser. If you do not
-   trust other local users, we recommend you use
+   trust other local users, we recommend you use one of
    <TT
 CLASS="COMMAND"
 >initdb</TT
->'s <VAR
+>'s <TT
 CLASS="OPTION"
->-W</VAR
-> or
-   <VAR
+>-W</TT
+>, <TT
 CLASS="OPTION"
->--pwprompt</VAR
+>--pwprompt</TT
+>
+   or <TT
+CLASS="OPTION"
+>--pwfile</TT
 > option to assign a password to the
    database superuser.<A
-NAME="AEN15213"
+NAME="AEN15900"
 ></A
 > After <TT
 CLASS="COMMAND"
@@ -279,16 +282,16 @@ CLASS="COMMAND"
    the <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
-> file to use <VAR
+> file to use <TT
 CLASS="LITERAL"
->md5</VAR
+>md5</TT
 > or
-   <VAR
+   <TT
 CLASS="LITERAL"
->password</VAR
-> instead of <VAR
+>password</TT
+> instead of <TT
 CLASS="LITERAL"
->trust</VAR
+>trust</TT
 > authentication
    <SPAN
 CLASS="emphasis"
@@ -297,9 +300,9 @@ CLASS="EMPHASIS"
 >before</I
 ></SPAN
 > you start the server for the first time. (Other
-   approaches include using <VAR
+   approaches include using <TT
 CLASS="LITERAL"
->ident</VAR
+>ident</TT
 > authentication or
    file system permissions to restrict connections. See <A
 HREF="client-authentication.html"
@@ -312,7 +315,7 @@ CLASS="COMMAND"
 >initdb</TT
 > also initializes the default
    locale<A
-NAME="AEN15226"
+NAME="AEN15913"
 ></A
 > for the database cluster.
    Normally, it will just take the locale settings in the environment

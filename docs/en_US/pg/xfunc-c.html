@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="extend.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. Extending <ACRONYM
+>Chapter 31. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
@@ -96,10 +96,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XFUNC-C"
->33.7. C-Language Functions</A
+>31.7. C-Language Functions</A
 ></H1
 ><A
-NAME="AEN28898"
+NAME="AEN28111"
 ></A
 ><P
 >    User-defined functions can be written in C (or a language that can
@@ -124,9 +124,9 @@ CLASS="QUOTE"
 CLASS="QUOTE"
 >"version 1"</SPAN
 > calling convention is indicated by writing
-    a <VAR
+    a <TT
 CLASS="LITERAL"
->PG_FUNCTION_INFO_V1()</VAR
+>PG_FUNCTION_INFO_V1()</TT
 > macro call for the function,
     as illustrated below.  Lack of such a macro indicates an old-style
     (<SPAN
@@ -136,9 +136,9 @@ CLASS="QUOTE"
 CLASS="COMMAND"
 >CREATE FUNCTION</TT
 >
-    is <VAR
+    is <TT
 CLASS="LITERAL"
->C</VAR
+>C</TT
 > in either case.  Old-style functions are now deprecated
     because of portability problems and lack of functionality, but they
     are still supported for compatibility reasons.
@@ -149,10 +149,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XFUNC-C-DYNLOAD"
->33.7.1. Dynamic Loading</A
+>31.7.1. Dynamic Loading</A
 ></H2
 ><A
-NAME="AEN28913"
+NAME="AEN28126"
 ></A
 ><P
 >    The first time a user-defined function in a particular
@@ -187,9 +187,9 @@ TYPE="1"
 ></LI
 ><LI
 ><P
->       If the name starts with the string <VAR
+>       If the name starts with the string <TT
 CLASS="LITERAL"
->$libdir</VAR
+>$libdir</TT
 >,
        that part is replaced by the <SPAN
 CLASS="PRODUCTNAME"
@@ -197,7 +197,7 @@ CLASS="PRODUCTNAME"
 > package
 	library directory
        name, which is determined at build time.<A
-NAME="AEN28926"
+NAME="AEN28139"
 ></A
 >
       </P
@@ -206,11 +206,11 @@ NAME="AEN28926"
 ><P
 >       If the name does not contain a directory part, the file is
        searched for in the path specified by the configuration variable
-       <VAR
-CLASS="VARNAME"
->dynamic_library_path</VAR
+       <A
+HREF="runtime-config.html#GUC-DYNAMIC-LIBRARY-PATH"
+>dynamic_library_path</A
 >.<A
-NAME="AEN28931"
+NAME="AEN28144"
 ></A
 >
       </P
@@ -274,7 +274,7 @@ CLASS="COMMAND"
      FUNCTION</TT
 > command.  See <A
 HREF="xfunc-c.html#DFUNC"
->Section 33.7.6</A
+>Section 31.7.6</A
 > for additional
      information.
     </P
@@ -293,19 +293,19 @@ CLASS="COMMAND"
    </P
 ><P
 >    It is recommended to locate shared libraries either relative to
-    <VAR
+    <TT
 CLASS="LITERAL"
->$libdir</VAR
+>$libdir</TT
 > or through the dynamic library path.
     This simplifies version upgrades if the new installation is at a
     different location.  The actual directory that
-    <VAR
+    <TT
 CLASS="LITERAL"
->$libdir</VAR
+>$libdir</TT
 > stands for can be found out with the
-    command <VAR
+    command <TT
 CLASS="LITERAL"
->pg_config --pkglibdir</VAR
+>pg_config --pkglibdir</TT
 >.
    </P
 ><P
@@ -330,10 +330,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XFUNC-C-BASETYPE"
->33.7.2. Base Types in C-Language Functions</A
+>31.7.2. Base Types in C-Language Functions</A
 ></H2
 ><A
-NAME="AEN28957"
+NAME="AEN28170"
 ></A
 ><P
 >     To know how to write C-language functions, you need to know how
@@ -388,16 +388,16 @@ CLASS="PRODUCTNAME"
     </P
 ><P
 >     By-value  types  can  only be 1, 2, or 4 bytes in length
-     (also 8 bytes, if <VAR
+     (also 8 bytes, if <TT
 CLASS="LITERAL"
->sizeof(Datum)</VAR
+>sizeof(Datum)</TT
 > is 8 on your machine).
      You should be careful 
      to define your types such that  they  will  be  the  same  
      size (in bytes) on all architectures.  For example, the 
-     <VAR
+     <TT
 CLASS="LITERAL"
->long</VAR
+>long</TT
 > type is dangerous because  it  
      is 4 bytes on some machines and 8 bytes on others, whereas 
      <TT
@@ -440,9 +440,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > functions.
      To return a value of such a type, allocate the right amount of
-     memory with <VAR
+     memory with <TT
 CLASS="LITERAL"
->palloc</VAR
+>palloc</TT
 >, fill in the allocated memory,
      and return a pointer to it.  (You can also return an input value
      that has the same type as the return value directly by returning
@@ -516,23 +516,23 @@ memcpy(destination-&gt;data, buffer, 40);
 ...</PRE
 ><P>
 
-     <VAR
+     <TT
 CLASS="LITERAL"
->VARHDRSZ</VAR
-> is the same as <VAR
+>VARHDRSZ</TT
+> is the same as <TT
 CLASS="LITERAL"
->sizeof(int4)</VAR
+>sizeof(int4)</TT
 >, but
-     it's considered good style to use the macro <VAR
+     it's considered good style to use the macro <TT
 CLASS="LITERAL"
->VARHDRSZ</VAR
+>VARHDRSZ</TT
 >
      to refer to the size of the overhead for a variable-length type.
     </P
 ><P
 >     <A
 HREF="xfunc-c.html#XFUNC-C-TYPE-TABLE"
->Table 33-1</A
+>Table 31-1</A
 > specifies which C type
      corresponds to which SQL type when writing a C-language function
      that uses a built-in type of <SPAN
@@ -560,7 +560,7 @@ NAME="XFUNC-C-TYPE-TABLE"
 ></A
 ><P
 ><B
->Table 33-1. Equivalent C Types for Built-In SQL Types</B
+>Table 31-1. Equivalent C Types for Built-In SQL Types</B
 ></P
 ><TABLE
 BORDER="1"
@@ -1117,8 +1117,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29228"
->33.7.3. Calling Conventions Version 0 for C-Language Functions</A
+NAME="AEN28441"
+>31.7.3. Calling Conventions Version 0 for C-Language Functions</A
 ></H2
 ><P
 >     We present the <SPAN
@@ -1265,26 +1265,26 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > tutorial directory, which
      contains the code for the examples used in this section).
-     (Better style would be to use just <VAR
+     (Better style would be to use just <TT
 CLASS="LITERAL"
->'funcs'</VAR
+>'funcs'</TT
 > in the
-     <VAR
+     <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 > clause, after having added
      <VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
 > to the search path.  In any
      case, we may omit the system-specific extension for a shared
-     library, commonly <VAR
+     library, commonly <TT
 CLASS="LITERAL"
->.so</VAR
+>.so</TT
 > or
-     <VAR
+     <TT
 CLASS="LITERAL"
->.sl</VAR
+>.sl</TT
 >.)
     </P
 ><P
@@ -1317,8 +1317,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29255"
->33.7.4. Calling Conventions Version 1 for C-Language Functions</A
+NAME="AEN28468"
+>31.7.4. Calling Conventions Version 1 for C-Language Functions</A
 ></H2
 ><P
 >     The version-1 calling convention relies on macros to suppress most
@@ -1335,9 +1335,9 @@ CLASS="PROGRAMLISTING"
 ><P>
      must appear in the same source file.  (Conventionally. it's
      written just before the function itself.)  This macro call is not
-     needed for <VAR
+     needed for <TT
 CLASS="LITERAL"
->internal</VAR
+>internal</TT
 >-language functions, since
      <SPAN
 CLASS="PRODUCTNAME"
@@ -1492,9 +1492,9 @@ CLASS="FUNCTION"
 CLASS="TYPE"
 >float8</TT
 > is a pass-by-reference type.  Another
-     example is that the <VAR
+     example is that the <TT
 CLASS="LITERAL"
->GETARG</VAR
+>GETARG</TT
 > macros for variable-length types allow
      for more efficient fetching of <SPAN
 CLASS="QUOTE"
@@ -1588,7 +1588,7 @@ CLASS="REPLACEABLE"
 CLASS="QUOTE"
 >"external"</SPAN
 >. (The storage type of a column can be specified using
-    <VAR
+    <TT
 CLASS="LITERAL"
 >ALTER TABLE <VAR
 CLASS="REPLACEABLE"
@@ -1601,39 +1601,39 @@ CLASS="REPLACEABLE"
     <VAR
 CLASS="REPLACEABLE"
 >storagetype</VAR
-></VAR
+></TT
 >. <VAR
 CLASS="REPLACEABLE"
 >storagetype</VAR
 > is one of
-    <VAR
+    <TT
 CLASS="LITERAL"
->plain</VAR
->, <VAR
+>plain</TT
+>, <TT
 CLASS="LITERAL"
->external</VAR
->, <VAR
+>external</TT
+>, <TT
 CLASS="LITERAL"
->extended</VAR
+>extended</TT
 >,
-     or <VAR
+     or <TT
 CLASS="LITERAL"
->main</VAR
+>main</TT
 >.)
     </P
 ><P
 >     Finally, the version-1 function call conventions make it possible
      to return set results (<A
 HREF="xfunc-c.html#XFUNC-C-RETURN-SET"
->Section 33.7.9</A
+>Section 31.7.10</A
 >) and
      implement trigger functions (<A
 HREF="triggers.html"
->Chapter 35</A
+>Chapter 33</A
 >) and
      procedural-language call handlers (<A
 HREF="plhandler.html"
->Chapter 47</A
+>Chapter 45</A
 >).  Version-1 code is also more
      portable than version-0, because it does not break restrictions
      on function call protocol in the C standard.  For more details
@@ -1649,8 +1649,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29313"
->33.7.5. Writing Code</A
+NAME="AEN28526"
+>31.7.5. Writing Code</A
 ></H2
 ><P
 >     Before we turn to the more advanced topics, we should discuss
@@ -1679,12 +1679,12 @@ CLASS="PRODUCTNAME"
 ></P><UL
 ><LI
 ><P
->        Use <VAR
+>        Use <TT
 CLASS="LITERAL"
 >pg_config
-        --includedir-server</VAR
+        --includedir-server</TT
 ><A
-NAME="AEN29323"
+NAME="AEN28536"
 ></A
 >
         to find out where the <SPAN
@@ -1701,9 +1701,9 @@ CLASS="PRODUCTNAME"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 7.1 you should use the option
-        <VAR
+        <TT
 CLASS="OPTION"
->--includedir</VAR
+>--includedir</TT
 >.  (<TT
 CLASS="COMMAND"
 >pg_config</TT
@@ -1726,13 +1726,13 @@ CLASS="PRODUCTNAME"
 CLASS="FUNCTION"
 >palloc</CODE
 ><A
-NAME="AEN29335"
+NAME="AEN28548"
 ></A
 > and <CODE
 CLASS="FUNCTION"
 >pfree</CODE
 ><A
-NAME="AEN29338"
+NAME="AEN28551"
 ></A
 >
         instead of the corresponding C library functions
@@ -1831,7 +1831,7 @@ CLASS="PRODUCTNAME"
 > always
         requires special flags.  See <A
 HREF="xfunc-c.html#DFUNC"
->Section 33.7.6</A
+>Section 31.7.6</A
 > for a
         detailed explanation of how to do it for your particular
         operating system.
@@ -1847,7 +1847,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="DFUNC"
->33.7.6. Compiling and Linking Dynamically-Loaded Functions</A
+>31.7.6. Compiling and Linking Dynamically-Loaded Functions</A
 ></H2
 ><P
 >  Before you are able to use your
@@ -1862,7 +1862,7 @@ CLASS="FIRSTTERM"
 >shared library</I
 > needs to be
   created.<A
-NAME="AEN29369"
+NAME="AEN28582"
 ></A
 >
 
@@ -1895,7 +1895,7 @@ CLASS="PRODUCTNAME"
  </P
 ><P
 >  <A
-NAME="AEN29378"
+NAME="AEN28591"
 ></A
 > Creating shared libraries is generally
   analogous to linking executables: first the source files are
@@ -1909,7 +1909,7 @@ CLASS="FIRSTTERM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 >),<A
-NAME="AEN29382"
+NAME="AEN28595"
 ></A
 > which
   conceptually means that they can be placed at an arbitrary location
@@ -1952,13 +1952,13 @@ CLASS="SYSTEMITEM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 > is
-      <VAR
+      <TT
 CLASS="OPTION"
->-fpic</VAR
+>-fpic</TT
 >.  The linker flag to create shared
-      libraries is <VAR
+      libraries is <TT
 CLASS="OPTION"
->-shared</VAR
+>-shared</TT
 >.
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1983,13 +1983,13 @@ CLASS="SYSTEMITEM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 > is
-      <VAR
+      <TT
 CLASS="OPTION"
->-fpic</VAR
+>-fpic</TT
 >.  To create shared libraries the compiler
-      flag is <VAR
+      flag is <TT
 CLASS="OPTION"
->-shared</VAR
+>-shared</TT
 >.
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -2014,20 +2014,20 @@ CLASS="SYSTEMITEM"
       <ACRONYM
 CLASS="ACRONYM"
 >PIC</ACRONYM
-> is <VAR
+> is <TT
 CLASS="OPTION"
->+z</VAR
+>+z</TT
 >.  When using
       <SPAN
 CLASS="APPLICATION"
 >GCC</SPAN
-> it's <VAR
+> it's <TT
 CLASS="OPTION"
->-fpic</VAR
+>-fpic</TT
 >. The
-      linker flag for shared libraries is <VAR
+      linker flag for shared libraries is <TT
 CLASS="OPTION"
->-b</VAR
+>-b</TT
 >.  So
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -2066,9 +2066,9 @@ CLASS="ACRONYM"
 >PIC</ACRONYM
 > is the default, no special compiler
       options are necessary.  The linker option to produce shared
-      libraries is <VAR
+      libraries is <TT
 CLASS="OPTION"
->-shared</VAR
+>-shared</TT
 >.
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -2088,22 +2088,22 @@ CLASS="SYSTEMITEM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 > is
-      <VAR
+      <TT
 CLASS="OPTION"
->-fpic</VAR
+>-fpic</TT
 >.  On some platforms in some situations
-      <VAR
+      <TT
 CLASS="OPTION"
->-fPIC</VAR
-> must be used if <VAR
+>-fPIC</TT
+> must be used if <TT
 CLASS="OPTION"
->-fpic</VAR
+>-fpic</TT
 >
       does not work.  Refer to the GCC manual for more information.
       The compiler flag to create a shared library is
-      <VAR
+      <TT
 CLASS="OPTION"
->-shared</VAR
+>-shared</TT
 >.  A complete example looks like this:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -2138,21 +2138,21 @@ CLASS="SYSTEMITEM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 > is
-      <VAR
+      <TT
 CLASS="OPTION"
->-fpic</VAR
+>-fpic</TT
 >.  For <ACRONYM
 CLASS="ACRONYM"
 >ELF</ACRONYM
 > systems, the
-      compiler with the flag <VAR
+      compiler with the flag <TT
 CLASS="OPTION"
->-shared</VAR
+>-shared</TT
 > is used to link
-      shared libraries.  On the older non-ELF systems, <VAR
+      shared libraries.  On the older non-ELF systems, <TT
 CLASS="LITERAL"
 >ld
-      -Bshareable</VAR
+      -Bshareable</TT
 > is used.
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -2172,12 +2172,12 @@ CLASS="SYSTEMITEM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 > is
-      <VAR
+      <TT
 CLASS="OPTION"
->-fpic</VAR
->.  <VAR
+>-fpic</TT
+>.  <TT
 CLASS="LITERAL"
->ld -Bshareable</VAR
+>ld -Bshareable</TT
 > is
       used to link shared libraries.
 </P><PRE
@@ -2198,25 +2198,25 @@ CLASS="SYSTEMITEM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 > is
-      <VAR
+      <TT
 CLASS="OPTION"
->-KPIC</VAR
+>-KPIC</TT
 > with the Sun compiler and
-      <VAR
+      <TT
 CLASS="OPTION"
->-fpic</VAR
+>-fpic</TT
 > with <SPAN
 CLASS="APPLICATION"
 >GCC</SPAN
 >.  To
       link shared libraries, the compiler option is
-      <VAR
+      <TT
 CLASS="OPTION"
->-G</VAR
+>-G</TT
 > with either compiler or alternatively
-      <VAR
+      <TT
 CLASS="OPTION"
->-shared</VAR
+>-shared</TT
 > with <SPAN
 CLASS="APPLICATION"
 >GCC</SPAN
@@ -2269,25 +2269,25 @@ CLASS="SYSTEMITEM"
 >      The compiler flag to create <ACRONYM
 CLASS="ACRONYM"
 >PIC</ACRONYM
-> is <VAR
+> is <TT
 CLASS="OPTION"
 >-K
-      PIC</VAR
-> with the SCO compiler and <VAR
+      PIC</TT
+> with the SCO compiler and <TT
 CLASS="OPTION"
->-fpic</VAR
+>-fpic</TT
 >
       with <SPAN
 CLASS="PRODUCTNAME"
 >GCC</SPAN
 >.  To link shared libraries,
-      the compiler option is <VAR
+      the compiler option is <TT
 CLASS="OPTION"
->-G</VAR
+>-G</TT
 > with the SCO compiler
-      and <VAR
+      and <TT
 CLASS="OPTION"
->-shared</VAR
+>-shared</TT
 > with
       <SPAN
 CLASS="PRODUCTNAME"
@@ -2341,12 +2341,12 @@ CLASS="COMMAND"
 > command, one must give it
   the name of the shared library file, not the intermediate object file.
   Note that the system's standard shared-library extension (usually
-  <VAR
+  <TT
 CLASS="LITERAL"
->.so</VAR
-> or <VAR
+>.so</TT
+> or <TT
 CLASS="LITERAL"
->.sl</VAR
+>.sl</TT
 >) can be omitted from
   the <TT
 CLASS="COMMAND"
@@ -2357,7 +2357,7 @@ CLASS="COMMAND"
 ><P
 >  Refer back to <A
 HREF="xfunc-c.html#XFUNC-C-DYNLOAD"
->Section 33.7.1</A
+>Section 31.7.1</A
 > about where the
   server expects to find the shared library files.
  </P
@@ -2367,8 +2367,309 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29553"
->33.7.7. Composite-Type Arguments in C-Language Functions</A
+NAME="XFUNC-C-PGXS"
+>31.7.7. Extension build infrastructure</A
+></H2
+><A
+NAME="AEN28768"
+></A
+><P
+>    If you are thinking about distributing your PostgreSQL extension
+    modules, setting up a portable build system for them can be fairly
+    difficult.  Therefore the PostgreSQL installation provides a build
+    infrastructure for extensions, called <ACRONYM
+CLASS="ACRONYM"
+>PGXS</ACRONYM
+>, so
+    that simple extension modules can be built simply against an
+    already installed server.  Note that this infrastructure is not
+    intended to be a universal build system framework that can be used
+    to build all software interfacing to PostgreSQL; it simply
+    automates common build rules for simple server extension modules.
+    For more complicated packages, you need to write your own build
+    system.
+   </P
+><P
+>    To use the infrastructure for your extension, you must write a
+    simple makefile.  In that makefile, you need to set some variables
+    and finally include the global <ACRONYM
+CLASS="ACRONYM"
+>PGXS</ACRONYM
+> makefile.
+    Here is an example that builds an extension module named
+    <TT
+CLASS="LITERAL"
+>isbn_issn</TT
+> consisting of a shared library, an
+    SQL script, and a documentation text file:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>MODULES = isbn_issn
+DATA_built = isbn_issn.sql
+DOCS = README.isbn_issn
+
+PGXS := $(shell pg_config --pgxs)
+include $(PGXS)</PRE
+><P>
+    The last two lines should always be the same.  Earlier in the
+    file, you assign variables or add custom
+    <SPAN
+CLASS="APPLICATION"
+>make</SPAN
+> rules.
+   </P
+><P
+>    The following variables can be set:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>MODULES</TT
+></DT
+><DD
+><P
+>        list of shared objects to be build from source file with same
+        stem (do not include suffix in this list)
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DATA</TT
+></DT
+><DD
+><P
+>        random files to install into <TT
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>prefix</VAR
+>/share/contrib</TT
+>
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DATA_built</TT
+></DT
+><DD
+><P
+>        random files to install into
+        <TT
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>prefix</VAR
+>/share/contrib</TT
+>,
+        which need to be built first
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DOCS</TT
+></DT
+><DD
+><P
+>        random files to install under
+        <TT
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>prefix</VAR
+>/doc/contrib</TT
+>
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SCRIPTS</TT
+></DT
+><DD
+><P
+>        script files (not binaries) to install into
+        <TT
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>prefix</VAR
+>/bin</TT
+>
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SCRIPTS_built</TT
+></DT
+><DD
+><P
+>        script files (not binaries) to install into
+        <TT
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>prefix</VAR
+>/bin</TT
+>,
+        which need to be built first
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>REGRESS</TT
+></DT
+><DD
+><P
+>        list of regression test cases (without suffix)
+       </P
+></DD
+></DL
+></DIV
+><P>
+
+    or at most one of these two:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>PROGRAM</TT
+></DT
+><DD
+><P
+>        a binary program to build (list objects files in <TT
+CLASS="VARNAME"
+>OBJS</TT
+>)
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>MODULE_big</TT
+></DT
+><DD
+><P
+>        a shared object to build (list object files in <TT
+CLASS="VARNAME"
+>OBJS</TT
+>)
+       </P
+></DD
+></DL
+></DIV
+><P>
+
+    The following can also be set:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>EXTRA_CLEAN</TT
+></DT
+><DD
+><P
+>        extra files to remove in <TT
+CLASS="LITERAL"
+>make clean</TT
+>
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>PG_CPPFLAGS</TT
+></DT
+><DD
+><P
+>        will be added to <TT
+CLASS="VARNAME"
+>CPPFLAGS</TT
+>
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>PG_LIBS</TT
+></DT
+><DD
+><P
+>        will be added to <TT
+CLASS="VARNAME"
+>PROGRAM</TT
+> link line
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SHLIB_LINK</TT
+></DT
+><DD
+><P
+>        will be added to <TT
+CLASS="VARNAME"
+>MODULE_big</TT
+> link line
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    Put this makefile as <TT
+CLASS="LITERAL"
+>Makefile</TT
+> in the directory
+    which holds your extension. Then you can do
+    <TT
+CLASS="LITERAL"
+>make</TT
+> to compile, and later <TT
+CLASS="LITERAL"
+>make
+    install</TT
+> to install your module.  The extension is
+    compiled and installed for the
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation that
+    corresponds to the first <TT
+CLASS="COMMAND"
+>pg_config</TT
+> command
+    found in your path.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN28868"
+>31.7.8. Composite-Type Arguments in C-Language Functions</A
 ></H2
 ><P
 >     Composite types do not  have  a  fixed  layout  like  C
@@ -2405,7 +2706,7 @@ CLASS="PROGRAMLISTING"
 #include "executor/executor.h"  /* for GetAttributeByName() */
 
 bool
-c_overpaid(TupleTableSlot *t, /* the current row of emp */
+c_overpaid(HeapTupleHeader t, /* the current row of emp */
            int32 limit)
 {
     bool isnull;
@@ -2430,7 +2731,7 @@ PG_FUNCTION_INFO_V1(c_overpaid);
 Datum
 c_overpaid(PG_FUNCTION_ARGS)
 {
-    TupleTableSlot  *t = (TupleTableSlot *) PG_GETARG_POINTER(0);
+    HeapTupleHeader  t = PG_GETARG_HEAPTUPLEHEADER(0);
     int32            limit = PG_GETARG_INT32(1);
     bool isnull;
     int32 salary;
@@ -2456,8 +2757,9 @@ CLASS="PRODUCTNAME"
      returns attributes out of the specified row.  It has
      three arguments: the argument of type <TT
 CLASS="TYPE"
->TupleTableSlot*</TT
-> passed into
+>HeapTupleHeader</TT
+> passed
+     into 
      the  function, the name of the desired attribute, and a
      return parameter that tells whether  the  attribute
      is  null.   <CODE
@@ -2477,6 +2779,13 @@ CLASS="REPLACEABLE"
 > macro.
     </P
 ><P
+>     There is also <CODE
+CLASS="FUNCTION"
+>GetAttributeByNum</CODE
+>, which selects
+     the target attribute by column number instead of name.
+    </P
+><P
 >     The following command declares the function
      <CODE
 CLASS="FUNCTION"
@@ -2490,8 +2799,14 @@ CLASS="PROGRAMLISTING"
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
 >/funcs', 'c_overpaid'
-    LANGUAGE C;</PRE
+    LANGUAGE C STRICT;</PRE
 ><P>
+
+     Notice we have used <TT
+CLASS="LITERAL"
+>STRICT</TT
+> so that we did not have to
+     check whether the input arguments were NULL.
     </P
 ></DIV
 ><DIV
@@ -2499,8 +2814,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29574"
->33.7.8. Returning Rows (Composite Types) from C-Language Functions</A
+NAME="AEN28892"
+>31.7.9. Returning Rows (Composite Types) from C-Language Functions</A
 ></H2
 ><P
 >     To return a row or composite-type value from a C-language
@@ -2513,53 +2828,51 @@ CLASS="PROGRAMLISTING"
 ><P>
     </P
 ><P
->     The support for returning composite data types (or rows) starts
-     with the <TT
-CLASS="STRUCTNAME"
->AttInMetadata</TT
-> structure. This structure
-     holds arrays of individual attribute information needed to create
-     a row from raw C strings. The information contained in the
-     structure is derived from a <TT
+>     There are two ways you can build a composite data value (henceforth
+     a <SPAN
+CLASS="QUOTE"
+>"tuple"</SPAN
+>): you can build it from an array of Datum values,
+     or from an array of C strings that can be passed to the input
+     conversion functions of the tuple's column datatypes.  In either
+     case, you first need to obtain or construct a <TT
 CLASS="STRUCTNAME"
 >TupleDesc</TT
-> structure,
-     but it is stored to avoid redundant computations on each call to
-     a set-returning function (see next section).  In the case of a
-     function returning a set, the <TT
-CLASS="STRUCTNAME"
->AttInMetadata</TT
 >
-     structure should be computed once during the first call and saved
-     for reuse in later calls.  <TT
-CLASS="STRUCTNAME"
->AttInMetadata</TT
-> also
-     saves a pointer to the original <TT
+     descriptor for the tuple structure.  When working with Datums, you
+     pass the <TT
 CLASS="STRUCTNAME"
 >TupleDesc</TT
->.
-</P><PRE
-CLASS="PROGRAMLISTING"
->typedef struct AttInMetadata
-{
-    /* full TupleDesc */
-    TupleDesc       tupdesc;
-
-    /* array of attribute type input function finfo */
-    FmgrInfo       *attinfuncs;
-
-    /* array of attribute type typelem */
-    Oid            *attelems;
-
-    /* array of attribute typmod */
-    int32    	   *atttypmods;
-}	AttInMetadata;</PRE
-><P>
+> to <CODE
+CLASS="FUNCTION"
+>BlessTupleDesc</CODE
+>,
+     and then call <CODE
+CLASS="FUNCTION"
+>heap_formtuple</CODE
+> for each row.  When working
+     with C strings, you pass the <TT
+CLASS="STRUCTNAME"
+>TupleDesc</TT
+> to
+     <CODE
+CLASS="FUNCTION"
+>TupleDescGetAttInMetadata</CODE
+>, and then call
+     <CODE
+CLASS="FUNCTION"
+>BuildTupleFromCStrings</CODE
+> for each row.  In the case of a
+     function returning a set of tuples, the setup steps can all be done
+     once during the first call of the function.
     </P
 ><P
->     To assist you in populating this structure, several functions and a macro
-     are available. Use
+>     Several helper functions are available for setting up the initial
+     <TT
+CLASS="STRUCTNAME"
+>TupleDesc</TT
+>.  If you want to use a named composite type,
+     you can fetch the information from the system catalogs.  Use
 </P><PRE
 CLASS="PROGRAMLISTING"
 >TupleDesc RelationNameGetTupleDesc(const char *relname)</PRE
@@ -2580,107 +2893,82 @@ CLASS="STRUCTNAME"
 CLASS="STRUCTNAME"
 >TupleDesc</TT
 > for a base or
-     composite type. Then
+     composite type.  When writing a function that returns
+     <TT
+CLASS="STRUCTNAME"
+>record</TT
+>, the expected <TT
+CLASS="STRUCTNAME"
+>TupleDesc</TT
+> 
+     must be passed in by the caller.
+    </P
+><P
+>     Once you have a <TT
+CLASS="STRUCTNAME"
+>TupleDesc</TT
+>, call
+</P><PRE
+CLASS="PROGRAMLISTING"
+>TupleDesc BlessTupleDesc(TupleDesc tupdesc)</PRE
+><P>
+     if you plan to work with Datums, or
 </P><PRE
 CLASS="PROGRAMLISTING"
 >AttInMetadata *TupleDescGetAttInMetadata(TupleDesc tupdesc)</PRE
 ><P>
-     will return a pointer to an <TT
-CLASS="STRUCTNAME"
->AttInMetadata</TT
->,
-     initialized based on the given
+     if you plan to work with C strings.  If you are writing a function
+     returning set, you can save the results of these functions in the
      <TT
 CLASS="STRUCTNAME"
->TupleDesc</TT
->. <TT
-CLASS="STRUCTNAME"
->AttInMetadata</TT
-> can be
-     used in conjunction with C strings to produce a properly formed
-     row value (internally called tuple).
+>FuncCallContext</TT
+> structure --- use the
+     <TT
+CLASS="STRUCTFIELD"
+>tuple_desc</TT
+> or <TT
+CLASS="STRUCTFIELD"
+>attinmeta</TT
+> field
+     respectively.
     </P
 ><P
->     To return a tuple you must create a tuple slot based on the
-     <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
->. You can use
+>     When working with Datums, use
 </P><PRE
 CLASS="PROGRAMLISTING"
->TupleTableSlot *TupleDescGetSlot(TupleDesc tupdesc)</PRE
+>HeapTuple heap_formtuple(TupleDesc tupdesc, Datum *values, char *nulls)</PRE
 ><P>
-     to initialize this tuple slot, or obtain one through other (user provided)
-     means. The tuple slot is needed to create a <TT
-CLASS="TYPE"
->Datum</TT
-> for return by the
-     function.  The same slot can (and should) be reused on each call.
+     to build a <TT
+CLASS="STRUCTNAME"
+>HeapTuple</TT
+> given user data in Datum form.
     </P
 ><P
->     After constructing an <TT
-CLASS="STRUCTNAME"
->AttInMetadata</TT
-> structure,
+>     When working with C strings, use
 </P><PRE
 CLASS="PROGRAMLISTING"
 >HeapTuple BuildTupleFromCStrings(AttInMetadata *attinmeta, char **values)</PRE
 ><P>
-     can be used to build a <TT
+     to build a <TT
 CLASS="STRUCTNAME"
 >HeapTuple</TT
 > given user data
-     in C string form.  <VAR
+     in C string form.  <TT
 CLASS="LITERAL"
->values</VAR
-> is an array of C strings, one for
-     each attribute of the return row. Each C string should be in
+>values</TT
+> is an array of C strings,
+     one for each attribute of the return row. Each C string should be in
      the form expected by the input function of the attribute data
      type. In order to return a null value for one of the attributes,
-     the corresponding pointer in the <VAR
+     the corresponding pointer in the <TT
 CLASS="PARAMETER"
->values</VAR
+>values</TT
 > array
      should be set to <TT
 CLASS="SYMBOL"
 >NULL</TT
 >.  This function will need to
      be called again for each row you return.
-    </P
-><P
->     Building a tuple via <CODE
-CLASS="FUNCTION"
->TupleDescGetAttInMetadata</CODE
-> and
-     <CODE
-CLASS="FUNCTION"
->BuildTupleFromCStrings</CODE
-> is only convenient if your
-     function naturally computes the values to be returned as text
-     strings.  If your code naturally computes the values as a set of
-     <TT
-CLASS="TYPE"
->Datum</TT
-> values, you should instead use the underlying
-     function <CODE
-CLASS="FUNCTION"
->heap_formtuple</CODE
-> to convert the
-     <TT
-CLASS="TYPE"
->Datum</TT
-> values directly into a tuple.  You will still need
-     the <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
-> and a <TT
-CLASS="STRUCTNAME"
->TupleTableSlot</TT
->,
-     but not <TT
-CLASS="STRUCTNAME"
->AttInMetadata</TT
->.
     </P
 ><P
 >     Once you have built a tuple to return from your function, it
@@ -2690,12 +2978,12 @@ CLASS="TYPE"
 >. Use
 </P><PRE
 CLASS="PROGRAMLISTING"
->TupleGetDatum(TupleTableSlot *slot, HeapTuple tuple)</PRE
+>HeapTupleGetDatum(HeapTuple tuple)</PRE
 ><P>
-     to get a <TT
-CLASS="TYPE"
->Datum</TT
-> given a tuple and a slot.  This
+     to convert a <TT
+CLASS="STRUCTNAME"
+>HeapTuple</TT
+> into a valid Datum.  This
      <TT
 CLASS="TYPE"
 >Datum</TT
@@ -2713,7 +3001,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XFUNC-C-RETURN-SET"
->33.7.9. Returning Sets from C-Language Functions</A
+>31.7.10. Returning Sets from C-Language Functions</A
 ></H2
 ><P
 >     There is also a special API that provides support for returning
@@ -2740,9 +3028,9 @@ CLASS="ACRONYM"
 CLASS="STRUCTNAME"
 >FuncCallContext</TT
 > is provided to help
-     control this process.  Within a function, <VAR
+     control this process.  Within a function, <TT
 CLASS="LITERAL"
->fcinfo-&gt;flinfo-&gt;fn_extra</VAR
+>fcinfo-&gt;flinfo-&gt;fn_extra</TT
 >
      is used to hold a pointer to <TT
 CLASS="STRUCTNAME"
@@ -2773,8 +3061,8 @@ CLASS="PROGRAMLISTING"
     /*
      * OPTIONAL pointer to result slot
      * 
-     * slot is for use when returning tuples (i.e., composite data types)
-     * and is not needed when returning base data types.
+     * This is obsolete and only present for backwards compatibility, viz,
+     * user-defined SRFs that use the deprecated TupleDescGetSlot().
      */
     TupleTableSlot *slot;
 
@@ -2790,9 +3078,9 @@ CLASS="PROGRAMLISTING"
      * OPTIONAL pointer to struct containing attribute type input metadata
      * 
      * attinmeta is for use when returning tuples (i.e., composite data types)
-     * and is not needed when returning base data types. It
-     * is only needed if you intend to use BuildTupleFromCStrings() to create
-     * the return tuple.
+     * and is not used when returning base data types. It is only needed
+     * if you intend to use BuildTupleFromCStrings() to create the return
+     * tuple.
      */
     AttInMetadata *attinmeta;
 
@@ -2805,6 +3093,18 @@ CLASS="PROGRAMLISTING"
      * of the SRF.
      */
     MemoryContext multi_call_memory_ctx;
+
+    /*
+     * OPTIONAL pointer to struct containing tuple description
+     *
+     * tuple_desc is for use when returning tuples (i.e. composite data types)
+     * and is only needed if you are going to build the tuples with
+     * heap_formtuple() rather than with BuildTupleFromCStrings().  Note that
+     * the TupleDesc pointer stored here should usually have been run through
+     * BlessTupleDesc() first.
+     */
+    TupleDesc tuple_desc;
+
 } FuncCallContext;</PRE
 ><P>
     </P
@@ -2817,9 +3117,9 @@ CLASS="ACRONYM"
 CLASS="STRUCTNAME"
 >FuncCallContext</TT
 >
-     structure (and expect to find it via <VAR
+     structure (and expect to find it via <TT
 CLASS="LITERAL"
->fn_extra</VAR
+>fn_extra</TT
 >).  Use
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -2853,9 +3153,9 @@ CLASS="STRUCTNAME"
 CLASS="PROGRAMLISTING"
 >SRF_RETURN_NEXT(funcctx, result)</PRE
 ><P>
-     to return it to the caller.  (<VAR
+     to return it to the caller.  (<TT
 CLASS="LITERAL"
->result</VAR
+>result</TT
 > must be of type
      <TT
 CLASS="TYPE"
@@ -2934,11 +3234,6 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >build TupleDesc, and perhaps AttInMetadata</VAR
 >
-            <VAR
-CLASS="REPLACEABLE"
->obtain slot</VAR
->
-            funcctx-&gt;slot = slot;
         <VAR
 CLASS="REPLACEABLE"
 >endif returning composite</VAR
@@ -3003,7 +3298,6 @@ testpassbyval(PG_FUNCTION_ARGS)
     int                  call_cntr;
     int                  max_calls;
     TupleDesc            tupdesc;
-    TupleTableSlot      *slot;
     AttInMetadata       *attinmeta;
 
      /* stuff done only on the first call of the function */
@@ -3023,12 +3317,6 @@ testpassbyval(PG_FUNCTION_ARGS)
         /* Build a tuple description for a __testpassbyval tuple */
         tupdesc = RelationNameGetTupleDesc("__testpassbyval");
 
-        /* allocate a slot for a tuple with this tupdesc */
-        slot = TupleDescGetSlot(tupdesc);
-
-        /* assign slot to function context */
-        funcctx-&gt;slot = slot;
-
         /*
          * generate attribute metadata needed later to produce tuples from raw
          * C strings
@@ -3044,7 +3332,6 @@ testpassbyval(PG_FUNCTION_ARGS)
 
     call_cntr = funcctx-&gt;call_cntr;
     max_calls = funcctx-&gt;max_calls;
-    slot = funcctx-&gt;slot;
     attinmeta = funcctx-&gt;attinmeta;
  
     if (call_cntr &lt; max_calls)    /* do when there is more left to send */
@@ -3054,7 +3341,7 @@ testpassbyval(PG_FUNCTION_ARGS)
         Datum        result;
 
         /*
-         * Prepare a values array for storage in our slot.
+         * Prepare a values array for building the returned tuple.
          * This should be an array of C strings which will
          * be processed later by the type input functions.
          */
@@ -3071,7 +3358,7 @@ testpassbyval(PG_FUNCTION_ARGS)
         tuple = BuildTupleFromCStrings(attinmeta, values);
 
         /* make the tuple into a datum */
-        result = TupleGetDatum(slot, tuple);
+        result = HeapTupleGetDatum(tuple);
 
         /* clean up (this is not really necessary) */
         pfree(values[0]);
@@ -3114,8 +3401,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29675"
->33.7.10. Polymorphic Arguments and Return Types</A
+NAME="AEN28989"
+>31.7.11. Polymorphic Arguments and Return Types</A
 ></H2
 ><P
 >     C-language functions may be declared to accept and
@@ -3129,7 +3416,7 @@ CLASS="TYPE"
 >.
      See <A
 HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 33.2.5</A
+>Section 31.2.5</A
 > for a more detailed explanation
      of polymorphic functions. When function arguments or return types
      are defined as polymorphic types, the function author cannot know
@@ -3140,29 +3427,29 @@ CLASS="FILENAME"
 >
      to allow a version-1 C function to discover the actual data types
      of its arguments and the type it is expected to return. The routines are
-     called <VAR
+     called <TT
 CLASS="LITERAL"
->get_fn_expr_rettype(FmgrInfo *flinfo)</VAR
+>get_fn_expr_rettype(FmgrInfo *flinfo)</TT
 > and
-     <VAR
+     <TT
 CLASS="LITERAL"
->get_fn_expr_argtype(FmgrInfo *flinfo, int argnum)</VAR
+>get_fn_expr_argtype(FmgrInfo *flinfo, int argnum)</TT
 >.
      They return the result or argument type OID, or <TT
 CLASS="SYMBOL"
 >InvalidOid</TT
 > if the
      information is not available.
-     The structure <VAR
+     The structure <TT
 CLASS="LITERAL"
->flinfo</VAR
+>flinfo</TT
 > is normally accessed as
-     <VAR
+     <TT
 CLASS="LITERAL"
->fcinfo-&gt;flinfo</VAR
->. The parameter <VAR
+>fcinfo-&gt;flinfo</TT
+>. The parameter <TT
 CLASS="LITERAL"
->argnum</VAR
+>argnum</TT
 >
      is zero based.
     </P
@@ -3227,9 +3514,9 @@ CLASS="REPLACEABLE"
     LANGUAGE C STRICT;</PRE
 ><P>
 
-     Note the use of <VAR
+     Note the use of <TT
 CLASS="LITERAL"
->STRICT</VAR
+>STRICT</TT
 >; this is essential
      since the code is not bothering to test for a null input.
     </P

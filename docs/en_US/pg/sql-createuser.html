@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATEUSER"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38900"
+NAME="AEN39169"
 ></A
 ><H2
 >Name</H2
 >CREATE USER&nbsp;--&nbsp;define a new database user account</DIV
 ><A
-NAME="AEN38903"
+NAME="AEN39172"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38905"
+NAME="AEN39174"
 ></A
 ><H2
 >Synopsis</H2
@@ -147,7 +147,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38914"
+NAME="AEN39183"
 ></A
 ><H2
 >Description</H2
@@ -174,7 +174,7 @@ HREF="client-authentication.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38921"
+NAME="AEN39190"
 ></A
 ><H2
 >Parameters</H2
@@ -200,9 +200,9 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->        The <VAR
+>        The <TT
 CLASS="LITERAL"
->SYSID</VAR
+>SYSID</TT
 > clause can be used to choose the
         <SPAN
 CLASS="PRODUCTNAME"
@@ -237,30 +237,30 @@ HREF="sql-alteruser.html"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ENCRYPTED</VAR
-><BR><VAR
+>ENCRYPTED</TT
+><BR><TT
 CLASS="LITERAL"
->UNENCRYPTED</VAR
+>UNENCRYPTED</TT
 ></DT
 ><DD
 ><P
 >	These key words control whether the password is stored
 	encrypted in the system catalogs.  (If neither is specified,
 	the default behavior is determined by the configuration
-	parameter <VAR
-CLASS="VARNAME"
->PASSWORD_ENCRYPTION</VAR
+	parameter <A
+HREF="runtime-config.html#GUC-PASSWORD-ENCRYPTION"
+>password_encryption</A
 >.)  If the
 	presented password string is already in MD5-encrypted format,
 	then it is stored encrypted as-is, regardless of whether
-	<VAR
+	<TT
 CLASS="LITERAL"
->ENCRYPTED</VAR
-> or <VAR
+>ENCRYPTED</TT
+> or <TT
 CLASS="LITERAL"
->UNENCRYPTED</VAR
+>UNENCRYPTED</TT
 > is specified
 	(since the system cannot decrypt the specified encrypted
 	password string).  This allows reloading of encrypted
@@ -273,39 +273,39 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CREATEDB</VAR
-><BR><VAR
+>CREATEDB</TT
+><BR><TT
 CLASS="LITERAL"
->NOCREATEDB</VAR
+>NOCREATEDB</TT
 ></DT
 ><DD
 ><P
 >	These clauses define a user's ability to create databases.  If
-	<VAR
+	<TT
 CLASS="LITERAL"
->CREATEDB</VAR
+>CREATEDB</TT
 > is specified, the user being
 	defined will be allowed to create his own databases. Using
-	<VAR
+	<TT
 CLASS="LITERAL"
->NOCREATEDB</VAR
+>NOCREATEDB</TT
 > will deny a user the ability to
 	create databases. If this clause is omitted,
-	<VAR
+	<TT
 CLASS="LITERAL"
->NOCREATEDB</VAR
+>NOCREATEDB</TT
 > is used by default.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CREATEUSER</VAR
-><BR><VAR
+>CREATEUSER</TT
+><BR><TT
 CLASS="LITERAL"
->NOCREATEUSER</VAR
+>NOCREATEUSER</TT
 ></DT
 ><DD
 ><P
@@ -313,9 +313,9 @@ CLASS="LITERAL"
 	create new users himself. This option will also make the user
 	a superuser who can override all access restrictions.
 	Omitting this clause will set the user's value of this
-	attribute to be <VAR
+	attribute to be <TT
 CLASS="LITERAL"
->NOCREATEUSER</VAR
+>NOCREATEUSER</TT
 >.
        </P
 ></DD
@@ -337,9 +337,9 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The <VAR
+>	The <TT
 CLASS="LITERAL"
->VALID UNTIL</VAR
+>VALID UNTIL</TT
 > clause sets an absolute
 	time after which the user's password is no longer valid.  If
 	this clause is omitted the login will be valid for all time.
@@ -351,7 +351,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38983"
+NAME="AEN39252"
 ></A
 ><H2
 >Notes</H2
@@ -397,7 +397,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38993"
+NAME="AEN39262"
 ></A
 ><H2
 >Examples</H2
@@ -437,7 +437,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39003"
+NAME="AEN39272"
 ></A
 ><H2
 >Compatibility</H2
@@ -456,7 +456,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39008"
+NAME="AEN39277"
 ></A
 ><H2
 >See Also</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Overview of PostgreSQL Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="overview.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 42. Overview of PostgreSQL Internals</TD
+>Chapter 40. Overview of PostgreSQL Internals</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="EXECUTOR"
->42.6. Executor</A
+>40.6. Executor</A
 ></H1
 ><P
 >    The <I
@@ -107,49 +107,49 @@ CLASS="FIRSTTERM"
    </P
 ><P
 >    To provide a concrete example, assume that the top
-    node is a <VAR
+    node is a <TT
 CLASS="LITERAL"
->MergeJoin</VAR
+>MergeJoin</TT
 > node. 
     Before any merge can be done two rows have to be fetched (one from
     each subplan). So the executor recursively calls itself to
     process the subplans (it starts with the subplan attached to
-    <VAR
+    <TT
 CLASS="LITERAL"
->lefttree</VAR
+>lefttree</TT
 >). The new top node (the top node of the left
     subplan) is, let's say, a
-    <VAR
+    <TT
 CLASS="LITERAL"
->Sort</VAR
+>Sort</TT
 > node and again recursion is needed to obtain
-    an input row.  The child node of the <VAR
+    an input row.  The child node of the <TT
 CLASS="LITERAL"
->Sort</VAR
+>Sort</TT
 > might
-    be a <VAR
+    be a <TT
 CLASS="LITERAL"
->SeqScan</VAR
+>SeqScan</TT
 > node, representing actual reading of a table.
     Execution of this node causes the executor to fetch a row from the
-    table and return it up to the calling node.  The <VAR
+    table and return it up to the calling node.  The <TT
 CLASS="LITERAL"
->Sort</VAR
+>Sort</TT
 >
     node will repeatedly call its child to obtain all the rows to be sorted.
     When the input is exhausted (as indicated by the child node returning
-    a NULL instead of a row), the <VAR
+    a NULL instead of a row), the <TT
 CLASS="LITERAL"
->Sort</VAR
+>Sort</TT
 > code performs
     the sort, and finally is able to return its first output row, namely
     the first one in sorted order.  It keeps the remaining rows stored so
     that it can deliver them in sorted order in response to later demands.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->MergeJoin</VAR
+>MergeJoin</TT
 > node similarly demands the first row
     from its right subplan.  Then it compares the two rows to see if they
     can be joined; if so, it returns a join row to its caller.  On the next
@@ -157,9 +157,9 @@ CLASS="LITERAL"
     it advances to the next row of one table
     or the other (depending on how the comparison came out), and again
     checks for a match.  Eventually, one subplan or the other is exhausted,
-    and the <VAR
+    and the <TT
 CLASS="LITERAL"
->MergeJoin</VAR
+>MergeJoin</TT
 > node returns NULL to indicate that
     no more join rows can be formed.
    </P
@@ -202,9 +202,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >INSERT ... VALUES</TT
 > command creates a trivial plan tree
-    consisting of a single <VAR
+    consisting of a single <TT
 CLASS="LITERAL"
->Result</VAR
+>Result</TT
 > node, which computes just one
     result row.  But <TT
 CLASS="COMMAND"

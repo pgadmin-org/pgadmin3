@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -100,11 +100,11 @@ NAME="TUTORIAL-SELECT"
 ></H1
 ><P
 >    <A
-NAME="AEN683"
+NAME="AEN685"
 ></A
 >
     <A
-NAME="AEN685"
+NAME="AEN687"
 ></A
 >
 
@@ -133,14 +133,23 @@ CLASS="CLASSNAME"
 CLASS="PROGRAMLISTING"
 >SELECT * FROM weather;</PRE
 ><P>
-    (here <VAR
+    (here <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > means <SPAN
 CLASS="QUOTE"
 >"all columns"</SPAN
->) and
-    the output should be:
+>).
+     <A
+NAME="AEN696"
+HREF="#FTN.AEN696"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>
+    The output should be:
+
 </P><PRE
 CLASS="SCREEN"
 >     city      | temp_lo | temp_hi | prcp |    date
@@ -168,23 +177,23 @@ CLASS="SCREEN"
  Hayward       |       45 | 1994-11-29
 (3 rows)</PRE
 ><P>
-    Notice how the <VAR
+    Notice how the <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 > clause is used to relabel the
     output column.  (It is optional.)
    </P
 ><P
->    Arbitrary Boolean operators (<VAR
+>    Arbitrary Boolean operators (<TT
 CLASS="LITERAL"
->AND</VAR
+>AND</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->OR</VAR
->, and <VAR
+>OR</TT
+>, and <TT
 CLASS="LITERAL"
->NOT</VAR
+>NOT</TT
 >) are allowed in
     the qualification of a query.  For example, the following
     retrieves the weather of San Francisco on rainy days:
@@ -206,15 +215,15 @@ CLASS="SCREEN"
    </P
 ><P
 >    <A
-NAME="AEN706"
+NAME="AEN711"
 ></A
 >
     <A
-NAME="AEN708"
+NAME="AEN713"
 ></A
 >
     <A
-NAME="AEN710"
+NAME="AEN715"
 ></A
 >
 
@@ -237,16 +246,51 @@ CLASS="SCREEN"
 (2 rows)</PRE
 ><P>
 
-    <VAR
+    <TT
 CLASS="LITERAL"
->DISTINCT</VAR
-> and <VAR
+>DISTINCT</TT
+> and <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 > can be
     used separately, of course.
    </P
 ></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN696"
+HREF="tutorial-select.html#AEN696"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+>       While <TT
+CLASS="LITERAL"
+>SELECT *</TT
+> is useful for off-the-cuff
+       queries, it is considered bad style in production code for
+       maintenance reasons: adding a column to the table changes the results.
+      </P
+></TD
+></TR
+></TABLE
 ><DIV
 CLASS="NAVFOOTER"
 ><HR

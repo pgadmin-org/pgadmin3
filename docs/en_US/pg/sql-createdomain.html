@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATEDOMAIN"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN36859"
+NAME="AEN36901"
 ></A
 ><H2
 >Name</H2
 >CREATE DOMAIN&nbsp;--&nbsp;define a new domain</DIV
 ><A
-NAME="AEN36862"
+NAME="AEN36904"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN36864"
+NAME="AEN36906"
 ></A
 ><H2
 >Synopsis</H2
@@ -145,7 +145,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36873"
+NAME="AEN36915"
 ></A
 ><H2
 >Description</H2
@@ -157,10 +157,10 @@ CLASS="COMMAND"
    user who defines a domain becomes its owner.
   </P
 ><P
->   If a schema name is given (for example, <VAR
+>   If a schema name is given (for example, <TT
 CLASS="LITERAL"
 >CREATE DOMAIN
-   myschema.mydomain ...</VAR
+   myschema.mydomain ...</TT
 >) then the domain is created in the
    specified schema.  Otherwise it is created in the current schema.
    The domain name must be unique among the types and domains existing
@@ -176,7 +176,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36880"
+NAME="AEN36922"
 ></A
 ><H2
 >Parameters</H2
@@ -207,18 +207,18 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >DEFAULT <VAR
 CLASS="REPLACEABLE"
 >expression</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->        The <VAR
+>        The <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 > clause specifies a default value for
         columns of the domain data type.  The value is any
         variable-free expression (but subqueries are not allowed).
@@ -236,12 +236,12 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >CONSTRAINT <VAR
 CLASS="REPLACEABLE"
 >constraint_name</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -250,9 +250,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->NOT NULL</VAR
+>NOT NULL</TT
 ></DT
 ><DD
 ><P
@@ -260,9 +260,9 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 ></DT
 ><DD
 ><P
@@ -275,35 +275,35 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >CHECK (<VAR
 CLASS="REPLACEABLE"
 >expression</VAR
->)</VAR
+>)</TT
 ></DT
 ><DD
 ><P
->      <VAR
+>      <TT
 CLASS="LITERAL"
->CHECK</VAR
+>CHECK</TT
 > clauses specify integrity constraints or tests
       which values of the domain must satisfy.
       Each constraint must be an expression
-      producing a Boolean result.  It should use the name <VAR
+      producing a Boolean result.  It should use the name <TT
 CLASS="LITERAL"
->VALUE</VAR
+>VALUE</TT
 >
       to refer to the value being tested.
      </P
 ><P
->      Currently, <VAR
+>      Currently, <TT
 CLASS="LITERAL"
->CHECK</VAR
+>CHECK</TT
 > expressions cannot contain
-      subqueries nor refer to variables other than <VAR
+      subqueries nor refer to variables other than <TT
 CLASS="LITERAL"
->VALUE</VAR
+>VALUE</TT
 >.
      </P
 ></DD
@@ -313,20 +313,34 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36929"
+NAME="AEN36971"
 ></A
 ><H2
 >Examples</H2
 ><P
 >   This example creates the <TT
 CLASS="TYPE"
->country_code</TT
-> data type and then uses the
-   type in a table definition:
+>us_postal_code</TT
+> data type and
+   then uses the type in a table definition.  A regular expression test
+   is used to verify that the value looks like a valid US postal code.
+
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE DOMAIN country_code char(2) NOT NULL;
-CREATE TABLE countrylist (id integer, country country_code);</PRE
+>CREATE DOMAIN us_postal_code AS TEXT
+CHECK(
+   VALUE ~ '^\d{5}$'
+OR VALUE ~ '^\d{5}-\d{4}$'
+);
+
+CREATE TABLE us_snail_addy (
+  address_id SERIAL NOT NULL PRIMARY KEY
+, street1 TEXT NOT NULL
+, street2 TEXT
+, street3 TEXT
+, city TEXT NOT NULL
+, postal us_postal_code NOT NULL
+);</PRE
 ><P>
   </P
 ></DIV

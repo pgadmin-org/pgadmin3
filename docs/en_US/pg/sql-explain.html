@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-EXPLAIN"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN40425"
+NAME="AEN40753"
 ></A
 ><H2
 >Name</H2
 >EXPLAIN&nbsp;--&nbsp;show the execution plan of a statement</DIV
 ><A
-NAME="AEN40428"
+NAME="AEN40756"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN40430"
+NAME="AEN40758"
 ></A
 ><H2
 >Synopsis</H2
@@ -120,7 +120,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40433"
+NAME="AEN40761"
 ></A
 ><H2
 >Description</H2
@@ -142,23 +142,23 @@ CLASS="PRODUCTNAME"
    statement (measured in units of disk page fetches).  Actually two numbers
    are shown: the start-up time before the first row can be returned, and
    the total time to return all the rows.  For most queries the total time
-   is what matters, but in contexts such as a subquery in <VAR
+   is what matters, but in contexts such as a subquery in <TT
 CLASS="LITERAL"
->EXISTS</VAR
+>EXISTS</TT
 >, the planner
    will choose the smallest start-up time instead of the smallest total time
    (since the executor will stop after getting one row, anyway).
-   Also, if you limit the number of rows to return with a <VAR
+   Also, if you limit the number of rows to return with a <TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 > clause,
    the planner makes an appropriate interpolation between the endpoint
    costs to estimate which plan is really the cheapest.
   </P
 ><P
->   The <VAR
+>   The <TT
 CLASS="LITERAL"
->ANALYZE</VAR
+>ANALYZE</TT
 > option causes the statement to be actually executed, not only
    planned.  The total elapsed time expended within each plan node (in
    milliseconds) and total number of rows it actually returned are added to
@@ -173,9 +173,9 @@ CLASS="IMPORTANT"
 ><B
 >Important: </B
 >    Keep in mind that the statement is actually executed when
-    <VAR
+    <TT
 CLASS="LITERAL"
->ANALYZE</VAR
+>ANALYZE</TT
 > is used.  Although
     <TT
 CLASS="COMMAND"
@@ -218,7 +218,7 @@ ROLLBACK;</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40453"
+NAME="AEN40781"
 ></A
 ><H2
 >Parameters</H2
@@ -228,9 +228,9 @@ NAME="AEN40453"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ANALYZE</VAR
+>ANALYZE</TT
 ></DT
 ><DD
 ><P
@@ -238,9 +238,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->VERBOSE</VAR
+>VERBOSE</TT
 ></DT
 ><DD
 ><P
@@ -250,14 +250,13 @@ CLASS="LITERAL"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.  The
-      <VAR
+      <TT
 CLASS="LITERAL"
->VERBOSE</VAR
+>VERBOSE</TT
 > output is either pretty-printed or
-      not, depending on the setting of the
-      <VAR
-CLASS="VARNAME"
->explain_pretty_print</VAR
+      not, depending on the setting of the <A
+HREF="runtime-config.html#GUC-EXPLAIN-PRETTY-PRINT"
+>explain_pretty_print</A
 > configuration parameter.
      </P
 ></DD
@@ -297,7 +296,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40480"
+NAME="AEN40808"
 ></A
 ><H2
 >Notes</H2
@@ -337,9 +336,9 @@ CLASS="COMMAND"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 7.3, the plan was
-   emitted in the form of a <VAR
+   emitted in the form of a <TT
 CLASS="LITERAL"
->NOTICE</VAR
+>NOTICE</TT
 > message.  Now it
    appears as a query result (formatted like a table with a single
    text column).
@@ -348,7 +347,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40492"
+NAME="AEN40820"
 ></A
 ><H2
 >Examples</H2
@@ -371,9 +370,9 @@ CLASS="PROGRAMLISTING"
   </P
 ><P
 >   If there is an index and we use a query with an indexable
-   <VAR
+   <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > condition, <TT
 CLASS="COMMAND"
 >EXPLAIN</TT
@@ -455,7 +454,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40510"
+NAME="AEN40838"
 ></A
 ><H2
 >Compatibility</H2

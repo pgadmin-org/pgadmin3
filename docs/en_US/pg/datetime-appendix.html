@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Appendixes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="APPENDIX"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -103,7 +103,7 @@ CLASS="TOC"
 ></DT
 ><DT
 >B.1. <A
-HREF="datetime-appendix.html#AEN55818"
+HREF="datetime-appendix.html#AEN56706"
 >Date/Time Input Interpretation</A
 ></DT
 ><DT
@@ -129,8 +129,7 @@ CLASS="PRODUCTNAME"
    field. Each field is interpreted and either assigned a numeric
    value, ignored, or rejected.
    The parser contains internal lookup tables for all textual fields,
-   including months, days of the week, and time
-   zones.
+   including months, days of the week, and time zones.
   </P
 ><P
 >   This appendix includes information on the content of these
@@ -142,7 +141,7 @@ CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
-NAME="AEN55818"
+NAME="AEN56706"
 >B.1. Date/Time Input Interpretation</A
 ></H1
 ><P
@@ -162,25 +161,25 @@ CLASS="SUBSTEPS"
 TYPE="a"
 ><LI
 ><P
->	If the numeric token contains a colon (<VAR
+>	If the numeric token contains a colon (<TT
 CLASS="LITERAL"
->:</VAR
+>:</TT
 >), this is
 	a time string. Include all subsequent digits and colons.
        </P
 ></LI
 ><LI
 ><P
->	If the numeric token contains a dash (<VAR
+>	If the numeric token contains a dash (<TT
 CLASS="LITERAL"
->-</VAR
+>-</TT
 >), slash
-	(<VAR
+	(<TT
 CLASS="LITERAL"
->/</VAR
->), or two or more dots (<VAR
+>/</TT
+>), or two or more dots (<TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 >), this is
 	a date string which may have a text month.
        </P
@@ -189,25 +188,25 @@ CLASS="LITERAL"
 ><P
 >	If the token is numeric only, then it is either a single field
 	or an ISO 8601 concatenated date (e.g.,
-	<VAR
+	<TT
 CLASS="LITERAL"
->19990113</VAR
+>19990113</TT
 > for January 13, 1999) or time
-	(e.g., <VAR
+	(e.g., <TT
 CLASS="LITERAL"
->141516</VAR
+>141516</TT
 > for 14:15:16).
        </P
 ></LI
 ><LI
 ><P
->	If the token starts with a plus (<VAR
+>	If the token starts with a plus (<TT
 CLASS="LITERAL"
->+</VAR
+>+</TT
 >) or minus
-	(<VAR
+	(<TT
 CLASS="LITERAL"
->-</VAR
+>-</TT
 >), then it is either a time zone or a special
 	field.
        </P
@@ -224,35 +223,35 @@ TYPE="a"
 ><LI
 ><P
 >	Do a binary-search table lookup for the token
-	as either a special string (e.g., <VAR
+	as either a special string (e.g., <TT
 CLASS="LITERAL"
->today</VAR
+>today</TT
 >),
-	day (e.g., <VAR
+	day (e.g., <TT
 CLASS="LITERAL"
->Thursday</VAR
+>Thursday</TT
 >),
-	month (e.g., <VAR
+	month (e.g., <TT
 CLASS="LITERAL"
->January</VAR
+>January</TT
 >),
-	or noise word (e.g., <VAR
+	or noise word (e.g., <TT
 CLASS="LITERAL"
->at</VAR
->, <VAR
+>at</TT
+>, <TT
 CLASS="LITERAL"
->on</VAR
+>on</TT
 >).
        </P
 ><P
 >	Set field values and bit mask for fields.
-	For example, set year, month, day for <VAR
+	For example, set year, month, day for <TT
 CLASS="LITERAL"
->today</VAR
+>today</TT
 >,
-	and additionally hour, minute, second for <VAR
+	and additionally hour, minute, second for <TT
 CLASS="LITERAL"
->now</VAR
+>now</TT
 >.
        </P
 ></LI
@@ -284,19 +283,19 @@ TYPE="a"
 CLASS="QUOTE"
 >"concatenated date"</SPAN
 > (e.g.,
-	<VAR
+	<TT
 CLASS="LITERAL"
->19990118</VAR
-> or <VAR
+>19990118</TT
+> or <TT
 CLASS="LITERAL"
->990118</VAR
+>990118</TT
 >).
-	The interpretation is <VAR
+	The interpretation is <TT
 CLASS="LITERAL"
->YYYYMMDD</VAR
-> or <VAR
+>YYYYMMDD</TT
+> or <TT
 CLASS="LITERAL"
->YYMMDD</VAR
+>YYMMDD</TT
 >.
        </P
 ></LI
@@ -309,12 +308,12 @@ CLASS="LITERAL"
 ><LI
 ><P
 >	If four or six digits and a year has already been read, then
-	interpret as a time (<VAR
+	interpret as a time (<TT
 CLASS="LITERAL"
->HHMM</VAR
-> or <VAR
+>HHMM</TT
+> or <TT
 CLASS="LITERAL"
->HHMMSS</VAR
+>HHMMSS</TT
 >).
        </P
 ></LI
@@ -328,9 +327,9 @@ CLASS="LITERAL"
 ><LI
 ><P
 >        Otherwise the date field ordering is assumed to follow the
-	<VAR
+	<TT
 CLASS="VARNAME"
->DateStyle</VAR
+>DateStyle</TT
 > setting: mm-dd-yy, dd-mm-yy, or yy-mm-dd.
 	Throw an error if a month or day field is found to be out of range.
        </P
@@ -341,15 +340,14 @@ CLASS="VARNAME"
 ><P
 >      If BC has been specified, negate the year and add one for
       internal storage.  (There is no year zero in the Gregorian
-      calendar, so numerically 1 BC becomes year
-      zero.)
+      calendar, so numerically 1 BC becomes year zero.)
      </P
 ></LI
 ><LI
 ><P
->      If BC was not specified, and if the year field was two digits in length, then
-      adjust the year to four digits. If the field is less than 70, then add 2000,
-      otherwise add 1900.
+>      If BC was not specified, and if the year field was two digits in length,
+      then adjust the year to four digits. If the field is less than 70, then
+      add 2000, otherwise add 1900.
 
       <DIV
 CLASS="TIP"
@@ -359,9 +357,9 @@ CLASS="TIP"
 ><B
 >Tip: </B
 >	Gregorian years AD 1-99 may be entered by using 4 digits with leading
-	zeros (e.g., <VAR
+	zeros (e.g., <TT
 CLASS="LITERAL"
->0099</VAR
+>0099</TT
 > is AD 99). Previous versions of
 	<SPAN
 CLASS="PRODUCTNAME"

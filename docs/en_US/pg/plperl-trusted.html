@@ -9,22 +9,22 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Perl - Perl Procedural Language"
 HREF="plperl.html"><LINK
 REL="PREVIOUS"
-TITLE="Database Access from PL/Perl"
-HREF="plperl-database.html"><LINK
+TITLE="Global Values in PL/Perl"
+HREF="plperl-global.html"><LINK
 REL="NEXT"
-TITLE="Missing Features"
-HREF="plperl-missing.html"><LINK
+TITLE="PL/Perl Triggers"
+HREF="plperl-triggers.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="plperl-database.html"
+HREF="plperl-global.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -64,7 +64,7 @@ HREF="plperl.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 39. PL/Perl - Perl Procedural Language</TD
+>Chapter 37. PL/Perl - Perl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plperl-missing.html"
+HREF="plperl-triggers.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,29 +93,29 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPERL-TRUSTED"
->39.4. Trusted and Untrusted PL/Perl</A
+>37.5. Trusted and Untrusted PL/Perl</A
 ></H1
 ><A
-NAME="AEN32957"
+NAME="AEN32454"
 ></A
 ><P
 >   Normally, PL/Perl is installed as a <SPAN
 CLASS="QUOTE"
 >"trusted"</SPAN
 > programming
-   language named <VAR
+   language named <TT
 CLASS="LITERAL"
->plperl</VAR
+>plperl</TT
 >.  In this setup, certain Perl
    operations are disabled to preserve security.  In general, the
    operations that are restricted are those that interact with the
    environment. This includes file handle operations,
-   <VAR
+   <TT
 CLASS="LITERAL"
->require</VAR
->, and <VAR
+>require</TT
+>, and <TT
 CLASS="LITERAL"
->use</VAR
+>use</TT
 > (for
    external modules).  There is no way to access internals of the
    database server process or to gain OS-level access with the
@@ -128,11 +128,11 @@ CLASS="LITERAL"
    system operations are not allowed for security reasons:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION badfunc() RETURNS integer AS '
+>CREATE FUNCTION badfunc() RETURNS integer AS $$
     open(TEMP, "&#62;/tmp/badfile");
     print TEMP "Gotcha!\n";
     return 1;
-' LANGUAGE plperl;</PRE
+$$ LANGUAGE plperl;</PRE
 ><P>
    The creation of the function will succeed, but executing it will not.
   </P
@@ -148,7 +148,7 @@ CLASS="QUOTE"
 CLASS="APPLICATION"
 >PL/PerlU</SPAN
 ><A
-NAME="AEN32970"
+NAME="AEN32467"
 ></A
 >).
    In this case the full Perl language is available.  If the
@@ -156,9 +156,9 @@ NAME="AEN32970"
 CLASS="COMMAND"
 >createlang</TT
 > program is used to install the
-   language, the language name <VAR
+   language, the language name <TT
 CLASS="LITERAL"
->plperlu</VAR
+>plperlu</TT
 > will select
    the untrusted PL/Perl variant.
   </P
@@ -174,9 +174,9 @@ CLASS="APPLICATION"
   </P
 ><P
 >   If the above function was created by a superuser using the language
-   <VAR
+   <TT
 CLASS="LITERAL"
->plperlu</VAR
+>plperlu</TT
 >, execution would succeed.
   </P
 ></DIV
@@ -196,7 +196,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="plperl-database.html"
+HREF="plperl-global.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -214,7 +214,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plperl-missing.html"
+HREF="plperl-triggers.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -224,7 +224,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Database Access from PL/Perl</TD
+>Global Values in PL/Perl</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -238,7 +238,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Missing Features</TD
+>PL/Perl Triggers</TD
 ></TR
 ></TABLE
 ></DIV

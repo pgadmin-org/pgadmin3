@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATESEQUENCE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37900"
+NAME="AEN38005"
 ></A
 ><H2
 >Name</H2
 >CREATE SEQUENCE&nbsp;--&nbsp;define a new sequence generator</DIV
 ><A
-NAME="AEN37903"
+NAME="AEN38008"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37905"
+NAME="AEN38010"
 ></A
 ><H2
 >Synopsis</H2
@@ -137,7 +137,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37913"
+NAME="AEN38018"
 ></A
 ><H2
 >Description</H2
@@ -178,7 +178,7 @@ CLASS="FUNCTION"
    to operate on the sequence.  These functions are documented in
    <A
 HREF="functions-sequence.html"
->Section 9.11</A
+>Section 9.12</A
 >.
   </P
 ><P
@@ -193,9 +193,9 @@ CLASS="REPLACEABLE"
 ><P>
 
    to examine the parameters and current state of a sequence.  In particular,
-   the <VAR
+   the <TT
 CLASS="LITERAL"
->last_value</VAR
+>last_value</TT
 > field of the sequence shows the last value
    allocated by any session.  (Of course, this value may be obsolete
    by the time it's printed, if other sessions are actively doing
@@ -208,7 +208,7 @@ CLASS="FUNCTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37929"
+NAME="AEN38034"
 ></A
 ><H2
 >Parameters</H2
@@ -218,12 +218,12 @@ NAME="AEN37929"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TEMPORARY</VAR
-> or <VAR
+>TEMPORARY</TT
+> or <TT
 CLASS="LITERAL"
->TEMP</VAR
+>TEMP</TT
 ></DT
 ><DD
 ><P
@@ -251,13 +251,13 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->      The optional clause <VAR
+>      The optional clause <TT
 CLASS="LITERAL"
 >INCREMENT BY <VAR
 CLASS="REPLACEABLE"
 >increment</VAR
-></VAR
-> specified,
+></TT
+> specifies
       which value is added to the current sequence value to create a
       new value.  A positive value will make an ascending sequence, a
       negative one a descending sequence.  The default value is 1.
@@ -267,23 +267,23 @@ CLASS="REPLACEABLE"
 ><VAR
 CLASS="REPLACEABLE"
 >minvalue</VAR
-><BR><VAR
+><BR><TT
 CLASS="LITERAL"
->NO MINVALUE</VAR
+>NO MINVALUE</TT
 ></DT
 ><DD
 ><P
->      The optional clause <VAR
+>      The optional clause <TT
 CLASS="LITERAL"
 >MINVALUE <VAR
 CLASS="REPLACEABLE"
 >minvalue</VAR
-></VAR
+></TT
 > determines
       the minimum value a sequence can generate. If this clause is not
-      supplied or <VAR
+      supplied or <TT
 CLASS="OPTION"
->NO MINVALUE</VAR
+>NO MINVALUE</TT
 > is specified, then
       defaults will be used.  The defaults are 1 and
       -2<SUP
@@ -296,23 +296,23 @@ CLASS="OPTION"
 ><VAR
 CLASS="REPLACEABLE"
 >maxvalue</VAR
-><BR><VAR
+><BR><TT
 CLASS="LITERAL"
->NO MAXVALUE</VAR
+>NO MAXVALUE</TT
 ></DT
 ><DD
 ><P
->      The optional clause <VAR
+>      The optional clause <TT
 CLASS="LITERAL"
 >MAXVALUE <VAR
 CLASS="REPLACEABLE"
 >maxvalue</VAR
-></VAR
+></TT
 > determines
       the maximum value for the sequence. If this clause is not
-      supplied or <VAR
+      supplied or <TT
 CLASS="OPTION"
->NO MAXVALUE</VAR
+>NO MAXVALUE</TT
 > is specified, then
       default values will be used.  The defaults are
       2<SUP
@@ -328,12 +328,12 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->      The optional clause <VAR
+>      The optional clause <TT
 CLASS="LITERAL"
 >START WITH <VAR
 CLASS="REPLACEABLE"
 >start</VAR
-> </VAR
+> </TT
 > allows the
       sequence to begin anywhere.  The default starting value is
       <VAR
@@ -353,12 +353,12 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->      The optional clause <VAR
+>      The optional clause <TT
 CLASS="LITERAL"
 >CACHE <VAR
 CLASS="REPLACEABLE"
 >cache</VAR
-></VAR
+></TT
 > specifies how
       many sequence numbers are to be preallocated and stored in
       memory for faster access. The minimum value is 1 (only one value
@@ -367,18 +367,18 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CYCLE</VAR
-><BR><VAR
+>CYCLE</TT
+><BR><TT
 CLASS="LITERAL"
->NO CYCLE</VAR
+>NO CYCLE</TT
 ></DT
 ><DD
 ><P
->      The <VAR
+>      The <TT
 CLASS="LITERAL"
->CYCLE</VAR
+>CYCLE</TT
 > option allows the sequence to wrap
       around when the <VAR
 CLASS="REPLACEABLE"
@@ -397,25 +397,25 @@ CLASS="REPLACEABLE"
 >, respectively.
      </P
 ><P
->      If <VAR
+>      If <TT
 CLASS="LITERAL"
->NO CYCLE</VAR
+>NO CYCLE</TT
 > is specified, any calls to
       <CODE
 CLASS="FUNCTION"
 >nextval</CODE
 > after the sequence has reached its
       maximum value will return an error.  If neither
-      <VAR
+      <TT
 CLASS="LITERAL"
->CYCLE</VAR
-> or <VAR
+>CYCLE</TT
+> or <TT
 CLASS="LITERAL"
->NO CYCLE</VAR
+>NO CYCLE</TT
 > are
-      specified, <VAR
+      specified, <TT
 CLASS="LITERAL"
->NO CYCLE</VAR
+>NO CYCLE</TT
 > is the default.
      </P
 ></DD
@@ -425,7 +425,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38006"
+NAME="AEN38111"
 ></A
 ><H2
 >Notes</H2
@@ -457,9 +457,9 @@ CLASS="REPLACEABLE"
    used for a sequence object that will be used concurrently by
    multiple sessions.  Each session will allocate and cache successive
    sequence values during one access to the sequence object and
-   increase the sequence object's <VAR
+   increase the sequence object's <TT
 CLASS="LITERAL"
->last_value</VAR
+>last_value</TT
 > accordingly.
    Then, the next <VAR
 CLASS="REPLACEABLE"
@@ -494,9 +494,9 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >nextval</CODE
 >=11 before session A
-   has generated <VAR
+   has generated <TT
 CLASS="LITERAL"
->nextval</VAR
+>nextval</TT
 >=2.  Thus, with a
    <VAR
 CLASS="REPLACEABLE"
@@ -515,9 +515,9 @@ CLASS="FUNCTION"
 >nextval</CODE
 > values are all
    distinct, not that they are generated purely sequentially.  Also,
-   <VAR
+   <TT
 CLASS="LITERAL"
->last_value</VAR
+>last_value</TT
 > will reflect the latest value reserved by
    any session, whether or not it has yet been returned by
    <CODE
@@ -537,14 +537,14 @@ CLASS="FUNCTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38032"
+NAME="AEN38137"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Create an ascending sequence called <VAR
+>   Create an ascending sequence called <TT
 CLASS="LITERAL"
->serial</VAR
+>serial</TT
 >, starting at 101:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -556,7 +556,7 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT nextval('serial');
-    
+
  nextval
 ---------
      114</PRE
@@ -589,7 +589,7 @@ END;</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38045"
+NAME="AEN38150"
 ></A
 ><H2
 >Compatibility</H2

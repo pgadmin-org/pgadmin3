@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Information Schema"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="information-schema.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 32. The Information Schema</TD
+>Chapter 30. The Information Schema</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,20 +93,20 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-COLUMNS"
->32.9. <VAR
+>30.9. <TT
 CLASS="LITERAL"
->columns</VAR
+>columns</TT
 ></A
 ></H1
 ><P
->   The view <VAR
+>   The view <TT
 CLASS="LITERAL"
->columns</VAR
+>columns</TT
 > contains information about all
    table columns (or view columns) in the database.  System columns
-   (<VAR
+   (<TT
 CLASS="LITERAL"
->oid</VAR
+>oid</TT
 >, etc.) are not included.  Only those columns are
    shown that the current user has access to (by way of being the
    owner or having some privilege).
@@ -114,13 +114,13 @@ CLASS="LITERAL"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN25607"
+NAME="AEN24700"
 ></A
 ><P
 ><B
->Table 32-7. <VAR
+>Table 30-7. <TT
 CLASS="LITERAL"
->columns</VAR
+>columns</TT
 > Columns</B
 ></P
 ><TABLE
@@ -139,9 +139,9 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->table_catalog</VAR
+>table_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -153,9 +153,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->table_schema</VAR
+>table_schema</TT
 ></TD
 ><TD
 ><TT
@@ -167,9 +167,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->table_name</VAR
+>table_name</TT
 ></TD
 ><TD
 ><TT
@@ -181,9 +181,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->column_name</VAR
+>column_name</TT
 ></TD
 ><TD
 ><TT
@@ -195,9 +195,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ordinal_position</VAR
+>ordinal_position</TT
 ></TD
 ><TD
 ><TT
@@ -209,9 +209,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->column_default</VAR
+>column_default</TT
 ></TD
 ><TD
 ><TT
@@ -225,9 +225,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->is_nullable</VAR
+>is_nullable</TT
 ></TD
 ><TD
 ><TT
@@ -235,13 +235,13 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->       <VAR
+>       <TT
 CLASS="LITERAL"
->YES</VAR
+>YES</TT
 > if the column is possibly nullable,
-       <VAR
+       <TT
 CLASS="LITERAL"
->NO</VAR
+>NO</TT
 > if it is known not nullable.  A not-null
        constraint is one way a column can be known not nullable, but
        there may be others.
@@ -249,9 +249,9 @@ CLASS="LITERAL"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 ></TD
 ><TD
 ><TT
@@ -260,36 +260,36 @@ CLASS="TYPE"
 ></TD
 ><TD
 >       Data type of the column, if it is a built-in type, or
-       <VAR
+       <TT
 CLASS="LITERAL"
->ARRAY</VAR
+>ARRAY</TT
 > if it is some array (in that case, see
-       the view <VAR
+       the view <TT
 CLASS="LITERAL"
->element_types</VAR
+>element_types</TT
 >), else
-       <VAR
+       <TT
 CLASS="LITERAL"
->USER-DEFINED</VAR
+>USER-DEFINED</TT
 > (in that case, the type is
-       identified in <VAR
+       identified in <TT
 CLASS="LITERAL"
->udt_name</VAR
+>udt_name</TT
 > and associated
        columns).  If the column is based on a domain, this column
        refers to the type underlying the domain (and the domain is
-       identified in <VAR
+       identified in <TT
 CLASS="LITERAL"
->domain_name</VAR
+>domain_name</TT
 > and associated
        columns).
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_maximum_length</VAR
+>character_maximum_length</TT
 ></TD
 ><TD
 ><TT
@@ -297,9 +297,9 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->       If <VAR
+>       If <TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 > identifies a character or bit
        string type, the declared maximum length; null for all other
        data types or if no maximum length was declared.
@@ -307,9 +307,9 @@ CLASS="LITERAL"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_octet_length</VAR
+>character_octet_length</TT
 ></TD
 ><TD
 ><TT
@@ -317,9 +317,9 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->       If <VAR
+>       If <TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 > identifies a character type,
        the maximum possible length in octets (bytes) of a datum (this
        should not be of concern to <SPAN
@@ -331,9 +331,9 @@ CLASS="PRODUCTNAME"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_precision</VAR
+>numeric_precision</TT
 ></TD
 ><TD
 ><TT
@@ -341,26 +341,26 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->       If <VAR
+>       If <TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 > identifies a numeric type, this
        column contains the (declared or implicit) precision of the
        type for this column.  The precision indicates the number of
        significant digits.  It may be expressed in decimal (base 10)
        or binary (base 2) terms, as specified in the column
-       <VAR
+       <TT
 CLASS="LITERAL"
->numeric_precision_radix</VAR
+>numeric_precision_radix</TT
 >.  For all other data
        types, this column is null.
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_precision_radix</VAR
+>numeric_precision_radix</TT
 ></TD
 ><TD
 ><TT
@@ -368,27 +368,27 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->       If <VAR
+>       If <TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 > identifies a numeric type, this
        column indicates in which base the values in the columns
-       <VAR
+       <TT
 CLASS="LITERAL"
->numeric_precision</VAR
+>numeric_precision</TT
 > and
-       <VAR
+       <TT
 CLASS="LITERAL"
->numeric_scale</VAR
+>numeric_scale</TT
 > are expressed.  The value is
        either 2 or 10.  For all other data types, this column is null.
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->numeric_scale</VAR
+>numeric_scale</TT
 ></TD
 ><TD
 ><TT
@@ -396,27 +396,27 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->       If <VAR
+>       If <TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 > identifies an exact numeric
        type, this column contains the (declared or implicit) scale of
        the type for this column.  The scale indicates the number of
        significant digits to the right of the decimal point.  It may
        be expressed in decimal (base 10) or binary (base 2) terms, as
        specified in the column
-       <VAR
+       <TT
 CLASS="LITERAL"
->numeric_precision_radix</VAR
+>numeric_precision_radix</TT
 >.  For all other data
        types, this column is null.
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->datetime_precision</VAR
+>datetime_precision</TT
 ></TD
 ><TD
 ><TT
@@ -424,9 +424,9 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->       If <VAR
+>       If <TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 > identifies a date, time, or
        interval type, the declared precision; null for all other data
        types or if no precision was declared.
@@ -434,9 +434,9 @@ CLASS="LITERAL"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->interval_type</VAR
+>interval_type</TT
 ></TD
 ><TD
 ><TT
@@ -448,9 +448,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->interval_precision</VAR
+>interval_precision</TT
 ></TD
 ><TD
 ><TT
@@ -462,9 +462,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_catalog</VAR
+>character_set_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -472,13 +472,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_schema</VAR
+>character_set_schema</TT
 ></TD
 ><TD
 ><TT
@@ -486,13 +489,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->character_set_name</VAR
+>character_set_name</TT
 ></TD
 ><TD
 ><TT
@@ -500,13 +506,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_catalog</VAR
+>collation_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -514,13 +523,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_schema</VAR
+>collation_schema</TT
 ></TD
 ><TD
 ><TT
@@ -528,13 +540,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->collation_name</VAR
+>collation_name</TT
 ></TD
 ><TD
 ><TT
@@ -542,13 +557,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->domain_catalog</VAR
+>domain_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -563,9 +581,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->domain_schema</VAR
+>domain_schema</TT
 ></TD
 ><TD
 ><TT
@@ -579,9 +597,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->domain_name</VAR
+>domain_name</TT
 ></TD
 ><TD
 ><TT
@@ -593,9 +611,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_catalog</VAR
+>udt_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -610,9 +628,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_schema</VAR
+>udt_schema</TT
 ></TD
 ><TD
 ><TT
@@ -626,9 +644,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->udt_name</VAR
+>udt_name</TT
 ></TD
 ><TD
 ><TT
@@ -642,9 +660,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_catalog</VAR
+>scope_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -652,13 +670,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_schema</VAR
+>scope_schema</TT
 ></TD
 ><TD
 ><TT
@@ -666,13 +687,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->scope_name</VAR
+>scope_name</TT
 ></TD
 ><TD
 ><TT
@@ -680,13 +704,16 @@ CLASS="TYPE"
 >sql_identifier</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->maximum_cardinality</VAR
+>maximum_cardinality</TT
 ></TD
 ><TD
 ><TT
@@ -694,13 +721,16 @@ CLASS="TYPE"
 >cardinal_number</TT
 ></TD
 ><TD
->Always null, because arrays always have unlimited maximum cardinality in PostgreSQL</TD
+>Always null, because arrays always have unlimited maximum cardinality in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->dtd_identifier</VAR
+>dtd_identifier</TT
 ></TD
 ><TD
 ><TT
@@ -718,9 +748,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->is_self_referencing</VAR
+>is_self_referencing</TT
 ></TD
 ><TD
 ><TT
@@ -728,7 +758,10 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Applies to a feature not available in PostgreSQL</TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
 ></TR
 ></TBODY
 ></TABLE
@@ -740,9 +773,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > contains additional ways to
    define data types, their representation in the information schema
-   can be somewhat difficult.  The column <VAR
+   can be somewhat difficult.  The column <TT
 CLASS="LITERAL"
->data_type</VAR
+>data_type</TT
 >
    is supposed to identify the underlying built-in type of the column.
    In <SPAN
@@ -750,22 +783,22 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >, this means that the type
    is defined in the system catalog schema
-   <VAR
+   <TT
 CLASS="LITERAL"
->pg_catalog</VAR
+>pg_catalog</TT
 >.  This column may be useful if the
    application can handle the well-known built-in types specially (for
    example, format the numeric types differently or use the data in
-   the precision columns).  The columns <VAR
+   the precision columns).  The columns <TT
 CLASS="LITERAL"
->udt_name</VAR
+>udt_name</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->udt_schema</VAR
->, and <VAR
+>udt_schema</TT
+>, and <TT
 CLASS="LITERAL"
->udt_catalog</VAR
+>udt_catalog</TT
 >
    always identify the underlying data type of the column, even if the
    column is based on a domain.  (Since
@@ -779,22 +812,22 @@ CLASS="PRODUCTNAME"
    type, because in that case it wouldn't matter if the column is
    really based on a domain.  If the column is based on a domain, the
    identity of the domain is stored in the columns
-   <VAR
+   <TT
 CLASS="LITERAL"
->domain_name</VAR
->, <VAR
+>domain_name</TT
+>, <TT
 CLASS="LITERAL"
->domain_schema</VAR
+>domain_schema</TT
 >,
-   and <VAR
+   and <TT
 CLASS="LITERAL"
->domain_catalog</VAR
+>domain_catalog</TT
 >.  If you want to pair up
    columns with their associated data types and treat domains as
-   separate types, you could write <VAR
+   separate types, you could write <TT
 CLASS="LITERAL"
 >coalesce(domain_name,
-   udt_name)</VAR
+   udt_name)</TT
 >, etc.
   </P
 ></DIV
@@ -842,9 +875,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->column_udt_usage</VAR
+>column_udt_usage</TT
 ></TD
 ><TD
 WIDTH="34%"
@@ -859,9 +892,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->constraint_column_usage</VAR
+>constraint_column_usage</TT
 ></TD
 ></TR
 ></TABLE

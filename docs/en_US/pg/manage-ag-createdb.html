@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Managing Databases"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="MANAGE-AG-CREATEDB"
 >18.2. Creating a Database</A
 ></H1
 ><P
->   In order to create a databases, the <SPAN
+>   In order to create a database, the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
@@ -106,12 +106,12 @@ HREF="postmaster-start.html"
 >).
   </P
 ><P
->   Databases are created with the SQL command <TT
-CLASS="COMMAND"
->CREATE
-   DATABASE</TT
+>   Databases are created with the SQL command
+   <A
+HREF="sql-createdatabase.html"
+>CREATE DATABASE</A
 >:<A
-NAME="AEN17364"
+NAME="AEN18461"
 ></A
 >
 </P><PRE
@@ -162,31 +162,31 @@ HREF="creating-cluster.html"
 >Section 16.2</A
 >.)  This
    database is called
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >.<A
-NAME="AEN17378"
+NAME="AEN18475"
 ></A
 > So to
    create the first <SPAN
 CLASS="QUOTE"
 >"real"</SPAN
 > database you can connect to
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >.
   </P
 ><P
->   The name <VAR
+>   The name <TT
 CLASS="LITERAL"
->template1</VAR
-> is no accident: When a new
+>template1</TT
+> is no accident: when a new
    database is created, the template database is essentially cloned.
-   This means that any changes you make in <VAR
+   This means that any changes you make in <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > are
    propagated to all subsequently created databases. This implies that
    you should not use the template database for real work, but when
@@ -203,7 +203,7 @@ HREF="manage-ag-templatedbs.html"
 CLASS="COMMAND"
 >createdb</TT
 >.<A
-NAME="AEN17388"
+NAME="AEN18485"
 ></A
 >
 
@@ -218,9 +218,9 @@ CLASS="REPLACEABLE"
    <TT
 CLASS="COMMAND"
 >createdb</TT
-> does no magic. It connects to the <VAR
+> does no magic. It connects to the <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >
    database and issues the <TT
 CLASS="COMMAND"

@@ -9,22 +9,22 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Managing Databases"
 HREF="managing-databases.html"><LINK
 REL="PREVIOUS"
-TITLE="Alternative Locations"
-HREF="manage-ag-alternate-locs.html"><LINK
+TITLE="Database Configuration"
+HREF="manage-ag-config.html"><LINK
 REL="NEXT"
-TITLE="Client Authentication"
-HREF="client-authentication.html"><LINK
+TITLE="Tablespaces"
+HREF="manage-ag-tablespaces.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="manage-ag-alternate-locs.html"
+HREF="manage-ag-config.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="client-authentication.html"
+HREF="manage-ag-tablespaces.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,15 +93,15 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="MANAGE-AG-DROPDB"
->18.6. Destroying a Database</A
+>18.5. Destroying a Database</A
 ></H1
 ><P
->   Databases are destroyed with the command <TT
-CLASS="COMMAND"
->DROP
-   DATABASE</TT
+>   Databases are destroyed with the command 
+   <A
+HREF="sql-dropdatabase.html"
+>DROP DATABASE</A
 >:<A
-NAME="AEN17529"
+NAME="AEN18590"
 ></A
 >
 </P><PRE
@@ -111,7 +111,7 @@ CLASS="REPLACEABLE"
 >name</VAR
 >;</PRE
 ><P>
-   Only the owner of the database (i.e., the user that created it) or
+   Only the owner of the database (i.e., the user that created it), or
    a superuser, can drop a database. Dropping a database removes all objects
    that were 
    contained within the database. The destruction of a database cannot
@@ -123,21 +123,21 @@ CLASS="COMMAND"
 >DROP DATABASE</TT
 > command
    while connected to the victim database. You can, however, be
-   connected to any other database, including the <VAR
+   connected to any other database, including the <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >
    database.
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 > would be the only option for dropping the last user database of a
    given cluster.
   </P
 ><P
 >   For convenience, there is also a shell program to drop
    databases:<A
-NAME="AEN17538"
+NAME="AEN18599"
 ></A
 >
 </P><PRE
@@ -170,7 +170,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="manage-ag-alternate-locs.html"
+HREF="manage-ag-config.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -188,7 +188,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="client-authentication.html"
+HREF="manage-ag-tablespaces.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -198,7 +198,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Alternative Locations</TD
+>Database Configuration</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -212,7 +212,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Client Authentication</TD
+>Tablespaces</TD
 ></TR
 ></TABLE
 ></DIV

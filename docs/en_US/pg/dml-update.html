@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Manipulation"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="DML-UPDATE"
 >6.2. Updating Data</A
 ></H1
 ><A
-NAME="AEN2464"
+NAME="AEN2562"
 ></A
 ><A
-NAME="AEN2466"
+NAME="AEN2564"
 ></A
 ><P
 >   The modification of data that is already in the database is
@@ -155,14 +155,14 @@ CLASS="PROGRAMLISTING"
   </P
 ><P
 >   Let's look at that command in detail: First is the key word
-   <VAR
+   <TT
 CLASS="LITERAL"
->UPDATE</VAR
+>UPDATE</TT
 > followed by the table name.  As usual,
    the table name may be schema-qualified, otherwise it is looked up
-   in the path.  Next is the key word <VAR
+   in the path.  Next is the key word <TT
 CLASS="LITERAL"
->SET</VAR
+>SET</TT
 > followed
    by the column name, an equals sign and the new column value.  The
    new column value can be any scalar expression, not just a constant.
@@ -173,23 +173,23 @@ CLASS="PROGRAMLISTING"
 >UPDATE products SET price = price * 1.10;</PRE
 ><P>
    As you see, the expression for the new value can also refer to the
-   old value.  We also left out the <VAR
+   old value.  We also left out the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause.
    If it is omitted, it means that all rows in the table are updated.
    If it is present, only those rows that match the condition after
-   the <VAR
+   the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > are updated.  Note that the equals
-   sign in the <VAR
+   sign in the <TT
 CLASS="LITERAL"
->SET</VAR
+>SET</TT
 > clause is an assignment while
-   the one in the <VAR
+   the one in the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause is a comparison, but
    this does not create any ambiguity.  Of course, the condition does
    not have to be an equality test.  Many other operators are
@@ -201,13 +201,13 @@ HREF="functions.html"
   </P
 ><P
 >   You can also update more than one column in an
-   <VAR
+   <TT
 CLASS="LITERAL"
->UPDATE</VAR
+>UPDATE</TT
 > command by listing more than one
-   assignment in the <VAR
+   assignment in the <TT
 CLASS="LITERAL"
->SET</VAR
+>SET</TT
 > clause.  For example:
 </P><PRE
 CLASS="PROGRAMLISTING"

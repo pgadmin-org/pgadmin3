@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,21 @@ NAME="SQL-FETCH"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN40518"
+NAME="AEN40846"
 ></A
 ><H2
 >Name</H2
 >FETCH&nbsp;--&nbsp;retrieve rows from a query using a cursor</DIV
 ><A
-NAME="AEN40521"
+NAME="AEN40849"
+></A
+><A
+NAME="AEN40851"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN40523"
+NAME="AEN40854"
 ></A
 ><H2
 >Synopsis</H2
@@ -158,7 +161,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40533"
+NAME="AEN40864"
 ></A
 ><H2
 >Description</H2
@@ -193,25 +196,25 @@ CLASS="COMMAND"
    the first row.
   </P
 ><P
->   The forms <VAR
+>   The forms <TT
 CLASS="LITERAL"
->NEXT</VAR
->, <VAR
+>NEXT</TT
+>, <TT
 CLASS="LITERAL"
->PRIOR</VAR
->, <VAR
+>PRIOR</TT
+>, <TT
 CLASS="LITERAL"
->FIRST</VAR
+>FIRST</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->LAST</VAR
->, <VAR
+>LAST</TT
+>, <TT
 CLASS="LITERAL"
->ABSOLUTE</VAR
->, <VAR
+>ABSOLUTE</TT
+>, <TT
 CLASS="LITERAL"
->RELATIVE</VAR
+>RELATIVE</TT
 > fetch
    a single row after moving the cursor appropriately.  If there is no
    such row, an empty result is returned, and the cursor is left
@@ -219,12 +222,12 @@ CLASS="LITERAL"
    appropriate.
   </P
 ><P
->   The forms using <VAR
+>   The forms using <TT
 CLASS="LITERAL"
->FORWARD</VAR
-> and <VAR
+>FORWARD</TT
+> and <TT
 CLASS="LITERAL"
->BACKWARD</VAR
+>BACKWARD</TT
 >
    retrieve the indicated number of rows moving in the forward or
    backward direction, leaving the cursor positioned on the
@@ -235,16 +238,16 @@ CLASS="REPLACEABLE"
    available).
   </P
 ><P
->   <VAR
+>   <TT
 CLASS="LITERAL"
->RELATIVE 0</VAR
->, <VAR
+>RELATIVE 0</TT
+>, <TT
 CLASS="LITERAL"
->FORWARD 0</VAR
+>FORWARD 0</TT
 >, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->BACKWARD 0</VAR
+>BACKWARD 0</TT
 > all request fetching the current row without
    moving the cursor, that is, re-fetching the most recently fetched
    row.  This will succeed unless the cursor is positioned before the
@@ -254,7 +257,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40557"
+NAME="AEN40888"
 ></A
 ><H2
 >Parameters</H2
@@ -283,9 +286,9 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->NEXT</VAR
+>NEXT</TT
 ></DT
 ><DD
 ><P
@@ -296,9 +299,9 @@ CLASS="REPLACEABLE"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->PRIOR</VAR
+>PRIOR</TT
 ></DT
 ><DD
 ><P
@@ -306,38 +309,38 @@ CLASS="LITERAL"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->FIRST</VAR
+>FIRST</TT
 ></DT
 ><DD
 ><P
->          Fetch the first row of the query (same as <VAR
+>          Fetch the first row of the query (same as <TT
 CLASS="LITERAL"
->ABSOLUTE 1</VAR
+>ABSOLUTE 1</TT
 >).
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->LAST</VAR
+>LAST</TT
 ></DT
 ><DD
 ><P
->          Fetch the last row of the query (same as <VAR
+>          Fetch the last row of the query (same as <TT
 CLASS="LITERAL"
->ABSOLUTE -1</VAR
+>ABSOLUTE -1</TT
 >).
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >ABSOLUTE <VAR
 CLASS="REPLACEABLE"
 >count</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -345,12 +348,12 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >count</VAR
 >'th row of the query,
-          or the <VAR
+          or the <TT
 CLASS="LITERAL"
 >abs(<VAR
 CLASS="REPLACEABLE"
 >count</VAR
->)</VAR
+>)</TT
 >'th row from
           the end if <VAR
 CLASS="REPLACEABLE"
@@ -360,20 +363,20 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >count</VAR
 > is out of range; in
-          particular, <VAR
+          particular, <TT
 CLASS="LITERAL"
->ABSOLUTE 0</VAR
+>ABSOLUTE 0</TT
 > positions before
           the first row.
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >RELATIVE <VAR
 CLASS="REPLACEABLE"
 >count</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -381,20 +384,20 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >count</VAR
 >'th succeeding row, or
-          the <VAR
+          the <TT
 CLASS="LITERAL"
 >abs(<VAR
 CLASS="REPLACEABLE"
 >count</VAR
->)</VAR
+>)</TT
 >'th prior
           row if <VAR
 CLASS="REPLACEABLE"
 >count</VAR
 > is
-          negative.  <VAR
+          negative.  <TT
 CLASS="LITERAL"
->RELATIVE 0</VAR
+>RELATIVE 0</TT
 > re-fetches the
           current row, if any.
          </P
@@ -410,48 +413,48 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >count</VAR
 > rows (same as
-          <VAR
+          <TT
 CLASS="LITERAL"
 >FORWARD <VAR
 CLASS="REPLACEABLE"
 >count</VAR
-></VAR
+></TT
 >).
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 ></DT
 ><DD
 ><P
->          Fetch all remaining rows (same as <VAR
+>          Fetch all remaining rows (same as <TT
 CLASS="LITERAL"
->FORWARD ALL</VAR
+>FORWARD ALL</TT
 >).
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->FORWARD</VAR
+>FORWARD</TT
 ></DT
 ><DD
 ><P
->          Fetch the next row (same as <VAR
+>          Fetch the next row (same as <TT
 CLASS="LITERAL"
->NEXT</VAR
+>NEXT</TT
 >).
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >FORWARD <VAR
 CLASS="REPLACEABLE"
 >count</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -459,16 +462,16 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >count</VAR
 > rows.
-          <VAR
+          <TT
 CLASS="LITERAL"
->FORWARD 0</VAR
+>FORWARD 0</TT
 > re-fetches the current row.
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->FORWARD ALL</VAR
+>FORWARD ALL</TT
 ></DT
 ><DD
 ><P
@@ -476,25 +479,25 @@ CLASS="LITERAL"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->BACKWARD</VAR
+>BACKWARD</TT
 ></DT
 ><DD
 ><P
->          Fetch the prior row (same as <VAR
+>          Fetch the prior row (same as <TT
 CLASS="LITERAL"
->PRIOR</VAR
+>PRIOR</TT
 >).
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >BACKWARD <VAR
 CLASS="REPLACEABLE"
 >count</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -502,17 +505,17 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >count</VAR
 > rows (scanning
-          backwards).  <VAR
+          backwards).  <TT
 CLASS="LITERAL"
->BACKWARD 0</VAR
+>BACKWARD 0</TT
 > re-fetches the
           current row.
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->BACKWARD ALL</VAR
+>BACKWARD ALL</TT
 ></DT
 ><DD
 ><P
@@ -536,23 +539,23 @@ CLASS="REPLACEABLE"
 >count</VAR
 > is a
       possibly-signed integer constant, determining the location or
-      number of rows to fetch.  For <VAR
+      number of rows to fetch.  For <TT
 CLASS="LITERAL"
->FORWARD</VAR
+>FORWARD</TT
 > and
-      <VAR
+      <TT
 CLASS="LITERAL"
->BACKWARD</VAR
+>BACKWARD</TT
 > cases, specifying a negative <VAR
 CLASS="REPLACEABLE"
 >count</VAR
 > is equivalent to changing
-      the sense of <VAR
+      the sense of <TT
 CLASS="LITERAL"
->FORWARD</VAR
-> and <VAR
+>FORWARD</TT
+> and <TT
 CLASS="LITERAL"
->BACKWARD</VAR
+>BACKWARD</TT
 >.
      </P
 ></DD
@@ -572,7 +575,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40681"
+NAME="AEN41012"
 ></A
 ><H2
 >Outputs</H2
@@ -608,14 +611,14 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40690"
+NAME="AEN41021"
 ></A
 ><H2
 >Notes</H2
 ><P
->   The cursor should be declared with the <VAR
+>   The cursor should be declared with the <TT
 CLASS="LITERAL"
->SCROLL</VAR
+>SCROLL</TT
 >
    option if one intends to use any variants of <TT
 CLASS="COMMAND"
@@ -633,29 +636,29 @@ CLASS="COMMAND"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > will allow backwards fetch
-   from cursors not declared with <VAR
+   from cursors not declared with <TT
 CLASS="LITERAL"
->SCROLL</VAR
+>SCROLL</TT
 >, but this
    behavior is best not relied on. If the cursor is declared with
-   <VAR
+   <TT
 CLASS="LITERAL"
->NO SCROLL</VAR
+>NO SCROLL</TT
 >, no backward fetches are allowed.
   </P
 ><P
->   <VAR
+>   <TT
 CLASS="LITERAL"
->ABSOLUTE</VAR
+>ABSOLUTE</TT
 > fetches are not any faster than
    navigating to the desired row with a relative move: the underlying
    implementation must traverse all the intermediate rows anyway.
    Negative absolute fetches are even worse: the query must be read to
    the end to find the last row, and then traversed backward from
    there.  However, rewinding to the start of the query (as with
-   <VAR
+   <TT
 CLASS="LITERAL"
->FETCH ABSOLUTE 0</VAR
+>FETCH ABSOLUTE 0</TT
 >) is fast.
   </P
 ><P
@@ -685,7 +688,7 @@ HREF="sql-move.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40708"
+NAME="AEN41039"
 ></A
 ><H2
 >Examples</H2
@@ -726,7 +729,7 @@ COMMIT WORK;</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40712"
+NAME="AEN41043"
 ></A
 ><H2
 >Compatibility</H2
@@ -735,7 +738,7 @@ NAME="AEN40712"
 CLASS="COMMAND"
 >FETCH</TT
 > for use in
-   embedded SQL only.  This variant of <TT
+   embedded SQL only.  The variant of <TT
 CLASS="COMMAND"
 >FETCH</TT
 >
@@ -755,26 +758,26 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >FETCH</TT
 > forms involving
-   <VAR
+   <TT
 CLASS="LITERAL"
->FORWARD</VAR
-> and <VAR
+>FORWARD</TT
+> and <TT
 CLASS="LITERAL"
->BACKWARD</VAR
+>BACKWARD</TT
 >, as well
-   as the forms <VAR
+   as the forms <TT
 CLASS="LITERAL"
 >FETCH <VAR
 CLASS="REPLACEABLE"
 >count</VAR
-></VAR
-> and <VAR
+></TT
+> and <TT
 CLASS="LITERAL"
 >FETCH
-   ALL</VAR
->, in which <VAR
+   ALL</TT
+>, in which <TT
 CLASS="LITERAL"
->FORWARD</VAR
+>FORWARD</TT
 > is implicit, are
    <SPAN
 CLASS="PRODUCTNAME"
@@ -782,13 +785,13 @@ CLASS="PRODUCTNAME"
 > extensions.
   </P
 ><P
->   The SQL standard allows only <VAR
+>   The SQL standard allows only <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > preceding the cursor
-   name; the option to use <VAR
+   name; the option to use <TT
 CLASS="LITERAL"
->IN</VAR
+>IN</TT
 > is an extension.
   </P
 ></DIV

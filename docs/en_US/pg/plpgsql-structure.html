@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 37. <SPAN
+>Chapter 35. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-STRUCTURE"
->37.3. Structure of <SPAN
+>35.3. Structure of <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 ></A
@@ -146,33 +146,34 @@ END;</PRE
     </P
 ><P
 >     All key words and identifiers can be written in mixed upper and
-     lower case.  Identifiers are implicitly converted to lower-case
+     lower case.  Identifiers are implicitly converted to lowercase
      unless double-quoted.
     </P
 ><P
 >     There are two types of comments in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
->. A double dash (<VAR
+>. A double
+     dash (<TT
 CLASS="LITERAL"
->--</VAR
->)
-     starts a comment that extends to the end of the line. A <VAR
+>--</TT
+>) starts a comment that extends to the end of
+     the line. A <TT
 CLASS="LITERAL"
->/*</VAR
+>/*</TT
+> starts a block comment that extends to
+     the next occurrence of <TT
+CLASS="LITERAL"
+>*/</TT
+>.  Block comments cannot be
+     nested, but double dash comments can be enclosed into a block comment and
+     a double dash can hide the block comment delimiters <TT
+CLASS="LITERAL"
+>/*</TT
 >
-     starts a block comment that extends to the next occurrence of <VAR
+     and <TT
 CLASS="LITERAL"
->*/</VAR
->.
-     Block comments cannot be nested, but double dash comments can be
-     enclosed into a block comment and a double dash can hide
-     the block comment delimiters <VAR
-CLASS="LITERAL"
->/*</VAR
-> and <VAR
-CLASS="LITERAL"
->*/</VAR
+>*/</TT
 >.
     </P
 ><P
@@ -190,11 +191,11 @@ CLASS="FIRSTTERM"
      block is entered, not only once per function call. For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION somefunc() RETURNS integer AS '
+>CREATE FUNCTION somefunc() RETURNS integer AS $$
 DECLARE
     quantity integer := 30;
 BEGIN
-    RAISE NOTICE ''Quantity here is %'', quantity;  -- Quantity here is 30
+    RAISE NOTICE 'Quantity here is %', quantity;  -- Quantity here is 30
     quantity := 50;
     --
     -- Create a subblock
@@ -202,29 +203,30 @@ BEGIN
     DECLARE
         quantity integer := 80;
     BEGIN
-        RAISE NOTICE ''Quantity here is %'', quantity;  -- Quantity here is 80
+        RAISE NOTICE 'Quantity here is %', quantity;  -- Quantity here is 80
     END;
 
-    RAISE NOTICE ''Quantity here is %'', quantity;  -- Quantity here is 50
+    RAISE NOTICE 'Quantity here is %', quantity;  -- Quantity here is 50
 
     RETURN quantity;
 END;
-' LANGUAGE plpgsql;</PRE
+$$ LANGUAGE plpgsql;</PRE
 ><P>
     </P
 ><P
->     It is important not to confuse the use of <TT
+>     It is important not to confuse the use of
+     <TT
 CLASS="COMMAND"
 >BEGIN</TT
 >/<TT
 CLASS="COMMAND"
 >END</TT
-> for
-     grouping statements in <SPAN
+> for grouping statements in
+     <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> with the database commands for
-     transaction control.  <SPAN
+> with the database commands for transaction
+     control.  <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 >'s <TT
@@ -233,14 +235,20 @@ CLASS="COMMAND"
 >/<TT
 CLASS="COMMAND"
 >END</TT
-> are only for grouping;
-     they do not start or end a transaction.  Functions and trigger procedures
-     are always executed within a transaction established by an outer query
-     --- they cannot start or commit transactions, since
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not have nested transactions.
+>
+     are only for grouping; they do not start or end a transaction.
+     Functions and trigger procedures are always executed within a transaction
+     established by an outer query --- they cannot start or commit that
+     transaction, since there would be no context for them to execute in.
+     However, a block containing an <TT
+CLASS="LITERAL"
+>EXCEPTION</TT
+> clause effectively
+     forms a subtransaction that can be rolled back without affecting the
+     outer transaction.  For more details see <A
+HREF="plpgsql-control-structures.html#PLPGSQL-ERROR-TRAPPING"
+>Section 35.7.5</A
+>.
     </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Backup and Restore"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Backup and Restore"
 HREF="backup.html"><LINK
 REL="NEXT"
-TITLE="Migration Between Releases"
-HREF="migration.html"><LINK
+TITLE="On-line backup and point-in-time recovery"
+HREF="backup-online.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="migration.html"
+HREF="backup-online.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -136,25 +136,30 @@ CLASS="EMPHASIS"
 ></SPAN
 > be shut down in order to
       get a usable backup. Half-way measures such as disallowing all
-      connections will not work as there is always some buffering
-      going on. For this reason it is also not advisable to trust file
-      systems that claim to support <SPAN
-CLASS="QUOTE"
->"consistent
-      snapshots"</SPAN
->. Information about stopping the server can be
-      found in <A
+      connections will <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> work
+      (mainly because <TT
+CLASS="COMMAND"
+>tar</TT
+> and similar tools do not take an
+      atomic snapshot of the state of the filesystem at a point in
+      time). Information about stopping the server can be found in
+      <A
 HREF="postmaster-shutdown.html"
 >Section 16.6</A
->.  Needless to say
-      that you also need to shut down the server before restoring the
-      data.
+>.  Needless to say that you
+      also need to shut down the server before restoring the data.
      </P
 ></LI
 ><LI
 ><P
->      If you have dug into the details of the file system layout of the data you
-      may be tempted to try to back up or restore only certain
+>      If you have dug into the details of the file system layout of the
+      database, you may be tempted to try to back up or restore only certain
       individual tables or databases from their respective files or
       directories. This will <SPAN
 CLASS="emphasis"
@@ -176,7 +181,8 @@ CLASS="FILENAME"
 >pg_clog</TT
 > data
       because that would render all other tables in the database
-      cluster useless.
+      cluster useless.  So file system backups only work for complete
+      restoration of an entire database cluster.
      </P
 ></LI
 ></OL
@@ -188,15 +194,31 @@ CLASS="FILENAME"
 CLASS="QUOTE"
 >"consistent snapshot"</SPAN
 > of the data directory, if the
-   file system supports that functionality.  Such a snapshot will save
+   file system supports that functionality (and you are willing to
+   trust that it is implemented correctly).  The typical procedure is
+   to make a <SPAN
+CLASS="QUOTE"
+>"frozen snapshot"</SPAN
+> of the volume containing the
+   database, then copy the whole data directory (not just parts, see
+   above) from the snapshot to a backup device, then release the frozen
+   snapshot.  This will work even while the database server is running.
+   However, a backup created in this way saves
    the database files in a state where the database server was not
    properly shut down; therefore, when you start the database server
-   on this backed up directory, it will think the server had crashed
+   on the backed-up data, it will think the server had crashed
    and replay the WAL log.  This is not a problem, just be aware of
-   it.
+   it (and be sure to include the WAL files in your dump).
   </P
 ><P
->   Note that the file system backup will not necessarily be
+>   If your database is spread across multiple volumes (for example,
+   data files and WAL log on different disks) there may not be any way
+   to obtain exactly-simultaneous frozen snapshots of all the volumes.
+   Read your filesystem documentation very carefully before trusting
+   to the consistent-snapshot technique in such situations.
+  </P
+><P
+>   Note that a file system backup will not necessarily be
    smaller than an SQL dump. On the contrary, it will most likely be
    larger. (<SPAN
 CLASS="APPLICATION"
@@ -240,7 +262,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="migration.html"
+HREF="backup-online.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -264,7 +286,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Migration Between Releases</TD
+>On-line backup and point-in-time recovery</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATEDATABASE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN36753"
+NAME="AEN36799"
 ></A
 ><H2
 >Name</H2
 >CREATE DATABASE&nbsp;--&nbsp;create a new database</DIV
 ><A
-NAME="AEN36756"
+NAME="AEN36802"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN36758"
+NAME="AEN36804"
 ></A
 ><H2
 >Synopsis</H2
@@ -120,10 +120,6 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >dbowner</VAR
 > ]
-           [ LOCATION [=] '<VAR
-CLASS="REPLACEABLE"
->dbpath</VAR
->' ]
            [ TEMPLATE [=] <VAR
 CLASS="REPLACEABLE"
 >template</VAR
@@ -131,12 +127,16 @@ CLASS="REPLACEABLE"
            [ ENCODING [=] <VAR
 CLASS="REPLACEABLE"
 >encoding</VAR
+> ]
+           [ TABLESPACE [=] <VAR
+CLASS="REPLACEABLE"
+>tablespace</VAR
 > ] ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36765"
+NAME="AEN36811"
 ></A
 ><H2
 >Description</H2
@@ -152,9 +152,9 @@ CLASS="PRODUCTNAME"
   </P
 ><P
 >   To create a database, you must be a superuser or have the special
-   <VAR
+   <TT
 CLASS="LITERAL"
->CREATEDB</VAR
+>CREATEDB</TT
 > privilege.
    See <A
 HREF="sql-createuser.html"
@@ -166,70 +166,33 @@ HREF="sql-createuser.html"
 ><P
 >   Normally, the creator becomes the owner of the new database.
    Superusers can create databases owned by other users using the
-   <VAR
+   <TT
 CLASS="LITERAL"
->OWNER</VAR
+>OWNER</TT
 > clause. They can even create databases owned by
-   users with no special privileges. Non-superusers with <VAR
+   users with no special privileges. Non-superusers with <TT
 CLASS="LITERAL"
->CREATEDB</VAR
+>CREATEDB</TT
 >
    privilege can only create databases owned by themselves.
   </P
 ><P
->   An alternative location can be specified in order to,
-   for example, store the database on a different disk.
-   The path must have been prepared with the 
-   <A
-HREF="app-initlocation.html"
-><I
-><I
->initlocation</I
-></I
-></A
->
-   command.
-  </P
-><P
->   If the path name does not contain a slash, it is interpreted
-   as an environment variable name, which must be known to the
-   server process. This way the database administrator can
-   exercise control over locations in which databases can be created.
-   (A customary choice is, e.g., <TT
-CLASS="ENVAR"
->PGDATA2</TT
->.)
-   If the server is compiled with <VAR
-CLASS="LITERAL"
->ALLOW_ABSOLUTE_DBPATHS</VAR
->
-   (not so by default), absolute path names, as identified by
-   a leading slash
-   (e.g., <TT
-CLASS="FILENAME"
->/usr/local/pgsql/data</TT
->),
-   are allowed as well.
-   In either case, the final path name must be absolute and must not
-   contain any single quotes.
-  </P
-><P
 >   By default, the new database will be created by cloning the standard
-   system database <VAR
+   system database <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >.  A different template can be
-   specified by writing <VAR
+   specified by writing <TT
 CLASS="LITERAL"
 >TEMPLATE
    <VAR
 CLASS="REPLACEABLE"
 >name</VAR
-></VAR
+></TT
 >.  In particular,
-   by writing <VAR
+   by writing <TT
 CLASS="LITERAL"
->TEMPLATE template0</VAR
+>TEMPLATE template0</TT
 >, you can create a virgin
    database containing only the standard objects predefined by your
    version of <SPAN
@@ -238,21 +201,16 @@ CLASS="PRODUCTNAME"
 >.  This is useful
    if you wish to avoid copying
    any installation-local objects that may have been added to
-   <VAR
+   <TT
 CLASS="LITERAL"
->template1</VAR
->. 
-  </P
-><P
->   The optional encoding parameter allows selection of the database
-   encoding.  When not specified, it defaults to the encoding used by
-   the selected template database.
+>template1</TT
+>.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36790"
+NAME="AEN36829"
 ></A
 ><H2
 >Parameters</H2
@@ -268,7 +226,7 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The name of a database to create.
+>        The name of a database to create.
        </P
 ></DD
 ><DT
@@ -279,26 +237,11 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >        The name of the database user who will own the new database,
-	or <VAR
+        or <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 > to use the default (namely, the
-	user executing the command).
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->dbpath</VAR
-></DT
-><DD
-><P
->	An alternate file-system location in which to store the new database,
-	specified as a string literal;
-	or <VAR
-CLASS="LITERAL"
->DEFAULT</VAR
-> to use the default location.
+        user executing the command).
        </P
 ></DD
 ><DT
@@ -309,13 +252,13 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >        The name of the template from which to create the new database,
-	or <VAR
+        or <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 > to use the default template
-	(<VAR
+        (<TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >).
        </P
 ></DD
@@ -327,15 +270,42 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >        Character set encoding to use in the new database.  Specify
-	a string constant (e.g., <VAR
+        a string constant (e.g., <TT
 CLASS="LITERAL"
->'SQL_ASCII'</VAR
+>'SQL_ASCII'</TT
 >),
-	or an integer encoding number, or <VAR
+        or an integer encoding number, or <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 >
-	to use the default encoding.
+        to use the default encoding. The character sets supported by the
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server are described in
+        <A
+HREF="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED"
+>Section 20.2.1</A
+>.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>tablespace</VAR
+></DT
+><DD
+><P
+>        Specifies the default tablespace for the new database.
+        If not specified, the same tablespace that is default for
+        the template database is used.  See
+        <A
+HREF="sql-createtablespace.html"
+><I
+>CREATE TABLESPACE</I
+></A
+>
+        for more information.
        </P
 ></DD
 ></DL
@@ -348,7 +318,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36825"
+NAME="AEN36866"
 ></A
 ><H2
 >Notes</H2
@@ -365,9 +335,7 @@ CLASS="QUOTE"
 >"could not initialize database directory"</SPAN
 >
     are most likely related to insufficient permissions on the data
-    directory, a full disk, or other file system problems.  When using an
-    alternate location, the user under
-    which the database server is running must have access to the location.
+    directory, a full disk, or other file system problems.
    </P
 ><P
 >    Use <A
@@ -389,17 +357,9 @@ HREF="app-createdb.html"
     wrapper program around this command, provided for convenience.
    </P
 ><P
->   There are security issues involved with using alternate database
-   locations specified with absolute path names; this is why the feature
-   is not enabled by default.  See <A
-HREF="manage-ag-alternate-locs.html"
->Section 18.5</A
-> for more information.
-  </P
-><P
->   Although it is possible to copy a database other than <VAR
+>   Although it is possible to copy a database other than <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >
    by specifying its name as the template, this is not (yet) intended as
    a general-purpose <SPAN
@@ -419,7 +379,7 @@ HREF="manage-ag-templatedbs.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36842"
+NAME="AEN36881"
 ></A
 ><H2
 >Examples</H2
@@ -432,35 +392,40 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   To create a new database in an alternate area
-   <TT
-CLASS="FILENAME"
->~/private_db</TT
->, execute the following from the
-   shell:
+>   To create a database <TT
+CLASS="LITERAL"
+>sales</TT
+> owned by user <TT
+CLASS="LITERAL"
+>salesapp</TT
+>&#62;
+   with a default tablespace of <TT
+CLASS="LITERAL"
+>salesspace</TT
+>:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->mkdir private_db
-initlocation ~/private_db</PRE
+>CREATE DATABASE sales OWNER salesapp TABLESPACE salesspace;</PRE
 ><P>
-
-   Then execute the following from within a
-   <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> session:
+  </P
+><P
+>   To create a database <TT
+CLASS="LITERAL"
+>music</TT
+> which supports the ISO-8859-1 
+   character set:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE DATABASE elsewhere WITH LOCATION '/home/olly/private_db';</PRE
+>CREATE DATABASE music ENCODING 'LATIN1';</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36851"
+NAME="AEN36893"
 ></A
 ><H2
 >Compatibility</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Rule System"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="rules.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 34. The Rule System</TD
+>Chapter 32. The Rule System</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,16 +93,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RULES-STATUS"
->34.5. Rules and Command Status</A
+>32.5. Rules and Command Status</A
 ></H1
 ><P
 >    The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server returns a command
-    status string, such as <VAR
+    status string, such as <TT
 CLASS="LITERAL"
->INSERT 149592 1</VAR
+>INSERT 149592 1</TT
 >, for each
     command it receives.  This is simple enough when there are no rules
     involved, but what happens when the query is rewritten by rules?</P
@@ -114,15 +114,15 @@ CLASS="LITERAL"
 ></P><UL
 ><LI
 ><P
->       If there is no unconditional <VAR
+>       If there is no unconditional <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rule for the query, then
        the originally given query will be executed, and its command
        status will be returned as usual.  (But note that if there were
-       any conditional <VAR
+       any conditional <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rules, the negation of their qualifications
        will have been added to the original query.  This may reduce the
        number of rows it processes, and if so the reported status will
@@ -131,15 +131,15 @@ CLASS="LITERAL"
 ></LI
 ><LI
 ><P
->       If there is any unconditional <VAR
+>       If there is any unconditional <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rule for the query, then
        the original query will not be executed at all.  In this case,
        the server will return the command status for the last query
-       that was inserted by an <VAR
+       that was inserted by an <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rule (conditional or
        unconditional) and is of the same command type
        (<TT
@@ -161,13 +161,16 @@ CLASS="COMMAND"
 ></UL
 ><P>
 
-    (This system was established in PostgreSQL 7.3.  In versions
-    before that, the command status might show different results when
-    rules exist.)</P
+    (This system was established in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3.
+    In versions before that, the command status might show different
+    results when rules exist.)</P
 ><P
->    The programmer can ensure that any desired <VAR
+>    The programmer can ensure that any desired <TT
 CLASS="LITERAL"
->INSTEAD</VAR
+>INSTEAD</TT
 > rule is the one
     that sets the command status in the second case, by giving it the
     alphabetically last rule name among the active rules, so that it

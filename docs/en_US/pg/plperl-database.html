@@ -9,22 +9,22 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Perl - Perl Procedural Language"
 HREF="plperl.html"><LINK
 REL="PREVIOUS"
+TITLE="PL/Perl - Perl Procedural Language"
+HREF="plperl.html"><LINK
+REL="NEXT"
 TITLE="Data Values in PL/Perl"
 HREF="plperl-data.html"><LINK
-REL="NEXT"
-TITLE="Trusted and Untrusted PL/Perl"
-HREF="plperl-trusted.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="plperl-data.html"
+HREF="plperl.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -64,7 +64,7 @@ HREF="plperl.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 39. PL/Perl - Perl Procedural Language</TD
+>Chapter 37. PL/Perl - Perl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plperl-trusted.html"
+HREF="plperl-data.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,16 +93,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPERL-DATABASE"
->39.3. Database Access from PL/Perl</A
+>37.2. Database Access from PL/Perl</A
 ></H1
 ><P
 >   Access to the database itself from your Perl function can be done via
-   an experimental module <A
+   spi_exec_query, or via an experimental module <A
 HREF="http://www.cpan.org/modules/by-module/DBD/APILOS/"
 TARGET="_top"
-><VAR
+><TT
 CLASS="LITERAL"
->DBD::PgSPI</VAR
+>DBD::PgSPI</TT
 ></A
 >
    (also available at <A
@@ -113,31 +113,94 @@ CLASS="ACRONYM"
 >CPAN</ACRONYM
 >
    mirror sites</A
->). This module makes available a
+>).  This module makes available a
    <ACRONYM
 CLASS="ACRONYM"
 >DBI</ACRONYM
 >-compliant database-handle named
-   <VAR
+   <TT
 CLASS="VARNAME"
->$pg_dbh</VAR
+>$pg_dbh</TT
 > that can be used to perform queries
    with normal <ACRONYM
 CLASS="ACRONYM"
 >DBI</ACRONYM
 > syntax.<A
-NAME="AEN32934"
+NAME="AEN32393"
 ></A
 >
+
   </P
 ><P
->   PL/Perl itself presently provides only one additional Perl command:
+>   PL/Perl itself presently provides two additional Perl commands:
 
    <P
 ></P
 ></P><DIV
 CLASS="VARIABLELIST"
 ><DL
+><DT
+><CODE
+CLASS="FUNCTION"
+>spi_exec_query(</CODE
+> [ <VAR
+CLASS="REPLACEABLE"
+>SELECT query</VAR
+> [, <VAR
+CLASS="REPLACEABLE"
+>max_rows</VAR
+>]] | [<VAR
+CLASS="REPLACEABLE"
+>non-SELECT query</VAR
+>] )</DT
+><DD
+><P
+>        Here is an example of a SELECT query with the optional maximum
+number of rows.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$rv = spi_exec_query('SELECT * from my_table', 5);</PRE
+><P>
+
+This returns up to 5 rows from my_table.
+       </P
+><P
+>If my_table has a column my_column, it would be accessed as
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$foo = $rv-&#62;{rows}[$i]-&#62;{my_column};</PRE
+><P>
+       </P
+><P
+>The number of rows actually returned would be:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$nrows = @{$rv-&#62;{rows}};</PRE
+><P>
+       </P
+><P
+>Here is an example using a non-SELECT statement.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$query = "INSERT INTO my_table VALUES (1, 'test')";
+$rv = spi_exec_query($query);</PRE
+><P>
+
+You can then access status (SPI_OK_INSERT, e.g.) like this.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$res = $rv-&#62;{status};</PRE
+><P>
+
+       </P
+><P
+>To get the rows affected, do:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$nrows = $rv-&#62;{rows};</PRE
+><P>
+       </P
+></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
@@ -152,29 +215,29 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >       Emit a log or error message. Possible levels are
-       <VAR
+       <TT
 CLASS="LITERAL"
->DEBUG</VAR
->, <VAR
+>DEBUG</TT
+>, <TT
 CLASS="LITERAL"
->LOG</VAR
->, <VAR
+>LOG</TT
+>, <TT
 CLASS="LITERAL"
->INFO</VAR
+>INFO</TT
 >,
-       <VAR
+       <TT
 CLASS="LITERAL"
->NOTICE</VAR
->, <VAR
+>NOTICE</TT
+>, <TT
 CLASS="LITERAL"
->WARNING</VAR
->, and <VAR
+>WARNING</TT
+>, and <TT
 CLASS="LITERAL"
->ERROR</VAR
+>ERROR</TT
 >.
-       <VAR
+       <TT
 CLASS="LITERAL"
->ERROR</VAR
+>ERROR</TT
 > raises an error condition: further execution
        of the function is abandoned, and the current transaction is
        aborted.
@@ -201,7 +264,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="plperl-data.html"
+HREF="plperl.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -219,7 +282,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plperl-trusted.html"
+HREF="plperl-data.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -229,7 +292,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Data Values in PL/Perl</TD
+>PL/Perl - Perl Procedural Language</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -243,7 +306,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Trusted and Untrusted PL/Perl</TD
+>Data Values in PL/Perl</TD
 ></TR
 ></TABLE
 ></DIV

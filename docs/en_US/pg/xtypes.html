@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="extend.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. Extending <ACRONYM
+>Chapter 31. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
@@ -96,15 +96,15 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XTYPES"
->33.10. User-Defined Types</A
+>31.10. User-Defined Types</A
 ></H1
 ><A
-NAME="AEN29759"
+NAME="AEN29073"
 ></A
 ><P
 >   As described in <A
 HREF="extend-type-system.html"
->Section 33.2</A
+>Section 31.2</A
 >,
    <SPAN
 CLASS="PRODUCTNAME"
@@ -139,19 +139,19 @@ CLASS="FILENAME"
   </P
 ><P
 >  <A
-NAME="AEN29772"
+NAME="AEN29086"
 ></A
 >
   <A
-NAME="AEN29774"
+NAME="AEN29088"
 ></A
 >
   A user-defined type must always have input and output
   functions.<A
-NAME="AEN29776"
+NAME="AEN29090"
 ></A
 ><A
-NAME="AEN29779"
+NAME="AEN29093"
 ></A
 >
   These functions determine how the type appears in strings (for input
@@ -188,9 +188,9 @@ CLASS="TYPE"
  </P
 ><P
 >  As the external string representation of the type, we choose a
-  string of the form <VAR
+  string of the form <TT
 CLASS="LITERAL"
->(x,y)</VAR
+>(x,y)</TT
 >.
  </P
 ><P
@@ -365,13 +365,13 @@ CLASS="PRODUCTNAME"
 > automatically provides support
   for arrays of that
   type.<A
-NAME="AEN29807"
+NAME="AEN29121"
 ></A
 > For historical reasons, the array type
   has the same name as the base type with the underscore character
-  (<VAR
+  (<TT
 CLASS="LITERAL"
->_</VAR
+>_</TT
 >) prepended.
  </P
 ><P
@@ -385,7 +385,7 @@ CLASS="LITERAL"
 >  If the values of your data type might exceed a few hundred bytes in
   size (in internal form), you should make the data type
   TOAST-able.<A
-NAME="AEN29813"
+NAME="AEN29127"
 ></A
 > To do this, the internal
   representation must follow the standard layout for variable-length
@@ -404,9 +404,9 @@ CLASS="FUNCTION"
 CLASS="COMMAND"
 >CREATE TYPE</TT
 > command, specify the
-  internal length as <VAR
+  internal length as <TT
 CLASS="LITERAL"
->variable</VAR
+>variable</TT
 > and select the appropriate
   storage option.
  </P

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="INDEXES-OPCLASS"
 >11.6. Operator Classes</A
 ></H1
 ><A
-NAME="AEN13264"
+NAME="AEN13939"
 ></A
 ><P
 >   An index definition may specify an <I
@@ -128,9 +128,9 @@ CLASS="OPTIONAL"
 CLASS="TYPE"
 >int4</TT
 >
-   would use the <VAR
+   would use the <TT
 CLASS="LITERAL"
->int4_ops</VAR
+>int4_ops</TT
 > class; this operator
    class includes comparison functions for values of type <TT
 CLASS="TYPE"
@@ -152,21 +152,21 @@ CLASS="TYPE"
 ></P><UL
 ><LI
 ><P
->      The operator classes <VAR
+>      The operator classes <TT
 CLASS="LITERAL"
->text_pattern_ops</VAR
+>text_pattern_ops</TT
 >,
-      <VAR
+      <TT
 CLASS="LITERAL"
->varchar_pattern_ops</VAR
+>varchar_pattern_ops</TT
 >,
-      <VAR
+      <TT
 CLASS="LITERAL"
->bpchar_pattern_ops</VAR
+>bpchar_pattern_ops</TT
 >, and
-      <VAR
+      <TT
 CLASS="LITERAL"
->name_pattern_ops</VAR
+>name_pattern_ops</TT
 > support B-tree indexes on
       the types <TT
 CLASS="TYPE"
@@ -186,9 +186,9 @@ CLASS="TYPE"
       are compared strictly character by character rather than
       according to the locale-specific collation rules.  This makes
       these operator classes suitable for use by queries involving
-      pattern matching expressions (<VAR
+      pattern matching expressions (<TT
 CLASS="LITERAL"
->LIKE</VAR
+>LIKE</TT
 > or POSIX
       regular expressions) if the server does not use the standard
       <SPAN
@@ -209,12 +209,12 @@ CLASS="PROGRAMLISTING"
       create an index with the default operator class if you want
       queries involving ordinary comparisons to use an index.  Such
       queries cannot use the
-      <VAR
+      <TT
 CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
 >xxx</VAR
->_pattern_ops</VAR
+>_pattern_ops</TT
 >
       operator classes.  It is allowed to create multiple
       indexes on the same column with different operator classes.

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. System Catalogs</TD
+>Chapter 41. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-CONSTRAINT"
->43.10. <TT
+>41.10. <TT
 CLASS="STRUCTNAME"
 >pg_constraint</TT
 ></A
 ></H1
 ><A
-NAME="AEN49734"
+NAME="AEN50372"
 ></A
 ><P
 >   The catalog <TT
@@ -120,11 +120,11 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN49740"
+NAME="AEN50378"
 ></A
 ><P
 ><B
->Table 43-10. <TT
+>Table 41-10. <TT
 CLASS="STRUCTNAME"
 >pg_constraint</TT
 > Columns</B
@@ -173,7 +173,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-namespace.html"
@@ -181,7 +181,7 @@ HREF="catalog-pg-namespace.html"
 CLASS="STRUCTNAME"
 >pg_namespace</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >       The OID of the namespace that contains this constraint
@@ -201,21 +201,21 @@ CLASS="TYPE"
 ><TD
 >&nbsp;</TD
 ><TD
->        <VAR
+>        <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 > = check constraint,
-        <VAR
+        <TT
 CLASS="LITERAL"
->f</VAR
+>f</TT
 > = foreign key constraint,
-        <VAR
+        <TT
 CLASS="LITERAL"
->p</VAR
+>p</TT
 > = primary key constraint,
-        <VAR
+        <TT
 CLASS="LITERAL"
->u</VAR
+>u</TT
 > = unique constraint
       </TD
 ></TR
@@ -263,7 +263,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-class.html"
@@ -271,7 +271,7 @@ HREF="catalog-pg-class.html"
 CLASS="STRUCTNAME"
 >pg_class</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >The table this constraint is on; 0 if not a table constraint</TD
@@ -288,7 +288,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-type.html"
@@ -296,7 +296,7 @@ HREF="catalog-pg-type.html"
 CLASS="STRUCTNAME"
 >pg_type</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >The domain this constraint is on; 0 if not a domain constraint</TD
@@ -313,7 +313,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-class.html"
@@ -321,7 +321,7 @@ HREF="catalog-pg-class.html"
 CLASS="STRUCTNAME"
 >pg_class</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >If a foreign key, the referenced table; else 0</TD
@@ -386,7 +386,7 @@ CLASS="TYPE"
 >int2[]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-attribute.html"
@@ -394,7 +394,7 @@ HREF="catalog-pg-attribute.html"
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 ></A
->.attnum</VAR
+>.attnum</TT
 ></TD
 ><TD
 >If a table constraint, list of columns which the constraint constrains</TD
@@ -411,7 +411,7 @@ CLASS="TYPE"
 >int2[]</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-attribute.html"
@@ -419,7 +419,7 @@ HREF="catalog-pg-attribute.html"
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 ></A
->.attnum</VAR
+>.attnum</TT
 ></TD
 ><TD
 >If a foreign key, list of the referenced columns</TD
@@ -486,9 +486,9 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->    <VAR
+>    <TT
 CLASS="LITERAL"
->pg_class.relchecks</VAR
+>pg_class.relchecks</TT
 > needs to agree with the
     number of check-constraint entries found in this table for the
     given relation.

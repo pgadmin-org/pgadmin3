@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="ecpg.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 30. <SPAN
+>Chapter 29. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
 > - Embedded <ACRONYM
@@ -99,12 +99,12 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-VARIABLES"
->30.6. Using Host Variables</A
+>29.6. Using Host Variables</A
 ></H1
 ><P
 >   In <A
 HREF="ecpg-commands.html"
->Section 30.4</A
+>Section 29.4</A
 > you saw how you can execute SQL
    statements from an embedded SQL program.  Some of those statements
    only used fixed values and did not provide a way to insert
@@ -123,8 +123,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23463"
->30.6.1. Overview</A
+NAME="AEN23736"
+>29.6.1. Overview</A
 ></H2
 ><P
 >    Passing data between the C program and the SQL statements is
@@ -138,12 +138,12 @@ CLASS="PROGRAMLISTING"
 >EXEC SQL INSERT INTO sometable VALUES (:v1, 'foo', :v2);</PRE
 ><P>
     This statements refers to two C variables named
-    <VAR
+    <TT
 CLASS="VARNAME"
->v1</VAR
-> and <VAR
+>v1</TT
+> and <TT
 CLASS="VARNAME"
->v2</VAR
+>v2</TT
 > and also uses a
     regular SQL string literal, to illustrate that you are not
     restricted to use one kind of data or the other.
@@ -163,8 +163,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23471"
->30.6.2. Declare Sections</A
+NAME="AEN23744"
+>29.6.2. Declare Sections</A
 ></H2
 ><P
 >    To pass data from the program to the database, for example as
@@ -201,9 +201,9 @@ char  foo[16], bar[16];</PRE
    </P
 ><P
 >    The definition of a structure or union also must be listed inside
-    a <VAR
+    a <TT
 CLASS="LITERAL"
->DECLARE</VAR
+>DECLARE</TT
 > section. Otherwise the preprocessor cannot
     handle these types since it does not know the definition.
    </P
@@ -238,8 +238,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23487"
->30.6.3. <TT
+NAME="AEN23760"
+>29.6.3. <TT
 CLASS="COMMAND"
 >SELECT INTO</TT
 > and <TT
@@ -259,9 +259,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >FETCH</TT
 >.  These commands have a special
-    <VAR
+    <TT
 CLASS="LITERAL"
->INTO</VAR
+>INTO</TT
 > clause that specifies which host variables
     the retrieved values are to be stored in.
    </P
@@ -283,18 +283,18 @@ EXEC SQL END DECLARE SECTION;
 
 EXEC SQL SELECT a, b INTO :v1, :v2 FROM test;</PRE
 ><P>
-    So the <VAR
+    So the <TT
 CLASS="LITERAL"
->INTO</VAR
+>INTO</TT
 > clause appears between the select
-    list and the <VAR
+    list and the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause.  The number of
     elements in the select list and the list after
-    <VAR
+    <TT
 CLASS="LITERAL"
->INTO</VAR
+>INTO</TT
 > (also called the target list) must be
     equal.
    </P
@@ -322,9 +322,9 @@ do {
     ...
 } while (...);</PRE
 ><P>
-    Here the <VAR
+    Here the <TT
 CLASS="LITERAL"
->INTO</VAR
+>INTO</TT
 > clause appears after all the
     normal clauses.
    </P
@@ -339,8 +339,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23505"
->30.6.4. Indicators</A
+NAME="AEN23778"
+>29.6.4. Indicators</A
 ></H2
 ><P
 >    The examples above do not handle null values.  In fact, the
@@ -367,9 +367,9 @@ EXEC SQL END DECLARE SECTION:
 
 EXEC SQL SELECT b INTO :val :val_ind FROM test1;</PRE
 ><P>
-    The indicator variable <VAR
+    The indicator variable <TT
 CLASS="VARNAME"
->val_ind</VAR
+>val_ind</TT
 > will be zero if
     the value was not null, and it will be negative if the value was
     null.

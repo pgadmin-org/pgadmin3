@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,32 +95,44 @@ NAME="SQL-SET-TRANSACTION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42539"
+NAME="AEN43100"
 ></A
 ><H2
 >Name</H2
 >SET TRANSACTION&nbsp;--&nbsp;set the characteristics of the current transaction</DIV
 ><A
-NAME="AEN42542"
+NAME="AEN43103"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42544"
+NAME="AEN43105"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SET TRANSACTION
-    [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ] [ READ WRITE | READ ONLY ]
-SET SESSION CHARACTERISTICS AS TRANSACTION
-    [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ] [ READ WRITE | READ ONLY ]</PRE
+>SET TRANSACTION <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> [, ...]
+SET SESSION CHARACTERISTICS AS TRANSACTION <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> [, ...]
+
+where <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> is one of:
+
+    ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
+    READ WRITE | READ ONLY</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42546"
+NAME="AEN43110"
 ></A
 ><H2
 >Description</H2
@@ -135,7 +147,7 @@ CLASS="COMMAND"
 >SET SESSION
    CHARACTERISTICS</TT
 > sets the default transaction
-   characteristics for each transaction of a session.  <TT
+   characteristics for subsequent transactions of a session.  <TT
 CLASS="COMMAND"
 >SET
    TRANSACTION</TT
@@ -149,7 +161,7 @@ CLASS="COMMAND"
   </P
 ><P
 >   The isolation level of a transaction determines what data the
-   transaction can see when other transactions are running concurrently.
+   transaction can see when other transactions are running concurrently:
 
    <P
 ></P
@@ -157,9 +169,9 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->READ COMMITTED</VAR
+>READ COMMITTED</TT
 ></DT
 ><DD
 ><P
@@ -168,14 +180,15 @@ CLASS="LITERAL"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SERIALIZABLE</VAR
+>SERIALIZABLE</TT
 ></DT
 ><DD
 ><P
->       The current transaction can only see rows committed before
-       first query or data-modification statement was executed in this transaction.
+>       All statements of the current transaction can only see rows committed
+       before the first query or data-modification statement was executed in
+       this transaction.
       </P
 ><DIV
 CLASS="TIP"
@@ -186,8 +199,8 @@ CLASS="TIP"
 >Tip: </B
 >        Intuitively, serializable means that two concurrent
         transactions will leave the database in the same state as if
-        the two has been executed strictly after one another in either
-        order.
+        the two had been executed strictly one after the other (in one
+        order or the other).
        </P
 ></BLOCKQUOTE
 ></DIV
@@ -196,8 +209,37 @@ CLASS="TIP"
 ></DIV
 ><P>
 
-   The transaction isolation level cannot be set after the first query
-   or data-modification statement (<TT
+   The SQL standard defines two additional levels, <TT
+CLASS="LITERAL"
+>READ
+   UNCOMMITTED</TT
+> and <TT
+CLASS="LITERAL"
+>REPEATABLE READ</TT
+>.
+   In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <TT
+CLASS="LITERAL"
+>READ
+   UNCOMMITTED</TT
+> is treated as
+   <TT
+CLASS="LITERAL"
+>READ COMMITTED</TT
+>, while <TT
+CLASS="LITERAL"
+>REPEATABLE
+   READ</TT
+> is treated as <TT
+CLASS="LITERAL"
+>SERIALIZABLE</TT
+>.
+  </P
+><P
+>   The transaction isolation level cannot be changed after the first query or
+   data-modification statement (<TT
 CLASS="COMMAND"
 >SELECT</TT
 >,
@@ -214,7 +256,7 @@ CLASS="COMMAND"
 >, <TT
 CLASS="COMMAND"
 >FETCH</TT
->,
+>, or
    <TT
 CLASS="COMMAND"
 >COPY</TT
@@ -229,52 +271,52 @@ HREF="mvcc.html"
 >   The transaction access mode determines whether the transaction is
    read/write or read-only.  Read/write is the default.  When a
    transaction is read-only, the following SQL commands are
-   disallowed: <VAR
+   disallowed: <TT
 CLASS="LITERAL"
->INSERT</VAR
->, <VAR
+>INSERT</TT
+>, <TT
 CLASS="LITERAL"
->UPDATE</VAR
+>UPDATE</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->DELETE</VAR
->, and <VAR
+>DELETE</TT
+>, and <TT
 CLASS="LITERAL"
->COPY TO</VAR
+>COPY TO</TT
 > if the
    table they would write to is not a temporary table; all
-   <VAR
+   <TT
 CLASS="LITERAL"
->CREATE</VAR
->, <VAR
+>CREATE</TT
+>, <TT
 CLASS="LITERAL"
->ALTER</VAR
+>ALTER</TT
 >, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->DROP</VAR
-> commands; <VAR
+>DROP</TT
+> commands; <TT
 CLASS="LITERAL"
->COMMENT</VAR
+>COMMENT</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->GRANT</VAR
->, <VAR
+>GRANT</TT
+>, <TT
 CLASS="LITERAL"
->REVOKE</VAR
+>REVOKE</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->TRUNCATE</VAR
->; and <VAR
+>TRUNCATE</TT
+>; and <TT
 CLASS="LITERAL"
->EXPLAIN ANALYZE</VAR
+>EXPLAIN ANALYZE</TT
 >
-   and <VAR
+   and <TT
 CLASS="LITERAL"
->EXECUTE</VAR
+>EXECUTE</TT
 > if the command they would execute is
    among those listed.  This is a high-level notion of read-only that
    does not prevent writes to disk.
@@ -283,25 +325,61 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42588"
+NAME="AEN43160"
 ></A
 ><H2
 >Notes</H2
 ><P
->   The session default transaction isolation level can also be set
-   with the command
-</P><PRE
-CLASS="PROGRAMLISTING"
->SET default_transaction_isolation = '<VAR
+>   If <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+> is executed without a prior
+   <TT
+CLASS="COMMAND"
+>START TRANSACTION</TT
+> or  <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>,
+   it will appear to have no effect, since the transaction will immediately
+   end.
+  </P
+><P
+>   It is possible to dispense with <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+> by
+   instead specifying the desired <VAR
 CLASS="REPLACEABLE"
->value</VAR
->'</PRE
-><P>
-   and in the configuration file.  Consult <A
+>transaction_modes</VAR
+> in
+   <TT
+CLASS="COMMAND"
+>START TRANSACTION</TT
+>.
+  </P
+><P
+>   The session default transaction modes can also be set by setting the
+   configuration parameters <A
+HREF="runtime-config.html#GUC-DEFAULT-TRANSACTION-ISOLATION"
+>default_transaction_isolation</A
+>
+   and <A
+HREF="runtime-config.html#GUC-DEFAULT-TRANSACTION-READ-ONLY"
+>default_transaction_read_only</A
+>.
+   (In fact <TT
+CLASS="COMMAND"
+>SET SESSION CHARACTERISTICS</TT
+> is just a
+   verbose equivalent for setting these variables with <TT
+CLASS="COMMAND"
+>SET</TT
+>.)
+   This allows them to be set in the configuration file.  Consult <A
 HREF="runtime-config.html"
 >Section 16.4</A
-> for more
-   information.
+> for more information.
   </P
 ></DIV
 ><DIV
@@ -316,35 +394,25 @@ NAME="R1-SQL-SET-TRANSACTION-3"
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > standard.
-   <VAR
+   <TT
 CLASS="LITERAL"
->SERIALIZABLE</VAR
+>SERIALIZABLE</TT
 > is the default transaction
-   isolation level in the standard; in <SPAN
+   isolation level in the standard; in
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> the default is
-   ordinarily <VAR
+> the default is ordinarily
+   <TT
 CLASS="LITERAL"
->READ COMMITTED</VAR
+>READ COMMITTED</TT
 >, but you can change it as
-   described above.  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not
-   provide the isolation levels <VAR
+   mentioned above.  Because of multiversion concurrency control, the
+   <TT
 CLASS="LITERAL"
->READ UNCOMMITTED</VAR
->
-   and <VAR
-CLASS="LITERAL"
->REPEATABLE READ</VAR
->. Because of multiversion
-   concurrency control, the <VAR
-CLASS="LITERAL"
->SERIALIZABLE</VAR
-> level is
-   not truly serializable. See <A
+>SERIALIZABLE</TT
+> level is not truly
+   serializable. See <A
 HREF="mvcc.html"
 >Chapter 12</A
 > for details.
@@ -352,7 +420,22 @@ HREF="mvcc.html"
 ><P
 >   In the SQL standard, there is one other transaction characteristic
    that can be set with these commands: the size of the diagnostics
-   area.  This concept is only for use in embedded SQL.
+   area.  This concept is specific to embedded SQL, and therefore is
+   not implemented in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server.
+  </P
+><P
+>   The SQL standard requires commas between successive <VAR
+CLASS="REPLACEABLE"
+>transaction_modes</VAR
+>, but for historical
+   reasons <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows the commas to be
+   omitted.
   </P
 ></DIV
 ><DIV

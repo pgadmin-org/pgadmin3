@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47446"
+NAME="AEN48015"
 ></A
 ><H2
 >Name</H2
@@ -107,12 +107,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server</DIV
 ><A
-NAME="AEN47450"
+NAME="AEN48019"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47452"
+NAME="AEN48021"
 ></A
 ><H2
 >Synopsis</H2
@@ -163,6 +163,15 @@ CLASS="COMMAND"
 >  status  [-D <VAR
 CLASS="REPLACEABLE"
 >datadir</VAR
+>]<BR><TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>  kill  [<VAR
+CLASS="REPLACEABLE"
+>signal_name</VAR
+>] [<VAR
+CLASS="REPLACEABLE"
+>process_id</VAR
 >]</P
 ></DIV
 ><DIV
@@ -198,20 +207,20 @@ CLASS="APPLICATION"
    controlled shutdown.
   </P
 ><P
->   In <VAR
+>   In <TT
 CLASS="OPTION"
->start</VAR
+>start</TT
 > mode, a new server is launched.  The
    server is started in the background, and standard input is attached to
    <TT
 CLASS="FILENAME"
 >/dev/null</TT
 >.  The standard output and standard
-   error are either appended to a log file (if the <VAR
+   error are either appended to a log file (if the <TT
 CLASS="OPTION"
->-l</VAR
+>-l</TT
 >
-   option is used), or redirected to  <SPAN
+   option is used), or redirected to <SPAN
 CLASS="APPLICATION"
 >pg_ctl</SPAN
 >'s 
@@ -220,23 +229,26 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_ctl</SPAN
 > should be redirected 
-   to a file or piped to another process, for example a log rotating program,
-   otherwise <TT
+   to a file or piped to another process such as a log rotating program
+   like <SPAN
+CLASS="APPLICATION"
+>rotatelogs</SPAN
+>; otherwise the <TT
 CLASS="COMMAND"
 >postmaster</TT
-> will write its output to the controlling
-   terminal (from the background) and will not leave the shell's
-   process group.
+> 
+   will write its output to the controlling terminal (from the background) 
+   and will not leave the shell's process group.
   </P
 ><P
->   In <VAR
+>   In <TT
 CLASS="OPTION"
->stop</VAR
+>stop</TT
 > mode, the server that is running in
    the specified data directory is shut down.  Three different
-   shutdown methods can be selected with the <VAR
+   shutdown methods can be selected with the <TT
 CLASS="OPTION"
->-m</VAR
+>-m</TT
 >
    option: <SPAN
 CLASS="QUOTE"
@@ -256,9 +268,9 @@ CLASS="QUOTE"
    a recovery run on restart.
   </P
 ><P
->   <VAR
+>   <TT
 CLASS="OPTION"
->restart</VAR
+>restart</TT
 > mode effectively executes a stop followed
    by a start.  This allows changing the <TT
 CLASS="COMMAND"
@@ -267,9 +279,9 @@ CLASS="COMMAND"
    command-line options.
   </P
 ><P
->   <VAR
+>   <TT
 CLASS="OPTION"
->reload</VAR
+>reload</TT
 > mode simply sends the
    <TT
 CLASS="COMMAND"
@@ -291,9 +303,9 @@ CLASS="FILENAME"
    to take effect.
   </P
 ><P
->   <VAR
+>   <TT
 CLASS="OPTION"
->status</VAR
+>status</TT
 > mode checks whether a server is running in
    the specified data directory. If it is, the <ACRONYM
 CLASS="ACRONYM"
@@ -301,6 +313,24 @@ CLASS="ACRONYM"
 >
    and the command line options that were used to invoke it are
    displayed.
+  </P
+><P
+>   <TT
+CLASS="OPTION"
+>kill</TT
+> mode allows you to send a signal to a specified
+    process.  This is particularly valuable for <SPAN
+CLASS="PRODUCTNAME"
+>MS Windows</SPAN
+>
+    which does not have a <SPAN
+CLASS="APPLICATION"
+>kill</SPAN
+> command.  Use 
+    <TT
+CLASS="LITERAL"
+>--help</TT
+> to see a list of supported signal names.
   </P
 ></DIV
 ><DIV
@@ -317,12 +347,12 @@ NAME="APP-PG-CTL-OPTIONS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-D <VAR
 CLASS="REPLACEABLE"
 >datadir</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -335,12 +365,12 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-l <VAR
 CLASS="REPLACEABLE"
 >filename</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -357,12 +387,12 @@ CLASS="SYSTEMITEM"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-m <VAR
 CLASS="REPLACEABLE"
 >mode</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -370,27 +400,27 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >mode</VAR
 >
-	may be <VAR
+	may be <TT
 CLASS="LITERAL"
->smart</VAR
->, <VAR
+>smart</TT
+>, <TT
 CLASS="LITERAL"
->fast</VAR
+>fast</TT
 >, or
-	<VAR
+	<TT
 CLASS="LITERAL"
->immediate</VAR
+>immediate</TT
 >, or the first letter of one of
 	these three.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-o <VAR
 CLASS="REPLACEABLE"
 >options</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -406,12 +436,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-p <VAR
 CLASS="REPLACEABLE"
 >path</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -436,9 +466,9 @@ CLASS="FILENAME"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-s</VAR
+>-s</TT
 ></DT
 ><DD
 ><P
@@ -446,9 +476,9 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-w</VAR
+>-w</TT
 ></DT
 ><DD
 ><P
@@ -487,9 +517,9 @@ CLASS="PRODUCTNAME"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-W</VAR
+>-W</TT
 ></DT
 ><DD
 ><P
@@ -505,7 +535,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47604"
+NAME="AEN48186"
 ></A
 ><H2
 >Environment</H2
@@ -555,7 +585,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47620"
+NAME="AEN48202"
 ></A
 ><H2
 >Files</H2
@@ -590,18 +620,18 @@ CLASS="FILENAME"
       <SPAN
 CLASS="APPLICATION"
 >pg_ctl</SPAN
-> (in <VAR
+> (in <TT
 CLASS="OPTION"
->start</VAR
+>start</TT
 >
       mode) will pass the contents of the file as options to the
       <TT
 CLASS="COMMAND"
 >postmaster</TT
 > command, unless overridden by the
-      <VAR
+      <TT
 CLASS="OPTION"
->-o</VAR
+>-o</TT
 > option.
      </P
 ></DD
@@ -616,22 +646,22 @@ CLASS="FILENAME"
       <SPAN
 CLASS="APPLICATION"
 >pg_ctl</SPAN
-> (in <VAR
+> (in <TT
 CLASS="OPTION"
->restart</VAR
+>restart</TT
 > mode) 
       will pass the contents of the file as options to the 
       <SPAN
 CLASS="APPLICATION"
 >postmaster</SPAN
 >, unless overridden 
-      by the <VAR
+      by the <TT
 CLASS="OPTION"
->-o</VAR
+>-o</TT
 > option. The contents of this file 
-      are also displayed in <VAR
+      are also displayed in <TT
 CLASS="OPTION"
->status</VAR
+>status</TT
 > mode.
      </P
 ></DD
@@ -647,12 +677,12 @@ CLASS="FILENAME"
 CLASS="APPLICATION"
 >psql</SPAN
 > when the
-      <VAR
+      <TT
 CLASS="OPTION"
->-w</VAR
-> is given in <VAR
+>-w</TT
+> is given in <TT
 CLASS="OPTION"
->start</VAR
+>start</TT
 > mode.
      </P
 ></DD
@@ -662,7 +692,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47656"
+NAME="AEN48238"
 ></A
 ><H2
 >Notes</H2
@@ -749,9 +779,9 @@ CLASS="USERINPUT"
 >pg_ctl stop</KBD
 ></PRE
 ><P>
-    stops the server. Using the <VAR
+    stops the server. Using the <TT
 CLASS="OPTION"
->-m</VAR
+>-m</TT
 > switch allows one
     to control <SPAN
 CLASS="emphasis"
@@ -856,7 +886,7 @@ Command line was:
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47708"
+NAME="AEN48290"
 ></A
 ><H2
 >See Also</H2

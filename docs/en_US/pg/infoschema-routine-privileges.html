@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Information Schema"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="information-schema.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 32. The Information Schema</TD
+>Chapter 30. The Information Schema</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,34 +93,34 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-ROUTINE-PRIVILEGES"
->32.25. <VAR
+>30.25. <TT
 CLASS="LITERAL"
->routine_privileges</VAR
+>routine_privileges</TT
 ></A
 ></H1
 ><P
->   The view <VAR
+>   The view <TT
 CLASS="LITERAL"
->routine_privileges</VAR
+>routine_privileges</TT
 > identifies all
    privileges granted on functions to the current user or by the
    current user.  There is one row for each combination of function,
    grantor, and grantee.  Privileges granted to groups are identified
-   in the view <VAR
+   in the view <TT
 CLASS="LITERAL"
->role_routine_grants</VAR
+>role_routine_grants</TT
 >.
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN27187"
+NAME="AEN26340"
 ></A
 ><P
 ><B
->Table 32-23. <VAR
+>Table 30-23. <TT
 CLASS="LITERAL"
->routine_privileges</VAR
+>routine_privileges</TT
 > Columns</B
 ></P
 ><TABLE
@@ -139,9 +139,9 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->grantor</VAR
+>grantor</TT
 ></TD
 ><TD
 ><TT
@@ -153,9 +153,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->grantee</VAR
+>grantee</TT
 ></TD
 ><TD
 ><TT
@@ -167,9 +167,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->specific_catalog</VAR
+>specific_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -181,9 +181,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->specific_schema</VAR
+>specific_schema</TT
 ></TD
 ><TD
 ><TT
@@ -195,9 +195,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->specific_name</VAR
+>specific_name</TT
 ></TD
 ><TD
 ><TT
@@ -210,15 +210,15 @@ CLASS="QUOTE"
 >"specific name"</SPAN
 > of the function.  See <A
 HREF="infoschema-routines.html"
->Section 32.26</A
+>Section 30.26</A
 > for more information.
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->routine_catalog</VAR
+>routine_catalog</TT
 ></TD
 ><TD
 ><TT
@@ -230,9 +230,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->routine_schema</VAR
+>routine_schema</TT
 ></TD
 ><TD
 ><TT
@@ -244,9 +244,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->routine_name</VAR
+>routine_name</TT
 ></TD
 ><TD
 ><TT
@@ -258,9 +258,9 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->privilege_type</VAR
+>privilege_type</TT
 ></TD
 ><TD
 ><TT
@@ -268,16 +268,16 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
->Always <VAR
+>Always <TT
 CLASS="LITERAL"
->EXECUTE</VAR
+>EXECUTE</TT
 > (the only privilege type for functions)</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->is_grantable</VAR
+>is_grantable</TT
 ></TD
 ><TD
 ><TT
@@ -285,21 +285,21 @@ CLASS="TYPE"
 >character_data</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->YES</VAR
-> if the privilege is grantable, <VAR
+>YES</TT
+> if the privilege is grantable, <TT
 CLASS="LITERAL"
->NO</VAR
+>NO</TT
 > if not</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->   Note that the column <VAR
+>   Note that the column <TT
 CLASS="LITERAL"
->grantee</VAR
+>grantee</TT
 > makes no
    distinction between users and groups.  If you have users and groups
    with the same name, there is unfortunately no way to distinguish
@@ -354,9 +354,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->role_usage_grants</VAR
+>role_usage_grants</TT
 ></TD
 ><TD
 WIDTH="34%"
@@ -371,9 +371,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><VAR
+><TT
 CLASS="LITERAL"
->routines</VAR
+>routines</TT
 ></TD
 ></TR
 ></TABLE

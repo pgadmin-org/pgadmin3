@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -108,7 +108,7 @@ NAME="CONFIGURE"
 >Configuration</B
 ></P
 ><A
-NAME="AEN14212"
+NAME="AEN14899"
 ></A
 ><P
 >    The first step of the installation procedure is to configure the
@@ -158,12 +158,12 @@ CLASS="FILENAME"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--prefix=<VAR
 CLASS="REPLACEABLE"
 >PREFIX</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -184,16 +184,38 @@ CLASS="REPLACEABLE"
         </P
 ><P
 >         If you have special needs, you can also customize the
-         individual subdirectories with the following options.
+         individual subdirectories with the following options. However,
+         if you leave these with their defaults, the installation will be
+         relocatable, meaning you can move the directory after
+         installation. (The <TT
+CLASS="LITERAL"
+>man</TT
+> and <TT
+CLASS="LITERAL"
+>doc</TT
+>
+         locations are not affected by this.)
+        </P
+><P
+>         For relocatable installs, you might want to use 
+         <TT
+CLASS="FILENAME"
+>configure</TT
+>'s <TT
+CLASS="LITERAL"
+>--disable-rpath</TT
+>
+         option.  Also, you will need to tell the operating system how
+         to find the shared libraries.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--exec-prefix=<VAR
 CLASS="REPLACEABLE"
 >EXEC-PREFIX</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -220,12 +242,12 @@ CLASS="REPLACEABLE"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--bindir=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -244,12 +266,12 @@ CLASS="FILENAME"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--datadir=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -266,12 +288,12 @@ CLASS="REPLACEABLE"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--sysconfdir=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -286,12 +308,12 @@ CLASS="REPLACEABLE"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--libdir=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -307,12 +329,12 @@ CLASS="REPLACEABLE"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--includedir=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -327,36 +349,12 @@ CLASS="REPLACEABLE"
         </P
 ></DD
 ><DT
-><VAR
-CLASS="OPTION"
->--docdir=<VAR
-CLASS="REPLACEABLE"
->DIRECTORY</VAR
-></VAR
-></DT
-><DD
-><P
->         Documentation files, except <SPAN
-CLASS="QUOTE"
->"man"</SPAN
-> pages, will be
-         installed into this directory. The default is
-         <TT
-CLASS="FILENAME"
-><VAR
-CLASS="REPLACEABLE"
->PREFIX</VAR
->/doc</TT
->.
-        </P
-></DD
-><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--mandir=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -381,6 +379,43 @@ CLASS="REPLACEABLE"
 >.
         </P
 ></DD
+><DT
+><TT
+CLASS="OPTION"
+>--with-docdir=<VAR
+CLASS="REPLACEABLE"
+>DIRECTORY</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--without-docdir</TT
+></DT
+><DD
+><P
+>         Documentation files, except <SPAN
+CLASS="QUOTE"
+>"man"</SPAN
+> pages, will be
+         installed into this directory. The default is
+         <TT
+CLASS="FILENAME"
+><VAR
+CLASS="REPLACEABLE"
+>PREFIX</VAR
+>/doc</TT
+>.  If the option
+         <TT
+CLASS="OPTION"
+>--without-docdir</TT
+> is specified, the
+         documentation will not be installed by <TT
+CLASS="COMMAND"
+>make
+         install</TT
+>.  This is intended for packaging scripts
+         that have special methods for installing documentation.
+        </P
+></DD
 ></DL
 ></DIV
 ><P>
@@ -393,83 +428,81 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >       Care has been taken to make it possible to install
-        <SPAN
+       <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> 
-       into shared installation locations (such as
-       <TT
+> into shared installation locations
+       (such as <TT
 CLASS="FILENAME"
 >/usr/local/include</TT
->) without interfering
-       with the namespace of the rest of the system.  First, the
-       string <SPAN
+>) without
+       interfering with the namespace of the rest of the system. First,
+       the string <SPAN
 CLASS="QUOTE"
->"<VAR
+>"<TT
 CLASS="LITERAL"
->/postgresql</VAR
+>/postgresql</TT
 >"</SPAN
 > is
-       automatically appended to <VAR
+       automatically appended to <TT
 CLASS="VARNAME"
->datadir</VAR
+>datadir</TT
 >,
-       <VAR
+       <TT
 CLASS="VARNAME"
->sysconfdir</VAR
->, and <VAR
+>sysconfdir</TT
+>, and <TT
 CLASS="VARNAME"
->docdir</VAR
+>docdir</TT
 >,
        unless the fully expanded directory name already contains the
        string <SPAN
 CLASS="QUOTE"
->"<VAR
+>"<TT
 CLASS="LITERAL"
->postgres</VAR
+>postgres</TT
 >"</SPAN
-> or <SPAN
+> or
+       <SPAN
 CLASS="QUOTE"
->"<VAR
+>"<TT
 CLASS="LITERAL"
->pgsql</VAR
+>pgsql</TT
 >"</SPAN
->.  For
-       example, if you choose <TT
-CLASS="FILENAME"
->/usr/local</TT
-> as
-       prefix, the documentation will be installed in
+>. For example, if you choose
        <TT
 CLASS="FILENAME"
+>/usr/local</TT
+> as prefix, the documentation will
+       be installed in <TT
+CLASS="FILENAME"
 >/usr/local/doc/postgresql</TT
->, but if the
-       prefix is <TT
+>,
+       but if the prefix is <TT
 CLASS="FILENAME"
 >/opt/postgres</TT
->, then it will be
-       in <TT
+>, then it
+       will be in <TT
 CLASS="FILENAME"
 >/opt/postgres/doc</TT
->.  The public C header files of the
-       client interfaces are installed into
-       <VAR
+>. The public C
+       header files of the client interfaces are installed into
+       <TT
 CLASS="VARNAME"
->includedir</VAR
-> and are namespace-clean.  The
+>includedir</TT
+> and are namespace-clean. The
        internal header files and the server header files are installed
-       into private directories under
-       <VAR
+       into private directories under <TT
 CLASS="VARNAME"
->includedir</VAR
->.
-       See the documentation of each interface for information about how to get at
-       the its header files.
-       Finally, a private subdirectory will also be created, if appropriate,
-       under <VAR
+>includedir</TT
+>. See
+       the documentation of each interface for information about how to
+       get at the its header files. Finally, a private subdirectory will
+       also be created, if appropriate, under <TT
 CLASS="VARNAME"
->libdir</VAR
-> for dynamically loadable modules.       
+>libdir</TT
+>
+       for dynamically loadable modules.
       </P
 ></BLOCKQUOTE
 ></DIV
@@ -482,12 +515,12 @@ CLASS="VARNAME"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--with-includes=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORIES</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -503,25 +536,25 @@ CLASS="APPLICATION"
 >) installed in a non-standard
          location,
          you have to use this option and probably also the corresponding
-         <VAR
+         <TT
 CLASS="OPTION"
->--with-libraries</VAR
+>--with-libraries</TT
 > option.
         </P
 ><P
->         Example: <VAR
+>         Example: <TT
 CLASS="LITERAL"
->--with-includes=/opt/gnu/include:/usr/sup/include</VAR
+>--with-includes=/opt/gnu/include:/usr/sup/include</TT
 >.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--with-libraries=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORIES</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -531,21 +564,21 @@ CLASS="REPLACEABLE"
 > is a colon-separated list of
          directories to search for libraries. You will probably have
          to use this option (and the corresponding
-         <VAR
+         <TT
 CLASS="OPTION"
->--with-includes</VAR
+>--with-includes</TT
 > option) if you have packages
          installed in non-standard locations.
         </P
 ><P
->         Example: <VAR
+>         Example: <TT
 CLASS="LITERAL"
->--with-libraries=/opt/gnu/lib:/usr/sup/lib</VAR
+>--with-libraries=/opt/gnu/lib:/usr/sup/lib</TT
 >.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--enable-nls[<SPAN
 CLASS="OPTIONAL"
@@ -553,7 +586,7 @@ CLASS="OPTIONAL"
 CLASS="REPLACEABLE"
 >LANGUAGES</VAR
 ></SPAN
->]</VAR
+>]</TT
 ></DT
 ><DD
 ><P
@@ -568,9 +601,9 @@ CLASS="REPLACEABLE"
 >LANGUAGES</VAR
 > is a space separated
          list of codes of the languages that you want supported, for
-         example <VAR
+         example <TT
 CLASS="LITERAL"
->--enable-nls='de fr'</VAR
+>--enable-nls='de fr'</TT
 >.  (The intersection
          between your list and the set of actually provided
          translations will be computed automatically.)  If you do not
@@ -586,12 +619,12 @@ CLASS="APPLICATION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--with-pgport=<VAR
 CLASS="REPLACEABLE"
 >NUMBER</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -611,9 +644,9 @@ CLASS="PRODUCTNAME"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--with-perl</VAR
+>--with-perl</TT
 ></DT
 ><DD
 ><P
@@ -621,9 +654,9 @@ CLASS="OPTION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--with-python</VAR
+>--with-python</TT
 ></DT
 ><DD
 ><P
@@ -631,44 +664,32 @@ CLASS="OPTION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--with-tcl</VAR
+>--with-tcl</TT
 ></DT
 ><DD
 ><P
->         Build components that require Tcl/Tk, which are
-         <SPAN
-CLASS="APPLICATION"
->libpgtcl</SPAN
->, <SPAN
-CLASS="APPLICATION"
->pgtclsh</SPAN
->,
-         <SPAN
-CLASS="APPLICATION"
->pgtksh</SPAN
->,
-         and <SPAN
+>         Build <SPAN
 CLASS="APPLICATION"
 >PL/Tcl</SPAN
->.  But see below about
-         <VAR
+>, which requires Tcl/Tk
+         <TT
 CLASS="OPTION"
->--without-tk</VAR
+>--without-tk</TT
 >.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--without-tk</VAR
+>--without-tk</TT
 ></DT
 ><DD
 ><P
->         If you specify <VAR
+>         If you specify <TT
 CLASS="OPTION"
->--with-tcl</VAR
+>--with-tcl</TT
 > and this option, then
          the program that requires <SPAN
 CLASS="PRODUCTNAME"
@@ -682,18 +703,18 @@ CLASS="APPLICATION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--with-tclconfig=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--with-tkconfig=<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -713,146 +734,90 @@ CLASS="FILENAME"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--with-java</VAR
-></DT
-><DD
-><P
->         Build the <ACRONYM
-CLASS="ACRONYM"
->JDBC</ACRONYM
-> driver and associated Java
-         packages.
-        </P
-></DD
-><DT
-><VAR
+>--with-krb4</TT
+><BR><TT
 CLASS="OPTION"
->--with-krb4[<SPAN
-CLASS="OPTIONAL"
->=<VAR
-CLASS="REPLACEABLE"
->DIRECTORY</VAR
-></SPAN
->]</VAR
-><BR><VAR
-CLASS="OPTION"
->--with-krb5[<SPAN
-CLASS="OPTIONAL"
->=<VAR
-CLASS="REPLACEABLE"
->DIRECTORY</VAR
-></SPAN
->]</VAR
+>--with-krb5</TT
 ></DT
 ><DD
 ><P
 >         Build with support for Kerberos authentication. You can use
-         either Kerberos version 4 or 5, but not both. The
-         <VAR
-CLASS="REPLACEABLE"
->DIRECTORY</VAR
-> argument specifies the root
-         directory of the Kerberos installation;
+         either Kerberos version 4 or 5, but not both.  On many
+         systems, the Kerberos system is not installed in a location
+         that is searched by default (e.g., <TT
+CLASS="FILENAME"
+>/usr/include</TT
+>,
          <TT
 CLASS="FILENAME"
->/usr/athena</TT
-> is assumed as default. If the
-         relevant header files and libraries are not under a common
-         parent directory, then you must use the
-         <VAR
-CLASS="OPTION"
->--with-includes</VAR
-> and <VAR
-CLASS="OPTION"
->--with-libraries</VAR
->
-         options in addition to this option. If, on the other hand,
-         the required files are in a location that is searched by
-         default (e.g., <TT
-CLASS="FILENAME"
 >/usr/lib</TT
->), then you can leave off
-         the argument.
-        </P
-><P
->         <TT
+>), so you must use the options
+         <TT
+CLASS="OPTION"
+>--with-includes</TT
+> and <TT
+CLASS="OPTION"
+>--with-libraries</TT
+> in
+         addition to this option.  <TT
 CLASS="FILENAME"
 >configure</TT
-> will check for the required header
-         files and libraries to make sure that your Kerberos
-         installation is sufficient before proceeding.
+> will check
+         for the required header files and libraries to make sure that
+         your Kerberos installation is sufficient before proceeding.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--with-krb-srvnam=<VAR
 CLASS="REPLACEABLE"
 >NAME</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
 >         The name of the Kerberos service principal.
-         <VAR
+         <TT
 CLASS="LITERAL"
->postgres</VAR
+>postgres</TT
 > is the default. There's probably no
          reason to change this.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--with-openssl[<SPAN
-CLASS="OPTIONAL"
->=<VAR
-CLASS="REPLACEABLE"
->DIRECTORY</VAR
-></SPAN
->]</VAR
+>--with-openssl</TT
 ></DT
 ><DD
 ><P
 >         Build with support for <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
-> (encrypted) connections. 
-         This requires the <SPAN
-CLASS="PRODUCTNAME"
->OpenSSL</SPAN
-> package to be installed.
-         The <VAR
-CLASS="REPLACEABLE"
->DIRECTORY</VAR
-> argument specifies the
-         root directory of the <SPAN
-CLASS="PRODUCTNAME"
->OpenSSL</SPAN
-> installation; the
-         default is <TT
-CLASS="FILENAME"
->/usr/local/ssl</TT
->.
-        </P
-><P
->         <TT
-CLASS="FILENAME"
->configure</TT
-> will check for the required header
-         files and libraries to make sure that your <SPAN
+> (encrypted)
+         connections. This requires the <SPAN
 CLASS="PRODUCTNAME"
 >OpenSSL</SPAN
 >
-         installation is sufficient before proceeding.
+         package to be installed.  <TT
+CLASS="FILENAME"
+>configure</TT
+> will check
+         for the required header files and libraries to make sure that
+         your <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+> installation is sufficient
+         before proceeding.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--with-pam</VAR
+>--with-pam</TT
 ></DT
 ><DD
 ><P
@@ -860,16 +825,16 @@ CLASS="OPTION"
 CLASS="ACRONYM"
 >PAM</ACRONYM
 ><A
-NAME="AEN14462"
+NAME="AEN15137"
 ></A
 >
          (Pluggable Authentication Modules) support.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--without-readline</VAR
+>--without-readline</TT
 ></DT
 ><DD
 ><P
@@ -885,9 +850,9 @@ CLASS="APPLICATION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--with-rendezvous</VAR
+>--with-rendezvous</TT
 ></DT
 ><DD
 ><P
@@ -895,23 +860,35 @@ CLASS="OPTION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--disable-spinlocks</VAR
+>--disable-spinlocks</TT
 ></DT
 ><DD
 ><P
->         Allow the builds to succeed even if PostgreSQL has no CPU
-         spinlock support for the platform.  The lack of spinlock
-         support will result in poor performance; therefore, this
-         option should only be used if the build aborts and informs
-         you that the platform lacks spinlock support.
+>         Allow the build to succeed even if <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+         has no CPU spinlock support for the platform.  The lack of
+         spinlock support will result in poor performance; therefore,
+         this option should only be used if the build aborts and
+         informs you that the platform lacks spinlock support. If this
+         option is required to build <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> on
+         your platform, please report the problem to the
+         <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> developers.
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--enable-thread-safety</VAR
+>--enable-thread-safety</TT
 ></DT
 ><DD
 ><P
@@ -928,9 +905,9 @@ CLASS="APPLICATION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--without-zlib</VAR
+>--without-zlib</TT
 ></DT
 ><DD
 ><P
@@ -947,9 +924,9 @@ CLASS="APPLICATION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--enable-debug</VAR
+>--enable-debug</TT
 ></DT
 ><DD
 ><P
@@ -966,9 +943,9 @@ CLASS="OPTION"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--enable-cassert</VAR
+>--enable-cassert</TT
 ></DT
 ><DD
 ><P
@@ -991,9 +968,9 @@ CLASS="QUOTE"
         </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--enable-depend</VAR
+>--enable-depend</TT
 ></DT
 ><DD
 ><P
@@ -1083,7 +1060,7 @@ CLASS="SCREEN"
 >Regression Tests</B
 ></P
 ><A
-NAME="AEN14532"
+NAME="AEN15210"
 ></A
 ><P
 >    If you want to test the newly built server before you install it,
@@ -1159,20 +1136,20 @@ HREF="install-procedure.html#CONFIGURE"
     be granted.
    </P
 ><P
->    You can use <VAR
+>    You can use <TT
 CLASS="LITERAL"
->gmake install-strip</VAR
+>gmake install-strip</TT
 > instead of
-    <VAR
+    <TT
 CLASS="LITERAL"
->gmake install</VAR
+>gmake install</TT
 > to strip the executable files and
     libraries as they are installed.  This will save some space.  If
     you built with debugging support, stripping will effectively
     remove the debugging support, so it should only be done if
-    debugging is no longer needed.  <VAR
+    debugging is no longer needed.  <TT
 CLASS="LITERAL"
->install-strip</VAR
+>install-strip</TT
 >
     tries to do a reasonable job saving space, but it does not have
     perfect knowledge of how to strip every unneeded byte from an
@@ -1230,6 +1207,38 @@ CLASS="USERINPUT"
 ></DIV
 ></LI
 ></OL
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Registering <SPAN
+CLASS="APPLICATION"
+>eventlog</SPAN
+> on <SPAN
+CLASS="SYSTEMITEM"
+>Windows</SPAN
+>: </B
+>    To register a <SPAN
+CLASS="SYSTEMITEM"
+>Windows</SPAN
+> <SPAN
+CLASS="APPLICATION"
+>eventlog</SPAN
+>
+    library with the operating system, issue this command after installation:
+</P><PRE
+CLASS="SCREEN"
+><KBD
+CLASS="USERINPUT"
+>regsvr32 <VAR
+CLASS="REPLACEABLE"
+>pgsql_library_directory</VAR
+>/pgevent.dll</KBD
+></PRE
+><P>
+    This creates registry entries used by the event viewer.
+   </P
 ></DIV
 ><DIV
 CLASS="FORMALPARA"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="extend.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. Extending <ACRONYM
+>Chapter 31. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
@@ -96,22 +96,22 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="EXTEND-TYPE-SYSTEM"
->33.2. The <SPAN
+>31.2. The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > Type System</A
 ></H1
 ><A
-NAME="AEN28626"
+NAME="AEN27835"
 ></A
 ><A
-NAME="AEN28628"
+NAME="AEN27837"
 ></A
 ><A
-NAME="AEN28631"
+NAME="AEN27840"
 ></A
 ><A
-NAME="AEN28633"
+NAME="AEN27842"
 ></A
 ><P
 >    <SPAN
@@ -125,8 +125,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28638"
->33.2.1. Base Types</A
+NAME="AEN27847"
+>31.2.1. Base Types</A
 ></H2
 ><P
 >     Base types are those, like <TT
@@ -156,8 +156,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28644"
->33.2.2. Composite Types</A
+NAME="AEN27853"
+>31.2.2. Composite Types</A
 ></H2
 ><P
 >     Composite types, or row types, are created whenever the user
@@ -180,8 +180,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28649"
->33.2.3. Domains</A
+NAME="AEN27858"
+>31.2.3. Domains</A
 ></H2
 ><P
 >     A domain is based on a particular base type and for many purposes
@@ -193,7 +193,7 @@ NAME="AEN28649"
 >     Domains can be created using the <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> commands
+> command
      <TT
 CLASS="COMMAND"
 >CREATE DOMAIN</TT
@@ -206,8 +206,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28655"
->33.2.4. Pseudo-Types</A
+NAME="AEN27864"
+>31.2.4. Pseudo-Types</A
 ></H2
 ><P
 >     There are a few <SPAN
@@ -230,19 +230,19 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="EXTEND-TYPES-POLYMORPHIC"
->33.2.5. Polymorphic Types</A
+>31.2.5. Polymorphic Types</A
 ></H2
 ><A
-NAME="AEN28662"
+NAME="AEN27871"
 ></A
 ><A
-NAME="AEN28664"
+NAME="AEN27873"
 ></A
 ><A
-NAME="AEN28666"
+NAME="AEN27875"
 ></A
 ><A
-NAME="AEN28669"
+NAME="AEN27878"
 ></A
 ><P
 >     Two pseudo-types of special interest are <TT
@@ -307,9 +307,9 @@ CLASS="TYPE"
 >     Thus, when more than one argument position is declared with a polymorphic
      type, the net effect is that only certain combinations of actual argument
      types are allowed.  For example, a function declared as
-     <VAR
+     <TT
 CLASS="LITERAL"
->foo(anyelement, anyelement)</VAR
+>foo(anyelement, anyelement)</TT
 > will take any two input values,
      so long as they are of the same data type.
     </P
@@ -319,10 +319,10 @@ CLASS="LITERAL"
      and the actual data type supplied as the argument determines the actual
      result type for that call.  For example, if there were not already
      an array subscripting mechanism, one could define a function that
-     implements subscripting as <VAR
+     implements subscripting as <TT
 CLASS="LITERAL"
 >subscript(anyarray, integer)
-     returns anyelement</VAR
+     returns anyelement</TT
 >.  This declaration constrains the actual first
      argument to be an array type, and allows the parser to infer the correct
      result type from the actual first argument's type.

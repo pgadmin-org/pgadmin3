@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Interfaces"
 HREF="client-interfaces.html"><LINK
 REL="PREVIOUS"
-TITLE="Further Reading"
-HREF="jdbc-reading.html"><LINK
+TITLE="Internals"
+HREF="ecpg-develop.html"><LINK
 REL="NEXT"
 TITLE="Data Types"
 HREF="infoschema-datatypes.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="jdbc-reading.html"
+HREF="ecpg-develop.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="jdbc.html"
+HREF="ecpg.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="INFORMATION-SCHEMA"
 ></A
->Chapter 32. The Information Schema</H1
+>Chapter 30. The Information Schema</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,331 +102,331 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->32.1. <A
+>30.1. <A
 HREF="information-schema.html#INFOSCHEMA-SCHEMA"
 >The Schema</A
 ></DT
 ><DT
->32.2. <A
+>30.2. <A
 HREF="infoschema-datatypes.html"
 >Data Types</A
 ></DT
 ><DT
->32.3. <A
+>30.3. <A
 HREF="infoschema-information-schema-catalog-name.html"
-><VAR
+><TT
 CLASS="LITERAL"
->information_schema_catalog_name</VAR
+>information_schema_catalog_name</TT
 ></A
 ></DT
 ><DT
->32.4. <A
+>30.4. <A
 HREF="infoschema-applicable-roles.html"
-><VAR
+><TT
 CLASS="LITERAL"
->applicable_roles</VAR
+>applicable_roles</TT
 ></A
 ></DT
 ><DT
->32.5. <A
+>30.5. <A
 HREF="infoschema-check-constraints.html"
-><VAR
+><TT
 CLASS="LITERAL"
->check_constraints</VAR
+>check_constraints</TT
 ></A
 ></DT
 ><DT
->32.6. <A
+>30.6. <A
 HREF="infoschema-column-domain-usage.html"
-><VAR
+><TT
 CLASS="LITERAL"
->column_domain_usage</VAR
+>column_domain_usage</TT
 ></A
 ></DT
 ><DT
->32.7. <A
+>30.7. <A
 HREF="infoschema-column-privileges.html"
-><VAR
+><TT
 CLASS="LITERAL"
->column_privileges</VAR
+>column_privileges</TT
 ></A
 ></DT
 ><DT
->32.8. <A
+>30.8. <A
 HREF="infoschema-column-udt-usage.html"
-><VAR
+><TT
 CLASS="LITERAL"
->column_udt_usage</VAR
+>column_udt_usage</TT
 ></A
 ></DT
 ><DT
->32.9. <A
+>30.9. <A
 HREF="infoschema-columns.html"
-><VAR
+><TT
 CLASS="LITERAL"
->columns</VAR
+>columns</TT
 ></A
 ></DT
 ><DT
->32.10. <A
+>30.10. <A
 HREF="infoschema-constraint-column-usage.html"
-><VAR
+><TT
 CLASS="LITERAL"
->constraint_column_usage</VAR
+>constraint_column_usage</TT
 ></A
 ></DT
 ><DT
->32.11. <A
+>30.11. <A
 HREF="infoschema-constraint-table-usage.html"
-><VAR
+><TT
 CLASS="LITERAL"
->constraint_table_usage</VAR
+>constraint_table_usage</TT
 ></A
 ></DT
 ><DT
->32.12. <A
+>30.12. <A
 HREF="infoschema-data-type-privileges.html"
-><VAR
+><TT
 CLASS="LITERAL"
->data_type_privileges</VAR
+>data_type_privileges</TT
 ></A
 ></DT
 ><DT
->32.13. <A
+>30.13. <A
 HREF="infoschema-domain-constraints.html"
-><VAR
+><TT
 CLASS="LITERAL"
->domain_constraints</VAR
+>domain_constraints</TT
 ></A
 ></DT
 ><DT
->32.14. <A
+>30.14. <A
 HREF="infoschema-domain-udt-usage.html"
-><VAR
+><TT
 CLASS="LITERAL"
->domain_udt_usage</VAR
+>domain_udt_usage</TT
 ></A
 ></DT
 ><DT
->32.15. <A
+>30.15. <A
 HREF="infoschema-domains.html"
-><VAR
+><TT
 CLASS="LITERAL"
->domains</VAR
+>domains</TT
 ></A
 ></DT
 ><DT
->32.16. <A
+>30.16. <A
 HREF="infoschema-element-types.html"
-><VAR
+><TT
 CLASS="LITERAL"
->element_types</VAR
+>element_types</TT
 ></A
 ></DT
 ><DT
->32.17. <A
+>30.17. <A
 HREF="infoschema-enabled-roles.html"
-><VAR
+><TT
 CLASS="LITERAL"
->enabled_roles</VAR
+>enabled_roles</TT
 ></A
 ></DT
 ><DT
->32.18. <A
+>30.18. <A
 HREF="infoschema-key-column-usage.html"
-><VAR
+><TT
 CLASS="LITERAL"
->key_column_usage</VAR
+>key_column_usage</TT
 ></A
 ></DT
 ><DT
->32.19. <A
+>30.19. <A
 HREF="infoschema-parameters.html"
-><VAR
+><TT
 CLASS="LITERAL"
->parameters</VAR
+>parameters</TT
 ></A
 ></DT
 ><DT
->32.20. <A
+>30.20. <A
 HREF="infoschema-referential-constraints.html"
-><VAR
+><TT
 CLASS="LITERAL"
->referential_constraints</VAR
+>referential_constraints</TT
 ></A
 ></DT
 ><DT
->32.21. <A
+>30.21. <A
 HREF="infoschema-role-column-grants.html"
-><VAR
+><TT
 CLASS="LITERAL"
->role_column_grants</VAR
+>role_column_grants</TT
 ></A
 ></DT
 ><DT
->32.22. <A
+>30.22. <A
 HREF="infoschema-role-routine-grants.html"
-><VAR
+><TT
 CLASS="LITERAL"
->role_routine_grants</VAR
+>role_routine_grants</TT
 ></A
 ></DT
 ><DT
->32.23. <A
+>30.23. <A
 HREF="infoschema-role-table-grants.html"
-><VAR
+><TT
 CLASS="LITERAL"
->role_table_grants</VAR
+>role_table_grants</TT
 ></A
 ></DT
 ><DT
->32.24. <A
+>30.24. <A
 HREF="infoschema-role-usage-grants.html"
-><VAR
+><TT
 CLASS="LITERAL"
->role_usage_grants</VAR
+>role_usage_grants</TT
 ></A
 ></DT
 ><DT
->32.25. <A
+>30.25. <A
 HREF="infoschema-routine-privileges.html"
-><VAR
+><TT
 CLASS="LITERAL"
->routine_privileges</VAR
+>routine_privileges</TT
 ></A
 ></DT
 ><DT
->32.26. <A
+>30.26. <A
 HREF="infoschema-routines.html"
-><VAR
+><TT
 CLASS="LITERAL"
->routines</VAR
+>routines</TT
 ></A
 ></DT
 ><DT
->32.27. <A
+>30.27. <A
 HREF="infoschema-schemata.html"
-><VAR
+><TT
 CLASS="LITERAL"
->schemata</VAR
+>schemata</TT
 ></A
 ></DT
 ><DT
->32.28. <A
+>30.28. <A
 HREF="infoschema-sql-features.html"
-><VAR
+><TT
 CLASS="LITERAL"
->sql_features</VAR
+>sql_features</TT
 ></A
 ></DT
 ><DT
->32.29. <A
+>30.29. <A
 HREF="infoschema-sql-implementation-info.html"
-><VAR
+><TT
 CLASS="LITERAL"
->sql_implementation_info</VAR
+>sql_implementation_info</TT
 ></A
 ></DT
 ><DT
->32.30. <A
+>30.30. <A
 HREF="infoschema-sql-languages.html"
-><VAR
+><TT
 CLASS="LITERAL"
->sql_languages</VAR
+>sql_languages</TT
 ></A
 ></DT
 ><DT
->32.31. <A
+>30.31. <A
 HREF="infoschema-sql-packages.html"
-><VAR
+><TT
 CLASS="LITERAL"
->sql_packages</VAR
+>sql_packages</TT
 ></A
 ></DT
 ><DT
->32.32. <A
+>30.32. <A
 HREF="infoschema-sql-sizing.html"
-><VAR
+><TT
 CLASS="LITERAL"
->sql_sizing</VAR
+>sql_sizing</TT
 ></A
 ></DT
 ><DT
->32.33. <A
+>30.33. <A
 HREF="infoschema-sql-sizing-profiles.html"
-><VAR
+><TT
 CLASS="LITERAL"
->sql_sizing_profiles</VAR
+>sql_sizing_profiles</TT
 ></A
 ></DT
 ><DT
->32.34. <A
+>30.34. <A
 HREF="infoschema-table-constraints.html"
-><VAR
+><TT
 CLASS="LITERAL"
->table_constraints</VAR
+>table_constraints</TT
 ></A
 ></DT
 ><DT
->32.35. <A
+>30.35. <A
 HREF="infoschema-table-privileges.html"
-><VAR
+><TT
 CLASS="LITERAL"
->table_privileges</VAR
+>table_privileges</TT
 ></A
 ></DT
 ><DT
->32.36. <A
+>30.36. <A
 HREF="infoschema-tables.html"
-><VAR
+><TT
 CLASS="LITERAL"
->tables</VAR
+>tables</TT
 ></A
 ></DT
 ><DT
->32.37. <A
+>30.37. <A
 HREF="infoschema-triggers.html"
-><VAR
+><TT
 CLASS="LITERAL"
->triggers</VAR
+>triggers</TT
 ></A
 ></DT
 ><DT
->32.38. <A
+>30.38. <A
 HREF="infoschema-usage-privileges.html"
-><VAR
+><TT
 CLASS="LITERAL"
->usage_privileges</VAR
+>usage_privileges</TT
 ></A
 ></DT
 ><DT
->32.39. <A
+>30.39. <A
 HREF="infoschema-view-column-usage.html"
-><VAR
+><TT
 CLASS="LITERAL"
->view_column_usage</VAR
+>view_column_usage</TT
 ></A
 ></DT
 ><DT
->32.40. <A
+>30.40. <A
 HREF="infoschema-view-table-usage.html"
-><VAR
+><TT
 CLASS="LITERAL"
->view_table_usage</VAR
+>view_table_usage</TT
 ></A
 ></DT
 ><DT
->32.41. <A
+>30.41. <A
 HREF="infoschema-views.html"
-><VAR
+><TT
 CLASS="LITERAL"
->views</VAR
+>views</TT
 ></A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN25267"
+NAME="AEN24359"
 ></A
 ><P
 >  The information schema consists of a set of views that contain
@@ -456,13 +456,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-SCHEMA"
->32.1. The Schema</A
+>30.1. The Schema</A
 ></H1
 ><P
 >   The information schema itself is a schema named
-   <VAR
+   <TT
 CLASS="LITERAL"
->information_schema</VAR
+>information_schema</TT
 >.  This schema automatically
    exists in all databases.  The owner of this schema is the initial
    database user in the cluster, and that user naturally has all the
@@ -495,7 +495,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="jdbc-reading.html"
+HREF="ecpg-develop.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -523,7 +523,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Further Reading</TD
+>Internals</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

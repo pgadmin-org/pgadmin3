@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="DDL-SCHEMAS"
 >5.8. Schemas</A
 ></H1
 ><A
-NAME="AEN2221"
+NAME="AEN2318"
 ></A
 ><P
 >   A <SPAN
@@ -118,14 +118,14 @@ CLASS="NOTE"
 >Note: </B
 >    Users of a cluster do not necessarily have the privilege to access every
     database in the cluster.  Sharing of user names means that there
-    cannot be different users named, say, <VAR
+    cannot be different users named, say, <TT
 CLASS="LITERAL"
->joe</VAR
+>joe</TT
 > in two databases
     in the same cluster; but the system can be configured to allow
-    <VAR
+    <TT
 CLASS="LITERAL"
->joe</VAR
+>joe</TT
 > access to only some of the databases.
    </P
 ></BLOCKQUOTE
@@ -138,16 +138,16 @@ CLASS="FIRSTTERM"
    in turn contain tables.  Schemas also contain other kinds of named
    objects, including data types, functions, and operators.  The same
    object name can be used in different schemas without conflict; for
-   example, both <VAR
+   example, both <TT
 CLASS="LITERAL"
->schema1</VAR
-> and <VAR
+>schema1</TT
+> and <TT
 CLASS="LITERAL"
->myschema</VAR
+>myschema</TT
 > may
-   contain tables named <VAR
+   contain tables named <TT
 CLASS="LITERAL"
->mytable</VAR
+>mytable</TT
 >.  Unlike databases,
    schemas are not rigidly separated: a user may access objects in any
    of the schemas in the database he is connected to, if he has
@@ -192,13 +192,13 @@ NAME="DDL-SCHEMAS-CREATE"
 >5.8.1. Creating a Schema</A
 ></H2
 ><A
-NAME="AEN2244"
+NAME="AEN2341"
 ></A
 ><P
->    To create a separate schema, use the command <VAR
+>    To create a separate schema, use the command <TT
 CLASS="LITERAL"
 >CREATE
-    SCHEMA</VAR
+    SCHEMA</TT
 >.  Give the schema a name of your choice.  For
     example:
 </P><PRE
@@ -207,10 +207,10 @@ CLASS="PROGRAMLISTING"
 ><P>
    </P
 ><A
-NAME="AEN2250"
+NAME="AEN2347"
 ></A
 ><A
-NAME="AEN2252"
+NAME="AEN2349"
 ></A
 ><P
 >    To create or access objects in a schema, write a
@@ -224,36 +224,40 @@ CLASS="SYNOPSIS"
 ><VAR
 CLASS="REPLACEABLE"
 >schema</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 ><VAR
 CLASS="REPLACEABLE"
 >table</VAR
 ></PRE
 ><P>
-    Actually, the even more general syntax
+    (For brevity we will speak of tables only, but the same ideas apply
+    to other kinds of named objects, such as types and functions.)
+   </P
+><P
+>    Actually, the even more general syntax
 </P><PRE
 CLASS="SYNOPSIS"
 ><VAR
 CLASS="REPLACEABLE"
 >database</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 ><VAR
 CLASS="REPLACEABLE"
 >schema</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 ><VAR
 CLASS="REPLACEABLE"
 >table</VAR
 ></PRE
 ><P>
     can be used too, but at present this is just for pro-forma compliance
-    with the SQL standard; if you write a database name it must be the
+    with the SQL standard.  If you write a database name, it must be the
     same as the database you are connected to.
    </P
 ><P
@@ -269,7 +273,7 @@ CLASS="PROGRAMLISTING"
     the following chapters.
    </P
 ><A
-NAME="AEN2269"
+NAME="AEN2367"
 ></A
 ><P
 >    To drop a schema if it's empty (all objects in it have been
@@ -310,9 +314,9 @@ HREF="ddl-schemas.html#DDL-SCHEMAS-PATTERNS"
 > for how this can be useful.
    </P
 ><P
->    Schema names beginning with <VAR
+>    Schema names beginning with <TT
 CLASS="LITERAL"
->pg_</VAR
+>pg_</TT
 > are reserved for
     system purposes and may not be created by users.
    </P
@@ -326,7 +330,7 @@ NAME="DDL-SCHEMAS-PUBLIC"
 >5.8.2. The Public Schema</A
 ></H2
 ><A
-NAME="AEN2285"
+NAME="AEN2383"
 ></A
 ><P
 >    In the previous sections we created tables without specifying any
@@ -356,13 +360,13 @@ NAME="DDL-SCHEMAS-PATH"
 >5.8.3. The Schema Search Path</A
 ></H2
 ><A
-NAME="AEN2294"
+NAME="AEN2392"
 ></A
 ><A
-NAME="AEN2296"
+NAME="AEN2394"
 ></A
 ><A
-NAME="AEN2298"
+NAME="AEN2396"
 ></A
 ><P
 >    Qualified names are tedious to write, and it's often best not to
@@ -382,7 +386,7 @@ CLASS="FIRSTTERM"
     in other schemas in the database.
    </P
 ><A
-NAME="AEN2304"
+NAME="AEN2402"
 ></A
 ><P
 >    The first schema named in the search path is called the current schema.
@@ -394,7 +398,7 @@ CLASS="COMMAND"
     command does not specify a schema name.
    </P
 ><A
-NAME="AEN2309"
+NAME="AEN2407"
 ></A
 ><P
 >    To show the current search path, use the following command:
@@ -430,9 +434,9 @@ CLASS="SCREEN"
 CLASS="PROGRAMLISTING"
 >SET search_path TO myschema,public;</PRE
 ><P>
-    (We omit the <VAR
+    (We omit the <TT
 CLASS="LITERAL"
->$user</VAR
+>$user</TT
 > here because we have no
     immediate need for it.)  And then we can access the table without
     schema qualification:
@@ -440,9 +444,9 @@ CLASS="LITERAL"
 CLASS="PROGRAMLISTING"
 >DROP TABLE mytable;</PRE
 ><P>
-    Also, since <VAR
+    Also, since <TT
 CLASS="LITERAL"
->myschema</VAR
+>myschema</TT
 > is the first element in
     the path, new objects would by default be created in it.
    </P
@@ -458,8 +462,8 @@ CLASS="PROGRAMLISTING"
    </P
 ><P
 >    See also <A
-HREF="functions-misc.html"
->Section 9.13</A
+HREF="functions-info.html"
+>Section 9.19</A
 > for other ways to access
     the schema search path.
    </P
@@ -471,21 +475,21 @@ HREF="functions-misc.html"
     special provision: you must write
 </P><PRE
 CLASS="SYNOPSIS"
-><VAR
+><TT
 CLASS="LITERAL"
->OPERATOR(</VAR
+>OPERATOR(</TT
 ><VAR
 CLASS="REPLACEABLE"
 >schema</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->.</VAR
+>.</TT
 ><VAR
 CLASS="REPLACEABLE"
 >operator</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->)</VAR
+>)</TT
 ></PRE
 ><P>
     This is needed to avoid syntactic ambiguity.  An example is
@@ -506,41 +510,41 @@ NAME="DDL-SCHEMAS-PRIV"
 >5.8.4. Schemas and Privileges</A
 ></H2
 ><A
-NAME="AEN2334"
+NAME="AEN2432"
 ></A
 ><P
 >    By default, users cannot access any objects in schemas they do not
     own.  To allow that, the owner of the schema needs to grant the
-    <VAR
+    <TT
 CLASS="LITERAL"
->USAGE</VAR
+>USAGE</TT
 > privilege on the schema.  To allow users
     to make use of the objects in the schema, additional privileges
     may need to be granted, as appropriate for the object.
    </P
 ><P
 >    A user can also be allowed to create objects in someone else's
-    schema.  To allow that, the <VAR
+    schema.  To allow that, the <TT
 CLASS="LITERAL"
->CREATE</VAR
+>CREATE</TT
 > privilege on
     the schema needs to be granted.  Note that by default, everyone
-    has <VAR
+    has <TT
 CLASS="LITERAL"
->CREATE</VAR
-> and <VAR
+>CREATE</TT
+> and <TT
 CLASS="LITERAL"
->USAGE</VAR
+>USAGE</TT
 > privileges on
     the schema 
-    <VAR
+    <TT
 CLASS="LITERAL"
->public</VAR
+>public</TT
 >.  This allows all users that are able to
     connect to a given database to create objects in its
-    <VAR
+    <TT
 CLASS="LITERAL"
->public</VAR
+>public</TT
 > schema.  If you do
     not want to allow that, you can revoke that privilege:
 </P><PRE
@@ -575,21 +579,21 @@ NAME="DDL-SCHEMAS-CATALOG"
 >5.8.5. The System Catalog Schema</A
 ></H2
 ><A
-NAME="AEN2352"
+NAME="AEN2450"
 ></A
 ><P
->    In addition to <VAR
+>    In addition to <TT
 CLASS="LITERAL"
->public</VAR
+>public</TT
 > and user-created schemas, each
-    database contains a <VAR
+    database contains a <TT
 CLASS="LITERAL"
->pg_catalog</VAR
+>pg_catalog</TT
 > schema, which contains
     the system tables and all the built-in data types, functions, and
-    operators.  <VAR
+    operators.  <TT
 CLASS="LITERAL"
->pg_catalog</VAR
+>pg_catalog</TT
 > is always effectively part of
     the search path.  If it is not named explicitly in the path then
     it is implicitly searched <SPAN
@@ -601,9 +605,9 @@ CLASS="EMPHASIS"
 > searching the path's
     schemas.  This ensures that built-in names will always be
     findable.  However, you may explicitly place
-    <VAR
+    <TT
 CLASS="LITERAL"
->pg_catalog</VAR
+>pg_catalog</TT
 > at the end of your search path if you
     prefer to have user-defined names override built-in names.
    </P
@@ -612,9 +616,9 @@ CLASS="LITERAL"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > versions before 7.3,
-    table names beginning with <VAR
+    table names beginning with <TT
 CLASS="LITERAL"
->pg_</VAR
+>pg_</TT
 > were reserved.  This is
     no longer true: you may create such a table name if you wish, in
     any non-system schema.  However, it's best to continue to avoid
@@ -623,14 +627,14 @@ CLASS="LITERAL"
     table.  (With the default search path, an unqualified reference to
     your table name would be resolved as the system table instead.)
     System tables will continue to follow the convention of having
-    names beginning with <VAR
+    names beginning with <TT
 CLASS="LITERAL"
->pg_</VAR
+>pg_</TT
 >, so that they will not
     conflict with unqualified user-table names so long as users avoid
-    the <VAR
+    the <TT
 CLASS="LITERAL"
->pg_</VAR
+>pg_</TT
 > prefix.
    </P
 ></DIV
@@ -663,9 +667,9 @@ NAME="DDL-SCHEMAS-PATTERNS"
 ><P
 >       You can create a schema for each user with the same name as
        that user.  Recall that the default search path starts with
-       <VAR
+       <TT
 CLASS="LITERAL"
->$user</VAR
+>$user</TT
 >, which resolves to the user name.
        Therefore, if each user has a separate schema, they access their
        own schemas by default.
@@ -684,7 +688,7 @@ CLASS="LITERAL"
        privileges to allow the other users to access them.  Users can
        then refer to these additional objects by qualifying the names
        with a schema name, or they can put the additional schemas into
-       their path, as they choose.
+       their search path, as they choose.
       </P
 ></LI
 ></UL
@@ -708,7 +712,7 @@ NAME="DDL-SCHEMAS-PORTABILITY"
     implements only the basic schema support specified in the
     standard.  Therefore, many users consider qualified names to
     really consist of
-    <VAR
+    <TT
 CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
@@ -716,7 +720,7 @@ CLASS="REPLACEABLE"
 >.<VAR
 CLASS="REPLACEABLE"
 >tablename</VAR
-></VAR
+></TT
 >.
     This is how <SPAN
 CLASS="PRODUCTNAME"
@@ -725,14 +729,14 @@ CLASS="PRODUCTNAME"
     behave if you create a per-user schema for every user.
    </P
 ><P
->    Also, there is no concept of a <VAR
+>    Also, there is no concept of a <TT
 CLASS="LITERAL"
->public</VAR
+>public</TT
 > schema in the
     SQL standard.  For maximum conformance to the standard, you should
-    not use (perhaps even remove) the <VAR
+    not use (perhaps even remove) the <TT
 CLASS="LITERAL"
->public</VAR
+>public</TT
 > schema.
    </P
 ><P

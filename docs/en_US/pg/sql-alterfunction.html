@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-ALTERFUNCTION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN34867"
+NAME="AEN34521"
 ></A
 ><H2
 >Name</H2
 >ALTER FUNCTION&nbsp;--&nbsp;change the definition of a function</DIV
 ><A
-NAME="AEN34870"
+NAME="AEN34524"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN34872"
+NAME="AEN34526"
 ></A
 ><H2
 >Synopsis</H2
@@ -121,12 +121,22 @@ CLASS="REPLACEABLE"
 > [, ...] ] ) RENAME TO <VAR
 CLASS="REPLACEABLE"
 >newname</VAR
+>
+ALTER FUNCTION <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> ( [ <VAR
+CLASS="REPLACEABLE"
+>type</VAR
+> [, ...] ] ) OWNER TO <VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
 ></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34877"
+NAME="AEN34534"
 ></A
 ><H2
 >Description</H2
@@ -135,13 +145,13 @@ NAME="AEN34877"
 CLASS="COMMAND"
 >ALTER FUNCTION</TT
 > changes the definition of a
-   function.  The only functionality is to rename the function.
+   function.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34881"
+NAME="AEN34538"
 ></A
 ><H2
 >Parameters</H2
@@ -180,38 +190,72 @@ CLASS="REPLACEABLE"
 >      The new name of the function.
      </P
 ></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
+></DT
+><DD
+><P
+>      The new owner of the function.
+      To change the owner of a function, you must be a superuser.
+      Note that if the function is marked
+      <TT
+CLASS="LITERAL"
+>SECURITY DEFINER</TT
+>,
+      it will subsequently execute as the new owner.
+     </P
+></DD
 ></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34899"
+NAME="AEN34562"
 ></A
 ><H2
 >Examples</H2
 ><P
->   To rename the function <VAR
+>   To rename the function <TT
 CLASS="LITERAL"
->sqrt</VAR
+>sqrt</TT
 > for type
    <TT
 CLASS="TYPE"
 >integer</TT
-> to <VAR
+> to <TT
 CLASS="LITERAL"
->square_root</VAR
+>square_root</TT
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >ALTER FUNCTION sqrt(integer) RENAME TO square_root;</PRE
 ><P>
   </P
+><P
+>   To change the owner of the function <TT
+CLASS="LITERAL"
+>sqrt</TT
+> for type
+   <TT
+CLASS="TYPE"
+>integer</TT
+> to <TT
+CLASS="LITERAL"
+>joe</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER FUNCTION sqrt(integer) OWNER TO joe;</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34906"
+NAME="AEN34574"
 ></A
 ><H2
 >Compatibility</H2
@@ -221,13 +265,13 @@ CLASS="COMMAND"
 >ALTER FUNCTION</TT
 > statement in the SQL
    standard, but it does not provide the option to rename the
-   function.
+   function or change the owner.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34910"
+NAME="AEN34578"
 ></A
 ><H2
 >See Also</H2

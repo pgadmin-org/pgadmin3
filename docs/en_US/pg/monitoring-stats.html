@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Monitoring Database Activity"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="MONITORING-STATS"
 >23.2. The Statistics Collector</A
 ></H1
 ><A
-NAME="AEN19143"
+NAME="AEN20475"
 ></A
 ><P
 >   <SPAN
@@ -134,48 +134,50 @@ HREF="runtime-config.html"
    details about setting configuration parameters.)
   </P
 ><P
->   The parameter <VAR
-CLASS="VARNAME"
->stats_start_collector</VAR
-> must be set to
-   <VAR
+>   The parameter <A
+HREF="runtime-config.html#GUC-STATS-START-COLLECTOR"
+>stats_start_collector</A
+> must be
+   set to <TT
 CLASS="LITERAL"
->true</VAR
-> for the statistics collector to
-   be launched at all.  This is the default and recommended setting,
-   but it may be turned off if you have no interest in statistics and
-   want to squeeze out every last drop of overhead.  (The savings is
-   likely to be small, however.)  Note that this option
-   cannot be changed while the server is running.
+>true</TT
+> for the statistics collector to be launched
+   at all.  This is the default and recommended setting, but it may be
+   turned off if you have no interest in statistics and want to
+   squeeze out every last drop of overhead.  (The savings is likely to
+   be small, however.)  Note that this option cannot be changed while
+   the server is running.
   </P
 ><P
->   The parameters <VAR
-CLASS="VARNAME"
->stats_command_string</VAR
+>   The parameters <A
+HREF="runtime-config.html#GUC-STATS-COMMAND-STRING"
+>stats_command_string</A
 >,
-   <VAR
-CLASS="VARNAME"
->stats_block_level</VAR
->,
-   and <VAR
-CLASS="VARNAME"
->stats_row_level</VAR
+   <A
+HREF="runtime-config.html#GUC-STATS-BLOCK-LEVEL"
+>guc_stats_block_level</A
+>, and <A
+HREF="runtime-config.html#GUC-STATS-ROW-LEVEL"
+>guc_stats_row_level</A
 > control how much information is
    actually sent to the collector and thus determine how much run-time
-   overhead occurs.  These respectively determine whether a server process
-   sends its current command string, disk-block-level access statistics, and
-   row-level access statistics to the collector.  Normally these parameters are
-   set in <TT
+   overhead occurs.  These respectively determine whether a server
+   process sends its current command string, disk-block-level access
+   statistics, and row-level access statistics to the collector.
+   Normally these parameters are set in <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
-> so that they apply to all server
-   processes, but it is possible to turn them on or off in individual sessions
-   using the <TT
-CLASS="COMMAND"
->SET</TT
-> command.  (To prevent ordinary users
-   from hiding their activity from the administrator, only superusers are
-   allowed to change these parameters with <TT
+>
+   so that they apply to all server processes, but it is possible to
+   turn them on or off in individual sessions using the <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> command.  (To prevent
+   ordinary users from hiding their activity from the administrator,
+   only superusers are allowed to change these parameters with
+   <TT
 CLASS="COMMAND"
 >SET</TT
 >.)
@@ -187,20 +189,20 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     Since the parameters <VAR
+>     Since the parameters <TT
 CLASS="VARNAME"
->stats_command_string</VAR
+>stats_command_string</TT
 >,
-     <VAR
+     <TT
 CLASS="VARNAME"
->stats_block_level</VAR
+>stats_block_level</TT
 >, and
-     <VAR
+     <TT
 CLASS="VARNAME"
->stats_row_level</VAR
-> default to <VAR
+>stats_row_level</TT
+> default to <TT
 CLASS="LITERAL"
->false</VAR
+>false</TT
 >,
      very few statistics are collected in the default
      configuration. Enabling one or more of these configuration
@@ -233,9 +235,9 @@ HREF="monitoring-stats.html#MONITORING-STATS-VIEWS-TABLE"
    Each individual server process transmits new access counts to the collector
    just before waiting for another client command; so a query still in
    progress does not affect the displayed totals.  Also, the collector itself
-   emits new totals at most once per <VAR
+   emits new totals at most once per <TT
 CLASS="VARNAME"
->pgstat_stat_interval</VAR
+>pgstat_stat_interval</TT
 > milliseconds
    (500 by default).  So the displayed totals lag behind actual activity.
   </P
@@ -287,9 +289,9 @@ CLASS="ACRONYM"
 >, database, user, current query, and the time at
       which the current query began execution. The columns that report
       data on the current query are only available if the parameter
-      <VAR
+      <TT
 CLASS="VARNAME"
->stats_command_string</VAR
+>stats_command_string</TT
 > has been turned on.
       Furthermore, these columns read as null unless the user examining
       the view is a superuser or the same as the user owning the process
@@ -581,7 +583,7 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -589,7 +591,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -602,7 +604,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -610,7 +612,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -623,7 +625,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -631,7 +633,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -644,7 +646,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -652,7 +654,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -665,7 +667,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -673,7 +675,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -686,7 +688,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -694,7 +696,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -708,7 +710,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -716,7 +718,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -730,7 +732,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -738,7 +740,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -753,7 +755,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -761,7 +763,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -774,7 +776,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -782,7 +784,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -795,7 +797,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -803,7 +805,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -816,7 +818,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -824,7 +826,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -837,7 +839,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -845,7 +847,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >oid</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -858,12 +860,12 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >pg_stat_get_backend_idset</CODE
->()</VAR
+>()</TT
 ></TD
 ><TD
 ><TT
@@ -877,12 +879,12 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >pg_backend_pid</CODE
->()</VAR
+>()</TT
 ></TD
 ><TD
 ><TT
@@ -895,7 +897,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -903,7 +905,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >integer</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -916,7 +918,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -924,7 +926,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >integer</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -937,7 +939,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -945,7 +947,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >integer</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -958,7 +960,7 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -966,7 +968,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >integer</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -977,15 +979,15 @@ CLASS="TYPE"
 >       Active command of the given backend process (null if the
        current user is not a superuser nor the same user as that of
        the session being queried, or
-       <VAR
+       <TT
 CLASS="VARNAME"
->stats_command_string</VAR
+>stats_command_string</TT
 > is not on)
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -993,7 +995,7 @@ CLASS="FUNCTION"
 >(<TT
 CLASS="TYPE"
 >integer</TT
->)</VAR
+>)</TT
 ></TD
 ><TD
 ><TT
@@ -1005,20 +1007,20 @@ CLASS="TYPE"
        executing query was started (null if the
        current user is not a superuser nor the same user as that of
        the session being queried, or
-       <VAR
+       <TT
 CLASS="VARNAME"
->stats_command_string</VAR
+>stats_command_string</TT
 > is not on)
       </TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >pg_stat_reset</CODE
->()</VAR
+>()</TT
 ></TD
 ><TD
 ><TT

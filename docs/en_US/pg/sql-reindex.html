@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="PREPARE"
 HREF="sql-prepare.html"><LINK
 REL="NEXT"
-TITLE="RESET"
-HREF="sql-reset.html"><LINK
+TITLE="RELEASE SAVEPOINT"
+HREF="sql-release-savepoint.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-reset.html"
+HREF="sql-release-savepoint.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-reset.html"
+HREF="sql-release-savepoint.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -95,18 +95,18 @@ NAME="SQL-REINDEX"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41364"
+NAME="AEN41729"
 ></A
 ><H2
 >Name</H2
 >REINDEX&nbsp;--&nbsp;rebuild indexes</DIV
 ><A
-NAME="AEN41367"
+NAME="AEN41732"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41369"
+NAME="AEN41734"
 ></A
 ><H2
 >Synopsis</H2
@@ -120,7 +120,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41372"
+NAME="AEN41737"
 ></A
 ><H2
 >Description</H2
@@ -176,7 +176,7 @@ HREF="routine-reindex.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41386"
+NAME="AEN41751"
 ></A
 ><H2
 >Parameters</H2
@@ -186,9 +186,9 @@ NAME="AEN41386"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->DATABASE</VAR
+>DATABASE</TT
 ></DT
 ><DD
 ><P
@@ -198,9 +198,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TABLE</VAR
+>TABLE</TT
 ></DT
 ><DD
 ><P
@@ -212,9 +212,9 @@ CLASS="QUOTE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->INDEX</VAR
+>INDEX</TT
 ></DT
 ><DD
 ><P
@@ -233,9 +233,9 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->FORCE</VAR
+>FORCE</TT
 ></DT
 ><DD
 ><P
@@ -248,7 +248,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41415"
+NAME="AEN41780"
 ></A
 ><H2
 >Notes</H2
@@ -282,9 +282,9 @@ CLASS="COMMAND"
    (Indeed, in this sort of scenario you may find that server
    processes are crashing immediately at start-up, due to reliance on
    the corrupted indexes.)  To recover safely, the server must be started
-   with the <VAR
+   with the <TT
 CLASS="OPTION"
->-P</VAR
+>-P</TT
 > option, which prevents it from using
    indexes for system catalog lookups.
   </P
@@ -294,9 +294,9 @@ CLASS="OPTION"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server
-   with the <VAR
+   with the <TT
 CLASS="OPTION"
->-P</VAR
+>-P</TT
 > option included on its command line.
    Then, <TT
 CLASS="COMMAND"
@@ -328,9 +328,9 @@ CLASS="APPLICATION"
   </P
 ><P
 >   Alternatively, a regular server session can be started with
-   <VAR
+   <TT
 CLASS="OPTION"
->-P</VAR
+>-P</TT
 > included in its command line options.
    The method for doing this varies across clients, but in all
    <SPAN
@@ -340,9 +340,9 @@ CLASS="APPLICATION"
    the <TT
 CLASS="ENVAR"
 >PGOPTIONS</TT
-> environment variable to <VAR
+> environment variable to <TT
 CLASS="LITERAL"
->-P</VAR
+>-P</TT
 >
    before starting the client.  Note that while this method does not
    require locking out other clients, it may still be wise to prevent
@@ -404,14 +404,14 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41449"
+NAME="AEN41814"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Recreate the indexes on the table <VAR
+>   Recreate the indexes on the table <TT
 CLASS="LITERAL"
->my_table</VAR
+>my_table</TT
 >:
 
 </P><PRE
@@ -450,7 +450,7 @@ broken_db=&#62; \q</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41460"
+NAME="AEN41825"
 ></A
 ><H2
 >Compatibility</H2
@@ -495,7 +495,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-reset.html"
+HREF="sql-release-savepoint.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -519,7 +519,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->RESET</TD
+>RELEASE SAVEPOINT</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Tcl - Tcl Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="pltcl.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 38. PL/Tcl - Tcl Procedural Language</TD
+>Chapter 36. PL/Tcl - Tcl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,10 +93,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLTCL-TRIGGER"
->38.6. Trigger Procedures in PL/Tcl</A
+>36.6. Trigger Procedures in PL/Tcl</A
 ></H1
 ><A
-NAME="AEN32753"
+NAME="AEN32211"
 ></A
 ><P
 >     Trigger procedures can be written in PL/Tcl.
@@ -105,9 +105,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > requires that a procedure that is to be called
      as a trigger must be declared as a function with no arguments
-     and a return type of <VAR
+     and a return type of <TT
 CLASS="LITERAL"
->trigger</VAR
+>trigger</TT
 >.
     </P
 ><P
@@ -120,9 +120,9 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$TG_name</VAR
+>$TG_name</TT
 ></DT
 ><DD
 ><P
@@ -133,9 +133,9 @@ CLASS="COMMAND"
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$TG_relid</VAR
+>$TG_relid</TT
 ></DT
 ><DD
 ><P
@@ -144,9 +144,9 @@ CLASS="VARNAME"
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$TG_relatts</VAR
+>$TG_relatts</TT
 ></DT
 ><DD
 ><P
@@ -163,67 +163,70 @@ CLASS="FUNCTION"
 	 numbered in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->.
+>.  (Empty list
+	 elements also appear in the positions of columns that have been
+	 dropped, so that the attribute numbering is correct for columns
+	 to their right.)
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$TG_when</VAR
+>$TG_when</TT
 ></DT
 ><DD
 ><P
->	 The string <VAR
+>	 The string <TT
 CLASS="LITERAL"
->BEFORE</VAR
-> or <VAR
+>BEFORE</TT
+> or <TT
 CLASS="LITERAL"
->AFTER</VAR
+>AFTER</TT
 > depending on the
 	 type of trigger call.
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$TG_level</VAR
+>$TG_level</TT
 ></DT
 ><DD
 ><P
->	 The string <VAR
+>	 The string <TT
 CLASS="LITERAL"
->ROW</VAR
-> or <VAR
+>ROW</TT
+> or <TT
 CLASS="LITERAL"
->STATEMENT</VAR
+>STATEMENT</TT
 > depending on the
 	 type of trigger call.
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$TG_op</VAR
+>$TG_op</TT
 ></DT
 ><DD
 ><P
->	 The string <VAR
+>	 The string <TT
 CLASS="LITERAL"
->INSERT</VAR
->, <VAR
+>INSERT</TT
+>, <TT
 CLASS="LITERAL"
->UPDATE</VAR
+>UPDATE</TT
 >, or
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->DELETE</VAR
+>DELETE</TT
 > depending on the type of trigger call.
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$NEW</VAR
+>$NEW</TT
 ></DT
 ><DD
 ><P
@@ -243,9 +246,9 @@ CLASS="COMMAND"
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$OLD</VAR
+>$OLD</TT
 ></DT
 ><DD
 ><P
@@ -265,9 +268,9 @@ CLASS="COMMAND"
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="VARNAME"
->$args</VAR
+>$args</TT
 ></DT
 ><DD
 ><P
@@ -276,15 +279,15 @@ CLASS="VARNAME"
 CLASS="COMMAND"
 >CREATE TRIGGER</TT
 > statement. These arguments are also accessible as
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->$1</VAR
-> ... <VAR
+>$1</TT
+> ... <TT
 CLASS="LITERAL"
 >$<VAR
 CLASS="REPLACEABLE"
 >n</VAR
-></VAR
+></TT
 > in the procedure body.
 	</P
 ></DD
@@ -294,19 +297,19 @@ CLASS="REPLACEABLE"
     </P
 ><P
 >     The return value from a trigger procedure can be one of the strings
-     <VAR
+     <TT
 CLASS="LITERAL"
->OK</VAR
-> or <VAR
+>OK</TT
+> or <TT
 CLASS="LITERAL"
->SKIP</VAR
+>SKIP</TT
 >, or a list as returned by the
-     <VAR
+     <TT
 CLASS="LITERAL"
->array get</VAR
-> Tcl command. If the return value is <VAR
+>array get</TT
+> Tcl command. If the return value is <TT
 CLASS="LITERAL"
->OK</VAR
+>OK</TT
 >,
      the operation (<TT
 CLASS="COMMAND"
@@ -318,15 +321,15 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >DELETE</TT
 >) that fired the trigger will proceed
-     normally. <VAR
+     normally. <TT
 CLASS="LITERAL"
->SKIP</VAR
+>SKIP</TT
 > tells the trigger manager to silently suppress
      the operation for this row. If a list is returned, it tells PL/Tcl to
      return a modified row to the trigger manager that will be inserted
-     instead of the one given in <VAR
+     instead of the one given in <TT
 CLASS="VARNAME"
->$NEW</VAR
+>$NEW</TT
 >.  (This works for <TT
 CLASS="COMMAND"
 >INSERT</TT
@@ -335,9 +338,9 @@ CLASS="COMMAND"
 >UPDATE</TT
 >
      only.) Needless to say that all this is only meaningful when the trigger
-     is <VAR
+     is <TT
 CLASS="LITERAL"
->BEFORE</VAR
+>BEFORE</TT
 > and <TT
 CLASS="COMMAND"
 >FOR EACH ROW</TT
@@ -351,7 +354,7 @@ CLASS="COMMAND"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION trigfunc_modcount() RETURNS trigger AS '
+>CREATE FUNCTION trigfunc_modcount() RETURNS trigger AS $$
     switch $TG_op {
         INSERT {
             set NEW($1) 0
@@ -365,7 +368,7 @@ CLASS="PROGRAMLISTING"
         }
     }
     return [array get NEW]
-' LANGUAGE pltcl;
+$$ LANGUAGE pltcl;
 
 CREATE TABLE mytab (num integer, description text, modcnt integer);
 

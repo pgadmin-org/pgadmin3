@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Routine Database Maintenance Tasks"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,40 +96,115 @@ NAME="LOGFILE-MAINTENANCE"
 >21.3. Log File Maintenance</A
 ></H1
 ><A
-NAME="AEN18843"
+NAME="AEN19975"
 ></A
 ><P
->   It's a good idea to save the database server's log output somewhere,
-   rather than just routing it to <TT
+>   It is a good idea to save the database server's log output
+   somewhere, rather than just routing it to <TT
 CLASS="FILENAME"
 >/dev/null</TT
->.  The log output
-   is invaluable when it comes time to diagnose problems.  However, the
-   log output tends to be voluminous (especially at higher debug levels)
-   and you won't want to save it indefinitely.  You need to <SPAN
+>.
+   The log output is invaluable when it comes time to diagnose
+   problems.  However, the log output tends to be voluminous
+   (especially at higher debug levels) and you won't want to save it
+   indefinitely.  You need to <SPAN
 CLASS="QUOTE"
 >"rotate"</SPAN
->
-   the log files so that new log files are started and old ones thrown
-   away every so often.
+> the log files so that
+   new log files are started and old ones removed after a reasonable
+   period of time.
   </P
 ><P
 >   If you simply direct the <SPAN
 CLASS="SYSTEMITEM"
 >stderr</SPAN
-> of the <TT
+> of the
+   <TT
 CLASS="COMMAND"
 >postmaster</TT
 > into a
-   file, the only way to truncate the log file is to stop and restart
+   file, you will have log output, but
+   the only way to truncate the log file is to stop and restart
    the <TT
 CLASS="COMMAND"
 >postmaster</TT
->. This may be OK for development setups but you won't
-   want to run a production server that way.
+>. This may be OK if you are using
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> in a development environment,
+   but few production servers would find this behavior acceptable.
   </P
 ><P
->   The simplest production-grade approach to managing log output is to
+>   A better approach is to send the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>'s
+   <SPAN
+CLASS="SYSTEMITEM"
+>stderr</SPAN
+> output to some type of log rotation program.
+   There is a built-in log rotation program, which you can use by
+   setting the configuration parameter <TT
+CLASS="LITERAL"
+>redirect_stderr</TT
+> to
+   <TT
+CLASS="LITERAL"
+>true</TT
+> in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>.  The control
+   parameters for this program are described in <A
+HREF="runtime-config.html#RUNTIME-CONFIG-LOGGING-WHERE"
+>Section 16.4.6.1</A
+>.
+  </P
+><P
+>   Alternatively, you might prefer to use an external log rotation
+   program, if you have one that you are already using with other
+   server software. For example, the <SPAN
+CLASS="APPLICATION"
+>rotatelogs</SPAN
+>
+   tool included in the <SPAN
+CLASS="PRODUCTNAME"
+>Apache</SPAN
+> distribution
+   can be used with <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  To do this,
+   just pipe the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>'s
+   <SPAN
+CLASS="SYSTEMITEM"
+>stderr</SPAN
+> output to the desired program.
+   If you start the server with
+   <TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>, then <SPAN
+CLASS="SYSTEMITEM"
+>stderr</SPAN
+>
+   is already redirected to <SPAN
+CLASS="SYSTEMITEM"
+>stdout</SPAN
+>, so you just need a
+   pipe command:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>pg_ctl start | rotatelogs /var/log/pgsql_log 86400</PRE
+><P>
+  </P
+><P
+>   Another production-grade approach to managing log output is to
    send it all to <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
@@ -138,26 +213,29 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >syslog</SPAN
 > deal with file rotation. To do this, set the
-   configurations parameter <VAR
+   configuration parameter <TT
 CLASS="LITERAL"
->syslog</VAR
-> to 2 (to log to
-   <SPAN
+>log_destination</TT
+> to <TT
+CLASS="LITERAL"
+>syslog</TT
+>
+   (to log to <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
-> only) in <TT
+> only) in
+   <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
->. Then
-   you can send a <VAR
+>. Then you can send a <TT
 CLASS="LITERAL"
->SIGHUP</VAR
-> signal to the
-   <SPAN
+>SIGHUP</TT
+>
+   signal to the <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
-> daemon whenever you want to force it to
-   start writing a new log file.  If you want to automate log
+> daemon whenever you want to force it
+   to start writing a new log file.  If you want to automate log
    rotation, the <SPAN
 CLASS="APPLICATION"
 >logrotate</SPAN
@@ -167,50 +245,35 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >syslog</SPAN
 >.
-
   </P
 ><P
 >   On many systems, however, <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
-> is not very reliable, particularly
-   with large log messages; it may truncate or drop messages just when
-   you need them the most. You may find it more useful to pipe the
-   <SPAN
-CLASS="SYSTEMITEM"
->stderr</SPAN
-> of the <TT
-CLASS="COMMAND"
->postmaster</TT
-> to some type of
-   log rotation program. If you start the server with
-   <TT
-CLASS="COMMAND"
->pg_ctl</TT
->, then the <SPAN
-CLASS="SYSTEMITEM"
->stderr</SPAN
-> of the <TT
-CLASS="COMMAND"
->postmaster</TT
->
-   is already redirected to <SPAN
-CLASS="SYSTEMITEM"
->stdout</SPAN
->, so you just need a
-   pipe command:
-   
-</P><PRE
-CLASS="PROGRAMLISTING"
->pg_ctl start | logrotate</PRE
-><P>
-
-   The <SPAN
+> is not very reliable,
+   particularly with large log messages; it may truncate or drop messages
+   just when you need them the most.  Also, on <SPAN
 CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> distribution doesn't include a suitable
-   log rotation program, but there are many available on the Internet;
-   one is included in the Apache distribution, for example.
+>linux</SPAN
+>,
+   <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> will sync each message to disk, yielding poor
+   performance.  (You can use a <TT
+CLASS="LITERAL"
+>-</TT
+> at the start of the file name
+   in the <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> config file to disable this behavior.)
+  </P
+><P
+>   Note that all the solutions described above take care of starting new
+   log files at configurable intervals, but they do not handle deletion
+   of old, no-longer-interesting log files.  You will also want to set
+   up a batch job to periodically delete old log files.
   </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Tcl - Tcl Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="pltcl.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 38. PL/Tcl - Tcl Procedural Language</TD
+>Chapter 36. PL/Tcl - Tcl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLTCL-DBACCESS"
->38.5. Database Access from PL/Tcl</A
+>36.5. Database Access from PL/Tcl</A
 ></H1
 ><P
 >     The following commands are available to access the database from
@@ -105,7 +105,7 @@ NAME="PLTCL-DBACCESS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -131,7 +131,7 @@ CLASS="OPTIONAL"
 CLASS="REPLACEABLE"
 >loop-body</VAR
 ></SPAN
->?</VAR
+>?</TT
 ></DT
 ><DD
 ><P
@@ -150,21 +150,21 @@ CLASS="COMMAND"
 	described below.
        </P
 ><P
->	The optional <VAR
+>	The optional <TT
 CLASS="LITERAL"
->-count</VAR
+>-count</TT
 > value tells
 	<CODE
 CLASS="FUNCTION"
 >spi_exec</CODE
 > the maximum number of rows
 	to process in the command.  The effect of this is comparable to
-	setting up a query as a cursor and then saying <VAR
+	setting up a query as a cursor and then saying <TT
 CLASS="LITERAL"
 >FETCH <VAR
 CLASS="REPLACEABLE"
 >n</VAR
-></VAR
+></TT
 >.
        </P
 ><P
@@ -173,9 +173,9 @@ CLASS="COMMAND"
 >SELECT</TT
 > statement, the values of the
 	result columns are placed into Tcl variables named after the columns.
-        If the <VAR
+        If the <TT
 CLASS="LITERAL"
->-array</VAR
+>-array</TT
 > option is given, the column values are
 	instead stored into the named associative array, with the
 	column names used as array indexes.
@@ -202,9 +202,9 @@ CLASS="PROGRAMLISTING"
 >spi_exec "SELECT count(*) AS cnt FROM pg_proc"</PRE
 ><P>
 
-	will set the Tcl variable <VAR
+	will set the Tcl variable <TT
 CLASS="LITERAL"
->$cnt</VAR
+>$cnt</TT
 > to the number of rows in
 	the <TT
 CLASS="STRUCTNAME"
@@ -234,17 +234,17 @@ CLASS="PROGRAMLISTING"
 }</PRE
 ><P>
 
-	will print a log message for every row of <VAR
+	will print a log message for every row of <TT
 CLASS="LITERAL"
->pg_class</VAR
+>pg_class</TT
 >.  This
 	feature works similarly to other Tcl looping constructs; in
-	particular <VAR
+	particular <TT
 CLASS="LITERAL"
->continue</VAR
-> and <VAR
+>continue</TT
+> and <TT
 CLASS="LITERAL"
->break</VAR
+>break</TT
 > work in the
 	usual way inside the loop body.
        </P
@@ -272,7 +272,7 @@ CLASS="REPLACEABLE"
 >	Prepares and saves a query plan for later execution.  The
 	saved plan will be retained for the life of the current
 	session.<A
-NAME="AEN32648"
+NAME="AEN32107"
 ></A
 >
        </P
@@ -280,15 +280,15 @@ NAME="AEN32648"
 >        The query may use parameters, that is, placeholders for
 	values to be supplied whenever the plan is actually executed.
 	In the query string, refer to parameters
-	by the symbols <VAR
+	by the symbols <TT
 CLASS="LITERAL"
->$1</VAR
-> ... <VAR
+>$1</TT
+> ... <TT
 CLASS="LITERAL"
 >$<VAR
 CLASS="REPLACEABLE"
 >n</VAR
-></VAR
+></TT
 >.
 	If the query uses parameters, the names of the parameter types
 	must be given as a Tcl list.  (Write an empty list for
@@ -297,16 +297,16 @@ CLASS="REPLACEABLE"
 >typelist</VAR
 > if no parameters are used.)
 	Presently, the parameter types must be identified by the internal
-	type names shown in the system table <VAR
+	type names shown in the system table <TT
 CLASS="LITERAL"
->pg_type</VAR
->; for example <VAR
+>pg_type</TT
+>; for example <TT
 CLASS="LITERAL"
->int4</VAR
+>int4</TT
 > not
-	<VAR
+	<TT
 CLASS="LITERAL"
->integer</VAR
+>integer</TT
 >.
        </P
 ><P
@@ -325,7 +325,7 @@ CLASS="FUNCTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
@@ -363,7 +363,7 @@ CLASS="OPTIONAL"
 CLASS="REPLACEABLE"
 >loop-body</VAR
 ></SPAN
->?</VAR
+>?</TT
 ></DT
 ><DD
 ><P
@@ -395,13 +395,13 @@ CLASS="REPLACEABLE"
 	if the query has no parameters.
        </P
 ><P
->	The optional value for <VAR
+>	The optional value for <TT
 CLASS="LITERAL"
->-nulls</VAR
+>-nulls</TT
 > is a string of spaces and
-	<VAR
+	<TT
 CLASS="LITERAL"
->'n'</VAR
+>'n'</TT
 > characters telling <CODE
 CLASS="FUNCTION"
 >spi_execp</CODE
@@ -422,12 +422,12 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >spi_exec</CODE
 >.
-        The <VAR
+        The <TT
 CLASS="LITERAL"
->-count</VAR
->, <VAR
+>-count</TT
+>, <TT
 CLASS="LITERAL"
->-array</VAR
+>-array</TT
 >, and
 	<VAR
 CLASS="REPLACEABLE"
@@ -440,40 +440,36 @@ CLASS="REPLACEABLE"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION t1_count(integer, integer) RETURNS integer AS '
+>CREATE FUNCTION t1_count(integer, integer) RETURNS integer AS $$
     if {![ info exists GD(plan) ]} {
         # prepare the saved plan on the first call
-        set GD(plan) [ spi_prepare \\
-                "SELECT count(*) AS cnt FROM t1 WHERE num &gt;= \\$1 AND num &lt;= \\$2" \\
+        set GD(plan) [ spi_prepare \
+                "SELECT count(*) AS cnt FROM t1 WHERE num &gt;= \$1 AND num &lt;= \$2" \
                 [ list int4 int4 ] ]
     }
     spi_execp -count 1 $GD(plan) [ list $1 $2 ]
     return $cnt
-' LANGUAGE pltcl;</PRE
+$$ LANGUAGE pltcl;</PRE
 ><P>
 
-	Note that each backslash that Tcl should see must be doubled when
-	we type in the function, since the main parser processes
-	backslashes, too, in <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->.  We need backslashes inside
-	the query string given to <CODE
+    We need backslashes inside the query string given to
+    <CODE
 CLASS="FUNCTION"
 >spi_prepare</CODE
-> to ensure that
-	the <VAR
+> to ensure that the
+    <TT
 CLASS="LITERAL"
 >$<VAR
 CLASS="REPLACEABLE"
 >n</VAR
-></VAR
-> markers will be passed through to
-	<CODE
+></TT
+> markers will be passed
+    through to <CODE
 CLASS="FUNCTION"
 >spi_prepare</CODE
-> as-is, and not
-	replaced by Tcl variable substitution.
+> as-is, and not replaced by Tcl
+    variable substitution.
+
        </P
 ></DD
 ><DT
@@ -525,13 +521,13 @@ CLASS="PROGRAMLISTING"
 >"SELECT '$val' AS ret"</PRE
 ><P>
 
-	where the Tcl variable <VAR
+	where the Tcl variable <TT
 CLASS="LITERAL"
->val</VAR
+>val</TT
 > actually contains
-	<VAR
+	<TT
 CLASS="LITERAL"
->doesn't</VAR
+>doesn't</TT
 >. This would result
 	in the final command string
 
@@ -553,7 +549,7 @@ CLASS="FUNCTION"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->SELECT 'doesn''t' AS ret</PRE
+>SELECT $q$doesn't$q$ AS ret</PRE
 ><P>
 
 	which can be formed in PL/Tcl using
@@ -585,42 +581,42 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >	Emits a log or error message. Possible levels are
-	<VAR
+	<TT
 CLASS="LITERAL"
->DEBUG</VAR
->, <VAR
+>DEBUG</TT
+>, <TT
 CLASS="LITERAL"
->LOG</VAR
->, <VAR
+>LOG</TT
+>, <TT
 CLASS="LITERAL"
->INFO</VAR
+>INFO</TT
 >,
-	<VAR
+	<TT
 CLASS="LITERAL"
->NOTICE</VAR
->, <VAR
+>NOTICE</TT
+>, <TT
 CLASS="LITERAL"
->WARNING</VAR
->, <VAR
+>WARNING</TT
+>, <TT
 CLASS="LITERAL"
->ERROR</VAR
+>ERROR</TT
 >, and
-	<VAR
+	<TT
 CLASS="LITERAL"
->FATAL</VAR
+>FATAL</TT
 >. Most simply emit the given message just like
-	the <VAR
+	the <TT
 CLASS="LITERAL"
->elog</VAR
-> C function. <VAR
+>elog</TT
+> C function. <TT
 CLASS="LITERAL"
->ERROR</VAR
+>ERROR</TT
 >
 	raises an error condition: further execution of the function is
 	abandoned, and the current transaction is aborted.
-	<VAR
+	<TT
 CLASS="LITERAL"
->FATAL</VAR
+>FATAL</TT
 > aborts the transaction and causes the current
 	session to shut down.  (There is probably no good reason to use
 	this error level in PL/Tcl functions, but it's provided for

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47786"
+NAME="AEN48368"
 ></A
 ><H2
 >Name</H2
@@ -107,12 +107,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server in single-user mode</DIV
 ><A
-NAME="AEN47790"
+NAME="AEN48372"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47792"
+NAME="AEN48374"
 ></A
 ><H2
 >Synopsis</H2
@@ -140,7 +140,7 @@ CLASS="REPLACEABLE"
 >filename</VAR
 >] [-O] [-P] [-s | -t  pa | pl | ex ] [-S <VAR
 CLASS="REPLACEABLE"
->sort-mem</VAR
+>work-mem</VAR
 >] [-W <VAR
 CLASS="REPLACEABLE"
 >seconds</VAR
@@ -179,7 +179,7 @@ CLASS="REPLACEABLE"
 >database</VAR
 >] [-P] [-s | -t  pa | pl | ex ] [-S <VAR
 CLASS="REPLACEABLE"
->sort-mem</VAR
+>work-mem</VAR
 >] [-v <VAR
 CLASS="REPLACEABLE"
 >protocol</VAR
@@ -197,7 +197,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47888"
+NAME="AEN48470"
 ></A
 ><H2
 >Description</H2
@@ -266,7 +266,7 @@ HREF="app-initdb.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47902"
+NAME="AEN48484"
 ></A
 ><H2
 >Options</H2
@@ -290,9 +290,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >postmaster</TT
 > with the
-    <VAR
+    <TT
 CLASS="OPTION"
->-o</VAR
+>-o</TT
 > switch.
    </P
 ><P
@@ -320,37 +320,37 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN47915"
+NAME="AEN48497"
 ></A
 ><H3
 >General Purpose</H3
 ><P
->     The options <VAR
+>     The options <TT
 CLASS="OPTION"
->-A</VAR
->, <VAR
+>-A</TT
+>, <TT
 CLASS="OPTION"
->-B</VAR
+>-B</TT
 >,
-     <VAR
+     <TT
 CLASS="OPTION"
->-c</VAR
->, <VAR
+>-c</TT
+>, <TT
 CLASS="OPTION"
->-d</VAR
->, <VAR
+>-d</TT
+>, <TT
 CLASS="OPTION"
->-D</VAR
+>-D</TT
 >,
-     <VAR
+     <TT
 CLASS="OPTION"
->-F</VAR
->, and <VAR
+>-F</TT
+>, and <TT
 CLASS="OPTION"
 >--<VAR
 CLASS="REPLACEABLE"
 >name</VAR
-></VAR
+></TT
 > have the same meanings
      as the <A
 HREF="app-postmaster.html"
@@ -359,9 +359,9 @@ CLASS="APPLICATION"
 >postmaster</SPAN
 ></A
 > except that
-     <VAR
+     <TT
 CLASS="LITERAL"
->-d 0</VAR
+>-d 0</TT
 > prevents the server log level of
      the <TT
 CLASS="COMMAND"
@@ -377,9 +377,9 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-e</VAR
+>-e</TT
 ></DT
 ><DD
 ><P
@@ -387,9 +387,9 @@ CLASS="OPTION"
 CLASS="QUOTE"
 >"European"</SPAN
 >, that is
-	<VAR
+	<TT
 CLASS="LITERAL"
->DMY</VAR
+>DMY</TT
 > ordering of input date fields.  This also causes
 	the day to be printed before the month in certain date output formats.
 	See <A
@@ -399,9 +399,9 @@ HREF="datatype-datetime.html"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-o</VAR
+>-o</TT
 > <VAR
 CLASS="REPLACEABLE"
 >filename</VAR
@@ -432,9 +432,9 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-P</VAR
+>-P</TT
 ></DT
 ><DD
 ><P
@@ -444,9 +444,9 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-s</VAR
+>-s</TT
 ></DT
 ><DD
 ><P
@@ -456,25 +456,24 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-S</VAR
+>-S</TT
 > <VAR
 CLASS="REPLACEABLE"
->sort-mem</VAR
+>work-mem</VAR
 ></DT
 ><DD
 ><P
 >	Specifies the amount of memory to be used by internal sorts and hashes
-	before resorting to temporary disk files.  The value is specified in
-	kilobytes, and defaults to 1024.  Note that for a complex query,
-	several sorts and/or hashes might be running in parallel, and each one
-	will be allowed to use as much as
-	<VAR
-CLASS="REPLACEABLE"
->sort-mem</VAR
-> kilobytes
-	before it starts to put data into temporary files.
+	before resorting to temporary disk files.  See the description of the
+	<TT
+CLASS="VARNAME"
+>work_mem</TT
+> configuration parameter in <A
+HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE-MEMORY"
+>Section 16.4.3.1</A
+>.
        </P
 ></DD
 ></DL
@@ -483,7 +482,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN47967"
+NAME="AEN48550"
 ></A
 ><H3
 >Options for stand-alone mode</H3
@@ -504,9 +503,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-E</VAR
+>-E</TT
 ></DT
 ><DD
 ><P
@@ -514,9 +513,9 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-N</VAR
+>-N</TT
 ></DT
 ><DD
 ><P
@@ -529,7 +528,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN47985"
+NAME="AEN48568"
 ></A
 ><H3
 >Semi-internal Options</H3
@@ -556,33 +555,33 @@ CLASS="EMPHASIS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-f</VAR
-> <VAR
+>-f</TT
+> <TT
 CLASS="LITERAL"
->{ s | i | m | n | h }</VAR
+>{ s | i | m | n | h }</TT
 ></DT
 ><DD
 ><P
 >	Forbids the use of particular scan and join methods:
-	<VAR
+	<TT
 CLASS="LITERAL"
->s</VAR
-> and <VAR
+>s</TT
+> and <TT
 CLASS="LITERAL"
->i</VAR
+>i</TT
 >
 	disable sequential and index scans respectively, while
-	<VAR
+	<TT
 CLASS="LITERAL"
->n</VAR
->, <VAR
+>n</TT
+>, <TT
 CLASS="LITERAL"
->m</VAR
->, and <VAR
+>m</TT
+>, and <TT
 CLASS="LITERAL"
->h</VAR
+>h</TT
 >
 	disable nested-loop, merge and hash joins respectively.
        </P
@@ -594,12 +593,12 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >	  Neither sequential scans nor nested-loop joins can be disabled completely;
-	  the <VAR
+	  the <TT
 CLASS="LITERAL"
->-fs</VAR
-> and <VAR
+>-fs</TT
+> and <TT
 CLASS="LITERAL"
->-fn</VAR
+>-fn</TT
 >
 	  options simply discourage the optimizer from using those
 	  plan types if it has any other alternative.
@@ -608,9 +607,9 @@ CLASS="LITERAL"
 ></DIV
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-O</VAR
+>-O</TT
 ></DT
 ><DD
 ><P
@@ -622,9 +621,9 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-p</VAR
+>-p</TT
 > <VAR
 CLASS="REPLACEABLE"
 >database</VAR
@@ -640,27 +639,27 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-t</VAR
-> <VAR
+>-t</TT
+> <TT
 CLASS="LITERAL"
->pa[rser] | pl[anner] | e[xecutor]</VAR
+>pa[rser] | pl[anner] | e[xecutor]</TT
 ></DT
 ><DD
 ><P
 >	Print timing statistics for each query relating to each of the
 	major system modules.  This option cannot be used together
-	with the <VAR
+	with the <TT
 CLASS="OPTION"
->-s</VAR
+>-s</TT
 > option.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-v</VAR
+>-v</TT
 > <VAR
 CLASS="REPLACEABLE"
 >protocol</VAR
@@ -672,9 +671,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-W</VAR
+>-W</TT
 > <VAR
 CLASS="REPLACEABLE"
 >seconds</VAR
@@ -687,9 +686,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->--describe-config</VAR
+>--describe-config</TT
 ></DT
 ><DD
 ><P
@@ -708,7 +707,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48044"
+NAME="AEN48627"
 ></A
 ><H2
 >Environment</H2
@@ -743,14 +742,14 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48054"
+NAME="AEN48637"
 ></A
 ><H2
 >Notes</H2
 ><P
->   To cancel a running query, send the <VAR
+>   To cancel a running query, send the <TT
 CLASS="LITERAL"
->SIGINT</VAR
+>SIGINT</TT
 > signal
    to the <TT
 CLASS="COMMAND"
@@ -762,13 +761,13 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >postgres</TT
 > to reload the configuration files,
-   send a <VAR
+   send a <TT
 CLASS="LITERAL"
->SIGHUP</VAR
+>SIGHUP</TT
 > signal.  Normally it's best to
-   <VAR
+   <TT
 CLASS="LITERAL"
->SIGHUP</VAR
+>SIGHUP</TT
 > the <TT
 CLASS="COMMAND"
 >postmaster</TT
@@ -776,9 +775,9 @@ CLASS="COMMAND"
    the <TT
 CLASS="COMMAND"
 >postmaster</TT
-> will in turn <VAR
+> will in turn <TT
 CLASS="LITERAL"
->SIGHUP</VAR
+>SIGHUP</TT
 >
    each of its children.  But in some cases it might be desirable to have only
    one <TT
@@ -790,17 +789,17 @@ CLASS="COMMAND"
 >   The <TT
 CLASS="COMMAND"
 >postmaster</TT
-> uses <VAR
+> uses <TT
 CLASS="LITERAL"
->SIGTERM</VAR
+>SIGTERM</TT
 >
    to tell a <TT
 CLASS="COMMAND"
 >postgres</TT
 > process to quit normally and
-   <VAR
+   <TT
 CLASS="LITERAL"
->SIGQUIT</VAR
+>SIGQUIT</TT
 > to terminate without the normal cleanup.
    These signals <SPAN
 CLASS="emphasis"
@@ -809,9 +808,9 @@ CLASS="EMPHASIS"
 >should not</I
 ></SPAN
 > be used by users.  It is also
-   unwise to send <VAR
+   unwise to send <TT
 CLASS="LITERAL"
->SIGKILL</VAR
+>SIGKILL</TT
 > to a <TT
 CLASS="COMMAND"
 >postgres</TT
@@ -834,7 +833,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48078"
+NAME="AEN48661"
 ></A
 ><H2
 >Usage</H2
@@ -850,9 +849,9 @@ CLASS="REPLACEABLE"
 > my_database</KBD
 ></PRE
 ><P>
-    Provide the correct path to the database directory with <VAR
+    Provide the correct path to the database directory with <TT
 CLASS="OPTION"
->-D</VAR
+>-D</TT
 >, or
     make sure that the environment variable <TT
 CLASS="ENVAR"
@@ -871,9 +870,9 @@ CLASS="APPLICATION"
     newline except the last one.
    </P
 ><P
->    But if you use the <VAR
+>    But if you use the <TT
 CLASS="OPTION"
->-N</VAR
+>-N</TT
 > command line switch, then newline does
     not terminate command entry.  In this case, the server will read the standard input
     until the end-of-file (<ACRONYM
@@ -896,9 +895,9 @@ CLASS="KEYCAP"
 >D</B
 >, usually).
     If you've
-    used <VAR
+    used <TT
 CLASS="OPTION"
->-N</VAR
+>-N</TT
 >, two consecutive <ACRONYM
 CLASS="ACRONYM"
 >EOF</ACRONYM
@@ -912,7 +911,7 @@ CLASS="ACRONYM"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48099"
+NAME="AEN48682"
 ></A
 ><H2
 >See Also</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="EXPLICIT-LOCKING"
 >12.3. Explicit Locking</A
 ></H1
 ><A
-NAME="AEN13522"
+NAME="AEN14200"
 ></A
 ><P
 >    <SPAN
@@ -129,7 +129,7 @@ CLASS="STRUCTNAME"
 > system view
     (<A
 HREF="view-pg-locks.html"
->Section 43.32</A
+>Section 41.34</A
 >). For more
     information on monitoring the status of the lock manager
     subsystem, refer to <A
@@ -146,7 +146,7 @@ NAME="LOCKING-TABLES"
 >12.3.1. Table-Level Locks</A
 ></H2
 ><A
-NAME="AEN13535"
+NAME="AEN14213"
 ></A
 ><P
 >    The list below shows the available lock modes and the contexts in
@@ -167,24 +167,24 @@ CLASS="QUOTE"
     which each conflicts.  Two transactions cannot hold locks of conflicting
     modes on the same table at the same time.  (However, a transaction
     never conflicts with itself.  For example, it may acquire
-    <VAR
+    <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock and later acquire
-    <VAR
+    <TT
 CLASS="LITERAL"
->ACCESS SHARE</VAR
+>ACCESS SHARE</TT
 > lock on the same table.)  Non-conflicting
     lock modes may be held concurrently by many transactions.  Notice in
     particular that some lock modes are self-conflicting (for example,
-    an <VAR
+    an <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock cannot be held by more than one
     transaction at a time) while others are not self-conflicting (for example,
-    an <VAR
+    an <TT
 CLASS="LITERAL"
->ACCESS SHARE</VAR
+>ACCESS SHARE</TT
 > lock can be held by multiple transactions).
     Once acquired, a lock is held till end of transaction.
    </P
@@ -198,15 +198,15 @@ CLASS="VARIABLELIST"
 ></P
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ACCESS SHARE</VAR
+>ACCESS SHARE</TT
 ></DT
 ><DD
 ><P
->	 Conflicts with the <VAR
+>	 Conflicts with the <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock
 	 mode only.
 	</P
@@ -224,19 +224,19 @@ CLASS="COMMAND"
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ROW SHARE</VAR
+>ROW SHARE</TT
 ></DT
 ><DD
 ><P
->	 Conflicts with the <VAR
+>	 Conflicts with the <TT
 CLASS="LITERAL"
->EXCLUSIVE</VAR
+>EXCLUSIVE</TT
 > and
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock modes.
 	</P
 ><P
@@ -245,37 +245,37 @@ CLASS="COMMAND"
 >SELECT FOR UPDATE</TT
 > command acquires a
 	 lock of this mode on the target table(s) (in addition to
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS SHARE</VAR
+>ACCESS SHARE</TT
 > locks on any other tables
-	 that are referenced but not selected <VAR
+	 that are referenced but not selected <TT
 CLASS="OPTION"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 >).
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ROW EXCLUSIVE</VAR
+>ROW EXCLUSIVE</TT
 ></DT
 ><DD
 ><P
->	 Conflicts with the <VAR
+>	 Conflicts with the <TT
 CLASS="LITERAL"
->SHARE</VAR
->, <VAR
+>SHARE</TT
+>, <TT
 CLASS="LITERAL"
 >SHARE ROW
-	 EXCLUSIVE</VAR
->, <VAR
+	 EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
->EXCLUSIVE</VAR
+>EXCLUSIVE</TT
 >, and
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock modes.
 	</P
 ><P
@@ -291,39 +291,39 @@ CLASS="COMMAND"
 >INSERT</TT
 >
 	 acquire this lock mode on the target table (in addition to
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS SHARE</VAR
+>ACCESS SHARE</TT
 > locks on any other referenced
 	 tables).  In general, this lock mode will be acquired by any
 	 command that modifies the data in a table.
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</VAR
+>SHARE UPDATE EXCLUSIVE</TT
 ></DT
 ><DD
 ><P
->	 Conflicts with the <VAR
+>	 Conflicts with the <TT
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</VAR
+>SHARE UPDATE EXCLUSIVE</TT
 >,
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->SHARE</VAR
->, <VAR
+>SHARE</TT
+>, <TT
 CLASS="LITERAL"
 >SHARE ROW
-	 EXCLUSIVE</VAR
->, <VAR
+	 EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
->EXCLUSIVE</VAR
+>EXCLUSIVE</TT
 >, and
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock modes.
 	 This mode protects a table against
 	 concurrent schema changes and <TT
@@ -335,37 +335,37 @@ CLASS="COMMAND"
 >	 Acquired by <TT
 CLASS="COMMAND"
 >VACUUM</TT
-> (without <VAR
+> (without <TT
 CLASS="OPTION"
->FULL</VAR
+>FULL</TT
 >).
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 ></DT
 ><DD
 ><P
->	 Conflicts with the <VAR
+>	 Conflicts with the <TT
 CLASS="LITERAL"
->ROW EXCLUSIVE</VAR
+>ROW EXCLUSIVE</TT
 >,
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</VAR
->, <VAR
+>SHARE UPDATE EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
 >SHARE ROW
-	 EXCLUSIVE</VAR
->, <VAR
+	 EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
->EXCLUSIVE</VAR
+>EXCLUSIVE</TT
 >, and
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock modes.
 	 This mode protects a table against concurrent data changes.
 	</P
@@ -377,34 +377,34 @@ CLASS="COMMAND"
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SHARE ROW EXCLUSIVE</VAR
+>SHARE ROW EXCLUSIVE</TT
 ></DT
 ><DD
 ><P
->	 Conflicts with the <VAR
+>	 Conflicts with the <TT
 CLASS="LITERAL"
->ROW EXCLUSIVE</VAR
+>ROW EXCLUSIVE</TT
 >,
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</VAR
+>SHARE UPDATE EXCLUSIVE</TT
 >,
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->SHARE</VAR
->, <VAR
+>SHARE</TT
+>, <TT
 CLASS="LITERAL"
 >SHARE ROW
-	 EXCLUSIVE</VAR
->, <VAR
+	 EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
->EXCLUSIVE</VAR
+>EXCLUSIVE</TT
 >, and
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock modes.
 	</P
 ><P
@@ -416,41 +416,41 @@ CLASS="PRODUCTNAME"
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->EXCLUSIVE</VAR
+>EXCLUSIVE</TT
 ></DT
 ><DD
 ><P
->	 Conflicts with the <VAR
+>	 Conflicts with the <TT
 CLASS="LITERAL"
->ROW SHARE</VAR
->, <VAR
+>ROW SHARE</TT
+>, <TT
 CLASS="LITERAL"
 >ROW
-	 EXCLUSIVE</VAR
->, <VAR
+	 EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
 >SHARE UPDATE
-	 EXCLUSIVE</VAR
->, <VAR
+	 EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
->SHARE</VAR
->, <VAR
+>SHARE</TT
+>, <TT
 CLASS="LITERAL"
 >SHARE
-	 ROW EXCLUSIVE</VAR
->, <VAR
+	 ROW EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
->EXCLUSIVE</VAR
+>EXCLUSIVE</TT
 >, and
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock modes.
-	 This mode allows only concurrent <VAR
+	 This mode allows only concurrent <TT
 CLASS="LITERAL"
->ACCESS SHARE</VAR
+>ACCESS SHARE</TT
 > locks,
 	 i.e., only reads from the table can proceed in parallel with a
 	 transaction holding this lock mode.
@@ -464,41 +464,41 @@ CLASS="PRODUCTNAME"
 	</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 ></DT
 ><DD
 ><P
->	 Conflicts with locks of all modes (<VAR
+>	 Conflicts with locks of all modes (<TT
 CLASS="LITERAL"
 >ACCESS
-	 SHARE</VAR
->, <VAR
+	 SHARE</TT
+>, <TT
 CLASS="LITERAL"
->ROW SHARE</VAR
->, <VAR
+>ROW SHARE</TT
+>, <TT
 CLASS="LITERAL"
 >ROW
-	 EXCLUSIVE</VAR
->, <VAR
+	 EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
 >SHARE UPDATE
-	 EXCLUSIVE</VAR
->, <VAR
+	 EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
->SHARE</VAR
->, <VAR
+>SHARE</TT
+>, <TT
 CLASS="LITERAL"
 >SHARE
-	 ROW EXCLUSIVE</VAR
->, <VAR
+	 ROW EXCLUSIVE</TT
+>, <TT
 CLASS="LITERAL"
->EXCLUSIVE</VAR
+>EXCLUSIVE</TT
 >, and
-	 <VAR
+	 <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 >).
 	 This mode guarantees that the
 	 holder is the only transaction accessing the table in any way.
@@ -538,16 +538,16 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->       Only an <VAR
+>       Only an <TT
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</VAR
+>ACCESS EXCLUSIVE</TT
 > lock blocks a
        <TT
 CLASS="COMMAND"
 >SELECT</TT
-> (without <VAR
+> (without <TT
 CLASS="OPTION"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 >)
        statement.
       </P
@@ -615,7 +615,7 @@ NAME="LOCKING-DEADLOCKS"
 >12.3.3. Deadlocks</A
 ></H2
 ><A
-NAME="AEN13670"
+NAME="AEN14348"
 ></A
 ><P
 >     The use of explicit locking can increase the likelihood of

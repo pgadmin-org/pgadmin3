@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 37. <SPAN
+>Chapter 35. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-EXPRESSIONS"
->37.5. Expressions</A
+>35.5. Expressions</A
 ></H1
 ><P
 >     All expressions used in <SPAN
@@ -112,9 +112,9 @@ CLASS="ACRONYM"
 >SQL</ACRONYM
 > executor. Expressions that appear to
      contain constants may in fact require run-time evaluation
-     (e.g., <VAR
+     (e.g., <TT
 CLASS="LITERAL"
->'now'</VAR
+>'now'</TT
 > for the <TT
 CLASS="TYPE"
 >timestamp</TT
@@ -124,9 +124,9 @@ CLASS="TYPE"
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > parser to identify real
-     constant values other than the key word <VAR
+     constant values other than the key word <TT
 CLASS="LITERAL"
->NULL</VAR
+>NULL</TT
 >. All expressions are
      evaluated internally by executing a query
 </P><PRE
@@ -164,30 +164,27 @@ CLASS="PRODUCTNAME"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION logfunc1(text) RETURNS timestamp AS '
-    DECLARE
-        logtxt ALIAS FOR $1;
+>CREATE FUNCTION logfunc1(logtxt text) RETURNS timestamp AS $$
     BEGIN
-        INSERT INTO logtable VALUES (logtxt, ''now'');
-        RETURN ''now'';
+        INSERT INTO logtable VALUES (logtxt, 'now');
+        RETURN 'now';
     END;
-' LANGUAGE plpgsql;</PRE
+$$ LANGUAGE plpgsql;</PRE
 ><P>
 
      and
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION logfunc2(text) RETURNS timestamp AS '
+>CREATE FUNCTION logfunc2(logtxt text) RETURNS timestamp AS $$
     DECLARE
-        logtxt ALIAS FOR $1;
         curtime timestamp;
     BEGIN
-        curtime := ''now'';
+        curtime := 'now';
         INSERT INTO logtable VALUES (logtxt, curtime);
         RETURN curtime;
     END;
-' LANGUAGE plpgsql;</PRE
+$$ LANGUAGE plpgsql;</PRE
 ><P>
     </P
 ><P
@@ -203,9 +200,9 @@ CLASS="PRODUCTNAME"
 CLASS="COMMAND"
 >INSERT</TT
 >, that the string 
-     <VAR
+     <TT
 CLASS="LITERAL"
->'now'</VAR
+>'now'</TT
 > should be interpreted as 
      <TT
 CLASS="TYPE"
@@ -232,21 +229,21 @@ CLASS="FUNCTION"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > main parser does not know
-     what type <VAR
+     what type <TT
 CLASS="LITERAL"
->'now'</VAR
+>'now'</TT
 > should become and therefore 
      it returns a data value of type <TT
 CLASS="TYPE"
 >text</TT
 > containing the string 
-     <VAR
+     <TT
 CLASS="LITERAL"
->now</VAR
+>now</TT
 >. During the ensuing assignment
-     to the local variable <VAR
+     to the local variable <TT
 CLASS="VARNAME"
->curtime</VAR
+>curtime</TT
 >, the
      <SPAN
 CLASS="APPLICATION"

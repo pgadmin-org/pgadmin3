@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -133,10 +133,10 @@ HREF="monitoring-locks.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN19094"
+NAME="AEN20426"
 ></A
 ><A
-NAME="AEN19097"
+NAME="AEN20429"
 ></A
 ><P
 >  A database administrator frequently wonders, <SPAN
@@ -165,9 +165,11 @@ CLASS="COMMAND"
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->'s <TT
-CLASS="COMMAND"
->EXPLAIN</TT
+>'s <A
+HREF="sql-explain.html"
+><I
+>EXPLAIN</I
+></A
 > command.
    <A
 HREF="performance-tips.html#USING-EXPLAIN"
@@ -188,7 +190,7 @@ NAME="MONITORING-PS"
 >23.1. Standard Unix Tools</A
 ></H1
 ><A
-NAME="AEN19112"
+NAME="AEN20444"
 ></A
 ><P
 >   On most platforms, <SPAN
@@ -248,24 +250,24 @@ CLASS="REPLACEABLE"
 
   The user, database, and connection source host items remain the same for
   the life of the client connection, but the activity indicator changes.
-  The activity may be <VAR
+  The activity may be <TT
 CLASS="LITERAL"
->idle</VAR
+>idle</TT
 > (i.e., waiting for a client command),
-  <VAR
+  <TT
 CLASS="LITERAL"
->idle in transaction</VAR
+>idle in transaction</TT
 > (waiting for client inside a <TT
 CLASS="COMMAND"
 >BEGIN</TT
 > block),
-  or a command type name such as <VAR
+  or a command type name such as <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 >.  Also,
-  <VAR
+  <TT
 CLASS="LITERAL"
->waiting</VAR
+>waiting</TT
 > is attached if the server process is presently waiting
   on a lock held by another server process.  In the above example we can infer
   that process 1003 is waiting for process 1016 to complete its transaction and
@@ -289,9 +291,9 @@ CLASS="COMMAND"
   <TT
 CLASS="COMMAND"
 >/bin/ps</TT
->. You also must use two <VAR
+>. You also must use two <TT
 CLASS="OPTION"
->w</VAR
+>w</TT
 >
   flags, not just one. In addition, your original invocation of the
   <TT

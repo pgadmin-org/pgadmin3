@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Tcl - Tcl Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="pltcl.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 38. PL/Tcl - Tcl Procedural Language</TD
+>Chapter 36. PL/Tcl - Tcl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLTCL-FUNCTIONS"
->38.2. PL/Tcl Functions and Arguments</A
+>36.2. PL/Tcl Functions and Arguments</A
 ></H1
 ><P
 >     To create a function in the <SPAN
@@ -106,43 +106,44 @@ CLASS="PROGRAMLISTING"
 >CREATE FUNCTION <VAR
 CLASS="REPLACEABLE"
 >funcname</VAR
-> (<VAR
+>
+(<VAR
 CLASS="REPLACEABLE"
 >argument-types</VAR
 >) RETURNS <VAR
 CLASS="REPLACEABLE"
 >return-type</VAR
-> AS '
+> AS $$
     # PL/Tcl function body
-' LANGUAGE pltcl;</PRE
+$$ LANGUAGE pltcl;</PRE
 ><P>
 
      <SPAN
 CLASS="APPLICATION"
 >PL/TclU</SPAN
 > is the same, except that the language has to be specified as
-     <VAR
+     <TT
 CLASS="LITERAL"
->pltclu</VAR
+>pltclu</TT
 >.
     </P
 ><P
 >     The body of the function is simply a piece of Tcl script.
      When the function is called, the argument values are passed as
-     variables <VAR
+     variables <TT
 CLASS="LITERAL"
->$1</VAR
-> ... <VAR
+>$1</TT
+> ... <TT
 CLASS="LITERAL"
 >$<VAR
 CLASS="REPLACEABLE"
 >n</VAR
-></VAR
+></TT
 > to the
      Tcl script.  The result is returned
-     from the Tcl code in the usual way, with a <VAR
+     from the Tcl code in the usual way, with a <TT
 CLASS="LITERAL"
->return</VAR
+>return</TT
 >
      statement.
     </P
@@ -152,15 +153,15 @@ CLASS="LITERAL"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION tcl_max(integer, integer) RETURNS integer AS '
+>CREATE FUNCTION tcl_max(integer, integer) RETURNS integer AS $$
     if {$1 &#62; $2} {return $1}
     return $2
-' LANGUAGE pltcl STRICT;</PRE
+$$ LANGUAGE pltcl STRICT;</PRE
 ><P>
 
-     Note the clause <VAR
+     Note the clause <TT
 CLASS="LITERAL"
->STRICT</VAR
+>STRICT</TT
 >, which saves us from
      having to think about null input values: if a null value is passed, the
      function will not be called at all, but will just return a null
@@ -169,17 +170,17 @@ CLASS="LITERAL"
 ><P
 >     In a nonstrict function,
      if the actual value of an argument is null, the corresponding
-     <VAR
+     <TT
 CLASS="LITERAL"
 >$<VAR
 CLASS="REPLACEABLE"
 >n</VAR
-></VAR
+></TT
 > variable will be set to an empty string.
      To detect whether a particular argument is null, use the function
-     <VAR
+     <TT
 CLASS="LITERAL"
->argisnull</VAR
+>argisnull</TT
 >.  For example, suppose that we wanted <CODE
 CLASS="FUNCTION"
 >tcl_max</CODE
@@ -189,7 +190,7 @@ CLASS="FUNCTION"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION tcl_max(integer, integer) RETURNS integer AS '
+>CREATE FUNCTION tcl_max(integer, integer) RETURNS integer AS $$
     if {[argisnull 1]} {
         if {[argisnull 2]} { return_null }
         return $2
@@ -197,15 +198,15 @@ CLASS="PROGRAMLISTING"
     if {[argisnull 2]} { return $1 }
     if {$1 &#62; $2} {return $1}
     return $2
-' LANGUAGE pltcl;</PRE
+$$ LANGUAGE pltcl;</PRE
 ><P>
     </P
 ><P
 >     As shown above,
      to return a null value from a PL/Tcl function, execute
-     <VAR
+     <TT
 CLASS="LITERAL"
->return_null</VAR
+>return_null</TT
 >.  This can be done whether the
      function is strict or not.
     </P
@@ -223,7 +224,7 @@ CLASS="PROGRAMLISTING"
     age integer
 );
 
-CREATE FUNCTION overpaid(employee) RETURNS boolean AS '
+CREATE FUNCTION overpaid(employee) RETURNS boolean AS $$
     if {200000.0 &#60; $1(salary)} {
         return "t"
     }
@@ -231,7 +232,7 @@ CREATE FUNCTION overpaid(employee) RETURNS boolean AS '
         return "t"
     }
     return "f"
-' LANGUAGE pltcl;</PRE
+$$ LANGUAGE pltcl;</PRE
 ><P>
     </P
 ><P

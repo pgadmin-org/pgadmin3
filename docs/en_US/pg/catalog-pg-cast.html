@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. System Catalogs</TD
+>Chapter 41. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-CAST"
->43.8. <TT
+>41.8. <TT
 CLASS="STRUCTNAME"
 >pg_cast</TT
 ></A
 ></H1
 ><A
-NAME="AEN49436"
+NAME="AEN50052"
 ></A
 ><P
 >   The catalog <TT
@@ -114,11 +114,11 @@ CLASS="COMMAND"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN49441"
+NAME="AEN50057"
 ></A
 ><P
 ><B
->Table 43-8. <TT
+>Table 41-8. <TT
 CLASS="STRUCTFIELD"
 >pg_cast</TT
 > Columns</B
@@ -151,7 +151,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-type.html"
@@ -159,7 +159,7 @@ HREF="catalog-pg-type.html"
 CLASS="STRUCTNAME"
 >pg_type</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >OID of the source data type</TD
@@ -176,7 +176,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-type.html"
@@ -184,7 +184,7 @@ HREF="catalog-pg-type.html"
 CLASS="STRUCTNAME"
 >pg_type</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >OID of the target data type</TD
@@ -201,7 +201,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-proc.html"
@@ -209,7 +209,7 @@ HREF="catalog-pg-proc.html"
 CLASS="STRUCTNAME"
 >pg_proc</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >       The OID of the function to use to perform this cast.  Zero is
@@ -232,25 +232,25 @@ CLASS="TYPE"
 >&nbsp;</TD
 ><TD
 >       Indicates what contexts the cast may be invoked in.
-       <VAR
+       <TT
 CLASS="LITERAL"
->e</VAR
+>e</TT
 > means only as an explicit cast (using
-       <VAR
+       <TT
 CLASS="LITERAL"
->CAST</VAR
->, <VAR
+>CAST</TT
+> or <TT
 CLASS="LITERAL"
->::</VAR
->, or function-call syntax).
-       <VAR
+>::</TT
+> syntax).
+       <TT
 CLASS="LITERAL"
->a</VAR
+>a</TT
 > means implicitly in assignment
        to a target column, as well as explicitly.
-       <VAR
+       <TT
 CLASS="LITERAL"
->i</VAR
+>i</TT
 > means implicitly in expressions, as well as the
        other cases.
       </TD
@@ -258,6 +258,63 @@ CLASS="LITERAL"
 ></TBODY
 ></TABLE
 ></DIV
+><P
+>   The cast functions listed in <TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+> must
+   always take the cast source type as their first argument type, and
+   return the cast destination type as their result type.  A cast
+   function can have up to three arguments.  The second argument,
+   if present, must be type <TT
+CLASS="TYPE"
+>integer</TT
+>; it receives the type
+   modifier associated with the destination type, or <TT
+CLASS="LITERAL"
+>-1</TT
+>
+   if there is none.  The third argument,
+   if present, must be type <TT
+CLASS="TYPE"
+>boolean</TT
+>; it receives <TT
+CLASS="LITERAL"
+>true</TT
+>
+   if the cast is an explicit cast, <TT
+CLASS="LITERAL"
+>false</TT
+> otherwise.
+  </P
+><P
+>   It is legitimate to create a <TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+> entry
+   in which the source and target types are the same, if the associated
+   function takes more than one argument.  Such entries represent
+   <SPAN
+CLASS="QUOTE"
+>"length coercion functions"</SPAN
+> that coerce values of the type
+   to be legal for a particular type modifier value.  Note however that
+   at present there is no support for associating non-default type
+   modifiers with user-created data types, and so this facility is only
+   of use for the small number of built-in types that have type modifier
+   syntax built into the grammar.
+  </P
+><P
+>   When a <TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+> entry has different source and
+   target types and a function that takes more than one argument, it
+   represents converting from one type to another and applying a length
+   coercion in a single step.  When no such entry is available, coercion
+   to a type that uses a type modifier involves two steps, one to
+   convert between datatypes and a second to apply the modifier.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

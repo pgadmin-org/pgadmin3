@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -117,9 +117,9 @@ HREF="planner-stats.html"
 ><DT
 >13.3. <A
 HREF="explicit-joins.html"
->Controlling the Planner with Explicit <VAR
+>Controlling the Planner with Explicit <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > Clauses</A
 ></DT
 ><DT
@@ -139,7 +139,7 @@ HREF="populate.html#DISABLE-AUTOCOMMIT"
 HREF="populate.html#POPULATE-COPY-FROM"
 >Use <TT
 CLASS="COMMAND"
->COPY FROM</TT
+>COPY</TT
 ></A
 ></DT
 ><DT
@@ -149,14 +149,22 @@ HREF="populate.html#POPULATE-RM-INDEXES"
 ></DT
 ><DT
 >13.4.4. <A
-HREF="populate.html#POPULATE-SORT-MEM"
->Increase <VAR
+HREF="populate.html#POPULATE-WORK-MEM"
+>Increase <TT
 CLASS="VARNAME"
->sort_mem</VAR
+>maintenance_work_mem</TT
 ></A
 ></DT
 ><DT
 >13.4.5. <A
+HREF="populate.html#POPULATE-CHECKPOINT-SEGMENTS"
+>Increase <TT
+CLASS="VARNAME"
+>checkpoint_segments</TT
+></A
+></DT
+><DT
+>13.4.6. <A
 HREF="populate.html#POPULATE-ANALYZE"
 >Run <TT
 CLASS="COMMAND"
@@ -167,6 +175,9 @@ CLASS="COMMAND"
 ></DD
 ></DL
 ></DIV
+><A
+NAME="AEN14412"
+></A
 ><P
 >   Query performance can be affected by many things. Some of these can 
    be manipulated by the user, while others are fundamental to the underlying
@@ -188,10 +199,10 @@ CLASS="COMMAND"
 ></A
 ></H1
 ><A
-NAME="AEN13739"
+NAME="AEN14419"
 ></A
 ><A
-NAME="AEN13741"
+NAME="AEN14421"
 ></A
 ><P
 >    <SPAN
@@ -204,11 +215,13 @@ CLASS="FIRSTTERM"
 > for each query it is given.  Choosing the right
     plan to match the query structure and the properties of the data
     is absolutely critical for good performance.  You can use the
-    <TT
-CLASS="COMMAND"
->EXPLAIN</TT
-> command to see what query plan the system
-    creates for any query.
+    <A
+HREF="sql-explain.html"
+><I
+>EXPLAIN</I
+></A
+> command
+    to see what query plan the system creates for any query.
     Plan-reading is an art that deserves an extensive tutorial, which
     this is not; but here is some basic information.
    </P
@@ -230,9 +243,9 @@ CLASS="COMMAND"
 ><LI
 ><P
 >       Estimated total cost (If all rows were to be retrieved, which they may not
-       be: a query with a <VAR
+       be: a query with a <TT
 CLASS="LITERAL"
->LIMIT</VAR
+>LIMIT</TT
 > clause will stop short of paying the total cost,
        for example.)
       </P
@@ -259,7 +272,7 @@ CLASS="LITERAL"
     factors, see the list of run-time configuration parameters in
     <A
 HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE"
->Section 16.4.2</A
+>Section 16.4.3</A
 >.)
    </P
 ><P
@@ -282,9 +295,9 @@ CLASS="EMPHASIS"
 > the
     number of rows
     processed/scanned by the query, it is usually less, reflecting the
-    estimated selectivity of any <VAR
+    estimated selectivity of any <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >-clause conditions that are being
     applied at this node.  Ideally the top-level rows estimate will
     approximate the number of rows actually returned, updated, or deleted
@@ -292,9 +305,9 @@ CLASS="LITERAL"
    </P
 ><P
 >    Here are some examples (using the regression test database after a
-    <VAR
-CLASS="LITERAL"
->VACUUM ANALYZE</VAR
+    <TT
+CLASS="COMMAND"
+>VACUUM ANALYZE</TT
 >, and 7.3 development sources):
 
 </P><PRE
@@ -319,9 +332,9 @@ CLASS="CLASSNAME"
 >tenk1</CODE
 > has 233 disk
     pages and 10000 rows.  So the cost is estimated at 233 page
-    reads, defined as costing 1.0 apiece, plus 10000 * <VAR
-CLASS="VARNAME"
->cpu_tuple_cost</VAR
+    reads, defined as costing 1.0 apiece, plus 10000 * <A
+HREF="runtime-config.html#GUC-CPU-TUPLE-COST"
+>cpu_tuple_cost</A
 > which is
     currently 0.01 (try <TT
 CLASS="COMMAND"
@@ -329,9 +342,9 @@ CLASS="COMMAND"
 >).
    </P
 ><P
->    Now let's modify the query to add a <VAR
+>    Now let's modify the query to add a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > condition:
 
 </P><PRE
@@ -344,15 +357,15 @@ CLASS="PROGRAMLISTING"
    Filter: (unique1 &lt; 1000)</PRE
 ><P>
 
-    The estimate of output rows has gone down because of the <VAR
+    The estimate of output rows has gone down because of the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause.
     However, the scan will still have to visit all 10000 rows, so the cost
     hasn't decreased; in fact it has gone up a bit to reflect the extra CPU
-    time spent checking the <VAR
+    time spent checking the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > condition.
    </P
 ><P
@@ -382,9 +395,9 @@ CLASS="PROGRAMLISTING"
    Index Cond: (unique1 &lt; 50)</PRE
 ><P>
 
-    and you will see that if we make the <VAR
+    and you will see that if we make the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > condition selective
     enough, the planner will
     eventually decide that an index scan is cheaper than a sequential scan.
@@ -393,9 +406,9 @@ CLASS="LITERAL"
     than reading a whole disk page sequentially.
    </P
 ><P
->    Add another condition to the <VAR
+>    Add another condition to the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause:
 
 </P><PRE
@@ -409,19 +422,19 @@ CLASS="PROGRAMLISTING"
    Filter: (stringu1 = 'xxx'::name)</PRE
 ><P>
 
-    The added condition <VAR
+    The added condition <TT
 CLASS="LITERAL"
->stringu1 = 'xxx'</VAR
+>stringu1 = 'xxx'</TT
 > reduces the
     output-rows estimate, but not the cost because we still have to visit the
-    same set of rows.  Notice that the <VAR
+    same set of rows.  Notice that the <TT
 CLASS="LITERAL"
->stringu1</VAR
+>stringu1</TT
 > clause
     cannot be applied as an index condition (since this index is only on
-    the <VAR
+    the <TT
 CLASS="LITERAL"
->unique1</VAR
+>unique1</TT
 > column).  Instead it is applied as a filter on
     the rows retrieved by the index.  Thus the cost has actually gone up
     a little bit to reflect this extra checking.
@@ -447,35 +460,35 @@ CLASS="PROGRAMLISTING"
 ><P
 >    In this nested-loop join, the outer scan is the same index scan we had
     in the example before last, and so its cost and row count are the same
-    because we are applying the <VAR
+    because we are applying the <TT
 CLASS="LITERAL"
->WHERE</VAR
-> clause <VAR
+>WHERE</TT
+> clause <TT
 CLASS="LITERAL"
->unique1 &lt; 50</VAR
+>unique1 &lt; 50</TT
 > at that node.
-    The <VAR
+    The <TT
 CLASS="LITERAL"
->t1.unique2 = t2.unique2</VAR
+>t1.unique2 = t2.unique2</TT
 > clause is not relevant yet, so it doesn't
-    affect row count of the outer scan.  For the inner scan, the <VAR
+    affect row count of the outer scan.  For the inner scan, the <TT
 CLASS="LITERAL"
->unique2</VAR
+>unique2</TT
 > value of the
     current
     outer-scan row is plugged into the inner index scan
     to produce an index condition like
-    <VAR
+    <TT
 CLASS="LITERAL"
 >t2.unique2 = <VAR
 CLASS="REPLACEABLE"
 >constant</VAR
-></VAR
+></TT
 >.  So we get the
-     same inner-scan plan and costs that we'd get from, say, <VAR
+     same inner-scan plan and costs that we'd get from, say, <TT
 CLASS="LITERAL"
 >EXPLAIN SELECT
-     * FROM tenk2 WHERE unique2 = 42</VAR
+     * FROM tenk2 WHERE unique2 = 42</TT
 >.  The costs of the loop node are then set
      on the basis of the cost of the outer scan, plus one repetition of the
      inner scan for each outer row (49 * 3.01, here), plus a little CPU
@@ -484,14 +497,14 @@ CLASS="LITERAL"
 ><P
 >    In this example the join's output row count is the same as the product
     of the two scans' row counts, but that's not true in general, because
-    in general you can have <VAR
+    in general you can have <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clauses that mention both tables and
     so can only be applied at the join point, not to either input scan.
-    For example, if we added <VAR
+    For example, if we added <TT
 CLASS="LITERAL"
->WHERE ... AND t1.hundred &lt; t2.hundred</VAR
+>WHERE ... AND t1.hundred &lt; t2.hundred</TT
 >,
     that would decrease the output row count of the join node, but not change
     either input scan.
@@ -530,9 +543,9 @@ CLASS="CLASSNAME"
 CLASS="CLASSNAME"
 >tenk2</CODE
 >, probing into the hash table
-    for possible matches of <VAR
+    for possible matches of <TT
 CLASS="LITERAL"
->t1.unique2 = t2.unique2</VAR
+>t1.unique2 = t2.unique2</TT
 > at each <CODE
 CLASS="CLASSNAME"
 >tenk2</CODE
@@ -617,9 +630,9 @@ CLASS="QUOTE"
     the node.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->Total runtime</VAR
+>Total runtime</TT
 > shown by <TT
 CLASS="COMMAND"
 >EXPLAIN ANALYZE</TT

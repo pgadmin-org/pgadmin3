@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 37. <SPAN
+>Chapter 35. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,10 +99,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-CURSORS"
->37.8. Cursors</A
+>35.8. Cursors</A
 ></H1
 ><A
-NAME="AEN32061"
+NAME="AEN31487"
 ></A
 ><P
 >    Rather than executing a whole query at once, it is possible to set
@@ -116,9 +116,9 @@ CLASS="FIRSTTERM"
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > users do not normally need
-    to worry about that, since <VAR
+    to worry about that, since <TT
 CLASS="LITERAL"
->FOR</VAR
+>FOR</TT
 > loops automatically use a cursor
     internally to avoid memory problems.) A more interesting usage is to
     return a reference to a cursor that a function has created, allowing the
@@ -131,7 +131,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-CURSOR-DECLARATIONS"
->37.8.1. Declaring Cursor Variables</A
+>35.8.1. Declaring Cursor Variables</A
 ></H2
 ><P
 >     All access to cursors in <SPAN
@@ -165,12 +165,12 @@ CLASS="REPLACEABLE"
 >query</VAR
 > ;</PRE
 ><P>
-     (<VAR
+     (<TT
 CLASS="LITERAL"
->FOR</VAR
-> may be replaced by <VAR
+>FOR</TT
+> may be replaced by <TT
 CLASS="LITERAL"
->IS</VAR
+>IS</TT
 > for
      <SPAN
 CLASS="PRODUCTNAME"
@@ -180,7 +180,7 @@ CLASS="PRODUCTNAME"
 CLASS="REPLACEABLE"
 >arguments</VAR
 >, if specified, is a
-     comma-separated list of pairs <VAR
+     comma-separated list of pairs <TT
 CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
@@ -189,7 +189,7 @@ CLASS="REPLACEABLE"
      <VAR
 CLASS="REPLACEABLE"
 >datatype</VAR
-></VAR
+></TT
 > that define names to be
      replaced by parameter values in the given query.  The actual
      values to substitute for these names will be specified later,
@@ -213,14 +213,14 @@ CLASS="TYPE"
 CLASS="FIRSTTERM"
 >bound</I
 > to it, and the last
-     has a parameterized query bound to it.  (<VAR
+     has a parameterized query bound to it.  (<TT
 CLASS="LITERAL"
->key</VAR
+>key</TT
 > will be
      replaced by an integer parameter value when the cursor is opened.)
-     The variable <VAR
+     The variable <TT
 CLASS="LITERAL"
->curs1</VAR
+>curs1</TT
 >
      is said to be <I
 CLASS="FIRSTTERM"
@@ -235,7 +235,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-CURSOR-OPENING"
->37.8.2. Opening Cursors</A
+>35.8.2. Opening Cursors</A
 ></H2
 ><P
 >     Before a cursor can be used to retrieve rows, it must be
@@ -261,8 +261,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN32100"
->37.8.2.1. <TT
+NAME="AEN31526"
+>35.8.2.1. <TT
 CLASS="COMMAND"
 >OPEN FOR SELECT</TT
 ></A
@@ -311,8 +311,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN32113"
->37.8.2.2. <TT
+NAME="AEN31539"
+>35.8.2.2. <TT
 CLASS="COMMAND"
 >OPEN FOR EXECUTE</TT
 ></A
@@ -345,7 +345,7 @@ CLASS="COMMAND"
 >        An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->OPEN curs1 FOR EXECUTE ''SELECT * FROM '' || quote_ident($1);</PRE
+>OPEN curs1 FOR EXECUTE 'SELECT * FROM ' || quote_ident($1);</PRE
 ><P>
        </P
 ></DIV
@@ -354,8 +354,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN32124"
->37.8.2.3. Opening a Bound Cursor</A
+NAME="AEN31550"
+>35.8.2.3. Opening a Bound Cursor</A
 ></H3
 ><PRE
 CLASS="SYNOPSIS"
@@ -400,7 +400,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-CURSOR-USING"
->37.8.3. Using Cursors</A
+>35.8.3. Using Cursors</A
 ></H2
 ><P
 >     Once a cursor has been opened, it can be manipulated with the
@@ -437,10 +437,10 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN32144"
->37.8.3.1. <VAR
+NAME="AEN31570"
+>35.8.3.1. <TT
 CLASS="LITERAL"
->FETCH</VAR
+>FETCH</TT
 ></A
 ></H3
 ><PRE
@@ -466,9 +466,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SELECT
            INTO</TT
->, the special variable <VAR
+>, the special variable <TT
 CLASS="LITERAL"
->FOUND</VAR
+>FOUND</TT
 > may
           be checked to see whether a row was obtained or not.
          </P
@@ -486,10 +486,10 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN32157"
->37.8.3.2. <VAR
+NAME="AEN31583"
+>35.8.3.2. <TT
 CLASS="LITERAL"
->CLOSE</VAR
+>CLOSE</TT
 ></A
 ></H3
 ><PRE
@@ -519,8 +519,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN32166"
->37.8.3.3. Returning Cursors</A
+NAME="AEN31592"
+>35.8.3.3. Returning Cursors</A
 ></H3
 ><P
 >        <SPAN
@@ -604,7 +604,7 @@ COMMIT;</PRE
        </P
 ><P
 >        The following example uses automatic cursor name generation:
-         
+
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE FUNCTION reffunc2() RETURNS refcursor AS '
@@ -618,7 +618,7 @@ END;
 
 BEGIN;
 SELECT reffunc2();
-  
+
       reffunc2      
 --------------------
  &lt;unnamed cursor 1&gt;

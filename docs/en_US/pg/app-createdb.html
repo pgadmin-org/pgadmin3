@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43202"
+NAME="AEN43811"
 ></A
 ><H2
 >Name</H2
@@ -107,12 +107,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database</DIV
 ><A
-NAME="AEN43206"
+NAME="AEN43815"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43208"
+NAME="AEN43817"
 ></A
 ><H2
 >Synopsis</H2
@@ -152,9 +152,9 @@ CLASS="PRODUCTNAME"
 ><P
 >   Normally, the database user who executes this command becomes the owner of
    the new database.
-   However a different owner can be specified via the <VAR
+   However a different owner can be specified via the <TT
 CLASS="OPTION"
->-O</VAR
+>-O</TT
 >
    option, if the executing user has appropriate privileges.
   </P
@@ -179,7 +179,7 @@ HREF="sql-createdatabase.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43228"
+NAME="AEN43837"
 ></A
 ><H2
 >Options</H2
@@ -201,8 +201,8 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	Specifies the name of the database to be created.  The name must be
-	unique among all <SPAN
+>        Specifies the name of the database to be created.  The name must be
+        unique among all <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > databases in this cluster.
@@ -217,42 +217,36 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->        This optionally specifies a comment to be associated with the newly created
-	database.
+>        Specifies a comment to be associated with the newly created
+        database.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-D <VAR
 CLASS="REPLACEABLE"
->location</VAR
-></VAR
-><BR><VAR
+>tablespace</VAR
+></TT
+><BR><TT
 CLASS="OPTION"
->--location <VAR
+>--tablespace <VAR
 CLASS="REPLACEABLE"
->location</VAR
-></VAR
+>tablespace</VAR
+></TT
 ></DT
 ><DD
 ><P
->	Specifies the alternative location for the database.  See also <A
-HREF="app-initlocation.html"
-><SPAN
-CLASS="APPLICATION"
->initlocation</SPAN
-></A
->.
+>        Specifies the default tablespace for the database.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-e</VAR
-><BR><VAR
+>-e</TT
+><BR><TT
 CLASS="OPTION"
->--echo</VAR
+>--echo</TT
 ></DT
 ><DD
 ><P
@@ -260,54 +254,63 @@ CLASS="OPTION"
 CLASS="APPLICATION"
 >createdb</SPAN
 > generates
-	and sends to the server.
+        and sends to the server.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-E <VAR
 CLASS="REPLACEABLE"
 >encoding</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--encoding <VAR
 CLASS="REPLACEABLE"
 >encoding</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->        Specifies the character encoding scheme to be used in this database.
+>        Specifies the character encoding scheme to be used in this
+        database. The character sets supported by the
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server are described in
+        <A
+HREF="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED"
+>Section 20.2.1</A
+>.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-O <VAR
 CLASS="REPLACEABLE"
 >owner</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--owner <VAR
 CLASS="REPLACEABLE"
 >owner</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->	Specifies the database user who will own the new database.
+>        Specifies the database user who will own the new database.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-q</VAR
-><BR><VAR
+>-q</TT
+><BR><TT
 CLASS="OPTION"
->--quiet</VAR
+>--quiet</TT
 ></DT
 ><DD
 ><P
@@ -315,18 +318,18 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-T <VAR
 CLASS="REPLACEABLE"
 >template</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--template <VAR
 CLASS="REPLACEABLE"
 >template</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -338,20 +341,20 @@ CLASS="REPLACEABLE"
 ><P>
    </P
 ><P
->    The options <VAR
+>    The options <TT
 CLASS="OPTION"
->-D</VAR
->, <VAR
+>-D</TT
+>, <TT
 CLASS="OPTION"
->-E</VAR
+>-E</TT
 >,
-    <VAR
+    <TT
 CLASS="OPTION"
->-O</VAR
+>-O</TT
 >, and
-    <VAR
+    <TT
 CLASS="OPTION"
->-T</VAR
+>-T</TT
 > correspond to options of the underlying
     SQL command <A
 HREF="sql-createdatabase.html"
@@ -374,59 +377,59 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-h <VAR
 CLASS="REPLACEABLE"
 >host</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--host <VAR
 CLASS="REPLACEABLE"
 >host</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->	Specifies the host name of the machine on which the 
-	server is running.  If the value begins with a slash, it is used 
-	as the directory for the Unix domain socket.
+>        Specifies the host name of the machine on which the 
+        server is running.  If the value begins with a slash, it is used 
+        as the directory for the Unix domain socket.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-p <VAR
 CLASS="REPLACEABLE"
 >port</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--port <VAR
 CLASS="REPLACEABLE"
 >port</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->	Specifies the TCP port or the local Unix domain socket file 
-	extension on which the server is listening for connections.
+>        Specifies the TCP port or the local Unix domain socket file 
+        extension on which the server is listening for connections.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-U <VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
-><BR><VAR
+></TT
+><BR><TT
 CLASS="OPTION"
 >--username <VAR
 CLASS="REPLACEABLE"
 >username</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -434,12 +437,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-W</VAR
-><BR><VAR
+>-W</TT
+><BR><TT
 CLASS="OPTION"
->--password</VAR
+>--password</TT
 ></DT
 ><DD
 ><P
@@ -454,7 +457,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43339"
+NAME="AEN43949"
 ></A
 ><H2
 >Environment</H2
@@ -504,7 +507,7 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43358"
+NAME="AEN43968"
 ></A
 ><H2
 >Diagnostics</H2
@@ -534,14 +537,14 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43364"
+NAME="AEN43974"
 ></A
 ><H2
 >Examples</H2
 ><P
->    To create the database <VAR
+>    To create the database <TT
 CLASS="LITERAL"
->demo</VAR
+>demo</TT
 > using the default
     database server:
 </P><PRE
@@ -568,17 +571,17 @@ CLASS="ACRONYM"
 > command.
    </P
 ><P
->    To create the database <VAR
+>    To create the database <TT
 CLASS="LITERAL"
->demo</VAR
+>demo</TT
 > using the
-    server on host <VAR
+    server on host <TT
 CLASS="LITERAL"
->eden</VAR
+>eden</TT
 >, port 5000, using the
-    <VAR
+    <TT
 CLASS="LITERAL"
->LATIN1</VAR
+>LATIN1</TT
 > encoding scheme with a look at the
     underlying command:
 </P><PRE
@@ -604,7 +607,7 @@ CLASS="COMPUTEROUTPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43383"
+NAME="AEN43993"
 ></A
 ><H2
 >See Also</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="SOURCE"
 ></A
->Chapter 45. PostgreSQL Coding Conventions</H1
+>Chapter 43. PostgreSQL Coding Conventions</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,100 +102,100 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->45.1. <A
+>43.1. <A
 HREF="source.html#SOURCE-FORMAT"
 >Formatting</A
 ></DT
 ><DT
->45.2. <A
+>43.2. <A
 HREF="error-message-reporting.html"
 >Reporting Errors Within the Server</A
 ></DT
 ><DT
->45.3. <A
+>43.3. <A
 HREF="error-style-guide.html"
 >Error Message Style Guide</A
 ></DT
 ><DD
 ><DL
 ><DT
->45.3.1. <A
-HREF="error-style-guide.html#AEN54008"
+>43.3.1. <A
+HREF="error-style-guide.html#AEN54842"
 >What goes where</A
 ></DT
 ><DT
->45.3.2. <A
-HREF="error-style-guide.html#AEN54017"
+>43.3.2. <A
+HREF="error-style-guide.html#AEN54851"
 >Formatting</A
 ></DT
 ><DT
->45.3.3. <A
-HREF="error-style-guide.html#AEN54021"
+>43.3.3. <A
+HREF="error-style-guide.html#AEN54855"
 >Quotation marks</A
 ></DT
 ><DT
->45.3.4. <A
-HREF="error-style-guide.html#AEN54025"
+>43.3.4. <A
+HREF="error-style-guide.html#AEN54859"
 >Use of quotes</A
 ></DT
 ><DT
->45.3.5. <A
-HREF="error-style-guide.html#AEN54031"
+>43.3.5. <A
+HREF="error-style-guide.html#AEN54865"
 >Grammar and punctuation</A
 ></DT
 ><DT
->45.3.6. <A
-HREF="error-style-guide.html#AEN54037"
+>43.3.6. <A
+HREF="error-style-guide.html#AEN54871"
 >Upper case vs. lower case</A
 ></DT
 ><DT
->45.3.7. <A
-HREF="error-style-guide.html#AEN54041"
+>43.3.7. <A
+HREF="error-style-guide.html#AEN54875"
 >Avoid passive voice</A
 ></DT
 ><DT
->45.3.8. <A
-HREF="error-style-guide.html#AEN54047"
+>43.3.8. <A
+HREF="error-style-guide.html#AEN54881"
 >Present vs past tense</A
 ></DT
 ><DT
->45.3.9. <A
-HREF="error-style-guide.html#AEN54057"
+>43.3.9. <A
+HREF="error-style-guide.html#AEN54891"
 >Type of the object</A
 ></DT
 ><DT
->45.3.10. <A
-HREF="error-style-guide.html#AEN54062"
+>43.3.10. <A
+HREF="error-style-guide.html#AEN54896"
 >Brackets</A
 ></DT
 ><DT
->45.3.11. <A
-HREF="error-style-guide.html#AEN54066"
+>43.3.11. <A
+HREF="error-style-guide.html#AEN54900"
 >Assembling error messages</A
 ></DT
 ><DT
->45.3.12. <A
-HREF="error-style-guide.html#AEN54071"
+>43.3.12. <A
+HREF="error-style-guide.html#AEN54905"
 >Reasons for errors</A
 ></DT
 ><DT
->45.3.13. <A
-HREF="error-style-guide.html#AEN54075"
+>43.3.13. <A
+HREF="error-style-guide.html#AEN54909"
 >Function names</A
 ></DT
 ><DT
->45.3.14. <A
-HREF="error-style-guide.html#AEN54082"
+>43.3.14. <A
+HREF="error-style-guide.html#AEN54916"
 >Tricky words to avoid</A
 ></DT
 ><DT
->45.3.15. <A
-HREF="error-style-guide.html#AEN54114"
+>43.3.15. <A
+HREF="error-style-guide.html#AEN54948"
 >Proper spelling</A
 ></DT
 ><DT
->45.3.16. <A
-HREF="error-style-guide.html#AEN54129"
+>43.3.16. <A
+HREF="error-style-guide.html#AEN54963"
 >Localization</A
 ></DT
 ></DL
@@ -208,7 +208,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SOURCE-FORMAT"
->45.1. Formatting</A
+>43.1. Formatting</A
 ></H1
 ><P
 >    Source code formatting uses 4 column tab spacing, with 
@@ -226,8 +226,11 @@ CLASS="APPLICATION"
     under some other set of formatting conventions.
    </P
 ><P
->    For Emacs, add the following (or something similar)
-    to your <TT
+>    For <SPAN
+CLASS="PRODUCTNAME"
+>Emacs</SPAN
+>, add the following (or
+    something similar) to your <TT
 CLASS="FILENAME"
 >~/.emacs</TT
 > 
@@ -269,7 +272,10 @@ CLASS="PROGRAMLISTING"
 >set tabstop=4</PRE
 ><P>
 
-    or equivalently from within vi, try
+    or equivalently from within <SPAN
+CLASS="APPLICATION"
+>vi</SPAN
+>, try
 
 </P><PRE
 CLASS="PROGRAMLISTING"

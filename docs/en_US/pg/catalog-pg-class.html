@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. System Catalogs</TD
+>Chapter 41. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-CLASS"
->43.9. <TT
+>41.9. <TT
 CLASS="STRUCTNAME"
 >pg_class</TT
 ></A
 ></H1
 ><A
-NAME="AEN49497"
+NAME="AEN50125"
 ></A
 ><P
 >   The catalog <TT
@@ -111,8 +111,8 @@ CLASS="STRUCTNAME"
    <TT
 CLASS="STRUCTNAME"
 >pg_index</TT
->), sequences, views, and some
-   kinds of special relation; see <TT
+>), sequences, views, composite types,
+   and some kinds of special relation; see <TT
 CLASS="STRUCTFIELD"
 >relkind</TT
 >.
@@ -126,11 +126,11 @@ CLASS="QUOTE"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN49504"
+NAME="AEN50132"
 ></A
 ><P
 ><B
->Table 43-9. <TT
+>Table 41-9. <TT
 CLASS="STRUCTNAME"
 >pg_class</TT
 > Columns</B
@@ -179,7 +179,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-namespace.html"
@@ -187,7 +187,7 @@ HREF="catalog-pg-namespace.html"
 CLASS="STRUCTNAME"
 >pg_namespace</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >       The OID of the namespace that contains this relation
@@ -205,7 +205,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-type.html"
@@ -213,11 +213,11 @@ HREF="catalog-pg-type.html"
 CLASS="STRUCTNAME"
 >pg_type</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
->       The OID of the data type that corresponds to this table, if any
-       (zero for indexes, which have no <TT
+>       The OID of the data type that corresponds to this table's rowtype,
+       if any (zero for indexes, which have no <TT
 CLASS="STRUCTNAME"
 >pg_type</TT
 > entry)
@@ -235,7 +235,7 @@ CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-shadow.html"
@@ -243,7 +243,7 @@ HREF="catalog-pg-shadow.html"
 CLASS="STRUCTNAME"
 >pg_shadow</TT
 ></A
->.usesysid</VAR
+>.usesysid</TT
 ></TD
 ><TD
 >Owner of the relation</TD
@@ -260,7 +260,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-am.html"
@@ -268,7 +268,7 @@ HREF="catalog-pg-am.html"
 CLASS="STRUCTNAME"
 >pg_am</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >If this is an index, the access method used (B-tree, hash, etc.)</TD
@@ -288,6 +288,34 @@ CLASS="TYPE"
 >&nbsp;</TD
 ><TD
 >Name of the on-disk file of this relation; 0 if none</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>reltablespace</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-tablespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+></A
+>.oid</TT
+></TD
+><TD
+>       The tablespace in which this relation is stored.  If zero,
+       the database's default tablespace is implied.  (Not meaningful
+       if the relation has no on-disk file.)
+      </TD
 ></TR
 ><TR
 ><TD
@@ -363,7 +391,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-class.html"
@@ -371,7 +399,7 @@ HREF="catalog-pg-class.html"
 CLASS="STRUCTNAME"
 >pg_class</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >       OID of the TOAST table associated with this table, 0 if none.
@@ -394,7 +422,7 @@ CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
 ><A
 HREF="catalog-pg-class.html"
@@ -402,7 +430,7 @@ HREF="catalog-pg-class.html"
 CLASS="STRUCTNAME"
 >pg_class</TT
 ></A
->.oid</VAR
+>.oid</TT
 ></TD
 ><TD
 >       For a TOAST table, the OID of its index.  0 if not a TOAST table.
@@ -476,29 +504,29 @@ CLASS="TYPE"
 ><TD
 >&nbsp;</TD
 ><TD
->       <VAR
+>       <TT
 CLASS="LITERAL"
->r</VAR
-> = ordinary table, <VAR
+>r</TT
+> = ordinary table, <TT
 CLASS="LITERAL"
->i</VAR
+>i</TT
 > = index,
-       <VAR
+       <TT
 CLASS="LITERAL"
->S</VAR
-> = sequence, <VAR
+>S</TT
+> = sequence, <TT
 CLASS="LITERAL"
->v</VAR
-> = view, <VAR
+>v</TT
+> = view, <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 > =
-       composite type, <VAR
+       composite type, <TT
 CLASS="LITERAL"
->s</VAR
-> = special, <VAR
+>s</TT
+> = special, <TT
 CLASS="LITERAL"
->t</VAR
+>t</TT
 > = TOAST
        table
       </TD
@@ -523,9 +551,9 @@ CLASS="TYPE"
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 >.  See also
-       <VAR
+       <TT
 CLASS="LITERAL"
->pg_attribute.attnum</VAR
+>pg_attribute.attnum</TT
 >.
       </TD
 ></TR

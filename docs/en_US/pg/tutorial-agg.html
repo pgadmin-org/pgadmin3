@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -99,27 +99,27 @@ NAME="TUTORIAL-AGG"
 >2.7. Aggregate Functions</A
 ></H1
 ><A
-NAME="AEN779"
+NAME="AEN784"
 ></A
 ><P
 >    <A
-NAME="AEN782"
+NAME="AEN787"
 ></A
 >
     <A
-NAME="AEN784"
+NAME="AEN789"
 ></A
 >
     <A
-NAME="AEN786"
+NAME="AEN791"
 ></A
 >
     <A
-NAME="AEN788"
+NAME="AEN793"
 ></A
 >
     <A
-NAME="AEN790"
+NAME="AEN795"
 ></A
 >
 
@@ -169,7 +169,7 @@ CLASS="SCREEN"
    </P
 ><P
 >    <A
-NAME="AEN802"
+NAME="AEN807"
 ></A
 >
 
@@ -189,13 +189,13 @@ CLASS="LINEANNOTATION"
 CLASS="FUNCTION"
 >max</CODE
 > cannot be used in the
-    <VAR
+    <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause.  (This restriction exists because
-    the <VAR
+    the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause determines the rows that will
     go into the aggregation stage; so it has to be evaluated before
     aggregate functions are computed.)
@@ -226,18 +226,18 @@ CLASS="SCREEN"
    </P
 ><P
 >    <A
-NAME="AEN813"
+NAME="AEN818"
 ></A
 >
     <A
-NAME="AEN815"
+NAME="AEN820"
 ></A
 >
 
-    Aggregates are also very useful in combination with <VAR
+    Aggregates are also very useful in combination with <TT
 CLASS="LITERAL"
 >GROUP
-    BY</VAR
+    BY</TT
 > clauses.  For example, we can get the maximum low
     temperature observed in each city with
 
@@ -260,9 +260,9 @@ CLASS="SCREEN"
     which gives us one output row per city.  Each aggregate result is
     computed over the table rows matching that city.
     We can filter these grouped
-    rows using <VAR
+    rows using <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 >:
 
 </P><PRE
@@ -282,16 +282,16 @@ CLASS="SCREEN"
 ><P>
 
     which gives us the same results for only the cities that have all
-    <VAR
+    <TT
 CLASS="LITERAL"
->temp_lo</VAR
+>temp_lo</TT
 > values below 40.  Finally, if we only care about
     cities whose
     names begin with <SPAN
 CLASS="QUOTE"
->"<VAR
+>"<TT
 CLASS="LITERAL"
->S</VAR
+>S</TT
 >"</SPAN
 >, we might do
 
@@ -320,13 +320,13 @@ HREF="tutorial-agg.html#CO.TUTORIAL-AGG-LIKE"
 ></A
 ></DT
 ><DD
->      The <VAR
+>      The <TT
 CLASS="LITERAL"
->LIKE</VAR
+>LIKE</TT
 > operator does pattern matching and
       is explained in <A
 HREF="functions-matching.html"
->Section 9.6</A
+>Section 9.7</A
 >.
      </DD
 ></DL
@@ -338,65 +338,65 @@ HREF="functions-matching.html"
     <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
->'s <VAR
+>'s <TT
 CLASS="LITERAL"
->WHERE</VAR
-> and <VAR
+>WHERE</TT
+> and <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clauses.
-    The fundamental difference between <VAR
+    The fundamental difference between <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->HAVING</VAR
-> is this: <VAR
+>HAVING</TT
+> is this: <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > selects
     input rows before groups and aggregates are computed (thus, it controls
     which rows go into the aggregate computation), whereas
-    <VAR
+    <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > selects group rows after groups and
     aggregates are computed.  Thus, the
-    <VAR
+    <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause must not contain aggregate functions;
     it makes no sense to try to use an aggregate to determine which rows
     will be inputs to the aggregates.  On the other hand,
-    <VAR
+    <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clause always contains aggregate functions.
-    (Strictly speaking, you are allowed to write a <VAR
+    (Strictly speaking, you are allowed to write a <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 >
     clause that doesn't use aggregates, but it's wasteful: The same condition
-    could be used more efficiently at the <VAR
+    could be used more efficiently at the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > stage.)
    </P
 ><P
 >    Observe that we can apply the city name restriction in
-    <VAR
+    <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >, since it needs no aggregate.  This is
-    more efficient than adding the restriction to <VAR
+    more efficient than adding the restriction to <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 >,
     because we avoid doing the grouping and aggregate calculations
-    for all rows that fail the <VAR
+    for all rows that fail the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > check.
    </P
 ></DIV

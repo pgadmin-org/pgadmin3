@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-COPY"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN36092"
+NAME="AEN36027"
 ></A
 ><H2
 >Name</H2
 >COPY&nbsp;--&nbsp;copy data between a file and a table</DIV
 ><A
-NAME="AEN36095"
+NAME="AEN36030"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN36097"
+NAME="AEN36032"
 ></A
 ><H2
 >Synopsis</H2
@@ -133,7 +133,19 @@ CLASS="REPLACEABLE"
           [ NULL [ AS ] '<VAR
 CLASS="REPLACEABLE"
 >null string</VAR
->' ] ]
+>' ]
+          [ CSV [ QUOTE [ AS ] '<VAR
+CLASS="REPLACEABLE"
+>quote</VAR
+>' ] 
+                [ ESCAPE [ AS ] '<VAR
+CLASS="REPLACEABLE"
+>escape</VAR
+>' ]
+                [ FORCE NOT NULL <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> [, ...] ]
 
 COPY <VAR
 CLASS="REPLACEABLE"
@@ -156,12 +168,24 @@ CLASS="REPLACEABLE"
           [ NULL [ AS ] '<VAR
 CLASS="REPLACEABLE"
 >null string</VAR
->' ] ]</PRE
+>' ]
+          [ CSV [ QUOTE [ AS ] '<VAR
+CLASS="REPLACEABLE"
+>quote</VAR
+>' ] 
+                [ ESCAPE [ AS ] '<VAR
+CLASS="REPLACEABLE"
+>escape</VAR
+>' ]
+                [ FORCE QUOTE <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> [, ...] ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36109"
+NAME="AEN36050"
 ></A
 ><H2
 >Description</H2
@@ -221,12 +245,12 @@ CLASS="PRODUCTNAME"
 > server to directly read from
    or write to a file. The file must be accessible to the server and
    the name must be specified from the viewpoint of the server. When
-   <VAR
+   <TT
 CLASS="LITERAL"
->STDIN</VAR
-> or <VAR
+>STDIN</TT
+> or <TT
 CLASS="LITERAL"
->STDOUT</VAR
+>STDOUT</TT
 > is
    specified, data is transmitted via the connection between the
    client and the server.
@@ -235,7 +259,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36126"
+NAME="AEN36067"
 ></A
 ><H2
 >Parameters</H2
@@ -276,9 +300,9 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->STDIN</VAR
+>STDIN</TT
 ></DT
 ><DD
 ><P
@@ -286,9 +310,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->STDOUT</VAR
+>STDOUT</TT
 ></DT
 ><DD
 ><P
@@ -296,34 +320,34 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->BINARY</VAR
+>BINARY</TT
 ></DT
 ><DD
 ><P
 >      Causes all data to be stored or read in binary format rather
-      than as text. You cannot specify the <VAR
+      than as text. You cannot specify the <TT
 CLASS="OPTION"
->DELIMITER</VAR
+>DELIMITER</TT
 >
-      or <VAR
+      or <TT
 CLASS="OPTION"
->NULL</VAR
+>NULL</TT
 > options in binary mode.
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->OIDS</VAR
+>OIDS</TT
 ></DT
 ><DD
 ><P
 >      Specifies copying the OID for each row.  (An error is raised if
-      <VAR
+      <TT
 CLASS="LITERAL"
->OIDS</VAR
+>OIDS</TT
 > is specified for a table that does not
       have OIDs.)
      </P
@@ -336,7 +360,11 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >      The single character that separates columns within each row
-      (line) of the file.  The default is a tab character.
+      (line) of the file.  The default is a tab character in text mode,
+      a comma in <TT
+CLASS="LITERAL"
+>CSV</TT
+> mode.
      </P
 ></DD
 ><DT
@@ -347,11 +375,16 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >      The string that represents a null value. The default is
-      <VAR
+      <TT
 CLASS="LITERAL"
->\N</VAR
-> (backslash-N). You might prefer an empty
-      string, for example.
+>\N</TT
+> (backslash-N) in text mode, and a empty
+      value with no quotes in <TT
+CLASS="LITERAL"
+>CSV</TT
+> mode. You might prefer an
+      empty string even in text mode for cases where you don't want to
+      distinguish nulls from empty strings.
      </P
 ><DIV
 CLASS="NOTE"
@@ -360,7 +393,7 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->       On a <TT
+>       When using <TT
 CLASS="COMMAND"
 >COPY FROM</TT
 >, any data item that matches
@@ -374,13 +407,129 @@ CLASS="COMMAND"
 ></BLOCKQUOTE
 ></DIV
 ></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CSV</TT
+></DT
+><DD
+><P
+>      Enables Comma Separated Variable (<TT
+CLASS="LITERAL"
+>CSV</TT
+>) mode. (Also
+      called Comma Separated Value). It sets the default
+      <TT
+CLASS="LITERAL"
+>DELIMITER</TT
+> to comma, and <TT
+CLASS="LITERAL"
+>QUOTE</TT
+> and
+      <TT
+CLASS="LITERAL"
+>ESCAPE</TT
+> values to double-quote.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>quote</VAR
+></DT
+><DD
+><P
+>      Specifies the quotation character in <TT
+CLASS="LITERAL"
+>CSV</TT
+> mode.
+      The default is double-quote.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>escape</VAR
+></DT
+><DD
+><P
+>      Specifies the character that should appear before a
+      <TT
+CLASS="LITERAL"
+>QUOTE</TT
+> data character value in <TT
+CLASS="LITERAL"
+>CSV</TT
+> mode.
+      The default is the <TT
+CLASS="LITERAL"
+>QUOTE</TT
+> value (usually double-quote).
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>FORCE QUOTE</TT
+></DT
+><DD
+><P
+>      In <TT
+CLASS="LITERAL"
+>CSV</TT
+> <TT
+CLASS="COMMAND"
+>COPY TO</TT
+> mode, forces quoting to be
+      used for all non-<TT
+CLASS="LITERAL"
+>NULL</TT
+> values in each specified column.
+      <TT
+CLASS="LITERAL"
+>NULL</TT
+> output is never quoted.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>FORCE NOT NULL</TT
+></DT
+><DD
+><P
+>      In <TT
+CLASS="LITERAL"
+>CSV</TT
+> <TT
+CLASS="COMMAND"
+>COPY FROM</TT
+> mode, process each
+      specified column as though it were quoted and hance not a
+      <TT
+CLASS="LITERAL"
+>NULL</TT
+> value. For the default <TT
+CLASS="LITERAL"
+>null string</TT
+> in
+      <TT
+CLASS="LITERAL"
+>CSV</TT
+> mode (<TT
+CLASS="LITERAL"
+>''</TT
+>), this causes a missing
+      values to be input as a zero-length strings.
+     </P
+></DD
 ></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36182"
+NAME="AEN36168"
 ></A
 ><H2
 >Notes</H2
@@ -392,9 +541,9 @@ CLASS="COMMAND"
     with views.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->BINARY</VAR
+>BINARY</TT
 > key word causes all data to be
     stored/read as binary format rather than as text.  It is
     somewhat faster than the normal text mode, but a binary-format
@@ -498,6 +647,46 @@ CLASS="COMMAND"
 >    <TT
 CLASS="COMMAND"
 >COPY</TT
+> input and output is affected by
+    <TT
+CLASS="VARNAME"
+>DateStyle </TT
+>. For portability with other
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installations which might use
+    non-default <TT
+CLASS="VARNAME"
+>DateStyle</TT
+> settings,
+    <TT
+CLASS="VARNAME"
+>DateStyle</TT
+> should be set to <TT
+CLASS="LITERAL"
+>ISO</TT
+> before
+    using <TT
+CLASS="COMMAND"
+>COPY</TT
+>. In <TT
+CLASS="LITERAL"
+>CSV</TT
+> mode, use <TT
+CLASS="LITERAL"
+>ISO</TT
+>
+    or a <TT
+CLASS="VARNAME"
+>DateStyle</TT
+> setting appropriate for the
+    external application.
+   </P
+><P
+>    <TT
+CLASS="COMMAND"
+>COPY</TT
 > stops operation at the first error. This
     should not lead to problems in the event of a <TT
 CLASS="COMMAND"
@@ -520,14 +709,14 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36216"
+NAME="AEN36213"
 ></A
 ><H2
 >File Formats</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN36218"
+NAME="AEN36215"
 ></A
 ><H3
 >Text Format</H3
@@ -535,11 +724,15 @@ NAME="AEN36218"
 >    When <TT
 CLASS="COMMAND"
 >COPY</TT
-> is used without the <VAR
+> is used without the <TT
 CLASS="LITERAL"
->BINARY</VAR
+>BINARY</TT
 > option,
-    the data read or written is a text file with one line per table row.
+    the data read or written is a text file with one line per table row,
+    unless <TT
+CLASS="LITERAL"
+>CSV</TT
+> mode is used.
     Columns in a row are separated by the delimiter character.
     The column values themselves are strings generated by the
     output function, or acceptable to the input function, of each
@@ -550,26 +743,26 @@ CLASS="COMMAND"
 >COPY FROM</TT
 > will raise an error if any line of the
     input file contains more or fewer columns than are expected.
-    If <VAR
+    If <TT
 CLASS="LITERAL"
->OIDS</VAR
+>OIDS</TT
 > is specified, the OID is read or written as the first column,
     preceding the user data columns.
    </P
 ><P
 >    End of data can be represented by a single line containing just
-    backslash-period (<VAR
+    backslash-period (<TT
 CLASS="LITERAL"
->\.</VAR
+>\.</TT
 >).  An end-of-data marker is
     not necessary when reading from a file, since the end of file
     serves perfectly well; it is needed only when copying data to or from
     client applications using pre-3.0 client protocol.
    </P
 ><P
->    Backslash characters (<VAR
+>    Backslash characters (<TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 >) may be used in the
     <TT
 CLASS="COMMAND"
@@ -596,17 +789,17 @@ CLASS="COMMAND"
 >COPY FROM</TT
 > matches
     the input against the null string before removing backslashes.  Therefore,
-    a null string such as <VAR
+    a null string such as <TT
 CLASS="LITERAL"
->\N</VAR
+>\N</TT
 > cannot be confused with
-    the actual data value <VAR
+    the actual data value <TT
 CLASS="LITERAL"
->\N</VAR
+>\N</TT
 > (which would be represented
-    as <VAR
+    as <TT
 CLASS="LITERAL"
->\\N</VAR
+>\\N</TT
 >).
    </P
 ><P
@@ -621,7 +814,7 @@ CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN36239"
+NAME="AEN36237"
 ></A
 ><TABLE
 BORDER="1"
@@ -637,63 +830,63 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\b</VAR
+>\b</TT
 ></TD
 ><TD
 >Backspace (ASCII 8)</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\f</VAR
+>\f</TT
 ></TD
 ><TD
 >Form feed (ASCII 12)</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\n</VAR
+>\n</TT
 ></TD
 ><TD
 >Newline (ASCII 10)</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\r</VAR
+>\r</TT
 ></TD
 ><TD
 >Carriage return (ASCII 13)</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\t</VAR
+>\t</TT
 ></TD
 ><TD
 >Tab (ASCII 9)</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\v</VAR
+>\v</TT
 ></TD
 ><TD
 >Vertical tab (ASCII 11)</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->\</VAR
+>\</TT
 ><VAR
 CLASS="REPLACEABLE"
 >digits</VAR
@@ -720,25 +913,25 @@ CLASS="COMMAND"
 >    Any other backslashed character that is not mentioned in the above table
     will be taken to represent itself.  However, beware of adding backslashes
     unnecessarily, since that might accidentally produce a string matching the
-    end-of-data marker (<VAR
+    end-of-data marker (<TT
 CLASS="LITERAL"
->\.</VAR
->) or the null string (<VAR
+>\.</TT
+>) or the null string (<TT
 CLASS="LITERAL"
->\N</VAR
+>\N</TT
 > by
     default).  These strings will be recognized before any other backslash
     processing is done.
    </P
 ><P
 >    It is strongly recommended that applications generating COPY data convert
-    data newlines and carriage returns to the <VAR
+    data newlines and carriage returns to the <TT
 CLASS="LITERAL"
->\n</VAR
+>\n</TT
 > and
-    <VAR
+    <TT
 CLASS="LITERAL"
->\r</VAR
+>\r</TT
 > sequences respectively.  At present it is
     possible to represent a data carriage return by a backslash and carriage
     return, and to represent a data newline by a backslash and newline.  
@@ -754,16 +947,16 @@ CLASS="COMMAND"
 > will terminate each row with a Unix-style 
     newline (<SPAN
 CLASS="QUOTE"
->"<VAR
+>"<TT
 CLASS="LITERAL"
->\n</VAR
+>\n</TT
 >"</SPAN
 >).  Servers running on MS Windows instead
     output carriage return/newline (<SPAN
 CLASS="QUOTE"
->"<VAR
+>"<TT
 CLASS="LITERAL"
->\r\n</VAR
+>\r\n</TT
 >"</SPAN
 >), but only for
     <TT
@@ -775,9 +968,9 @@ CLASS="COMMAND"
 >COPY TO STDOUT</TT
 > always sends <SPAN
 CLASS="QUOTE"
->"<VAR
+>"<TT
 CLASS="LITERAL"
->\n</VAR
+>\n</TT
 >"</SPAN
 >
     regardless of server platform.
@@ -797,7 +990,138 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN36294"
+NAME="AEN36292"
+></A
+><H3
+>CSV Format</H3
+><P
+>    This format is used for importing and exporting the Comma
+    Separated Variable (<TT
+CLASS="LITERAL"
+>CSV</TT
+>) file format used by many other
+    programs, such as spreadsheets. Instead of the escaping used by
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s standard text mode, it
+    produces and recognises the common CSV escaping mechanism.
+   </P
+><P
+>    The values in each record are separated by the <TT
+CLASS="LITERAL"
+>DELIMITER</TT
+>
+    character. If the value contains the delimiter character, the
+    <TT
+CLASS="LITERAL"
+>QUOTE</TT
+> character, the <TT
+CLASS="LITERAL"
+>NULL</TT
+> string, a carriage
+    return, or line feed character, then the whole value is prefixed and
+    suffixed by the <TT
+CLASS="LITERAL"
+>QUOTE</TT
+> character, and any occurrence
+    within the value of a <TT
+CLASS="LITERAL"
+>QUOTE</TT
+> character or the
+    <TT
+CLASS="LITERAL"
+>ESCAPE</TT
+> character is preceded by the escape character.
+    You can also use <TT
+CLASS="LITERAL"
+>FORCE QUOTE</TT
+> to force quotes when outputting
+    non-<TT
+CLASS="LITERAL"
+>NULL</TT
+> values in specific columns.
+   </P
+><P
+> 
+    In general, the <TT
+CLASS="LITERAL"
+>CSV</TT
+> format has no way to distinguish a
+    <TT
+CLASS="LITERAL"
+>NULL</TT
+> from an empty string.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s COPY handles this by
+    quoting. A <TT
+CLASS="LITERAL"
+>NULL</TT
+> is output as the <TT
+CLASS="LITERAL"
+>NULL</TT
+> string 
+    and is not quoted, while a data value matching the <TT
+CLASS="LITERAL"
+>NULL</TT
+> string 
+    is quoted. Therefore, using the default settings, a <TT
+CLASS="LITERAL"
+>NULL</TT
+> is
+    written as an unquoted empty string, while an empty string is
+    written with double quotes (<TT
+CLASS="LITERAL"
+>""</TT
+>). Reading values follows 
+    similar rules. You can use <TT
+CLASS="LITERAL"
+>FORCE NOT NULL</TT
+> to prevent <TT
+CLASS="LITERAL"
+>NULL</TT
+>
+    input comparisons for specific columns.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     CSV mode will both recognize and produce CSV files with quoted
+     values containing embedded carriage returns and line feeds. Thus
+     the files are not strictly one line per table row like text-mode
+     files.
+    </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Many programs produce strange and occasionally perverse CSV files,
+     so the file format is more a convention than a standard. Thus you
+     might encounter some files that cannot be imported using this
+     mechanism, and <TT
+CLASS="COMMAND"
+>COPY</TT
+> might produce files that other
+     programs can not process.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN36322"
 ></A
 ><H3
 >Binary Format</H3
@@ -816,7 +1140,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN36299"
+NAME="AEN36327"
 ></A
 ><H4
 >File Header</H4
@@ -833,9 +1157,9 @@ CLASS="VARIABLELIST"
 >Signature</DT
 ><DD
 ><P
->11-byte sequence <VAR
+>11-byte sequence <TT
 CLASS="LITERAL"
->PGCOPY\n\377\r\n\0</VAR
+>PGCOPY\n\377\r\n\0</TT
 > --- note that the zero byte
 is a required part of the signature.  (The signature is designed to allow
 easy identification of files that have been munged by a non-8-bit-clean
@@ -910,7 +1234,7 @@ is left for a later release.
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN36325"
+NAME="AEN36353"
 ></A
 ><H4
 >Tuples</H4
@@ -965,7 +1289,7 @@ OIDs to be shown as null if that ever proves desirable.
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN36337"
+NAME="AEN36365"
 ></A
 ><H4
 >File Trailer</H4
@@ -984,15 +1308,15 @@ NAME="AEN36337"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36341"
+NAME="AEN36369"
 ></A
 ><H2
 >Examples</H2
 ><P
 >   The following example copies a table to the client
-   using the vertical bar (<VAR
+   using the vertical bar (<TT
 CLASS="LITERAL"
->|</VAR
+>|</TT
 >) as the field delimiter:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1000,9 +1324,9 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   To copy data from a file into the <VAR
+>   To copy data from a file into the <TT
 CLASS="LITERAL"
->country</VAR
+>country</TT
 > table:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1011,9 +1335,9 @@ CLASS="PROGRAMLISTING"
   </P
 ><P
 >   Here is a sample of data suitable for copying into a table from
-   <VAR
+   <TT
 CLASS="LITERAL"
->STDIN</VAR
+>STDIN</TT
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1061,7 +1385,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36358"
+NAME="AEN36386"
 ></A
 ><H2
 >Compatibility</H2
@@ -1072,8 +1396,11 @@ CLASS="COMMAND"
 > statement in the SQL standard.
   </P
 ><P
->   The following syntax was used before PostgreSQL version 7.3 and is
-   still supported:
+>   The following syntax was used before <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   version 7.3 and is still supported:
 
 </P><PRE
 CLASS="SYNOPSIS"

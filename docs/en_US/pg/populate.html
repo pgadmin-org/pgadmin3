@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Performance Tips"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,9 +96,9 @@ NAME="POPULATE"
 >13.4. Populating a Database</A
 ></H1
 ><P
->   One may need to do a large number of table insertions when first
-   populating a database. Here are some tips and techniques for making that as
-   efficient as possible.
+>   One may need to insert a large amount of data when first populating
+   a database. This section contains some suggestions on how to make
+   this process as efficient as possible.
   </P
 ><DIV
 CLASS="SECT2"
@@ -109,30 +109,52 @@ NAME="DISABLE-AUTOCOMMIT"
 >13.4.1. Disable Autocommit</A
 ></H2
 ><A
-NAME="AEN13942"
+NAME="AEN14622"
 ></A
 ><P
->    Turn off autocommit and just do one commit at
-    the end.  (In plain SQL, this means issuing <TT
+>    Turn off autocommit and just do one commit at the end.  (In plain
+    SQL, this means issuing <TT
 CLASS="COMMAND"
 >BEGIN</TT
->
-    at the start and <TT
+> at the start and
+    <TT
 CLASS="COMMAND"
 >COMMIT</TT
-> at the end.  Some client
-    libraries may do this behind your back, in which case you need to
-    make sure the library does it when you want it done.)
-    If you allow each insertion to be committed separately,
+> at the end.  Some client libraries may
+    do this behind your back, in which case you need to make sure the
+    library does it when you want it done.)  If you allow each
+    insertion to be committed separately,
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> is doing a lot of work for each
-    row added.
-    An additional benefit of doing all insertions in one transaction
-    is that if the insertion of one row were to fail then the
-    insertion of all rows inserted up to that point would be rolled
-    back, so you won't be stuck with partially loaded data.
+> is doing a lot of work for
+    each row that is added.  An additional benefit of doing all
+    insertions in one transaction is that if the insertion of one row
+    were to fail then the insertion of all rows inserted up to that
+    point would be rolled back, so you won't be stuck with partially
+    loaded data.
+   </P
+><P
+>    If you are issuing a large sequence of <TT
+CLASS="COMMAND"
+>INSERT</TT
+>
+    commands to bulk load some data, also consider using <A
+HREF="sql-prepare.html"
+><I
+>PREPARE</I
+></A
+> to create a
+    prepared <TT
+CLASS="COMMAND"
+>INSERT</TT
+> statement. Since you are
+    executing the same command multiple times, it is more efficient to
+    prepare the command once and then use <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>
+    as many times as required.
    </P
 ></DIV
 ><DIV
@@ -143,21 +165,51 @@ CLASS="SECT2"
 NAME="POPULATE-COPY-FROM"
 >13.4.2. Use <TT
 CLASS="COMMAND"
->COPY FROM</TT
+>COPY</TT
 ></A
 ></H2
 ><P
->    Use <TT
-CLASS="COMMAND"
->COPY FROM STDIN</TT
-> to load all the rows in one
-    command, instead of using a series of <TT
+>    Use <A
+HREF="sql-copy.html"
+><I
+>COPY</I
+></A
+> to load
+    all the rows in one command, instead of using a series of
+    <TT
 CLASS="COMMAND"
 >INSERT</TT
+> commands.  The <TT
+CLASS="COMMAND"
+>COPY</TT
 >
-    commands.  This reduces parsing, planning, etc.  overhead a great
-    deal. If you do this then it is not necessary to turn off
-    autocommit, since it is only one command anyway.
+    command is optimized for loading large numbers of rows; it is less
+    flexible than <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, but incurs significantly
+    less overhead for large data loads. Since <TT
+CLASS="COMMAND"
+>COPY</TT
+>
+    is a single command, there is no need to disable autocommit if you
+    use this method to populate a table.
+   </P
+><P
+>    Note that loading a large number of rows using
+    <TT
+CLASS="COMMAND"
+>COPY</TT
+> is almost always faster than using
+    <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, even if multiple
+    <TT
+CLASS="COMMAND"
+>INSERT</TT
+> commands are batched into a single
+    transaction.
    </P
 ></DIV
 ><DIV
@@ -180,11 +232,12 @@ CLASS="COMMAND"
    </P
 ><P
 >    If you are augmenting an existing table, you can drop the index,
-    load the table, then recreate the index. Of
-    course, the database performance for other users may be adversely 
-    affected during the time that the index is missing.  One should also
-    think twice before dropping unique indexes, since the error checking
-    afforded by the unique constraint will be lost while the index is missing.
+    load the table, and then recreate the index. Of course, the
+    database performance for other users may be adversely affected
+    during the time that the index is missing.  One should also think
+    twice before dropping unique indexes, since the error checking
+    afforded by the unique constraint will be lost while the index is
+    missing.
    </P
 ></DIV
 ><DIV
@@ -192,22 +245,63 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="POPULATE-SORT-MEM"
->13.4.4. Increase <VAR
+NAME="POPULATE-WORK-MEM"
+>13.4.4. Increase <TT
 CLASS="VARNAME"
->sort_mem</VAR
+>maintenance_work_mem</TT
 ></A
 ></H2
 ><P
->    Temporarily increasing the <VAR
-CLASS="VARNAME"
->sort_mem</VAR
+>    Temporarily increasing the <A
+HREF="runtime-config.html#GUC-MAINTENANCE-WORK-MEM"
+>maintenance_work_mem</A
 >
     configuration variable when restoring large amounts of data can
     lead to improved performance. This is because when a B-tree index
     is created from scratch, the existing content of the table needs
-    to be sorted. Allowing the merge sort to use more buffer pages
-    means that fewer merge passes will be required.
+    to be sorted. Allowing the external merge sort to use more memory
+    means that fewer merge passes will be required.  A larger setting for
+    <TT
+CLASS="VARNAME"
+>maintenance_work_mem</TT
+> may also speed up validation
+    of foreign-key constraints.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="POPULATE-CHECKPOINT-SEGMENTS"
+>13.4.5. Increase <TT
+CLASS="VARNAME"
+>checkpoint_segments</TT
+></A
+></H2
+><P
+>    Temporarily increasing the <A
+HREF="runtime-config.html#GUC-CHECKPOINT-SEGMENTS"
+>checkpoint_segments</A
+> configuration variable can also
+    make large data loads faster.  This is because loading a large
+    amount of data into <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can
+    cause checkpoints to occur more often than the normal checkpoint
+    frequency (specified by the <TT
+CLASS="VARNAME"
+>checkpoint_timeout</TT
+>
+    configuration variable). Whenever a checkpoint occurs, all dirty
+    pages must be flushed to disk. By increasing
+    <TT
+CLASS="VARNAME"
+>checkpoint_segments</TT
+> temporarily during bulk
+    data loads, the number of checkpoints that are required can be
+    reduced.
    </P
 ></DIV
 ><DIV
@@ -216,24 +310,36 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="POPULATE-ANALYZE"
->13.4.5. Run <TT
+>13.4.6. Run <TT
 CLASS="COMMAND"
 >ANALYZE</TT
 > Afterwards</A
 ></H2
 ><P
->    It's a good idea to run <TT
+>    Whenever you have significantly altered the distribution of data
+    within a table, running <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+> is strongly recommended. This
+    includes when bulk loading large amounts of data into
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  Running
+    <TT
 CLASS="COMMAND"
 >ANALYZE</TT
-> or <TT
+> (or <TT
 CLASS="COMMAND"
->VACUUM
-    ANALYZE</TT
-> anytime you've added or updated a lot of data,
-    including just after initially populating a table.  This ensures that
-    the planner has up-to-date statistics about the table.  With no statistics
-    or obsolete statistics, the planner may make poor choices of query plans,
-    leading to bad performance on queries that use your table.
+>VACUUM ANALYZE</TT
+>)
+    ensures that the planner has up-to-date statistics about the
+    table.  With no statistics or obsolete statistics, the planner may
+    make poor decisions during query planning, leading to poor
+    performance on any tables with inaccurate or nonexistent
+    statistics.
    </P
 ></DIV
 ></DIV
@@ -281,9 +387,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Controlling the Planner with Explicit <VAR
+>Controlling the Planner with Explicit <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > Clauses</TD
 ><TD
 WIDTH="34%"

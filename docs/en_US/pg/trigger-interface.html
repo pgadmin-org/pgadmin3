@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Triggers"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="triggers.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 35. Triggers</TD
+>Chapter 33. Triggers</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,10 +93,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRIGGER-INTERFACE"
->35.3. Writing Trigger Functions in C</A
+>33.3. Writing Trigger Functions in C</A
 ></H1
 ><A
-NAME="AEN31058"
+NAME="AEN30395"
 ></A
 ><P
 >    This section describes the low-level details of the interface to a
@@ -135,13 +135,13 @@ CLASS="PROGRAMLISTING"
 >((fcinfo)-&#62;context != NULL &#38;&#38; IsA((fcinfo)-&#62;context, TriggerData))</PRE
 ><P>
     If this returns true, then it is safe to cast
-    <VAR
+    <TT
 CLASS="LITERAL"
->fcinfo-&#62;context</VAR
-> to type <VAR
+>fcinfo-&#62;context</TT
+> to type <TT
 CLASS="LITERAL"
 >TriggerData
-    *</VAR
+    *</TT
 > and make use of the pointed-to
     <TT
 CLASS="STRUCTNAME"
@@ -196,9 +196,9 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->        Always <VAR
+>        Always <TT
 CLASS="LITERAL"
->T_TriggerData</VAR
+>T_TriggerData</TT
 >.
        </P
 ></DD
@@ -210,9 +210,9 @@ CLASS="STRUCTFIELD"
 ><DD
 ><P
 >	Describes the event for which the function is called. You may use the
-	following macros to examine <VAR
+	following macros to examine <TT
 CLASS="LITERAL"
->tg_event</VAR
+>tg_event</TT
 >:
 
 	<P
@@ -221,9 +221,9 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TRIGGER_FIRED_BEFORE(tg_event)</VAR
+>TRIGGER_FIRED_BEFORE(tg_event)</TT
 ></DT
 ><DD
 ><P
@@ -231,9 +231,9 @@ CLASS="LITERAL"
 	   </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TRIGGER_FIRED_AFTER(tg_event)</VAR
+>TRIGGER_FIRED_AFTER(tg_event)</TT
 ></DT
 ><DD
 ><P
@@ -241,9 +241,9 @@ CLASS="LITERAL"
 	   </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TRIGGER_FIRED_FOR_ROW(tg_event)</VAR
+>TRIGGER_FIRED_FOR_ROW(tg_event)</TT
 ></DT
 ><DD
 ><P
@@ -251,9 +251,9 @@ CLASS="LITERAL"
 	   </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TRIGGER_FIRED_FOR_STATEMENT(tg_event)</VAR
+>TRIGGER_FIRED_FOR_STATEMENT(tg_event)</TT
 ></DT
 ><DD
 ><P
@@ -261,9 +261,9 @@ CLASS="LITERAL"
 	   </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TRIGGER_FIRED_BY_INSERT(tg_event)</VAR
+>TRIGGER_FIRED_BY_INSERT(tg_event)</TT
 ></DT
 ><DD
 ><P
@@ -274,9 +274,9 @@ CLASS="COMMAND"
 	   </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TRIGGER_FIRED_BY_UPDATE(tg_event)</VAR
+>TRIGGER_FIRED_BY_UPDATE(tg_event)</TT
 ></DT
 ><DD
 ><P
@@ -287,9 +287,9 @@ CLASS="COMMAND"
 	   </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TRIGGER_FIRED_BY_DELETE(tg_event)</VAR
+>TRIGGER_FIRED_BY_DELETE(tg_event)</TT
 ></DT
 ><DD
 ><P
@@ -317,13 +317,13 @@ CLASS="FILENAME"
 >utils/rel.h</TT
 > for details about
 	this structure.  The most interesting things are
-	<VAR
+	<TT
 CLASS="LITERAL"
->tg_relation-&#62;rd_att</VAR
+>tg_relation-&#62;rd_att</TT
 > (descriptor of the relation
-	tuples) and <VAR
+	tuples) and <TT
 CLASS="LITERAL"
->tg_relation-&#62;rd_rel-&#62;relname</VAR
+>tg_relation-&#62;rd_rel-&#62;relname</TT
 >
 	(relation name; the type is not <TT
 CLASS="TYPE"
@@ -333,9 +333,9 @@ CLASS="TYPE"
 CLASS="TYPE"
 >NameData</TT
 >; use
-	<VAR
+	<TT
 CLASS="LITERAL"
->SPI_getrelname(tg_relation)</VAR
+>SPI_getrelname(tg_relation)</TT
 > to get a <TT
 CLASS="TYPE"
 >char*</TT
@@ -462,14 +462,22 @@ CLASS="COMMAND"
 ><P>
    </P
 ><P
->    A trigger function must return either <TT
-CLASS="SYMBOL"
->NULL</TT
-> or a
+>    A trigger function must return either a
     <TT
 CLASS="STRUCTNAME"
 >HeapTuple</TT
-> pointer.  Be careful to return either
+> pointer or a <TT
+CLASS="SYMBOL"
+>NULL</TT
+> pointer
+    (<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> a SQL NULL, that is, do not set isNull true).
+    Be careful to return either
     <TT
 CLASS="STRUCTFIELD"
 >tg_trigtuple</TT

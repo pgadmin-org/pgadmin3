@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN48111"
+NAME="AEN48694"
 ></A
 ><H2
 >Name</H2
@@ -107,12 +107,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > multiuser database server</DIV
 ><A
-NAME="AEN48115"
+NAME="AEN48698"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN48117"
+NAME="AEN48700"
 ></A
 ><H2
 >Synopsis</H2
@@ -161,7 +161,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48153"
+NAME="AEN48736"
 ></A
 ><H2
 >Description</H2
@@ -222,28 +222,63 @@ CLASS="COMMAND"
    location.  When the <TT
 CLASS="COMMAND"
 >postmaster</TT
-> starts it needs to know the location
-   of the database cluster files (<SPAN
+> starts it needs 
+   to know the location of the database cluster files (<SPAN
 CLASS="QUOTE"
->"data area"</SPAN
->).  This is
-   done with the <VAR
-CLASS="OPTION"
->-D</VAR
-> invocation option or the
-   <TT
-CLASS="ENVAR"
->PGDATA</TT
-> environment variable; there is no default.
+>"data 
+   area"</SPAN
+>).  
    More than one <TT
 CLASS="COMMAND"
 >postmaster</TT
-> process can run on a system at one time,
-   as long as they use different data areas and different
+> process can run on a system
+   at one time as long as they use different data areas and different
    communication ports (see below).  A data area is created with <A
 HREF="app-initdb.html"
 >initdb</A
 >.
+  </P
+><P
+>   The <SPAN
+CLASS="QUOTE"
+>"data area"</SPAN
+> is specified by the <TT
+CLASS="OPTION"
+>-D</TT
+> option
+   or the <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable; there is no default.
+   Typically, it points to a directory created by <SPAN
+CLASS="APPLICATION"
+>   initdb</SPAN
+>.  However, for administrative flexibility, you can
+   point to a directory containing only configuration files:
+   <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>, <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+>, and
+   <TT
+CLASS="FILENAME"
+>pg_ident.conf</TT
+>. You can then set
+   <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>'s <TT
+CLASS="VARNAME"
+>pgdata</TT
+> to point to the
+   data directory. You can also point just to the server configuration file
+   like <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> and set its variables to point to the
+   other configuration files and the data directory.
   </P
 ></DIV
 ><DIV
@@ -271,34 +306,44 @@ HREF="runtime-config.html"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-A 0|1</VAR
+>-A 0|1</TT
 ></DT
 ><DD
 ><P
 >        Enables run-time assertion checks, which is a debugging aid to
-        detect programming mistakes.  This is only available if it was
-        enabled during compilation.  If so, the default is on.
+        detect programming mistakes.  This option is only available if
+        assertions were enabled when <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> was
+        compiled. If so, the default is on.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-B <VAR
 CLASS="REPLACEABLE"
 >nbuffers</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
 >	Sets the number of shared buffers for use by the server
-	processes.  This value defaults to 64 buffers, where each
-	buffer is 8 kB.
+	processes.  The default value of this parameter is chosen
+	automatically by <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+>; refer to <A
+HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE-MEMORY"
+>Section 16.4.3.1</A
+> for more information.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-c <VAR
 CLASS="REPLACEABLE"
@@ -306,45 +351,49 @@ CLASS="REPLACEABLE"
 >=<VAR
 CLASS="REPLACEABLE"
 >value</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->        Sets a named run-time parameter. Consult <A
+>        Sets a named run-time parameter. The configuration parameters
+        supported by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> are
+        described in <A
 HREF="runtime-config.html"
 >Section 16.4</A
-> for
-        a list and descriptions.  Most of the other command line
-        options are in fact short forms of such a parameter
-        assignment.  <VAR
+>. Most of the
+        other command line options are in fact short forms of such a
+        parameter assignment.  <TT
 CLASS="OPTION"
->-c</VAR
-> can appear multiple times to set
-        multiple parameters.
+>-c</TT
+> can appear multiple times
+        to set multiple parameters.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-d <VAR
 CLASS="REPLACEABLE"
 >debug-level</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
 >        Sets the debug level.  The higher this value is set, the more
         debugging output is written to the server log.  Values are from
-	1 to 5.
+        1 to 5.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-D <VAR
 CLASS="REPLACEABLE"
 >datadir</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -353,9 +402,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-F</VAR
+>-F</TT
 ></DT
 ><DD
 ><P
@@ -364,80 +413,102 @@ CLASS="FUNCTION"
 >fsync</CODE
 > calls for performance
         improvement, at the risk of data corruption in event of a
-        system crash.  This option corresponds to setting
-        <VAR
-CLASS="LITERAL"
->fsync=false</VAR
-> in <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->. Read the detailed
-        documentation before using this!
+        system crash.  Specifying this option is equivalent to
+        disabling the <A
+HREF="runtime-config.html#GUC-FSYNC"
+>fsync</A
+> configuration
+        parameter. Read the detailed documentation before using this!
        </P
 ><P
->        <VAR
+>        <TT
 CLASS="OPTION"
->--fsync=true</VAR
+>--fsync=true</TT
 > has the opposite effect
         of this option.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-h <VAR
 CLASS="REPLACEABLE"
 >hostname</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
->	Specifies the IP host name or address on which the
-	<TT
+>        Specifies the IP host name or address on which the
+        <TT
 CLASS="COMMAND"
 >postmaster</TT
-> is to listen for
-	connections from client applications.  Defaults to
-	listening on all configured addresses (including
+> is to listen for TCP/IP
+        connections from client applications.  The value can also be a
+        space-separated list of addresses, or <TT
+CLASS="LITERAL"
+>*</TT
+> to specify
+        listening on all available interfaces.  An empty value
+        specifies not listening on any IP addresses, in which case
+        only Unix-domain sockets can be used to connect to the
+        <TT
+CLASS="COMMAND"
+>postmaster</TT
+>.  Defaults to listening only on
         <SPAN
 CLASS="SYSTEMITEM"
 >localhost</SPAN
->).
+>.
+        Specifying this option is equivalent to setting the <A
+HREF="runtime-config.html#GUC-LISTEN-ADDRESSES"
+>listen_addresses</A
+> configuration parameter.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-i</VAR
+>-i</TT
 ></DT
 ><DD
 ><P
->        Allows clients to connect via TCP/IP (Internet domain)
-	connections.  Without this option, only local Unix domain
-        socket connections are accepted. This option corresponds
-        to setting <VAR
+>        Allows remote clients to connect via TCP/IP (Internet domain)
+        connections.  Without this option, only local connections are
+        accepted.  This option is equivalent to setting
+        <TT
+CLASS="VARNAME"
+>listen_addresses</TT
+> to <TT
 CLASS="LITERAL"
->tcpip_socket=true</VAR
-> in <TT
+>*</TT
+> in
+        <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
+> or via <TT
+CLASS="OPTION"
+>-h</TT
 >.
        </P
 ><P
->        <VAR
-CLASS="OPTION"
->--tcpip-socket=false</VAR
-> has the opposite
-        effect of this option.
+>        This option is deprecated since it does not allow access to the
+        full functionality of <A
+HREF="runtime-config.html#GUC-LISTEN-ADDRESSES"
+>listen_addresses</A
+>.
+        It's usually better to set <TT
+CLASS="VARNAME"
+>listen_addresses</TT
+> directly.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-k <VAR
 CLASS="REPLACEABLE"
 >directory</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -454,27 +525,41 @@ CLASS="FILENAME"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-l</VAR
+>-l</TT
 ></DT
 ><DD
 ><P
->	Enables secure connections using SSL.  The <VAR
-CLASS="OPTION"
->-i</VAR
->
-	option is also required.  You must have compiled with SSL
-	enabled to use this option.
+>	Enables secure connections using <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>.
+	<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> must have been compiled with
+	support for <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> for this option to be
+	available. For more information on using <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>,
+	refer to <A
+HREF="ssl-tcp.html"
+>Section 16.7</A
+>.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-N <VAR
 CLASS="REPLACEABLE"
 >max-connections</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -485,28 +570,32 @@ CLASS="COMMAND"
 > will accept.  By
 	default, this value is 32, but it can be set as high as your
 	system will support.  (Note that
-	<VAR
+	<TT
 CLASS="OPTION"
->-B</VAR
+>-B</TT
 > is required to be at least twice
-	<VAR
+	<TT
 CLASS="OPTION"
->-N</VAR
+>-N</TT
 >.  See <A
 HREF="kernel-resources.html"
 >Section 16.5</A
 > for a discussion of
 	system resource requirements for large numbers of client
-	connections.)
+	connections.) Specifying this option is equivalent to setting the
+	<A
+HREF="runtime-config.html#GUC-MAX-CONNECTIONS"
+>max_connections</A
+> configuration parameter.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-o <VAR
 CLASS="REPLACEABLE"
 >extra-options</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -529,12 +618,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >-p <VAR
 CLASS="REPLACEABLE"
 >port</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -562,9 +651,9 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-S</VAR
+>-S</TT
 ></DT
 ><DD
 ><P
@@ -590,15 +679,15 @@ CLASS="COMMAND"
 > in the background.
        </P
 ><P
->        <VAR
+>        <TT
 CLASS="OPTION"
->--silent-mode=false</VAR
+>--silent-mode=false</TT
 > has the opposite effect
         of this option.
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
 >--<VAR
 CLASS="REPLACEABLE"
@@ -606,14 +695,14 @@ CLASS="REPLACEABLE"
 >=<VAR
 CLASS="REPLACEABLE"
 >value</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
 >        Sets a named run-time parameter; a shorter form of
-        <VAR
+        <TT
 CLASS="OPTION"
->-c</VAR
+>-c</TT
 >.
        </P
 ></DD
@@ -653,9 +742,9 @@ CLASS="EMPHASIS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-n</VAR
+>-n</TT
 ></DT
 ><DD
 ><P
@@ -669,9 +758,9 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="OPTION"
->-s</VAR
+>-s</TT
 ></DT
 ><DD
 ><P
@@ -680,9 +769,9 @@ CLASS="COMMAND"
 >postmaster</TT
 >
 	will stop all other server processes by sending the signal
-	<VAR
+	<TT
 CLASS="LITERAL"
->SIGSTOP</VAR
+>SIGSTOP</TT
 >,
 	but will not cause them to terminate.  This permits system programmers
 	to collect core dumps from all server processes by hand.
@@ -696,7 +785,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48320"
+NAME="AEN48926"
 ></A
 ><H2
 >Environment</H2
@@ -734,9 +823,9 @@ CLASS="ENVAR"
 ></DT
 ><DD
 ><P
->      Default value of the <VAR
-CLASS="VARNAME"
->DATESTYLE</VAR
+>      Default value of the <A
+HREF="runtime-config.html#GUC-DATESTYLE"
+>datestyle</A
 > run-time
       parameter.  (The use of this environment variable is deprecated.)
      </P
@@ -761,35 +850,23 @@ CLASS="ENVAR"
 >      Server time zone
      </P
 ></DD
-><DT
->others</DT
-><DD
-><P
->      Other environment variables may be used to designate alternative
-      data storage locations.  See <A
-HREF="manage-ag-alternate-locs.html"
->Section 18.5</A
-> for more
-      information.
-     </P
-></DD
 ></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48354"
+NAME="AEN48955"
 ></A
 ><H2
 >Diagnostics</H2
 ><P
->    A failure message mentioning <VAR
+>    A failure message mentioning <TT
 CLASS="LITERAL"
->semget</VAR
-> or <VAR
+>semget</TT
+> or <TT
 CLASS="LITERAL"
->shmget</VAR
+>shmget</TT
 >
     probably indicates you need to configure your kernel to provide adequate
     shared memory and semaphores.  For more discussion see <A
@@ -804,19 +881,20 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->     You may be able to postpone reconfiguring your kernel by decreasing
-     <VAR
-CLASS="VARNAME"
->shared_buffers</VAR
-> to reduce the shared memory consumption
-     of <SPAN
+>     You may be able to postpone reconfiguring your kernel by
+     decreasing <A
+HREF="runtime-config.html#GUC-SHARED-BUFFERS"
+>shared_buffers</A
+> to reduce the
+     shared memory consumption of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->, and/or by reducing
-     <VAR
-CLASS="VARNAME"
->max_connections</VAR
-> to reduce the semaphore consumption.
+>, and/or
+     by reducing <A
+HREF="runtime-config.html#GUC-MAX-CONNECTIONS"
+>max_connections</A
+> to reduce the
+     semaphore consumption.
     </P
 ></BLOCKQUOTE
 ></DIV
@@ -849,29 +927,32 @@ CLASS="USERINPUT"
     message and try again.
    </P
 ><P
->    A failure message indicating inability to bind to a port may indicate
-    that that port is already in use by some non-PostgreSQL process.
-    You may also get this error if you terminate the
-    <TT
+>    A failure message indicating inability to bind to a port may
+    indicate that that port is already in use by some
+    non-<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> process.  You may also
+    get this error if you terminate the <TT
 CLASS="COMMAND"
 >postmaster</TT
 >
-    and immediately restart it using the same port; in this case, you must
-    simply wait a few seconds until the operating system closes the port
-    before trying again.  Finally, you may get this error if you specify
-    a port number that your operating system considers to be reserved.
-    For example, many versions of Unix consider port numbers under 1024 to
-    be <SPAN
+    and immediately restart it using the same port; in this case, you
+    must simply wait a few seconds until the operating system closes
+    the port before trying again.  Finally, you may get this error if
+    you specify a port number that your operating system considers to
+    be reserved.  For example, many versions of Unix consider port
+    numbers under 1024 to be <SPAN
 CLASS="QUOTE"
 >"trusted"</SPAN
->
-    and only permit the Unix superuser to access them.
+> and only permit
+    the Unix superuser to access them.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48375"
+NAME="AEN48977"
 ></A
 ><H2
 >Notes</H2
@@ -883,9 +964,9 @@ CLASS="EMPHASIS"
 >do not</I
 ></SPAN
 > use
-   <VAR
+   <TT
 CLASS="LITERAL"
->SIGKILL</VAR
+>SIGKILL</TT
 > to kill the
    <TT
 CLASS="COMMAND"
@@ -907,23 +988,23 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >postmaster</TT
 > normally,
-   the signals <VAR
+   the signals <TT
 CLASS="LITERAL"
->SIGTERM</VAR
->, <VAR
+>SIGTERM</TT
+>, <TT
 CLASS="LITERAL"
->SIGINT</VAR
+>SIGINT</TT
 >,
-   or <VAR
+   or <TT
 CLASS="LITERAL"
->SIGQUIT</VAR
+>SIGQUIT</TT
 > can be used.  The first will wait for
    all clients to terminate before quitting, the second will
    forcefully disconnect all clients, and the third will quit
    immediately without proper shutdown, resulting in a recovery run
-   during restart.   The <VAR
+   during restart.   The <TT
 CLASS="LITERAL"
->SIGHUP</VAR
+>SIGHUP</TT
 > signal will 
    reload the server configuration files.
   </P
@@ -942,9 +1023,9 @@ CLASS="COMMAND"
    safely and comfortably.
   </P
 ><P
->   The <VAR
+>   The <TT
 CLASS="OPTION"
->--</VAR
+>--</TT
 > options will not work on <SPAN
 CLASS="SYSTEMITEM"
 >FreeBSD</SPAN
@@ -952,9 +1033,9 @@ CLASS="SYSTEMITEM"
 CLASS="SYSTEMITEM"
 >OpenBSD</SPAN
 >.
-   Use <VAR
+   Use <TT
 CLASS="OPTION"
->-c</VAR
+>-c</TT
 > instead. This is a bug in the affected operating
    systems; a future release of <SPAN
 CLASS="PRODUCTNAME"
@@ -1058,19 +1139,19 @@ CLASS="PROMPT"
 >$</SAMP
 > <KBD
 CLASS="USERINPUT"
->postmaster -c sort_mem=1234</KBD
+>postmaster -c work_mem=1234</KBD
 >
 <SAMP
 CLASS="PROMPT"
 >$</SAMP
 > <KBD
 CLASS="USERINPUT"
->postmaster --sort-mem=1234</KBD
+>postmaster --work-mem=1234</KBD
 ></PRE
 ><P>
-   Either form overrides whatever setting might exist for <VAR
+   Either form overrides whatever setting might exist for <TT
 CLASS="VARNAME"
->SORT_MEM</VAR
+>work_mem</TT
 >
    in <TT
 CLASS="FILENAME"
@@ -1099,7 +1180,7 @@ CLASS="FILENAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48433"
+NAME="AEN49035"
 ></A
 ><H2
 >See Also</H2

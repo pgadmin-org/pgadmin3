@@ -9,13 +9,13 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
 HREF="server-programming.html"><LINK
 REL="PREVIOUS"
-TITLE="Missing Features"
+TITLE="Limitations and Missing Features"
 HREF="plperl-missing.html"><LINK
 REL="NEXT"
 TITLE="Trigger Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="PLPYTHON"
 ></A
->Chapter 40. PL/Python - Python Procedural Language</H1
+>Chapter 38. PL/Python - Python Procedural Language</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,27 +102,27 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->40.1. <A
+>38.1. <A
 HREF="plpython.html#PLPYTHON-FUNCS"
 >PL/Python Functions</A
 ></DT
 ><DT
->40.2. <A
+>38.2. <A
 HREF="plpython-trigger.html"
 >Trigger Functions</A
 ></DT
 ><DT
->40.3. <A
+>38.3. <A
 HREF="plpython-database.html"
 >Database Access</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN32995"
+NAME="AEN32498"
 ></A
 ><A
-NAME="AEN32997"
+NAME="AEN32500"
 ></A
 ><P
 >  The <SPAN
@@ -141,12 +141,12 @@ TARGET="_top"
  </P
 ><P
 >  To install PL/Python in a particular database, use
-  <VAR
+  <TT
 CLASS="LITERAL"
 >createlang plpythonu <VAR
 CLASS="REPLACEABLE"
 >dbname</VAR
-></VAR
+></TT
 >.
  </P
 ><DIV
@@ -156,9 +156,9 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->    If a language is installed into <VAR
+>    If a language is installed into <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, all subsequently
     created databases will have the language installed automatically.
    </P
@@ -174,13 +174,13 @@ CLASS="QUOTE"
 >"untrusted"</SPAN
 > language (meaning it does not
   offer any way of restricting what users can do in it).  It has
-  therefore been renamed to <VAR
+  therefore been renamed to <TT
 CLASS="LITERAL"
->plpythonu</VAR
+>plpythonu</TT
 >.  The trusted
-  variant <VAR
+  variant <TT
 CLASS="LITERAL"
->plpython</VAR
+>plpython</TT
 > may become available again in future,
   if a new secure execution mechanism is developed in Python.
  </P
@@ -204,7 +204,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPYTHON-FUNCS"
->40.1. PL/Python Functions</A
+>38.1. PL/Python Functions</A
 ></H1
 ><P
 >   The Python code you write gets transformed into a Python function.  E.g.,
@@ -236,7 +236,7 @@ CLASS="SYMBOL"
 >None</TT
 > into the SQL null
    value.<A
-NAME="AEN33024"
+NAME="AEN32527"
 ></A
 >
   </P
@@ -245,50 +245,50 @@ NAME="AEN33024"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > function parameters are available in
-   the global <VAR
+   the global <TT
 CLASS="VARNAME"
->args</VAR
+>args</TT
 > list.  In the
    <CODE
 CLASS="FUNCTION"
 >myfunc</CODE
-> example, <VAR
+> example, <TT
 CLASS="VARNAME"
->args[0]</VAR
+>args[0]</TT
 > contains
    whatever was passed in as the text argument.  For
-   <VAR
+   <TT
 CLASS="LITERAL"
->myfunc2(text, integer)</VAR
->, <VAR
+>myfunc2(text, integer)</TT
+>, <TT
 CLASS="VARNAME"
->args[0]</VAR
+>args[0]</TT
 >
    would contain the <TT
 CLASS="TYPE"
 >text</TT
 > argument and
-   <VAR
+   <TT
 CLASS="VARNAME"
->args[1]</VAR
+>args[1]</TT
 > the <TT
 CLASS="TYPE"
 >integer</TT
 > argument.
   </P
 ><P
->   The global dictionary <VAR
+>   The global dictionary <TT
 CLASS="VARNAME"
->SD</VAR
+>SD</TT
 > is available to store
    data between function calls.  This variable is private static data.
-   The global dictionary <VAR
+   The global dictionary <TT
 CLASS="VARNAME"
->GD</VAR
+>GD</TT
 > is public data,
    available to all Python functions within a session.  Use with
    care.<A
-NAME="AEN33040"
+NAME="AEN32543"
 ></A
 >
   </P
@@ -303,9 +303,9 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >myfunc2</CODE
 >.  The exception is the data in the
-   <VAR
+   <TT
 CLASS="VARNAME"
->GD</VAR
+>GD</TT
 > dictionary, as mentioned above.
   </P
 ></DIV
@@ -354,7 +354,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Missing Features</TD
+>Limitations and Missing Features</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

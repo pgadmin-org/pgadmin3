@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="INDEXES-MULTICOLUMN"
 >11.3. Multicolumn Indexes</A
 ></H1
 ><A
-NAME="AEN13189"
+NAME="AEN13864"
 ></A
 ><P
 >   An index can be defined on more than one column.  For example, if
@@ -154,46 +154,46 @@ CLASS="FILENAME"
 >   The query planner can use a multicolumn index for queries that
    involve the leftmost column in the index definition plus any number
    of columns listed to the right of it, without a gap.  For example,
-   an index on <VAR
+   an index on <TT
 CLASS="LITERAL"
->(a, b, c)</VAR
+>(a, b, c)</TT
 > can be used in queries
-   involving all of <VAR
+   involving all of <TT
 CLASS="LITERAL"
->a</VAR
->, <VAR
+>a</TT
+>, <TT
 CLASS="LITERAL"
->b</VAR
+>b</TT
 >, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 >, or in queries involving both
-   <VAR
+   <TT
 CLASS="LITERAL"
->a</VAR
-> and <VAR
+>a</TT
+> and <TT
 CLASS="LITERAL"
->b</VAR
+>b</TT
 >, or in queries
-   involving only <VAR
+   involving only <TT
 CLASS="LITERAL"
->a</VAR
+>a</TT
 >, but not in other combinations.
-   (In a query involving <VAR
+   (In a query involving <TT
 CLASS="LITERAL"
->a</VAR
-> and <VAR
+>a</TT
+> and <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 >
    the planner could choose to use the index for
-   <VAR
+   <TT
 CLASS="LITERAL"
->a</VAR
->, while treating <VAR
+>a</TT
+>, while treating <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 > like an
    ordinary unindexed column.)  Of course, each column must be used with
    operators appropriate to the index type; clauses that involve other
@@ -201,9 +201,9 @@ CLASS="LITERAL"
   </P
 ><P
 >   Multicolumn indexes can only be used if the clauses involving the
-   indexed columns are joined with <VAR
+   indexed columns are joined with <TT
 CLASS="LITERAL"
->AND</VAR
+>AND</TT
 >.  For instance,
 </P><PRE
 CLASS="PROGRAMLISTING"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -117,10 +117,10 @@ NAME="SYSVIPC"
 >16.5.1. Shared Memory and Semaphores</A
 ></H2
 ><A
-NAME="AEN16742"
+NAME="AEN17824"
 ></A
 ><A
-NAME="AEN16744"
+NAME="AEN17826"
 ></A
 ><P
 >    Shared memory and semaphores are collectively referred to as
@@ -219,26 +219,27 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SHMMAX</VAR
+>SHMMAX</TT
 ></TD
 ><TD
 >Maximum size of shared memory segment (bytes)</TD
 ><TD
->250 kB + 8.2 kB * <VAR
-CLASS="VARNAME"
->shared_buffers</VAR
-> + 14.2 kB * <VAR
-CLASS="VARNAME"
->max_connections</VAR
+>250 kB + 8.2 kB * <A
+HREF="runtime-config.html#GUC-SHARED-BUFFERS"
+>shared_buffers</A
+> +
+       14.2 kB * <A
+HREF="runtime-config.html#GUC-MAX-CONNECTIONS"
+>max_connections</A
 > up to infinity</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SHMMIN</VAR
+>SHMMIN</TT
 ></TD
 ><TD
 >Minimum size of shared memory segment (bytes)</TD
@@ -247,26 +248,26 @@ CLASS="VARNAME"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SHMALL</VAR
+>SHMALL</TT
 ></TD
 ><TD
 >Total amount of shared memory available (bytes or pages)</TD
 ><TD
->if bytes, same as <VAR
+>if bytes, same as <TT
 CLASS="VARNAME"
->SHMMAX</VAR
->; if pages, <VAR
+>SHMMAX</TT
+>; if pages, <TT
 CLASS="LITERAL"
->ceil(SHMMAX/PAGE_SIZE)</VAR
+>ceil(SHMMAX/PAGE_SIZE)</TT
 ></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SHMSEG</VAR
+>SHMSEG</TT
 ></TD
 ><TD
 >Maximum number of shared memory segments per process</TD
@@ -275,51 +276,51 @@ CLASS="VARNAME"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SHMMNI</VAR
+>SHMMNI</TT
 ></TD
 ><TD
 >Maximum number of shared memory segments system-wide</TD
 ><TD
->like <VAR
+>like <TT
 CLASS="VARNAME"
->SHMSEG</VAR
+>SHMSEG</TT
 > plus room for other applications</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SEMMNI</VAR
+>SEMMNI</TT
 ></TD
 ><TD
 >Maximum number of semaphore identifiers (i.e., sets)</TD
 ><TD
->at least <VAR
+>at least <TT
 CLASS="LITERAL"
->ceil(max_connections / 16)</VAR
+>ceil(max_connections / 16)</TT
 ></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SEMMNS</VAR
+>SEMMNS</TT
 ></TD
 ><TD
 >Maximum number of semaphores system-wide</TD
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ceil(max_connections / 16) * 17</VAR
+>ceil(max_connections / 16) * 17</TT
 > plus room for other applications</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SEMMSL</VAR
+>SEMMSL</TT
 ></TD
 ><TD
 >Maximum number of semaphores per set</TD
@@ -328,9 +329,9 @@ CLASS="VARNAME"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SEMMAP</VAR
+>SEMMAP</TT
 ></TD
 ><TD
 >Number of entries in semaphore map</TD
@@ -339,9 +340,9 @@ CLASS="VARNAME"
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="VARNAME"
->SEMVMX</VAR
+>SEMVMX</TT
 ></TD
 ><TD
 >Maximum value of semaphore</TD
@@ -353,12 +354,12 @@ CLASS="VARNAME"
 ></DIV
 ><P
 >    <A
-NAME="AEN16831"
+NAME="AEN17913"
 ></A
 > The most important
-    shared memory parameter is <VAR
+    shared memory parameter is <TT
 CLASS="VARNAME"
->SHMMAX</VAR
+>SHMMAX</TT
 >, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <CODE
@@ -370,13 +371,13 @@ CLASS="ERRORNAME"
 >, it is
     possible that this limit has been exceeded. The size of the required
     shared memory segment varies both with the number of requested
-    buffers (<VAR
+    buffers (<TT
 CLASS="OPTION"
->-B</VAR
+>-B</TT
 > option) and the number of allowed connections
-    (<VAR
+    (<TT
 CLASS="OPTION"
->-N</VAR
+>-N</TT
 > option), although the former is the most significant.
     (You can, as a temporary solution, lower these settings to eliminate
     the failure.) As a rough approximation, you can estimate the
@@ -387,21 +388,21 @@ CLASS="OPTION"
    </P
 ><P
 >    Less likely to cause problems is the minimum size for shared
-    memory segments (<VAR
+    memory segments (<TT
 CLASS="VARNAME"
->SHMMIN</VAR
+>SHMMIN</TT
 >), which should be at most
     approximately 256 kB for <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > (it is
     usually just 1). The maximum number of segments system-wide
-    (<VAR
+    (<TT
 CLASS="VARNAME"
->SHMMNI</VAR
->) or per-process (<VAR
+>SHMMNI</TT
+>) or per-process (<TT
 CLASS="VARNAME"
->SHMSEG</VAR
+>SHMSEG</TT
 >) should
     not cause a problem unless your system has them set to zero. Some
     systems also have a limit on the total amount of shared memory in
@@ -412,9 +413,9 @@ CLASS="VARNAME"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > uses one semaphore per allowed connection
-    (<VAR
+    (<TT
 CLASS="OPTION"
->-N</VAR
+>-N</TT
 > option), in sets of 16.  Each such set will also
     contain a 17th semaphore which contains a <SPAN
 CLASS="QUOTE"
@@ -422,26 +423,26 @@ CLASS="QUOTE"
     number"</SPAN
 >, to detect collision with semaphore sets used by
     other applications. The maximum number of semaphores in the system
-    is set by <VAR
+    is set by <TT
 CLASS="VARNAME"
->SEMMNS</VAR
+>SEMMNS</TT
 >, which consequently must be at least
-    as high as <VAR
-CLASS="LITERAL"
->max_connections</VAR
+    as high as <TT
+CLASS="VARNAME"
+>max_connections</TT
 > plus one extra for each 16
     allowed connections (see the formula in <A
 HREF="kernel-resources.html#SYSVIPC-PARAMETERS"
 >Table 16-2</A
->).  The parameter <VAR
+>).  The parameter <TT
 CLASS="VARNAME"
->SEMMNI</VAR
+>SEMMNI</TT
 >
     determines the limit on the number of semaphore sets that can
     exist on the system at one time.  Hence this parameter must be at
-    least <VAR
+    least <TT
 CLASS="LITERAL"
->ceil(max_connections / 16)</VAR
+>ceil(max_connections / 16)</TT
 >. Lowering the number
     of allowed connections is a temporary workaround for failures,
     which are usually confusingly worded <SPAN
@@ -455,13 +456,13 @@ CLASS="FUNCTION"
    </P
 ><P
 >    In some cases it might also be necessary to increase
-    <VAR
+    <TT
 CLASS="VARNAME"
->SEMMAP</VAR
+>SEMMAP</TT
 > to be at least on the order of
-    <VAR
+    <TT
 CLASS="VARNAME"
->SEMMNS</VAR
+>SEMMNS</TT
 >. This parameter defines the size of the semaphore
     resource map, in which each contiguous block of available semaphores
     needs an entry. When a semaphore set is freed it is either added to
@@ -472,9 +473,9 @@ CLASS="VARNAME"
     should be.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="VARNAME"
->SEMMSL</VAR
+>SEMMSL</TT
 > parameter, which determines how many
     semaphores can be in a set, must be at least 17 for
     <SPAN
@@ -487,12 +488,12 @@ CLASS="PRODUCTNAME"
 CLASS="QUOTE"
 >"semaphore undo"</SPAN
 >, such as
-    <VAR
+    <TT
 CLASS="VARNAME"
->SEMMNU</VAR
-> and <VAR
+>SEMMNU</TT
+> and <TT
 CLASS="VARNAME"
->SEMUME</VAR
+>SEMUME</TT
 >, are not of concern
     for <SPAN
 CLASS="PRODUCTNAME"
@@ -519,9 +520,9 @@ CLASS="FORMALPARA"
          mind that shared memory is not pageable; it is locked in RAM.
          To increase the amount of shared memory supported by your
          system, add the following to your kernel configuration
-         file. A <VAR
+         file. A <TT
 CLASS="VARNAME"
->SHMALL</VAR
+>SHMALL</TT
 > value of 1024 represents 4 MB of
          shared memory. The following increases the maximum shared
          memory area to 32 MB:
@@ -531,12 +532,12 @@ CLASS="PROGRAMLISTING"
 options "SHMMAX=\(SHMALL*PAGE_SIZE\)"</PRE
 ><P>
          For those running 4.3 or later, you will probably need to increase
-         <VAR
+         <TT
 CLASS="VARNAME"
->KERNEL_VIRTUAL_MB</VAR
-> above the default <VAR
+>KERNEL_VIRTUAL_MB</TT
+> above the default <TT
 CLASS="LITERAL"
->248</VAR
+>248</TT
 >.
          Once all changes have been made, recompile the kernel, and reboot.
         </P
@@ -546,9 +547,9 @@ CLASS="LITERAL"
 CLASS="COMMAND"
 >bpatch</TT
 >
-        to find the <VAR
+        to find the <TT
 CLASS="VARNAME"
->sysptsize</VAR
+>sysptsize</TT
 > value in the current
         kernel. This is computed dynamically at boot time.
 </P><PRE
@@ -562,9 +563,9 @@ CLASS="COMPUTEROUTPUT"
 >0x9 = 9</SAMP
 ></PRE
 ><P>
-        Next, add <VAR
+        Next, add <TT
 CLASS="VARNAME"
->SYSPTSIZE</VAR
+>SYSPTSIZE</TT
 > as a hard-coded value in the
         kernel configuration file. Increase the value you found using
         <TT
@@ -576,9 +577,9 @@ CLASS="COMMAND"
 CLASS="PROGRAMLISTING"
 >options "SYSPTSIZE=16"</PRE
 ><P>
-        <VAR
+        <TT
 CLASS="VARNAME"
->sysptsize</VAR
+>sysptsize</TT
 > cannot be changed by <TT
 CLASS="COMMAND"
 >sysctl</TT
@@ -617,18 +618,18 @@ CLASS="SYSTEMITEM"
 ></DT
 ><DD
 ><P
->        The options <VAR
+>        The options <TT
 CLASS="VARNAME"
->SYSVSHM</VAR
-> and <VAR
+>SYSVSHM</TT
+> and <TT
 CLASS="VARNAME"
->SYSVSEM</VAR
+>SYSVSEM</TT
 > need
         to be enabled when the kernel is compiled. (They are by
         default.) The maximum size of shared memory is determined by
-        the option <VAR
+        the option <TT
 CLASS="VARNAME"
->SHMMAXPGS</VAR
+>SHMMAXPGS</TT
 > (in pages). The following
         shows an example of how to set the various parameters:
 </P><PRE
@@ -650,9 +651,9 @@ CLASS="SYSTEMITEM"
 CLASS="SYSTEMITEM"
 >OpenBSD</SPAN
 > the key word is actually
-        <VAR
+        <TT
 CLASS="LITERAL"
->option</VAR
+>option</TT
 > singular.)
        </P
 ><P
@@ -662,9 +663,9 @@ CLASS="LITERAL"
 CLASS="COMMAND"
 >sysctl</TT
 > setting
-        <VAR
+        <TT
 CLASS="LITERAL"
->kern.ipc.shm_use_phys</VAR
+>kern.ipc.shm_use_phys</TT
 >.
        </P
 ></DD
@@ -680,9 +681,9 @@ CLASS="SYSTEMITEM"
 CLASS="PRODUCTNAME"
 >HP-UX</SPAN
 > 10, the factory default for
-        <VAR
+        <TT
 CLASS="VARNAME"
->SEMMNS</VAR
+>SEMMNS</TT
 > is 128, which might be too low for larger
         database sites.
        </P
@@ -720,12 +721,12 @@ CLASS="SYSTEMITEM"
 ><DD
 ><P
 >        The default shared memory limit (both
-        <VAR
+        <TT
 CLASS="VARNAME"
->SHMMAX</VAR
-> and <VAR
+>SHMMAX</TT
+> and <TT
 CLASS="VARNAME"
->SHMALL</VAR
+>SHMALL</TT
 >) is 32
         MB in 2.2 kernels, but it can be changed in the
         <TT
@@ -783,9 +784,9 @@ CLASS="FILENAME"
 >/usr/src/linux/include/asm-<VAR
 CLASS="REPLACEABLE"
 >xxx</VAR
->/shmpara
-        m.h</TT
-> and <TT
+>/shmparam.h</TT
+>
+        and <TT
 CLASS="FILENAME"
 >/usr/src/linux/include/linux/sem.h</TT
 >.
@@ -803,7 +804,7 @@ CLASS="SYSTEMITEM"
 CLASS="FILENAME"
 >/System/Library/StartupItems/SystemTuning/SystemTuning</TT
 >
-	and change the values in the following commands:
+        and change the values in the following commands:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >sysctl -w kern.sysv.shmmax
@@ -816,7 +817,7 @@ sysctl -w kern.sysv.shmall</PRE
 CLASS="FILENAME"
 >/etc/rc</TT
 >
-	and must be edited there.
+        and must be edited there.
        </P
 ></DD
 ><DT
@@ -827,26 +828,26 @@ CLASS="SYSTEMITEM"
 ><DD
 ><P
 >        In the default configuration, only 512 kB of shared memory per
-        segment is allowed, which is about enough for <VAR
+        segment is allowed, which is about enough for <TT
 CLASS="OPTION"
 >-B 24 -N
-        12</VAR
+        12</TT
 >. To increase the setting, first change to the directory
         <TT
 CLASS="FILENAME"
 >/etc/conf/cf.d</TT
 >. To display the current value of
-        <VAR
+        <TT
 CLASS="VARNAME"
->SHMMAX</VAR
+>SHMMAX</TT
 >, run
 </P><PRE
 CLASS="PROGRAMLISTING"
 >./configure -y SHMMAX</PRE
 ><P>
-        To set a new value for <VAR
+        To set a new value for <TT
 CLASS="VARNAME"
->SHMMAX</VAR
+>SHMMAX</TT
 >, run
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -859,15 +860,54 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >value</VAR
 > is the new value you want to use
-        (in bytes). After setting <VAR
+        (in bytes). After setting <TT
 CLASS="VARNAME"
->SHMMAX</VAR
+>SHMMAX</TT
 >, rebuild the kernel:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >./link_unix</PRE
 ><P>
         and reboot.
+       </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>AIX</SPAN
+></DT
+><DD
+><P
+>        At least as of version 5.1, it should not be necessary to do
+        any special configuration for such parameters as
+        <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>, as it appears this is configured to
+        allow all memory to be used as shared memory.  That is the
+        sort of configuration commonly used for other databases such
+        as <SPAN
+CLASS="APPLICATION"
+>DB/2</SPAN
+>.</P
+><P
+> It may, however, be necessary to modify the global
+       <TT
+CLASS="COMMAND"
+>ulimit</TT
+> information in
+       <TT
+CLASS="FILENAME"
+>/etc/security/limits</TT
+>, as the default hard
+       limits for filesizes (<TT
+CLASS="VARNAME"
+>fsize</TT
+>) and numbers of
+       files (<TT
+CLASS="VARNAME"
+>nofiles</TT
+>) may be too low.
        </P
 ></DD
 ><DT
@@ -903,9 +943,9 @@ set semsys:seminfo_semmsl=32</PRE
        </P
 ><P
 >        See also <A
-HREF="http://www.sunworld.com/swol-09-1997/swol-09-insidesolaris.html"
+HREF="http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html"
 TARGET="_top"
->http://www.sunworld.com/swol-09-1997/swol-09-insidesolaris.html</A
+>http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html</A
 >
         for information on shared memory under
         <SPAN
@@ -926,22 +966,22 @@ CLASS="PRODUCTNAME"
 >UnixWare</SPAN
 > 7, the maximum size for shared
         memory segments is 512 kB in the default configuration. This
-        is enough for about <VAR
+        is enough for about <TT
 CLASS="OPTION"
->-B 24 -N 12</VAR
+>-B 24 -N 12</TT
 >. To display the
-        current value of <VAR
+        current value of <TT
 CLASS="VARNAME"
->SHMMAX</VAR
+>SHMMAX</TT
 >, run
 </P><PRE
 CLASS="PROGRAMLISTING"
 >/etc/conf/bin/idtune -g SHMMAX</PRE
 ><P>
         which displays the current, default, minimum, and maximum
-        values. To set a new value for <VAR
+        values. To set a new value for <TT
 CLASS="VARNAME"
->SHMMAX</VAR
+>SHMMAX</TT
 >,
         run
 </P><PRE
@@ -955,9 +995,9 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >value</VAR
 > is the new value you want to use
-        (in bytes). After setting <VAR
+        (in bytes). After setting <TT
 CLASS="VARNAME"
->SHMMAX</VAR
+>SHMMAX</TT
 >, rebuild the
         kernel:
 </P><PRE
@@ -975,7 +1015,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN17028"
+NAME="AEN18125"
 >16.5.2. Resource Limits</A
 ></H2
 ><P
@@ -1019,16 +1059,16 @@ CLASS="FILENAME"
 >
     controls the various resource limits set during login. See the
     operating system documentation for details. The relevant
-    parameters are <VAR
+    parameters are <TT
 CLASS="VARNAME"
->maxproc</VAR
+>maxproc</TT
 >,
-    <VAR
+    <TT
 CLASS="VARNAME"
->openfiles</VAR
->, and <VAR
+>openfiles</TT
+>, and <TT
 CLASS="VARNAME"
->datasize</VAR
+>datasize</TT
 >. For
     example:
 </P><PRE
@@ -1040,13 +1080,13 @@ CLASS="PROGRAMLISTING"
         :openfiles-cur=256:\
 ...</PRE
 ><P>
-    (<VAR
+    (<TT
 CLASS="LITERAL"
->-cur</VAR
+>-cur</TT
 > is the soft limit.  Append
-    <VAR
+    <TT
 CLASS="LITERAL"
->-max</VAR
+>-max</TT
 > to set the hard limit.)
    </P
 ><P
@@ -1107,14 +1147,13 @@ CLASS="QUOTE"
 >    On the other side of the coin, some systems allow individual
     processes to open large numbers of files; if more than a few
     processes do so then the system-wide limit can easily be exceeded.
-    If you find this happening, and you do not want to alter the system-wide
-    limit, you can set <SPAN
+    If you find this happening, and you do not want to alter the
+    system-wide limit, you can set <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->'s
-    <VAR
-CLASS="VARNAME"
->max_files_per_process</VAR
+>'s <A
+HREF="runtime-config.html#GUC-MAX-FILES-PER-PROCESS"
+>max_files_per_process</A
 > configuration parameter to
     limit the consumption of open files.
    </P
@@ -1124,7 +1163,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN17060"
+NAME="AEN18157"
 >16.5.3. Linux Memory Overcommit</A
 ></H2
 ><P
@@ -1189,9 +1228,9 @@ CLASS="FILENAME"
 >/etc/sysctl.conf</TT
 >.
     You may also wish to modify the related setting 
-    <VAR
+    <TT
 CLASS="LITERAL"
->vm.overcommit_ratio</VAR
+>vm.overcommit_ratio</TT
 >.  For details see the kernel documentation
     file <TT
 CLASS="FILENAME"
@@ -1201,9 +1240,9 @@ CLASS="FILENAME"
 ><P
 >    Some vendors' Linux 2.4 kernels are reported to have early versions
     of the 2.6 overcommit sysctl.  However, setting
-    <VAR
+    <TT
 CLASS="LITERAL"
->vm.overcommit_memory</VAR
+>vm.overcommit_memory</TT
 > to 2
     on a kernel that does not have the relevant code will make
     things worse not better.  It is recommended that you inspect

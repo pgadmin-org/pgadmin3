@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Performance Tips"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="PLANNER-STATS"
 >13.2. Statistics Used by the Planner</A
 ></H1
 ><A
-NAME="AEN13833"
+NAME="AEN14513"
 ></A
 ><P
 >   As we saw in the previous section, the query planner needs to estimate
@@ -178,25 +178,25 @@ CLASS="STRUCTFIELD"
    since it does not read every row of the table.
   </P
 ><A
-NAME="AEN13852"
+NAME="AEN14532"
 ></A
 ><P
 >   Most queries retrieve only a fraction of the rows in a table, due
-   to having <VAR
+   to having <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clauses that restrict the rows to be examined.
    The planner thus needs to make an estimate of the
    <I
 CLASS="FIRSTTERM"
 >selectivity</I
-> of <VAR
+> of <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clauses, that is, the fraction of
-   rows that match each condition in the <VAR
+   rows that match each condition in the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause.  The information
    used for this task is stored in the <TT
 CLASS="STRUCTNAME"
@@ -216,7 +216,7 @@ CLASS="COMMAND"
    and are always approximate even when freshly updated.
   </P
 ><A
-NAME="AEN13863"
+NAME="AEN14543"
 ></A
 ><P
 >   Rather than look at <TT
@@ -267,7 +267,7 @@ CLASS="STRUCTNAME"
 > is described in detail in
    <A
 HREF="view-pg-stats.html"
->Section 43.35</A
+>Section 41.37</A
 >.
   </P
 ><P
@@ -289,10 +289,10 @@ CLASS="COMMAND"
 >ALTER TABLE SET STATISTICS</TT
 >
    command, or globally by setting the
-   <VAR
-CLASS="VARNAME"
->default_statistics_target</VAR
-> runtime parameter.
+   <A
+HREF="runtime-config.html#GUC-DEFAULT-STATISTICS-TARGET"
+>default_statistics_target</A
+> configuration variable.
    The default limit is presently 10 entries.  Raising the limit
    may allow more accurate planner estimates to be made, particularly for
    columns with irregular data distributions, at the price of consuming
@@ -362,9 +362,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Controlling the Planner with Explicit <VAR
+>Controlling the Planner with Explicit <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > Clauses</TD
 ></TR
 ></TABLE

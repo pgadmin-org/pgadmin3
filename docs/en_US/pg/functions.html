@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -128,13 +128,18 @@ HREF="functions-binarystring.html"
 ></DT
 ><DT
 >9.6. <A
+HREF="functions-bitstring.html"
+>Bit String Functions and Operators</A
+></DT
+><DT
+>9.7. <A
 HREF="functions-matching.html"
 >Pattern Matching</A
 ></DT
 ><DD
 ><DL
 ><DT
->9.6.1. <A
+>9.7.1. <A
 HREF="functions-matching.html#FUNCTIONS-LIKE"
 ><CODE
 CLASS="FUNCTION"
@@ -142,7 +147,7 @@ CLASS="FUNCTION"
 ></A
 ></DT
 ><DT
->9.6.2. <A
+>9.7.2. <A
 HREF="functions-matching.html#FUNCTIONS-SQL99-REGEXP"
 ><CODE
 CLASS="FUNCTION"
@@ -154,7 +159,7 @@ CLASS="ACRONYM"
      Regular Expressions</A
 ></DT
 ><DT
->9.6.3. <A
+>9.7.3. <A
 HREF="functions-matching.html#FUNCTIONS-POSIX-REGEXP"
 ><ACRONYM
 CLASS="ACRONYM"
@@ -164,19 +169,19 @@ CLASS="ACRONYM"
 ></DL
 ></DD
 ><DT
->9.7. <A
+>9.8. <A
 HREF="functions-formatting.html"
 >Data Type Formatting Functions</A
 ></DT
 ><DT
->9.8. <A
+>9.9. <A
 HREF="functions-datetime.html"
 >Date/Time Functions and Operators</A
 ></DT
 ><DD
 ><DL
 ><DT
->9.8.1. <A
+>9.9.1. <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"
 ><CODE
 CLASS="FUNCTION"
@@ -187,7 +192,7 @@ CLASS="FUNCTION"
 ></A
 ></DT
 ><DT
->9.8.2. <A
+>9.9.2. <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-TRUNC"
 ><CODE
 CLASS="FUNCTION"
@@ -195,73 +200,68 @@ CLASS="FUNCTION"
 ></A
 ></DT
 ><DT
->9.8.3. <A
+>9.9.3. <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-ZONECONVERT"
-><VAR
+><TT
 CLASS="LITERAL"
->AT TIME ZONE</VAR
+>AT TIME ZONE</TT
 ></A
 ></DT
 ><DT
->9.8.4. <A
+>9.9.4. <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
 >Current Date/Time</A
 ></DT
 ></DL
 ></DD
 ><DT
->9.9. <A
+>9.10. <A
 HREF="functions-geometry.html"
 >Geometric Functions and Operators</A
 ></DT
 ><DT
->9.10. <A
+>9.11. <A
 HREF="functions-net.html"
 >Network Address Type Functions</A
 ></DT
 ><DT
->9.11. <A
+>9.12. <A
 HREF="functions-sequence.html"
->Sequence-Manipulation Functions</A
+>Sequence Manipulation Functions</A
 ></DT
 ><DT
->9.12. <A
+>9.13. <A
 HREF="functions-conditional.html"
 >Conditional Expressions</A
 ></DT
 ><DD
 ><DL
 ><DT
->9.12.1. <A
-HREF="functions-conditional.html#AEN11369"
-><VAR
+>9.13.1. <A
+HREF="functions-conditional.html#AEN11748"
+><TT
 CLASS="LITERAL"
->CASE</VAR
+>CASE</TT
 ></A
 ></DT
 ><DT
->9.12.2. <A
-HREF="functions-conditional.html#AEN11419"
-><VAR
+>9.13.2. <A
+HREF="functions-conditional.html#AEN11798"
+><TT
 CLASS="LITERAL"
->COALESCE</VAR
+>COALESCE</TT
 ></A
 ></DT
 ><DT
->9.12.3. <A
-HREF="functions-conditional.html#AEN11434"
-><VAR
+>9.13.3. <A
+HREF="functions-conditional.html#AEN11813"
+><TT
 CLASS="LITERAL"
->NULLIF</VAR
+>NULLIF</TT
 ></A
 ></DT
 ></DL
 ></DD
-><DT
->9.13. <A
-HREF="functions-misc.html"
->Miscellaneous Functions</A
-></DT
 ><DT
 >9.14. <A
 HREF="functions-array.html"
@@ -281,50 +281,50 @@ HREF="functions-subquery.html"
 ><DL
 ><DT
 >9.16.1. <A
-HREF="functions-subquery.html#AEN12461"
-><VAR
+HREF="functions-subquery.html#AEN12306"
+><TT
 CLASS="LITERAL"
->EXISTS</VAR
+>EXISTS</TT
 ></A
 ></DT
 ><DT
 >9.16.2. <A
-HREF="functions-subquery.html#AEN12485"
-><VAR
+HREF="functions-subquery.html#AEN12330"
+><TT
 CLASS="LITERAL"
->IN</VAR
+>IN</TT
 ></A
 ></DT
 ><DT
 >9.16.3. <A
-HREF="functions-subquery.html#AEN12511"
-><VAR
+HREF="functions-subquery.html#AEN12355"
+><TT
 CLASS="LITERAL"
->NOT IN </VAR
+>NOT IN </TT
 ></A
 ></DT
 ><DT
 >9.16.4. <A
-HREF="functions-subquery.html#AEN12537"
-><VAR
+HREF="functions-subquery.html#AEN12380"
+><TT
 CLASS="LITERAL"
->ANY</VAR
->/<VAR
+>ANY</TT
+>/<TT
 CLASS="LITERAL"
->SOME</VAR
+>SOME</TT
 ></A
 ></DT
 ><DT
 >9.16.5. <A
-HREF="functions-subquery.html#AEN12584"
-><VAR
+HREF="functions-subquery.html#AEN12424"
+><TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 ></A
 ></DT
 ><DT
 >9.16.6. <A
-HREF="functions-subquery.html#AEN12620"
+HREF="functions-subquery.html#AEN12459"
 >Row-wise Comparison</A
 ></DT
 ></DL
@@ -338,53 +338,68 @@ HREF="functions-comparisons.html"
 ><DL
 ><DT
 >9.17.1. <A
-HREF="functions-comparisons.html#AEN12651"
-><VAR
+HREF="functions-comparisons.html#AEN12489"
+><TT
 CLASS="LITERAL"
->IN</VAR
+>IN</TT
 ></A
 ></DT
 ><DT
 >9.17.2. <A
-HREF="functions-comparisons.html#AEN12667"
-><VAR
+HREF="functions-comparisons.html#AEN12505"
+><TT
 CLASS="LITERAL"
->NOT IN</VAR
+>NOT IN</TT
 ></A
 ></DT
 ><DT
 >9.17.3. <A
-HREF="functions-comparisons.html#AEN12689"
-><VAR
+HREF="functions-comparisons.html#AEN12527"
+><TT
 CLASS="LITERAL"
->ANY</VAR
->/<VAR
+>ANY</TT
+>/<TT
 CLASS="LITERAL"
->SOME</VAR
+>SOME</TT
 > (array)</A
 ></DT
 ><DT
 >9.17.4. <A
-HREF="functions-comparisons.html#AEN12708"
-><VAR
+HREF="functions-comparisons.html#AEN12546"
+><TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > (array)</A
 ></DT
 ><DT
 >9.17.5. <A
-HREF="functions-comparisons.html#AEN12720"
+HREF="functions-comparisons.html#AEN12558"
 >Row-wise Comparison</A
 ></DT
 ></DL
 ></DD
+><DT
+>9.18. <A
+HREF="functions-srf.html"
+>Set Returning Functions</A
+></DT
+><DT
+>9.19. <A
+HREF="functions-info.html"
+>System Information Functions</A
+></DT
+><DT
+>9.20. <A
+HREF="functions-admin.html"
+>System Administration Functions</A
+></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN5506"
+NAME="AEN5735"
 ></A
 ><A
-NAME="AEN5508"
+NAME="AEN5737"
 ></A
 ><P
 >   <SPAN
@@ -435,41 +450,41 @@ NAME="FUNCTIONS-LOGICAL"
 >9.1. Logical Operators</A
 ></H1
 ><A
-NAME="AEN5521"
+NAME="AEN5750"
 ></A
 ><A
-NAME="AEN5524"
+NAME="AEN5753"
 ></A
 ><P
 >    The usual logical operators are available:
 
     <A
-NAME="AEN5529"
+NAME="AEN5758"
 ></A
 >
 
     <A
-NAME="AEN5531"
+NAME="AEN5760"
 ></A
 >
 
     <A
-NAME="AEN5533"
+NAME="AEN5762"
 ></A
 >
 
     <A
-NAME="AEN5535"
+NAME="AEN5764"
 ></A
 >
 
     <A
-NAME="AEN5537"
+NAME="AEN5766"
 ></A
 >
 
     <A
-NAME="AEN5539"
+NAME="AEN5768"
 ></A
 >
 
@@ -480,23 +495,23 @@ BORDER="0"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->AND</VAR
+>AND</TT
 ></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->OR</VAR
+>OR</TT
 ></TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->NOT</VAR
+>NOT</TT
 ></TD
 ></TR
 ></TBODY
@@ -519,7 +534,7 @@ CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN5550"
+NAME="AEN5779"
 ></A
 ><TABLE
 BORDER="1"
@@ -627,7 +642,7 @@ CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN5595"
+NAME="AEN5824"
 ></A
 ><TABLE
 BORDER="1"
@@ -673,17 +688,17 @@ CLASS="REPLACEABLE"
 >
    </P
 ><P
->    The operators <VAR
+>    The operators <TT
 CLASS="LITERAL"
->AND</VAR
-> and <VAR
+>AND</TT
+> and <TT
 CLASS="LITERAL"
->OR</VAR
+>OR</TT
 > are
     commutative, that is, you can switch the left and right operand
     without affecting the result.  But see <A
 HREF="sql-expressions.html#SYNTAX-EXPRESS-EVAL"
->Section 4.2.11</A
+>Section 4.2.12</A
 > for more information about the
     order of evaluation of subexpressions.
    </P

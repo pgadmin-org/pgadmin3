@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Memory Management"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="SPI_pfree"
 HREF="spi-spi-pfree.html"><LINK
 REL="NEXT"
-TITLE="SPI_copytupledesc"
-HREF="spi-spi-copytupledesc.html"><LINK
+TITLE="SPI_returntuple"
+HREF="spi-spi-returntuple.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="spi-spi-copytupledesc.html"
+HREF="spi-spi-returntuple.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="spi-spi-copytupledesc.html"
+HREF="spi-spi-returntuple.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -95,32 +95,32 @@ NAME="SPI-SPI-COPYTUPLE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN34217"
+NAME="AEN33868"
 ></A
 ><H2
 >Name</H2
 >SPI_copytuple&nbsp;--&nbsp;make a copy of a row in the upper executor context</DIV
 ><A
-NAME="AEN34220"
+NAME="AEN33871"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN34222"
+NAME="AEN33873"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->HeapTuple SPI_copytuple(HeapTuple <VAR
+>HeapTuple SPI_copytuple(HeapTuple <TT
 CLASS="PARAMETER"
->row</VAR
+>row</TT
 >)</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34225"
+NAME="AEN33876"
 ></A
 ><H2
 >Description</H2
@@ -129,13 +129,18 @@ NAME="AEN34225"
 CLASS="FUNCTION"
 >SPI_copytuple</CODE
 > makes a copy of a row in the
-   upper executor context.
+   upper executor context.  This is normally used to return a modified
+   row from a trigger.  In a function declared to return a composite
+   type, use <CODE
+CLASS="FUNCTION"
+>SPI_returntuple</CODE
+> instead.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34229"
+NAME="AEN33881"
 ></A
 ><H2
 >Arguments</H2
@@ -145,12 +150,12 @@ NAME="AEN34229"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->HeapTuple <VAR
+>HeapTuple <TT
 CLASS="PARAMETER"
->row</VAR
-></VAR
+>row</TT
+></TT
 ></DT
 ><DD
 ><P
@@ -163,7 +168,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34238"
+NAME="AEN33890"
 ></A
 ><H2
 >Return Value</H2
@@ -172,9 +177,9 @@ NAME="AEN34238"
 CLASS="SYMBOL"
 >NULL</TT
 > only if
-   <VAR
+   <TT
 CLASS="PARAMETER"
->tuple</VAR
+>tuple</TT
 > is <TT
 CLASS="SYMBOL"
 >NULL</TT
@@ -215,7 +220,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="spi-spi-copytupledesc.html"
+HREF="spi-spi-returntuple.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -239,7 +244,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->SPI_copytupledesc</TD
+>SPI_returntuple</TD
 ></TR
 ></TABLE
 ></DIV

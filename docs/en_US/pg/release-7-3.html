@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-3"
->E.6. Release 7.3</A
+>E.12. Release 7.3</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -110,8 +110,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN63025"
->E.6.1. Overview</A
+NAME="AEN65704"
+>E.12.1. Overview</A
 ></H2
 ><P
 >    Major changes in this release:
@@ -136,10 +136,13 @@ CLASS="VARIABLELIST"
 >Drop Column</DT
 ><DD
 ><P
->        PostgreSQL now supports the <VAR
+>        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> now supports the
+        <TT
 CLASS="LITERAL"
->ALTER TABLE ... DROP
-        COLUMN</VAR
+>ALTER TABLE ... DROP COLUMN</TT
 > functionality.
        </P
 ></DD
@@ -152,13 +155,13 @@ CLASS="LITERAL"
         <SPAN
 CLASS="QUOTE"
 >"table function"</SPAN
-> in the <VAR
+> in the <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 >
-        <VAR
+        <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause, treating its output like a
         table. Also, <SPAN
 CLASS="APPLICATION"
@@ -171,28 +174,34 @@ CLASS="APPLICATION"
 >Prepared Queries</DT
 ><DD
 ><P
->        PostgreSQL now supports prepared queries, for improved
-        performance.
+>        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> now supports prepared
+        queries, for improved performance.
        </P
 ></DD
 ><DT
 >Dependency Tracking</DT
 ><DD
 ><P
->        PostgreSQL now records object dependencies, which allows
-        improvements in many areas.  <TT
+>        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> now records object
+        dependencies, which allows improvements in many areas.
+        <TT
 CLASS="COMMAND"
 >DROP</TT
->
-        statements now take either <VAR
+> statements now take either
+        <TT
 CLASS="LITERAL"
->CASCADE</VAR
-> or
-        <VAR
+>CASCADE</TT
+> or <TT
 CLASS="LITERAL"
->RESTRICT</VAR
-> to control whether dependent objects are
-        also dropped.
+>RESTRICT</TT
+> to control whether
+        dependent objects are also dropped.
        </P
 ></DD
 ><DT
@@ -235,17 +244,17 @@ TARGET="_top"
 ><DD
 ><P
 >        By default, functions can now take up to 32 parameters, and
-        identifiers can be up to 63 bytes long.  Also, <VAR
+        identifiers can be up to 63 bytes long.  Also, <TT
 CLASS="LITERAL"
->OPAQUE</VAR
+>OPAQUE</TT
 >
         is now deprecated: there are specific <SPAN
 CLASS="QUOTE"
 >"pseudo-datatypes"</SPAN
 >
-        to represent each of the former meanings of <VAR
+        to represent each of the former meanings of <TT
 CLASS="LITERAL"
->OPAQUE</VAR
+>OPAQUE</TT
 >
         in function argument and result types.
        </P
@@ -260,8 +269,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN63081"
->E.6.2. Migration to version 7.3</A
+NAME="AEN65763"
+>E.12.2. Migration to version 7.3</A
 ></H2
 ><P
 >    A dump/restore using <SPAN
@@ -309,13 +318,13 @@ CLASS="FILENAME"
 ></LI
 ><LI
 ><P
->       <VAR
+>       <TT
 CLASS="LITERAL"
->LIMIT #,#</VAR
+>LIMIT #,#</TT
 > has been disabled; use
-       <VAR
+       <TT
 CLASS="LITERAL"
->LIMIT # OFFSET #</VAR
+>LIMIT # OFFSET #</TT
 >.
       </P
 ></LI
@@ -326,9 +335,9 @@ CLASS="COMMAND"
 >INSERT</TT
 > statements with column lists must
        specify a value for each specified column. For example,
-       <VAR
+       <TT
 CLASS="LITERAL"
->INSERT INTO tab (col1, col2) VALUES ('val1')</VAR
+>INSERT INTO tab (col1, col2) VALUES ('val1')</TT
 >
        is now invalid.  It's still allowed to supply fewer columns than
        expected if the <TT
@@ -343,9 +352,9 @@ CLASS="COMMAND"
 CLASS="TYPE"
 >serial</TT
 > columns are no longer automatically
-       <VAR
+       <TT
 CLASS="LITERAL"
->UNIQUE</VAR
+>UNIQUE</TT
 >; thus, an index will not automatically be
        created.
       </P
@@ -406,9 +415,9 @@ CLASS="FILENAME"
 ></LI
 ><LI
 ><P
->       An empty string (<VAR
+>       An empty string (<TT
 CLASS="LITERAL"
->''</VAR
+>''</TT
 >) is no longer allowed as
        the input into an integer field.  Formerly, it was silently
        interpreted as 0.
@@ -423,16 +432,16 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN63128"
->E.6.3. Changes</A
+NAME="AEN65810"
+>E.12.3. Changes</A
 ></H2
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63130"
->E.6.3.1. Server Operation</A
+NAME="AEN65812"
+>E.12.3.1. Server Operation</A
 ></H3
 ><P
 ></P
@@ -447,7 +456,10 @@ NAME="AEN63130"
 ></LI
 ><LI
 ><P
->Remove support for version 0 FE/BE protocol (PostgreSQL 6.2 and earlier) (Tom)</P
+>Remove support for version 0 FE/BE protocol (<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 6.2 and earlier) (Tom)</P
 ></LI
 ><LI
 ><P
@@ -460,8 +472,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63141"
->E.6.3.2. Performance</A
+NAME="AEN65824"
+>E.12.3.2. Performance</A
 ></H3
 ><P
 ></P
@@ -545,8 +557,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63180"
->E.6.3.3. Privileges</A
+NAME="AEN65863"
+>E.12.3.3. Privileges</A
 ></H3
 ><P
 ></P
@@ -578,8 +590,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63193"
->E.6.3.4. Server Configuration</A
+NAME="AEN65876"
+>E.12.3.4. Server Configuration</A
 ></H3
 ><P
 ></P
@@ -655,8 +667,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63228"
->E.6.3.5. Queries</A
+NAME="AEN65911"
+>E.12.3.5. Queries</A
 ></H3
 ><P
 ></P
@@ -740,8 +752,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63267"
->E.6.3.6. Object Manipulation</A
+NAME="AEN65950"
+>E.12.3.6. Object Manipulation</A
 ></H3
 ><P
 ></P
@@ -877,8 +889,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63332"
->E.6.3.7. Utility Commands</A
+NAME="AEN66015"
+>E.12.3.7. Utility Commands</A
 ></H3
 ><P
 ></P
@@ -1038,8 +1050,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63407"
->E.6.3.8. Data Types and Functions</A
+NAME="AEN66090"
+>E.12.3.8. Data Types and Functions</A
 ></H3
 ><P
 ></P
@@ -1211,8 +1223,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63490"
->E.6.3.9. Internationalization</A
+NAME="AEN66173"
+>E.12.3.9. Internationalization</A
 ></H3
 ><P
 ></P
@@ -1272,8 +1284,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63517"
->E.6.3.10. Server-side Languages</A
+NAME="AEN66200"
+>E.12.3.10. Server-side Languages</A
 ></H3
 ><P
 ></P
@@ -1313,8 +1325,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63534"
->E.6.3.11. psql</A
+NAME="AEN66217"
+>E.12.3.11. psql</A
 ></H3
 ><P
 ></P
@@ -1370,8 +1382,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63559"
->E.6.3.12. libpq</A
+NAME="AEN66242"
+>E.12.3.12. libpq</A
 ></H3
 ><P
 ></P
@@ -1415,8 +1427,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63578"
->E.6.3.13. JDBC</A
+NAME="AEN66261"
+>E.12.3.13. JDBC</A
 ></H3
 ><P
 ></P
@@ -1468,8 +1480,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63601"
->E.6.3.14. Miscellaneous Interfaces</A
+NAME="AEN66284"
+>E.12.3.14. Miscellaneous Interfaces</A
 ></H3
 ><P
 ></P
@@ -1521,8 +1533,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63624"
->E.6.3.15. Source Code</A
+NAME="AEN66307"
+>E.12.3.15. Source Code</A
 ></H3
 ><P
 ></P
@@ -1730,8 +1742,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN63725"
->E.6.3.16. Contrib</A
+NAME="AEN66408"
+>E.12.3.16. Contrib</A
 ></H3
 ><P
 ></P

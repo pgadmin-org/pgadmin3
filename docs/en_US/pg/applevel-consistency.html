@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -174,9 +174,9 @@ CLASS="ACRONYM"
     example, a banking application might wish to check that the sum of
     all credits in one table equals the sum of debits in another table,
     when both tables are being actively updated.  Comparing the results of two
-    successive <VAR
+    successive <TT
 CLASS="LITERAL"
->SELECT sum(...)</VAR
+>SELECT sum(...)</TT
 > commands will not work reliably under
     Read Committed mode, since the second query will likely include the results
     of transactions not counted by the first.  Doing the two sums in a
@@ -189,9 +189,9 @@ CLASS="LITERAL"
     includes some but not all post-transaction-start changes.  In such cases
     a careful person might wish to lock all tables needed for the check,
     in order to get an indisputable picture of current reality.  A
-    <VAR
+    <TT
 CLASS="LITERAL"
->SHARE</VAR
+>SHARE</TT
 > mode (or higher) lock guarantees that there are no
     uncommitted changes in the locked table, other than those of the current
     transaction.
@@ -206,19 +206,19 @@ CLASS="LITERAL"
     transaction predates obtaining the lock, it may predate some now-committed
     changes in the table.  A serializable transaction's snapshot is actually
     frozen at the start of its first query or data-modification command
-    (<VAR
+    (<TT
 CLASS="LITERAL"
->SELECT</VAR
->, <VAR
+>SELECT</TT
+>, <TT
 CLASS="LITERAL"
->INSERT</VAR
+>INSERT</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->UPDATE</VAR
->, or <VAR
+>UPDATE</TT
+>, or <TT
 CLASS="LITERAL"
->DELETE</VAR
+>DELETE</TT
 >), so
     it's possible to obtain explicit locks before the snapshot is
     frozen.

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ NAME="SQL-ALTERSEQUENCE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35107"
+NAME="AEN34852"
 ></A
 ><H2
 >Name</H2
@@ -103,12 +103,12 @@ NAME="AEN35107"
   &nbsp;--&nbsp;   alter the definition of a sequence generator
   </DIV
 ><A
-NAME="AEN35110"
+NAME="AEN34855"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35112"
+NAME="AEN34857"
 ></A
 ><H2
 >Synopsis</H2
@@ -140,7 +140,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35120"
+NAME="AEN34865"
 ></A
 ><H2
 >Description</H2
@@ -159,7 +159,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35125"
+NAME="AEN34870"
 ></A
 ><H2
 >Parameters</H2
@@ -186,12 +186,12 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->        The clause <VAR
+>        The clause <TT
 CLASS="LITERAL"
 >INCREMENT BY <VAR
 CLASS="REPLACEABLE"
 >increment</VAR
-></VAR
+></TT
 > is
         optional. A positive value will make an ascending sequence, a
         negative one a descending sequence.  If unspecified, the old
@@ -202,23 +202,23 @@ CLASS="REPLACEABLE"
 ><VAR
 CLASS="REPLACEABLE"
 >minvalue</VAR
-><BR><VAR
+><BR><TT
 CLASS="LITERAL"
->NO MINVALUE</VAR
+>NO MINVALUE</TT
 ></DT
 ><DD
 ><P
->        The optional clause <VAR
+>        The optional clause <TT
 CLASS="LITERAL"
 >MINVALUE <VAR
 CLASS="REPLACEABLE"
 >minvalue</VAR
-></VAR
+></TT
 > determines
-        the minimum value a sequence can generate. If <VAR
+        the minimum value a sequence can generate. If <TT
 CLASS="LITERAL"
 >NO
-        MINVALUE</VAR
+        MINVALUE</TT
 > is specified, the defaults of 1 and
         -2<SUP
 >63</SUP
@@ -231,23 +231,23 @@ CLASS="LITERAL"
 ><VAR
 CLASS="REPLACEABLE"
 >maxvalue</VAR
-><BR><VAR
+><BR><TT
 CLASS="LITERAL"
->NO MAXVALUE</VAR
+>NO MAXVALUE</TT
 ></DT
 ><DD
 ><P
->        The optional clause <VAR
+>        The optional clause <TT
 CLASS="LITERAL"
 >MAXVALUE <VAR
 CLASS="REPLACEABLE"
 >maxvalue</VAR
-></VAR
+></TT
 > determines
-        the maximum value for the sequence. If <VAR
+        the maximum value for the sequence. If <TT
 CLASS="LITERAL"
 >NO
-        MAXVALUE</VAR
+        MAXVALUE</TT
 > is specified, the defaults are
         2<SUP
 >63</SUP
@@ -263,12 +263,12 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->        The optional clause <VAR
+>        The optional clause <TT
 CLASS="LITERAL"
 >RESTART WITH <VAR
 CLASS="REPLACEABLE"
 >start</VAR
-></VAR
+></TT
 > changes the
         current value of the sequence.
        </P
@@ -280,12 +280,12 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->        The clause <VAR
+>        The clause <TT
 CLASS="LITERAL"
 >CACHE <VAR
 CLASS="REPLACEABLE"
 >cache</VAR
-></VAR
+></TT
 > enables
         sequence numbers to be preallocated and stored in memory for
         faster access. The minimum value is 1 (only one value can be
@@ -297,9 +297,9 @@ CLASS="REPLACEABLE"
 >CYCLE</DT
 ><DD
 ><P
->        The optional <VAR
+>        The optional <TT
 CLASS="LITERAL"
->CYCLE</VAR
+>CYCLE</TT
 > key word may be used to enable
         the sequence to wrap around when the
         <VAR
@@ -328,22 +328,22 @@ CLASS="REPLACEABLE"
 >NO CYCLE</DT
 ><DD
 ><P
->        If the optional <VAR
+>        If the optional <TT
 CLASS="LITERAL"
->NO CYCLE</VAR
+>NO CYCLE</TT
 > key word is
         specified, any calls to <CODE
 CLASS="FUNCTION"
 >nextval</CODE
 > after the
         sequence has reached its maximum value will return an error.
-        If neither <VAR
+        If neither <TT
 CLASS="LITERAL"
->CYCLE</VAR
-> or <VAR
+>CYCLE</TT
+> or <TT
 CLASS="LITERAL"
 >NO
-        CYCLE</VAR
+        CYCLE</TT
 > are specified, the old cycle behaviour will be
         maintained.
        </P
@@ -356,14 +356,14 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35194"
+NAME="AEN34939"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Restart a sequence called <VAR
+>   Restart a sequence called <TT
 CLASS="LITERAL"
->serial</VAR
+>serial</TT
 >, at 105:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -374,7 +374,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35199"
+NAME="AEN34944"
 ></A
 ><H2
 >Notes</H2
@@ -391,9 +391,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >ALTER SEQUENCE</TT
 > will not immediately affect
-   <VAR
+   <TT
 CLASS="LITERAL"
->nextval</VAR
+>nextval</TT
 > results in backends,
    other than the current one, that have preallocated (cached) sequence
    values. They will use up all cached values prior to noticing the changed
@@ -403,7 +403,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35206"
+NAME="AEN34951"
 ></A
 ><H2
 >   Compatibility
@@ -411,7 +411,7 @@ NAME="AEN35206"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN35208"
+NAME="AEN34953"
 ></A
 ><H3
 >    SQL99

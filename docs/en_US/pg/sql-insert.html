@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-INSERT"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN40906"
+NAME="AEN41247"
 ></A
 ><H2
 >Name</H2
 >INSERT&nbsp;--&nbsp;create new rows in a table</DIV
 ><A
-NAME="AEN40909"
+NAME="AEN41250"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN40911"
+NAME="AEN41252"
 ></A
 ><H2
 >Synopsis</H2
@@ -130,7 +130,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40917"
+NAME="AEN41258"
 ></A
 ><H2
 >Description</H2
@@ -153,17 +153,17 @@ CLASS="COMMAND"
    automatic type conversion will be attempted.
   </P
 ><P
->   You must have <VAR
+>   You must have <TT
 CLASS="LITERAL"
->INSERT</VAR
+>INSERT</TT
 > privilege to a table in
    order to insert into it.  If you use the <VAR
 CLASS="REPLACEABLE"
 >query</VAR
 > clause to insert rows from a
-   query, you also need to have <VAR
+   query, you also need to have <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 > privilege on
    any table used in the query.
   </P
@@ -171,7 +171,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40927"
+NAME="AEN41268"
 ></A
 ><H2
 >Parameters</H2
@@ -201,12 +201,15 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >table</VAR
 >.
+      The column name can be qualified with a subfield name or array
+      subscript, if needed.  (Inserting into only some fields of a
+      composite column leaves the other fields null.)
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->DEFAULT VALUES</VAR
+>DEFAULT VALUES</TT
 ></DT
 ><DD
 ><P
@@ -227,9 +230,9 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 ></DT
 ><DD
 ><P
@@ -260,7 +263,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40964"
+NAME="AEN41305"
 ></A
 ><H2
 >Outputs</H2
@@ -306,14 +309,14 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40976"
+NAME="AEN41317"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Insert a single row into table <VAR
+>   Insert a single row into table <TT
 CLASS="LITERAL"
->films</VAR
+>films</TT
 >:
 
 </P><PRE
@@ -323,9 +326,9 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   In this second example, the last column <VAR
+>   In this second example, the last column <TT
 CLASS="LITERAL"
->len</VAR
+>len</TT
 > is
    omitted and therefore it will have the default value of null:
 
@@ -336,9 +339,9 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   The third example uses the <VAR
+>   The third example uses the <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 > clause for
    the date columns rather than specifying a value:
 
@@ -352,12 +355,12 @@ INSERT INTO films (code, title, did, date_prod, kind)
   </P
 ><P
 >   This examples inserts several rows into table
-   <VAR
+   <TT
 CLASS="LITERAL"
->films</VAR
-> from table <VAR
+>films</TT
+> from table <TT
 CLASS="LITERAL"
->tmp</VAR
+>tmp</TT
 >:
 
 </P><PRE
@@ -371,20 +374,18 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >-- Create an empty 3x3 gameboard for noughts-and-crosses
--- (all of these commands create the same board)
+-- (these commands create the same board)
 INSERT INTO tictactoe (game, board[1:3][1:3])
-    VALUES (1,'{{"","",""},{},{"",""}}');
-INSERT INTO tictactoe (game, board[3][3])
-    VALUES (2,'{}');
+    VALUES (1,'{{"","",""},{"","",""},{"","",""}}');
 INSERT INTO tictactoe (game, board)
-    VALUES (3,'{{,,},{,,},{,,}}');</PRE
+    VALUES (2,'{{,,},{,,},{,,}}');</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40993"
+NAME="AEN41334"
 ></A
 ><H2
 >Compatibility</H2

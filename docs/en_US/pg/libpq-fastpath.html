@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -99,7 +99,7 @@ NAME="LIBPQ-FASTPATH"
 >27.5. The Fast-Path Interface</A
 ></H1
 ><A
-NAME="AEN21274"
+NAME="AEN22622"
 ></A
 ><P
 ><SPAN
@@ -125,13 +125,13 @@ parameters and results substitutes for a fast-path function call.</P
 CLASS="FUNCTION"
 >PQfn</CODE
 ><A
-NAME="AEN21282"
+NAME="AEN22630"
 ></A
 >
 requests execution of a server function via the fast-path interface:
 </P><PRE
 CLASS="SYNOPSIS"
->PGresult* PQfn(PGconn* conn,
+>PGresult *PQfn(PGconn *conn,
                int fnid,
                int *result_buf,
                int *result_len,
@@ -149,58 +149,58 @@ typedef struct {
 } PQArgBlock;</PRE
 ><P></P
 ><P
->     The <VAR
+>     The <TT
 CLASS="PARAMETER"
->fnid</VAR
+>fnid</TT
 > argument is the OID of the function to be
-     executed.  <VAR
+     executed.  <TT
 CLASS="PARAMETER"
->args</VAR
-> and <VAR
+>args</TT
+> and <TT
 CLASS="PARAMETER"
->nargs</VAR
+>nargs</TT
 > define the
      parameters to be passed to the function; they must match the declared
-     function argument list.  When the <VAR
+     function argument list.  When the <TT
 CLASS="PARAMETER"
->isint</VAR
+>isint</TT
 > field of a
      parameter
      structure is true,
-     the <VAR
+     the <TT
 CLASS="PARAMETER"
->u.integer</VAR
+>u.integer</TT
 > value is sent to the server as an integer
      of the indicated length (this must be 1, 2, or 4 bytes); proper
-     byte-swapping occurs.  When <VAR
+     byte-swapping occurs.  When <TT
 CLASS="PARAMETER"
->isint</VAR
+>isint</TT
 > is false, the
-     indicated number of bytes at <VAR
+     indicated number of bytes at <TT
 CLASS="PARAMETER"
->*u.ptr</VAR
+>*u.ptr</TT
 > are sent with no
      processing; the data must be in the format expected by the server for
      binary transmission of the function's argument data type.
-     <VAR
+     <TT
 CLASS="PARAMETER"
->result_buf</VAR
+>result_buf</TT
 > is the buffer in which
      to place the return value.  The caller must  have  allocated
      sufficient space to store the return value.  (There is no check!)
      The actual result length will be returned in the integer pointed
-     to  by  <VAR
+     to  by  <TT
 CLASS="PARAMETER"
->result_len</VAR
+>result_len</TT
 >.
      If a 1, 2, or 4-byte integer result is expected, set
-     <VAR
+     <TT
 CLASS="PARAMETER"
->result_is_int</VAR
+>result_is_int</TT
 > to 1, otherwise set it to 0.
-     Setting <VAR
+     Setting <TT
 CLASS="PARAMETER"
->result_is_int</VAR
+>result_is_int</TT
 > to 1
      causes <SPAN
 CLASS="APPLICATION"
@@ -211,9 +211,9 @@ CLASS="APPLICATION"
 CLASS="TYPE"
 >int</TT
 > value for the client machine.  When
-     <VAR
+     <TT
 CLASS="PARAMETER"
->result_is_int</VAR
+>result_is_int</TT
 > is 0, the binary-format byte string sent by
      the server is returned unmodified.</P
 ><P

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-ALTERDATABASE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN34688"
+NAME="AEN34335"
 ></A
 ><H2
 >Name</H2
 >ALTER DATABASE&nbsp;--&nbsp;change a database</DIV
 ><A
-NAME="AEN34691"
+NAME="AEN34338"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN34693"
+NAME="AEN34340"
 ></A
 ><H2
 >Synopsis</H2
@@ -136,12 +136,20 @@ CLASS="REPLACEABLE"
 > RENAME TO <VAR
 CLASS="REPLACEABLE"
 >newname</VAR
+>
+
+ALTER DATABASE <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> OWNER TO <VAR
+CLASS="REPLACEABLE"
+>new_owner</VAR
 ></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34702"
+NAME="AEN34351"
 ></A
 ><H2
 >Description</H2
@@ -175,18 +183,22 @@ CLASS="COMMAND"
 ><P
 >   The third form changes the name of the database.  Only the database
    owner can rename a database, and only if he has the
-   <VAR
+   <TT
 CLASS="LITERAL"
->CREATEDB</VAR
+>CREATEDB</TT
 > privilege.  The current database cannot
    be renamed.  (Connect to a different database if you need to do
    that.)
+  </P
+><P
+>   The fourth form changes the owner of the database.  Only a superuser
+   can change the database's owner.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34712"
+NAME="AEN34362"
 ></A
 ><H2
 >Parameters</H2
@@ -220,20 +232,20 @@ CLASS="REPLACEABLE"
         <VAR
 CLASS="REPLACEABLE"
 >value</VAR
-> is <VAR
+> is <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 >
-        or, equivalently, <VAR
+        or, equivalently, <TT
 CLASS="LITERAL"
->RESET</VAR
+>RESET</TT
 > is used, the
         database-specific variable setting is removed and the system-wide
 	default
-        setting will be inherited in new sessions.  Use <VAR
+        setting will be inherited in new sessions.  Use <TT
 CLASS="LITERAL"
 >RESET
-        ALL</VAR
+        ALL</TT
 > to clear all settings.
        </P
 ><P
@@ -266,7 +278,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34739"
+NAME="AEN34389"
 ></A
 ><H2
 >Notes</H2
@@ -285,15 +297,15 @@ HREF="sql-alteruser.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34743"
+NAME="AEN34393"
 ></A
 ><H2
 >Examples</H2
 ><P
 >   To disable index scans by default in the database
-   <VAR
+   <TT
 CLASS="LITERAL"
->test</VAR
+>test</TT
 >:
 
 </P><PRE
@@ -305,7 +317,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34748"
+NAME="AEN34398"
 ></A
 ><H2
 >Compatibility</H2
@@ -323,7 +335,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN34753"
+NAME="AEN34403"
 ></A
 ><H2
 >See Also</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Advanced Features"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="TUTORIAL-TRANSACTIONS"
 >3.4. Transactions</A
 ></H1
 ><A
-NAME="AEN919"
+NAME="AEN924"
 ></A
 ><P
 >    <I
@@ -260,6 +260,72 @@ CLASS="COMMAND"
     </P
 ></BLOCKQUOTE
 ></DIV
+><P
+>    It's possible to control the statements in a transaction in a more
+    granular fashion through the use of <I
+CLASS="FIRSTTERM"
+>savepoints</I
+>.  Savepoints
+    allow you to selectively discard parts of the transaction, while
+    committing the rest.  After defining a savepoint with
+    <TT
+CLASS="COMMAND"
+>SAVEPOINT</TT
+>, you can if needed roll back to the savepoint
+    with <TT
+CLASS="COMMAND"
+>ROLLBACK TO</TT
+>.  All the transaction's database changes
+    between defining the savepoint and rolling back to it are discarded, but
+    changes earlier than the savepoint are kept.
+   </P
+><P
+>    After rolling back to a savepoint, it continues to be defined, so you can
+    roll back to it several times.  Conversely, if you are sure you won't need
+    to roll back to a particular savepoint again, it can be released, so the
+    system can free some resources.  Keep in mind that either releasing or
+    rolling back to a savepoint
+    will automatically release all savepoints that were defined after it.
+   </P
+><P
+>    All this is happening within the transaction block, so none of it
+    is visible to other database sessions.  When and if you commit the
+    transaction block, the committed actions become visible as a unit
+    to other sessions, while the rolled-back actions never become visible
+    at all.
+   </P
+><P
+>    Remembering the bank database, suppose we debit $100.00 from Alice's
+    account, and credit Bob's account, only to find later that we should
+    have credited Wally's account.  We could do it using savepoints like
+    this:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
+UPDATE accounts SET balance = balance - 100.00
+    WHERE name = 'Alice';
+SAVEPOINT my_savepoint;
+UPDATE accounts SET balance = balance + 100.00
+    WHERE name = 'Bob';
+-- oops ... forget that and use Wally's account
+ROLLBACK TO my_savepoint;
+UPDATE accounts SET balance = balance + 100.00
+    WHERE name = 'Wally';
+COMMIT;</PRE
+><P>
+   </P
+><P
+>    This example is, of course, oversimplified, but there's a lot of control
+    to be had over a transaction block through the use of savepoints.
+    Moreover, <TT
+CLASS="COMMAND"
+>ROLLBACK TO</TT
+> is the only way to regain control of a
+    transaction block that was put in aborted state by the
+    system due to an error, short of rolling it back completely and starting
+    again.
+   </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

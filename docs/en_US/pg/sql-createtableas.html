@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="CREATE TABLE"
 HREF="sql-createtable.html"><LINK
 REL="NEXT"
-TITLE="CREATE TRIGGER"
-HREF="sql-createtrigger.html"><LINK
+TITLE="CREATE TABLESPACE"
+HREF="sql-createtablespace.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-createtrigger.html"
+HREF="sql-createtablespace.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-createtrigger.html"
+HREF="sql-createtablespace.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATETABLEAS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38443"
+NAME="AEN38586"
 ></A
 ><H2
 >Name</H2
 >CREATE TABLE AS&nbsp;--&nbsp;create a new table from the results of a query</DIV
 ><A
-NAME="AEN38446"
+NAME="AEN38589"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38448"
+NAME="AEN38591"
 ></A
 ><H2
 >Synopsis</H2
@@ -118,7 +118,7 @@ CLASS="REPLACEABLE"
 > [ (<VAR
 CLASS="REPLACEABLE"
 >column_name</VAR
-> [, ...] ) ]
+> [, ...] ) ] [ [ WITH | WITHOUT ] OIDS ]
     AS <VAR
 CLASS="REPLACEABLE"
 >query</VAR
@@ -127,7 +127,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38453"
+NAME="AEN38596"
 ></A
 ><H2
 >Description</H2
@@ -174,7 +174,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38464"
+NAME="AEN38607"
 ></A
 ><H2
 >Parameters</H2
@@ -184,12 +184,38 @@ NAME="AEN38464"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->TEMPORARY</VAR
-> or <VAR
+>GLOBAL</TT
+> or <TT
 CLASS="LITERAL"
->TEMP</VAR
+>LOCAL</TT
+></DT
+><DD
+><P
+>      Ignored for compatibility. Refer to <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+> for
+      details.
+     </P
+></DD
+></DL
+></DIV
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>TEMPORARY</TT
+> or <TT
+CLASS="LITERAL"
+>TEMP</TT
 ></DT
 ><DD
 ><P
@@ -230,6 +256,29 @@ CLASS="COMMAND"
      </P
 ></DD
 ><DT
+><TT
+CLASS="LITERAL"
+>WITH OIDS</TT
+><BR><TT
+CLASS="LITERAL"
+>WITHOUT OIDS</TT
+></DT
+><DD
+><P
+>       This optional clause specifies whether the table created by
+       <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> should include OIDs. If
+       neither form of this clause if specified, the value of the
+       <A
+HREF="runtime-config.html#GUC-DEFAULT-WITH-OIDS"
+>default_with_oids</A
+> configuration parameter is
+       used.
+      </P
+></DD
+><DT
 ><VAR
 CLASS="REPLACEABLE"
 >query</VAR
@@ -267,28 +316,89 @@ HREF="sql-execute.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38495"
+NAME="AEN38655"
 ></A
 ><H2
 >Notes</H2
 ><P
->   This command is functionally equivalent to <A
+>   This command is functionally similar to <A
 HREF="sql-selectinto.html"
 ><I
 >SELECT INTO</I
 ></A
->, but it is preferred since it is less
-   likely to be confused with other uses of the <TT
+>, but it is
+   preferred since it is less likely to be confused with other uses of
+   the <TT
 CLASS="COMMAND"
->SELECT
-   ... INTO</TT
-> syntax.
+>SELECT INTO</TT
+> syntax. Furthermore, <TT
+CLASS="COMMAND"
+>CREATE
+   TABLE AS</TT
+> offers a superset of the functionality offerred
+   by <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+>.
+  </P
+><P
+>   Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0, <TT
+CLASS="COMMAND"
+>CREATE
+   TABLE AS</TT
+> always included OIDs in the table it
+   produced. Furthermore, these OIDs were newly generated: they were
+   distinct from the OIDs of any of the rows in the source tables of
+   the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> or <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>
+   statement. Therefore, if <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> was
+   frequently executed, the OID counter would be rapidly
+   incremented. As of <SPAN
+CLASS="PRODUCTNAME"
+>PostgresSQL</SPAN
+> 8.0,
+   the <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> command allows the user to
+   explicitely specify whether OIDs should be included. If the
+   presence of OIDs is not explicitely specified,
+   the <A
+HREF="runtime-config.html#GUC-DEFAULT-WITH-OIDS"
+>default_with_oids</A
+> configuration variable is
+   used. While this variable currently defaults to true, the default
+   value may be changed in the future. Therefore, applications that
+   require OIDs in the table created by <TT
+CLASS="COMMAND"
+>CREATE TABLE
+   AS</TT
+> should explicitely specify <TT
+CLASS="LITERAL"
+>WITH
+   OIDS</TT
+> to ensure compatibility with future versions
+   of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38500"
+NAME="AEN38674"
 ></A
 ><H2
 >Compatibility</H2
@@ -298,13 +408,13 @@ CLASS="PRODUCTNAME"
 >Oracle</SPAN
 >
    feature.  There is no command with equivalent functionality in
-   the SQL standard.  However, a combination of <VAR
+   the SQL standard.  However, a combination of <TT
 CLASS="LITERAL"
 >CREATE
-   TABLE</VAR
-> and <VAR
+   TABLE</TT
+> and <TT
 CLASS="LITERAL"
->INSERT ... SELECT</VAR
+>INSERT ... SELECT</TT
 > can
    accomplish the same thing with little more effort.
   </P
@@ -312,7 +422,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38506"
+NAME="AEN38680"
 ></A
 ><H2
 >See Also</H2
@@ -320,11 +430,6 @@ NAME="AEN38506"
 HREF="sql-createtable.html"
 ><I
 >CREATE TABLE</I
-></A
->, <A
-HREF="sql-createview.html"
-><I
->CREATE VIEW</I
 ></A
 >, <A
 HREF="sql-execute.html"
@@ -376,7 +481,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-createtrigger.html"
+HREF="sql-createtablespace.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -400,7 +505,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->CREATE TRIGGER</TD
+>CREATE TABLESPACE</TD
 ></TR
 ></TABLE
 ></DIV

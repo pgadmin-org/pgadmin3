@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Triggers"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="triggers.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 35. Triggers</TD
+>Chapter 33. Triggers</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRIGGER-DATACHANGES"
->35.2. Visibility of Data Changes</A
+>33.2. Visibility of Data Changes</A
 ></H1
 ><P
 >    If you execute SQL commands in your trigger function, and these
@@ -107,38 +107,47 @@ NAME="TRIGGER-DATACHANGES"
 ></P><UL
 ><LI
 ><P
->       The data change (insertion, update, or deletion) causing the trigger
-       to fire is naturally
-       <SPAN
+>       Statement-level triggers follow simple visibility rules: none of
+       the changes made by a statement are visible to statement-level
+       triggers that are invoked before the statement, whereas all
+       modifications are visible to statement-level after triggers.
+      </P
+></LI
+><LI
+><P
+>       The data change (insertion, update, or deletion) causing the
+       trigger to fire is naturally <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
 >not</I
 ></SPAN
-> visible to SQL commands executed in a
-       before trigger, because it hasn't happened yet.
+> visible
+       to SQL commands executed in a row-level before trigger, because
+       it hasn't happened yet.
       </P
 ></LI
 ><LI
 ><P
->       However, SQL commands executed in a before trigger
-       <SPAN
+>       However, SQL commands executed in a row-level before
+       trigger <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
 >will</I
 ></SPAN
-> see the effects of data changes
-       for rows previously processed in the same outer command.  This
-       requires caution, since the ordering of these change events
-       is not in general predictable; a SQL command that affects
-       multiple rows may visit the rows in any order.
+> see the effects of data
+       changes for rows previously processed in the same outer
+       command.  This requires caution, since the ordering of these
+       change events is not in general predictable; a SQL command that
+       affects multiple rows may visit the rows in any order.
       </P
 ></LI
 ><LI
 ><P
->       When an after trigger is fired, all data changes made by the outer
-       command are already complete, and are visible to executed SQL commands.
+>       When a row-level after trigger is fired, all data changes made
+       by the outer command are already complete, and are visible to
+       the invoked trigger function.
       </P
 ></LI
 ></UL
@@ -148,10 +157,10 @@ CLASS="EMPHASIS"
 >    Further information about data visibility rules can be found in
     <A
 HREF="spi-visibility.html"
->Section 41.4</A
+>Section 39.4</A
 >.  The example in <A
 HREF="trigger-example.html"
->Section 35.4</A
+>Section 33.4</A
 > contains a demonstration of these rules.
    </P
 ></DIV

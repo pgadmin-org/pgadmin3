@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Interfaces"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="client-interfaces.html#AEN19828"
+HREF="client-interfaces.html#AEN21130"
 >Fast Backward</A
 ></TD
 ><TD
@@ -240,10 +240,10 @@ HREF="libpq-example.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN19836"
+NAME="AEN21138"
 ></A
 ><A
-NAME="AEN19838"
+NAME="AEN21140"
 ></A
 ><P
 >   <SPAN
@@ -253,42 +253,32 @@ CLASS="APPLICATION"
 CLASS="ACRONYM"
 >C</ACRONYM
 >
-   application programmer's interface to
-   <SPAN
+   application programmer's interface to <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->.  <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> is a set
-   of library functions that allow client programs to pass queries to the
+>.
    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> backend server and to receive the
-   results of these queries.  <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> is also the
-   underlying engine for several other <SPAN
+> is a set of library functions that allow
+   client programs to pass queries to the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-   application interfaces, including <SPAN
-CLASS="APPLICATION"
->libpq++</SPAN
-> (C++),
+   backend server and to receive the results of these queries.
    <SPAN
 CLASS="APPLICATION"
->libpgtcl</SPAN
-> (Tcl), <SPAN
+>libpq</SPAN
+> is also the underlying engine for several
+   other <SPAN
 CLASS="PRODUCTNAME"
->Perl</SPAN
->, and
-   <SPAN
+>PostgreSQL</SPAN
+> application interfaces, including
+   those written for C++, TCL, Perl, Python and <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
->.  So some aspects of <SPAN
+>.
+   So some aspects of <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 >'s behavior will be
@@ -322,7 +312,7 @@ CLASS="APPLICATION"
 CLASS="FILENAME"
 >libpq-fe.h</TT
 ><A
-NAME="AEN19861"
+NAME="AEN21160"
 ></A
 >
    and must link with the <SPAN
@@ -351,7 +341,7 @@ CLASS="PRODUCTNAME"
 CLASS="STRUCTNAME"
 >PGconn</TT
 ><A
-NAME="AEN19869"
+NAME="AEN21168"
 ></A
 > object which
    is obtained from the function <CODE
@@ -384,7 +374,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQconnectdb</CODE
 ><A
-NAME="AEN19879"
+NAME="AEN21178"
 ></A
 ></DT
 ><DD
@@ -396,9 +386,9 @@ CLASS="SYNOPSIS"
 ><P></P
 ><P
 >   This function opens a new database connection using the parameters taken
-   from the string <VAR
+   from the string <TT
 CLASS="LITERAL"
->conninfo</VAR
+>conninfo</TT
 >.  Unlike <CODE
 CLASS="FUNCTION"
 >PQsetdbLogin</CODE
@@ -417,23 +407,23 @@ CLASS="FUNCTION"
 >   The passed string
    can be empty to use all default parameters, or it can contain one or more
    parameter settings separated by whitespace.
-   Each parameter setting is in the form <VAR
+   Each parameter setting is in the form <TT
 CLASS="LITERAL"
->keyword = value</VAR
+>keyword = value</TT
 >.
    (To write an empty value or a value containing
    spaces, surround it with single quotes, e.g.,
-   <VAR
+   <TT
 CLASS="LITERAL"
->keyword = 'a value'</VAR
+>keyword = 'a value'</TT
 >.
    Single quotes and backslashes within the value must be escaped with a
-   backslash, i.e., <VAR
+   backslash, i.e., <TT
 CLASS="LITERAL"
->\'</VAR
-> and <VAR
+>\'</TT
+> and <TT
 CLASS="LITERAL"
->\\</VAR
+>\\</TT
 >.)
    Spaces around the equal sign are optional.
    </P
@@ -446,14 +436,14 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->host</VAR
+>host</TT
 ></DT
 ><DD
 ><P
 >      Name of host to connect to.<A
-NAME="AEN19901"
+NAME="AEN21200"
 ></A
 >
       If this begins with a slash, it specifies Unix-domain
@@ -464,88 +454,88 @@ NAME="AEN19901"
 CLASS="FILENAME"
 >/tmp</TT
 >.<A
-NAME="AEN19904"
+NAME="AEN21203"
 ></A
 >
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->hostaddr</VAR
+>hostaddr</TT
 ></DT
 ><DD
 ><P
 >      Numeric IP address of host to connect to.  This should be in the
-      standard IPv4 address format, e.g., <VAR
+      standard IPv4 address format, e.g., <TT
 CLASS="LITERAL"
->172.28.40.9</VAR
+>172.28.40.9</TT
 >.  If
       your machine supports IPv6, you can also use those addresses.
       TCP/IP communication is
       always used when a nonempty string is specified for this parameter.
      </P
 ><P
->      Using <VAR
+>      Using <TT
 CLASS="LITERAL"
->hostaddr</VAR
-> instead of <VAR
+>hostaddr</TT
+> instead of <TT
 CLASS="LITERAL"
->host</VAR
+>host</TT
 > allows the
       application to avoid a host name look-up, which may be important in
       applications with time constraints. However, Kerberos authentication
       requires the host name. The following therefore applies: If
-      <VAR
+      <TT
 CLASS="LITERAL"
->host</VAR
-> is specified without <VAR
+>host</TT
+> is specified without <TT
 CLASS="LITERAL"
->hostaddr</VAR
+>hostaddr</TT
 >, a host name
-      lookup occurs. If <VAR
+      lookup occurs. If <TT
 CLASS="LITERAL"
->hostaddr</VAR
+>hostaddr</TT
 > is specified without
-      <VAR
+      <TT
 CLASS="LITERAL"
->host</VAR
->, the value for <VAR
+>host</TT
+>, the value for <TT
 CLASS="LITERAL"
->hostaddr</VAR
+>hostaddr</TT
 > gives the remote
       address. When Kerberos is used, a reverse name query occurs to obtain
       the host name for Kerberos. If both
-      <VAR
+      <TT
 CLASS="LITERAL"
->host</VAR
-> and <VAR
+>host</TT
+> and <TT
 CLASS="LITERAL"
->hostaddr</VAR
+>hostaddr</TT
 > are specified, the value for
-      <VAR
+      <TT
 CLASS="LITERAL"
->hostaddr</VAR
+>hostaddr</TT
 > gives the remote address; the value for
-      <VAR
+      <TT
 CLASS="LITERAL"
->host</VAR
+>host</TT
 > is ignored, unless Kerberos is used, in which case that
       value is used for Kerberos authentication. (Note that authentication is
       likely to fail if <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > is passed a host name
-      that is not the name of the machine at <VAR
+      that is not the name of the machine at <TT
 CLASS="LITERAL"
->hostaddr</VAR
+>hostaddr</TT
 >.)  Also,
-      <VAR
+      <TT
 CLASS="LITERAL"
->host</VAR
-> rather than <VAR
+>host</TT
+> rather than <TT
 CLASS="LITERAL"
->hostaddr</VAR
+>hostaddr</TT
 > is used to identify
       the connection in <TT
 CLASS="FILENAME"
@@ -562,24 +552,24 @@ CLASS="APPLICATION"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->port</VAR
+>port</TT
 ></DT
 ><DD
 ><P
 >      Port number to connect to at the server host, or socket file
       name extension for Unix-domain
       connections.<A
-NAME="AEN19936"
+NAME="AEN21235"
 ></A
 >
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->dbname</VAR
+>dbname</TT
 ></DT
 ><DD
 ><P
@@ -587,9 +577,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->user</VAR
+>user</TT
 ></DT
 ><DD
 ><P
@@ -600,9 +590,9 @@ CLASS="PRODUCTNAME"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->password</VAR
+>password</TT
 ></DT
 ><DD
 ><P
@@ -610,9 +600,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->connect_timeout</VAR
+>connect_timeout</TT
 ></DT
 ><DD
 ><P
@@ -622,9 +612,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->options</VAR
+>options</TT
 ></DT
 ><DD
 ><P
@@ -632,9 +622,9 @@ CLASS="LITERAL"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->tty</VAR
+>tty</TT
 ></DT
 ><DD
 ><P
@@ -642,9 +632,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->sslmode</VAR
+>sslmode</TT
 ></DT
 ><DD
 ><P
@@ -653,17 +643,17 @@ CLASS="LITERAL"
 CLASS="ACRONYM"
 >SSL</ACRONYM
 > connection will be negotiated with the
-       server. There are four modes: <VAR
+       server. There are four modes: <TT
 CLASS="LITERAL"
->disable</VAR
+>disable</TT
 > will attempt
        only an unencrypted <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
 > connection;
-       <VAR
+       <TT
 CLASS="LITERAL"
->allow</VAR
+>allow</TT
 > will negotiate, trying first a
        non-<ACRONYM
 CLASS="ACRONYM"
@@ -672,9 +662,9 @@ CLASS="ACRONYM"
        <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
-> connection; <VAR
+> connection; <TT
 CLASS="LITERAL"
->prefer</VAR
+>prefer</TT
 > (the default)
        will negotiate, trying first an <ACRONYM
 CLASS="ACRONYM"
@@ -684,9 +674,9 @@ CLASS="ACRONYM"
 CLASS="ACRONYM"
 >SSL</ACRONYM
 >
-       connection; <VAR
+       connection; <TT
 CLASS="LITERAL"
->require</VAR
+>require</TT
 > will try only an
        <ACRONYM
 CLASS="ACRONYM"
@@ -698,16 +688,16 @@ CLASS="ACRONYM"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is compiled without SSL support,
-       using option <VAR
+       using option <TT
 CLASS="LITERAL"
->require</VAR
+>require</TT
 > will cause an error, and
-       options <VAR
+       options <TT
 CLASS="LITERAL"
->allow</VAR
-> and <VAR
+>allow</TT
+> and <TT
 CLASS="LITERAL"
->prefer</VAR
+>prefer</TT
 > will be
        tolerated but <SPAN
 CLASS="APPLICATION"
@@ -718,21 +708,21 @@ CLASS="ACRONYM"
 >SSL</ACRONYM
 >
        connection.<A
-NAME="AEN19992"
+NAME="AEN21291"
 ></A
 >
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->requiressl</VAR
+>requiressl</TT
 ></DT
 ><DD
 ><P
->       This option is deprecated in favor of the <VAR
+>       This option is deprecated in favor of the <TT
 CLASS="LITERAL"
->sslmode</VAR
+>sslmode</TT
 >
        setting.
       </P
@@ -741,13 +731,13 @@ CLASS="LITERAL"
 CLASS="ACRONYM"
 >SSL</ACRONYM
 > connection to the server
-       is required (this is equivalent to <VAR
+       is required (this is equivalent to <TT
 CLASS="LITERAL"
->sslmode</VAR
+>sslmode</TT
 >
-       <VAR
+       <TT
 CLASS="LITERAL"
->require</VAR
+>require</TT
 >).  <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
@@ -761,13 +751,13 @@ CLASS="ACRONYM"
 CLASS="APPLICATION"
 >libpq</SPAN
 > will negotiate the connection type with
-       the server (equivalent to <VAR
+       the server (equivalent to <TT
 CLASS="LITERAL"
->sslmode</VAR
+>sslmode</TT
 >
-       <VAR
+       <TT
 CLASS="LITERAL"
->prefer</VAR
+>prefer</TT
 >).  This option is only available if
        <SPAN
 CLASS="PRODUCTNAME"
@@ -776,9 +766,9 @@ CLASS="PRODUCTNAME"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->service</VAR
+>service</TT
 ></DT
 ><DD
 ><P
@@ -817,7 +807,7 @@ HREF="libpq-envars.html"
 CLASS="FUNCTION"
 >PQsetdbLogin</CODE
 ><A
-NAME="AEN20023"
+NAME="AEN21322"
 ></A
 ></DT
 ><DD
@@ -851,7 +841,7 @@ CLASS="SYMBOL"
 CLASS="FUNCTION"
 >PQsetdb</CODE
 ><A
-NAME="AEN20034"
+NAME="AEN21333"
 ></A
 ></DT
 ><DD
@@ -870,12 +860,12 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQsetdbLogin</CODE
 > with null pointers
-   for the <VAR
+   for the <TT
 CLASS="PARAMETER"
->login</VAR
-> and <VAR
+>login</TT
+> and <TT
 CLASS="PARAMETER"
->pwd</VAR
+>pwd</TT
 > parameters.  It is provided
    for backward compatibility with very old programs.
    </P
@@ -885,19 +875,19 @@ CLASS="PARAMETER"
 CLASS="FUNCTION"
 >PQconnectStart</CODE
 ><A
-NAME="AEN20046"
+NAME="AEN21345"
 ></A
 ><BR><CODE
 CLASS="FUNCTION"
 >PQconnectPoll</CODE
 ><A
-NAME="AEN20050"
+NAME="AEN21349"
 ></A
 ></DT
 ><DD
 ><P
 >   <A
-NAME="AEN20054"
+NAME="AEN21353"
 ></A
 >
    Make a connection to the database server in a nonblocking manner.
@@ -923,9 +913,9 @@ CLASS="FUNCTION"
   </P
 ><P
 >   The database connection is made using the parameters taken from the string
-   <VAR
+   <TT
 CLASS="LITERAL"
->conninfo</VAR
+>conninfo</TT
 >, passed to <CODE
 CLASS="FUNCTION"
 >PQconnectStart</CODE
@@ -949,12 +939,12 @@ CLASS="FUNCTION"
 ></P><UL
 ><LI
 ><P
->      The <VAR
+>      The <TT
 CLASS="LITERAL"
->hostaddr</VAR
-> and <VAR
+>hostaddr</TT
+> and <TT
 CLASS="LITERAL"
->host</VAR
+>host</TT
 > parameters are used appropriately to ensure that
       name and reverse name queries are not made. See the documentation of
       these parameters under <CODE
@@ -985,16 +975,16 @@ CLASS="FUNCTION"
 ><P>
   </P
 ><P
->   To begin a nonblocking connection request, call <VAR
+>   To begin a nonblocking connection request, call <TT
 CLASS="LITERAL"
 >conn = PQconnectStart("<VAR
 CLASS="REPLACEABLE"
 >connection_info_string</VAR
->")</VAR
+>")</TT
 >.
-   If <VAR
+   If <TT
 CLASS="VARNAME"
->conn</VAR
+>conn</TT
 > is null, then <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
@@ -1010,12 +1000,12 @@ CLASS="STRUCTNAME"
    <CODE
 CLASS="FUNCTION"
 >PQconnectStart</CODE
->, call <VAR
+>, call <TT
 CLASS="LITERAL"
->status = PQstatus(conn)</VAR
->. If <VAR
+>status = PQstatus(conn)</TT
+>. If <TT
 CLASS="VARNAME"
->status</VAR
+>status</TT
 > equals
    <TT
 CLASS="SYMBOL"
@@ -1213,9 +1203,9 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   The <VAR
+>   The <TT
 CLASS="LITERAL"
->connect_timeout</VAR
+>connect_timeout</TT
 > connection parameter is ignored
    when using <CODE
 CLASS="FUNCTION"
@@ -1253,7 +1243,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQconndefaults</CODE
 ><A
-NAME="AEN20158"
+NAME="AEN21457"
 ></A
 ></DT
 ><DD
@@ -1317,7 +1307,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQfinish</CODE
 ><A
-NAME="AEN20174"
+NAME="AEN21473"
 ></A
 ></DT
 ><DD
@@ -1359,7 +1349,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQreset</CODE
 ><A
-NAME="AEN20189"
+NAME="AEN21488"
 ></A
 ></DT
 ><DD
@@ -1382,13 +1372,13 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQresetStart</CODE
 ><A
-NAME="AEN20198"
+NAME="AEN21497"
 ></A
 ><BR><CODE
 CLASS="FUNCTION"
 >PQresetPoll</CODE
 ><A
-NAME="AEN20202"
+NAME="AEN21501"
 ></A
 ></DT
 ><DD

@@ -798,6 +798,8 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_DOMAIN:
         case PG_OPERATORS:
         case PG_OPERATOR:
+        case PG_FUNCTION:
+        case PG_TRIGGERFUNCTION:
         case PG_OPERATORCLASSES:
         case PG_OPERATORCLASS:
         case PG_SEQUENCE:

@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
 HREF="admin.html"><LINK
 REL="PREVIOUS"
-TITLE="Destroying a Database"
-HREF="manage-ag-dropdb.html"><LINK
+TITLE="Tablespaces"
+HREF="manage-ag-tablespaces.html"><LINK
 REL="NEXT"
 TITLE="Authentication methods"
 HREF="auth-methods.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="manage-ag-dropdb.html"
+HREF="manage-ag-tablespaces.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -151,7 +151,7 @@ HREF="client-authentication-problems.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN17545"
+NAME="AEN18648"
 ></A
 ><P
 >  When a client application connects to the database server, it
@@ -212,7 +212,7 @@ CLASS="FILENAME"
 > file</A
 ></H1
 ><A
-NAME="AEN17559"
+NAME="AEN18662"
 ></A
 ><P
 >   Client authentication is controlled by the file
@@ -243,9 +243,9 @@ CLASS="FILENAME"
 >pg_hba.conf</TT
 > file is
    a set of records, one per line. Blank lines are ignored, as is any
-   text after the <VAR
+   text after the <TT
 CLASS="LITERAL"
->#</VAR
+>#</TT
 > comment character. A record is made
    up of a number of fields which are separated by spaces and/or tabs.
    Fields can contain white space if the field value is quoted. Records
@@ -429,9 +429,9 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->local</VAR
+>local</TT
 ></DT
 ><DD
 ><P
@@ -441,68 +441,98 @@ CLASS="LITERAL"
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->host</VAR
+>host</TT
 ></DT
 ><DD
 ><P
->       This record matches connection attempts using TCP/IP networks.
-       Note that TCP/IP connections are disabled unless the server is
-       started with the <VAR
-CLASS="OPTION"
->-i</VAR
-> option or the
-       <VAR
-CLASS="VARNAME"
->tcpip_socket</VAR
-> configuration parameter is enabled.
+>       This record matches connection attempts made using TCP/IP.
+       <TT
+CLASS="LITERAL"
+>host</TT
+> records match either
+       <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> or non-<ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> connection
+       attempts.
       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       Remote TCP/IP connections will not be possible unless
+       the server is started with an appropriate value for the
+       <A
+HREF="runtime-config.html#GUC-LISTEN-ADDRESSES"
+>listen_addresses</A
+> configuration parameter,
+       since the default behavior is to listen for TCP/IP connections
+       only on the local loopback address <TT
+CLASS="LITERAL"
+>localhost</TT
+>.
+      </P
+></BLOCKQUOTE
+></DIV
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->hostssl</VAR
+>hostssl</TT
 ></DT
 ><DD
 ><P
->       This record matches connection attempts using SSL over TCP/IP.
-       <VAR
-CLASS="LITERAL"
->host</VAR
-> records will match either SSL or
-       non-SSL connection attempts, but <VAR
-CLASS="LITERAL"
->hostssl</VAR
+>       This record matches connection attempts made using TCP/IP,
+       but only when the connection is made with <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
 >
-       records require SSL connections.
+       encryption.
       </P
 ><P
->       To make use of this option the server must be built
-       with SSL support enabled. Furthermore, SSL must be enabled by
-       enabling the <VAR
-CLASS="VARNAME"
->ssl</VAR
-> configuration parameter
-       (see <A
-HREF="runtime-config.html"
->Section 16.4</A
+>       To make use of this option the server must be built with
+       <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> support. Furthermore,
+       <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> must be enabled at server start time
+       by setting the <A
+HREF="runtime-config.html#GUC-SSL"
+>ssl</A
+> configuration parameter (see
+       <A
+HREF="ssl-tcp.html"
+>Section 16.7</A
 > for more information).
       </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->hostnossl</VAR
+>hostnossl</TT
 ></DT
 ><DD
 ><P
->       This record is similar to <VAR
+>       This record is similar to <TT
 CLASS="LITERAL"
->hostssl</VAR
+>hostssl</TT
 > but with the
-	   opposite logic: it matches only regular connection attempts not
-	   using SSL.
+       opposite logic: it only matches connection attempts made over
+       TCP/IP that do not use <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>.
       </P
 ></DD
 ><DT
@@ -513,18 +543,18 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >       Specifies which databases this record matches.  The value
-       <VAR
+       <TT
 CLASS="LITERAL"
->all</VAR
+>all</TT
 > specifies that it matches all databases.
-       The value <VAR
+       The value <TT
 CLASS="LITERAL"
->sameuser</VAR
+>sameuser</TT
 > specifies that the record
        matches if the requested database has the same name as the
-       requested user.  The value <VAR
+       requested user.  The value <TT
 CLASS="LITERAL"
->samegroup</VAR
+>samegroup</TT
 > specifies that
        the requested user must a member of the group with the same
        name as the requested database.  Otherwise, this is the name of
@@ -534,9 +564,9 @@ CLASS="PRODUCTNAME"
 > database.
        Multiple database names can be supplied by separating them with
        commas.  A file containing database names can be specified by
-       preceding the file name with <VAR
+       preceding the file name with <TT
 CLASS="LITERAL"
->@</VAR
+>@</TT
 >. The file must be in
        the same directory as <TT
 CLASS="FILENAME"
@@ -555,9 +585,9 @@ CLASS="REPLACEABLE"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > users this record
-       matches. The value <VAR
+       matches. The value <TT
 CLASS="LITERAL"
->all</VAR
+>all</TT
 > specifies that it
        matches all users.  Otherwise, this is the name of a specific
        <SPAN
@@ -565,14 +595,14 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user. Multiple user names
        can be supplied by separating them with commas. Group names can
-       be specified by preceding the group name with <VAR
+       be specified by preceding the group name with <TT
 CLASS="LITERAL"
->+</VAR
+>+</TT
 >. A
        file containing user names can be specified by preceding the
-       file name with <VAR
+       file name with <TT
 CLASS="LITERAL"
->@</VAR
+>@</TT
 >. The file must be in the same
        directory as <TT
 CLASS="FILENAME"
@@ -612,13 +642,13 @@ CLASS="REPLACEABLE"
       </P
 ><P
 >       An IP address given in IPv4 format will match IPv6 connections that
-       have the corresponding address, for example <VAR
+       have the corresponding address, for example <TT
 CLASS="LITERAL"
->127.0.0.1</VAR
+>127.0.0.1</TT
 >
-       will match the IPv6 address <VAR
+       will match the IPv6 address <TT
 CLASS="LITERAL"
->::ffff:127.0.0.1</VAR
+>::ffff:127.0.0.1</TT
 >.  An entry
        given in IPv6 format will match only IPv6 connections, even if the
        represented address is in the IPv4-in-IPv6 range.  Note that entries
@@ -626,16 +656,16 @@ CLASS="LITERAL"
        support for IPv6 addresses.
       </P
 ><P
->       These fields only apply to <VAR
+>       These fields only apply to <TT
 CLASS="LITERAL"
->host</VAR
+>host</TT
 >,
-       <VAR
+       <TT
 CLASS="LITERAL"
->hostssl</VAR
->, and <VAR
+>hostssl</TT
+>, and <TT
 CLASS="LITERAL"
->hostnossl</VAR
+>hostnossl</TT
 > records.
       </P
 ></DD
@@ -668,12 +698,12 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >IP-address</VAR
 > and the
-       <VAR
+       <TT
 CLASS="LITERAL"
->/</VAR
-> or the <VAR
+>/</TT
+> or the <TT
 CLASS="LITERAL"
->/</VAR
+>/</TT
 > and the
        <VAR
 CLASS="REPLACEABLE"
@@ -682,16 +712,16 @@ CLASS="REPLACEABLE"
        parsed correctly.
       </P
 ><P
->       This field only applies to <VAR
+>       This field only applies to <TT
 CLASS="LITERAL"
->host</VAR
+>host</TT
 >,
-       <VAR
+       <TT
 CLASS="LITERAL"
->hostssl</VAR
->, and <VAR
+>hostssl</TT
+>, and <TT
 CLASS="LITERAL"
->hostnossl</VAR
+>hostnossl</TT
 > records.
       </P
 ></DD
@@ -715,9 +745,9 @@ HREF="auth-methods.html"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->trust</VAR
+>trust</TT
 ></DT
 ><DD
 ><P
@@ -738,9 +768,9 @@ HREF="auth-methods.html#AUTH-TRUST"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->reject</VAR
+>reject</TT
 ></DT
 ><DD
 ><P
@@ -752,9 +782,9 @@ CLASS="QUOTE"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->md5</VAR
+>md5</TT
 ></DT
 ><DD
 ><P
@@ -771,23 +801,23 @@ HREF="auth-methods.html#AUTH-PASSWORD"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->crypt</VAR
+>crypt</TT
 ></DT
 ><DD
 ><P
->          Like the <VAR
+>          Like the <TT
 CLASS="LITERAL"
->md5</VAR
+>md5</TT
 > method but uses older <CODE
 CLASS="FUNCTION"
 >crypt()</CODE
 >
           encryption, which is needed for pre-7.2 clients.
-          <VAR
+          <TT
 CLASS="LITERAL"
->md5</VAR
+>md5</TT
 > is preferred for 7.2 and later clients.
           See <A
 HREF="auth-methods.html#AUTH-PASSWORD"
@@ -796,15 +826,15 @@ HREF="auth-methods.html#AUTH-PASSWORD"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->password</VAR
+>password</TT
 ></DT
 ><DD
 ><P
->          Same as <VAR
+>          Same as <TT
 CLASS="LITERAL"
->md5</VAR
+>md5</TT
 >, but the password is sent in clear text over the
           network. This should not be used on untrusted networks.
           See <A
@@ -814,9 +844,9 @@ HREF="auth-methods.html#AUTH-PASSWORD"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->krb4</VAR
+>krb4</TT
 ></DT
 ><DD
 ><P
@@ -828,9 +858,9 @@ HREF="auth-methods.html#KERBEROS-AUTH"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->krb5</VAR
+>krb5</TT
 ></DT
 ><DD
 ><P
@@ -842,9 +872,9 @@ HREF="auth-methods.html#KERBEROS-AUTH"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ident</VAR
+>ident</TT
 ></DT
 ><DD
 ><P
@@ -853,15 +883,15 @@ CLASS="LITERAL"
           client, for local connections by getting it from the
           operating system) and check if the user is allowed to
           connect as the requested database user by consulting the map
-          specified after the <VAR
+          specified after the <TT
 CLASS="LITERAL"
->ident</VAR
+>ident</TT
 > key word.
          </P
 ><P
->          If you use the map <VAR
+>          If you use the map <TT
 CLASS="LITERAL"
->sameuser</VAR
+>sameuser</TT
 >, the user
           names are required to be identical. If not, the map name is
           looked up in the file <TT
@@ -910,9 +940,9 @@ HREF="auth-methods.html#AUTH-IDENT"
          </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->pam</VAR
+>pam</TT
 ></DT
 ><DD
 ><P
@@ -953,15 +983,15 @@ CLASS="FILENAME"
    significant. Typically, earlier records will have tight connection
    match parameters and weaker authentication methods, while later
    records will have looser match parameters and stronger authentication
-   methods. For example, one might wish to use <VAR
+   methods. For example, one might wish to use <TT
 CLASS="LITERAL"
->trust</VAR
+>trust</TT
 >
    authentication for local TCP/IP connections but require a password for
    remote TCP/IP connections. In this case a record specifying
-   <VAR
+   <TT
 CLASS="LITERAL"
->trust</VAR
+>trust</TT
 > authentication for connections from 127.0.0.1 would
    appear before a record specifying password authentication for a wider
    range of allowed client IP addresses.
@@ -973,13 +1003,13 @@ CLASS="IMPORTANT"
 ><P
 ><B
 >Important: </B
->    Do not prevent the superuser from accessing the <VAR
+>    Do not prevent the superuser from accessing the <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >
-    database.  Various utility commands need access to <VAR
+    database.  Various utility commands need access to <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >.
    </P
 ></BLOCKQUOTE
@@ -997,7 +1027,7 @@ CLASS="COMMAND"
 CLASS="SYSTEMITEM"
 >SIGHUP</SPAN
 ><A
-NAME="AEN17805"
+NAME="AEN18915"
 ></A
 >
    signal. If you edit the file on an
@@ -1005,12 +1035,12 @@ NAME="AEN17805"
 CLASS="COMMAND"
 >postmaster</TT
 >
-   (using <VAR
+   (using <TT
 CLASS="LITERAL"
->pg_ctl reload</VAR
-> or <VAR
+>pg_ctl reload</TT
+> or <TT
 CLASS="LITERAL"
->kill -HUP</VAR
+>kill -HUP</TT
 >) to make it
    re-read the file.
   </P
@@ -1129,7 +1159,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="manage-ag-dropdb.html"
+HREF="manage-ag-tablespaces.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -1157,7 +1187,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Destroying a Database</TD
+>Tablespaces</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

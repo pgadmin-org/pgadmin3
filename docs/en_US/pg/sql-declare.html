@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,21 @@ NAME="SQL-DECLARE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN39147"
+NAME="AEN39416"
 ></A
 ><H2
 >Name</H2
 >DECLARE&nbsp;--&nbsp;define a cursor</DIV
 ><A
-NAME="AEN39150"
+NAME="AEN39419"
+></A
+><A
+NAME="AEN39421"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN39152"
+NAME="AEN39424"
 ></A
 ><H2
 >Synopsis</H2
@@ -128,7 +131,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39157"
+NAME="AEN39429"
 ></A
 ><H2
 >Description</H2
@@ -165,9 +168,9 @@ CLASS="COMMAND"
   </P
 ><P
 >   As an example, if a query returns a value of one from an integer column,
-   you would get a string of <VAR
+   you would get a string of <TT
 CLASS="LITERAL"
->1</VAR
+>1</TT
 > with a default cursor
    whereas with a binary cursor you would get
    a 4-byte field containing the internal representation of the value
@@ -208,7 +211,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39172"
+NAME="AEN39444"
 ></A
 ><H2
 >Parameters</H2
@@ -228,9 +231,9 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->BINARY</VAR
+>BINARY</TT
 ></DT
 ><DD
 ><P
@@ -238,9 +241,9 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->INSENSITIVE</VAR
+>INSENSITIVE</TT
 ></DT
 ><DD
 ><P
@@ -255,64 +258,64 @@ CLASS="PRODUCTNAME"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SCROLL</VAR
-><BR><VAR
+>SCROLL</TT
+><BR><TT
 CLASS="LITERAL"
->NO SCROLL</VAR
+>NO SCROLL</TT
 ></DT
 ><DD
 ><P
->      <VAR
+>      <TT
 CLASS="LITERAL"
->SCROLL</VAR
+>SCROLL</TT
 > specifies that the cursor may be used
       to retrieve rows in a nonsequential fashion (e.g.,
       backward). Depending upon the complexity of the query's
-      execution plan, specifying <VAR
+      execution plan, specifying <TT
 CLASS="LITERAL"
->SCROLL</VAR
+>SCROLL</TT
 > may impose
       a performance penalty on the query's execution time.
-      <VAR
+      <TT
 CLASS="LITERAL"
->NO SCROLL</VAR
+>NO SCROLL</TT
 > specifies that the cursor cannot be
       used to retrieve rows in a nonsequential fashion.
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->WITH HOLD</VAR
-><BR><VAR
+>WITH HOLD</TT
+><BR><TT
 CLASS="LITERAL"
->WITHOUT HOLD</VAR
+>WITHOUT HOLD</TT
 ></DT
 ><DD
 ><P
->      <VAR
+>      <TT
 CLASS="LITERAL"
->WITH HOLD</VAR
+>WITH HOLD</TT
 > specifies that the cursor may
       continue to be used after the transaction that created it
-      successfully commits.  <VAR
+      successfully commits.  <TT
 CLASS="LITERAL"
->WITHOUT HOLD</VAR
+>WITHOUT HOLD</TT
 > specifies
       that the cursor cannot be used outside of the transaction that
-      created it. If neither <VAR
+      created it. If neither <TT
 CLASS="LITERAL"
->WITHOUT HOLD</VAR
+>WITHOUT HOLD</TT
 > nor
-      <VAR
+      <TT
 CLASS="LITERAL"
->WITH HOLD</VAR
-> is specified, <VAR
+>WITH HOLD</TT
+> is specified, <TT
 CLASS="LITERAL"
 >WITHOUT
-      HOLD</VAR
+      HOLD</TT
 > is the default.
      </P
 ></DD
@@ -337,36 +340,36 @@ HREF="sql-select.html"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->FOR READ ONLY</VAR
-><BR><VAR
+>FOR READ ONLY</TT
+><BR><TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 ></DT
 ><DD
 ><P
->      <VAR
+>      <TT
 CLASS="LITERAL"
->FOR READ ONLY</VAR
+>FOR READ ONLY</TT
 > indicates that the cursor will
-      be used in a read-only mode.  <VAR
+      be used in a read-only mode.  <TT
 CLASS="LITERAL"
->FOR UPDATE</VAR
+>FOR UPDATE</TT
 >
       indicates that the cursor will be used to update tables.  Since
       cursor updates are not currently supported in
       <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->, specifying <VAR
+>, specifying <TT
 CLASS="LITERAL"
 >FOR
-      UPDATE</VAR
+      UPDATE</TT
 > will cause an error message and specifying
-      <VAR
+      <TT
 CLASS="LITERAL"
->FOR READ ONLY</VAR
+>FOR READ ONLY</TT
 > has no effect.
      </P
 ></DD
@@ -382,26 +385,26 @@ CLASS="REPLACEABLE"
       <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->, the <VAR
+>, the <TT
 CLASS="LITERAL"
 >FOR
-      UPDATE</VAR
+      UPDATE</TT
 > clause provokes an error message.
      </P
 ></DD
 ></DL
 ></DIV
 ><P
->   The key words <VAR
+>   The key words <TT
 CLASS="LITERAL"
->BINARY</VAR
+>BINARY</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->INSENSITIVE</VAR
->, and <VAR
+>INSENSITIVE</TT
+>, and <TT
 CLASS="LITERAL"
->SCROLL</VAR
+>SCROLL</TT
 > may
    appear in any order.
   </P
@@ -409,23 +412,23 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39243"
+NAME="AEN39515"
 ></A
 ><H2
 >Notes</H2
 ><P
->    Unless <VAR
+>    Unless <TT
 CLASS="LITERAL"
->WITH HOLD</VAR
+>WITH HOLD</TT
 > is specified, the cursor
     created by this command can only be used within the current
     transaction.  Thus, <TT
 CLASS="COMMAND"
 >DECLARE</TT
-> without <VAR
+> without <TT
 CLASS="LITERAL"
 >WITH
-    HOLD</VAR
+    HOLD</TT
 > is useless outside a transaction block: the cursor would
     survive only to the completion of the statement.  Therefore
     <SPAN
@@ -456,16 +459,16 @@ HREF="sql-rollback.html"
     to define a transaction block.
    </P
 ><P
->    If <VAR
+>    If <TT
 CLASS="LITERAL"
->WITH HOLD</VAR
+>WITH HOLD</TT
 > is specified and the transaction
     that created the cursor successfully commits, the cursor can
     continue to be accessed by subsequent transactions in the same
     session.  (But if the creating transaction is aborted, the cursor
-    is removed.)  A cursor created with <VAR
+    is removed.)  A cursor created with <TT
 CLASS="LITERAL"
->WITH HOLD</VAR
+>WITH HOLD</TT
 >
     is closed when an explicit <TT
 CLASS="COMMAND"
@@ -477,9 +480,9 @@ CLASS="COMMAND"
     transactions.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->SCROLL</VAR
+>SCROLL</TT
 > option should be specified when defining a
     cursor that will be used to fetch backwards.  This is required by
     the SQL standard.  However, for compatibility with earlier
@@ -487,19 +490,19 @@ CLASS="LITERAL"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > will allow
-    backward fetches without <VAR
+    backward fetches without <TT
 CLASS="LITERAL"
->SCROLL</VAR
+>SCROLL</TT
 >, if the cursor's query
     plan is simple enough that no extra overhead is needed to support
     it. However, application developers are advised not to rely on
     using backward fetches from a cursor that has not been created
-    with <VAR
+    with <TT
 CLASS="LITERAL"
->SCROLL</VAR
->.  If <VAR
+>SCROLL</TT
+>.  If <TT
 CLASS="LITERAL"
->NO SCROLL</VAR
+>NO SCROLL</TT
 > is
     specified, then backward fetches are disallowed in any case.
    </P
@@ -538,7 +541,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39271"
+NAME="AEN39543"
 ></A
 ><H2
 >Examples</H2
@@ -560,7 +563,7 @@ HREF="sql-fetch.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39276"
+NAME="AEN39548"
 ></A
 ><H2
 >Compatibility</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-REVOKE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41521"
+NAME="AEN41940"
 ></A
 ><H2
 >Name</H2
 >REVOKE&nbsp;--&nbsp;remove access privileges</DIV
 ><A
-NAME="AEN41524"
+NAME="AEN41943"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41526"
+NAME="AEN41945"
 ></A
 ><H2
 >Synopsis</H2
@@ -133,6 +133,21 @@ REVOKE [ GRANT OPTION FOR ]
     ON DATABASE <VAR
 CLASS="REPLACEABLE"
 >dbname</VAR
+> [, ...]
+    FROM { <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+> | GROUP <VAR
+CLASS="REPLACEABLE"
+>groupname</VAR
+> | PUBLIC } [, ...]
+    [ CASCADE | RESTRICT ]
+
+REVOKE [ GRANT OPTION FOR ]
+    { CREATE | ALL [ PRIVILEGES ] }
+    ON TABLESPACE <VAR
+CLASS="REPLACEABLE"
+>tablespacename</VAR
 > [, ...]
     FROM { <VAR
 CLASS="REPLACEABLE"
@@ -204,9 +219,9 @@ CLASS="COMMAND"
 >REVOKE</TT
 > command revokes previously granted
    privileges from one or more users or groups of users.  The key word
-   <VAR
+   <TT
 CLASS="LITERAL"
->PUBLIC</VAR
+>PUBLIC</TT
 > refers to the implicitly defined group of
    all users.
   </P
@@ -223,29 +238,30 @@ HREF="sql-grant.html"
 >   Note that any particular user will have the sum
    of privileges granted directly to him, privileges granted to any group he
    is presently a member of, and privileges granted to
-   <VAR
+   <TT
 CLASS="LITERAL"
->PUBLIC</VAR
->.  Thus, for example, revoking <VAR
+>PUBLIC</TT
+>.  Thus, for example, revoking <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 > privilege
-   from <VAR
+   from <TT
 CLASS="LITERAL"
->PUBLIC</VAR
+>PUBLIC</TT
 > does not necessarily mean that all users
-   have lost <VAR
+   have lost <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 > privilege on the object: those who have it granted
    directly or via a group will still have it.
   </P
 ><P
->   If <VAR
+>   If <TT
 CLASS="LITERAL"
->GRANT OPTION FOR</VAR
+>GRANT OPTION FOR</TT
 > is specified, only the grant
    option for the privilege is revoked, not the privilege itself.
+   Otherwise, both the privilege and the grant option are revoked.
   </P
 ><P
 >   If a user holds a privilege with grant option and has granted it to
@@ -253,15 +269,15 @@ CLASS="LITERAL"
    called dependent privileges. If the privilege or the grant option
    held by the first user is being revoked and dependent privileges
    exist, those dependent privileges are also revoked if
-   <VAR
+   <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 > is specified, else the revoke action
    will fail.  This recursive revocation only affects privileges that
    were granted through a chain of users that is traceable to the user
-   that is the subject of this <VAR
+   that is the subject of this <TT
 CLASS="LITERAL"
->REVOKE</VAR
+>REVOKE</TT
 > command.
    Thus, the affected users may effectively keep the privilege if it
    was also granted through other users.
@@ -285,7 +301,7 @@ CLASS="APPLICATION"
 CLASS="COMMAND"
 >\z</TT
 > command to
-   display the privileges granted on existing objects.  See also <A
+   display the privileges granted on existing objects.  See <A
 HREF="sql-grant.html"
 ><I
 >GRANT</I
@@ -298,12 +314,33 @@ HREF="sql-grant.html"
    grant option to user B, and user B has in turned granted it to user
    C, then user A cannot revoke the privilege directly from C.
    Instead, user A could revoke the grant option from user B and use
-   the <VAR
+   the <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 > option so that the privilege is
-   automatically revoked from user C.
+   in turn revoked from user C.  For another example, if both A and B
+   have granted the same privilege to C, A can revoke his own grant
+   but not B's grant, so C will still effectively have the privilege.
   </P
+><P
+>    When a non-owner of an object attempts to <TT
+CLASS="COMMAND"
+>REVOKE</TT
+> privileges
+    on the object, the command will fail outright if the user has no
+    privileges whatsoever on the object.  As long as some privilege is
+    available, the command will proceed, but it will revoke only those
+    privileges for which the user has grant options.  The <TT
+CLASS="COMMAND"
+>REVOKE ALL
+    PRIVILEGES</TT
+> forms will issue a warning message if no grant options are
+    held, while the other forms will issue a warning if grant options for
+    any of the privileges specifically named in the command are not held.
+    (In principle these statements apply to the object owner as well, but
+    since the owner is always treated as holding all grant options, the
+    cases can never occur.)
+   </P
 ><P
 >    If a superuser chooses to issue a <TT
 CLASS="COMMAND"
@@ -316,9 +353,9 @@ CLASS="COMMAND"
     owner of the affected object.  Since all privileges ultimately come
     from the object owner (possibly indirectly via chains of grant options),
     it is possible for a superuser to revoke all privileges, but this may
-    require use of <VAR
+    require use of <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 > as stated above.
    </P
 ></DIV
@@ -331,9 +368,9 @@ NAME="SQL-REVOKE-EXAMPLES"
 >Examples</H2
 ><P
 >   Revoke insert privilege for the public on table
-   <VAR
+   <TT
 CLASS="LITERAL"
->films</VAR
+>films</TT
 >:
 
 </P><PRE
@@ -342,19 +379,25 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Revoke all privileges from user <VAR
+>   Revoke all privileges from user <TT
 CLASS="LITERAL"
->manuel</VAR
-> on view <VAR
+>manuel</TT
+> on view
+   <TT
 CLASS="LITERAL"
->kinds</VAR
+>kinds</TT
 >:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->  
-REVOKE ALL PRIVILEGES ON kinds FROM manuel;</PRE
+>REVOKE ALL PRIVILEGES ON kinds FROM manuel;</PRE
 ><P>
+
+   Note that this actually means <SPAN
+CLASS="QUOTE"
+>"revoke all privileges that I
+   granted"</SPAN
+>.
   </P
 ></DIV
 ><DIV
@@ -395,27 +438,27 @@ CLASS="REPLACEABLE"
 > [, ...] }
     { RESTRICT | CASCADE }</PRE
 ><P>
-    One of <VAR
+    One of <TT
 CLASS="LITERAL"
->RESTRICT</VAR
-> or <VAR
+>RESTRICT</TT
+> or <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 >
     is required according to the standard, but <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-    assumes <VAR
+    assumes <TT
 CLASS="LITERAL"
->RESTRICT</VAR
+>RESTRICT</TT
 > by default.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41596"
+NAME="AEN42022"
 ></A
 ><H2
 >See Also</H2

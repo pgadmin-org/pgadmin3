@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Regression Tests"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -124,44 +124,37 @@ CLASS="SYNOPSIS"
 CLASS="COMMAND"
 >expr</TT
 > (that is, a regular expression with an implicit
-    <VAR
+    <TT
 CLASS="LITERAL"
->^</VAR
+>^</TT
 > anchor
     at the start).  It is matched against the platform name as printed
     by <TT
 CLASS="COMMAND"
 >config.guess</TT
 > followed by
-    <VAR
+    <TT
 CLASS="LITERAL"
->:gcc</VAR
-> or <VAR
+>:gcc</TT
+> or <TT
 CLASS="LITERAL"
->:cc</VAR
+>:cc</TT
 >, depending on
     whether you use the GNU compiler or the system's native compiler
     (on systems where there is a difference).  The comparison file
     name is the name of the substitute result comparison file.
    </P
 ><P
->    For example: some systems using older time zone libraries fail to apply
-    daylight-saving corrections to dates before 1970, causing
-    pre-1970 <ACRONYM
-CLASS="ACRONYM"
->PDT</ACRONYM
-> times to be displayed in <ACRONYM
-CLASS="ACRONYM"
->PST</ACRONYM
-> instead.  This causes a
+>    For example: some systems interpret very small floating-point values
+    as zero, rather than reporting an underflow error.  This causes a
     few differences in the <TT
 CLASS="FILENAME"
->horology</TT
+>float8</TT
 > regression test.
     Therefore, we provide a variant comparison file,
     <TT
 CLASS="FILENAME"
->horology-no-DST-before-1970.out</TT
+>float8-small-is-zero.out</TT
 >, which includes
     the results to be expected on these systems.  To silence the bogus
     <SPAN
@@ -169,23 +162,23 @@ CLASS="QUOTE"
 >"failure"</SPAN
 > message on <SPAN
 CLASS="SYSTEMITEM"
->HPUX</SPAN
-> platforms,
-    <TT
+>OpenBSD</SPAN
+>
+    platforms, <TT
 CLASS="FILENAME"
 >resultmap</TT
 > includes
 </P><PRE
 CLASS="PROGRAMLISTING"
->horology/.*-hpux=horology-no-DST-before-1970</PRE
+>float8/i.86-.*-openbsd=float8-small-is-zero</PRE
 ><P>
     which will trigger on any machine for which the output of
     <TT
 CLASS="COMMAND"
 >config.guess</TT
-> includes <VAR
+> matches <TT
 CLASS="LITERAL"
->-hpux</VAR
+>i.86-.*-openbsd</TT
 >.
     Other lines
     in <TT

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Frontend/Backend Protocol"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="protocol.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 44. Frontend/Backend Protocol</TD
+>Chapter 42. Frontend/Backend Protocol</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PROTOCOL-ERROR-FIELDS"
->44.5. Error and Notice Message Fields</A
+>42.5. Error and Notice Message Fields</A
 ></H1
 ><P
 >This section describes the fields that may appear in ErrorResponse and
@@ -106,47 +106,47 @@ message.</P
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->S</VAR
+>S</TT
 ></DT
 ><DD
 ><P
 >        Severity: the field contents are
-        <VAR
+        <TT
 CLASS="LITERAL"
->ERROR</VAR
->, <VAR
+>ERROR</TT
+>, <TT
 CLASS="LITERAL"
->FATAL</VAR
+>FATAL</TT
 >, or
-        <VAR
+        <TT
 CLASS="LITERAL"
->PANIC</VAR
+>PANIC</TT
 > (in an error message), or
-	<VAR
+	<TT
 CLASS="LITERAL"
->WARNING</VAR
->, <VAR
+>WARNING</TT
+>, <TT
 CLASS="LITERAL"
->NOTICE</VAR
->, <VAR
+>NOTICE</TT
+>, <TT
 CLASS="LITERAL"
->DEBUG</VAR
+>DEBUG</TT
 >,
-	<VAR
+	<TT
 CLASS="LITERAL"
->INFO</VAR
->, or <VAR
+>INFO</TT
+>, or <TT
 CLASS="LITERAL"
->LOG</VAR
+>LOG</TT
 > (in a notice message),
 	or a localized translation of one of these.  Always present.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->C</VAR
+>C</TT
 ></DT
 ><DD
 ><P
@@ -156,9 +156,9 @@ HREF="errcodes-appendix.html"
 >).  Not localizable.  Always present.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->M</VAR
+>M</TT
 ></DT
 ><DD
 ><P
@@ -167,9 +167,9 @@ CLASS="LITERAL"
         Always present.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->D</VAR
+>D</TT
 ></DT
 ><DD
 ><P
@@ -177,9 +177,9 @@ CLASS="LITERAL"
         detail about the problem.  May run to multiple lines.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->H</VAR
+>H</TT
 ></DT
 ><DD
 ><P
@@ -189,9 +189,9 @@ CLASS="LITERAL"
 	May run to multiple lines.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->P</VAR
+>P</TT
 ></DT
 ><DD
 ><P
@@ -201,20 +201,49 @@ CLASS="LITERAL"
 	characters not bytes.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->W</VAR
+>p</TT
+></DT
+><DD
+><P
+>        Internal position: this is defined the same as the <TT
+CLASS="LITERAL"
+>P</TT
+>
+        field, but it is used when the cursor position refers to an internally
+        generated command rather than the one submitted by the client.
+        The <TT
+CLASS="LITERAL"
+>q</TT
+> field will always appear when this field appears.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>q</TT
+></DT
+><DD
+><P
+>        Internal query: the text of a failed internally-generated command.
+        This could be, for example, a SQL query issued by a PL/pgSQL function.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>W</TT
 ></DT
 ><DD
 ><P
 >        Where: an indication of the context in which the error occurred.
-	Presently this includes a call stack traceback of active PL functions.
-	The trace is one entry per line, most recent first.</P
+        Presently this includes a call stack traceback of active
+        procedural language functions and internally-generated queries.
+        The trace is one entry per line, most recent first.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->F</VAR
+>F</TT
 ></DT
 ><DD
 ><P
@@ -222,9 +251,9 @@ CLASS="LITERAL"
 	was reported.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->L</VAR
+>L</TT
 ></DT
 ><DD
 ><P
@@ -232,9 +261,9 @@ CLASS="LITERAL"
 	was reported.</P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->R</VAR
+>R</TT
 ></DT
 ><DD
 ><P

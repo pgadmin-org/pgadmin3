@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Queries"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="QUERIES-SELECT-LISTS"
 >7.3. Select Lists</A
 ></H1
 ><A
-NAME="AEN2934"
+NAME="AEN3032"
 ></A
 ><P
 >   As shown in the previous section,
@@ -128,12 +128,12 @@ NAME="QUERIES-SELECT-LIST-ITEMS"
 >7.3.1. Select-List Items</A
 ></H2
 ><A
-NAME="AEN2943"
+NAME="AEN3041"
 ></A
 ><P
->    The simplest kind of select list is <VAR
+>    The simplest kind of select list is <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > which
     emits all columns that the table expression produces.  Otherwise,
     a select list is a comma-separated list of value expressions (as
@@ -146,33 +146,33 @@ HREF="sql-expressions.html"
 CLASS="PROGRAMLISTING"
 >SELECT a, b, c FROM ...</PRE
 ><P>
-     The columns names <VAR
+     The columns names <TT
 CLASS="LITERAL"
->a</VAR
->, <VAR
+>a</TT
+>, <TT
 CLASS="LITERAL"
->b</VAR
->, and <VAR
+>b</TT
+>, and <TT
 CLASS="LITERAL"
->c</VAR
+>c</TT
 >
      are either the actual names of the columns of tables referenced
-     in the <VAR
+     in the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause, or the aliases given to them as
      explained in <A
 HREF="queries-table-expressions.html#QUERIES-TABLE-ALIASES"
 >Section 7.2.1.2</A
 >.  The name
      space available in the select list is the same as in the
-     <VAR
+     <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause, unless grouping is used, in which case
-     it is the same as in the <VAR
+     it is the same as in the <TT
 CLASS="LITERAL"
->HAVING</VAR
+>HAVING</TT
 > clause.
    </P
 ><P
@@ -199,9 +199,9 @@ HREF="queries-table-expressions.html#QUERIES-WHERE"
     value expression is evaluated once for each result row, with
     the row's values substituted for any column references.  But the
     expressions in the select list do not have to reference any
-    columns in the table expression of the <VAR
+    columns in the table expression of the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause;
     they could be constant arithmetic expressions as well, for
     instance.
@@ -216,7 +216,7 @@ NAME="QUERIES-COLUMN-LABELS"
 >7.3.2. Column Labels</A
 ></H2
 ><A
-NAME="AEN2964"
+NAME="AEN3062"
 ></A
 ><P
 >    The entries in the select list can be assigned names for further
@@ -232,9 +232,9 @@ CLASS="PROGRAMLISTING"
 ><P>
    </P
 ><P
->    If no output column name is specified using <VAR
+>    If no output column name is specified using <TT
 CLASS="LITERAL"
->AS</VAR
+>AS</TT
 >, the system assigns a
     default name.  For simple column references, this is the name of the
     referenced column.  For function 
@@ -249,9 +249,9 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >     The naming of output columns here is different from that done in
-     the <VAR
+     the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause (see <A
 HREF="queries-table-expressions.html#QUERIES-TABLE-ALIASES"
 >Section 7.2.1.2</A
@@ -268,27 +268,27 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="QUERIES-DISTINCT"
->7.3.3. <VAR
+>7.3.3. <TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 ></A
 ></H2
 ><A
-NAME="AEN2979"
+NAME="AEN3077"
 ></A
 ><A
-NAME="AEN2981"
+NAME="AEN3079"
 ></A
 ><P
 >    After the select list has been processed, the result table may
     optionally be subject to the elimination of duplicates.  The
-    <VAR
+    <TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 > key word is written directly after the
-    <VAR
+    <TT
 CLASS="LITERAL"
->SELECT</VAR
+>SELECT</TT
 > to enable this:
 </P><PRE
 CLASS="SYNOPSIS"
@@ -297,18 +297,18 @@ CLASS="REPLACEABLE"
 >select_list</VAR
 > ...</PRE
 ><P>
-    (Instead of <VAR
+    (Instead of <TT
 CLASS="LITERAL"
->DISTINCT</VAR
-> the word <VAR
+>DISTINCT</TT
+> the key word <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 >
     can be used to select the default behavior of retaining all rows.)
    </P
 ><P
 >    <A
-NAME="AEN2991"
+NAME="AEN3089"
 ></A
 >
     Obviously, two rows are considered distinct if they differ in at
@@ -346,32 +346,32 @@ CLASS="QUOTE"
 >"first row"</SPAN
 > of a set is unpredictable unless the
     query is sorted on enough columns to guarantee a unique ordering
-    of the rows arriving at the <VAR
+    of the rows arriving at the <TT
 CLASS="LITERAL"
->DISTINCT</VAR
+>DISTINCT</TT
 > filter.
-    (<VAR
+    (<TT
 CLASS="LITERAL"
->DISTINCT ON</VAR
-> processing occurs after <VAR
+>DISTINCT ON</TT
+> processing occurs after <TT
 CLASS="LITERAL"
 >ORDER
-    BY</VAR
+    BY</TT
 > sorting.)
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->DISTINCT ON</VAR
+>DISTINCT ON</TT
 > clause is not part of the SQL standard
     and is sometimes considered bad style because of the potentially
     indeterminate nature of its results.  With judicious use of
-    <VAR
+    <TT
 CLASS="LITERAL"
->GROUP BY</VAR
-> and subqueries in <VAR
+>GROUP BY</TT
+> and subqueries in <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > the
     construct can be avoided, but it is often the most convenient
     alternative.

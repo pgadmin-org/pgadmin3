@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Tcl Procedure Names"
 HREF="pltcl-procnames.html"><LINK
 REL="NEXT"
-TITLE="Data Values in PL/Perl"
-HREF="plperl-data.html"><LINK
+TITLE="Database Access from PL/Perl"
+HREF="plperl-database.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plperl-data.html"
+HREF="plperl-database.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="PLPERL"
 ></A
->Chapter 39. PL/Perl - Perl Procedural Language</H1
+>Chapter 37. PL/Perl - Perl Procedural Language</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,37 +102,47 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->39.1. <A
+>37.1. <A
 HREF="plperl.html#PLPERL-FUNCS"
 >PL/Perl Functions and Arguments</A
 ></DT
 ><DT
->39.2. <A
-HREF="plperl-data.html"
->Data Values in PL/Perl</A
-></DT
-><DT
->39.3. <A
+>37.2. <A
 HREF="plperl-database.html"
 >Database Access from PL/Perl</A
 ></DT
 ><DT
->39.4. <A
+>37.3. <A
+HREF="plperl-data.html"
+>Data Values in PL/Perl</A
+></DT
+><DT
+>37.4. <A
+HREF="plperl-global.html"
+>Global Values in PL/Perl</A
+></DT
+><DT
+>37.5. <A
 HREF="plperl-trusted.html"
 >Trusted and Untrusted PL/Perl</A
 ></DT
 ><DT
->39.5. <A
+>37.6. <A
+HREF="plperl-triggers.html"
+>PL/Perl Triggers</A
+></DT
+><DT
+>37.7. <A
 HREF="plperl-missing.html"
->Missing Features</A
+>Limitations and Missing Features</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN32873"
+NAME="AEN32331"
 ></A
 ><A
-NAME="AEN32875"
+NAME="AEN32333"
 ></A
 ><P
 >   PL/Perl is a loadable procedural language that enables you to write
@@ -147,12 +157,12 @@ TARGET="_top"
   </P
 ><P
 >   To install PL/Perl in a particular database, use
-   <VAR
+   <TT
 CLASS="LITERAL"
 >createlang plperl <VAR
 CLASS="REPLACEABLE"
 >dbname</VAR
-></VAR
+></TT
 >.
   </P
 ><DIV
@@ -162,9 +172,9 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->    If a language is installed into <VAR
+>    If a language is installed into <TT
 CLASS="LITERAL"
->template1</VAR
+>template1</TT
 >, all subsequently
     created databases will have the language installed automatically.
    </P
@@ -178,9 +188,12 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >    Users of source packages must specially enable the build of
-    PL/Perl during the installation process.  (Refer to the installation
-    instructions for more information.)  Users of binary packages
-    might find PL/Perl in a separate subpackage.
+    PL/Perl during the installation process.  (Refer to <A
+HREF="installation.html#INSTALL-SHORT"
+>Section 14.1</A
+> for more information.)  Users of
+    binary packages might find PL/Perl in a separate subpackage.
+
    </P
 ></BLOCKQUOTE
 ></DIV
@@ -190,7 +203,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPERL-FUNCS"
->39.1. PL/Perl Functions and Arguments</A
+>37.1. PL/Perl Functions and Arguments</A
 ></H1
 ><P
 >   To create a function in the PL/Perl language, use the standard syntax:
@@ -199,27 +212,39 @@ CLASS="PROGRAMLISTING"
 >CREATE FUNCTION <VAR
 CLASS="REPLACEABLE"
 >funcname</VAR
-> (<VAR
+>
+(<VAR
 CLASS="REPLACEABLE"
 >argument-types</VAR
 >) RETURNS <VAR
 CLASS="REPLACEABLE"
 >return-type</VAR
-> AS '
+> AS $$
     # PL/Perl function body
-' LANGUAGE plperl;</PRE
+$$ LANGUAGE plperl;</PRE
 ><P>
-   The body of the function is ordinary Perl code.
+   The body of the function is ordinary Perl code. Since the body of
+   the function is treated as a string by
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, it can be specified using
+   dollar quoting (as shown above), or via the legacy single quote
+   syntax (see <A
+HREF="sql-syntax.html#SQL-SYNTAX-STRINGS"
+>Section 4.1.2.1</A
+> for more
+   information).
   </P
 ><P
 >   Arguments and results are handled as in any other Perl subroutine:
-   Arguments are passed in <VAR
+   Arguments are passed in <TT
 CLASS="VARNAME"
->@_</VAR
+>@_</TT
 >, and a result value
-   is returned with <VAR
+   is returned with <TT
 CLASS="LITERAL"
->return</VAR
+>return</TT
 > or as the last expression
    evaluated in the function.
   </P
@@ -229,44 +254,71 @@ CLASS="LITERAL"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS '
+>CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS $$
     if ($_[0] &#62; $_[1]) { return $_[0]; }
     return $_[1];
-' LANGUAGE plperl;</PRE
+$$ LANGUAGE plperl;</PRE
 ><P>
   </P
 ><P
->   If an SQL null value<A
-NAME="AEN32901"
+>   If an SQL <TT
+CLASS="LITERAL"
+>NULL</TT
+> value<A
+NAME="AEN32363"
 ></A
-> is passed to a function,
-   the argument value will appear as <SPAN
+> is
+    passed to a function, the argument value will appear as
+    <SPAN
 CLASS="QUOTE"
 >"undefined"</SPAN
-> in Perl.  The
-   above function definition will not behave very nicely with null
-   inputs (in fact, it will act as though they are zeroes).  We could
-   add <VAR
+> in Perl.  The above function definition will not
+    behave very nicely with <TT
 CLASS="LITERAL"
->STRICT</VAR
-> to the function definition to make
-   <SPAN
+>NULL</TT
+> inputs (in fact, it
+    will act as though they are zeroes).  We could add <TT
+CLASS="LITERAL"
+>STRICT</TT
+>
+    to the function definition to make
+    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> do something more reasonable:
-   if a null value is passed, the function will not be called at all,
-   but will just return a null result automatically.  Alternatively,
-   we could check for undefined inputs in the function body.  For
-   example, suppose that we wanted <CODE
+> do something more reasonable: if
+    a <TT
+CLASS="LITERAL"
+>NULL</TT
+> value is passed, the function will not be
+    called at all, but will just return a <TT
+CLASS="LITERAL"
+>NULL</TT
+> result
+    automatically.  Alternatively, we could check for undefined inputs in
+    the function body.  For example, suppose that we wanted
+    <CODE
 CLASS="FUNCTION"
 >perl_max</CODE
-> with
-   one null and one non-null argument to return the non-null argument,
-   rather than a null value:
+> with one <TT
+CLASS="LITERAL"
+>NULL</TT
+> and one
+    non-<TT
+CLASS="LITERAL"
+>NULL</TT
+> argument to return the
+    non-<TT
+CLASS="LITERAL"
+>NULL</TT
+> argument, rather than a
+    <TT
+CLASS="LITERAL"
+>NULL</TT
+> value:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS '
+>CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS $$
     my ($a,$b) = @_;
     if (! defined $a) {
         if (! defined $b) { return undef; }
@@ -275,13 +327,16 @@ CLASS="PROGRAMLISTING"
     if (! defined $b) { return $a; }
     if ($a &#62; $b) { return $a; }
     return $b;
-' LANGUAGE plperl;</PRE
+$$ LANGUAGE plperl;</PRE
 ><P>
   </P
 ><P
->   As shown above, to return an SQL null value from a PL/Perl
-   function, return an undefined value.  This can be done whether the
-   function is strict or not.
+>    As shown above, to return an SQL <TT
+CLASS="LITERAL"
+>NULL</TT
+> value from
+    a PL/Perl function, return an undefined value.  This can be done
+    whether the function is strict or not.
   </P
 ><P
 >   Composite-type arguments are passed to the function as references
@@ -296,47 +351,17 @@ CLASS="PROGRAMLISTING"
     bonus integer
 );
 
-CREATE FUNCTION empcomp(employee) RETURNS integer AS '
+CREATE FUNCTION empcomp(employee) RETURNS integer AS $$
     my ($emp) = @_;
-    return $emp-&#62;{''basesalary''} + $emp-&#62;{''bonus''};
-' LANGUAGE plperl;
+    return $emp-&#62;{basesalary} + $emp-&#62;{bonus};
+$$ LANGUAGE plperl;
 
 SELECT name, empcomp(employee) FROM employee;</PRE
 ><P>
   </P
 ><P
->   There is currently no support for returning a composite-type result
-   value.
+>   There is now support for returning a composite-type result value.
   </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->    Because the function body is passed as an SQL string literal to
-    <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->, you have to escape single
-    quotes and backslashes within your Perl source, typically by
-    doubling them as shown in the above example.  Another possible
-    approach is to avoid writing single quotes by using Perl's
-    extended quoting operators (<VAR
-CLASS="LITERAL"
->q[]</VAR
->,
-    <VAR
-CLASS="LITERAL"
->qq[]</VAR
->, <VAR
-CLASS="LITERAL"
->qw[]</VAR
->).
-   </P
-></BLOCKQUOTE
-></DIV
 ></DIV
 ></DIV
 ><DIV
@@ -373,7 +398,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plperl-data.html"
+HREF="plperl-database.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -397,7 +422,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Data Values in PL/Perl</TD
+>Database Access from PL/Perl</TD
 ></TR
 ></TABLE
 ></DIV

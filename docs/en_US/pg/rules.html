@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="RULES"
 ></A
->Chapter 34. The Rule System</H1
+>Chapter 32. The Rule System</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,19 +102,19 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->34.1. <A
+>32.1. <A
 HREF="rules.html#QUERYTREE"
 >The Query Tree</A
 ></DT
 ><DT
->34.2. <A
+>32.2. <A
 HREF="rules-views.html"
 >Views and the Rule System</A
 ></DT
 ><DD
 ><DL
 ><DT
->34.2.1. <A
+>32.2.1. <A
 HREF="rules-views.html#RULES-SELECT"
 >How <TT
 CLASS="COMMAND"
@@ -122,30 +122,30 @@ CLASS="COMMAND"
 > Rules Work</A
 ></DT
 ><DT
->34.2.2. <A
-HREF="rules-views.html#AEN30585"
+>32.2.2. <A
+HREF="rules-views.html#AEN29911"
 >View Rules in Non-<TT
 CLASS="COMMAND"
 >SELECT</TT
 > Statements</A
 ></DT
 ><DT
->34.2.3. <A
-HREF="rules-views.html#AEN30641"
+>32.2.3. <A
+HREF="rules-views.html#AEN29967"
 >The Power of Views in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 ></A
 ></DT
 ><DT
->34.2.4. <A
+>32.2.4. <A
 HREF="rules-views.html#RULES-VIEWS-UPDATE"
 >Updating a View</A
 ></DT
 ></DL
 ></DD
 ><DT
->34.3. <A
+>32.3. <A
 HREF="rules-update.html"
 >Rules on <TT
 CLASS="COMMAND"
@@ -161,36 +161,36 @@ CLASS="COMMAND"
 ><DD
 ><DL
 ><DT
->34.3.1. <A
-HREF="rules-update.html#AEN30689"
+>32.3.1. <A
+HREF="rules-update.html#AEN30016"
 >How Update Rules Work</A
 ></DT
 ><DT
->34.3.2. <A
+>32.3.2. <A
 HREF="rules-update.html#RULES-UPDATE-VIEWS"
 >Cooperation with Views</A
 ></DT
 ></DL
 ></DD
 ><DT
->34.4. <A
+>32.4. <A
 HREF="rules-privileges.html"
 >Rules and Privileges</A
 ></DT
 ><DT
->34.5. <A
+>32.5. <A
 HREF="rules-status.html"
 >Rules and Command Status</A
 ></DT
 ><DT
->34.6. <A
+>32.6. <A
 HREF="rules-triggers.html"
 >Rules versus Triggers</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN30371"
+NAME="AEN29697"
 ></A
 ><P
 >     This chapter discusses the rule system in
@@ -237,10 +237,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="QUERYTREE"
->34.1. The Query Tree</A
+>32.1. The Query Tree</A
 ></H1
 ><A
-NAME="AEN30382"
+NAME="AEN29708"
 ></A
 ><P
 >    To understand how the rule system works it is necessary to know
@@ -264,17 +264,17 @@ CLASS="ACRONYM"
 > statement where the single parts that it is
     built from are stored separately. These query trees can be shown
     in the server log if you set the configuration parameters
-    <VAR
+    <TT
 CLASS="VARNAME"
->debug_print_parse</VAR
+>debug_print_parse</TT
 >,
-    <VAR
+    <TT
 CLASS="VARNAME"
->debug_print_rewritten</VAR
+>debug_print_rewritten</TT
 >, or
-    <VAR
+    <TT
 CLASS="VARNAME"
->debug_print_plan</VAR
+>debug_print_plan</TT
 >.  The rule actions are also
     stored as query trees, in the system catalog
     <TT
@@ -335,9 +335,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SELECT</TT
 > statement these are the relations given after
-	the <VAR
+	the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > key word.
     </P
 ><P
@@ -374,9 +374,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >CREATE TABLE</TT
 > followed by a
-	<VAR
+	<TT
 CLASS="LITERAL"
->INSERT ... SELECT</VAR
+>INSERT ... SELECT</TT
 > and is not discussed
 	separately here.
     </P
@@ -413,9 +413,9 @@ CLASS="COMMAND"
         and <TT
 CLASS="COMMAND"
 >FROM</TT
->.  (<VAR
+>.  (<TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > is just an
         abbreviation for all the column names of a relation.  It is
         expanded by the parser into the individual columns, so the
@@ -440,17 +440,17 @@ CLASS="COMMAND"
 >INSERT</TT
 > commands, the target list describes
 	the new rows that should go into the result relation. It consists of the
-	expressions in the <VAR
+	expressions in the <TT
 CLASS="LITERAL"
->VALUES</VAR
+>VALUES</TT
 > clause or the ones from the
 	<TT
 CLASS="COMMAND"
 >SELECT</TT
-> clause in <VAR
+> clause in <TT
 CLASS="LITERAL"
 >INSERT
-	... SELECT</VAR
+	... SELECT</TT
 >.  The first step of the rewrite process adds
 	target list entries for any columns that were not assigned to by
 	the original command but have defaults.  Any remaining columns (with
@@ -463,10 +463,10 @@ CLASS="COMMAND"
 >UPDATE</TT
 > commands, the target list
 	describes the new rows that should replace the old ones. In the
-	rule system, it contains just the expressions from the <VAR
+	rule system, it contains just the expressions from the <TT
 CLASS="LITERAL"
 >SET
-	column = expression</VAR
+	column = expression</TT
 > part of the command.  The planner will handle
 	missing columns by inserting expressions that copy the values from
 	the old row into the new one. And it will add the special
@@ -506,9 +506,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SELECT</TT
 >) for the
-	final result row should be executed or not. It corresponds to the <VAR
+	final result row should be executed or not. It corresponds to the <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clause
 	of an <ACRONYM
 CLASS="ACRONYM"
@@ -520,50 +520,50 @@ CLASS="ACRONYM"
 >the join tree</DT
 ><DD
 ><P
->        The query's join tree shows the structure of the <VAR
+>        The query's join tree shows the structure of the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > clause.
-	For a simple query like <VAR
+	For a simple query like <TT
 CLASS="LITERAL"
->SELECT ... FROM a, b, c</VAR
+>SELECT ... FROM a, b, c</TT
 >, the join tree is just
-	a list of the <VAR
+	a list of the <TT
 CLASS="LITERAL"
->FROM</VAR
+>FROM</TT
 > items, because we are allowed to join them in
-	any order.  But when <VAR
+	any order.  But when <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > expressions, particularly outer joins,
 	are used, we have to join in the order shown by the joins.
-	In that case, the join tree shows the structure of the <VAR
+	In that case, the join tree shows the structure of the <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > expressions.  The
-	restrictions associated with particular <VAR
+	restrictions associated with particular <TT
 CLASS="LITERAL"
->JOIN</VAR
-> clauses (from <VAR
+>JOIN</TT
+> clauses (from <TT
 CLASS="LITERAL"
->ON</VAR
+>ON</TT
 > or
-	<VAR
+	<TT
 CLASS="LITERAL"
->USING</VAR
+>USING</TT
 > expressions) are stored as qualification expressions attached
 	to those join-tree nodes.  It turns out to be convenient to store
-	the top-level <VAR
+	the top-level <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > expression as a qualification attached to the
 	top-level join-tree item, too.  So really the join tree represents
-	both the <VAR
+	both the <TT
 CLASS="LITERAL"
->FROM</VAR
-> and <VAR
+>FROM</TT
+> and <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 > clauses of a <TT
 CLASS="COMMAND"
 >SELECT</TT
@@ -574,9 +574,9 @@ CLASS="COMMAND"
 >the others</DT
 ><DD
 ><P
->        The other parts of the query tree like the <VAR
+>        The other parts of the query tree like the <TT
 CLASS="LITERAL"
->ORDER BY</VAR
+>ORDER BY</TT
 >
 	clause aren't of interest here. The rule system
 	substitutes some entries there while applying rules, but that

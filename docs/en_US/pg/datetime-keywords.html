@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Date/Time Support"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -307,69 +307,69 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ABSTIME</VAR
+>ABSTIME</TT
 ></TD
 ><TD
 >Key word ignored</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->AM</VAR
+>AM</TT
 ></TD
 ><TD
 >Time is before 12:00</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->AT</VAR
+>AT</TT
 ></TD
 ><TD
 >Key word ignored</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->JULIAN</VAR
->, <VAR
+>JULIAN</TT
+>, <TT
 CLASS="LITERAL"
->JD</VAR
->, <VAR
+>JD</TT
+>, <TT
 CLASS="LITERAL"
->J</VAR
+>J</TT
 ></TD
 ><TD
 >Next field is Julian Day</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->ON</VAR
+>ON</TT
 ></TD
 ><TD
 >Key word ignored</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->PM</VAR
+>PM</TT
 ></TD
 ><TD
 >Time is on or after 12:00</TD
 ></TR
 ><TR
 ><TD
-><VAR
+><TT
 CLASS="LITERAL"
->T</VAR
+>T</TT
 ></TD
 ><TD
 >Next field is time</TD
@@ -378,9 +378,9 @@ CLASS="LITERAL"
 ></TABLE
 ></DIV
 ><P
->    The key word <VAR
+>    The key word <TT
 CLASS="LITERAL"
->ABSTIME</VAR
+>ABSTIME</TT
 > is ignored for historical
     reasons: In very old releases of
     <SPAN
@@ -390,46 +390,42 @@ CLASS="PRODUCTNAME"
 CLASS="TYPE"
 >abstime</TT
 >
-    were emitted as <VAR
+    were emitted as <TT
 CLASS="LITERAL"
->Invalid Abstime</VAR
+>Invalid Abstime</TT
 >. This is no
     longer the case however and this key word will likely be dropped in
     a future release.
    </P
 ><A
-NAME="AEN56010"
+NAME="AEN56898"
 ></A
 ><P
 >    <A
-HREF="datetime-keywords.html#DATETIME-TIMEZONE-TABLE"
+HREF="datetime-keywords.html#DATETIME-TIMEZONE-INPUT-TABLE"
 >Table B-4</A
 > shows the time zone
     abbreviations recognized by <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->.
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> contains internal tabular
-    information for time zone decoding, since there is no standard
-    operating system interface to provide access to general,
-    cross-time zone information. The underlying operating system
-    <SPAN
+>
+    in date/time input values.  Note that these names are <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
->is</I
+>not</I
 ></SPAN
-> used to provide time zone information for
-    <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->output</I
-></SPAN
->, however.
+>
+    used for date/time output --- display is driven by the currently
+    selected <A
+HREF="runtime-config.html#GUC-TIMEZONE"
+>timezone</A
+> parameter setting.  (It is
+    likely that future releases will make some use of <TT
+CLASS="VARNAME"
+>timezone</TT
+>
+    for input as well.)
    </P
 ><P
 >    The table is organized by time zone offset from <ACRONYM
@@ -443,11 +439,11 @@ CLASS="ACRONYM"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="DATETIME-TIMEZONE-TABLE"
+NAME="DATETIME-TIMEZONE-INPUT-TABLE"
 ></A
 ><P
 ><B
->Table B-4. Time Zone Abbreviations</B
+>Table B-4. Time Zone Abbreviations for Input</B
 ></P
 ><TABLE
 BORDER="1"
@@ -1295,53 +1291,53 @@ CLASS="FORMALPARA"
 >Australian Time Zones. </B
 >    There are three naming conflicts between Australian time zone
     names and time zone names commonly used in North and South America:
-    <VAR
+    <TT
 CLASS="LITERAL"
->ACST</VAR
->, <VAR
+>ACST</TT
+>, <TT
 CLASS="LITERAL"
->CST</VAR
+>CST</TT
 >, and
-    <VAR
+    <TT
 CLASS="LITERAL"
->EST</VAR
+>EST</TT
 >.  If the run-time option
-    <VAR
+    <TT
 CLASS="VARNAME"
->australian_timezones</VAR
+>australian_timezones</TT
 > is set to true then
-    <VAR
+    <TT
 CLASS="LITERAL"
->ACST</VAR
->, <VAR
+>ACST</TT
+>, <TT
 CLASS="LITERAL"
->CST</VAR
+>CST</TT
 >,
-    <VAR
+    <TT
 CLASS="LITERAL"
->EST</VAR
->, and <VAR
+>EST</TT
+>, and <TT
 CLASS="LITERAL"
->SAT</VAR
+>SAT</TT
 > are interpreted
     as Australian time zone names, as shown in <A
 HREF="datetime-keywords.html#DATETIME-OZTZ-TABLE"
 >Table B-5</A
 >. If it is false (which is the
-    default), then <VAR
+    default), then <TT
 CLASS="LITERAL"
->ACST</VAR
->, <VAR
+>ACST</TT
+>, <TT
 CLASS="LITERAL"
->CST</VAR
+>CST</TT
 >,
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->EST</VAR
+>EST</TT
 > are taken as American time zone names,
-    and <VAR
+    and <TT
 CLASS="LITERAL"
->SAT</VAR
+>SAT</TT
 > is interpreted as a noise word
     indicating Saturday.
    </P
@@ -1353,7 +1349,7 @@ NAME="DATETIME-OZTZ-TABLE"
 ></A
 ><P
 ><B
->Table B-5. Australian Time Zone Abbreviations</B
+>Table B-5. Australian Time Zone Abbreviations for Input</B
 ></P
 ><TABLE
 BORDER="1"
@@ -1404,6 +1400,1728 @@ CLASS="CALSTABLE"
 ></TBODY
 ></TABLE
 ></DIV
+><A
+NAME="AEN57369"
+></A
+><P
+>    <A
+HREF="datetime-keywords.html#DATETIME-TIMEZONE-SET-TABLE"
+>Table B-6</A
+> shows the time zone
+    names recognized by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> as valid
+    settings for the <A
+HREF="runtime-config.html#GUC-TIMEZONE"
+>timezone</A
+> parameter.  Note that
+    these names are conceptually as well as practically different from
+    the names shown in <A
+HREF="datetime-keywords.html#DATETIME-TIMEZONE-INPUT-TABLE"
+>Table B-4</A
+>:
+    most of these names imply a local daylight-savings time rule, whereas
+    the former names each represent just a fixed offset from UTC.
+   </P
+><P
+>    In many cases there are several equivalent names for the same zone.
+    These are listed on the same line.  The table is primarily sorted
+    by the name of the principal city of the zone.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATETIME-TIMEZONE-SET-TABLE"
+></A
+><P
+><B
+>Table B-6. Time Zone Names for Setting <TT
+CLASS="VARNAME"
+>timezone</TT
+></B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><THEAD
+><TR
+><TH
+>Time Zone</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>Africa/Abidjan</TD
+></TR
+><TR
+><TD
+>Africa/Accra</TD
+></TR
+><TR
+><TD
+>Africa/Addis_Ababa</TD
+></TR
+><TR
+><TD
+>Africa/Algiers</TD
+></TR
+><TR
+><TD
+>Africa/Asmera</TD
+></TR
+><TR
+><TD
+>Africa/Bamako</TD
+></TR
+><TR
+><TD
+>Africa/Bangui</TD
+></TR
+><TR
+><TD
+>Africa/Banjul</TD
+></TR
+><TR
+><TD
+>Africa/Bissau</TD
+></TR
+><TR
+><TD
+>Africa/Blantyre</TD
+></TR
+><TR
+><TD
+>Africa/Brazzaville</TD
+></TR
+><TR
+><TD
+>Africa/Bujumbura</TD
+></TR
+><TR
+><TD
+>Africa/Cairo Egypt</TD
+></TR
+><TR
+><TD
+>Africa/Casablanca</TD
+></TR
+><TR
+><TD
+>Africa/Ceuta</TD
+></TR
+><TR
+><TD
+>Africa/Conakry</TD
+></TR
+><TR
+><TD
+>Africa/Dakar</TD
+></TR
+><TR
+><TD
+>Africa/Dar_es_Salaam</TD
+></TR
+><TR
+><TD
+>Africa/Djibouti</TD
+></TR
+><TR
+><TD
+>Africa/Douala</TD
+></TR
+><TR
+><TD
+>Africa/El_Aaiun</TD
+></TR
+><TR
+><TD
+>Africa/Freetown</TD
+></TR
+><TR
+><TD
+>Africa/Gaborone</TD
+></TR
+><TR
+><TD
+>Africa/Harare</TD
+></TR
+><TR
+><TD
+>Africa/Johannesburg</TD
+></TR
+><TR
+><TD
+>Africa/Kampala</TD
+></TR
+><TR
+><TD
+>Africa/Khartoum</TD
+></TR
+><TR
+><TD
+>Africa/Kigali</TD
+></TR
+><TR
+><TD
+>Africa/Kinshasa</TD
+></TR
+><TR
+><TD
+>Africa/Lagos</TD
+></TR
+><TR
+><TD
+>Africa/Libreville</TD
+></TR
+><TR
+><TD
+>Africa/Lome</TD
+></TR
+><TR
+><TD
+>Africa/Luanda</TD
+></TR
+><TR
+><TD
+>Africa/Lubumbashi</TD
+></TR
+><TR
+><TD
+>Africa/Lusaka</TD
+></TR
+><TR
+><TD
+>Africa/Malabo</TD
+></TR
+><TR
+><TD
+>Africa/Maputo</TD
+></TR
+><TR
+><TD
+>Africa/Maseru</TD
+></TR
+><TR
+><TD
+>Africa/Mbabane</TD
+></TR
+><TR
+><TD
+>Africa/Mogadishu</TD
+></TR
+><TR
+><TD
+>Africa/Monrovia</TD
+></TR
+><TR
+><TD
+>Africa/Nairobi</TD
+></TR
+><TR
+><TD
+>Africa/Ndjamena</TD
+></TR
+><TR
+><TD
+>Africa/Niamey</TD
+></TR
+><TR
+><TD
+>Africa/Nouakchott</TD
+></TR
+><TR
+><TD
+>Africa/Ouagadougou</TD
+></TR
+><TR
+><TD
+>Africa/Porto-Novo</TD
+></TR
+><TR
+><TD
+>Africa/Sao_Tome</TD
+></TR
+><TR
+><TD
+>Africa/Timbuktu</TD
+></TR
+><TR
+><TD
+>Africa/Tripoli Libya</TD
+></TR
+><TR
+><TD
+>Africa/Tunis</TD
+></TR
+><TR
+><TD
+>Africa/Windhoek</TD
+></TR
+><TR
+><TD
+>America/Adak America/Atka US/Aleutian</TD
+></TR
+><TR
+><TD
+>America/Anchorage SystemV/YST9YDT US/Alaska</TD
+></TR
+><TR
+><TD
+>America/Anguilla</TD
+></TR
+><TR
+><TD
+>America/Antigua</TD
+></TR
+><TR
+><TD
+>America/Araguaina</TD
+></TR
+><TR
+><TD
+>America/Aruba</TD
+></TR
+><TR
+><TD
+>America/Asuncion</TD
+></TR
+><TR
+><TD
+>America/Bahia</TD
+></TR
+><TR
+><TD
+>America/Barbados</TD
+></TR
+><TR
+><TD
+>America/Belem</TD
+></TR
+><TR
+><TD
+>America/Belize</TD
+></TR
+><TR
+><TD
+>America/Boa_Vista</TD
+></TR
+><TR
+><TD
+>America/Bogota</TD
+></TR
+><TR
+><TD
+>America/Boise</TD
+></TR
+><TR
+><TD
+>America/Buenos_Aires</TD
+></TR
+><TR
+><TD
+>America/Cambridge_Bay</TD
+></TR
+><TR
+><TD
+>America/Campo_Grande</TD
+></TR
+><TR
+><TD
+>America/Cancun</TD
+></TR
+><TR
+><TD
+>America/Caracas</TD
+></TR
+><TR
+><TD
+>America/Catamarca</TD
+></TR
+><TR
+><TD
+>America/Cayenne</TD
+></TR
+><TR
+><TD
+>America/Cayman</TD
+></TR
+><TR
+><TD
+>America/Chicago CST6CDT SystemV/CST6CDT US/Central</TD
+></TR
+><TR
+><TD
+>America/Chihuahua</TD
+></TR
+><TR
+><TD
+>America/Cordoba America/Rosario</TD
+></TR
+><TR
+><TD
+>America/Costa_Rica</TD
+></TR
+><TR
+><TD
+>America/Cuiaba</TD
+></TR
+><TR
+><TD
+>America/Curacao</TD
+></TR
+><TR
+><TD
+>America/Danmarkshavn</TD
+></TR
+><TR
+><TD
+>America/Dawson</TD
+></TR
+><TR
+><TD
+>America/Dawson_Creek</TD
+></TR
+><TR
+><TD
+>America/Denver MST7MDT SystemV/MST7MDT US/Mountain America/Shiprock Navajo</TD
+></TR
+><TR
+><TD
+>America/Detroit US/Michigan</TD
+></TR
+><TR
+><TD
+>America/Dominica</TD
+></TR
+><TR
+><TD
+>America/Edmonton Canada/Mountain</TD
+></TR
+><TR
+><TD
+>America/Eirunepe</TD
+></TR
+><TR
+><TD
+>America/El_Salvador</TD
+></TR
+><TR
+><TD
+>America/Ensenada America/Tijuana Mexico/BajaNorte</TD
+></TR
+><TR
+><TD
+>America/Fortaleza</TD
+></TR
+><TR
+><TD
+>America/Glace_Bay</TD
+></TR
+><TR
+><TD
+>America/Godthab</TD
+></TR
+><TR
+><TD
+>America/Goose_Bay</TD
+></TR
+><TR
+><TD
+>America/Grand_Turk</TD
+></TR
+><TR
+><TD
+>America/Grenada</TD
+></TR
+><TR
+><TD
+>America/Guadeloupe</TD
+></TR
+><TR
+><TD
+>America/Guatemala</TD
+></TR
+><TR
+><TD
+>America/Guayaquil</TD
+></TR
+><TR
+><TD
+>America/Guyana</TD
+></TR
+><TR
+><TD
+>America/Halifax Canada/Atlantic SystemV/AST4ADT</TD
+></TR
+><TR
+><TD
+>America/Havana Cuba</TD
+></TR
+><TR
+><TD
+>America/Hermosillo</TD
+></TR
+><TR
+><TD
+>America/Indiana/Indianapolis America/Indianapolis America/Fort_Wayne EST SystemV/EST5 US/East-Indiana</TD
+></TR
+><TR
+><TD
+>America/Indiana/Knox America/Knox_IN US/Indiana-Starke</TD
+></TR
+><TR
+><TD
+>America/Indiana/Marengo</TD
+></TR
+><TR
+><TD
+>America/Indiana/Vevay</TD
+></TR
+><TR
+><TD
+>America/Inuvik</TD
+></TR
+><TR
+><TD
+>America/Iqaluit</TD
+></TR
+><TR
+><TD
+>America/Jamaica Jamaica</TD
+></TR
+><TR
+><TD
+>America/Jujuy</TD
+></TR
+><TR
+><TD
+>America/Juneau</TD
+></TR
+><TR
+><TD
+>America/Kentucky/Louisville America/Louisville</TD
+></TR
+><TR
+><TD
+>America/Kentucky/Monticello</TD
+></TR
+><TR
+><TD
+>America/La_Paz</TD
+></TR
+><TR
+><TD
+>America/Lima</TD
+></TR
+><TR
+><TD
+>America/Los_Angeles PST8PDT SystemV/PST8PDT US/Pacific US/Pacific-New</TD
+></TR
+><TR
+><TD
+>America/Maceio</TD
+></TR
+><TR
+><TD
+>America/Managua</TD
+></TR
+><TR
+><TD
+>America/Manaus Brazil/West</TD
+></TR
+><TR
+><TD
+>America/Martinique</TD
+></TR
+><TR
+><TD
+>America/Mazatlan Mexico/BajaSur</TD
+></TR
+><TR
+><TD
+>America/Mendoza</TD
+></TR
+><TR
+><TD
+>America/Menominee</TD
+></TR
+><TR
+><TD
+>America/Merida</TD
+></TR
+><TR
+><TD
+>America/Mexico_City Mexico/General</TD
+></TR
+><TR
+><TD
+>America/Miquelon</TD
+></TR
+><TR
+><TD
+>America/Monterrey</TD
+></TR
+><TR
+><TD
+>America/Montevideo</TD
+></TR
+><TR
+><TD
+>America/Montreal</TD
+></TR
+><TR
+><TD
+>America/Montserrat</TD
+></TR
+><TR
+><TD
+>America/Nassau</TD
+></TR
+><TR
+><TD
+>America/New_York EST5EDT SystemV/EST5EDT US/Eastern</TD
+></TR
+><TR
+><TD
+>America/Nipigon</TD
+></TR
+><TR
+><TD
+>America/Nome</TD
+></TR
+><TR
+><TD
+>America/Noronha Brazil/DeNoronha</TD
+></TR
+><TR
+><TD
+>America/North_Dakota/Center</TD
+></TR
+><TR
+><TD
+>America/Panama</TD
+></TR
+><TR
+><TD
+>America/Pangnirtung</TD
+></TR
+><TR
+><TD
+>America/Paramaribo</TD
+></TR
+><TR
+><TD
+>America/Phoenix MST SystemV/MST7 US/Arizona</TD
+></TR
+><TR
+><TD
+>America/Port-au-Prince</TD
+></TR
+><TR
+><TD
+>America/Port_of_Spain</TD
+></TR
+><TR
+><TD
+>America/Porto_Acre America/Rio_Branco Brazil/Acre</TD
+></TR
+><TR
+><TD
+>America/Porto_Velho</TD
+></TR
+><TR
+><TD
+>America/Puerto_Rico SystemV/AST4</TD
+></TR
+><TR
+><TD
+>America/Rainy_River</TD
+></TR
+><TR
+><TD
+>America/Rankin_Inlet</TD
+></TR
+><TR
+><TD
+>America/Recife</TD
+></TR
+><TR
+><TD
+>America/Regina Canada/East-Saskatchewan Canada/Saskatchewan SystemV/CST6</TD
+></TR
+><TR
+><TD
+>America/Santiago Chile/Continental</TD
+></TR
+><TR
+><TD
+>America/Santo_Domingo</TD
+></TR
+><TR
+><TD
+>America/Sao_Paulo Brazil/East</TD
+></TR
+><TR
+><TD
+>America/Scoresbysund</TD
+></TR
+><TR
+><TD
+>America/St_Johns Canada/Newfoundland</TD
+></TR
+><TR
+><TD
+>America/St_Kitts</TD
+></TR
+><TR
+><TD
+>America/St_Lucia</TD
+></TR
+><TR
+><TD
+>America/St_Thomas America/Virgin</TD
+></TR
+><TR
+><TD
+>America/St_Vincent</TD
+></TR
+><TR
+><TD
+>America/Swift_Current</TD
+></TR
+><TR
+><TD
+>America/Tegucigalpa</TD
+></TR
+><TR
+><TD
+>America/Thule</TD
+></TR
+><TR
+><TD
+>America/Thunder_Bay</TD
+></TR
+><TR
+><TD
+>America/Toronto Canada/Eastern</TD
+></TR
+><TR
+><TD
+>America/Tortola</TD
+></TR
+><TR
+><TD
+>America/Vancouver Canada/Pacific</TD
+></TR
+><TR
+><TD
+>America/Whitehorse Canada/Yukon</TD
+></TR
+><TR
+><TD
+>America/Winnipeg Canada/Central</TD
+></TR
+><TR
+><TD
+>America/Yakutat</TD
+></TR
+><TR
+><TD
+>America/Yellowknife</TD
+></TR
+><TR
+><TD
+>Antarctica/Casey</TD
+></TR
+><TR
+><TD
+>Antarctica/Davis</TD
+></TR
+><TR
+><TD
+>Antarctica/DumontDUrville</TD
+></TR
+><TR
+><TD
+>Antarctica/Mawson</TD
+></TR
+><TR
+><TD
+>Antarctica/McMurdo Antarctica/South_Pole</TD
+></TR
+><TR
+><TD
+>Antarctica/Palmer</TD
+></TR
+><TR
+><TD
+>Antarctica/Rothera</TD
+></TR
+><TR
+><TD
+>Antarctica/Syowa</TD
+></TR
+><TR
+><TD
+>Antarctica/Vostok</TD
+></TR
+><TR
+><TD
+>Asia/Aden</TD
+></TR
+><TR
+><TD
+>Asia/Almaty</TD
+></TR
+><TR
+><TD
+>Asia/Amman</TD
+></TR
+><TR
+><TD
+>Asia/Anadyr</TD
+></TR
+><TR
+><TD
+>Asia/Aqtau</TD
+></TR
+><TR
+><TD
+>Asia/Aqtobe</TD
+></TR
+><TR
+><TD
+>Asia/Ashgabat Asia/Ashkhabad</TD
+></TR
+><TR
+><TD
+>Asia/Baghdad</TD
+></TR
+><TR
+><TD
+>Asia/Bahrain</TD
+></TR
+><TR
+><TD
+>Asia/Baku</TD
+></TR
+><TR
+><TD
+>Asia/Bangkok</TD
+></TR
+><TR
+><TD
+>Asia/Beirut</TD
+></TR
+><TR
+><TD
+>Asia/Bishkek</TD
+></TR
+><TR
+><TD
+>Asia/Brunei</TD
+></TR
+><TR
+><TD
+>Asia/Calcutta</TD
+></TR
+><TR
+><TD
+>Asia/Choibalsan</TD
+></TR
+><TR
+><TD
+>Asia/Chongqing Asia/Chungking</TD
+></TR
+><TR
+><TD
+>Asia/Colombo</TD
+></TR
+><TR
+><TD
+>Asia/Dacca Asia/Dhaka</TD
+></TR
+><TR
+><TD
+>Asia/Damascus</TD
+></TR
+><TR
+><TD
+>Asia/Dili</TD
+></TR
+><TR
+><TD
+>Asia/Dubai</TD
+></TR
+><TR
+><TD
+>Asia/Dushanbe</TD
+></TR
+><TR
+><TD
+>Asia/Gaza</TD
+></TR
+><TR
+><TD
+>Asia/Harbin</TD
+></TR
+><TR
+><TD
+>Asia/Hong_Kong Hongkong</TD
+></TR
+><TR
+><TD
+>Asia/Hovd</TD
+></TR
+><TR
+><TD
+>Asia/Irkutsk</TD
+></TR
+><TR
+><TD
+>Asia/Jakarta</TD
+></TR
+><TR
+><TD
+>Asia/Jayapura</TD
+></TR
+><TR
+><TD
+>Asia/Jerusalem Asia/Tel_Aviv Israel</TD
+></TR
+><TR
+><TD
+>Asia/Kabul</TD
+></TR
+><TR
+><TD
+>Asia/Kamchatka</TD
+></TR
+><TR
+><TD
+>Asia/Karachi</TD
+></TR
+><TR
+><TD
+>Asia/Kashgar</TD
+></TR
+><TR
+><TD
+>Asia/Katmandu</TD
+></TR
+><TR
+><TD
+>Asia/Krasnoyarsk</TD
+></TR
+><TR
+><TD
+>Asia/Kuala_Lumpur</TD
+></TR
+><TR
+><TD
+>Asia/Kuching</TD
+></TR
+><TR
+><TD
+>Asia/Kuwait</TD
+></TR
+><TR
+><TD
+>Asia/Macao Asia/Macau</TD
+></TR
+><TR
+><TD
+>Asia/Magadan</TD
+></TR
+><TR
+><TD
+>Asia/Makassar Asia/Ujung_Pandang</TD
+></TR
+><TR
+><TD
+>Asia/Manila</TD
+></TR
+><TR
+><TD
+>Asia/Muscat</TD
+></TR
+><TR
+><TD
+>Asia/Nicosia Europe/Nicosia</TD
+></TR
+><TR
+><TD
+>Asia/Novosibirsk</TD
+></TR
+><TR
+><TD
+>Asia/Omsk</TD
+></TR
+><TR
+><TD
+>Asia/Oral</TD
+></TR
+><TR
+><TD
+>Asia/Phnom_Penh</TD
+></TR
+><TR
+><TD
+>Asia/Pontianak</TD
+></TR
+><TR
+><TD
+>Asia/Pyongyang</TD
+></TR
+><TR
+><TD
+>Asia/Qatar</TD
+></TR
+><TR
+><TD
+>Asia/Qyzylorda</TD
+></TR
+><TR
+><TD
+>Asia/Rangoon</TD
+></TR
+><TR
+><TD
+>Asia/Riyadh</TD
+></TR
+><TR
+><TD
+>Asia/Riyadh87 Mideast/Riyadh87</TD
+></TR
+><TR
+><TD
+>Asia/Riyadh88 Mideast/Riyadh88</TD
+></TR
+><TR
+><TD
+>Asia/Riyadh89 Mideast/Riyadh89</TD
+></TR
+><TR
+><TD
+>Asia/Saigon</TD
+></TR
+><TR
+><TD
+>Asia/Sakhalin</TD
+></TR
+><TR
+><TD
+>Asia/Samarkand</TD
+></TR
+><TR
+><TD
+>Asia/Seoul ROK</TD
+></TR
+><TR
+><TD
+>Asia/Shanghai PRC</TD
+></TR
+><TR
+><TD
+>Asia/Singapore Singapore</TD
+></TR
+><TR
+><TD
+>Asia/Taipei ROC</TD
+></TR
+><TR
+><TD
+>Asia/Tashkent</TD
+></TR
+><TR
+><TD
+>Asia/Tbilisi</TD
+></TR
+><TR
+><TD
+>Asia/Tehran Iran</TD
+></TR
+><TR
+><TD
+>Asia/Thimbu Asia/Thimphu</TD
+></TR
+><TR
+><TD
+>Asia/Tokyo Japan</TD
+></TR
+><TR
+><TD
+>Asia/Ulaanbaatar Asia/Ulan_Bator</TD
+></TR
+><TR
+><TD
+>Asia/Urumqi</TD
+></TR
+><TR
+><TD
+>Asia/Vientiane</TD
+></TR
+><TR
+><TD
+>Asia/Vladivostok</TD
+></TR
+><TR
+><TD
+>Asia/Yakutsk</TD
+></TR
+><TR
+><TD
+>Asia/Yekaterinburg</TD
+></TR
+><TR
+><TD
+>Asia/Yerevan</TD
+></TR
+><TR
+><TD
+>Atlantic/Azores</TD
+></TR
+><TR
+><TD
+>Atlantic/Bermuda</TD
+></TR
+><TR
+><TD
+>Atlantic/Canary</TD
+></TR
+><TR
+><TD
+>Atlantic/Cape_Verde</TD
+></TR
+><TR
+><TD
+>Atlantic/Faeroe</TD
+></TR
+><TR
+><TD
+>Atlantic/Madeira</TD
+></TR
+><TR
+><TD
+>Atlantic/Reykjavik Iceland</TD
+></TR
+><TR
+><TD
+>Atlantic/South_Georgia</TD
+></TR
+><TR
+><TD
+>Atlantic/St_Helena</TD
+></TR
+><TR
+><TD
+>Atlantic/Stanley</TD
+></TR
+><TR
+><TD
+>Australia/ACT Australia/Canberra Australia/NSW Australia/Sydney</TD
+></TR
+><TR
+><TD
+>Australia/Adelaide Australia/South</TD
+></TR
+><TR
+><TD
+>Australia/Brisbane Australia/Queensland</TD
+></TR
+><TR
+><TD
+>Australia/Broken_Hill Australia/Yancowinna</TD
+></TR
+><TR
+><TD
+>Australia/Darwin Australia/North</TD
+></TR
+><TR
+><TD
+>Australia/Hobart Australia/Tasmania</TD
+></TR
+><TR
+><TD
+>Australia/LHI Australia/Lord_Howe</TD
+></TR
+><TR
+><TD
+>Australia/Lindeman</TD
+></TR
+><TR
+><TD
+>Australia/Melbourne Australia/Victoria</TD
+></TR
+><TR
+><TD
+>Australia/Perth Australia/West</TD
+></TR
+><TR
+><TD
+>CET</TD
+></TR
+><TR
+><TD
+>EET</TD
+></TR
+><TR
+><TD
+>Etc/GMT+1</TD
+></TR
+><TR
+><TD
+>Etc/GMT+2</TD
+></TR
+><TR
+><TD
+>Etc/GMT+3</TD
+></TR
+><TR
+><TD
+>Etc/GMT+4</TD
+></TR
+><TR
+><TD
+>Etc/GMT+5</TD
+></TR
+><TR
+><TD
+>Etc/GMT+6</TD
+></TR
+><TR
+><TD
+>Etc/GMT+7</TD
+></TR
+><TR
+><TD
+>Etc/GMT+8</TD
+></TR
+><TR
+><TD
+>Etc/GMT+9</TD
+></TR
+><TR
+><TD
+>Etc/GMT+10</TD
+></TR
+><TR
+><TD
+>Etc/GMT+11</TD
+></TR
+><TR
+><TD
+>Etc/GMT+12</TD
+></TR
+><TR
+><TD
+>Etc/GMT-1</TD
+></TR
+><TR
+><TD
+>Etc/GMT-2</TD
+></TR
+><TR
+><TD
+>Etc/GMT-3</TD
+></TR
+><TR
+><TD
+>Etc/GMT-4</TD
+></TR
+><TR
+><TD
+>Etc/GMT-5</TD
+></TR
+><TR
+><TD
+>Etc/GMT-6</TD
+></TR
+><TR
+><TD
+>Etc/GMT-7</TD
+></TR
+><TR
+><TD
+>Etc/GMT-8</TD
+></TR
+><TR
+><TD
+>Etc/GMT-9</TD
+></TR
+><TR
+><TD
+>Etc/GMT-10</TD
+></TR
+><TR
+><TD
+>Etc/GMT-11</TD
+></TR
+><TR
+><TD
+>Etc/GMT-12</TD
+></TR
+><TR
+><TD
+>Etc/GMT-13</TD
+></TR
+><TR
+><TD
+>Etc/GMT-14</TD
+></TR
+><TR
+><TD
+>Europe/Amsterdam</TD
+></TR
+><TR
+><TD
+>Europe/Andorra</TD
+></TR
+><TR
+><TD
+>Europe/Athens</TD
+></TR
+><TR
+><TD
+>Europe/Belfast</TD
+></TR
+><TR
+><TD
+>Europe/Belgrade Europe/Ljubljana Europe/Sarajevo Europe/Skopje Europe/Zagreb</TD
+></TR
+><TR
+><TD
+>Europe/Berlin</TD
+></TR
+><TR
+><TD
+>Europe/Brussels</TD
+></TR
+><TR
+><TD
+>Europe/Bucharest</TD
+></TR
+><TR
+><TD
+>Europe/Budapest</TD
+></TR
+><TR
+><TD
+>Europe/Chisinau Europe/Tiraspol</TD
+></TR
+><TR
+><TD
+>Europe/Copenhagen</TD
+></TR
+><TR
+><TD
+>Europe/Dublin Eire</TD
+></TR
+><TR
+><TD
+>Europe/Gibraltar</TD
+></TR
+><TR
+><TD
+>Europe/Helsinki</TD
+></TR
+><TR
+><TD
+>Europe/Istanbul Asia/Istanbul Turkey</TD
+></TR
+><TR
+><TD
+>Europe/Kaliningrad</TD
+></TR
+><TR
+><TD
+>Europe/Kiev</TD
+></TR
+><TR
+><TD
+>Europe/Lisbon Portugal</TD
+></TR
+><TR
+><TD
+>Europe/London GB GB-Eire</TD
+></TR
+><TR
+><TD
+>Europe/Luxembourg</TD
+></TR
+><TR
+><TD
+>Europe/Madrid</TD
+></TR
+><TR
+><TD
+>Europe/Malta</TD
+></TR
+><TR
+><TD
+>Europe/Minsk</TD
+></TR
+><TR
+><TD
+>Europe/Monaco</TD
+></TR
+><TR
+><TD
+>Europe/Moscow W-SU</TD
+></TR
+><TR
+><TD
+>Europe/Oslo Arctic/Longyearbyen Atlantic/Jan_Mayen</TD
+></TR
+><TR
+><TD
+>Europe/Paris</TD
+></TR
+><TR
+><TD
+>Europe/Prague Europe/Bratislava</TD
+></TR
+><TR
+><TD
+>Europe/Riga</TD
+></TR
+><TR
+><TD
+>Europe/Rome Europe/San_Marino Europe/Vatican</TD
+></TR
+><TR
+><TD
+>Europe/Samara</TD
+></TR
+><TR
+><TD
+>Europe/Simferopol</TD
+></TR
+><TR
+><TD
+>Europe/Sofia</TD
+></TR
+><TR
+><TD
+>Europe/Stockholm</TD
+></TR
+><TR
+><TD
+>Europe/Tallinn</TD
+></TR
+><TR
+><TD
+>Europe/Tirane</TD
+></TR
+><TR
+><TD
+>Europe/Uzhgorod</TD
+></TR
+><TR
+><TD
+>Europe/Vaduz</TD
+></TR
+><TR
+><TD
+>Europe/Vienna</TD
+></TR
+><TR
+><TD
+>Europe/Vilnius</TD
+></TR
+><TR
+><TD
+>Europe/Warsaw Poland</TD
+></TR
+><TR
+><TD
+>Europe/Zaporozhye</TD
+></TR
+><TR
+><TD
+>Europe/Zurich</TD
+></TR
+><TR
+><TD
+>Factory</TD
+></TR
+><TR
+><TD
+>GMT GMT+0 GMT-0 GMT0 Greenwich Etc/GMT Etc/GMT+0 Etc/GMT-0 Etc/GMT0 Etc/Greenwich</TD
+></TR
+><TR
+><TD
+>Indian/Antananarivo</TD
+></TR
+><TR
+><TD
+>Indian/Chagos</TD
+></TR
+><TR
+><TD
+>Indian/Christmas</TD
+></TR
+><TR
+><TD
+>Indian/Cocos</TD
+></TR
+><TR
+><TD
+>Indian/Comoro</TD
+></TR
+><TR
+><TD
+>Indian/Kerguelen</TD
+></TR
+><TR
+><TD
+>Indian/Mahe</TD
+></TR
+><TR
+><TD
+>Indian/Maldives</TD
+></TR
+><TR
+><TD
+>Indian/Mauritius</TD
+></TR
+><TR
+><TD
+>Indian/Mayotte</TD
+></TR
+><TR
+><TD
+>Indian/Reunion</TD
+></TR
+><TR
+><TD
+>MET</TD
+></TR
+><TR
+><TD
+>Pacific/Apia</TD
+></TR
+><TR
+><TD
+>Pacific/Auckland NZ</TD
+></TR
+><TR
+><TD
+>Pacific/Chatham NZ-CHAT</TD
+></TR
+><TR
+><TD
+>Pacific/Easter Chile/EasterIsland</TD
+></TR
+><TR
+><TD
+>Pacific/Efate</TD
+></TR
+><TR
+><TD
+>Pacific/Enderbury</TD
+></TR
+><TR
+><TD
+>Pacific/Fakaofo</TD
+></TR
+><TR
+><TD
+>Pacific/Fiji</TD
+></TR
+><TR
+><TD
+>Pacific/Funafuti</TD
+></TR
+><TR
+><TD
+>Pacific/Galapagos</TD
+></TR
+><TR
+><TD
+>Pacific/Gambier SystemV/YST9</TD
+></TR
+><TR
+><TD
+>Pacific/Guadalcanal</TD
+></TR
+><TR
+><TD
+>Pacific/Guam</TD
+></TR
+><TR
+><TD
+>Pacific/Honolulu HST SystemV/HST10 US/Hawaii</TD
+></TR
+><TR
+><TD
+>Pacific/Johnston</TD
+></TR
+><TR
+><TD
+>Pacific/Kiritimati</TD
+></TR
+><TR
+><TD
+>Pacific/Kosrae</TD
+></TR
+><TR
+><TD
+>Pacific/Kwajalein Kwajalein</TD
+></TR
+><TR
+><TD
+>Pacific/Majuro</TD
+></TR
+><TR
+><TD
+>Pacific/Marquesas</TD
+></TR
+><TR
+><TD
+>Pacific/Midway</TD
+></TR
+><TR
+><TD
+>Pacific/Nauru</TD
+></TR
+><TR
+><TD
+>Pacific/Niue</TD
+></TR
+><TR
+><TD
+>Pacific/Norfolk</TD
+></TR
+><TR
+><TD
+>Pacific/Noumea</TD
+></TR
+><TR
+><TD
+>Pacific/Pago_Pago Pacific/Samoa US/Samoa</TD
+></TR
+><TR
+><TD
+>Pacific/Palau</TD
+></TR
+><TR
+><TD
+>Pacific/Pitcairn SystemV/PST8</TD
+></TR
+><TR
+><TD
+>Pacific/Ponape</TD
+></TR
+><TR
+><TD
+>Pacific/Port_Moresby</TD
+></TR
+><TR
+><TD
+>Pacific/Rarotonga</TD
+></TR
+><TR
+><TD
+>Pacific/Saipan</TD
+></TR
+><TR
+><TD
+>Pacific/Tahiti</TD
+></TR
+><TR
+><TD
+>Pacific/Tarawa</TD
+></TR
+><TR
+><TD
+>Pacific/Tongatapu</TD
+></TR
+><TR
+><TD
+>Pacific/Truk</TD
+></TR
+><TR
+><TD
+>Pacific/Wake</TD
+></TR
+><TR
+><TD
+>Pacific/Wallis</TD
+></TR
+><TR
+><TD
+>Pacific/Yap</TD
+></TR
+><TR
+><TD
+>UCT Etc/UCT</TD
+></TR
+><TR
+><TD
+>UTC Universal Zulu Etc/UTC Etc/Universal Etc/Zulu</TD
+></TR
+><TR
+><TD
+>WET</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    In addition to the names listed in the table,
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will accept time zone names of the
+    form <VAR
+CLASS="REPLACEABLE"
+>STD</VAR
+><VAR
+CLASS="REPLACEABLE"
+>offset</VAR
+> or
+    <VAR
+CLASS="REPLACEABLE"
+>STD</VAR
+><VAR
+CLASS="REPLACEABLE"
+>offset</VAR
+><VAR
+CLASS="REPLACEABLE"
+>DST</VAR
+>, where
+    <VAR
+CLASS="REPLACEABLE"
+>STD</VAR
+> is a zone abbreviation, <VAR
+CLASS="REPLACEABLE"
+>offset</VAR
+> is a
+    numeric offset in hours west from UTC, and <VAR
+CLASS="REPLACEABLE"
+>DST</VAR
+> is an
+    optional daylight-savings zone abbreviation, assumed to stand for one hour
+    ahead of the given offset.  For example, if <TT
+CLASS="LITERAL"
+>EST5EDT</TT
+> were not
+    already a recognized zone name, it would be accepted and would be
+    functionally equivalent to USA East Coast time.  When a daylight-savings
+    zone name is present, it is assumed to be used according to USA time zone
+    rules, so this feature is of limited use outside North America.
+    One should also be wary that this provision can lead to
+    silently accepting bogus input, since there is no check on the
+    reasonableness of the zone abbreviations.  For example,
+    <TT
+CLASS="LITERAL"
+>SET TIMEZONE TO FOOBAR0</TT
+> will work, leaving the system
+    effectively using a rather peculiar abbreviation for GMT.
+   </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

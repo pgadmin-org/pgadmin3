@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Queries"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,25 +96,25 @@ NAME="QUERIES-UNION"
 >7.4. Combining Queries</A
 ></H1
 ><A
-NAME="AEN3011"
+NAME="AEN3109"
 ></A
 ><A
-NAME="AEN3013"
+NAME="AEN3111"
 ></A
 ><A
-NAME="AEN3015"
+NAME="AEN3113"
 ></A
 ><A
-NAME="AEN3017"
+NAME="AEN3115"
 ></A
 ><A
-NAME="AEN3019"
+NAME="AEN3117"
 ></A
 ><A
-NAME="AEN3021"
+NAME="AEN3119"
 ></A
 ><A
-NAME="AEN3023"
+NAME="AEN3121"
 ></A
 ><P
 >   The results of two queries can be combined using the set operations
@@ -191,9 +191,9 @@ CLASS="REPLACEABLE"
 ><P>
   </P
 ><P
->   <VAR
+>   <TT
 CLASS="LITERAL"
->UNION</VAR
+>UNION</TT
 > effectively appends the result of
    <VAR
 CLASS="REPLACEABLE"
@@ -205,18 +205,18 @@ CLASS="REPLACEABLE"
 > (although there is no guarantee
    that this is the order in which the rows are actually returned).
    Furthermore, it eliminates all duplicate rows, in the sense of
-   <VAR
+   <TT
 CLASS="LITERAL"
->DISTINCT</VAR
->, unless <VAR
+>DISTINCT</TT
+>, unless <TT
 CLASS="LITERAL"
->UNION ALL</VAR
+>UNION ALL</TT
 > is used.
   </P
 ><P
->   <VAR
+>   <TT
 CLASS="LITERAL"
->INTERSECT</VAR
+>INTERSECT</TT
 > returns all rows that are both in the result
    of <VAR
 CLASS="REPLACEABLE"
@@ -226,15 +226,15 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >query2</VAR
 >.  Duplicate rows are eliminated
-   unless <VAR
+   unless <TT
 CLASS="LITERAL"
->INTERSECT ALL</VAR
+>INTERSECT ALL</TT
 > is used.
   </P
 ><P
->   <VAR
+>   <TT
 CLASS="LITERAL"
->EXCEPT</VAR
+>EXCEPT</TT
 > returns all rows that are in the result of
    <VAR
 CLASS="REPLACEABLE"
@@ -248,9 +248,9 @@ CLASS="REPLACEABLE"
 CLASS="FIRSTTERM"
 >difference</I
 > between two queries.)  Again, duplicates
-   are eliminated unless <VAR
+   are eliminated unless <TT
 CLASS="LITERAL"
->EXCEPT ALL</VAR
+>EXCEPT ALL</TT
 > is used.
   </P
 ><P

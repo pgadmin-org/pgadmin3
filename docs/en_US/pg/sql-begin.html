@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,29 +95,40 @@ NAME="SQL-BEGIN"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35730"
+NAME="AEN35618"
 ></A
 ><H2
 >Name</H2
 >BEGIN&nbsp;--&nbsp;start a transaction block</DIV
 ><A
-NAME="AEN35733"
+NAME="AEN35621"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35735"
+NAME="AEN35623"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->BEGIN [ WORK | TRANSACTION ]</PRE
+>BEGIN [ WORK | TRANSACTION ] [ <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> [, ...] ]
+
+where <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> is one of:
+
+    ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
+    READ WRITE | READ ONLY</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35737"
+NAME="AEN35627"
 ></A
 ><H2
 >Description</H2
@@ -126,7 +137,7 @@ NAME="AEN35737"
 CLASS="COMMAND"
 >BEGIN</TT
 > initiates a transaction block, that is,
-   all statements after <TT
+   all statements after a <TT
 CLASS="COMMAND"
 >BEGIN</TT
 > command will be
@@ -165,11 +176,22 @@ CLASS="QUOTE"
    other sessions will be unable to see the intermediate states
    wherein not all the related updates have been done.
   </P
+><P
+>   If the isolation level or read/write mode is specified, the new
+   transaction has those characteristics, as if
+   <A
+HREF="sql-set-transaction.html"
+><I
+>SET TRANSACTION</I
+></A
+> 
+   was executed.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35748"
+NAME="AEN35640"
 ></A
 ><H2
 >Parameters</H2
@@ -179,12 +201,12 @@ NAME="AEN35748"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->WORK</VAR
-><BR><VAR
+>WORK</TT
+><BR><TT
 CLASS="LITERAL"
->TRANSACTION</VAR
+>TRANSACTION</TT
 ></DT
 ><DD
 ><P
@@ -193,11 +215,20 @@ CLASS="LITERAL"
 ></DD
 ></DL
 ></DIV
+><P
+>   Refer to <A
+HREF="sql-set-transaction.html"
+><I
+>SET TRANSACTION</I
+></A
+> for information on the meaning
+   of the other parameters to this statement.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35758"
+NAME="AEN35652"
 ></A
 ><H2
 >Notes</H2
@@ -234,12 +265,27 @@ CLASS="COMMAND"
 >BEGIN</TT
 > when already inside a transaction block will
    provoke a warning message.  The state of the transaction is not affected.
+   To nest transactions within a transaction block, use savepoints 
+   (see <A
+HREF="sql-savepoint.html"
+><I
+>SAVEPOINT</I
+></A
+>).
+  </P
+><P
+>   For reasons of backwards compatibility, the commas between successive
+   <VAR
+CLASS="REPLACEABLE"
+>transaction_modes</VAR
+> may be
+   omitted.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35768"
+NAME="AEN35665"
 ></A
 ><H2
 >Examples</H2
@@ -255,7 +301,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35772"
+NAME="AEN35669"
 ></A
 ><H2
 >Compatibility</H2
@@ -267,28 +313,19 @@ CLASS="COMMAND"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-   language extension.  There is no explicit <TT
-CLASS="COMMAND"
->BEGIN</TT
->
-   command in the SQL standard; transaction initiation is
-   always implicit and it terminates either with a
-   <TT
-CLASS="COMMAND"
->COMMIT</TT
-> or <TT
-CLASS="COMMAND"
->ROLLBACK</TT
-> statement.
+   language extension.  It is equivalent to the SQL-standard command
+   <A
+HREF="sql-start-transaction.html"
+><I
+>START TRANSACTION</I
+></A
+>, which see for additional
+   compatibility information.
   </P
 ><P
->   Other relational database systems may offer an autocommit feature
-   as a convenience.
-  </P
-><P
->   Incidentally, the <VAR
+>   Incidentally, the <TT
 CLASS="LITERAL"
->BEGIN</VAR
+>BEGIN</TT
 > key word is used for a
    different purpose in embedded SQL. You are advised to be careful
    about the transaction semantics when porting database applications.
@@ -297,7 +334,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35783"
+NAME="AEN35677"
 ></A
 ><H2
 >See Also</H2
@@ -310,6 +347,16 @@ HREF="sql-commit.html"
 HREF="sql-rollback.html"
 ><I
 >ROLLBACK</I
+></A
+>, <A
+HREF="sql-start-transaction.html"
+><I
+>START TRANSACTION</I
+></A
+>, <A
+HREF="sql-savepoint.html"
+><I
+>SAVEPOINT</I
 ></A
 ></DIV
 ><DIV

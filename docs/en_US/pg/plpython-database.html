@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Python - Python Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpython.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 40. PL/Python - Python Procedural Language</TD
+>Chapter 38. PL/Python - Python Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,63 +93,63 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPYTHON-DATABASE"
->40.3. Database Access</A
+>38.3. Database Access</A
 ></H1
 ><P
 >   The PL/Python language module automatically imports a Python module
-   called <VAR
+   called <TT
 CLASS="LITERAL"
->plpy</VAR
+>plpy</TT
 >.  The functions and constants in
    this module are available to you in the Python code as
-   <VAR
+   <TT
 CLASS="LITERAL"
 >plpy.<VAR
 CLASS="REPLACEABLE"
 >foo</VAR
-></VAR
+></TT
 >.  At present
-   <VAR
+   <TT
 CLASS="LITERAL"
->plpy</VAR
+>plpy</TT
 > implements the functions
-   <VAR
+   <TT
 CLASS="LITERAL"
->plpy.debug("msg")</VAR
+>plpy.debug("msg")</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->plpy.log("msg")</VAR
+>plpy.log("msg")</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->plpy.info("msg")</VAR
+>plpy.info("msg")</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->plpy.notice("msg")</VAR
+>plpy.notice("msg")</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->plpy.warning("msg")</VAR
+>plpy.warning("msg")</TT
 >,
-   <VAR
+   <TT
 CLASS="LITERAL"
->plpy.error("msg")</VAR
+>plpy.error("msg")</TT
 >, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->plpy.fatal("msg")</VAR
+>plpy.fatal("msg")</TT
 >.  They are mostly equivalent
-   to calling <VAR
+   to calling <TT
 CLASS="LITERAL"
 >elog(<VAR
 CLASS="REPLACEABLE"
 >LEVEL</VAR
->, "msg")</VAR
+>, "msg")</TT
 >
    from C code.<A
-NAME="AEN33096"
+NAME="AEN32599"
 ></A
 >  <CODE
 CLASS="FUNCTION"
@@ -160,19 +160,19 @@ CLASS="FUNCTION"
 >plpy.fatal</CODE
 > actually raise a Python exception
    which, if uncaught, causes the PL/Python module to call
-   <VAR
+   <TT
 CLASS="LITERAL"
->elog(ERROR, msg)</VAR
+>elog(ERROR, msg)</TT
 > when the function handler
    returns from the Python interpreter.  Long-jumping out of the
-   Python interpreter is probably not good.  <VAR
+   Python interpreter is probably not good.  <TT
 CLASS="LITERAL"
 >raise
-   plpy.ERROR("msg")</VAR
-> and <VAR
+   plpy.ERROR("msg")</TT
+> and <TT
 CLASS="LITERAL"
 >raise
-   plpy.FATAL("msg")</VAR
+   plpy.FATAL("msg")</TT
 > are equivalent to calling
    <CODE
 CLASS="FUNCTION"
@@ -184,9 +184,9 @@ CLASS="FUNCTION"
 >, respectively.
   </P
 ><P
->   Additionally, the <VAR
+>   Additionally, the <TT
 CLASS="LITERAL"
->plpy</VAR
+>plpy</TT
 > module provides two
    functions called <CODE
 CLASS="FUNCTION"
@@ -224,17 +224,17 @@ CLASS="FUNCTION"
 CLASS="PROGRAMLISTING"
 >rv = plpy.execute("SELECT * FROM my_table", 5)</PRE
 ><P>
-   returns up to 5 rows from <VAR
+   returns up to 5 rows from <TT
 CLASS="LITERAL"
->my_table</VAR
+>my_table</TT
 >.  If
-   <VAR
+   <TT
 CLASS="LITERAL"
->my_table</VAR
+>my_table</TT
 > has a column
-   <VAR
+   <TT
 CLASS="LITERAL"
->my_column</VAR
+>my_column</TT
 >, it would be accessed as
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -243,7 +243,7 @@ CLASS="PROGRAMLISTING"
   </P
 ><P
 >   <A
-NAME="AEN33121"
+NAME="AEN32624"
 ></A
 >
    The second function, <CODE
@@ -257,13 +257,13 @@ CLASS="FUNCTION"
 CLASS="PROGRAMLISTING"
 >plan = plpy.prepare("SELECT last_name FROM my_users WHERE first_name = $1", [ "text" ])</PRE
 ><P>
-   <VAR
+   <TT
 CLASS="LITERAL"
->text</VAR
+>text</TT
 > is the type of the variable you will be
-   passing for <VAR
+   passing for <TT
 CLASS="LITERAL"
->$1</VAR
+>$1</TT
 >.  After preparing a statement, you
    use the function <CODE
 CLASS="FUNCTION"
@@ -282,14 +282,14 @@ CLASS="APPLICATION"
 >PL/Python</SPAN
 > function will result
    in the immediate termination of that function by the server; it is
-   not possible to trap error conditions using Python <VAR
+   not possible to trap error conditions using Python <TT
 CLASS="LITERAL"
 >try
-   ... catch</VAR
+   ... catch</TT
 > constructs.  For example, a syntax error in an
-   SQL statement passed to the <VAR
+   SQL statement passed to the <TT
 CLASS="LITERAL"
->plpy.execute</VAR
+>plpy.execute</TT
 > call
    will terminate the function.  This behavior may be changed in a
    future release.
@@ -298,31 +298,31 @@ CLASS="LITERAL"
 >   When you prepare a plan using the PL/Python module it is
    automatically saved.  Read the SPI documentation (<A
 HREF="spi.html"
->Chapter 41</A
+>Chapter 39</A
 >) for a description of what this means.
    In order to make effective use of this across function calls
    one needs to use one of the persistent storage dictionaries
-   <VAR
+   <TT
 CLASS="LITERAL"
->SD</VAR
-> or <VAR
+>SD</TT
+> or <TT
 CLASS="LITERAL"
->GD</VAR
+>GD</TT
 > (see
    <A
 HREF="plpython.html#PLPYTHON-FUNCS"
->Section 40.1</A
+>Section 38.1</A
 >). For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION usesavedplan() RETURNS trigger AS '
+>CREATE FUNCTION usesavedplan() RETURNS trigger AS $$
     if SD.has_key("plan"):
         plan = SD["plan"]
     else:
         plan = plpy.prepare("SELECT 1")
         SD["plan"] = plan
     # rest of function
-' LANGUAGE plpythonu;</PRE
+$$ LANGUAGE plpythonu;</PRE
 ><P>
   </P
 ></DIV

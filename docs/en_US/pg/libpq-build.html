@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -102,7 +102,7 @@ CLASS="APPLICATION"
 > Programs</A
 ></H1
 ><A
-NAME="AEN21918"
+NAME="AEN23307"
 ></A
 ><P
 >   To build (i.e., compile and link) your <SPAN
@@ -144,12 +144,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > header
       files were installed, by supplying the
-      <VAR
+      <TT
 CLASS="LITERAL"
 >-I<VAR
 CLASS="REPLACEABLE"
 >directory</VAR
-></VAR
+></TT
 > option
       to your compiler.  (In some cases the compiler will look into
       the directory in question by default, so you can omit this
@@ -160,9 +160,9 @@ CLASS="PROGRAMLISTING"
 >cc -c -I/usr/local/pgsql/include testprog.c</PRE
 ><P>
       If you are using makefiles then add the option to the
-      <VAR
+      <TT
 CLASS="VARNAME"
->CPPFLAGS</VAR
+>CPPFLAGS</TT
 > variable:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -177,7 +177,7 @@ CLASS="PROGRAMLISTING"
 CLASS="COMMAND"
 >pg_config</TT
 ><A
-NAME="AEN21939"
+NAME="AEN23328"
 ></A
 > to find out where the header
       files are on the local system:
@@ -205,33 +205,33 @@ CLASS="SCREEN"
 ><LI
 ><P
 >      When linking the final program, specify the option
-      <VAR
+      <TT
 CLASS="LITERAL"
->-lpq</VAR
+>-lpq</TT
 > so that the <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > library gets pulled
       in, as well as the option
-      <VAR
+      <TT
 CLASS="LITERAL"
 >-L<VAR
 CLASS="REPLACEABLE"
 >directory</VAR
-></VAR
+></TT
 > to
       point the compiler to the directory where the <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > library resides.  (Again, the
       compiler will search some directories by default.)  For maximum
-      portability, put the <VAR
+      portability, put the <TT
 CLASS="OPTION"
->-L</VAR
+>-L</TT
 > option before the
-      <VAR
+      <TT
 CLASS="OPTION"
->-lpq</VAR
+>-lpq</TT
 > option.  For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -266,17 +266,17 @@ testlibpq.o(.text+0x60): undefined reference to `PQsetdbLogin'
 testlibpq.o(.text+0x71): undefined reference to `PQstatus'
 testlibpq.o(.text+0xa4): undefined reference to `PQerrorMessage'</PRE
 ><P>
-      This means you forgot <VAR
+      This means you forgot <TT
 CLASS="OPTION"
->-lpq</VAR
+>-lpq</TT
 >.
 </P><PRE
 CLASS="SCREEN"
 >/usr/bin/ld: cannot find -lpq</PRE
 ><P>
-      This means you forgot the <VAR
+      This means you forgot the <TT
 CLASS="OPTION"
->-L</VAR
+>-L</TT
 > option or did not specify
       the right directory.
      </P
@@ -286,7 +286,7 @@ CLASS="OPTION"
   </P
 ><P
 >   <A
-NAME="AEN21968"
+NAME="AEN23357"
 ></A
 >
    If your codes references the header file
@@ -305,9 +305,9 @@ CLASS="REPLACEABLE"
 >includedir</VAR
 >/postgresql/internal/libpq-int.h</TT
 >,
-   so you need to add the appropriate <VAR
+   so you need to add the appropriate <TT
 CLASS="OPTION"
->-I</VAR
+>-I</TT
 > option to
    your compiler command line.
   </P

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="DDL-PRIV"
 >5.7. Privileges</A
 ></H1
 ><A
-NAME="AEN2178"
+NAME="AEN2271"
 ></A
 ><A
-NAME="AEN2180"
+NAME="AEN2273"
 ></A
 ><P
 >   When you create a database object, you become its owner.  By
@@ -108,9 +108,65 @@ NAME="AEN2180"
    <I
 CLASS="FIRSTTERM"
 >privileges</I
-> must be granted.  (There are also
-   users that have the superuser privilege.  Those users can always
+> must be granted.  (However,
+   users that have the superuser attribute can always
    access any object.)
+  </P
+><P
+>   There are several different privileges: <TT
+CLASS="LITERAL"
+>SELECT</TT
+>,
+   <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, <TT
+CLASS="LITERAL"
+>DELETE</TT
+>,
+   <TT
+CLASS="LITERAL"
+>RULE</TT
+>, <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+>, <TT
+CLASS="LITERAL"
+>TRIGGER</TT
+>,
+   <TT
+CLASS="LITERAL"
+>CREATE</TT
+>, <TT
+CLASS="LITERAL"
+>TEMPORARY</TT
+>, <TT
+CLASS="LITERAL"
+>EXECUTE</TT
+>,
+   and <TT
+CLASS="LITERAL"
+>USAGE</TT
+>.  The privileges applicable to a particular
+   object vary depending on the object's type (table, function, etc).
+   For complete
+   information on the different types of privileges supported by
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, refer to the
+   <A
+HREF="sql-grant.html"
+>GRANT</A
+> reference page.  The following sections
+   and chapters will also show you how those privileges are used.
+  </P
+><P
+>   The right to modify or destroy an object is always the privilege of
+   the owner only.
   </P
 ><DIV
 CLASS="NOTE"
@@ -122,94 +178,34 @@ CLASS="NOTE"
 >    To change the owner of a table, index, sequence, or view, use the
     <A
 HREF="sql-altertable.html"
-><I
->ALTER TABLE</I
-></A
->
-    command.
+>ALTER TABLE</A
+> command.  There are corresponding
+    <TT
+CLASS="LITERAL"
+>ALTER</TT
+> commands for other object types.
    </P
 ></BLOCKQUOTE
 ></DIV
-><P
->   There are several different privileges: <VAR
-CLASS="LITERAL"
->SELECT</VAR
->,
-   <VAR
-CLASS="LITERAL"
->INSERT</VAR
->, <VAR
-CLASS="LITERAL"
->UPDATE</VAR
->, <VAR
-CLASS="LITERAL"
->DELETE</VAR
->,
-   <VAR
-CLASS="LITERAL"
->RULE</VAR
->, <VAR
-CLASS="LITERAL"
->REFERENCES</VAR
->, <VAR
-CLASS="LITERAL"
->TRIGGER</VAR
->,
-   <VAR
-CLASS="LITERAL"
->CREATE</VAR
->, <VAR
-CLASS="LITERAL"
->TEMPORARY</VAR
->, <VAR
-CLASS="LITERAL"
->EXECUTE</VAR
->,
-   <VAR
-CLASS="LITERAL"
->USAGE</VAR
->, and <VAR
-CLASS="LITERAL"
->ALL PRIVILEGES</VAR
->. For complete
-   information on the different types of privileges supported by
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, refer to the
-   <A
-HREF="sql-grant.html"
-><I
->GRANT</I
-></A
->
-   reference page.  The following sections
-   and chapters will also show you how those privileges are used.
-  </P
-><P
->   The right to modify or destroy an object is always the privilege of
-   the owner only.
-  </P
 ><P
 >   To assign privileges, the <TT
 CLASS="COMMAND"
 >GRANT</TT
 > command is
-   used. So, if <VAR
+   used. For example, if <TT
 CLASS="LITERAL"
->joe</VAR
+>joe</TT
 > is an existing user, and
-   <VAR
+   <TT
 CLASS="LITERAL"
->accounts</VAR
+>accounts</TT
 > is an existing table, the privilege to
    update the table can be granted with
 </P><PRE
 CLASS="PROGRAMLISTING"
 >GRANT UPDATE ON accounts TO joe;</PRE
 ><P>
-   The user executing this command must be the owner of the table. To
-   grant a privilege to a group, use
+   To grant a privilege to a group, use this syntax:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >GRANT SELECT ON accounts TO GROUP staff;</PRE
@@ -217,16 +213,16 @@ CLASS="PROGRAMLISTING"
    The special <SPAN
 CLASS="QUOTE"
 >"user"</SPAN
-> name <VAR
+> name <TT
 CLASS="LITERAL"
->PUBLIC</VAR
+>PUBLIC</TT
 > can
    be used to grant a privilege to every user on the system. Writing
-   <VAR
+   <TT
 CLASS="LITERAL"
->ALL</VAR
-> in place of a specific privilege specifies that all
-   privileges will be granted.
+>ALL</TT
+> in place of a specific privilege grants all
+   privileges that are relevant for the object type.
   </P
 ><P
 >   To revoke a privilege, use the fittingly named
@@ -238,7 +234,7 @@ CLASS="COMMAND"
 CLASS="PROGRAMLISTING"
 >REVOKE ALL ON accounts FROM PUBLIC;</PRE
 ><P>
-   The special privileges of the table owner (i.e., the right to do
+   The special privileges of the object owner (i.e., the right to do
    <TT
 CLASS="COMMAND"
 >DROP</TT
@@ -250,9 +246,28 @@ CLASS="COMMAND"
 >REVOKE</TT
 >, etc.)
    are always implicit in being the owner,
-   and cannot be granted or revoked.  But the table owner can choose
+   and cannot be granted or revoked.  But the object owner can choose
    to revoke his own ordinary privileges, for example to make a
    table read-only for himself as well as others.
+  </P
+><P
+>   Ordinarily, only the object's owner (or a superuser) can grant or revoke
+   privileges on an object.  However, it is possible to grant a privilege
+   <SPAN
+CLASS="QUOTE"
+>"with grant option"</SPAN
+>, which gives the recipient the right to
+   grant it in turn to others.  If the grant option is subsequently revoked
+   then all who received the privilege from that recipient (directly or
+   through a chain of grants) will lose the privilege.  For details see
+   the <A
+HREF="sql-grant.html"
+>GRANT</A
+> and <A
+HREF="sql-revoke.html"
+>REVOKE</A
+> reference
+   pages.
   </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -113,37 +113,18 @@ CREATE TABLE capitals (
 ) INHERITS (cities);</PRE
 ><P>
 
-   In this case, a row  of  capitals  <I
+   In this case, a row of capitals <I
 CLASS="FIRSTTERM"
 >inherits</I
->  all
-   attributes  (name,  population,  and altitude) from its
-   parent, cities.  The type  of  the  attribute  name  is
-   <TT
-CLASS="TYPE"
->text</TT
->,  a  native  <SPAN
+> all
+   attributes (name, population, and altitude) from its parent, cities.  State
+   capitals have an extra attribute, state, that shows their state.  In
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->  type
-   for variable length character strings.  The type of the attribute
-   population is
-   <TT
-CLASS="TYPE"
->float</TT
->,  a  native <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> type for double precision
-   floating-point numbers.  State capitals have  an  extra
-   attribute, state, that shows their state.  In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->,
-   a  table  can inherit from zero or more other tables,
-   and a query can reference either  all  rows  of  a
-   table  or  all  rows of  a  table plus all of its
-   descendants. 
+>, a table can inherit from zero or
+   more other tables, and a query can reference either all rows of a table or
+   all rows of a table plus all of its descendants.
 
    </P><DIV
 CLASS="NOTE"
@@ -221,6 +202,56 @@ CLASS="QUOTE"
 >"ONLY"</SPAN
 > notation.
   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Deprecated: </B
+>     In previous versions of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, the
+     default behavior was not to include child tables in queries. This was
+     found to be error prone and is also in violation of the SQL99
+     standard. Under the old syntax, to get the sub-tables you append
+     <TT
+CLASS="LITERAL"
+>*</TT
+> to the table name.
+     For example
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * from cities*;</PRE
+><P>
+     You can still explicitly specify scanning child tables by appending
+     <TT
+CLASS="LITERAL"
+>*</TT
+>, as well as explicitly specify not scanning child tables by
+     writing <SPAN
+CLASS="QUOTE"
+>"ONLY"</SPAN
+>.  But beginning in version 7.1, the default
+     behavior for an undecorated table name is to scan its child tables
+     too, whereas before the default was not to do so.  To get the old
+     default behavior, set the configuration option
+     <TT
+CLASS="LITERAL"
+>SQL_Inheritance</TT
+> to off, e.g.,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET SQL_Inheritance TO OFF;</PRE
+><P>
+     or add a line in your <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.
+   </P
+></BLOCKQUOTE
+></DIV
 ><P
 >  In some cases you may wish to know which table a particular row
   originated from. There is a system column called
@@ -274,66 +305,103 @@ CLASS="PROGRAMLISTING"
 ><P>
    
   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Deprecated: </B
->     In previous versions of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, the
-     default behavior was not to include child tables in queries. This was
-     found to be error prone and is also in violation of the SQL99
-     standard. Under the old syntax, to get the sub-tables you append
-     <VAR
-CLASS="LITERAL"
->*</VAR
-> to the table name.
-     For example
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * from cities*;</PRE
-><P>
-     You can still explicitly specify scanning child tables by appending
-     <VAR
-CLASS="LITERAL"
->*</VAR
->, as well as explicitly specify not scanning child tables by
-     writing <SPAN
-CLASS="QUOTE"
->"ONLY"</SPAN
->.  But beginning in version 7.1, the default
-     behavior for an undecorated table name is to scan its child tables
-     too, whereas before the default was not to do so.  To get the old
-     default behavior, set the configuration option
-     <VAR
-CLASS="LITERAL"
->SQL_Inheritance</VAR
-> to off, e.g.,
-</P><PRE
-CLASS="PROGRAMLISTING"
->SET SQL_Inheritance TO OFF;</PRE
-><P>
-     or add a line in your <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->   A limitation of the inheritance feature is that indexes (including
+>   A serious limitation of the inheritance feature is that indexes (including
    unique constraints) and foreign key constraints only apply to single
-   tables, not to their inheritance children.  Thus, in the above example,
-   specifying that another table's column <VAR
+   tables, not to their inheritance children.  This is true on both the
+   referencing and referenced sides of a foreign key constraint.  Thus,
+   in the terms of the above example:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      If we declared <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.<TT
+CLASS="STRUCTFIELD"
+>name</TT
+> to be
+      <TT
 CLASS="LITERAL"
->REFERENCES cities(name)</VAR
->
-   would allow the other table to contain city names but not capital names.
-   This deficiency will probably be fixed in some future release.
+>UNIQUE</TT
+> or a <TT
+CLASS="LITERAL"
+>PRIMARY KEY</TT
+>, this would not stop the
+      <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+> table from having rows with names duplicating
+      rows in <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.  And those duplicate rows would by
+      default show up in SELECTs from <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.  In fact, by
+      default <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+> would have no unique constraint at all,
+      and so could contain multiple rows with the same name.
+      You could add a unique constraint to <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+>, but this
+      would not prevent duplication compared to <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.
+     </P
+></LI
+><LI
+><P
+>      Similarly, if we were to specify that
+      <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.<TT
+CLASS="STRUCTFIELD"
+>name</TT
+> <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+> some
+      other table, this constraint would not automatically propagate to
+      <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+>.  In this case you could work around it by
+      manually adding the same <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+> constraint to
+      <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+>.
+     </P
+></LI
+><LI
+><P
+>      Specifying that another table's column <TT
+CLASS="LITERAL"
+>REFERENCES
+      cities(name)</TT
+> would allow the other table to contain city names, but
+      not capital names.  There is no good workaround for this case.
+     </P
+></LI
+></UL
+><P>
+
+   These deficiencies will probably be fixed in some future release,
+   but in the meantime considerable care is needed in deciding whether
+   inheritance is useful for your problem.
   </P
 ></DIV
 ><DIV

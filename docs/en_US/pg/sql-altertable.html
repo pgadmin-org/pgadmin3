@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="ALTER SEQUENCE"
 HREF="sql-altersequence.html"><LINK
 REL="NEXT"
-TITLE="ALTER TRIGGER"
-HREF="sql-altertrigger.html"><LINK
+TITLE="ALTER TABLESPACE"
+HREF="sql-altertablespace.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-altertrigger.html"
+HREF="sql-altertablespace.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-altertrigger.html"
+HREF="sql-altertablespace.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -95,18 +95,18 @@ NAME="SQL-ALTERTABLE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35219"
+NAME="AEN34964"
 ></A
 ><H2
 >Name</H2
 >ALTER TABLE&nbsp;--&nbsp;change the definition of a table</DIV
 ><A
-NAME="AEN35222"
+NAME="AEN34967"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35224"
+NAME="AEN34969"
 ></A
 ><H2
 >Synopsis</H2
@@ -116,67 +116,10 @@ CLASS="SYNOPSIS"
 CLASS="REPLACEABLE"
 >name</VAR
 > [ * ]
-    ADD [ COLUMN ] <VAR
+    <VAR
 CLASS="REPLACEABLE"
->column</VAR
-> <VAR
-CLASS="REPLACEABLE"
->type</VAR
-> [ <VAR
-CLASS="REPLACEABLE"
->column_constraint</VAR
-> [ ... ] ]
-ALTER TABLE [ ONLY ] <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [ * ]
-    DROP [ COLUMN ] <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> [ RESTRICT | CASCADE ]
-ALTER TABLE [ ONLY ] <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [ * ]
-    ALTER [ COLUMN ] <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> { SET DEFAULT <VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> | DROP DEFAULT }
-ALTER TABLE [ ONLY ] <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [ * ]
-    ALTER [ COLUMN ] <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> { SET | DROP } NOT NULL
-ALTER TABLE [ ONLY ] <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [ * ]
-    ALTER [ COLUMN ] <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> SET STATISTICS <VAR
-CLASS="REPLACEABLE"
->integer</VAR
->
-ALTER TABLE [ ONLY ] <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [ * ]
-    ALTER [ COLUMN ] <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }
-ALTER TABLE [ ONLY ] <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [ * ]
-    SET WITHOUT OIDS
+>action</VAR
+> [, ... ]
 ALTER TABLE [ ONLY ] <VAR
 CLASS="REPLACEABLE"
 >name</VAR
@@ -196,43 +139,89 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >new_name</VAR
 >
-ALTER TABLE [ ONLY ] <VAR
+
+where <VAR
 CLASS="REPLACEABLE"
->name</VAR
-> [ * ]
+>action</VAR
+> is one of:
+
+    ADD [ COLUMN ] <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>type</VAR
+> [ <VAR
+CLASS="REPLACEABLE"
+>column_constraint</VAR
+> [ ... ] ]
+    DROP [ COLUMN ] <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> [ RESTRICT | CASCADE ]
+    ALTER [ COLUMN ] <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> TYPE <VAR
+CLASS="REPLACEABLE"
+>type</VAR
+> [ USING <VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> ]
+    ALTER [ COLUMN ] <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> SET DEFAULT <VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>
+    ALTER [ COLUMN ] <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> DROP DEFAULT
+    ALTER [ COLUMN ] <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> { SET | DROP } NOT NULL
+    ALTER [ COLUMN ] <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> SET STATISTICS <VAR
+CLASS="REPLACEABLE"
+>integer</VAR
+>
+    ALTER [ COLUMN ] <VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }
     ADD <VAR
 CLASS="REPLACEABLE"
 >table_constraint</VAR
 >
-ALTER TABLE [ ONLY ] <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [ * ]
     DROP CONSTRAINT <VAR
 CLASS="REPLACEABLE"
 >constraint_name</VAR
 > [ RESTRICT | CASCADE ]
-ALTER TABLE <VAR
+    CLUSTER ON <VAR
 CLASS="REPLACEABLE"
->name</VAR
+>index_name</VAR
 >
+    SET WITHOUT CLUSTER
+    SET WITHOUT OIDS
     OWNER TO <VAR
 CLASS="REPLACEABLE"
 >new_owner</VAR
 >
-ALTER TABLE <VAR
+    SET TABLESPACE <VAR
 CLASS="REPLACEABLE"
->name</VAR
->
-    CLUSTER ON <VAR
-CLASS="REPLACEABLE"
->index_name</VAR
+>tablespace_name</VAR
 ></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35256"
+NAME="AEN34998"
 ></A
 ><H2
 >Description</H2
@@ -249,9 +238,9 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->ADD COLUMN</VAR
+>ADD COLUMN</TT
 ></DT
 ><DD
 ><P
@@ -265,29 +254,53 @@ HREF="sql-createtable.html"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->DROP COLUMN</VAR
+>DROP COLUMN</TT
 ></DT
 ><DD
 ><P
 >      This form drops a column from a table.  Indexes and
       table constraints involving the column will be automatically
-      dropped as well.  You will need to say <VAR
+      dropped as well.  You will need to say <TT
 CLASS="LITERAL"
->CASCADE</VAR
+>CASCADE</TT
 > if
       anything outside the table depends on the column, for example,
       foreign key references or views.
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SET</VAR
->/<VAR
+>ALTER COLUMN TYPE</TT
+></DT
+><DD
+><P
+>      This form changes the type of a column of a table. Indexes and
+      simple table constraints involving the column will be automatically
+      converted to use the new column type by reparsing the originally
+      supplied expression.  The optional <TT
 CLASS="LITERAL"
->DROP DEFAULT</VAR
+>USING</TT
+>
+      clause specifies how to compute the new column value from the old;
+      if omitted, the default conversion is the same as an assignment
+      cast from old data type to new.  A  <TT
+CLASS="LITERAL"
+>USING</TT
+>
+      clause must be provided if there is no implicit or assignment
+      cast from old to new type.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SET</TT
+>/<TT
+CLASS="LITERAL"
+>DROP DEFAULT</TT
 ></DT
 ><DD
 ><P
@@ -302,34 +315,34 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >INSERT</TT
 > statements on the view before
-      the view's <VAR
+      the view's <TT
 CLASS="LITERAL"
->ON INSERT</VAR
+>ON INSERT</TT
 > rule is applied.
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SET</VAR
->/<VAR
+>SET</TT
+>/<TT
 CLASS="LITERAL"
->DROP NOT NULL</VAR
+>DROP NOT NULL</TT
 ></DT
 ><DD
 ><P
 >      These forms change whether a column is marked to allow null
-      values or to reject null values.  You can only use <VAR
+      values or to reject null values.  You can only use <TT
 CLASS="LITERAL"
 >SET
-      NOT NULL</VAR
+      NOT NULL</TT
 > when the column contains no null values.
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SET STATISTICS</VAR
+>SET STATISTICS</TT
 ></DT
 ><DD
 ><P
@@ -342,45 +355,54 @@ HREF="sql-analyze.html"
 ></A
 > operations.
       The target can be set in the range 0 to 1000; alternatively, set it
-      to -1 to revert to using the system default statistics target.
+      to -1 to revert to using the system default statistics
+      target. For more information on the use of statistics by the
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query planner, refer to
+      <A
+HREF="planner-stats.html"
+>Section 13.2</A
+>.
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->SET STORAGE</VAR
+>SET STORAGE</TT
 ></DT
 ><DD
 ><P
 >      This form sets the storage mode for a column. This controls whether this
       column is held inline or in a supplementary table, and whether the data
-      should be compressed or not. <VAR
+      should be compressed or not. <TT
 CLASS="LITERAL"
->PLAIN</VAR
+>PLAIN</TT
 > must be used
       for fixed-length values such as <TT
 CLASS="TYPE"
 >integer</TT
 > and is
-      inline, uncompressed. <VAR
+      inline, uncompressed. <TT
 CLASS="LITERAL"
->MAIN</VAR
+>MAIN</TT
 > is for inline,
-      compressible data. <VAR
+      compressible data. <TT
 CLASS="LITERAL"
->EXTERNAL</VAR
+>EXTERNAL</TT
 > is for external,
-      uncompressed data, and <VAR
+      uncompressed data, and <TT
 CLASS="LITERAL"
->EXTENDED</VAR
+>EXTENDED</TT
 > is for external,
-      compressed data.  <VAR
+      compressed data.  <TT
 CLASS="LITERAL"
->EXTENDED</VAR
+>EXTENDED</TT
 > is the default for all
-      data types that support it.  The use of <VAR
+      data types that support it.  The use of <TT
 CLASS="LITERAL"
->EXTERNAL</VAR
+>EXTERNAL</TT
 > will, for example,
       make substring operations on a <TT
 CLASS="TYPE"
@@ -390,48 +412,12 @@ CLASS="TYPE"
      </P
 ></DD
 ><DT
-><VAR
-CLASS="LITERAL"
->SET WITHOUT OIDS</VAR
-></DT
-><DD
-><P
->      This form removes the <VAR
-CLASS="LITERAL"
->oid</VAR
-> column from the
-      table.  Removing OIDs from a table does not occur immediately.
-      The space that the OID uses will be reclaimed when the row is
-      updated.  Without updating the row, both the space and the value
-      of the OID are kept indefinitely.  This is semantically similar
-      to the <VAR
-CLASS="LITERAL"
->DROP COLUMN</VAR
-> process.
-     </P
-></DD
-><DT
-><VAR
-CLASS="LITERAL"
->RENAME</VAR
-></DT
-><DD
-><P
->      The <VAR
-CLASS="LITERAL"
->RENAME</VAR
-> forms change the name of a table
-      (or an index, sequence, or view) or the name of an individual column in
-      a table. There is no effect on the stored data.
-     </P
-></DD
-><DT
-><VAR
+><TT
 CLASS="LITERAL"
 >ADD <VAR
 CLASS="REPLACEABLE"
 >table_constraint</VAR
-></VAR
+></TT
 ></DT
 ><DD
 ><P
@@ -445,22 +431,88 @@ HREF="sql-createtable.html"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->DROP CONSTRAINT</VAR
+>DROP CONSTRAINT</TT
 ></DT
 ><DD
 ><P
 >      This form drops constraints on a table.
       Currently, constraints on tables are not required to have unique
       names, so there may be more than one constraint matching the specified
-      name.  All such constraints will be dropped.
+      name.  All matching constraints will be dropped.
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->OWNER</VAR
+>CLUSTER</TT
+></DT
+><DD
+><P
+>      This form selects the default index for future 
+      <A
+HREF="sql-cluster.html"
+><I
+>CLUSTER</I
+></A
+>
+      operations.  It does not actually re-cluster the table.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SET WITHOUT CLUSTER</TT
+></DT
+><DD
+><P
+>      This form removes the most recently used
+      <A
+HREF="sql-cluster.html"
+><I
+>CLUSTER</I
+></A
+>
+      index specification from the table.  This affects
+      future cluster operations that don't specify an index.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SET WITHOUT OIDS</TT
+></DT
+><DD
+><P
+>      This form removes the <TT
+CLASS="LITERAL"
+>oid</TT
+> system column from the
+      table.  This is exactly equivalent to
+      <TT
+CLASS="LITERAL"
+>DROP COLUMN oid RESTRICT</TT
+>,
+      except that it will not complain if there is already no
+      <TT
+CLASS="LITERAL"
+>oid</TT
+> column.
+     </P
+><P
+>      Note that there is no variant of <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+>
+      that allows OIDs to be restored to a table once they have been
+      removed.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>OWNER</TT
 ></DT
 ><DD
 ><P
@@ -469,24 +521,56 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->CLUSTER</VAR
+>SET TABLESPACE</TT
 ></DT
 ><DD
 ><P
->      This form marks a table for future <A
-HREF="sql-cluster.html"
+>      This form changes the table's tablespace to the specified tablespace and
+      moves the data file(s) associated with the table to the new tablespace.
+      Indexes on the table, if any, are not moved; but they can be moved
+      separately with additional <TT
+CLASS="LITERAL"
+>SET TABLESPACE</TT
+> commands.
+      See also 
+      <A
+HREF="sql-createtablespace.html"
 ><I
->CLUSTER</I
+>CREATE TABLESPACE</I
 ></A
->
-      operations.
+>.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RENAME</TT
+></DT
+><DD
+><P
+>      The <TT
+CLASS="LITERAL"
+>RENAME</TT
+> forms change the name of a table
+      (or an index, sequence, or view) or the name of an individual column in
+      a table. There is no effect on the stored data.
      </P
 ></DD
 ></DL
 ></DIV
 ><P>
+  </P
+><P
+>   All the actions except <TT
+CLASS="LITERAL"
+>RENAME</TT
+> can be combined into
+   a list of multiple alterations to apply in parallel.  For example, it
+   is possible to add several columns and/or alter the type of several
+   columns in a single command.  This is particularly useful with large
+   tables, since only one pass over the table need be made.
   </P
 ><P
 >   You must own the table to use <TT
@@ -502,7 +586,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35347"
+NAME="AEN35119"
 ></A
 ><H2
 >Parameters</H2
@@ -519,28 +603,28 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >	The name (possibly schema-qualified) of an existing table to
-	alter. If <VAR
+	alter. If <TT
 CLASS="LITERAL"
->ONLY</VAR
+>ONLY</TT
 > is specified, only that table is
-	altered. If <VAR
+	altered. If <TT
 CLASS="LITERAL"
->ONLY</VAR
+>ONLY</TT
 > is not specified, the table and all
-	its descendant tables (if any) are updated. <VAR
+	its descendant tables (if any) are updated. <TT
 CLASS="LITERAL"
->*</VAR
+>*</TT
 > can be
 	appended to the table name to indicate that descendant tables are
 	to be altered, but in the current version, this is the default
-	behavior.  (In releases before 7.1, <VAR
+	behavior.  (In releases before 7.1, <TT
 CLASS="LITERAL"
->ONLY</VAR
+>ONLY</TT
 > was the
 	default behavior.  The default can be altered by changing the
-	configuration parameter <VAR
-CLASS="VARNAME"
->sql_inheritance</VAR
+	configuration parameter <A
+HREF="runtime-config.html#GUC-SQL-INHERITANCE"
+>sql_inheritance</A
 >.)
        </P
 ></DD
@@ -552,16 +636,6 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >	Name of a new or existing column.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->type</VAR
-></DT
-><DD
-><P
->	Data type of the new column.
        </P
 ></DD
 ><DT
@@ -587,6 +661,17 @@ CLASS="REPLACEABLE"
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
+>type</VAR
+></DT
+><DD
+><P
+>	Data type of the new column, or new data type for an existing
+	column.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
 >table_constraint</VAR
 ></DT
 ><DD
@@ -605,13 +690,25 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><VAR
-CLASS="REPLACEABLE"
->new_owner</VAR
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
 ></DT
 ><DD
 ><P
->	The user name of the new owner of the table.
+>        Automatically drop objects that depend on the dropped column
+	or constraint (for example, views referencing the column).
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>        Refuse to drop the column or constraint if there are any dependent
+	objects. This is the default behavior.
        </P
 ></DD
 ><DT
@@ -626,24 +723,22 @@ CLASS="REPLACEABLE"
 ></DD
 ><DT
 ><VAR
-CLASS="LITERAL"
->CASCADE</VAR
+CLASS="REPLACEABLE"
+>new_owner</VAR
 ></DT
 ><DD
 ><P
->        Automatically drop objects that depend on the dropped column
-	or constraint (for example, views referencing the column).
+>	The user name of the new owner of the table.
        </P
 ></DD
 ><DT
 ><VAR
-CLASS="LITERAL"
->RESTRICT</VAR
+CLASS="REPLACEABLE"
+>tablespace_name</VAR
 ></DT
 ><DD
 ><P
->        Refuse to drop the column or constraint if there are any dependent
-	objects. This is the default behavior.
+>	The tablespace name to which the table will be moved.
        </P
 ></DD
 ></DL
@@ -652,74 +747,91 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35410"
+NAME="AEN35187"
 ></A
 ><H2
 >Notes</H2
 ><P
->    The key word <VAR
+>    The key word <TT
 CLASS="LITERAL"
->COLUMN</VAR
+>COLUMN</TT
 > is noise and can be omitted.
    </P
 ><P
->    In the current implementation of <VAR
+>    When a column is added with <TT
 CLASS="LITERAL"
->ADD COLUMN</VAR
->,
-    default and <VAR
+>ADD COLUMN</TT
+>, all existing
+    rows in the table are initialized with the column's default value
+    (NULL if no <TT
 CLASS="LITERAL"
->NOT NULL</VAR
-> clauses for the new column are not supported.
-    The new column always comes into being with all values null.
-    You can use the <VAR
+>DEFAULT</TT
+> clause is specified).
+   </P
+><P
+>    Adding a column with a non-null default or changing the type of an
+    existing column will require the entire table to be rewritten.  This
+    may take a significant amount of time for a large table; and it will
+    temporarily require double the disk space.
+   </P
+><P
+>    Adding a <TT
 CLASS="LITERAL"
->SET DEFAULT</VAR
-> form
-    of <TT
+>CHECK</TT
+> or <TT
+CLASS="LITERAL"
+>NOT NULL</TT
+> constraint requires
+    scanning the table to verify that existing rows meet the constraint.
+   </P
+><P
+>    The main reason for providing the option to specify multiple changes
+    in a single <TT
 CLASS="COMMAND"
 >ALTER TABLE</TT
-> to set the default afterward.
-    (You may also want to update the already existing rows to the
-    new default value, using
-    <A
-HREF="sql-update.html"
-><I
->UPDATE</I
-></A
->.)
-    If you want to mark the column non-null, use the <VAR
-CLASS="LITERAL"
->SET NOT NULL</VAR
->
-    form after you've entered non-null values for the column in all rows.
+> is that multiple table scans or
+    rewrites can thereby be combined into a single pass over the table.
    </P
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->DROP COLUMN</VAR
+>DROP COLUMN</TT
 > form does not physically remove
     the column, but simply makes it invisible to SQL operations.  Subsequent
-    insert and update operations in the table will store a null value for the column.
-    Thus, dropping a column is quick but it will not immediately reduce the
-    on-disk size of your table, as the space occupied 
+    insert and update operations in the table will store a null value for the
+    column. Thus, dropping a column is quick but it will not immediately
+    reduce the on-disk size of your table, as the space occupied 
     by the dropped column is not reclaimed.  The space will be
     reclaimed over time as existing rows are updated.
-    To reclaim the space at once, do a dummy <TT
-CLASS="COMMAND"
->UPDATE</TT
-> of all rows
-    and then vacuum, as in:
-</P><PRE
-CLASS="PROGRAMLISTING"
->UPDATE table SET col = col;
-VACUUM FULL table;</PRE
-><P>
    </P
 ><P
->    If a table has any descendant tables, it is not permitted to add
-    or rename a column in the parent table without doing the same to
-    the descendants.  That is, <TT
+>    The fact that <TT
+CLASS="LITERAL"
+>ALTER TYPE</TT
+> requires rewriting the whole table
+    is sometimes an advantage, because the rewriting process eliminates
+    any dead space in the table.  For example, to reclaim the space occupied
+    by a dropped column immediately, the fastest way is
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE table ALTER COLUMN anycol TYPE anytype;</PRE
+><P>
+    where <TT
+CLASS="LITERAL"
+>anycol</TT
+> is any remaining table column and
+    <TT
+CLASS="LITERAL"
+>anytype</TT
+> is the same type that column already has.
+    This results in no semantically-visible change in the table,
+    but the command forces rewriting, which gets rid of no-longer-useful
+    data.
+   </P
+><P
+>    If a table has any descendant tables, it is not permitted to add,
+    rename, or change the type of a column in the parent table without doing
+    the same to the descendants.  That is, <TT
 CLASS="COMMAND"
 >ALTER TABLE ONLY</TT
 >
@@ -727,16 +839,16 @@ CLASS="COMMAND"
     columns matching the parent.
    </P
 ><P
->    A recursive <VAR
+>    A recursive <TT
 CLASS="LITERAL"
->DROP COLUMN</VAR
+>DROP COLUMN</TT
 > operation will remove a
     descendant table's column only if the descendant does not inherit
     that column from any other parents and never had an independent
-    definition of the column.  A nonrecursive <VAR
+    definition of the column.  A nonrecursive <TT
 CLASS="LITERAL"
 >DROP
-    COLUMN</VAR
+    COLUMN</TT
 > (i.e., <TT
 CLASS="COMMAND"
 >ALTER TABLE ONLY ... DROP
@@ -748,11 +860,13 @@ CLASS="COMMAND"
 >    Changing any part of a system catalog table is not permitted.
    </P
 ><P
->    Refer to <TT
-CLASS="COMMAND"
->CREATE TABLE</TT
-> for a further description
-    of valid parameters. <A
+>    Refer to <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+> for a further description of valid
+    parameters. <A
 HREF="ddl.html"
 >Chapter 5</A
 > has further information on
@@ -762,7 +876,7 @@ HREF="ddl.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35435"
+NAME="AEN35217"
 ></A
 ><H2
 >Examples</H2
@@ -781,6 +895,15 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >ALTER TABLE distributors DROP COLUMN address RESTRICT;</PRE
+><P>
+  </P
+><P
+>   To change the types of two existing columns in one operation:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors
+    ALTER COLUMN address TYPE varchar(80),
+    ALTER COLUMN name TYPE varchar(100);</PRE
 ><P>
   </P
 ><P
@@ -850,32 +973,43 @@ CLASS="PROGRAMLISTING"
 >ALTER TABLE distributors ADD PRIMARY KEY (dist_id);</PRE
 ><P>
   </P
+><P
+> 
+	To move a table to a different tablespace:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors SET TABLESPACE fasttablespace;</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35459"
+NAME="AEN35245"
 ></A
 ><H2
 >Compatibility</H2
 ><P
->   The <VAR
+>   The <TT
 CLASS="LITERAL"
->ADD COLUMN</VAR
-> form conforms with the SQL
-   standard, with the exception that it does not support defaults and
-   not-null constraints, as explained above.  The <VAR
+>ADD</TT
+>, <TT
 CLASS="LITERAL"
->ALTER
-   COLUMN</VAR
-> form is in full conformance.
-  </P
-><P
->   The clauses to rename tables, columns, indexes, views, and sequences are
+>DROP</TT
+>, and <TT
+CLASS="LITERAL"
+>SET DEFAULT</TT
+>
+   forms conform with the SQL standard.  The other forms are
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > extensions of the SQL standard.
+   Also, the ability to specify more than one manipulation in a single
+   <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+> command is an extension.
   </P
 ><P
 >   <TT
@@ -920,7 +1054,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-altertrigger.html"
+HREF="sql-altertablespace.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -944,7 +1078,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->ALTER TRIGGER</TD
+>ALTER TABLESPACE</TD
 ></TR
 ></TABLE
 ></DIV

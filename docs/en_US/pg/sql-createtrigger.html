@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
 HREF="sql-commands.html"><LINK
 REL="PREVIOUS"
-TITLE="CREATE TABLE AS"
-HREF="sql-createtableas.html"><LINK
+TITLE="CREATE TABLESPACE"
+HREF="sql-createtablespace.html"><LINK
 REL="NEXT"
 TITLE="CREATE TYPE"
 HREF="sql-createtype.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-createtableas.html"
+HREF="sql-createtablespace.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-createtableas.html"
+HREF="sql-createtablespace.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATETRIGGER"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38523"
+NAME="AEN38775"
 ></A
 ><H2
 >Name</H2
 >CREATE TRIGGER&nbsp;--&nbsp;define a new trigger</DIV
 ><A
-NAME="AEN38526"
+NAME="AEN38778"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38528"
+NAME="AEN38780"
 ></A
 ><H2
 >Synopsis</H2
@@ -134,7 +134,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38535"
+NAME="AEN38787"
 ></A
 ><H2
 >Description</H2
@@ -146,11 +146,11 @@ CLASS="COMMAND"
    trigger will be associated with the specified table and will
    execute the specified function <VAR
 CLASS="REPLACEABLE"
->func</VAR
+>funcname</VAR
 > when certain events occur.
   </P
 ><P
->   The trigger can be specified to fire either before before the
+>   The trigger can be specified to fire either before the
    operation is attempted on a row (before constraints are checked and
    the <TT
 CLASS="COMMAND"
@@ -192,30 +192,30 @@ CLASS="QUOTE"
    to the trigger.
   </P
 ><P
->   A trigger that is marked <VAR
+>   A trigger that is marked <TT
 CLASS="LITERAL"
->FOR EACH ROW</VAR
+>FOR EACH ROW</TT
 > is called
    once for every row that the operation modifies. For example, a
    <TT
 CLASS="COMMAND"
 >DELETE</TT
 > that affects 10 rows will cause any
-   <VAR
+   <TT
 CLASS="LITERAL"
->ON DELETE</VAR
+>ON DELETE</TT
 > triggers on the target relation to be
    called 10 separate times, once for each deleted row. In contrast, a
-   trigger that is marked <VAR
+   trigger that is marked <TT
 CLASS="LITERAL"
->FOR EACH STATEMENT</VAR
+>FOR EACH STATEMENT</TT
 > only
    executes once for any given operation, regardless of how many rows
    it modifies (in particular, an operation that modifies zero rows
-   will still result in the execution of any applicable <VAR
+   will still result in the execution of any applicable <TT
 CLASS="LITERAL"
 >FOR
-   EACH STATEMENT</VAR
+   EACH STATEMENT</TT
 > triggers).
   </P
 ><P
@@ -236,14 +236,14 @@ CLASS="COMMAND"
 ><P
 >   Refer to <A
 HREF="triggers.html"
->Chapter 35</A
+>Chapter 33</A
 > for more information about triggers.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38562"
+NAME="AEN38814"
 ></A
 ><H2
 >Parameters</H2
@@ -264,12 +264,12 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->BEFORE</VAR
-><BR><VAR
+>BEFORE</TT
+><BR><TT
 CLASS="LITERAL"
->AFTER</VAR
+>AFTER</TT
 ></DT
 ><DD
 ><P
@@ -296,9 +296,9 @@ CLASS="COMMAND"
 >DELETE</TT
 >; this specifies the event that will
       fire the trigger. Multiple events can be specified using
-      <VAR
+      <TT
 CLASS="LITERAL"
->OR</VAR
+>OR</TT
 >.
      </P
 ></DD
@@ -314,35 +314,35 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><VAR
+><TT
 CLASS="LITERAL"
->FOR EACH ROW</VAR
-><BR><VAR
+>FOR EACH ROW</TT
+><BR><TT
 CLASS="LITERAL"
->FOR EACH STATEMENT</VAR
+>FOR EACH STATEMENT</TT
 ></DT
 ><DD
 ><P
 >      This specifies whether the trigger procedure should be fired
       once for every row affected by the trigger event, or just once
-      per SQL statement. If neither is specified, <VAR
+      per SQL statement. If neither is specified, <TT
 CLASS="LITERAL"
 >FOR EACH
-      STATEMENT</VAR
+      STATEMENT</TT
 > is the default.
      </P
 ></DD
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
->func</VAR
+>funcname</VAR
 ></DT
 ><DD
 ><P
 >      A user-supplied function that is declared as taking no arguments
-      and returning type <VAR
+      and returning type <TT
 CLASS="LITERAL"
->trigger</VAR
+>trigger</TT
 >, which is executed when
       the trigger fires.
      </P
@@ -376,9 +376,9 @@ NAME="SQL-CREATETRIGGER-NOTES"
 >Notes</H2
 ><P
 >   To create a trigger on a table, the user must have the
-   <VAR
+   <TT
 CLASS="LITERAL"
->TRIGGER</VAR
+>TRIGGER</TT
 > privilege on the table.
   </P
 ><P
@@ -426,7 +426,7 @@ NAME="R1-SQL-CREATETRIGGER-2"
 ><P
 >   <A
 HREF="trigger-example.html"
->Section 35.4</A
+>Section 33.4</A
 > contains a complete example.
   </P
 ></DIV
@@ -455,9 +455,9 @@ CLASS="PRODUCTNAME"
 ><LI
 ><P
 >      SQL99 allows triggers to fire on updates to specific columns
-      (e.g., <VAR
+      (e.g., <TT
 CLASS="LITERAL"
->AFTER UPDATE OF col1, col2</VAR
+>AFTER UPDATE OF col1, col2</TT
 >).
      </P
 ></LI
@@ -471,11 +471,11 @@ CLASS="QUOTE"
 CLASS="QUOTE"
 >"new"</SPAN
 > rows or tables for use in the definition
-      of the triggered action (e.g., <VAR
+      of the triggered action (e.g., <TT
 CLASS="LITERAL"
 >CREATE TRIGGER ... ON
       tablename REFERENCING OLD ROW AS somename NEW ROW AS othername
-      ...</VAR
+      ...</TT
 >).  Since <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -514,9 +514,9 @@ CLASS="PRODUCTNAME"
   </P
 ><P
 >   The ability to specify multiple actions for a single trigger using
-   <VAR
+   <TT
 CLASS="LITERAL"
->OR</VAR
+>OR</TT
 > is a <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -527,7 +527,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38651"
+NAME="AEN38903"
 ></A
 ><H2
 >See Also</H2
@@ -563,7 +563,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-createtableas.html"
+HREF="sql-createtablespace.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -591,7 +591,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->CREATE TABLE AS</TD
+>CREATE TABLESPACE</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -99,7 +99,7 @@ NAME="LIBPQ-THREADING"
 >27.12. Behavior in Threaded Programs</A
 ></H1
 ><A
-NAME="AEN21890"
+NAME="AEN23252"
 ></A
 ><P
 ><SPAN
@@ -110,15 +110,29 @@ CLASS="APPLICATION"
 CLASS="FILENAME"
 >configure</TT
 > command-line option
-<VAR
+<TT
 CLASS="LITERAL"
->--enable-thread-safety</VAR
-> has been used when the PostgreSQL
-distribution was built.
-In addition, you might need to use additional compiler command-line 
-options when you compile your application code.  Refer to your system's
-documentation for information about how to build thread-enabled
-applications.</P
+>--enable-thread-safety</TT
+> has been used when the
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> distribution was built.  In
+addition, you might need to use additional compiler command-line
+options when you compile your application code.  Refer to your
+system's documentation for information about how to build
+thread-enabled applications, or look in 
+<TT
+CLASS="FILENAME"
+>src/Makefile.global</TT
+> for <TT
+CLASS="LITERAL"
+>PTHREAD_CFLAGS</TT
+>
+and <TT
+CLASS="LITERAL"
+>PTHREAD_LIBS</TT
+>.</P
 ><P
 >One restriction is that no two threads attempt to manipulate the same
 <TT
@@ -126,7 +140,7 @@ CLASS="STRUCTNAME"
 >PGconn</TT
 > object at the same time. In particular, you cannot
 issue concurrent commands from different threads through the same
-connection object. (If you need to run concurrent commands, start up
+connection object. (If you need to run concurrent commands, use
 multiple connections.)</P
 ><P
 ><TT
@@ -160,22 +174,108 @@ CLASS="FUNCTION"
 CLASS="APPLICATION"
 >libpq</SPAN
 > applications that use the
-<VAR
+<TT
 CLASS="LITERAL"
->crypt</VAR
+>crypt</TT
 > authentication method rely on the
-<VAR
+<TT
 CLASS="LITERAL"
->crypt()</VAR
+>crypt()</TT
 > operating system function, which is often
 not thread-safe.<A
-NAME="AEN21911"
+NAME="AEN23277"
 ></A
-> It is better to use the <VAR
+> It is better to use the <TT
 CLASS="LITERAL"
->md5</VAR
+>md5</TT
 > method,
 which is thread-safe on all platforms.</P
+><P
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> must ignore <TT
+CLASS="LITERAL"
+>SIGPIPE</TT
+> signals
+generated internally by <CODE
+CLASS="FUNCTION"
+>send()</CODE
+> calls to backend processes.
+When <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is configured without
+<TT
+CLASS="LITERAL"
+>--enable-thread-safety</TT
+>, <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> sets
+<TT
+CLASS="LITERAL"
+>SIGPIPE</TT
+> to <TT
+CLASS="LITERAL"
+>SIG_IGN</TT
+> before each
+<CODE
+CLASS="FUNCTION"
+>send()</CODE
+> call and restores the original signal handler after
+completion. When <TT
+CLASS="LITERAL"
+>--enable-thread-safety</TT
+> is used,
+<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> installs its own <TT
+CLASS="LITERAL"
+>SIGPIPE</TT
+> handler
+before the first database connection if no custom <TT
+CLASS="LITERAL"
+>SIGPIPE</TT
+>
+handler has been installed previously. This handler uses thread-local
+storage to determine if a <TT
+CLASS="LITERAL"
+>SIGPIPE</TT
+> signal has been generated
+by a libpq <CODE
+CLASS="FUNCTION"
+>send()</CODE
+>. If an application wants to install
+its own <TT
+CLASS="LITERAL"
+>SIGPIPE</TT
+> signal handler, it should call
+<CODE
+CLASS="FUNCTION"
+>PQinSend()</CODE
+> to determine if it should ignore the
+<TT
+CLASS="LITERAL"
+>SIGPIPE</TT
+> signal. This function is available in both
+thread-safe and non-thread-safe versions of <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>.</P
+><P
+>If you experience problems with threaded applications, run
+the program in <TT
+CLASS="FILENAME"
+>src/tools/thread</TT
+> to see if your
+platform has thread-unsafe functions.  This program is run 
+by <TT
+CLASS="FILENAME"
+>configure</TT
+>, but for binary distributions
+your library might not match the library used to build the binaries.</P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Subquery Expressions"
 HREF="functions-subquery.html"><LINK
 REL="NEXT"
-TITLE="Type Conversion"
-HREF="typeconv.html"><LINK
+TITLE="Set Returning Functions"
+HREF="functions-srf.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="typeconv.html"
+HREF="functions-srf.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -96,19 +96,19 @@ NAME="FUNCTIONS-COMPARISONS"
 >9.17. Row and Array Comparisons</A
 ></H1
 ><A
-NAME="AEN12638"
+NAME="AEN12476"
 ></A
 ><A
-NAME="AEN12640"
+NAME="AEN12478"
 ></A
 ><A
-NAME="AEN12642"
+NAME="AEN12480"
 ></A
 ><A
-NAME="AEN12644"
+NAME="AEN12482"
 ></A
 ><A
-NAME="AEN12646"
+NAME="AEN12484"
 ></A
 ><P
 >   This section describes several specialized constructs for making
@@ -132,10 +132,10 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN12651"
->9.17.1. <VAR
+NAME="AEN12489"
+>9.17.1. <TT
 CLASS="LITERAL"
->IN</VAR
+>IN</TT
 ></A
 ></H2
 ><PRE
@@ -196,10 +196,10 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN12667"
->9.17.2. <VAR
+NAME="AEN12505"
+>9.17.2. <TT
 CLASS="LITERAL"
->NOT IN</VAR
+>NOT IN</TT
 ></A
 ></H2
 ><PRE
@@ -262,12 +262,12 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->   <VAR
+>   <TT
 CLASS="LITERAL"
->x NOT IN y</VAR
-> is equivalent to <VAR
+>x NOT IN y</TT
+> is equivalent to <TT
 CLASS="LITERAL"
->NOT (x IN y)</VAR
+>NOT (x IN y)</TT
 > in all
    cases.  However, null values are much more likely to trip up the novice when
    working with <TT
@@ -287,13 +287,13 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN12689"
->9.17.3. <VAR
+NAME="AEN12527"
+>9.17.3. <TT
 CLASS="LITERAL"
->ANY</VAR
->/<VAR
+>ANY</TT
+>/<TT
 CLASS="LITERAL"
->SOME</VAR
+>SOME</TT
 > (array)</A
 ></H2
 ><PRE
@@ -356,10 +356,10 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN12708"
->9.17.4. <VAR
+NAME="AEN12546"
+>9.17.4. <TT
 CLASS="LITERAL"
->ALL</VAR
+>ALL</TT
 > (array)</A
 ></H2
 ><PRE
@@ -403,43 +403,35 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN12720"
+NAME="AEN12558"
 >9.17.5. Row-wise Comparison</A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
->(<VAR
+><VAR
 CLASS="REPLACEABLE"
->expression</VAR
-> [<SPAN
-CLASS="OPTIONAL"
->, <VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> ...</SPAN
->]) <VAR
+>row_constructor</VAR
+> <VAR
 CLASS="REPLACEABLE"
 >operator</VAR
-> (<VAR
+> <VAR
 CLASS="REPLACEABLE"
->expression</VAR
-> [<SPAN
-CLASS="OPTIONAL"
->, <VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> ...</SPAN
->])</PRE
+>row_constructor</VAR
+></PRE
 ><P
->   Each side is a list of scalar expressions; the two lists must be
-   of the same length.  Each side is evaluated and they are compared
-   row-wise.
-   Presently, only <VAR
+>   Each side is a row constructor,
+   as described in <A
+HREF="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS"
+>Section 4.2.11</A
+>.
+   The two row values must have the same number of fields.
+   Each side is evaluated and they are compared row-wise.
+   Presently, only <TT
 CLASS="LITERAL"
->=</VAR
-> and <VAR
+>=</TT
+> and <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
+>&lt;&gt;</TT
 > operators are allowed
    in row-wise comparisons.
    The result is <SPAN
@@ -453,6 +445,39 @@ CLASS="QUOTE"
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of the row comparison is unknown (null).
+  </P
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+> IS DISTINCT FROM <VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+></PRE
+><P
+>   This construct is similar to a <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> row comparison,
+   but it does not yield null for null inputs.  Instead, any null value is
+   considered unequal to (distinct from) any non-null value, and any two
+   nulls are considered equal (not distinct).  Thus the result will always
+   be either true or false, never null.
+  </P
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+> IS NULL
+<VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+> IS NOT NULL</PRE
+><P
+>   These constructs test a row value for null or not null.  A row value
+   is considered not null if it has at least one field that is not null.
   </P
 ></DIV
 ></DIV
@@ -490,7 +515,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="typeconv.html"
+HREF="functions-srf.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -514,7 +539,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Type Conversion</TD
+>Set Returning Functions</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="extend.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. Extending <ACRONYM
+>Chapter 31. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
@@ -96,7 +96,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XOPER-OPTIMIZATION"
->33.12. Operator Optimization Information</A
+>31.12. Operator Optimization Information</A
 ></H1
 ><P
 >    A <SPAN
@@ -119,41 +119,41 @@ CLASS="PRODUCTNAME"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.  The ones described here are all
-    the ones that release 7.4 understands.
+    the ones that release 8.0.0beta1 understands.
    </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29855"
->33.12.1. <VAR
+NAME="AEN29169"
+>31.12.1. <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 ></A
 ></H2
 ><P
->     The <VAR
+>     The <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 > clause, if provided, names an operator that is the
      commutator of the operator being defined.  We say that operator A is the
      commutator of operator B if (x A y) equals (y B x) for all possible input
      values x, y.  Notice that B is also the commutator of A.  For example,
-     operators <VAR
+     operators <TT
 CLASS="LITERAL"
->&lt;</VAR
-> and <VAR
+>&lt;</TT
+> and <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 > for a particular data type are usually each others'
-     commutators, and operator <VAR
+     commutators, and operator <TT
 CLASS="LITERAL"
->+</VAR
+>+</TT
 > is usually commutative with itself.
-     But operator <VAR
+     But operator <TT
 CLASS="LITERAL"
->-</VAR
+>-</TT
 > is usually not commutative with anything.
     </P
 ><P
@@ -164,9 +164,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
      needs to be given to look up the commutator, and that's all that needs to
-     be provided in the <VAR
+     be provided in the <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 > clause.
     </P
 ><P
@@ -177,25 +177,25 @@ CLASS="QUOTE"
 >"flip around"</SPAN
 > such a clause to the forms
      needed for different plan types.  For example, consider a query with
-     a WHERE clause like <VAR
+     a WHERE clause like <TT
 CLASS="LITERAL"
->tab1.x = tab2.y</VAR
->, where <VAR
+>tab1.x = tab2.y</TT
+>, where <TT
 CLASS="LITERAL"
->tab1.x</VAR
+>tab1.x</TT
 >
-     and <VAR
+     and <TT
 CLASS="LITERAL"
->tab2.y</VAR
+>tab2.y</TT
 > are of a user-defined type, and suppose that
-     <VAR
+     <TT
 CLASS="LITERAL"
->tab2.y</VAR
+>tab2.y</TT
 > is indexed.  The optimizer cannot generate an
      index scan unless it can determine how to flip the clause around to
-     <VAR
+     <TT
 CLASS="LITERAL"
->tab2.y = tab1.x</VAR
+>tab2.y = tab1.x</TT
 >, because the index-scan machinery expects
      to see the indexed column on the left of the operator it is given.
      <SPAN
@@ -209,9 +209,9 @@ CLASS="EMPHASIS"
 ></SPAN
 > simply
      assume that this is a valid transformation --- the creator of the
-     <VAR
+     <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 > operator must specify that it is valid, by marking the
      operator with commutator information.
     </P
@@ -227,9 +227,9 @@ CLASS="LITERAL"
 ></P><UL
 ><LI
 ><P
->	One way is to omit the <VAR
+>	One way is to omit the <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 > clause in the first operator that
 	you define, and then provide one in the second operator's definition.
 	Since <SPAN
@@ -237,26 +237,26 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > knows that commutative
 	operators come in pairs, when it sees the second definition it will
-	automatically go back and fill in the missing <VAR
+	automatically go back and fill in the missing <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 > clause in
 	the first definition.
        </P
 ></LI
 ><LI
 ><P
->	The other, more straightforward way is just to include <VAR
+>	The other, more straightforward way is just to include <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 > clauses
 	in both definitions.  When <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > processes
-	the first definition and realizes that <VAR
+	the first definition and realizes that <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 > refers to a nonexistent
 	operator, the system will make a dummy entry for that operator in the
 	system catalog.  This dummy entry will have valid data only
@@ -281,27 +281,27 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29890"
->33.12.2. <VAR
+NAME="AEN29204"
+>31.12.2. <TT
 CLASS="LITERAL"
->NEGATOR</VAR
+>NEGATOR</TT
 ></A
 ></H2
 ><P
->     The <VAR
+>     The <TT
 CLASS="LITERAL"
->NEGATOR</VAR
+>NEGATOR</TT
 > clause, if provided, names an operator that is the
      negator of the operator being defined.  We say that operator A
      is the negator of operator B if both return Boolean results and
      (x A y) equals NOT (x B y) for all possible inputs x, y.
      Notice that B is also the negator of A.
-     For example, <VAR
+     For example, <TT
 CLASS="LITERAL"
->&lt;</VAR
-> and <VAR
+>&lt;</TT
+> and <TT
 CLASS="LITERAL"
->&gt;=</VAR
+>&gt;=</TT
 > are a negator pair for most data types.
      An operator can never validly be its own negator.
     </P
@@ -312,28 +312,28 @@ CLASS="LITERAL"
    </P
 ><P
 >    An operator's negator must have the same left and/or right operand types
-    as the operator to be defined, so just as with <VAR
+    as the operator to be defined, so just as with <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 >, only the operator
-    name need be given in the <VAR
+    name need be given in the <TT
 CLASS="LITERAL"
->NEGATOR</VAR
+>NEGATOR</TT
 > clause.
    </P
 ><P
 >    Providing a negator is very helpful to the query optimizer since
-    it allows expressions like <VAR
+    it allows expressions like <TT
 CLASS="LITERAL"
->NOT (x = y)</VAR
+>NOT (x = y)</TT
 > to be simplified into
-    <VAR
+    <TT
 CLASS="LITERAL"
->x &lt;&gt; y</VAR
+>x &lt;&gt; y</TT
 >.  This comes up more often than you might think, because
-    <VAR
+    <TT
 CLASS="LITERAL"
->NOT</VAR
+>NOT</TT
 > operations can be inserted as a consequence of other rearrangements.
    </P
 ><P
@@ -346,30 +346,30 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29906"
->33.12.3. <VAR
+NAME="AEN29220"
+>31.12.3. <TT
 CLASS="LITERAL"
->RESTRICT</VAR
+>RESTRICT</TT
 ></A
 ></H2
 ><P
->    The <VAR
+>    The <TT
 CLASS="LITERAL"
->RESTRICT</VAR
+>RESTRICT</TT
 > clause, if provided, names a restriction selectivity
     estimation function for the operator.  (Note that this is a function
-    name, not an operator name.)  <VAR
+    name, not an operator name.)  <TT
 CLASS="LITERAL"
->RESTRICT</VAR
+>RESTRICT</TT
 > clauses only make sense for
     binary operators that return <TT
 CLASS="TYPE"
 >boolean</TT
 >.  The idea behind a restriction
     selectivity estimator is to guess what fraction of the rows in a
-    table will satisfy a <VAR
+    table will satisfy a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >-clause condition of the form
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -377,15 +377,15 @@ CLASS="PROGRAMLISTING"
 ><P>
     for the current operator and a particular constant value.
     This assists the optimizer by
-    giving it some idea of how many rows will be eliminated by <VAR
+    giving it some idea of how many rows will be eliminated by <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >
     clauses that have this form.  (What happens if the constant is on
     the left, you may be wondering?  Well, that's one of the things that
-    <VAR
+    <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 > is for...)
    </P
 ><P
@@ -403,9 +403,9 @@ BORDER="0"
 ><CODE
 CLASS="FUNCTION"
 >eqsel</CODE
->	for <VAR
+>	for <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 ></TD
 ></TR
 ><TR
@@ -413,9 +413,9 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >neqsel</CODE
-> for <VAR
+> for <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
+>&lt;&gt;</TT
 ></TD
 ></TR
 ><TR
@@ -423,12 +423,12 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >scalarltsel</CODE
-> for <VAR
+> for <TT
 CLASS="LITERAL"
->&lt;</VAR
-> or <VAR
+>&lt;</TT
+> or <TT
 CLASS="LITERAL"
->&lt;=</VAR
+>&lt;=</TT
 ></TD
 ></TR
 ><TR
@@ -436,12 +436,12 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >scalargtsel</CODE
-> for <VAR
+> for <TT
 CLASS="LITERAL"
->&gt;</VAR
-> or <VAR
+>&gt;</TT
+> or <TT
 CLASS="LITERAL"
->&gt;=</VAR
+>&gt;=</TT
 ></TD
 ></TR
 ></TBODY
@@ -450,17 +450,17 @@ CLASS="LITERAL"
 ></P
 >
     It might seem a little odd that these are the categories, but they
-    make sense if you think about it.  <VAR
+    make sense if you think about it.  <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 > will typically accept only
-    a small fraction of the rows in a table; <VAR
+    a small fraction of the rows in a table; <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
+>&lt;&gt;</TT
 > will typically reject
-    only a small fraction.  <VAR
+    only a small fraction.  <TT
 CLASS="LITERAL"
->&lt;</VAR
+>&lt;</TT
 > will accept a fraction that depends on
     where the given constant falls in the range of values for that table
     column (which, it just so happens, is information collected by
@@ -468,21 +468,21 @@ CLASS="LITERAL"
 CLASS="COMMAND"
 >ANALYZE</TT
 > and made available to the selectivity estimator).
-    <VAR
+    <TT
 CLASS="LITERAL"
->&lt;=</VAR
-> will accept a slightly larger fraction than <VAR
+>&lt;=</TT
+> will accept a slightly larger fraction than <TT
 CLASS="LITERAL"
->&lt;</VAR
+>&lt;</TT
 > for the same
     comparison constant, but they're close enough to not be worth
     distinguishing, especially since we're not likely to do better than a
-    rough guess anyhow.  Similar remarks apply to <VAR
+    rough guess anyhow.  Similar remarks apply to <TT
 CLASS="LITERAL"
->&gt;</VAR
-> and <VAR
+>&gt;</TT
+> and <TT
 CLASS="LITERAL"
->&gt;=</VAR
+>&gt;=</TT
 >.
    </P
 ><P
@@ -550,38 +550,38 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29956"
->33.12.4. <VAR
+NAME="AEN29270"
+>31.12.4. <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 ></A
 ></H2
 ><P
->     The <VAR
+>     The <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > clause, if provided, names a join selectivity
      estimation function for the operator.  (Note that this is a function
-     name, not an operator name.)  <VAR
+     name, not an operator name.)  <TT
 CLASS="LITERAL"
->JOIN</VAR
+>JOIN</TT
 > clauses only make sense for
      binary operators that return <TT
 CLASS="TYPE"
 >boolean</TT
 >.  The idea behind a join
      selectivity estimator is to guess what fraction of the rows in a
-     pair of tables will satisfy a <VAR
+     pair of tables will satisfy a <TT
 CLASS="LITERAL"
->WHERE</VAR
+>WHERE</TT
 >-clause condition of the form
 </P><PRE
 CLASS="PROGRAMLISTING"
 >table1.column1 OP table2.column2</PRE
 ><P>
-     for the current operator.  As with the <VAR
+     for the current operator.  As with the <TT
 CLASS="LITERAL"
->RESTRICT</VAR
+>RESTRICT</TT
 > clause, this helps
      the optimizer very substantially by letting it figure out which
      of several possible join sequences is likely to take the least work.
@@ -600,9 +600,9 @@ BORDER="0"
 ><CODE
 CLASS="FUNCTION"
 >eqjoinsel</CODE
-> for <VAR
+> for <TT
 CLASS="LITERAL"
->=</VAR
+>=</TT
 ></TD
 ></TR
 ><TR
@@ -610,9 +610,9 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >neqjoinsel</CODE
-> for <VAR
+> for <TT
 CLASS="LITERAL"
->&lt;&gt;</VAR
+>&lt;&gt;</TT
 ></TD
 ></TR
 ><TR
@@ -620,12 +620,12 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >scalarltjoinsel</CODE
-> for <VAR
+> for <TT
 CLASS="LITERAL"
->&lt;</VAR
-> or <VAR
+>&lt;</TT
+> or <TT
 CLASS="LITERAL"
->&lt;=</VAR
+>&lt;=</TT
 ></TD
 ></TR
 ><TR
@@ -633,12 +633,12 @@ CLASS="LITERAL"
 ><CODE
 CLASS="FUNCTION"
 >scalargtjoinsel</CODE
-> for <VAR
+> for <TT
 CLASS="LITERAL"
->&gt;</VAR
-> or <VAR
+>&gt;</TT
+> or <TT
 CLASS="LITERAL"
->&gt;=</VAR
+>&gt;=</TT
 ></TD
 ></TR
 ><TR
@@ -674,25 +674,25 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29988"
->33.12.5. <VAR
+NAME="AEN29302"
+>31.12.5. <TT
 CLASS="LITERAL"
->HASHES</VAR
+>HASHES</TT
 ></A
 ></H2
 ><P
->     The <VAR
+>     The <TT
 CLASS="LITERAL"
->HASHES</VAR
+>HASHES</TT
 > clause, if present, tells the system that
      it is permissible to use the hash join method for a join based on this
-     operator.  <VAR
+     operator.  <TT
 CLASS="LITERAL"
->HASHES</VAR
+>HASHES</TT
 > only makes sense for a binary operator that
-     returns <VAR
+     returns <TT
 CLASS="LITERAL"
->boolean</VAR
+>boolean</TT
 >, and in practice the operator had better be
      equality for some data type.
     </P
@@ -702,16 +702,16 @@ CLASS="LITERAL"
      same hash code.  If two values get put in different hash buckets, the
      join will never compare them at all, implicitly assuming that the
      result of the join operator must be false.  So it never makes sense
-     to specify <VAR
+     to specify <TT
 CLASS="LITERAL"
->HASHES</VAR
+>HASHES</TT
 > for operators that do not represent
      equality.
     </P
 ><P
->     To be marked <VAR
+>     To be marked <TT
 CLASS="LITERAL"
->HASHES</VAR
+>HASHES</TT
 >, the join operator must appear
      in a hash index operator class.  This is not enforced when you create
      the operator, since of course the referencing operator class couldn't
@@ -765,13 +765,13 @@ CLASS="NOTE"
      strict, the
      function must also be complete: that is, it should return true or
      false, never null, for any two nonnull inputs.  If this rule is
-     not followed, hash-optimization of <VAR
+     not followed, hash-optimization of <TT
 CLASS="LITERAL"
->IN</VAR
+>IN</TT
 > operations may
-     generate wrong results.  (Specifically, <VAR
+     generate wrong results.  (Specifically, <TT
 CLASS="LITERAL"
->IN</VAR
+>IN</TT
 > might return
      false where the correct answer according to the standard would be null; or it might
      yield an error complaining that it wasn't prepared for a null result.)
@@ -784,37 +784,37 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30008"
->33.12.6. <VAR
+NAME="AEN29322"
+>31.12.6. <TT
 CLASS="LITERAL"
->MERGES</VAR
-> (<VAR
+>MERGES</TT
+> (<TT
 CLASS="LITERAL"
->SORT1</VAR
->, <VAR
+>SORT1</TT
+>, <TT
 CLASS="LITERAL"
->SORT2</VAR
->, <VAR
+>SORT2</TT
+>, <TT
 CLASS="LITERAL"
->LTCMP</VAR
->, <VAR
+>LTCMP</TT
+>, <TT
 CLASS="LITERAL"
->GTCMP</VAR
+>GTCMP</TT
 >)</A
 ></H2
 ><P
->     The <VAR
+>     The <TT
 CLASS="LITERAL"
->MERGES</VAR
+>MERGES</TT
 > clause, if present, tells the system that
      it is permissible to use the merge-join method for a join based on this
-     operator.  <VAR
+     operator.  <TT
 CLASS="LITERAL"
->MERGES</VAR
+>MERGES</TT
 > only makes sense for a binary operator that
-     returns <VAR
+     returns <TT
 CLASS="LITERAL"
->boolean</VAR
+>boolean</TT
 >, and in practice the operator must represent
      equality for some data type or pair of data types.
     </P
@@ -853,41 +853,41 @@ CLASS="TYPE"
      operand data types; but when the operand types are the same the three
      less-than operators are all the same operator.)
      It is possible to
-     specify these operators individually by name, as the <VAR
+     specify these operators individually by name, as the <TT
 CLASS="LITERAL"
->SORT1</VAR
+>SORT1</TT
 >,
-     <VAR
+     <TT
 CLASS="LITERAL"
->SORT2</VAR
->, <VAR
+>SORT2</TT
+>, <TT
 CLASS="LITERAL"
->LTCMP</VAR
->, and <VAR
+>LTCMP</TT
+>, and <TT
 CLASS="LITERAL"
->GTCMP</VAR
+>GTCMP</TT
 > options
      respectively.  The system will fill in the default names
-     <VAR
+     <TT
 CLASS="LITERAL"
->&lt;</VAR
->, <VAR
+>&lt;</TT
+>, <TT
 CLASS="LITERAL"
->&lt;</VAR
->, <VAR
+>&lt;</TT
+>, <TT
 CLASS="LITERAL"
->&lt;</VAR
->, <VAR
+>&lt;</TT
+>, <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 >
-     respectively if any of these are omitted when <VAR
+     respectively if any of these are omitted when <TT
 CLASS="LITERAL"
->MERGES</VAR
+>MERGES</TT
 > is
-     specified.  Also, <VAR
+     specified.  Also, <TT
 CLASS="LITERAL"
->MERGES</VAR
+>MERGES</TT
 > will be assumed to be implied if any
      of these four operator options appear, so it is possible to specify
      just some of them and let the system fill in the rest.
@@ -895,22 +895,22 @@ CLASS="LITERAL"
 ><P
 >     The operand data types of the four comparison operators can be deduced
      from the operand types of the merge-joinable operator, so just as with
-     <VAR
+     <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
+>COMMUTATOR</TT
 >, only the operator names need be given in these
      clauses.  Unless you are using peculiar choices of operator names,
-     it's sufficient to write <VAR
+     it's sufficient to write <TT
 CLASS="LITERAL"
->MERGES</VAR
+>MERGES</TT
 > and let the system fill in
      the details.
-     (As with <VAR
+     (As with <TT
 CLASS="LITERAL"
->COMMUTATOR</VAR
-> and <VAR
+>COMMUTATOR</TT
+> and <TT
 CLASS="LITERAL"
->NEGATOR</VAR
+>NEGATOR</TT
 >, the system is
      able to make dummy
      operator entries if you happen to define the equality operator before
@@ -977,32 +977,32 @@ CLASS="NOTE"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > versions before 7.3,
-     the <VAR
+     the <TT
 CLASS="LITERAL"
->MERGES</VAR
+>MERGES</TT
 > shorthand was not available: to make a
-     merge-joinable operator one had to write both <VAR
+     merge-joinable operator one had to write both <TT
 CLASS="LITERAL"
->SORT1</VAR
+>SORT1</TT
 > and
-     <VAR
+     <TT
 CLASS="LITERAL"
->SORT2</VAR
-> explicitly.  Also, the <VAR
+>SORT2</TT
+> explicitly.  Also, the <TT
 CLASS="LITERAL"
->LTCMP</VAR
+>LTCMP</TT
 > and
-     <VAR
+     <TT
 CLASS="LITERAL"
->GTCMP</VAR
+>GTCMP</TT
 >
      options did not exist; the names of those operators were hardwired as
-     <VAR
+     <TT
 CLASS="LITERAL"
->&lt;</VAR
-> and <VAR
+>&lt;</TT
+> and <TT
 CLASS="LITERAL"
->&gt;</VAR
+>&gt;</TT
 > respectively.
     </P
 ></BLOCKQUOTE

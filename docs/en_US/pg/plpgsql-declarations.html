@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4 Documentation"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-11-16T21:52:34"></HEAD
+CONTENT="2004-08-13T19:30:48"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4 Documentation</TH
+>PostgreSQL 8.0.0beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 37. <SPAN
+>Chapter 35. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,17 +99,17 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-DECLARATIONS"
->37.4. Declarations</A
+>35.4. Declarations</A
 ></H1
 ><P
 >     All variables used in a block must be declared in the
      declarations section of the block. 
-     (The only exception is that the loop variable of a <VAR
+     (The only exception is that the loop variable of a <TT
 CLASS="LITERAL"
->FOR</VAR
-> loop iterating
-     over a range of integer values is automatically declared as an integer
-     variable.)
+>FOR</TT
+> loop
+     iterating over a range of integer values is automatically declared as an
+     integer variable.)
     </P
 ><P
 >     <SPAN
@@ -164,40 +164,40 @@ CLASS="REPLACEABLE"
 > </SPAN
 >];</PRE
 ><P>
-      The <VAR
+      The <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 > clause, if given, specifies the initial value assigned
-      to the variable when the block is entered.  If the <VAR
+      to the variable when the block is entered.  If the <TT
 CLASS="LITERAL"
->DEFAULT</VAR
+>DEFAULT</TT
 > clause
       is not given then the variable is initialized to the
       <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > null value. 
-      The <VAR
+      The <TT
 CLASS="LITERAL"
->CONSTANT</VAR
+>CONSTANT</TT
 > option prevents the variable from being assigned to,
       so that its value remains constant for the duration of the block.
-      If <VAR
+      If <TT
 CLASS="LITERAL"
->NOT NULL</VAR
+>NOT NULL</TT
 >
       is specified, an assignment of a null value results in a run-time
-      error. All variables declared as <VAR
+      error. All variables declared as <TT
 CLASS="LITERAL"
->NOT NULL</VAR
+>NOT NULL</TT
 >
       must have a nonnull default value specified.
      </P
 ><P
 >      The default value is evaluated every time the block is entered. So,
-      for example, assigning <VAR
+      for example, assigning <TT
 CLASS="LITERAL"
->'now'</VAR
+>'now'</TT
 > to a variable of type
       <TT
 CLASS="TYPE"
@@ -211,7 +211,7 @@ CLASS="TYPE"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >quantity integer DEFAULT 32;
-url varchar := ''http://mysite.com'';
+url varchar := 'http://mysite.com';
 user_id CONSTANT integer := 10;</PRE
 ><P>
      </P
@@ -221,9 +221,49 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-ALIASES"
->37.4.1. Aliases for Function Parameters</A
+>35.4.1. Aliases for Function Parameters</A
 ></H2
-><PRE
+><P
+>      Parameters passed to functions are named with the identifiers
+      <TT
+CLASS="LITERAL"
+>$1</TT
+>, <TT
+CLASS="LITERAL"
+>$2</TT
+>,
+      etc.  Optionally, aliases can be declared for
+      <TT
+CLASS="LITERAL"
+>$<VAR
+CLASS="REPLACEABLE"
+>n</VAR
+></TT
+>
+      parameter names for increased readability.  Either the alias or the
+      numeric identifier can then be used to refer to the parameter value.
+      There are two ways to create an alias.  The preferred way is to give a
+      name to the parameter in the <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command,
+      for example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION sales_tax(subtotal real) RETURNS real AS $$
+BEGIN
+    RETURN subtotal * 0.06;
+END;
+$$ LANGUAGE plpgsql;</PRE
+><P>
+      The other way, which was the only way available before
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0, is to explicitly
+      declare an alias, using the declaration syntax
+
+</P><PRE
 CLASS="SYNOPSIS"
 ><VAR
 CLASS="REPLACEABLE"
@@ -232,54 +272,37 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >n</VAR
 >;</PRE
-><P
->      Parameters passed to functions are named with the identifiers
-      <VAR
-CLASS="LITERAL"
->$1</VAR
->, <VAR
-CLASS="LITERAL"
->$2</VAR
->,
-      etc.  Optionally, aliases can be declared for
-      <VAR
-CLASS="LITERAL"
->$<VAR
-CLASS="REPLACEABLE"
->n</VAR
-></VAR
->
-      parameter names for increased readability.  Either the alias or the
-      numeric identifier can then be used to refer to the parameter value.
-      Some examples:
+><P>
+
+      The same example in this style looks like
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION sales_tax(real) RETURNS real AS '
+>CREATE FUNCTION sales_tax(real) RETURNS real AS $$
 DECLARE
     subtotal ALIAS FOR $1;
 BEGIN
     RETURN subtotal * 0.06;
 END;
-' LANGUAGE plpgsql;
-
-
-CREATE FUNCTION instr(varchar, integer) RETURNS integer AS '
+$$ LANGUAGE plpgsql;</PRE
+><P>
+      Some more examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION instr(varchar, integer) RETURNS integer AS $$
 DECLARE
     v_string ALIAS FOR $1;
     index ALIAS FOR $2;
 BEGIN
     -- some computations here
 END;
-' LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 
-CREATE FUNCTION concat_selected_fields(tablename) RETURNS text AS '
-DECLARE
-    in_t ALIAS FOR $1;
+CREATE FUNCTION concat_selected_fields(in_t tablename) RETURNS text AS $$
 BEGIN
     RETURN in_t.f1 || in_t.f3 || in_t.f5 || in_t.f7;
 END;
-' LANGUAGE plpgsql;</PRE
+$$ LANGUAGE plpgsql;</PRE
 ><P>
      </P
 ><P
@@ -294,48 +317,45 @@ CLASS="TYPE"
       or <TT
 CLASS="TYPE"
 >anyarray</TT
->), a special parameter <VAR
+>), a special parameter <TT
 CLASS="LITERAL"
->$0</VAR
+>$0</TT
 >
       is created.  Its data type is the actual return type of the function,
       as deduced from the actual input types (see <A
 HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 33.2.5</A
+>Section 31.2.5</A
 >).
       This allows the function to access its actual return type
       as shown in <A
 HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-TYPE"
->Section 37.4.2</A
+>Section 35.4.2</A
 >.
-      <VAR
+      <TT
 CLASS="LITERAL"
->$0</VAR
+>$0</TT
 > is initialized to null and can be modified by
       the function, so it can be used to hold the return value if desired,
-      though that is not required.  <VAR
+      though that is not required.  <TT
 CLASS="LITERAL"
->$0</VAR
+>$0</TT
 > can also be
       given an alias.  For example, this function works on any data type
-      that has a <VAR
+      that has a <TT
 CLASS="LITERAL"
->+</VAR
+>+</TT
 > operator:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION add_three_values(anyelement, anyelement, anyelement)
-RETURNS anyelement AS '
+>CREATE FUNCTION add_three_values(v1 anyelement, v2 anyelement, v3 anyelement)
+RETURNS anyelement AS $$
 DECLARE
     result ALIAS FOR $0;
-    first ALIAS FOR $1;
-    second ALIAS FOR $2;
-    third ALIAS FOR $3;
 BEGIN
-    result := first + second + third;
+    result := v1 + v2 + v3;
     RETURN result;
 END;
-' LANGUAGE plpgsql;</PRE
+$$ LANGUAGE plpgsql;</PRE
 ><P>
      </P
 ></DIV
@@ -345,7 +365,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-TYPE"
->37.4.2. Copying Types</A
+>35.4.2. Copying Types</A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
@@ -354,23 +374,23 @@ CLASS="REPLACEABLE"
 >variable</VAR
 >%TYPE</PRE
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->%TYPE</VAR
+>%TYPE</TT
 > provides the data type of a variable or
     table column. You can use this to declare variables that will hold
     database values. For example, let's say you have a column named
-    <VAR
+    <TT
 CLASS="LITERAL"
->user_id</VAR
-> in your <VAR
+>user_id</TT
+> in your <TT
 CLASS="LITERAL"
->users</VAR
+>users</TT
 >
     table. To declare a variable with the same data type as
-    <VAR
+    <TT
 CLASS="LITERAL"
->users.user_id</VAR
+>users.user_id</TT
 > you write:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -378,15 +398,15 @@ CLASS="PROGRAMLISTING"
 ><P>
    </P
 ><P
->    By using <VAR
+>    By using <TT
 CLASS="LITERAL"
->%TYPE</VAR
+>%TYPE</TT
 > you don't need to know the data
     type of the structure you are referencing, and most importantly,
     if the data type of the referenced item changes in the future (for
-    instance: you change the type of <VAR
+    instance: you change the type of <TT
 CLASS="LITERAL"
->user_id</VAR
+>user_id</TT
 >
     from <TT
 CLASS="TYPE"
@@ -398,15 +418,15 @@ CLASS="TYPE"
     to change your function definition.
    </P
 ><P
->    <VAR
+>    <TT
 CLASS="LITERAL"
->%TYPE</VAR
+>%TYPE</TT
 > is particularly valuable in polymorphic
     functions, since the data types needed for internal variables may
     change from one call to the next.  Appropriate variables can be
-    created by applying <VAR
+    created by applying <TT
 CLASS="LITERAL"
->%TYPE</VAR
+>%TYPE</TT
 > to the function's
     arguments or result placeholders.
    </P
@@ -417,7 +437,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-ROWTYPES"
->37.4.3. Row Types</A
+>35.4.3. Row Types</A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
@@ -427,9 +447,9 @@ CLASS="REPLACEABLE"
 > <VAR
 CLASS="REPLACEABLE"
 >table_name</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->%ROWTYPE</VAR
+>%ROWTYPE</TT
 >;
 <VAR
 CLASS="REPLACEABLE"
@@ -458,9 +478,9 @@ CLASS="COMMAND"
     declared type of the variable.
     The individual fields of the row value
     are accessed using the usual dot notation, for example
-    <VAR
+    <TT
 CLASS="LITERAL"
->rowvar.field</VAR
+>rowvar.field</TT
 >.
    </P
 ><P
@@ -469,9 +489,9 @@ CLASS="LITERAL"
     <VAR
 CLASS="REPLACEABLE"
 >table_name</VAR
-><VAR
+><TT
 CLASS="LITERAL"
->%ROWTYPE</VAR
+>%ROWTYPE</TT
 >
     notation; or it can be declared by giving a composite type's name.
     (Since every table has an associated composite type of the same name,
@@ -479,28 +499,28 @@ CLASS="LITERAL"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > whether you
-    write <VAR
+    write <TT
 CLASS="LITERAL"
->%ROWTYPE</VAR
+>%ROWTYPE</TT
 > or not.  But the form with
-    <VAR
+    <TT
 CLASS="LITERAL"
->%ROWTYPE</VAR
+>%ROWTYPE</TT
 > is more portable.)
    </P
 ><P
 >    Parameters to a function can be
     composite types (complete table rows). In that case, the
-    corresponding identifier <VAR
+    corresponding identifier <TT
 CLASS="LITERAL"
 >$<VAR
 CLASS="REPLACEABLE"
 >n</VAR
-></VAR
+></TT
 > will be a row variable, and fields can
-    be selected from it, for example <VAR
+    be selected from it, for example <TT
 CLASS="LITERAL"
->$1.user_id</VAR
+>$1.user_id</TT
 >.
    </P
 ><P
@@ -520,15 +540,16 @@ CLASS="REPLACEABLE"
 >    Here is an example of using composite types:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION use_two_tables(tablename) RETURNS text AS '
+>CREATE FUNCTION merge_fields(t_row tablename) RETURNS text AS $$
 DECLARE
-    in_t ALIAS FOR $1;
-    use_t table2name%ROWTYPE;
+    t2_row table2name%ROWTYPE;
 BEGIN
-    SELECT * INTO use_t FROM table2name WHERE ... ;
-    RETURN in_t.f1 || use_t.f3 || in_t.f5 || use_t.f7;
+    SELECT * INTO t2_row FROM table2name WHERE ... ;
+    RETURN t_row.f1 || t2_row.f3 || t_row.f5 || t2_row.f7;
 END;
-' LANGUAGE plpgsql;</PRE
+$$ LANGUAGE plpgsql;
+
+SELECT merge_fields(t.*) FROM tablename t WHERE ... ;</PRE
 ><P>
    </P
 ></DIV
@@ -538,7 +559,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-RECORDS"
->37.4.4. Record Types</A
+>35.4.4. Record Types</A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
@@ -562,9 +583,9 @@ CLASS="COMMAND"
     field in it will draw a run-time error.
    </P
 ><P
->    Note that <VAR
+>    Note that <TT
 CLASS="LITERAL"
->RECORD</VAR
+>RECORD</TT
 > is not a true data type, only a placeholder.
     One should also realize that when a <SPAN
 CLASS="APPLICATION"
@@ -591,9 +612,9 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-RENAMING-VARS"
->37.4.5. <VAR
+>35.4.5. <TT
 CLASS="LITERAL"
->RENAME</VAR
+>RENAME</TT
 ></A
 ></H2
 ><PRE
@@ -606,22 +627,22 @@ CLASS="REPLACEABLE"
 >newname</VAR
 >;</PRE
 ><P
->    Using the <VAR
+>    Using the <TT
 CLASS="LITERAL"
->RENAME</VAR
+>RENAME</TT
 > declaration you can change the
     name of a variable, record or row. This is primarily useful if
-    <VAR
-CLASS="LITERAL"
->NEW</VAR
-> or <VAR
-CLASS="LITERAL"
->OLD</VAR
+    <TT
+CLASS="VARNAME"
+>NEW</TT
+> or <TT
+CLASS="VARNAME"
+>OLD</TT
 > should be
     referenced by another name inside a trigger procedure.  See also
-    <VAR
+    <TT
 CLASS="LITERAL"
->ALIAS</VAR
+>ALIAS</TT
 >.
    </P
 ><P
@@ -639,21 +660,21 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->      <VAR
+>      <TT
 CLASS="LITERAL"
->RENAME</VAR
+>RENAME</TT
 > appears to be broken as of
       <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 7.3.  Fixing this is of low priority,
-      since <VAR
+      since <TT
 CLASS="LITERAL"
->ALIAS</VAR
+>ALIAS</TT
 > covers most of the practical uses
-      of <VAR
+      of <TT
 CLASS="LITERAL"
->RENAME</VAR
+>RENAME</TT
 >.
      </P
 ></BLOCKQUOTE
