@@ -73,10 +73,14 @@ public:
     long GetAutoRowCountThreshold() const { return autoRowCountThreshold; }
     void SetAutoRowCountThreshold(const long l) { autoRowCountThreshold=l; }
 
-
     // Sticky SQL
     bool GetStickySql() const { return stickySql; }
     void SetStickySql(const bool newval);
+
+    // DoubleClick for Properties
+    bool GetDoubleClickProperties() const { return doubleClickProperties; }
+    void SetDoubleClickProperties(const bool newval);
+
 private:
 
     // Tip Of The Day
@@ -102,6 +106,7 @@ private:
     bool confirmDelete;
     long maxRows, maxColSize, autoRowCountThreshold;
     bool stickySql;
+    bool doubleClickProperties;
 };
 
 #endif

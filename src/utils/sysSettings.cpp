@@ -54,6 +54,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
     autoRowCountThreshold=Read(wxT("AutoRowCount"), 2000);
     Read(wxT("StickySql"), &stickySql, TRUE);
+    Read(wxT("DoubleClickProperties"), &doubleClickProperties, TRUE);
 }
 
 
@@ -144,13 +145,23 @@ void sysSettings::SetShowSystemObjects(const bool newval)
 
 
 //////////////////////////////////////////////////////////////////////////
-// Auto Row Count
+// Sticky SQL
 //////////////////////////////////////////////////////////////////////////
 
 void sysSettings::SetStickySql(const bool newval)
 {
     stickySql = newval;
     this->Write(wxT("StickySql"), stickySql);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Double click for properties
+//////////////////////////////////////////////////////////////////////////
+
+void sysSettings::SetDoubleClickProperties(const bool newval)
+{
+    doubleClickProperties = newval;
+    this->Write(wxT("DoubleClickProperties"), doubleClickProperties);
 }
 
 //////////////////////////////////////////////////////////////////////////

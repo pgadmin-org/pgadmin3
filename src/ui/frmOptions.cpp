@@ -34,6 +34,7 @@
 #define chkShowUsersForPrivileges   CTRL("chkShowUsersForPrivileges", wxCheckBox)
 #define txtAutoRowCount             CTRL("txtAutoRowCount", wxTextCtrl)
 #define chkStickySql                CTRL("chkStickySql", wxCheckBox)
+#define chkDoubleClickProperties    CTRL("chkDoubleClickProperties", wxCheckBox)
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
@@ -67,7 +68,7 @@ frmOptions::frmOptions(wxFrame *parent)
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
     txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
     chkStickySql->SetValue(settings->GetStickySql());
-
+    chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtHelpSite->SetValue(settings->GetHelpSite());
 }
 
@@ -119,7 +120,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->IsChecked());
     settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
     settings->SetStickySql(chkStickySql->IsChecked());
-
+    settings->SetDoubleClickProperties(chkDoubleClickProperties->IsChecked());
     settings->SetHelpSite(txtHelpSite->GetValue());
     Destroy();
 }

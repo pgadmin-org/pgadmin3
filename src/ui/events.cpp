@@ -726,11 +726,13 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
             break;
 
         default:
-            if (data->CanEdit())
-            {
-                OnProperties(nullEvent);
-                event.Skip();
-                return;
+            if (settings->GetDoubleClickProperties()) {
+                if (data->CanEdit())
+                {
+                    OnProperties(nullEvent);
+                    event.Skip();
+                    return;
+                }
             }
             break;
     }
