@@ -77,9 +77,10 @@ make install
 pushd contrib/src/xrc
 make install
 popd
-pushd contrib/utils/wxrc
-cp -r wxrc %{buildroot}%{_bindir}/
-popd
+
+#pushd contrib/utils/wxrc
+#cp -r wxrc %{buildroot}%{_bindir}/
+#popd
 
 pushd contrib/src/stc
 make install
@@ -95,8 +96,8 @@ rm -rf %{buildroot}
 
 %post -p /sbin/ldconfig
 ln -s /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
-sed -e "s/var\/tmp\/wxGTK2ud-root\/usr/usr/g" /usr/bin/wxgtk2ud-2.5-config > /var/tmp/tmpfoo
-mv -f /var/tmp/tmpfoo /usr/bin/wxgtk2ud-2.5-config
+#sed -e "s/var\/tmp\/wxGTK2ud-root\/usr/usr/g" /usr/bin/wxgtk2ud-2.5-config > %{buildroot}/tmpfoo
+#mv -f %{buildroot}/tmpfoo /usr/bin/wxgtk2ud-2.5-config
 
 %postun -p /sbin/ldconfig
 rm -fr /usr/include/wx/setup.h
@@ -122,7 +123,7 @@ rm -fr /usr/include/wx/setup.h
 %files xrc
 %defattr(-, root, root)
 %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
-%{_bindir}/wxrc
+#%{_bindir}/wxrc
 
 %files stc
 %defattr(-, root, root)
