@@ -360,17 +360,9 @@ void frmMain::Refresh(pgObject *data)
     StartMsg(wxT("Refreshing ") + data->GetTypeName() + wxT("..."));
     browser->Freeze();
 
-    wxTreeItemId item, currentItem=data->GetId();
-    long cookie;
+    wxTreeItemId currentItem=data->GetId();
 
-    while ((item=browser->GetFirstChild(currentItem, cookie)) != 0)
-    {
-        pgObject *tmpData = (pgObject *)browser->GetItemData(item);
-        wxLogInfo(wxT("Deleting ") + tmpData->GetTypeName() + wxT(" ") 
-            + tmpData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
-        // delete data will be performed by browser->Delete
-        browser->Delete(item);
-    }
+    data->RemoveSubitems(browser);
 
 	// refresh information about the object
 

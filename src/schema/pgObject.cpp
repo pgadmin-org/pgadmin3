@@ -163,6 +163,21 @@ void pgObject::InsertListItem(wxListCtrl *list, const int pos, const wxString& s
 }
 
 
+void pgObject::RemoveSubitems(wxTreeCtrl *browser)
+{
+    wxTreeItemId item;
+    long cookie;
+    while ((item=browser->GetFirstChild(GetId(), cookie)) != 0)
+    {
+        pgObject *tmpData = (pgObject *)browser->GetItemData(item);
+        wxLogInfo(wxT("Deleting Node ") + tmpData->GetTypeName() + wxT(" ") 
+            + tmpData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+        // delete data will be performed by browser->Delete
+        browser->Delete(item);
+    }
+}
+
+
 wxString pgObject::GetCommentSql()
 {
     wxString cmt;
