@@ -78,7 +78,7 @@ include/frmQBJoin.h include/frmQueryBuilder.h include/frmHelp.h \
 include/frmQuery.h include/frmSplash.h \
 include/frmStatus.h include/frmMaintenance.h \
 include/frmBackup.h include/frmRestore.h \
-include/misc.h include\pgfeatures.h include/pgAdmin3.h include/pgAggregate.h \
+include/misc.h include/pgfeatures.h include/pgAdmin3.h include/pgAggregate.h \
 include/pgCast.h include/pgCheck.h include/pgCollection.h \
 include/pgColumn.h include/pgConn.h include/pgTablespace.h \
 include/pgConstraints.h include/pgConversion.h \
