@@ -451,10 +451,11 @@ void frmMain::ReconnectServer(pgServer *objServer)
         wxLogInfo(wxT("pgServer object initialised as required."));
         tvBrowser->SetItemImage(objServer->GetId(), 0, wxTreeItemIcon_Normal);
         tvBrowser->SetItemImage(objServer->GetId(), 0, wxTreeItemIcon_Selected);
-        tvBrowser->Collapse(itmServers);
+		tvBrowser->Collapse(itmServers);
         tvBrowser->Expand(itmServers);
-        tvBrowser->SelectItem(objServer->GetId());
-
+		tvBrowser->SelectItem(itmServers);
+		tvBrowser->SelectItem(objServer->GetId());
+		
     } else if (iRes == PGCONN_DNSERR)  {
         delete objServer;
         OnAddServer();
@@ -464,7 +465,7 @@ void frmMain::ReconnectServer(pgServer *objServer)
         szMsg.Printf(wxT("%s"), objServer->GetLastError().c_str());
         wxLogError(wxT(szMsg));
         ReconnectServer(objServer);
-
+		
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
     }
@@ -472,7 +473,7 @@ void frmMain::ReconnectServer(pgServer *objServer)
 
 void frmMain::OnSelChanged()
 {
-    // Reset the listviews/SQL pane
+	// Reset the listviews/SQL pane
     lvProperties->ClearAll();
     lvProperties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
     lvProperties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
@@ -535,6 +536,7 @@ void frmMain::OnSelActivated()
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
+
     wxTreeItemId itmX = tvBrowser->GetSelection();
     pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
     int iType(itmData->GetType());

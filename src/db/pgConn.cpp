@@ -159,7 +159,7 @@ wxString pgConn::ExecuteScalar(const wxString& szSQL) const
 	}
 	
 	// Retrieve the query result and return it.
-    wxString szResult;
+	wxString szResult;
     szResult.Printf("%s", PQgetvalue(qryRes, 0, 0));
     szMsg.Printf(wxT("Query result: %s"), szResult.c_str());
     wxLogInfo(szMsg);
