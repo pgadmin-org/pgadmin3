@@ -22,7 +22,7 @@ div.Section1
 <h3>Translation guidelines</h3>
 
 <p>
-	Traditionally, it is hard to translate strings dealing with database technologies. We will first try to outline the difficulties of translation, before proposing writer and translator guidelines.
+	Traditionally, it is hard to translate strings dealing with database technologies. We will first try to outline the difficulties of translation, before proposing writing and translating guidelines.
 </p>
 
 <h3>Translation problems</h3>
@@ -63,17 +63,25 @@ div.Section1
 <h3>Writing guidelines</h3>
 
 <p>
-	We are proposing a very simple solution based on the idea that a writer should always try to make a clear difference between SQL keywords and natural language. If possible, SQL keywords and database objects should be written in capital letters. For example, "Create a new view" should be written "Create a new VIEW".
+	We propose a very simple solution based on the idea that a developper/writer should always try to make a clear difference between SQL keywords and natural language. If possible, SQL keywords and database objects should be written in capital letters. For example, "Create a new view" should be written "Create a new VIEW".
 </p>
 
 <p>
 	Avoid the use of "%s" unless the replaced sting is invariable, like it is the case for a product name,a username, a password, etc... As such, "Successfully connected on host: %s" and "User %s was disconnected" are valid strings.
 </p>
 
-<h3>Translator guidelines</h3>
+<p>
+	Never write a string like "Create a new %s" for the reasons explainded before. You should write "Create a new VIEW", "Create a new TABLE", "Create a new INDEX", etc...
+</p>
+
+<h3>Translating guidelines</h3>
 
 <p>
-  To be written ...
+Never translate SQL keywords written in upper-case letters for the reasons explained before.
+</p>
+
+<p>
+  Stick as much as possible to words which are close to the original SQL syntax. For example, in French, you may use "vue" for "view", because both words start with the letter "v". Do not  choose distant words, like "déclancheur" for "trigger", because entry-level users may not be able to make a good use of the SQL syntax ... and ultimately switch to the English version.
 </p>
 
 </body>
