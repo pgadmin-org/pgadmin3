@@ -1042,11 +1042,8 @@ void frmQueryBuilder::BuildQuery()
 		if (found)
 		{
 			wxLogError(__("Double right-handed joins are not allowed.\n")
-				__("You must redraw your joins so that \"%s\"\n")
-                __("does not appear on the righthand side \n")
-				__("more than once. \n\n")
-				__("Try switching it to the lefthand side in one\n")
-				__("or more relationships."), tmptable1.c_str());
+				__("You must redraw your joins so that \"%s\"\ndoes not appear on the righthand side \nmore than once. \n\n")
+				__("Try switching it to the lefthand side in one\nor more relationships."), tmptable1.c_str());
 			return;
 		}
 		else
