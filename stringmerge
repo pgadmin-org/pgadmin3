@@ -1,0 +1,30 @@
+#######################################################################
+#
+# pgAdmin III - PostgreSQL Tools
+# Copyright (C) 2002 - 2003, The pgAdmin Development Team
+# This software is released under the Artistic Licence
+#
+# stringmerge - merge pgadmin3.pot template file into existing pgadmin3.po
+# translated files, compile and publish them on CVS.
+#
+#######################################################################
+
+if test -f pgadmin3.pot; then
+
+  for GETTEXTDIR in src/ui/*_* ; do
+  	echo "Entering $GETTEXTDIR."
+    cd $GETTEXTDIR
+    echo "Updating from CVS."
+    cvs update -C -P -d
+    echo "Merging pgadmin3.pot into pgadmin3.po"
+    msgmerge -o merge.po pgadmin3.po ../../../pgadmin3.pot
+    echo "Compiling pgadmin3.mo"
+    msgfmt -o pgadmin3.mo pgadmin3.po
+    if test -f merge.po; then
+      echo "Commiting changes to CVS."
+      mv -f merge.po pgadmin3.po
+      cvs commit -m "Automatic merge using stringmerge script." pgadmin3.*
+    fi
+    cd ../../..
+  done
+fi
