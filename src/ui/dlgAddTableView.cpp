@@ -121,7 +121,7 @@ void dlgAddTableView::InitLists()
 				wxT("WHERE nspname <> 'pg_catalog' AND ")
 				wxT("nspname <> 'pg_toast' AND ")
 				wxT("nspname NOT LIKE 'pg_temp_%' ) b ")
-				wxT("ON a.relnamespace = b.oid");
+				wxT("ON a.relnamespace = b.oid ");
 
 	// Clear the lists
 	m_tablelist->Clear();
