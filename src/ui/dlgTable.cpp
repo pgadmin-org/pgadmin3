@@ -374,7 +374,7 @@ wxString dlgTable::GetSql()
                 sql += wxT("ALTER TABLE ") + tabname
                     +  wxT(" ADD");
                 if (!conname.IsEmpty())
-                    sql += wxT(" CONSTRAINT ") + conname;
+                    sql += wxT(" CONSTRAINT ");
 
                 sql += definition + wxT(";\n");
             }
