@@ -114,6 +114,10 @@ SOURCE=.\schema\pgAggregate.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgCast.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgCheck.cpp
 # End Source File
 # Begin Source File
@@ -123,6 +127,10 @@ SOURCE=.\schema\pgCollection.cpp
 # Begin Source File
 
 SOURCE=.\schema\pgColumn.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgConversion.cpp
 # End Source File
 # Begin Source File
 
@@ -168,6 +176,10 @@ SOURCE=.\schema\pgObject.cpp
 # Begin Source File
 
 SOURCE=.\schema\pgOperator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgOperatorClass.cpp
 # End Source File
 # Begin Source File
 
@@ -571,6 +583,10 @@ SOURCE=.\include\pgAggregate.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgCast.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\pgCheck.h
 # End Source File
 # Begin Source File
@@ -584,6 +600,10 @@ SOURCE=.\include\pgColumn.h
 # Begin Source File
 
 SOURCE=.\include\pgConn.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgConversion.h
 # End Source File
 # Begin Source File
 
@@ -620,6 +640,10 @@ SOURCE=.\include\pgObject.h
 # Begin Source File
 
 SOURCE=.\include\pgOperator.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgOperatorClass.h
 # End Source File
 # Begin Source File
 
