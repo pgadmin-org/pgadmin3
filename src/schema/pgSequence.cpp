@@ -37,7 +37,11 @@ bool pgSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 #ifdef __WIN32__
 #define atolonglong _atoi64
 #else
+#ifdef __WXMAC__
+#define atolonglong(str) strtoll(str, (char **)NULL, 10) 
+#else
 #define atolonglong atoll
+#endif
 #endif
 
 void pgSequence::UpdateValues()
