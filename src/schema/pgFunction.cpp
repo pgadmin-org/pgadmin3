@@ -65,7 +65,6 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 
 void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
     if (properties)
     {
         CreateListColumns(properties);
@@ -87,6 +86,7 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 }
+
 
 
 
@@ -151,15 +151,36 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
                 vol.IsSameAs("s") ? wxT("STABLE") :
                 vol.IsSameAs("v") ? wxT("VOLATILE") : wxT("unknown"));
 
-            browser->AppendItem(obj->GetId(), function->GetFullName(), PGICON_FUNCTION, -1, function);
-	
-			functions->MoveNext();
+
+            if (browser)
+            {
+                browser->AppendItem(obj->GetId(), function->GetFullName(), PGICON_FUNCTION, -1, function);
+			    functions->MoveNext();
+            }
+            else
+                break;
         }
 
 		delete functions;
     }
     return function;
 }
+
+
+
+pgObject *pgFunction::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *function=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_FUNCTIONS || obj->GetType() == PG_TRIGGERFUNCTIONS)
+            function = AppendFunctions((pgCollection*)obj, GetSchema(), 0, wxT("   AND pr.oid=") + GetOidStr() + wxT("\n"));
+    }
+    return function;
+}
+
 
 
 void pgFunction::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)

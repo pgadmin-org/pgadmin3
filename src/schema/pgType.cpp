@@ -56,12 +56,11 @@ wxString pgType::GetSql(wxTreeCtrl *browser)
 
 void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    msg.Printf(wxT("Displaying properties for type %s"), GetIdentifier().c_str());
-    wxLogInfo(msg);
 
     if (properties)
     {
+        wxLogInfo(wxT("Displaying properties for type %s"), GetIdentifier().c_str());
+
         CreateListColumns(properties);
         int pos=0;
 
@@ -84,61 +83,82 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
 
 
 
+pgObject *pgType::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *type=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_TYPES)
+            type = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+    }
+    return type;
+}
+
+
+
+pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgType *type=0;
+    pgSet *types= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element\n"
+        "  FROM pg_type t\n"
+        "  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n"
+        " WHERE t.typtype != 'd' AND t.typtype != 'c' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
+        " ORDER BY t.typname"));
+    if (types)
+    {
+        while (!types->Eof())
+        {
+            type = new pgType(collection->GetSchema(), types->GetVal(wxT("typname")));
+
+            type->iSetOid(types->GetOid(wxT("oid")));
+            type->iSetOwner(types->GetVal(wxT("typeowner")));
+            type->iSetPassedByValue(types->GetBool(wxT("typbyval")));
+            type->iSetInternalLength(types->GetLong(wxT("typlen")));
+            type->iSetDelimiter(types->GetVal(wxT("typdelim")));
+            type->iSetElement(types->GetVal(wxT("element")));
+            type->iSetInputFunction(types->GetVal(wxT("typinput")));
+            type->iSetOutputFunction(types->GetVal(wxT("typoutput")));
+            wxString align=types->GetVal(wxT("typalign"));
+            type->iSetAlignment( 
+                align == wxT("c") ? wxT("char") :
+                align == wxT("s") ? wxT("int2") :
+                align == wxT("i") ? wxT("int4") :
+                align == wxT("d") ? wxT("double") : wxT("unknown"));
+            type->iSetDefault(types->GetVal(wxT("typdefault")));
+            wxString storage=types->GetVal(wxT("typstorage"));
+            type->iSetStorage(
+                storage == wxT("p") ? wxT("PLAIN") :
+                storage == wxT("e") ? wxT("EXTERNAL") :
+                storage == wxT("m") ? wxT("MAIN") :
+                storage == wxT("s") ? wxT("EXTENDED") : wxT("unknown"));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), type->GetIdentifier(), PGICON_TYPE, -1, type);
+    			types->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete types;
+    }
+    return type;
+}
+
+
+
 void pgType::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    pgType *type;
-
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        msg.Printf(wxT("Adding Types to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding Types to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
 
         // Get the Types
-        pgSet *types= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element\n"
-            "  FROM pg_type t\n"
-            "  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n"
-            " WHERE t.typtype != 'd' AND t.typtype != 'c' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
-            " ORDER BY t.typname"));
-        if (types)
-        {
-            while (!types->Eof())
-            {
-                type = new pgType(collection->GetSchema(), types->GetVal(wxT("typname")));
-
-                type->iSetOid(types->GetOid(wxT("oid")));
-                type->iSetOwner(types->GetVal(wxT("typeowner")));
-                type->iSetPassedByValue(types->GetBool(wxT("typbyval")));
-                type->iSetInternalLength(types->GetLong(wxT("typlen")));
-                type->iSetDelimiter(types->GetVal(wxT("typdelim")));
-                type->iSetElement(types->GetVal(wxT("element")));
-                type->iSetInputFunction(types->GetVal(wxT("typinput")));
-                type->iSetOutputFunction(types->GetVal(wxT("typoutput")));
-                wxString align=types->GetVal(wxT("typalign"));
-                type->iSetAlignment( 
-                    align == wxT("c") ? wxT("char") :
-                    align == wxT("s") ? wxT("int2") :
-                    align == wxT("i") ? wxT("int4") :
-                    align == wxT("d") ? wxT("double") : wxT("unknown"));
-                type->iSetDefault(types->GetVal(wxT("typdefault")));
-                wxString storage=types->GetVal(wxT("typstorage"));
-                type->iSetStorage(
-                    storage == wxT("p") ? wxT("PLAIN") :
-                    storage == wxT("e") ? wxT("EXTERNAL") :
-                    storage == wxT("m") ? wxT("MAIN") :
-                    storage == wxT("s") ? wxT("EXTENDED") : wxT("unknown"));
-
-                browser->AppendItem(collection->GetId(), type->GetIdentifier(), PGICON_TYPE, -1, type);
-	    
-			    types->MoveNext();
-            }
-
-		    delete types;
-        }
-        wxString label;
-        label.Printf(wxT("Types (%d)"), browser->GetChildrenCount(collection->GetId(), FALSE));
-        browser->SetItemText(collection->GetId(), label);
+        ReadObjects(collection, browser);
     }
 }

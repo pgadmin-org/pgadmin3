@@ -57,6 +57,7 @@ public:
     void iSetIsStrict(bool b) { isStrict = b; }
 
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxString(""));

@@ -86,8 +86,10 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
             case PG_USERS:
             case PG_USER:
                 canSql=false;
+                break;
             default:
                 canSql=true;
+                break;
         }
         form->SetButtons(TRUE, CanCreate(), CanDrop(), CanEdit(), canSql, CanView(), CanVacuum());
         SetContextInfo(form);

@@ -200,8 +200,6 @@ gotToken:
 
 void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
     if (!expandedKids)
     {
         expandedKids = true;
@@ -223,46 +221,72 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
 
 
 
+pgObject *pgView::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *view=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_VIEWS)
+            view = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND c.oid=") + GetOidStr());
+    }
+    return view;
+}
+
+
+
+pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgView *view=0;
+
+    pgSet *views= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, pg_get_viewdef(c.oid) AS definition\n"
+        "  FROM pg_class c\n"
+        " WHERE ((c.relhasrules AND (EXISTS (\n"
+        "           SELECT r.rulename FROM pg_rewrite r\n"
+        "            WHERE ((r.ev_class = c.oid)\n"
+        "              AND (bpchar(r.ev_type) = '1'::bpchar)) ))) OR (c.relkind = 'v'::char))\n"
+        "   AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
+        " ORDER BY relname"));
+
+    if (views)
+    {
+        while (!views->Eof())
+        {
+            view = new pgView(collection->GetSchema(), views->GetVal(wxT("relname")));
+
+            view->iSetOid(views->GetOid(wxT("oid")));
+            view->iSetOwner(views->GetVal(wxT("Viewowner")));
+            view->iSetAcl(views->GetVal(wxT("relacl")));
+            view->iSetDefinition(views->GetVal(wxT("definition")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), view->GetIdentifier(), PGICON_VIEW, -1, view);
+    			views->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete views;
+    }
+    return view;
+}
+
+
+
 void pgView::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    pgView *view;
 
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        msg.Printf(wxT("Adding Views to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding Views to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
 
 
         // Get the Views
-        pgSet *views= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, pg_get_viewdef(c.oid) AS definition\n"
-            "  FROM pg_class c\n"
-            " WHERE ((c.relhasrules AND (EXISTS (\n"
-            "           SELECT r.rulename FROM pg_rewrite r\n"
-            "            WHERE ((r.ev_class = c.oid)\n"
-            "              AND (bpchar(r.ev_type) = '1'::bpchar)) ))) OR (c.relkind = 'v'::char))\n"
-            "   AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
-            " ORDER BY relname"));
-
-        if (views)
-        {
-            while (!views->Eof())
-            {
-                view = new pgView(collection->GetSchema(), views->GetVal(wxT("relname")));
-
-                view->iSetOid(views->GetOid(wxT("oid")));
-                view->iSetOwner(views->GetVal(wxT("Viewowner")));
-                view->iSetAcl(views->GetVal(wxT("relacl")));
-                view->iSetDefinition(views->GetVal(wxT("definition")));
-
-                browser->AppendItem(collection->GetId(), view->GetIdentifier(), PGICON_VIEW, -1, view);
-	    
-			    views->MoveNext();
-            }
-
-		    delete views;
-        }
+        ReadObjects(collection, browser);
     }
 }

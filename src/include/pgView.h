@@ -33,9 +33,13 @@ public:
 
     wxString GetDefinition() const { return definition; }
     void iSetDefinition(const wxString& s) { definition=s; }
+
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString definition;
 };
 

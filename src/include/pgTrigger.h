@@ -47,11 +47,19 @@ public:
     void iSetTriggerFunction(pgFunction *fkt) { triggerFunction=fkt; }
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
+    double GetFunctionOid() const { return functionOid; }
+    void iSetFunctionOid(const double d) { functionOid=d; }
+
+    void SetDirty();
 
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString function, quotedFullTable;
+    double functionOid;
     long triggerType;
     bool enabled;
     pgFunction *triggerFunction;

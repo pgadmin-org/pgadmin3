@@ -51,8 +51,11 @@ public:
     void iSetPassedByValue(const bool b) { passedByValue=b; }
 
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage;
     long internalLength;
     bool passedByValue;

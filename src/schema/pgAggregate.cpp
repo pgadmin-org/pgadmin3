@@ -57,8 +57,6 @@ wxString pgAggregate::GetFullName() const
 
 void pgAggregate::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
     if (properties)
     {
         CreateListColumns(properties);
@@ -79,59 +77,84 @@ void pgAggregate::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl 
 }
 
 
+pgObject *pgAggregate::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *aggregate=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_AGGREGATES)
+            aggregate = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND aggfnoid=") + GetOidStr());
+    }
+    return aggregate;
+}
+
+
+
+pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgAggregate *aggregate=0;
+    pgSet *aggregates= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT aggfnoid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n"
+                "aggfinalfn, "
+                "proargtypes[0] AS aggbasetype, "
+                "CASE WHEN (ti.typlen = -1 AND ti.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = ti.typelem) || '[]' ELSE ti.typname END as inputname, "
+                "aggtranstype, "
+                "CASE WHEN (tt.typlen = -1 AND tt.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tt.typelem) || '[]' ELSE tt.typname END as transname, "
+                "prorettype AS aggfinaltype, "
+                "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, "
+                "agginitval\n"
+        "  FROM pg_aggregate ag\n"
+        "  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n"
+        "  JOIN pg_type ti on ti.oid=proargtypes[0]\n"
+        "  JOIN pg_type tt on tt.oid=aggtranstype\n"
+        "  JOIN pg_type tf on tf.oid=prorettype\n"
+        " WHERE pronamespace = ") + collection->GetSchema()->GetOidStr() 
+        + restriction
+        + wxT("\n"
+        " ORDER BY aggname"));
+
+    if (aggregates)
+    {
+        while (!aggregates->Eof())
+        {
+            aggregate = new pgAggregate(collection->GetSchema(), aggregates->GetVal(wxT("aggname")));
+
+            aggregate->iSetOid(aggregates->GetOid(wxT("aggfnoid")));
+            aggregate->iSetOwner(aggregates->GetVal(wxT("aggowner")));
+            aggregate->iSetInputType(aggregates->GetVal(wxT("inputname")));
+            aggregate->iSetStateType(aggregates->GetVal(wxT("transname")));
+            aggregate->iSetStateFunction(aggregates->GetVal(wxT("aggtransfn")));
+            aggregate->iSetFinalType(aggregates->GetVal(wxT("finalname")));
+            aggregate->iSetFinalFunction(aggregates->GetVal(wxT("aggfinalfn")));
+            aggregate->iSetInitialCondition(aggregates->GetVal(wxT("agginitval")));
+
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), aggregate->GetFullName(), PGICON_AGGREGATE, -1, aggregate);
+    			aggregates->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete aggregates;
+    }
+    return aggregate;
+}
+
 
 void pgAggregate::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    pgAggregate *aggregate;
 
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        msg.Printf(wxT("Adding Aggregates to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding Aggregates to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
 
         // Get the Aggregates
-        pgSet *aggregates= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT pr.oid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n"
-                    "aggfinalfn, "
-                    "proargtypes[0] AS aggbasetype, "
-                    "CASE WHEN (ti.typlen = -1 AND ti.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = ti.typelem) || '[]' ELSE ti.typname END as inputname, "
-                    "aggtranstype, "
-                    "CASE WHEN (tt.typlen = -1 AND tt.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tt.typelem) || '[]' ELSE tt.typname END as transname, "
-                    "prorettype AS aggfinaltype, "
-                    "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, "
-                    "agginitval\n"
-            "  FROM pg_aggregate ag\n"
-            "  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n"
-            "  JOIN pg_type ti on ti.oid=proargtypes[0]\n"
-            "  JOIN pg_type tt on tt.oid=aggtranstype\n"
-            "  JOIN pg_type tf on tf.oid=prorettype\n"
-            " WHERE pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"
-            " ORDER BY aggname"));
-
-        if (aggregates)
-        {
-            while (!aggregates->Eof())
-            {
-                aggregate = new pgAggregate(collection->GetSchema(), aggregates->GetVal(wxT("aggname")));
-
-                aggregate->iSetOid(aggregates->GetOid(wxT("oid")));
-                aggregate->iSetOwner(aggregates->GetVal(wxT("aggowner")));
-                aggregate->iSetInputType(aggregates->GetVal(wxT("inputname")));
-                aggregate->iSetStateType(aggregates->GetVal(wxT("transname")));
-                aggregate->iSetStateFunction(aggregates->GetVal(wxT("aggtransfn")));
-                aggregate->iSetFinalType(aggregates->GetVal(wxT("finalname")));
-                aggregate->iSetFinalFunction(aggregates->GetVal(wxT("aggfinalfn")));
-                aggregate->iSetInitialCondition(aggregates->GetVal(wxT("agginitval")));
-
-
-                browser->AppendItem(collection->GetId(), aggregate->GetFullName(), PGICON_AGGREGATE, -1, aggregate);
-	    
-			    aggregates->MoveNext();
-            }
-
-		    delete aggregates;
-        }
+        ReadObjects(collection, browser);
     }
 }

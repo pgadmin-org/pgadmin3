@@ -32,10 +32,26 @@
 pgTrigger::pgTrigger(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, PG_TRIGGER, newName)
 {
+    triggerFunction=0;
 }
+
 
 pgTrigger::~pgTrigger()
 {
+    if (!expandedKids && triggerFunction)
+    {
+        // triggerFunction wasn't appended to tree, so we 
+        // need to delete it manually
+        delete triggerFunction;
+    }
+}
+
+
+void pgTrigger::SetDirty()
+{
+    if (expandedKids)
+        triggerFunction=0;
+    pgObject::SetDirty();
 }
 
 
@@ -62,6 +78,7 @@ wxString pgTrigger::GetFireWhen() const
 {
     return (triggerType & TRIGGER_TYPE_BEFORE) ? wxT("BEFORE") : wxT("AFTER");
 }
+
 
 wxString pgTrigger::GetEvent() const
 {
@@ -92,12 +109,23 @@ wxString pgTrigger::GetForEach() const
 
 void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form, true);
-
     if (!expandedKids)
     {
-        expandedKids = true;
+        if (browser)
+        {
+            // if no browser present, function will not be appended to tree
+            expandedKids = true;
+        }
+        if (triggerFunction)
+            delete triggerFunction;
+
         // append function here
+        triggerFunction=pgFunction::AppendFunctions(this, GetSchema(), browser, wxT(
+            "WHERE pr.oid=") + NumToStr(functionOid) + wxT("::oid\n"));
+        if (triggerFunction)
+        {
+            iSetFunction(triggerFunction->GetName());
+        }
     }
 
     if (properties)
@@ -118,53 +146,72 @@ void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *p
 }
 
 
+
+pgObject *pgTrigger::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *trigger=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_TRIGGERS)
+            trigger = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+    }
+    return trigger;
+}
+
+
+
+pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgTrigger *trigger=0;
+
+        pgSet *triggers= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT t.oid, t.*, relname, nspname\n"
+        "  FROM pg_trigger t\n"
+        "  JOIN pg_class cl ON cl.oid=tgrelid\n"
+        "  JOIN pg_namespace na ON na.oid=relnamespace\n"
+        " WHERE NOT tgisconstraint AND tgrelid = ") + collection->GetOidStr() + wxT("\n"
+        " ORDER BY tgname"));
+
+    if (triggers)
+    {
+        while (!triggers->Eof())
+        {
+            trigger = new pgTrigger(collection->GetSchema(), triggers->GetVal(wxT("tgname")));
+
+            trigger->iSetOid(triggers->GetOid(wxT("oid")));
+            trigger->iSetTableOid(collection->GetOid());
+            trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
+            trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
+            trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
+            trigger->iSetQuotedFullTable(qtIdent(triggers->GetVal(wxT("nspname")))+wxT(".")+qtIdent(triggers->GetVal(wxT("nspname"))));
+
+            if (browser)
+            {
+                wxTreeItemId item=browser->AppendItem(collection->GetId(), trigger->GetIdentifier(), PGICON_TRIGGER, -1, trigger);
+    			triggers->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete triggers;
+    }
+    return trigger;
+}
+
+
+
 void pgTrigger::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    pgTrigger *trigger;
-
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        msg.Printf(wxT("Adding Triggers to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding Triggers to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
 
         // Get the Triggers
-        pgSet *triggers= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT t.oid, t.*, relname, nspname\n"
-            "  FROM pg_trigger t\n"
-            "  JOIN pg_class cl ON cl.oid=tgrelid\n"
-            "  JOIN pg_namespace na ON na.oid=relnamespace\n"
-            " WHERE NOT tgisconstraint AND tgrelid = ") + collection->GetOidStr() + wxT("\n"
-            " ORDER BY tgname"));
-
-        if (triggers)
-        {
-            while (!triggers->Eof())
-            {
-                trigger = new pgTrigger(collection->GetSchema(), triggers->GetVal(wxT("tgname")));
-
-                trigger->iSetOid(triggers->GetOid(wxT("oid")));
-                trigger->iSetTableOid(collection->GetOid());
-                trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
-                trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
-                trigger->iSetQuotedFullTable(qtIdent(triggers->GetVal(wxT("nspname")))+wxT(".")+qtIdent(triggers->GetVal(wxT("nspname"))));
-
-                wxTreeItemId item=browser->AppendItem(collection->GetId(), trigger->GetIdentifier(), PGICON_TRIGGER, -1, trigger);
-
-                pgFunction *fkt=pgFunction::AppendFunctions(trigger, collection->GetSchema(), browser, wxT(
-                    "WHERE pr.oid=") + triggers->GetVal(wxT("tgfoid")) + wxT("\n"));
-                if (fkt)
-                {
-                    trigger->iSetTriggerFunction(fkt);
-                    trigger->iSetFunction(fkt->GetName());
-                }
-
-			    triggers->MoveNext();
-            }
-
-		    delete triggers;
-        }
+        ReadObjects(collection, browser);
     }
 }
 
