@@ -32,6 +32,7 @@ BEGIN_EVENT_TABLE(frmMaintenance, DialogWithHelp)
     EVT_CLOSE(                          frmMaintenance::OnClose)
 END_EVENT_TABLE()
 
+#define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
 #define rbxAction               CTRL_RADIOBOX("rbxAction")
 #define sbxOptions              CTRL_STATICBOX("sbxOptions")
 #define chkFull                 CTRL_CHECKBOX("chkFull")
@@ -196,6 +197,8 @@ void frmMaintenance::OnOK(wxCommandEvent& ev)
 
         wxLongLong startTime=wxGetLocalTimeMillis();
         thread->Run();
+
+        nbNotebook->SetSelection(1);
 
         while (thread && thread->IsRunning())
         {
