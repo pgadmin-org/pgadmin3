@@ -469,8 +469,6 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
     if (tables)
     {
-        int nr=tables->NumRows();
-
         while (!tables->Eof())
         {
             table = new pgTable(collection->GetSchema(), tables->GetVal(wxT("relname")));
