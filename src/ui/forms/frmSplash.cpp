@@ -30,6 +30,8 @@ frmSplash::frmSplash(wxFrame *parent)
 : wxFrame(parent, -1, "", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW)
 {
     
+    wxLogDebug(wxT("Creating a splash screen"));
+
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
 
@@ -41,6 +43,11 @@ frmSplash::frmSplash(wxFrame *parent)
     szVersion.Append(VERSION);
     wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
     Center();
+}
+
+frmSplash::~frmSplash()
+{
+    wxLogDebug(wxT("Destroying a splash screen"));
 }
 
 void frmSplash::OnPaint(wxPaintEvent& WXUNUSED(event))

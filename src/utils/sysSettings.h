@@ -43,6 +43,12 @@ public:
     void SetShowTipOfTheDay(bool bNewVal);
     long GetNextTipOfTheDay();
     void SetNextTipOfTheDay(long lNewVal);
+
+    // Log
+    wxString GetLogFile();
+    void SetLogFile(wxString szNewVal);
+    long GetLogLevel();
+    void SetLogLevel(long lNewVal);
 private:
 
     // The main config object
@@ -57,6 +63,10 @@ private:
     // Tip Of The Day
     bool bShowTipOfTheDay;
     long lNextTipOfTheDay;
+
+    // Log
+    wxString szLogFile;
+    long lLogLevel;
 };
 
 #endif

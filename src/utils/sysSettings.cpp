@@ -19,9 +19,12 @@
 // App headers
 #include "../pgAdmin3.h"
 #include "sysSettings.h"
+#include "sysLogger.h"
 
 sysSettings::sysSettings() : sysConfig(APPNAME)
 {
+    wxLogDebug(wxT("Creating sSettings object and loading settings"));
+
     // frMain size/position
     lFrmMainWidth = sysConfig.Read(wxT("frmMain/Width"), 750);
     lFrmMainHeight = sysConfig.Read(wxT("frmMain/Height"), 550);
@@ -31,11 +34,16 @@ sysSettings::sysSettings() : sysConfig(APPNAME)
     // Tip Of The Day
     sysConfig.Read(wxT("ShowTipOfTheDay"), &bShowTipOfTheDay, TRUE); 
     sysConfig.Read(wxT("NextTipOfTheDay"), &lNextTipOfTheDay, 0); 
+
+    // Log
+    sysConfig.Read(wxT("LogFile"), &szLogFile, wxT("pgadmin.log")); 
+    sysConfig.Read(wxT("LogLevel"), &lLogLevel, LOG_INFO); 
 }
 
 
 sysSettings::~sysSettings()
 {
+    wxLogDebug(wxT("Destroying sysSettings object and saving settings"));
     // frMain size/position
     sysConfig.Write(wxT("frmMain/Width"), lFrmMainWidth);
     sysConfig.Write(wxT("frmMain/Height"), lFrmMainHeight);
@@ -105,4 +113,28 @@ void sysSettings::SetNextTipOfTheDay(long lNewVal)
 {
     lNextTipOfTheDay = lNewVal;
     sysConfig.Write(wxT("NextTipOfTheDay"), lNextTipOfTheDay);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Log
+//////////////////////////////////////////////////////////////////////////
+
+wxString sysSettings::GetLogFile()
+{
+    return wxString(szLogFile);
+}
+void sysSettings::SetLogFile(wxString szNewVal)
+{
+    szLogFile = wxString(szNewVal);
+    sysConfig.Write(wxT("LogFile"), szLogFile);
+}
+
+long sysSettings::GetLogLevel()
+{
+    return lLogLevel;
+}
+void sysSettings::SetLogLevel(long lNewVal)
+{
+    lLogLevel = lNewVal;
+    sysConfig.Write(wxT("LogLevel"), lLogLevel);
 }

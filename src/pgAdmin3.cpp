@@ -30,9 +30,18 @@ IMPLEMENT_APP(pgAdmin3)
 bool pgAdmin3::OnInit()
 {
 
-    // Setup logging first
+    // Load the Settings
+    objSettings = new sysSettings();
+
+    // Setup logging
     objLogger = new sysLogger();
     wxLog::SetActiveTarget(objLogger);
+
+    wxString szMsg;
+    szMsg << "# " << APPNAME << " Version " << VERSION << " Startup";
+    wxLogInfo(wxT("##############################################################"));
+    wxLogInfo(szMsg);
+    wxLogInfo(wxT("##############################################################"));
 
     // Show the splash screen
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
@@ -45,15 +54,12 @@ bool pgAdmin3::OnInit()
 #endif
     SetAppName(APPNAME);
 
-    // Load the Settings
-    objSettings = new sysSettings();
-
 #ifndef _DEBUG
     wxSleep(2);
 #endif
 
     // Create & show the main form
-    winMain = new frmMain(wxT("pgAdmin III"), wxPoint(objSettings->GetFrmMainLeft(), objSettings->GetFrmMainTop()), wxSize(objSettings->GetFrmMainWidth(), objSettings->GetFrmMainHeight()));
+    winMain = new frmMain(APPNAME, wxPoint(objSettings->GetFrmMainLeft(), objSettings->GetFrmMainTop()), wxSize(objSettings->GetFrmMainWidth(), objSettings->GetFrmMainHeight()));
     winMain->Show(TRUE);
     SetTopWindow(winMain);
     SetExitOnFrameDelete(TRUE);

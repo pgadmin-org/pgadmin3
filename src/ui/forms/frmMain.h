@@ -26,6 +26,7 @@ class frmMain : public wxFrame
 {
 public:
     frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
+    ~frmMain();
     void TipOfTheDay();
     
 private:
@@ -39,8 +40,6 @@ private:
     wxToolBar *tlBar;
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
-    void OnSize(wxSizeEvent &sizForm);
-    void OnMove(wxMoveEvent &posForm);
     DECLARE_EVENT_TABLE()
 };
 

@@ -30,6 +30,8 @@ frmAbout::frmAbout(wxFrame *parent)
 : wxDialog(parent, -1, "About pgAdmin III", wxDefaultPosition, wxDefaultSize, wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
 {
 
+    wxLogDebug(wxT("Creating an about box"));
+
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
 
@@ -41,6 +43,11 @@ frmAbout::frmAbout(wxFrame *parent)
     szVersion.Append(VERSION);
     wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
     Center();
+}
+
+frmAbout::~frmAbout()
+{
+    wxLogDebug(wxT("Destroying an about box"));
 }
 
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))

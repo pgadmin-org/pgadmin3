@@ -73,14 +73,11 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::TipOfTheDay)
-    EVT_SIZE(frmMain::OnSize)
-    EVT_MOVE(frmMain::OnMove) 
 END_EVENT_TABLE()
 
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
 
@@ -259,6 +256,15 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     txtSQLPane->InsertText(0, wxT("-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;"));
 }
 
+frmMain::~frmMain()
+{
+    extern sysSettings *objSettings;
+    objSettings->SetFrmMainWidth(GetSize().x);
+    objSettings->SetFrmMainHeight(GetSize().y);
+    objSettings->SetFrmMainLeft(GetPosition().x);
+    objSettings->SetFrmMainTop(GetPosition().y);
+}
+
 // Event handlers
 void frmMain::OnExit(wxCommandEvent& WXUNUSED(event))
 {
@@ -270,21 +276,6 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     frmAbout *winAbout = new frmAbout(this);
     winAbout->Show(TRUE);
-}
-
-void frmMain::OnSize(wxSizeEvent &sizForm)
-{
-    extern sysSettings *objSettings;
-    objSettings->SetFrmMainWidth(sizForm.GetSize().x);
-    objSettings->SetFrmMainHeight(sizForm.GetSize().y);
-    sizForm.Skip();
-}
-
-void frmMain::OnMove(wxMoveEvent &posForm)
-{
-    extern sysSettings *objSettings;
-    objSettings->SetFrmMainLeft(posForm.GetPosition().x);
-    objSettings->SetFrmMainTop(posForm.GetPosition().y);
 }
 
 void frmMain::TipOfTheDay()

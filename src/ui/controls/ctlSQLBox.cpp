@@ -20,6 +20,8 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent = (wxWindow *) NULL, wxWindowID id = -1, c
 : wxStyledTextCtrl(parent,id , pos, size, style)
 {
     
+    wxLogDebug(wxT("Creating a ctlSQLBox"));
+
     // Clear all styles
     this->StyleClearAll();
     
@@ -41,4 +43,9 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent = (wxWindow *) NULL, wxWindowID id = -1, c
     this->SetLexer(wxSTC_LEX_SQL);
     this->SetKeyWords(0, SQL_KEYWORDS);
     
+}
+
+ctlSQLBox::~ctlSQLBox()
+{
+    wxLogDebug(wxT("Destroying a ctlSQLBox"));
 }

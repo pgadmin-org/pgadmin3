@@ -31,6 +31,7 @@ class ctlSQLBox : public wxStyledTextCtrl
 {
 public:
     ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
+    ~ctlSQLBox();
 };
 
 #endif
