@@ -32,8 +32,8 @@
 #define txtArguments        CTRL_TEXT("txtArguments")
 #define cbReturntype        CTRL_COMBOBOX("cbReturntype")
 #define cbLanguage          CTRL_COMBOBOX("cbLanguage")
-#define cbVolatility        CTRL_COMBOBOX("cbVolatility")
 #define chkSetof            CTRL_CHECKBOX("chkSetof")
+#define cbVolatility        CTRL_COMBOBOX("cbVolatility")
 #define chkStrict           CTRL_CHECKBOX("chkStrict")
 #define chkSecureDefiner    CTRL_CHECKBOX("chkSecureDefiner")
 
@@ -56,7 +56,6 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgFunction::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgFunction::OnChange)
     EVT_TEXT(XRCID("cbVolatility"),                 dlgFunction::OnChange)
-    EVT_CHECKBOX(XRCID("chkSetof"),                 dlgFunction::OnChange)
     EVT_CHECKBOX(XRCID("chkStrict"),                dlgFunction::OnChange)
     EVT_CHECKBOX(XRCID("chkSecureDefiner"),         dlgFunction::OnChange)
     EVT_TEXT(XRCID("txtObjectFile"),                dlgFunction::OnChange)
@@ -142,15 +141,15 @@ int dlgFunction::Go(bool modal)
         cbReturntype->Disable();
         cbDatatype->Disable();
         lstArguments->Disable();
+        chkSetof->Disable();
     }
     else
     {
 		wxString restrict;
         // create mode
-		if (settings->GetShowSystemObjects()) 
-			restrict = wxT("(typtype IN ('b', 'c', 'd') OR typname IN ('void', 'cstring'))");
-		else
-			restrict = wxT("(typtype IN ('b', 'c', 'd') OR typname IN ('void', 'cstring')) AND nspname NOT LIKE 'pg_toast%' AND nspname NOT LIKE 'pg_temp%'");
+    	restrict = wxT("(typtype IN ('b', 'c', 'd', 'p') AND typname NOT IN ('any', 'trigger', 'language_handler'))");
+		if (!settings->GetShowSystemObjects()) 
+			restrict += wxT(" AND nspname NOT LIKE 'pg_toast%' AND nspname NOT LIKE 'pg_temp%'");
 
 		DatatypeReader tr(connection, restrict);
         while (tr.HasMore())
