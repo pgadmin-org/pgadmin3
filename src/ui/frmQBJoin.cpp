@@ -186,7 +186,7 @@ void frmQBJoin::OnAdd(wxCommandEvent &event)
 	if (tmpleftcolumn.IsEmpty() || tmprightcolumn.IsEmpty())
 	{
 		// Fail with an error 
-		wxLogError(__("You must select one column from te left table and one column from the right table."));
+		wxLogError(__("You must select one column from the left table and one column from the right table."));
 		return;
 	}
 
