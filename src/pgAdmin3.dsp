@@ -89,109 +89,18 @@ LINK32=link.exe
 
 # Name "pgAdmin3 - Win32 Release"
 # Name "pgAdmin3 - Win32 Debug"
-# Begin Group "Source Files"
+# Begin Group "src"
 
-# PROP Default_Filter "c,cpp"
-# Begin Source File
+# PROP Default_Filter ""
+# Begin Group "db"
 
-SOURCE=.\ui\controls\ctlSQLBox.cpp
-# End Source File
-# Begin Source File
+# PROP Default_Filter ""
+# Begin Group "pg2"
 
-SOURCE=.\ui\forms\frmAbout.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmConnect.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmMain.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmOptions.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmSplash.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmUpgradeWizard.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\pgAdmin3.cpp
-
-!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\db\pg\pgConn.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\schema\pg\pgObject.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\schema\pg\pgServer.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\db\pg\pgSet.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\utils\sysLogger.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\utils\sysSettings.cpp
-# End Source File
-# End Group
-# Begin Group "Header Files"
-
-# PROP Default_Filter "h"
-# Begin Source File
-
-SOURCE=.\ui\controls\ctlSQLBox.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmAbout.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmConnect.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmMain.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmOptions.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmSplash.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmUpgradeWizard.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\pgAdmin3.h
 # End Source File
 # Begin Source File
 
@@ -199,15 +108,44 @@ SOURCE=.\db\pg\pgConn.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\db\pg\pgSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\db\pg\pgSet.h
+# End Source File
+# End Group
+# End Group
+# Begin Group "schema"
+
+# PROP Default_Filter ""
+# Begin Group "pg"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\schema\pg\pgObject.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pg\pgObject.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pg\pgServer.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\schema\pg\pgServer.h
 # End Source File
+# End Group
+# End Group
+# Begin Group "utils"
+
+# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\db\pg\pgSet.h
+SOURCE=.\utils\sysLogger.cpp
 # End Source File
 # Begin Source File
 
@@ -215,12 +153,31 @@ SOURCE=.\utils\sysLogger.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\utils\sysSettings.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\sysSettings.h
 # End Source File
 # End Group
-# Begin Group "Resource Files"
+# Begin Group "controls"
 
-# PROP Default_Filter "rc xrc"
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ui\controls\ctlSQLBox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\controls\ctlSQLBox.h
+# End Source File
+# End Group
+# Begin Group "ui"
+
+# PROP Default_Filter ""
+# Begin Group "win32"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\ui\win32\frmConnect.xrc
@@ -231,18 +188,91 @@ SOURCE=.\ui\win32\frmOptions.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\pgAdmin3.rc
+SOURCE=.\ui\win32\frmPassword.xrc
 # End Source File
 # End Group
-# Begin Group "Unix"
+# Begin Group "gtk"
 
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\Makefile
+SOURCE=.\ui\gtk\frmConnect.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\gtk\frmOptions.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\gtk\frmPassword.xrc
 # End Source File
 # End Group
-# Begin Group "Images"
+# Begin Group "forms"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ui\forms\frmAbout.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmAbout.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmConnect.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmConnect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmMain.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmMain.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmOptions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmOptions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmPassword.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmPassword.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmSplash.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmSplash.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmUpgradeWizard.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmUpgradeWizard.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\ui\pgAdmin3.rc
+# End Source File
+# End Group
+# Begin Group "images"
 
 # PROP Default_Filter "xpm"
 # Begin Source File
@@ -434,9 +464,32 @@ SOURCE=.\images\view.xpm
 SOURCE=.\images\viewdata.xpm
 # End Source File
 # End Group
-# Begin Group "Misc"
+# Begin Source File
 
-# PROP Default_Filter "txt"
+SOURCE=.\Makefile
+# End Source File
+# Begin Source File
+
+SOURCE=.\pgAdmin3.cpp
+
+!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\pgAdmin3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tips.txt
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=..\LICENCE.txt
@@ -447,12 +500,7 @@ SOURCE=..\README.txt
 # End Source File
 # Begin Source File
 
-SOURCE=.\tips.txt
-# End Source File
-# Begin Source File
-
 SOURCE=..\TODO.txt
 # End Source File
-# End Group
 # End Target
 # End Project

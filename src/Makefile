@@ -25,6 +25,7 @@ OBJECTS = $(PROGRAM).o \
           ui/forms/frmConnect.o \
           ui/forms/frmMain.o \
           ui/forms/frmOptions.o \
+          ui/forms/frmPassword.o \
           ui/forms/frmSplash.o \
           ui/forms/frmUpgradeWizard.o \
           ui/controls/ctlSQLBox.o \
