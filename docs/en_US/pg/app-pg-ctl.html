@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="previous" href="app-pgcontroldata.html" title="pg_controldata">
 <link rel="next" href="app-pgresetxlog.html" title="pg_resetxlog">
@@ -19,13 +19,13 @@
 <h2>Name</h2>
 <p>pg_ctl &#8212; start, stop, or restart a <span class="productname">PostgreSQL</span> server</p>
 </div>
-<a name="id2720413"></a><div class="refsynopsisdiv">
+<a name="id2720748"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><tt class="command">pg_ctl</tt>  start  [-w] [-s] [-D <i class="replaceable"><tt>datadir</tt></i>] [-l <i class="replaceable"><tt>filename</tt></i>] [-o <i class="replaceable"><tt>options</tt></i>] [-p <i class="replaceable"><tt>path</tt></i>]<br><tt class="command">pg_ctl</tt>  stop  [-W] [-s] [-D <i class="replaceable"><tt>datadir</tt></i>] [-m
        [s[mart]] |  [f[ast]] |  [i[mmediate]] 
    ]<br><tt class="command">pg_ctl</tt>  restart  [-w] [-s] [-D <i class="replaceable"><tt>datadir</tt></i>] [-m
        [s[mart]] |  [f[ast]] |  [i[mmediate]] 
-   ] [-o <i class="replaceable"><tt>options</tt></i>]<br><tt class="command">pg_ctl</tt>  reload  [-s] [-D <i class="replaceable"><tt>datadir</tt></i>]<br><tt class="command">pg_ctl</tt>  status  [-D <i class="replaceable"><tt>datadir</tt></i>]<br><tt class="command">pg_ctl</tt>  kill  [<i class="replaceable"><tt>signal_name</tt></i>] [<i class="replaceable"><tt>process_id</tt></i>]</p></div>
+   ] [-o <i class="replaceable"><tt>options</tt></i>]<br><tt class="command">pg_ctl</tt>  reload  [-s] [-D <i class="replaceable"><tt>datadir</tt></i>]<br><tt class="command">pg_ctl</tt>  status  [-D <i class="replaceable"><tt>datadir</tt></i>]<br><tt class="command">pg_ctl</tt>  kill  [<i class="replaceable"><tt>signal_name</tt></i>] [<i class="replaceable"><tt>process_id</tt></i>]<br><tt class="command">pg_ctl</tt>  register  [-N <i class="replaceable"><tt>servicename</tt></i>] [-U <i class="replaceable"><tt>username</tt></i>] [-P <i class="replaceable"><tt>password</tt></i>] [-D <i class="replaceable"><tt>datadir</tt></i>] [-w] [-o <i class="replaceable"><tt>options</tt></i>]<br><tt class="command">pg_ctl</tt>  unregister  [-N <i class="replaceable"><tt>servicename</tt></i>]</p></div>
 </div>
 <div class="refsect1" lang="en">
 <a name="app-pg-ctl-description"></a><h2>Description</h2>
@@ -82,6 +82,13 @@
     process.  This is particularly valuable for <span class="productname">Microsoft Windows</span>
     which does not have a <span class="application">kill</span> command.  Use 
     <tt class="literal">--help</tt> to see a list of supported signal names.
+  </p>
+<p>   <tt class="option">register</tt> mode allows you to register a system service
+   on <span class="productname">Microsoft Windows</span>.
+  </p>
+<p>   <tt class="option">unregister</tt> mode allows you to unregister a system service
+   on <span class="productname">Microsoft Windows</span>, previously registered with the
+   <tt class="option">register</tt> command.
   </p>
 </div>
 <div class="refsect1" lang="en">
@@ -147,10 +154,29 @@
        </p></dd>
 </dl></div>
 <p>
-   </p>
+  </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2721143"></a><h2>Environment</h2>
+<a name="app-pg-ctl-svcoptions"></a><h2>Windows options</h2>
+<p>   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="option">-N <i class="replaceable"><tt>servicename</tt></i></tt></span></dt>
+<dd><p>       Name of the system service to register. The name will be used
+       as both the service name and the display name.
+      </p></dd>
+<dt><span class="term"><tt class="option">-P <i class="replaceable"><tt>password</tt></i></tt></span></dt>
+<dd><p>       Password for the user to start the service.
+      </p></dd>
+<dt><span class="term"><tt class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span></dt>
+<dd><p>       Username for the user to start the service. For domain users, use the
+       format <tt class="literal">DOMAIN\username</tt>.
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2721653"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="envar">PGDATA</tt></span></dt>
 <dd><p>      Default data directory location.
@@ -163,7 +189,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2721179"></a><h2>Files</h2>
+<a name="id2721688"></a><h2>Files</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="filename">postmaster.pid</tt></span></dt>
 <dd><p>      The existence of this file in the data directory is used to help
@@ -193,7 +219,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2721296"></a><h2>Notes</h2>
+<a name="id2721805"></a><h2>Notes</h2>
 <p>   Waiting for complete start is not a well-defined operation and may
    fail if access control is set up so that a local client cannot
    connect without manual interaction (e.g., password authentication).
@@ -267,7 +293,7 @@ Command line was:
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2721530"></a><h2>See Also</h2>
+<a name="id2722040"></a><h2>See Also</h2>
 <p>   <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>
   </p>
 </div>

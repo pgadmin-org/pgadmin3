@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="source.html" title="Chapter 43. PostgreSQL Coding Conventions">
 <link rel="previous" href="source.html" title="Chapter 43. PostgreSQL Coding Conventions">
 <link rel="next" href="error-style-guide.html" title="43.3. Error Message Style Guide">
@@ -16,7 +16,7 @@
 <a name="error-message-reporting"></a>43.2. Reporting Errors Within the Server</h2></div></div>
 <div></div>
 </div>
-<a name="id2740875"></a><a name="id2740881"></a><p>    Error, warning, and log messages generated within the server code
+<a name="id2741636"></a><a name="id2741641"></a><p>    Error, warning, and log messages generated within the server code
     should be created using <tt class="function">ereport</tt>, or its older cousin
     <tt class="function">elog</tt>.  The use of this function is complex enough to
     require some explanation.
@@ -79,7 +79,7 @@
      the standard format codes accepted by <tt class="function">sprintf</tt>, the format
      code <tt class="literal">%m</tt> can be used to insert the error message returned
      by <tt class="function">strerror</tt> for the current value of <tt class="literal">errno</tt>.
-     <sup>[<a name="id2741130" href="#ftn.id2741130">7</a>]</sup>
+     <sup>[<a name="id2741890" href="#ftn.id2741890">7</a>]</sup>
      <tt class="literal">%m</tt> does not require any
      corresponding entry in the parameter list for <tt class="function">errmsg</tt>.
      Note that the message string will be run through <tt class="function">gettext</tt>
@@ -156,7 +156,7 @@
    </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2741130" href="#id2741130">7</a>] </sup>       That is, the value that was current when the <tt class="function">ereport</tt> call
+<div class="footnote"><p><sup>[<a name="ftn.id2741890" href="#id2741890">7</a>] </sup>       That is, the value that was current when the <tt class="function">ereport</tt> call
        was reached; changes of <tt class="literal">errno</tt> within the auxiliary reporting
        routines will not affect it.  That would not be true if you were to
        write <tt class="literal">strerror(errno)</tt> explicitly in <tt class="function">errmsg</tt>'s

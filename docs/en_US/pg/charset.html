@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="previous" href="client-authentication-problems.html" title="19.3. Authentication problems">
 <link rel="next" href="multibyte.html" title="20.2. Character Set Support">
@@ -21,16 +21,16 @@
 <dl>
 <dt><span class="sect1"><a href="charset.html#locale">20.1. Locale Support</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="charset.html#id2596565">20.1.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="charset.html#id2596889">20.1.2. Behavior</a></span></dt>
-<dt><span class="sect2"><a href="charset.html#id2596975">20.1.3. Problems</a></span></dt>
+<dt><span class="sect2"><a href="charset.html#id2596800">20.1.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="charset.html#id2597124">20.1.2. Behavior</a></span></dt>
+<dt><span class="sect2"><a href="charset.html#id2597210">20.1.3. Problems</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="multibyte.html">20.2. Character Set Support</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="multibyte.html#multibyte-charset-supported">20.2.1. Supported Character Sets</a></span></dt>
-<dt><span class="sect2"><a href="multibyte.html#id2597585">20.2.2. Setting the Character Set</a></span></dt>
-<dt><span class="sect2"><a href="multibyte.html#id2597774">20.2.3. Automatic Character Set Conversion Between Server and Client</a></span></dt>
-<dt><span class="sect2"><a href="multibyte.html#id2599041">20.2.4. Further Reading</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2597820">20.2.2. Setting the Character Set</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2598008">20.2.3. Automatic Character Set Conversion Between Server and Client</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2599276">20.2.4. Further Reading</a></span></dt>
 </dl></dd>
 </dl>
 </div>
@@ -60,7 +60,7 @@
 <a name="locale"></a>20.1. Locale Support</h2></div></div>
 <div></div>
 </div>
-<a name="id2596536"></a><p>   <i class="firstterm">Locale</i> support refers to an application respecting
+<a name="id2596771"></a><p>   <i class="firstterm">Locale</i> support refers to an application respecting
    cultural preferences regarding alphabets, sorting, number
    formatting, etc.  <span class="productname">PostgreSQL</span> uses the standard ISO
    C and <span class="acronym">POSIX</span> locale facilities provided by the server operating
@@ -70,7 +70,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2596565"></a>20.1.1. Overview</h3></div></div>
+<a name="id2596800"></a>20.1.1. Overview</h3></div></div>
 <div></div>
 </div>
 <p>    Locale support is automatically initialized when a database
@@ -200,7 +200,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2596889"></a>20.1.2. Behavior</h3></div></div>
+<a name="id2597124"></a>20.1.2. Behavior</h3></div></div>
 <div></div>
 </div>
 <p>    Locale support influences the following features:
@@ -208,10 +208,10 @@
     </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>       Sort order in queries using <tt class="literal">ORDER BY</tt>
-       <a name="id2596906"></a>
+       <a name="id2597141"></a>
       </p></li>
 <li><p>       The ability to use indexes with <tt class="literal">LIKE</tt> clauses
-       <a name="id2596925"></a>
+       <a name="id2597160"></a>
       </p></li>
 <li><p>       The <tt class="function">to_char</tt> family of functions
       </p></li>
@@ -228,7 +228,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2596975"></a>20.1.3. Problems</h3></div></div>
+<a name="id2597210"></a>20.1.3. Problems</h3></div></div>
 <div></div>
 </div>
 <p>    If locale support doesn't work in spite of the explanation above,

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-rollback.html" title="ROLLBACK">
 <link rel="next" href="sql-savepoint.html" title="SAVEPOINT">
@@ -19,12 +19,12 @@
 <h2>Name</h2>
 <p>ROLLBACK TO SAVEPOINT &#8212; roll back to a savepoint</p>
 </div>
-<a name="id2697059"></a><a name="id2697068"></a><div class="refsynopsisdiv">
+<a name="id2697380"></a><a name="id2697389"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ] TO [ SAVEPOINT ] <i class="replaceable"><tt>savepoint_name</tt></i></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697088"></a><h2>Description</h2>
+<a name="id2697410"></a><h2>Description</h2>
 <p>   Roll back all commands that were executed after the savepoint was
    established.  The savepoint remains valid and can be rolled back to
    again later, if needed.
@@ -34,7 +34,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697107"></a><h2>Parameters</h2>
+<a name="id2697428"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>savepoint_name</tt></i></span></dt>
 <dd><p>      The savepoint to roll back to.
@@ -42,25 +42,27 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697122"></a><h2>Notes</h2>
+<a name="id2697443"></a><h2>Notes</h2>
 <p>   Use <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a> to destroy a savepoint without
    discarding the effects of commands executed after it was established.
   </p>
 <p>   Specifying a savepoint name that has not been established is an error.
   </p>
 <p>   Cursors have somewhat non-transactional behavior with respect to
-   savepoints.  Any cursor that is opened inside the savepoint is not closed
-   when the savepoint is rolled back.  If a cursor is affected by a
+   savepoints.  Any cursor that is opened inside a savepoint will be closed
+   when the savepoint is rolled back.  If a previously opened cursor is
+   affected by a 
    <tt class="command">FETCH</tt> command inside a savepoint that is later rolled
    back, the cursor position remains at the position that <tt class="command">FETCH</tt>
    left it pointing to (that is, <tt class="command">FETCH</tt> is not rolled back).
+   Closing a cursor is not undone by rolling back, either.
    A cursor whose execution causes a transaction to abort is put in a
    can't-execute state, so while the transaction can be restored using
    <tt class="command">ROLLBACK TO SAVEPOINT</tt>, the cursor can no longer be used.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697180"></a><h2>Examples</h2>
+<a name="id2697503"></a><h2>Examples</h2>
 <p>   To undo the effects of the commands executed after <tt class="literal">my_savepoint</tt>
    was established:
 </p>
@@ -92,7 +94,7 @@ COMMIT;</pre>
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697212"></a><h2>Compatibility</h2>
+<a name="id2697534"></a><h2>Compatibility</h2>
 <p>   The SQL:2003 standard specifies that the key word
    <tt class="literal">SAVEPOINT</tt> is mandatory, but <span class="productname">PostgreSQL</span>
    and <span class="productname">Oracle</span> allow it to be omitted.  SQL:2003 allows
@@ -104,7 +106,7 @@ COMMIT;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697270"></a><h2>See Also</h2>
+<a name="id2697593"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-savepoint.html">SAVEPOINT</a></span>
 </div>
 </div></body>

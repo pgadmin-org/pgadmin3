@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="previous" href="libpq-ssl.html" title="27.13. SSL Support">
 <link rel="next" href="libpq-build.html" title="27.15. Building libpq Programs">
@@ -16,7 +16,7 @@
 <a name="libpq-threading"></a>27.14. Behavior in Threaded Programs</h2></div></div>
 <div></div>
 </div>
-<a name="id2616469"></a><p><span class="application">libpq</span> is reentrant and thread-safe if the
+<a name="id2616784"></a><p><span class="application">libpq</span> is reentrant and thread-safe if the
 <tt class="filename">configure</tt> command-line option
 <tt class="literal">--enable-thread-safety</tt> was used when the
 <span class="productname">PostgreSQL</span> distribution was built.  In
@@ -46,7 +46,7 @@ There is no good reason to call <tt class="function">fe_setauthsvc</tt> at all.<
 <p><span class="application">libpq</span> applications that use the
 <tt class="literal">crypt</tt> authentication method rely on the
 <tt class="literal">crypt()</tt> operating system function, which is often
-not thread-safe.<a name="id2616620"></a> It is better to use the <tt class="literal">md5</tt> method,
+not thread-safe.<a name="id2616934"></a> It is better to use the <tt class="literal">md5</tt> method,
 which is thread-safe on all platforms.</p>
 <p>If you experience problems with threaded applications, run
 the program in <tt class="filename">src/tools/thread</tt> to see if your

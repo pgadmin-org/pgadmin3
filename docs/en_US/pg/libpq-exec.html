@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="previous" href="libpq-status.html" title="27.2. Connection Status Functions">
 <link rel="next" href="libpq-async.html" title="27.4. Asynchronous Command Processing">
@@ -26,7 +26,7 @@ SQL queries and commands.</p>
 <div></div>
 </div>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQexec</tt><a name="id2609332"></a></span></dt>
+<dt><span class="term"><tt class="function">PQexec</tt><a name="id2609640"></a></span></dt>
 <dd>
 <p>          Submits a command to the server
           and waits for the result.
@@ -54,7 +54,7 @@ string.  Should one of the commands fail, processing of the string stops with
 it and the returned <tt class="structname">PGresult</tt> describes the error
 condition.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQexecParams</tt><a name="id2609414"></a></span></dt>
+<dt><span class="term"><tt class="function">PQexecParams</tt><a name="id2609722"></a></span></dt>
 <dd>
 <p>          Submits a command to the server and waits for the result,
           with the ability to pass parameters separately from the SQL
@@ -112,7 +112,7 @@ command in the given string.  (There can be semicolons in it, but not more
 than one nonempty command.)  This is a limitation of the underlying protocol,
 but has some usefulness as an extra defense against SQL-injection attacks.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQprepare</tt><a name="id2609616"></a></span></dt>
+<dt><span class="term"><tt class="function">PQprepare</tt><a name="id2609923"></a></span></dt>
 <dd>
 <p>          Submits a request to create a prepared statement with the
           given parameters, and waits for completion.
@@ -168,7 +168,7 @@ parameter types to be pre-specified.)  Also, although there is no
 <span class="application">libpq</span> function for deleting a prepared statement,
 the SQL <tt class="command">DEALLOCATE</tt> statement can be used for that purpose.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQexecPrepared</tt><a name="id2609836"></a></span></dt>
+<dt><span class="term"><tt class="function">PQexecPrepared</tt><a name="id2610143"></a></span></dt>
 <dd>
 <p>          Sends a request to execute a prepared statement with given
           parameters, and waits for the result.
@@ -196,7 +196,7 @@ the prepared statement's parameter types were determined when it was created).</
 </dd>
 </dl></div>
 <p>The
-<tt class="structname">PGresult</tt><a name="id2609906"></a>
+<tt class="structname">PGresult</tt><a name="id2610214"></a>
 structure encapsulates the result returned by the server.
 <span class="application">libpq</span> application programmers should be
 careful to maintain the <tt class="structname">PGresult</tt> abstraction.
@@ -207,7 +207,7 @@ are subject to change in the future.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQresultStatus</tt><a name="id2609943"></a></span></dt>
+<dt><span class="term"><tt class="function">PQresultStatus</tt><a name="id2610250"></a></span></dt>
 <dd>
 <p>          Returns the result status of the command.
 </p>
@@ -249,7 +249,7 @@ returned directly by <tt class="function">PQexec</tt> or other query
 execution functions; results of this kind are instead passed to the notice
 processor (see <a href="libpq-notice-processing.html" title="27.10. Notice Processing">Section 27.10, &#8220;Notice Processing&#8221;</a>).</p>
 </dd>
-<dt><span class="term"><tt class="function">PQresStatus</tt><a name="id2610144"></a></span></dt>
+<dt><span class="term"><tt class="function">PQresStatus</tt><a name="id2610452"></a></span></dt>
 <dd>
 <p>        Converts the enumerated type returned by <tt class="function">PQresultStatus</tt> into
         a string constant describing the status code. The caller should not 
@@ -257,7 +257,7 @@ processor (see <a href="libpq-notice-processing.html" title="27.10. Notice Proce
 </p>
 <pre class="synopsis">char *PQresStatus(ExecStatusType status);</pre>
 </dd>
-<dt><span class="term"><tt class="function">PQresultErrorMessage</tt><a name="id2610174"></a></span></dt>
+<dt><span class="term"><tt class="function">PQresultErrorMessage</tt><a name="id2610481"></a></span></dt>
 <dd>
 <p>Returns the error message associated with the command, or an empty string
 if there was no error.
@@ -277,7 +277,7 @@ subsequent operations are done.  Use <tt class="function">PQresultErrorMessage</
 know the status associated with a particular <tt class="structname">PGresult</tt>; use <tt class="function">PQerrorMessage</tt>
 when you want to know the status from the latest operation on the connection.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQresultErrorField</tt><a name="id2610264"></a></span></dt>
+<dt><span class="term"><tt class="function">PQresultErrorField</tt><a name="id2610571"></a></span></dt>
 <dd>
 <p>Returns an individual field of an error report.
 </p>
@@ -358,7 +358,7 @@ primary message, and sometimes a detail message, but no other fields.</p>
 <tt class="structname">PGconn</tt> objects; there is no
 <tt class="function">PQerrorField</tt> function.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQclear</tt><a name="id2610552"></a></span></dt>
+<dt><span class="term"><tt class="function">PQclear</tt><a name="id2610859"></a></span></dt>
 <dd>
 <p>          Frees  the  storage  associated with a <tt class="structname">PGresult</tt>.
           Every command result should be freed via <tt class="function">PQclear</tt> when
@@ -371,7 +371,7 @@ primary message, and sometimes a detail message, but no other fields.</p>
           you must call <tt class="function">PQclear</tt>.  Failure to do this will
           result in memory leaks in your application.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQmakeEmptyPGresult</tt><a name="id2610602"></a></span></dt>
+<dt><span class="term"><tt class="function">PQmakeEmptyPGresult</tt><a name="id2610909"></a></span></dt>
 <dd>
 <p>          Constructs an empty <tt class="structname">PGresult</tt> object with the given status.
 </p>
@@ -398,21 +398,21 @@ query result (that is, one that has status
 <tt class="literal">PGRES_TUPLES_OK</tt>).  For objects with other status
 values they will act as though the result has zero rows and zero columns.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQntuples</tt><a name="id2610703"></a></span></dt>
+<dt><span class="term"><tt class="function">PQntuples</tt><a name="id2611011"></a></span></dt>
 <dd>
 <p>          Returns the number of rows (tuples)
           in the query result.
 </p>
 <pre class="synopsis">int PQntuples(const PGresult *res);</pre>
 </dd>
-<dt><span class="term"><tt class="function">PQnfields</tt><a name="id2610726"></a></span></dt>
+<dt><span class="term"><tt class="function">PQnfields</tt><a name="id2611033"></a></span></dt>
 <dd>
 <p>          Returns the number of columns (fields)
           in each row of the query result.
 </p>
 <pre class="synopsis">int PQnfields(const PGresult *res);</pre>
 </dd>
-<dt><span class="term"><tt class="function">PQfname</tt><a name="id2610748"></a></span></dt>
+<dt><span class="term"><tt class="function">PQfname</tt><a name="id2611056"></a></span></dt>
 <dd>
 <p>Returns the column name associated with the given column number.
 Column numbers start at 0. The caller should not free the result
@@ -423,7 +423,7 @@ handle is passed to <tt class="function">PQclear</tt>.
               int column_number);</pre>
 <p><tt class="symbol">NULL</tt> is returned if the column number is out of range.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQfnumber</tt><a name="id2610788"></a></span></dt>
+<dt><span class="term"><tt class="function">PQfnumber</tt><a name="id2611095"></a></span></dt>
 <dd>
 <p>          Returns the column number associated with the given column name.
 </p>
@@ -445,7 +445,7 @@ PQfnumber(res, "foo")        <i class="lineannotation"><span class="lineannotati
 PQfnumber(res, "BAR")        <i class="lineannotation"><span class="lineannotation">-1</span></i>
 PQfnumber(res, "\"BAR\"")    <i class="lineannotation"><span class="lineannotation">1</span></i></pre>
 </dd>
-<dt><span class="term"><tt class="function">PQftable</tt><a name="id2610853"></a></span></dt>
+<dt><span class="term"><tt class="function">PQftable</tt><a name="id2611161"></a></span></dt>
 <dd>
 <p> Returns the OID of the table from which the given column was fetched.
  Column numbers start at 0.
@@ -462,7 +462,7 @@ exactly which table is referenced.</p>
           the <span class="application">libpq</span> header file. They will
           both be some integer type.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQftablecol</tt><a name="id2610913"></a></span></dt>
+<dt><span class="term"><tt class="function">PQftablecol</tt><a name="id2611221"></a></span></dt>
 <dd>
 <p> Returns the column number (within its table) of the column making up
  the specified query result column.
@@ -475,7 +475,7 @@ exactly which table is referenced.</p>
 or if the specified column is not a simple reference to a table column,
 or when using pre-3.0 protocol.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQfformat</tt><a name="id2610943"></a></span></dt>
+<dt><span class="term"><tt class="function">PQfformat</tt><a name="id2611251"></a></span></dt>
 <dd>
 <p> Returns the format code indicating the format of the given column.
  Column numbers start at 0.
@@ -486,7 +486,7 @@ or when using pre-3.0 protocol.</p>
 code one indicates binary representation.  (Other codes are reserved
 for future definition.)</p>
 </dd>
-<dt><span class="term"><tt class="function">PQftype</tt><a name="id2610971"></a></span></dt>
+<dt><span class="term"><tt class="function">PQftype</tt><a name="id2611279"></a></span></dt>
 <dd>
 <p>          Returns the data type associated with the
           given  column number.  The  integer  returned is the
@@ -500,7 +500,7 @@ the names and properties of the various data types. The <span class="acronym">OI
 of the built-in data types are defined in the file <tt class="filename">src/include/catalog/pg_type.h</tt>
 in the source tree.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQfmod</tt><a name="id2611017"></a></span></dt>
+<dt><span class="term"><tt class="function">PQfmod</tt><a name="id2611324"></a></span></dt>
 <dd>
 <p>          Returns  the type modifier of the column
           associated with the given column number.
@@ -513,7 +513,7 @@ indicate precision or size limits.  The value -1 is used to indicate
 &#8220;<span class="quote">no information available</span>&#8221;.  Most data types do not use modifiers,
 in which case the value is always -1.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQfsize</tt><a name="id2611051"></a></span></dt>
+<dt><span class="term"><tt class="function">PQfsize</tt><a name="id2611358"></a></span></dt>
 <dd>
 <p>          Returns  the  size  in bytes of the column
           associated with the given column number.
@@ -526,7 +526,7 @@ row, in other words the size of the server's internal representation
 of the data type.  (Accordingly, it is not really very useful to clients.)
 A negative value indicates the data type is variable-length.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQbinaryTuples</tt><a name="id2611086"></a></span></dt>
+<dt><span class="term"><tt class="function">PQbinaryTuples</tt><a name="id2611394"></a></span></dt>
 <dd>
 <p>Returns 1 if the <tt class="structname">PGresult</tt> contains binary data
 and 0 if it contains text data.
@@ -539,7 +539,7 @@ to contain text data in some columns and binary data in others.
 <tt class="function">PQfformat</tt> is preferred.  <tt class="function">PQbinaryTuples</tt>
 returns 1 only if all columns of the result are binary (format 1).</p>
 </dd>
-<dt><span class="term"><tt class="function">PQgetvalue</tt><a name="id2611140"></a></span></dt>
+<dt><span class="term"><tt class="function">PQgetvalue</tt><a name="id2611448"></a></span></dt>
 <dd>
 <p>            Returns a single field value of one row of a
             <tt class="structname">PGresult</tt>.  Row and column numbers
@@ -567,7 +567,7 @@ and one must explicitly
 copy the data into other storage if it is to
 be used past the lifetime of the  <tt class="structname">PGresult</tt>  structure itself.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQgetisnull</tt><a name="id2611236"></a></span></dt>
+<dt><span class="term"><tt class="function">PQgetisnull</tt><a name="id2611543"></a></span></dt>
 <dd>
 <p>           Tests a field for a null value.
            Row and column numbers start at 0.
@@ -579,7 +579,7 @@ be used past the lifetime of the  <tt class="structname">PGresult</tt>  structur
 it contains a non-null value.  (Note that <tt class="function">PQgetvalue</tt>
 will return an empty string, not a null pointer, for a null field.)</p>
 </dd>
-<dt><span class="term"><tt class="function">PQgetlength</tt><a name="id2611281"></a></span></dt>
+<dt><span class="term"><tt class="function">PQgetlength</tt><a name="id2611588"></a></span></dt>
 <dd>
 <p>          Returns the actual length of a field value in bytes.
           Row and column numbers start at 0.
@@ -593,7 +593,7 @@ data format this is the same as <tt class="function">strlen()</tt>.  For binary 
 this is essential information.  Note that one should <span class="emphasis"><em>not</em></span> rely
 on <tt class="function">PQfsize</tt> to obtain the actual data length.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQprint</tt><a name="id2611333"></a></span></dt>
+<dt><span class="term"><tt class="function">PQprint</tt><a name="id2611640"></a></span></dt>
 <dd>
 <p>          Prints out all the rows and,  optionally,  the
           column names  to  the specified output stream.
@@ -630,7 +630,7 @@ assumes all the data is in text format.</p>
 <tt class="structname">PGresult</tt> objects that are not <tt class="command">SELECT</tt>
 results.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQcmdStatus</tt><a name="id2611401"></a></span></dt>
+<dt><span class="term"><tt class="function">PQcmdStatus</tt><a name="id2611708"></a></span></dt>
 <dd>
 <p>          Returns the command status tag from the SQL command that
           generated the <tt class="structname">PGresult</tt>.
@@ -642,7 +642,7 @@ not free the result directly. It will be freed when the
 associated <tt class="structname">PGresult</tt> handle is passed to
 <tt class="function">PQclear</tt>.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQcmdTuples</tt><a name="id2611442"></a></span></dt>
+<dt><span class="term"><tt class="function">PQcmdTuples</tt><a name="id2611750"></a></span></dt>
 <dd>
 <p>          Returns the number of rows affected by the SQL command.
 </p>
@@ -662,9 +662,9 @@ associated <tt class="structname">PGresult</tt> handle is passed to
           <tt class="structname">PGresult</tt> handle is passed to
           <tt class="function">PQclear</tt>.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQoidValue</tt><a name="id2611555"></a></span></dt>
+<dt><span class="term"><tt class="function">PQoidValue</tt><a name="id2611862"></a></span></dt>
 <dd>
-<p>          Returns the OID<a name="id2611564"></a> of the inserted row, if the <span class="acronym">SQL</span>
+<p>          Returns the OID<a name="id2611872"></a> of the inserted row, if the <span class="acronym">SQL</span>
           command was an <tt class="command">INSERT</tt> that inserted exactly one
           row into a table that has OIDs, or a <tt class="command">EXECUTE</tt> of
           a prepared query containing a suitable <tt class="command">INSERT</tt>
@@ -675,7 +675,7 @@ associated <tt class="structname">PGresult</tt> handle is passed to
 </p>
 <pre class="synopsis">Oid PQoidValue(const PGresult *res);</pre>
 </dd>
-<dt><span class="term"><tt class="function">PQoidStatus</tt><a name="id2611630"></a></span></dt>
+<dt><span class="term"><tt class="function">PQoidStatus</tt><a name="id2611938"></a></span></dt>
 <dd>
 <p>          Returns a string with the OID of the inserted row, if the
           <span class="acronym">SQL</span> command was an
@@ -699,7 +699,7 @@ It is not thread-safe.</p>
 <a name="libpq-exec-escape-string"></a>27.3.4. Escaping Strings for Inclusion in SQL Commands</h3></div></div>
 <div></div>
 </div>
-<a name="id2611708"></a><a name="id2611720"></a><p><tt class="function">PQescapeString</tt> escapes a string for use within an SQL
+<a name="id2612016"></a><a name="id2612027"></a><p><tt class="function">PQescapeString</tt> escapes a string for use within an SQL
 command.  This is useful when inserting data values as literal constants
 in SQL commands.  Certain characters (such as quotes and backslashes) must
 be escaped to prevent them from being interpreted specially by the SQL parser.
@@ -745,8 +745,8 @@ strings overlap.</p>
 <a name="libpq-exec-escape-bytea"></a>27.3.5. Escaping Binary Strings for Inclusion in SQL Commands</h3></div></div>
 <div></div>
 </div>
-<a name="id2611899"></a><div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQescapeBytea</tt><a name="id2611922"></a></span></dt>
+<a name="id2612206"></a><div class="variablelist"><dl>
+<dt><span class="term"><tt class="function">PQescapeBytea</tt><a name="id2612230"></a></span></dt>
 <dd>
 <p>   Escapes binary data for use within an SQL command with the type
    <tt class="type">bytea</tt>.  As with <tt class="function">PQescapeString</tt>,
@@ -788,7 +788,7 @@ strings overlap.</p>
    of the result string.
   </p>
 </dd>
-<dt><span class="term"><tt class="function">PQunescapeBytea</tt><a name="id2612080"></a></span></dt>
+<dt><span class="term"><tt class="function">PQunescapeBytea</tt><a name="id2612388"></a></span></dt>
 <dd>
 <p>   Converts an escaped string representation of binary data into binary
    data [mdash ] the reverse of <tt class="function">PQescapeBytea</tt>.
@@ -807,7 +807,7 @@ strings overlap.</p>
    freed using <tt class="function">PQfreemem</tt> when it is no longer needed.
   </p>
 </dd>
-<dt><span class="term"><tt class="function">PQfreemem</tt><a name="id2612163"></a></span></dt>
+<dt><span class="term"><tt class="function">PQfreemem</tt><a name="id2612470"></a></span></dt>
 <dd>
 <p>   Frees memory allocated by <span class="application">libpq</span>.
 </p>

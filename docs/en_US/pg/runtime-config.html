@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="previous" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
@@ -16,7 +16,7 @@
 <a name="runtime-config"></a>16.4. Run-time Configuration</h2></div></div>
 <div></div>
 </div>
-<a name="id2580320"></a><p>    There are a lot of configuration parameters that affect the
+<a name="id2580553"></a><p>    There are a lot of configuration parameters that affect the
     behavior of the database system. In this subsection, we describe
     how to set configuration parameters; the following subsections
     discuss each parameter in detail.
@@ -30,7 +30,7 @@
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <tt class="filename">postgresql.conf</tt><a name="id2580394"></a>,
+    <tt class="filename">postgresql.conf</tt><a name="id2580627"></a>,
     which is normally kept in the data directory. (<tt class="command">initdb</tt>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -46,7 +46,7 @@ search_path = '$user, public'</pre>
     anywhere.  Parameter values that are not simple identifiers or
     numbers must be single-quoted.
    </p>
-<p>    <a name="id2580430"></a>
+<p>    <a name="id2580663"></a>
     The configuration file is reread whenever the
     <tt class="command">postmaster</tt> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
@@ -787,6 +787,7 @@ search_path = '$user, public'</pre>
         values are
         <tt class="literal">fsync</tt> (call <tt class="function">fsync()</tt> at each commit),
         <tt class="literal">fdatasync</tt> (call <tt class="function">fdatasync()</tt> at each commit),
+        <tt class="literal">fsync_writethrough</tt> (call <tt class="function">_commit()</tt> at each commit on Windows),
         <tt class="literal">open_sync</tt> (write WAL files with <tt class="function">open()</tt> option <tt class="symbol">O_SYNC</tt>), and
         <tt class="literal">open_datasync</tt> (write WAL files with <tt class="function">open()</tt> option <tt class="symbol">O_DSYNC</tt>).
         Not all of these choices are available on all platforms.
@@ -1206,13 +1207,13 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <a name="runtime-config-logging"></a>16.4.6. Error Reporting and Logging</h3></div></div>
 <div></div>
 </div>
-<a name="id2584350"></a><div class="sect3" lang="en">
+<a name="id2584602"></a><div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
 <a name="runtime-config-logging-where"></a>16.4.6.1. Where to log</h4></div></div>
 <div></div>
 </div>
-<a name="id2584370"></a><div class="variablelist"><dl>
+<a name="id2584622"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><tt class="varname">log_destination</tt> (<tt class="type">string</tt>)</span>
 </dt>
@@ -2149,7 +2150,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         nor <tt class="literal">WITHOUT OIDS</tt> is specified. It also
         determines whether OIDs will be included in tables created by
         <tt class="command">SELECT INTO</tt>. In
-        <span class="productname">PostgreSQL</span> 8.0
+        <span class="productname">PostgreSQL</span> 8.0.2
         <tt class="varname">default_with_oids</tt> defaults to true. This is
         also the behavior of previous versions of
         <span class="productname">PostgreSQL</span>. However, assuming that
@@ -2380,8 +2381,8 @@ plruby.bar = true        # generates error, unknown class name</pre>
 <dt>
 <a name="guc-debug-shared-buffers"></a><span class="term"><tt class="varname">debug_shared_buffers</tt> (<tt class="type">integer</tt>)</span>
 </dt>
-<dd><p>        Number of seconds between ARC reports.
-        If set greater than zero, emit ARC statistics to the log every so many
+<dd><p>        Number of seconds between buffer freelist reports.
+        If set greater than zero, emit freelist statistics to the log every so many
         seconds.  Zero (the default) disables reporting.
        </p></dd>
 <dt>

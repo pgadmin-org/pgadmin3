@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="previous" href="functions-srf.html" title="9.18. Set Returning Functions">
 <link rel="next" href="functions-admin.html" title="9.20. System Administration Functions">
@@ -92,7 +92,7 @@
 </tbody>
 </table>
 </div>
-<a name="id2564130"></a><a name="id2564142"></a><a name="id2564154"></a><p>    The <tt class="function">session_user</tt> is normally the user who initiated
+<a name="id2564345"></a><a name="id2564357"></a><a name="id2564368"></a><p>    The <tt class="function">session_user</tt> is normally the user who initiated
     the current database connection; but superusers can change this setting
     with <a href="sql-set-session-authorization.html" title="SET SESSION AUTHORIZATION"><span class="refentrytitle"><a name="sql-set-session-authorization-title"></a>SET SESSION AUTHORIZATION</span></a>.
     The <tt class="function">current_user</tt> is the user identifier
@@ -126,7 +126,7 @@
 <p>
     </p>
 </div>
-<a name="id2564282"></a><a name="id2564291"></a><a name="id2564300"></a><a name="id2564310"></a><p>     <tt class="function">inet_client_addr</tt> returns the IP address of the
+<a name="id2564496"></a><a name="id2564505"></a><a name="id2564515"></a><a name="id2564524"></a><p>     <tt class="function">inet_client_addr</tt> returns the IP address of the
      current client, and <tt class="function">inet_client_port</tt> returns the
      port number.
      <tt class="function">inet_server_addr</tt> returns the IP address on which
@@ -135,10 +135,10 @@
      All these functions return NULL if the current connection is via a
      Unix-domain socket.
    </p>
-<a name="id2564350"></a><p>    <tt class="function">version()</tt> returns a string describing the
+<a name="id2564565"></a><p>    <tt class="function">version()</tt> returns a string describing the
     <span class="productname">PostgreSQL</span> server's version.
    </p>
-<a name="id2564375"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
+<a name="id2564589"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
    allow the user to query object access privileges programmatically.
    See <a href="ddl-priv.html" title="5.7. Privileges">Section 5.7, &#8220;Privileges&#8221;</a> for more information about
    privileges.
@@ -238,7 +238,7 @@
 </tbody>
 </table>
 </div>
-<a name="id2564836"></a><a name="id2564845"></a><a name="id2564855"></a><a name="id2564864"></a><a name="id2564874"></a><a name="id2564883"></a><p>    <tt class="function">has_table_privilege</tt> checks whether a user
+<a name="id2565050"></a><a name="id2565060"></a><a name="id2565069"></a><a name="id2565079"></a><a name="id2565088"></a><a name="id2565098"></a><p>    <tt class="function">has_table_privilege</tt> checks whether a user
     can access a table in a particular way.  The user can be
     specified by name or by ID
     (<tt class="literal">pg_user.usesysid</tt>), or if the argument is
@@ -362,7 +362,7 @@
 </tbody>
 </table>
 </div>
-<a name="id2565350"></a><a name="id2565359"></a><a name="id2565368"></a><a name="id2565378"></a><a name="id2565388"></a><a name="id2565397"></a><p>   <tt class="function">pg_table_is_visible</tt> performs the check for
+<a name="id2565564"></a><a name="id2565573"></a><a name="id2565583"></a><a name="id2565592"></a><a name="id2565602"></a><a name="id2565611"></a><p>   <tt class="function">pg_table_is_visible</tt> performs the check for
    tables (or views, or any other kind of <tt class="literal">pg_class</tt> entry).
    <tt class="function">pg_type_is_visible</tt>,
    <tt class="function">pg_function_is_visible</tt>,
@@ -386,7 +386,7 @@
     Note that it would not make much sense to test an unqualified name in
     this way [mdash ] if the name can be recognized at all, it must be visible.
    </p>
-<a name="id2565492"></a><a name="id2565501"></a><a name="id2565511"></a><a name="id2565520"></a><a name="id2565529"></a><a name="id2565539"></a><a name="id2565548"></a><a name="id2565557"></a><a name="id2565567"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
+<a name="id2565706"></a><a name="id2565716"></a><a name="id2565725"></a><a name="id2565734"></a><a name="id2565744"></a><a name="id2565753"></a><a name="id2565763"></a><a name="id2565772"></a><a name="id2565781"></a><a name="id2565791"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
    extract information from the system catalogs.
   </p>
 <div class="table">
@@ -403,6 +403,11 @@
 <th>Description</th>
 </tr></thead>
 <tbody>
+<tr>
+<td><tt class="literal"><tt class="function">format_type</tt>(<i class="parameter"><tt>type_oid</tt></i>, <i class="parameter"><tt>typemod</tt></i>)</tt></td>
+<td><tt class="type">text</tt></td>
+<td>get SQL name of a data type</td>
+</tr>
 <tr>
 <td><tt class="literal"><tt class="function">pg_get_viewdef</tt>(<i class="parameter"><tt>view_name</tt></i>)</tt></td>
 <td><tt class="type">text</tt></td>
@@ -492,6 +497,10 @@
 </tbody>
 </table>
 </div>
+<p>   <tt class="function">format_type</tt> returns the SQL name of a data type that
+   is identified by its type OID and possibly a type modifier.  Pass NULL
+   for the type modifier if no specific modifier is known.
+  </p>
 <p>   <tt class="function">pg_get_viewdef</tt>,
    <tt class="function">pg_get_ruledef</tt>,
    <tt class="function">pg_get_indexdef</tt>,
@@ -529,7 +538,7 @@
   <tt class="function">pg_tablespace_databases</tt> and query their
   <tt class="structname">pg_class</tt> catalogs.
   </p>
-<a name="id2566233"></a><a name="id2566243"></a><a name="id2566252"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
+<a name="id2566496"></a><a name="id2566506"></a><a name="id2566515"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
     previously stored with the <tt class="command">COMMENT</tt> command.  A
     null value is returned if no comment could be found matching the
     specified parameters.

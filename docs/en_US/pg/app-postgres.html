@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="previous" href="app-pgresetxlog.html" title="pg_resetxlog">
 <link rel="next" href="app-postmaster.html" title="postmaster">
@@ -19,12 +19,12 @@
 <h2>Name</h2>
 <p>postgres &#8212; run a <span class="productname">PostgreSQL</span> server in single-user mode</p>
 </div>
-<a name="id2721986"></a><div class="refsynopsisdiv">
+<a name="id2722496"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><tt class="command">postgres</tt> [-A   [0] |  [1] ] [-B <i class="replaceable"><tt>nbuffers</tt></i>] [-c <i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>] [-d <i class="replaceable"><tt>debug-level</tt></i>] [--describe-config] [-D <i class="replaceable"><tt>datadir</tt></i>] [-e] [-E] [-f  [s] |  [i] |  [t] |  [n] |  [m] |  [h] ] [-F] [-N] [-o <i class="replaceable"><tt>filename</tt></i>] [-O] [-P] [[-s] |  [-t  [pa] |  [pl] |  [ex] ]] [-S <i class="replaceable"><tt>work-mem</tt></i>] [-W <i class="replaceable"><tt>seconds</tt></i>] [--<i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>]  <i class="replaceable"><tt>database</tt></i> <br><tt class="command">postgres</tt> [-A   [0] |  [1] ] [-B <i class="replaceable"><tt>nbuffers</tt></i>] [-c <i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>] [-d <i class="replaceable"><tt>debug-level</tt></i>] [-D <i class="replaceable"><tt>datadir</tt></i>] [-e] [-f  [s] |  [i] |  [t] |  [n] |  [m] |  [h] ] [-F] [-o <i class="replaceable"><tt>filename</tt></i>] [-O] [-p <i class="replaceable"><tt>database</tt></i>] [-P] [[-s] |  [-t  [pa] |  [pl] |  [ex] ]] [-S <i class="replaceable"><tt>work-mem</tt></i>] [-v <i class="replaceable"><tt>protocol</tt></i>] [-W <i class="replaceable"><tt>seconds</tt></i>] [--<i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2722499"></a><h2>Description</h2>
+<a name="id2723008"></a><h2>Description</h2>
 <p>   The <tt class="command">postgres</tt> executable is the actual
    <span class="productname">PostgreSQL</span> server process that processes
    queries.  It is normally not called directly; instead a <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> multiuser server is started.
@@ -54,7 +54,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2722585"></a><h2>Options</h2>
+<a name="id2723088"></a><h2>Options</h2>
 <p>    When <tt class="command">postgres</tt> is started by a <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> then it
     inherits all options set by the latter.  Additionally,
     <tt class="command">postgres</tt>-specific options can be passed
@@ -71,7 +71,7 @@
     <tt class="command">postgres</tt> command-line options.
    </p>
 <div class="refsect2" lang="en">
-<a name="id2722650"></a><h3>General Purpose</h3>
+<a name="id2723153"></a><h3>General Purpose</h3>
 <p>     The options <tt class="option">-A</tt>, <tt class="option">-B</tt>,
      <tt class="option">-c</tt>, <tt class="option">-d</tt>, <tt class="option">-D</tt>,
      <tt class="option">-F</tt>, and <tt class="option">--<i class="replaceable"><tt>name</tt></i></tt> have the same meanings
@@ -112,7 +112,7 @@
 </dl></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2722828"></a><h3>Options for stand-alone mode</h3>
+<a name="id2723332"></a><h3>Options for stand-alone mode</h3>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>database</tt></i></span></dt>
 <dd><p>	Specifies the name of the database to be accessed.  If it is
@@ -127,7 +127,7 @@
 </dl></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2722861"></a><h3>Semi-internal Options</h3>
+<a name="id2723365"></a><h3>Semi-internal Options</h3>
 <p>     There are several other options that may be specified, used
      mainly for debugging purposes.  These are listed here only for
      the use by <span class="productname">PostgreSQL</span> system
@@ -185,7 +185,7 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723050"></a><h2>Environment</h2>
+<a name="id2723554"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="envar">PGDATA</tt></span></dt>
 <dd><p>      Default data directory location
@@ -196,7 +196,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723073"></a><h2>Notes</h2>
+<a name="id2723576"></a><h2>Notes</h2>
 <p>   To cancel a running query, send the <tt class="literal">SIGINT</tt> signal
    to the <tt class="command">postgres</tt> process running that command.
   </p>
@@ -219,7 +219,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723204"></a><h2>Usage</h2>
+<a name="id2723707"></a><h2>Usage</h2>
 <p>    Start a stand-alone server with a command like
 </p>
 <pre class="screen"><b class="userinput"><tt>postgres -D /usr/local/pgsql/data <i class="replaceable"><tt>other-options</tt></i> my_database</tt></b></pre>
@@ -250,7 +250,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723295"></a><h2>See Also</h2>
+<a name="id2723799"></a><h2>See Also</h2>
 <p>   <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,
    <a href="app-ipcclean.html" title="ipcclean"><span class="refentrytitle"><a name="app-ipcclean-title"></a><span class="application">ipcclean</span></span></a>,
    <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-load.html" title="LOAD">
 <link rel="next" href="sql-move.html" title="MOVE">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>LOCK &#8212; lock a table</p>
 </div>
-<a name="id2693997"></a><div class="refsynopsisdiv">
+<a name="id2694318"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">LOCK [ TABLE ] <i class="replaceable"><tt>name</tt></i> [, ...] [ IN <i class="replaceable"><tt>lockmode</tt></i> MODE ] [ NOWAIT ]
 
@@ -29,7 +29,7 @@ where <i class="replaceable"><tt>lockmode</tt></i> is one of:
     | SHARE | SHARE ROW EXCLUSIVE | EXCLUSIVE | ACCESS EXCLUSIVE</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694033"></a><h2>Description</h2>
+<a name="id2694354"></a><h2>Description</h2>
 <p>   <tt class="command">LOCK TABLE</tt> obtains a table-level lock, waiting
    if necessary for any conflicting locks to be released.  If
    <tt class="literal">NOWAIT</tt> is specified, <tt class="command">LOCK
@@ -87,7 +87,7 @@ where <i class="replaceable"><tt>lockmode</tt></i> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694236"></a><h2>Parameters</h2>
+<a name="id2694557"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd>
@@ -118,7 +118,7 @@ where <i class="replaceable"><tt>lockmode</tt></i> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694322"></a><h2>Notes</h2>
+<a name="id2694642"></a><h2>Notes</h2>
 <p>    <tt class="literal">LOCK TABLE ... IN ACCESS SHARE MODE</tt> requires <tt class="literal">SELECT</tt>
     privileges on the target table.  All other forms of <tt class="command">LOCK</tt>
     require <tt class="literal">UPDATE</tt> and/or <tt class="literal">DELETE</tt> privileges.
@@ -144,7 +144,7 @@ where <i class="replaceable"><tt>lockmode</tt></i> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694449"></a><h2>Examples</h2>
+<a name="id2694770"></a><h2>Examples</h2>
 <p>   Obtain a <tt class="literal">SHARE</tt> lock on a primary key table when going to perform
    inserts into a foreign key table:
 
@@ -173,7 +173,7 @@ COMMIT WORK;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694493"></a><h2>Compatibility</h2>
+<a name="id2694814"></a><h2>Compatibility</h2>
 <p>   There is no <tt class="command">LOCK TABLE</tt> in the SQL standard,
    which instead uses <tt class="command">SET TRANSACTION</tt> to specify
    concurrency levels on transactions.  <span class="productname">PostgreSQL</span> supports that too;

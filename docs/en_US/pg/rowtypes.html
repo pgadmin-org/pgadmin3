@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="previous" href="arrays.html" title="8.10. Arrays">
 <link rel="next" href="datatype-oid.html" title="8.12. Object Identifier Types">
@@ -16,7 +16,7 @@
 <a name="rowtypes"></a>8.11. Composite Types</h2></div></div>
 <div></div>
 </div>
-<a name="id2539048"></a><a name="id2539054"></a><p>  A <i class="firstterm">composite type</i> describes the structure of a row or record;
+<a name="id2539102"></a><a name="id2539108"></a><p>  A <i class="firstterm">composite type</i> describes the structure of a row or record;
   it is in essence just a list of field names and their data types.
   <span class="productname">PostgreSQL</span> allows values of composite types to be
   used in many of the same ways that simple types can be used.  For example, a
@@ -25,7 +25,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2539077"></a>8.11.1. Declaration of Composite Types</h3></div></div>
+<a name="id2539131"></a>8.11.1. Declaration of Composite Types</h3></div></div>
 <div></div>
 </div>
 <p>  Here are two simple examples of defining composite types:
@@ -92,10 +92,10 @@ SELECT price_extension(item, 10) FROM on_hand;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2539174"></a>8.11.2. Composite Value Input</h3></div></div>
+<a name="id2539228"></a>8.11.2. Composite Value Input</h3></div></div>
 <div></div>
 </div>
-<a name="id2539178"></a><p>   To write a composite value as a literal constant, enclose the field
+<a name="id2539232"></a><p>   To write a composite value as a literal constant, enclose the field
    values within parentheses and separate them by commas.  You may put double
    quotes around any field value, and must do so if it contains commas or
    parentheses.  (More details appear below.)  Thus, the general format of a
@@ -146,7 +146,7 @@ ROW('', 42, NULL)</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2539293"></a>8.11.3. Accessing Composite Types</h3></div></div>
+<a name="id2539347"></a>8.11.3. Accessing Composite Types</h3></div></div>
 <div></div>
 </div>
 <p>  To access a field of a composite column, one writes a dot and the field
@@ -191,7 +191,7 @@ ROW('', 42, NULL)</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2539366"></a>8.11.4. Modifying Composite Types</h3></div></div>
+<a name="id2539420"></a>8.11.4. Modifying Composite Types</h3></div></div>
 <div></div>
 </div>
 <p>  Here are some examples of the proper syntax for inserting and updating
@@ -231,7 +231,7 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2539426"></a>8.11.5. Composite Type Input and Output Syntax</h3></div></div>
+<a name="id2539480"></a>8.11.5. Composite Type Input and Output Syntax</h3></div></div>
 <div></div>
 </div>
 <p>   The external text representation of a composite value consists of items that

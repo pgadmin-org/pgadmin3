@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="previous" href="ddl-default.html" title="5.2. Default Values">
 <link rel="next" href="ddl-system-columns.html" title="5.4. System Columns">
@@ -16,7 +16,7 @@
 <a name="ddl-constraints"></a>5.3. Constraints</h2></div></div>
 <div></div>
 </div>
-<a name="id2524151"></a><p>   Data types are a way to limit the kind of data that can be stored
+<a name="id2524176"></a><p>   Data types are a way to limit the kind of data that can be stored
    in a table.  For many applications, however, the constraint they
    provide is too coarse.  For example, a column containing a product
    price should probably only accept positive values.  But there is no
@@ -34,10 +34,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2524181"></a>5.3.1. Check Constraints</h3></div></div>
+<a name="id2524206"></a>5.3.1. Check Constraints</h3></div></div>
 <div></div>
 </div>
-<a name="id2524184"></a><a name="id2524190"></a><p>    A check constraint is the most generic constraint type.  It allows
+<a name="id2524209"></a><a name="id2524215"></a><p>    A check constraint is the most generic constraint type.  It allows
     you to specify that the value in a certain column must satisfy a
     Boolean (truth-value) expression.  For instance, to require positive
     product prices, you could use:
@@ -57,7 +57,7 @@
     involve the column thus constrained, otherwise the constraint
     would not make too much sense.
    </p>
-<a name="id2524230"></a><p>    You can also give the constraint a separate name.  This clarifies
+<a name="id2524255"></a><p>    You can also give the constraint a separate name.  This clarifies
     error messages and allows you to refer to the constraint when you
     need to change it.  The syntax is:
 </p>
@@ -137,7 +137,7 @@
 );</pre>
 <p>
    </p>
-<a name="id2524355"></a><p>    It should be noted that a check constraint is satisfied if the
+<a name="id2524380"></a><p>    It should be noted that a check constraint is satisfied if the
     check expression evaluates to true or the null value.  Since most
     expressions will evaluate to the null value if any operand is null,
     they will not prevent null values in the constrained columns.  To
@@ -148,10 +148,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2524375"></a>5.3.2. Not-Null Constraints</h3></div></div>
+<a name="id2524407"></a>5.3.2. Not-Null Constraints</h3></div></div>
 <div></div>
 </div>
-<a name="id2524379"></a><a name="id2524385"></a><p>    A not-null constraint simply specifies that a column must not
+<a name="id2524411"></a><a name="id2524416"></a><p>    A not-null constraint simply specifies that a column must not
     assume the null value.  A syntax example:
 </p>
 <pre class="programlisting">CREATE TABLE products (
@@ -211,10 +211,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2524505"></a>5.3.3. Unique Constraints</h3></div></div>
+<a name="id2524537"></a>5.3.3. Unique Constraints</h3></div></div>
 <div></div>
 </div>
-<a name="id2524509"></a><a name="id2524515"></a><p>    Unique constraints ensure that the data contained in a column or a
+<a name="id2524540"></a><a name="id2524546"></a><p>    Unique constraints ensure that the data contained in a column or a
     group of columns is unique with respect to all the rows in the
     table.  The syntax is
 </p>
@@ -258,7 +258,7 @@
 );</pre>
 <p>
    </p>
-<a name="id2524584"></a><p>    In general, a unique constraint is violated when there are two or
+<a name="id2524616"></a><p>    In general, a unique constraint is violated when there are two or
     more rows in the table where the values of all of the
     columns included in the constraint are equal.
     However, null values are not considered equal in this
@@ -274,10 +274,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2524608"></a>5.3.4. Primary Keys</h3></div></div>
+<a name="id2524640"></a>5.3.4. Primary Keys</h3></div></div>
 <div></div>
 </div>
-<a name="id2524612"></a><a name="id2524617"></a><p>    Technically, a primary key constraint is simply a combination of a
+<a name="id2524643"></a><a name="id2524649"></a><p>    Technically, a primary key constraint is simply a combination of a
     unique constraint and a not-null constraint.  So, the following
     two table definitions accept the same data:
 </p>
@@ -330,7 +330,7 @@
 <a name="ddl-constraints-fk"></a>5.3.5. Foreign Keys</h3></div></div>
 <div></div>
 </div>
-<a name="id2524695"></a><a name="id2524701"></a><a name="id2524709"></a><p>    A foreign key constraint specifies that the values in a column (or
+<a name="id2524727"></a><a name="id2524733"></a><a name="id2524741"></a><p>    A foreign key constraint specifies that the values in a column (or
     a group of columns) must match the values appearing in some row
     of another table.
     We say this maintains the <i class="firstterm">referential
@@ -421,7 +421,7 @@ CREATE TABLE order_items (
     Notice that the primary key overlaps with the foreign keys in
     the last table.
    </p>
-<a name="id2524830"></a><a name="id2524839"></a><p>    We know that the foreign keys disallow creation of orders that
+<a name="id2524862"></a><a name="id2524870"></a><p>    We know that the foreign keys disallow creation of orders that
     do not relate to any products.  But what if a product is removed
     after an order is created that references it?  SQL allows you to
     handle that as well.  Intuitively, we have a few options:
