@@ -19,7 +19,7 @@
 
 // App headers
 #include "frmStatus.h"
-
+#include "features.h"
 // Icons
 #include "images/pgAdmin3.xpm"
 
@@ -117,7 +117,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
         lockList->AddColumn(_("Query"), 500);
     }
 
-    if (connection->BackendMinimumVersion(7, 5))
+    if (connection->BackendMinimumVersion(7, 5) && connection->HasFeature(FEATURE_FILEREAD))
     {
         logFormat = connection->ExecuteScalar(wxT("SHOW log_line_prefix"));
         if (logFormat == wxT("unset"))

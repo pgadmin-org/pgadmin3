@@ -15,6 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "features.h"
 #include "pgObject.h"
 #include "pgIndex.h"
 #include "pgIndexConstraint.h"
@@ -213,6 +214,13 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
     }
 }
 
+
+void pgIndex::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    if (GetConnection()->HasFeature(FEATURE_SIZE))
+        DisplayStatistics(statistics, 
+            wxT("SELECT pg_size_pretty(pg_relation_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(_("Index Size")));
+}
 
 
 pgObject *pgIndex::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)

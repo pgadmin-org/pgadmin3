@@ -298,6 +298,9 @@ void pgCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
         case PG_TABLES:
             pgTable::ShowStatistics(this, statistics);
             break;
+        case PG_TABLESPACES:
+            pgTablespace::ShowStatistics(this, statistics);
+            break;
         default:
             break;
     }

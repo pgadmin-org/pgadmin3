@@ -16,6 +16,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "features.h"
 #include "pgObject.h"
 #include "pgTablespace.h"
 #include "pgCollection.h"
@@ -140,6 +141,34 @@ void pgTablespace::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
 }
 
 
+void pgTablespace::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    if (statistics)
+    {
+        if (GetConnection()->HasFeature(FEATURE_SIZE))
+        {
+            wxLogInfo(wxT("Displaying statistics for %s"), GetTypeName().c_str());
+
+        // Add the statistics view columns
+            CreateListColumns(statistics, _("Statistic"), _("Value"));
+
+            pgSet *stats = GetConnection()->ExecuteSet(
+                wxT("SELECT pg_size_pretty(pg_tablespace_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(_("Tablespace Size")));
+    
+            if (stats)
+            {
+                int col;
+                for (col=0 ; col < stats->NumCols() ; col++)
+                {
+                    if (!stats->ColName(col).IsEmpty())
+                        statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
+                }
+                delete stats;
+            }
+        }
+    }
+}
+
 
 pgObject *pgTablespace::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 {
@@ -193,3 +222,35 @@ pgObject *pgTablespace::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
     }
     return tablespace;
 }
+
+
+void pgTablespace::ShowStatistics(pgCollection *collection, ctlListView *statistics)
+{
+    if (collection->GetConnection()->HasFeature(FEATURE_SIZE))
+    {
+        wxLogInfo(wxT("Displaying statistics for tablespaces"));
+
+        // Add the statistics view columns
+        statistics->ClearAll();
+        statistics->AddColumn(_("Tablespace"), 100);
+        statistics->AddColumn(_("Size"), 60);
+
+        pgSet *stats = collection->GetConnection()->ExecuteSet(
+            wxT("SELECT spcname, pg_size_pretty(pg_tablespace_size(oid)) AS size FROM pg_tablespace ORDER BY spcname"));
+
+        if (stats)
+        {
+            long pos=0;
+            while (!stats->Eof())
+            {
+                statistics->InsertItem(pos, stats->GetVal(wxT("spcname")), PGICON_STATISTICS);
+                statistics->SetItem(pos, 1, stats->GetVal(wxT("size")));
+                stats->MoveNext();
+                pos++;
+            }
+
+	        delete stats;
+        }
+    }
+}
+

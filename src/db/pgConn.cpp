@@ -16,6 +16,7 @@
 
 // PostgreSQL headers
 #include <libpq-fe.h>
+#include "features.h"
 
 // Network  headers
 #ifdef __WXMSW__
@@ -425,4 +426,32 @@ bool pgConn::BackendMinimumVersion(int major, int minor)
 	    sscanf(GetVersionString().ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
     }
 	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+}
+
+
+bool pgConn::HasFeature(int featureNo)
+{
+    if (!features[FEATURE_INITIALIZED])
+    {
+        features[FEATURE_INITIALIZED] = true;
+
+        features[FEATURE_SIZE] = 
+            !ExecuteScalar(
+                    wxT("SELECT proname FROM pg_proc\n")
+                    wxT(" WHERE proname = 'pg_tablespace_size'")
+                    wxT(  " AND proargtypes[0] = 26"))
+                    .IsEmpty();
+        features[FEATURE_FILEREAD] = 
+            !ExecuteScalar(
+                    wxT("SELECT proname FROM pg_proc\n")
+                    wxT(" WHERE proname = 'pg_file_read'")
+                    wxT(  " AND proargtypes[0] = 25")
+                    wxT(  " AND proargtypes[1] = 20")
+                    wxT(  " AND proargtypes[2] = 20"))
+                    .IsEmpty();
+    }
+
+    if (featureNo < 1 ||featureNo >= FEATURE_LAST)
+        return false;
+    return features[featureNo];
 }

@@ -820,10 +820,12 @@ void pgSchemaObject::DisplayStatistics(ctlListView *statistics, const wxString& 
     
         if (stats)
         {
-            int col=0;
-            while (col++ < stats->NumCols())
-              if (!stats->ColName(col).IsEmpty())
-                statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
+            int col;
+            for (col=0 ; col < stats->NumCols() ; col++)
+            {
+                if (!stats->ColName(col).IsEmpty())
+                    statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
+            }
             delete stats;
         }
     }

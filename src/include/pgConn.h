@@ -55,6 +55,7 @@ public:
 
     void Close();
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
+    bool HasFeature(int feature=0);
     bool ExecuteVoid(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
@@ -86,6 +87,8 @@ public:
 private:
     PGconn *conn;
     int lastResultStatus;
+    bool features[32];
+
     int connStatus;
     int minorVersion, majorVersion;
     wxMBConv *conv;

@@ -31,6 +31,7 @@ public:
 
     int GetIcon() { return PGICON_INDEX; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
 

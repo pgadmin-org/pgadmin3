@@ -24,6 +24,7 @@
 #include "pgForeignKey.h"
 #include "pgCheck.h"
 #include "sysSettings.h"
+#include "features.h"
 
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, PG_TABLE, newName)
@@ -404,7 +405,7 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
 
 void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    DisplayStatistics(statistics, 
+    wxString sql =
         wxT("SELECT seq_scan AS ") + qtIdent(_("Sequential Scans")) +
              wxT(", seq_tup_read AS ") + qtIdent(_("Sequential Tuples Read")) +
              wxT(", idx_scan AS ") + qtIdent(_("Index Scans")) +
@@ -419,10 +420,17 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
              wxT(", toast_blks_read AS ") + qtIdent(_("Toast Blocks Read")) +
              wxT(", toast_blks_hit AS ") + qtIdent(_("Toast Blocks Hit")) +
              wxT(", tidx_blks_read AS ") + qtIdent(_("Toast Index Blocks Read")) +
-             wxT(", tidx_blks_hit AS ") + qtIdent(_("Toast Index Blocks Hit")) + wxT("\n")
+             wxT(", tidx_blks_hit AS ") + qtIdent(_("Toast Index Blocks Hit"));
+    
+    if (GetConnection()->HasFeature(FEATURE_SIZE))
+        sql += wxT(", pg_size_pretty(pg_relation_size(stat.relid)) AS ") + qtIdent(_("Table Size"));
+
+    sql +=  wxT("\n")
         wxT("  FROM pg_stat_all_tables stat, pg_statio_all_tables statio\n")
         wxT(" WHERE stat.relid = statio.relid\n")
-        wxT("   AND stat.relid = ") + GetOidStr());
+        wxT("   AND stat.relid = ") + GetOidStr();
+
+    DisplayStatistics(statistics, sql);
 }
 
 
@@ -511,15 +519,24 @@ void pgTable::ShowStatistics(pgCollection *collection, ctlListView *statistics)
 {
     wxLogInfo(wxT("Displaying statistics for tables on ")+ collection->GetSchema()->GetIdentifier());
 
+    bool hasSize=collection->GetConnection()->HasFeature(FEATURE_SIZE);
+
     // Add the statistics view columns
     statistics->ClearAll();
     statistics->AddColumn(_("Table"), 100);
     statistics->AddColumn(_("Tuples inserted"), 50);
     statistics->AddColumn(_("Tuples updated"), 50);
     statistics->AddColumn(_("Tuples deleted"), 50);
+    if (hasSize)
+        statistics->AddColumn(_("Size"), 60);
 
-    pgSet *stats = collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT relname, n_tup_ins, n_tup_upd, n_tup_del FROM pg_stat_all_tables ORDER BY relname"));
+    wxString sql=wxT("SELECT relname, n_tup_ins, n_tup_upd, n_tup_del");
+    if (hasSize)
+        sql += wxT(", pg_size_pretty(pg_relation_size(relid)) AS size");
+    
+    sql += wxT("\n  FROM pg_stat_all_tables ORDER BY relname");
+
+    pgSet *stats = collection->GetDatabase()->ExecuteSet(sql);
 
     if (stats)
     {
@@ -530,6 +547,8 @@ void pgTable::ShowStatistics(pgCollection *collection, ctlListView *statistics)
             statistics->SetItem(pos, 1, stats->GetVal(wxT("n_tup_ins")));
             statistics->SetItem(pos, 2, stats->GetVal(wxT("n_tup_upd")));
             statistics->SetItem(pos, 3, stats->GetVal(wxT("n_tup_del")));
+            if (hasSize)
+                statistics->SetItem(pos, 4, stats->GetVal(wxT("size")));
             stats->MoveNext();
             pos++;
         }

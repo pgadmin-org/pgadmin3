@@ -15,6 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "features.h"
 #include "pgDatabase.h"
 #include "pgObject.h"
 #include "pgServer.h"
@@ -429,6 +430,15 @@ void pgDatabase::ShowStatistics(pgCollection *collection, ctlListView *statistic
 {
     wxLogInfo(wxT("Displaying statistics for databases on ") + collection->GetServer()->GetIdentifier());
 
+    bool hasSize=collection->GetConnection()->HasFeature(FEATURE_SIZE);
+
+    wxString sql=wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit");
+
+    if (hasSize)
+        sql += wxT(", pg_size_pretty(pg_database_size(datid)) as size");
+
+    sql += wxT("\n  FROM pg_stat_database db ORDER BY datname");
+
     // Add the statistics view columns
     statistics->ClearAll();
     statistics->AddColumn(_("Database"), 60);
@@ -437,8 +447,10 @@ void pgDatabase::ShowStatistics(pgCollection *collection, ctlListView *statistic
     statistics->AddColumn(_("Xact Rolled Back"), 60);
     statistics->AddColumn(_("Blocks Read"), 60);
     statistics->AddColumn(_("Blocks Hit"), 60);
+    if (hasSize)
+        statistics->AddColumn(_("Size"), 60);
 
-    pgSet *stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
+    pgSet *stats = collection->GetServer()->ExecuteSet(sql);
     if (stats)
     {
         while (!stats->Eof())
@@ -449,6 +461,9 @@ void pgDatabase::ShowStatistics(pgCollection *collection, ctlListView *statistic
             statistics->SetItem(stats->CurrentPos() - 1, 3, stats->GetVal(wxT("xact_rollback")));
             statistics->SetItem(stats->CurrentPos() - 1, 4, stats->GetVal(wxT("blks_read")));
             statistics->SetItem(stats->CurrentPos() - 1, 5, stats->GetVal(wxT("blks_hit")));
+            if (hasSize)
+                statistics->SetItem(stats->CurrentPos() - 1, 6, stats->GetVal(wxT("size")));
+
             stats->MoveNext();
         }
 

@@ -22,8 +22,10 @@ public:
     int GetIcon() { return PGICON_TABLESPACE; }
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
     
     wxString GetLocation() const { return location; };
     void iSetLocation(const wxString& newVal) { location = newVal; }
