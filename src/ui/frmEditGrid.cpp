@@ -371,8 +371,9 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
 
     pgSet *colSet=connection->ExecuteSet(wxT(
-        "SELECT t.typname, attname, COALESCE(b.oid, t.oid) AS basetype, "
-                "COALESCE(att.atttypmod, t.typtypmod) as typmod, COALESCE(att.attlen, t.typlen) as typlen\n"
+        "SELECT t.typname, attname, COALESCE(b.oid, t.oid) AS basetype,\n"
+        "       CASE WHEN t.typbasetype::oid=0 THEN att.atttypmod else t.typtypmod END AS typmod,\n"
+        "       CASE WHEN t.typbasetype::oid=0 THEN att.attlen else t.typlen END AS typlen\n"
         "  FROM pg_attribute att\n"
         "  JOIN pg_type t ON t.oid=att.atttypid\n"
         "  LEFT OUTER JOIN pg_type b ON b.oid=t.typbasetype\n"
@@ -431,10 +432,16 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     break;
                 case 790:   // money
                 case 1700:  // numeric
+                {
                     columns[i].numeric = true;
                     columns[i].attr->SetReadOnly(false);
-                    columns[i].attr->SetEditor(new wxGridCellFloatEditor(columns[i].size(), columns[i].precision()));
+                    int len=columns[i].size();
+                    int prec=columns[i].precision();
+                    if (prec>0)
+                        len -= (prec+1);
+                    columns[i].attr->SetEditor(new wxGridCellFloatEditor(len, prec));
                     break;
+                }
                 case 2:     // bytea
                 case 3:     // char
                 case 4:     // name
