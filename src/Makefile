@@ -50,5 +50,4 @@ clean:
 	rm -f db/*.o
 	rm -f schema/*.o
 	rm -f ui/*.o
-	rm -f ui/*.o
 	rm -f utils/*.o
