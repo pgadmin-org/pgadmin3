@@ -24,6 +24,9 @@ OBJECTS = $(PROGRAM).o \
           schema/pgObject.o \
           schema/pgServer.o \
           schema/pgUser.o \
+          ui/browser.o \
+          ui/ctlSQLBox.o \
+          ui/events.o \
           ui/frmAbout.o \
           ui/frmConnect.o \
           ui/frmMain.o \
@@ -31,7 +34,7 @@ OBJECTS = $(PROGRAM).o \
           ui/frmPassword.o \
           ui/frmSplash.o \
           ui/frmUpgradeWizard.o \
-          ui/ctlSQLBox.o \
+          ui/statistics.o \
           utils/misc.o \
           utils/sysLogger.o \
           utils/sysSettings.o

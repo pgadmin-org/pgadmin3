@@ -181,7 +181,15 @@ SOURCE=.\ui\gtk\frmPassword.xrc
 # End Group
 # Begin Source File
 
+SOURCE=.\ui\browser.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\ctlSQLBox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\events.cpp
 # End Source File
 # Begin Source File
 
@@ -214,6 +222,10 @@ SOURCE=.\ui\frmUpgradeWizard.cpp
 # Begin Source File
 
 SOURCE=.\ui\pgAdmin3.rc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\statistics.cpp
 # End Source File
 # End Group
 # Begin Group "include"
