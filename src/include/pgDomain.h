@@ -53,6 +53,7 @@ public:
     void iSetTypmod(const long l) { typmod=l; }
 
     bool CanDrop() { return true; }
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));

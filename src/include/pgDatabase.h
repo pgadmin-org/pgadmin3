@@ -48,6 +48,7 @@ public:
     
     bool CanCreate() { return true; }
     bool CanDrop() { return true; }
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanEdit() { return true; }
     bool CanVacuum() { return true; }
     bool RequireDropConfirm() { return true; }
@@ -56,7 +57,6 @@ public:
 
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool Vacuum(frmMain *form);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 

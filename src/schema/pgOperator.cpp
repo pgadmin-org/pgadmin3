@@ -28,6 +28,22 @@ pgOperator::~pgOperator()
 {
 }
 
+bool pgOperator::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    wxString sql = wxT("DROP OPERATOR ") + GetFullIdentifier();
+    
+    if (GetLeftType().Length() > 0)
+        sql += wxT(" (") + qtIdent(GetLeftType());
+    else
+        sql += wxT(") (NONE");
+
+    if (GetRightType().Length() > 0)
+        sql += wxT(", ") + qtIdent(GetLeftType()) + wxT(")");
+    else
+        sql += wxT(", NONE)");
+
+    return GetDatabase()->ExecuteVoid(sql);
+}
 
 wxString pgOperator::GetSql(wxTreeCtrl *browser)
 {
@@ -188,3 +204,4 @@ void pgOperator::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
         ReadObjects(collection, browser);
     }
 }
+

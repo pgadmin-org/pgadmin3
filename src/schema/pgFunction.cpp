@@ -28,6 +28,10 @@ pgFunction::~pgFunction()
 {
 }
 
+bool pgFunction::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")"));
+}
 
 pgFunction::pgFunction(pgSchema *newSchema, int newType, const wxString& newName)
 : pgSchemaObject(newSchema, newType, newName)

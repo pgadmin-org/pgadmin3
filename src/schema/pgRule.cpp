@@ -28,7 +28,10 @@ pgRule::~pgRule()
 {
 }
 
-
+bool pgRule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP RULE ") + GetQuotedFullIdentifier() + wxT(" ON ") + GetQuotedFullTable());
+}
 
 wxString pgRule::GetSql(wxTreeCtrl *browser)
 {

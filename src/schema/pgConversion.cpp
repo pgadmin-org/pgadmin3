@@ -28,6 +28,11 @@ pgConversion::~pgConversion()
 {
 }
 
+bool pgConversion::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP CONVERSION ") + GetQuotedFullIdentifier());
+}
+
 wxString pgConversion::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())

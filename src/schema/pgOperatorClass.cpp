@@ -29,13 +29,17 @@ pgOperatorClass::~pgOperatorClass()
 {
 }
 
-
+bool pgOperatorClass::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP OPERATOR CLASS ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod());
+}
 
 wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE OPERATOR CLASS ") + GetQuotedFullIdentifier();
+        sql = wxT("-- Operator Class: \"") + GetName() + wxT("\"\n")
+        sql += wxT("CREATE OPERATOR CLASS ") + GetQuotedFullIdentifier();
         if (GetOpcDefault())
             sql += wxT("DEFAULT ");
         sql += wxT(" FOR TYPE ") + GetInType()
@@ -144,7 +148,6 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
         InsertListItem(properties, pos++, wxT("Default?"), GetOpcDefault());
         InsertListItem(properties, pos++, wxT("For Type"), GetInType());
         InsertListItem(properties, pos++, wxT("Access Method"), GetAccessMethod());
@@ -196,7 +199,6 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
             operatorClass = new pgOperatorClass(
                         collection->GetSchema(), operatorClasses->GetVal(wxT("opcname")));
 
-            operatorClass->iSetOid(operatorClasses->GetOid(wxT("oid")));
             operatorClass->iSetOwner(operatorClasses->GetVal(wxT("opcowner")));
             operatorClass->iSetAccessMethod(operatorClasses->GetVal(wxT("amname")));
             operatorClass->iSetInType(operatorClasses->GetVal(wxT("intypename")));

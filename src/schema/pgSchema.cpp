@@ -31,6 +31,10 @@ pgSchema::~pgSchema()
     wxLogInfo(wxT("Destroying a pgSchema object"));
 }
 
+bool pgSchema::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP SCHEMA ") + GetQuotedFullIdentifier());
+}
 
 wxString pgSchema::GetSql(wxTreeCtrl *browser)
 {

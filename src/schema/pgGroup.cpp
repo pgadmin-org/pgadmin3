@@ -31,6 +31,10 @@ pgGroup::~pgGroup()
     wxLogInfo(wxT("Destroying a pgGroup object"));
 }
 
+bool pgGroup::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return server->ExecuteVoid(wxT("DROP GROUP ") + GetQuotedFullIdentifier());
+}
 
 wxString pgGroup::GetSql(wxTreeCtrl *browser)
 {

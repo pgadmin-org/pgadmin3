@@ -60,6 +60,7 @@ public:
     void iSetIsStrict(bool b) { isStrict = b; }
 
     bool CanDrop() { return true; }
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

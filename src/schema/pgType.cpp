@@ -28,6 +28,10 @@ pgType::~pgType()
 {
 }
 
+bool pgType::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP TYPE ") + GetQuotedFullIdentifier());
+}
 
 wxString pgType::GetSql(wxTreeCtrl *browser)
 {

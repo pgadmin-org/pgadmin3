@@ -28,7 +28,10 @@ pgView::~pgView()
 {
 }
 
-
+bool pgView::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP VIEW ") + GetQuotedFullIdentifier());
+}
 
 wxString pgView::GetSql(wxTreeCtrl *browser)
 {

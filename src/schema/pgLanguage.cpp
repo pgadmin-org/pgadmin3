@@ -30,7 +30,10 @@ pgLanguage::~pgLanguage()
     wxLogInfo(wxT("Destroying a pgLanguage object"));
 }
 
-
+bool pgLanguage::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP LANGUAGE ") + GetQuotedFullIdentifier());
+}
 
 wxString pgLanguage::GetSql(wxTreeCtrl *browser)
 {

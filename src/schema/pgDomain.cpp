@@ -28,6 +28,10 @@ pgDomain::~pgDomain()
 {
 }
 
+bool pgDomain::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP DOMAIN ") + GetQuotedFullIdentifier());
+}
 
 wxString pgDomain::GetSql(wxTreeCtrl *browser)
 {

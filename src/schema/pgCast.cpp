@@ -27,6 +27,10 @@ pgCast::~pgCast()
 {
 }
 
+bool pgCast::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP CAST (") + GetSourceType() + wxT(" AS ") + GetTargetType() + wxT(")"));
+}
 
 wxString pgCast::GetSql(wxTreeCtrl *browser)
 {

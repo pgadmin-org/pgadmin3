@@ -28,6 +28,10 @@ pgAggregate::~pgAggregate()
 {
 }
 
+bool pgAggregate::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(")"));
+}
 
 wxString pgAggregate::GetSql(wxTreeCtrl *browser)
 {

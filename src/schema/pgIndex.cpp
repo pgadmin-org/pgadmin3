@@ -28,7 +28,10 @@ pgIndex::~pgIndex()
 {
 }
 
-
+bool pgIndex::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP INDEX ") + GetQuotedFullIdentifier());
+}
 
 wxString pgIndex::GetCreate()
 {

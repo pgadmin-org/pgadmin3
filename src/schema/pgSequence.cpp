@@ -28,6 +28,10 @@ pgSequence::~pgSequence()
 {
 }
 
+bool pgSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP SEQUENCE ") + GetQuotedFullIdentifier());
+}
 
 // we dont have an appropriate wxLongLong method
 #ifdef __WIN32__
