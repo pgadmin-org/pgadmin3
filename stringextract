@@ -2,16 +2,20 @@
 #
 # pgAdmin III - PostgreSQL Tools
 # Copyright (C) 2002 - 2003, The pgAdmin Development Team
- This software is released under the Artistic Licence
+# This software is released under the Artistic Licence
 #
 # strinextract - extract strings from sources 
 # and create gettext template file
 #
 #######################################################################
 
+if test -f pgadmin3.pot; then
+xgettext -k_ -k__ -j -s -o pgadmin3.pot src/*.cpp
+else
 xgettext -k_ -k__    -s -o pgadmin3.pot src/*.cpp
+fi
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/include/*.h
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/db/*.cpp
-xgettext -k_ -k__ -j -s -o pgadmin3.pot src/schema/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot src/schema/*.cpp
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/ui/*.cpp
 wxrc -g src/ui/common/*.xrc | xgettext -k_ -k__ -L C  -s -o pgadmin3.pot -
