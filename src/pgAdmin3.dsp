@@ -314,7 +314,15 @@ SOURCE=.\ui\dlgDatabase.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\dlgDomain.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgForeignKey.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgGroup.cpp
 # End Source File
 # Begin Source File
 
@@ -323,6 +331,10 @@ SOURCE=.\ui\dlgIndex.cpp
 # Begin Source File
 
 SOURCE=.\ui\dlgIndexConstraint.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgLanguage.cpp
 # End Source File
 # Begin Source File
 
@@ -602,7 +614,15 @@ SOURCE=.\include\dlgDatabase.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\dlgDomain.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgForeignKey.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgGroup.h
 # End Source File
 # Begin Source File
 
@@ -611,6 +631,10 @@ SOURCE=.\include\dlgIndex.h
 # Begin Source File
 
 SOURCE=.\include\dlgIndexConstraint.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgLanguage.h
 # End Source File
 # Begin Source File
 

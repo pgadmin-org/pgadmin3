@@ -54,6 +54,7 @@ protected:
 
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew);
     void AppendComment(wxString &sql, const wxString &objName, pgObject *obj=0);
+    void AppendQuoted(wxString &sql, const wxString &name);
 
     void OnPageSelect(wxNotebookEvent& event);
     void OnOK(wxNotifyEvent &ev);

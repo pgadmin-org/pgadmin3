@@ -33,6 +33,8 @@
 
 BEGIN_EVENT_TABLE(dlgColumn, dlgProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgColumn::OnChange)
+    EVT_TEXT(XRCID("txtLength"),                    dlgColumn::OnChange)
+    EVT_TEXT(XRCID("txtPrecision"),                  dlgColumn::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
 END_EVENT_TABLE();
 
@@ -82,10 +84,8 @@ int dlgColumn::Go(bool modal)
     else
     {
         // create mode
-        btnOK->Disable();
-
         pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT CASE WHEN COALESCE(t.typelem, 0) = 0 THEN t.typname ELSE b.typname || '[]' END AS typname, t.typlen, t.oid, nspname\n"
+            "SELECT CASE WHEN COALESCE(t.typelem, 0) = 0 OR SUBSTR(t.typname, 1,1) <> '_' THEN t.typname ELSE b.typname || '[]' END AS typname, t.typlen, t.oid, nspname\n"
             "  FROM pg_type t\n"
             "  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n"
             "  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n"
@@ -140,16 +140,8 @@ wxString dlgColumn::GetSql()
 wxString dlgColumn::GetFullType()
 {
     wxString sql;
-    wxString type=cbDatatype->GetValue();
-    wxString nsp;
-    if (type.First('.') >= 0)
-    {
-        nsp = type.BeforeFirst('.');
-        type = type.Mid(nsp.Length()+1);
-        nsp = qtIdent(nsp) + wxT(".");
-    }
 
-    sql = nsp + qtIdent(type);
+    AppendQuoted(sql, cbDatatype->GetValue());
     if (isVarLen)
     {
         wxString len=txtLength->GetValue();
@@ -157,7 +149,11 @@ wxString dlgColumn::GetFullType()
         {
             sql += wxT("(") + len;
             if (isVarPrec)
-                sql += wxT(", ") + txtPrecision->GetValue();
+            {
+                wxString varprec=txtPrecision->GetValue();
+                if (!varprec.IsEmpty())
+                    sql += wxT(", ") + varprec;
+            }
             sql += wxT(")");
         }
     }
@@ -222,6 +218,9 @@ void dlgColumn::OnChange(wxNotifyEvent &ev)
 {
     if (!column)
     {
+        int varlen=StrToLong(txtLength->GetValue()), 
+            varprec=StrToLong(txtPrecision->GetValue());
+        txtPrecision->Enable(isVarPrec && varlen > 0);
 
         wxString name=txtName->GetValue();
         bool enable=true;
@@ -229,10 +228,10 @@ void dlgColumn::OnChange(wxNotifyEvent &ev)
             enable=false;
         else if (cbDatatype->GetSelection() < 0)
             enable=false;
-        else if (isVarLen && StrToLong(txtLength->GetValue()) < 0)
+        else if (isVarLen && !txtLength->GetValue().IsEmpty() && varlen < 1)
             enable=false;
-        else if (isVarPrec && StrToLong(txtPrecision->GetValue()) < 0)
-                enable=false;
+        else if (txtPrecision->IsEnabled() && (varprec < 0 || varprec > varlen))
+            enable=false;
 
         btnOK->Enable(enable);
     }

@@ -87,7 +87,6 @@ int dlgDatabase::Go(bool modal)
         // create mode
 
         txtComment->Disable();
-        btnOK->Disable();
 
         pgSet *set=connection->ExecuteSet(wxT(
             "SELECT datname FROM pg_database ORDER BY datname"));

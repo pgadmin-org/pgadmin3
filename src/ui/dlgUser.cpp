@@ -58,7 +58,6 @@ dlgUser::dlgUser(frmMain *frame, pgUser *node)
     user=node;
     SetIcon(wxIcon(user_xpm));
     CreateListColumns(lstVariables, wxT("Variable"), wxT("Value"), -1);
-
 }
 
 
@@ -107,7 +106,6 @@ int dlgUser::Go(bool modal)
     else
     {
         txtID->SetValidator(numericValidator);
-        btnOK->Disable();
     }
 
     return dlgProperty::Go(modal);
@@ -122,6 +120,10 @@ void dlgUser::OnChange(wxNotifyEvent &ev)
 
         btnOK->Enable(!name.IsEmpty());
     }
+    else
+    {
+        btnOK->Enable(!GetSql().IsEmpty());
+    }
 }
 
 
@@ -133,6 +135,7 @@ void dlgUser::OnGroupAdd(wxNotifyEvent &ev)
         lbGroupsIn->Append(lbGroupsNotIn->GetString(pos));
         lbGroupsNotIn->Delete(pos);
     }
+    OnChange(ev);
 }
 
 
@@ -144,6 +147,7 @@ void dlgUser::OnGroupRemove(wxNotifyEvent &ev)
         lbGroupsNotIn->Append(lbGroupsIn->GetString(pos));
         lbGroupsIn->Delete(pos);
     }
+    OnChange(ev);
 }
 
 
@@ -175,12 +179,14 @@ void dlgUser::OnVarAdd(wxNotifyEvent &ev)
         }
         lstVariables->SetItem(pos, 1, value);
     }
+    OnChange(ev);
 }
 
 
 void dlgUser::OnVarRemove(wxNotifyEvent &ev)
 {
     lstVariables->DeleteItem(GetListSelected(lstVariables));
+    OnChange(ev);
 }
 
 

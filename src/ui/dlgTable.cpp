@@ -204,8 +204,6 @@ int dlgTable::Go(bool modal)
     else
     {
         // create mode
-        btnOK->Disable();
-
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
             systemRestriction = wxT("   AND oid >= 100\n");

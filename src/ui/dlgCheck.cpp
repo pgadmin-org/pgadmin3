@@ -101,13 +101,10 @@ int dlgCheck::Go(bool modal)
         chkDeferred->SetValue(check->GetDeferred());
         chkDeferrable->Disable();
         chkDeferred->Disable();
-
-        btnOK->Disable();
     }
     else
     {
         // create mode
-        btnOK->Disable();
         txtComment->Disable();
     }
     return dlgProperty::Go(modal);

@@ -21,16 +21,21 @@
 #include "images/properties.xpm"
 
 #include "frmMain.h"
+
+// Property dialogs
 #include "dlgProperty.h"
 #include "dlgUser.h"
+#include "dlgGroup.h"
 #include "dlgDatabase.h"
+#include "dlgLanguage.h"
+#include "dlgSchema.h"
+#include "dlgDomain.h"
 #include "dlgTable.h"
 #include "dlgColumn.h"
 #include "dlgIndex.h"
 #include "dlgIndexConstraint.h"
 #include "dlgForeignKey.h"
 #include "dlgCheck.h"
-#include "dlgSchema.h"
 
 #include "pgTable.h"
 #include "pgColumn.h"
@@ -81,6 +86,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
 #endif
 
     numericValidator.SetStyle(wxFILTER_NUMERIC);
+    btnOK->Disable();
 }
 
 
@@ -118,6 +124,21 @@ void dlgProperty::AppendComment(wxString &sql, const wxString &objName, pgObject
     if ((!obj && !comment.IsEmpty()) ||(obj && obj->GetComment() != comment))
         sql += wxT("COMMENT ON ") + objName + wxT(" ") + qtIdent(txtName->GetValue())
             +  wxT(" IS ") + qtString(comment) + wxT(";\n");
+}
+
+
+
+void dlgProperty::AppendQuoted(wxString &sql, const wxString &name)
+{
+    wxString nsp;
+    wxString tab;
+    if (name.First('.') >= 0)
+    {
+        nsp = name.BeforeFirst('.');
+        sql += qtIdent(nsp) + wxT(".") + qtIdent(name.Mid(nsp.Length()+1));
+    }
+    else
+        sql += qtIdent(name);
 }
 
 
@@ -248,6 +269,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
         case PG_USERS:
             dlg=new dlgUser(frame, (pgUser*)currentNode);
             break;
+        case PG_GROUP:
+        case PG_GROUPS:
+            dlg=new dlgGroup(frame, (pgGroup*)currentNode);
+            break;
         case PG_DATABASE:
         case PG_DATABASES:
             dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
@@ -255,6 +280,14 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
         case PG_SCHEMA:
         case PG_SCHEMAS:
             dlg=new dlgSchema(frame, (pgSchema*)currentNode);
+            break;
+        case PG_LANGUAGE:
+        case PG_LANGUAGES:
+            dlg=new dlgLanguage(frame, (pgLanguage*)currentNode);
+            break;
+        case PG_DOMAIN:
+        case PG_DOMAINS:
+            dlg=new dlgDomain(frame, (pgDomain*)currentNode);
             break;
         case PG_TABLE:
         case PG_TABLES:
@@ -464,6 +497,8 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
     privCheckboxes=0;
     privilegeChars = _privChar;
     securityChanged=false;
+    allPrivileges=0;
+    bool needAll=strlen(privilegeChars) > 1;
 
     wxStringTokenizer privileges(privilegeList, ',');
     privilegeCount=privileges.CountTokens();
@@ -476,26 +511,28 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
 
         nbNotebook->AddPage(page, wxT("Security"));
 
-        lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount));
+        lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount+ (needAll ? 0 : 20)));
         CreateListColumns(lbPrivileges, wxT("User/Group"), wxT("Privileges"), -1);
-        int y=height-105-20*privilegeCount;
+        int y=height-105-20*privilegeCount + (needAll ? 0 : 20);
 
         btnAddPriv = new wxButton(page, CTL_ADDPRIV, wxT("Add/Change"), wxPoint(10, y), wxSize(75, 25));
         btnDelPriv = new wxButton(page, CTL_DELPRIV, wxT("Remove"), wxPoint(95, y), wxSize(75, 25));
         y += 35;
 
-        new wxStaticBox(page, -1, wxT("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount));
+        new wxStaticBox(page, -1, wxT("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount-(needAll?0:20)));
         y += 15;
 
         stGroup = new wxStaticText(page, CTL_STATICGROUP, wxT("Group"), wxPoint(20, y+3), wxSize(100, 20));
         cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(130, y), wxSize(width-145, 100), 0, 0, wxCB_DROPDOWN|wxCB_READONLY);
         y += 25;
 
-        allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), wxPoint(20, y), wxSize(100, 20));
-        allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
-        y += 20;
-        allPrivilegesGrant->Disable();
-
+        if (needAll)
+        {
+            allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), wxPoint(20, y), wxSize(100, 20));
+            allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
+            y += 20;
+            allPrivilegesGrant->Disable();
+        }
         cbGroups->Append(wxT("public"));
         cbGroups->SetSelection(0);
 
@@ -631,10 +668,12 @@ void dlgSecurityProperty::OnPrivCheckAll(wxCommandEvent& ev)
 
 void dlgSecurityProperty::OnPrivSelChange(wxListEvent &ev)
 {
-    allPrivileges->SetValue(false);
-    allPrivilegesGrant->SetValue(false);
-    allPrivilegesGrant->Disable();
-
+    if (allPrivileges)
+    {
+        allPrivileges->SetValue(false);
+        allPrivilegesGrant->SetValue(false);
+        allPrivilegesGrant->Disable();
+    }
     long pos=lbPrivileges->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     if (pos >= 0)
     {

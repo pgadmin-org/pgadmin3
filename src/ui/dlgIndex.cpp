@@ -80,8 +80,6 @@ int dlgIndexBase::Go(bool modal)
         btnRemoveCol->Disable();
         cbColumns->Disable();
 
-        btnOK->Disable();
-
         int pos=0;
         wxStringTokenizer cols(index->GetColumns(), ',');
         while (cols.HasMoreTokens())
@@ -95,7 +93,6 @@ int dlgIndexBase::Go(bool modal)
     else
     {
         // create mode
-        btnOK->Disable();
     }
 
     return dlgCollistProperty::Go(modal);

@@ -100,7 +100,7 @@ void dlgForeignKey::OnSelChangeRef(wxNotifyEvent &ev)
     cbRefColumns->Clear();
 
     wxString tab=cbReferences->GetValue();
-    wxString nsp;
+    wxString nsp=wxT("public");
     if (tab.Find('.') >= 0)
     {
         nsp=tab.BeforeFirst('.');
@@ -216,8 +216,6 @@ int dlgForeignKey::Go(bool modal)
         cbColumns->Disable();
         cbRefColumns->Disable();
 
-        btnOK->Disable();
-
         int pos=0;
         wxStringTokenizer cols(foreignKey->GetFkColumns(), ',');
         wxStringTokenizer refs(foreignKey->GetRefColumns(), ',');
@@ -236,7 +234,6 @@ int dlgForeignKey::Go(bool modal)
     else
     {
         // create mode
-        btnOK->Disable();
         txtComment->Disable();
 
         wxString systemRestriction;
@@ -314,18 +311,10 @@ wxString dlgForeignKey::GetDefinition()
         refs += GetListText(lstColumns, pos, 1);
     }
 
-    wxString tab=cbReferences->GetValue();
-    wxString nsp;
-    if (tab.Find('.') >= 0)
-    {
-        nsp = tab.BeforeFirst('.');
-        tab = tab.Mid(nsp.Length()+1);
-        nsp = qtIdent(nsp) + wxT(".");
-    }
-
     sql = wxT("(") + cols 
-        + wxT(") REFERENCES ") + nsp + qtIdent(tab)
-        + wxT(" (") + refs
+        + wxT(") REFERENCES ");
+    AppendQuoted(sql, cbReferences->GetValue());
+    sql += wxT(" (") + refs
         + wxT(")"
           "\n   ON UPDATE ") + rbOnUpdate->GetStringSelection()
         + wxT(" ON DELETE ") + rbOnDelete->GetStringSelection();

@@ -32,7 +32,7 @@ END_EVENT_TABLE();
 
 
 dlgSchema::dlgSchema(frmMain *frame, pgSchema *node)
-: dlgSecurityProperty(frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UCC")
+: dlgSecurityProperty(frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC")
 {
     SetIcon(wxIcon(namespace_xpm));
     schema=node;
@@ -61,12 +61,10 @@ int dlgSchema::Go(bool modal)
 
         txtName->Disable();
         cbOwner->Disable();
-        btnOK->Disable();
     }
     else
     {
         // create mode
-        btnOK->Disable();
     }
 
     return dlgSecurityProperty::Go(modal);
@@ -115,7 +113,6 @@ wxString dlgSchema::GetSql()
         sql += wxT(";\n");
 
     }
-    wxString comment=txtComment->GetValue();
     AppendComment(sql, wxT("SCHEMA"), schema);
 
     sql += GetGrant(wxT("UC"), wxT("SCHEMA ") + qtIdent(name));

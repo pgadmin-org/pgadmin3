@@ -123,6 +123,7 @@ bool pgCollection::CanCreate()
         case PG_SCHEMAS:
         case PG_AGGREGATES:
         case PG_CONVERSIONS:
+        case PG_DOMAINS:
         case PG_FUNCTIONS:
         case PG_TRIGGERFUNCTIONS:
         case PG_OPERATORS:

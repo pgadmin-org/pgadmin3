@@ -64,14 +64,16 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         {
             while (!set->Eof())
             {
+                wxString user=set->GetVal(0);
                 if (memberCount)
                 {
                     members += wxT(", ");
                     quotedMembers += wxT(", ");
                 }
-                members += set->GetVal(0);
-                quotedMembers += qtIdent(set->GetVal(0));
+                members += user;
+                quotedMembers += qtIdent(user);
                 memberCount++;
+                usersIn.Add(user);
                 set->MoveNext();
             }
             delete set;
