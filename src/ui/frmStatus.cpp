@@ -55,6 +55,8 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
     statusList->InsertColumn(1, _("Database"), wxLIST_FORMAT_LEFT, 100);
     statusList->InsertColumn(2, _("User"), wxLIST_FORMAT_LEFT, 100);
     statusList->InsertColumn(3, _("Query"), wxLIST_FORMAT_LEFT, 850);
+    if (connection->GetVersionNumber() >= 7.4)
+        statusList->InsertColumn(4, _("Start"), wxLIST_FORMAT_LEFT, 70);
 
     timer=new wxTimer(this, TIMER_ID);
     timer->Start(1000);
@@ -128,9 +130,16 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                 }
                 statusList->SetItem(row, 1, dataSet->GetVal(wxT("datname")));
                 statusList->SetItem(row, 2, dataSet->GetVal(wxT("usename")));
-                statusList->SetItem(row, 3, dataSet->GetVal(wxT("current_query")));
-                wxString query=dataSet->GetVal(wxT("query_start"));
-                statusList->SetItem(row, 4, query.Left(250));
+                wxString qry=dataSet->GetVal(wxT("current_query"));
+                statusList->SetItem(row, 3, qry.Left(250));
+
+                if (connection->GetVersionNumber() >= 7.4)
+                {
+                    if (qry.IsEmpty())
+                        statusList->SetItem(row, 4, wxT(""));
+                    else
+                        statusList->SetItem(row, 4, dataSet->GetVal(wxT("query_start")));
+                }
 
                 row++;
             }
