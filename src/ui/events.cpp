@@ -42,32 +42,32 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
-    EVT_MENU(BTN_ADDSERVER,                 OnAddServer)
-    EVT_MENU(BTN_DROP,                      OnDrop)
-    EVT_MENU(BTN_REFRESH,                   OnRefresh)
-    EVT_MENU(BTN_PROPERTIES,                OnProperties)
-    EVT_MENU(BTN_SQL,                       OnSql)
-    EVT_MENU(MNU_ABOUT,                     OnAbout)
-    EVT_MENU(MNU_ADDSERVER,                 OnAddServer)
-	EVT_MENU(MNU_REFRESH,                   OnRefresh)
-	EVT_MENU(MNU_CONNECT,                   OnConnect)
-	EVT_MENU(MNU_DISCONNECT,                OnDisconnect)
-	EVT_MENU(MNU_DROP,                      OnDrop)
-	EVT_MENU(MNU_PROPERTIES,                OnProperties)
-    EVT_MENU(MNU_EXIT,                      OnExit)
-    EVT_MENU(MNU_OPTIONS,                   OnOptions)
-    EVT_MENU(MNU_PASSWORD,                  OnPassword)
-    EVT_MENU(MNU_SAVEDEFINITION,            OnSaveDefinition)
-    EVT_MENU(MNU_SYSTEMOBJECTS,             OnShowSystemObjects)
-    EVT_MENU(MNU_TIPOFTHEDAY,               OnTipOfTheDay)
-    EVT_MENU(MNU_UPGRADEWIZARD,             OnUpgradeWizard)
-    EVT_MENU(MNU_QUERYBUILDER,              OnQueryBuilder)
-    EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    OnPropSelChanged)
-    EVT_TREE_SEL_CHANGED(CTL_BROWSER,       OnTreeSelChanged)
-    EVT_TREE_ITEM_COLLAPSING(CTL_BROWSER,   OnCollapse)
-    EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER,    OnSelActivated)
-	EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  OnSelRightClick) 
-    EVT_CLOSE(                              OnClose)
+    EVT_MENU(BTN_ADDSERVER,                 frmMain::OnAddServer)
+    EVT_MENU(BTN_DROP,                      frmMain::OnDrop)
+    EVT_MENU(BTN_REFRESH,                   frmMain::OnRefresh)
+    EVT_MENU(BTN_PROPERTIES,                frmMain::OnProperties)
+    EVT_MENU(BTN_SQL,                       frmMain::OnSql)
+    EVT_MENU(MNU_ABOUT,                     frmMain::OnAbout)
+    EVT_MENU(MNU_ADDSERVER,                 frmMain::OnAddServer)
+    EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
+    EVT_MENU(MNU_CONNECT,                   frmMain::OnConnect)
+    EVT_MENU(MNU_DISCONNECT,                frmMain::OnDisconnect)
+    EVT_MENU(MNU_DROP,                      frmMain::OnDrop)
+    EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
+    EVT_MENU(MNU_EXIT,                      frmMain::OnExit)
+    EVT_MENU(MNU_OPTIONS,                   frmMain::OnOptions)
+    EVT_MENU(MNU_PASSWORD,                  frmMain::OnPassword)
+    EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
+    EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
+    EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
+    EVT_MENU(MNU_UPGRADEWIZARD,             frmMain::OnUpgradeWizard)
+    EVT_MENU(MNU_QUERYBUILDER,              frmMain::OnQueryBuilder)
+    EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
+    EVT_TREE_SEL_CHANGED(CTL_BROWSER,       frmMain::OnTreeSelChanged)
+    EVT_TREE_ITEM_COLLAPSING(CTL_BROWSER,   frmMain::OnCollapse)
+    EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER,    frmMain::OnSelActivated)
+    EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  frmMain::OnSelRightClick) 
+    EVT_CLOSE(                              frmMain::OnClose)
 END_EVENT_TABLE()
 
 
@@ -275,14 +275,14 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
 
     } else if (res == PGCONN_DNSERR)  {
         delete server;
-        OnAddServer(wxCommandEvent());
+        OnAddServer(ev);
 
     } else if (res == PGCONN_BAD)  {
         wxString msg;
         msg.Printf(wxT("Error connecting to the server: %s"), server->GetLastError().c_str());
         wxLogError(wxT(msg));
         delete server;
-        OnAddServer(wxCommandEvent());
+        OnAddServer(ev);
 
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
@@ -444,10 +444,11 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
         return;
     int type = data->GetType();
     pgServer *server;
+    wxCommandEvent nullEvent;
 
     switch (type) {
         case PG_ADD_SERVER:
-            OnAddServer(wxCommandEvent());
+            OnAddServer(nullEvent);
             break;
 
         case PG_SERVER:

@@ -29,19 +29,19 @@
 
 
 BEGIN_EVENT_TABLE(frmQuery, wxFrame)
-    EVT_CLOSE(                      OnClose)
-    EVT_MENU(BTN_OPEN,              OnOpen)
-    EVT_MENU(BTN_SAVE,              OnSave)
-    EVT_MENU(BTN_EXECUTE,           OnExecute)
-    EVT_MENU(BTN_EXPLAIN,           OnExplain)
-    EVT_MENU(BTN_CANCEL,            OnCancel)
-    EVT_MENU(MNU_OPEN,              OnOpen)
-    EVT_MENU(MNU_SAVE,              OnSave)
-    EVT_MENU(MNU_SAVEAS,            OnSaveAs)
-    EVT_MENU(MNU_EXECUTE,           OnExecute)
-    EVT_MENU(MNU_EXPLAIN,           OnExplain)
-    EVT_MENU(MNU_CANCEL,            OnCancel)
-    EVT_STC_CHANGE(CTL_SQLQUERY,    OnChange)
+    EVT_CLOSE(                      frmQuery::OnClose)
+    EVT_MENU(BTN_OPEN,              frmQuery::OnOpen)
+    EVT_MENU(BTN_SAVE,              frmQuery::OnSave)
+    EVT_MENU(BTN_EXECUTE,           frmQuery::OnExecute)
+    EVT_MENU(BTN_EXPLAIN,           frmQuery::OnExplain)
+    EVT_MENU(BTN_CANCEL,            frmQuery::OnCancel)
+    EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
+    EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
+    EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
+    EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
+    EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
+    EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
+    EVT_STC_CHANGE(CTL_SQLQUERY,    frmQuery::OnChange)
 END_EVENT_TABLE()
 
 
@@ -69,7 +69,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu->Append(MNU_CANCEL, wxT("&Cancel"), wxT("Cancel query"));
     menuBar->Append(queryMenu, wxT("&Query"));
     SetMenuBar(menuBar);
-    
+
+#ifdef __WIN32__    
     wxAcceleratorEntry entries[6];
     entries[0].Set(wxACCEL_ALT,     (int)'E',      MNU_EXECUTE);
     entries[1].Set(wxACCEL_ALT,     (int)'X',      MNU_EXPLAIN);
@@ -80,6 +81,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     wxAcceleratorTable accel(6, entries);
     SetAcceleratorTable(accel);
+#endif
 
     fileMenu->Enable(MNU_SAVE, false);
     queryMenu->Enable(MNU_CANCEL, false);
@@ -186,17 +188,18 @@ void frmQuery::OnClose(wxCloseEvent& event)
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
                     (event.CanVeto() ? wxCANCEL : 0));
 
+	wxCommandEvent noEvent;
         switch (msg.ShowModal())
         {
             case wxID_YES:
                 if (lastPath.IsNull())
                 {
-                    OnSaveAs(wxCommandEvent());
+                    OnSaveAs(noEvent);
                     if (changed && event.CanVeto())
                         event.Veto();
                 }
                 else
-                    OnSave(wxCommandEvent());
+                    OnSave(noEvent);
                 break;
             case wxID_CANCEL:
                 event.Veto();
@@ -358,11 +361,11 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
         wxYield();
         long row=0;
 
-        wxLongLong startTime=wxGetLocalTimeMillis();
+        wxLongLong startTimeQuery=wxGetLocalTimeMillis();
         thread->Run();
         while (thread->IsRunning())
         {
-            elapsedQuery=wxGetLocalTimeMillis() - startTime;
+            elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
             SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
             wxYield();
             wxUsleep(10);
@@ -370,7 +373,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
         }
         msgResult->AppendText(thread->messages);
 
-        elapsedQuery=wxGetLocalTimeMillis() - startTime;
+        elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
         SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
 
         int rc=PQresultStatus(thread->result);
@@ -467,6 +470,8 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
 
                     wxString value;
                     wxLongLong elapsed;
+		    elapsedRetrieve=0;
+		    wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
 
                     while (row < maxRows && !thread->running && !dataSet->Eof())
                     {
@@ -488,7 +493,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                         row++;
                         
                         dataSet->MoveNext();
-                        elapsed = wxGetLocalTimeMillis() - startTime - elapsedQuery;
+                        elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
                         if (elapsed > elapsedRetrieve +100)
                         {
                             elapsedRetrieve=elapsed;
@@ -496,7 +501,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                             wxYield();
                         }
                     }
-                    elapsedRetrieve=wxGetLocalTimeMillis() - startTime - elapsedQuery;
+                    elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
                     SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
                     msgResult->AppendText(wxT(
                         "Total query runtime: ") + elapsedQuery.ToString() + " ms.\n"

@@ -23,7 +23,7 @@
 #include "images/splash.xpm"
 
 BEGIN_EVENT_TABLE(frmSplash, wxFrame)
-EVT_PAINT(OnPaint)
+    EVT_PAINT(frmSplash::OnPaint)
 END_EVENT_TABLE()
 
 frmSplash::frmSplash(wxFrame *parent)

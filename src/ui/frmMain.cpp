@@ -365,7 +365,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
         if (data->GetType() == PG_DATABASES)
             break;
         // Get the next item
-        item = browser->GetNextChild(item, cookie);
+        item = browser->GetNextChild(server->GetId(), cookie);
     }
     if (!item)
         return item;
@@ -374,14 +374,14 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     data->ShowTree(this, browser, 0, 0, 0);
     lastItem=item;
 
-    item = browser->GetFirstChild(item, cookie);
+    item = browser->GetFirstChild(lastItem, cookie);
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
         if (data->GetType() == PG_DATABASE && data->GetName() == lastDatabase)
             break;
         // Get the next item
-        item = browser->GetNextChild(item, cookie);
+        item = browser->GetNextChild(lastItem, cookie);
     }
     if (!item)
         return lastItem;
@@ -394,14 +394,14 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     if (lastSchema.IsNull())
         return lastItem;
 
-    item = browser->GetFirstChild(item, cookie);
+    item = browser->GetFirstChild(lastItem, cookie);
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
         if (data->GetType() == PG_SCHEMAS)
             break;
         // Get the next item
-        item = browser->GetNextChild(item, cookie);
+        item = browser->GetNextChild(lastItem, cookie);
     }
     if (!item)
         return lastItem;
@@ -410,14 +410,14 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     data->ShowTree(this, browser, 0, 0, 0);
     lastItem=item;
 
-    item = browser->GetFirstChild(item, cookie);
+    item = browser->GetFirstChild(lastItem, cookie);
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
         if (data->GetType() == PG_SCHEMA && data->GetName() == lastSchema)
             break;
         // Get the next item
-        item = browser->GetNextChild(item, cookie);
+        item = browser->GetNextChild(lastItem, cookie);
     }
 
     return (item ? item : lastItem);

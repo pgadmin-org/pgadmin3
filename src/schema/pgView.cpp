@@ -51,11 +51,7 @@ typedef struct __tokenaction
 
 tokenAction sqlTokens[] =
 {
-#ifdef __WIN32__
     { "WHERE"},     // initializing fails, so we're doing it in the code
-#else
-    { "WHERE",  "  WHERE"   -8, 8,      SQLTK_NORMAL,   true},
-#endif
     { "SELECT", " SELECT",   0, 8,      SQLTK_NORMAL,   true},
     { "FROM",   "   FROM",  -8, 8,      SQLTK_NORMAL,   true},
     { "LEFT",   "   LEFT",  -8, 13,     SQLTK_JOINMOD,  true},
@@ -74,7 +70,7 @@ tokenAction sqlTokens[] =
     { "WHEN",   "WHEN",      0, 0,      SQLTK_NORMAL,   true},
     { "ELSE",   "ELSE",      0, 0,      SQLTK_NORMAL,   true},
     { "END",    "END ",     -4, 0,      SQLTK_NORMAL,   true},
-    {0, 0}
+    {0, 0, 0, 0, SQLTK_NORMAL, false}
 };
 
 tokenAction secondOnToken= 

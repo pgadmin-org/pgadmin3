@@ -27,9 +27,9 @@
 
 
 BEGIN_EVENT_TABLE(frmConnect, wxDialog)
-EVT_BUTTON (XRCID("btnOK"),     OnOK)
-EVT_BUTTON (XRCID("btnCancel"), OnCancel)
-EVT_CHECKBOX(XRCID("chkTrusted"), OnTrustChange)
+    EVT_BUTTON (XRCID("btnOK"),       frmConnect::OnOK)
+    EVT_BUTTON (XRCID("btnCancel"),   frmConnect::OnCancel)
+    EVT_CHECKBOX(XRCID("chkTrusted"), frmConnect::OnTrustChange)
 END_EVENT_TABLE()
 
 

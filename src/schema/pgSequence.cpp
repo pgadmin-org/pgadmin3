@@ -30,7 +30,11 @@ pgSequence::~pgSequence()
 
 
 // we dont have an appropriate wxLongLong method
+#ifdef __WIN32__
 #define atolonglong _atoi64
+#else
+#define atolonglong atoll
+#endif
 
 void pgSequence::UpdateValues()
 {
@@ -129,7 +133,7 @@ void pgSequence::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        wxLogInfo(wxT("Adding Sequences to schema %s"), collection->GetSchema()->GetIdentifier());
+        wxLogInfo(wxT("Adding Sequences to schema ") + collection->GetSchema()->GetIdentifier());
 
         // Get the Sequences
         pgSet *sequences= collection->GetDatabase()->ExecuteSet(wxT(

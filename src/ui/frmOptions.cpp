@@ -24,9 +24,9 @@
 #include "images/pgAdmin3.xpm"
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
-  EVT_BUTTON (XRCID("btnOK"),               OnOK)
-  EVT_BUTTON (XRCID("btnCancel"),           OnCancel)
-  EVT_BUTTON (XRCID("btnBrowseLogfile"),    OnBrowseLogFile)
+    EVT_BUTTON (XRCID("btnOK"),               frmOptions::OnOK)
+    EVT_BUTTON (XRCID("btnCancel"),           frmOptions::OnCancel)
+    EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
 END_EVENT_TABLE()
 
 frmOptions::frmOptions(wxFrame *parent)

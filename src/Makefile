@@ -20,17 +20,21 @@ OBJECTS = $(PROGRAM).o \
           db/pgConn.o \
           db/pgSet.o \
           schema/pgAggregate.o \
+          schema/pgCast.o \
           schema/pgCheck.o \
           schema/pgCollection.o \
           schema/pgColumn.o \
+          schema/pgConversion.o \
           schema/pgDatabase.o \
           schema/pgDomain.o \
           schema/pgForeignKey.o \
           schema/pgFunction.o \
+          schema/pgGroup.o \
           schema/pgIndex.o \
           schema/pgLanguage.o \
           schema/pgObject.o \
           schema/pgOperator.o \
+          schema/pgOperatorClass.o \
           schema/pgRule.o \
           schema/pgSchema.o \
           schema/pgSequence.o \
@@ -42,16 +46,17 @@ OBJECTS = $(PROGRAM).o \
           schema/pgView.o \
           ui/browser.o \
           ui/ctlSQLBox.o \
-          ui/dlgAddTableView.cpp \
+          ui/dlgAddTableView.o \
           ui/events.o \
           ui/frmAbout.o \
-          ui/frmChildTableViewFrame.cpp \
+          ui/frmChildTableViewFrame.o \
           ui/frmConnect.o \
           ui/frmMain.o \
           ui/frmOptions.o \
           ui/frmPassword.o \
           ui/frmQuery.o \
           ui/frmQueryBuilder.o \
+          ui/frmQBJoin.o \
           ui/frmSplash.o \
           ui/frmUpgradeWizard.o \
           ui/statistics.o \

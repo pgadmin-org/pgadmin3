@@ -79,7 +79,7 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
 
 void pgObject::InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2)
 {
-    list->InsertItem(pos, str1, 0);
+    list->InsertItem(0, str1, 0);
     if (str2 != wxT(""))
         list->SetItem(pos, 1, str2);
 }

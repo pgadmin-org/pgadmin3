@@ -226,12 +226,13 @@ bool IsValidIdentifier(wxString ident)
 	const char *second = 
 		wxT("_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
-	if (strchr(first, ident[0]) == NULL)
+	if (strchr(first, (wxChar)ident[0U]) == NULL)
 		return FALSE;
 
-	for (int si = 1; si < len; si++)
+	unsigned int si;
+	for ( si = 1; si < len; si++)
 	{
-	if (strchr(second, ident[si]) == NULL)
+	if (strchr(second, (wxChar)ident[si]) == NULL)
 		return FALSE;
 	}
 

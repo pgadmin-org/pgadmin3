@@ -11,27 +11,34 @@
 #include "frmQueryBuilder.h"
 #include "frmQBJoin.h"
 
+#ifndef __WIN32__
+#include "wx/dnd.h"
+#include "images/dnd_copy.xpm"
+#include "images/dnd_move.xpm"
+#include "images/dnd_none.xpm"
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // Event Table
 ////////////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(frmChildTableViewFrame, wxMDIChildFrame)
 
-	EVT_LISTBOX_DCLICK(ID_TABLEVIEWLISTBOX,OnDoubleClick)
+    EVT_LISTBOX_DCLICK(ID_TABLEVIEWLISTBOX, frmChildTableViewFrame::OnDoubleClick)
 
-    EVT_MENU(MNU_ADDCOLUMN, OnAddColumn)
-    EVT_MENU(MNU_CLOSE, OnClose)
-    EVT_MENU_RANGE(MNU_JOINTO, MNU_JOINTO_N, OnJoinTo)
+    EVT_MENU(MNU_ADDCOLUMN, frmChildTableViewFrame::OnAddColumn)
+    EVT_MENU(MNU_CLOSE, frmChildTableViewFrame::OnClose)
+    EVT_MENU_RANGE(MNU_JOINTO, MNU_JOINTO_N, frmChildTableViewFrame::OnJoinTo)
 
-	EVT_CLOSE(OnCloseWindow)  
+    EVT_CLOSE(frmChildTableViewFrame::OnCloseWindow)  
 
 #ifdef __WXMSW__
-    EVT_CONTEXT_MENU(OnContextMenu)
+    EVT_CONTEXT_MENU(frmChildTableViewFrame::OnContextMenu)
 #else
-    EVT_RIGHT_UP(OnRightUp)
+    EVT_RIGHT_UP(frmChildTableViewFrame::OnRightUp)
 #endif
 
-	EVT_MOVE(OnMove)
-	EVT_SIZE(OnSize)
+    EVT_MOVE(frmChildTableViewFrame::OnMove)
+    EVT_SIZE(frmChildTableViewFrame::OnSize)
 
 END_EVENT_TABLE()
 
@@ -39,9 +46,7 @@ END_EVENT_TABLE()
 // Event Table
 ////////////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(myList, wxListBox)
-
-	EVT_MOTION(OnMotion)
-
+    EVT_MOTION(myList::OnMotion)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////

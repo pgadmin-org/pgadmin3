@@ -76,7 +76,7 @@ void pgConversion::ShowTreeCollection(pgCollection *collection, frmMain *form, w
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        wxLogInfo(wxT("Adding Conversions to schema %s"), collection->GetSchema()->GetIdentifier());
+        wxLogInfo(wxT("Adding Conversions to schema ") + collection->GetSchema()->GetIdentifier());
 
         // Get the Conversions
         pgSet *conversions= collection->GetDatabase()->ExecuteSet(wxT(

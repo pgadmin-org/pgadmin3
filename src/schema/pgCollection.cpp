@@ -76,7 +76,7 @@ void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, wxListCtr
                 properties->SetItem(pos, 1, data->GetComment());
             }
             // Get the next item
-            item = browser->GetNextChild(item, cookie);
+            item = browser->GetNextChild(GetId(), cookie);
             pos++;
         }
     }
@@ -114,7 +114,7 @@ void pgCollection::SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, int index)
             }
             pos++;
         }
-        item = browser->GetNextChild(item, cookie);
+        item = browser->GetNextChild(GetId(), cookie);
     }
 }
 

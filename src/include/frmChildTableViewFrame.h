@@ -72,7 +72,7 @@ private:
         { OnRightClick(ScreenToClient(event.GetPosition())); }
 #else
     void OnRightUp(wxMouseEvent& event)
-        { OnRightClick(event.GetPosition()); }
+        { wxPoint pt=event.GetPosition(); OnRightClick(pt); }
 #endif
 
 	void OnRightClick(wxPoint& point);

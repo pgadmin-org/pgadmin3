@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
-#include "ctlSQLbox.h"
+#include "ctlSQLBox.h"
 
 // App headers
 #include "pgAdmin3.h"

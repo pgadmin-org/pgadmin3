@@ -49,7 +49,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             data=(pgObject*)browser->GetItemData(columnsItem);
             if (data->GetType() == PG_COLUMNS)
                 break;
-            columnsItem=browser->GetNextChild(columnsItem, cookie);
+            columnsItem=browser->GetNextChild(GetId(), cookie);
         }
         if (columnsItem)
         {
@@ -85,7 +85,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                     }
                 }
                 
-                item=browser->GetNextChild(item, cookie);
+                item=browser->GetNextChild(columnsItem, cookie);
             }
         }
 
@@ -117,7 +117,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                         }
                     }
 
-                    item=browser->GetNextChild(item, cookie);
+                    item=browser->GetNextChild(columnsItem, cookie);
                 }
             }
             sql += wxT(")");
@@ -130,7 +130,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             data=(pgObject*)browser->GetItemData(checkItem);
             if (data->GetType() == PG_CHECKS)
                 break;
-            checkItem=browser->GetNextChild(columnsItem, cookie);
+            checkItem=browser->GetNextChild(GetId(), cookie);
         }
         if (checkItem)
         {
@@ -154,7 +154,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                     sql += wxT("    CONSTRAINT ") + check->GetConstraint();
                 }
                 
-                item=browser->GetNextChild(item, cookie);
+                item=browser->GetNextChild(checkItem, cookie);
             }
         }
 
@@ -165,7 +165,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             data=(pgObject*)browser->GetItemData(fkItem);
             if (data->GetType() == PG_FOREIGNKEYS)
                 break;
-            fkItem=browser->GetNextChild(fkItem, cookie);
+            fkItem=browser->GetNextChild(GetId(), cookie);
         }
         if (fkItem)
         {
@@ -187,7 +187,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                     foreignKey->ShowTreeDetail(browser);
                     sql += wxT("    CONSTRAINT ") + foreignKey->GetConstraint();
                 }                
-                item=browser->GetNextChild(item, cookie);
+                item=browser->GetNextChild(fkItem, cookie);
             }
         }
         sql += wxT("\n) ");
@@ -426,7 +426,7 @@ void pgTable::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
 
     if (statistics)
     {
-        wxLogInfo(wxT("Displaying statistics for tables on %s"), collection->GetSchema()->GetIdentifier());
+        wxLogInfo(wxT("Displaying statistics for tables on ")+ collection->GetSchema()->GetIdentifier());
 
         // Add the statistics view columns
         statistics->ClearAll();

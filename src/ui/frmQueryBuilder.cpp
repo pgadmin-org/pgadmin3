@@ -32,37 +32,36 @@ extern sysSettings *settings;
 ////////////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(frmQueryBuilder, wxMDIParentFrame)
 
-    EVT_MENU(frmQueryBuilder::BTN_OPEN, OnOpen)
-    EVT_MENU(frmQueryBuilder::BTN_SAVE, OnSave)
-    EVT_MENU(frmQueryBuilder::BTN_EXECUTE, OnExecute)
-    EVT_MENU(frmQueryBuilder::BTN_EXPLAIN, OnExplain)
-    EVT_MENU(frmQueryBuilder::BTN_CANCEL, OnCancel)
+    EVT_MENU(frmQueryBuilder::BTN_OPEN,    frmQueryBuilder::OnOpen)
+    EVT_MENU(frmQueryBuilder::BTN_SAVE,    frmQueryBuilder::OnSave)
+    EVT_MENU(frmQueryBuilder::BTN_EXECUTE, frmQueryBuilder::OnExecute)
+    EVT_MENU(frmQueryBuilder::BTN_EXPLAIN, frmQueryBuilder::OnExplain)
+    EVT_MENU(frmQueryBuilder::BTN_CANCEL,  frmQueryBuilder::OnCancel)
+    
+    EVT_MENU(frmQueryBuilder::MNU_OPEN, frmQueryBuilder::OnOpen)
+    EVT_MENU(frmQueryBuilder::MNU_SAVE, frmQueryBuilder::OnSave)
+    EVT_MENU(frmQueryBuilder::MNU_SAVEAS, frmQueryBuilder::OnSaveAs)
+    EVT_MENU(frmQueryBuilder::MNU_EXECUTE, frmQueryBuilder::OnExecute)
+    EVT_MENU(frmQueryBuilder::MNU_EXPLAIN, frmQueryBuilder::OnExplain)
+    EVT_MENU(frmQueryBuilder::MNU_CANCEL, frmQueryBuilder::OnCancel)
+    EVT_MENU(frmQueryBuilder::MNU_EXIT, frmQueryBuilder::OnExit)
+    EVT_MENU(frmQueryBuilder::MNU_ADDTABLEVIEW, frmQueryBuilder::OnAddTableView)
 
-    EVT_MENU(frmQueryBuilder::MNU_OPEN, OnOpen)
-    EVT_MENU(frmQueryBuilder::MNU_SAVE, OnSave)
-    EVT_MENU(frmQueryBuilder::MNU_SAVEAS, OnSaveAs)
-    EVT_MENU(frmQueryBuilder::MNU_EXECUTE, OnExecute)
-    EVT_MENU(frmQueryBuilder::MNU_EXPLAIN, OnExplain)
-    EVT_MENU(frmQueryBuilder::MNU_CANCEL, OnCancel)
-	EVT_MENU(frmQueryBuilder::MNU_EXIT, OnExit)
-	EVT_MENU(frmQueryBuilder::MNU_ADDTABLEVIEW, OnAddTableView)
-
-	EVT_SIZE(OnSize)
-    EVT_CLOSE(OnClose)
+    EVT_SIZE(frmQueryBuilder::OnSize)
+    EVT_CLOSE(frmQueryBuilder::OnClose)
 
 #ifdef __WXMSW__
-    EVT_CONTEXT_MENU(OnContextMenu)
+    EVT_CONTEXT_MENU(frmQueryBuilder::OnContextMenu)
 #else
-    EVT_RIGHT_UP(OnRightUp)
+    EVT_RIGHT_UP(frmQueryBuilder::OnRightUp)
 #endif
 
-	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, OnNotebookPageChanged)
-	EVT_GRID_CELL_LEFT_CLICK(OnCellSelect) 
-	EVT_GRID_CELL_CHANGE(OnCellChange)
-	EVT_COMBOBOX(-1, OnCellChoice) 
+    EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, frmQueryBuilder::OnNotebookPageChanged)
+    EVT_GRID_CELL_LEFT_CLICK(frmQueryBuilder::OnCellSelect) 
+    EVT_GRID_CELL_CHANGE(frmQueryBuilder::OnCellChange)
+    EVT_COMBOBOX(-1, frmQueryBuilder::OnCellChoice) 
 
-    EVT_SASH_DRAGGED_RANGE(ID_SASH_WINDOW_BOTTOM, 
-		ID_SASH_WINDOW_BOTTOM, OnSashDrag)
+    EVT_SASH_DRAGGED_RANGE(ID_SASH_WINDOW_BOTTOM, ID_SASH_WINDOW_BOTTOM, frmQueryBuilder::OnSashDrag)
 
 END_EVENT_TABLE()
 
@@ -70,9 +69,7 @@ END_EVENT_TABLE()
 // Event Table
 ////////////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(myClientWindow, wxMDIClientWindow)
-
-	EVT_PAINT(OnPaint)
-
+    EVT_PAINT(myClientWindow::OnPaint)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -324,7 +321,7 @@ void myClientWindow::OnPaint(wxPaintEvent& event)
 
 	dc.SetPen(*wxBLACK_PEN);
 	wxFont font(10, wxSWISS, wxNORMAL, wxBOLD);
-    dc.SetFont(font);
+	dc.SetFont(font);
 
 	int count = tmpparent->m_joins.GetCount();
 
@@ -400,14 +397,14 @@ void myClientWindow::OnPaint(wxPaintEvent& event)
 			GetString(tmpjoin->rightcolumn), &tw, &th);
 
 		float xPlot = (tw * -1.0 * cos(atan(slope)));
-        float yPlot = (tw * -1.0 * sin(atan(slope)));
+		float  yPlot = (tw * -1.0 * sin(atan(slope)));
 
 		wxString tmp = wxString::Format( "%0.2f, %0.2f", xPlot, yPlot );
 		tmpparent->SetStatusText(tmp, frmQueryBuilder::STATUSPOS_MSGS);
 
 		dc.DrawRotatedText(tmpright->m_columnlist->
-			GetString(tmpjoin->rightcolumn), xPlot + finish.x, 
-			yPlot + finish.y, angle);
+				   GetString(tmpjoin->rightcolumn), (wxCoord)xPlot + finish.x, 
+				   (wxCoord)yPlot + finish.y, angle);
 
 	}
 
@@ -592,7 +589,8 @@ void frmQueryBuilder::UpdateGridTables(frmChildTableViewFrame *frame)
 
 	// Sort the table choices
 	wxSortedArrayString tablechoices;
-	for (int si = 0; si < tblcount; si++ )
+	int si;
+	for (si = 0; si < tblcount; si++ )
 	{
 		tablechoices.Add(this->m_aliases[si]);
 	}
@@ -680,7 +678,8 @@ void frmQueryBuilder::UpdateGridColumns(frmChildTableViewFrame *frame,
 
 	// Sort the column choices
 	wxSortedArrayString columnchoices;
-	for (int si = 0; si < colcount; si++ )
+	int si;
+	for (si = 0; si < colcount; si++ )
 	{
 		columnchoices.Add(frame->m_columnlist->GetString(si));
 	}
@@ -806,9 +805,10 @@ void frmQueryBuilder::BuildQuery()
 	wxString *tablealiases = new wxString[rows];
 	wxString tmptable1, tmptable2;
 	int tblcount = 0;
+	int si;
 
 	// Grab all the tables and cull the duplicates
-	for ( int si = 0; si < rows; si++ )
+	for ( si = 0; si < rows; si++ )
 	{
 		tmptable1 = design->GetCellValue(si, 1);
 	
@@ -986,8 +986,10 @@ void frmQueryBuilder::RunQuery()
 	rowct = querydata->NumRows();
 	colct = querydata->NumCols();
 
+	int si, sj;
+
 	// Get the column names from the query and set them in the grid
-	for (int si = 0; si < colct; si++ )
+	for (si = 0; si < colct; si++ )
 	{
 		wxString tmpcolname = querydata->ColName(si);
 		data->SetColLabelValue(si, tmpcolname);
@@ -1005,7 +1007,7 @@ void frmQueryBuilder::RunQuery()
 	for ( si = 0; si < rowct; si++ )
 	{
 		// Iterate through all the columns
-		for ( int sj = 0; sj < colct; sj++ )
+		for ( sj = 0; sj < colct; sj++ )
 		{
 			// Set the value for the cell to our query data
 			data->SetCellValue(si, sj, querydata->GetVal(sj));
@@ -1245,17 +1247,18 @@ void frmQueryBuilder::OnClose(wxCloseEvent& event)
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
                     (event.CanVeto() ? wxCANCEL : 0));
 
+	wxCommandEvent noEvent;
         switch (msg.ShowModal())
         {
             case wxID_YES:
                 if (m_lastPath.IsNull())
                 {
-                    OnSaveAs(wxCommandEvent());
+                    OnSaveAs(noEvent);
                     if (m_changed && event.CanVeto())
                         event.Veto();
                 }
                 else
-                    OnSave(wxCommandEvent());
+                    OnSave(noEvent);
                 break;
             case wxID_CANCEL:
                 event.Veto();

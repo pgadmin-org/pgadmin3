@@ -24,10 +24,10 @@
 // Event Table
 BEGIN_EVENT_TABLE(frmQBJoin, wxDialog)
 
-	EVT_BUTTON (XRCID("btnOK"),     wxDialog::OnOK)
-	EVT_BUTTON (XRCID("btnCancel"), wxDialog::OnCancel)
-	EVT_BUTTON (XRCID("btnAdd"),	OnAdd)
-	EVT_BUTTON (XRCID("btnDel"),	OnDelete)
+    EVT_BUTTON (XRCID("btnOK"),     wxDialog::OnOK)
+    EVT_BUTTON (XRCID("btnCancel"), wxDialog::OnCancel)
+    EVT_BUTTON (XRCID("btnAdd"),    frmQBJoin::OnAdd)
+    EVT_BUTTON (XRCID("btnDel"),    frmQBJoin::OnDelete)
 
 END_EVENT_TABLE()
 
@@ -136,7 +136,8 @@ void frmQBJoin::PopulateData(wxFrame *leftframe, wxFrame *rightframe)
 
 	// Iterate through the left frame column list
 	// skipping the asterisk
-	for (int si = 1; si < leftcount; si++)
+	int si;
+	for (si = 1; si < leftcount; si++)
 	{
 		wxString tmpstr = tmpleftframe->m_columnlist->GetString(si);
 		tmpleftlist->Append(tmpstr);

@@ -15,14 +15,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(dlgAddTableView, wxDialog)
 
-	EVT_KEY_DOWN(dlgAddTableView::OnKeyDown)
-	EVT_KEY_UP(dlgAddTableView::OnChar)
-	EVT_CHAR(dlgAddTableView::OnChar) 
-	EVT_BUTTON(dlgAddTableView::BTN_CLOSE, 
-		dlgAddTableView::OnClose)
-	EVT_BUTTON(dlgAddTableView::BTN_OK, 
-		dlgAddTableView::OnOK)
-	EVT_LISTBOX_DCLICK(-1,OnOK)
+    EVT_KEY_DOWN(dlgAddTableView::OnKeyDown)
+    EVT_KEY_UP(dlgAddTableView::OnChar)
+    EVT_CHAR(dlgAddTableView::OnChar) 
+    EVT_BUTTON(dlgAddTableView::BTN_CLOSE,  dlgAddTableView::OnClose)
+    EVT_BUTTON(dlgAddTableView::BTN_OK,     dlgAddTableView::OnOK)
+    EVT_LISTBOX_DCLICK(-1,dlgAddTableView::OnOK)
 
 END_EVENT_TABLE()
 
@@ -94,9 +92,10 @@ void dlgAddTableView::OnOK(wxCommandEvent& event)
 	// Find out how many tables there are to add
 	int tblcount = tableselections.GetCount();
 	int viewcount = viewselections.GetCount();
+	int si;
 
 	// Add the tables to the MDI Client Window
-	for ( int si = 0; si < tblcount; si++ )
+	for ( si = 0; si < tblcount; si++ )
 	{
 		// Grab the item number and the name of the table
 		int itemno = tableselections.Item( si );
