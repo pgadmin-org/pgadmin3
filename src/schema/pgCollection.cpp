@@ -187,7 +187,7 @@ void pgCollection::SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, int index)
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
-        if (IsCollectionForType(data->GetType() == GetType()))
+        if (IsCollectionForType(data->GetType()))
         {
             if (index == pos)
             {
