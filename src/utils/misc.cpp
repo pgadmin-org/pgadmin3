@@ -374,7 +374,7 @@ wxString FileRead(const wxString &filename, wxWindow *errParent, int format)
                 break;
         }
 
-        int nLen = conv.MB2WC(0, buf, 0);
+        size_t nLen = conv.MB2WC(0, buf, 0);
         if (nLen == (size_t) -1)
         {
             // Format error
