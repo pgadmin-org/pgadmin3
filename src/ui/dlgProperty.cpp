@@ -1131,22 +1131,28 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
         int nameLen=name.Length();
 
         bool privWasAssigned=false;
+        bool privPartiallyAssigned=false;
         for (i=0 ; i < tmpAcl.GetCount() ; i++)
         {
             if (tmpAcl.Item(i).Left(nameLen) == name)
             {
+                privPartiallyAssigned=true;
                 if (tmpAcl.Item(i).Mid(nameLen+1) == value)
                     privWasAssigned=true;
                 tmpAcl.RemoveAt(i);
                 break;
             }
         }
+
+        if (name.Left(6).IsSameAs(wxT("group "), false))
+            name = wxT("GROUP ") + qtIdent(name.Mid(6));
+        else
+            name=qtIdent(name);
+
         if (!privWasAssigned)
         {
-            if (name.Left(6).IsSameAs(wxT("group "), false))
-                name = wxT("GROUP ") + qtIdent(name.Mid(6));
-            else
-                name=qtIdent(name);
+            if (privPartiallyAssigned)
+                sql += pgObject::GetPrivileges(allPattern, wxT(""), grantObject, name);
             sql += pgObject::GetPrivileges(allPattern, value, grantObject, name);
         }
     }
