@@ -39,7 +39,7 @@ frmPassword::frmPassword(wxFrame *parent)
     wxLogInfo(wxT("Creating a change password dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(wxT("frmPassword")); 
+    LoadResource(parent, wxT("frmPassword")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

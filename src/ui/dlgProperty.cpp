@@ -86,7 +86,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     mainForm=frame;
     database=0;
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(resName);
+    LoadResource(frame, resName);
     nbNotebook = CTRL_NOTEBOOK("nbNotebook");
 
     if (!nbNotebook)

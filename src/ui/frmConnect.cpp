@@ -52,7 +52,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
     wxLogInfo(wxT("Creating a connect dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(wxT("frmConnect"));
+    LoadResource(form, wxT("frmConnect"));
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

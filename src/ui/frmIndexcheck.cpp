@@ -43,7 +43,7 @@ frmIndexcheck::frmIndexcheck(frmMain *form, pgObject *obj) : ExecutionDialog(for
 
     nbNotebook = 0;
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(wxT("frmIndexCheck"));
+    LoadResource(form, wxT("frmIndexCheck"));
     RestorePosition();
 
     SetTitle(wxString::Format(_("Check Foreign Key indexes on %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));

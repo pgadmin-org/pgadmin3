@@ -56,7 +56,7 @@ frmExport::frmExport(wxWindow *p)
     wxLogInfo(wxT("Creating the export dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(wxT("frmExport")); 
+    LoadResource(p, wxT("frmExport")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

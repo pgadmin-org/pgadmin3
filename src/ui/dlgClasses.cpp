@@ -51,11 +51,11 @@ void pgDialog::SavePosition()
     settings->Write(dlgName, GetSize(), GetPosition());
 }
 
-void pgDialog::LoadResource(const wxChar *name)
+void pgDialog::LoadResource(wxWindow *parent, const wxChar *name)
 {
     if (name)
         dlgName = name;
-    wxXmlResource::Get()->LoadDialog(this, GetParent(), dlgName); 
+    wxXmlResource::Get()->LoadDialog(this, parent, dlgName); 
 }
 
 

@@ -67,7 +67,7 @@ frmOptions::frmOptions(frmMain *parent)
     wxLogInfo(wxT("Creating an options dialogue"));
     mainForm=parent;
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(wxT("frmOptions")); 
+    LoadResource(parent, wxT("frmOptions")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

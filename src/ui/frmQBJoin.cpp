@@ -43,7 +43,7 @@ frmQBJoin::frmQBJoin(wxFrame *frame, wxString txt)
     wxLogInfo(wxT("Creating a Query Builder Join dialogue"));
 
 	// Load the XML resource for this dialog
-    LoadResource(wxT("frmQBJoin")); 
+    LoadResource(frame, wxT("frmQBJoin")); 
 
     // Set the Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

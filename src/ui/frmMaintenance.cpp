@@ -49,7 +49,7 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
     wxLogInfo(wxT("Creating a maintenance dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(wxT("frmMaintenance"));
+    LoadResource(form, wxT("frmMaintenance"));
     RestorePosition();
 
     SetTitle(wxString::Format(_("Maintain %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));

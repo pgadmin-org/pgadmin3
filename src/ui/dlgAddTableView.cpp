@@ -43,7 +43,7 @@ dlgAddTableView::dlgAddTableView(wxWindow *frame, pgDatabase *database)
     wxLogInfo(wxT("Creating the Query Builder Add Table/View dialogue"));
 
 	// Load the XML resource for this dialog
-    LoadResource(wxT("frmAddTableView")); 
+    LoadResource(frame, wxT("frmAddTableView")); 
 
     // Set the Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

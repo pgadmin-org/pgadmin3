@@ -76,7 +76,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(wxT("frmStatus")); 
+    LoadResource(form, wxT("frmStatus")); 
 
     RestorePosition(-1, -1, 400, 240, 200, 150);
     SetTitle(_title);

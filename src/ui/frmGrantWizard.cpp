@@ -44,7 +44,7 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
     nbNotebook = 0;
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(wxT("frmGrantWizard"));
+    LoadResource(form, wxT("frmGrantWizard"));
     RestorePosition();
 
     SetTitle(wxString::Format(_("Privileges for %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
