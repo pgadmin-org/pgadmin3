@@ -3,7 +3,7 @@
 %define wxGTK2_version     20030607
 %define with_wx_config     --with-wx-config=wxgtk2ud-2.5-config
 %define with_pgsql         --with-pgsql=/usr
-%define with_pgsql_include --with-pgsql-include=/usr
+%define with_pgsql_include --with-pgsql-include=/usr/include
 %define prefix             /usr/local/pgadmin3
 
 # Mandrake 91
