@@ -37,22 +37,11 @@ wxString pgRule::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-#if 0
-        sql = wxT("-- Rule: \"") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT("\"\n\n")
-            + wxT("-- DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";")
-            + wxT("\n\nCREATE OR REPLACE RULE ") + GetQuotedIdentifier()
-            + wxT("\n  AS ON ") + GetEvent()
-            + wxT("\n  TO ") + GetQuotedFullTable()
-            + wxT("\n  DO ");
-        if (GetDoInstead())
-            sql += wxT("INSTEAD ");
-        if (GetDefinition().IsEmpty())
-            sql += wxT("NOTHING;");
-        else
-#endif
-            sql += GetFormattedDefinition();
 
-        sql += wxT("\n");
+        sql = wxT("-- Rule: \"") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT("\"\n\n")
+            + wxT("-- DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";\n\n")
+            + GetFormattedDefinition()
+            + wxT("\n");
         if (!GetComment().IsEmpty())
             sql += wxT("COMMENT ON RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
                 +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");

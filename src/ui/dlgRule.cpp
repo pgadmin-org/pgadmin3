@@ -162,7 +162,7 @@ void dlgRule::OnChange(wxNotifyEvent &ev)
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         CheckValid(enable, rbxEvent->GetSelection() >= 0,
                     _("Please select at an event."));
-        CheckValid(enable, !sqlBox->GetTextLength() || sqlBox->GetTextLength() > 9 , _("Please enter function definition."));
+        CheckValid(enable, !sqlBox->GetTextLength() || sqlBox->GetTextLength() > 6 , _("Please enter function definition."));
 
         EnableOK(enable);
     }
