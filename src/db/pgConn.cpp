@@ -233,18 +233,19 @@ bool pgConn::ExecuteVoid(const wxString& sql)
 
     wxLogSql(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
     qryRes = PQexec(conn, sql.mb_str(*conv));
-    int res = PQresultStatus(qryRes);
+    lastResultStatus = PQresultStatus(qryRes);
 
     // Check for errors
-    if (res != PGRES_TUPLES_OK &&
-        res != PGRES_COMMAND_OK)
+    if (lastResultStatus != PGRES_TUPLES_OK &&
+        lastResultStatus != PGRES_COMMAND_OK)
     {
         LogError();
+        return false;
     }
 
     // Cleanup & exit
     PQclear(qryRes);
-    return res == PGRES_TUPLES_OK || res == PGRES_COMMAND_OK;
+    return  true;
 }
 
 
@@ -269,9 +270,10 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
         PGresult *qryRes;
         wxLogSql(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
         qryRes = PQexec(conn, sql.mb_str(*conv));
+        lastResultStatus = PQresultStatus(qryRes);
         
         // Check for errors
-        if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
+        if (lastResultStatus != PGRES_TUPLES_OK)
         {
             LogError();
             PQclear(qryRes);
@@ -307,9 +309,9 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
         wxLogSql(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
         qryRes = PQexec(conn, sql.mb_str(*conv));
 
-        int status= PQresultStatus(qryRes);
+        lastResultStatus= PQresultStatus(qryRes);
 
-        if (status == PGRES_TUPLES_OK || status == PGRES_COMMAND_OK)
+        if (lastResultStatus == PGRES_TUPLES_OK || lastResultStatus == PGRES_COMMAND_OK)
         {
             pgSet *set = new pgSet(qryRes, this, *conv, needColQuoting);
             if (!set)
@@ -346,6 +348,28 @@ void pgConn::LogError()
             conn=0;
         }
     }
+}
+
+
+
+bool pgConn::IsAlive()
+{
+    if (GetStatus() != PGCONN_OK)
+        return false;
+
+    PGresult *qryRes = PQexec(conn, "SELECT 1;");
+    lastResultStatus = PQresultStatus(qryRes);
+    PQclear(qryRes);
+
+    // Check for errors
+    if (lastResultStatus != PGRES_TUPLES_OK)
+    {
+        PQfinish(conn);
+        conn=0;
+        return false;
+    }
+
+    return true;
 }
 
 

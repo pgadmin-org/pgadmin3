@@ -22,6 +22,8 @@
 // Class declarations
 
 
+class frmMain;
+
 class pgServer : public pgObject
 {
 public:
@@ -46,6 +48,8 @@ public:
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
     bool GetSuperUser() const { return superUser; }
     void iSetSuperUser(const bool b) { superUser=b; }
+
+    frmMain *GetParentFrame() { return parentWin; }
 
 
     wxString GetLastDatabase() const { return lastDatabase; }
@@ -89,7 +93,7 @@ private:
     bool trusted, createPrivilege, superUser;
     OID lastSystemOID;
     wxString versionNum;
-    wxFrame *parentWin;
+    frmMain *parentWin;
 };
 
 #endif

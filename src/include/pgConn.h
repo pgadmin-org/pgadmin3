@@ -63,6 +63,8 @@ public:
     wxString GetOptions() const { return wxString(PQoptions(conn), *conv); }
     int GetBackendPID() const { return PQbackendPID(conn); }
     int GetStatus() const;
+    int GetLastResultStatus() const { return lastResultStatus; }
+    bool IsAlive();
     wxString GetLastError() const { return wxString(PQerrorMessage(conn), *conv); }
     wxString GetVersionString();
     OID GetLastSystemOID() const { return lastSystemOID; }
@@ -80,6 +82,7 @@ public:
 
 private:
     PGconn *conn;
+    int lastResultStatus;
     int minorVersion, majorVersion;
     wxMBConv *conv;
     bool resolvedIP, needColQuoting;

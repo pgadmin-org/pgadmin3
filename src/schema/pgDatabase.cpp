@@ -20,6 +20,8 @@
 #include "pgServer.h"
 #include "pgCollection.h"
 #include "pgaAgent.h"
+#include "menu.h"
+#include "frmMain.h"
 
 
 pgDatabase::pgDatabase(const wxString& newName)
@@ -27,7 +29,8 @@ pgDatabase::pgDatabase(const wxString& newName)
 {
     wxLogInfo(wxT("Creating a pgDatabase object"));
 
-    allowConnections = TRUE;
+    allowConnections = true;
+    connected = false;
     conn = NULL;
 }
 
@@ -36,7 +39,10 @@ pgDatabase::~pgDatabase()
 {
     wxLogInfo(wxT("Destroying a pgDatabase object"));
     if (conn)
-        delete conn;
+    {
+        if (conn)
+            delete conn;
+    }
 }
 
 
@@ -59,43 +65,72 @@ int pgDatabase::Connect()
     if (!allowConnections)
         return PGCONN_REFUSED;
 
-    if (conn)
-        return conn->GetStatus();
-    else
+    if (!connected)
     {
-		conn = new pgConn(GetServer()->GetName(), GetName(), GetServer()->GetUsername(), GetServer()->GetPassword(), GetServer()->GetPort(), GetServer()->GetSSL());
-		if (conn->GetStatus() == PGCONN_OK)
+        if (GetName() == server->GetDatabaseName() && server->connection()->GetStatus() == PGCONN_OK)
         {
-            // Now we're connected.
-            iSetComment(conn->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
-
-            // check for extended ruleutils with pretty-print option
-            wxString exprname=conn->ExecuteScalar(wxT("SELECT proname FROM pg_proc WHERE proname='pg_get_viewdef' AND proargtypes[1]=16"));
-            if (!exprname.IsEmpty())
-                prettyOption = wxT(", true");
-        
-            searchPath = conn->ExecuteScalar(wxT("SHOW search_path"));
-
-            return PGCONN_OK;
+            useServerConnection = true;
+            conn=0;
         }
         else
         {
-            delete conn;
-            conn=0;
-			wxLogError(wxT("%s"), conn->GetLastError().c_str());
-            return PGCONN_BAD;
+            useServerConnection = false;
+		    conn = new pgConn(server->GetName(), GetName(), server->GetUsername(), server->GetPassword(), server->GetPort(), server->GetSSL());
+
+            if (conn->GetStatus() != PGCONN_OK)
+            {
+                wxLogError(wxT("%s"), conn->GetLastError().c_str());
+                delete conn;
+                conn=0;
+                connected = false;
+                return PGCONN_BAD;
+            }
+        }
+
+        // Now we're connected.
+        iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+
+        // check for extended ruleutils with pretty-print option
+        wxString exprname=connection()->ExecuteScalar(wxT("SELECT proname FROM pg_proc WHERE proname='pg_get_viewdef' AND proargtypes[1]=16"));
+        if (!exprname.IsEmpty())
+            prettyOption = wxT(", true");
+    
+        searchPath = connection()->ExecuteScalar(wxT("SHOW search_path"));
+        connected = true;
+    }
+
+    return connection()->GetStatus();
+}
+
+
+pgConn *pgDatabase::connection()
+{
+    if (useServerConnection)
+        return server->connection();
+    return conn;
+
+}
+
+void pgDatabase::CheckAlive()
+{
+    if (connected)
+    {
+        connected = connection()->IsAlive();
+        if (!connected)
+        {
+            // backend died
+            wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, MNU_CHECKALIVE);
+            wxPostEvent(GetServer()->GetParentFrame(), event);
         }
     }
 }
 
-
 void pgDatabase::Disconnect()
 {
-#if 0
+    connected=false;
     if (conn)
         delete conn;
     conn=0;
-#endif
 }
 
 
@@ -104,9 +139,9 @@ pgSet *pgDatabase::ExecuteSet(const wxString& sql)
     pgSet *set=0;
     if (conn)
     {
-        set=conn->ExecuteSet(sql);
-        if (!set && conn->GetStatus() == PGCONN_BAD)
-            Disconnect();
+        set=connection()->ExecuteSet(sql);
+        if (!set)
+            CheckAlive();
     }
     return set;
 }
@@ -117,9 +152,9 @@ wxString pgDatabase::ExecuteScalar(const wxString& sql)
     wxString str;
     if (conn)
     {
-        str = conn->ExecuteScalar(sql);
-        if (str.IsEmpty() && conn->GetStatus() == PGCONN_BAD)
-            Disconnect();
+        str = connection()->ExecuteScalar(sql);
+        if (str.IsEmpty() && connection()->GetLastResultStatus() != PGRES_TUPLES_OK)
+            CheckAlive();
     }
     return str;
 }
@@ -130,9 +165,9 @@ bool pgDatabase::ExecuteVoid(const wxString& sql)
     bool rc;
     if (conn)
     {
-        rc = conn->ExecuteVoid(sql);
-        if (!rc && conn->GetStatus() == PGCONN_BAD)
-            Disconnect();
+        rc = connection()->ExecuteVoid(sql);
+        if (!rc)
+            CheckAlive();
     }
     return rc;
 }
@@ -193,6 +228,13 @@ void pgDatabase::AppendSchemaChange(const wxString &sql)
 
 bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
+    if (useServerConnection)
+    {
+        wxMessageDialog(frame, _("Initial database can't be dropped."),
+                        _("Dropping database not allowed"), wxICON_EXCLAMATION | wxOK);
+
+        return false;
+    }
     Disconnect();
 
     bool done=server->ExecuteVoid(wxT("DROP DATABASE ") + GetQuotedIdentifier() + wxT(";"));
@@ -256,7 +298,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
             // pgAgent
             pgaAgent::ReadObjects(this, browser);
 
-            missingFKs = StrToLong(conn->ExecuteScalar(
+            missingFKs = StrToLong(connection()->ExecuteScalar(
                 wxT("SELECT COUNT(*) FROM\n")
                 wxT("   (SELECT tgargs from pg_trigger tr\n")
                 wxT("      LEFT JOIN pg_depend dep ON dep.objid=tr.oid AND deptype = 'i'\n")
@@ -313,7 +355,7 @@ pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
                 sql=wxT("");
                 iSetAcl(database->GetAcl());
                 iSetVariables(database->GetVariables());
-                iSetComment(conn->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+                iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
                 delete database;
             }
         }

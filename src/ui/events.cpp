@@ -109,6 +109,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_NEW+PGA_JOB,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PGA_STEP,              frmMain::OnNew)
     EVT_MENU(MNU_NEW+PGA_SCHEDULE,          frmMain::OnNew)
+    EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
     EVT_NOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
@@ -333,6 +334,87 @@ void frmMain::OnStatus(wxCommandEvent &event)
         status->Go();
     }
 }
+
+
+void frmMain::OnCheckAlive(wxCommandEvent &event)
+{
+    bool userInformed = false;
+    bool closeIt;
+
+    wxCookieType cookie;
+    wxTreeItemId item=browser->GetFirstChild(servers, cookie);
+    while (item)
+    {
+        pgServer *server=(pgServer*)browser->GetItemData(item);
+        if (server && server->GetType() == PG_SERVER && server->connection())
+        {
+            if (server->connection()->IsAlive())
+            {
+                wxCookieType cookie2;
+                item = browser->GetFirstChild(server->GetId(), cookie2);
+                while (item)
+                {
+                    pgObject *obj=(pgObject*)browser->GetItemData(item);
+                    if (obj && obj->GetType() == PG_DATABASES)
+                    {
+                        wxCookieType cookie3;
+                        item = browser->GetFirstChild(obj->GetId(), cookie3);
+                        while (item)
+                        {
+                            pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
+                            if (db && db->GetType() == PG_DATABASE && db->GetConnected() && db->connection())
+                            {
+                                if (!db->connection()->IsAlive())
+                                {
+                                    if (!userInformed)
+                                    {
+                                        wxMessageDialog dlg(this, _("Close database browser? If you abort, the object browser will not show accurate data."),
+                                        wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()), 
+                                            wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
+
+                                        closeIt = (dlg.ShowModal() == wxID_YES);
+                                        userInformed = true;
+                                    }
+                                    if (closeIt)
+                                    {
+                                        browser->DeleteChildren(db->GetId());
+                                        browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
+                                        browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
+                                        db->Disconnect();
+                                    }
+                                }
+                            }
+                            item = browser->GetNextChild(obj->GetId(), cookie3);
+                        }
+                    }
+                    item = browser->GetNextChild(server->GetId(), cookie2);
+                }
+            }
+            else
+            {
+                if (!userInformed)
+                {
+                    wxMessageDialog dlg(this, _("Close server browser? If you abort, the object browser will not show accurate data."),
+                        wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()), 
+                        wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
+
+                    closeIt = (dlg.ShowModal() == wxID_YES);
+                    userInformed = true;
+                }
+                if (closeIt)
+                {
+                    browser->DeleteChildren(server->GetId());
+                    browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Normal);
+                    browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Selected);
+                    server->Disconnect();
+                }
+            }
+        }
+
+        item = browser->GetNextChild(servers, cookie);
+    }
+}
+
 
 void frmMain::OnPassword(wxCommandEvent& event)
 {

@@ -79,6 +79,7 @@ int pgServer::Connect(frmMain *form, bool lockFields)
 {
     wxLogInfo(wxT("Attempting to create a connection object..."));
 
+    parentWin = form;
     if (!conn || conn->GetStatus() != PGCONN_OK)
     {
         if (conn)

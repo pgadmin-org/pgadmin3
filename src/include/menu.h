@@ -76,6 +76,7 @@ enum
     MNU_RELOAD,
     MNU_CLEARHISTORY,
     MNU_SAVEHISTORY,
+    MNU_CHECKALIVE,
     MNU_RECENT, // leave space for recent file entries
     MNU_NEW=MNU_RECENT+15
 };

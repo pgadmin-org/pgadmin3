@@ -62,9 +62,10 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanMaintenance() { return true; }
     bool RequireDropConfirm() { return true; }
-    pgConn *connection() { return conn; }
+    pgConn *connection();
     int Connect();
     void Disconnect();
+    void CheckAlive();
     void AppendSchemaChange(const wxString &sql);
     wxString GetSchemaChanges() { return schemaChanges; }
     void ClearSchemaChanges() { schemaChanges=wxEmptyString; }
@@ -75,6 +76,8 @@ public:
 
 private:
     pgConn *conn;
+    bool connected;
+    bool useServerConnection;
     wxString searchPath, path, encoding, variables;
     wxString prettyOption;
     bool allowConnections, createPrivilege;
