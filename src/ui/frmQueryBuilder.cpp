@@ -680,7 +680,7 @@ void frmQueryBuilder::UpdateGridTables(frmChildTableViewFrame *frame)
 	}
 
 	// We need to know the index of the table that was chosen
-	int chosentable;
+	int chosentable = 0;
 
 	// Copy the SortedArrayString into a true array because
 	// SetCellEditor won't accept wxSortedArrayString and add a 
