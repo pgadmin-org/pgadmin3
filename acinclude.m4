@@ -117,50 +117,34 @@ then
     else
         CPPFLAGS="$CPPFLAGS -I${LIBPQ_HOME}/include"
     fi
-
-    AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
-    if test "$pgsql_cv_libpq" = "no"
+    if test "$pg_static_build" = "yes"
     then
-        LIBS="$LIBS -lssl"
-#        AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
-        AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=np])
-        if test "$pgsql_ssl_libpq" = "yes"
-        then
-            pgsql_cv_libpq=yes
-            if test "$pg_static_build" = "yes"
-            then
-                LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lssl -lcrypto"
-            else
-                LIBS="$LIBS -lssl -lcrypto -lpq"
-            fi
-
-            CPPFLAGS="$CPPFLAGS -DSSL"
-        fi
+        LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lssl -lcrypto"
     else
-        if test "$pg_static_build" = "yes"
-        then
-            LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lcrypto"
-        else
-            LIBS="$LIBS -lcrypto -lpq"
-        fi
-    
+        LIBS="$LIBS -lssl -lcrypto -lpq"
     fi
-    AC_CHECK_HEADER(libpq-fe.h, [pgsql_cv_libpqfe_h=yes], [pgsql_cv_libpqfe_h=no])
-
     AC_LANG_SAVE
     AC_LANG_C
+    AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
+    AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=np])
+    AC_CHECK_HEADER(libpq-fe.h, [pgsql_cv_libpqfe_h=yes], [pgsql_cv_libpqfe_h=no])
     AC_LANG_RESTORE
-    AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
     if test "$pgsql_cv_libpq" = "yes" -a "$pgsql_cv_libpqfe_h" = "yes"
     then
+        AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
         AC_MSG_RESULT(ok)
     else
+        AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
         AC_MSG_RESULT(failed)
         LDFLAGS="$PGSQL_OLD_LDFLAGS"
         CPPFLAGS="$PGSQL_OLD_CPPFLAGS"
         AC_MSG_ERROR([you must specify a valid pgsql installation with --with-pgsql=DIR])
     fi
 
+    if test "$pgsql_ssl_libpq" = "yes"
+    then
+        CPPFLAGS="$CPPFLAGS -DSSL"
+    fi
 fi
 ])
 
