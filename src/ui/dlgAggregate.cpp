@@ -82,6 +82,7 @@ int dlgAggregate::Go(bool modal)
         cbFinalFunc->SetSelection(0);
 
         txtInitial->SetValue(aggregate->GetInitialCondition());
+        txtComment->SetValue(aggregate->GetComment());
 
         txtName->Disable();
         cbBaseType->Disable();
