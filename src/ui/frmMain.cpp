@@ -549,26 +549,30 @@ bool frmMain::checkAlive()
                         while (item)
                         {
                             pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
-                            if (db && db->GetType() == PG_DATABASE && db->GetConnected() && db->connection())
+                            if (db && db->GetType() == PG_DATABASE)
                             {
-                                if (!db->connection()->IsAlive() && db->connection()->GetStatus() == PGCONN_BROKEN)
+                                pgConn *conn=db->GetConnection();
+                                if (conn)
                                 {
-                                    db->connection()->Close();
-                                    if (!userInformed)
+                                    if (!conn->IsAlive() && conn->GetStatus() == PGCONN_BROKEN)
                                     {
-                                        wxMessageDialog dlg(this, _("Close database browser? If you abort, the object browser will not show accurate data."),
-                                        wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()), 
-                                            wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
+                                        conn->Close();
+                                        if (!userInformed)
+                                        {
+                                            wxMessageDialog dlg(this, _("Close database browser? If you abort, the object browser will not show accurate data."),
+                                            wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()), 
+                                                wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
 
-                                        closeIt = (dlg.ShowModal() == wxID_YES);
-                                        userInformed = true;
-                                    }
-                                    if (closeIt)
-                                    {
-                                        browser->DeleteChildren(db->GetId());
-                                        browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
-                                        browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
-                                        db->Disconnect();
+                                            closeIt = (dlg.ShowModal() == wxID_YES);
+                                            userInformed = true;
+                                        }
+                                        if (closeIt)
+                                        {
+                                            browser->DeleteChildren(db->GetId());
+                                            browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
+                                            browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
+                                            db->Disconnect();
+                                        }
                                     }
                                 }
                             }
