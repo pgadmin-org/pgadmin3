@@ -10,7 +10,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/image.h>
+#include <wx/app.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -51,7 +51,7 @@ bool pgAdmin3::OnInit()
 #endif
     
     // Create & show the main form
-    winMain = new frmMain("pgAdmin III", wxPoint(objSettings->GetFrmMainLeft(), objSettings->GetFrmMainTop()), wxSize(objSettings->GetFrmMainWidth(), objSettings->GetFrmMainHeight()));
+    winMain = new frmMain(wxT("pgAdmin III"), wxPoint(objSettings->GetFrmMainLeft(), objSettings->GetFrmMainTop()), wxSize(objSettings->GetFrmMainWidth(), objSettings->GetFrmMainHeight()));
     winMain->Show(TRUE);
     SetTopWindow(winMain);
     SetExitOnFrameDelete(TRUE);

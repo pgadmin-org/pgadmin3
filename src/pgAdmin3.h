@@ -18,8 +18,8 @@
 #include "utils/sysSettings.h"
 
 // Application Version & Name
-#define VERSION "1.0.0 Devel"
-#define APPNAME "pgAdmin III"
+#define VERSION wxT("1.0.0 Devel")
+#define APPNAME wxT("pgAdmin III")
 
 // Class declarations
 class pgAdmin3 : public wxApp

@@ -87,34 +87,34 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // File Menu
     wxMenu *mnuFile = new wxMenu;
-    mnuFile->Append(mnuConnect, "&Connect...", "Connect to a PostgreSQL server");
-    mnuFile->Append(mnuPassword, "C&hange password...", "Change your password");
+    mnuFile->Append(mnuConnect, wxT("&Connect..."), wxT("Connect to a PostgreSQL server"));
+    mnuFile->Append(mnuPassword, wxT("C&hange password..."), wxT("Change your password"));
     mnuFile->AppendSeparator();
-    mnuFile->Append(mnuSaveDefinition, "&Save definition...", "Save the SQL definition of the selected object");
-    mnuFile->Append(mnuSaveSchema, "S&ave DB schema...", "Save the schema of the current database");
+    mnuFile->Append(mnuSaveDefinition, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object"));
+    mnuFile->Append(mnuSaveSchema, wxT("S&ave DB schema..."), wxT("Save the schema of the current database"));
     mnuFile->AppendSeparator();
-    mnuFile->Append(mnuExit, "E&xit", "Quit this program");
-    mnuBar->Append(mnuFile, "&File");
+    mnuFile->Append(mnuExit, wxT("E&xit"), wxT("Quit this program"));
+    mnuBar->Append(mnuFile, wxT("&File"));
 
     // Tools Menu
     wxMenu *mnuTools = new wxMenu;
-    mnuTools->Append(mnuUpgradeWizard, "&Upgrade Wizard...", "Run the upgrade wizard");
+    mnuTools->Append(mnuUpgradeWizard, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard"));
     mnuTools->AppendSeparator();
-    mnuTools->Append(mnuOptions, "&Options...", "Show options dialog");
-    mnuBar->Append(mnuTools, "&Tools");
+    mnuTools->Append(mnuOptions, wxT("&Options..."), wxT("Show options dialog"));
+    mnuBar->Append(mnuTools, wxT("&Tools"));
 
     // View Menu
     wxMenu *mnuView = new wxMenu;
-    mnuView->Append(mnuSystemObjects, "&System objects", "Show or hide system objects");
-    mnuBar->Append(mnuView, "&View");
+    mnuView->Append(mnuSystemObjects, wxT("&System objects"), wxT("Show or hide system objects"));
+    mnuBar->Append(mnuView, wxT("&View"));
 
     // Help Menu
     wxMenu *mnuHelp = new wxMenu;
-    mnuHelp->Append(mnuContents, "&Help...", "Open the helpfile");
-    mnuHelp->Append(mnuTipOfTheDay, "&Tip of the day...", "Show a tip of the day");
+    mnuHelp->Append(mnuContents, wxT("&Help..."), wxT("Open the helpfile"));
+    mnuHelp->Append(mnuTipOfTheDay, wxT("&Tip of the day..."), wxT("Show a tip of the day"));
     mnuHelp->AppendSeparator();
-    mnuHelp->Append(mnuAbout, "&About...", "Show about dialog");
-    mnuBar->Append(mnuHelp, "&Help");
+    mnuHelp->Append(mnuAbout, wxT("&About..."), wxT("Show about dialog"));
+    mnuBar->Append(mnuHelp, wxT("&Help"));
 
     // Add the Menubar
     SetMenuBar(mnuBar);
@@ -123,12 +123,12 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     CreateStatusBar(6);
     static const int iWidths[6] = {-1, 50, 100, 100, 100, 100};
     SetStatusWidths(6, iWidths);
-    SetStatusText("Ready.", 0);
-    SetStatusText("0 Secs", 1);
-    SetStatusText("Object: None", 2);
-    SetStatusText("Schema: None", 3);
-    SetStatusText("Database: None", 4);
-    SetStatusText("Server: None", 5);
+    SetStatusText(wxT("Ready."), 0);
+    SetStatusText(wxT("0 Secs"), 1);
+    SetStatusText(wxT("Object: None"), 2);
+    SetStatusText(wxT("Schema: None"), 3);
+    SetStatusText(wxT("Database: None"), 4);
+    SetStatusText(wxT("Server: None"), 5);
 
     // Toolbar bar
 
@@ -152,19 +152,19 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     tlBarBitmaps[8] = wxBitmap(record_xpm);
     tlBarBitmaps[9] = wxBitmap(stop_xpm);
 
-    tlBar->AddTool(100, _T("Connect"), tlBarBitmaps[0], _T("Connect to a server"), wxITEM_NORMAL);
-    tlBar->AddTool(101, _T("Refresh"), tlBarBitmaps[1], _T("Refrsh the data below the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(100, wxT("Connect"), tlBarBitmaps[0], wxT("Connect to a server"), wxITEM_NORMAL);
+    tlBar->AddTool(101, wxT("Refresh"), tlBarBitmaps[1], wxT("Refrsh the data below the selected object"), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(102, _T("Create"), tlBarBitmaps[2], _T("Create a new object of the same type as the selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(103, _T("Drop"), tlBarBitmaps[3], _T("Drop the currently selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(104, _T("Properties"), tlBarBitmaps[4], _T("Display/edit the properties of the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(102, wxT("Create"), tlBarBitmaps[2], wxT("Create a new object of the same type as the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(103, wxT("Drop"), tlBarBitmaps[3], wxT("Drop the currently selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(104, wxT("Properties"), tlBarBitmaps[4], wxT("Display/edit the properties of the selected object"), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(105, _T("SQL"), tlBarBitmaps[5], _T("Execute arbitrary SQL queries"), wxITEM_NORMAL);
-    tlBar->AddTool(106, _T("View Data"), tlBarBitmaps[6], _T("View the data in the selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(107, _T("Vacuum"), tlBarBitmaps[7], _T("Vacuum the current database or table"), wxITEM_NORMAL);
+    tlBar->AddTool(105, wxT("SQL"), tlBarBitmaps[5], wxT("Execute arbitrary SQL queries"), wxITEM_NORMAL);
+    tlBar->AddTool(106, wxT("View Data"), tlBarBitmaps[6], wxT("View the data in the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(107, wxT("Vacuum"), tlBarBitmaps[7], wxT("Vacuum the current database or table"), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(108, _T("Record"), tlBarBitmaps[8], _T("Record a query log"), wxITEM_NORMAL);
-    tlBar->AddTool(109, _T("Stop"), tlBarBitmaps[9], _T("Stop recording the query log"), wxITEM_NORMAL);
+    tlBar->AddTool(108, wxT("Record"), tlBarBitmaps[8], wxT("Record a query log"), wxITEM_NORMAL);
+    tlBar->AddTool(109, wxT("Stop"), tlBarBitmaps[9], wxT("Stop recording the query log"), wxITEM_NORMAL);
 
     tlBar->Realize();
     
@@ -179,8 +179,8 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     wxNotebook* nbListViews = new wxNotebook(splHorizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     lvProperties = new wxListCtrl(nbListViews, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
     lvStatistics = new wxListCtrl(nbListViews, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
-    nbListViews->AddPage(lvProperties, "Properties");
-    nbListViews->AddPage(lvStatistics, "Statistics");
+    nbListViews->AddPage(lvProperties, wxT("Properties"));
+    nbListViews->AddPage(lvStatistics, wxT("Statistics"));
     txtSQLPane = new ctlSQLBox(splHorizontal, -1, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
     txtSQLPane->SetBackgroundColour(*wxLIGHT_GREY);
     splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
@@ -208,13 +208,13 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     ilBrowser->Add(wxIcon(closeddatabase_xpm));
 
     // Add some treeview items
-    wxTreeItemId itmDummy = tvBrowser->AddRoot("Root node",0);
-    tvBrowser->AppendItem(itmDummy, "Child Node #1");
-    tvBrowser->AppendItem(itmDummy, "Child Node #2");
+    wxTreeItemId itmDummy = tvBrowser->AddRoot(wxT("Root node"),0);
+    tvBrowser->AppendItem(itmDummy, wxT("Child Node #1"));
+    tvBrowser->AppendItem(itmDummy, wxT("Child Node #2"));
     tvBrowser->Expand(itmDummy);
-    itmDummy = tvBrowser->AppendItem(itmDummy, "Child Node #3");
-    tvBrowser->AppendItem(itmDummy, "Child Node #4");
-    tvBrowser->AppendItem(itmDummy, "Child Node #5");
+    itmDummy = tvBrowser->AppendItem(itmDummy, wxT("Child Node #3"));
+    tvBrowser->AppendItem(itmDummy, wxT("Child Node #4"));
+    tvBrowser->AppendItem(itmDummy, wxT("Child Node #5"));
 
     //Setup a listview imagemap
     wxImageList *ilProperties = new wxImageList(16, 16);
@@ -224,15 +224,15 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     ilProperties->Add(wxIcon(property_xpm));
 
     // Add some listview items
-    lvProperties->InsertColumn(0, "Property", wxLIST_FORMAT_LEFT, 100);
-    lvProperties->InsertColumn(1, "Value", wxLIST_FORMAT_LEFT, 400);
+    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 100);
+    lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
 
     // This is the bit that puts it all on one line over 2 colums
-    lvProperties->InsertItem(0, "Property #1", 0);
-    lvProperties->SetItem(0, 1, "Property #1a");
+    lvProperties->InsertItem(0, wxT("Property #1"), 0);
+    lvProperties->SetItem(0, 1, wxT("Property #1a"));
 
-    lvProperties->InsertItem(1, "Property #2", 0);
-    lvProperties->SetItem(1, 1, "Property #2a");
+    lvProperties->InsertItem(1, wxT("Property #2"), 0);
+    lvProperties->SetItem(1, 1, wxT("Property #2a"));
 
     //Setup a listview imagemap
     wxImageList *ilStatistics = new wxImageList(16, 16);
@@ -242,19 +242,19 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     ilStatistics->Add(wxIcon(statistics_xpm));
 
     // Add some listview items
-    lvStatistics->InsertColumn(0, "Statistic", wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(1, "Value", wxLIST_FORMAT_LEFT, 400);
+    lvStatistics->InsertColumn(0, wxT("Statistic"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
 
     // This is the bit that puts it all on one line over 2 colums
-    lvStatistics->InsertItem(0, "Statistic #1", 0);
-    lvStatistics->SetItem(0, 1, "Statistic #1a");
+    lvStatistics->InsertItem(0, wxT("Statistic #1"), 0);
+    lvStatistics->SetItem(0, 1, wxT("Statistic #1a"));
 
-    lvStatistics->InsertItem(1, "Statistic #2", 0);
-    lvStatistics->SetItem(1, 1, "Statistic #2a");
+    lvStatistics->InsertItem(1, wxT("Statistic #2"), 0);
+    lvStatistics->SetItem(1, 1, wxT("Statistic #2a"));
 
 
     // Setup the SQL Pane
-    txtSQLPane->InsertText(0, "-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;");
+    txtSQLPane->InsertText(0, wxT("-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;"));
 
 }
 

@@ -48,16 +48,16 @@ private:
 enum
 {
     mnuConnect = 1,
-        mnuPassword,
-        mnuSaveDefinition,
-        mnuSaveSchema,
-        mnuExit,
-        mnuUpgradeWizard,
-        mnuOptions,
-        mnuSystemObjects,
-        mnuContents,
-        mnuTipOfTheDay,
-        mnuAbout
+    mnuPassword,
+    mnuSaveDefinition,
+    mnuSaveSchema,
+    mnuExit,
+    mnuUpgradeWizard,
+    mnuOptions,
+    mnuSystemObjects,
+    mnuContents,
+    mnuTipOfTheDay,
+    mnuAbout
 };
 
 #endif

@@ -23,20 +23,20 @@
 sysSettings::sysSettings() : sysConfig(APPNAME)
 {
     // frMain size/position
-    lFrmMainWidth = sysConfig.Read("frmMain/Width", 750);
-    lFrmMainHeight = sysConfig.Read("frmMain/Height", 550);
-    lFrmMainTop = sysConfig.Read("frmMain/Top", 50);
-    lFrmMainLeft = sysConfig.Read("frmMain/Left", 50);
+    lFrmMainWidth = sysConfig.Read(wxT("frmMain/Width"), 750);
+    lFrmMainHeight = sysConfig.Read(wxT("frmMain/Height"), 550);
+    lFrmMainTop = sysConfig.Read(wxT("frmMain/Top"), 50);
+    lFrmMainLeft = sysConfig.Read(wxT("frmMain/Left"), 50);
 }
 
 
 sysSettings::~sysSettings()
 {
     // frMain size/position
-    sysConfig.Write("frmMain/Width", lFrmMainWidth);
-    sysConfig.Write("frmMain/Height", lFrmMainHeight);
-    sysConfig.Write("frmMain/Top", lFrmMainTop);
-    sysConfig.Write("frmMain/Left", lFrmMainLeft);
+    sysConfig.Write(wxT("frmMain/Width"), lFrmMainWidth);
+    sysConfig.Write(wxT("frmMain/Height"), lFrmMainHeight);
+    sysConfig.Write(wxT("frmMain/Top"), lFrmMainTop);
+    sysConfig.Write(wxT("frmMain/Left"), lFrmMainLeft);
 }
 
 //////////////////////////////////////////////////////////////////////////

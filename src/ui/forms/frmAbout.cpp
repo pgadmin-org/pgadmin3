@@ -37,7 +37,7 @@ frmAbout::frmAbout(wxFrame *parent)
     imgAbout = wxBitmap(splash_xpm);
 
     SetClientSize(imgAbout.GetWidth(), imgAbout.GetHeight());
-    wxString szVersion = "Version: ";
+    wxString szVersion = wxT("Version: ");
     szVersion.Append(VERSION);
     wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
     Center();
