@@ -5,9 +5,22 @@ This file lists the current known issues to be resolved.
 
 
 Query Builder active in debug builds only:
-[Schema Browser]	Menu item 'Query Browser' causes Segfault under unix - crash after qbForm->Show() in frmQueryBuilder::OnSize() at layout.LayoutMDIFrame(this)
+[Schema Browser]	Menu item 'Query Browser' causes Segfault under unix - crash after qbForm->Show()
+                        in frmQueryBuilder::OnSize() at layout.LayoutMDIFrame(this)
+
 [Query Builder]		frmAddTableView: you have to double click buttons!
 
+[Mandrake91]            pgAdmin3 will not compile because of old versions of
+                        autoconf (2.13-16mdk) and automake (1.4-21.p6.mdk).
+                        Newer versions are not provided by Mandrake Cooker as
+                        strange as it may seem. I tried to recompile RedHat
+                        ones without success. Therefore, we may need to
+                        support older versions of automake and autoconf. 
+
+[SuSE82]                pgAdmin3 does not compile under SuSE82 withou a patch
+                        which looks for PostgreSQL libs in non-standard
+                        directories. Patch written by Reinhard will be copied
+                        to snake as soon as a patch directory is added.
 
 Fixed:
 AP 2003-04-29 [Schema Browser]	Segfault under unix if server connection fails for non password reasons - fixed
