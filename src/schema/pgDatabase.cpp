@@ -173,37 +173,31 @@ void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
            "SELECT oid, datname, datpath, datallowconn, datconfig, datacl, pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner\n"
            "  FROM pg_database\n"
            " ORDER BY datname"));
+        
+        if (databases)
+        {
+            while (!databases->Eof())
+            {
+                database = new pgDatabase(databases->GetVal(wxT("datname")));
+                database->SetServer(collection->GetServer());
+                database->iSetOid(StrToDouble(databases->GetVal(wxT("oid"))));
+                database->iSetOwner(databases->GetVal(wxT("datowner")));
+                database->iSetAcl(databases->GetVal(wxT("datacl")));
+                database->iSetPath(databases->GetVal(wxT("datpath")));
+                database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
+                database->iSetVariables(databases->GetVal(wxT("datconfig")));
+                database->iSetAllowConnections(StrToBool(databases->GetVal(wxT("datallowconn"))));
 
-        while (!databases->Eof()) {
-
-            database = new pgDatabase(databases->GetVal(wxT("datname")));
-            database->SetServer(collection->GetServer());
-            database->iSetOid(StrToDouble(databases->GetVal(wxT("oid"))));
-            database->iSetOwner(databases->GetVal(wxT("datowner")));
-            database->iSetAcl(databases->GetVal(wxT("datacl")));
-            database->iSetPath(databases->GetVal(wxT("datpath")));
-            database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
-            database->iSetVariables(databases->GetVal(wxT("datconfig")));
-            database->iSetAllowConnections(StrToBool(databases->GetVal(wxT("datallowconn"))));
-
-            // Add the treeview node if required
-            if (settings->GetShowSystemObjects())
-                browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_CLOSEDDATABASE, -1, database);
-            else if (!database->GetSystemObject()) 
-				browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_CLOSEDDATABASE, -1, database);
-
-			// Keith 2003.03.05
-			// We never gave the database to the treeview control, so we
-			// have to manually delete it's object to fix a memory leak
-            else 
-				delete database;
-	
-			databases->MoveNext();
+                // Add the treeview node if required
+                if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 
+                    browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_CLOSEDDATABASE, -1, database);
+                else 
+				    delete database;
+	    
+			    databases->MoveNext();
+            }
+		    delete databases;
         }
-
-		// Keith 2003.03.05
-		// Fixing memory leak
-		delete databases;
     }
 
     if (statistics)
