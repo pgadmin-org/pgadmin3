@@ -67,6 +67,11 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
 
     if (!conn || conn->GetStatus() != PGCONN_OK)
     {
+        if (conn)
+        {
+            delete conn;
+            conn=0;
+        }
         if (!trusted)
         {
             frmConnect winConnect(form, GetName(), description, database, username, port, trusted);
@@ -122,18 +127,12 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
         {
             error.Printf(wxT("The PostgreSQL server must be at least version %1.1f!"), SERVER_MIN_VERSION);
             connected = FALSE;
-            delete conn;
-            conn=0;
             return PGCONN_BAD;
         }
 
     }
     else
-    {
-        delete conn;
-        conn=0;
         connected = FALSE;
-    }
 
     return status;
 }
