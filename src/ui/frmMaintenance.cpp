@@ -60,7 +60,8 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
     SetIcon(wxIcon(vacuum_xpm));
 
     // Bitmap
-    stBitmap->SetBitmap(wxBitmap(vacuum_xpm));
+//    stBitmap->SetBitmap(wxBitmap(vacuum_xpm));
+
     txtMessages->SetMaxLength(0L);
 
     if (object->GetType() == PG_INDEX)
