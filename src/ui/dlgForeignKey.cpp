@@ -242,14 +242,14 @@ int dlgForeignKey::Go(bool modal)
 
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
-            systemRestriction = wxT("   AND nsp.oid > ") + NumToStr(connection->GetLastSystemOID()) + wxT("\n");
+            systemRestriction = wxT("   AND (nsp.oid=2200 OR nsp.oid > ") + NumToStr(connection->GetLastSystemOID()) + wxT(")\n");
 
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT nspname, relname FROM pg_namespace nsp, pg_class cl\n")
             wxT(" WHERE relnamespace=nsp.oid AND relkind='r'\n")
             wxT("   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n")
             + systemRestriction
-            + wxT("\n ORDER BY nsp.oid, relname"));
+            + wxT(" ORDER BY nsp.oid, relname"));
 
         if (set)
         {
