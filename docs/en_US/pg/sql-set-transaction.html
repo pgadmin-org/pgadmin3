@@ -1,136 +1,499 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SET TRANSACTION</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-set-session-authorization.html" title="SET SESSION AUTHORIZATION">
-<link rel="next" href="sql-show.html" title="SHOW">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-set-transaction"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SET TRANSACTION &#8212; set the characteristics of the current transaction</p>
-</div>
-<a name="id2695879"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">SET TRANSACTION <i class="replaceable"><tt>transaction_mode</tt></i> [, ...]
-SET SESSION CHARACTERISTICS AS TRANSACTION <i class="replaceable"><tt>transaction_mode</tt></i> [, ...]
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SET TRANSACTION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SET SESSION AUTHORIZATION"
+HREF="sql-set-session-authorization.html"><LINK
+REL="NEXT"
+TITLE="SHOW"
+HREF="sql-show.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-show.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-show.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-SET-TRANSACTION"
+></A
+>SET TRANSACTION</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43656"
+></A
+><H2
+>Name</H2
+>SET TRANSACTION&nbsp;--&nbsp;set the characteristics of the current transaction</DIV
+><A
+NAME="AEN43659"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN43661"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SET TRANSACTION <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> [, ...]
+SET SESSION CHARACTERISTICS AS TRANSACTION <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> [, ...]
 
-where <i class="replaceable"><tt>transaction_mode</tt></i> is one of:
+where <VAR
+CLASS="REPLACEABLE"
+>transaction_mode</VAR
+> is one of:
 
     ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
-    READ WRITE | READ ONLY</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2695910"></a><h2>Description</h2>
-<p>   The <tt class="command">SET TRANSACTION</tt> command sets the
+    READ WRITE | READ ONLY</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43666"
+></A
+><H2
+>Description</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+> command sets the
    characteristics of the current transaction. It has no effect on any
-   subsequent transactions.  <tt class="command">SET SESSION
-   CHARACTERISTICS</tt> sets the default transaction
+   subsequent transactions.  <TT
+CLASS="COMMAND"
+>SET SESSION
+   CHARACTERISTICS</TT
+> sets the default transaction
    characteristics for subsequent transactions of a session.  These
-   defaults can be overridden by <tt class="command">SET TRANSACTION</tt>
+   defaults can be overridden by <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+>
    for an individual transaction.
-  </p>
-<p>   The available transaction characteristics are the transaction
+  </P
+><P
+>   The available transaction characteristics are the transaction
    isolation level and the transaction access mode (read/write or
    read-only).
-  </p>
-<p>   The isolation level of a transaction determines what data the
+  </P
+><P
+>   The isolation level of a transaction determines what data the
    transaction can see when other transactions are running concurrently:
 
-   </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">READ COMMITTED</tt></span></dt>
-<dd><p>       A statement can only see rows committed before it began. This
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>READ COMMITTED</TT
+></DT
+><DD
+><P
+>       A statement can only see rows committed before it began. This
        is the default.
-      </p></dd>
-<dt><span class="term"><tt class="literal">SERIALIZABLE</tt></span></dt>
-<dd><p>       All statements of the current transaction can only see rows committed
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SERIALIZABLE</TT
+></DT
+><DD
+><P
+>       All statements of the current transaction can only see rows committed
        before the first query or data-modification statement was executed in
        this transaction.
-      </p></dd>
-</dl></div>
-<p>
+      </P
+></DD
+></DL
+></DIV
+><P>
 
-   The SQL standard defines two additional levels, <tt class="literal">READ
-   UNCOMMITTED</tt> and <tt class="literal">REPEATABLE READ</tt>.
-   In <span class="productname">PostgreSQL</span> <tt class="literal">READ
-   UNCOMMITTED</tt> is treated as
-   <tt class="literal">READ COMMITTED</tt>, while <tt class="literal">REPEATABLE
-   READ</tt> is treated as <tt class="literal">SERIALIZABLE</tt>.
-  </p>
-<p>   The transaction isolation level cannot be changed after the first query or
-   data-modification statement (<tt class="command">SELECT</tt>,
-   <tt class="command">INSERT</tt>, <tt class="command">DELETE</tt>,
-   <tt class="command">UPDATE</tt>, <tt class="command">FETCH</tt>, or
-   <tt class="command">COPY</tt>) of a transaction has been executed.  See
-   <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for more information about transaction
+   The SQL standard defines two additional levels, <TT
+CLASS="LITERAL"
+>READ
+   UNCOMMITTED</TT
+> and <TT
+CLASS="LITERAL"
+>REPEATABLE READ</TT
+>.
+   In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <TT
+CLASS="LITERAL"
+>READ
+   UNCOMMITTED</TT
+> is treated as
+   <TT
+CLASS="LITERAL"
+>READ COMMITTED</TT
+>, while <TT
+CLASS="LITERAL"
+>REPEATABLE
+   READ</TT
+> is treated as <TT
+CLASS="LITERAL"
+>SERIALIZABLE</TT
+>.
+  </P
+><P
+>   The transaction isolation level cannot be changed after the first query or
+   data-modification statement (<TT
+CLASS="COMMAND"
+>SELECT</TT
+>,
+   <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>DELETE</TT
+>,
+   <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, <TT
+CLASS="COMMAND"
+>FETCH</TT
+>, or
+   <TT
+CLASS="COMMAND"
+>COPY</TT
+>) of a transaction has been executed.  See
+   <A
+HREF="mvcc.html"
+>Chapter 12</A
+> for more information about transaction
    isolation and concurrency control.
-  </p>
-<p>   The transaction access mode determines whether the transaction is
+  </P
+><P
+>   The transaction access mode determines whether the transaction is
    read/write or read-only.  Read/write is the default.  When a
    transaction is read-only, the following SQL commands are
-   disallowed: <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>,
-   <tt class="literal">DELETE</tt>, and <tt class="literal">COPY TO</tt> if the
+   disallowed: <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>,
+   <TT
+CLASS="LITERAL"
+>DELETE</TT
+>, and <TT
+CLASS="LITERAL"
+>COPY TO</TT
+> if the
    table they would write to is not a temporary table; all
-   <tt class="literal">CREATE</tt>, <tt class="literal">ALTER</tt>, and
-   <tt class="literal">DROP</tt> commands; <tt class="literal">COMMENT</tt>,
-   <tt class="literal">GRANT</tt>, <tt class="literal">REVOKE</tt>,
-   <tt class="literal">TRUNCATE</tt>; and <tt class="literal">EXPLAIN ANALYZE</tt>
-   and <tt class="literal">EXECUTE</tt> if the command they would execute is
+   <TT
+CLASS="LITERAL"
+>CREATE</TT
+>, <TT
+CLASS="LITERAL"
+>ALTER</TT
+>, and
+   <TT
+CLASS="LITERAL"
+>DROP</TT
+> commands; <TT
+CLASS="LITERAL"
+>COMMENT</TT
+>,
+   <TT
+CLASS="LITERAL"
+>GRANT</TT
+>, <TT
+CLASS="LITERAL"
+>REVOKE</TT
+>,
+   <TT
+CLASS="LITERAL"
+>TRUNCATE</TT
+>; and <TT
+CLASS="LITERAL"
+>EXPLAIN ANALYZE</TT
+>
+   and <TT
+CLASS="LITERAL"
+>EXECUTE</TT
+> if the command they would execute is
    among those listed.  This is a high-level notion of read-only that
    does not prevent all writes to disk.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2696129"></a><h2>Notes</h2>
-<p>   If <tt class="command">SET TRANSACTION</tt> is executed without a prior
-   <tt class="command">START TRANSACTION</tt> or  <tt class="command">BEGIN</tt>,
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43714"
+></A
+><H2
+>Notes</H2
+><P
+>   If <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+> is executed without a prior
+   <TT
+CLASS="COMMAND"
+>START TRANSACTION</TT
+> or  <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>,
    it will appear to have no effect, since the transaction will immediately
    end.
-  </p>
-<p>   It is possible to dispense with <tt class="command">SET TRANSACTION</tt>
-   by instead specifying the desired <i class="replaceable"><tt>transaction_modes</tt></i> in
-   <tt class="command">BEGIN</tt> or <tt class="command">START TRANSACTION</tt>.
-  </p>
-<p>   The session default transaction modes can also be set by setting the
-   configuration parameters <a href="runtime-config.html#guc-default-transaction-isolation">default_transaction_isolation</a>
-   and <a href="runtime-config.html#guc-default-transaction-read-only">default_transaction_read_only</a>.
-   (In fact <tt class="command">SET SESSION CHARACTERISTICS</tt> is just a
-   verbose equivalent for setting these variables with <tt class="command">SET</tt>.)
+  </P
+><P
+>   It is possible to dispense with <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+>
+   by instead specifying the desired <VAR
+CLASS="REPLACEABLE"
+>transaction_modes</VAR
+> in
+   <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> or <TT
+CLASS="COMMAND"
+>START TRANSACTION</TT
+>.
+  </P
+><P
+>   The session default transaction modes can also be set by setting the
+   configuration parameters <A
+HREF="runtime-config.html#GUC-DEFAULT-TRANSACTION-ISOLATION"
+>default_transaction_isolation</A
+>
+   and <A
+HREF="runtime-config.html#GUC-DEFAULT-TRANSACTION-READ-ONLY"
+>default_transaction_read_only</A
+>.
+   (In fact <TT
+CLASS="COMMAND"
+>SET SESSION CHARACTERISTICS</TT
+> is just a
+   verbose equivalent for setting these variables with <TT
+CLASS="COMMAND"
+>SET</TT
+>.)
    This means the defaults can be set in the configuration file, via
-   <tt class="command">ALTER DATABASE</tt>, etc.  Consult <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>
+   <TT
+CLASS="COMMAND"
+>ALTER DATABASE</TT
+>, etc.  Consult <A
+HREF="runtime-config.html"
+>Section 16.4</A
+>
    for more information.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="r1-sql-set-transaction-3"></a><h2>Compatibility</h2>
-<p>   Both commands are defined in the <span class="acronym">SQL</span> standard.
-   <tt class="literal">SERIALIZABLE</tt> is the default transaction
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SET-TRANSACTION-3"
+></A
+><H2
+>Compatibility</H2
+><P
+>   Both commands are defined in the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard.
+   <TT
+CLASS="LITERAL"
+>SERIALIZABLE</TT
+> is the default transaction
    isolation level in the standard.  In
-   <span class="productname">PostgreSQL</span> the default is ordinarily
-   <tt class="literal">READ COMMITTED</tt>, but you can change it as
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> the default is ordinarily
+   <TT
+CLASS="LITERAL"
+>READ COMMITTED</TT
+>, but you can change it as
    mentioned above.  Because of lack of predicate locking, the
-   <tt class="literal">SERIALIZABLE</tt> level is not truly
-   serializable. See <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for details.
-  </p>
-<p>   In the SQL standard, there is one other transaction characteristic
+   <TT
+CLASS="LITERAL"
+>SERIALIZABLE</TT
+> level is not truly
+   serializable. See <A
+HREF="mvcc.html"
+>Chapter 12</A
+> for details.
+  </P
+><P
+>   In the SQL standard, there is one other transaction characteristic
    that can be set with these commands: the size of the diagnostics
    area.  This concept is specific to embedded SQL, and therefore is
-   not implemented in the <span class="productname">PostgreSQL</span> server.
-  </p>
-<p>   The SQL standard requires commas between successive <i class="replaceable"><tt>transaction_modes</tt></i>, but for historical
-   reasons <span class="productname">PostgreSQL</span> allows the commas to be
+   not implemented in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server.
+  </P
+><P
+>   The SQL standard requires commas between successive <VAR
+CLASS="REPLACEABLE"
+>transaction_modes</VAR
+>, but for historical
+   reasons <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows the commas to be
    omitted.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-show.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SET SESSION AUTHORIZATION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SHOW</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,51 +1,268 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SPI_exec</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
-<link rel="previous" href="spi-spi-execute.html" title="SPI_execute">
-<link rel="next" href="spi-spi-prepare.html" title="SPI_prepare">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-exec"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SPI_exec &#8212; execute a read/write command</p>
-</div>
-<a name="id2652968"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">int SPI_exec(const char * <i class="parameter"><tt>command</tt></i>, int <i class="parameter"><tt>count</tt></i>)</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2652991"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_exec</tt> is the same as
-   <tt class="function">SPI_execute</tt>, with the latter's
-   <i class="parameter"><tt>read_only</tt></i> parameter always taken as
-   <tt class="literal">false</tt>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2653022"></a><h2>Arguments</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>command</tt></i></tt></span></dt>
-<dd><p>      string containing command to execute
-     </p></dd>
-<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>count</tt></i></tt></span></dt>
-<dd><p>      maximum number of rows to process or return
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2653058"></a><h2>Return Value</h2>
-<p>   See <tt class="function">SPI_execute</tt>.
-  </p>
-</div>
-</div></body>
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SPI_exec</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Functions"
+HREF="spi.html#SPI-INTERFACE"><LINK
+REL="PREVIOUS"
+TITLE="SPI_execute"
+HREF="spi-spi-execute.html"><LINK
+REL="NEXT"
+TITLE="SPI_prepare"
+HREF="spi-spi-prepare.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-execute.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-execute.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-prepare.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-prepare.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-EXEC"
+></A
+>SPI_exec</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN33218"
+></A
+><H2
+>Name</H2
+>SPI_exec&nbsp;--&nbsp;execute a read/write command</DIV
+><A
+NAME="AEN33221"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN33223"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>int SPI_exec(const char * <TT
+CLASS="PARAMETER"
+>command</TT
+>, int <TT
+CLASS="PARAMETER"
+>count</TT
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33227"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_exec</CODE
+> is the same as
+   <CODE
+CLASS="FUNCTION"
+>SPI_execute</CODE
+>, with the latter's
+   <TT
+CLASS="PARAMETER"
+>read_only</TT
+> parameter always taken as
+   <TT
+CLASS="LITERAL"
+>false</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33234"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>const char * <TT
+CLASS="PARAMETER"
+>command</TT
+></TT
+></DT
+><DD
+><P
+>      string containing command to execute
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>int <TT
+CLASS="PARAMETER"
+>count</TT
+></TT
+></DT
+><DD
+><P
+>      maximum number of rows to process or return
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33249"
+></A
+><H2
+>Return Value</H2
+><P
+>   See <CODE
+CLASS="FUNCTION"
+>SPI_execute</CODE
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-execute.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-prepare.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_execute</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_prepare</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

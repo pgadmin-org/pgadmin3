@@ -1,160 +1,575 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>8.12. Object Identifier Types</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="previous" href="rowtypes.html" title="8.11. Composite Types">
-<link rel="next" href="datatype-pseudo.html" title="8.13. Pseudo-Types">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="datatype-oid"></a>8.12. Object Identifier Types</h2></div></div>
-<div></div>
-</div>
-<a name="id2539006"></a><a name="id2539017"></a><a name="id2539027"></a><a name="id2539036"></a><a name="id2539045"></a><a name="id2539054"></a><a name="id2539064"></a><a name="id2539073"></a><a name="id2539082"></a><a name="id2539091"></a><a name="id2539100"></a><p>    Object identifiers (OIDs) are used internally by
-    <span class="productname">PostgreSQL</span> as primary keys for various
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Object Identifier Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="PREVIOUS"
+TITLE="Composite Types"
+HREF="rowtypes.html"><LINK
+REL="NEXT"
+TITLE="Pseudo-Types"
+HREF="datatype-pseudo.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rowtypes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Data Types</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-pseudo.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-OID"
+>8.12. Object Identifier Types</A
+></H1
+><A
+NAME="AEN5524"
+></A
+><A
+NAME="AEN5527"
+></A
+><A
+NAME="AEN5529"
+></A
+><A
+NAME="AEN5531"
+></A
+><A
+NAME="AEN5533"
+></A
+><A
+NAME="AEN5535"
+></A
+><A
+NAME="AEN5537"
+></A
+><A
+NAME="AEN5539"
+></A
+><A
+NAME="AEN5541"
+></A
+><A
+NAME="AEN5543"
+></A
+><A
+NAME="AEN5545"
+></A
+><P
+>    Object identifiers (OIDs) are used internally by
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> as primary keys for various
     system tables.  An OID system column is also added to user-created
-    tables, unless <tt class="literal">WITHOUT OIDS</tt> is specified when
-    the table is created, or the <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a>
-    configuration variable is set to false.  Type <tt class="type">oid</tt>
+    tables, unless <TT
+CLASS="LITERAL"
+>WITHOUT OIDS</TT
+> is specified when
+    the table is created, or the <A
+HREF="runtime-config.html#GUC-DEFAULT-WITH-OIDS"
+>default_with_oids</A
+>
+    configuration variable is set to false.  Type <TT
+CLASS="TYPE"
+>oid</TT
+>
     represents an object identifier.  There are also several alias
-    types for <tt class="type">oid</tt>: <tt class="type">regproc</tt>, <tt class="type">regprocedure</tt>,
-    <tt class="type">regoper</tt>, <tt class="type">regoperator</tt>, <tt class="type">regclass</tt>, and
-    <tt class="type">regtype</tt>. <a href="datatype-oid.html#datatype-oid-table" title="Table 8.19. Object Identifier Types">Table 8.19, &#8220;Object Identifier Types&#8221;</a> shows an
+    types for <TT
+CLASS="TYPE"
+>oid</TT
+>: <TT
+CLASS="TYPE"
+>regproc</TT
+>, <TT
+CLASS="TYPE"
+>regprocedure</TT
+>,
+    <TT
+CLASS="TYPE"
+>regoper</TT
+>, <TT
+CLASS="TYPE"
+>regoperator</TT
+>, <TT
+CLASS="TYPE"
+>regclass</TT
+>, and
+    <TT
+CLASS="TYPE"
+>regtype</TT
+>. <A
+HREF="datatype-oid.html#DATATYPE-OID-TABLE"
+>Table 8-19</A
+> shows an
     overview.
-   </p>
-<p>    The <tt class="type">oid</tt> type is currently implemented as an unsigned
+   </P
+><P
+>    The <TT
+CLASS="TYPE"
+>oid</TT
+> type is currently implemented as an unsigned
     four-byte integer.  Therefore, it is not large enough to provide
     database-wide uniqueness in large databases, or even in large
     individual tables.  So, using a user-created table's OID column as
     a primary key is discouraged.  OIDs are best used only for
     references to system tables.
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     OIDs are included by default in user-created tables in
-     <span class="productname">PostgreSQL</span> 8.0.0beta2. However, this
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     OIDs are included by default in user-created tables in
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0.0beta3. However, this
      behavior is likely to change in a future version of
-     <span class="productname">PostgreSQL</span>. Eventually, user-created
-     tables will not include an OID system column unless <tt class="literal">WITH
-     OIDS</tt> is specified when the table is created, or the
-     <tt class="varname">default_with_oids</tt> configuration variable is set
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. Eventually, user-created
+     tables will not include an OID system column unless <TT
+CLASS="LITERAL"
+>WITH
+     OIDS</TT
+> is specified when the table is created, or the
+     <TT
+CLASS="VARNAME"
+>default_with_oids</TT
+> configuration variable is set
      to true. If your application requires the presence of an OID
-     system column in a table, it should specify <tt class="literal">WITH
-     OIDS</tt> when that table is created to ensure compatibility
-     with future releases of <span class="productname">PostgreSQL</span>.
-    </p>
-</div>
-<p>    The <tt class="type">oid</tt> type itself has few operations beyond comparison.
+     system column in a table, it should specify <TT
+CLASS="LITERAL"
+>WITH
+     OIDS</TT
+> when that table is created to ensure compatibility
+     with future releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    The <TT
+CLASS="TYPE"
+>oid</TT
+> type itself has few operations beyond comparison.
     It can be cast to
     integer, however, and then manipulated using the standard integer
     operators.  (Beware of possible signed-versus-unsigned confusion
     if you do this.)
-   </p>
-<p>    The OID alias types have no operations of their own except
+   </P
+><P
+>    The OID alias types have no operations of their own except
     for specialized input and output routines.  These routines are able
     to accept and display symbolic names for system objects, rather than
-    the raw numeric value that type <tt class="type">oid</tt> would use.  The alias
+    the raw numeric value that type <TT
+CLASS="TYPE"
+>oid</TT
+> would use.  The alias
     types allow simplified lookup of OID values for objects: for example,
-    one may write <tt class="literal">'mytable'::regclass</tt> to get the OID of table
-    <tt class="literal">mytable</tt>, rather than <tt class="literal">SELECT oid FROM pg_class WHERE
-    relname = 'mytable'</tt>.  (In reality, a much more complicated <tt class="command">SELECT</tt> would
+    one may write <TT
+CLASS="LITERAL"
+>'mytable'::regclass</TT
+> to get the OID of table
+    <TT
+CLASS="LITERAL"
+>mytable</TT
+>, rather than <TT
+CLASS="LITERAL"
+>SELECT oid FROM pg_class WHERE
+    relname = 'mytable'</TT
+>.  (In reality, a much more complicated <TT
+CLASS="COMMAND"
+>SELECT</TT
+> would
     be needed to deal with selecting the right OID when there are multiple
-    tables named <tt class="literal">mytable</tt> in different schemas.)
-   </p>
-<div class="table">
-<a name="datatype-oid-table"></a><p class="title"><b>Table 8.19. Object Identifier Types</b></p>
-<table summary="Object Identifier Types" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>References</th>
-<th>Description</th>
-<th>Value Example</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="type">oid</tt></td>
-<td>any</td>
-<td>numeric object identifier</td>
-<td><tt class="literal">564182</tt></td>
-</tr>
-<tr>
-<td><tt class="type">regproc</tt></td>
-<td><tt class="structname">pg_proc</tt></td>
-<td>function name</td>
-<td><tt class="literal">sum</tt></td>
-</tr>
-<tr>
-<td><tt class="type">regprocedure</tt></td>
-<td><tt class="structname">pg_proc</tt></td>
-<td>function with argument types</td>
-<td><tt class="literal">sum(int4)</tt></td>
-</tr>
-<tr>
-<td><tt class="type">regoper</tt></td>
-<td><tt class="structname">pg_operator</tt></td>
-<td>operator name</td>
-<td><tt class="literal">+</tt></td>
-</tr>
-<tr>
-<td><tt class="type">regoperator</tt></td>
-<td><tt class="structname">pg_operator</tt></td>
-<td>operator with argument types</td>
-<td>
-<tt class="literal">*(integer,integer)</tt> or <tt class="literal">-(NONE,integer)</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="type">regclass</tt></td>
-<td><tt class="structname">pg_class</tt></td>
-<td>relation name</td>
-<td><tt class="literal">pg_type</tt></td>
-</tr>
-<tr>
-<td><tt class="type">regtype</tt></td>
-<td><tt class="structname">pg_type</tt></td>
-<td>data type name</td>
-<td><tt class="literal">integer</tt></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>    All of the OID alias types accept schema-qualified names, and will
+    tables named <TT
+CLASS="LITERAL"
+>mytable</TT
+> in different schemas.)
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-OID-TABLE"
+></A
+><P
+><B
+>Table 8-19. Object Identifier Types</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+><TH
+>Value Example</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+>any</TD
+><TD
+>numeric object identifier</TD
+><TD
+><TT
+CLASS="LITERAL"
+>564182</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></TD
+><TD
+>function name</TD
+><TD
+><TT
+CLASS="LITERAL"
+>sum</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>regprocedure</TT
+></TD
+><TD
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></TD
+><TD
+>function with argument types</TD
+><TD
+><TT
+CLASS="LITERAL"
+>sum(int4)</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>regoper</TT
+></TD
+><TD
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
+><TD
+>operator name</TD
+><TD
+><TT
+CLASS="LITERAL"
+>+</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>regoperator</TT
+></TD
+><TD
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
+><TD
+>operator with argument types</TD
+><TD
+><TT
+CLASS="LITERAL"
+>*(integer,integer)</TT
+> or <TT
+CLASS="LITERAL"
+>-(NONE,integer)</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>regclass</TT
+></TD
+><TD
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></TD
+><TD
+>relation name</TD
+><TD
+><TT
+CLASS="LITERAL"
+>pg_type</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>regtype</TT
+></TD
+><TD
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></TD
+><TD
+>data type name</TD
+><TD
+><TT
+CLASS="LITERAL"
+>integer</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    All of the OID alias types accept schema-qualified names, and will
     display schema-qualified names on output if the object would not
     be found in the current search path without being qualified.
-    The <tt class="type">regproc</tt> and <tt class="type">regoper</tt> alias types will only
+    The <TT
+CLASS="TYPE"
+>regproc</TT
+> and <TT
+CLASS="TYPE"
+>regoper</TT
+> alias types will only
     accept input names that are unique (not overloaded), so they are
-    of limited use; for most uses <tt class="type">regprocedure</tt> or
-    <tt class="type">regoperator</tt> is more appropriate.  For <tt class="type">regoperator</tt>,
-    unary operators are identified by writing <tt class="literal">NONE</tt> for the unused
+    of limited use; for most uses <TT
+CLASS="TYPE"
+>regprocedure</TT
+> or
+    <TT
+CLASS="TYPE"
+>regoperator</TT
+> is more appropriate.  For <TT
+CLASS="TYPE"
+>regoperator</TT
+>,
+    unary operators are identified by writing <TT
+CLASS="LITERAL"
+>NONE</TT
+> for the unused
     operand.
-   </p>
-<p>    Another identifier type used by the system is <tt class="type">xid</tt>, or transaction
-    (abbreviated <span class="abbrev">xact</span>) identifier.  This is the data type of the system columns
-    <tt class="structfield">xmin</tt> and <tt class="structfield">xmax</tt>.  Transaction identifiers are 32-bit quantities.
-   </p>
-<p>    A third identifier type used by the system is <tt class="type">cid</tt>, or
+   </P
+><P
+>    Another identifier type used by the system is <TT
+CLASS="TYPE"
+>xid</TT
+>, or transaction
+    (abbreviated <ABBR
+CLASS="ABBREV"
+>xact</ABBR
+>) identifier.  This is the data type of the system columns
+    <TT
+CLASS="STRUCTFIELD"
+>xmin</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>xmax</TT
+>.  Transaction identifiers are 32-bit quantities.
+   </P
+><P
+>    A third identifier type used by the system is <TT
+CLASS="TYPE"
+>cid</TT
+>, or
     command identifier.  This is the data type of the system columns
-    <tt class="structfield">cmin</tt> and <tt class="structfield">cmax</tt>. Command identifiers are also 32-bit quantities.
-   </p>
-<p>    A final identifier type used by the system is <tt class="type">tid</tt>, or tuple
+    <TT
+CLASS="STRUCTFIELD"
+>cmin</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>cmax</TT
+>. Command identifiers are also 32-bit quantities.
+   </P
+><P
+>    A final identifier type used by the system is <TT
+CLASS="TYPE"
+>tid</TT
+>, or tuple
     identifier (row identifier).  This is the data type of the system column
-    <tt class="structfield">ctid</tt>.  A tuple ID is a pair
+    <TT
+CLASS="STRUCTFIELD"
+>ctid</TT
+>.  A tuple ID is a pair
     (block number, tuple index within block) that identifies the
     physical location of the row within its table.
-   </p>
-<p>    (The system columns are further explained in <a href="ddl-system-columns.html" title="5.2. System Columns">Section 5.2, &#8220;System Columns&#8221;</a>.)
-   </p>
-</div></body>
-</html>
+   </P
+><P
+>    (The system columns are further explained in <A
+HREF="ddl-system-columns.html"
+>Section 5.2</A
+>.)
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rowtypes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-pseudo.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Composite Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Pseudo-Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

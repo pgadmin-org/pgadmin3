@@ -1,22 +1,108 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>6.3. Deleting Data</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="dml.html" title="Chapter 6. Data Manipulation">
-<link rel="previous" href="dml-update.html" title="6.2. Updating Data">
-<link rel="next" href="queries.html" title="Chapter 7. Queries">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="dml-delete"></a>6.3. Deleting Data</h2></div></div>
-<div></div>
-</div>
-<a name="id2527322"></a><a name="id2527332"></a><p>   So far we have explained how to add data to tables and how to
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Deleting Data</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Manipulation"
+HREF="dml.html"><LINK
+REL="PREVIOUS"
+TITLE="Updating Data"
+HREF="dml-update.html"><LINK
+REL="NEXT"
+TITLE="Queries"
+HREF="queries.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dml-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dml.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Data Manipulation</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="dml.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DML-DELETE"
+>6.3. Deleting Data</A
+></H1
+><A
+NAME="AEN2603"
+></A
+><A
+NAME="AEN2605"
+></A
+><P
+>   So far we have explained how to add data to tables and how to
    change data.  What remains is to discuss how to remove data that is
    no longer needed.  Just as adding data is only possible in whole
    rows, you can only remove entire rows from a table.  In the
@@ -27,19 +113,93 @@
    specify the exact row.  But you can also remove groups of rows
    matching a condition, or you can remove all rows in the table at
    once.
-  </p>
-<p>   You use the <tt class="literal">DELETE</tt> command to remove rows; the
-   syntax is very similar to the <tt class="literal">UPDATE</tt> command.
+  </P
+><P
+>   You use the <TT
+CLASS="LITERAL"
+>DELETE</TT
+> command to remove rows; the
+   syntax is very similar to the <TT
+CLASS="LITERAL"
+>UPDATE</TT
+> command.
    For instance, to remove all rows from the products table that have a price of 10, use
-</p>
-<pre class="programlisting">DELETE FROM products WHERE price = 10;</pre>
-<p>
-  </p>
-<p>   If you simply write
-</p>
-<pre class="programlisting">DELETE FROM products;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM products WHERE price = 10;</PRE
+><P>
+  </P
+><P
+>   If you simply write
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM products;</PRE
+><P>
    then all rows in the table will be deleted!  Caveat programmer.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dml-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Updating Data</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="dml.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Queries</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

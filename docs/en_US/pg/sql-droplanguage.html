@@ -1,71 +1,310 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>DROP LANGUAGE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-dropindex.html" title="DROP INDEX">
-<link rel="next" href="sql-dropoperator.html" title="DROP OPERATOR">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-droplanguage"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>DROP LANGUAGE &#8212; remove a procedural language</p>
-</div>
-<a name="id2681625"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">DROP [ PROCEDURAL ] LANGUAGE <i class="replaceable"><tt>name</tt></i> [ CASCADE | RESTRICT ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2681647"></a><h2>Description</h2>
-<p>   <tt class="command">DROP LANGUAGE</tt> will remove the definition
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>DROP LANGUAGE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP INDEX"
+HREF="sql-dropindex.html"><LINK
+REL="NEXT"
+TITLE="DROP OPERATOR"
+HREF="sql-dropoperator.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropindex.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropoperator.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropoperator.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPLANGUAGE"
+></A
+>DROP LANGUAGE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN40534"
+></A
+><H2
+>Name</H2
+>DROP LANGUAGE&nbsp;--&nbsp;remove a procedural language</DIV
+><A
+NAME="AEN40537"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN40539"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP [ PROCEDURAL ] LANGUAGE <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> [ CASCADE | RESTRICT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40542"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP LANGUAGE</TT
+> will remove the definition
    of the previously registered procedural language called
-   <i class="replaceable"><tt>name</tt></i>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2681666"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>      The name of an existing procedural language.  For backward
+   <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40547"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name of an existing procedural language.  For backward
       compatibility, the name may be enclosed by single quotes.
-     </p></dd>
-<dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
-<dd><p>      Automatically drop objects that depend on the language (such as
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the language (such as
       functions in the language).
-     </p></dd>
-<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
-<dd><p>      Refuse to drop the language if any objects depend on it.  This
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>      Refuse to drop the language if any objects depend on it.  This
       is the default.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2681707"></a><h2>Examples</h2>
-<p>   This command removes the procedural language
-   <tt class="literal">plsample</tt>:
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40565"
+></A
+><H2
+>Examples</H2
+><P
+>   This command removes the procedural language
+   <TT
+CLASS="LITERAL"
+>plsample</TT
+>:
 
-</p>
-<pre class="programlisting">DROP LANGUAGE plsample;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2681725"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">DROP LANGUAGE</tt> statement in the SQL
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP LANGUAGE plsample;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40570"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>DROP LANGUAGE</TT
+> statement in the SQL
    standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2681738"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterlanguage.html">ALTER LANGUAGE</a>, <a href="sql-createlanguage.html">CREATE LANGUAGE</a>, <a href="app-droplang.html" title="droplang"><span class="refentrytitle"><a name="app-droplang-title"></a><span class="application">droplang</span></span></a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40574"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alterlanguage.html"
+><I
+>ALTER LANGUAGE</I
+></A
+>, <A
+HREF="sql-createlanguage.html"
+><I
+>CREATE LANGUAGE</I
+></A
+>, <A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropoperator.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP INDEX</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP OPERATOR</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

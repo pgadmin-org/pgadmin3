@@ -1,62 +1,267 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 5. Data Definition</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql.html" title="Part II. The SQL Language">
-<link rel="previous" href="sql-expressions.html" title="4.2. Value Expressions">
-<link rel="next" href="ddl-system-columns.html" title="5.2. System Columns">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="ddl">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="ddl"></a>Chapter 5. Data Definition</h2></div></div>
-<div></div>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="ddl.html#ddl-basics">5.1. Table Basics</a></span></dt>
-<dt><span class="sect1"><a href="ddl-system-columns.html">5.2. System Columns</a></span></dt>
-<dt><span class="sect1"><a href="ddl-default.html">5.3. Default Values</a></span></dt>
-<dt><span class="sect1"><a href="ddl-constraints.html">5.4. Constraints</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524222">5.4.1. Check Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524385">5.4.2. Not-Null Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524515">5.4.3. Unique Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524614">5.4.4. Primary Keys</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#ddl-constraints-fk">5.4.5. Foreign Keys</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="ddl-inherit.html">5.5. Inheritance</a></span></dt>
-<dt><span class="sect1"><a href="ddl-alter.html">5.6. Modifying Tables</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525401">5.6.1. Adding a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525443">5.6.2. Removing a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525464">5.6.3. Adding a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525506">5.6.4. Removing a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525567">5.6.5. Changing the Default</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525606">5.6.6. Renaming a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525627">5.6.7. Renaming a Table</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="ddl-priv.html">5.7. Privileges</a></span></dt>
-<dt><span class="sect1"><a href="ddl-schemas.html">5.8. Schemas</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-create">5.8.1. Creating a Schema</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-public">5.8.2. The Public Schema</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-path">5.8.3. The Schema Search Path</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-priv">5.8.4. Schemas and Privileges</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-catalog">5.8.5. The System Catalog Schema</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-patterns">5.8.6. Usage Patterns</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-portability">5.8.7. Portability</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="ddl-others.html">5.9. Other Database Objects</a></span></dt>
-<dt><span class="sect1"><a href="ddl-depend.html">5.10. Dependency Tracking</a></span></dt>
-</dl>
-</div>
-<p>  This chapter covers how one creates the database structures that
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Data Definition</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
+REL="PREVIOUS"
+TITLE="Value Expressions"
+HREF="sql-expressions.html"><LINK
+REL="NEXT"
+TITLE="System Columns"
+HREF="ddl-system-columns.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-expressions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="dml.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-system-columns.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DDL"
+></A
+>Chapter 5. Data Definition</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>5.1. <A
+HREF="ddl.html#DDL-BASICS"
+>Table Basics</A
+></DT
+><DT
+>5.2. <A
+HREF="ddl-system-columns.html"
+>System Columns</A
+></DT
+><DT
+>5.3. <A
+HREF="ddl-default.html"
+>Default Values</A
+></DT
+><DT
+>5.4. <A
+HREF="ddl-constraints.html"
+>Constraints</A
+></DT
+><DD
+><DL
+><DT
+>5.4.1. <A
+HREF="ddl-constraints.html#AEN1978"
+>Check Constraints</A
+></DT
+><DT
+>5.4.2. <A
+HREF="ddl-constraints.html#AEN2007"
+>Not-Null Constraints</A
+></DT
+><DT
+>5.4.3. <A
+HREF="ddl-constraints.html#AEN2033"
+>Unique Constraints</A
+></DT
+><DT
+>5.4.4. <A
+HREF="ddl-constraints.html#AEN2055"
+>Primary Keys</A
+></DT
+><DT
+>5.4.5. <A
+HREF="ddl-constraints.html#DDL-CONSTRAINTS-FK"
+>Foreign Keys</A
+></DT
+></DL
+></DD
+><DT
+>5.5. <A
+HREF="ddl-inherit.html"
+>Inheritance</A
+></DT
+><DT
+>5.6. <A
+HREF="ddl-alter.html"
+>Modifying Tables</A
+></DT
+><DD
+><DL
+><DT
+>5.6.1. <A
+HREF="ddl-alter.html#AEN2217"
+>Adding a Column</A
+></DT
+><DT
+>5.6.2. <A
+HREF="ddl-alter.html#AEN2226"
+>Removing a Column</A
+></DT
+><DT
+>5.6.3. <A
+HREF="ddl-alter.html#AEN2233"
+>Adding a Constraint</A
+></DT
+><DT
+>5.6.4. <A
+HREF="ddl-alter.html#AEN2242"
+>Removing a Constraint</A
+></DT
+><DT
+>5.6.5. <A
+HREF="ddl-alter.html#AEN2255"
+>Changing the Default</A
+></DT
+><DT
+>5.6.6. <A
+HREF="ddl-alter.html#AEN2264"
+>Renaming a Column</A
+></DT
+><DT
+>5.6.7. <A
+HREF="ddl-alter.html#AEN2271"
+>Renaming a Table</A
+></DT
+></DL
+></DD
+><DT
+>5.7. <A
+HREF="ddl-priv.html"
+>Privileges</A
+></DT
+><DT
+>5.8. <A
+HREF="ddl-schemas.html"
+>Schemas</A
+></DT
+><DD
+><DL
+><DT
+>5.8.1. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-CREATE"
+>Creating a Schema</A
+></DT
+><DT
+>5.8.2. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PUBLIC"
+>The Public Schema</A
+></DT
+><DT
+>5.8.3. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PATH"
+>The Schema Search Path</A
+></DT
+><DT
+>5.8.4. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PRIV"
+>Schemas and Privileges</A
+></DT
+><DT
+>5.8.5. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-CATALOG"
+>The System Catalog Schema</A
+></DT
+><DT
+>5.8.6. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PATTERNS"
+>Usage Patterns</A
+></DT
+><DT
+>5.8.7. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PORTABILITY"
+>Portability</A
+></DT
+></DL
+></DD
+><DT
+>5.9. <A
+HREF="ddl-others.html"
+>Other Database Objects</A
+></DT
+><DT
+>5.10. <A
+HREF="ddl-depend.html"
+>Dependency Tracking</A
+></DT
+></DL
+></DIV
+><P
+>  This chapter covers how one creates the database structures that
   will hold one's data.  In a relational database, the raw data is
   stored in tables, so the majority of this chapter is devoted to
   explaining how tables are created and modified and what features are
@@ -65,26 +270,42 @@
   schemas, and how privileges can be assigned to tables.  Finally,
   we will briefly look at other features that affect the data storage,
   such as views, functions, and triggers.
- </p>
-<div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ddl-basics"></a>5.1. Table Basics</h2></div></div>
-<div></div>
-</div>
-<a name="id2523583"></a><a name="id2523592"></a><a name="id2523598"></a><p>   A table in a relational database is much like a table on paper: It
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DDL-BASICS"
+>5.1. Table Basics</A
+></H1
+><A
+NAME="AEN1825"
+></A
+><A
+NAME="AEN1827"
+></A
+><A
+NAME="AEN1829"
+></A
+><P
+>   A table in a relational database is much like a table on paper: It
    consists of rows and columns.  The number and order of the columns
    is fixed, and each column has a name.  The number of rows is
    variable -- it reflects how much data is stored at a given moment.
    SQL does not make any guarantees about the order of the rows in a
    table.  When a table is read, the rows will appear in random order,
-   unless sorting is explicitly requested.  This is covered in <a href="queries.html" title="Chapter 7. Queries">Chapter 7, <i>Queries</i></a>.  Furthermore, SQL does not assign unique
+   unless sorting is explicitly requested.  This is covered in <A
+HREF="queries.html"
+>Chapter 7</A
+>.  Furthermore, SQL does not assign unique
    identifiers to rows, so it is possible to have several completely
    identical rows in a table.  This is a consequence of the
    mathematical model that underlies SQL but is usually not desirable.
    Later in this chapter we will see how to deal with this issue.
-  </p>
-<p>   Each column has a data type.  The data type constrains the set of
+  </P
+><P
+>   Each column has a data type.  The data type constrains the set of
    possible values that can be assigned to a column and assigns
    semantics to the data stored in the column so that it can be used
    for computations.  For instance, a column declared to be of a
@@ -94,84 +315,227 @@
    will accept almost any kind of data but it does not lend itself to
    mathematical calculations, although other operations such as string
    concatenation are available.
-  </p>
-<p>   <span class="productname">PostgreSQL</span> includes a sizable set of
+  </P
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> includes a sizable set of
    built-in data types that fit many applications.  Users can also
    define their own data types.  Most built-in data types have obvious
-   names and semantics, so we defer a detailed explanation to <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a>.  Some of the frequently used data types are
-   <tt class="type">integer</tt> for whole numbers, <tt class="type">numeric</tt> for
-   possibly fractional numbers, <tt class="type">text</tt> for character
-   strings, <tt class="type">date</tt> for dates, <tt class="type">time</tt> for
-   time-of-day values, and <tt class="type">timestamp</tt> for values
+   names and semantics, so we defer a detailed explanation to <A
+HREF="datatype.html"
+>Chapter 8</A
+>.  Some of the frequently used data types are
+   <TT
+CLASS="TYPE"
+>integer</TT
+> for whole numbers, <TT
+CLASS="TYPE"
+>numeric</TT
+> for
+   possibly fractional numbers, <TT
+CLASS="TYPE"
+>text</TT
+> for character
+   strings, <TT
+CLASS="TYPE"
+>date</TT
+> for dates, <TT
+CLASS="TYPE"
+>time</TT
+> for
+   time-of-day values, and <TT
+CLASS="TYPE"
+>timestamp</TT
+> for values
    containing both date and time.
-  </p>
-<a name="id2523681"></a><p>   To create a table, you use the aptly named <tt class="command">CREATE
-   TABLE</tt> command.  In this command you specify at least a
+  </P
+><A
+NAME="AEN1843"
+></A
+><P
+>   To create a table, you use the aptly named <TT
+CLASS="COMMAND"
+>CREATE
+   TABLE</TT
+> command.  In this command you specify at least a
    name for the new table, the names of the columns and the data type
    of each column.  For example:
-</p>
-<pre class="programlisting">CREATE TABLE my_first_table (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE my_first_table (
     first_column text,
     second_column integer
-);</pre>
-<p>
-   This creates a table named <tt class="literal">my_first_table</tt> with
+);</PRE
+><P>
+   This creates a table named <TT
+CLASS="LITERAL"
+>my_first_table</TT
+> with
    two columns.  The first column is named
-   <tt class="literal">first_column</tt> and has a data type of
-   <tt class="type">text</tt>; the second column has the name
-   <tt class="literal">second_column</tt> and the type <tt class="type">integer</tt>.
+   <TT
+CLASS="LITERAL"
+>first_column</TT
+> and has a data type of
+   <TT
+CLASS="TYPE"
+>text</TT
+>; the second column has the name
+   <TT
+CLASS="LITERAL"
+>second_column</TT
+> and the type <TT
+CLASS="TYPE"
+>integer</TT
+>.
    The table and column names follow the identifier syntax explained
-   in <a href="sql-syntax.html#sql-syntax-identifiers" title="4.1.1. Identifiers and Key Words">Section 4.1.1, &#8220;Identifiers and Key Words&#8221;</a>.  The type names are
+   in <A
+HREF="sql-syntax.html#SQL-SYNTAX-IDENTIFIERS"
+>Section 4.1.1</A
+>.  The type names are
    usually also identifiers, but there are some exceptions.  Note that the
    column list is comma-separated and surrounded by parentheses.
-  </p>
-<p>   Of course, the previous example was heavily contrived.  Normally,
+  </P
+><P
+>   Of course, the previous example was heavily contrived.  Normally,
    you would give names to your tables and columns that convey what
    kind of data they store.  So let's look at a more realistic
    example:
-</p>
-<pre class="programlisting">CREATE TABLE products (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE products (
     product_no integer,
     name text,
     price numeric
-);</pre>
-<p>
-   (The <tt class="type">numeric</tt> type can store fractional components, as
+);</PRE
+><P>
+   (The <TT
+CLASS="TYPE"
+>numeric</TT
+> type can store fractional components, as
    would be typical of monetary amounts.)
-  </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>    When you create many interrelated tables it is wise to choose a
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>    When you create many interrelated tables it is wise to choose a
     consistent naming pattern for the tables and columns.  For
     instance, there is a choice of using singular or plural nouns for
     table names, both of which are favored by some theorist or other.
-   </p>
-</div>
-<p>   There is a limit on how many columns a table can contain.
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   There is a limit on how many columns a table can contain.
    Depending on the column types, it is between 250 and 1600.
    However, defining a table with anywhere near this many columns is
    highly unusual and often a questionable design.
-  </p>
-<a name="id2523779"></a><p>   If you no longer need a table, you can remove it using the
-   <tt class="command">DROP TABLE</tt> command.  For example:
-</p>
-<pre class="programlisting">DROP TABLE my_first_table;
-DROP TABLE products;</pre>
-<p>
+  </P
+><A
+NAME="AEN1861"
+></A
+><P
+>   If you no longer need a table, you can remove it using the
+   <TT
+CLASS="COMMAND"
+>DROP TABLE</TT
+> command.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP TABLE my_first_table;
+DROP TABLE products;</PRE
+><P>
    Attempting to drop a table that does not exist is an error.
    Nevertheless, it is common in SQL script files to unconditionally
    try to drop each table before creating it, ignoring the error
    messages.
-  </p>
-<p>   If you need to modify a table that already exists look into <a href="ddl-alter.html" title="5.6. Modifying Tables">Section 5.6, &#8220;Modifying Tables&#8221;</a> later in this chapter.
-  </p>
-<p>   With the tools discussed so far you can create fully functional
+  </P
+><P
+>   If you need to modify a table that already exists look into <A
+HREF="ddl-alter.html"
+>Section 5.6</A
+> later in this chapter.
+  </P
+><P
+>   With the tools discussed so far you can create fully functional
    tables.  The remainder of this chapter is concerned with adding
    features to the table definition to ensure data integrity,
    security, or convenience.  If you are eager to fill your tables with
-   data now you can skip ahead to <a href="dml.html" title="Chapter 6. Data Manipulation">Chapter 6, <i>Data Manipulation</i></a> and read the
+   data now you can skip ahead to <A
+HREF="dml.html"
+>Chapter 6</A
+> and read the
    rest of this chapter later.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-expressions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-system-columns.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Value Expressions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>System Columns</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

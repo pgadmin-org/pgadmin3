@@ -1,77 +1,340 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Part I. Tutorial</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="previous" href="bug-reporting.html" title="1.5. Bug Reporting Guidelines">
-<link rel="next" href="tutorial-start.html" title="Chapter 1. Getting Started">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="tutorial">
-<div class="titlepage">
-<div><div><h1 class="title">
-<a name="tutorial"></a>Tutorial</h1></div></div>
-<div></div>
-</div>
-<div class="partintro" lang="en" id="id2516421">
-<div>
-<div></div>
-<div></div>
-</div>
-<p>    Welcome to the <span class="productname">PostgreSQL</span> Tutorial.  The
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Tutorial</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Bug Reporting Guidelines"
+HREF="bug-reporting.html"><LINK
+REL="NEXT"
+TITLE="Getting Started"
+HREF="tutorial-start.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="PART"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="bug-reporting.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="preface.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-start.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
+><A
+NAME="TUTORIAL"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>I. Tutorial</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN377"
+></A
+><P
+>    Welcome to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Tutorial.  The
     following few chapters are intended to give a simple introduction
-    to <span class="productname">PostgreSQL</span>, relational database
+    to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, relational database
     concepts, and the SQL language to those who are new to any one of
     these aspects.  We only assume some general knowledge about how to
     use computers.  No particular Unix or programming experience is
     required.  This part is mainly intended to give you some hands-on
     experience with important aspects of the
-    <span class="productname">PostgreSQL</span> system.  It makes no attempt
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> system.  It makes no attempt
     to be a complete or thorough treatment of the topics it covers.
-   </p>
-<p>    After you have worked through this tutorial you might want to move
-    on to reading <a href="sql.html" title="Part II. The SQL Language">Part II, &#8220;The SQL Language&#8221;</a> to gain a more formal knowledge
-    of the SQL language, or <a href="client-interfaces.html" title="Part IV. Client Interfaces">Part IV, &#8220;Client Interfaces&#8221;</a> for
+   </P
+><P
+>    After you have worked through this tutorial you might want to move
+    on to reading <A
+HREF="sql.html"
+>Part II</A
+> to gain a more formal knowledge
+    of the SQL language, or <A
+HREF="client-interfaces.html"
+>Part IV</A
+> for
     information about developing applications for
-    <span class="productname">PostgreSQL</span>.  Those who set up and
-    manage their own server should also read <a href="admin.html" title="Part III. Server Administration">Part III, &#8220;Server Administration&#8221;</a>.
-   </p>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="chapter"><a href="tutorial-start.html">1. Getting Started</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="tutorial-start.html#tutorial-install">1.1. Installation</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-arch.html">1.2. Architectural Fundamentals</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-createdb.html">1.3. Creating a Database</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-accessdb.html">1.4. Accessing a Database</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="tutorial-sql.html">2. The SQL Language</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="tutorial-sql.html#tutorial-sql-intro">2.1. Introduction</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-concepts.html">2.2. Concepts</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-table.html">2.3. Creating a New Table</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-populate.html">2.4. Populating a Table With Rows</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-select.html">2.5. Querying a Table</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-join.html">2.6. Joins Between Tables</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-agg.html">2.7. Aggregate Functions</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-update.html">2.8. Updates</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-delete.html">2.9. Deletions</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="tutorial-advanced.html">3. Advanced Features</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="tutorial-advanced.html#tutorial-advanced-intro">3.1. Introduction</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-views.html">3.2. Views</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-fk.html">3.3. Foreign Keys</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-transactions.html">3.4. Transactions</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-inheritance.html">3.5. Inheritance</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-conclusion.html">3.6. Conclusion</a></span></dt>
-</dl></dd>
-</dl>
-</div>
-</div>
-</div></body>
-</html>
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  Those who set up and
+    manage their own server should also read <A
+HREF="admin.html"
+>Part III</A
+>.
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>1. <A
+HREF="tutorial-start.html"
+>Getting Started</A
+></DT
+><DD
+><DL
+><DT
+>1.1. <A
+HREF="tutorial-start.html#TUTORIAL-INSTALL"
+>Installation</A
+></DT
+><DT
+>1.2. <A
+HREF="tutorial-arch.html"
+>Architectural Fundamentals</A
+></DT
+><DT
+>1.3. <A
+HREF="tutorial-createdb.html"
+>Creating a Database</A
+></DT
+><DT
+>1.4. <A
+HREF="tutorial-accessdb.html"
+>Accessing a Database</A
+></DT
+></DL
+></DD
+><DT
+>2. <A
+HREF="tutorial-sql.html"
+>The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Language</A
+></DT
+><DD
+><DL
+><DT
+>2.1. <A
+HREF="tutorial-sql.html#TUTORIAL-SQL-INTRO"
+>Introduction</A
+></DT
+><DT
+>2.2. <A
+HREF="tutorial-concepts.html"
+>Concepts</A
+></DT
+><DT
+>2.3. <A
+HREF="tutorial-table.html"
+>Creating a New Table</A
+></DT
+><DT
+>2.4. <A
+HREF="tutorial-populate.html"
+>Populating a Table With Rows</A
+></DT
+><DT
+>2.5. <A
+HREF="tutorial-select.html"
+>Querying a Table</A
+></DT
+><DT
+>2.6. <A
+HREF="tutorial-join.html"
+>Joins Between Tables</A
+></DT
+><DT
+>2.7. <A
+HREF="tutorial-agg.html"
+>Aggregate Functions</A
+></DT
+><DT
+>2.8. <A
+HREF="tutorial-update.html"
+>Updates</A
+></DT
+><DT
+>2.9. <A
+HREF="tutorial-delete.html"
+>Deletions</A
+></DT
+></DL
+></DD
+><DT
+>3. <A
+HREF="tutorial-advanced.html"
+>Advanced Features</A
+></DT
+><DD
+><DL
+><DT
+>3.1. <A
+HREF="tutorial-advanced.html#TUTORIAL-ADVANCED-INTRO"
+>Introduction</A
+></DT
+><DT
+>3.2. <A
+HREF="tutorial-views.html"
+>Views</A
+></DT
+><DT
+>3.3. <A
+HREF="tutorial-fk.html"
+>Foreign Keys</A
+></DT
+><DT
+>3.4. <A
+HREF="tutorial-transactions.html"
+>Transactions</A
+></DT
+><DT
+>3.5. <A
+HREF="tutorial-inheritance.html"
+>Inheritance</A
+></DT
+><DT
+>3.6. <A
+HREF="tutorial-conclusion.html"
+>Conclusion</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="bug-reporting.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-start.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Bug Reporting Guidelines</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Getting Started</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,92 +1,362 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>LISTEN</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-insert.html" title="INSERT">
-<link rel="next" href="sql-load.html" title="LOAD">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-listen"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>LISTEN &#8212; listen for a notification</p>
-</div>
-<a name="id2686815"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">LISTEN <i class="replaceable"><tt>name</tt></i></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2686836"></a><h2>Description</h2>
-<p>   <tt class="command">LISTEN</tt> registers the current session as a
-   listener on the notification condition <i class="replaceable"><tt>name</tt></i>.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>LISTEN</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="INSERT"
+HREF="sql-insert.html"><LINK
+REL="NEXT"
+TITLE="LOAD"
+HREF="sql-load.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-insert.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-insert.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-load.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-load.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-LISTEN"
+></A
+>LISTEN</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN41876"
+></A
+><H2
+>Name</H2
+>LISTEN&nbsp;--&nbsp;listen for a notification</DIV
+><A
+NAME="AEN41879"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN41881"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>LISTEN <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41884"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> registers the current session as a
+   listener on the notification condition <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>.
    If the current session is already registered as a listener for
    this notification condition, nothing is done.
-  </p>
-<p>   Whenever the command <tt class="command">NOTIFY <i class="replaceable"><tt>name</tt></i></tt> is invoked, either
+  </P
+><P
+>   Whenever the command <TT
+CLASS="COMMAND"
+>NOTIFY <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></TT
+> is invoked, either
    by this session or another one connected to the same database, all
    the sessions currently listening on that notification condition are
    notified, and each will in turn notify its connected client
-   application.  See the discussion of <tt class="command">NOTIFY</tt> for
+   application.  See the discussion of <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> for
    more information.
-  </p>
-<p>   A session can be unregistered for a given notify condition with the
-   <tt class="command">UNLISTEN</tt> command.  A session's listen
+  </P
+><P
+>   A session can be unregistered for a given notify condition with the
+   <TT
+CLASS="COMMAND"
+>UNLISTEN</TT
+> command.  A session's listen
    registrations are automatically cleared when the session ends.
-  </p>
-<p>   The method a client application must use to detect notification events depends on
-   which <span class="productname">PostgreSQL</span> application programming interface it
-   uses.  With the <span class="application">libpq</span> library, the application issues
-   <tt class="command">LISTEN</tt> as an ordinary SQL command, and then must
-   periodically call the function <tt class="function">PQnotifies</tt> to find out
+  </P
+><P
+>   The method a client application must use to detect notification events depends on
+   which <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> application programming interface it
+   uses.  With the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> library, the application issues
+   <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> as an ordinary SQL command, and then must
+   periodically call the function <CODE
+CLASS="FUNCTION"
+>PQnotifies</CODE
+> to find out
    whether any notification events have been received.  Other interfaces such as
-   <span class="application">libpgtcl</span> provide higher-level methods for handling notify events; indeed,
-   with <span class="application">libpgtcl</span> the application programmer should not even issue
-   <tt class="command">LISTEN</tt> or <tt class="command">UNLISTEN</tt> directly.  See the
+   <SPAN
+CLASS="APPLICATION"
+>libpgtcl</SPAN
+> provide higher-level methods for handling notify events; indeed,
+   with <SPAN
+CLASS="APPLICATION"
+>libpgtcl</SPAN
+> the application programmer should not even issue
+   <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> or <TT
+CLASS="COMMAND"
+>UNLISTEN</TT
+> directly.  See the
    documentation for the interface you are using for more details.
-  </p>
-<p>   <a href="sql-notify.html">NOTIFY</a>
+  </P
+><P
+>   <A
+HREF="sql-notify.html"
+><I
+>NOTIFY</I
+></A
+>
    contains a more extensive
-   discussion of the use of <tt class="command">LISTEN</tt> and
-   <tt class="command">NOTIFY</tt>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2686977"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>      Name of a notify condition (any identifier).
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2686993"></a><h2>Examples</h2>
-<p>   Configure and execute a listen/notify sequence from
-   <span class="application">psql</span>:
+   discussion of the use of <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> and
+   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41908"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      Name of a notify condition (any identifier).
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41916"
+></A
+><H2
+>Examples</H2
+><P
+>   Configure and execute a listen/notify sequence from
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>:
 
-</p>
-<pre class="programlisting">LISTEN virtual;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>LISTEN virtual;
 NOTIFY virtual;
-Asynchronous notification "virtual" received from server process with PID 8448.</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687013"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">LISTEN</tt> statement in the SQL
+Asynchronous notification "virtual" received from server process with PID 8448.</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41921"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> statement in the SQL
    standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687025"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-notify.html">NOTIFY</a>, <a href="sql-unlisten.html">UNLISTEN</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41925"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-notify.html"
+><I
+>NOTIFY</I
+></A
+>, <A
+HREF="sql-unlisten.html"
+><I
+>UNLISTEN</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-insert.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-load.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>INSERT</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>LOAD</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,70 +1,340 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>PostgreSQL Client Applications</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="reference.html" title="Part VI. Reference">
-<link rel="previous" href="sql-vacuum.html" title="VACUUM">
-<link rel="next" href="app-clusterdb.html" title="clusterdb">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="reference" lang="en">
-<a name="reference-client"></a><div class="titlepage">
-<div><div><h1 class="title">
-<a name="reference-client"></a>PostgreSQL Client Applications</h1></div></div>
-<div></div>
-<hr>
-</div>
-<div class="partintro" lang="en" id="id2698016">
-<div>
-<div></div>
-<div></div>
-</div>
-<p>    This part contains reference information for
-    <span class="productname">PostgreSQL</span> client applications and
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>PostgreSQL Client Applications</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Reference"
+HREF="reference.html"><LINK
+REL="PREVIOUS"
+TITLE="VACUUM"
+HREF="sql-vacuum.html"><LINK
+REL="NEXT"
+TITLE="clusterdb"
+HREF="app-clusterdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFERENCE"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-vacuum.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-clusterdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="REFERENCE"
+><A
+NAME="REFERENCE-CLIENT"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>II. PostgreSQL Client Applications</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN44196"
+></A
+><P
+>    This part contains reference information for
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> client applications and
     utilities.  Not all of these commands are of general utility, some
     may require special privileges.  The common feature of these
     applications is that they can be run on any host, independent of
     where the database server resides.
-   </p>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt>
-<a href="app-clusterdb.html">clusterdb</a> - cluster a PostgreSQL database</dt>
-<dt>
-<a href="app-createdb.html">createdb</a> - create a new PostgreSQL database</dt>
-<dt>
-<a href="app-createlang.html">createlang</a> - define a new PostgreSQL procedural language</dt>
-<dt>
-<a href="app-createuser.html">createuser</a> - define a new PostgreSQL user account</dt>
-<dt>
-<a href="app-dropdb.html">dropdb</a> - remove a PostgreSQL database</dt>
-<dt>
-<a href="app-droplang.html">droplang</a> - remove a PostgreSQL procedural language</dt>
-<dt>
-<a href="app-dropuser.html">dropuser</a> - remove a PostgreSQL user account</dt>
-<dt>
-<a href="app-ecpg.html">ecpg</a> - embedded SQL C preprocessor</dt>
-<dt>
-<a href="app-pgconfig.html">pg_config</a> - retrieve information about the installed version of PostgreSQL</dt>
-<dt>
-<a href="app-pgdump.html">pg_dump</a> -    extract a PostgreSQL database into a script file or other archive file 
-  </dt>
-<dt>
-<a href="app-pg-dumpall.html">pg_dumpall</a> - extract a PostgreSQL database cluster into a script file</dt>
-<dt>
-<a href="app-pgrestore.html">pg_restore</a> -    restore a PostgreSQL database from an archive file created by pg_dump
-  </dt>
-<dt>
-<a href="app-psql.html">psql</a> -       PostgreSQL interactive terminal
-    </dt>
-<dt>
-<a href="app-vacuumdb.html">vacuumdb</a> - garbage-collect and analyze a PostgreSQL database</dt>
-</dl>
-</div>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="app-clusterdb.html"
+><SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+></A
+>&nbsp;--&nbsp;cluster a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-createdb.html"
+><SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+></A
+>&nbsp;--&nbsp;create a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+>&nbsp;--&nbsp;define a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DT
+><DT
+><A
+HREF="app-createuser.html"
+><SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+></A
+>&nbsp;--&nbsp;define a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account</DT
+><DT
+><A
+HREF="app-dropdb.html"
+><SPAN
+CLASS="APPLICATION"
+>dropdb</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DT
+><DT
+><A
+HREF="app-dropuser.html"
+><SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account</DT
+><DT
+><A
+HREF="app-ecpg.html"
+><SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+></A
+>&nbsp;--&nbsp;embedded SQL C preprocessor</DT
+><DT
+><A
+HREF="app-pgconfig.html"
+>pg_config</A
+>&nbsp;--&nbsp;retrieve information about the installed version of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></DT
+><DT
+><A
+HREF="app-pgdump.html"
+>pg_dump</A
+>&nbsp;--&nbsp;   extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database into a script file or other archive file 
+  </DT
+><DT
+><A
+HREF="app-pg-dumpall.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+></A
+>&nbsp;--&nbsp;extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster into a script file</DT
+><DT
+><A
+HREF="app-pgrestore.html"
+>pg_restore</A
+>&nbsp;--&nbsp;   restore a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database from an archive file created by pg_dump
+  </DT
+><DT
+><A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>&nbsp;--&nbsp;      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+    </DT
+><DT
+><A
+HREF="app-vacuumdb.html"
+><SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+></A
+>&nbsp;--&nbsp;garbage-collect and analyze a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-vacuum.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-clusterdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>VACUUM</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

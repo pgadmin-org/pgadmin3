@@ -1,75 +1,334 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.13. Release 7.3.2</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="previous" href="release-7-3-3.html" title="E.12. Release 7.3.3">
-<link rel="next" href="release-7-3-1.html" title="E.14. Release 7.3.1">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="release-7-3-2"></a>E.13. Release 7.3.2</h2></div></div>
-<div></div>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Release date</h3>
-<p>2003-02-04</p>
-</div>
-<p>   This release contains a variety of fixes for version 7.3.1.
-  </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2760761"></a>E.13.1. Migration to version 7.3.2</h3></div></div>
-<div></div>
-</div>
-<p>    A dump/restore is <span class="emphasis"><em>not</em></span> required for those
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Release 7.3.2</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 7.3.3"
+HREF="release-7-3-3.html"><LINK
+REL="NEXT"
+TITLE="Release 7.3.1"
+HREF="release-7-3-1.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-3-3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-3-2"
+>E.13. Release 7.3.2</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2003-02-04</P
+></BLOCKQUOTE
+></DIV
+><P
+>   This release contains a variety of fixes for version 7.3.1.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN66305"
+>E.13.1. Migration to version 7.3.2</A
+></H2
+><P
+>    A dump/restore is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> required for those
     running version 7.3.*.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2760772"></a>E.13.2. Changes</h3></div></div>
-<div></div>
-</div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>Restore creation of OID column in CREATE TABLE AS / SELECT INTO</p></li>
-<li><p>Fix <span class="application">pg_dump</span> core dump when dumping views having comments</p></li>
-<li><p>Dump DEFERRABLE/INITIALLY DEFERRED constraints properly</p></li>
-<li><p>Fix UPDATE when child table's column numbering differs from parent</p></li>
-<li><p>Increase default value of max_fsm_relations</p></li>
-<li><p>Fix problem when fetching backwards in a cursor for a single-row query</p></li>
-<li><p>Make backward fetch work properly with cursor on SELECT DISTINCT query</p></li>
-<li><p>Fix problems with loading <span class="application">pg_dump</span> files containing contrib/lo usage</p></li>
-<li><p>Fix problem with all-numeric user names</p></li>
-<li><p>Fix possible memory leak and core dump during disconnect in libpgtcl</p></li>
-<li><p>Make plpython's spi_execute command handle nulls properly (Andrew Bosma)</p></li>
-<li><p>Adjust plpython error reporting so that its regression test passes again</p></li>
-<li><p>Work with bison 1.875</p></li>
-<li><p>Handle mixed-case names properly in plpgsql's %type (Neil)</p></li>
-<li><p>Fix core dump in pltcl when executing a query rewritten by a rule</p></li>
-<li><p>Repair array subscript overruns (per report from Yichen Xie)</p></li>
-<li><p>Reduce MAX_TIME_PRECISION from 13 to 10 in floating-point case</p></li>
-<li><p>Correctly case-fold variable names in per-database and per-user settings</p></li>
-<li><p>Fix coredump in plpgsql's RETURN NEXT when SELECT into record returns no rows</p></li>
-<li><p>Fix outdated use of pg_type.typprtlen in python client interface</p></li>
-<li><p>Correctly handle fractional seconds in timestamps in JDBC driver</p></li>
-<li><p>Improve performance of getImportedKeys() in JDBC</p></li>
-<li><p>Make shared-library symlinks work standardly on HPUX (Giles)</p></li>
-<li><p>Repair inconsistent rounding behavior for timestamp, time, interval</p></li>
-<li><p>SSL negotiation fixes (Nathan Mueller)</p></li>
-<li><p>Make libpq's ~/.pgpass feature work when connecting with PQconnectDB</p></li>
-<li><p>Update my2pg, ora2pg</p></li>
-<li><p>Translation updates</p></li>
-<li><p>Add casts between types lo and oid in contrib/lo</p></li>
-<li><p>fastpath code now checks for privilege to call function</p></li>
-</ul></div>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN66309"
+>E.13.2. Changes</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>Restore creation of OID column in CREATE TABLE AS / SELECT INTO</P
+></LI
+><LI
+><P
+>Fix <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> core dump when dumping views having comments</P
+></LI
+><LI
+><P
+>Dump DEFERRABLE/INITIALLY DEFERRED constraints properly</P
+></LI
+><LI
+><P
+>Fix UPDATE when child table's column numbering differs from parent</P
+></LI
+><LI
+><P
+>Increase default value of max_fsm_relations</P
+></LI
+><LI
+><P
+>Fix problem when fetching backwards in a cursor for a single-row query</P
+></LI
+><LI
+><P
+>Make backward fetch work properly with cursor on SELECT DISTINCT query</P
+></LI
+><LI
+><P
+>Fix problems with loading <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> files containing contrib/lo usage</P
+></LI
+><LI
+><P
+>Fix problem with all-numeric user names</P
+></LI
+><LI
+><P
+>Fix possible memory leak and core dump during disconnect in libpgtcl</P
+></LI
+><LI
+><P
+>Make plpython's spi_execute command handle nulls properly (Andrew Bosma)</P
+></LI
+><LI
+><P
+>Adjust plpython error reporting so that its regression test passes again</P
+></LI
+><LI
+><P
+>Work with bison 1.875</P
+></LI
+><LI
+><P
+>Handle mixed-case names properly in plpgsql's %type (Neil)</P
+></LI
+><LI
+><P
+>Fix core dump in pltcl when executing a query rewritten by a rule</P
+></LI
+><LI
+><P
+>Repair array subscript overruns (per report from Yichen Xie)</P
+></LI
+><LI
+><P
+>Reduce MAX_TIME_PRECISION from 13 to 10 in floating-point case</P
+></LI
+><LI
+><P
+>Correctly case-fold variable names in per-database and per-user settings</P
+></LI
+><LI
+><P
+>Fix coredump in plpgsql's RETURN NEXT when SELECT into record returns no rows</P
+></LI
+><LI
+><P
+>Fix outdated use of pg_type.typprtlen in python client interface</P
+></LI
+><LI
+><P
+>Correctly handle fractional seconds in timestamps in JDBC driver</P
+></LI
+><LI
+><P
+>Improve performance of getImportedKeys() in JDBC</P
+></LI
+><LI
+><P
+>Make shared-library symlinks work standardly on HPUX (Giles)</P
+></LI
+><LI
+><P
+>Repair inconsistent rounding behavior for timestamp, time, interval</P
+></LI
+><LI
+><P
+>SSL negotiation fixes (Nathan Mueller)</P
+></LI
+><LI
+><P
+>Make libpq's ~/.pgpass feature work when connecting with PQconnectDB</P
+></LI
+><LI
+><P
+>Update my2pg, ora2pg</P
+></LI
+><LI
+><P
+>Translation updates</P
+></LI
+><LI
+><P
+>Add casts between types lo and oid in contrib/lo</P
+></LI
+><LI
+><P
+>fastpath code now checks for privilege to call function</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-3-3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 7.3.3</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.3.1</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

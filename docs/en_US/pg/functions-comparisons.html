@@ -1,166 +1,548 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.17. Row and Array Comparisons</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-subquery.html" title="9.16. Subquery Expressions">
-<link rel="next" href="functions-srf.html" title="9.18. Set Returning Functions">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-comparisons"></a>9.17. Row and Array Comparisons</h2></div></div>
-<div></div>
-</div>
-<a name="id2562444"></a><a name="id2562449"></a><a name="id2562455"></a><a name="id2562460"></a><a name="id2562466"></a><p>   This section describes several specialized constructs for making
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Row and Array Comparisons</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Subquery Expressions"
+HREF="functions-subquery.html"><LINK
+REL="NEXT"
+TITLE="Set Returning Functions"
+HREF="functions-srf.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-subquery.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-srf.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-COMPARISONS"
+>9.17. Row and Array Comparisons</A
+></H1
+><A
+NAME="AEN12502"
+></A
+><A
+NAME="AEN12504"
+></A
+><A
+NAME="AEN12506"
+></A
+><A
+NAME="AEN12508"
+></A
+><A
+NAME="AEN12510"
+></A
+><P
+>   This section describes several specialized constructs for making
    multiple comparisons between groups of values.  These forms are
    syntactically related to the subquery forms of the previous section,
    but do not involve subqueries.
    The forms involving array subexpressions are
-   <span class="productname">PostgreSQL</span> extensions; the rest are
-   <span class="acronym">SQL</span>-compliant.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extensions; the rest are
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>-compliant.
    All of the expression forms documented in this section return
    Boolean (true/false) results.
-  </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2562490"></a>9.17.1. <tt class="literal">IN</tt></h3></div></div>
-<div></div>
-</div>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> IN (<i class="replaceable"><tt>value</tt></i>[<span class="optional">, ...</span>])</pre>
-<p>   The right-hand side is a parenthesized list
-   of scalar expressions.  The result is &#8220;<span class="quote">true</span>&#8221; if the left-hand expression's
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12515"
+>9.17.1. <TT
+CLASS="LITERAL"
+>IN</TT
+></A
+></H2
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> IN (<VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>[<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>])</PRE
+><P
+>   The right-hand side is a parenthesized list
+   of scalar expressions.  The result is <SPAN
+CLASS="QUOTE"
+>"true"</SPAN
+> if the left-hand expression's
    result is equal to any of the right-hand expressions.  This is a shorthand
    notation for
 
-</p>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> = <i class="replaceable"><tt>value1</tt></i>
+</P><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> = <VAR
+CLASS="REPLACEABLE"
+>value1</VAR
+>
 OR
-<i class="replaceable"><tt>expression</tt></i> = <i class="replaceable"><tt>value2</tt></i>
+<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> = <VAR
+CLASS="REPLACEABLE"
+>value2</VAR
+>
 OR
-...</pre>
-<p>
-  </p>
-<p>   Note that if the left-hand expression yields null, or if there are
+...</PRE
+><P>
+  </P
+><P
+>   Note that if the left-hand expression yields null, or if there are
    no equal right-hand values and at least one right-hand expression yields
-   null, the result of the <tt class="token">IN</tt> construct will be null, not false.
+   null, the result of the <TT
+CLASS="TOKEN"
+>IN</TT
+> construct will be null, not false.
    This is in accordance with SQL's normal rules for Boolean combinations
    of null values.
-  </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2562550"></a>9.17.2. <tt class="literal">NOT IN</tt></h3></div></div>
-<div></div>
-</div>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> NOT IN (<i class="replaceable"><tt>value</tt></i>[<span class="optional">, ...</span>])</pre>
-<p>   The right-hand side is a parenthesized list
-   of scalar expressions.  The result is &#8220;<span class="quote">true</span>&#8221; if the left-hand expression's
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12531"
+>9.17.2. <TT
+CLASS="LITERAL"
+>NOT IN</TT
+></A
+></H2
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> NOT IN (<VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>[<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>])</PRE
+><P
+>   The right-hand side is a parenthesized list
+   of scalar expressions.  The result is <SPAN
+CLASS="QUOTE"
+>"true"</SPAN
+> if the left-hand expression's
    result is unequal to all of the right-hand expressions.  This is a shorthand
    notation for
 
-</p>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> &lt;&gt; <i class="replaceable"><tt>value1</tt></i>
+</P><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> &lt;&gt; <VAR
+CLASS="REPLACEABLE"
+>value1</VAR
+>
 AND
-<i class="replaceable"><tt>expression</tt></i> &lt;&gt; <i class="replaceable"><tt>value2</tt></i>
+<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> &lt;&gt; <VAR
+CLASS="REPLACEABLE"
+>value2</VAR
+>
 AND
-...</pre>
-<p>
-  </p>
-<p>   Note that if the left-hand expression yields null, or if there are
+...</PRE
+><P>
+  </P
+><P
+>   Note that if the left-hand expression yields null, or if there are
    no equal right-hand values and at least one right-hand expression yields
-   null, the result of the <tt class="token">NOT IN</tt> construct will be null, not true
+   null, the result of the <TT
+CLASS="TOKEN"
+>NOT IN</TT
+> construct will be null, not true
    as one might naively expect.
    This is in accordance with SQL's normal rules for Boolean combinations
    of null values.
-  </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>   <tt class="literal">x NOT IN y</tt> is equivalent to <tt class="literal">NOT (x IN y)</tt> in all
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>   <TT
+CLASS="LITERAL"
+>x NOT IN y</TT
+> is equivalent to <TT
+CLASS="LITERAL"
+>NOT (x IN y)</TT
+> in all
    cases.  However, null values are much more likely to trip up the novice when
-   working with <tt class="token">NOT IN</tt> than when working with <tt class="token">IN</tt>.
+   working with <TT
+CLASS="TOKEN"
+>NOT IN</TT
+> than when working with <TT
+CLASS="TOKEN"
+>IN</TT
+>.
    It's best to express your condition positively if possible.
-  </p>
-</div>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2562635"></a>9.17.3. <tt class="literal">ANY</tt>/<tt class="literal">SOME</tt> (array)</h3></div></div>
-<div></div>
-</div>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> <i class="replaceable"><tt>operator</tt></i> ANY (<i class="replaceable"><tt>array expression</tt></i>)
-<i class="replaceable"><tt>expression</tt></i> <i class="replaceable"><tt>operator</tt></i> SOME (<i class="replaceable"><tt>array expression</tt></i>)</pre>
-<p>   The right-hand side is a parenthesized expression, which must yield an
+  </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12553"
+>9.17.3. <TT
+CLASS="LITERAL"
+>ANY</TT
+>/<TT
+CLASS="LITERAL"
+>SOME</TT
+> (array)</A
+></H2
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>operator</VAR
+> ANY (<VAR
+CLASS="REPLACEABLE"
+>array expression</VAR
+>)
+<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>operator</VAR
+> SOME (<VAR
+CLASS="REPLACEABLE"
+>array expression</VAR
+>)</PRE
+><P
+>   The right-hand side is a parenthesized expression, which must yield an
    array value.
    The left-hand expression
    is evaluated and compared to each element of the array using the
-   given <i class="replaceable"><tt>operator</tt></i>, which must yield a Boolean
+   given <VAR
+CLASS="REPLACEABLE"
+>operator</VAR
+>, which must yield a Boolean
    result.
-   The result of <tt class="token">ANY</tt> is &#8220;<span class="quote">true</span>&#8221; if any true result is obtained.
-   The result is &#8220;<span class="quote">false</span>&#8221; if no true result is found (including the special
+   The result of <TT
+CLASS="TOKEN"
+>ANY</TT
+> is <SPAN
+CLASS="QUOTE"
+>"true"</SPAN
+> if any true result is obtained.
+   The result is <SPAN
+CLASS="QUOTE"
+>"false"</SPAN
+> if no true result is found (including the special
    case where the array has zero elements).
-  </p>
-<p>   <tt class="token">SOME</tt> is a synonym for <tt class="token">ANY</tt>.
-  </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2562706"></a>9.17.4. <tt class="literal">ALL</tt> (array)</h3></div></div>
-<div></div>
-</div>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> <i class="replaceable"><tt>operator</tt></i> ALL (<i class="replaceable"><tt>array expression</tt></i>)</pre>
-<p>   The right-hand side is a parenthesized expression, which must yield an
+  </P
+><P
+>   <TT
+CLASS="TOKEN"
+>SOME</TT
+> is a synonym for <TT
+CLASS="TOKEN"
+>ANY</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12572"
+>9.17.4. <TT
+CLASS="LITERAL"
+>ALL</TT
+> (array)</A
+></H2
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>operator</VAR
+> ALL (<VAR
+CLASS="REPLACEABLE"
+>array expression</VAR
+>)</PRE
+><P
+>   The right-hand side is a parenthesized expression, which must yield an
    array value.
    The left-hand expression
    is evaluated and compared to each element of the array using the
-   given <i class="replaceable"><tt>operator</tt></i>, which must yield a Boolean
+   given <VAR
+CLASS="REPLACEABLE"
+>operator</VAR
+>, which must yield a Boolean
    result.
-   The result of <tt class="token">ALL</tt> is &#8220;<span class="quote">true</span>&#8221; if all comparisons yield true
+   The result of <TT
+CLASS="TOKEN"
+>ALL</TT
+> is <SPAN
+CLASS="QUOTE"
+>"true"</SPAN
+> if all comparisons yield true
    (including the special case where the array has zero elements).
-   The result is &#8220;<span class="quote">false</span>&#8221; if any false result is found.
-  </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2562752"></a>9.17.5. Row-wise Comparison</h3></div></div>
-<div></div>
-</div>
-<pre class="synopsis"><i class="replaceable"><tt>row_constructor</tt></i> <i class="replaceable"><tt>operator</tt></i> <i class="replaceable"><tt>row_constructor</tt></i></pre>
-<p>   Each side is a row constructor,
-   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
+   The result is <SPAN
+CLASS="QUOTE"
+>"false"</SPAN
+> if any false result is found.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12584"
+>9.17.5. Row-wise Comparison</A
+></H2
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>operator</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+></PRE
+><P
+>   Each side is a row constructor,
+   as described in <A
+HREF="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS"
+>Section 4.2.11</A
+>.
    The two row values must have the same number of fields.
    Each side is evaluated and they are compared row-wise.
-   Presently, only <tt class="literal">=</tt> and <tt class="literal">&lt;&gt;</tt> operators are allowed
+   Presently, only <TT
+CLASS="LITERAL"
+>=</TT
+> and <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> operators are allowed
    in row-wise comparisons.
-   The result is &#8220;<span class="quote">true</span>&#8221; if the two rows are equal or unequal, respectively.
-  </p>
-<p>   As usual, null values in the rows are combined per
+   The result is <SPAN
+CLASS="QUOTE"
+>"true"</SPAN
+> if the two rows are equal or unequal, respectively.
+  </P
+><P
+>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of the row comparison is unknown (null).
-  </p>
-<pre class="synopsis"><i class="replaceable"><tt>row_constructor</tt></i> IS DISTINCT FROM <i class="replaceable"><tt>row_constructor</tt></i></pre>
-<p>   This construct is similar to a <tt class="literal">&lt;&gt;</tt> row comparison,
+  </P
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+> IS DISTINCT FROM <VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+></PRE
+><P
+>   This construct is similar to a <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> row comparison,
    but it does not yield null for null inputs.  Instead, any null value is
    considered unequal to (distinct from) any non-null value, and any two
    nulls are considered equal (not distinct).  Thus the result will always
    be either true or false, never null.
-  </p>
-<pre class="synopsis"><i class="replaceable"><tt>row_constructor</tt></i> IS NULL
-<i class="replaceable"><tt>row_constructor</tt></i> IS NOT NULL</pre>
-<p>   These constructs test a row value for null or not null.  A row value
+  </P
+><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+> IS NULL
+<VAR
+CLASS="REPLACEABLE"
+>row_constructor</VAR
+> IS NOT NULL</PRE
+><P
+>   These constructs test a row value for null or not null.  A row value
    is considered not null if it has at least one field that is not null.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-subquery.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-srf.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Subquery Expressions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Set Returning Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

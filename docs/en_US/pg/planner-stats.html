@@ -1,35 +1,129 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>13.2. Statistics Used by the Planner</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
-<link rel="previous" href="performance-tips.html" title="Chapter 13. Performance Tips">
-<link rel="next" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="planner-stats"></a>13.2. Statistics Used by the Planner</h2></div></div>
-<div></div>
-</div>
-<a name="id2571821"></a><p>   As we saw in the previous section, the query planner needs to estimate
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Statistics Used by the Planner</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Performance Tips"
+HREF="performance-tips.html"><LINK
+REL="PREVIOUS"
+TITLE="Performance Tips"
+HREF="performance-tips.html"><LINK
+REL="NEXT"
+TITLE="Controlling the Planner with Explicit JOIN Clauses"
+HREF="explicit-joins.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 13. Performance Tips</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="explicit-joins.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLANNER-STATS"
+>13.2. Statistics Used by the Planner</A
+></H1
+><A
+NAME="AEN14566"
+></A
+><P
+>   As we saw in the previous section, the query planner needs to estimate
    the number of rows retrieved by a query in order to make good choices
    of query plans.  This section provides a quick look at the statistics
    that the system uses for these estimates.
-  </p>
-<p>   One component of the statistics is the total number of entries in each
+  </P
+><P
+>   One component of the statistics is the total number of entries in each
    table and index, as well as the number of disk blocks occupied by each
    table and index.  This information is kept in the table
-   <tt class="structname">pg_class</tt> in the columns <tt class="structfield">reltuples</tt>
-   and <tt class="structfield">relpages</tt>.  We can look at it
+   <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+> in the columns <TT
+CLASS="STRUCTFIELD"
+>reltuples</TT
+>
+   and <TT
+CLASS="STRUCTFIELD"
+>relpages</TT
+>.  We can look at it
    with queries similar to this one:
 
-</p>
-<pre class="screen">SELECT relname, relkind, reltuples, relpages FROM pg_class WHERE relname LIKE 'tenk1%';
+</P><PRE
+CLASS="SCREEN"
+>SELECT relname, relkind, reltuples, relpages FROM pg_class WHERE relname LIKE 'tenk1%';
 
     relname    | relkind | reltuples | relpages
 ---------------+---------+-----------+----------
@@ -37,72 +131,244 @@
  tenk1_hundred | i       |     10000 |       30
  tenk1_unique1 | i       |     10000 |       30
  tenk1_unique2 | i       |     10000 |       30
-(4 rows)</pre>
-<p>
+(4 rows)</PRE
+><P>
 
-   Here we can see that <tt class="structname">tenk1</tt> contains 10000
+   Here we can see that <TT
+CLASS="STRUCTNAME"
+>tenk1</TT
+> contains 10000
    rows, as do its indexes, but the indexes are (unsurprisingly) much
    smaller than the table.
-  </p>
-<p>   For efficiency reasons, <tt class="structfield">reltuples</tt> 
-   and <tt class="structfield">relpages</tt> are not updated on-the-fly,
+  </P
+><P
+>   For efficiency reasons, <TT
+CLASS="STRUCTFIELD"
+>reltuples</TT
+> 
+   and <TT
+CLASS="STRUCTFIELD"
+>relpages</TT
+> are not updated on-the-fly,
    and so they usually contain only approximate values (which is good
    enough for the planner's purposes).  They are initialized with dummy
    values (presently 1000 and 10 respectively) when a table is created.
-   They are updated by certain commands, presently <tt class="command">VACUUM</tt>,
-   <tt class="command">ANALYZE</tt>, and <tt class="command">CREATE INDEX</tt>.  A stand-alone
-   <tt class="command">ANALYZE</tt>, that is one not part of <tt class="command">VACUUM</tt>,
-   generates an approximate <tt class="structfield">reltuples</tt> value
+   They are updated by certain commands, presently <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>,
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>, and <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+>.  A stand-alone
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>, that is one not part of <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>,
+   generates an approximate <TT
+CLASS="STRUCTFIELD"
+>reltuples</TT
+> value
    since it does not read every row of the table.
-  </p>
-<a name="id2571927"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
-   to having <tt class="literal">WHERE</tt> clauses that restrict the rows to be examined.
+  </P
+><A
+NAME="AEN14585"
+></A
+><P
+>   Most queries retrieve only a fraction of the rows in a table, due
+   to having <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clauses that restrict the rows to be examined.
    The planner thus needs to make an estimate of the
-   <i class="firstterm">selectivity</i> of <tt class="literal">WHERE</tt> clauses, that is, the fraction of
-   rows that match each condition in the <tt class="literal">WHERE</tt> clause.  The information
-   used for this task is stored in the <tt class="structname">pg_statistic</tt>
-   system catalog.  Entries in <tt class="structname">pg_statistic</tt> are
-   updated by <tt class="command">ANALYZE</tt> and <tt class="command">VACUUM ANALYZE</tt> commands
+   <I
+CLASS="FIRSTTERM"
+>selectivity</I
+> of <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clauses, that is, the fraction of
+   rows that match each condition in the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause.  The information
+   used for this task is stored in the <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>
+   system catalog.  Entries in <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> are
+   updated by <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> and <TT
+CLASS="COMMAND"
+>VACUUM ANALYZE</TT
+> commands
    and are always approximate even when freshly updated.
-  </p>
-<a name="id2571983"></a><p>   Rather than look at <tt class="structname">pg_statistic</tt> directly,
-   it's better to look at its view <tt class="structname">pg_stats</tt>
-   when examining the statistics manually.  <tt class="structname">pg_stats</tt>
+  </P
+><A
+NAME="AEN14596"
+></A
+><P
+>   Rather than look at <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> directly,
+   it's better to look at its view <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+>
+   when examining the statistics manually.  <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+>
    is designed to be more easily readable.  Furthermore,
-   <tt class="structname">pg_stats</tt> is readable by all, whereas
-   <tt class="structname">pg_statistic</tt> is only readable by a superuser.
+   <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> is readable by all, whereas
+   <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> is only readable by a superuser.
    (This prevents unprivileged users from learning something about
    the contents of other people's tables from the statistics.  The
-   <tt class="structname">pg_stats</tt> view is restricted to show only
+   <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> view is restricted to show only
    rows about tables that the current user can read.)
    For example, we might do:
 
-</p>
-<pre class="screen">SELECT attname, n_distinct, most_common_vals FROM pg_stats WHERE tablename = 'road';
+</P><PRE
+CLASS="SCREEN"
+>SELECT attname, n_distinct, most_common_vals FROM pg_stats WHERE tablename = 'road';
 
  attname | n_distinct |                                                                                                                                                                                  most_common_vals                                                                                                                                                                                   
 ---------+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  name    |  -0.467008 | {"I- 580                        Ramp","I- 880                        Ramp","Sp Railroad                       ","I- 580                            ","I- 680                        Ramp","I- 80                         Ramp","14th                          St  ","5th                           St  ","Mission                       Blvd","I- 880                            "}
  thepath |         20 | {"[(-122.089,37.71),(-122.0886,37.711)]"}
-(2 rows)</pre>
-<p>
-  </p>
-<p>   <tt class="structname">pg_stats</tt> is described in detail in
-   <a href="view-pg-stats.html" title="41.36. pg_stats">Section 41.36, &#8220;pg_stats&#8221;</a>.
-  </p>
-<p>   The amount of information stored in <tt class="structname">pg_statistic</tt>,
+(2 rows)</PRE
+><P>
+  </P
+><P
+>   <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> is described in detail in
+   <A
+HREF="view-pg-stats.html"
+>Section 41.36</A
+>.
+  </P
+><P
+>   The amount of information stored in <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>,
    in particular the maximum number of entries in the
-   <tt class="structfield">most_common_vals</tt> and <tt class="structfield">histogram_bounds</tt>
+   <TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>histogram_bounds</TT
+>
    arrays for each column, can be set on a
-   column-by-column basis using the <tt class="command">ALTER TABLE SET STATISTICS</tt>
+   column-by-column basis using the <TT
+CLASS="COMMAND"
+>ALTER TABLE SET STATISTICS</TT
+>
    command, or globally by setting the
-   <a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> configuration variable.
+   <A
+HREF="runtime-config.html#GUC-DEFAULT-STATISTICS-TARGET"
+>default_statistics_target</A
+> configuration variable.
    The default limit is presently 10 entries.  Raising the limit
    may allow more accurate planner estimates to be made, particularly for
    columns with irregular data distributions, at the price of consuming
-   more space in <tt class="structname">pg_statistic</tt> and slightly more
+   more space in <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> and slightly more
    time to compute the estimates.  Conversely, a lower limit may be
    appropriate for columns with simple data distributions.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="explicit-joins.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Performance Tips</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Controlling the Planner with Explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+> Clauses</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

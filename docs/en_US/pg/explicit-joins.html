@@ -1,149 +1,410 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>13.3. Controlling the Planner with Explicit JOIN Clauses</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
-<link rel="previous" href="planner-stats.html" title="13.2. Statistics Used by the Planner">
-<link rel="next" href="populate.html" title="13.4. Populating a Database">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="explicit-joins"></a>13.3. Controlling the Planner with Explicit <tt class="literal">JOIN</tt> Clauses</h2></div></div>
-<div></div>
-</div>
-<a name="id2572121"></a><p>   It is possible
-   to control the query planner to some extent by using the explicit <tt class="literal">JOIN</tt>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Controlling the Planner with Explicit JOIN Clauses</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Performance Tips"
+HREF="performance-tips.html"><LINK
+REL="PREVIOUS"
+TITLE="Statistics Used by the Planner"
+HREF="planner-stats.html"><LINK
+REL="NEXT"
+TITLE="Populating a Database"
+HREF="populate.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="planner-stats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 13. Performance Tips</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="populate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="EXPLICIT-JOINS"
+>13.3. Controlling the Planner with Explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+> Clauses</A
+></H1
+><A
+NAME="AEN14619"
+></A
+><P
+>   It is possible
+   to control the query planner to some extent by using the explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+>
    syntax.  To see why this matters, we first need some background.
-  </p>
-<p>   In a simple join query, such as
-</p>
-<pre class="programlisting">SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;</pre>
-<p>
+  </P
+><P
+>   In a simple join query, such as
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;</PRE
+><P>
    the planner is free to join the given tables in any order.  For
    example, it could generate a query plan that joins A to B, using
-   the <tt class="literal">WHERE</tt> condition <tt class="literal">a.id = b.id</tt>, and then
-   joins C to this joined table, using the other <tt class="literal">WHERE</tt>
+   the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> condition <TT
+CLASS="LITERAL"
+>a.id = b.id</TT
+>, and then
+   joins C to this joined table, using the other <TT
+CLASS="LITERAL"
+>WHERE</TT
+>
    condition.  Or it could join B to C and then join A to that result.
    Or it could join A to C and then join them with B, but that
    would be inefficient, since the full Cartesian product of A and C
    would have to be formed, there being no applicable condition in the
-   <tt class="literal">WHERE</tt> clause to allow optimization of the join.  (All
-   joins in the <span class="productname">PostgreSQL</span> executor happen
+   <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause to allow optimization of the join.  (All
+   joins in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> executor happen
    between two input tables, so it's necessary to build up the result
    in one or another of these fashions.)  The important point is that
    these different join possibilities give semantically equivalent
    results but may have hugely different execution costs.  Therefore,
    the planner will explore all of them to try to find the most
    efficient query plan.
-  </p>
-<p>   When a query only involves two or three tables, there aren't many join
+  </P
+><P
+>   When a query only involves two or three tables, there aren't many join
    orders to worry about.  But the number of possible join orders grows
    exponentially as the number of tables expands.  Beyond ten or so input
    tables it's no longer practical to do an exhaustive search of all the
    possibilities, and even for six or seven tables planning may take an
    annoyingly long time.  When there are too many input tables, the
-   <span class="productname">PostgreSQL</span> planner will switch from exhaustive
-   search to a <i class="firstterm">genetic</i> probabilistic search
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> planner will switch from exhaustive
+   search to a <I
+CLASS="FIRSTTERM"
+>genetic</I
+> probabilistic search
    through a limited number of possibilities.  (The switch-over threshold is
-   set by the <a href="runtime-config.html#guc-geqo-threshold">geqo_threshold</a> run-time
+   set by the <A
+HREF="runtime-config.html#GUC-GEQO-THRESHOLD"
+>geqo_threshold</A
+> run-time
    parameter.)
    The genetic search takes less time, but it won't
    necessarily find the best possible plan.
-  </p>
-<p>   When the query involves outer joins, the planner has much less freedom
+  </P
+><P
+>   When the query involves outer joins, the planner has much less freedom
    than it does for plain (inner) joins. For example, consider
-</p>
-<pre class="programlisting">SELECT * FROM a LEFT JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM a LEFT JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</PRE
+><P>
    Although this query's restrictions are superficially similar to the
    previous example, the semantics are different because a row must be
    emitted for each row of A that has no matching row in the join of B and C.
    Therefore the planner has no choice of join order here: it must join
    B to C and then join A to that result.  Accordingly, this query takes
    less time to plan than the previous query.
-  </p>
-<p>   Explicit inner join syntax (<tt class="literal">INNER JOIN</tt>, <tt class="literal">CROSS
-   JOIN</tt>, or unadorned <tt class="literal">JOIN</tt>) is semantically the same as
-   listing the input relations in <tt class="literal">FROM</tt>, so it does not need to
+  </P
+><P
+>   Explicit inner join syntax (<TT
+CLASS="LITERAL"
+>INNER JOIN</TT
+>, <TT
+CLASS="LITERAL"
+>CROSS
+   JOIN</TT
+>, or unadorned <TT
+CLASS="LITERAL"
+>JOIN</TT
+>) is semantically the same as
+   listing the input relations in <TT
+CLASS="LITERAL"
+>FROM</TT
+>, so it does not need to
    constrain the join order.  But it is possible to instruct the
-   <span class="productname">PostgreSQL</span> query planner to treat
-   explicit inner <tt class="literal">JOIN</tt>s as constraining the join order anyway.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query planner to treat
+   explicit inner <TT
+CLASS="LITERAL"
+>JOIN</TT
+>s as constraining the join order anyway.
    For example, these three queries are logically equivalent:
-</p>
-<pre class="programlisting">SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
 SELECT * FROM a CROSS JOIN b CROSS JOIN c WHERE a.id = b.id AND b.ref = c.id;
-SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</pre>
-<p>
-   But if we tell the planner to honor the <tt class="literal">JOIN</tt> order,
+SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</PRE
+><P>
+   But if we tell the planner to honor the <TT
+CLASS="LITERAL"
+>JOIN</TT
+> order,
    the second and third take less time to plan than the first.  This effect
    is not worth worrying about for only three tables, but it can be a
    lifesaver with many tables.
-  </p>
-<p>   To force the planner to follow the <tt class="literal">JOIN</tt> order for inner joins,
-   set the <a href="runtime-config.html#guc-join-collapse-limit">join_collapse_limit</a> run-time parameter to 1.
+  </P
+><P
+>   To force the planner to follow the <TT
+CLASS="LITERAL"
+>JOIN</TT
+> order for inner joins,
+   set the <A
+HREF="runtime-config.html#GUC-JOIN-COLLAPSE-LIMIT"
+>join_collapse_limit</A
+> run-time parameter to 1.
    (Other possible values are discussed below.)
-  </p>
-<p>   You do not need to constrain the join order completely in order to
-   cut search time, because it's OK to use <tt class="literal">JOIN</tt> operators
-   within items of a plain <tt class="literal">FROM</tt> list.  For example, consider
-</p>
-<pre class="programlisting">SELECT * FROM a CROSS JOIN b, c, d, e WHERE ...;</pre>
-<p>
-   With <tt class="varname">join_collapse_limit</tt> = 1, this
+  </P
+><P
+>   You do not need to constrain the join order completely in order to
+   cut search time, because it's OK to use <TT
+CLASS="LITERAL"
+>JOIN</TT
+> operators
+   within items of a plain <TT
+CLASS="LITERAL"
+>FROM</TT
+> list.  For example, consider
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM a CROSS JOIN b, c, d, e WHERE ...;</PRE
+><P>
+   With <TT
+CLASS="VARNAME"
+>join_collapse_limit</TT
+> = 1, this
    forces the planner to join A to B before joining them to other tables,
    but doesn't constrain its choices otherwise.  In this example, the
    number of possible join orders is reduced by a factor of 5.
-  </p>
-<p>   Constraining the planner's search in this way is a useful technique
+  </P
+><P
+>   Constraining the planner's search in this way is a useful technique
    both for reducing planning time and for directing the planner to a
    good query plan.  If the planner chooses a bad join order by default,
-   you can force it to choose a better order via <tt class="literal">JOIN</tt> syntax
+   you can force it to choose a better order via <TT
+CLASS="LITERAL"
+>JOIN</TT
+> syntax
    --- assuming that you know of a better order, that is.  Experimentation
    is recommended.
-  </p>
-<p>   A closely related issue that affects planning time is collapsing of
+  </P
+><P
+>   A closely related issue that affects planning time is collapsing of
    subqueries into their parent query.  For example, consider
-</p>
-<pre class="programlisting">SELECT *
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT *
 FROM x, y,
     (SELECT * FROM a, b, c WHERE something) AS ss
-WHERE somethingelse;</pre>
-<p>
+WHERE somethingelse;</PRE
+><P>
    This situation might arise from use of a view that contains a join;
-   the view's <tt class="literal">SELECT</tt> rule will be inserted in place of the view reference,
+   the view's <TT
+CLASS="LITERAL"
+>SELECT</TT
+> rule will be inserted in place of the view reference,
    yielding a query much like the above.  Normally, the planner will try
    to collapse the subquery into the parent, yielding
-</p>
-<pre class="programlisting">SELECT * FROM x, y, a, b, c WHERE something AND somethingelse;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM x, y, a, b, c WHERE something AND somethingelse;</PRE
+><P>
    This usually results in a better plan than planning the subquery
-   separately.  (For example, the outer <tt class="literal">WHERE</tt> conditions might be such that
+   separately.  (For example, the outer <TT
+CLASS="LITERAL"
+>WHERE</TT
+> conditions might be such that
    joining X to A first eliminates many rows of A, thus avoiding the need to
    form the full logical output of the subquery.)  But at the same time,
    we have increased the planning time; here, we have a five-way join
    problem replacing two separate three-way join problems.  Because of the
    exponential growth of the number of possibilities, this makes a big
    difference.  The planner tries to avoid getting stuck in huge join search
-   problems by not collapsing a subquery if more than <tt class="varname">from_collapse_limit</tt>
-   <tt class="literal">FROM</tt> items would result in the parent
+   problems by not collapsing a subquery if more than <TT
+CLASS="VARNAME"
+>from_collapse_limit</TT
+>
+   <TT
+CLASS="LITERAL"
+>FROM</TT
+> items would result in the parent
    query.  You can trade off planning time against quality of plan by
    adjusting this run-time parameter up or down.
-  </p>
-<p>   <a href="runtime-config.html#guc-from-collapse-limit">from_collapse_limit</a> and <a href="runtime-config.html#guc-join-collapse-limit">join_collapse_limit</a>
+  </P
+><P
+>   <A
+HREF="runtime-config.html#GUC-FROM-COLLAPSE-LIMIT"
+>from_collapse_limit</A
+> and <A
+HREF="runtime-config.html#GUC-JOIN-COLLAPSE-LIMIT"
+>join_collapse_limit</A
+>
    are similarly named because they do almost the same thing: one controls
-   when the planner will &#8220;<span class="quote">flatten out</span>&#8221; subselects, and the
+   when the planner will <SPAN
+CLASS="QUOTE"
+>"flatten out"</SPAN
+> subselects, and the
    other controls when it will flatten out explicit inner joins.  Typically
-   you would either set <tt class="varname">join_collapse_limit</tt> equal to
-   <tt class="varname">from_collapse_limit</tt> (so that explicit joins and subselects
-   act similarly) or set <tt class="varname">join_collapse_limit</tt> to 1 (if you want
+   you would either set <TT
+CLASS="VARNAME"
+>join_collapse_limit</TT
+> equal to
+   <TT
+CLASS="VARNAME"
+>from_collapse_limit</TT
+> (so that explicit joins and subselects
+   act similarly) or set <TT
+CLASS="VARNAME"
+>join_collapse_limit</TT
+> to 1 (if you want
    to control join order with explicit joins).  But you might set them
    differently if you are trying to fine-tune the trade off between planning
    time and run time.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="planner-stats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="populate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Statistics Used by the Planner</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Populating a Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

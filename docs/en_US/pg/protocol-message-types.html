@@ -1,59 +1,282 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>42.3. Message Data Types</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
-<link rel="previous" href="protocol-flow.html" title="42.2. Message Flow">
-<link rel="next" href="protocol-message-formats.html" title="42.4. Message Formats">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="protocol-message-types"></a>42.3. Message Data Types</h2></div></div>
-<div></div>
-</div>
-<p>This section describes the base data types used in messages.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Message Data Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Frontend/Backend Protocol"
+HREF="protocol.html"><LINK
+REL="PREVIOUS"
+TITLE="Message Flow"
+HREF="protocol-flow.html"><LINK
+REL="NEXT"
+TITLE="Message Formats"
+HREF="protocol-message-formats.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol-flow.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. Frontend/Backend Protocol</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-message-formats.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PROTOCOL-MESSAGE-TYPES"
+>42.3. Message Data Types</A
+></H1
+><P
+>This section describes the base data types used in messages.
 
-</p>
-<div class="variablelist"><dl>
-<dt><span class="term">        Int<i class="replaceable"><tt>n</tt></i>(<i class="replaceable"><tt>i</tt></i>)</span></dt>
-<dd><p>                An <i class="replaceable"><tt>n</tt></i>-bit integer in network byte
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int<VAR
+CLASS="REPLACEABLE"
+>n</VAR
+>(<VAR
+CLASS="REPLACEABLE"
+>i</VAR
+>)</DT
+><DD
+><P
+>                An <VAR
+CLASS="REPLACEABLE"
+>n</VAR
+>-bit integer in network byte
 		order (most significant byte first).
-                If <i class="replaceable"><tt>i</tt></i> is specified it
+                If <VAR
+CLASS="REPLACEABLE"
+>i</VAR
+> is specified it
                 is the exact value that will appear, otherwise the value
-		is variable.  Eg. Int16, Int32(42).</p></dd>
-<dt><span class="term">        Int<i class="replaceable"><tt>n</tt></i>[<i class="replaceable"><tt>k</tt></i>]</span></dt>
-<dd><p>		An array of <i class="replaceable"><tt>k</tt></i>
-                <i class="replaceable"><tt>n</tt></i>-bit integers, each in network
-		byte order.  The array length <i class="replaceable"><tt>k</tt></i>
+		is variable.  Eg. Int16, Int32(42).</P
+></DD
+><DT
+>Int<VAR
+CLASS="REPLACEABLE"
+>n</VAR
+>[<VAR
+CLASS="REPLACEABLE"
+>k</VAR
+>]</DT
+><DD
+><P
+>		An array of <VAR
+CLASS="REPLACEABLE"
+>k</VAR
+>
+                <VAR
+CLASS="REPLACEABLE"
+>n</VAR
+>-bit integers, each in network
+		byte order.  The array length <VAR
+CLASS="REPLACEABLE"
+>k</VAR
+>
 		is always determined by an earlier field in the message.
-		Eg. Int16[M].</p></dd>
-<dt><span class="term">        String(<i class="replaceable"><tt>s</tt></i>)</span></dt>
-<dd>
-<p>                A null-terminated string (C-style string).  There is no
+		Eg. Int16[M].</P
+></DD
+><DT
+>String(<VAR
+CLASS="REPLACEABLE"
+>s</VAR
+>)</DT
+><DD
+><P
+>                A null-terminated string (C-style string).  There is no
 		specific length limitation on strings.
-                If <i class="replaceable"><tt>s</tt></i> is specified it is the exact
+                If <VAR
+CLASS="REPLACEABLE"
+>s</VAR
+> is specified it is the exact
 		value that will appear, otherwise the value is variable.
-                Eg. String, String("user").</p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p><span class="emphasis"><em>There is no predefined limit</em></span> on the length of a string
+                Eg. String, String("user").</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>There is no predefined limit</I
+></SPAN
+> on the length of a string
 that can be returned by the backend.  Good coding strategy for a frontend
 is to use an expandable buffer so that anything that fits in memory can be
 accepted.  If that's not feasible, read the full string and discard trailing
-characters that don't fit into your fixed-size buffer.</p>
-</div>
-</dd>
-<dt><span class="term">        Byte<i class="replaceable"><tt>n</tt></i>(<i class="replaceable"><tt>c</tt></i>)</span></dt>
-<dd><p>                Exactly <i class="replaceable"><tt>n</tt></i> bytes.  If the field
-		width <i class="replaceable"><tt>n</tt></i> is not a constant, it is
+characters that don't fit into your fixed-size buffer.</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+>Byte<VAR
+CLASS="REPLACEABLE"
+>n</VAR
+>(<VAR
+CLASS="REPLACEABLE"
+>c</VAR
+>)</DT
+><DD
+><P
+>                Exactly <VAR
+CLASS="REPLACEABLE"
+>n</VAR
+> bytes.  If the field
+		width <VAR
+CLASS="REPLACEABLE"
+>n</VAR
+> is not a constant, it is
 		always determinable from an earlier field in the message.
-                If <i class="replaceable"><tt>c</tt></i> is specified it is the exact
-                value.  Eg. Byte2, Byte1('\n').</p></dd>
-</dl></div>
-</div></body>
-</html>
+                If <VAR
+CLASS="REPLACEABLE"
+>c</VAR
+> is specified it is the exact
+                value.  Eg. Byte2, Byte1('\n').</P
+></DD
+></DL
+></DIV
+><P></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol-flow.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-message-formats.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Message Flow</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="protocol.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Message Formats</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

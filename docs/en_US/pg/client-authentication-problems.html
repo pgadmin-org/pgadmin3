@@ -1,57 +1,225 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>19.3. Authentication problems</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="client-authentication.html" title="Chapter 19. Client Authentication">
-<link rel="previous" href="auth-methods.html" title="19.2. Authentication methods">
-<link rel="next" href="charset.html" title="Chapter 20. Localization">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="client-authentication-problems"></a>19.3. Authentication problems</h2></div></div>
-<div></div>
-</div>
-<p>    Genuine authentication failures and related problems generally
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Authentication problems</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Client Authentication"
+HREF="client-authentication.html"><LINK
+REL="PREVIOUS"
+TITLE="Authentication methods"
+HREF="auth-methods.html"><LINK
+REL="NEXT"
+TITLE="Localization"
+HREF="charset.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="auth-methods.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 19. Client Authentication</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="charset.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CLIENT-AUTHENTICATION-PROBLEMS"
+>19.3. Authentication problems</A
+></H1
+><P
+>    Genuine authentication failures and related problems generally
     manifest themselves through error messages like the following.
-   </p>
-<pre class="programlisting">FATAL:  no pg_hba.conf entry for host "123.123.123.123", user "andym", database "testdb"</pre>
-<p>
+   </P
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>FATAL:  no pg_hba.conf entry for host "123.123.123.123", user "andym", database "testdb"</PRE
+><P>
     This is what you are most likely to get if you succeed in contacting
     the server, but it does not want to talk to you. As the message
     suggests, the server refused the connection request because it found
-    no authorizing entry in its <tt class="filename">pg_hba.conf</tt>
+    no authorizing entry in its <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+>
     configuration file.
-   </p>
-<pre class="programlisting">FATAL:  Password authentication failed for user "andym"</pre>
-<p>
+   </P
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>FATAL:  Password authentication failed for user "andym"</PRE
+><P>
     Messages like this indicate that you contacted the server, and it is
     willing to talk to you, but not until you pass the authorization
-    method specified in the <tt class="filename">pg_hba.conf</tt> file. Check
+    method specified in the <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+> file. Check
     the password you are providing, or check your Kerberos or ident
     software if the complaint mentions one of those authentication
     types.
-   </p>
-<pre class="programlisting">FATAL:  user "andym" does not exist</pre>
-<p>
+   </P
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>FATAL:  user "andym" does not exist</PRE
+><P>
     The indicated user name was not found.
-   </p>
-<pre class="programlisting">FATAL:  database "testdb" does not exist</pre>
-<p>
+   </P
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>FATAL:  database "testdb" does not exist</PRE
+><P>
     The database you are trying to connect to does not exist. Note that
     if you do not specify a database name, it defaults to the database
     user name, which may or may not be the right thing.
-   </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>    The server log may contain more information about an
+   </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>    The server log may contain more information about an
     authentication failure than is reported to the client. If you are
     confused about the reason for a failure, check the log.
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="auth-methods.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="charset.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Authentication methods</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Localization</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

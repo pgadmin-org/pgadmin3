@@ -1,46 +1,207 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>29.5. Choosing a Connection</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-<link rel="previous" href="ecpg-commands.html" title="29.4. Running SQL Commands">
-<link rel="next" href="ecpg-variables.html" title="29.6. Using Host Variables">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-set-connection"></a>29.5. Choosing a Connection</h2></div></div>
-<div></div>
-</div>
-<p>   The SQL statements shown in the previous section are executed on
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Choosing a Connection</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Running SQL Commands"
+HREF="ecpg-commands.html"><LINK
+REL="NEXT"
+TITLE="Using Host Variables"
+HREF="ecpg-variables.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-commands.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 29. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-variables.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-SET-CONNECTION"
+>29.5. Choosing a Connection</A
+></H1
+><P
+>   The SQL statements shown in the previous section are executed on
    the current connection, that is, the most recently opened one.  If
    an application needs to manage multiple connections, then there are
    two ways to handle this.
-  </p>
-<p>   The first option is to explicitly choose a connection for each SQL
+  </P
+><P
+>   The first option is to explicitly choose a connection for each SQL
    statement, for example
-</p>
-<pre class="programlisting">EXEC SQL AT <i class="replaceable"><tt>connection-name</tt></i> SELECT ...;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL AT <VAR
+CLASS="REPLACEABLE"
+>connection-name</VAR
+> SELECT ...;</PRE
+><P>
    This option is particularly suitable if the application needs to
    use several connections in mixed order.
-      </p>
-<p>      If your application uses multiple threads of execution, they cannot share a
+      </P
+><P
+>      If your application uses multiple threads of execution, they cannot share a
       connection concurrently. You must either explicitly control access to the connection
       (using mutexes) or use a connection for each thread. If each thread uses its own connection,
       you will need to use the AT clause to specify which connection the thread will use.
-  </p>
-<p>   The second option is to execute a statement to switch the current
+  </P
+><P
+>   The second option is to execute a statement to switch the current
    connection.  That statement is:
-</p>
-<pre class="programlisting">EXEC SQL SET CONNECTION <i class="replaceable"><tt>connection-name</tt></i>;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL SET CONNECTION <VAR
+CLASS="REPLACEABLE"
+>connection-name</VAR
+>;</PRE
+><P>
    This option is particularly convenient if many statements are to be
    executed on the same connection.  It is not thread-aware.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-commands.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-variables.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Running SQL Commands</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Using Host Variables</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

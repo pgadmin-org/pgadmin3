@@ -1,72 +1,299 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.28. pg_tablespace</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-statistic.html" title="41.27. pg_statistic">
-<link rel="next" href="catalog-pg-trigger.html" title="41.29. pg_trigger">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-tablespace"></a>41.28. <tt class="structname">pg_tablespace</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2725598"></a><p>   The catalog <tt class="structname">pg_tablespace</tt> stores information
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>pg_tablespace</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_statistic"
+HREF="catalog-pg-statistic.html"><LINK
+REL="NEXT"
+TITLE="pg_trigger"
+HREF="catalog-pg-trigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-statistic.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-trigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-TABLESPACE"
+>41.28. <TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+></A
+></H1
+><A
+NAME="AEN52604"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+> stores information
    about the available tablespaces.  Tables can be placed in particular
    tablespaces to aid administration of disk layout.
-  </p>
-<p>   Unlike most system catalogs, <tt class="structname">pg_tablespace</tt>
+  </P
+><P
+>   Unlike most system catalogs, <TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+>
    is shared across all databases of a cluster: there is only one
-   copy of <tt class="structname">pg_tablespace</tt> per cluster, not
+   copy of <TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+> per cluster, not
    one per database.
-  </p>
-<div class="table">
-<a name="id2725628"></a><p class="title"><b>Table 41.28. <tt class="structname">pg_tablespace</tt> Columns</b></p>
-<table summary="pg_tablespace Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="structfield">spcname</tt></td>
-<td><tt class="type">name</tt></td>
-<td> </td>
-<td>Tablespace name</td>
-</tr>
-<tr>
-<td><tt class="structfield">spcowner</tt></td>
-<td><tt class="type">int4</tt></td>
-<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usesysid</tt></td>
-<td>Owner of the tablespace, usually the user who created it</td>
-</tr>
-<tr>
-<td><tt class="structfield">spclocation</tt></td>
-<td><tt class="type">text</tt></td>
-<td> </td>
-<td>Location (directory path) of the tablespace</td>
-</tr>
-<tr>
-<td><tt class="structfield">spcacl</tt></td>
-<td><tt class="type">aclitem[]</tt></td>
-<td> </td>
-<td>Access privileges</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></body>
-</html>
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN52611"
+></A
+><P
+><B
+>Table 41-28. <TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>spcname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Tablespace name</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>spcowner</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</TT
+></TD
+><TD
+>Owner of the tablespace, usually the user who created it</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>spclocation</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Location (directory path) of the tablespace</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>spcacl</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>aclitem[]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Access privileges</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-statistic.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-trigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

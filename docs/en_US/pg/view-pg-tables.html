@@ -1,78 +1,363 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.37. pg_tables</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="view-pg-stats.html" title="41.36. pg_stats">
-<link rel="next" href="view-pg-user.html" title="41.38. pg_user">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="view-pg-tables"></a>41.37. <tt class="structname">pg_tables</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2728119"></a><p>   The view <tt class="structname">pg_tables</tt> provides access to
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>pg_tables</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_stats"
+HREF="view-pg-stats.html"><LINK
+REL="NEXT"
+TITLE="pg_user"
+HREF="view-pg-user.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-stats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-user.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="VIEW-PG-TABLES"
+>41.37. <TT
+CLASS="STRUCTNAME"
+>pg_tables</TT
+></A
+></H1
+><A
+NAME="AEN53568"
+></A
+><P
+>   The view <TT
+CLASS="STRUCTNAME"
+>pg_tables</TT
+> provides access to
    useful information about each table in the database.
-  </p>
-<div class="table">
-<a name="id2728135"></a><p class="title"><b>Table 41.37. <tt class="structname">pg_tables</tt> Columns</b></p>
-<table summary="pg_tables Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="structfield">schemaname</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.nspname</tt></td>
-<td>name of schema containing table</td>
-</tr>
-<tr>
-<td><tt class="structfield">tablename</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.relname</tt></td>
-<td>name of table</td>
-</tr>
-<tr>
-<td><tt class="structfield">tableowner</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usename</tt></td>
-<td>name of table's owner</td>
-</tr>
-<tr>
-<td><tt class="structfield">hasindexes</tt></td>
-<td><tt class="type">boolean</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.relhasindex</tt></td>
-<td>true if table has (or recently had) any indexes</td>
-</tr>
-<tr>
-<td><tt class="structfield">hasrules</tt></td>
-<td><tt class="type">boolean</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.relhasrules</tt></td>
-<td>true if table has rules</td>
-</tr>
-<tr>
-<td><tt class="structfield">hastriggers</tt></td>
-<td><tt class="type">boolean</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.reltriggers</tt></td>
-<td>true if table has triggers</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></body>
-</html>
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN53572"
+></A
+><P
+><B
+>Table 41-37. <TT
+CLASS="STRUCTNAME"
+>pg_tables</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>schemaname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.nspname</TT
+></TD
+><TD
+>name of schema containing table</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tablename</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.relname</TT
+></TD
+><TD
+>name of table</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tableowner</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usename</TT
+></TD
+><TD
+>name of table's owner</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>hasindexes</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.relhasindex</TT
+></TD
+><TD
+>true if table has (or recently had) any indexes</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>hasrules</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.relhasrules</TT
+></TD
+><TD
+>true if table has rules</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>hastriggers</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.reltriggers</TT
+></TD
+><TD
+>true if table has triggers</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-stats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-user.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_user</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

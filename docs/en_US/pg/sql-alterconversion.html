@@ -1,74 +1,324 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER CONVERSION</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-alteraggregate.html" title="ALTER AGGREGATE">
-<link rel="next" href="sql-alterdatabase.html" title="ALTER DATABASE">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-alterconversion"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ALTER CONVERSION &#8212; change the definition of a conversion</p>
-</div>
-<a name="id2657952"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ALTER CONVERSION <i class="replaceable"><tt>name</tt></i> RENAME TO <i class="replaceable"><tt>newname</tt></i>
-ALTER CONVERSION <i class="replaceable"><tt>name</tt></i> OWNER TO <i class="replaceable"><tt>newowner</tt></i></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2657982"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER CONVERSION</tt> changes the definition of a
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ALTER CONVERSION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER AGGREGATE"
+HREF="sql-alteraggregate.html"><LINK
+REL="NEXT"
+TITLE="ALTER DATABASE"
+HREF="sql-alterdatabase.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteraggregate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteraggregate.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERCONVERSION"
+></A
+>ALTER CONVERSION</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN34694"
+></A
+><H2
+>Name</H2
+>ALTER CONVERSION&nbsp;--&nbsp;change the definition of a conversion</DIV
+><A
+NAME="AEN34697"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN34699"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER CONVERSION <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> RENAME TO <VAR
+CLASS="REPLACEABLE"
+>newname</VAR
+>
+ALTER CONVERSION <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> OWNER TO <VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34705"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER CONVERSION</TT
+> changes the definition of a
    conversion.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2657995"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing conversion.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>newname</tt></i></span></dt>
-<dd><p>      The new name of the conversion.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>newowner</tt></i></span></dt>
-<dd><p>      The new owner of the conversion. To change the owner of a conversion,
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34709"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing conversion.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newname</VAR
+></DT
+><DD
+><P
+>      The new name of the conversion.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
+></DT
+><DD
+><P
+>      The new owner of the conversion. To change the owner of a conversion,
       you must be a superuser.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2658034"></a><h2>Examples</h2>
-<p>   To rename the conversion <tt class="literal">iso_8859_1_to_utf_8</tt> to
-   <tt class="literal">latin1_to_unicode</tt>:
-</p>
-<pre class="programlisting">ALTER CONVERSION iso_8859_1_to_utf_8 RENAME TO latin1_to_unicode;</pre>
-<p>
-  </p>
-<p>   To change the owner of the conversion <tt class="literal">iso_8859_1_to_utf_8</tt> to
-   <tt class="literal">joe</tt>:
-</p>
-<pre class="programlisting">ALTER CONVERSION iso_8859_1_to_utf_8 OWNER TO joe;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2658080"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">ALTER CONVERSION</tt> statement in the SQL
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34727"
+></A
+><H2
+>Examples</H2
+><P
+>   To rename the conversion <TT
+CLASS="LITERAL"
+>iso_8859_1_to_utf_8</TT
+> to
+   <TT
+CLASS="LITERAL"
+>latin1_to_unicode</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER CONVERSION iso_8859_1_to_utf_8 RENAME TO latin1_to_unicode;</PRE
+><P>
+  </P
+><P
+>   To change the owner of the conversion <TT
+CLASS="LITERAL"
+>iso_8859_1_to_utf_8</TT
+> to
+   <TT
+CLASS="LITERAL"
+>joe</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER CONVERSION iso_8859_1_to_utf_8 OWNER TO joe;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34737"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>ALTER CONVERSION</TT
+> statement in the SQL
    standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2658092"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createconversion.html">CREATE CONVERSION</a>, <a href="sql-dropconversion.html">DROP CONVERSION</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34741"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createconversion.html"
+><I
+>CREATE CONVERSION</I
+></A
+>, <A
+HREF="sql-dropconversion.html"
+><I
+>DROP CONVERSION</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteraggregate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER AGGREGATE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER DATABASE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

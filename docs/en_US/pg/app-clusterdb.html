@@ -1,153 +1,581 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>clusterdb</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="next" href="app-createdb.html" title="createdb">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-clusterdb"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>clusterdb &#8212; cluster a <span class="productname">PostgreSQL</span> database</p>
-</div>
-<a name="id2698067"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">clusterdb</tt> [<i class="replaceable"><tt>connection-option</tt></i>...] [--table | -t <i class="replaceable"><tt>table</tt></i> ] [<i class="replaceable"><tt>dbname</tt></i>]<br><tt class="command">clusterdb</tt> [<i class="replaceable"><tt>connection-option</tt></i>...] [[--all] |  [-a]]</p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2698142"></a><h2>Description</h2>
-<p>   <span class="application">clusterdb</span> is a utility for reclustering tables
-   in a <span class="productname">PostgreSQL</span> database.  It finds tables
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>clusterdb</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="NEXT"
+TITLE="createdb"
+HREF="app-createdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="reference-client.html#AEN44196"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createdb.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-CLUSTERDB"
+></A
+><SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44205"
+></A
+><H2
+>Name</H2
+>clusterdb&nbsp;--&nbsp;cluster a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DIV
+><A
+NAME="AEN44209"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44211"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>clusterdb</TT
+> [<VAR
+CLASS="REPLACEABLE"
+>connection-option</VAR
+>...] [--table | -t <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+> ] [<VAR
+CLASS="REPLACEABLE"
+>dbname</VAR
+>]<BR><TT
+CLASS="COMMAND"
+>clusterdb</TT
+> [<VAR
+CLASS="REPLACEABLE"
+>connection-option</VAR
+>...] [--all | -a]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44227"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+> is a utility for reclustering tables
+   in a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.  It finds tables
    that have previously been clustered, and clusters them again on the same
    index that was last used.  Tables that have never been clustered are not
    affected.
-  </p>
-<p>   <span class="application">clusterdb</span> is a wrapper around the SQL
-   command <a href="sql-cluster.html">CLUSTER</a>.
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+> is a wrapper around the SQL
+   command <A
+HREF="sql-cluster.html"
+><I
+>CLUSTER</I
+></A
+>.
    There is no effective difference between clustering databases via
    this utility and via other methods for accessing the server.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2698184"></a><h2>Options</h2>
-<p>    <span class="application">clusterdb</span> accepts the following command-line arguments:
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44235"
+></A
+><H2
+>Options</H2
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+> accepts the following command-line arguments:
     
-    </p>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--all</tt></span>
-</dt>
-<dd><p>	Cluster all databases.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">[<span class="optional">-d</span>] <i class="replaceable"><tt>dbname</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">[<span class="optional">--dbname</span>] <i class="replaceable"><tt>dbname</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the name of the database to be clustered.
-	If this is not specified and <tt class="option">-a</tt> (or
-	<tt class="option">--all</tt>) is not used, the database name is read
-	from the environment variable <tt class="envar">PGDATABASE</tt>.  If
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-a</TT
+><BR><TT
+CLASS="OPTION"
+>--all</TT
+></DT
+><DD
+><P
+>	Cluster all databases.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>-d</SPAN
+>] <VAR
+CLASS="REPLACEABLE"
+>dbname</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>--dbname</SPAN
+>] <VAR
+CLASS="REPLACEABLE"
+>dbname</VAR
+></TT
+></DT
+><DD
+><P
+>	Specifies the name of the database to be clustered.
+	If this is not specified and <TT
+CLASS="OPTION"
+>-a</TT
+> (or
+	<TT
+CLASS="OPTION"
+>--all</TT
+>) is not used, the database name is read
+	from the environment variable <TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+>.  If
 	that is not set, the user name specified for the connection is
 	used.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
-</dt>
-<dd><p>        Echo the commands that <span class="application">clusterdb</span> generates
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo</TT
+></DT
+><DD
+><P
+>        Echo the commands that <SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+> generates
 	and sends to the server.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-q</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--quiet</tt></span>
-</dt>
-<dd><p>        Do not display a response.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-t <i class="replaceable"><tt>table</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--table <i class="replaceable"><tt>table</tt></i></tt></span>
-</dt>
-<dd><p>	Cluster <i class="replaceable"><tt>table</tt></i> only.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-<p>    <span class="application">clusterdb</span> also accepts 
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-q</TT
+><BR><TT
+CLASS="OPTION"
+>--quiet</TT
+></DT
+><DD
+><P
+>        Do not display a response.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-t <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--table <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></TT
+></DT
+><DD
+><P
+>	Cluster <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+> only.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+> also accepts 
     the following command-line arguments for connection parameters:
 
-    </p>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the host name of the machine on which the server is
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <VAR
+CLASS="REPLACEABLE"
+>host</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <VAR
+CLASS="REPLACEABLE"
+>host</VAR
+></TT
+></DT
+><DD
+><P
+>	Specifies the host name of the machine on which the server is
 	running.  If the value begins with a slash, it is used as the
 	directory for the Unix domain socket.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the TCP port or local Unix domain socket file 
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <VAR
+CLASS="REPLACEABLE"
+>port</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <VAR
+CLASS="REPLACEABLE"
+>port</VAR
+></TT
+></DT
+><DD
+><P
+>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
-</dt>
-<dd><p>        User name to connect as.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
-</dt>
-<dd><p>        Force password prompt.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2698396"></a><h2>Environment</h2>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGDATABASE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
-</dt>
-<dd><p>      Default connection parameters
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2698420"></a><h2>Diagnostics</h2>
-<p>   In case of difficulty, see <a href="sql-cluster.html">CLUSTER</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></TT
+></DT
+><DD
+><P
+>        User name to connect as.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>        Force password prompt.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44323"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+><BR><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44337"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   In case of difficulty, see <A
+HREF="sql-cluster.html"
+><I
+>CLUSTER</I
+></A
+> and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment
-   variables used by the <span class="application">libpq</span> front-end
+   variables used by the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end
    library will apply.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2698450"></a><h2>Examples</h2>
-<p>    To cluster the database <tt class="literal">test</tt>:
-</p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>clusterdb test</tt></b></pre>
-<p>
-   </p>
-<p>    To cluster a single table
-    <tt class="literal">foo</tt> in a database named
-    <tt class="literal">xyzzy</tt>:
-</p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>clusterdb --table foo xyzzy</tt></b></pre>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2698504"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-cluster.html">CLUSTER</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44343"
+></A
+><H2
+>Examples</H2
+><P
+>    To cluster the database <TT
+CLASS="LITERAL"
+>test</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>clusterdb test</KBD
+></PRE
+><P>
+   </P
+><P
+>    To cluster a single table
+    <TT
+CLASS="LITERAL"
+>foo</TT
+> in a database named
+    <TT
+CLASS="LITERAL"
+>xyzzy</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>clusterdb --table foo xyzzy</KBD
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44356"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-cluster.html"
+><I
+>CLUSTER</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>PostgreSQL Client Applications</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

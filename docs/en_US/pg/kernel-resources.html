@@ -1,170 +1,469 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>16.5. Managing Kernel Resources</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
-<link rel="previous" href="runtime-config.html" title="16.4. Run-time Configuration">
-<link rel="next" href="postmaster-shutdown.html" title="16.6. Shutting Down the Server">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="kernel-resources"></a>16.5. Managing Kernel Resources</h2></div></div>
-<div></div>
-</div>
-<p>   A large <span class="productname">PostgreSQL</span> installation can quickly exhaust
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Managing Kernel Resources</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Run-time Environment"
+HREF="runtime.html"><LINK
+REL="PREVIOUS"
+TITLE="Run-time Configuration"
+HREF="runtime-config.html"><LINK
+REL="NEXT"
+TITLE="Shutting Down the Server"
+HREF="postmaster-shutdown.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 16. Server Run-time Environment</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="postmaster-shutdown.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="KERNEL-RESOURCES"
+>16.5. Managing Kernel Resources</A
+></H1
+><P
+>   A large <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation can quickly exhaust
    various operating system resource limits. (On some systems, the
    factory defaults are so low that you don't even need a really
-   &#8220;<span class="quote">large</span>&#8221; installation.) If you have encountered this kind of
+   <SPAN
+CLASS="QUOTE"
+>"large"</SPAN
+> installation.) If you have encountered this kind of
    problem, keep reading.
-  </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="sysvipc"></a>16.5.1. Shared Memory and Semaphores</h3></div></div>
-<div></div>
-</div>
-<a name="id2586576"></a><a name="id2586585"></a><p>    Shared memory and semaphores are collectively referred to as
-    &#8220;<span class="quote"><span class="systemitem">System V</span>
-    <span class="acronym">IPC</span></span>&#8221; (together with message queues, which are not
-    relevant for <span class="productname">PostgreSQL</span>). Almost all modern
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SYSVIPC"
+>16.5.1. Shared Memory and Semaphores</A
+></H2
+><A
+NAME="AEN17958"
+></A
+><A
+NAME="AEN17960"
+></A
+><P
+>    Shared memory and semaphores are collectively referred to as
+    <SPAN
+CLASS="QUOTE"
+>"<SPAN
+CLASS="SYSTEMITEM"
+>System V</SPAN
+>
+    <ACRONYM
+CLASS="ACRONYM"
+>IPC</ACRONYM
+>"</SPAN
+> (together with message queues, which are not
+    relevant for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>). Almost all modern
     operating systems provide these features, but not all of them have
     them turned on or sufficiently sized by default, especially systems
-    with BSD heritage. (For the <span class="systemitem">QNX</span> and
-    <span class="systemitem">BeOS</span> ports, <span class="productname">PostgreSQL</span>
+    with BSD heritage. (For the <SPAN
+CLASS="SYSTEMITEM"
+>QNX</SPAN
+> and
+    <SPAN
+CLASS="SYSTEMITEM"
+>BeOS</SPAN
+> ports, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     provides its own replacement implementation of these facilities.)
-   </p>
-<p>    The complete lack of these facilities is usually manifested by an
-    <span class="errorname">Illegal system call</span> error upon server start. In
+   </P
+><P
+>    The complete lack of these facilities is usually manifested by an
+    <SPAN
+CLASS="ERRORNAME"
+>Illegal system call</SPAN
+> error upon server start. In
     that case there's nothing left to do but to reconfigure your
-    kernel.  <span class="productname">PostgreSQL</span> won't work without them.
-   </p>
-<p>    When <span class="productname">PostgreSQL</span> exceeds one of the various hard
-    <span class="acronym">IPC</span> limits, the server will refuse to start and
+    kernel.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> won't work without them.
+   </P
+><P
+>    When <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> exceeds one of the various hard
+    <ACRONYM
+CLASS="ACRONYM"
+>IPC</ACRONYM
+> limits, the server will refuse to start and
     should leave an instructive error message describing the problem
-    encountered and what to do about it. (See also <a href="postmaster-start.html#postmaster-start-failures" title="16.3.1. Server Start-up Failures">Section 16.3.1, &#8220;Server Start-up Failures&#8221;</a>.) The relevant kernel
-    parameters are named consistently across different systems; <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;System V IPC parameters&#8221;</a> gives an overview. The methods to set
+    encountered and what to do about it. (See also <A
+HREF="postmaster-start.html#POSTMASTER-START-FAILURES"
+>Section 16.3.1</A
+>.) The relevant kernel
+    parameters are named consistently across different systems; <A
+HREF="kernel-resources.html#SYSVIPC-PARAMETERS"
+>Table 16-2</A
+> gives an overview. The methods to set
     them, however, vary. Suggestions for some platforms are given below.
     Be warned that it is often necessary to reboot your machine, and
     possibly even recompile the kernel, to change these settings.
-   </p>
-<div class="table">
-<a name="sysvipc-parameters"></a><p class="title"><b>Table 16.2. <span class="systemitem">System V</span> <span class="acronym">IPC</span> parameters</b></p>
-<table summary="System V IPC parameters" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Description</th>
-<th>Reasonable values</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="varname">SHMMAX</tt></td>
-<td>Maximum size of shared memory segment (bytes)</td>
-<td>250 kB + 8.2 kB * <a href="runtime-config.html#guc-shared-buffers">shared_buffers</a> +
-       14.2 kB * <a href="runtime-config.html#guc-max-connections">max_connections</a> up to infinity</td>
-</tr>
-<tr>
-<td><tt class="varname">SHMMIN</tt></td>
-<td>Minimum size of shared memory segment (bytes)</td>
-<td>1</td>
-</tr>
-<tr>
-<td><tt class="varname">SHMALL</tt></td>
-<td>Total amount of shared memory available (bytes or pages)</td>
-<td>if bytes, same as <tt class="varname">SHMMAX</tt>; if pages, <tt class="literal">ceil(SHMMAX/PAGE_SIZE)</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="varname">SHMSEG</tt></td>
-<td>Maximum number of shared memory segments per process</td>
-<td>only 1 segment is needed, but the default is much higher</td>
-</tr>
-<tr>
-<td><tt class="varname">SHMMNI</tt></td>
-<td>Maximum number of shared memory segments system-wide</td>
-<td>like <tt class="varname">SHMSEG</tt> plus room for other applications</td>
-</tr>
-<tr>
-<td><tt class="varname">SEMMNI</tt></td>
-<td>Maximum number of semaphore identifiers (i.e., sets)</td>
-<td>at least <tt class="literal">ceil(max_connections / 16)</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="varname">SEMMNS</tt></td>
-<td>Maximum number of semaphores system-wide</td>
-<td>
-<tt class="literal">ceil(max_connections / 16) * 17</tt> plus room for other applications</td>
-</tr>
-<tr>
-<td><tt class="varname">SEMMSL</tt></td>
-<td>Maximum number of semaphores per set</td>
-<td>at least 17</td>
-</tr>
-<tr>
-<td><tt class="varname">SEMMAP</tt></td>
-<td>Number of entries in semaphore map</td>
-<td>see text</td>
-</tr>
-<tr>
-<td><tt class="varname">SEMVMX</tt></td>
-<td>Maximum value of semaphore</td>
-<td>at least 1000 (The default is often 32767, don't change unless asked to.)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>    <a name="id2586864"></a> The most important
-    shared memory parameter is <tt class="varname">SHMMAX</tt>, the maximum size, in
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="SYSVIPC-PARAMETERS"
+></A
+><P
+><B
+>Table 16-2. <SPAN
+CLASS="SYSTEMITEM"
+>System V</SPAN
+> <ACRONYM
+CLASS="ACRONYM"
+>IPC</ACRONYM
+> parameters</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Description</TH
+><TH
+>Reasonable values</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SHMMAX</TT
+></TD
+><TD
+>Maximum size of shared memory segment (bytes)</TD
+><TD
+>250 kB + 8.2 kB * <A
+HREF="runtime-config.html#GUC-SHARED-BUFFERS"
+>shared_buffers</A
+> +
+       14.2 kB * <A
+HREF="runtime-config.html#GUC-MAX-CONNECTIONS"
+>max_connections</A
+> up to infinity</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SHMMIN</TT
+></TD
+><TD
+>Minimum size of shared memory segment (bytes)</TD
+><TD
+>1</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SHMALL</TT
+></TD
+><TD
+>Total amount of shared memory available (bytes or pages)</TD
+><TD
+>if bytes, same as <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>; if pages, <TT
+CLASS="LITERAL"
+>ceil(SHMMAX/PAGE_SIZE)</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SHMSEG</TT
+></TD
+><TD
+>Maximum number of shared memory segments per process</TD
+><TD
+>only 1 segment is needed, but the default is much higher</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SHMMNI</TT
+></TD
+><TD
+>Maximum number of shared memory segments system-wide</TD
+><TD
+>like <TT
+CLASS="VARNAME"
+>SHMSEG</TT
+> plus room for other applications</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SEMMNI</TT
+></TD
+><TD
+>Maximum number of semaphore identifiers (i.e., sets)</TD
+><TD
+>at least <TT
+CLASS="LITERAL"
+>ceil(max_connections / 16)</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SEMMNS</TT
+></TD
+><TD
+>Maximum number of semaphores system-wide</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ceil(max_connections / 16) * 17</TT
+> plus room for other applications</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SEMMSL</TT
+></TD
+><TD
+>Maximum number of semaphores per set</TD
+><TD
+>at least 17</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SEMMAP</TT
+></TD
+><TD
+>Number of entries in semaphore map</TD
+><TD
+>see text</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="VARNAME"
+>SEMVMX</TT
+></TD
+><TD
+>Maximum value of semaphore</TD
+><TD
+>at least 1000 (The default is often 32767, don't change unless asked to.)</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    <A
+NAME="AEN18047"
+></A
+> The most important
+    shared memory parameter is <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
-    <tt class="function">shmget</tt> like <span class="errorname">Invalid argument</span>, it is
+    <CODE
+CLASS="FUNCTION"
+>shmget</CODE
+> like <SPAN
+CLASS="ERRORNAME"
+>Invalid argument</SPAN
+>, it is
     possible that this limit has been exceeded. The size of the required
     shared memory segment varies both with the number of requested
-    buffers (<tt class="option">-B</tt> option) and the number of allowed connections
-    (<tt class="option">-N</tt> option), although the former is the most significant.
+    buffers (<TT
+CLASS="OPTION"
+>-B</TT
+> option) and the number of allowed connections
+    (<TT
+CLASS="OPTION"
+>-N</TT
+> option), although the former is the most significant.
     (You can, as a temporary solution, lower these settings to eliminate
     the failure.) As a rough approximation, you can estimate the
     required segment size by multiplying the number of buffers and the
     block size (8 kB by default) plus ample overhead (at least half a
     megabyte). Any error message you might get will contain the size of
     the failed allocation request.
-   </p>
-<p>    Less likely to cause problems is the minimum size for shared
-    memory segments (<tt class="varname">SHMMIN</tt>), which should be at most
-    approximately 256 kB for <span class="productname">PostgreSQL</span> (it is
+   </P
+><P
+>    Less likely to cause problems is the minimum size for shared
+    memory segments (<TT
+CLASS="VARNAME"
+>SHMMIN</TT
+>), which should be at most
+    approximately 256 kB for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> (it is
     usually just 1). The maximum number of segments system-wide
-    (<tt class="varname">SHMMNI</tt>) or per-process (<tt class="varname">SHMSEG</tt>) should
+    (<TT
+CLASS="VARNAME"
+>SHMMNI</TT
+>) or per-process (<TT
+CLASS="VARNAME"
+>SHMSEG</TT
+>) should
     not cause a problem unless your system has them set to zero. Some
     systems also have a limit on the total amount of shared memory in
     the system; see the platform-specific instructions below.
-   </p>
-<p>    <span class="productname">PostgreSQL</span> uses one semaphore per allowed connection
-    (<tt class="option">-N</tt> option), in sets of 16.  Each such set will also
-    contain a 17th semaphore which contains a &#8220;<span class="quote">magic
-    number</span>&#8221;, to detect collision with semaphore sets used by
+   </P
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses one semaphore per allowed connection
+    (<TT
+CLASS="OPTION"
+>-N</TT
+> option), in sets of 16.  Each such set will also
+    contain a 17th semaphore which contains a <SPAN
+CLASS="QUOTE"
+>"magic
+    number"</SPAN
+>, to detect collision with semaphore sets used by
     other applications. The maximum number of semaphores in the system
-    is set by <tt class="varname">SEMMNS</tt>, which consequently must be at least
-    as high as <tt class="varname">max_connections</tt> plus one extra for each 16
-    allowed connections (see the formula in <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;System V IPC parameters&#8221;</a>).  The parameter <tt class="varname">SEMMNI</tt>
+    is set by <TT
+CLASS="VARNAME"
+>SEMMNS</TT
+>, which consequently must be at least
+    as high as <TT
+CLASS="VARNAME"
+>max_connections</TT
+> plus one extra for each 16
+    allowed connections (see the formula in <A
+HREF="kernel-resources.html#SYSVIPC-PARAMETERS"
+>Table 16-2</A
+>).  The parameter <TT
+CLASS="VARNAME"
+>SEMMNI</TT
+>
     determines the limit on the number of semaphore sets that can
     exist on the system at one time.  Hence this parameter must be at
-    least <tt class="literal">ceil(max_connections / 16)</tt>. Lowering the number
+    least <TT
+CLASS="LITERAL"
+>ceil(max_connections / 16)</TT
+>. Lowering the number
     of allowed connections is a temporary workaround for failures,
-    which are usually confusingly worded <span class="errorname">No space
-    left on device</span>, from the function <tt class="function">semget</tt>.
-   </p>
-<p>    In some cases it might also be necessary to increase
-    <tt class="varname">SEMMAP</tt> to be at least on the order of
-    <tt class="varname">SEMMNS</tt>. This parameter defines the size of the semaphore
+    which are usually confusingly worded <SPAN
+CLASS="ERRORNAME"
+>No space
+    left on device</SPAN
+>, from the function <CODE
+CLASS="FUNCTION"
+>semget</CODE
+>.
+   </P
+><P
+>    In some cases it might also be necessary to increase
+    <TT
+CLASS="VARNAME"
+>SEMMAP</TT
+> to be at least on the order of
+    <TT
+CLASS="VARNAME"
+>SEMMNS</TT
+>. This parameter defines the size of the semaphore
     resource map, in which each contiguous block of available semaphores
     needs an entry. When a semaphore set is freed it is either added to
     an existing entry that is adjacent to the freed block or it is
@@ -172,70 +471,170 @@
     semaphores get lost (until reboot). Fragmentation of the semaphore
     space could over time lead to fewer available semaphores than there
     should be.
-   </p>
-<p>    The <tt class="varname">SEMMSL</tt> parameter, which determines how many
+   </P
+><P
+>    The <TT
+CLASS="VARNAME"
+>SEMMSL</TT
+> parameter, which determines how many
     semaphores can be in a set, must be at least 17 for
-    <span class="productname">PostgreSQL</span>.
-   </p>
-<p>    Various other settings related to &#8220;<span class="quote">semaphore undo</span>&#8221;, such as
-    <tt class="varname">SEMMNU</tt> and <tt class="varname">SEMUME</tt>, are not of concern
-    for <span class="productname">PostgreSQL</span>.
-   </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><span class="systemitem">BSD/OS</span></span></dt>
-<dd>
-<p><b>Shared Memory. </b>         By default, only 4 MB of shared memory is supported. Keep in
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+   </P
+><P
+>    Various other settings related to <SPAN
+CLASS="QUOTE"
+>"semaphore undo"</SPAN
+>, such as
+    <TT
+CLASS="VARNAME"
+>SEMMNU</TT
+> and <TT
+CLASS="VARNAME"
+>SEMUME</TT
+>, are not of concern
+    for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+   </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>BSD/OS</SPAN
+></DT
+><DD
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Shared Memory. </B
+>         By default, only 4 MB of shared memory is supported. Keep in
          mind that shared memory is not pageable; it is locked in RAM.
          To increase the amount of shared memory supported by your
          system, add the following to your kernel configuration
-         file. A <tt class="varname">SHMALL</tt> value of 1024 represents 4 MB of
+         file. A <TT
+CLASS="VARNAME"
+>SHMALL</TT
+> value of 1024 represents 4 MB of
          shared memory. The following increases the maximum shared
          memory area to 32 MB:
-</p>
-<pre class="programlisting">options "SHMALL=8192"
-options "SHMMAX=\(SHMALL*PAGE_SIZE\)"</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>options "SHMALL=8192"
+options "SHMMAX=\(SHMALL*PAGE_SIZE\)"</PRE
+><P>
          For those running 4.3 or later, you will probably need to increase
-         <tt class="varname">KERNEL_VIRTUAL_MB</tt> above the default <tt class="literal">248</tt>.
+         <TT
+CLASS="VARNAME"
+>KERNEL_VIRTUAL_MB</TT
+> above the default <TT
+CLASS="LITERAL"
+>248</TT
+>.
          Once all changes have been made, recompile the kernel, and reboot.
-        </p>
-<p>        For those running 4.0 and earlier releases, use <tt class="command">bpatch</tt>
-        to find the <tt class="varname">sysptsize</tt> value in the current
+        </P
+></DIV
+><P
+>        For those running 4.0 and earlier releases, use <TT
+CLASS="COMMAND"
+>bpatch</TT
+>
+        to find the <TT
+CLASS="VARNAME"
+>sysptsize</TT
+> value in the current
         kernel. This is computed dynamically at boot time.
-</p>
-<pre class="screen">$ <b class="userinput"><tt>bpatch -r sysptsize</tt></b>
-<tt class="computeroutput">0x9 = 9</tt></pre>
-<p>
-        Next, add <tt class="varname">SYSPTSIZE</tt> as a hard-coded value in the
+</P><PRE
+CLASS="SCREEN"
+>$ <KBD
+CLASS="USERINPUT"
+>bpatch -r sysptsize</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>0x9 = 9</SAMP
+></PRE
+><P>
+        Next, add <TT
+CLASS="VARNAME"
+>SYSPTSIZE</TT
+> as a hard-coded value in the
         kernel configuration file. Increase the value you found using
-        <tt class="command">bpatch</tt>. Add 1 for every additional 4 MB of
+        <TT
+CLASS="COMMAND"
+>bpatch</TT
+>. Add 1 for every additional 4 MB of
         shared memory you desire.
-</p>
-<pre class="programlisting">options "SYSPTSIZE=16"</pre>
-<p>
-        <tt class="varname">sysptsize</tt> cannot be changed by <tt class="command">sysctl</tt>.
-       </p>
-<p><b>Semaphores. </b>         You may need to increase the number of semaphores. By
-         default, <span class="productname">PostgreSQL</span> allocates 34 semaphores,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>options "SYSPTSIZE=16"</PRE
+><P>
+        <TT
+CLASS="VARNAME"
+>sysptsize</TT
+> cannot be changed by <TT
+CLASS="COMMAND"
+>sysctl</TT
+>.
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Semaphores. </B
+>         You may need to increase the number of semaphores. By
+         default, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allocates 34 semaphores,
          which is over half the default system total of 60.  Set the
          values you want in your kernel configuration file, e.g.:
-</p>
-<pre class="programlisting">options "SEMMNI=40"
-options "SEMMNS=240"</pre>
-<p>
-        </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><span xmlns="" class="systemitem">FreeBSD</span></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><span xmlns="" class="systemitem">NetBSD</span></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><span class="systemitem">OpenBSD</span></span>
-</dt>
-<dd>
-<p>        The options <tt class="varname">SYSVSHM</tt> and <tt class="varname">SYSVSEM</tt> need
+</P><PRE
+CLASS="PROGRAMLISTING"
+>options "SEMMNI=40"
+options "SEMMNS=240"</PRE
+><P>
+        </P
+></DIV
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>FreeBSD</SPAN
+><BR><SPAN
+CLASS="SYSTEMITEM"
+>NetBSD</SPAN
+><BR><SPAN
+CLASS="SYSTEMITEM"
+>OpenBSD</SPAN
+></DT
+><DD
+><P
+>        The options <TT
+CLASS="VARNAME"
+>SYSVSHM</TT
+> and <TT
+CLASS="VARNAME"
+>SYSVSEM</TT
+> need
         to be enabled when the kernel is compiled. (They are by
         default.) The maximum size of shared memory is determined by
-        the option <tt class="varname">SHMMAXPGS</tt> (in pages). The following
+        the option <TT
+CLASS="VARNAME"
+>SHMMAXPGS</TT
+> (in pages). The following
         shows an example of how to set the various parameters:
-</p>
-<pre class="programlisting">options         SYSVSHM
+</P><PRE
+CLASS="PROGRAMLISTING"
+>options         SYSVSHM
 options         SHMMAXPGS=4096
 options         SHMSEG=256
 
@@ -243,123 +642,294 @@ options         SYSVSEM
 options         SEMMNI=256
 options         SEMMNS=512
 options         SEMMNU=256
-options         SEMMAP=256</pre>
-<p>
-        (On <span class="systemitem">NetBSD</span> and <span class="systemitem">OpenBSD</span> the key word is actually
-        <tt class="literal">option</tt> singular.)
-       </p>
-<p>        You might also want to configure your kernel to lock shared
+options         SEMMAP=256</PRE
+><P>
+        (On <SPAN
+CLASS="SYSTEMITEM"
+>NetBSD</SPAN
+> and <SPAN
+CLASS="SYSTEMITEM"
+>OpenBSD</SPAN
+> the key word is actually
+        <TT
+CLASS="LITERAL"
+>option</TT
+> singular.)
+       </P
+><P
+>        You might also want to configure your kernel to lock shared
         memory into RAM and prevent it from being paged out to swap.
-        Use the <tt class="command">sysctl</tt> setting
-        <tt class="literal">kern.ipc.shm_use_phys</tt>.
-       </p>
-</dd>
-<dt><span class="term"><span class="systemitem">HP-UX</span></span></dt>
-<dd>
-<p>        The default settings tend to suffice for normal installations.
-        On <span class="productname">HP-UX</span> 10, the factory default for
-        <tt class="varname">SEMMNS</tt> is 128, which might be too low for larger
+        Use the <TT
+CLASS="COMMAND"
+>sysctl</TT
+> setting
+        <TT
+CLASS="LITERAL"
+>kern.ipc.shm_use_phys</TT
+>.
+       </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>HP-UX</SPAN
+></DT
+><DD
+><P
+>        The default settings tend to suffice for normal installations.
+        On <SPAN
+CLASS="PRODUCTNAME"
+>HP-UX</SPAN
+> 10, the factory default for
+        <TT
+CLASS="VARNAME"
+>SEMMNS</TT
+> is 128, which might be too low for larger
         database sites.
-       </p>
-<p>        <span class="acronym">IPC</span> parameters can be set in the <span class="application">System
-        Administration Manager</span> (<span class="acronym">SAM</span>) under
-        <span class="guimenu">Kernel
-        Configuration</span>-&gt;<span class="guimenuitem">Configurable Parameters</span>. Hit
-        <span class="guibutton">Create A New Kernel</span> when you're done.
-       </p>
-</dd>
-<dt><span class="term"><span class="systemitem">Linux</span></span></dt>
-<dd>
-<p>        The default shared memory limit (both
-        <tt class="varname">SHMMAX</tt> and <tt class="varname">SHMALL</tt>) is 32
+       </P
+><P
+>        <ACRONYM
+CLASS="ACRONYM"
+>IPC</ACRONYM
+> parameters can be set in the <SPAN
+CLASS="APPLICATION"
+>System
+        Administration Manager</SPAN
+> (<ACRONYM
+CLASS="ACRONYM"
+>SAM</ACRONYM
+>) under
+        <SPAN
+CLASS="GUIMENU"
+>Kernel
+        Configuration</SPAN
+>-&gt;<SPAN
+CLASS="GUIMENUITEM"
+>Configurable Parameters</SPAN
+>. Hit
+        <SPAN
+CLASS="GUIBUTTON"
+>Create A New Kernel</SPAN
+> when you're done.
+       </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>Linux</SPAN
+></DT
+><DD
+><P
+>        The default shared memory limit (both
+        <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+> and <TT
+CLASS="VARNAME"
+>SHMALL</TT
+>) is 32
         MB in 2.2 kernels, but it can be changed in the
-        <tt class="filename">proc</tt> file system (without reboot).  For
+        <TT
+CLASS="FILENAME"
+>proc</TT
+> file system (without reboot).  For
         example, to allow 128 MB:
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>echo 134217728 &gt;/proc/sys/kernel/shmall</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>echo 134217728 &gt;/proc/sys/kernel/shmmax</tt></b></pre>
-<p>
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>echo 134217728 &#62;/proc/sys/kernel/shmall</KBD
+>
+<SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>echo 134217728 &#62;/proc/sys/kernel/shmmax</KBD
+></PRE
+><P>
         You could put these commands into a script run at boot-time.
-       </p>
-<p>        Alternatively, you can use <tt class="command">sysctl</tt>, if
+       </P
+><P
+>        Alternatively, you can use <TT
+CLASS="COMMAND"
+>sysctl</TT
+>, if
         available, to control these parameters.  Look for a file
-        called <tt class="filename">/etc/sysctl.conf</tt> and add lines
+        called <TT
+CLASS="FILENAME"
+>/etc/sysctl.conf</TT
+> and add lines
         like the following to it:
-</p>
-<pre class="programlisting">kernel.shmall = 134217728
-kernel.shmmax = 134217728</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>kernel.shmall = 134217728
+kernel.shmmax = 134217728</PRE
+><P>
         This file is usually processed at boot time, but
-        <tt class="command">sysctl</tt> can also be called
+        <TT
+CLASS="COMMAND"
+>sysctl</TT
+> can also be called
         explicitly later.
-       </p>
-<p>        Other parameters are sufficiently sized for any application. If
+       </P
+><P
+>        Other parameters are sufficiently sized for any application. If
         you want to see for yourself look in
-        <tt class="filename">/usr/src/linux/include/asm-<i class="replaceable"><tt>xxx</tt></i>/shmparam.h</tt>
-        and <tt class="filename">/usr/src/linux/include/linux/sem.h</tt>.
-       </p>
-</dd>
-<dt><span class="term"><span class="systemitem">MacOS X</span></span></dt>
-<dd>
-<p>        In OS X 10.2 and earlier, edit the file
-        <tt class="filename">/System/Library/StartupItems/SystemTuning/SystemTuning</tt>
+        <TT
+CLASS="FILENAME"
+>/usr/src/linux/include/asm-<VAR
+CLASS="REPLACEABLE"
+>xxx</VAR
+>/shmparam.h</TT
+>
+        and <TT
+CLASS="FILENAME"
+>/usr/src/linux/include/linux/sem.h</TT
+>.
+       </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>MacOS X</SPAN
+></DT
+><DD
+><P
+>        In OS X 10.2 and earlier, edit the file
+        <TT
+CLASS="FILENAME"
+>/System/Library/StartupItems/SystemTuning/SystemTuning</TT
+>
         and change the values in the following commands:
-</p>
-<pre class="programlisting">sysctl -w kern.sysv.shmmax
+</P><PRE
+CLASS="PROGRAMLISTING"
+>sysctl -w kern.sysv.shmmax
 sysctl -w kern.sysv.shmmin
 sysctl -w kern.sysv.shmmni
 sysctl -w kern.sysv.shmseg
-sysctl -w kern.sysv.shmall</pre>
-<p>
-        In OS X 10.3, these commands have been moved to <tt class="filename">/etc/rc</tt>
+sysctl -w kern.sysv.shmall</PRE
+><P>
+        In OS X 10.3, these commands have been moved to <TT
+CLASS="FILENAME"
+>/etc/rc</TT
+>
         and must be edited there.
-       </p>
-</dd>
-<dt><span class="term"><span class="systemitem">SCO OpenServer</span></span></dt>
-<dd>
-<p>        In the default configuration, only 512 kB of shared memory per
-        segment is allowed, which is about enough for <tt class="option">-B 24 -N
-        12</tt>. To increase the setting, first change to the directory
-        <tt class="filename">/etc/conf/cf.d</tt>. To display the current value of
-        <tt class="varname">SHMMAX</tt>, run
-</p>
-<pre class="programlisting">./configure -y SHMMAX</pre>
-<p>
-        To set a new value for <tt class="varname">SHMMAX</tt>, run
-</p>
-<pre class="programlisting">./configure SHMMAX=<i class="replaceable"><tt>value</tt></i></pre>
-<p>
-        where <i class="replaceable"><tt>value</tt></i> is the new value you want to use
-        (in bytes). After setting <tt class="varname">SHMMAX</tt>, rebuild the kernel:
-</p>
-<pre class="programlisting">./link_unix</pre>
-<p>
+       </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>SCO OpenServer</SPAN
+></DT
+><DD
+><P
+>        In the default configuration, only 512 kB of shared memory per
+        segment is allowed, which is about enough for <TT
+CLASS="OPTION"
+>-B 24 -N
+        12</TT
+>. To increase the setting, first change to the directory
+        <TT
+CLASS="FILENAME"
+>/etc/conf/cf.d</TT
+>. To display the current value of
+        <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>, run
+</P><PRE
+CLASS="PROGRAMLISTING"
+>./configure -y SHMMAX</PRE
+><P>
+        To set a new value for <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>, run
+</P><PRE
+CLASS="PROGRAMLISTING"
+>./configure SHMMAX=<VAR
+CLASS="REPLACEABLE"
+>value</VAR
+></PRE
+><P>
+        where <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+> is the new value you want to use
+        (in bytes). After setting <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>, rebuild the kernel:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>./link_unix</PRE
+><P>
         and reboot.
-       </p>
-</dd>
-<dt><span class="term"><span class="systemitem">AIX</span></span></dt>
-<dd>
-<p>        At least as of version 5.1, it should not be necessary to do
+       </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>AIX</SPAN
+></DT
+><DD
+><P
+>        At least as of version 5.1, it should not be necessary to do
         any special configuration for such parameters as
-        <tt class="varname">SHMMAX</tt>, as it appears this is configured to
+        <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>, as it appears this is configured to
         allow all memory to be used as shared memory.  That is the
         sort of configuration commonly used for other databases such
-        as <span class="application">DB/2</span>.</p>
-<p> It may, however, be necessary to modify the global
-       <tt class="command">ulimit</tt> information in
-       <tt class="filename">/etc/security/limits</tt>, as the default hard
-       limits for filesizes (<tt class="varname">fsize</tt>) and numbers of
-       files (<tt class="varname">nofiles</tt>) may be too low.
-       </p>
-</dd>
-<dt><span class="term"><span class="systemitem">Solaris</span></span></dt>
-<dd>
-<p>        At least in version 2.6, the default maximum size of a shared
-        memory segments is too low for <span class="productname">PostgreSQL</span>. The
-        relevant settings can be changed in <tt class="filename">/etc/system</tt>,
+        as <SPAN
+CLASS="APPLICATION"
+>DB/2</SPAN
+>.</P
+><P
+> It may, however, be necessary to modify the global
+       <TT
+CLASS="COMMAND"
+>ulimit</TT
+> information in
+       <TT
+CLASS="FILENAME"
+>/etc/security/limits</TT
+>, as the default hard
+       limits for filesizes (<TT
+CLASS="VARNAME"
+>fsize</TT
+>) and numbers of
+       files (<TT
+CLASS="VARNAME"
+>nofiles</TT
+>) may be too low.
+       </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>Solaris</SPAN
+></DT
+><DD
+><P
+>        At least in version 2.6, the default maximum size of a shared
+        memory segments is too low for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. The
+        relevant settings can be changed in <TT
+CLASS="FILENAME"
+>/etc/system</TT
+>,
         for example:
-</p>
-<pre class="programlisting">set shmsys:shminfo_shmmax=0x2000000
+</P><PRE
+CLASS="PROGRAMLISTING"
+>set shmsys:shminfo_shmmax=0x2000000
 set shmsys:shminfo_shmmin=1
 set shmsys:shminfo_shmmni=256
 set shmsys:shminfo_shmseg=256
@@ -367,166 +937,402 @@ set shmsys:shminfo_shmseg=256
 set semsys:seminfo_semmap=256
 set semsys:seminfo_semmni=512
 set semsys:seminfo_semmns=512
-set semsys:seminfo_semmsl=32</pre>
-<p>
+set semsys:seminfo_semmsl=32</PRE
+><P>
         You need to reboot for the changes to take effect.
-       </p>
-<p>        See also <a href="http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html" target="_top">http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html</a>
+       </P
+><P
+>        See also <A
+HREF="http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html"
+TARGET="_top"
+>http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html</A
+>
         for information on shared memory under
-        <span class="productname">Solaris</span>.
-       </p>
-</dd>
-<dt><span class="term"><span class="systemitem">UnixWare</span></span></dt>
-<dd>
-<p>        On <span class="productname">UnixWare</span> 7, the maximum size for shared
+        <SPAN
+CLASS="PRODUCTNAME"
+>Solaris</SPAN
+>.
+       </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>UnixWare</SPAN
+></DT
+><DD
+><P
+>        On <SPAN
+CLASS="PRODUCTNAME"
+>UnixWare</SPAN
+> 7, the maximum size for shared
         memory segments is 512 kB in the default configuration. This
-        is enough for about <tt class="option">-B 24 -N 12</tt>. To display the
-        current value of <tt class="varname">SHMMAX</tt>, run
-</p>
-<pre class="programlisting">/etc/conf/bin/idtune -g SHMMAX</pre>
-<p>
+        is enough for about <TT
+CLASS="OPTION"
+>-B 24 -N 12</TT
+>. To display the
+        current value of <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>, run
+</P><PRE
+CLASS="PROGRAMLISTING"
+>/etc/conf/bin/idtune -g SHMMAX</PRE
+><P>
         which displays the current, default, minimum, and maximum
-        values. To set a new value for <tt class="varname">SHMMAX</tt>,
+        values. To set a new value for <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>,
         run
-</p>
-<pre class="programlisting">/etc/conf/bin/idtune SHMMAX <i class="replaceable"><tt>value</tt></i></pre>
-<p>
-        where <i class="replaceable"><tt>value</tt></i> is the new value you want to use
-        (in bytes). After setting <tt class="varname">SHMMAX</tt>, rebuild the
+</P><PRE
+CLASS="PROGRAMLISTING"
+>/etc/conf/bin/idtune SHMMAX <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+></PRE
+><P>
+        where <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+> is the new value you want to use
+        (in bytes). After setting <TT
+CLASS="VARNAME"
+>SHMMAX</TT
+>, rebuild the
         kernel:
-</p>
-<pre class="programlisting">/etc/conf/bin/idbuild -B</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>/etc/conf/bin/idbuild -B</PRE
+><P>
         and reboot.
-       </p>
-</dd>
-</dl></div>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2587803"></a>16.5.2. Resource Limits</h3></div></div>
-<div></div>
-</div>
-<p>    Unix-like operating systems enforce various kinds of resource limits
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN18259"
+>16.5.2. Resource Limits</A
+></H2
+><P
+>    Unix-like operating systems enforce various kinds of resource limits
     that might interfere with the operation of your
-    <span class="productname">PostgreSQL</span> server. Of particular
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server. Of particular
     importance are limits on the number of processes per user, the
     number of open files per process, and the amount of memory available
-    to each process. Each of these have a &#8220;<span class="quote">hard</span>&#8221; and a
-    &#8220;<span class="quote">soft</span>&#8221; limit. The soft limit is what actually counts
+    to each process. Each of these have a <SPAN
+CLASS="QUOTE"
+>"hard"</SPAN
+> and a
+    <SPAN
+CLASS="QUOTE"
+>"soft"</SPAN
+> limit. The soft limit is what actually counts
     but it can be changed by the user up to the hard limit. The hard
     limit can only be changed by the root user. The system call
-    <tt class="function">setrlimit</tt> is responsible for setting these
-    parameters. The shell's built-in command <tt class="command">ulimit</tt>
-    (Bourne shells) or <tt class="command">limit</tt> (<span class="application">csh</span>) is
+    <CODE
+CLASS="FUNCTION"
+>setrlimit</CODE
+> is responsible for setting these
+    parameters. The shell's built-in command <TT
+CLASS="COMMAND"
+>ulimit</TT
+>
+    (Bourne shells) or <TT
+CLASS="COMMAND"
+>limit</TT
+> (<SPAN
+CLASS="APPLICATION"
+>csh</SPAN
+>) is
     used to control the resource limits from the command line. On
-    BSD-derived systems the file <tt class="filename">/etc/login.conf</tt>
+    BSD-derived systems the file <TT
+CLASS="FILENAME"
+>/etc/login.conf</TT
+>
     controls the various resource limits set during login. See the
     operating system documentation for details. The relevant
-    parameters are <tt class="varname">maxproc</tt>,
-    <tt class="varname">openfiles</tt>, and <tt class="varname">datasize</tt>. For
+    parameters are <TT
+CLASS="VARNAME"
+>maxproc</TT
+>,
+    <TT
+CLASS="VARNAME"
+>openfiles</TT
+>, and <TT
+CLASS="VARNAME"
+>datasize</TT
+>. For
     example:
-</p>
-<pre class="programlisting">default:\
+</P><PRE
+CLASS="PROGRAMLISTING"
+>default:\
 ...
         :datasize-cur=256M:\
         :maxproc-cur=256:\
         :openfiles-cur=256:\
-...</pre>
-<p>
-    (<tt class="literal">-cur</tt> is the soft limit.  Append
-    <tt class="literal">-max</tt> to set the hard limit.)
-   </p>
-<p>    Kernels can also have system-wide limits on some resources.
-    </p>
-<div class="itemizedlist"><ul type="disc"><li><p>      On <span class="productname">Linux</span>
-      <tt class="filename">/proc/sys/fs/file-max</tt> determines the
+...</PRE
+><P>
+    (<TT
+CLASS="LITERAL"
+>-cur</TT
+> is the soft limit.  Append
+    <TT
+CLASS="LITERAL"
+>-max</TT
+> to set the hard limit.)
+   </P
+><P
+>    Kernels can also have system-wide limits on some resources.
+    <P
+></P
+></P><UL
+><LI
+><P
+>      On <SPAN
+CLASS="PRODUCTNAME"
+>Linux</SPAN
+>
+      <TT
+CLASS="FILENAME"
+>/proc/sys/fs/file-max</TT
+> determines the
       maximum number of open files that the kernel will support.  It can
       be changed by writing a different number into the file or by
-      adding an assignment in <tt class="filename">/etc/sysctl.conf</tt>.
+      adding an assignment in <TT
+CLASS="FILENAME"
+>/etc/sysctl.conf</TT
+>.
       The maximum limit of files per process is fixed at the time the
       kernel is compiled; see
-      <tt class="filename">/usr/src/linux/Documentation/proc.txt</tt> for
+      <TT
+CLASS="FILENAME"
+>/usr/src/linux/Documentation/proc.txt</TT
+> for
       more information.
-      </p></li></ul></div>
-<p>
-   </p>
-<p>    The <span class="productname">PostgreSQL</span> server uses one process
+      </P
+></LI
+></UL
+><P>
+   </P
+><P
+>    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server uses one process
     per connection so you should provide for at least as many processes
     as allowed connections, in addition to what you need for the rest
     of your system.  This is usually not a problem but if you run
     several servers on one machine things might get tight.
-   </p>
-<p>    The factory default limit on open files is often set to
-    &#8220;<span class="quote">socially friendly</span>&#8221; values that allow many users to
+   </P
+><P
+>    The factory default limit on open files is often set to
+    <SPAN
+CLASS="QUOTE"
+>"socially friendly"</SPAN
+> values that allow many users to
     coexist on a machine without using an inappropriate fraction of
     the system resources.  If you run many servers on a machine this
     is perhaps what you want, but on dedicated servers you may want to
     raise this limit.
-   </p>
-<p>    On the other side of the coin, some systems allow individual
+   </P
+><P
+>    On the other side of the coin, some systems allow individual
     processes to open large numbers of files; if more than a few
     processes do so then the system-wide limit can easily be exceeded.
     If you find this happening, and you do not want to alter the
-    system-wide limit, you can set <span class="productname">PostgreSQL</span>'s <a href="runtime-config.html#guc-max-files-per-process">max_files_per_process</a> configuration parameter to
+    system-wide limit, you can set <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s <A
+HREF="runtime-config.html#GUC-MAX-FILES-PER-PROCESS"
+>max_files_per_process</A
+> configuration parameter to
     limit the consumption of open files.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2587984"></a>16.5.3. Linux Memory Overcommit</h3></div></div>
-<div></div>
-</div>
-<p>    In Linux 2.4 and later, the default virtual memory behavior is not
-    optimal for <span class="productname">PostgreSQL</span>. Because of the
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN18291"
+>16.5.3. Linux Memory Overcommit</A
+></H2
+><P
+>    In Linux 2.4 and later, the default virtual memory behavior is not
+    optimal for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. Because of the
     way that the kernel implements memory overcommit, the kernel may
-    terminate the <span class="productname">PostgreSQL</span> server (the
-    <tt class="filename">postmaster</tt> process) if the memory demands of
+    terminate the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server (the
+    <TT
+CLASS="FILENAME"
+>postmaster</TT
+> process) if the memory demands of
     another process cause the system to run out of virtual memory.
-   </p>
-<p>    If this happens, you will see a kernel message that looks like
+   </P
+><P
+>    If this happens, you will see a kernel message that looks like
     this (consult your system documentation and configuration on where
     to look for such a message):
-</p>
-<pre class="programlisting">Out of Memory: Killed process 12345 (postmaster). </pre>
-<p>
-    This indicates that the <tt class="filename">postmaster</tt> process
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Out of Memory: Killed process 12345 (postmaster). </PRE
+><P>
+    This indicates that the <TT
+CLASS="FILENAME"
+>postmaster</TT
+> process
     has been terminated due to memory pressure.
     Although existing database connections will continue to function
     normally, no new connections will be accepted.  To recover,
-    <span class="productname">PostgreSQL</span> will need to be restarted.
-   </p>
-<p>    One way to avoid this problem is to run
-    <span class="productname">PostgreSQL</span>
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will need to be restarted.
+   </P
+><P
+>    One way to avoid this problem is to run
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     on a machine where you can be sure that other processes will not
     run the machine out of memory.
-   </p>
-<p>    On Linux 2.6 and later, a better solution is to modify the kernel's
-    behavior so that it will not &#8220;<span class="quote">overcommit</span>&#8221; memory.  This is
+   </P
+><P
+>    On Linux 2.6 and later, a better solution is to modify the kernel's
+    behavior so that it will not <SPAN
+CLASS="QUOTE"
+>"overcommit"</SPAN
+> memory.  This is
     done by selecting strict overcommit mode via sysctl:
-</p>
-<pre class="programlisting">sysctl -w vm.overcommit_memory=2</pre>
-<p>
-    or placing an equivalent entry in <tt class="filename">/etc/sysctl.conf</tt>.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>sysctl -w vm.overcommit_memory=2</PRE
+><P>
+    or placing an equivalent entry in <TT
+CLASS="FILENAME"
+>/etc/sysctl.conf</TT
+>.
     You may also wish to modify the related setting 
-    <tt class="literal">vm.overcommit_ratio</tt>.  For details see the kernel documentation
-    file <tt class="filename">Documentation/vm/overcommit-accounting</tt>.
-   </p>
-<p>    Some vendors' Linux 2.4 kernels are reported to have early versions
+    <TT
+CLASS="LITERAL"
+>vm.overcommit_ratio</TT
+>.  For details see the kernel documentation
+    file <TT
+CLASS="FILENAME"
+>Documentation/vm/overcommit-accounting</TT
+>.
+   </P
+><P
+>    Some vendors' Linux 2.4 kernels are reported to have early versions
     of the 2.6 overcommit sysctl.  However, setting
-    <tt class="literal">vm.overcommit_memory</tt> to 2
+    <TT
+CLASS="LITERAL"
+>vm.overcommit_memory</TT
+> to 2
     on a kernel that does not have the relevant code will make
     things worse not better.  It is recommended that you inspect
     the actual kernel source code (see the function
-    <tt class="function">vm_enough_memory</tt> in the file <tt class="filename">mm/mmap.c</tt>)
+    <CODE
+CLASS="FUNCTION"
+>vm_enough_memory</CODE
+> in the file <TT
+CLASS="FILENAME"
+>mm/mmap.c</TT
+>)
     to verify what is supported in your copy before you try this in a 2.4
-    installation.  The presence of the <tt class="filename">overcommit-accounting</tt>
-    documentation file should <span class="emphasis"><em>not</em></span> be taken as evidence that the
+    installation.  The presence of the <TT
+CLASS="FILENAME"
+>overcommit-accounting</TT
+>
+    documentation file should <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> be taken as evidence that the
     feature is there.  If in any doubt, consult a kernel expert or your
     kernel vendor.
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="postmaster-shutdown.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Run-time Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Shutting Down the Server</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

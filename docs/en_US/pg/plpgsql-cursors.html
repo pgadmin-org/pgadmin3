@@ -1,217 +1,532 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>35.8. Cursors</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
-<link rel="previous" href="plpgsql-control-structures.html" title="35.7. Control Structures">
-<link rel="next" href="plpgsql-errors-and-messages.html" title="35.9. Errors and Messages">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-cursors"></a>35.8. Cursors</h2></div></div>
-<div></div>
-</div>
-<a name="id2645906"></a><p>    Rather than executing a whole query at once, it is possible to set
-    up a <i class="firstterm">cursor</i> that encapsulates the query, and then read
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Cursors</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/pgSQL - SQL Procedural Language"
+HREF="plpgsql.html"><LINK
+REL="PREVIOUS"
+TITLE="Control Structures"
+HREF="plpgsql-control-structures.html"><LINK
+REL="NEXT"
+TITLE="Errors and Messages"
+HREF="plpgsql-errors-and-messages.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-control-structures.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 35. <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> - <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-errors-and-messages.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPGSQL-CURSORS"
+>35.8. Cursors</A
+></H1
+><A
+NAME="AEN31742"
+></A
+><P
+>    Rather than executing a whole query at once, it is possible to set
+    up a <I
+CLASS="FIRSTTERM"
+>cursor</I
+> that encapsulates the query, and then read
     the query result a few rows at a time. One reason for doing this is
     to avoid memory overrun when the result contains a large number of
-    rows. (However, <span class="application">PL/pgSQL</span> users do not normally need
-    to worry about that, since <tt class="literal">FOR</tt> loops automatically use a cursor
+    rows. (However, <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> users do not normally need
+    to worry about that, since <TT
+CLASS="LITERAL"
+>FOR</TT
+> loops automatically use a cursor
     internally to avoid memory problems.) A more interesting usage is to
     return a reference to a cursor that a function has created, allowing the
     caller to read the rows. This provides an efficient way to return
     large row sets from functions.
-   </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="plpgsql-cursor-declarations"></a>35.8.1. Declaring Cursor Variables</h3></div></div>
-<div></div>
-</div>
-<p>     All access to cursors in <span class="application">PL/pgSQL</span> goes through
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-CURSOR-DECLARATIONS"
+>35.8.1. Declaring Cursor Variables</A
+></H2
+><P
+>     All access to cursors in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> goes through
      cursor variables, which are always of the special data type
-     <tt class="type">refcursor</tt>.  One way to create a cursor variable
-     is just to declare it as a variable of type <tt class="type">refcursor</tt>.
+     <TT
+CLASS="TYPE"
+>refcursor</TT
+>.  One way to create a cursor variable
+     is just to declare it as a variable of type <TT
+CLASS="TYPE"
+>refcursor</TT
+>.
      Another way is to use the cursor declaration syntax,
      which in general is:
-</p>
-<pre class="synopsis"><i class="replaceable"><tt>name</tt></i> CURSOR [<span class="optional"> ( <i class="replaceable"><tt>arguments</tt></i> ) </span>] FOR <i class="replaceable"><tt>query</tt></i> ;</pre>
-<p>
-     (<tt class="literal">FOR</tt> may be replaced by <tt class="literal">IS</tt> for
-     <span class="productname">Oracle</span> compatibility.)
-     <i class="replaceable"><tt>arguments</tt></i>, if specified, is a
-     comma-separated list of pairs <tt class="literal"><i class="replaceable"><tt>name</tt></i>
-     <i class="replaceable"><tt>datatype</tt></i></tt> that define names to be
+</P><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> CURSOR [<SPAN
+CLASS="OPTIONAL"
+> ( <VAR
+CLASS="REPLACEABLE"
+>arguments</VAR
+> ) </SPAN
+>] FOR <VAR
+CLASS="REPLACEABLE"
+>query</VAR
+> ;</PRE
+><P>
+     (<TT
+CLASS="LITERAL"
+>FOR</TT
+> may be replaced by <TT
+CLASS="LITERAL"
+>IS</TT
+> for
+     <SPAN
+CLASS="PRODUCTNAME"
+>Oracle</SPAN
+> compatibility.)
+     <VAR
+CLASS="REPLACEABLE"
+>arguments</VAR
+>, if specified, is a
+     comma-separated list of pairs <TT
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>
+     <VAR
+CLASS="REPLACEABLE"
+>datatype</VAR
+></TT
+> that define names to be
      replaced by parameter values in the given query.  The actual
      values to substitute for these names will be specified later,
      when the cursor is opened.
-    </p>
-<p>     Some examples:
-</p>
-<pre class="programlisting">DECLARE
+    </P
+><P
+>     Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DECLARE
     curs1 refcursor;
     curs2 CURSOR FOR SELECT * FROM tenk1;
-    curs3 CURSOR (key integer) IS SELECT * FROM tenk1 WHERE unique1 = key;</pre>
-<p>
-     All three of these variables have the data type <tt class="type">refcursor</tt>,
+    curs3 CURSOR (key integer) IS SELECT * FROM tenk1 WHERE unique1 = key;</PRE
+><P>
+     All three of these variables have the data type <TT
+CLASS="TYPE"
+>refcursor</TT
+>,
      but the first may be used with any query, while the second has
-     a fully specified query already <i class="firstterm">bound</i> to it, and the last
-     has a parameterized query bound to it.  (<tt class="literal">key</tt> will be
+     a fully specified query already <I
+CLASS="FIRSTTERM"
+>bound</I
+> to it, and the last
+     has a parameterized query bound to it.  (<TT
+CLASS="LITERAL"
+>key</TT
+> will be
      replaced by an integer parameter value when the cursor is opened.)
-     The variable <tt class="literal">curs1</tt>
-     is said to be <i class="firstterm">unbound</i> since it is not bound to
+     The variable <TT
+CLASS="LITERAL"
+>curs1</TT
+>
+     is said to be <I
+CLASS="FIRSTTERM"
+>unbound</I
+> since it is not bound to
      any particular query.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="plpgsql-cursor-opening"></a>35.8.2. Opening Cursors</h3></div></div>
-<div></div>
-</div>
-<p>     Before a cursor can be used to retrieve rows, it must be
-     <i class="firstterm">opened</i>. (This is the equivalent action to the SQL
-     command <tt class="command">DECLARE CURSOR</tt>.) <span class="application">PL/pgSQL</span> has
-     three forms of the <tt class="command">OPEN</tt> statement, two of which use unbound
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-CURSOR-OPENING"
+>35.8.2. Opening Cursors</A
+></H2
+><P
+>     Before a cursor can be used to retrieve rows, it must be
+     <I
+CLASS="FIRSTTERM"
+>opened</I
+>. (This is the equivalent action to the SQL
+     command <TT
+CLASS="COMMAND"
+>DECLARE CURSOR</TT
+>.) <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> has
+     three forms of the <TT
+CLASS="COMMAND"
+>OPEN</TT
+> statement, two of which use unbound
      cursor variables while the third uses a bound cursor variable.
-    </p>
-<div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2646107"></a>35.8.2.1. <tt class="command">OPEN FOR SELECT</tt></h4></div></div>
-<div></div>
-</div>
-<pre class="synopsis">OPEN <i class="replaceable"><tt>unbound-cursor</tt></i> FOR SELECT ...;</pre>
-<p>    The cursor variable is opened and given the specified query to
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN31781"
+>35.8.2.1. <TT
+CLASS="COMMAND"
+>OPEN FOR SELECT</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>OPEN <VAR
+CLASS="REPLACEABLE"
+>unbound-cursor</VAR
+> FOR SELECT ...;</PRE
+><P
+>    The cursor variable is opened and given the specified query to
         execute.  The cursor cannot be open already, and it must have been
         declared as an unbound cursor (that is, as a simple
-        <tt class="type">refcursor</tt> variable).  The <tt class="command">SELECT</tt> query
-        is treated in the same way as other <tt class="command">SELECT</tt>
-        statements in <span class="application">PL/pgSQL</span>: <span class="application">PL/pgSQL</span>
+        <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable).  The <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query
+        is treated in the same way as other <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+        statements in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>: <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>
         variable names are substituted, and the query plan is cached for
         possible reuse.
-       </p>
-<p>        An example:
-</p>
-<pre class="programlisting">OPEN curs1 FOR SELECT * FROM foo WHERE key = mykey;</pre>
-<p>
-       </p>
-</div>
-<div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2646168"></a>35.8.2.2. <tt class="command">OPEN FOR EXECUTE</tt></h4></div></div>
-<div></div>
-</div>
-<pre class="synopsis">OPEN <i class="replaceable"><tt>unbound-cursor</tt></i> FOR EXECUTE <i class="replaceable"><tt>query-string</tt></i>;</pre>
-<p>          The cursor variable is opened and given the specified query to
+       </P
+><P
+>        An example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>OPEN curs1 FOR SELECT * FROM foo WHERE key = mykey;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN31794"
+>35.8.2.2. <TT
+CLASS="COMMAND"
+>OPEN FOR EXECUTE</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>OPEN <VAR
+CLASS="REPLACEABLE"
+>unbound-cursor</VAR
+> FOR EXECUTE <VAR
+CLASS="REPLACEABLE"
+>query-string</VAR
+>;</PRE
+><P
+>          The cursor variable is opened and given the specified query to
           execute.  The cursor cannot be open already, and it must have been
           declared as an unbound cursor (that is, as a simple
-          <tt class="type">refcursor</tt> variable).  The query is specified as a string
-          expression in the same way as in the <tt class="command">EXECUTE</tt>
+          <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable).  The query is specified as a string
+          expression in the same way as in the <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>
           command.  As usual, this gives flexibility so the query can vary
           from one run to the next.
-       </p>
-<p>        An example:
-</p>
-<pre class="programlisting">OPEN curs1 FOR EXECUTE 'SELECT * FROM ' || quote_ident($1);</pre>
-<p>
-       </p>
-</div>
-<div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2646218"></a>35.8.2.3. Opening a Bound Cursor</h4></div></div>
-<div></div>
-</div>
-<pre class="synopsis">OPEN <i class="replaceable"><tt>bound-cursor</tt></i> [<span class="optional"> ( <i class="replaceable"><tt>argument_values</tt></i> ) </span>];</pre>
-<p>          This form of <tt class="command">OPEN</tt> is used to open a cursor
+       </P
+><P
+>        An example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>OPEN curs1 FOR EXECUTE 'SELECT * FROM ' || quote_ident($1);</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN31805"
+>35.8.2.3. Opening a Bound Cursor</A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>OPEN <VAR
+CLASS="REPLACEABLE"
+>bound-cursor</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+> ( <VAR
+CLASS="REPLACEABLE"
+>argument_values</VAR
+> ) </SPAN
+>];</PRE
+><P
+>          This form of <TT
+CLASS="COMMAND"
+>OPEN</TT
+> is used to open a cursor
           variable whose query was bound to it when it was declared.  The
           cursor cannot be open already.  A list of actual argument value
           expressions must appear if and only if the cursor was declared to
           take arguments.  These values will be substituted in the query.
           The query plan for a bound cursor is always considered cacheable;
-          there is no equivalent of <tt class="command">EXECUTE</tt> in this case.
-         </p>
-<p>     Examples:
-</p>
-<pre class="programlisting">OPEN curs2;
-OPEN curs3(42);</pre>
-<p>
-       </p>
-</div>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="plpgsql-cursor-using"></a>35.8.3. Using Cursors</h3></div></div>
-<div></div>
-</div>
-<p>     Once a cursor has been opened, it can be manipulated with the
+          there is no equivalent of <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> in this case.
+         </P
+><P
+>     Examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>OPEN curs2;
+OPEN curs3(42);</PRE
+><P>
+       </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-CURSOR-USING"
+>35.8.3. Using Cursors</A
+></H2
+><P
+>     Once a cursor has been opened, it can be manipulated with the
      statements described here.
-    </p>
-<p>     These manipulations need not occur in the same function that
-     opened the cursor to begin with.  You can return a <tt class="type">refcursor</tt>
+    </P
+><P
+>     These manipulations need not occur in the same function that
+     opened the cursor to begin with.  You can return a <TT
+CLASS="TYPE"
+>refcursor</TT
+>
      value out of a function and let the caller operate on the cursor.
-     (Internally, a <tt class="type">refcursor</tt> value is simply the string name
+     (Internally, a <TT
+CLASS="TYPE"
+>refcursor</TT
+> value is simply the string name
      of a so-called portal containing the active query for the cursor.  This name
-     can be passed around, assigned to other <tt class="type">refcursor</tt> variables,
+     can be passed around, assigned to other <TT
+CLASS="TYPE"
+>refcursor</TT
+> variables,
      and so on, without disturbing the portal.)
-    </p>
-<p>     All portals are implicitly closed at transaction end.  Therefore
-     a <tt class="type">refcursor</tt> value is usable to reference an open cursor
+    </P
+><P
+>     All portals are implicitly closed at transaction end.  Therefore
+     a <TT
+CLASS="TYPE"
+>refcursor</TT
+> value is usable to reference an open cursor
      only until the end of the transaction.
-    </p>
-<div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2646309"></a>35.8.3.1. <tt class="literal">FETCH</tt></h4></div></div>
-<div></div>
-</div>
-<pre class="synopsis">FETCH <i class="replaceable"><tt>cursor</tt></i> INTO <i class="replaceable"><tt>target</tt></i>;</pre>
-<p>          <tt class="command">FETCH</tt> retrieves the next row from the
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN31825"
+>35.8.3.1. <TT
+CLASS="LITERAL"
+>FETCH</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>FETCH <VAR
+CLASS="REPLACEABLE"
+>cursor</VAR
+> INTO <VAR
+CLASS="REPLACEABLE"
+>target</VAR
+>;</PRE
+><P
+>          <TT
+CLASS="COMMAND"
+>FETCH</TT
+> retrieves the next row from the
           cursor into a target, which may be a row variable, a record
           variable, or a comma-separated list of simple variables, just like
-          <tt class="command">SELECT INTO</tt>.  As with <tt class="command">SELECT
-           INTO</tt>, the special variable <tt class="literal">FOUND</tt> may
+          <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+>.  As with <TT
+CLASS="COMMAND"
+>SELECT
+           INTO</TT
+>, the special variable <TT
+CLASS="LITERAL"
+>FOUND</TT
+> may
           be checked to see whether a row was obtained or not.
-         </p>
-<p>     An example:
-</p>
-<pre class="programlisting">FETCH curs1 INTO rowvar;
-FETCH curs2 INTO foo, bar, baz;</pre>
-<p>
-       </p>
-</div>
-<div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2646368"></a>35.8.3.2. <tt class="literal">CLOSE</tt></h4></div></div>
-<div></div>
-</div>
-<pre class="synopsis">CLOSE <i class="replaceable"><tt>cursor</tt></i>;</pre>
-<p>        <tt class="command">CLOSE</tt> closes the portal underlying an open
+         </P
+><P
+>     An example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>FETCH curs1 INTO rowvar;
+FETCH curs2 INTO foo, bar, baz;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN31838"
+>35.8.3.2. <TT
+CLASS="LITERAL"
+>CLOSE</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>CLOSE <VAR
+CLASS="REPLACEABLE"
+>cursor</VAR
+>;</PRE
+><P
+>        <TT
+CLASS="COMMAND"
+>CLOSE</TT
+> closes the portal underlying an open
         cursor.  This can be used to release resources earlier than end of
         transaction, or to free up the cursor variable to be opened again.
-       </p>
-<p>        An example:
-</p>
-<pre class="programlisting">CLOSE curs1;</pre>
-<p>
-       </p>
-</div>
-<div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2646403"></a>35.8.3.3. Returning Cursors</h4></div></div>
-<div></div>
-</div>
-<p>        <span class="application">PL/pgSQL</span> functions can return cursors to the
+       </P
+><P
+>        An example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CLOSE curs1;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN31847"
+>35.8.3.3. Returning Cursors</A
+></H3
+><P
+>        <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> functions can return cursors to the
         caller. This is useful to return multiple rows or columns,
         especially with very large result sets.  To do this, the function
         opens the cursor and returns the cursor name to the caller (or simply
@@ -219,32 +534,59 @@ FETCH curs2 INTO foo, bar, baz;</pre>
         to the caller).  The caller can then fetch rows from the cursor. The
         cursor can be closed by the caller, or it will be closed automatically
         when the transaction closes.
-       </p>
-<p>        The portal name used for a cursor can be specified by the
+       </P
+><P
+>        The portal name used for a cursor can be specified by the
         programmer or automatically generated.  To specify a portal name,
-        simply assign a string to the <tt class="type">refcursor</tt> variable before
-        opening it.  The string value of the <tt class="type">refcursor</tt> variable
-        will be used by <tt class="command">OPEN</tt> as the name of the underlying portal.
-        However, if the <tt class="type">refcursor</tt> variable is null,
-        <tt class="command">OPEN</tt> automatically generates a name that does not
+        simply assign a string to the <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable before
+        opening it.  The string value of the <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable
+        will be used by <TT
+CLASS="COMMAND"
+>OPEN</TT
+> as the name of the underlying portal.
+        However, if the <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable is null,
+        <TT
+CLASS="COMMAND"
+>OPEN</TT
+> automatically generates a name that does not
         conflict with any existing portal, and assigns it to the
-        <tt class="type">refcursor</tt> variable.
-       </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>         A bound cursor variable is initialized to the string value
+        <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         A bound cursor variable is initialized to the string value
          representing its name, so that the portal name is the same as
          the cursor variable name, unless the programmer overrides it
          by assignment before opening the cursor.  But an unbound cursor
          variable defaults to the null value initially , so it will receive
          an automatically-generated unique name, unless overridden.
-        </p>
-</div>
-<p>        The following example shows one way a cursor name can be supplied by
+        </P
+></BLOCKQUOTE
+></DIV
+><P
+>        The following example shows one way a cursor name can be supplied by
         the caller:
 
-</p>
-<pre class="programlisting">CREATE TABLE test (col text);
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE test (col text);
 INSERT INTO test VALUES ('123');
 
 CREATE FUNCTION reffunc(refcursor) RETURNS refcursor AS '
@@ -257,13 +599,15 @@ END;
 BEGIN;
 SELECT reffunc('funccursor');
 FETCH ALL IN funccursor;
-COMMIT;</pre>
-<p>
-       </p>
-<p>        The following example uses automatic cursor name generation:
+COMMIT;</PRE
+><P>
+       </P
+><P
+>        The following example uses automatic cursor name generation:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION reffunc2() RETURNS refcursor AS '
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION reffunc2() RETURNS refcursor AS '
 DECLARE
     ref refcursor;
 BEGIN
@@ -281,10 +625,74 @@ SELECT reffunc2();
 (1 row)
 
 FETCH ALL IN "&lt;unnamed cursor 1&gt;";
-COMMIT;</pre>
-<p>
-       </p>
-</div>
-</div>
-</div></body>
-</html>
+COMMIT;</PRE
+><P>
+       </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-control-structures.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-errors-and-messages.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Control Structures</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Errors and Messages</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

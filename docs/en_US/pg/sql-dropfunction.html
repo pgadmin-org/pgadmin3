@@ -1,74 +1,311 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>DROP FUNCTION</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-dropdomain.html" title="DROP DOMAIN">
-<link rel="next" href="sql-dropgroup.html" title="DROP GROUP">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-dropfunction"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>DROP FUNCTION &#8212; remove a function</p>
-</div>
-<a name="id2681180"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">DROP FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ <i class="replaceable"><tt>type</tt></i> [, ...] ] ) [ CASCADE | RESTRICT ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2681207"></a><h2>Description</h2>
-<p>   <tt class="command">DROP FUNCTION</tt> removes the definition of an existing
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>DROP FUNCTION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP DOMAIN"
+HREF="sql-dropdomain.html"><LINK
+REL="NEXT"
+TITLE="DROP GROUP"
+HREF="sql-dropgroup.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropdomain.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropdomain.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropgroup.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropgroup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPFUNCTION"
+></A
+>DROP FUNCTION</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN40391"
+></A
+><H2
+>Name</H2
+>DROP FUNCTION&nbsp;--&nbsp;remove a function</DIV
+><A
+NAME="AEN40394"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN40396"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP FUNCTION <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> ( [ <VAR
+CLASS="REPLACEABLE"
+>type</VAR
+> [, ...] ] ) [ CASCADE | RESTRICT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40400"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP FUNCTION</TT
+> removes the definition of an existing
    function. To execute this command the user must be the
    owner of the function. The argument types to the
    function must be specified, since several different functions
    may exist with the same name and different argument lists.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2681223"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing function.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>type</tt></i></span></dt>
-<dd><p>      The data type of an argument of the function.
-     </p></dd>
-<dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
-<dd><p>      Automatically drop objects that depend on the function (such as
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40404"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing function.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>type</VAR
+></DT
+><DD
+><P
+>      The data type of an argument of the function.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the function (such as
       operators or triggers).
-     </p></dd>
-<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
-<dd><p>      Refuse to drop the function if any objects depend on it.  This
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>      Refuse to drop the function if any objects depend on it.  This
       is the default.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-dropfunction-examples"></a><h2>Examples</h2>
-<p>   This command removes the square root function:
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPFUNCTION-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   This command removes the square root function:
 
-</p>
-<pre class="programlisting">DROP FUNCTION sqrt(integer);</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-dropfunction-compatibility"></a><h2>Compatibility</h2>
-<p>   A <tt class="command">DROP FUNCTION</tt> statement is defined in the SQL
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP FUNCTION sqrt(integer);</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPFUNCTION-COMPATIBILITY"
+></A
+><H2
+>Compatibility</H2
+><P
+>   A <TT
+CLASS="COMMAND"
+>DROP FUNCTION</TT
+> statement is defined in the SQL
    standard, but it is not compatible with this command.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2681310"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-alterfunction.html">ALTER FUNCTION</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40435"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+>, <A
+HREF="sql-alterfunction.html"
+><I
+>ALTER FUNCTION</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropdomain.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropgroup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP DOMAIN</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP GROUP</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

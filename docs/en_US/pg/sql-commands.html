@@ -1,246 +1,711 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SQL Commands</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="reference.html" title="Part VI. Reference">
-<link rel="previous" href="reference.html" title="Part VI. Reference">
-<link rel="next" href="sql-abort.html" title="ABORT">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="reference" lang="en">
-<a name="sql-commands"></a><div class="titlepage">
-<div><div><h1 class="title">
-<a name="sql-commands"></a>SQL Commands</h1></div></div>
-<div></div>
-<hr>
-</div>
-<div class="partintro" lang="en" id="id2657499">
-<div>
-<div></div>
-<div></div>
-</div>
-<p>    This part contains reference information for the
-    <span class="acronym">SQL</span> commands supported by
-    <span class="productname">PostgreSQL</span>.  By &#8220;<span class="quote">SQL</span>&#8221; the
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SQL Commands</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Reference"
+HREF="reference.html"><LINK
+REL="PREVIOUS"
+TITLE="Reference"
+HREF="reference.html"><LINK
+REL="NEXT"
+TITLE="ABORT"
+HREF="sql-abort.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFERENCE"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="reference.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="reference.html#AEN34559"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-abort.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="REFERENCE"
+><A
+NAME="SQL-COMMANDS"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>I. SQL Commands</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN34566"
+></A
+><P
+>    This part contains reference information for the
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands supported by
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  By <SPAN
+CLASS="QUOTE"
+>"SQL"</SPAN
+> the
     language in general is meant; information about the standards
     conformance and compatibility of each command can be found on the
     respective reference page.
-   </p>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt>
-<a href="sql-abort.html">ABORT</a> - abort the current transaction</dt>
-<dt>
-<a href="sql-alteraggregate.html">ALTER AGGREGATE</a> - change the definition of an aggregate function</dt>
-<dt>
-<a href="sql-alterconversion.html">ALTER CONVERSION</a> - change the definition of a conversion</dt>
-<dt>
-<a href="sql-alterdatabase.html">ALTER DATABASE</a> - change a database</dt>
-<dt>
-<a href="sql-alterdomain.html">ALTER DOMAIN</a> -    change the definition of a domain
-  </dt>
-<dt>
-<a href="sql-alterfunction.html">ALTER FUNCTION</a> - change the definition of a function</dt>
-<dt>
-<a href="sql-altergroup.html">ALTER GROUP</a> - change a user group</dt>
-<dt>
-<a href="sql-alterindex.html">ALTER INDEX</a> - change the definition of an index</dt>
-<dt>
-<a href="sql-alterlanguage.html">ALTER LANGUAGE</a> - change the definition of a procedural language</dt>
-<dt>
-<a href="sql-alteroperator.html">ALTER OPERATOR</a> - change the definition of an operator</dt>
-<dt>
-<a href="sql-alteropclass.html">ALTER OPERATOR CLASS</a> - change the definition of an operator class</dt>
-<dt>
-<a href="sql-alterschema.html">ALTER SCHEMA</a> - change the definition of a schema</dt>
-<dt>
-<a href="sql-altersequence.html">ALTER SEQUENCE</a> -    change the definition of a sequence generator
-  </dt>
-<dt>
-<a href="sql-altertable.html">ALTER TABLE</a> - change the definition of a table</dt>
-<dt>
-<a href="sql-altertablespace.html">ALTER TABLESPACE</a> - change the definition of a tablespace</dt>
-<dt>
-<a href="sql-altertrigger.html">ALTER TRIGGER</a> - change the definition of a trigger</dt>
-<dt>
-<a href="sql-altertype.html">ALTER TYPE</a> -    change the definition of a type
-  </dt>
-<dt>
-<a href="sql-alteruser.html">ALTER USER</a> - change a database user account</dt>
-<dt>
-<a href="sql-analyze.html">ANALYZE</a> - collect statistics about a database</dt>
-<dt>
-<a href="sql-begin.html">BEGIN</a> - start a transaction block</dt>
-<dt>
-<a href="sql-checkpoint.html">CHECKPOINT</a> - force a transaction log checkpoint</dt>
-<dt>
-<a href="sql-close.html">CLOSE</a> - close a cursor</dt>
-<dt>
-<a href="sql-cluster.html">CLUSTER</a> - cluster a table according to an index</dt>
-<dt>
-<a href="sql-comment.html">COMMENT</a> - define or change the comment of an object</dt>
-<dt>
-<a href="sql-commit.html">COMMIT</a> - commit the current transaction</dt>
-<dt>
-<a href="sql-copy.html">COPY</a> - copy data between a file and a table</dt>
-<dt>
-<a href="sql-createaggregate.html">CREATE AGGREGATE</a> - define a new aggregate function</dt>
-<dt>
-<a href="sql-createcast.html">CREATE CAST</a> - define a new cast</dt>
-<dt>
-<a href="sql-createconstraint.html">CREATE CONSTRAINT TRIGGER</a> - define a new constraint trigger</dt>
-<dt>
-<a href="sql-createconversion.html">CREATE CONVERSION</a> - define a new conversion</dt>
-<dt>
-<a href="sql-createdatabase.html">CREATE DATABASE</a> - create a new database</dt>
-<dt>
-<a href="sql-createdomain.html">CREATE DOMAIN</a> - define a new domain</dt>
-<dt>
-<a href="sql-createfunction.html">CREATE FUNCTION</a> - define a new function</dt>
-<dt>
-<a href="sql-creategroup.html">CREATE GROUP</a> - define a new user group</dt>
-<dt>
-<a href="sql-createindex.html">CREATE INDEX</a> - define a new index</dt>
-<dt>
-<a href="sql-createlanguage.html">CREATE LANGUAGE</a> - define a new procedural language</dt>
-<dt>
-<a href="sql-createoperator.html">CREATE OPERATOR</a> - define a new operator</dt>
-<dt>
-<a href="sql-createopclass.html">CREATE OPERATOR CLASS</a> - define a new operator class</dt>
-<dt>
-<a href="sql-createrule.html">CREATE RULE</a> - define a new rewrite rule</dt>
-<dt>
-<a href="sql-createschema.html">CREATE SCHEMA</a> - define a new schema</dt>
-<dt>
-<a href="sql-createsequence.html">CREATE SEQUENCE</a> - define a new sequence generator</dt>
-<dt>
-<a href="sql-createtable.html">CREATE TABLE</a> - define a new table</dt>
-<dt>
-<a href="sql-createtableas.html">CREATE TABLE AS</a> - define a new table from the results of a query</dt>
-<dt>
-<a href="sql-createtablespace.html">CREATE TABLESPACE</a> - define a new tablespace</dt>
-<dt>
-<a href="sql-createtrigger.html">CREATE TRIGGER</a> - define a new trigger</dt>
-<dt>
-<a href="sql-createtype.html">CREATE TYPE</a> - define a new data type</dt>
-<dt>
-<a href="sql-createuser.html">CREATE USER</a> - define a new database user account</dt>
-<dt>
-<a href="sql-createview.html">CREATE VIEW</a> - define a new view</dt>
-<dt>
-<a href="sql-deallocate.html">DEALLOCATE</a> - deallocate a prepared statement</dt>
-<dt>
-<a href="sql-declare.html">DECLARE</a> - define a cursor</dt>
-<dt>
-<a href="sql-delete.html">DELETE</a> - delete rows of a table</dt>
-<dt>
-<a href="sql-dropaggregate.html">DROP AGGREGATE</a> - remove an aggregate function</dt>
-<dt>
-<a href="sql-dropcast.html">DROP CAST</a> - remove a cast</dt>
-<dt>
-<a href="sql-dropconversion.html">DROP CONVERSION</a> - remove a conversion</dt>
-<dt>
-<a href="sql-dropdatabase.html">DROP DATABASE</a> - remove a database</dt>
-<dt>
-<a href="sql-dropdomain.html">DROP DOMAIN</a> - remove a domain</dt>
-<dt>
-<a href="sql-dropfunction.html">DROP FUNCTION</a> - remove a function</dt>
-<dt>
-<a href="sql-dropgroup.html">DROP GROUP</a> - remove a user group</dt>
-<dt>
-<a href="sql-dropindex.html">DROP INDEX</a> - remove an index</dt>
-<dt>
-<a href="sql-droplanguage.html">DROP LANGUAGE</a> - remove a procedural language</dt>
-<dt>
-<a href="sql-dropoperator.html">DROP OPERATOR</a> - remove an operator</dt>
-<dt>
-<a href="sql-dropopclass.html">DROP OPERATOR CLASS</a> - remove an operator class</dt>
-<dt>
-<a href="sql-droprule.html">DROP RULE</a> - remove a rewrite rule</dt>
-<dt>
-<a href="sql-dropschema.html">DROP SCHEMA</a> - remove a schema</dt>
-<dt>
-<a href="sql-dropsequence.html">DROP SEQUENCE</a> - remove a sequence</dt>
-<dt>
-<a href="sql-droptable.html">DROP TABLE</a> - remove a table</dt>
-<dt>
-<a href="sql-droptablespace.html">DROP TABLESPACE</a> - remove a tablespace</dt>
-<dt>
-<a href="sql-droptrigger.html">DROP TRIGGER</a> - remove a trigger</dt>
-<dt>
-<a href="sql-droptype.html">DROP TYPE</a> - remove a data type</dt>
-<dt>
-<a href="sql-dropuser.html">DROP USER</a> - remove a database user account</dt>
-<dt>
-<a href="sql-dropview.html">DROP VIEW</a> - remove a view</dt>
-<dt>
-<a href="sql-end.html">END</a> - commit the current transaction</dt>
-<dt>
-<a href="sql-execute.html">EXECUTE</a> - execute a prepared statement</dt>
-<dt>
-<a href="sql-explain.html">EXPLAIN</a> - show the execution plan of a statement</dt>
-<dt>
-<a href="sql-fetch.html">FETCH</a> - retrieve rows from a query using a cursor</dt>
-<dt>
-<a href="sql-grant.html">GRANT</a> - define access privileges</dt>
-<dt>
-<a href="sql-insert.html">INSERT</a> - create new rows in a table</dt>
-<dt>
-<a href="sql-listen.html">LISTEN</a> - listen for a notification</dt>
-<dt>
-<a href="sql-load.html">LOAD</a> - load or reload a shared library file</dt>
-<dt>
-<a href="sql-lock.html">LOCK</a> - lock a table</dt>
-<dt>
-<a href="sql-move.html">MOVE</a> - position a cursor</dt>
-<dt>
-<a href="sql-notify.html">NOTIFY</a> - generate a notification</dt>
-<dt>
-<a href="sql-prepare.html">PREPARE</a> - prepare a statement for execution</dt>
-<dt>
-<a href="sql-reindex.html">REINDEX</a> - rebuild indexes</dt>
-<dt>
-<a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a> - destroy a previously defined savepoint</dt>
-<dt>
-<a href="sql-reset.html">RESET</a> - restore the value of a run-time parameter to the default value</dt>
-<dt>
-<a href="sql-revoke.html">REVOKE</a> - remove access privileges</dt>
-<dt>
-<a href="sql-rollback.html">ROLLBACK</a> - abort the current transaction</dt>
-<dt>
-<a href="sql-rollback-to.html">ROLLBACK TO SAVEPOINT</a> - roll back to a savepoint</dt>
-<dt>
-<a href="sql-savepoint.html">SAVEPOINT</a> - define a new savepoint within the current transaction</dt>
-<dt>
-<a href="sql-select.html">SELECT</a> - retrieve rows from a table or view</dt>
-<dt>
-<a href="sql-selectinto.html">SELECT INTO</a> - define a new table from the results of a query</dt>
-<dt>
-<a href="sql-set.html">SET</a> - change a run-time parameter</dt>
-<dt>
-<a href="sql-set-constraints.html">SET CONSTRAINTS</a> - set constraint checking modes for the current transaction</dt>
-<dt>
-<a href="sql-set-session-authorization.html">SET SESSION AUTHORIZATION</a> - set the session user identifier and the current user identifier of the current session</dt>
-<dt>
-<a href="sql-set-transaction.html">SET TRANSACTION</a> - set the characteristics of the current transaction</dt>
-<dt>
-<a href="sql-show.html">SHOW</a> - show the value of a run-time parameter</dt>
-<dt>
-<a href="sql-start-transaction.html">START TRANSACTION</a> - start a transaction block</dt>
-<dt>
-<a href="sql-truncate.html">TRUNCATE</a> - empty a table</dt>
-<dt>
-<a href="sql-unlisten.html">UNLISTEN</a> - stop listening for a notification</dt>
-<dt>
-<a href="sql-update.html">UPDATE</a> - update rows of a table</dt>
-<dt>
-<a href="sql-vacuum.html">VACUUM</a> - garbage-collect and optionally analyze a database</dt>
-</dl>
-</div>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="sql-abort.html"
+>ABORT</A
+>&nbsp;--&nbsp;abort the current transaction</DT
+><DT
+><A
+HREF="sql-alteraggregate.html"
+>ALTER AGGREGATE</A
+>&nbsp;--&nbsp;change the definition of an aggregate function</DT
+><DT
+><A
+HREF="sql-alterconversion.html"
+>ALTER CONVERSION</A
+>&nbsp;--&nbsp;change the definition of a conversion</DT
+><DT
+><A
+HREF="sql-alterdatabase.html"
+>ALTER DATABASE</A
+>&nbsp;--&nbsp;change a database</DT
+><DT
+><A
+HREF="sql-alterdomain.html"
+>ALTER DOMAIN</A
+>&nbsp;--&nbsp;   change the definition of a domain
+  </DT
+><DT
+><A
+HREF="sql-alterfunction.html"
+>ALTER FUNCTION</A
+>&nbsp;--&nbsp;change the definition of a function</DT
+><DT
+><A
+HREF="sql-altergroup.html"
+>ALTER GROUP</A
+>&nbsp;--&nbsp;change a user group</DT
+><DT
+><A
+HREF="sql-alterindex.html"
+>ALTER INDEX</A
+>&nbsp;--&nbsp;change the definition of an index</DT
+><DT
+><A
+HREF="sql-alterlanguage.html"
+>ALTER LANGUAGE</A
+>&nbsp;--&nbsp;change the definition of a procedural language</DT
+><DT
+><A
+HREF="sql-alteroperator.html"
+>ALTER OPERATOR</A
+>&nbsp;--&nbsp;change the definition of an operator</DT
+><DT
+><A
+HREF="sql-alteropclass.html"
+>ALTER OPERATOR CLASS</A
+>&nbsp;--&nbsp;change the definition of an operator class</DT
+><DT
+><A
+HREF="sql-alterschema.html"
+>ALTER SCHEMA</A
+>&nbsp;--&nbsp;change the definition of a schema</DT
+><DT
+><A
+HREF="sql-altersequence.html"
+>ALTER SEQUENCE</A
+>&nbsp;--&nbsp;   change the definition of a sequence generator
+  </DT
+><DT
+><A
+HREF="sql-altertable.html"
+>ALTER TABLE</A
+>&nbsp;--&nbsp;change the definition of a table</DT
+><DT
+><A
+HREF="sql-altertablespace.html"
+>ALTER TABLESPACE</A
+>&nbsp;--&nbsp;change the definition of a tablespace</DT
+><DT
+><A
+HREF="sql-altertrigger.html"
+>ALTER TRIGGER</A
+>&nbsp;--&nbsp;change the definition of a trigger</DT
+><DT
+><A
+HREF="sql-altertype.html"
+>ALTER TYPE</A
+>&nbsp;--&nbsp;   change the definition of a type
+  </DT
+><DT
+><A
+HREF="sql-alteruser.html"
+>ALTER USER</A
+>&nbsp;--&nbsp;change a database user account</DT
+><DT
+><A
+HREF="sql-analyze.html"
+>ANALYZE</A
+>&nbsp;--&nbsp;collect statistics about a database</DT
+><DT
+><A
+HREF="sql-begin.html"
+>BEGIN</A
+>&nbsp;--&nbsp;start a transaction block</DT
+><DT
+><A
+HREF="sql-checkpoint.html"
+>CHECKPOINT</A
+>&nbsp;--&nbsp;force a transaction log checkpoint</DT
+><DT
+><A
+HREF="sql-close.html"
+>CLOSE</A
+>&nbsp;--&nbsp;close a cursor</DT
+><DT
+><A
+HREF="sql-cluster.html"
+>CLUSTER</A
+>&nbsp;--&nbsp;cluster a table according to an index</DT
+><DT
+><A
+HREF="sql-comment.html"
+>COMMENT</A
+>&nbsp;--&nbsp;define or change the comment of an object</DT
+><DT
+><A
+HREF="sql-commit.html"
+>COMMIT</A
+>&nbsp;--&nbsp;commit the current transaction</DT
+><DT
+><A
+HREF="sql-copy.html"
+>COPY</A
+>&nbsp;--&nbsp;copy data between a file and a table</DT
+><DT
+><A
+HREF="sql-createaggregate.html"
+>CREATE AGGREGATE</A
+>&nbsp;--&nbsp;define a new aggregate function</DT
+><DT
+><A
+HREF="sql-createcast.html"
+>CREATE CAST</A
+>&nbsp;--&nbsp;define a new cast</DT
+><DT
+><A
+HREF="sql-createconstraint.html"
+>CREATE CONSTRAINT TRIGGER</A
+>&nbsp;--&nbsp;define a new constraint trigger</DT
+><DT
+><A
+HREF="sql-createconversion.html"
+>CREATE CONVERSION</A
+>&nbsp;--&nbsp;define a new conversion</DT
+><DT
+><A
+HREF="sql-createdatabase.html"
+>CREATE DATABASE</A
+>&nbsp;--&nbsp;create a new database</DT
+><DT
+><A
+HREF="sql-createdomain.html"
+>CREATE DOMAIN</A
+>&nbsp;--&nbsp;define a new domain</DT
+><DT
+><A
+HREF="sql-createfunction.html"
+>CREATE FUNCTION</A
+>&nbsp;--&nbsp;define a new function</DT
+><DT
+><A
+HREF="sql-creategroup.html"
+>CREATE GROUP</A
+>&nbsp;--&nbsp;define a new user group</DT
+><DT
+><A
+HREF="sql-createindex.html"
+>CREATE INDEX</A
+>&nbsp;--&nbsp;define a new index</DT
+><DT
+><A
+HREF="sql-createlanguage.html"
+>CREATE LANGUAGE</A
+>&nbsp;--&nbsp;define a new procedural language</DT
+><DT
+><A
+HREF="sql-createoperator.html"
+>CREATE OPERATOR</A
+>&nbsp;--&nbsp;define a new operator</DT
+><DT
+><A
+HREF="sql-createopclass.html"
+>CREATE OPERATOR CLASS</A
+>&nbsp;--&nbsp;define a new operator class</DT
+><DT
+><A
+HREF="sql-createrule.html"
+>CREATE RULE</A
+>&nbsp;--&nbsp;define a new rewrite rule</DT
+><DT
+><A
+HREF="sql-createschema.html"
+>CREATE SCHEMA</A
+>&nbsp;--&nbsp;define a new schema</DT
+><DT
+><A
+HREF="sql-createsequence.html"
+>CREATE SEQUENCE</A
+>&nbsp;--&nbsp;define a new sequence generator</DT
+><DT
+><A
+HREF="sql-createtable.html"
+>CREATE TABLE</A
+>&nbsp;--&nbsp;define a new table</DT
+><DT
+><A
+HREF="sql-createtableas.html"
+>CREATE TABLE AS</A
+>&nbsp;--&nbsp;define a new table from the results of a query</DT
+><DT
+><A
+HREF="sql-createtablespace.html"
+>CREATE TABLESPACE</A
+>&nbsp;--&nbsp;define a new tablespace</DT
+><DT
+><A
+HREF="sql-createtrigger.html"
+>CREATE TRIGGER</A
+>&nbsp;--&nbsp;define a new trigger</DT
+><DT
+><A
+HREF="sql-createtype.html"
+>CREATE TYPE</A
+>&nbsp;--&nbsp;define a new data type</DT
+><DT
+><A
+HREF="sql-createuser.html"
+>CREATE USER</A
+>&nbsp;--&nbsp;define a new database user account</DT
+><DT
+><A
+HREF="sql-createview.html"
+>CREATE VIEW</A
+>&nbsp;--&nbsp;define a new view</DT
+><DT
+><A
+HREF="sql-deallocate.html"
+>DEALLOCATE</A
+>&nbsp;--&nbsp;deallocate a prepared statement</DT
+><DT
+><A
+HREF="sql-declare.html"
+>DECLARE</A
+>&nbsp;--&nbsp;define a cursor</DT
+><DT
+><A
+HREF="sql-delete.html"
+>DELETE</A
+>&nbsp;--&nbsp;delete rows of a table</DT
+><DT
+><A
+HREF="sql-dropaggregate.html"
+>DROP AGGREGATE</A
+>&nbsp;--&nbsp;remove an aggregate function</DT
+><DT
+><A
+HREF="sql-dropcast.html"
+>DROP CAST</A
+>&nbsp;--&nbsp;remove a cast</DT
+><DT
+><A
+HREF="sql-dropconversion.html"
+>DROP CONVERSION</A
+>&nbsp;--&nbsp;remove a conversion</DT
+><DT
+><A
+HREF="sql-dropdatabase.html"
+>DROP DATABASE</A
+>&nbsp;--&nbsp;remove a database</DT
+><DT
+><A
+HREF="sql-dropdomain.html"
+>DROP DOMAIN</A
+>&nbsp;--&nbsp;remove a domain</DT
+><DT
+><A
+HREF="sql-dropfunction.html"
+>DROP FUNCTION</A
+>&nbsp;--&nbsp;remove a function</DT
+><DT
+><A
+HREF="sql-dropgroup.html"
+>DROP GROUP</A
+>&nbsp;--&nbsp;remove a user group</DT
+><DT
+><A
+HREF="sql-dropindex.html"
+>DROP INDEX</A
+>&nbsp;--&nbsp;remove an index</DT
+><DT
+><A
+HREF="sql-droplanguage.html"
+>DROP LANGUAGE</A
+>&nbsp;--&nbsp;remove a procedural language</DT
+><DT
+><A
+HREF="sql-dropoperator.html"
+>DROP OPERATOR</A
+>&nbsp;--&nbsp;remove an operator</DT
+><DT
+><A
+HREF="sql-dropopclass.html"
+>DROP OPERATOR CLASS</A
+>&nbsp;--&nbsp;remove an operator class</DT
+><DT
+><A
+HREF="sql-droprule.html"
+>DROP RULE</A
+>&nbsp;--&nbsp;remove a rewrite rule</DT
+><DT
+><A
+HREF="sql-dropschema.html"
+>DROP SCHEMA</A
+>&nbsp;--&nbsp;remove a schema</DT
+><DT
+><A
+HREF="sql-dropsequence.html"
+>DROP SEQUENCE</A
+>&nbsp;--&nbsp;remove a sequence</DT
+><DT
+><A
+HREF="sql-droptable.html"
+>DROP TABLE</A
+>&nbsp;--&nbsp;remove a table</DT
+><DT
+><A
+HREF="sql-droptablespace.html"
+>DROP TABLESPACE</A
+>&nbsp;--&nbsp;remove a tablespace</DT
+><DT
+><A
+HREF="sql-droptrigger.html"
+>DROP TRIGGER</A
+>&nbsp;--&nbsp;remove a trigger</DT
+><DT
+><A
+HREF="sql-droptype.html"
+>DROP TYPE</A
+>&nbsp;--&nbsp;remove a data type</DT
+><DT
+><A
+HREF="sql-dropuser.html"
+>DROP USER</A
+>&nbsp;--&nbsp;remove a database user account</DT
+><DT
+><A
+HREF="sql-dropview.html"
+>DROP VIEW</A
+>&nbsp;--&nbsp;remove a view</DT
+><DT
+><A
+HREF="sql-end.html"
+>END</A
+>&nbsp;--&nbsp;commit the current transaction</DT
+><DT
+><A
+HREF="sql-execute.html"
+>EXECUTE</A
+>&nbsp;--&nbsp;execute a prepared statement</DT
+><DT
+><A
+HREF="sql-explain.html"
+>EXPLAIN</A
+>&nbsp;--&nbsp;show the execution plan of a statement</DT
+><DT
+><A
+HREF="sql-fetch.html"
+>FETCH</A
+>&nbsp;--&nbsp;retrieve rows from a query using a cursor</DT
+><DT
+><A
+HREF="sql-grant.html"
+>GRANT</A
+>&nbsp;--&nbsp;define access privileges</DT
+><DT
+><A
+HREF="sql-insert.html"
+>INSERT</A
+>&nbsp;--&nbsp;create new rows in a table</DT
+><DT
+><A
+HREF="sql-listen.html"
+>LISTEN</A
+>&nbsp;--&nbsp;listen for a notification</DT
+><DT
+><A
+HREF="sql-load.html"
+>LOAD</A
+>&nbsp;--&nbsp;load or reload a shared library file</DT
+><DT
+><A
+HREF="sql-lock.html"
+>LOCK</A
+>&nbsp;--&nbsp;lock a table</DT
+><DT
+><A
+HREF="sql-move.html"
+>MOVE</A
+>&nbsp;--&nbsp;position a cursor</DT
+><DT
+><A
+HREF="sql-notify.html"
+>NOTIFY</A
+>&nbsp;--&nbsp;generate a notification</DT
+><DT
+><A
+HREF="sql-prepare.html"
+>PREPARE</A
+>&nbsp;--&nbsp;prepare a statement for execution</DT
+><DT
+><A
+HREF="sql-reindex.html"
+>REINDEX</A
+>&nbsp;--&nbsp;rebuild indexes</DT
+><DT
+><A
+HREF="sql-release-savepoint.html"
+>RELEASE SAVEPOINT</A
+>&nbsp;--&nbsp;destroy a previously defined savepoint</DT
+><DT
+><A
+HREF="sql-reset.html"
+>RESET</A
+>&nbsp;--&nbsp;restore the value of a run-time parameter to the default value</DT
+><DT
+><A
+HREF="sql-revoke.html"
+>REVOKE</A
+>&nbsp;--&nbsp;remove access privileges</DT
+><DT
+><A
+HREF="sql-rollback.html"
+>ROLLBACK</A
+>&nbsp;--&nbsp;abort the current transaction</DT
+><DT
+><A
+HREF="sql-rollback-to.html"
+>ROLLBACK TO SAVEPOINT</A
+>&nbsp;--&nbsp;roll back to a savepoint</DT
+><DT
+><A
+HREF="sql-savepoint.html"
+>SAVEPOINT</A
+>&nbsp;--&nbsp;define a new savepoint within the current transaction</DT
+><DT
+><A
+HREF="sql-select.html"
+>SELECT</A
+>&nbsp;--&nbsp;retrieve rows from a table or view</DT
+><DT
+><A
+HREF="sql-selectinto.html"
+>SELECT INTO</A
+>&nbsp;--&nbsp;define a new table from the results of a query</DT
+><DT
+><A
+HREF="sql-set.html"
+>SET</A
+>&nbsp;--&nbsp;change a run-time parameter</DT
+><DT
+><A
+HREF="sql-set-constraints.html"
+>SET CONSTRAINTS</A
+>&nbsp;--&nbsp;set constraint checking modes for the current transaction</DT
+><DT
+><A
+HREF="sql-set-session-authorization.html"
+>SET SESSION AUTHORIZATION</A
+>&nbsp;--&nbsp;set the session user identifier and the current user identifier of the current session</DT
+><DT
+><A
+HREF="sql-set-transaction.html"
+>SET TRANSACTION</A
+>&nbsp;--&nbsp;set the characteristics of the current transaction</DT
+><DT
+><A
+HREF="sql-show.html"
+>SHOW</A
+>&nbsp;--&nbsp;show the value of a run-time parameter</DT
+><DT
+><A
+HREF="sql-start-transaction.html"
+>START TRANSACTION</A
+>&nbsp;--&nbsp;start a transaction block</DT
+><DT
+><A
+HREF="sql-truncate.html"
+>TRUNCATE</A
+>&nbsp;--&nbsp;empty a table</DT
+><DT
+><A
+HREF="sql-unlisten.html"
+>UNLISTEN</A
+>&nbsp;--&nbsp;stop listening for a notification</DT
+><DT
+><A
+HREF="sql-update.html"
+>UPDATE</A
+>&nbsp;--&nbsp;update rows of a table</DT
+><DT
+><A
+HREF="sql-vacuum.html"
+>VACUUM</A
+>&nbsp;--&nbsp;garbage-collect and optionally analyze a database</DT
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="reference.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-abort.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Reference</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ABORT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,47 +1,160 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>31.12. User-Defined Operators</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
-<link rel="previous" href="xtypes.html" title="31.11. User-Defined Types">
-<link rel="next" href="xoper-optimization.html" title="31.13. Operator Optimization Information">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="xoper"></a>31.12. User-Defined Operators</h2></div></div>
-<div></div>
-</div>
-<a name="id2633337"></a><p>   Every operator is &#8220;<span class="quote">syntactic sugar</span>&#8221; for a call to an
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>User-Defined Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL"
+HREF="extend.html"><LINK
+REL="PREVIOUS"
+TITLE="User-Defined Types"
+HREF="xtypes.html"><LINK
+REL="NEXT"
+TITLE="Operator Optimization Information"
+HREF="xoper-optimization.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xtypes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 31. Extending <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xoper-optimization.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XOPER"
+>31.12. User-Defined Operators</A
+></H1
+><A
+NAME="AEN29377"
+></A
+><P
+>   Every operator is <SPAN
+CLASS="QUOTE"
+>"syntactic sugar"</SPAN
+> for a call to an
    underlying function that does the real work; so you must
    first create the underlying function before you can create
-   the operator.  However, an operator is <span class="emphasis"><em>not merely</em></span>
+   the operator.  However, an operator is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not merely</I
+></SPAN
+>
    syntactic sugar, because it carries additional information
    that helps the query planner optimize queries that use the
    operator.  The next section will be devoted to explaining
    that additional information.
-  </p>
-<p>   <span class="productname">PostgreSQL</span> supports left unary, right
+  </P
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports left unary, right
    unary, and binary operators.  Operators can be
-   overloaded;<a name="id2633374"></a>
+   overloaded;<A
+NAME="AEN29385"
+></A
+>
    that is, the same operator name can be used for different operators
    that have different numbers and types of operands.  When a query is
    executed, the system determines the operator to call from the
    number and types of the provided operands.
-  </p>
-<p>   Here is an example of creating an operator for adding two complex
+  </P
+><P
+>   Here is an example of creating an operator for adding two complex
    numbers.  We assume we've already created the definition of type
-   <tt class="type">complex</tt> (see <a href="xtypes.html" title="31.11. User-Defined Types">Section 31.11, &#8220;User-Defined Types&#8221;</a>).  First we need a
+   <TT
+CLASS="TYPE"
+>complex</TT
+> (see <A
+HREF="xtypes.html"
+>Section 31.11</A
+>).  First we need a
    function that does the work, then we can define the operator:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION complex_add(complex, complex)
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION complex_add(complex, complex)
     RETURNS complex
-    AS '<i class="replaceable"><tt>filename</tt></i>', 'complex_add'
+    AS '<VAR
+CLASS="REPLACEABLE"
+>filename</VAR
+>', 'complex_add'
     LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR + (
@@ -49,28 +162,113 @@ CREATE OPERATOR + (
     rightarg = complex,
     procedure = complex_add,
     commutator = +
-);</pre>
-<p>
-  </p>
-<p>   Now we could execute a query like this:
+);</PRE
+><P>
+  </P
+><P
+>   Now we could execute a query like this:
      
-</p>
-<pre class="screen">SELECT (a + b) AS c FROM test_complex;
+</P><PRE
+CLASS="SCREEN"
+>SELECT (a + b) AS c FROM test_complex;
 
         c
 -----------------
  (5.2,6.05)
- (133.42,144.95)</pre>
-<p>
-  </p>
-<p>   We've shown how to create a binary operator here.  To create unary
-   operators, just omit one of <tt class="literal">leftarg</tt> (for left unary) or
-   <tt class="literal">rightarg</tt> (for right unary).  The <tt class="literal">procedure</tt>
+ (133.42,144.95)</PRE
+><P>
+  </P
+><P
+>   We've shown how to create a binary operator here.  To create unary
+   operators, just omit one of <TT
+CLASS="LITERAL"
+>leftarg</TT
+> (for left unary) or
+   <TT
+CLASS="LITERAL"
+>rightarg</TT
+> (for right unary).  The <TT
+CLASS="LITERAL"
+>procedure</TT
+>
    clause and the argument clauses are the only required items in
-   <tt class="command">CREATE OPERATOR</tt>.  The <tt class="literal">commutator</tt>
+   <TT
+CLASS="COMMAND"
+>CREATE OPERATOR</TT
+>.  The <TT
+CLASS="LITERAL"
+>commutator</TT
+>
    clause shown in the example is an optional hint to the query
-   optimizer.  Further details about <tt class="literal">commutator</tt> and other
+   optimizer.  Further details about <TT
+CLASS="LITERAL"
+>commutator</TT
+> and other
    optimizer hints appear in the next section.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xtypes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xoper-optimization.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>User-Defined Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="extend.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Operator Optimization Information</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,49 +1,223 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>11.4. Unique Indexes</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="previous" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
-<link rel="next" href="indexes-expressional.html" title="11.5. Indexes on Expressions">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="indexes-unique"></a>11.4. Unique Indexes</h2></div></div>
-<div></div>
-</div>
-<a name="id2568280"></a><p>   Indexes may also be used to enforce uniqueness of a column's value,
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Unique Indexes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Indexes"
+HREF="indexes.html"><LINK
+REL="PREVIOUS"
+TITLE="Multicolumn Indexes"
+HREF="indexes-multicolumn.html"><LINK
+REL="NEXT"
+TITLE="Indexes on Expressions"
+HREF="indexes-expressional.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-multicolumn.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 11. Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-expressional.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INDEXES-UNIQUE"
+>11.4. Unique Indexes</A
+></H1
+><A
+NAME="AEN13927"
+></A
+><P
+>   Indexes may also be used to enforce uniqueness of a column's value,
    or the uniqueness of the combined values of more than one column.
-</p>
-<pre class="synopsis">CREATE UNIQUE INDEX <i class="replaceable"><tt>name</tt></i> ON <i class="replaceable"><tt>table</tt></i> (<i class="replaceable"><tt>column</tt></i> [<span class="optional">, ...</span>]);</pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE UNIQUE INDEX <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> ON <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+> (<VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>]);</PRE
+><P>
    Currently, only B-tree indexes can be declared unique.
-  </p>
-<p>   When an index is declared unique, multiple table rows with equal
+  </P
+><P
+>   When an index is declared unique, multiple table rows with equal
    indexed values will not be allowed.  Null values are not considered
    equal.  A multicolumn unique index will only reject cases where all
    of the indexed columns are equal in two rows.
-  </p>
-<p>   <span class="productname">PostgreSQL</span> automatically creates a unique
+  </P
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> automatically creates a unique
    index when a unique constraint or a primary key is defined for a table.
    The index covers the columns that make up the primary key or unique 
    columns (a multicolumn index, if appropriate), and is the mechanism
    that enforces the constraint.
-  </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>    The preferred way to add a unique constraint to a table is
-    <tt class="literal">ALTER TABLE ... ADD CONSTRAINT</tt>.  The use of
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    The preferred way to add a unique constraint to a table is
+    <TT
+CLASS="LITERAL"
+>ALTER TABLE ... ADD CONSTRAINT</TT
+>.  The use of
     indexes to enforce unique constraints could be considered an
     implementation detail that should not be accessed directly.
     One should, however, be aware that there's no need to manually
     create indexes on unique columns; doing so would just duplicate
     the automatically-created index.
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-multicolumn.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-expressional.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Multicolumn Indexes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="indexes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Indexes on Expressions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

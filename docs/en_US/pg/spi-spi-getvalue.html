@@ -1,62 +1,305 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SPI_getvalue</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="spi-interface-support.html" title="39.2. Interface Support Functions">
-<link rel="previous" href="spi-spi-fnumber.html" title="SPI_fnumber">
-<link rel="next" href="spi-spi-getbinval.html" title="SPI_getbinval">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-getvalue"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SPI_getvalue &#8212; return the string value of the specified column</p>
-</div>
-<a name="id2655390"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">char * SPI_getvalue(HeapTuple <i class="parameter"><tt>row</tt></i>, TupleDesc <i class="parameter"><tt>rowdesc</tt></i>, int <i class="parameter"><tt>colnumber</tt></i>)</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2655420"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_getvalue</tt> returns the string representation
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SPI_getvalue</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Support Functions"
+HREF="spi-interface-support.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_fnumber"
+HREF="spi-spi-fnumber.html"><LINK
+REL="NEXT"
+TITLE="SPI_getbinval"
+HREF="spi-spi-getbinval.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-fnumber.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-fnumber.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getbinval.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getbinval.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-GETVALUE"
+></A
+>SPI_getvalue</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN33946"
+></A
+><H2
+>Name</H2
+>SPI_getvalue&nbsp;--&nbsp;return the string value of the specified column</DIV
+><A
+NAME="AEN33949"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN33951"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>char * SPI_getvalue(HeapTuple <TT
+CLASS="PARAMETER"
+>row</TT
+>, TupleDesc <TT
+CLASS="PARAMETER"
+>rowdesc</TT
+>, int <TT
+CLASS="PARAMETER"
+>colnumber</TT
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33956"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_getvalue</CODE
+> returns the string representation
    of the value of the specified column.
-  </p>
-<p>   The result is returned in memory allocated using
-   <tt class="function">palloc</tt>.  (You can use
-   <tt class="function">pfree</tt> to release the memory when you don't
+  </P
+><P
+>   The result is returned in memory allocated using
+   <CODE
+CLASS="FUNCTION"
+>palloc</CODE
+>.  (You can use
+   <CODE
+CLASS="FUNCTION"
+>pfree</CODE
+> to release the memory when you don't
    need it anymore.)
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2655449"></a><h2>Arguments</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">HeapTuple <i class="parameter"><tt>row</tt></i></tt></span></dt>
-<dd><p>      input row to be examined
-     </p></dd>
-<dt><span class="term"><tt class="literal">TupleDesc <i class="parameter"><tt>rowdesc</tt></i></tt></span></dt>
-<dd><p>      input row description
-     </p></dd>
-<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>colnumber</tt></i></tt></span></dt>
-<dd><p>      column number (count starts at 1)
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2655499"></a><h2>Return Value</h2>
-<p>   Column value, or <tt class="symbol">NULL</tt> if the column is null,
-   <i class="parameter"><tt>colnumber</tt></i> is out of range
-   (<tt class="varname">SPI_result</tt> is set to
-   <tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt>), or no no output function
-   available (<tt class="varname">SPI_result</tt> is set to
-   <tt class="symbol">SPI_ERROR_NOOUTFUNC</tt>).
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33963"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>HeapTuple <TT
+CLASS="PARAMETER"
+>row</TT
+></TT
+></DT
+><DD
+><P
+>      input row to be examined
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>TupleDesc <TT
+CLASS="PARAMETER"
+>rowdesc</TT
+></TT
+></DT
+><DD
+><P
+>      input row description
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>int <TT
+CLASS="PARAMETER"
+>colnumber</TT
+></TT
+></DT
+><DD
+><P
+>      column number (count starts at 1)
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33984"
+></A
+><H2
+>Return Value</H2
+><P
+>   Column value, or <TT
+CLASS="SYMBOL"
+>NULL</TT
+> if the column is null,
+   <TT
+CLASS="PARAMETER"
+>colnumber</TT
+> is out of range
+   (<TT
+CLASS="VARNAME"
+>SPI_result</TT
+> is set to
+   <TT
+CLASS="SYMBOL"
+>SPI_ERROR_NOATTRIBUTE</TT
+>), or no no output function
+   available (<TT
+CLASS="VARNAME"
+>SPI_result</TT
+> is set to
+   <TT
+CLASS="SYMBOL"
+>SPI_ERROR_NOOUTFUNC</TT
+>).
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-fnumber.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getbinval.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_fnumber</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-interface-support.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_getbinval</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

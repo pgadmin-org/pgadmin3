@@ -1,143 +1,488 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.36. pg_stats</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="view-pg-settings.html" title="41.35. pg_settings">
-<link rel="next" href="view-pg-tables.html" title="41.37. pg_tables">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="view-pg-stats"></a>41.36. <tt class="structname">pg_stats</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2727814"></a><p>   The view <tt class="structname">pg_stats</tt> provides access to
-   the information stored in the <a href="catalog-pg-statistic.html" title="41.27. pg_statistic"><tt class="structname">pg_statistic</tt></a>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>pg_stats</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_settings"
+HREF="view-pg-settings.html"><LINK
+REL="NEXT"
+TITLE="pg_tables"
+HREF="view-pg-tables.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-settings.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-tables.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="VIEW-PG-STATS"
+>41.36. <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+></A
+></H1
+><A
+NAME="AEN53454"
+></A
+><P
+>   The view <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> provides access to
+   the information stored in the <A
+HREF="catalog-pg-statistic.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+></A
+>
    catalog.  This view allows access only to rows of
-   <tt class="structname">pg_statistic</tt> that correspond to tables the
+   <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> that correspond to tables the
    user has permission to read, and therefore it is safe to allow public
    read access to this view.
-  </p>
-<p>   <tt class="structname">pg_stats</tt> is also designed to present the
+  </P
+><P
+>   <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> is also designed to present the
    information in a more readable format than the underlying catalog
    --- at the cost that its schema must be extended whenever new slot types
-   are defined for <tt class="structname">pg_statistic</tt>.
-  </p>
-<div class="table">
-<a name="id2727859"></a><p class="title"><b>Table 41.36. <tt class="structname">pg_stats</tt> Columns</b></p>
-<table summary="pg_stats Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="structfield">schemaname</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.nspname</tt></td>
-<td>name of schema containing table</td>
-</tr>
-<tr>
-<td><tt class="structfield">tablename</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.relname</tt></td>
-<td>name of table</td>
-</tr>
-<tr>
-<td><tt class="structfield">attname</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><tt class="structname">pg_attribute</tt></a>.attname</tt></td>
-<td>name of the column described by this row</td>
-</tr>
-<tr>
-<td><tt class="structfield">null_frac</tt></td>
-<td><tt class="type">real</tt></td>
-<td> </td>
-<td>fraction of column entries that are null</td>
-</tr>
-<tr>
-<td><tt class="structfield">avg_width</tt></td>
-<td><tt class="type">integer</tt></td>
-<td> </td>
-<td>average width in bytes of column's entries</td>
-</tr>
-<tr>
-<td><tt class="structfield">n_distinct</tt></td>
-<td><tt class="type">real</tt></td>
-<td> </td>
-<td>If greater than zero, the estimated number of distinct values
+   are defined for <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN53464"
+></A
+><P
+><B
+>Table 41-36. <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>schemaname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.nspname</TT
+></TD
+><TD
+>name of schema containing table</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tablename</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.relname</TT
+></TD
+><TD
+>name of table</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+>.attname</TT
+></TD
+><TD
+>name of the column described by this row</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>null_frac</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>real</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>fraction of column entries that are null</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>avg_width</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>average width in bytes of column's entries</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>n_distinct</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>real</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>If greater than zero, the estimated number of distinct values
       in the column.  If less than zero, the negative of the number of
       distinct values divided by the number of rows.  (The negated form
-      is used when <tt class="command">ANALYZE</tt> believes that the number of distinct
+      is used when <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> believes that the number of distinct
       values
       is likely to increase as the table grows; the positive form is used
       when the column seems to have a fixed number of possible values.)
       For example, -1 indicates a unique column in which the number of
       distinct values is the same as the number of rows.
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">most_common_vals</tt></td>
-<td><tt class="type">anyarray</tt></td>
-<td> </td>
-<td>A list of the most common values in the column. (NULL if
-      no values seem to be more common than any others.)</td>
-</tr>
-<tr>
-<td><tt class="structfield">most_common_freqs</tt></td>
-<td><tt class="type">real[]</tt></td>
-<td> </td>
-<td>A list of the frequencies of the most common values,
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>A list of the most common values in the column. (NULL if
+      no values seem to be more common than any others.)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>most_common_freqs</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>real[]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>A list of the frequencies of the most common values,
       i.e., number of occurrences of each divided by total number of rows.
-      (NULL when <tt class="structfield">most_common_vals</tt> is.)
-     </td>
-</tr>
-<tr>
-<td><tt class="structfield">histogram_bounds</tt></td>
-<td><tt class="type">anyarray</tt></td>
-<td> </td>
-<td>A list of values that divide the column's values into
+      (NULL when <TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+> is.)
+     </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>histogram_bounds</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>A list of values that divide the column's values into
       groups of approximately equal population.  The values in
-      <tt class="structfield">most_common_vals</tt>, if present, are omitted from this
+      <TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+>, if present, are omitted from this
       histogram calculation.  (This column is NULL if the column data type
-      does not have a <tt class="literal">&lt;</tt> operator or if the
-      <tt class="structfield">most_common_vals</tt> list accounts for the entire
+      does not have a <TT
+CLASS="LITERAL"
+>&lt;</TT
+> operator or if the
+      <TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+> list accounts for the entire
       population.)
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">correlation</tt></td>
-<td><tt class="type">real</tt></td>
-<td> </td>
-<td>Statistical correlation between physical row ordering and
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>correlation</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>real</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Statistical correlation between physical row ordering and
       logical ordering of the column values.  This ranges from -1 to +1.
       When the value is near -1 or +1, an index scan on the column will
       be estimated to be cheaper than when it is near zero, due to reduction
       of random access to the disk.  (This column is NULL if the column data
-      type does not have a <tt class="literal">&lt;</tt> operator.)
-      </td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   The maximum number of entries in the <tt class="structfield">most_common_vals</tt>
-   and <tt class="structfield">histogram_bounds</tt> arrays can be set on a
-   column-by-column basis using the <tt class="command">ALTER TABLE SET STATISTICS</tt>
+      type does not have a <TT
+CLASS="LITERAL"
+>&lt;</TT
+> operator.)
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   The maximum number of entries in the <TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+>
+   and <TT
+CLASS="STRUCTFIELD"
+>histogram_bounds</TT
+> arrays can be set on a
+   column-by-column basis using the <TT
+CLASS="COMMAND"
+>ALTER TABLE SET STATISTICS</TT
+>
    command, or globally by setting the
-   <tt class="varname">default_statistics_target</tt> runtime parameter.
-  </p>
-</div></body>
-</html>
+   <TT
+CLASS="VARNAME"
+>default_statistics_target</TT
+> runtime parameter.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-settings.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-tables.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_tables</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

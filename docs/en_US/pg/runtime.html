@@ -1,82 +1,377 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 16. Server Run-time Environment</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="previous" href="install-win32.html" title="Chapter 15. Installation on Windows">
-<link rel="next" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="runtime">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="runtime"></a>Chapter 16. Server Run-time Environment</h2></div></div>
-<div></div>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="runtime.html#postgres-user">16.1. The PostgreSQL User Account</a></span></dt>
-<dt><span class="sect1"><a href="creating-cluster.html">16.2. Creating a Database Cluster</a></span></dt>
-<dt><span class="sect1"><a href="postmaster-start.html">16.3. Starting the Database Server</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="postmaster-start.html#postmaster-start-failures">16.3.1. Server Start-up Failures</a></span></dt>
-<dt><span class="sect2"><a href="postmaster-start.html#client-connection-problems">16.3.2. Client Connection Problems</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="runtime-config.html">16.4. Run-time Configuration</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-configuration-files">16.4.1. Configuration Files</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-connection">16.4.2. Connections and Authentication</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-resource">16.4.3. Resource Consumption</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-wal">16.4.4. Write Ahead Log</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-query">16.4.5. Query Planning</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-logging">16.4.6. Error Reporting and Logging</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-statistics">16.4.7. Runtime Statistics</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-client">16.4.8. Client Connection Defaults</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-locks">16.4.9. Lock Management</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-compatible">16.4.10. Version and Platform Compatibility</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-preset">16.4.11. Preset Options</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-custom">16.4.12. Customized Options</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-developer">16.4.13. Developer Options</a></span></dt>
-<dt><span class="sect2"><a href="runtime-config.html#runtime-config-short">16.4.14. Short Options</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="kernel-resources.html">16.5. Managing Kernel Resources</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="kernel-resources.html#sysvipc">16.5.1. Shared Memory and Semaphores</a></span></dt>
-<dt><span class="sect2"><a href="kernel-resources.html#id2587803">16.5.2. Resource Limits</a></span></dt>
-<dt><span class="sect2"><a href="kernel-resources.html#id2587984">16.5.3. Linux Memory Overcommit</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="postmaster-shutdown.html">16.6. Shutting Down the Server</a></span></dt>
-<dt><span class="sect1"><a href="ssl-tcp.html">16.7. Secure TCP/IP Connections with SSL</a></span></dt>
-<dt><span class="sect1"><a href="ssh-tunnels.html">16.8. Secure TCP/IP Connections with SSH Tunnels</a></span></dt>
-</dl>
-</div>
-<p>  This chapter discusses how to set up and run the database server
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Server Run-time Environment</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Administration"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Installation on Windows"
+HREF="install-win32.html"><LINK
+REL="NEXT"
+TITLE="Creating a Database Cluster"
+HREF="creating-cluster.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-win32.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-win32.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="creating-cluster.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="RUNTIME"
+></A
+>Chapter 16. Server Run-time Environment</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>16.1. <A
+HREF="runtime.html#POSTGRES-USER"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> User Account</A
+></DT
+><DT
+>16.2. <A
+HREF="creating-cluster.html"
+>Creating a Database Cluster</A
+></DT
+><DT
+>16.3. <A
+HREF="postmaster-start.html"
+>Starting the Database Server</A
+></DT
+><DD
+><DL
+><DT
+>16.3.1. <A
+HREF="postmaster-start.html#POSTMASTER-START-FAILURES"
+>Server Start-up Failures</A
+></DT
+><DT
+>16.3.2. <A
+HREF="postmaster-start.html#CLIENT-CONNECTION-PROBLEMS"
+>Client Connection Problems</A
+></DT
+></DL
+></DD
+><DT
+>16.4. <A
+HREF="runtime-config.html"
+>Run-time Configuration</A
+></DT
+><DD
+><DL
+><DT
+>16.4.1. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CONFIGURATION-FILES"
+>Configuration Files</A
+></DT
+><DT
+>16.4.2. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CONNECTION"
+>Connections and Authentication</A
+></DT
+><DT
+>16.4.3. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE"
+>Resource Consumption</A
+></DT
+><DT
+>16.4.4. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-WAL"
+>Write Ahead Log</A
+></DT
+><DT
+>16.4.5. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-QUERY"
+>Query Planning</A
+></DT
+><DT
+>16.4.6. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-LOGGING"
+>Error Reporting and Logging</A
+></DT
+><DT
+>16.4.7. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-STATISTICS"
+>Runtime Statistics</A
+></DT
+><DT
+>16.4.8. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CLIENT"
+>Client Connection Defaults</A
+></DT
+><DT
+>16.4.9. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-LOCKS"
+>Lock Management</A
+></DT
+><DT
+>16.4.10. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-COMPATIBLE"
+>Version and Platform Compatibility</A
+></DT
+><DT
+>16.4.11. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-PRESET"
+>Preset Options</A
+></DT
+><DT
+>16.4.12. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CUSTOM"
+>Customized Options</A
+></DT
+><DT
+>16.4.13. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-DEVELOPER"
+>Developer Options</A
+></DT
+><DT
+>16.4.14. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-SHORT"
+>Short Options</A
+></DT
+></DL
+></DD
+><DT
+>16.5. <A
+HREF="kernel-resources.html"
+>Managing Kernel Resources</A
+></DT
+><DD
+><DL
+><DT
+>16.5.1. <A
+HREF="kernel-resources.html#SYSVIPC"
+>Shared Memory and Semaphores</A
+></DT
+><DT
+>16.5.2. <A
+HREF="kernel-resources.html#AEN18259"
+>Resource Limits</A
+></DT
+><DT
+>16.5.3. <A
+HREF="kernel-resources.html#AEN18291"
+>Linux Memory Overcommit</A
+></DT
+></DL
+></DD
+><DT
+>16.6. <A
+HREF="postmaster-shutdown.html"
+>Shutting Down the Server</A
+></DT
+><DT
+>16.7. <A
+HREF="ssl-tcp.html"
+>Secure TCP/IP Connections with SSL</A
+></DT
+><DT
+>16.8. <A
+HREF="ssh-tunnels.html"
+>Secure TCP/IP Connections with <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> Tunnels</A
+></DT
+></DL
+></DIV
+><P
+>  This chapter discusses how to set up and run the database server
   and the interactions with the operating system.
- </p>
-<div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="postgres-user"></a>16.1. The <span class="productname">PostgreSQL</span> User Account</h2></div></div>
-<div></div>
-</div>
-<a name="id2577454"></a><p>   As with any other server daemon that is connected to outside world,
-   it is advisable to run <span class="productname">PostgreSQL</span> under a
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="POSTGRES-USER"
+>16.1. The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> User Account</A
+></H1
+><A
+NAME="AEN15900"
+></A
+><P
+>   As with any other server daemon that is connected to outside world,
+   it is advisable to run <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> under a
    separate user account. This user account should only own the data
    that is managed by the server, and should not be shared with other
-   daemons. (For example, using the user <tt class="literal">nobody</tt> is a bad
+   daemons. (For example, using the user <TT
+CLASS="LITERAL"
+>nobody</TT
+> is a bad
    idea.) It is not advisable to install executables owned by this 
    user because compromised systems could then modify their own 
    binaries.
-  </p>
-<p>   To add a Unix user account to your system, look for a command
-   <tt class="command">useradd</tt> or <tt class="command">adduser</tt>. The user
-   name <span class="systemitem">postgres</span> is often used but is by no
+  </P
+><P
+>   To add a Unix user account to your system, look for a command
+   <TT
+CLASS="COMMAND"
+>useradd</TT
+> or <TT
+CLASS="COMMAND"
+>adduser</TT
+>. The user
+   name <SPAN
+CLASS="SYSTEMITEM"
+>postgres</SPAN
+> is often used but is by no
    means required.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-win32.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="creating-cluster.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Installation on <SPAN
+CLASS="PRODUCTNAME"
+>Windows</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating a Database Cluster</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

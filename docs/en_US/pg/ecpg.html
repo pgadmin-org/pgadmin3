@@ -1,103 +1,432 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 29. ECPG - Embedded SQL in C</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
-<link rel="previous" href="lo-examplesect.html" title="28.5. Example Program">
-<link rel="next" href="ecpg-connect.html" title="29.2. Connecting to the Database Server">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="ecpg">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="ecpg"></a>Chapter 29. <span class="application">ECPG</span> - Embedded <span class="acronym">SQL</span> in C</h2></div></div>
-<div></div>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="ecpg.html#ecpg-concept">29.1. The Concept</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-connect.html">29.2. Connecting to the Database Server</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-disconnect.html">29.3. Closing a Connection</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-commands.html">29.4. Running SQL Commands</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-set-connection.html">29.5. Choosing a Connection</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-variables.html">29.6. Using Host Variables</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2614505">29.6.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2614544">29.6.2. Declare Sections</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2614628">29.6.3. SELECT INTO and FETCH INTO</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2614731">29.6.4. Indicators</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="ecpg-dynamic.html">29.7. Dynamic SQL</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-descriptors.html">29.8. Using SQL Descriptor Areas</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-errors.html">29.9. Error Handling</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2615234">29.9.1. Setting Callbacks</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2615506">29.9.2. sqlca</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2615744">29.9.3. SQLSTATE vs SQLCODE</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="ecpg-include.html">29.10. Including Files</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-process.html">29.11. Processing Embedded SQL Programs</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-library.html">29.12. Library Functions</a></span></dt>
-<dt><span class="sect1"><a href="ecpg-develop.html">29.13. Internals</a></span></dt>
-</dl>
-</div>
-<a name="id2613796"></a><a name="id2613809"></a><a name="id2613818"></a><p>  This chapter describes the embedded <span class="acronym">SQL</span> package
-  for <span class="productname">PostgreSQL</span>. It was written by
-  Linus Tolke (<tt class="email">&lt;<a href="mailto:linus@epact.se">linus@epact.se</a>&gt;</tt>) and Michael Meskes
-  (<tt class="email">&lt;<a href="mailto:meskes@postgresql.org">meskes@postgresql.org</a>&gt;</tt>). Originally it was written to work with
-  <span class="acronym">C</span>. It also works with <span class="acronym">C++</span>, but
-  it does not recognize all <span class="acronym">C++</span> constructs yet. 
- </p>
-<p>  Admittedly, this documentation is quite incomplete.  But since this
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ECPG - Embedded SQL in C</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Client Interfaces"
+HREF="client-interfaces.html"><LINK
+REL="PREVIOUS"
+TITLE="Example Program"
+HREF="lo-examplesect.html"><LINK
+REL="NEXT"
+TITLE="Connecting to the Database Server"
+HREF="ecpg-connect.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="lo-examplesect.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="largeobjects.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-connect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="ECPG"
+></A
+>Chapter 29. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> in C</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>29.1. <A
+HREF="ecpg.html#ECPG-CONCEPT"
+>The Concept</A
+></DT
+><DT
+>29.2. <A
+HREF="ecpg-connect.html"
+>Connecting to the Database Server</A
+></DT
+><DT
+>29.3. <A
+HREF="ecpg-disconnect.html"
+>Closing a Connection</A
+></DT
+><DT
+>29.4. <A
+HREF="ecpg-commands.html"
+>Running SQL Commands</A
+></DT
+><DT
+>29.5. <A
+HREF="ecpg-set-connection.html"
+>Choosing a Connection</A
+></DT
+><DT
+>29.6. <A
+HREF="ecpg-variables.html"
+>Using Host Variables</A
+></DT
+><DD
+><DL
+><DT
+>29.6.1. <A
+HREF="ecpg-variables.html#AEN23906"
+>Overview</A
+></DT
+><DT
+>29.6.2. <A
+HREF="ecpg-variables.html#AEN23914"
+>Declare Sections</A
+></DT
+><DT
+>29.6.3. <A
+HREF="ecpg-variables.html#AEN23930"
+><TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> and <TT
+CLASS="COMMAND"
+>FETCH INTO</TT
+></A
+></DT
+><DT
+>29.6.4. <A
+HREF="ecpg-variables.html#AEN23948"
+>Indicators</A
+></DT
+></DL
+></DD
+><DT
+>29.7. <A
+HREF="ecpg-dynamic.html"
+>Dynamic SQL</A
+></DT
+><DT
+>29.8. <A
+HREF="ecpg-descriptors.html"
+>Using SQL Descriptor Areas</A
+></DT
+><DT
+>29.9. <A
+HREF="ecpg-errors.html"
+>Error Handling</A
+></DT
+><DD
+><DL
+><DT
+>29.9.1. <A
+HREF="ecpg-errors.html#AEN24081"
+>Setting Callbacks</A
+></DT
+><DT
+>29.9.2. <A
+HREF="ecpg-errors.html#AEN24162"
+>sqlca</A
+></DT
+><DT
+>29.9.3. <A
+HREF="ecpg-errors.html#AEN24207"
+><TT
+CLASS="LITERAL"
+>SQLSTATE</TT
+> vs <TT
+CLASS="LITERAL"
+>SQLCODE</TT
+></A
+></DT
+></DL
+></DD
+><DT
+>29.10. <A
+HREF="ecpg-include.html"
+>Including Files</A
+></DT
+><DT
+>29.11. <A
+HREF="ecpg-process.html"
+>Processing Embedded SQL Programs</A
+></DT
+><DT
+>29.12. <A
+HREF="ecpg-library.html"
+>Library Functions</A
+></DT
+><DT
+>29.13. <A
+HREF="ecpg-develop.html"
+>Internals</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN23732"
+></A
+><A
+NAME="AEN23735"
+></A
+><A
+NAME="AEN23737"
+></A
+><P
+>  This chapter describes the embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> package
+  for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. It was written by
+  Linus Tolke (<CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:linus@epact.se"
+>linus@epact.se</A
+>&#62;</CODE
+>) and Michael Meskes
+  (<CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:meskes@postgresql.org"
+>meskes@postgresql.org</A
+>&#62;</CODE
+>). Originally it was written to work with
+  <ACRONYM
+CLASS="ACRONYM"
+>C</ACRONYM
+>. It also works with <ACRONYM
+CLASS="ACRONYM"
+>C++</ACRONYM
+>, but
+  it does not recognize all <ACRONYM
+CLASS="ACRONYM"
+>C++</ACRONYM
+> constructs yet. 
+ </P
+><P
+>  Admittedly, this documentation is quite incomplete.  But since this
   interface is standardized, additional information can be found in
   many resources about SQL.
- </p>
-<div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-concept"></a>29.1. The Concept</h2></div></div>
-<div></div>
-</div>
-<p>   An embedded SQL program consists of code written in an ordinary
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-CONCEPT"
+>29.1. The Concept</A
+></H1
+><P
+>   An embedded SQL program consists of code written in an ordinary
    programming language, in this case C, mixed with SQL commands in
    specially marked sections.  To build the program, the source code
    is first passed to the embedded SQL preprocessor, which converts it
    to an ordinary C program, and afterwards it can be processed by a C
    compilation tool chain.
-  </p>
-<p>   Embedded <span class="acronym">SQL</span> has advantages over other methods
-   for handling <span class="acronym">SQL</span> commands from C code. First, it
+  </P
+><P
+>   Embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> has advantages over other methods
+   for handling <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands from C code. First, it
    takes care of the tedious passing of information to and from
-   variables in your <span class="acronym">C</span> program.  Second, the SQL
+   variables in your <ACRONYM
+CLASS="ACRONYM"
+>C</ACRONYM
+> program.  Second, the SQL
    code in the program is checked at build time for syntactical
-   correctness.  Third, embedded <span class="acronym">SQL</span> in C is
-   specified in the <span class="acronym">SQL</span> standard and supported by
-   many other <span class="acronym">SQL</span> database systems.  The
-   <span class="productname">PostgreSQL</span> implementation is designed to match this
+   correctness.  Third, embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> in C is
+   specified in the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard and supported by
+   many other <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> database systems.  The
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> implementation is designed to match this
    standard as much as possible, and it is usually possible to port
-   embedded <span class="acronym">SQL</span> programs written for other SQL
-   databases to <span class="productname">PostgreSQL</span> with relative
+   embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> programs written for other SQL
+   databases to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> with relative
    ease.
-  </p>
-<p>   As indicated, programs written for the embedded
-   <span class="acronym">SQL</span> interface are normal C programs with special
+  </P
+><P
+>   As indicated, programs written for the embedded
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> interface are normal C programs with special
    code inserted to perform database-related actions.  This special
    code always has the form
-</p>
-<pre class="programlisting">EXEC SQL ...;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL ...;</PRE
+><P>
    These statements syntactically take the place of a C statement.
    Depending on the particular statement, they may appear in the
    global context or within a function.  Embedded
-   <span class="acronym">SQL</span> statements follow the case-sensitivity rules
-   of normal <span class="acronym">SQL</span> code, and not those of C.
-  </p>
-<p>   The following sections explain all the embedded SQL statements.
-  </p>
-</div>
-</div></body>
-</html>
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> statements follow the case-sensitivity rules
+   of normal <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> code, and not those of C.
+  </P
+><P
+>   The following sections explain all the embedded SQL statements.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="lo-examplesect.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-connect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Example Program</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="client-interfaces.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Connecting to the Database Server</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

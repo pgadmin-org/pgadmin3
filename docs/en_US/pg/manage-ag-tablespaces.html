@@ -1,125 +1,356 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>18.6. Tablespaces</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="managing-databases.html" title="Chapter 18. Managing Databases">
-<link rel="previous" href="manage-ag-dropdb.html" title="18.5. Destroying a Database">
-<link rel="next" href="client-authentication.html" title="Chapter 19. Client Authentication">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="manage-ag-tablespaces"></a>18.6. Tablespaces</h2></div></div>
-<div></div>
-</div>
-<a name="id2590382"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Tablespaces</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Managing Databases"
+HREF="managing-databases.html"><LINK
+REL="PREVIOUS"
+TITLE="Destroying a Database"
+HREF="manage-ag-dropdb.html"><LINK
+REL="NEXT"
+TITLE="Client Authentication"
+HREF="client-authentication.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="manage-ag-dropdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 18. Managing Databases</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MANAGE-AG-TABLESPACES"
+>18.6. Tablespaces</A
+></H1
+><P
+>    Tablespaces in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allow database administrators to
     define locations in the file system where the files representing
     database objects can be stored. Once created, a tablespace can be referred
     to by name when creating database objects.
-   </p>
-<p>    By using tablespaces, a database administrator can control the disk
-    layout of a <span class="productname">PostgreSQL</span> installation. This is useful in
+   </P
+><P
+>    By using tablespaces, a database administrator can control the disk
+    layout of a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation. This is useful in
     at least two ways. Firstly, if the partition or volume on which the cluster
     was initialized runs out of space and cannot be extended logically
     or otherwise, a tablespace can be created on a different partition
     and used until the system can be reconfigured.
-   </p>
-<p>    Secondly, tablespaces allow a database administrator to arrange data
+   </P
+><P
+>    Secondly, tablespaces allow a database administrator to arrange data
     locations based on the usage patterns of database objects. For
     example, an index which is very heavily used can be placed on very fast,
     highly available disk, such as an expensive solid state device. At the same
     time a table storing archived data which is rarely used or not performance
     critical could be stored on a less expensive, slower disk system.
-   </p>
-<p>    To define a tablespace, use the <a href="sql-createtablespace.html" title="CREATE TABLESPACE"><span class="refentrytitle"><a name="sql-createtablespace-title"></a>CREATE TABLESPACE</span></a>
-    command, for example:<a name="id2590445"></a>
-</p>
-<pre class="programlisting">CREATE TABLESPACE fastspace LOCATION '/mnt/sda1/postgresql/data';</pre>
-<p>
+   </P
+><P
+>    To define a tablespace, use the <A
+HREF="sql-createtablespace.html"
+>CREATE TABLESPACE</A
+>
+    command, for example:<A
+NAME="AEN18757"
+></A
+>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLESPACE fastspace LOCATION '/mnt/sda1/postgresql/data';</PRE
+><P>
     The location must be an existing, empty directory that is owned by
-    the <span class="productname">PostgreSQL</span> system user.  All objects subsequently
+    the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> system user.  All objects subsequently
     created within the tablespace will be stored in files underneath this
     directory.
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>    There is usually not much point in making more than one
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    There is usually not much point in making more than one
     tablespace per logical filesystem, since you can't control the location
     of individual files within a logical filesystem.  However,
-    <span class="productname">PostgreSQL</span> does not enforce any such limitation, and
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> does not enforce any such limitation, and
     indeed it's not directly aware of the filesystem boundaries on your
     system.  It just stores files in the directories you tell it to use.
-   </p>
-</div>
-<p>    Creation of the tablespace itself must be done as a database superuser,
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Creation of the tablespace itself must be done as a database superuser,
     but after that you can allow ordinary database users to make use of it.
-    To do that, grant them the <tt class="literal">CREATE</tt> privilege on it.
-   </p>
-<p>    Databases, schemas, tables, and indexes can all be assigned to
-    particular tablespaces. To do so, a user with the <tt class="literal">CREATE</tt>
+    To do that, grant them the <TT
+CLASS="LITERAL"
+>CREATE</TT
+> privilege on it.
+   </P
+><P
+>    Databases, schemas, tables, and indexes can all be assigned to
+    particular tablespaces. To do so, a user with the <TT
+CLASS="LITERAL"
+>CREATE</TT
+>
     privilege on a given tablespace must pass the tablespace name as a 
     parameter to the relevant command. For example, the following creates 
-    a table in the tablespace <tt class="literal">space1</tt>:
-</p>
-<pre class="programlisting">CREATE TABLE foo(i int) TABLESPACE space1;</pre>
-<p>
-   </p>
-<p>    The tablespace associated with a database is used to store the system
+    a table in the tablespace <TT
+CLASS="LITERAL"
+>space1</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE foo(i int) TABLESPACE space1;</PRE
+><P>
+   </P
+><P
+>    The tablespace associated with a database is used to store the system
     catalogs of that database, as well as any temporary files created by
     server processes using that database.  Furthermore, it is the default
     tablespace selected for any objects created within the database, if
-    no specific <tt class="literal">TABLESPACE</tt> clause is given when those objects
+    no specific <TT
+CLASS="LITERAL"
+>TABLESPACE</TT
+> clause is given when those objects
     are created.  If a database is created without specifying a tablespace
     for it, it uses the same tablespace as the template database it is copied
     from.
-   </p>
-<p>    A schema does not in itself occupy any storage (other than a system
+   </P
+><P
+>    A schema does not in itself occupy any storage (other than a system
     catalog entry), so assigning a tablespace to a schema does not in itself
     do anything.  What this actually does is to set a default tablespace
     for tables later created within the schema.  If
     no tablespace is mentioned when creating a schema, it inherits its
     default tablespace from the current database.
-   </p>
-<p>    The default choice of tablespace for an index is the same tablespace
+   </P
+><P
+>    The default choice of tablespace for an index is the same tablespace
     already assigned to the table the index is for.
-   </p>
-<p>    Another way to state the above rules is that when a schema, table, or index
+   </P
+><P
+>    Another way to state the above rules is that when a schema, table, or index
     is created without specifying a tablespace, the object
     inherits its logical parent's tablespace. A schema will be created in the
     current database's tablespace; a table will be created in the
     tablespace of the schema it is being created in; an index will be created
     in the tablespace of the table underlying the index.
-   </p>
-<p>    Two tablespaces are automatically created by <tt class="literal">initdb</tt>. The
-    <tt class="literal">pg_global</tt> tablespace is used for shared system catalogs. The
-    <tt class="literal">pg_default</tt> tablespace is the default tablespace of the
-    <tt class="literal">template1</tt> and <tt class="literal">template0</tt> databases (and, therefore,
+   </P
+><P
+>    Two tablespaces are automatically created by <TT
+CLASS="LITERAL"
+>initdb</TT
+>. The
+    <TT
+CLASS="LITERAL"
+>pg_global</TT
+> tablespace is used for shared system catalogs. The
+    <TT
+CLASS="LITERAL"
+>pg_default</TT
+> tablespace is the default tablespace of the
+    <TT
+CLASS="LITERAL"
+>template1</TT
+> and <TT
+CLASS="LITERAL"
+>template0</TT
+> databases (and, therefore,
     will be the default tablespace for everything else as well, unless
-    explicit <tt class="literal">TABLESPACE</tt> clauses are used somewhere along the
+    explicit <TT
+CLASS="LITERAL"
+>TABLESPACE</TT
+> clauses are used somewhere along the
     line).
-   </p>
-<p>    Once created, a tablespace can be used from any database, provided
+   </P
+><P
+>    Once created, a tablespace can be used from any database, provided
     the requesting user has sufficient privilege. This means that a tablespace
     cannot be dropped until all objects in all databases using the tablespace
     have been removed.
-   </p>
-<p>    To simplify the implementation of tablespaces, 
-    <span class="productname">PostgreSQL</span> makes extensive use of symbolic links. This
-    means that tablespaces can be used <span class="emphasis"><em>only</em></span> on systems
+   </P
+><P
+>    To simplify the implementation of tablespaces, 
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> makes extensive use of symbolic links. This
+    means that tablespaces can be used <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>only</I
+></SPAN
+> on systems
     that support symbolic links.
-   </p>
-<p>    The directory <tt class="filename">$PGDATA/pg_tblspc</tt> contains symbolic links that
+   </P
+><P
+>    The directory <TT
+CLASS="FILENAME"
+>$PGDATA/pg_tblspc</TT
+> contains symbolic links that
     point to each of the non-built-in tablespaces defined in the cluster.
     Although not recommended, it is possible to adjust the tablespace
     layout by hand by redefining these links.  Two warnings: do not do so
     while the postmaster is running; and after you restart the postmaster,
-    update the <tt class="structname">pg_tablespace</tt> catalog to show the new
-    locations.  (If you do not, <tt class="literal">pg_dump</tt> will continue to show
+    update the <TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+> catalog to show the new
+    locations.  (If you do not, <TT
+CLASS="LITERAL"
+>pg_dump</TT
+> will continue to show
     the old tablespace locations.)
-   </p>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="manage-ag-dropdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Destroying a Database</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Client Authentication</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

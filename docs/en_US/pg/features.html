@@ -1,1632 +1,2872 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Appendix D. SQL Conformance</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
-<link rel="previous" href="sql-keywords-appendix.html" title="Appendix C. SQL Key Words">
-<link rel="next" href="unsupported-features-sql99.html" title="D.2. Unsupported Features">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="features">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="features"></a>Appendix D. SQL Conformance</h2></div></div>
-<div></div>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="features.html#features-sql99">D.1. Supported Features</a></span></dt>
-<dt><span class="sect1"><a href="unsupported-features-sql99.html">D.2. Unsupported Features</a></span></dt>
-</dl>
-</div>
-<p>  This section attempts to outline to what extent
-  <span class="productname">PostgreSQL</span> conforms to the SQL standard.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SQL Conformance</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Appendixes"
+HREF="appendixes.html"><LINK
+REL="PREVIOUS"
+TITLE="SQL Key Words"
+HREF="sql-keywords-appendix.html"><LINK
+REL="NEXT"
+TITLE="Unsupported Features"
+HREF="unsupported-features-sql99.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="APPENDIX"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-keywords-appendix.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-keywords-appendix.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="unsupported-features-sql99.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="FEATURES"
+></A
+>Appendix D. SQL Conformance</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>D.1. <A
+HREF="features.html#FEATURES-SQL99"
+>Supported Features</A
+></DT
+><DT
+>D.2. <A
+HREF="unsupported-features-sql99.html"
+>Unsupported Features</A
+></DT
+></DL
+></DIV
+><P
+>  This section attempts to outline to what extent
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> conforms to the SQL standard.
   Full compliance to the standard or a complete statement about the
   compliance to the standard is complicated and not particularly
   useful, so this section can only give an overview.
-  </p>
-<p>  The formal name of the SQL standard is ISO/IEC 9075 &#8220;<span class="quote">Database
-  Language SQL</span>&#8221;.  A revised version of the standard is released
+  </P
+><P
+>  The formal name of the SQL standard is ISO/IEC 9075 <SPAN
+CLASS="QUOTE"
+>"Database
+  Language SQL"</SPAN
+>.  A revised version of the standard is released
   from time to time; the most recent one appearing in 1999.  That
   version is referred to as ISO/IEC 9075:1999, or informally as SQL99.
   The version prior to that was SQL92.
-  <span class="productname">PostgreSQL</span> development tends to aim for
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> development tends to aim for
   conformance with the latest official version of the standard where
   such conformance does not contradict traditional features or common
   sense.  At the time of this writing, balloting is under way for a
   new revision of the standard, which, if approved, will eventually
   become the conformance target for future
-  <span class="productname">PostgreSQL</span> development.
- </p>
-<p>  <span class="acronym">SQL92</span> defined three feature sets for conformance:
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> development.
+ </P
+><P
+>  <ACRONYM
+CLASS="ACRONYM"
+>SQL92</ACRONYM
+> defined three feature sets for conformance:
   Entry, Intermediate, and Full. Most database management systems claiming
-  <span class="acronym">SQL</span> standard conformance were conforming at only
+  <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard conformance were conforming at only
   the Entry level, since the entire set of features in the
   Intermediate and Full levels was either too voluminous or in
   conflict with legacy behaviors.
- </p>
-<p>  <span class="acronym">SQL99</span> defines a large set of individual features
+ </P
+><P
+>  <ACRONYM
+CLASS="ACRONYM"
+>SQL99</ACRONYM
+> defines a large set of individual features
   rather than the ineffectively broad three levels found in
-  <span class="acronym">SQL92</span>.  A large subset of these features
-  represents the &#8220;<span class="quote">core</span>&#8221; features, which every conforming
+  <ACRONYM
+CLASS="ACRONYM"
+>SQL92</ACRONYM
+>.  A large subset of these features
+  represents the <SPAN
+CLASS="QUOTE"
+>"core"</SPAN
+> features, which every conforming
   SQL implementation must supply.  The rest of the features are purely
   optional.  Some optional features are grouped together to form
-  &#8220;<span class="quote">packages</span>&#8221;, which SQL implementations can claim
+  <SPAN
+CLASS="QUOTE"
+>"packages"</SPAN
+>, which SQL implementations can claim
   conformance to, thus claiming conformance to particular groups of
   features.
- </p>
-<p>  The <span class="acronym">SQL99</span> standard is also split into 5 parts:
+ </P
+><P
+>  The <ACRONYM
+CLASS="ACRONYM"
+>SQL99</ACRONYM
+> standard is also split into 5 parts:
   Framework, Foundation, Call Level Interface, Persistent Stored
   Modules, and Host Language Bindings.
-  <span class="productname">PostgreSQL</span> only covers parts 1, 2, and 5.
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> only covers parts 1, 2, and 5.
   Part 3 is similar to the ODBC interface, and part 4 is similar to
-  the <span class="application">PL/pgSQL</span> programming language, but
+  the <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> programming language, but
   exact conformance is not specifically intended in either case.
- </p>
-<p>  In the following two sections, we provide a list of those features
-  that <span class="productname">PostgreSQL</span> supports, followed by a
+ </P
+><P
+>  In the following two sections, we provide a list of those features
+  that <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports, followed by a
   list of the features defined in SQL99 which are not yet supported in
-  <span class="productname">PostgreSQL</span>.  Both of these lists are
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  Both of these lists are
   approximate: There may be minor details that are nonconforming for a
   feature that is listed as supported, and large parts of an
   unsupported feature may in fact be implemented.  The main body of
   the documentation always contains the most accurate information
   about what does and does not work.
- </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>   Feature codes containing a hyphen are subfeatures.  Therefore, if a
+ </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   Feature codes containing a hyphen are subfeatures.  Therefore, if a
    particular subfeature is not supported, the main feature is listed
    as unsupported even if some other subfeatures are supported.
-  </p>
-</div>
-<div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="features-sql99"></a>D.1. Supported Features</h2></div></div>
-<div></div>
-</div>
-<p>    </p>
-<div class="informaltable"><table border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Identifier</th>
-<th>Package</th>
-<th>Description</th>
-<th>Comment</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>B012</td>
-<td>Core</td>
-<td>Embedded C</td>
-<td> </td>
-</tr>
-<tr>
-<td>B021</td>
-<td> </td>
-<td>Direct SQL</td>
-<td> </td>
-</tr>
-<tr>
-<td>E011</td>
-<td>Core</td>
-<td>Numeric data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>E011-01</td>
-<td>Core</td>
-<td>INTEGER and SMALLINT data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>E011-02</td>
-<td>Core</td>
-<td>REAL, DOUBLE PRECISION, and FLOAT data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>E011-03</td>
-<td>Core</td>
-<td>DECIMAL and NUMERIC data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>E011-04</td>
-<td>Core</td>
-<td>Arithmetic operators</td>
-<td> </td>
-</tr>
-<tr>
-<td>E011-05</td>
-<td>Core</td>
-<td>Numeric comparison</td>
-<td> </td>
-</tr>
-<tr>
-<td>E011-06</td>
-<td>Core</td>
-<td>Implicit casting among the numeric data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021</td>
-<td>Core</td>
-<td>Character data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-01</td>
-<td>Core</td>
-<td>CHARACTER data type</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-02</td>
-<td>Core</td>
-<td>CHARACTER VARYING data type</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-03</td>
-<td>Core</td>
-<td>Character literals</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-04</td>
-<td>Core</td>
-<td>CHARACTER_LENGTH function</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-05</td>
-<td>Core</td>
-<td>OCTET_LENGTH function</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-06</td>
-<td>Core</td>
-<td>SUBSTRING function</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-07</td>
-<td>Core</td>
-<td>Character concatenation</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-08</td>
-<td>Core</td>
-<td>UPPER and LOWER functions</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-09</td>
-<td>Core</td>
-<td>TRIM function</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-10</td>
-<td>Core</td>
-<td>Implicit casting among the character data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-11</td>
-<td>Core</td>
-<td>POSITION function</td>
-<td> </td>
-</tr>
-<tr>
-<td>E021-12</td>
-<td>Core</td>
-<td>Character comparison</td>
-<td> </td>
-</tr>
-<tr>
-<td>E031</td>
-<td>Core</td>
-<td>Identifiers</td>
-<td> </td>
-</tr>
-<tr>
-<td>E031-01</td>
-<td>Core</td>
-<td>Delimited identifiers</td>
-<td> </td>
-</tr>
-<tr>
-<td>E031-02</td>
-<td>Core</td>
-<td>Lower case identifiers</td>
-<td> </td>
-</tr>
-<tr>
-<td>E031-03</td>
-<td>Core</td>
-<td>Trailing underscore</td>
-<td> </td>
-</tr>
-<tr>
-<td>E051</td>
-<td>Core</td>
-<td>Basic query specification</td>
-<td> </td>
-</tr>
-<tr>
-<td>E051-01</td>
-<td>Core</td>
-<td>SELECT DISTINCT</td>
-<td> </td>
-</tr>
-<tr>
-<td>E051-02</td>
-<td>Core</td>
-<td>GROUP BY clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>E051-04</td>
-<td>Core</td>
-<td>GROUP BY can contain columns not in &lt;select list&gt;</td>
-<td> </td>
-</tr>
-<tr>
-<td>E051-05</td>
-<td>Core</td>
-<td>Select list items can be renamed</td>
-<td>AS is required</td>
-</tr>
-<tr>
-<td>E051-06</td>
-<td>Core</td>
-<td>HAVING clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>E051-07</td>
-<td>Core</td>
-<td>Qualified * in select list</td>
-<td> </td>
-</tr>
-<tr>
-<td>E051-08</td>
-<td>Core</td>
-<td>Correlation names in the FROM clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>E051-09</td>
-<td>Core</td>
-<td>Rename columns in the FROM clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061</td>
-<td>Core</td>
-<td>Basic predicates and search conditions</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-01</td>
-<td>Core</td>
-<td>Comparison predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-02</td>
-<td>Core</td>
-<td>BETWEEN predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-03</td>
-<td>Core</td>
-<td>IN predicate with list of values</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-04</td>
-<td>Core</td>
-<td>LIKE predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-05</td>
-<td>Core</td>
-<td>LIKE predicate ESCAPE clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-06</td>
-<td>Core</td>
-<td>NULL predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-07</td>
-<td>Core</td>
-<td>Quantified comparison predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-08</td>
-<td>Core</td>
-<td>EXISTS predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-09</td>
-<td>Core</td>
-<td>Subqueries in comparison predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-11</td>
-<td>Core</td>
-<td>Subqueries in IN predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-12</td>
-<td>Core</td>
-<td>Subqueries in quantified comparison predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-13</td>
-<td>Core</td>
-<td>Correlated subqueries</td>
-<td> </td>
-</tr>
-<tr>
-<td>E061-14</td>
-<td>Core</td>
-<td>Search condition</td>
-<td> </td>
-</tr>
-<tr>
-<td>E071</td>
-<td>Core</td>
-<td>Basic query expressions</td>
-<td> </td>
-</tr>
-<tr>
-<td>E071-01</td>
-<td>Core</td>
-<td>UNION DISTINCT table operator</td>
-<td> </td>
-</tr>
-<tr>
-<td>E071-02</td>
-<td>Core</td>
-<td>UNION ALL table operator</td>
-<td> </td>
-</tr>
-<tr>
-<td>E071-03</td>
-<td>Core</td>
-<td>EXCEPT DISTINCT table operator</td>
-<td> </td>
-</tr>
-<tr>
-<td>E071-05</td>
-<td>Core</td>
-<td>Columns combined via table operators need not have exactly the same data type</td>
-<td> </td>
-</tr>
-<tr>
-<td>E071-06</td>
-<td>Core</td>
-<td>Table operators in subqueries</td>
-<td> </td>
-</tr>
-<tr>
-<td>E081-01</td>
-<td>Core</td>
-<td>SELECT privilege</td>
-<td> </td>
-</tr>
-<tr>
-<td>E081-02</td>
-<td>Core</td>
-<td>DELETE privilege</td>
-<td> </td>
-</tr>
-<tr>
-<td>E081-03</td>
-<td>Core</td>
-<td>INSERT privilege at the table level</td>
-<td> </td>
-</tr>
-<tr>
-<td>E081-04</td>
-<td>Core</td>
-<td>UPDATE privilege at the table level</td>
-<td> </td>
-</tr>
-<tr>
-<td>E081-06</td>
-<td>Core</td>
-<td>REFERENCES privilege at the table level</td>
-<td> </td>
-</tr>
-<tr>
-<td>E081-08</td>
-<td>Core</td>
-<td>WITH GRANT OPTION</td>
-<td> </td>
-</tr>
-<tr>
-<td>E091</td>
-<td>Core</td>
-<td>Set functions</td>
-<td> </td>
-</tr>
-<tr>
-<td>E091-01</td>
-<td>Core</td>
-<td>AVG</td>
-<td> </td>
-</tr>
-<tr>
-<td>E091-02</td>
-<td>Core</td>
-<td>COUNT</td>
-<td> </td>
-</tr>
-<tr>
-<td>E091-03</td>
-<td>Core</td>
-<td>MAX</td>
-<td> </td>
-</tr>
-<tr>
-<td>E091-04</td>
-<td>Core</td>
-<td>MIN</td>
-<td> </td>
-</tr>
-<tr>
-<td>E091-05</td>
-<td>Core</td>
-<td>SUM</td>
-<td> </td>
-</tr>
-<tr>
-<td>E091-06</td>
-<td>Core</td>
-<td>ALL quantifier</td>
-<td> </td>
-</tr>
-<tr>
-<td>E091-07</td>
-<td>Core</td>
-<td>DISTINCT quantifier</td>
-<td> </td>
-</tr>
-<tr>
-<td>E101</td>
-<td>Core</td>
-<td>Basic data manipulation</td>
-<td> </td>
-</tr>
-<tr>
-<td>E101-01</td>
-<td>Core</td>
-<td>INSERT statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E101-03</td>
-<td>Core</td>
-<td>Searched UPDATE statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E101-04</td>
-<td>Core</td>
-<td>Searched DELETE statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E111</td>
-<td>Core</td>
-<td>Single row SELECT statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E121-01</td>
-<td>Core</td>
-<td>DECLARE CURSOR</td>
-<td> </td>
-</tr>
-<tr>
-<td>E121-02</td>
-<td>Core</td>
-<td>ORDER BY columns need not be in select list</td>
-<td> </td>
-</tr>
-<tr>
-<td>E121-03</td>
-<td>Core</td>
-<td>Value expressions in ORDER BY clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>E121-04</td>
-<td>Core</td>
-<td>OPEN statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E121-08</td>
-<td>Core</td>
-<td>CLOSE statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E121-10</td>
-<td>Core</td>
-<td>FETCH statement implicit NEXT</td>
-<td> </td>
-</tr>
-<tr>
-<td>E121-17</td>
-<td>Core</td>
-<td>WITH HOLD cursors</td>
-<td> </td>
-</tr>
-<tr>
-<td>E131</td>
-<td>Core</td>
-<td>Null value support (nulls in lieu of values)</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141</td>
-<td>Core</td>
-<td>Basic integrity constraints</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141-01</td>
-<td>Core</td>
-<td>NOT NULL constraints</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141-02</td>
-<td>Core</td>
-<td>UNIQUE constraints of NOT NULL columns</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141-03</td>
-<td>Core</td>
-<td>PRIMARY KEY constraints</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141-04</td>
-<td>Core</td>
-<td>Basic FOREIGN KEY constraint with the NO ACTION default for both referential delete action and referential update action</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141-06</td>
-<td>Core</td>
-<td>CHECK constraints</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141-07</td>
-<td>Core</td>
-<td>Column defaults</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141-08</td>
-<td>Core</td>
-<td>NOT NULL inferred on PRIMARY KEY</td>
-<td> </td>
-</tr>
-<tr>
-<td>E141-10</td>
-<td>Core</td>
-<td>Names in a foreign key can be specified in any order</td>
-<td> </td>
-</tr>
-<tr>
-<td>E151</td>
-<td>Core</td>
-<td>Transaction support</td>
-<td> </td>
-</tr>
-<tr>
-<td>E151-01</td>
-<td>Core</td>
-<td>COMMIT statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E151-02</td>
-<td>Core</td>
-<td>ROLLBACK statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E152</td>
-<td>Core</td>
-<td>Basic SET TRANSACTION statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>E152-01</td>
-<td>Core</td>
-<td>SET TRANSACTION statement: ISOLATION LEVEL SERIALIZABLE clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>E152-02</td>
-<td>Core</td>
-<td>SET TRANSACTION statement: READ ONLY and READ WRITE clauses</td>
-<td> </td>
-</tr>
-<tr>
-<td>E161</td>
-<td>Core</td>
-<td>SQL comments using leading double minus</td>
-<td> </td>
-</tr>
-<tr>
-<td>E171</td>
-<td>Core</td>
-<td>SQLSTATE support</td>
-<td> </td>
-</tr>
-<tr>
-<td>F021</td>
-<td>Core</td>
-<td>Basic information schema</td>
-<td> </td>
-</tr>
-<tr>
-<td>F021-01</td>
-<td>Core</td>
-<td>COLUMNS view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F021-02</td>
-<td>Core</td>
-<td>TABLES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F021-03</td>
-<td>Core</td>
-<td>VIEWS view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F021-04</td>
-<td>Core</td>
-<td>TABLE_CONSTRAINTS view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F021-05</td>
-<td>Core</td>
-<td>REFERENTIAL_CONSTRAINTS view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F021-06</td>
-<td>Core</td>
-<td>CHECK_CONSTRAINTS view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F031</td>
-<td>Core</td>
-<td>Basic schema manipulation</td>
-<td> </td>
-</tr>
-<tr>
-<td>F031-01</td>
-<td>Core</td>
-<td>CREATE TABLE statement to create persistent base tables</td>
-<td> </td>
-</tr>
-<tr>
-<td>F031-02</td>
-<td>Core</td>
-<td>CREATE VIEW statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>F031-03</td>
-<td>Core</td>
-<td>GRANT statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>F031-04</td>
-<td>Core</td>
-<td>ALTER TABLE statement: ADD COLUMN clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F031-13</td>
-<td>Core</td>
-<td>DROP TABLE statement: RESTRICT clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F031-16</td>
-<td>Core</td>
-<td>DROP VIEW statement: RESTRICT clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F031-19</td>
-<td>Core</td>
-<td>REVOKE statement: RESTRICT clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F032</td>
-<td> </td>
-<td>CASCADE drop behavior</td>
-<td> </td>
-</tr>
-<tr>
-<td>F033</td>
-<td> </td>
-<td>ALTER TABLE statement: DROP COLUMN clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F034</td>
-<td> </td>
-<td>Extended REVOKE statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>F034-01</td>
-<td> </td>
-<td>REVOKE statement performed by other than the owner of a schema object</td>
-<td> </td>
-</tr>
-<tr>
-<td>F034-02</td>
-<td> </td>
-<td>REVOKE statement: GRANT OPTION FOR clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F034-03</td>
-<td> </td>
-<td>REVOKE statement to revoke a privilege that the grantee has WITH GRANT OPTION</td>
-<td> </td>
-</tr>
-<tr>
-<td>F041</td>
-<td>Core</td>
-<td>Basic joined table</td>
-<td> </td>
-</tr>
-<tr>
-<td>F041-01</td>
-<td>Core</td>
-<td>Inner join (but not necessarily the INNER keyword)</td>
-<td> </td>
-</tr>
-<tr>
-<td>F041-02</td>
-<td>Core</td>
-<td>INNER keyword</td>
-<td> </td>
-</tr>
-<tr>
-<td>F041-03</td>
-<td>Core</td>
-<td>LEFT OUTER JOIN</td>
-<td> </td>
-</tr>
-<tr>
-<td>F041-04</td>
-<td>Core</td>
-<td>RIGHT OUTER JOIN</td>
-<td> </td>
-</tr>
-<tr>
-<td>F041-05</td>
-<td>Core</td>
-<td>Outer joins can be nested</td>
-<td> </td>
-</tr>
-<tr>
-<td>F041-07</td>
-<td>Core</td>
-<td>The inner table in a left or right outer join can also be used in an inner join</td>
-<td> </td>
-</tr>
-<tr>
-<td>F041-08</td>
-<td>Core</td>
-<td>All comparison operators are supported (rather than just =)</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051</td>
-<td>Core</td>
-<td>Basic date and time</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051-01</td>
-<td>Core</td>
-<td>DATE data type (including support of DATE literal)</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051-02</td>
-<td>Core</td>
-<td>TIME data type (including support of TIME literal) with fractional seconds precision of at least 0</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051-03</td>
-<td>Core</td>
-<td>TIMESTAMP data type (including support of TIMESTAMP literal) with fractional seconds precision of at least 0 and 6</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051-04</td>
-<td>Core</td>
-<td>Comparison predicate on DATE, TIME, and TIMESTAMP data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051-05</td>
-<td>Core</td>
-<td>Explicit CAST between datetime types and character types</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051-06</td>
-<td>Core</td>
-<td>CURRENT_DATE</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051-07</td>
-<td>Core</td>
-<td>LOCALTIME</td>
-<td> </td>
-</tr>
-<tr>
-<td>F051-08</td>
-<td>Core</td>
-<td>LOCALTIMESTAMP</td>
-<td> </td>
-</tr>
-<tr>
-<td>F052</td>
-<td>Enhanced datetime facilities</td>
-<td>Intervals and datetime arithmetic</td>
-<td> </td>
-</tr>
-<tr>
-<td>F081</td>
-<td>Core</td>
-<td>UNION and EXCEPT in views</td>
-<td> </td>
-</tr>
-<tr>
-<td>F111</td>
-<td> </td>
-<td>Isolation levels other than SERIALIZABLE</td>
-<td> </td>
-</tr>
-<tr>
-<td>F111-01</td>
-<td> </td>
-<td>READ UNCOMMITTED isolation level</td>
-<td>behaves like READ COMMITTED</td>
-</tr>
-<tr>
-<td>F111-02</td>
-<td> </td>
-<td>READ COMMITTED isolation level</td>
-<td> </td>
-</tr>
-<tr>
-<td>F111-03</td>
-<td> </td>
-<td>REPEATABLE READ isolation level</td>
-<td>behaves like SERIALIZABLE</td>
-</tr>
-<tr>
-<td>F131</td>
-<td>Core</td>
-<td>Grouped operations</td>
-<td> </td>
-</tr>
-<tr>
-<td>F131-01</td>
-<td>Core</td>
-<td>WHERE, GROUP BY, and HAVING clauses supported in queries with grouped views</td>
-<td> </td>
-</tr>
-<tr>
-<td>F131-02</td>
-<td>Core</td>
-<td>Multiple tables supported in queries with grouped views</td>
-<td> </td>
-</tr>
-<tr>
-<td>F131-03</td>
-<td>Core</td>
-<td>Set functions supported in queries with grouped views</td>
-<td> </td>
-</tr>
-<tr>
-<td>F131-04</td>
-<td>Core</td>
-<td>Subqueries with GROUP BY and HAVING clauses and grouped views</td>
-<td> </td>
-</tr>
-<tr>
-<td>F131-05</td>
-<td>Core</td>
-<td>Single row SELECT with GROUP BY and HAVING clauses and grouped views</td>
-<td> </td>
-</tr>
-<tr>
-<td>F171</td>
-<td> </td>
-<td>Multiple schemas per user</td>
-<td> </td>
-</tr>
-<tr>
-<td>F191</td>
-<td>Enhanced integrity management</td>
-<td>Referential delete actions</td>
-<td> </td>
-</tr>
-<tr>
-<td>F201</td>
-<td>Core</td>
-<td>CAST function</td>
-<td> </td>
-</tr>
-<tr>
-<td>F221</td>
-<td>Core</td>
-<td>Explicit defaults</td>
-<td> </td>
-</tr>
-<tr>
-<td>F222</td>
-<td> </td>
-<td>INSERT statement: DEFAULT VALUES clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F231</td>
-<td> </td>
-<td>Privilege Tables</td>
-<td> </td>
-</tr>
-<tr>
-<td>F231-01</td>
-<td> </td>
-<td>TABLE_PRIVILEGES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F231-02</td>
-<td> </td>
-<td>COLUMN_PRIVILEGES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F231-03</td>
-<td> </td>
-<td>USAGE_PRIVILEGES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F251</td>
-<td> </td>
-<td>Domain support</td>
-<td> </td>
-</tr>
-<tr>
-<td>F261</td>
-<td>Core</td>
-<td>CASE expression</td>
-<td> </td>
-</tr>
-<tr>
-<td>F261-01</td>
-<td>Core</td>
-<td>Simple CASE</td>
-<td> </td>
-</tr>
-<tr>
-<td>F261-02</td>
-<td>Core</td>
-<td>Searched CASE</td>
-<td> </td>
-</tr>
-<tr>
-<td>F261-03</td>
-<td>Core</td>
-<td>NULLIF</td>
-<td> </td>
-</tr>
-<tr>
-<td>F261-04</td>
-<td>Core</td>
-<td>COALESCE</td>
-<td> </td>
-</tr>
-<tr>
-<td>F271</td>
-<td> </td>
-<td>Compound character literals</td>
-<td> </td>
-</tr>
-<tr>
-<td>F281</td>
-<td> </td>
-<td>LIKE enhancements</td>
-<td> </td>
-</tr>
-<tr>
-<td>F302</td>
-<td>OLAP facilities</td>
-<td>INTERSECT table operator</td>
-<td> </td>
-</tr>
-<tr>
-<td>F302-01</td>
-<td>OLAP facilities</td>
-<td>INTERSECT DISTINCT table operator</td>
-<td> </td>
-</tr>
-<tr>
-<td>F302-02</td>
-<td>OLAP facilities</td>
-<td>INTERSECT ALL table operator</td>
-<td> </td>
-</tr>
-<tr>
-<td>F304</td>
-<td>OLAP facilities</td>
-<td>EXCEPT ALL table operator</td>
-<td> </td>
-</tr>
-<tr>
-<td>F311-01</td>
-<td>Core</td>
-<td>CREATE SCHEMA</td>
-<td> </td>
-</tr>
-<tr>
-<td>F311-02</td>
-<td>Core</td>
-<td>CREATE TABLE for persistent base tables</td>
-<td> </td>
-</tr>
-<tr>
-<td>F311-03</td>
-<td>Core</td>
-<td>CREATE VIEW</td>
-<td> </td>
-</tr>
-<tr>
-<td>F311-05</td>
-<td>Core</td>
-<td>GRANT statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>F321</td>
-<td> </td>
-<td>User authorization</td>
-<td> </td>
-</tr>
-<tr>
-<td>F361</td>
-<td> </td>
-<td>Subprogram support</td>
-<td> </td>
-</tr>
-<tr>
-<td>F381</td>
-<td> </td>
-<td>Extended schema manipulation</td>
-<td> </td>
-</tr>
-<tr>
-<td>F381-01</td>
-<td> </td>
-<td>ALTER TABLE statement: ALTER COLUMN clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F381-02</td>
-<td> </td>
-<td>ALTER TABLE statement: ADD CONSTRAINT clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F381-03</td>
-<td> </td>
-<td>ALTER TABLE statement: DROP CONSTRAINT clause</td>
-<td> </td>
-</tr>
-<tr>
-<td>F391</td>
-<td> </td>
-<td>Long identifiers</td>
-<td> </td>
-</tr>
-<tr>
-<td>F401</td>
-<td>OLAP facilities</td>
-<td>Extended joined table</td>
-<td> </td>
-</tr>
-<tr>
-<td>F401-01</td>
-<td>OLAP facilities</td>
-<td>NATURAL JOIN</td>
-<td> </td>
-</tr>
-<tr>
-<td>F401-02</td>
-<td>OLAP facilities</td>
-<td>FULL OUTER JOIN</td>
-<td> </td>
-</tr>
-<tr>
-<td>F401-03</td>
-<td>OLAP facilities</td>
-<td>UNION JOIN</td>
-<td> </td>
-</tr>
-<tr>
-<td>F401-04</td>
-<td>OLAP facilities</td>
-<td>CROSS JOIN</td>
-<td> </td>
-</tr>
-<tr>
-<td>F411</td>
-<td>Enhanced datetime facilities</td>
-<td>Time zone specification</td>
-<td> </td>
-</tr>
-<tr>
-<td>F421</td>
-<td> </td>
-<td>National character</td>
-<td> </td>
-</tr>
-<tr>
-<td>F431</td>
-<td> </td>
-<td>Read-only scrollable cursors</td>
-<td> </td>
-</tr>
-<tr>
-<td>F431-01</td>
-<td> </td>
-<td>FETCH with explicit NEXT</td>
-<td> </td>
-</tr>
-<tr>
-<td>F431-02</td>
-<td> </td>
-<td>FETCH FIRST</td>
-<td> </td>
-</tr>
-<tr>
-<td>F431-03</td>
-<td> </td>
-<td>FETCH LAST</td>
-<td> </td>
-</tr>
-<tr>
-<td>F431-04</td>
-<td> </td>
-<td>FETCH PRIOR</td>
-<td> </td>
-</tr>
-<tr>
-<td>F431-05</td>
-<td> </td>
-<td>FETCH ABSOLUTE</td>
-<td> </td>
-</tr>
-<tr>
-<td>F431-06</td>
-<td> </td>
-<td>FETCH RELATIVE</td>
-<td> </td>
-</tr>
-<tr>
-<td>F441</td>
-<td> </td>
-<td>Extended set function support</td>
-<td> </td>
-</tr>
-<tr>
-<td>F471</td>
-<td>Core</td>
-<td>Scalar subquery values</td>
-<td> </td>
-</tr>
-<tr>
-<td>F481</td>
-<td>Core</td>
-<td>Expanded NULL predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>F491</td>
-<td>Enhanced integrity management</td>
-<td>Constraint management</td>
-<td> </td>
-</tr>
-<tr>
-<td>F501</td>
-<td>Core</td>
-<td>Features and conformance views</td>
-<td> </td>
-</tr>
-<tr>
-<td>F501-01</td>
-<td>Core</td>
-<td>SQL_FEATURES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F501-02</td>
-<td>Core</td>
-<td>SQL_SIZING view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F501-03</td>
-<td>Core</td>
-<td>SQL_LANGUAGES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F502</td>
-<td> </td>
-<td>Enhanced documentation tables</td>
-<td> </td>
-</tr>
-<tr>
-<td>F502-01</td>
-<td> </td>
-<td>SQL_SIZING_PROFILES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F502-02</td>
-<td> </td>
-<td>SQL_IMPLEMENTATION_INFO view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F502-03</td>
-<td> </td>
-<td>SQL_PACKAGES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>F511</td>
-<td> </td>
-<td>BIT data type</td>
-<td> </td>
-</tr>
-<tr>
-<td>F531</td>
-<td> </td>
-<td>Temporary tables</td>
-<td> </td>
-</tr>
-<tr>
-<td>F555</td>
-<td>Enhanced datetime facilities</td>
-<td>Enhanced seconds precision</td>
-<td> </td>
-</tr>
-<tr>
-<td>F561</td>
-<td> </td>
-<td>Full value expressions</td>
-<td> </td>
-</tr>
-<tr>
-<td>F571</td>
-<td> </td>
-<td>Truth value tests</td>
-<td> </td>
-</tr>
-<tr>
-<td>F591</td>
-<td>OLAP facilities</td>
-<td>Derived tables</td>
-<td> </td>
-</tr>
-<tr>
-<td>F611</td>
-<td> </td>
-<td>Indicator data types</td>
-<td> </td>
-</tr>
-<tr>
-<td>F651</td>
-<td> </td>
-<td>Catalog name qualifiers</td>
-<td> </td>
-</tr>
-<tr>
-<td>F701</td>
-<td>Enhanced integrity management</td>
-<td>Referential update actions</td>
-<td> </td>
-</tr>
-<tr>
-<td>F711</td>
-<td> </td>
-<td>ALTER domain</td>
-<td> </td>
-</tr>
-<tr>
-<td>F761</td>
-<td> </td>
-<td>Session management</td>
-<td> </td>
-</tr>
-<tr>
-<td>F771</td>
-<td> </td>
-<td>Connection management</td>
-<td> </td>
-</tr>
-<tr>
-<td>F781</td>
-<td> </td>
-<td>Self-referencing operations</td>
-<td> </td>
-</tr>
-<tr>
-<td>F791</td>
-<td> </td>
-<td>Insensitive cursors</td>
-<td> </td>
-</tr>
-<tr>
-<td>F801</td>
-<td> </td>
-<td>Full set function</td>
-<td> </td>
-</tr>
-<tr>
-<td>S071</td>
-<td>Enhanced object support</td>
-<td>SQL paths in function and type name resolution</td>
-<td> </td>
-</tr>
-<tr>
-<td>S111</td>
-<td>Enhanced object support</td>
-<td>ONLY in query expressions</td>
-<td> </td>
-</tr>
-<tr>
-<td>S211</td>
-<td>Enhanced object support, SQL/MM support</td>
-<td>User-defined cast functions</td>
-<td> </td>
-</tr>
-<tr>
-<td>T031</td>
-<td> </td>
-<td>BOOLEAN data type</td>
-<td> </td>
-</tr>
-<tr>
-<td>T141</td>
-<td> </td>
-<td>SIMILAR predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>T151</td>
-<td> </td>
-<td>DISTINCT predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>T171</td>
-<td> </td>
-<td>LIKE clause in table definition</td>
-<td> </td>
-</tr>
-<tr>
-<td>T191</td>
-<td>Enhanced integrity management</td>
-<td>Referential action RESTRICT</td>
-<td> </td>
-</tr>
-<tr>
-<td>T201</td>
-<td>Enhanced integrity management</td>
-<td>Comparable data types for referential constraints</td>
-<td> </td>
-</tr>
-<tr>
-<td>T211-01</td>
-<td>Enhanced integrity management, Active database</td>
-<td>Triggers activated on UPDATE, INSERT, or DELETE of one base table</td>
-<td> </td>
-</tr>
-<tr>
-<td>T211-02</td>
-<td>Enhanced integrity management, Active database</td>
-<td>BEFORE triggers</td>
-<td> </td>
-</tr>
-<tr>
-<td>T211-03</td>
-<td>Enhanced integrity management, Active database</td>
-<td>AFTER triggers</td>
-<td> </td>
-</tr>
-<tr>
-<td>T211-04</td>
-<td>Enhanced integrity management, Active database</td>
-<td>FOR EACH ROW triggers</td>
-<td> </td>
-</tr>
-<tr>
-<td>T211-07</td>
-<td>Enhanced integrity management, Active database</td>
-<td>TRIGGER privilege</td>
-<td> </td>
-</tr>
-<tr>
-<td>T212</td>
-<td>Enhanced integrity management</td>
-<td>Enhanced trigger capability</td>
-<td> </td>
-</tr>
-<tr>
-<td>T231</td>
-<td> </td>
-<td>SENSITIVE cursors</td>
-<td> </td>
-</tr>
-<tr>
-<td>T241</td>
-<td> </td>
-<td>START TRANSACTION statement</td>
-<td> </td>
-</tr>
-<tr>
-<td>T271</td>
-<td> </td>
-<td>Savepoints</td>
-<td> </td>
-</tr>
-<tr>
-<td>T312</td>
-<td> </td>
-<td>OVERLAY function</td>
-<td> </td>
-</tr>
-<tr>
-<td>T321-01</td>
-<td>Core</td>
-<td>User-defined functions with no overloading</td>
-<td> </td>
-</tr>
-<tr>
-<td>T321-03</td>
-<td>Core</td>
-<td>Function invocation</td>
-<td> </td>
-</tr>
-<tr>
-<td>T321-06</td>
-<td>Core</td>
-<td>ROUTINES view</td>
-<td> </td>
-</tr>
-<tr>
-<td>T321-07</td>
-<td>Core</td>
-<td>PARAMETERS view</td>
-<td> </td>
-</tr>
-<tr>
-<td>T322</td>
-<td>PSM, SQL/MM support</td>
-<td>Overloading of SQL-invoked functions and procedures</td>
-<td> </td>
-</tr>
-<tr>
-<td>T323</td>
-<td> </td>
-<td>Explicit security for external routines</td>
-<td> </td>
-</tr>
-<tr>
-<td>T351</td>
-<td> </td>
-<td>Bracketed SQL comments (/*...*/ comments)</td>
-<td> </td>
-</tr>
-<tr>
-<td>T441</td>
-<td> </td>
-<td>ABS and MOD functions</td>
-<td> </td>
-</tr>
-<tr>
-<td>T501</td>
-<td> </td>
-<td>Enhanced EXISTS predicate</td>
-<td> </td>
-</tr>
-<tr>
-<td>T551</td>
-<td> </td>
-<td>Optional key words for default syntax</td>
-<td> </td>
-</tr>
-<tr>
-<td>T581</td>
-<td> </td>
-<td>Regular expression substring function</td>
-<td> </td>
-</tr>
-<tr>
-<td>T591</td>
-<td> </td>
-<td>UNIQUE constraints of possibly null columns</td>
-<td> </td>
-</tr>
-</tbody>
-</table></div>
-<p>
-   </p>
-</div>
-</div></body>
-</html>
+  </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FEATURES-SQL99"
+>D.1. Supported Features</A
+></H1
+><P
+>    <DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN62029"
+></A
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Identifier</TH
+><TH
+>Package</TH
+><TH
+>Description</TH
+><TH
+>Comment</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>B012</TD
+><TD
+>Core</TD
+><TD
+>Embedded C</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>B021</TD
+><TD
+>&nbsp;</TD
+><TD
+>Direct SQL</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E011</TD
+><TD
+>Core</TD
+><TD
+>Numeric data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E011-01</TD
+><TD
+>Core</TD
+><TD
+>INTEGER and SMALLINT data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E011-02</TD
+><TD
+>Core</TD
+><TD
+>REAL, DOUBLE PRECISION, and FLOAT data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E011-03</TD
+><TD
+>Core</TD
+><TD
+>DECIMAL and NUMERIC data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E011-04</TD
+><TD
+>Core</TD
+><TD
+>Arithmetic operators</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E011-05</TD
+><TD
+>Core</TD
+><TD
+>Numeric comparison</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E011-06</TD
+><TD
+>Core</TD
+><TD
+>Implicit casting among the numeric data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021</TD
+><TD
+>Core</TD
+><TD
+>Character data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-01</TD
+><TD
+>Core</TD
+><TD
+>CHARACTER data type</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-02</TD
+><TD
+>Core</TD
+><TD
+>CHARACTER VARYING data type</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-03</TD
+><TD
+>Core</TD
+><TD
+>Character literals</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-04</TD
+><TD
+>Core</TD
+><TD
+>CHARACTER_LENGTH function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-05</TD
+><TD
+>Core</TD
+><TD
+>OCTET_LENGTH function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-06</TD
+><TD
+>Core</TD
+><TD
+>SUBSTRING function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-07</TD
+><TD
+>Core</TD
+><TD
+>Character concatenation</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-08</TD
+><TD
+>Core</TD
+><TD
+>UPPER and LOWER functions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-09</TD
+><TD
+>Core</TD
+><TD
+>TRIM function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-10</TD
+><TD
+>Core</TD
+><TD
+>Implicit casting among the character data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-11</TD
+><TD
+>Core</TD
+><TD
+>POSITION function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E021-12</TD
+><TD
+>Core</TD
+><TD
+>Character comparison</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E031</TD
+><TD
+>Core</TD
+><TD
+>Identifiers</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E031-01</TD
+><TD
+>Core</TD
+><TD
+>Delimited identifiers</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E031-02</TD
+><TD
+>Core</TD
+><TD
+>Lower case identifiers</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E031-03</TD
+><TD
+>Core</TD
+><TD
+>Trailing underscore</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E051</TD
+><TD
+>Core</TD
+><TD
+>Basic query specification</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E051-01</TD
+><TD
+>Core</TD
+><TD
+>SELECT DISTINCT</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E051-02</TD
+><TD
+>Core</TD
+><TD
+>GROUP BY clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E051-04</TD
+><TD
+>Core</TD
+><TD
+>GROUP BY can contain columns not in &lt;select list&gt;</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E051-05</TD
+><TD
+>Core</TD
+><TD
+>Select list items can be renamed</TD
+><TD
+>AS is required</TD
+></TR
+><TR
+><TD
+>E051-06</TD
+><TD
+>Core</TD
+><TD
+>HAVING clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E051-07</TD
+><TD
+>Core</TD
+><TD
+>Qualified * in select list</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E051-08</TD
+><TD
+>Core</TD
+><TD
+>Correlation names in the FROM clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E051-09</TD
+><TD
+>Core</TD
+><TD
+>Rename columns in the FROM clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061</TD
+><TD
+>Core</TD
+><TD
+>Basic predicates and search conditions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-01</TD
+><TD
+>Core</TD
+><TD
+>Comparison predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-02</TD
+><TD
+>Core</TD
+><TD
+>BETWEEN predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-03</TD
+><TD
+>Core</TD
+><TD
+>IN predicate with list of values</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-04</TD
+><TD
+>Core</TD
+><TD
+>LIKE predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-05</TD
+><TD
+>Core</TD
+><TD
+>LIKE predicate ESCAPE clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-06</TD
+><TD
+>Core</TD
+><TD
+>NULL predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-07</TD
+><TD
+>Core</TD
+><TD
+>Quantified comparison predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-08</TD
+><TD
+>Core</TD
+><TD
+>EXISTS predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-09</TD
+><TD
+>Core</TD
+><TD
+>Subqueries in comparison predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-11</TD
+><TD
+>Core</TD
+><TD
+>Subqueries in IN predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-12</TD
+><TD
+>Core</TD
+><TD
+>Subqueries in quantified comparison predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-13</TD
+><TD
+>Core</TD
+><TD
+>Correlated subqueries</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E061-14</TD
+><TD
+>Core</TD
+><TD
+>Search condition</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E071</TD
+><TD
+>Core</TD
+><TD
+>Basic query expressions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E071-01</TD
+><TD
+>Core</TD
+><TD
+>UNION DISTINCT table operator</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E071-02</TD
+><TD
+>Core</TD
+><TD
+>UNION ALL table operator</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E071-03</TD
+><TD
+>Core</TD
+><TD
+>EXCEPT DISTINCT table operator</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E071-05</TD
+><TD
+>Core</TD
+><TD
+>Columns combined via table operators need not have exactly the same data type</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E071-06</TD
+><TD
+>Core</TD
+><TD
+>Table operators in subqueries</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E081-01</TD
+><TD
+>Core</TD
+><TD
+>SELECT privilege</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E081-02</TD
+><TD
+>Core</TD
+><TD
+>DELETE privilege</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E081-03</TD
+><TD
+>Core</TD
+><TD
+>INSERT privilege at the table level</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E081-04</TD
+><TD
+>Core</TD
+><TD
+>UPDATE privilege at the table level</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E081-06</TD
+><TD
+>Core</TD
+><TD
+>REFERENCES privilege at the table level</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E081-08</TD
+><TD
+>Core</TD
+><TD
+>WITH GRANT OPTION</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E091</TD
+><TD
+>Core</TD
+><TD
+>Set functions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E091-01</TD
+><TD
+>Core</TD
+><TD
+>AVG</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E091-02</TD
+><TD
+>Core</TD
+><TD
+>COUNT</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E091-03</TD
+><TD
+>Core</TD
+><TD
+>MAX</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E091-04</TD
+><TD
+>Core</TD
+><TD
+>MIN</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E091-05</TD
+><TD
+>Core</TD
+><TD
+>SUM</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E091-06</TD
+><TD
+>Core</TD
+><TD
+>ALL quantifier</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E091-07</TD
+><TD
+>Core</TD
+><TD
+>DISTINCT quantifier</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E101</TD
+><TD
+>Core</TD
+><TD
+>Basic data manipulation</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E101-01</TD
+><TD
+>Core</TD
+><TD
+>INSERT statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E101-03</TD
+><TD
+>Core</TD
+><TD
+>Searched UPDATE statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E101-04</TD
+><TD
+>Core</TD
+><TD
+>Searched DELETE statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E111</TD
+><TD
+>Core</TD
+><TD
+>Single row SELECT statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E121-01</TD
+><TD
+>Core</TD
+><TD
+>DECLARE CURSOR</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E121-02</TD
+><TD
+>Core</TD
+><TD
+>ORDER BY columns need not be in select list</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E121-03</TD
+><TD
+>Core</TD
+><TD
+>Value expressions in ORDER BY clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E121-04</TD
+><TD
+>Core</TD
+><TD
+>OPEN statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E121-08</TD
+><TD
+>Core</TD
+><TD
+>CLOSE statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E121-10</TD
+><TD
+>Core</TD
+><TD
+>FETCH statement implicit NEXT</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E121-17</TD
+><TD
+>Core</TD
+><TD
+>WITH HOLD cursors</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E131</TD
+><TD
+>Core</TD
+><TD
+>Null value support (nulls in lieu of values)</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141</TD
+><TD
+>Core</TD
+><TD
+>Basic integrity constraints</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141-01</TD
+><TD
+>Core</TD
+><TD
+>NOT NULL constraints</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141-02</TD
+><TD
+>Core</TD
+><TD
+>UNIQUE constraints of NOT NULL columns</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141-03</TD
+><TD
+>Core</TD
+><TD
+>PRIMARY KEY constraints</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141-04</TD
+><TD
+>Core</TD
+><TD
+>Basic FOREIGN KEY constraint with the NO ACTION default for both referential delete action and referential update action</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141-06</TD
+><TD
+>Core</TD
+><TD
+>CHECK constraints</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141-07</TD
+><TD
+>Core</TD
+><TD
+>Column defaults</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141-08</TD
+><TD
+>Core</TD
+><TD
+>NOT NULL inferred on PRIMARY KEY</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E141-10</TD
+><TD
+>Core</TD
+><TD
+>Names in a foreign key can be specified in any order</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E151</TD
+><TD
+>Core</TD
+><TD
+>Transaction support</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E151-01</TD
+><TD
+>Core</TD
+><TD
+>COMMIT statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E151-02</TD
+><TD
+>Core</TD
+><TD
+>ROLLBACK statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E152</TD
+><TD
+>Core</TD
+><TD
+>Basic SET TRANSACTION statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E152-01</TD
+><TD
+>Core</TD
+><TD
+>SET TRANSACTION statement: ISOLATION LEVEL SERIALIZABLE clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E152-02</TD
+><TD
+>Core</TD
+><TD
+>SET TRANSACTION statement: READ ONLY and READ WRITE clauses</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E161</TD
+><TD
+>Core</TD
+><TD
+>SQL comments using leading double minus</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>E171</TD
+><TD
+>Core</TD
+><TD
+>SQLSTATE support</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F021</TD
+><TD
+>Core</TD
+><TD
+>Basic information schema</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F021-01</TD
+><TD
+>Core</TD
+><TD
+>COLUMNS view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F021-02</TD
+><TD
+>Core</TD
+><TD
+>TABLES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F021-03</TD
+><TD
+>Core</TD
+><TD
+>VIEWS view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F021-04</TD
+><TD
+>Core</TD
+><TD
+>TABLE_CONSTRAINTS view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F021-05</TD
+><TD
+>Core</TD
+><TD
+>REFERENTIAL_CONSTRAINTS view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F021-06</TD
+><TD
+>Core</TD
+><TD
+>CHECK_CONSTRAINTS view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F031</TD
+><TD
+>Core</TD
+><TD
+>Basic schema manipulation</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F031-01</TD
+><TD
+>Core</TD
+><TD
+>CREATE TABLE statement to create persistent base tables</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F031-02</TD
+><TD
+>Core</TD
+><TD
+>CREATE VIEW statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F031-03</TD
+><TD
+>Core</TD
+><TD
+>GRANT statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F031-04</TD
+><TD
+>Core</TD
+><TD
+>ALTER TABLE statement: ADD COLUMN clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F031-13</TD
+><TD
+>Core</TD
+><TD
+>DROP TABLE statement: RESTRICT clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F031-16</TD
+><TD
+>Core</TD
+><TD
+>DROP VIEW statement: RESTRICT clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F031-19</TD
+><TD
+>Core</TD
+><TD
+>REVOKE statement: RESTRICT clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F032</TD
+><TD
+>&nbsp;</TD
+><TD
+>CASCADE drop behavior</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F033</TD
+><TD
+>&nbsp;</TD
+><TD
+>ALTER TABLE statement: DROP COLUMN clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F034</TD
+><TD
+>&nbsp;</TD
+><TD
+>Extended REVOKE statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F034-01</TD
+><TD
+>&nbsp;</TD
+><TD
+>REVOKE statement performed by other than the owner of a schema object</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F034-02</TD
+><TD
+>&nbsp;</TD
+><TD
+>REVOKE statement: GRANT OPTION FOR clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F034-03</TD
+><TD
+>&nbsp;</TD
+><TD
+>REVOKE statement to revoke a privilege that the grantee has WITH GRANT OPTION</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F041</TD
+><TD
+>Core</TD
+><TD
+>Basic joined table</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F041-01</TD
+><TD
+>Core</TD
+><TD
+>Inner join (but not necessarily the INNER keyword)</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F041-02</TD
+><TD
+>Core</TD
+><TD
+>INNER keyword</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F041-03</TD
+><TD
+>Core</TD
+><TD
+>LEFT OUTER JOIN</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F041-04</TD
+><TD
+>Core</TD
+><TD
+>RIGHT OUTER JOIN</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F041-05</TD
+><TD
+>Core</TD
+><TD
+>Outer joins can be nested</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F041-07</TD
+><TD
+>Core</TD
+><TD
+>The inner table in a left or right outer join can also be used in an inner join</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F041-08</TD
+><TD
+>Core</TD
+><TD
+>All comparison operators are supported (rather than just =)</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051</TD
+><TD
+>Core</TD
+><TD
+>Basic date and time</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051-01</TD
+><TD
+>Core</TD
+><TD
+>DATE data type (including support of DATE literal)</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051-02</TD
+><TD
+>Core</TD
+><TD
+>TIME data type (including support of TIME literal) with fractional seconds precision of at least 0</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051-03</TD
+><TD
+>Core</TD
+><TD
+>TIMESTAMP data type (including support of TIMESTAMP literal) with fractional seconds precision of at least 0 and 6</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051-04</TD
+><TD
+>Core</TD
+><TD
+>Comparison predicate on DATE, TIME, and TIMESTAMP data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051-05</TD
+><TD
+>Core</TD
+><TD
+>Explicit CAST between datetime types and character types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051-06</TD
+><TD
+>Core</TD
+><TD
+>CURRENT_DATE</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051-07</TD
+><TD
+>Core</TD
+><TD
+>LOCALTIME</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F051-08</TD
+><TD
+>Core</TD
+><TD
+>LOCALTIMESTAMP</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F052</TD
+><TD
+>Enhanced datetime facilities</TD
+><TD
+>Intervals and datetime arithmetic</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F081</TD
+><TD
+>Core</TD
+><TD
+>UNION and EXCEPT in views</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F111</TD
+><TD
+>&nbsp;</TD
+><TD
+>Isolation levels other than SERIALIZABLE</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F111-01</TD
+><TD
+>&nbsp;</TD
+><TD
+>READ UNCOMMITTED isolation level</TD
+><TD
+>behaves like READ COMMITTED</TD
+></TR
+><TR
+><TD
+>F111-02</TD
+><TD
+>&nbsp;</TD
+><TD
+>READ COMMITTED isolation level</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F111-03</TD
+><TD
+>&nbsp;</TD
+><TD
+>REPEATABLE READ isolation level</TD
+><TD
+>behaves like SERIALIZABLE</TD
+></TR
+><TR
+><TD
+>F131</TD
+><TD
+>Core</TD
+><TD
+>Grouped operations</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F131-01</TD
+><TD
+>Core</TD
+><TD
+>WHERE, GROUP BY, and HAVING clauses supported in queries with grouped views</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F131-02</TD
+><TD
+>Core</TD
+><TD
+>Multiple tables supported in queries with grouped views</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F131-03</TD
+><TD
+>Core</TD
+><TD
+>Set functions supported in queries with grouped views</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F131-04</TD
+><TD
+>Core</TD
+><TD
+>Subqueries with GROUP BY and HAVING clauses and grouped views</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F131-05</TD
+><TD
+>Core</TD
+><TD
+>Single row SELECT with GROUP BY and HAVING clauses and grouped views</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F171</TD
+><TD
+>&nbsp;</TD
+><TD
+>Multiple schemas per user</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F191</TD
+><TD
+>Enhanced integrity management</TD
+><TD
+>Referential delete actions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F201</TD
+><TD
+>Core</TD
+><TD
+>CAST function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F221</TD
+><TD
+>Core</TD
+><TD
+>Explicit defaults</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F222</TD
+><TD
+>&nbsp;</TD
+><TD
+>INSERT statement: DEFAULT VALUES clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F231</TD
+><TD
+>&nbsp;</TD
+><TD
+>Privilege Tables</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F231-01</TD
+><TD
+>&nbsp;</TD
+><TD
+>TABLE_PRIVILEGES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F231-02</TD
+><TD
+>&nbsp;</TD
+><TD
+>COLUMN_PRIVILEGES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F231-03</TD
+><TD
+>&nbsp;</TD
+><TD
+>USAGE_PRIVILEGES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F251</TD
+><TD
+>&nbsp;</TD
+><TD
+>Domain support</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F261</TD
+><TD
+>Core</TD
+><TD
+>CASE expression</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F261-01</TD
+><TD
+>Core</TD
+><TD
+>Simple CASE</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F261-02</TD
+><TD
+>Core</TD
+><TD
+>Searched CASE</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F261-03</TD
+><TD
+>Core</TD
+><TD
+>NULLIF</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F261-04</TD
+><TD
+>Core</TD
+><TD
+>COALESCE</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F271</TD
+><TD
+>&nbsp;</TD
+><TD
+>Compound character literals</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F281</TD
+><TD
+>&nbsp;</TD
+><TD
+>LIKE enhancements</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F302</TD
+><TD
+>OLAP facilities</TD
+><TD
+>INTERSECT table operator</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F302-01</TD
+><TD
+>OLAP facilities</TD
+><TD
+>INTERSECT DISTINCT table operator</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F302-02</TD
+><TD
+>OLAP facilities</TD
+><TD
+>INTERSECT ALL table operator</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F304</TD
+><TD
+>OLAP facilities</TD
+><TD
+>EXCEPT ALL table operator</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F311-01</TD
+><TD
+>Core</TD
+><TD
+>CREATE SCHEMA</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F311-02</TD
+><TD
+>Core</TD
+><TD
+>CREATE TABLE for persistent base tables</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F311-03</TD
+><TD
+>Core</TD
+><TD
+>CREATE VIEW</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F311-05</TD
+><TD
+>Core</TD
+><TD
+>GRANT statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F321</TD
+><TD
+>&nbsp;</TD
+><TD
+>User authorization</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F361</TD
+><TD
+>&nbsp;</TD
+><TD
+>Subprogram support</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F381</TD
+><TD
+>&nbsp;</TD
+><TD
+>Extended schema manipulation</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F381-01</TD
+><TD
+>&nbsp;</TD
+><TD
+>ALTER TABLE statement: ALTER COLUMN clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F381-02</TD
+><TD
+>&nbsp;</TD
+><TD
+>ALTER TABLE statement: ADD CONSTRAINT clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F381-03</TD
+><TD
+>&nbsp;</TD
+><TD
+>ALTER TABLE statement: DROP CONSTRAINT clause</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F391</TD
+><TD
+>&nbsp;</TD
+><TD
+>Long identifiers</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F401</TD
+><TD
+>OLAP facilities</TD
+><TD
+>Extended joined table</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F401-01</TD
+><TD
+>OLAP facilities</TD
+><TD
+>NATURAL JOIN</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F401-02</TD
+><TD
+>OLAP facilities</TD
+><TD
+>FULL OUTER JOIN</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F401-03</TD
+><TD
+>OLAP facilities</TD
+><TD
+>UNION JOIN</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F401-04</TD
+><TD
+>OLAP facilities</TD
+><TD
+>CROSS JOIN</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F411</TD
+><TD
+>Enhanced datetime facilities</TD
+><TD
+>Time zone specification</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F421</TD
+><TD
+>&nbsp;</TD
+><TD
+>National character</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F431</TD
+><TD
+>&nbsp;</TD
+><TD
+>Read-only scrollable cursors</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F431-01</TD
+><TD
+>&nbsp;</TD
+><TD
+>FETCH with explicit NEXT</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F431-02</TD
+><TD
+>&nbsp;</TD
+><TD
+>FETCH FIRST</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F431-03</TD
+><TD
+>&nbsp;</TD
+><TD
+>FETCH LAST</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F431-04</TD
+><TD
+>&nbsp;</TD
+><TD
+>FETCH PRIOR</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F431-05</TD
+><TD
+>&nbsp;</TD
+><TD
+>FETCH ABSOLUTE</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F431-06</TD
+><TD
+>&nbsp;</TD
+><TD
+>FETCH RELATIVE</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F441</TD
+><TD
+>&nbsp;</TD
+><TD
+>Extended set function support</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F471</TD
+><TD
+>Core</TD
+><TD
+>Scalar subquery values</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F481</TD
+><TD
+>Core</TD
+><TD
+>Expanded NULL predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F491</TD
+><TD
+>Enhanced integrity management</TD
+><TD
+>Constraint management</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F501</TD
+><TD
+>Core</TD
+><TD
+>Features and conformance views</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F501-01</TD
+><TD
+>Core</TD
+><TD
+>SQL_FEATURES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F501-02</TD
+><TD
+>Core</TD
+><TD
+>SQL_SIZING view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F501-03</TD
+><TD
+>Core</TD
+><TD
+>SQL_LANGUAGES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F502</TD
+><TD
+>&nbsp;</TD
+><TD
+>Enhanced documentation tables</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F502-01</TD
+><TD
+>&nbsp;</TD
+><TD
+>SQL_SIZING_PROFILES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F502-02</TD
+><TD
+>&nbsp;</TD
+><TD
+>SQL_IMPLEMENTATION_INFO view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F502-03</TD
+><TD
+>&nbsp;</TD
+><TD
+>SQL_PACKAGES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F511</TD
+><TD
+>&nbsp;</TD
+><TD
+>BIT data type</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F531</TD
+><TD
+>&nbsp;</TD
+><TD
+>Temporary tables</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F555</TD
+><TD
+>Enhanced datetime facilities</TD
+><TD
+>Enhanced seconds precision</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F561</TD
+><TD
+>&nbsp;</TD
+><TD
+>Full value expressions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F571</TD
+><TD
+>&nbsp;</TD
+><TD
+>Truth value tests</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F591</TD
+><TD
+>OLAP facilities</TD
+><TD
+>Derived tables</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F611</TD
+><TD
+>&nbsp;</TD
+><TD
+>Indicator data types</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F651</TD
+><TD
+>&nbsp;</TD
+><TD
+>Catalog name qualifiers</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F701</TD
+><TD
+>Enhanced integrity management</TD
+><TD
+>Referential update actions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F711</TD
+><TD
+>&nbsp;</TD
+><TD
+>ALTER domain</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F761</TD
+><TD
+>&nbsp;</TD
+><TD
+>Session management</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F771</TD
+><TD
+>&nbsp;</TD
+><TD
+>Connection management</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F781</TD
+><TD
+>&nbsp;</TD
+><TD
+>Self-referencing operations</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F791</TD
+><TD
+>&nbsp;</TD
+><TD
+>Insensitive cursors</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>F801</TD
+><TD
+>&nbsp;</TD
+><TD
+>Full set function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>S071</TD
+><TD
+>Enhanced object support</TD
+><TD
+>SQL paths in function and type name resolution</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>S111</TD
+><TD
+>Enhanced object support</TD
+><TD
+>ONLY in query expressions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>S211</TD
+><TD
+>Enhanced object support, SQL/MM support</TD
+><TD
+>User-defined cast functions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T031</TD
+><TD
+>&nbsp;</TD
+><TD
+>BOOLEAN data type</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T141</TD
+><TD
+>&nbsp;</TD
+><TD
+>SIMILAR predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T151</TD
+><TD
+>&nbsp;</TD
+><TD
+>DISTINCT predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T171</TD
+><TD
+>&nbsp;</TD
+><TD
+>LIKE clause in table definition</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T191</TD
+><TD
+>Enhanced integrity management</TD
+><TD
+>Referential action RESTRICT</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T201</TD
+><TD
+>Enhanced integrity management</TD
+><TD
+>Comparable data types for referential constraints</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T211-01</TD
+><TD
+>Enhanced integrity management, Active database</TD
+><TD
+>Triggers activated on UPDATE, INSERT, or DELETE of one base table</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T211-02</TD
+><TD
+>Enhanced integrity management, Active database</TD
+><TD
+>BEFORE triggers</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T211-03</TD
+><TD
+>Enhanced integrity management, Active database</TD
+><TD
+>AFTER triggers</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T211-04</TD
+><TD
+>Enhanced integrity management, Active database</TD
+><TD
+>FOR EACH ROW triggers</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T211-07</TD
+><TD
+>Enhanced integrity management, Active database</TD
+><TD
+>TRIGGER privilege</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T212</TD
+><TD
+>Enhanced integrity management</TD
+><TD
+>Enhanced trigger capability</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T231</TD
+><TD
+>&nbsp;</TD
+><TD
+>SENSITIVE cursors</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T241</TD
+><TD
+>&nbsp;</TD
+><TD
+>START TRANSACTION statement</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T271</TD
+><TD
+>&nbsp;</TD
+><TD
+>Savepoints</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T312</TD
+><TD
+>&nbsp;</TD
+><TD
+>OVERLAY function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T321-01</TD
+><TD
+>Core</TD
+><TD
+>User-defined functions with no overloading</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T321-03</TD
+><TD
+>Core</TD
+><TD
+>Function invocation</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T321-06</TD
+><TD
+>Core</TD
+><TD
+>ROUTINES view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T321-07</TD
+><TD
+>Core</TD
+><TD
+>PARAMETERS view</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T322</TD
+><TD
+>PSM, SQL/MM support</TD
+><TD
+>Overloading of SQL-invoked functions and procedures</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T323</TD
+><TD
+>&nbsp;</TD
+><TD
+>Explicit security for external routines</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T351</TD
+><TD
+>&nbsp;</TD
+><TD
+>Bracketed SQL comments (/*...*/ comments)</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T441</TD
+><TD
+>&nbsp;</TD
+><TD
+>ABS and MOD functions</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T501</TD
+><TD
+>&nbsp;</TD
+><TD
+>Enhanced EXISTS predicate</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T551</TD
+><TD
+>&nbsp;</TD
+><TD
+>Optional key words for default syntax</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T581</TD
+><TD
+>&nbsp;</TD
+><TD
+>Regular expression substring function</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+>T591</TD
+><TD
+>&nbsp;</TD
+><TD
+>UNIQUE constraints of possibly null columns</TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-keywords-appendix.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="unsupported-features-sql99.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Key Words</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="appendixes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Unsupported Features</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

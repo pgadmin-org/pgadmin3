@@ -1,68 +1,291 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>10.4. Value Storage</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
-<link rel="previous" href="typeconv-func.html" title="10.3. Functions">
-<link rel="next" href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="typeconv-query"></a>10.4. Value Storage</h2></div></div>
-<div></div>
-</div>
-<p>   Values to be inserted into a table are converted to the destination
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Value Storage</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Type Conversion"
+HREF="typeconv.html"><LINK
+REL="PREVIOUS"
+TITLE="Functions"
+HREF="typeconv-func.html"><LINK
+REL="NEXT"
+TITLE="UNION, CASE, and ARRAY Constructs"
+HREF="typeconv-union-case.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="typeconv-func.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="typeconv.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Type Conversion</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="typeconv.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="typeconv-union-case.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TYPECONV-QUERY"
+>10.4. Value Storage</A
+></H1
+><P
+>   Values to be inserted into a table are converted to the destination
    column's data type according to the
    following steps.
-  </p>
-<div class="procedure">
-<p class="title"><b>Value Storage Type Conversion</b></p>
-<ol type="1">
-<li><p>Check for an exact match with the target.</p></li>
-<li><p>Otherwise, try to convert the expression to the target type.  This will succeed
+  </P
+><DIV
+CLASS="PROCEDURE"
+><P
+><B
+>Value Storage Type Conversion</B
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Check for an exact match with the target.</P
+></LI
+><LI
+><P
+>Otherwise, try to convert the expression to the target type.  This will succeed
 if there is a registered cast between the two types.
 If the expression is an unknown-type literal, the contents of
 the literal string will be fed to the input conversion routine for the target
-type.</p></li>
-<li><p>If the target is a fixed-length type (e.g., <tt class="type">char</tt> or <tt class="type">varchar</tt>
+type.</P
+></LI
+><LI
+><P
+>If the target is a fixed-length type (e.g., <TT
+CLASS="TYPE"
+>char</TT
+> or <TT
+CLASS="TYPE"
+>varchar</TT
+>
 declared with a length) then try to find a sizing function for the target
 type.  A sizing function is a function of the same name as the type,
 taking two arguments of which the first is that type and the second is of type
-<tt class="type">integer</tt>, and returning the same type.  If one is found, it is applied,
-passing the column's declared length as the second parameter.</p></li>
-</ol>
-</div>
-<div class="example">
-<a name="id2567247"></a><p class="title"><b>Example 10.6. <tt class="type">character</tt> Storage Type Conversion</b></p>
-<p>For a target column declared as <tt class="type">character(20)</tt> the following statement
+<TT
+CLASS="TYPE"
+>integer</TT
+>, and returning the same type.  If one is found, it is applied,
+passing the column's declared length as the second parameter.</P
+></LI
+></OL
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN13703"
+></A
+><P
+><B
+>Example 10-6. <TT
+CLASS="TYPE"
+>character</TT
+> Storage Type Conversion</B
+></P
+><P
+>For a target column declared as <TT
+CLASS="TYPE"
+>character(20)</TT
+> the following statement
 ensures that the stored value is sized correctly:
 
-</p>
-<pre class="screen">CREATE TABLE vv (v character(20));
+</P><PRE
+CLASS="SCREEN"
+>CREATE TABLE vv (v character(20));
 INSERT INTO vv SELECT 'abc' || 'def';
 SELECT v, length(v) FROM vv;
 
           v           | length
 ----------------------+--------
  abcdef               |     20
-(1 row)</pre>
-<p>What has really happened here is that the two unknown literals are resolved
-to <tt class="type">text</tt> by default, allowing the <tt class="literal">||</tt> operator
-to be resolved as <tt class="type">text</tt> concatenation.  Then the <tt class="type">text</tt>
-result of the operator is converted to <tt class="type">bpchar</tt> (&#8220;<span class="quote">blank-padded
-char</span>&#8221;, the internal name of the <tt class="type">character</tt> data type) to match the target
-column type.  (Since the types <tt class="type">text</tt> and
-<tt class="type">bpchar</tt> are binary-compatible, this conversion does
+(1 row)</PRE
+><P></P
+><P
+>What has really happened here is that the two unknown literals are resolved
+to <TT
+CLASS="TYPE"
+>text</TT
+> by default, allowing the <TT
+CLASS="LITERAL"
+>||</TT
+> operator
+to be resolved as <TT
+CLASS="TYPE"
+>text</TT
+> concatenation.  Then the <TT
+CLASS="TYPE"
+>text</TT
+>
+result of the operator is converted to <TT
+CLASS="TYPE"
+>bpchar</TT
+> (<SPAN
+CLASS="QUOTE"
+>"blank-padded
+char"</SPAN
+>, the internal name of the <TT
+CLASS="TYPE"
+>character</TT
+> data type) to match the target
+column type.  (Since the types <TT
+CLASS="TYPE"
+>text</TT
+> and
+<TT
+CLASS="TYPE"
+>bpchar</TT
+> are binary-compatible, this conversion does
 not insert any real function call.)  Finally, the sizing function
-<tt class="literal">bpchar(bpchar, integer)</tt> is found in the system catalog
+<TT
+CLASS="LITERAL"
+>bpchar(bpchar, integer)</TT
+> is found in the system catalog
 and applied to the operator's result and the stored column length.  This
 type-specific function performs the required length check and addition of
-padding spaces.</p>
-</div>
-</div></body>
-</html>
+padding spaces.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="typeconv-func.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="typeconv-union-case.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="typeconv.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>UNION</TT
+>, <TT
+CLASS="LITERAL"
+>CASE</TT
+>, and <TT
+CLASS="LITERAL"
+>ARRAY</TT
+> Constructs</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

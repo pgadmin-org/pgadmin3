@@ -1,71 +1,305 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ROLLBACK</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-revoke.html" title="REVOKE">
-<link rel="next" href="sql-rollback-to.html" title="ROLLBACK TO SAVEPOINT">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-rollback"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ROLLBACK &#8212; abort the current transaction</p>
-</div>
-<a name="id2690025"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690040"></a><h2>Description</h2>
-<p>   <tt class="command">ROLLBACK</tt> rolls back the current transaction and causes
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ROLLBACK</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="REVOKE"
+HREF="sql-revoke.html"><LINK
+REL="NEXT"
+TITLE="ROLLBACK TO SAVEPOINT"
+HREF="sql-rollback-to.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-revoke.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-revoke.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-rollback-to.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-rollback-to.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ROLLBACK"
+></A
+>ROLLBACK</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42571"
+></A
+><H2
+>Name</H2
+>ROLLBACK&nbsp;--&nbsp;abort the current transaction</DIV
+><A
+NAME="AEN42574"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42576"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ROLLBACK [ WORK | TRANSACTION ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42578"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+> rolls back the current transaction and causes
    all the updates made by the transaction to be discarded.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690053"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">WORK</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">TRANSACTION</tt></span>
-</dt>
-<dd><p>      Optional key words. They have no effect.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690075"></a><h2>Notes</h2>
-<p>   Use <a href="sql-commit.html">COMMIT</a> to
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42582"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>WORK</TT
+><BR><TT
+CLASS="LITERAL"
+>TRANSACTION</TT
+></DT
+><DD
+><P
+>      Optional key words. They have no effect.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42592"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+> to
    successfully terminate a transaction.
-  </p>
-<p>   Issuing <tt class="command">ROLLBACK</tt> when not inside a transaction does
+  </P
+><P
+>   Issuing <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+> when not inside a transaction does
    no harm, but it will provoke a warning message.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690100"></a><h2>Examples</h2>
-<p>   To abort all changes:
-</p>
-<pre class="programlisting">ROLLBACK;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690112"></a><h2>Compatibility</h2>
-<p>   The SQL standard only specifies the two forms
-   <tt class="literal">ROLLBACK</tt> and <tt class="literal">ROLLBACK
-   WORK</tt>. Otherwise, this command is fully conforming.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690132"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback-to.html">ROLLBACK TO SAVEPOINT</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42598"
+></A
+><H2
+>Examples</H2
+><P
+>   To abort all changes:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ROLLBACK;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42602"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL standard only specifies the two forms
+   <TT
+CLASS="LITERAL"
+>ROLLBACK</TT
+> and <TT
+CLASS="LITERAL"
+>ROLLBACK
+   WORK</TT
+>. Otherwise, this command is fully conforming.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42607"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+>, <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+>, <A
+HREF="sql-rollback-to.html"
+><I
+>ROLLBACK TO SAVEPOINT</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-revoke.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-rollback-to.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>REVOKE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ROLLBACK TO SAVEPOINT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

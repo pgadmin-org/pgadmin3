@@ -1,121 +1,440 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>29.8. Using SQL Descriptor Areas</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-<link rel="previous" href="ecpg-dynamic.html" title="29.7. Dynamic SQL">
-<link rel="next" href="ecpg-errors.html" title="29.9. Error Handling">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-descriptors"></a>29.8. Using SQL Descriptor Areas</h2></div></div>
-<div></div>
-</div>
-<p>   An SQL descriptor area is a more sophisticated method for
-   processing the result of a <tt class="command">SELECT</tt> or
-   <tt class="command">FETCH</tt> statement.  An SQL descriptor area groups
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Using SQL Descriptor Areas</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Dynamic SQL"
+HREF="ecpg-dynamic.html"><LINK
+REL="NEXT"
+TITLE="Error Handling"
+HREF="ecpg-errors.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-dynamic.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 29. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-errors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-DESCRIPTORS"
+>29.8. Using SQL Descriptor Areas</A
+></H1
+><P
+>   An SQL descriptor area is a more sophisticated method for
+   processing the result of a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> or
+   <TT
+CLASS="COMMAND"
+>FETCH</TT
+> statement.  An SQL descriptor area groups
    the data of one row of data together with metadata items into one
    data structure.  The metadata is particularly useful when executing
    dynamic SQL statements, where the nature of the result columns may
    not be known ahead of time.
-  </p>
-<p>   An SQL descriptor area consists of a header, which contains
+  </P
+><P
+>   An SQL descriptor area consists of a header, which contains
    information concerning the entire descriptor, and one or more item
    descriptor areas, which basically each describe one column in the
    result row.
-  </p>
-<p>   Before you can use an SQL descriptor area, you need to allocate one:
-</p>
-<pre class="programlisting">EXEC SQL ALLOCATE DESCRIPTOR <i class="replaceable"><tt>identifier</tt></i>;</pre>
-<p>
-   The identifier serves as the &#8220;<span class="quote">variable name</span>&#8221; of the
+  </P
+><P
+>   Before you can use an SQL descriptor area, you need to allocate one:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL ALLOCATE DESCRIPTOR <VAR
+CLASS="REPLACEABLE"
+>identifier</VAR
+>;</PRE
+><P>
+   The identifier serves as the <SPAN
+CLASS="QUOTE"
+>"variable name"</SPAN
+> of the
    descriptor area.  
    When you don't need the descriptor anymore, you should deallocate
    it:
-</p>
-<pre class="programlisting">EXEC SQL DEALLOCATE DESCRIPTOR <i class="replaceable"><tt>identifier</tt></i>;</pre>
-<p>
-  </p>
-<p>   To use a descriptor area, specify it as the storage target in an
-   <tt class="literal">INTO</tt> clause, instead of listing host variables:
-</p>
-<pre class="programlisting">EXEC SQL FETCH NEXT FROM mycursor INTO DESCRIPTOR mydesc;</pre>
-<p>
-  </p>
-<p>   Now how do you get the data out of the descriptor area?  You can
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL DEALLOCATE DESCRIPTOR <VAR
+CLASS="REPLACEABLE"
+>identifier</VAR
+>;</PRE
+><P>
+  </P
+><P
+>   To use a descriptor area, specify it as the storage target in an
+   <TT
+CLASS="LITERAL"
+>INTO</TT
+> clause, instead of listing host variables:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL FETCH NEXT FROM mycursor INTO DESCRIPTOR mydesc;</PRE
+><P>
+  </P
+><P
+>   Now how do you get the data out of the descriptor area?  You can
    think of the descriptor area as a structure with named fields.  To
    retrieve the value of a field from the header and store it into a
    host variable, use the following command:
-</p>
-<pre class="programlisting">EXEC SQL GET DESCRIPTOR <i class="replaceable"><tt>name</tt></i> :<i class="replaceable"><tt>hostvar</tt></i> = <i class="replaceable"><tt>field</tt></i>;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL GET DESCRIPTOR <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> :<VAR
+CLASS="REPLACEABLE"
+>hostvar</VAR
+> = <VAR
+CLASS="REPLACEABLE"
+>field</VAR
+>;</PRE
+><P>
    Currently, there is only one header field defined:
-   <i class="replaceable"><tt>COUNT</tt></i>, which tells how many item
+   <VAR
+CLASS="REPLACEABLE"
+>COUNT</VAR
+>, which tells how many item
    descriptor areas exist (that is, how many columns are contained in
    the result).  The host variable needs to be of an integer type.  To
    get a field from the item descriptor area, use the following
    command:
-</p>
-<pre class="programlisting">EXEC SQL GET DESCRIPTOR <i class="replaceable"><tt>name</tt></i> VALUE <i class="replaceable"><tt>num</tt></i> :<i class="replaceable"><tt>hostvar</tt></i> = <i class="replaceable"><tt>field</tt></i>;</pre>
-<p>
-   <i class="replaceable"><tt>num</tt></i> can be a literal integer or a host
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL GET DESCRIPTOR <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> VALUE <VAR
+CLASS="REPLACEABLE"
+>num</VAR
+> :<VAR
+CLASS="REPLACEABLE"
+>hostvar</VAR
+> = <VAR
+CLASS="REPLACEABLE"
+>field</VAR
+>;</PRE
+><P>
+   <VAR
+CLASS="REPLACEABLE"
+>num</VAR
+> can be a literal integer or a host
    variable containing an integer. Possible fields are:
 
-   </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">CARDINALITY</tt> (integer)</span></dt>
-<dd><p>       number of rows in the result set
-      </p></dd>
-<dt><span class="term"><tt class="literal">DATA</tt></span></dt>
-<dd><p>       actual data item (therefore, the data type of this field
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>CARDINALITY</TT
+> (integer)</DT
+><DD
+><P
+>       number of rows in the result set
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DATA</TT
+></DT
+><DD
+><P
+>       actual data item (therefore, the data type of this field
        depends on the query)
-      </p></dd>
-<dt><span class="term"><tt class="literal">DATETIME_INTERVAL_CODE</tt> (integer)</span></dt>
-<dd><p>       ?
-      </p></dd>
-<dt><span class="term"><tt class="literal">DATETIME_INTERVAL_PRECISION</tt> (integer)</span></dt>
-<dd><p>       not implemented
-      </p></dd>
-<dt><span class="term"><tt class="literal">INDICATOR</tt> (integer)</span></dt>
-<dd><p>       the indicator (indicating a null value or a value truncation)
-      </p></dd>
-<dt><span class="term"><tt class="literal">KEY_MEMBER</tt> (integer)</span></dt>
-<dd><p>       not implemented
-      </p></dd>
-<dt><span class="term"><tt class="literal">LENGTH</tt> (integer)</span></dt>
-<dd><p>       length of the datum in characters
-      </p></dd>
-<dt><span class="term"><tt class="literal">NAME</tt> (string)</span></dt>
-<dd><p>       name of the column
-      </p></dd>
-<dt><span class="term"><tt class="literal">NULLABLE</tt> (integer)</span></dt>
-<dd><p>       not implemented
-      </p></dd>
-<dt><span class="term"><tt class="literal">OCTET_LENGTH</tt> (integer)</span></dt>
-<dd><p>       length of the character representation of the datum in bytes
-      </p></dd>
-<dt><span class="term"><tt class="literal">PRECISION</tt> (integer)</span></dt>
-<dd><p>       precision (for type <tt class="type">numeric</tt>)
-      </p></dd>
-<dt><span class="term"><tt class="literal">RETURNED_LENGTH</tt> (integer)</span></dt>
-<dd><p>       length of the datum in characters
-      </p></dd>
-<dt><span class="term"><tt class="literal">RETURNED_OCTET_LENGTH</tt> (integer)</span></dt>
-<dd><p>       length of the character representation of the datum in bytes
-      </p></dd>
-<dt><span class="term"><tt class="literal">SCALE</tt> (integer)</span></dt>
-<dd><p>       scale (for type <tt class="type">numeric</tt>)
-      </p></dd>
-<dt><span class="term"><tt class="literal">TYPE</tt> (integer)</span></dt>
-<dd><p>       numeric code of the data type of the column
-      </p></dd>
-</dl></div>
-<p>
-  </p>
-</div></body>
-</html>
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DATETIME_INTERVAL_CODE</TT
+> (integer)</DT
+><DD
+><P
+>       ?
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DATETIME_INTERVAL_PRECISION</TT
+> (integer)</DT
+><DD
+><P
+>       not implemented
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>INDICATOR</TT
+> (integer)</DT
+><DD
+><P
+>       the indicator (indicating a null value or a value truncation)
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>KEY_MEMBER</TT
+> (integer)</DT
+><DD
+><P
+>       not implemented
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>LENGTH</TT
+> (integer)</DT
+><DD
+><P
+>       length of the datum in characters
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>NAME</TT
+> (string)</DT
+><DD
+><P
+>       name of the column
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>NULLABLE</TT
+> (integer)</DT
+><DD
+><P
+>       not implemented
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>OCTET_LENGTH</TT
+> (integer)</DT
+><DD
+><P
+>       length of the character representation of the datum in bytes
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>PRECISION</TT
+> (integer)</DT
+><DD
+><P
+>       precision (for type <TT
+CLASS="TYPE"
+>numeric</TT
+>)
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RETURNED_LENGTH</TT
+> (integer)</DT
+><DD
+><P
+>       length of the datum in characters
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RETURNED_OCTET_LENGTH</TT
+> (integer)</DT
+><DD
+><P
+>       length of the character representation of the datum in bytes
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SCALE</TT
+> (integer)</DT
+><DD
+><P
+>       scale (for type <TT
+CLASS="TYPE"
+>numeric</TT
+>)
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>TYPE</TT
+> (integer)</DT
+><DD
+><P
+>       numeric code of the data type of the column
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-dynamic.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-errors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Dynamic SQL</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Error Handling</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

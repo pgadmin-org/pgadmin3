@@ -1,30 +1,141 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>11.6. Operator Classes</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="previous" href="indexes-expressional.html" title="11.5. Indexes on Expressions">
-<link rel="next" href="indexes-partial.html" title="11.7. Partial Indexes">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="indexes-opclass"></a>11.6. Operator Classes</h2></div></div>
-<div></div>
-</div>
-<a name="id2568486"></a><p>   An index definition may specify an <i class="firstterm">operator
-   class</i> for each column of an index.
-</p>
-<pre class="synopsis">CREATE INDEX <i class="replaceable"><tt>name</tt></i> ON <i class="replaceable"><tt>table</tt></i> (<i class="replaceable"><tt>column</tt></i> <i class="replaceable"><tt>opclass</tt></i> [<span class="optional">, ...</span>]);</pre>
-<p>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Operator Classes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Indexes"
+HREF="indexes.html"><LINK
+REL="PREVIOUS"
+TITLE="Indexes on Expressions"
+HREF="indexes-expressional.html"><LINK
+REL="NEXT"
+TITLE="Partial Indexes"
+HREF="indexes-partial.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-expressional.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 11. Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-partial.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INDEXES-OPCLASS"
+>11.6. Operator Classes</A
+></H1
+><A
+NAME="AEN13965"
+></A
+><P
+>   An index definition may specify an <I
+CLASS="FIRSTTERM"
+>operator
+   class</I
+> for each column of an index.
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE INDEX <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> ON <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+> (<VAR
+CLASS="REPLACEABLE"
+>column</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>opclass</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>]);</PRE
+><P>
    The operator class identifies the operators to be used by the index
-   for that column.  For example, a B-tree index on the type <tt class="type">int4</tt>
-   would use the <tt class="literal">int4_ops</tt> class; this operator
-   class includes comparison functions for values of type <tt class="type">int4</tt>.
+   for that column.  For example, a B-tree index on the type <TT
+CLASS="TYPE"
+>int4</TT
+>
+   would use the <TT
+CLASS="LITERAL"
+>int4_ops</TT
+> class; this operator
+   class includes comparison functions for values of type <TT
+CLASS="TYPE"
+>int4</TT
+>.
    In practice the default operator class for the column's data type is
    usually sufficient.  The main point of having operator classes is
    that for some data types, there could be more than one meaningful
@@ -32,62 +143,174 @@
    type either by absolute value or by real part.  We could do this by
    defining two operator classes for the data type and then selecting
    the proper class when making an index.
-  </p>
-<p>   There are also some built-in operator classes besides the default ones:
+  </P
+><P
+>   There are also some built-in operator classes besides the default ones:
 
-   </p>
-<div class="itemizedlist"><ul type="disc"><li>
-<p>      The operator classes <tt class="literal">text_pattern_ops</tt>,
-      <tt class="literal">varchar_pattern_ops</tt>,
-      <tt class="literal">bpchar_pattern_ops</tt>, and
-      <tt class="literal">name_pattern_ops</tt> support B-tree indexes on
-      the types <tt class="type">text</tt>, <tt class="type">varchar</tt>,
-      <tt class="type">char</tt>, and <tt class="type">name</tt>, respectively.  The
+   <P
+></P
+></P><UL
+><LI
+><P
+>      The operator classes <TT
+CLASS="LITERAL"
+>text_pattern_ops</TT
+>,
+      <TT
+CLASS="LITERAL"
+>varchar_pattern_ops</TT
+>,
+      <TT
+CLASS="LITERAL"
+>bpchar_pattern_ops</TT
+>, and
+      <TT
+CLASS="LITERAL"
+>name_pattern_ops</TT
+> support B-tree indexes on
+      the types <TT
+CLASS="TYPE"
+>text</TT
+>, <TT
+CLASS="TYPE"
+>varchar</TT
+>,
+      <TT
+CLASS="TYPE"
+>char</TT
+>, and <TT
+CLASS="TYPE"
+>name</TT
+>, respectively.  The
       difference from the ordinary operator classes is that the values
       are compared strictly character by character rather than
       according to the locale-specific collation rules.  This makes
       these operator classes suitable for use by queries involving
-      pattern matching expressions (<tt class="literal">LIKE</tt> or POSIX
+      pattern matching expressions (<TT
+CLASS="LITERAL"
+>LIKE</TT
+> or POSIX
       regular expressions) if the server does not use the standard
-      &#8220;<span class="quote">C</span>&#8221; locale.  As an example, you might index a
-      <tt class="type">varchar</tt> column like this:
-</p>
-<pre class="programlisting">CREATE INDEX test_index ON test_table (col varchar_pattern_ops);</pre>
-<p>
+      <SPAN
+CLASS="QUOTE"
+>"C"</SPAN
+> locale.  As an example, you might index a
+      <TT
+CLASS="TYPE"
+>varchar</TT
+> column like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE INDEX test_index ON test_table (col varchar_pattern_ops);</PRE
+><P>
       If you do use the C locale, you may instead create an index
       with the default operator class, and it will still be useful
       for pattern-matching queries.  Also note that you should
       create an index with the default operator class if you want
       queries involving ordinary comparisons to use an index.  Such
       queries cannot use the
-      <tt class="literal"><i class="replaceable"><tt>xxx</tt></i>_pattern_ops</tt>
+      <TT
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>xxx</VAR
+>_pattern_ops</TT
+>
       operator classes.  It is allowed to create multiple
       indexes on the same column with different operator classes.
-     </p>
-</li></ul></div>
-<p>
-  </p>
-<p>    The following query shows all defined operator classes:
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>    The following query shows all defined operator classes:
 
-</p>
-<pre class="programlisting">SELECT am.amname AS index_method,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT am.amname AS index_method,
        opc.opcname AS opclass_name
     FROM pg_am am, pg_opclass opc
     WHERE opc.opcamid = am.oid
-    ORDER BY index_method, opclass_name;</pre>
-<p>
+    ORDER BY index_method, opclass_name;</PRE
+><P>
 
     It can be extended to show all the operators included in each class:
-</p>
-<pre class="programlisting">SELECT am.amname AS index_method,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT am.amname AS index_method,
        opc.opcname AS opclass_name,
        opr.oprname AS opclass_operator
     FROM pg_am am, pg_opclass opc, pg_amop amop, pg_operator opr
     WHERE opc.opcamid = am.oid AND
           amop.amopclaid = opc.oid AND
           amop.amopopr = opr.oid
-    ORDER BY index_method, opclass_name, opclass_operator;</pre>
-<p>
-  </p>
-</div></body>
-</html>
+    ORDER BY index_method, opclass_name, opclass_operator;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-expressional.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-partial.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Indexes on Expressions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="indexes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Partial Indexes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

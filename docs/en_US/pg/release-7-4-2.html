@@ -1,62 +1,188 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.5. Release 7.4.2</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="previous" href="release-7-4-3.html" title="E.4. Release 7.4.3">
-<link rel="next" href="release-7-4-1.html" title="E.6. Release 7.4.1">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="release-7-4-2"></a>E.5. Release 7.4.2</h2></div></div>
-<div></div>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Release date</h3>
-<p>2004-03-08</p>
-</div>
-<p>    This release contains a variety of fixes from 7.4.1.
-   </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2755465"></a>E.5.1. Migration to version 7.4.2</h3></div></div>
-<div></div>
-</div>
-<p>     A dump/restore is not required for those running 7.4.X.  However,
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Release 7.4.2</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 7.4.3"
+HREF="release-7-4-3.html"><LINK
+REL="NEXT"
+TITLE="Release 7.4.1"
+HREF="release-7-4-1.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-4-3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-4-1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-4-2"
+>E.5. Release 7.4.2</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2004-03-08</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This release contains a variety of fixes from 7.4.1.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN64690"
+>E.5.1. Migration to version 7.4.2</A
+></H2
+><P
+>     A dump/restore is not required for those running 7.4.X.  However,
      it may be advisable as the easiest method of incorporating fixes for
      two errors that have been found in the initial contents of 7.4.X system
      catalogs.  A dump/initdb/reload sequence using 7.4.2's initdb will
      automatically correct these problems.
-    </p>
-<p>     The more severe of the two errors is that data type <tt class="type">anyarray</tt>
+    </P
+><P
+>     The more severe of the two errors is that data type <TT
+CLASS="TYPE"
+>anyarray</TT
+>
      has the wrong alignment label; this is a problem because the
-     <tt class="structname">pg_statistic</tt> system catalog uses <tt class="type">anyarray</tt>
+     <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> system catalog uses <TT
+CLASS="TYPE"
+>anyarray</TT
+>
      columns.  The mislabeling can cause planner misestimations and even
-     crashes when planning queries that involve <tt class="literal">WHERE</tt> clauses on
-     double-aligned columns (such as <tt class="type">float8</tt> and <tt class="type">timestamp</tt>).
+     crashes when planning queries that involve <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clauses on
+     double-aligned columns (such as <TT
+CLASS="TYPE"
+>float8</TT
+> and <TT
+CLASS="TYPE"
+>timestamp</TT
+>).
      It is strongly recommended that all installations repair this error,
      either by initdb or by following the manual repair procedure given
      below.
-    </p>
-<p>     The lesser error is that the system view <tt class="structname">pg_settings</tt>
+    </P
+><P
+>     The lesser error is that the system view <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+>
      ought to be marked as having public update access, to allow
-     <tt class="literal">UPDATE pg_settings</tt> to be used as a substitute for
-     <tt class="command">SET</tt>.  This can also be fixed either by initdb or manually,
-     but it is not necessary to fix unless you want to use <tt class="literal">UPDATE
-     pg_settings</tt>.
-    </p>
-<p>     If you wish not to do an initdb, the following procedure will work
-     for fixing <tt class="structname">pg_statistic</tt>.  As the database superuser,
+     <TT
+CLASS="LITERAL"
+>UPDATE pg_settings</TT
+> to be used as a substitute for
+     <TT
+CLASS="COMMAND"
+>SET</TT
+>.  This can also be fixed either by initdb or manually,
+     but it is not necessary to fix unless you want to use <TT
+CLASS="LITERAL"
+>UPDATE
+     pg_settings</TT
+>.
+    </P
+><P
+>     If you wish not to do an initdb, the following procedure will work
+     for fixing <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>.  As the database superuser,
      do:
 
-</p>
-<pre class="programlisting">-- clear out old data in pg_statistic:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>-- clear out old data in pg_statistic:
 DELETE FROM pg_statistic;
 VACUUM pg_statistic;
 -- this should update 1 row:
@@ -67,80 +193,269 @@ UPDATE pg_attribute SET attalign = 'd' WHERE atttypid = 2277;
 -- At this point you MUST start a fresh backend to avoid a crash!
 --
 -- repopulate pg_statistic:
-ANALYZE;</pre>
-<p>
+ANALYZE;</PRE
+><P>
 
      This can be done in a live database, but beware that all backends
      running in the altered database must be restarted before it is safe to
-     repopulate <tt class="structname">pg_statistic</tt>.
-    </p>
-<p>     To repair the <tt class="structname">pg_settings</tt> error, simply do:
-</p>
-<pre class="programlisting">GRANT SELECT, UPDATE ON pg_settings TO PUBLIC;</pre>
-<p>
-    </p>
-<p>     The above procedures must be carried out in <span class="emphasis"><em>each</em></span> database
-     of an installation, including <tt class="literal">template1</tt>, and ideally
-     including <tt class="literal">template0</tt> as well.  If you do not fix the
+     repopulate <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>.
+    </P
+><P
+>     To repair the <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+> error, simply do:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT SELECT, UPDATE ON pg_settings TO PUBLIC;</PRE
+><P>
+    </P
+><P
+>     The above procedures must be carried out in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>each</I
+></SPAN
+> database
+     of an installation, including <TT
+CLASS="LITERAL"
+>template1</TT
+>, and ideally
+     including <TT
+CLASS="LITERAL"
+>template0</TT
+> as well.  If you do not fix the
      template databases then any subsequently created databases will contain
-     the same errors.  <tt class="literal">template1</tt> can be fixed in the same way
-     as any other database, but fixing <tt class="literal">template0</tt> requires
+     the same errors.  <TT
+CLASS="LITERAL"
+>template1</TT
+> can be fixed in the same way
+     as any other database, but fixing <TT
+CLASS="LITERAL"
+>template0</TT
+> requires
      additional steps.  First, from any database issue
-</p>
-<pre class="programlisting">UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</pre>
-<p>
-      Next connect to <tt class="literal">template0</tt> and perform the above repair
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</PRE
+><P>
+      Next connect to <TT
+CLASS="LITERAL"
+>template0</TT
+> and perform the above repair
       procedures.  Finally, do
-</p>
-<pre class="programlisting">-- re-freeze template0:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>-- re-freeze template0:
 VACUUM FREEZE;
 -- and protect it against future alterations:
-UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
-<p>
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2755638"></a>E.5.2. Changes</h3></div></div>
-<div></div>
-</div>
-<p>    Release 7.4.2 incorporates all the fixes included in release 7.3.6,
-    plus the following fixes:</p>
-<div class="itemizedlist"><ul type="disc">
-<li>
-<p>Fix <tt class="structname">pg_statistics</tt> alignment bug that could crash optimizer</p>
-<p>See above for details about this problem.</p>
-</li>
-<li><p>Allow non-super users to update <tt class="structname">pg_settings</tt></p></li>
-<li><p>Fix several optimizer bugs, most of which led to
-&#8220;<span class="quote">variable not found in subplan target lists</span>&#8221; errors</p></li>
-<li><p>Avoid out-of-memory failure during startup of large multiple
-index scan</p></li>
-<li><p>Fix multibyte problem that could lead to &#8220;<span class="quote">out of
-memory</span>&#8221; error during <tt class="command">COPY IN</tt></p></li>
-<li><p>Fix problems with <tt class="command">SELECT INTO</tt> / <tt class="command">CREATE
-TABLE AS</tt> from tables without OIDs</p></li>
-<li><p>Fix problems with <tt class="filename">alter_table</tt> regression test
-during parallel testing</p></li>
-<li><p>Fix problems with hitting open file limit, especially on OS X (Tom)</p></li>
-<li>
-<p>Partial fix for Turkish-locale issues</p>
-<p>initdb will succeed now in Turkish locale, but there are still some
-inconveniences associated with the <tt class="literal">i/I</tt> problem.</p>
-</li>
-<li><p>Make pg_dump set client encoding on restore</p></li>
-<li><p>Other minor pg_dump fixes</p></li>
-<li><p>Allow ecpg to again use C keywords as column names (Michael)</p></li>
-<li><p>Added ecpg <tt class="literal">WHENEVER NOT_FOUND</tt> to
-<tt class="literal">SELECT/INSERT/UPDATE/DELETE</tt> (Michael)</p></li>
-<li><p>Fix ecpg crash for queries calling set-returning functions (Michael)</p></li>
-<li><p>Various other ecpg fixes (Michael)</p></li>
-<li><p>Fixes for Borland compiler</p></li>
-<li><p>Thread build improvements (Bruce)</p></li>
-<li><p>Various other build fixes</p></li>
-<li><p>Various JDBC fixes</p></li>
-</ul></div>
-</div>
-</div></body>
-</html>
+UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN64721"
+>E.5.2. Changes</A
+></H2
+><P
+>    Release 7.4.2 incorporates all the fixes included in release 7.3.6,
+    plus the following fixes:</P
+><P
+></P
+><UL
+><LI
+><P
+>Fix <TT
+CLASS="STRUCTNAME"
+>pg_statistics</TT
+> alignment bug that could crash optimizer</P
+><P
+>See above for details about this problem.</P
+></LI
+><LI
+><P
+>Allow non-super users to update <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+></P
+></LI
+><LI
+><P
+>Fix several optimizer bugs, most of which led to
+<SPAN
+CLASS="QUOTE"
+>"variable not found in subplan target lists"</SPAN
+> errors</P
+></LI
+><LI
+><P
+>Avoid out-of-memory failure during startup of large multiple
+index scan</P
+></LI
+><LI
+><P
+>Fix multibyte problem that could lead to <SPAN
+CLASS="QUOTE"
+>"out of
+memory"</SPAN
+> error during <TT
+CLASS="COMMAND"
+>COPY IN</TT
+></P
+></LI
+><LI
+><P
+>Fix problems with <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> / <TT
+CLASS="COMMAND"
+>CREATE
+TABLE AS</TT
+> from tables without OIDs</P
+></LI
+><LI
+><P
+>Fix problems with <TT
+CLASS="FILENAME"
+>alter_table</TT
+> regression test
+during parallel testing</P
+></LI
+><LI
+><P
+>Fix problems with hitting open file limit, especially on OS X (Tom)</P
+></LI
+><LI
+><P
+>Partial fix for Turkish-locale issues</P
+><P
+>initdb will succeed now in Turkish locale, but there are still some
+inconveniences associated with the <TT
+CLASS="LITERAL"
+>i/I</TT
+> problem.</P
+></LI
+><LI
+><P
+>Make pg_dump set client encoding on restore</P
+></LI
+><LI
+><P
+>Other minor pg_dump fixes</P
+></LI
+><LI
+><P
+>Allow ecpg to again use C keywords as column names (Michael)</P
+></LI
+><LI
+><P
+>Added ecpg <TT
+CLASS="LITERAL"
+>WHENEVER NOT_FOUND</TT
+> to
+<TT
+CLASS="LITERAL"
+>SELECT/INSERT/UPDATE/DELETE</TT
+> (Michael)</P
+></LI
+><LI
+><P
+>Fix ecpg crash for queries calling set-returning functions (Michael)</P
+></LI
+><LI
+><P
+>Various other ecpg fixes (Michael)</P
+></LI
+><LI
+><P
+>Fixes for Borland compiler</P
+></LI
+><LI
+><P
+>Thread build improvements (Bruce)</P
+></LI
+><LI
+><P
+>Various other build fixes</P
+></LI
+><LI
+><P
+>Various JDBC fixes</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-4-3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-4-1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 7.4.3</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.4.1</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

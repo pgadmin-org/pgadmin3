@@ -1,196 +1,495 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>26.2. Test Evaluation</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="regress.html" title="Chapter 26. Regression Tests">
-<link rel="previous" href="regress.html" title="Chapter 26. Regression Tests">
-<link rel="next" href="regress-platform.html" title="26.3. Platform-specific comparison files">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="regress-evaluation"></a>26.2. Test Evaluation</h2></div></div>
-<div></div>
-</div>
-<p>    Some properly installed and fully functional
-    <span class="productname">PostgreSQL</span> installations can
-    &#8220;<span class="quote">fail</span>&#8221; some of these regression tests due to
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Test Evaluation</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Regression Tests"
+HREF="regress.html"><LINK
+REL="PREVIOUS"
+TITLE="Regression Tests"
+HREF="regress.html"><LINK
+REL="NEXT"
+TITLE="Platform-specific comparison files"
+HREF="regress-platform.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="regress.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="regress.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 26. Regression Tests</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="regress.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="regress-platform.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="REGRESS-EVALUATION"
+>26.2. Test Evaluation</A
+></H1
+><P
+>    Some properly installed and fully functional
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installations can
+    <SPAN
+CLASS="QUOTE"
+>"fail"</SPAN
+> some of these regression tests due to
     platform-specific artifacts such as varying floating-point representation
     and time zone support. The tests are currently evaluated using a simple
-    <tt class="command">diff</tt> comparison against the outputs
+    <TT
+CLASS="COMMAND"
+>diff</TT
+> comparison against the outputs
     generated on a reference system, so the results are sensitive to
     small system differences.  When a test is reported as
-    &#8220;<span class="quote">failed</span>&#8221;, always examine the differences between
+    <SPAN
+CLASS="QUOTE"
+>"failed"</SPAN
+>, always examine the differences between
     expected and actual results; you may well find that the
     differences are not significant.  Nonetheless, we still strive to
     maintain accurate reference files across all supported platforms,
     so it can be expected that all tests pass.
-   </p>
-<p>    The actual outputs of the regression tests are in files in the
-    <tt class="filename">src/test/regress/results</tt> directory. The test
-    script uses <tt class="command">diff</tt> to compare each output
+   </P
+><P
+>    The actual outputs of the regression tests are in files in the
+    <TT
+CLASS="FILENAME"
+>src/test/regress/results</TT
+> directory. The test
+    script uses <TT
+CLASS="COMMAND"
+>diff</TT
+> to compare each output
     file against the reference outputs stored in the
-    <tt class="filename">src/test/regress/expected</tt> directory.  Any
+    <TT
+CLASS="FILENAME"
+>src/test/regress/expected</TT
+> directory.  Any
     differences are saved for your inspection in
-    <tt class="filename">src/test/regress/regression.diffs</tt>.  (Or you
-    can run <tt class="command">diff</tt> yourself, if you prefer.)
-   </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2602075"></a>26.2.1. Error message differences</h3></div></div>
-<div></div>
-</div>
-<p>     Some of the regression tests involve intentional invalid input
+    <TT
+CLASS="FILENAME"
+>src/test/regress/regression.diffs</TT
+>.  (Or you
+    can run <TT
+CLASS="COMMAND"
+>diff</TT
+> yourself, if you prefer.)
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21188"
+>26.2.1. Error message differences</A
+></H2
+><P
+>     Some of the regression tests involve intentional invalid input
      values.  Error messages can come from either the
-     <span class="productname">PostgreSQL</span> code or from the host
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> code or from the host
      platform system routines. In the latter case, the messages may
      vary between platforms, but should reflect similar
      information. These differences in messages will result in a
-     &#8220;<span class="quote">failed</span>&#8221; regression test that can be validated by
+     <SPAN
+CLASS="QUOTE"
+>"failed"</SPAN
+> regression test that can be validated by
      inspection.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2602098"></a>26.2.2. Locale differences</h3></div></div>
-<div></div>
-</div>
-<p>     If you run the tests against an already-installed server that was
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21193"
+>26.2.2. Locale differences</A
+></H2
+><P
+>     If you run the tests against an already-installed server that was
      initialized with a collation-order locale other than C, then
      there may be differences due to sort order and follow-up
      failures.  The regression test suite is set up to handle this
      problem by providing alternative result files that together are
      known to handle a large number of locales.  For example, for the
-     <tt class="literal">char</tt> test, the expected file
-     <tt class="filename">char.out</tt> handles the <tt class="literal">C</tt> and <tt class="literal">POSIX</tt> locales,
-     and the file <tt class="filename">char_1.out</tt> handles many other
+     <TT
+CLASS="LITERAL"
+>char</TT
+> test, the expected file
+     <TT
+CLASS="FILENAME"
+>char.out</TT
+> handles the <TT
+CLASS="LITERAL"
+>C</TT
+> and <TT
+CLASS="LITERAL"
+>POSIX</TT
+> locales,
+     and the file <TT
+CLASS="FILENAME"
+>char_1.out</TT
+> handles many other
      locales.  The regression test driver will automatically pick the
      best file to match against when checking for success and for
      computing failure differences.  (This means that the regression
      tests cannot detect whether the results are appropriate for the
      configured locale.  The tests will simply pick the one result
      file that works best.)
-    </p>
-<p>     If for some reason the existing expected files do not cover some
+    </P
+><P
+>     If for some reason the existing expected files do not cover some
      locale, you can add a new file.  The naming scheme is
-     <tt class="literal"><i class="replaceable"><tt>testname</tt></i>_<i class="replaceable"><tt>digit</tt></i>.out</tt>.
+     <TT
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>testname</VAR
+>_<VAR
+CLASS="REPLACEABLE"
+>digit</VAR
+>.out</TT
+>.
      The actual digit is not significant.  Remember that the
      regression test driver will consider all such files to be equally
      valid test results.  If the test results are platform-specific,
-     the technique described in <a href="regress-platform.html" title="26.3. Platform-specific comparison files">Section 26.3, &#8220;Platform-specific comparison files&#8221;</a>
+     the technique described in <A
+HREF="regress-platform.html"
+>Section 26.3</A
+>
      should be used instead.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2602176"></a>26.2.3. Date and time differences</h3></div></div>
-<div></div>
-</div>
-<p>     A few of the queries in the <tt class="filename">horology</tt> test will
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21206"
+>26.2.3. Date and time differences</A
+></H2
+><P
+>     A few of the queries in the <TT
+CLASS="FILENAME"
+>horology</TT
+> test will
      fail if you run the test on the day of a daylight-saving time
      changeover, or the day after one.  These queries expect that
      the intervals between midnight yesterday, midnight today and
      midnight tomorrow are exactly twenty-four hours --- which is wrong
      if daylight-saving time went into or out of effect meanwhile.
-    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>      Because USA daylight-saving time rules are used, this problem always
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      Because USA daylight-saving time rules are used, this problem always
       occurs on the first Sunday of April, the last Sunday of October,
       and their following Mondays, regardless of when daylight-saving time
       is in effect where you live.  Also note that the problem appears or
       disappears at midnight Pacific time (UTC-7 or UTC-8), not midnight
       your local time.  Thus the failure may appear late on Saturday or
       persist through much of Tuesday, depending on where you live.
-     </p>
-</div>
-<p>     Most of the date and time results are dependent on the time zone
+     </P
+></BLOCKQUOTE
+></DIV
+><P
+>     Most of the date and time results are dependent on the time zone
      environment.  The reference files are generated for time zone
-     <tt class="literal">PST8PDT</tt> (Berkeley, California), and there will be
+     <TT
+CLASS="LITERAL"
+>PST8PDT</TT
+> (Berkeley, California), and there will be
      apparent failures if the tests are not run with that time zone setting.
      The regression test driver sets environment variable
-     <tt class="envar">PGTZ</tt> to <tt class="literal">PST8PDT</tt>, which normally
+     <TT
+CLASS="ENVAR"
+>PGTZ</TT
+> to <TT
+CLASS="LITERAL"
+>PST8PDT</TT
+>, which normally
      ensures proper results.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2602229"></a>26.2.4. Floating-point differences</h3></div></div>
-<div></div>
-</div>
-<p>     Some of the tests involve computing 64-bit floating-point numbers (<tt class="type">double
-     precision</tt>) from table columns. Differences in
-     results involving mathematical functions of <tt class="type">double
-     precision</tt> columns have been observed.  The <tt class="literal">float8</tt> and
-     <tt class="literal">geometry</tt> tests are particularly prone to small differences
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21216"
+>26.2.4. Floating-point differences</A
+></H2
+><P
+>     Some of the tests involve computing 64-bit floating-point numbers (<TT
+CLASS="TYPE"
+>double
+     precision</TT
+>) from table columns. Differences in
+     results involving mathematical functions of <TT
+CLASS="TYPE"
+>double
+     precision</TT
+> columns have been observed.  The <TT
+CLASS="LITERAL"
+>float8</TT
+> and
+     <TT
+CLASS="LITERAL"
+>geometry</TT
+> tests are particularly prone to small differences
      across platforms, or even with different compiler optimization options.
      Human eyeball comparison is needed to determine the real
      significance of these differences which are usually 10 places to
      the right of the decimal point.
-    </p>
-<p>     Some systems display minus zero as <tt class="literal">-0</tt>, while others
-     just show <tt class="literal">0</tt>.
-    </p>
-<p>     Some systems signal errors from <tt class="function">pow()</tt> and
-     <tt class="function">exp()</tt> differently from the mechanism
-     expected by the current <span class="productname">PostgreSQL</span>
+    </P
+><P
+>     Some systems display minus zero as <TT
+CLASS="LITERAL"
+>-0</TT
+>, while others
+     just show <TT
+CLASS="LITERAL"
+>0</TT
+>.
+    </P
+><P
+>     Some systems signal errors from <CODE
+CLASS="FUNCTION"
+>pow()</CODE
+> and
+     <CODE
+CLASS="FUNCTION"
+>exp()</CODE
+> differently from the mechanism
+     expected by the current <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
      code.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2602300"></a>26.2.5. Row ordering differences</h3></div></div>
-<div></div>
-</div>
-<p>You might see differences in which the same rows are output in a
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21230"
+>26.2.5. Row ordering differences</A
+></H2
+><P
+>You might see differences in which the same rows are output in a
 different order than what appears in the expected file.  In most cases
 this is not, strictly speaking, a bug.  Most of the regression test
-scripts are not so pedantic as to use an <tt class="literal">ORDER BY</tt> for every single
-<tt class="literal">SELECT</tt>, and so their result row orderings are not well-defined
+scripts are not so pedantic as to use an <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+> for every single
+<TT
+CLASS="LITERAL"
+>SELECT</TT
+>, and so their result row orderings are not well-defined
 according to the letter of the SQL specification.  In practice, since we are
 looking at the same queries being executed on the same data by the same
 software, we usually get the same result ordering on all platforms, and
-so the lack of <tt class="literal">ORDER BY</tt> isn't a problem.  Some queries do exhibit
+so the lack of <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+> isn't a problem.  Some queries do exhibit
 cross-platform ordering differences, however.  (Ordering differences
 can also be triggered by non-C locale settings.)
-    </p>
-<p>Therefore, if you see an ordering difference, it's not something to
-worry about, unless the query does have an <tt class="literal">ORDER BY</tt> that your result
+    </P
+><P
+>Therefore, if you see an ordering difference, it's not something to
+worry about, unless the query does have an <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+> that your result
 is violating.  But please report it anyway, so that we can add an
-<tt class="literal">ORDER BY</tt> to that particular query and thereby eliminate the bogus
-&#8220;<span class="quote">failure</span>&#8221; in future releases.
-    </p>
-<p>You might wonder why we don't order all the regression test queries explicitly to
+<TT
+CLASS="LITERAL"
+>ORDER BY</TT
+> to that particular query and thereby eliminate the bogus
+<SPAN
+CLASS="QUOTE"
+>"failure"</SPAN
+> in future releases.
+    </P
+><P
+>You might wonder why we don't order all the regression test queries explicitly to
 get rid of this issue once and for all.  The reason is that that would
 make the regression tests less useful, not more, since they'd tend
 to exercise query plan types that produce ordered results to the
 exclusion of those that don't.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2602366"></a>26.2.6. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div>
-<div></div>
-</div>
-<p>     The <tt class="literal">random</tt> test script is intended to produce 
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21241"
+>26.2.6. The <SPAN
+CLASS="QUOTE"
+>"random"</SPAN
+> test</A
+></H2
+><P
+>     The <TT
+CLASS="LITERAL"
+>random</TT
+> test script is intended to produce 
      random results.   In rare cases, this causes the random regression
      test to fail.  Typing
-</p>
-<pre class="programlisting">diff results/random.out expected/random.out</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>diff results/random.out expected/random.out</PRE
+><P>
      should produce only one or a few lines of differences.  You need
      not worry unless the random test repeatedly fails.
-    </p>
-</div>
-</div></body>
-</html>
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="regress.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="regress-platform.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Regression Tests</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="regress.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Platform-specific comparison files</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,44 +1,211 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>36.4. Global Data in PL/Tcl</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="pltcl.html" title="Chapter 36. PL/Tcl - Tcl Procedural Language">
-<link rel="previous" href="pltcl-data.html" title="36.3. Data Values in PL/Tcl">
-<link rel="next" href="pltcl-dbaccess.html" title="36.5. Database Access from PL/Tcl">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="pltcl-global"></a>36.4. Global Data in PL/Tcl</h2></div></div>
-<div></div>
-</div>
-<a name="id2648851"></a><p>     Sometimes it
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Global Data in PL/Tcl</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/Tcl - Tcl Procedural Language"
+HREF="pltcl.html"><LINK
+REL="PREVIOUS"
+TITLE="Data Values in PL/Tcl"
+HREF="pltcl-data.html"><LINK
+REL="NEXT"
+TITLE="Database Access from PL/Tcl"
+HREF="pltcl-dbaccess.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl-data.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 36. PL/Tcl - Tcl Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pltcl.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pltcl-dbaccess.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLTCL-GLOBAL"
+>36.4. Global Data in PL/Tcl</A
+></H1
+><A
+NAME="AEN32299"
+></A
+><P
+>     Sometimes it
      is useful to have some global data that is held between two
      calls to a function or is shared between different functions.
      This is easily done since
      all PL/Tcl functions executed in one session share the same
      safe Tcl interpreter.  So, any global Tcl variable is accessible to
      all PL/Tcl function calls and will persist for the duration of the
-     SQL session.  (Note that <span class="application">PL/TclU</span> functions likewise share
+     SQL session.  (Note that <SPAN
+CLASS="APPLICATION"
+>PL/TclU</SPAN
+> functions likewise share
      global data, but they are in a different Tcl interpreter and cannot
      communicate with PL/Tcl functions.)
-    </p>
-<p>     To help protect PL/Tcl functions from unintentionally interfering
+    </P
+><P
+>     To help protect PL/Tcl functions from unintentionally interfering
      with each other, a global
-     array is made available to each function via the <tt class="function">upvar</tt>
+     array is made available to each function via the <CODE
+CLASS="FUNCTION"
+>upvar</CODE
+>
      command. The global name of this variable is the function's internal
-     name, and the local name is <tt class="literal">GD</tt>.  It is recommended that
-     <tt class="literal">GD</tt> be used
+     name, and the local name is <TT
+CLASS="LITERAL"
+>GD</TT
+>.  It is recommended that
+     <TT
+CLASS="LITERAL"
+>GD</TT
+> be used
      for private data of a function.  Use regular Tcl global variables
      only for values that you specifically intend to be shared among multiple
      functions.
-    </p>
-<p>     An example of using <tt class="literal">GD</tt> appears in the
-     <tt class="function">spi_execp</tt> example below.
-    </p>
-</div></body>
-</html>
+    </P
+><P
+>     An example of using <TT
+CLASS="LITERAL"
+>GD</TT
+> appears in the
+     <CODE
+CLASS="FUNCTION"
+>spi_execp</CODE
+> example below.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl-data.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pltcl-dbaccess.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Data Values in PL/Tcl</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="pltcl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Database Access from PL/Tcl</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

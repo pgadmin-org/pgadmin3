@@ -1,135 +1,456 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER DOMAIN</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-alterdatabase.html" title="ALTER DATABASE">
-<link rel="next" href="sql-alterfunction.html" title="ALTER FUNCTION">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-alterdomain"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>   ALTER DOMAIN
-   &#8212;    change the definition of a domain
-  </p>
-</div>
-<a name="id2658466"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ALTER DOMAIN <i class="replaceable"><tt>name</tt></i>
-    { SET DEFAULT <i class="replaceable"><tt>expression</tt></i> | DROP DEFAULT }
-ALTER DOMAIN <i class="replaceable"><tt>name</tt></i>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ALTER DOMAIN</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER DATABASE"
+HREF="sql-alterdatabase.html"><LINK
+REL="NEXT"
+TITLE="ALTER FUNCTION"
+HREF="sql-alterfunction.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterfunction.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERDOMAIN"
+></A
+>ALTER DOMAIN</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN34835"
+></A
+><H2
+>Name</H2
+>   ALTER DOMAIN
+  &nbsp;--&nbsp;   change the definition of a domain
+  </DIV
+><A
+NAME="AEN34838"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN34840"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>
+    { SET DEFAULT <VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> | DROP DEFAULT }
+ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>
     { SET | DROP } NOT NULL
-ALTER DOMAIN <i class="replaceable"><tt>name</tt></i>
-    ADD <i class="replaceable"><tt>domain_constraint</tt></i>
-ALTER DOMAIN <i class="replaceable"><tt>name</tt></i>
-    DROP CONSTRAINT <i class="replaceable"><tt>constraint_name</tt></i> [ RESTRICT | CASCADE ]
-ALTER DOMAIN <i class="replaceable"><tt>name</tt></i>
-    OWNER TO <i class="replaceable"><tt>new_owner</tt></i> 
-  </pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2658539"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER DOMAIN</tt> changes the definition of an existing domain.
+ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>
+    ADD <VAR
+CLASS="REPLACEABLE"
+>domain_constraint</VAR
+>
+ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>
+    DROP CONSTRAINT <VAR
+CLASS="REPLACEABLE"
+>constraint_name</VAR
+> [ RESTRICT | CASCADE ]
+ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>
+    OWNER TO <VAR
+CLASS="REPLACEABLE"
+>new_owner</VAR
+> 
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34851"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER DOMAIN</TT
+> changes the definition of an existing domain.
    There are several sub-forms:
-  </p>
-<div class="variablelist"><dl>
-<dt><span class="term">SET/DROP DEFAULT</span></dt>
-<dd><p>      These forms set or remove the default value for a domain. Note
-      that defaults only apply to subsequent <tt class="command">INSERT</tt>
+  </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>SET/DROP DEFAULT</DT
+><DD
+><P
+>      These forms set or remove the default value for a domain. Note
+      that defaults only apply to subsequent <TT
+CLASS="COMMAND"
+>INSERT</TT
+>
       commands; they do not affect rows already in a table using the domain.
-     </p></dd>
-<dt><span class="term">SET/DROP NOT NULL</span></dt>
-<dd><p>      These forms change whether a domain is marked to allow NULL
-      values or to reject NULL values.  You may only <tt class="literal">SET NOT NULL</tt>
+     </P
+></DD
+><DT
+>SET/DROP NOT NULL</DT
+><DD
+><P
+>      These forms change whether a domain is marked to allow NULL
+      values or to reject NULL values.  You may only <TT
+CLASS="LITERAL"
+>SET NOT NULL</TT
+>
       when the columns using the domain contain no null values.
-     </p></dd>
-<dt><span class="term">ADD <i class="replaceable"><tt>domain_constraint</tt></i></span></dt>
-<dd><p>      This form adds a new constraint to a domain using the same syntax as
-      <a href="sql-createdomain.html">CREATE DOMAIN</a>.
+     </P
+></DD
+><DT
+>ADD <VAR
+CLASS="REPLACEABLE"
+>domain_constraint</VAR
+></DT
+><DD
+><P
+>      This form adds a new constraint to a domain using the same syntax as
+      <A
+HREF="sql-createdomain.html"
+><I
+>CREATE DOMAIN</I
+></A
+>.
       This will only succeed if all columns using the domain satisfy the
       new constraint.
-     </p></dd>
-<dt><span class="term">DROP CONSTRAINT</span></dt>
-<dd><p>      This form drops constraints on a domain.
-     </p></dd>
-<dt><span class="term">OWNER</span></dt>
-<dd><p>      This form changes the owner of the domain to the specified user.
-     </p></dd>
-</dl></div>
-<p>   You must own the domain to use <tt class="command">ALTER DOMAIN</tt>; except for
-   <tt class="command">ALTER DOMAIN OWNER</tt>, which may only be executed by a superuser.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2658644"></a><h2>Parameters</h2>
-<p>    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>	The name (possibly schema-qualified) of an existing domain to
+     </P
+></DD
+><DT
+>DROP CONSTRAINT</DT
+><DD
+><P
+>      This form drops constraints on a domain.
+     </P
+></DD
+><DT
+>OWNER</DT
+><DD
+><P
+>      This form changes the owner of the domain to the specified user.
+     </P
+></DD
+></DL
+></DIV
+><P
+>   You must own the domain to use <TT
+CLASS="COMMAND"
+>ALTER DOMAIN</TT
+>; except for
+   <TT
+CLASS="COMMAND"
+>ALTER DOMAIN OWNER</TT
+>, which may only be executed by a superuser.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34883"
+></A
+><H2
+>Parameters</H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>	The name (possibly schema-qualified) of an existing domain to
 	alter.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>domain_constraint</tt></i></span></dt>
-<dd><p>	New domain constraint for the domain.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>constraint_name</tt></i></span></dt>
-<dd><p>	Name of an existing constraint to drop.
-       </p></dd>
-<dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
-<dd><p>        Automatically drop objects that depend on the constraint.
-       </p></dd>
-<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
-<dd><p>        Refuse to drop the constraint if there are any dependent
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>domain_constraint</VAR
+></DT
+><DD
+><P
+>	New domain constraint for the domain.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>constraint_name</VAR
+></DT
+><DD
+><P
+>	Name of an existing constraint to drop.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+></DT
+><DD
+><P
+>        Automatically drop objects that depend on the constraint.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>        Refuse to drop the constraint if there are any dependent
 	objects. This is the default behavior.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>new_owner</tt></i></span></dt>
-<dd><p>	The user name of the new owner of the domain.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2658720"></a><h2>Examples</h2>
-<p>   To add a <tt class="literal">NOT NULL</tt> constraint to a domain:
-   </p>
-<pre class="programlisting">ALTER DOMAIN zipcode SET NOT NULL;
-   </pre>
-<p>
-   To remove a <tt class="literal">NOT NULL</tt> constraint from a domain:
-   </p>
-<pre class="programlisting">ALTER DOMAIN zipcode DROP NOT NULL;
-   </pre>
-<p>
-  </p>
-<p> 
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>new_owner</VAR
+></DT
+><DD
+><P
+>	The user name of the new owner of the domain.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34917"
+></A
+><H2
+>Examples</H2
+><P
+>   To add a <TT
+CLASS="LITERAL"
+>NOT NULL</TT
+> constraint to a domain:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DOMAIN zipcode SET NOT NULL;
+   </PRE
+><P>
+   To remove a <TT
+CLASS="LITERAL"
+>NOT NULL</TT
+> constraint from a domain:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DOMAIN zipcode DROP NOT NULL;
+   </PRE
+><P>
+  </P
+><P
+> 
    To add a check constraint to a domain:
-   </p>
-<pre class="programlisting">ALTER DOMAIN zipcode ADD CONSTRAINT zipchk CHECK (char_length(VALUE) = 5);
-   </pre>
-<p>
-  </p>
-<p> 
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DOMAIN zipcode ADD CONSTRAINT zipchk CHECK (char_length(VALUE) = 5);
+   </PRE
+><P>
+  </P
+><P
+> 
    To remove a check constraint from a domain:
-   </p>
-<pre class="programlisting">ALTER DOMAIN zipcode DROP CONSTRAINT zipchk;
-   </pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2658772"></a><h2>Compatibility</h2>
-<p>   The <tt class="command">ALTER DOMAIN</tt> statement is compatible with SQL99,
-   except for the <tt class="literal">OWNER</tt> variant, which is a
-   <span class="productname">PostgreSQL</span> extension.
-  </p>
-</div>
-</div></body>
-</html>
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DOMAIN zipcode DROP CONSTRAINT zipchk;
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34928"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>ALTER DOMAIN</TT
+> statement is compatible with SQL99,
+   except for the <TT
+CLASS="LITERAL"
+>OWNER</TT
+> variant, which is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER DATABASE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER FUNCTION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

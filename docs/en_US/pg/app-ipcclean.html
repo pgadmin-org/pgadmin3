@@ -1,58 +1,258 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ipcclean</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
-<link rel="previous" href="app-initdb.html" title="initdb">
-<link rel="next" href="app-pgcontroldata.html" title="pg_controldata">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-ipcclean"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ipcclean &#8212; remove shared memory and semaphores from an aborted <span class="productname">PostgreSQL</span> server</p>
-</div>
-<a name="id2712877"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">ipcclean</tt></p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="r1-app-ipcclean-1"></a><h2>Description</h2>
-<p>   <tt class="command">ipcclean</tt> removes all shared memory segments and
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ipcclean</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="PREVIOUS"
+TITLE="initdb"
+HREF="app-initdb.html"><LINK
+REL="NEXT"
+TITLE="pg_controldata"
+HREF="app-pgcontroldata.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-initdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-initdb.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pgcontroldata.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pgcontroldata.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-IPCCLEAN"
+></A
+><SPAN
+CLASS="APPLICATION"
+>ipcclean</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN48518"
+></A
+><H2
+>Name</H2
+>ipcclean&nbsp;--&nbsp;remove shared memory and semaphores from an aborted <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server</DIV
+><A
+NAME="AEN48522"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN48524"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>ipcclean</TT
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-IPCCLEAN-1"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ipcclean</TT
+> removes all shared memory segments and
    semaphore sets owned by the current user.  It is intended to be
    used for cleaning up after a crashed
-   <span class="productname">PostgreSQL</span> server (<a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>).  Note that immediately restarting the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server (<A
+HREF="app-postmaster.html"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></A
+>).  Note that immediately restarting the
    server will also clean up shared memory and semaphores, so this
    command is of little real utility.
-  </p>
-<p>   Only the database administrator should execute this program as it
+  </P
+><P
+>   Only the database administrator should execute this program as it
    can cause bizarre behavior (i.e., crashes) if run during multiuser
    execution.  If this command is executed while a server is running,
    the shared memory and semaphores allocated by that server will be
    deleted, which would have rather severe consequences for that
    server.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2712937"></a><h2>Notes</h2>
-<p>   This script is a hack, but in the many years since it was written,
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48534"
+></A
+><H2
+>Notes</H2
+><P
+>   This script is a hack, but in the many years since it was written,
    no one has come up with an equally effective and portable solution.
-   Since the <tt class="command">postmaster</tt> can now clean up by
-   itself, it is unlikely that <tt class="command">ipcclean</tt> will be
+   Since the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> can now clean up by
+   itself, it is unlikely that <TT
+CLASS="COMMAND"
+>ipcclean</TT
+> will be
    improved upon in the future.
-  </p>
-<p>   The script makes assumption about the format of output of the
-   <tt class="command">ipcs</tt>
+  </P
+><P
+>   The script makes assumption about the format of output of the
+   <TT
+CLASS="COMMAND"
+>ipcs</TT
+>
    utility which may not be true across different operating systems.
    Therefore, it may not work on your particular OS.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-initdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pgcontroldata.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>initdb</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pg_controldata</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

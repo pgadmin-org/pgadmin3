@@ -1,312 +1,729 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Part II. The SQL Language</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="previous" href="tutorial-conclusion.html" title="3.6. Conclusion">
-<link rel="next" href="sql-syntax.html" title="Chapter 4. SQL Syntax">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="sql">
-<div class="titlepage">
-<div><div><h1 class="title">
-<a name="sql"></a>The SQL Language</h1></div></div>
-<div></div>
-</div>
-<div class="partintro" lang="en" id="id2520041">
-<div>
-<div></div>
-<div></div>
-</div>
-<p>    This part describes the use of the <span class="acronym">SQL</span> language
-    in <span class="productname">PostgreSQL</span>.  We start with
-    describing the general syntax of <span class="acronym">SQL</span>, then
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>The SQL Language</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Conclusion"
+HREF="tutorial-conclusion.html"><LINK
+REL="NEXT"
+TITLE="SQL Syntax"
+HREF="sql-syntax.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="PART"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-conclusion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="admin.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
+><A
+NAME="SQL"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>II. The SQL Language</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN1024"
+></A
+><P
+>    This part describes the use of the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> language
+    in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  We start with
+    describing the general syntax of <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>, then
     explain how to create the structures to hold data, how to populate
     the database, and how to query it.  The middle part lists the
     available data types and functions for use in
-    <span class="acronym">SQL</span> data commands.  The rest treats several
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> data commands.  The rest treats several
     aspects that are important for tuning a database for optimal
     performance.
-   </p>
-<p>    The information in this part is arranged so that a novice user can
+   </P
+><P
+>    The information in this part is arranged so that a novice user can
     follow it start to end to gain a full understanding of the topics
     without having to refer forward too many times.  The chapters are
     intended to be self-contained, so that advanced users can read the
     chapters individually as they choose.  The information in this
     part is presented in a narrative fashion in topical units.
     Readers looking for a complete description of a particular command
-    should look into <a href="reference.html" title="Part VI. Reference">Part VI, &#8220;Reference&#8221;</a>.
-   </p>
-<p>    Readers of this part should know how to connect to a
-    <span class="productname">PostgreSQL</span> database and issue
-    <span class="acronym">SQL</span> commands.  Readers that are unfamiliar with
-    these issues are encouraged to read <a href="tutorial.html" title="Part I. Tutorial">Part I, &#8220;Tutorial&#8221;</a>
-    first.  <span class="acronym">SQL</span> commands are typically entered
-    using the <span class="productname">PostgreSQL</span> interactive terminal
-    <span class="application">psql</span>, but other programs that have
+    should look into <A
+HREF="reference.html"
+>Part VI</A
+>.
+   </P
+><P
+>    Readers of this part should know how to connect to a
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database and issue
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands.  Readers that are unfamiliar with
+    these issues are encouraged to read <A
+HREF="tutorial.html"
+>Part I</A
+>
+    first.  <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands are typically entered
+    using the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, but other programs that have
     similar functionality can be used as well.
-   </p>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="chapter"><a href="sql-syntax.html">4. SQL Syntax</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="sql-syntax.html#sql-syntax-lexical">4.1. Lexical Structure</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-identifiers">4.1.1. Identifiers and Key Words</a></span></dt>
-<dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-constants">4.1.2. Constants</a></span></dt>
-<dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-operators">4.1.3. Operators</a></span></dt>
-<dt><span class="sect2"><a href="sql-syntax.html#id2521501">4.1.4. Special Characters</a></span></dt>
-<dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-comments">4.1.5. Comments</a></span></dt>
-<dt><span class="sect2"><a href="sql-syntax.html#sql-precedence">4.1.6. Lexical Precedence</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="sql-expressions.html">4.2. Value Expressions</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="sql-expressions.html#id2522265">4.2.1. Column References</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2522336">4.2.2. Positional Parameters</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2522394">4.2.3. Subscripts</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2522476">4.2.4. Field Selection</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2522518">4.2.5. Operator Invocations</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2522622">4.2.6. Function Calls</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#syntax-aggregates">4.2.7. Aggregate Expressions</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-type-casts">4.2.8. Type Casts</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-scalar-subqueries">4.2.9. Scalar Subqueries</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-array-constructors">4.2.10. Array Constructors</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-row-constructors">4.2.11. Row Constructors</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#syntax-express-eval">4.2.12. Expression Evaluation Rules</a></span></dt>
-</dl></dd>
-</dl></dd>
-<dt><span class="chapter"><a href="ddl.html">5. Data Definition</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="ddl.html#ddl-basics">5.1. Table Basics</a></span></dt>
-<dt><span class="sect1"><a href="ddl-system-columns.html">5.2. System Columns</a></span></dt>
-<dt><span class="sect1"><a href="ddl-default.html">5.3. Default Values</a></span></dt>
-<dt><span class="sect1"><a href="ddl-constraints.html">5.4. Constraints</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524222">5.4.1. Check Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524385">5.4.2. Not-Null Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524515">5.4.3. Unique Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524614">5.4.4. Primary Keys</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#ddl-constraints-fk">5.4.5. Foreign Keys</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="ddl-inherit.html">5.5. Inheritance</a></span></dt>
-<dt><span class="sect1"><a href="ddl-alter.html">5.6. Modifying Tables</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525401">5.6.1. Adding a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525443">5.6.2. Removing a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525464">5.6.3. Adding a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525506">5.6.4. Removing a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525567">5.6.5. Changing the Default</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525606">5.6.6. Renaming a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525627">5.6.7. Renaming a Table</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="ddl-priv.html">5.7. Privileges</a></span></dt>
-<dt><span class="sect1"><a href="ddl-schemas.html">5.8. Schemas</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-create">5.8.1. Creating a Schema</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-public">5.8.2. The Public Schema</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-path">5.8.3. The Schema Search Path</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-priv">5.8.4. Schemas and Privileges</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-catalog">5.8.5. The System Catalog Schema</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-patterns">5.8.6. Usage Patterns</a></span></dt>
-<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-portability">5.8.7. Portability</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="ddl-others.html">5.9. Other Database Objects</a></span></dt>
-<dt><span class="sect1"><a href="ddl-depend.html">5.10. Dependency Tracking</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="dml.html">6. Data Manipulation</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="dml.html#dml-insert">6.1. Inserting Data</a></span></dt>
-<dt><span class="sect1"><a href="dml-update.html">6.2. Updating Data</a></span></dt>
-<dt><span class="sect1"><a href="dml-delete.html">6.3. Deleting Data</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="queries.html">7. Queries</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="queries.html#queries-overview">7.1. Overview</a></span></dt>
-<dt><span class="sect1"><a href="queries-table-expressions.html">7.2. Table Expressions</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="queries-table-expressions.html#queries-from">7.2.1. The FROM Clause</a></span></dt>
-<dt><span class="sect2"><a href="queries-table-expressions.html#queries-where">7.2.2. The WHERE Clause</a></span></dt>
-<dt><span class="sect2"><a href="queries-table-expressions.html#queries-group">7.2.3. The GROUP BY and HAVING Clauses</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="queries-select-lists.html">7.3. Select Lists</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="queries-select-lists.html#queries-select-list-items">7.3.1. Select-List Items</a></span></dt>
-<dt><span class="sect2"><a href="queries-select-lists.html#queries-column-labels">7.3.2. Column Labels</a></span></dt>
-<dt><span class="sect2"><a href="queries-select-lists.html#queries-distinct">7.3.3. DISTINCT</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="queries-union.html">7.4. Combining Queries</a></span></dt>
-<dt><span class="sect1"><a href="queries-order.html">7.5. Sorting Rows</a></span></dt>
-<dt><span class="sect1"><a href="queries-limit.html">7.6. LIMIT and OFFSET</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="datatype.html">8. Data Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="datatype.html#datatype-numeric">8.1. Numeric Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="datatype.html#datatype-int">8.1.1. Integer Types</a></span></dt>
-<dt><span class="sect2"><a href="datatype.html#datatype-numeric-decimal">8.1.2. Arbitrary Precision Numbers</a></span></dt>
-<dt><span class="sect2"><a href="datatype.html#datatype-float">8.1.3. Floating-Point Types</a></span></dt>
-<dt><span class="sect2"><a href="datatype.html#datatype-serial">8.1.4. Serial Types</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-money.html">8.2. Monetary Types</a></span></dt>
-<dt><span class="sect1"><a href="datatype-character.html">8.3. Character Types</a></span></dt>
-<dt><span class="sect1"><a href="datatype-binary.html">8.4. Binary Data Types</a></span></dt>
-<dt><span class="sect1"><a href="datatype-datetime.html">8.5. Date/Time Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-input">8.5.1. Date/Time Input</a></span></dt>
-<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-output">8.5.2. Date/Time Output</a></span></dt>
-<dt><span class="sect2"><a href="datatype-datetime.html#datatype-timezones">8.5.3. Time Zones</a></span></dt>
-<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-internals">8.5.4. Internals</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-boolean.html">8.6. Boolean Type</a></span></dt>
-<dt><span class="sect1"><a href="datatype-geometric.html">8.7. Geometric Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536155">8.7.1. Points</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536198">8.7.2. Line Segments</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536296">8.7.3. Boxes</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536397">8.7.4. Paths</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536557">8.7.5. Polygons</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536643">8.7.6. Circles</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-net-types.html">8.8. Network Address Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="datatype-net-types.html#datatype-inet">8.8.1. inet</a></span></dt>
-<dt><span class="sect2"><a href="datatype-net-types.html#datatype-cidr">8.8.2. cidr</a></span></dt>
-<dt><span class="sect2"><a href="datatype-net-types.html#datatype-inet-vs-cidr">8.8.3. inet vs. cidr</a></span></dt>
-<dt><span class="sect2"><a href="datatype-net-types.html#datatype-macaddr">8.8.4. macaddr</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-bit.html">8.9. Bit String Types</a></span></dt>
-<dt><span class="sect1"><a href="arrays.html">8.10. Arrays</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="arrays.html#id2537507">8.10.1. Declaration of Array Types</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2537614">8.10.2. Array Value Input</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2537807">8.10.3. Accessing Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2537968">8.10.4. Modifying Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2538187">8.10.5. Searching in Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2538238">8.10.6. Array Input and Output Syntax</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="rowtypes.html">8.11. Composite Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="rowtypes.html#id2538507">8.11.1. Declaration of Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2538605">8.11.2. Composite Value Input</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2538724">8.11.3. Accessing Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2538796">8.11.4. Modifying Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2538857">8.11.5. Composite Type Input and Output Syntax</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-oid.html">8.12. Object Identifier Types</a></span></dt>
-<dt><span class="sect1"><a href="datatype-pseudo.html">8.13. Pseudo-Types</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="functions.html">9. Functions and Operators</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="functions.html#functions-logical">9.1. Logical Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-comparison.html">9.2. Comparison Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-math.html">9.3. Mathematical Functions and Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-string.html">9.4. String Functions and Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-binarystring.html">9.5. Binary String Functions and Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-bitstring.html">9.6. Bit String Functions and Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-matching.html">9.7. Pattern Matching</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="functions-matching.html#functions-like">9.7.1. LIKE</a></span></dt>
-<dt><span class="sect2"><a href="functions-matching.html#functions-sql99-regexp">9.7.2. SIMILAR TO and SQL99
-     Regular Expressions</a></span></dt>
-<dt><span class="sect2"><a href="functions-matching.html#functions-posix-regexp">9.7.3. POSIX Regular Expressions</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="functions-formatting.html">9.8. Data Type Formatting Functions</a></span></dt>
-<dt><span class="sect1"><a href="functions-datetime.html">9.9. Date/Time Functions and Operators</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-extract">9.9.1. EXTRACT, date_part</a></span></dt>
-<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-trunc">9.9.2. date_trunc</a></span></dt>
-<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-zoneconvert">9.9.3. AT TIME ZONE</a></span></dt>
-<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-current">9.9.4. Current Date/Time</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="functions-geometry.html">9.10. Geometric Functions and Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-net.html">9.11. Network Address Type Functions</a></span></dt>
-<dt><span class="sect1"><a href="functions-sequence.html">9.12. Sequence Manipulation Functions</a></span></dt>
-<dt><span class="sect1"><a href="functions-conditional.html">9.13. Conditional Expressions</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="functions-conditional.html#id2559690">9.13.1. CASE</a></span></dt>
-<dt><span class="sect2"><a href="functions-conditional.html#id2559901">9.13.2. COALESCE</a></span></dt>
-<dt><span class="sect2"><a href="functions-conditional.html#id2559964">9.13.3. NULLIF</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="functions-array.html">9.14. Array Functions and Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-aggregate.html">9.15. Aggregate Functions</a></span></dt>
-<dt><span class="sect1"><a href="functions-subquery.html">9.16. Subquery Expressions</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="functions-subquery.html#id2561698">9.16.1. EXISTS</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2561811">9.16.2. IN</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2561920">9.16.3. NOT IN </a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2562031">9.16.4. ANY/SOME</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2562216">9.16.5. ALL</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2562369">9.16.6. Row-wise Comparison</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="functions-comparisons.html">9.17. Row and Array Comparisons</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562490">9.17.1. IN</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562550">9.17.2. NOT IN</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562635">9.17.3. ANY/SOME (array)</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562706">9.17.4. ALL (array)</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562752">9.17.5. Row-wise Comparison</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="functions-srf.html">9.18. Set Returning Functions</a></span></dt>
-<dt><span class="sect1"><a href="functions-info.html">9.19. System Information Functions</a></span></dt>
-<dt><span class="sect1"><a href="functions-admin.html">9.20. System Administration Functions</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="typeconv.html">10. Type Conversion</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="typeconv.html#typeconv-overview">10.1. Overview</a></span></dt>
-<dt><span class="sect1"><a href="typeconv-oper.html">10.2. Operators</a></span></dt>
-<dt><span class="sect1"><a href="typeconv-func.html">10.3. Functions</a></span></dt>
-<dt><span class="sect1"><a href="typeconv-query.html">10.4. Value Storage</a></span></dt>
-<dt><span class="sect1"><a href="typeconv-union-case.html">10.5. UNION, CASE, and ARRAY Constructs</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="indexes.html">11. Indexes</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="indexes.html#indexes-intro">11.1. Introduction</a></span></dt>
-<dt><span class="sect1"><a href="indexes-types.html">11.2. Index Types</a></span></dt>
-<dt><span class="sect1"><a href="indexes-multicolumn.html">11.3. Multicolumn Indexes</a></span></dt>
-<dt><span class="sect1"><a href="indexes-unique.html">11.4. Unique Indexes</a></span></dt>
-<dt><span class="sect1"><a href="indexes-expressional.html">11.5. Indexes on Expressions</a></span></dt>
-<dt><span class="sect1"><a href="indexes-opclass.html">11.6. Operator Classes</a></span></dt>
-<dt><span class="sect1"><a href="indexes-partial.html">11.7. Partial Indexes</a></span></dt>
-<dt><span class="sect1"><a href="indexes-examine.html">11.8. Examining Index Usage</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="mvcc.html">12. Concurrency Control</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="mvcc.html#mvcc-intro">12.1. Introduction</a></span></dt>
-<dt><span class="sect1"><a href="transaction-iso.html">12.2. Transaction Isolation</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="transaction-iso.html#xact-read-committed">12.2.1. Read Committed Isolation Level</a></span></dt>
-<dt><span class="sect2"><a href="transaction-iso.html#xact-serializable">12.2.2. Serializable Isolation Level</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="explicit-locking.html">12.3. Explicit Locking</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="explicit-locking.html#locking-tables">12.3.1. Table-Level Locks</a></span></dt>
-<dt><span class="sect2"><a href="explicit-locking.html#locking-rows">12.3.2. Row-Level Locks</a></span></dt>
-<dt><span class="sect2"><a href="explicit-locking.html#locking-deadlocks">12.3.3. Deadlocks</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="applevel-consistency.html">12.4. Data Consistency Checks at the Application Level</a></span></dt>
-<dt><span class="sect1"><a href="locking-indexes.html">12.5. Locking and Indexes</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="performance-tips.html">13. Performance Tips</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="performance-tips.html#using-explain">13.1. Using EXPLAIN</a></span></dt>
-<dt><span class="sect1"><a href="planner-stats.html">13.2. Statistics Used by the Planner</a></span></dt>
-<dt><span class="sect1"><a href="explicit-joins.html">13.3. Controlling the Planner with Explicit JOIN Clauses</a></span></dt>
-<dt><span class="sect1"><a href="populate.html">13.4. Populating a Database</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="populate.html#disable-autocommit">13.4.1. Disable Autocommit</a></span></dt>
-<dt><span class="sect2"><a href="populate.html#populate-copy-from">13.4.2. Use COPY</a></span></dt>
-<dt><span class="sect2"><a href="populate.html#populate-rm-indexes">13.4.3. Remove Indexes</a></span></dt>
-<dt><span class="sect2"><a href="populate.html#populate-work-mem">13.4.4. Increase maintenance_work_mem</a></span></dt>
-<dt><span class="sect2"><a href="populate.html#populate-checkpoint-segments">13.4.5. Increase checkpoint_segments</a></span></dt>
-<dt><span class="sect2"><a href="populate.html#populate-analyze">13.4.6. Run ANALYZE Afterwards</a></span></dt>
-</dl></dd>
-</dl></dd>
-</dl>
-</div>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>4. <A
+HREF="sql-syntax.html"
+>SQL Syntax</A
+></DT
+><DD
+><DL
+><DT
+>4.1. <A
+HREF="sql-syntax.html#SQL-SYNTAX-LEXICAL"
+>Lexical Structure</A
+></DT
+><DT
+>4.2. <A
+HREF="sql-expressions.html"
+>Value Expressions</A
+></DT
+></DL
+></DD
+><DT
+>5. <A
+HREF="ddl.html"
+>Data Definition</A
+></DT
+><DD
+><DL
+><DT
+>5.1. <A
+HREF="ddl.html#DDL-BASICS"
+>Table Basics</A
+></DT
+><DT
+>5.2. <A
+HREF="ddl-system-columns.html"
+>System Columns</A
+></DT
+><DT
+>5.3. <A
+HREF="ddl-default.html"
+>Default Values</A
+></DT
+><DT
+>5.4. <A
+HREF="ddl-constraints.html"
+>Constraints</A
+></DT
+><DT
+>5.5. <A
+HREF="ddl-inherit.html"
+>Inheritance</A
+></DT
+><DT
+>5.6. <A
+HREF="ddl-alter.html"
+>Modifying Tables</A
+></DT
+><DT
+>5.7. <A
+HREF="ddl-priv.html"
+>Privileges</A
+></DT
+><DT
+>5.8. <A
+HREF="ddl-schemas.html"
+>Schemas</A
+></DT
+><DT
+>5.9. <A
+HREF="ddl-others.html"
+>Other Database Objects</A
+></DT
+><DT
+>5.10. <A
+HREF="ddl-depend.html"
+>Dependency Tracking</A
+></DT
+></DL
+></DD
+><DT
+>6. <A
+HREF="dml.html"
+>Data Manipulation</A
+></DT
+><DD
+><DL
+><DT
+>6.1. <A
+HREF="dml.html#DML-INSERT"
+>Inserting Data</A
+></DT
+><DT
+>6.2. <A
+HREF="dml-update.html"
+>Updating Data</A
+></DT
+><DT
+>6.3. <A
+HREF="dml-delete.html"
+>Deleting Data</A
+></DT
+></DL
+></DD
+><DT
+>7. <A
+HREF="queries.html"
+>Queries</A
+></DT
+><DD
+><DL
+><DT
+>7.1. <A
+HREF="queries.html#QUERIES-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>7.2. <A
+HREF="queries-table-expressions.html"
+>Table Expressions</A
+></DT
+><DT
+>7.3. <A
+HREF="queries-select-lists.html"
+>Select Lists</A
+></DT
+><DT
+>7.4. <A
+HREF="queries-union.html"
+>Combining Queries</A
+></DT
+><DT
+>7.5. <A
+HREF="queries-order.html"
+>Sorting Rows</A
+></DT
+><DT
+>7.6. <A
+HREF="queries-limit.html"
+><TT
+CLASS="LITERAL"
+>LIMIT</TT
+> and <TT
+CLASS="LITERAL"
+>OFFSET</TT
+></A
+></DT
+></DL
+></DD
+><DT
+>8. <A
+HREF="datatype.html"
+>Data Types</A
+></DT
+><DD
+><DL
+><DT
+>8.1. <A
+HREF="datatype.html#DATATYPE-NUMERIC"
+>Numeric Types</A
+></DT
+><DT
+>8.2. <A
+HREF="datatype-money.html"
+>Monetary Types</A
+></DT
+><DT
+>8.3. <A
+HREF="datatype-character.html"
+>Character Types</A
+></DT
+><DT
+>8.4. <A
+HREF="datatype-binary.html"
+>Binary Data Types</A
+></DT
+><DT
+>8.5. <A
+HREF="datatype-datetime.html"
+>Date/Time Types</A
+></DT
+><DT
+>8.6. <A
+HREF="datatype-boolean.html"
+>Boolean Type</A
+></DT
+><DT
+>8.7. <A
+HREF="datatype-geometric.html"
+>Geometric Types</A
+></DT
+><DT
+>8.8. <A
+HREF="datatype-net-types.html"
+>Network Address Types</A
+></DT
+><DT
+>8.9. <A
+HREF="datatype-bit.html"
+>Bit String Types</A
+></DT
+><DT
+>8.10. <A
+HREF="arrays.html"
+>Arrays</A
+></DT
+><DT
+>8.11. <A
+HREF="rowtypes.html"
+>Composite Types</A
+></DT
+><DT
+>8.12. <A
+HREF="datatype-oid.html"
+>Object Identifier Types</A
+></DT
+><DT
+>8.13. <A
+HREF="datatype-pseudo.html"
+>Pseudo-Types</A
+></DT
+></DL
+></DD
+><DT
+>9. <A
+HREF="functions.html"
+>Functions and Operators</A
+></DT
+><DD
+><DL
+><DT
+>9.1. <A
+HREF="functions.html#FUNCTIONS-LOGICAL"
+>Logical Operators</A
+></DT
+><DT
+>9.2. <A
+HREF="functions-comparison.html"
+>Comparison Operators</A
+></DT
+><DT
+>9.3. <A
+HREF="functions-math.html"
+>Mathematical Functions and Operators</A
+></DT
+><DT
+>9.4. <A
+HREF="functions-string.html"
+>String Functions and Operators</A
+></DT
+><DT
+>9.5. <A
+HREF="functions-binarystring.html"
+>Binary String Functions and Operators</A
+></DT
+><DT
+>9.6. <A
+HREF="functions-bitstring.html"
+>Bit String Functions and Operators</A
+></DT
+><DT
+>9.7. <A
+HREF="functions-matching.html"
+>Pattern Matching</A
+></DT
+><DT
+>9.8. <A
+HREF="functions-formatting.html"
+>Data Type Formatting Functions</A
+></DT
+><DT
+>9.9. <A
+HREF="functions-datetime.html"
+>Date/Time Functions and Operators</A
+></DT
+><DT
+>9.10. <A
+HREF="functions-geometry.html"
+>Geometric Functions and Operators</A
+></DT
+><DT
+>9.11. <A
+HREF="functions-net.html"
+>Network Address Type Functions</A
+></DT
+><DT
+>9.12. <A
+HREF="functions-sequence.html"
+>Sequence Manipulation Functions</A
+></DT
+><DT
+>9.13. <A
+HREF="functions-conditional.html"
+>Conditional Expressions</A
+></DT
+><DT
+>9.14. <A
+HREF="functions-array.html"
+>Array Functions and Operators</A
+></DT
+><DT
+>9.15. <A
+HREF="functions-aggregate.html"
+>Aggregate Functions</A
+></DT
+><DT
+>9.16. <A
+HREF="functions-subquery.html"
+>Subquery Expressions</A
+></DT
+><DT
+>9.17. <A
+HREF="functions-comparisons.html"
+>Row and Array Comparisons</A
+></DT
+><DT
+>9.18. <A
+HREF="functions-srf.html"
+>Set Returning Functions</A
+></DT
+><DT
+>9.19. <A
+HREF="functions-info.html"
+>System Information Functions</A
+></DT
+><DT
+>9.20. <A
+HREF="functions-admin.html"
+>System Administration Functions</A
+></DT
+></DL
+></DD
+><DT
+>10. <A
+HREF="typeconv.html"
+>Type Conversion</A
+></DT
+><DD
+><DL
+><DT
+>10.1. <A
+HREF="typeconv.html#TYPECONV-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>10.2. <A
+HREF="typeconv-oper.html"
+>Operators</A
+></DT
+><DT
+>10.3. <A
+HREF="typeconv-func.html"
+>Functions</A
+></DT
+><DT
+>10.4. <A
+HREF="typeconv-query.html"
+>Value Storage</A
+></DT
+><DT
+>10.5. <A
+HREF="typeconv-union-case.html"
+><TT
+CLASS="LITERAL"
+>UNION</TT
+>, <TT
+CLASS="LITERAL"
+>CASE</TT
+>, and <TT
+CLASS="LITERAL"
+>ARRAY</TT
+> Constructs</A
+></DT
+></DL
+></DD
+><DT
+>11. <A
+HREF="indexes.html"
+>Indexes</A
+></DT
+><DD
+><DL
+><DT
+>11.1. <A
+HREF="indexes.html#INDEXES-INTRO"
+>Introduction</A
+></DT
+><DT
+>11.2. <A
+HREF="indexes-types.html"
+>Index Types</A
+></DT
+><DT
+>11.3. <A
+HREF="indexes-multicolumn.html"
+>Multicolumn Indexes</A
+></DT
+><DT
+>11.4. <A
+HREF="indexes-unique.html"
+>Unique Indexes</A
+></DT
+><DT
+>11.5. <A
+HREF="indexes-expressional.html"
+>Indexes on Expressions</A
+></DT
+><DT
+>11.6. <A
+HREF="indexes-opclass.html"
+>Operator Classes</A
+></DT
+><DT
+>11.7. <A
+HREF="indexes-partial.html"
+>Partial Indexes</A
+></DT
+><DT
+>11.8. <A
+HREF="indexes-examine.html"
+>Examining Index Usage</A
+></DT
+></DL
+></DD
+><DT
+>12. <A
+HREF="mvcc.html"
+>Concurrency Control</A
+></DT
+><DD
+><DL
+><DT
+>12.1. <A
+HREF="mvcc.html#MVCC-INTRO"
+>Introduction</A
+></DT
+><DT
+>12.2. <A
+HREF="transaction-iso.html"
+>Transaction Isolation</A
+></DT
+><DT
+>12.3. <A
+HREF="explicit-locking.html"
+>Explicit Locking</A
+></DT
+><DT
+>12.4. <A
+HREF="applevel-consistency.html"
+>Data Consistency Checks at the Application Level</A
+></DT
+><DT
+>12.5. <A
+HREF="locking-indexes.html"
+>Locking and Indexes</A
+></DT
+></DL
+></DD
+><DT
+>13. <A
+HREF="performance-tips.html"
+>Performance Tips</A
+></DT
+><DD
+><DL
+><DT
+>13.1. <A
+HREF="performance-tips.html#USING-EXPLAIN"
+>Using <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+></A
+></DT
+><DT
+>13.2. <A
+HREF="planner-stats.html"
+>Statistics Used by the Planner</A
+></DT
+><DT
+>13.3. <A
+HREF="explicit-joins.html"
+>Controlling the Planner with Explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+> Clauses</A
+></DT
+><DT
+>13.4. <A
+HREF="populate.html"
+>Populating a Database</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-conclusion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Conclusion</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SQL Syntax</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

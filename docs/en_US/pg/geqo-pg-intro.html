@@ -1,89 +1,322 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>46.3. Genetic Query Optimization (GEQO) in PostgreSQL</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="geqo.html" title="Chapter 46. Genetic Query Optimizer">
-<link rel="previous" href="geqo-intro2.html" title="46.2. Genetic Algorithms">
-<link rel="next" href="geqo-biblio.html" title="46.4. Further Readings">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="geqo-pg-intro"></a>46.3. Genetic Query Optimization (<span class="acronym">GEQO</span>) in PostgreSQL</h2></div></div>
-<div></div>
-</div>
-<p>    The <span class="acronym">GEQO</span> module is intended for the solution of the query
-    optimization problem similar to a traveling salesman problem (<span class="acronym">TSP</span>).
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Genetic Query Optimization (GEQO) in PostgreSQL</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Genetic Query Optimizer"
+HREF="geqo.html"><LINK
+REL="PREVIOUS"
+TITLE="Genetic Algorithms"
+HREF="geqo-intro2.html"><LINK
+REL="NEXT"
+TITLE="Further Readings"
+HREF="geqo-biblio.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="geqo-intro2.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="geqo.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 46. Genetic Query Optimizer</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="geqo.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="geqo-biblio.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GEQO-PG-INTRO"
+>46.3. Genetic Query Optimization (<ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+>) in PostgreSQL</A
+></H1
+><P
+>    The <ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+> module is intended for the solution of the query
+    optimization problem similar to a traveling salesman problem (<ACRONYM
+CLASS="ACRONYM"
+>TSP</ACRONYM
+>).
     Possible query plans are encoded as integer strings. Each string
     represents the join order from one relation of the query to the next.
     E. g., the query tree
-</p>
-<pre class="literallayout">   /\
+</P><PRE
+CLASS="LITERALLAYOUT"
+>   /\
   /\ 2
  /\ 3
-4  1</pre>
-<p>
+4  1</PRE
+><P>
     is encoded by the integer string '4-1-3-2',
     which means, first join relation '4' and '1', then '3', and
     then '2', where 1, 2, 3, 4 are relation IDs within the
-    <span class="productname">PostgreSQL</span> optimizer.
-   </p>
-<p>    Parts of the <span class="acronym">GEQO</span> module are adapted from D. Whitley's Genitor
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> optimizer.
+   </P
+><P
+>    Parts of the <ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+> module are adapted from D. Whitley's Genitor
     algorithm.
-   </p>
-<p>    Specific characteristics of the <span class="acronym">GEQO</span>
-    implementation in <span class="productname">PostgreSQL</span>
+   </P
+><P
+>    Specific characteristics of the <ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+>
+    implementation in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     are:
 
-    </p>
-<div class="itemizedlist"><ul type="bullet" compact>
-<li style="list-style-type: disc"><p>       Usage of a <i class="firstterm">steady state</i> <span class="acronym">GA</span> (replacement of the least fit
+    <P
+></P
+></P><UL
+COMPACT="COMPACT"
+><LI
+STYLE="list-style-type: disc"
+><P
+>       Usage of a <I
+CLASS="FIRSTTERM"
+>steady state</I
+> <ACRONYM
+CLASS="ACRONYM"
+>GA</ACRONYM
+> (replacement of the least fit
        individuals in a population, not whole-generational replacement)
        allows fast convergence towards improved query plans. This is
        essential for query handling with reasonable time;
-      </p></li>
-<li style="list-style-type: disc"><p>       Usage of <i class="firstterm">edge recombination crossover</i>
+      </P
+></LI
+><LI
+STYLE="list-style-type: disc"
+><P
+>       Usage of <I
+CLASS="FIRSTTERM"
+>edge recombination crossover</I
+>
        which is especially suited to keep edge losses low for the
-       solution of the <span class="acronym">TSP</span> by means of a
-       <span class="acronym">GA</span>;
-      </p></li>
-<li style="list-style-type: disc"><p>       Mutation as genetic operator is deprecated so that no repair
-       mechanisms are needed to generate legal <span class="acronym">TSP</span> tours.
-      </p></li>
-</ul></div>
-<p>
-   </p>
-<p>    The <span class="acronym">GEQO</span> module allows
-    the <span class="productname">PostgreSQL</span> query optimizer to
+       solution of the <ACRONYM
+CLASS="ACRONYM"
+>TSP</ACRONYM
+> by means of a
+       <ACRONYM
+CLASS="ACRONYM"
+>GA</ACRONYM
+>;
+      </P
+></LI
+><LI
+STYLE="list-style-type: disc"
+><P
+>       Mutation as genetic operator is deprecated so that no repair
+       mechanisms are needed to generate legal <ACRONYM
+CLASS="ACRONYM"
+>TSP</ACRONYM
+> tours.
+      </P
+></LI
+></UL
+><P>
+   </P
+><P
+>    The <ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+> module allows
+    the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query optimizer to
     support large join queries effectively through
     non-exhaustive search.
-   </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="geqo-future"></a>46.3.1. Future Implementation Tasks for
-    <span class="productname">PostgreSQL</span> <span class="acronym">GEQO</span></h3></div></div>
-<div></div>
-</div>
-<p>      Work is still needed to improve the genetic algorithm parameter
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GEQO-FUTURE"
+>46.3.1. Future Implementation Tasks for
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+></A
+></H2
+><P
+>      Work is still needed to improve the genetic algorithm parameter
       settings.
-      In file <tt class="filename">backend/optimizer/geqo/geqo_params.c</tt>, routines
-      <tt class="function">gimme_pool_size</tt> and <tt class="function">gimme_number_generations</tt>,
+      In file <TT
+CLASS="FILENAME"
+>backend/optimizer/geqo/geqo_params.c</TT
+>, routines
+      <CODE
+CLASS="FUNCTION"
+>gimme_pool_size</CODE
+> and <CODE
+CLASS="FUNCTION"
+>gimme_number_generations</CODE
+>,
       we have to find a compromise for the parameter settings
       to satisfy two competing demands:
-      </p>
-<div class="itemizedlist"><ul type="disc" compact>
-<li><p>	 Optimality of the query plan
-	</p></li>
-<li><p>	 Computing time
-	</p></li>
-</ul></div>
-<p>
-     </p>
-</div>
-</div></body>
-</html>
+      <P
+></P
+></P><UL
+COMPACT="COMPACT"
+><LI
+><P
+>	 Optimality of the query plan
+	</P
+></LI
+><LI
+><P
+>	 Computing time
+	</P
+></LI
+></UL
+><P>
+     </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="geqo-intro2.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="geqo-biblio.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Genetic Algorithms</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="geqo.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Further Readings</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

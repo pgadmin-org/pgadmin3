@@ -1,64 +1,186 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>5.6. Modifying Tables</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="previous" href="ddl-inherit.html" title="5.5. Inheritance">
-<link rel="next" href="ddl-priv.html" title="5.7. Privileges">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ddl-alter"></a>5.6. Modifying Tables</h2></div></div>
-<div></div>
-</div>
-<a name="id2525335"></a><p>   When you create a table and you realize that you made a mistake, or
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Modifying Tables</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="PREVIOUS"
+TITLE="Inheritance"
+HREF="ddl-inherit.html"><LINK
+REL="NEXT"
+TITLE="Privileges"
+HREF="ddl-priv.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl-inherit.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Data Definition</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-priv.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DDL-ALTER"
+>5.6. Modifying Tables</A
+></H1
+><A
+NAME="AEN2195"
+></A
+><P
+>   When you create a table and you realize that you made a mistake, or
    the requirements of the application changed, then you can drop the
    table and create it again.  But this is not a convenient option if
    the table is already filled with data, or if the table is
    referenced by other database objects (for instance a foreign key
-   constraint).  Therefore <span class="productname">PostgreSQL</span>
+   constraint).  Therefore <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
    provides a family of commands to make modifications on existing
    tables.
-  </p>
-<p>   You can
-   </p>
-<div class="itemizedlist"><ul type="disc" compact>
-<li><p>Add columns,</p></li>
-<li><p>Remove columns,</p></li>
-<li><p>Add constraints,</p></li>
-<li><p>Remove constraints,</p></li>
-<li><p>Change default values,</p></li>
-<li><p>Rename columns,</p></li>
-<li><p>Rename tables.</p></li>
-</ul></div>
-<p>
+  </P
+><P
+>   You can
+   <P
+></P
+></P><UL
+COMPACT="COMPACT"
+><LI
+><P
+>Add columns,</P
+></LI
+><LI
+><P
+>Remove columns,</P
+></LI
+><LI
+><P
+>Add constraints,</P
+></LI
+><LI
+><P
+>Remove constraints,</P
+></LI
+><LI
+><P
+>Change default values,</P
+></LI
+><LI
+><P
+>Rename columns,</P
+></LI
+><LI
+><P
+>Rename tables.</P
+></LI
+></UL
+><P>
 
-   All these actions are performed using the <tt class="literal">ALTER
-   TABLE</tt> command.
-  </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525401"></a>5.6.1. Adding a Column</h3></div></div>
-<div></div>
-</div>
-<a name="id2525404"></a><p>    To add a column, use this command:
-</p>
-<pre class="programlisting">ALTER TABLE products ADD COLUMN description text;</pre>
-<p>
+   All these actions are performed using the <TT
+CLASS="LITERAL"
+>ALTER
+   TABLE</TT
+> command.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2217"
+>5.6.1. Adding a Column</A
+></H2
+><A
+NAME="AEN2219"
+></A
+><P
+>    To add a column, use this command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ADD COLUMN description text;</PRE
+><P>
     The new column will initially be filled with null values in the
     existing rows of the table.
-   </p>
-<p>    You can also define a constraint on the column at the same time,
+   </P
+><P
+>    You can also define a constraint on the column at the same time,
     using the usual syntax:
-</p>
-<pre class="programlisting">ALTER TABLE products ADD COLUMN description text CHECK (description &lt;&gt; '');</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ADD COLUMN description text CHECK (description &lt;&gt; '');</PRE
+><P>
     A new column cannot have a not-null constraint since the column
     initially has to contain null values.  But you can add a not-null
     constraint later.  Also, you cannot define a default value on a
@@ -66,113 +188,239 @@
     fill the new columns in the existing rows with the default value,
     which is not implemented yet.  But you can adjust the column
     default later on.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525443"></a>5.6.2. Removing a Column</h3></div></div>
-<div></div>
-</div>
-<a name="id2525447"></a><p>    To remove a column, use this command:
-</p>
-<pre class="programlisting">ALTER TABLE products DROP COLUMN description;</pre>
-<p>
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525464"></a>5.6.3. Adding a Constraint</h3></div></div>
-<div></div>
-</div>
-<a name="id2525468"></a><p>    To add a constraint, the table constraint syntax is used.  For example:
-</p>
-<pre class="programlisting">ALTER TABLE products ADD CHECK (name &lt;&gt; '');
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2226"
+>5.6.2. Removing a Column</A
+></H2
+><A
+NAME="AEN2228"
+></A
+><P
+>    To remove a column, use this command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products DROP COLUMN description;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2233"
+>5.6.3. Adding a Constraint</A
+></H2
+><A
+NAME="AEN2235"
+></A
+><P
+>    To add a constraint, the table constraint syntax is used.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ADD CHECK (name &lt;&gt; '');
 ALTER TABLE products ADD CONSTRAINT some_name UNIQUE (product_no);
-ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_groups;</pre>
-<p>
+ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_groups;</PRE
+><P>
     To add a not-null constraint, which cannot be written as a table
     constraint, use this syntax:
-</p>
-<pre class="programlisting">ALTER TABLE products ALTER COLUMN product_no SET NOT NULL;</pre>
-<p>
-   </p>
-<p>    The constraint will be checked immediately, so the table data must
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ALTER COLUMN product_no SET NOT NULL;</PRE
+><P>
+   </P
+><P
+>    The constraint will be checked immediately, so the table data must
     satisfy the constraint before it can be added.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525506"></a>5.6.4. Removing a Constraint</h3></div></div>
-<div></div>
-</div>
-<a name="id2525510"></a><p>    To remove a constraint you need to know its name.  If you gave it
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2242"
+>5.6.4. Removing a Constraint</A
+></H2
+><A
+NAME="AEN2244"
+></A
+><P
+>    To remove a constraint you need to know its name.  If you gave it
     a name then that's easy.  Otherwise the system assigned a
     generated name, which you need to find out.  The
-    <span class="application">psql</span> command <tt class="literal">\d
-    <i class="replaceable"><tt>tablename</tt></i></tt> can be helpful
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> command <TT
+CLASS="LITERAL"
+>\d
+    <VAR
+CLASS="REPLACEABLE"
+>tablename</VAR
+></TT
+> can be helpful
     here; other interfaces might also provide a way to inspect table
     details.  Then the command is:
-</p>
-<pre class="programlisting">ALTER TABLE products DROP CONSTRAINT some_name;</pre>
-<p>
-    (If you are dealing with a generated constraint name like <tt class="literal">$2</tt>,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products DROP CONSTRAINT some_name;</PRE
+><P>
+    (If you are dealing with a generated constraint name like <TT
+CLASS="LITERAL"
+>$2</TT
+>,
     don't forget that you'll need to double-quote it to make it a valid
     identifier.)
-   </p>
-<p>    This works the same for all constraint types except not-null
+   </P
+><P
+>    This works the same for all constraint types except not-null
     constraints. To drop a not null constraint use
-</p>
-<pre class="programlisting">ALTER TABLE products ALTER COLUMN product_no DROP NOT NULL;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ALTER COLUMN product_no DROP NOT NULL;</PRE
+><P>
     (Recall that not-null constraints do not have names.)
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525567"></a>5.6.5. Changing the Default</h3></div></div>
-<div></div>
-</div>
-<a name="id2525570"></a><p>    To set a new default for a column, use a command like this:
-</p>
-<pre class="programlisting">ALTER TABLE products ALTER COLUMN price SET DEFAULT 7.77;</pre>
-<p>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2255"
+>5.6.5. Changing the Default</A
+></H2
+><A
+NAME="AEN2257"
+></A
+><P
+>    To set a new default for a column, use a command like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ALTER COLUMN price SET DEFAULT 7.77;</PRE
+><P>
     To remove any default value, use
-</p>
-<pre class="programlisting">ALTER TABLE products ALTER COLUMN price DROP DEFAULT;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ALTER COLUMN price DROP DEFAULT;</PRE
+><P>
     This is equivalent to setting the default to null, at least in
-    <span class="productname">PostgreSQL</span>.  As a consequence, it is not an error
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  As a consequence, it is not an error
     to drop a default where one hadn't been defined, because the
     default is implicitly the null value.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525606"></a>5.6.6. Renaming a Column</h3></div></div>
-<div></div>
-</div>
-<a name="id2525610"></a><p>    To rename a column:
-</p>
-<pre class="programlisting">ALTER TABLE products RENAME COLUMN product_no TO product_number;</pre>
-<p>
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525627"></a>5.6.7. Renaming a Table</h3></div></div>
-<div></div>
-</div>
-<a name="id2525631"></a><p>    To rename a table:
-</p>
-<pre class="programlisting">ALTER TABLE products RENAME TO items;</pre>
-<p>
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2264"
+>5.6.6. Renaming a Column</A
+></H2
+><A
+NAME="AEN2266"
+></A
+><P
+>    To rename a column:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products RENAME COLUMN product_no TO product_number;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2271"
+>5.6.7. Renaming a Table</A
+></H2
+><A
+NAME="AEN2273"
+></A
+><P
+>    To rename a table:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products RENAME TO items;</PRE
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl-inherit.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-priv.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Inheritance</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Privileges</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

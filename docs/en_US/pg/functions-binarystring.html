@@ -1,206 +1,810 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.5. Binary String Functions and Operators</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-string.html" title="9.4. String Functions and Operators">
-<link rel="next" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-binarystring"></a>9.5. Binary String Functions and Operators</h2></div></div>
-<div></div>
-</div>
-<a name="id2546685"></a><p>    This section describes functions and operators for examining and
-    manipulating values of type <tt class="type">bytea</tt>.
-   </p>
-<p>    <span class="acronym">SQL</span> defines some string functions with a
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Binary String Functions and Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="String Functions and Operators"
+HREF="functions-string.html"><LINK
+REL="NEXT"
+TITLE="Bit String Functions and Operators"
+HREF="functions-bitstring.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-string.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-bitstring.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-BINARYSTRING"
+>9.5. Binary String Functions and Operators</A
+></H1
+><A
+NAME="AEN8010"
+></A
+><P
+>    This section describes functions and operators for examining and
+    manipulating values of type <TT
+CLASS="TYPE"
+>bytea</TT
+>.
+   </P
+><P
+>    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> defines some string functions with a
     special syntax where 
     certain key words rather than commas are used to separate the
     arguments.  Details are in
-    <a href="functions-binarystring.html#functions-binarystring-sql" title="Table 9.8. SQL Binary String Functions and Operators">Table 9.8, &#8220;SQL Binary String Functions and Operators&#8221;</a>.
+    <A
+HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-SQL"
+>Table 9-8</A
+>.
     Some functions are also implemented using the regular syntax for
     function invocation.
-    (See <a href="functions-binarystring.html#functions-binarystring-other" title="Table 9.9. Other Binary String Functions">Table 9.9, &#8220;Other Binary String Functions&#8221;</a>.)
-   </p>
-<div class="table">
-<a name="functions-binarystring-sql"></a><p class="title"><b>Table 9.8. <span class="acronym">SQL</span> Binary String Functions and Operators</b></p>
-<table summary="SQL Binary String Functions and Operators" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Return Type</th>
-<th>Description</th>
-<th>Example</th>
-<th>Result</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="literal"><i class="parameter"><tt>string</tt></i> <tt class="literal">||</tt>
-        <i class="parameter"><tt>string</tt></i></tt></td>
-<td><tt class="type">bytea</tt></td>
-<td>        String concatenation
-        <a name="id2546790"></a>
-</td>
-<td><tt class="literal">'\\\\Post'::bytea || '\\047gres\\000'::bytea</tt></td>
-<td><tt class="literal">\\Post'gres\000</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">octet_length</tt>(<i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">integer</tt></td>
-<td>Number of bytes in binary string</td>
-<td><tt class="literal">octet_length( 'jo\\000se'::bytea)</tt></td>
-<td><tt class="literal">5</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">position</tt>(<i class="parameter"><tt>substring</tt></i> in <i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">integer</tt></td>
-<td>Location of specified substring</td>
-<td><tt class="literal">position('\\000om'::bytea in 'Th\\000omas'::bytea)</tt></td>
-<td><tt class="literal">3</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> [<span class="optional">from <tt class="type">integer</tt></span>] [<span class="optional">for <tt class="type">integer</tt></span>])</tt></td>
-<td><tt class="type">bytea</tt></td>
-<td>        Extract substring
-        <a name="id2546922"></a>
-</td>
-<td><tt class="literal">substring('Th\\000omas'::bytea from 2 for 3)</tt></td>
-<td><tt class="literal">h\000o</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">trim</tt>([<span class="optional">both</span>]
-        <i class="parameter"><tt>bytes</tt></i> from
-        <i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">bytea</tt></td>
-<td>        Remove the longest string containing only the bytes in
-        <i class="parameter"><tt>bytes</tt></i> from the start
-        and end of <i class="parameter"><tt>string</tt></i>
-</td>
-<td><tt class="literal">trim('\\000'::bytea from '\\000Tom\\000'::bytea)</tt></td>
-<td><tt class="literal">Tom</tt></td>
-</tr>
-<tr>
-<td>
-<tt class="function">get_byte</tt>(<i class="parameter"><tt>string</tt></i>, <i class="parameter"><tt>offset</tt></i>)</td>
-<td><tt class="type">integer</tt></td>
-<td>        Extract byte from string.
-        <a name="id2547026"></a>
-</td>
-<td><tt class="literal">get_byte('Th\\000omas'::bytea, 4)</tt></td>
-<td><tt class="literal">109</tt></td>
-</tr>
-<tr>
-<td>
-<tt class="function">set_byte</tt>(<i class="parameter"><tt>string</tt></i>,
-       <i class="parameter"><tt>offset</tt></i>, <i class="parameter"><tt>newvalue</tt></i>)</td>
-<td><tt class="type">bytea</tt></td>
-<td>        Set byte in string.
-        <a name="id2547076"></a>
-</td>
-<td><tt class="literal">set_byte('Th\\000omas'::bytea, 4, 64)</tt></td>
-<td><tt class="literal">Th\000o@as</tt></td>
-</tr>
-<tr>
-<td>
-<tt class="function">get_bit</tt>(<i class="parameter"><tt>string</tt></i>, <i class="parameter"><tt>offset</tt></i>)</td>
-<td><tt class="type">integer</tt></td>
-<td>        Extract bit from string.
-        <a name="id2547121"></a>
-</td>
-<td><tt class="literal">get_bit('Th\\000omas'::bytea, 45)</tt></td>
-<td><tt class="literal">1</tt></td>
-</tr>
-<tr>
-<td>
-<tt class="function">set_bit</tt>(<i class="parameter"><tt>string</tt></i>,
-       <i class="parameter"><tt>offset</tt></i>, <i class="parameter"><tt>newvalue</tt></i>)</td>
-<td><tt class="type">bytea</tt></td>
-<td>        Set bit in string.
-        <a name="id2547171"></a>
-</td>
-<td><tt class="literal">set_bit('Th\\000omas'::bytea, 45, 0)</tt></td>
-<td><tt class="literal">Th\000omAs</tt></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>    Additional binary string manipulation functions are available and
-    are listed in <a href="functions-binarystring.html#functions-binarystring-other" title="Table 9.9. Other Binary String Functions">Table 9.9, &#8220;Other Binary String Functions&#8221;</a>.  Some
+    (See <A
+HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-OTHER"
+>Table 9-9</A
+>.)
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-BINARYSTRING-SQL"
+></A
+><P
+><B
+>Table 9-8. <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Binary String Functions and Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="LITERAL"
+>||</TT
+>
+        <TT
+CLASS="PARAMETER"
+>string</TT
+></TT
+></TD
+><TD
+> <TT
+CLASS="TYPE"
+>bytea</TT
+> </TD
+><TD
+>        String concatenation
+        <A
+NAME="AEN8040"
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>'\\\\Post'::bytea || '\\047gres\\000'::bytea</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>\\Post'gres\000</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>octet_length</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>Number of bytes in binary string</TD
+><TD
+><TT
+CLASS="LITERAL"
+>octet_length( 'jo\\000se'::bytea)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>position</CODE
+>(<TT
+CLASS="PARAMETER"
+>substring</TT
+> in <TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>Location of specified substring</TD
+><TD
+><TT
+CLASS="LITERAL"
+>position('\\000om'::bytea in 'Th\\000omas'::bytea)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>3</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>substring</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> [<SPAN
+CLASS="OPTIONAL"
+>from <TT
+CLASS="TYPE"
+>integer</TT
+></SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+>for <TT
+CLASS="TYPE"
+>integer</TT
+></SPAN
+>])</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>        Extract substring
+        <A
+NAME="AEN8084"
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>substring('Th\\000omas'::bytea from 2 for 3)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>h\000o</TT
+></TD
+></TR
+><TR
+><TD
+>        <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>trim</CODE
+>([<SPAN
+CLASS="OPTIONAL"
+>both</SPAN
+>]
+        <TT
+CLASS="PARAMETER"
+>bytes</TT
+> from
+        <TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>        Remove the longest string containing only the bytes in
+        <TT
+CLASS="PARAMETER"
+>bytes</TT
+> from the start
+        and end of <TT
+CLASS="PARAMETER"
+>string</TT
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>trim('\\000'::bytea from '\\000Tom\\000'::bytea)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>Tom</TT
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>get_byte</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>, <TT
+CLASS="PARAMETER"
+>offset</TT
+>)</TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>        Extract byte from string.
+        <A
+NAME="AEN8114"
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>get_byte('Th\\000omas'::bytea, 4)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>109</TT
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>set_byte</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>,
+       <TT
+CLASS="PARAMETER"
+>offset</TT
+>, <TT
+CLASS="PARAMETER"
+>newvalue</TT
+>)</TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>        Set byte in string.
+        <A
+NAME="AEN8129"
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>set_byte('Th\\000omas'::bytea, 4, 64)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>Th\000o@as</TT
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>get_bit</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>, <TT
+CLASS="PARAMETER"
+>offset</TT
+>)</TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>        Extract bit from string.
+        <A
+NAME="AEN8143"
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>get_bit('Th\\000omas'::bytea, 45)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>1</TT
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>set_bit</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>,
+       <TT
+CLASS="PARAMETER"
+>offset</TT
+>, <TT
+CLASS="PARAMETER"
+>newvalue</TT
+>)</TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>        Set bit in string.
+        <A
+NAME="AEN8158"
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>set_bit('Th\\000omas'::bytea, 45, 0)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>Th\000omAs</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    Additional binary string manipulation functions are available and
+    are listed in <A
+HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-OTHER"
+>Table 9-9</A
+>.  Some
     of them are used internally to implement the
-    <span class="acronym">SQL</span>-standard string functions listed in <a href="functions-binarystring.html#functions-binarystring-sql" title="Table 9.8. SQL Binary String Functions and Operators">Table 9.8, &#8220;SQL Binary String Functions and Operators&#8221;</a>.
-   </p>
-<div class="table">
-<a name="functions-binarystring-other"></a><p class="title"><b>Table 9.9. Other Binary String Functions</b></p>
-<table summary="Other Binary String Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Return Type</th>
-<th>Description</th>
-<th>Example</th>
-<th>Result</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="literal"><tt class="function">btrim</tt>(<i class="parameter"><tt>string</tt></i>
-        <tt class="type">bytea</tt>, <i class="parameter"><tt>bytes</tt></i> <tt class="type">bytea</tt>)</tt></td>
-<td><tt class="type">bytea</tt></td>
-<td>        Remove the longest string consisting only of bytes
-        in <i class="parameter"><tt>bytes</tt></i> from the start and end of
-        <i class="parameter"><tt>string</tt></i>.
-      </td>
-<td><tt class="literal">btrim('\\000trim\\000'::bytea, '\\000'::bytea)</tt></td>
-<td><tt class="literal">trim</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">length</tt>(<i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">integer</tt></td>
-<td>       Length of binary string
-       <a name="id2547321"></a><a name="id2547331"></a>
-</td>
-<td><tt class="literal">length('jo\\000se'::bytea)</tt></td>
-<td><tt class="literal">5</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">decode</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>,
-              <i class="parameter"><tt>type</tt></i> <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">bytea</tt></td>
-<td>       Decode binary string from <i class="parameter"><tt>string</tt></i> previously 
-       encoded with <tt class="literal">encode</tt>.  Parameter type is same as in <tt class="literal">encode</tt>.
-      </td>
-<td><tt class="literal">decode('123\\000456', 'escape')</tt></td>
-<td><tt class="literal">123\000456</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">encode</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">bytea</tt>,
-              <i class="parameter"><tt>type</tt></i> <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>       Encode binary string to <span class="acronym">ASCII</span>-only representation.  Supported
-       types are: <tt class="literal">base64</tt>, <tt class="literal">hex</tt>, <tt class="literal">escape</tt>.
-      </td>
-<td><tt class="literal">encode('123\\000456'::bytea, 'escape')</tt></td>
-<td><tt class="literal">123\000456</tt></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></body>
-</html>
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>-standard string functions listed in <A
+HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-SQL"
+>Table 9-8</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-BINARYSTRING-OTHER"
+></A
+><P
+><B
+>Table 9-9. Other Binary String Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>btrim</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>
+        <TT
+CLASS="TYPE"
+>bytea</TT
+>, <TT
+CLASS="PARAMETER"
+>bytes</TT
+> <TT
+CLASS="TYPE"
+>bytea</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>        Remove the longest string consisting only of bytes
+        in <TT
+CLASS="PARAMETER"
+>bytes</TT
+> from the start and end of
+        <TT
+CLASS="PARAMETER"
+>string</TT
+>.
+      </TD
+><TD
+><TT
+CLASS="LITERAL"
+>btrim('\\000trim\\000'::bytea, '\\000'::bytea)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>trim</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>length</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>       Length of binary string
+       <A
+NAME="AEN8204"
+></A
+>
+       <A
+NAME="AEN8207"
+></A
+>
+      </TD
+><TD
+><TT
+CLASS="LITERAL"
+>length('jo\\000se'::bytea)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>5</TT
+></TD
+></TR
+><TR
+><TD
+>       <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>decode</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+              <TT
+CLASS="PARAMETER"
+>type</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+>
+      </TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>       Decode binary string from <TT
+CLASS="PARAMETER"
+>string</TT
+> previously 
+       encoded with <TT
+CLASS="LITERAL"
+>encode</TT
+>.  Parameter type is same as in <TT
+CLASS="LITERAL"
+>encode</TT
+>.
+      </TD
+><TD
+><TT
+CLASS="LITERAL"
+>decode('123\\000456', 'escape')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>123\000456</TT
+></TD
+></TR
+><TR
+><TD
+>       <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>encode</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>bytea</TT
+>,
+              <TT
+CLASS="PARAMETER"
+>type</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+>
+      </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>       Encode binary string to <ACRONYM
+CLASS="ACRONYM"
+>ASCII</ACRONYM
+>-only representation.  Supported
+       types are: <TT
+CLASS="LITERAL"
+>base64</TT
+>, <TT
+CLASS="LITERAL"
+>hex</TT
+>, <TT
+CLASS="LITERAL"
+>escape</TT
+>.
+      </TD
+><TD
+><TT
+CLASS="LITERAL"
+>encode('123\\000456'::bytea, 'escape')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>123\000456</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-string.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-bitstring.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>String Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Bit String Functions and Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

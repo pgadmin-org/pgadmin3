@@ -1,55 +1,287 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SPI_getargtypeid</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
-<link rel="previous" href="spi-spi-getargcount.html" title="SPI_getargcount">
-<link rel="next" href="spi-spi-is-cursor-plan.html" title="SPI_is_cursor_plan">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-getargtypeid"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SPI_getargtypeid &#8212; returns the expected typeid for the specified argument of
-  a plan prepared by <tt class="function">SPI_prepare</tt></p>
-</div>
-<a name="id2653466"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">Oid SPI_getargtypeid(void * <i class="parameter"><tt>plan</tt></i>, int <i class="parameter"><tt>argIndex</tt></i>)</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2653490"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_getargtypeid</tt> returns the Oid representing the type
-   id for the <i class="parameter"><tt>argIndex</tt></i>'th argument of a plan prepared by
-   <tt class="function">SPI_prepare</tt>. First argument is at index zero.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2653515"></a><h2>Arguments</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">void * <i class="parameter"><tt>plan</tt></i></tt></span></dt>
-<dd><p>      execution plan (returned by <tt class="function">SPI_prepare</tt>)
-     </p></dd>
-<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>argIndex</tt></i></tt></span></dt>
-<dd><p>      zero based index of the argument
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2653557"></a><h2>Return Value</h2>
-<p>    The type id of the argument at the given index, or
-    <tt class="symbol">SPI_ERROR_ARGUMENT</tt> if the <i class="parameter"><tt>plan</tt></i> is
-    <tt class="symbol">NULL</tt> or <i class="parameter"><tt>argIndex</tt></i> is less than 0 or
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SPI_getargtypeid</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Functions"
+HREF="spi.html#SPI-INTERFACE"><LINK
+REL="PREVIOUS"
+TITLE="SPI_getargcount"
+HREF="spi-spi-getargcount.html"><LINK
+REL="NEXT"
+TITLE="SPI_is_cursor_plan"
+HREF="spi-spi-is-cursor-plan.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-getargcount.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-getargcount.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-is-cursor-plan.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-is-cursor-plan.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-GETARGTYPEID"
+></A
+>SPI_getargtypeid</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN33359"
+></A
+><H2
+>Name</H2
+>SPI_getargtypeid&nbsp;--&nbsp;returns the expected typeid for the specified argument of
+  a plan prepared by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+></DIV
+><A
+NAME="AEN33363"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN33365"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>Oid SPI_getargtypeid(void * <TT
+CLASS="PARAMETER"
+>plan</TT
+>, int <TT
+CLASS="PARAMETER"
+>argIndex</TT
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33369"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_getargtypeid</CODE
+> returns the Oid representing the type
+   id for the <TT
+CLASS="PARAMETER"
+>argIndex</TT
+>'th argument of a plan prepared by
+   <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+>. First argument is at index zero.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33375"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>void * <TT
+CLASS="PARAMETER"
+>plan</TT
+></TT
+></DT
+><DD
+><P
+>      execution plan (returned by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+>)
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>int <TT
+CLASS="PARAMETER"
+>argIndex</TT
+></TT
+></DT
+><DD
+><P
+>      zero based index of the argument
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN33391"
+></A
+><H2
+>Return Value</H2
+><P
+>    The type id of the argument at the given index, or
+    <TT
+CLASS="SYMBOL"
+>SPI_ERROR_ARGUMENT</TT
+> if the <TT
+CLASS="PARAMETER"
+>plan</TT
+> is
+    <TT
+CLASS="SYMBOL"
+>NULL</TT
+> or <TT
+CLASS="PARAMETER"
+>argIndex</TT
+> is less than 0 or
     not less than the number of arguments declared for the
-    <i class="parameter"><tt>plan</tt></i>
-  </p>
-</div>
-</div></body>
-</html>
+    <TT
+CLASS="PARAMETER"
+>plan</TT
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-getargcount.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-is-cursor-plan.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_getargcount</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_is_cursor_plan</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

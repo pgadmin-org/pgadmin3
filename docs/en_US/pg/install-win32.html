@@ -1,113 +1,392 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 15. Installation on Windows</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="previous" href="supported-platforms.html" title="14.7. Supported Platforms">
-<link rel="next" href="runtime.html" title="Chapter 16. Server Run-time Environment">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="install-win32">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="install-win32"></a>Chapter 15. Installation on <span class="productname">Windows</span></h2></div></div>
-<div></div>
-</div>
-<a name="id2577103"></a><p>  Although <span class="productname">PostgreSQL</span> is written for
-  Unix-like operating systems and compiles under
-  <span class="productname">MinGW</span>, the C client library
-  (<span class="application">libpq</span>) and the interactive terminal
-  (<span class="application">psql</span>) can be compiled using other Windows
-  tool sets. Makefiles are included in the source distribution for
-  <span class="productname">Microsoft Visual C++</span> and
-  <span class="productname">Borland C++</span>. It should be possible to
-  compile the libraries manually for other configurations.
- </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>   If you are using a Windows NT-based operating system or newer you can
-   build and use all of <span class="productname">PostgreSQL</span> &#8220;<span class="quote">the
-   Unix way</span>&#8221; if you install the <span class="productname">MinGW</span>
-   toolkit first. In that case see <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>.
-  </p>
-</div>
-<p>  To build everything that you can on <span class="productname">Windows</span>
-  using <span class="productname">Microsoft Visual C++</span>, change into the
-  <tt class="filename">src</tt> directory and type the command
-</p>
-<pre class="screen"><b class="userinput"><tt>nmake /f win32.mak</tt></b></pre>
-<p>
-  This assumes that you have <span class="productname">Visual C++</span> in
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Installation on Windows</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Administration"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Supported Platforms"
+HREF="supported-platforms.html"><LINK
+REL="NEXT"
+TITLE="Server Run-time Environment"
+HREF="runtime.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="supported-platforms.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="installation.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="INSTALL-WIN32"
+></A
+>Chapter 15. Installation on <SPAN
+CLASS="PRODUCTNAME"
+>Windows</SPAN
+></H1
+><A
+NAME="AEN15826"
+></A
+><P
+>  Although <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is written for
+  Unix-like operating systems, the C client library
+  (<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>) and the interactive terminal
+  (<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>) can be compiled natively under
+  Windows.  The makefiles included in the source distribution are
+  written for <SPAN
+CLASS="PRODUCTNAME"
+>Microsoft Visual C++</SPAN
+> and will
+  probably not work with other systems.  It should be possible to
+  compile the libraries manually in other cases.
+ </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>   If you are using Windows 98 or newer you can build and use all of
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <SPAN
+CLASS="QUOTE"
+>"the Unix way"</SPAN
+>
+   if you install the <SPAN
+CLASS="PRODUCTNAME"
+>Cygwin</SPAN
+> toolkit first.
+   In that case see <A
+HREF="installation.html"
+>Chapter 14</A
+>.
+  </P
+></BLOCKQUOTE
+></DIV
+><P
+>  To build everything that you can on
+  <SPAN
+CLASS="PRODUCTNAME"
+>Windows</SPAN
+>, change into the
+  <TT
+CLASS="FILENAME"
+>src</TT
+> directory and type the command
+</P><PRE
+CLASS="SCREEN"
+><KBD
+CLASS="USERINPUT"
+>nmake /f win32.mak</KBD
+></PRE
+><P>
+  This assumes that you have <SPAN
+CLASS="PRODUCTNAME"
+>Visual C++</SPAN
+> in
   your path.
- </p>
-<p>  To build everything using using <span class="productname">Borland
-  C++</span>, change into the <tt class="filename">src</tt> directory
-  and type the command
-</p>
-<pre class="screen"><b class="userinput"><tt>make -DCFG=Release /f bcc32.mak</tt></b></pre>
-<p>
- </p>
-<p>  The following files will be built:
+ </P
+><P
+>  The following files will be built:
 
-  </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="filename">interfaces\libpq\Release\libpq.dll</tt></span></dt>
-<dd><p>      The dynamically linkable frontend library
-     </p></dd>
-<dt><span class="term"><tt class="filename">interfaces\libpq\Release\libpqdll.lib</tt></span></dt>
-<dd><p>      Import library to link your programs to <tt class="filename">libpq.dll</tt>
-     </p></dd>
-<dt><span class="term"><tt class="filename">interfaces\libpq\Release\libpq.lib</tt></span></dt>
-<dd><p>      Static library version of the frontend library
-     </p></dd>
-<dt><span class="term"><tt class="filename">bin\psql\Release\psql.exe</tt></span></dt>
-<dd><p>      The <span class="productname">PostgreSQL</span> interactive terminal
-     </p></dd>
-</dl></div>
-<p>
- </p>
-<p>  The only file that really needs to be installed is the
-  <tt class="filename">libpq.dll</tt> library.  This file should in most
-  cases be placed in the <tt class="filename">WINNT\SYSTEM32</tt> directory
-  (or in <tt class="filename">WINDOWS\SYSTEM</tt> on a Windows 95/98/ME
+  <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="FILENAME"
+>interfaces\libpq\Release\libpq.dll</TT
+></DT
+><DD
+><P
+>      The dynamically linkable frontend library
+     </P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>interfaces\libpq\Release\libpqdll.lib</TT
+></DT
+><DD
+><P
+>      Import library to link your programs to <TT
+CLASS="FILENAME"
+>libpq.dll</TT
+>
+     </P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>interfaces\libpq\Release\libpq.lib</TT
+></DT
+><DD
+><P
+>      Static library version of the frontend library
+     </P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>bin\psql\Release\psql.exe</TT
+></DT
+><DD
+><P
+>      The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+     </P
+></DD
+></DL
+></DIV
+><P>
+ </P
+><P
+>  The only file that really needs to be installed is the
+  <TT
+CLASS="FILENAME"
+>libpq.dll</TT
+> library.  This file should in most
+  cases be placed in the <TT
+CLASS="FILENAME"
+>WINNT\SYSTEM32</TT
+> directory
+  (or in <TT
+CLASS="FILENAME"
+>WINDOWS\SYSTEM</TT
+> on a Windows 95/98/ME
   system).  If this file is installed using a setup program, it should
   be installed with version checking using the
-  <tt class="symbol">VERSIONINFO</tt> resource included in the file, to
+  <TT
+CLASS="SYMBOL"
+>VERSIONINFO</TT
+> resource included in the file, to
   ensure that a newer version of the library is not overwritten.
- </p>
-<p>  If you plan to do development using <span class="application">libpq</span>
-  on this machine, you will have to add the
-  <tt class="filename">src\include</tt> and
-  <tt class="filename">src\interfaces\libpq</tt> subdirectories of the source
-  tree to the include path in your compilers settings.
- </p>
-<p>  To use the library, you must add the
-  <tt class="filename">libpqdll.lib</tt> file to your project.  (In Visual
+ </P
+><P
+>  If you plan to do development using <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> on this machine, you will
+  have to add the <TT
+CLASS="FILENAME"
+>src\include</TT
+> and
+  <TT
+CLASS="FILENAME"
+>src\interfaces\libpq</TT
+> subdirectories of the
+  source tree to the include path in your compilers settings.
+ </P
+><P
+>  To use the library, you must add the
+  <TT
+CLASS="FILENAME"
+>libpqdll.lib</TT
+> file to your project.  (In Visual
   C++, just right-click on the project and choose to add it.)
- </p>
-<p>  <span class="application">psql</span> is compiled as a &#8220;<span class="quote">console
-  application</span>&#8221;. As the Windows console windows use a different
+ </P
+><P
+>  <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> is compiled as a <SPAN
+CLASS="QUOTE"
+>"console
+  application"</SPAN
+>. As the Windows console windows use a different
   encoding than the rest of the system, you must take special care
-  when using 8-bit characters at the <span class="application">psql</span>
-  prompt. When <span class="application">psql</span> detects a problematic
+  when using 8-bit characters at the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+  prompt. When <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> detects a problematic
   console code page, it will warn you at startup. To change the
   console code page, two things are neccessary:
 
-   </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      Set the code page by entering <b class="userinput"><tt>cmd.exe /c chcp
-      1252</tt></b>. (1252 is a code page that is appropriate for
+   <P
+></P
+></P><UL
+><LI
+><P
+>      Set the code page by entering <KBD
+CLASS="USERINPUT"
+>cmd.exe /c chcp
+      1252</KBD
+>. (1252 is a code page that is appropriate for
       German; replace it with your value.) If you are using Cygwin,
-      you can put this command in <tt class="filename">/etc/profile</tt>.
-     </p></li>
-<li><p>      Set the console font to &#8220;<span class="quote">Lucida Console</span>&#8221;, because the
+      you can put this command in <TT
+CLASS="FILENAME"
+>/etc/profile</TT
+>.
+     </P
+></LI
+><LI
+><P
+>      Set the console font to <SPAN
+CLASS="QUOTE"
+>"Lucida Console"</SPAN
+>, because the
       raster font does not work with the ANSI code page.
-     </p></li>
-</ul></div>
-<p>
- </p>
-</div></body>
-</html>
+     </P
+></LI
+></UL
+><P>
+ </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="supported-platforms.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Supported Platforms</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Server Run-time Environment</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

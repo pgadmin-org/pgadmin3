@@ -1,471 +1,1300 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>pg_dump</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="app-pgconfig.html" title="pg_config">
-<link rel="next" href="app-pg-dumpall.html" title="pg_dumpall">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-pgdump"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>pg_dump &#8212;    extract a <span class="productname">PostgreSQL</span> database into a script file or other archive file 
-  </p>
-</div>
-<a name="id2702284"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">pg_dump</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>dbname</tt></i>]</p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="pg-dump-description"></a><h2>   Description
-  </h2>
-<p>   <span class="application">pg_dump</span> is a utility for backing up a
-   <span class="productname">PostgreSQL</span> database. It makes consistent
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>pg_dump</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_config"
+HREF="app-pgconfig.html"><LINK
+REL="NEXT"
+TITLE="pg_dumpall"
+HREF="app-pg-dumpall.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgconfig.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgconfig.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pg-dumpall.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pg-dumpall.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-PGDUMP"
+></A
+>pg_dump</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45580"
+></A
+><H2
+>Name</H2
+>pg_dump&nbsp;--&nbsp;   extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database into a script file or other archive file 
+  </DIV
+><A
+NAME="AEN45584"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45586"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>pg_dump</TT
+> [<VAR
+CLASS="REPLACEABLE"
+>option</VAR
+>...] [<VAR
+CLASS="REPLACEABLE"
+>dbname</VAR
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PG-DUMP-DESCRIPTION"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> is a utility for backing up a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database. It makes consistent
    backups even if the database is being used concurrently.
-   <span class="application">pg_dump</span> does not block other users
+   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> does not block other users
    accessing the database (readers or writers).
-  </p>
-<p>   Dumps can be output in script or archive file formats. The script
+  </P
+><P
+>   Dumps can be output in script or archive file formats. The script
    files are in plain-text format and contain the SQL commands required
    to reconstruct the database to the state it was in at the time it was
-   saved. To restore these scripts, use <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>. They
+   saved. To restore these scripts, use <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>. They
    can be used to reconstruct the database even on other machines and
    other architectures, with some modifications even on other SQL
    database products.
-  </p>
-<p>   The alternative archive file formats that are meant to be used with
-   <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a> to rebuild the database, and they also
-   allow <span class="application">pg_restore</span> to be selective about
+  </P
+><P
+>   The alternative archive file formats that are meant to be used with
+   <A
+HREF="app-pgrestore.html"
+>pg_restore</A
+> to rebuild the database, and they also
+   allow <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+> to be selective about
    what is restored, or even to reorder the items prior to being
    restored. The archive files are also designed to be portable across
    architectures.
-  </p>
-<p>   When used with one of the archive file formats and combined with
-   <span class="application">pg_restore</span>,
-   <span class="application">pg_dump</span> provides a flexible archival and
-   transfer mechanism. <span class="application">pg_dump</span> can be used to
-   backup an entire database, then <span class="application">pg_restore</span>
+  </P
+><P
+>   When used with one of the archive file formats and combined with
+   <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+>,
+   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> provides a flexible archival and
+   transfer mechanism. <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> can be used to
+   backup an entire database, then <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+>
    can be used to examine the archive and/or select which parts of the
    database are to be restored. The most flexible output file format is
-   the &#8220;<span class="quote">custom</span>&#8221; format (<tt class="option">-Fc</tt>). It allows
+   the <SPAN
+CLASS="QUOTE"
+>"custom"</SPAN
+> format (<TT
+CLASS="OPTION"
+>-Fc</TT
+>). It allows
    for selection and reordering of all archived items, and is compressed
-   by default. The <span class="application">tar</span> format
-   (<tt class="option">-Ft</tt>) is not compressed and it is not possible to
+   by default. The <SPAN
+CLASS="APPLICATION"
+>tar</SPAN
+> format
+   (<TT
+CLASS="OPTION"
+>-Ft</TT
+>) is not compressed and it is not possible to
    reorder data when loading, but it is otherwise quite flexible;
    moreover, it can be manipulated with other tools such as
-   <tt class="command">tar</tt>.
-  </p>
-<p>   While running <span class="application">pg_dump</span>, one should examine the
+   <TT
+CLASS="COMMAND"
+>tar</TT
+>.
+  </P
+><P
+>   While running <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>, one should examine the
    output for any warnings (printed on standard error), especially in
    light of the limitations listed below.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="pg-dump-options"></a><h2>Options</h2>
-<p>   The following command-line options are used to control the output format.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PG-DUMP-OPTIONS"
+></A
+><H2
+>Options</H2
+><P
+>   The following command-line options are used to control the output format.
 
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>dbname</tt></i></span></dt>
-<dd><p>	Specifies the name of the database to be dumped.  If this is
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>dbname</VAR
+></DT
+><DD
+><P
+>	Specifies the name of the database to be dumped.  If this is
 	not specified, the environment variable
-	<tt class="envar">PGDATABASE</tt> is used.  If that is not set, the
+	<TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+> is used.  If that is not set, the
 	user name specified for the connection is used.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--data-only</tt></span>
-</dt>
-<dd>
-<p>	Dump only the data, not the object definitions (schema)
-       </p>
-<p>        This option is only meaningful for the plain-text format.  For
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-a</TT
+><BR><TT
+CLASS="OPTION"
+>--data-only</TT
+></DT
+><DD
+><P
+>	Dump only the data, not the object definitions (schema)
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
         the other formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
-       </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-b</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--blobs</tt></span>
-</dt>
-<dd><p> 	Include large objects in dump.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-c</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--clean</tt></span>
-</dt>
-<dd>
-<p>        Output commands to clean (drop)
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-b</TT
+><BR><TT
+CLASS="OPTION"
+>--blobs</TT
+></DT
+><DD
+><P
+> 	Include large objects in dump.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-c</TT
+><BR><TT
+CLASS="OPTION"
+>--clean</TT
+></DT
+><DD
+><P
+>        Output commands to clean (drop)
 	database objects prior to (the commands for) creating them.
-       </p>
-<p>        This option is only meaningful for the plain-text format.  For
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
         the other formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
-       </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-C</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--create</tt></span>
-</dt>
-<dd>
-<p>	Begin the output with a command to create the
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-C</TT
+><BR><TT
+CLASS="OPTION"
+>--create</TT
+></DT
+><DD
+><P
+>	Begin the output with a command to create the
 	database itself and reconnect to the created database.  (With a
 	script of this form, it doesn't matter which database you connect
 	to before running the script.)
-       </p>
-<p>        This option is only meaningful for the plain-text format.  For
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
         the other formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
-       </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-d</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--inserts</tt></span>
-</dt>
-<dd><p>	Dump data as <tt class="command">INSERT</tt> commands (rather
-	than <tt class="command">COPY</tt>). This will make restoration very
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-d</TT
+><BR><TT
+CLASS="OPTION"
+>--inserts</TT
+></DT
+><DD
+><P
+>	Dump data as <TT
+CLASS="COMMAND"
+>INSERT</TT
+> commands (rather
+	than <TT
+CLASS="COMMAND"
+>COPY</TT
+>). This will make restoration very
 	slow, but it makes the archives more portable to other SQL database
 	management systems.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-D</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--column-inserts</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--attribute-inserts</tt></span>
-</dt>
-<dd><p>	Dump data as <tt class="command">INSERT</tt> commands with explicit
-	column names (<tt class="literal">INSERT INTO
-	<i class="replaceable"><tt>table</tt></i>
-	(<i class="replaceable"><tt>column</tt></i>, ...) VALUES
-	...</tt>).  This will make restoration very slow,
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-D</TT
+><BR><TT
+CLASS="OPTION"
+>--column-inserts</TT
+><BR><TT
+CLASS="OPTION"
+>--attribute-inserts</TT
+></DT
+><DD
+><P
+>	Dump data as <TT
+CLASS="COMMAND"
+>INSERT</TT
+> commands with explicit
+	column names (<TT
+CLASS="LITERAL"
+>INSERT INTO
+	<VAR
+CLASS="REPLACEABLE"
+>table</VAR
+>
+	(<VAR
+CLASS="REPLACEABLE"
+>column</VAR
+>, ...) VALUES
+	...</TT
+>).  This will make restoration very slow,
 	but it is necessary if you desire to rearrange the column ordering.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-f <i class="replaceable"><tt>file</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--file=<i class="replaceable"><tt>file</tt></i></tt></span>
-</dt>
-<dd><p>	Send output to the specified file.  If this is omitted, the
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-f <VAR
+CLASS="REPLACEABLE"
+>file</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--file=<VAR
+CLASS="REPLACEABLE"
+>file</VAR
+></TT
+></DT
+><DD
+><P
+>	Send output to the specified file.  If this is omitted, the
 	standard output is used.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-F <i class="replaceable"><tt>format</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--format=<i class="replaceable"><tt>format</tt></i></tt></span>
-</dt>
-<dd>
-<p>        Selects the format of the output.
-	<i class="replaceable"><tt>format</tt></i> can be one of the following:
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-F <VAR
+CLASS="REPLACEABLE"
+>format</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--format=<VAR
+CLASS="REPLACEABLE"
+>format</VAR
+></TT
+></DT
+><DD
+><P
+>        Selects the format of the output.
+	<VAR
+CLASS="REPLACEABLE"
+>format</VAR
+> can be one of the following:
 
-       </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">p</tt></span></dt>
-<dd><p>           Output a plain-text <span class="acronym">SQL</span> script file (default)
-          </p></dd>
-<dt><span class="term"><tt class="literal">t</tt></span></dt>
-<dd><p>         Output a <tt class="command">tar</tt> archive suitable for input into 
-         <span class="application">pg_restore</span>. Using this archive format 
+       <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>p</TT
+></DT
+><DD
+><P
+>           Output a plain-text <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> script file (default)
+          </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>t</TT
+></DT
+><DD
+><P
+>         Output a <TT
+CLASS="COMMAND"
+>tar</TT
+> archive suitable for input into 
+         <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+>. Using this archive format 
          allows reordering and/or exclusion of database objects
          at the time the database is restored. It is also possible to limit 
          which data is reloaded at restore time.
-          </p></dd>
-<dt><span class="term"><tt class="literal">c</tt></span></dt>
-<dd><p>         Output a custom archive suitable for input into 
-         <span class="application">pg_restore</span>. This is the most flexible 
+          </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>c</TT
+></DT
+><DD
+><P
+>         Output a custom archive suitable for input into 
+         <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+>. This is the most flexible 
          format in that it allows reordering of loading data as well 
          as object definitions. This format is also compressed by default.
-          </p></dd>
-</dl></div>
-<p>
-       </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--ignore-version</tt></span>
-</dt>
-<dd>
-<p>        Ignore version mismatch between
-        <span class="application">pg_dump</span> and the database server.
-       </p>
-<p>        <span class="application">pg_dump</span> can handle databases from
-        previous releases of <span class="productname">PostgreSQL</span>, but very old
+          </P
+></DD
+></DL
+></DIV
+><P>
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-i</TT
+><BR><TT
+CLASS="OPTION"
+>--ignore-version</TT
+></DT
+><DD
+><P
+>        Ignore version mismatch between
+        <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> and the database server.
+       </P
+><P
+>        <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> can handle databases from
+        previous releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, but very old
         versions are not supported anymore (currently prior to 7.0).
         Use this option if you need to override the version check (and
-        if <span class="application">pg_dump</span> then fails, don't say
+        if <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> then fails, don't say
         you weren't warned).
-       </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-n <i class="replaceable"><tt>namespace</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--schema=<i class="replaceable"><tt>schema</tt></i></tt></span>
-</dt>
-<dd>
-<p>        Dump the contents of <i class="replaceable"><tt>schema</tt></i>
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-n <VAR
+CLASS="REPLACEABLE"
+>namespace</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--schema=<VAR
+CLASS="REPLACEABLE"
+>schema</VAR
+></TT
+></DT
+><DD
+><P
+>        Dump the contents of <VAR
+CLASS="REPLACEABLE"
+>schema</VAR
+>
         only. If this option is not specified, all non-system schemas
         in the target database will be dumped.
-       </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>         In this mode, <span class="application">pg_dump</span> makes no
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         In this mode, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> makes no
          attempt to dump any other database objects that objects in the
 	 selected schema may depend upon. Therefore, there is no
          guarantee that the results of a single-schema dump can be
          successfully restored by themselves into a clean database.
-        </p>
-</div>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-o</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--oids</tt></span>
-</dt>
-<dd><p>	Dump object identifiers (<span class="acronym">OID</span>s) for every
-	table.  Use this option if your application references the <span class="acronym">OID</span>
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-o</TT
+><BR><TT
+CLASS="OPTION"
+>--oids</TT
+></DT
+><DD
+><P
+>	Dump object identifiers (<ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+>s) for every
+	table.  Use this option if your application references the <ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+>
 	columns in some way (e.g., in a foreign key constraint).
 	Otherwise, this option should not be used.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-O</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-owner</tt></span>
-</dt>
-<dd>
-<p>        Do not output commands to set
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-O</TT
+><BR><TT
+CLASS="OPTION"
+>--no-owner</TT
+></DT
+><DD
+><P
+>        Do not output commands to set
 	ownership of objects to match the original database.
-	By default, <span class="application">pg_dump</span> issues
-	<tt class="command">SET SESSION AUTHORIZATION</tt>
+	By default, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> issues
+	<TT
+CLASS="COMMAND"
+>SET SESSION AUTHORIZATION</TT
+>
 	statements to set ownership of created database objects.
 	These statements
 	will fail when the script is run unless it is started by a superuser
 	(or the same user that owns all of the objects in the script).
 	To make a script that can be restored by any user, but will give
-	that user ownership of all the objects, specify <tt class="option">-O</tt>.
-       </p>
-<p>        This option is only meaningful for the plain-text format.  For
+	that user ownership of all the objects, specify <TT
+CLASS="OPTION"
+>-O</TT
+>.
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
         the other formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
-       </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-R</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-reconnect</tt></span>
-</dt>
-<dd><p>        This option is obsolete but still accepted for backwards
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-R</TT
+><BR><TT
+CLASS="OPTION"
+>--no-reconnect</TT
+></DT
+><DD
+><P
+>        This option is obsolete but still accepted for backwards
 	compatibility.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-s</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--schema-only</tt></span>
-</dt>
-<dd><p>	Dump only the object definitions (schema), not data.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-S <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--superuser=<i class="replaceable"><tt>username</tt></i></tt></span>
-</dt>
-<dd><p>        Specify the superuser user name to use when disabling triggers.
-	This is only relevant if <tt class="option">--disable-triggers</tt> is used.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-s</TT
+><BR><TT
+CLASS="OPTION"
+>--schema-only</TT
+></DT
+><DD
+><P
+>	Dump only the object definitions (schema), not data.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-S <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--superuser=<VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></TT
+></DT
+><DD
+><P
+>        Specify the superuser user name to use when disabling triggers.
+	This is only relevant if <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+> is used.
 	(Usually, it's better to leave this out, and instead start the
 	resulting script as superuser.)
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-t <i class="replaceable"><tt>table</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--table=<i class="replaceable"><tt>table</tt></i></tt></span>
-</dt>
-<dd>
-<p>	Dump data for <i class="replaceable"><tt>table</tt></i>
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-t <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--table=<VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></TT
+></DT
+><DD
+><P
+>	Dump data for <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+>
 	only. It is possible for there to be
 	multiple tables with the same name in different schemas; if that
 	is the case, all matching tables will be dumped.  Specify both
-	<tt class="option">--schema</tt> and <tt class="option">--table</tt> to select just one table.
-       </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>         In this mode, <span class="application">pg_dump</span> makes no
+	<TT
+CLASS="OPTION"
+>--schema</TT
+> and <TT
+CLASS="OPTION"
+>--table</TT
+> to select just one table.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         In this mode, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> makes no
          attempt to dump any other database objects that the selected table
 	 may depend upon. Therefore, there is no guarantee
          that the results of a single-table dump can be successfully
          restored by themselves into a clean database.
-        </p>
-</div>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-v</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--verbose</tt></span>
-</dt>
-<dd><p>	Specifies verbose mode.  This will cause
-	<span class="application">pg_dump</span> to output detailed object
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-v</TT
+><BR><TT
+CLASS="OPTION"
+>--verbose</TT
+></DT
+><DD
+><P
+>	Specifies verbose mode.  This will cause
+	<SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> to output detailed object
         comments and start/stop times to the dump file, and progress 
         messages to standard error.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-x</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--no-privileges</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-acl</tt></span>
-</dt>
-<dd><p>	Prevent dumping of access privileges (grant/revoke commands).
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X disable-dollar-quoting</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--disable-dollar-quoting</tt></span>
-</dt>
-<dd><p>        This option disables the use of dollar quoting for function bodies,
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-x</TT
+><BR><TT
+CLASS="OPTION"
+>--no-privileges</TT
+><BR><TT
+CLASS="OPTION"
+>--no-acl</TT
+></DT
+><DD
+><P
+>	Prevent dumping of access privileges (grant/revoke commands).
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X disable-dollar-quoting</TT
+><BR><TT
+CLASS="OPTION"
+>--disable-dollar-quoting</TT
+></DT
+><DD
+><P
+>        This option disables the use of dollar quoting for function bodies,
         and forces them to be quoted using SQL standard string syntax.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X disable-triggers</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--disable-triggers</tt></span>
-</dt>
-<dd>
-<p>        This option is only relevant when creating a data-only dump.
-        It instructs <span class="application">pg_dump</span> to include commands
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X disable-triggers</TT
+><BR><TT
+CLASS="OPTION"
+>--disable-triggers</TT
+></DT
+><DD
+><P
+>        This option is only relevant when creating a data-only dump.
+        It instructs <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> to include commands
         to temporarily disable triggers on the target tables while
         the data is reloaded.  Use this if you have referential
         integrity checks or other triggers on the tables that you
         do not want to invoke during data reload.
-       </p>
-<p>        Presently, the commands emitted for <tt class="option">--disable-triggers</tt>
+       </P
+><P
+>        Presently, the commands emitted for <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+>
         must be done as superuser.  So, you should also specify
-        a superuser name with <tt class="option">-S</tt>, or preferably be careful to
+        a superuser name with <TT
+CLASS="OPTION"
+>-S</TT
+>, or preferably be careful to
         start the resulting script as a superuser.
-       </p>
-<p>        This option is only meaningful for the plain-text format.  For
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
         the other formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
-       </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X use-set-session-authorization</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--use-set-session-authorization</tt></span>
-</dt>
-<dd><p>	Output SQL standard SET SESSION AUTHORIZATION commands instead
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X use-set-session-authorization</TT
+><BR><TT
+CLASS="OPTION"
+>--use-set-session-authorization</TT
+></DT
+><DD
+><P
+>	Output SQL standard SET SESSION AUTHORIZATION commands instead
 	of OWNER TO commands.  This makes the dump more standards compatible,
 	but depending on the history of the objects in the dump, may not
 	restore properly.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-Z <i class="replaceable"><tt>0..9</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--compress=<i class="replaceable"><tt>0..9</tt></i></tt></span>
-</dt>
-<dd><p>        Specify the compression level to use in archive formats that
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-Z <VAR
+CLASS="REPLACEABLE"
+>0..9</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--compress=<VAR
+CLASS="REPLACEABLE"
+>0..9</VAR
+></TT
+></DT
+><DD
+><P
+>        Specify the compression level to use in archive formats that
         support compression.  (Currently only the custom archive
         format supports compression.)
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-<p>    The following command-line options control the database connection parameters.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    The following command-line options control the database connection parameters.
 
-    </p>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host=<i class="replaceable"><tt>host</tt></i></tt></span>
-</dt>
-<dd><p>        Specifies the host name of the machine on which the server is
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <VAR
+CLASS="REPLACEABLE"
+>host</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host=<VAR
+CLASS="REPLACEABLE"
+>host</VAR
+></TT
+></DT
+><DD
+><P
+>        Specifies the host name of the machine on which the server is
         running.  If the value begins with a slash, it is used as the
         directory for the Unix domain socket. The default is taken
-        from the <tt class="envar">PGHOST</tt> environment variable, if set,
+        from the <TT
+CLASS="ENVAR"
+>PGHOST</TT
+> environment variable, if set,
         else a Unix domain socket connection is attempted.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port=<i class="replaceable"><tt>port</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the TCP port or local Unix domain socket file
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <VAR
+CLASS="REPLACEABLE"
+>port</VAR
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port=<VAR
+CLASS="REPLACEABLE"
+>port</VAR
+></TT
+></DT
+><DD
+><P
+>	Specifies the TCP port or local Unix domain socket file
 	extension on which the server is listening for connections.
-	Defaults to the <tt class="envar">PGPORT</tt> environment variable, if
+	Defaults to the <TT
+CLASS="ENVAR"
+>PGPORT</TT
+> environment variable, if
 	set, or a compiled-in default.
-       </p></dd>
-<dt><span class="term"><tt class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span></dt>
-<dd><p>        Connect as the given user
-       </p></dd>
-<dt><span class="term"><tt class="option">-W</tt></span></dt>
-<dd><p>        Force a password prompt.  This should happen automatically if
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></TT
+></DT
+><DD
+><P
+>        Connect as the given user
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+></DT
+><DD
+><P
+>        Force a password prompt.  This should happen automatically if
         the server requires password authentication.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2703213"></a><h2>Environment</h2>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGDATABASE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
-</dt>
-<dd><p>      Default connection parameters.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="app-pgdump-diagnostics"></a><h2>Diagnostics</h2>
-<p>   <span class="application">pg_dump</span> internally executes
-   <tt class="command">SELECT</tt> statements. If you have problems running
-   <span class="application">pg_dump</span>, make sure you are able to
-   select information from the database using, for example, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="pg-dump-notes"></a><h2>Notes</h2>
-<p>   If your database cluster has any local additions to the <tt class="literal">template1</tt> database,
-   be careful to restore the output of <span class="application">pg_dump</span> into a
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45892"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+><BR><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-PGDUMP-DIAGNOSTICS"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> internally executes
+   <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statements. If you have problems running
+   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>, make sure you are able to
+   select information from the database using, for example, <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PG-DUMP-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   If your database cluster has any local additions to the <TT
+CLASS="LITERAL"
+>template1</TT
+> database,
+   be careful to restore the output of <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> into a
    truly empty database; otherwise you are likely to get errors due to
    duplicate definitions of the added objects.  To make an empty database
-   without any local additions, copy from <tt class="literal">template0</tt> not <tt class="literal">template1</tt>,
+   without any local additions, copy from <TT
+CLASS="LITERAL"
+>template0</TT
+> not <TT
+CLASS="LITERAL"
+>template1</TT
+>,
    for example:
-</p>
-<pre class="programlisting">CREATE DATABASE foo WITH TEMPLATE template0;</pre>
-<p>
-  </p>
-<p>   <span class="application">pg_dump</span> has a few limitations:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE DATABASE foo WITH TEMPLATE template0;</PRE
+><P>
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> has a few limitations:
 
-   </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      When dumping a single table or as plain text, <span class="application">pg_dump</span> 
+   <P
+></P
+></P><UL
+><LI
+><P
+>      When dumping a single table or as plain text, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> 
       does not handle large objects. Large objects must be dumped with the
       entire database using one of the non-text archive formats.
-     </p></li>
-<li><p>      When a data-only dump is chosen and the option
-      <tt class="option">--disable-triggers</tt> is used,
-      <span class="application">pg_dump</span> emits commands to disable
+     </P
+></LI
+><LI
+><P
+>      When a data-only dump is chosen and the option
+      <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+> is used,
+      <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> emits commands to disable
       triggers on user tables before inserting the data and commands
       to re-enable them after the data has been inserted.  If the
       restore is stopped in the middle, the system catalogs may be
       left in the wrong state.
-     </p></li>
-</ul></div>
-<p>
-  </p>
-<p>   Members of tar archives are limited to a size less than 8 GB.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   Members of tar archives are limited to a size less than 8 GB.
    (This is an inherent limitation of the tar file format.)  Therefore
    this format cannot be used if the textual representation of a table
    exceeds that size.  The total size of a tar archive and any of the
    other output formats is not limited, except possibly by the
    operating system.
-  </p>
-<p>   The dump file produced by <span class="application">pg_dump</span> does
+  </P
+><P
+>   The dump file produced by <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> does
    not contain the statistics used by the optimizer to make query
    planning decisions.  Therefore, it is wise to run
-   <tt class="command">ANALYZE</tt> after restoring from a dump file to
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> after restoring from a dump file to
    ensure good performance.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="pg-dump-examples"></a><h2>Examples</h2>
-<p>   To dump a database:
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_dump mydb &gt; db.out</tt></b></pre>
-<p>
-  </p>
-<p>   To reload this database:
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>psql -d database -f db.out</tt></b></pre>
-<p>
-  </p>
-<p>   To dump a database called <tt class="literal">mydb</tt> that contains
-   large objects to a <tt class="filename">tar</tt> file:
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PG-DUMP-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To dump a database:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>pg_dump mydb &gt; db.out</KBD
+></PRE
+><P>
+  </P
+><P
+>   To reload this database:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>psql -d database -f db.out</KBD
+></PRE
+><P>
+  </P
+><P
+>   To dump a database called <TT
+CLASS="LITERAL"
+>mydb</TT
+> that contains
+   large objects to a <TT
+CLASS="FILENAME"
+>tar</TT
+> file:
 
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_dump -Ft -b mydb &gt; db.tar</tt></b></pre>
-<p>
-  </p>
-<p>   To reload this database (with large objects) to an
-   existing database called <tt class="literal">newdb</tt>:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>pg_dump -Ft -b mydb &gt; db.tar</KBD
+></PRE
+><P>
+  </P
+><P
+>   To reload this database (with large objects) to an
+   existing database called <TT
+CLASS="LITERAL"
+>newdb</TT
+>:
 
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_restore -d newdb db.tar</tt></b></pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2703483"></a><h2>History</h2>
-<p>   The <span class="application">pg_dump</span> utility first appeared in
-   <span class="application">Postgres95</span> release 0.02.  The
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>pg_restore -d newdb db.tar</KBD
+></PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45956"
+></A
+><H2
+>History</H2
+><P
+>   The <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> utility first appeared in
+   <SPAN
+CLASS="APPLICATION"
+>Postgres95</SPAN
+> release 0.02.  The
    non-plain-text output formats were introduced in
-   <span class="productname">PostgreSQL</span> release 7.1.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2703508"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a>, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a></span>
-</div>
-</div></body>
-</html>
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> release 7.1.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45962"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-pg-dumpall.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+></A
+>, <A
+HREF="app-pgrestore.html"
+>pg_restore</A
+>, <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgconfig.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pg-dumpall.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_config</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

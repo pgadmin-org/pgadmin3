@@ -1,59 +1,197 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>14.4. If You Are Upgrading</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
-<link rel="previous" href="install-getsource.html" title="14.3. Getting The Source">
-<link rel="next" href="install-procedure.html" title="14.5. Installation Procedure">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="install-upgrading"></a>14.4. If You Are Upgrading</h2></div></div>
-<div></div>
-</div>
-<a name="id2573708"></a><p>   The internal data storage format changes with new releases of
-   <span class="productname">PostgreSQL</span>. Therefore, if you are upgrading an
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>If You Are Upgrading</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="  Installation Instructions"
+HREF="installation.html"><LINK
+REL="PREVIOUS"
+TITLE="Getting The Source"
+HREF="install-getsource.html"><LINK
+REL="NEXT"
+TITLE="Installation Procedure"
+HREF="install-procedure.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-getsource.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="installation.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 14. Installation Instructions</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="installation.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-procedure.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-UPGRADING"
+>14.4. If You Are Upgrading</A
+></H1
+><A
+NAME="AEN14897"
+></A
+><P
+>   The internal data storage format changes with new releases of
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. Therefore, if you are upgrading an
    existing installation that does not have a version number
-   &#8220;<span class="quote">8.0.x</span>&#8221;, you must back up and restore your
+   <SPAN
+CLASS="QUOTE"
+>"8.0.x"</SPAN
+>, you must back up and restore your
    data as shown here. These instructions assume that your existing
-   installation is under the <tt class="filename">/usr/local/pgsql</tt> directory,
-   and that the data area is in <tt class="filename">/usr/local/pgsql/data</tt>.
+   installation is under the <TT
+CLASS="FILENAME"
+>/usr/local/pgsql</TT
+> directory,
+   and that the data area is in <TT
+CLASS="FILENAME"
+>/usr/local/pgsql/data</TT
+>.
    Substitute your paths appropriately.
-  </p>
-<div class="procedure"><ol type="1">
-<li><p>     Make sure that your database is not updated during or after the
+  </P
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+><P
+>     Make sure that your database is not updated during or after the
      backup. This does not affect the integrity of the backup, but the
      changed data would of course not be included. If necessary, edit
      the permissions in the file
-     <tt class="filename">/usr/local/pgsql/data/pg_hba.conf</tt> (or equivalent) to
+     <TT
+CLASS="FILENAME"
+>/usr/local/pgsql/data/pg_hba.conf</TT
+> (or equivalent) to
      disallow access from everyone except you.
-    </p></li>
-<li>
-<p>     <a name="id2573772"></a>
+    </P
+></LI
+><LI
+><P
+>     <A
+NAME="AEN14910"
+></A
+>
 
      To back up your database installation, type:
-</p>
-<pre class="screen"><b class="userinput"><tt>pg_dumpall &gt; <i class="replaceable"><tt>outputfile</tt></i></tt></b></pre>
-<p>
+</P><PRE
+CLASS="SCREEN"
+><KBD
+CLASS="USERINPUT"
+>pg_dumpall &gt; <VAR
+CLASS="REPLACEABLE"
+>outputfile</VAR
+></KBD
+></PRE
+><P>
      If you need to preserve OIDs (such as when using them as
-     foreign keys), then use the <tt class="option">-o</tt> option when running
-     <span class="application">pg_dumpall</span>.
-    </p>
-<p>     <span class="application">pg_dumpall</span> does not
+     foreign keys), then use the <TT
+CLASS="OPTION"
+>-o</TT
+> option when running
+     <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+>.
+    </P
+><P
+>     <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> does not
      save large objects.  Check
      
-     <a href="backup.html#backup-dump-caveats" title="22.1.4. Caveats">Section 22.1.4, &#8220;Caveats&#8221;</a>
+     <A
+HREF="backup.html#BACKUP-DUMP-CAVEATS"
+>Section 22.1.4</A
+>
      if you need to do this.
-    </p>
-<p>     To make the backup, you can use the <span class="application">pg_dumpall</span>
+    </P
+><P
+>     To make the backup, you can use the <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+>
      command from the version you are currently running.  For best
-     results, however, try to use the <span class="application">pg_dumpall</span>
-     command from <span class="productname">PostgreSQL</span> 8.0.0beta2,
+     results, however, try to use the <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+>
+     command from <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0.0beta3,
      since this version contains bug fixes and improvements over older
      versions.  While this advice might seem idiosyncratic since you
      haven't installed the new version yet, it is advisable to follow
@@ -61,57 +199,186 @@
      old version.  In that case you can complete the installation
      normally and transfer the data later.  This will also decrease
      the downtime.
-    </p>
-</li>
-<li>
-<p>     If you are installing the new version at the same location as the
+    </P
+></LI
+><LI
+><P
+>     If you are installing the new version at the same location as the
      old one then shut down the old server, at the latest before you
      install the new files:
-</p>
-<pre class="screen"><b class="userinput"><tt>kill -INT `cat /usr/local/pgsql/data/postmaster.pid | sed 1q`</tt></b></pre>
-<p>
+</P><PRE
+CLASS="SCREEN"
+><KBD
+CLASS="USERINPUT"
+>kill -INT `cat /usr/local/pgsql/data/postmaster.pid | sed 1q`</KBD
+></PRE
+><P>
      Versions prior to 7.0 do not have this
-     <tt class="filename">postmaster.pid</tt> file. If you are using such a version
+     <TT
+CLASS="FILENAME"
+>postmaster.pid</TT
+> file. If you are using such a version
      you must find out the process ID of the server yourself, for
-     example by typing <b class="userinput"><tt>ps ax | grep postmaster</tt></b>, and
-     supply it to the <tt class="command">kill</tt> command.
-    </p>
-<p>     On systems that have <span class="productname">PostgreSQL</span> started at boot time, there is
+     example by typing <KBD
+CLASS="USERINPUT"
+>ps ax | grep postmaster</KBD
+>, and
+     supply it to the <TT
+CLASS="COMMAND"
+>kill</TT
+> command.
+    </P
+><P
+>     On systems that have <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> started at boot time, there is
      probably a start-up file that will accomplish the same thing. For
-     example, on a <span class="systemitem">Red Hat Linux</span> system one might find that
-</p>
-<pre class="screen"><b class="userinput"><tt>/etc/rc.d/init.d/postgresql stop</tt></b></pre>
-<p>
-     works.  Another possibility is <b class="userinput"><tt>pg_ctl stop</tt></b>.
-    </p>
-</li>
-<li>
-<p>     If you are installing in the same place as the old version then
+     example, on a <SPAN
+CLASS="SYSTEMITEM"
+>Red Hat Linux</SPAN
+> system one might find that
+</P><PRE
+CLASS="SCREEN"
+><KBD
+CLASS="USERINPUT"
+>/etc/rc.d/init.d/postgresql stop</KBD
+></PRE
+><P>
+     works.  Another possibility is <KBD
+CLASS="USERINPUT"
+>pg_ctl stop</KBD
+>.
+    </P
+></LI
+><LI
+><P
+>     If you are installing in the same place as the old version then
      it is also a good idea to move the old installation out of the
      way, in case you have trouble and need to revert to it.
      Use a command like this:
-</p>
-<pre class="screen"><b class="userinput"><tt>mv /usr/local/pgsql /usr/local/pgsql.old</tt></b></pre>
-<p>
-    </p>
-</li>
-</ol></div>
-<p>   After you have installed <span class="productname">PostgreSQL</span> 8.0.0beta2, create a new database
+</P><PRE
+CLASS="SCREEN"
+><KBD
+CLASS="USERINPUT"
+>mv /usr/local/pgsql /usr/local/pgsql.old</KBD
+></PRE
+><P>
+    </P
+></LI
+></OL
+></DIV
+><P
+>   After you have installed <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0.0beta3, create a new database
    directory and start the new server. Remember that you must execute
    these commands while logged in to the special database user account
    (which you already have if you are upgrading).
-</p>
-<pre class="programlisting"><b class="userinput"><tt>/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</tt></b>
-<b class="userinput"><tt>/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data</tt></b></pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+><KBD
+CLASS="USERINPUT"
+>/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</KBD
+>
+<KBD
+CLASS="USERINPUT"
+>/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data</KBD
+></PRE
+><P>
    Finally, restore your data with
-</p>
-<pre class="screen"><b class="userinput"><tt>/usr/local/pgsql/bin/psql -d template1 -f <i class="replaceable"><tt>outputfile</tt></i></tt></b></pre>
-<p>
-   using the <span class="emphasis"><em>new</em></span> <span class="application">psql</span>.
-  </p>
-<p>   These topics are discussed at length in  <a href="migration.html" title="22.4. Migration Between Releases">Section 22.4, &#8220;Migration Between Releases&#8221;</a>, which you are encouraged to read in any
+</P><PRE
+CLASS="SCREEN"
+><KBD
+CLASS="USERINPUT"
+>/usr/local/pgsql/bin/psql -d template1 -f <VAR
+CLASS="REPLACEABLE"
+>outputfile</VAR
+></KBD
+></PRE
+><P>
+   using the <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>new</I
+></SPAN
+> <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>.
+  </P
+><P
+>   These topics are discussed at length in  <A
+HREF="migration.html"
+>Section 22.4</A
+>, which you are encouraged to read in any
    case.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-getsource.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-procedure.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Getting The Source</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="installation.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Installation Procedure</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

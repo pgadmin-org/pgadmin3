@@ -1,82 +1,325 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CREATE GROUP</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createfunction.html" title="CREATE FUNCTION">
-<link rel="next" href="sql-createindex.html" title="CREATE INDEX">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-creategroup"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>CREATE GROUP &#8212; define a new user group</p>
-</div>
-<a name="id2669881"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">CREATE GROUP <i class="replaceable"><tt>name</tt></i> [ [ WITH ] <i class="replaceable"><tt>option</tt></i> [ ... ] ]
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>CREATE GROUP</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE FUNCTION"
+HREF="sql-createfunction.html"><LINK
+REL="NEXT"
+TITLE="CREATE INDEX"
+HREF="sql-createindex.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createfunction.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createfunction.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createindex.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createindex.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEGROUP"
+></A
+>CREATE GROUP</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN37691"
+></A
+><H2
+>Name</H2
+>CREATE GROUP&nbsp;--&nbsp;define a new user group</DIV
+><A
+NAME="AEN37694"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN37696"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE GROUP <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> [ [ WITH ] <VAR
+CLASS="REPLACEABLE"
+>option</VAR
+> [ ... ] ]
 
-where <i class="replaceable"><tt>option</tt></i> can be:
+where <VAR
+CLASS="REPLACEABLE"
+>option</VAR
+> can be:
 
-     SYSID <i class="replaceable"><tt>gid</tt></i>
-   | USER  <i class="replaceable"><tt>username</tt></i> [, ...]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2669927"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE GROUP</tt> will create a new group in the
+     SYSID <VAR
+CLASS="REPLACEABLE"
+>gid</VAR
+>
+   | USER  <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+> [, ...]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37703"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE GROUP</TT
+> will create a new group in the
    database cluster.  You must be a database
    superuser to use this command.
-  </p>
-<p>   Use <a href="sql-altergroup.html">ALTER GROUP</a>
-   to change a group's membership, and <a href="sql-dropgroup.html">DROP GROUP</a> to remove a group.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2669963"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>	The name of the group.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>gid</tt></i></span></dt>
-<dd>
-<p>        The <tt class="literal">SYSID</tt> clause can be used to choose
-        the <span class="productname">PostgreSQL</span> group ID of the new
+  </P
+><P
+>   Use <A
+HREF="sql-altergroup.html"
+><I
+>ALTER GROUP</I
+></A
+>
+   to change a group's membership, and <A
+HREF="sql-dropgroup.html"
+><I
+>DROP GROUP</I
+></A
+> to remove a group.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37710"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>	The name of the group.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>gid</VAR
+></DT
+><DD
+><P
+>        The <TT
+CLASS="LITERAL"
+>SYSID</TT
+> clause can be used to choose
+        the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> group ID of the new
         group. It is not necessary to do so, however.
-       </p>
-<p>        If this is not specified, the highest assigned group ID plus one,
+       </P
+><P
+>        If this is not specified, the highest assigned group ID plus one,
         starting at 1, will be used as default.
-       </p>
-</dd>
-<dt><span class="term"><i class="replaceable"><tt>username</tt></i></span></dt>
-<dd><p>        A list of users to include in the group. The users must already exist.
-       </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2670018"></a><h2>Examples</h2>
-<p>   Create an empty group:
-</p>
-<pre class="programlisting">CREATE GROUP staff;</pre>
-<p>
-  </p>
-<p>   Create a group with members:
-</p>
-<pre class="programlisting">CREATE GROUP marketing WITH USER jonathan, david;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2670039"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">CREATE GROUP</tt> statement in the SQL
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></DT
+><DD
+><P
+>        A list of users to include in the group. The users must already exist.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37731"
+></A
+><H2
+>Examples</H2
+><P
+>   Create an empty group:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE GROUP staff;</PRE
+><P>
+  </P
+><P
+>   Create a group with members:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE GROUP marketing WITH USER jonathan, david;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37737"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>CREATE GROUP</TT
+> statement in the SQL
    standard.  Roles are similar in concept to groups.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createfunction.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createindex.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE FUNCTION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE INDEX</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

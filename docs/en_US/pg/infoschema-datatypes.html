@@ -1,58 +1,257 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>30.2. Data Types</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="next" href="infoschema-information-schema-catalog-name.html" title="30.3. information_schema_catalog_name">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-datatypes"></a>30.2. Data Types</h2></div></div>
-<div></div>
-</div>
-<p>   The columns of the information schema views use special data types
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Data Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="NEXT"
+TITLE="information_schema_catalog_name"
+HREF="infoschema-information-schema-catalog-name.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 30. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-information-schema-catalog-name.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-DATATYPES"
+>30.2. Data Types</A
+></H1
+><P
+>   The columns of the information schema views use special data types
    that are defined in the information schema.  These are defined as
    simple domains over ordinary built-in types.  You should not use
    these types for work outside the information schema, but your
    applications must be prepared for them if they select from the
    information schema.
-  </p>
-<p>   These types are:
+  </P
+><P
+>   These types are:
 
-   </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="type">cardinal_number</tt></span></dt>
-<dd><p>       A nonnegative integer.
-      </p></dd>
-<dt><span class="term"><tt class="type">character_data</tt></span></dt>
-<dd><p>       A character string (without specific maximum length).
-      </p></dd>
-<dt><span class="term"><tt class="type">sql_identifier</tt></span></dt>
-<dd><p>       A character string.  This type is used for SQL identifiers, the
-       type <tt class="type">character_data</tt> is used for any other kind of
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></DT
+><DD
+><P
+>       A nonnegative integer.
+      </P
+></DD
+><DT
+><TT
+CLASS="TYPE"
+>character_data</TT
+></DT
+><DD
+><P
+>       A character string (without specific maximum length).
+      </P
+></DD
+><DT
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></DT
+><DD
+><P
+>       A character string.  This type is used for SQL identifiers, the
+       type <TT
+CLASS="TYPE"
+>character_data</TT
+> is used for any other kind of
        text data.
-      </p></dd>
-<dt><span class="term"><tt class="type">time_stamp</tt></span></dt>
-<dd><p>       A domain over the type <tt class="type">timestamp</tt>
-      </p></dd>
-</dl></div>
-<p>
+      </P
+></DD
+><DT
+><TT
+CLASS="TYPE"
+>time_stamp</TT
+></DT
+><DD
+><P
+>       A domain over the type <TT
+CLASS="TYPE"
+>timestamp</TT
+>
+      </P
+></DD
+></DL
+></DIV
+><P>
 
    Every column in the information schema has one of these four types.
-  </p>
-<p>   Boolean (true/false) data is represented in the information schema
-   by a column of type <tt class="type">character_data</tt> that contains
-   either <tt class="literal">YES</tt> or <tt class="literal">NO</tt>.  (The
+  </P
+><P
+>   Boolean (true/false) data is represented in the information schema
+   by a column of type <TT
+CLASS="TYPE"
+>character_data</TT
+> that contains
+   either <TT
+CLASS="LITERAL"
+>YES</TT
+> or <TT
+CLASS="LITERAL"
+>NO</TT
+>.  (The
    information schema was invented before the type
-   <tt class="type">boolean</tt> was added to the SQL standard, so this
+   <TT
+CLASS="TYPE"
+>boolean</TT
+> was added to the SQL standard, so this
    convention is necessary to keep the information schema backward
    compatible.)
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-information-schema-catalog-name.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The Information Schema</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>information_schema_catalog_name</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

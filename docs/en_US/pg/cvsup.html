@@ -1,123 +1,340 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>F.3. Getting The Source Via CVSup</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="cvs.html" title="Appendix F. The CVS Repository">
-<link rel="previous" href="cvs-tree.html" title="F.2. CVS Tree Organization">
-<link rel="next" href="docguide.html" title="Appendix G. Documentation">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="cvsup"></a>F.3. Getting The Source Via <span class="productname">CVSup</span></h2></div></div>
-<div></div>
-</div>
-<p>   An alternative to using anonymous CVS for retrieving
-   the <span class="productname">PostgreSQL</span> source tree
-   is <span class="productname">CVSup</span>.
-   <span class="productname">CVSup</span> was developed by
-   John Polstra (<tt class="email">&lt;<a href="mailto:jdp@polstra.com">jdp@polstra.com</a>&gt;</tt>) to
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Getting The Source Via CVSup</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The CVS Repository"
+HREF="cvs.html"><LINK
+REL="PREVIOUS"
+TITLE="CVS Tree Organization"
+HREF="cvs-tree.html"><LINK
+REL="NEXT"
+TITLE="Documentation"
+HREF="docguide.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cvs-tree.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cvs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix F. The <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Repository</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cvs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="docguide.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CVSUP"
+>F.3. Getting The Source Via <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+></A
+></H1
+><P
+>   An alternative to using anonymous CVS for retrieving
+   the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> source tree
+   is <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+>.
+   <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> was developed by
+   John Polstra (<CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:jdp@polstra.com"
+>jdp@polstra.com</A
+>&#62;</CODE
+>) to
    distribute CVS repositories and other file trees for
-   <a href="http://www.freebsd.org" target="_top">the FreeBSD project</a>.
-  </p>
-<p>   A major advantage to using
-   <span class="productname">CVSup</span> is that it can reliably
-   replicate the <span class="emphasis"><em>entire</em></span> CVS repository on your local system,
-   allowing fast local access to cvs operations such as <tt class="option">log</tt>
-   and <tt class="option">diff</tt>. Other advantages include fast synchronization to
-   the <span class="productname">PostgreSQL</span> server due to an efficient
+   <A
+HREF="http://www.freebsd.org"
+TARGET="_top"
+>the FreeBSD project</A
+>.
+  </P
+><P
+>   A major advantage to using
+   <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> is that it can reliably
+   replicate the <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>entire</I
+></SPAN
+> CVS repository on your local system,
+   allowing fast local access to cvs operations such as <TT
+CLASS="OPTION"
+>log</TT
+>
+   and <TT
+CLASS="OPTION"
+>diff</TT
+>. Other advantages include fast synchronization to
+   the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server due to an efficient
    streaming transfer protocol which only sends the changes since the last update.
-  </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2770428"></a>F.3.1. Preparing A <span class="productname">CVSup</span> Client System</h3></div></div>
-<div></div>
-</div>
-<p>    Two directory areas are required for <span class="productname">CVSup</span>
-    to do it's job: a local <span class="productname">CVS</span> repository
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN68880"
+>F.3.1. Preparing A <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> Client System</A
+></H2
+><P
+>    Two directory areas are required for <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+>
+    to do it's job: a local <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> repository
     (or simply a directory area if you are fetching a snapshot rather
     than a repository; see below)
-    and a local <span class="productname">CVSup</span> bookkeeping
+    and a local <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> bookkeeping
     area. These can coexist in the same directory tree.
-   </p>
-<p>    Decide where you want to keep your local copy of the
-    <span class="productname">CVS</span> repository. On one of our systems we
-    recently set up a repository in <tt class="filename">/home/cvs/</tt>,
+   </P
+><P
+>    Decide where you want to keep your local copy of the
+    <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> repository. On one of our systems we
+    recently set up a repository in <TT
+CLASS="FILENAME"
+>/home/cvs/</TT
+>,
     but had formerly kept it under a
-    <span class="productname">PostgreSQL</span> development tree in
-    <tt class="filename">/opt/postgres/cvs/</tt>. If you intend to keep your
-    repository in <tt class="filename">/home/cvs/</tt>, then put
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> development tree in
+    <TT
+CLASS="FILENAME"
+>/opt/postgres/cvs/</TT
+>. If you intend to keep your
+    repository in <TT
+CLASS="FILENAME"
+>/home/cvs/</TT
+>, then put
 
-    </p>
-<pre class="programlisting">setenv CVSROOT /home/cvs
-    </pre>
-<p>
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>setenv CVSROOT /home/cvs
+    </PRE
+><P>
 
-    in your <tt class="filename">.cshrc</tt> file, or a similar line in
-    your <tt class="filename">.bashrc</tt> or
-    <tt class="filename">.profile</tt> file, depending on your shell.
-   </p>
-<p>    The <span class="application">cvs</span> repository area must be initialized.
-    Once <tt class="envar">CVSROOT</tt> is set, then this can be done with a
+    in your <TT
+CLASS="FILENAME"
+>.cshrc</TT
+> file, or a similar line in
+    your <TT
+CLASS="FILENAME"
+>.bashrc</TT
+> or
+    <TT
+CLASS="FILENAME"
+>.profile</TT
+> file, depending on your shell.
+   </P
+><P
+>    The <SPAN
+CLASS="APPLICATION"
+>cvs</SPAN
+> repository area must be initialized.
+    Once <TT
+CLASS="ENVAR"
+>CVSROOT</TT
+> is set, then this can be done with a
     single command:
 
-    </p>
-<pre class="programlisting">$ cvs init
-    </pre>
-<p>
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>$ cvs init
+    </PRE
+><P>
 
     after which you should see at least a directory named
-    <tt class="filename">CVSROOT</tt> when listing the
-    <tt class="envar">CVSROOT</tt> directory:
+    <TT
+CLASS="FILENAME"
+>CVSROOT</TT
+> when listing the
+    <TT
+CLASS="ENVAR"
+>CVSROOT</TT
+> directory:
 
-    </p>
-<pre class="programlisting">$ ls $CVSROOT
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>$ ls $CVSROOT
 CVSROOT/
-    </pre>
-<p>
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2770560"></a>F.3.2. Running a <span class="productname">CVSup</span> Client</h3></div></div>
-<div></div>
-</div>
-<p>    Verify that
-    <span class="application">cvsup</span> is in your path; on most systems
+    </PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN68904"
+>F.3.2. Running a <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> Client</A
+></H2
+><P
+>    Verify that
+    <SPAN
+CLASS="APPLICATION"
+>cvsup</SPAN
+> is in your path; on most systems
     you can do this by typing
 
-    </p>
-<pre class="programlisting">which cvsup
-    </pre>
-<p>
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>which cvsup
+    </PRE
+><P>
 
     Then, simply run
-    <span class="application">cvsup</span> using:
+    <SPAN
+CLASS="APPLICATION"
+>cvsup</SPAN
+> using:
 
-    </p>
-<pre class="programlisting">$ cvsup -L 2 <i class="replaceable"><tt>postgres.cvsup</tt></i>
-    </pre>
-<p>
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>$ cvsup -L 2 <VAR
+CLASS="REPLACEABLE"
+>postgres.cvsup</VAR
+>
+    </PRE
+><P>
 
-    where <tt class="option">-L 2</tt> enables some status messages so you
+    where <TT
+CLASS="OPTION"
+>-L 2</TT
+> enables some status messages so you
     can monitor the progress of the update,
-    and <i class="replaceable"><tt>postgres.cvsup</tt></i> is
+    and <VAR
+CLASS="REPLACEABLE"
+>postgres.cvsup</VAR
+> is
     the path and name you have given to your
-    <span class="productname">CVSup</span> configuration file.
-   </p>
-<p>    Here is a <span class="productname">CVSup</span> configuration file
+    <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> configuration file.
+   </P
+><P
+>    Here is a <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> configuration file
     modified for a specific installation, and which maintains a full
-    local <span class="productname">CVS</span> repository:
+    local <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> repository:
 
-    </p>
-<pre class="programlisting"># This file represents the standard CVSup distribution file
-# for the <span class="productname">PostgreSQL</span> ORDBMS project
+    </P><PRE
+CLASS="PROGRAMLISTING"
+># This file represents the standard CVSup distribution file
+# for the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> ORDBMS project
 # Modified by lockhart@fourpalms.org 1997-08-28
 # - Point to my local snapshot source tree
 # - Pull the full CVS repository, not just the latest snapshot
@@ -149,31 +366,31 @@ pgsql
 # pgsql-perl5
 # pgsql-src
 
-   </pre>
-<p>
-   </p>
-<p>    If you specify <tt class="option">repository</tt> instead of <tt class="option">pgsql</tt>
-    in the above setup, you will get a complete copy of the entire
-    repository at cvsup.postgresql.org, including its
-    <tt class="filename">CVSROOT</tt> directory. If you do that, you will
-    probably want to exclude those files in that directory that you
-    want to modify locally, using a refuse file. For example, for the
-    above setup you might put this in
-    <tt class="filename">/home/cvs/sup/repository/refuse</tt>:
-</p>
-<pre class="programlisting">CVSROOT/config*
-CVSROOT/commitinfo*
-CVSROOT/loginfo*</pre>
-<p>
-    See the <span class="productname">CVSup</span> manual pages for how to use refuse files.
-   </p>
-<p>    The following is a suggested <span class="productname">CVSup</span> config file from
-    <a href="ftp://ftp.postgresql.org/pub/CVSup/README.cvsup" target="_top">the <span class="productname">PostgreSQL</span> ftp site</a>
+   </PRE
+><P>
+   </P
+><P
+>    The following is a suggested <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> config file from
+    <A
+HREF="ftp://ftp.postgresql.org/pub/CVSup/README.cvsup"
+TARGET="_top"
+>the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> ftp site</A
+>
     which will fetch the current snapshot only:
 
-    </p>
-<pre class="programlisting"># This file represents the standard CVSup distribution file
-# for the <span class="productname">PostgreSQL</span> ORDBMS project
+    </P><PRE
+CLASS="PROGRAMLISTING"
+># This file represents the standard CVSup distribution file
+# for the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> ORDBMS project
 #
 # Defaults that apply to all the collections
 *default host=cvsup.postgresql.org
@@ -183,10 +400,16 @@ CVSROOT/loginfo*</pre>
 *default tag=.
 
 # base directory where CVSup will store its 'bookmarks' file(s)
-*default base=<i class="replaceable"><tt>/usr/local/pgsql</tt></i>
+*default base=<VAR
+CLASS="REPLACEABLE"
+>/usr/local/pgsql</VAR
+>
 
 # prefix directory where CVSup will store the actual distribution(s)
-*default prefix=<i class="replaceable"><tt>/usr/local/pgsql</tt></i>
+*default prefix=<VAR
+CLASS="REPLACEABLE"
+>/usr/local/pgsql</VAR
+>
 
 # complete distribution, including all below
 pgsql
@@ -196,203 +419,414 @@ pgsql
 # pgsql-perl5
 # pgsql-src
 
-    </pre>
-<p>
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2770764"></a>F.3.3. Installing <span class="productname">CVSup</span></h3></div></div>
-<div></div>
-</div>
-<p>    <span class="productname">CVSup</span> is available as source, pre-built
+    </PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN68929"
+>F.3.3. Installing <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+></A
+></H2
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> is available as source, pre-built
     binaries, or Linux RPMs. It is far easier to use a binary than to
     build from source, primarily because the very capable, but
     voluminous, Modula-3 compiler is required for the build.
-   </p>
-<div class="procedure">
-<p class="title"><b><span class="productname">CVSup</span> Installation from Binaries</b></p>
-<p>     You can use pre-built binaries
+   </P
+><DIV
+CLASS="PROCEDURE"
+><P
+><B
+><SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> Installation from Binaries</B
+></P
+><P
+>     You can use pre-built binaries
      if you have a platform for which binaries
      are posted on
-     <a href="ftp://ftp.postgresql.org/pub" target="_top">the <span class="productname">PostgreSQL</span> ftp site</a>,
+     <A
+HREF="ftp://ftp.postgresql.org/pub"
+TARGET="_top"
+>the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> ftp site</A
+>,
      or if you are running FreeBSD, for which
-     <span class="productname">CVSup</span> is available as a port.
+     <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> is available as a port.
 
-     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>       <span class="productname">CVSup</span> was originally developed as a
-       tool for distributing the <span class="productname">FreeBSD</span>
-       source tree. It is available as a &#8220;<span class="quote">port</span>&#8221;, and for those running
+     </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> was originally developed as a
+       tool for distributing the <SPAN
+CLASS="PRODUCTNAME"
+>FreeBSD</SPAN
+>
+       source tree. It is available as a <SPAN
+CLASS="QUOTE"
+>"port"</SPAN
+>, and for those running
        FreeBSD, if this is not sufficient to tell how to obtain and
        install it then please contribute a procedure here.
-      </p>
-</div>
-<p>
-    </p>
-<p>     At the time of writing, binaries are available for
+      </P
+></BLOCKQUOTE
+></DIV
+><P>
+    </P
+><P
+>     At the time of writing, binaries are available for
      Alpha/Tru64, ix86/xBSD,
      HPPA/HP-UX 10.20, MIPS/IRIX,
      ix86/linux-libc5, ix86/linux-glibc,
      Sparc/Solaris, and Sparc/SunOS.
-    </p>
-<ol type="1">
-<li>
-<p>      Retrieve the binary tar file for
-      <span class="application">cvsup</span>
-      (<span class="application">cvsupd</span> is not required
+    </P
+><OL
+TYPE="1"
+><LI
+><P
+>      Retrieve the binary tar file for
+      <SPAN
+CLASS="APPLICATION"
+>cvsup</SPAN
+>
+      (<SPAN
+CLASS="APPLICATION"
+>cvsupd</SPAN
+> is not required
       to be a client) appropriate for your platform.
-     </p>
-<ol type="a">
-<li><p>	If you are running FreeBSD, install the <span class="productname">CVSup</span> port.
-       </p></li>
-<li><p>	If you have another platform, check for and download the appropriate binary from
-	<a href="ftp://ftp.postgresql.org/pub" target="_top">the <span class="productname">PostgreSQL</span> ftp site</a>.
-       </p></li>
-</ol>
-</li>
-<li>
-<p>      Check the tar file to verify the contents and directory
+     </P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+><P
+>	If you are running FreeBSD, install the <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> port.
+       </P
+></LI
+><LI
+><P
+>	If you have another platform, check for and download the appropriate binary from
+	<A
+HREF="ftp://ftp.postgresql.org/pub"
+TARGET="_top"
+>the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> ftp site</A
+>.
+       </P
+></LI
+></OL
+></LI
+><LI
+><P
+>      Check the tar file to verify the contents and directory
       structure, if any. For the linux tar file at least, the static binary
       and man page is included without any directory packaging.
-     </p>
-<ol type="a">
-<li>
-<p>	If the binary is in the top level of the tar file, then simply
+     </P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+><P
+>	If the binary is in the top level of the tar file, then simply
 	unpack the tar file into your target directory:
 
-	</p>
-<pre class="programlisting">$ cd /usr/local/bin
+	</P><PRE
+CLASS="PROGRAMLISTING"
+>$ cd /usr/local/bin
 $ tar zxvf /usr/local/src/cvsup-16.0-linux-i386.tar.gz
 $ mv cvsup.1 ../doc/man/man1/
-	</pre>
-<p>
-       </p>
-</li>
-<li><p>	If there is a directory structure in the tar file, then unpack
+	</PRE
+><P>
+       </P
+></LI
+><LI
+><P
+>	If there is a directory structure in the tar file, then unpack
 	the tar file within /usr/local/src and move the binaries into
 	the appropriate location as above.
-       </p></li>
-</ol>
-</li>
-<li>
-<p>      Ensure that the new binaries are in your path.
+       </P
+></LI
+></OL
+></LI
+><LI
+><P
+>      Ensure that the new binaries are in your path.
 
-      </p>
-<pre class="programlisting">$ rehash
+      </P><PRE
+CLASS="PROGRAMLISTING"
+>$ rehash
 $ which cvsup
-$ set path=(<i class="replaceable"><tt>path to cvsup</tt></i> $path)
+$ set path=(<VAR
+CLASS="REPLACEABLE"
+>path to cvsup</VAR
+> $path)
 $ which cvsup
 /usr/local/bin/cvsup
-      </pre>
-<p>
-     </p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2770954"></a>F.3.4. Installation from Sources</h3></div></div>
-<div></div>
-</div>
-<p>    Installing <span class="productname">CVSup</span> from sources is not
+      </PRE
+><P>
+     </P
+></LI
+></OL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN68971"
+>F.3.4. Installation from Sources</A
+></H2
+><P
+>    Installing <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+> from sources is not
     entirely trivial, primarily because most systems will need to
     install a Modula-3 compiler first.
-    This compiler is available as Linux <span class="productname">RPM</span>,
+    This compiler is available as Linux <SPAN
+CLASS="PRODUCTNAME"
+>RPM</SPAN
+>,
     FreeBSD package, or source code.
 
-    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>      A clean-source installation of Modula-3 takes roughly 200MB of disk space,
-      which shrinks to roughly 50MB of space when the sources are removed.</p>
-</div>
-<p>
-   </p>
-<div class="procedure">
-<p class="title"><b>Linux installation</b></p>
-<ol type="1">
-<li>
-<p>      Install Modula-3.
-     </p>
-<ol type="a">
-<li>
-<p>	Pick up the <span class="productname">Modula-3</span>
+    </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      A clean-source installation of Modula-3 takes roughly 200MB of disk space,
+      which shrinks to roughly 50MB of space when the sources are removed.</P
+></BLOCKQUOTE
+></DIV
+><P>
+   </P
+><DIV
+CLASS="PROCEDURE"
+><P
+><B
+>Linux installation</B
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>      Install Modula-3.
+     </P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+><P
+>	Pick up the <SPAN
+CLASS="PRODUCTNAME"
+>Modula-3</SPAN
+>
 	distribution from
-	<a href="http://m3.polymtl.ca/m3" target="_top">Polytechnique Montréal</a>,
+	<A
+HREF="http://m3.polymtl.ca/m3"
+TARGET="_top"
+>Polytechnique Montréal</A
+>,
 	who are actively maintaining the code base originally developed by
-	<a href="http://www.research.digital.com/SRC/modula-3/html/home.html" target="_top">the DEC Systems Research Center</a>.
-       The <span class="productname">PM3</span> <span class="productname">RPM</span> distribution is roughly
+	<A
+HREF="http://www.research.digital.com/SRC/modula-3/html/home.html"
+TARGET="_top"
+>the DEC Systems Research Center</A
+>.
+       The <SPAN
+CLASS="PRODUCTNAME"
+>PM3</SPAN
+> <SPAN
+CLASS="PRODUCTNAME"
+>RPM</SPAN
+> distribution is roughly
 	30MB compressed. At the time of writing, the 1.1.10-1 release
 	installed cleanly on RH-5.2, whereas the 1.1.11-1 release is
 	apparently built for another release (RH-6.0?) and does not run on RH-5.2.
 
-	</p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>	  This particular rpm packaging has
-	  <span class="emphasis"><em>many</em></span> <span class="productname">RPM</span> files,
+	<DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	  This particular rpm packaging has
+	  <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>many</I
+></SPAN
+> <SPAN
+CLASS="PRODUCTNAME"
+>RPM</SPAN
+> files,
 	  so you will likely want to place them into a separate
 	  directory.
-	 </p>
-</div>
-<p>
-       </p>
-</li>
-<li>
-<p>	Install the Modula-3 rpms:
+	 </P
+></BLOCKQUOTE
+></DIV
+>
+       </P
+></LI
+><LI
+><P
+>	Install the Modula-3 rpms:
 
-	</p>
-<pre class="programlisting"># rpm -Uvh pm3*.rpm
-	</pre>
-<p>
-       </p>
-</li>
-</ol>
-</li>
-<li>
-<p>     Unpack the cvsup distribution:
+	</P><PRE
+CLASS="PROGRAMLISTING"
+># rpm -Uvh pm3*.rpm
+	</PRE
+><P>
+       </P
+></LI
+></OL
+></LI
+><LI
+><P
+>     Unpack the cvsup distribution:
 
-      </p>
-<pre class="programlisting"># cd /usr/local/src
+      </P><PRE
+CLASS="PROGRAMLISTING"
+># cd /usr/local/src
 # tar zxf cvsup-16.0.tar.gz
-      </pre>
-<p>
-     </p>
-</li>
-<li>
-<p>      Build the cvsup distribution, suppressing the GUI interface
+      </PRE
+><P>
+     </P
+></LI
+><LI
+><P
+>      Build the cvsup distribution, suppressing the GUI interface
       feature to avoid requiring X11 libraries:
 
-      </p>
-<pre class="programlisting"># make M3FLAGS="-DNOGUI"
-      </pre>
-<p>
+      </P><PRE
+CLASS="PROGRAMLISTING"
+># make M3FLAGS="-DNOGUI"
+      </PRE
+><P>
 
       and if you want to build a static binary to move to systems
       that may not have Modula-3 installed, try:
 
-      </p>
-<pre class="programlisting"># make M3FLAGS="-DNOGUI -DSTATIC"
-      </pre>
-<p>
-     </p>
-</li>
-<li>
-<p>      Install the built binary:
+      </P><PRE
+CLASS="PROGRAMLISTING"
+># make M3FLAGS="-DNOGUI -DSTATIC"
+      </PRE
+><P>
+     </P
+></LI
+><LI
+><P
+>      Install the built binary:
 
-      </p>
-<pre class="programlisting"># make M3FLAGS="-DNOGUI -DSTATIC" install
-      </pre>
-<p>
-     </p>
-</li>
-</ol>
-</div>
-</div>
-</div></body>
-</html>
+      </P><PRE
+CLASS="PROGRAMLISTING"
+># make M3FLAGS="-DNOGUI -DSTATIC" install
+      </PRE
+><P>
+     </P
+></LI
+></OL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cvs-tree.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="docguide.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Tree Organization</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cvs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Documentation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

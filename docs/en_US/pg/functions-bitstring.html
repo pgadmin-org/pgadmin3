@@ -1,121 +1,461 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.6. Bit String Functions and Operators</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
-<link rel="next" href="functions-matching.html" title="9.7. Pattern Matching">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-bitstring"></a>9.6. Bit String Functions and Operators</h2></div></div>
-<div></div>
-</div>
-<a name="id2547506"></a><p>    This section describes functions and operators for examining and
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Bit String Functions and Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Binary String Functions and Operators"
+HREF="functions-binarystring.html"><LINK
+REL="NEXT"
+TITLE="Pattern Matching"
+HREF="functions-matching.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-binarystring.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-matching.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-BITSTRING"
+>9.6. Bit String Functions and Operators</A
+></H1
+><A
+NAME="AEN8254"
+></A
+><P
+>    This section describes functions and operators for examining and
     manipulating bit strings, that is values of the types
-    <tt class="type">bit</tt> and <tt class="type">bit varying</tt>.  Aside from the
+    <TT
+CLASS="TYPE"
+>bit</TT
+> and <TT
+CLASS="TYPE"
+>bit varying</TT
+>.  Aside from the
     usual comparison operators, the operators
-    shown in <a href="functions-bitstring.html#functions-bit-string-op-table" title="Table 9.10. Bit String Operators">Table 9.10, &#8220;Bit String Operators&#8221;</a> can be used.
-    Bit string operands of <tt class="literal">&amp;</tt>, <tt class="literal">|</tt>,
-    and <tt class="literal">#</tt> must be of equal length.  When bit
+    shown in <A
+HREF="functions-bitstring.html#FUNCTIONS-BIT-STRING-OP-TABLE"
+>Table 9-10</A
+> can be used.
+    Bit string operands of <TT
+CLASS="LITERAL"
+>&amp;</TT
+>, <TT
+CLASS="LITERAL"
+>|</TT
+>,
+    and <TT
+CLASS="LITERAL"
+>#</TT
+> must be of equal length.  When bit
     shifting, the original length of the string is preserved, as shown
     in the examples.
-   </p>
-<div class="table">
-<a name="functions-bit-string-op-table"></a><p class="title"><b>Table 9.10. Bit String Operators</b></p>
-<table summary="Bit String Operators" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Operator</th>
-<th>Description</th>
-<th>Example</th>
-<th>Result</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="literal">||</tt></td>
-<td>concatenation</td>
-<td><tt class="literal">B'10001' || B'011'</tt></td>
-<td><tt class="literal">10001011</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">&amp;</tt></td>
-<td>bitwise AND</td>
-<td><tt class="literal">B'10001' &amp; B'01101'</tt></td>
-<td><tt class="literal">00001</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">|</tt></td>
-<td>bitwise OR</td>
-<td><tt class="literal">B'10001' | B'01101'</tt></td>
-<td><tt class="literal">11101</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">#</tt></td>
-<td>bitwise XOR</td>
-<td><tt class="literal">B'10001' # B'01101'</tt></td>
-<td><tt class="literal">11100</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">~</tt></td>
-<td>bitwise NOT</td>
-<td><tt class="literal">~ B'10001'</tt></td>
-<td><tt class="literal">01110</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">&lt;&lt;</tt></td>
-<td>bitwise shift left</td>
-<td><tt class="literal">B'10001' &lt;&lt; 3</tt></td>
-<td><tt class="literal">01000</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">&gt;&gt;</tt></td>
-<td>bitwise shift right</td>
-<td><tt class="literal">B'10001' &gt;&gt; 2</tt></td>
-<td><tt class="literal">00100</tt></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>    The following <span class="acronym">SQL</span>-standard functions work on bit
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-BIT-STRING-OP-TABLE"
+></A
+><P
+><B
+>Table 9-10. Bit String Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Operator</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>||</TT
+> </TD
+><TD
+>concatenation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' || B'011'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>10001011</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&amp;</TT
+> </TD
+><TD
+>bitwise AND</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' &amp; B'01101'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>00001</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>|</TT
+> </TD
+><TD
+>bitwise OR</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' | B'01101'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>11101</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>#</TT
+> </TD
+><TD
+>bitwise XOR</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' # B'01101'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>11100</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>~</TT
+> </TD
+><TD
+>bitwise NOT</TD
+><TD
+><TT
+CLASS="LITERAL"
+>~ B'10001'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>01110</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;&lt;</TT
+> </TD
+><TD
+>bitwise shift left</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' &lt;&lt; 3</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>01000</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&gt;&gt;</TT
+> </TD
+><TD
+>bitwise shift right</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' &gt;&gt; 2</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>00100</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    The following <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>-standard functions work on bit
     strings as well as character strings:
-    <tt class="literal"><tt class="function">length</tt></tt>,
-    <tt class="literal"><tt class="function">bit_length</tt></tt>,
-    <tt class="literal"><tt class="function">octet_length</tt></tt>,
-    <tt class="literal"><tt class="function">position</tt></tt>,
-    <tt class="literal"><tt class="function">substring</tt></tt>.
-   </p>
-<p>    In addition, it is possible to cast integral values to and from type
-    <tt class="type">bit</tt>.
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>length</CODE
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>bit_length</CODE
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>octet_length</CODE
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>position</CODE
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>substring</CODE
+></TT
+>.
+   </P
+><P
+>    In addition, it is possible to cast integral values to and from type
+    <TT
+CLASS="TYPE"
+>bit</TT
+>.
     Some examples:
-</p>
-<pre class="programlisting">44::bit(10)                    <i class="lineannotation"><span class="lineannotation">0000101100</span></i>
-44::bit(3)                     <i class="lineannotation"><span class="lineannotation">100</span></i>
-cast(-44 as bit(12))           <i class="lineannotation"><span class="lineannotation">111111010100</span></i>
-'1110'::bit(4)::integer        <i class="lineannotation"><span class="lineannotation">14</span></i></pre>
-<p>
-    Note that casting to just &#8220;<span class="quote">bit</span>&#8221; means casting to
-    <tt class="literal">bit(1)</tt>, and so it will deliver only the least significant
+</P><PRE
+CLASS="PROGRAMLISTING"
+>44::bit(10)                    <I
+CLASS="LINEANNOTATION"
+>0000101100</I
+>
+44::bit(3)                     <I
+CLASS="LINEANNOTATION"
+>100</I
+>
+cast(-44 as bit(12))           <I
+CLASS="LINEANNOTATION"
+>111111010100</I
+>
+'1110'::bit(4)::integer        <I
+CLASS="LINEANNOTATION"
+>14</I
+></PRE
+><P>
+    Note that casting to just <SPAN
+CLASS="QUOTE"
+>"bit"</SPAN
+> means casting to
+    <TT
+CLASS="LITERAL"
+>bit(1)</TT
+>, and so it will deliver only the least significant
     bit of the integer.
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>      Prior to <span class="productname">PostgreSQL</span> 8.0, casting an
-      integer to <tt class="type">bit(n)</tt> would copy the leftmost <tt class="literal">n</tt>
-      bits of the integer, whereas now it copies the rightmost <tt class="literal">n</tt>
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0, casting an
+      integer to <TT
+CLASS="TYPE"
+>bit(n)</TT
+> would copy the leftmost <TT
+CLASS="LITERAL"
+>n</TT
+>
+      bits of the integer, whereas now it copies the rightmost <TT
+CLASS="LITERAL"
+>n</TT
+>
       bits.  Also, casting an integer to a bit string width wider than
       the integer itself will sign-extend on the left.
-     </p>
-</div>
-</div></body>
-</html>
+     </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-binarystring.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-matching.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Binary String Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Pattern Matching</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

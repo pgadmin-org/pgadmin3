@@ -1,162 +1,737 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Part VII. Internals</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="up" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
-<link rel="previous" href="app-postmaster.html" title="postmaster">
-<link rel="next" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="internals">
-<div class="titlepage">
-<div><div><h1 class="title">
-<a name="internals"></a>Internals</h1></div></div>
-<div></div>
-</div>
-<div class="partintro" lang="en" id="id2717411">
-<div>
-<div></div>
-<div></div>
-</div>
-<p>    This part contains assorted information that can be of use to
-    <span class="productname">PostgreSQL</span> developers.
-   </p>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="chapter"><a href="overview.html">40. Overview of PostgreSQL Internals</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="overview.html#query-path">40.1. The Path of a Query</a></span></dt>
-<dt><span class="sect1"><a href="connect-estab.html">40.2. How Connections are Established</a></span></dt>
-<dt><span class="sect1"><a href="parser-stage.html">40.3. The Parser Stage</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="parser-stage.html#id2717808">40.3.1. Parser</a></span></dt>
-<dt><span class="sect2"><a href="parser-stage.html#id2717993">40.3.2. Transformation Process</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="rule-system.html">40.4. The PostgreSQL Rule System</a></span></dt>
-<dt><span class="sect1"><a href="planner-optimizer.html">40.5. Planner/Optimizer</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id2718236">40.5.1. Generating Possible Plans</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="executor.html">40.6. Executor</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="catalogs.html">41. System Catalogs</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="catalogs.html#catalogs-overview">41.1. Overview</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-aggregate.html">41.2. pg_aggregate</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-am.html">41.3. pg_am</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-amop.html">41.4. pg_amop</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-amproc.html">41.5. pg_amproc</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-attrdef.html">41.6. pg_attrdef</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-attribute.html">41.7. pg_attribute</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-cast.html">41.8. pg_cast</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-class.html">41.9. pg_class</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-constraint.html">41.10. pg_constraint</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-conversion.html">41.11. pg_conversion</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-database.html">41.12. pg_database</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-depend.html">41.13. pg_depend</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-description.html">41.14. pg_description</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-group.html">41.15. pg_group</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-index.html">41.16. pg_index</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-inherits.html">41.17. pg_inherits</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-language.html">41.18. pg_language</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-largeobject.html">41.19. pg_largeobject</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-listener.html">41.20. pg_listener</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-namespace.html">41.21. pg_namespace</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-opclass.html">41.22. pg_opclass</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-operator.html">41.23. pg_operator</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-proc.html">41.24. pg_proc</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-rewrite.html">41.25. pg_rewrite</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-shadow.html">41.26. pg_shadow</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-statistic.html">41.27. pg_statistic</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-tablespace.html">41.28. pg_tablespace</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-trigger.html">41.29. pg_trigger</a></span></dt>
-<dt><span class="sect1"><a href="catalog-pg-type.html">41.30. pg_type</a></span></dt>
-<dt><span class="sect1"><a href="views-overview.html">41.31. System Views</a></span></dt>
-<dt><span class="sect1"><a href="view-pg-indexes.html">41.32. pg_indexes</a></span></dt>
-<dt><span class="sect1"><a href="view-pg-locks.html">41.33. pg_locks</a></span></dt>
-<dt><span class="sect1"><a href="view-pg-rules.html">41.34. pg_rules</a></span></dt>
-<dt><span class="sect1"><a href="view-pg-settings.html">41.35. pg_settings</a></span></dt>
-<dt><span class="sect1"><a href="view-pg-stats.html">41.36. pg_stats</a></span></dt>
-<dt><span class="sect1"><a href="view-pg-tables.html">41.37. pg_tables</a></span></dt>
-<dt><span class="sect1"><a href="view-pg-user.html">41.38. pg_user</a></span></dt>
-<dt><span class="sect1"><a href="view-pg-views.html">41.39. pg_views</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="protocol.html">42. Frontend/Backend Protocol</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="protocol.html#protocol-overview">42.1. Overview</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="protocol.html#protocol-message-concepts">42.1.1. Messaging Overview</a></span></dt>
-<dt><span class="sect2"><a href="protocol.html#protocol-query-concepts">42.1.2. Extended Query Overview</a></span></dt>
-<dt><span class="sect2"><a href="protocol.html#protocol-format-codes">42.1.3. Formats and Format Codes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="protocol-flow.html">42.2. Message Flow</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="protocol-flow.html#id2728955">42.2.1. Start-Up</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2729209">42.2.2. Simple Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2729446">42.2.3. Extended Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2729739">42.2.4. Function Call</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#protocol-copy">42.2.5. COPY Operations</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#protocol-async">42.2.6. Asynchronous Operations</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2730126">42.2.7. Cancelling Requests in Progress</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2730188">42.2.8. Termination</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2730244">42.2.9. SSL Session Encryption</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="protocol-message-types.html">42.3. Message Data Types</a></span></dt>
-<dt><span class="sect1"><a href="protocol-message-formats.html">42.4. Message Formats</a></span></dt>
-<dt><span class="sect1"><a href="protocol-error-fields.html">42.5. Error and Notice Message Fields</a></span></dt>
-<dt><span class="sect1"><a href="protocol-changes.html">42.6. Summary of Changes since Protocol 2.0</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="source.html">43. PostgreSQL Coding Conventions</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="source.html#source-format">43.1. Formatting</a></span></dt>
-<dt><span class="sect1"><a href="error-message-reporting.html">43.2. Reporting Errors Within the Server</a></span></dt>
-<dt><span class="sect1"><a href="error-style-guide.html">43.3. Error Message Style Guide</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="nls.html">44. Native Language Support</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="nls.html#nls-translator">44.1. For the Translator</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="nls.html#id2734396">44.1.1. Requirements</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2734464">44.1.2. Concepts</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2734590">44.1.3. Creating and maintaining message catalogs</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2734769">44.1.4. Editing the PO files</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="nls-programmer.html">44.2. For the Programmer</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="nls-programmer.html#nls-mechanics">44.2.1. Mechanics</a></span></dt>
-<dt><span class="sect2"><a href="nls-programmer.html#nls-guidelines">44.2.2. Message-writing guidelines</a></span></dt>
-</dl></dd>
-</dl></dd>
-<dt><span class="chapter"><a href="plhandler.html">45. Writing A Procedural Language Handler</a></span></dt>
-<dt><span class="chapter"><a href="geqo.html">46. Genetic Query Optimizer</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="geqo.html#geqo-intro">46.1. Query Handling as a Complex Optimization Problem</a></span></dt>
-<dt><span class="sect1"><a href="geqo-intro2.html">46.2. Genetic Algorithms</a></span></dt>
-<dt><span class="sect1"><a href="geqo-pg-intro.html">46.3. Genetic Query Optimization (GEQO) in PostgreSQL</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="geqo-pg-intro.html#geqo-future">46.3.1. Future Implementation Tasks for
-    PostgreSQL GEQO</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="geqo-biblio.html">46.4. Further Readings</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="indexcost.html">47. Index Cost Estimation Functions</a></span></dt>
-<dt><span class="chapter"><a href="gist.html">48. GiST Indexes</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="gist.html#intro">48.1. Introduction</a></span></dt>
-<dt><span class="sect1"><a href="extensibility.html">48.2. Extensibility</a></span></dt>
-<dt><span class="sect1"><a href="implementation.html">48.3. Implementation</a></span></dt>
-<dt><span class="sect1"><a href="limitations.html">48.4. Limitations</a></span></dt>
-<dt><span class="sect1"><a href="examples.html">48.5. Examples</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="page.html">49. Page Files</a></span></dt>
-<dt><span class="chapter"><a href="bki.html">50. BKI Backend Interface</a></span></dt>
-<dd><dl>
-<dt><span class="sect1"><a href="bki.html#bki-format">50.1. BKI File Format</a></span></dt>
-<dt><span class="sect1"><a href="bki-commands.html">50.2. BKI Commands</a></span></dt>
-<dt><span class="sect1"><a href="bki-example.html">50.3. Example</a></span></dt>
-</dl></dd>
-</dl>
-</div>
-</div>
-</div></body>
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Internals</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta3 Documentation"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="postmaster"
+HREF="app-postmaster.html"><LINK
+REL="NEXT"
+TITLE="Overview of PostgreSQL Internals"
+HREF="overview.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-09-27T02:56:59"></HEAD
+><BODY
+CLASS="PART"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-postmaster.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="reference.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="appendixes.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="overview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
+><A
+NAME="INTERNALS"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>VII. Internals</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN49606"
+></A
+><P
+>    This part contains assorted information that can be of use to
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> developers.
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>40. <A
+HREF="overview.html"
+>Overview of PostgreSQL Internals</A
+></DT
+><DD
+><DL
+><DT
+>40.1. <A
+HREF="overview.html#QUERY-PATH"
+>The Path of a Query</A
+></DT
+><DT
+>40.2. <A
+HREF="connect-estab.html"
+>How Connections are Established</A
+></DT
+><DT
+>40.3. <A
+HREF="parser-stage.html"
+>The Parser Stage</A
+></DT
+><DT
+>40.4. <A
+HREF="rule-system.html"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Rule System</A
+></DT
+><DT
+>40.5. <A
+HREF="planner-optimizer.html"
+>Planner/Optimizer</A
+></DT
+><DT
+>40.6. <A
+HREF="executor.html"
+>Executor</A
+></DT
+></DL
+></DD
+><DT
+>41. <A
+HREF="catalogs.html"
+>System Catalogs</A
+></DT
+><DD
+><DL
+><DT
+>41.1. <A
+HREF="catalogs.html#CATALOGS-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>41.2. <A
+HREF="catalog-pg-aggregate.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
+></A
+></DT
+><DT
+>41.3. <A
+HREF="catalog-pg-am.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+></A
+></DT
+><DT
+>41.4. <A
+HREF="catalog-pg-amop.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_amop</TT
+></A
+></DT
+><DT
+>41.5. <A
+HREF="catalog-pg-amproc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_amproc</TT
+></A
+></DT
+><DT
+>41.6. <A
+HREF="catalog-pg-attrdef.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attrdef</TT
+></A
+></DT
+><DT
+>41.7. <A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+></DT
+><DT
+>41.8. <A
+HREF="catalog-pg-cast.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+></A
+></DT
+><DT
+>41.9. <A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+></DT
+><DT
+>41.10. <A
+HREF="catalog-pg-constraint.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+></A
+></DT
+><DT
+>41.11. <A
+HREF="catalog-pg-conversion.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_conversion</TT
+></A
+></DT
+><DT
+>41.12. <A
+HREF="catalog-pg-database.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+></A
+></DT
+><DT
+>41.13. <A
+HREF="catalog-pg-depend.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+></A
+></DT
+><DT
+>41.14. <A
+HREF="catalog-pg-description.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+></A
+></DT
+><DT
+>41.15. <A
+HREF="catalog-pg-group.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_group</TT
+></A
+></DT
+><DT
+>41.16. <A
+HREF="catalog-pg-index.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_index</TT
+></A
+></DT
+><DT
+>41.17. <A
+HREF="catalog-pg-inherits.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_inherits</TT
+></A
+></DT
+><DT
+>41.18. <A
+HREF="catalog-pg-language.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_language</TT
+></A
+></DT
+><DT
+>41.19. <A
+HREF="catalog-pg-largeobject.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+></A
+></DT
+><DT
+>41.20. <A
+HREF="catalog-pg-listener.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_listener</TT
+></A
+></DT
+><DT
+>41.21. <A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+></DT
+><DT
+>41.22. <A
+HREF="catalog-pg-opclass.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+></A
+></DT
+><DT
+>41.23. <A
+HREF="catalog-pg-operator.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></A
+></DT
+><DT
+>41.24. <A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+></DT
+><DT
+>41.25. <A
+HREF="catalog-pg-rewrite.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+></A
+></DT
+><DT
+>41.26. <A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+></DT
+><DT
+>41.27. <A
+HREF="catalog-pg-statistic.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+></A
+></DT
+><DT
+>41.28. <A
+HREF="catalog-pg-tablespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+></A
+></DT
+><DT
+>41.29. <A
+HREF="catalog-pg-trigger.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+></A
+></DT
+><DT
+>41.30. <A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+></DT
+><DT
+>41.31. <A
+HREF="views-overview.html"
+>System Views</A
+></DT
+><DT
+>41.32. <A
+HREF="view-pg-indexes.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_indexes</TT
+></A
+></DT
+><DT
+>41.33. <A
+HREF="view-pg-locks.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_locks</TT
+></A
+></DT
+><DT
+>41.34. <A
+HREF="view-pg-rules.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_rules</TT
+></A
+></DT
+><DT
+>41.35. <A
+HREF="view-pg-settings.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+></A
+></DT
+><DT
+>41.36. <A
+HREF="view-pg-stats.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+></A
+></DT
+><DT
+>41.37. <A
+HREF="view-pg-tables.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_tables</TT
+></A
+></DT
+><DT
+>41.38. <A
+HREF="view-pg-user.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_user</TT
+></A
+></DT
+><DT
+>41.39. <A
+HREF="view-pg-views.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_views</TT
+></A
+></DT
+></DL
+></DD
+><DT
+>42. <A
+HREF="protocol.html"
+>Frontend/Backend Protocol</A
+></DT
+><DD
+><DL
+><DT
+>42.1. <A
+HREF="protocol.html#PROTOCOL-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>42.2. <A
+HREF="protocol-flow.html"
+>Message Flow</A
+></DT
+><DT
+>42.3. <A
+HREF="protocol-message-types.html"
+>Message Data Types</A
+></DT
+><DT
+>42.4. <A
+HREF="protocol-message-formats.html"
+>Message Formats</A
+></DT
+><DT
+>42.5. <A
+HREF="protocol-error-fields.html"
+>Error and Notice Message Fields</A
+></DT
+><DT
+>42.6. <A
+HREF="protocol-changes.html"
+>Summary of Changes since Protocol 2.0</A
+></DT
+></DL
+></DD
+><DT
+>43. <A
+HREF="source.html"
+>PostgreSQL Coding Conventions</A
+></DT
+><DD
+><DL
+><DT
+>43.1. <A
+HREF="source.html#SOURCE-FORMAT"
+>Formatting</A
+></DT
+><DT
+>43.2. <A
+HREF="error-message-reporting.html"
+>Reporting Errors Within the Server</A
+></DT
+><DT
+>43.3. <A
+HREF="error-style-guide.html"
+>Error Message Style Guide</A
+></DT
+></DL
+></DD
+><DT
+>44. <A
+HREF="nls.html"
+>Native Language Support</A
+></DT
+><DD
+><DL
+><DT
+>44.1. <A
+HREF="nls.html#NLS-TRANSLATOR"
+>For the Translator</A
+></DT
+><DT
+>44.2. <A
+HREF="nls-programmer.html"
+>For the Programmer</A
+></DT
+></DL
+></DD
+><DT
+>45. <A
+HREF="plhandler.html"
+>Writing A Procedural Language Handler</A
+></DT
+><DT
+>46. <A
+HREF="geqo.html"
+>Genetic Query Optimizer</A
+></DT
+><DD
+><DL
+><DT
+>46.1. <A
+HREF="geqo.html#GEQO-INTRO"
+>Query Handling as a Complex Optimization Problem</A
+></DT
+><DT
+>46.2. <A
+HREF="geqo-intro2.html"
+>Genetic Algorithms</A
+></DT
+><DT
+>46.3. <A
+HREF="geqo-pg-intro.html"
+>Genetic Query Optimization (<ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+>) in PostgreSQL</A
+></DT
+><DT
+>46.4. <A
+HREF="geqo-biblio.html"
+>Further Readings</A
+></DT
+></DL
+></DD
+><DT
+>47. <A
+HREF="indexcost.html"
+>Index Cost Estimation Functions</A
+></DT
+><DT
+>48. <A
+HREF="gist.html"
+>GiST Indexes</A
+></DT
+><DD
+><DL
+><DT
+>48.1. <A
+HREF="gist.html#INTRO"
+>Introduction</A
+></DT
+><DT
+>48.2. <A
+HREF="extensibility.html"
+>Extensibility</A
+></DT
+><DT
+>48.3. <A
+HREF="implementation.html"
+>Implementation</A
+></DT
+><DT
+>48.4. <A
+HREF="limitations.html"
+>Limitations</A
+></DT
+><DT
+>48.5. <A
+HREF="examples.html"
+>Examples</A
+></DT
+></DL
+></DD
+><DT
+>49. <A
+HREF="page.html"
+>Page Files</A
+></DT
+><DT
+>50. <A
+HREF="bki.html"
+><ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> Backend Interface</A
+></DT
+><DD
+><DL
+><DT
+>50.1. <A
+HREF="bki.html#BKI-FORMAT"
+><ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> File Format</A
+></DT
+><DT
+>50.2. <A
+HREF="bki-commands.html"
+><ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> Commands</A
+></DT
+><DT
+>50.3. <A
+HREF="bki-example.html"
+>Example</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-postmaster.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="overview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Overview of PostgreSQL Internals</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
