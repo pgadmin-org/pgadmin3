@@ -562,6 +562,9 @@ void frmMain::StoreServers()
             // last Schema
             key.Printf(wxT("Servers/LastSchema%d"), numServers);
             settings->Write(key, server->GetLastSchema());
+
+	    key.Printf(wxT("Servers/LastSSL%d"), numServers);
+            settings->Write(key, server->GetSSL());
         }
 
         // Get the next item
@@ -582,7 +585,7 @@ void frmMain::RetrieveServers()
     int numServers;
     settings->Read(wxT("Servers/Count"), &numServers, 0);
 
-    int loop, port;
+    int loop, port, ssl;
     wxString key, servername, description, database, username, lastDatabase, lastSchema, trusted;
     pgServer *server;
 
@@ -620,8 +623,11 @@ void frmMain::RetrieveServers()
         key.Printf(wxT("Servers/LastSchema%d"), loop);
         settings->Read(key, &lastSchema, wxT(""));
 
+	key.Printf(wxT("Servers/LastSSL%d"), loop);
+	settings->Read(key, &ssl, 0);
+
         // Add the Server node
-        server = new pgServer(servername, database, username, port, StrToBool(trusted));
+        server = new pgServer(servername, database, username, port, StrToBool(trusted), ssl);
         server->iSetDescription(description);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);

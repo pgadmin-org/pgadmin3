@@ -20,7 +20,7 @@
 #include "pgCollection.h"
 
 
-pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _trusted)
+pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _trusted, int _ssl)
 : pgObject(PG_SERVER, newName)
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
@@ -28,13 +28,12 @@ pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const w
     database = newDatabase;
     username = newUsername;
     port = newPort;
+    ssl=_ssl;
 
     connected = FALSE;
     lastSystemOID = 0;
 
-	// Keith 2003.03.05
-	// Because we need to delete it later
-	conn = NULL;
+    conn = NULL;
     trusted=_trusted;
     superUser=false;
     createPrivilege=false;
@@ -84,7 +83,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
             delete conn;
             conn=0;
         }
-        if (!trusted)
+        if (!trusted || !lockFields)
         {
             frmConnect winConnect(form, GetName(), description, database, username, port, trusted, ssl);
 
@@ -280,6 +279,18 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, _("Hostname"), GetName());
         InsertListItem(properties, pos++, _("Description"), GetDescription());
         InsertListItem(properties, pos++, _("Port"), (long)GetPort());
+	if (ssl > 0)
+	{
+	    wxString sslMode;
+	    switch (ssl)
+	    {
+		case 1: sslMode = _("require"); break;
+		case 2: sslMode = _("prefer"); break;
+		case 3: sslMode = _("allow"); break;
+		case 4: sslMode = _("disable"); break;
+	    }
+	    InsertListItem(properties, pos++, _("SSL Mode"), sslMode);
+	}
         InsertListItem(properties, pos++, _("Initial database"), GetDatabase());
         InsertListItem(properties, pos++, _("Username"), GetUsername());
         InsertListItem(properties, pos++, _("Trusted?"), GetTrusted());

@@ -70,7 +70,6 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
 
     cbSSL->Append(wxEmptyString);
 
-#ifdef USE_SSL
     cbSSL->Append(_("require"));
     cbSSL->Append(_("prefer"));
 
@@ -79,9 +78,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
         cbSSL->Append(_("allow"));
         cbSSL->Append(_("disable"));
     }
-#else
-    cbSSL->Disable();
-#endif
+
     if (ssl > cbSSL->GetCount() || ssl < 0)
         ssl = 0;
     cbSSL->SetSelection(ssl);
@@ -101,7 +98,7 @@ void frmConnect::OnHelp(wxCommandEvent &ev)
 
 void frmConnect::OnTrustChange(wxNotifyEvent& ev)
 {
-    txtPassword->Enable(chkTrusted->GetValue());
+    txtPassword->Enable(!chkTrusted->GetValue());
 }
 
 
