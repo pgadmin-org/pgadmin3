@@ -35,7 +35,11 @@ public:
     long CurrentPos() const { return pos; }
     bool Eof() const { return eof; }
     bool Bof() const { return bof; }
-    wxString ColName(int col) const { return wxString(PQfname(res, col + 1)); }
+	
+	// Keith 2003.03.04 --
+	// pglib column names are zero based, so I replaced col+1 with col
+    wxString ColName(int col) const { return wxString(PQfname(res, col)); }
+
     wxString ColType(int col) const;
     int ColSize(int col) const { return PQfsize(res, col + 1); }
     int ColScale(int col) const;

@@ -39,17 +39,19 @@ void frmMain::svServer(pgServer *server)
     statistics->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
     statistics->InsertColumn(3, wxT("Current Query"), wxLIST_FORMAT_LEFT, 400);
 
-    pgSet stats = server->ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
+    pgSet *stats = server->ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
 
-    while (!stats.Eof()) {
-        statistics->InsertItem(stats.CurrentPos() - 1, stats.GetVal(wxT("datname")), 0);
-        statistics->SetItem(stats.CurrentPos() - 1, 1, stats.GetVal(wxT("procpid")));
-        statistics->SetItem(stats.CurrentPos() - 1, 2, stats.GetVal(wxT("usename")));
-        statistics->SetItem(stats.CurrentPos() - 1, 3, stats.GetVal(wxT("current_query")));
-        stats.MoveNext();
+    while (!stats->Eof()) {
+        statistics->InsertItem(stats->CurrentPos() - 1, stats->GetVal(wxT("datname")), 0);
+        statistics->SetItem(stats->CurrentPos() - 1, 1, stats->GetVal(wxT("procpid")));
+        statistics->SetItem(stats->CurrentPos() - 1, 2, stats->GetVal(wxT("usename")));
+        statistics->SetItem(stats->CurrentPos() - 1, 3, stats->GetVal(wxT("current_query")));
+        stats->MoveNext();
     }
 
-
+	// Keith 2003.03.05
+	// Fixed memory leak
+	delete stats;
 }
 
 void frmMain::svDatabases(pgCollection *collection)
@@ -68,16 +70,20 @@ void frmMain::svDatabases(pgCollection *collection)
     statistics->InsertColumn(4, wxT("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
     statistics->InsertColumn(5, wxT("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
 
-    pgSet stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
+    pgSet *stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
 
-    while (!stats.Eof()) {
-        statistics->InsertItem(stats.CurrentPos() - 1, stats.GetVal(wxT("datname")), 0);
-        statistics->SetItem(stats.CurrentPos() - 1, 1, stats.GetVal(wxT("numbackends")));
-        statistics->SetItem(stats.CurrentPos() - 1, 2, stats.GetVal(wxT("xact_commit")));
-        statistics->SetItem(stats.CurrentPos() - 1, 3, stats.GetVal(wxT("xact_rollback")));
-        statistics->SetItem(stats.CurrentPos() - 1, 4, stats.GetVal(wxT("blks_read")));
-        statistics->SetItem(stats.CurrentPos() - 1, 5, stats.GetVal(wxT("blks_hit")));
-        stats.MoveNext();
+    while (!stats->Eof()) {
+        statistics->InsertItem(stats->CurrentPos() - 1, stats->GetVal(wxT("datname")), 0);
+        statistics->SetItem(stats->CurrentPos() - 1, 1, stats->GetVal(wxT("numbackends")));
+        statistics->SetItem(stats->CurrentPos() - 1, 2, stats->GetVal(wxT("xact_commit")));
+        statistics->SetItem(stats->CurrentPos() - 1, 3, stats->GetVal(wxT("xact_rollback")));
+        statistics->SetItem(stats->CurrentPos() - 1, 4, stats->GetVal(wxT("blks_read")));
+        statistics->SetItem(stats->CurrentPos() - 1, 5, stats->GetVal(wxT("blks_hit")));
+        stats->MoveNext();
     }
+
+	// Keith 2003.03.05
+	// Fixed memory leak
+	delete stats;
 }
 

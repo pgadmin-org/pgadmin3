@@ -45,7 +45,8 @@ public:
     void iSetPort(int newVal) { port = newVal; }
     int ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
-    pgSet ExecuteSet(const wxString& sql) { return *conn->ExecuteSet(sql); }
+    pgSet *ExecuteSet(const wxString& sql) { 
+		return conn->ExecuteSet(sql); }
 
 private:
     pgConn *conn;

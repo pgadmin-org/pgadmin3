@@ -181,10 +181,9 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
         wxLogError(wxT("Couldn't create a pgSet object!"));
         PQclear(qryRes);
         return NULL;
-    } else {
-        // Don't cleanup here, let the pgSet do that itself.
-        return set;
     }
+
+	return set;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -35,6 +35,7 @@
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
+#include "frmQueryBuilder.h"
 
 // Icons
 #include "images/aggregate.xpm"
@@ -83,6 +84,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 {
     extern sysSettings *settings;
 
+	// Current database
+	m_database = NULL;
+
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
 
@@ -110,6 +114,8 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"), 
 		wxT("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
+	toolsMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),
+		wxT("Start the query builder."));
     toolsMenu->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog."));
@@ -137,6 +143,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 		wxT("Connect to the selected server."));
     treeContextMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"), 
 		wxT("Disconnect from the selected server."));
+    treeContextMenu->AppendSeparator();
+	treeContextMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),
+		wxT("Start the query builder."));
     treeContextMenu->AppendSeparator();
     treeContextMenu->Append(MNU_DROP, wxT("&Delete/Drop"), 
 		wxT("Delete/Drop the selected object."));
@@ -218,7 +227,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     horizontal->SetMinimumPaneSize(50);
 
     //Setup a Browser imagelist
-    wxImageList *browserImages = new wxImageList(16, 16);
+	// Keith 2003.03.05
+	// Fixed memory leak
+	browserImages = new wxImageList(16, 16);
     browser->SetImageList(browserImages);
 
     //Stuff the Image List
@@ -247,7 +258,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     browser->Expand(servers);
 
     // Setup the property imagelist
-    wxImageList *propertiesImages = new wxImageList(16, 16);
+	// Keith 2003.03.05
+	// Fixed memory leak
+    propertiesImages = new wxImageList(16, 16);
     properties->SetImageList(propertiesImages, wxIMAGE_LIST_SMALL);
     propertiesImages->Add(wxIcon(property_xpm));
 
@@ -256,7 +269,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     properties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
 
     // Setup a statistics view imagelist
-    wxImageList *statisticsImages = new wxImageList(16, 16);
+	// Keith 2003.03.05
+	// Fixed memory leak
+    statisticsImages = new wxImageList(16, 16);
     statistics->SetImageList(statisticsImages, wxIMAGE_LIST_SMALL);
     statisticsImages->Add(wxIcon(statistics_xpm));
 
@@ -281,6 +296,14 @@ frmMain::~frmMain()
 
     // Clear the treeview
     browser->DeleteAllItems();
+
+	// Keith 2003.03.05
+	// Fixed memory leak -- These are not destroyed automatically 
+	delete treeContextMenu;
+	delete browserImages;
+	delete statisticsImages;
+	delete propertiesImages;
+	delete statistics;
 }
 
 void frmMain::ReconnectServer(pgServer *server)
@@ -422,11 +445,13 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	fileMenu->Enable(MNU_PROPERTIES, properties);
 	toolsMenu->Enable(MNU_CONNECT, FALSE);
 	toolsMenu->Enable(MNU_DISCONNECT, FALSE);
+	toolsMenu->Enable(MNU_QUERYBUILDER, FALSE);
 	viewMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_DROP, drop);
 	treeContextMenu->Enable(MNU_CONNECT, FALSE);
 	treeContextMenu->Enable(MNU_DISCONNECT, FALSE);
 	treeContextMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_PROPERTIES, properties);
+	treeContextMenu->Enable(MNU_QUERYBUILDER, FALSE);
 
 }

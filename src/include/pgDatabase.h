@@ -28,6 +28,13 @@ public:
     ~pgDatabase();
     pgServer *GetServer() const { return server; }
     void SetServer(pgServer *newServer) { server = newServer; }
+
+	// Keith 2002.03.04 --
+	// pgServer::ExecuteSet executes on an arbitrary database on the server,
+	// so I added this because it works on the correct database connection
+    pgSet *ExecuteSet(const wxString& sql) { 
+		return database->ExecuteSet(sql); }
+
     wxString GetPath() const { return path; };
     void iSetPath(const wxString& newVal) { path = newVal; }
     wxString GetEncoding() const { return encoding; }

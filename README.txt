@@ -29,7 +29,7 @@ Build Environment
 If you wish to build the current code just to take a look, or to help out with
 the development, you will need:
 
-1) wxWindows 2.3.3 + the StyledTextCtrl from /contrib + libwxxrc
+1) wxWindows 2.4.0 + the StyledTextCtrl from /contrib + libwxxrc
 2) A C++ compiler. We use GCC under Linux, and Microsoft Visual C++ under
    Windows XP.
 3) libpq.

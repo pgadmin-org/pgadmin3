@@ -23,6 +23,7 @@
 #include "pgServer.h"
 #include "pgCollection.h"
 #include "pgDatabase.h"
+#include "frmQueryBuilder.h"
 
 // Class declarations
 class frmMain : public wxFrame
@@ -34,7 +35,8 @@ public:
     wxStatusBar *statusBar;
     
 private:
-    wxTreeCtrl *browser;	
+	pgDatabase *m_database;
+    wxTreeCtrl *browser;
     wxListCtrl *properties;
     wxListCtrl *statistics;
     wxNotebook *listViews;
@@ -43,6 +45,9 @@ private:
     wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu;
     wxToolBar *toolBar;
     wxTreeItemId servers;
+	frmQueryBuilder *qbform;
+	wxImageList *browserImages, *statisticsImages, *propertiesImages;
+
     void OnAbout(wxCommandEvent& event);
     void OnAddServer();
     void OnExit(wxCommandEvent& event);
@@ -58,6 +63,8 @@ private:
     void OnRefresh();
 	void OnDisconnect();
 	void OnProperties();
+	void OnQueryBuilder();
+
     void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum);
 
     // Treeview  handlers
@@ -92,7 +99,8 @@ enum
 	MNU_CONNECT = 112,
 	MNU_DISCONNECT = 113,
 	MNU_DROP = 114,
-	MNU_PROPERTIES = 115
+	MNU_PROPERTIES = 115,
+	MNU_QUERYBUILDER = 116
 };
 
 // Toolbar buttons

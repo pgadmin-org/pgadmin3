@@ -26,11 +26,20 @@ pgDatabase::pgDatabase(const wxString& newName)
 
     allowConnections = TRUE;
     connected = FALSE;
+
+	// Keith 2003.03.05
+	// Must set to null to see if we can delete it later
+	database = NULL;
 }
 
 pgDatabase::~pgDatabase()
 {
     wxLogInfo(wxT("Destroying a pgDatabase object"));
+
+	// Keith 2003.03.05
+	// Fixing memory leak 
+	if (database)
+		delete database;
 }
 
 int pgDatabase::Connect() {
@@ -41,8 +50,8 @@ int pgDatabase::Connect() {
         return database->GetStatus();
     } else {
 
-        database = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());
-        if (database->GetStatus() == PGCONN_OK) {
+		database = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());       
+		if (database->GetStatus() == PGCONN_OK) {
 
             // As we connected, we should now get the comments
             wxString sql, rawcomment;

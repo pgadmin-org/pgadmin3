@@ -75,7 +75,11 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     wxString fullmsg;
 
     // Build the message.
-    fullmsg << time->FormatISODate() << " " << time->FormatISOTime() << " " << msgtype << ": " << msg;
+    fullmsg << time->FormatISODate() << " " << 
+		time->FormatISOTime() << " " << msgtype << ": " << msg;
+
+	// Make sure to delete the time that we allocated
+	delete time;
 
     // Display the message if required
     switch (settings->GetLogLevel()) {
@@ -100,7 +104,8 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     }
 
     // Display a messagebox if required.
-    if (icon != 0) wxMessageBox(preamble + msg, APPNAME_L, wxOK | wxCENTRE | icon);
+    if (icon != 0) wxMessageBox(preamble + msg, APPNAME_L, 
+		wxOK | wxCENTRE | icon);
 }
 
 void sysLogger::WriteLog(const wxString& msg)

@@ -84,12 +84,12 @@ void frmConnect::OnOK()
     objParent->iSetPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
 
     // Close the dialogue
-    this->EndModal(0);
+    this->EndModal(wxID_OK);
 }
 
 void frmConnect::OnCancel()
 {
-    this->EndModal(1);
+    this->EndModal(wxID_CANCEL);
 }
 
 wxString frmConnect::GetServer()

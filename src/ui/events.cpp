@@ -56,6 +56,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_SYSTEMOBJECTS, frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
+    EVT_MENU(MNU_QUERYBUILDER, frmMain::OnQueryBuilder)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER, frmMain::OnSelChanged)
     EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER, frmMain::OnSelActivated)
 	EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER, frmMain::OnSelRightClick) 
@@ -286,6 +287,9 @@ void frmMain::OnSelChanged()
             StartMsg(wxT("Retrieving database details"));
             SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
             tvDatabase((pgDatabase *)data);          
+			m_database = (pgDatabase *)data;
+			toolsMenu->Enable(MNU_QUERYBUILDER, TRUE);
+			treeContextMenu->Enable(MNU_QUERYBUILDER, TRUE);
 			//svDatabases((pgCollection *)data);
             EndMsg();
             break;
@@ -329,10 +333,11 @@ void frmMain::OnSelActivated()
 #endif
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// This handler will display a popup menu for the item
+////////////////////////////////////////////////////////////////////////////////
 void frmMain::OnSelRightClick(wxTreeEvent& event)
-{
-    // This handler will display a popup menu for the item
-
+{   
 	// Get mouse point data
 	wxPoint point = event.GetPoint();
 	wxPoint origin = GetClientAreaOrigin();
@@ -406,3 +411,35 @@ void frmMain::OnProperties()
 	int res = wxMessageBox("This is not yet implemented" );
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void frmMain::OnQueryBuilder()
+{
+	wxString msg, title;
+
+	// Check to see if the database is set
+	if ( m_database == NULL )
+	{
+		msg.Printf(wxT("Cannot enter query builder because no "
+			"database was selected."));
+        wxLogInfo(msg);
+		return;
+	}
+
+	// Check to see if the server is set
+	pgServer *server = m_database->GetServer();
+	if (!server->GetConnected()) {
+		msg.Printf(wxT("Cannot enter query builder because the\n "
+			"server for the selected database\n " 
+			"is not connected."));
+        wxLogInfo(msg);
+		return;
+	}
+
+	// Create the Query Builder Form
+	qbform = new frmQueryBuilder(this, m_database); 
+
+	// Show the Query Builder
+	qbform->Show(TRUE);
+
+}

@@ -184,3 +184,28 @@ wxString qtIdent(const wxString& value)
     }	
     return result;
 }
+
+// Keith 2003.03.11
+// We need an identifier validation function
+bool IsValidIdentifier(wxString ident)
+{
+	int len = ident.length();
+	if (!len)
+		return FALSE;
+
+	const char *first = 
+		wxT("_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	const char *second = 
+		wxT("_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
+	if (strchr(first, ident[0]) == NULL)
+		return FALSE;
+
+	for (int si = 1; si < len; si++)
+	{
+	if (strchr(second, ident[si]) == NULL)
+		return FALSE;
+	}
+
+	return TRUE;
+}

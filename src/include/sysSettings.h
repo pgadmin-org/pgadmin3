@@ -38,6 +38,12 @@ public:
     int GetFrmMainLeft() const { return frmMainLeft; }
     void SetFrmMainLeft(const int newval) { frmMainLeft = newval; }
 
+    // frmQueryBuilder size/position
+    wxSize GetFrmQueryBuilderSize();
+    wxPoint GetFrmQueryBuilderPos();
+	void SetFrmQueryBuilderPos(wxPoint pos);
+	void SetFrmQueryBuilderSize(wxSize size);
+
     // Tip Of The Day
     bool GetShowTipOfTheDay() const { return showTipOfTheDay; }
     void SetShowTipOfTheDay(const bool newval);

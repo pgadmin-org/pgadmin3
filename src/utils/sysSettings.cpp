@@ -23,7 +23,10 @@
 
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
-    wxLogInfo(wxT("Creating sSettings object and loading settings"));
+	// Keith 2003.03.05
+	// Can't do this because the logger is set up *after* syssettings
+	// so nothing will be logged, and it causes a memory leak
+    // wxLogInfo(wxT("Creating sSettings object and loading settings"));
 
     // frMain size/position
     frmMainWidth = this->Read(wxT("frmMain/Width"), 750);
@@ -129,4 +132,40 @@ void sysSettings::SetShowSystemObjects(const bool newval)
 {
     showSystemObjects = newval;
     this->Write(wxT("ShowSystemObjects"), showSystemObjects);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// The size of the query builder
+//////////////////////////////////////////////////////////////////////////
+
+wxSize sysSettings::GetFrmQueryBuilderSize()
+{
+    int width = this->Read(wxT("frmQueryBuilder/Width"), 750);
+    int height = this->Read(wxT("frmQueryBuilder/Height"), 550);
+
+	return wxSize(width, height);
+}
+
+void sysSettings::SetFrmQueryBuilderSize(wxSize size)
+{
+    this->Write(wxT("frmQueryBuilder/Width"), size.GetWidth());
+    this->Write(wxT("frmQueryBuilder/Height"), size.GetHeight());
+}
+
+//////////////////////////////////////////////////////////////////////////
+// The position of the query builder
+//////////////////////////////////////////////////////////////////////////
+
+wxPoint sysSettings::GetFrmQueryBuilderPos()
+{
+    int top = this->Read(wxT("frmQueryBuilder/Top"), 50);
+    int left = this->Read(wxT("frmQueryBuilder/Left"), 50);
+
+	return wxPoint(top, left);
+}
+
+void sysSettings::SetFrmQueryBuilderPos(wxPoint pos)
+{
+    this->Write(wxT("frmQueryBuilder/Top"), pos.x);
+    this->Write(wxT("frmQueryBuilder/Left"), pos.y);
 }

@@ -31,38 +31,52 @@ pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const w
     connected = FALSE;
     versionNum = 0.0;
     lastSystemOID = 0;
+
+	// Keith 2003.03.05
+	// Because we need to delete it later
+	conn = NULL;
+
 }
 
 pgServer::~pgServer()
 {
+	// Keith 2003.03.05
+	// This was not being deleted and was causing memory leaksd
+	if (conn)
+		delete conn;
+
     wxLogInfo(wxT("Destroying a pgServer object"));
 }
 
 int pgServer::Connect(bool lockFields) 
 {
     wxLogInfo(wxT("Getting connection details..."));
-    frmConnect *winConnect = new frmConnect(this, this->GetName(), database, username, port);
-    if (!winConnect) {
-        wxLogError(wxT("Couldn't create a connection dialogue!"));
-        return PGCONN_BAD;
-    }
 
-    if (lockFields) winConnect->LockFields();
+	// Keith 2003.03.05
+	// It's simpler to use a reference for modal dialogs
+    frmConnect winConnect(this, this->GetName(), database, username, port);
 
-    if (winConnect->ShowModal() != 0) {
-        delete winConnect;
-        return PGCONN_ABORTED;
-    }
+    if (lockFields) 
+		winConnect.LockFields();
+
+	switch (winConnect.ShowModal()) {
+		case wxID_OK:
+			break;
+		case wxID_CANCEL:
+	        return PGCONN_ABORTED;
+		default:
+	        wxLogError(wxT("Couldn't create a connection dialogue!"));
+		    return PGCONN_BAD;
+	}
 
     wxLogInfo(wxT("Attempting to create a connection object..."));
-    StartMsg(wxT("Connecting to database"));
-    conn = new pgConn(this->GetName(), database, username, password, port);
-    if (!conn) {
+	StartMsg(wxT("Connecting to database"));
+    conn = new pgConn(this->GetName(), database, username, password, port);   
+	if (!conn) {
         wxLogError(wxT("Couldn't create a connection object!"));
         return PGCONN_BAD;
     }
 
-    delete winConnect;
     EndMsg();
     int status = conn->GetStatus();
     if (status == PGCONN_OK) {

@@ -46,7 +46,7 @@ bool pgAdmin3::OnInit()
     settings = new sysSettings(APPNAME_S);
 #endif
 
-    // Setup logging
+	// Setup logging
     logger = new sysLogger();
     wxLog::SetActiveTarget(logger);
 
@@ -119,10 +119,15 @@ int pgAdmin3::OnExit()
 {
     // Delete the settings object to ensure settings are saved.
     delete settings;
+
 #ifdef __WXMSW__
 	WSACleanup();
 #endif
     return 1;
+
+	// Keith 2003.03.05
+	// We must delete this after cleanup to prevent memory leaks
+    delete logger;
 }
 
 void pgAdmin3::LoadXrc(const wxString file)

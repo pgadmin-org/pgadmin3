@@ -31,4 +31,10 @@ double StrToDouble(const wxString& value);
 wxString qtString(const wxString& value);
 wxString qtIdent(const wxString& value);
 
+// Keith 2003.03.11
+// We need an identifier validation function
+
+// Validation
+bool IsValidIdentifier(wxString ident);
+
 #endif
