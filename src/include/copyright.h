@@ -12,7 +12,7 @@
 #define VERSION_WITH_DATE       wxT("Version ") VERSION wxT(" (") __TDATE__ wxT(")")
 #define VERSION_WITHOUT_DATE    wxT("Version ") VERSION
 #define COPYRIGHT               wxT("Copyright 2002 - 2003 The pgAdmin Development Team")
-#define LICENSE                 wxT("This software is released under the Artistic License.")
+#define LICENSE                 _("This software is released under the Artistic License.")
 
 
 #ifdef __WIN32__

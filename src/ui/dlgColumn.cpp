@@ -160,12 +160,12 @@ void dlgColumn::OnChange(wxNotifyEvent &ev)
         wxString name=GetName();
 
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
-        CheckValid(enable, cbDatatype->GetSelection() >= 0, wxT("Please select a datatype."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, cbDatatype->GetSelection() >= 0, _("Please select a datatype."));
         CheckValid(enable, isVarLen || txtLength->GetValue().IsEmpty() || varlen >0,
-            wxT("Please specify valid length."));
+            _("Please specify valid length."));
         CheckValid(enable, !txtPrecision->IsEnabled() || (varprec >= 0 && varprec <= varlen),
-            wxT("Please specify valid numeric precision (0..") + NumToStr(varlen) + wxT(")."));
+            _("Please specify valid numeric precision (0..") + NumToStr(varlen) + wxT(")."));
 
         EnableOK(enable);
     }

@@ -48,7 +48,7 @@ dlgDatabase::dlgDatabase(frmMain *frame, pgDatabase *node)
 {
     SetIcon(wxIcon(database_xpm));
     database=node;
-    CreateListColumns(lstVariables, wxT("Variable"), wxT("Value"));
+    CreateListColumns(lstVariables, _("Variable"), _("Value"));
 
     txtOID->Disable();
 
@@ -124,7 +124,7 @@ void dlgDatabase::OnChange(wxNotifyEvent &ev)
     {
         wxString name=GetName();
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         EnableOK(enable);
     }
 }

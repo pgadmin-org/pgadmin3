@@ -96,26 +96,26 @@ void pgOperator::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("Kind"), GetKind());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("Kind"), GetKind());
         if (!leftType.IsNull())
-            InsertListItem(properties, pos++, wxT("Left Type"), GetLeftType());
+            InsertListItem(properties, pos++, _("Left Type"), GetLeftType());
         if (!rightType.IsNull())
-            InsertListItem(properties, pos++, wxT("Right Type"), GetRightType());
-        InsertListItem(properties, pos++, wxT("Result Type"), GetResultType());
-        InsertListItem(properties, pos++, wxT("Operator Function"), GetOperatorFunction());
-        InsertListItem(properties, pos++, wxT("Join Function"), GetJoinFunction());
-        InsertListItem(properties, pos++, wxT("Restrict Function"), GetRestrictFunction());
-        InsertListItem(properties, pos++, wxT("Commutator"), GetCommutator());
-        InsertListItem(properties, pos++, wxT("Negator"), GetNegator());
-        InsertListItem(properties, pos++, wxT("Left Sort Operator"), GetLeftSortOperator());
-        InsertListItem(properties, pos++, wxT("Right Sort Operator"), GetRightSortOperator());
-        InsertListItem(properties, pos++, wxT("Less Than Operator"), GetLessOperator());
-        InsertListItem(properties, pos++, wxT("Greater Than Operator"), GetGreaterOperator());
-        InsertListItem(properties, pos++, wxT("Hash Joins?"), GetHashJoins());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+            InsertListItem(properties, pos++, _("Right Type"), GetRightType());
+        InsertListItem(properties, pos++, _("Result Type"), GetResultType());
+        InsertListItem(properties, pos++, _("Operator Function"), GetOperatorFunction());
+        InsertListItem(properties, pos++, _("Join Function"), GetJoinFunction());
+        InsertListItem(properties, pos++, _("Restrict Function"), GetRestrictFunction());
+        InsertListItem(properties, pos++, _("Commutator"), GetCommutator());
+        InsertListItem(properties, pos++, _("Negator"), GetNegator());
+        InsertListItem(properties, pos++, _("Left Sort Operator"), GetLeftSortOperator());
+        InsertListItem(properties, pos++, _("Right Sort Operator"), GetRightSortOperator());
+        InsertListItem(properties, pos++, _("Less Than Operator"), GetLessOperator());
+        InsertListItem(properties, pos++, _("Greater Than Operator"), GetGreaterOperator());
+        InsertListItem(properties, pos++, _("Hash Joins?"), GetHashJoins());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

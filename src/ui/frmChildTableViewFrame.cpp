@@ -224,25 +224,28 @@ void frmChildTableViewFrame::ExecRightClick(wxPoint &point)
 
 		if (tName!=m_title && !tName.IsEmpty())
 		{
-			tablemenu->Append(MNU_JOINTO + si, tName);
+			tablemenu->Append(MNU_JOINTO + si, wxGetTranslation(tName));
 			result++;
 		}
    	}
 
 	// Context Menu
+    wxString text;
    	wxMenu contextmenu;
-    contextmenu.Append(MNU_ADDCOLUMN, wxT("&Add " + columnname + " to Query"), 
-		wxT("Connect to the selected server."));
+
+    text.Printf(_("&Add %s to query"), columnname.c_str());
+    contextmenu.Append(MNU_ADDCOLUMN, text, 
+		_("Connect to the selected server."));
 
 	if (result)
 	{
 		contextmenu.AppendSeparator();
-		contextmenu.Append(MNU_JOINTO, wxT("&Join To..."), tablemenu);
+		contextmenu.Append(MNU_JOINTO, _("&Join To..."), tablemenu);
 	}
 
     contextmenu.AppendSeparator();
-    contextmenu.Append(MNU_CLOSE, wxT("&Close Table/View"), 
-		wxT("Connect to the selected server."));
+    contextmenu.Append(MNU_CLOSE, _("&Close Table/View"), 
+		_("Connect to the selected server."));
 
 	// Popup the menu
 	PopupMenu(&contextmenu, point);
@@ -385,12 +388,12 @@ void myList::OnMotion(wxMouseEvent &event)
 		const wxChar *pc;
 		switch ( source.DoDragDrop(flags) )
 		{
-			case wxDragError:   pc = _T("Error!");    break;
-			case wxDragNone:    pc = _T("Nothing");   break;
-			case wxDragCopy:    pc = _T("Copied");    break;
-			case wxDragMove:    pc = _T("Moved");     break;
-			case wxDragCancel:  pc = _T("Cancelled"); break;
-			default:            pc = _T("Huh?");      break;
+			case wxDragError:   pc = _("Error!");    break;
+			case wxDragNone:    pc = _("Nothing");   break;
+			case wxDragCopy:    pc = _("Copied");    break;
+			case wxDragMove:    pc = _("Moved");     break;
+			case wxDragCancel:  pc = _("Cancelled"); break;
+			default:            pc = _("Huh?");      break;
 		}
 
 		return;
@@ -430,7 +433,7 @@ bool DnDJoin::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 	// Fail if the column is the asterisk
 	if (column == wxT("*"))
 	{
-		wxLogError(wxT("You cannot join on the asterisk."));
+		wxLogError(__("You cannot join on the asterisk."));
 		return FALSE;
 	}
 

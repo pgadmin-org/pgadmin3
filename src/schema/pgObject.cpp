@@ -24,31 +24,31 @@
 // Must match the PG_OBJTYPE enumeration in pgObject.h
 char *typeNameList[] =
 {
-    "None",
-    "Servers",          "Server",
-    "Databases",        "Database",
-    "Groups",           "Group",
-    "Users",            "User",
-    "Languages",        "Language",
-    "Schemas",          "Schema",
-    "Aggregates",       "Aggregate",
-    "Casts",            "Cast",
-    "Conversions",      "Conversion",
-    "Domains",          "Domain",
-    "Functions",        "Function",
-    "Trigger Functions","Trigger Function",
-    "Operators",        "Operator",
-    "Operator Classes", "Operator Class",
-    "Sequences",        "Sequence",
-    "Tables",           "Table",
-    "Types",            "Type",
-    "Views",            "View",
-    "Columns",          "Column",
-    "Indexes",          "Index",
-    "Rules",            "Rule",
-    "Triggers",         "Trigger",
-    "Constraints", "Primary Key", "Unique", "Check", "Foreign Key",
-    "Unknown"
+    __("None"),
+    __("Servers"),          __("Server"),
+    __("Databases"),        __("Database"),
+    __("Groups"),           __("Group"),
+    __("Users"),            __("User"),
+    __("Languages"),        __("Language"),
+    __("Schemas"),          __("Schema"),
+    __("Aggregates"),       __("Aggregate"),
+    __("Casts"),            __("Cast"),
+    __("Conversions"),      __("Conversion"),
+    __("Domains"),          __("Domain"),
+    __("Functions"),        __("Function"),
+    __("Trigger Functions"),__("Trigger Function"),
+    __("Operators"),        __("Operator"),
+    __("Operator Classes"), __("Operator Class"),
+    __("Sequences"),        __("Sequence"),
+    __("Tables"),           __("Table"),
+    __("Types"),            __("Type"),
+    __("Views"),            __("View"),
+    __("Columns"),          __("Column"),
+    __("Indexes"),          __("Index"),
+    __("Rules"),            __("Rule"),
+    __("Triggers"),         __("Trigger"),
+    __("Constraints"), __("Primary Key"), __("Unique"), __("Check"), __("Foreign Key"),
+    __("Unknown")
 };
 
 
@@ -78,7 +78,10 @@ void pgObject::AppendMenu(wxMenu *menu, int type)
         if (IsCollection())
             type++;
     }
-    menu->Append(MNU_NEW+type, wxString("New ") + typeNameList[type], wxString("Create a new ") + typeNameList[type] + wxT("."));
+    wxString text, help;
+    text.Printf(_("New %s"), wxGetTranslation(typeNameList[type]));
+    help.Printf(_("Create a new %s."), wxGetTranslation(typeNameList[type]));
+    menu->Append(MNU_NEW+type, text, help);
 }
 
 
@@ -127,7 +130,9 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
     }
 
     wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
-    StartMsg(wxT("Retrieving ") + typeName + wxT(" details"));
+    wxString msg;
+    msg.Printf(_("Retrieving %s details"), wxGetTranslation(typeName));
+    StartMsg(msg);
     ShowTreeDetail(browser, form, properties, statistics, sqlPane);
     EndMsg();
 }
@@ -459,7 +464,7 @@ void pgSchemaObject::DisplayStatistics(wxListCtrl *statistics, const wxString& q
         wxLogInfo(wxT("Displaying statistics for %s on %s"), GetTypeName().c_str(), GetSchema()->GetIdentifier().c_str());
 
         // Add the statistics view columns
-        CreateListColumns(statistics, wxT("Statistic"), wxT("Value"));
+        CreateListColumns(statistics, _("Statistic"), _("Value"));
 
         pgSet *stats = ExecuteSet(query);
     

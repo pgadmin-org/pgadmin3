@@ -55,7 +55,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 		if (host == NULL)
 		{
             resolvedIP = FALSE;
-            wxLogError("Could not resolve hostname: %s", server.c_str());
+            wxLogError(__("Could not resolve hostname %s"), server.c_str());
 			return;
 		}
 
@@ -172,7 +172,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
     qryRes = PQexec(conn, sql.c_str());
     pgSet *set = new pgSet(qryRes, conn);
     if (!set) {
-        wxLogError(wxT("Couldn't create a pgSet object!"));
+        wxLogError(__("Couldn't create a pgSet object!"));
         PQclear(qryRes);
         return NULL;
     }

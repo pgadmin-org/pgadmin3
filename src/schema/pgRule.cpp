@@ -69,18 +69,18 @@ void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Event"), GetEvent());
-        InsertListItem(properties, pos++, wxT("Condition"), GetCondition());
-        InsertListItem(properties, pos++, wxT("Do Instead?"), GetDoInstead());
-        InsertListItem(properties, pos++, wxT("Action"), GetAction());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Event"), GetEvent());
+        InsertListItem(properties, pos++, _("Condition"), GetCondition());
+        InsertListItem(properties, pos++, _("Do Instead?"), GetDoInstead());
+        InsertListItem(properties, pos++, _("Action"), GetAction());
         if (GetDefinition().IsEmpty())
-            InsertListItem(properties, pos++, wxT("Definition"), wxT("NOTHING"));
+            InsertListItem(properties, pos++, _("Definition"), wxT("NOTHING"));
         else
-            InsertListItem(properties, pos++, wxT("Definition"), GetDefinition().Left(250));
-        InsertListItem(properties, pos++, wxT("System Rule?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+            InsertListItem(properties, pos++, _("Definition"), GetDefinition().Left(250));
+        InsertListItem(properties, pos++, _("System Rule?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

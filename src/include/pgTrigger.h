@@ -46,8 +46,8 @@ public:
     void iSetTriggerFunction(pgFunction *fkt) { triggerFunction=fkt; }
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
-    double GetFunctionOid() const { return functionOid; }
-    void iSetFunctionOid(const double d) { functionOid=d; }
+    OID GetFunctionOid() const { return functionOid; }
+    void iSetFunctionOid(const OID d) { functionOid=d; }
 
     void SetDirty();
 
@@ -60,7 +60,7 @@ public:
 
 private:
     wxString function, quotedFullTable;
-    double functionOid;
+    OID functionOid;
     long triggerType;
     bool enabled;
     pgFunction *triggerFunction;

@@ -67,13 +67,13 @@ void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
-        InsertListItem(properties, pos++, wxT("Deferrable?"), BoolToYesNo(GetDeferrable()));
-        InsertListItem(properties, pos++, wxT("Initially?"), 
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Definition"), GetDefinition());
+        InsertListItem(properties, pos++, _("Deferrable?"), BoolToYesNo(GetDeferrable()));
+        InsertListItem(properties, pos++, _("Initially?"), 
             GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

@@ -54,7 +54,7 @@ public:
     void iSetIsComposite(const bool b) { isComposite=b; }
     bool GetIsRecordType() const { return isRecordType; }
     void iSetIsRecordType(const bool b) { isRecordType=b; }
-    void iSetRelOid(const double d) { relOid=d; }
+    void iSetRelOid(const OID d) { relOid=d; }
     wxString GetTypesList() const { return typesList; }
     wxString GetQuotedTypesList() const {return quotedTypesList; }
     bool GetSystemObject() const { return pgSchemaObject::GetSystemObject() || isRecordType; }
@@ -71,7 +71,7 @@ private:
         typesList, quotedTypesList;
     long internalLength;
     bool passedByValue, isComposite, isRecordType;
-    double relOid;
+    OID relOid;
 };
 
 #endif

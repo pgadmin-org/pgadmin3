@@ -48,8 +48,8 @@ public:
     void iSetDimensions(long l) { dimensions=l; }
     wxString GetDelimiter() const { return delimiter; }
     void iSetDelimiter(const wxString& s) { delimiter = s; }
-    double GetBasetypeOid() const { return basetypeOid; }
-    void iSetBasetypeOid(double d) { basetypeOid = d; }
+    OID GetBasetypeOid() const { return basetypeOid; }
+    void iSetBasetypeOid(OID d) { basetypeOid = d; }
     long GetTyplen() const { return typlen; }
     void iSetTyplen(const long l) { typlen=l; }
     long GetTypmod() const { return typmod; }
@@ -67,7 +67,7 @@ private:
     long length, precision, dimensions;
     long typlen, typmod;
     bool notNull;
-    double basetypeOid;
+    OID basetypeOid;
 };
 
 #endif

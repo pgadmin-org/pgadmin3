@@ -65,36 +65,19 @@ void EndMsg()
 
 // Conversions
 
-wxString StrToYesNo(const wxString& value)
-{
-    wxString result;
-    if (value.StartsWith(wxT("t"))) {
-        result.Printf("Yes");
-    } else if (value.StartsWith(wxT("T"))) {
-        result.Printf("Yes");
-    } else if (value.StartsWith(wxT("1"))) {
-        result.Printf("Yes");
-    } else if (value.StartsWith(wxT("Y"))) {
-        result.Printf("Yes");
-    } else if (value.StartsWith(wxT("y"))) {
-        result.Printf("Yes");
-    } else {
-        result.Printf("No");
-    }
-
-    return result;
-}
 
 wxString BoolToYesNo(bool value)
 {
-    wxString result;
-    if (value) {
-        result.Printf("Yes");
-    } else {
-        result.Printf("No");
-    }
-    return result;
+    return value ? _("Yes") : _("No");
 }
+
+
+wxString BoolToStr(bool value)
+{
+    return value ? wxT("Yes") : wxT("No");
+}
+
+
 
 bool StrToBool(const wxString& value)
 {
@@ -120,9 +103,24 @@ wxString NumToStr(long value)
     return result;
 }
 
+
+wxString NumToStr(OID value)
+{
+    wxString result;
+    result.Printf("%u", (long)value);
+    return result;
+}
+
+
 long StrToLong(const wxString& value)
 {
     return atol(value.c_str());
+}
+
+
+OID StrToOid(const wxString& value)
+{
+    return (OID)atol(value.c_str());
 }
 
 wxString NumToStr(double value)

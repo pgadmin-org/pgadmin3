@@ -81,9 +81,9 @@ public:
     wxString GetTypeName() const { return typeName; }
     void iSetName(const wxString& newVal) { name = newVal; }
     wxString GetName() const { return name; }
-    double GetOid() const { return oid; }
+    OID GetOid() const { return oid; }
     wxString GetOidStr() const {return NumToStr(oid) + wxT("::oid"); }
-    void iSetOid(double newVal) { oid = newVal; } 
+    void iSetOid(const OID newVal) { oid = newVal; } 
     wxString GetOwner() const { return owner; }
     void iSetOwner(const wxString& newVal) { owner = newVal; }
     wxString GetComment() const { return comment; }
@@ -140,6 +140,8 @@ protected:
         { InsertListItem(list, pos, str1, BoolToYesNo(b)); }
     void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const double d)
         { InsertListItem(list, pos, str1, NumToStr(d)); }
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const OID o)
+        { InsertListItem(list, pos, str1, NumToStr(o)); }
 
     void AppendMenu(wxMenu *menu, int type=-1);
     virtual void SetContextInfo(frmMain *form) {}
@@ -152,7 +154,7 @@ private:
 
     wxString typeName, name, owner, comment, acl;
     int type;
-    double oid;
+    OID oid;
 };
 
 
@@ -204,8 +206,8 @@ public:
     wxString ExecuteScalar(const wxString& sql);
     bool ExecuteVoid(const wxString& sql);
     void DisplayStatistics(wxListCtrl *statistics, const wxString& query);
-    double GetTableOid() const {return tableOid; }
-    void iSetTableOid(const double d) { tableOid=d; }
+    OID GetTableOid() const {return tableOid; }
+    void iSetTableOid(const OID d) { tableOid=d; }
     wxString GetTableOidStr() const {return NumToStr(tableOid) + wxT("::oid"); }
     virtual wxString GetFullIdentifier() const;
     virtual wxString GetQuotedFullIdentifier() const;
@@ -215,7 +217,7 @@ protected:
     virtual void SetContextInfo(frmMain *form);
 
     pgSchema *schema;
-    double tableOid;
+    OID tableOid;
 };
 
 

@@ -64,7 +64,7 @@ void dlgCheck::OnChange(wxNotifyEvent &ev)
     else
     {
         bool enable=true;
-        CheckValid(enable, !txtWhere->GetValue().IsEmpty(), wxT("Please specify condition."));
+        CheckValid(enable, !txtWhere->GetValue().IsEmpty(), _("Please specify condition."));
         EnableOK(enable);
     }
 }

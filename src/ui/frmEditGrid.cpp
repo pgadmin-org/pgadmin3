@@ -56,11 +56,11 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
     relid=(Oid)obj->GetOid();
 
     contextGridMenu=new wxMenu();
-    contextGridMenu->Append(MNU_REFRESH, wxT("&Refresh"),   wxT("Refresh data"));
-    contextGridMenu->Append(MNU_SAVE,    wxT("&Save"),   wxT("Save data"));
+    contextGridMenu->Append(MNU_REFRESH, _("&Refresh"),   _("Refresh data"));
+    contextGridMenu->Append(MNU_SAVE,    _("&Save"),   _("Save data"));
 
     contextLabelMenu=new wxMenu();
-    contextLabelMenu->Append(MNU_DELETE,  wxT("&Delete"),  	wxT("Delete current row"));
+    contextLabelMenu->Append(MNU_DELETE,  _("&Delete"),  	_("Delete current row"));
 
     CreateStatusBar();
 
@@ -128,7 +128,7 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
         sqlGrid->DeleteRows(delrows.Item(i), 1);
     sqlGrid->EndBatch();
 
-    SetStatusText(NumToStr((long)((sqlTable*)sqlGrid->GetTable())->GetNumberStoredRows()) + wxT(" rows."), 0);
+    SetStatusText(NumToStr((long)((sqlTable*)sqlGrid->GetTable())->GetNumberStoredRows()) + _(" rows."), 0);
 }
 
 
@@ -160,7 +160,7 @@ void frmEditGrid::Go()
         Close();
         Destroy();
     }
-    SetStatusText(wxT("Refreshing data, please wait."), 0);
+    SetStatusText(_("Refreshing data, please wait."), 0);
 
     wxString qry=wxT("SELECT ");
     if (hasOids)
@@ -193,7 +193,7 @@ void frmEditGrid::Go()
         Abort();
         return;
     }
-    SetStatusText(NumToStr(thread->DataSet()->NumRows()) + wxT(" rows."), 0);
+    SetStatusText(NumToStr(thread->DataSet()->NumRows()) + _(" rows."), 0);
 
     sqlGrid->BeginBatch();
 
@@ -239,7 +239,7 @@ void frmEditGrid::Abort()
     }
     else if (thread)
     {
-        SetStatusText(wxT("aborting."), 0);
+        SetStatusText(_("aborting."), 0);
         if (thread->IsRunning())
             thread->Delete();
         delete thread;
@@ -764,7 +764,7 @@ wxString sqlTable::GetValue(int row, int col)
         {
             if (!thread)
             {
-                wxLogError("Unexpected empty cache line: dataSet already closed.");
+                wxLogError(__("Unexpected empty cache line: dataSet already closed."));
                 return val;
             }
 
@@ -937,7 +937,7 @@ cacheLinePool::cacheLinePool(int initialLines)
     else
     {
         anzLines=0;
-        wxLogError("Out of Memory for cacheLinePool");
+        wxLogError(__("Out of Memory for cacheLinePool"));
     }
 }
 
@@ -985,7 +985,7 @@ cacheLine *cacheLinePool::Get(int lineNo)
         if (!ptr)
         {
             anzLines=0;
-            wxLogError("Out of Memory for cacheLinePool");
+            wxLogError(__("Out of Memory for cacheLinePool"));
         }
         else
         {

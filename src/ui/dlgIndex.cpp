@@ -48,7 +48,7 @@ dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *nod
     index=node;
     wxASSERT(!table || table->GetType() == PG_TABLE);
 
-    CreateListColumns(lstColumns, wxT("Columns"), wxT(""), 0);
+    CreateListColumns(lstColumns, _("Columns"), wxT(""), 0);
 }
 
 
@@ -58,7 +58,7 @@ dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, wxListCtrl *
     SetIcon(wxIcon(index_xpm));
     index=0;
     
-    CreateListColumns(lstColumns, wxT("Columns"), wxT(""), 0);
+    CreateListColumns(lstColumns, _("Columns"), wxT(""), 0);
 }
 
 
@@ -141,8 +141,8 @@ void dlgIndexBase::OnChange(wxNotifyEvent &ev)
         wxString name=GetName();
         
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
-        CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         EnableOK(enable);
     }
 }

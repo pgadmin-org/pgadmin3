@@ -68,17 +68,17 @@ void pgAggregate::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl 
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("Input Type"), GetInputType());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("State Type"), GetStateType());
-        InsertListItem(properties, pos++, wxT("State Function"), GetStateFunction());
-        InsertListItem(properties, pos++, wxT("Final Type"), GetFinalType());
-        InsertListItem(properties, pos++, wxT("Final Function"), GetFinalFunction());
-        InsertListItem(properties, pos++, wxT("Initial Condition"), GetInitialCondition());
-        InsertListItem(properties, pos++, wxT("System Aggregate?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("Input Type"), GetInputType());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("State Type"), GetStateType());
+        InsertListItem(properties, pos++, _("State Function"), GetStateFunction());
+        InsertListItem(properties, pos++, _("Final Type"), GetFinalType());
+        InsertListItem(properties, pos++, _("Final Function"), GetFinalFunction());
+        InsertListItem(properties, pos++, _("Initial Condition"), GetInitialCondition());
+        InsertListItem(properties, pos++, _("System Aggregate?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

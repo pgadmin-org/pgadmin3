@@ -48,25 +48,25 @@ void frmPassword::OnOK(wxCommandEvent& event)
 
     // Is the old password right?
     if (XRCCTRL(*this, "txtCurrent", wxTextCtrl)->GetValue() != server->GetPassword()) {
-        wxLogError(wxT("Incorrect password!"));
+        wxLogError(__("Incorrect password!"));
         return;
     }
 
     // Did we confirm the password OK?
     if (XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue() != XRCCTRL(*this, "txtConfirm", wxTextCtrl)->GetValue()) {
-        wxLogError(wxT("Passwords do not match!"));
+        wxLogError(__("Passwords do not match!"));
         return;
     }
 
     // Set the new password
     if (!server->SetPassword(XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue()))
     {
-        wxLogError(wxT("The password could not be changed!"));
+        wxLogError(__("The password could not be changed!"));
         return;
     }
 
     // All must have gone well!
-    wxLogMessage(wxT("Password successfully changed!"));
+    wxLogMessage(__("Password successfully changed!"));
     this->Destroy();
 }
 

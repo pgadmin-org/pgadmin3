@@ -66,7 +66,7 @@ dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
     type=node;
     schema=sch;
     SetIcon(wxIcon(type_xpm));
-    CreateListColumns(lstMembers, wxT("Member"), wxT("Data type"), -1);
+    CreateListColumns(lstMembers, _("Member"), _("Data type"), -1);
 
 
     wxWindow *defPage=cbInput->GetParent();
@@ -186,14 +186,14 @@ void dlgType::OnChange(wxNotifyEvent &ev)
 
         if (isComposite)
         {
-            CheckValid(enable, lstMembers->GetItemCount() > 1, wxT("Please specify at least two members."));
+            CheckValid(enable, lstMembers->GetItemCount() > 1, _("Please specify at least two members."));
         }
         else
         {
             txtLength->Enable(!chkVariable->GetValue());
-            CheckValid(enable, cbInput->GetSelection() >= 0, wxT("Please specify input conversion function."));
-            CheckValid(enable, cbOutput->GetSelection() >= 0, wxT("Please specify output conversion function."));
-            CheckValid(enable, chkVariable->GetValue() || StrToLong(txtLength->GetValue()) > 0, wxT("Please specify internal storage length."));
+            CheckValid(enable, cbInput->GetSelection() >= 0, _("Please specify input conversion function."));
+            CheckValid(enable, cbOutput->GetSelection() >= 0, _("Please specify output conversion function."));
+            CheckValid(enable, chkVariable->GetValue() || StrToLong(txtLength->GetValue()) > 0, _("Please specify internal storage length."));
         }
         EnableOK(enable);
     }

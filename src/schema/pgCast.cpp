@@ -59,13 +59,13 @@ void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Source Type"), GetSourceType());
-        InsertListItem(properties, pos++, wxT("Target Type"), GetTargetType());
-        InsertListItem(properties, pos++, wxT("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
-        InsertListItem(properties, pos++, wxT("Context"), GetCastContext());
-        InsertListItem(properties, pos++, wxT("System Cast?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Source Type"), GetSourceType());
+        InsertListItem(properties, pos++, _("Target Type"), GetTargetType());
+        InsertListItem(properties, pos++, _("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
+        InsertListItem(properties, pos++, _("Context"), GetCastContext());
+        InsertListItem(properties, pos++, _("System Cast?"), GetSystemObject());
     }
 }
 

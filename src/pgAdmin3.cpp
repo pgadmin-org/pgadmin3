@@ -72,7 +72,7 @@ bool pgAdmin3::OnInit()
     // Show the splash screen
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     if (!winSplash) 
-        wxLogError(wxT("Couldn't create the splash screen!"));
+        wxLogError(_("Couldn't create the splash screen!"));
     else {
       SetTopWindow(winSplash);
       winSplash->Show(TRUE);
@@ -84,7 +84,7 @@ bool pgAdmin3::OnInit()
 #ifdef __WXMSW__
     WSADATA	wsaData;
     if (WSAStartup(MAKEWORD(1, 1), &wsaData) != 0) {
-        wxLogFatalError("Cannot initialise the networking subsystem!");   
+        wxLogFatalError(__("Cannot initialise the networking subsystem!"));   
     }
 #endif
 
@@ -141,7 +141,7 @@ bool pgAdmin3::OnInit()
     winMain = new frmMain(APPNAME_L, pos, size);
 
     if (!winMain) 
-        wxLogFatalError(wxT("Couldn't create the main window!"));
+        wxLogFatalError(__("Couldn't create the main window!"));
 
     winMain->Show(TRUE);
     SetTopWindow(winMain);

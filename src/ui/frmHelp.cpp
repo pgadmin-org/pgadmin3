@@ -52,9 +52,9 @@ frmHelp::frmHelp(frmMain *fr)
     barBitmaps[0] = wxBitmap(back_xpm);
     barBitmaps[1] = wxBitmap(forward_xpm);
     barBitmaps[2] = wxBitmap(reload_xpm);
-    toolBar->AddTool(MNU_BACK, wxT("Back"), barBitmaps[0], wxT("Back to previous page."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_FORWARD, wxT("Forward"), barBitmaps[1], wxT("Forward to next page."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_REFRESH, wxT("Reload"), barBitmaps[2], wxT("Reload current page."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_BACK, _("Back"), barBitmaps[0], _("Back to previous page."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_FORWARD, _("Forward"), barBitmaps[1], _("Forward to next page."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REFRESH, _("Reload"), barBitmaps[2], _("Reload current page."), wxITEM_NORMAL);
     toolBar->Realize();
 
     wxAcceleratorEntry entries[2];
@@ -93,7 +93,7 @@ frmHelp::~frmHelp()
 bool frmHelp::Load(const wxString &page)
 {
     if (currentPage.IsEmpty())
-        htmlWindow->SetPage(wxT("<html><body>Loading ") + page + wxT("</body></html>"));
+        htmlWindow->SetPage(wxString::Format(_("<html><body>Loading %s</body></html>"), page.c_str()));
 
     currentPage=page;
     bool loaded=htmlWindow->LoadPage(page);

@@ -190,7 +190,7 @@ pgObject *dlgForeignKey::CreateObject(pgCollection *collection)
 
 int dlgForeignKey::Go(bool modal)
 {
-    CreateListColumns(lstColumns, wxT("Local"), wxT("Referenced"), -1);
+    CreateListColumns(lstColumns, _("Local"), _("Referenced"), -1);
 
     btnAddRef->Disable();
     btnRemoveRef->Disable();

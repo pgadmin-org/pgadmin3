@@ -226,17 +226,17 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
 
         bool enable=true;
 
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
-        CheckValid(enable, cbReturntype->GetSelection() >= 0, wxT("Please select return type."));
-        CheckValid(enable, cbLanguage->GetSelection() >= 0, wxT("Please select language."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, cbReturntype->GetSelection() >= 0, _("Please select return type."));
+        CheckValid(enable, cbLanguage->GetSelection() >= 0, _("Please select language."));
         if (isC)
         {
             wxString objfile=txtObjectFile->GetValue();
-            CheckValid(enable, !objfile.IsEmpty() && objfile != TXTOBJ_LIB, wxT("Please specify object library."));
+            CheckValid(enable, !objfile.IsEmpty() && objfile != TXTOBJ_LIB, _("Please specify object library."));
         }
         else
         {
-            CheckValid(enable, !sqlBox->GetText().IsEmpty(), wxT("Please enter function source code."));
+            CheckValid(enable, !sqlBox->GetText().IsEmpty(), _("Please enter function source code."));
         }
 
         EnableOK(enable);

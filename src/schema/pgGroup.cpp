@@ -88,10 +88,10 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("Group ID"), GetGroupId());
-        InsertListItem(properties, pos++, wxT("Member Count"), GetMemberCount());
-        InsertListItem(properties, pos++, wxT("Members"), GetMembers());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("Group ID"), GetGroupId());
+        InsertListItem(properties, pos++, _("Member Count"), GetMemberCount());
+        InsertListItem(properties, pos++, _("Members"), GetMembers());
     }
 }
 

@@ -128,8 +128,8 @@ void dlgLanguage::OnChange(wxNotifyEvent &ev)
         wxString name=GetName();
 
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
-        CheckValid(enable, !cbHandler->GetValue().IsEmpty(), wxT("Please specify language handler."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, !cbHandler->GetValue().IsEmpty(), _("Please specify language handler."));
         EnableOK(enable);
     }
 }

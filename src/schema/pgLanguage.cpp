@@ -59,13 +59,13 @@ void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
-        InsertListItem(properties, pos++, wxT("Trusted?"), GetTrusted());
-        InsertListItem(properties, pos++, wxT("Handler"), GetHandlerProc());
-        InsertListItem(properties, pos++, wxT("Validator"), GetValidatorProc());
-        InsertListItem(properties, pos++, wxT("System Object?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("ACL"), GetAcl());
+        InsertListItem(properties, pos++, _("Trusted?"), GetTrusted());
+        InsertListItem(properties, pos++, _("Handler"), GetHandlerProc());
+        InsertListItem(properties, pos++, _("Validator"), GetValidatorProc());
+        InsertListItem(properties, pos++, _("System Object?"), GetSystemObject());
     }
 }
 

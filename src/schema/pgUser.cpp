@@ -110,12 +110,12 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("User ID"), GetUserId());
-        InsertListItem(properties, pos++, wxT("Account Expires"), GetAccountExpires());
-        InsertListItem(properties, pos++, wxT("Superuser?"), BoolToYesNo(GetSuperuser()));
-        InsertListItem(properties, pos++, wxT("Create Databases?"), BoolToYesNo(GetCreateDatabase()));
-        InsertListItem(properties, pos++, wxT("Update Catalogs?"), BoolToYesNo(GetUpdateCatalog()));
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("User ID"), GetUserId());
+        InsertListItem(properties, pos++, _("Account Expires"), GetAccountExpires());
+        InsertListItem(properties, pos++, _("Superuser?"), BoolToYesNo(GetSuperuser()));
+        InsertListItem(properties, pos++, _("Create Databases?"), BoolToYesNo(GetCreateDatabase()));
+        InsertListItem(properties, pos++, _("Update Catalogs?"), BoolToYesNo(GetUpdateCatalog()));
 
         wxString groupList;
 
@@ -169,7 +169,7 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             user = new pgUser(users->GetVal(wxT("usename")));
             user->iSetServer(collection->GetServer());
             user->iSetUserId(users->GetLong(wxT("usesysid")));
-            user->iSetCreateDatabase(StrToBool(users->GetVal(wxT("usecreatedb"))));
+            user->iSetCreateDatabase(users->GetBool(wxT("usecreatedb")));
             user->iSetSuperuser(users->GetBool(wxT("usesuper")));
             user->iSetUpdateCatalog(users->GetBool(wxT("usecatupd")));
             user->iSetAccountExpires(users->GetVal(wxT("valuntil")));

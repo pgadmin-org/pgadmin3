@@ -69,16 +69,16 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("Base Type"), GetBasetype());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("Base Type"), GetBasetype());
         if (GetDimensions())
-            InsertListItem(properties, pos++, wxT("Dimensions"), GetDimensions());
-        InsertListItem(properties, pos++, wxT("Default"), GetDefault());
-        InsertListItem(properties, pos++, wxT("Not Null?"), GetNotNull());
-        InsertListItem(properties, pos++, wxT("System Domain?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+            InsertListItem(properties, pos++, _("Dimensions"), GetDimensions());
+        InsertListItem(properties, pos++, _("Default"), GetDefault());
+        InsertListItem(properties, pos++, _("Not Null?"), GetNotNull());
+        InsertListItem(properties, pos++, _("System Domain?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

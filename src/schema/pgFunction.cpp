@@ -95,28 +95,28 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("Argument Count"), GetArgCount());
-        InsertListItem(properties, pos++, wxT("Arguments"), GetArgTypes());
-        InsertListItem(properties, pos++, wxT("Returns"), GetReturnType());
-        InsertListItem(properties, pos++, wxT("Language"), GetLanguage());
-        InsertListItem(properties, pos++, wxT("Returns a Set?"), GetReturnAsSet());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("Argument Count"), GetArgCount());
+        InsertListItem(properties, pos++, _("Arguments"), GetArgTypes());
+        InsertListItem(properties, pos++, _("Returns"), GetReturnType());
+        InsertListItem(properties, pos++, _("Language"), GetLanguage());
+        InsertListItem(properties, pos++, _("Returns a Set?"), GetReturnAsSet());
         if (GetLanguage().IsSameAs(wxT("C"), false))
         {
-            InsertListItem(properties, pos++, wxT("Object File"), GetBin());
-            InsertListItem(properties, pos++, wxT("Link Symbol"), GetSource());
+            InsertListItem(properties, pos++, _("Object File"), GetBin());
+            InsertListItem(properties, pos++, _("Link Symbol"), GetSource());
         }
         else
-            InsertListItem(properties, pos++, wxT("Source"), GetSource());
+            InsertListItem(properties, pos++, _("Source"), GetSource());
 
-        InsertListItem(properties, pos++, wxT("Volatility"), GetVolatility());
-        InsertListItem(properties, pos++, wxT("Secure Definer?"), GetSecureDefiner());
-        InsertListItem(properties, pos++, wxT("Strict?"), GetIsStrict());
-        InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
-        InsertListItem(properties, pos++, wxT("System Function?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("Volatility"), GetVolatility());
+        InsertListItem(properties, pos++, _("Secure Definer?"), GetSecureDefiner());
+        InsertListItem(properties, pos++, _("Strict?"), GetIsStrict());
+        InsertListItem(properties, pos++, _("ACL"), GetAcl());
+        InsertListItem(properties, pos++, _("System Function?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

@@ -83,22 +83,22 @@ void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxLis
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
         if (GetProcName().IsNull())
-            InsertListItem(properties, pos++, wxT("Columns"), GetColumns());
+            InsertListItem(properties, pos++, _("Columns"), GetColumns());
         else
         {
-            InsertListItem(properties, pos++, wxT("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
-            InsertListItem(properties, pos++, wxT("Operator Classes"), GetOperatorClasses());
+            InsertListItem(properties, pos++, _("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
+            InsertListItem(properties, pos++, _("Operator Classes"), GetOperatorClasses());
         }
-        InsertListItem(properties, pos++, wxT("Unique?"), GetIsUnique());
-        InsertListItem(properties, pos++, wxT("Primary?"), GetIsPrimary());
-        InsertListItem(properties, pos++, wxT("Clustered?"), GetIsClustered());
-        InsertListItem(properties, pos++, wxT("Index Type"), GetIndexType());
-        InsertListItem(properties, pos++, wxT("Constraint"), GetConstraint());
-        InsertListItem(properties, pos++, wxT("System index?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("Unique?"), GetIsUnique());
+        InsertListItem(properties, pos++, _("Primary?"), GetIsPrimary());
+        InsertListItem(properties, pos++, _("Clustered?"), GetIsClustered());
+        InsertListItem(properties, pos++, _("Index Type"), GetIndexType());
+        InsertListItem(properties, pos++, _("Constraint"), GetConstraint());
+        InsertListItem(properties, pos++, _("System index?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

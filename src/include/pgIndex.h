@@ -58,8 +58,8 @@ public:
     void iSetIdxTable(const wxString& s) { idxTable=s; }
     wxString GetIdxSchema() const { return idxSchema; }
     void iSetIdxSchema(const wxString& s) { idxSchema=s; }
-    double GetRelTableOid() const { return relTableOid; }
-    void iSetRelTableOid(const double d) { relTableOid=d; }
+    OID GetRelTableOid() const { return relTableOid; }
+    void iSetRelTableOid(const OID d) { relTableOid=d; }
 
     wxString GetProcName() const { return procName; }
     void iSetProcName(const wxString& s) { procName=s; }
@@ -91,7 +91,7 @@ private:
     long columnCount;
     bool isUnique, isPrimary, isClustered;
     bool deferrable, deferred;
-    double relTableOid;
+    OID relTableOid;
 };
 
 

@@ -57,8 +57,8 @@ public:
     bool GetDeferred() const { return deferred; }
     void iSetDeferred(const bool b) { deferred=b; }
     wxString GetRelTableOidStr() const { return NumToStr(relTableOid) + wxT("::oid"); }
-    double GetRelTableOid() const { return relTableOid; }
-    void iSetRelTableOid(const double d) { relTableOid = d; }
+    OID GetRelTableOid() const { return relTableOid; }
+    void iSetRelTableOid(const OID d) { relTableOid = d; }
 
     wxString GetFkColumns() const { return fkColumns; }
     wxString GetRefColumns() const { return refColumns; }
@@ -79,7 +79,7 @@ private:
              fkTable, fkSchema, references, refSchema;
     wxString fkColumns, refColumns, quotedFkColumns, quotedRefColumns;
     bool deferrable, deferred;
-    double relTableOid;
+    OID relTableOid;
 };
 
 #endif

@@ -86,28 +86,28 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     fileMenu = new wxMenu();
     recentFileMenu = new wxMenu();
-    fileMenu->Append(MNU_OPEN, wxT("&Open..."), wxT("Open a query file"));
-    fileMenu->Append(MNU_SAVE, wxT("&Save"), wxT("Save current file"));
-    fileMenu->Append(MNU_SAVEAS, wxT("Save &as..."), wxT("Save file under new name"));
-    fileMenu->Append(MNU_RECENT, wxT("&Recent files"), recentFileMenu);
-    fileMenu->Append(MNU_EXIT, wxT("Exit"), wxT("Exit query window"));
+    fileMenu->Append(MNU_OPEN, _("&Open..."), _("Open a query file"));
+    fileMenu->Append(MNU_SAVE, _("&Save"), _("Save current file"));
+    fileMenu->Append(MNU_SAVEAS, _("Save &as..."), _("Save file under new name"));
+    fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
+    fileMenu->Append(MNU_EXIT, _("Exit"), _("Exit query window"));
 
-    menuBar->Append(fileMenu, wxT("&File"));
+    menuBar->Append(fileMenu, _("&File"));
 
     editMenu = new wxMenu();
-    editMenu->Append(MNU_CUT, wxT("Cu&t"), wxT("Cut selected text to clipboard"), wxITEM_NORMAL);
-    editMenu->Append(MNU_COPY, wxT("&Copy"), wxT("Copy selected text to clipboard"), wxITEM_NORMAL);
-    editMenu->Append(MNU_PASTE, wxT("&Paste"), wxT("Paste selected text from clipboard"), wxITEM_NORMAL);
-    editMenu->Append(MNU_CLEAR, wxT("C&lear window"), wxT("Clear edit window"), wxITEM_NORMAL);
+    editMenu->Append(MNU_CUT, _("Cu&t"), _("Cut selected text to clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_COPY, _("&Copy"), _("Copy selected text to clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_PASTE, _("&Paste"), _("Paste selected text from clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_CLEAR, _("C&lear window"), _("Clear edit window"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
-    editMenu->Append(MNU_UNDO, wxT("&Undo"), wxT("Undo last action"), wxITEM_NORMAL);
-    editMenu->Append(MNU_REDO, wxT("&Redo"), wxT("Redo last action"), wxITEM_NORMAL);
+    editMenu->Append(MNU_UNDO, _("&Undo"), _("Undo last action"), wxITEM_NORMAL);
+    editMenu->Append(MNU_REDO, _("&Redo"), _("Redo last action"), wxITEM_NORMAL);
 
     queryMenu = new wxMenu();
-    queryMenu->Append(MNU_EXECUTE, wxT("&Execute"), wxT("Execute query"));
-    queryMenu->Append(MNU_EXPLAIN, wxT("E&xplain"), wxT("Explain query"));
-    queryMenu->Append(MNU_CANCEL, wxT("&Cancel"), wxT("Cancel query"));
-    menuBar->Append(queryMenu, wxT("&Query"));
+    queryMenu->Append(MNU_EXECUTE, _("&Execute"), _("Execute query"));
+    queryMenu->Append(MNU_EXPLAIN, _("E&xplain"), _("Explain query"));
+    queryMenu->Append(MNU_CANCEL, _("&Cancel"), _("Cancel query"));
+    menuBar->Append(queryMenu, _("&Query"));
     SetMenuBar(menuBar);
 
     updateRecentFiles();
@@ -130,7 +130,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     int iWidths[4] = {0, -1, 110, 110};
     CreateStatusBar(4);
     SetStatusWidths(4, iWidths);
-    SetStatusText(wxT("ready"), STATUSPOS_MSGS);
+    SetStatusText(_("ready"), STATUSPOS_MSGS);
 
     CreateToolBar();
     statusBar = GetStatusBar();
@@ -138,20 +138,20 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-    toolBar->AddTool(MNU_OPEN, wxT("Open"), wxBitmap(file_open_xpm), wxT("Open file"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_SAVE, wxT("Save"), wxBitmap(file_save_xpm), wxT("Save file"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_CUT, wxT("Cut"), wxBitmap(clip_cut_xpm), wxT("Cut selected text to clipboard"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_COPY, wxT("Copy"), wxBitmap(clip_copy_xpm), wxT("Copy selected text to clipboard"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_PASTE, wxT("Paste"), wxBitmap(clip_paste_xpm), wxT("Paste selected text from clipboard"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_CLEAR, wxT("Clear window"), wxBitmap(edit_clear_xpm), wxT("Clear edit window"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_CUT, _("Cut"), wxBitmap(clip_cut_xpm), _("Cut selected text to clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected text to clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_PASTE, _("Paste"), wxBitmap(clip_paste_xpm), _("Paste selected text from clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_CLEAR, _("Clear window"), wxBitmap(edit_clear_xpm), _("Clear edit window"), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_UNDO, wxT("Undo"), wxBitmap(edit_undo_xpm), wxT("Undo last action"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_REDO, wxT("Redo"), wxBitmap(edit_redo_xpm), wxT("Redo last action"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REDO, _("Redo"), wxBitmap(edit_redo_xpm), _("Redo last action"), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_EXECUTE, wxT("Execute"), wxBitmap(query_execute_xpm), wxT("Execute query"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_EXPLAIN, wxT("Explain"), wxBitmap(query_explain_xpm), wxT("Explain query"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_CANCEL, wxT("Cancel"), wxBitmap(query_cancel_xpm), wxT("Cancel query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
 
     toolBar->Realize();
     setTools(false);
@@ -165,8 +165,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     sqlResult = new ctlSQLResult(output, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     msgResult = new wxTextCtrl(output, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
 
-    output->AddPage(sqlResult, wxT("Data Output"));
-    output->AddPage(msgResult, wxT("Messages"));
+    output->AddPage(sqlResult, _("Data Output"));
+    output->AddPage(msgResult, _("Messages"));
 
     int splitpos=settings->Read(wxT("frmQuery/Split"), 250);
     if (splitpos < 50)
@@ -481,7 +481,7 @@ void frmQuery::OnClose(wxCloseEvent& event)
         wxString fn;
         if (!lastPath.IsNull())
             fn = wxT(" in file ") + lastPath;
-        wxMessageDialog msg(this, wxT("The text") + fn + wxT(" has changed.\nDo you want to save changes?"), wxT("pgAdmin III Query"), 
+        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
                     (event.CanVeto() ? wxCANCEL : 0));
 
@@ -540,8 +540,8 @@ void frmQuery::openLastFile()
         
 void frmQuery::OnOpen(wxCommandEvent& event)
 {
-    wxFileDialog dlg(this, wxT("Open query file"), lastDir, wxT(""), 
-        wxT("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
+    wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""), 
+        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
     if (dlg.ShowModal() == wxID_OK)
     {
         lastFilename=dlg.GetFilename();
@@ -576,8 +576,8 @@ void frmQuery::OnSave(wxCommandEvent& event)
 
 void frmQuery::OnSaveAs(wxCommandEvent& event)
 {
-    wxFileDialog *dlg=new wxFileDialog(this, wxT("Save query file as"), lastDir, lastFilename, 
-        wxT("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
+    wxFileDialog *dlg=new wxFileDialog(this, _("Save query file as"), lastDir, lastFilename, 
+        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
     if (dlg->ShowModal() == wxID_OK)
     {
         lastFilename=dlg->GetFilename();
@@ -691,7 +691,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
         {
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
-                showMessage(wxT("Query returned successfully with no result."), wxT("OK."));
+                showMessage(_("Query returned successfully with no result."), _("OK."));
             }
             else
             {
@@ -734,11 +734,11 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
             if (singleResult)
             {
                 rowsReadTotal=sqlResult->RetrieveOne();
-                showMessage(NumToStr(rowsReadTotal) + wxT(" rows retrieved."), wxT("OK."));
+                showMessage(wxString::Format(_("%d rows retrieved."), rowsReadTotal), _("OK."));
             }
             else
             {
-                SetStatusText(wxT("Retrieving data: " + NumToStr(rowsTotal) + " rows."), STATUSPOS_MSGS);
+                SetStatusText(wxString::Format(_("Retrieving data: %d rows."), rowsTotal), STATUSPOS_MSGS);
                 wxYield();
 
                 long maxRows=settings->GetMaxRows();
@@ -747,8 +747,8 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                     maxRows = rowsTotal;
                 if (rowsTotal > maxRows)
                 {
-                    wxMessageDialog msg(this, wxT("The maximum of ") + NumToStr(maxRows) + wxT(
-                                " Rows is exceeded (total ") +NumToStr(rowsTotal) + wxT("). Retrieve all rows anyway?"), wxT("Limit exceeded"), 
+                    wxMessageDialog msg(this, wxString::Format(_("The maximum of %ld rows is exceeded "
+                        "(total %ld).\nRetrieve all rows anyway?"), maxRows, rowsTotal), _("Limit exceeded"), 
                                 wxYES_NO|wxCANCEL|wxNO_DEFAULT|wxICON_EXCLAMATION);
                     switch (msg.ShowModal())
                     {
@@ -806,17 +806,19 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                     "Data retrieval runtime: " + elapsedRetrieve.ToString() + wxT(" ms.\n"));
 
                 if (rowsReadTotal == sqlResult->NumRows())
-                    showMessage(NumToStr(rowsReadTotal) + wxT(" rows retrieved."), wxT("OK."));
+                    showMessage(wxString::Format(_("%ld rows retrieved."), rowsReadTotal), _("OK."));
                 else
-                    showMessage(wxT("Total ") + NumToStr(rowsTotal) + wxT(" rows.\n")+
-                        NumToStr(rowsTotal - rowsReadTotal) + wxT(" rows not retrieved."),
-                        NumToStr(rowsTotal - rowsReadTotal) + wxT(" rows not retrieved."));
+                {
+                    wxString nr;
+                    nr.Printf(_("%ld  rows not retrieved."), rowsTotal - rowsReadTotal);
+                    showMessage(wxString::Format(_("Total %ld rows.\n"), rowsTotal) + nr, nr);
+                }
 
             }
             if (rowsTotal == rowsReadTotal)
-                SetStatusText(NumToStr(rowsTotal) + wxT(" rows"), STATUSPOS_ROWS);
+                SetStatusText(NumToStr(rowsTotal) + _(" rows"), STATUSPOS_ROWS);
             else
-                SetStatusText(NumToStr(rowsReadTotal) + wxT(" of ") + NumToStr(rowsTotal) + wxT(" rows"), STATUSPOS_ROWS);
+                SetStatusText(wxString::Format(_("%l of %l rows"), rowsReadTotal, rowsTotal), STATUSPOS_ROWS);
         }
     }
 

@@ -54,9 +54,8 @@ public:
     bool GetBool(const wxString &col) const { return StrToBool(GetVal(col)); }
     double GetDouble(int col) const { return StrToDouble(GetVal(col)); }
     double GetDouble(const wxString &col) const { return StrToDouble(GetVal(col)); }
-    // we may replace double oid some time by an own data type
-    double GetOid(int col) const { return StrToDouble(GetVal(col)); }
-    double GetOid(const wxString &col) const { return StrToDouble(GetVal(col)); }
+    OID GetOid(int col) const { return StrToOid(GetVal(col)); }
+    OID GetOid(const wxString &col) const { return StrToOid(GetVal(col)); }
 
 
 private:

@@ -94,7 +94,7 @@ void dlgSchema::OnChange(wxNotifyEvent &ev)
         wxString name=GetName();
 
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 
         EnableOK(enable);
     }

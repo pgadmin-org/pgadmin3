@@ -70,8 +70,8 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
 
     txtOID->Disable();
 
-    CreateListColumns(lstColumns, wxT("Column name"), wxT("Definition"), 150);
-    CreateListColumns(lstConstraints, wxT("Constraint name"), wxT("Definition"), 150);
+    CreateListColumns(lstColumns, _("Column name"), _("Definition"), 150);
+    CreateListColumns(lstConstraints, _("Constraint name"), _("Definition"), 150);
 
 }
 
@@ -394,8 +394,8 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
     {
         wxString name=GetName();
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
-        CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         EnableOK(enable);
     }
 }

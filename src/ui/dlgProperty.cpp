@@ -81,7 +81,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
 
     if (!nbNotebook)
     {
-        wxMessageBox(wxT("Problem with resource ") + resName + wxT(": Notebook not found.\nPrepare to crash!"));
+        wxMessageBox(_("Problem with resource ") + resName + _(": Notebook not found.\nPrepare to crash!"));
         return;
     }
     SetIcon(wxIcon(properties_xpm));
@@ -693,7 +693,6 @@ BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
     EVT_CHECKBOX(CTL_PRIVCB+8,          dlgSecurityProperty::OnPrivCheck)
     EVT_CHECKBOX(CTL_PRIVCB+10,         dlgSecurityProperty::OnPrivCheck)
     EVT_CHECKBOX(CTL_PRIVCB+12,         dlgSecurityProperty::OnPrivCheck)
-    EVT_MENU(MNU_HELP,                  dlgSecurityProperty::OnHelp)
 END_EVENT_TABLE();
 
 
@@ -719,17 +718,17 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
         nbNotebook->AddPage(page, wxT("Security"));
 
         lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount+ (needAll ? 0 : 20)));
-        CreateListColumns(lbPrivileges, wxT("User/Group"), wxT("Privileges"), -1);
+        CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
         int y=height-105-20*privilegeCount + (needAll ? 0 : 20);
 
-        btnAddPriv = new wxButton(page, CTL_ADDPRIV, wxT("Add/Change"), wxPoint(10, y), wxSize(75, 25));
-        btnDelPriv = new wxButton(page, CTL_DELPRIV, wxT("Remove"), wxPoint(95, y), wxSize(75, 25));
+        btnAddPriv = new wxButton(page, CTL_ADDPRIV, _("Add/Change"), wxPoint(10, y), wxSize(75, 25));
+        btnDelPriv = new wxButton(page, CTL_DELPRIV, _("Remove"), wxPoint(95, y), wxSize(75, 25));
         y += 35;
 
         new wxStaticBox(page, -1, wxT("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount-(needAll?0:20)));
         y += 15;
 
-        stGroup = new wxStaticText(page, CTL_STATICGROUP, wxT("Group"), wxPoint(20, y+3), wxSize(100, 20));
+        stGroup = new wxStaticText(page, CTL_STATICGROUP, _("Group"), wxPoint(20, y+3), wxSize(100, 20));
         cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(130, y), wxSize(width-145, 100), 0, 0, wxCB_DROPDOWN|wxCB_READONLY);
         y += 25;
 

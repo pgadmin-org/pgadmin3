@@ -58,14 +58,14 @@ void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("From"), GetForEncoding());
-        InsertListItem(properties, pos++, wxT("To"), GetToEncoding());
-        InsertListItem(properties, pos++, wxT("Function"), GetProcNamespace() + wxT(".") + GetProc());
-        InsertListItem(properties, pos++, wxT("Default?"), GetDefaultConversion());
-        InsertListItem(properties, pos++, wxT("System Conversion?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("From"), GetForEncoding());
+        InsertListItem(properties, pos++, _("To"), GetToEncoding());
+        InsertListItem(properties, pos++, _("Function"), GetProcNamespace() + wxT(".") + GetProc());
+        InsertListItem(properties, pos++, _("Default?"), GetDefaultConversion());
+        InsertListItem(properties, pos++, _("System Conversion?"), GetSystemObject());
 
     }
 }

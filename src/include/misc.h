@@ -15,6 +15,8 @@
 #include <wx/wx.h>
 #include <wx/tokenzr.h>
 
+typedef unsigned long OID;
+
 // Global Stuff
 void StartMsg(const wxString& msg);
 void EndMsg();
@@ -26,13 +28,17 @@ extern sysSettings *settings;
 #define CTRL(id, typ) (XRCCTRL(*this, id, typ))
 
 // Conversions
-wxString StrToYesNo(const wxString& value);
-wxString BoolToYesNo(bool value);
-bool StrToBool(const wxString& value);
-wxString NumToStr(long value);
+wxString BoolToStr(bool value);         // english; used for config values
+bool StrToBool(const wxString& value);  // english
 long StrToLong(const wxString& value);
-wxString NumToStr(double value);
 double StrToDouble(const wxString& value);
+OID StrToOid(const wxString& value);
+
+// nls aware
+wxString BoolToYesNo(bool value);
+wxString NumToStr(long value);
+wxString NumToStr(double value);
+wxString NumToStr(OID value);
 
 // Quoting
 wxString qtString(const wxString& value);

@@ -121,30 +121,30 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
         if (isComposite)
         {
-            InsertListItem(properties, pos++, wxT("Members"), GetTypesList());
+            InsertListItem(properties, pos++, _("Members"), GetTypesList());
         }
         else
         {
-            InsertListItem(properties, pos++, wxT("Alignment"), GetAlignment());
-            InsertListItem(properties, pos++, wxT("Internal Length"), GetInternalLength());
-            InsertListItem(properties, pos++, wxT("Default"), GetDefault());
-            InsertListItem(properties, pos++, wxT("Passed by Value?"), BoolToYesNo(GetPassedByValue()));
+            InsertListItem(properties, pos++, _("Alignment"), GetAlignment());
+            InsertListItem(properties, pos++, _("Internal Length"), GetInternalLength());
+            InsertListItem(properties, pos++, _("Default"), GetDefault());
+            InsertListItem(properties, pos++, _("Passed by Value?"), BoolToYesNo(GetPassedByValue()));
             if (!GetElement().IsEmpty())
             {
-                InsertListItem(properties, pos++, wxT("Element"), GetElement());
-                InsertListItem(properties, pos++, wxT("Delimiter"), GetDelimiter());
+                InsertListItem(properties, pos++, _("Element"), GetElement());
+                InsertListItem(properties, pos++, _("Delimiter"), GetDelimiter());
             }
-            InsertListItem(properties, pos++, wxT("Input Function"), GetInputFunction());
-            InsertListItem(properties, pos++, wxT("Output Function"), GetOutputFunction());
-            InsertListItem(properties, pos++, wxT("Storage"), GetStorage());
+            InsertListItem(properties, pos++, _("Input Function"), GetInputFunction());
+            InsertListItem(properties, pos++, _("Output Function"), GetOutputFunction());
+            InsertListItem(properties, pos++, _("Storage"), GetStorage());
         }
-        InsertListItem(properties, pos++, wxT("System Type?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("System Type?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

@@ -166,19 +166,19 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("Position"), GetColNumber());
-        InsertListItem(properties, pos++, wxT("Data Type"), GetVarTypename());
-        InsertListItem(properties, pos++, wxT("Default"), GetDefault());
-        InsertListItem(properties, pos++, wxT("Not Null?"), GetNotNull());
-        InsertListItem(properties, pos++, wxT("Primary Key?"), GetIsPK());
-        InsertListItem(properties, pos++, wxT("Foreign Key?"), GetIsFK());
-        InsertListItem(properties, pos++, wxT("Storage"), GetStorage());
-        InsertListItem(properties, pos++, wxT("Storage"), GetStorage());
-        InsertListItem(properties, pos++, wxT("Inherits Count"), GetInheritedCount());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("Position"), GetColNumber());
+        InsertListItem(properties, pos++, _("Data Type"), GetVarTypename());
+        InsertListItem(properties, pos++, _("Default"), GetDefault());
+        InsertListItem(properties, pos++, _("Not Null?"), GetNotNull());
+        InsertListItem(properties, pos++, _("Primary Key?"), GetIsPK());
+        InsertListItem(properties, pos++, _("Foreign Key?"), GetIsFK());
+        InsertListItem(properties, pos++, _("Storage"), GetStorage());
+        InsertListItem(properties, pos++, _("Storage"), GetStorage());
+        InsertListItem(properties, pos++, _("Inherits Count"), GetInheritedCount());
 
-        InsertListItem(properties, pos++, wxT("System Column?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("System Column?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 
     // statistic 

@@ -135,19 +135,19 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
-        InsertListItem(properties, pos++, wxT("Child Columns"), GetFkColumns());
-        InsertListItem(properties, pos++, wxT("References"), GetReferences() 
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), NumToStr(GetOid()));
+        InsertListItem(properties, pos++, _("Child Columns"), GetFkColumns());
+        InsertListItem(properties, pos++, _("References"), GetReferences() 
             + wxT("(") +GetRefColumns() + wxT(")"));
 
-        InsertListItem(properties, pos++, wxT("On Update"), GetOnUpdate());
-        InsertListItem(properties, pos++, wxT("On Delete"), GetOnDelete());
-        InsertListItem(properties, pos++, wxT("Deferrable?"), BoolToYesNo(GetDeferrable()));
-        InsertListItem(properties, pos++, wxT("Initially?"), 
+        InsertListItem(properties, pos++, _("On Update"), GetOnUpdate());
+        InsertListItem(properties, pos++, _("On Delete"), GetOnDelete());
+        InsertListItem(properties, pos++, _("Deferrable?"), BoolToYesNo(GetDeferrable()));
+        InsertListItem(properties, pos++, _("Initially?"), 
             GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
-        InsertListItem(properties, pos++, wxT("System Foreign Key?"), BoolToYesNo(GetSystemObject()));
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("System Foreign Key?"), BoolToYesNo(GetSystemObject()));
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

@@ -86,7 +86,7 @@ wxString pgSet::GetVal(const wxString& colname) const
 {
     int col = PQfnumber(res, colname.c_str());
     if (col < 0)
-        wxLogError(wxT("Column not found in pgSet: ") + colname);
+        wxLogError(__("Column not found in pgSet: ") + colname);
     return GetVal(col);
 }
 
@@ -172,8 +172,7 @@ int pgQueryThread::execute()
             break;
         if (result)
         {
-            messages += wxT(
-                "Query result with ") + NumToStr((long)PQntuples(result)) + wxT(" rows discarded.\n");
+            messages.Printf(_("Query result with %d rows discarded.\n"), PQntuples(result));
             PQclear(result);
         }
         result=res;

@@ -50,19 +50,19 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     switch (level) {
         case wxLOG_FatalError:
             msgtype = wxT("FATAL  ");
-            preamble = wxT("A fatal error has occured:\n\n");
+            preamble = _("A fatal error has occured:\n\n");
             icon = wxICON_ERROR;
             break;
 
         case wxLOG_Error:
             msgtype = wxT("ERROR  ");
-            preamble = wxT("An error has occured:\n\n");
+            preamble = _("An error has occured:\n\n");
             icon = wxICON_ERROR;
             break;
 
         case wxLOG_Warning:
             msgtype = wxT("WARNING");
-            preamble = wxT("Warning:\n\n");
+            preamble = _("Warning:\n\n");
             icon = wxICON_EXCLAMATION;
             break;
 
@@ -136,7 +136,7 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     }
 
     // Display a messagebox if required.
-    if (icon != 0) wxMessageBox(preamble + msg, APPNAME_L, 
+    if (icon != 0) wxMessageBox(preamble + wxGetTranslation(msg), APPNAME_L, 
 		wxOK | wxCENTRE | icon);
 }
 
@@ -151,7 +151,7 @@ void sysLogger::WriteLog(const wxString& msg)
 
     wxFFile file(logfile, "a");
     if (!file.IsOpened()) {
-        wxMessageBox(wxT("Cannot open the logfile!"), wxT("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
+        wxMessageBox(_("Cannot open the logfile!"), _("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
         return;
     }
 

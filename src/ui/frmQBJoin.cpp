@@ -186,7 +186,7 @@ void frmQBJoin::OnAdd(wxCommandEvent &event)
 	if (tmpleftcolumn.IsEmpty() || tmprightcolumn.IsEmpty())
 	{
 		// Fail with an error 
-		wxLogError(wxT("You must select one column from the\n"
+		wxLogError(__("You must select one column from the\n"
 			"left table and one column from the\n"
 			"right table."));
 		return;

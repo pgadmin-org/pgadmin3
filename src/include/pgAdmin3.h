@@ -18,6 +18,9 @@
 // App headers
 #include "sysSettings.h"
 
+#define __(str) str
+
+
 // XRC Path
 #ifdef __WXMSW__
 #define XRC_PATH wxT("/ui/win32")

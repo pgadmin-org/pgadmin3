@@ -177,23 +177,23 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), NumToStr(GetOid()));
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("ACL"), GetAcl());
         if (!GetPath().IsEmpty())
-            InsertListItem(properties, pos++, wxT("Path"), GetPath());
-        InsertListItem(properties, pos++, wxT("Encoding"), GetEncoding());
+            InsertListItem(properties, pos++, _("Path"), GetPath());
+        InsertListItem(properties, pos++, _("Encoding"), GetEncoding());
         wxStringTokenizer vars(GetVariables());
         while (vars.HasMoreTokens())
         {
             wxString str=vars.GetNextToken();
             InsertListItem(properties, pos++, str.BeforeFirst('='), str.AfterFirst('='));
         }
-        InsertListItem(properties, pos++, wxT("Allow Connections?"), GetAllowConnections());
-        InsertListItem(properties, pos++, wxT("Connected?"), GetConnected());
-        InsertListItem(properties, pos++, wxT("System Database?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("Allow Connections?"), GetAllowConnections());
+        InsertListItem(properties, pos++, _("Connected?"), GetConnected());
+        InsertListItem(properties, pos++, _("System Database?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

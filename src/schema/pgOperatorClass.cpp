@@ -147,12 +147,12 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("Default?"), GetOpcDefault());
-        InsertListItem(properties, pos++, wxT("For Type"), GetInType());
-        InsertListItem(properties, pos++, wxT("Access Method"), GetAccessMethod());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("Default?"), GetOpcDefault());
+        InsertListItem(properties, pos++, _("For Type"), GetInType());
+        InsertListItem(properties, pos++, _("Access Method"), GetAccessMethod());
 // do we need this?
-//        InsertListItem(properties, pos++, wxT("Key Type"), GetKeyType());  
+//        InsertListItem(properties, pos++, _("Key Type"), GetKeyType());  
         unsigned int i;
         for (i=0 ; i < operators.Count() ; i++)
             InsertListItem(properties, pos++, wxT("OPERATOR"), operators.Item(i));

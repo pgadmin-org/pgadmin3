@@ -186,10 +186,10 @@ void dlgTrigger::OnChange(wxNotifyEvent &ev)
         wxString name=GetName();
 
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
-        CheckValid(enable, !function.IsEmpty(), wxT("Please specify trigger function."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, !function.IsEmpty(), _("Please specify trigger function."));
         CheckValid(enable, chkInsert->GetValue() || chkUpdate->GetValue() ||chkDelete->GetValue(),
-            wxT("Please specify at least one action."));
+            _("Please specify at least one action."));
 
         if (enable)
         {
@@ -219,7 +219,7 @@ void dlgTrigger::OnChange(wxNotifyEvent &ev)
                 }
             }
             // we compare for less/equal, maybe a string arg contains ','
-            CheckValid(enable, argCount <= varCount, wxT("Please specify correct parameters."));
+            CheckValid(enable, argCount <= varCount, _("Please specify correct parameters."));
         }
         EnableOK(enable);
     }

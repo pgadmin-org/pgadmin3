@@ -86,7 +86,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
 		        case wxID_CANCEL:
 	                return PGCONN_ABORTED;
 		        default:
-	                wxLogError(wxT("Couldn't create a connection dialogue!"));
+	                wxLogError(__("Couldn't create a connection dialogue!"));
 		            return PGCONN_BAD;
 	        }
 
@@ -111,7 +111,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
         EndMsg();
         if (!conn)
         {
-            wxLogError(wxT("Couldn't create a connection object!"));
+            wxLogError(__("Couldn't create a connection object!"));
             return PGCONN_BAD;
         }
     }
@@ -125,7 +125,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
         }
         else
         {
-            error.Printf(wxT("The PostgreSQL server must be at least version %1.1f!"), SERVER_MIN_VERSION);
+            error.Printf(_("The PostgreSQL server must be at least version %2.1f!"), SERVER_MIN_VERSION);
             connected = FALSE;
             return PGCONN_BAD;
         }
@@ -169,17 +169,18 @@ float pgServer::GetVersionNumber()
     }
 }
 
-double pgServer::GetLastSystemOID()
+OID pgServer::GetLastSystemOID()
 {
-    if (connected) {
-      if (lastSystemOID == 0) {
-          lastSystemOID = conn->GetLastSystemOID();
-      }
-      return lastSystemOID;
-    } else {
-        return 0;
+    if (connected)
+    {
+        if (lastSystemOID == 0)
+            lastSystemOID = conn->GetLastSystemOID();
+        return lastSystemOID;
     }
+    else
+        return 0;
 }
+
 
 bool pgServer::SetPassword(const wxString& newVal)
 {
@@ -250,19 +251,19 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
         // Display the Server properties
         int pos=0;
-        InsertListItem(properties, pos++, wxT("Hostname"), GetName());
-        InsertListItem(properties, pos++, wxT("Description"), GetDescription());
-        InsertListItem(properties, pos++, wxT("Port"), (long)GetPort());
-        InsertListItem(properties, pos++, wxT("Initial Database"), GetDatabase());
-        InsertListItem(properties, pos++, wxT("Username"), GetUsername());
-        InsertListItem(properties, pos++, wxT("Trusted?"), GetTrusted());
+        InsertListItem(properties, pos++, _("Hostname"), GetName());
+        InsertListItem(properties, pos++, _("Description"), GetDescription());
+        InsertListItem(properties, pos++, _("Port"), (long)GetPort());
+        InsertListItem(properties, pos++, _("Initial Database"), GetDatabase());
+        InsertListItem(properties, pos++, _("Username"), GetUsername());
+        InsertListItem(properties, pos++, _("Trusted?"), GetTrusted());
         if (GetConnected())
         {
-            InsertListItem(properties, pos++, wxT("Version String"), GetVersionString());
-            InsertListItem(properties, pos++, wxT("Version Number"), GetVersionNumber());
-            InsertListItem(properties, pos++, wxT("Last System OID"), GetLastSystemOID());
+            InsertListItem(properties, pos++, _("Version String"), GetVersionString());
+            InsertListItem(properties, pos++, _("Version Number"), GetVersionNumber());
+            InsertListItem(properties, pos++, _("Last System OID"), GetLastSystemOID());
         }
-        InsertListItem(properties, pos++, wxT("Connected?"), BoolToYesNo(GetConnected()));
+        InsertListItem(properties, pos++, _("Connected?"), BoolToYesNo(GetConnected()));
     }
 
     if(!GetConnected())

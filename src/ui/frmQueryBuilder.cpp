@@ -104,34 +104,34 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     menuBar = new wxMenuBar();
 
     fileMenu = new wxMenu();
-    fileMenu->Append(MNU_OPEN, wxT("&Open..."), wxT("Open a query file"));
-    fileMenu->Append(MNU_SAVE, wxT("&Save"), wxT("Save current file"));
-    fileMenu->Append(MNU_SAVEAS, wxT("Save &as..."), wxT("Save file under new name"));
-    fileMenu->Append(MNU_EXIT, wxT("E&xit"), wxT("Close this Window."));
-    menuBar->Append(fileMenu, wxT("&File"));
+    fileMenu->Append(MNU_OPEN, _("&Open..."), _("Open a query file"));
+    fileMenu->Append(MNU_SAVE, _("&Save"), _("Save current file"));
+    fileMenu->Append(MNU_SAVEAS, _("Save &as..."), _("Save file under new name"));
+    fileMenu->Append(MNU_EXIT, _("E&xit"), _("Close this Window."));
+    menuBar->Append(fileMenu, _("&File"));
 
 	// Query Menu
     queryMenu = new wxMenu();
-    queryMenu->Append(MNU_EXECUTE, wxT("&Execute"), wxT("Execute query"));
-    queryMenu->Append(MNU_EXPLAIN, wxT("E&xplain"), wxT("Explain query"));
-    queryMenu->Append(MNU_CANCEL, wxT("&Cancel"), wxT("Cancel query"));
-    menuBar->Append(queryMenu, wxT("&Query"));
+    queryMenu->Append(MNU_EXECUTE, _("&Execute"), _("Execute query"));
+    queryMenu->Append(MNU_EXPLAIN, _("E&xplain"), _("Explain query"));
+    queryMenu->Append(MNU_CANCEL, _("&Cancel"), _("Cancel query"));
+    menuBar->Append(queryMenu, _("&Query"));
 
     // Tools Menu
     toolsMenu = new wxMenu();
-    toolsMenu->Append(MNU_ADDTABLEVIEW, wxT("&Add Table/View..."), 
-		wxT("Add a table or view to the datagram."));
-    menuBar->Append(toolsMenu, wxT("&Tools"));
+    toolsMenu->Append(MNU_ADDTABLEVIEW, _("&Add Table/View..."), 
+		_("Add a table or view to the datagram."));
+    menuBar->Append(toolsMenu, _("&Tools"));
 
     // View Menu
     viewMenu = new wxMenu();
-    viewMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"), 
-		wxT("Refresh the selected object."));
-    viewMenu->Append(MNU_QUERYANALYZER, wxT("&Query Analyzer"), 
-		wxT("Refresh the selected object."));
+    viewMenu->Append(MNU_QUERYBUILDER, _("&Query Builder"), 
+		_("Refresh the selected object."));
+    viewMenu->Append(MNU_QUERYANALYZER, _("&Query Analyzer"), 
+		_("Refresh the selected object."));
     //viewMenu->Check(MNU_QUERYBUILDER, TRUE);
 
-    menuBar->Append(viewMenu, wxT("&View"));
+    menuBar->Append(viewMenu, _("&View"));
     
 	// Set the Menu Bar
 	SetMenuBar(menuBar);
@@ -155,7 +155,7 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     int iWidths[4] = {0, -1, 110, 110};
     CreateStatusBar(4);
     SetStatusWidths(4, iWidths);
-    SetStatusText(wxT("ready"), STATUSPOS_MSGS);
+    SetStatusText(_("ready"), STATUSPOS_MSGS);
     statusBar = GetStatusBar();
 
 	// Tool Bar
@@ -164,11 +164,11 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-    toolBar->AddTool(BTN_OPEN, wxT("Open"), wxBitmap(file_open_xpm), wxT("Open file"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_SAVE, wxT("Save"), wxBitmap(file_save_xpm), wxT("Save file"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_EXECUTE, wxT("Execute"), wxBitmap(query_execute_xpm), wxT("Execute query"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_EXPLAIN, wxT("Explain"), wxBitmap(query_explain_xpm), wxT("Explain query"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_CANCEL, wxT("Cancel"), wxBitmap(query_cancel_xpm), wxT("Cancel query"), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
 
     toolBar->Realize();
     setTools(false);
@@ -176,8 +176,8 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 
     // Datagram Context Menu
     datagramContextMenu = new wxMenu();
-    datagramContextMenu->Append(MNU_ADDTABLEVIEW, wxT("&Add Table/View..."), 
-		wxT("Add a table or view to the datagram."));
+    datagramContextMenu->Append(MNU_ADDTABLEVIEW, _("&Add Table/View..."), 
+		_("Add a table or view to the datagram."));
   
 	// Set up the sash window
 	m_sashwindow = new wxSashLayoutWindow(this, ID_SASH_WINDOW_BOTTOM,
@@ -202,29 +202,29 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 	design->SetDefaultCellOverflow(FALSE);
 
 	// show / don't show
-	design->SetColLabelValue(DESIGN_OUTPUT, wxT("Output"));
+	design->SetColLabelValue(DESIGN_OUTPUT, _("Output"));
 	// table
-	design->SetColLabelValue(DESIGN_TABLE, wxT("Table"));
+	design->SetColLabelValue(DESIGN_TABLE, _("Table"));
 	// column
-	design->SetColLabelValue(DESIGN_COLUMN, wxT("Column"));
+	design->SetColLabelValue(DESIGN_COLUMN, _("Column"));
 	// expression 
-	design->SetColLabelValue(DESIGN_EXPRESSION, wxT("Expression"));
+	design->SetColLabelValue(DESIGN_EXPRESSION, _("Expression"));
 	// alias
-	design->SetColLabelValue(DESIGN_ALIAS, wxT("Alias"));
+	design->SetColLabelValue(DESIGN_ALIAS, _("Alias"));
 	// aggregate
-	design->SetColLabelValue(DESIGN_AGGREGATE, wxT("Aggregate"));
+	design->SetColLabelValue(DESIGN_AGGREGATE, _("Aggregate"));
 	// inner where/having clause
-	design->SetColLabelValue(DESIGN_CONDITION, wxT("Condition"));
+	design->SetColLabelValue(DESIGN_CONDITION, _("Condition"));
 	// outer where/having clause
-	design->SetColLabelValue(DESIGN_OR1, wxT("Or"));
+	design->SetColLabelValue(DESIGN_OR1, _("Or"));
 	// outer where/having clause
-	design->SetColLabelValue(DESIGN_OR2, wxT("Or"));
+	design->SetColLabelValue(DESIGN_OR2, _("Or"));
 	// outer where/having clause
-	design->SetColLabelValue(DESIGN_OR3, wxT("Or"));
+	design->SetColLabelValue(DESIGN_OR3, _("Or"));
 	// outer where/having clause
-	design->SetColLabelValue(DESIGN_OR4, wxT("Or"));
+	design->SetColLabelValue(DESIGN_OR4, _("Or"));
 	// outer where/having clause
-	design->SetColLabelValue(DESIGN_OR5, wxT("Or"));
+	design->SetColLabelValue(DESIGN_OR5, _("Or"));
 
 	// Update the design
     design->UpdateDimensions();
@@ -243,11 +243,11 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 	// Update the design
 	data->UpdateDimensions();
     
-	notebook->AddPage(design, wxT("Design"));
-	//notebook->AddPage(design, wxT("Union"));
-	//notebook->AddPage(design, wxT("Global"));
-    notebook->AddPage(sql, wxT("SQL"));
-	notebook->AddPage(data, wxT("Data"));
+	notebook->AddPage(design, _("Design"));
+	//notebook->AddPage(design, _("Union"));
+	//notebook->AddPage(design, _("Global"));
+    notebook->AddPage(sql, _("SQL"));
+	notebook->AddPage(data, _("Data"));
 
 	// Set the drop target
 	design->SetDropTarget(new DnDDesign(this));
@@ -582,15 +582,15 @@ void frmQueryBuilder::AddColumn(frmChildTableViewFrame *frame, int item)
 	// Add a new row (table column)
 	if (!design->AppendRows(1))
 	{
-		wxLogError(wxT("Can't add another column to the query."));
+		wxLogError(__("Can't add another column to the query."));
 		return;
 	}
 
 	// Output column
    const wxString outputchoices[] =
     {
-		wxT("Yes"),
-		wxT("No"),
+		_("Yes"),
+		_("No"),
     };
     design->SetCellEditor(rows, DESIGN_OUTPUT, 
 		new wxGridCellChoiceEditor(2, outputchoices));
@@ -1039,7 +1039,7 @@ void frmQueryBuilder::BuildQuery()
 
 		if (found)
 		{
-			wxLogError(wxT("Double right-handed joins are not allowed.\n"
+			wxLogError(__("Double right-handed joins are not allowed.\n"
 				"You must redraw your joins so that \"") + tmptable1 +  
 				wxT("\"\ndoes not appear on the righthand side \n"
 				"more than once. \n\n"
@@ -1112,7 +1112,7 @@ void frmQueryBuilder::BuildQuery()
 
 		if (!expression.length() && !(table.length() || column.length()))
 		{
-			wxLogError("Error: No table or no column");
+			wxLogError(__("Error: No table or no column"));
 			return;
 		}
 
@@ -1123,8 +1123,8 @@ void frmQueryBuilder::BuildQuery()
 		condition = RebuildCondition(condition, conderr);
 		if (conderr)
 		{
-			wxLogError(condition + wxT("in the condition for row #") + 
-				wxString::Format(wxT("%d"),si + 1) + wxT("."));
+			wxLogError(condition +  
+				wxString::Format(__("in the condition for row #%d."),si + 1));
 			return;
 		}
 
@@ -1146,7 +1146,7 @@ void frmQueryBuilder::BuildQuery()
 
 	if (columnstr.IsEmpty())
 	{
-		wxLogError(wxT("You must add at least on column."));
+		wxLogError(__("You must add at least on column."));
 		return;
 	}
 
@@ -1189,17 +1189,18 @@ void frmQueryBuilder::RunQuery()
 
 	if (count > 100)
 	{
-		wxString tmpstr = wxString::Format("This query will return %d results."
-			"\n\nLoad all results?", count); 
+		wxString tmpstr;
+        tmpstr.Printf(_("This query will return %d results."
+			"\n\nLoad all results?"), count); 
 
 		wxMessageDialog *messagebox = 
-			new wxMessageDialog(this, tmpstr, "Query", wxYES_NO );
+			new wxMessageDialog(this, tmpstr, _("Query"), wxYES_NO );
 
 		if (messagebox->ShowModal() == wxID_NO)
 			return;
 	}
 
-	pgSet *querydata = m_database->ExecuteSet(wxT(query));
+	pgSet *querydata = m_database->ExecuteSet(query);
 	if (querydata->Eof())
 		return;
 
@@ -1285,11 +1286,11 @@ void frmQueryBuilder::VerifyExpression(int celly)
 
 	if (cellv.length() == 0 && tmpcolumn == wxT(" "))
 	{
-		wxMessageDialog dlg(this, wxT("You cannot leave both the "
+		wxMessageDialog dlg(this, _("You cannot leave both the "
 			"column and expression blank.\n\n"
 			"Click 'OK' to insert a default function "
 			"into the expression."), 
-			wxT("Expression Error"), 
+			_("Expression Error"), 
 			wxICON_ERROR | wxOK);
 
 		dlg.ShowModal();
@@ -1362,9 +1363,14 @@ void frmQueryBuilder::OnCellChange(wxGridEvent& event)
 			break;
 		case DESIGN_ALIAS:
 			if (!IsValidIdentifier(tmpstr))
-				wxMessageBox(wxT("'") + tmpstr + wxT("' is not a valid "
+            {
+                wxString msg;
+                msg.Printf(_("'%s' is not a valid "
 				"identifier. It must start with A-Z or a-z or _ and can " 
-				"contain A-Z and a-z and 0-9 and _."));
+				"contain A-Z and a-z and 0-9 and _."), tmpstr.c_str());
+
+                wxMessageBox(msg);
+            }
 			break;
 		default:
 			// do nothing
@@ -1442,7 +1448,7 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 	re.Compile("'");
 	if (re.Matches(txt))
 	{
-		errmsg = "Check for unbalanced single quote marks ";
+		errmsg = _("Check for unbalanced single quote marks ");
 	}
 
 	// Collapse multiple whitespace to a single space
@@ -1480,11 +1486,13 @@ void frmQueryBuilder::OnClose(wxCloseEvent& event)
         wxString fn;
         if (!m_lastPath.IsNull())
             fn = wxT(" in file ") + m_lastPath;
-        wxMessageDialog msg(this, wxT("The text") + fn + wxT(" has m_changed.\nDo you want to save changes?"), wxT("pgAdmin III Query"), 
+
+        wxMessageDialog msg(this, wxString::Format(_("The text %s has m_changed.\n"
+                    "Do you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
                     (event.CanVeto() ? wxCANCEL : 0));
 
-	wxCommandEvent noEvent;
+	    wxCommandEvent noEvent;
         switch (msg.ShowModal())
         {
             case wxID_YES:
@@ -1519,8 +1527,8 @@ void frmQueryBuilder::OnChange(wxNotifyEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnOpen(wxCommandEvent& event)
 {
-    wxFileDialog dlg(this, wxT("Open query file"), m_lastDir, wxT(""), 
-        wxT("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
+    wxFileDialog dlg(this, _("Open query file"), m_lastDir, wxT(""), 
+        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
     if (dlg.ShowModal() == wxID_OK)
     {
         m_lastFilename = dlg.GetFilename();
@@ -1562,8 +1570,8 @@ void frmQueryBuilder::OnSave(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnSaveAs(wxCommandEvent& event)
 {
-    wxFileDialog *dlg=new wxFileDialog(this, wxT("Save query file as"), m_lastDir, m_lastFilename, 
-        wxT("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
+    wxFileDialog *dlg=new wxFileDialog(this, _("Save query file as"), m_lastDir, m_lastFilename, 
+        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
     if (dlg->ShowModal() == wxID_OK)
     {
         m_lastFilename=dlg->GetFilename();

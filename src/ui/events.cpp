@@ -314,7 +314,7 @@ void frmMain::OnPassword(wxCommandEvent& event)
 
         default:
             // Should never see this
-            wxLogError(wxT("You must select a server before changing your password!"));
+            wxLogError(__("You must select a server before changing your password!"));
             break;
     }
 }
@@ -413,11 +413,11 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
     wxLogInfo(wxT("Saving object definition"));
 
     if (sqlPane->GetText().IsNull()) {
-        wxLogError(wxT("There is nothing in the SQL pane to save!"));
+        wxLogError(__("There is nothing in the SQL pane to save!"));
         return;
     }
 
-    wxFileDialog filename(this, wxT("Select output file"), wxT(""), wxT(""), wxT("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"));
+    wxFileDialog filename(this, _("Select output file"), wxT(""), wxT(""), _("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"));
     filename.SetStyle(wxSAVE | wxOVERWRITE_PROMPT);
 
     // Show the dialogue
@@ -426,7 +426,7 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
         // Write the file
         wxFile *file = new wxFile(filename.GetPath(), wxFile::write);
         if (!file->Write(sqlPane->GetText()))
-            wxLogError(wxT("Failed to write to the output file: %s"), filename.GetPath().c_str());
+            wxLogError(__("Failed to write to the output file: %s"), filename.GetPath().c_str());
 
         file->Close();
         return;
@@ -441,8 +441,8 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
 void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 {
     // Warn the user
-    if (wxMessageBox(wxT("Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n\nAre you sure you wish to continue?"),
-                     wxT("Continue?"), wxYES_NO | wxICON_QUESTION) == wxNO) {
+    if (wxMessageBox(_("Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n\nAre you sure you wish to continue?"),
+                     _("Continue?"), wxYES_NO | wxICON_QUESTION) == wxNO) {
         viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
         return;
     }
@@ -488,19 +488,19 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
         OnAddServer(ev);
 
     } else if (res == PGCONN_BAD)  {
-        wxLogError(wxT("Error connecting to the server: %s"), server->GetLastError().c_str());
+        wxLogError(__("Error connecting to the server: %s"), server->GetLastError().c_str());
 
         delete server;
         OnAddServer(ev);
 
     } else {
-        wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
+        wxLogInfo(__("pgServer object didn't initialise because the user aborted."));
         delete server;
     }
 
     // Reset the Servers node text
     wxString label;
-    label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
+    label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
     browser->SetItemText(servers, label);
     StoreServers();
 }
@@ -520,11 +520,11 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     denyCollapseItem=wxTreeItemId();
 	// Reset the listviews/SQL pane
     properties->ClearAll();
-    properties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
-    properties->InsertItem(0, wxT("No properties are available for the current selection"), PGICON_PROPERTY);
+    properties->InsertColumn(0, _("Properties"), wxLIST_FORMAT_LEFT, 500);
+    properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
     statistics->ClearAll();
-    statistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
-    statistics->InsertItem(0, wxT("No statistics are available for the current selection"), PGICON_STATISTICS);
+    statistics->InsertColumn(0, _("Statistics"), wxLIST_FORMAT_LEFT, 500);
+    statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
     sqlPane->Clear();
 
     // Reset the toolbar & password menu options
@@ -555,7 +555,7 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     switch (type)
     {
         case PG_SERVER:
-            StartMsg(wxT("Retrieving server properties"));
+            StartMsg(_("Retrieving server properties"));
 
             server = (pgServer *)data;
             if (!server->GetConnected())
@@ -777,17 +777,17 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 
     if (data->GetSystemObject())
     {
-        wxMessageDialog msg(this, wxT("Cannot drop system ") + data->GetTypeName() 
-            + wxT(" ") + data->GetFullIdentifier(), wxT("Trying to drop system object"), wxICON_EXCLAMATION);
+        wxMessageDialog msg(this, _("Cannot drop system ") + data->GetTypeName() 
+            + wxT(" ") + data->GetFullIdentifier(), _("Trying to drop system object"), wxICON_EXCLAMATION);
         msg.ShowModal();
         return;
     }
 
     if (data->RequireDropConfirm() || settings->GetConfirmDelete())
     {
-        wxMessageDialog msg(this, wxT("Are you sure you wish to drop ") + data->GetTypeName() 
+        wxMessageDialog msg(this, _("Are you sure you wish to drop ") + data->GetTypeName() 
                         + wxT(" ") + data->GetFullIdentifier() + wxT("?"),
-            wxT("Drop ") + data->GetTypeName() + wxT("?"), wxYES_NO | wxICON_QUESTION);
+            _("Drop ") + data->GetTypeName() + wxT("?"), wxYES_NO | wxICON_QUESTION);
         if (msg.ShowModal() != wxID_YES)
         {
             return;

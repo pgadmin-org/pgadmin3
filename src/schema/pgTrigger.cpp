@@ -135,15 +135,15 @@ void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *p
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Fires"), GetFireWhen());
-        InsertListItem(properties, pos++, wxT("Event"), GetEvent());
-        InsertListItem(properties, pos++, wxT("For Each"), GetForEach());
-        InsertListItem(properties, pos++, wxT("Function"), GetFunction());
-        InsertListItem(properties, pos++, wxT("Enabled?"), GetEnabled());
-        InsertListItem(properties, pos++, wxT("System Trigger?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Fires"), GetFireWhen());
+        InsertListItem(properties, pos++, _("Event"), GetEvent());
+        InsertListItem(properties, pos++, _("For Each"), GetForEach());
+        InsertListItem(properties, pos++, _("Function"), GetFunction());
+        InsertListItem(properties, pos++, _("Enabled?"), GetEnabled());
+        InsertListItem(properties, pos++, _("System Trigger?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
 

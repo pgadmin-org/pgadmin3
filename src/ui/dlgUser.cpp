@@ -57,7 +57,7 @@ dlgUser::dlgUser(frmMain *frame, pgUser *node)
 {
     user=node;
     SetIcon(wxIcon(user_xpm));
-    CreateListColumns(lstVariables, wxT("Variable"), wxT("Value"), -1);
+    CreateListColumns(lstVariables, _("Variable"), _("Value"), -1);
 }
 
 
@@ -118,7 +118,7 @@ void dlgUser::OnChange(wxNotifyEvent &ev)
         wxString name=GetName();
 
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         EnableOK(enable);
     }
     else

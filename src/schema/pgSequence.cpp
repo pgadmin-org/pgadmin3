@@ -94,18 +94,18 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
-        InsertListItem(properties, pos++, wxT("Last Value"), GetLastValue().ToString());
-        InsertListItem(properties, pos++, wxT("Minimum"), GetMinValue().ToString());
-        InsertListItem(properties, pos++, wxT("Maximum"), GetMaxValue().ToString());
-        InsertListItem(properties, pos++, wxT("Increment"), GetIncrement().ToString());
-        InsertListItem(properties, pos++, wxT("Cache"), GetCacheValue().ToString());
-        InsertListItem(properties, pos++, wxT("Cycled"), GetCycled());
-        InsertListItem(properties, pos++, wxT("System Sequence?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("ACL"), GetAcl());
+        InsertListItem(properties, pos++, _("Last Value"), GetLastValue().ToString());
+        InsertListItem(properties, pos++, _("Minimum"), GetMinValue().ToString());
+        InsertListItem(properties, pos++, _("Maximum"), GetMaxValue().ToString());
+        InsertListItem(properties, pos++, _("Increment"), GetIncrement().ToString());
+        InsertListItem(properties, pos++, _("Cache"), GetCacheValue().ToString());
+        InsertListItem(properties, pos++, _("Cycled"), GetCycled());
+        InsertListItem(properties, pos++, _("System Sequence?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 
     wxLogInfo(wxT("Displaying statistics for sequence on ") +GetSchema()->GetIdentifier());
@@ -113,7 +113,7 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     if (statistics)
     {
         // Add the statistics view columns
-        CreateListColumns(statistics, wxT("Statistic"), wxT("Value"));
+        CreateListColumns(statistics, _("Statistic"), _("Value"));
 
         pgSet *stats = GetSchema()->GetDatabase()->ExecuteSet(wxT(
             "SELECT blks_read, blks_hit FROM pg_statio_all_sequences WHERE relid = ") + GetOidStr());

@@ -169,94 +169,6 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             }
         }
 
-        /*
-        // add primary key
-        if (!GetPrimaryKey().IsNull())
-        {
-            sql += wxT(",\n  CONSTRAINT ") + GetPrimaryKeyName() + wxT(" PRIMARY KEY (");
-            wxStringTokenizer collist(GetPrimaryKeyColNumbers(), ',');
-            long cn;
-            int pkcolcount=0;
-
-            while (collist.HasMoreTokens())
-            {
-                cn=StrToLong(collist.GetNextToken());
-                wxTreeItemId item=browser->GetFirstChild(columnsItem, cookie);
-                while (item)
-                {
-                    data=(pgObject*)browser->GetItemData(item);
-                    if (data->GetType() == PG_COLUMN)
-                    {
-                        pgColumn *column=(pgColumn*)data;
-                        if (column->GetColNumber() == cn)
-                        {
-                            if (pkcolcount)
-                                sql += wxT(", ");
-                            sql += column->GetQuotedIdentifier();
-                            pkcolcount++;
-                            break;
-                        }
-                    }
-
-                    item=browser->GetNextChild(columnsItem, cookie);
-                }
-            }
-            sql += wxT(")");
-        }
-
-        // add checks
-        if (constraintsItem)
-        {
-            // this is the checks collection
-            pgCollection *coll=(pgCollection*)data;
-            // make sure all kids are read
-            coll->ShowTreeDetail(browser);
-
-            wxTreeItemId item=browser->GetFirstChild(constraintsItem, cookie);
-            
-            while (item)
-            {
-                data=(pgObject*)browser->GetItemData(item);
-                int colCount=0;
-                if (data->GetType() == PG_CHECK)
-                {
-                    sql += wxT(",\n");
-
-                    pgCheck *check=(pgCheck *)data;
-                    check->ShowTreeDetail(browser);
-                    sql += wxT("  CONSTRAINT ") + check->GetConstraint();
-                }
-                
-                item=browser->GetNextChild(constraintsItem, cookie);
-            }
-        }
-
-        // add foreign keys
-        if (constraintsItem)
-        {
-            // this is the foreign keys collection
-            pgCollection *coll=(pgCollection*)data;
-            coll->ShowTreeDetail(browser);
-
-            wxTreeItemId item=browser->GetFirstChild(constraintsItem, cookie);
-            
-            while (item)
-            {
-                data=(pgObject*)browser->GetItemData(item);
-                int colCount=0;
-                if (data->GetType() == PG_FOREIGNKEY)
-                {
-                    sql += wxT(",\n");
-
-                    pgForeignKey *foreignKey=(pgForeignKey *)data;
-                    foreignKey->ShowTreeDetail(browser);
-                    sql += wxT("  CONSTRAINT ") + foreignKey->GetConstraint();
-                }                
-                item=browser->GetNextChild(constraintsItem, cookie);
-            }
-        }
-        */
-
         if (constraintsItem)
         {
             pgCollection *coll=(pgCollection*)browser->GetItemData(constraintsItem);
@@ -297,7 +209,7 @@ void pgTable::UpdateRows()
     pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ") + GetQuotedFullIdentifier());
     if (props)
     {
-        rows = StrToDouble(props->GetVal(0));
+        rows = StrToLong(props->GetVal(0));
         delete props;
     }
 }
@@ -402,28 +314,28 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         CreateListColumns(properties);
         int pos=0;
 
-        InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), GetOid());
-        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
+        InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        InsertListItem(properties, pos++, _("ACL"), GetAcl());
         if (GetPrimaryKey().IsNull())
-            InsertListItem(properties, pos++, wxT("Primary Key"), wxT("<none>"));
+            InsertListItem(properties, pos++, _("Primary Key"), _("<none>"));
         else
-            InsertListItem(properties, pos++, wxT("Primary Key"), GetPrimaryKey());
+            InsertListItem(properties, pos++, _("Primary Key"), GetPrimaryKey());
 
-        InsertListItem(properties, pos++, wxT("Rows estimated"), GetEstimatedRows());
+        InsertListItem(properties, pos++, _("Rows estimated"), GetEstimatedRows());
 
         if (rows < 0)
-            InsertListItem(properties, pos++, wxT("Rows"), wxT("Refresh to count rows"));
+            InsertListItem(properties, pos++, _("Rows"), _("Refresh to count rows"));
         else
-            InsertListItem(properties, pos++, wxT("Rows"), rows);
+            InsertListItem(properties, pos++, _("Rows"), rows);
 
-        InsertListItem(properties, pos++, wxT("Inherits Tables"), GetHasSubclass());
-        InsertListItem(properties, pos++, wxT("Inherited Tables Count"), GetInheritedTableCount());
-        InsertListItem(properties, pos++, wxT("Inherited Tables"), GetInheritedTables());
-        InsertListItem(properties, pos++, wxT("Has OIDs?"), GetHasOids());
-        InsertListItem(properties, pos++, wxT("System Table?"), GetSystemObject());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, _("Inherits Tables"), GetHasSubclass());
+        InsertListItem(properties, pos++, _("Inherited Tables Count"), GetInheritedTableCount());
+        InsertListItem(properties, pos++, _("Inherited Tables"), GetInheritedTables());
+        InsertListItem(properties, pos++, _("Has OIDs?"), GetHasOids());
+        InsertListItem(properties, pos++, _("System Table?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 
     DisplayStatistics(statistics, wxT(
@@ -486,7 +398,7 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             table->iSetAcl(tables->GetVal(wxT("relacl")));
             table->iSetComment(tables->GetVal(wxT("description")));
             table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
-            table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
+            table->iSetEstimatedRows(tables->GetLong(wxT("reltuples")));
             table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
             table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));
             wxString cn=tables->GetVal(wxT("conkey"));

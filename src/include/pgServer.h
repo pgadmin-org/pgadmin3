@@ -32,7 +32,7 @@ public:
     wxString GetIdentifier() const;
     wxString GetVersionString();
     float GetVersionNumber();
-    double GetLastSystemOID();
+    OID GetLastSystemOID();
     wxString GetDatabase() const { return database; }
     wxString GetUsername() const { return username; }
     wxString GetPassword() const { return password; }
@@ -76,7 +76,7 @@ private:
     wxString lastDatabase, lastSchema, description;
     int port;
     bool trusted;
-    double lastSystemOID;
+    OID lastSystemOID;
     float versionNum;
     wxFrame *parentWin;
 };
