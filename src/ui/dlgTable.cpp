@@ -345,7 +345,9 @@ wxString dlgTable::GetSql()
             sql += wxT(" ") + GetItemConstraintType(lstConstraints, pos) + wxT(" ") + definition;
         }
 
-        sql += wxT("\n);\n");
+
+        sql += wxString(wxT("\n) ")) + (chkHasOids->GetValue() ? wxT("WITH") : wxT("WITHOUT"))
+            +  wxT(" OIDS;\n");
     }
     sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + tabname);
 

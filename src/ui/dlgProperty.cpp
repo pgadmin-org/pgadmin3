@@ -250,14 +250,20 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             wxString nodeName=data->GetFullName();
             size_t pos=0;
             wxTreeItemId item;
-            long cookie;
-            item=browser->GetFirstChild(collectionItem, cookie);
-            while (item)
+
+            if (data->GetType() != PG_COLUMN)
             {
-                if (browser->GetItemText(item) > nodeName)
-                    break;
-                pos++;
-                item=browser->GetNextChild(collectionItem, cookie);
+                // columns should be appended, not inserted alphabetically
+
+                long cookie;
+                item=browser->GetFirstChild(collectionItem, cookie);
+                while (item)
+                {
+                    if (browser->GetItemText(item) > nodeName)
+                        break;
+                    pos++;
+                    item=browser->GetNextChild(collectionItem, cookie);
+                }
             }
 
             if (item)
@@ -360,6 +366,7 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 {
     if (sqlPane && event.GetSelection() == nbNotebook->GetPageCount()-1)
     {
+        sqlPane->SetReadOnly(false);
         if (btnOK->IsEnabled())
             sqlPane->SetText(GetSql());
         else
@@ -369,6 +376,7 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
             else
                 sqlPane->SetText(_("-- definition incomplete"));
         }
+        sqlPane->SetReadOnly(true);
     }
 }
 

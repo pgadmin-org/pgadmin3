@@ -191,7 +191,9 @@ void pgCollection::SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, int index)
         {
             if (index == pos)
             {
+                sqlPane->SetReadOnly(false);
                 sqlPane->SetText(data->GetSql(browser));
+                sqlPane->SetReadOnly(true);
                 return;
             }
             pos++;

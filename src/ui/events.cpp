@@ -654,7 +654,9 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     }
     properties->Thaw();
     statistics->Thaw();
+    sqlPane->SetReadOnly(false);
     sqlPane->SetText(data->GetSql(browser));
+    sqlPane->SetReadOnly(true);
 
     unsigned int i;
     wxMenuItem *menuItem;

@@ -33,6 +33,7 @@ pgColumn::~pgColumn()
 {
 }
 
+
 bool pgColumn::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     wxString sql = wxT("ALTER TABLE ") + GetQuotedFullTable();
@@ -58,7 +59,8 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
                 + wxT(" ADD COLUMN ") + GetQuotedIdentifier() + wxT(" ") + GetQuotedTypename()
                 
                 + wxT(";\nALTER TABLE ")+ GetQuotedFullTable()
-                +  wxT(" ALTER COLUMN pgadmin_tmpcol SET STORAGE ") + GetStorage() + wxT(";\n");
+                + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                + wxT(" SET STORAGE ") + GetStorage() + wxT(";\n");
 
             if (GetNotNull())
                 sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
@@ -80,14 +82,18 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
 
 wxString pgColumn::GetDefinition()
 {
-    wxString sql;
-    sql = GetQuotedTypename();
+    wxString sql = GetQuotedTypename();
 
-    if (sql== wxT("int4") && GetDefault() == wxT("nextval('") 
+    if ((sql == wxT("int4") || sql == wxT("int8"))
+        && GetDefault() == wxT("nextval('") 
                         + schema->GetName() + wxT(".") + GetTableName() 
                         + wxT("_") + GetName() + wxT("_seq'::text)"))
     {
-        sql = wxT("serial");
+        if (sql == wxT("int8"))
+            sql = wxT("bigserial");
+        else
+            sql = wxT("serial");
+
         if (GetNotNull())
             sql += wxT(" NOT NULL");
     }
@@ -173,7 +179,6 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, _("Not Null?"), GetNotNull());
         InsertListItem(properties, pos++, _("Primary Key?"), GetIsPK());
         InsertListItem(properties, pos++, _("Foreign Key?"), GetIsFK());
-        InsertListItem(properties, pos++, _("Storage"), GetStorage());
         InsertListItem(properties, pos++, _("Storage"), GetStorage());
         InsertListItem(properties, pos++, _("Inherits Count"), GetInheritedCount());
 

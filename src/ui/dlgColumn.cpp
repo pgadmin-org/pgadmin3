@@ -108,7 +108,9 @@ int dlgColumn::Go(bool modal)
         // create mode
         FillDatatype(cbDatatype);
         cbDatatype->Append(wxT("serial"));
+        cbDatatype->Append(wxT("bigserial"));
         AddType(wxT(" "), 0, wxT("serial"));
+        AddType(wxT(" "), 0, wxT("bigserial"));
     }
     return dlgTypeProperty::Go(modal);
 }
@@ -154,6 +156,18 @@ wxString dlgColumn::GetSql()
                        wxT("   SET ") + sqlPart + wxT("\n")
                        wxT(" WHERE attrelid=") + table->GetOidStr() +
                        wxT(" AND attnum=") + NumToStr(column->GetColNumber()) + wxT(";\n");
+
+            if (txtDefault->GetValue() != column->GetDefault())
+            {
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT(" ALTER ") + qtIdent(column->GetName());
+                if (txtDefault->GetValue().IsEmpty())
+                    sql += wxT(" DROP DEFAULT");
+                else
+                    sql += wxT(" SET DEFAULT ") + txtDefault->GetValue();
+
+                sql += wxT(";\n");
+            }
         }
         else
         {
@@ -163,17 +177,6 @@ wxString dlgColumn::GetSql()
                 + wxT(";\n");
         }
 
-        if (txtDefault->GetValue() != column->GetDefault())
-        {
-            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                +  wxT(" ALTER ") + qtIdent(column->GetName());
-            if (txtDefault->GetValue().IsEmpty())
-                sql += wxT(" DROP DEFAULT");
-            else
-                sql += wxT(" SET DEFAULT ") + txtDefault->GetValue();
-
-            sql += wxT(";\n");
-        }
 
         AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier() 
                 + wxT(".") + qtIdent(GetName()), column);

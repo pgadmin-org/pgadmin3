@@ -609,12 +609,18 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             columns[i].typeName = colSet->GetVal(wxT("typname"));
 
             columns[i].type = (Oid)colSet->GetOid(wxT("basetype"));
-            if (columns[i].type == PGOID_TYPE_INT4 && colSet->GetBool(wxT("atthasdef")))
+            if ((columns[i].type == PGOID_TYPE_INT4 || columns[i].type == PGOID_TYPE_INT8)
+                && colSet->GetBool(wxT("atthasdef")))
             {
                 if (colSet->GetVal(wxT("adsrc")) ==  wxT("nextval('") 
                         + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname"))
                         + wxT("_") + columns[i].name + wxT("_seq'::text)"))
-                    columns[i].type = (Oid)PGOID_TYPE_SERIAL;
+                {
+                    if (columns[i].type == PGOID_TYPE_INT4)
+                        columns[i].type = (Oid)PGOID_TYPE_SERIAL;
+                    else
+                        columns[i].type = (Oid)PGOID_TYPE_SERIAL8;
+                }
             }
             columns[i].typlen=colSet->GetLong(wxT("typlen"));
             columns[i].typmod=colSet->GetLong(wxT("typmod"));
@@ -758,10 +764,18 @@ wxString sqlTable::GetColLabelValue(int col)
     if (columns[col].isPrimaryKey)
         label += wxT("[PK] ");
 
-    if (columns[col].type == (Oid)PGOID_TYPE_SERIAL)
-        label += wxT("serial");
-    else
-        label += columns[col].typeName;
+    switch (columns[col].type)
+    {
+        case (Oid)PGOID_TYPE_SERIAL:
+            label += wxT("serial");
+            break;
+        case (Oid)PGOID_TYPE_SERIAL8:
+            label += wxT("bigserial");
+            break;
+        default:
+            label += columns[col].typeName;
+            break;
+    }
     return label;
 }
 
