@@ -30,6 +30,7 @@ const float SERVER_MIN_VERSION = 7.3f;
 #define XRC_PATH wxT("/ui/win32")
 #else
 #include "config.h"
+#undef VERSION
 #define XRC_PATH wxT("/ui/gtk")
 #endif
 
