@@ -5,6 +5,7 @@
 # Makefile - Makefile for *nix systems
 SUBDIRS = src
 EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt \
+		pkg/pgadmin3.desktop \
 		pkg/debian/rules pkg/debian/README.Debian \
 		pkg/debian/docs pkg/debian/dirs \
 		pkg/debian/copyright pkg/debian/control \
@@ -12,7 +13,6 @@ EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt \
 		pkg/debian/pgadmin3.menu \
 		pkg/redhat/pgadmin3.spec \
 		pkg/slackware/build-package pkg/slackware/slack-desc \
-		pkg/slackware/pgadmin3.desktop \
 		pkg/src/build-tarball
 
 nobase_dist_pkgdata_DATA = \
