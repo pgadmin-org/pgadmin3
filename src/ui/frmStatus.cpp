@@ -117,9 +117,8 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
         lockList->AddColumn(_("Query"), 500);
     }
 
-    if (connection->BackendMinimumVersion(7, 5) && 
-		 connection->HasFeature(FEATURE_FILEREAD) && 
-		 connection->HasFeature(FEATURE_STANDARD_LOGNAME_FORMAT))
+    if (connection->BackendMinimumVersion(8, 0) && 
+		 connection->HasFeature(FEATURE_FILEREAD))
     {
         logFormat = connection->ExecuteScalar(wxT("SHOW log_line_prefix"));
         if (logFormat == wxT("unset"))
@@ -434,7 +433,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
             else 
             {
                 logDirectory = wxT("-");
-                logList->AppendItem(-1, _("file logging not enabled"));
+                logList->AppendItem(-1, _("redirect_stderr not enabled or log_filename misconfigured"));
                 cbLogfiles->Disable();
                 btnRotateLog->Disable();
             }

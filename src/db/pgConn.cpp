@@ -63,7 +63,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     majorVersion=0;
     noticeArg=0;
     connStatus = PGCONN_BAD;
-    features[FEATURE_INITIALIZED] = false;
+    memset(features, 0, sizeof(features));
     
 #ifdef __WXMSW__
     struct in_addr ipaddr;
@@ -436,54 +436,38 @@ bool pgConn::HasFeature(int featureNo)
     {
         features[FEATURE_INITIALIZED] = true;
 
-        features[FEATURE_SIZE] = 
-            !ExecuteScalar(
-                    wxT("SELECT proname FROM pg_proc\n")
-                    wxT(" WHERE proname = 'pg_tablespace_size'")
-                    wxT(  " AND proargtypes[0] = 26"))
-                    .IsEmpty();
-        features[FEATURE_FILEREAD] = 
-            !ExecuteScalar(
-                    wxT("SELECT proname FROM pg_proc\n")
-                    wxT(" WHERE proname = 'pg_file_read'")
-                    wxT(  " AND proargtypes[0] = 25")
-                    wxT(  " AND proargtypes[1] = 20")
-                    wxT(  " AND proargtypes[2] = 20"))
-                    .IsEmpty();
-        features[FEATURE_ROTATELOG] =
-            !ExecuteScalar(
-                    wxT("SELECT proname FROM pg_proc\n")
-                    wxT(" WHERE proname = 'pg_rotate_log'")
-                    wxT(  " AND pronargs = 0"))
-                    .IsEmpty();
-        features[FEATURE_POSTMASTER_STARTTIME] =
-            !ExecuteScalar(
-                    wxT("SELECT proname FROM pg_proc\n")
-                    wxT(" WHERE proname = 'pg_postmaster_starttime'")
-                    wxT(  " AND pronargs = 0"))
-                    .IsEmpty();
-        features[FEATURE_TERMINATE_BACKEND] =
-            !ExecuteScalar(
-                    wxT("SELECT proname FROM pg_proc\n")
-                    wxT(" WHERE proname = 'pg_terminate_backend'")
-                    wxT(  " AND pronargs = 1"))
-                    .IsEmpty();
+        pgSet *set=ExecuteSet(
+            wxT("SELECT proname, pronargs, proargtypes[0] AS arg0, proargtypes[1] AS arg1, proargtypes[2] AS arg2\n")
+            wxT("  FROM pg_proc\n")
+            wxT(" WHERE proname IN ('pg_tablespace_size', 'pg_file_read', 'pg_rotate_log',")
+            wxT(                  " 'pg_postmaster_starttime', 'pg_terminate_backend')"));
 
-		if (majorVersion >= 8)
-		{
-			features[FEATURE_STANDARD_LOGNAME_FORMAT] = 
-					ExecuteScalar(
-						wxT("SHOW log_filename"))
-						== wxT("postgresql-%Y-%m-%d_%H%M%S.log");
-		}
-		else
-		{
-			features[FEATURE_STANDARD_LOGNAME_FORMAT] = false;
-		}
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                wxString proname=set->GetVal(wxT("proname"));
+                long pronargs = set->GetLong(wxT("pronargs"));
 
+                if (proname == wxT("pg_tablespace_size") && pronargs == 1 && set->GetLong(wxT("arg0")) == 26)
+                    features[FEATURE_SIZE]= true;
+                else if (proname == wxT("pg_file_read") && pronargs == 3 && set->GetLong(wxT("arg0")) == 25
+                    && set->GetLong(wxT("arg1")) == 20 && set->GetLong(wxT("arg2")) == 20)
+                    features[FEATURE_FILEREAD] = true;
+                else if (proname == wxT("pg_rotate_log") && pronargs == 0)
+                    features[FEATURE_ROTATELOG] = true;
+                else if (proname == wxT("pg_postmaster_starttime") && pronargs == 0)
+                    features[FEATURE_POSTMASTER_STARTTIME] = true;
+                else if (proname == wxT("pg_terminate_backend") && pronargs == 1 && set->GetLong(wxT("arg0")) == 23)
+                    features[FEATURE_TERMINATE_BACKEND] = true;
+
+                set->MoveNext();
+            }
+            delete set;
+        }
     }
 
-    if (featureNo < 1 ||featureNo >= FEATURE_LAST)
+    if (featureNo <= FEATURE_INITIALIZED || featureNo >= FEATURE_LAST)
         return false;
     return features[featureNo];
 }
