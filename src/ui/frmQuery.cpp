@@ -66,6 +66,8 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
     EVT_MENU(MNU_CONTENTS,          frmQuery::OnContents)
     EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
+    EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
+    EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
 #ifdef __wxGTK__
     EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
 #endif
@@ -119,6 +121,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     eo->Append(MNU_VERBOSE, _("Verbose"), _("Explain verbose query"), wxITEM_CHECK);
     eo->Append(MNU_ANALYZE, _("Analyze"), _("Explain analyse query"), wxITEM_CHECK);
     queryMenu->Append(MNU_EXPLAINOPTIONS, _("Explain &options"), eo, _("Options modifying Explain output"));
+    queryMenu->AppendSeparator();
+    queryMenu->Append(MNU_SAVEHISTORY, _("Save history"), _("Save history of executed commands."));
+    queryMenu->Append(MNU_CLEARHISTORY, _("Clear history"), _("Clear history window."));
     queryMenu->AppendSeparator();
     queryMenu->Append(MNU_CANCEL, _("&Cancel\tAlt-Break"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
@@ -189,10 +194,11 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     sqlResult = new ctlSQLResult(output, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     msgResult = new wxTextCtrl(output, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    msgHistory = new wxTextCtrl(output, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
 
     output->AddPage(sqlResult, _("Data Output"));
     output->AddPage(msgResult, _("Messages"));
-    //output->AddPage(msgHistory, _("History"));
+    output->AddPage(msgHistory, _("History"));
 
     int splitpos=settings->Read(wxT("frmQuery/Split"), 250);
     if (splitpos < 50)
@@ -201,16 +207,18 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
         splitpos = GetSize().y-50;
     horizontal->SplitHorizontally(sqlQuery, output, splitpos);
 
-
     if (settings->GetStickySql()) sqlQuery->SetText(query);
     changed = !query.IsNull() && settings->GetStickySql();
     if (changed)
         setExtendedTitle();
     updateMenu();
+    queryMenu->Enable(MNU_SAVEHISTORY, false);
+    queryMenu->Enable(MNU_CLEARHISTORY, false);
     setTools(false);
     lastFileFormat = settings->GetUnicodeFile();
 
     msgResult->SetMaxLength(0L);
+    msgHistory->SetMaxLength(0L);
 }
 
 
@@ -239,7 +247,7 @@ void frmQuery::updateRecentFiles()
 
     for (i=1 ; i <= maxFiles ; i++)
     {
-        lastFiles[i] = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("%d"), '0'+i), wxT(""));
+        lastFiles[i] = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("%d"), i), wxT(""));
         if (!lastPath.IsNull() && lastPath.IsSameAs(lastFiles[i], wxARE_FILENAMES_CASE_SENSITIVE))
             recentIndex=i;
     }
@@ -449,6 +457,26 @@ void frmQuery::OnHelp(wxCommandEvent& event)
 	page=wxT("sql-commands.html");
 
     frmHelp::LoadSqlDoc(this, page);
+}
+
+
+void frmQuery::OnSaveHistory(wxCommandEvent& event)
+{
+    wxFileDialog *dlg=new wxFileDialog(this, _("Save history"), lastDir, wxEmptyString, 
+        _("Log files (*.log)|*.log|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
+    if (dlg->ShowModal() == wxID_OK)
+    {
+        FileWrite(dlg->GetPath(), msgHistory->GetValue(), false);
+    }
+    delete dlg;
+
+}
+
+void frmQuery::OnClearHistory(wxCommandEvent& event)
+{
+    queryMenu->Enable(MNU_SAVEHISTORY, false);
+    queryMenu->Enable(MNU_CLEARHISTORY, false);
+    msgHistory->Clear();
 }
 
 void frmQuery::OnCut(wxCommandEvent& ev)
@@ -716,6 +744,7 @@ void frmQuery::setTools(const bool running)
 void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
 {
     msgResult->AppendText(msg + wxT("\n"));
+    msgHistory->AppendText(msg + wxT("\n"));
     wxString str;
     if (msgShort.IsNull())
         str=msg;
@@ -729,6 +758,8 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 {
     long rowsReadTotal=0;
     setTools(true);
+    queryMenu->Enable(MNU_SAVEHISTORY, true);
+    queryMenu->Enable(MNU_CLEARHISTORY, true);
 
     bool wasChanged = changed;
     sqlQuery->MarkerDeleteAll(0);
@@ -747,15 +778,13 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         SetStatusText(wxT(""), STATUSPOS_ROWS);
         msgResult->Clear();
 
-/*
-        msgResult->AppendText(_("Executing query:"));
-        msgResult->AppendText(wxT("\n\n"));
-        msgResult->AppendText(query);
-        msgResult->AppendText(wxT("\n"));
-*/
+        msgHistory->AppendText(_("-- Executing query:\n"));
+        msgHistory->AppendText(query);
+        msgHistory->AppendText(wxT("\n"));
         Update();
         wxYield();
 
+        wxString str;
         wxLongLong startTimeQuery=wxGetLocalTimeMillis();
         while (sqlResult->RunStatus() == CTLSQL_RUNNING)
         {
@@ -763,11 +792,18 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
             wxYield();
             wxUsleep(10);
-            msgResult->AppendText(sqlResult->GetMessagesAndClear());
+            str=sqlResult->GetMessagesAndClear();
+            if (!str.IsEmpty())
+            {
+                msgResult->AppendText(str);
+                msgHistory->AppendText(str);
+            }
             wxYield();
         }
 
-        msgResult->AppendText(sqlResult->GetMessagesAndClear());
+        str=sqlResult->GetMessagesAndClear();
+        msgResult->AppendText(str);
+        msgHistory->AppendText(str);
 
         elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
         SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
@@ -892,9 +928,10 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                 elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
                 SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
 
-                msgResult->AppendText(
-                    _("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n") +
-                    _("Data retrieval runtime: ") + elapsedRetrieve.ToString() + wxT(" ms.\n"));
+                str= _("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n") +
+                     _("Data retrieval runtime: ") + elapsedRetrieve.ToString() + wxT(" ms.\n");
+                msgResult->AppendText(str);
+                msgHistory->AppendText(str);
 
                 if (rowsReadTotal == sqlResult->NumRows())
                     showMessage(wxString::Format(_("%ld rows retrieved."), rowsReadTotal), _("OK."));
@@ -904,7 +941,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                     nr.Printf(_("%ld  rows not retrieved."), rowsTotal - rowsReadTotal);
                     showMessage(wxString::Format(_("Total %ld rows.\n"), rowsTotal) + nr, nr);
                 }
-                msgResult->AppendText(wxT("\n"));
+                msgHistory->AppendText(wxT("\n"));
 
             }
             if (rowsTotal == rowsReadTotal)

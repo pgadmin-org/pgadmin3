@@ -65,6 +65,8 @@ enum
     MNU_VERBOSE,
     MNU_ANALYZE,
     MNU_RELOAD,
+    MNU_CLEARHISTORY,
+    MNU_SAVEHISTORY,
     MNU_RECENT, // leave space for recent file entries
     MNU_NEW=MNU_RECENT+15
 };

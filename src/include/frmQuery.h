@@ -32,7 +32,7 @@ private:
     ctlSQLBox *sqlQuery;
     wxNotebook *output;
     ctlSQLResult *sqlResult;
-    wxTextCtrl *msgResult;
+    wxTextCtrl *msgResult, *msgHistory;
     wxStatusBar *statusBar;
     wxToolBar *toolBar;
     pgConn *conn;
@@ -58,6 +58,8 @@ private:
     void OnFind(wxCommandEvent& event);
     void OnUndo(wxCommandEvent& event);
     void OnRedo(wxCommandEvent& event);
+    void OnSaveHistory(wxCommandEvent& event);
+    void OnClearHistory(wxCommandEvent& event);
     void OnKeyDown(wxKeyEvent& event);
 
     void updateRecentFiles();
@@ -93,7 +95,8 @@ enum
 {
     CTL_SQLQUERY=331,
     CTL_SQLRESULT,
-    CTL_MSGRESULT
+    CTL_MSGRESULT,
+    CTL_MSGHISTORY
 };
 
 
