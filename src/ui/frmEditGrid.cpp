@@ -57,9 +57,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
     sqlGrid = new ctlSQLGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
     sqlGrid->SetSizer(new wxBoxSizer(wxVERTICAL));
 #ifdef __WIN32__
-    wxFont fntLabel(9, wxMODERN, wxNORMAL, wxNORMAL);
+    wxFont fntLabel(8, wxDEFAULT, wxNORMAL, wxBOLD);
 #else
-    wxFont fntLabel(12, wxMODERN, wxNORMAL, wxNORMAL);
+    wxFont fntLabel(12, wxDEFAULT, wxNORMAL, wxBOLD);
 #endif
     sqlGrid->SetLabelFont(fntLabel);
 
@@ -72,6 +72,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
         tableName = table->GetQuotedFullIdentifier();
         primaryKeyColNumbers = table->GetPrimaryKeyColNumbers();
         orderBy = table->GetPrimaryKey();
+        if (orderBy.IsEmpty() && hasOids)
+            orderBy=wxT("oid");
     }
     else if (obj->GetType() == PG_VIEW)
     {
@@ -154,10 +156,11 @@ void frmEditGrid::Go()
     if (hasOids)
         qry += wxT("Oid, ");
     qry += wxT("* FROM ") + tableName;
-    if (!hasOids && !orderBy.IsEmpty())
+    if (!orderBy.IsEmpty())
     {
         qry += wxT(" ORDER BY ") + orderBy;
     }
+
     thread=new pgQueryThread(connection->connection(), qry);
     if (thread->Create() != wxTHREAD_NO_ERROR)
     {
@@ -181,10 +184,10 @@ void frmEditGrid::Go()
         return;
     }
     SetStatusText(NumToStr(thread->DataSet()->NumRows()) + wxT(" rows."), 0);
+    sqlGrid->BeginBatch();
     sqlGrid->SetTable(new sqlTable(connection, thread, tableName, relid, hasOids, primaryKeyColNumbers, relkind), true);
-
-    sqlGrid->ForceRefresh();
-    sqlGrid->ScrollLines(0);
+    sqlGrid->EndBatch();
+    sqlGrid->FitInside();
 }
 
 
@@ -304,15 +307,28 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
     {
         done= wxGrid::SetTable(table, takeOwnership);
 
-	int i;
-	wxCoord w, h;
-	wxClientDC dc(this);
-	dc.SetFont(GetLabelFont());
-	for (i=0 ; i < m_numCols ; i++)
-	{
-	    dc.GetTextExtent(GetColLabelValue(i), &w, &h);
-	    SetColSize(i, w);
-	}
+	    int col;
+	    wxCoord w, h, wmax;
+	    wxClientDC dc(this);
+	    dc.SetFont(GetLabelFont());
+
+	    for (col=0 ; col < m_numCols ; col++)
+	    {
+            wxString str=GetColLabelValue(col);
+	        dc.GetTextExtent(str.BeforeFirst('\n'), &wmax, &h);
+            int crPos=str.Find('\n');
+            if (crPos)
+            {
+    	        dc.GetTextExtent(str.Mid(crPos+1), &w, &h);
+                if (w>wmax)
+                    wmax=w;
+            }
+            wmax += 4;      // looks better
+            if (wmax < 40)
+                wmax = 40;
+
+            SetColSize(col, wmax);
+	    }
     }
     return done;
 }
@@ -388,7 +404,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             switch (columns[i].type)
             {
                 case 16:    // bool
-                    columns[i].numeric = true;
+                    columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
                     columns[i].attr->SetEditor(new wxGridCellBoolEditor());
                     break;
@@ -441,6 +457,19 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             colSet->MoveNext();
         }
         delete colSet;
+
+        if (!hasOids)
+        {
+            wxStringTokenizer collist(primaryKeyColNumbers, ',');
+            long cn;
+            int pkcolcount=0;
+
+            while (collist.HasMoreTokens())
+            {
+                cn=StrToLong(collist.GetNextToken());
+                columns[cn-1].isPrimaryKey = true;
+            }
+        }
     }
     else
     {
@@ -500,7 +529,12 @@ int sqlTable::GetNumberStoredRows()
 
 wxString sqlTable::GetColLabelValue(int col)
 {
-    return columns[col].name + wxT("\n") + columns[col].typeName;
+    wxString label=columns[col].name + wxT("\n");
+    if (columns[col].isPrimaryKey)
+        label += wxT("[PK] ");
+
+    label += columns[col].typeName;
+    return label;
 }
 
 
@@ -579,6 +613,9 @@ void sqlTable::StoreLine()
             // UPDATE
             for (i=(hasOids? 1 : 0) ; i<nCols ; i++)
             {
+                if (columns[i].type == 16)  // bool
+                    line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
+
                 if (savedLine.cols[i] != line->cols[i])
                 {
                     if (!valList.IsNull())
@@ -609,6 +646,8 @@ void sqlTable::StoreLine()
                         colList += wxT(", ");
                     }
                     colList += qtIdent(columns[i].name);
+                    if (columns[i].type == 16)  // bool
+                        line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
                     valList += columns[i].Quote(line->cols[i]);
                 }
             }
@@ -669,6 +708,7 @@ void sqlTable::SetValue(int row, int col, const wxString &value)
 }
 
 
+
 wxString sqlTable::GetValue(int row, int col)
 {
     wxString val;
@@ -711,11 +751,46 @@ wxString sqlTable::GetValue(int row, int col)
             }
         }
     }
+    if (columns[col].type == 16)
+        line->cols[col] = (StrToBool(line->cols[col]) ? wxT("TRUE") : wxT("FALSE"));
 
     val = line->cols[col];
     return val;
 }
 
+
+
+bool sqlTable::CanGetValueAs(int row, int col, const wxString& typeName)
+{
+    return CanSetValueAs(row, col, typeName);
+}
+
+
+bool sqlTable::CanSetValueAs(int row, int col, const wxString& typeName)
+{
+    if (typeName == wxGRID_VALUE_STRING)
+        return true;
+
+    switch (columns[col].type)
+    {
+        case 16:
+            return typeName == wxGRID_VALUE_BOOL;
+        default:
+            return false;
+    }
+}
+
+    
+bool sqlTable::GetValueAsBool(int row, int col)
+{
+    return StrToBool(GetValue(row, col));
+}
+
+
+void sqlTable::SetValueAsBool(int row, int col, bool b)
+{
+    SetValue(row, col, (b ? wxT("TRUE") : wxT("FALSE")));
+}
 
 
 bool sqlTable::AppendRows(size_t rows)

@@ -48,7 +48,7 @@ private:
 class sqlCellAttr
 {
 public:
-    sqlCellAttr()  { attr = new wxGridCellAttr; }
+    sqlCellAttr()  { attr = new wxGridCellAttr; isPrimaryKey=false; }
     ~sqlCellAttr() { attr->DecRef(); }
     int size();
     int precision();
@@ -58,7 +58,7 @@ public:
     Oid type;
     long typlen, typmod;
     wxString name, typeName;
-    bool numeric;
+    bool numeric, isPrimaryKey;
 };
 
 
@@ -78,8 +78,13 @@ public:
     wxString GetRowLabelValue(int row);
     wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
 
+    bool CanGetValueAs(int row, int col, const wxString& typeName);
+    bool CanSetValueAs(int row, int col, const wxString& typeName);
+    
     wxString GetValue(int row, int col);
     void SetValue(int row, int col, const wxString &value);
+    bool GetValueAsBool(int row, int col);
+    void SetValueAsBool(int row, int col, bool b);
 
     bool IsEmptyCell(int rows, int col) { return false; }
     bool AppendRows(size_t rows);
