@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -115,9 +115,13 @@ HREF="typeconv-union-case.html"
 ><VAR
 CLASS="LITERAL"
 >UNION</VAR
-> and <VAR
+>, <VAR
 CLASS="LITERAL"
 >CASE</VAR
+>, and
+<VAR
+CLASS="LITERAL"
+>ARRAY</VAR
 > Constructs</A
 ></DT
 ></DL
@@ -301,29 +305,36 @@ with, and perhaps converted to, the types of the target columns.</P
 ><VAR
 CLASS="LITERAL"
 >UNION</VAR
-> and <VAR
+>, <VAR
 CLASS="LITERAL"
 >CASE</VAR
+>, and <VAR
+CLASS="LITERAL"
+>ARRAY</VAR
 > constructs</DT
 ><DD
 ><P
 >Since all query results from a unionized <VAR
 CLASS="LITERAL"
 >SELECT</VAR
-> statement must appear in a single
-set of columns, the types of the results
-of each <VAR
+> statement
+must appear in a single set of columns, the types of the results of each
+<VAR
 CLASS="LITERAL"
 >SELECT</VAR
 > clause must be matched up and converted to a uniform set.
 Similarly, the branch expressions of a <VAR
 CLASS="LITERAL"
 >CASE</VAR
-> construct must be converted to
-a common type so that the <VAR
+> construct must be
+converted to a common type so that the <VAR
 CLASS="LITERAL"
 >CASE</VAR
-> expression as a whole has a known output type.</P
+> expression as a whole
+has a known output type.  The same holds for <VAR
+CLASS="LITERAL"
+>ARRAY</VAR
+> constructs.</P
 ></DD
 ></DL
 ></DIV

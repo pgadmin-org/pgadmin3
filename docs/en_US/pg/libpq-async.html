@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -87,7 +87,7 @@ NAME="LIBPQ-ASYNC"
 >27.4. Asynchronous Command Processing</A
 ></H1
 ><A
-NAME="AEN20185"
+NAME="AEN20349"
 ></A
 ><P
 >The <CODE
@@ -152,18 +152,26 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQgetResult</CODE
 >.
-There is also <CODE
+There are also <CODE
 CLASS="FUNCTION"
 >PQsendQueryParams</CODE
->, which can be
-used with <CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>PQsendQueryPrepared</CODE
+>, which can be used with
+<CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
-> to duplicate the functionality
-of <CODE
+> to duplicate the functionality of
+<CODE
 CLASS="FUNCTION"
 >PQexecParams</CODE
->.
+> and <CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+>
+respectively.
 
 <P
 ></P
@@ -247,6 +255,43 @@ CLASS="FUNCTION"
 ><DT
 ><CODE
 CLASS="FUNCTION"
+>PQsendQueryPrepared</CODE
+></DT
+><DD
+><P
+>          Sends a request to execute a prepared statement with given
+	  parameters, without waiting for the result(s).
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQsendQueryPrepared(PGconn *conn,
+                        const char *stmtName,
+                        int nParams,
+                        const char * const *paramValues,
+                        const int *paramLengths,
+                        const int *paramFormats,
+                        int resultFormat);</PRE
+><P>
+
+	This is similar to <CODE
+CLASS="FUNCTION"
+>PQsendQueryParams</CODE
+>, but the
+	command to be executed is specified by naming a previously-prepared
+	statement, instead of giving a query string.
+	The function's parameters are handled identically to
+	<CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+>.  Like
+	<CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+>, it will not work on 2.0-protocol
+	connections.</P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
 >PQgetResult</CODE
 ></DT
 ><DD
@@ -255,11 +300,15 @@ CLASS="FUNCTION"
 	  <CODE
 CLASS="FUNCTION"
 >PQsendQuery</CODE
-> or
+>,
 	  <CODE
 CLASS="FUNCTION"
 >PQsendQueryParams</CODE
->,
+>, or
+	  <CODE
+CLASS="FUNCTION"
+>PQsendQueryPrepared</CODE
+> call,
 	  and returns it.  A null pointer is returned when the command is complete
 	  and there will be no more results.
 </P><PRE

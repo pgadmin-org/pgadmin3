@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Frontend/Backend Protocol"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -102,7 +102,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53551"
+NAME="AEN53919"
 >46.2.1. Start-Up</A
 ></H2
 ><P
@@ -329,7 +329,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53620"
+NAME="AEN53988"
 >46.2.2. Simple Query</A
 ></H2
 ><P
@@ -528,7 +528,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53682"
+NAME="AEN54050"
 >46.2.3. Extended Query</A
 ></H2
 ><P
@@ -780,7 +780,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53718"
+NAME="AEN54086"
 >46.2.4. Function Call</A
 ></H2
 ><P
@@ -908,8 +908,7 @@ CLASS="COMMAND"
    </P
 ><P
 >    In the event of a backend-detected error during copy-in mode (including
-    receipt of a CopyFail message, or indeed any frontend message other than
-    CopyData or CopyDone), the backend will issue an ErrorResponse 
+    receipt of a CopyFail message), the backend will issue an ErrorResponse 
     message.  If the <TT
 CLASS="COMMAND"
 >COPY</TT
@@ -923,6 +922,17 @@ CLASS="COMMAND"
     Query message, the rest of that message is discarded and ReadyForQuery
     is issued.  In either case, any subsequent CopyData, CopyDone, or CopyFail
     messages issued by the frontend will simply be dropped.
+   </P
+><P
+>    The backend will ignore Flush and Sync messages received during copy-in
+    mode.  Receipt of any other non-copy message type constitutes an error
+    that will abort the copy-in state as described above.  (The exception for
+    Flush and Sync is for the convenience of client libraries that always
+    send Flush or Sync after an Execute message, without checking whether
+    the command to be executed is a <TT
+CLASS="COMMAND"
+>COPY FROM STDIN</TT
+>.)
    </P
 ><P
 >    Copy-out mode (data transfer from the server) is initiated when the
@@ -1063,7 +1073,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53779"
+NAME="AEN54149"
 >46.2.7. Cancelling Requests in Progress</A
 ></H2
 ><P
@@ -1126,7 +1136,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53787"
+NAME="AEN54157"
 >46.2.8. Termination</A
 ></H2
 ><P
@@ -1173,7 +1183,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53795"
+NAME="AEN54165"
 >46.2.9. SSL Session Encryption</A
 ></H2
 ><P
@@ -1190,7 +1200,7 @@ CLASS="PRODUCTNAME"
     an SSLRequest message rather than a StartupMessage.  The server then
     responds with a single byte containing <VAR
 CLASS="LITERAL"
->Y</VAR
+>S</VAR
 > or <VAR
 CLASS="LITERAL"
 >N</VAR
@@ -1199,7 +1209,7 @@ CLASS="LITERAL"
     The frontend may close the connection at this point if it is dissatisfied
     with the response.  To continue after <VAR
 CLASS="LITERAL"
->Y</VAR
+>S</VAR
 >, perform an SSL
     startup handshake (not described here, part of the SSL specification)
     with the server.  If this is successful, continue with

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -83,7 +83,7 @@ NAME="SQL-SELECT"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43312"
+NAME="AEN43673"
 ></A
 ><H2
 >Name</H2
@@ -91,7 +91,7 @@ NAME="AEN43312"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43315"
+NAME="AEN43676"
 ></A
 ><H2
 >Synopsis</H2
@@ -219,7 +219,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43351"
+NAME="AEN43712"
 ></A
 ><H2
 >Description</H2
@@ -501,7 +501,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43416"
+NAME="AEN43777"
 ></A
 ><H2
 >Parameters</H2
@@ -1612,17 +1612,20 @@ CLASS="LITERAL"
     <VAR
 CLASS="LITERAL"
 >ASC</VAR
-> is equivalent to <VAR
+> is usually equivalent to <VAR
 CLASS="LITERAL"
 >USING &lt;</VAR
 > and
     <VAR
 CLASS="LITERAL"
 >DESC</VAR
-> is equivalent to <VAR
+> is usually equivalent to <VAR
 CLASS="LITERAL"
 >USING &gt;</VAR
 >.
+    (But the creator of a user-defined datatype can define exactly what the
+    default sort ordering is, and it might correspond to operators with other
+    names.)
    </P
 ><P
 >    The null value sorts higher than any other value. In other words,
@@ -1630,7 +1633,7 @@ CLASS="LITERAL"
     descending sort order, null values sort at the beginning.
    </P
 ><P
->    Data of character types is sorted according to the locale-specific
+>    Character-string data is sorted according to the locale-specific
     collation order that was established when the database cluster
     was initialized.
    </P
@@ -1903,7 +1906,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43793"
+NAME="AEN44154"
 ></A
 ><H2
 >Examples</H2
@@ -2083,7 +2086,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43818"
+NAME="AEN44179"
 ></A
 ><H2
 >Compatibility</H2
@@ -2098,7 +2101,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN43822"
+NAME="AEN44183"
 ></A
 ><H3
 >Omitted <VAR
@@ -2190,13 +2193,21 @@ CLASS="COMMAND"
     contains an explicit <VAR
 CLASS="LITERAL"
 >FROM</VAR
-> clause.
+> clause.  Also, it is
+    possible to disable the implicit-<VAR
+CLASS="LITERAL"
+>FROM</VAR
+> feature
+    by setting the <VAR
+CLASS="VARNAME"
+>ADD_MISSING_FROM</VAR
+> parameter to false.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN43844"
+NAME="AEN44207"
 ></A
 ><H3
 >The <VAR
@@ -2214,7 +2225,7 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > parser requires this key
     word when renaming output columns because the type extensibility
-    features lead to parsing ambiguities in this context.
+    features lead to parsing ambiguities without it.
     <VAR
 CLASS="LITERAL"
 >AS</VAR
@@ -2228,7 +2239,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN43852"
+NAME="AEN44215"
 ></A
 ><H3
 >Namespace Available to <VAR
@@ -2239,7 +2250,7 @@ CLASS="LITERAL"
 >ORDER BY</VAR
 ></H3
 ><P
->    In the SQL standard, an <VAR
+>    In the SQL92 standard, an <VAR
 CLASS="LITERAL"
 >ORDER BY</VAR
 > clause may
@@ -2262,11 +2273,26 @@ CLASS="PRODUCTNAME"
     expression will always be taken as input-column names, not as
     result-column names.
    </P
+><P
+>    SQL99 uses a slightly different definition which is not upward compatible
+    with SQL92.  In most cases, however, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    will interpret an <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> or <VAR
+CLASS="LITERAL"
+>GROUP
+    BY</VAR
+> expression the same way SQL99 does.
+   </P
 ></DIV
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN43861"
+NAME="AEN44228"
 ></A
 ><H3
 >Nonstandard Clauses</H3

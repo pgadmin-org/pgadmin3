@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -139,7 +139,7 @@ HREF="client-authentication-problems.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN16890"
+NAME="AEN16970"
 ></A
 ><P
 >  When a client application connects to the database server, it
@@ -200,7 +200,7 @@ CLASS="FILENAME"
 > file</A
 ></H1
 ><A
-NAME="AEN16904"
+NAME="AEN16984"
 ></A
 ><P
 >   Client authentication is controlled by the file
@@ -983,7 +983,7 @@ CLASS="COMMAND"
 CLASS="SYSTEMITEM"
 >SIGHUP</SPAN
 ><A
-NAME="AEN17150"
+NAME="AEN17230"
 ></A
 >
    signal. If you edit the file on an
@@ -1037,12 +1037,22 @@ local   all         all                                             trust
 # TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
 host    all         all         127.0.0.1         255.255.255.255   trust     
 
+# The same as the last line but using a CIDR mask
+#
+# TYPE  DATABASE    USER        IP-ADDRESS/CIDR-mask  METHOD
+host    all         all         127.0.0.1/32          trust     
+
 # Allow any user from any host with IP address 192.168.93.x to connect
 # to database "template1" as the same user name that ident reports for
 # the connection (typically the Unix user name).
 # 
 # TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
 host    template1   all         192.168.93.0      255.255.255.0     ident sameuser
+
+# The same as the last line but using a CIDR mask
+#
+# TYPE  DATABASE    USER        IP-ADDRESS/CIDR-mask  METHOD
+host    template1   all         192.168.93.0/24       ident sameuser
 
 # Allow a user from host 192.168.12.10 to connect to database
 # "template1" if the user's password is correctly supplied.

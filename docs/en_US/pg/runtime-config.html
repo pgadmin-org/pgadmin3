@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -84,7 +84,7 @@ NAME="RUNTIME-CONFIG"
 >16.4. Run-time Configuration</A
 ></H1
 ><A
-NAME="AEN14789"
+NAME="AEN14864"
 ></A
 ><P
 >    There are a lot of configuration parameters that affect the behavior
@@ -150,7 +150,7 @@ CLASS="LITERAL"
    </P
 ><P
 >    <A
-NAME="AEN14807"
+NAME="AEN14882"
 ></A
 >
     The configuration file is reread whenever the <TT
@@ -3544,7 +3544,33 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->       </P
+>        When <VAR
+CLASS="LITERAL"
+>true</VAR
+>, tables that are referenced by a query will be
+	automatically added to the <VAR
+CLASS="LITERAL"
+>FROM</VAR
+> clause if not already
+	present.  The default is <VAR
+CLASS="LITERAL"
+>true</VAR
+> for compatibility with
+	previous releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  However, this
+	behavior is not SQL-standard, and many people dislike it because it
+	can mask mistakes.  Set to <VAR
+CLASS="LITERAL"
+>false</VAR
+> for the SQL-standard
+	behavior of rejecting references to tables that are not listed in
+	<VAR
+CLASS="LITERAL"
+>FROM</VAR
+>.
+       </P
 ></DD
 ><DT
 ><VAR
@@ -3604,10 +3630,8 @@ CLASS="LITERAL"
 >ONLY</VAR
 > key word to exclude subtables. See
         <A
-HREF="sql.html"
->Part II in <I
->PostgreSQL 7.4beta1 Documentation</I
-></A
+HREF="ddl-inherit.html"
+>Section 5.5</A
 > for more information about inheritance.
        </P
 ></DD

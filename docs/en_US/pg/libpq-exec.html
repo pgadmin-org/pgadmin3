@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -293,6 +293,82 @@ CLASS="FUNCTION"
 command in the given string.  (There can be semicolons in it, but not more
 than one nonempty command.)  This is a limitation of the underlying protocol,
 but has some usefulness as an extra defense against SQL-injection attacks.</P
+><P
+><P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+></DT
+><DD
+><P
+>          Sends a request to execute a prepared statement with given
+	  parameters, and waits for the result.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGresult *PQexecPrepared(PGconn *conn,
+                         const char *stmtName,
+                         int nParams,
+                         const char * const *paramValues,
+                         const int *paramLengths,
+                         const int *paramFormats,
+                         int resultFormat);</PRE
+><P></P
+><P
+><CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+> is like <CODE
+CLASS="FUNCTION"
+>PQexecParams</CODE
+>, but the
+command to be executed is specified by naming a previously-prepared
+statement, instead of giving a query string.  This feature allows commands
+that will be used repeatedly to be parsed and planned just once, rather
+than each time they are executed.
+<CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+> is supported only in protocol 3.0 and later
+connections; it will fail when using protocol 2.0.</P
+><P
+>The parameters are identical to <CODE
+CLASS="FUNCTION"
+>PQexecParams</CODE
+>, except that the
+name of a prepared statement is given instead of a query string, and the
+<VAR
+CLASS="PARAMETER"
+>paramTypes[]</VAR
+> parameter is not present (it is not needed since
+the prepared statement's parameter types were determined when it was created).</P
+></DD
+></DL
+></DIV
+><P>
+
+Presently, prepared statements for use with <CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+>
+must be set up by executing an SQL <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> command,
+which is typically sent with <CODE
+CLASS="FUNCTION"
+>PQexec</CODE
+> (though any of
+<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>'s query-submission functions may be used).
+A lower-level interface for preparing statements may be offered in a
+future release.</P
 ><P
 >The <TT
 CLASS="STRUCTNAME"
@@ -551,18 +627,11 @@ CLASS="SYNOPSIS"
 <VAR
 CLASS="PARAMETER"
 >fieldcode</VAR
-> is an error field identifier defined by the
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> protocol (see <A
-HREF="protocol-error-fields.html"
->Section 46.5</A
->), for example <VAR
-CLASS="LITERAL"
->'C'</VAR
-> for
-the SQLSTATE error code.  NULL is returned if the
+> is an error field identifier; see the symbols
+listed below.  <TT
+CLASS="SYMBOL"
+>NULL</TT
+> is returned if the
 <TT
 CLASS="STRUCTNAME"
 >PGresult</TT
@@ -570,10 +639,158 @@ CLASS="STRUCTNAME"
 or does not include the specified field.  Field values will normally
 not include a trailing newline.</P
 ><P
->Errors generated internally by libpq will have severity and primary message,
-but typically no other fields.  Errors returned by a pre-3.0-protocol server
-will include severity and primary message, and sometimes a detail message,
-but no other fields.</P
+>The following field codes are available:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_SEVERITY</TT
+></DT
+><DD
+><P
+>The severity; the field contents are <VAR
+CLASS="LITERAL"
+>ERROR</VAR
+>,
+<VAR
+CLASS="LITERAL"
+>FATAL</VAR
+>, or <VAR
+CLASS="LITERAL"
+>PANIC</VAR
+> (in an error message), or
+<VAR
+CLASS="LITERAL"
+>WARNING</VAR
+>, <VAR
+CLASS="LITERAL"
+>NOTICE</VAR
+>, <VAR
+CLASS="LITERAL"
+>DEBUG</VAR
+>,
+<VAR
+CLASS="LITERAL"
+>INFO</VAR
+>, or <VAR
+CLASS="LITERAL"
+>LOG</VAR
+> (in a notice message), or a
+localized translation of one of these.  Always present.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_SQLSTATE</TT
+></DT
+><DD
+><P
+>The SQLSTATE code for the error (a 5-character string following SQL
+spec conventions).  Not localizable.  Always present.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_MESSAGE_PRIMARY</TT
+></DT
+><DD
+><P
+>The primary human-readable error message (typically one line).  Always
+present.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_MESSAGE_DETAIL</TT
+></DT
+><DD
+><P
+>Detail: an optional secondary error message carrying more detail about
+the problem.  May run to multiple lines.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_MESSAGE_HINT</TT
+></DT
+><DD
+><P
+>Hint: an optional suggestion what to do about the problem.  This is
+intended to differ from detail in that it offers advice (potentially
+inappropriate) rather than hard facts.  May run to multiple lines.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_STATEMENT_POSITION</TT
+></DT
+><DD
+><P
+>A string containing a decimal integer indicating an error cursor
+position as an index into the original statement string.  The first
+character has index 1, and positions are measured in characters not
+bytes.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_CONTEXT</TT
+></DT
+><DD
+><P
+>An indication of the context in which the error occurred.  Presently
+this includes a call stack traceback of active PL functions.  The
+trace is one entry per line, most recent first.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_SOURCE_FILE</TT
+></DT
+><DD
+><P
+>The file name of the source-code location where the error was
+reported.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_SOURCE_LINE</TT
+></DT
+><DD
+><P
+>The line number of the source-code location where the error was
+reported.</P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>PG_DIAG_SOURCE_FUNCTION</TT
+></DT
+><DD
+><P
+>The name of the source-code function reporting the error.</P
+></DD
+></DL
+></DIV
+><P></P
+><P
+>The client is responsible for formatting displayed information to meet
+its needs; in particular it should break long lines as needed.
+Newline characters appearing in the error message fields should be
+treated as paragraph breaks, not line breaks.</P
+><P
+>Errors generated internally by <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> will
+have severity and primary message, but typically no other fields.
+Errors returned by a pre-3.0-protocol server will include severity and
+primary message, and sometimes a detail message, but no other fields.</P
 ><P
 >Note that error fields are only available from
 <TT
@@ -1275,7 +1492,7 @@ NAME="LIBPQ-EXEC-ESCAPE-STRING"
 >27.3.4. Escaping Strings for Inclusion in SQL Commands</A
 ></H2
 ><A
-NAME="AEN20095"
+NAME="AEN20260"
 ></A
 ><P
 ><CODE
@@ -1311,10 +1528,7 @@ value is passed as a separate parameter in <CODE
 CLASS="FUNCTION"
 >PQexecParams</CODE
 > or
-<CODE
-CLASS="FUNCTION"
->PQsendQueryParams</CODE
->.
+its sibling routines.
 
 </P><PRE
 CLASS="SYNOPSIS"
@@ -1387,7 +1601,7 @@ NAME="LIBPQ-EXEC-ESCAPE-BYTEA"
 >27.3.5. Escaping Binary Strings for Inclusion in SQL Commands</A
 ></H2
 ><A
-NAME="AEN20124"
+NAME="AEN20288"
 ></A
 ><P
 ></P

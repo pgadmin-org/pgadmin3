@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -88,7 +88,7 @@ NAME="FUNCTIONS-ARRAY"
 HREF="functions-array.html#ARRAY-OPERATORS-TABLE"
 >Table 9-41</A
 > shows the operators
-   available for the <TT
+   available for <TT
 CLASS="TYPE"
 >array</TT
 > types.
@@ -128,11 +128,106 @@ CLASS="LITERAL"
 >=</VAR
 > </TD
 ><TD
->equals</TD
+>equal</TD
 ><TD
 ><VAR
 CLASS="LITERAL"
 >ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>t</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&lt;&gt;</VAR
+> </TD
+><TD
+>not equal</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[1,2,3] &lt;&gt; ARRAY[1,2,4]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>t</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&lt;</VAR
+> </TD
+><TD
+>less than</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[1,2,3] &lt; ARRAY[1,2,4]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>t</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&gt;</VAR
+> </TD
+><TD
+>greater than</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[1,4,3] &gt; ARRAY[1,2,4]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>t</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&lt;=</VAR
+> </TD
+><TD
+>less than or equal</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[1,2,3] &lt;= ARRAY[1,2,3]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>t</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&gt;=</VAR
+> </TD
+><TD
+>greater than or equal</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[1,4,3] &gt;= ARRAY[1,4,3]</VAR
 ></TD
 ><TD
 ><VAR
@@ -156,7 +251,7 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->{{1,2,3},{4,5,6}}</VAR
+>{1,2,3,4,5,6}</VAR
 ></TD
 ></TR
 ><TR
@@ -219,6 +314,13 @@ CLASS="LITERAL"
 ></TBODY
 ></TABLE
 ></DIV
+><P
+>   See <A
+HREF="arrays.html"
+>Section 8.10</A
+> for more details about array operator
+   behavior.
+  </P
 ><P
 >   <A
 HREF="functions-array.html#ARRAY-FUNCTIONS-TABLE"
@@ -345,7 +447,7 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->{{1,2,3},{4,5,6}}</VAR
+>{1,2,3,4,5,6}</VAR
 ></TD
 ></TR
 ><TR

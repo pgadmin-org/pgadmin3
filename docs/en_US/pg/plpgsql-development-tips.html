@@ -2,14 +2,14 @@
 <HTML
 ><HEAD
 ><TITLE
->Handling of Quotations Marks</TITLE
+>Tips for Developing in PL/pgSQL</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -86,23 +86,90 @@ CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
-NAME="PLPGSQL-QUOTE"
->40.2. Handling of Quotations Marks</A
+NAME="PLPGSQL-DEVELOPMENT-TIPS"
+>40.2. Tips for Developing in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+></A
 ></H1
 ><P
->   Since the code of any procedural language function is specified
+>    One good way to develop in
+    <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> is to use the text editor of your
+    choice to create your functions, and in another window, use
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> to load and test those functions.
+    If you are doing it this way, it
+    is a good idea to write the function using <TT
+CLASS="COMMAND"
+>CREATE OR
+    REPLACE FUNCTION</TT
+>. That way you can just reload the file to update
+    the function definition.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS '
+	  ....
+end;
+' LANGUAGE plpgsql;</PRE
+><P>
+   </P
+><P
+>    While running <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, you can load or reload such
+    a function definition file with
+</P><PRE
+CLASS="PROGRAMLISTING"
+>\i filename.sql</PRE
+><P>
+    and then immediately issue SQL commands to test the function.
+   </P
+><P
+>    Another good way to develop in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> is using a
+    GUI database access tool that facilitates development in a
+    procedural language. One example of such as a tool is
+    <SPAN
+CLASS="APPLICATION"
+>PgAccess</SPAN
+>, although others exist. These tools often
+    provide convenient features such as escaping single quotes and
+    making it easier to recreate and debug functions.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-QUOTE-TIPS"
+>40.2.1. Handling of Quote Marks</A
+></H2
+><P
+>   Since the code of a <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> function is specified in
    <TT
 CLASS="COMMAND"
 >CREATE FUNCTION</TT
 > as a string literal, single
-   quotes inside the function body must be escaped. This can lead to
+   quotes inside the function body must be escaped by doubling them.
+   This can lead to
    rather complicated code at times, especially if you are writing a
    function that generates other functions, as in the example in <A
 HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN"
 >Section 40.6.4</A
->.  The list below gives
-   you an overview over the needed levels of quotation marks in
-   various situations.  Keep this chart handy.
+>.  This chart may be useful
+   as a summary of the needed numbers of quote marks in
+   various situations.
   </P
 ><P
 ></P
@@ -110,19 +177,27 @@ HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->1 quotation mark</DT
+>1 quote mark</DT
 ><DD
 ><P
->      To begin/end function bodies, for example:
+>      To begin and end the function body, for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE FUNCTION foo() RETURNS integer AS '...'
     LANGUAGE plpgsql;</PRE
 ><P>
+      Anywhere within the function body, quote marks <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+>
+      appear in pairs.
      </P
 ></DD
 ><DT
->2 quotation marks</DT
+>2 quote marks</DT
 ><DD
 ><P
 >      For string literals inside the function body, for example:
@@ -131,7 +206,10 @@ CLASS="PROGRAMLISTING"
 >a_output := ''Blah'';
 SELECT * FROM users WHERE f_name=''foobar'';</PRE
 ><P>
-      The second line is interpreted as
+      The second line is seen by <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> as
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT * FROM users WHERE f_name='foobar';</PRE
@@ -139,26 +217,27 @@ CLASS="PROGRAMLISTING"
      </P
 ></DD
 ><DT
->4 quotation marks</DT
+>4 quote marks</DT
 ><DD
 ><P
->      When you need a single quote in a string inside the function
+>      When you need a single quote in a string constant inside the function
       body, for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >a_output := a_output || '' AND name LIKE ''''foobar'''' AND xyz''</PRE
 ><P>
-      The value of <VAR
+      The value actually appended to <VAR
 CLASS="LITERAL"
 >a_output</VAR
-> would then be: <VAR
+> would be:
+      <VAR
 CLASS="LITERAL"
->      AND name LIKE 'foobar' AND xyz</VAR
+> AND name LIKE 'foobar' AND xyz</VAR
 >.
      </P
 ></DD
 ><DT
->6 quotation marks</DT
+>6 quote marks</DT
 ><DD
 ><P
 >      When a single quote in a string inside the function body is
@@ -167,7 +246,7 @@ CLASS="LITERAL"
 CLASS="PROGRAMLISTING"
 >a_output := a_output || '' AND name LIKE ''''foobar''''''</PRE
 ><P>
-      The value of <VAR
+      The value appended to <VAR
 CLASS="LITERAL"
 >a_output</VAR
 > would then be:
@@ -178,7 +257,7 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
->10 quotation marks</DT
+>10 quote marks</DT
 ><DD
 ><P
 >      When you want two single quotes in a string constant (which
@@ -205,6 +284,20 @@ CLASS="PROGRAMLISTING"
      </P
 ></DD
 ></DL
+></DIV
+><P
+>    A different approach is to escape quote marks in the function body
+    with a backslash rather than by doubling them.  With this method
+    you'll find yourself writing things like <VAR
+CLASS="LITERAL"
+>\'\'</VAR
+> instead
+    of <VAR
+CLASS="LITERAL"
+>''''</VAR
+>.  Some find this easier to keep track of, some
+    do not.
+   </P
 ></DIV
 ></DIV
 ><DIV

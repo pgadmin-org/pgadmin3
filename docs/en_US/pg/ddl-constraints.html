@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -105,7 +105,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1717"
+NAME="AEN1752"
 >5.4.1. Check Constraints</A
 ></H2
 ><P
@@ -226,7 +226,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1735"
+NAME="AEN1770"
 >5.4.2. Not-Null Constraints</A
 ></H2
 ><P
@@ -277,7 +277,7 @@ CLASS="PROGRAMLISTING"
     price numeric NOT NULL CHECK (price &#62; 0)
 );</PRE
 ><P>
-    The order doesn't matter.  It does not necessarily affect in which
+    The order doesn't matter.  It does not necessarily determine in which
     order the constraints are checked.
    </P
 ><P
@@ -334,7 +334,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1756"
+NAME="AEN1791"
 >5.4.3. Unique Constraints</A
 ></H2
 ><P
@@ -402,7 +402,7 @@ CLASS="EMPHASIS"
     least) two rows in the table where the values of each of the
     corresponding columns that are part of the constraint are equal.
     However, null values are not considered equal in this
-    consideration.  That means, in the presence of a multicolumn
+    consideration.  That means even in the presence of a
     unique constraint it is possible to store an unlimited number of
     rows that contain a null value in at least one of the constrained
     columns.  This behavior conforms to the SQL standard, but we have
@@ -416,7 +416,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1770"
+NAME="AEN1805"
 >5.4.4. Primary Keys</A
 ></H2
 ><P
@@ -464,7 +464,7 @@ CLASS="EMPHASIS"
 >    A primary key indicates that a column or group of columns can be
     used as a unique identifier for rows in the table.  (This is a
     direct consequence of the definition of a primary key.  Note that
-    a unique constraint does not, in fact, provide a unique identifier
+    a unique constraint does not, by itself, provide a unique identifier
     because it does not exclude null values.)  This is useful both for
     documentation purposes and for client applications.  For example,
     a GUI application that allows modifying row values probably needs
@@ -717,14 +717,11 @@ HREF="dml.html"
     columns that are either a primary key or form a unique constraint.
     If the foreign key references a unique constraint, there are some
     additional possibilities regarding how null values are matched.
-    These are explained in the <VAR
-CLASS="LITERAL"
->CREATE TABLE</VAR
-> entry
-    in <A
-HREF="reference.html"
->Part VI in <I
->PostgreSQL 7.4beta1 Documentation</I
+    These are explained in the reference documentation for
+    <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
 ></A
 >.
    </P

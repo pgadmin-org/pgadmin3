@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
 HREF="extend.html"><LINK
 REL="PREVIOUS"
-TITLE="Procedural Language Handlers"
-HREF="xfunc-plhandler.html"><LINK
+TITLE="User-Defined Aggregates"
+HREF="xaggr.html"><LINK
 REL="NEXT"
 TITLE="User-defined Operators"
 HREF="xoper.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="xfunc-plhandler.html"
+HREF="xaggr.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -84,10 +84,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XTYPES"
->34.10. User-Defined Types</A
+>34.11. User-Defined Types</A
 ></H1
 ><A
-NAME="AEN30557"
+NAME="AEN30892"
 ></A
 ><P
 >   As described above, there are two kinds of data types in
@@ -110,11 +110,11 @@ CLASS="FILENAME"
   </P
 ><P
 >  <A
-NAME="AEN30567"
+NAME="AEN30902"
 ></A
 >
   <A
-NAME="AEN30569"
+NAME="AEN30904"
 ></A
 >
   A user-defined type must always have input and output functions.
@@ -255,7 +255,7 @@ CLASS="PRODUCTNAME"
 > automatically provides support
   for arrays of that
   type.<A
-NAME="AEN30590"
+NAME="AEN30925"
 ></A
 > For historical reasons, the array type
   has the same name as the base type with the underscore character
@@ -268,7 +268,7 @@ CLASS="LITERAL"
 >  If the values of your data type might exceed a few hundred bytes in
   size (in internal form), you should mark them
   TOAST-able.<A
-NAME="AEN30595"
+NAME="AEN30930"
 ></A
 > To do this, the internal
   representation must follow the standard layout for variable-length
@@ -288,16 +288,13 @@ CLASS="LITERAL"
   storage option.
  </P
 ><P
->  For further details see the description of the <TT
-CLASS="COMMAND"
->CREATE
-  TYPE</TT
-> command in <A
-HREF="reference.html"
->Part VI in <I
->PostgreSQL 7.4beta1 Documentation</I
+>  For further details see the description of the
+  <A
+HREF="sql-createtype.html"
+><I
+>CREATE TYPE</I
 ></A
->.
+> command.
  </P
 ></DIV
 ><DIV
@@ -316,7 +313,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xfunc-plhandler.html"
+HREF="xaggr.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -344,7 +341,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Procedural Language Handlers</TD
+>User-Defined Aggregates</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

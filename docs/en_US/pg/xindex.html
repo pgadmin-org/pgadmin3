@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
 HREF="extend.html"><LINK
 REL="PREVIOUS"
-TITLE="User-Defined Aggregates"
-HREF="xaggr.html"><LINK
+TITLE="Operator Optimization Information"
+HREF="xoper-optimization.html"><LINK
 REL="NEXT"
 TITLE="Index Cost Estimation Functions"
 HREF="indexcost.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="xaggr.html"
+HREF="xoper-optimization.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -731,7 +731,7 @@ CLASS="LITERAL"
    a set of operators.  The procedure for defining operators was
    discussed in <A
 HREF="xoper.html"
->Section 34.11</A
+>Section 34.12</A
 >.  For an operator class on
    B-trees, the operators we require are:
 
@@ -808,7 +808,7 @@ CREATE OPERATOR = (
 ><P>
    It is important to specify the restriction and join selectivity
    functions, otherwise the optimizer will be unable to make effective
-   use of the index.  Note that there less-than, equal, and
+   use of the index.  Note that the less-than, equal, and
    greater-than cases should use different selectivity functions.
   </P
 ><P
@@ -960,13 +960,111 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
+NAME="XINDEX-OPCLASS-DEPENDENCIES"
+>34.14.5. System Dependencies on Operator Classes</A
+></H2
+><A
+NAME="AEN31420"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses operator classes to infer the
+   properties of operators in more ways than just whether they can be used
+   with indexes.  Therefore, you might want to create operator classes
+   even if you have no intention of indexing any columns of your datatype.
+  </P
+><P
+>   In particular, there are SQL features such as <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> and
+   <VAR
+CLASS="LITERAL"
+>DISTINCT</VAR
+> that require comparison and sorting of values.
+   To implement these features on a user-defined datatype,
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> looks for the default B-tree operator
+   class for the datatype.  The <SPAN
+CLASS="QUOTE"
+>"equals"</SPAN
+> member of this operator
+   class defines the system's notion of equality of values for
+   <VAR
+CLASS="LITERAL"
+>GROUP BY</VAR
+> and <VAR
+CLASS="LITERAL"
+>DISTINCT</VAR
+>, and the sort ordering
+   imposed by the operator class defines the default <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+>
+   ordering.
+  </P
+><P
+>   Comparison of arrays of user-defined types also relies on the semantics
+   defined by the default B-tree operator class.
+  </P
+><P
+>   If there is no default B-tree operator class for a datatype, the system
+   will look for a default hash operator class.  But since that kind of
+   operator class only provides equality, in practice it is only enough
+   to support array equality.
+  </P
+><P
+>   When there is no default operator class for a datatype, you will get
+   errors like <SPAN
+CLASS="QUOTE"
+>"could not identify an ordering operator"</SPAN
+> if you
+   try to use these SQL features with the datatype.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> versions before 7.4,
+     sorting and grouping operations would implicitly use operators named
+     <VAR
+CLASS="LITERAL"
+>=</VAR
+>, <VAR
+CLASS="LITERAL"
+>&lt;</VAR
+>, and <VAR
+CLASS="LITERAL"
+>&gt;</VAR
+>.  The new
+     behavior of relying on default operator classes avoids having to make
+     any assumption about the behavior of operators with particular names.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
 NAME="XINDEX-OPCLASS-FEATURES"
->34.14.5. Special Features of Operator Classes</A
+>34.14.6. Special Features of Operator Classes</A
 ></H2
 ><P
 >   There are two special features of operator classes that we have
-   not discussed yet, mainly because they are not very useful
-   with the default B-tree index method.
+   not discussed yet, mainly because they are not useful
+   with the most commonly used index methods.
   </P
 ><P
 >   Normally, declaring an operator as a member of an operator class means
@@ -1073,7 +1171,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xaggr.html"
+HREF="xoper-optimization.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -1101,7 +1199,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->User-Defined Aggregates</TD
+>Operator Optimization Information</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

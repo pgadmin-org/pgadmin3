@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -87,7 +87,7 @@ NAME="XFUNC"
 >34.3. User-Defined Functions</A
 ></H1
 ><A
-NAME="AEN29563"
+NAME="AEN29817"
 ></A
 ><P
 >   <SPAN
@@ -149,24 +149,21 @@ HREF="xfunc-c.html"
 ><P
 >   Every kind
    of  function  can take base types, composite types, or
-   some combination as arguments (parameters).   In  addition, 
+   combinations of these as arguments (parameters).   In  addition, 
    every kind of function can return a base type or
    a composite type.
+  </P
+><P
+>   Many kinds of functions can take or return certain pseudo-types
+   (such as polymorphic types), but the available facilities vary.
+   Consult the description of each kind of function for more details.
   </P
 ><P
 >   It's easiest to define <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > 
-   functions, so we'll start with those.  Examples in this section 
-   can also be found in <TT
-CLASS="FILENAME"
->funcs.sql</TT
-> 
-   and <TT
-CLASS="FILENAME"
->funcs.c</TT
-> in the tutorial directory.
+   functions, so we'll start by discussing those.
   </P
 ><P
 >   Throughout this chapter, it can be useful to look at the reference
@@ -175,6 +172,15 @@ CLASS="COMMAND"
 >CREATE FUNCTION</TT
 > command to
    understand the examples better.
+   Some examples from this chapter
+   can be found in <TT
+CLASS="FILENAME"
+>funcs.sql</TT
+> 
+   and <TT
+CLASS="FILENAME"
+>funcs.c</TT
+> in the tutorial directory.
   </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Syntax"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -135,7 +135,8 @@ HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
 ></LI
 ><LI
 ><P
->      A positional parameter reference, in the body of a function definition.
+>      A positional parameter reference, in the body of a function definition
+      or prepared statement.
      </P
 ></LI
 ><LI
@@ -161,6 +162,11 @@ HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
 ><LI
 ><P
 >      A scalar subquery.
+     </P
+></LI
+><LI
+><P
+>      An array constructor.
      </P
 ></LI
 ><LI
@@ -196,7 +202,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1432"
+NAME="AEN1439"
 >4.2.1. Column References</A
 ></H2
 ><P
@@ -283,7 +289,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1455"
+NAME="AEN1462"
 >4.2.2. Positional Parameters</A
 ></H2
 ><P
@@ -328,7 +334,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1464"
+NAME="AEN1471"
 >4.2.3. Operator Invocations</A
 ></H2
 ><P
@@ -428,7 +434,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1490"
+NAME="AEN1497"
 >4.2.4. Function Calls</A
 ></H2
 ><P
@@ -480,7 +486,7 @@ NAME="SYNTAX-AGGREGATES"
 >4.2.5. Aggregate Expressions</A
 ></H2
 ><A
-NAME="AEN1505"
+NAME="AEN1512"
 ></A
 ><P
 >    An <I
@@ -630,7 +636,7 @@ NAME="SQL-SYNTAX-TYPE-CASTS"
 >4.2.6. Type Casts</A
 ></H2
 ><A
-NAME="AEN1540"
+NAME="AEN1547"
 ></A
 ><P
 >    A type cast specifies a conversion from one data type to another.
@@ -737,8 +743,13 @@ CLASS="LITERAL"
     one of the two standard cast syntaxes is used to do a run-time
     conversion, it will internally invoke a registered function to
     perform the conversion.  By convention, these conversion functions
-    have the same name as their output type, but this is not something
-    that a portable application should rely on.)
+    have the same name as their output type, and thus the <SPAN
+CLASS="QUOTE"
+>"function-like
+    syntax"</SPAN
+> is nothing more than a direct invocation of the underlying
+    conversion function.  Obviously, this is not something that a portable
+    application should rely on.)
    </P
 ></DIV
 ><DIV
@@ -790,8 +801,140 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
+NAME="SQL-SYNTAX-ARRAY-CONSTRUCTORS"
+>4.2.8. Array Constructors</A
+></H2
+><A
+NAME="AEN1585"
+></A
+><P
+>    An <I
+CLASS="FIRSTTERM"
+>array constructor</I
+> is an expression that builds an
+    array value from values for its member elements.  A simple array
+    constructor 
+    consists of the keyword <VAR
+CLASS="LITERAL"
+>ARRAY</VAR
+>, a left square bracket
+    <VAR
+CLASS="LITERAL"
+>[</VAR
+>, one or more expressions (separated by commas) for the
+    array element values, and finally a right square bracket <VAR
+CLASS="LITERAL"
+>]</VAR
+>.
+    For example,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY[1,2,3+4];
+  array
+---------
+ {1,2,7}
+(1 row)</PRE
+><P>
+    The array element type is the common type of the member expressions,
+    determined using the same rules as for <VAR
+CLASS="LITERAL"
+>UNION</VAR
+> or
+    <VAR
+CLASS="LITERAL"
+>CASE</VAR
+> constructs (see <A
+HREF="typeconv-union-case.html"
+>Section 10.5</A
+>). 
+   </P
+><P
+>    Multidimensional array values can be built by nesting array
+    constructors.
+    In the inner constructors, the keyword <VAR
+CLASS="LITERAL"
+>ARRAY</VAR
+> may
+    be omitted.  For example, these produce the same result:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY[ARRAY[1,2], ARRAY[3,4]];
+     array
+---------------
+ {{1,2},{3,4}}
+(1 row)
+
+SELECT ARRAY[[1,2],[3,4]];
+     array
+---------------
+ {{1,2},{3,4}}
+(1 row)</PRE
+><P>
+
+    Since multidimensional arrays must be rectangular, inner constructors
+    at the same level must produce sub-arrays of identical dimensions.
+  </P
+><P
+>    Multidimensional array constructor elements can be anything yielding
+    an array of the proper kind, not only a sub-<VAR
+CLASS="LITERAL"
+>ARRAY</VAR
+> construct.
+    For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>create table arr(f1 int[], f2 int[]);
+CREATE TABLE
+insert into arr values (ARRAY[[1,2],[3,4]],ARRAY[[5,6],[7,8]]);
+INSERT 2635544 1
+select ARRAY[f1, f2, '{{9,10},{11,12}}'::int[]] from arr;
+                     array
+------------------------------------------------
+ {{{1,2},{3,4}},{{5,6},{7,8}},{{9,10},{11,12}}}
+(1 row)</PRE
+><P>
+  </P
+><P
+>   It is also possible to construct an array from the results of a
+   subquery.  In this form, the array constructor is written with the
+   keyword <VAR
+CLASS="LITERAL"
+>ARRAY</VAR
+> followed by a parenthesized (not
+   bracketed) subquery. For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY(SELECT oid FROM pg_proc WHERE proname LIKE 'bytea%');
+                          ?column?
+-------------------------------------------------------------
+ {2011,1954,1948,1952,1951,1244,1950,2005,1949,1953,2006,31}
+(1 row)</PRE
+><P>
+  The sub-select must return a single column. The
+  resulting one-dimensional array will have an element for each row in the
+  sub-select result, with an element type matching that of the sub-select's
+  output column.
+  </P
+><P
+>   The subscripts of an array value built with <VAR
+CLASS="LITERAL"
+>ARRAY</VAR
+>
+   always begin with one.  For more information about arrays, see
+   <A
+HREF="arrays.html"
+>Section 8.10</A
+>.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
 NAME="SYNTAX-EXPRESS-EVAL"
->4.2.8. Expression Evaluation</A
+>4.2.9. Expression Evaluation Rules</A
 ></H2
 ><P
 >    The order of evaluation of subexpressions is not defined.  In
@@ -872,8 +1015,13 @@ CLASS="PROGRAMLISTING"
     A <VAR
 CLASS="LITERAL"
 >CASE</VAR
-> construct used in this fashion will defeat optimization attempts,
-    so it should only be done when necessary.
+> construct used in this fashion will defeat optimization
+    attempts, so it should only be done when necessary.  (In this particular
+    example, it would doubtless be best to sidestep the problem by writing
+    <VAR
+CLASS="LITERAL"
+>y &gt; 1.5*x</VAR
+> instead.)
    </P
 ></DIV
 ></DIV

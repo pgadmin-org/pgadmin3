@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Procedural Languages"
 HREF="xplang.html"><LINK
 REL="NEXT"
-TITLE="Handling of Quotations Marks"
-HREF="plpgsql-quote.html"><LINK
+TITLE="Tips for Developing in PL/pgSQL"
+HREF="plpgsql-development-tips.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="plpgsql-quote.html"
+HREF="plpgsql-development-tips.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -112,18 +112,18 @@ CLASS="APPLICATION"
 ></DT
 ><DT
 >40.1.2. <A
-HREF="plpgsql.html#PLPGSQL-OVERVIEW-DEVELOPING-IN-PLPGSQL"
->Developing in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></A
+HREF="plpgsql.html#PLPGSQL-ARGS-RESULTS"
+>Supported Argument and Result Datatypes</A
 ></DT
 ></DL
 ></DD
 ><DT
 >40.2. <A
-HREF="plpgsql-quote.html"
->Handling of Quotations Marks</A
+HREF="plpgsql-development-tips.html"
+>Tips for Developing in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+></A
 ></DT
 ><DT
 >40.3. <A
@@ -287,7 +287,7 @@ CLASS="PRODUCTNAME"
 ><DL
 ><DT
 >40.11.1. <A
-HREF="plpgsql-porting.html#AEN34894"
+HREF="plpgsql-porting.html#AEN35250"
 >Porting Examples</A
 ></DT
 ><DT
@@ -305,7 +305,7 @@ HREF="plpgsql-porting.html#PLPGSQL-PORTING-APPENDIX"
 ></DL
 ></DIV
 ><A
-NAME="AEN33900"
+NAME="AEN34212"
 ></A
 ><P
 >  <SPAN
@@ -618,63 +618,82 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="PLPGSQL-OVERVIEW-DEVELOPING-IN-PLPGSQL"
->40.1.2. Developing in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></A
+NAME="PLPGSQL-ARGS-RESULTS"
+>40.1.2. Supported Argument and Result Datatypes</A
 ></H2
 ><P
->    One good way to develop in
-    <SPAN
+>     Functions written in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> is to simply use the text editor of your
-    choice to create your functions, and in another window, use
-    <TT
-CLASS="COMMAND"
->psql</TT
-> to load those functions. If you are doing it this way, it
-    is a good idea to write the function using <TT
-CLASS="COMMAND"
->CREATE OR
-    REPLACE FUNCTION</TT
->. That way you can reload the file to update
-    the function definition.  For example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS '
-	  ....
-end;
-' LANGUAGE plpgsql;</PRE
-><P>
-   </P
-><P
->    While running <TT
-CLASS="COMMAND"
->psql</TT
->, you can load or reload such a
-    function definition file with
-</P><PRE
-CLASS="PROGRAMLISTING"
->\i filename.sql</PRE
-><P>
-    and then immediately issue SQL commands to test the function.
-   </P
-><P
->    Another good way to develop in <SPAN
+> can accept
+     as arguments any scalar or array datatype supported by the server,
+     and they can return a result of any of these types.  They can also
+     accept or return any composite type (row type) specified by name.
+     It is also possible to declare a <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> is using a
-    GUI database access tool that facilitates development in a
-    procedural language. One example of such as a tool is
-    <SPAN
+>
+     function as returning <TT
+CLASS="TYPE"
+>record</TT
+>, which means that the result
+     is a row type whose columns are determined by specification in the
+     calling query, as discussed in <A
+HREF="queries-table-expressions.html#QUERIES-TABLEFUNCTIONS"
+>Section 7.2.1.4</A
+>.
+    </P
+><P
+>     <SPAN
 CLASS="APPLICATION"
->PgAccess</SPAN
->, although others exist. These tools often
-    provide convenient features such as escaping single quotes and
-    making it easier to recreate and debug functions.
-   </P
+>PL/pgSQL</SPAN
+> functions may also be declared to accept
+     and return the <SPAN
+CLASS="QUOTE"
+>"polymorphic"</SPAN
+> types
+     <TT
+CLASS="TYPE"
+>anyelement</TT
+> and <TT
+CLASS="TYPE"
+>anyarray</TT
+>.  The actual
+     datatypes handled by a polymorphic function can vary from call to
+     call, as discussed in <A
+HREF="type-system.html#TYPES-POLYMORPHIC"
+>Section 34.2.1</A
+>.
+     An example is shown in <A
+HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-ALIASES"
+>Section 40.4.1</A
+>.
+    </P
+><P
+>     <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> functions can also be declared to return
+     a <SPAN
+CLASS="QUOTE"
+>"set"</SPAN
+>, or table, of any datatype they can return a single
+     instance of.  Such a function generates its output by executing
+     <VAR
+CLASS="LITERAL"
+>RETURN NEXT</VAR
+> for each desired element of the result set.
+    </P
+><P
+>     Finally, a <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> function may be declared to return
+     <TT
+CLASS="TYPE"
+>void</TT
+> if it has no useful return value.
+    </P
 ></DIV
 ></DIV
 ></DIV
@@ -712,7 +731,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="plpgsql-quote.html"
+HREF="plpgsql-development-tips.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -736,7 +755,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Handling of Quotations Marks</TD
+>Tips for Developing in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+></TD
 ></TR
 ></TABLE
 ></DIV

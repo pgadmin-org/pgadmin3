@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -179,7 +179,7 @@ CLASS="PRODUCTNAME"
 > package
 	library directory
        name, which is determined at build time.<A
-NAME="AEN29765"
+NAME="AEN30039"
 ></A
 >
       </P
@@ -192,7 +192,7 @@ NAME="AEN29765"
 CLASS="VARNAME"
 >dynamic_library_path</VAR
 >.<A
-NAME="AEN29770"
+NAME="AEN30044"
 ></A
 >
       </P
@@ -334,7 +334,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29797"
+NAME="AEN30071"
 >34.7.2. Base Types in C-Language Functions</A
 ></H2
 ><P
@@ -1116,7 +1116,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30066"
+NAME="AEN30340"
 >34.7.3. Calling Conventions Version 0 for C-Language Functions</A
 ></H2
 ><P
@@ -1312,7 +1312,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30092"
+NAME="AEN30366"
 >34.7.4. Calling Conventions Version 1 for C-Language Functions</A
 ></H2
 ><P
@@ -1644,7 +1644,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30150"
+NAME="AEN30424"
 >34.7.5. Writing Code</A
 ></H2
 ><P
@@ -1675,7 +1675,7 @@ CLASS="LITERAL"
 >pg_config
         --includedir-server</VAR
 ><A
-NAME="AEN30159"
+NAME="AEN30433"
 ></A
 >
         to find out where the <SPAN
@@ -1875,7 +1875,7 @@ CLASS="PRODUCTNAME"
  </P
 ><P
 >  <A
-NAME="AEN30207"
+NAME="AEN30481"
 ></A
 >
   Creating shared libraries is generally analogous to linking
@@ -2343,7 +2343,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30369"
+NAME="AEN30643"
 >34.7.7. Composite-Type Arguments in C-Language Functions</A
 ></H2
 ><P
@@ -2476,7 +2476,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30390"
+NAME="AEN30664"
 >34.7.8. Returning Rows (Composite Types) from C-Language Functions</A
 ></H2
 ><P
@@ -3084,6 +3084,129 @@ CLASS="FILENAME"
 >contrib/tablefunc</TT
 > in the source
      distribution contains more examples of set-returning functions.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN30765"
+>34.7.10. Polymorphic Arguments and Return Types</A
+></H2
+><P
+>     C-language functions may be declared to accept and
+     return the <SPAN
+CLASS="QUOTE"
+>"polymorphic"</SPAN
+> types
+     <TT
+CLASS="TYPE"
+>anyelement</TT
+> and <TT
+CLASS="TYPE"
+>anyarray</TT
+>.
+     See <A
+HREF="type-system.html#TYPES-POLYMORPHIC"
+>Section 34.2.1</A
+> for a more detailed explanation
+     of polymorphic functions. When function arguments or return types
+     are defined as polymorphic types, the function author cannot know
+     in advance what data type it will be called with, or
+     need to return. There are two routines provided in <TT
+CLASS="FILENAME"
+>fmgr.h</TT
+>
+     to allow a version-1 C function to discover the actual data types
+     of its arguments and the type it is expected to return. The routines are
+     called <VAR
+CLASS="LITERAL"
+>get_fn_expr_rettype(FmgrInfo *flinfo)</VAR
+> and
+     <VAR
+CLASS="LITERAL"
+>get_fn_expr_argtype(FmgrInfo *flinfo, int argnum)</VAR
+>.
+     They return the result or argument type OID, or InvalidOid if the
+     information is not available.
+     The structure <VAR
+CLASS="LITERAL"
+>flinfo</VAR
+> is normally accessed as
+     <VAR
+CLASS="LITERAL"
+>fcinfo-&gt;flinfo</VAR
+>. The parameter <VAR
+CLASS="LITERAL"
+>argnum</VAR
+>
+     is zero based.
+    </P
+><P
+>     For example, suppose we want to write a function to accept a single
+     element of any type, and return a one-dimensional array of that type:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>PG_FUNCTION_INFO_V1(make_array);
+Datum
+make_array(PG_FUNCTION_ARGS)
+{
+    ArrayType  *result;
+    Oid         element_type = get_fn_expr_argtype(fcinfo-&gt;flinfo, 0);
+    Datum       element;
+    int16       typlen;
+    bool        typbyval;
+    char        typalign;
+    int         ndims;
+    int         dims[MAXDIM];
+    int         lbs[MAXDIM];
+
+    if (!OidIsValid(element_type))
+        elog(ERROR, "could not determine data type of input");
+
+    /* get the provided element */
+    element = PG_GETARG_DATUM(0);
+
+    /* we have one dimension */
+    ndims = 1;
+    /* and one element */
+    dims[0] = 1;
+    /* and lower bound is 1 */
+    lbs[0] = 1;
+
+    /* get required info about the element type */
+    get_typlenbyvalalign(element_type, &amp;typlen, &amp;typbyval, &amp;typalign);
+
+    /* now build the array */
+    result = construct_md_array(&amp;element, ndims, dims, lbs,
+                                element_type, typlen, typbyval, typalign);
+
+    PG_RETURN_ARRAYTYPE_P(result);
+}</PRE
+><P>
+    </P
+><P
+>     The following command declares the function
+     <CODE
+CLASS="FUNCTION"
+>make_array</CODE
+> in SQL:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION make_array(anyelement) 
+    RETURNS anyarray
+    AS '<VAR
+CLASS="REPLACEABLE"
+>DIRECTORY</VAR
+>/funcs', 'make_array'
+    LANGUAGE 'C' STRICT;</PRE
+><P>
+
+     Note the use of STRICT; this is essential since the code is not
+     bothering to test for a NULL input.
     </P
 ></DIV
 ></DIV

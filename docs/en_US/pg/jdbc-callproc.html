@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Calling Stored Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="JDBC Interface"
+HREF="jdbc.html"><LINK
+REL="PREVIOUS"
+TITLE="Performing Updates"
+HREF="jdbc-update.html"><LINK
+REL="NEXT"
+TITLE="Creating and Modifying Database Objects"
+HREF="jdbc-ddl.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-27T02:55:32"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="jdbc-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 31. <ACRONYM
+CLASS="ACRONYM"
+>JDBC</ACRONYM
+> Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="jdbc-ddl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JDBC-CALLPROC"
+>31.5. Calling Stored Functions</A
+></H1
+><P
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL's</SPAN
+> jdbc driver fully
+      supports calling <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> stored
+      functions.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JDBC-CALL-FUNCTION"
+></A
+><P
+><B
+>Example 31-4. Calling a built in stored function</B
+></P
+><P
+>This example shows how to call
+	a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> built in
+	function, <TT
+CLASS="COMMAND"
+>upper</TT
+>, which simply converts the
+	supplied string argument to uppercase.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>// Turn transactions off.
+con.setAutoCommit(false);
+// Procedure call.
+CallableStatement upperProc = con.prepareCall("{ ? = call upper( ? ) }");
+upperProc.registerOutParameter(1, Types.VARCHAR);
+upperProc.setString(2, "lowercase to uppercase");
+upperProc.execute();
+String upperCased = upperProc.getString(1);
+upperProc.close();</PRE
+><P>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN23510"
+>31.5.1. Using the <CODE
+CLASS="CLASSNAME"
+>CallableStatement</CODE
+> Interface</A
+></H2
+><P
+>	All the considerations that apply
+	for <CODE
+CLASS="CLASSNAME"
+>Statement</CODE
+>
+	and <CODE
+CLASS="CLASSNAME"
+>PreparedStatement</CODE
+> apply
+	for <CODE
+CLASS="CLASSNAME"
+>CallableStatement</CODE
+> but in addition
+	you must also consider one extra restriction:
+      </P
+><P
+></P
+><UL
+><LI
+><P
+>You can only call a stored function from within a
+	    transaction.</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN23520"
+>31.5.2. Obtaining <CODE
+CLASS="CLASSNAME"
+>ResultSet</CODE
+> from a stored function</A
+></H2
+><P
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL's</SPAN
+> stored function
+	can return results by means of a <TT
+CLASS="TYPE"
+>refcursor</TT
+>
+	value. A <TT
+CLASS="TYPE"
+>refcursor</TT
+>.</P
+><P
+>As an extension to JDBC,
+	the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> JDBC driver can
+	return <TT
+CLASS="TYPE"
+>refcursor</TT
+> values
+	as <CODE
+CLASS="CLASSNAME"
+>ResultSet</CODE
+> values.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="GET-REFCURSOR-FROM-FUNCTION-CALL"
+></A
+><P
+><B
+>Example 31-5. Gettig <TT
+CLASS="TYPE"
+>refcursor</TT
+> values from a
+	function</B
+></P
+><P
+>When calling a function that returns
+	  a <TT
+CLASS="TYPE"
+>refcursor</TT
+> you must cast the return type
+	  of getObject to
+	  a <CODE
+CLASS="CLASSNAME"
+>ResultSet</CODE
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// Turn transactions off.
+con.setAutoCommit(false);
+// Procedure call.
+CallableStatement proc = con.prepareCall("{ ? = call doquery ( ? ) }");
+proc.registerOutParameter(1, Types.Other);
+proc.setInt(2, -1);
+proc.execute();
+ResultSet results = (ResultSet) proc.getObject(1);
+while (results.next()) {
+  // do something with the results...
+}
+results.close();
+proc.close();</PRE
+></DIV
+><P
+>It is also possible to treat the <TT
+CLASS="TYPE"
+>refcursor</TT
+>
+      return value as a distinct type in itself. The JDBC driver
+	provides
+      the <CODE
+CLASS="CLASSNAME"
+>org.postgresql.PGRefCursorResultSet</CODE
+>
+	class for this purpose.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN23541"
+></A
+><P
+><B
+>Example 31-6. Treating <TT
+CLASS="TYPE"
+>refcursor</TT
+> as a distinct
+	type</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>con.setAutoCommit(false);
+CallableStatement proc = con.prepareCall("{ ? = call doquery ( ? ) }");
+proc.registerOutParameter(1, Types.Other);
+proc.setInt(2, 0);
+org.postgresql.PGRefCursorResultSet refcurs 
+    = (PGRefCursorResultSet) con.getObject(1);
+String cursorName = refcurs.getRefCursor();
+proc.close();</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="jdbc-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="jdbc-ddl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Performing Updates</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="jdbc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating and Modifying Database Objects</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

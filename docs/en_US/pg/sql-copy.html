@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -83,7 +83,7 @@ NAME="SQL-COPY"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37351"
+NAME="AEN37709"
 ></A
 ><H2
 >Name</H2
@@ -91,7 +91,7 @@ NAME="AEN37351"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37354"
+NAME="AEN37712"
 ></A
 ><H2
 >Synopsis</H2
@@ -146,7 +146,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37366"
+NAME="AEN37724"
 ></A
 ><H2
 >Description</H2
@@ -220,7 +220,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37383"
+NAME="AEN37741"
 ></A
 ><H2
 >Parameters</H2
@@ -365,7 +365,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37439"
+NAME="AEN37797"
 ></A
 ><H2
 >Diagnostics</H2
@@ -390,7 +390,7 @@ CLASS="COMPUTEROUTPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37447"
+NAME="AEN37805"
 ></A
 ><H2
 >Notes</H2
@@ -530,14 +530,14 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37481"
+NAME="AEN37839"
 ></A
 ><H2
 >File Formats</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN37483"
+NAME="AEN37841"
 ></A
 ><H3
 >Text Format</H3
@@ -608,7 +608,7 @@ CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN37498"
+NAME="AEN37856"
 ></A
 ><TABLE
 BORDER="1"
@@ -755,7 +755,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN37546"
+NAME="AEN37904"
 ></A
 ><H3
 >Binary Format</H3
@@ -769,12 +769,12 @@ CLASS="APPLICATION"
 >PostgreSQL</SPAN
 > 7.4. The new format consists
     of a file header, zero or more tuples containing the row data, and
-    a file trailer.
+    a file trailer. Headers and data are now in network byte order.
    </P
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN37551"
+NAME="AEN37909"
 ></A
 ><H4
 >File Header</H4
@@ -868,7 +868,7 @@ is left for a later release.
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN37577"
+NAME="AEN37935"
 ></A
 ><H4
 >Tuples</H4
@@ -893,6 +893,29 @@ future extension may add a header field that allows per-column format codes
 to be specified.
     </P
 ><P
+>To determine the appropriate binary format for the actual tuple data you
+should consult the <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> source, in
+particular the <CODE
+CLASS="FUNCTION"
+>*send</CODE
+> and <CODE
+CLASS="FUNCTION"
+>*recv</CODE
+> functions for
+the data type (typically found in the <TT
+CLASS="FILENAME"
+>src/backend/utils/adt</TT
+>
+directory). The <SPAN
+CLASS="APPLICATION"
+>contrib/binarycopy</SPAN
+> module
+can also be used to create an appropriate format file.
+    </P
+><P
 >If OIDs are included in the file, the OID field immediately follows the
 field-count word.  It is a normal field except that it's not included
 in the field-count.  In particular it has a length word --- this will allow
@@ -903,7 +926,7 @@ OIDs to be shown as null if that ever proves desirable.
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN37584"
+NAME="AEN37948"
 ></A
 ><H4
 >File Trailer</H4
@@ -922,7 +945,7 @@ NAME="AEN37584"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37588"
+NAME="AEN37952"
 ></A
 ><H2
 >Examples</H2
@@ -999,7 +1022,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37605"
+NAME="AEN37969"
 ></A
 ><H2
 >Compatibility</H2

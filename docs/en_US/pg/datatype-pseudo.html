@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -84,24 +84,6 @@ NAME="DATATYPE-PSEUDO"
 >8.12. Pseudo-Types</A
 ></H1
 ><A
-NAME="AEN5004"
-></A
-><A
-NAME="AEN5006"
-></A
-><A
-NAME="AEN5008"
-></A
-><A
-NAME="AEN5010"
-></A
-><A
-NAME="AEN5012"
-></A
-><A
-NAME="AEN5014"
-></A
-><A
 NAME="AEN5016"
 ></A
 ><A
@@ -109,6 +91,27 @@ NAME="AEN5018"
 ></A
 ><A
 NAME="AEN5020"
+></A
+><A
+NAME="AEN5022"
+></A
+><A
+NAME="AEN5024"
+></A
+><A
+NAME="AEN5026"
+></A
+><A
+NAME="AEN5028"
+></A
+><A
+NAME="AEN5030"
+></A
+><A
+NAME="AEN5032"
+></A
+><A
+NAME="AEN5034"
 ></A
 ><P
 >    The <SPAN
@@ -179,7 +182,24 @@ CLASS="TYPE"
 >anyarray</TT
 ></TD
 ><TD
->Indicates that a function accepts any array data type.</TD
+>Indicates that a function accepts any array data type
+	(see <A
+HREF="type-system.html#TYPES-POLYMORPHIC"
+>Section 34.2.1</A
+>).</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>anyelement</TT
+></TD
+><TD
+>Indicates that a function accepts any data type
+	(see <A
+HREF="type-system.html#TYPES-POLYMORPHIC"
+>Section 34.2.1</A
+>).</TD
 ></TR
 ><TR
 ><TD
@@ -258,11 +278,22 @@ CLASS="TYPE"
     only <TT
 CLASS="TYPE"
 >void</TT
-> as a result type (plus <TT
+> and <TT
+CLASS="TYPE"
+>record</TT
+> as a result type (plus
+    <TT
 CLASS="TYPE"
 >trigger</TT
-> when the
-    function is used as a trigger).
+> when the function is used as a trigger).  Some also
+    support polymorphic functions using the types <TT
+CLASS="TYPE"
+>anyarray</TT
+> and
+    <TT
+CLASS="TYPE"
+>anyelement</TT
+>.
    </P
 ><P
 >    The <TT

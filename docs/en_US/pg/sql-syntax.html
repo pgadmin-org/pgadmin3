@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta1 Documentation"
+TITLE="PostgreSQL 7.4beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-05T05:04:12"></HEAD
+CONTENT="2003-08-27T02:55:32"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.4beta1 Documentation</TH
+>PostgreSQL 7.4beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -113,7 +113,7 @@ HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
 ></DT
 ><DT
 >4.1.4. <A
-HREF="sql-syntax.html#AEN1206"
+HREF="sql-syntax.html#AEN1211"
 >Special Characters</A
 ></DT
 ><DT
@@ -137,22 +137,22 @@ HREF="sql-expressions.html"
 ><DL
 ><DT
 >4.2.1. <A
-HREF="sql-expressions.html#AEN1432"
+HREF="sql-expressions.html#AEN1439"
 >Column References</A
 ></DT
 ><DT
 >4.2.2. <A
-HREF="sql-expressions.html#AEN1455"
+HREF="sql-expressions.html#AEN1462"
 >Positional Parameters</A
 ></DT
 ><DT
 >4.2.3. <A
-HREF="sql-expressions.html#AEN1464"
+HREF="sql-expressions.html#AEN1471"
 >Operator Invocations</A
 ></DT
 ><DT
 >4.2.4. <A
-HREF="sql-expressions.html#AEN1490"
+HREF="sql-expressions.html#AEN1497"
 >Function Calls</A
 ></DT
 ><DT
@@ -172,15 +172,20 @@ HREF="sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES"
 ></DT
 ><DT
 >4.2.8. <A
+HREF="sql-expressions.html#SQL-SYNTAX-ARRAY-CONSTRUCTORS"
+>Array Constructors</A
+></DT
+><DT
+>4.2.9. <A
 HREF="sql-expressions.html#SYNTAX-EXPRESS-EVAL"
->Expression Evaluation</A
+>Expression Evaluation Rules</A
 ></DT
 ></DL
 ></DD
 ></DL
 ></DIV
 ><A
-NAME="AEN946"
+NAME="AEN952"
 ></A
 ><P
 >  This chapter describes the syntax of SQL.  It forms the foundation
@@ -296,7 +301,7 @@ CLASS="TOKEN"
    precise syntax rules for each command are described in <A
 HREF="reference.html"
 >Part VI in <I
->PostgreSQL 7.4beta1 Documentation</I
+>PostgreSQL 7.4beta2 Documentation</I
 ></A
 >.
   </P
@@ -309,10 +314,10 @@ NAME="SQL-SYNTAX-IDENTIFIERS"
 >4.1.1. Identifiers and Key Words</A
 ></H2
 ><A
-NAME="AEN978"
+NAME="AEN984"
 ></A
 ><A
-NAME="AEN980"
+NAME="AEN986"
 ></A
 ><P
 >    Tokens such as <TT
@@ -411,7 +416,7 @@ CLASS="FILENAME"
    </P
 ><P
 >    <A
-NAME="AEN1006"
+NAME="AEN1012"
 ></A
 >
     Identifier and key word names are case insensitive.  Therefore
@@ -433,7 +438,7 @@ CLASS="PROGRAMLISTING"
    </P
 ><P
 >    <A
-NAME="AEN1013"
+NAME="AEN1019"
 ></A
 >
     There is a second kind of identifier:  the <I
@@ -505,8 +510,8 @@ CLASS="LITERAL"
 > are different from these three and
     each other.
     <A
-NAME="AEN1031"
-HREF="#FTN.AEN1031"
+NAME="AEN1037"
+HREF="#FTN.AEN1037"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN
@@ -523,7 +528,7 @@ NAME="SQL-SYNTAX-CONSTANTS"
 >4.1.2. Constants</A
 ></H2
 ><A
-NAME="AEN1039"
+NAME="AEN1045"
 ></A
 ><P
 >    There are three kinds of <I
@@ -549,11 +554,11 @@ NAME="SQL-SYNTAX-STRINGS"
 >4.1.2.1. String Constants</A
 ></H3
 ><A
-NAME="AEN1046"
+NAME="AEN1052"
 ></A
 ><P
 >     <A
-NAME="AEN1050"
+NAME="AEN1056"
 ></A
 >
      A string constant in SQL is an arbitrary sequence of characters
@@ -667,7 +672,7 @@ NAME="SQL-SYNTAX-BIT-STRINGS"
 >4.1.2.2. Bit-String Constants</A
 ></H3
 ><A
-NAME="AEN1078"
+NAME="AEN1084"
 ></A
 ><P
 >     Bit-string constants look like string constants with a
@@ -711,11 +716,11 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN1090"
+NAME="AEN1096"
 >4.1.2.3. Numeric Constants</A
 ></H3
 ><A
-NAME="AEN1092"
+NAME="AEN1098"
 ></A
 ><P
 >     Numeric constants are accepted in these general forms:
@@ -861,7 +866,7 @@ NAME="SQL-SYNTAX-CONSTANTS-GENERIC"
 >4.1.2.4. Constants of Other Types</A
 ></H3
 ><A
-NAME="AEN1130"
+NAME="AEN1136"
 ></A
 ><P
 >     A constant of an <SPAN
@@ -975,11 +980,11 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN1160"
+NAME="AEN1166"
 >4.1.2.5. Array constants</A
 ></H3
 ><A
-NAME="AEN1162"
+NAME="AEN1168"
 ></A
 ><P
 >     The general format of an array constant is the following:
@@ -1025,16 +1030,10 @@ CLASS="PROGRAMLISTING"
 >'{{1,2,3},{4,5,6},{7,8,9}}'</PRE
 ><P>
      This constant is a two-dimensional, 3-by-3 array consisting of three
-     subarrays of integers.
-    </P
-><P
->     Individual array elements can be placed between double-quote
-     marks (<VAR
-CLASS="LITERAL"
->"</VAR
->)  to avoid ambiguity
-     problems with respect to whitespace.  Without quote marks, the
-     array-value parser will skip leading whitespace.
+     subarrays of integers.  For more information see <A
+HREF="arrays.html"
+>Section 8.10</A
+>.
     </P
 ><P
 >     (Array constants are actually only a special case of the generic
@@ -1054,7 +1053,7 @@ NAME="SQL-SYNTAX-OPERATORS"
 >4.1.3. Operators</A
 ></H2
 ><A
-NAME="AEN1182"
+NAME="AEN1187"
 ></A
 ><P
 >    An operator is a sequence of up to <TT
@@ -1143,7 +1142,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1206"
+NAME="AEN1211"
 >4.1.4. Special Characters</A
 ></H2
 ><P
@@ -1265,7 +1264,7 @@ NAME="SQL-SYNTAX-COMMENTS"
 >4.1.5. Comments</A
 ></H2
 ><A
-NAME="AEN1241"
+NAME="AEN1246"
 ></A
 ><P
 >    A comment is an arbitrary sequence of characters beginning with
@@ -1309,7 +1308,7 @@ NAME="SQL-PRECEDENCE"
 >4.1.6. Lexical Precedence</A
 ></H2
 ><A
-NAME="AEN1253"
+NAME="AEN1258"
 ></A
 ><P
 >    <A
@@ -1696,8 +1695,8 @@ ALIGN="LEFT"
 VALIGN="TOP"
 WIDTH="5%"
 ><A
-NAME="FTN.AEN1031"
-HREF="sql-syntax.html#AEN1031"
+NAME="FTN.AEN1037"
+HREF="sql-syntax.html#AEN1037"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN
