@@ -70,10 +70,7 @@ if test -n "${LIBPQ_HOME}"
 then
     LIBPQ_OLD_LDFLAGS=$LDFLAGS
     LIBPQ_OLD_CPPFLAGS=$CPPFLAGS
-    if test "$pg_release_build" == "yes"
-    then
-	    LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib"
-    fi
+    LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib"
     CPPFLAGS="$CPPFLAGS -I${LIBPQ_HOME}/include"
     LIBS="$LIBS -lssl -lcrypto"
     AC_LANG_SAVE
@@ -139,10 +136,7 @@ fi], [
         else
             WX_CONFIG="${WX_HOME}/bin/wx-config"
         fi
-	if test "$pg_release_build" == "yes"
-	then
-	        LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
-	fi
+	LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
         WX_OLD_LDFLAGS=$LDFLAGS
         WX_OLD_CPPFLAGS=$CPPFLAGS
         if test "$pg_release_build" == "yes"
