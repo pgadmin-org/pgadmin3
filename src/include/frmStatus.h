@@ -42,6 +42,10 @@ private:
     void OnRateChange(wxCommandEvent &event);
     void OnRateChangeSpin(wxSpinEvent &event);
 	void OnNotebookPageChanged(wxNotebookEvent& event);
+    void OnTerminateBtn(wxCommandEvent &event);
+    void OnCancelBtn(wxCommandEvent &event);
+	void OnSelStatusItem(wxCommandEvent &event);
+
 
     void addLog(const wxString &str);
     
