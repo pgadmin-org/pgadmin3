@@ -86,12 +86,18 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     else
         systemFont = wxFont(fontName);
 
+    Read(wxT("frmQuery/Font"), &fontName, wxEmptyString);
+
+    if (fontName.IsEmpty())
+    {
 #ifdef __WXMSW__
-    Read(wxT("frmQuery/FontFace"), &fontName, wxT("Courier New.9"));
+        sqlFont = wxFont(9, wxTELETYPE, wxNORMAL, wxNORMAL);
 #else
-    Read(wxT("frmQuery/Font"), &fontName, wxT("monospace 12"));
+        sqlFont = wxFont(12, wxTELETYPE, wxNORMAL, wxNORMAL);
 #endif
-	sqlFont = wxFont(fontName);
+    }
+    else
+    	sqlFont = wxFont(fontName);
 }
 
 
