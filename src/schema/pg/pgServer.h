@@ -28,7 +28,6 @@ public:
     ~pgServer();
     int GetType();
     wxString GetTypeName() const;
-    pgConn *cnMaster;
     int Connect();
     wxString GetIdentifier() const;
     wxString GetServerVersion();
@@ -36,7 +35,9 @@ public:
     wxString GetDatabase() const;
     wxString GetUsername() const;
     wxString GetPassword() const;
+    wxString GetLastError() const;
     int GetPort();
+    bool GetConnected();
     void iSetServer(const wxString& szNewVal);
     void iSetDatabase(const wxString& szNewVal);
     void iSetUsername(const wxString& szNewVal);
@@ -45,6 +46,8 @@ public:
 
 
 private:
+    pgConn *cnMaster;
+    bool bConnected;
     wxString szServer, szDatabase, szUsername, szPassword, szVer;
     int iPort;
     wxFrame *winParent;

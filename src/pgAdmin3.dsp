@@ -375,6 +375,10 @@ SOURCE=.\images\server.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\images\serverbad.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\splash.xpm
 # End Source File
 # Begin Source File

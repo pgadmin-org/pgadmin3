@@ -45,11 +45,12 @@ private:
     void OnExit(wxCommandEvent& event);
     void OnUpgradeWizard(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);
-    void OnSelChanged(wxTreeEvent& event);
-    void OnSelActivated(wxTreeEvent& event);
+    void OnSelChanged();
+    void OnSelActivated();
     void tvServer(pgServer *objServer);
     void StoreServers();
     void RetrieveServers();
+    void ReconnectServer(pgServer *objServer);
     DECLARE_EVENT_TABLE()
 };
 

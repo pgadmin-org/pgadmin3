@@ -145,3 +145,8 @@ void EndMsg()
     szTimer.Empty();
     
 }
+
+int wxCALLBACK ListSort(long itm1, long itm2, long sortData)
+{
+    return itm1 < itm2;
+}

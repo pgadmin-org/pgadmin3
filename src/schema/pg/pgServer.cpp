@@ -26,6 +26,7 @@ pgServer::pgServer(const wxString& szNewServer, const wxString& szNewDatabase, c
     szDatabase = szNewDatabase;
     szUsername = szNewUsername;
     iPort = iNewPort;
+    bConnected = FALSE;
 }
 
 pgServer::~pgServer()
@@ -59,7 +60,14 @@ int pgServer::Connect() {
 
     delete winConnect;
     EndMsg();
-    return cnMaster->GetStatus();
+    int iStatus = cnMaster->GetStatus();
+    if (iStatus == PGCONN_OK) {
+        bConnected = TRUE;
+    } else {
+        bConnected = FALSE;
+    }
+
+    return iStatus;
 }
 
 wxString pgServer::GetIdentifier() const
@@ -71,10 +79,14 @@ wxString pgServer::GetIdentifier() const
 
 wxString pgServer::GetServerVersion()
 {
-    if (szVer.IsEmpty()) {
-        szVer = wxString(cnMaster->GetServerVersion());
+    if (bConnected) {
+      if (szVer.IsEmpty()) {
+          szVer = wxString(cnMaster->GetServerVersion());
+      }
+      return szVer;
+    } else {
+        return wxString("Not Connected");
     }
-    return szVer;
 }
 
 wxString pgServer::GetServer() const
@@ -120,4 +132,18 @@ int pgServer::GetPort()
 void pgServer::iSetPort(int iNewVal)
 {
     iPort = iNewVal;
+}
+
+wxString pgServer::GetLastError() const
+{
+    if (bConnected) {
+        return cnMaster->GetLastError();
+    } else {
+        return wxString("");
+    }
+}
+
+bool pgServer::GetConnected()
+{
+    return bConnected;
 }

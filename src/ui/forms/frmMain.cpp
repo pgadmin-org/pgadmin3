@@ -63,6 +63,7 @@
 #include "../../images/rule.xpm"
 #include "../../images/sequence.xpm"
 #include "../../images/server.xpm"
+#include "../../images/serverbad.xpm"
 #include "../../images/sql.xpm"
 #include "../../images/statistics.xpm"
 #include "../../images/stop.xpm"
@@ -200,6 +201,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     tvBrowser->SetImageList(ilBrowser);
     //Stuff the Image List
     ilBrowser->Add(wxIcon(server_xpm));
+    ilBrowser->Add(wxIcon(serverbad_xpm));
     ilBrowser->Add(wxIcon(database_xpm));
     ilBrowser->Add(wxIcon(language_xpm));
     ilBrowser->Add(wxIcon(namespace_xpm));
@@ -229,7 +231,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     //Stuff the BrowserImage Listu:
     ilProperties->Add(wxIcon(property_xpm));
 
-    // Add some listview items
+    // Add the property view columns
     lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
     lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
 
@@ -240,20 +242,12 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     //Stuff the BrowserImage Listu:
     ilStatistics->Add(wxIcon(statistics_xpm));
 
-    // Add some listview items
+    // Add the statistics view columns
     lvStatistics->InsertColumn(0, wxT("Statistic"), wxLIST_FORMAT_LEFT, 100);
     lvStatistics->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
 
-    // This is the bit that puts it all on one line over 2 colums
-    lvStatistics->InsertItem(0, wxT("Statistic #1"), 0);
-    lvStatistics->SetItem(0, 1, wxT("Statistic #1a"));
-
-    lvStatistics->InsertItem(1, wxT("Statistic #2"), 0);
-    lvStatistics->SetItem(1, 1, wxT("Statistic #2a"));
-
-
-    // Setup the SQL Pane
-    txtSQLPane->InsertText(0, wxT("-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;"));
+    // Load servers
+    RetrieveServers();
 }
 
 frmMain::~frmMain()
@@ -309,7 +303,7 @@ void frmMain::OnAddServer()
     // Check the result, and handle it as appropriate
     if (iRes == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
-        wxTreeItemId itmServer = tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 0, -1, objServer);
+        tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 0, -1, objServer);
         tvBrowser->Expand(itmServers);
 
     } else if (iRes == PGCONN_DNSERR)  {
@@ -318,7 +312,7 @@ void frmMain::OnAddServer()
 
     } else if (iRes == PGCONN_BAD)  {
         wxString szMsg;
-        szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->cnMaster->GetLastError().c_str());
+        szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->GetLastError().c_str());
         wxLogError(wxT(szMsg));
         delete objServer;
         OnAddServer();
@@ -327,16 +321,48 @@ void frmMain::OnAddServer()
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
         delete objServer;
     }
+    StoreServers();
 }
 
-void frmMain::OnSelChanged(wxTreeEvent& event)
+void frmMain::ReconnectServer(pgServer *objServer)
+{
+    // Create a server object and connect it.
+    int iRes = objServer->Connect();
+
+    // Check the result, and handle it as appropriate
+    if (iRes == PGCONN_OK) {
+        wxLogInfo(wxT("pgServer object initialised as required."));
+        tvBrowser->SetItemImage(objServer->GetId(), 0, wxTreeItemIcon_Normal);
+        tvBrowser->SetItemImage(objServer->GetId(), 0, wxTreeItemIcon_Selected);
+        tvBrowser->Collapse(itmServers);
+        tvBrowser->Expand(itmServers);
+
+    } else if (iRes == PGCONN_DNSERR)  {
+        delete objServer;
+        OnAddServer();
+
+    } else if (iRes == PGCONN_BAD)  {
+        wxString szMsg;
+        szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->GetLastError().c_str());
+        wxLogError(wxT(szMsg));
+        ReconnectServer(objServer);
+
+    } else {
+        wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
+    }
+
+    // Refresh the listview
+    OnSelChanged();
+}
+
+void frmMain::OnSelChanged()
 {
     lvProperties->DeleteAllItems();
     lvStatistics->DeleteAllItems();
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
-    wxTreeItemId itmX = event.GetItem();
+    wxTreeItemId itmX = tvBrowser->GetSelection();
     pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
     int iType(itmData->GetType());
 
@@ -350,20 +376,28 @@ void frmMain::OnSelChanged(wxTreeEvent& event)
     }
 }
 
-void frmMain::OnSelActivated(wxTreeEvent& event)
+void frmMain::OnSelActivated()
 {
     // This handler will primarily deal with displaying item
     // properties in seperate windows and 'Add xxx...' clicks
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
-    wxTreeItemId itmX = event.GetItem();
+    wxTreeItemId itmX = tvBrowser->GetSelection();
     pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
     int iType(itmData->GetType());
+    pgServer *objServer;
 
     switch (iType) {
         case PG_ADD_SERVER:
             OnAddServer();
+            break;
+
+        case PG_SERVER:
+            objServer = (pgServer *)itmData;
+            if (!objServer->GetConnected()) {
+                ReconnectServer(objServer);
+            }
             break;
 
         default:
@@ -382,19 +416,91 @@ void frmMain::StoreServers()
     wxConfig *sysConfig = new wxConfig(APPNAME_S);
 #endif
 
-    // Write the server count
-    int iServers = tvBrowser->GetChildrenCount(itmServers, FALSE) - 1;
-    sysConfig->Write(wxT("Servers/Count"), iServers);
-
     // Write the individual servers
+    // Iterate through all the child nodes of the Servers node
+    long lCookie;
+    wxString szKey;
+    pgObject *itmData;
+    pgServer *objServer;
+    int iServers = 0;
 
+    wxTreeItemId itmX = tvBrowser->GetFirstChild(itmServers, lCookie);
+    while (itmX) {
+        itmData = (pgObject *)tvBrowser->GetItemData(itmX);
+        if (itmData->GetType() == PG_SERVER) {
+            // We have a sever, so cast the object and save the settings
+            ++iServers;
+            objServer = (pgServer *)itmData;
+
+            // Hostname
+            szKey.Printf("Servers/Server %d", iServers);
+            sysConfig->Write(szKey, objServer->GetServer());
+
+            // Port
+            szKey.Printf("Servers/Port %d", iServers);
+            sysConfig->Write(szKey, objServer->GetPort());
+
+            // Database
+            szKey.Printf("Servers/Database %d", iServers);
+            sysConfig->Write(szKey, objServer->GetDatabase());
+
+            // Username
+            szKey.Printf("Servers/Username %d", iServers);
+            sysConfig->Write(szKey, objServer->GetUsername());
+        }
+
+        // Get the next item
+        itmX = tvBrowser->GetNextChild(itmServers, lCookie);
+    }
+
+    // Write the server count
+    sysConfig->Write(wxT("Servers/Count"), iServers);
+    wxString szMsg;
+    szMsg.Printf("Stored %d servers.", iServers);
+    wxLogInfo(szMsg);
 
 }
 
 void frmMain::RetrieveServers()
 {
     // Retrieve previously stored servers
+    wxLogInfo(wxT("Reloading servers..."));
 
+#ifdef __WXMSW__
+    wxConfig *sysConfig = new wxConfig(APPNAME_L);
+#else 
+    wxConfig *sysConfig = new wxConfig(APPNAME_S);
+#endif
+
+    int iServers;
+    sysConfig->Read(wxT("Servers/Count"), &iServers, 0);
+
+    int iLoop, iPort;
+    wxString szKey, szServer, szDatabase, szUsername;
+    pgServer * objServer;
+
+    for (iLoop = 1; iLoop <= iServers; ++iLoop) {
+        
+        // Server
+        szKey.Printf("Servers/Server %d", iLoop);
+        sysConfig->Read(szKey, &szServer, wxT(""));
+
+        // Port
+        szKey.Printf("Servers/Port %d", iLoop);
+        sysConfig->Read(szKey, &iPort, 0);
+
+        // Database
+        szKey.Printf("Servers/Database %d", iLoop);
+        sysConfig->Read(szKey, &szDatabase, wxT(""));
+
+        // Username
+        szKey.Printf("Servers/Username %d", iLoop);
+        sysConfig->Read(szKey, &szUsername, wxT(""));
+
+        // Add the Server node
+        objServer = new pgServer(szServer, szDatabase, szUsername, iPort);
+        tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 1, -1, objServer);
+    }
 }
 
 void frmMain::tvServer(pgServer *objServer)
@@ -417,5 +523,13 @@ void frmMain::tvServer(pgServer *objServer)
     lvProperties->SetItem(0, 1, objServer->GetUsername());
     lvProperties->InsertItem(0, wxT("Server Version"), 0);
     lvProperties->SetItem(0, 1, objServer->GetServerVersion());
+    lvProperties->InsertItem(0, wxT("Connected?"), 0);
+    if (objServer->GetConnected()) {
+        lvProperties->SetItem(0, 1, wxT("Yes"));
+    } else {
+        lvProperties->SetItem(0, 1, wxT("No"));
+    }
+    lvProperties->SortItems(ListSort, 0);
+
     EndMsg();
 }

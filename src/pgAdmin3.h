@@ -40,5 +40,6 @@ public:
 // Global Stuff
 void StartMsg(const wxString& szMsg);
 void EndMsg();
+int wxCALLBACK ListSort(long itm1, long itm2, long sortData);
 
 #endif
