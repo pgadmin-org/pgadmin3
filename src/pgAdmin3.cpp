@@ -193,7 +193,7 @@ bool pgAdmin3::OnInit()
             for (langNo = 0; langNo < langCount ; langNo++)
             {
                 langInfo = wxLocale::GetLanguageInfo(existingLangs.Item(langNo));
-                langNames[langNo+1] = wxT(" (") + langInfo->CanonicalName + wxT(")")
+                langNames[langNo+1] = wxT("(") + langInfo->CanonicalName + wxT(") ")
                         + existingLangNames.Item(langNo);
             }
 

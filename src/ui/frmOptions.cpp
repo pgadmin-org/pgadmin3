@@ -107,7 +107,7 @@ frmOptions::frmOptions(frmMain *parent)
         for (langNo = 0; langNo < langCount ; langNo++)
         {
             langInfo = wxLocale::GetLanguageInfo(existingLangs.Item(langNo));
-            cbLanguage->Append(wxT(" (") + langInfo->CanonicalName + wxT(")")
+            cbLanguage->Append(wxT("(") + langInfo->CanonicalName + wxT(") ")
                 + existingLangNames.Item(langNo));
             if (langId == langInfo->Language)
                 sel=langNo+1;
