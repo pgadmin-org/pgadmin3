@@ -260,7 +260,25 @@ then
         esac
     else
         case "${host}" in
-            *-*-linux*)
+            *-apple-darwin*)
+                case "${WX_NEW_LDFLAGS}" in
+                    *wx_macud-*)
+                        LIBS="$LIBS -lwx_macud_stc-${WX_VERSION} -lwx_macud_xrc-${WX_VERSION}"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS"
+                        ;;
+                    *wx_macd-*)
+                        LIBS="$LIBS -lwx_macd_stc-${WX_VERSION} -lwx_macd_xrc-${WX_VERSION}"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS"
+                        ;;
+                    *wx_mac-*)
+                        LIBS="$LIBS -lwx_mac_stc-${WX_VERSION} -lwx_mac_xrc-${WX_VERSION}"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS"
+                        ;;
+                    *)
+                        ;;
+                esac
+                ;;
+            *)  # This used to be just for Linux, but let's make it the default now as it should be appropriate for any wxGTK build
                 case "${WX_NEW_LDFLAGS}" in
                     *wx_gtk2ud-*)
                         LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION} -lwx_gtk2ud_xrc-${WX_VERSION}"
@@ -289,26 +307,6 @@ then
                     *)
                         ;;
                 esac
-                ;;
-            *-apple-darwin*)
-                case "${WX_NEW_LDFLAGS}" in
-                    *wx_macud-*)
-                        LIBS="$LIBS -lwx_macud_stc-${WX_VERSION} -lwx_macud_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_macd-*)
-                        LIBS="$LIBS -lwx_macd_stc-${WX_VERSION} -lwx_macd_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_mac-*)
-                        LIBS="$LIBS -lwx_mac_stc-${WX_VERSION} -lwx_mac_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *)
-                        ;;
-                esac
-                ;;
-            *)
                 ;;
         esac
     fi
