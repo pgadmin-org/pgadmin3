@@ -91,31 +91,13 @@ dlgUser::dlgUser(wxFrame *frame, pgUser *node)
 
 void dlgUser::Go()
 {
-    pgSet *set=connection->ExecuteSet(wxT("SELECT groname, grolist FROM pg_group"));
+    pgSet *set=connection->ExecuteSet(wxT("SELECT groname FROM pg_group"));
     if (set)
     {
         while (!set->Eof())
         {
-            bool isMember=false;
             wxString groupName=set->GetVal(wxT("groname"));
-            if (user)
-            {
-                wxString str=set->GetVal(wxT("grolist"));
-                if (!str.IsNull())
-                {
-                    wxStringTokenizer ids(str.Mid(1, str.Length()-2), ',');
-                    while (ids.HasMoreTokens())
-                    {
-                        if (atoi(ids.GetNextToken()) == user->GetUserId())
-                        {
-                            isMember=true;
-                            groupsIn.Add(groupName);
-                            break;
-                        }
-                    }
-                }
-            }
-            if (isMember)
+            if (user && user->GetGroupsIn().Index(groupName) >= 0)
                 lbGroupsIn->Append(groupName);
             else
                 lbGroupsNotIn->Append(groupName);
@@ -300,27 +282,17 @@ wxString dlgUser::GetSql()
 
     
         cnt=lbGroupsIn->GetCount();
-        wxArrayString tmpGroups=groupsIn;
+        wxArrayString tmpGroups=user->GetGroupsIn();
 
         // check for added groups
         for (pos=0 ; pos < cnt ; pos++)
         {
             wxString groupName=lbGroupsIn->GetString(pos);
 
-            bool groupFound=false;
-
-            int index;
-            for (index=0 ; index < (int)tmpGroups.GetCount() ; index++)
-            {
-                wxString str=tmpGroups.Item(index);
-                if (str.IsSameAs(groupName))
-                {
-                    groupFound=true;
-                    tmpGroups.RemoveAt(index);
-                    break;
-                }
-            }
-            if (!groupFound)
+            int index=tmpGroups.Index(groupName);
+            if (index >= 0)
+                tmpGroups.RemoveAt(index);
+            else
                 sql += wxT("ALTER GROUP ") + qtIdent(groupName)
                     +  wxT(" ADD USER ") + user->GetQuotedFullIdentifier() + wxT(";\n");
         }

@@ -44,6 +44,7 @@ public:
     void iSetSuperuser(const bool b) { superuser=b; }
     bool GetUpdateCatalog() const { return updateCatalog; }
     void iSetUpdateCatalog(const bool b) { updateCatalog=b; }
+    wxArrayString& GetGroupsIn() { return groupsIn; }
 
 
     // Tree object creation
@@ -63,6 +64,7 @@ public:
 private:
     wxString accountExpires, password, configList;
     bool createDatabase, superuser, updateCatalog;
+    wxArrayString groupsIn;
     long userId;
 };
 

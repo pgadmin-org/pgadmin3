@@ -63,6 +63,11 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
                     + wxT(" SET ") + cfgTokens.GetNextToken() + wxT(";\n");
             }
         }
+        unsigned index;
+        for (index=0 ; index < groupsIn.GetCount() ; index++)
+            sql += wxT("ALTER GROUP ") + qtIdent(groupsIn.Item(index))
+                +  wxT(" ADD USER ") + GetQuotedIdentifier() + wxT(";\n");
+
     }
     return sql;
 }
@@ -70,6 +75,34 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
 
 void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
+    if (!expandedKids)
+    {
+        expandedKids=true;
+
+        pgSet *set=GetServer()->ExecuteSet(wxT("SELECT groname, grolist FROM pg_group ORDER BY groname"));
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                wxString groupName=set->GetVal(wxT("groname"));
+                wxString str=set->GetVal(wxT("grolist"));
+                if (!str.IsNull())
+                {
+                    wxStringTokenizer ids(str.Mid(1, str.Length()-2), ',');
+                    while (ids.HasMoreTokens())
+                    {
+                        if (atoi(ids.GetNextToken()) == GetUserId())
+                        {
+                            groupsIn.Add(groupName);
+                            break;
+                        }
+                    }
+                }
+                set->MoveNext();
+            }
+            delete set;
+        }
+    }
     if (properties)
     {
         wxLogInfo(wxT("Displaying properties for User ") + GetIdentifier());
@@ -84,7 +117,17 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, wxT("Create Databases?"), BoolToYesNo(GetCreateDatabase()));
         InsertListItem(properties, pos++, wxT("Update Catalogs?"), BoolToYesNo(GetUpdateCatalog()));
 
-        expandedKids=true;
+        wxString groupList;
+
+        unsigned index;
+        for (index=0 ; index < groupsIn.GetCount() ; index++)
+        {
+            if (!groupList.IsEmpty())
+                groupList += wxT(", ");
+            groupList += groupsIn.Item(index);
+        }
+        InsertListItem(properties, pos, wxT("Member of"), groupList);
+
         wxStringTokenizer cfgTokens(configList, ',');
         while (cfgTokens.HasMoreTokens())
         {
