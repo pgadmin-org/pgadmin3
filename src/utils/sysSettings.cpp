@@ -176,7 +176,7 @@ wxSize sysSettings::Read(const wxString& key, const wxSize &defaultVal) const
 void sysSettings::SetShowTipOfTheDay(const bool newval)
 {
     showTipOfTheDay = newval;
-    Write(wxT("NextTipOfTheDay"), showTipOfTheDay);
+    Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
 }
 
 void sysSettings::SetNextTipOfTheDay(const int newval)
