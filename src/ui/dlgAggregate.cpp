@@ -142,7 +142,7 @@ void dlgAggregate::OnChangeType(wxNotifyEvent &ev)
             wxT("SELECT proname, nspname, prorettype\n")
             wxT("  FROM pg_proc p\n")
             wxT("  JOIN pg_type t ON t.oid=p.prorettype\n")
-            wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n");
+            wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
             wxT(" WHERE proargtypes[2] = 0");
 
 

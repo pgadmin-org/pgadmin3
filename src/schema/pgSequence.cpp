@@ -44,7 +44,7 @@ void pgSequence::UpdateValues()
         lastValue = sequence->GetLongLong(wxT("last_value"));
         minValue = sequence->GetLongLong(wxT("min_value"));
         maxValue = sequence->GetLongLong(wxT("max_value"));
-        cacheValue = sequence->GetLongLong(wxT("cache_vale"));
+        cacheValue = sequence->GetLongLong(wxT("cache_value"));
         increment = sequence->GetLongLong(wxT("increment_by"));
         cycled = sequence->GetBool(wxT("is_cycled"));
 
