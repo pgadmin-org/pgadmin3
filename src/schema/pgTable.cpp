@@ -112,6 +112,7 @@ wxString pgTable::GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collection
 
 wxString pgTable::GetSql(wxTreeCtrl *browser)
 {
+	wxString colDetails;
     if (sql.IsNull())
     {
         // make sure all kids are appended
@@ -164,6 +165,12 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                         sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
                             + column->GetDefinition();
 
+						// Whilst we are looping round the columns, grab their comments as well.
+						// Perhaps we should also get storage types here?
+						colDetails += column->GetCommentSql();
+						if (colDetails.Length() > 0)
+							if (colDetails.Last() != '\n') colDetails += wxT("\n");
+
                         colCount++;
                     }
                 }
@@ -195,13 +202,17 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             sql += wxT("WITHOUT OIDS;\n");
 
         sql += GetGrant(wxT("arwdRxt")) 
-            + GetCommentSql()
-            + wxT("\n\n");
+            + GetCommentSql();
+
+		// Column comments
+		sql += colDetails;
 
         // add indexes here
 
         // add triggers here 
 
+		if (sql.Length() > 0)
+			if (sql.Last() != '\n') sql += wxT("\n");
 
     }
     return sql;

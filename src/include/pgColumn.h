@@ -84,6 +84,7 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool GetSystemObject() const { return colNumber < 0; }
     wxString GetSql(wxTreeCtrl *browser);
+	wxString GetCommentSql();
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-createtable"); }
 
     virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop(); }

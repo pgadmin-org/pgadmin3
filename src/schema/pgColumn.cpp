@@ -90,15 +90,24 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
                 sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                     + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                     + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
-            if (!GetComment().IsEmpty())
-                sql += wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
-                    +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+
+			sql += GetCommentSql();
         }
     }
 
     return sql;
 }
 
+wxString pgColumn::GetCommentSql()
+{
+	wxString commentSql;
+
+	if (!GetComment().IsEmpty())
+		commentSql = wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
+        +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+	
+	return commentSql;
+}
 
 wxString pgColumn::GetDefinition()
 {
