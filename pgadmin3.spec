@@ -1,9 +1,10 @@
-%define major_version 0.1.1
-%define minor_version %(date +%Y%m%d)
-%define wxGTK2_version 20030607
+%define major_version      0.1.1
+%define minor_version      %(date +%Y%m%d)
+%define wxGTK2_version     20030607
 %define with_wx_config     --with-wx-config=wxgtk2ud-2.5-config
 %define with_pgsql         --with-pgsql=/usr
 %define with_pgsql_include --with-pgsql-include=/usr
+%define prefix             /usr/local/pgadmin3
 
 # Mandrake 91
 # %define with_pgsql_include --with-pgsql-include=/usr/include/pgsql
@@ -34,7 +35,7 @@ pgAdmin3 is the graphical administration interface of PostgreSQL.
 %setup -q
 
 %build
-%configure --enable-debug --enable-static %{with_wx_config} %{with_pgsql} %{with_pgsql_include}
+%configure --enable-debug --enable-static --prefix=%{prefix} %{with_wx_config} %{with_pgsql} %{with_pgsql_include}
 make all
 
 %install
@@ -46,7 +47,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-/usr/local/pgadmin3
+%{prefix}
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <jm.poure@freesurf.fr>
