@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -99,7 +99,7 @@ NAME="XFUNC-C"
 >31.7. C-Language Functions</A
 ></H1
 ><A
-NAME="AEN28111"
+NAME="AEN28175"
 ></A
 ><P
 >    User-defined functions can be written in C (or a language that can
@@ -152,7 +152,7 @@ NAME="XFUNC-C-DYNLOAD"
 >31.7.1. Dynamic Loading</A
 ></H2
 ><A
-NAME="AEN28126"
+NAME="AEN28190"
 ></A
 ><P
 >    The first time a user-defined function in a particular
@@ -197,7 +197,7 @@ CLASS="PRODUCTNAME"
 > package
 	library directory
        name, which is determined at build time.<A
-NAME="AEN28139"
+NAME="AEN28203"
 ></A
 >
       </P
@@ -210,7 +210,7 @@ NAME="AEN28139"
 HREF="runtime-config.html#GUC-DYNAMIC-LIBRARY-PATH"
 >dynamic_library_path</A
 >.<A
-NAME="AEN28144"
+NAME="AEN28208"
 ></A
 >
       </P
@@ -333,7 +333,7 @@ NAME="XFUNC-C-BASETYPE"
 >31.7.2. Base Types in C-Language Functions</A
 ></H2
 ><A
-NAME="AEN28170"
+NAME="AEN28234"
 ></A
 ><P
 >     To know how to write C-language functions, you need to know how
@@ -1117,7 +1117,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28441"
+NAME="AEN28505"
 >31.7.3. Calling Conventions Version 0 for C-Language Functions</A
 ></H2
 ><P
@@ -1317,7 +1317,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28468"
+NAME="AEN28532"
 >31.7.4. Calling Conventions Version 1 for C-Language Functions</A
 ></H2
 ><P
@@ -1649,7 +1649,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28526"
+NAME="AEN28590"
 >31.7.5. Writing Code</A
 ></H2
 ><P
@@ -1684,7 +1684,7 @@ CLASS="LITERAL"
 >pg_config
         --includedir-server</TT
 ><A
-NAME="AEN28536"
+NAME="AEN28600"
 ></A
 >
         to find out where the <SPAN
@@ -1726,13 +1726,13 @@ CLASS="PRODUCTNAME"
 CLASS="FUNCTION"
 >palloc</CODE
 ><A
-NAME="AEN28548"
+NAME="AEN28612"
 ></A
 > and <CODE
 CLASS="FUNCTION"
 >pfree</CODE
 ><A
-NAME="AEN28551"
+NAME="AEN28615"
 ></A
 >
         instead of the corresponding C library functions
@@ -1862,7 +1862,7 @@ CLASS="FIRSTTERM"
 >shared library</I
 > needs to be
   created.<A
-NAME="AEN28582"
+NAME="AEN28646"
 ></A
 >
 
@@ -1895,7 +1895,7 @@ CLASS="PRODUCTNAME"
  </P
 ><P
 >  <A
-NAME="AEN28591"
+NAME="AEN28655"
 ></A
 > Creating shared libraries is generally
   analogous to linking executables: first the source files are
@@ -1909,7 +1909,7 @@ CLASS="FIRSTTERM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 >),<A
-NAME="AEN28595"
+NAME="AEN28659"
 ></A
 > which
   conceptually means that they can be placed at an arbitrary location
@@ -2371,12 +2371,19 @@ NAME="XFUNC-C-PGXS"
 >31.7.7. Extension build infrastructure</A
 ></H2
 ><A
-NAME="AEN28768"
+NAME="AEN28832"
 ></A
 ><P
->    If you are thinking about distributing your PostgreSQL extension
-    modules, setting up a portable build system for them can be fairly
-    difficult.  Therefore the PostgreSQL installation provides a build
+>    If you are thinking about distributing your
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension modules, setting up a
+    portable build system for them can be fairly difficult.  Therefore
+    the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation provides a build
     infrastructure for extensions, called <ACRONYM
 CLASS="ACRONYM"
 >PGXS</ACRONYM
@@ -2384,10 +2391,13 @@ CLASS="ACRONYM"
     that simple extension modules can be built simply against an
     already installed server.  Note that this infrastructure is not
     intended to be a universal build system framework that can be used
-    to build all software interfacing to PostgreSQL; it simply
-    automates common build rules for simple server extension modules.
-    For more complicated packages, you need to write your own build
-    system.
+    to build all software interfacing to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>;
+    it simply automates common build rules for simple server extension
+    modules.  For more complicated packages, you need to write your
+    own build system.
    </P
 ><P
 >    To use the infrastructure for your extension, you must write a
@@ -2668,21 +2678,20 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28868"
+NAME="AEN28935"
 >31.7.8. Composite-Type Arguments in C-Language Functions</A
 ></H2
 ><P
->     Composite types do not  have  a  fixed  layout  like  C
-     structures.   Instances of a composite type may contain
-     null fields.  In addition,  composite  types  that  are
-     part  of  an  inheritance  hierarchy may have different
-     fields than other members of the same inheritance hierarchy.    
-     Therefore,  <SPAN
+>     Composite types do not have a fixed layout like C structures.
+     Instances of a composite type may contain null fields.  In
+     addition, composite types that are part of an inheritance
+     hierarchy may have different fields than other members of the
+     same inheritance hierarchy.  Therefore,
+     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->  provides  
-     a function interface for accessing fields of composite types  
-     from C.
+> provides a function
+     interface for accessing fields of composite types from C.
     </P
 ><P
 >     Suppose we want to write a function to answer the query
@@ -2814,7 +2823,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28892"
+NAME="AEN28959"
 >31.7.9. Returning Rows (Composite Types) from C-Language Functions</A
 ></H2
 ><P
@@ -3401,7 +3410,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28989"
+NAME="AEN29056"
 >31.7.11. Polymorphic Arguments and Return Types</A
 ></H2
 ><P

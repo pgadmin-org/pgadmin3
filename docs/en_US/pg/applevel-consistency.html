@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -125,7 +125,7 @@ CLASS="QUOTE"
     whole concept of <SPAN
 CLASS="QUOTE"
 >"now"</SPAN
-> is somewhat suspect anyway.
+> is somewhat ill-defined anyway.
     This is not normally
     a big problem if the client applications are isolated from each other,
     but if the clients can communicate via channels outside the database
@@ -170,8 +170,8 @@ CLASS="PRODUCTNAME"
 >    Global validity checks require extra thought under <ACRONYM
 CLASS="ACRONYM"
 >MVCC</ACRONYM
->.  For
-    example, a banking application might wish to check that the sum of
+>.
+    For example, a banking application might wish to check that the sum of
     all credits in one table equals the sum of debits in another table,
     when both tables are being actively updated.  Comparing the results of two
     successive <TT
@@ -198,9 +198,9 @@ CLASS="LITERAL"
    </P
 ><P
 >    Note also that if one is
-    relying on explicit locks to prevent concurrent changes, one should use
+    relying on explicit locking to prevent concurrent changes, one should use
     Read Committed mode, or in Serializable mode be careful to obtain the
-    lock(s) before performing queries.  An explicit lock obtained in a
+    lock(s) before performing queries.  A lock obtained by a
     serializable transaction guarantees that no other transactions modifying
     the table are still running, but if the snapshot seen by the
     transaction predates obtaining the lock, it may predate some now-committed
@@ -220,7 +220,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >DELETE</TT
 >), so
-    it's possible to obtain explicit locks before the snapshot is
+    it's possible to obtain locks explicitly before the snapshot is
     frozen.
    </P
 ></DIV

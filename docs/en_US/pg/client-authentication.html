@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -151,7 +151,7 @@ HREF="client-authentication-problems.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN18648"
+NAME="AEN18715"
 ></A
 ><P
 >  When a client application connects to the database server, it
@@ -212,7 +212,7 @@ CLASS="FILENAME"
 > file</A
 ></H1
 ><A
-NAME="AEN18662"
+NAME="AEN18729"
 ></A
 ><P
 >   Client authentication is controlled by the file
@@ -296,10 +296,7 @@ CLASS="REPLACEABLE"
 >user</VAR
 >  <VAR
 CLASS="REPLACEABLE"
->IP-address</VAR
->  <VAR
-CLASS="REPLACEABLE"
->IP-mask</VAR
+>CIDR-address</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -318,10 +315,7 @@ CLASS="REPLACEABLE"
 >user</VAR
 >  <VAR
 CLASS="REPLACEABLE"
->IP-address</VAR
->  <VAR
-CLASS="REPLACEABLE"
->IP-mask</VAR
+>CIDR-address</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -335,15 +329,12 @@ CLASS="REPLACEABLE"
 hostnossl  <VAR
 CLASS="REPLACEABLE"
 >database</VAR
->  <VAR
+>	<VAR
 CLASS="REPLACEABLE"
 >user</VAR
 >  <VAR
 CLASS="REPLACEABLE"
->IP-address</VAR
->  <VAR
-CLASS="REPLACEABLE"
->IP-mask</VAR
+>CIDR-address</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -363,9 +354,9 @@ CLASS="REPLACEABLE"
 >  <VAR
 CLASS="REPLACEABLE"
 >IP-address</VAR
->/<VAR
+>  <VAR
 CLASS="REPLACEABLE"
->IP-masklen</VAR
+>IP-mask</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -385,9 +376,9 @@ CLASS="REPLACEABLE"
 >  <VAR
 CLASS="REPLACEABLE"
 >IP-address</VAR
->/<VAR
+>  <VAR
 CLASS="REPLACEABLE"
->IP-masklen</VAR
+>IP-mask</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -407,9 +398,9 @@ CLASS="REPLACEABLE"
 >  <VAR
 CLASS="REPLACEABLE"
 >IP-address</VAR
->/<VAR
+>  <VAR
 CLASS="REPLACEABLE"
->IP-masklen</VAR
+>IP-mask</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -613,32 +604,29 @@ CLASS="FILENAME"
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
->IP-address</VAR
-><BR><VAR
-CLASS="REPLACEABLE"
->IP-mask</VAR
+>CIDR-address</VAR
 ></DT
 ><DD
 ><P
->       These two fields contain IP address and mask values in standard
-       dotted decimal notation. (IP addresses can only be specified
-       numerically, not as domain or host names.)  Taken together they
-       specify the client machine IP addresses that this record
-       matches.  The precise logic is that
-</P><PRE
-CLASS="PROGRAMLISTING"
->(<VAR
-CLASS="REPLACEABLE"
->actual-IP-address</VAR
-> xor <VAR
-CLASS="REPLACEABLE"
->IP-address-field</VAR
->) and <VAR
-CLASS="REPLACEABLE"
->IP-mask-field</VAR
-></PRE
-><P>
-       must be zero for the record to match.
+>       specifies the client machine IP addresses that this record
+       matches. It contains an IP address in standard dotted decimal
+       notation and a CIDR mask length. (IP addresses can only be
+       specified numerically, not as domain or host names.) For example,
+       an IPv4 CIDR mask of 8 is equivalent to an IP mask of 255.0.0.0,
+       an IPv6 CIDR mask of 64 is equivalent to an IP mask of
+       ffff:ffff:ffff:ffff::. A IPv4 CIDR mask of 32 is used for single
+       hosts.
+      </P
+><P
+>       A typical CIDR address is <TT
+CLASS="LITERAL"
+>172.20.143.89/32</TT
+>.
+       There should be no white space between the IP address, the
+       <TT
+CLASS="LITERAL"
+>/</TT
+>, and the CIDR mask length.
       </P
 ><P
 >       An IP address given in IPv4 format will match IPv6 connections that
@@ -672,44 +660,26 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
+>IP-address</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
 >IP-masklen</VAR
 ></DT
 ><DD
 ><P
->       This field may be used as an alternative to the
+>       This may be used as an alternative to the
        <VAR
 CLASS="REPLACEABLE"
->IP-mask</VAR
-> notation.  It is an integer
-       specifying the number of high-order bits to set in the mask.
-       The number must be between 0 and 32 (in the case of an IPv4
-       address) or 128 (in the case of an IPv6 address) inclusive. 0
-       will match any address, while 32 (or 128, respectively) will
-       match only the exact host specified.  The same matching logic
-       is used as for a dotted notation
-       <VAR
+>CIDR-address</VAR
+> notation. Instead of
+       specifying the mask length, the actual mask is specified in a
+       separate column. For example, 255.0.0.0 represents a IPv4 CIDR
+       mask length of 8, and 255.255.255.255 represents a CIDR mask
+       length of 32. The same matching logic is used as for a dotted
+       notation <VAR
 CLASS="REPLACEABLE"
 >IP-mask</VAR
 >.
-      </P
-><P
->       There must be no white space between the
-       <VAR
-CLASS="REPLACEABLE"
->IP-address</VAR
-> and the
-       <TT
-CLASS="LITERAL"
->/</TT
-> or the <TT
-CLASS="LITERAL"
->/</TT
-> and the
-       <VAR
-CLASS="REPLACEABLE"
->IP-masklen</VAR
->, or the file will not be
-       parsed correctly.
       </P
 ><P
 >       This field only applies to <TT
@@ -1027,7 +997,7 @@ CLASS="COMMAND"
 CLASS="SYSTEMITEM"
 >SIGHUP</SPAN
 ><A
-NAME="AEN18915"
+NAME="AEN18973"
 ></A
 >
    signal. If you edit the file on an
@@ -1073,36 +1043,36 @@ CLASS="PROGRAMLISTING"
 # any user name using Unix-domain sockets (the default for local
 # connections).
 #
-# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
-local   all         all                                             trust
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+local   all         all                               trust
 
 # The same using local loopback TCP/IP connections.
 #
-# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
-host    all         all         127.0.0.1         255.255.255.255   trust     
-
-# The same as the last line but using a CIDR mask
-#
-# TYPE  DATABASE    USER        IP-ADDRESS/CIDR-mask  METHOD
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
 host    all         all         127.0.0.1/32          trust     
+
+# The same as the last line but using a separate netmask column
+#
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    all         all         127.0.0.1     255.255.255.255     trust     
 
 # Allow any user from any host with IP address 192.168.93.x to connect
 # to database "template1" as the same user name that ident reports for
 # the connection (typically the Unix user name).
 # 
-# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
-host    template1   all         192.168.93.0      255.255.255.0     ident sameuser
-
-# The same as the last line but using a CIDR mask
-#
-# TYPE  DATABASE    USER        IP-ADDRESS/CIDR-mask  METHOD
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
 host    template1   all         192.168.93.0/24       ident sameuser
+
+# The same as the last line but using a separate netmask column
+#
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    template1   all         192.168.93.0  255.255.255.0   ident sameuser
 
 # Allow a user from host 192.168.12.10 to connect to database
 # "template1" if the user's password is correctly supplied.
 # 
-# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
-host    template1   all         192.168.12.10     255.255.255.255   md5
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    template1   all         192.168.12.10/32      md5
 
 # In the absence of preceding "host" lines, these two lines will
 # reject all connection from 192.168.54.1 (since that entry will be
@@ -1110,9 +1080,9 @@ host    template1   all         192.168.12.10     255.255.255.255   md5
 # on the Internet.  The zero mask means that no bits of the host IP
 # address are considered so it matches any host.
 # 
-# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
-host    all         all         192.168.54.1      255.255.255.255   reject
-host    all         all         0.0.0.0           0.0.0.0           krb5
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    all         all         192.168.54.1/32       reject
+host    all         all         0.0.0.0/0             krb5
 
 # Allow users from 192.168.x.x hosts to connect to any database, if
 # they pass the ident check.  If, for example, ident says the user is
@@ -1120,8 +1090,8 @@ host    all         all         0.0.0.0           0.0.0.0           krb5
 # connection is allowed if there is an entry in pg_ident.conf for map
 # "omicron" that says "bryanh" is allowed to connect as "guest1".
 #
-# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
-host    all         all         192.168.0.0       255.255.0.0       ident omicron
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    all         all         192.168.0.0/16        ident omicron
 
 # If these are the only three lines for local connections, they will
 # allow local users to connect only to their own databases (databases
@@ -1130,7 +1100,7 @@ host    all         all         192.168.0.0       255.255.0.0       ident omicro
 # $PGDATA/admins contains a list of user names.  Passwords are required in
 # all cases.
 #
-# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
 local   sameuser    all                                             md5
 local   all         @admins                                         md5
 local   all         +support                                        md5

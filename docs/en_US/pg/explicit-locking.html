@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="EXPLICIT-LOCKING"
 >12.3. Explicit Locking</A
 ></H1
 ><A
-NAME="AEN14200"
+NAME="AEN14235"
 ></A
 ><P
 >    <SPAN
@@ -129,7 +129,7 @@ CLASS="STRUCTNAME"
 > system view
     (<A
 HREF="view-pg-locks.html"
->Section 41.34</A
+>Section 41.33</A
 >). For more
     information on monitoring the status of the lock manager
     subsystem, refer to <A
@@ -146,7 +146,7 @@ NAME="LOCKING-TABLES"
 >12.3.1. Table-Level Locks</A
 ></H2
 ><A
-NAME="AEN14213"
+NAME="AEN14248"
 ></A
 ><P
 >    The list below shows the available lock modes and the contexts in
@@ -154,6 +154,10 @@ NAME="AEN14213"
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
+>.  You can also acquire any
+    of these locks explicitly with the command <A
+HREF="sql-lock.html"
+>LOCK</A
 >.
     Remember that all of these lock modes are table-level locks,
     even if the name contains the word
@@ -615,7 +619,7 @@ NAME="LOCKING-DEADLOCKS"
 >12.3.3. Deadlocks</A
 ></H2
 ><A
-NAME="AEN14348"
+NAME="AEN14384"
 ></A
 ><P
 >     The use of explicit locking can increase the likelihood of
@@ -691,8 +695,8 @@ CLASS="PRODUCTNAME"
 ><P
 >     The best defense against deadlocks is generally to avoid them by
      being certain that all applications using a database acquire
-     locks on multiple objects in a consistent order. That was the
-     reason for the previous deadlock example: if both transactions
+     locks on multiple objects in a consistent order. In the example
+     above, if both transactions
      had updated the rows in the same order, no deadlock would have
      occurred. One should also ensure that the first lock acquired on
      an object in a transaction is the highest mode that will be

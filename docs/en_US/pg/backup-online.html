@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Backup and Restore"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="BACKUP-ONLINE"
 >22.3. On-line backup and point-in-time recovery</A
 ></H1
 ><A
-NAME="AEN20217"
+NAME="AEN20275"
 ></A
 ><A
-NAME="AEN20219"
+NAME="AEN20277"
 ></A
 ><P
 >   At all times, <SPAN
@@ -800,7 +800,7 @@ NAME="BACKUP-TIMELINES"
 >22.3.4. Timelines</A
 ></H2
 ><A
-NAME="AEN20371"
+NAME="AEN20429"
 ></A
 ><P
 >    The ability to restore the database to a previous point in time creates
@@ -896,31 +896,11 @@ NAME="BACKUP-ONLINE-CAVEATS"
 ></H2
 ><P
 >    At this writing, there are several limitations of the on-line backup
-    technique.  These will probably be fixed in future releases.
+    technique.  These will probably be fixed in future releases:
 
   <P
 ></P
 ></P><UL
-><LI
-><P
->     The effects of <TT
-CLASS="COMMAND"
->CREATE DATABASE</TT
->, <TT
-CLASS="COMMAND"
->DROP DATABASE</TT
->,
-     <TT
-CLASS="COMMAND"
->CREATE TABLESPACE</TT
->, and <TT
-CLASS="COMMAND"
->DROP TABLESPACE</TT
-> are
-     not fully reflected in the WAL log.  It is recommended that you take
-     a new base backup after performing one of these operations.
-    </P
-></LI
 ><LI
 ><P
 >     Operations on non-btree indexes (hash, R-tree, and GiST indexes) are
@@ -946,7 +926,7 @@ CLASS="ACRONYM"
     since we may need to fix partially-written disk pages.  It is not
     necessary to store so many page copies for PITR operations, however.
     An area for future development is to compress archived WAL data by
-    removing unnecesssary page copies.
+    removing unnecessary page copies.
    </P
 ></DIV
 ></DIV

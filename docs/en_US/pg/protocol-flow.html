@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Frontend/Backend Protocol"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -117,7 +117,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53314"
+NAME="AEN53451"
 >42.2.1. Start-Up</A
 ></H2
 ><P
@@ -291,7 +291,7 @@ HREF="runtime-config.html#GUC-CLIENT-ENCODING"
 >client_encoding</A
 > or <A
 HREF="runtime-config.html#GUC-DATESTYLE"
->datestyle</A
+>DateStyle</A
 >.
          The frontend may ignore this message, or record the settings
          for its future use; see <A
@@ -344,7 +344,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53383"
+NAME="AEN53520"
 >42.2.2. Simple Query</A
 ></H2
 ><P
@@ -543,7 +543,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53445"
+NAME="AEN53582"
 >42.2.3. Extended Query</A
 ></H2
 ><P
@@ -837,7 +837,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53486"
+NAME="AEN53623"
 >42.2.4. Function Call</A
 ></H2
 ><P
@@ -1081,8 +1081,11 @@ CLASS="COMMAND"
     <TT
 CLASS="LITERAL"
 >server_version</TT
-> (a pseudo-parameter that cannot change after
-    startup);
+>,
+    <TT
+CLASS="LITERAL"
+>server_encoding</TT
+>,
     <TT
 CLASS="LITERAL"
 >client_encoding</TT
@@ -1094,11 +1097,37 @@ CLASS="LITERAL"
     <TT
 CLASS="LITERAL"
 >session_authorization</TT
->, and
+>,
     <TT
 CLASS="LITERAL"
 >DateStyle</TT
+>, and
+    <TT
+CLASS="LITERAL"
+>integer_datetimes</TT
 >.
+    (<TT
+CLASS="LITERAL"
+>server_encoding</TT
+> and <TT
+CLASS="LITERAL"
+>integer_datetimes</TT
+> were not
+    reported by releases before 8.0.)
+    Note that
+    <TT
+CLASS="LITERAL"
+>server_version</TT
+>,
+    <TT
+CLASS="LITERAL"
+>server_encoding</TT
+> and
+    <TT
+CLASS="LITERAL"
+>integer_datetimes</TT
+>
+    are pseudo-parameters that cannot change after startup.
     This set might change in the future, or even become configurable.
     Accordingly, a frontend should simply ignore ParameterStatus for
     parameters that it does not understand or care about.
@@ -1138,7 +1167,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53551"
+NAME="AEN53695"
 >42.2.7. Cancelling Requests in Progress</A
 ></H2
 ><P
@@ -1201,7 +1230,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53559"
+NAME="AEN53703"
 >42.2.8. Termination</A
 ></H2
 ><P
@@ -1251,7 +1280,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN53568"
+NAME="AEN53712"
 >42.2.9. <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Perl - Perl Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,24 +96,26 @@ NAME="PLPERL-GLOBAL"
 >37.4. Global Values in PL/Perl</A
 ></H1
 ><P
->  You can use the %_SHARED to store data between function calls.  WHY
-IS THIS A HASH, AND NOT A HASH REF?
+>  You can use the %_SHARED to store data between function calls.
   </P
 ><P
 >For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE OR REPLACE FUNCTION set_var(TEXT) RETURNS TEXT AS $$
-    $_SHARED{first} = 'Hello, PL/Perl!';
-    return 'ok';
+>CREATE OR REPLACE FUNCTION set_var(name TEXT, val TEXT) RETURNS TEXT AS $$
+    if ($_SHARED{$_[0]} = $_[1]) {
+        return 'ok';
+    } else {
+        return "Can't set shared variable $_[0] to $_[1]";
+    }
 $$ LANGUAGE plperl;
 
-CREATE OR REPLACE FUNCTION get_var() RETURNS text AS $$
-    return $_SHARED{first};
+CREATE OR REPLACE FUNCTION get_var(name TEXT) RETURNS text AS $$
+    return $_SHARED{$_[0]};
 $$ LANGUAGE plperl;
 
-SELECT set_var('hello plperl');
-SELECT get_var();</PRE
+SELECT set_var('sample', $q$Hello, PL/Perl!  How's tricks?$q$);
+SELECT get_var('sample');</PRE
 ><P>
 
   </P

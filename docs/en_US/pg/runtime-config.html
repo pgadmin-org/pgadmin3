@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="RUNTIME-CONFIG"
 >16.4. Run-time Configuration</A
 ></H1
 ><A
-NAME="AEN16058"
+NAME="AEN16094"
 ></A
 ><P
 >    There are a lot of configuration parameters that affect the
@@ -143,7 +143,7 @@ CLASS="LITERAL"
 CLASS="FILENAME"
 >postgresql.conf</TT
 ><A
-NAME="AEN16073"
+NAME="AEN16109"
 ></A
 >
     in the data directory. (A default file is installed there.) An
@@ -166,7 +166,7 @@ CLASS="LITERAL"
    </P
 ><P
 >    <A
-NAME="AEN16078"
+NAME="AEN16114"
 ></A
 >
     The configuration file is reread whenever the
@@ -308,7 +308,7 @@ CLASS="STRUCTNAME"
 >
     (described in <A
 HREF="view-pg-settings.html"
->Section 41.36</A
+>Section 41.35</A
 >) also allows
     displaying and updating session run-time parameters.  It is equivalent
     to <TT
@@ -1511,23 +1511,22 @@ CLASS="TYPE"
 ><DD
 ><P
 >         Specifies the delay between activity rounds for the
-         background writer.  In each round the writer issues writes for some
-         number of dirty buffers (controllable by the following parameters).
-         The selected buffers will always be the
-         least recently used ones among the currently dirty buffers.
-         It then sleeps for <TT
+         background writer.  In each round the writer issues writes
+         for some number of dirty buffers (controllable by the
+         following parameters).  The selected buffers will always be
+         the least recently used ones among the currently dirty
+         buffers.  It then sleeps for <TT
 CLASS="VARNAME"
 >bgwriter_delay</TT
-> milliseconds,
-         and repeats.
-         Note that on many systems, the effective resolution
-         of sleep delays is 10 milliseconds; setting
-         <TT
+>
+         milliseconds, and repeats.  The default value is 200. Note
+         that on many systems, the effective resolution of sleep
+         delays is 10 milliseconds; setting <TT
 CLASS="VARNAME"
 >bgwriter_delay</TT
-> to a value that is
-         not a multiple of 10 may have the same results as setting it
-         to the next higher multiple of 10.
+>
+         to a value that is not a multiple of 10 may have the same
+         results as setting it to the next higher multiple of 10.
          This option can only be set at server start or in the
          <TT
 CLASS="FILENAME"
@@ -1548,10 +1547,10 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->         In each round, no more than this percentage of the currently dirty
-         buffers will be written (rounding up any fraction to the next whole
-         number of buffers).
-         This option can only be set at server start or in the
+>         In each round, no more than this percentage of the currently
+         dirty buffers will be written (rounding up any fraction to
+         the next whole number of buffers).  The default value is
+         1. This option can only be set at server start or in the
          <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
@@ -1571,8 +1570,9 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->         In each round, no more than this many dirty buffers will be written.
-         This option can only be set at server start or in the
+>         In each round, no more than this many dirty buffers will be
+         written. The default value is 100. This option can only be
+         set at server start or in the
          <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
@@ -1589,9 +1589,10 @@ CLASS="VARNAME"
       <TT
 CLASS="VARNAME"
 >bgwriter_maxpages</TT
-> reduce the extra I/O load caused by
-      the background writer, but leave more work to be done at checkpoint
-      time.  To reduce load spikes at checkpoints, increase the values.
+> reduce the extra I/O load
+      caused by the background writer, but leave more work to be done
+      at checkpoint time.  To reduce load spikes at checkpoints,
+      increase the values.
      </P
 ></DIV
 ></DIV
@@ -1986,7 +1987,7 @@ CLASS="FILENAME"
        </P
 ><P
 >        It is important for the command to return a zero exit status only if
-	it succeeds.  Examples:
+        it succeeds.  Examples:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >archive_command = 'cp "%p" /mnt/server/archivedir/"%f"'
@@ -2687,7 +2688,7 @@ NAME="RUNTIME-CONFIG-LOGGING"
 >16.4.6. Error Reporting and Logging</A
 ></H2
 ><A
-NAME="AEN16768"
+NAME="AEN16804"
 ></A
 ><DIV
 CLASS="SECT3"
@@ -2698,7 +2699,7 @@ NAME="RUNTIME-CONFIG-LOGGING-WHERE"
 >16.4.6.1. Where to log</A
 ></H3
 ><A
-NAME="AEN16772"
+NAME="AEN16808"
 ></A
 ><P
 ></P
@@ -2718,29 +2719,29 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->	<SPAN
+>        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > supports several methods
-	 for logging server messages, including
-	 <SPAN
+         for logging server messages, including
+         <SPAN
 CLASS="SYSTEMITEM"
 >stderr</SPAN
 > and
-	 <SPAN
+         <SPAN
 CLASS="SYSTEMITEM"
 >syslog</SPAN
 >. On Windows, 
-	 <SPAN
+         <SPAN
 CLASS="SYSTEMITEM"
 >eventlog</SPAN
 > is also supported. Set this
-	 option to a list of desired log destinations separated by
-	 commas. The default is to log to <SPAN
+         option to a list of desired log destinations separated by
+         commas. The default is to log to <SPAN
 CLASS="SYSTEMITEM"
 >stderr</SPAN
 > 
-	 only.
+         only.
          This option can only be set at server start or in the
          <TT
 CLASS="FILENAME"
@@ -2761,26 +2762,26 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->	  This option allows messages sent to <SPAN
+>          This option allows messages sent to <SPAN
 CLASS="APPLICATION"
 >stderr</SPAN
 > to be
-	  captured and redirected into log files.
-	  This option, in combination with logging to <SPAN
+          captured and redirected into log files.
+          This option, in combination with logging to <SPAN
 CLASS="APPLICATION"
 >stderr</SPAN
 >,
-	  is often more useful than
-	  logging to <SPAN
+          is often more useful than
+          logging to <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
 >, since some types of messages
-	  may not appear in <SPAN
+          may not appear in <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
 > output (a common example
-	  is dynamic-linker failure messages).
-	  This option can only be set at server start.
+          is dynamic-linker failure messages).
+          This option can only be set at server start.
         </P
 ></DD
 ><DT
@@ -2796,13 +2797,13 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->	  When <TT
+>          When <TT
 CLASS="VARNAME"
 >redirect_stderr</TT
 > is enabled, this option
           determines the directory in which log files will be created.
-	  It may be specified as an absolute path, or relative to the
-	  cluster data directory.
+          It may be specified as an absolute path, or relative to the
+          cluster data directory.
          This option can only be set at server start or in the
          <TT
 CLASS="FILENAME"
@@ -2823,13 +2824,13 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->	  When <TT
+>          When <TT
 CLASS="VARNAME"
 >redirect_stderr</TT
 > is enabled, this option
           sets the prefix of the file names of the created log files.
-	  The postmaster PID and the current time are appended to this
-	  prefix to form an exact log file name.
+          The postmaster PID and the current time are appended to this
+          prefix to form an exact log file name.
          This option can only be set at server start or in the
          <TT
 CLASS="FILENAME"
@@ -2850,14 +2851,14 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->	  When <TT
+>          When <TT
 CLASS="VARNAME"
 >redirect_stderr</TT
 > is enabled, this option
-	  determines the maximum lifetime of an individual log file.
-	  After this many minutes have elapsed, a new log file will
-	  be created.  Set to zero to disable time-based creation of
-	  new log files.
+          determines the maximum lifetime of an individual log file.
+          After this many minutes have elapsed, a new log file will
+          be created.  Set to zero to disable time-based creation of
+          new log files.
          This option can only be set at server start or in the
          <TT
 CLASS="FILENAME"
@@ -2878,14 +2879,14 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->	  When <TT
+>          When <TT
 CLASS="VARNAME"
 >redirect_stderr</TT
 > is enabled, this option
-	  determines the maximum size of an individual log file.
-	  After this many kilobytes have been emitted into a log file,
-	  a new log file will be created.  Set to zero to disable size-based
-	  creation of new log files.
+          determines the maximum size of an individual log file.
+          After this many kilobytes have been emitted into a log file,
+          a new log file will be created.  Set to zero to disable size-based
+          creation of new log files.
          This option can only be set at server start or in the
          <TT
 CLASS="FILENAME"
@@ -2954,7 +2955,7 @@ CLASS="LITERAL"
 CLASS="APPLICATION"
 >syslog</SPAN
 > daemon.
-	  This option can only be set at server start.
+          This option can only be set at server start.
         </P
 ></DD
 ><DT
@@ -2987,7 +2988,7 @@ CLASS="APPLICATION"
 CLASS="LITERAL"
 >postgres</TT
 >.
-	  This option can only be set at server start.
+          This option can only be set at server start.
         </P
 ></DD
 ></DL
@@ -3288,15 +3289,15 @@ CLASS="OPTION"
 >-S</TT
 > option).
         The server's standard output and standard error are redirected
-	to <TT
+        to <TT
 CLASS="LITERAL"
 >/dev/null</TT
 >, so any messages sent to them will be lost.
-	Unless <SPAN
+        Unless <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
 > logging is selected or
-	<TT
+        <TT
 CLASS="VARNAME"
 >redirect_stderr</TT
 > is enabled, using this option
@@ -3565,37 +3566,37 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->	 This is a <CODE
+>         This is a <CODE
 CLASS="FUNCTION"
 >printf</CODE
 >-style string that is output at the
-	 beginning of each log line. The default is an empty string.
-	 Each recognized escape is replaced as outlined 
-	 below - anything else that looks like an escape is ignored. Other
-	 characters are copied straight to the log line. Some escapes are
-	 only recognised by session processes, and do not apply to
-	 background processes such as the postmaster. <SPAN
+         beginning of each log line. The default is an empty string.
+         Each recognized escape is replaced as outlined 
+         below - anything else that looks like an escape is ignored. Other
+         characters are copied straight to the log line. Some escapes are
+         only recognised by session processes, and do not apply to
+         background processes such as the postmaster. <SPAN
 CLASS="APPLICATION"
 >Syslog</SPAN
 >
          produces its own 
-	 timestamp and process ID information, so you probably do not want to
-	 use those escapes if you are using <SPAN
+         timestamp and process ID information, so you probably do not want to
+         use those escapes if you are using <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
 >.
-	 This option can only be set at server start or in the
+         This option can only be set at server start or in the
          <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
 > configuration file.
 
-	 <DIV
+         <DIV
 CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN17046"
+NAME="AEN17082"
 ></A
 ><TABLE
 BORDER="1"
@@ -3674,7 +3675,7 @@ CLASS="LITERAL"
 ></TD
 ><TD
 >Command Tag. This is the command which generated the log
-	      line.</TD
+              line.</TD
 ><TD
 >Yes</TD
 ></TR
@@ -3686,10 +3687,10 @@ CLASS="LITERAL"
 ></TD
 ><TD
 >Session ID. A unique identifier for each session.
-	     It is 2 4-byte hexadecimal numbers (without leading zeros) 
+             It is 2 4-byte hexadecimal numbers (without leading zeros) 
              separated by a dot. The numbers
-	     are the Session Start Time and the Process ID, so this can also
-	     be used as a space saving way of printing these items.</TD
+             are the Session Start Time and the Process ID, so this can also
+             be used as a space saving way of printing these items.</TD
 ><TD
 >Yes</TD
 ></TR
@@ -3701,7 +3702,7 @@ CLASS="LITERAL"
 ></TD
 ><TD
 >Number of the log line for each process,
-	      starting at 1</TD
+              starting at 1</TD
 ><TD
 >No</TD
 ></TR
@@ -3724,8 +3725,8 @@ CLASS="LITERAL"
 ></TD
 ><TD
 >Does not produce any output, but tells non-session
-	     processes to stop at this point in the string. Ignored by
-	     session processes.</TD
+             processes to stop at this point in the string. Ignored by
+             session processes.</TD
 ><TD
 >No</TD
 ></TR
@@ -4386,7 +4387,7 @@ NAME="GUC-DATESTYLE"
 ></A
 ><TT
 CLASS="VARNAME"
->datestyle</TT
+>DateStyle</TT
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -4738,7 +4739,7 @@ CLASS="VARNAME"
 >dynamic_library_path</TT
 > has to be a
         list of absolute directory paths separated by colons (or semi-colons
-	on Windows).  If a list element starts
+        on Windows).  If a list element starts
         with the special string <TT
 CLASS="LITERAL"
 >$libdir</TT
@@ -5036,7 +5037,7 @@ CLASS="COMMAND"
         <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> 8.0.0beta1
+> 8.0.0beta2
         <TT
 CLASS="VARNAME"
 >default_with_oids</TT
@@ -5194,8 +5195,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="RUNTIME-CONFIG-COMPILER"
->16.4.11. Compiled-in Options</A
+NAME="RUNTIME-CONFIG-PRESET"
+>16.4.11. Preset Options</A
 ></H2
 ><P
 >     The following <SPAN
@@ -5205,8 +5206,8 @@ CLASS="QUOTE"
      when <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> is compiled. As such,
-     they have been excluded from the sample
+> is compiled or when it is
+     installed. As such, they have been excluded from the sample
      <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
@@ -5272,7 +5273,7 @@ CLASS="TYPE"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > was built
-        with support for 64-bit integer dates and times.  It is set by
+        with support for 64-bit-integer dates and times.  It is set by
         configuring with <TT
 CLASS="LITERAL"
 >--enable-integer-datetimes</TT
@@ -5285,6 +5286,53 @@ CLASS="PRODUCTNAME"
 CLASS="LITERAL"
 >off</TT
 >.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-LC-COLLATE"
+></A
+><TT
+CLASS="VARNAME"
+>lc_collate</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Shows the locale in which sorting of textual data is done.
+        See <A
+HREF="charset.html#LOCALE"
+>Section 20.1</A
+> for more information.
+        The value is determined when the database cluster is initialized.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-LC-CTYPE"
+></A
+><TT
+CLASS="VARNAME"
+>lc_ctype</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Shows the locale that determines character classifications.
+        See <A
+HREF="charset.html#LOCALE"
+>Section 20.1</A
+> for more information.
+        The value is determined when the database cluster is initialized.
+        Ordinarily this will be the same as <TT
+CLASS="VARNAME"
+>lc_collate</TT
+>,
+        but for special applications it might be set differently.
        </P
 ></DD
 ><DT
@@ -5358,6 +5406,47 @@ CLASS="LITERAL"
         default value is 32.
        </P
 ></DD
+><DT
+><A
+NAME="GUC-SERVER-ENCODING"
+></A
+><TT
+CLASS="VARNAME"
+>server_encoding</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Shows the database encoding (character set).
+        It is determined when the database is created.  Ordinarily,
+        clients need only be concerned with the value of <A
+HREF="runtime-config.html#GUC-CLIENT-ENCODING"
+>client_encoding</A
+>.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-SERVER-VERSION"
+></A
+><TT
+CLASS="VARNAME"
+>server_version</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Shows the version number of the server. It is determined by the
+        value of <TT
+CLASS="LITERAL"
+>PG_VERSION</TT
+> when building the server.
+       </P
+></DD
 ></DL
 ></DIV
 ></DIV
@@ -5404,7 +5493,7 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > proper but used by some
         add-on module.  Such variables must have names consisting of a class
-	name, a dot, and a variable name.  <TT
+        name, a dot, and a variable name.  <TT
 CLASS="VARNAME"
 >custom_variable_classes</TT
 >

@@ -2,29 +2,29 @@
 <HTML
 ><HEAD
 ><TITLE
->pg_logdir_ls</TITLE
+>Release 7.3.7</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
+TITLE="Release Notes"
+HREF="release.html"><LINK
 REL="PREVIOUS"
-TITLE="pg_indexes"
-HREF="view-pg-indexes.html"><LINK
+TITLE="Release 7.4"
+HREF="release-7-4.html"><LINK
 REL="NEXT"
-TITLE="pg_locks"
-HREF="view-pg-locks.html"><LINK
+TITLE="Release 7.3.6"
+HREF="release-7-3-6.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="view-pg-indexes.html"
+HREF="release-7-4.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,20 +57,20 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="catalogs.html"
+HREF="release.html"
 >Fast Backward</A
 ></TD
 ><TD
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 41. System Catalogs</TD
+>Appendix E. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="catalogs.html"
+HREF="release.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="view-pg-locks.html"
+HREF="release-7-3-6.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -92,92 +92,67 @@ CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
-NAME="VIEW-PG-LOGDIR-LS"
->41.33. <TT
-CLASS="STRUCTNAME"
->pg_logdir_ls</TT
-></A
+NAME="RELEASE-7-3-7"
+>E.8. Release 7.3.7</A
 ></H1
-><A
-NAME="AEN52647"
-></A
-><P
->   The view <TT
-CLASS="STRUCTNAME"
->pg_logdir_ls</TT
-> provides access to
-    log files stored in the log directory.
-  </P
 ><DIV
-CLASS="TABLE"
-><A
-NAME="AEN52651"
-></A
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
 ><P
 ><B
->Table 41-33. <TT
-CLASS="STRUCTNAME"
->pg_logdir_ls</TT
-> Columns</B
+>Release date: </B
+>2004-08-16</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This release contains one critical fix over 7.3.6, and some minor items.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN65548"
+>E.8.1. Migration to version 7.3.7</A
+></H2
+><P
+>     A dump/restore is not required for those running 7.3.X.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN65551"
+>E.8.2. Changes</A
+></H2
+><P
 ></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->filetime</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->timestamp</TT
-></TD
-><TD
->timestamp of log file creation</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->pid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->process id of postmaster that created the logfile</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->filename</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->full pathname of log file</TD
-></TR
-></TBODY
-></TABLE
+><UL
+><LI
+><P
+>Prevent possible loss of committed transactions during crash</P
+><P
+>Due to insufficient interlocking between transaction commit and checkpointing,
+it was possible for transactions committed just before the most recent
+checkpoint to be lost, in whole or in part, following a database crash and
+restart.  This is a serious bug that has existed
+since <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.1.</P
+></LI
+><LI
+><P
+>Remove asymmetrical word processing in tsearch (Teodor)</P
+></LI
+><LI
+><P
+>Properly schema-qualify function names when pg_dump'ing a CAST</P
+></LI
+></UL
 ></DIV
 ></DIV
 ><DIV
@@ -196,7 +171,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="view-pg-indexes.html"
+HREF="release-7-4.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -214,7 +189,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="view-pg-locks.html"
+HREF="release-7-3-6.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -224,16 +199,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_indexes</TT
-></TD
+>Release 7.4</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="catalogs.html"
+HREF="release.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -241,10 +213,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_locks</TT
-></TD
+>Release 7.3.6</TD
 ></TR
 ></TABLE
 ></DIV

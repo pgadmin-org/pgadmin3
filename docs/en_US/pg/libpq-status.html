@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -110,11 +110,11 @@ CLASS="TIP"
 ><B
 >Tip: </B
 ><A
-NAME="AEN21520"
+NAME="AEN21573"
 ></A
 >
 <A
-NAME="AEN21522"
+NAME="AEN21575"
 ></A
 >
 <SPAN
@@ -176,7 +176,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQdb</CODE
 ><A
-NAME="AEN21540"
+NAME="AEN21593"
 ></A
 ></DT
 ><DD
@@ -192,7 +192,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQuser</CODE
 ><A
-NAME="AEN21548"
+NAME="AEN21601"
 ></A
 ></DT
 ><DD
@@ -208,7 +208,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQpass</CODE
 ><A
-NAME="AEN21556"
+NAME="AEN21609"
 ></A
 ></DT
 ><DD
@@ -224,7 +224,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQhost</CODE
 ><A
-NAME="AEN21564"
+NAME="AEN21617"
 ></A
 ></DT
 ><DD
@@ -240,7 +240,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQport</CODE
 ><A
-NAME="AEN21572"
+NAME="AEN21625"
 ></A
 ></DT
 ><DD
@@ -256,7 +256,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQtty</CODE
 ><A
-NAME="AEN21580"
+NAME="AEN21633"
 ></A
 ></DT
 ><DD
@@ -281,7 +281,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQoptions</CODE
 ><A
-NAME="AEN21590"
+NAME="AEN21643"
 ></A
 ></DT
 ><DD
@@ -312,7 +312,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQstatus</CODE
 ><A
-NAME="AEN21601"
+NAME="AEN21654"
 ></A
 ></DT
 ><DD
@@ -377,7 +377,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQtransactionStatus</CODE
 ><A
-NAME="AEN21620"
+NAME="AEN21673"
 ></A
 ></DT
 ><DD
@@ -455,7 +455,7 @@ deprecated and does not exist in later server versions.</P
 CLASS="FUNCTION"
 >PQparameterStatus</CODE
 ><A
-NAME="AEN21639"
+NAME="AEN21692"
 ></A
 ></DT
 ><DD
@@ -475,14 +475,18 @@ CLASS="FUNCTION"
 It returns the current value of a parameter if known, or <TT
 CLASS="SYMBOL"
 >NULL</TT
-> if the parameter
-is not known.</P
+>
+if the parameter is not known.</P
 ><P
 >Parameters reported as of the current release include
 <TT
 CLASS="LITERAL"
 >server_version</TT
-> (cannot change after startup);
+>,
+<TT
+CLASS="LITERAL"
+>server_encoding</TT
+>,
 <TT
 CLASS="LITERAL"
 >client_encoding</TT
@@ -494,11 +498,37 @@ CLASS="LITERAL"
 <TT
 CLASS="LITERAL"
 >session_authorization</TT
->, and
+>,
 <TT
 CLASS="LITERAL"
 >DateStyle</TT
->.</P
+>, and
+<TT
+CLASS="LITERAL"
+>integer_datetimes</TT
+>.
+(<TT
+CLASS="LITERAL"
+>server_encoding</TT
+> and <TT
+CLASS="LITERAL"
+>integer_datetimes</TT
+> were not
+reported by releases before 8.0.)
+Note that
+<TT
+CLASS="LITERAL"
+>server_version</TT
+>,
+<TT
+CLASS="LITERAL"
+>server_encoding</TT
+> and
+<TT
+CLASS="LITERAL"
+>integer_datetimes</TT
+>
+cannot change after startup.</P
 ><P
 >Pre-3.0-protocol servers do not report parameter settings, but
 <SPAN
@@ -508,10 +538,10 @@ CLASS="APPLICATION"
 <TT
 CLASS="LITERAL"
 >server_version</TT
->, and <TT
+> and <TT
 CLASS="LITERAL"
 >client_encoding</TT
->.
+> anyway.
 Applications are encouraged to use <CODE
 CLASS="FUNCTION"
 >PQparameterStatus</CODE
@@ -528,14 +558,32 @@ CLASS="COMMAND"
 <CODE
 CLASS="FUNCTION"
 >PQparameterStatus</CODE
->.)</P
+>.)  For <TT
+CLASS="LITERAL"
+>server_version</TT
+>,
+see also <CODE
+CLASS="FUNCTION"
+>PQserverVersion</CODE
+>, which returns the information
+in a numeric form that is much easier to compare against.</P
+><P
+>Although the returned pointer is declared <TT
+CLASS="LITERAL"
+>const</TT
+>, it in fact
+points to mutable storage associated with the <TT
+CLASS="LITERAL"
+>PGconn</TT
+> structure.
+It is unwise to assume the pointer will remain valid across queries.</P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQprotocolVersion</CODE
 ><A
-NAME="AEN21663"
+NAME="AEN21728"
 ></A
 ></DT
 ><DD
@@ -565,7 +613,7 @@ CLASS="APPLICATION"
 CLASS="FUNCTION"
 >PQserverVersion</CODE
 ><A
-NAME="AEN21673"
+NAME="AEN21738"
 ></A
 ></DT
 ><DD
@@ -577,23 +625,23 @@ CLASS="SYNOPSIS"
 ><P>
 Applications may use this to determine the version of the database server they
 are connected to. The number is formed by converting the major, minor, and
-revision numbers into two digit numbers and appending them together. For
-example, version 7.4.2 will be returned as 70402, and version 8.1 will be
-returned as 80100 (leading zeroes are not shown).  Zero is returned if the
-connection is bad.</P
+revision numbers into two-decimal-digit numbers and appending them
+together. For example, version 7.4.2 will be returned as 70402, and version
+8.1 will be returned as 80100 (leading zeroes are not shown).  Zero is
+returned if the connection is bad.</P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQerrorMessage</CODE
 ><A
-NAME="AEN21681"
+NAME="AEN21746"
 ></A
 ></DT
 ><DD
 ><P
 >       <A
-NAME="AEN21685"
+NAME="AEN21750"
 ></A
 >
        Returns the error message most recently generated by
@@ -636,7 +684,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQsocket</CODE
 ><A
-NAME="AEN21698"
+NAME="AEN21763"
 ></A
 ></DT
 ><DD
@@ -657,7 +705,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQbackendPID</CODE
 ><A
-NAME="AEN21706"
+NAME="AEN21771"
 ></A
 ></DT
 ><DD
@@ -667,7 +715,7 @@ CLASS="ACRONYM"
 >ID</ACRONYM
 >
        (PID)<A
-NAME="AEN21711"
+NAME="AEN21776"
 ></A
 > of the backend server
        process handling this connection.
@@ -701,13 +749,13 @@ CLASS="ACRONYM"
 CLASS="FUNCTION"
 >PQgetssl</CODE
 ><A
-NAME="AEN21724"
+NAME="AEN21789"
 ></A
 ></DT
 ><DD
 ><P
 >       <A
-NAME="AEN21728"
+NAME="AEN21793"
 ></A
 >
        Returns the SSL structure used in the connection, or null

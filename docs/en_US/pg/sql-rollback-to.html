@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,21 +95,21 @@ NAME="SQL-ROLLBACK-TO"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42079"
+NAME="AEN42244"
 ></A
 ><H2
 >Name</H2
 >ROLLBACK TO SAVEPOINT&nbsp;--&nbsp;roll back to a savepoint</DIV
 ><A
-NAME="AEN42082"
+NAME="AEN42247"
 ></A
 ><A
-NAME="AEN42084"
+NAME="AEN42249"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42087"
+NAME="AEN42252"
 ></A
 ><H2
 >Synopsis</H2
@@ -123,7 +123,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42090"
+NAME="AEN42255"
 ></A
 ><H2
 >Description</H2
@@ -143,7 +143,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42095"
+NAME="AEN42260"
 ></A
 ><H2
 >Parameters</H2
@@ -168,7 +168,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42103"
+NAME="AEN42268"
 ></A
 ><H2
 >Notes</H2
@@ -211,7 +211,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42113"
+NAME="AEN42278"
 ></A
 ><H2
 >Examples</H2
@@ -255,33 +255,53 @@ COMMIT;</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42120"
+NAME="AEN42285"
 ></A
 ><H2
 >Compatibility</H2
 ><P
->   The SQL2003 standard specifies that the keyword SAVEPOINT is mandatory.
+>   The SQL2003 standard specifies that the keyword
+   <TT
+CLASS="LITERAL"
+>SAVEPOINT</TT
+> is mandatory.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> and
+   <SPAN
+CLASS="PRODUCTNAME"
+>Oracle</SPAN
+> allow the <TT
+CLASS="LITERAL"
+>SAVEPOINT</TT
+>
+   keyword to be omitted.  SQL2003 allows only <TT
+CLASS="LITERAL"
+>WORK</TT
+>, not
+   <TT
+CLASS="LITERAL"
+>TRANSACTION</TT
+>, as a noise word after
+   <TT
+CLASS="LITERAL"
+>ROLLBACK</TT
+>.  Also, SQL2003 has an optional clause
+   <TT
+CLASS="LITERAL"
+>AND [ NO ] CHAIN</TT
+> which is not currently supported by
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> and <SPAN
-CLASS="PRODUCTNAME"
->Oracle</SPAN
->
-   allow the SAVEPOINT keyword to be omitted.  SQL2003 allows only
-   WORK, not TRANSACTION, as a noise word after ROLLBACK.  Also, SQL2003
-   has an optional clause AND [ NO ] CHAIN which is not currently supported
-   by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  Otherwise, this command is
-   fully conforming.
+>.  Otherwise, this command is fully
+   conforming.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42126"
+NAME="AEN42297"
 ></A
 ><H2
 >See Also</H2

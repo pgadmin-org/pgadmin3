@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-SET-TRANSACTION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43100"
+NAME="AEN43271"
 ></A
 ><H2
 >Name</H2
 >SET TRANSACTION&nbsp;--&nbsp;set the characteristics of the current transaction</DIV
 ><A
-NAME="AEN43103"
+NAME="AEN43274"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43105"
+NAME="AEN43276"
 ></A
 ><H2
 >Synopsis</H2
@@ -132,7 +132,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43110"
+NAME="AEN43281"
 ></A
 ><H2
 >Description</H2
@@ -147,12 +147,12 @@ CLASS="COMMAND"
 >SET SESSION
    CHARACTERISTICS</TT
 > sets the default transaction
-   characteristics for subsequent transactions of a session.  <TT
+   characteristics for subsequent transactions of a session.  These
+   defaults can be overridden by <TT
 CLASS="COMMAND"
->SET
-   TRANSACTION</TT
-> can override it for an individual
-   transaction.
+>SET TRANSACTION</TT
+> for an
+   individual transaction.
   </P
 ><P
 >   The available transaction characteristics are the transaction
@@ -190,20 +190,6 @@ CLASS="LITERAL"
        before the first query or data-modification statement was executed in
        this transaction.
       </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->        Intuitively, serializable means that two concurrent
-        transactions will leave the database in the same state as if
-        the two had been executed strictly one after the other (in one
-        order or the other).
-       </P
-></BLOCKQUOTE
-></DIV
 ></DD
 ></DL
 ></DIV
@@ -319,13 +305,13 @@ CLASS="LITERAL"
 >EXECUTE</TT
 > if the command they would execute is
    among those listed.  This is a high-level notion of read-only that
-   does not prevent writes to disk.
+   does not prevent all writes to disk.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43160"
+NAME="AEN43329"
 ></A
 ><H2
 >Notes</H2
@@ -376,10 +362,15 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SET</TT
 >.)
-   This allows them to be set in the configuration file.  Consult <A
+   This means the defaults can be set in the configuration file, via
+   <TT
+CLASS="COMMAND"
+>ALTER DATABASE</TT
+>, etc.  Consult <A
 HREF="runtime-config.html"
 >Section 16.4</A
-> for more information.
+>
+   for more information.
   </P
 ></DIV
 ><DIV
@@ -398,7 +389,7 @@ CLASS="ACRONYM"
 CLASS="LITERAL"
 >SERIALIZABLE</TT
 > is the default transaction
-   isolation level in the standard; in
+   isolation level in the standard.  In
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -407,7 +398,7 @@ CLASS="PRODUCTNAME"
 CLASS="LITERAL"
 >READ COMMITTED</TT
 >, but you can change it as
-   mentioned above.  Because of multiversion concurrency control, the
+   mentioned above.  Because of lack of predicate locking, the
    <TT
 CLASS="LITERAL"
 >SERIALIZABLE</TT

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="TRANSACTION-ISO"
 >12.2. Transaction Isolation</A
 ></H1
 ><A
-NAME="AEN14090"
+NAME="AEN14099"
 ></A
 ><P
 >    The <ACRONYM
@@ -115,7 +115,7 @@ CLASS="VARIABLELIST"
 ><DT
 >dirty read
        <A
-NAME="AEN14097"
+NAME="AEN14106"
 ></A
 ></DT
 ><DD
@@ -126,7 +126,7 @@ NAME="AEN14097"
 ><DT
 >nonrepeatable read
        <A
-NAME="AEN14103"
+NAME="AEN14112"
 ></A
 ></DT
 ><DD
@@ -139,7 +139,7 @@ NAME="AEN14103"
 ><DT
 >phantom read
        <A
-NAME="AEN14109"
+NAME="AEN14118"
 ></A
 ></DT
 ><DD
@@ -155,7 +155,7 @@ NAME="AEN14109"
    </P
 ><P
 >    <A
-NAME="AEN14114"
+NAME="AEN14123"
 ></A
 >
     The four transaction isolation levels and the corresponding
@@ -293,7 +293,7 @@ NAME="XACT-READ-COMMITTED"
 >12.2.1. Read Committed Isolation Level</A
 ></H2
 ><A
-NAME="AEN14155"
+NAME="AEN14164"
 ></A
 ><P
 >    <I
@@ -420,7 +420,7 @@ NAME="XACT-SERIALIZABLE"
 >12.2.2. Serializable Isolation Level</A
 ></H2
 ><A
-NAME="AEN14179"
+NAME="AEN14188"
 ></A
 ><P
 >    The level <I
@@ -518,8 +518,167 @@ CLASS="SCREEN"
     a transaction executes several successive commands that must see
     identical views of the database.
    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="MVCC-SERIALIZABILITY"
+>12.2.2.1. Serializable Isolation versus True Serializability</A
+></H3
+><A
+NAME="AEN14209"
+></A
+><A
+NAME="AEN14211"
+></A
+><P
+>    The intuitive meaning (and mathematical definition) of
+    <SPAN
+CLASS="QUOTE"
+>"serializable"</SPAN
+> execution is that any two successfully committed
+    concurrent transactions will appear to have executed strictly serially,
+    one after the other --- although which one appeared to occur first may
+    not be predictable in advance.  It is important to realize that forbidding
+    the undesirable behaviors listed in <A
+HREF="transaction-iso.html#MVCC-ISOLEVEL-TABLE"
+>Table 12-1</A
+>
+    is not sufficient to guarantee true serializability, and in fact
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s Serializable mode <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>does
+    not guarantee serializable execution in this sense</I
+></SPAN
+>.  As an example,
+    consider a table <TT
+CLASS="STRUCTNAME"
+>mytab</TT
+>, initially containing
+</P><PRE
+CLASS="SCREEN"
+> class | value 
+-------+-------
+     1 |    10
+     1 |    20
+     2 |   100
+     2 |   200</PRE
+><P>
+    Suppose that serializable transaction A computes
+</P><PRE
+CLASS="SCREEN"
+>SELECT SUM(value) FROM mytab WHERE class = 1;</PRE
+><P>
+    and then inserts the result (30) as the <TT
+CLASS="STRUCTFIELD"
+>value</TT
+> in a
+    new row with <TT
+CLASS="STRUCTFIELD"
+>class</TT
+> = 2.  Concurrently, serializable
+    transaction B computes
+</P><PRE
+CLASS="SCREEN"
+>SELECT SUM(value) FROM mytab WHERE class = 2;</PRE
+><P>
+    and obtains the result 300, which it inserts in a new row with
+    <TT
+CLASS="STRUCTFIELD"
+>class</TT
+> = 1.  Then both transactions commit.  None of
+    the listed undesirable behaviors have occurred, yet we have a result
+    that could not have occurred in either order serially.  If A had
+    executed before B, B would have computed the sum 330, not 300, and
+    similarly the other order would have resulted in a different sum
+    computed by A.
+   </P
+><P
+>    To guarantee true mathematical serializability, it is necessary for
+    a database system to enforce <I
+CLASS="FIRSTTERM"
+>predicate locking</I
+>, which
+    means that a transaction cannot insert or modify a row that would
+    have matched the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> condition of a query in another concurrent
+    transaction.  For example, once transaction A has executed the query
+    <TT
+CLASS="LITERAL"
+>SELECT ... WHERE class = 1</TT
+>, a predicate-locking system
+    would forbid transaction B from inserting any new row with class 1
+    until A has committed.
+     <A
+NAME="AEN14229"
+HREF="#FTN.AEN14229"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>
+    Such a locking system is complex to
+    implement and extremely expensive in execution, since every session must
+    be aware of the details of every query executed by every concurrent
+    transaction.  And this large expense is mostly wasted, since in
+    practice most applications do not do the sorts of things that could
+    result in problems.  (Certainly the example above is rather contrived
+    and unlikely to represent real software.)  Accordingly,
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> does not implement predicate
+    locking, and so far as we are aware no other production DBMS does either.
+   </P
+><P
+>    In those cases where the possibility of nonserializable execution
+    is a real hazard, problems can be prevented by appropriate use of
+    explicit locking.  Further discussion appears in the following
+    sections.
+   </P
 ></DIV
 ></DIV
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN14229"
+HREF="transaction-iso.html#AEN14229"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+>       Essentially, a predicate-locking system prevents phantom reads
+       by restricting what is written, whereas MVCC prevents them by
+       restricting what is read.
+      </P
+></TD
+></TR
+></TABLE
 ><DIV
 CLASS="NAVFOOTER"
 ><HR

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta1 Documentation"
+TITLE="PostgreSQL 8.0.0beta2 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-08-13T19:30:48"></HEAD
+CONTENT="2004-08-31T04:59:43"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta1 Documentation</TH
+>PostgreSQL 8.0.0beta2 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -197,7 +197,7 @@ CLASS="COMMAND"
 ></A
 ></H2
 ><A
-NAME="AEN31018"
+NAME="AEN31085"
 ></A
 ><P
 >     The result of a <TT
@@ -426,8 +426,79 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
+NAME="PLPGSQL-STATEMENTS-NULL"
+>35.6.4. Doing Nothing At All</A
+></H2
+><P
+>     Sometimes a placeholder statement that does nothing is useful.
+     For example, it can indicate that one arm of an if/then/else
+     chain is deliberately empty.  For this purpose, use the
+     <TT
+CLASS="COMMAND"
+>NULL</TT
+> statement:
+
+</P><PRE
+CLASS="SYNOPSIS"
+>NULL;</PRE
+><P>
+    </P
+><P
+>     For example, the following two fragments of code are equivalent:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>    BEGIN
+        y := x / 0;
+    EXCEPTION
+        WHEN division_by_zero THEN
+            NULL;  -- ignore the error
+    END;</PRE
+><P>
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>    BEGIN
+        y := x / 0;
+    EXCEPTION
+        WHEN division_by_zero THEN  -- ignore the error
+    END;</PRE
+><P>
+     Which is preferable is a matter of taste.
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      In Oracle's PL/SQL, empty statement lists are not allowed, and so
+      <TT
+CLASS="COMMAND"
+>NULL</TT
+> statements are <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>required</I
+></SPAN
+> for situations
+      such as this.  <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> allows you to
+      just write nothing, instead.
+     </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
 NAME="PLPGSQL-STATEMENTS-EXECUTING-DYN"
->35.6.4. Executing Dynamic Commands</A
+>35.6.5. Executing Dynamic Commands</A
 ></H2
 ><P
 >     Oftentimes you will want to generate dynamic commands inside your
@@ -477,7 +548,7 @@ CLASS="APPLICATION"
 ><P
 >    When working with dynamic commands you will often have to handle escaping
     of single quotes.  The recommended method for quoting fixed text in your
-    function body is dollar quoting.  If you have legacy code which does
+    function body is dollar quoting.  If you have legacy code that does
     not use dollar quoting, please refer to the
     overview in <A
 HREF="plpgsql-development-tips.html#PLPGSQL-QUOTE-TIPS"
@@ -542,15 +613,16 @@ HREF="plpgsql-cursors.html#PLPGSQL-CURSOR-OPENING"
 >.
     </P
 ><P
->     An example (this assumes that you are using dollar quoting, so the
-     quote marks need not be doubled):
+>     An example (this assumes that you are using dollar quoting for the
+     function as a whole, so the quote marks need not be doubled):
 </P><PRE
 CLASS="PROGRAMLISTING"
 >EXECUTE 'UPDATE tbl SET '
         || quote_ident(colname)
         || ' = '
         || quote_literal(newvalue)
-        || ' WHERE ...';</PRE
+        || ' WHERE key = '
+        || quote_literal(keyvalue);</PRE
 ><P>
     </P
 ><P
@@ -569,10 +641,10 @@ CLASS="TYPE"
 >text</TT
 >)</CODE
 >.<A
-NAME="AEN31106"
+NAME="AEN31186"
 ></A
 ><A
-NAME="AEN31109"
+NAME="AEN31189"
 ></A
 > For safety, variables containing column and
      table identifiers should be passed to function
@@ -598,7 +670,8 @@ CLASS="PROGRAMLISTING"
         || quote_ident(colname)
         || ' = $$'
         || newvalue
-        || '$$ WHERE ...';</PRE
+        || '$$ WHERE key = '
+        || quote_literal(keyvalue);</PRE
 ><P>
      because it would break if the contents of <TT
 CLASS="LITERAL"
@@ -642,7 +715,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-DIAGNOSTICS"
->35.6.5. Obtaining the Result Status</A
+>35.6.6. Obtaining the Result Status</A
 ></H2
 ><P
 >     There are several ways to determine the effect of a command. The
