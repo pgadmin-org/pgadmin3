@@ -23,11 +23,11 @@ extern sysSettings *settings;
 // IMPLEMENT_LOG_FUNCTION(Sql) from wx../common/log.c
 void wxVLogSql(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[4096];
+    static wxChar s_szBuf[1024];
 
     if (settings->GetLogLevel() >= LOG_SQL)
     {
-        wxVsnprintf(s_szBuf, sizeof(s_szBuf), szFormat, argptr);
+        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
         wxLog::OnLog(wxLOG_Sql, s_szBuf, time(NULL));
 
     }
