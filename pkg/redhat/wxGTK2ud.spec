@@ -56,7 +56,7 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 %setup -q
 
 %build
-./configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared --prefix=/usr
+./configure --enable-monolithic --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared --prefix=/usr
 make clean
 make
 
