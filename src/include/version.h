@@ -10,8 +10,8 @@
 
 
 // Application Versions
-#define VERSION_STR wxT("1.0.1")
-#define VERSION_NUM 1,0,1,0
+#define VERSION_STR wxT("1.0.2")
+#define VERSION_NUM 1,0,2,0
 #define PRERELEASE 0
 // #define BUILD "..."
 
