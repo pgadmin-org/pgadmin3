@@ -432,10 +432,10 @@ bool FileWrite(const wxString &filename, const wxString &data, int format)
     wxUtfFile file;
 
     if (format < 0) // first try using the old encoding
-        file.Open(filename, wxFile::read_write, encoding);
+        file.Open(filename, wxFile::read_write, wxS_DEFAULT, encoding);
 
     if (!file.IsOpened())
-        file.Open(filename, wxFile::write, encoding);
+        file.Open(filename, wxFile::write, wxS_DEFAULT, encoding);
 
     if (file.IsOpened())
         return file.Write(wxTextBuffer::Translate(data));
