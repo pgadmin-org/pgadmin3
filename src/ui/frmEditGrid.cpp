@@ -4,7 +4,7 @@
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// frmQuery.cpp - SQL Query Box
+// frmEditGrid.cpp - Edit Grid Box
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +27,7 @@
 #include "menu.h"
 
 #include "frmEditGrid.h"
+#include "dlgEditGridOptions.h"
 #include "pgTable.h"
 #include "pgView.h"
 
@@ -46,6 +47,7 @@ BEGIN_EVENT_TABLE(frmEditGrid, wxFrame)
     EVT_MENU(MNU_DELETE,    frmEditGrid::OnDelete)
     EVT_MENU(MNU_SAVE,      frmEditGrid::OnSave)
     EVT_MENU(MNU_UNDO,      frmEditGrid::OnUndo)
+    EVT_MENU(MNU_OPTIONS,   frmEditGrid::OnOptions)
     EVT_MENU(MNU_HELP,      frmEditGrid::OnHelp)
     EVT_CLOSE(              frmEditGrid::OnClose)
     EVT_KEY_DOWN(           frmEditGrid::OnKey)
@@ -91,6 +93,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected lines."), wxITEM_NORMAL);
     toolBar->AddSeparator();
+    toolBar->AddTool(MNU_OPTIONS, _("Options"), wxBitmap(delete_xpm), _("Sort/filter options."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."));
 
     toolBar->Realize();
@@ -121,6 +125,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
         orderBy = table->GetQuotedPrimaryKey();
         if (orderBy.IsEmpty() && hasOids)
             orderBy=wxT("oid");
+		orderBy += wxT(" ASC");
     }
     else if (obj->GetType() == PG_VIEW)
     {
@@ -132,7 +137,13 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
     }
 }
 
-
+void frmEditGrid::SetSortCols(const wxString &cols) 
+{ 
+	if (orderBy != cols) { 
+		orderBy = cols; 
+		optionsChanged = true;
+	} 
+}
 
 #define EXTRAEXTENT_HEIGHT 6
 #define EXTRAEXTENT_WIDTH  6
@@ -420,7 +431,14 @@ void frmEditGrid::OnSave(wxCommandEvent& event)
     toolBar->EnableTool(MNU_UNDO, false);
 }
 
+void frmEditGrid::OnOptions(wxCommandEvent& event)
+{
+	optionsChanged = false;
+    dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, sqlGrid);
+    winOptions->ShowModal();
 
+	if (optionsChanged) Go();
+}
 
 void frmEditGrid::OnDelete(wxCommandEvent& event)
 {

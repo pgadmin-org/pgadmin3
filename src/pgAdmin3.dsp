@@ -650,6 +650,10 @@ SOURCE=.\ui\ctlSQLResult.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\dlgEditGridOptions.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\events.cpp
 # End Source File
 # Begin Source File
@@ -723,6 +727,10 @@ SOURCE=.\include\ctlSQLResult.h
 # Begin Source File
 
 SOURCE=.\include\dlgAddTableView.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgEditGridOptions.h
 # End Source File
 # Begin Source File
 

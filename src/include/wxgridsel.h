@@ -10,6 +10,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef __WXGRIDSEL_H
+#define __WXGRIDSEL_H
+
+
 class wxGridSelection
 {
     wxGridCellCoordsArray dummy1[3];
@@ -18,3 +22,4 @@ class wxGridSelection
     wxGrid::wxGridSelectionModes dummy4;
 };
 
+#endif

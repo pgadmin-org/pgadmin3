@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxDialog" name="dlgEditGridOptions">
+    <title>Edit Grid Options</title>
+    <size>220,240d</size>
+    <object class="wxButton" name="btnCancel">
+      <label>Cancel</label>
+      <pos>168,222d</pos>
+      <size>50,15d</size>
+      <tooltip>Cancel any changes and close the dialogue.</tooltip>
+    </object>
+    <object class="wxButton" name="btnOK">
+      <label>OK</label>
+      <pos>116,222d</pos>
+      <size>50,15d</size>
+      <tooltip>Accept the current options and close the dialogue.</tooltip>
+    </object>
+    <object class="wxNotebook" name="nbOptions">
+      <pos>2,2d</pos>
+      <size>216,216d</size>
+      <object class="notebookpage">
+        <label>Data Sorting</label>
+        <object class="wxPanel" name="pnlSort">
+          <object class="wxButton" name="btnAsc">
+            <label>Ascending</label>
+            <pos>5,182d</pos>
+            <size>65,15d</size>
+            <tooltip>Add the select column for ascending sort.</tooltip>
+          </object>
+          <object class="wxButton" name="btnDesc">
+            <label>Descending</label>
+            <pos>75,182d</pos>
+            <size>65,15d</size>
+            <tooltip>Add the select column for descending sort.</tooltip>
+          </object>
+          <object class="wxButton" name="btnRemove">
+            <label>Remove</label>
+            <pos>145,182d</pos>
+            <size>60,15d</size>
+            <tooltip>Remove the selected sort column.</tooltip>
+          </object>
+          <object class="wxStaticText" name="lblSortCols">
+            <label>Selected Columns</label>
+            <pos>5,5d</pos>
+            <size>100,10d</size>
+          </object>
+          <object class="wxStaticText" name="lblAvailCols">
+            <label>Available Columns</label>
+            <pos>5,155d</pos>
+            <size>100,10d</size>
+          </object>
+          <object class="wxListCtrl" name="lstSortCols">
+            <pos>5,15d</pos>
+            <size>201,135d</size>
+            <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+            <tooltip>Lists the columns that the data will be sorted by.</tooltip>
+          </object>
+          <object class="wxComboBox" name="cboColumns">
+            <content/>
+            <pos>5,165d</pos>
+            <size>201,15d</size>
+            <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+            <tooltip>Select a column to add to the sort list.</tooltip>
+          </object>
+        </object>
+      </object>
+    </object>
+  </object>
+</resource>

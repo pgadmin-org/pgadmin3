@@ -4,7 +4,7 @@
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// frmQuery.h - The SQL Query form
+// frmEditGrid.h - The SQL Edit Grid form
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -151,12 +151,15 @@ public:
     ~frmEditGrid();
 
     void Go();
+	wxString GetSortCols() const { return orderBy; } ;
+	void SetSortCols(const wxString &cols);
 
 private:
     void OnClose(wxCloseEvent& event);
     void OnHelp(wxCommandEvent& event);
     void OnRefresh(wxCommandEvent& event);
     void OnDelete(wxCommandEvent& event);
+    void OnOptions(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     void OnUndo(wxCommandEvent& event);
     void OnCellChange(wxGridEvent& event);
@@ -176,6 +179,7 @@ private:
     char relkind;
     Oid relid;
     bool hasOids;
+	bool optionsChanged;
     wxString tableName;
     wxString primaryKeyColNumbers;
     wxString orderBy;
@@ -183,3 +187,4 @@ private:
     DECLARE_EVENT_TABLE();
 };
 #endif
+
