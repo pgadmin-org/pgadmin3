@@ -13,7 +13,8 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/image.h>
-#include "wx/fs_inet.h"
+#include <wx/fs_inet.h>
+#include <wx/file.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -81,6 +82,44 @@ frmHelp::~frmHelp()
     settings->Write(wxT("frmHelp/Height"), GetSize().y);
     settings->Write(wxT("frmHelp/Left"), GetPosition().x);
     settings->Write(wxT("frmHelp/Top"), GetPosition().y);
+}
+
+
+bool frmHelp::LoadSqlDoc(wxWindow *wnd, const wxString &page)
+{
+    wxString helpSite=settings->GetSqlHelpSite();
+
+    frmHelp *h=new frmHelp(wnd);
+    h->Show(true);
+    bool loaded=h->Load(helpSite + page);
+    if (!loaded)
+        h->Destroy();
+
+    return loaded;
+}
+
+
+bool frmHelp::LoadLocalDoc(wxWindow *wnd, const wxString &page)
+{
+    extern wxString docPath;
+    wxString cn=settings->GetCanonicalLanguage();
+    if (cn.IsEmpty())
+        cn=wxT("en_US");
+
+    wxString file=docPath + wxT("/") + cn + wxT("/") + page;
+
+    if (!wxFile::Exists(file))
+        file = docPath + wxT("/en_US/") + page;
+    if (!wxFile::Exists(file))
+        return false;
+
+    frmHelp *h=new frmHelp(wnd);
+    h->Show(true);
+    bool loaded=h->Load(wxT("file:") + file);
+    if (!loaded)
+        h->Destroy();
+
+    return loaded;
 }
 
 

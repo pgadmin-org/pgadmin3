@@ -395,7 +395,6 @@ void frmQuery::OnContents(wxCommandEvent& event)
 
 void frmQuery::OnHelp(wxCommandEvent& event)
 {
-    wxString helpSite=settings->GetSqlHelpSite();
     wxString page;
     wxString query=sqlQuery->GetSelectedText();
     if (query.IsNull())
@@ -448,10 +447,7 @@ void frmQuery::OnHelp(wxCommandEvent& event)
     if (page.IsEmpty())
 	page=wxT("sql-commands.html");
 
-    frmHelp *h=new frmHelp(mainForm);
-    h->Show(true);
-    if (!h->Load(helpSite + page))
-        h->Destroy();
+    frmHelp::LoadSqlDoc(this, page);
 }
 
 void frmQuery::OnCut(wxCommandEvent& ev)

@@ -22,6 +22,9 @@ class frmHelp : public wxFrame
 public:
     frmHelp(wxWindow *fr);
     ~frmHelp();
+    static bool LoadLocalDoc(wxWindow *wnd, const wxString &page);
+    static bool LoadSqlDoc(wxWindow *wnd, const wxString &page);
+
     bool Load(const wxString &page);
     void OnLinkClicked(const wxHtmlLinkInfo& link);
 

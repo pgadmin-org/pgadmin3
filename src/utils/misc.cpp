@@ -14,7 +14,6 @@
 #include <wx/timer.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/file.h>
-#include <wx/dir.h>
 
 // Standard headers
 #include <stdlib.h>
@@ -424,7 +423,6 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic)
     while (wnd->GetParent())
         wnd=wnd->GetParent();
 
-    extern wxString docPath;
 #if 0
     // testing only
     static wxHtmlHelpController *helpCtl=0;
@@ -442,19 +440,7 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic)
     return;
 #endif
 
-    wxString cn=settings->GetCanonicalLanguage();
-    if (cn.IsEmpty())
-        cn=wxT("en_US");
-
-    wxString helpSite=docPath + wxT("/");
-
-    if (!wxDir::Exists(helpSite + cn))
-        cn=wxT("en_US");
-
-    frmHelp *h=new frmHelp(wnd);
-    h->Show(true);
-    if (!h->Load(helpSite + cn + wxT("/") + helpTopic + wxT(".html")))
-        h->Destroy();
+    frmHelp::LoadLocalDoc(wnd, helpTopic + wxT(".html"));
 }
 
 
@@ -481,14 +467,8 @@ DialogWithHelp::DialogWithHelp(frmMain *frame) : wxDialog()
 
 void DialogWithHelp::OnHelp(wxCommandEvent& ev)
 {
-    wxString helpSite=settings->GetSqlHelpSite();
     wxString page=GetHelpPage();
 
     if (!page.IsEmpty())
-    {
-        frmHelp *h=new frmHelp(mainForm);
-        h->Show(true);
-        if (!h->Load(helpSite + page))
-            h->Destroy();
-    }
+        frmHelp::LoadSqlDoc(this, page);
 }

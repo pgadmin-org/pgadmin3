@@ -22,7 +22,7 @@
 #include "sysLogger.h"
 #include "misc.h"
 
-extern wxString loadPath;
+extern wxString docPath;
 
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
@@ -48,15 +48,9 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
 
-#ifdef __WIN32__
-    Read(wxT("SqlHelpSite"), &sqlHelpSite, loadPath + wxT("\\docs\\en_US\\pg\\"));
-    if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
-        sqlHelpSite += wxT("\\");
-#else
-    Read(wxT("SqlHelpSite"), &sqlHelpSite, DATA_DIR DOC_PATH wxT("/en_US/pg/"));
+    Read(wxT("SqlHelpSite"), &sqlHelpSite, docPath + wxT("/en_US/pg/"));
     if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
         sqlHelpSite += wxT("/");
-#endif
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
     maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);

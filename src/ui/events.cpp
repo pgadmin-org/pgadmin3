@@ -216,14 +216,9 @@ void frmMain::OnContents(wxCommandEvent& event)
 }
 
 
-
 void frmMain::OnPgsqlHelp(wxCommandEvent& event)
 {
-    wxString helpSite=settings->GetSqlHelpSite();
-    frmHelp *h=new frmHelp(this);
-    h->Show(true);
-    if (!h->Load(helpSite + wxT("index.html")))
-        h->Destroy();
+    frmHelp::LoadSqlDoc(this, wxT("index.html"));
 }
 
 
@@ -238,29 +233,12 @@ void frmMain::OnFaq(wxCommandEvent& event)
 
 void frmMain::OnBugreport(wxCommandEvent& event)
 {
-    frmHelp *h=new frmHelp(this);
-    h->Show(true);
-
-#ifdef __WIN32__
-    wxString bugfile = loadPath + wxT("/bugreport.html");
-#else
-    wxString bugfile = DATA_DIR wxT("bugreport.html");
-#endif
-    if (!wxFile::Exists(bugfile))
-#ifdef __WIN32__
-        bugfile = loadPath + wxT("/../bugreport.html");
-#else
-        bugfile = loadPath + wxT("/bugreport.html");
-#endif
-
-    if (!h->Load(wxT("file:") + bugfile))
-        h->Destroy();
+    frmHelp::LoadLocalDoc(this, wxT("bugreport.html"));
 }
 
 
 void frmMain::OnHelp(wxCommandEvent& event)
 {
-    wxString helpSite=settings->GetSqlHelpSite();
     wxString page;
 
     wxTreeItemId item=browser->GetSelection();
@@ -271,10 +249,7 @@ void frmMain::OnHelp(wxCommandEvent& event)
     if (page.IsEmpty())
         page = wxT("sql-commands.html");
 
-    frmHelp *h=new frmHelp(this);
-    h->Show(true);
-    if (!h->Load(helpSite + page))
-        h->Destroy();
+    frmHelp::LoadSqlDoc(this, page);
 }
 
 

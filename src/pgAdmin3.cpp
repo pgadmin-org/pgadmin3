@@ -37,10 +37,19 @@
 frmMain *winMain;
 wxLog *logger;
 sysSettings *settings;
-wxString loadPath;
-wxString docPath;
 wxArrayInt existingLangs;
 wxLocale locale;
+
+wxString loadPath;      // Where the program is loaded from
+wxString docPath;       // Where docs are stored
+wxString uiPath;        // Where ui data is stored
+
+
+#define DOC_DIR     wxT("/docs")
+#define UI_DIR      wxT("/ui")
+#define COMMON_DIR  wxT("/common")
+
+
 
 IMPLEMENT_APP(pgAdmin3)
 
@@ -79,29 +88,33 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("##############################################################"));
 
 
-    
 #ifdef __WIN32__
-    if (wxDir::Exists(loadPath + MO_PATH))
-        locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
-    else
-        locale.AddCatalogLookupPathPrefix(loadPath + wxT("/..") MO_PATH);
 
-    if (wxDir::Exists(loadPath + DOC_PATH))
-        docPath = loadPath + DOC_PATH;
+    if (wxDir::Exists(loadPath + UI_DIR))
+        uiPath = loadPath + UI_DIR;
     else
-        docPath = loadPath + wxT("/../..") DOC_PATH;
+        uiPath = loadPath + wxT("/..") UI_DIR;
+
+    if (wxDir::Exists(loadPath + DOC_DIR))
+        docPath = loadPath + DOC_DIR;
+    else
+        docPath = loadPath + wxT("/../..") DOC_DIR;
+    
 #else
-    if (wxDir::Exists(DATA_DIR MO_PATH))
-        locale.AddCatalogLookupPathPrefix(DATA_DIR MO_PATH);
-    else
-        locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
 
-    if (wxDir::Exists(DATA_DIR DOC_PATH))
-        docPath = DATA_DIR DOC_PATH;
+    if (wxDir::Exists(DATA_DIR UI_DIR))
+        uiPath = DATA_DIR UI_DIR;
     else
-        docPath = loadPath + wxT("/..") DOC_PATH;
+        uiPath = loadPath + UI_DIR;
+
+    if (wxDir::Exists(DATA_DIR DOC_DIR))
+        docPath = DATA_DIR DOC_DIR;
+    else
+        docPath = loadPath + wxT("/..") DOC_DIR;
 #endif
 
+
+    locale.AddCatalogLookupPathPrefix(uiPath);
     
     long langCount=0;
     const wxLanguageInfo *langInfo;
@@ -115,13 +128,7 @@ bool pgAdmin3::OnInit()
 
         if (langInfo->CanonicalName == wxT("en_US") || 
             (!langInfo->CanonicalName.IsEmpty() && 
-#ifdef __WIN32__
-            (wxDir::Exists(loadPath + MO_PATH + wxT("/") + langInfo->CanonicalName) ||
-             wxDir::Exists(loadPath + wxT("/..") MO_PATH + wxT("/") + langInfo->CanonicalName))))
-#else
-            (wxDir::Exists(DATA_DIR MO_PATH wxT("/") + langInfo->CanonicalName) ||
-             wxDir::Exists(loadPath +  MO_PATH wxT("/") + langInfo->CanonicalName))))
-#endif
+             wxDir::Exists(uiPath + wxT("/") + langInfo->CanonicalName)))
         {
             existingLangs.Add(langNo);
             langCount++;
@@ -211,29 +218,7 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->InitAllHandlers();
 
 
-
-// at the moment, no platform specific xrcs using the XRC_PATH
-#ifdef __WIN32__
-    bool done;
-//    done=LoadAllXrc(loadPath + XRC_PATH);
-//    if (!done)
-//        done=LoadAllXrc(loadPath + wxT("/..") + XRC_PATH);
-
-    done=LoadAllXrc(loadPath + wxT("/ui/common"));
-    if (!done)
-        done=LoadAllXrc(loadPath + wxT("/../ui/common"));
-#else
-    bool done;
-//    done=LoadAllXrc(DATA_DIR XRC_PATH);
-//    if (!done)
-//        done=LoadAllXrc(loadPath + XRC_PATH);
-
-    done=LoadAllXrc(DATA_DIR wxT("/ui/common"));
-    if (!done)
-        done=LoadAllXrc(loadPath + wxT("/ui/common"));
-#endif
-
-
+    LoadAllXrc(uiPath + COMMON_DIR);
 
     // Set some defaults
     SetAppName(APPNAME_L);
