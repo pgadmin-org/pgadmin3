@@ -30,7 +30,7 @@ pgRule::~pgRule()
 
 bool pgRule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP RULE ") + GetQuotedFullIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";"));
+    return GetDatabase()->ExecuteVoid(wxT("DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";"));
 }
 
 wxString pgRule::GetSql(wxTreeCtrl *browser)
@@ -38,8 +38,8 @@ wxString pgRule::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
 #if 0
-        sql = wxT("-- Rule: \"") + GetQuotedFullIdentifier() + wxT("\"\n\n")
-            + wxT("-- DROP RULE ") + GetQuotedFullIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";")
+        sql = wxT("-- Rule: \"") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT("\"\n\n")
+            + wxT("-- DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";")
             + wxT("\n\nCREATE OR REPLACE RULE ") + GetQuotedIdentifier()
             + wxT("\n  AS ON ") + GetEvent()
             + wxT("\n  TO ") + GetQuotedFullTable()
@@ -100,7 +100,6 @@ pgObject *pgRule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 }
 
 
-
 pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgRule *rule=0;
@@ -128,24 +127,7 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             rule->iSetDoInstead(rules->GetBool(wxT("is_instead")));
             rule->iSetAction(rules->GetVal(wxT("ev_action")));
             wxString definition=rules->GetVal(wxT("definition"));
-            if (!definition.IsEmpty())
-            {
-#if 0
-                int doPos=definition.Find(wxT(" DO INSTEAD "));
-                if (doPos > 0)
-                    rule->iSetDefinition(definition.Mid(doPos + 12));
-                else
-                {
-                    doPos = definition.Find(wxT(" DO "));
-                    if (doPos > 0)
-                        rule->iSetDefinition(definition.Mid(doPos+4));
-                    else
-                        rule->iSetDefinition(definition);
-                }
-#else
             rule->iSetDefinition(definition);
-#endif
-            }
             rule->iSetQuotedFullTable(qtIdent(rules->GetVal(wxT("nspname"))) + wxT(".")
                 + qtIdent(rules->GetVal(wxT("relname"))));
             wxChar *evts[] = {0, wxT("SELECT"), wxT("UPDATE"), wxT("INSERT"), wxT("DELETE")};

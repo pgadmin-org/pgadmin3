@@ -307,6 +307,10 @@ SOURCE=.\ui\frmQueryBuilder.cpp
 # PROP Default_Filter "*.cpp"
 # Begin Source File
 
+SOURCE=.\ui\dlgCast.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgCheck.cpp
 # End Source File
 # Begin Source File
@@ -733,6 +737,10 @@ SOURCE=.\include\pgView.h
 # Begin Group "property includes"
 
 # PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\include\dlgCast.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\include\dlgCheck.h

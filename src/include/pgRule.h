@@ -43,7 +43,8 @@ public:
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
 
-    bool CanDrop() { return true; }
+    bool GetSystemObject() const { return GetName() == wxT("_RETURN"); }
+    bool CanDrop() { return !GetSystemObject(); }
     bool CanEdit() { return true; }
     bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);

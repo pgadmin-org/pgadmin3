@@ -82,13 +82,13 @@ protected:
     int objectType;
 
 private:
+    bool tryUpdate(wxTreeItemId collectionItem);
+
     DECLARE_EVENT_TABLE();
 };
 
 
 #define cbDatatype      CTRL("cbDatatype",      wxComboBox)
-#define txtLength       CTRL("txtLength", wxTextCtrl)
-#define txtPrecision    CTRL("txtPrecision", wxTextCtrl)
 
 
 class dlgTypeProperty : public dlgProperty
@@ -104,6 +104,7 @@ protected:
     void FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDomains=true);
 
     bool isVarLen, isVarPrec;
+    wxTextCtrl *txtLength, *txtPrecision;
     wxArrayString types;
 };
 

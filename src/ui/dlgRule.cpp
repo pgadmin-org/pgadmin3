@@ -28,10 +28,7 @@
 
 
 // pointer to controls
-#define chkSelect       CTRL("chkSelect", wxCheckBox)
-#define chkInsert       CTRL("chkInsert", wxCheckBox)
-#define chkUpdate       CTRL("chkUpdate", wxCheckBox)
-#define chkDelete       CTRL("chkDelete", wxCheckBox)
+#define rbxEvent        CTRL("rbxEvent", wxRadioBox)
 #define chkDoInstead    CTRL("chkDoInstead", wxCheckBox)
 #define txtCondition    CTRL("txtCondition", wxTextCtrl)
 
@@ -86,6 +83,18 @@ int dlgRule::Go(bool modal)
         // edit mode
 
         oldDefinition=rule->GetFormattedDefinition();
+        if (!oldDefinition.IsEmpty())
+        {
+            int doPos=oldDefinition.Find(wxT(" DO INSTEAD "));
+            if (doPos > 0)
+                oldDefinition = oldDefinition.Mid(doPos + 12).Strip(wxString::both);
+            else
+            {
+                doPos = oldDefinition.Find(wxT(" DO "));
+                if (doPos > 0)
+                    oldDefinition = oldDefinition.Mid(doPos+4).Strip(wxString::both);
+            }
+        }
         txtName->SetValue(rule->GetName());
         txtOID->SetValue(NumToStr(rule->GetOid()));
         txtComment->SetValue(rule->GetComment());
@@ -104,8 +113,27 @@ int dlgRule::Go(bool modal)
 
 pgObject *dlgRule::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=0; //pgRule::ReadObjects(collection, 0, wxT(""));
+    pgObject *obj=pgRule::ReadObjects(collection, 0, 
+        wxT("\n   AND rulename=") + qtString(GetName()) +
+        wxT("\n   AND rw.ev_class=") + table->GetOidStr());
     return obj;
+}
+
+
+bool dlgRule::didChange()
+{
+    if (!rule)
+        return true;
+
+    if (GetName() != rule->GetName())
+        return true;
+    if (sqlBox->GetText().Strip(wxString::both) != oldDefinition)
+        return true;
+    if (chkDoInstead->GetValue() != rule->GetDoInstead())
+        return true;
+    if (rbxEvent->GetStringSelection() != rule->GetCondition())
+        return true;
+    return false;
 }
 
 
@@ -114,9 +142,7 @@ void dlgRule::OnChange(wxNotifyEvent &ev)
     wxString name=GetName();
     if (rule)
     {
-        EnableOK(txtComment->GetValue() != rule->GetComment()
-              || sqlBox->GetText() != oldDefinition
-              || name != rule->GetName());
+        EnableOK(didChange() || txtComment->GetValue() != rule->GetComment());
     }
     else
     {
@@ -125,9 +151,9 @@ void dlgRule::OnChange(wxNotifyEvent &ev)
         bool enable=true;
 
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, chkSelect->GetValue() || chkInsert->GetValue() || chkUpdate->GetValue() || chkDelete->GetValue(),
-                    _("Please select at least one event."));
-        CheckValid(enable, sqlBox->GetText().Length() > 14 , _("Please enter function definition."));
+        CheckValid(enable, rbxEvent->GetSelection() >= 0,
+                    _("Please select at an event."));
+        CheckValid(enable, !sqlBox->GetTextLength() || sqlBox->GetTextLength() > 9 , _("Please enter function definition."));
 
         EnableOK(enable);
     }
@@ -139,23 +165,29 @@ wxString dlgRule::GetSql()
     wxString sql, name=GetName();
 
 
-    if (rule)
-    {
-        // edit mode
-
-    }
-
-    if (!rule || sqlBox->GetText() != oldDefinition)
+    if (!rule || didChange())
     {
         sql += wxT("CREATE OR REPLACE RULE ") + qtIdent(name)
-            + wxT(" AS ON ");
-        bool needComma=false;
+            + wxT(" AS\n   ON ") + rbxEvent->GetStringSelection()
+            + wxT(" TO ") + table->GetQuotedFullIdentifier();
+        AppendIfFilled(sql, wxT("\n   WHERE ") , txtCondition->GetValue());
 
+        sql += wxT("\n   DO ");
 
-        sql + sqlBox->GetText()
-            + wxT(";\n");
+        if (chkDoInstead->GetValue())
+            sql += wxT("INSTEAD ");
+    
+        if (sqlBox->GetTextLength())
+        {
+            sql += wxT("\n") + sqlBox->GetText().Strip(wxString::both);
+            if (sql.Right(1) != wxT(";"))
+                sql += wxT(";");
+        }
+        else
+            sql += wxT("NOTHING;");
+
+        sql += wxT("\n");
     }
-
     AppendComment(sql, wxT("RULE ") + qtIdent(name) 
         + wxT(" ON ") + table->GetQuotedFullIdentifier(), rule);
     return sql;

@@ -775,6 +775,10 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     wxTreeItemId item = browser->GetSelection();
     pgObject *data = (pgObject *)browser->GetItemData(item);
 
+    // accelerator can bypass disabled menu, so we need to check
+    if (!data->CanDrop())
+        return;
+
     if (data->GetSystemObject())
     {
         wxMessageDialog msg(this, _("Cannot drop system ") + data->GetTypeName() 

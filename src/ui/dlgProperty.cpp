@@ -31,6 +31,7 @@
 #include "dlgUser.h"
 #include "dlgGroup.h"
 #include "dlgDatabase.h"
+#include "dlgCast.h"
 #include "dlgLanguage.h"
 #include "dlgSchema.h"
 #include "dlgDomain.h"
@@ -223,6 +224,28 @@ void dlgProperty::OnClose(wxCloseEvent &ev)
 }
 
 
+
+bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
+{
+    pgCollection *collection = (pgCollection*)mainForm->GetBrowser()->GetItemData(collectionItem);
+    if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
+    {
+        pgObject *data = CreateObject(collection);
+        if (data)
+        {
+            mainForm->GetBrowser()->AppendItem(collectionItem, data->GetFullName(), data->GetIcon(), -1, data);
+
+            if (mainForm->GetBrowser()->GetSelection() == collectionItem)
+                collection->ShowTreeDetail(mainForm->GetBrowser(), 0, properties);
+            else
+                collection->UpdateChildCount(mainForm->GetBrowser());
+        }
+        return true;
+    }
+    return false;
+}
+
+
 void dlgProperty::OnOK(wxNotifyEvent &ev)
 {
 
@@ -261,29 +284,31 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
         }
         else
         {
-            pgCollection *collection=0;
-
             wxTreeItemId collectionItem=item;
 
             while (collectionItem)
             {
-                collection = (pgCollection*)mainForm->GetBrowser()->GetItemData(collectionItem);
-                if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
-                {
-                    data = CreateObject(collection);
-                    if (data)
-                    {
-                        mainForm->GetBrowser()->AppendItem(collectionItem, data->GetFullName(), data->GetIcon(), -1, data);
-
-                        if (mainForm->GetBrowser()->GetSelection() == collectionItem)
-                            collection->ShowTreeDetail(mainForm->GetBrowser(), 0, properties);
-                        else
-                            collection->UpdateChildCount(mainForm->GetBrowser());
-                    }
+                // search up the tree for our collection
+                if (tryUpdate(collectionItem))
                     break;
-                }
                 collectionItem=mainForm->GetBrowser()->GetItemParent(collectionItem);
             }
+            /*
+            if (!collectionItem)
+            {
+                // search leaves for our collection
+                // shouldn't become necessary
+                long cookie;
+                collectionItem=mainForm->GetBrowser()->GetFirstChild(item, cookie);
+
+                while (collectionItem)
+                {
+                    if (tryUpdate(collectionItem))
+                        break;
+                    collectionItem=mainForm->GetBrowser()->GetNextChild(item, cookie);
+                }
+            }
+            */
         }
     }
 
@@ -366,6 +391,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_DATABASES:
             dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
             break;
+        case PG_CAST:
+        case PG_CASTS:
+            dlg=new dlgCast(frame, (pgCast*)currentNode);
+            break;
         case PG_SCHEMA:
         case PG_SCHEMAS:
             dlg=new dlgSchema(frame, (pgSchema*)currentNode);
@@ -430,7 +459,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_VIEWS:
             dlg=new dlgView(frame, (pgView*)currentNode, (pgSchema*)parentNode);
             break;
-#if 0
+#if 1
 //UNDER_CONSTRUCTION
         case PG_RULE:
         case PG_RULES:
@@ -549,10 +578,21 @@ dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
 {
     isVarLen=false;
     isVarPrec=false;
-    txtLength->Disable();
-    txtPrecision->Disable();
+    if (wxWindow::FindWindow(XRCID("txtLength")))
+    {
+        txtLength = CTRL("txtLength", wxTextCtrl);
+        txtLength->Disable();
+    }
+    else
+        txtLength = 0;
+    if (wxWindow::FindWindow(XRCID("txtPrecision")))
+    {
+        txtPrecision= CTRL("txtPrecision", wxTextCtrl);
+        txtPrecision->Disable();
+    }
+    else
+        txtPrecision=0;
 }
-
 
 
 void dlgTypeProperty::FillDatatype(wxComboBox *cb, bool withDomains)
@@ -590,8 +630,10 @@ int dlgTypeProperty::Go(bool modal)
 {
     if (GetObject())
     {
-        txtLength->SetValidator(numericValidator);
-        txtPrecision->SetValidator(numericValidator);
+        if (txtLength)
+            txtLength->SetValidator(numericValidator);
+        if (txtPrecision)
+            txtPrecision->SetValidator(numericValidator);
     }
     return dlgProperty::Go(modal);
 }
@@ -607,10 +649,10 @@ wxString dlgTypeProperty::GetQuotedTypename()
     {
         sql = types.Item(sel).AfterFirst(':');
 
-        if (isVarLen && StrToLong(txtLength->GetValue()) > 0)
+        if (isVarLen && txtLength && StrToLong(txtLength->GetValue()) > 0)
         {
             sql += wxT("(") + txtLength->GetValue();
-            if (isVarPrec)
+            if (isVarPrec && txtPrecision)
             {
                 wxString varprec=txtPrecision->GetValue();
                 if (!varprec.IsEmpty())

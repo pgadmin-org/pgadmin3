@@ -35,6 +35,8 @@ private:
 
     void OnChange(wxNotifyEvent &ev);
 
+    bool didChange();
+
     ctlSQLBox *sqlBox;
 
     DECLARE_EVENT_TABLE();

@@ -77,10 +77,6 @@ dlgOperator::dlgOperator(frmMain *frame, pgOperator *node, pgSchema *sch)
     cbGreater->Disable();
     chkCanHash->Disable();
     chkCanMerge->Disable();
-
-    // dummy for dlgTypeProperty
-    txtLength->Hide();
-    txtPrecision->Hide();
 }
 
 
@@ -99,10 +95,10 @@ int dlgOperator::Go(bool modal)
         txtOID->SetValue(NumToStr(oper->GetOid()));
         txtOwner->SetValue(oper->GetOwner());
         cbLeftType->Append(oper->GetLeftType());
-        cbRightType->Append(oper->GetLeftType());
         types.Add(wxT(" ") + oper->GetLeftTypeOidStr());
         cbLeftType->SetSelection(0);
 
+        cbRightType->Append(oper->GetRightType());
         cbRightType->Append(oper->GetRightType());
         types.Add(wxT(" ") + oper->GetRightTypeOidStr());
         cbRightType->SetSelection(1);
@@ -334,14 +330,14 @@ wxString dlgOperator::GetSql()
             + wxT("(\n   PROCEDURE=") + cbProcedure->GetValue();
         
         AppendIfFilled(sql, wxT(",\n   LEFTARG="), cbLeftType->GetValue());
-        AppendIfFilled(sql, wxT(",\n   RIGHTARG="), cbLeftType->GetValue());
+        AppendIfFilled(sql, wxT(",\n   RIGHTARG="), cbRightType->GetValue());
         AppendIfFilled(sql, wxT(",\n   COMMUTATOR="), cbCommutator->GetValue().Trim());
         AppendIfFilled(sql, wxT(",\n   NEGATOR="), cbNegator->GetValue().Trim());
         
         if (cbLeftType->GetSelection() > 0 && cbRightType->GetSelection() > 0)
         {
-            AppendIfFilled(sql, wxT(",\n   RESTRICT="), cbRestrict->GetValue().Trim());
-            AppendIfFilled(sql, wxT(",\n   JOIN="), cbJoin->GetValue().Trim());
+            AppendIfFilled(sql, wxT(",\n   RESTRICT="), procedures.Item(cbRestrict->GetSelection()));
+            AppendIfFilled(sql, wxT(",\n   JOIN="), procedures.Item(cbJoin->GetSelection()));
             AppendIfFilled(sql, wxT(",\n   SORT1="), cbLeftSort->GetValue().Trim());
             AppendIfFilled(sql, wxT(",\n   SORT2="), cbRightSort->GetValue().Trim());
             AppendIfFilled(sql, wxT(",\n   LTCMP="), cbLess->GetValue().Trim());

@@ -140,7 +140,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             // make sure all columns are appended
             coll->ShowTreeDetail(browser);
             // this is the columns collection
-            wxTreeItemId item=browser->GetFirstChild(columnsItem, cookie);
+            wxTreeItemId item=browser->GetFirstChild(columnsItem, cookie); 
 
             // add columns
             int colCount=0;

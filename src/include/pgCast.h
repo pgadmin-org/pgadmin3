@@ -36,6 +36,10 @@ public:
     void iSetSourceType(const wxString& s) { sourceType=s; }
     wxString GetTargetType() const { return targetType; }
     void iSetTargetType(const wxString& s) { targetType=s; }
+    wxString GetSourceTypeOidStr() const { return sourceTypeOidStr; }
+    void iSetSourceTypeOidStr(const wxString& s) { sourceTypeOidStr=s; }
+    wxString GetTargetTypeOidStr() const { return targetTypeOidStr; }
+    void iSetTargetTypeOidStr(const wxString& s) { targetTypeOidStr=s; }
     wxString GetCastFunction() const { return castFunction; }
     void iSetCastFunction(const wxString& s) { castFunction=s; }
     wxString GetCastNamespace() const { return castNamespace; }
@@ -45,12 +49,15 @@ public:
     void iSetCastContext(const wxString& s) { castContext=s; }
 
     bool CanDrop() { return true; }
+    bool CanEdit() { return true; }
+    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString sourceType, targetType, castFunction, castContext, castNamespace;
+    wxString sourceType, targetType, castFunction, castContext, castNamespace,
+        sourceTypeOidStr, targetTypeOidStr;
 };
 
 #endif
