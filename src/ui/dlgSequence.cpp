@@ -159,8 +159,8 @@ wxString dlgSequence::GetSql()
         }
         if (sequence->GetOwner() != cbOwner->GetValue())
         {
-            sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
-                +  wxT(" OWNER TO ") + qtIdent(name) + wxT(";\n");
+            sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix() + qtIdent(name)
+                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
         }
 
         if (connection->BackendMinimumVersion(7, 4))
@@ -202,13 +202,13 @@ wxString dlgSequence::GetSql()
                 sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
                     +  tmp + wxT(";\n");
             }
-         }
+        }
         else
         {
             if (txtStart->GetValue() != sequence->GetLastValue().ToString())
-                sql += wxT("SELECT setval('") + qtString(schema->GetName()) + wxT(".") + qtString(name)
+                sql += wxT("SELECT setval('") + qtIdent(schema->GetName()) + wxT(".") + qtIdent(name)
                     +  wxT("', ") + txtStart->GetValue()
-                    +  wxT(");\n");
+                    +  wxT(", false);\n");
         }
         if (cbTablespace->GetValue() != sequence->GetTablespace())
             sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix()+ qtIdent(name)
