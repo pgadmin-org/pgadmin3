@@ -45,7 +45,7 @@ public:
     void SetNextTipOfTheDay(int iNewVal);
 
     // Log
-    wxString GetLogFile();
+    wxString GetLogFile() const;
     void SetLogFile(const wxString& szNewVal);
     int GetLogLevel();
     void SetLogLevel(int iNewVal);

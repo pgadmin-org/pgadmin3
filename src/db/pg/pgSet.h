@@ -35,12 +35,12 @@ public:
     long CurrentPos();
     bool Eof();
     bool Bof();
-    wxString ColName(int iCol);
-    wxString ColType(int iCol);
+    wxString ColName(int iCol) const;
+    wxString ColType(int iCol) const;
     int ColSize(int iCol);
     int ColScale(int iCol);
-    wxString GetVal(int iCol);
-    wxString GetVal(const wxString& szCol);
+    wxString GetVal(int iCol) const;
+    wxString GetVal(const wxString& szCol) const;
 
 private:
     PGconn *objConn;

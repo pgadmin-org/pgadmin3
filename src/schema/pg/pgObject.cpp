@@ -57,37 +57,37 @@ int pgObject::GetType()
     return iType;
 }
 
-wxString pgObject::GetTypeName()
+wxString pgObject::GetTypeName() const
 {
     return szTypeName;
 }
 
-wxString pgObject::GetIdentifier()
+wxString pgObject::GetIdentifier() const
 {
     return szIdentifier;
 }
 
-wxString pgObject::GetName()
+wxString pgObject::GetName() const
 {
     return szName;
 }
 
-wxString pgObject::GetServer()
+wxString pgObject::GetServer() const
 {
     return szServer;
 }
 
-wxString pgObject::GetDatabase()
+wxString pgObject::GetDatabase() const
 {
     return szDatabase;
 }
 
-wxString pgObject::GetNamespace()
+wxString pgObject::GetNamespace() const
 {
     return szNamespace;
 }
 
-wxString pgObject::GetTable()
+wxString pgObject::GetTable() const
 {
     return szTable;
 }

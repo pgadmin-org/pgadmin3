@@ -35,13 +35,13 @@ public:
     pgObject(int iNewType = 0, const wxString& szNewName = wxString(""));
     ~pgObject();
     virtual int GetType();
-    virtual wxString GetTypeName();
-    virtual wxString GetIdentifier();
-    virtual wxString GetName();
-    virtual wxString GetServer();
-    virtual wxString GetDatabase();
-    virtual wxString GetNamespace();
-    virtual wxString GetTable();
+    virtual wxString GetTypeName() const;
+    virtual wxString GetIdentifier() const;
+    virtual wxString GetName() const;
+    virtual wxString GetServer() const;
+    virtual wxString GetDatabase() const;
+    virtual wxString GetNamespace() const;
+    virtual wxString GetTable() const;
     virtual int GetPort();
     virtual unsigned long GetOid();
 

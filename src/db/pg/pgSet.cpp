@@ -123,12 +123,12 @@ bool pgSet::Bof()
     return bBof;
 }
 
-wxString pgSet::ColName(int iCol)
+wxString pgSet::ColName(int iCol) const
 {
     return wxString(PQfname(objRes, iCol + 1));
 }
 
-wxString pgSet::ColType(int iCol)
+wxString pgSet::ColType(int iCol) const
 {
     // TODO
     return wxString("");
@@ -145,12 +145,12 @@ int pgSet::ColScale(int iCol)
     return 0;
 }
 
-wxString pgSet::GetVal(int iCol)
+wxString pgSet::GetVal(int iCol) const
 {
     return wxString(PQgetvalue(objRes, lPos -1, iCol));
 }
 
-wxString pgSet::GetVal(const wxString& szCol)
+wxString pgSet::GetVal(const wxString& szCol) const
 {
     int iCol = PQfnumber(objRes, szCol.c_str()) + 1;
     return GetVal(iCol);

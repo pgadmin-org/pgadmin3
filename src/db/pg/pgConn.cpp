@@ -109,7 +109,7 @@ int pgConn::ExecuteVoid(const wxString& szSQL)
     return iRes;
 }
 
-wxString pgConn::ExecuteScalar(const wxString& szSQL)
+wxString pgConn::ExecuteScalar(const wxString& szSQL) const
 {
     // Execute the query and get the status.
     PGresult *qryRes;
@@ -150,32 +150,32 @@ pgSet *pgConn::ExecuteSet(const wxString& szSQL)
 // Info
 //////////////////////////////////////////////////////////////////////////
 
-wxString pgConn::GetUser()
+wxString pgConn::GetUser() const
 {
   return wxString(PQuser(objConn));
 }
 
-wxString pgConn::GetPassword()
+wxString pgConn::GetPassword() const
 {
   return wxString(PQpass(objConn));
 }
 
-wxString pgConn::GetHost()
+wxString pgConn::GetHost() const
 {
   return wxString(PQhost(objConn));
 }
 
-wxString pgConn::GetPort()
+int pgConn::GetPort()
 {
-  return wxString(PQport(objConn));
+  return atoi(PQport(objConn));
 }
 
-wxString pgConn::GetTTY()
+wxString pgConn::GetTTY() const
 {
   return wxString(PQtty(objConn));
 }
 
-wxString pgConn::GetOptions()
+wxString pgConn::GetOptions() const
 {
   return wxString(PQoptions(objConn));
 }
@@ -190,12 +190,12 @@ int pgConn::GetStatus()
   return PQstatus(objConn);
 }
 
-wxString pgConn::GetLastError()
+wxString pgConn::GetLastError() const
 {
   return wxString(PQerrorMessage(objConn));
 }
 
-wxString pgConn::GetServerVersion()
+wxString pgConn::GetServerVersion() const
 {
   return ExecuteScalar(wxString("SELECT version();"));
 }

@@ -35,7 +35,7 @@ int pgServer::GetType()
     return PG_SERVER;
 }
 
-wxString pgServer::GetTypeName()
+wxString pgServer::GetTypeName() const
 {
     return wxString("Server");
 }
@@ -64,7 +64,7 @@ int pgServer::Connect() {
     return cnMaster->GetStatus();
 }
 
-wxString pgServer::GetIdentifier()
+wxString pgServer::GetIdentifier() const
 {
     wxString szID;
     szID.Printf(wxT("%s:%d"), szServer, iPort);
@@ -74,12 +74,12 @@ wxString pgServer::GetIdentifier()
 wxString pgServer::GetServerVersion()
 {
     if (szVer.IsEmpty()) {
-      szVer = cnMaster->GetServerVersion();
+        szVer = wxString(cnMaster->GetServerVersion());
     }
     return szVer;
 }
 
-wxString pgServer::GetServer()
+wxString pgServer::GetServer() const
 {
     return szServer;
 }
@@ -88,7 +88,7 @@ void pgServer::SetServer(const wxString& szNewVal)
     szServer = szNewVal;
 }
 
-wxString pgServer::GetDatabase()
+wxString pgServer::GetDatabase() const
 {
     return szDatabase;
 }
@@ -97,7 +97,7 @@ void pgServer::SetDatabase(const wxString& szNewVal)
     szDatabase = szNewVal;
 }
 
-wxString pgServer::GetUsername()
+wxString pgServer::GetUsername() const
 {
     return szUsername;
 }
@@ -106,7 +106,7 @@ void pgServer::SetUsername(const wxString& szNewVal)
     szUsername = szNewVal;
 }
 
-wxString pgServer::GetPassword()
+wxString pgServer::GetPassword() const
 {
     return szPassword;
 }

@@ -123,7 +123,7 @@ void sysSettings::SetNextTipOfTheDay(int iNewVal)
 // Log
 //////////////////////////////////////////////////////////////////////////
 
-wxString sysSettings::GetLogFile()
+wxString sysSettings::GetLogFile() const
 {
     return szLogFile;
 }

@@ -48,18 +48,18 @@ public:
     pgConn(const wxString& szServer = wxString(""), const wxString& szDatabase = wxString(""), const wxString& szUsername = wxString(""), const wxString& szPassword = wxString(""), int iPort = 5432);
     ~pgConn();
     int ExecuteVoid(const wxString& szSQL);
-    wxString ExecuteScalar(const wxString& szSQL);
+    wxString ExecuteScalar(const wxString& szSQL) const;
     pgSet *ExecuteSet(const wxString& szSQL);
-    wxString GetUser();
-    wxString GetPassword();
-    wxString GetHost();
-    wxString GetPort();
-    wxString GetTTY();
-    wxString GetOptions();
+    wxString GetUser() const;
+    wxString GetPassword() const;
+    wxString GetHost() const;
+    int GetPort();
+    wxString GetTTY() const;
+    wxString GetOptions() const;
     int GetBackendPID();
     int GetStatus();
-    wxString GetLastError();
-    wxString GetServerVersion();
+    wxString GetLastError() const;
+    wxString GetServerVersion() const;
 
 private:
     PGconn *objConn;
