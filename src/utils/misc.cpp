@@ -249,6 +249,14 @@ queryTokenizer::queryTokenizer(const wxString& str, const char delim)
     delimiter=delim;
 }
 
+
+void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &what)
+{
+    if (!what.IsNull())
+        str+= delimiter + what;
+}
+
+
 wxString queryTokenizer::GetNextToken()
 {
     // we need to override wxStringTokenizer, because we have to handle quotes

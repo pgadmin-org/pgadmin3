@@ -44,7 +44,10 @@ void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0=100, const int h0=70
 // Validation
 bool IsValidIdentifier(wxString ident);
 
+// string build helper
+void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &what);
 
+// splitting of strings, obeying quotes
 class queryTokenizer : public wxStringTokenizer
 {
 public:
@@ -79,7 +82,10 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_INDEX,
     PGICON_RULE,
     PGICON_TRIGGER,
-    PGICON_KEY
+    PGICON_KEY,
+    PGICON_CAST,
+    PGICON_CONVERSION,
+    PGICON_OPERATORCLASS
 };
 
 #endif
