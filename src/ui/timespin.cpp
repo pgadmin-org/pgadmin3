@@ -388,6 +388,10 @@ long wxTimeSpinCtrl::GetTextTime()
 
 void wxTimeSpinCtrl::OnKillFocus(wxFocusEvent &ev)
 {
+#ifdef __WXGTK__
+    ev.Skip();
+#endif
+
     long time=GetTextTime();
 
     if (time < 0)
