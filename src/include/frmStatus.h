@@ -36,10 +36,12 @@ private:
     void OnClose(wxCommandEvent &event);
     void OnRefresh(wxCommandEvent &event);
     void OnRateChange(wxCommandEvent &event);
+	void OnNotebookPageChanged(wxNotebookEvent& event);
     frmMain *mainForm;
     pgConn *connection;
     long backend_pid;
     wxTimer *timer;
+	bool loaded;
 
     DECLARE_EVENT_TABLE();
 };
