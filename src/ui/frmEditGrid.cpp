@@ -403,12 +403,15 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
 
     pgSet *colSet=connection->ExecuteSet(
-        wxT("SELECT t.typname, attname, COALESCE(b.oid, t.oid) AS basetype,\n")
+        wxT("SELECT nspname, relname, t.typname, attname, COALESCE(b.oid, t.oid) AS basetype, atthasdef, adsrc,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.atttypmod else t.typtypmod END AS typmod,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.attlen else t.typlen END AS typlen\n")
         wxT("  FROM pg_attribute att\n")
         wxT("  JOIN pg_type t ON t.oid=att.atttypid\n")
+        wxT("  JOIN pg_class c ON c.oid=attrelid\n")
+        wxT("  JOIN pg_namespace n ON n.oid=relnamespace\n")
         wxT("  LEFT OUTER JOIN pg_type b ON b.oid=t.typbasetype\n")
+        wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n")
         wxT(" WHERE attnum > 0 AND NOT attisdropped AND attrelid=") + NumToStr((long)relid) + wxT("::oid\n")
         wxT(" ORDER BY attnum"));
 
@@ -430,6 +433,13 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             columns[i].typeName = colSet->GetVal(wxT("typname"));
 
             columns[i].type = (Oid)colSet->GetOid(wxT("basetype"));
+            if (columns[i].type == PGOID_TYPE_INT4 && colSet->GetBool(wxT("atthasdef")))
+            {
+                if (colSet->GetVal(wxT("adsrc")) ==  wxT("nextval('") 
+                        + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname"))
+                        + wxT("_") + columns[i].name + wxT("_seq'::text)"))
+                    columns[i].type = PGOID_TYPE_SERIAL;
+            }
             columns[i].typlen=colSet->GetLong(wxT("typlen"));
             columns[i].typmod=colSet->GetLong(wxT("typmod"));
 
@@ -572,7 +582,10 @@ wxString sqlTable::GetColLabelValue(int col)
     if (columns[col].isPrimaryKey)
         label += wxT("[PK] ");
 
-    label += columns[col].typeName;
+    if (columns[col].type == PGOID_TYPE_SERIAL)
+        label += wxT("serial");
+    else
+        label += columns[col].typeName;
     return label;
 }
 
@@ -676,7 +689,7 @@ void sqlTable::StoreLine()
 
             for (i=0 ; i<nCols ; i++)
             {
-                if (!columns[i].attr->IsReadOnly())
+                if (!columns[i].attr->IsReadOnly() && !line->cols[i].IsEmpty())
                 {
                     if (!colList.IsNull())
                     {
@@ -690,8 +703,8 @@ void sqlTable::StoreLine()
                 }
             }
             
-            pgSet *set=connection->ExecuteSet(wxT(
-                "INSERT INTO ") + tableName
+            pgSet *set=connection->ExecuteSet(
+                wxT("INSERT INTO ") + tableName
                 + wxT("(") + colList 
                 + wxT(") VALUES (") + valList
                 + wxT(")"));
@@ -706,6 +719,20 @@ void sqlTable::StoreLine()
                 ((wxFrame*)GetView()->GetParent())->SetStatusText(wxString::Format(wxT("%d rows."), GetNumberStoredRows()));
                 if (rowsAdded == rowsStored)
                     GetView()->AppendRows();
+
+                // Read back what we inserted to get default vals
+                set=connection->ExecuteSet(
+                    wxT("SELECT * FROM ") + tableName + 
+                    wxT(" WHERE ") + MakeKey(line));
+                if (set)
+                {
+                    for (i=(hasOids?1:0) ; i < nCols ; i++)
+                    {
+                        line->cols[i] = set->GetVal(columns[i].name);
+                    }
+                    delete set;
+                }
+
             }
         }
         if (done)

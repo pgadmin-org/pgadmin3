@@ -84,7 +84,7 @@ wxString pgColumn::GetDefinition()
     sql = GetQuotedTypename();
 
     if (sql== wxT("int4") && GetDefault() == wxT("nextval('") 
-                        + GetQuotedFullTable() 
+                        + schema->GetName() + wxT(".") + GetTableName() 
                         + wxT("_") + GetName() + wxT("_seq'::text)"))
     {
         sql = wxT("serial");
@@ -265,7 +265,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             wxString nsp=columns->GetVal(wxT("typnspname"));
             if (nsp == wxT("pg_catalog"))
             {
-                column->iSetVarTypename(nsp + wxT(".") + dt.FullName());
+                column->iSetVarTypename(dt.FullName());
                 column->iSetQuotedTypename(dt.QuotedFullName());
             }
             else
@@ -277,6 +277,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             column->iSetNotNull(columns->GetBool(wxT("attnotnull")));
             column->iSetQuotedFullTable(qtIdent(columns->GetVal(wxT("nspname"))) + wxT(".")
                 + qtIdent(columns->GetVal(wxT("relname"))));
+            column->iSetTableName(columns->GetVal(wxT("relname")));
             column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));
 
             if (browser)

@@ -60,6 +60,8 @@ public:
     void iSetTyplen(const long l) { typlen=l; }
     long GetTypmod() const { return typmod; }
     void iSetTypmod(const long l) { typmod=l; }
+    wxString GetTableName() const { return tableName; }
+    void iSetTableName(const wxString &s) { tableName=s; }
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
     wxString GetStorage() const {return storage; }
@@ -77,7 +79,7 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString varTypename, quotedTypename, defaultVal, quotedFullTable, storage, rawTypename;
+    wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;
     long colNumber, length, precision, statistics;
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray;
