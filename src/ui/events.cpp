@@ -11,6 +11,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/dir.h>
 #include <wx/splitter.h>
 #include <wx/settings.h>
 #include <wx/treectrl.h>
@@ -18,6 +19,7 @@
 #include <wx/imaglist.h>
 #include <wx/tipdlg.h>
 #include <wx/stc/stc.h>
+#include <wx/html/helpctrl.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -207,12 +209,39 @@ void frmMain::OnReload(wxCommandEvent& WXUNUSED(event))
     }
 }
 
+
 void frmMain::OnContents(wxCommandEvent& event)
 {
-    wxString helpSite=settings->GetPgAdminHelpSite();
+    extern wxString docPath;
+#if 0
+    // testing only
+    static wxHtmlHelpController *helpCtl=0;
+    if (!helpCtl)
+    {
+        helpCtl=new wxHtmlHelpController();
+#ifdef __WXMSW__
+        helpCtl->Initialize(wxT("e:\\pg\\pgadmin2\\help\\pgadmin2"));
+#else
+        helpCtl->Initialize(wxT("/tmp/help/pgadmin2"));
+#endif
+    }
+    helpCtl->DisplayContents();
+    
+    return;
+#endif
+
+    wxString cn=settings->GetCanonicalLanguage();
+    if (cn.IsEmpty())
+        cn=wxT("en_US");
+
+    wxString helpSite=docPath + wxT("/");
+
+    if (!wxDir::Exists(helpSite + cn))
+        cn=wxT("en_US");
+
     frmHelp *h=new frmHelp(this);
     h->Show(true);
-    if (!h->Load(helpSite + wxT("index.html")))
+    if (!h->Load(helpSite + cn + wxT("/index.html")))
         h->Destroy();
 }
 

@@ -49,16 +49,6 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
 
 #ifdef __WIN32__
-    Read(wxT("pgAdminHelpSite"), &pgAdminHelpSite, loadPath + wxT("\\docs\\en_US\\"));
-    if (pgAdminHelpSite.Last() != '/' && pgAdminHelpSite.Last() != '\\')
-        pgAdminHelpSite += wxT("\\");
-#else
-    Read(wxT("pgAdminHelpSite"), &pgAdminHelpSite, loadPath + wxT("../share/pgadmin3/docs/en_US/"));
-    if (pgAdminHelpSite.Last() != '/' && pgAdminHelpSite.Last() != '\\')
-        pgAdminHelpSite += wxT("/");
-#endif
-
-#ifdef __WIN32__
     Read(wxT("SqlHelpSite"), &sqlHelpSite, loadPath + wxT("\\docs\\en_US\\pg\\"));
     if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
         sqlHelpSite += wxT("\\");
@@ -79,6 +69,11 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("StickySql"), &stickySql, true);
     Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
     Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
+
+    const wxLanguageInfo *langInfo;
+    langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
+    if (langInfo)
+        canonicalLanguage=langInfo->CanonicalName;
 }
 
 
@@ -95,7 +90,6 @@ sysSettings::~sysSettings()
     Write(wxT("AskSaveConfirmation"), BoolToStr(askSaveConfirmation));
     Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
-    Write(wxT("pgAdminHelpSite"), pgAdminHelpSite);
     Write(wxT("SqlHelpSite"), sqlHelpSite);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);

@@ -18,6 +18,7 @@
 #include <wx/imagjpeg.h>
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
+#include <wx/fs_zip.h>
 
 // Windows headers
 #ifdef __WXMSW__
@@ -37,6 +38,7 @@ frmMain *winMain;
 wxLog *logger;
 sysSettings *settings;
 wxString loadPath;
+wxString docPath;
 wxArrayInt existingLangs;
 wxLocale locale;
 
@@ -79,11 +81,25 @@ bool pgAdmin3::OnInit()
 
     
 #ifdef __WIN32__
-    locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
-    locale.AddCatalogLookupPathPrefix(loadPath + wxT("/..") MO_PATH);
+    if (wxDir::Exists(loadPath + MO_PATH))
+        locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
+    else
+        locale.AddCatalogLookupPathPrefix(loadPath + wxT("/..") MO_PATH);
+
+    if (wxDir::Exists(loadPath + DOC_PATH))
+        docPath = loadPath + DOC_PATH;
+    else
+        docPath = loadPath + wxT("/../..") DOC_PATH;
 #else
-    locale.AddCatalogLookupPathPrefix(DATA_DIR MO_PATH);
-    locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
+    if (wxDir::Exists((DATA_DIR MO_PATH))
+        locale.AddCatalogLookupPathPrefix(DATA_DIR MO_PATH);
+    else
+        locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
+
+    if (wxDir::Exists(loadPath + DOC_PATH))
+        docPath = DATA_DIR DOC_PATH;
+    else
+        docPath = loadPath + wxT("/..") DOC_PATH;
 #endif
 
     
@@ -169,11 +185,12 @@ bool pgAdmin3::OnInit()
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     if (!winSplash) 
         wxLogError(_("Couldn't create the splash screen!"));
-    else {
-      SetTopWindow(winSplash);
-      winSplash->Show(TRUE);
-	  winSplash->Update();
-      wxYield();
+    else
+    {
+        SetTopWindow(winSplash);
+        winSplash->Show(TRUE);
+	    winSplash->Update();
+        wxYield();
     }
 
 	
@@ -188,6 +205,8 @@ bool pgAdmin3::OnInit()
     wxImage::AddHandler(new wxJPEGHandler());
     wxImage::AddHandler(new wxPNGHandler());
     wxImage::AddHandler(new wxGIFHandler());
+
+    wxFileSystem::AddHandler(new wxZipFSHandler);
 
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();

@@ -44,7 +44,7 @@ const float SERVER_MIN_VERSION = 7.3f;
 
 #define XRC_COMMON_PATH wxT("/ui/common")
 #define MO_PATH wxT("/ui")
-
+#define DOC_PATH wxT("/docs")
 
 // Class declarations
 class pgAdmin3 : public wxApp

@@ -27,7 +27,6 @@ extern wxLocale locale;
 extern wxArrayInt existingLangs;
 
 
-#define txtPgAdminHelpSite          CTRL("txtPgAdminHelpSite", wxTextCtrl)
 #define txtSqlHelpSite              CTRL("txtSqlHelpSite", wxTextCtrl)
 #define txtLogfile                  CTRL("txtLogfile", wxTextCtrl)
 #define radLoglevel                 CTRL("radLoglevel", wxRadioBox)
@@ -75,7 +74,6 @@ frmOptions::frmOptions(wxFrame *parent)
     txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
     chkStickySql->SetValue(settings->GetStickySql());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
-    txtPgAdminHelpSite->SetValue(settings->GetPgAdminHelpSite());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
 
@@ -154,14 +152,6 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetUnicodeFile(chkUnicodeFile->IsChecked());
 
     // Make sure there's a slash on the end of the path
-    if (txtPgAdminHelpSite->GetValue().Last() == '/' || txtPgAdminHelpSite->GetValue().Last() == '\\')
-        settings->SetPgAdminHelpSite(txtPgAdminHelpSite->GetValue());
-    else
-#ifdef __WIN32__
-        settings->SetPgAdminHelpSite(txtPgAdminHelpSite->GetValue() + wxT("\\"));
-#else
-        settings->SetPgAdminHelpSite(txtPgAdminHelpSite->GetValue() + wxT("/"));
-#endif
 
     if (txtSqlHelpSite->GetValue().Last() == '/' || txtSqlHelpSite->GetValue().Last() == '\\')
         settings->SetSqlHelpSite(txtSqlHelpSite->GetValue());

@@ -61,9 +61,6 @@ public:
     bool GetConfirmDelete() const { return confirmDelete; }
     void SetConfirmDelete(const bool b) { confirmDelete=b; }
 
-    wxString GetPgAdminHelpSite() const { return pgAdminHelpSite; }
-    void SetPgAdminHelpSite(const wxString& s) { pgAdminHelpSite = s; }
-
     wxString GetSqlHelpSite() const { return sqlHelpSite; }
     void SetSqlHelpSite(const wxString& s) { sqlHelpSite = s; }
 
@@ -94,6 +91,8 @@ public:
     bool GetUnicodeFile() const { return unicodeFile; }
     void SetUnicodeFile(const bool b) {unicodeFile = b; }
 
+    wxString GetCanonicalLanguage() const { return canonicalLanguage; }
+
 private:
 
     // Tip Of The Day
@@ -115,8 +114,8 @@ private:
 
     bool explainVerbose, explainAnalyze;
 
-    wxString pgAdminHelpSite;
     wxString sqlHelpSite;
+    wxString canonicalLanguage;
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
     bool confirmDelete;
