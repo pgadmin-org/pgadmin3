@@ -32,6 +32,7 @@ public:
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     int GetIcon() { return PGICON_CAST; }
 
+    bool GetSystemObject() const { return GetOid() <= GetConnection()->GetLastSystemOID(); }
     wxString GetSourceType() const { return sourceType; }
     void iSetSourceType(const wxString& s) { sourceType=s; }
     wxString GetTargetType() const { return targetType; }
@@ -51,8 +52,6 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
-
-    bool GetSystemObject() const;
 
 private:
     wxString sourceType, targetType, castFunction, castContext, castNamespace;

@@ -89,6 +89,10 @@ pgObject *pgCast::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgCast *cast=0;
+    wxString systemRestriction;
+    if (!settings->GetShowSystemObjects() && restriction.IsEmpty())
+        systemRestriction = wxT(" WHERE ca.oid > ") + NumToStr(collection->GetConnection()->GetLastSystemOID()) + wxT("\n");
+
     pgSet *casts= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp, proname, nspname\n")
         wxT("  FROM pg_cast ca\n")
@@ -96,7 +100,7 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
         wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
         wxT("  JOIN pg_proc pr ON pr.oid=castfunc\n")
         wxT("  JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
-        + restriction +
+        + restriction + systemRestriction +
         wxT(" ORDER BY st.typname, tt.typname"));
 
     if (casts)
@@ -137,9 +141,3 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     }
     return cast;
 }
-
-bool pgCast::GetSystemObject() const
-{
-        return (this->GetOid() <= ((pgServer*)this)->GetLastSystemOID());
-}
-

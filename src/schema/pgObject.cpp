@@ -331,7 +331,7 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantOn
 
 
 
-pgConn *pgObject::GetConnection()
+pgConn *pgObject::GetConnection() const
 {
     pgConn *conn=0;
     pgDatabase *db;
@@ -353,7 +353,7 @@ pgConn *pgObject::GetConnection()
     return conn;    
 }
 
-pgDatabase *pgObject::GetDatabase()
+pgDatabase *pgObject::GetDatabase() const
 {
     pgDatabase *db=0;
     switch (GetType())
@@ -454,7 +454,7 @@ bool pgSchemaObject::GetSystemObject() const
 {
     if (!schema)
         return false;
-	return schema->GetOid() <= ((pgServer*)this)->GetLastSystemOID();
+    return schema->GetOid() < GetConnection()->GetLastSystemOID();
 }
 
 

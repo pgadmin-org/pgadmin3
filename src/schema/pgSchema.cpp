@@ -174,7 +174,8 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     pgSchema *schema=0;
 
     pgSet *schemas= collection->GetDatabase()->ExecuteSet(
-       wxT("SELECT CASE WHEN nsp.oid<100 THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n")
+       wxT("SELECT CASE WHEN nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) 
+                + wxT(" THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n")
        wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
        wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
        wxT("  FROM pg_namespace nsp\n")

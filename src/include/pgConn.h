@@ -64,7 +64,7 @@ public:
     int GetStatus() const;
     wxString GetLastError() const { return wxString(PQerrorMessage(conn), wxConvUTF8); }
     wxString GetVersionString();
-    long GetLastSystemOID();
+    OID GetLastSystemOID() const { return lastSystemOID; }
     bool BackendMinimumVersion(int major, int minor);
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
 
@@ -76,6 +76,7 @@ private:
     int minorVersion, majorVersion;
     bool resolvedIP;
     wxString dbHost;
+    OID lastSystemOID;
 
     void *noticeArg;
     PQnoticeProcessor noticeProc;

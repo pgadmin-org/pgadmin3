@@ -115,18 +115,18 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
 #if wxUSE_UNICODE
 
-       wxLogInfo(wxT("Setting client_encoding to 'UNICODE'"));
-       if (PQsetClientEncoding(conn, "UNICODE"))
-           wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), wxConvUTF8).c_str());
+        wxLogInfo(wxT("Setting client_encoding to 'UNICODE'"));
+        if (PQsetClientEncoding(conn, "UNICODE"))
+            wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), wxConvUTF8).c_str());
 
 #else
 
-       wxLogInfo(wxT("Setting client_encoding to 'SQL_ASCII'"));
-       if (PQsetClientEncoding(conn, "SQL_ASCII"))
-           wxLogError(wxT("%s"), PQerrorMessage(conn));
+        wxLogInfo(wxT("Setting client_encoding to 'SQL_ASCII'"));
+        if (PQsetClientEncoding(conn, "SQL_ASCII"))
+            wxLogError(wxT("%s"), PQerrorMessage(conn));
 
 #endif
-
+        lastSystemOID = StrToLong(ExecuteScalar(wxT("SELECT datlastsysoid FROM pg_database LIMIT 1;")));
     }
 }
 
@@ -282,10 +282,4 @@ bool pgConn::BackendMinimumVersion(int major, int minor)
 	    sscanf(GetVersionString().ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
     }
 	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
-}
-
-
-long pgConn::GetLastSystemOID()
-{
-	return StrToLong(ExecuteScalar(wxT("SELECT datlastsysoid FROM pg_database LIMIT 1;")));
 }

@@ -113,8 +113,8 @@ public:
     virtual wxString GetSql(wxTreeCtrl *browser) { return wxT(""); }
     wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""), bool noOwner=false);
     wxString GetCommentSql();
-    pgDatabase *GetDatabase();
-    pgConn *GetConnection();
+    pgDatabase *GetDatabase() const;
+    pgConn *GetConnection() const;
 
     virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }
     virtual void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index) { return; }
