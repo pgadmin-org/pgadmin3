@@ -328,7 +328,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 			// We only add the Jobs node if the appropriate objects are in this DB.
 		    wxString exists = ExecuteScalar(
 				wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
-				wxT(" WHERE relname='pga_job' AND nspname='pgadmin'"));
+				wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
 
 			if (!exists.IsNull())
 			{
