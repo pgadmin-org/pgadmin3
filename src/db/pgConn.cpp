@@ -369,8 +369,9 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
 wxString pgConn::GetLastError() const
 { 
     wxString errmsg;
-    if (conn)
-        errmsg=wxString(PQerrorMessage(conn), wxConvUTF8);
+	char *pqErr;
+    if (conn && (pqErr = PQerrorMessage(conn)) != 0)
+        errmsg=wxString(pqErr, wxConvUTF8);
     else
     {
         if (connStatus == PGCONN_BROKEN)
