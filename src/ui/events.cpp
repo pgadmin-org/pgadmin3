@@ -114,7 +114,6 @@ void frmMain::OnUpgradeWizard(wxCommandEvent& WXUNUSED(event))
 
 void frmMain::OnTipOfTheDay()
 {
-    extern sysSettings *settings;
     wxTipProvider *tipProvider = wxCreateFileTipProvider(wxT("tips.txt"), settings->GetNextTipOfTheDay());
     settings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
     settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
@@ -276,8 +275,6 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
 
 void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 {
-    extern sysSettings *settings;
-
     // Warn the user
     if (wxMessageBox(wxT("Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n\nAre you sure you wish to continue?"),
                      wxT("Continue?"), wxYES_NO | wxICON_QUESTION) == wxNO) {
@@ -309,8 +306,6 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 
 void frmMain::OnAddServer(wxCommandEvent &ev)
 {
-    extern sysSettings *settings;
-
     // Create a server object and connec it.
     pgServer *server = new pgServer(settings->GetLastServer(), settings->GetLastDatabase(), settings->GetLastUsername(), settings->GetLastPort());
     int res = server->Connect(this);
@@ -318,7 +313,7 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
     // Check the result, and handle it as appropriate
     if (res == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
-        browser->AppendItem(servers, server->GetIdentifier(), 0, -1, server);
+        browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
         browser->Expand(servers);
 
     } else if (res == PGCONN_DNSERR)  {
@@ -404,6 +399,8 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
             break;
 
         case PG_DATABASES:
+        case PG_GROUPS:
+        case PG_USERS:
             data->ShowTree(this, browser, properties, statistics, sqlPane);
             SetButtons(true, true, false, false, false, false, false);
             break;
@@ -413,6 +410,11 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
             SetButtons(true, true, true, true, true, false, true);
             break;
 
+        case PG_GROUP:
+        case PG_USER:
+            data->ShowTree(this, browser, properties, statistics, sqlPane);
+            SetButtons(true, true, true, true, false, false, false);
+            break;
         case PG_LANGUAGES:
         case PG_LANGUAGE:
         case PG_SCHEMAS:
