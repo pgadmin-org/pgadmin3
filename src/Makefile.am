@@ -30,6 +30,7 @@ ui/frmEditGrid.cpp ui/dlgProperty.cpp ui/dlgUser.cpp \
 ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
 ui/dlgSchema.cpp ui/dlgDomain.cpp ui/dlgTable.cpp \
 ui/dlgColumn.cpp ui/dlgIndex.cpp ui/dlgFunction.cpp \
+ui/dlgView.cpp ui/dlgRule.cpp ui/dlgOperator.cpp \
 ui/dlgIndexConstraint.cpp ui/dlgForeignKey.cpp \
 ui/dlgSequence.cpp ui/dlgTrigger.cpp ui/dlgType.cpp \
 ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
@@ -43,6 +44,7 @@ include/dlgDatabase.h include/dlgDomain.h \
 include/dlgForeignKey.h include/dlgFunction.h include/dlgGroup.h \
 include/dlgIndexConstraint.h include/dlgIndex.h \
 include/dlgLanguage.h include/dlgProperty.h include/dlgType.h \
+include/dlgView.h include/dlgRule.h include/dlgOperator.h \
 include/dlgSequence.h include/dlgSchema.h include/dlgTable.h \
 include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
 include/frmChildTableViewFrame.h include/frmConnect.h \

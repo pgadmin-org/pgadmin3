@@ -232,6 +232,8 @@ void frmMain::OnFaq(wxCommandEvent& event)
 
 void frmMain::OnHelp(wxCommandEvent& event)
 {
+    wxMessageBox(wxString::Format(wxT("Size is %d."), sizeof(wxChar)));
+
     wxString helpSite=settings->GetHelpSite();
     wxString page;
 
