@@ -159,7 +159,7 @@ int dlgFunction::Go(bool modal)
 
         txtArguments->SetValue(function->GetArgTypeNames());
         cbReturntype->Append(function->GetReturnType());
-        cbReturntype->SetSelection(0);
+        cbReturntype->SetValue(function->GetReturnType());
 
         cbLanguage->SetValue(function->GetLanguage());
         cbVolatility->SetValue(function->GetVolatility());
