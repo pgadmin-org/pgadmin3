@@ -240,7 +240,9 @@ void dlgProperty::CreateAdditionalPages()
 
 wxString dlgProperty::GetName()
 {
-    return txtName->GetValue().Strip(wxString::both);
+    if (txtName)
+        return txtName->GetValue().Strip(wxString::both);
+    return wxEmptyString;
 }
 
 

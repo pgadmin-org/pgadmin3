@@ -26,6 +26,7 @@
 
 
 // pointer to controls
+#define txtCastname         CTRL_TEXT("txtCastname")
 #define cbSourceType        CTRL_COMBOBOX2("cbSourceType")
 #define cbTargetType        CTRL_COMBOBOX2("cbTargetType")
 #define cbFunction          CTRL_COMBOBOX("cbFunction")
@@ -46,7 +47,7 @@ dlgCast::dlgCast(frmMain *frame, pgCast *node)
     SetIcon(wxIcon(cast_xpm));
     cast=node;
 
-    txtName->Disable();
+    txtCastname->Disable();
 }
 
 
@@ -116,9 +117,9 @@ void dlgCast::CheckChange()
         CheckValid(enable, cbTargetType->GetGuessedSelection() > 0, _("Please select target datatype."));
 
         if (enable)
-            txtName->SetValue(cbSourceType->GetValue() + wxT(" -> ") + cbTargetType->GetValue());
+            txtCastname->SetValue(cbSourceType->GetValue() + wxT(" -> ") + cbTargetType->GetValue());
         else
-            txtName->SetValue(wxEmptyString);
+            txtCastname->SetValue(wxEmptyString);
 
         EnableOK(enable);
     }
