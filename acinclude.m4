@@ -119,14 +119,24 @@ then
     fi
     if test "$pg_static_build" = "yes"
     then
-        LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lssl -lcrypto"
+        if test "$pgsql_ssl_libpq" = "yes"
+        then
+            LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lssl -lcrypto"
+        else
+            LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lcrypto"
+        fi
     else
-        LIBS="$LIBS -lssl -lcrypto -lpq"
+        if test "$pgsql_ssl_libpq" = "yes"
+        then
+            LIBS="$LIBS -lssl -lcrypto -lpq"
+        else
+            LIBS="$LIBS -lcrypto -lpq"
+        fi
     fi
     AC_LANG_SAVE
     AC_LANG_C
     AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
-    AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=np])
+    AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=no])
     AC_CHECK_HEADER(libpq-fe.h, [pgsql_cv_libpqfe_h=yes], [pgsql_cv_libpqfe_h=no])
     AC_LANG_RESTORE
     if test "$pgsql_cv_libpq" = "yes" -a "$pgsql_cv_libpqfe_h" = "yes"
