@@ -140,29 +140,29 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 {
     pgOperator *oper=0;
 
-    pgSet *operators= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT op.oid, op.oprname, pg_get_userbyid(op.oprowner) as opowner, op.oprkind, op.oprcanhash,\n"
-        "       lt.typname as lefttype, rt.typname as righttype, et.typname as resulttype,\n"
-        "       co.oprname as compop, ne.oprname as negop, lso.oprname as leftsortop, rso.oprname as rightsortop,\n"
-        "       lco.oprname as lscmpop, gco.oprname as gtcmpop,\n"
-        "       po.proname as operproc, pj.proname as joinproc, pr.proname as restrproc, description\n"
-        "  FROM pg_operator op\n"
-        "  JOIN pg_type lt ON lt.oid=op.oprleft\n"
-        "  JOIN pg_type rt ON rt.oid=op.oprright\n"
-        "  JOIN pg_type et on et.oid=op.oprresult\n"
-        "  LEFT OUTER JOIN pg_operator co ON co.oid=op.oprcom\n"
-        "  LEFT OUTER JOIN pg_operator ne ON ne.oid=op.oprnegate\n"
-        "  LEFT OUTER JOIN pg_operator lso ON lso.oid=op.oprlsortop\n"
-        "  LEFT OUTER JOIN pg_operator rso ON rso.oid=op.oprrsortop\n"
-        "  LEFT OUTER JOIN pg_operator lco ON lco.oid=op.oprltcmpop\n"
-        "  LEFT OUTER JOIN pg_operator gco ON gco.oid=op.oprgtcmpop\n"
-        "  JOIN pg_proc po ON po.oid=op.oprcode\n"
-        "  LEFT OUTER JOIN pg_proc pr ON pr.oid=op.oprrest\n"
-        "  LEFT OUTER JOIN pg_proc pj ON pj.oid=op.oprjoin\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=op.oid\n"
-        " WHERE op.oprnamespace = ") + collection->GetSchema()->GetOidStr() 
-        + restriction + wxT("\n"
-        " ORDER BY op.oprname"));
+    pgSet *operators= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT op.oid, op.oprname, pg_get_userbyid(op.oprowner) as opowner, op.oprkind, op.oprcanhash,\n")
+        wxT("       lt.typname as lefttype, rt.typname as righttype, et.typname as resulttype,\n")
+        wxT("       co.oprname as compop, ne.oprname as negop, lso.oprname as leftsortop, rso.oprname as rightsortop,\n")
+        wxT("       lco.oprname as lscmpop, gco.oprname as gtcmpop,\n")
+        wxT("       po.proname as operproc, pj.proname as joinproc, pr.proname as restrproc, description\n")
+        wxT("  FROM pg_operator op\n")
+        wxT("  JOIN pg_type lt ON lt.oid=op.oprleft\n")
+        wxT("  JOIN pg_type rt ON rt.oid=op.oprright\n")
+        wxT("  JOIN pg_type et on et.oid=op.oprresult\n")
+        wxT("  LEFT OUTER JOIN pg_operator co ON co.oid=op.oprcom\n")
+        wxT("  LEFT OUTER JOIN pg_operator ne ON ne.oid=op.oprnegate\n")
+        wxT("  LEFT OUTER JOIN pg_operator lso ON lso.oid=op.oprlsortop\n")
+        wxT("  LEFT OUTER JOIN pg_operator rso ON rso.oid=op.oprrsortop\n")
+        wxT("  LEFT OUTER JOIN pg_operator lco ON lco.oid=op.oprltcmpop\n")
+        wxT("  LEFT OUTER JOIN pg_operator gco ON gco.oid=op.oprgtcmpop\n")
+        wxT("  JOIN pg_proc po ON po.oid=op.oprcode\n")
+        wxT("  LEFT OUTER JOIN pg_proc pr ON pr.oid=op.oprrest\n")
+        wxT("  LEFT OUTER JOIN pg_proc pj ON pj.oid=op.oprjoin\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=op.oid\n")
+        wxT(" WHERE op.oprnamespace = ") + collection->GetSchema()->GetOidStr() 
+        + restriction + wxT("\n")
+        wxT(" ORDER BY op.oprname"));
 
     if (operators)
     {
@@ -185,9 +185,9 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             oper->iSetCommutator(operators->GetVal(wxT("compop")));
             oper->iSetNegator(operators->GetVal(wxT("negop")));
             wxString kind=operators->GetVal(wxT("oprkind"));
-            oper->iSetKind(kind.IsSameAs("b") ? wxT("infix") :
-                           kind.IsSameAs("l") ? wxT("prefix") :
-                           kind.IsSameAs("r") ? wxT("postfix") : wxT("unknown"));
+            oper->iSetKind(kind.IsSameAs(wxT("b")) ? wxT("infix") :
+                           kind.IsSameAs(wxT("l")) ? wxT("prefix") :
+                           kind.IsSameAs(wxT("r")) ? wxT("postfix") : wxT("unknown"));
             oper->iSetHashJoins(operators->GetBool(wxT("oprcanhash")));
 
             if (browser)

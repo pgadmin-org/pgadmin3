@@ -25,7 +25,7 @@ class pgCollection;
 class pgSchema : public pgDatabaseObject
 {
 public:
-    pgSchema(const wxString& newName = wxString(""));
+    pgSchema(const wxString& newName = wxT(""));
     ~pgSchema();
 
     int GetIcon() { return PGICON_SCHEMA; }

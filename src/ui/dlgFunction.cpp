@@ -153,7 +153,7 @@ int dlgFunction::Go(bool modal)
     else
     {
         // create mode
-        DatatypeReader tr(connection, wxString("(typtype IN ('b', 'd') OR typname IN ('void', 'cstring'))"));
+        DatatypeReader tr(connection, wxString(wxT("(typtype IN ('b', 'd') OR typname IN ('void', 'cstring'))")));
         while (tr.HasMore())
         {
             pgDatatype dt=tr.GetDatatype();

@@ -24,7 +24,7 @@
 class pgUser : public pgServerObject
 {
 public:
-    pgUser(const wxString& newName = wxString(""));
+    pgUser(const wxString& newName = wxT(""));
     ~pgUser();
 
 

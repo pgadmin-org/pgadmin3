@@ -25,7 +25,7 @@ class pgCollection;
 class pgRule : public pgRuleObject
 {
 public:
-    pgRule(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgRule(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgRule();
 
     int GetIcon() { return PGICON_RULE; }

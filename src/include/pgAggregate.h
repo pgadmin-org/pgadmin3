@@ -25,7 +25,7 @@ class pgCollection;
 class pgAggregate : public pgSchemaObject
 {
 public:
-    pgAggregate(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgAggregate(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgAggregate();
     void SetSchema(pgSchema *newSchema) { schema = newSchema; }
     pgSchema *GetSchema() const {return schema; }

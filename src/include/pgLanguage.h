@@ -25,7 +25,7 @@ class pgCollection;
 class pgLanguage : public pgDatabaseObject
 {
 public:
-    pgLanguage(const wxString& newName = wxString(""));
+    pgLanguage(const wxString& newName = wxT(""));
     ~pgLanguage();
 
     int GetIcon() { return PGICON_LANGUAGE; }

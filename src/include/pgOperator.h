@@ -24,7 +24,7 @@
 class pgOperator : public pgSchemaObject
 {
 public:
-    pgOperator(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgOperator(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgOperator();
 
     int GetIcon() { return PGICON_OPERATOR; }

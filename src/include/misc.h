@@ -32,6 +32,8 @@ wxString BoolToStr(bool value);         // english; used for config values
 bool StrToBool(const wxString& value);  // english
 long StrToLong(const wxString& value);
 double StrToDouble(const wxString& value);
+wxULongLong StrToLongLong(const wxString& value);
+
 OID StrToOid(const wxString& value);
 
 // nls aware
@@ -39,6 +41,7 @@ wxString BoolToYesNo(bool value);
 wxString NumToStr(long value);
 wxString NumToStr(double value);
 wxString NumToStr(OID value);
+wxString NumToStr(wxLongLong value);
 
 // Quoting
 wxString qtString(const wxString& value);
@@ -65,7 +68,7 @@ long GetListSelected(wxListCtrl *lst);
 class queryTokenizer : public wxStringTokenizer
 {
 public:
-    queryTokenizer(const wxString& str, const char delim=' ');
+    queryTokenizer(const wxString& str, const wxChar delim=(wxChar)' ');
     wxString GetNextToken();
 private:
     char delimiter;

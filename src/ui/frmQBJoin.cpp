@@ -41,7 +41,7 @@ frmQBJoin::frmQBJoin(wxFrame *frame, wxString txt)
     wxLogInfo(wxT("Creating a Query Builder Join dialogue"));
 
 	// Load the XML resource for this dialog
-    wxXmlResource::Get()->LoadDialog(this, frame, "frmQBJoin"); 
+    wxXmlResource::Get()->LoadDialog(this, frame, wxT("frmQBJoin")); 
 
     // Set the Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
@@ -56,16 +56,16 @@ frmQBJoin::frmQBJoin(wxFrame *frame, wxString txt)
 
 	// Get the operator list
 	pgSet *columns = tmpparent->m_database->ExecuteSet(
-		wxT("SELECT DISTINCT "
-			"	a.oprname "
-			"FROM "
-			"	pg_operator a "
-			"JOIN "
-			"	pg_type b on ( a.oprresult = b.oid ) "
-			"WHERE "
-			"	a.oprkind = 'b' and b.typname = 'bool' "
-			"ORDER BY "
-			"	a.oprname; " ));
+		wxT("SELECT DISTINCT ")
+			wxT("	a.oprname ")
+			wxT("FROM ")
+			wxT("	pg_operator a ")
+			wxT("JOIN ")
+			wxT("	pg_type b on ( a.oprresult = b.oid ) ")
+			wxT("WHERE ")
+			wxT("	a.oprkind = 'b' and b.typname = 'bool' ")
+			wxT("ORDER BY ")
+			wxT("	a.oprname; " ));
 
 	// Get the column count
 	int rowct = columns->NumRows();
@@ -186,9 +186,7 @@ void frmQBJoin::OnAdd(wxCommandEvent &event)
 	if (tmpleftcolumn.IsEmpty() || tmprightcolumn.IsEmpty())
 	{
 		// Fail with an error 
-		wxLogError(__("You must select one column from the\n"
-			"left table and one column from the\n"
-			"right table."));
+		wxLogError(__("You must select one column from te left table and one column from the right table."));
 		return;
 	}
 

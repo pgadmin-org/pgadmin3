@@ -24,7 +24,7 @@
 class pgGroup : public pgServerObject
 {
 public:
-    pgGroup(const wxString& newName = wxString(""));
+    pgGroup(const wxString& newName = wxT(""));
     ~pgGroup();
 
 

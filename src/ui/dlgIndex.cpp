@@ -81,7 +81,7 @@ int dlgIndexBase::Go(bool modal)
         cbColumns->Disable();
 
         int pos=0;
-        wxStringTokenizer cols(index->GetColumns(), ',');
+        wxStringTokenizer cols(index->GetColumns(), wxT(","));
         while (cols.HasMoreTokens())
         {
             wxString str=cols.GetNextToken();

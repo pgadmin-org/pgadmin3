@@ -153,9 +153,9 @@ void dlgProperty::EnableOK(bool enable)
 int dlgProperty::Go(bool modal)
 {
     if (GetObject())
-        SetTitle(wxString("") + typeNameList[objectType] + wxT(" ") + GetObject()->GetFullIdentifier());
+        SetTitle(wxString(typeNameList[objectType]) + wxT(" ") + GetObject()->GetFullIdentifier());
     else
-        SetTitle(wxString("Creating new ") + typeNameList[objectType]);
+        SetTitle(wxT("Creating new ") + wxString(typeNameList[objectType]));
 
     if (modal)
         return ShowModal();
@@ -460,13 +460,13 @@ void dlgProperty::CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgO
     {
         dlg->properties = properties;
 
-        dlg->SetTitle(wxString("Creating new ") + typeNameList[dlg->objectType]);
+        dlg->SetTitle(wxT("Creating new ") + wxString(typeNameList[dlg->objectType]));
 
         dlg->CreateAdditionalPages();
         dlg->Go();
     }
     else
-        wxMessageBox("Not implemented");
+        wxMessageBox(wxT("Not implemented"));
 }
 
 
@@ -484,13 +484,13 @@ void dlgProperty::EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxLis
         dlg->statistics=statistics;
         dlg->sqlFormPane=sqlbox;
 
-        dlg->SetTitle(wxString("") + typeNameList[dlg->objectType] + wxT(" ") + node->GetFullIdentifier());
+        dlg->SetTitle(wxString(typeNameList[dlg->objectType]) + wxT(" ") + node->GetFullIdentifier());
 
         dlg->CreateAdditionalPages();
         dlg->Go();
     }
     else
-        wxMessageBox("Not implemented");
+        wxMessageBox(wxT("Not implemented"));
 }
 
 
@@ -706,7 +706,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
     allPrivileges=0;
     bool needAll=strlen(privilegeChars) > 1;
 
-    wxStringTokenizer privileges(privilegeList, ',');
+    wxStringTokenizer privileges(privilegeList, wxT(","));
     privilegeCount=privileges.CountTokens();
 
     if (privilegeCount)
@@ -761,7 +761,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
             if (!str.IsEmpty())
             {
                 str = str.Mid(1, str.Length()-2);
-                wxStringTokenizer tokens(str, ',');
+                wxStringTokenizer tokens(str, wxT(","));
 
                 while (tokens.HasMoreTokens())
                 {
@@ -1051,7 +1051,7 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
         }
         if (!privWasAssigned)
         {
-            if (name.Left(6).IsSameAs("group ", false))
+            if (name.Left(6).IsSameAs(wxT("group "), false))
                 name = wxT("GROUP ") + qtIdent(name.Mid(6));
             else
                 name=qtIdent(name);
@@ -1063,7 +1063,7 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
     {
         wxString name=tmpAcl.Item(i).BeforeLast('=');
 
-        if (name.Left(6).IsSameAs("group ", false))
+        if (name.Left(6).IsSameAs(wxT("group "), false))
             name = wxT("GROUP ") + qtIdent(name.Mid(6));
         else
             name=qtIdent(name);

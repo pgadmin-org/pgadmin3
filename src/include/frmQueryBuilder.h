@@ -56,7 +56,7 @@ public:
 
 	// Methods
 	wxString GetTableViewAlias(wxString firstname, 
-		wxString newname = "", int postfix = 1);
+		wxString newname = wxT(""), int postfix = 1);
 	void AddColumn(frmChildTableViewFrame *frame,int item);
 	void UpdateGridTables(frmChildTableViewFrame *frame);
 	void DeleteChild(wxString talias);

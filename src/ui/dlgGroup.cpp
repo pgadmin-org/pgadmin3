@@ -183,7 +183,7 @@ wxString dlgGroup::GetSql()
         // Create Mode
         wxString name=GetName();
 
-        long id=atol(txtID->GetValue());
+        long id=StrToLong(txtID->GetValue());
 
         sql = wxT(
             "CREATE GROUP ") + qtIdent(name);

@@ -25,7 +25,7 @@ class pgCollection;
 class pgConversion : public pgSchemaObject
 {
 public:
-    pgConversion(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgConversion(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgConversion();
 
     int GetIcon() { return PGICON_CONVERSION; }

@@ -556,7 +556,7 @@ wxString frmQueryBuilder::GetTableViewAlias(wxString firstname,
 		if (oldname == newname)
 		{
 			// Postfix a numeral onto the actual table name (_1, _2, etc)
-			alias = firstname + wxString::Format( "_%d", postfix++ );
+			alias = firstname + wxString::Format(wxT("_%d"), postfix++ );
 
 			// Recurse to find out if the alias already exists
 			wxString tmpalias = this->GetTableViewAlias(firstname, 
@@ -1039,12 +1039,12 @@ void frmQueryBuilder::BuildQuery()
 
 		if (found)
 		{
-			wxLogError(__("Double right-handed joins are not allowed.\n"
-				"You must redraw your joins so that \"") + tmptable1 +  
-				wxT("\"\ndoes not appear on the righthand side \n"
-				"more than once. \n\n"
-				"Try switching it to the lefthand side in one\n"
-				"or more relationships."));
+			wxLogError(__("Double right-handed joins are not allowed.\n")
+				__("You must redraw your joins so that \"") + tmptable1 +  
+				__("\"\ndoes not appear on the righthand side \n")
+				__("more than once. \n\n")
+				__("Try switching it to the lefthand side in one\n")
+				__("or more relationships."));
 			return;
 		}
 		else
@@ -1173,16 +1173,16 @@ void frmQueryBuilder::RunQuery()
 		return;
 
 	// We need to know how many rows the query is going to return
-	wxString querycount = "SELECT count(*) AS ct FROM (" + query + ") a";
+	wxString querycount = wxT("SELECT count(*) AS ct FROM (") + query + wxT(") a");
 
 	// We should probably use ExecuteScalar here, but pgDatabase doesn't
 	// have ExecuteScalar yet 
-	pgSet *queryset = m_database->ExecuteSet(wxT(querycount));
+	pgSet *queryset = m_database->ExecuteSet(querycount);
 	if (queryset->Eof())
 		return;
 
 	// PGSet returns strings, so convert the count to an integer
-	int count = atoi(queryset->GetVal(wxT("ct")));
+	int count = queryset->GetLong(wxT("ct"));
 
 	// We're done with the data
 	delete queryset;
@@ -1190,8 +1190,7 @@ void frmQueryBuilder::RunQuery()
 	if (count > 100)
 	{
 		wxString tmpstr;
-        tmpstr.Printf(_("This query will return %d results."
-			"\n\nLoad all results?"), count); 
+        tmpstr.Printf(_("This query will return %d results.\nLoad all results?"), count); 
 
 		wxMessageDialog *messagebox = 
 			new wxMessageDialog(this, tmpstr, _("Query"), wxYES_NO );
@@ -1286,16 +1285,13 @@ void frmQueryBuilder::VerifyExpression(int celly)
 
 	if (cellv.length() == 0 && tmpcolumn == wxT(" "))
 	{
-		wxMessageDialog dlg(this, _("You cannot leave both the "
-			"column and expression blank.\n\n"
-			"Click 'OK' to insert a default function "
-			"into the expression."), 
+		wxMessageDialog dlg(this, _("You cannot leave both the column and expression blank.\n\nClick 'OK' to insert a default function into the expression."), 
 			_("Expression Error"), 
 			wxICON_ERROR | wxOK);
 
 		dlg.ShowModal();
 		
-		design->SetCellValue(celly, DESIGN_EXPRESSION, "now()");
+		design->SetCellValue(celly, DESIGN_EXPRESSION, wxT("now()"));
 	}
 	else if (cellv.length() == 0 && tmptable != wxT(" "))
 		design->SetCellValue(celly, DESIGN_COLUMN, wxT("*"));
@@ -1365,9 +1361,7 @@ void frmQueryBuilder::OnCellChange(wxGridEvent& event)
 			if (!IsValidIdentifier(tmpstr))
             {
                 wxString msg;
-                msg.Printf(_("'%s' is not a valid "
-				"identifier. It must start with A-Z or a-z or _ and can " 
-				"contain A-Z and a-z and 0-9 and _."), tmpstr.c_str());
+                msg.Printf(_("'%s' is not a valid identifier. It must start with A-Z or a-z or _ and can contain A-Z and a-z and 0-9 and _."), tmpstr.c_str());
 
                 wxMessageBox(msg);
             }
@@ -1407,8 +1401,8 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 
 	wxString tmpstr = condition;
 
-	wxString binarycomp = "<|>|<=|>=|=|<>|!=|";
-	wxString binarypat = "NOT LIKE"; //|LIKE|ILIKE|SIMILAR TO|!~*|~*|!~|~"
+	wxString binarycomp = wxT("<|>|<=|>=|=|<>|!=|");
+	wxString binarypat = wxT("NOT LIKE"); //|LIKE|ILIKE|SIMILAR TO|!~*|~*|!~|~"
 	wxString errmsg = wxT("");
 
 	wxString txt = tmpstr;
@@ -1421,18 +1415,18 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 	
 	// Replace the "special" character
 	re.Compile(marker);
-	re.Replace(&txt,"");
+	re.Replace(&txt, wxT(""));
 
 	// Check for ''
-	re.Compile("''");
+	re.Compile(wxT("''"));
 	if (re.Matches(txt))
 	{
-		re.Replace(&tmpstr, marker + "_0");
+		re.Replace(&tmpstr, marker + wxT("_0"));
 		txt = tmpstr;
 	}
 
 	// Check for 'x'
-	re.Compile("'[^']'");
+	re.Compile(wxT("'[^']'"));
 	while (re.Matches(txt))
 	{
 		size_t start, len;
@@ -1441,32 +1435,31 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 		txt = txt.Mid(start + len);
 	}
 
-	re.Replace(&tmpstr, marker + "_1");
+	re.Replace(&tmpstr, marker + wxT("_1"));
 	txt = tmpstr;
 
 	// Check for unbalanced '
-	re.Compile("'");
+	re.Compile(wxT("'"));
 	if (re.Matches(txt))
 	{
 		errmsg = _("Check for unbalanced single quote marks ");
 	}
 
 	// Collapse multiple whitespace to a single space
-	re.Compile("[[:space:]]{1,}");
-	re.Replace(&tmpstr, " ");
+	re.Compile(wxT("[[:space:]]{1,}"));
+	re.Replace(&tmpstr, wxT(" "));
 
 	// Trim leading/trailing spaces
-	tmpstr.Trim(TRUE);
-	tmpstr.Trim(FALSE);
+    tmpstr.Strip(wxString::both);
 
 	// Replace string 'x' literals
 	for (int si = 0; si < singlequotedcount; si++)
 	{
-		tmpstr.Replace(marker + "_1", singlequotedmatches[si], FALSE);
+		tmpstr.Replace(marker + wxT("_1"), singlequotedmatches[si], FALSE);
 	}
 
 	// Replace null string '' literals
-	tmpstr.Replace(marker + "_0", "''", FALSE);
+	tmpstr.Replace(marker + wxT("_0"), wxT("''"), FALSE);
 
 	if (errmsg.length())
 	{
@@ -1487,8 +1480,8 @@ void frmQueryBuilder::OnClose(wxCloseEvent& event)
         if (!m_lastPath.IsNull())
             fn = wxT(" in file ") + m_lastPath;
 
-        wxMessageDialog msg(this, wxString::Format(_("The text %s has m_changed.\n"
-                    "Do you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
+        wxMessageDialog msg(this, wxString::Format(_("The text %s has m_changed.\n"), fn.c_str()) +
+                    _("Do you want to save changes?"), _("pgAdmin III Query"), 
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
                     (event.CanVeto() ? wxCANCEL : 0));
 
@@ -1535,13 +1528,13 @@ void frmQueryBuilder::OnOpen(wxCommandEvent& event)
         m_lastDir = dlg.GetDirectory();
         m_lastPath = dlg.GetPath();
 
-        FILE *f=fopen(m_lastPath.c_str(), "rt");
+        FILE *f=fopen(m_lastPath.ToAscii(), "rt");
         if (f)
         {
             fseek(f, 0, SEEK_END);
             int len=ftell(f);
             fseek(f, 0, SEEK_SET);
-            wxString buf("", len+1);
+            wxString buf(wxT(""), len+1);
             fread((char*)buf.c_str(), len, 1, f);
             fclose(f);
             ((char*)buf.c_str())[len]=0;
@@ -1556,7 +1549,7 @@ void frmQueryBuilder::OnOpen(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnSave(wxCommandEvent& event)
 {
-    FILE *f=fopen(m_lastPath.c_str(), "w+t");
+    FILE *f=fopen(m_lastPath.ToAscii(), "w+t");
     if (f)
     {
         wxString buf=sql->GetText();
@@ -1704,7 +1697,7 @@ bool DnDDesign::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 		(frmQueryBuilder*)m_frame;
 
 	// Extract the left table name/column name
-	wxStringTokenizer tmptok(text, ".");
+	wxStringTokenizer tmptok(text, wxT("."));
 	wxString lefttable = tmptok.GetNextToken();
 	wxString column = tmptok.GetNextToken();
 

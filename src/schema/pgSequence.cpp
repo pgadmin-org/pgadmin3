@@ -33,30 +33,20 @@ bool pgSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser)
     return GetDatabase()->ExecuteVoid(wxT("DROP SEQUENCE ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
-// we dont have an appropriate wxLongLong method
-#ifdef __WIN32__
-#define atolonglong _atoi64
-#else
-#ifdef __WXMAC__
-#define atolonglong(str) strtoll(str, (char **)NULL, 10) 
-#else
-#define atolonglong atoll
-#endif
-#endif
 
 void pgSequence::UpdateValues()
 {
-    pgSet *sequence=ExecuteSet(wxT(
-        "SELECT last_value, min_value, max_value, cache_value, is_cycled, increment_by\n"
-        "  FROM ") + qtIdent(GetName()));
+    pgSet *sequence=ExecuteSet(
+        wxT("SELECT last_value, min_value, max_value, cache_value, is_cycled, increment_by\n")
+        wxT("  FROM ") + qtIdent(GetName()));
     if (sequence)
     {
-        lastValue = atolonglong(sequence->GetVal(wxT("last_value")));
-        minValue = atolonglong(sequence->GetVal(wxT("min_value")));
-        maxValue = atolonglong(sequence->GetVal(wxT("max_value")));
-        cacheValue = atolonglong(sequence->GetVal(wxT("cache_value")));
-        increment = atolonglong(sequence->GetVal(wxT("increment_by")));
-        cycled = StrToBool(sequence->GetVal(wxT("is_cycled")));
+        lastValue = sequence->GetLongLong(wxT("last_value"));
+        minValue = sequence->GetLongLong(wxT("min_value"));
+        maxValue = sequence->GetLongLong(wxT("max_value"));
+        cacheValue = sequence->GetLongLong(wxT("cache_vale"));
+        increment = sequence->GetLongLong(wxT("increment_by"));
+        cycled = sequence->GetBool(wxT("is_cycled"));
 
         delete sequence;
     }
@@ -151,13 +141,13 @@ pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 {
     pgSequence *sequence=0;
 
-    pgSet *sequences= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT cl.oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl, description\n"
-        "  FROM pg_class cl\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n"
-        " WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr() 
-        + restriction + wxT("\n"
-        " ORDER BY relname"));
+    pgSet *sequences= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT cl.oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl, description\n")
+        wxT("  FROM pg_class cl\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n")
+        wxT(" WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr()
+        + restriction + wxT("\n")
+        wxT(" ORDER BY relname"));
 
     if (sequences)
     {

@@ -71,7 +71,7 @@ Oid pgSet::ColTypeOid(int col) const
 wxString pgSet::ColType(int col) const
 {
     wxString szSQL, szResult;
-    szSQL.Printf("SELECT typname FROM pg_type WHERE oid = %d", ColTypeOid(col));
+    szSQL.Printf(wxT("SELECT typname FROM pg_type WHERE oid = %d"), ColTypeOid(col));
     szResult = ExecuteScalar(szSQL);
     return szResult;
 }
@@ -84,7 +84,7 @@ int pgSet::ColScale(int col) const
 
 wxString pgSet::GetVal(const wxString& colname) const
 {
-    int col = PQfnumber(res, colname.c_str());
+    int col = PQfnumber(res, colname.ToAscii());
     if (col < 0)
         wxLogError(__("Column not found in pgSet: ") + colname);
     return GetVal(col);
@@ -97,13 +97,13 @@ wxString pgSet::ExecuteScalar(const wxString& sql) const
 
     wxLogSql(wxT("Set sub-query: %s"), sql.c_str());
 
-    qryRes = PQexec(conn, sql.c_str());
+    qryRes = PQexec(conn, sql.ToAscii());
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
-        return wxString("");
+        return wxEmptyString;
     }
 
     // Retrieve the query result and return it.
-    wxString result=PQgetvalue(qryRes, 0, 0);
+    wxString result=wxString::FromAscii(PQgetvalue(qryRes, 0, 0));
     
     wxLogInfo(wxT("Query result: %s"), result.c_str());
 
@@ -137,9 +137,9 @@ int pgQueryThread::execute()
 {
     wxLongLong startTime=wxGetLocalTimeMillis();
 
-    wxLogSql("Thread Query %s", query.c_str());
+    wxLogSql(wxT("Thread Query %s"), query.c_str());
 
-    if (!PQsendQuery(conn, query.c_str()))
+    if (!PQsendQuery(conn, query.ToAscii()))
         return(0);
 
     while (true)

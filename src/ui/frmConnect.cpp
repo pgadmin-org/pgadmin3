@@ -40,7 +40,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
 {
     wxLogInfo(wxT("Creating a connect dialogue"));
 
-    wxXmlResource::Get()->LoadDialog(this, form, "frmConnect"); 
+    wxXmlResource::Get()->LoadDialog(this, form, wxT("frmConnect")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
@@ -52,9 +52,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
     XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetValue(database);
     XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetValue(username);
     XRCCTRL(*this, "chkTrusted", wxCheckBox)->SetValue(trusted);
-    wxString sport;
-    sport.Printf("%d", port);
-    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetValue(sport);
+    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetValue(NumToStr((long)port));
     XRCCTRL(*this, "txtPassword", wxTextCtrl)->Enable(!trusted);
 }
 
@@ -100,7 +98,7 @@ bool frmConnect::TransferDataFromWindow()
     settings->SetLastServer(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
     settings->SetLastDatabase(XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue());
     settings->SetLastUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
-    settings->SetLastPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
+    settings->SetLastPort(StrToLong(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue()));
     return true;
 }
 
@@ -136,7 +134,7 @@ bool frmConnect::GetTrusted()
 
 long frmConnect::GetPort()
 {
-    return atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue());
+    return StrToLong(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue());
 }
 
 void frmConnect::LockFields()

@@ -181,12 +181,12 @@ void frmMain::OnTipOfTheDay()
 {
 #ifdef __WIN32__
     extern wxString loadPath;
-    wxString tipPath = loadPath + "/tips.txt";
+    wxString tipPath = loadPath + wxT("/tips.txt");
 #else
-    wxString tipPath = DATA_DIR "tips.txt";
+    wxString tipPath = DATA_DIR wxT("tips.txt");
 #endif
 
-    wxTipProvider *tipProvider = wxCreateFileTipProvider(wxT(tipPath), settings->GetNextTipOfTheDay());
+    wxTipProvider *tipProvider = wxCreateFileTipProvider(tipPath, settings->GetNextTipOfTheDay());
     settings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
     settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
     delete tipProvider;
@@ -283,8 +283,8 @@ void frmMain::OnStatus(wxCommandEvent &event)
     pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
     if (conn->GetStatus() == PGCONN_OK)
     {
-        wxString txt = "pgAdmin III Server Status - " + server->GetDescription() 
-            + wxT(" (") + server->GetName() + ":" + NumToStr((long)server->GetPort()) + wxT(")");
+        wxString txt = wxT("pgAdmin III Server Status - ") + server->GetDescription() 
+            + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(")");
 
         wxPoint pos(settings->Read(wxT("frmStatus/Left"), 100), settings->Read(wxT("frmStatus/Top"), 100));
         wxSize size(settings->Read(wxT("frmStatus/Width"), 400), settings->Read(wxT("frmStatus/Height"), 240));
@@ -346,7 +346,7 @@ void frmMain::OnSql(wxCommandEvent &ev)
     pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
     if (conn->GetStatus() == PGCONN_OK)
     {
-        wxString txt = "pgAdmin III Query - " + server->GetDescription() + wxT(" (") + server->GetName() + ":" + NumToStr((long)server->GetPort()) + ") - " + db->GetName();
+        wxString txt = wxT("pgAdmin III Query - ") + server->GetDescription() + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(") - ") + db->GetName();
 
         wxPoint pos(settings->Read(wxT("frmQuery/Left"), 100), settings->Read(wxT("frmQuery/Top"), 100));
         wxSize size(settings->Read(wxT("frmQuery/Width"), 600), settings->Read(wxT("frmQuery/Height"), 500));
@@ -855,7 +855,7 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 void frmMain::OnDisconnect(wxCommandEvent &ev)
 {
     // Disconnect -- does nothing yet
-	wxMessageBox("This is not yet implemented" );
+	wxMessageBox(_("This is not yet implemented"));
 }
 
 

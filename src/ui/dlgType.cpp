@@ -131,11 +131,11 @@ int dlgType::Go(bool modal)
     {
         // Create mode
 
-        pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT proname, nspname\n"
-            "  FROM pg_proc p\n"
-            "  JOIN pg_namespace n ON n.oid=pronamespace\n"
-            " WHERE proargtypes[0] <> 0 AND proargtypes[1] = 0"));
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT proname, nspname\n")
+            wxT("  FROM pg_proc p\n")
+            wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+            wxT(" WHERE proargtypes[0] <> 0 AND proargtypes[1] = 0"));
         if (set)
         {
             while (!set->Eof())

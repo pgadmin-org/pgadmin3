@@ -107,11 +107,11 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
         {
             c1=c1l.GetNextToken();
             c2=c2l.GetNextToken();
-            pgSet *set=ExecuteSet(wxT(
-                "SELECT a1.attname as conattname, a2.attname as confattname\n"
-                "  FROM pg_attribute a1, pg_attribute a2\n"
-                " WHERE a1.attrelid=") + GetTableOidStr() + wxT(" AND a1.attnum=") + c1 + wxT("\n"
-                "   AND a2.attrelid=") + GetRelTableOidStr() + wxT(" AND a2.attnum=") + c2);
+            pgSet *set=ExecuteSet(
+                wxT("SELECT a1.attname as conattname, a2.attname as confattname\n")
+                wxT("  FROM pg_attribute a1, pg_attribute a2\n")
+                wxT(" WHERE a1.attrelid=") + GetTableOidStr() + wxT(" AND a1.attnum=") + c1 + wxT("\n")
+                wxT("   AND a2.attrelid=") + GetRelTableOidStr() + wxT(" AND a2.attnum=") + c2);
             if (set)
             {
                 if (!fkColumns.IsNull())
@@ -173,19 +173,19 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 {
     pgForeignKey *foreignKey=0;
 
-    pgSet *foreignKeys= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, "
-               "conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, "
-               "nr.nspname as refnsp, cr.relname as reftab, description\n"
-        "  FROM pg_constraint ct\n"
-        "  JOIN pg_class cl ON cl.oid=conrelid\n"
-        "  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n"
-        "  JOIN pg_class cr ON cr.oid=confrelid\n"
-        "  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n"
-        " WHERE contype='f' AND conrelid = ") + collection->GetOidStr() 
-        + restriction + wxT("\n"
-        " ORDER BY conname"));
+    pgSet *foreignKeys= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, ")
+               wxT("conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, ")
+               wxT("nr.nspname as refnsp, cr.relname as reftab, description\n")
+        wxT("  FROM pg_constraint ct\n")
+        wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
+        wxT("  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n")
+        wxT("  JOIN pg_class cr ON cr.oid=confrelid\n")
+        wxT("  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n")
+        wxT(" WHERE contype='f' AND conrelid = ") + collection->GetOidStr()
+        + restriction + wxT("\n")
+        wxT(" ORDER BY conname"));
 
     if (foreignKeys)
     {

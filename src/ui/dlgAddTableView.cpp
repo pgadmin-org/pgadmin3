@@ -41,7 +41,7 @@ dlgAddTableView::dlgAddTableView(wxWindow *frame, pgDatabase *database)
     wxLogInfo(wxT("Creating the Query Builder Add Table/View dialogue"));
 
 	// Load the XML resource for this dialog
-    wxXmlResource::Get()->LoadDialog(this, frame, "frmAddTableView"); 
+    wxXmlResource::Get()->LoadDialog(this, frame, wxT("frmAddTableView")); 
 
     // Set the Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
@@ -117,11 +117,11 @@ void dlgAddTableView::InitLists()
 	// We need to know if we're going to show system objects
 	wxString sysobjstr;
 	if (!settings->GetShowSystemObjects())
-		sysobjstr = "JOIN (SELECT oid,nspname FROM pg_namespace "
-				"WHERE nspname <> 'pg_catalog' AND "
-				"nspname <> 'pg_toast' AND "
-				"nspname NOT LIKE 'pg_temp_%' ) b "
-				"ON (a.relnamespace = b.oid) ";
+		sysobjstr = wxT("JOIN (SELECT oid,nspname FROM pg_namespace ")
+				wxT("WHERE nspname <> 'pg_catalog' AND ")
+				wxT("nspname <> 'pg_toast' AND ")
+				wxT("nspname NOT LIKE 'pg_temp_%' ) b ")
+				wxT("ON a.relnamespace = b.oid");
 
 	// Clear the lists
 	m_tablelist->Clear();
@@ -130,10 +130,10 @@ void dlgAddTableView::InitLists()
     if (m_database->Connect() == PGCONN_OK) {
 
 		wxString querystr = 
-			wxT("SELECT a.relname FROM pg_class a " +
+			wxT("SELECT a.relname FROM pg_class a ") +
 				sysobjstr + 
-				"WHERE a.relkind='r' " 
-				"ORDER BY lower(a.relname)");
+				wxT("WHERE a.relkind='r' ")
+				wxT("ORDER BY lower(a.relname)");
 
 		// tables
 		pgSet *tables = m_database->ExecuteSet(querystr);
@@ -146,10 +146,10 @@ void dlgAddTableView::InitLists()
 		delete tables;
 
 		querystr = 
-			wxT("SELECT a.relname FROM pg_class a " +
+			wxT("SELECT a.relname FROM pg_class a ") +
 				sysobjstr + 
-				"WHERE a.relkind='v' " 
-				"ORDER BY lower(a.relname)");
+				wxT("WHERE a.relkind='v' ") 
+				wxT("ORDER BY lower(a.relname)");
 
 		// views
 		pgSet *views = m_database->ExecuteSet(querystr);

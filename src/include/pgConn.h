@@ -47,20 +47,20 @@ enum
 class pgConn
 {
 public:
-    pgConn(const wxString& server = wxString(""), const wxString& database = wxString(""), const wxString& username = wxString(""), const wxString& password = wxString(""), int port = 5432);
+    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432);
     ~pgConn();
     bool ExecuteVoid(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
-    wxString GetUser() const { return wxString(PQuser(conn)); }
-    wxString GetPassword() const { return wxString(PQpass(conn)); }
+    wxString GetUser() const { return wxString::FromAscii(PQuser(conn)); }
+    wxString GetPassword() const { return wxString::FromAscii(PQpass(conn)); }
     wxString GetHost() const { return dbHost; }
     int GetPort() const { return atoi(PQport(conn)); };
-    wxString GetTTY() const { return wxString(PQtty(conn)); }
-    wxString GetOptions() const { return wxString(PQoptions(conn)); }
+    wxString GetTTY() const { return wxString::FromAscii(PQtty(conn)); }
+    wxString GetOptions() const { return wxString::FromAscii(PQoptions(conn)); }
     int GetBackendPID() const { return PQbackendPID(conn); }
     int GetStatus() const;
-    wxString GetLastError() const { return wxString(PQerrorMessage(conn)); }
+    wxString GetLastError() const { return wxString::FromAscii(PQerrorMessage(conn)); }
     wxString GetVersionString();
     float GetVersionNumber();
     long GetLastSystemOID();

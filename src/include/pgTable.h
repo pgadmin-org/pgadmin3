@@ -25,7 +25,7 @@ class pgCollection;
 class pgTable : public pgSchemaObject
 {
 public:
-    pgTable(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgTable(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTable();
 
     int GetIcon() { return PGICON_TABLE; }

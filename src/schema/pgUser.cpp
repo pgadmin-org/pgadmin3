@@ -56,7 +56,7 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
         sql +=wxT(";\n");
         if (!configList.IsEmpty())
         {
-            wxStringTokenizer cfgTokens(configList, ',');
+            wxStringTokenizer cfgTokens(configList, wxT(","));
             while (cfgTokens.HasMoreTokens())
             {
                 sql += wxT("ALTER USER ") + GetQuotedIdentifier()
@@ -88,10 +88,10 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
                 wxString str=set->GetVal(wxT("grolist"));
                 if (!str.IsNull())
                 {
-                    wxStringTokenizer ids(str.Mid(1, str.Length()-2), ',');
+                    wxStringTokenizer ids(str.Mid(1, str.Length()-2), wxT(","));
                     while (ids.HasMoreTokens())
                     {
-                        if (atoi(ids.GetNextToken()) == GetUserId())
+                        if (StrToLong(ids.GetNextToken()) == GetUserId())
                         {
                             groupsIn.Add(groupName);
                             break;
@@ -128,7 +128,7 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         }
         InsertListItem(properties, pos, wxT("Member of"), groupList);
 
-        wxStringTokenizer cfgTokens(configList, ',');
+        wxStringTokenizer cfgTokens(configList, wxT(","));
         while (cfgTokens.HasMoreTokens())
         {
             wxString token=cfgTokens.GetNextToken();

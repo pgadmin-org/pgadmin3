@@ -76,14 +76,14 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         expandedKids=true;
         if (isComposite)
         {
-            pgSet *set=ExecuteSet(wxT(
-                "SELECT attname, t.typname, attndims, atttypmod, nspname\n"
-                "  FROM pg_attribute att\n"
-                "  JOIN pg_type t ON t.oid=atttypid\n"
-                "  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n"
-                "  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n"
-                " WHERE att.attrelid=") + NumToStr(relOid) + wxT("\n"
-                " ORDER by attnum"));
+            pgSet *set=ExecuteSet(
+                wxT("SELECT attname, t.typname, attndims, atttypmod, nspname\n")
+                wxT("  FROM pg_attribute att\n")
+                wxT("  JOIN pg_type t ON t.oid=atttypid\n")
+                wxT("  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n")
+                wxT("  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n")
+                wxT(" WHERE att.attrelid=") + NumToStr(relOid) + wxT("\n")
+                wxT(" ORDER by attnum"));
             if (set)
             {
                 int anzvar=0;
@@ -172,15 +172,15 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     if (!settings->GetShowSystemObjects())
         systemRestriction = wxT("   AND ct.oid IS NULL\n");
 
-    pgSet *types= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid\n"
-        "  FROM pg_type t\n"
-        "  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n"
-        "  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n"
-        " WHERE t.typtype != 'd' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
-        + systemRestriction + wxT(
-        " ORDER BY t.typname"));
+    pgSet *types= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid\n")
+        wxT("  FROM pg_type t\n")
+        wxT("  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n")
+        wxT("  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
+        wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+        + systemRestriction +
+        wxT(" ORDER BY t.typname"));
     if (types)
     {
         while (!types->Eof())

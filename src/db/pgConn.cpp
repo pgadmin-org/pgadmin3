@@ -48,10 +48,10 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 #endif
     
     
-    addr = inet_addr(server.c_str());
+    addr = inet_addr(server.ToAscii());
 	if (addr == INADDR_NONE) // szServer is not an IP address
 	{
-		host = gethostbyname(server.c_str());
+		host = gethostbyname(server.ToAscii());
 		if (host == NULL)
 		{
             resolvedIP = FALSE;
@@ -60,7 +60,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 		}
 
         memcpy(&(ipaddr),host->h_addr,host->h_length); 
-	    hostip.Printf("%s", inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
+	    hostip.Printf(wxT("%s"), inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
 
     } else {
         hostip = server;
@@ -96,7 +96,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     // Open the connection
     wxLogInfo(wxT("Opening connection with connection string: %s"), connstr.c_str());
 
-    conn = PQconnectdb(connstr.c_str());
+    conn = PQconnectdb(connstr.ToAscii());
     dbHost = server;
 }
 
@@ -117,7 +117,7 @@ bool pgConn::ExecuteVoid(const wxString& sql)
     PGresult *qryRes;
 
     wxLogSql(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.c_str());
+    qryRes = PQexec(conn, sql.ToAscii());
     int res = PQresultStatus(qryRes);
 
     // Check for errors
@@ -136,14 +136,14 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxLogSql(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.c_str());
+    qryRes = PQexec(conn, sql.ToAscii());
         
     // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
     {
         wxLogError(wxT("%s"), PQerrorMessage(conn));
         PQclear(qryRes);
-        return wxString("");
+        return wxEmptyString;
     }
 
 	// Check for a returned row
@@ -151,11 +151,11 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
     {
 		wxLogInfo(wxT("Query returned no tuples"));
         PQclear(qryRes);
-        return wxString("");
+        return wxEmptyString;
 	}
 	
 	// Retrieve the query result and return it.
-	wxString result=PQgetvalue(qryRes, 0, 0);
+    wxString result=wxString::FromAscii(PQgetvalue(qryRes, 0, 0));
 
     wxLogSql(wxT("Query result: %s"), result.c_str());
 
@@ -169,7 +169,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxLogSql(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.c_str());
+    qryRes = PQexec(conn, sql.ToAscii());
     pgSet *set = new pgSet(qryRes, conn);
     if (!set) {
         wxLogError(__("Couldn't create a pgSet object!"));
@@ -205,19 +205,19 @@ float pgConn::GetVersionNumber()
 
     static wxString decsep;
     if (decsep.Length() == 0) {
-        decsep.Printf("%lf", 1.2);
+        decsep.Printf(wxT("%lf"), 1.2);
         decsep = decsep[(unsigned int)1];
     }
 
-	if (sscanf(GetVersionString(), "%*s %d.%d", &major, &minor) >= 2)
+	if (sscanf(GetVersionString().ToAscii(), "%*s %d.%d", &major, &minor) >= 2)
 	{
-		version.Printf("%d%s%d", major, decsep.c_str(), minor);
+		version.Printf(wxT("%d%s%d"), major, decsep.c_str(), minor);
 	}
-	return (float) atof(version.c_str());
+	return StrToDouble(version);
 }
 
 
 long pgConn::GetLastSystemOID()
 {
-	return atol(ExecuteScalar(wxT("SELECT datlastsysoid FROM pg_database LIMIT 1;")));
+	return StrToLong(ExecuteScalar(wxT("SELECT datlastsysoid FROM pg_database LIMIT 1;")));
 }

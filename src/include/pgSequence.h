@@ -25,7 +25,7 @@ class pgCollection;
 class pgSequence : public pgSchemaObject
 {
 public:
-    pgSequence(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgSequence(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgSequence();
 
     int GetIcon() { return PGICON_SEQUENCE; }

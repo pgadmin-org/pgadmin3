@@ -31,7 +31,7 @@ frmPassword::frmPassword(wxFrame *parent)
 
     wxLogInfo(wxT("Creating a change password dialogue"));
 
-    wxXmlResource::Get()->LoadDialog(this, parent, "frmPassword"); 
+    wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmPassword")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

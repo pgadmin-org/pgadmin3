@@ -22,7 +22,7 @@
 
 
 // Must match the PG_OBJTYPE enumeration in pgObject.h
-char *typeNameList[] =
+wxChar *typeNameList[] =
 {
     __("None"),
     __("Servers"),          __("Server"),
@@ -279,10 +279,10 @@ wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str
 {
     wxString aclWithGrant, aclWithoutGrant;
 
-    const char *p=str.c_str();
+    const wxChar *p=str.c_str();
     while (*p)
     {
-        if (p[1] == '*')
+        if (p[1] == (wxChar)'*')
         {
             aclWithGrant += *p;
             p += 2;
@@ -506,7 +506,7 @@ enum tokentype
 
 typedef struct __tokenaction
 {
-    char *keyword, *replaceKeyword;
+    wxChar *keyword, *replaceKeyword;
     int actionBefore, actionAfter;
     tokentype special;
     bool doBreak;
@@ -515,30 +515,30 @@ typedef struct __tokenaction
 
 tokenAction sqlTokens[] =
 {
-    { "WHERE"},     // initializing fails, so we're doing it in the code
-    { "SELECT", " SELECT",   0, 8,      SQLTK_NORMAL,   true},
-    { "FROM",   "   FROM",  -8, 8,      SQLTK_NORMAL,   true},
-    { "LEFT",   "   LEFT",  -8, 13,     SQLTK_JOINMOD,  true},
-    { "RIGHT",  "   RIGHT", -8, 13,     SQLTK_JOINMOD,  true},
-    { "NATURAL","   NATURAL", -8, 13,   SQLTK_JOINMOD,  true},
-    { "FULL",   "   FULL",  -8, 13,     SQLTK_JOINMOD,  true},
-    { "CROSS",  "   CROSS", -8, 13,     SQLTK_JOINMOD,  true},
-    { "UNION",  "   UNION", -8, 13,     SQLTK_UNION,    true},
-    { "JOIN",   "   JOIN",  -8, 13,     SQLTK_JOIN,     true},
-    { "ON",     "ON",        0, -5,     SQLTK_ON,       false},
-    { "ORDER",  "  ORDER",  -8, 8,      SQLTK_NORMAL,   true},
-    { "GROUP",  "  GROUP",  -8, 8,      SQLTK_NORMAL,   true},
-    { "HAVING", " HAVING",  -8, 8,      SQLTK_NORMAL,   true},
-    { "LIMIT",  "  LIMIT",  -8, 8,      SQLTK_NORMAL,   true},
-    { "CASE",   "CASE",      0, 4,      SQLTK_NORMAL,   true},
-    { "WHEN",   "WHEN",      0, 0,      SQLTK_NORMAL,   true},
-    { "ELSE",   "ELSE",      0, 0,      SQLTK_NORMAL,   true},
-    { "END",    "END ",     -4, 0,      SQLTK_NORMAL,   true},
+    { wxT("WHERE")},     // initializing fails, so we're doing it in the code
+    { wxT("SELECT"), wxT(" SELECT"),   0, 8,      SQLTK_NORMAL,   true},
+    { wxT("FROM"),   wxT("   FROM"),  -8, 8,      SQLTK_NORMAL,   true},
+    { wxT("LEFT"),   wxT("   LEFT"),  -8, 13,     SQLTK_JOINMOD,  true},
+    { wxT("RIGHT"),  wxT("   RIGHT"), -8, 13,     SQLTK_JOINMOD,  true},
+    { wxT("NATURAL"),wxT("   NATURAL"), -8, 13,   SQLTK_JOINMOD,  true},
+    { wxT("FULL"),   wxT("   FULL"),  -8, 13,     SQLTK_JOINMOD,  true},
+    { wxT("CROSS"),  wxT("   CROSS"), -8, 13,     SQLTK_JOINMOD,  true},
+    { wxT("UNION"),  wxT("   UNION"), -8, 13,     SQLTK_UNION,    true},
+    { wxT("JOIN"),   wxT("   JOIN"),  -8, 13,     SQLTK_JOIN,     true},
+    { wxT("ON"),     wxT("ON"),        0, -5,     SQLTK_ON,       false},
+    { wxT("ORDER"),  wxT("  ORDER"),  -8, 8,      SQLTK_NORMAL,   true},
+    { wxT("GROUP"),  wxT("  GROUP"),  -8, 8,      SQLTK_NORMAL,   true},
+    { wxT("HAVING"), wxT(" HAVING"),  -8, 8,      SQLTK_NORMAL,   true},
+    { wxT("LIMIT"),  wxT("  LIMIT"),  -8, 8,      SQLTK_NORMAL,   true},
+    { wxT("CASE"),   wxT("CASE"),      0, 4,      SQLTK_NORMAL,   true},
+    { wxT("WHEN"),   wxT("WHEN"),      0, 0,      SQLTK_NORMAL,   true},
+    { wxT("ELSE"),   wxT("ELSE"),      0, 0,      SQLTK_NORMAL,   true},
+    { wxT("END"),    wxT("END "),     -4, 0,      SQLTK_NORMAL,   true},
     {0, 0, 0, 0, SQLTK_NORMAL, false}
 };
 
 tokenAction secondOnToken= 
-    { "ON",     "ON",       -5, 0,      SQLTK_ON,       true};
+    { wxT("ON"),     wxT("ON"),       -5, 0,      SQLTK_ON,       true};
 
 
 ////////////////////////////////
@@ -549,7 +549,7 @@ tokenAction secondOnToken=
 
 wxString pgRuleObject::GetFormattedDefinition()
 {
-    sqlTokens[0].replaceKeyword="  WHERE";
+    sqlTokens[0].replaceKeyword=wxT("  WHERE");
     sqlTokens[0].actionBefore = -8;
     sqlTokens[0].actionAfter = 8;
     sqlTokens[0].special = SQLTK_NORMAL;
@@ -626,7 +626,7 @@ gotToken:
             }
             if (tp->doBreak)
             {
-                fc += "\n" + wxString(' ', indent);
+                fc += wxT("\n") + wxString(' ', indent);
                 position = indent;
             }
             else
@@ -635,7 +635,7 @@ gotToken:
                 position += 1;
             }
             fc += tp->replaceKeyword;
-            position += strlen(tp->replaceKeyword);
+            position += wxString(tp->replaceKeyword).Length();
 
             indent += tp->actionAfter;
             if (indent<0)   indent=0;

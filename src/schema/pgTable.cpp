@@ -158,7 +158,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                         if (colCount)
                             sql += wxT(",\n");
 
-                        sql += wxT("  ") + column->GetQuotedIdentifier() + wxString(" ")
+                        sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
                             + column->GetDefinition();
 
                         colCount++;
@@ -217,13 +217,13 @@ void pgTable::UpdateRows()
 void pgTable::UpdateInheritance()
 {
     // not checked so far
-    pgSet *props=ExecuteSet(wxT(
-        "SELECT c.relname , nspname\n"
-        "  FROM pg_inherits i\n"
-        "  JOIN pg_class c ON c.oid = i.inhparent\n"
-        "  JOIN pg_namespace n ON n.oid=c.relnamespace\n"
-        " WHERE i.inhrelid = ") +GetOidStr() + wxT("\n"
-        " ORDER BY inhseqno"));
+    pgSet *props=ExecuteSet(
+        wxT("SELECT c.relname , nspname\n")
+        wxT("  FROM pg_inherits i\n")
+        wxT("  JOIN pg_class c ON c.oid = i.inhparent\n")
+        wxT("  JOIN pg_namespace n ON n.oid=c.relnamespace\n")
+        wxT(" WHERE i.inhrelid = ") +GetOidStr() + wxT("\n")
+        wxT(" ORDER BY inhseqno"));
     if (props)
     {
         inheritedTableCount=0;
@@ -283,16 +283,16 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         AppendBrowserItem(browser, collection);
 
         // convert list of columns numbers to column names
-        wxStringTokenizer collist(GetPrimaryKeyColNumbers(), ',');
+        wxStringTokenizer collist(GetPrimaryKeyColNumbers(), wxT(","));
         wxString cn;
 
         while (collist.HasMoreTokens())
         {
             cn=collist.GetNextToken();
-            pgSet *set=ExecuteSet(wxT(
-                "SELECT attname\n"
-                "  FROM pg_attribute\n"
-                " WHERE attrelid=") + GetOidStr() + wxT(" AND attnum IN (") + cn + wxT(")"));
+            pgSet *set=ExecuteSet(
+                wxT("SELECT attname\n")
+                wxT("  FROM pg_attribute\n")
+                wxT(" WHERE attrelid=") + GetOidStr() + wxT(" AND attnum IN (") + cn + wxT(")"));
             if (set)
             {
                 if (!primaryKey.IsNull())
@@ -338,17 +338,17 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 
-    DisplayStatistics(statistics, wxT(
-        "SELECT seq_scan AS \"Sequential Scans\", seq_tup_read AS \"Sequential Tuples Read\", "
-                "idx_scan AS \"Index Scans\", idx_tup_fetch AS \"Index Tuples Fetched\", "
-                "n_tup_ins AS \"Tuples Inserted\", n_tup_upd AS \"Tuples Updated\", n_tup_del AS \"Tuples Deleted\","
-                "heap_blks_read AS \"Heap Blocks Read\", heap_blks_hit AS \"Heap Blocks Hit\", "
-                "idx_blks_read AS \"Index Blocks Read\", idx_blks_hit AS \"Index Blocks Hit\", "
-                "toast_blks_read AS \"Toast Blocks Read\", toast_blks_hit AS \"Toast Blocks Hit\", "
-                "tidx_blks_read AS \"Toast Index Blocks Read\", tidx_blks_hit AS \"Toast Index Blocks Hit\"\n"
-        "  FROM pg_stat_all_tables stat, pg_statio_all_tables statio\n"
-        " WHERE stat.relid = statio.relid\n"
-        "   AND stat.relid = ") + GetOidStr());
+    DisplayStatistics(statistics, 
+        wxT("SELECT seq_scan AS \"Sequential Scans\", seq_tup_read AS \"Sequential Tuples Read\", ")
+                wxT("idx_scan AS \"Index Scans\", idx_tup_fetch AS \"Index Tuples Fetched\", ")
+                wxT("n_tup_ins AS \"Tuples Inserted\", n_tup_upd AS \"Tuples Updated\", n_tup_del AS \"Tuples Deleted\",")
+                wxT("heap_blks_read AS \"Heap Blocks Read\", heap_blks_hit AS \"Heap Blocks Hit\", ")
+                wxT("idx_blks_read AS \"Index Blocks Read\", idx_blks_hit AS \"Index Blocks Hit\", ")
+                wxT("toast_blks_read AS \"Toast Blocks Read\", toast_blks_hit AS \"Toast Blocks Hit\", ")
+                wxT("tidx_blks_read AS \"Toast Index Blocks Read\", tidx_blks_hit AS \"Toast Index Blocks Hit\"\n")
+        wxT("  FROM pg_stat_all_tables stat, pg_statio_all_tables statio\n")
+        wxT(" WHERE stat.relid = statio.relid\n")
+        wxT("   AND stat.relid = ") + GetOidStr());
 }
 
 
@@ -377,15 +377,15 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 {
     pgTable *table=0;
 
-    pgSet *tables= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, "
-                "relhassubclass, reltuples, description, conname, conkey\n"
-        "  FROM pg_class rel\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid AND des.objsubid=0\n"
-        "  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n"
-        " WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
+    pgSet *tables= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
+                wxT("relhassubclass, reltuples, description, conname, conkey\n")
+        wxT("  FROM pg_class rel\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid AND des.objsubid=0\n")
+        wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
+        wxT(" WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
         + restriction + 
-        " ORDER BY relname"));
+        wxT(" ORDER BY relname"));
 
     if (tables)
     {

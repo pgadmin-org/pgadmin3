@@ -33,7 +33,7 @@ protected:
 class pgPrimaryKey : public pgIndexConstraint
 {
 public:
-    pgPrimaryKey(pgSchema *newSchema, const wxString& newName = wxString(""))
+    pgPrimaryKey(pgSchema *newSchema, const wxString& newName = wxT(""))
         : pgIndexConstraint(newSchema, newName, PG_PRIMARYKEY) {}
 
     bool CanCreate() { return false; }
@@ -44,7 +44,7 @@ public:
 class pgUnique : public pgIndexConstraint
 {
 public:
-    pgUnique(pgSchema *newSchema, const wxString& newName = wxString(""))
+    pgUnique(pgSchema *newSchema, const wxString& newName = wxT(""))
         : pgIndexConstraint(newSchema, newName, PG_UNIQUE) {}
 
     int GetIcon() { return PGICON_UNIQUE; }

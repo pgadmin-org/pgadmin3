@@ -25,7 +25,7 @@ class pgCollection;
 class pgType : public pgSchemaObject
 {
 public:
-    pgType(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgType(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgType();
 
     int GetIcon() { return PGICON_TYPE; }

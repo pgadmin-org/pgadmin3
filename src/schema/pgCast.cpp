@@ -89,15 +89,15 @@ pgObject *pgCast::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgCast *cast=0;
-    pgSet *casts= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp, proname, nspname\n"
-        "  FROM pg_cast ca\n"
-        "  JOIN pg_type st ON st.oid=castsource\n"
-        "  JOIN pg_type tt ON tt.oid=casttarget\n"
-        "  JOIN pg_proc pr ON pr.oid=castfunc\n"
-        "  JOIN pg_namespace na ON na.oid=pr.pronamespace\n"
+    pgSet *casts= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp, proname, nspname\n")
+        wxT("  FROM pg_cast ca\n")
+        wxT("  JOIN pg_type st ON st.oid=castsource\n")
+        wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
+        wxT("  JOIN pg_proc pr ON pr.oid=castfunc\n")
+        wxT("  JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
         + restriction +
-        " ORDER BY st.typname, tt.typname"));
+        wxT(" ORDER BY st.typname, tt.typname"));
 
     if (casts)
     {

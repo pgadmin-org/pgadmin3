@@ -145,17 +145,19 @@ wxString pgServer::GetIdentifier() const
     return wxString(id);
 }
 
+
 wxString pgServer::GetVersionString()
 {
-    if (connected) {
-      if (ver.IsEmpty()) {
-          ver = wxString(conn->GetVersionString());
-      }
-      return ver;
-    } else {
-        return wxString("");
+    if (connected)
+    {
+        if (ver.IsEmpty())
+            ver = wxString(conn->GetVersionString());
+        return ver;
     }
+    else
+        return wxEmptyString;
 }
+
 
 float pgServer::GetVersionNumber()
 {
@@ -168,6 +170,7 @@ float pgServer::GetVersionNumber()
         return 0.0;
     }
 }
+
 
 OID pgServer::GetLastSystemOID()
 {

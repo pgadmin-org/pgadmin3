@@ -104,16 +104,16 @@ pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 {
     pgView *view=0;
 
-    pgSet *views= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
-                + collection->GetDatabase()->GetViewdefFunction() + wxT("(c.oid) AS definition\n"
-        "  FROM pg_class c\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n"
-        " WHERE ((c.relhasrules AND (EXISTS (\n"
-        "           SELECT r.rulename FROM pg_rewrite r\n"
-        "            WHERE ((r.ev_class = c.oid)\n"
-        "              AND (bpchar(r.ev_type) = '1'::bpchar)) ))) OR (c.relkind = 'v'::char))\n"
-        "   AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+    pgSet *views= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
+             + collection->GetDatabase()->GetViewdefFunction() + wxT("(c.oid) AS definition\n")
+        wxT("  FROM pg_class c\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
+        wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
+        wxT("           SELECT r.rulename FROM pg_rewrite r\n")
+        wxT("            WHERE ((r.ev_class = c.oid)\n")
+        wxT("              AND (bpchar(r.ev_type) = '1'::bpchar)) ))) OR (c.relkind = 'v'::char))\n")
+        wxT("   AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
         + restriction
         + wxT(" ORDER BY relname"));
 

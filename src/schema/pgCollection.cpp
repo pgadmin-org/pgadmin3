@@ -34,8 +34,6 @@
 #include "pgRule.h"
 #include "pgTrigger.h"
 
-extern char *typeNameList[]; 
-
 
 pgCollection::pgCollection(int newType, pgServer *sv)
 : pgObject(newType, typeNameList[newType])

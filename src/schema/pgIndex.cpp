@@ -97,10 +97,10 @@ void pgIndex::ReadColumnDetails()
             cn=collist.GetNextToken();
             ct=args.GetNextToken();
 
-            pgSet *colSet=ExecuteSet(wxT(
-                "SELECT attname as conattname\n"
-                "  FROM pg_attribute\n"
-                " WHERE attrelid=") + GetTableOidStr() + wxT(" AND attnum=") + cn);
+            pgSet *colSet=ExecuteSet(
+                wxT("SELECT attname as conattname\n")
+                wxT("  FROM pg_attribute\n")
+                wxT(" WHERE attrelid=") + GetTableOidStr() + wxT(" AND attnum=") + cn);
             if (colSet)
             {
                 if (columnCount)
@@ -202,22 +202,22 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 {
     pgIndex *index=0;
 
-        pgSet *indexes= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n"
-        "       proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass, description,\n"
-        "       ") + collection->GetDatabase()->GetExprFunction() + wxT("(indpred, indrelid) as indconstraint, contype, condeferrable, condeferred, amname\n"
-        "  FROM pg_index idx\n"
-        "  JOIN pg_class cls ON cls.oid=indexrelid\n"
-        "  JOIN pg_class tab ON tab.oid=indrelid\n"
-        "  JOIN pg_namespace n ON n.oid=tab.relnamespace\n"
-        "  JOIN pg_am am ON am.oid=cls.relam\n"
-        "  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n"
-        "  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n"
-        "  LEFT OUTER JOIN pg_constraint con ON con.conrelid=indrelid AND conname=cls.relname\n"
-        " WHERE indrelid = ") + collection->GetOidStr() 
-        + restriction + wxT("\n"
-        " ORDER BY cls.relname"));
+        pgSet *indexes= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
+        wxT("       proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass, description,\n")
+        wxT("       ") + collection->GetDatabase()->GetExprFunction() + wxT("(indpred, indrelid) as indconstraint, contype, condeferrable, condeferred, amname\n")
+        wxT("  FROM pg_index idx\n")
+        wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
+        wxT("  JOIN pg_class tab ON tab.oid=indrelid\n")
+        wxT("  JOIN pg_namespace n ON n.oid=tab.relnamespace\n")
+        wxT("  JOIN pg_am am ON am.oid=cls.relam\n")
+        wxT("  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n")
+        wxT("  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n")
+        wxT("  LEFT OUTER JOIN pg_constraint con ON con.conrelid=indrelid AND conname=cls.relname\n")
+        wxT(" WHERE indrelid = ") + collection->GetOidStr()
+        + restriction + wxT("\n")
+        wxT(" ORDER BY cls.relname"));
 
     if (indexes)
     {

@@ -25,7 +25,7 @@ class pgCollection;
 class pgCast : public pgDatabaseObject
 {
 public:
-    pgCast(const wxString& newName = wxString(""));
+    pgCast(const wxString& newName = wxT(""));
     ~pgCast();
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);

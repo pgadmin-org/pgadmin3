@@ -207,7 +207,7 @@ void frmQuery::updateRecentFiles()
 
     for (i=1 ; i <= maxFiles ; i++)
     {
-        lastFiles[i] = settings->Read(wxT("RecentFiles/") + wxString((char)('0'+i)), wxT(""));
+        lastFiles[i] = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("%d"), '0'+i), wxT(""));
         if (!lastPath.IsNull() && lastPath.IsSameAs(lastFiles[i], wxARE_FILENAMES_CASE_SENSITIVE))
             recentIndex=i;
     }
@@ -232,18 +232,18 @@ void frmQuery::updateRecentFiles()
 
     for (i=1 ; i <= maxFiles ; i++)
     {
-        settings->Write(wxT("RecentFiles/") + wxString((char)('0'+i)), lastFiles[i]);
+        settings->Write(wxT("RecentFiles/") + wxString::Format(wxT("%d"), '0'+i), lastFiles[i]);
 
 
         if (!lastFiles[i].IsNull())
-            recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString((char)('0'+i)) + wxT("  ") + lastFiles[i]);
+            recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString::Format(wxT("%d"), '0'+i) + wxT("  ") + lastFiles[i]);
     }
 }
 
 void frmQuery::OnRecent(wxCommandEvent& event)
 {
     int fileNo=event.GetId() - MNU_RECENT;
-    lastPath = settings->Read(wxT("RecentFiles/") + wxString((char)('0'+fileNo)), wxT(""));
+    lastPath = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("%d"), '0'+fileNo), wxT(""));
 
     if (!lastPath.IsNull())
     {
@@ -520,13 +520,13 @@ void frmQuery::OnChange(wxNotifyEvent& event)
 
 void frmQuery::openLastFile()
 {
-    FILE *f=fopen(lastPath.c_str(), "rt");
+    FILE *f=fopen(lastPath.ToAscii(), "rt");
     if (f)
     {
         fseek(f, 0, SEEK_END);
         int len=ftell(f);
         fseek(f, 0, SEEK_SET);
-        wxString buf("\0", len+1);
+        wxString buf(wxT("\0"), len+1);
         memset((char*)buf.c_str(), 0, len+1);
         fread((char*)buf.c_str(), len, 1, f);
         fclose(f);
@@ -560,7 +560,7 @@ void frmQuery::OnSave(wxCommandEvent& event)
         return;
     }
 
-    FILE *f=fopen(lastPath.c_str(), "w+t");
+    FILE *f=fopen(lastPath.ToAscii(), "w+t");
     if (f)
     {
         setExtendedTitle();
@@ -644,7 +644,7 @@ void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
         str=msg;
     else
         str=msgShort;
-    str.Replace("\n", " ");
+    str.Replace(wxT("\n"), wxT(" "));
     SetStatusText(str, STATUSPOS_MSGS);
 }
 
@@ -747,8 +747,9 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                     maxRows = rowsTotal;
                 if (rowsTotal > maxRows)
                 {
-                    wxMessageDialog msg(this, wxString::Format(_("The maximum of %ld rows is exceeded "
-                        "(total %ld).\nRetrieve all rows anyway?"), maxRows, rowsTotal), _("Limit exceeded"), 
+                    wxMessageDialog msg(this, wxString::Format(
+                            _("The maximum of %ld rows is exceeded (total %ld)."), maxRows, rowsTotal) +
+                            _("\nRetrieve all rows anyway?"), _("Limit exceeded"), 
                                 wxYES_NO|wxCANCEL|wxNO_DEFAULT|wxICON_EXCLAMATION);
                     switch (msg.ShowModal())
                     {
@@ -792,18 +793,18 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                     if (elapsed > elapsedRetrieve +100)
                     {
                         elapsedRetrieve=elapsed;
-                        SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
+                        SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
                         wxYield();
                     }
                 }
 	        	sqlResult->Thaw();
 
                 elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
-                SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
+                SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
 
-                msgResult->AppendText(wxT(
-                    "Total query runtime: ") + elapsedQuery.ToString() + " ms.\n"
-                    "Data retrieval runtime: " + elapsedRetrieve.ToString() + wxT(" ms.\n"));
+                msgResult->AppendText(
+                    wxT("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n")
+                    wxT("Data retrieval runtime: ") + elapsedRetrieve.ToString() + wxT(" ms.\n"));
 
                 if (rowsReadTotal == sqlResult->NumRows())
                     showMessage(wxString::Format(_("%ld rows retrieved."), rowsReadTotal), _("OK."));

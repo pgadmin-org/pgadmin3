@@ -90,14 +90,14 @@ pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 {
     pgLanguage *language=0;
 
-        pgSet *languages= collection->GetDatabase()->ExecuteSet(wxT(
-       "SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval\n"
-       "  FROM pg_language lan\n"
-       "  JOIN pg_proc hp on hp.oid=lanplcallfoid\n"
-       "  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n"
-       " WHERE lanispl IS TRUE")
-       + restriction + wxT("\n"
-       " ORDER BY lanname"));
+        pgSet *languages= collection->GetDatabase()->ExecuteSet(
+       wxT("SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval\n")
+       wxT("  FROM pg_language lan\n")
+       wxT("  JOIN pg_proc hp on hp.oid=lanplcallfoid\n")
+       wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n")
+       wxT(" WHERE lanispl IS TRUE")
+       + restriction + wxT("\n")
+       wxT(" ORDER BY lanname"));
 
     if (languages)
     {

@@ -61,18 +61,18 @@ int pgDatabase::Connect()
         {
             // Now we're connected.
             connected = TRUE;
-            pgSet *set=conn->ExecuteSet(wxT(
-                "SELECT DEFS.*, description\n"
-                "  FROM (SELECT \n"
-                "  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_viewdef', 'pg_get_viewdef2')"
-                      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_viewdef,\n"
-                "  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_ruledef', 'pg_get_ruledef2')"
-                      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_ruledef,\n"
-                "  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_expr', 'pg_get_expr2')"
-                      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_expr,\n"
-                " 'nix' as get_ruledef, 'expr' as get_expr\n"
-                "       ) AS DEFS\n"
-                "  LEFT OUTER JOIN pg_description ON objoid=") + GetOidStr());
+            pgSet *set=conn->ExecuteSet(
+                wxT("SELECT DEFS.*, description\n")
+                wxT("  FROM (SELECT \n")
+                wxT("  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_viewdef', 'pg_get_viewdef2')")
+                wxT(      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_viewdef,\n")
+                wxT("  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_ruledef', 'pg_get_ruledef2')")
+                wxT(      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_ruledef,\n")
+                wxT("  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_expr', 'pg_get_expr2')")
+                wxT(      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_expr,\n")
+                wxT(" 'nix' as get_ruledef, 'expr' as get_expr\n")
+                wxT("       ) AS DEFS\n")
+                wxT("  LEFT OUTER JOIN pg_description ON objoid=") + GetOidStr());
             if (set)
             {
                 viewdefFunction = set->GetVal(wxT("get_viewdef"));
@@ -227,12 +227,12 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 {
     pgDatabase *database=0;
 
-    pgSet *databases = collection->GetServer()->ExecuteSet(wxT(
-       "SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, "
-              "pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner\n"
-       "  FROM pg_database db\n"
+    pgSet *databases = collection->GetServer()->ExecuteSet(
+       wxT("SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, ")
+              wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner\n")
+       wxT("  FROM pg_database db\n")
        + restriction +
-       " ORDER BY datname"));
+       wxT(" ORDER BY datname"));
     
     if (databases)
     {

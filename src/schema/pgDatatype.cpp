@@ -76,12 +76,12 @@ DatatypeReader::DatatypeReader(pgConn *conn, bool withDomains)
 
 void DatatypeReader::init(pgConn *conn, const wxString &condition)
 {
-    set=conn->ExecuteSet(wxT(
-        "SELECT typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname\n"
-        "  FROM pg_type t\n"
-        "  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n"
-        " WHERE ") + condition + wxT("\n"
-        " ORDER BY CASE WHEN typtype='d' THEN 0 ELSE 1 END, (t.typelem>0)::bool, t.typname"));
+    set=conn->ExecuteSet(
+        wxT("SELECT typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname\n")
+        wxT("  FROM pg_type t\n")
+        wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
+        wxT(" WHERE ") + condition + wxT("\n")
+        wxT(" ORDER BY CASE WHEN typtype='d' THEN 0 ELSE 1 END, (t.typelem>0)::bool, t.typname"));
 }
 
 
@@ -89,7 +89,6 @@ bool DatatypeReader::IsDomain() const
 {
     return set->GetVal(wxT("typtype")) == 'd';
 }
-
 
 
 bool DatatypeReader::IsVarlen() const

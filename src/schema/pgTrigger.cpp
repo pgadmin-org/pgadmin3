@@ -168,14 +168,14 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
 {
     pgTrigger *trigger=0;
 
-        pgSet *triggers= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT t.oid, t.*, relname, nspname, des.description\n"
-        "  FROM pg_trigger t\n"
-        "  JOIN pg_class cl ON cl.oid=tgrelid\n"
-        "  JOIN pg_namespace na ON na.oid=relnamespace\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n"
-        " WHERE NOT tgisconstraint AND tgrelid = ") + collection->GetOidStr() + wxT("\n"
-        " ORDER BY tgname"));
+        pgSet *triggers= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT t.oid, t.*, relname, nspname, des.description\n")
+        wxT("  FROM pg_trigger t\n")
+        wxT("  JOIN pg_class cl ON cl.oid=tgrelid\n")
+        wxT("  JOIN pg_namespace na ON na.oid=relnamespace\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
+        wxT(" WHERE NOT tgisconstraint AND tgrelid = ") + collection->GetOidStr() + wxT("\n")
+        wxT(" ORDER BY tgname"));
 
     if (triggers)
     {

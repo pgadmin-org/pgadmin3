@@ -24,7 +24,7 @@
 class pgDatabase : public pgServerObject
 {
 public:
-    pgDatabase(const wxString& newName = wxString(""));
+    pgDatabase(const wxString& newName = wxT(""));
     ~pgDatabase();
 
     int GetIcon() { return PGICON_DATABASE; }

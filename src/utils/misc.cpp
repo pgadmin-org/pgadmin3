@@ -24,6 +24,20 @@
 #include "frmMain.h"
 #include "frmHelp.h"
 
+
+// we dont have an appropriate wxLongLong method
+#ifdef __WIN32__
+#define atolonglong _atoi64
+#else
+#ifdef __WXMAC__
+#define atolonglong(str) strtoll(str, (char **)NULL, 10) 
+#else
+#define atolonglong atoll
+#endif
+#endif
+
+
+
 // Global Vars - yuch!
 wxStopWatch stopwatch;
 wxString timermsg;
@@ -33,7 +47,7 @@ void StartMsg(const wxString& msg)
     extern frmMain *winMain;
 
     if (!timermsg.IsEmpty()) return;
-    timermsg.Printf("%s...", msg.c_str());
+    timermsg.Printf(wxT("%s..."), msg.c_str());
     wxBeginBusyCursor();
     stopwatch.Start(0);
     wxLogStatus(timermsg);
@@ -50,12 +64,12 @@ void EndMsg()
     // Get the execution time & display it
     float timeval = stopwatch.Time();
     wxString time, msg;
-    time.Printf("%.2f Secs", (timeval/1000));
+    time.Printf(wxT("%.2f secs"), (timeval/1000));
     winMain->statusBar->SetStatusText(time, 2);
 
     // Display the 'Done' message
-    timermsg.Append(" Done.");
-    msg.Printf("%s (%s)", timermsg.c_str(), time.c_str());
+    timermsg.Append(wxT(" Done."));
+    msg.Printf(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
     wxLogStatus(msg);
     winMain->statusBar->SetStatusText(timermsg, 1);
     wxEndBusyCursor();
@@ -99,7 +113,7 @@ bool StrToBool(const wxString& value)
 wxString NumToStr(long value)
 {
     wxString result;
-    result.Printf("%ld", value);
+    result.Printf(wxT("%ld"), value);
     return result;
 }
 
@@ -107,20 +121,20 @@ wxString NumToStr(long value)
 wxString NumToStr(OID value)
 {
     wxString result;
-    result.Printf("%u", (long)value);
+    result.Printf(wxT("%u"), (long)value);
     return result;
 }
 
 
 long StrToLong(const wxString& value)
 {
-    return atol(value.c_str());
+    return atol(value.ToAscii());
 }
 
 
 OID StrToOid(const wxString& value)
 {
-    return (OID)atol(value.c_str());
+    return (OID)atol(value.ToAscii());
 }
 
 wxString NumToStr(double value)
@@ -129,18 +143,18 @@ wxString NumToStr(double value)
     static wxString decsep;
     
     if (decsep.Length() == 0) {
-        decsep.Printf("%lf", 1.2);
+        decsep.Printf(wxT("%lf"), 1.2);
         decsep = decsep[(unsigned int)1];
     }
 
-    result.Printf("%lf", value);
-    result.Replace(decsep,".");
+    result.Printf(wxT("%lf"), value);
+    result.Replace(decsep, wxT("."));
 
     // Get rid of excessive decimal places
     if (result.Contains(wxT(".")))
-        while (result.Right(1) == "0")
+        while (result.Right(1) == wxT("0"))
             result.RemoveLast();
-    if (result.Right(1) == ".")
+    if (result.Right(1) == wxT("."))
         result.RemoveLast();
 
     return result;
@@ -148,7 +162,13 @@ wxString NumToStr(double value)
 
 double StrToDouble(const wxString& value)
 {
-    return strtod(value.c_str(), 0);
+    return strtod(value.ToAscii(), 0);
+}
+
+
+wxULongLong StrToLongLong(const wxString &value)
+{
+    return atolonglong(value.ToAscii());
 }
 
 
@@ -201,8 +221,8 @@ wxString qtString(const wxString& value)
 {
     wxString result = value;	
 
-    result.Replace("\\", "\\\\");
-    result.Replace("'", "\\'");
+    result.Replace(wxT("\\"), wxT("\\\\"));
+    result.Replace(wxT("'"), wxT("\\'"));
     result.Append(wxT("'"));
     result.Prepend(wxT("'"));
 	
@@ -219,7 +239,7 @@ wxString qtIdent(const wxString& value)
     int pos = 0;
 
     // Replace Double Quotes
-    result.Replace("\"", "\"\"");
+    result.Replace(wxT("\""), wxT("\"\""));
 	
     // Is it a number?
     if (result.IsNumber()) {
@@ -249,31 +269,31 @@ bool IsValidIdentifier(wxString ident)
     // compiler complains if not unsigned
 	unsigned int len = ident.length();
 	if (!len)
-		return FALSE;
+		return false;
 
-	const char *first = 
+	wxString first = 
 		wxT("_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	const char *second = 
+	wxString second = 
 		wxT("_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
-	if (strchr(first, (wxChar)ident[0U]) == NULL)
-		return FALSE;
+	if (!first.Contains(ident.Left(1)))
+		return false;
 
 	unsigned int si;
 	for ( si = 1; si < len; si++)
 	{
-	if (strchr(second, (wxChar)ident[si]) == NULL)
-		return FALSE;
+	    if (!second.Contains(ident.Mid(si, 1)))
+		    return false;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
-queryTokenizer::queryTokenizer(const wxString& str, const char delim)
+queryTokenizer::queryTokenizer(const wxString& str, const wxChar delim)
 : wxStringTokenizer()
 {
-    if (delim == ' ')
+    if (delim == (wxChar)' ')
         SetString(str, wxT(" \n\r\t"), wxTOKEN_RET_EMPTY_ALL);
     else
         SetString(str, delim, wxTOKEN_RET_EMPTY_ALL);

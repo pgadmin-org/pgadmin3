@@ -95,7 +95,7 @@ int ctlSQLResult::Retrieve(long chunk)
 
     if (chunk<0)
         chunk=thread->DataSet()->NumRows();
-    wxLogInfo("retrieve %ld: did %ld of %ld", chunk, rowsRetrieved, NumRows());
+    wxLogInfo(wxT("retrieve %ld: did %ld of %ld"), chunk, rowsRetrieved, NumRows());
 
     long col, nCols=thread->DataSet()->NumCols();
     if (!rowsRetrieved)
@@ -134,7 +134,7 @@ int ctlSQLResult::Retrieve(long chunk)
         rowsRetrieved++;
         count++;
     }
-    wxLogInfo("retrieve done %ld: did %ld of %ld", count, rowsRetrieved, NumRows());
+    wxLogInfo(wxT("retrieve done %ld: did %ld of %ld"), count, rowsRetrieved, NumRows());
 
     return (count);
 }
@@ -150,7 +150,7 @@ wxString ctlSQLResult::GetMessages()
 
 wxString ctlSQLResult::GetErrorMessage()
 {
-    wxString errmsg=PQerrorMessage(conn->connection());
+    wxString errmsg=wxString::FromAscii(PQerrorMessage(conn->connection()));
     return errmsg;
 }
 

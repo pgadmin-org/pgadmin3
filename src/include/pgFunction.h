@@ -25,7 +25,7 @@ class pgCollection;
 class pgFunction : public pgSchemaObject
 {
 public:
-    pgFunction(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgFunction();
 
 
@@ -70,7 +70,7 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 protected:
-    pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxString(""));
+    pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxT(""));
 
 private:
     wxString argTypeOids, argTypes, returnType, language, volatility, source, bin;
@@ -81,7 +81,7 @@ private:
 class pgTriggerFunction : public pgFunction
 {
 public:
-    pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
     int GetIcon() { return PGICON_TRIGGERFUNCTION; }
 };

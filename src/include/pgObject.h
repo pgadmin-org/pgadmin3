@@ -63,7 +63,7 @@ enum PG_OBJTYPE
     PG_UNKNOWN
 };
 
-extern char *typeNameList[];
+extern wxChar *typeNameList[];
 
 // Class declarations
 class pgObject : public wxTreeItemData
@@ -132,7 +132,7 @@ public:
 protected:
     void CreateListColumns(wxListCtrl *properties, const wxString &left=wxT("Property"), const wxString &right=wxT("Value"));
     void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2);
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const char *s)
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxChar *s)
         { InsertListItem(list, pos, str1, wxString(s)); }
     void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const long l)
         { InsertListItem(list, pos, str1, NumToStr(l)); }
@@ -192,7 +192,7 @@ protected:
 class pgSchemaObject : public pgObject
 {
 public:
-    pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxString("")) : pgObject(newType, newName)
+    pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) : pgObject(newType, newName)
         { tableOid=0; schema = newSchema; wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
 
     pgSchemaObject::~pgSchemaObject()
@@ -224,7 +224,7 @@ protected:
 class pgRuleObject : public pgSchemaObject
 {
 public:
-    pgRuleObject(pgSchema *newSchema, int newType, const wxString& newName = wxString("")) 
+    pgRuleObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) 
         : pgSchemaObject(newSchema, newType, newName) {}
 
 protected:

@@ -108,9 +108,9 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         expandedKids = true;
         // append type here
         // fk, pk lesen
-        pgSet *set = ExecuteSet(wxT(
-            "SELECT indkey FROM pg_index\n"
-            " WHERE indrelid=") + GetTableOidStr());
+        pgSet *set = ExecuteSet(
+            wxT("SELECT indkey FROM pg_index\n")
+            wxT(" WHERE indrelid=") + GetTableOidStr());
         if (set)
         {
             wxString indkey, str;
@@ -132,12 +132,12 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
             delete set;
         }
 
-        set=ExecuteSet(wxT(
-            "SELECT conkey\n"
-            "  FROM pg_constraint ct\n"
-            "  JOIN pg_class cl on cl.oid=confrelid\n"
-            " WHERE contype='f' AND conrelid = ") + GetTableOidStr() + wxT("\n"
-            " ORDER BY conname"));
+        set=ExecuteSet(
+            wxT("SELECT conkey\n")
+            wxT("  FROM pg_constraint ct\n")
+            wxT("  JOIN pg_class cl on cl.oid=confrelid\n")
+            wxT(" WHERE contype='f' AND conrelid = ") + GetTableOidStr() + wxT("\n")
+            wxT(" ORDER BY conname"));
         if (set)
         {
             wxString conkey, str;
@@ -148,7 +148,7 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
                 while (conkey.HasMoreTokens())
                 {
                     str=conkey.GetNextToken();
-                    if (atol(str.c_str()+1) == GetColNumber())
+                    if (StrToLong(str.Mid(1)) == GetColNumber())
                     {
                         isFK = true;
                         break;
@@ -182,11 +182,11 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
     }
 
     // statistic 
-    DisplayStatistics(statistics, wxT(
-        "SELECT null_frac AS \"Null Fraction\", avg_width AS \"Average Width\", n_distinct AS \"Distinct Values\", "
-        "most_common_vals AS \"Most Common Values\", most_common_freqs AS \"Most Common Frequencies\", "
-        " histogram_bounds AS \"Histogram Bounds\", correlation AS \"Correlation\"\n"
-        "  FROM pg_stats WHERE tablename = 'pt_partner' AND attname = 'partner_nr'"));
+    DisplayStatistics(statistics,
+        wxT("SELECT null_frac AS \"Null Fraction\", avg_width AS \"Average Width\", n_distinct AS \"Distinct Values\", ")
+        wxT("most_common_vals AS \"Most Common Values\", most_common_freqs AS \"Most Common Frequencies\", ")
+        wxT(" histogram_bounds AS \"Histogram Bounds\", correlation AS \"Correlation\"\n")
+        wxT("  FROM pg_stats WHERE tablename = 'pt_partner' AND attname = 'partner_nr'"));
 }
 
 
@@ -212,22 +212,22 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
     wxString systemRestriction;
     if (!settings->GetShowSystemObjects())
-        systemRestriction = "\n   AND attnum > 0";
-
-    pgSet *columns= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT att.*, def.*, CASE when attndims > 0 THEN 1 ELSE 0 END AS isarray, ty.typname, tn.nspname as typnspname, et.typname as elemtypname, relname, na.nspname, description\n"
-        "  FROM pg_attribute att\n"
-        "  JOIN pg_type ty ON ty.oid=atttypid\n"
-        "  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n"
-        "  JOIN pg_class cl ON cl.oid=attrelid\n"
-        "  JOIN pg_namespace na ON na.oid=cl.relnamespace\n"
-        "  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n"
-        "  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=attrelid AND des.objsubid=attnum\n"
-        " WHERE attrelid = ") + collection->GetOidStr() 
-        + restriction + systemRestriction + wxT("\n"
-        "   AND attisdropped IS FALSE\n"
-        " ORDER BY attnum"));
+        systemRestriction = wxT("\n   AND attnum > 0");
+        
+    pgSet *columns= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT att.*, def.*, CASE when attndims > 0 THEN 1 ELSE 0 END AS isarray, ty.typname, tn.nspname as typnspname, et.typname as elemtypname, relname, na.nspname, description\n")
+        wxT("  FROM pg_attribute att\n")
+        wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
+        wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
+        wxT("  JOIN pg_class cl ON cl.oid=attrelid\n")
+        wxT("  JOIN pg_namespace na ON na.oid=cl.relnamespace\n")
+        wxT("  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n")
+        wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=attrelid AND des.objsubid=attnum\n")
+        wxT(" WHERE attrelid = ") + collection->GetOidStr()
+        + restriction + systemRestriction + wxT("\n")
+        wxT("   AND attisdropped IS FALSE\n")
+        wxT(" ORDER BY attnum"));
 
     if (columns)
     {

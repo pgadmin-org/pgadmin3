@@ -79,11 +79,11 @@ int dlgLanguage::Go(bool modal)
     {
         // create mode
         cbValidator->Append(wxT(""));
-        pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT nspname, proname, prorettype\n"
-            "  FROM pg_proc p\n"
-            "  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n"
-            " WHERE prorettype=2280 OR (prorettype=") + NumToStr(PGOID_TYPE_VOID) +
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT nspname, proname, prorettype\n")
+            wxT("  FROM pg_proc p\n")
+            wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
+            wxT(" WHERE prorettype=2280 OR (prorettype=") + NumToStr(PGOID_TYPE_VOID) +
             wxT(" AND proargtypes[0]=") + NumToStr(PGOID_TYPE_LANGUAGE_HANDLER) + wxT(")"));
         if (set)
         {

@@ -102,16 +102,16 @@ pgObject *pgDomain::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgDomain *domain=0;
-    pgSet *domains= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n"
-        "       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n"
-        "       description\n"
-        "  FROM pg_type d\n"
-        "  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n"
-        " WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"
+    pgSet *domains= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n")
+        wxT("       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n")
+        wxT("       description\n")
+        wxT("  FROM pg_type d\n")
+        wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n")
+        wxT(" WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
         + restriction +
-        " ORDER BY d.typname"));
+        wxT(" ORDER BY d.typname"));
 
     if (domains)
     {

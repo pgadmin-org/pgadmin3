@@ -25,7 +25,7 @@ class pgCollection;
 class pgCheck : public pgSchemaObject
 {
 public:
-    pgCheck(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgCheck(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgCheck();
     void SetSchema(pgSchema *newSchema) { schema = newSchema; }
     pgSchema *GetSchema() const {return schema; }

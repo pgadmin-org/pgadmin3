@@ -96,14 +96,14 @@ pgObject *pgCheck::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgCheck *check=0;
-    pgSet *checks= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT c.oid, conname, consrc, condeferrable, condeferred, relname, nspname\n"
-        "  FROM pg_constraint c\n"
-        "  JOIN pg_class cl ON cl.oid=conrelid\n"
-        "  JOIN pg_namespace nl ON nl.oid=relnamespace\n"
-        " WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid()) 
-        + restriction + wxT("::oid\n"
-        " ORDER BY conname"));
+    pgSet *checks= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT c.oid, conname, consrc, condeferrable, condeferred, relname, nspname\n")
+        wxT("  FROM pg_constraint c\n")
+        wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
+        wxT("  JOIN pg_namespace nl ON nl.oid=relnamespace\n")
+        wxT(" WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid())
+        + restriction + wxT("::oid\n")
+        wxT(" ORDER BY conname"));
 
     if (checks)
     {

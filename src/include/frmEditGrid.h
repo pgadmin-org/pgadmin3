@@ -63,7 +63,33 @@ public:
 
 
 
-class ctlSQLGrid;
+class ctlSQLGrid : public wxGrid
+{
+public:
+    ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
+
+#if wxCHECK_VERSION(2,5,0)
+    // problems are fixed
+#else
+    // Reimplementation needed, because the 2.4.0 version doesn't update internal dimension vars
+    bool InsertRows( int pos = 0, int numRows = 1, bool updateLabels=TRUE );
+    bool AppendRows( int numRows = 1, bool updateLabels=TRUE );
+    bool DeleteRows( int pos = 0, int numRows = 1, bool updateLabels=TRUE );
+    bool InsertCols( int pos = 0, int numCols = 1, bool updateLabels=TRUE );
+    bool AppendCols( int numCols = 1, bool updateLabels=TRUE );
+    bool DeleteCols( int pos = 0, int numCols = 1, bool updateLabels=TRUE );
+
+    // overriding original version to allow re-setting the table
+    bool SetTable( wxGridTableBase *table, bool takeOwnership=FALSE );
+#endif
+
+
+private:
+    void OnCellChange(wxGridEvent& event);
+    DECLARE_EVENT_TABLE();
+};
+
+
 class sqlTable : public wxGridTableBase
 {
 public:
@@ -120,30 +146,6 @@ private:
 
     friend class ctlSQLGrid;
 };
-
-
-
-class ctlSQLGrid : public wxGrid
-{
-public:
-    ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
-
-    // Reimplementation needed, because the 2.4.0 version doesn't update internal dimension vars
-    bool InsertRows( int pos = 0, int numRows = 1, bool updateLabels=TRUE );
-    bool AppendRows( int numRows = 1, bool updateLabels=TRUE );
-    bool DeleteRows( int pos = 0, int numRows = 1, bool updateLabels=TRUE );
-    bool InsertCols( int pos = 0, int numCols = 1, bool updateLabels=TRUE );
-    bool AppendCols( int numCols = 1, bool updateLabels=TRUE );
-    bool DeleteCols( int pos = 0, int numCols = 1, bool updateLabels=TRUE );
-
-    // overriding original version to allow re-setting the table
-    bool SetTable( wxGridTableBase *table, bool takeOwnership=FALSE );
-
-private:
-    void OnCellChange(wxGridEvent& event);
-    DECLARE_EVENT_TABLE();
-};
-
 
 
 

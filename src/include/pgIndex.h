@@ -25,7 +25,7 @@ class pgCollection;
 class pgIndex : public pgSchemaObject
 {
 public:
-    pgIndex(pgSchema *newSchema, const wxString& newName = wxString(""), int type=PG_INDEX);
+    pgIndex(pgSchema *newSchema, const wxString& newName = wxT(""), int type=PG_INDEX);
     ~pgIndex();
 
     int GetIcon() { return PGICON_INDEX; }

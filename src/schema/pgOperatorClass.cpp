@@ -79,14 +79,14 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
         expandedKids=true;
 
         pgSet *set;
-        set=ExecuteSet(wxT(
-            "SELECT amopstrategy, amopreqcheck, oprname, lt.typname as lefttype, rt.typname as righttype\n"
-            "  FROM pg_amop am\n"
-            "  JOIN pg_operator op ON amopopr=op.oid\n"
-            "  LEFT OUTER JOIN pg_type lt ON lt.oid=oprleft\n"
-            "  LEFT OUTER JOIN pg_type rt ON rt.oid=oprright\n"
-            " WHERE amopclaid=") + GetOidStr()+ wxT("\n"
-            " ORDER BY amopstrategy"));
+        set=ExecuteSet(
+            wxT("SELECT amopstrategy, amopreqcheck, oprname, lt.typname as lefttype, rt.typname as righttype\n")
+            wxT("  FROM pg_amop am\n")
+            wxT("  JOIN pg_operator op ON amopopr=op.oid\n")
+            wxT("  LEFT OUTER JOIN pg_type lt ON lt.oid=oprleft\n")
+            wxT("  LEFT OUTER JOIN pg_type rt ON rt.oid=oprright\n")
+            wxT(" WHERE amopclaid=") + GetOidStr()+ wxT("\n")
+            wxT(" ORDER BY amopstrategy"));
         if (set)
         {
             while (!set->Eof())
@@ -115,11 +115,11 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
             delete set;
         }
 
-        set=ExecuteSet(wxT(
-            "SELECT amprocnum, amproc::oid\n"
-            "  FROM pg_amproc am\n"
-            " WHERE amopclaid=") + GetOidStr() +wxT("\n"
-            " ORDER BY amprocnum"));
+        set=ExecuteSet(
+            wxT("SELECT amprocnum, amproc::oid\n")
+            wxT("  FROM pg_amproc am\n")
+            wxT(" WHERE amopclaid=") + GetOidStr() +wxT("\n")
+            wxT(" ORDER BY amprocnum"));
         if (set)
         {
             while (!set->Eof())
@@ -182,15 +182,15 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
 {
     pgOperatorClass *operatorClass=0;
 
-    pgSet *operatorClasses= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT op.oid, op.*, it.typname as intypename, dt.typname as keytypename, amname\n"
-        "  FROM pg_opclass op\n"
-        "  JOIN pg_am am ON am.oid=opcamid\n"
-        "  JOIN pg_type it ON it.oid=opcintype\n"
-        "  LEFT OUTER JOIN pg_type dt ON dt.oid=opckeytype\n"
-        " WHERE opcnamespace = ") + collection->GetSchema()->GetOidStr() 
-        + restriction + wxT("\n"
-        " ORDER BY opcname"));
+    pgSet *operatorClasses= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT op.oid, op.*, it.typname as intypename, dt.typname as keytypename, amname\n")
+        wxT("  FROM pg_opclass op\n")
+        wxT("  JOIN pg_am am ON am.oid=opcamid\n")
+        wxT("  JOIN pg_type it ON it.oid=opcintype\n")
+        wxT("  LEFT OUTER JOIN pg_type dt ON dt.oid=opckeytype\n")
+        wxT(" WHERE opcnamespace = ") + collection->GetSchema()->GetOidStr()
+        + restriction + wxT("\n")
+        wxT(" ORDER BY opcname"));
 
     if (operatorClasses)
     {

@@ -113,14 +113,14 @@ void dlgForeignKey::OnSelChangeRef(wxNotifyEvent &ev)
     else
         nsp=wxT("public");
 
-    pgSet *set=connection->ExecuteSet(wxT(
-        "SELECT attname\n"
-        "  FROM pg_attribute att, pg_class cl, pg_namespace nsp\n"
-        " WHERE attrelid=cl.oid AND relnamespace=nsp.oid\n"
-        "   AND nspname=") + qtString(nsp)
-        + wxT("\n   AND relname=") + qtString(tab)
-        + wxT("\n   AND attnum > 0\n"
-              "\n ORDER BY attnum"));
+    pgSet *set=connection->ExecuteSet(
+        wxT("SELECT attname\n")
+        wxT("  FROM pg_attribute att, pg_class cl, pg_namespace nsp\n")
+        wxT(" WHERE attrelid=cl.oid AND relnamespace=nsp.oid\n")
+        wxT("   AND nspname=") + qtString(nsp) +
+        wxT("\n   AND relname=") + qtString(tab) +
+        wxT("\n   AND attnum > 0\n")
+          wxT("\n ORDER BY attnum"));
     if (set)
     {
         while (!set->Eof())
@@ -221,8 +221,8 @@ int dlgForeignKey::Go(bool modal)
         cbRefColumns->Disable();
 
         int pos=0;
-        wxStringTokenizer cols(foreignKey->GetFkColumns(), ',');
-        wxStringTokenizer refs(foreignKey->GetRefColumns(), ',');
+        wxStringTokenizer cols(foreignKey->GetFkColumns(), wxT(","));
+        wxStringTokenizer refs(foreignKey->GetRefColumns(), wxT(","));
         while (cols.HasMoreTokens())
         {
             wxString col=cols.GetNextToken();
@@ -244,10 +244,10 @@ int dlgForeignKey::Go(bool modal)
         if (!settings->GetShowSystemObjects())
             systemRestriction = wxT("   AND nsp.oid >= 100\n");
 
-        pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT nspname, relname FROM pg_namespace nsp, pg_class cl\n"
-            " WHERE relnamespace=nsp.oid AND relkind='r'\n"
-            "   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n") 
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT nspname, relname FROM pg_namespace nsp, pg_class cl\n")
+            wxT(" WHERE relnamespace=nsp.oid AND relkind='r'\n")
+            wxT("   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n")
             + systemRestriction
             + wxT("\n ORDER BY nsp.oid, relname"));
 
@@ -315,8 +315,8 @@ wxString dlgForeignKey::GetDefinition()
         + wxT(") REFERENCES ");
     AppendQuoted(sql, cbReferences->GetValue());
     sql += wxT(" (") + refs
-        + wxT(")"
-          "\n   ON UPDATE ") + rbOnUpdate->GetStringSelection()
+        + wxT(")\n  ")
+          wxT(" ON UPDATE ") + rbOnUpdate->GetStringSelection()
         + wxT(" ON DELETE ") + rbOnDelete->GetStringSelection();
 
     return sql;

@@ -24,10 +24,10 @@
 class pgServer : public pgObject
 {
 public:
-    pgServer(const wxString& newServer = wxString(""), const wxString& newDatabase = wxString(""), const wxString& newUsername = wxString(""), int newPort = 5432, bool trusted=false);
+    pgServer(const wxString& newServer = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool trusted=false);
     ~pgServer();
     int GetType() const { return PG_SERVER; }
-    wxString GetTypeName() const { return wxString("Server"); }
+    wxString GetTypeName() const { return wxT("Server"); }
     int Connect(wxFrame *form, bool lockFields = FALSE);
     wxString GetIdentifier() const;
     wxString GetVersionString();

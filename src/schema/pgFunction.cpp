@@ -127,14 +127,14 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
 {
     pgFunction *function=0;
 
-    pgSet *functions = obj->GetDatabase()->ExecuteSet(wxT(
-            "SELECT pr.oid, pr.*, TYP.typname, lanname, pg_get_userbyid(proowner) as funcowner, description\n"
-            "  FROM pg_proc pr\n"
-            "  JOIN pg_type TYP ON TYP.oid=prorettype\n"
-            "  JOIN pg_language LNG ON LNG.oid=prolang\n"
-            "  LEFT OUTER JOIN pg_description des ON des.objoid=pr.oid\n"
+    pgSet *functions = obj->GetDatabase()->ExecuteSet(
+            wxT("SELECT pr.oid, pr.*, TYP.typname, lanname, pg_get_userbyid(proowner) as funcowner, description\n")
+            wxT("  FROM pg_proc pr\n")
+            wxT("  JOIN pg_type TYP ON TYP.oid=prorettype\n")
+            wxT("  JOIN pg_language LNG ON LNG.oid=prolang\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=pr.oid\n")
             + restriction +
-            " ORDER BY proname"));
+            wxT(" ORDER BY proname"));
 
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
                     "SELECT oid, typname FROM pg_type"));
@@ -187,9 +187,9 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             function->iSetBin(functions->GetVal(wxT("probin")));
             wxString vol=functions->GetVal(wxT("provolatile"));
             function->iSetVolatility(
-                vol.IsSameAs("i") ? wxT("IMMUTABLE") : 
-                vol.IsSameAs("s") ? wxT("STABLE") :
-                vol.IsSameAs("v") ? wxT("VOLATILE") : wxT("unknown"));
+                vol.IsSameAs(wxT("i")) ? wxT("IMMUTABLE") : 
+                vol.IsSameAs(wxT("s")) ? wxT("STABLE") :
+                vol.IsSameAs(wxT("v")) ? wxT("VOLATILE") : wxT("unknown"));
 
 
             if (browser)

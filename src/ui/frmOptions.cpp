@@ -47,7 +47,7 @@ frmOptions::frmOptions(wxFrame *parent)
 
     wxLogInfo(wxT("Creating an options dialogue"));
 
-    wxXmlResource::Get()->LoadDialog(this, parent, "frmOptions"); 
+    wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmOptions")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

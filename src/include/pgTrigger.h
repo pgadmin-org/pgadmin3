@@ -27,7 +27,7 @@ class pgFunction;
 class pgTrigger : public pgSchemaObject
 {
 public:
-    pgTrigger(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgTrigger(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTrigger();
 
     int GetIcon() { return PGICON_TRIGGER; }

@@ -95,7 +95,7 @@ int dlgUser::Go(bool modal)
         txtName->Disable();
         txtID->Disable();
 
-        wxStringTokenizer cfgTokens(user->GetConfigList(), ',');
+        wxStringTokenizer cfgTokens(user->GetConfigList(), wxT(","));
         while (cfgTokens.HasMoreTokens())
         {
             wxString token=cfgTokens.GetNextToken();
@@ -238,7 +238,7 @@ wxString dlgUser::GetSql()
 
         wxArrayString vars;
 
-        wxStringTokenizer cfgTokens(user->GetConfigList(), ',');
+        wxStringTokenizer cfgTokens(user->GetConfigList(), wxT(","));
         while (cfgTokens.HasMoreTokens())
             vars.Add(cfgTokens.GetNextToken());
 
@@ -310,7 +310,7 @@ wxString dlgUser::GetSql()
         // Create Mode
         wxString name=GetName();
 
-        long id=atol(txtID->GetValue());
+        long id=StrToLong(txtID->GetValue());
 
         sql = wxT(
             "CREATE USER ") + qtIdent(name);

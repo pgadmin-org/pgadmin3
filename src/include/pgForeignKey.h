@@ -25,7 +25,7 @@ class pgCollection;
 class pgForeignKey : public pgSchemaObject
 {
 public:
-    pgForeignKey(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgForeignKey(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgForeignKey();
     
     wxString GetDefinition();

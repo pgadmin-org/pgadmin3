@@ -30,7 +30,7 @@ BEGIN_EVENT_TABLE(frmSplash, wxFrame)
 END_EVENT_TABLE()
 
 frmSplash::frmSplash(wxFrame *parent)
-: wxFrame(parent, -1, "", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW)
+: wxFrame(parent, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW)
 {
     
     wxLogInfo(wxT("Creating a splash screen"));

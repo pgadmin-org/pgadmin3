@@ -105,16 +105,16 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 {
     pgRule *rule=0;
 
-    pgSet *rules= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT rw.oid, rw.ev_class, rulename, relname, nspname, description, is_instead, ev_type, ev_action, ev_qual,\n"
-        "       ") + collection->GetDatabase()->GetRuledefFunction() + wxT("(rw.oid) as definition\n"
-        "  FROM pg_rewrite rw\n"
-        "  JOIN pg_class cl ON cl.oid=rw.ev_class\n"
-        "  JOIN pg_namespace nsp ON nsp.oid=cl.relnamespace\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=rw.oid\n"
-        " WHERE ev_class = ") + NumToStr(collection->GetOid()) 
-        + restriction + wxT("\n"
-        " ORDER BY rulename"));
+    pgSet *rules= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT rw.oid, rw.ev_class, rulename, relname, nspname, description, is_instead, ev_type, ev_action, ev_qual,\n")
+        wxT("       ") + collection->GetDatabase()->GetRuledefFunction() + wxT("(rw.oid) as definition\n")
+        wxT("  FROM pg_rewrite rw\n")
+        wxT("  JOIN pg_class cl ON cl.oid=rw.ev_class\n")
+        wxT("  JOIN pg_namespace nsp ON nsp.oid=cl.relnamespace\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rw.oid\n")
+        wxT(" WHERE ev_class = ") + NumToStr(collection->GetOid())
+        + restriction + wxT("\n")
+        wxT(" ORDER BY rulename"));
 
     if (rules)
     {
@@ -148,7 +148,7 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             }
             rule->iSetQuotedFullTable(qtIdent(rules->GetVal(wxT("nspname"))) + wxT(".")
                 + qtIdent(rules->GetVal(wxT("relname"))));
-            char *evts[] = {0, "SELECT", "UPDATE", "INSERT", "DELETE"};
+            wxChar *evts[] = {0, wxT("SELECT"), wxT("UPDATE"), wxT("INSERT"), wxT("DELETE")};
             int evno=StrToLong(rules->GetVal(wxT("ev_type")));
             if (evno > 0 && evno < 5)
                 rule->iSetEvent(evts[evno]);

@@ -25,7 +25,7 @@ class pgCollection;
 class pgOperatorClass : public pgSchemaObject
 {
 public:
-    pgOperatorClass(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgOperatorClass(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgOperatorClass();
 
     int GetIcon() { return PGICON_OPERATORCLASS; }

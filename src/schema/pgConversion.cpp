@@ -92,14 +92,14 @@ pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 {
     pgConversion *conversion=0;
 
-        pgSet *conversions= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT co.oid, co.*, pg_encoding_to_char(conforencoding) as forencoding, pg_encoding_to_char(contoencoding) as toencoding, proname, nspname\n"
-        "  FROM pg_conversion co\n"
-        "  JOIN pg_proc pr ON pr.oid=conproc\n"
-        "  JOIN pg_namespace na ON na.oid=pr.pronamespace\n"
-        " WHERE connamespace = ") + collection->GetSchema()->GetOidStr() 
-        + restriction + wxT("\n"
-        " ORDER BY conname"));
+        pgSet *conversions= collection->GetDatabase()->ExecuteSet(
+            wxT("SELECT co.oid, co.*, pg_encoding_to_char(conforencoding) as forencoding, pg_encoding_to_char(contoencoding) as toencoding, proname, nspname\n")
+            wxT("  FROM pg_conversion co\n")
+            wxT("  JOIN pg_proc pr ON pr.oid=conproc\n")
+            wxT("  JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
+            wxT(" WHERE connamespace = ") + collection->GetSchema()->GetOidStr()
+            + restriction + wxT("\n")
+            wxT(" ORDER BY conname"));
 
     if (conversions)
     {

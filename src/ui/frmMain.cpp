@@ -547,34 +547,34 @@ void frmMain::StoreServers()
             server = (pgServer *)data;
 
             // Hostname
-            key.Printf("Servers/Server%d", numServers);
+            key.Printf(wxT("Servers/Server%d"), numServers);
             settings->Write(key, server->GetName());
 
-            key.Printf("Servers/Description%d", numServers);
+            key.Printf(wxT("Servers/Description%d"), numServers);
             settings->Write(key, server->GetDescription());
 
             // Port
-            key.Printf("Servers/Port%d", numServers);
+            key.Printf(wxT("Servers/Port%d"), numServers);
             settings->Write(key, server->GetPort());
 
             // Trusted
-            key.Printf("Servers/Trusted%d", numServers);
+            key.Printf(wxT("Servers/Trusted%d"), numServers);
             settings->Write(key, BoolToYesNo(server->GetTrusted()));
 
             // Database
-            key.Printf("Servers/Database%d", numServers);
+            key.Printf(wxT("Servers/Database%d"), numServers);
             settings->Write(key, server->GetDatabase());
 
             // Username
-            key.Printf("Servers/Username%d", numServers);
+            key.Printf(wxT("Servers/Username%d"), numServers);
             settings->Write(key, server->GetUsername());
 
             // last Database
-            key.Printf("Servers/LastDatabase%d", numServers);
+            key.Printf(wxT("Servers/LastDatabase%d"), numServers);
             settings->Write(key, server->GetLastDatabase());
 
             // last Schema
-            key.Printf("Servers/LastSchema%d", numServers);
+            key.Printf(wxT("Servers/LastSchema%d"), numServers);
             settings->Write(key, server->GetLastSchema());
         }
 
@@ -585,7 +585,7 @@ void frmMain::StoreServers()
     // Write the server count
     settings->Write(wxT("Servers/Count"), numServers);
 
-    wxLogInfo("Stored %d servers.", numServers);
+    wxLogInfo(wxT("Stored %d servers."), numServers);
 }
 
 void frmMain::RetrieveServers()
@@ -603,35 +603,35 @@ void frmMain::RetrieveServers()
     for (loop = 1; loop <= numServers; ++loop) {
         
         // Server
-        key.Printf("Servers/Server%d", loop);
+        key.Printf(wxT("Servers/Server%d"), loop);
         settings->Read(key, &servername, wxT(""));
 
         // Comment
-        key.Printf("Servers/Description%d", loop);
+        key.Printf(wxT("Servers/Description%d"), loop);
         settings->Read(key, &description, wxT(""));
 
         // Trusted
-        key.Printf("Servers/Trusted%d", loop);
+        key.Printf(wxT("Servers/Trusted%d"), loop);
         settings->Read(key, &trusted, wxT(""));
 
         // Port
-        key.Printf("Servers/Port%d", loop);
+        key.Printf(wxT("Servers/Port%d"), loop);
         settings->Read(key, &port, 0);
 
         // Database
-        key.Printf("Servers/Database%d", loop);
+        key.Printf(wxT("Servers/Database%d"), loop);
         settings->Read(key, &database, wxT(""));
 
         // Username
-        key.Printf("Servers/Username%d", loop);
+        key.Printf(wxT("Servers/Username%d"), loop);
         settings->Read(key, &username, wxT(""));
 
         // last Database
-        key.Printf("Servers/LastDatabase%d", loop);
+        key.Printf(wxT("Servers/LastDatabase%d"), loop);
         settings->Read(key, &lastDatabase, wxT(""));
 
         // last Schema
-        key.Printf("Servers/LastSchema%d", loop);
+        key.Printf(wxT("Servers/LastSchema%d"), loop);
         settings->Read(key, &lastSchema, wxT(""));
 
         // Add the Server node

@@ -124,7 +124,7 @@ frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame* frame,
 	// We need to know if we're going to show system objects
 	wxString sysobjstr;
 	if (!settings->GetShowSystemObjects())
-		sysobjstr = " WHERE attnum > 0 ";
+		sysobjstr = wxT(" WHERE attnum > 0 ");
 
 	// Only do this if we have a database connection
 	if (m_database->Connect() == PGCONN_OK) 
@@ -132,22 +132,20 @@ frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame* frame,
 		// Query the columns for the table
 		// Currently does not process system columns
 		pgSet *columns = m_database->ExecuteSet(
-			wxT("SELECT attname, c.typname " 
-				"FROM pg_attribute a "
-				"JOIN "
-				"( SELECT oid FROM pg_class "
-				"WHERE lower(relname) = lower('" + table + "') ) b "
-				"ON ( a.attrelid = b.oid ) "
-				"JOIN "
-				"( SELECT oid, typname FROM pg_type ) c "
-				"ON ( a.atttypid = c.oid ) " + 
-				sysobjstr +
-				"ORDER BY attnum"));
+			wxT("SELECT attname, c.typname\n")
+			wxT("  FROM pg_attribute a\n")
+			wxT("  JOIN (SELECT oid FROM pg_class\n")
+			wxT("         WHERE lower(relname) = lower('") + table + wxT("') ) b")
+			        wxT(" ON a.attrelid = b.oid\n")
+			wxT("  JOIN (SELECT oid, typname FROM pg_type ) c ")
+			       wxT(" ON ( a.atttypid = c.oid )\n") + 
+			sysobjstr +
+			wxT("\n ORDER BY attnum"));
 
 		// Add the star column
 		int item = m_columnlist->InsertItem(0, wxT("*"));
 		m_columnlist->InsertColumn(0,wxT(""));
-		m_columnlist->SetItem(item, 0, "*");
+		m_columnlist->SetItem(item, 0, wxT("*"));
 
 		// Get the column count
 		rowct = columns->NumRows();
@@ -426,7 +424,7 @@ bool DnDJoin::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 	frmQBJoin dlgJoin(m_frame, text);
 
 	// Extract the left table name/column name
-	wxStringTokenizer tmptok(text, ".");
+	wxStringTokenizer tmptok(text, wxT("."));
 	wxString lefttable = tmptok.GetNextToken();
 	wxString column = tmptok.GetNextToken();
 

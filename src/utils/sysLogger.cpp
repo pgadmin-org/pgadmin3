@@ -23,7 +23,7 @@ extern sysSettings *settings;
 // IMPLEMENT_LOG_FUNCTION(Sql) from wx../common/log.c
 void wxVLogSql(const wxChar *szFormat, va_list argptr)
 {
-    static char s_szBuf[4096];
+    static wxChar s_szBuf[4096];
 
     if (settings->GetLogLevel() >= LOG_SQL)
     {
@@ -103,8 +103,8 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     wxString fullmsg;
 
     // Build the message.
-    fullmsg << time->FormatISODate() << " " << 
-		time->FormatISOTime() << " " << msgtype << ": " << msg;
+    fullmsg << time->FormatISODate() << wxT(" ") << 
+		time->FormatISOTime() << wxT(" ") << msgtype << wxT(": ") << msg;
 
 	// Make sure to delete the time that we allocated
 	delete time;
@@ -145,17 +145,17 @@ void sysLogger::WriteLog(const wxString& msg)
     extern sysSettings *settings;
     wxString pid, logfile;
 
-    pid.Printf("%ld", wxGetProcessId());
-    logfile.Printf("%s", settings->GetLogFile().c_str());
-    logfile.Replace("%ID", pid);
+    pid.Printf(wxT("%ld"), wxGetProcessId());
+    logfile.Printf(wxT("%s"), settings->GetLogFile().c_str());
+    logfile.Replace(wxT("%ID"), pid);
 
-    wxFFile file(logfile, "a");
+    wxFFile file(logfile, wxT("a"));
     if (!file.IsOpened()) {
         wxMessageBox(_("Cannot open the logfile!"), _("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
         return;
     }
 
-   file.Write(msg + "\n");
+   file.Write(msg + wxT("\n"));
    file.Close();
 }
 

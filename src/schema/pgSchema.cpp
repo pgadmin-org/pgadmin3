@@ -169,13 +169,13 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 {
     pgSchema *schema=0;
 
-    pgSet *schemas= collection->GetDatabase()->ExecuteSet(wxT(
-       "SELECT CASE WHEN nsp.oid<100 THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n"
-       "       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description\n"
-       "  FROM pg_namespace nsp\n"
-       "  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n"
+    pgSet *schemas= collection->GetDatabase()->ExecuteSet(
+       wxT("SELECT CASE WHEN nsp.oid<100 THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n")
+       wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description\n")
+       wxT("  FROM pg_namespace nsp\n")
+       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
         + restriction +
-       " ORDER BY 1, nspname"));
+       wxT(" ORDER BY 1, nspname"));
 
     if (schemas)
     {
@@ -210,9 +210,9 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
 {
     wxString systemRestriction;
     if (!settings->GetShowSystemObjects())
-        systemRestriction = wxT(
-            " WHERE nsp.oid >= 100\n"
-            "   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n");
+        systemRestriction = 
+            wxT(" WHERE nsp.oid >= 100\n")
+            wxT("   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n");
 
     // Get the schemas
     return ReadObjects(collection, browser, systemRestriction);

@@ -101,26 +101,24 @@ pgObject *pgAggregate::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgAggregate *aggregate=0;
-    pgSet *aggregates= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT aggfnoid::oid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n"
-                "aggfinalfn, "
-                "proargtypes[0] AS aggbasetype, "
-                "CASE WHEN (ti.typlen = -1 AND ti.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = ti.typelem) || '[]' ELSE ti.typname END as inputname, "
-                "aggtranstype, "
-                "CASE WHEN (tt.typlen = -1 AND tt.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tt.typelem) || '[]' ELSE tt.typname END as transname, "
-                "prorettype AS aggfinaltype, "
-                "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, "
-                "agginitval, description\n"
-        "  FROM pg_aggregate ag\n"
-        "  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n"
-        "  JOIN pg_type ti on ti.oid=proargtypes[0]\n"
-        "  JOIN pg_type tt on tt.oid=aggtranstype\n"
-        "  JOIN pg_type tf on tf.oid=prorettype\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=aggfnoid::oid\n"
-        " WHERE pronamespace = ") + collection->GetSchema()->GetOidStr() 
+    pgSet *aggregates= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT aggfnoid::oid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n")
+        wxT(        "aggfinalfn, proargtypes[0] AS aggbasetype, ")
+        wxT(        "CASE WHEN (ti.typlen = -1 AND ti.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = ti.typelem) || '[]' ELSE ti.typname END as inputname, ")
+        wxT(        "aggtranstype, ")
+        wxT(        "CASE WHEN (tt.typlen = -1 AND tt.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tt.typelem) || '[]' ELSE tt.typname END as transname, ")
+        wxT(        "prorettype AS aggfinaltype, ")
+        wxT(        "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, ")
+        wxT(        "agginitval, description\n")
+        wxT("  FROM pg_aggregate ag\n")
+        wxT("  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n")
+        wxT("  JOIN pg_type ti on ti.oid=proargtypes[0]\n")
+        wxT("  JOIN pg_type tt on tt.oid=aggtranstype\n")
+        wxT("  JOIN pg_type tf on tf.oid=prorettype\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=aggfnoid::oid\n")
+        wxT(" WHERE pronamespace = ") + collection->GetSchema()->GetOidStr()
         + restriction
-        + wxT("\n"
-        " ORDER BY aggname"));
+        + wxT("\n ORDER BY aggname"));
 
     if (aggregates)
     {

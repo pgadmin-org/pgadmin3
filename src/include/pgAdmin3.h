@@ -18,7 +18,7 @@
 // App headers
 #include "sysSettings.h"
 
-#define __(str) str
+#define __(str) wxT(str)
 
 
 // XRC Path

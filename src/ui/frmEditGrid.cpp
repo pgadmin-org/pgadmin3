@@ -156,7 +156,7 @@ void frmEditGrid::Go()
         Show(true);
     else
     {
-        wxMessageBox("No Table or view.");
+        wxMessageBox(_("No Table or view."));
         Close();
         Destroy();
     }
@@ -260,6 +260,18 @@ ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 }
 
 
+void ctlSQLGrid::OnCellChange(wxGridEvent& event)
+{
+    sqlTable *table=(sqlTable*)GetTable();
+    if (table && table->lastRow >= 0 && table->lastRow != event.GetRow())
+        table->StoreLine();
+    event.Skip();
+}
+
+
+#if wxCHECK_VERSION(2,5,0)
+    // problems are fixed
+#else
 
 bool ctlSQLGrid::InsertRows(int pos, int numRows, bool updateLabels)
 {
@@ -359,15 +371,10 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
     }
     return done;
 }
+#endif
 
 
-void ctlSQLGrid::OnCellChange(wxGridEvent& event)
-{
-    sqlTable *table=(sqlTable*)GetTable();
-    if (table && table->lastRow >= 0 && table->lastRow != event.GetRow())
-        table->StoreLine();
-    event.Skip();
-}
+
 
 
 sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName, const Oid _relid, bool _hasOid, const wxString& _pkCols, char _relkind)
@@ -397,15 +404,15 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
     savedLine.cols = new wxString[nCols];
 
 
-    pgSet *colSet=connection->ExecuteSet(wxT(
-        "SELECT t.typname, attname, COALESCE(b.oid, t.oid) AS basetype,\n"
-        "       CASE WHEN t.typbasetype::oid=0 THEN att.atttypmod else t.typtypmod END AS typmod,\n"
-        "       CASE WHEN t.typbasetype::oid=0 THEN att.attlen else t.typlen END AS typlen\n"
-        "  FROM pg_attribute att\n"
-        "  JOIN pg_type t ON t.oid=att.atttypid\n"
-        "  LEFT OUTER JOIN pg_type b ON b.oid=t.typbasetype\n"
-        " WHERE attnum > 0 AND NOT attisdropped AND attrelid=") + NumToStr((long)relid) + wxT("::oid\n"
-        " ORDER BY attnum"));
+    pgSet *colSet=connection->ExecuteSet(
+        wxT("SELECT t.typname, attname, COALESCE(b.oid, t.oid) AS basetype,\n")
+        wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.atttypmod else t.typtypmod END AS typmod,\n")
+        wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.attlen else t.typlen END AS typlen\n")
+        wxT("  FROM pg_attribute att\n")
+        wxT("  JOIN pg_type t ON t.oid=att.atttypid\n")
+        wxT("  LEFT OUTER JOIN pg_type b ON b.oid=t.typbasetype\n")
+        wxT(" WHERE attnum > 0 AND NOT attisdropped AND attrelid=") + NumToStr((long)relid) + wxT("::oid\n")
+        wxT(" ORDER BY attnum"));
 
 
 
@@ -493,7 +500,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
         if (!hasOids)
         {
-            wxStringTokenizer collist(primaryKeyColNumbers, ',');
+            wxStringTokenizer collist(primaryKeyColNumbers, wxT(","));
             long cn;
             int pkcolcount=0;
 
@@ -612,7 +619,7 @@ wxString sqlTable::MakeKey(cacheLine *line)
         where = wxT("OID = ") + line->cols[0];
     else
     {
-        wxStringTokenizer collist(primaryKeyColNumbers, ',');
+        wxStringTokenizer collist(primaryKeyColNumbers, wxT(","));
         long cn;
 
         while (collist.HasMoreTokens())
