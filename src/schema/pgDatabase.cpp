@@ -127,7 +127,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         }
 
             // Add child nodes if necessary
-        if (browser->GetChildrenCount(GetId(), FALSE) != 2)
+        if (browser->GetChildrenCount(GetId(), FALSE) != 3)
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
 
