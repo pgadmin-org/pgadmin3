@@ -895,10 +895,6 @@ SOURCE=.\include\pgColumn.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\pgConn.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\include\pgConstraints.h
 # End Source File
 # Begin Source File
@@ -968,10 +964,6 @@ SOURCE=.\include\pgSequence.h
 # Begin Source File
 
 SOURCE=.\include\pgServer.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\pgSet.h
 # End Source File
 # Begin Source File
 
@@ -1508,6 +1500,18 @@ SOURCE=.\include\utffile.h
 # Begin Source File
 
 SOURCE=.\include\version.h
+# End Source File
+# End Group
+# Begin Group "db includes"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\include\pgConn.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgSet.h
 # End Source File
 # End Group
 # End Group
