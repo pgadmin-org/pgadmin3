@@ -192,10 +192,11 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         if (GetHasOids())
             sql += wxT("WITH OIDS;\n");
         else
-            sql += wxT("WITHOUT OIDS;\n")
-                + GetGrant(wxT("arwdRxt")) 
-                + GetCommentSql()
-                + wxT("\n\n");
+            sql += wxT("WITHOUT OIDS;\n");
+
+        sql += GetGrant(wxT("arwdRxt")) 
+            + GetCommentSql()
+            + wxT("\n\n");
 
         // add indexes here
 
