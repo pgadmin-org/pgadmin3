@@ -171,13 +171,13 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetMaxRows(StrToLong(txtMaxRows->GetValue()));
     settings->SetMaxColSize(StrToLong(txtMaxColSize->GetValue()));
 
-    settings->SetAskSaveConfirmation(!chkAskSaveConfirm->IsChecked());
-    settings->SetConfirmDelete(chkAskDelete->IsChecked());
-    settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->IsChecked());
+    settings->SetAskSaveConfirmation(!chkAskSaveConfirm->GetValue());
+    settings->SetConfirmDelete(chkAskDelete->GetValue());
+    settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->GetValue());
     settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
-    settings->SetStickySql(chkStickySql->IsChecked());
-    settings->SetDoubleClickProperties(chkDoubleClickProperties->IsChecked());
-    settings->SetUnicodeFile(chkUnicodeFile->IsChecked());
+    settings->SetStickySql(chkStickySql->GetValue());
+    settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
+    settings->SetUnicodeFile(chkUnicodeFile->GetValue());
     settings->SetSQLFont(currentFont);
 
     // Make sure there's a slash on the end of the path
