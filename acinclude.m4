@@ -186,7 +186,7 @@ then
     WX_OLD_CPPFLAGS="$CPPFLAGS"
     if test "$pg_static_build" = "yes"
     then
-        WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --static`
+        WX_NEW_LDFLAGS=`${WX_CONFIG} --static --libs`
     else
         WX_NEW_LDFLAGS=`${WX_CONFIG} --libs`
     fi
@@ -207,105 +207,117 @@ then
     # Here we go!!
     if test "$pg_static_build" = "yes"
     then
-        case "${host}" in
-            *-apple-darwin*)
-                case "${WX_NEW_LDFLAGS}" in
-                    *libwx_macud-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macud_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_macd-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macd_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_mac-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mac_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *)
-                        ;;
-                esac
+        case "${WX_NEW_LDFLAGS}" in
+            *libwx_mswud-*)
+                LIBS="$LIBS $(WX_HOME)/lib/libwx_mswud_stc-$(WX+VERSION).a $(WX_HOME)/lib/libwx_mswud_xrc-$(WX_VERSION).a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
+            *libwx_mswu-*)
+                LIBS="$LIBS $(WX_HOME)/lib/libwx_mswu_stc-$(WX+VERSION).a $(WX_HOME)/lib/libwx_mswu_xrc-$(WX_VERSION).a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
+            *libwx_mswd-*)
+                LIBS="$LIBS $(WX_HOME)/lib/libwx_mswd_stc-$(WX+VERSION).a $(WX_HOME)/lib/libwx_mswd_xrc-$(WX_VERSION).a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
+            *libwx_msw-*)
+                LIBS="$LIBS $(WX_HOME)/lib/libwx_msw_stc-$(WX+VERSION).a $(WX_HOME)/lib/libwx_msw_xrc-$(WX_VERSION).a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
+            *libwx_macud-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macud_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
-            *) # This used to be just for Linux, but let's make it the default now as it should be appropriate for any wxGTK build
-                case "${WX_NEW_LDFLAGS}" in
-                    *libwx_gtk2ud-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2ud_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_gtk2d-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2d_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2d_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_gtk2u-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2u_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2u_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_gtkud-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkud_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_gtkd-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkd_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_gtk-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *)
-                        ;;
-                esac
+            *libwx_macd-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macd_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_mac-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mac_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_gtk2ud-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2ud_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_gtk2d-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2d_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2d_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_gtk2u-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2u_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2u_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_gtkud-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkud_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_gtkd-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkd_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_gtk-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk_xrc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *)
                 ;;
         esac
     else
-        case "${host}" in
-            *-apple-darwin*)
-                case "${WX_NEW_LDFLAGS}" in
-                    *wx_macud-*)
-                        LIBS="$LIBS -lwx_macud_stc-${WX_VERSION} -lwx_macud_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_macd-*)
-                        LIBS="$LIBS -lwx_macd_stc-${WX_VERSION} -lwx_macd_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_mac-*)
-                        LIBS="$LIBS -lwx_mac_stc-${WX_VERSION} -lwx_mac_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *)
-                        ;;
-                esac
+        case "${WX_NEW_LDFLAGS}" in
+            *libwx_mswud-*)
+                LIBS="$LIBS -lwx_mswud_stc-$(WX+VERSION) -lwx_mswud_xrc-$(WX_VERSION)"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
+            *libwx_mswu-*)
+                LIBS="$LIBS -lwx_mswu_stc-$(WX+VERSION) -lwx_mswu_xrc-$(WX_VERSION)"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
+            *libwx_mswd-*)
+                LIBS="$LIBS -lwx_mswd_stc-$(WX+VERSION) -lwx_mswd_xrc-$(WX_VERSION)"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
+            *libwx_msw-*)
+                LIBS="$LIBS -lwx_msw_stc-$(WX+VERSION) -lwx_msw_xrc-$(WX_VERSION)"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
+            *wx_macud-*)
+                LIBS="$LIBS -lwx_macud_stc-${WX_VERSION} -lwx_macud_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
-            *)  # This used to be just for Linux, but let's make it the default now as it should be appropriate for any wxGTK build
-                case "${WX_NEW_LDFLAGS}" in
-                    *wx_gtk2ud-*)
-                        LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION} -lwx_gtk2ud_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_gtk2d-*)
-                        LIBS="$LIBS -lwx_gtk2d_stc-${WX_VERSION} -lwx_gtk2d_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_gtk2u-*)
-                        LIBS="$LIBS -lwx_gtk2u_stc-${WX_VERSION} -lwx_gtk2u_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_gtkud-*)
-                        LIBS="$LIBS -lwx_gtkud_stc-${WX_VERSION} -lwx_gtkud_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_gtkd-*)
-                        LIBS="$LIBS -lwx_gtkd_stc-${WX_VERSION} -lwx_gtkd_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *wx_gtk-*)
-                        LIBS="$LIBS -lwx_gtk_stc-${WX_VERSION} -lwx_gtk_xrc-${WX_VERSION}"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *)
-                        ;;
-                esac
+            *wx_macd-*)
+                LIBS="$LIBS -lwx_macd_stc-${WX_VERSION} -lwx_macd_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *wx_mac-*)
+                LIBS="$LIBS -lwx_mac_stc-${WX_VERSION} -lwx_mac_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *wx_gtk2ud-*)
+                LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION} -lwx_gtk2ud_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *wx_gtk2d-*)
+                LIBS="$LIBS -lwx_gtk2d_stc-${WX_VERSION} -lwx_gtk2d_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *wx_gtk2u-*)
+                LIBS="$LIBS -lwx_gtk2u_stc-${WX_VERSION} -lwx_gtk2u_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *wx_gtkud-*)
+                LIBS="$LIBS -lwx_gtkud_stc-${WX_VERSION} -lwx_gtkud_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *wx_gtkd-*)
+                LIBS="$LIBS -lwx_gtkd_stc-${WX_VERSION} -lwx_gtkd_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *wx_gtk-*)
+                LIBS="$LIBS -lwx_gtk_stc-${WX_VERSION} -lwx_gtk_xrc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *)
                 ;;
         esac
     fi
