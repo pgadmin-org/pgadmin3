@@ -502,7 +502,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
                 browser->Delete(item);
 
                 // Reset the Servers node text
-                label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE) - 1);
+                label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
                 browser->SetItemText(servers, label);
                 StoreServers();
             }
@@ -554,7 +554,7 @@ void frmMain::OnQueryBuilder(wxCommandEvent &ev)
     wxTreeItemId item=browser->GetSelection();
     pgObject *data = (pgObject *)browser->GetItemData(item);
 
-    pgDatabase *db=data->GetDatabase();;
+    pgDatabase *db=data->GetDatabase();
     if (!db)
         return;
 
