@@ -90,6 +90,10 @@ WX_DEFINE_LIST(windowList);
 #include "images/help2.xpm"
 
 
+#if wxDIALOG_UNIT_COMPATIBILITY
+#error wxWindows must be compiled with wxDIALOG_UNIT_COMPATIBILITY=0!
+#endif
+
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
