@@ -158,59 +158,48 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
     if (!expandedKids)
     {
         expandedKids = true;
-        // append type here
-        // fk, pk lesen
-        pgSet *set = ExecuteSet(
-            wxT("SELECT indkey FROM pg_index\n")
-            wxT(" WHERE indrelid=") + GetTableOidStr() +
-			wxT(" AND indisprimary"));
-        if (set)
-        {
-            wxString indkey, str;
-            while (!isPK && !set->Eof())
-            {
-                wxStringTokenizer indkey(set->GetVal(0));
-                while (indkey.HasMoreTokens())
-                {
-                    str=indkey.GetNextToken();
-                    if (StrToLong(str) == GetColNumber())
-                    {
-                        isPK = true;
-                        break;
-                    }
-                }
 
-                set->MoveNext();
+        wxStringTokenizer indkey(pkCols);
+        while (indkey.HasMoreTokens())
+        {
+            wxString str=indkey.GetNextToken();
+            if (StrToLong(str) == GetColNumber())
+            {
+                isPK = true;
+                break;
             }
-            delete set;
         }
 
-        set=ExecuteSet(
-            wxT("SELECT conkey\n")
-            wxT("  FROM pg_constraint ct\n")
-            wxT("  JOIN pg_class cl on cl.oid=confrelid\n")
-            wxT(" WHERE contype='f' AND conrelid = ") + GetTableOidStr() + wxT("\n")
-            wxT(" ORDER BY conname"));
-        if (set)
+        if (!GetDatabase()->BackendMinimumVersion(7, 4))
         {
-            wxString conkey, str;
-            while (!isFK && !set->Eof())
+            // 7.3 misses the ANY(array) comparision
+            pgSet *set=ExecuteSet(
+                wxT("SELECT conkey\n")
+                wxT("  FROM pg_constraint ct\n")
+                wxT("  JOIN pg_class cl on cl.oid=confrelid\n")
+                wxT(" WHERE contype='f' AND conrelid = ") + GetTableOidStr() + wxT("\n")
+                wxT(" ORDER BY conname"));
+            if (set)
             {
-                wxStringTokenizer conkey(set->GetVal(0));
-
-                while (conkey.HasMoreTokens())
+                wxString conkey, str;
+                while (!isFK && !set->Eof())
                 {
-                    str=conkey.GetNextToken();
-                    if (StrToLong(str.Mid(1)) == GetColNumber())
-                    {
-                        isFK = true;
-                        break;
-                    }
-                }
+                    wxStringTokenizer conkey(set->GetVal(0));
 
-                set->MoveNext();
+                    while (conkey.HasMoreTokens())
+                    {
+                        str=conkey.GetNextToken();
+                        if (StrToLong(str.Mid(1)) == GetColNumber())
+                        {
+                            isFK = true;
+                            break;
+                        }
+                    }
+
+                    set->MoveNext();
+                }
+                delete set;
             }
-            delete set;
         }
     }
 
@@ -278,10 +267,18 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     if (!settings->GetShowSystemObjects())
         systemRestriction = wxT("\n   AND attnum > 0");
         
-    pgSet *columns= database->ExecuteSet(
+    wxString sql=
         wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, CASE WHEN ty.typname = 'bpchar' THEN 'char' WHEN ty.typname = '_bpchar' THEN '_char' ELSE ty.typname END AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
         wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
-        wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup\n")
+        wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey");
+
+    if (database->BackendMinimumVersion(7, 4))
+        sql += 
+            wxT(",\n")
+            wxT("  EXISTS(SELECT 1 FROM  pg_constraint WHERE conrelid=att.attrelid AND contype='f'")
+                        wxT(" AND att.attnum=ANY(conkey)) As isfk");
+
+    sql += wxT("\n")
         wxT("  FROM pg_attribute att\n")
         wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
         wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
@@ -292,11 +289,13 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=attrelid AND des.objsubid=attnum\n")
         wxT("  LEFT OUTER JOIN (pg_depend JOIN pg_class cs ON objid=cs.oid AND cs.relkind='S') ON refobjid=attrelid AND refobjsubid=attnum\n")
         wxT("  LEFT OUTER JOIN pg_namespace ns ON ns.oid=cs.relnamespace\n")
+        wxT("  LEFT OUTER JOIN pg_index pi ON pi.indrelid=attrelid AND indisprimary\n")
         wxT(" WHERE attrelid = ") + collection->GetOidStr()
         + restriction + systemRestriction + wxT("\n")
         wxT("   AND attisdropped IS FALSE\n")
-        wxT(" ORDER BY attnum"));
+        wxT(" ORDER BY attnum");
 
+    pgSet *columns= database->ExecuteSet(sql);
     if (columns)
     {
         while (!columns->Eof())
@@ -310,6 +309,9 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             column->iSetComment(columns->GetVal(wxT("description")));
             column->iSetSerialSequence(columns->GetVal(wxT("sername")));
             column->iSetSerialSchema(columns->GetVal(wxT("serschema")));
+            column->iSetPkCols(columns->GetVal(wxT("indkey")));
+            if (database->BackendMinimumVersion(7, 4))
+                column->iSetIsFK(columns->GetBool(wxT("isfk")));
 
             if (columns->GetBool(wxT("atthasdef")))
                 column->iSetDefault(columns->GetVal(wxT("adsrc")));

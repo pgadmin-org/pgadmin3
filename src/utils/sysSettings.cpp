@@ -33,7 +33,7 @@ extern wxString docPath;
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
     // Tip Of The Day
-    Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, TRUE); 
+    Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, true); 
     Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 
     // Log
@@ -49,7 +49,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("LastSSL"), &lastSSL, 0);
 
     // Show System Objects
-    Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
+    Read(wxT("ShowSystemObjects"), &showSystemObjects, false); 
 
 //    Read(wxT("SqlHelpSite"), &sqlHelpSite, docPath + wxT("/en_US/pg/"));
     Read(wxT("SqlHelpSite"), &sqlHelpSite, wxT(""));

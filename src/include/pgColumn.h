@@ -82,6 +82,8 @@ public:
     void iSetSerialSequence(const wxString &s) { serialSequence=s; }
     wxString GetSerialSchema() const { return serialSchema; }
     void iSetSerialSchema(const wxString &s) { serialSchema=s; }
+    void iSetPkCols(const wxString &s) { pkCols = s; }
+    void iSetIsFK(const bool b) { isFK = b; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     bool GetSystemObject() const { return colNumber < 0; }
@@ -94,7 +96,7 @@ public:
 
 private:
     wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;
-    wxString serialSequence, serialSchema;
+    wxString serialSequence, serialSchema, pkCols;
     long colNumber, length, precision, statistics, attstattarget;
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray;
