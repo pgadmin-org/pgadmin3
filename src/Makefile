@@ -64,7 +64,13 @@ OBJECTS = $(PROGRAM).o \
           ui/frmEditGrid.o \
           ui/dlgProperty.o \
           ui/dlgUser.o \
+          ui/dlgTable.o \
           ui/dlgDatabase.o \
+          ui/dlgColumn.o \
+          ui/dlgIndex.o \
+          ui/dlgIndexConstraint.o \
+          ui/dlgForeignKey.o \
+          ui/dlgCheck.o \
           ui/frmStatus.o \
           utils/misc.o \
           utils/sysLogger.o \
