@@ -56,7 +56,7 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 %setup -q
 
 %build
-./configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
+%configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
 make 
 
 pushd contrib/src/xrc
@@ -86,9 +86,9 @@ make install
 popd
 
 # Mandrake and RedHat do it by default. Needed for SuSE.
-strip --strip-debug %{_libdir}/libwx_gtk2ud-%{version}.a
-strip --strip-debug %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
-strip --strip-debug %{_libdir}/libwx_gtk2ud_stc-%{version}.a
+#strip --strip-debug %{_libdir}/libwx_gtk2ud-%{version}.a
+#strip --strip-debug %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
+#strip --strip-debug %{_libdir}/libwx_gtk2ud_stc-%{version}.a
 
 %clean
 rm -rf %{buildroot}
