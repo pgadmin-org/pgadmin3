@@ -224,3 +224,4 @@ void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
 	parent->SetSortCols(sortCols);
     Destroy();
 }
+
