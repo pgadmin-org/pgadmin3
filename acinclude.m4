@@ -339,10 +339,21 @@ then
         *)
             ;;
     esac
-    AC_LANG_SAVE
-    AC_LANG_C
-    AC_CHECK_HEADER(wx/version.h, [wx_wx_h=yes], [wx_wx_h=no])
-    AC_LANG_RESTORE
+    wx_wx_h="yes"
+    if test ! -f "${WX_HOME}/include/wx/version.h"
+    then
+        wx_wx_h="no"
+    fi
+    if test ! -f "${WX_HOME}/include/wx/stc/stc.h"
+    then
+        AC_MSG_ERROR([you need to install the stc package from wxWindows/contrib/src/stc])
+        wx_wx_h="no"
+    fi
+    if test ! -f "${WX_HOME}/include/wx/xrc/xml.h"
+    then
+        AC_MSG_ERROR([you need to install the xrc package from wxWindows/contrib/src/stc])
+        wx_wx_h="no"
+    fi
     if test "$wx_wx_h" = "yes"
     then
         AC_MSG_CHECKING([wxWindows in ${WX_HOME}])
