@@ -16,6 +16,10 @@ wxMBConvUTF16LE wxConvUTF16LE;
 extern wxMBConvUTF32BE wxConvUTF32BE;
 extern wxMBConvUTF32LE wxConvUTF32LE;
 
+#if !wxUSE_UNICODE
+#error utffile.cpp is implemented for unicode only.
+#endif
+
 
 // these are the magic characters identifying an Unicode file
 #define BOM_UTF8    "\357\273\277"
@@ -83,7 +87,7 @@ off_t wxUtfFile::Read(wxString &str, off_t nCount)
             if (decr)
                 Seek(-decr, wxFromCurrent);
 
-            m_conversion->MB2WC((wchar_t*)(wxChar*)wxStringBuffer(str, nLen), (const char*)buffer, (size_t)(nLen+1));
+            m_conversion->MB2WC((wchar_t*)(wxChar*)wxStringBuffer(str, nLen+1), (const char*)buffer, (size_t)(nLen+1));
         }
         else
             str = (wxChar*)buffer;
