@@ -469,6 +469,10 @@ SOURCE=.\ui\frmStatus.cpp
 
 SOURCE=.\ui\frmVacuum.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\ui\pgAdmin3.rc
+# End Source File
 # End Group
 # Begin Group "include"
 
@@ -1030,6 +1034,38 @@ SOURCE=.\include\sysSettings.h
 SOURCE=.\include\wxgridsel.h
 # End Source File
 # End Group
+# Begin Group "unix build"
+
+# PROP Default_Filter ""
+# Begin Group "top level"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\acinclude.m4
+# End Source File
+# Begin Source File
+
+SOURCE=..\bootstrap
+# End Source File
+# Begin Source File
+
+SOURCE="..\build-snapshot"
+# End Source File
+# Begin Source File
+
+SOURCE=..\configure.ac
+# End Source File
+# Begin Source File
+
+SOURCE=..\Makefile.am
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\Makefile.am
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\pgAdmin3.cpp
@@ -1050,10 +1086,6 @@ SOURCE=.\pgAdmin3.cpp
 # Begin Source File
 
 SOURCE=..\BUGS.txt
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\pgAdmin3.rc
 # End Source File
 # Begin Source File
 
