@@ -22,6 +22,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "menu.h"
 #include "frmMain.h"
 #include "frmAbout.h"
 #include "frmConnect.h"
@@ -40,7 +41,7 @@
 #include "pgFunction.h"
 #include "frmQueryBuilder.h"
 #include "frmEditGrid.h"
-#include "frmSqlHelp.h"
+#include "frmHelp.h"
 #include "dlgProperty.h"
 #include "frmVacuum.h"
 
@@ -51,6 +52,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_VACUUM,                    frmMain::OnVacuum)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_HELP,                      frmMain::OnHelp)
+    EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
     EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
     EVT_MENU(MNU_ABOUT,                     frmMain::OnAbout)
     EVT_MENU(MNU_ADDSERVER,                 frmMain::OnAddServer)
@@ -208,9 +210,18 @@ void frmMain::OnContents(wxCommandEvent& event)
 void frmMain::OnPgsqlHelp(wxCommandEvent& event)
 {
     wxString helpSite=settings->GetHelpSite();
-    frmSqlHelp *h=new frmSqlHelp(this);
+    frmHelp *h=new frmHelp(this);
     h->Show(true);
     if (!h->Load(helpSite + wxT("index.html")))
+        h->Destroy();
+}
+
+
+void frmMain::OnFaq(wxCommandEvent& event)
+{
+    frmHelp *h=new frmHelp(this);
+    h->Show(true);
+    if (!h->Load(wxT("http://www.pgadmin.org/pgadmin3/faq/")))
         h->Destroy();
 }
 
@@ -228,7 +239,7 @@ void frmMain::OnHelp(wxCommandEvent& event)
     if (page.IsEmpty())
         page = wxT("sql-commands.html");
 
-    frmSqlHelp *h=new frmSqlHelp(this);
+    frmHelp *h=new frmHelp(this);
     h->Show(true);
     if (!h->Load(helpSite + page))
         h->Destroy();
@@ -533,6 +544,9 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     statistics->Freeze();
 
     bool canReload=false;
+    bool canConnect=false;
+    bool canDisconnect=false;
+    bool canReindex=false;
 
     switch (type)
     {
@@ -542,13 +556,12 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
             server = (pgServer *)data;
             if (!server->GetConnected())
             {
-                toolsMenu->Enable(MNU_CONNECT, TRUE);
-                treeContextMenu->Enable(MNU_CONNECT, TRUE);               
+                canConnect=true;
             }
 			else
             {
-                toolsMenu->Enable(MNU_DISCONNECT, TRUE);
-                treeContextMenu->Enable(MNU_DISCONNECT, TRUE);               
+                canDisconnect=true;
+                canReindex=true;
             }
             data->ShowTree(this, browser, properties, statistics, sqlPane);
             EndMsg();
@@ -635,6 +648,13 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     }
     toolsMenu->Enable(MNU_RELOAD, canReload);
     treeContextMenu->Enable(MNU_RELOAD, canReload);
+    toolsMenu->Enable(MNU_CONNECT, canConnect);
+    treeContextMenu->Enable(MNU_CONNECT, canConnect);               
+    toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
+    treeContextMenu->Enable(MNU_DISCONNECT, canDisconnect);
+    fileMenu->Enable(MNU_PASSWORD, canDisconnect);
+//    toolsMenu->Enable(MNU_REINDEX, canReindex);
+//    treeContextMenu->Enable(MNU_REINDEX, canReindex);               
 }
 
 

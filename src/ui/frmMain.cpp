@@ -26,6 +26,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "menu.h"
 #include "frmMain.h"
 #include "ctlSQLBox.h"
 #include "pgConn.h"
@@ -153,6 +154,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     // Help Menu
     helpMenu = new wxMenu();
     helpMenu->Append(MNU_CONTENTS, wxT("&Help..."),                 wxT("Open the pgAdmin III helpfile."));
+    helpMenu->Append(MNU_FAQ, wxT("pgAdmin III FAQ"),               wxT("Frequently asked questions about pgAdmin III."));
     helpMenu->Append(MNU_HELP, wxT("SQL Help"),                     wxT("Display help on SQL commands."));
     helpMenu->Append(MNU_PGSQLHELP, wxT("PostgreSQL Help"),         wxT("Display help on PostgreSQL database system."));
     helpMenu->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."),    wxT("Show a tip of the day."));

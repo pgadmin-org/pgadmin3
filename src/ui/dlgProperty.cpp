@@ -18,12 +18,13 @@
 #include "pgCollection.h"
 #include "pgDatatype.h"
 #include "misc.h"
+#include "menu.h"
 
 // Images
 #include "images/properties.xpm"
 
 #include "frmMain.h"
-#include "frmSqlHelp.h"
+#include "frmHelp.h"
 
 // Property dialogs
 #include "dlgProperty.h"
@@ -109,14 +110,18 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
     numericValidator.SetStyle(wxFILTER_NUMERIC);
     btnOK->Disable();
 
-    wxSize size=GetSize();
-    size.SetHeight(size.GetHeight()+20);
-    SetSize(size);
-
-    size=GetClientSize();
-    wxPoint pos(0, size.GetHeight()-20);
-    size.SetHeight(20);
-    statusBox=new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
+    if (wxWindow::FindWindow(XRCID("txtStatus")))
+        statusBox=CTRL("txtStatus", wxTextCtrl);
+    else
+    {
+        wxSize size=GetSize();
+        size.SetHeight(size.GetHeight()+20);
+        SetSize(size);
+        size=GetClientSize();
+        wxPoint pos(0, size.GetHeight()-20);
+        size.SetHeight(20);
+        statusBox = new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
+    }
     statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 }
 
@@ -136,7 +141,7 @@ void dlgProperty::OnHelp(wxCommandEvent& event)
     if (page.IsEmpty())
         page = wxT("index.html");
 
-    frmSqlHelp *h=new frmSqlHelp(mainForm);
+    frmHelp *h=new frmHelp(mainForm);
     h->Show(true);
     if (!h->Load(helpSite + page))
         h->Destroy();

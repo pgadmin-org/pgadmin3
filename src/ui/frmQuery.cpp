@@ -17,7 +17,8 @@
 #include "pgAdmin3.h"
 #include "frmMain.h"
 #include "frmQuery.h"
-#include "frmSqlHelp.h"
+#include "frmHelp.h"
+#include "menu.h"
 
 // Icons
 #include "images/sql.xpm"
@@ -402,7 +403,7 @@ void frmQuery::OnHelp(wxCommandEvent& event)
     if (page.IsEmpty())
 	page=wxT("sql-commands.html");
 
-    frmSqlHelp *h=new frmSqlHelp(mainForm);
+    frmHelp *h=new frmHelp(mainForm);
     h->Show(true);
     if (!h->Load(helpSite + page))
         h->Destroy();

@@ -23,6 +23,7 @@
 #include "pgAdmin3.h"
 #include "pgDefs.h"
 #include "frmMain.h"
+#include "menu.h"
 
 #include "frmEditGrid.h"
 #include "pgTable.h"
