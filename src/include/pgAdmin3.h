@@ -19,17 +19,18 @@
 #include "sysSettings.h"
 
 // Application Versions & Name
-#define VERSION wxT("0.1.0 Devel")
+#define VERSION wxT("0.1.1 Devel")
 #define APPNAME_L wxT("pgAdmin III")
 #define APPNAME_S wxT("pgadmin3")
 const float SERVER_MIN_VERSION = 7.3f;
 
 // XRC Path
 #ifdef __WXMSW__
-  #define XRC_PATH wxT("ui/win32")
+  #define XRC_PATH wxT("/ui/win32")
 #else
-  #define XRC_PATH wxT("ui/gtk")
+  #define XRC_PATH wxT("/ui/gtk")
 #endif
+#define XRC_COMMON_PATH wxT("/ui/common")
 
 // Class declarations
 class pgAdmin3 : public wxApp

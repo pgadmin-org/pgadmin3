@@ -22,6 +22,10 @@
 // Splash
 #include "images/splash.xpm"
 
+// Copyright text
+#include "copyright.h"
+
+
 BEGIN_EVENT_TABLE(frmAbout, wxDialog)
 EVT_PAINT(frmAbout::OnPaint)
 END_EVENT_TABLE()
@@ -39,22 +43,30 @@ frmAbout::frmAbout(wxFrame *parent)
     about = wxBitmap(splash_xpm);
 
     SetClientSize(about.GetWidth(), about.GetHeight());
-    wxString version = wxT(" "VERSION" ("__DATE__") ");
 
-    // Creating a 0 size panel is the only way to position the static text on unix. If you know a better way..!
-	(void)new wxPanel(this, -1, wxPoint(7,95), wxSize(0,0));
-	(void)new wxStaticText(this, -1, version, wxPoint(7,95));
 	this->Center();
 }
+
 
 frmAbout::~frmAbout()
 {
     wxLogInfo(wxT("Destroying an about box"));
 }
 
+
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-	wxPaintDC dc(this);
+    int y=SPLASH_Y0;
+    wxFont fnt(SPLASH_FONTSIZE, wxSWISS, wxNORMAL, wxNORMAL);
+
+    wxPaintDC dc(this);
 	dc.DrawBitmap(about, 0, 0);
-	
+    dc.SetTextForeground(wxColour(255, 255, 255));
+    dc.SetFont(fnt);
+
+    dc.DrawText(VERSION_WITH_DATE, SPLASH_X0, y);
+    y += SPLASH_OFFS;
+    dc.DrawText(COPYRIGHT, SPLASH_X0, y);
+    y += SPLASH_OFFS;
+    dc.DrawText(LICENSE, SPLASH_X0, y);
 }

@@ -22,6 +22,9 @@
 // Splash
 #include "images/splash.xpm"
 
+// Copyright text
+#include "copyright.h"
+
 BEGIN_EVENT_TABLE(frmSplash, wxFrame)
     EVT_PAINT(frmSplash::OnPaint)
 END_EVENT_TABLE()
@@ -39,20 +42,30 @@ frmSplash::frmSplash(wxFrame *parent)
     splash = wxBitmap(splash_xpm);
     
     SetClientSize(splash.GetWidth(), splash.GetHeight());
-    wxString version = wxT(" "VERSION" ("__DATE__") ");
 
-    (void)new wxPanel(this, -1, wxPoint(7,95), wxSize(0,0));
-	(void)new wxStaticText(this, -1, version, wxPoint(7,95));
     Center();
 }
+
 
 frmSplash::~frmSplash()
 {
     wxLogInfo(wxT("Destroying a splash screen"));
 }
 
+
 void frmSplash::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
+    int y=SPLASH_Y0;
+    wxFont fnt(SPLASH_FONTSIZE, wxSWISS, wxNORMAL, wxNORMAL);
+
     wxPaintDC dc(this);
-    dc.DrawBitmap(splash, 0, 0);
+	dc.DrawBitmap(splash, 0, 0);
+    dc.SetTextForeground(wxColour(255, 255, 255));
+    dc.SetFont(fnt);
+
+    dc.DrawText(VERSION_WITHOUT_DATE, SPLASH_X0, y);
+    y += SPLASH_OFFS;
+    dc.DrawText(COPYRIGHT, SPLASH_X0, y);
+    y += SPLASH_OFFS;
+    dc.DrawText(LICENSE, SPLASH_X0, y);
 }

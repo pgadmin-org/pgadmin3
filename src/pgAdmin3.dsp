@@ -895,6 +895,10 @@ SOURCE=.\include\images\viewdata.xpm
 # End Group
 # Begin Source File
 
+SOURCE=.\include\copyright.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\misc.h
 # End Source File
 # Begin Source File
@@ -908,6 +912,10 @@ SOURCE=.\include\sysLogger.h
 # Begin Source File
 
 SOURCE=.\include\sysSettings.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\wxgridsel.h
 # End Source File
 # End Group
 # Begin Source File
