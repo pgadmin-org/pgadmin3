@@ -25,6 +25,6 @@
 #endif
 #endif
 
-#define SPLASH_X0       10
-#define SPLASH_Y0       100
+#define SPLASH_X0       6
+#define SPLASH_Y0       114
 #define SPLASH_OFFS     15
