@@ -1,0 +1,93 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pg/stylesheet.css">
+<title>Translation steps</title>
+</head>
+
+<!--
+div.Section1
+	{page:Section1;}
+ li.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	margin-left:0cm; margin-right:0cm; margin-top:0cm}
+-->
+
+<body>
+
+<h3>Translation steps</h3>
+
+<p>
+	pgAdmin3 is a localised application, which means it was designed to be easily translated into several languages, using Gettext technologies and Unicode (UTF-8). Also, as described in the <a href="translation_guidelines.html">translation guidelines</a>, we made sure that all strings could be translated.
+</p>
+
+<p>
+  Anyone can translate pgAdmin3 into his/her mother tongue. You don't need to be a programmer. The required steps for translation are the followings:
+</p>
+
+<ol>
+  <li>
+    Declare yourself as a translator by sending an email to pgAdmin3 <a href="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers@postgresql.org</a> mailing list. Anonymous post is not aloud, you may need to subscribe by sending an email to <a href="mailto:pgadmin-hackers-request@postgresql.org">pgadmin-hackers-request@postgresql.org</a> with subject "subscribe".
+    <br><br>
+    In the case of widely spread European and Asian languages, we prefer native speakers translating to their mother tongue. In the case of less common languages, we have no special requirements.
+  <br><br>
+
+  <li>
+  Download and install a Gettext translation software. We recommend using <a href="http://poedit.sourceforge.net">poEdit</a> as it can be installed under GNU/Linux or MS Windows and has a nice GUI interface, which makes translating easier.
+  <br><br>
+
+  <li>
+  Download the latest pgadmin3.pot language file from CVS. There are two ways of doing it:
+		<ul>
+    	<br>
+			<li>The easy way
+      <br>
+      Download <a href="http://cvs.pgadmin.org/cgi-bin/viewcvs.cgi/pgadmin3/pgadmin3.pot">pgadmin3.pot</a> from our graphical CVS interface. It is very fast, but if you are planning to update your translations often, you may prefer to checkout from CVS.
+      <br><br>
+      <li>The hard way
+      <br>
+      Checkout pgAdmin3 source code using a CVS client. Under Windows, we recommend using <a href="http://www.wincvs.org">WinCVS</a>. Under GNU/Linux, there are several command lines and graphical clients available.
+      <br><br>
+      Anonymous read access is available at the following CVSRoot (no password is required): <:pserver:anonymous@cvs.pgadmin.org:/disk1/cvsroot>. You need to checkout pgadmin3 repository.
+      <br><br>
+      Under GNU/Linux, the checkout command line is:
+      <br>
+			# cvs -d :pserver:anonymous@cvs.pgadmin.org:/disk1/cvsroot co pgadmin3
+      </li>
+      <br>
+      Create an empty folder in pgadmin3/src/ui, using the "Languagecode_COUNTRYCODE" code, like for example de_DE (German spoken in Germany), fr_FR (French spoken in France), pt_BR (Portuguese spoken in Brazil), etc... The list of language codes can be found on <a href="http://www.debian.org/international/l10n/po">Debian site</a>. Copy the .pot file to the new folder and rename it pgadmin3.po.
+    </ul>
+  <br><br>
+
+  <li>Translate the pgadmin3.po file into your mother tongue. Because poEdit is sometimes instable, do not hesitate to save partial work every 10 minutes.
+  </li>
+	<br><br>
+
+  <li>When the translation is finished, send the resulting pgadmin3.po and pgadmin3.pot files to <a href="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers@postgresql.org</a> after zipping of taring them.
+	</li>
+	<br><br>
+
+  <li>
+	Because pgAdmin3 is under heavy development, we recommend updating translations regularly. Under GNU/Linux, you can retrieve the latest pgadmin3.pot with:
+  <br>
+	# cd path_to_pgadmin3_source_code
+  <br>
+  # cvs update -P -C -d
+  <br><br>
+	<a href="http://poedit.sourceforge.net">poEdit</a> has a nice feature, at startup of software, which merges the updated pgadmin3.pot file into your pgadmin.po file.
+  <br><br>
+  When you are finished with translations, create a patch:
+  <br>
+	# cvs diff -u path_to_your_pgadmin3_po_file > language_patch.txt
+  <br>
+  and send it to us.
+  </li>
+</ol>
+
+</body>
+
+</html>
