@@ -110,15 +110,15 @@ pgObject *dlgSequence::CreateObject(pgCollection *collection)
 
 void dlgSequence::OnChange(wxNotifyEvent &ev)
 {
+    wxString name=GetName();
     if (sequence)
     {
-        EnableOK(txtComment->GetValue() != sequence->GetComment()
+        EnableOK(name != sequence->GetName() 
+               || txtComment->GetValue() != sequence->GetComment()
                || txtStart->GetValue() != sequence->GetLastValue().ToString());
     }
     else
     {
-        wxString name=GetName();
-
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         EnableOK(enable);
