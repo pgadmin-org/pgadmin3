@@ -94,15 +94,15 @@ LINK32=link.exe
 # PROP Default_Filter "c,cpp"
 # Begin Source File
 
-SOURCE=.\ui\frmAbout.cpp
+SOURCE=.\ui\forms\frmAbout.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmMain.cpp
+SOURCE=.\ui\forms\frmMain.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmSplash.cpp
+SOURCE=.\ui\forms\frmSplash.cpp
 # End Source File
 # Begin Source File
 
@@ -123,15 +123,15 @@ SOURCE=.\pgAdmin3.cpp
 # PROP Default_Filter "h"
 # Begin Source File
 
-SOURCE=.\ui\frmAbout.h
+SOURCE=.\ui\forms\frmAbout.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmMain.h
+SOURCE=.\ui\forms\frmMain.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmSplash.h
+SOURCE=.\ui\forms\frmSplash.h
 # End Source File
 # Begin Source File
 

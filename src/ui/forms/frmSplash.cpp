@@ -13,7 +13,7 @@
 #include <wx/image.h>
 
 // App headers
-#include "../pgAdmin3.h"
+#include "../../pgAdmin3.h"
 #include "frmSplash.h"
 
 BEGIN_EVENT_TABLE(frmSplash, wxFrame)

@@ -5,25 +5,27 @@
 # Makefile - Makefile for *nix systems
 
 CC = gcc
-
 PROGRAM = pgAdmin3
+CFLAGS  = `wx-config --cflags`
+LDFLAGS = `wx-config --libs` -lstc
 
 OBJECTS = $(PROGRAM).o \
-          ui/frmAbout.o \
-          ui/frmMain.o \
-          ui/frmSplash.o
+          ui/forms/frmAbout.o \
+          ui/forms/frmMain.o \
+          ui/forms/frmSplash.o
 
 
 .SUFFIXES:	.o .cpp
 
 .cpp.o :
-	$(CC) -c `wx-config --cflags` -o $@ $<
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 all:    $(PROGRAM)
 
 $(PROGRAM):	$(OBJECTS)
-	$(CC) -o $(PROGRAM) $(OBJECTS) `wx-config --libs` -lstc
+	$(CC) -o $(PROGRAM) $(OBJECTS) $(LDFLAGS)
 
 clean:
 	rm -f *.o $(PROGRAM)
 	rm -f ui/*.o
+        rm -f ui/forms/*.o

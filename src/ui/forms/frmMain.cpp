@@ -17,7 +17,7 @@
 #include <wx/stc/stc.h>
 
 // App headers
-#include "../pgAdmin3.h"
+#include "../../pgAdmin3.h"
 #include "frmMain.h"
 #include "frmAbout.h"
 

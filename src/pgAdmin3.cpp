@@ -15,8 +15,8 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "ui/frmMain.h"
-#include "ui/frmSplash.h"
+#include "ui/forms/frmMain.h"
+#include "ui/forms/frmSplash.h"
 
 IMPLEMENT_APP(pgAdmin3)
 
