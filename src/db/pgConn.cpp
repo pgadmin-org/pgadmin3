@@ -429,6 +429,12 @@ bool pgConn::IsAlive()
 
     PGresult *qryRes = PQexec(conn, "SELECT 1;");
     lastResultStatus = PQresultStatus(qryRes);
+    if (lastResultStatus != PGRES_TUPLES_OK)
+    {
+        PQclear(qryRes);
+        qryRes = PQexec(conn, "ROLLBACK TRANSACTION; SELECT 1;");
+        lastResultStatus = PQresultStatus(qryRes);
+    }
     PQclear(qryRes);
 
     // Check for errors
