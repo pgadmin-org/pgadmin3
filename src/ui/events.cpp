@@ -625,14 +625,17 @@ void frmMain::OnDrop(wxCommandEvent &ev)
         else
             browser->SelectItem(browser->GetPrevVisible(item));
 
+        int droppedType = data->GetType();
         browser->Delete(item);
+        // data is invalid now
+
 
         pgCollection *collection=0;
 
         while (parentItem)
         {
             collection = (pgCollection*)browser->GetItemData(parentItem);
-            if (collection && collection->IsCollection() && collection->IsCollectionForType(data->GetType()))
+            if (collection && collection->IsCollection() && collection->IsCollectionForType(droppedType))
             {
                 collection->UpdateChildCount(browser);
                 break;
