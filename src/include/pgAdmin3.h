@@ -39,7 +39,7 @@ public:
     virtual int OnExit();
 
 private:
-    void LoadXrc(const wxString file);
+    bool LoadAllXrc(const wxString dir);
 };
 
 

@@ -13,6 +13,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/app.h>
+#include <wx/dir.h>
 #include <wx/xrc/xmlres.h>
 
 // Windows headers
@@ -77,14 +78,20 @@ bool pgAdmin3::OnInit()
 
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();
-    LoadXrc(wxT("frmConnect.xrc"));
-    LoadXrc(wxT("frmOptions.xrc"));
-    LoadXrc(wxT("frmPassword.xrc"));
-    LoadXrc(wxT("frmQBJoin.xrc"));
-    LoadXrc(wxT("frmAddTableView.xrc"));
-    LoadXrc(wxT("frmStatus.xrc"));
 
-    LoadXrc(wxT("dlgUser.xrc"));
+    bool done;
+    
+    done=LoadAllXrc(XRC_PATH);
+    if (!done)
+    {
+        wxString loadPath=wxPathOnly(argv[0]);
+        done=LoadAllXrc(loadPath + wxT("/") + XRC_PATH);
+        if (!done)
+            done=LoadAllXrc(loadPath + wxT("/../") + XRC_PATH);
+        if (!done)
+            done=LoadAllXrc(loadPath + wxT("/pgAdmin.ui"));
+    }
+
 
     // Set some defaults
 #ifdef __WXMSW__
@@ -141,31 +148,20 @@ int pgAdmin3::OnExit()
     delete logger;
 }
 
-void pgAdmin3::LoadXrc(const wxString file)
+
+bool pgAdmin3::LoadAllXrc(const wxString dir)
 {
-    wxLogInfo(wxT("Loading %s"), file.c_str());
+    wxArrayString files;
+    int count=wxDir::GetAllFiles(dir, &files, wxT("*.xrc"), wxDIR_FILES);
+    if (!count)
+        return false;
+    int i;
 
-    wxString loadPath=wxPathOnly(argv[0]);
-
-
-    wxString xrc;
-    xrc.Printf("%s/%s", XRC_PATH, file.c_str());
-    if (!wxFileExists(xrc))
+    for (i=0 ; i < count ; i++)
     {
-        xrc.Printf("%s/%s/%s", loadPath.c_str(), XRC_PATH, file.c_str());
-        if (!wxFileExists(xrc))
-        {
-            xrc.Printf("%s/../%s/%s", loadPath.c_str(), XRC_PATH, file.c_str());
-            if (!wxFileExists(xrc))
-            {
-                xrc.Printf("%s/pgadmin.ui/%s", loadPath.c_str(), file.c_str());
-                if (!wxFileExists(xrc))
-                {
-                    wxLogError(wxT("Resource ") + file + wxT(" could not be located!"));
-                    return;
-                }
-            }
-        }
+        wxLogInfo(wxT("Loading %s"), files.Item(i).c_str());
+        wxXmlResource::Get()->Load(files.Item(i));
     }
-    wxXmlResource::Get()->Load(xrc);
+    return true;
 }
+
