@@ -42,7 +42,7 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
             sql = wxT("-- Just a proposal; indexes, foreign keys and trigger might prevent this\n\n"
                       "ALTER TABLE ") + GetQuotedFullTable()
                 + wxT(" ADD COLUMN pgadmin_tmpcol ") + GetFullType();
-            if (GetStorage() != "PLAIN")
+// plain not always default!            if (GetStorage() != "PLAIN")
                 sql += wxT(";\nALTER TABLE ")+ GetQuotedFullTable()
                     +  wxT(" ALTER COLUMN pgadmin_tmpcol SET STORAGE ") + GetStorage();
             sql +=wxT(";\nUPDATE ") + GetQuotedFullTable()
@@ -81,8 +81,6 @@ wxString pgColumn::GetFullType()
 
 void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
     if (!expandedKids)
     {
         expandedKids = true;
@@ -179,89 +177,120 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
 
 
+pgObject *pgColumn::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *column=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_COLUMNS)
+            column = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND attnum=") + NumToStr(GetColNumber()));
+    }
+    return column;
+}
+
+
+
+pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgColumn *column=0;
+
+    wxString systemRestriction;
+    if (!settings->GetShowSystemObjects())
+        systemRestriction = "\n   AND attnum > 0 AND attisdropped IS FALSE";
+
+
+    pgSet *columns= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT att.*, def.*, ty.typname, et.typname as elemtypname, relname, nspname,\n"
+        "       CASE WHEN atttypid IN (1231,1700) OR ty.typbasetype IN (1231,1700) "
+                    "THEN 1 ELSE 0 END AS isnumeric\n"
+        "  FROM pg_attribute att\n"
+        "  JOIN pg_type ty ON ty.oid=atttypid\n"
+        "  JOIN pg_class cl ON cl.oid=attrelid\n"
+        "  JOIN pg_namespace na ON na.oid=cl.relnamespace\n"
+        "  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n"
+        "  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n"
+
+        " WHERE attrelid = ") + collection->GetOidStr() 
+        + restriction + systemRestriction + wxT("\n"
+        " ORDER BY attnum"));
+
+    if (columns)
+    {
+        while (!columns->Eof())
+        {
+            column = new pgColumn(collection->GetSchema(), columns->GetVal(wxT("attname")));
+
+            column->iSetTableOid(collection->GetOid());
+            column->iSetColNumber(columns->GetLong(wxT("attnum")));
+            column->iSetIsArray(columns->GetLong(wxT("attndims")) > 0);
+            if (column->GetIsArray())
+                column->iSetVarTypename(columns->GetVal(wxT("elemtypname")));
+            else
+                column->iSetVarTypename(columns->GetVal(wxT("typname")));
+            column->iSetDefault(columns->GetVal(wxT("adsrc")));
+            column->iSetStatistics(columns->GetLong(wxT("attstattarget")));
+
+            wxString storage=columns->GetVal(wxT("attstorage"));
+            column->iSetStorage(
+                storage == wxT("p") ? wxT("PLAIN") :
+                storage == wxT("e") ? wxT("EXTERNAL") :
+                storage == wxT("m") ? wxT("MAIN") :
+                storage == wxT("s") ? wxT("EXTENDED") : wxT("unknown"));
+
+            long typlen=columns->GetLong(wxT("attlen"));
+            long typmod=columns->GetLong(wxT("atttypmod"));
+            bool isnum=columns->GetBool(wxT("isnumeric"));
+
+            long precision=-1, length=typlen;
+            if (length == -1)
+            {
+                if (typmod > 0)
+                {
+                    if (isnum)
+                    {
+                        length=(typmod-4) >> 16;
+                        precision=(typmod-4) & 0xffff;
+                    }
+                    else
+                        length = typmod-4;
+                }
+            }
+            column->iSetTyplen(typlen);
+            column->iSetTypmod(typmod);
+            column->iSetLength(length);
+            column->iSetPrecision(precision);
+            column->iSetNotNull(columns->GetBool(wxT("attnotnull")));
+            column->iSetQuotedFullTable(qtIdent(columns->GetVal(wxT("nspname"))) + wxT(".")
+                + qtIdent(columns->GetVal(wxT("relname"))));
+            column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), column->GetIdentifier(), PGICON_COLUMN, -1, column);
+				columns->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete columns;
+    }
+    return column;
+}
+
+
 void pgColumn::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    pgColumn *column;
-
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        msg.Printf(wxT("Adding Columns to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding Columns to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
 
         // Get the Columns
+        ReadObjects(collection, browser);
 
-        wxString systemRestriction;
-        if (!settings->GetShowSystemObjects())
-            systemRestriction = "\n   AND attnum > 0 AND attisdropped IS FALSE";
-
-
-        pgSet *columns= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT att.*, def.*, ty.typname, et.typname as elemtypname, relname, nspname,\n"
-            "       CASE WHEN atttypid IN (1231,1700) OR ty.typbasetype IN (1231,1700) "
-                        "THEN 1 ELSE 0 END AS isnumeric\n"
-            "  FROM pg_attribute att\n"
-            "  JOIN pg_type ty ON ty.oid=atttypid\n"
-            "  JOIN pg_class cl ON cl.oid=attrelid\n"
-            "  JOIN pg_namespace na ON na.oid=cl.relnamespace\n"
-            "  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n"
-            "  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n"
-
-            " WHERE attrelid = ") + collection->GetOidStr() + systemRestriction + wxT("\n"
-            " ORDER BY attnum"));
-
-        if (columns)
-        {
-            while (!columns->Eof())
-            {
-                column = new pgColumn(collection->GetSchema(), columns->GetVal(wxT("attname")));
-
-                column->iSetTableOid(collection->GetOid());
-                column->iSetColNumber(columns->GetLong(wxT("attnum")));
-                column->iSetIsArray(columns->GetLong(wxT("attndims")) > 0);
-                if (column->GetIsArray())
-                    column->iSetVarTypename(columns->GetVal(wxT("elemtypname")));
-                else
-                    column->iSetVarTypename(columns->GetVal(wxT("typname")));
-                column->iSetDefault(columns->GetVal(wxT("adsrc")));
-                column->iSetStatistics(columns->GetLong(wxT("attstattarget")));
-                column->iSetStorage(columns->GetVal(wxT("attstorage")));
-
-                long typlen=columns->GetLong(wxT("attlen"));
-                long typmod=columns->GetLong(wxT("atttypmod"));
-                bool isnum=columns->GetBool(wxT("isnumeric"));
-
-                long precision=-1, length=typlen;
-                if (length == -1)
-                {
-                    if (typmod > 0)
-                    {
-                        if (isnum)
-                        {
-                            length=(typmod-4) >> 16;
-                            precision=(typmod-4) & 0xffff;
-                        }
-                        else
-                            length = typmod-4;
-                    }
-                }
-                column->iSetTyplen(typlen);
-                column->iSetTypmod(typmod);
-                column->iSetLength(length);
-                column->iSetPrecision(precision);
-                column->iSetNotNull(columns->GetBool(wxT("attnotnull")));
-                column->iSetQuotedFullTable(qtIdent(columns->GetVal(wxT("nspname"))) + wxT(".")
-                    + qtIdent(columns->GetVal(wxT("relname"))));
-                column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));
-
-                browser->AppendItem(collection->GetId(), column->GetIdentifier(), PGICON_COLUMN, -1, column);
-	    
-			    columns->MoveNext();
-            }
-
-		    delete columns;
-        }
     }
 }
 

@@ -253,9 +253,6 @@ void pgTable::UpdateInheritance()
 
 void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    if (form)
-        SetButtons(form);
-
     if (!expandedKids)
     {
         expandedKids=true;
@@ -370,10 +367,73 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
 
 
+
+pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *table=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_TABLES)
+            table = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+    }
+    return table;
+}
+
+
+
+pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgTable *table=0;
+
+    pgSet *tables= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, "
+                "relhassubclass, reltuples, description, conname, conkey\n"
+        "  FROM pg_class rel\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid\n"
+        "  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n"
+        " WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
+        + restriction + 
+        " ORDER BY relname"));
+
+    if (tables)
+    {
+        int nr=tables->NumRows();
+
+        while (!tables->Eof())
+        {
+            table = new pgTable(collection->GetSchema(), tables->GetVal(wxT("relname")));
+
+            table->iSetOid(tables->GetOid(wxT("oid")));
+            table->iSetOwner(tables->GetVal(wxT("relowner")));
+            table->iSetAcl(tables->GetVal(wxT("relacl")));
+            table->iSetComment(tables->GetVal(wxT("description")));
+            table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
+            table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
+            table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
+            table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));
+            wxString cn=tables->GetVal(wxT("conkey"));
+            cn=cn.Mid(1, cn.Length()-2);
+            table->iSetPrimaryKeyColNumbers(cn);
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), table->GetIdentifier(), PGICON_TABLE, -1, table);
+                tables->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete tables;
+    }
+    return table;
+}
+
+
 void pgTable::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    pgTable *table;
-
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
 
@@ -381,43 +441,7 @@ void pgTable::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
         wxLogInfo(wxT("Adding tables to schema ")+ collection->GetSchema()->GetIdentifier());
 
         // Get the tables
-        pgSet *tables= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, "
-                    "relhassubclass, reltuples, description, conname, conkey\n"
-            "  FROM pg_class rel\n"
-            "  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid\n"
-            "  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n"
-            " WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
-            " ORDER BY relname"));
-
-        if (tables)
-        {
-            int nr=tables->NumRows();
-
-            while (!tables->Eof())
-            {
-                wxString tn=tables->GetVal(wxT("relname"));
-                table = new pgTable(collection->GetSchema(), tables->GetVal(wxT("relname")));
-
-                table->iSetOid(tables->GetOid(wxT("oid")));
-                table->iSetOwner(tables->GetVal(wxT("relowner")));
-                table->iSetAcl(tables->GetVal(wxT("relacl")));
-                table->iSetComment(tables->GetVal(wxT("description")));
-                table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
-                table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
-                table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
-                table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));
-                wxString cn=tables->GetVal(wxT("conkey"));
-                cn=cn.Mid(1, cn.Length()-2);
-                table->iSetPrimaryKeyColNumbers(cn);
-
-                browser->AppendItem(collection->GetId(), table->GetIdentifier(), PGICON_TABLE, -1, table);
-	    
-			    tables->MoveNext();
-            }
-
-		    delete tables;
-        }
+        ReadObjects(collection, browser);
     }
 
     if (statistics)

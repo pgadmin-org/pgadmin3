@@ -48,8 +48,10 @@ public:
     void UpdateRows();
 
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     void UpdateInheritance();
 
     double rows, estimatedRows;

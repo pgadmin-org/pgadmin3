@@ -64,7 +64,11 @@ public:
     wxString GetFullType();
     wxString GetSql(wxTreeCtrl *browser);
 
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString varTypename, defaultVal, quotedFullTable, storage;
     long colNumber, length, precision, statistics;
     long typlen, typmod, inheritedCount;
