@@ -13,6 +13,8 @@
 #ifndef _WX_UTFFILEH__
 #define _WX_UTFFILEH__
 
+#include  "wx/wx.h"
+#include  "wx/font.h"
 #include  "wx/file.h"
 
 class wxUtfFile : public wxFile
