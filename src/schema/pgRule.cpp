@@ -37,20 +37,20 @@ wxString pgRule::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
+#if 0
         sql = wxT("CREATE OR REPLACE RULE ") + GetQuotedIdentifier()
-            + wxT(" AS ON ") + GetEvent()
+            + wxT("\n AS ON ") + GetEvent()
             + wxT(" TO ") + GetQuotedFullTable()
             + wxT(" DO ");
         if (GetDoInstead())
             sql += wxT("INSTEAD ");
         if (GetDefinition().IsEmpty())
-            sql += wxT("NOTHING");
+            sql += wxT("NOTHING;");
         else
-            sql += wxT("\n(\n")
-                + GetDefinition()
-                + wxT(")\n");
+#endif
+            sql += GetFormattedDefinition();
 
-        sql += wxT(";\n");
+        sql += wxT("\n");
         if (!GetComment().IsEmpty())
             sql += wxT("COMMENT ON RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
                 +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
@@ -76,7 +76,7 @@ void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         if (GetDefinition().IsEmpty())
             InsertListItem(properties, pos++, wxT("Definition"), wxT("NOTHING"));
         else
-            InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
+            InsertListItem(properties, pos++, wxT("Definition"), GetDefinition().Left(250));
         InsertListItem(properties, pos++, wxT("System Rule?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
@@ -104,7 +104,8 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     pgRule *rule=0;
 
     pgSet *rules= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT rw.oid, rw.ev_class, rulename, pg_get_ruledef(rw.oid) as definition, is_instead, ev_type, ev_action, ev_qual, description\n"
+        "SELECT rw.oid, rw.ev_class, rulename, relname, nspname, description, is_instead, ev_type, ev_action, ev_qual,\n"
+        "       ") + collection->GetDatabase()->GetRuledefFunction() + wxT("(rw.oid) as definition\n"
         "  FROM pg_rewrite rw\n"
         "  JOIN pg_class cl ON cl.oid=rw.ev_class\n"
         "  JOIN pg_namespace nsp ON nsp.oid=cl.relnamespace\n"
@@ -124,7 +125,25 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             rule->iSetComment(rules->GetVal(wxT("description")));
             rule->iSetDoInstead(rules->GetBool(wxT("is_instead")));
             rule->iSetAction(rules->GetVal(wxT("ev_action")));
-            rule->iSetDefinition(rules->GetVal(wxT("definition")));
+            wxString definition=rules->GetVal(wxT("definition"));
+            if (!definition.IsEmpty())
+            {
+#if 0
+                int doPos=definition.Find(wxT(" DO INSTEAD "));
+                if (doPos > 0)
+                    rule->iSetDefinition(definition.Mid(doPos + 12));
+                else
+                {
+                    doPos = definition.Find(wxT(" DO "));
+                    if (doPos > 0)
+                        rule->iSetDefinition(definition.Mid(doPos+4));
+                    else
+                        rule->iSetDefinition(definition);
+                }
+#else
+            rule->iSetDefinition(definition);
+#endif
+            }
             rule->iSetQuotedFullTable(qtIdent(rules->GetVal(wxT("nspname"))) + wxT(".")
                 + qtIdent(rules->GetVal(wxT("relname"))));
             char *evts[] = {0, "SELECT", "UPDATE", "INSERT", "DELETE"};

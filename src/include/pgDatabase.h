@@ -37,6 +37,9 @@ public:
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
 
     wxString GetViewdefFunction() const { return viewdefFunction; }
+    wxString GetRuledefFunction() const { return ruledefFunction; }
+    wxString GetExprFunction() const { return exprFunction; }
+
     wxString GetPath() const { return path; };
     void iSetPath(const wxString& newVal) { path = newVal; }
     wxString GetEncoding() const { return encoding; }
@@ -62,7 +65,8 @@ public:
 
 private:
     pgConn *conn;
-    wxString path, encoding, variables, viewdefFunction;
+    wxString path, encoding, variables;
+    wxString viewdefFunction, ruledefFunction, exprFunction;
     bool allowConnections, connected;
 };
 

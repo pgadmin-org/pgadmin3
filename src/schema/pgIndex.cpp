@@ -202,8 +202,8 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
         pgSet *indexes= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n"
-        "       proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass, description,"
-        "       pg_get_expr(indpred, indrelid) as indconstraint, contype, condeferrable, condeferred, amname\n"
+        "       proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass, description,\n"
+        "       ") + collection->GetDatabase()->GetExprFunction() + wxT("(indpred, indrelid) as indconstraint, contype, condeferrable, condeferred, amname\n"
         "  FROM pg_index idx\n"
         "  JOIN pg_class cls ON cls.oid=indexrelid\n"
         "  JOIN pg_class tab ON tab.oid=indrelid\n"

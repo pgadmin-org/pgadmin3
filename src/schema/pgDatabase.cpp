@@ -56,21 +56,25 @@ int pgDatabase::Connect()
             // Now we're connected.
             connected = TRUE;
             pgSet *set=conn->ExecuteSet(wxT(
-                "SELECT proname, description\n"
-                "  FROM pg_proc\n"
-                "  LEFT OUTER JOIN pg_description ON objoid=") + GetOidStr() +wxT("\n"
-                " WHERE proname IN ('pg_get_viewdef', 'pg_get_viewdef_ext')\n"
-                "   AND pronamespace=11\n"
-                "   AND proargtypes[0] = 26 AND proargtypes[1] = 0\n"
-                " ORDER BY proname DESC"));
+                "SELECT DEFS.*, description\n"
+                "  FROM (SELECT \n"
+                "  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_viewdef', 'pg_get_viewdef2')"
+                      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_viewdef,\n"
+                "  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_ruledef', 'pg_get_ruledef2')"
+                      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_ruledef,\n"
+                "  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_expr', 'pg_get_expr2')"
+                      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_expr,\n"
+                " 'nix' as get_ruledef, 'expr' as get_expr\n"
+                "       ) AS DEFS\n"
+                "  LEFT OUTER JOIN pg_description ON objoid=") + GetOidStr());
             if (set)
             {
-                viewdefFunction = set->GetVal(0);
-                iSetComment(set->GetVal(1));
+                viewdefFunction = set->GetVal(wxT("get_viewdef"));
+                ruledefFunction = set->GetVal(wxT("get_ruledef"));
+                exprFunction = set->GetVal(wxT("get_expr"));
+                iSetComment(set->GetVal(wxT("description")));
                 delete set;
             }
-            if (viewdefFunction.IsEmpty())
-                wxLogError("pg_get_viewdef(oid) function not found.");
             return PGCONN_OK;
         }
         else
