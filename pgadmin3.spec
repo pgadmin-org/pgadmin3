@@ -16,7 +16,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 #
 # When rebuilding, wxWindows 2.5 CVS version > 20030607 is needed.
 # wxWindows 2.5 CVS (RPM and SRPMs) snapshots can be downloaded from
-# http://snake.pgadmin.org in the directory of your distribution.
+# http://www.pgadmin.org/snapshots in the directory of your distribution.
 # 
 
 BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}

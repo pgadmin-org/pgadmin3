@@ -8,5 +8,6 @@ EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt
 
 nobase_dist_pkgdata_DATA = \
 		docs/en_US/pg/*.gif docs/en_US/pg/*.html docs/en_US/pg/*.css \
+		docs/en_US/images/*.jpg \
 		docs/en_US/*.html
 
