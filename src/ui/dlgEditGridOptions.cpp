@@ -251,7 +251,7 @@ void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
 
 bool dlgEditGridOptions::Validate()
 {
-	StartMsg(_("Validating filter string,,,"));
+	StartMsg(_("Validating filter string"));
 	filter->MarkerDeleteAll(0);
 	if (!filter->GetText().Trim().Length()) {
 		EndMsg();
