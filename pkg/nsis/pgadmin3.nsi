@@ -318,6 +318,29 @@ LangString Short ${LANG_SPANISH} "Start Menu Shortcuts"
 LangString Doc ${LANG_SPANISH} "Documentation"
 LangString Lang ${LANG_SPANISH} "User languages"
 
+LoadLanguageFile Languages\Czech.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_CZECH} "Program (required)"
+LangString Short ${LANG_CZECH} "Start Menu Shortcuts"
+LangString Doc ${LANG_CZECH} "Documentation"
+LangString Lang ${LANG_CZECH} "User languages"
+
+LoadLanguageFile Languages\Farsi.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_FARSI} "Program (required)"
+LangString Short ${LANG_FARSI} "Start Menu Shortcuts"
+LangString Doc ${LANG_FARSI} "Documentation"
+LangString Lang ${LANG_FARSI} "User languages"
 
 
 Icon images\normal-install.ico
