@@ -83,10 +83,10 @@ popd
 rm -rf %{buildroot}
 
 %post
-ln -fs /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
+#ln -fs /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
 
 %postun
-rm -fr /usr/include/wx/setup.h
+#rm -fr /usr/include/wx/setup.h
 
 %files
 %defattr(-,root,root)
