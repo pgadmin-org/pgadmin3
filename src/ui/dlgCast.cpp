@@ -37,9 +37,9 @@
 
 BEGIN_EVENT_TABLE(dlgCast, dlgTypeProperty)
     EVT_TEXT(XRCID("cbSourceType"),                 dlgCast::OnChangeTypeSrc)
-    EVT_COMBOBOX(XRCID("cbSourceType"),             dlgCast::OnChangeTypeSrc)
+    EVT_COMBOBOX(XRCID("cbSourceType"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTargetType"),                 dlgCast::OnChangeTypeTrg)
-    EVT_COMBOBOX(XRCID("cbTargetType"),             dlgCast::OnChangeTypeTrg)
+    EVT_COMBOBOX(XRCID("cbTargetType"),             dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -130,13 +130,13 @@ void dlgCast::CheckChange()
 
 void dlgCast::OnChangeTypeSrc(wxCommandEvent &ev)
 {
-    cbSourceType->GuessSelection();
+    cbSourceType->GuessSelection(ev);
     OnChangeType(ev);
 }
 
 void dlgCast::OnChangeTypeTrg(wxCommandEvent &ev)
 {
-    cbTargetType->GuessSelection();
+    cbTargetType->GuessSelection(ev);
     OnChangeType(ev);
 }
 

@@ -37,9 +37,9 @@
 
 BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
     EVT_TEXT(XRCID("cbBaseType"),                   dlgAggregate::OnChangeTypeBase)
-    EVT_COMBOBOX(XRCID("cbBaseType"),               dlgAggregate::OnChangeTypeBase)
+    EVT_COMBOBOX(XRCID("cbBaseType"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbStateType"),                  dlgAggregate::OnChangeTypeState)
-    EVT_COMBOBOX(XRCID("cbStateType"),              dlgAggregate::OnChangeTypeState)
+    EVT_COMBOBOX(XRCID("cbStateType"),              dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbStateFunc"),              dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbStateFunc"),                  dlgProperty::OnChange)
 END_EVENT_TABLE();
@@ -135,13 +135,13 @@ void dlgAggregate::CheckChange()
 
 void dlgAggregate::OnChangeTypeBase(wxCommandEvent &ev)
 {
-    cbBaseType->GuessSelection();
+    cbBaseType->GuessSelection(ev);
     CheckChange();
 }
 
 void dlgAggregate::OnChangeTypeState(wxCommandEvent &ev)
 {
-    cbStateType->GuessSelection();
+    cbStateType->GuessSelection(ev);
     CheckChange();
 }
 

@@ -62,8 +62,11 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
 
     EVT_TEXT(XRCID("cbReturntype"),                 dlgFunction::OnChangeReturn)
+    EVT_COMBOBOX(XRCID("cbReturntype"),             dlgFunction::OnChangeReturn)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgFunction::OnSelChangeType)
+    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgFunction::OnSelChangeType)
     EVT_TEXT(XRCID("cbLanguage"),                   dlgFunction::OnSelChangeLanguage)
+    EVT_COMBOBOX(XRCID("cbLanguage"),               dlgFunction::OnSelChangeLanguage)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstArguments"),   dlgFunction::OnSelChangeArg)
     EVT_TEXT(XRCID("txtArgName"),                   dlgFunction::OnChangeArgName)
@@ -344,14 +347,14 @@ void dlgFunction::OnSelChangeArg(wxListEvent &ev)
 
 void dlgFunction::OnChangeReturn(wxCommandEvent &ev)
 {
-    cbReturntype->GuessSelection();
+    cbReturntype->GuessSelection(ev);
     CheckChange();
 }
 
 
 void dlgFunction::OnSelChangeType(wxCommandEvent &ev)
 {
-    cbDatatype->GuessSelection();
+    cbDatatype->GuessSelection(ev);
     OnChangeArgName(ev);
 }
 

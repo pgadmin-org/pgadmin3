@@ -211,13 +211,13 @@ void dlgOperator::CheckChange()
 
 void dlgOperator::OnChangeTypeLeft(wxCommandEvent &ev)
 {
-    cbLeftType->GuessSelection();
+    cbLeftType->GuessSelection(ev);
     CheckChangeType();
 }
 
 void dlgOperator::OnChangeTypeRight(wxCommandEvent &ev)
 {
-    cbRightType->GuessSelection();
+    cbRightType->GuessSelection(ev);
     CheckChangeType();
 }
 

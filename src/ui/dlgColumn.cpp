@@ -41,8 +41,8 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtAttstattarget"),             dlgProperty::OnChange)
-    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgColumn::OnSelChangeTyp)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
+    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgColumn::OnSelChangeTyp)
 END_EVENT_TABLE();
 
 
@@ -370,7 +370,7 @@ pgObject *dlgColumn::CreateObject(pgCollection *collection)
 
 void dlgColumn::OnSelChangeTyp(wxCommandEvent &ev)
 {
-    cbDatatype->GuessSelection();
+    cbDatatype->GuessSelection(ev);
 
     CheckLenEnable();
     if (column && column->GetLength() <= 0)

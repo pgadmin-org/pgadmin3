@@ -31,7 +31,7 @@ class ctlComboBox : public wxComboBox
 {
 public:
     ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr=0);
-    int GuessSelection();
+    int GuessSelection(wxCommandEvent &ev);
     int GetGuessedSelection() const;
     wxString GetGuessedStringSelection() const;
 #ifdef __WXMSW__

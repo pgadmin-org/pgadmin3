@@ -220,7 +220,8 @@ void dlgDatabase::CheckChange()
 
 void dlgDatabase::OnVarnameSelChange(wxCommandEvent &ev)
 {
-    int sel=cbVarname->GuessSelection();
+    int sel=cbVarname->GuessSelection(ev);
+
     if (sel >= 0)
     {
         wxStringTokenizer vals(varInfo.Item(sel));

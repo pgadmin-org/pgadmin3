@@ -58,7 +58,6 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTables"),                     dlgTable::OnChangeTable)
-    EVT_COMBOBOX(XRCID("cbTables"),                 dlgTable::OnChangeTable)
     EVT_BUTTON(XRCID("btnAddTable"),                dlgTable::OnAddTable)
     EVT_BUTTON(XRCID("btnRemoveTable"),             dlgTable::OnRemoveTable)
     EVT_LISTBOX(XRCID("lbTables"),                  dlgTable::OnSelChangeTable)
@@ -496,7 +495,7 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 
 void dlgTable::OnChangeTable(wxCommandEvent &ev)
 {
-    cbTables->GuessSelection();
+    cbTables->GuessSelection(ev);
 }
 
 

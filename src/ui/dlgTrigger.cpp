@@ -41,7 +41,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_CHECKBOX(XRCID("chkUpdate"),                dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChangeFunc)
-    EVT_COMBOBOX(XRCID("cbFunction"),               dlgTrigger::OnChangeFunc)
+    EVT_COMBOBOX(XRCID("cbFunction"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtArguments"),                 dlgProperty::OnChange)
 END_EVENT_TABLE();
 
@@ -181,7 +181,7 @@ pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 
 void dlgTrigger::OnChangeFunc(wxCommandEvent &ev)
 {
-    cbFunction->GuessSelection();
+    cbFunction->GuessSelection(ev);
     CheckChange();
 }
 

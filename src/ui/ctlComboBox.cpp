@@ -25,8 +25,11 @@ ctlComboBox::ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long at
 }
 
 
-int ctlComboBox::GuessSelection()
+int ctlComboBox::GuessSelection(wxCommandEvent &ev)
 {
+    if (ev.GetEventType() != wxEVT_COMMAND_TEXT_UPDATED)
+        return GetGuessedSelection();
+
     wxString str=wxComboBox::GetValue();
     if (str.Length())
     {

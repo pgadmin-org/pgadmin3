@@ -28,6 +28,7 @@ BEGIN_EVENT_TABLE(ctlSecurityPanel, wxPanel)
     EVT_BUTTON(CTL_ADDPRIV,             ctlSecurityPanel::OnAddPriv)
     EVT_BUTTON(CTL_DELPRIV,             ctlSecurityPanel::OnDelPriv)
     EVT_TEXT(CTL_CBGROUP,               ctlSecurityPanel::OnGroupChange)
+    EVT_COMBOBOX(CTL_CBGROUP,           ctlSecurityPanel::OnGroupChange)
     EVT_CHECKBOX(CTL_ALLPRIV,           ctlSecurityPanel::OnPrivCheckAll)
     EVT_CHECKBOX(CTL_ALLPRIVGRANT,      ctlSecurityPanel::OnPrivCheckAllGrant)
     EVT_CHECKBOX(CTL_PRIVCB,            ctlSecurityPanel::OnPrivCheck)
@@ -218,7 +219,7 @@ wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &
 
 void ctlSecurityPanel::OnGroupChange(wxCommandEvent &ev)
 {
-    cbGroups->GuessSelection();
+    cbGroups->GuessSelection(ev);
     wxString name=cbGroups->GetGuessedStringSelection();
 
     btnAddPriv->Enable(!name.Strip(wxString::both).IsEmpty());

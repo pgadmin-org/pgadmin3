@@ -206,7 +206,7 @@ int dlgType::Go(bool modal)
 
 void dlgType::OnSelChangeTyp(wxCommandEvent &ev)
 {
-    cbDatatype->GuessSelection();
+    cbDatatype->GuessSelection(ev);
     OnSelChangeTypOrLen(ev);
 }
 

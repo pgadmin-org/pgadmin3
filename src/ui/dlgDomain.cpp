@@ -35,6 +35,7 @@ BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
     EVT_TEXT(XRCID("txtLength"),                    dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtPrecision"),                 dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgDomain::OnSelChangeTyp)
+    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgDomain::OnSelChangeTyp)
     EVT_TEXT(XRCID("txLength"),                     dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
@@ -149,7 +150,7 @@ void dlgDomain::OnSelChangeTyp(wxCommandEvent &ev)
 {
     if (!domain)
     {
-        cbDatatype->GuessSelection();
+        cbDatatype->GuessSelection(ev);
         CheckLenEnable();
         txtLength->Enable(isVarLen);
         CheckChange();
