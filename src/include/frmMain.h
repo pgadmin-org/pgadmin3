@@ -46,11 +46,11 @@ public:
     void SetStatusText(const wxString &msg);
 
     void SetButtons(pgObject *obj=0);
-    void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
 
     void execSelChange(wxTreeItemId item, bool currentNode);
     void Refresh(pgObject *data);
     void RemoveFrame(wxWindow *frame);
+    void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
 
     wxImageList *GetImageList() { return images; }
     wxTreeCtrl *GetBrowser() { return browser; }
@@ -62,7 +62,6 @@ public:
 
 private:
     windowList frames;
-	pgDatabase *m_database;
     wxTreeCtrl *browser;
     ctlListView *properties;
     ctlListView *statistics;
@@ -80,6 +79,10 @@ private:
     wxStopWatch stopwatch;
     wxString timermsg;
     long msgLevel;
+
+    wxTreeItemId denyCollapseItem;
+    pgObject *currentObject;
+    pgDatabase *m_database;
 
     void OnKeyDown(wxKeyEvent& event);
     void OnAbout(wxCommandEvent& event);
@@ -110,6 +113,8 @@ private:
     
     void OnPageChange(wxNotebookEvent& event);
     void OnPropSelChanged(wxListEvent& event);
+    void OnPropSelActivated(wxListEvent& event);
+    void OnPropRightClick(wxListEvent& event);
     void OnTreeSelChanged(wxTreeEvent &event);
     void OnTreeKeyDown(wxTreeEvent& event);
     void OnConnect(wxCommandEvent &ev);
@@ -132,7 +137,7 @@ private:
     void OnCheckAlive(wxCommandEvent& event);
 
     bool dropSingleObject(pgObject *data, bool updateFinal);
-    void doPopup(wxPoint point, pgObject *object);
+    void doPopup(wxWindow *win, wxPoint point, pgObject *object);
     void appendIfEnabled(int id);
     bool checkAlive();
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);
@@ -140,8 +145,6 @@ private:
     void RetrieveServers();
     int ReconnectServer(pgServer *server);
     wxTreeItemId RestoreEnvironment(pgServer *server);
-    wxTreeItemId denyCollapseItem;
-    pgObject *GetSelectedObject();
 
     DECLARE_EVENT_TABLE()
 };

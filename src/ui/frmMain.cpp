@@ -138,8 +138,9 @@ frmMain::frmMain(const wxString& title)
     }
 
     // Current database
-    m_database = NULL;
     denyCollapseItem=wxTreeItemId();
+    currentObject = 0;
+    m_database = 0;
 
     // Icon
     wxIconBundle icons;
@@ -494,35 +495,6 @@ ctlListView *frmMain::GetReferencedBy()
     if (listViews->GetSelection() == NBP_REFERENCEDBY)
         return referencedBy;
     return 0;
-}
-
-
-pgObject *frmMain::GetSelectedObject()
-{
-    wxTreeItemId item=browser->GetSelection();
-    pgObject *data = (pgObject*)browser->GetItemData(item);
-
-    /* When it isn't connected. */
-    if (data == NULL)
-        return 0;
-	
-    if (data->IsCollection())
-    {
-	    wxWindow *win=wxWindow::FindFocus();
-        if (!win)
-            return data;
-		if (win == listViews)
-		{
-		    if (listViews->GetSelection())
-			    win = properties;
-		}
-	    if (win == properties || win->GetParent() == properties)
-		    return ((pgCollection*)data)->FindChild(browser, properties->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
-    }
-    else
-        return data;
-
-	return 0;
 }
 
 
