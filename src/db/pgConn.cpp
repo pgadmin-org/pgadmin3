@@ -86,19 +86,19 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     wxString connstr;
     if (!server.IsEmpty()) {
       connstr.Append(wxT(" hostaddr="));
-      connstr.Append(hostip);
+      connstr.Append(qtString(hostip));
     }
     if (!database.IsEmpty()) {
       connstr.Append(wxT(" dbname="));
-      connstr.Append(database);
+      connstr.Append(qtString(database));
     }
     if (!username.IsEmpty()) {
       connstr.Append(wxT(" user="));
-      connstr.Append(username);
+      connstr.Append(qtString(username));
     }
     if (!password.IsEmpty()) {
       connstr.Append(wxT(" password="));
-      connstr.Append(password);
+      connstr.Append(qtString(password));
     }
     if (port > 0) {
       connstr.Append(wxT(" port="));
