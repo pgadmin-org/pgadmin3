@@ -242,13 +242,7 @@ wxString dlgIndex::GetSql()
             sql +=  wxT(";\n");
         }
         wxString cmt=txtComment->GetValue();
-        if (index && index->GetComment() != cmt)
-        {
-            if (!cmt.IsEmpty())
-                sql += wxT("COMMENT ON INDEX ") + qtIdent(txtName->GetValue())
-                    + wxT("\n   IS ") + qtString(cmt)
-                    + wxT(";\n");
-        }
+        AppendComment(sql, wxT("INDEX"), index);
     }
     return sql;
 }

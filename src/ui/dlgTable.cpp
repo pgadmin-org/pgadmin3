@@ -422,10 +422,10 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
             else
                 changed = !GetSql().IsEmpty();
         }
-        btnOK->Enable(changed);
+        EnableOK(changed);
     }
     else
-        btnOK->Enable(!txtName->GetValue().IsEmpty() && lstColumns->GetItemCount() > 0);
+        EnableOK(!txtName->GetValue().IsEmpty() && lstColumns->GetItemCount() > 0);
 }
 
 

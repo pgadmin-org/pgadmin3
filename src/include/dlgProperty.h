@@ -53,6 +53,7 @@ protected:
     void AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon);
 
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew);
+    void AppendComment(wxString &sql, const wxString &objName, pgObject *obj=0);
 
     void OnPageSelect(wxNotebookEvent& event);
     void OnOK(wxNotifyEvent &ev);
@@ -102,6 +103,7 @@ protected:
     void AddUsers(wxComboBox *comboBox=0);
 
     wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
+    void EnableOK(bool enable);
 
 private:
     void OnPrivSelChange(wxListEvent &ev);
@@ -114,6 +116,7 @@ private:
     void ExecPrivCheck(int index);
     bool GrantAllowed() const;
 
+    bool securityChanged;
     wxArrayString currentAcl;
     wxListView *lbPrivileges;
     wxComboBox *cbGroups;

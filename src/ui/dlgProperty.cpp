@@ -30,6 +30,8 @@
 #include "dlgIndexConstraint.h"
 #include "dlgForeignKey.h"
 #include "dlgCheck.h"
+#include "dlgSchema.h"
+
 #include "pgTable.h"
 #include "pgColumn.h"
 
@@ -107,6 +109,15 @@ void dlgProperty::CreateAdditionalPages()
 wxString dlgProperty::GetName()
 {
     return txtName->GetValue();
+}
+
+
+void dlgProperty::AppendComment(wxString &sql, const wxString &objName, pgObject *obj)
+{
+    wxString comment=txtComment->GetValue();
+    if ((!obj && !comment.IsEmpty()) ||(obj && obj->GetComment() != comment))
+        sql += wxT("COMMENT ON ") + objName + wxT(" ") + qtIdent(txtName->GetValue())
+            +  wxT(" IS ") + qtString(comment) + wxT(";\n");
 }
 
 
@@ -240,6 +251,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
         case PG_DATABASE:
         case PG_DATABASES:
             dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
+            break;
+        case PG_SCHEMA:
+        case PG_SCHEMAS:
+            dlg=new dlgSchema(frame, (pgSchema*)currentNode);
             break;
         case PG_TABLE:
         case PG_TABLES:
@@ -448,6 +463,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
 {
     privCheckboxes=0;
     privilegeChars = _privChar;
+    securityChanged=false;
 
     wxStringTokenizer privileges(privilegeList, ',');
     privilegeCount=privileges.CountTokens();
@@ -695,7 +711,7 @@ void dlgSecurityProperty::OnAddPriv(wxNotifyEvent &ev)
         else if (name.IsSameAs(wxT("public"), false))
             icon = PGICON_PUBLIC;
 
-        lbPrivileges->InsertItem(pos, name, 0);
+        lbPrivileges->InsertItem(pos, name, icon);
     }
     wxString value;
     int i;
@@ -709,14 +725,32 @@ void dlgSecurityProperty::OnAddPriv(wxNotifyEvent &ev)
         }
     }
     lbPrivileges->SetItem(pos, 1, value);
+    securityChanged=true;
+    EnableOK(btnOK->IsEnabled());
 }
 
 
 void dlgSecurityProperty::OnDelPriv(wxNotifyEvent &ev)
 {
     lbPrivileges->DeleteItem(GetListSelected(lbPrivileges));
+    securityChanged=true;
+    EnableOK(btnOK->IsEnabled());
 }
 
+
+
+void dlgSecurityProperty::EnableOK(bool enable)
+{
+    if (!enable && securityChanged)
+    {
+        wxString sql=GetSql();
+        if (sql.IsEmpty())
+            securityChanged=false;
+        else
+            enable=true;
+    }
+    btnOK->Enable(enable);
+}
 
 
 bool dlgSecurityProperty::GrantAllowed() const

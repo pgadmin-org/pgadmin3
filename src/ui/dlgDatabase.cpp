@@ -172,9 +172,7 @@ wxString dlgDatabase::GetSql()
     {
         // edit mode
         wxString comment=txtComment->GetValue();
-        if (database->GetComment() != comment)
-            sql += wxT("COMMENT ON DATABASE ") + qtIdent(name)
-                +  wxT(" IS '") + comment + wxT("';\n");
+        AppendComment(sql, wxT("DATABASE"), database);
     }
     else
     {
