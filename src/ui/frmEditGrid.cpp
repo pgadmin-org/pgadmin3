@@ -18,6 +18,7 @@
 #include "wxgridsel.h"
 #endif
 
+#include <wx/generic/gridctrl.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -438,7 +439,7 @@ void frmEditGrid::OnEditorShown(wxGridEvent& event)
     toolBar->EnableTool(MNU_SAVE, true);
     toolBar->EnableTool(MNU_UNDO, true);
 
-    sqlGrid->ResizeEditor(event.GetRow(), event.GetCol());
+//    sqlGrid->ResizeEditor(event.GetRow(), event.GetCol());
 
     event.Skip();
 }
@@ -720,6 +721,8 @@ public:
     sqlGridTextEditor(bool multiLine=false, int len=0) { isMultiLine=multiLine; textlen=len;  }
     virtual wxGridCellEditor *Clone() const { return new sqlGridTextEditor(isMultiLine, textlen); }
     void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
+    void BeginEdit(int row, int col, wxGrid* grid);
+
 
 protected:
     int textlen;
@@ -733,6 +736,7 @@ void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* ev
 {
     int flags=0;
     if (isMultiLine)
+//        flags = wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_RICH;
         flags = wxTE_PROCESS_TAB | wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_AUTO_SCROLL;
 
     m_control = new wxTextCtrl(parent, id, wxEmptyString,
@@ -743,6 +747,14 @@ void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* ev
         Text()->SetMaxLength(textlen);
 
     wxGridCellEditor::Create(parent, id, evtHandler);
+}
+
+
+
+void sqlGridTextEditor::BeginEdit(int row, int col, wxGrid *grid)
+{
+    wxGridCellTextEditor::BeginEdit(row, col, grid);
+    ((ctlSQLGrid*)grid)->ResizeEditor(row, col);
 }
 
 
@@ -1058,6 +1070,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
                     columns[i].needResize = true;
+//                    editor = new wxGridCellAutoWrapStringEditor();
                     editor = new sqlGridTextEditor(true);
                     break;
             }

@@ -14,6 +14,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/listctrl.h>
 
 // App headers
 #include "sysSettings.h"
