@@ -379,7 +379,12 @@ wxString dlgFunction::GetSql()
                 sql += wxT(", ") + qtString(txtLinkSymbol->GetValue());
         }
         else
-            sql += qtString(sqlBox->GetText());
+        {
+            if (connection->BackendMinimumVersion(7, 5))
+                sql += qtDocumentHere(sqlBox->GetText());
+            else
+                sql += qtString(sqlBox->GetText());
+        }
         sql += wxT("\nLANGUAGE ") + qtString(cbLanguage->GetValue())
             +  wxT(" ") + cbVolatility->GetValue();
         if (chkStrict->GetValue())

@@ -67,6 +67,7 @@ wxString NumToStr(wxLongLong value);
 // Quoting
 wxString qtString(const wxString& value);
 wxString qtIdent(const wxString& value);
+wxString qtDocumentHere(const wxString &value);
 
 // check if size/pos have reasonable values
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0=100, const int h0=70);

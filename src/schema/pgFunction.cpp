@@ -71,10 +71,17 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
             + wxT(" AS\n");
         
         if (GetLanguage().IsSameAs(wxT("C"), false))
-            sql += qtString(GetBin()) + wxT(", ");
-
-        sql += qtString(GetSource())
-            + wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
+        {
+            sql += qtString(GetBin()) + wxT(", ") + qtString(GetSource());
+        }
+        else
+        {
+            if (GetConnection()->BackendMinimumVersion(7, 5))
+                sql += qtDocumentHere(GetSource());
+            else
+                sql += qtString(GetSource());
+        }
+        sql += wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
 
         if (GetIsStrict())
             sql += wxT(" STRICT");

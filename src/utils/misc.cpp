@@ -246,6 +246,25 @@ wxString qtString(const wxString& value)
     return result;
 }
 
+
+wxString qtDocumentHere(const wxString &value)
+{
+    wxString qtDefault=wxT("BODY");
+    wxString qt=qtDefault;
+    int counter=1;
+    if (value.Find('\'') < 0 && value.Find('\n') < 0)
+        return qtString(value);
+
+    while (value.Find(wxT("$") + qt + wxT("$")) >= 0)
+        qt.Printf(wxT("%s%d"), qtDefault.c_str(), counter++);
+
+
+    return wxT("$") + qt + wxT("$") 
+        +  value 
+        +  wxT("$") + qt + wxT("$");
+}
+
+
 wxString qtIdent(const wxString& value)
 {
     wxString result = value;
