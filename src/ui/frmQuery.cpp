@@ -159,6 +159,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     int iWidths[4] = {0, -1, 110, 110};
     statusBar=CreateStatusBar(4);
+    SetStatusBarPane(-1);
     SetStatusWidths(4, iWidths);
     SetStatusText(_("ready"), STATUSPOS_MSGS);
 

@@ -80,6 +80,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
 
     CreateStatusBar();
+    SetStatusBarPane(-1);
 
     sqlGrid = new ctlSQLGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
     sqlGrid->SetSizer(new wxBoxSizer(wxVERTICAL));
