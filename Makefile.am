@@ -11,6 +11,7 @@ EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt \
 		pkg/debian/copyright pkg/debian/control \
 		pkg/debian/changelog pkg/debian/make-deb \
 		pkg/debian/pgadmin3.menu \
+		pkg/fc1/pgadmin3.spec \
 		pkg/redhat/pgadmin3.spec \
 		pkg/slackware/build-package \
 		pkg/src/build-tarball \
