@@ -345,7 +345,7 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const 
     // SQL Lexer and keywords.
 //    SetLexer(lmPostgreSQL.GetLanguage());
     SetLexer(wxSTC_LEX_SQL);
-    SetKeyWords(0, SQL_KEYWORDS);
+    SetKeyWords(0, SQL_KEYWORDS.MakeLower());
 
     wxAcceleratorEntry entries[1];
     entries[0].Set(wxACCEL_CTRL, (int)'F', MNU_FIND);
