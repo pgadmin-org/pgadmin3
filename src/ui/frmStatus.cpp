@@ -258,6 +258,10 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				dataSet1->MoveNext();
 			}
             delete dataSet1;
+			
+            while (row < statusList->GetItemCount())
+				statusList->DeleteItem(row);
+
             statusList->Thaw();
 		}
         else
@@ -354,6 +358,10 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 			}
 
             delete dataSet2;
+			
+            while (row < lockList->GetItemCount())
+				lockList->DeleteItem(row);
+
             lockList->Thaw();
 		}
         else
