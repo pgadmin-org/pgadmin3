@@ -185,13 +185,22 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
 
 void frmMain::OnTipOfTheDay(wxCommandEvent& WXUNUSED(event))
 {
-#ifdef __WIN32__
-    wxString tipPath = loadPath + wxT("/tips.txt");
-#else
-    wxString tipPath = DATA_DIR wxT("tips.txt");
-#endif
+extern wxString docPath;
+extern wxLocale locale;
 
-    wxTipProvider *tipProvider = wxCreateFileTipProvider(tipPath, settings->GetNextTipOfTheDay());
+    wxString file;
+    
+    file = docPath + wxT("/") + locale.GetCanonicalName() + wxT("/tips.txt");
+
+    if (!wxFile::Exists(file))
+        file = docPath + wxT("/en_US/tips.txt");    
+
+    if (!wxFile::Exists(file)) {
+        wxLogError(_("Couldn't open a tips.txt file!"));
+        return;
+    }
+
+    wxTipProvider *tipProvider = wxCreateFileTipProvider(file, settings->GetNextTipOfTheDay());
     settings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
     settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
 

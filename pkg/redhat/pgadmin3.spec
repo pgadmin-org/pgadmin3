@@ -28,7 +28,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
 
 %description
-pgAdmin3 is the graphical administration interface of PostgreSQL.
+PostgreSQL Tools.
 
 %prep
 %setup -q
