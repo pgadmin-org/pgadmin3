@@ -65,6 +65,24 @@ private:
     char delimiter;
 };
 
+
+class frmMain;
+class DialogWithHelp : public wxDialog
+{
+public:
+    DialogWithHelp(frmMain *frame);
+
+protected:
+    frmMain *mainForm;
+
+private:
+    void OnHelp(wxCommandEvent& ev);
+    virtual wxString GetHelpPage() const = 0;
+
+    DECLARE_EVENT_TABLE();
+};
+
+
 enum        // depends on frmMain browserImages->Add order!
 {
     PGICON_PROPERTY,

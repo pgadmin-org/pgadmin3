@@ -21,7 +21,6 @@
 class pgSchema;
 class pgTable;
 
-#define nbNotebook      CTRL("nbNotebook",      wxNotebook)
 #define txtName         CTRL("txtName",         wxTextCtrl)
 #define txtOID          CTRL("txtOID",          wxTextCtrl)
 #define txtComment      CTRL("txtComment",      wxTextCtrl)
@@ -31,7 +30,7 @@ class pgTable;
 #define btnCancel       CTRL("btnCancel",       wxButton)
 
 
-class dlgProperty : public wxDialog
+class dlgProperty : public DialogWithHelp
 {
 public:
     static void CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, int type);
@@ -63,15 +62,12 @@ protected:
     void AppendQuoted(wxString &sql, const wxString &name);
 
     void OnPageSelect(wxNotebookEvent& event);
-    void OnKeyDown(wxKeyEvent& event);
     void OnOK(wxNotifyEvent &ev);
-    void OnHelp(wxCommandEvent& ev);
     void OnCancel(wxNotifyEvent &ev);
     void OnClose(wxCloseEvent &ev);
 
 
     pgConn *connection;
-    frmMain *mainForm;
 
     ctlSQLBox *sqlPane;
     wxListCtrl *properties, *statistics;
@@ -80,6 +76,7 @@ protected:
     wxTextValidator numericValidator;
 
     wxTextCtrl *statusBox;
+    wxNotebook *nbNotebook;
     int width, height;
     wxTreeItemId item;
     int objectType;
@@ -135,6 +132,7 @@ protected:
 
     wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
     void EnableOK(bool enable);
+    virtual wxString GetHelpPage() const;
 
 private:
     void OnPrivSelChange(wxListEvent &ev);

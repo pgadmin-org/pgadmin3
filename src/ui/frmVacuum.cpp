@@ -23,7 +23,7 @@
 #include "images/vacuum.xpm"
 
 
-BEGIN_EVENT_TABLE(frmVacuum, wxDialog)
+BEGIN_EVENT_TABLE(frmVacuum, DialogWithHelp)
     EVT_BUTTON (XRCID("btnOK"),         frmVacuum::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),     frmVacuum::OnCancel)
     EVT_CLOSE(                          frmVacuum::OnClose)
@@ -38,7 +38,7 @@ END_EVENT_TABLE()
 
 
 
-frmVacuum::frmVacuum(frmMain *form, pgObject *obj)
+frmVacuum::frmVacuum(frmMain *form, pgObject *obj) : DialogWithHelp(form)
 {
     object=obj;
     thread=0;
@@ -62,6 +62,11 @@ frmVacuum::~frmVacuum()
     Abort();
 }
 
+
+wxString frmVacuum::GetHelpPage() const
+{
+    return wxT("sql-vacuum.html");
+}
 
 void frmVacuum::Abort()
 {

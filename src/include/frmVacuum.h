@@ -20,7 +20,7 @@
 
 
 // Class declarations
-class frmVacuum : public wxDialog
+class frmVacuum : public DialogWithHelp
 {
 public:
     frmVacuum(frmMain *form, pgObject *_object);
@@ -29,6 +29,7 @@ public:
     void Go();
     
 private:
+    wxString GetHelpPage() const;
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
     void OnClose(wxCloseEvent& event);

@@ -19,8 +19,10 @@
 
 // App headers
 #include "misc.h"
+#include "menu.h"
 #include "pgAdmin3.h"
 #include "frmMain.h"
+#include "frmHelp.h"
 
 // Global Vars - yuch!
 wxStopWatch stopwatch;
@@ -316,4 +318,41 @@ wxString queryTokenizer::GetNextToken()
     while (foundQuote & HasMoreTokens());
  
     return str;
+}
+
+
+
+
+BEGIN_EVENT_TABLE(DialogWithHelp, wxDialog)
+    EVT_MENU(MNU_HELP,                              DialogWithHelp::OnHelp)
+END_EVENT_TABLE();
+
+
+DialogWithHelp::DialogWithHelp(frmMain *frame) : wxDialog()
+{
+    mainForm = frame;
+
+    wxAcceleratorEntry entries[2];
+    entries[0].Set(wxACCEL_NORMAL, WXK_F1, MNU_HELP);
+// this is for GTK because Meta (usually Numlock) is interpreted like Alt
+// there are too many controls to reset m_Meta in all of them
+    entries[1].Set(wxACCEL_ALT, WXK_F1, MNU_HELP);
+    wxAcceleratorTable accel(2, entries);
+
+    SetAcceleratorTable(accel);
+}
+
+
+void DialogWithHelp::OnHelp(wxCommandEvent& ev)
+{
+    wxString helpSite=settings->GetHelpSite();
+    wxString page=GetHelpPage();
+
+    if (!page.IsEmpty())
+    {
+        frmHelp *h=new frmHelp(mainForm);
+        h->Show(true);
+        if (!h->Load(helpSite + page))
+            h->Destroy();
+    }
 }

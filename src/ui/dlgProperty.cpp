@@ -64,39 +64,27 @@ enum
 };
 
 
-BEGIN_EVENT_TABLE(dlgProperty, wxDialog)
+BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgProperty::OnPageSelect)  
     EVT_BUTTON (XRCID("btnOK"),                     dlgProperty::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),                 dlgProperty::OnCancel)
     EVT_CLOSE(                                      dlgProperty::OnClose)
-    EVT_MENU(MNU_HELP,                              dlgProperty::OnHelp)
-#ifdef __wxGTK__
-    EVT_KEYDOWN(                                    dlgProperty::OnKeyDown)
-#endif
 END_EVENT_TABLE();
 
 
-dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
+dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHelp(frame)
 {
     objectType=-1;
     sqlPane=0;
-    mainForm = frame;
     wxXmlResource::Get()->LoadDialog(this, frame, resName);
+    nbNotebook = CTRL("nbNotebook", wxNotebook);
+
     if (!nbNotebook)
     {
         wxMessageBox(wxT("Problem with resource ") + resName + wxT(": Notebook not found.\nPrepare to crash!"));
         return;
     }
     SetIcon(wxIcon(properties_xpm));
-
-    wxAcceleratorEntry entries[2];
-    entries[0].Set(wxACCEL_NORMAL, WXK_F1, MNU_HELP);
-// this is for GTK because Meta (usually Nnumlock) is interpreted like Alt
-// there are too many controls to reset m_Meta in all of them
-    entries[1].Set(wxACCEL_ALT, WXK_F1, MNU_HELP);
-    wxAcceleratorTable accel(2, entries);
-
-    SetAcceleratorTable(accel);
 
 #ifdef __WIN32__
     wxNotebookPage *page=nbNotebook->GetPage(0);
@@ -126,31 +114,10 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
 }
 
 
-void dlgProperty::OnKeyDown(wxKeyEvent& event)
-{
-    event.m_metaDown=false;
-    event.Skip();
-}
-
-
-void dlgProperty::OnHelp(wxCommandEvent& event)
-{
-    wxString helpSite=settings->GetHelpSite();
-    wxString page=GetHelpPage();
-
-    if (page.IsEmpty())
-        page = wxT("index.html");
-
-    frmHelp *h=new frmHelp(mainForm);
-    h->Show(true);
-    if (!h->Load(helpSite + page))
-        h->Destroy();
-}
-
-
 wxString dlgProperty::GetHelpPage() const
 {
     wxString page;
+
     pgObject *obj=0; //GetObject();
     if (obj)
         page=obj->GetHelpPage(false);
@@ -726,6 +693,7 @@ BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
     EVT_CHECKBOX(CTL_PRIVCB+8,          dlgSecurityProperty::OnPrivCheck)
     EVT_CHECKBOX(CTL_PRIVCB+10,         dlgSecurityProperty::OnPrivCheck)
     EVT_CHECKBOX(CTL_PRIVCB+12,         dlgSecurityProperty::OnPrivCheck)
+    EVT_MENU(MNU_HELP,                  dlgSecurityProperty::OnHelp)
 END_EVENT_TABLE();
 
 
@@ -880,7 +848,6 @@ void dlgSecurityProperty::AddUsers(wxComboBox *comboBox)
 }
 
 
-
 void dlgSecurityProperty::OnPrivCheckAll(wxCommandEvent& ev)
 {
     bool all=allPrivileges->GetValue();
@@ -1015,6 +982,14 @@ void dlgSecurityProperty::OnDelPriv(wxNotifyEvent &ev)
     EnableOK(btnOK->IsEnabled());
 }
 
+
+wxString dlgSecurityProperty::GetHelpPage() const
+{
+    if (nbNotebook->GetSelection() == nbNotebook->GetPageCount()-2)
+        return wxT("sql-grant.html");
+    else
+        return dlgProperty::GetHelpPage();
+}
 
 
 void dlgSecurityProperty::EnableOK(bool enable)
