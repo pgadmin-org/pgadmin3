@@ -102,7 +102,8 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     cbOwner = CTRL_COMBOBOX2("cbOwner");
 
 
-#ifdef __WIN32__
+	//#ifdef  __WIN32__
+#if 1  // seems wxgtk now returns a usable page size
     wxNotebookPage *page=nbNotebook->GetPage(0);
     wxASSERT(page != NULL);
     page->GetClientSize(&width, &height);
@@ -120,7 +121,8 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     if (statusBarContainer)
     {
         statusBox = 0;
-        statusBar = new wxStatusBar(statusBarContainer, -1, wxST_SIZEGRIP);
+        statusBar = new wxStatusBar(this, -1, wxST_SIZEGRIP);
+        wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
     }
     else
     {
