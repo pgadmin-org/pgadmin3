@@ -100,9 +100,9 @@ private:
 	void OnMove(wxMoveEvent& event);
 	void OnSize(wxSizeEvent& event);
 	void OnDoubleClick(wxCommandEvent& event);
-	void OnClose();
+	void OnClose(wxCommandEvent& event);
 	void OnCloseWindow(wxCloseEvent& event);
-	void OnAddColumn();
+	void OnAddColumn(wxCommandEvent& event);
 	void OnJoinTo(wxCommandEvent& event);
     void OnLeftDown(wxMouseEvent& event);
 	void OnMotion(wxMouseEvent& event);
@@ -111,13 +111,13 @@ private:
 
 #ifdef __WXMSW__
     void OnContextMenu(wxContextMenuEvent& event)
-        { OnRightClick(ScreenToClient(event.GetPosition())); }
+        { ExecRightClick(ScreenToClient(event.GetPosition())); }
 #else
     void OnRightUp(wxMouseEvent& event)
-        { wxPoint pt=event.GetPosition(); OnRightClick(pt); }
+        { wxPoint pt=event.GetPosition(); ExecRightClick(pt); }
 #endif
 
-	void OnRightClick(wxPoint& point);
+    void ExecRightClick(wxPoint& point);
 
 	// Control Enumeration
 	enum

@@ -19,6 +19,7 @@
 // App headers
 #include "frmMain.h"
 #include "frmChildTableViewFrame.h"
+#include "dlgAddTableView.h"
 
 struct JoinStruct
 {
@@ -64,6 +65,7 @@ public:
 private:
 
 	// Data
+	dlgAddTableView *addtableview;
 	frmMain *m_mainForm;
     bool m_changed;
 	wxString m_lastFilename;
@@ -112,21 +114,22 @@ private:
 	void OnSize(wxSizeEvent& event);
 	void OnSashDrag(wxSashEvent& event);
 	void OnExit(wxCommandEvent& event);
-	void OnAddTableView();
+	void OnAddTableView(wxCommandEvent& event);
 
 #ifdef __WXMSW__
     void OnContextMenu(wxContextMenuEvent& event)
-        { OnRightClick(ScreenToClient(event.GetPosition())); }
+        { ExecRightClick(ScreenToClient(event.GetPosition())); }
 #else
     void OnRightUp(wxMouseEvent& event)
-        { wxPoint pt=event.GetPosition(); OnRightClick(pt); }
+        { wxPoint pt=event.GetPosition(); ExecRightClick(pt); }
 #endif
-
-	void OnRightClick(wxPoint& point);
 	void OnCellSelect(wxGridEvent& event);
 	void OnNotebookPageChanged(wxNotebookEvent& event);
 	void OnCellChoice(wxCommandEvent& event);
 	void OnCellChange(wxGridEvent& event);
+
+
+   	void ExecRightClick(wxPoint& point);
 
 	// Control Enumeration
 	enum

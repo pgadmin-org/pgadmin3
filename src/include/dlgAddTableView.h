@@ -37,8 +37,10 @@ public:
 
 private:
 
-	// Events 
-	void OnAll(wxCommandEvent& event, bool selectall);
+	void SelectItems(bool selectall);
+
+    // Events 
+	void OnAll(wxCommandEvent& event);
 	void OnNone(wxCommandEvent& event);
 
 	// Macros
