@@ -68,7 +68,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
 //    if (lockFields && !database.IsNull() && !username.IsNull() && port)
 //        conn= new pgConn(GetName(), database, username, password, port);   
 
-    if (!conn)
+    if (!conn || conn->GetStatus() != PGCONN_OK)
     {
         if (!trusted)
         {

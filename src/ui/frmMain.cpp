@@ -463,6 +463,7 @@ int frmMain::ReconnectServer(pgServer *server)
             */
         case PGCONN_BAD:
             wxLogError(server->GetLastError());
+            ReconnectServer(server);
             break;
         default:
             wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
