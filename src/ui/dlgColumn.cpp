@@ -102,8 +102,8 @@ int dlgColumn::Go(bool modal)
                 else
                     nsp += wxT(".");
 
-                cbDatatype->Append(nsp + set->GetVal(0));
                 typmods.Add(set->GetVal(1) + wxT(":") + set->GetVal(2));
+                cbDatatype->Append(nsp + set->GetVal(0));
                 set->MoveNext();
             }
             delete set;

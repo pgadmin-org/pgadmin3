@@ -70,8 +70,8 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node)
 
     txtOID->Disable();
 
-    CreateListColumns(lstColumns, wxT("Column name"), wxT("Definition"));
-    CreateListColumns(lstConstraints, wxT("Constraint name"), wxT("Definition"));
+    CreateListColumns(lstColumns, wxT("Column name"), wxT("Definition"), 150);
+    CreateListColumns(lstConstraints, wxT("Constraint name"), wxT("Definition"), 150);
 
 }
 
