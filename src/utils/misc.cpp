@@ -33,7 +33,11 @@
 #ifdef __WXMAC__
 #define atolonglong(str) strtoll(str, (char **)NULL, 10) 
 #else
+#ifdef __FreeBSD__
+#define atolonglong(str) strtoll(str, (char **)NULL, 10)
+#else
 #define atolonglong atoll
+#endif
 #endif
 #endif
 
