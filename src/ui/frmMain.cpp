@@ -22,6 +22,7 @@
 #include <wx/toolbar.h>
 #include <wx/tbarsmpl.h>
 #include <wx/imaglist.h>
+#include <wx/dir.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -36,6 +37,7 @@
 #include "pgObject.h"
 #include "pgCollection.h"
 #include "frmQueryBuilder.h"
+#include "frmHelp.h"
 
 
 #include <wx/listimpl.cpp>
@@ -352,6 +354,42 @@ frmMain::~frmMain()
 
     delete treeContextMenu;
 	delete images;
+}
+
+
+void frmMain::DisplayHelp(const wxString &helpTopic)
+{
+    extern wxString docPath;
+#if 0
+    // testing only
+    static wxHtmlHelpController *helpCtl=0;
+    if (!helpCtl)
+    {
+        helpCtl=new wxHtmlHelpController();
+#ifdef __WXMSW__
+        helpCtl->Initialize(wxT("e:\\pg\\pgadmin2\\help\\pgadmin2"));
+#else
+        helpCtl->Initialize(wxT("/tmp/help/pgadmin2"));
+#endif
+    }
+    helpCtl->DisplayContents();
+    
+    return;
+#endif
+
+    wxString cn=settings->GetCanonicalLanguage();
+    if (cn.IsEmpty())
+        cn=wxT("en_US");
+
+    wxString helpSite=docPath + wxT("/");
+
+    if (!wxDir::Exists(helpSite + cn))
+        cn=wxT("en_US");
+
+    frmHelp *h=new frmHelp(this);
+    h->Show(true);
+    if (!h->Load(helpSite + cn + wxT("/") + helpTopic + wxT(".html")))
+        h->Destroy();
 }
 
 

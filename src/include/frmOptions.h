@@ -17,16 +17,21 @@
 // App headers
 #include "pgAdmin3.h"
 
+class frmMain;
+
 // Class declarations
 class frmOptions : public wxDialog
 {
 public:
-    frmOptions(wxFrame *parent);
+    frmOptions(frmMain *parent);
     ~frmOptions();
     
 private:
+    frmMain *mainForm;
+
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);
+    void OnHelp(wxCommandEvent &ev);
     void OnBrowseLogFile(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE()
 };

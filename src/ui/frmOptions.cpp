@@ -16,9 +16,11 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmOptions.h"
+#include "frmMain.h"
 #include "sysSettings.h"
 #include "sysLogger.h"
 #include "misc.h"
+#include "menu.h"
 
 // Icons
 #include "images/pgAdmin3.xpm"
@@ -26,7 +28,7 @@
 extern wxLocale locale;
 extern wxArrayInt existingLangs;
 
-
+#define nbOptions                   CTRL("nbOptions", wxNotebook)
 #define txtSqlHelpSite              CTRL("txtSqlHelpSite", wxTextCtrl)
 #define txtLogfile                  CTRL("txtLogfile", wxTextCtrl)
 #define radLoglevel                 CTRL("radLoglevel", wxRadioBox)
@@ -43,21 +45,30 @@ extern wxArrayInt existingLangs;
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
+    EVT_MENU(MNU_HELP,                        frmOptions::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),               frmOptions::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),           frmOptions::OnCancel)
     EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
 END_EVENT_TABLE()
 
-frmOptions::frmOptions(wxFrame *parent)
+frmOptions::frmOptions(frmMain *parent)
 {
-
     wxLogInfo(wxT("Creating an options dialogue"));
+    mainForm=parent;
 
     wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmOptions")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
     CenterOnParent();
+
+    wxAcceleratorEntry entries[1];
+
+    entries[0].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+
+    wxAcceleratorTable accel(1, entries);
+    SetAcceleratorTable(accel);
+
 
     wxTextValidator numval(wxFILTER_NUMERIC);
     txtMaxRows->SetValidator(numval);
@@ -106,6 +117,12 @@ frmOptions::~frmOptions()
     wxLogInfo(wxT("Destroying an options dialogue"));
 }
 
+
+void frmOptions::OnHelp(wxCommandEvent &ev)
+{
+    long page=nbOptions->GetSelection();
+    mainForm->DisplayHelp(wxT("options-tab") + NumToStr(page+1L));
+}
 
 
 void frmOptions::OnOK(wxCommandEvent &ev)
