@@ -10,6 +10,7 @@
 
 // wxWindows headers
 #include "wx/regex.h"
+#include "math.h"
 
 // App headers
 #include "frmQueryBuilder.h"
@@ -66,10 +67,20 @@ BEGIN_EVENT_TABLE(frmQueryBuilder, wxMDIParentFrame)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
+// Event Table
 ////////////////////////////////////////////////////////////////////////////////
-frmQueryBuilder::frmQueryBuilder(wxWindow* parent, pgDatabase *database)
+BEGIN_EVENT_TABLE(myClientWindow, wxMDIClientWindow)
+
+	EVT_PAINT(OnPaint)
+
+END_EVENT_TABLE()
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 {
 	// Initialize Data
+    m_mainForm = form;
 	m_sashwindow = NULL;
 	m_database = database;
 	m_server = m_database->GetServer();
@@ -81,7 +92,7 @@ frmQueryBuilder::frmQueryBuilder(wxWindow* parent, pgDatabase *database)
 		wxT(")");
 
 	// Create
-	this->Create(parent, -1, title,
+	this->Create(form, -1, title,
 		settings->GetFrmQueryBuilderPos(), 
 		settings->GetFrmQueryBuilderSize());
 
@@ -250,12 +261,29 @@ frmQueryBuilder::frmQueryBuilder(wxWindow* parent, pgDatabase *database)
 ////////////////////////////////////////////////////////////////////////////////
 frmQueryBuilder::~frmQueryBuilder()
 {
+    wxLogInfo(wxT("Destroying SQL Query box"));
+
+	wxPoint tmppoint = GetPosition();
+	if (tmppoint.x < 0) 
+		tmppoint.x = 0;
+	if (tmppoint.y < 0)
+		tmppoint.y = 0;
+
+	wxSize tmpsize = GetSize();
+	if (tmpsize.x < 10) 
+		tmpsize.x = 10;
+	if (tmpsize.y < 10)
+		tmpsize.y = 10;
+
 	// Save Settings
-	settings->SetFrmQueryBuilderPos(GetPosition());
-	settings->SetFrmQueryBuilderSize(GetSize());
+	settings->SetFrmQueryBuilderPos(tmppoint);
+	settings->SetFrmQueryBuilderSize(tmpsize);
 
 	// Cleanup
 	delete datagramContextMenu;
+
+	// Remove from main frame
+    m_mainForm->RemoveFrame(this);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -272,9 +300,120 @@ void frmQueryBuilder::setTools(const bool running)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void frmQueryBuilder::DrawTablesAndViews()
+wxMDIClientWindow* frmQueryBuilder::OnCreateClient()
 {
-	wxMessageBox(wxT("This is not yet implemented."));
+	myClientWindow *tmpwin = new myClientWindow();
+	return tmpwin;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void myClientWindow::OnPaint(wxPaintEvent& event)
+{
+	wxPaintDC dc(this);
+
+	// Get the parent Query Builder
+	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
+
+	int w,h;
+	GetClientSize(&w,&h);
+
+	dc.DestroyClippingRegion();
+	dc.SetClippingRegion(0, 0, w, h);
+
+	dc.SetPen(*wxBLACK_PEN);
+	wxFont font(10, wxSWISS, wxNORMAL, wxBOLD);
+    dc.SetFont(font);
+
+	int count = tmpparent->m_joins.GetCount();
+
+	for (int si = 0; si < count; si++ )
+	{
+		JoinStruct *tmpjoin = NULL;
+
+		tmpjoin = (JoinStruct *)tmpparent->m_joins[si];
+
+		frmChildTableViewFrame *tmpleft = 
+			tmpparent->GetFrameFromAlias(tmpjoin->left);
+		frmChildTableViewFrame *tmpright = 
+			tmpparent->GetFrameFromAlias(tmpjoin->right);
+
+		wxSize tleftsize = tmpleft->GetSize();
+		wxSize trightsize = tmpright->GetSize();
+		wxSize tleftcsize = tmpleft->GetClientSize();
+		int offsety = tleftsize.y - tleftcsize.y;
+
+		int leftyoffset = tmpleft->m_columnlist->
+			GetCharHeight() * (tmpjoin->leftcolumn) + offsety;
+
+		int rightyoffset = tmpleft->m_columnlist->
+			GetCharHeight() * (tmpjoin->rightcolumn) + offsety;
+
+		if (leftyoffset > tleftsize.y)
+			leftyoffset = tleftsize.y;
+
+		if (rightyoffset > trightsize.y)
+			rightyoffset = trightsize.y;
+
+		wxPoint leftpos = tmpleft->GetPosition();
+		wxSize leftsize = tmpleft->GetSize();
+		wxPoint rightpos = tmpright->GetPosition();
+		wxSize rightsize = tmpright->GetSize();
+
+		wxPoint start;
+		wxPoint finish;
+		double slope;
+		double angle;
+
+		if (leftpos.x < rightpos.x)
+		{
+			start.x = leftpos.x + leftsize.x;
+			finish.x = rightpos.x;
+			start.y = leftpos.y + leftyoffset;
+			finish.y = rightpos.y + rightyoffset;
+		}
+		else
+		{
+			start.x = rightpos.x + rightsize.x;
+			finish.x = leftpos.x;
+			start.y = rightpos.y + rightyoffset;
+			finish.y = leftpos.y + leftyoffset;	
+		}
+		
+		slope = ((double)start.y-(double)finish.y) / 
+			((double)start.x-(double)finish.x);
+		angle = atan(slope) * 
+			(double)-180.0 / (double)3.141592653;
+
+		if (start.x >= finish.x)
+			angle += 180;
+
+		dc.DrawLine(start, finish);
+	
+		// Win32: Hit Testing Lines and Curves
+		dc.DrawRotatedText(tmpleft->m_columnlist->
+			GetString(tmpjoin->leftcolumn), start, angle);
+
+		int tw, th;
+		dc.GetTextExtent(tmpright->m_columnlist->
+			GetString(tmpjoin->rightcolumn), &tw, &th);
+
+		float xPlot = (tw * -1.0 * cos(atan(slope)));
+        float yPlot = (tw * -1.0 * sin(atan(slope)));
+
+		wxString tmp = wxString::Format( "%0.2f, %0.2f", xPlot, yPlot );
+		tmpparent->SetStatusText(tmp, frmQueryBuilder::STATUSPOS_MSGS);
+
+		dc.DrawRotatedText(tmpright->m_columnlist->
+			GetString(tmpjoin->rightcolumn), xPlot + finish.x, 
+			yPlot + finish.y, angle);
+
+	}
+
+	dc.SetPen(wxNullPen);
+	dc.SetFont(wxNullFont);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -708,9 +847,9 @@ void frmQueryBuilder::BuildQuery()
 	for ( si = 0; si < tblcount; si++ )
 	{
 		if ( si==0 ) 
-			tablestr += tablealiases[si] + tables[si];
+			tablestr += wxT("\n\t") + tablealiases[si] + tables[si];
 		else
-			tablestr += ", " + tablealiases[si] + tables[si];
+			tablestr += wxT(", \n\t") + tablealiases[si] + tables[si];
 	}
 
 	// Iterate through the rows to build the column list
@@ -756,30 +895,28 @@ void frmQueryBuilder::BuildQuery()
 			return;
 		}
 
-		if (condition.length())
+		if (!condition.IsEmpty())
 		{
 			if (si == 0)
 			{
-				conditionstr += wxT("(") + condition + wxT(")");
+				conditionstr += wxT("\t(") + condition + wxT(")");
 			}
 			else
-				conditionstr += wxT(" AND (") + condition + wxT(")");
+				conditionstr += wxT(" AND \n\t(") + condition + wxT(")");
 		}
 
 		if (si == 0) 
-			columnstr += expression;
+			columnstr += wxT("\n\t") + expression;
 		else
-			columnstr += wxT(", ") + expression;
+			columnstr += wxT(", \n\t") + expression;
 	}
 
 	if (conditionstr.length())
-		conditionstr = wxT("WHERE (") + conditionstr + wxT(")");
+		conditionstr = wxT("\nWHERE \n(\n") + conditionstr + wxT("\n)");
 
-	querystr += wxT(" ") + 
-		columnstr + 
-		wxT(" FROM ") + 
+	querystr += columnstr + 
+		wxT("\nFROM") + 
 		tablestr +
-		wxT(" ") +
 		conditionstr;
 
 	this->sql->SetText(querystr);
@@ -1016,6 +1153,8 @@ frmChildTableViewFrame *frmQueryBuilder::GetFrameFromAlias(wxString alias)
 	return NULL;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 {
 	// Assume no errors
@@ -1093,6 +1232,8 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 	return tmpstr;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnClose(wxCloseEvent& event)
 {
     if (m_changed && settings->GetAskSaveConfirmation())
@@ -1124,7 +1265,8 @@ void frmQueryBuilder::OnClose(wxCloseEvent& event)
     Destroy();
 }
 
-
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnChange(wxNotifyEvent& event)
 {
     if (!m_changed)
@@ -1133,6 +1275,8 @@ void frmQueryBuilder::OnChange(wxNotifyEvent& event)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnOpen(wxCommandEvent& event)
 {
     wxFileDialog dlg(this, wxT("Open query file"), m_lastDir, wxT(""), 
@@ -1160,6 +1304,8 @@ void frmQueryBuilder::OnOpen(wxCommandEvent& event)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnSave(wxCommandEvent& event)
 {
     FILE *f=fopen(m_lastPath.c_str(), "w+t");
@@ -1172,6 +1318,8 @@ void frmQueryBuilder::OnSave(wxCommandEvent& event)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnSaveAs(wxCommandEvent& event)
 {
     wxFileDialog *dlg=new wxFileDialog(this, wxT("Save query file as"), m_lastDir, m_lastFilename, 
@@ -1187,7 +1335,8 @@ void frmQueryBuilder::OnSaveAs(wxCommandEvent& event)
     delete dlg;
 }
 
-
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnCancel(wxCommandEvent& event)
 {
     toolBar->EnableTool(BTN_CANCEL, FALSE);
@@ -1196,12 +1345,60 @@ void frmQueryBuilder::OnCancel(wxCommandEvent& event)
 
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnExplain(wxCommandEvent& event)
 {
 //
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnExecute(wxCommandEvent& event)
 {
 //
 }
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void frmQueryBuilder::DeleteChild(wxString talias)
+{
+	// Get the count of children
+	int count = m_children.GetCount();
+
+	// Iterate through the children
+	for (int si = 0; si < count; si++)
+	{
+		void *tmpchild = m_children[si];
+
+		// If the child is not null
+		if (tmpchild!=NULL)
+		{
+			wxString tmpalias = m_aliases[si];
+
+			// If the aliases match 
+			if (tmpalias==talias)
+			{
+				// Make the child null and clear its strings
+				m_children[si] = NULL;
+				m_names[si].Clear();
+				m_aliases[si].Clear();
+
+				// How many rows do we have in the design grid?
+				int rowcount = design->GetNumberRows();
+
+				// Iterate through all the rows
+				for (int sj = rowcount - 1; sj >= 0; sj--) 
+				{
+					wxString tmptable = design->GetCellValue(sj, DESIGN_TABLE);
+					
+					// Delete row that matches the child we're deleting
+					if (tmptable==talias) 
+						design->DeleteRows(sj);
+				}
+
+
+			}
+		} 
+	} 
+} 
