@@ -54,11 +54,11 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 
 %build
 %configure --enable-monolithic --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
-%make
+make
 
 pushd contrib/src
-        %make -C xrc
-        %make -C stc
+        make -C xrc
+        make -C stc
 popd
 
 %install
