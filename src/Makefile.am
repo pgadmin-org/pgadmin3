@@ -8,7 +8,7 @@ bin_PROGRAMS = pgadmin3
 #  db/keywords.c  needs to be added
 
 pgadmin3_SOURCES = pgAdmin3.cpp \
-db/pgConn.cpp db/pgSet.cpp \
+db/pgConn.cpp db/pgSet.cpp db/keywords.c \
 schema/pgAggregate.cpp schema/pgCast.cpp \
 schema/pgCheck.cpp schema/pgCollection.cpp \
 schema/pgColumn.cpp schema/pgConstraints.cpp \
@@ -188,3 +188,4 @@ ui/tr_TR/wxstd.mo \
 ui/zh_CN/wxstd.mo
 
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(WX_HOME)
+AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(WX_HOME)
