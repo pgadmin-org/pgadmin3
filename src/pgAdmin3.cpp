@@ -57,9 +57,13 @@ bool pgAdmin3::OnInit()
 
     // Show the splash screen
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
-    SetTopWindow(winSplash);
-    winSplash->Show(TRUE);
-	winSplash->Refresh();
+    if (!winSplash) 
+        wxLogError(wxT("Couldn't create the splash screen!"));
+    else {
+      SetTopWindow(winSplash);
+      winSplash->Show(TRUE);
+	  winSplash->Refresh();
+    }
 	
     // Startup the windows sockets if required
 #ifdef __WXMSW__
@@ -94,7 +98,10 @@ bool pgAdmin3::OnInit()
     SetTopWindow(winMain);
     SetExitOnFrameDelete(TRUE);
 
-    winSplash->Close();
+    if (winSplash) {
+        winSplash->Close();
+        delete winSplash;
+    }
 
     // Display a Tip if required.
     extern sysSettings *objSettings;
