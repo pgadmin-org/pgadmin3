@@ -17,135 +17,136 @@ The following list contains all changes to pgAdmin3, as present in cvs.
 </ul>
 <br>
 <ul>
-    <li>2004-09-10 AP        fix type quoting
-    <li>2004-09-08 AP        fix OnAdd server property positioning
-    <li>2004-09-05 AP        performance speedup retrieving server features
-    <li>2004-09-05 AP        qtIdent checks keywords
-    <li>2004-08-29 AP        Sequence schema fix
-    <li>2004-08-25 DAP       Prevent crash when non-superuser views database properties.
-    <li>2004-08-18 AP        set PGPASSWORD environment for backup/restore
-    <li>2004-08-18 AP        fix ACL for quoted user/group names
-    <li>2004-08-15 AP        buglet cleanups
-    <li>2004-08-11 AP        restore wizard
-    <li>2004-08-11 AP        rework of ctlComboBox
-    <li>2004-08-09 AP        server property
-    <li>2004-08-05 AP        win32 service control
-    <li>2004-08-05 AP        refactor tree context menu: create instead of en/disable items
-    <li>2004-08-02 DP        Auto-discover locally installed servers when registered by the Win32 binary installer.
-    <li>2004-07-30 AP        Tablespace usage fix for objects using the database's default tablespace
-    <li>2004-07-27 AP        Reworked schema prefixing
-    <li>2004-07-25 AP        support of pg_xxx_size if available
-    <li>2004-07-21 AP        Improved disconnect handling
-    <li>2004-07-21 AP        StatusBar with size handle for frmStatus, dlgFunction and dlgView
-    <li>2004-07-21 AP        Update ServerStatus to pg_logdir_ls
-    <li>2004-07-21 AP        catch SIGPIPE
-    <li>2004-07-20 AP        owner, name, comment refactoring in dlgProperty
-    <li>2004-07-20 AP        support of function parameters
-    <li>2004-07-20 AP        tablespace changes
-    <li>2004-07-19 AP        fix dependency display for tablespaces and users
-    <li>2004-07-18 AP        Update ServerStatus to pg_logfiles_ls and pg_file_read/pg_file_length
-    <li>2004-07-18 AP        Allow change of some function attributes
-    <li>2004-07-12 AP        Fix check constraint in table reengineering
-    <li>2004-07-11 AP        Fix combobox size/position issue on gtk
-    <li>2004-07-11 AP        Fix button height issue with modern gtk themes
-    <li>2004-06-30 AP        Tablespace ACLs
-    <li>2004-06-23 DP        Split Windows installer into a merge module and installer to allow inclusion in other packages.
-    <li>2004-06-23 DP        Allow cancelling of queries and termination of backends from server status dialogue for 7.5+.
-    <li>2004-06-20 AP        backup database using pg_dump
-    <li>2004-06-19 AP        Tablespace dependencies
-    <li>2004-06-19 AP        combobox guessing cleanups
-    <li>2004-06-18 AP        7.5 Tablespace
-    <li>2004-06-18 AP        Count menu instead of refresh to count rows in a table
-    <li>2004-06-18 AP        CLUSTERed index support for PostgreSQL 7.4 - ALTER TABLE foo CLUSTER ON blah;
-    <li>2004-06-17 AP        copy rows to clipboard from Query Tool and View Data Tool
-    <li>2004-06-16 AP        allow omitting server disconnect when switching "Show System Objects"
-    <li>2004-06-16 AP        guess combobox selection while typing
-    <li>2004-06-13 AP        fix "no schema" bug when database is initial database
-    <li>2004-06-11 AP        Apply for some function and view property dialogs
-    <li>2004-06-11 AP        Display server log
-    <li>2004-06-08 AP        Allow Server Status & Maintenance windows to be resized to allow easy reading of data
-    <li>2004-06-07 AP        changed connection loss handling
-    <li>2004-06-07 AP        fix storing of existing files (didn't truncate)
-    <li>2004-06-06 AP        GRANT wizard
-    <li>2004-06-06 AP        ALTER AGGREGATE/FUNCTION/GROUP/LANGUAGE/SCHEMA/TRIGGER/USER RENAME TO for 7.4+
-    <li>2004-06-04 AP        SQL Window: Try to preserve result column width
-    <li>2004-06-04 AP        7.5 support: comment on cast/conversion/language
-    <li>2004-06-04 AP        checks on column type changes
-    <li>2004-05-28 AP        handle lost connections safely
-    <li>2004-05-28 AP        fix server status not cleaning old connections
-    <li>2004-05-28 AP        line numbers in function definition property dialog
-    <li>2004-05-26 AP        warn when deleting superuser privilege
-    <li>2004-05-10 DP        Generate function SQL correctly when the return type needs a schema specification
-    <li>2004-05-04 DP        Prevent duplication of functional indexes
-    <li>2004-03-30 AP   ***  no initial language selection (using system default)
-    <li>2004-03-25 AP   ***  Allow initial selection of language "Default"
-    <li>2004-03-24 AP        changed font handling to accept exotic weights
-    <li>2004-03-17 AP        Updated sources for wx 2.5.1
-    <li>2004-03-17 AP        Added Font Option
-    <li>2004-03-06 AP   ***  Fixed missing qtIdent for CREATE DATABASE TEMPLATE option
-    <li>2004-02-23 DP        Correct syntax for constraint comments generated SQL
-    <li>2004-01-30 DP        Include column comments in generated table SQL
-    <li>2004-01-13 AP   ***  Fix crash refreshing dropped object
-    <li>2003-12-28 AP        gtk: fix for dlgForeignKey combobox illegal selection 
-    <li>2003-12-28 AP        Fix for pgDatabase::database crash
-    <li>2003-12-10 AP        serial/bigserial datatype for ALTER TABLE; can create new sequence/dependency
-    <li>2003-12-09 AP   ***  Fix for Tagalog language
-    <li>2003-12-08 AP        Refactor virtual pgObject::GetDatabase()
-    <li>2003-12-08 AP        Rewrite of schema qualifier suppression: configurable or search_path
-    <li>2003-12-08 DP        Prompt to save changes before opening SQL files.
-    <li>2003-12-08 AP        Query tool: display of inserted OIDs
-    <li>2003-12-08 AP        pgAgent schema, changed system schema discovery
-    <li>2003-12-05 AP   ***  allow all 'p' types except any,trigger,language_handler as return types for functions
-    <li>2003-12-03 AP   ***  fix connect to MULE_INTERNAL db
-    <li>2003-12-02 AP   ***  fix acl property display
-    <li>2003-12-02 AP        another fix closing Query Tool
-    <li>2003-12-01 AP        add display of superuser context settings
-    <li>2003-11-30 AP        handle covering index for Foreign Keys
-    <li>2003-11-30 AP        fix closing Query Tool while query is running
-    <li>2003-11-30 AP   ***  fix error message when SET client_encoding fails
-    <li>2003-11-28 HS   ***  Fix case sensitive keyword highlighting.
+    <li>2004-09-10 AP  1.2B2 fix GrantWizard for sequence and view
+    <li>2004-09-10 AP  1.2B2 fix type quoting
+    <li>2004-09-08 AP  1.2B2 fix OnAdd server property positioning
+    <li>2004-09-05 AP  1.2.0 performance speedup retrieving server features
+    <li>2004-09-05 AP  1.2.0 qtIdent checks keywords
+    <li>2004-08-29 AP  1.2.0 Sequence schema fix
+    <li>2004-08-25 DAP 1.2.0 Prevent crash when non-superuser views database properties.
+    <li>2004-08-18 AP  1.2.0 set PGPASSWORD environment for backup/restore
+    <li>2004-08-18 AP  1.2.0 fix ACL for quoted user/group names
+    <li>2004-08-15 AP  1.2.0 buglet cleanups
+    <li>2004-08-11 AP  1.2.0 restore wizard
+    <li>2004-08-11 AP  1.2.0 rework of ctlComboBox
+    <li>2004-08-09 AP  1.2.0 server property
+    <li>2004-08-05 AP  1.2.0 win32 service control
+    <li>2004-08-05 AP  1.2.0 refactor tree context menu: create instead of en/disable items
+    <li>2004-08-02 DP  1.2.0 Auto-discover locally installed servers when registered by the Win32 binary installer.
+    <li>2004-07-30 AP  1.2.0 Tablespace usage fix for objects using the database's default tablespace
+    <li>2004-07-27 AP  1.2.0 Reworked schema prefixing
+    <li>2004-07-25 AP  1.2.0 support of pg_xxx_size if available
+    <li>2004-07-21 AP  1.2.0 Improved disconnect handling
+    <li>2004-07-21 AP  1.2.0 StatusBar with size handle for frmStatus, dlgFunction and dlgView
+    <li>2004-07-21 AP  1.2.0 Update ServerStatus to pg_logdir_ls
+    <li>2004-07-21 AP  1.2.0 catch SIGPIPE
+    <li>2004-07-20 AP  1.2.0 owner, name, comment refactoring in dlgProperty
+    <li>2004-07-20 AP  1.2.0 support of function parameters
+    <li>2004-07-20 AP  1.2.0 tablespace changes
+    <li>2004-07-19 AP  1.2.0 fix dependency display for tablespaces and users
+    <li>2004-07-18 AP  1.2.0 Update ServerStatus to pg_logfiles_ls and pg_file_read/pg_file_length
+    <li>2004-07-18 AP  1.2.0 Allow change of some function attributes
+    <li>2004-07-12 AP  1.2.0 Fix check constraint in table reengineering
+    <li>2004-07-11 AP  1.2.0 Fix combobox size/position issue on gtk
+    <li>2004-07-11 AP  1.2.0 Fix button height issue with modern gtk themes
+    <li>2004-06-30 AP  1.2.0 Tablespace ACLs
+    <li>2004-06-23 DP  1.2.0 Split Windows installer into a merge module and installer to allow inclusion in other packages.
+    <li>2004-06-23 DP  1.2.0 Allow cancelling of queries and termination of backends from server status dialogue for 7.5+.
+    <li>2004-06-20 AP  1.2.0 backup database using pg_dump
+    <li>2004-06-19 AP  1.2.0 Tablespace dependencies
+    <li>2004-06-19 AP  1.2.0 combobox guessing cleanups
+    <li>2004-06-18 AP  1.2.0 7.5 Tablespace
+    <li>2004-06-18 AP  1.2.0 Count menu instead of refresh to count rows in a table
+    <li>2004-06-18 AP  1.2.0 CLUSTERed index support for PostgreSQL 7.4 - ALTER TABLE foo CLUSTER ON blah;
+    <li>2004-06-17 AP  1.2.0 copy rows to clipboard from Query Tool and View Data Tool
+    <li>2004-06-16 AP  1.2.0 allow omitting server disconnect when switching "Show System Objects"
+    <li>2004-06-16 AP  1.2.0 guess combobox selection while typing
+    <li>2004-06-13 AP  1.2.0 fix "no schema" bug when database is initial database
+    <li>2004-06-11 AP  1.2.0 Apply for some function and view property dialogs
+    <li>2004-06-11 AP  1.2.0 Display server log
+    <li>2004-06-08 AP  1.2.0 Allow Server Status & Maintenance windows to be resized to allow easy reading of data
+    <li>2004-06-07 AP  1.2.0 changed connection loss handling
+    <li>2004-06-07 AP  1.2.0 fix storing of existing files (didn't truncate)
+    <li>2004-06-06 AP  1.2.0 GRANT wizard
+    <li>2004-06-06 AP  1.2.0 ALTER AGGREGATE/FUNCTION/GROUP/LANGUAGE/SCHEMA/TRIGGER/USER RENAME TO for 7.4+
+    <li>2004-06-04 AP  1.2.0 SQL Window: Try to preserve result column width
+    <li>2004-06-04 AP  1.2.0 7.5 support: comment on cast/conversion/language
+    <li>2004-06-04 AP  1.2.0 checks on column type changes
+    <li>2004-05-28 AP  1.2.0 handle lost connections safely
+    <li>2004-05-28 AP  1.2.0 fix server status not cleaning old connections
+    <li>2004-05-28 AP  1.2.0 line numbers in function definition property dialog
+    <li>2004-05-26 AP  1.2.0 warn when deleting superuser privilege
+    <li>2004-05-10 DP  1.2.0 Generate function SQL correctly when the return type needs a schema specification
+    <li>2004-05-04 DP  1.2.0 Prevent duplication of functional indexes
+    <li>2004-03-30 AP  1.2.0 no initial language selection (using system default)
+    <li>2004-03-25 AP  1.2.0 Allow initial selection of language "Default"
+    <li>2004-03-24 AP  1.2.0 changed font handling to accept exotic weights
+    <li>2004-03-17 AP  1.2.0 Updated sources for wx 2.5.1
+    <li>2004-03-17 AP  1.2.0 Added Font Option
+    <li>2004-03-06 AP  1.2.0 Fixed missing qtIdent for CREATE DATABASE TEMPLATE option
+    <li>2004-02-23 DP  1.2.0 Correct syntax for constraint comments generated SQL
+    <li>2004-01-30 DP  1.2.0 Include column comments in generated table SQL
+    <li>2004-01-13 AP  1.2.0 Fix crash refreshing dropped object
+    <li>2003-12-28 AP  1.2.0 gtk: fix for dlgForeignKey combobox illegal selection 
+    <li>2003-12-28 AP  1.2.0 Fix for pgDatabase::database crash
+    <li>2003-12-10 AP  1.2.0 serial/bigserial datatype for ALTER TABLE; can create new sequence/dependency
+    <li>2003-12-09 AP  1.2.0 Fix for Tagalog language
+    <li>2003-12-08 AP  1.2.0 Refactor virtual pgObject::GetDatabase()
+    <li>2003-12-08 AP  1.2.0 Rewrite of schema qualifier suppression: configurable or search_path
+    <li>2003-12-08 DP  1.2.0 Prompt to save changes before opening SQL files.
+    <li>2003-12-08 AP  1.2.0 Query tool: display of inserted OIDs
+    <li>2003-12-08 AP  1.2.0 pgAgent schema, changed system schema discovery
+    <li>2003-12-05 AP  1.2.0 allow all 'p' types except any,trigger,language_handler as return types for functions
+    <li>2003-12-03 AP  1.2.0 fix connect to MULE_INTERNAL db
+    <li>2003-12-02 AP  1.2.0 fix acl property display
+    <li>2003-12-02 AP  1.2.0 another fix closing Query Tool
+    <li>2003-12-01 AP  1.2.0 add display of superuser context settings
+    <li>2003-11-30 AP  1.2.0 handle covering index for Foreign Keys
+    <li>2003-11-30 AP  1.2.0 fix closing Query Tool while query is running
+    <li>2003-11-30 AP  1.2.0 fix error message when SET client_encoding fails
+    <li>2003-11-28 HS  1.2.0 Fix case sensitive keyword highlighting.
     <li>2003-11-28 DP  1.0.2 Update PostgreSQL docs to 7.4
     <li>2003-11-26 AP  1.0.2 fix notice processing for pgQueryThread
-    <li>2003-11-24 AP        refactoring stats/depends: populate on demand
-    <li>2003-11-24 AP        remember property dialog sizes (refactoring syssettings for pos/size)
-    <li>2003-11-16 AP        Fix file writing
-    <li>2003-11-14 DP        Allow creation/display of functions with class data types.
-    <li>2003-11-11 AP        refactoring: ctlListView
-    <li>2003-11-11 AP        Show referencing/referenced objects
-    <li>2003-11-05 AP        File format (won't change existing format)
-    <li>2003-10-31 AP        Rows affected in query tool
-    <li>2003-10-31 AP        counting non-constraint FKs for databases
-    <li>2003-10-26 AP        precompiled headers under msw
+    <li>2003-11-24 AP  1.2.0 refactoring stats/depends: populate on demand
+    <li>2003-11-24 AP  1.2.0 remember property dialog sizes (refactoring syssettings for pos/size)
+    <li>2003-11-16 AP  1.2.0 Fix file writing
+    <li>2003-11-14 DP  1.2.0 Allow creation/display of functions with class data types.
+    <li>2003-11-11 AP  1.2.0 refactoring: ctlListView
+    <li>2003-11-11 AP  1.2.0 Show referencing/referenced objects
+    <li>2003-11-05 AP  1.2.0 File format (won't change existing format)
+    <li>2003-10-31 AP  1.2.0 Rows affected in query tool
+    <li>2003-10-31 AP  1.2.0 counting non-constraint FKs for databases
+    <li>2003-10-26 AP  1.2.0 precompiled headers under msw
     <li>2003-10-23 AP  1.0.2 another SQL_ASCII fix
-    <li>2003-10-23 AP   ***  Fix estimated rowcount
-    <li>2003-10-20 AP        wxTimeSpinCtrl
-    <li>2003-10-20 HS        Added support for column statistics.
-    <li>2003-10-19 AP        Loading of ctlSQLBox from resource
-    <li>2003-10-19 AP        User expiry
-    <li>2003-10-18 DP        Allow filtering of data in the edit grid.
-    <li>2003-10-17 DP        Allow sorting of data in the edit grid.
-    <li>2003-10-16 AHP       Fix SSL compile bug.
+    <li>2003-10-23 AP  1.2.0 Fix estimated rowcount
+    <li>2003-10-20 AP  1.2.0 wxTimeSpinCtrl
+    <li>2003-10-20 HS  1.2.0 Added support for column statistics.
+    <li>2003-10-19 AP  1.2.0 Loading of ctlSQLBox from resource
+    <li>2003-10-19 AP  1.2.0 User expiry
+    <li>2003-10-18 DP  1.2.0 Allow filtering of data in the edit grid.
+    <li>2003-10-17 DP  1.2.0 Allow sorting of data in the edit grid.
+    <li>2003-10-16 AHP 1.2.0 Fix SSL compile bug.
     <li>2003-10-14 DP  1.0.1 Update PostgreSQL docs to 7.4Beta4
     <li>2003-10-13 AP  1.0.1 Fix ReadOnly security
     <li>2003-10-13 AP  1.0.1 Fix encoding when connecting
-    <li>2003-10-10 AP        Query Tool execute to file
+    <li>2003-10-10 AP  1.2.0 Query Tool execute to file
     <li>2003-10-07 DP  1.0.1 Set cache value correctly when creating sequences.
-    <li>2003-10-07 DP        Handle array of definable length types correctly e.g. numeric(12,8)[].
+    <li>2003-10-07 DP  1.2.0 Handle array of definable length types correctly e.g. numeric(12,8)[].
     <li>2003-10-07 DP  1.0.1 Display/use char instead of bpchar.
     <li>2003-10-07 AP  1.0.1 Fixed the frogfrog constraint (doubling of names).
-    <li>2003-10-06 AP        Check if PQfnumber wants quoting or not
+    <li>2003-10-06 AP  1.2.0 Check if PQfnumber wants quoting or not
     <li>2003-10-06 AP  1.0.1 Fix Unique Constraint creation
-    <li>2003-10-06 AP        Fix DlgUnit sizing, review of XRC files
-    <li>2003-10-03 DP        When connecting to a new server, if logon fails remember description as well as other info.
-    <li>2003-10-03 DP        Added locks tab to server status window.
+    <li>2003-10-06 AP  1.2.0 Fix DlgUnit sizing, review of XRC files
+    <li>2003-10-03 DP  1.2.0 When connecting to a new server, if logon fails remember description as well as other info.
+    <li>2003-10-03 DP  1.2.0 Added locks tab to server status window.
     <li>2003-10-03 DP  1.0.1 Reconnect to databases properly after failed attempt to drop.
-    <li>2003-10-01 AP        generic TreeItem renderer for gtk [+] / [-]
+    <li>2003-10-01 AP  1.2.0 generic TreeItem renderer for gtk [+] / [-]
     <li>2003-10-01 AP  1.0.1 client encoding SQL_ASCII for server SQL_ASCII
     <li>2003-10-01 DP  1.0.1 Correctly quote table names when creating indexes.
-    <li>2003-10-01 AP        fonts determine metrics for dialog resizing
+    <li>2003-10-01 AP  1.2.0 fonts determine metrics for dialog resizing
     <li>2003-09-30 HS  1.0.1 Display new triggers correctly in the treeview.
     <li>2003-09-30 DP  1.0.1 Allow creation of triggers with functions in schemas not in the search path.
-    <li>2003-09-28 AP        Statistics translatable
+    <li>2003-09-28 AP  1.2.0 Statistics translatable
     <li>2003-09-26 HS  1.0.0 Handle Primary Key comments correctly.
     <li>2003-09-24 AP  1.0.0 rule condition fix
     <li>2003-09-26 HS  1.0.0 column quoting when reading pgSet
