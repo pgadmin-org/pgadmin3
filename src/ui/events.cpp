@@ -247,6 +247,12 @@ void frmMain::OnBugreport(wxCommandEvent& event)
 #else
     wxString bugfile = DATA_DIR wxT("bugreport.html");
 #endif
+    if (!wxFile::Exists(bugfile))
+#ifdef __WIN32__
+        bugfile = loadPath + wxT("/../bugreport.html");
+#else
+    wxString bugfile = loadPath + wxT("/bugreport.html");
+#endif
 
     if (!h->Load(wxT("file:") + bugfile))
         h->Destroy();
