@@ -185,6 +185,15 @@ off_t wxUtfFile::Seek(off_t ofs, wxSeekMode mode)
 
 
 
+wxFontEncoding wxUtfFile::GetEncoding()
+{
+    if (IsOpened())
+        return m_encoding;
+    else
+        return wxFONTENCODING_DEFAULT;
+}
+
+
 void wxUtfFile::WriteBOM()
 {
     wxFile::Seek(0);

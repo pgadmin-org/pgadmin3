@@ -28,6 +28,8 @@ public:
     bool Open(const wxChar *szFileName, OpenMode mode = read, int access = wxS_DEFAULT, wxFontEncoding encoding=wxFONTENCODING_DEFAULT);
     void Attach(int fd, wxFontEncoding encoding=wxFONTENCODING_DEFAULT);
 
+    wxFontEncoding GetEncoding();
+
     off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart);
     off_t SeekEnd(off_t ofs = 0) { return Seek(ofs, wxFromEnd); }
     off_t Tell() const { return wxFile::Tell() - m_bomOffset; }

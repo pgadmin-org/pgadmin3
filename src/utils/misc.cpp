@@ -435,18 +435,20 @@ wxString FileRead(const wxString &filename, int format)
 bool FileWrite(const wxString &filename, const wxString &data, int format)
 {
     wxFontEncoding encoding;
+    wxUtfFile file(filename);
+
     if (format < 0)
-        encoding = settings->GetUnicodeFile() ? wxFONTENCODING_UTF8 : wxFONTENCODING_SYSTEM;
+    {
+        encoding = file.GetEncoding();
+        if (encoding == wxFONTENCODING_DEFAULT)
+            encoding = settings->GetUnicodeFile() ? wxFONTENCODING_UTF8 : wxFONTENCODING_SYSTEM;
+    }
     else
         encoding = format ? wxFONTENCODING_UTF8 : wxFONTENCODING_SYSTEM;
 
-    wxUtfFile file;
 
-    if (format < 0) // first try using the old encoding
-        file.Open(filename, wxFile::read_write, wxS_DEFAULT, encoding);
-
-    if (!file.IsOpened())
-        file.Open(filename, wxFile::write, wxS_DEFAULT, encoding);
+    file.Close();
+    file.Open(filename, wxFile::write, wxS_DEFAULT, encoding);
 
     if (file.IsOpened())
         return file.Write(wxTextBuffer::Translate(data));
