@@ -82,51 +82,8 @@ agent/include/pgaAgent.h agent/include/pgaInstance.h agent/include/pgaJob.h \
 agent/include/pgaStep.h agent/include/pgaSchedule.h
   
 EXTRA_DIST = pgAdmin3.dsp pgAdmin3.dsw \
-include/images/aggregate.xpm \
-include/images/back.xpm \
-include/images/help.xpm include/images/help2.xpm \
-include/images/baddatabase.xpm include/images/cast.xpm \
-include/images/check.xpm include/images/clip_copy.xpm \
-include/images/clip_cut.xpm include/images/clip_paste.xpm \
-include/images/closeddatabase.xpm \
-include/images/closedown.xpm include/images/closeup.xpm \
-include/images/column.xpm include/images/connect.xpm \
-include/images/constraints.xpm \
-include/images/conversion.xpm include/images/create.xpm \
-include/images/database.xpm include/images/delete.xpm \
-include/images/dnd_copy.xpm \
-include/images/dnd_move.xpm include/images/dnd_none.xpm \
-include/images/domain.xpm include/images/drop.xpm \
-include/images/edit_clear.xpm include/images/edit_find.xpm \
-include/images/edit_redo.xpm include/images/edit_undo.xpm \
-include/images/elephant48.xpm \
-include/images/encoding.xpm include/images/event.xpm \
-include/images/file_open.xpm include/images/file_save.xpm \
-include/images/foreignkey.xpm include/images/forward.xpm \
-include/images/function.xpm \
-include/images/group.xpm \
-include/images/index.xpm \
-include/images/key.xpm include/images/language.xpm \
-include/images/namespace.xpm \
-include/images/operatorclass.xpm \
-include/images/operator.xpm include/images/pgAdmin3.ico \
-include/images/pgAdmin3.xpm include/images/primarykey.xpm \
-include/images/properties.xpm include/images/property.xpm \
-include/images/public.xpm include/images/querybuilder.xpm \
-include/images/query_cancel.xpm include/images/query_execute.xpm \
-include/images/query_explain.xpm include/images/readdata.xpm \
-include/images/refresh.xpm include/images/relationship.xpm \
-include/images/reload.xpm include/images/rule.xpm \
-include/images/sequence.xpm include/images/serverbad.xpm \
-include/images/servers.xpm include/images/server.xpm \
-include/images/splash.xpm include/images/sql.xpm \
-include/images/statistics.xpm include/images/storage.xpm \
-include/images/storedata.xpm include/images/table.xpm \
-include/images/triggerfunction.xpm \
-include/images/trigger.xpm include/images/type.xpm \
-include/images/unique.xpm include/images/unknown.xpm \
-include/images/user.xpm include/images/vacuum.xpm \
-include/images/viewdata.xpm include/images/view.xpm \
+include/images/*.xpm \
+include/images/pgAdmin3.ico \
 ui/af_ZA/pgadmin3.po \
 ui/bg_BG/pgadmin3.po \
 ui/da_DK/pgadmin3.po \
