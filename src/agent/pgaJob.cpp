@@ -47,6 +47,12 @@ wxMenu *pgaJob::GetNewMenu()
 }
 
 
+bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pga_job WHERE oid=") + GetOidStr());
+}
+
+
 void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)

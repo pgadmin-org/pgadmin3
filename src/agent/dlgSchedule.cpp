@@ -56,6 +56,7 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
 : dlgOidProperty(frame, wxT("dlgSchedule"))
 {
     SetIcon(wxIcon(schedule_xpm));
+    objectType=PGA_SCHEDULE;
     schedule=node;
     job=j;
     if (job)
@@ -138,6 +139,10 @@ void dlgSchedule::OnChange(wxNotifyEvent &ev)
 }
 
 
+wxString dlgSchedule::GetComment()
+{
+    return txtComment->GetValue();
+}
 
 
 wxString dlgSchedule::GetInsertSql()

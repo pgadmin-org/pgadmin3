@@ -60,6 +60,12 @@ void pgaSchedule::iSetIntervalList(const wxString &s)
 }
 
 
+bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pga_jobschedule WHERE oid=") + GetOidStr());
+}
+
+
 void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)

@@ -26,6 +26,7 @@ public:
 
     wxString GetUpdateSql();
     wxString GetInsertSql();
+    wxString GetComment();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
     void SetJobOid(OID oid) { jobOid = oid; }

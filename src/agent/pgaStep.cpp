@@ -35,6 +35,11 @@ pgaStep::~pgaStep()
 }
 
 
+bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pga_jobstep WHERE oid=") + GetOidStr());
+}
+
 
 void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {

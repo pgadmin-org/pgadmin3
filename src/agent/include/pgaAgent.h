@@ -32,6 +32,7 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgDatabase *database, wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    wxMenu *GetNewMenu();
 
     bool CanCreate() { return false; }
     bool CanView() { return false; }

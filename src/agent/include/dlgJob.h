@@ -30,13 +30,21 @@ public:
 
 private:
     pgaJob *job;
+
+    wxArrayString previousSteps, previousSchedules;
+
     void OnChange(wxNotifyEvent &ev);
+
+    void OnSelChangeStep(wxNotifyEvent &ev);
     void OnChangeStep(wxNotifyEvent &ev);
     void OnAddStep(wxNotifyEvent &ev);
     void OnRemoveStep(wxNotifyEvent &ev);
+
+    void OnSelChangeSchedule(wxNotifyEvent &ev);
     void OnChangeSchedule(wxNotifyEvent &ev);
     void OnAddSchedule(wxNotifyEvent &ev);
     void OnRemoveSchedule(wxNotifyEvent &ev);
+
        
 
     DECLARE_EVENT_TABLE();

@@ -35,6 +35,16 @@ pgaAgent::~pgaAgent()
 
 
 
+wxMenu *pgaAgent::GetNewMenu()
+{
+    wxMenu *menu=new wxMenu();
+    if (1) // check priv.
+    {
+        AppendMenu(menu, PGA_JOB);
+    }
+    return menu;
+}
+
 void pgaAgent::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)

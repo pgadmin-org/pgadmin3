@@ -24,6 +24,7 @@ public:
     dlgSchedule(frmMain *frame, pgaSchedule *s, pgaJob *j);
     int Go(bool modal);
 
+    wxString GetComment();
     wxString GetUpdateSql();
     wxString GetInsertSql();
     pgObject *CreateObject(pgCollection *collection);

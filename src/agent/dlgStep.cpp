@@ -47,6 +47,7 @@ dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
 : dlgOidProperty(frame, wxT("dlgStep"))
 {
     SetIcon(wxIcon(step_xpm));
+    objectType=PGA_STEP;
     step=node;
     job=j;
     if (job)
@@ -148,6 +149,12 @@ void dlgStep::OnChange(wxNotifyEvent &ev)
 
 
 
+wxString dlgStep::GetComment()
+{
+    return txtComment->GetValue();
+}
+
+
 
 wxString dlgStep::GetInsertSql()
 {
@@ -185,7 +192,6 @@ wxString dlgStep::GetUpdateSql()
 
     if (step)
     {
-        wxString st=wxGetTranslation(wxT("asdf"));
         // edit mode
 
         wxString name=GetName();
