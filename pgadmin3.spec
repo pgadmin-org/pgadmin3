@@ -14,7 +14,7 @@ Version: %{major_version}
 Release: %{minor_version}
 License: Artistic
 Group: Applications/Databases
-Source: pgadmin3-%{version}.tar.bz2
+Source: pgadmin3-%{major_version}.tar.bz2
 URL: http://www.pgadmin.org/
 Packager: pgAdmin project <pgadmin-hackers@postgresql.org>
 BuildRoot: %{_tmppath}/%{name}-root
