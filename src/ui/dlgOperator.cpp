@@ -132,6 +132,10 @@ int dlgOperator::Go(bool modal)
         cbGreater->SetSelection(0);
 
         chkCanHash->SetValue(oper->GetHashJoins());
+        if (!oper->GetLeftSortOperator().IsNull() || !oper->GetRightSortOperator().IsNull() ||
+            !oper->GetLessOperator().IsNull() || !oper->GetGreaterOperator().IsNull())
+            chkCanMerge->SetValue(TRUE);
+
 
 	    txtComment->SetValue(oper->GetComment());
         txtName->Disable();
