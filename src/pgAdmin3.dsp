@@ -142,6 +142,10 @@ SOURCE=.\schema\pgFunction.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgGroup.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgIndex.cpp
 # End Source File
 # Begin Source File
@@ -255,10 +259,6 @@ SOURCE=.\ui\gtk\frmPassword.xrc
 # End Group
 # Begin Source File
 
-SOURCE=.\ui\browser.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\ui\ctlSQLBox.cpp
 # End Source File
 # Begin Source File
@@ -312,10 +312,6 @@ SOURCE=.\ui\frmUpgradeWizard.cpp
 # Begin Source File
 
 SOURCE=.\ui\pgAdmin3.rc
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\statistics.cpp
 # End Source File
 # End Group
 # Begin Group "include"
@@ -604,6 +600,10 @@ SOURCE=.\include\pgForeignKey.h
 # Begin Source File
 
 SOURCE=.\include\pgFunction.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgGroup.h
 # End Source File
 # Begin Source File
 
