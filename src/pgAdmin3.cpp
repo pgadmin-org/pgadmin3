@@ -73,24 +73,7 @@ bool pgAdmin3::OnInit()
     // we are here
     loadPath=wxPathOnly(argv[0]);
 
-    // Load the Settings
-#ifdef __WXMSW__
-    settings = new sysSettings(APPNAME_L);
-#else
-    settings = new sysSettings(APPNAME_S);
-#endif
-
-	// Setup logging
-    logger = new sysLogger();
-    wxLog::SetActiveTarget(logger);
-
-    wxString msg;
-    msg << wxT("# ") << APPNAME_L << wxT(" Version ") << VERSION << wxT(" Startup");
-    wxLogInfo(wxT("##############################################################"));
-    wxLogInfo(msg);
-    wxLogInfo(wxT("##############################################################"));
-
-
+    // evaluate all working paths
 #ifdef __WIN32__
 
     if (wxDir::Exists(loadPath + UI_DIR))
@@ -115,6 +98,25 @@ bool pgAdmin3::OnInit()
     else
         docPath = loadPath + wxT("/..") DOC_DIR;
 #endif
+
+
+
+    // Load the Settings
+#ifdef __WXMSW__
+    settings = new sysSettings(APPNAME_L);
+#else
+    settings = new sysSettings(APPNAME_S);
+#endif
+
+	// Setup logging
+    logger = new sysLogger();
+    wxLog::SetActiveTarget(logger);
+
+    wxString msg;
+    msg << wxT("# ") << APPNAME_L << wxT(" Version ") << VERSION << wxT(" Startup");
+    wxLogInfo(wxT("##############################################################"));
+    wxLogInfo(msg);
+    wxLogInfo(wxT("##############################################################"));
 
 
     locale.AddCatalogLookupPathPrefix(uiPath);
