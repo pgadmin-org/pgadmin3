@@ -17,18 +17,49 @@
 #include "pgObject.h"
 
 
-pgObject::pgObject()
+pgObject::pgObject(int iNewType, wxString& szNewName)
 : wxTreeItemData()
-{  
+{
+
+    // Set the typename and type
+    iType = iNewType;
+    switch(iNewType){
+        case PG_NONE:
+            szTypeName = wxT("None");
+            break;
+
+        case PG_SERVERS:
+            szTypeName = wxT("Servers");
+            break;
+
+        case PG_ADD_SERVER:
+            szTypeName = wxT("Add Server");
+            break;
+
+        case PG_SERVER:
+            szTypeName = wxT("Server");
+            break;
+
+        default:
+            szTypeName = wxT("None");
+            break;
+    }
+
+    szName = szNewName;
 }
 
 pgObject::~pgObject()
 {
 }
 
-wxString pgObject::GetType()
+int pgObject::GetType()
 {
-    return wxString("");
+    return iType;
+}
+
+wxString pgObject::GetTypeName()
+{
+    return szTypeName;
 }
 
 wxString pgObject::GetIdentifier()
@@ -61,9 +92,9 @@ wxString pgObject::GetTable()
     return szTable;
 }
 
-unsigned long pgObject::GetPort()
+int pgObject::GetPort()
 {
-    return lPort;
+    return iPort;
 }
 
 unsigned long pgObject::GetOid()

@@ -26,7 +26,6 @@ class pgServer : public pgObject
 public:
     pgServer(wxFrame *parent);
     ~pgServer();
-    virtual wxString GetType();
     pgConn *cnMaster;
     int Connect();
     wxString GetIdentifier();
@@ -39,12 +38,12 @@ public:
     void SetUsername(wxString& szNewVal);
     wxString GetPassword();
     void SetPassword(wxString& szNewVal);
-    unsigned long GetPort();
-    void SetPort(long lNewVal);
+    void SetPort(int iNewVal);
+    int GetPort();
 
 private:
-    wxString szServer, szDatabase, szUsername, szPassword;
-    unsigned long lPort;
+    wxString szServer, szDatabase, szUsername, szPassword, szVer;
+    int iPort;
     wxFrame *winParent;
 };
 

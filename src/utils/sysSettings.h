@@ -26,47 +26,47 @@ public:
     ~sysSettings();
 
     // frmMain size/position
-    long GetFrmMainWidth();
-    void SetFrmMainWidth(long lNewVal);
+    int GetFrmMainWidth();
+    void SetFrmMainWidth(int iNewVal);
 
-    long GetFrmMainHeight();
-    void SetFrmMainHeight(long lNewVal);
+    int GetFrmMainHeight();
+    void SetFrmMainHeight(int iNewVal);
 
-    long GetFrmMainTop();
-    void SetFrmMainTop(long lNewVal);
+    int GetFrmMainTop();
+    void SetFrmMainTop(int iNewVal);
 
-    long GetFrmMainLeft();
-    void SetFrmMainLeft(long lNewVal);
+    int GetFrmMainLeft();
+    void SetFrmMainLeft(int iNewVal);
 
     // Tip Of The Day
     bool GetShowTipOfTheDay();
     void SetShowTipOfTheDay(bool bNewVal);
-    long GetNextTipOfTheDay();
-    void SetNextTipOfTheDay(long lNewVal);
+    int GetNextTipOfTheDay();
+    void SetNextTipOfTheDay(int iNewVal);
 
     // Log
     wxString GetLogFile();
     void SetLogFile(wxString& szNewVal);
-    long GetLogLevel();
-    void SetLogLevel(long lNewVal);
+    int GetLogLevel();
+    void SetLogLevel(int iNewVal);
 private:
 
     // The main config object
     wxConfig sysConfig;
 
     // frmMain size/position
-    long lFrmMainWidth;
-    long lFrmMainHeight;
-    long lFrmMainTop;
-    long lFrmMainLeft;
+    int iFrmMainWidth;
+    int iFrmMainHeight;
+    int iFrmMainTop;
+    int iFrmMainLeft;
 
     // Tip Of The Day
     bool bShowTipOfTheDay;
-    long lNextTipOfTheDay;
+    int iNextTipOfTheDay;
 
     // Log
     wxString szLogFile;
-    long lLogLevel;
+    int iLogLevel;
 };
 
 #endif

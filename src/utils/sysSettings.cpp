@@ -30,18 +30,18 @@ sysSettings::sysSettings() : sysConfig(APPNAME_S)
     wxLogDebug(wxT("Creating sSettings object and loading settings"));
 
     // frMain size/position
-    lFrmMainWidth = sysConfig.Read(wxT("frmMain/Width"), 750);
-    lFrmMainHeight = sysConfig.Read(wxT("frmMain/Height"), 550);
-    lFrmMainTop = sysConfig.Read(wxT("frmMain/Top"), 50);
-    lFrmMainLeft = sysConfig.Read(wxT("frmMain/Left"), 50);
+    iFrmMainWidth = sysConfig.Read(wxT("frmMain/Width"), 750);
+    iFrmMainHeight = sysConfig.Read(wxT("frmMain/Height"), 550);
+    iFrmMainTop = sysConfig.Read(wxT("frmMain/Top"), 50);
+    iFrmMainLeft = sysConfig.Read(wxT("frmMain/Left"), 50);
 
     // Tip Of The Day
     sysConfig.Read(wxT("ShowTipOfTheDay"), &bShowTipOfTheDay, TRUE); 
-    sysConfig.Read(wxT("NextTipOfTheDay"), &lNextTipOfTheDay, 0); 
+    sysConfig.Read(wxT("NextTipOfTheDay"), &iNextTipOfTheDay, 0); 
 
     // Log
     sysConfig.Read(wxT("LogFile"), &szLogFile, wxT("pgadmin.log")); 
-    sysConfig.Read(wxT("LogLevel"), &lLogLevel, LOG_INFO); 
+    sysConfig.Read(wxT("LogLevel"), &iLogLevel, LOG_INFO); 
 }
 
 
@@ -49,50 +49,50 @@ sysSettings::~sysSettings()
 {
     wxLogDebug(wxT("Destroying sysSettings object and saving settings"));
     // frMain size/position
-    sysConfig.Write(wxT("frmMain/Width"), lFrmMainWidth);
-    sysConfig.Write(wxT("frmMain/Height"), lFrmMainHeight);
-    sysConfig.Write(wxT("frmMain/Top"), lFrmMainTop);
-    sysConfig.Write(wxT("frmMain/Left"), lFrmMainLeft);
+    sysConfig.Write(wxT("frmMain/Width"), iFrmMainWidth);
+    sysConfig.Write(wxT("frmMain/Height"), iFrmMainHeight);
+    sysConfig.Write(wxT("frmMain/Top"), iFrmMainTop);
+    sysConfig.Write(wxT("frmMain/Left"), iFrmMainLeft);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // frmMain size/position
 //////////////////////////////////////////////////////////////////////////
 
-long sysSettings::GetFrmMainWidth()
+int sysSettings::GetFrmMainWidth()
 {
-    return lFrmMainWidth;
+    return iFrmMainWidth;
 }
-void sysSettings::SetFrmMainWidth(long lNewVal)
+void sysSettings::SetFrmMainWidth(int iNewVal)
 {
-    lFrmMainWidth = lNewVal;
-}
-
-long sysSettings::GetFrmMainHeight()
-{
-    return lFrmMainHeight;
-}
-void sysSettings::SetFrmMainHeight(long lNewVal)
-{
-    lFrmMainHeight = lNewVal;
+    iFrmMainWidth = iNewVal;
 }
 
-long sysSettings::GetFrmMainTop()
+int sysSettings::GetFrmMainHeight()
 {
-    return lFrmMainTop;
+    return iFrmMainHeight;
 }
-void sysSettings::SetFrmMainTop(long lNewVal)
+void sysSettings::SetFrmMainHeight(int iNewVal)
 {
-    lFrmMainTop = lNewVal;
+    iFrmMainHeight = iNewVal;
 }
 
-long sysSettings::GetFrmMainLeft()
+int sysSettings::GetFrmMainTop()
 {
-    return lFrmMainLeft;
+    return iFrmMainTop;
 }
-void sysSettings::SetFrmMainLeft(long lNewVal)
+void sysSettings::SetFrmMainTop(int iNewVal)
 {
-    lFrmMainLeft = lNewVal;
+    iFrmMainTop = iNewVal;
+}
+
+int sysSettings::GetFrmMainLeft()
+{
+    return iFrmMainLeft;
+}
+void sysSettings::SetFrmMainLeft(int iNewVal)
+{
+    iFrmMainLeft = iNewVal;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -109,14 +109,14 @@ void sysSettings::SetShowTipOfTheDay(bool bNewVal)
     sysConfig.Write(wxT("ShowTipOfTheDay"), bShowTipOfTheDay);
 }
 
-long sysSettings::GetNextTipOfTheDay()
+int sysSettings::GetNextTipOfTheDay()
 {
-    return lNextTipOfTheDay;
+    return iNextTipOfTheDay;
 }
-void sysSettings::SetNextTipOfTheDay(long lNewVal)
+void sysSettings::SetNextTipOfTheDay(int iNewVal)
 {
-    lNextTipOfTheDay = lNewVal;
-    sysConfig.Write(wxT("NextTipOfTheDay"), lNextTipOfTheDay);
+    iNextTipOfTheDay = iNewVal;
+    sysConfig.Write(wxT("NextTipOfTheDay"), iNextTipOfTheDay);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -133,12 +133,12 @@ void sysSettings::SetLogFile(wxString& szNewVal)
     sysConfig.Write(wxT("LogFile"), szLogFile);
 }
 
-long sysSettings::GetLogLevel()
+int sysSettings::GetLogLevel()
 {
-    return lLogLevel;
+    return iLogLevel;
 }
-void sysSettings::SetLogLevel(long lNewVal)
+void sysSettings::SetLogLevel(int iNewVal)
 {
-    lLogLevel = lNewVal;
-    sysConfig.Write(wxT("LogLevel"), lLogLevel);
+    iLogLevel = iNewVal;
+    sysConfig.Write(wxT("LogLevel"), iLogLevel);
 }

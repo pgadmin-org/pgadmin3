@@ -30,7 +30,12 @@ pgServer::~pgServer()
     wxLogDebug(wxT("Destroying a pgServer object"));
 }
 
-wxString pgServer::GetType()
+int pgServer::GetType()
+{
+    return PG_SERVER;
+}
+
+wxString pgServer::GetTypeName()
 {
     return wxString("Server");
 }
@@ -50,10 +55,10 @@ int pgServer::Connect() {
     szDatabase = winConnect->GetDatabase();
     szUsername = winConnect->GetUsername();
     szPassword = winConnect->GetPassword();
-    lPort = winConnect->GetPort();
+    iPort = winConnect->GetPort();
 
     wxLogDebug(wxT("Attempting to create a connection object..."));
-    cnMaster = new pgConn(szServer, szDatabase, szUsername, szPassword, lPort);
+    cnMaster = new pgConn(szServer, szDatabase, szUsername, szPassword, iPort);
 
     delete winConnect;
     return cnMaster->GetStatus();
@@ -62,13 +67,12 @@ int pgServer::Connect() {
 wxString pgServer::GetIdentifier()
 {
     wxString szID;
-    szID.Printf(wxT("%s:%d"), szServer, lPort);
+    szID.Printf(wxT("%s:%d"), szServer, iPort);
     return wxString(szID);
 }
 
 wxString pgServer::GetServerVersion()
 {
-    static wxString szVer;
     if (szVer.IsEmpty()) {
       szVer = cnMaster->GetServerVersion();
     }
@@ -111,11 +115,11 @@ void pgServer::SetPassword(wxString& szNewVal)
     szPassword = szNewVal;
 }
 
-unsigned long pgServer::GetPort()
+int pgServer::GetPort()
 {
-    return lPort;
+    return iPort;
 }
-void pgServer::SetPort(long lNewVal)
+void pgServer::SetPort(int iNewVal)
 {
-    lPort = lNewVal;
+    iPort = iNewVal;
 }

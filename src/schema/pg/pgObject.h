@@ -18,25 +18,37 @@
 // App headers
 #include "../../pgAdmin3.h"
 
+// This enum lists the type of objects that may be included in the treeview
+// as objects.
+enum PG_OBJTYPE
+{
+    PG_NONE,
+    PG_SERVERS,
+    PG_SERVER,
+    PG_ADD_SERVER
+};
+
 // Class declarations
 class pgObject : public wxTreeItemData
 {
 public:
-    pgObject();
+    pgObject(int iNewType = 0, wxString& szNewName = wxString(""));
     ~pgObject();
-    virtual wxString GetType();
+    virtual int GetType();
+    virtual wxString GetTypeName();
     virtual wxString GetIdentifier();
     virtual wxString GetName();
     virtual wxString GetServer();
     virtual wxString GetDatabase();
     virtual wxString GetNamespace();
     virtual wxString GetTable();
-    virtual unsigned long GetPort();
+    virtual int GetPort();
     virtual unsigned long GetOid();
 
 private:
-    wxString szIdentifier, szName, szServer, szDatabase, szNamespace, szTable;
-    unsigned long lPort, lOid;
+    wxString szTypeName, szIdentifier, szName, szServer, szDatabase, szNamespace, szTable;
+    int iType, iPort;
+    unsigned long lOid;
 };
 
 #endif

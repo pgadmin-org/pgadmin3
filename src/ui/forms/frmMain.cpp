@@ -84,6 +84,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER, frmMain::OnSelChanged)
+    EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER, frmMain::OnSelActivated)
 END_EVENT_TABLE()
 
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -214,7 +215,11 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     ilBrowser->Add(wxIcon(closeddatabase_xpm));
 
     // Add the root node
-    itmServers = tvBrowser->AddRoot(wxT("Servers"),0);
+    pgObject *objServers = new pgObject(PG_SERVERS, wxString("Servers"));
+    itmServers = tvBrowser->AddRoot(wxT("Servers"), 0, -1, objServers);
+    pgObject *objAddServer = new pgObject(PG_ADD_SERVER, wxString("Add Server"));
+    wxTreeItemId itmAddServer = tvBrowser->AppendItem(itmServers, wxT("Add Server..."), 0, -1, objAddServer);
+    tvBrowser->Expand(itmServers);
 
     //Setup a listview imagemap
     wxImageList *ilProperties = new wxImageList(16, 16);
@@ -294,17 +299,23 @@ void frmMain::OnOptions(wxCommandEvent& event)
 
 void frmMain::OnAddServer(wxCommandEvent& event)
 {
+    // Create a server object and connec it.
     pgServer *objServer = new pgServer(this);
     int iRes = objServer->Connect();
+
+    // Check the result, and handle it as appropriate
     if (iRes == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
         wxTreeItemId itmServer = tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 0, -1, objServer);
         tvBrowser->Expand(itmServers);
+
     } else if (iRes == PGCONN_BAD)  {
         wxString szMsg;
         szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->cnMaster->GetLastError());
         wxLogError(wxT(szMsg));
         delete objServer;
+        OnAddServer(event);
+
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
         delete objServer;
@@ -316,24 +327,74 @@ void frmMain::OnSelChanged(wxTreeEvent& event)
     lvProperties->DeleteAllItems();
     lvStatistics->DeleteAllItems();
 
-    // If this is the root node, exit.
+    // Get the item data, and feed it to the relevant handler,
+    // cast as required.
     wxTreeItemId itmX = event.GetItem();
-    if (tvBrowser->GetItemText(itmX) == wxT("Servers")) {
-        return;
-    }
-
-    // Get the item data (the database object).
     pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
-    wxString szType(itmData->GetType());
+    int iType(itmData->GetType());
 
-    if (szType == wxT("Server")) {
-        tvServer((pgServer *)itmData);
+    switch (iType) {
+        case PG_SERVER:
+            tvServer((pgServer *)itmData);
+            break;
+
+        default:
+            break;
     }
+}
+
+void frmMain::OnSelActivated(wxTreeEvent& event)
+{
+    // This handler will primarily deal with displaying item
+    // properties in seperate windows and 'Add xxx...' clicks
+
+    // Get the item data, and feed it to the relevant handler,
+    // cast as required.
+    wxTreeItemId itmX = event.GetItem();
+    pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
+    int iType(itmData->GetType());
+
+    switch (iType) {
+        case PG_ADD_SERVER:
+            OnAddServer((wxCommandEvent) NULL);
+            break;
+
+        default:
+            break;
+    }
+}
+
+void frmMain::StoreServers()
+{
+    wxLogDebug(wxT("Storing listed servers for later..."));
+
+    // Store the currently listed servers for later retrieval.
+#ifdef __WXMSW__
+    wxConfig *sysConfig = new wxConfig(APPNAME_L);
+#else 
+    wxConfig *sysConfig = new wxConfig(APPNAME_S);
+#endif
+
+    // Write the server count
+    int iServers = tvBrowser->GetChildrenCount(itmServers, FALSE) - 1;
+    sysConfig->Write(wxT("Servers/Count"), iServers);
+
+    // Write the individual servers
+
+
+}
+
+void frmMain::RetrieveServers()
+{
+    // Retrieve previously stored servers
 
 }
 
 void frmMain::tvServer(pgServer *objServer)
 {
+    // This handler will primarily deal with displaying item
+    // properties in the main window.
+
     // Display the Server properties
     // This is the bit that puts it all on one line over 2 colums
     lvProperties->InsertItem(0, wxT("Hostname"), 0);

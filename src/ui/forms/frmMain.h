@@ -46,7 +46,10 @@ private:
     void OnUpgradeWizard(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);
     void OnSelChanged(wxTreeEvent& event);
+    void OnSelActivated(wxTreeEvent& event);
     void tvServer(pgServer *objServer);
+    void StoreServers();
+    void RetrieveServers();
     DECLARE_EVENT_TABLE()
 };
 

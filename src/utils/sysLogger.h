@@ -17,6 +17,14 @@
 // App headers
 #include "../pgAdmin3.h"
 
+enum LOG_LEVEL
+{
+    LOG_NONE = 0,
+    LOG_ERRORS = 1,
+    LOG_INFO = 2,
+    LOG_DEBUG = 3
+};
+
 // Class declarations
 class sysLogger : public wxLog
 {
@@ -25,14 +33,6 @@ public:
 
 private:
     void WriteLog(wxString& szMsg);
-};
-
-enum
-{
-    LOG_NONE = 0,
-    LOG_ERRORS = 1,
-    LOG_INFO = 2,
-    LOG_DEBUG = 3
 };
 
 #endif
