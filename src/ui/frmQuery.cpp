@@ -146,6 +146,8 @@ frmQuery::~frmQuery()
     settings->Write(wxT("frmQuery/Left"), GetPosition().x);
     settings->Write(wxT("frmQuery/Top"), GetPosition().y);
     settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
+    if (conn)
+        delete conn;
 }
 
 
@@ -297,6 +299,7 @@ void frmQuery::OnExplain(wxCommandEvent& event)
     if (query.IsNull())
         return;
     execQuery(wxT("EXPLAIN ") + query, true, 8);
+    sqlQuery->SetFocus();
 }
 
 
@@ -309,6 +312,7 @@ void frmQuery::OnExecute(wxCommandEvent& event)
     if (query.IsNull())
         return;
     execQuery(query);
+    sqlQuery->SetFocus();
 }
 
 void frmQuery::setTools(const bool running)
