@@ -33,14 +33,14 @@ bool pgRule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
     return GetDatabase()->ExecuteVoid(wxT("DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";"));
 }
 
+
 wxString pgRule::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-
         sql = wxT("-- Rule: \"") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT("\"\n\n")
             + wxT("-- DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";\n\n")
-            + GetFormattedDefinition()
+            + wxT("CREATE OR REPLACE") + GetFormattedDefinition().Mid(6) // the backend pg_get_ruledef gives CREATE only
             + wxT("\n");
         if (!GetComment().IsEmpty())
             sql += wxT("COMMENT ON RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
@@ -48,7 +48,6 @@ wxString pgRule::GetSql(wxTreeCtrl *browser)
     }
     return sql;
 }
-
 
 
 void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
