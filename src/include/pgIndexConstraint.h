@@ -37,7 +37,7 @@ public:
 
     bool CanCreate() { return false; }
     int GetIcon() { return PGICON_PRIMARYKEY; }
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where=wxT(""));
 };
 
 class pgUnique : public pgIndexConstraint
@@ -47,7 +47,7 @@ public:
         : pgIndexConstraint(newSchema, newName, PG_UNIQUE) {}
 
     int GetIcon() { return PGICON_UNIQUE; }
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where=wxT(""));
 };
 
 

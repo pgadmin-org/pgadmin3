@@ -144,21 +144,18 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         if (browser->GetChildrenCount(GetId(), FALSE) == 0)
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
+            pgCollection *collection;
 
             // Casts
-            pgCollection *collection = new pgCollection(PG_CASTS);
-            collection->SetDatabase(this);
+            collection = new pgCollection(PG_CASTS, this);
             AppendBrowserItem(browser, collection);
 
             // Languages
-            collection = new pgCollection(PG_LANGUAGES);
-            collection->SetDatabase(this);
+            collection = new pgCollection(PG_LANGUAGES, this);
             AppendBrowserItem(browser, collection);
 
             // Schemas
-            collection = new pgCollection(PG_SCHEMAS);
-            collection->SetServer(GetServer());
-            collection->SetDatabase(this);
+            collection = new pgCollection(PG_SCHEMAS, this);
             AppendBrowserItem(browser, collection);
         }
     }

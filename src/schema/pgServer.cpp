@@ -227,18 +227,15 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
             wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
     
             // Databases
-            pgCollection *collection = new pgCollection(PG_DATABASES);
-            collection->SetServer(this);
+            pgCollection *collection = new pgCollection(PG_DATABASES, this);
             AppendBrowserItem(browser, collection);
       
             // Groups
-            collection = new pgCollection(PG_GROUPS);
-            collection->SetServer(this);
+            collection = new pgCollection(PG_GROUPS, this);
             AppendBrowserItem(browser, collection);
     
             // Users
-            collection = new pgCollection(PG_USERS);
-            collection->SetServer(this);
+            collection = new pgCollection(PG_USERS, this);
             AppendBrowserItem(browser, collection);
         }
     }

@@ -104,13 +104,13 @@ void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxLis
 
 
 
-pgObject *pgPrimaryKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
+pgObject *pgPrimaryKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where)
 {
-    return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='p'\n"));
+    return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='p'\n") + where);
 }
 
 
-pgObject *pgUnique::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
+pgObject *pgUnique::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where)
 {
-    return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='u'\n"));
+    return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='u'\n") + where);
 }

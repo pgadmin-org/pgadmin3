@@ -54,8 +54,7 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         expandedKids = true;
 
         pgCollection *collection;
-        collection = new pgCollection(PG_RULES);
-        collection->SetInfo(GetSchema());
+        collection = new pgCollection(PG_RULES, GetSchema());
         collection->iSetOid(GetOid());
         AppendBrowserItem(browser, collection);
     }

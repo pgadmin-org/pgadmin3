@@ -155,6 +155,12 @@ wxString GetListText(wxListCtrl *lst, long row, long col)
 }
 
 
+long GetListSelected(wxListCtrl *lst)
+{
+    return lst->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+}
+
+
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0, const int h0)
 {
     int scrW=wxSystemSettings::GetMetric(wxSYS_SCREEN_X);

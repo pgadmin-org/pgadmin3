@@ -53,7 +53,7 @@ void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &wh
 // easier getting of text
 class wxListCtrl;
 wxString GetListText(wxListCtrl *lst, long row, long col);
-
+long GetListSelected(wxListCtrl *lst);
 
 // splitting of strings, obeying quotes
 class queryTokenizer : public wxStringTokenizer

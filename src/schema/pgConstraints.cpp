@@ -20,8 +20,8 @@
 
 
 
-pgConstraints::pgConstraints()
-: pgCollection(PG_CONSTRAINTS)
+pgConstraints::pgConstraints(pgSchema *sch)
+: pgCollection(PG_CONSTRAINTS, sch)
 { 
     wxLogInfo(wxT("Creating a pgConstraint object")); 
 }

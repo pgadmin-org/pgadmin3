@@ -36,11 +36,36 @@
 
 extern char *typeNameList[]; 
 
-pgCollection::pgCollection(int newType)
+
+pgCollection::pgCollection(int newType, pgServer *sv)
 : pgObject(newType, typeNameList[newType])
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
+    schema=0;
+    database=0;
+    server= sv;
 }
+
+
+pgCollection::pgCollection(int newType, pgDatabase *db)
+: pgObject(newType, typeNameList[newType])
+{ 
+    wxLogInfo(wxT("Creating a pgCollection object")); 
+    schema=0;
+    database=db;
+    server= database->GetServer();
+}
+
+
+pgCollection::pgCollection(int newType, pgSchema *sch)
+: pgObject(newType, typeNameList[newType])
+{ 
+    wxLogInfo(wxT("Creating a pgCollection object")); 
+    schema = sch;
+    database = sch->GetDatabase();
+    server= database->GetServer();
+}
+
 
 pgCollection::~pgCollection()
 {

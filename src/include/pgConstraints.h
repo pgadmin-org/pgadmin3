@@ -17,7 +17,7 @@
 class pgConstraints : public pgCollection
 {
 public:
-    pgConstraints();
+    pgConstraints(pgSchema *sch);
     ~pgConstraints();
     int GetIcon() { return PGICON_CONSTRAINT; }
     bool IsCollectionForType(int objType);

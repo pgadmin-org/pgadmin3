@@ -318,32 +318,27 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         pgCollection *collection;
 
         // Columns
-        collection = new pgCollection(PG_COLUMNS);
-        collection->SetInfo(GetSchema());
+        collection = new pgCollection(PG_COLUMNS, GetSchema());
         collection->iSetOid(GetOid());
         AppendBrowserItem(browser, collection);
 
         // Constraints
-        collection = new pgConstraints();
-        collection->SetInfo(GetSchema());
+        collection = new pgConstraints(GetSchema());
         collection->iSetOid(GetOid());
         AppendBrowserItem(browser, collection);
 
         // Indexes
-        collection = new pgCollection(PG_INDEXES);
-        collection->SetInfo(GetSchema());
+        collection = new pgCollection(PG_INDEXES, GetSchema());
         collection->iSetOid(GetOid());
         AppendBrowserItem(browser, collection);
 
         // Rules
-        collection = new pgCollection(PG_RULES);
-        collection->SetInfo(GetSchema());
+        collection = new pgCollection(PG_RULES, GetSchema());
         collection->iSetOid(GetOid());
         AppendBrowserItem(browser, collection);
 
         // Triggers
-        collection = new pgCollection(PG_TRIGGERS);
-        collection->SetInfo(GetSchema());
+        collection = new pgCollection(PG_TRIGGERS, GetSchema());
         collection->iSetOid(GetOid());
         AppendBrowserItem(browser, collection);
 

@@ -17,31 +17,25 @@
 // App headers
 #include "pgAdmin3.h"
 #include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
 #include "pgSchema.h"
+
+class pgServer;
+class pgDatabase;
 
 // Class declarations
 class pgCollection : public pgObject
 {
 public:
-    pgCollection(int newType = PG_NONE);
+    pgCollection(int newType, pgServer *sv);
+    pgCollection(int newType, pgDatabase *db);
+    pgCollection(int newType, pgSchema *sch);
     ~pgCollection();
     virtual bool IsCollection() const { return true; }
     virtual bool IsCollectionForType(int objType) { return GetType() == objType-1; }
 
     pgServer *GetServer() const { return server; }
-    void SetServer(pgServer *newServer) { server = newServer; }
     pgDatabase *GetDatabase() const { return database; }
-    void SetDatabase(pgDatabase *newDatabase) { database = newDatabase; }
     pgSchema *GetSchema() const { return schema; }
-    void SetSchema(pgSchema *newSchema) { schema = newSchema; }
-    void SetInfo(pgServer *newServer, pgDatabase *newDatabase, pgSchema *newSchema)
-        { server = newServer; database = newDatabase; schema = newSchema; }
-    void SetInfo(pgCollection *collection) 
-        { SetInfo(collection->GetServer(), collection->GetDatabase(), collection->GetSchema()); }
-    void SetInfo(pgSchema *schema)
-        { SetInfo(schema->GetDatabase()->GetServer(), schema->GetDatabase(), schema); }
 
     int GetIcon();
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
@@ -60,7 +54,7 @@ private:
 class pgServers: public pgCollection
 {
 public:
-    pgServers() : pgCollection(PG_SERVERS) {}
+    pgServers() : pgCollection(PG_SERVERS, (pgServer*)0) {}
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0) {};
 };
 

@@ -68,57 +68,46 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         pgCollection *collection;
 
         // Aggregates
-        collection = new pgCollection(PG_AGGREGATES);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_AGGREGATES, this);
         AppendBrowserItem(browser, collection);
 
         // Conversions
-        collection = new pgCollection(PG_CONVERSIONS);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_CONVERSIONS, this);
         AppendBrowserItem(browser, collection);
 
         // Domains
-        collection = new pgCollection(PG_DOMAINS);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_DOMAINS, this);
         AppendBrowserItem(browser, collection);
 
         // Functions
-        collection = new pgCollection(PG_FUNCTIONS);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_FUNCTIONS, this);
         AppendBrowserItem(browser, collection);
 
-        collection = new pgCollection(PG_TRIGGERFUNCTIONS);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_TRIGGERFUNCTIONS, this);
         AppendBrowserItem(browser, collection);
 
         // Operators
-        collection = new pgCollection(PG_OPERATORS);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_OPERATORS, this);
         AppendBrowserItem(browser, collection);
 
         // Operator Classes
-        collection = new pgCollection(PG_OPERATORCLASSES);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_OPERATORCLASSES, this);
         AppendBrowserItem(browser, collection);
 
         // Sequences
-        collection = new pgCollection(PG_SEQUENCES);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_SEQUENCES, this);
         AppendBrowserItem(browser, collection);
 
         // Tables
-        collection = new pgCollection(PG_TABLES);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_TABLES, this);
         AppendBrowserItem(browser, collection);
 
         // Types
-        collection = new pgCollection(PG_TYPES);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_TYPES, this);
         AppendBrowserItem(browser, collection);
 
         // Views
-        collection = new pgCollection(PG_VIEWS);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        collection = new pgCollection(PG_VIEWS, this);
         AppendBrowserItem(browser, collection);
     }
 

@@ -117,6 +117,8 @@ void pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
     else
         label = object->GetFullName();
     browser->AppendItem(GetId(), label, object->GetIcon(), -1, object);
+    if (object->IsCollection())
+        object->ShowTreeDetail(browser);
 }
 
 
