@@ -43,6 +43,7 @@ public:
 
     Oid ColTypeOid(int col) const;
     wxString ColType(int col) const;
+    Oid GetInsertedOid() const { return PQoidValue(res); }
     int ColSize(int col) const { return PQfsize(res, col); }
     int ColScale(int col) const;
     wxString GetVal(int col) const { return wxString(PQgetvalue(res, pos -1, col)); }

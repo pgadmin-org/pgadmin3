@@ -40,7 +40,8 @@ pgSet::pgSet(PGresult *newRes, PGconn *newConn)
     // Make sure we have tuples
     if (PQresultStatus(res) != PGRES_TUPLES_OK)
     {
-        wxLogError(wxT("%s"), PQerrorMessage(conn));
+        if (PQresultStatus(res) != PGRES_COMMAND_OK)
+            wxLogError(wxT("%s"), PQerrorMessage(conn));
 
         nRows = 0;
         pos = 0;

@@ -41,12 +41,12 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
 
     mainForm=form;
     connection=conn;
+    backend_pid=conn->GetBackendPID();
+
     statusList->InsertColumn(0, wxT("PID"), wxLIST_FORMAT_LEFT, 55);
     statusList->InsertColumn(1, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
     statusList->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
     statusList->InsertColumn(3, wxT("Query"), wxLIST_FORMAT_LEFT, 850);
-
-    backend_pid=StrToLong(conn->ExecuteScalar(wxT("SELECT pg_catalog.pg_backend_pid()")));
 
     timer=new wxTimer(this, TIMER_ID);
     timer->Start(1000);
