@@ -42,12 +42,7 @@ cp ./pkg/redhat/%{name}.desktop        %{buildroot}/%{_datadir}/%{name}/%{name}.
 
 mkdir -p %{buildroot}/%{_datadir}/applications
 
-#desktop-file-install --vendor %{desktop_vendor} --delete-original \
-#  --dir %{buildroot}%{_datadir}/applications                      \
-#  --add-category X-Red-Hat-Base                                   \
-#  --add-category Application                                      \
-#  --add-category Development                                         \
-#  %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
+desktop-file-install --vendor %{desktop_vendor} --delete-original  --dir %{buildroot}/%{_datadir}/applications --add-category X-Red-Hat-Base --add-category Application --add-category Development %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
 
 %clean
 rm -rf %{buildroot}
