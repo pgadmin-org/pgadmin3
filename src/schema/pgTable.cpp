@@ -28,7 +28,7 @@ pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, PG_TABLE, newName)
 {
     inheritedTableCount=0;
-    rows=-1;
+    rowsCounted = false;
 }
 
 pgTable::~pgTable()
@@ -212,8 +212,9 @@ void pgTable::UpdateRows()
     pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ") + GetQuotedFullIdentifier());
     if (props)
     {
-        rows = StrToLong(props->GetVal(0));
+        rows = props->GetLongLong(0);
         delete props;
+        rowsCounted = true;
     }
 }
 
@@ -335,10 +336,10 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
         InsertListItem(properties, pos++, _("Rows (estimated)"), GetEstimatedRows());
 
-        if (rows < 0)
-            InsertListItem(properties, pos++, _("Rows (counted)"), _("Refresh to count rows"));
-        else
+        if (rowsCounted)
             InsertListItem(properties, pos++, _("Rows (counted)"), rows);
+        else
+            InsertListItem(properties, pos++, _("Rows (counted)"), _("Refresh to count rows"));
 
         InsertListItem(properties, pos++, _("Inherits tables"), GetHasSubclass());
         InsertListItem(properties, pos++, _("Inherited tables count"), GetInheritedTableCount());
@@ -383,7 +384,7 @@ pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
         if (obj->GetType() == PG_TABLES)
         {
             table = (pgTable*)ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
-            if (table && table->GetRows() < 0)
+            if (table && table->GetRows() == 0)
                 table->UpdateRows();
         }
     }
@@ -417,7 +418,7 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             table->iSetAcl(tables->GetVal(wxT("relacl")));
             table->iSetComment(tables->GetVal(wxT("description")));
             table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
-            table->iSetEstimatedRows(tables->GetLong(wxT("reltuples")));
+            table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
             table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
             table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));
             wxString cn=tables->GetVal(wxT("conkey"));

@@ -153,6 +153,10 @@ protected:
         { InsertListItem(list, pos, str1, NumToStr(o)); }
     void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxDateTime &d)
         { InsertListItem(list, pos, str1, DateToStr(d)); }
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxLongLong &l)
+        { InsertListItem(list, pos, str1, l.ToString()); }
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxULongLong &l)
+        { InsertListItem(list, pos, str1, l.ToString()); }
 
     void AppendMenu(wxMenu *menu, int type=-1);
     virtual void SetContextInfo(frmMain *form) {}

@@ -44,9 +44,9 @@ public:
     void iSetPrimaryKeyColNumbers(const wxString& s) {primaryKeyColNumbers = s; }
     wxString GetPrimaryKeyName() const { return primaryKeyName; }
     void iSetPrimaryKeyName(const wxString& s) {primaryKeyName = s; }
-    long GetEstimatedRows() const { return estimatedRows; }
-    void iSetEstimatedRows(const long l) { estimatedRows=l; }
-    long GetRows() const { return rows; }
+    double GetEstimatedRows() const { return estimatedRows; }
+    void iSetEstimatedRows(const double d) { estimatedRows=d; }
+    wxULongLong GetRows() const { return rows; }
     long GetInheritedTableCount() { if (inheritedTableCount < 0) UpdateInheritance(); return inheritedTableCount; }
     wxString GetInheritedTables() { GetInheritedTableCount(); return inheritedTables; }
     wxString GetQuotedInheritedTables() { GetInheritedTableCount(); return quotedInheritedTables; }
@@ -67,8 +67,9 @@ public:
 private:
     void UpdateInheritance();
 
-    long rows, estimatedRows;
-    bool hasOids, hasSubclass;
+    wxULongLong rows;
+    double estimatedRows;
+    bool hasOids, hasSubclass, rowsCounted;
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
         primaryKeyName, primaryKeyColNumbers;

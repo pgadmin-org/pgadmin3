@@ -202,11 +202,7 @@ wxDateTime pgSet::GetDateTime(const wxString &col) const
 
 double pgSet::GetDouble(const int col) const
 {
-    char *c=PQgetvalue(res, pos-1, col);
-    if (c)
-        return strtod(c, 0);
-    else
-        return 0;
+    return StrToDouble(GetVal(col));
 }
 
 
