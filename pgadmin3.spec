@@ -26,7 +26,7 @@ Requires: gtk2 >= 2.2, glibc >= 2.3.2, libjpeg >= 6b, libpng >= 1.2.2, pango >= 
 # Also, compile the following contributions in wxWindows contrib/src
 # stc (Styled Text Control), xrc (xml dialogs description)
 #
-BuildRequires: autoconf >= 2.57, automake >= 1.7.5, gtk2-devel >= 2.2, postgresql >= 7.3.2, openssl-devel >= 0.9.7
+BuildRequires: autoconf >= 2.57, automake >= 1.7.2, gtk2-devel >= 2.2, postgresql >= 7.3.2, openssl-devel >= 0.9.6
 
 %description
 pgAdmin3 is the graphical administration interface of PostgreSQL.
