@@ -33,7 +33,7 @@
 </dl></dd>
 </dl>
 </div>
-<a name="id2572080"></a><p>   Query performance can be affected by many things. Some of these can 
+<a name="id2572331"></a><p>   Query performance can be affected by many things. Some of these can 
    be manipulated by the user, while others are fundamental to the underlying
    design of the system.  This chapter provides some hints about understanding
    and tuning <span class="productname">PostgreSQL</span> performance.
@@ -44,7 +44,7 @@
 <a name="using-explain"></a>13.1. Using <tt class="command">EXPLAIN</tt></h2></div></div>
 <div></div>
 </div>
-<a name="id2572115"></a><a name="id2572124"></a><p>    <span class="productname">PostgreSQL</span> devises a <i class="firstterm">query
+<a name="id2572365"></a><a name="id2572375"></a><p>    <span class="productname">PostgreSQL</span> devises a <i class="firstterm">query
     plan</i> for each query it is given.  Choosing the right
     plan to match the query structure and the properties of the data
     is absolutely critical for good performance.  You can use the
@@ -290,16 +290,19 @@ EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 50 AND t1.unique2
     the &#8220;<span class="quote">loops</span>&#8221; value to get the total time actually spent in
     the node.
    </p>
-<p>    The <tt class="literal">Total runtime</tt> shown by <tt class="command">EXPLAIN ANALYZE</tt> includes
-    executor start-up and shut-down time, as well as time spent processing
-    the result rows.  It does not include parsing, rewriting, or planning
-    time.  For a <tt class="command">SELECT</tt> query, the total run time will normally be just a
-    little larger than the total time reported for the top-level plan node.
-    For <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and <tt class="command">DELETE</tt> commands, the total run time may be
-    considerably larger, because it includes the time spent processing the
-    result rows.  In these commands, the time for the top plan node
-    essentially is the time spent computing the new rows and/or locating
-    the old ones, but it doesn't include the time spent making the changes.
+<p>    The <tt class="literal">Total runtime</tt> shown by <tt class="command">EXPLAIN
+    ANALYZE</tt> includes executor start-up and shut-down time, as well
+    as time spent processing the result rows.  It does not include parsing,
+    rewriting, or planning time.  For a <tt class="command">SELECT</tt> query, the total
+    run time will normally be just a little larger than the total time
+    reported for the top-level plan node.  For <tt class="command">INSERT</tt>,
+    <tt class="command">UPDATE</tt>, and <tt class="command">DELETE</tt> commands, the total run time
+    may be considerably larger, because it includes the time spent processing
+    the result rows.  In these commands, the time for the top plan node
+    essentially is the time spent computing the new rows and/or locating the
+    old ones, but it doesn't include the time spent making the changes.
+    Time spent firing triggers, if any, is also outside the top plan node,
+    and is shown separately for each trigger.
    </p>
 <p>    It is worth noting that <tt class="command">EXPLAIN</tt> results should not be extrapolated
     to situations other than the one you are actually testing; for example,

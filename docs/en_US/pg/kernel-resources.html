@@ -28,7 +28,7 @@
 <a name="sysvipc"></a>16.5.1. Shared Memory and Semaphores</h3></div></div>
 <div></div>
 </div>
-<a name="id2589730"></a><a name="id2589739"></a><p>    Shared memory and semaphores are collectively referred to as
+<a name="id2590083"></a><a name="id2590092"></a><p>    Shared memory and semaphores are collectively referred to as
     &#8220;<span class="quote"><span class="systemitem">System V</span>
     <span class="acronym">IPC</span></span>&#8221; (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
@@ -123,7 +123,7 @@
 </tbody>
 </table>
 </div>
-<p>    <a name="id2590018"></a> The most important
+<p>    <a name="id2590371"></a> The most important
     shared memory parameter is <tt class="varname">SHMMAX</tt>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <tt class="function">shmget</tt> like <span class="errorname">Invalid argument</span>, it is
@@ -228,8 +228,44 @@ options "SEMMNS=240"</pre>
 <p>
         </p>
 </dd>
+<dt><span class="term"><span class="systemitem">FreeBSD</span></span></dt>
+<dd>
+<p>        The default settings are only suitable for small installations
+        (for example, default <tt class="varname">SHMMAX</tt> is 32
+        MB). Changes can be made via the <tt class="command">sysctl</tt> or
+        <tt class="command">loader</tt> interfaces.  The following
+        parameters can be set using <tt class="command">sysctl</tt>:
+</p>
+<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>sysctl -w kern.ipc.shmall=32768</tt></b>
+<tt class="prompt">$</tt> <b class="userinput"><tt>sysctl -w kern.ipc.shmmax=134217728</tt></b>
+<tt class="prompt">$</tt> <b class="userinput"><tt>sysctl -w kern.ipc.semmap=256</tt></b></pre>
+<p>
+        To have these settings persist over reboots, modify
+        <tt class="filename">/etc/sysctl.conf</tt>.
+       </p>
+<p>        The remaining sempahore settings are read-only as far as
+        <tt class="command">sysctl</tt> is concerned, but can be changed
+        before boot using the <tt class="command">loader</tt> prompt:
+</p>
+<pre class="screen"><tt class="prompt">(loader)</tt> <b class="userinput"><tt>set kern.ipc.semmni=256</tt></b>
+<tt class="prompt">(loader)</tt> <b class="userinput"><tt>set kern.ipc.semmns=512</tt></b>
+<tt class="prompt">(loader)</tt> <b class="userinput"><tt>set kern.ipc.semmnu=256</tt></b></pre>
+<p>
+        Similarly these can be saved between reboots in
+        <tt class="filename">/boot/loader.conf</tt>.
+       </p>
+<p>        You might also want to configure your kernel to lock shared
+        memory into RAM and prevent it from being paged out to swap.
+        This can be accomplished using the <tt class="command">sysctl</tt>
+        setting <tt class="literal">kern.ipc.shm_use_phys</tt>.
+       </p>
+<p>        <span class="systemitem">FreeBSD</span> versions before 4.0 work like 
+        <span class="systemitem">NetBSD</span> and <span class="systemitem">        OpenBSD</span> (see below), except that the configuration file uses the 
+        keyword "options" instead of "option".
+       </p>
+</dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><span xmlns="" class="systemitem">FreeBSD</span></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><span xmlns="" class="systemitem">NetBSD</span></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><span class="systemitem">OpenBSD</span></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><span xmlns="" class="systemitem">NetBSD</span></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><span class="systemitem">OpenBSD</span></span>
 </dt>
 <dd>
 <p>        The options <tt class="varname">SYSVSHM</tt> and <tt class="varname">SYSVSEM</tt> need
@@ -238,23 +274,21 @@ options "SEMMNS=240"</pre>
         the option <tt class="varname">SHMMAXPGS</tt> (in pages). The following
         shows an example of how to set the various parameters:
 </p>
-<pre class="programlisting">options         SYSVSHM
-options         SHMMAXPGS=4096
-options         SHMSEG=256
+<pre class="programlisting">option         SYSVSHM
+option         SHMMAXPGS=4096
+option         SHMSEG=256
 
-options         SYSVSEM
-options         SEMMNI=256
-options         SEMMNS=512
-options         SEMMNU=256
-options         SEMMAP=256</pre>
+option         SYSVSEM
+option         SEMMNI=256
+option         SEMMNS=512
+option         SEMMNU=256
+option         SEMMAP=256</pre>
 <p>
-        (On <span class="systemitem">NetBSD</span> and <span class="systemitem">OpenBSD</span> the key word is actually
-        <tt class="literal">option</tt> singular.)
        </p>
 <p>        You might also want to configure your kernel to lock shared
         memory into RAM and prevent it from being paged out to swap.
-        Use the <tt class="command">sysctl</tt> setting
-        <tt class="literal">kern.ipc.shm_use_phys</tt>.
+        This can be accomplished using the <tt class="command">sysctl</tt>
+        setting <tt class="literal">kern.ipc.shm_use_phys</tt>.
        </p>
 </dd>
 <dt><span class="term"><span class="systemitem">HP-UX</span></span></dt>
@@ -273,33 +307,27 @@ options         SEMMAP=256</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">Linux</span></span></dt>
 <dd>
-<p>        The default shared memory limit (both
-        <tt class="varname">SHMMAX</tt> and <tt class="varname">SHMALL</tt>) is 32
-        MB in 2.2 kernels, but it can be changed in the
-        <tt class="filename">proc</tt> file system (without reboot).  For
-        example, to allow 128 MB:
+<p>        The default settings are only suitable for small installations 
+        (the default max segment size is 32 MB). However the remaining
+        defaults are quite generously sized, and usually do not require
+        changes. The max segment size can be changed via the 
+        <tt class="command">sysctl</tt> interface. For example, to allow 128 MB, 
+        and explicitly set the maximum total shared memory size to 2097152 
+        pages (the default):
 </p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>echo 134217728 &gt;/proc/sys/kernel/shmall</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>echo 134217728 &gt;/proc/sys/kernel/shmmax</tt></b></pre>
+<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>sysctl -w kernel.shmmax=134217728</tt></b>
+<tt class="prompt">$</tt> <b class="userinput"><tt>sysctl -w kernel.shmall=2097152</tt></b></pre>
 <p>
-        You could put these commands into a script run at boot-time.
+        In addition these settings can be saved between reboots in 
+        <tt class="filename">/etc/sysctl.conf</tt>.
        </p>
-<p>        Alternatively, you can use <tt class="command">sysctl</tt>, if
-        available, to control these parameters.  Look for a file
-        called <tt class="filename">/etc/sysctl.conf</tt> and add lines
-        like the following to it:
+<p>        Older distributions may not have the <tt class="command">sysctl</tt> program,
+        but equivalent changes can be made by manipulating the 
+        <tt class="filename">/proc</tt> filesystem:
 </p>
-<pre class="programlisting">kernel.shmall = 134217728
-kernel.shmmax = 134217728</pre>
+<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>echo 134217728 &gt;/proc/sys/kernel/shmmax</tt></b>
+<tt class="prompt">$</tt> <b class="userinput"><tt>echo 2097152 &gt;/proc/sys/kernel/shmall</tt></b></pre>
 <p>
-        This file is usually processed at boot time, but
-        <tt class="command">sysctl</tt> can also be called
-        explicitly later.
-       </p>
-<p>        Other parameters are sufficiently sized for any application. If
-        you want to see for yourself look in
-        <tt class="filename">/usr/src/linux/include/asm-<i class="replaceable"><tt>xxx</tt></i>/shmparam.h</tt>
-        and <tt class="filename">/usr/src/linux/include/linux/sem.h</tt>.
        </p>
 </dd>
 <dt><span class="term"><span class="systemitem">MacOS X</span></span></dt>
@@ -413,7 +441,7 @@ set semsys:seminfo_semmsl=32</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2590995"></a>16.5.2. Resource Limits</h3></div></div>
+<a name="id2591503"></a>16.5.2. Resource Limits</h3></div></div>
 <div></div>
 </div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
@@ -484,7 +512,7 @@ set semsys:seminfo_semmsl=32</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2591176"></a>16.5.3. Linux Memory Overcommit</h3></div></div>
+<a name="id2591684"></a>16.5.3. Linux Memory Overcommit</h3></div></div>
 <div></div>
 </div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not

@@ -16,7 +16,7 @@
 <a name="functions-formatting"></a>9.8. Data Type Formatting Functions</h2></div></div>
 <div></div>
 </div>
-<a name="id2552967"></a><a name="id2552976"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
+<a name="id2553035"></a><a name="id2553045"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
     provide a powerful set of tools for converting various data types
     (date/time, integer, floating point, numeric) to formatted strings
     and for converting from formatted strings to specific data types.
@@ -415,6 +415,13 @@
        separator after the year, like
        <tt class="literal">to_date('20000-1131', 'YYYY-MMDD')</tt> or
        <tt class="literal">to_date('20000Nov31', 'YYYYMonDD')</tt>.
+      </p></li>
+<li><p>       In conversions from string to <tt class="type">timestamp</tt> or
+       <tt class="type">date</tt>, the <tt class="literal">CC</tt> field is ignored if there
+       is a <tt class="literal">YYY</tt>, <tt class="literal">YYYY</tt> or
+       <tt class="literal">Y,YYY</tt> field. If <tt class="literal">CC</tt> is used with
+       <tt class="literal">YY</tt> or <tt class="literal">Y</tt> then the year is computed
+       as <tt class="literal">(CC-1)*100+YY</tt>.
       </p></li>
 <li>
 <p>       Millisecond (<tt class="literal">MS</tt>) and microsecond (<tt class="literal">US</tt>)

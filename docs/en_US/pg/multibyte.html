@@ -16,11 +16,11 @@
 <a name="multibyte"></a>20.2. Character Set Support</h2></div></div>
 <div></div>
 </div>
-<a name="id2597089"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
+<a name="id2597623"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
    allows you to store text in a variety of character sets, including
    single-byte character sets such as the ISO 8859 series and
    multiple-byte character sets such as <span class="acronym">EUC</span> (Extended Unix
-   Code), Unicode, and Mule internal code.  All character sets can be
+   Code), UTF8, and Mule internal code.  All character sets can be
    used transparently throughout the server.  (If you use extension
    functions from other sources, it depends on whether they wrote
    their code correctly.)  The default character set is selected while
@@ -49,141 +49,269 @@
 <thead><tr>
 <th>Name</th>
 <th>Description</th>
+<th>Language</th>
+<th>Bytes/Char</th>
+<th>Aliases</th>
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">SQL_ASCII</tt></td>
-<td><span class="acronym">ASCII</span></td>
-</tr>
-<tr>
-<td><tt class="literal">EUC_JP</tt></td>
-<td>Japanese <span class="acronym">EUC</span>
+<td><tt class="literal">BIG5</tt></td>
+<td>Big Five</td>
+<td>Traditional Chinese</td>
+<td>1-2</td>
+<td>
+<tt class="literal">WIN950</tt>, <tt class="literal">Windows950</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">EUC_CN</tt></td>
-<td>Chinese <span class="acronym">EUC</span>
-</td>
+<td>Extended UNIX Code-CN</td>
+<td>Simplified Chinese</td>
+<td>1-3</td>
+<td> </td>
+</tr>
+<tr>
+<td><tt class="literal">EUC_JP</tt></td>
+<td>Extended UNIX Code-JP</td>
+<td>Japanese</td>
+<td>1-3</td>
+<td> </td>
 </tr>
 <tr>
 <td><tt class="literal">EUC_KR</tt></td>
-<td>Korean <span class="acronym">EUC</span>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">JOHAB</tt></td>
-<td>Korean <span class="acronym">EUC</span> (Hangle base)</td>
+<td>Extended UNIX Code-KR</td>
+<td>Korean</td>
+<td>1-3</td>
+<td> </td>
 </tr>
 <tr>
 <td><tt class="literal">EUC_TW</tt></td>
-<td>Taiwan <span class="acronym">EUC</span>
+<td>Extended UNIX Code-TW</td>
+<td>Traditional Chinese, Taiwanese</td>
+<td>1-3</td>
+<td> </td>
+</tr>
+<tr>
+<td><tt class="literal">GB18030</tt></td>
+<td>National Standard</td>
+<td>Chinese</td>
+<td>1-2</td>
+<td> </td>
+</tr>
+<tr>
+<td><tt class="literal">GBK</tt></td>
+<td>Extended National Standard</td>
+<td>Simplified Chinese</td>
+<td>1-2</td>
+<td>
+<tt class="literal">WIN936</tt>, <tt class="literal">Windows936</tt>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">UNICODE</tt></td>
-<td>Unicode (<span class="acronym">UTF</span>-8)</td>
-</tr>
-<tr>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td>Mule internal code</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN1</tt></td>
-<td>ISO 8859-1/<span class="acronym">ECMA</span> 94 (Latin alphabet no.1)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN2</tt></td>
-<td>ISO 8859-2/<span class="acronym">ECMA</span> 94 (Latin alphabet no.2)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN3</tt></td>
-<td>ISO 8859-3/<span class="acronym">ECMA</span> 94 (Latin alphabet no.3)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN4</tt></td>
-<td>ISO 8859-4/<span class="acronym">ECMA</span> 94 (Latin alphabet no.4)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN5</tt></td>
-<td>ISO 8859-9/<span class="acronym">ECMA</span> 128 (Latin alphabet no.5)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN6</tt></td>
-<td>ISO 8859-10/<span class="acronym">ECMA</span> 144 (Latin alphabet no.6)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN7</tt></td>
-<td>ISO 8859-13 (Latin alphabet no.7)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN8</tt></td>
-<td>ISO 8859-14 (Latin alphabet no.8)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN9</tt></td>
-<td>ISO 8859-15 (Latin alphabet no.9)</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN10</tt></td>
-<td>ISO 8859-16/<span class="acronym">ASRO</span> SR 14111 (Latin alphabet no.10)</td>
-</tr>
-<tr>
 <td><tt class="literal">ISO_8859_5</tt></td>
-<td>ISO 8859-5/<span class="acronym">ECMA</span> 113 (Latin/Cyrillic)</td>
+<td>ISO 8859-5, <span class="acronym">ECMA</span> 113</td>
+<td>Latin/Cyrillic</td>
+<td>1</td>
+<td> </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_6</tt></td>
-<td>ISO 8859-6/<span class="acronym">ECMA</span> 114 (Latin/Arabic)</td>
+<td>ISO 8859-6, <span class="acronym">ECMA</span> 114</td>
+<td>Latin/Arabic</td>
+<td>1</td>
+<td> </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_7</tt></td>
-<td>ISO 8859-7/<span class="acronym">ECMA</span> 118 (Latin/Greek)</td>
+<td>ISO 8859-7, <span class="acronym">ECMA</span> 118</td>
+<td>Latin/Greek</td>
+<td>1</td>
+<td> </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_8</tt></td>
-<td>ISO 8859-8/<span class="acronym">ECMA</span> 121 (Latin/Hebrew)</td>
+<td>ISO 8859-8, <span class="acronym">ECMA</span> 121</td>
+<td>Latin/Hebrew</td>
+<td>1</td>
+<td> </td>
+</tr>
+<tr>
+<td><tt class="literal">JOHAB</tt></td>
+<td><span class="acronym">JOHAB</span></td>
+<td>Korean (Hangul)</td>
+<td>1-3</td>
+<td> </td>
 </tr>
 <tr>
 <td><tt class="literal">KOI8</tt></td>
 <td>
 <span class="acronym">KOI</span>8-R(U)</td>
+<td>Cyrillic</td>
+<td>1</td>
+<td><tt class="literal">KOI8R</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">LATIN1</tt></td>
+<td>ISO 8859-1, <span class="acronym">ECMA</span> 94</td>
+<td>Western European</td>
+<td>1</td>
+<td><tt class="literal">ISO88591</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN2</tt></td>
+<td>ISO 8859-2, <span class="acronym">ECMA</span> 94</td>
+<td>Central European</td>
+<td>1</td>
+<td><tt class="literal">ISO88592</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN3</tt></td>
+<td>ISO 8859-3, <span class="acronym">ECMA</span> 94</td>
+<td>South European</td>
+<td>1</td>
+<td><tt class="literal">ISO88593</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN4</tt></td>
+<td>ISO 8859-4, <span class="acronym">ECMA</span> 94</td>
+<td>North European</td>
+<td>1</td>
+<td><tt class="literal">ISO88594</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN5</tt></td>
+<td>ISO 8859-9, <span class="acronym">ECMA</span> 128</td>
+<td>Turkish</td>
+<td>1</td>
+<td><tt class="literal">ISO88599</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN6</tt></td>
+<td>ISO 8859-10, <span class="acronym">ECMA</span> 144</td>
+<td>Nordic</td>
+<td>1</td>
+<td><tt class="literal">ISO885910</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN7</tt></td>
+<td>ISO 8859-13</td>
+<td>Baltic</td>
+<td>1</td>
+<td><tt class="literal">ISO885913</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN8</tt></td>
+<td>ISO 8859-14</td>
+<td>Celtic</td>
+<td>1</td>
+<td><tt class="literal">ISO885914</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN9</tt></td>
+<td>ISO 8859-15</td>
+<td>LATIN1 with Euro and accents</td>
+<td>1</td>
+<td>ISO885915</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN10</tt></td>
+<td>ISO 8859-16, <span class="acronym">ASRO</span> SR 14111</td>
+<td>Romanian</td>
+<td>1</td>
+<td><tt class="literal">ISO885916</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td>Mule internal code</td>
+<td>Multi-lingual Emacs</td>
+<td>1-4</td>
+<td> </td>
+</tr>
+<tr>
+<td><tt class="literal">SJIS</tt></td>
+<td>Shift JIS</td>
+<td>Japanese</td>
+<td>1-2</td>
+<td>
+<tt class="literal">Mskanji</tt>, <tt class="literal">ShiftJIS</tt>, <tt class="literal">WIN932</tt>, <tt class="literal">Windows932</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">SQL_ASCII</tt></td>
+<td><span class="acronym">ASCII</span></td>
+<td>English</td>
+<td>1</td>
+<td> </td>
+</tr>
+<tr>
+<td><tt class="literal">UHC</tt></td>
+<td>Unified Hangul Code</td>
+<td>Korean</td>
+<td>1-2</td>
+<td>
+<tt class="literal">WIN949</tt>, <tt class="literal">Windows949</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">UTF8</tt></td>
+<td>Unicode, 8-bit</td>
+<td><span class="emphasis"><em>all</em></span></td>
+<td>1-3</td>
+<td><tt class="literal">Unicode</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">WIN866</tt></td>
 <td>Windows CP866</td>
+<td>Cyrillic</td>
+<td>1</td>
+<td><tt class="literal">ALT</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">WIN874</tt></td>
-<td>Windows CP874 (Thai)</td>
+<td>Windows CP874</td>
+<td>Thai</td>
+<td>1</td>
+<td> </td>
 </tr>
 <tr>
 <td><tt class="literal">WIN1250</tt></td>
 <td>Windows CP1250</td>
+<td>Central European</td>
+<td>1</td>
+<td> </td>
 </tr>
 <tr>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 <td>Windows CP1251</td>
+<td>Cyrillic</td>
+<td>1</td>
+<td><tt class="literal">WIN</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">WIN1252</tt></td>
+<td>Windows CP1252</td>
+<td>Western European</td>
+<td>1</td>
+<td> </td>
 </tr>
 <tr>
 <td><tt class="literal">WIN1256</tt></td>
-<td>Windows CP1256 (Arabic)</td>
+<td>Windows CP1256</td>
+<td>Arabic</td>
+<td>1</td>
+<td> </td>
 </tr>
 <tr>
-<td><tt class="literal">TCVN</tt></td>
+<td><tt class="literal">WIN1258</tt></td>
+<td>Windows CP1258</td>
+<td>Vietnamese</td>
+<td>1</td>
 <td>
-<span class="acronym">TCVN</span>-5712/Windows CP1258 (Vietnamese)</td>
+<tt class="literal">ABC</tt>, <tt class="literal">TCVN</tt>, <tt class="literal">TCVN5712</tt>, <tt class="literal">VSCII</tt>
+</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Important</h3>
-<p>      Before <span class="productname">PostgreSQL</span> 7.2, <tt class="literal">LATIN5</tt>
-      mistakenly meant ISO 8859-5.  From 7.2 on, <tt class="literal">LATIN5</tt>
-      means ISO 8859-9. If you have a <tt class="literal">LATIN5</tt> database
-      created on 7.1 or earlier and want to migrate to 7.2 or later,
-      you should be careful about this change.
-     </p>
 </div>
 <p>      Not all <span class="acronym">API</span>s support all the listed character sets. For example, the
       <span class="productname">PostgreSQL</span>
@@ -194,7 +322,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2597585"></a>20.2.2. Setting the Character Set</h3></div></div>
+<a name="id2598467"></a>20.2.2. Setting the Character Set</h3></div></div>
 <div></div>
 </div>
 <p>     <tt class="command">initdb</tt> defines the default character set
@@ -243,7 +371,7 @@
  regression    | t-ishii | SQL_ASCII
  template1     | t-ishii | EUC_JP
  test          | t-ishii | EUC_JP
- unicode       | t-ishii | UNICODE
+ utf8          | t-ishii | UTF8
 (9 rows)</pre>
 <p>
     </p>
@@ -271,7 +399,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2597774"></a>20.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div>
+<a name="id2598656"></a>20.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div>
 <div></div>
 </div>
 <p>     <span class="productname">PostgreSQL</span> supports automatic
@@ -295,225 +423,271 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">SQL_ASCII</tt></td>
+<td><tt class="literal">BIG5</tt></td>
+<td><span class="emphasis"><em>not supported as a server encoding</em></span></td>
+</tr>
+<tr>
+<td><tt class="literal">EUC_CN</tt></td>
 <td>
-<tt class="literal">SQL_ASCII</tt>, <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+<span class="emphasis"><em>EUC_CN</em></span>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">EUC_JP</tt></td>
 <td>
-<tt class="literal">EUC_JP</tt>, <tt class="literal">SJIS</tt>,
-         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">EUC_CN</tt></td>
-<td>
-<tt class="literal">EUC_CN</tt>, <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+<span class="emphasis"><em>EUC_JP</em></span>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">SJIS</tt>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">EUC_KR</tt></td>
 <td>
-<tt class="literal">EUC_KR</tt>, <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">JOHAB</tt></td>
-<td>
-<tt class="literal">JOHAB</tt>, <tt class="literal">UNICODE</tt>
+<span class="emphasis"><em>EUC_KR</em></span>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">EUC_TW</tt></td>
 <td>
-<tt class="literal">EUC_TW</tt>, <tt class="literal">BIG5</tt>,
-         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+<span class="emphasis"><em>EUC_TW</em></span>,
+         <tt class="literal">BIG5</tt>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">LATIN1</tt></td>
-<td>
-<tt class="literal">LATIN1</tt>, <tt class="literal">UNICODE</tt><tt class="literal">MULE_INTERNAL</tt>
-</td>
+<td><tt class="literal">GB18030</tt></td>
+<td><span class="emphasis"><em>not supported as a server encoding</em></span></td>
 </tr>
 <tr>
-<td><tt class="literal">LATIN2</tt></td>
-<td>
-<tt class="literal">LATIN2</tt>, <tt class="literal">WIN1250</tt>,
-         <tt class="literal">UNICODE</tt>,
-         <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN3</tt></td>
-<td>
-<tt class="literal">LATIN3</tt>, <tt class="literal">UNICODE</tt>,
-         <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN4</tt></td>
-<td>
-<tt class="literal">LATIN4</tt>, <tt class="literal">UNICODE</tt>,
-         <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN5</tt></td>
-<td>
-<tt class="literal">LATIN5</tt>, <tt class="literal">UNICODE</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN6</tt></td>
-<td>
-<tt class="literal">LATIN6</tt>, <tt class="literal">UNICODE</tt>,
-         <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN7</tt></td>
-<td>
-<tt class="literal">LATIN7</tt>, <tt class="literal">UNICODE</tt>,
-         <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN8</tt></td>
-<td>
-<tt class="literal">LATIN8</tt>, <tt class="literal">UNICODE</tt>,
-         <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN9</tt></td>
-<td>
-<tt class="literal">LATIN9</tt>, <tt class="literal">UNICODE</tt>,
-         <tt class="literal">MULE_INTERNAL</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">LATIN10</tt></td>
-<td>
-<tt class="literal">LATIN10</tt>, <tt class="literal">UNICODE</tt>,
-         <tt class="literal">MULE_INTERNAL</tt>
-</td>
+<td><tt class="literal">GBK</tt></td>
+<td><span class="emphasis"><em>not supported as a server encoding</em></span></td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_5</tt></td>
 <td>
-<tt class="literal">ISO_8859_5</tt>,
-         <tt class="literal">UNICODE</tt>,
+<span class="emphasis"><em>ISO_8859_5</em></span>,
+         <tt class="literal">KOI8</tt>,
          <tt class="literal">MULE_INTERNAL</tt>,
-         <tt class="literal">WIN</tt>,
-         <tt class="literal">ALT</tt>,
-         <tt class="literal">KOI8</tt>
+         <tt class="literal">UTF8</tt>,
+         <tt class="literal">WIN866</tt>,
+         <tt class="literal">WIN1251</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_6</tt></td>
 <td>
-<tt class="literal">ISO_8859_6</tt>,
-         <tt class="literal">UNICODE</tt>
+<span class="emphasis"><em>ISO_8859_6</em></span>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_7</tt></td>
 <td>
-<tt class="literal">ISO_8859_7</tt>,
-         <tt class="literal">UNICODE</tt>
+<span class="emphasis"><em>ISO_8859_7</em></span>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_8</tt></td>
 <td>
-<tt class="literal">ISO_8859_8</tt>,
-         <tt class="literal">UNICODE</tt>
+<span class="emphasis"><em>ISO_8859_8</em></span>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">JOHAB</tt></td>
 <td>
-<tt class="literal">EUC_JP</tt>, <tt class="literal">SJIS</tt>, 
-         <tt class="literal">EUC_KR</tt>, <tt class="literal">UHC</tt>, <tt class="literal">JOHAB</tt>,
-         <tt class="literal">EUC_CN</tt>, <tt class="literal">GBK</tt>,
-         <tt class="literal">EUC_TW</tt>, <tt class="literal">BIG5</tt>, 
-         <tt class="literal">LATIN1</tt> to <tt class="literal">LATIN10</tt>, 
-         <tt class="literal">ISO_8859_5</tt>, 
-         <tt class="literal">ISO_8859_6</tt>,
-         <tt class="literal">ISO_8859_7</tt>, 
-         <tt class="literal">ISO_8859_8</tt>, 
-         <tt class="literal">WIN</tt>, <tt class="literal">ALT</tt>, 
-         <tt class="literal">KOI8</tt>, 
-         <tt class="literal">WIN1256</tt>,
-         <tt class="literal">TCVN</tt>,
-         <tt class="literal">WIN874</tt>,
-         <tt class="literal">GB18030</tt>,
-         <tt class="literal">WIN1250</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td>
-<tt class="literal">EUC_JP</tt>, <tt class="literal">SJIS</tt>, <tt class="literal">EUC_KR</tt>, <tt class="literal">EUC_CN</tt>, 
-          <tt class="literal">EUC_TW</tt>, <tt class="literal">BIG5</tt>, <tt class="literal">LATIN1</tt> to <tt class="literal">LATIN5</tt>, 
-          <tt class="literal">WIN</tt>, <tt class="literal">ALT</tt>,
-         <tt class="literal">WIN1250</tt>,
-          <tt class="literal">BIG5</tt>, <tt class="literal">ISO_8859_5</tt>, <tt class="literal">KOI8</tt>
+<span class="emphasis"><em>JOHAB</em></span>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">KOI8</tt></td>
 <td>
-<tt class="literal">ISO_8859_5</tt>, <tt class="literal">WIN</tt>, 
-         <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
-         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+<span class="emphasis"><em>KOI8</em></span>,
+         <tt class="literal">ISO_8859_5</tt>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">UTF8</tt>,
+         <tt class="literal">WIN866</tt>,
+         <tt class="literal">WIN1251</tt>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">LATIN1</tt></td>
 <td>
-<tt class="literal">ISO_8859_5</tt>, <tt class="literal">WIN</tt>, 
-         <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
-         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+<span class="emphasis"><em>LATIN1</em></span>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN2</tt></td>
+<td>
+<span class="emphasis"><em>LATIN2</em></span>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">UTF8</tt>,
+         <tt class="literal">WIN1250</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN3</tt></td>
+<td>
+<span class="emphasis"><em>LATIN3</em></span>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN4</tt></td>
+<td>
+<span class="emphasis"><em>LATIN4</em></span>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN5</tt></td>
+<td>
+<span class="emphasis"><em>LATIN5</em></span>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN6</tt></td>
+<td>
+<span class="emphasis"><em>LATIN6</em></span>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN7</tt></td>
+<td>
+<span class="emphasis"><em>LATIN7</em></span>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN8</tt></td>
+<td>
+<span class="emphasis"><em>LATIN8</em></span>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN9</tt></td>
+<td>
+<span class="emphasis"><em>LATIN9</em></span>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">LATIN10</tt></td>
+<td>
+<span class="emphasis"><em>LATIN10</em></span>,
+         <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td>
+<span class="emphasis"><em>MULE_INTERNAL</em></span>,
+          <tt class="literal">BIG5</tt>,
+          <tt class="literal">EUC_CN</tt>,
+          <tt class="literal">EUC_JP</tt>,
+          <tt class="literal">EUC_KR</tt>,
+          <tt class="literal">EUC_TW</tt>,
+          <tt class="literal">ISO_8859_5</tt>,
+          <tt class="literal">KOI8</tt>,
+          <tt class="literal">LATIN1</tt> to <tt class="literal">LATIN4</tt>,
+          <tt class="literal">SJIS</tt>,
+          <tt class="literal">WIN866</tt>,
+          <tt class="literal">WIN1250</tt>,
+          <tt class="literal">WIN1251</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">SJIS</tt></td>
+<td><span class="emphasis"><em>not supported as a server encoding</em></span></td>
+</tr>
+<tr>
+<td><tt class="literal">SQL_ASCII</tt></td>
+<td>
+<span class="emphasis"><em>SQL_ASCII</em></span>,
+          <tt class="literal">MULE_INTERNAL</tt>,
+          <tt class="literal">UTF8</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">UHC</tt></td>
+<td><span class="emphasis"><em>not supported as a server encoding</em></span></td>
+</tr>
+<tr>
+<td><tt class="literal">UTF8</tt></td>
+<td><span class="emphasis"><em>all supported encodings</em></span></td>
+</tr>
+<tr>
+<td><tt class="literal">WIN866</tt></td>
+<td>
+<span class="emphasis"><em>WIN866</em></span>,
+          <tt class="literal">ISO_8859_5</tt>,
+          <tt class="literal">KOI8</tt>,
+          <tt class="literal">MULE_INTERNAL</tt>,
+          <tt class="literal">UTF8</tt>,
+          <tt class="literal">WIN1251</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">WIN874</tt></td>
 <td>
-<tt class="literal">WIN874</tt>,
-         <tt class="literal">UNICODE</tt>
+<span class="emphasis"><em>WIN874</em></span>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">WIN1250</tt></td>
 <td>
-<tt class="literal">LATIN2</tt>, <tt class="literal">WIN1250</tt>,
-         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+<span class="emphasis"><em>WIN1250</em></span>,
+          <tt class="literal">LATIN2</tt>,
+          <tt class="literal">MULE_INTERNAL</tt>,
+          <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 <td>
-<tt class="literal">ISO_8859_5</tt>, <tt class="literal">WIN</tt>, 
-         <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
-         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+<span class="emphasis"><em>WIN1251</em></span>,
+          <tt class="literal">ISO_8859_5</tt>,
+          <tt class="literal">KOI8</tt>,
+          <tt class="literal">MULE_INTERNAL</tt>,
+          <tt class="literal">UTF8</tt>,
+          <tt class="literal">WIN866</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">WIN1252</tt></td>
+<td>
+<span class="emphasis"><em>WIN1252</em></span>,
+          <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">WIN1256</tt></td>
 <td>
-<tt class="literal">WIN1256</tt>,
-         <tt class="literal">UNICODE</tt>
+<span class="emphasis"><em>WIN1256</em></span>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">TCVN</tt></td>
+<td><tt class="literal">WIN1258</tt></td>
 <td>
-<tt class="literal">TCVN</tt>,
-         <tt class="literal">UNICODE</tt>
+<span class="emphasis"><em>WIN1258</em></span>,
+         <tt class="literal">UTF8</tt>
 </td>
 </tr>
 </tbody>
@@ -622,7 +796,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2599041"></a>20.2.4. Further Reading</h3></div></div>
+<a name="id2599789"></a>20.2.4. Further Reading</h3></div></div>
 <div></div>
 </div>
 <p>     These are good sources to start learning about various kinds of encoding
@@ -630,6 +804,10 @@
 
      </p>
 <div class="variablelist"><dl>
+<dt><span class="term"><a href="http://www.i18ngurus.com/docs/984813247.html" target="_top">http://www.i18ngurus.com/docs/984813247.html</a></span></dt>
+<dd><p>         An extensive collection of documents about character sets, encodings,
+         and code pages.
+        </p></dd>
 <dt><span class="term"><a href="ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/cjk.inf" target="_top">ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/cjk.inf</a></span></dt>
 <dd><p>         Detailed explanations of <tt class="literal">EUC_JP</tt>,
          <tt class="literal">EUC_CN</tt>, <tt class="literal">EUC_KR</tt>,

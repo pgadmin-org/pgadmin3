@@ -65,7 +65,7 @@
 <a name="auth-password"></a>19.2.2. Password authentication</h3></div></div>
 <div></div>
 </div>
-<a name="id2595435"></a><a name="id2595440"></a><a name="id2595446"></a><p>    The password-based authentication methods are <tt class="literal">md5</tt>,
+<a name="id2595920"></a><a name="id2595925"></a><a name="id2595931"></a><p>    The password-based authentication methods are <tt class="literal">md5</tt>,
     <tt class="literal">crypt</tt>, and <tt class="literal">password</tt>. These methods operate
     similarly except for the way that the password is sent across the
     connection.  But only <tt class="literal">md5</tt> supports encrypted
@@ -96,7 +96,7 @@
 <a name="kerberos-auth"></a>19.2.3. Kerberos authentication</h3></div></div>
 <div></div>
 </div>
-<a name="id2595573"></a><p>    <span class="productname">Kerberos</span> is an industry-standard secure
+<a name="id2596059"></a><p>    <span class="productname">Kerberos</span> is an industry-standard secure
     authentication system suitable for distributed computing over a public
     network. A description of the <span class="productname">Kerberos</span> system
     is far beyond the scope of this document; in full generality it can be
@@ -171,8 +171,8 @@
 <a name="auth-ident"></a>19.2.4. Ident-based authentication</h3></div></div>
 <div></div>
 </div>
-<a name="id2595884"></a><p>    The ident authentication method works by obtaining the client's
-    operating system user name and determining the allowed database
+<a name="id2596370"></a><p>    The ident authentication method works by obtaining the client's
+    operating system user name, then determining the allowed database
     user names using a map file that lists the permitted
     corresponding pairs of names.  The determination of the client's
     user name is the security-critical point, and it works differently
@@ -181,7 +181,7 @@
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2595898"></a>19.2.4.1. Ident Authentication over TCP/IP</h4></div></div>
+<a name="id2596384"></a>19.2.4.1. Ident Authentication over TCP/IP</h4></div></div>
 <div></div>
 </div>
 <p>    The &#8220;<span class="quote">Identification Protocol</span>&#8221; is described in
@@ -223,11 +223,18 @@
 </table></div>
 <p>
    </p>
+<p>    Some ident servers have a nonstandard option that causes the returned
+    user name to be encrypted, using a key that only the originating
+    machine's administrator knows.  This option <span class="emphasis"><em>must not</em></span> be
+    used when using the ident server with <span class="productname">PostgreSQL</span>,
+    since <span class="productname">PostgreSQL</span> does not have any way to decrypt the
+    returned string to determine the actual user name.
+   </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2595965"></a>19.2.4.2. Ident Authentication over Local Sockets</h4></div></div>
+<a name="id2596473"></a>19.2.4.2. Ident Authentication over Local Sockets</h4></div></div>
 <div></div>
 </div>
 <p>    On systems supporting <tt class="symbol">SO_PEERCRED</tt> requests for
@@ -264,7 +271,7 @@
    </p>
 <p>    Ident maps other than <tt class="literal">sameuser</tt> are defined in the
     ident map file, which by default is named
-    <tt class="filename">pg_ident.conf</tt><a name="id2596104"></a>
+    <tt class="filename">pg_ident.conf</tt><a name="id2596613"></a>
     and is stored in the
     cluster's data directory.  (It is possible to place the map file
     elsewhere, however; see the <a href="runtime-config.html#guc-ident-file">ident_file</a>
@@ -285,7 +292,7 @@
    </p>
 <p>   The <tt class="filename">pg_ident.conf</tt> file is read on start-up and
    when the main server process (<tt class="command">postmaster</tt>) receives a
-   <span class="systemitem">SIGHUP</span><a name="id2596184"></a>
+   <span class="systemitem">SIGHUP</span><a name="id2596692"></a>
    signal. If you edit the file on an
    active system, you will need to signal the <tt class="command">postmaster</tt>
    (using <tt class="literal">pg_ctl reload</tt> or <tt class="literal">kill -HUP</tt>) to make it
@@ -322,7 +329,7 @@ omicron       bryanh            guest1</pre>
 <a name="auth-pam"></a>19.2.5. PAM authentication</h3></div></div>
 <div></div>
 </div>
-<a name="id2596347"></a><p>    This authentication method operates similarly to
+<a name="id2596856"></a><p>    This authentication method operates similarly to
     <tt class="literal">password</tt> except that it uses PAM (Pluggable
     Authentication Modules) as the authentication mechanism. The
     default PAM service name is <tt class="literal">postgresql</tt>. You can

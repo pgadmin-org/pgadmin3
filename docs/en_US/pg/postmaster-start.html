@@ -18,7 +18,7 @@
 </div>
 <p>   Before anyone can access the database, you must start the database
    server. The database server program is called
-   <tt class="command">postmaster</tt>.<a name="id2579593"></a>
+   <tt class="command">postmaster</tt>.<a name="id2579825"></a>
    The <tt class="command">postmaster</tt> must know where to
    find the data it is supposed to use. This is done with the
    <tt class="option">-D</tt> option. Thus, the simplest way to start the
@@ -49,7 +49,7 @@
   </p>
 <p>   This shell syntax can get tedious quickly.  Therefore the wrapper
    program
-   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id2579716"></a>
+   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id2579949"></a>
    is provided to simplify some tasks.  For example:
 </p>
 <pre class="programlisting">pg_ctl start -l logfile</pre>
@@ -60,7 +60,7 @@
    is also capable of stopping the server.
   </p>
 <p>   Normally, you will want to start the database server when the
-   computer boots.<a name="id2579752"></a> Autostart scripts are operating-system-specific.
+   computer boots.<a name="id2579984"></a> Autostart scripts are operating-system-specific.
    There are a few distributed with
    <span class="productname">PostgreSQL</span> in the
    <tt class="filename">contrib/start-scripts</tt> directory. Installing one will require
@@ -88,12 +88,12 @@
 <li><p>      For <span class="productname">FreeBSD</span>, look at the file
       <tt class="filename">contrib/start-scripts/freebsd</tt> in the
       <span class="productname">PostgreSQL</span> source distribution.
-      <a name="id2579853"></a>
+      <a name="id2580086"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">OpenBSD</span>, add the following lines
       to the file <tt class="filename">/etc/rc.local</tt>:
-      <a name="id2579879"></a>
+      <a name="id2580111"></a>
 </p>
 <pre class="programlisting">if [ -x /usr/local/pgsql/bin/pg_ctl -a -x /usr/local/pgsql/bin/postmaster ]; then
     su - -c '/usr/local/pgsql/bin/pg_ctl start -l /var/postgresql/log -s' postgres
@@ -104,7 +104,7 @@ fi</pre>
 </li>
 <li>
 <p>      On <span class="productname">Linux</span> systems either add
-      <a name="id2579907"></a>
+      <a name="id2580139"></a>
 </p>
 <pre class="programlisting">/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data</pre>
 <p>
@@ -116,13 +116,13 @@ fi</pre>
 <li><p>      On <span class="productname">NetBSD</span>, either use the
       <span class="productname">FreeBSD</span> or
       <span class="productname">Linux</span> start scripts, depending on
-      preference. <a name="id2579965"></a>
+      preference. <a name="id2580197"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">Solaris</span>, create a file called
       <tt class="filename">/etc/init.d/postgresql</tt> that contains
       the following line:
-      <a name="id2579991"></a>
+      <a name="id2580223"></a>
 </p>
 <pre class="programlisting">su - postgres -c "/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data"</pre>
 <p>

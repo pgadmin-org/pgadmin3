@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="previous" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
@@ -16,7 +16,7 @@
 <a name="runtime-config"></a>16.4. Run-time Configuration</h2></div></div>
 <div></div>
 </div>
-<a name="id2580320"></a><p>    There are a lot of configuration parameters that affect the
+<a name="id2580552"></a><p>    There are a lot of configuration parameters that affect the
     behavior of the database system. In this subsection, we describe
     how to set configuration parameters; the following subsections
     discuss each parameter in detail.
@@ -30,7 +30,7 @@
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <tt class="filename">postgresql.conf</tt><a name="id2580394"></a>,
+    <tt class="filename">postgresql.conf</tt><a name="id2580626"></a>,
     which is normally kept in the data directory. (<tt class="command">initdb</tt>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -46,7 +46,7 @@ search_path = '$user, public'</pre>
     anywhere.  Parameter values that are not simple identifiers or
     numbers must be single-quoted.
    </p>
-<p>    <a name="id2580430"></a>
+<p>    <a name="id2580662"></a>
     The configuration file is reread whenever the
     <tt class="command">postmaster</tt> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
@@ -439,6 +439,26 @@ search_path = '$user, public'</pre>
        </p>
 </dd>
 <dt>
+<a name="guc-temp-buffers"></a><span class="term"><tt class="varname">temp_buffers</tt> (<tt class="type">integer</tt>)</span>
+</dt>
+<dd>
+<p>        Sets the maximum number of temporary buffers used by each database
+        session.  These are session-local buffers used only for access
+        to temporary tables.  The default is 1000.  The setting can
+        be changed within individual sessions, but only up until the
+        first use of temporary tables within a session; subsequent
+        attempts to change the value will have no effect on that session.
+       </p>
+<p>        A session will allocate temporary buffers as needed up to the limit
+        given by <tt class="varname">temp_buffers</tt>.  The cost of setting a large
+        value in sessions that do not actually need a lot of temporary
+        buffers is only a buffer descriptor, or about 64 bytes, per
+        increment in <tt class="varname">temp_buffers</tt>.  However if a buffer is
+        actually used an additional 8192 bytes will be consumed for it
+        (or in general <tt class="symbol">BLCKSZ</tt> bytes).
+       </p>
+</dd>
+<dt>
 <a name="guc-work-mem"></a><span class="term"><tt class="varname">work_mem</tt> (<tt class="type">integer</tt>)</span>
 </dt>
 <dd><p>        Specifies the amount of memory to be used by internal sort operations
@@ -686,9 +706,7 @@ search_path = '$user, public'</pre>
 <dd><p>         Specifies the delay between activity rounds for the
          background writer.  In each round the writer issues writes
          for some number of dirty buffers (controllable by the
-         following parameters).  The selected buffers will always be
-         the least recently used ones among the currently dirty
-         buffers.  It then sleeps for <tt class="varname">bgwriter_delay</tt>
+         following parameters).  It then sleeps for <tt class="varname">bgwriter_delay</tt>
          milliseconds, and repeats.  The default value is 200. Note
          that on many systems, the effective resolution of sleep
          delays is 10 milliseconds; setting <tt class="varname">bgwriter_delay</tt>
@@ -698,30 +716,67 @@ search_path = '$user, public'</pre>
          <tt class="filename">postgresql.conf</tt> file.
         </p></dd>
 <dt>
-<a name="guc-bgwriter-percent"></a><span class="term"><tt class="varname">bgwriter_percent</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-bgwriter-lru-percent"></a><span class="term"><tt class="varname">bgwriter_lru_percent</tt> (<tt class="type">floating point</tt>)</span>
 </dt>
-<dd><p>         In each round, no more than this percentage of the currently
-         dirty buffers will be written (rounding up any fraction to
-         the next whole number of buffers).  The default value is
-         1. This option can only be set at server start or in the
+<dd><p>         To reduce the probability that server processes will need to issue
+         their own writes, the background writer tries to write buffers that
+         are likely to be recycled soon.  In each round, it examines up to
+         <tt class="varname">bgwriter_lru_percent</tt> of the buffers that are nearest to
+         being recycled, and writes any that are dirty.
+         The default value is 1.0 (this is a percentage of the total number
+         of shared buffers).
+         This option can only be set at server start or in the
          <tt class="filename">postgresql.conf</tt> file.
         </p></dd>
 <dt>
-<a name="guc-bgwriter-maxpages"></a><span class="term"><tt class="varname">bgwriter_maxpages</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-bgwriter-lru-maxpages"></a><span class="term"><tt class="varname">bgwriter_lru_maxpages</tt> (<tt class="type">integer</tt>)</span>
 </dt>
-<dd><p>         In each round, no more than this many dirty buffers will be
-         written. The default value is 100. This option can only be
-         set at server start or in the
+<dd><p>         In each round, no more than this many buffers will be written
+         as a result of scanning soon-to-be-recycled buffers.
+         The default value is 5.
+         This option can only be set at server start or in the
+         <tt class="filename">postgresql.conf</tt> file.
+        </p></dd>
+<dt>
+<a name="guc-bgwriter-all-percent"></a><span class="term"><tt class="varname">bgwriter_all_percent</tt> (<tt class="type">floating point</tt>)</span>
+</dt>
+<dd><p>         To reduce the amount of work that will be needed at checkpoint time,
+         the background writer also does a circular scan through the entire
+         buffer pool, writing buffers that are found to be dirty.
+         In each round, it examines up to
+         <tt class="varname">bgwriter_all_percent</tt> of the buffers for this purpose.
+         The default value is 0.333 (this is a percentage of the total number
+         of shared buffers).  With the default <tt class="varname">bgwriter_delay</tt>
+         setting, this will allow the entire shared buffer pool to be scanned
+         about once per minute.
+         This option can only be set at server start or in the
+         <tt class="filename">postgresql.conf</tt> file.
+        </p></dd>
+<dt>
+<a name="guc-bgwriter-all-maxpages"></a><span class="term"><tt class="varname">bgwriter_all_maxpages</tt> (<tt class="type">integer</tt>)</span>
+</dt>
+<dd><p>         In each round, no more than this many buffers will be written
+         as a result of the scan of the entire buffer pool.  (If this
+         limit is reached, the scan stops, and resumes at the next buffer
+         during the next round.)
+         The default value is 5.
+         This option can only be set at server start or in the
          <tt class="filename">postgresql.conf</tt> file.
         </p></dd>
 </dl></div>
-<p>      Smaller values of <tt class="varname">bgwriter_percent</tt> and
-      <tt class="varname">bgwriter_maxpages</tt> reduce the extra I/O load
+<p>      Smaller values of <tt class="varname">bgwriter_all_percent</tt> and
+      <tt class="varname">bgwriter_all_maxpages</tt> reduce the extra I/O load
       caused by the background writer, but leave more work to be done
       at checkpoint time.  To reduce load spikes at checkpoints,
-      increase the values.  To disable background writing entirely,
-      set <tt class="varname">bgwriter_percent</tt> and/or
-      <tt class="varname">bgwriter_maxpages</tt> to zero.
+      increase these two values.
+      Similarly, smaller values of <tt class="varname">bgwriter_lru_percent</tt> and
+      <tt class="varname">bgwriter_lru_maxpages</tt> reduce the extra I/O load
+      caused by the background writer, but make it more likely that server
+      processes will have to issue writes for themselves, delaying interactive
+      queries.
+      To disable background writing entirely,
+      set both <tt class="varname">maxpages</tt> values and/or both
+      <tt class="varname">percent</tt> values to zero.
      </p>
 </div>
 </div>
@@ -787,6 +842,7 @@ search_path = '$user, public'</pre>
         values are
         <tt class="literal">fsync</tt> (call <tt class="function">fsync()</tt> at each commit),
         <tt class="literal">fdatasync</tt> (call <tt class="function">fdatasync()</tt> at each commit),
+        <tt class="literal">fsync_writethrough</tt> (call <tt class="function">_commit()</tt> at each commit on Windows),
         <tt class="literal">open_sync</tt> (write WAL files with <tt class="function">open()</tt> option <tt class="symbol">O_SYNC</tt>), and
         <tt class="literal">open_datasync</tt> (write WAL files with <tt class="function">open()</tt> option <tt class="symbol">O_DSYNC</tt>).
         Not all of these choices are available on all platforms.
@@ -1206,13 +1262,13 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <a name="runtime-config-logging"></a>16.4.6. Error Reporting and Logging</h3></div></div>
 <div></div>
 </div>
-<a name="id2584350"></a><div class="sect3" lang="en">
+<a name="id2584764"></a><div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
 <a name="runtime-config-logging-where"></a>16.4.6.1. Where to log</h4></div></div>
 <div></div>
 </div>
-<a name="id2584370"></a><div class="variablelist"><dl>
+<a name="id2584784"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><tt class="varname">log_destination</tt> (<tt class="type">string</tt>)</span>
 </dt>
@@ -2148,21 +2204,16 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         newly-created tables, if neither <tt class="literal">WITH OIDS</tt>
         nor <tt class="literal">WITHOUT OIDS</tt> is specified. It also
         determines whether OIDs will be included in tables created by
-        <tt class="command">SELECT INTO</tt>. In
-        <span class="productname">PostgreSQL</span> 8.0
-        <tt class="varname">default_with_oids</tt> defaults to true. This is
-        also the behavior of previous versions of
-        <span class="productname">PostgreSQL</span>. However, assuming that
-        tables will contain OIDs by default is not encouraged. This
-        option will probably default to false in a future release of
-        <span class="productname">PostgreSQL</span>.
+        <tt class="command">SELECT INTO</tt>. In <span class="productname">PostgreSQL</span>
+        8.1 <tt class="varname">default_with_oids</tt> is disabled by default; in
+        prior versions of PostgreSQL, it was true by default.
        </p>
-<p>        To ease compatibility with applications that make use of OIDs,
-        this option should left enabled. To ease compatibility with
-        future versions of <span class="productname">PostgreSQL</span>, this
-        option should be disabled, and applications that require OIDs
-        on certain tables should explicitly specify <tt class="literal">WITH
-        OIDS</tt> when those tables are created.
+<p>        The use of OIDs in user tables is considered deprecated, so
+        most installations should leave this variable disabled.
+        Applications that require OIDs for a particular table should
+        specify <tt class="literal">WITH OIDS</tt> when creating the
+        table. This variable can be enabled for compatibility with old
+        applications that do not follow this behavior.
        </p>
 </dd>
 </dl></div>
@@ -2376,13 +2427,6 @@ plruby.bar = true        # generates error, unknown class name</pre>
         <tt class="varname">debug_assertions</tt> defaults to on if
         <span class="productname">PostgreSQL</span> has been built with
         assertions enabled.
-       </p></dd>
-<dt>
-<a name="guc-debug-shared-buffers"></a><span class="term"><tt class="varname">debug_shared_buffers</tt> (<tt class="type">integer</tt>)</span>
-</dt>
-<dd><p>        Number of seconds between ARC reports.
-        If set greater than zero, emit ARC statistics to the log every so many
-        seconds.  Zero (the default) disables reporting.
        </p></dd>
 <dt>
 <a name="guc-pre-auth-delay"></a><span class="term"><tt class="varname">pre_auth_delay</tt> (<tt class="type">integer</tt>)</span>

@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>initdb &#8212; create a new <span class="productname">PostgreSQL</span> database cluster</p>
 </div>
-<a name="id2719528"></a><div class="refsynopsisdiv">
+<a name="id2720758"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><tt class="command">initdb</tt> [<i class="replaceable"><tt>option</tt></i>...]  [--pgdata ] |  [-D ]<i class="replaceable"><tt>directory</tt></i> </p></div>
 </div>
@@ -31,32 +31,21 @@
    cluster is a collection of databases that are managed by a single
    server instance.
   </p>
-<p>   Creating a database cluster consists of creating the directories in which
-   the database data will live, generating the shared catalog tables 
-   (tables that belong to the whole cluster rather than to any particular
-   database), and creating the <tt class="literal">template1</tt>
-   database.  When you later create a new database, everything in the
-   <tt class="literal">template1</tt> database is copied.
-   It contains catalog tables filled in for things like the
-   built-in types.
+<p>   Creating a database cluster consists of creating the directories in
+   which the database data will live, generating the shared catalog
+   tables (tables that belong to the whole cluster rather than to any
+   particular database), and creating the <tt class="literal">template1</tt>
+   database. When you later create a new database, everything in the
+   <tt class="literal">template1</tt> database is copied. It contains catalog
+   tables containing things like built-in data types.
   </p>
-<p>   <tt class="command">initdb</tt> initializes the database cluster's default
-   locale and character set encoding. Some locale categories are fixed
-   for the lifetime of the cluster. There is also a performance impact
-   in using locales other than <tt class="literal">C</tt> or <tt class="literal">POSIX</tt>.
-   Therefore it is important to make the right choice when running
-   <tt class="command">initdb</tt>. Other locale categories can be changed
-   later when the server is started. <tt class="command">initdb</tt> will
-   write those locale settings into the
-   <tt class="filename">postgresql.conf</tt> configuration file so they are
-   the default, but they can be changed by editing that file. To set the
-   locale that <tt class="command">initdb</tt> uses, see the description of
-   the <tt class="option">--locale</tt> option. The character set encoding can
-   be set separately for each database as it is created.
-   <tt class="command">initdb</tt> determines the encoding for the
-   <tt class="literal">template1</tt> database, which will serve as the
-   default for all other databases. To alter the default encoding use
-   the <tt class="option">--encoding</tt> option.
+<p>   Although <tt class="command">initdb</tt> will attempt to create the
+   specified data directory, it might not have permission if the parent
+   directory of the desired data directory is root-owned. To initialize
+   in such a setup, create an empty data directory as root, then use
+   <tt class="command">chown</tt> to assign ownership of that directory to the
+   database user account, then <tt class="command">su</tt> to become the
+   database user to run <tt class="command">initdb</tt>.
   </p>
 <p>   <tt class="command">initdb</tt> must be run as the user that will own the
    server process, because the server needs to have access to the
@@ -65,18 +54,28 @@
    <tt class="command">initdb</tt> as root either.  (It will in fact refuse
    to do so.)
   </p>
-<p>   Although <tt class="command">initdb</tt> will attempt to create the
-   specified data directory, often it won't have permission to do so,
-   since the parent of the desired data directory is often a root-owned
-   directory.  To set up an arrangement like this, create an empty data
-   directory as root, then use <tt class="command">chown</tt> to hand over
-   ownership of that directory to the database user account, then
-   <tt class="command">su</tt> to become the database user, and
-   finally run <tt class="command">initdb</tt> as the database user.
+<p>   <tt class="command">initdb</tt> initializes the database cluster's default
+   locale and character set encoding. The collation order
+   (<tt class="literal">LC_COLLATE</tt>) and character set classes
+   (<tt class="literal">LC_CTYPE</tt>, e.g. upper, lower, digit) are fixed for all
+   databases and can not be changed. Collation orders other than
+   <tt class="literal">C</tt> or <tt class="literal">POSIX</tt> also have a performance penalty.
+   For these reasons it is important to choose the right locale when
+   running <tt class="command">initdb</tt>. The remaining locale categories
+   can be changed later when the server is started. All server locale
+   values (<tt class="literal">lc_*</tt>) can be displayed via <tt class="command">SHOW ALL</tt>.
+   More details can be found in <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a>.
+  </p>
+<p>   The character set encoding can be set separately for a database when
+   it is created. <tt class="command">initdb</tt> determines the encoding for
+   the <tt class="literal">template1</tt> database, which will serve as the
+   default for all other databases. To alter the default encoding use
+   the <tt class="option">--encoding</tt> option. More details can be found in
+   <a href="multibyte.html" title="20.2. Character Set Support">Section 20.2, &#8220;Character Set Support&#8221;</a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2719752"></a><h2>Options</h2>
+<a name="id2720997"></a><h2>Options</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt>
@@ -179,7 +178,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2720106"></a><h2>Environment</h2>
+<a name="id2721350"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="envar">PGDATA</tt></span></dt>
 <dd><p>      Specifies the directory where the database cluster is to be
@@ -188,7 +187,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2720124"></a><h2>See Also</h2>
+<a name="id2721368"></a><h2>See Also</h2>
 <span class="simplelist"><a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a>, <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a></span>
 </div>
 </div></body>

@@ -1,0 +1,112 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>47.4. Index Locking Considerations</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="up" href="indexam.html" title="Chapter 47. Index Access Method Interface Definition">
+<link rel="previous" href="index-scanning.html" title="47.3. Index Scanning">
+<link rel="next" href="index-unique-checks.html" title="47.5. Index Uniqueness Checks">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="index-locking"></a>47.4. Index Locking Considerations</h2></div></div>
+<div></div>
+</div>
+<p>   An index access method can choose whether it supports concurrent updates
+   of the index by multiple processes.  If the method's
+   <tt class="structname">pg_am</tt>.<tt class="structfield">amconcurrent</tt> flag is true, then
+   the core <span class="productname">PostgreSQL</span> system obtains
+   <tt class="literal">AccessShareLock</tt> on the index during an index scan, and
+   <tt class="literal">RowExclusiveLock</tt> when updating the index.  Since these lock
+   types do not conflict, the access method is responsible for handling any
+   fine-grained locking it may need.  An exclusive lock on the index as a whole
+   will be taken only during index creation, destruction, or
+   <tt class="literal">REINDEX</tt>.  When <tt class="structfield">amconcurrent</tt> is false,
+   <span class="productname">PostgreSQL</span> still obtains
+   <tt class="literal">AccessShareLock</tt> during index scans, but it obtains
+   <tt class="literal">AccessExclusiveLock</tt> during any update.  This ensures that
+   updaters have sole use of the index.  Note that this implicitly assumes
+   that index scans are read-only; an access method that might modify the
+   index during a scan will still have to do its own locking to handle the
+   case of concurrent scans.
+  </p>
+<p>   Recall that a backend's own locks never conflict; therefore, even a
+   non-concurrent index type must be prepared to handle the case where
+   a backend is inserting or deleting entries in an index that it is itself
+   scanning.  (This is of course necessary to support an <tt class="command">UPDATE</tt>
+   that uses the index to find the rows to be updated.)
+  </p>
+<p>   Building an index type that supports concurrent updates usually requires
+   extensive and subtle analysis of the required behavior.  For the b-tree
+   and hash index types, you can read about the design decisions involved in
+   <tt class="filename">src/backend/access/nbtree/README</tt> and
+   <tt class="filename">src/backend/access/hash/README</tt>.
+  </p>
+<p>   Aside from the index's own internal consistency requirements, concurrent
+   updates create issues about consistency between the parent table (the
+   <i class="firstterm">heap</i>) and the index.  Because
+   <span class="productname">PostgreSQL</span> separates accesses 
+   and updates of the heap from those of the index, there are windows in
+   which the index may be inconsistent with the heap.  We handle this problem
+   with the following rules:
+
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       A new heap entry is made before making its index entries.  (Therefore
+       a concurrent index scan is likely to fail to see the heap entry.
+       This is okay because the index reader would be uninterested in an
+       uncommitted row anyway.  But see <a href="index-unique-checks.html" title="47.5. Index Uniqueness Checks">Section 47.5, &#8220;Index Uniqueness Checks&#8221;</a>.)
+      </p></li>
+<li><p>       When a heap entry is to be deleted (by <tt class="command">VACUUM</tt>), all its
+       index entries must be removed first.
+      </p></li>
+<li><p>       For concurrent index types, an indexscan must maintain a pin
+       on the index page holding the item last returned by
+       <tt class="function">amgettuple</tt>, and <tt class="function">ambulkdelete</tt> cannot delete
+       entries from pages that are pinned by other backends.  The need
+       for this rule is explained below.
+      </p></li>
+</ul></div>
+<p>
+
+   If an index is concurrent then it is possible for an index reader to
+   see an index entry just before it is removed by <tt class="command">VACUUM</tt>, and
+   then to arrive at the corresponding heap entry after that was removed by
+   <tt class="command">VACUUM</tt>.  (With a nonconcurrent index, this is not possible
+   because of the conflicting index-level locks that will be taken out.)
+   This creates no serious problems if that item
+   number is still unused when the reader reaches it, since an empty
+   item slot will be ignored by <tt class="function">heap_fetch()</tt>.  But what if a
+   third backend has already re-used the item slot for something else?
+   When using an MVCC-compliant snapshot, there is no problem because
+   the new occupant of the slot is certain to be too new to pass the
+   snapshot test.  However, with a non-MVCC-compliant snapshot (such as
+   <tt class="literal">SnapshotNow</tt>), it would be possible to accept and return
+   a row that does not in fact match the scan keys.  We could defend
+   against this scenario by requiring the scan keys to be rechecked
+   against the heap row in all cases, but that is too expensive.  Instead,
+   we use a pin on an index page as a proxy to indicate that the reader
+   may still be &#8220;<span class="quote">in flight</span>&#8221; from the index entry to the matching
+   heap entry.  Making <tt class="function">ambulkdelete</tt> block on such a pin ensures
+   that <tt class="command">VACUUM</tt> cannot delete the heap entry before the reader
+   is done with it.  This solution costs little in runtime, and adds blocking
+   overhead only in the rare cases where there actually is a conflict.
+  </p>
+<p>   This solution requires that index scans be &#8220;<span class="quote">synchronous</span>&#8221;: we have
+   to fetch each heap tuple immediately after scanning the corresponding index
+   entry.  This is expensive for a number of reasons.  An
+   &#8220;<span class="quote">asynchronous</span>&#8221; scan in which we collect many TIDs from the index,
+   and only visit the heap tuples sometime later, requires much less index
+   locking overhead and may allow a more efficient heap access pattern.
+   Per the above analysis, we must use the synchronous approach for
+   non-MVCC-compliant snapshots, but an asynchronous scan would be safe
+   for a query using an MVCC snapshot.  This possibility is not exploited
+   as of <span class="productname">PostgreSQL</span> 8.0, but it is likely to be
+   investigated soon.
+  </p>
+</div></body>
+</html>

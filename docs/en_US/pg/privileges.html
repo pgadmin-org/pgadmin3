@@ -16,53 +16,52 @@
 <a name="privileges"></a>17.4. Privileges</h2></div></div>
 <div></div>
 </div>
-<a name="id2592515"></a><a name="id2592526"></a><a name="id2592535"></a><a name="id2592544"></a><i><span class="remark">Being moved to the DDL chapter.  Will eventually disappear here.</span></i><p>   When a database object is created, it is assigned an owner. The
-   owner is the user that executed the creation statement. To change
-   the owner of a table, index, sequence, or view, use the
-   <tt class="command">ALTER TABLE</tt> command. By default, only an owner
-   (or a superuser) can do anything with the object. In order to allow
+<a name="id2593024"></a><a name="id2593034"></a><a name="id2593043"></a><a name="id2593052"></a><i><span class="remark">Being moved to the DDL chapter.  Will eventually disappear here.</span></i><p>   When an object is created, it is assigned an owner. The
+   owner is normally the user that executed the creation statement.
+   For most kinds of objects, the initial state is that only the owner
+   (or a superuser) can do anything with the object. To allow
    other users to use it, <i class="firstterm">privileges</i> must be
    granted.
-  </p>
-<p>   There are several different privileges: <tt class="literal">SELECT</tt>,
+   There are several different kinds of privilege: <tt class="literal">SELECT</tt>,
    <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, <tt class="literal">DELETE</tt>,
    <tt class="literal">RULE</tt>, <tt class="literal">REFERENCES</tt>, <tt class="literal">TRIGGER</tt>,
    <tt class="literal">CREATE</tt>, <tt class="literal">TEMPORARY</tt>, <tt class="literal">EXECUTE</tt>,
-   <tt class="literal">USAGE</tt>, and <tt class="literal">ALL PRIVILEGES</tt>. For more
+   and <tt class="literal">USAGE</tt>. For more
    information on the different types of privileges supported by
    <span class="productname">PostgreSQL</span>, see the
    <a href="sql-grant.html">GRANT</a> reference page.
-   The right to modify or
-   destroy an object is always the privilege of the owner only. To
-   assign privileges, the <tt class="command">GRANT</tt> command is
+  </p>
+<p>   To assign privileges, the <tt class="command">GRANT</tt> command is
    used. So, if <tt class="literal">joe</tt> is an existing user, and
    <tt class="literal">accounts</tt> is an existing table, the privilege to
    update the table can be granted with
-
 </p>
 <pre class="programlisting">GRANT UPDATE ON accounts TO joe;</pre>
 <p>
-   The user executing this command must be the owner of the table. To
-   grant a privilege to a group, use
+   To grant a privilege to a group, use
 </p>
 <pre class="programlisting">GRANT SELECT ON accounts TO GROUP staff;</pre>
 <p>
-   The special &#8220;<span class="quote">user</span>&#8221; name <tt class="literal">PUBLIC</tt> can
+   The special name <tt class="literal">PUBLIC</tt> can
    be used to grant a privilege to every user on the system. Writing
    <tt class="literal">ALL</tt> in place of a specific privilege specifies that all
-   privileges will be granted.
+   privileges that apply to the object will be granted.
   </p>
 <p>   To revoke a privilege, use the fittingly named
    <tt class="command">REVOKE</tt> command:
 </p>
 <pre class="programlisting">REVOKE ALL ON accounts FROM PUBLIC;</pre>
 <p>
-   The special privileges of the table owner (i.e., the right to do
-   <tt class="command">DROP</tt>, <tt class="command">GRANT</tt>, <tt class="command">REVOKE</tt>, etc)
-   are always implicit in being the owner,
-   and cannot be granted or revoked.  But the table owner can choose
+  </p>
+<p>   The special privileges of an object's owner (i.e., the right to modify
+   or destroy the object) are always implicit in being the owner,
+   and cannot be granted or revoked.  But the owner can choose
    to revoke his own ordinary privileges, for example to make a
    table read-only for himself as well as others.
+  </p>
+<p>   An object can be assigned to a new owner with an <tt class="command">ALTER</tt>
+   command of the appropriate kind for the object.  Only superusers can do
+   this.
   </p>
 </div></body>
 </html>

@@ -99,6 +99,9 @@ public:
     bool GetUnicodeFile() const { return unicodeFile; }
     void SetUnicodeFile(const bool b) {unicodeFile = b; }
 
+    bool GetSuppressGuruHints() const { return suppressGuruHints; }
+    void SetSuppressGuruHints(const bool b) { suppressGuruHints=b; }
+
     wxFont GetSQLFont() const { return sqlFont; }
     wxFont GetSystemFont() const { return systemFont; }
     void SetFont(const wxFont &font) { systemFont = font; }
@@ -171,7 +174,7 @@ private:
     wxString canonicalLanguage;
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
-    bool confirmDelete;
+    bool confirmDelete, suppressGuruHints;
     long maxRows, maxColSize, autoRowCountThreshold;
     bool stickySql, unicodeFile;
     bool doubleClickProperties;

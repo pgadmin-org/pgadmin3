@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="backup.html" title="Chapter 22. Backup and Restore">
 <link rel="previous" href="backup-online.html" title="22.3. On-line backup and point-in-time recovery (PITR)">
 <link rel="next" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
@@ -16,7 +16,7 @@
 <a name="migration"></a>22.4. Migration Between Releases</h2></div></div>
 <div></div>
 </div>
-<a name="id2603153"></a><a name="id2603162"></a><p>   This section discusses how to migrate your database data from one
+<a name="id2604048"></a><a name="id2604057"></a><p>   This section discusses how to migrate your database data from one
    <span class="productname">PostgreSQL</span> release to a newer one.
    The software installation procedure <span class="foreignphrase"><i class="foreignphrase">per se</i></span> is not the
    subject of this section; those details are in <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>.
@@ -72,11 +72,11 @@
 <pre class="programlisting">pg_dumpall &gt; backup
 pg_ctl stop
 mv /usr/local/pgsql /usr/local/pgsql.old
-cd ~/postgresql-8.0
+cd ~/postgresql-8.1devel
 gmake install
 initdb -D /usr/local/pgsql/data
 postmaster -D /usr/local/pgsql/data
-psql template1 &lt; backup</pre>
+psql -f backup template1</pre>
 <p>
 
    See <a href="runtime.html" title="Chapter 16. Server Run-time Environment">Chapter 16, <i>Server Run-time Environment</i></a> about ways to start and stop the

@@ -16,11 +16,11 @@
 <a name="tutorial-agg"></a>2.7. Aggregate Functions</h2></div></div>
 <div></div>
 </div>
-<a name="id2518917"></a><p>    <a name="id2518930"></a>
-    <a name="id2518936"></a>
-    <a name="id2518943"></a>
-    <a name="id2518950"></a>
-    <a name="id2518957"></a>
+<a name="id2518941"></a><p>    <a name="id2518954"></a>
+    <a name="id2518960"></a>
+    <a name="id2518967"></a>
+    <a name="id2518974"></a>
+    <a name="id2518981"></a>
 
     Like  most  other relational database products, 
     <span class="productname">PostgreSQL</span> supports
@@ -45,7 +45,7 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <a name="id2519021"></a>
+<p>    <a name="id2519045"></a>
 
     If we wanted to know what city (or cities) that reading occurred in,
     we might try
@@ -80,8 +80,8 @@
     that computes its own aggregate separately from what is happening
     in the outer query.
    </p>
-<p>    <a name="id2519085"></a>
-    <a name="id2519092"></a>
+<p>    <a name="id2519109"></a>
+    <a name="id2519116"></a>
 
     Aggregates are also very useful in combination with <tt class="literal">GROUP
     BY</tt> clauses.  For example, we can get the maximum low
@@ -155,8 +155,9 @@
     will be inputs to the aggregates.  On the other hand, the
     <tt class="literal">HAVING</tt> clause always contains aggregate functions.
     (Strictly speaking, you are allowed to write a <tt class="literal">HAVING</tt>
-    clause that doesn't use aggregates, but it's wasteful. The same condition
-    could be used more efficiently at the <tt class="literal">WHERE</tt> stage.)
+    clause that doesn't use aggregates, but it's seldom useful. The same
+    condition could be used more efficiently at the <tt class="literal">WHERE</tt>
+    stage.)
    </p>
 <p>    In the previous example, we can apply the city name restriction in
     <tt class="literal">WHERE</tt>, since it needs no aggregate.  This is

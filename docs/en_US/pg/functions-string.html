@@ -56,7 +56,7 @@
         <i class="parameter"><tt>string</tt></i></tt></td>
 <td><tt class="type">text</tt></td>
 <td>        String concatenation
-        <a name="id2543125"></a>
+        <a name="id2543154"></a>
 </td>
 <td><tt class="literal">'Post' || 'greSQL'</tt></td>
 <td><tt class="literal">PostgreSQL</tt></td>
@@ -74,7 +74,7 @@
 </td>
 <td><tt class="type">integer</tt></td>
 <td>        Number of characters in string
-        <a name="id2543220"></a><a name="id2543229"></a>
+        <a name="id2543248"></a><a name="id2543258"></a>
 </td>
 <td><tt class="literal">char_length('jose')</tt></td>
 <td><tt class="literal">4</tt></td>
@@ -88,9 +88,9 @@
         there are some pre-defined conversion names. See <a href="functions-string.html#conversion-names" title="Table 9.7. Built-in Conversions">Table 9.7, &#8220;Built-in Conversions&#8221;</a> for available conversion
         names.
        </td>
-<td><tt class="literal">convert('PostgreSQL' using iso_8859_1_to_utf_8)</tt></td>
+<td><tt class="literal">convert('PostgreSQL' using iso_8859_1_to_utf8)</tt></td>
 <td>
-<tt class="literal">'PostgreSQL'</tt> in Unicode (UTF-8) encoding</td>
+<tt class="literal">'PostgreSQL'</tt> in UTF8 (Unicode, 8-bit) encoding</td>
 </tr>
 <tr>
 <td><tt class="literal"><tt class="function">lower</tt>(<i class="parameter"><tt>string</tt></i>)</tt></td>
@@ -110,7 +110,7 @@
 <td><tt class="literal"><tt class="function">overlay</tt>(<i class="parameter"><tt>string</tt></i> placing <i class="parameter"><tt>string</tt></i> from <tt class="type">integer</tt> [<span class="optional">for <tt class="type">integer</tt></span>])</tt></td>
 <td><tt class="type">text</tt></td>
 <td>        Replace substring
-        <a name="id2543422"></a>
+        <a name="id2543451"></a>
 </td>
 <td><tt class="literal">overlay('Txxxxas' placing 'hom' from 2 for 4)</tt></td>
 <td><tt class="literal">Thomas</tt></td>
@@ -126,7 +126,7 @@
 <td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> [<span class="optional">from <tt class="type">integer</tt></span>] [<span class="optional">for <tt class="type">integer</tt></span>])</tt></td>
 <td><tt class="type">text</tt></td>
 <td>        Extract substring
-        <a name="id2543517"></a>
+        <a name="id2543546"></a>
 </td>
 <td><tt class="literal">substring('Thomas' from 2 for 3)</tt></td>
 <td><tt class="literal">hom</tt></td>
@@ -135,7 +135,7 @@
 <td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> from <i class="replaceable"><tt>pattern</tt></i>)</tt></td>
 <td><tt class="type">text</tt></td>
 <td>        Extract substring matching POSIX regular expression
-        <a name="id2543563"></a>
+        <a name="id2543592"></a>
 </td>
 <td><tt class="literal">substring('Thomas' from '...$')</tt></td>
 <td><tt class="literal">mas</tt></td>
@@ -145,7 +145,7 @@
 <td><tt class="type">text</tt></td>
 <td>        Extract substring matching <span class="acronym">SQL</span> regular
         expression
-        <a name="id2543617"></a>
+        <a name="id2543646"></a>
 </td>
 <td><tt class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</tt></td>
 <td><tt class="literal">oma</tt></td>
@@ -232,9 +232,9 @@
         <i class="parameter"><tt>src_encoding</tt></i> is omitted, database
         encoding is assumed.
        </td>
-<td><tt class="literal">convert( 'text_in_unicode', 'UNICODE', 'LATIN1')</tt></td>
+<td><tt class="literal">convert( 'text_in_utf8', 'UTF8', 'LATIN1')</tt></td>
 <td>
-<tt class="literal">text_in_unicode</tt> represented in ISO 8859-1 encoding</td>
+<tt class="literal">text_in_utf8</tt> represented in ISO 8859-1 encoding</td>
 </tr>
 <tr>
 <td><tt class="literal"><tt class="function">decode</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>,
@@ -270,7 +270,7 @@
 <td><tt class="literal"><tt class="function">length</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>)</tt></td>
 <td><tt class="type">integer</tt></td>
 <td>        Number of characters in <i class="parameter"><tt>string</tt></i>.
-        <a name="id2544205"></a><a name="id2544215"></a>
+        <a name="id2544234"></a><a name="id2544243"></a>
 </td>
 <td><tt class="literal">length('jose')</tt></td>
 <td><tt class="literal">4</tt></td>
@@ -320,7 +320,7 @@
 </tr>
 <tr>
 <td>
-<tt class="literal"><tt class="function">quote_ident</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2544490"></a>
+<tt class="literal"><tt class="function">quote_ident</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2544519"></a>
 </td>
 <td><tt class="type">text</tt></td>
 <td>        Return the given string suitably quoted to be used as an identifier
@@ -334,7 +334,7 @@
 </tr>
 <tr>
 <td>
-<tt class="literal"><tt class="function">quote_literal</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2544539"></a>
+<tt class="literal"><tt class="function">quote_literal</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2544568"></a>
 </td>
 <td><tt class="type">text</tt></td>
 <td>        Return the given string suitably quoted to be used as a string literal
@@ -424,7 +424,7 @@
         [<span class="optional">, <i class="parameter"><tt>encoding</tt></i></span>])</tt></td>
 <td><tt class="type">text</tt></td>
 <td>       Convert <i class="parameter"><tt>text</tt></i> to <span class="acronym">ASCII</span> from another encoding
-       <sup>[<a name="id2545102" href="#ftn.id2545102">a</a>]</sup>
+       <sup>[<a name="id2545130" href="#ftn.id2545130">a</a>]</sup>
 </td>
 <td><tt class="literal">to_ascii('Karel')</tt></td>
 <td><tt class="literal">Karel</tt></td>
@@ -454,7 +454,7 @@
 <td><tt class="literal">a23x5</tt></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id2545102" href="#id2545102">a</a>] </sup>         The <tt class="function">to_ascii</tt> function supports conversion from
+<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id2545130" href="#id2545130">a</a>] </sup>         The <tt class="function">to_ascii</tt> function supports conversion from
          <tt class="literal">LATIN1</tt>, <tt class="literal">LATIN2</tt>, <tt class="literal">LATIN9</tt>,
          and <tt class="literal">WIN1250</tt> encodings only.
         </p></div></td></tr></tbody>
@@ -470,7 +470,7 @@
 </colgroup>
 <thead><tr>
 <th>Conversion Name
-        <sup>[<a name="id2545291" href="#ftn.id2545291">a</a>]</sup>
+        <sup>[<a name="id2545320" href="#ftn.id2545320">a</a>]</sup>
 </th>
 <th>Source Encoding</th>
 <th>Destination Encoding</th>
@@ -482,9 +482,9 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">ascii_to_utf_8</tt></td>
+<td><tt class="literal">ascii_to_utf8</tt></td>
 <td><tt class="literal">SQL_ASCII</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">big5_to_euc_tw</tt></td>
@@ -497,9 +497,9 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">big5_to_utf_8</tt></td>
+<td><tt class="literal">big5_to_utf8</tt></td>
 <td><tt class="literal">BIG5</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">euc_cn_to_mic</tt></td>
@@ -507,9 +507,9 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_cn_to_utf_8</tt></td>
+<td><tt class="literal">euc_cn_to_utf8</tt></td>
 <td><tt class="literal">EUC_CN</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">euc_jp_to_mic</tt></td>
@@ -522,9 +522,9 @@
 <td><tt class="literal">SJIS</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_jp_to_utf_8</tt></td>
+<td><tt class="literal">euc_jp_to_utf8</tt></td>
 <td><tt class="literal">EUC_JP</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">euc_kr_to_mic</tt></td>
@@ -532,9 +532,9 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_kr_to_utf_8</tt></td>
+<td><tt class="literal">euc_kr_to_utf8</tt></td>
 <td><tt class="literal">EUC_KR</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">euc_tw_to_big5</tt></td>
@@ -547,44 +547,44 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_tw_to_utf_8</tt></td>
+<td><tt class="literal">euc_tw_to_utf8</tt></td>
 <td><tt class="literal">EUC_TW</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">gb18030_to_utf_8</tt></td>
+<td><tt class="literal">gb18030_to_utf8</tt></td>
 <td><tt class="literal">GB18030</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">gbk_to_utf_8</tt></td>
+<td><tt class="literal">gbk_to_utf8</tt></td>
 <td><tt class="literal">GBK</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_10_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_10_to_utf8</tt></td>
 <td><tt class="literal">LATIN6</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_13_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_13_to_utf8</tt></td>
 <td><tt class="literal">LATIN7</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_14_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_14_to_utf8</tt></td>
 <td><tt class="literal">LATIN8</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_15_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_15_to_utf8</tt></td>
 <td><tt class="literal">LATIN9</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_16_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_16_to_utf8</tt></td>
 <td><tt class="literal">LATIN10</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">iso_8859_1_to_mic</tt></td>
@@ -592,9 +592,9 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_1_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_1_to_utf8</tt></td>
 <td><tt class="literal">LATIN1</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">iso_8859_2_to_mic</tt></td>
@@ -602,9 +602,9 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_2_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_2_to_utf8</tt></td>
 <td><tt class="literal">LATIN2</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">iso_8859_2_to_windows_1250</tt></td>
@@ -617,9 +617,9 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_3_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_3_to_utf8</tt></td>
 <td><tt class="literal">LATIN3</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">iso_8859_4_to_mic</tt></td>
@@ -627,9 +627,9 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_4_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_4_to_utf8</tt></td>
 <td><tt class="literal">LATIN4</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">iso_8859_5_to_koi8_r</tt></td>
@@ -642,44 +642,44 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_5_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_5_to_utf8</tt></td>
 <td><tt class="literal">ISO_8859_5</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">iso_8859_5_to_windows_1251</tt></td>
 <td><tt class="literal">ISO_8859_5</tt></td>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">iso_8859_5_to_windows_866</tt></td>
 <td><tt class="literal">ISO_8859_5</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_6_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_6_to_utf8</tt></td>
 <td><tt class="literal">ISO_8859_6</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_7_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_7_to_utf8</tt></td>
 <td><tt class="literal">ISO_8859_7</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_8_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_8_to_utf8</tt></td>
 <td><tt class="literal">ISO_8859_8</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_9_to_utf_8</tt></td>
+<td><tt class="literal">iso_8859_9_to_utf8</tt></td>
 <td><tt class="literal">LATIN5</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">johab_to_utf_8</tt></td>
+<td><tt class="literal">johab_to_utf8</tt></td>
 <td><tt class="literal">JOHAB</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">koi8_r_to_iso_8859_5</tt></td>
@@ -692,19 +692,19 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">koi8_r_to_utf_8</tt></td>
+<td><tt class="literal">koi8_r_to_utf8</tt></td>
 <td><tt class="literal">KOI8</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">koi8_r_to_windows_1251</tt></td>
 <td><tt class="literal">KOI8</tt></td>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">koi8_r_to_windows_866</tt></td>
 <td><tt class="literal">KOI8</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">mic_to_ascii</tt></td>
@@ -779,12 +779,12 @@
 <tr>
 <td><tt class="literal">mic_to_windows_1251</tt></td>
 <td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">mic_to_windows_866</tt></td>
 <td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">sjis_to_euc_jp</tt></td>
@@ -797,178 +797,183 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">sjis_to_utf_8</tt></td>
+<td><tt class="literal">sjis_to_utf8</tt></td>
 <td><tt class="literal">SJIS</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">tcvn_to_utf_8</tt></td>
-<td><tt class="literal">TCVN</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">tcvn_to_utf8</tt></td>
+<td><tt class="literal">WIN1258</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">uhc_to_utf_8</tt></td>
+<td><tt class="literal">uhc_to_utf8</tt></td>
 <td><tt class="literal">UHC</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_ascii</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_ascii</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">SQL_ASCII</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_big5</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_big5</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">BIG5</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_euc_cn</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_euc_cn</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">EUC_CN</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_euc_jp</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_euc_jp</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">EUC_JP</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_euc_kr</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_euc_kr</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">EUC_KR</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_euc_tw</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_euc_tw</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">EUC_TW</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_gb18030</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_gb18030</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">GB18030</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_gbk</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_gbk</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">GBK</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_1</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_1</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN1</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_10</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_10</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN6</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_13</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_13</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN7</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_14</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_14</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_15</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_15</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN9</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_16</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_16</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN10</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_2</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_2</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN2</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_3</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_3</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN3</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_4</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_4</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN4</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_5</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_5</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">ISO_8859_5</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_6</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_6</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">ISO_8859_6</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_7</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_7</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">ISO_8859_7</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_8</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_8</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">ISO_8859_8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_iso_8859_9</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_iso_8859_9</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">LATIN5</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_johab</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_johab</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">JOHAB</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_koi8_r</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_koi8_r</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">KOI8</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_sjis</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_sjis</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">SJIS</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_tcvn</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
-<td><tt class="literal">TCVN</tt></td>
+<td><tt class="literal">utf8_to_tcvn</tt></td>
+<td><tt class="literal">UTF8</tt></td>
+<td><tt class="literal">WIN1258</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_uhc</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_uhc</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">UHC</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_windows_1250</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_windows_1250</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">WIN1250</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_windows_1251</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">utf8_to_windows_1251</tt></td>
+<td><tt class="literal">UTF8</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_windows_1256</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_windows_1252</tt></td>
+<td><tt class="literal">UTF8</tt></td>
+<td><tt class="literal">WIN1252</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">utf8_to_windows_1256</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">WIN1256</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_windows_866</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">utf8_to_windows_866</tt></td>
+<td><tt class="literal">UTF8</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">utf_8_to_windows_874</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">utf8_to_windows_874</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 <td><tt class="literal">WIN874</tt></td>
 </tr>
 <tr>
@@ -982,72 +987,77 @@
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1250_to_utf_8</tt></td>
+<td><tt class="literal">windows_1250_to_utf8</tt></td>
 <td><tt class="literal">WIN1250</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">windows_1251_to_iso_8859_5</tt></td>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 <td><tt class="literal">ISO_8859_5</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">windows_1251_to_koi8_r</tt></td>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 <td><tt class="literal">KOI8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">windows_1251_to_mic</tt></td>
-<td><tt class="literal">WIN</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1251_to_utf_8</tt></td>
-<td><tt class="literal">WIN</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">windows_1251_to_utf8</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">windows_1251_to_windows_866</tt></td>
-<td><tt class="literal">WIN</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">WIN1251</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1256_to_utf_8</tt></td>
+<td><tt class="literal">windows_1252_to_utf8</tt></td>
+<td><tt class="literal">WIN1252</tt></td>
+<td><tt class="literal">UTF8</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">windows_1256_to_utf8</tt></td>
 <td><tt class="literal">WIN1256</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">windows_866_to_iso_8859_5</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 <td><tt class="literal">ISO_8859_5</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">windows_866_to_koi8_r</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 <td><tt class="literal">KOI8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">windows_866_to_mic</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_866_to_utf_8</tt></td>
-<td><tt class="literal">ALT</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">windows_866_to_utf8</tt></td>
+<td><tt class="literal">WIN866</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 <tr>
 <td><tt class="literal">windows_866_to_windows_1251</tt></td>
-<td><tt class="literal">ALT</tt></td>
+<td><tt class="literal">WIN866</tt></td>
 <td><tt class="literal">WIN</tt></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_874_to_utf_8</tt></td>
+<td><tt class="literal">windows_874_to_utf8</tt></td>
 <td><tt class="literal">WIN874</tt></td>
-<td><tt class="literal">UNICODE</tt></td>
+<td><tt class="literal">UTF8</tt></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2545291" href="#id2545291">a</a>] </sup>          The conversion names follow a standard naming scheme: The
+<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2545320" href="#id2545320">a</a>] </sup>          The conversion names follow a standard naming scheme: The
           official name of the source encoding with all
           non-alphanumeric characters replaced by underscores followed
           by <tt class="literal">_to_</tt> followed by the equally processed

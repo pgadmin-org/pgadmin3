@@ -74,13 +74,25 @@
    and replay the WAL log.  This is not a problem, just be aware of
    it (and be sure to include the WAL files in your backup).
   </p>
-<p>   If your database is spread across multiple volumes (for example,
-   data files and WAL log on different disks) there may not be any way
-   to obtain exactly-simultaneous frozen snapshots of all the volumes.
+<p>   If your database is spread across multiple file systems, there may not 
+   be any way to obtain exactly-simultaneous frozen snapshots of all 
+   the volumes.  For example, if your data files and WAL log are on different
+   disks, or if tablespaces are on different file systems, it might
+   not be possible to use snapshot backup because the snapshots must be
+   simultaneous.
    Read your file system documentation very carefully before trusting
    to the consistent-snapshot technique in such situations.  The safest
    approach is to shut down the database server for long enough to
    establish all the frozen snapshots.
+  </p>
+<p>   Another option is to use <span class="application">rsync</span> to perform a file
+   system backup.  This is done by first running <span class="application">rsync</span>
+   while the database server is running, then shutting down the database
+   server just long enough to do a second <span class="application">rsync</span>.  The
+   second <span class="application">rsync</span> will be much quicker than the first,
+   because it has relatively little data to transfer, and the end result
+   will be consistent because the server was down.  This method
+   allows a file system backup to be performed with minimal downtime.
   </p>
 <p>   Note that a file system backup will not necessarily be
    smaller than an SQL dump. On the contrary, it will most likely be

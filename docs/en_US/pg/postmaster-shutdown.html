@@ -16,27 +16,27 @@
 <a name="postmaster-shutdown"></a>16.6. Shutting Down the Server</h2></div></div>
 <div></div>
 </div>
-<a name="id2591338"></a><p>   There are several ways to shut down the database server. You control
+<a name="id2591847"></a><p>   There are several ways to shut down the database server. You control
    the type of shutdown by sending different signals to the
    <tt class="command">postmaster</tt> process.
 
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id2591367"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id2591875"></a></span></dt>
 <dd><p>       After receiving <span class="systemitem">SIGTERM</span>, the server
        disallows new connections, but lets existing sessions end their
        work normally. It shuts down only after all of the sessions
        terminate normally. This is the <i class="firstterm">Smart
        Shutdown</i>.
       </p></dd>
-<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id2591397"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id2591905"></a></span></dt>
 <dd><p>       The server disallows new connections and sends all existing
        server processes <span class="systemitem">SIGTERM</span>, which will cause them
        to abort their current transactions and exit promptly. It then
        waits for the server processes to exit and finally shuts down. This is the
        <i class="firstterm">Fast Shutdown</i>.
       </p></dd>
-<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id2591427"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id2591935"></a></span></dt>
 <dd><p>      This is the <i class="firstterm">Immediate Shutdown</i>, which
       will cause the <tt class="command">postmaster</tt> process to send a
       <span class="systemitem">SIGQUIT</span> to all child processes and exit

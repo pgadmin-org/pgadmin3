@@ -38,7 +38,7 @@
 <dt><span class="sect1"><a href="migration.html">22.4. Migration Between Releases</a></span></dt>
 </dl>
 </div>
-<a name="id2600580"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
+<a name="id2601405"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
   databases should be backed up regularly. While the procedure is
   essentially simple, it is important to have a basic understanding of
   the underlying techniques and assumptions.
@@ -188,7 +188,7 @@
 <p>
     The resulting dump can be restored with <span class="application">psql</span>:
 </p>
-<pre class="synopsis">psql template1 &lt; <i class="replaceable"><tt>infile</tt></i></pre>
+<pre class="synopsis">psql -f <i class="replaceable"><tt>infile</tt></i> template1</pre>
 <p>
     (Actually, you can specify any existing database name to start from,
     but if you are reloading in an empty cluster then <tt class="literal">template1</tt>
@@ -269,7 +269,7 @@ cat <i class="replaceable"><tt>filename</tt></i>* | psql <i class="replaceable">
 <div></div>
 </div>
 <p>    For reasons of backward compatibility, <span class="application">pg_dump</span>
-    does not dump large objects by default.<a name="id2601408"></a> To dump
+    does not dump large objects by default.<a name="id2602232"></a> To dump
     large objects you must use either the custom or the tar output
     format, and use the <tt class="option">-b</tt> option in
     <span class="application">pg_dump</span>. See the <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> reference

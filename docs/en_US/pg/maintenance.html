@@ -29,7 +29,7 @@
 <dt><span class="sect1"><a href="logfile-maintenance.html">21.3. Log File Maintenance</a></span></dt>
 </dl>
 </div>
-<a name="id2599113"></a><p>   There are a few routine maintenance chores that must be performed on
+<a name="id2599873"></a><p>   There are a few routine maintenance chores that must be performed on
    a regular basis to keep a <span class="productname">PostgreSQL</span>
    server running smoothly.  The tasks discussed here are repetitive
    in nature and can easily be automated using standard Unix tools such
@@ -62,7 +62,7 @@
 <a name="routine-vacuuming"></a>21.1. Routine Vacuuming</h2></div></div>
 <div></div>
 </div>
-<a name="id2599208"></a><p>   <span class="productname">PostgreSQL</span>'s <tt class="command">VACUUM</tt> command
+<a name="id2599973"></a><p>   <span class="productname">PostgreSQL</span>'s <tt class="command">VACUUM</tt> command
    must be run on a regular basis for several reasons:
 
     </p>
@@ -101,7 +101,7 @@
 <a name="vacuum-for-space-recovery"></a>21.1.1. Recovering disk space</h3></div></div>
 <div></div>
 </div>
-<a name="id2599327"></a><p>    In normal <span class="productname">PostgreSQL</span> operation, an
+<a name="id2600092"></a><p>    In normal <span class="productname">PostgreSQL</span> operation, an
     <tt class="command">UPDATE</tt> or <tt class="command">DELETE</tt> of a row does not
     immediately remove the old version of the row.
     This approach is necessary to gain the benefits of multiversion
@@ -188,7 +188,7 @@
 <a name="vacuum-for-statistics"></a>21.1.2. Updating planner statistics</h3></div></div>
 <div></div>
 </div>
-<a name="id2599632"></a><a name="id2599647"></a><p>    The <span class="productname">PostgreSQL</span> query planner relies on
+<a name="id2600398"></a><a name="id2600412"></a><p>    The <span class="productname">PostgreSQL</span> query planner relies on
     statistical information about the contents of tables in order to
     generate good plans for queries.  These statistics are gathered by
     the <tt class="command">ANALYZE</tt> command, which can be invoked by itself or
@@ -245,13 +245,13 @@
 <a name="vacuum-for-wraparound"></a>21.1.3. Preventing transaction ID wraparound failures</h3></div></div>
 <div></div>
 </div>
-<a name="id2599800"></a><p>    <span class="productname">PostgreSQL</span>'s MVCC transaction semantics
+<a name="id2600565"></a><p>    <span class="productname">PostgreSQL</span>'s MVCC transaction semantics
     depend on being able to compare transaction ID (<span class="acronym">XID</span>)
     numbers: a row version with an insertion XID greater than the current
     transaction's XID is &#8220;<span class="quote">in the future</span>&#8221; and should not be visible
     to the current transaction.  But since transaction IDs have limited size
     (32 bits at this writing) a cluster that runs for a long time (more
-    than 4 billion transactions) will suffer <i class="firstterm">transaction ID
+    than 4 billion transactions) would suffer <i class="firstterm">transaction ID
     wraparound</i>: the XID counter wraps around to zero, and all of a sudden
     transactions that were in the past appear to be in the future [mdash ] which
     means their outputs become invisible.  In short, catastrophic data loss.
@@ -270,8 +270,13 @@
 <p>    In practice this isn't an onerous requirement, but since the
     consequences of failing to meet it can be complete data loss (not
     just wasted disk space or slow performance), some special provisions
-    have been made to help database administrators keep track of the
-    time since the last <tt class="command">VACUUM</tt>. The remainder of this
+    have been made to help database administrators avoid disaster.
+    For each database in the cluster, <span class="productname">PostgreSQL</span>
+    keeps track of the time of the last database-wide <tt class="command">VACUUM</tt>.
+    When any database approaches the billion-transaction danger level,
+    the system begins to emit warning messages.  If nothing is done, it
+    will eventually shut down normal operations until appropriate
+    manual maintenance is done.  The remainder of this
     section gives the details.
    </p>
 <p>    The new approach to XID comparison distinguishes two special XIDs,
@@ -314,7 +319,8 @@
     statistics in the system table <tt class="literal">pg_database</tt>.  In particular,
     the <tt class="literal">datfrozenxid</tt> column of a database's
     <tt class="literal">pg_database</tt> row is updated at the completion of any
-    database-wide <tt class="command">VACUUM</tt> operation (i.e., <tt class="command">VACUUM</tt> that does not
+    database-wide <tt class="command">VACUUM</tt> operation (i.e.,
+    <tt class="command">VACUUM</tt> that does not
     name a specific table).  The value stored in this field is the freeze
     cutoff XID that was used by that <tt class="command">VACUUM</tt> command.  All normal
     XIDs older than this cutoff XID are guaranteed to have been replaced by
@@ -340,10 +346,33 @@
 
 </p>
 <pre class="programlisting">play=# VACUUM;
-WARNING:  some databases have not been vacuumed in 1613770184 transactions
-HINT:  Better vacuum them within 533713463 transactions, or you may have a wraparound failure.
+WARNING:  database "mydb" must be vacuumed within 177009986 transactions
+HINT:  To avoid a database shutdown, execute a full-database VACUUM in "mydb".
 VACUUM</pre>
 <p>
+   </p>
+<p>    If the warnings emitted by <tt class="command">VACUUM</tt> go ignored, then
+    <span class="productname">PostgreSQL</span> will begin to emit a warning
+    like the above on every transaction start once there are fewer than 10
+    million transactions left until wraparound.  If those warnings also are
+    ignored, the system will shut down and refuse to execute any new
+    transactions once there are fewer than 1 million transactions left
+    until wraparound:
+
+</p>
+<pre class="programlisting">play=# select 2+2;
+ERROR:  database is shut down to avoid wraparound data loss in database "mydb"
+HINT:  Stop the postmaster and use a standalone backend to VACUUM in "mydb".</pre>
+<p>
+
+    The 1-million-transaction safety margin exists to let the
+    administrator recover without data loss, by manually executing the
+    required <tt class="command">VACUUM</tt> commands.  However, since the system will not
+    execute commands once it has gone into the safety shutdown mode,
+    the only way to do this is to stop the postmaster and use a standalone
+    backend to execute <tt class="command">VACUUM</tt>.  The shutdown mode is not enforced
+    by a standalone backend.  See the <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a> reference
+    page for details about using a standalone backend.
    </p>
 <p>    <tt class="command">VACUUM</tt> with the <tt class="command">FREEZE</tt> option uses a more
     aggressive freezing policy: row versions are frozen if they are old enough
@@ -357,22 +386,16 @@ VACUUM</pre>
     It should also be used to prepare any user-created databases that
     are to be marked <tt class="literal">datallowconn</tt> = <tt class="literal">false</tt> in
     <tt class="literal">pg_database</tt>, since there isn't any convenient way to
-    <tt class="command">VACUUM</tt> a database that you can't connect to. Note that
-    <tt class="command">VACUUM</tt>'s automatic warning message about
-    unvacuumed databases will ignore <tt class="literal">pg_database</tt> entries
-    with <tt class="literal">datallowconn</tt> = <tt class="literal">false</tt>, so as to avoid
-    giving false warnings about these databases; therefore it's up to
-    you to ensure that such databases are frozen correctly.
+    <tt class="command">VACUUM</tt> a database that you can't connect to.
    </p>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p>     To be sure of safety against transaction wraparound, it is necessary
-     to vacuum <span class="emphasis"><em>every</em></span> table, including system catalogs, in
-     <span class="emphasis"><em>every</em></span> database at least once every billion transactions.
-     We have seen data loss situations caused by people deciding that they
-     only needed to vacuum their active user tables, rather than issuing
-     database-wide vacuum commands.  That will appear to work fine ...
-     for a while.
+<p>     A database that is marked <tt class="literal">datallowconn</tt> = <tt class="literal">false</tt>
+     in <tt class="literal">pg_database</tt> is assumed to be properly frozen; the
+     automatic warnings and wraparound protection shutdown do not take
+     such databases into account.  Therefore it's up to you to ensure
+     you've correctly frozen a database before you mark it with
+     <tt class="literal">datallowconn</tt> = <tt class="literal">false</tt>.
     </p>
 </div>
 </div>

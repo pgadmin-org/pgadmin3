@@ -154,6 +154,7 @@ private:
     void StoreServers();
     void RetrieveServers();
     int ReconnectServer(pgServer *server);
+    void reportConnError(pgServer *server);
     wxTreeItemId RestoreEnvironment(pgServer *server);
 
     DECLARE_EVENT_TABLE()

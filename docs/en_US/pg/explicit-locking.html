@@ -16,7 +16,7 @@
 <a name="explicit-locking"></a>12.3. Explicit Locking</h2></div></div>
 <div></div>
 </div>
-<a name="id2570966"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
+<a name="id2571215"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
     to control concurrent access to data in tables.  These modes can
     be used for application-controlled locking in situations where
     <span class="acronym">MVCC</span> does not give the desired behavior.  Also,
@@ -38,7 +38,7 @@
 <a name="locking-tables"></a>12.3.1. Table-Level Locks</h3></div></div>
 <div></div>
 </div>
-<a name="id2571034"></a><p>    The list below shows the available lock modes and the contexts in
+<a name="id2571283"></a><p>    The list below shows the available lock modes and the contexts in
     which they are used automatically by
     <span class="productname">PostgreSQL</span>.  You can also acquire any
     of these locks explicitly with the command <a href="sql-lock.html" title="LOCK"><span class="refentrytitle"><a name="sql-lock-title"></a>LOCK</span></a>.
@@ -152,8 +152,9 @@
 	 i.e., only reads from the table can proceed in parallel with a
 	 transaction holding this lock mode.
 	</p>
-<p>         This lock mode is not automatically acquired by any
-         <span class="productname">PostgreSQL</span> command.
+<p>         This lock mode is not automatically acquired on user tables by any
+         <span class="productname">PostgreSQL</span> command.  However it is
+         acquired on certain system catalogs in some operations.
 	</p>
 </dd>
 <dt><span class="term">	<tt class="literal">ACCESS EXCLUSIVE</tt>
@@ -223,7 +224,7 @@
 <a name="locking-deadlocks"></a>12.3.3. Deadlocks</h3></div></div>
 <div></div>
 </div>
-<a name="id2571691"></a><p>     The use of explicit locking can increase the likelihood of
+<a name="id2571942"></a><p>     The use of explicit locking can increase the likelihood of
      <i class="firstterm">deadlocks</i>, wherein two (or more) transactions each
      hold locks that the other wants.  For example, if transaction 1
      acquires an exclusive lock on table A and then tries to acquire

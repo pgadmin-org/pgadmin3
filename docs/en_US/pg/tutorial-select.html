@@ -16,8 +16,8 @@
 <a name="tutorial-select"></a>2.5. Querying a Table</h2></div></div>
 <div></div>
 </div>
-<p>    <a name="id2518290"></a>
-    <a name="id2518296"></a>
+<p>    <a name="id2518314"></a>
+    <a name="id2518320"></a>
 
     To retrieve data from a table, the table is
     <i class="firstterm">queried</i>.  An <span class="acronym">SQL</span>
@@ -32,7 +32,7 @@
 <pre class="programlisting">SELECT * FROM weather;</pre>
 <p>
     Here <tt class="literal">*</tt> is a shorthand for &#8220;<span class="quote">all columns</span>&#8221;.
-     <sup>[<a name="id2518343" href="#ftn.id2518343">2</a>]</sup>
+     <sup>[<a name="id2518367" href="#ftn.id2518367">2</a>]</sup>
     So the same result would be had with:
 </p>
 <pre class="programlisting">SELECT city, temp_lo, temp_hi, prcp, date FROM weather;</pre>
@@ -87,7 +87,7 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <a name="id2518469"></a>
+<p>    <a name="id2518493"></a>
 
     You can request that the results of a query
     be returned in sorted order:
@@ -114,8 +114,8 @@
     ORDER BY city, temp_lo;</pre>
 <p>
    </p>
-<p>    <a name="id2518506"></a>
-    <a name="id2518513"></a>
+<p>    <a name="id2518530"></a>
+    <a name="id2518537"></a>
 
     You can request that duplicate rows be removed from the result of
     a query:
@@ -136,7 +136,7 @@
     Here again, the result row ordering might vary.
     You can ensure consistent results by using <tt class="literal">DISTINCT</tt> and
     <tt class="literal">ORDER BY</tt> together:
-     <sup>[<a name="id2518548" href="#ftn.id2518548">3</a>]</sup>
+     <sup>[<a name="id2518572" href="#ftn.id2518572">3</a>]</sup>
 
 </p>
 <pre class="programlisting">SELECT DISTINCT city
@@ -146,11 +146,11 @@
    </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2518343" href="#id2518343">2</a>] </sup>       While <tt class="literal">SELECT *</tt> is useful for off-the-cuff
+<div class="footnote"><p><sup>[<a name="ftn.id2518367" href="#id2518367">2</a>] </sup>       While <tt class="literal">SELECT *</tt> is useful for off-the-cuff
        queries, it is widely considered bad style in production code,
        since adding a column to the table would change the results.
       </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2518548" href="#id2518548">3</a>] </sup>       In some database systems, including older versions of
+<div class="footnote"><p><sup>[<a name="ftn.id2518572" href="#id2518572">3</a>] </sup>       In some database systems, including older versions of
        <span class="productname">PostgreSQL</span>, the implementation of
        <tt class="literal">DISTINCT</tt> automatically orders the rows and
        so <tt class="literal">ORDER BY</tt> is redundant.  But this is not

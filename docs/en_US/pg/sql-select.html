@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>SELECT &#8212; retrieve rows from a table or view</p>
 </div>
-<a name="id2697578"></a><div class="refsynopsisdiv">
+<a name="id2698751"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <i class="replaceable"><tt>expression</tt></i> [, ...] ) ] ]
     * | <i class="replaceable"><tt>expression</tt></i> [ AS <i class="replaceable"><tt>output_name</tt></i> ] [, ...]
@@ -42,7 +42,7 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
     <i class="replaceable"><tt>from_item</tt></i> [ NATURAL ] <i class="replaceable"><tt>join_type</tt></i> <i class="replaceable"><tt>from_item</tt></i> [ ON <i class="replaceable"><tt>join_condition</tt></i> | USING ( <i class="replaceable"><tt>join_column</tt></i> [, ...] ) ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697797"></a><h2>Description</h2>
+<a name="id2698970"></a><h2>Description</h2>
 <p>   <tt class="command">SELECT</tt> retrieves rows from one or more tables.
    The general processing of <tt class="command">SELECT</tt> is as follows:
 
@@ -114,7 +114,7 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2698186"></a><h2>Parameters</h2>
+<a name="id2699359"></a><h2>Parameters</h2>
 <div class="refsect2" lang="en">
 <a name="sql-from"></a><h3>
 <tt class="literal">FROM</tt> Clause</h3>
@@ -323,6 +323,15 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
     <i class="replaceable"><tt>condition</tt></i> must
     unambiguously reference a grouping column, unless the reference
     appears within an aggregate function.
+   </p>
+<p>    The presence of <tt class="literal">HAVING</tt> turns a query into a grouped
+    query even if there is no <tt class="literal">GROUP BY</tt> clause.  This is the
+    same as what happens when the query contains aggregate functions but
+    no <tt class="literal">GROUP BY</tt> clause.  All the selected rows are considered to
+    form a single group, and the <tt class="command">SELECT</tt> list and
+    <tt class="literal">HAVING</tt> clause can only reference table columns from
+    within aggregate functions.  Such a query will emit a single row if the
+    <tt class="literal">HAVING</tt> condition is true, zero rows if it is not true.
    </p>
 </div>
 <div class="refsect2" lang="en">
@@ -622,7 +631,7 @@ OFFSET <i class="replaceable"><tt>start</tt></i></pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2701080"></a><h2>Examples</h2>
+<a name="id2702298"></a><h2>Examples</h2>
 <p>   To join the table <tt class="literal">films</tt> with the table
    <tt class="literal">distributors</tt>:
 
@@ -752,13 +761,13 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2701246"></a><h2>Compatibility</h2>
+<a name="id2702464"></a><h2>Compatibility</h2>
 <p>   Of course, the <tt class="command">SELECT</tt> statement is compatible
    with the SQL standard.  But there are some extensions and some
    missing features.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2701258"></a><h3>Omitted <tt class="literal">FROM</tt> Clauses</h3>
+<a name="id2702477"></a><h3>Omitted <tt class="literal">FROM</tt> Clauses</h3>
 <p>    <span class="productname">PostgreSQL</span> allows one to omit the
     <tt class="literal">FROM</tt> clause.  It has a straightforward use to
     compute the results of simple expressions:
@@ -810,7 +819,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2701391"></a><h3>The <tt class="literal">AS</tt> Key Word</h3>
+<a name="id2702609"></a><h3>The <tt class="literal">AS</tt> Key Word</h3>
 <p>    In the SQL standard, the optional key word <tt class="literal">AS</tt> is just
     noise and can be omitted without affecting the meaning.  The
     <span class="productname">PostgreSQL</span> parser requires this key
@@ -821,7 +830,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2701427"></a><h3>Namespace Available to <tt class="literal">GROUP BY</tt> and <tt class="literal">ORDER BY</tt>
+<a name="id2702645"></a><h3>Namespace Available to <tt class="literal">GROUP BY</tt> and <tt class="literal">ORDER BY</tt>
 </h3>
 <p>    In the SQL-92 standard, an <tt class="literal">ORDER BY</tt> clause may
     only use result column names or numbers, while a <tt class="literal">GROUP
@@ -842,7 +851,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2701493"></a><h3>Nonstandard Clauses</h3>
+<a name="id2702711"></a><h3>Nonstandard Clauses</h3>
 <p>    The clauses <tt class="literal">DISTINCT ON</tt>,
     <tt class="literal">LIMIT</tt>, and <tt class="literal">OFFSET</tt> are not
     defined in the SQL standard.

@@ -19,12 +19,12 @@
 <h2>Name</h2>
 <p>SPI_prepare &#8212; prepare a plan for a command, without executing it yet</p>
 </div>
-<a name="id2659244"></a><div class="refsynopsisdiv">
+<a name="id2660158"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">void * SPI_prepare(const char * <i class="parameter"><tt>command</tt></i>, int <i class="parameter"><tt>nargs</tt></i>, Oid * <i class="parameter"><tt>argtypes</tt></i>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659274"></a><h2>Description</h2>
+<a name="id2660188"></a><h2>Description</h2>
 <p>   <tt class="function">SPI_prepare</tt> creates and returns an execution
    plan for the specified command but doesn't execute the command.
    This function should only be called from a connected procedure.
@@ -50,7 +50,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659355"></a><h2>Arguments</h2>
+<a name="id2660268"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>command</tt></i></tt></span></dt>
 <dd><p>      command string
@@ -65,7 +65,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659421"></a><h2>Return Value</h2>
+<a name="id2660334"></a><h2>Return Value</h2>
 <p>   <tt class="function">SPI_prepare</tt> returns a non-null pointer to an
    execution plan.  On error, <tt class="symbol">NULL</tt> will be returned,
    and <tt class="varname">SPI_result</tt> will be set to one of the same
@@ -77,7 +77,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659484"></a><h2>Notes</h2>
+<a name="id2660398"></a><h2>Notes</h2>
 <p>   There is a disadvantage to using parameters: since the planner does
    not know the values that will be supplied for the parameters, it
    may make worse planning choices than it would make for a normal

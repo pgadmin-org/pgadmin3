@@ -563,19 +563,26 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
         }
     }
 
+    wxString page;
+    int hashPos = helpTopic.Find('#');
+    if (hashPos < 0)
+        page = helpTopic;
+    else
+        page = helpTopic.Left(hashPos) + wxT(".html") + helpTopic.Mid(hashPos);
+
     if (helpCtl)
     {
-        if (helpTopic == wxT("index"))
+        if (helpTopic == wxT("index.html"))
             helpCtl->DisplayContents();
         else
-            helpCtl->DisplaySection(helpTopic + wxT(".html"));
+            helpCtl->DisplaySection(page);
     }
     else
     {
         while (wnd->GetParent())
             wnd=wnd->GetParent();
     
-        frmHelp::LoadLocalDoc(wnd, helpTopic + wxT(".html"), icon);
+        frmHelp::LoadLocalDoc(wnd, page, icon);
     }
 }
 

@@ -38,14 +38,14 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2617735"></a>28.3.1. Creating a Large Object</h3></div></div>
+<a name="id2618631"></a>28.3.1. Creating a Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     The function
 </p>
 <pre class="synopsis">Oid lo_creat(PGconn *conn, int mode);</pre>
 <p>
-     <a name="id2617748"></a>
+     <a name="id2618644"></a>
      creates a new large  object.  
      <i class="replaceable"><tt>mode</tt></i>  is  a  bit mask
      describing  several  different  attributes  of  the new
@@ -70,14 +70,14 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2617796"></a>28.3.2. Importing a Large Object</h3></div></div>
+<a name="id2618692"></a>28.3.2. Importing a Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     To import an operating system file as a large object, call
 </p>
 <pre class="synopsis">Oid lo_import(PGconn *conn, const char *filename);</pre>
 <p>
-     <a name="id2617809"></a>
+     <a name="id2618705"></a>
      <i class="replaceable"><tt>filename</tt></i> 
      specifies the operating system name of
      the file to be imported as a large object.
@@ -91,7 +91,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2617828"></a>28.3.3. Exporting a Large Object</h3></div></div>
+<a name="id2618724"></a>28.3.3. Exporting a Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     To export a large object
@@ -99,7 +99,7 @@
 </p>
 <pre class="synopsis">int lo_export(PGconn *conn, Oid lobjId, const char *filename);</pre>
 <p>
-     <a name="id2617842"></a>
+     <a name="id2618738"></a>
      The <i class="parameter"><tt>lobjId</tt></i> argument specifies the OID of the large
      object to export and the <i class="parameter"><tt>filename</tt></i> argument
      specifies the operating system name of the file.  Note that the file is
@@ -110,14 +110,14 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2617866"></a>28.3.4. Opening an Existing Large Object</h3></div></div>
+<a name="id2618762"></a>28.3.4. Opening an Existing Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     To open an existing large object for reading or writing, call
 </p>
 <pre class="synopsis">int lo_open(PGconn *conn, Oid lobjId, int mode);</pre>
 <p>
-     <a name="id2617880"></a>
+     <a name="id2618776"></a>
      The <i class="parameter"><tt>lobjId</tt></i> argument specifies  the  OID  of  the  large
      object  to  open.   The  <i class="parameter"><tt>mode</tt></i>  bits control whether the
      object is opened  for  reading  (<tt class="symbol">INV_READ</tt>),  writing (<tt class="symbol">INV_WRITE</tt>),  or
@@ -134,14 +134,14 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2617948"></a>28.3.5. Writing Data to a Large Object</h3></div></div>
+<a name="id2618844"></a>28.3.5. Writing Data to a Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     The function
 </p>
 <pre class="synopsis">int lo_write(PGconn *conn, int fd, const char *buf, size_t len);</pre>
 <p>
-     <a name="id2617962"></a> writes
+     <a name="id2618858"></a> writes
      <i class="parameter"><tt>len</tt></i> bytes from <i class="parameter"><tt>buf</tt></i>
      to large object descriptor <i class="parameter"><tt>fd</tt></i>.  The <i class="parameter"><tt>fd</tt></i>
      argument must have been returned by a previous
@@ -152,14 +152,14 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2618001"></a>28.3.6. Reading Data from a Large Object</h3></div></div>
+<a name="id2618897"></a>28.3.6. Reading Data from a Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     The function
 </p>
 <pre class="synopsis">int lo_read(PGconn *conn, int fd, char *buf, size_t len);</pre>
 <p>
-     <a name="id2618014"></a> reads
+     <a name="id2618910"></a> reads
      <i class="parameter"><tt>len</tt></i> bytes from large object descriptor
      <i class="parameter"><tt>fd</tt></i> into <i class="parameter"><tt>buf</tt></i>. The
      <i class="parameter"><tt>fd</tt></i> argument must have been returned by a
@@ -170,7 +170,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2618054"></a>28.3.7. Seeking in a Large Object</h3></div></div>
+<a name="id2618950"></a>28.3.7. Seeking in a Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     To change the current read or write location associated with a
@@ -178,7 +178,7 @@
 </p>
 <pre class="synopsis">int lo_lseek(PGconn *conn, int fd, int offset, int whence);</pre>
 <p>
-     <a name="id2618068"></a> This function moves the
+     <a name="id2618964"></a> This function moves the
      current location pointer for the large object descriptor identified by
      <i class="parameter"><tt>fd</tt></i> to the new location specified by
      <i class="parameter"><tt>offset</tt></i>.  The valid values for <i class="parameter"><tt>whence</tt></i>
@@ -190,7 +190,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2618109"></a>28.3.8. Obtaining the Seek Position of a Large Object</h3></div></div>
+<a name="id2619005"></a>28.3.8. Obtaining the Seek Position of a Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     To obtain the current read or write location of a large object descriptor,
@@ -198,20 +198,20 @@
 </p>
 <pre class="synopsis">int lo_tell(PGconn *conn, int fd);</pre>
 <p>
-     <a name="id2618123"></a> If there is an error, the
+     <a name="id2619019"></a> If there is an error, the
      return value is negative.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2618131"></a>28.3.9. Closing a Large Object Descriptor</h3></div></div>
+<a name="id2619027"></a>28.3.9. Closing a Large Object Descriptor</h3></div></div>
 <div></div>
 </div>
 <p>     A large object descriptor may be closed by calling
 </p>
 <pre class="synopsis">int lo_close(PGconn *conn, int fd);</pre>
 <p>
-     <a name="id2618144"></a> where <i class="parameter"><tt>fd</tt></i> is a
+     <a name="id2619040"></a> where <i class="parameter"><tt>fd</tt></i> is a
      large object descriptor returned by <tt class="function">lo_open</tt>.
      On success, <tt class="function">lo_close</tt> returns zero.  On
      error, the return value is negative.</p>
@@ -221,14 +221,14 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2618175"></a>28.3.10. Removing a Large Object</h3></div></div>
+<a name="id2619071"></a>28.3.10. Removing a Large Object</h3></div></div>
 <div></div>
 </div>
 <p>     To remove a large object from the database, call
 </p>
 <pre class="synopsis">int lo_unlink(PGconn *conn, Oid lobjId);</pre>
 <p>
-     <a name="id2618188"></a> The
+     <a name="id2619084"></a> The
      <i class="parameter"><tt>lobjId</tt></i> argument specifies the OID of the
      large object to remove.  Returns 1 if successful, -1 on failure.
     </p>

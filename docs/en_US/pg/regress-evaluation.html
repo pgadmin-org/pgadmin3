@@ -42,7 +42,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2606170"></a>26.2.1. Error message differences</h3></div></div>
+<a name="id2607081"></a>26.2.1. Error message differences</h3></div></div>
 <div></div>
 </div>
 <p>     Some of the regression tests involve intentional invalid input
@@ -58,7 +58,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2606192"></a>26.2.2. Locale differences</h3></div></div>
+<a name="id2607104"></a>26.2.2. Locale differences</h3></div></div>
 <div></div>
 </div>
 <p>     If you run the tests against an already-installed server that was
@@ -90,7 +90,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2606270"></a>26.2.3. Date and time differences</h3></div></div>
+<a name="id2607182"></a>26.2.3. Date and time differences</h3></div></div>
 <div></div>
 </div>
 <p>     A few of the queries in the <tt class="filename">horology</tt> test will
@@ -123,7 +123,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2606324"></a>26.2.4. Floating-point differences</h3></div></div>
+<a name="id2607236"></a>26.2.4. Floating-point differences</h3></div></div>
 <div></div>
 </div>
 <p>     Some of the tests involve computing 64-bit floating-point numbers (<tt class="type">double
@@ -148,7 +148,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2606395"></a>26.2.5. Row ordering differences</h3></div></div>
+<a name="id2607306"></a>26.2.5. Row ordering differences</h3></div></div>
 <div></div>
 </div>
 <p>You might see differences in which the same rows are output in a
@@ -160,17 +160,19 @@ according to the letter of the SQL specification.  In practice, since we are
 looking at the same queries being executed on the same data by the same
 software, we usually get the same result ordering on all platforms, and
 so the lack of <tt class="literal">ORDER BY</tt> isn't a problem.  Some queries do exhibit
-cross-platform ordering differences, however.  (Ordering differences
-can also be triggered by non-C locale settings.)
+cross-platform ordering differences, however.  When testing against an
+already-installed server, ordering differences can also be caused by
+non-C locale settings or non-default parameter settings, such as custom values
+of <tt class="varname">work_mem</tt> or the planner cost parameters.
     </p>
 <p>Therefore, if you see an ordering difference, it's not something to
-worry about, unless the query does have an <tt class="literal">ORDER BY</tt> that your result
-is violating.  But please report it anyway, so that we can add an
+worry about, unless the query does have an <tt class="literal">ORDER BY</tt> that your
+result is violating.  But please report it anyway, so that we can add an
 <tt class="literal">ORDER BY</tt> to that particular query and thereby eliminate the bogus
 &#8220;<span class="quote">failure</span>&#8221; in future releases.
     </p>
-<p>You might wonder why we don't order all the regression test queries explicitly to
-get rid of this issue once and for all.  The reason is that that would
+<p>You might wonder why we don't order all the regression test queries explicitly
+to get rid of this issue once and for all.  The reason is that that would
 make the regression tests less useful, not more, since they'd tend
 to exercise query plan types that produce ordered results to the
 exclusion of those that don't.
@@ -179,7 +181,7 @@ exclusion of those that don't.
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2606460"></a>26.2.6. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div>
+<a name="id2607378"></a>26.2.6. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div>
 <div></div>
 </div>
 <p>     The <tt class="literal">random</tt> test script is intended to produce 

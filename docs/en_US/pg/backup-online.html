@@ -16,7 +16,7 @@
 <a name="backup-online"></a>22.3. On-line backup and point-in-time recovery (PITR)</h2></div></div>
 <div></div>
 </div>
-<a name="id2601623"></a><a name="id2601632"></a><a name="id2601641"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id2602495"></a><a name="id2602504"></a><a name="id2602513"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <i class="firstterm">write ahead log</i> (WAL) in the <tt class="filename">pg_xlog/</tt>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -538,7 +538,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <a name="backup-timelines"></a>22.3.4. Timelines</h3></div></div>
 <div></div>
 </div>
-<a name="id2602988"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id2603860"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.
@@ -601,11 +601,22 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     technique.  These will probably be fixed in future releases:
 
   </p>
-<div class="itemizedlist"><ul type="disc"><li><p>     Operations on non-B-tree indexes (hash, R-tree, and GiST indexes) are
+<div class="itemizedlist"><ul type="disc">
+<li><p>     Operations on non-B-tree indexes (hash, R-tree, and GiST indexes) are
      not presently WAL-logged, so replay will not update these index types.
      The recommended workaround is to manually <tt class="command">REINDEX</tt> each
      such index after completing a recovery operation.
-    </p></li></ul></div>
+    </p></li>
+<li><p>     <tt class="command">CREATE TABLESPACE</tt> commands are WAL-logged with the literal
+     absolute path, and will therefore be replayed as tablespace creations
+     with the same absolute path.  This might be undesirable if the log is
+     being replayed on a different machine.  It can be dangerous even if
+     the log is being replayed on the same machine, but into a new data
+     directory: the replay will still overwrite the contents of the original
+     tablespace.  To avoid potential gotchas of this sort, the best practice
+     is to take a new base backup after creating or dropping tablespaces.
+    </p></li>
+</ul></div>
 <p>
    </p>
 <p>    It should also be noted that the present <span class="acronym">WAL</span>
@@ -614,7 +625,9 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     since we may need to fix partially-written disk pages.  It is not
     necessary to store so many page copies for PITR operations, however.
     An area for future development is to compress archived WAL data by
-    removing unnecessary page copies.
+    removing unnecessary page copies.  In the meantime, administrators
+    may wish to reduce the number of page snapshots included in WAL by
+    increasing the checkpoint interval parameters as much as feasible.
    </p>
 </div>
 </div></body>

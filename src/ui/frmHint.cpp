@@ -16,12 +16,14 @@
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/file.h>
+#include "wx/wxhtml.h"
 
 // App headers
 #include "copyright.h"
 #include "frmHint.h"
 #include "frmMain.h"
 #include "menu.h"
+#include "utffile.h"
 
 // Icons
 #include "images/pgAdmin3.xpm"
@@ -33,23 +35,26 @@
 
 struct
 {
-    const wxChar *helpItem;
     int flags;
-    const wxChar *helpCaption;
-    const wxChar *helpText;
+    const wxChar *helpItem;
+    const wxChar *hintPage;
+    const wxChar *hintCaption;
 } hintArray[]=
 {
-    { wxT("pk"), HINT_CANSUPPRESS, 
-        __("Primary key suggested"),
-        __("In general, every table should have a primary key which uniquely identifies each row.")
+    {   HINT_CANSUPPRESS, 
+        wxT("runtime-config#runtime-config-connection"),
+        wxT("conn-listen"), __("Server not listening")
     },
-    { wxT("fk"), HINT_CANSUPPRESS, 
-        __("Index in referenced table suggested"), 
-        __("Creating a foreign key on a table also affects access to the referenced table, because on each update and delete all foreign keys have to be checked for referencings rows in dependent tables.")
-        __("This effectively means that an implicit select access to those tables is performed, which should be supported by indexes in most cases.\n")
-        __("To create an index on the referencing table automatically, you can select the \"Covering Index\" option.")
+    {   HINT_CANSUPPRESS, wxT("client-authentication#auth-pg-hba-conf"), 
+        wxT("conn-hba"), __("Server denies access")
     },
-    { 0,0,0,0 }
+    {   HINT_CANSUPPRESS|HINT_CANABORT, 0, 
+        wxT("pk"), __("Primary key suggested")
+    },
+    {   HINT_CANSUPPRESS|HINT_CANABORT, 0, 
+        wxT("fki"),     __("Index in referenced table suggested")
+    },
+    { 0, 0,0,0 }
 };
 
 
@@ -57,25 +62,41 @@ BEGIN_EVENT_TABLE(frmHint, DialogWithHelp)
 END_EVENT_TABLE();
 
 
-#define stBold          CTRL_STATIC("stBold")
-#define stNormal        CTRL_STATIC("stNormal")
+
+
 #define chkSuppress     CTRL_CHECKBOX("chkSuppress")
+#define htmlHint        (XRCCTRL(*this, "htmlHint", wxHtmlWindow))
 
-
-frmHint::frmHint(wxWindow *fr, Hint hintno) : DialogWithHelp(0)
+frmHint::frmHint(wxWindow *fr, Hint hintno, const wxString &info) : DialogWithHelp(0)
 {
-    SetIcon(wxIcon(pgAdmin3_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(fr, wxT("frmHint"));
 
-    wxWindowBase::SetFont(settings->GetSystemFont());
+    SetIcon(wxIcon(pgAdmin3_xpm));
+    SetTitle(_("pgAdmin III Guru Hint") + wxString(wxT(" - ")) + wxGetTranslation(hintArray[hintno].hintCaption));
 
-    wxFont fntLabel = stBold->GetFont();
-    fntLabel.SetWeight(wxBOLD);
-    stBold->SetFont(fntLabel);
+    extern wxString docPath;
+    wxString cn=settings->GetCanonicalLanguage();
+    if (cn.IsEmpty())
+        cn=wxT("en_US");
 
-    stBold->SetLabel(wxGetTranslation(hintArray[hintno].helpCaption));
-    stNormal->SetLabel(wxGetTranslation(hintArray[hintno].helpText));
+    wxString filename=docPath + wxT("/") + cn + wxT("/hints/") + hintArray[hintno].hintPage + wxT(".html");
+
+    if (!wxFile::Exists(filename))
+        filename = docPath + wxT("/en_US/hints/") + hintArray[hintno].hintPage + wxT(".html");
+    if (wxFile::Exists(filename))
+    {
+        if (info.IsEmpty())
+            htmlHint->LoadPage(filename);
+        else
+        {
+            wxString page;
+            wxUtfFile file(filename);
+            file.Read(page);
+            page.Replace(wxT("<INFO>"), info);
+            htmlHint->SetPage(page);
+        }
+    }
     chkSuppress->SetValue(false);
     if (!(hintArray[hintno].flags & HINT_CANSUPPRESS))
         chkSuppress->Disable();
@@ -95,22 +116,41 @@ frmHint::~frmHint()
 
 wxString frmHint::GetHelpPage() const
 {
-    return hintArray[currentHint].helpItem;
+    const wxChar *helpItem=hintArray[currentHint].helpItem;
+    if (helpItem)
+        return helpItem;
+
+    return wxT("guruhints");
 }
 
 
-int frmHint::ShowHint(wxWindow *fr, Hint hintno)
+
+bool frmHint::WantHint(Hint hintno)
 {
-    int rc=wxID_OK;
     if (hintno < 0 || hintno >= HintLast)
-        return rc;
+        return false;
+    if ((hintArray[hintno].flags & HINT_CANSUPPRESS) && settings->GetSuppressGuruHints())
+        return false;
 
     if (!StrToBool(settings->Read(wxString::Format(wxT("Hints/Suppress%d"), hintno),wxT("No"))))
-    {
-        frmHint *frm=new frmHint(fr, hintno);
+        return true;
 
-        rc = frm->ShowModal() != wxID_CANCEL;
+    return false;
+}
+
+int frmHint::ShowHint(wxWindow *fr, Hint hintno, const wxString &info)
+{
+    int rc=wxID_OK;
+
+    if (WantHint(hintno))
+    {
+        frmHint *frm=new frmHint(fr, hintno, info);
+
+        rc = frm->ShowModal();
         delete frm;
+
+        if (!(hintArray[hintno].flags & HINT_CANABORT))
+            rc = wxID_OK;
     }
     return rc;
 }

@@ -16,7 +16,7 @@
 <a name="plpgsql-trigger"></a>35.10. Trigger Procedures</h2></div></div>
 <div></div>
 </div>
-<a name="id2652134"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
+<a name="id2653026"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
         procedures. A trigger procedure is created with the
         <tt class="command">CREATE FUNCTION</tt> command, declaring it as a function with
         no arguments and a return type of <tt class="type">trigger</tt>.  Note that
@@ -137,7 +137,7 @@ CREATE FUNCTION emp_stamp() RETURNS trigger AS $emp_stamp$
         END IF;
 
         -- Remember who changed the payroll when
-        NEW.last_date := 'now';
+        NEW.last_date := now();
         NEW.last_user := current_user;
         RETURN NEW;
     END;
@@ -190,7 +190,7 @@ CREATE OR REPLACE FUNCTION process_emp_audit() RETURNS TRIGGER AS $emp_audit$
         END IF;
         RETURN NULL; -- result is ignored since this is an AFTER trigger
     END;
-$emp_audit$ language plpgsql;
+$emp_audit$ LANGUAGE plpgsql;
 
 CREATE TRIGGER emp_audit
 AFTER INSERT OR UPDATE OR DELETE ON emp

@@ -65,7 +65,7 @@ tax := subtotal * 0.06;</pre>
 <a name="plpgsql-select-into"></a>35.6.2. <tt class="command">SELECT INTO</tt></h3></div></div>
 <div></div>
 </div>
-<a name="id2648809"></a><p>     The result of a <tt class="command">SELECT</tt> command yielding multiple columns (but
+<a name="id2649678"></a><p>     The result of a <tt class="command">SELECT</tt> command yielding multiple columns (but
      only one row) can be assigned to a record variable, row-type
      variable, or list of scalar variables.  This is done by:
 
@@ -289,7 +289,7 @@ END;</pre>
     </p>
 <p>     This example shows use of the functions
      <tt class="function">quote_ident(<tt class="type">text</tt>)</tt> and
-     <tt class="function">quote_literal(<tt class="type">text</tt>)</tt>.<a name="id2649425"></a><a name="id2649434"></a> For safety, variables containing column and
+     <tt class="function">quote_literal(<tt class="type">text</tt>)</tt>.<a name="id2650294"></a><a name="id2650303"></a> For safety, variables containing column and
      table identifiers should be passed to function
      <tt class="function">quote_ident</tt>.  Variables containing values
      that should be literal strings in the constructed command should
@@ -342,7 +342,8 @@ END;</pre>
      the <span class="acronym">SQL</span> engine, and <tt class="varname">RESULT_OID</tt>,
      the OID of the last row inserted by the most recent
      <span class="acronym">SQL</span> command.  Note that <tt class="varname">RESULT_OID</tt>
-     is only useful after an <tt class="command">INSERT</tt> command.
+     is only useful after an <tt class="command">INSERT</tt> command into a
+     table containing OIDs.
     </p>
 <p>     An example:
 </p>

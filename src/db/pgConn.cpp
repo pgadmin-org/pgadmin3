@@ -143,11 +143,16 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     wxLogInfo(wxT("Opening connection with connection string: %s"), connstr.c_str());
 
 #if wxUSE_UNICODE
-    conn = PQconnectdb(connstr.mb_str(wxConvUTF8));
+    wxCharBuffer cstrUTF=connstr.mb_str(wxConvUTF8);
+    conn = PQconnectdb(cstrUTF);
     if (PQstatus(conn) != CONNECTION_OK)
     {
-        PQfinish(conn);
-        conn = PQconnectdb(connstr.mb_str(wxConvLibc));
+        wxCharBuffer cstrLibc=connstr.mb_str(wxConvLibc);
+        if (strcmp(cstrUTF, cstrLibc))
+        {
+            PQfinish(conn);
+            conn = PQconnectdb(cstrLibc);
+        }
     }
 #else
     conn = PQconnectdb(connstr.ToAscii());

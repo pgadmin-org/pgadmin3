@@ -16,12 +16,13 @@
 <a name="catalog-pg-am"></a>41.3. <tt class="structname">pg_am</tt></h2></div></div>
 <div></div>
 </div>
-<a name="id2726615"></a><p>   The catalog <tt class="structname">pg_am</tt> stores information about index access
-   methods.  There is one row for each index access method supported by
-   the system.
+<a name="id2728018"></a><p>   The catalog <tt class="structname">pg_am</tt> stores information about index
+   access methods.  There is one row for each index access method supported by
+   the system.  The contents of this catalog are discussed in detail in
+   <a href="indexam.html" title="Chapter 47. Index Access Method Interface Definition">Chapter 47, <i>Index Access Method Interface Definition</i></a>.
   </p>
 <div class="table">
-<a name="id2726632"></a><p class="title"><b>Table 41.3. <tt class="structname">pg_am</tt> Columns</b></p>
+<a name="id2728041"></a><p class="title"><b>Table 41.3. <tt class="structname">pg_am</tt> Columns</b></p>
 <table summary="pg_am Columns" border="1">
 <colgroup>
 <col>
@@ -160,17 +161,5 @@
 </tbody>
 </table>
 </div>
-<p>    An index access method that supports multiple columns (has
-    <tt class="structfield">amcanmulticol</tt> true) <span class="emphasis"><em>must</em></span>
-    support indexing null values in columns after the first, because the planner
-    will assume the index can be used for queries on just the first
-    column(s).  For example, consider an index on (a,b) and a query with
-    <tt class="literal">WHERE a = 4</tt>.  The system will assume the index can be used to scan for
-    rows with <tt class="literal">a = 4</tt>, which is wrong if the index omits rows where <tt class="literal">b</tt> is null.
-    It is, however, OK to omit rows where the first indexed column is null.
-    (GiST currently does so.)
-    <tt class="structfield">amindexnulls</tt> should be set true only if the
-    index access method indexes all rows, including arbitrary combinations of null values.
-   </p>
 </div></body>
 </html>

@@ -19,13 +19,13 @@
 <h2>Name</h2>
 <p>SPI_execute_plan &#8212; execute a plan prepared by <tt class="function">SPI_prepare</tt></p>
 </div>
-<a name="id2659928"></a><div class="refsynopsisdiv">
+<a name="id2660842"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">int SPI_execute_plan(void * <i class="parameter"><tt>plan</tt></i>, Datum * <i class="parameter"><tt>values</tt></i>, const char * <i class="parameter"><tt>nulls</tt></i>,
                      bool <i class="parameter"><tt>read_only</tt></i>, int <i class="parameter"><tt>count</tt></i>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659970"></a><h2>Description</h2>
+<a name="id2660884"></a><h2>Description</h2>
 <p>   <tt class="function">SPI_execute_plan</tt> executes a plan prepared by
    <tt class="function">SPI_prepare</tt>.  <i class="parameter"><tt>read_only</tt></i> and
    <i class="parameter"><tt>count</tt></i> have the same interpretation as in
@@ -33,7 +33,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2660007"></a><h2>Arguments</h2>
+<a name="id2660921"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">void * <i class="parameter"><tt>plan</tt></i></tt></span></dt>
 <dd><p>      execution plan (returned by <tt class="function">SPI_prepare</tt>)
@@ -64,7 +64,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2660142"></a><h2>Return Value</h2>
+<a name="id2661055"></a><h2>Return Value</h2>
 <p>   The return value is the same as for <tt class="function">SPI_execute</tt>,
    with the following additional possible error (negative) results:
 
@@ -87,7 +87,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2660222"></a><h2>Notes</h2>
+<a name="id2661136"></a><h2>Notes</h2>
 <p>   If one of the objects (a table, function, etc.) referenced by the
    prepared plan is dropped during the session then the result of
    <tt class="function">SPI_execute_plan</tt> for this plan will be unpredictable.

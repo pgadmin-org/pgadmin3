@@ -16,7 +16,7 @@
 <a name="xaggr"></a>31.10. User-Defined Aggregates</h2></div></div>
 <div></div>
 </div>
-<a name="id2637642"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
+<a name="id2638498"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
    are expressed as <i class="firstterm">state values</i>
    and <i class="firstterm">state transition functions</i>.
    That is,  an  aggregate  can  be
@@ -150,6 +150,19 @@ SELECT attrelid::regclass, array_accum(atttypid)
  pg_user  | {19,23,16,16,16,25,702,1009}
 (1 row)</pre>
 <p>
+  </p>
+<p>   A function written in C can detect that it is being called as an
+   aggregate transition or final function by seeing if it was passed
+   an <tt class="structname">AggState</tt> node as the function call &#8220;<span class="quote">context</span>&#8221;,
+   for example by
+</p>
+<pre class="programlisting">        if (fcinfo-&gt;context &amp;&amp; IsA(fcinfo-&gt;context, AggState))</pre>
+<p>
+   One reason for checking this is that when it is true, the left input
+   must be a temporary transition value and can therefore safely be modified
+   in-place rather than allocating a new copy.  (This is the <span class="emphasis"><em>only</em></span>
+   case where it is safe for a function to modify a pass-by-reference input.)
+   See <tt class="literal">int8inc()&gt;</tt> for an example.
   </p>
 <p>   For further details see the
    <a href="sql-createaggregate.html">CREATE AGGREGATE</a>

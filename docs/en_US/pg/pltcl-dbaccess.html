@@ -87,7 +87,7 @@
 <dd>
 <p>        Prepares and saves a query plan for later execution.  The
         saved plan will be retained for the life of the current
-        session.<a name="id2654940"></a>
+        session.<a name="id2655853"></a>
        </p>
 <p>        The query may use parameters, that is, placeholders for
         values to be supplied whenever the plan is actually executed.
@@ -163,8 +163,9 @@ $$ LANGUAGE pltcl;</pre>
 </dd>
 <dt><span class="term"><tt class="function">spi_lastoid</tt></span></dt>
 <dd><p>        Returns the OID of the row inserted by the last
-        <tt class="function">spi_exec</tt> or <tt class="function">spi_execp</tt>,
-        if the command was a single-row <tt class="command">INSERT</tt>.  (If not, you get zero.)
+        <tt class="function">spi_exec</tt> or <tt class="function">spi_execp</tt>, if the
+        command was a single-row <tt class="command">INSERT</tt> and the modified
+        table contained OIDs.  (If not, you get zero.)
        </p></dd>
 <dt><span class="term"><tt class="function">quote</tt> <i class="replaceable"><tt>string</tt></i></span></dt>
 <dd>

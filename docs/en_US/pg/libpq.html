@@ -49,7 +49,7 @@
 <dt><span class="sect1"><a href="libpq-example.html">27.16. Example Programs</a></span></dt>
 </dl>
 </div>
-<a name="id2606680"></a><a name="id2606690"></a><p>   <span class="application">libpq</span> is the <span class="acronym">C</span>
+<a name="id2607597"></a><a name="id2607608"></a><p>   <span class="application">libpq</span> is the <span class="acronym">C</span>
    application programmer's interface to <span class="productname">PostgreSQL</span>.
    <span class="application">libpq</span> is a set of library functions that allow
    client programs to pass queries to the <span class="productname">PostgreSQL</span>
@@ -73,7 +73,7 @@
   </p>
 <p>   Client programs that use <span class="application">libpq</span> must
    include the header file
-   <tt class="filename">libpq-fe.h</tt><a name="id2606834"></a>
+   <tt class="filename">libpq-fe.h</tt><a name="id2607751"></a>
    and must link with the <span class="application">libpq</span> library.
   </p>
 <div class="sect1" lang="en">
@@ -87,7 +87,7 @@
    application program can have several backend connections open at
    one time.  (One reason to do that is to access more than one
    database.)  Each connection is represented by a
-   <tt class="structname">PGconn</tt><a name="id2606871"></a> object, which
+   <tt class="structname">PGconn</tt><a name="id2607788"></a> object, which
    is obtained from the function <tt class="function">PQconnectdb</tt> or
    <tt class="function">PQsetdbLogin</tt>.  Note that these functions will always
    return a non-null object pointer, unless perhaps there is too
@@ -98,7 +98,7 @@
 
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQconnectdb</tt><a name="id2606913"></a></span></dt>
+<dt><span class="term"><tt class="function">PQconnectdb</tt><a name="id2607830"></a></span></dt>
 <dd>
 <p>       Makes a new connection to the database server.
 </p>
@@ -125,13 +125,13 @@
    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">host</tt></span></dt>
-<dd><p>      Name of host to connect to.<a name="id2607007"></a>
+<dd><p>      Name of host to connect to.<a name="id2607925"></a>
       If this begins with a slash, it specifies Unix-domain
       communication rather than TCP/IP communication; the value is the
       name of the directory in which the socket file is stored.  The
       default behavior when <tt class="literal">host</tt> is not specified
       is to connect to a Unix-domain
-      socket<a name="id2607025"></a> in
+      socket<a name="id2607942"></a> in
       <tt class="filename">/tmp</tt> (or whatever socket directory was specified
       when <span class="productname">PostgreSQL</span> was built). On machines without
       Unix-domain sockets, the default is to connect to <tt class="literal">localhost</tt>.
@@ -172,7 +172,7 @@
 <dt><span class="term"><tt class="literal">port</tt></span></dt>
 <dd><p>      Port number to connect to at the server host, or socket file
       name extension for Unix-domain
-      connections.<a name="id2607221"></a>
+      connections.<a name="id2608138"></a>
      </p></dd>
 <dt><span class="term"><tt class="literal">dbname</tt></span></dt>
 <dd><p>      The database name.  Defaults to be the same as the user name.
@@ -215,7 +215,7 @@
        options <tt class="literal">allow</tt> and <tt class="literal">prefer</tt> will be
        accepted but <span class="application">libpq</span> will not in fact attempt
        an <span class="acronym">SSL</span>
-       connection.<a name="id2607408"></a>
+       connection.<a name="id2608326"></a>
       </p>
 </dd>
 <dt><span class="term"><tt class="literal">requiressl</tt></span></dt>
@@ -251,7 +251,7 @@
    then the indicated built-in defaults are used.
    </p>
 </dd>
-<dt><span class="term"><tt class="function">PQsetdbLogin</tt><a name="id2607539"></a></span></dt>
+<dt><span class="term"><tt class="function">PQsetdbLogin</tt><a name="id2608456"></a></span></dt>
 <dd>
 <p>       Makes a new connection to the database server.
 </p>
@@ -268,7 +268,7 @@
    empty string for any one of the fixed parameters that is to be defaulted.
    </p>
 </dd>
-<dt><span class="term"><tt class="function">PQsetdb</tt><a name="id2607581"></a></span></dt>
+<dt><span class="term"><tt class="function">PQsetdb</tt><a name="id2608499"></a></span></dt>
 <dd>
 <p>   Makes a new connection to the database server.
 </p>
@@ -283,10 +283,10 @@
    </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="function">PQconnectStart</tt><a xmlns="" name="id2607628"></a></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="function">PQconnectPoll</tt><a name="id2607639"></a></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="function">PQconnectStart</tt><a xmlns="" name="id2608545"></a></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="function">PQconnectPoll</tt><a name="id2608557"></a></span>
 </dt>
 <dd>
-<p>   <a name="id2607648"></a>
+<p>   <a name="id2608566"></a>
    Make a connection to the database server in a nonblocking manner.
 </p>
 <pre class="synopsis">PGconn *PQconnectStart(const char *conninfo);</pre>
@@ -417,7 +417,7 @@
    the connection attempt fails or is abandoned.
   </p>
 </dd>
-<dt><span class="term"><tt class="function">PQconndefaults</tt><a name="id2608099"></a></span></dt>
+<dt><span class="term"><tt class="function">PQconndefaults</tt><a name="id2609017"></a></span></dt>
 <dd>
 <p>   Returns the default connection options.
 </p>
@@ -451,7 +451,7 @@ typedef struct
     is leaked for each call to <tt class="function">PQconndefaults</tt>.
    </p>
 </dd>
-<dt><span class="term"><tt class="function">PQfinish</tt><a name="id2608176"></a></span></dt>
+<dt><span class="term"><tt class="function">PQfinish</tt><a name="id2609094"></a></span></dt>
 <dd>
 <p>   Closes  the  connection to the server.  Also frees
    memory used by the <tt class="structname">PGconn</tt> object.
@@ -464,7 +464,7 @@ typedef struct
    <tt class="function">PQfinish</tt> has been called.
    </p>
 </dd>
-<dt><span class="term"><tt class="function">PQreset</tt><a name="id2608233"></a></span></dt>
+<dt><span class="term"><tt class="function">PQreset</tt><a name="id2609151"></a></span></dt>
 <dd>
 <p>   Resets the communication channel to the server.
 </p>
@@ -477,7 +477,7 @@ typedef struct
    </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="function">PQresetStart</tt><a xmlns="" name="id2608262"></a></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="function">PQresetPoll</tt><a name="id2608273"></a></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="function">PQresetStart</tt><a xmlns="" name="id2609179"></a></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="function">PQresetPoll</tt><a name="id2609191"></a></span>
 </dt>
 <dd>
 <p>   Reset the communication channel to the server, in a nonblocking manner.

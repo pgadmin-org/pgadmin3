@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="previous" href="rowtypes.html" title="8.11. Composite Types">
 <link rel="next" href="datatype-pseudo.html" title="8.13. Pseudo-Types">
@@ -16,14 +16,14 @@
 <a name="datatype-oid"></a>8.12. Object Identifier Types</h2></div></div>
 <div></div>
 </div>
-<a name="id2539583"></a><a name="id2539594"></a><a name="id2539603"></a><a name="id2539612"></a><a name="id2539621"></a><a name="id2539631"></a><a name="id2539640"></a><a name="id2539649"></a><a name="id2539659"></a><a name="id2539668"></a><a name="id2539677"></a><p>    Object identifiers (OIDs) are used internally by
+<a name="id2539658"></a><a name="id2539670"></a><a name="id2539679"></a><a name="id2539688"></a><a name="id2539697"></a><a name="id2539707"></a><a name="id2539716"></a><a name="id2539725"></a><a name="id2539734"></a><a name="id2539743"></a><a name="id2539753"></a><p>    Object identifiers (OIDs) are used internally by
     <span class="productname">PostgreSQL</span> as primary keys for various
-    system tables.  An OID system column is also added to user-created
-    tables, unless <tt class="literal">WITHOUT OIDS</tt> is specified when
-    the table is created, or the <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a>
-    configuration variable is set to false.  Type <tt class="type">oid</tt>
-    represents an object identifier.  There are also several alias
-    types for <tt class="type">oid</tt>: <tt class="type">regproc</tt>, <tt class="type">regprocedure</tt>,
+    system tables.  OIDs are not added to user-created tables, unless
+    <tt class="literal">WITH OIDS</tt> is specified when the table is
+    created, or the <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a>
+    configuration variable is enabled.  Type <tt class="type">oid</tt> represents
+    an object identifier.  There are also several alias types for
+    <tt class="type">oid</tt>: <tt class="type">regproc</tt>, <tt class="type">regprocedure</tt>,
     <tt class="type">regoper</tt>, <tt class="type">regoperator</tt>, <tt class="type">regclass</tt>, and
     <tt class="type">regtype</tt>. <a href="datatype-oid.html#datatype-oid-table" title="Table 8.19. Object Identifier Types">Table 8.19, &#8220;Object Identifier Types&#8221;</a> shows an
     overview.
@@ -35,26 +35,10 @@
     a primary key is discouraged.  OIDs are best used only for
     references to system tables.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     OIDs are included by default in user-created tables in
-     <span class="productname">PostgreSQL</span> 8.0. However, this
-     behavior is likely to change in a future version of
-     <span class="productname">PostgreSQL</span>. Eventually, user-created
-     tables will not include an OID system column unless <tt class="literal">WITH
-     OIDS</tt> is specified when the table is created, or the
-     <tt class="varname">default_with_oids</tt> configuration variable is set
-     to true. If your application requires the presence of an OID
-     system column in a table, it should specify <tt class="literal">WITH
-     OIDS</tt> when that table is created to ensure compatibility
-     with future releases of <span class="productname">PostgreSQL</span>.
-    </p>
-</div>
 <p>    The <tt class="type">oid</tt> type itself has few operations beyond comparison.
-    It can be cast to
-    integer, however, and then manipulated using the standard integer
-    operators.  (Beware of possible signed-versus-unsigned confusion
-    if you do this.)
+    It can be cast to integer, however, and then manipulated using the
+    standard integer operators.  (Beware of possible
+    signed-versus-unsigned confusion if you do this.)
    </p>
 <p>    The OID alias types have no operations of their own except
     for specialized input and output routines.  These routines are able

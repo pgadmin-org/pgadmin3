@@ -16,7 +16,7 @@
 <a name="rules-update"></a>33.3. Rules on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and <tt class="command">DELETE</tt></h2></div></div>
 <div></div>
 </div>
-<a name="id2643884"></a><a name="id2643899"></a><a name="id2643913"></a><p>    Rules that are defined on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
+<a name="id2644760"></a><a name="id2644775"></a><a name="id2644789"></a><p>    Rules that are defined on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
     and <tt class="command">DELETE</tt> are significantly different from the view rules
     described in the previous section. First, their <tt class="command">CREATE
     RULE</tt> command allows more:
@@ -42,7 +42,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2644004"></a>33.3.1. How Update Rules Work</h3></div></div>
+<a name="id2644880"></a>33.3.1. How Update Rules Work</h3></div></div>
 <div></div>
 </div>
 <p>    Keep the syntax
@@ -110,12 +110,11 @@
 <p>    The query trees generated from rule actions are thrown into the
     rewrite system again, and maybe more rules get applied resulting
     in more or less query trees.
-    So the query trees in the rule actions must have either a different command type
-    or a different result relation, otherwise, this recursive process will end up in a loop.
-    There is a fixed recursion limit of currently 100 iterations.
-    If after 100 iterations there are still update rules to apply, the
-    rule system assumes a loop over multiple rule definitions and reports
-    an error.</p>
+    So a rule's actions must have either a different
+    command type or a different result relation than the rule itself is
+    on, otherwise this recursive process will end up in an infinite loop.
+    (Recursive expansion of a rule will be detected and reported as an
+    error.)</p>
 <p>    The query trees found in the actions of the
     <tt class="structname">pg_rewrite</tt> system catalog are only
     templates. Since they can reference the range-table entries for
@@ -133,7 +132,7 @@
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2644305"></a>33.3.1.1. A First Rule Step by Step</h4></div></div>
+<a name="id2645179"></a>33.3.1.1. A First Rule Step by Step</h4></div></div>
 <div></div>
 </div>
 <p>    Say we want to trace changes to the <tt class="literal">sl_avail</tt> column in the
@@ -358,7 +357,7 @@ SELECT shoelace_data.sl_name, 0,
 <a name="rules-update-views"></a>33.3.2. Cooperation with Views</h3></div></div>
 <div></div>
 </div>
-<a name="id2644768"></a><p>    A simple way to protect view relations from the mentioned
+<a name="id2645642"></a><p>    A simple way to protect view relations from the mentioned
     possibility that someone can try to run <tt class="command">INSERT</tt>,
     <tt class="command">UPDATE</tt>, or <tt class="command">DELETE</tt> on them is
     to let those query trees get thrown away.  So we create the rules

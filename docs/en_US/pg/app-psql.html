@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="previous" href="app-pgrestore.html" title="pg_restore">
 <link rel="next" href="app-vacuumdb.html" title="vacuumdb">
@@ -20,13 +20,13 @@
 <p><span class="application">psql</span> &#8212;       <span class="productname">PostgreSQL</span> interactive terminal
     </p>
 </div>
-<a name="id2712588"></a><div class="refsynopsisdiv">
+<a name="id2713806"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><tt class="command">psql</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>dbname</tt></i>
     [<i class="replaceable"><tt>username</tt></i>]]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2712636"></a><h2>Description</h2>
+<a name="id2713854"></a><h2>Description</h2>
 <p>     <span class="application">psql</span> is a terminal-based front-end to
      <span class="productname">PostgreSQL</span>. It enables you to type in
      queries interactively, issue them to
@@ -129,8 +129,8 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-F <i class="replaceable"><tt>separator</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--field-separator <i class="replaceable"><tt>separator</tt></i></tt></span>
 </dt>
 <dd><p>      Use <i class="replaceable"><tt>separator</tt></i> as the
-      field separator. This is equivalent to <tt class="command">\pset
-      fieldsep</tt> or <tt class="command">\f</tt>.
+      field separator for unaligned output. This is equivalent to
+      <tt class="command">\pset fieldsep</tt> or <tt class="command">\f</tt>.
       </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>hostname</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>hostname</tt></i></tt></span>
@@ -192,8 +192,8 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-R <i class="replaceable"><tt>separator</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--record-separator <i class="replaceable"><tt>separator</tt></i></tt></span>
 </dt>
 <dd><p>      Use <i class="replaceable"><tt>separator</tt></i> as the
-      record separator. This is equivalent to the <tt class="command">\pset
-      recordsep</tt> command.
+      record separator for unaligned output. This is equivalent to the
+      <tt class="command">\pset recordsep</tt> command.
       </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-s</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--single-step</tt></span>
@@ -233,7 +233,7 @@
       </p></dd>
 <dt><span class="term"><tt class="option">-u</tt></span></dt>
 <dd>
-<p>      Makes <span class="application">psql</span> prompt for the user name and
+<p>      Forces <span class="application">psql</span> to prompt for the user name and
       password before connecting to the database.
       </p>
 <p>      This option is deprecated, as it is conceptually flawed.
@@ -269,18 +269,19 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
 </dt>
 <dd>
-<p>      Cause <span class="application">psql</span> to prompt for a
-      password before connecting to a database. This will remain set for
-      the entire session, even if you change the database connection
-      with the meta-command <tt class="command">\connect</tt>.
+<p>      Forces <span class="application">psql</span> to prompt for a
+      password before connecting to a database.  
       </p>
-<p>      In the current version, <span class="application">psql</span>
-      automatically issues a password prompt whenever the server
-      requests password authentication. Because this is currently based
-      on a hack, the automatic recognition might mysteriously fail,
-      hence this option to force a prompt. If no password prompt is
-      issued and the server requires password authentication, the
-      connection attempt will fail.
+<p>      <span class="application">psql</span> should automatically prompt for a
+      password whenever the server requests password authentication.
+      However, currently password request detection is not totally
+      reliable, hence this option to force a prompt. If no password
+      prompt is issued and the server requires password authentication,
+      the connection attempt will fail.
+      </p>
+<p>      This option will remain set for the entire session, even if you
+      change the database connection with the meta-command
+      <tt class="command">\connect</tt>.
       </p>
 </dd>
 <dt>
@@ -305,7 +306,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713559"></a><h2>Exit Status</h2>
+<a name="id2714780"></a><h2>Exit Status</h2>
 <p>   <span class="application">psql</span> returns 0 to the shell if it
    finished normally, 1 if a fatal error of its own (out of memory,
    file not found) occurs, 2 if the connection to the server went bad
@@ -314,7 +315,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713579"></a><h2>Usage</h2>
+<a name="id2714800"></a><h2>Usage</h2>
 <div class="refsect2" lang="en">
 <a name="r2-app-psql-connecting"></a><h3>Connecting To A Database</h3>
 <p>    <span class="application">psql</span> is a regular
@@ -342,7 +343,9 @@
     some typing by setting the environment variables
     <tt class="envar">PGDATABASE</tt>, <tt class="envar">PGHOST</tt>,
     <tt class="envar">PGPORT</tt> and/or <tt class="envar">PGUSER</tt> to appropriate
-    values.
+    values. (For additional environment variables, see <a href="libpq-envars.html" title="27.11. Environment Variables">Section 27.11, &#8220;Environment Variables&#8221;</a>.) It is also convenient to have a
+    <tt class="filename">~/.pgpass</tt> file to avoid regularly having to type in
+    passwords. See <a href="libpq-pgpass.html" title="27.12. The Password File">Section 27.12, &#8220;The Password File&#8221;</a> for more information.
     </p>
 <p>    If the connection could not be made for any reason (e.g., insufficient
     privileges, server is not running on the targeted host, etc.),
@@ -357,7 +360,7 @@
     the string <tt class="literal">=&gt;</tt>. For example,
 </p>
 <pre class="programlisting">$ <b class="userinput"><tt>psql testdb</tt></b>
-Welcome to psql 8.0, the PostgreSQL interactive terminal.
+Welcome to psql 8.1devel, the PostgreSQL interactive terminal.
 
 Type:  \copyright for distribution terms
        \h for help with SQL commands
@@ -382,7 +385,7 @@ testdb=&gt;</pre>
     </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2713776"></a><h3>Meta-Commands</h3>
+<a name="id2715016"></a><h3>Meta-Commands</h3>
 <p>    Anything you enter in <span class="application">psql</span> that begins
     with an unquoted backslash is a <span class="application">psql</span>
     meta-command that is processed by <span class="application">psql</span>
@@ -1139,7 +1142,7 @@ lo_import 152801</pre>
   </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2716708"></a><h3>Advanced features</h3>
+<a name="id2717948"></a><h3>Advanced features</h3>
 <div class="refsect3" lang="en">
 <a name="app-psql-variables"></a><h4>Variables</h4>
 <p>    <span class="application">psql</span> provides variable substitution
@@ -1361,7 +1364,7 @@ bar</pre>
 </dl></div>
 </div>
 <div class="refsect3" lang="en">
-<a name="id2717416"></a><h4>
+<a name="id2718646"></a><h4>
 <span class="acronym">SQL</span> Interpolation</h4>
 <p>    An additional useful feature of <span class="application">psql</span>
     variables is that you can substitute (&#8220;<span class="quote">interpolate</span>&#8221;)
@@ -1446,7 +1449,8 @@ testdb=&gt; <b class="userinput"><tt>INSERT INTO my_table VALUES (:content);</tt
 <dd><p>          The full host name (with domain name) of the database server,
           or <tt class="literal">[local]</tt> if the connection is over a Unix
           domain socket, or
-          <tt class="literal">[local:<i class="replaceable"><tt>/dir/name</tt></i>]</tt>, if the Unix domain socket is not at the compiled in default
+          <tt class="literal">[local:<i class="replaceable"><tt>/dir/name</tt></i>]</tt>, 
+          if the Unix domain socket is not at the compiled in default
           location.
         </p></dd>
 <dt><span class="term"><tt class="literal">%m</tt></span></dt>
@@ -1545,7 +1549,7 @@ testdb=&gt; <b class="userinput"><tt>INSERT INTO my_table VALUES (:content);</tt
 </div>
 </div>
 <div class="refsect3" lang="en">
-<a name="id2718123"></a><h4>Command-Line Editing</h4>
+<a name="id2719354"></a><h4>Command-Line Editing</h4>
 <p>    <span class="application">psql</span> supports the <span class="application">Readline</span>
     library for convenient line editing and retrieval. The command
     history is automatically saved when <span class="application">psql</span>
@@ -1568,7 +1572,7 @@ $endif</pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2718189"></a><h2>Environment</h2>
+<a name="id2719419"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="envar">PAGER</tt></span></dt>
 <dd><p>      If the query results do not fit on the screen, they are piped
@@ -1578,7 +1582,7 @@ $endif</pre>
       using the <tt class="command">\pset</tt> command.
      </p></dd>
 <dt><span class="term"><tt class="envar">PGDATABASE</tt></span></dt>
-<dd><p>      Default database to connect to
+<dd><p>      Default connection database
      </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
@@ -1601,7 +1605,7 @@ $endif</pre>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2718299"></a><h2>Files</h2>
+<a name="id2719530"></a><h2>Files</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><p>     Before starting up, <span class="application">psql</span> attempts to
      read and execute commands from the system-wide
@@ -1617,7 +1621,7 @@ $endif</pre>
 <li><p>     Both the system-wide <tt class="filename">psqlrc</tt> file and the user's
      <tt class="filename">~/.psqlrc</tt> file can be made version-specific
      by appending a dash and the <span class="productname">PostgreSQL</span>
-     release number, for example <tt class="filename">~/.psqlrc-8.0</tt>.
+     release number, for example <tt class="filename">~/.psqlrc-8.1devel</tt>.
      A matching version-specific file will be read in preference to a
      non-version-specific file.
     </p></li>
@@ -1628,7 +1632,7 @@ $endif</pre>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2718405"></a><h2>Notes</h2>
+<a name="id2719636"></a><h2>Notes</h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>      In an earlier life <span class="application">psql</span> allowed the
@@ -1654,7 +1658,7 @@ Field separator is "oo".</pre>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2718453"></a><h2>Notes for Windows users</h2>
+<a name="id2719683"></a><h2>Notes for Windows users</h2>
 <p>  <span class="application">psql</span> is built as a &#8220;<span class="quote">console
   application</span>&#8221;.  Since the Windows console windows use a different
   encoding than the rest of the system, you must take special care

@@ -44,6 +44,7 @@
 #include "pgObject.h"
 #include "pgCollection.h"
 #include "frmHelp.h"
+#include "frmHint.h"
 
 
 #include <wx/listimpl.cpp>
@@ -758,8 +759,9 @@ int frmMain::ReconnectServer(pgServer *server)
             break;
             */
         case PGCONN_BAD:
-            wxLogError(server->GetLastError());
+            reportConnError(server);
             break;
+
         default:
             wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
             break;
@@ -768,6 +770,34 @@ int frmMain::ReconnectServer(pgServer *server)
     server->Disconnect(this);
     return res;
 }
+
+
+void frmMain::reportConnError(pgServer *server)
+{
+    wxString error=server->GetLastError();
+    bool wantHint=false;
+    if (error.Find(wxT("Is the server running on host")) >= 0)
+    {
+        if (frmHint::WantHint(HintConnectServer))
+        {
+            frmHint::ShowHint(this, HintConnectServer, error);
+            wantHint = true;
+        }
+    }
+    if (error.Find(wxT("no pg_hba.conf entry for")) >= 0)
+    {
+        if (frmHint::WantHint(HintMissingHba))
+        {
+            frmHint::ShowHint(this, HintMissingHba, error);
+            wantHint = true;
+        }
+    }
+
+
+    if (!wantHint)
+        wxLogError(__("Error connecting to the server: %s"), error.c_str());
+}
+
 
 void frmMain::StoreServers()
 {

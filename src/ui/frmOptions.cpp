@@ -20,6 +20,7 @@
 // App headers
 #include "frmOptions.h"
 #include "frmMain.h"
+#include "frmHint.h"
 #include "sysSettings.h"
 #include "sysLogger.h"
 #include "misc.h"
@@ -49,6 +50,8 @@ extern wxArrayString existingLangNames;
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
 #define txtSqlFont                  CTRL_TEXT("txtSqlFont")
+#define chkSuppressHints            CTRL_CHECKBOX("chkSuppressHints")
+#define chkResetHints               CTRL_CHECKBOX("chkResetHints")
 
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
@@ -56,6 +59,8 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (XRCID("btnFont"),             frmOptions::OnFontSelect)
     EVT_BUTTON (XRCID("btnSqlFont"),          frmOptions::OnSqlFontSelect)
     EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
+    EVT_CHECKBOX(XRCID("chkSuppressHints"),   frmOptions::OnSuppressHints)
+    EVT_CHECKBOX(XRCID("chkResetHints"),      frmOptions::OnResetHints)
     EVT_BUTTON (wxID_OK,                      frmOptions::OnOK)
     EVT_BUTTON (wxID_HELP,                    frmOptions::OnHelp)
     EVT_BUTTON (wxID_CANCEL,                  frmOptions::OnCancel)
@@ -98,6 +103,7 @@ frmOptions::frmOptions(frmMain *parent)
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
     txtProxy->SetValue(settings->GetProxy());
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
+    chkSuppressHints->SetValue(settings->GetSuppressGuruHints());
 
 
     cbLanguage->Append(_("Default"));
@@ -137,6 +143,20 @@ void frmOptions::OnHelp(wxCommandEvent &ev)
 {
     long page=nbOptions->GetSelection();
     DisplayHelp(this, wxT("options-tab") + NumToStr(page+1L));
+}
+
+
+void frmOptions::OnSuppressHints(wxCommandEvent &ev)
+{
+    if (chkSuppressHints->GetValue())
+        chkResetHints->SetValue(false);
+}
+
+
+void frmOptions::OnResetHints(wxCommandEvent &ev)
+{
+    if (chkResetHints->GetValue())
+        chkSuppressHints->SetValue(false);
 }
 
 
@@ -187,6 +207,15 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());
     settings->SetFont(currentFont);
     settings->SetSQLFont(currentSqlFont);
+    settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
+
+    if (chkResetHints->GetValue())
+    {
+        int i;
+        for (i=0 ; i < HintLast ; i++)
+            settings->Write(wxString::Format(wxT("Hints/Suppress%d"), i),wxT("No"));
+
+    }
 
     // Make sure there's a slash on the end of the path
 

@@ -19,19 +19,26 @@
 <h2>Name</h2>
 <p>ALTER FUNCTION &#8212; change the definition of a function</p>
 </div>
-<a name="id2665025"></a><div class="refsynopsisdiv">
+<a name="id2665944"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">ALTER FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ <i class="replaceable"><tt>type</tt></i> [, ...] ] ) RENAME TO <i class="replaceable"><tt>newname</tt></i>
-ALTER FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ <i class="replaceable"><tt>type</tt></i> [, ...] ] ) OWNER TO <i class="replaceable"><tt>newowner</tt></i></pre>
+<pre class="synopsis">ALTER FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ <i class="replaceable"><tt>type</tt></i> [, ...] ] ) <i class="replaceable"><tt>action</tt></i> [, ... ] [ RESTRICT ]
+ALTER FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ <i class="replaceable"><tt>type</tt></i> [, ...] ] ) RENAME TO <i class="replaceable"><tt>newname</tt></i>
+ALTER FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ <i class="replaceable"><tt>type</tt></i> [, ...] ] ) OWNER TO <i class="replaceable"><tt>newowner</tt></i>
+
+where <i class="replaceable"><tt>action</tt></i> is one of:
+
+    CALLED ON NULL INPUT | RETURNS NULL ON NULL INPUT | STRICT
+    IMMUTABLE | STABLE | VOLATILE
+    [ EXTERNAL ] SECURITY INVOKER | [ EXTERNAL ] SECURITY DEFINER</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665068"></a><h2>Description</h2>
+<a name="id2666013"></a><h2>Description</h2>
 <p>   <tt class="command">ALTER FUNCTION</tt> changes the definition of a
    function.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665080"></a><h2>Parameters</h2>
+<a name="id2666026"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing function.
@@ -43,16 +50,42 @@ ALTER FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ <i class="replaceabl
 <dd><p>      The new name of the function.
      </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>newowner</tt></i></span></dt>
-<dd><p>      The new owner of the function.
-      To change the owner of a function, you must be a superuser.
-      Note that if the function is marked
-      <tt class="literal">SECURITY DEFINER</tt>,
-      it will subsequently execute as the new owner.
+<dd><p>      The new owner of the function.  To change the owner of a
+      function, you must be a superuser.  Note that if the function is
+      marked <tt class="literal">SECURITY DEFINER</tt>, it will subsequently
+      execute as the new owner.
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CALLED ON NULL INPUT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">RETURNS NULL ON NULL INPUT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">STRICT</tt></span>
+</dt>
+<dd><p>       <tt class="literal">CALLED ON NULL INPUT</tt> changes the function so
+       that it will be invoked when some or all of its arguments are
+       null. <tt class="literal">RETURNS NULL ON NULL INPUT</tt> or
+       <tt class="literal">STRICT</tt> changes the function so that it
+       always returns null if any of its arguments are null. See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more information.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">IMMUTABLE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">STABLE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">VOLATILE</tt></span>
+</dt>
+<dd><p>       Change the volatility of the function to the specified
+       type. See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more
+       information about function volatility.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">[<span class="optional">EXTERNAL</span>] SECURITY INVOKER</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">[<span class="optional">EXTERNAL</span>] SECURITY DEFINER</tt></span>
+</dt>
+<dd><p>      Change whether the function is a security definer or not. The
+      key word <tt class="literal">EXTERNAL</tt> is ignored for SQL
+      conformance. See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more
+      information about this capability.
+     </p></dd>
+<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
+<dd><p>      Ignored for conformance with the SQL standard.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665138"></a><h2>Examples</h2>
+<a name="id2666210"></a><h2>Examples</h2>
 <p>   To rename the function <tt class="literal">sqrt</tt> for type
    <tt class="type">integer</tt> to <tt class="literal">square_root</tt>:
 </p>
@@ -67,14 +100,18 @@ ALTER FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ <i class="replaceabl
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665191"></a><h2>Compatibility</h2>
-<p>   There is an <tt class="command">ALTER FUNCTION</tt> statement in the SQL
-   standard, but it does not provide the option to rename the
-   function or change the owner.
+<a name="id2666262"></a><h2>Compatibility</h2>
+<p>   This statement is partially compatible with the <tt class="command">ALTER
+   FUNCTION</tt> statement in the SQL standard. The standard allows more
+   properties of a function to be modified, but does not provide the
+   ability to rename a function, make a function a security definer,
+   or change the owner or volatility of a function. The standard also
+   requires the <tt class="literal">RESTRICT</tt> key word; it is optional in
+   <span class="productname">PostgreSQL</span>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665205"></a><h2>See Also</h2>
+<a name="id2666292"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-dropfunction.html">DROP FUNCTION</a></span>
 </div>
 </div></body>

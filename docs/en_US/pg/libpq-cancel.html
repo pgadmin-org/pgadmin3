@@ -16,27 +16,27 @@
 <a name="libpq-cancel"></a>27.5. Cancelling Queries in Progress</h2></div></div>
 <div></div>
 </div>
-<a name="id2613158"></a><p>A client application can request cancellation of
+<a name="id2614075"></a><p>A client application can request cancellation of
 a command that is still being processed by the
 server, using the functions described in this section.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQgetCancel</tt><a name="id2613182"></a></span></dt>
+<dt><span class="term"><tt class="function">PQgetCancel</tt><a name="id2614099"></a></span></dt>
 <dd>
 <p>          Creates a data structure containing the information needed to cancel
           a command issued through a particular database connection.
 </p>
 <pre class="synopsis">PGcancel *PQgetCancel(PGconn *conn);</pre>
 <p><tt class="function">PQgetCancel</tt> creates a 
-<tt class="structname">PGcancel</tt><a name="id2613208"></a> object given
+<tt class="structname">PGcancel</tt><a name="id2614125"></a> object given
 a <tt class="structname">PGconn</tt> connection object.  It will return NULL if the
 given <i class="parameter"><tt>conn</tt></i> is NULL or an invalid connection.  The
 <tt class="structname">PGcancel</tt> object is an opaque structure that is not meant
 to be accessed directly by the application; it can only be passed to
 <tt class="function">PQcancel</tt> or <tt class="function">PQfreeCancel</tt>.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQfreeCancel</tt><a name="id2613251"></a></span></dt>
+<dt><span class="term"><tt class="function">PQfreeCancel</tt><a name="id2614168"></a></span></dt>
 <dd>
 <p>          Frees a data structure created by <tt class="function">PQgetCancel</tt>.
 </p>
@@ -44,7 +44,7 @@ to be accessed directly by the application; it can only be passed to
 <p><tt class="function">PQfreeCancel</tt> frees a data object previously created
 by <tt class="function">PQgetCancel</tt>.</p>
 </dd>
-<dt><span class="term"><tt class="function">PQcancel</tt><a name="id2613292"></a></span></dt>
+<dt><span class="term"><tt class="function">PQcancel</tt><a name="id2614209"></a></span></dt>
 <dd>
 <p>          Requests that the server abandon
           processing of the current command.
@@ -71,7 +71,7 @@ object.</p>
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">PQrequestCancel</tt><a name="id2613379"></a></span></dt>
+<dt><span class="term"><tt class="function">PQrequestCancel</tt><a name="id2614296"></a></span></dt>
 <dd>
 <p>          Requests that the server abandon
           processing of the current command.

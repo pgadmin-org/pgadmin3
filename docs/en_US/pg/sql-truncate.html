@@ -17,49 +17,52 @@
 </div>
 <div class="refnamediv">
 <h2>Name</h2>
-<p>TRUNCATE &#8212; empty a table</p>
+<p>TRUNCATE &#8212; empty a table or set of tables</p>
 </div>
-<a name="id2703781"></a><div class="refsynopsisdiv">
+<a name="id2704999"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">TRUNCATE [ TABLE ] <i class="replaceable"><tt>name</tt></i></pre>
+<pre class="synopsis">TRUNCATE [ TABLE ] <i class="replaceable"><tt>name</tt></i> [, ...]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2703801"></a><h2>Description</h2>
-<p>   <tt class="command">TRUNCATE</tt> quickly removes all rows from a
-   table. It has the same effect as an unqualified
-   <tt class="command">DELETE</tt> but since it does not actually scan the
-   table it is faster. This is most useful on large tables.
+<a name="id2705020"></a><h2>Description</h2>
+<p>   <tt class="command">TRUNCATE</tt> quickly removes all rows from a set of
+   tables. It has the same effect as an unqualified
+   <tt class="command">DELETE</tt> on each table, but since it does not actually
+   scan the tables it is faster. This is most useful on large tables.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2703822"></a><h2>Parameters</h2>
+<a name="id2705041"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>      The name (optionally schema-qualified) of the table to be truncated.
+<dd><p>      The name (optionally schema-qualified) of a table to be truncated.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2703838"></a><h2>Notes</h2>
-<p>   <tt class="command">TRUNCATE</tt> cannot be used if there are foreign-key references
-   to the table from other tables.  Checking validity in such cases would
-   require table scans, and the whole point is not to do one.
+<a name="id2705057"></a><h2>Notes</h2>
+<p>   Only the owner of a table may <tt class="command">TRUNCATE</tt> it.
+  </p>
+<p>   <tt class="command">TRUNCATE</tt> cannot be used on a table that has foreign-key
+   references from other tables, unless all such tables are also truncated
+   in the same command.  Checking validity in such cases would require table
+   scans, and the whole point is not to do one.
   </p>
 <p>   <tt class="command">TRUNCATE</tt> will not run any user-defined <tt class="literal">ON
-   DELETE</tt> triggers that might exist for the table.
+   DELETE</tt> triggers that might exist for the tables.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2703868"></a><h2>Examples</h2>
-<p>   Truncate the table <tt class="literal">bigtable</tt>:
+<a name="id2705097"></a><h2>Examples</h2>
+<p>   Truncate the tables <tt class="literal">bigtable</tt> and <tt class="literal">fattable</tt>:
 
 </p>
-<pre class="programlisting">TRUNCATE TABLE bigtable;</pre>
+<pre class="programlisting">TRUNCATE TABLE bigtable, fattable;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2703886"></a><h2>Compatibility</h2>
+<a name="id2705121"></a><h2>Compatibility</h2>
 <p>   There is no <tt class="command">TRUNCATE</tt> command in the SQL standard.
   </p>
 </div>

@@ -70,14 +70,13 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     autoRowCountThreshold=Read(wxT("AutoRowCount"), 2000);
     Read(wxT("StickySql"), &stickySql, false);
     Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
+    Read(wxT("SuppressGuruHints"), &suppressGuruHints, false);
     Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
     Read(wxT("SearchPath"), &searchPath, wxEmptyString);
     Read(wxT("MaxServerLogSize"), &maxServerLogSize, 100000L);
+    Read(wxT("Export/Unicode"), &exportUnicode, false);
 
     wxString val;
-    Read(wxT("Export/Unicode"), &val, wxT("No"));
-    exportUnicode = StrToBool(val);
-
 #ifdef __WXMSW__
     Read(wxT("Export/RowSeparator"), &val, wxT("CR/LF"));
 #else
@@ -153,9 +152,10 @@ void sysSettings::Save()
     Write(wxT("WriteUnicodeFile"), unicodeFile);
     Write(wxT("SearchPath"), searchPath);
     Write(wxT("MaxServerLogSize"), maxServerLogSize);
+    Write(wxT("SuppressGuruHints"), suppressGuruHints);
 
 
-    Write(wxT("Export/Unicode"), BoolToStr(exportUnicode));
+    Write(wxT("Export/Unicode"), exportUnicode);
     Write(wxT("Export/QuoteChar"), exportQuoteChar);
     Write(wxT("Export/ColSeparator"), exportColSeparator);
     if (exportRowSeparator == wxT("\r\n"))

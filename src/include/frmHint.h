@@ -17,24 +17,29 @@
 // must match frmHint.cpp hintArray!
 typedef enum
 {
-    HintPrimaryKey  = 0,
+    HintConnectServer = 0,
+    HintMissingHba,
+    HintPrimaryKey,
     HintCoveringIndex,
     HintLast
 } Hint;
 
 class frmMain;
+class wxHtmlWindow;
 class frmHint : public DialogWithHelp
 {
 public:
-    static int ShowHint(wxWindow *fr, Hint hintno);
+    static int ShowHint(wxWindow *fr, Hint hintno, const wxString &info=wxEmptyString);
+    static bool WantHint(Hint hintno);
 
 private:
-    frmHint(wxWindow *fr, Hint hintHo);
+    frmHint(wxWindow *fr, Hint hintHo, const wxString &info=wxEmptyString);
     ~frmHint();
 
     wxString GetHelpPage() const;
 
     DECLARE_EVENT_TABLE();
+
     Hint currentHint;
 };
 

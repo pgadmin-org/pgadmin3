@@ -705,9 +705,9 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
             case PGCONN_BAD:
             case PGCONN_BROKEN:
             {
-                wxLogError(__("Error connecting to the server: %s"), server->GetLastError().c_str());
-
+                reportConnError(server);
                 delete server;
+
                 break;
             }
             default:
