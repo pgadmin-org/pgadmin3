@@ -57,7 +57,7 @@ public:
 
     wxGridCellAttr *attr;
     wxString Quote(const wxString &value);
-    Oid type;
+    OID type;
     long typlen, typmod;
     wxString name, typeName;
     bool numeric, isPrimaryKey, needResize;
@@ -86,7 +86,7 @@ public:
 class sqlTable : public wxGridTableBase
 {
 public:
-    sqlTable(pgConn *conn, pgQueryThread *thread, const wxString& tabName, const Oid relid, bool _hasOid, const wxString& _pkCols, char _relkind);
+    sqlTable(pgConn *conn, pgQueryThread *thread, const wxString& tabName, const OID relid, bool _hasOid, const wxString& _pkCols, char _relkind);
     ~sqlTable();
     void StoreLine();
     void UndoLine(int row);
@@ -122,7 +122,7 @@ private:
     bool hasOids;
     char relkind;
     wxString tableName;
-    Oid relid;
+    OID relid;
     wxString primaryKeyColNumbers;
 
     cacheLine *GetLine(int row);
@@ -186,7 +186,7 @@ private:
     wxToolBar *toolBar;
 
     char relkind;
-    Oid relid;
+    OID relid;
     bool hasOids;
 	bool optionsChanged;
     wxString tableName;

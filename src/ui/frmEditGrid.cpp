@@ -1079,7 +1079,7 @@ void sqlGridNumericEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler*
 
 
 
-sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName, const Oid _relid, bool _hasOid, const wxString& _pkCols, char _relkind)
+sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName, const OID _relid, bool _hasOid, const wxString& _pkCols, char _relkind)
 {
     connection=conn;
     primaryKeyColNumbers = _pkCols;
@@ -1116,7 +1116,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
         wxT("  JOIN pg_namespace n ON n.oid=relnamespace\n")
         wxT("  LEFT OUTER JOIN pg_type b ON b.oid=t.typbasetype\n")
         wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n")
-        wxT(" WHERE attnum > 0 AND NOT attisdropped AND attrelid=") + NumToStr((long)relid) + wxT("::oid\n")
+        wxT(" WHERE attnum > 0 AND NOT attisdropped AND attrelid=") + NumToStr(relid) + wxT("::oid\n")
         wxT(" ORDER BY attnum"));
 
 
