@@ -645,6 +645,32 @@ void frmQuery::openLastFile()
         
 void frmQuery::OnOpen(wxCommandEvent& event)
 {
+    if (changed && settings->GetAskSaveConfirmation())
+    {
+        wxString fn;
+        if (!lastPath.IsNull())
+            fn = wxT(" in file ") + lastPath;
+        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
+                    wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|wxCANCEL);
+
+    	wxCommandEvent noEvent;
+        switch (msg.ShowModal())
+        {
+            case wxID_YES:
+                if (lastPath.IsNull())
+                {
+                    OnSaveAs(noEvent);
+                    if (changed)
+						return;
+                }
+                else
+                    OnSave(noEvent);
+                break;
+            case wxID_CANCEL:
+                return;
+        }
+    }
+
     wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""), 
         _("Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
     if (dlg.ShowModal() == wxID_OK)
