@@ -139,7 +139,7 @@ void frmBackup::OnChangePlain(wxCommandEvent &ev)
     chkNoOwner->Enable(isPlain);
     chkDropDb->Enable(isPlain);
     chkCreateDb->Enable(isPlain);
-    chkDisableTrigger->Enable(isPlain);
+    chkDisableTrigger->Enable(chkOnlyData->GetValue());
 }
 
 
