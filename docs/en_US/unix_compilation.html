@@ -1,29 +1,25 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
-	<TITLE>Compilation on unix platforms</TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1  (Win32)">
-	<META NAME="CREATED" CONTENT="20030716;11270579">
-	<META NAME="CHANGEDBY" CONTENT="Andreas Pflug">
-	<META NAME="CHANGED" CONTENT="20030716;11275935">
-	<STYLE>
-	<!--
-		P { color: #000000; font-family: "verdana", "helvetica", sans-serif; font-size: 9pt; font-style: normal }
-		H3 { color: #000000; font-style: normal }
-		PRE { color: #000000; font-style: normal }
-	-->
-	</STYLE>
-</HEAD>
-<BODY LANG="en-US" TEXT="#000000" BGCOLOR="#cdddeb" DIR="LTR" STYLE="border: none; padding: 0cm">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Compilation on unix platforms</title>
+</head>
+
+<body>
+
 <H3>Compilation on unix platforms</H3>
 <P>If you plan to contribute code, pgAdmin3 requires wxWindows from
-CVS version &gt; 20030607. Use a recent GNU/Linux distro because
+CVS version &gt; 20030607. We have our own version which is preferred
+as it is well tested and includes a number of additional patches (we
+use the CVS version of wxWindows because it supports Unicode, and 
+sizes controls much more nicely on *nix systems).
+ Use a recent GNU/Linux distro because
 recent versions of GTK2.2, automake and autoconf are needed. You will
 also need a copy of PostgreSQL on your development system. 
 </P>
 <OL>
-	<LI><P STYLE="margin-bottom: 0cm">We provide a set of four wxGTK2
+	<LI><P>We provide a set of four wxGTK2
 	binaries (wxGTK2ud, wxGTK2ud-devel, wxGTK2ud-xrc and wxGTK2ud-stc)
 	suited for pgAdmin3 development, compiled with Unicode and logging
 	and linked against GTK 2.2, as described in the <A HREF="snapshots.html">binary
@@ -35,18 +31,18 @@ also need a copy of PostgreSQL on your development system.
 	Otherwise, if you wish to install wxGTK 2.5 from source, continue
 	with step 2. 
 	</P>
-	<LI><P>Download the <A HREF="http://wxwindows.sourceforge.net/snapshots/">latest
-	wxWindows source tarball</A> from wxWindows web site. Alternatively,
+	<LI><P>Download our supported wxWindows CVS version from
+        <A HREF="http://www.pgadmin.org/snapshots/">. Alternatively,
 	you can install our wxGTK2 RPMs which provide all needed libraries
 	and headers files, as described in the <A HREF="snapshots.html">binary
 	snapshots</A> instructions. 
 	</P>
-	<PRE STYLE="margin-right: 1cm"># wx_version=$(date +%Y%m%d)
+	<PRE># wx_version=$(date +%Y%m%d)
 # wget http://wxwindows.sourceforge.net/snapshots/wx-cvs-$wx_version.tar.bz2
 # tar -zjf wx-cvs-$wx_version.tar.bz2</PRE>
 	<LI><P>Install wxWindows from source as follows: 
 	</P>
-	<PRE STYLE="margin-right: 1cm"># cd wx-cvs-$wx_version;
+	<PRE># cd wx-cvs-$wx_version;
 # ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
 # make
 # make install
@@ -59,17 +55,17 @@ also need a copy of PostgreSQL on your development system.
 # ldconfig</PRE>
 	<LI><P>Install the wxWindows XML Recources as follows:# cd ../xrc 
 	</P>
-	<PRE STYLE="margin-right: 1cm"># make
+	<PRE># make
 # make install
 # ldconfig</PRE>
 	<LI><P>Until pgAdmin3 configuration script is able to detect
 	wxgtk2ud-2.5-config, you need to create a symlink /usr/bin/wx-config
 	-&gt; wxgtk2ud-2.5-config entering this command: 
 	</P>
-	<PRE STYLE="margin-right: 1cm; margin-bottom: 0.5cm"># ln -s /usr/bin/wxgtk2ud-2.5-config /usr/bin/wx-config</PRE>
+	<PRE># ln -s /usr/bin/wxgtk2ud-2.5-config /usr/bin/wx-config</PRE>
 	<LI><P>Download and unpack the pgAdmin source code. 
 	</P>
-	<PRE STYLE="margin-right: 1cm">If you wish to use CVS code:
+	<PRE>If you wish to use CVS code:
 # CVSROOT=:pserver:anonymous@cvs.pgadmin.org:/disk1/cvsroot export CVSROOT
 # cvs login
 # cvs -z9 checkout pgadmin3
