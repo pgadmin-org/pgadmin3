@@ -181,7 +181,7 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
     winAbout->Show(TRUE);
 }
 
-void frmMain::OnTipOfTheDay()
+void frmMain::OnTipOfTheDay(wxCommandEvent& WXUNUSED(event))
 {
 #ifdef __WIN32__
     wxString tipPath = loadPath + wxT("/tips.txt");
@@ -192,6 +192,7 @@ void frmMain::OnTipOfTheDay()
     wxTipProvider *tipProvider = wxCreateFileTipProvider(tipPath, settings->GetNextTipOfTheDay());
     settings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
     settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
+
     delete tipProvider;
 }
 

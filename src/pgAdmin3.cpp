@@ -264,7 +264,7 @@ bool pgAdmin3::OnInit()
 
     // Display a Tip if required.
     extern sysSettings *settings;
-    if (settings->GetShowTipOfTheDay()) winMain->OnTipOfTheDay();
+    if (settings->GetShowTipOfTheDay()) winMain->OnTipOfTheDay(wxCommandEvent(NULL));
 
     return TRUE;
 }

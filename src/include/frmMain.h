@@ -38,7 +38,7 @@ class frmMain : public wxFrame
 public:
     frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
     ~frmMain();
-    void OnTipOfTheDay();
+    void OnTipOfTheDay(wxCommandEvent& event);
     wxStatusBar *statusBar;
 
     void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum);
