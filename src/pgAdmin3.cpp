@@ -309,7 +309,7 @@ bool pgAdmin3::OnInit()
     // Show the splash screen
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     if (!winSplash) 
-        wxLogError(_("Couldn't create the splash screen!"));
+        wxLogError(__("Couldn't create the splash screen!"));
     else
     {
         SetTopWindow(winSplash);

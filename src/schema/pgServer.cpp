@@ -142,6 +142,8 @@ bool pgServer::StartService()
                 return true;
 
             // report error
+            wxLogError(__("Failed to start server %s: Errcode=%d\nCheck event log for details."),
+                serviceId.c_str(), rc);
         }
         else
             GetServerRunning();     // ignore result, just to wait for startup
@@ -163,6 +165,8 @@ bool pgServer::StopService()
         {
             DWORD rc = ::GetLastError();
             // report error
+            wxLogError(__("Failed to stop server %s: Errcode=%d\nCheck event log for details."),
+                serviceId.c_str(), rc);
         }
     }
 #endif

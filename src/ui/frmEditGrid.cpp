@@ -577,7 +577,7 @@ void frmEditGrid::ShowForm(bool filter)
 	}
     else
     {
-        wxLogError(_("No Table or view."));
+        wxLogError(__("No Table or view."));
         Close();
         Destroy();
     }
