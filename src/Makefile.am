@@ -89,6 +89,7 @@ include/images/dnd_move.xpm include/images/dnd_none.xpm \
 include/images/domain.xpm include/images/drop.xpm \
 include/images/edit_clear.xpm include/images/edit_find.xpm \
 include/images/edit_redo.xpm include/images/edit_undo.xpm \
+include/images/elephant48.xpm \
 include/images/encoding.xpm include/images/event.xpm \
 include/images/file_open.xpm include/images/file_save.xpm \
 include/images/foreignkey.xpm include/images/forward.xpm \
