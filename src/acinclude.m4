@@ -34,6 +34,7 @@ then
     then
         AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
         AC_MSG_RESULT(ok)
+        LIBS="$LIBS -lpq"
     else
         AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
         LDFLAGS="$LIBPQ_OLD_LDFLAGS"
@@ -77,15 +78,12 @@ fi], [
         fi
         WX_OLD_LDFLAGS=$LDFLAGS
         WX_OLD_CPPFLAGS=$CPPFLAGS
-        WX_NEW_LDFLAGS=`${WX_CONFIG} --libs`
+        WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --static`
         if test -f "${WX_HOME}/lib/libstc.a"
         then
-            LDFLAGS="-L${WXDIR}/lib -lwxxrc -lstc"
-            LDFLAGS="$LDFLAGS $WX_NEW_LDFLAGS"
+            LIBS="$LIBS -lwxxrc -lstc $WX_NEW_LDFLAGS"
         else
-            LDFLAGS="$LDFLAGS ${WX_HOME}/lib/libwx*.a"
-            LDFLAGS="$LDFLAGS -lwxxrc -lstc"
-            LDFLAGS="$LDFLAGS $WX_NEW_LDFLAGS"
+            LIBS="$LIBS -lwx_gtkd_stc-2.4 -lwx_gtkd_xrc-2.4 $WX_NEW_LDFLAGS"
         fi
         WX_NEW_CPPFLAGS=`${WX_CONFIG} --cxxflags`
         CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS"
