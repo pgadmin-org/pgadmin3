@@ -23,17 +23,17 @@ LangString Doc ${LANG_ENGLISH} "Documentation"
 LangString Lang ${LANG_ENGLISH} "User languages"
 
 
-; LoadLanguageFile Languages\Arabic.nlf
-; Name "pgAdmin3"
-; Caption "pgAdmin III Installation"
-; LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
-; LicenseData "licence.rtf"
-; ComponentText " "
-; DirText " "
-; LangString Prg ${LANG_ARABIC} "Program (required)"
-; LangString Short ${LANG_ARABIC} "Start Menu Shortcuts"
-; LangString Doc ${LANG_ARABIC} "Documentation"
-; LangString Lang ${LANG_ARABIC} "User languages"
+LoadLanguageFile Languages\Arabic.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_ARABIC} "Program (required)"
+LangString Short ${LANG_ARABIC} "Start Menu Shortcuts"
+LangString Doc ${LANG_ARABIC} "Documentation"
+LangString Lang ${LANG_ARABIC} "User languages"
 
 LoadLanguageFile Languages\Danish.nlf
 Name "pgAdmin3"
@@ -197,6 +197,126 @@ LangString Prg ${LANG_TURKISH} "Program (required)"
 LangString Short ${LANG_TURKISH} "Start Menu Shortcuts"
 LangString Doc ${LANG_TURKISH} "Documentation"
 LangString Lang ${LANG_TURKISH} "User languages"
+
+LoadLanguageFile Languages\Bulgarian.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_BULGARIAN} "Program (required)"
+LangString Short ${LANG_BULGARIAN} "Start Menu Shortcuts"
+LangString Doc ${LANG_BULGARIAN} "Documentation"
+LangString Lang ${LANG_BULGARIAN} "User languages"
+
+LoadLanguageFile Languages\Dutch.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_DUTCH} "Program (required)"
+LangString Short ${LANG_DUTCH} "Start Menu Shortcuts"
+LangString Doc ${LANG_DUTCH} "Documentation"
+LangString Lang ${LANG_DUTCH} "User languages"
+
+LoadLanguageFile Languages\Greek.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_GREEK} "Program (required)"
+LangString Short ${LANG_GREEK} "Start Menu Shortcuts"
+LangString Doc ${LANG_GREEK} "Documentation"
+LangString Lang ${LANG_GREEK} "User languages"
+
+LoadLanguageFile Languages\NORWEGIAN.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_NORWEGIAN} "Program (required)"
+LangString Short ${LANG_NORWEGIAN} "Start Menu Shortcuts"
+LangString Doc ${LANG_NORWEGIAN} "Documentation"
+LangString Lang ${LANG_NORWEGIAN} "User languages"
+
+LoadLanguageFile Languages\Portuguese.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_PORTUGUESE} "Program (required)"
+LangString Short ${LANG_PORTUGUESE} "Start Menu Shortcuts"
+LangString Doc ${LANG_PORTUGUESE} "Documentation"
+LangString Lang ${LANG_PORTUGUESE} "User languages"
+
+LoadLanguageFile Languages\Serbian.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_SERBIAN} "Program (required)"
+LangString Short ${LANG_SERBIAN} "Start Menu Shortcuts"
+LangString Doc ${LANG_SERBIAN} "Documentation"
+LangString Lang ${LANG_SERBIAN} "User languages"
+
+LoadLanguageFile Languages\Slovak.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_SLOVAK} "Program (required)"
+LangString Short ${LANG_SLOVAK} "Start Menu Shortcuts"
+LangString Doc ${LANG_SLOVAK} "Documentation"
+LangString Lang ${LANG_SLOVAK} "User languages"
+
+LoadLanguageFile Languages\Slovenian.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_SLOVENIAN} "Program (required)"
+LangString Short ${LANG_SLOVENIAN} "Start Menu Shortcuts"
+LangString Doc ${LANG_SLOVENIAN} "Documentation"
+LangString Lang ${LANG_SLOVENIAN} "User languages"
+
+LoadLanguageFile Languages\Swedish.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_SWEDISH} "Program (required)"
+LangString Short ${LANG_SWEDISH} "Start Menu Shortcuts"
+LangString Doc ${LANG_SWEDISH} "Documentation"
+LangString Lang ${LANG_SWEDISH} "User languages"
+
+LoadLanguageFile Languages\Spanish.nlf
+Name "pgAdmin3"
+Caption "pgAdmin III Installation"
+LicenseText "The use and distribution of pgAdmin III is subject to the following Artistic Licence:"
+LicenseData "licence.rtf"
+ComponentText " "
+DirText " "
+LangString Prg ${LANG_SPANISH} "Program (required)"
+LangString Short ${LANG_SPANISH} "Start Menu Shortcuts"
+LangString Doc ${LANG_SPANISH} "Documentation"
+LangString Lang ${LANG_SPANISH} "User languages"
 
 
 
@@ -460,24 +580,44 @@ Function .onInit
   Push "English"
 ;  Push ${LANG_ARABIC}
 ;  Push "Arabic"
+  Push ${LANG_BULGARIAN}
+  Push "Bulgarian"
+  Push ${LANG_CROATIAN}
+  Push "Hrvatski"
   Push ${LANG_DANISH}
   Push "Dansk"
+  Push ${LANG_DUTCH}
+  Push "Nederlands"
   Push ${LANG_GERMAN}
   Push "Deutsch"
+  Push ${LANG_GREEK}
+  Push "Greek"
   Push ${LANG_FRENCH}
   Push "Français"
-  Push ${LANG_CROATIAN}
-  Push "Hrvatsk"
   Push ${LANG_HUNGARIAN}
   Push "Magyar"
   Push ${LANG_ITALIAN}
   Push "Italiano"
   Push ${LANG_JAPANESE}
   Push "Japanese"
+  Push ${LANG_NORWEGIAN}
+  Push "Norwegian"
   Push ${LANG_POLISH}
   Push "Polski"
+  Push ${LANG_PORTUGUESE}
+  Push "Português"
   Push ${LANG_ROMANIAN}
   Push "Romana"
+  Push ${LANG_SERBIAN}
+  Push "Serbian"
+  Push ${LANG_SLOVAK}
+  Push "Slovenski"
+  Push ${LANG_SLOVENIAN}
+  Push "Slovenšcina"
+  Push ${LANG_SWEDISH}
+  Push "Svenska"
+  Push ${LANG_SPANISH}
+  Push "Spanish"
   Push ${LANG_RUSSIAN}
   Push "Russian"
   Push ${LANG_SIMPCHINESE}
@@ -497,40 +637,56 @@ Function .onInit
   SectionSetFlags ${af_ZA} 0
 ;  StrCmp $LANGUAGE ${LANG_ARABIC} +2 0
 ;    SectionSetFlags ${ar_SA} 0
+  StrCmp $LANGUAGE ${LANG_BULGARIAN} +2 0
   SectionSetFlags ${bg_BG} 0
+  StrCmp $LANGUAGE ${LANG_CZECH} +2 0
   SectionSetFlags ${cs_CZ} 0
   StrCmp $LANGUAGE ${LANG_DANISH} +2 0
     SectionSetFlags ${da_DK} 0
   StrCmp $LANGUAGE ${LANG_GERMAN} +2 0
     SectionSetFlags ${de_DE} 0
+  StrCmp $LANGUAGE ${LANG_GREEK} +2 0
   SectionSetFlags ${el_GR} 0
+  StrCmp $LANGUAGE ${LANG_SPANISH} +2 0
   SectionSetFlags ${es_ES} 0
+  StrCmp $LANGUAGE ${LANG_FARSI} +2 0
   SectionSetFlags ${fa_IR} 0
   StrCmp $LANGUAGE ${LANG_FRENCH} +2 0
     SectionSetFlags ${fr_FR} 0
+  StrCmp $LANGUAGE ${LANG_GALICIAN} +2 0
     SectionSetFlags ${gl_ES} 0
   StrCmp $LANGUAGE ${LANG_CROATIAN} +2 0
     SectionSetFlags ${hr_HR} 0
   StrCmp $LANGUAGE ${LANG_HUNGARIAN} +2 0
     SectionSetFlags ${hu_HU} 0
+  StrCmp $LANGUAGE ${LANG_INDONESIAN} +2 0
   SectionSetFlags ${id_ID} 0
   StrCmp $LANGUAGE ${LANG_ITALIAN} +2 0
     SectionSetFlags ${it_IT} 0
   StrCmp $LANGUAGE ${LANG_JAPANESE} +2 0
   SectionSetFlags ${ja_JP} 0
+  StrCmp $LANGUAGE ${LANG_PORTUGUESE} +2 0
   SectionSetFlags ${lv_LV} 0
+  StrCmp $LANGUAGE ${LANG_NORWEGIAN} +2 0
   SectionSetFlags ${nb_NO} 0
+  StrCmp $LANGUAGE ${LANG_DUTCH} +2 0
   SectionSetFlags ${nl_NL} 0
+  StrCmp $LANGUAGE ${LANG_POLISH} +2 0
   SectionSetFlags ${pl_PL} 0
+  StrCmp $LANGUAGE ${LANG_PORTUGUESE} +3 0
   SectionSetFlags ${pt_BR} 0
   SectionSetFlags ${pt_PT} 0
   StrCmp $LANGUAGE ${LANG_ROMANIAN} +2 0
     SectionSetFlags ${ro_RO} 0
   StrCmp $LANGUAGE ${LANG_RUSSIAN} +2 0
     SectionSetFlags ${ru_RU} 0
+  StrCmp $LANGUAGE ${LANG_SLOVAK} +2 0
   SectionSetFlags ${sk_SK} 0
+  StrCmp $LANGUAGE ${LANG_SLOVENIAN} +2 0
   SectionSetFlags ${sl_SI} 0
+  StrCmp $LANGUAGE ${LANG_SERBIAN} +2 0
   SectionSetFlags ${sr_YU} 0
+  StrCmp $LANGUAGE ${LANG_SWEDISH} +2 0
   SectionSetFlags ${sv_SE} 0
   StrCmp $LANGUAGE ${LANG_TURKISH} +2 0
     SectionSetFlags ${tr_TR} 0
