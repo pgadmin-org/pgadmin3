@@ -58,7 +58,7 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
             + wxT("\n\nCREATE USER ") + GetQuotedIdentifier()
             + wxT("\n  WITH SYSID ") + NumToStr(userId);
         if (GetPassword() != wxT("********"))
-            AppendIfFilled(sql, wxT("\n  PASSWORD ENCRYPTED "), GetPassword());
+            AppendIfFilled(sql, wxT("\n  ENCRYPTED PASSWORD "), qtString(GetPassword()));
         sql += wxT("\n ");
         if (GetCreateDatabase())    sql += wxT(" CREATEDB");
         else                        sql += wxT(" NOCREATEDB");
