@@ -19,20 +19,11 @@
 
 pgCollection::pgCollection(int newType, const wxString& newName)
 : pgObject(newType, newName)
-{
-    wxLogInfo(wxT("Creating a pgCollection object"));
+{ 
+    wxLogInfo(wxT("Creating a pgCollection object")); 
 }
 
 pgCollection::~pgCollection()
 {
     wxLogInfo(wxT("Destroying a pgCollection object"));
-}
-
-// Parent objects
-pgServer *pgCollection::GetServer() {
-    return server;
-}
-
-void pgCollection::SetServer(pgServer *newServer) {
-    server = newServer;
 }

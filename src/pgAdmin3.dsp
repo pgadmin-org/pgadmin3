@@ -43,8 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O1 /Ob2 /I "include/" /I "c:/wx2/include" /I "c:/wx2/contrib/include" /I "c:/wx2/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FAcs /FR /FD /c
-# SUBTRACT CPP /YX
+# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wx2/include" /I "c:/wx2/contrib/include" /I "c:/wx2/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FAcs /FR /FD /c
+# SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
@@ -55,6 +55,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmsw.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib libpq.lib wxxrc.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libc.lib" /nodefaultlib:"libci.lib" /nodefaultlib:"msvcrtd.lib" /libpath:"c:/wx2/lib" /libpath:"c:/wx2/contrib/lib" /libpath:"c:/postgresql/lib"
+# SUBTRACT LINK32 /debug
 
 !ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
 
@@ -118,6 +119,15 @@ SOURCE=.\schema\pgDatabase.cpp
 # Begin Source File
 
 SOURCE=.\schema\pgObject.cpp
+
+!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
+
+# ADD CPP /O2
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

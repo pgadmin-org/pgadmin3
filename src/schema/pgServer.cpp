@@ -38,18 +38,8 @@ pgServer::~pgServer()
     wxLogInfo(wxT("Destroying a pgServer object"));
 }
 
-int pgServer::GetType()
+int pgServer::Connect(bool lockFields) 
 {
-    return PG_SERVER;
-}
-
-wxString pgServer::GetTypeName() const
-{
-    return wxString("Server");
-}
-
-int pgServer::Connect(bool lockFields) {
-
     wxLogInfo(wxT("Getting connection details..."));
     frmConnect *winConnect = new frmConnect(this, this->GetName(), database, username, port);
     if (!winConnect) {
@@ -136,32 +126,6 @@ double pgServer::GetLastSystemOID()
     }
 }
 
-wxString pgServer::GetDatabase() const
-{
-    return database;
-}
-void pgServer::iSetDatabase(const wxString& newVal)
-{
-    database = newVal;
-}
-
-wxString pgServer::GetUsername() const
-{
-    return username;
-}
-void pgServer::iSetUsername(const wxString& newVal)
-{
-    username = newVal;
-}
-
-wxString pgServer::GetPassword() const
-{
-    return password;
-}
-void pgServer::iSetPassword(const wxString& newVal)
-{
-    password = newVal;
-}
 bool pgServer::SetPassword(const wxString& newVal)
 {
     wxString sql;
@@ -173,15 +137,6 @@ bool pgServer::SetPassword(const wxString& newVal)
     } else {
         return FALSE;
     }
-}
-
-int pgServer::GetPort()
-{
-    return port;
-}
-void pgServer::iSetPort(int newVal)
-{
-    port = newVal;
 }
 
 wxString pgServer::GetLastError() const
@@ -197,24 +152,4 @@ wxString pgServer::GetLastError() const
         msg.Printf(wxT("%s"), conn->GetLastError().c_str());
     }
     return msg;
-}
-
-bool pgServer::GetConnected()
-{
-    return connected;
-}
-
-int pgServer::ExecuteVoid(const wxString& sql)
-{
-    return conn->ExecuteVoid(sql);
-}
-
-wxString pgServer::ExecuteScalar(const wxString& sql) const
-{
-    return conn->ExecuteScalar(sql);
-}
-
-pgSet pgServer::ExecuteSet(const wxString& sql)
-{
-    return *conn->ExecuteSet(sql);
 }

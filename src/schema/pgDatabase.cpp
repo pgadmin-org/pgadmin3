@@ -66,57 +66,7 @@ int pgDatabase::Connect() {
     }
 }
 
-// Parent objects
-pgServer *pgDatabase::GetServer() {
-    return server;
-}
-
-void pgDatabase::SetServer(pgServer *newServer) {
-    server = newServer;
-}
-
-wxString pgDatabase::GetPath() const
-{
-    return path;
-}
-void pgDatabase::iSetPath(const wxString& newVal)
-{
-    path = newVal;
-}
-
-wxString pgDatabase::GetEncoding() const
-{
-    return encoding;
-}
-void pgDatabase::iSetEncoding(const wxString& newVal)
-{
-    encoding = newVal;
-}
-
-wxString pgDatabase::GetVariables() const
-{
-    return variables;
-}
-void pgDatabase::iSetVariables(const wxString& newVal)
-{
-    variables = newVal;
-}
-
-bool pgDatabase::GetAllowConnections()
-{
-    return allowConnections;
-}
-void pgDatabase::iSetAllowConnections(bool newVal)
-{
-    allowConnections = newVal;
-}
-
-bool pgDatabase::GetConnected()
-{
-    return connected;
-}
-
-bool pgDatabase::GetSystemObject()
+bool pgDatabase::GetSystemObject() const
 {
     if (server) {
         if (this->GetName() == wxT("template0")) return TRUE;

@@ -26,42 +26,42 @@ public:
     ~sysSettings();
 
     // frmMain size/position
-    int GetFrmMainWidth();
-    void SetFrmMainWidth(const int newval);
+    int GetFrmMainWidth() const { return frmMainWidth; }
+    void SetFrmMainWidth(const int newval) { frmMainWidth = newval; }
 
-    int GetFrmMainHeight();
-    void SetFrmMainHeight(const int newval);
+    int GetFrmMainHeight() const { return frmMainHeight; }
+    void SetFrmMainHeight(const int newval) { frmMainHeight = newval; }
 
-    int GetFrmMainTop();
-    void SetFrmMainTop(const int newval);
+    int GetFrmMainTop() const { return frmMainTop; }
+    void SetFrmMainTop(const int newval) { frmMainTop = newval; }
 
-    int GetFrmMainLeft();
-    void SetFrmMainLeft(const int newval);
+    int GetFrmMainLeft() const { return frmMainLeft; }
+    void SetFrmMainLeft(const int newval) { frmMainLeft = newval; }
 
     // Tip Of The Day
-    bool GetShowTipOfTheDay();
+    bool GetShowTipOfTheDay() const { return showTipOfTheDay; }
     void SetShowTipOfTheDay(const bool newval);
-    int GetNextTipOfTheDay();
+    int GetNextTipOfTheDay() const { return nextTipOfTheDay; }
     void SetNextTipOfTheDay(const int newval);
 
     // Log
-    wxString GetLogFile() const;
+    wxString GetLogFile() const { return logFile; }
     void SetLogFile(const wxString& newval);
-    int GetLogLevel();
+    int GetLogLevel() const { return logLevel; }
     void SetLogLevel(const int newval);
 
     // Last connection
-    wxString GetLastServer() const;
+    wxString GetLastServer() const { return lastServer; }
     void SetLastServer(const wxString& newval);
-    wxString GetLastDatabase() const;
+    wxString GetLastDatabase() const { return lastDatabase; }
     void SetLastDatabase(const wxString& newval);
-    wxString GetLastUsername() const;
+    wxString GetLastUsername() const { return lastUsername; }
     void SetLastUsername(const wxString& newval);
-    int GetLastPort();
+    int GetLastPort() const { return lastPort; }
     void SetLastPort(const int newval);
 
     // Show System Objects
-    bool GetShowSystemObjects();
+    bool GetShowSystemObjects() const { return showSystemObjects; }
     void SetShowSystemObjects(const bool newval);
 
 private:

@@ -62,63 +62,15 @@ sysSettings::~sysSettings()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// frmMain size/position
-//////////////////////////////////////////////////////////////////////////
-
-int sysSettings::GetFrmMainWidth()
-{
-    return frmMainWidth;
-}
-void sysSettings::SetFrmMainWidth(const int newval)
-{
-    frmMainWidth = newval;
-}
-
-int sysSettings::GetFrmMainHeight()
-{
-    return frmMainHeight;
-}
-void sysSettings::SetFrmMainHeight(const int newval)
-{
-    frmMainHeight = newval;
-}
-
-int sysSettings::GetFrmMainTop()
-{
-    return frmMainTop;
-}
-void sysSettings::SetFrmMainTop(const int newval)
-{
-    frmMainTop = newval;
-}
-
-int sysSettings::GetFrmMainLeft()
-{
-    return frmMainLeft;
-}
-void sysSettings::SetFrmMainLeft(const int newval)
-{
-    frmMainLeft = newval;
-}
-
-//////////////////////////////////////////////////////////////////////////
 // Tip of the Day
 //////////////////////////////////////////////////////////////////////////
 
-bool sysSettings::GetShowTipOfTheDay()
-{
-    return showTipOfTheDay;
-}
 void sysSettings::SetShowTipOfTheDay(const bool newval)
 {
     showTipOfTheDay = newval;
     this->Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
 }
 
-int sysSettings::GetNextTipOfTheDay()
-{
-    return nextTipOfTheDay;
-}
 void sysSettings::SetNextTipOfTheDay(const int newval)
 {
     nextTipOfTheDay = newval;
@@ -129,20 +81,12 @@ void sysSettings::SetNextTipOfTheDay(const int newval)
 // Log
 //////////////////////////////////////////////////////////////////////////
 
-wxString sysSettings::GetLogFile() const
-{
-    return logFile;
-}
 void sysSettings::SetLogFile(const wxString& newval)
 {
     logFile = newval;
     this->Write(wxT("LogFile"), logFile);
 }
 
-int sysSettings::GetLogLevel()
-{
-    return logLevel;
-}
 void sysSettings::SetLogLevel(const int newval)
 {
     logLevel = newval;
@@ -153,40 +97,24 @@ void sysSettings::SetLogLevel(const int newval)
 // Last Connection
 //////////////////////////////////////////////////////////////////////////
 
-wxString sysSettings::GetLastServer() const
-{
-    return lastServer;
-}
 void sysSettings::SetLastServer(const wxString& newval)
 {
     lastServer = newval;
     this->Write(wxT("LastServer"), lastServer);
 }
 
-wxString sysSettings::GetLastDatabase() const
-{
-    return lastDatabase;
-}
 void sysSettings::SetLastDatabase(const wxString& newval)
 {
     lastDatabase = newval;
     this->Write(wxT("LastDatabase"), lastDatabase);
 }
 
-wxString sysSettings::GetLastUsername() const
-{
-    return lastUsername;
-}
 void sysSettings::SetLastUsername(const wxString& newval)
 {
     lastUsername = newval;
     this->Write(wxT("LastUsername"), lastUsername);
 }
 
-int sysSettings::GetLastPort()
-{
-    return lastPort;
-}
 void sysSettings::SetLastPort(const int newval)
 {
     lastPort = newval;
@@ -197,10 +125,6 @@ void sysSettings::SetLastPort(const int newval)
 // Show System Objects
 //////////////////////////////////////////////////////////////////////////
 
-bool sysSettings::GetShowSystemObjects()
-{
-    return showSystemObjects;
-}
 void sysSettings::SetShowSystemObjects(const bool newval)
 {
     showSystemObjects = newval;

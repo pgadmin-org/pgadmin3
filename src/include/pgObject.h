@@ -17,6 +17,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "misc.h"
 
 // This enum lists the type of objects that may be included in the treeview
 // as objects.
@@ -48,23 +49,24 @@ class pgObject : public wxTreeItemData
 {
 public:
     pgObject(int newType = PG_NONE, const wxString& newName = wxString(""));
-    ~pgObject();
+    ~pgObject() { wxLogInfo(wxT("Destroying a pgDatabase object")); }
 
-    int GetType();
-    wxString GetTypeName() const;
-    void iSetName(const wxString& newVal);
-    wxString GetName() const;
-    virtual wxString GetIdentifier() const;
-    virtual wxString GetQuotedIdentifier() const;
-    double GetOid();
-    void iSetOid(double newVal);
-    wxString GetOwner() const;
-    void iSetOwner(const wxString& newVal);
-    wxString GetComment() const;
-    void iSetComment(const wxString& newVal);
-    wxString GetAcl() const;
-    void iSetAcl(const wxString& newVal);
-    virtual bool GetSystemObject();
+    virtual void ShowProperties() const {};
+    int GetType() const { return type; }
+    wxString GetTypeName() const { return typeName; }
+    void iSetName(const wxString& newVal) { name = newVal; }
+    wxString GetName() const { return name; }
+    virtual wxString GetIdentifier() const { return name; }
+    virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
+    double GetOid() const { return oid; }
+    void iSetOid(double newVal) { oid = newVal; } 
+    wxString GetOwner() const { return owner; }
+    void iSetOwner(const wxString& newVal) { owner = newVal; }
+    wxString GetComment() const { return comment; }
+    void iSetComment(const wxString& newVal) { comment = newVal; }
+    wxString GetAcl() const { return acl; }
+    void iSetAcl(const wxString& newVal) { acl = newVal; }
+    virtual bool GetSystemObject() const { return FALSE; }
 
 private:
     wxString typeName, name, owner, comment, acl;

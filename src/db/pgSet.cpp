@@ -54,16 +54,6 @@ pgSet::~pgSet()
     PQclear(res);
 }
 
-long pgSet::NumCols()
-{
-    return PQnfields(res);
-}
-
-long pgSet::NumRows()
-{
-    return PQntuples(res);
-}
-
 void pgSet::MoveNext()
 {
     // If pos = 0 then there aren't any tuples
@@ -115,27 +105,6 @@ void pgSet::MoveLast()
     }
 }
 
-
-long pgSet::CurrentPos()
-{
-    return pos;
-}
-
-bool pgSet::Eof()
-{
-    return eof;
-}
-
-bool pgSet::Bof()
-{
-    return bof;
-}
-
-wxString pgSet::ColName(int col) const
-{
-    return wxString(PQfname(res, col + 1));
-}
-
 wxString pgSet::ColType(int col) const
 {
     wxString szSQL, szResult;
@@ -144,20 +113,10 @@ wxString pgSet::ColType(int col) const
     return szResult;
 }
 
-int pgSet::ColSize(int col)
-{
-    return PQfsize(res, col + 1);
-}
-
-int pgSet::ColScale(int col)
+int pgSet::ColScale(int col) const
 {
     // TODO
     return 0;
-}
-
-wxString pgSet::GetVal(int col) const
-{
-    return wxString(PQgetvalue(res, pos -1, col));
 }
 
 wxString pgSet::GetVal(const wxString& colname) const

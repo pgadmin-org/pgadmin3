@@ -132,7 +132,7 @@ int pgConn::ExecuteVoid(const wxString& sql)
     return res;
 }
 
-wxString pgConn::ExecuteScalar(const wxString& sql) const
+wxString pgConn::ExecuteScalar(const wxString& sql)
 {
     // Execute the query and get the status.
     PGresult *qryRes;
@@ -191,42 +191,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
 // Info
 //////////////////////////////////////////////////////////////////////////
 
-wxString pgConn::GetUser() const
-{
-  return wxString(PQuser(conn));
-}
-
-wxString pgConn::GetPassword() const
-{
-  return wxString(PQpass(conn));
-}
-
-wxString pgConn::GetHost() const
-{
-  return dbHost;
-}
-
-int pgConn::GetPort() const
-{
-  return atoi(PQport(conn));
-}
-
-wxString pgConn::GetTTY() const
-{
-  return wxString(PQtty(conn));
-}
-
-wxString pgConn::GetOptions() const
-{
-  return wxString(PQoptions(conn));
-}
-
-int pgConn::GetBackendPID()
-{
-    return PQbackendPID(conn);
-}
-
-int pgConn::GetStatus()
+int pgConn::GetStatus() const
 {
     if(resolvedIP) {
 	    return PQstatus(conn);
@@ -235,12 +200,7 @@ int pgConn::GetStatus()
     }
 }
 
-wxString pgConn::GetLastError() const
-{
-	return wxString(PQerrorMessage(conn));
-}
-
-wxString pgConn::GetVersionString() const
+wxString pgConn::GetVersionString()
 {
 	wxString sql;
     sql.Printf("SELECT version();");

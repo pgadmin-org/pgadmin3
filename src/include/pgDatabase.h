@@ -26,18 +26,18 @@ class pgDatabase : public pgObject
 public:
     pgDatabase(const wxString& newName = wxString(""));
     ~pgDatabase();
-    pgServer *GetServer();
-    void SetServer(pgServer *newServer);
-    wxString GetPath() const;
-    void iSetPath(const wxString& newVal);
-    wxString GetEncoding() const;
-    void iSetEncoding(const wxString& newVal);
-    wxString GetVariables() const;
-    void iSetVariables(const wxString& newVal);
-    bool GetAllowConnections();
-    void iSetAllowConnections(bool newVal);
-    bool GetConnected();
-    bool GetSystemObject();
+    pgServer *GetServer() const { return server; }
+    void SetServer(pgServer *newServer) { server = newServer; }
+    wxString GetPath() const { return path; };
+    void iSetPath(const wxString& newVal) { path = newVal; }
+    wxString GetEncoding() const { return encoding; }
+    void iSetEncoding(const wxString& newVal) { encoding = newVal; }
+    wxString GetVariables() const { return variables; }
+    void iSetVariables(const wxString& newVal) { variables = newVal; }
+    bool GetAllowConnections() const { return allowConnections; }
+    void iSetAllowConnections(bool newVal) { allowConnections = newVal; }
+    bool GetConnected() const { return connected; }
+    bool GetSystemObject() const;
     wxString GetSql() const;
 
     int Connect();

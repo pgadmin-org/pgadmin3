@@ -26,11 +26,11 @@ class pgUser : public pgObject
 public:
     pgUser(const wxString& newName = wxString(""));
     ~pgUser();
-    pgServer *GetServer();
-    void SetServer(pgServer *newServer);
+    pgServer *GetServer() const { return server; }
+    void SetServer(pgServer *newServer) { server = newServer; }
 
     // User Specific
-    int GetUserID();
+    int GetUserID() const { return userId; }
 
 private:
     int userId;

@@ -50,18 +50,18 @@ public:
     pgConn(const wxString& server = wxString(""), const wxString& database = wxString(""), const wxString& username = wxString(""), const wxString& password = wxString(""), int port = 5432);
     ~pgConn();
     int ExecuteVoid(const wxString& sql);
-    wxString ExecuteScalar(const wxString& sql) const;
+    wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
-    wxString GetUser() const;
-    wxString GetPassword() const;
-    wxString GetHost() const;
-    int GetPort() const;
-    wxString GetTTY() const;
-    wxString GetOptions() const;
-    int GetBackendPID();
-    int GetStatus();
-    wxString GetLastError() const;
-    wxString GetVersionString() const;
+    wxString GetUser() const { return wxString(PQuser(conn)); }
+    wxString GetPassword() const { return wxString(PQpass(conn)); }
+    wxString GetHost() const { return dbHost; }
+    int GetPort() const { return atoi(PQport(conn)); };
+    wxString GetTTY() const { return wxString(PQtty(conn)); }
+    wxString GetOptions() const { return wxString(PQoptions(conn)); }
+    int GetBackendPID() const { return PQbackendPID(conn); }
+    int GetStatus() const;
+    wxString GetLastError() const { return wxString(PQerrorMessage(conn)); }
+    wxString GetVersionString();
     float GetVersionNumber();
     long GetLastSystemOID();
 

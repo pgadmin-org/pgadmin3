@@ -26,20 +26,20 @@ class pgSet
 public:
     pgSet(PGresult *newRes, PGconn *newConn);
     ~pgSet();
-    long NumRows();
-    long NumCols();
+    long NumRows() const { return PQntuples(res); }
+    long NumCols() const { return PQnfields(res); }
     void MoveNext();
     void MovePrevious();
     void MoveFirst();
     void MoveLast();
-    long CurrentPos();
-    bool Eof();
-    bool Bof();
-    wxString ColName(int col) const;
+    long CurrentPos() const { return pos; }
+    bool Eof() const { return eof; }
+    bool Bof() const { return bof; }
+    wxString ColName(int col) const { return wxString(PQfname(res, col + 1)); }
     wxString ColType(int col) const;
-    int ColSize(int col);
-    int ColScale(int col);
-    wxString GetVal(int col) const;
+    int ColSize(int col) const { return PQfsize(res, col + 1); }
+    int ColScale(int col) const;
+    wxString GetVal(int col) const { return wxString(PQgetvalue(res, pos -1, col)); }
     wxString GetVal(const wxString& col) const;
 
 private:

@@ -26,16 +26,3 @@ pgUser::~pgUser()
 {
     wxLogInfo(wxT("Destroying a pgUser object"));
 }
-
-int pgUser::GetUserID() {
-    return userId;
-}
-
-// Parent objects
-pgServer *pgUser::GetServer() {
-    return server;
-}
-
-void pgUser::SetServer(pgServer *newServer) {
-    server = newServer;
-}
