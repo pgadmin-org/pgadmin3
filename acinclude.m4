@@ -71,7 +71,7 @@ fi], [
     AC_MSG_RESULT(yes)
     LIBPQ_HOME="/usr/local/pgsql"
     # Check for headers
-    if test "$pgsql_include" == ""
+    if test "$pgsql_include" = ""
     then
         if test ! -f "${LIBPQ_HOME}/include/libpq-fe.h"
         then
@@ -98,22 +98,21 @@ then
     else
         CPPFLAGS="$CPPFLAGS -I${LIBPQ_HOME}/include"
     fi
-    LIBS="$LIBS -lssl -lcrypto"
+    if test "$pg_static_build" = "yes"
+    then
+        LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lssl -lcrypto"
+    else
+        LIBS="$LIBS -lssl -lcrypto -lpq"
+    fi
     AC_LANG_SAVE
     AC_LANG_C
     AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
     AC_CHECK_HEADER(libpq-fe.h, [pgsql_cv_libpqfe_h=yes], [pgsql_cv_libpqfe_h=no])
     AC_LANG_RESTORE
-    if test "$pgsql_cv_libpq" == "yes" -a "$pgsql_cv_libpqfe_h" == "yes"
+    if test "$pgsql_cv_libpq" = "yes" -a "$pgsql_cv_libpqfe_h" = "yes"
     then
         AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
         AC_MSG_RESULT(ok)
-        if test "$pg_static_build" == "yes"
-        then
-            LIBS="$LIBS ${LIBPQ_HOME}/lib/libpq.a -lcrypt"
-        else
-            LIBS="$LIBS -lpq"
-        fi
     else
         AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
         AC_MSG_RESULT(failed)
@@ -185,7 +184,7 @@ then
     LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
     WX_OLD_LDFLAGS="$LDFLAGS"
     WX_OLD_CPPFLAGS="$CPPFLAGS"
-    if test "$pg_static_build" == "yes"
+    if test "$pg_static_build" = "yes"
     then
         WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --static`
     else
@@ -206,7 +205,7 @@ then
     esac
 
     # Here we go!!
-    if test "$pg_static_build" == "yes"
+    if test "$pg_static_build" = "yes"
     then
         case "${host}" in
             *-apple-darwin*)
