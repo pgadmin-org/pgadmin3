@@ -214,17 +214,17 @@ then
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_mswu-*)
-                LIBS="$LIBS $(WX_HOME)/lib/libwx_mswu_stc-$(WX+VERSION).a $(WX_HOME)/lib/libwx_mswu_xrc-$(WX_VERSION).a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswu_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mswu_xrc-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_mswd-*)
-                LIBS="$LIBS $(WX_HOME)/lib/libwx_mswd_stc-$(WX+VERSION).a $(WX_HOME)/lib/libwx_mswd_xrc-$(WX_VERSION).a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mswd_xrc-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_msw-*)
-                LIBS="$LIBS $(WX_HOME)/lib/libwx_msw_stc-$(WX+VERSION).a $(WX_HOME)/lib/libwx_msw_xrc-$(WX_VERSION).a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_msw_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_msw_xrc-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
@@ -270,22 +270,22 @@ then
     else
         case "${WX_NEW_LDFLAGS}" in
             *libwx_mswud-*)
-                LIBS="$LIBS -lwx_mswud_stc-$(WX+VERSION) -lwx_mswud_xrc-$(WX_VERSION)"
+                LIBS="$LIBS -lwx_mswud_stc-${WX_VERSION} -lwx_mswud_xrc-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_mswu-*)
-                LIBS="$LIBS -lwx_mswu_stc-$(WX+VERSION) -lwx_mswu_xrc-$(WX_VERSION)"
+                LIBS="$LIBS -lwx_mswu_stc-${WX_VERSION} -lwx_mswu_xrc-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_mswd-*)
-                LIBS="$LIBS -lwx_mswd_stc-$(WX+VERSION) -lwx_mswd_xrc-$(WX_VERSION)"
+                LIBS="$LIBS -lwx_mswd_stc-${WX_VERSION} -lwx_mswd_xrc-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_msw-*)
-                LIBS="$LIBS -lwx_msw_stc-$(WX+VERSION) -lwx_msw_xrc-$(WX_VERSION)"
+                LIBS="$LIBS -lwx_msw_stc-${WX_VERSION} -lwx_msw_xrc-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
