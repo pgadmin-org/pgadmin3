@@ -35,6 +35,7 @@ public:
     
 private:
     wxString GetHelpPage() const;
+    void OnChangeName(wxCommandEvent &ev);
     void OnChange(wxCommandEvent &ev);
     void OnSelectFilename(wxCommandEvent &ev);
     void OnView(wxCommandEvent &ev);
@@ -46,7 +47,7 @@ private:
 
     frmMain *form;
     pgObject *object;
-    bool viewRunning;
+    bool viewRunning, filenameValid;
 
     DECLARE_EVENT_TABLE()
 };

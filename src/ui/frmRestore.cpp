@@ -22,6 +22,7 @@
 #include "pgTable.h"
 #include <wx/process.h>
 #include <wx/textbuf.h>
+#include <wx/file.h>
 
 // Icons
 #include "images/restore.xpm"
@@ -43,7 +44,7 @@
 
 
 BEGIN_EVENT_TABLE(frmRestore, ExternProcessDialog)
-    EVT_TEXT(XRCID("txtFilename"),          frmRestore::OnChange)
+    EVT_TEXT(XRCID("txtFilename"),          frmRestore::OnChangeName)
     EVT_BUTTON(XRCID("btnFilename"),        frmRestore::OnSelectFilename)
     EVT_BUTTON(XRCID("btnOK"),              frmRestore::OnOK)
     EVT_BUTTON(XRCID("btnView"),            frmRestore::OnView)
@@ -72,6 +73,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
     txtMessages = CTRL_TEXT("txtMessages");
     txtMessages->SetMaxLength(0L);
     btnOK->Disable();
+    filenameValid=false;
 
     wxCommandEvent ev;
     OnChange(ev);
@@ -107,9 +109,40 @@ void frmRestore::OnSelectFilename(wxCommandEvent &ev)
 }
 
 
+void frmRestore::OnChangeName(wxCommandEvent &ev)
+{
+    wxString name=txtFilename->GetValue();
+    if (name.IsEmpty() || !wxFile::Exists(name))
+        filenameValid=false;
+    else
+    {
+        wxFile file(name, wxFile::read);
+        if (file.IsOpened())
+        {
+            char buffer[8];
+            off_t size=file.Read(buffer, 8);
+            if (size == 8)
+            {
+                if (memcmp(buffer, "PGDMP", 5) && !memcmp(buffer, "toc.dat", 8))
+                {
+                    // tar format?
+                    file.Seek(512);
+                    size=file.Read(buffer, 8);
+                }
+                if (size == 8 && !memcmp(buffer, "PGDMP", 5))
+                {
+                    // check version here?
+                    filenameValid=true;
+                }
+            }
+        }
+    }
+    OnChange(ev);
+}
+
+
 void frmRestore::OnChange(wxCommandEvent &ev)
 {
-    bool filenameValid=!txtFilename->GetValue().IsEmpty();
     btnOK->Enable(filenameValid);
     btnView->Enable(filenameValid);
 }
