@@ -7,7 +7,7 @@
 //
 // pgConn.cpp - PostgreSQL Connection class
 //
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
 
@@ -61,6 +61,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     conn=0;
     majorVersion=0;
     noticeArg=0;
+    connStatus = PGCONN_BAD;
     
 #ifdef __WXMSW__
     struct in_addr ipaddr;
@@ -75,7 +76,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 		host = gethostbyname(server.ToAscii());
 		if (host == NULL)
 		{
-            resolvedIP = FALSE;
+            connStatus = PGCONN_DNSERR;
             wxLogError(__("Could not resolve hostname %s"), server.c_str());
 			return;
 		}
@@ -87,7 +88,6 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     else
         hostip = server;
 
-    resolvedIP = TRUE;
     wxLogInfo(wxT("Server name: %s (resolved to: %s)"), server.c_str(), hostip.c_str());
 
     // Create the connection string
@@ -142,7 +142,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     // Set client encoding to Unicode/Ascii
     if (PQstatus(conn) == CONNECTION_OK)
     {
-
+        connStatus = PGCONN_OK;
         PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
 
         pgSet *set=ExecuteSet(
@@ -166,7 +166,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
             wxLogInfo(wxT("Setting client_encoding to '%s'"), encoding.c_str());
             if (PQsetClientEncoding(conn, encoding.ToAscii()))
-				wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
+				wxLogError(wxT("%s"), GetLastError().c_str());
 
             delete set;
         }
@@ -177,8 +177,17 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 pgConn::~pgConn()
 {
     wxLogInfo(wxT("Destroying pgConn object"));
+    Close();
+}
+
+
+
+void pgConn::Close()
+{
     if (conn)
         PQfinish(conn);
+    conn=0;
+    connStatus=PGCONN_BAD;
 }
 
 
@@ -334,19 +343,39 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
 // Info
 //////////////////////////////////////////////////////////////////////////
 
+wxString pgConn::GetLastError() const
+{ 
+    wxString errmsg;
+    if (conn)
+        errmsg=wxString(PQerrorMessage(conn), wxConvUTF8);
+    else
+    {
+        if (connStatus == PGCONN_BROKEN)
+            errmsg = _("Connection to database broken.");
+        else
+            errmsg = _("No connection to database.");
+    }
+    return errmsg;
+}
+
+
 
 void pgConn::LogError()
 {
     if (conn)
     {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
+        wxLogError(wxT("%s"), GetLastError().c_str());
 
+        IsAlive();
+#if 0
         ConnStatusType status = PQstatus(conn);
         if (status == CONNECTION_BAD)
         {
             PQfinish(conn);
             conn=0;
+            connStatus = PGCONN_BROKEN;
         }
+#endif
     }
 }
 
@@ -366,6 +395,7 @@ bool pgConn::IsAlive()
     {
         PQfinish(conn);
         conn=0;
+        connStatus = PGCONN_BROKEN;
         return false;
     }
 
@@ -375,13 +405,10 @@ bool pgConn::IsAlive()
 
 int pgConn::GetStatus() const
 {
-    if(!resolvedIP)
-        return PGCONN_DNSERR;
-    
-    if (!conn)
-        return PGCONN_BAD;
-    else
-        return PQstatus(conn);
+    if (conn)
+        ((pgConn*)this)->connStatus = PQstatus(conn);
+
+    return connStatus;
 }
 
 

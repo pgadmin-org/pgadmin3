@@ -340,81 +340,7 @@ void frmMain::OnStatus(wxCommandEvent &event)
 
 void frmMain::OnCheckAlive(wxCommandEvent &event)
 {
-    bool userInformed = false;
-    bool closeIt;
-
-    wxCookieType cookie;
-    wxTreeItemId item=browser->GetFirstChild(servers, cookie);
-    while (item)
-    {
-        pgServer *server=(pgServer*)browser->GetItemData(item);
-        if (server && server->GetType() == PG_SERVER && server->connection())
-        {
-            if (server->connection()->IsAlive())
-            {
-                wxCookieType cookie2;
-                item = browser->GetFirstChild(server->GetId(), cookie2);
-                while (item)
-                {
-                    pgObject *obj=(pgObject*)browser->GetItemData(item);
-                    if (obj && obj->GetType() == PG_DATABASES)
-                    {
-                        wxCookieType cookie3;
-                        item = browser->GetFirstChild(obj->GetId(), cookie3);
-                        while (item)
-                        {
-                            pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
-                            if (db && db->GetType() == PG_DATABASE && db->GetConnected() && db->connection())
-                            {
-                                if (!db->connection()->IsAlive())
-                                {
-                                    if (!userInformed)
-                                    {
-                                        wxMessageDialog dlg(this, _("Close database browser? If you abort, the object browser will not show accurate data."),
-                                        wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()), 
-                                            wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
-
-                                        closeIt = (dlg.ShowModal() == wxID_YES);
-                                        userInformed = true;
-                                    }
-                                    if (closeIt)
-                                    {
-                                        browser->DeleteChildren(db->GetId());
-                                        browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
-                                        browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
-                                        db->Disconnect();
-                                    }
-                                }
-                            }
-                            item = browser->GetNextChild(obj->GetId(), cookie3);
-                        }
-                    }
-                    item = browser->GetNextChild(server->GetId(), cookie2);
-                }
-            }
-            else
-            {
-                if (!userInformed)
-                {
-                    wxMessageDialog dlg(this, _("Close server browser? If you abort, the object browser will not show accurate data."),
-                        wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()), 
-                        wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
-
-                    closeIt = (dlg.ShowModal() == wxID_YES);
-                    userInformed = true;
-                }
-                if (closeIt)
-                {
-                    browser->DeleteChildren(server->GetId());
-                    browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Normal);
-                    browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Selected);
-                    server->Disconnect();
-                }
-            }
-        }
-
-        item = browser->GetNextChild(servers, cookie);
-    }
+    checkAlive();
 }
 
 
@@ -635,24 +561,36 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
     int res = server->Connect(this);
 
     // Check the result, and handle it as appropriate
-    if (res == PGCONN_OK) {
-        wxLogInfo(wxT("pgServer object initialised as required."));
-        browser->AppendItem(servers, server->GetFullName(), PGICON_SERVER, -1, server);
-        browser->Expand(servers);
+    switch (res)
+    {
+        case PGCONN_OK:
+        {
+            wxLogInfo(wxT("pgServer object initialised as required."));
+            browser->AppendItem(servers, server->GetFullName(), PGICON_SERVER, -1, server);
+            browser->Expand(servers);
+            break;
+        }
+        case PGCONN_DNSERR:
+        {
+            delete server;
+            OnAddServer(ev);
+            break;
+        }
+        case PGCONN_BAD:
+        case PGCONN_BROKEN:
+        {
+            wxLogError(__("Error connecting to the server: %s"), server->GetLastError().c_str());
 
-    } else if (res == PGCONN_DNSERR)  {
-        delete server;
-        OnAddServer(ev);
-
-    } else if (res == PGCONN_BAD)  {
-        wxLogError(__("Error connecting to the server: %s"), server->GetLastError().c_str());
-
-        delete server;
-        OnAddServer(ev);
-
-    } else {
-        wxLogInfo(__("pgServer object didn't initialise because the user aborted."));
-        delete server;
+            delete server;
+            OnAddServer(ev);
+            break;
+        }
+        default:
+        {
+            wxLogInfo(__("pgServer object didn't initialise because the user aborted."));
+            delete server;
+            break;
+        }
     }
 
     // Reset the Servers node text
@@ -779,6 +717,8 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             canGrantWizard=true;
             break;
         case PG_TABLE:
+        case PG_CONSTRAINTS:
+        case PG_FOREIGNKEY:
             canIndexCheck=true;
             break;
         case PG_DATABASES:
@@ -807,10 +747,8 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_CHECK:
         case PG_COLUMNS:
         case PG_COLUMN:
-        case PG_CONSTRAINTS:
         case PG_PRIMARYKEY:
         case PG_UNIQUE:
-        case PG_FOREIGNKEY:
         case PG_INDEXES:
         case PG_INDEX:
         case PG_RULES:
@@ -837,6 +775,12 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         sqlbox->SetReadOnly(true);
     }
 
+    pgConn *conn=data->GetConnection();
+    if (conn && conn->GetStatus() == PGCONN_BROKEN)
+    {
+        checkAlive();
+        return;
+    }
     unsigned int i;
     wxMenuItem *menuItem;
     i=newMenu->GetMenuItemCount();

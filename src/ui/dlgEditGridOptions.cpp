@@ -294,7 +294,7 @@ bool dlgEditGridOptions::Validate()
     }
 
     // Figure out where the error is
-    wxString errMsg = wxString(PQerrorMessage(connection->connection()), *conv).c_str();
+    wxString errMsg = connection->GetLastError();
 
     wxString atChar=wxT(" at character ");
     int chp=errMsg.Find(atChar);

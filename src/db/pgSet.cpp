@@ -279,7 +279,8 @@ pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &qry, int _resultToRe
     rc=-1;
     insertedOid = (OID)-1;
     conn->RegisterNoticeProcessor(pgNoticeProcessor, this);
-    PQsetnonblocking(conn->conn, 1);
+    if (conn->conn)
+        PQsetnonblocking(conn->conn, 1);
 }
 
 
@@ -308,7 +309,7 @@ wxString pgQueryThread::GetMessagesAndClear()
 void pgQueryThread::appendMessage(const wxString &str)
 {
     wxCriticalSectionLocker cs(criticalSection);
-    messages += str;
+    messages.Append(str);
 }
 
 
@@ -319,10 +320,14 @@ int pgQueryThread::execute()
 
     wxLogSql(wxT("Thread Query %s"), query.c_str());
 
-
-    if (!PQsendQuery(conn->conn, query.mb_str(*conn->conv)))
+    if (!conn->conn)
         return(0);
 
+    if (!PQsendQuery(conn->conn, query.mb_str(*conn->conv)))
+    {
+        conn->IsAlive();
+        return(0);
+    }
     int resultsRetrieved=0;
     PGresult *lastResult=0;
     while (true)

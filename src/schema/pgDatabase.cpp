@@ -114,15 +114,7 @@ pgConn *pgDatabase::connection()
 void pgDatabase::CheckAlive()
 {
     if (connected)
-    {
         connected = connection()->IsAlive();
-        if (!connected)
-        {
-            // backend died
-            wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, MNU_CHECKALIVE);
-            wxPostEvent(GetServer()->GetParentFrame(), event);
-        }
-    }
 }
 
 void pgDatabase::Disconnect()

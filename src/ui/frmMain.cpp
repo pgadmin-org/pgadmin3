@@ -509,6 +509,97 @@ void frmMain::RemoveFrame(wxWindow *frame)
     frames.DeleteObject(frame);
 }
 
+
+bool frmMain::checkAlive()
+{
+    bool userInformed = false;
+    bool closeIt;
+
+    wxCookieType cookie;
+    wxTreeItemId serverItem=browser->GetFirstChild(servers, cookie);
+    while (serverItem)
+    {
+        pgServer *server=(pgServer*)browser->GetItemData(serverItem);
+
+        if (server && server->GetType() == PG_SERVER && server->connection())
+        {
+            if (server->connection()->IsAlive())
+            {
+                wxCookieType cookie2;
+                wxTreeItemId item = browser->GetFirstChild(serverItem, cookie2);
+                while (item)
+                {
+                    pgObject *obj=(pgObject*)browser->GetItemData(item);
+                    if (obj && obj->GetType() == PG_DATABASES)
+                    {
+                        wxCookieType cookie3;
+                        item = browser->GetFirstChild(obj->GetId(), cookie3);
+                        while (item)
+                        {
+                            pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
+                            if (db && db->GetType() == PG_DATABASE && db->GetConnected() && db->connection())
+                            {
+                                if (!db->connection()->IsAlive() && db->connection()->GetStatus() == PGCONN_BROKEN)
+                                {
+                                    db->connection()->Close();
+                                    if (!userInformed)
+                                    {
+                                        wxMessageDialog dlg(this, _("Close database browser? If you abort, the object browser will not show accurate data."),
+                                        wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()), 
+                                            wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
+
+                                        closeIt = (dlg.ShowModal() == wxID_YES);
+                                        userInformed = true;
+                                    }
+                                    if (closeIt)
+                                    {
+                                        browser->DeleteChildren(db->GetId());
+                                        browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
+                                        browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
+                                        db->Disconnect();
+                                    }
+                                }
+                            }
+                            item = browser->GetNextChild(obj->GetId(), cookie3);
+                        }
+                    }
+                    item = browser->GetNextChild(serverItem, cookie2);
+                }
+            }
+            else
+            {
+                if (server->connection()->GetStatus() == PGCONN_BROKEN)
+                {
+                    server->connection()->Close();
+                    if (!userInformed)
+                    {
+                        wxMessageDialog dlg(this, _("Close server browser? If you abort, the object browser will not show accurate data."),
+                            wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()), 
+                            wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
+
+                        closeIt = (dlg.ShowModal() == wxID_YES);
+                        userInformed = true;
+                    }
+                    if (closeIt)
+                    {
+
+                        browser->SelectItem(serverItem);
+                        browser->SetItemImage(serverItem, PGICON_SERVERBAD, wxTreeItemIcon_Normal);
+                        browser->SetItemImage(serverItem, PGICON_SERVERBAD, wxTreeItemIcon_Selected);
+                        server->Disconnect();
+                        execSelChange(serverItem, true);
+                        browser->DeleteChildren(serverItem);
+                    }
+                }
+            }
+        }
+
+        serverItem = browser->GetNextChild(servers, cookie);
+    }
+    return userInformed;
+}
+
+
 wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
 {
     wxTreeItemId item, lastItem;

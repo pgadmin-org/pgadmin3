@@ -30,7 +30,8 @@ enum
     PGCONN_BAD = CONNECTION_BAD,
     PGCONN_REFUSED,
     PGCONN_DNSERR,
-    PGCONN_ABORTED
+    PGCONN_ABORTED,     // connect user aborted
+    PGCONN_BROKEN       // tcp/pipe broken
 };
 
 enum 
@@ -51,6 +52,8 @@ class pgConn
 public:
     pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0);
     ~pgConn();
+
+    void Close();
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
     bool ExecuteVoid(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
@@ -65,7 +68,7 @@ public:
     int GetStatus() const;
     int GetLastResultStatus() const { return lastResultStatus; }
     bool IsAlive();
-    wxString GetLastError() const { return wxString(PQerrorMessage(conn), *conv); }
+    wxString GetLastError() const;
     wxString GetVersionString();
     OID GetLastSystemOID() const { return lastSystemOID; }
     bool BackendMinimumVersion(int major, int minor);
@@ -83,9 +86,10 @@ public:
 private:
     PGconn *conn;
     int lastResultStatus;
+    int connStatus;
     int minorVersion, majorVersion;
     wxMBConv *conv;
-    bool resolvedIP, needColQuoting;
+    bool needColQuoting;
     wxString dbHost;
     OID lastSystemOID;
 

@@ -127,6 +127,7 @@ private:
     void OnCheckAlive(wxCommandEvent& event);
 
     void execSelChange(wxTreeItemId item, bool currentNode);
+    bool checkAlive();
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);
     void StoreServers();
     void RetrieveServers();

@@ -220,8 +220,7 @@ wxString ctlSQLResult::GetMessagesAndClear()
 
 wxString ctlSQLResult::GetErrorMessage()
 {
-    wxString errmsg=wxString(PQerrorMessage(conn->connection()), wxConvUTF8);
-    return errmsg;
+    return conn->GetLastError();
 }
 
 
