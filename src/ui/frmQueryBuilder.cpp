@@ -6,6 +6,9 @@
 //
 // frmQueryBuilder.cpp - The query builder main form
 //
+// NOTE: Much of the code in this file is the same as in frmQuery.cpp
+//       If any changes are made, please check there as well.
+//
 //////////////////////////////////////////////////////////////////////////
 
 // wxWindows headers
@@ -28,29 +31,25 @@
 #include "images/query_execute.xpm"
 #include "images/query_explain.xpm"
 #include "images/query_cancel.xpm"
+#include "images/table.xpm"
 
 extern sysSettings *settings;
 
-////////////////////////////////////////////////////////////////////////////////
+
 // Event Table
-////////////////////////////////////////////////////////////////////////////////
+
 BEGIN_EVENT_TABLE(frmQueryBuilder, wxMDIParentFrame)
 
-    EVT_MENU(frmQueryBuilder::BTN_OPEN,    frmQueryBuilder::OnOpen)
-    EVT_MENU(frmQueryBuilder::BTN_SAVE,    frmQueryBuilder::OnSave)
-    EVT_MENU(frmQueryBuilder::BTN_EXECUTE, frmQueryBuilder::OnExecute)
-    EVT_MENU(frmQueryBuilder::BTN_EXPLAIN, frmQueryBuilder::OnExplain)
-    EVT_MENU(frmQueryBuilder::BTN_CANCEL,  frmQueryBuilder::OnCancel)
-    
-    EVT_MENU(frmQueryBuilder::MNU_OPEN, frmQueryBuilder::OnOpen)
-    EVT_MENU(frmQueryBuilder::MNU_SAVE, frmQueryBuilder::OnSave)
-    EVT_MENU(frmQueryBuilder::MNU_SAVEAS, frmQueryBuilder::OnSaveAs)
-    EVT_MENU(frmQueryBuilder::MNU_EXPORT, frmQueryBuilder::OnExport)
-    EVT_MENU(frmQueryBuilder::MNU_EXECUTE, frmQueryBuilder::OnExecute)
-    EVT_MENU(frmQueryBuilder::MNU_EXPLAIN, frmQueryBuilder::OnExplain)
-    EVT_MENU(frmQueryBuilder::MNU_CANCEL, frmQueryBuilder::OnCancel)
-    EVT_MENU(frmQueryBuilder::MNU_EXIT, frmQueryBuilder::OnExit)
-    EVT_MENU(frmQueryBuilder::MNU_ADDTABLEVIEW, frmQueryBuilder::OnAddTableView)
+    EVT_MENU(MNU_SAVE,         frmQueryBuilder::OnSave)
+    EVT_MENU(MNU_SAVEAS,       frmQueryBuilder::OnSaveAs)
+    EVT_MENU(MNU_EXPORT,       frmQueryBuilder::OnExport)
+    EVT_MENU(MNU_EXECUTE,      frmQueryBuilder::OnExecute)
+    EVT_MENU(MNU_EXPLAIN,      frmQueryBuilder::OnExplain)
+    EVT_MENU(MNU_CANCEL,       frmQueryBuilder::OnCancel)
+    EVT_MENU(MNU_EXIT,         frmQueryBuilder::OnExit)
+    EVT_MENU(MNU_ADDTABLEVIEW, frmQueryBuilder::OnAddTableView)
+    EVT_MENU(MNU_CLEARHISTORY, frmQueryBuilder::OnClearHistory)
+    EVT_MENU(MNU_SAVEHISTORY,  frmQueryBuilder::OnSaveHistory)
 
     EVT_SIZE(frmQueryBuilder::OnSize)
     EVT_CLOSE(frmQueryBuilder::OnClose)
@@ -67,20 +66,22 @@ BEGIN_EVENT_TABLE(frmQueryBuilder, wxMDIParentFrame)
     EVT_COMBOBOX(-1, frmQueryBuilder::OnCellChoice) 
 
     EVT_SASH_DRAGGED_RANGE(ID_SASH_WINDOW_BOTTOM, ID_SASH_WINDOW_BOTTOM, frmQueryBuilder::OnSashDrag)
+    EVT_STC_MODIFIED(CTL_SQLPANEL, frmQueryBuilder::OnChange)
 
 END_EVENT_TABLE()
 
-////////////////////////////////////////////////////////////////////////////////
+
 // Event Table
-////////////////////////////////////////////////////////////////////////////////
+
 BEGIN_EVENT_TABLE(myClientWindow, wxMDIClientWindow)
     EVT_PAINT(myClientWindow::OnPaint)
 END_EVENT_TABLE()
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 {
+	// Log
+	wxLogInfo(wxT("Creating Query builder"));
+
 	// Initialize Data
     m_mainForm = form;
 	m_sashwindow = NULL;
@@ -96,19 +97,16 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 	// Create
 	this->Create(form, -1, title,
 		settings->GetFrmQueryBuilderPos(), 
-		settings->GetFrmQueryBuilderSize());
+		settings->GetFrmQueryBuilderSize(),
+        wxFRAME_NO_WINDOW_MENU | wxSYSTEM_MENU | wxMAXIMIZE_BOX | wxMINIMIZE_BOX | wxRESIZE_BORDER);
 
     // Icon
     SetIcon(wxIcon(sql_xpm));
-
-	// Log
-	wxLogInfo(wxT("Creating SQL Query box"));
 
     // Build menus
     menuBar = new wxMenuBar();
 
     fileMenu = new wxMenu();
-    fileMenu->Append(MNU_OPEN, _("&Open...\tCtrl-O"),   _("Open a query file"));
     fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
     fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
     fileMenu->AppendSeparator();
@@ -120,15 +118,19 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 
 	// Query Menu
     queryMenu = new wxMenu();
+    queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query"));
+    queryMenu->Append(MNU_EXPLAIN, _("E&xplain\tF7"), _("Explain query"));
+
     wxMenu *eo=new wxMenu();
     eo->Append(MNU_VERBOSE, _("Verbose"), _("Explain verbose query"), wxITEM_CHECK);
     eo->Append(MNU_ANALYZE, _("Analyze"), _("Explain analyse query"), wxITEM_CHECK);
     queryMenu->Append(MNU_EXPLAINOPTIONS, _("Explain &options"), eo, _("Options modifying Explain output"));
-    queryMenu->Append(MNU_EXECUTE, _("&Execute"), _("Execute query"));
-    queryMenu->Append(MNU_EXPLAIN, _("E&xplain"), _("Explain query"));
-    queryMenu->Append(MNU_CANCEL, _("&Cancel"), _("Cancel query"));
+    queryMenu->AppendSeparator();
+    queryMenu->Append(MNU_SAVEHISTORY, _("Save history"), _("Save history of executed commands."));
+    queryMenu->Append(MNU_CLEARHISTORY, _("Clear history"), _("Clear history window."));
+    queryMenu->AppendSeparator();
+    queryMenu->Append(MNU_CANCEL, _("&Cancel\tAlt-Break"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
-    queryMenu->Enable(MNU_CANCEL, FALSE);
 
     // Tools Menu
     toolsMenu = new wxMenu();
@@ -143,16 +145,17 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     wxAcceleratorEntry entries[6];
     entries[0].Set(wxACCEL_ALT,     (int)'E',      MNU_EXECUTE);
     entries[1].Set(wxACCEL_ALT,     (int)'X',      MNU_EXPLAIN);
-    entries[2].Set(wxACCEL_CTRL,    (int)'O',      MNU_OPEN);
-    entries[3].Set(wxACCEL_CTRL,    (int)'S',      MNU_SAVE);
-    entries[4].Set(wxACCEL_NORMAL,  WXK_F5,        MNU_EXECUTE);
-    entries[5].Set(wxACCEL_ALT,     WXK_PAUSE,     MNU_CANCEL);
+    entries[2].Set(wxACCEL_CTRL,    (int)'S',      MNU_SAVE);
+    entries[3].Set(wxACCEL_NORMAL,  WXK_F5,        MNU_EXECUTE);
+    entries[4].Set(wxACCEL_ALT,     WXK_PAUSE,     MNU_CANCEL);
+    entries[5].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 
     wxAcceleratorTable accel(6, entries);
     SetAcceleratorTable(accel);
 
-    fileMenu->Enable(MNU_SAVE, false);
     queryMenu->Enable(MNU_CANCEL, false);
+    queryMenu->Enable(MNU_SAVEHISTORY, false);
+    queryMenu->Enable(MNU_CLEARHISTORY, false);
 
 	// Status Bar
     int iWidths[4] = {0, -1, 110, 110};
@@ -167,16 +170,15 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-    toolBar->AddTool(BTN_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_ADDTABLEVIEW, _("Add Table/View..."), wxBitmap(table_xpm), _("Add a table or view to the datagram."), wxITEM_NORMAL);
 
     toolBar->Realize();
     setTools(false);
-    toolBar->EnableTool(BTN_SAVE, false);
-    toolBar->EnableTool(BTN_CANCEL, false);
+    toolBar->EnableTool(MNU_SAVE, false);
+    toolBar->EnableTool(MNU_CANCEL, false);
 
     // Datagram Context Menu
     datagramContextMenu = new wxMenu();
@@ -234,8 +236,7 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     design->UpdateDimensions();
 
 	// Setup the sql tab
-    sql = new ctlSQLBox(notebook, CTL_SQLPANEL, wxDefaultPosition, 
-		wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
+    sql = new ctlSQLBox(notebook, CTL_SQLPANEL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
 
     // Setup the data tab
     data = new ctlSQLResult(notebook, database->connection(), CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
@@ -257,8 +258,25 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+void frmQueryBuilder::OnSaveHistory(wxCommandEvent& event)
+{
+    wxFileDialog *dlg=new wxFileDialog(this, _("Save history"), lastDir, wxEmptyString, 
+        _("Log files (*.log)|*.log|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
+    if (dlg->ShowModal() == wxID_OK)
+    {
+        FileWrite(dlg->GetPath(), msgHistory->GetValue(), false);
+    }
+    delete dlg;
+
+}
+
+void frmQueryBuilder::OnClearHistory(wxCommandEvent& event)
+{
+    queryMenu->Enable(MNU_SAVEHISTORY, false);
+    queryMenu->Enable(MNU_CLEARHISTORY, false);
+    msgHistory->Clear();
+}
+
 frmQueryBuilder::~frmQueryBuilder()
 {
     wxLogInfo(wxT("Destroying SQL Query box"));
@@ -286,13 +304,11 @@ frmQueryBuilder::~frmQueryBuilder()
     m_mainForm->RemoveFrame(this);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::setTools(const bool running)
 {
-    toolBar->EnableTool(BTN_EXECUTE, !running);
-    toolBar->EnableTool(BTN_EXPLAIN, !running);
-    toolBar->EnableTool(BTN_CANCEL, running);
+    toolBar->EnableTool(MNU_EXECUTE, !running);
+    toolBar->EnableTool(MNU_EXPLAIN, !running);
+    toolBar->EnableTool(MNU_CANCEL, running);
     queryMenu->Enable(MNU_EXECUTE, !running);
     queryMenu->Enable(MNU_EXPLAIN, !running);
     queryMenu->Enable(MNU_CANCEL, running);
@@ -303,19 +319,17 @@ void frmQueryBuilder::OnExport(wxCommandEvent &ev)
     data->Export();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 wxMDIClientWindow* frmQueryBuilder::OnCreateClient()
 {
 	m_clientWindow = new myClientWindow();
 	return m_clientWindow;
-//	myClientWindow *tmpwin = new myClientWindow();
-//	return tmpwin;
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void myClientWindow::OnPaint(wxPaintEvent& event)
 {
 	wxPaintDC dc(this);
@@ -408,16 +422,16 @@ void myClientWindow::OnPaint(wxPaintEvent& event)
 	dc.SetPen(wxNullPen);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnExit(wxCommandEvent& WXUNUSED(event))
 {
     // TRUE is to force the frame to close
     Close(TRUE);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnAddTableView(wxCommandEvent& event)
 {
 	// Setup the add table/view dialog
@@ -490,8 +504,8 @@ void frmQueryBuilder::OnAddTableView(wxCommandEvent& event)
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnSize(wxSizeEvent& event)
 {
     if (this->GetClientWindow() != NULL) {
@@ -500,8 +514,8 @@ void frmQueryBuilder::OnSize(wxSizeEvent& event)
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::ExecRightClick(wxPoint& point)
 {
 	// Get mouse point data
@@ -516,8 +530,8 @@ void frmQueryBuilder::ExecRightClick(wxPoint& point)
 	PopupMenu(datagramContextMenu, point);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnSashDrag(wxSashEvent& event)
 {
     if (event.GetDragStatus() == wxSASH_STATUS_OUT_OF_RANGE)
@@ -540,8 +554,8 @@ void frmQueryBuilder::OnSashDrag(wxSashEvent& event)
     GetClientWindow()->Refresh();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 wxString frmQueryBuilder::GetTableViewAlias(wxString firstname, 
 												wxString newname, 
 												int postfix)
@@ -584,8 +598,8 @@ wxString frmQueryBuilder::GetTableViewAlias(wxString firstname,
 	return alias;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::AddColumn(frmChildTableViewFrame *frame, int item)
 {
 	// Get the number of rows (table columns)
@@ -639,8 +653,8 @@ void frmQueryBuilder::AddColumn(frmChildTableViewFrame *frame, int item)
     design->UpdateDimensions();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::UpdateGridTables(frmChildTableViewFrame *frame)
 {
 	// Get the number of rows (table columns)
@@ -718,8 +732,8 @@ void frmQueryBuilder::UpdateGridTables(frmChildTableViewFrame *frame)
 	delete[] tablechoices2;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::UpdateGridColumns(frmChildTableViewFrame *frame, 
 											int item, bool _FORCE,
 											int _FORCEROW)
@@ -823,8 +837,8 @@ void frmQueryBuilder::UpdateGridColumns(frmChildTableViewFrame *frame,
 	delete[] columnchoices2;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnNotebookPageChanged(wxNotebookEvent& event)
 {
 	// What page did we change to?
@@ -855,8 +869,8 @@ void frmQueryBuilder::OnNotebookPageChanged(wxNotebookEvent& event)
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 int frmQueryBuilder::FindLeftmostTable()
 {
 	int tablecount = m_aliases.GetCount();
@@ -898,8 +912,8 @@ int frmQueryBuilder::FindLeftmostTable()
 	return leftmost;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 bool frmQueryBuilder::IsTableLeftOnly(wxString tablename)
 {
 	int joincount = m_joins.GetCount();
@@ -929,9 +943,9 @@ bool frmQueryBuilder::IsTableLeftOnly(wxString tablename)
 	return TRUE;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+
 // RECURSIVE!
-////////////////////////////////////////////////////////////////////////////////
+
 wxString frmQueryBuilder::BuildTableJoin(int table, int indent = 0)
 {
 	wxString tablename = m_names[table];
@@ -1000,8 +1014,8 @@ wxString frmQueryBuilder::BuildTableJoin(int table, int indent = 0)
 	return joinclause;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::BuildQuery()
 {
 	// Make the query blank
@@ -1053,6 +1067,7 @@ void frmQueryBuilder::BuildQuery()
 			wxLogError(__("Double right-handed joins are not allowed.\n")
 				__("You must redraw your joins so that \"%s\"\ndoes not appear on the righthand side \nmore than once. \n\n")
 				__("Try switching it to the lefthand side in one\nor more relationships."), tmptable1.c_str());
+            sql->SetText(wxT(""));
 			return;
 		}
 		else
@@ -1121,6 +1136,7 @@ void frmQueryBuilder::BuildQuery()
 		if (!expression.length() && !(table.length() || column.length()))
 		{
 			wxLogError(__("Error: No table or no column"));
+            sql->SetText(wxT(""));
 			return;
 		}
 
@@ -1132,6 +1148,7 @@ void frmQueryBuilder::BuildQuery()
 		if (conderr)
 		{
 			wxLogError(condition);
+            sql->SetText(wxT(""));
 			return;
 		}
 
@@ -1154,6 +1171,7 @@ void frmQueryBuilder::BuildQuery()
 	if (columnstr.IsEmpty())
 	{
 		wxLogError(__("You must add at least on column."));
+        sql->SetText(wxT(""));
 		return;
 	}
 
@@ -1170,19 +1188,22 @@ void frmQueryBuilder::BuildQuery()
 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::RunQuery(const wxString &query, int resultToRetrieve, bool singleResult, const int queryOffset)
 {
     long rowsReadTotal=0;
     setTools(true);
 
-    bool wasChanged = m_changed;
+    queryMenu->Enable(MNU_SAVEHISTORY, true);
+    queryMenu->Enable(MNU_CLEARHISTORY, true);
+
+    bool wasChanged = changed;
     sql->MarkerDeleteAll(0);
     if (!wasChanged)
     {
-        m_changed=false;
-//        setExtendedTitle();
+        changed=false;
+        setExtendedTitle();
     }
 
     aborted=false;
@@ -1255,12 +1276,12 @@ void frmQueryBuilder::RunQuery(const wxString &query, int resultToRetrieve, bool
                         line++;
                     if (line < maxLine)
                     {
-                        wasChanged=m_changed;
+                        wasChanged=changed;
                         sql->MarkerAdd(line, 0);
                         if (!wasChanged)
                         {
-                            m_changed=false;
-//                            setExtendedTitle();
+                            changed=false;
+                            setExtendedTitle();
                         }
                         sql->EnsureVisible(line);
                     }
@@ -1379,8 +1400,8 @@ void frmQueryBuilder::RunQuery(const wxString &query, int resultToRetrieve, bool
 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnCellSelect(wxGridEvent& event)
 {
 	design->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
@@ -1389,8 +1410,8 @@ void frmQueryBuilder::OnCellSelect(wxGridEvent& event)
 	design->ShowCellEditControl();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::VerifyExpression(int celly)
 {
 	wxString cellv = design->GetCellValue(celly, DESIGN_EXPRESSION);
@@ -1414,8 +1435,8 @@ void frmQueryBuilder::VerifyExpression(int celly)
 		design->SetCellValue(celly, DESIGN_COLUMN, wxT(" "));
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnCellChoice(wxCommandEvent& event)
 {
 	int celly = design->GetGridCursorRow();
@@ -1459,8 +1480,8 @@ void frmQueryBuilder::OnCellChoice(wxCommandEvent& event)
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnCellChange(wxGridEvent& event)
 {
 	int celly = design->GetGridCursorRow();
@@ -1487,8 +1508,8 @@ void frmQueryBuilder::OnCellChange(wxGridEvent& event)
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 frmChildTableViewFrame *frmQueryBuilder::GetFrameFromAlias(wxString alias)
 {
 	int count = m_children.GetCount();
@@ -1507,8 +1528,8 @@ frmChildTableViewFrame *frmQueryBuilder::GetFrameFromAlias(wxString alias)
 	return NULL;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 wxString frmQueryBuilder::RebuildCondition(wxString condition, int row, bool &errout)
 {
 	// Assume no errors
@@ -1585,29 +1606,27 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, int row, bool &er
 	return tmpstr;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnClose(wxCloseEvent& event)
 {
-    if (m_changed && settings->GetAskSaveConfirmation())
+    if (changed && settings->GetAskSaveConfirmation())
     {
         wxString fn;
-        if (!m_lastPath.IsNull())
-            fn = wxT(" in file ") + m_lastPath;
-
-        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\n"), fn.c_str()) +
-                    _("Do you want to save changes?"), _("pgAdmin III Query"), 
+        if (!lastPath.IsNull())
+            fn = wxT(" in file ") + lastPath;
+        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
                     (event.CanVeto() ? wxCANCEL : 0));
 
-	    wxCommandEvent noEvent;
+    	wxCommandEvent noEvent;
         switch (msg.ShowModal())
         {
             case wxID_YES:
-                if (m_lastPath.IsNull())
+                if (lastPath.IsNull())
                 {
                     OnSaveAs(noEvent);
-                    if (m_changed && event.CanVeto())
+                    if (changed && event.CanVeto())
                         event.Veto();
                 }
                 else
@@ -1621,94 +1640,92 @@ void frmQueryBuilder::OnClose(wxCloseEvent& event)
     Destroy();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnChange(wxNotifyEvent& event)
 {
-    if (!m_changed)
+    if (!changed)
     {
-        m_changed=true;
+        changed=true;
+        setExtendedTitle();
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-void frmQueryBuilder::OnOpen(wxCommandEvent& event)
+void frmQueryBuilder::setExtendedTitle()
 {
-    wxFileDialog dlg(this, _("Open query file"), m_lastDir, wxT(""), 
-        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        m_lastFilename = dlg.GetFilename();
-        m_lastDir = dlg.GetDirectory();
-        m_lastPath = dlg.GetPath();
+    wxString chgStr;
+    if (changed)
+        chgStr = wxT(" *");
 
-        FILE *f=fopen(m_lastPath.ToAscii(), "rt");
-        if (f)
-        {
-            fseek(f, 0, SEEK_END);
-            int len=ftell(f);
-            fseek(f, 0, SEEK_SET);
-            wxString buf(wxT(""), len+1);
-            fread((char*)buf.c_str(), len, 1, f);
-            fclose(f);
-            ((char*)buf.c_str())[len]=0;
-			
-            sql->SetText(buf);
-            m_changed = false;
-        }
+    if (lastPath.IsNull())
+        SetTitle(title+chgStr);
+    else
+    {
+        SetTitle(title + wxT(" - [") + lastPath + wxT("]") + chgStr);
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
 void frmQueryBuilder::OnSave(wxCommandEvent& event)
 {
-    FILE *f=fopen(m_lastPath.ToAscii(), "w+t");
-    if (f)
+    if (lastPath.IsNull())
     {
-        wxString buf=sql->GetText();
-        fwrite(buf.c_str(), buf.Length(), 1, f);
-        fclose(f);
-        m_changed=false;
+        OnSaveAs(event);
+        return;
+    }
+
+    if (FileWrite(lastPath, sql->GetText(), lastFileFormat ? 1 : 0))
+    {
+        changed=false;
+        setExtendedTitle();
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnSaveAs(wxCommandEvent& event)
 {
-    wxFileDialog *dlg=new wxFileDialog(this, _("Save query file as"), m_lastDir, m_lastFilename, 
-        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
+    wxFileDialog *dlg=new wxFileDialog(this, _("Save query file as"), lastDir, lastFilename, 
+        _("Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
     if (dlg->ShowModal() == wxID_OK)
     {
-        m_lastFilename=dlg->GetFilename();
-        m_lastDir = dlg->GetDirectory();
-        m_lastPath = dlg->GetPath();
+        lastFilename=dlg->GetFilename();
+        lastDir = dlg->GetDirectory();
+        lastPath = dlg->GetPath();
+        switch (dlg->GetFilterIndex())
+        {
+            case 0: 
+                lastFileFormat = false;
+                break;
+            case 1:
+                lastFileFormat = true;
+                break;
+            default:
+                lastFileFormat = settings->GetUnicodeFile();
+                break;
+        }
 
         OnSave(event);
     }
     delete dlg;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnCancel(wxCommandEvent& event)
 {
     SetStatusText(wxT("Canceled query."), STATUSPOS_MSGS);
     aborted = true;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnExplain(wxCommandEvent& event)
 {
-    wxString query=sql->GetSelectedText();
-    if (query.IsNull())
-        query = sql->GetText();
+    BuildQuery();
+    wxString query = sql->GetText();
 
     if (query.IsNull())
         return;
+
     wxString qry;
     int resultToRetrieve=1;
     bool verbose=queryMenu->IsChecked(MNU_VERBOSE), analyze=queryMenu->IsChecked(MNU_ANALYZE);
@@ -1734,16 +1751,22 @@ void frmQueryBuilder::OnExplain(wxCommandEvent& event)
     sql->SetFocus();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::OnExecute(wxCommandEvent& event)
 {
     BuildQuery();
-    RunQuery(sql->GetText());
+
+    wxString query = sql->GetText();
+
+    if (query.IsNull())
+        return;
+
+    RunQuery(query);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 void frmQueryBuilder::DeleteChild(wxString talias)
 {
 	int si;
@@ -1831,8 +1854,8 @@ void frmQueryBuilder::DeleteChild(wxString talias)
 } 
 
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
 bool DnDDesign::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 {
 	frmQueryBuilder *tmpparent = 

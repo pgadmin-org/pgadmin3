@@ -62,7 +62,6 @@ public:
 	void AddColumn(frmChildTableViewFrame *frame,int item);
 	void UpdateGridTables(frmChildTableViewFrame *frame);
 	void DeleteChild(wxString talias);
-    void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
 	frmChildTableViewFrame *GetFrameFromAlias(wxString alias);
 
 private:
@@ -70,16 +69,15 @@ private:
 	// Data
 	dlgAddTableView *addtableview;
 	frmMain *m_mainForm;
-    bool m_changed;
-	wxString m_lastFilename;
-	wxString m_lastDir;
-	wxString m_lastPath;
 
-    bool aborted;
+    wxString title, lastFilename, lastDir, lastPath;
+
+    bool changed, aborted, lastFileFormat;
 
 	// Controls
     wxMenuBar *menuBar;
-    wxMenu *fileMenu, 
+    wxMenu *fileMenu,
+        *recentFileMenu,
 		*toolsMenu,  
 		*helpMenu, 
 		*datagramContextMenu,
@@ -112,7 +110,6 @@ private:
     void OnExecute(wxCommandEvent& event);
     void OnExplain(wxCommandEvent& event);
     void OnExport(wxCommandEvent& event);
-    void OnOpen(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
     void OnChange(wxNotifyEvent& event);
@@ -121,6 +118,11 @@ private:
 	void OnSashDrag(wxSashEvent& event);
 	void OnExit(wxCommandEvent& event);
 	void OnAddTableView(wxCommandEvent& event);
+    void OnSaveHistory(wxCommandEvent& event);
+    void OnClearHistory(wxCommandEvent& event);
+
+    void setExtendedTitle();
+    void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
 
 #ifdef __WXMSW__
     void OnContextMenu(wxContextMenuEvent& event)
@@ -144,30 +146,6 @@ private:
 		CTL_SQLPANEL,
 		CTL_DATAPANEL,
 		ID_NOTEBOOK
-	};
-
-	// Menu options
-	enum
-	{
-		MNU_EXIT = 2000,
-		MNU_ADDTABLEVIEW,
-		MNU_OPEN,
-		MNU_SAVE,
-		MNU_SAVEAS,
-		MNU_CANCEL,
-        MNU_EXPORT,
-		MNU_EXECUTE,
-		MNU_EXPLAIN
-	};
-
-	// Button Enumeration
-	enum
-	{
-	   BTN_OPEN = 3000,
-	   BTN_SAVE,
-	   BTN_EXECUTE,
-	   BTN_EXPLAIN,
-	   BTN_CANCEL
 	};
 
 	// Sash Windows
