@@ -47,7 +47,10 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
     LoadResource(form, wxT("frmGrantWizard"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Privileges for %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
+    if (object->IsCollection())
+        SetTitle(wxString::Format(_("Privileges for %s"), object->GetTranslatedTypeName().c_str(), ""));
+    else
+        SetTitle(wxString::Format(_("Privileges for %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     // Icon
     SetIcon(wxIcon(index_xpm));
@@ -222,14 +225,24 @@ wxString frmGrantWizard::GetSql()
 
             pgObject *obj=(pgObject*)objectArray.Item(i);
 
-            if (obj->GetType() == PG_FUNCTION || obj->GetType() == PG_TRIGGERFUNCTION)
+            switch (obj->GetType())
             {
-                tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
-                    + obj->GetQuotedFullIdentifier() + wxT("(")
-                    + ((pgFunction*)obj)->GetArgTypes() + wxT(")"));
+                case PG_FUNCTION:
+                case PG_TRIGGERFUNCTION:
+                {
+                    tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
+                        + obj->GetQuotedFullIdentifier() + wxT("(")
+                        + ((pgFunction*)obj)->GetArgTypes() + wxT(")"));
+                    break;
+                }
+                case PG_VIEW:
+                case PG_SEQUENCE:
+                    tmp = securityPage->GetGrant(wxT("arwdRxt"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
+                    break;
+                default:
+                    tmp = securityPage->GetGrant(wxT("arwdRxt"), obj->GetTypeName().Upper() + wxT(" ") + obj->GetQuotedFullIdentifier());
+                    break;
             }
-            else
-                tmp = securityPage->GetGrant(wxT("arwdRxt"), obj->GetTypeName().Upper() + wxT(" ") + obj->GetQuotedFullIdentifier());
 
             if (!tmp.IsEmpty())
                 sql.Append(tmp);

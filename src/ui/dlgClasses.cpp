@@ -235,18 +235,29 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
 
         if (thread)
         {
+            bool isOk = (thread->ReturnCode() == PGRES_COMMAND_OK || thread->ReturnCode() == PGRES_TUPLES_OK);
+
             if (txtMessages)
                 txtMessages->AppendText(thread->GetMessagesAndClear());
 
             if (thread->DataSet() != NULL)
                 wxLogDebug(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()));
 
-            if (txtMessages)
-                txtMessages->AppendText(_("Total query runtime: ") 
-                    + (wxGetLocalTimeMillis()-startTime).ToString() + wxT(" ms."));
+            if (isOk)
+            {
+                if (txtMessages)
+                    txtMessages->AppendText(_("Total query runtime: ") 
+                        + (wxGetLocalTimeMillis()-startTime).ToString() + wxT(" ms."));
 
                 btnOK->SetLabel(_("Done"));
-            btnCancel->Disable();
+                btnCancel->Disable();
+            }
+            else
+            {
+                if (txtMessages)
+                    txtMessages->AppendText(object->GetConnection()->GetLastError());
+                Abort();
+            }
         }
         else
             if (txtMessages)
