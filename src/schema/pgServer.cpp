@@ -101,6 +101,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
             StartMsg(wxT("Connecting to database without password"));
         else
             StartMsg(wxT("Connecting to database"));
+        if (conn) delete conn;
         conn = new pgConn(GetName(), database, username, password, port);   
         EndMsg();
         if (!conn) {
