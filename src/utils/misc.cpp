@@ -217,7 +217,8 @@ wxString qtIdent(const wxString& value)
 // We need an identifier validation function
 bool IsValidIdentifier(wxString ident)
 {
-	int len = ident.length();
+    // compiler complains if not unsigned
+	unsigned int len = ident.length();
 	if (!len)
 		return FALSE;
 
@@ -229,7 +230,7 @@ bool IsValidIdentifier(wxString ident)
 	if (strchr(first, (wxChar)ident[0U]) == NULL)
 		return FALSE;
 
-	int si;
+	unsigned int si;
 	for ( si = 1; si < len; si++)
 	{
 	if (strchr(second, (wxChar)ident[si]) == NULL)
