@@ -86,7 +86,6 @@ void slNode::ShowStatistics(frmMain *form, ctlListView *statistics)
             wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
             wxT(" WHERE st_origin = ") + NumToStr(GetCluster()->GetLocalNodeID()) + wxT("\n")
             wxT("  GROUP BY st_last_event"));
-        if (pgSet)
 
         if (stats)
         {
@@ -114,7 +113,6 @@ void slNode::ShowStatistics(frmMain *form, ctlListView *statistics)
             wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
             wxT(" WHERE st_origin = ") + NumToStr(GetCluster()->GetLocalNodeID()) + wxT("\n")
             wxT("   AND st_received = ") + NumToStr(GetSlId()));
-        if (pgSet)
 
         if (stats)
         {
