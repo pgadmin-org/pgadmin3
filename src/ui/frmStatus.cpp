@@ -465,7 +465,7 @@ void frmStatus::addLog(const wxString &str)
 
 void frmStatus::OnCancelBtn(wxCommandEvent &event)
 {
-	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxICON_QUESTION) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
 		return;
 
 	long item = -1;
@@ -488,7 +488,7 @@ void frmStatus::OnCancelBtn(wxCommandEvent &event)
 
 void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 {
-	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxICON_QUESTION) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
 		return;
 
 	long item = -1;
