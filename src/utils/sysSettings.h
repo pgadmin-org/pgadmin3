@@ -4,12 +4,12 @@
 // Copyright (C) 2002, The pgAdmin Development Team
 // This software is released under the pgAdmin Public Licence
 //
-// sysLogger.h - Log handling class
+// sysSettings.h - Settings handling class
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef SSYLOGGER_H
-#define SYSLOGGER_H
+#ifndef SYSSETTINGS_H
+#define SYSSETTINGS_H
 
 // wxWindows headers
 #include <wx/wx.h>
@@ -18,11 +18,9 @@
 #include "../pgAdmin3.h"
 
 // Class declarations
-class sysLogger : public wxLog
+class sysSettings
 {
-public:
-    virtual void DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp);
-    //virtual void DoLogString(const wxChar *msg, time_t timestamp);
+
 };
 
 #endif

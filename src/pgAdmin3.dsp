@@ -125,6 +125,10 @@ SOURCE=.\pgAdmin3.cpp
 
 SOURCE=.\utils\sysLogger.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\utils\sysSettings.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -152,6 +156,10 @@ SOURCE=.\pgAdmin3.h
 # Begin Source File
 
 SOURCE=.\utils\sysLogger.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\utils\sysSettings.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

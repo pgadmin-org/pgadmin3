@@ -14,7 +14,8 @@ OBJECTS = $(PROGRAM).o \
           ui/forms/frmMain.o \
           ui/forms/frmSplash.o \
           ui/controls/ctlSQLBox.o \
-          utils/sysLogger.o
+          utils/sysLogger.o \
+          utils/sysSettings.o
 
 .SUFFIXES:	.o .cpp
 
