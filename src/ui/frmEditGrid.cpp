@@ -520,15 +520,22 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
 
 void frmEditGrid::ShowForm(bool filter)
 {
+	bool abort = false;
+
     if (relkind == 'r' || relkind == 'v')
 	{
 		if (filter) 
 		{
 			dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, connection, tableName, sqlGrid);
-			winOptions->ShowModal();
+			abort = !(winOptions->ShowModal());
 		}
-        Show(true);
-		Go();
+		if (abort) {
+			Close();
+			Destroy();
+		} else {
+            Show(true);
+		    Go();
+		}
 	}
     else
     {

@@ -224,7 +224,7 @@ void dlgEditGridOptions::OnLstSortColsChange(wxCommandEvent &ev)
 
 void dlgEditGridOptions::OnCancel(wxCommandEvent &ev)
 {
-    Destroy();
+    EndModal(false);
 }
 
 void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
@@ -254,7 +254,7 @@ void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
 	}
 
 	parent->SetFilter(filter->GetText().Trim());
-    Destroy();
+    EndModal(true);
 }
 
 bool dlgEditGridOptions::Validate()
