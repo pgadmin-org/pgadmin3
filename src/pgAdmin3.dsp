@@ -222,6 +222,10 @@ LINK32=link.exe
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\db\keywords.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\db\pgConn.cpp
 # End Source File
 # Begin Source File
@@ -1289,6 +1293,30 @@ SOURCE=.\include\images\view.xpm
 SOURCE=.\include\images\viewdata.xpm
 # End Source File
 # End Group
+# Begin Group "dummy includes"
+
+# PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\include\parser\keywords.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\parser\parse.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\nodes\parsenodes.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\postgres.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\wxgridsel.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\include\copyright.h
@@ -1324,10 +1352,6 @@ SOURCE=.\include\sysSettings.h
 # Begin Source File
 
 SOURCE=.\include\version.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\wxgridsel.h
 # End Source File
 # End Group
 # Begin Group "unix build"
