@@ -17,6 +17,7 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgServer.h"
+#include "pgLanguage.h"
 #include "frmMain.h"
 
 
@@ -24,26 +25,27 @@
 char *typeNameList[] =
 {
     "None",
-    "Servers",      "Server",       "Add Server",
-    "Databases",    "Databases",    "Add Database",
-    "Groups",       "Groups",       "Add Group",
-    "Users",        "Users",        "Add User",
-    "Languages",    "Language",     "Add Language",
-    "Schemas",      "Schema",       "Add Schema",
-    "Aggregates",   "Aggregate",
-    "Domains",      "Domain",
-    "Functions",    "Function",
-    "Operators",    "Operator",
-    "Sequences",    "Sequence",
-    "Tables",       "Table",
-    "Types",        "Type",
-    "Views",        "View",
-    "Checks",       "Check",
-    "Columns",      "Column",
-    "Foreign Keys", "Foreign Key",
-    "Indexes",      "Index",
-    "Rules",        "Rule",
-    "Triggers",     "Trigger",
+    "Servers",          "Server",       "Add Server",
+    "Databases",        "Databases",    "Add Database",
+    "Groups",           "Groups",       "Add Group",
+    "Users",            "Users",        "Add User",
+    "Languages",        "Language",     "Add Language",
+    "Schemas",          "Schema",       "Add Schema",
+    "Aggregates",       "Aggregate",
+    "Domains",          "Domain",
+    "Functions",        "Function",
+    "Trigger Functions","Trigger Function",
+    "Operators",        "Operator",
+    "Sequences",        "Sequence",
+    "Tables",           "Table",
+    "Types",            "Type",
+    "Views",            "View",
+    "Checks",           "Check",
+    "Columns",          "Column",
+    "Foreign Keys",     "Foreign Key",
+    "Indexes",          "Index",
+    "Rules",            "Rule",
+    "Triggers",         "Trigger",
     "Unknown"
 };
 
@@ -182,6 +184,62 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
     }
     return grant;
 }
+
+
+pgDatabase *pgObject::GetDatabase()
+{
+    pgDatabase *db=0;
+    switch (GetType())
+    {
+        case PG_DATABASE:
+            db=(pgDatabase*)this;
+            break;
+        case PG_LANGUAGES:
+        case PG_SCHEMAS:
+        case PG_AGGREGATES:
+        case PG_DOMAINS:
+        case PG_FUNCTIONS:
+        case PG_TRIGGERFUNCTIONS:
+        case PG_OPERATORS:
+        case PG_SEQUENCES:
+        case PG_TABLES:
+        case PG_TYPES:
+        case PG_VIEWS:
+        case PG_CHECKS:
+        case PG_COLUMNS:
+        case PG_FOREIGNKEYS:
+        case PG_INDEXES:
+        case PG_RULES:
+        case PG_TRIGGERS:
+            db=((pgCollection*)this)->GetDatabase();
+            break;
+        case PG_LANGUAGE:
+            db=((pgLanguage*)this)->GetDatabase();
+            break;
+        case PG_SCHEMA:
+            db=((pgSchema*)this)->GetDatabase();
+            break;
+        case PG_AGGREGATE:
+        case PG_DOMAIN:
+        case PG_FUNCTION:
+        case PG_TRIGGERFUNCTION:
+        case PG_OPERATOR:
+        case PG_SEQUENCE:
+        case PG_TABLE:
+        case PG_TYPE:
+        case PG_VIEW:
+        case PG_CHECK:
+        case PG_COLUMN:
+        case PG_FOREIGNKEY:
+        case PG_INDEX:
+        case PG_RULE:
+        case PG_TRIGGER:
+            db=((pgSchemaObject*)this)->GetSchema()->GetDatabase();
+            break;
+    }
+    return db;
+}
+
 
 pgSet *pgSchemaObject::ExecuteSet(const wxString& sql)
 {

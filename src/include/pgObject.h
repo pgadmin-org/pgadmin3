@@ -23,13 +23,14 @@
 
 
 class frmMain;
+class pgDatabase;
 class pgSchema;
 class pgCollection;
 class pgSet;
 
 
 // This enum lists the type of objects that may be included in the treeview
-// as objects.
+// as objects. If changing, update typeNameList[] as well.
 enum PG_OBJTYPE
 {
     PG_NONE,
@@ -42,6 +43,7 @@ enum PG_OBJTYPE
     PG_AGGREGATES,      PG_AGGREGATE,
     PG_DOMAINS,         PG_DOMAIN,
     PG_FUNCTIONS,       PG_FUNCTION,
+    PG_TRIGGERFUNCTIONS,PG_TRIGGERFUNCTION,
     PG_OPERATORS,       PG_OPERATOR,
     PG_SEQUENCES,       PG_SEQUENCE,
     PG_TABLES,          PG_TABLE,
@@ -95,6 +97,7 @@ public:
     virtual wxString GetSql(wxTreeCtrl *browser) { return wxT(""); }
     wxString GetGrant(const wxString& grantFor=wxT(""), bool noOwner=false);
     wxString GetCommentSql();
+    pgDatabase *GetDatabase();
 
     virtual void SetDirty() { sql=wxT(""); expandedKids=0; }
     virtual void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index) { return; }

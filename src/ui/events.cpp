@@ -169,56 +169,13 @@ void frmMain::OnSql(wxCommandEvent &ev)
 {
     wxTreeItemId item=browser->GetSelection();
     pgObject *data = (pgObject *)browser->GetItemData(item);
-    pgDatabase *db;
-    switch (data->GetType())
-    {
-        case PG_DATABASE:
-            db=(pgDatabase*)data;
-            break;
-        case PG_LANGUAGES:
-        case PG_SCHEMAS:
-        case PG_AGGREGATES:
-        case PG_DOMAINS:
-        case PG_FUNCTIONS:
-        case PG_OPERATORS:
-        case PG_SEQUENCES:
-        case PG_TABLES:
-        case PG_TYPES:
-        case PG_VIEWS:
-        case PG_CHECKS:
-        case PG_COLUMNS:
-        case PG_FOREIGNKEYS:
-        case PG_INDEXES:
-        case PG_RULES:
-        case PG_TRIGGERS:
-            db=((pgCollection*)data)->GetDatabase();
-            break;
-        case PG_LANGUAGE:
-            db=((pgLanguage*)data)->GetDatabase();
-            break;
-        case PG_SCHEMA:
-            db=((pgSchema*)data)->GetDatabase();
-            break;
-        case PG_AGGREGATE:
-        case PG_DOMAIN:
-        case PG_FUNCTION:
-        case PG_OPERATOR:
-        case PG_SEQUENCE:
-        case PG_TABLE:
-        case PG_TYPE:
-        case PG_VIEW:
-        case PG_CHECK:
-        case PG_COLUMN:
-        case PG_FOREIGNKEY:
-        case PG_INDEX:
-        case PG_RULE:
-        case PG_TRIGGER:
-            db=((pgSchemaObject*)data)->GetSchema()->GetDatabase();
-            break;
-        default:
-            return;
-    }
+
+    pgDatabase *db=data->GetDatabase();
+    if (!db)
+        return;
+
     pgServer *server=db->GetServer();
+
     pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
     if (conn->GetStatus() == PGCONN_OK)
     {
@@ -425,6 +382,8 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
         case PG_DOMAIN:
         case PG_FUNCTIONS:
         case PG_FUNCTION:
+        case PG_TRIGGERFUNCTIONS:
+        case PG_TRIGGERFUNCTION:
         case PG_OPERATORS:
         case PG_OPERATOR:
         case PG_SEQUENCES:
@@ -594,55 +553,11 @@ void frmMain::OnQueryBuilder(wxCommandEvent &ev)
 
     wxTreeItemId item=browser->GetSelection();
     pgObject *data = (pgObject *)browser->GetItemData(item);
-    pgDatabase *db;
-    switch (data->GetType())
-    {
-        case PG_DATABASE:
-            db=(pgDatabase*)data;
-            break;
-        case PG_LANGUAGES:
-        case PG_SCHEMAS:
-        case PG_AGGREGATES:
-        case PG_DOMAINS:
-        case PG_FUNCTIONS:
-        case PG_OPERATORS:
-        case PG_SEQUENCES:
-        case PG_TABLES:
-        case PG_TYPES:
-        case PG_VIEWS:
-        case PG_CHECKS:
-        case PG_COLUMNS:
-        case PG_FOREIGNKEYS:
-        case PG_INDEXES:
-        case PG_RULES:
-        case PG_TRIGGERS:
-            db=((pgCollection*)data)->GetDatabase();
-            break;
-        case PG_LANGUAGE:
-            db=((pgLanguage*)data)->GetDatabase();
-            break;
-        case PG_SCHEMA:
-            db=((pgSchema*)data)->GetDatabase();
-            break;
-        case PG_AGGREGATE:
-        case PG_DOMAIN:
-        case PG_FUNCTION:
-        case PG_OPERATOR:
-        case PG_SEQUENCE:
-        case PG_TABLE:
-        case PG_TYPE:
-        case PG_VIEW:
-        case PG_CHECK:
-        case PG_COLUMN:
-        case PG_FOREIGNKEY:
-        case PG_INDEX:
-        case PG_RULE:
-        case PG_TRIGGER:
-            db=((pgSchemaObject*)data)->GetSchema()->GetDatabase();
-            break;
-        default:
-            return;
-    }
+
+    pgDatabase *db=data->GetDatabase();;
+    if (!db)
+        return;
+
     pgServer *server=db->GetServer();
     pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
     if (conn->GetStatus() == PGCONN_OK)

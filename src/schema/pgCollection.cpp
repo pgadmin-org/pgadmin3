@@ -155,6 +155,7 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
             pgDomain::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
             break;
         case PG_FUNCTIONS:
+        case PG_TRIGGERFUNCTIONS:
             pgFunction::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
             break;
         case PG_OPERATORS:

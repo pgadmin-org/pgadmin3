@@ -50,10 +50,19 @@ public:
     bool GetIsStrict() const { return isStrict; }
     void iSetIsStrict(bool b) { isStrict = b; }
 
+protected:
+    pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxString(""));
+
 private:
     wxString argTypeOids, argTypes, returnType, language, volatility;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount;
+};
+
+class pgTriggerFunction : public pgFunction
+{
+public:
+    pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxString(""));
 };
 
 #endif

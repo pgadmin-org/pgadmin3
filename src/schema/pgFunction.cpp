@@ -29,6 +29,17 @@ pgFunction::~pgFunction()
 }
 
 
+pgFunction::pgFunction(pgSchema *newSchema, int newType, const wxString& newName)
+: pgSchemaObject(newSchema, newType, newName)
+{
+}
+
+pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newName)
+: pgFunction(newSchema, PG_TRIGGERFUNCTION, newName)
+{
+}
+
+
 void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
     SetButtons(form);
@@ -66,6 +77,11 @@ void pgFunction::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
     {
         // Log
         wxLogInfo(wxT("Adding Functions to schema ") + collection->GetSchema()->GetIdentifier());
+        wxString funcRestriction;
+        if (collection->GetType() == PG_TRIGGERFUNCTIONS)
+            funcRestriction = "   AND typname = 'trigger'\n";
+        else
+            funcRestriction = "   AND typname <> 'trigger'\n";
 
         // Get the Functions
         pgSet *functions= collection->GetDatabase()->ExecuteSet(wxT(
@@ -74,13 +90,17 @@ void pgFunction::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
             "  JOIN pg_type TYP ON TYP.oid=prorettype\n"
             "  JOIN pg_language LNG ON LNG.oid=prolang\n"
             " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"
+            + funcRestriction +
             " ORDER BY proname"));
 
         if (functions)
         {
             while (!functions->Eof())
             {
-                function = new pgFunction(collection->GetSchema(), functions->GetVal(wxT("proname")));
+                if (collection->GetType() == PG_TRIGGERFUNCTIONS)
+                    function = new pgTriggerFunction(collection->GetSchema(), functions->GetVal(wxT("proname")));
+                else
+                    function = new pgFunction(collection->GetSchema(), functions->GetVal(wxT("proname")));
 
                 function->iSetOid(StrToDouble(functions->GetVal(wxT("oid"))));
                 function->iSetOwner(functions->GetVal(wxT("funcowner")));
