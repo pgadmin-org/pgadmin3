@@ -26,7 +26,6 @@
 #include "misc.h"
 #include "menu.h"
 #include "frmMain.h"
-#include "frmAbout.h"
 #include "dlgServer.h"
 #include "frmOptions.h"
 #include "frmPassword.h"
@@ -64,9 +63,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_HELP,                      frmMain::OnHelp)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
-    EVT_MENU(MNU_BUGREPORT,                 frmMain::OnBugreport)
     EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
-    EVT_MENU(MNU_ABOUT,                     frmMain::OnAbout)
     EVT_MENU(MNU_ADDSERVER,                 frmMain::OnAddServer)
     EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
     EVT_MENU(MNU_CONNECT,                   frmMain::OnConnect)
@@ -119,6 +116,8 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_NEW+PGA_SCHEDULE,          frmMain::OnNew)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
+    EVT_MENU(MNU_CONFIG,                    frmMain::OnConfig)
+    EVT_MENU(MNU_HBACONFIG,                 frmMain::OnHbaConfig)
     EVT_NOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_LIST_ITEM_ACTIVATED(CTL_PROPVIEW,   frmMain::OnPropSelActivated)
@@ -186,13 +185,6 @@ void frmMain::OnClose(wxCloseEvent& event)
         fr->Destroy();
     }
     Destroy();
-}
-
-
-void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
-{
-    frmAbout *winAbout = new frmAbout(this);
-    winAbout->Show(TRUE);
 }
 
 
@@ -278,12 +270,6 @@ void frmMain::OnFaq(wxCommandEvent& event)
     h->Show(true);
     if (!h->Load(wxT("http://www.pgadmin.org/pgadmin3/faq/")))
         h->Destroy();
-}
-
-
-void frmMain::OnBugreport(wxCommandEvent& event)
-{
-    DisplayHelp(this, wxT("bugreport"));
 }
 
 
@@ -1091,6 +1077,16 @@ void frmMain::OnContextMenu(wxCommandEvent& event)
         doPopup(this, point, (pgObject*)browser->GetItemData(item));
     }
 
+}
+
+
+void frmMain::OnConfig(wxCommandEvent& event)
+{
+}
+
+
+void frmMain::OnHbaConfig(wxCommandEvent& event)
+{
 }
 
     

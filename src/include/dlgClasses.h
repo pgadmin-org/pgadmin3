@@ -57,6 +57,9 @@ protected:
     void OnKeyDown(wxKeyEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnRecent(wxCommandEvent& event);
+    void OnAbout(wxCommandEvent& event);
+    void OnBugreport(wxCommandEvent& event);
+
     virtual void OpenLastFile() {}
 
     void UpdateRecentFiles();
@@ -64,7 +67,7 @@ protected:
     wxString dlgName;
     wxString lastFilename, lastDir, lastPath;
     wxString recentKey;
-    wxMenu *fileMenu, *recentFileMenu, *helpMenu;
+    wxMenu *fileMenu, *editMenu, *recentFileMenu, *helpMenu;
     wxStatusBar *statusBar;
     wxMenuBar *menuBar;
     wxToolBar *toolBar;

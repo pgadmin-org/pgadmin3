@@ -70,7 +70,7 @@ private:
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
     wxWindow *currentControl();
-    wxMenu *editMenu, *queryMenu;
+    wxMenu *queryMenu;
     wxString title;
     wxString lastFilename, lastDir;
 

@@ -81,6 +81,9 @@ enum
     MNU_CLEARHISTORY,
     MNU_SAVEHISTORY,
     MNU_CHECKALIVE,
+    MNU_CONFIG,
+    MNU_HBACONFIG,
+    MNU_HINT,
     MNU_RECENT, // leave space for recent file entries
     MNU_NEW=MNU_RECENT+15
 };

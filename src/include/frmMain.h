@@ -69,7 +69,7 @@ private:
     ctlListView *referencedBy, *dependsOn;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
-    wxMenu *editMenu, *newMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu;
+    wxMenu *newMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu;
     wxTreeItemId servers;
 	wxImageList *images;
     wxSplitterWindow *horizontal, *vertical;
@@ -82,12 +82,10 @@ private:
     pgObject *currentObject;
     pgDatabase *m_database;
 
-    void OnAbout(wxCommandEvent& event);
     void OnContents(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
     void OnPgsqlHelp(wxCommandEvent& event);
     void OnFaq(wxCommandEvent& event);
-    void OnBugreport(wxCommandEvent& event);
     void OnAddServer(wxCommandEvent &ev);
     void OnExit(wxCommandEvent& event);
     void OnViewData(wxCommandEvent& event);

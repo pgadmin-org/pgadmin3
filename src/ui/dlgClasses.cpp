@@ -20,6 +20,7 @@
 #include "wx/process.h"
 #include "frmMain.h"
 #include "pgConn.h"
+#include "frmAbout.h"
 
 #include "menu.h"
 
@@ -140,6 +141,8 @@ BEGIN_EVENT_TABLE(pgFrame, wxFrame)
     EVT_MENU(MNU_RECENT+7,              pgFrame::OnRecent)
     EVT_MENU(MNU_RECENT+8,              pgFrame::OnRecent)
     EVT_MENU(MNU_RECENT+9,              pgFrame::OnRecent)
+    EVT_MENU(MNU_BUGREPORT,             pgFrame::OnBugreport)
+    EVT_MENU(MNU_ABOUT,                 pgFrame::OnAbout)
 #ifdef __WXGTK__
     EVT_KEY_DOWN(                       pgFrame::OnKeyDown)
 #endif
@@ -157,6 +160,19 @@ void pgFrame::OnKeyDown(wxKeyEvent& event)
 void pgFrame::OnExit(wxCommandEvent& event)
 {
     Close();
+}
+
+
+void pgFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
+{
+    frmAbout *winAbout = new frmAbout(this);
+    winAbout->Show(TRUE);
+}
+
+
+void pgFrame::OnBugreport(wxCommandEvent& event)
+{
+    DisplayHelp(this, wxT("bugreport"));
 }
 
 
