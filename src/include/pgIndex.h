@@ -33,6 +33,7 @@ public:
 
     wxString GetQuotedColumns() const { return quotedColumns; }
     wxString GetColumns() const { return columns; }
+
     wxString GetColumnNumbers() const { return columnNumbers; }
     void iSetColumnNumbers(const wxString& s) { columnNumbers=s; }
     wxString GetConstraint() const { return constraint; }
@@ -52,13 +53,22 @@ public:
     wxString GetIdxSchema() const { return idxSchema; }
     void iSetIdxSchema(const wxString& s) { idxSchema=s; }
     double GetRelTableOid() const { return relTableOid; }
-    void iSetRelTableOid(const double d) { relTableOid = d; }
+    void iSetRelTableOid(const double d) { relTableOid=d; }
+    wxString GetProcName() const { return procName; }
+    void iSetProcName(const wxString& s) { procName=s; }
+    wxString GetProcNamespace() const { return procNamespace; }
+    void iSetProcNamespace(const wxString& s) { procNamespace=s; }
+    wxString GetProcArgs() const { return procArgs; }
+    void iSetProcArgs(const wxString& s) { procArgs=s; }
+    wxString GetOperatorClass() const { return operatorClass; }
+    void iSetOperatorClass(const wxString& s) { operatorClass=s; }
 
     wxString GetSql(wxTreeCtrl *browser);
     wxString GetCreate();
 
 private:
     wxString columnNumbers, columns, quotedColumns, constraint, indexType, idxTable, idxSchema;
+    wxString procName, procNamespace, procArgs, operatorClass;
     long columnCount;
     bool isUnique, isPrimary, isClustered;
     double relTableOid;
