@@ -361,19 +361,13 @@ wxString FileRead(const wxString &filename, wxWindow *errParent, int format)
 
         if (format < 0)
             format = (settings->GetUnicodeFile() ? 1 : 0);
+ 
+        size_t nLen;
+        if (format)
+            nLen = wxConvUTF8.MB2WC(0, buf, 0);
+        else
+            nLen = wxConvLibc.MB2WC(0, buf, 0);
 
-        wxMBConv conv;
-        switch (format)
-        {
-            case 1:
-                conv=wxConvUTF8;
-                break;
-            default:
-                conv=wxConvLibc;
-                break;
-        }
-
-        size_t nLen = conv.MB2WC(0, buf, 0);
         if (nLen == (size_t) -1)
         {
             // Format error
@@ -384,7 +378,10 @@ wxString FileRead(const wxString &filename, wxWindow *errParent, int format)
         else
         {
             str=wxString(' ', nLen);
-            conv.MB2WC((wxChar*)str.c_str(), buf, nLen);
+            if (format)
+                wxConvUTF8.MB2WC((wxChar*)str.c_str(), buf, nLen);
+            else
+                wxConvLibc.MB2WC((wxChar*)str.c_str(), buf, nLen);
 
             str.Replace(wxT("\r"), wxT(""));
         }
