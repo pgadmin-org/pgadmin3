@@ -17,6 +17,7 @@
 #include <wx/splitter.h>
 #include <wx/toolbar.h>
 #include <wx/tbarsmpl.h>
+#include <wx/imaglist.h>
 #include <wx/stc/stc.h>
 
 // App headers
@@ -64,19 +65,19 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     mnuFile->AppendSeparator();
     mnuFile->Append(mnuExit, "E&xit", "Quit this program");
     mnuBar->Append(mnuFile, "&File");
-    
+
     // Tools Menu
     wxMenu *mnuTools = new wxMenu;
     mnuTools->Append(mnuUpgradeWizard, "&Upgrade Wizard...", "Run the upgrade wizard");
     mnuTools->AppendSeparator();
     mnuTools->Append(mnuOptions, "&Options...", "Show options dialog");
     mnuBar->Append(mnuTools, "&Tools");
-    
+
     // View Menu
     wxMenu *mnuView = new wxMenu;
     mnuView->Append(mnuSystemObjects, "&System objects", "Show or hide system objects");
     mnuBar->Append(mnuView, "&View");
-    
+
     // Help Menu
     wxMenu *mnuHelp = new wxMenu;
     mnuHelp->Append(mnuContents, "&Help...", "Open the helpfile");
@@ -84,10 +85,10 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     mnuHelp->AppendSeparator();
     mnuHelp->Append(mnuAbout, "&About...", "Show about dialog");
     mnuBar->Append(mnuHelp, "&Help");
-    
+
     // Add the Menubar
     SetMenuBar(mnuBar);
-    
+
     // Status bar
     CreateStatusBar(6);
     static const int iWidths[6] = {-1, 50, 100, 100, 100, 100};
@@ -98,18 +99,18 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     SetStatusText("Schema: None", 3);
     SetStatusText("Database: None", 4);
     SetStatusText("Server: None", 5);
-    
+
     // Toolbar bar
-    
+
     CreateToolBar();
-    
+
     // Return objects
     stBar = GetStatusBar();
     tlBar = GetToolBar();
-    
+
     // Set up toolbar
     wxBitmap tlBarBitmaps[10];
-    
+
     tlBarBitmaps[0] = wxBitmap(connect_xpm);
     tlBarBitmaps[1] = wxBitmap(refresh_xpm);
     tlBarBitmaps[2] = wxBitmap(create_xpm);
@@ -150,7 +151,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     txtSQLPane->SetBackgroundColour(*wxLIGHT_GREY);
     splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
     splHorizontal->SetMinimumPaneSize(50);
-    
+
     // Add some treeview items
     wxTreeItemId itmDummy = tvBrowser->AddRoot("Root node");
     tvBrowser->AppendItem(itmDummy, "Child Node #1");
@@ -159,22 +160,30 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     itmDummy = tvBrowser->AppendItem(itmDummy, "Child Node #3");
     tvBrowser->AppendItem(itmDummy, "Child Node #4");
     tvBrowser->AppendItem(itmDummy, "Child Node #5");
-    
+
+    //Setup a listview imagemap
+    wxImageList *ilProperties = new wxImageList(16, 16);
+    //Associate the listview imagemap to the listview
+    lvProperties->SetImageList(ilProperties, wxIMAGE_LIST_SMALL);
+    //Stuff the Image List
+    ilProperties->Add(wxIcon(pgAdmin3_xpm));
+
+
     // Add some listview items
     lvProperties->InsertColumn(1, "Property", wxLIST_FORMAT_LEFT, 100);
     lvProperties->InsertColumn(2, "Value", wxLIST_FORMAT_LEFT, 400);
-    lvProperties->InsertItem(1, "Property #1");
-    lvProperties->InsertItem(1, "Property #2");
-    lvProperties->InsertItem(1, "Property #3");
+    lvProperties->InsertItem(0, "Property #1",0);
+    lvProperties->InsertItem(1, "Property #2",0);
+    lvProperties->InsertItem(2, "Property #3",0);
     lvStatistics->InsertColumn(1, "Statistic", wxLIST_FORMAT_LEFT, 100);
     lvStatistics->InsertColumn(2, "Value", wxLIST_FORMAT_LEFT, 400);
-    lvStatistics->InsertItem(1, "Statistic #1");
+    lvStatistics->InsertItem(0, "Statistic #1");
     lvStatistics->InsertItem(1, "Statistic #2");
-    lvStatistics->InsertItem(1, "Statistic #3");
-    
+    lvStatistics->InsertItem(2, "Statistic #3");
+
     // Setup the SQL Pane
     txtSQLPane->InsertText(0, "-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;");
-    
+
 }
 
 // Event handlers
