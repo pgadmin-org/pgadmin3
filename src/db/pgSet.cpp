@@ -34,7 +34,7 @@ pgSet::pgSet(PGresult *objNewRes, PGconn *objNewConn)
     objRes = objNewRes;
 
     // Make sure we have tuples
-    if (PQresultStatus(objRes) != PGCONN_TUPLES_OK) {
+    if (PQresultStatus(objRes) != PGRES_TUPLES_OK) {
         wxString szMsg;
         szMsg.Printf(wxT("%s"), PQerrorMessage(objConn));
         wxLogError(szMsg);
