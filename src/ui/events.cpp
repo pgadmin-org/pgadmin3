@@ -977,10 +977,17 @@ void frmMain::doPopup(wxPoint point, pgObject *object)
         wxMenu *indivMenu=object->GetNewMenu();
         if (indivMenu)
         {
-            if (indivMenu->GetMenuItemCount())
+            if (indivMenu->GetMenuItemCount() > 1)
                 treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), indivMenu, _("Create a new object."));
             else
+            {
+                if (indivMenu->GetMenuItemCount() == 1)
+                {
+                    wxMenuItem *menuItem=indivMenu->GetMenuItems().Item(0)->GetData();
+                    treeContextMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+                }
                 delete indivMenu;
+            }
         }
     }
 
