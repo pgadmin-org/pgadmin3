@@ -49,8 +49,8 @@ wxString pgLanguage::GetSql(wxTreeCtrl *browser)
 
 void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    form->SetDatabase(0);
-    form->SetButtons(true, true, true, true, false, false, false);
+    if (form)
+        form->SetButtons(true, true, true, true, false, false, false);
 
     properties->ClearAll();
     properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);

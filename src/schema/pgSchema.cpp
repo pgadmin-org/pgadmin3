@@ -46,9 +46,11 @@ wxString pgSchema::GetSql(wxTreeCtrl *browser)
 
 void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    form->SetDatabase(GetDatabase());
-    form->SetButtons(true, true, true, true, true, false, true);
-
+    if (form)
+    {
+        form->SetDatabase(GetDatabase());
+        form->SetButtons(true, true, true, true, true, false, true);
+    }
     GetDatabase()->GetServer()->iSetLastDatabase(GetDatabase()->GetName());
     GetDatabase()->GetServer()->iSetLastSchema(GetName());
 
@@ -65,11 +67,6 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         collection = new pgCollection(PG_AGGREGATES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_AGGREGATE, -1, collection);
-
-        // Casts
-        collection = new pgCollection(PG_CASTS);
-        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_CAST, -1, collection);
 
         // Conversions
         collection = new pgCollection(PG_CONVERSIONS);
@@ -158,14 +155,17 @@ void pgSchema::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
 
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
-            systemRestriction = "   AND nspname NOT LIKE 'pg\\_temp\\_%%'\n";
+            systemRestriction = wxT(
+                " WHERE oid >= 100\n"
+                "   AND nspname NOT LIKE 'pg\\_temp\\_%%'\n");
 
         // Get the schemas
         pgSet *schemas= collection->GetDatabase()->ExecuteSet(wxT(
-           "SELECT oid, nspname, pg_get_userbyid(nspowner) AS namespaceowner, nspacl\n"
+           "SELECT CASE WHEN oid<100 THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n"
+           "       nspname, oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl\n"
            "  FROM pg_namespace\n"
-           " WHERE oid >= 100\n" + systemRestriction +
-           " ORDER BY nspname"));
+            + systemRestriction +
+           " ORDER BY 1, nspname"));
 
         if (schemas)
         {
@@ -177,6 +177,7 @@ void pgSchema::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
                 schema->iSetOid(schemas->GetOid(wxT("oid")));
                 schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
                 schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
+                schema->iSetSchemaTyp(schemas->GetLong(wxT("nsptyp")));
 
                 browser->AppendItem(collection->GetId(), schema->GetIdentifier(), PGICON_SCHEMA, -1, schema);
 	    

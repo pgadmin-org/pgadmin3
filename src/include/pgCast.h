@@ -22,10 +22,10 @@
 
 class pgCollection;
 
-class pgCast : public pgSchemaObject
+class pgCast : public pgObject
 {
 public:
-    pgCast(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgCast(const wxString& newName = wxString(""));
     ~pgCast();
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);

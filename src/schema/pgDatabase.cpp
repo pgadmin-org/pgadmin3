@@ -118,8 +118,13 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
 
+            // Casts
+            pgCollection *collection = new pgCollection(PG_CASTS);
+            collection->SetDatabase(this);
+            browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_CAST, -1, collection);
+
             // Languages
-            pgCollection *collection = new pgCollection(PG_LANGUAGES);
+            collection = new pgCollection(PG_LANGUAGES);
             collection->SetDatabase(this);
             browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_LANGUAGE, -1, collection);
 

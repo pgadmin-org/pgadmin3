@@ -17,10 +17,10 @@
 #include "pgObject.h"
 #include "pgCast.h"
 #include "pgCollection.h"
+#include "frmMain.h"
 
-
-pgCast::pgCast(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_CAST, newName)
+pgCast::pgCast(const wxString& newName)
+: pgObject(PG_CAST, newName)
 {
 }
 
@@ -38,9 +38,9 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
         sql = wxT("CREATE CAST (") + GetSourceType()
             + wxT(" AS ") + GetTargetType();
         if (GetCastFunction().IsNull())
-            sql += wxT(") WITHOUT ");
+            sql += wxT(")\n    WITHOUT ");
         else
-            sql += wxT(") WITH ") + qtIdent(GetCastNamespace()) + wxT(".") + qtIdent(GetCastFunction());
+            sql += wxT(")\n    WITH ") + qtIdent(GetCastNamespace()) + wxT(".") + qtIdent(GetCastFunction());
         sql += wxT(" AS ") + GetCastContext()
             + wxT(";\n");
     }
@@ -50,7 +50,8 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
 
 void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
+    if (form)
+        form->SetButtons(true, true, true, true, false, false, false);
 
     if (properties)
     {
@@ -77,7 +78,7 @@ void pgCast::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        wxLogInfo(wxT("Adding Casts to schema ")+ collection->GetSchema()->GetIdentifier());
+        wxLogInfo(wxT("Adding Casts to database ")+ collection->GetDatabase()->GetIdentifier());
 
         // Get the Casts
         pgSet *casts= collection->GetDatabase()->ExecuteSet(wxT(
@@ -94,7 +95,7 @@ void pgCast::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
             while (!casts->Eof())
             {
                 wxString name=casts->GetVal(wxT("srctyp"))+wxT("->")+casts->GetVal(wxT("trgtyp"));
-                pgCast *cast = new pgCast(collection->GetSchema(), name);
+                pgCast *cast = new pgCast(name);
 
                 cast->iSetOid(casts->GetOid(wxT("oid")));
                 cast->iSetSourceType(casts->GetVal(wxT("srctyp")));
