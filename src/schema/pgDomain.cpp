@@ -47,7 +47,7 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
         // CONSTRAINT Name Dont know where it's stored, may be omitted anyway
         if (notNull)
             sql += wxT("\n  NOT NULL");
-        AppendIfFilled(sql, wxT("\n   CHECK "), GetCheck());
+        AppendIfFilled(sql, wxT("\n   "), GetCheck());
 
         sql += wxT(";\n")
             + GetOwnerSql(7, 4)
