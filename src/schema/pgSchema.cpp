@@ -52,15 +52,16 @@ wxMenu *pgSchema::GetNewMenu()
 
 bool pgSchema::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP SCHEMA ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP SCHEMA ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 wxString pgSchema::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Schema: \"") + GetName() + wxT("\"\n")
-            + wxT("CREATE SCHEMA ") + qtIdent(GetName()) 
+        sql = wxT("-- Schema: \"") + GetName() + wxT("\"\n\n")
+            + wxT("-- DROP SCHEMA ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE SCHEMA ") + qtIdent(GetName()) 
             + wxT("\n  AUTHORIZATION ") + qtIdent(GetOwner()) + wxT(";\n")
             + GetGrant(wxT("UC"), GetTypeName(), true)
             + GetCommentSql();

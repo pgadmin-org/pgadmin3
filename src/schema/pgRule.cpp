@@ -30,7 +30,7 @@ pgRule::~pgRule()
 
 bool pgRule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP RULE ") + GetQuotedFullIdentifier() + wxT(" ON ") + GetQuotedFullTable());
+    return GetDatabase()->ExecuteVoid(wxT("DROP RULE ") + GetQuotedFullIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";"));
 }
 
 wxString pgRule::GetSql(wxTreeCtrl *browser)
@@ -38,10 +38,12 @@ wxString pgRule::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
 #if 0
-        sql = wxT("CREATE OR REPLACE RULE ") + GetQuotedIdentifier()
-            + wxT("\n AS ON ") + GetEvent()
-            + wxT(" TO ") + GetQuotedFullTable()
-            + wxT(" DO ");
+        sql = wxT("-- Rule: \"") + GetQuotedFullIdentifier() + wxT("\"\n\n")
+            + wxT("-- DROP RULE ") + GetQuotedFullIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";")
+            + wxT("\n\nCREATE OR REPLACE RULE ") + GetQuotedIdentifier()
+            + wxT("\n  AS ON ") + GetEvent()
+            + wxT("\n  TO ") + GetQuotedFullTable()
+            + wxT("\n  DO ");
         if (GetDoInstead())
             sql += wxT("INSTEAD ");
         if (GetDefinition().IsEmpty())

@@ -49,8 +49,20 @@ wxString pgOperator::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Operator: ") + GetFullIdentifier() + wxT(" (") + GetLeftType() + wxT(", ") + GetRightType() + wxT(")\n")
-            + wxT("CREATE OPERATOR ") + GetFullIdentifier()
+        sql = wxT("-- Operator: ") + GetFullIdentifier() + wxT(" (") + GetLeftType() + wxT(", ") + GetRightType() + wxT(")\n\n")
+            + wxT("-- DROP OPERATOR ") + GetFullIdentifier();
+    
+        if (GetLeftType().Length() > 0)
+            sql += wxT(" (") + qtIdent(GetLeftType());
+        else
+            sql += wxT(") (NONE");
+
+        if (GetRightType().Length() > 0)
+            sql += wxT(", ") + qtIdent(GetLeftType()) + wxT(")");
+        else
+            sql += wxT(", NONE)");
+
+        sql += wxT(";\n\nCREATE OPERATOR ") + GetFullIdentifier()
             + wxT("(\n  PROCEDURE = ") + qtIdent(GetOperatorFunction());
         AppendIfFilled(sql, wxT(",\n  LEFTARG = "), qtIdent(GetLeftType()));
         AppendIfFilled(sql, wxT(",\n  RIGHTARG = "), qtIdent(GetRightType()));

@@ -109,7 +109,7 @@ bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser)
         delete conn;
         conn=0;
     }
-    bool done=server->ExecuteVoid(wxT("DROP DATABASE ") + GetQuotedIdentifier());
+    bool done=server->ExecuteVoid(wxT("DROP DATABASE ") + GetQuotedIdentifier() + wxT(";"));
     if (!done)
         Connect();
 
@@ -122,8 +122,9 @@ wxString pgDatabase::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsEmpty())
     {
-        sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE DATABASE ") + GetQuotedIdentifier()
+        sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP DATABASE ") + GetQuotedIdentifier() + wxT(";")
+            + wxT("\n\nCREATE DATABASE ") + GetQuotedIdentifier()
             + wxT("\n  WITH ENCODING = ") + qtString(GetEncoding()) + wxT(";\n");
         wxStringTokenizer vars(GetVariables());
         while (vars.HasMoreTokens())

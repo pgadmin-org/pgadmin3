@@ -62,7 +62,7 @@ wxString pgTable::GetHelpPage(bool forCreate) const
 
 bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP TABLE ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP TABLE ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 
@@ -112,8 +112,9 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
     {
         // make sure all kids are appended
         ShowTreeDetail(browser);
-        sql = wxT("-- Table: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE TABLE ") + GetQuotedFullIdentifier() + wxT("\n(\n");
+        sql = wxT("-- Table: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP TABLE ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE TABLE ") + GetQuotedFullIdentifier() + wxT("\n(\n");
 
         pgObject *data;
         long cookie;

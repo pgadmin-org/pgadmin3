@@ -48,10 +48,11 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+        sql = wxT("-- Check: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() 
-            + wxT(";\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
-            + wxT("\n    ADD CONSTRAINT ") + GetConstraint() 
+            + wxT(";\n\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
     }
 

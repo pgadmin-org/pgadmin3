@@ -31,15 +31,16 @@ pgOperatorClass::~pgOperatorClass()
 
 bool pgOperatorClass::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP OPERATOR CLASS ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod());
+    return GetDatabase()->ExecuteVoid(wxT("DROP OPERATOR CLASS ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod() + wxT(";"));
 }
 
 wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Operator Class: \"") + GetName() + wxT("\"\n");
-        sql += wxT("CREATE OPERATOR CLASS ") + GetQuotedFullIdentifier();
+        sql = wxT("-- Operator Class: \"") + GetName() + wxT("\"\n\n")
+            + wxT("-- DROP OPERATOR CLASS ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod() + wxT(";")
+            + wxT("\n\nCREATE OPERATOR CLASS ") + GetQuotedFullIdentifier();
         if (GetOpcDefault())
             sql += wxT(" DEFAULT");
         sql += wxT("\n   FOR TYPE ") + GetInType()

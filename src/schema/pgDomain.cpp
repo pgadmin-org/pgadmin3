@@ -31,15 +31,16 @@ pgDomain::~pgDomain()
 
 bool pgDomain::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP DOMAIN ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP DOMAIN ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 wxString pgDomain::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Domain: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE DOMAIN ") + GetQuotedFullIdentifier() 
+        sql = wxT("-- Domain: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP DOMAIN ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE DOMAIN ") + GetQuotedFullIdentifier() 
             + wxT("\n  AS ") + GetQuotedBasetype();
         AppendIfFilled(sql, wxT("\n  DEFAULT "), GetDefault());
         // CONSTRAINT Name Dont know where it's stored, may be omitted anyway

@@ -31,7 +31,7 @@ pgIndex::~pgIndex()
 
 bool pgIndex::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP INDEX ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP INDEX ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 wxString pgIndex::GetCreate()
@@ -69,7 +69,8 @@ wxString pgIndex::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Index: ") + GetQuotedFullIdentifier() + wxT("\n")
+        sql = wxT("-- Index: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP INDEX ") + GetQuotedFullIdentifier() + wxT(";\n\n")
             + GetCreate()
             + GetCommentSql();
     }

@@ -36,8 +36,9 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Cast: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE CAST (") + GetSourceType()
+        sql = wxT("-- Cast: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP CAST (") + GetSourceType() + wxT(" AS ") + GetTargetType() + wxT(")")
+            + wxT("\n\nCREATE CAST (") + GetSourceType()
             + wxT(" AS ") + GetTargetType();
         if (GetCastFunction().IsNull())
             sql += wxT(")\n  WITHOUT FUNCTION");

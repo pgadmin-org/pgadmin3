@@ -31,14 +31,16 @@ pgType::~pgType()
 
 bool pgType::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP TYPE ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP TYPE ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 wxString pgType::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE TYPE ") + GetQuotedFullIdentifier();
+        sql = wxT("-- Type: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP TYPE ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE TYPE ") + GetQuotedFullIdentifier();
         if (GetIsComposite())
         {
             sql += wxT(" AS\n   (");

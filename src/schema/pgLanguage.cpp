@@ -32,15 +32,16 @@ pgLanguage::~pgLanguage()
 
 bool pgLanguage::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP LANGUAGE ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP LANGUAGE ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 wxString pgLanguage::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Language: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE ");
+        sql = wxT("-- Language: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP LANGUAGE ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\n CREATE ");
         if (GetTrusted())
             sql += wxT("TRUSTED ");
         sql += wxT("PROCEDURAL LANGUAGE '") + GetName() 

@@ -30,15 +30,16 @@ pgConversion::~pgConversion()
 
 bool pgConversion::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP CONVERSION ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP CONVERSION ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 wxString pgConversion::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Conversion: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE ");
+        sql = wxT("-- Conversion: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP CONVERSION ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE ");
         if (GetDefaultConversion())
             sql += wxT("DEFAULT ");
         sql += wxT("CONVERSION ") + qtIdent(GetName())

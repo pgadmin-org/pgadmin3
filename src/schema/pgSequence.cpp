@@ -30,7 +30,7 @@ pgSequence::~pgSequence()
 
 bool pgSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP SEQUENCE ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP SEQUENCE ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 // we dont have an appropriate wxLongLong method
@@ -68,8 +68,9 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         UpdateValues();
-        sql = wxT("-- Sequence: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE SEQUENCE ") + GetQuotedFullIdentifier()
+        sql = wxT("-- Sequence: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP SEQUENCE ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE SEQUENCE ") + GetQuotedFullIdentifier()
             + wxT("\n  INCREMENT ") + GetIncrement().ToString()
             + wxT("\n  MINVALUE ") + GetMinValue().ToString()
             + wxT("\n  MAXVALUE ") + GetMaxValue().ToString()

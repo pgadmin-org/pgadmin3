@@ -37,8 +37,9 @@ wxString pgAggregate::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Aggregate: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE AGGREGATE ") + GetQuotedFullIdentifier() 
+        sql = wxT("-- Aggregate: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(")")
+            + wxT("\n\nCREATE AGGREGATE ") + GetQuotedFullIdentifier() 
             + wxT("(\n  BASETYPE=") + GetInputType()
             + wxT(",\n  SFUNC=") + GetStateFunction()
             + wxT(",\n  STYPE=") + GetStateType();

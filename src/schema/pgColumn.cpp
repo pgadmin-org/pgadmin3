@@ -50,19 +50,16 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
             sql = wxT("-- Column inherited; cannot be changed");
         else
         {
-            sql = wxT("-- Just a proposal; indexes, foreign keys and trigger might prevent this\n\n"
-                      "ALTER TABLE ") + GetQuotedFullTable()
-                + wxT(" ADD COLUMN pgadmin_tmpcol ") + GetQuotedTypename();
-// plain not always default!            if (GetStorage() != "PLAIN")
-                sql += wxT(";\nALTER TABLE ")+ GetQuotedFullTable()
-                    +  wxT(" ALTER COLUMN pgadmin_tmpcol SET STORAGE ") + GetStorage();
-            sql +=wxT(";\nUPDATE ") + GetQuotedFullTable()
-                + wxT(" SET pgadmin_tmpcol=") + GetQuotedIdentifier()
-                + wxT(";\nALTER TABLE ") + GetQuotedFullIdentifier()
+            sql = wxT("-- Column: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+                + wxT("-- ALTER TABLE ") + GetQuotedFullIdentifier()
                 + wxT(" DROP COLUMN ") + GetQuotedIdentifier()
-                + wxT(";\nALTER TABLE ") + GetQuotedFullTable()
-                + wxT(" RENAME COLUMN pgadmin_tmpcol TO ") + GetQuotedIdentifier()
-                + wxT(";\n");
+                
+                + wxT("\n\nALTER TABLE ") + GetQuotedFullTable()
+                + wxT(" ADD COLUMN ") + GetQuotedIdentifier() + wxT(" ") + GetQuotedTypename()
+                
+                + wxT(";\nALTER TABLE ")+ GetQuotedFullTable()
+                +  wxT(" ALTER COLUMN pgadmin_tmpcol SET STORAGE ") + GetStorage() + wxT(";\n");
+
             if (GetNotNull())
                 sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                     + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
@@ -240,7 +237,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
                 storage == wxT("p") ? wxT("PLAIN") :
                 storage == wxT("e") ? wxT("EXTERNAL") :
                 storage == wxT("m") ? wxT("MAIN") :
-                storage == wxT("s") ? wxT("EXTENDED") : wxT("unknown"));
+                storage == wxT("x") ? wxT("EXTENDED") : wxT("Unknown"));
 
             column->iSetTyplen(columns->GetLong(wxT("attlen")));
 
@@ -255,7 +252,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             wxString nsp=columns->GetVal(wxT("typnspname"));
             if (nsp == wxT("pg_catalog"))
             {
-                column->iSetVarTypename(nsp + dt.FullName());
+                column->iSetVarTypename(nsp + wxT(".") + dt.FullName());
                 column->iSetQuotedTypename(dt.QuotedFullName());
             }
             else

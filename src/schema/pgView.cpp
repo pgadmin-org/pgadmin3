@@ -39,14 +39,16 @@ wxMenu *pgView::GetNewMenu()
 
 bool pgView::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP VIEW ") + GetQuotedFullIdentifier());
+    return GetDatabase()->ExecuteVoid(wxT("DROP VIEW ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 wxString pgView::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
+        sql = wxT("-- View: \"") + GetQuotedFullIdentifier() + wxT("\"\n\n")
+            + wxT("DROP VIEW ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
             + GetFormattedDefinition()
             + wxT("\n\n") 
             + GetGrant(wxT("arwdRxt"), wxT("Table"))

@@ -31,7 +31,7 @@ pgFunction::~pgFunction()
 
 bool pgFunction::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")"));
+    return GetDatabase()->ExecuteVoid(wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(");"));
 }
 
 pgFunction::pgFunction(pgSchema *newSchema, int newType, const wxString& newName)
@@ -61,8 +61,9 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")\n")
-            + wxT("CREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes()
+        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")\n\n")
+            + wxT("-- DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(");")
+            + wxT("\n\nCREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes()
             + wxT(")\n  RETURNS ");
         if (GetReturnAsSet())
             sql += wxT("SETOF ");

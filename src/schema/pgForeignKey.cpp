@@ -73,10 +73,10 @@ wxString pgForeignKey::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Foreign Key: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("\n-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+        sql = wxT("-- Foreign Key: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier()
-            + wxT("\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT("\n\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
         if (!GetComment().IsEmpty())

@@ -34,7 +34,7 @@ pgUser::~pgUser()
 
 bool pgUser::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return server->ExecuteVoid(wxT("DROP USER ") + GetQuotedFullIdentifier());
+    return server->ExecuteVoid(wxT("DROP USER ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 
@@ -42,8 +42,9 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- User: \"") + GetName() + wxT("\"\n")
-            + wxT("CREATE User ") + GetQuotedIdentifier()
+        sql = wxT("-- User: \"") + GetName() + wxT("\"\n\n")
+            + wxT("-- DROP USER ") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE USER ") + GetQuotedIdentifier()
             + wxT("\n  WITH SYSID ") + NumToStr(userId);
         AppendIfFilled(sql, wxT("\n  PASSWORD ENCRYPTED "), GetPassword());
         sql += wxT("\n ");

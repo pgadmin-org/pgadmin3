@@ -57,10 +57,9 @@ wxString pgTrigger::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull() && this->triggerFunction)
     {
-        sql = wxT("-- Trigger: ") + GetName() + wxT(" on ") + GetQuotedFullTable() + wxT("\n")
+        sql = wxT("-- Trigger: ") + GetName() + wxT(" on ") + GetQuotedFullTable() + wxT("\n\n")
             + wxT("-- DROP TRIGGER ") + GetName()
-            + wxT(" ON ") + GetQuotedFullTable() +wxT(";\n"
-                  "CREATE TRIGGER ") + GetName()
+            + wxT(" ON ") + GetQuotedFullTable() +wxT(";\n\nCREATE TRIGGER ") + GetName()
             + wxT("\n  ") + GetFireWhen() 
             + wxT(" ") + GetEvent()
             + wxT("\n  ON ") + GetQuotedFullTable()
