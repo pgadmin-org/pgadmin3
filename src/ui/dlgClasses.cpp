@@ -142,12 +142,19 @@ BEGIN_EVENT_TABLE(pgFrame, wxFrame)
     EVT_MENU(MNU_RECENT+8,              pgFrame::OnRecent)
     EVT_MENU(MNU_RECENT+9,              pgFrame::OnRecent)
     EVT_MENU(MNU_BUGREPORT,             pgFrame::OnBugreport)
+    EVT_MENU(MNU_HELP,                  pgFrame::OnHelp)
     EVT_MENU(MNU_ABOUT,                 pgFrame::OnAbout)
 #ifdef __WXGTK__
     EVT_KEY_DOWN(                       pgFrame::OnKeyDown)
 #endif
 END_EVENT_TABLE()
 
+
+pgFrame::~pgFrame()
+{
+    if (!dlgName.IsEmpty())
+        SavePosition();
+}
 
 // Event handlers
 void pgFrame::OnKeyDown(wxKeyEvent& event)
@@ -160,6 +167,13 @@ void pgFrame::OnKeyDown(wxKeyEvent& event)
 void pgFrame::OnExit(wxCommandEvent& event)
 {
     Close();
+}
+
+
+void pgFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
+{
+    wxString page=GetHelpPage();
+    DisplayHelp(this, page);
 }
 
 
@@ -179,7 +193,7 @@ void pgFrame::OnBugreport(wxCommandEvent& event)
 void pgFrame::OnRecent(wxCommandEvent& event)
 {
     int fileNo=event.GetId() - MNU_RECENT;
-    lastPath = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("/%d"), fileNo), wxT(""));
+    lastPath = settings->Read(recentKey + wxString::Format(wxT("/%d"), fileNo), wxT(""));
 
     if (!lastPath.IsNull())
     {
@@ -195,6 +209,12 @@ void pgFrame::OnRecent(wxCommandEvent& event)
 
 void pgFrame::UpdateRecentFiles()
 {
+    if (!recentFileMenu)
+        return;
+
+    if (recentKey.IsEmpty())
+        recentKey = dlgName + wxT("/RecentFiles");
+
     wxString lastFiles[10]; // 0 will be unused for convenience
     int i, maxFiles=9;
     int recentIndex=maxFiles;
@@ -226,8 +246,7 @@ void pgFrame::UpdateRecentFiles()
 
     for (i=1 ; i <= maxFiles ; i++)
     {
-        settings->Write(wxT("RecentFiles/") + wxString::Format(wxT("%d"), i), lastFiles[i]);
-
+        settings->Write(recentKey + wxString::Format(wxT("/%d"), i), lastFiles[i]);
 
         if (!lastFiles[i].IsNull())
             recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString::Format(wxT("%d"), i) + wxT("  ") + lastFiles[i]);

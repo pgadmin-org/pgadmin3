@@ -49,6 +49,7 @@ class pgFrame : public wxFrame
 public:
     pgFrame(wxFrame *parent, const wxString &title, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long flags=wxDEFAULT_FRAME_STYLE) 
         : wxFrame(parent, -1, title, pos, size, flags) { changed=false; recentFileMenu=0; }
+    ~pgFrame();
     void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
     void SavePosition();
 
@@ -58,9 +59,11 @@ protected:
     void OnExit(wxCommandEvent& event);
     void OnRecent(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+    void OnHelp(wxCommandEvent& event);
     void OnBugreport(wxCommandEvent& event);
 
     virtual void OpenLastFile() {}
+    virtual wxString GetHelpPage() const { return wxEmptyString; }
 
     void UpdateRecentFiles();
 

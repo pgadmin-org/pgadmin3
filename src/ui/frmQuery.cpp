@@ -42,9 +42,9 @@
 
 
 
-BEGIN_EVENT_TABLE(frmQuery, wxFrame)
+BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_CLOSE(                      frmQuery::OnClose)
-	EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
+    EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
     EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
     EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
@@ -216,6 +216,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     horizontal->SplitHorizontally(sqlQuery, output, splitpos);
 
     sqlQuery->SetText(query);
+    sqlQuery->Colourise(0, query.Length());
+
     changed = !query.IsNull() && settings->GetStickySql();
     if (changed)
         setExtendedTitle();
@@ -240,7 +242,7 @@ frmQuery::~frmQuery()
     msgHistory->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
 
     mainForm->RemoveFrame(this);
-    SavePosition();
+
     settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
     settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
@@ -679,6 +681,7 @@ void frmQuery::OpenLastFile()
     if (!str.IsEmpty())
     {
         sqlQuery->SetText(str);
+        sqlQuery->Colourise(0, str.Length());
         wxYield();  // needed to process sqlQuery modify event
         changed = false;
         setExtendedTitle();

@@ -193,7 +193,8 @@ wxString dlgColumn::GetSql()
                 {
                     sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                         +  wxT(" ALTER ") + qtIdent(name) + wxT(" TYPE ")
-                        +  GetQuotedTypename(cbDatatype->GetGuessedSelection());
+                        +  GetQuotedTypename(cbDatatype->GetGuessedSelection())
+                        +  wxT(";\n");
                 }
             }
             else

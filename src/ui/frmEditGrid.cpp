@@ -669,7 +669,7 @@ frmEditGrid::~frmEditGrid()
 {
     wxLogInfo(wxT("Destroying SQL EditGrid"));
     mainForm->RemoveFrame(this);
-    SavePosition();
+
     if (connection)
         delete connection;
 }

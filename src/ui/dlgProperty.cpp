@@ -189,7 +189,7 @@ int dlgProperty::Go(bool modal)
     if (pos.x >= 0 && pos.y >= 0)
         Move(pos);
 
-    wxComboBox *cbowner = cbOwner;
+    wxComboBoxFix *cbowner = (wxComboBoxFix*)cbOwner;
 
     if (cbowner && !cbowner->GetCount())
     {

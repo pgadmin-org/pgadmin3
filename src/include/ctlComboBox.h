@@ -17,6 +17,16 @@
 #include <wx/wx.h>
 
 
+#ifdef __WXMSW__
+class wxComboBoxFix : public wxComboBox
+{
+public:
+    wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
+};
+#else
+#define wxComboBoxFix wxComboBox
+#endif
+
 class ctlComboBox : public wxComboBox
 {
 public:
@@ -24,6 +34,9 @@ public:
     int GuessSelection();
     int GetGuessedSelection() const;
     wxString GetGuessedStringSelection() const;
+#ifdef __WXMSW__
+    wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
+#endif
 private:
     // MS VC6 will call wxComboBox::GetSelection instead, so we can't overload these.
     int GetSelection() const;
