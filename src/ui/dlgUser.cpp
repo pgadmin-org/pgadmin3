@@ -173,6 +173,14 @@ int dlgUser::Go(bool modal)
 }
 
 
+wxString dlgUser::GetHelpPage() const
+{
+    if (nbNotebook->GetSelection() == 2)
+        return wxT("runtime-config");
+    return dlgProperty::GetHelpPage();
+}
+
+
 void dlgUser::OnChangeCal(wxCalendarEvent &ev)
 {
 	OnChange(*(wxCommandEvent*)&ev);
@@ -257,7 +265,7 @@ void dlgUser::OnGroupRemove(wxCommandEvent &ev)
 
 void dlgUser::OnVarnameSelChange(wxCommandEvent &ev)
 {
-    int sel=cbVarname->GetSelection();
+    int sel=cbVarname->GuessSelection();
     if (sel >= 0)
     {
         wxStringTokenizer vals(varInfo.Item(sel));

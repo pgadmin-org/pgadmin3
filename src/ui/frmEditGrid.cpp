@@ -19,13 +19,14 @@
 #include "wxgridsel.h"
 #endif
 
-#include <wx/generic/gridctrl.h>
-
 // App headers
 #include "pgAdmin3.h"
 #include "pgDefs.h"
 #include "frmMain.h"
 #include "menu.h"
+
+#include <wx/generic/gridctrl.h>
+#include <wx/clipbrd.h>
 
 #include "frmEditGrid.h"
 #include "dlgEditGridOptions.h"
@@ -41,6 +42,7 @@
 #include "images/edit_undo.xpm"
 #include "images/sortfilter.xpm"
 #include "images/help.xpm"
+#include "images/clip_copy.xpm"
 
 
 
@@ -51,12 +53,14 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_MENU(MNU_UNDO,      frmEditGrid::OnUndo)
     EVT_MENU(MNU_OPTIONS,   frmEditGrid::OnOptions)
     EVT_MENU(MNU_HELP,      frmEditGrid::OnHelp)
+    EVT_MENU(MNU_COPY,      frmEditGrid::OnCopy)
     EVT_CLOSE(              frmEditGrid::OnClose)
     EVT_KEY_DOWN(           frmEditGrid::OnKey)
     EVT_GRID_RANGE_SELECT(frmEditGrid::OnGridSelectCells)
     EVT_GRID_SELECT_CELL(frmEditGrid::OnCellChange)
     EVT_GRID_EDITOR_SHOWN(frmEditGrid::OnEditorShown)
     EVT_GRID_LABEL_LEFT_DCLICK(frmEditGrid::OnLabelDoubleClick)
+    EVT_GRID_LABEL_RIGHT_CLICK(frmEditGrid::OnLabelRightClick)
 END_EVENT_TABLE()
 
 
@@ -95,6 +99,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo change of data."), wxITEM_NORMAL);
     toolBar->AddSeparator();
+    toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected lines to clipboard"), wxITEM_NORMAL);
+    toolBar->AddSeparator();
     toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected lines."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_OPTIONS, _("Options"), wxBitmap(sortfilter_xpm), _("Sort/filter options."), wxITEM_NORMAL);
@@ -104,17 +110,19 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->Realize();
     toolBar->EnableTool(MNU_SAVE, false);
     toolBar->EnableTool(MNU_UNDO, false);
+    toolBar->EnableTool(MNU_COPY, false);
     toolBar->EnableTool(MNU_DELETE, false);
 
 
-    wxAcceleratorEntry entries[4];
+    wxAcceleratorEntry entries[5];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
     entries[1].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_REFRESH);
     entries[2].Set(wxACCEL_CTRL,                (int)'Z',      MNU_UNDO);
     entries[3].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+    entries[3].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
 
-    wxAcceleratorTable accel(4, entries);
+    wxAcceleratorTable accel(5, entries);
     SetAcceleratorTable(accel);
 
 
@@ -156,6 +164,14 @@ void frmEditGrid::SetFilter(const wxString &filter)
 		rowFilter = filter; 
 		optionsChanged = true;
 	} 
+}
+
+void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
+{
+    wxArrayInt rows=sqlGrid->GetSelectedRows();
+    if (rows.GetCount())
+    {
+    }
 }
 
 #define EXTRAEXTENT_HEIGHT 6
@@ -212,7 +228,7 @@ void frmEditGrid::OnLabelDoubleClick(wxGridEvent& event)
     {
         for (row=0 ; row < sqlGrid->GetNumberRows() ; row++)
         {
-            if (((sqlTable*)sqlGrid->GetTable())->CheckInCache(row))
+            if (sqlGrid->GetTable()->CheckInCache(row))
             {
                 extent = sqlGrid->GetBestSize(row, col).GetWidth();
                 if (extent > extentWant)
@@ -253,7 +269,7 @@ void frmEditGrid::OnLabelDoubleClick(wxGridEvent& event)
 
 void frmEditGrid::OnCellChange(wxGridEvent& event)
 {
-    sqlTable *table=(sqlTable*)sqlGrid->GetTable();
+    sqlTable *table=sqlGrid->GetTable();
     if (table)
     {
         if (table->LastRow() >= 0)
@@ -274,6 +290,29 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
     event.Skip();
 }
 
+
+void frmEditGrid::OnCopy(wxCommandEvent &ev)
+{
+    wxArrayInt rows=sqlGrid->GetSelectedRows();
+    size_t i;
+    if (rows.GetCount())
+    {
+        wxString str;
+        for (i=0 ; i < rows.GetCount() ; i++)
+        {
+            str.Append(sqlGrid->GetTable()->GetExportLine(i));
+    
+            if (rows.GetCount() > 1)
+                str.Append(END_OF_LINE);
+        }
+        if (wxTheClipboard->Open())
+        {
+            wxTheClipboard->SetData(new wxTextDataObject(str));
+            wxTheClipboard->Close();
+        }
+    }
+    SetStatusText(wxString::Format(_("%d rows copied to clipboard."), rows.GetCount()));
+}
 
 
 void frmEditGrid::OnHelp(wxCommandEvent &ev)
@@ -342,11 +381,7 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
                         {
                             long from, to;
                             txt->GetSelection(&from, &to);
-#ifdef __WXMSW__
-                            txt->Replace(from, to, wxT("\r\n"));
-#else
-                            txt->Replace(from, to, wxT("\n"));
-#endif
+                            txt->Replace(from, to, END_OF_LINE);
                         }
                     }
                     edit->DecRef();
@@ -421,7 +456,7 @@ void frmEditGrid::OnClose(wxCloseEvent& event)
 void frmEditGrid::OnUndo(wxCommandEvent& event)
 {
     sqlGrid->DisableCellEditControl();
-    ((sqlTable*)sqlGrid->GetTable())->UndoLine(sqlGrid->GetGridCursorRow());
+    sqlGrid->GetTable()->UndoLine(sqlGrid->GetGridCursorRow());
     sqlGrid->ForceRefresh();
 }
 
@@ -438,7 +473,7 @@ void frmEditGrid::OnSave(wxCommandEvent& event)
     sqlGrid->HideCellEditControl();
     sqlGrid->SaveEditControlValue();
     sqlGrid->DisableCellEditControl();
-    ((sqlTable*)sqlGrid->GetTable())->StoreLine();
+    sqlGrid->GetTable()->StoreLine();
 
     toolBar->EnableTool(MNU_SAVE, false);
     toolBar->EnableTool(MNU_UNDO, false);
@@ -465,7 +500,7 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
         sqlGrid->DeleteRows(delrows.Item(i), 1);
     sqlGrid->EndBatch();
 
-    SetStatusText(wxString::Format(_("%d rows."), ((sqlTable*)sqlGrid->GetTable())->GetNumberStoredRows()), 0);
+    SetStatusText(wxString::Format(_("%d rows."), sqlGrid->GetTable()->GetNumberStoredRows()), 0);
 }
 
 
@@ -516,6 +551,7 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
             }
         }
         toolBar->EnableTool(MNU_DELETE,  enable);
+        toolBar->EnableTool(MNU_COPY,  enable);
     }
     event.Skip();
 }
@@ -644,7 +680,7 @@ ctlSQLGrid::ctlSQLGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const
 void ctlSQLGrid::ResizeEditor(int row, int col)
 {
 
-    if (((sqlTable*)GetTable())->needsResizing(col))
+    if (GetTable()->needsResizing(col))
     {
         wxGridCellAttr* attr = GetCellAttr(row, col);
         wxGridCellRenderer* renderer = attr->GetRenderer(this, row, col);
@@ -1068,6 +1104,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             columns[0].name = wxT("oid");
             columns[0].numeric = true;
             columns[0].attr->SetReadOnly(true);
+            columns[0].type = PGTYPCLASS_NUMERIC;
         }
 
         for (i=(hasOids ? 1 : 0) ; i < nCols ; i++)
@@ -1231,6 +1268,42 @@ int sqlTable::GetNumberRows()
 int sqlTable::GetNumberStoredRows()
 {
     return nRows + rowsStored - rowsDeleted;
+}
+
+
+wxString sqlTable::GetExportLine(int row)
+{
+    wxString str;
+    cacheLine *line = GetLine(row);
+    if (line)
+    {
+        int col;
+        for (col=0 ; col < nCols ; col++)
+        {
+            if (col)
+                str.Append(settings->GetExportColSeparator());
+            bool needQuote = settings->GetExportQuoting() > 1;
+
+            // find out if string
+            switch (columns[col].type)
+            {
+                case PGTYPCLASS_NUMERIC:
+                case PGTYPCLASS_BOOL:
+                    break;
+                default:
+                    needQuote=true;
+                    break;
+            }
+            if (needQuote)
+                str.Append(settings->GetExportQuoteChar());
+
+            str.Append(line->cols[col]);
+        
+            if (needQuote)
+                str.Append(settings->GetExportQuoteChar());
+        }
+    }
+    return str;
 }
 
 

@@ -214,7 +214,7 @@ void pgConn::RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg)
 
 wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
 {
-    return wxT("(") + nsp + wxT(" NOT LIKE 'pg\\_%')");
+    return wxT("(") + nsp + wxT(" NOT LIKE 'pg\\_%' AND ") + nsp + wxT(" NOT LIKE 'information_schema')");
 }
 
 

@@ -103,6 +103,8 @@ DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains)
         condition += wxT("IN ('b', 'd')");
     else
         condition += wxT("= 'b'");
+    if (!settings->GetShowSystemObjects())
+        condition += wxT(" AND nsp.nspname NOT LIKE 'information_schema'");
     init(db, condition);
 }
 

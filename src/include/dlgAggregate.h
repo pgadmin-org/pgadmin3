@@ -34,6 +34,8 @@ private:
 
     void OnChange(wxCommandEvent &ev);
     void OnChangeType(wxCommandEvent &ev);
+    void OnChangeTypeBase(wxCommandEvent &ev);
+    void OnChangeTypeState(wxCommandEvent &ev);
     
     wxArrayString procedures;
 

@@ -38,8 +38,8 @@
 
 BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgAggregate::OnChange)
-    EVT_TEXT(XRCID("cbBaseType"),                   dlgAggregate::OnChangeType)
-    EVT_TEXT(XRCID("cbStateType"),                  dlgAggregate::OnChangeType)
+    EVT_TEXT(XRCID("cbBaseType"),                   dlgAggregate::OnChangeTypeBase)
+    EVT_TEXT(XRCID("cbStateType"),                  dlgAggregate::OnChangeTypeState)
     EVT_TEXT(XRCID("cbStateFunc"),                  dlgAggregate::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgAggregate::OnChange)
 END_EVENT_TABLE();
@@ -134,6 +134,18 @@ void dlgAggregate::OnChange(wxCommandEvent &ev)
     }
 }
 
+
+void dlgAggregate::OnChangeTypeBase(wxCommandEvent &ev)
+{
+    cbBaseType->GuessSelection();
+    OnChangeType(ev);
+}
+
+void dlgAggregate::OnChangeTypeState(wxCommandEvent &ev)
+{
+    cbStateType->GuessSelection();
+    OnChangeType(ev);
+}
 
 void dlgAggregate::OnChangeType(wxCommandEvent &ev)
 {

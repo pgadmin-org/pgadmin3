@@ -60,7 +60,7 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgType::OnVarSelChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgType::OnSelChangeTyp)
     EVT_TEXT(XRCID("txtMembername"),                dlgType::OnChangeMember)
-    EVT_TEXT(XRCID("txtLength"),                    dlgType::OnSelChangeTyp)
+    EVT_TEXT(XRCID("txtLength"),                    dlgType::OnSelChangeTypOrLen)
 END_EVENT_TABLE();
 
 
@@ -218,6 +218,13 @@ int dlgType::Go(bool modal)
 
 
 void dlgType::OnSelChangeTyp(wxCommandEvent &ev)
+{
+    cbDatatype->GuessSelection();
+    OnSelChangeTypOrLen(ev);
+}
+
+
+void dlgType::OnSelChangeTypOrLen(wxCommandEvent &ev)
 {
     if (!type)
     {

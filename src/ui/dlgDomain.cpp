@@ -173,6 +173,7 @@ void dlgDomain::OnSelChangeTyp(wxCommandEvent &ev)
 {
     if (!domain)
     {
+        cbDatatype->GuessSelection();
         CheckLenEnable();
         txtLength->Enable(isVarLen);
         OnChange(ev);

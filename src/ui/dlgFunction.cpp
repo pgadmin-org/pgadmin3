@@ -62,7 +62,7 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtLinkSymbol"),                dlgFunction::OnChange)
     EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgFunction::OnChangeStc)
 
-    EVT_TEXT(XRCID("cbReturntype"),                 dlgFunction::OnChange)
+    EVT_TEXT(XRCID("cbReturntype"),                 dlgFunction::OnChangeReturn)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgFunction::OnSelChangeType)
     EVT_TEXT(XRCID("cbLanguage"),                   dlgFunction::OnSelChangeLanguage)
 
@@ -295,8 +295,16 @@ void dlgFunction::OnSelChangeArg(wxCommandEvent &ev)
 }
 
 
+
+void dlgFunction::OnChangeReturn(wxCommandEvent &ev)
+{
+    cbReturntype->GuessSelection();
+}
+
+
 void dlgFunction::OnSelChangeType(wxCommandEvent &ev)
 {
+    cbDatatype->GuessSelection();
     if (objectType != PG_TRIGGERFUNCTION)
         btnAdd->Enable();
 }

@@ -43,6 +43,9 @@ public:
     bool Export();
     bool CanExport() { return rowsRetrieved>0 && colNames.GetCount() > 0; }
 
+    wxString GetItemText(int row, int col=-1);
+    wxString GetExportLine(int row);
+
     int RunStatus();
     wxString GetMessagesAndClear();
     wxString GetErrorMessage();

@@ -112,8 +112,8 @@ public:
 protected:
     dlgTypeProperty(frmMain *frame, const wxString &resName);
     void CheckLenEnable();
-    void FillDatatype(wxComboBox *cb, bool withDomains=true);
-    void FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDomains=true);
+    void FillDatatype(ctlComboBox *cb, bool withDomains=true);
+    void FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withDomains=true);
 
     bool isVarLen, isVarPrec;
     long minVarLen, maxVarLen;
@@ -143,8 +143,8 @@ class dlgSecurityProperty : public dlgProperty
 protected:
     dlgSecurityProperty(frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *privilegeChar);
     ~dlgSecurityProperty();
-    void AddGroups(wxComboBox *comboBox=0);
-    void AddUsers(wxComboBox *comboBox=0);
+    void AddGroups(ctlComboBox *comboBox=0);
+    void AddUsers(ctlComboBox *comboBox=0);
 
     wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
     void EnableOK(bool enable);

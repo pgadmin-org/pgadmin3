@@ -42,7 +42,7 @@ public:
     ~ctlSecurityPanel();
 
     ctlListView *lbPrivileges;
-    wxComboBox *cbGroups;
+    ctlComboBox *cbGroups;
     wxStaticText *stGroup;
     void SetConnection(pgConn *conn) { connection=conn; }
     wxString GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl=0);

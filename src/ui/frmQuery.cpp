@@ -23,6 +23,8 @@
 #include "frmHelp.h"
 #include "menu.h"
 
+#include <wx/clipbrd.h>
+
 // Icons
 #include "images/sql.xpm"
 // Bitmaps
@@ -79,7 +81,7 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
 #ifdef __WXGTK__
     EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
 #endif
-    EVT_STC_MODIFIED(CTL_SQLQUERY,    frmQuery::OnChangeStc)
+    EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
 END_EVENT_TABLE()
 
 
@@ -215,6 +217,11 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     output->AddPage(msgResult, _("Messages"));
     output->AddPage(msgHistory, _("History"));
 
+    sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS,(wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
+    sqlResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
+    msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
+    msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
+
     int splitpos=settings->Read(wxT("frmQuery/Split"), 250);
     if (splitpos < 50)
         splitpos = 50;
@@ -240,6 +247,11 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 frmQuery::~frmQuery()
 {
     wxLogInfo(wxT("Destroying SQL Query box"));
+
+    sqlQuery->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,(wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
+    sqlResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
+    msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
+    msgHistory->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
 
     mainForm->RemoveFrame(this);
     SavePosition();
@@ -509,15 +521,79 @@ void frmQuery::OnClearHistory(wxCommandEvent& event)
     msgHistory->Clear();
 }
 
+
+void frmQuery::OnFocus(wxFocusEvent& ev)
+{
+    if (wxDynamicCast(this, wxFrame))
+        updateMenu(ev.GetEventObject());
+    else
+    {
+        frmQuery *wnd=(frmQuery*)GetParent();
+        if (wnd)
+            wnd->OnFocus(ev);
+    }
+    ev.Skip();
+}
+
+
 void frmQuery::OnCut(wxCommandEvent& ev)
 {
-    sqlQuery->Cut();
-    updateMenu();
+    if (FindFocus() == sqlQuery)
+    {
+        sqlQuery->Cut();
+        updateMenu();
+    }
 }
+
+
+wxWindow *frmQuery::currentControl()
+{
+    wxWindow *wnd=FindFocus();
+    if (wnd == output)
+    {
+        switch (output->GetSelection())
+        {
+            case 0: wnd = sqlResult;    break;
+            case 1: wnd = msgResult;    break;
+            case 2: wnd = msgHistory;   break;
+        }
+    }
+    return wnd;
+}
+
 
 void frmQuery::OnCopy(wxCommandEvent& ev)
 {
-    sqlQuery->Copy();
+    wxWindow *wnd=currentControl();
+
+    if (wnd == sqlQuery)
+        sqlQuery->Copy();
+    else if (wnd == msgResult)
+        msgResult->Copy();
+    else if (wnd == msgHistory)
+        msgHistory->Copy();
+    else if (wnd == sqlResult && sqlResult->GetSelectedItemCount() > 0)
+    {
+        wxString str;
+        int row=-1;
+        while (true)
+        {
+            row = sqlResult->GetNextItem(row, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+            if (row < 0)
+                break;
+            
+            str.Append(sqlResult->GetExportLine(row));
+            if (sqlResult->GetSelectedItemCount() > 1)
+                str.Append(END_OF_LINE);
+        }
+
+        if (wxTheClipboard->Open())
+        {
+            wxTheClipboard->SetData(new wxTextDataObject(str));
+            wxTheClipboard->Close();
+        }
+
+    }
     updateMenu();
 }
 
@@ -528,7 +604,14 @@ void frmQuery::OnPaste(wxCommandEvent& ev)
 
 void frmQuery::OnClear(wxCommandEvent& ev)
 {
-    sqlQuery->ClearAll();
+    wxWindow *wnd=currentControl();
+
+    if (wnd == sqlQuery)
+        sqlQuery->ClearAll();
+    else if (wnd == msgResult)
+        msgResult->Clear();
+    else if (wnd == msgHistory)
+        msgHistory->Clear();
 }
 
 void frmQuery::OnFind(wxCommandEvent& ev)
@@ -561,19 +644,50 @@ void frmQuery::setExtendedTitle()
 }
 
 
-void frmQuery::updateMenu()
+void frmQuery::updateMenu(wxObject *obj)
 {
-    bool canUndo=sqlQuery->CanUndo();
+    bool canCut=false;
+    bool canPaste=false;
+    bool canSqlStuff=false;
+    bool canUndo=false;
+    bool canRedo=false;
+    bool canClear=false;
+    bool canFind=false;
+
+
+    if (!obj || obj == sqlQuery)
+    {
+        canUndo=sqlQuery->CanUndo();
+        canRedo=sqlQuery->CanRedo();
+        canPaste=sqlQuery->CanPaste();
+
+        canCut = true;
+        canClear = true;
+        canFind = true;
+    }
+    else if (obj == msgResult || obj == msgHistory)
+    {
+        canClear = true;
+    }
+
+
     toolBar->EnableTool(MNU_UNDO, canUndo);
     editMenu->Enable(MNU_UNDO, canUndo);
 
-    bool canRedo=sqlQuery->CanRedo();
     toolBar->EnableTool(MNU_REDO, canRedo);
     editMenu->Enable(MNU_REDO, canRedo);
 
-    bool canPaste=sqlQuery->CanPaste();
     toolBar->EnableTool(MNU_PASTE, canPaste);
     editMenu->Enable(MNU_PASTE, canPaste);
+
+    toolBar->EnableTool(MNU_CUT, canCut);
+    editMenu->Enable(MNU_CUT, canCut);
+
+    toolBar->EnableTool(MNU_CLEAR, canClear);
+    editMenu->Enable(MNU_CLEAR, canClear);
+
+    toolBar->EnableTool(MNU_FIND, canFind);
+    editMenu->Enable(MNU_FIND, canFind);
 }
 
 

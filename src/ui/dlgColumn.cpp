@@ -366,6 +366,8 @@ pgObject *dlgColumn::CreateObject(pgCollection *collection)
 
 void dlgColumn::OnSelChangeTyp(wxCommandEvent &ev)
 {
+    cbDatatype->GuessSelection();
+
     CheckLenEnable();
     if (column && column->GetLength() <= 0)
     {

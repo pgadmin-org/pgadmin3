@@ -46,8 +46,8 @@
 
 BEGIN_EVENT_TABLE(dlgOperator, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                  dlgOperator::OnChange)
-    EVT_TEXT(XRCID("cbLeftType"),               dlgOperator::OnChangeType)
-    EVT_TEXT(XRCID("cbRightType"),              dlgOperator::OnChangeType)
+    EVT_TEXT(XRCID("cbLeftType"),               dlgOperator::OnChangeTypeLeft)
+    EVT_TEXT(XRCID("cbRightType"),              dlgOperator::OnChangeTypeRight)
     EVT_TEXT(XRCID("cbProcedure"),              dlgOperator::OnChange)
     EVT_TEXT(XRCID("cbLeftSort") ,              dlgOperator::OnChangeJoin)
     EVT_TEXT(XRCID("cbRightSort") ,             dlgOperator::OnChangeJoin)
@@ -211,6 +211,18 @@ void dlgOperator::OnChange(wxCommandEvent &ev)
 }
 
 
+void dlgOperator::OnChangeTypeLeft(wxCommandEvent &ev)
+{
+    cbLeftType->GuessSelection();
+    OnChangeType(ev);
+}
+
+void dlgOperator::OnChangeTypeRight(wxCommandEvent &ev)
+{
+    cbRightType->GuessSelection();
+    OnChangeType(ev);
+}
+
 void dlgOperator::OnChangeType(wxCommandEvent &ev)
 {
     bool binaryOp=cbLeftType->GetSelection() > 0 && cbRightType->GetSelection() > 0;
@@ -342,7 +354,7 @@ void dlgOperator::OnChangeJoin(wxCommandEvent &ev)
 
 
 
-void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBox *cb)
+void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, ctlComboBox *cb)
 {
     wxString op=cb->GetValue().Trim();
     if (!op.IsNull())

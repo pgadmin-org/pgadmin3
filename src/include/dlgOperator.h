@@ -31,9 +31,11 @@ public:
 private:
     void OnChange(wxCommandEvent &ev);
     void OnChangeType(wxCommandEvent &ev);
+    void OnChangeTypeLeft(wxCommandEvent &ev);
+    void OnChangeTypeRight(wxCommandEvent &ev);
     void OnChangeJoin(wxCommandEvent &ev);
 
-    void AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBox *cb);
+    void AppendFilledOperator(wxString &sql, wxChar *txt, ctlComboBox *cb);
 
     pgSchema *schema;
     pgOperator *oper;

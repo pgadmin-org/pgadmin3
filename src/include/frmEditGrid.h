@@ -64,12 +64,14 @@ public:
 };
 
 
+class sqlTable;
 
 class ctlSQLGrid : public wxGrid
 {
 public:
     ctlSQLGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
 
+    sqlTable *GetTable() { return (sqlTable*)wxGrid::GetTable(); }
     wxSize GetBestSize(int row, int col);
     void ResizeEditor(int row, int col);
 
@@ -109,6 +111,7 @@ public:
     bool AppendRows(size_t rows);
     bool DeleteRows(size_t pos, size_t rows);
     int  LastRow() { return lastRow; }
+    wxString GetExportLine(int row);
 
     bool CheckInCache(int row);
 
@@ -170,7 +173,9 @@ private:
     void OnGridSelectCells(wxGridRangeSelectEvent& event);
     void OnEditorShown(wxGridEvent& event);
     void OnKey(wxKeyEvent& event);
+    void OnCopy(wxCommandEvent& event);
     void OnLabelDoubleClick(wxGridEvent& event);
+    void OnLabelRightClick(wxGridEvent& event);
     void Abort();
 
     ctlSQLGrid *sqlGrid;

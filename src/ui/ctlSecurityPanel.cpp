@@ -103,7 +103,7 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, cha
             y += zeroPos.y + spcSize.GetHeight();
 
             stGroup = new wxStaticText(this, CTL_STATICGROUP, _("Group"), wxPoint(zeroPos.x * 2, y+3), chkSize);
-            cbGroups = new wxComboBox(this, CTL_CBGROUP, wxT(""), 
+            cbGroups = new ctlComboBox(this, CTL_CBGROUP, 
                 wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
                 wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
             y += btnSize.GetHeight();

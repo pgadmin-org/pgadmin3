@@ -65,14 +65,16 @@ private:
     void OnClearHistory(wxCommandEvent& event);
     void OnKeyDown(wxKeyEvent& event);
     void OnActivate(wxActivateEvent& event);
+    void OnFocus(wxFocusEvent& event);
 
     void updateRecentFiles();
     void openLastFile();
-    void updateMenu();
+    void updateMenu(wxObject *obj=0);
     void execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0, bool toFile=false);
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
+    wxWindow *currentControl();
     wxMenuBar *menuBar;
     wxMenu *fileMenu, *recentFileMenu, *editMenu, *queryMenu;
     wxString title;

@@ -49,6 +49,43 @@ bool ctlSQLResult::Export()
 }
 
 
+
+wxString ctlSQLResult::GetExportLine(int row)
+{
+    if (GetColumnCount() <= 1)
+        return GetItemText(row);
+
+    wxString str;
+    int col;
+    for (col=1 ; col < GetColumnCount() ; col++)
+    {
+        if (col > 1)
+            str.Append(settings->GetExportColSeparator());
+
+        wxString text=GetItemText(row, col);
+
+        bool needQuote=(settings->GetExportQuoting() > 1);
+
+    
+        switch (colTypClasses.Item(col))
+        {
+            case PGTYPCLASS_NUMERIC:
+            case PGTYPCLASS_BOOL:
+                break;
+            default:
+                needQuote=true;
+                break;
+        }
+        if (needQuote)
+            str.Append(settings->GetExportQuoteChar());
+        str.Append(text);
+        if (needQuote)
+            str.Append(settings->GetExportQuoteChar());
+    }    
+    return str;
+}
+
+
 int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
 {
     Abort();
@@ -207,6 +244,20 @@ int ctlSQLResult::Retrieve(long chunk)
     wxLogInfo(wxT("retrieve done %ld: did %ld of %ld"), count, rowsRetrieved, NumRows());
 
     return (count);
+}
+
+
+wxString ctlSQLResult::GetItemText(int row, int col)
+{
+    if (col < 0)
+        return wxListCtrl::GetItemText(row);
+
+    wxListItem item;
+    item.m_mask=wxLIST_MASK_TEXT;
+    item.m_itemId=row;
+    item.m_col=col;
+    GetItem(item);
+    return item.GetText();
 }
 
 

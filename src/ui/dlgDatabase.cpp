@@ -66,6 +66,13 @@ pgObject *dlgDatabase::GetObject()
 }
 
 
+wxString dlgDatabase::GetHelpPage() const
+{
+    if (nbNotebook->GetSelection() == 1)
+        return wxT("runtime-config");
+    return dlgSecurityProperty::GetHelpPage();
+}
+
 int dlgDatabase::Go(bool modal)
 {
     if (!database)
@@ -204,7 +211,7 @@ void dlgDatabase::OnChange(wxCommandEvent &ev)
 
 void dlgDatabase::OnVarnameSelChange(wxCommandEvent &ev)
 {
-    int sel=cbVarname->GetSelection();
+    int sel=cbVarname->GuessSelection();
     if (sel >= 0)
     {
         wxStringTokenizer vals(varInfo.Item(sel));

@@ -512,34 +512,45 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
 void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 {
     // Warn the user
-    if (wxMessageBox(_("Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n\nAre you sure you wish to continue?"),
-                     _("Continue?"), wxYES_NO | wxICON_QUESTION) == wxNO) {
+    int rc;
+
+    if (settings->GetShowSystemObjects())
+        rc=wxMessageBox(
+            _("System objects will not be removed from the object tree until a refresh is performed.\nClose all connections now?"),
+            _("Hide system objects"),
+            wxYES_NO|wxCANCEL | wxICON_QUESTION);
+    else
+        rc=wxMessageBox(
+            _("System objects will not show in the the object tree until a refresh is performed.\nClose all connections now?"),
+            _("Show system objects"),
+            wxYES_NO|wxCANCEL | wxICON_QUESTION);
+
+    if (rc == wxID_CANCEL)
+    {
         viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
         return;
     }
 
-    if (settings->GetShowSystemObjects()) {
-        settings->SetShowSystemObjects(FALSE);
-        viewMenu->Check(MNU_SYSTEMOBJECTS, FALSE);
-    } else {
-        settings->SetShowSystemObjects(TRUE);
-        viewMenu->Check(MNU_SYSTEMOBJECTS, TRUE);
-    }
+    settings->SetShowSystemObjects(!settings->GetShowSystemObjects());
+    viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
 
-    wxLogInfo(wxT("Clearing treeview to toggle ShowSystemObjects"));
+    if (rc == wxID_YES)
+    {
+        wxLogInfo(wxT("Clearing treeview to toggle ShowSystemObjects"));
 
-    // Clear the treeview
-    browser->DeleteAllItems();
+        // Clear the treeview
+        browser->DeleteAllItems();
 
-    // Add the root node
-    pgObject *serversObj = new pgServers();
-    servers = browser->AddRoot(wxT("Servers"), PGICON_SERVER, -1, serversObj);
-    RetrieveServers();
-    browser->Expand(servers);
-    browser->SelectItem(servers);
+        // Add the root node
+        pgObject *serversObj = new pgServers();
+        servers = browser->AddRoot(wxT("Servers"), PGICON_SERVER, -1, serversObj);
+        RetrieveServers();
+        browser->Expand(servers);
+        browser->SelectItem(servers);
 #ifdef __WIN32__
-    denyCollapseItem = servers;
+        denyCollapseItem = servers;
 #endif
+    }
 }
 
 void frmMain::OnAddServer(wxCommandEvent &ev)

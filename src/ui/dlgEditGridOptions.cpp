@@ -37,14 +37,14 @@
 // Icons
 #include "images/sortfilter.xpm"
 
-#define nbOptions                   CTRL("nbOptions", wxNotebook)
-#define btnAsc                        CTRL("btnAsc", wxButton)
-#define btnDesc                        CTRL("btnDesc", wxButton)
-#define btnRemove                    CTRL("btnRemove", wxButton)
-#define cboColumns                  CTRL("cboColumns", wxComboBox)
-#define lstSortCols                 CTRL("lstSortCols", wxListCtrl)
-#define pnlSort                     CTRL("pnlSort", wxPanel)
-#define pnlFilter                   CTRL("pnlFilter", wxPanel)
+#define nbOptions                   CTRL_NOTEBOOK("nbOptions")
+#define btnAsc                        CTRL_BUTTON("btnAsc")
+#define btnDesc                        CTRL_BUTTON("btnDesc")
+#define btnRemove                    CTRL_BUTTON("btnRemove")
+#define cboColumns                  CTRL_COMBOBOX("cboColumns")
+#define lstSortCols                 CTRL_LISTVIEW("lstSortCols")
+#define pnlSort                     CTRL_PANEL("pnlSort")
+#define pnlFilter                   CTRL_PANEL("pnlFilter")
 
 BEGIN_EVENT_TABLE(dlgEditGridOptions, pgDialog)
     EVT_BUTTON               (XRCID("btnOK"),       dlgEditGridOptions::OnOK)

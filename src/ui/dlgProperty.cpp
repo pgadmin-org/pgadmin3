@@ -706,13 +706,13 @@ dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
 }
 
 
-void dlgTypeProperty::FillDatatype(wxComboBox *cb, bool withDomains)
+void dlgTypeProperty::FillDatatype(ctlComboBox *cb, bool withDomains)
 {
     FillDatatype(cb, 0, withDomains);
 }
 
 
-void dlgTypeProperty::FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDomains)
+void dlgTypeProperty::FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withDomains)
 {
     DatatypeReader tr(database, withDomains);
     while (tr.HasMore())
@@ -1006,7 +1006,7 @@ int dlgSecurityProperty::Go(bool modal)
 }
 
 
-void dlgSecurityProperty::AddGroups(wxComboBox *comboBox)
+void dlgSecurityProperty::AddGroups(ctlComboBox *comboBox)
 {
     if ((!securityPage || !securityPage->cbGroups) && !comboBox)
         return;
@@ -1028,7 +1028,7 @@ void dlgSecurityProperty::AddGroups(wxComboBox *comboBox)
 }
 
 
-void dlgSecurityProperty::AddUsers(wxComboBox *comboBox)
+void dlgSecurityProperty::AddUsers(ctlComboBox *comboBox)
 {
     if ((!securityPage || !securityPage->cbGroups) && !comboBox)
         return;

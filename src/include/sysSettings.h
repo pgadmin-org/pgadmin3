@@ -133,6 +133,18 @@ public:
     wxPoint Read(const wxString& key, const wxPoint &defaultVal) const;
     wxSize Read(const wxString& key, const wxSize &defaultVal) const;
 
+    wxString GetExportQuoteChar() const { return exportQuoteChar; }
+    wxString GetExportRowSeparator() const { return exportRowSeparator; }
+    wxString GetExportColSeparator() const { return exportColSeparator; }
+    int GetExportQuoting() const { return exportQuoting; }  // 0=none 1=string 2=all
+    bool GetExportUnicode() const { return exportUnicode; }
+
+    void SetExportQuoteChar(const wxString &s) { exportQuoteChar=s; }
+    void SetExportRowSeparator(const wxString &s) { exportRowSeparator=s; }
+    void SetExportColSeparator(const wxString &s) { exportColSeparator=s; }
+    void SetExportQuoting(const int i) { exportQuoting = i; }
+    void SetExportUnicode(const bool b) { exportUnicode=b; }
+
 	void Save();
 
 
@@ -172,6 +184,13 @@ private:
     long maxServerLogSize;
 
     wxString searchPath;
+
+    // export options
+    wxString exportRowSeparator;
+    wxString exportColSeparator;
+    wxString exportQuoteChar;
+    int exportQuoting;
+    bool exportUnicode;
 };
 
 #endif

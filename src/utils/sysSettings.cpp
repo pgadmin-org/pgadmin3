@@ -74,6 +74,31 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("SearchPath"), &searchPath, wxEmptyString);
     Read(wxT("MaxServerLogSize"), &maxServerLogSize, 100000L);
 
+    wxString val;
+    Read(wxT("Export/Unicode"), &val, wxT("No"));
+    exportUnicode = StrToBool(val);
+
+#ifdef __WXMSW__
+    Read(wxT("Export/RowSeparator"), &val, wxT("CR/LF"));
+#else
+    Read(wxT("Export/RowSeparator"), &val, wxT("LF"));
+#endif
+    if (val == wxT("CRLF"))
+        exportRowSeparator = wxT("\r\n");
+    else
+        exportRowSeparator = wxT("\n");
+    Read(wxT("Export/ColSeparator"), &exportColSeparator, wxT(";"));
+    Read(wxT("Export/QuoteChar"), &exportQuoteChar, wxT("\""));
+    Read(wxT("Export/Quote"), &val, wxT("Strings"));
+    if (val == wxT("All"))
+        exportQuoting = 2;
+    else if (val == wxT("Strings"))
+        exportQuoting = 1;
+    else
+        exportQuoting = 0;
+
+
+
     const wxLanguageInfo *langInfo;
     langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
     if (langInfo)
@@ -129,7 +154,32 @@ void sysSettings::Save()
     Write(wxT("SearchPath"), searchPath);
     Write(wxT("MaxServerLogSize"), maxServerLogSize);
 
-	wxString fontName = systemFont.GetNativeFontInfoDesc();
+
+    Write(wxT("Export/Unicode"), BoolToStr(exportUnicode));
+    Write(wxT("Export/QuoteChar"), exportQuoteChar);
+    Write(wxT("Export/ColSeparator"), exportColSeparator);
+    if (exportRowSeparator == wxT("\r\n"))
+        Write(wxT("Export/RowSeparator"), wxT("CR/LF"));
+    else
+        Write(wxT("Export/RowSeparator"), wxT("LF"));
+
+
+    switch(exportQuoting)
+    {
+        case 2:
+            Write(wxT("Export/Quote"), wxT("All"));
+            break;
+        case 1:
+            Write(wxT("Export/Quote"), wxT("Strings"));
+            break;
+        case 0:
+            Write(wxT("Export/Quote"), wxT("None"));
+            break;
+        default:
+            break;
+    }
+
+    wxString fontName = systemFont.GetNativeFontInfoDesc();
 
 	if (fontName == wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT).GetNativeFontInfoDesc())
         Write(wxT("Font"), wxEmptyString);

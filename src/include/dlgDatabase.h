@@ -26,6 +26,7 @@ public:
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    wxString GetHelpPage() const;
 
 private:
     pgDatabase *database;

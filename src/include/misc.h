@@ -34,6 +34,12 @@ typedef unsigned long OID;
 #endif
 #endif
 
+#ifdef __WXMSW__
+#define END_OF_LINE wxT("\r\n")
+#else
+#define END_OF_LINE wxT("\n")
+#endif
+
 #if wxCHECK_VERSION(2, 5, 1)
 #define wxCookieType wxTreeItemIdValue
 #else
@@ -52,7 +58,7 @@ extern sysSettings *settings;
 #define CTRL_LISTBOX(id)        (XRCCTRL(*this, id, wxListBox))
 #define CTRL_LISTCTRL(id)       (XRCCTRL(*this, id, wxListCtrl))
 #define CTRL_LISTVIEW(id)       ((ctlListView*)(XRCCTRL(*this, id, wxListCtrl)))
-#define CTRL_COMBOBOX(id)       (XRCCTRL(*this, id, wxComboBox))
+#define CTRL_COMBOBOX(id)       ((ctlComboBox*)(XRCCTRL(*this, id, wxComboBox)))
 #define CTRL_CHECKBOX(id)       (XRCCTRL(*this, id, wxCheckBox))
 #define CTRL_RADIOBOX(id)       (XRCCTRL(*this, id, wxRadioBox))
 #define CTRL_BUTTON(id)         (XRCCTRL(*this, id, wxButton))
@@ -104,6 +110,7 @@ void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &wh
 
 // Fill array, splitting the string separated by commas (maybe quoted elements)
 void FillArray(wxArrayString &array, const wxString &str);
+
 
 // splitting of strings, obeying quotes
 class queryTokenizer : public wxStringTokenizer

@@ -36,6 +36,7 @@ private:
     void OnVarRemove(wxCommandEvent &ev);
     void OnVarSelChange(wxListEvent &ev);
     void OnSelChangeTyp(wxCommandEvent &ev);
+    void OnSelChangeTypOrLen(wxCommandEvent &ev);
     void OnChangeMember(wxCommandEvent &ev);
 
     void showDefinition(bool isComposite);

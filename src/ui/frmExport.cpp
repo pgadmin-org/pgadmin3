@@ -67,33 +67,27 @@ frmExport::frmExport(wxWindow *p)
     cbQuoteChar->Disable();
     btnOK->Disable();
 
+
+    bool uc=settings->GetExportUnicode();
+    rbUnicode->SetValue(uc);
+    rbLocal->SetValue(uc);
+
+    bool isCrLf=settings->GetExportRowSeparator() == wxT("\r\n");
+    rbCRLF->SetValue(isCrLf);
+    rbLF->SetValue(!isCrLf);
+
+    int qt=settings->GetExportQuoting();
+    
+    rbQuoteNone->SetValue(qt == 0);
+    rbQuoteStrings->SetValue(qt == 1);
+    rbQuoteAll->SetValue(qt == 2);
+
+    cbColSeparator->SetValue(settings->GetExportColSeparator());
+
+
+    cbQuoteChar->SetValue(settings->GetExportQuoteChar());
+
     wxString val;
-
-    settings->Read(wxT("Export/Unicode"), &val, wxT("No"));
-    rbUnicode->SetValue(StrToBool(val));
-    rbLocal->SetValue(!StrToBool(val));
-
-#ifdef __WXMSW__
-    settings->Read(wxT("Export/RowSeparator"), &val, wxT("CR/LF"));
-#else
-    settings->Read(wxT("Export/RowSeparator"), &val, wxT("LF"));
-#endif
-
-    rbCRLF->SetValue(val == wxT("CR/LF"));
-    rbLF->SetValue(val == wxT("LF"));
-
-    settings->Read(wxT("Export/Quote"), &val, wxT("Strings"));
-
-    rbQuoteNone->SetValue(val == wxT("None"));
-    rbQuoteStrings->SetValue(val == wxT("Strings"));
-    rbQuoteAll->SetValue(val == wxT("All"));
-
-    settings->Read(wxT("Export/ColSeparator"), &val, wxT(";"));
-    cbColSeparator->SetValue(val);
-
-    settings->Read(wxT("Export/QuoteChar"), &val, wxT("\""));
-    cbQuoteChar->SetValue(val);
-
     settings->Read(wxT("Export/LastFile"), &val, wxEmptyString);
     txtFilename->SetValue(val);
 
@@ -123,17 +117,18 @@ void frmExport::OnChange(wxCommandEvent &ev)
 
 void frmExport::OnOK(wxCommandEvent &ev)
 {
-    settings->Write(wxT("Export/Unicode"), BoolToStr(rbUnicode->GetValue()));
-    settings->Write(wxT("Export/RowSeparator"), rbCRLF->GetValue() ? wxT("CR/LF") : wxT("LF"));
-    if (rbQuoteAll->GetValue())
-        settings->Write(wxT("Export/Quote"), wxT("All"));
-    else if (rbQuoteStrings->GetValue())
-        settings->Write(wxT("Export/Quote"), wxT("Strings"));
-    else
-        settings->Write(wxT("Export/Quote"), wxT("None"));
+    settings->SetExportUnicode(rbUnicode->GetValue());
+    settings->SetExportRowSeparator(rbCRLF->GetValue() ? wxT("\r\n") : wxT("\n"));
+    settings->SetExportColSeparator(cbColSeparator->GetValue());
 
-    settings->Write(wxT("Export/ColSeparator"), cbColSeparator->GetValue());
-    settings->Write(wxT("Export/QuoteChar"), cbQuoteChar->GetValue());
+    if (rbQuoteAll->GetValue())
+        settings->SetExportQuoting(2);
+    else if (rbQuoteStrings->GetValue())
+        settings->SetExportQuoting(1);
+    else
+        settings->SetExportQuoting(0);
+
+    settings->SetExportQuoteChar(cbQuoteChar->GetValue());
 
     settings->Write(wxT("Export/LastFile"), txtFilename->GetValue());
 
@@ -156,8 +151,7 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
     }
 
     wxString line;
-    wxListItem item;
-    item.m_mask=wxLIST_MASK_TEXT;
+
     int startCol=0;
     int colCount, rowCount;
 
@@ -174,19 +168,19 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
             startCol=1;
     }
 
-
+    int col;
     if (chkColnames->GetValue())
     {
-        for (item.m_col=startCol ; item.m_col < colCount ; item.m_col++)
+        for (col=startCol ; col < colCount ; col++)
         {
-            if (item.m_col == startCol)
+            if (col == startCol)
                 line=wxEmptyString;
             else
                 line += cbColSeparator->GetValue();
             if (set)
-                line += set->ColName(item.m_col);
+                line += set->ColName(col);
             else
-                line += data->colNames.Item(item.m_col);
+                line += data->colNames.Item(col);
         }
         if (rbCRLF->GetValue())
             line += wxT("\r\n");
@@ -203,11 +197,12 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
     wxString text;
     OID typOid;
 
-    for (item.m_itemId=0 ; item.m_itemId < rowCount ; item.m_itemId++)
+    int row;
+    for (row=0 ; row < rowCount ; row++)
     {
-        for (item.m_col=startCol ; item.m_col < colCount ; item.m_col++)
+        for (col=startCol ; col < colCount ; col++)
         {
-            if (item.m_col == startCol)
+            if (col == startCol)
                 line=wxEmptyString;
             else
                 line += cbColSeparator->GetValue();
@@ -216,14 +211,13 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
 
             if (set)
             {
-                text = set->GetVal(item.m_col);
-                typOid = set->ColTypeOid(item.m_col);
+                text = set->GetVal(col);
+                typOid = set->ColTypeOid(col);
             }
             else
             {
-                data->GetItem(item);
-                text = item.GetText();
-                typOid = data->colTypClasses.Item(item.m_col);
+                text = data->GetItemText(row, col);
+                typOid = data->colTypClasses.Item(col);
             }
             if (!needQuote && rbQuoteStrings->GetValue())
             {
