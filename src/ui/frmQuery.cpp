@@ -770,13 +770,14 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
         elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
         SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
-        wxString qTime = elapsedQuery.ToString() + wxT(" ms.");
 
         if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
         {
+            output->SetSelection(1);
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
-                showMessage(_("Query returned successfully with no result in ") + qTime, _("OK."));
+                showMessage(wxString::Format(_("Query returned successfully with no result in %s ms."),
+                    elapsedQuery.ToString().c_str()), _("OK."));
 //                wxMessageBox(_("Query returned successfully with no result in ") + qTime, _("Query Results"), wxICON_INFORMATION | wxOK);
             }
             else
@@ -816,6 +817,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         }
         else
         {
+            output->SetSelection(0);
             long rowsTotal=sqlResult->NumRows();
 
             if (singleResult)
