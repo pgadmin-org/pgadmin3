@@ -31,9 +31,6 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
 
-	// Keith 2002.03.04 --
-	// pgServer::ExecuteSet executes on an arbitrary database on the server,
-	// so I added this because it works on the correct database connection
     pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
@@ -49,13 +46,18 @@ public:
     bool GetConnected() const { return connected; }
     bool GetSystemObject() const;
     
+    bool CanCreate() { return true; }
+    bool CanDrop() { return true; }
+    bool CanEdit() { return true; }
     bool CanVacuum() { return true; }
-    bool Vacuum(frmMain *form);
+    bool RequireDropConfirm() { return true; }
     pgConn *connection() { return conn; }
     int Connect();
 
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool Vacuum(frmMain *form);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:

@@ -19,9 +19,6 @@
 #include <wx/xrc/xmlres.h>
 
 
-#define CTRL(id, typ) (XRCCTRL(*this, id, typ))
-
-
 class dlgProperty : public wxDialog
 {
 public:
@@ -32,7 +29,8 @@ public:
     virtual pgObject *CreateObject(pgCollection *collection) =0;
     virtual pgObject *GetObject() =0;
 
-    virtual void Go() { Show(); }
+    virtual void CreateAdditionalPages();
+    virtual void Go() {}
 
 protected:
     static dlgProperty *CreateDlg(wxFrame *frame, pgObject *node, bool asNew);
@@ -57,5 +55,40 @@ private:
 
     DECLARE_EVENT_TABLE();
 };
+
+
+class dlgSecurityProperty : public dlgProperty
+{
+protected:
+    dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *privilegeChar);
+    ~dlgSecurityProperty();
+    void AddGroups(wxComboBox *comboBox=0);
+    void AddUsers(wxComboBox *comboBox=0);
+
+    wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
+
+private:
+    void OnPrivSelChange(wxListEvent &ev);
+    void OnAddPriv(wxNotifyEvent& ev);
+    void OnDelPriv(wxNotifyEvent& ev);
+    void OnPrivCheck(wxCommandEvent& ev);
+    void OnPrivCheckAll(wxCommandEvent& ev);
+    void OnPrivCheckAllGrant(wxCommandEvent& ev);
+
+    void ExecPrivCheck(int index);
+    bool GrantAllowed() const;
+
+    wxArrayString currentAcl;
+    wxListView *lbPrivileges;
+    wxComboBox *cbGroups;
+    wxStaticText *stGroup;
+    wxButton *btnAddPriv, *btnDelPriv;
+    int privilegeCount;
+    char *privilegeChars;
+    wxCheckBox **privCheckboxes;
+    wxCheckBox *allPrivileges, *allPrivilegesGrant;
+    DECLARE_EVENT_TABLE();
+};
+
 
 #endif

@@ -27,7 +27,7 @@
 #include "pgSchema.h"
 
 class wxSplitterWindow;
-
+class dlgProperty;
 
 WX_DECLARE_LIST(wxWindow, windowList);
 
@@ -96,6 +96,8 @@ private:
     int ReconnectServer(pgServer *server);
     wxTreeItemId RestoreEnvironment(pgServer *server);
     wxTreeItemId denyCollapseItem;
+
+    friend class dlgProperty;
 
     DECLARE_EVENT_TABLE()
 };

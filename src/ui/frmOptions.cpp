@@ -40,11 +40,12 @@ frmOptions::frmOptions(wxFrame *parent)
     SetIcon(wxIcon(pgAdmin3_xpm));
     CenterOnParent();
 
-    XRCCTRL(*this, "txtLogfile", wxTextCtrl)->SetValue(settings->GetLogFile());
-    XRCCTRL(*this, "radLoglevel", wxRadioBox)->SetSelection(settings->GetLogLevel());
-    XRCCTRL(*this, "txtMaxRows", wxTextCtrl)->SetValue(NumToStr(settings->GetMaxRows()));
-    XRCCTRL(*this, "chkAskSaveConfirm", wxCheckBox)->SetValue(!settings->GetAskSaveConfirmation());
-    XRCCTRL(*this, "chkAskDelete", wxCheckBox)->SetValue(settings->GetConfirmDelete());
+    CTRL("txtLogfile", wxTextCtrl)->SetValue(settings->GetLogFile());
+    CTRL("radLoglevel", wxRadioBox)->SetSelection(settings->GetLogLevel());
+    CTRL("txtMaxRows", wxTextCtrl)->SetValue(NumToStr(settings->GetMaxRows()));
+    CTRL("chkAskSaveConfirm", wxCheckBox)->SetValue(!settings->GetAskSaveConfirmation());
+    CTRL("chkAskDelete", wxCheckBox)->SetValue(settings->GetConfirmDelete());
+    CTRL("chkShowUsersForPrivileges", wxCheckBox)->SetValue(settings->GetShowUsersForPrivileges());
 }
 
 
@@ -59,14 +60,14 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 {
 
     // Logfile
-    wxString logFile = XRCCTRL(*this, "txtLogfile", wxTextCtrl)->GetValue();
+    wxString logFile = CTRL("txtLogfile", wxTextCtrl)->GetValue();
     wxLogInfo(wxT("Setting logfile to: %s"), logFile.c_str());
     settings->SetLogFile(logFile);
 
     // Loglevel
-    wxString logInfo = XRCCTRL(*this, "radLoglevel", wxRadioBox)->GetStringSelection();
+    wxString logInfo = CTRL("radLoglevel", wxRadioBox)->GetStringSelection();
     wxLogInfo(wxT("Setting loglevel to: %s"),logInfo.c_str());
-    int sel = XRCCTRL(*this, "radLoglevel", wxRadioBox)->GetSelection();
+    int sel = CTRL("radLoglevel", wxRadioBox)->GetSelection();
 
     switch(sel) {
         case(0):
@@ -87,14 +88,15 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     }
 
     // Query parameter
-    wxString maxRows=XRCCTRL(*this, "txtMaxRows", wxTextCtrl)->GetValue();
+    wxString maxRows=CTRL("txtMaxRows", wxTextCtrl)->GetValue();
     settings->SetMaxRows(StrToLong(maxRows));
 
-    settings->SetAskSaveConfirmation(!(XRCCTRL(*this, "chkAskSaveConfirm", wxCheckBox)->IsChecked()));
-    settings->SetConfirmDelete((XRCCTRL(*this, "chkAskDelete", wxCheckBox)->IsChecked()));
-
+    settings->SetAskSaveConfirmation(!(CTRL("chkAskSaveConfirm", wxCheckBox)->IsChecked()));
+    settings->SetConfirmDelete((CTRL("chkAskDelete", wxCheckBox)->IsChecked()));
+    settings->SetShowUsersForPrivileges((CTRL("chkShowUsersForPrivileges", wxCheckBox)->IsChecked()));
     Destroy();
 }
+
 
 void frmOptions::OnCancel(wxCommandEvent &ev)
 {
@@ -105,5 +107,5 @@ void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
 {
     wxFileDialog logFile(this, wxT("Select log file"), wxT(""), wxT(""), wxT("Log files (*.log)|*.log|All files (*.*)|*.*"));
     logFile.SetDirectory(wxGetHomeDir());
-    if (logFile.ShowModal() == wxID_OK) XRCCTRL(*this, "txtLogfile", wxTextCtrl)->SetValue(logFile.GetPath());
+    if (logFile.ShowModal() == wxID_OK) CTRL("txtLogfile", wxTextCtrl)->SetValue(logFile.GetPath());
 }

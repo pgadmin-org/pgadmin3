@@ -294,6 +294,10 @@ SOURCE=.\ui\frmQueryBuilder.cpp
 # PROP Default_Filter "*.cpp"
 # Begin Source File
 
+SOURCE=.\ui\dlgDatabase.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgProperty.cpp
 # End Source File
 # Begin Source File
@@ -768,6 +772,10 @@ SOURCE=.\include\pgView.h
 # Begin Group "property includes"
 
 # PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\include\dlgDatabase.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\include\dlgProperty.h

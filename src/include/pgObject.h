@@ -74,6 +74,8 @@ protected:
 public:
     ~pgObject() { wxLogInfo(wxT("Destroying a pgDatabase object")); }
 
+    static wxString GetPrivileges(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
+
     virtual void ShowProperties() const {};
     int GetType() const { return type; }
     wxString GetTypeName() const { return typeName; }
@@ -120,6 +122,7 @@ public:
     virtual bool CanEdit() { return false; }
     virtual bool CanDrop() { return false; }
     virtual bool CanVacuum() { return false; }
+    virtual bool RequireDropConfirm() { return false; }
     virtual bool Vacuum(frmMain *form) { return false; }
 
 protected:
@@ -138,11 +141,12 @@ protected:
     virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
         =0;
 
-    wxString GetPrivileges(const wxString& allPattern, const wxString& acl, const wxString& grantFor, const wxString& user, bool noOwner);
     bool expandedKids, needReread;
     wxString sql;
     
 private:
+    static wxString GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
+
     wxString typeName, name, owner, comment, acl;
     int type;
     double oid;

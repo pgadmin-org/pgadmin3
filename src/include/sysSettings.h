@@ -59,6 +59,9 @@ public:
     bool GetConfirmDelete() const { return confirmDelete; }
     void SetConfirmDelete(const bool b) { confirmDelete=b; }
 
+    bool GetShowUsersForPrivileges() const { return showUsersForPrivileges; }
+    void SetShowUsersForPrivileges(const bool b) { showUsersForPrivileges=b; }
+
     // Show System Objects
     bool GetShowSystemObjects() const { return showSystemObjects; }
     void SetShowSystemObjects(const bool newval);
@@ -81,6 +84,8 @@ private:
 
     // Show System Objects
     bool showSystemObjects;
+
+    bool showUsersForPrivileges;
     bool askSaveConfirmation;
     bool confirmDelete;
     long maxRows;

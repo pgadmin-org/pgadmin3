@@ -571,6 +571,7 @@ void frmMain::OnSelRightClick(wxTreeEvent& event)
 	PopupMenu(treeContextMenu, point);
 }
 
+
 void frmMain::OnDrop(wxCommandEvent &ev)
 {
     // This handler will primarily deal with dropping items
@@ -587,7 +588,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
         return;
     }
 
-    if (settings->GetConfirmDelete())
+    if (data->RequireDropConfirm() || settings->GetConfirmDelete())
     {
         wxMessageDialog msg(this, wxT("Are you sure you wish to drop ") + data->GetTypeName() 
                         + wxT(" ") + data->GetFullIdentifier() + wxT("?"),

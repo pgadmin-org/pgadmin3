@@ -131,7 +131,7 @@ wxString pgObject::GetCommentSql()
 
 
 
-wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str, const wxString& grantOnType, const wxString& user, bool noOwner)
+wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString& str, const wxString& grantOnObject, const wxString& user)
 {
     wxString rights;
 
@@ -199,15 +199,41 @@ wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str
     if (rights.IsNull())    grant += wxT("REVOKE ALL");
     else                    grant += wxT("GRANT ") + rights;
     
-    grant += wxT(" ON ") + grantOnType + wxT(" ");
-
-    if (noOwner)            grant += GetQuotedIdentifier();
-    else                    grant += GetQuotedFullIdentifier();
+    grant += wxT(" ON ") + grantOnObject;
 
     if (rights.IsNull())    grant += wxT(" FROM ");
     else                    grant += wxT(" TO "); 
               
     grant += user;
+
+    return grant;
+}
+
+
+wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str, const wxString& grantOnObject, const wxString& user)
+{
+    wxString aclWithGrant, aclWithoutGrant;
+
+    const char *p=str.c_str();
+    while (*p)
+    {
+        if (p[1] == '*')
+        {
+            aclWithGrant += *p;
+            p += 2;
+        }
+        else
+        {
+            aclWithoutGrant += *p;
+            p++;
+        }
+    }
+
+    wxString grant;
+    if (!aclWithoutGrant.IsEmpty() || aclWithGrant.IsEmpty())
+        grant += GetPrivilegeGrant(allPattern, aclWithoutGrant, grantOnObject, user) + wxT(";\n");
+    if (!aclWithGrant.IsEmpty())
+        grant += GetPrivilegeGrant(allPattern, aclWithGrant, grantOnObject, user) + wxT(" WITH GRANT OPTION;\n");
 
     return grant;
 }
@@ -243,27 +269,8 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantOn
                 else
                     user = qtIdent(user);
             }
-            wxString aclWithGrant, aclWithoutGrant;
 
-            const char *p=str.c_str();
-            while (*p)
-            {
-                if (p[1] == '*')
-                {
-                    aclWithGrant += *p;
-                    p += 2;
-                }
-                else
-                {
-                    aclWithoutGrant += *p;
-                    p++;
-                }
-            }
-
-            if (!aclWithoutGrant.IsEmpty() || aclWithGrant.IsEmpty())
-                grant += GetPrivileges(allPattern, aclWithoutGrant, grantOnType, user, noOwner) + wxT(";\n");
-            if (!aclWithGrant.IsEmpty())
-                grant += GetPrivileges(allPattern, aclWithGrant, grantOnType, user, noOwner) + wxT(" WITH GRANT OPTION;\n");
+            grant += GetPrivileges(allPattern, str, grantOnType + wxT(" ") + GetQuotedFullIdentifier(), user);
         }
     }
     return grant;

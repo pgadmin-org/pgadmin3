@@ -22,6 +22,9 @@ void EndMsg();
 class sysSettings;
 extern sysSettings *settings;
 
+// making life easier
+#define CTRL(id, typ) (XRCCTRL(*this, id, typ))
+
 // Conversions
 wxString StrToYesNo(const wxString& value);
 wxString BoolToYesNo(bool value);

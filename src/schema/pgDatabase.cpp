@@ -58,6 +58,7 @@ int pgDatabase::Connect() {
         {
             // Now we're connected.
             connected = TRUE;
+            iSetComment(conn->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
             return PGCONN_OK;
         }
         else
@@ -78,13 +79,30 @@ bool pgDatabase::GetSystemObject() const
     }
 }
 
+
+bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    if (conn)
+    {
+        delete conn;
+        conn=0;
+    }
+    bool done=server->ExecuteVoid(wxT("DROP DATABASE ") + GetQuotedIdentifier());
+    if (!done)
+        Connect();
+
+    return done;
+}
+
+
+
 wxString pgDatabase::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsEmpty())
     {
         sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n")
             + wxT("CREATE DATABASE ") + GetQuotedIdentifier()
-            + wxT("\n  WITH ENCODING = ") + qtString(this->GetEncoding()) + wxT(";\n");
+            + wxT("\n  WITH ENCODING = ") + qtString(GetEncoding()) + wxT(";\n");
         wxStringTokenizer vars(GetVariables());
         while (vars.HasMoreTokens())
             sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
@@ -164,15 +182,25 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
 
 pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 {
-    pgObject *database=0;
+    pgDatabase *database=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_DATABASES)
-            database = ReadObjects((pgCollection*)obj, 0, wxT(" WHERE db.oid=") + GetOidStr() + wxT("\n"));
+        {
+            database = (pgDatabase*)ReadObjects((pgCollection*)obj, 0, wxT(" WHERE db.oid=") + GetOidStr() + wxT("\n"));
+            if (database)
+            {
+                sql=wxT("");
+                iSetAcl(database->GetAcl());
+                iSetVariables(database->GetVariables());
+                iSetComment(conn->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+                delete database;
+            }
+        }
     }
-    return database;
+    return this;
 }
 
 
@@ -182,9 +210,8 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 
     pgSet *databases = collection->GetServer()->ExecuteSet(wxT(
        "SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, "
-              "pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner, description\n"
+              "pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner\n"
        "  FROM pg_database db\n"
-       "  LEFT OUTER JOIN pg_description des ON des.objoid=db.oid\n"
        + restriction +
        " ORDER BY datname"));
     
@@ -203,7 +230,6 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             if (!str.IsEmpty())
                 database->iSetVariables(str.Mid(1, str.Length()-2));
             database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
-            database->iSetComment(databases->GetVal(wxT("description")));
 
             // Add the treeview node if required
             if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 
