@@ -215,6 +215,8 @@ int dlgForeignKey::Go(bool modal)
         rbOnUpdate->Disable();
         rbOnDelete->Disable();
 
+	txtComment->SetValue(foreignKey->GetComment());
+	    
         btnAddRef->Disable();
         btnRemoveRef->Disable();
         cbColumns->Disable();
