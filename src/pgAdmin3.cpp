@@ -120,6 +120,12 @@ bool pgAdmin3::OnInit()
     wxLogInfo(msg);
     wxLogInfo(wxT("##############################################################"));
 
+#if wxCHECK_VERSION(2,5,0)
+    // that's what we expect
+#else
+    wxLogInfo(wxT("Not compiled against wxWindows 2.5 or above: using ") wxVERSION_STRING);
+#endif
+
 
     locale.AddCatalogLookupPathPrefix(uiPath);
     
