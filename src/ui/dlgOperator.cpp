@@ -202,8 +202,12 @@ void dlgOperator::OnChangeType(wxNotifyEvent &ev)
     cbLess->Clear();
     cbGreater->Clear();
 
-    cbRestrict->Append(wxT(" "));
-    cbJoin->Append(wxT(" "));
+    cbRestrict->Append(wxEmptyString);
+    cbJoin->Append(wxEmptyString);
+    if (cbRestrict->GetSelection() < 0)
+        cbRestrict->SetSelection(0);
+    if (cbJoin->GetSelection() < 0)
+        cbJoin->SetSelection(0);
 
 
     if (cbLeftType->GetSelection() > 0 || cbRightType->GetSelection() > 0)
@@ -337,8 +341,10 @@ wxString dlgOperator::GetSql()
         
         if (cbLeftType->GetSelection() > 0 && cbRightType->GetSelection() > 0)
         {
-            AppendIfFilled(sql, wxT(",\n   RESTRICT="), procedures.Item(cbRestrict->GetSelection()));
-            AppendIfFilled(sql, wxT(",\n   JOIN="), procedures.Item(cbJoin->GetSelection()));
+            if (cbRestrict->GetSelection() > 0)
+                sql += wxT(",\n   RESTRICT=") + procedures.Item(cbRestrict->GetSelection()-1);
+            if (cbJoin->GetSelection() > 0)
+                sql += wxT(",\n   JOIN=") + procedures.Item(cbJoin->GetSelection()-1);
             AppendIfFilled(sql, wxT(",\n   SORT1="), cbLeftSort->GetValue().Trim());
             AppendIfFilled(sql, wxT(",\n   SORT2="), cbRightSort->GetValue().Trim());
             AppendIfFilled(sql, wxT(",\n   LTCMP="), cbLess->GetValue().Trim());
