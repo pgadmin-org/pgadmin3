@@ -76,6 +76,7 @@ public:
 private:
     PGconn *conn;
     int minorVersion, majorVersion;
+    wxMBConv &conv;
     bool resolvedIP;
     wxString dbHost;
     OID lastSystemOID;
