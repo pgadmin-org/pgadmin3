@@ -1,330 +1,90 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->view_column_usage</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The Information Schema"
-HREF="information-schema.html"><LINK
-REL="PREVIOUS"
-TITLE="usage_privileges"
-HREF="infoschema-usage-privileges.html"><LINK
-REL="NEXT"
-TITLE="view_table_usage"
-HREF="infoschema-view-table-usage.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-usage-privileges.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 30. The Information Schema</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-view-table-usage.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INFOSCHEMA-VIEW-COLUMN-USAGE"
->30.39. <TT
-CLASS="LITERAL"
->view_column_usage</TT
-></A
-></H1
-><P
->   The view <TT
-CLASS="LITERAL"
->view_column_usage</TT
-> identifies all
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>30.39. view_column_usage</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
+<link rel="previous" href="infoschema-usage-privileges.html" title="30.38. usage_privileges">
+<link rel="next" href="infoschema-view-table-usage.html" title="30.40. view_table_usage">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="infoschema-view-column-usage"></a>30.39. <tt class="literal">view_column_usage</tt></h2></div></div>
+<div></div>
+</div>
+<p>   The view <tt class="literal">view_column_usage</tt> identifies all
    columns that are used in the query expression of a view (the
-   <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement that defines the view).  A
+   <tt class="command">SELECT</tt> statement that defines the view).  A
    column is only included if the current user is the owner of the
    table that contains the column.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->    Columns of system tables are not included.  This should be fixed
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    Columns of system tables are not included.  This should be fixed
     sometime.
-   </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN27686"
-></A
-><P
-><B
->Table 30-37. <TT
-CLASS="LITERAL"
->view_column_usage</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Data Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->view_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the database that contains the view (always the current database)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->view_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the schema that contains the view</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->view_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the view</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->table_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       Name of the database that contains the table that contains the
+   </p>
+</div>
+<div class="table">
+<a name="id2626236"></a><p class="title"><b>Table 30.37. <tt class="literal">view_column_usage</tt> Columns</b></p>
+<table summary="view_column_usage Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal">view_catalog</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the database that contains the view (always the current database)</td>
+</tr>
+<tr>
+<td><tt class="literal">view_schema</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the schema that contains the view</td>
+</tr>
+<tr>
+<td><tt class="literal">view_name</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the view</td>
+</tr>
+<tr>
+<td><tt class="literal">table_catalog</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>       Name of the database that contains the table that contains the
        column that is used by the view (always the current database)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->table_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       Name of the schema that contains the table that contains the
+      </td>
+</tr>
+<tr>
+<td><tt class="literal">table_schema</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>       Name of the schema that contains the table that contains the
        column that is used by the view
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->table_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       Name of the table that contains the column that is used by the
+      </td>
+</tr>
+<tr>
+<td><tt class="literal">table_name</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>       Name of the table that contains the column that is used by the
        view
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->column_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the column that is used by the view</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-usage-privileges.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-view-table-usage.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->usage_privileges</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="information-schema.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->view_table_usage</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+<tr>
+<td><tt class="literal">column_name</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the column that is used by the view</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

@@ -1,683 +1,315 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Page Files</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Internals"
-HREF="internals.html"><LINK
-REL="PREVIOUS"
-TITLE="Examples"
-HREF="examples.html"><LINK
-REL="NEXT"
-TITLE="BKI Backend Interface"
-HREF="bki.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="examples.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="gist.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="PAGE"
-></A
->Chapter 49. Page Files</H1
-><BLOCKQUOTE
-CLASS="ABSTRACT"
-><DIV
-CLASS="ABSTRACT"
-><P
-></P
-><A
-NAME="AEN55666"
-></A
-><P
->A description of the database file page format.</P
-><P
-></P
-></DIV
-></BLOCKQUOTE
-><P
->This section provides an overview of the page format used by
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> tables and indexes.  (Index
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 49. Page Files</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="previous" href="examples.html" title="48.5. Examples">
+<link rel="next" href="bki.html" title="Chapter 50. BKI Backend Interface">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="page">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="page"></a>Chapter 49. Page Files</h2></div></div>
+<div></div>
+</div>
+<div class="abstract">
+<p class="title"><b>Abstract</b></p>
+<p>A description of the database file page format.</p>
+</div>
+<p>This section provides an overview of the page format used by
+<span class="productname">PostgreSQL</span> tables and indexes.  (Index
 access methods need not use this page format.  At present, all index
 methods do use this basic format, but the data kept on index metapages
 usually doesn't follow the item layout rules exactly.)  TOAST tables
-and sequences are formatted just like a regular table.</P
-><P
->In the following explanation, a
-<I
-CLASS="FIRSTTERM"
->byte</I
->
+and sequences are formatted just like a regular table.</p>
+<p>In the following explanation, a
+<i class="firstterm">byte</i>
 is assumed to contain 8 bits.  In addition, the term
-<I
-CLASS="FIRSTTERM"
->item</I
->
+<i class="firstterm">item</i>
 refers to an individual data value that is stored on a page.  In a table,
-an item is a row; in an index, an item is an index entry.</P
-><P
->&#13;<A
-HREF="page.html#PAGE-TABLE"
->Table 49-1</A
-> shows the basic layout of a page.
-There are five parts to each page.&#13;</P
-><DIV
-CLASS="TABLE"
-><A
-NAME="PAGE-TABLE"
-></A
-><P
-><B
->Table 49-1. Sample Page Layout</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><THEAD
-><TR
-><TH
->Item</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->PageHeaderData</TD
-><TD
->20 bytes long. Contains general information about the page, including
-free space pointers.</TD
-></TR
-><TR
-><TD
->ItemPointerData</TD
-><TD
->Array of (offset,length) pairs pointing to the actual items.</TD
-></TR
-><TR
-><TD
->Free space</TD
-><TD
->The unallocated space. All new rows are allocated from here, generally from the end.</TD
-></TR
-><TR
-><TD
->Items</TD
-><TD
->The actual items themselves.</TD
-></TR
-><TR
-><TD
->Special Space</TD
-><TD
->Index access method specific data. Different methods store different
-data. Empty in ordinary tables.</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->&#13;  The first 20 bytes of each page consists of a page header
-  (PageHeaderData). Its format is detailed in <A
-HREF="page.html#PAGEHEADERDATA-TABLE"
->Table 49-2</A
->. The first two fields deal with WAL
+an item is a row; in an index, an item is an index entry.</p>
+<p>
+<a href="page.html#page-table" title="Table 49.1. Sample Page Layout">Table 49.1, &#8220;Page Layout&#8221;</a> shows the basic layout of a page.
+There are five parts to each page.
+</p>
+<div class="table">
+<a name="page-table"></a><p class="title"><b>Table 49.1. Sample Page Layout</b></p>
+<table summary="Sample Page Layout" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Item</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>PageHeaderData</td>
+<td>20 bytes long. Contains general information about the page, including
+free space pointers.</td>
+</tr>
+<tr>
+<td>ItemPointerData</td>
+<td>Array of (offset,length) pairs pointing to the actual items.</td>
+</tr>
+<tr>
+<td>Free space</td>
+<td>The unallocated space. All new rows are allocated from here, generally from the end.</td>
+</tr>
+<tr>
+<td>Items</td>
+<td>The actual items themselves.</td>
+</tr>
+<tr>
+<td>Special Space</td>
+<td>Index access method specific data. Different methods store different
+data. Empty in ordinary tables.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>
+  The first 20 bytes of each page consists of a page header
+  (PageHeaderData). Its format is detailed in <a href="page.html#pageheaderdata-table" title="Table 49.2. PageHeaderData Layout">Table 49.2, &#8220;PageHeaderData Layout&#8221;</a>. The first two fields deal with WAL
   related stuff. This is followed by three 2-byte integer fields
-  (<TT
-CLASS="STRUCTFIELD"
->pd_lower</TT
->, <TT
-CLASS="STRUCTFIELD"
->pd_upper</TT
->,
-  and <TT
-CLASS="STRUCTFIELD"
->pd_special</TT
->). These represent byte offsets to
+  (<tt class="structfield">pd_lower</tt>, <tt class="structfield">pd_upper</tt>,
+  and <tt class="structfield">pd_special</tt>). These represent byte offsets to
   the start
   of unallocated space, to the end of unallocated space, and to the start of
   the special space. 
   
- </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="PAGEHEADERDATA-TABLE"
-></A
-><P
-><B
->Table 49-2. PageHeaderData Layout</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Field</TH
-><TH
->Type</TH
-><TH
->Length</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->pd_lsn</TD
-><TD
->XLogRecPtr</TD
-><TD
->8 bytes</TD
-><TD
->LSN: next byte after last byte of xlog record for last change
-   to this page</TD
-></TR
-><TR
-><TD
->pd_tli</TD
-><TD
->TimeLineID</TD
-><TD
->4 bytes</TD
-><TD
->TLI of last change</TD
-></TR
-><TR
-><TD
->pd_lower</TD
-><TD
->LocationIndex</TD
-><TD
->2 bytes</TD
-><TD
->Offset to start of free space</TD
-></TR
-><TR
-><TD
->pd_upper</TD
-><TD
->LocationIndex</TD
-><TD
->2 bytes</TD
-><TD
->Offset to end of free space</TD
-></TR
-><TR
-><TD
->pd_special</TD
-><TD
->LocationIndex</TD
-><TD
->2 bytes</TD
-><TD
->Offset to start of special space</TD
-></TR
-><TR
-><TD
->pd_pagesize_version</TD
-><TD
->uint16</TD
-><TD
->2 bytes</TD
-><TD
->Page size and layout version number information</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->  All the details may be found in
-  <TT
-CLASS="FILENAME"
->src/include/storage/bufpage.h</TT
->.
- </P
-><P
->  
+ </p>
+<div class="table">
+<a name="pageheaderdata-table"></a><p class="title"><b>Table 49.2. PageHeaderData Layout</b></p>
+<table summary="PageHeaderData Layout" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Field</th>
+<th>Type</th>
+<th>Length</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>pd_lsn</td>
+<td>XLogRecPtr</td>
+<td>8 bytes</td>
+<td>LSN: next byte after last byte of xlog record for last change
+   to this page</td>
+</tr>
+<tr>
+<td>pd_tli</td>
+<td>TimeLineID</td>
+<td>4 bytes</td>
+<td>TLI of last change</td>
+</tr>
+<tr>
+<td>pd_lower</td>
+<td>LocationIndex</td>
+<td>2 bytes</td>
+<td>Offset to start of free space</td>
+</tr>
+<tr>
+<td>pd_upper</td>
+<td>LocationIndex</td>
+<td>2 bytes</td>
+<td>Offset to end of free space</td>
+</tr>
+<tr>
+<td>pd_special</td>
+<td>LocationIndex</td>
+<td>2 bytes</td>
+<td>Offset to start of special space</td>
+</tr>
+<tr>
+<td>pd_pagesize_version</td>
+<td>uint16</td>
+<td>2 bytes</td>
+<td>Page size and layout version number information</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  All the details may be found in
+  <tt class="filename">src/include/storage/bufpage.h</tt>.
+ </p>
+<p>  
   Special space is a region at the end of the page that is allocated at page
   initialization time and contains information specific to an access method. 
   The last 2 bytes of the page header,
-  <TT
-CLASS="STRUCTFIELD"
->pd_pagesize_version</TT
->, store both the page size
+  <tt class="structfield">pd_pagesize_version</tt>, store both the page size
   and a version indicator.  Beginning with
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.3 the version number is 1; prior
+  <span class="productname">PostgreSQL</span> 7.3 the version number is 1; prior
   releases used version number 0.  (The basic page layout and header format
   has not changed, but the layout of heap row headers has.)  The page size
   is basically only present as a cross-check; there is no support for having
   more than one page size in an installation.
- </P
-><P
->&#13;  Following the page header are item identifiers
-  (<TT
-CLASS="TYPE"
->ItemIdData</TT
->), each requiring four bytes.
+ </p>
+<p>
+  Following the page header are item identifiers
+  (<tt class="type">ItemIdData</tt>), each requiring four bytes.
   An item identifier contains a byte-offset to
   the start of an item, its length in bytes, and a set of attribute bits
   which affect its interpretation.
   New item identifiers are allocated
   as needed from the beginning of the unallocated space.
   The number of item identifiers present can be determined by looking at
-  <TT
-CLASS="STRUCTFIELD"
->pd_lower</TT
->, which is increased to allocate a new identifier.
+  <tt class="structfield">pd_lower</tt>, which is increased to allocate a new identifier.
   Because an item
   identifier is never moved until it is freed, its index may be used on a
   long-term basis to reference an item, even when the item itself is moved
   around on the page to compact free space.  In fact, every pointer to an
-  item (<TT
-CLASS="TYPE"
->ItemPointer</TT
->, also known as
-  <TT
-CLASS="TYPE"
->CTID</TT
->) created by
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> consists of a page number and the
+  item (<tt class="type">ItemPointer</tt>, also known as
+  <tt class="type">CTID</tt>) created by
+  <span class="productname">PostgreSQL</span> consists of a page number and the
   index of an item identifier.
 
- </P
-><P
-> 
+ </p>
+<p> 
   The items themselves are stored in space allocated backwards from the end
   of unallocated space.  The exact structure varies depending on what the
   table is to contain. Tables and sequences both use a structure named
-  <TT
-CLASS="TYPE"
->HeapTupleHeaderData</TT
->, described below.
+  <tt class="type">HeapTupleHeaderData</tt>, described below.
 
- </P
-><P
-> 
-  The final section is the <SPAN
-CLASS="QUOTE"
->"special section"</SPAN
-> which may
+ </p>
+<p> 
+  The final section is the &#8220;<span class="quote">special section</span>&#8221; which may
   contain anything the access method wishes to store. Ordinary tables
   do not use this at all (indicated by setting
-  <TT
-CLASS="STRUCTFIELD"
->pd_special</TT
-> to equal the pagesize).
+  <tt class="structfield">pd_special</tt> to equal the pagesize).
   
- </P
-><P
->&#13;  All table rows are structured the same way. There is a fixed-size
+ </p>
+<p>
+  All table rows are structured the same way. There is a fixed-size
   header (occupying 23 bytes on most machines), followed by an optional null
   bitmap, an optional object ID field, and the user data. The header is
   detailed
-  in <A
-HREF="page.html#HEAPTUPLEHEADERDATA-TABLE"
->Table 49-3</A
->.  The actual user data
+  in <a href="page.html#heaptupleheaderdata-table" title="Table 49.3. HeapTupleHeaderData Layout">Table 49.3, &#8220;HeapTupleHeaderData Layout&#8221;</a>.  The actual user data
   (columns of the row) begins at the offset indicated by
-  <TT
-CLASS="STRUCTFIELD"
->t_hoff</TT
->, which must always be a multiple of the MAXALIGN
+  <tt class="structfield">t_hoff</tt>, which must always be a multiple of the MAXALIGN
   distance for the platform.
   The null bitmap is
-  only present if the <I
-CLASS="FIRSTTERM"
->HEAP_HASNULL</I
-> bit is set in
-  <TT
-CLASS="STRUCTFIELD"
->t_infomask</TT
->. If it is present it begins just after
+  only present if the <i class="firstterm">HEAP_HASNULL</i> bit is set in
+  <tt class="structfield">t_infomask</tt>. If it is present it begins just after
   the fixed header and occupies enough bytes to have one bit per data column
-  (that is, <TT
-CLASS="STRUCTFIELD"
->t_natts</TT
-> bits altogether). In this list of bits, a
+  (that is, <tt class="structfield">t_natts</tt> bits altogether). In this list of bits, a
   1 bit indicates not-null, a 0 bit is a null.  When the bitmap is not
   present, all columns are assumed not-null.
-  The object ID is only present if the <I
-CLASS="FIRSTTERM"
->HEAP_HASOID</I
-> bit
-  is set in <TT
-CLASS="STRUCTFIELD"
->t_infomask</TT
->.  If present, it appears just
-  before the <TT
-CLASS="STRUCTFIELD"
->t_hoff</TT
-> boundary.  Any padding needed to make
-  <TT
-CLASS="STRUCTFIELD"
->t_hoff</TT
-> a MAXALIGN multiple will appear between the null
+  The object ID is only present if the <i class="firstterm">HEAP_HASOID</i> bit
+  is set in <tt class="structfield">t_infomask</tt>.  If present, it appears just
+  before the <tt class="structfield">t_hoff</tt> boundary.  Any padding needed to make
+  <tt class="structfield">t_hoff</tt> a MAXALIGN multiple will appear between the null
   bitmap and the object ID.  (This in turn ensures that the object ID is
   suitably aligned.)
   
- </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="HEAPTUPLEHEADERDATA-TABLE"
-></A
-><P
-><B
->Table 49-3. HeapTupleHeaderData Layout</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Field</TH
-><TH
->Type</TH
-><TH
->Length</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->t_xmin</TD
-><TD
->TransactionId</TD
-><TD
->4 bytes</TD
-><TD
->insert XID stamp</TD
-></TR
-><TR
-><TD
->t_cmin</TD
-><TD
->CommandId</TD
-><TD
->4 bytes</TD
-><TD
->insert CID stamp (overlays with t_xmax)</TD
-></TR
-><TR
-><TD
->t_xmax</TD
-><TD
->TransactionId</TD
-><TD
->4 bytes</TD
-><TD
->delete XID stamp</TD
-></TR
-><TR
-><TD
->t_cmax</TD
-><TD
->CommandId</TD
-><TD
->4 bytes</TD
-><TD
->delete CID stamp (overlays with t_xvac)</TD
-></TR
-><TR
-><TD
->t_xvac</TD
-><TD
->TransactionId</TD
-><TD
->4 bytes</TD
-><TD
->XID for VACUUM operation moving row version</TD
-></TR
-><TR
-><TD
->t_ctid</TD
-><TD
->ItemPointerData</TD
-><TD
->6 bytes</TD
-><TD
->current TID of this or newer row version</TD
-></TR
-><TR
-><TD
->t_natts</TD
-><TD
->int16</TD
-><TD
->2 bytes</TD
-><TD
->number of attributes</TD
-></TR
-><TR
-><TD
->t_infomask</TD
-><TD
->uint16</TD
-><TD
->2 bytes</TD
-><TD
->various flags</TD
-></TR
-><TR
-><TD
->t_hoff</TD
-><TD
->uint8</TD
-><TD
->1 byte</TD
-><TD
->offset to user data</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   All the details may be found in
-   <TT
-CLASS="FILENAME"
->src/include/access/htup.h</TT
->.
- </P
-><P
-> 
+ </p>
+<div class="table">
+<a name="heaptupleheaderdata-table"></a><p class="title"><b>Table 49.3. HeapTupleHeaderData Layout</b></p>
+<table summary="HeapTupleHeaderData Layout" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Field</th>
+<th>Type</th>
+<th>Length</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>t_xmin</td>
+<td>TransactionId</td>
+<td>4 bytes</td>
+<td>insert XID stamp</td>
+</tr>
+<tr>
+<td>t_cmin</td>
+<td>CommandId</td>
+<td>4 bytes</td>
+<td>insert CID stamp (overlays with t_xmax)</td>
+</tr>
+<tr>
+<td>t_xmax</td>
+<td>TransactionId</td>
+<td>4 bytes</td>
+<td>delete XID stamp</td>
+</tr>
+<tr>
+<td>t_cmax</td>
+<td>CommandId</td>
+<td>4 bytes</td>
+<td>delete CID stamp (overlays with t_xvac)</td>
+</tr>
+<tr>
+<td>t_xvac</td>
+<td>TransactionId</td>
+<td>4 bytes</td>
+<td>XID for VACUUM operation moving row version</td>
+</tr>
+<tr>
+<td>t_ctid</td>
+<td>ItemPointerData</td>
+<td>6 bytes</td>
+<td>current TID of this or newer row version</td>
+</tr>
+<tr>
+<td>t_natts</td>
+<td>int16</td>
+<td>2 bytes</td>
+<td>number of attributes</td>
+</tr>
+<tr>
+<td>t_infomask</td>
+<td>uint16</td>
+<td>2 bytes</td>
+<td>various flags</td>
+</tr>
+<tr>
+<td>t_hoff</td>
+<td>uint8</td>
+<td>1 byte</td>
+<td>offset to user data</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   All the details may be found in
+   <tt class="filename">src/include/access/htup.h</tt>.
+ </p>
+<p> 
   Interpreting the actual data can only be done with information obtained
-  from other tables, mostly <I
-CLASS="FIRSTTERM"
->pg_attribute</I
->. The
-  particular fields are <TT
-CLASS="STRUCTFIELD"
->attlen</TT
-> and
-  <TT
-CLASS="STRUCTFIELD"
->attalign</TT
->. There is no way to directly get a
+  from other tables, mostly <i class="firstterm">pg_attribute</i>. The
+  particular fields are <tt class="structfield">attlen</tt> and
+  <tt class="structfield">attalign</tt>. There is no way to directly get a
   particular attribute, except when there are only fixed width fields and no
   NULLs. All this trickery is wrapped up in the functions
-  <I
-CLASS="FIRSTTERM"
->heap_getattr</I
->, <I
-CLASS="FIRSTTERM"
->fastgetattr</I
->
-  and <I
-CLASS="FIRSTTERM"
->heap_getsysattr</I
->.
+  <i class="firstterm">heap_getattr</i>, <i class="firstterm">fastgetattr</i>
+  and <i class="firstterm">heap_getsysattr</i>.
   
- </P
-><P
->&#13;  To read the data you need to examine each attribute in turn. First check
+ </p>
+<p>
+  To read the data you need to examine each attribute in turn. First check
   whether the field is NULL according to the null bitmap. If it is, go to
   the next. Then make sure you have the right alignment.  If the field is a
   fixed width field, then all the bytes are simply placed. If it's a
   variable length field (attlen == -1) then it's a bit more complicated,
-  using the variable length structure <TT
-CLASS="TYPE"
->varattrib</TT
->.
+  using the variable length structure <tt class="type">varattrib</tt>.
   Depending on the flags, the data may be either inline, compressed or in
   another table (TOAST).
   
- </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="examples.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Examples</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="internals.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> Backend Interface</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+ </p>
+</div></body>
+</html>

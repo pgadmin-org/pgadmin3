@@ -1,548 +1,148 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Sequence Manipulation Functions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="PREVIOUS"
-TITLE="Network Address Type Functions"
-HREF="functions-net.html"><LINK
-REL="NEXT"
-TITLE="Conditional Expressions"
-HREF="functions-conditional.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-net.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 9. Functions and Operators</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-conditional.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="FUNCTIONS-SEQUENCE"
->9.12. Sequence Manipulation Functions</A
-></H1
-><A
-NAME="AEN11625"
-></A
-><A
-NAME="AEN11627"
-></A
-><A
-NAME="AEN11629"
-></A
-><A
-NAME="AEN11631"
-></A
-><P
->   This section describes <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s functions
-   for operating on <I
-CLASS="FIRSTTERM"
->sequence objects</I
->.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.12. Sequence Manipulation Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="previous" href="functions-net.html" title="9.11. Network Address Type Functions">
+<link rel="next" href="functions-conditional.html" title="9.13. Conditional Expressions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="functions-sequence"></a>9.12. Sequence Manipulation Functions</h2></div></div>
+<div></div>
+</div>
+<a name="id2559175"></a><a name="id2559181"></a><a name="id2559187"></a><a name="id2559193"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
+   for operating on <i class="firstterm">sequence objects</i>.
    Sequence objects (also called sequence generators or
    just sequences) are special single-row tables created with
-   <TT
-CLASS="COMMAND"
->CREATE SEQUENCE</TT
->.  A sequence object is usually used to
+   <tt class="command">CREATE SEQUENCE</tt>.  A sequence object is usually used to
    generate unique identifiers for rows of a table.  The sequence functions,
-   listed in <A
-HREF="functions-sequence.html#FUNCTIONS-SEQUENCE-TABLE"
->Table 9-34</A
->,
+   listed in <a href="functions-sequence.html#functions-sequence-table" title="Table 9.34. Sequence Functions">Table 9.34, &#8220;Sequence Functions&#8221;</a>,
    provide simple, multiuser-safe methods for obtaining successive
    sequence values from sequence objects.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-SEQUENCE-TABLE"
-></A
-><P
-><B
->Table 9-34. Sequence Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Function</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->nextval</CODE
->(<TT
-CLASS="TYPE"
->text</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Advance sequence and return new value</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->currval</CODE
->(<TT
-CLASS="TYPE"
->text</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Return value most recently obtained with <CODE
-CLASS="FUNCTION"
->nextval</CODE
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->setval</CODE
->(<TT
-CLASS="TYPE"
->text</TT
->, <TT
-CLASS="TYPE"
->bigint</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Set sequence's current value</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->setval</CODE
->(<TT
-CLASS="TYPE"
->text</TT
->, <TT
-CLASS="TYPE"
->bigint</TT
->, <TT
-CLASS="TYPE"
->boolean</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Set sequence's current value and <TT
-CLASS="LITERAL"
->is_called</TT
-> flag</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   For largely historical reasons, the sequence to be operated on by a
+  </p>
+<div class="table">
+<a name="functions-sequence-table"></a><p class="title"><b>Table 9.34. Sequence Functions</b></p>
+<table summary="Sequence Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Function</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal"><tt class="function">nextval</tt>(<tt class="type">text</tt>)</tt></td>
+<td><tt class="type">bigint</tt></td>
+<td>Advance sequence and return new value</td>
+</tr>
+<tr>
+<td><tt class="literal"><tt class="function">currval</tt>(<tt class="type">text</tt>)</tt></td>
+<td><tt class="type">bigint</tt></td>
+<td>Return value most recently obtained with <tt class="function">nextval</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal"><tt class="function">setval</tt>(<tt class="type">text</tt>, <tt class="type">bigint</tt>)</tt></td>
+<td><tt class="type">bigint</tt></td>
+<td>Set sequence's current value</td>
+</tr>
+<tr>
+<td><tt class="literal"><tt class="function">setval</tt>(<tt class="type">text</tt>, <tt class="type">bigint</tt>, <tt class="type">boolean</tt>)</tt></td>
+<td><tt class="type">bigint</tt></td>
+<td>Set sequence's current value and <tt class="literal">is_called</tt> flag</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   For largely historical reasons, the sequence to be operated on by a
    sequence-function call is specified by a text-string argument.  To
    achieve some compatibility with the handling of ordinary
-   <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> names, the sequence functions convert their
+   <span class="acronym">SQL</span> names, the sequence functions convert their
    argument to lowercase unless the string is double-quoted.  Thus
-</P><PRE
-CLASS="PROGRAMLISTING"
->nextval('foo')      <I
-CLASS="LINEANNOTATION"
->operates on sequence <TT
-CLASS="LITERAL"
->foo</TT
-></I
->
-nextval('FOO')      <I
-CLASS="LINEANNOTATION"
->operates on sequence <TT
-CLASS="LITERAL"
->foo</TT
-></I
->
-nextval('"Foo"')    <I
-CLASS="LINEANNOTATION"
->operates on sequence <TT
-CLASS="LITERAL"
->Foo</TT
-></I
-></PRE
-><P>
+</p>
+<pre class="programlisting">nextval('foo')      <i class="lineannotation"><span class="lineannotation">operates on sequence <tt class="literal">foo</tt></span></i>
+nextval('FOO')      <i class="lineannotation"><span class="lineannotation">operates on sequence <tt class="literal">foo</tt></span></i>
+nextval('"Foo"')    <i class="lineannotation"><span class="lineannotation">operates on sequence <tt class="literal">Foo</tt></span></i></pre>
+<p>
    The sequence name can be schema-qualified if necessary:
-</P><PRE
-CLASS="PROGRAMLISTING"
->nextval('myschema.foo')     <I
-CLASS="LINEANNOTATION"
->operates on <TT
-CLASS="LITERAL"
->myschema.foo</TT
-></I
->
-nextval('"myschema".foo')   <I
-CLASS="LINEANNOTATION"
->same as above</I
->
-nextval('foo')              <I
-CLASS="LINEANNOTATION"
->searches search path for <TT
-CLASS="LITERAL"
->foo</TT
-></I
-></PRE
-><P>
+</p>
+<pre class="programlisting">nextval('myschema.foo')     <i class="lineannotation"><span class="lineannotation">operates on <tt class="literal">myschema.foo</tt></span></i>
+nextval('"myschema".foo')   <i class="lineannotation"><span class="lineannotation">same as above</span></i>
+nextval('foo')              <i class="lineannotation"><span class="lineannotation">searches search path for <tt class="literal">foo</tt></span></i></pre>
+<p>
    Of course, the text argument can be the result of an expression,
    not only a simple literal, which is occasionally useful.
-  </P
-><P
->   The available sequence functions are:
+  </p>
+<p>   The available sequence functions are:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><CODE
-CLASS="FUNCTION"
->nextval</CODE
-></DT
-><DD
-><P
->        Advance the sequence object to its next value and return that
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="function">nextval</tt></span></dt>
+<dd><p>        Advance the sequence object to its next value and return that
 	value.  This is done atomically: even if multiple sessions
-	execute <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> concurrently, each will safely receive
+	execute <tt class="function">nextval</tt> concurrently, each will safely receive
 	a distinct sequence value.
-       </P
-></DD
-><DT
-><CODE
-CLASS="FUNCTION"
->currval</CODE
-></DT
-><DD
-><P
->        Return the value most recently obtained by <CODE
-CLASS="FUNCTION"
->nextval</CODE
->
+       </p></dd>
+<dt><span class="term"><tt class="function">currval</tt></span></dt>
+<dd><p>        Return the value most recently obtained by <tt class="function">nextval</tt>
 	for this sequence in the current session.  (An error is
-	reported if <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> has never been called for this
+	reported if <tt class="function">nextval</tt> has never been called for this
 	sequence in this session.)  Notice that because this is returning
 	a session-local value, it gives a predictable answer even if other
-	sessions are executing <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> meanwhile.
-       </P
-></DD
-><DT
-><CODE
-CLASS="FUNCTION"
->setval</CODE
-></DT
-><DD
-><P
->        Reset the sequence object's counter value.  The two-parameter
-	form sets the sequence's <TT
-CLASS="LITERAL"
->last_value</TT
-> field to the specified
-	value and sets its <TT
-CLASS="LITERAL"
->is_called</TT
-> field to <TT
-CLASS="LITERAL"
->true</TT
->,
-	meaning that the next <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> will advance the sequence
+	sessions are executing <tt class="function">nextval</tt> meanwhile.
+       </p></dd>
+<dt><span class="term"><tt class="function">setval</tt></span></dt>
+<dd>
+<p>        Reset the sequence object's counter value.  The two-parameter
+	form sets the sequence's <tt class="literal">last_value</tt> field to the specified
+	value and sets its <tt class="literal">is_called</tt> field to <tt class="literal">true</tt>,
+	meaning that the next <tt class="function">nextval</tt> will advance the sequence
 	before returning a value.  In the three-parameter form,
-	<TT
-CLASS="LITERAL"
->is_called</TT
-> may be set either <TT
-CLASS="LITERAL"
->true</TT
-> or
-	<TT
-CLASS="LITERAL"
->false</TT
->.  If it's set to <TT
-CLASS="LITERAL"
->false</TT
->,
-	the next <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> will return exactly the specified
+	<tt class="literal">is_called</tt> may be set either <tt class="literal">true</tt> or
+	<tt class="literal">false</tt>.  If it's set to <tt class="literal">false</tt>,
+	the next <tt class="function">nextval</tt> will return exactly the specified
 	value, and sequence advancement commences with the following
-	<CODE
-CLASS="FUNCTION"
->nextval</CODE
->.  For example,
+	<tt class="function">nextval</tt>.  For example,
 
-</P><PRE
-CLASS="SCREEN"
->SELECT setval('foo', 42);           <I
-CLASS="LINEANNOTATION"
->Next <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> will return 43</I
->
-SELECT setval('foo', 42, true);     <I
-CLASS="LINEANNOTATION"
->Same as above</I
->
-SELECT setval('foo', 42, false);    <I
-CLASS="LINEANNOTATION"
->Next <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> will return 42</I
-></PRE
-><P>
+</p>
+<pre class="screen">SELECT setval('foo', 42);           <i class="lineannotation"><span class="lineannotation">Next <tt class="function">nextval</tt> will return 43</span></i>
+SELECT setval('foo', 42, true);     <i class="lineannotation"><span class="lineannotation">Same as above</span></i>
+SELECT setval('foo', 42, false);    <i class="lineannotation"><span class="lineannotation">Next <tt class="function">nextval</tt> will return 42</span></i></pre>
+<p>
 
-        The result returned by <CODE
-CLASS="FUNCTION"
->setval</CODE
-> is just the value of its
+        The result returned by <tt class="function">setval</tt> is just the value of its
 	second argument.
-       </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-><DIV
-CLASS="IMPORTANT"
-><BLOCKQUOTE
-CLASS="IMPORTANT"
-><P
-><B
->Important: </B
->    To avoid blocking of concurrent transactions that obtain numbers from the
-    same sequence, a <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> operation is never rolled back;
+       </p>
+</dd>
+</dl></div>
+<p>
+  </p>
+<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Important</h3>
+<p>    To avoid blocking of concurrent transactions that obtain numbers from the
+    same sequence, a <tt class="function">nextval</tt> operation is never rolled back;
     that is, once a value has been fetched it is considered used, even if the
-    transaction that did the <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> later aborts.  This means
-    that aborted transactions may leave unused <SPAN
-CLASS="QUOTE"
->"holes"</SPAN
-> in the
-    sequence of assigned values.  <CODE
-CLASS="FUNCTION"
->setval</CODE
-> operations are never
+    transaction that did the <tt class="function">nextval</tt> later aborts.  This means
+    that aborted transactions may leave unused &#8220;<span class="quote">holes</span>&#8221; in the
+    sequence of assigned values.  <tt class="function">setval</tt> operations are never
     rolled back, either.
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->   If a sequence object has been created with default parameters,
-   <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> calls on it will return successive values
+   </p>
+</div>
+<p>   If a sequence object has been created with default parameters,
+   <tt class="function">nextval</tt> calls on it will return successive values
    beginning with 1.  Other behaviors can be obtained by using
-   special parameters in the <A
-HREF="sql-createsequence.html"
->CREATE SEQUENCE</A
-> command;
+   special parameters in the <a href="sql-createsequence.html" title="CREATE SEQUENCE"><span class="refentrytitle"><a name="sql-createsequence-title"></a>CREATE SEQUENCE</span></a> command;
    see its command reference page for more information.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-net.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-conditional.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Network Address Type Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Conditional Expressions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

@@ -1,291 +1,65 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->ALTER TRIGGER</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ALTER TABLESPACE"
-HREF="sql-altertablespace.html"><LINK
-REL="NEXT"
-TITLE="ALTER TYPE"
-HREF="sql-altertype.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertablespace.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertablespace.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ALTERTRIGGER"
-></A
->ALTER TRIGGER</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN35480"
-></A
-><H2
->Name</H2
->ALTER TRIGGER&nbsp;--&nbsp;change the definition of a trigger</DIV
-><A
-NAME="AEN35483"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN35485"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ALTER TRIGGER <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> ON <VAR
-CLASS="REPLACEABLE"
->table</VAR
-> RENAME TO <VAR
-CLASS="REPLACEABLE"
->newname</VAR
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35490"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER TRIGGER</TT
-> changes properties of an existing
-   trigger.  The <TT
-CLASS="LITERAL"
->RENAME</TT
-> clause changes the name of
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER TRIGGER</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-altertablespace.html" title="ALTER TABLESPACE">
+<link rel="next" href="sql-altertype.html" title="ALTER TYPE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-altertrigger"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER TRIGGER &#8212; change the definition of a trigger</p>
+</div>
+<a name="id2662019"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER TRIGGER <i class="replaceable"><tt>name</tt></i> ON <i class="replaceable"><tt>table</tt></i> RENAME TO <i class="replaceable"><tt>newname</tt></i></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2662052"></a><h2>Description</h2>
+<p>   <tt class="command">ALTER TRIGGER</tt> changes properties of an existing
+   trigger.  The <tt class="literal">RENAME</tt> clause changes the name of
    the given trigger without otherwise changing the trigger
    definition.
-  </P
-><P
->   You must own the table on which the trigger acts to be allowed to change its properties.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35496"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->name</VAR
-></DT
-><DD
-><P
->      The name of an existing trigger to alter.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->table</VAR
-></DT
-><DD
-><P
->      The name of the table on which this trigger acts.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->newname</VAR
-></DT
-><DD
-><P
->      The new name for the trigger.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35514"
-></A
-><H2
->Examples</H2
-><P
->   To rename an existing trigger:
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER TRIGGER emp_stamp ON emp RENAME TO emp_track_chgs;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35518"
-></A
-><H2
->Compatibility</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER TRIGGER</TT
-> is a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+  </p>
+<p>   You must own the table on which the trigger acts to be allowed to change its properties.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2662076"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dd><p>      The name of an existing trigger to alter.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
+<dd><p>      The name of the table on which this trigger acts.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>newname</tt></i></span></dt>
+<dd><p>      The new name for the trigger.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2662114"></a><h2>Examples</h2>
+<p>   To rename an existing trigger:
+</p>
+<pre class="programlisting">ALTER TRIGGER emp_stamp ON emp RENAME TO emp_track_chgs;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2662127"></a><h2>Compatibility</h2>
+<p>   <tt class="command">ALTER TRIGGER</tt> is a <span class="productname">PostgreSQL</span>
    extension of the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertablespace.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ALTER TABLESPACE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ALTER TYPE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

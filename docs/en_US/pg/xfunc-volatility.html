@@ -1,0 +1,111 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.9. Function Volatility Categories</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
+<link rel="previous" href="xfunc-overload.html" title="31.8. Function Overloading">
+<link rel="next" href="xaggr.html" title="31.10. User-Defined Aggregates">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="xfunc-volatility"></a>31.9. Function Volatility Categories</h2></div></div>
+<div></div>
+</div>
+<a name="id2632310"></a><p>    Every function has a <i class="firstterm">volatility</i> classification, with
+    the possibilities being <tt class="literal">VOLATILE</tt>, <tt class="literal">STABLE</tt>, or
+    <tt class="literal">IMMUTABLE</tt>.  <tt class="literal">VOLATILE</tt> is the default if the
+    <tt class="command">CREATE FUNCTION</tt> command does not specify a category.
+    The volatility category is a promise to the optimizer about the behavior
+    of the function:
+
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      A <tt class="literal">VOLATILE</tt> function can do anything, including modifying
+      the database.  It can return different results on successive calls with
+      the same arguments.  The optimizer makes no assumptions about the
+      behavior of such functions.  A query using a volatile function will
+      re-evaluate the function at every row where its value is needed.
+     </p></li>
+<li><p>      A <tt class="literal">STABLE</tt> function cannot modify the database and is
+      guaranteed to return the same results given the same arguments
+      for all calls within a single surrounding query.  This category
+      allows the optimizer to optimize away multiple calls of the function
+      within a single query.  In particular, it is safe to use an expression
+      containing such a function in an indexscan condition.  (Since an
+      indexscan will evaluate the comparison value only once, not once at
+      each row, it is not valid to use a <tt class="literal">VOLATILE</tt> function in
+      an indexscan condition.)
+     </p></li>
+<li><p>      An <tt class="literal">IMMUTABLE</tt> function cannot modify the database and is
+      guaranteed to return the same results given the same arguments forever.
+      This category allows the optimizer to pre-evaluate the function when
+      a query calls it with constant arguments.  For example, a query like
+      <tt class="literal">SELECT ... WHERE x = 2 + 2</tt> can be simplified on sight to
+      <tt class="literal">SELECT ... WHERE x = 4</tt>, because the function underlying
+      the integer addition operator is marked <tt class="literal">IMMUTABLE</tt>.
+     </p></li>
+</ul></div>
+<p>
+   </p>
+<p>    For best optimization results, you should label your functions with the
+    strictest volatility category that is valid for them.
+   </p>
+<p>    Any function with side-effects <span class="emphasis"><em>must</em></span> be labeled
+    <tt class="literal">VOLATILE</tt>, so that calls to it cannot be optimized away.
+    Even a function with no side-effects needs to be labeled
+    <tt class="literal">VOLATILE</tt> if its value can change within a single query;
+    some examples are <tt class="literal">random()</tt>, <tt class="literal">currval()</tt>,
+    <tt class="literal">timeofday()</tt>.
+   </p>
+<p>    There is relatively little difference between <tt class="literal">STABLE</tt> and
+    <tt class="literal">IMMUTABLE</tt> categories when considering simple interactive
+    queries that are planned and immediately executed: it doesn't matter
+    a lot whether a function is executed once during planning or once during
+    query execution startup.  But there is a big difference if the plan is
+    saved and reused later.  Labeling a function <tt class="literal">IMMUTABLE</tt> when
+    it really isn't may allow it to be prematurely folded to a constant during
+    planning, resulting in a stale value being re-used during subsequent uses
+    of the plan.  This is a hazard when using prepared statements or when
+    using function languages that cache plans (such as
+    <span class="application">PL/pgSQL</span>).
+   </p>
+<p>    Because of the snapshotting behavior of MVCC (see <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a>)
+    a function containing only <tt class="command">SELECT</tt> commands can safely be
+    marked <tt class="literal">STABLE</tt>, even if it selects from tables that might be
+    undergoing modifications by concurrent queries.
+    <span class="productname">PostgreSQL</span> will execute a <tt class="literal">STABLE</tt>
+    function using the snapshot established for the calling query, and so it
+    will see a fixed view of the database throughout that query.
+    Also note
+    that the <tt class="function">current_timestamp</tt> family of functions qualify
+    as stable, since their values do not change within a transaction.
+   </p>
+<p>    The same snapshotting behavior is used for <tt class="command">SELECT</tt> commands
+    within <tt class="literal">IMMUTABLE</tt> functions.  It is generally unwise to select
+    from database tables within an <tt class="literal">IMMUTABLE</tt> function at all,
+    since the immutability will be broken if the table contents ever change.
+    However, <span class="productname">PostgreSQL</span> does not enforce that you
+    do not do that.
+   </p>
+<p>    A common error is to label a function <tt class="literal">IMMUTABLE</tt> when its
+    results depend on a configuration parameter.  For example, a function
+    that manipulates timestamps might well have results that depend on the
+    <a href="runtime-config.html#guc-timezone">timezone</a> setting.  For safety, such functions should
+    be labeled <tt class="literal">STABLE</tt> instead.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Before <span class="productname">PostgreSQL</span> release 8.0, the requirement
+     that <tt class="literal">STABLE</tt> and <tt class="literal">IMMUTABLE</tt> functions cannot modify
+     the database was not enforced by the system.  Release 8.0 enforces it
+     by requiring SQL functions and procedural language functions of these
+     categories to contain no SQL commands other than <tt class="command">SELECT</tt>.
+    </p>
+</div>
+</div></body>
+</html>

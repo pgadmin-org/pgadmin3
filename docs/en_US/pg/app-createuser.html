@@ -1,708 +1,204 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->createuser</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PostgreSQL Client Applications"
-HREF="reference-client.html"><LINK
-REL="PREVIOUS"
-TITLE="createlang"
-HREF="app-createlang.html"><LINK
-REL="NEXT"
-TITLE="dropdb"
-HREF="app-dropdb.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createlang.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createlang.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-dropdb.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-dropdb.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="APP-CREATEUSER"
-></A
-><SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-></H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN44334"
-></A
-><H2
->Name</H2
->createuser&nbsp;--&nbsp;define a new <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user account</DIV
-><A
-NAME="AEN44338"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN44340"
-></A
-><H2
->Synopsis</H2
-><P
-><TT
-CLASS="COMMAND"
->createuser</TT
-> [<VAR
-CLASS="REPLACEABLE"
->option</VAR
->...] [<VAR
-CLASS="REPLACEABLE"
->username</VAR
->]</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44347"
-></A
-><H2
->Description</H2
-><P
->   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> creates a 
-   new <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user.  
-   Only superusers (users with <TT
-CLASS="LITERAL"
->usesuper</TT
-> set in
-   the <TT
-CLASS="LITERAL"
->pg_shadow</TT
-> table) can create 
-   new <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> users,
-   so <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> must be
-   invoked by someone who can connect as a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>createuser</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="previous" href="app-createlang.html" title="createlang">
+<link rel="next" href="app-dropdb.html" title="dropdb">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-createuser"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>createuser &#8212; define a new <span class="productname">PostgreSQL</span> user account</p>
+</div>
+<a name="id2699628"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><tt class="command">createuser</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>username</tt></i>]</p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2699662"></a><h2>Description</h2>
+<p>   <span class="application">createuser</span> creates a 
+   new <span class="productname">PostgreSQL</span> user.  
+   Only superusers (users with <tt class="literal">usesuper</tt> set in
+   the <tt class="literal">pg_shadow</tt> table) can create 
+   new <span class="productname">PostgreSQL</span> users,
+   so <span class="application">createuser</span> must be
+   invoked by someone who can connect as a <span class="productname">PostgreSQL</span>
    superuser.
-  </P
-><P
->   Being a superuser also implies the ability to bypass access permission
+  </p>
+<p>   Being a superuser also implies the ability to bypass access permission
    checks within the database, so superuserdom should not be granted lightly.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> is a wrapper around the
-   <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command <A
-HREF="sql-createuser.html"
-><I
->CREATE USER</I
-></A
->.
+  </p>
+<p>   <span class="application">createuser</span> is a wrapper around the
+   <span class="acronym">SQL</span> command <a href="sql-createuser.html">CREATE USER</a>.
    There is no effective difference between creating users via
    this utility and via other methods for accessing the server.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44362"
-></A
-><H2
->Options</H2
-><P
->   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> accepts the following command-line arguments:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2699740"></a><h2>Options</h2>
+<p>   <span class="application">createuser</span> accepts the following command-line arguments:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->username</VAR
-></DT
-><DD
-><P
->	Specifies the name of the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user to be created. 
-	This name must be unique among all <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> users.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-a</TT
-><BR><TT
-CLASS="OPTION"
->--adduser</TT
-></DT
-><DD
-><P
->	The new user is allowed to create other users.
-	(Note: Actually, this makes the new user a <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->superuser</I
-></SPAN
->.
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>username</tt></i></span></dt>
+<dd><p>	Specifies the name of the <span class="productname">PostgreSQL</span> user to be created. 
+	This name must be unique among all <span class="productname">PostgreSQL</span> users.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--adduser</tt></span>
+</dt>
+<dd><p>	The new user is allowed to create other users.
+	(Note: Actually, this makes the new user a <span class="emphasis"><em>superuser</em></span>.
 	The option is poorly named.)
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-A</TT
-><BR><TT
-CLASS="OPTION"
->--no-adduser</TT
-></DT
-><DD
-><P
->	The new user is not allowed to create other users (i.e.,
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-A</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-adduser</tt></span>
+</dt>
+<dd><p>	The new user is not allowed to create other users (i.e.,
 	the new user is a regular user, not a superuser).
 	This is the default.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-d</TT
-><BR><TT
-CLASS="OPTION"
->--createdb</TT
-></DT
-><DD
-><P
->	The new user is allowed to create databases.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-D</TT
-><BR><TT
-CLASS="OPTION"
->--no-createdb</TT
-></DT
-><DD
-><P
->	The new user is not allowed to create databases.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-d</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--createdb</tt></span>
+</dt>
+<dd><p>	The new user is allowed to create databases.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-D</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-createdb</tt></span>
+</dt>
+<dd><p>	The new user is not allowed to create databases.
 	This is the default.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-e</TT
-><BR><TT
-CLASS="OPTION"
->--echo</TT
-></DT
-><DD
-><P
->        Echo the commands that <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> generates
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
+</dt>
+<dd><p>        Echo the commands that <span class="application">createuser</span> generates
 	and sends to the server.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-E</TT
-><BR><TT
-CLASS="OPTION"
->--encrypted</TT
-></DT
-><DD
-><P
->	Encrypts the user's password stored in the database. If not
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-E</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--encrypted</tt></span>
+</dt>
+<dd><p>	Encrypts the user's password stored in the database. If not
 	specified, the default password behavior is used.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-i <VAR
-CLASS="REPLACEABLE"
->number</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--sysid <VAR
-CLASS="REPLACEABLE"
->number</VAR
-></TT
-></DT
-><DD
-><P
->       Allows you to pick a non-default user ID for the new user. This is not
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i <i class="replaceable"><tt>number</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--sysid <i class="replaceable"><tt>number</tt></i></tt></span>
+</dt>
+<dd><p>       Allows you to pick a non-default user ID for the new user. This is not
        necessary, but some people like it.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-N</TT
-><BR><TT
-CLASS="OPTION"
->--unencrypted</TT
-></DT
-><DD
-><P
->	Does not encrypt the user's password stored in the database. If
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-N</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--unencrypted</tt></span>
+</dt>
+<dd><p>	Does not encrypt the user's password stored in the database. If
 	not specified, the default password behavior is used.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-P</TT
-><BR><TT
-CLASS="OPTION"
->--pwprompt</TT
-></DT
-><DD
-><P
->       If given, <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> will issue a prompt for
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-P</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--pwprompt</tt></span>
+</dt>
+<dd><p>       If given, <span class="application">createuser</span> will issue a prompt for
        the password of the new user. This is not necessary if you do not plan
        on using password authentication.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-q</TT
-><BR><TT
-CLASS="OPTION"
->--quiet</TT
-></DT
-><DD
-><P
->        Do not display a response.
-       </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-><P
->   You will be prompted for a name and other missing information if it
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-q</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--quiet</tt></span>
+</dt>
+<dd><p>        Do not display a response.
+       </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>   You will be prompted for a name and other missing information if it
    is not specified on the command line.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> also accepts the following
+  </p>
+<p>   <span class="application">createuser</span> also accepts the following
    command-line arguments for connection parameters:
     
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->-h <VAR
-CLASS="REPLACEABLE"
->host</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--host <VAR
-CLASS="REPLACEABLE"
->host</VAR
-></TT
-></DT
-><DD
-><P
->	Specifies the host name of the machine on which the 
+   </p>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
+</dt>
+<dd><p>	Specifies the host name of the machine on which the 
 	server
 	is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-p <VAR
-CLASS="REPLACEABLE"
->port</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--port <VAR
-CLASS="REPLACEABLE"
->port</VAR
-></TT
-></DT
-><DD
-><P
->	Specifies the TCP port or local Unix domain socket file 
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
+</dt>
+<dd><p>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-U <VAR
-CLASS="REPLACEABLE"
->username</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--username <VAR
-CLASS="REPLACEABLE"
->username</VAR
-></TT
-></DT
-><DD
-><P
->        User name to connect as (not the user name to create).
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-W</TT
-><BR><TT
-CLASS="OPTION"
->--password</TT
-></DT
-><DD
-><P
->        Force password prompt (to connect to the server, not for the
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
+</dt>
+<dd><p>        User name to connect as (not the user name to create).
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
+</dt>
+<dd><p>        Force password prompt (to connect to the server, not for the
         password of the new user).
-       </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44487"
-></A
-><H2
->Environment</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="ENVAR"
->PGHOST</TT
-><BR><TT
-CLASS="ENVAR"
->PGPORT</TT
-><BR><TT
-CLASS="ENVAR"
->PGUSER</TT
-></DT
-><DD
-><P
->      Default connection parameters
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44499"
-></A
-><H2
->Diagnostics</H2
-><P
->   In case of difficulty, see <A
-HREF="sql-createuser.html"
-><I
->CREATE USER</I
-></A
-> and <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> for
+       </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700027"></a><h2>Environment</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
+</dt>
+<dd><p>      Default connection parameters
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700047"></a><h2>Diagnostics</h2>
+<p>   In case of difficulty, see <a href="sql-createuser.html">CREATE USER</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment
-   variables used by the <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> front-end
+   variables used by the <span class="application">libpq</span> front-end
    library will apply.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44505"
-></A
-><H2
->Examples</H2
-><P
->    To create a user <TT
-CLASS="LITERAL"
->joe</TT
-> on the default database
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700079"></a><h2>Examples</h2>
+<p>    To create a user <tt class="literal">joe</tt> on the default database
     server:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$ </SAMP
-><KBD
-CLASS="USERINPUT"
->createuser joe</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->Is the new user allowed to create databases? (y/n) </SAMP
-><KBD
-CLASS="USERINPUT"
->n</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->Shall the new user be allowed to create more new users? (y/n) </SAMP
-><KBD
-CLASS="USERINPUT"
->n</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE USER</SAMP
-></PRE
-><P>
-   </P
-><P
->    To create the same user <TT
-CLASS="LITERAL"
->joe</TT
-> using the
-    server on host <TT
-CLASS="LITERAL"
->eden</TT
->, port 5000, avoiding the prompts and
+</p>
+<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>createuser joe</tt></b>
+<tt class="computeroutput">Is the new user allowed to create databases? (y/n) </tt><b class="userinput"><tt>n</tt></b>
+<tt class="computeroutput">Shall the new user be allowed to create more new users? (y/n) </tt><b class="userinput"><tt>n</tt></b>
+<tt class="computeroutput">CREATE USER</tt></pre>
+<p>
+   </p>
+<p>    To create the same user <tt class="literal">joe</tt> using the
+    server on host <tt class="literal">eden</tt>, port 5000, avoiding the prompts and
     taking a look at the underlying command:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$ </SAMP
-><KBD
-CLASS="USERINPUT"
->createuser -p 5000 -h eden -D -A -e joe</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE USER "joe" NOCREATEDB NOCREATEUSER</SAMP
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE USER</SAMP
-></PRE
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44525"
-></A
-><H2
->See Also</H2
-><A
-HREF="app-dropuser.html"
-><SPAN
-CLASS="APPLICATION"
->dropuser</SPAN
-></A
->, <A
-HREF="sql-createuser.html"
-><I
->CREATE USER</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createlang.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-dropdb.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->createlang</SPAN
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="reference-client.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>createuser -p 5000 -h eden -D -A -e joe</tt></b>
+<tt class="computeroutput">CREATE USER "joe" NOCREATEDB NOCREATEUSER</tt>
+<tt class="computeroutput">CREATE USER</tt></pre>
+<p>
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700174"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a>, <a href="sql-createuser.html">CREATE USER</a></span>
+</div>
+</div></body>
+</html>

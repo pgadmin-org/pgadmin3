@@ -1,0 +1,85 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Guru Hints</h3>
+<p>
+pgAdmin III has some functions included which should help to implement healthy 
+and good performing databases. They are the result of the long experience of the
+developers worldwide, and the design problems commonly observed.
+</p>
+<p>
+<ul>
+<li>
+<a href="#pk">Primary keys</a>
+<li>
+<a href="#fki">Foreign key covering indexes</a>
+</ul>
+</p>
+<br>
+<h3 id="pk">Primary keys</h3>
+<p>
+When designing a table, you should always keep in mind how the table will be adressed 
+later. In most cases, you will need an identifier in order to uniquely address a specific 
+row; this identifier should be created as your primary key. A primary key isn't 
+necessarily consisting of a single column; it may contain as many rows as necessary 
+to uniquely identify a row. If you need many columns (rule of thumb: 3), it might be a good
+idea to invent an additional column which holds the primary key.
+</p>
+<p>
+Only in rare cases it doesn't make sense to use a primary key. That means, a missing primary key is quite 
+a strong indicator for table not being designed completely; that's why a Guru Hint will arise if you create a table without
+primary key.
+</p>
+<p>
+If you look at PostgreSQL's system tables, you will find that none of them has a primary key, so what's this about?
+Actually, All of these tables have one or two columns (usually OID only) which uniquely identifies the row, obeying the
+second rule for a primary key, not allowing zero, and being covered by an index for faster access. Usage of OIDs has 
+historic reasons, and isn't really first choice for designing user tables. PostgreSQL still uses this for historic reasons, 
+and while a newer approach would probably use explicit primary keys it won't be changed now any more.
+</p>
+<p>
+As the case of system tables shows, the goal of uniqueness and fast access can be achieved with other approaches than 
+a primary key. Still, for clarity of the data model, you're strongly encouraged to use them.
+</p>
+<br>
+<h3 id="fki">Foreign key covering indexes</h3>
+<p>
+A foreign key is used to couple two tables in a logical way, and restrict the changes that can be applied to them. 
+</p>
+<p>
+It all starts with a master table, which will be the referenced table. It needs to have a primary key (well, actually the 
+referenced columns only need to be not null and covered by a unique index, but it's really good advise to have it a 
+<a href="#pk">primary key</a>). The slave table depends on the master table, in the sense that the columns on which 
+the foreign key is created must match the master table for any key inserted or updated. The slave table is the referencing
+table of the foreign key.
+</p>
+<p>
+The foreign key not only restricts the referencing table, but also the referenced table; the flavour of restriction can be 
+RESTRICT, CASCADE or SET NULL. This means, that if a row in the master/referenced table is changed (updated 
+or deleted), all referencing tables are checked if the operation is valid, and if there's some additional action to perform; 
+see the PostgreSQL documentation on <a href="pg/ddl-constraints.html#ddl-constraints-fk">Foreign Keys</a>
+for further details.
+</p>
+<p>
+This means that on change access to a specific row in the referenced table, a corresponding read is performed on all
+referencing tables, using the foreign key columns as access key. Consequently, all design rules which should be taken 
+into account for good read performance usually also apply to columns in a referencing table. For good performance,
+an index is advisable in most cases. PostgreSQL does not enforce this in any way, so it's up to the database designer
+to provide an index.
+</p>
+<p>
+For convenience, pgAdmin III provides a simple checkbox when creating a foreign key, which will automatically check 
+for the presence of a usable index, and will create one for you if none is found. As with all indexes, there are rare cases when such an index degrades your
+overall performance a little, but in general having one index too few is much more performance degrading than having one
+index too much.
+</p>
+</body>
+
+</html>

@@ -1,856 +1,281 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Subquery Expressions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="PREVIOUS"
-TITLE="Aggregate Functions"
-HREF="functions-aggregate.html"><LINK
-REL="NEXT"
-TITLE="Row and Array Comparisons"
-HREF="functions-comparisons.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-aggregate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 9. Functions and Operators</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-comparisons.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="FUNCTIONS-SUBQUERY"
->9.16. Subquery Expressions</A
-></H1
-><A
-NAME="AEN12298"
-></A
-><A
-NAME="AEN12300"
-></A
-><A
-NAME="AEN12302"
-></A
-><A
-NAME="AEN12304"
-></A
-><A
-NAME="AEN12306"
-></A
-><A
-NAME="AEN12308"
-></A
-><A
-NAME="AEN12310"
-></A
-><P
->   This section describes the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->-compliant subquery
-   expressions available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.16. Subquery Expressions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="previous" href="functions-aggregate.html" title="9.15. Aggregate Functions">
+<link rel="next" href="functions-comparisons.html" title="9.17. Row and Array Comparisons">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="functions-subquery"></a>9.16. Subquery Expressions</h2></div></div>
+<div></div>
+</div>
+<a name="id2561644"></a><a name="id2561650"></a><a name="id2561655"></a><a name="id2561661"></a><a name="id2561666"></a><a name="id2561672"></a><a name="id2561677"></a><p>   This section describes the <span class="acronym">SQL</span>-compliant subquery
+   expressions available in <span class="productname">PostgreSQL</span>.
    All of the expression forms documented in this section return
    Boolean (true/false) results.
-  </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN12315"
->9.16.1. <TT
-CLASS="LITERAL"
->EXISTS</TT
-></A
-></H2
-><PRE
-CLASS="SYNOPSIS"
->EXISTS ( <VAR
-CLASS="REPLACEABLE"
->subquery</VAR
-> )</PRE
-><P
->   The argument of <TT
-CLASS="TOKEN"
->EXISTS</TT
-> is an arbitrary <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement,
-   or <I
-CLASS="FIRSTTERM"
->subquery</I
->.  The
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2561698"></a>9.16.1. <tt class="literal">EXISTS</tt></h3></div></div>
+<div></div>
+</div>
+<pre class="synopsis">EXISTS ( <i class="replaceable"><tt>subquery</tt></i> )</pre>
+<p>   The argument of <tt class="token">EXISTS</tt> is an arbitrary <tt class="command">SELECT</tt> statement,
+   or <i class="firstterm">subquery</i>.  The
    subquery is evaluated to determine whether it returns any rows.
-   If it returns at least one row, the result of <TT
-CLASS="TOKEN"
->EXISTS</TT
-> is
-   <SPAN
-CLASS="QUOTE"
->"true"</SPAN
->; if the subquery returns no rows, the result of <TT
-CLASS="TOKEN"
->EXISTS</TT
-> 
-   is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
->.
-  </P
-><P
->   The subquery can refer to variables from the surrounding query,
+   If it returns at least one row, the result of <tt class="token">EXISTS</tt> is
+   &#8220;<span class="quote">true</span>&#8221;; if the subquery returns no rows, the result of <tt class="token">EXISTS</tt> 
+   is &#8220;<span class="quote">false</span>&#8221;.
+  </p>
+<p>   The subquery can refer to variables from the surrounding query,
    which will act as constants during any one evaluation of the subquery.
-  </P
-><P
->   The subquery will generally only be executed far enough to determine
+  </p>
+<p>   The subquery will generally only be executed far enough to determine
    whether at least one row is returned, not all the way to completion.
    It is unwise to write a subquery that has any side effects (such as
    calling sequence functions); whether the side effects occur or not
    may be difficult to predict.
-  </P
-><P
->   Since the result depends only on whether any rows are returned,
+  </p>
+<p>   Since the result depends only on whether any rows are returned,
    and not on the contents of those rows, the output list of the
    subquery is normally uninteresting.  A common coding convention is
-   to write all <TT
-CLASS="LITERAL"
->EXISTS</TT
-> tests in the form
-   <TT
-CLASS="LITERAL"
->EXISTS(SELECT 1 WHERE ...)</TT
->.  There are exceptions to
-   this rule however, such as subqueries that use <TT
-CLASS="TOKEN"
->INTERSECT</TT
->.
-  </P
-><P
->   This simple example is like an inner join on <TT
-CLASS="LITERAL"
->col2</TT
->, but
-   it produces at most one output row for each <TT
-CLASS="LITERAL"
->tab1</TT
-> row,
-   even if there are multiple matching <TT
-CLASS="LITERAL"
->tab2</TT
-> rows:
-</P><PRE
-CLASS="SCREEN"
->SELECT col1 FROM tab1
-    WHERE EXISTS(SELECT 1 FROM tab2 WHERE col2 = tab1.col2);</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN12339"
->9.16.2. <TT
-CLASS="LITERAL"
->IN</TT
-></A
-></H2
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IN (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The right-hand side is a parenthesized
+   to write all <tt class="literal">EXISTS</tt> tests in the form
+   <tt class="literal">EXISTS(SELECT 1 WHERE ...)</tt>.  There are exceptions to
+   this rule however, such as subqueries that use <tt class="token">INTERSECT</tt>.
+  </p>
+<p>   This simple example is like an inner join on <tt class="literal">col2</tt>, but
+   it produces at most one output row for each <tt class="literal">tab1</tt> row,
+   even if there are multiple matching <tt class="literal">tab2</tt> rows:
+</p>
+<pre class="screen">SELECT col1 FROM tab1
+    WHERE EXISTS(SELECT 1 FROM tab2 WHERE col2 = tab1.col2);</pre>
+<p>
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2561811"></a>9.16.2. <tt class="literal">IN</tt></h3></div></div>
+<div></div>
+</div>
+<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> IN (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
    is evaluated and compared to each row of the subquery result.
-   The result of <TT
-CLASS="TOKEN"
->IN</TT
-> is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if any equal subquery row is found.
-   The result is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
-> if no equal row is found (including the special
+   The result of <tt class="token">IN</tt> is &#8220;<span class="quote">true</span>&#8221; if any equal subquery row is found.
+   The result is &#8220;<span class="quote">false</span>&#8221; if no equal row is found (including the special
    case where the subquery returns no rows).
-  </P
-><P
->   Note that if the left-hand expression yields null, or if there are
+  </p>
+<p>   Note that if the left-hand expression yields null, or if there are
    no equal right-hand values and at least one right-hand row yields
-   null, the result of the <TT
-CLASS="TOKEN"
->IN</TT
-> construct will be null, not false.
+   null, the result of the <tt class="token">IN</tt> construct will be null, not false.
    This is in accordance with SQL's normal rules for Boolean combinations
    of null values.
-  </P
-><P
->   As with <TT
-CLASS="TOKEN"
->EXISTS</TT
->, it's unwise to assume that the subquery will
+  </p>
+<p>   As with <tt class="token">EXISTS</tt>, it's unwise to assume that the subquery will
    be evaluated completely.
-  </P
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->row_constructor</VAR
-> IN (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The left-hand side of this form of <TT
-CLASS="TOKEN"
->IN</TT
-> is a row constructor,
-   as described in <A
-HREF="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS"
->Section 4.2.11</A
->.
+  </p>
+<pre class="synopsis"><i class="replaceable"><tt>row_constructor</tt></i> IN (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The left-hand side of this form of <tt class="token">IN</tt> is a row constructor,
+   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
    evaluated and compared row-wise to each row of the subquery result.
-   The result of <TT
-CLASS="TOKEN"
->IN</TT
-> is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if any equal subquery row is found.
-   The result is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
-> if no equal row is found (including the special
+   The result of <tt class="token">IN</tt> is &#8220;<span class="quote">true</span>&#8221; if any equal subquery row is found.
+   The result is &#8220;<span class="quote">false</span>&#8221; if no equal row is found (including the special
    case where the subquery returns no rows).
-  </P
-><P
->   As usual, null values in the rows are combined per
+  </p>
+<p>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of that row comparison is unknown (null).
    If all the row results are either unequal or null, with at least one null,
-   then the result of <TT
-CLASS="TOKEN"
->IN</TT
-> is null.
-  </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN12364"
->9.16.3. <TT
-CLASS="LITERAL"
->NOT IN </TT
-></A
-></H2
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> NOT IN (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The right-hand side is a parenthesized
+   then the result of <tt class="token">IN</tt> is null.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2561920"></a>9.16.3. <tt class="literal">NOT IN </tt></h3></div></div>
+<div></div>
+</div>
+<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> NOT IN (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
    is evaluated and compared to each row of the subquery result.
-   The result of <TT
-CLASS="TOKEN"
->NOT IN</TT
-> is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if only unequal subquery rows
+   The result of <tt class="token">NOT IN</tt> is &#8220;<span class="quote">true</span>&#8221; if only unequal subquery rows
    are found (including the special case where the subquery returns no rows).
-   The result is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
-> if any equal row is found.
-  </P
-><P
->   Note that if the left-hand expression yields null, or if there are
+   The result is &#8220;<span class="quote">false</span>&#8221; if any equal row is found.
+  </p>
+<p>   Note that if the left-hand expression yields null, or if there are
    no equal right-hand values and at least one right-hand row yields
-   null, the result of the <TT
-CLASS="TOKEN"
->NOT IN</TT
-> construct will be null, not true.
+   null, the result of the <tt class="token">NOT IN</tt> construct will be null, not true.
    This is in accordance with SQL's normal rules for Boolean combinations
    of null values.
-  </P
-><P
->   As with <TT
-CLASS="TOKEN"
->EXISTS</TT
->, it's unwise to assume that the subquery will
+  </p>
+<p>   As with <tt class="token">EXISTS</tt>, it's unwise to assume that the subquery will
    be evaluated completely.
-  </P
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->row_constructor</VAR
-> NOT IN (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The left-hand side of this form of <TT
-CLASS="TOKEN"
->NOT IN</TT
-> is a row constructor,
-   as described in <A
-HREF="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS"
->Section 4.2.11</A
->.
+  </p>
+<pre class="synopsis"><i class="replaceable"><tt>row_constructor</tt></i> NOT IN (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The left-hand side of this form of <tt class="token">NOT IN</tt> is a row constructor,
+   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
    evaluated and compared row-wise to each row of the subquery result.
-   The result of <TT
-CLASS="TOKEN"
->NOT IN</TT
-> is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if only unequal subquery rows
+   The result of <tt class="token">NOT IN</tt> is &#8220;<span class="quote">true</span>&#8221; if only unequal subquery rows
    are found (including the special case where the subquery returns no rows).
-   The result is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
-> if any equal row is found.
-  </P
-><P
->   As usual, null values in the rows are combined per
+   The result is &#8220;<span class="quote">false</span>&#8221; if any equal row is found.
+  </p>
+<p>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of that row comparison is unknown (null).
    If all the row results are either unequal or null, with at least one null,
-   then the result of <TT
-CLASS="TOKEN"
->NOT IN</TT
-> is null.
-  </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN12389"
->9.16.4. <TT
-CLASS="LITERAL"
->ANY</TT
->/<TT
-CLASS="LITERAL"
->SOME</TT
-></A
-></H2
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> <VAR
-CLASS="REPLACEABLE"
->operator</VAR
-> ANY (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)
-<VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> <VAR
-CLASS="REPLACEABLE"
->operator</VAR
-> SOME (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The right-hand side is a parenthesized
+   then the result of <tt class="token">NOT IN</tt> is null.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2562031"></a>9.16.4. <tt class="literal">ANY</tt>/<tt class="literal">SOME</tt></h3></div></div>
+<div></div>
+</div>
+<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> <i class="replaceable"><tt>operator</tt></i> ANY (<i class="replaceable"><tt>subquery</tt></i>)
+<i class="replaceable"><tt>expression</tt></i> <i class="replaceable"><tt>operator</tt></i> SOME (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
    is evaluated and compared to each row of the subquery result using the
-   given <VAR
-CLASS="REPLACEABLE"
->operator</VAR
->, which must yield a Boolean
+   given <i class="replaceable"><tt>operator</tt></i>, which must yield a Boolean
    result.
-   The result of <TT
-CLASS="TOKEN"
->ANY</TT
-> is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if any true result is obtained.
-   The result is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
-> if no true result is found (including the special
+   The result of <tt class="token">ANY</tt> is &#8220;<span class="quote">true</span>&#8221; if any true result is obtained.
+   The result is &#8220;<span class="quote">false</span>&#8221; if no true result is found (including the special
    case where the subquery returns no rows).
-  </P
-><P
->   <TT
-CLASS="TOKEN"
->SOME</TT
-> is a synonym for <TT
-CLASS="TOKEN"
->ANY</TT
->.
-   <TT
-CLASS="TOKEN"
->IN</TT
-> is equivalent to <TT
-CLASS="LITERAL"
->= ANY</TT
->.
-  </P
-><P
->   Note that if there are no successes and at least one right-hand row yields
-   null for the operator's result, the result of the <TT
-CLASS="TOKEN"
->ANY</TT
-> construct
+  </p>
+<p>   <tt class="token">SOME</tt> is a synonym for <tt class="token">ANY</tt>.
+   <tt class="token">IN</tt> is equivalent to <tt class="literal">= ANY</tt>.
+  </p>
+<p>   Note that if there are no successes and at least one right-hand row yields
+   null for the operator's result, the result of the <tt class="token">ANY</tt> construct
    will be null, not false.
    This is in accordance with SQL's normal rules for Boolean combinations
    of null values.
-  </P
-><P
->   As with <TT
-CLASS="TOKEN"
->EXISTS</TT
->, it's unwise to assume that the subquery will
+  </p>
+<p>   As with <tt class="token">EXISTS</tt>, it's unwise to assume that the subquery will
    be evaluated completely.
-  </P
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->row_constructor</VAR
-> <VAR
-CLASS="REPLACEABLE"
->operator</VAR
-> ANY (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)
-<VAR
-CLASS="REPLACEABLE"
->row_constructor</VAR
-> <VAR
-CLASS="REPLACEABLE"
->operator</VAR
-> SOME (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The left-hand side of this form of <TT
-CLASS="TOKEN"
->ANY</TT
-> is a row constructor,
-   as described in <A
-HREF="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS"
->Section 4.2.11</A
->.
+  </p>
+<pre class="synopsis"><i class="replaceable"><tt>row_constructor</tt></i> <i class="replaceable"><tt>operator</tt></i> ANY (<i class="replaceable"><tt>subquery</tt></i>)
+<i class="replaceable"><tt>row_constructor</tt></i> <i class="replaceable"><tt>operator</tt></i> SOME (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The left-hand side of this form of <tt class="token">ANY</tt> is a row constructor,
+   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
    evaluated and compared row-wise to each row of the subquery result,
-   using the given <VAR
-CLASS="REPLACEABLE"
->operator</VAR
->.  Presently,
-   only <TT
-CLASS="LITERAL"
->=</TT
-> and <TT
-CLASS="LITERAL"
->&lt;&gt;</TT
-> operators are allowed
-   in row-wise <TT
-CLASS="TOKEN"
->ANY</TT
-> constructs.
-   The result of <TT
-CLASS="TOKEN"
->ANY</TT
-> is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if any equal or unequal row is
+   using the given <i class="replaceable"><tt>operator</tt></i>.  Presently,
+   only <tt class="literal">=</tt> and <tt class="literal">&lt;&gt;</tt> operators are allowed
+   in row-wise <tt class="token">ANY</tt> constructs.
+   The result of <tt class="token">ANY</tt> is &#8220;<span class="quote">true</span>&#8221; if any equal or unequal row is
    found, respectively.
-   The result is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
-> if no such row is found (including the special
+   The result is &#8220;<span class="quote">false</span>&#8221; if no such row is found (including the special
    case where the subquery returns no rows).
-  </P
-><P
->   As usual, null values in the rows are combined per
+  </p>
+<p>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of that row comparison is unknown (null).
-   If there is at least one null row result, then the result of <TT
-CLASS="TOKEN"
->ANY</TT
->
+   If there is at least one null row result, then the result of <tt class="token">ANY</tt>
    cannot be false; it will be true or null. 
-  </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN12433"
->9.16.5. <TT
-CLASS="LITERAL"
->ALL</TT
-></A
-></H2
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> <VAR
-CLASS="REPLACEABLE"
->operator</VAR
-> ALL (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The right-hand side is a parenthesized
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2562216"></a>9.16.5. <tt class="literal">ALL</tt></h3></div></div>
+<div></div>
+</div>
+<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> <i class="replaceable"><tt>operator</tt></i> ALL (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
    is evaluated and compared to each row of the subquery result using the
-   given <VAR
-CLASS="REPLACEABLE"
->operator</VAR
->, which must yield a Boolean
+   given <i class="replaceable"><tt>operator</tt></i>, which must yield a Boolean
    result.
-   The result of <TT
-CLASS="TOKEN"
->ALL</TT
-> is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if all rows yield true
+   The result of <tt class="token">ALL</tt> is &#8220;<span class="quote">true</span>&#8221; if all rows yield true
    (including the special case where the subquery returns no rows).
-   The result is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
-> if any false result is found.
-  </P
-><P
->   <TT
-CLASS="TOKEN"
->NOT IN</TT
-> is equivalent to <TT
-CLASS="LITERAL"
->&lt;&gt; ALL</TT
->.
-  </P
-><P
->   Note that if there are no failures but at least one right-hand row yields
-   null for the operator's result, the result of the <TT
-CLASS="TOKEN"
->ALL</TT
-> construct
+   The result is &#8220;<span class="quote">false</span>&#8221; if any false result is found.
+  </p>
+<p>   <tt class="token">NOT IN</tt> is equivalent to <tt class="literal">&lt;&gt; ALL</tt>.
+  </p>
+<p>   Note that if there are no failures but at least one right-hand row yields
+   null for the operator's result, the result of the <tt class="token">ALL</tt> construct
    will be null, not true.
    This is in accordance with SQL's normal rules for Boolean combinations
    of null values.
-  </P
-><P
->   As with <TT
-CLASS="TOKEN"
->EXISTS</TT
->, it's unwise to assume that the subquery will
+  </p>
+<p>   As with <tt class="token">EXISTS</tt>, it's unwise to assume that the subquery will
    be evaluated completely.
-  </P
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->row_constructor</VAR
-> <VAR
-CLASS="REPLACEABLE"
->operator</VAR
-> ALL (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The left-hand side of this form of <TT
-CLASS="TOKEN"
->ALL</TT
-> is a row constructor,
-   as described in <A
-HREF="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS"
->Section 4.2.11</A
->.
+  </p>
+<pre class="synopsis"><i class="replaceable"><tt>row_constructor</tt></i> <i class="replaceable"><tt>operator</tt></i> ALL (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The left-hand side of this form of <tt class="token">ALL</tt> is a row constructor,
+   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
    evaluated and compared row-wise to each row of the subquery result,
-   using the given <VAR
-CLASS="REPLACEABLE"
->operator</VAR
->.  Presently,
-   only <TT
-CLASS="LITERAL"
->=</TT
-> and <TT
-CLASS="LITERAL"
->&lt;&gt;</TT
-> operators are allowed
-   in row-wise <TT
-CLASS="TOKEN"
->ALL</TT
-> queries.
-   The result of <TT
-CLASS="TOKEN"
->ALL</TT
-> is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if all subquery rows are equal
+   using the given <i class="replaceable"><tt>operator</tt></i>.  Presently,
+   only <tt class="literal">=</tt> and <tt class="literal">&lt;&gt;</tt> operators are allowed
+   in row-wise <tt class="token">ALL</tt> queries.
+   The result of <tt class="token">ALL</tt> is &#8220;<span class="quote">true</span>&#8221; if all subquery rows are equal
    or unequal, respectively (including the special
    case where the subquery returns no rows).
-   The result is <SPAN
-CLASS="QUOTE"
->"false"</SPAN
-> if any row is found to be unequal or equal,
+   The result is &#8220;<span class="quote">false</span>&#8221; if any row is found to be unequal or equal,
    respectively.
-  </P
-><P
->   As usual, null values in the rows are combined per
+  </p>
+<p>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of that row comparison is unknown (null).
-   If there is at least one null row result, then the result of <TT
-CLASS="TOKEN"
->ALL</TT
->
+   If there is at least one null row result, then the result of <tt class="token">ALL</tt>
    cannot be true; it will be false or null. 
-  </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN12468"
->9.16.6. Row-wise Comparison</A
-></H2
-><A
-NAME="AEN12470"
-></A
-><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->row_constructor</VAR
-> <VAR
-CLASS="REPLACEABLE"
->operator</VAR
-> (<VAR
-CLASS="REPLACEABLE"
->subquery</VAR
->)</PRE
-><P
->   The left-hand side is a row constructor,
-   as described in <A
-HREF="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS"
->Section 4.2.11</A
->.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2562369"></a>9.16.6. Row-wise Comparison</h3></div></div>
+<div></div>
+</div>
+<a name="id2562372"></a><pre class="synopsis"><i class="replaceable"><tt>row_constructor</tt></i> <i class="replaceable"><tt>operator</tt></i> (<i class="replaceable"><tt>subquery</tt></i>)</pre>
+<p>   The left-hand side is a row constructor,
+   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized subquery, which must return exactly
    as many columns as there are expressions in the left-hand row. Furthermore,
    the subquery cannot return more than one row.  (If it returns zero rows,
    the result is taken to be null.)  The left-hand side is evaluated and
    compared row-wise to the single subquery result row.
-   Presently, only <TT
-CLASS="LITERAL"
->=</TT
-> and <TT
-CLASS="LITERAL"
->&lt;&gt;</TT
-> operators are allowed
+   Presently, only <tt class="literal">=</tt> and <tt class="literal">&lt;&gt;</tt> operators are allowed
    in row-wise comparisons.
-   The result is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if the two rows are equal or unequal, respectively.
-  </P
-><P
->   As usual, null values in the rows are combined per
+   The result is &#8220;<span class="quote">true</span>&#8221; if the two rows are equal or unequal, respectively.
+  </p>
+<p>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of the row comparison is unknown (null).
-  </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-aggregate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-comparisons.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Aggregate Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Row and Array Comparisons</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

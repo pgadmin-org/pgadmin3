@@ -1,331 +1,83 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->sql_features</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The Information Schema"
-HREF="information-schema.html"><LINK
-REL="PREVIOUS"
-TITLE="schemata"
-HREF="infoschema-schemata.html"><LINK
-REL="NEXT"
-TITLE="sql_implementation_info"
-HREF="infoschema-sql-implementation-info.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-schemata.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 30. The Information Schema</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-sql-implementation-info.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INFOSCHEMA-SQL-FEATURES"
->30.28. <TT
-CLASS="LITERAL"
->sql_features</TT
-></A
-></H1
-><P
->   The table <TT
-CLASS="LITERAL"
->sql_features</TT
-> contains information
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>30.28. sql_features</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
+<link rel="previous" href="infoschema-schemata.html" title="30.27. schemata">
+<link rel="next" href="infoschema-sql-implementation-info.html" title="30.29. sql_implementation_info">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="infoschema-sql-features"></a>30.28. <tt class="literal">sql_features</tt></h2></div></div>
+<div></div>
+</div>
+<p>   The table <tt class="literal">sql_features</tt> contains information
    about which formal features defined in the SQL standard are
-   supported by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  This is the
-   same information that is presented in <A
-HREF="features.html"
->Appendix D</A
->.
+   supported by <span class="productname">PostgreSQL</span>.  This is the
+   same information that is presented in <a href="features.html" title="Appendix D. SQL Conformance">Appendix D, <i>SQL Conformance</i></a>.
    There you can also find some additional background information.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN26946"
-></A
-><P
-><B
->Table 30-26. <TT
-CLASS="LITERAL"
->sql_features</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Data Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->feature_id</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Identifier string of the feature</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->feature_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Descriptive name of the feature</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sub_feature_id</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Identifier string of the subfeature, or a zero-length string if not a subfeature</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sub_feature_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Descriptive name of the subfeature, or a zero-length string if not a subfeature</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->is_supported</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       <TT
-CLASS="LITERAL"
->YES</TT
-> if the feature is fully supported by the
-       current version of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, <TT
-CLASS="LITERAL"
->NO</TT
-> if not
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->is_verified_by</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       Always null, since the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> development group does not
+  </p>
+<div class="table">
+<a name="id2624107"></a><p class="title"><b>Table 30.26. <tt class="literal">sql_features</tt> Columns</b></p>
+<table summary="sql_features Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal">feature_id</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Identifier string of the feature</td>
+</tr>
+<tr>
+<td><tt class="literal">feature_name</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Descriptive name of the feature</td>
+</tr>
+<tr>
+<td><tt class="literal">sub_feature_id</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Identifier string of the subfeature, or a zero-length string if not a subfeature</td>
+</tr>
+<tr>
+<td><tt class="literal">sub_feature_name</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Descriptive name of the subfeature, or a zero-length string if not a subfeature</td>
+</tr>
+<tr>
+<td><tt class="literal">is_supported</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>
+<tt class="literal">YES</tt> if the feature is fully supported by the
+       current version of <span class="productname">PostgreSQL</span>, <tt class="literal">NO</tt> if not
+      </td>
+</tr>
+<tr>
+<td><tt class="literal">is_verified_by</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>       Always null, since the <span class="productname">PostgreSQL</span> development group does not
        perform formal testing of feature conformance
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->comments</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Possibly a comment about the supported status of the feature</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-schemata.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-sql-implementation-info.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->schemata</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="information-schema.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->sql_implementation_info</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+<tr>
+<td><tt class="literal">comments</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Possibly a comment about the supported status of the feature</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

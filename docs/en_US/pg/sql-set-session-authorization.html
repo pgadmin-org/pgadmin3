@@ -1,199 +1,62 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->SET SESSION AUTHORIZATION</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="SET CONSTRAINTS"
-HREF="sql-set-constraints.html"><LINK
-REL="NEXT"
-TITLE="SET TRANSACTION"
-HREF="sql-set-transaction.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set-constraints.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set-constraints.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-set-transaction.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-set-transaction.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-SET-SESSION-AUTHORIZATION"
-></A
->SET SESSION AUTHORIZATION</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN43234"
-></A
-><H2
->Name</H2
->SET SESSION AUTHORIZATION&nbsp;--&nbsp;set the session user identifier and the current user identifier of the current session</DIV
-><A
-NAME="AEN43237"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN43239"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->SET [ SESSION | LOCAL ] SESSION AUTHORIZATION <VAR
-CLASS="REPLACEABLE"
->username</VAR
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SET SESSION AUTHORIZATION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-set-constraints.html" title="SET CONSTRAINTS">
+<link rel="next" href="sql-set-transaction.html" title="SET TRANSACTION">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-set-session-authorization"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SET SESSION AUTHORIZATION &#8212; set the session user identifier and the current user identifier of the current session</p>
+</div>
+<a name="id2695724"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">SET [ SESSION | LOCAL ] SESSION AUTHORIZATION <i class="replaceable"><tt>username</tt></i>
 SET [ SESSION | LOCAL ] SESSION AUTHORIZATION DEFAULT
-RESET SESSION AUTHORIZATION</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43242"
-></A
-><H2
->Description</H2
-><P
->   This command sets the session user identifier and the current user
-   identifier of the current SQL-session context to be <VAR
-CLASS="REPLACEABLE"
->username</VAR
->.  The user name may be
+RESET SESSION AUTHORIZATION</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2695746"></a><h2>Description</h2>
+<p>   This command sets the session user identifier and the current user
+   identifier of the current SQL-session context to be <i class="replaceable"><tt>username</tt></i>.  The user name may be
    written as either an identifier or a string literal.  Using this
    command, it is possible, for example, to temporarily become an
    unprivileged user and later switch back to become a superuser.
-  </P
-><P
->   The session user identifier is initially set to be the (possibly
+  </p>
+<p>   The session user identifier is initially set to be the (possibly
    authenticated) user name provided by the client.  The current user
    identifier is normally equal to the session user identifier, but
-   may change temporarily in the context of <SPAN
-CLASS="QUOTE"
->"setuid"</SPAN
->
+   may change temporarily in the context of &#8220;<span class="quote">setuid</span>&#8221;
    functions and similar mechanisms.  The current user identifier is
    relevant for permission checking.
-  </P
-><P
->   The session user identifier may be changed only if the initial session
-   user (the <I
-CLASS="FIRSTTERM"
->authenticated user</I
->) had the
+  </p>
+<p>   The session user identifier may be changed only if the initial session
+   user (the <i class="firstterm">authenticated user</i>) had the
    superuser privilege.  Otherwise, the command is accepted only if it
    specifies the authenticated user name.
-  </P
-><P
->   The <TT
-CLASS="LITERAL"
->SESSION</TT
-> and <TT
-CLASS="LITERAL"
->LOCAL</TT
-> modifiers act the same
-   as for the regular <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
->
+  </p>
+<p>   The <tt class="literal">SESSION</tt> and <tt class="literal">LOCAL</tt> modifiers act the same
+   as for the regular <a href="sql-set.html">SET</a>
    command.
-  </P
-><P
->   The <TT
-CLASS="LITERAL"
->DEFAULT</TT
-> and <TT
-CLASS="LITERAL"
->RESET</TT
-> forms reset the session
+  </p>
+<p>   The <tt class="literal">DEFAULT</tt> and <tt class="literal">RESET</tt> forms reset the session
    and current user identifiers to be the originally authenticated user
    name.  These forms may be executed by any user.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43257"
-></A
-><H2
->Examples</H2
-><PRE
-CLASS="PROGRAMLISTING"
->SELECT SESSION_USER, CURRENT_USER;
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2695819"></a><h2>Examples</h2>
+<pre class="programlisting">SELECT SESSION_USER, CURRENT_USER;
 
  session_user | current_user 
 --------------+--------------
@@ -205,101 +68,20 @@ SELECT SESSION_USER, CURRENT_USER;
 
  session_user | current_user 
 --------------+--------------
- paul         | paul</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43260"
-></A
-><H2
->Compatibility</H2
-><P
->   The SQL standard allows some other expressions to appear in place
-   of the literal <VAR
-CLASS="REPLACEABLE"
->username</VAR
-> which are not
-   important in practice.  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-   allows identifier syntax (<TT
-CLASS="LITERAL"
->"username"</TT
->), which SQL
+ paul         | paul</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2695831"></a><h2>Compatibility</h2>
+<p>   The SQL standard allows some other expressions to appear in place
+   of the literal <i class="replaceable"><tt>username</tt></i> which are not
+   important in practice.  <span class="productname">PostgreSQL</span>
+   allows identifier syntax (<tt class="literal">"username"</tt>), which SQL
    does not.  SQL does not allow this command during a transaction;
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not make this
+   <span class="productname">PostgreSQL</span> does not make this
    restriction because there is no reason to.  The privileges
    necessary to execute this command are left implementation-defined
    by the standard.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set-constraints.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-set-transaction.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SET CONSTRAINTS</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SET TRANSACTION</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

@@ -1,354 +1,91 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->usage_privileges</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The Information Schema"
-HREF="information-schema.html"><LINK
-REL="PREVIOUS"
-TITLE="triggers"
-HREF="infoschema-triggers.html"><LINK
-REL="NEXT"
-TITLE="view_column_usage"
-HREF="infoschema-view-column-usage.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-triggers.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 30. The Information Schema</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-view-column-usage.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INFOSCHEMA-USAGE-PRIVILEGES"
->30.38. <TT
-CLASS="LITERAL"
->usage_privileges</TT
-></A
-></H1
-><P
->   The view <TT
-CLASS="LITERAL"
->usage_privileges</TT
-> is meant to identify
-   <TT
-CLASS="LITERAL"
->USAGE</TT
-> privileges granted on various kinds of
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>30.38. usage_privileges</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
+<link rel="previous" href="infoschema-triggers.html" title="30.37. triggers">
+<link rel="next" href="infoschema-view-column-usage.html" title="30.39. view_column_usage">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="infoschema-usage-privileges"></a>30.38. <tt class="literal">usage_privileges</tt></h2></div></div>
+<div></div>
+</div>
+<p>   The view <tt class="literal">usage_privileges</tt> is meant to identify
+   <tt class="literal">USAGE</tt> privileges granted on various kinds of
    objects to the current user or by the current user.  In
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, this currently only applies
+   <span class="productname">PostgreSQL</span>, this currently only applies
    to domains, and since domains do not have real privileges in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, this view shows implicit
-   <TT
-CLASS="LITERAL"
->USAGE</TT
-> privileges granted to
-   <TT
-CLASS="LITERAL"
->PUBLIC</TT
-> for all domains.  In the future, this
+   <span class="productname">PostgreSQL</span>, this view shows implicit
+   <tt class="literal">USAGE</tt> privileges granted to
+   <tt class="literal">PUBLIC</tt> for all domains.  In the future, this
    view may contain more useful information.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN27616"
-></A
-><P
-><B
->Table 30-36. <TT
-CLASS="LITERAL"
->usage_privileges</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Data Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->grantor</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Currently set to the name of the owner of the object</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->grantee</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Currently always <TT
-CLASS="LITERAL"
->PUBLIC</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->object_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the database containing the object (always the current database)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->object_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the schema containing the object</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->object_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the object</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->object_type</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Currently always <TT
-CLASS="LITERAL"
->DOMAIN</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->privilege_type</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Always <TT
-CLASS="LITERAL"
->USAGE</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->is_grantable</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Currently always <TT
-CLASS="LITERAL"
->NO</TT
-></TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-triggers.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-view-column-usage.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->triggers</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="information-schema.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->view_column_usage</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+<div class="table">
+<a name="id2626055"></a><p class="title"><b>Table 30.36. <tt class="literal">usage_privileges</tt> Columns</b></p>
+<table summary="usage_privileges Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal">grantor</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Currently set to the name of the owner of the object</td>
+</tr>
+<tr>
+<td><tt class="literal">grantee</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Currently always <tt class="literal">PUBLIC</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">object_catalog</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the database containing the object (always the current database)</td>
+</tr>
+<tr>
+<td><tt class="literal">object_schema</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the schema containing the object</td>
+</tr>
+<tr>
+<td><tt class="literal">object_name</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the object</td>
+</tr>
+<tr>
+<td><tt class="literal">object_type</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Currently always <tt class="literal">DOMAIN</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">privilege_type</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Always <tt class="literal">USAGE</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="literal">is_grantable</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Currently always <tt class="literal">NO</tt>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

@@ -1,457 +1,94 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->BKI Commands</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="BKI Backend Interface"
-HREF="bki.html"><LINK
-REL="PREVIOUS"
-TITLE="BKI Backend Interface"
-HREF="bki.html"><LINK
-REL="NEXT"
-TITLE="Example"
-HREF="bki-example.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="bki.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="bki.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 50. <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> Backend Interface</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki-example.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="BKI-COMMANDS"
->50.2. <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> Commands</A
-></H1
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->open <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-></DT
-><DD
-><P
->      Open the table called
-      <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>50.2. BKI Commands</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="bki.html" title="Chapter 50. BKI Backend Interface">
+<link rel="previous" href="bki.html" title="Chapter 50. BKI Backend Interface">
+<link rel="next" href="bki-example.html" title="50.3. Example">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="bki-commands"></a>50.2. <span class="acronym">BKI</span> Commands</h2></div></div>
+<div></div>
+</div>
+<div class="variablelist"><dl>
+<dt><span class="term">     open <i class="replaceable"><tt>tablename</tt></i>
+    </span></dt>
+<dd><p>      Open the table called
+      <i class="replaceable"><tt>tablename</tt></i>
       for further manipulation.
-     </P
-></DD
-><DT
->close [<SPAN
-CLASS="OPTIONAL"
-><VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-></SPAN
->]</DT
-><DD
-><P
->      Close the open table called <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
->.  It is an error if
-      <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> is not
-      already opened.  If no <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> is given, then the
+     </p></dd>
+<dt><span class="term">     close [<span class="optional"><i class="replaceable"><tt>tablename</tt></i></span>]
+    </span></dt>
+<dd><p>      Close the open table called <i class="replaceable"><tt>tablename</tt></i>.  It is an error if
+      <i class="replaceable"><tt>tablename</tt></i> is not
+      already opened.  If no <i class="replaceable"><tt>tablename</tt></i> is given, then the
       currently open table is closed.
-     </P
-></DD
-><DT
->create <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
->
-     (<VAR
-CLASS="REPLACEABLE"
->name1</VAR
-> =
-     <VAR
-CLASS="REPLACEABLE"
->type1</VAR
-> [<SPAN
-CLASS="OPTIONAL"
->,
-     <VAR
-CLASS="REPLACEABLE"
->name2</VAR
-> = <VAR
-CLASS="REPLACEABLE"
->type2</VAR
->, ...</SPAN
->])</DT
-><DD
-><P
->      Create a table named <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> with the columns given
+     </p></dd>
+<dt><span class="term">     create <i class="replaceable"><tt>tablename</tt></i>
+     (<i class="replaceable"><tt>name1</tt></i> =
+     <i class="replaceable"><tt>type1</tt></i> [<span class="optional">,
+     <i class="replaceable"><tt>name2</tt></i> = <i class="replaceable"><tt>type2</tt></i>, ...</span>])
+    </span></dt>
+<dd>
+<p>      Create a table named <i class="replaceable"><tt>tablename</tt></i> with the columns given
       in parentheses.
-     </P
-><P
->      The <VAR
-CLASS="REPLACEABLE"
->type</VAR
-> is not necessarily the data
+     </p>
+<p>      The <i class="replaceable"><tt>type</tt></i> is not necessarily the data
       type that the column will have in the SQL environment; that is
-      determined by the <TT
-CLASS="STRUCTNAME"
->pg_attribute</TT
-> system
+      determined by the <tt class="structname">pg_attribute</tt> system
       catalog.  The type here is essentially only used to allocate
-      storage.  The following types are allowed: <TT
-CLASS="TYPE"
->bool</TT
->,
-      <TT
-CLASS="TYPE"
->bytea</TT
->, <TT
-CLASS="TYPE"
->char</TT
-> (1 byte),
-      <TT
-CLASS="TYPE"
->name</TT
->, <TT
-CLASS="TYPE"
->int2</TT
->, <TT
-CLASS="TYPE"
->int2vector</TT
->,
-      <TT
-CLASS="TYPE"
->int4</TT
->, <TT
-CLASS="TYPE"
->regproc</TT
->, <TT
-CLASS="TYPE"
->regclass</TT
->,
-      <TT
-CLASS="TYPE"
->regtype</TT
->, <TT
-CLASS="TYPE"
->text</TT
->,
-      <TT
-CLASS="TYPE"
->oid</TT
->, <TT
-CLASS="TYPE"
->tid</TT
->, <TT
-CLASS="TYPE"
->xid</TT
->,
-      <TT
-CLASS="TYPE"
->cid</TT
->, <TT
-CLASS="TYPE"
->oidvector</TT
->, <TT
-CLASS="TYPE"
->smgr</TT
->,
-      <TT
-CLASS="TYPE"
->_int4</TT
-> (array), <TT
-CLASS="TYPE"
->_aclitem</TT
-> (array).
+      storage.  The following types are allowed: <tt class="type">bool</tt>,
+      <tt class="type">bytea</tt>, <tt class="type">char</tt> (1 byte),
+      <tt class="type">name</tt>, <tt class="type">int2</tt>, <tt class="type">int2vector</tt>,
+      <tt class="type">int4</tt>, <tt class="type">regproc</tt>, <tt class="type">regclass</tt>,
+      <tt class="type">regtype</tt>, <tt class="type">text</tt>,
+      <tt class="type">oid</tt>, <tt class="type">tid</tt>, <tt class="type">xid</tt>,
+      <tt class="type">cid</tt>, <tt class="type">oidvector</tt>, <tt class="type">smgr</tt>,
+      <tt class="type">_int4</tt> (array), <tt class="type">_aclitem</tt> (array).
       Array types can also be indicated by writing
-      <TT
-CLASS="LITERAL"
->[]</TT
-> after the name of the element type.
-     </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->       The table will only be created on disk, it will not
+      <tt class="literal">[]</tt> after the name of the element type.
+     </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>       The table will only be created on disk, it will not
        automatically be registered in the system catalogs and will
        therefore not be accessible unless appropriate rows are
-       inserted in <TT
-CLASS="STRUCTNAME"
->pg_class</TT
->,
-       <TT
-CLASS="STRUCTNAME"
->pg_attribute</TT
->, etc.
-      </P
-></BLOCKQUOTE
-></DIV
-></DD
-><DT
->insert [<SPAN
-CLASS="OPTIONAL"
->OID = <VAR
-CLASS="REPLACEABLE"
->oid_value</VAR
-></SPAN
->] (<VAR
-CLASS="REPLACEABLE"
->value1</VAR
-> <VAR
-CLASS="REPLACEABLE"
->value2</VAR
-> ...)</DT
-><DD
-><P
->      Insert a new row into the open table using <VAR
-CLASS="REPLACEABLE"
->value1</VAR
->, <VAR
-CLASS="REPLACEABLE"
->value2</VAR
->, etc., for its column
-      values and <VAR
-CLASS="REPLACEABLE"
->oid_value</VAR
-> for its OID.  If
-      <VAR
-CLASS="REPLACEABLE"
->oid_value</VAR
-> is zero
+       inserted in <tt class="structname">pg_class</tt>,
+       <tt class="structname">pg_attribute</tt>, etc.
+      </p>
+</div>
+</dd>
+<dt><span class="term">     insert [<span class="optional">OID = <i class="replaceable"><tt>oid_value</tt></i></span>] (<i class="replaceable"><tt>value1</tt></i> <i class="replaceable"><tt>value2</tt></i> ...)
+    </span></dt>
+<dd>
+<p>      Insert a new row into the open table using <i class="replaceable"><tt>value1</tt></i>, <i class="replaceable"><tt>value2</tt></i>, etc., for its column
+      values and <i class="replaceable"><tt>oid_value</tt></i> for its OID.  If
+      <i class="replaceable"><tt>oid_value</tt></i> is zero
       (0) or the clause is omitted, then the next available OID is
       used.
-     </P
-><P
->      NULL values can be specified using the special key word
-      <TT
-CLASS="LITERAL"
->_null_</TT
->.  Values containing spaces must be
+     </p>
+<p>      NULL values can be specified using the special key word
+      <tt class="literal">_null_</tt>.  Values containing spaces must be
       double quoted.
-     </P
-></DD
-><DT
->declare [<SPAN
-CLASS="OPTIONAL"
->unique</SPAN
->] index <VAR
-CLASS="REPLACEABLE"
->indexname</VAR
-> on <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> using <VAR
-CLASS="REPLACEABLE"
->amname</VAR
-> (<VAR
-CLASS="REPLACEABLE"
->opclass1</VAR
-> <VAR
-CLASS="REPLACEABLE"
->name1</VAR
-> [<SPAN
-CLASS="OPTIONAL"
->, ...</SPAN
->])</DT
-><DD
-><P
->      Create an index named <VAR
-CLASS="REPLACEABLE"
->indexname</VAR
-> on the table named
-      <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> using the
-      <VAR
-CLASS="REPLACEABLE"
->amname</VAR
-> access
-      method.  The fields to index are called <VAR
-CLASS="REPLACEABLE"
->name1</VAR
->, <VAR
-CLASS="REPLACEABLE"
->name2</VAR
-> etc., and the operator
-      classes to use are <VAR
-CLASS="REPLACEABLE"
->opclass1</VAR
->, <VAR
-CLASS="REPLACEABLE"
->opclass2</VAR
-> etc., respectively.
-     </P
-></DD
-><DT
->build indices</DT
-><DD
-><P
->      Build the indices that have previously been declared.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="bki.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki-example.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> Backend Interface</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="bki.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Example</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+     </p>
+</dd>
+<dt><span class="term">     declare [<span class="optional">unique</span>] index <i class="replaceable"><tt>indexname</tt></i> on <i class="replaceable"><tt>tablename</tt></i> using <i class="replaceable"><tt>amname</tt></i> (<i class="replaceable"><tt>opclass1</tt></i> <i class="replaceable"><tt>name1</tt></i> [<span class="optional">, ...</span>])
+    </span></dt>
+<dd><p>      Create an index named <i class="replaceable"><tt>indexname</tt></i> on the table named
+      <i class="replaceable"><tt>tablename</tt></i> using the
+      <i class="replaceable"><tt>amname</tt></i> access
+      method.  The fields to index are called <i class="replaceable"><tt>name1</tt></i>, <i class="replaceable"><tt>name2</tt></i> etc., and the operator
+      classes to use are <i class="replaceable"><tt>opclass1</tt></i>, <i class="replaceable"><tt>opclass2</tt></i> etc., respectively.
+     </p></dd>
+<dt><span class="term">build indices</span></dt>
+<dd><p>      Build the indices that have previously been declared.
+     </p></dd>
+</dl></div>
+</div></body>
+</html>

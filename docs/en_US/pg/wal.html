@@ -1,152 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Write-Ahead Logging (WAL)</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Administration"
-HREF="admin.html"><LINK
-REL="PREVIOUS"
-TITLE="Disk Full Failure"
-HREF="disk-full.html"><LINK
-REL="NEXT"
-TITLE="WAL Configuration"
-HREF="wal-configuration.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="disk-full.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="diskusage.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="regress.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="wal-configuration.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="WAL"
-></A
->Chapter 25. Write-Ahead Logging (<ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
->)</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->25.1. <A
-HREF="wal.html#WAL-BENEFITS"
->Benefits of <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
-></A
-></DT
-><DT
->25.2. <A
-HREF="wal-configuration.html"
-><ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
-> Configuration</A
-></DT
-><DT
->25.3. <A
-HREF="wal-internals.html"
->Internals</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN20910"
-></A
-><A
-NAME="AEN20912"
-></A
-><P
->   <I
-CLASS="FIRSTTERM"
->Write-Ahead Logging</I
-> (<ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
->)
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 25. Write-Ahead Logging (WAL)</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="previous" href="disk-full.html" title="24.2. Disk Full Failure">
+<link rel="next" href="wal-configuration.html" title="25.2. WAL Configuration">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="wal">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="wal"></a>Chapter 25. Write-Ahead Logging (<span class="acronym">WAL</span>)</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="wal.html#wal-benefits">25.1. Benefits of WAL</a></span></dt>
+<dt><span class="sect1"><a href="wal-configuration.html">25.2. WAL Configuration</a></span></dt>
+<dt><span class="sect1"><a href="wal-internals.html">25.3. Internals</a></span></dt>
+</dl>
+</div>
+<a name="id2600983"></a><a name="id2600992"></a><p>   <i class="firstterm">Write-Ahead Logging</i> (<span class="acronym">WAL</span>)
    is a standard approach to transaction logging.  Its detailed
    description may be found in most (if not all) books about
-   transaction processing. Briefly, <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
->'s central
+   transaction processing. Briefly, <span class="acronym">WAL</span>'s central
    concept is that changes to data files (where tables and indexes
    reside) must be written only after those changes have been logged,
    that is, when log records describing the changes have been flushed
@@ -156,101 +37,49 @@ CLASS="ACRONYM"
    database using the log: any changes that have not been applied to
    the data pages can be redone from the log records.  (This is
    roll-forward recovery, also known as REDO.)
-  </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="WAL-BENEFITS"
->25.1. Benefits of <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
-></A
-></H1
-><A
-NAME="AEN20922"
-></A
-><P
->    The first major benefit of using <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
-> is a
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="wal-benefits"></a>25.1. Benefits of <span class="acronym">WAL</span></h2></div></div>
+<div></div>
+</div>
+<a name="id2601035"></a><p>    The first major benefit of using <span class="acronym">WAL</span> is a
     significantly reduced number of disk writes, because only the log
     file needs to be flushed to disk at the time of transaction
     commit, rather than every data file changed by the transaction.
     In multiuser environments, commits of many transactions
-    may be accomplished with a single <CODE
-CLASS="FUNCTION"
->fsync</CODE
-> of
+    may be accomplished with a single <tt class="function">fsync</tt> of
     the log file. Furthermore, the log file is written sequentially,
     and so the cost of syncing the log is much less than the cost of
     flushing the data pages.   This is especially true for servers
     handling many small transactions touching different parts of the data
     store.
-   </P
-><P
->    The next benefit is consistency of the data pages. The truth is
-    that, before <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
->,
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> was never able to guarantee
+   </p>
+<p>    The next benefit is consistency of the data pages. The truth is
+    that, before <span class="acronym">WAL</span>,
+    <span class="productname">PostgreSQL</span> was never able to guarantee
     consistency in the case of a crash.  Before
-    <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
->, any crash during writing could result in:
+    <span class="acronym">WAL</span>, any crash during writing could result in:
 
-    <P
-></P
-></P><OL
-TYPE="1"
-><LI
-><P
->index rows pointing to nonexistent table rows</P
-></LI
-><LI
-><P
->index rows lost in split operations</P
-></LI
-><LI
-><P
->totally corrupted table or index page content, because
-      of partially written data pages</P
-></LI
-></OL
-><P>
+    </p>
+<div class="orderedlist"><ol type="1">
+<li>index rows pointing to nonexistent table rows</li>
+<li>index rows lost in split operations</li>
+<li>totally corrupted table or index page content, because
+      of partially written data pages</li>
+</ol></div>
+<p>
 
     Problems with indexes (problems 1 and 2) could possibly have been
-    fixed by additional <CODE
-CLASS="FUNCTION"
->fsync</CODE
-> calls, but it is
+    fixed by additional <tt class="function">fsync</tt> calls, but it is
     not obvious how to handle the last case without
-    <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
->.  <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
-> saves the entire data
+    <span class="acronym">WAL</span>.  <span class="acronym">WAL</span> saves the entire data
     page content in the log if that is required to ensure page
     consistency for after-crash recovery.
-   </P
-><P
->    Finally, <ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
-> makes it possible to support on-line
-    backup and point-in-time recovery, as described in <A
-HREF="backup-online.html"
->Section 22.3</A
->.  By archiving the WAL data we can support
+   </p>
+<p>    Finally, <span class="acronym">WAL</span> makes it possible to support on-line
+    backup and point-in-time recovery, as described in <a href="backup-online.html" title="22.3. On-line backup and point-in-time recovery">Section 22.3, &#8220;On-line backup and point-in-time recovery&#8221;</a>.  By archiving the WAL data we can support
     reverting to any time instant covered by the available WAL data:
     we simply install a prior physical backup of the database, and
     replay the WAL log just as far as the desired time.  What's more,
@@ -258,74 +87,7 @@ HREF="backup-online.html"
     of the database state --- if it is made over some period of time,
     then replaying the WAL log for that period will fix any internal
     inconsistencies.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="disk-full.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="wal-configuration.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Disk Full Failure</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="admin.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
-> Configuration</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

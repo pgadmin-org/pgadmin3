@@ -1,161 +1,40 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->DECLARE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="DEALLOCATE"
-HREF="sql-deallocate.html"><LINK
-REL="NEXT"
-TITLE="DELETE"
-HREF="sql-delete.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-deallocate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-deallocate.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-delete.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-delete.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-DECLARE"
-></A
->DECLARE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN39579"
-></A
-><H2
->Name</H2
->DECLARE&nbsp;--&nbsp;define a cursor</DIV
-><A
-NAME="AEN39582"
-></A
-><A
-NAME="AEN39584"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN39587"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->DECLARE <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
-    CURSOR [ { WITH | WITHOUT } HOLD ] FOR <VAR
-CLASS="REPLACEABLE"
->query</VAR
->
-    [ FOR { READ ONLY | UPDATE [ OF <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> [, ...] ] } ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39592"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->DECLARE</TT
-> allows a user to create cursors, which
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DECLARE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-deallocate.html" title="DEALLOCATE">
+<link rel="next" href="sql-delete.html" title="DELETE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-declare"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DECLARE &#8212; define a cursor</p>
+</div>
+<a name="id2679477"></a><a name="id2679487"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DECLARE <i class="replaceable"><tt>name</tt></i> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
+    CURSOR [ { WITH | WITHOUT } HOLD ] FOR <i class="replaceable"><tt>query</tt></i>
+    [ FOR { READ ONLY | UPDATE [ OF <i class="replaceable"><tt>column</tt></i> [, ...] ] } ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2679524"></a><h2>Description</h2>
+<p>   <tt class="command">DECLARE</tt> allows a user to create cursors, which
    can be used to retrieve
    a small number of rows at a time out of a larger query. Cursors can
    return data either in text or in binary format using
-   <A
-HREF="sql-fetch.html"
-><I
->FETCH</I
-></A
->.
-  </P
-><P
->   Normal cursors return data in text format, the same as a
-   <TT
-CLASS="COMMAND"
->SELECT</TT
-> would produce.  Since data is stored natively in
+   <a href="sql-fetch.html">FETCH</a>.
+  </p>
+<p>   Normal cursors return data in text format, the same as a
+   <tt class="command">SELECT</tt> would produce.  Since data is stored natively in
    binary format, the system must do a conversion to produce the text
    format.  Once the information comes back in text form, the client
    application may need to convert it to a binary format to manipulate
@@ -165,496 +44,165 @@ CLASS="COMMAND"
    Nevertheless, if you intend to display the data as text anyway,
    retrieving it in text form will
    save you some effort on the client side.
-  </P
-><P
->   As an example, if a query returns a value of one from an integer column,
-   you would get a string of <TT
-CLASS="LITERAL"
->1</TT
-> with a default cursor
+  </p>
+<p>   As an example, if a query returns a value of one from an integer column,
+   you would get a string of <tt class="literal">1</tt> with a default cursor
    whereas with a binary cursor you would get
    a 4-byte field containing the internal representation of the value
    (in big-endian byte order).
-  </P
-><P
->   Binary cursors should be used carefully.  Many applications,
-   including <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->, are not prepared to
+  </p>
+<p>   Binary cursors should be used carefully.  Many applications,
+   including <span class="application">psql</span>, are not prepared to
    handle binary cursors and expect data to come back in the text
    format.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->    When the client application uses the <SPAN
-CLASS="QUOTE"
->"extended query"</SPAN
-> protocol
-    to issue a <TT
-CLASS="COMMAND"
->FETCH</TT
-> command, the Bind protocol message
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    When the client application uses the &#8220;<span class="quote">extended query</span>&#8221; protocol
+    to issue a <tt class="command">FETCH</tt> command, the Bind protocol message
     specifies whether data is to be retrieved in text or binary format.
     This choice overrides the way that the cursor is defined.  The concept
     of a binary cursor as such is thus obsolete when using extended query
     protocol --- any cursor can be treated as either text or binary.
-   </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39607"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->name</VAR
-></DT
-><DD
-><P
->      The name of the cursor to be created.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->BINARY</TT
-></DT
-><DD
-><P
->      Causes the cursor to return data in binary rather than in text format.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->INSENSITIVE</TT
-></DT
-><DD
-><P
->      Indicates that data retrieved from the cursor should be
+   </p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2679613"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dd><p>      The name of the cursor to be created.
+     </p></dd>
+<dt><span class="term"><tt class="literal">BINARY</tt></span></dt>
+<dd><p>      Causes the cursor to return data in binary rather than in text format.
+     </p></dd>
+<dt><span class="term"><tt class="literal">INSENSITIVE</tt></span></dt>
+<dd><p>      Indicates that data retrieved from the cursor should be
       unaffected by updates to the tables underlying the cursor while
-      the cursor exists.  In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->,
+      the cursor exists.  In <span class="productname">PostgreSQL</span>,
       all cursors are insensitive; this key word currently has no
       effect and is present for compatibility with the SQL standard.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->SCROLL</TT
-><BR><TT
-CLASS="LITERAL"
->NO SCROLL</TT
-></DT
-><DD
-><P
->      <TT
-CLASS="LITERAL"
->SCROLL</TT
-> specifies that the cursor may be used
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">SCROLL</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NO SCROLL</tt></span>
+</dt>
+<dd><p>      <tt class="literal">SCROLL</tt> specifies that the cursor may be used
       to retrieve rows in a nonsequential fashion (e.g.,
       backward). Depending upon the complexity of the query's
-      execution plan, specifying <TT
-CLASS="LITERAL"
->SCROLL</TT
-> may impose
+      execution plan, specifying <tt class="literal">SCROLL</tt> may impose
       a performance penalty on the query's execution time.
-      <TT
-CLASS="LITERAL"
->NO SCROLL</TT
-> specifies that the cursor cannot be
+      <tt class="literal">NO SCROLL</tt> specifies that the cursor cannot be
       used to retrieve rows in a nonsequential fashion.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->WITH HOLD</TT
-><BR><TT
-CLASS="LITERAL"
->WITHOUT HOLD</TT
-></DT
-><DD
-><P
->      <TT
-CLASS="LITERAL"
->WITH HOLD</TT
-> specifies that the cursor may
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">WITH HOLD</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">WITHOUT HOLD</tt></span>
+</dt>
+<dd><p>      <tt class="literal">WITH HOLD</tt> specifies that the cursor may
       continue to be used after the transaction that created it
-      successfully commits.  <TT
-CLASS="LITERAL"
->WITHOUT HOLD</TT
-> specifies
+      successfully commits.  <tt class="literal">WITHOUT HOLD</tt> specifies
       that the cursor cannot be used outside of the transaction that
-      created it. If neither <TT
-CLASS="LITERAL"
->WITHOUT HOLD</TT
-> nor
-      <TT
-CLASS="LITERAL"
->WITH HOLD</TT
-> is specified, <TT
-CLASS="LITERAL"
->WITHOUT
-      HOLD</TT
-> is the default.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->query</VAR
-></DT
-><DD
-><P
->      A <TT
-CLASS="COMMAND"
->SELECT</TT
-> command that will provide the rows to be
-      returned by the cursor.  Refer to <A
-HREF="sql-select.html"
-><I
->SELECT</I
-></A
-> for further information about valid
+      created it. If neither <tt class="literal">WITHOUT HOLD</tt> nor
+      <tt class="literal">WITH HOLD</tt> is specified, <tt class="literal">WITHOUT
+      HOLD</tt> is the default.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>query</tt></i></span></dt>
+<dd><p>      A <tt class="command">SELECT</tt> command that will provide the rows to be
+      returned by the cursor.  Refer to <a href="sql-select.html">SELECT</a> for further information about valid
       queries.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->FOR READ ONLY</TT
-><BR><TT
-CLASS="LITERAL"
->FOR UPDATE</TT
-></DT
-><DD
-><P
->      <TT
-CLASS="LITERAL"
->FOR READ ONLY</TT
-> indicates that the cursor will
-      be used in a read-only mode.  <TT
-CLASS="LITERAL"
->FOR UPDATE</TT
->
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">FOR READ ONLY</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">FOR UPDATE</tt></span>
+</dt>
+<dd><p>      <tt class="literal">FOR READ ONLY</tt> indicates that the cursor will
+      be used in a read-only mode.  <tt class="literal">FOR UPDATE</tt>
       indicates that the cursor will be used to update tables.  Since
       cursor updates are not currently supported in
-      <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, specifying <TT
-CLASS="LITERAL"
->FOR
-      UPDATE</TT
-> will cause an error message and specifying
-      <TT
-CLASS="LITERAL"
->FOR READ ONLY</TT
-> has no effect.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->column</VAR
-></DT
-><DD
-><P
->      Column(s) to be updated by the cursor.  Since cursor updates are
+      <span class="productname">PostgreSQL</span>, specifying <tt class="literal">FOR
+      UPDATE</tt> will cause an error message and specifying
+      <tt class="literal">FOR READ ONLY</tt> has no effect.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>column</tt></i></span></dt>
+<dd><p>      Column(s) to be updated by the cursor.  Since cursor updates are
       not currently supported in
-      <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, the <TT
-CLASS="LITERAL"
->FOR
-      UPDATE</TT
-> clause provokes an error message.
-     </P
-></DD
-></DL
-></DIV
-><P
->   The key words <TT
-CLASS="LITERAL"
->BINARY</TT
->,
-   <TT
-CLASS="LITERAL"
->INSENSITIVE</TT
->, and <TT
-CLASS="LITERAL"
->SCROLL</TT
-> may
+      <span class="productname">PostgreSQL</span>, the <tt class="literal">FOR
+      UPDATE</tt> clause provokes an error message.
+     </p></dd>
+</dl></div>
+<p>   The key words <tt class="literal">BINARY</tt>,
+   <tt class="literal">INSENSITIVE</tt>, and <tt class="literal">SCROLL</tt> may
    appear in any order.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39678"
-></A
-><H2
->Notes</H2
-><P
->    Unless <TT
-CLASS="LITERAL"
->WITH HOLD</TT
-> is specified, the cursor
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2679874"></a><h2>Notes</h2>
+<p>    Unless <tt class="literal">WITH HOLD</tt> is specified, the cursor
     created by this command can only be used within the current
-    transaction.  Thus, <TT
-CLASS="COMMAND"
->DECLARE</TT
-> without <TT
-CLASS="LITERAL"
->WITH
-    HOLD</TT
-> is useless outside a transaction block: the cursor would
+    transaction.  Thus, <tt class="command">DECLARE</tt> without <tt class="literal">WITH
+    HOLD</tt> is useless outside a transaction block: the cursor would
     survive only to the completion of the statement.  Therefore
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> reports an error if this
+    <span class="productname">PostgreSQL</span> reports an error if this
     command is used outside a transaction block.
     Use
-    <A
-HREF="sql-begin.html"
-><I
->BEGIN</I
-></A
->,
-    <A
-HREF="sql-commit.html"
-><I
->COMMIT</I
-></A
->
+    <a href="sql-begin.html">BEGIN</a>,
+    <a href="sql-commit.html">COMMIT</a>
     and
-    <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
->
+    <a href="sql-rollback.html">ROLLBACK</a>
     to define a transaction block.
-   </P
-><P
->    If <TT
-CLASS="LITERAL"
->WITH HOLD</TT
-> is specified and the transaction
+   </p>
+<p>    If <tt class="literal">WITH HOLD</tt> is specified and the transaction
     that created the cursor successfully commits, the cursor can
     continue to be accessed by subsequent transactions in the same
     session.  (But if the creating transaction is aborted, the cursor
-    is removed.)  A cursor created with <TT
-CLASS="LITERAL"
->WITH HOLD</TT
->
-    is closed when an explicit <TT
-CLASS="COMMAND"
->CLOSE</TT
-> command is
+    is removed.)  A cursor created with <tt class="literal">WITH HOLD</tt>
+    is closed when an explicit <tt class="command">CLOSE</tt> command is
     issued on it, or the session ends.  In the current implementation,
     the rows represented by a held cursor are copied into a temporary
     file or memory area so that they remain available for subsequent
     transactions.
-   </P
-><P
->    The <TT
-CLASS="LITERAL"
->SCROLL</TT
-> option should be specified when defining a
+   </p>
+<p>    The <tt class="literal">SCROLL</tt> option should be specified when defining a
     cursor that will be used to fetch backwards.  This is required by
     the SQL standard.  However, for compatibility with earlier
-    versions, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> will allow
-    backward fetches without <TT
-CLASS="LITERAL"
->SCROLL</TT
->, if the cursor's query
+    versions, <span class="productname">PostgreSQL</span> will allow
+    backward fetches without <tt class="literal">SCROLL</tt>, if the cursor's query
     plan is simple enough that no extra overhead is needed to support
     it. However, application developers are advised not to rely on
     using backward fetches from a cursor that has not been created
-    with <TT
-CLASS="LITERAL"
->SCROLL</TT
->.  If <TT
-CLASS="LITERAL"
->NO SCROLL</TT
-> is
+    with <tt class="literal">SCROLL</tt>.  If <tt class="literal">NO SCROLL</tt> is
     specified, then backward fetches are disallowed in any case.
-   </P
-><P
->    The SQL standard only makes provisions for cursors in embedded
-    <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->.  The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    server does not implement an <TT
-CLASS="COMMAND"
->OPEN</TT
-> statement for
+   </p>
+<p>    The SQL standard only makes provisions for cursors in embedded
+    <span class="acronym">SQL</span>.  The <span class="productname">PostgreSQL</span>
+    server does not implement an <tt class="command">OPEN</tt> statement for
     cursors; a cursor is considered to be open when it is declared.
-    However, <SPAN
-CLASS="APPLICATION"
->ECPG</SPAN
->, the embedded SQL
-    preprocessor for <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, supports
+    However, <span class="application">ECPG</span>, the embedded SQL
+    preprocessor for <span class="productname">PostgreSQL</span>, supports
     the standard SQL cursor conventions, including those involving
-    <TT
-CLASS="COMMAND"
->DECLARE</TT
-> and <TT
-CLASS="COMMAND"
->OPEN</TT
-> statements.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39706"
-></A
-><H2
->Examples</H2
-><P
->   To declare a cursor:
-</P><PRE
-CLASS="PROGRAMLISTING"
->DECLARE liahona CURSOR FOR SELECT * FROM films;</PRE
-><P>
-   See <A
-HREF="sql-fetch.html"
-><I
->FETCH</I
-></A
-> for more
+    <tt class="command">DECLARE</tt> and <tt class="command">OPEN</tt> statements.
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2680054"></a><h2>Examples</h2>
+<p>   To declare a cursor:
+</p>
+<pre class="programlisting">DECLARE liahona CURSOR FOR SELECT * FROM films;</pre>
+<p>
+   See <a href="sql-fetch.html">FETCH</a> for more
    examples of cursor usage.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39711"
-></A
-><H2
->Compatibility</H2
-><P
->   The SQL standard allows cursors only in embedded
-   <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> and in modules. <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2680077"></a><h2>Compatibility</h2>
+<p>   The SQL standard allows cursors only in embedded
+   <span class="acronym">SQL</span> and in modules. <span class="productname">PostgreSQL</span>
    permits cursors to be used interactively.
-  </P
-><P
->   The SQL standard allows cursors to update table data. All
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> cursors are read only.
-  </P
-><P
->   Binary cursors are a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+  </p>
+<p>   The SQL standard allows cursors to update table data. All
+   <span class="productname">PostgreSQL</span> cursors are read only.
+  </p>
+<p>   Binary cursors are a <span class="productname">PostgreSQL</span>
    extension.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-deallocate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-delete.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->DEALLOCATE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->DELETE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

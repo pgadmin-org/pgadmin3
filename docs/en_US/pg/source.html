@@ -1,244 +1,51 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->PostgreSQL Coding Conventions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Internals"
-HREF="internals.html"><LINK
-REL="PREVIOUS"
-TITLE="Summary of Changes since Protocol 2.0"
-HREF="protocol-changes.html"><LINK
-REL="NEXT"
-TITLE="Reporting Errors Within the Server"
-HREF="error-message-reporting.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="protocol-changes.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="protocol.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="nls.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="error-message-reporting.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="SOURCE"
-></A
->Chapter 43. PostgreSQL Coding Conventions</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->43.1. <A
-HREF="source.html#SOURCE-FORMAT"
->Formatting</A
-></DT
-><DT
->43.2. <A
-HREF="error-message-reporting.html"
->Reporting Errors Within the Server</A
-></DT
-><DT
->43.3. <A
-HREF="error-style-guide.html"
->Error Message Style Guide</A
-></DT
-><DD
-><DL
-><DT
->43.3.1. <A
-HREF="error-style-guide.html#AEN54986"
->What goes where</A
-></DT
-><DT
->43.3.2. <A
-HREF="error-style-guide.html#AEN54995"
->Formatting</A
-></DT
-><DT
->43.3.3. <A
-HREF="error-style-guide.html#AEN54999"
->Quotation marks</A
-></DT
-><DT
->43.3.4. <A
-HREF="error-style-guide.html#AEN55003"
->Use of quotes</A
-></DT
-><DT
->43.3.5. <A
-HREF="error-style-guide.html#AEN55009"
->Grammar and punctuation</A
-></DT
-><DT
->43.3.6. <A
-HREF="error-style-guide.html#AEN55015"
->Upper case vs. lower case</A
-></DT
-><DT
->43.3.7. <A
-HREF="error-style-guide.html#AEN55019"
->Avoid passive voice</A
-></DT
-><DT
->43.3.8. <A
-HREF="error-style-guide.html#AEN55025"
->Present vs past tense</A
-></DT
-><DT
->43.3.9. <A
-HREF="error-style-guide.html#AEN55035"
->Type of the object</A
-></DT
-><DT
->43.3.10. <A
-HREF="error-style-guide.html#AEN55040"
->Brackets</A
-></DT
-><DT
->43.3.11. <A
-HREF="error-style-guide.html#AEN55044"
->Assembling error messages</A
-></DT
-><DT
->43.3.12. <A
-HREF="error-style-guide.html#AEN55049"
->Reasons for errors</A
-></DT
-><DT
->43.3.13. <A
-HREF="error-style-guide.html#AEN55053"
->Function names</A
-></DT
-><DT
->43.3.14. <A
-HREF="error-style-guide.html#AEN55060"
->Tricky words to avoid</A
-></DT
-><DT
->43.3.15. <A
-HREF="error-style-guide.html#AEN55092"
->Proper spelling</A
-></DT
-><DT
->43.3.16. <A
-HREF="error-style-guide.html#AEN55107"
->Localization</A
-></DT
-></DL
-></DD
-></DL
-></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="SOURCE-FORMAT"
->43.1. Formatting</A
-></H1
-><P
->    Source code formatting uses 4 column tab spacing, with 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 43. PostgreSQL Coding Conventions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="previous" href="protocol-changes.html" title="42.6. Summary of Changes since Protocol 2.0">
+<link rel="next" href="error-message-reporting.html" title="43.2. Reporting Errors Within the Server">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="source">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="source"></a>Chapter 43. PostgreSQL Coding Conventions</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="source.html#source-format">43.1. Formatting</a></span></dt>
+<dt><span class="sect1"><a href="error-message-reporting.html">43.2. Reporting Errors Within the Server</a></span></dt>
+<dt><span class="sect1"><a href="error-style-guide.html">43.3. Error Message Style Guide</a></span></dt>
+</dl>
+</div>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="source-format"></a>43.1. Formatting</h2></div></div>
+<div></div>
+</div>
+<p>    Source code formatting uses 4 column tab spacing, with 
     tabs preserved (i.e. tabs are not expanded to spaces).
     Each logical indentation level is one additional tab stop.
     Layout rules (brace positioning, etc) follow BSD conventions.
-   </P
-><P
->    While submitted patches do not absolutely have to follow these formatting
+   </p>
+<p>    While submitted patches do not absolutely have to follow these formatting
     rules, it's a good idea to do so.  Your code will get run through
-    <SPAN
-CLASS="APPLICATION"
->pgindent</SPAN
->, so there's no point in making it look nice
+    <span class="application">pgindent</span>, so there's no point in making it look nice
     under some other set of formatting conventions.
-   </P
-><P
->    For <SPAN
-CLASS="PRODUCTNAME"
->Emacs</SPAN
->, add the following (or
-    something similar) to your <TT
-CLASS="FILENAME"
->~/.emacs</TT
-> 
+   </p>
+<p>    For <span class="productname">Emacs</span>, add the following (or
+    something similar) to your <tt class="filename">~/.emacs</tt> 
     initialization file:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->;; check for files with a path containing "postgres" or "pgsql"
+</p>
+<pre class="programlisting">;; check for files with a path containing "postgres" or "pgsql"
 (setq auto-mode-alist
   (cons '("\\(postgres\\|pgsql\\).*\\.[ch]\\'" . pgsql-c-mode)
         auto-mode-alist))
@@ -253,115 +60,31 @@ CLASS="PROGRAMLISTING"
   (setq-default tab-width 4)
   (c-set-style "bsd")             ; set c-basic-offset to 4, plus other stuff
   (c-set-offset 'case-label '+)   ; tweak case indent to match PG custom
-  (setq indent-tabs-mode t))      ; make sure we keep tabs when indenting</PRE
-><P>
-   </P
-><P
->    For <SPAN
-CLASS="APPLICATION"
->vi</SPAN
->, your
-    <TT
-CLASS="FILENAME"
->~/.vimrc</TT
-> or equivalent file should contain
+  (setq indent-tabs-mode t))      ; make sure we keep tabs when indenting</pre>
+<p>
+   </p>
+<p>    For <span class="application">vi</span>, your
+    <tt class="filename">~/.vimrc</tt> or equivalent file should contain
     the following:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->set tabstop=4</PRE
-><P>
+</p>
+<pre class="programlisting">set tabstop=4</pre>
+<p>
 
-    or equivalently from within <SPAN
-CLASS="APPLICATION"
->vi</SPAN
->, try
+    or equivalently from within <span class="application">vi</span>, try
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->:set ts=4</PRE
-><P>
-   </P
-><P
->    The text browsing tools <SPAN
-CLASS="APPLICATION"
->more</SPAN
-> and
-    <SPAN
-CLASS="APPLICATION"
->less</SPAN
-> can be invoked as
-</P><PRE
-CLASS="PROGRAMLISTING"
->more -x4
-less -x4</PRE
-><P>
+</p>
+<pre class="programlisting">:set ts=4</pre>
+<p>
+   </p>
+<p>    The text browsing tools <span class="application">more</span> and
+    <span class="application">less</span> can be invoked as
+</p>
+<pre class="programlisting">more -x4
+less -x4</pre>
+<p>
     to make them show tabs appropriately.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="protocol-changes.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="error-message-reporting.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Summary of Changes since Protocol 2.0</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="internals.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Reporting Errors Within the Server</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

@@ -1,108 +1,27 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Inheritance</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Data Definition"
-HREF="ddl.html"><LINK
-REL="PREVIOUS"
-TITLE="Constraints"
-HREF="ddl-constraints.html"><LINK
-REL="NEXT"
-TITLE="Modifying Tables"
-HREF="ddl-alter.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl-constraints.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 5. Data Definition</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl-alter.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="DDL-INHERIT"
->5.5. Inheritance</A
-></H1
-><P
->   Let's create two tables. The capitals  table  contains
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>5.5. Inheritance</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="previous" href="ddl-constraints.html" title="5.4. Constraints">
+<link rel="next" href="ddl-alter.html" title="5.6. Modifying Tables">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="ddl-inherit"></a>5.5. Inheritance</h2></div></div>
+<div></div>
+</div>
+<p>   Let's create two tables. The capitals  table  contains
    state  capitals  which  are also cities. Naturally, the
    capitals table should inherit from cities.
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TABLE cities (
+</p>
+<pre class="programlisting">CREATE TABLE cities (
     name            text,
     population      float,
     altitude        int     -- (in ft)
@@ -110,362 +29,167 @@ CLASS="PROGRAMLISTING"
 
 CREATE TABLE capitals (
     state           char(2)
-) INHERITS (cities);</PRE
-><P>
+) INHERITS (cities);</pre>
+<p>
 
-   In this case, a row of capitals <I
-CLASS="FIRSTTERM"
->inherits</I
-> all
+   In this case, a row of capitals <i class="firstterm">inherits</i> all
    attributes (name, population, and altitude) from its parent, cities.  State
    capitals have an extra attribute, state, that shows their state.  In
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, a table can inherit from zero or
+   <span class="productname">PostgreSQL</span>, a table can inherit from zero or
    more other tables, and a query can reference either all rows of a table or
    all rows of a table plus all of its descendants.
 
-   </P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     The inheritance hierarchy is actually a directed acyclic graph.
-    </P
-></BLOCKQUOTE
-></DIV
-><P>
-  </P
-><P
->    For example, the  following  query finds the  names  of  all  cities,
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     The inheritance hierarchy is actually a directed acyclic graph.
+    </p>
+</div>
+<p>
+  </p>
+<p>    For example, the  following  query finds the  names  of  all  cities,
     including  state capitals, that are located at an altitude 
     over 500ft:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT name, altitude
+</p>
+<pre class="programlisting">SELECT name, altitude
     FROM cities
-    WHERE altitude &gt; 500;</PRE
-><P>
+    WHERE altitude &gt; 500;</pre>
+<p>
 
    which returns:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->   name    | altitude
+</p>
+<pre class="programlisting">   name    | altitude
 -----------+----------
  Las Vegas |     2174
  Mariposa  |     1953
- Madison   |      845</PRE
-><P>
-  </P
-><P
->    On the other hand, the  following  query  finds
+ Madison   |      845</pre>
+<p>
+  </p>
+<p>    On the other hand, the  following  query  finds
     all  the cities that are not state capitals and
     are situated at an altitude over 500ft:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT name, altitude
+</p>
+<pre class="programlisting">SELECT name, altitude
     FROM ONLY cities
     WHERE altitude &gt; 500;
 
    name    | altitude
 -----------+----------
  Las Vegas |     2174
- Mariposa  |     1953</PRE
-><P>         
-  </P
-><P
->   Here the <SPAN
-CLASS="QUOTE"
->"ONLY"</SPAN
-> before cities indicates that the query should
+ Mariposa  |     1953</pre>
+<p>         
+  </p>
+<p>   Here the &#8220;<span class="quote">ONLY</span>&#8221; before cities indicates that the query should
    be  run over only cities and not tables below cities in the
    inheritance hierarchy.  Many of the  commands  that  we
-   have  already discussed -- <TT
-CLASS="COMMAND"
->SELECT</TT
->,
-   <TT
-CLASS="COMMAND"
->UPDATE</TT
-> and <TT
-CLASS="COMMAND"
->DELETE</TT
-> --
-   support this <SPAN
-CLASS="QUOTE"
->"ONLY"</SPAN
-> notation.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Deprecated: </B
->     In previous versions of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, the
+   have  already discussed -- <tt class="command">SELECT</tt>,
+   <tt class="command">UPDATE</tt> and <tt class="command">DELETE</tt> --
+   support this &#8220;<span class="quote">ONLY</span>&#8221; notation.
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Deprecated</h3>
+<p>     In previous versions of <span class="productname">PostgreSQL</span>, the
      default behavior was not to include child tables in queries. This was
      found to be error prone and is also in violation of the SQL99
      standard. Under the old syntax, to get the sub-tables you append
-     <TT
-CLASS="LITERAL"
->*</TT
-> to the table name.
+     <tt class="literal">*</tt> to the table name.
      For example
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * from cities*;</PRE
-><P>
+</p>
+<pre class="programlisting">SELECT * from cities*;</pre>
+<p>
      You can still explicitly specify scanning child tables by appending
-     <TT
-CLASS="LITERAL"
->*</TT
->, as well as explicitly specify not scanning child tables by
-     writing <SPAN
-CLASS="QUOTE"
->"ONLY"</SPAN
->.  But beginning in version 7.1, the default
+     <tt class="literal">*</tt>, as well as explicitly specify not scanning child tables by
+     writing &#8220;<span class="quote">ONLY</span>&#8221;.  But beginning in version 7.1, the default
      behavior for an undecorated table name is to scan its child tables
      too, whereas before the default was not to do so.  To get the old
      default behavior, set the configuration option
-     <TT
-CLASS="LITERAL"
->SQL_Inheritance</TT
-> to off, e.g.,
-</P><PRE
-CLASS="PROGRAMLISTING"
->SET SQL_Inheritance TO OFF;</PRE
-><P>
-     or add a line in your <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->  In some cases you may wish to know which table a particular row
+     <tt class="literal">SQL_Inheritance</tt> to off, e.g.,
+</p>
+<pre class="programlisting">SET SQL_Inheritance TO OFF;</pre>
+<p>
+     or add a line in your <tt class="filename">postgresql.conf</tt> file.
+   </p>
+</div>
+<p>  In some cases you may wish to know which table a particular row
   originated from. There is a system column called
-  <TT
-CLASS="STRUCTFIELD"
->TABLEOID</TT
-> in each table which can tell you the
+  <tt class="structfield">TABLEOID</tt> in each table which can tell you the
   originating table:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT c.tableoid, c.name, c.altitude
+</p>
+<pre class="programlisting">SELECT c.tableoid, c.name, c.altitude
 FROM cities c
-WHERE c.altitude &gt; 500;</PRE
-><P>
+WHERE c.altitude &gt; 500;</pre>
+<p>
 
    which returns:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
-> tableoid |   name    | altitude
+</p>
+<pre class="programlisting"> tableoid |   name    | altitude
 ----------+-----------+----------
    139793 | Las Vegas |     2174
    139793 | Mariposa  |     1953
-   139798 | Madison   |      845</PRE
-><P>
+   139798 | Madison   |      845</pre>
+<p>
 
    (If you try to reproduce this example, you will probably get
    different numeric OIDs.)  By doing a join with
-   <TT
-CLASS="STRUCTNAME"
->pg_class</TT
-> you can see the actual table names:
+   <tt class="structname">pg_class</tt> you can see the actual table names:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT p.relname, c.name, c.altitude
+</p>
+<pre class="programlisting">SELECT p.relname, c.name, c.altitude
 FROM cities c, pg_class p
-WHERE c.altitude &gt; 500 and c.tableoid = p.oid;</PRE
-><P>
+WHERE c.altitude &gt; 500 and c.tableoid = p.oid;</pre>
+<p>
 
    which returns:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
-> relname  |   name    | altitude
+</p>
+<pre class="programlisting"> relname  |   name    | altitude
 ----------+-----------+----------
  cities   | Las Vegas |     2174
  cities   | Mariposa  |     1953
- capitals | Madison   |      845</PRE
-><P>
+ capitals | Madison   |      845</pre>
+<p>
    
-  </P
-><P
->   A serious limitation of the inheritance feature is that indexes (including
+  </p>
+<p>   A serious limitation of the inheritance feature is that indexes (including
    unique constraints) and foreign key constraints only apply to single
    tables, not to their inheritance children.  This is true on both the
    referencing and referenced sides of a foreign key constraint.  Thus,
    in the terms of the above example:
 
-   <P
-></P
-></P><UL
-><LI
-><P
->      If we declared <TT
-CLASS="STRUCTNAME"
->cities</TT
->.<TT
-CLASS="STRUCTFIELD"
->name</TT
-> to be
-      <TT
-CLASS="LITERAL"
->UNIQUE</TT
-> or a <TT
-CLASS="LITERAL"
->PRIMARY KEY</TT
->, this would not stop the
-      <TT
-CLASS="STRUCTNAME"
->capitals</TT
-> table from having rows with names duplicating
-      rows in <TT
-CLASS="STRUCTNAME"
->cities</TT
->.  And those duplicate rows would by
-      default show up in SELECTs from <TT
-CLASS="STRUCTNAME"
->cities</TT
->.  In fact, by
-      default <TT
-CLASS="STRUCTNAME"
->capitals</TT
-> would have no unique constraint at all,
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      If we declared <tt class="structname">cities</tt>.<tt class="structfield">name</tt> to be
+      <tt class="literal">UNIQUE</tt> or a <tt class="literal">PRIMARY KEY</tt>, this would not stop the
+      <tt class="structname">capitals</tt> table from having rows with names duplicating
+      rows in <tt class="structname">cities</tt>.  And those duplicate rows would by
+      default show up in SELECTs from <tt class="structname">cities</tt>.  In fact, by
+      default <tt class="structname">capitals</tt> would have no unique constraint at all,
       and so could contain multiple rows with the same name.
-      You could add a unique constraint to <TT
-CLASS="STRUCTNAME"
->capitals</TT
->, but this
-      would not prevent duplication compared to <TT
-CLASS="STRUCTNAME"
->cities</TT
->.
-     </P
-></LI
-><LI
-><P
->      Similarly, if we were to specify that
-      <TT
-CLASS="STRUCTNAME"
->cities</TT
->.<TT
-CLASS="STRUCTFIELD"
->name</TT
-> <TT
-CLASS="LITERAL"
->REFERENCES</TT
-> some
+      You could add a unique constraint to <tt class="structname">capitals</tt>, but this
+      would not prevent duplication compared to <tt class="structname">cities</tt>.
+     </p></li>
+<li><p>      Similarly, if we were to specify that
+      <tt class="structname">cities</tt>.<tt class="structfield">name</tt> <tt class="literal">REFERENCES</tt> some
       other table, this constraint would not automatically propagate to
-      <TT
-CLASS="STRUCTNAME"
->capitals</TT
->.  In this case you could work around it by
-      manually adding the same <TT
-CLASS="LITERAL"
->REFERENCES</TT
-> constraint to
-      <TT
-CLASS="STRUCTNAME"
->capitals</TT
->.
-     </P
-></LI
-><LI
-><P
->      Specifying that another table's column <TT
-CLASS="LITERAL"
->REFERENCES
-      cities(name)</TT
-> would allow the other table to contain city names, but
+      <tt class="structname">capitals</tt>.  In this case you could work around it by
+      manually adding the same <tt class="literal">REFERENCES</tt> constraint to
+      <tt class="structname">capitals</tt>.
+     </p></li>
+<li><p>      Specifying that another table's column <tt class="literal">REFERENCES
+      cities(name)</tt> would allow the other table to contain city names, but
       not capital names.  There is no good workaround for this case.
-     </P
-></LI
-></UL
-><P>
+     </p></li>
+</ul></div>
+<p>
 
    These deficiencies will probably be fixed in some future release,
    but in the meantime considerable care is needed in deciding whether
    inheritance is useful for your problem.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl-constraints.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl-alter.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Constraints</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="ddl.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Modifying Tables</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

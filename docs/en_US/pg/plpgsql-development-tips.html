@@ -1,177 +1,57 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Tips for Developing in PL/pgSQL</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PL/pgSQL - SQL Procedural Language"
-HREF="plpgsql.html"><LINK
-REL="PREVIOUS"
-TITLE="PL/pgSQL - SQL Procedural Language"
-HREF="plpgsql.html"><LINK
-REL="NEXT"
-TITLE="Structure of PL/pgSQL"
-HREF="plpgsql-structure.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 35. <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> - <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Procedural Language</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql-structure.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PLPGSQL-DEVELOPMENT-TIPS"
->35.2. Tips for Developing in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></A
-></H1
-><P
->    One good way to develop in
-    <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> is to use the text editor of your
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>35.2. Tips for Developing in PL/pgSQL</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
+<link rel="previous" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
+<link rel="next" href="plpgsql-structure.html" title="35.3. Structure of PL/pgSQL">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-development-tips"></a>35.2. Tips for Developing in <span class="application">PL/pgSQL</span></h2></div></div>
+<div></div>
+</div>
+<p>    One good way to develop in
+    <span class="application">PL/pgSQL</span> is to use the text editor of your
     choice to create your functions, and in another window, use
-    <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> to load and test those functions.
+    <span class="application">psql</span> to load and test those functions.
     If you are doing it this way, it
-    is a good idea to write the function using <TT
-CLASS="COMMAND"
->CREATE OR
-    REPLACE FUNCTION</TT
->. That way you can just reload the file to update
+    is a good idea to write the function using <tt class="command">CREATE OR
+    REPLACE FUNCTION</tt>. That way you can just reload the file to update
     the function definition.  For example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $$
+</p>
+<pre class="programlisting">CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $$
           ....
-$$ LANGUAGE plpgsql;</PRE
-><P>
-   </P
-><P
->    While running <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->, you can load or reload such
+$$ LANGUAGE plpgsql;</pre>
+<p>
+   </p>
+<p>    While running <span class="application">psql</span>, you can load or reload such
     a function definition file with
-</P><PRE
-CLASS="PROGRAMLISTING"
->\i filename.sql</PRE
-><P>
+</p>
+<pre class="programlisting">\i filename.sql</pre>
+<p>
     and then immediately issue SQL commands to test the function.
-   </P
-><P
->    Another good way to develop in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> is with a
+   </p>
+<p>    Another good way to develop in <span class="application">PL/pgSQL</span> is with a
     GUI database access tool that facilitates development in a
     procedural language. One example of such as a tool is
-    <SPAN
-CLASS="APPLICATION"
->PgAccess</SPAN
->, although others exist. These tools often
+    <span class="application">PgAccess</span>, although others exist. These tools often
     provide convenient features such as escaping single quotes and
     making it easier to recreate and debug functions.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-QUOTE-TIPS"
->35.2.1. Handling of Quotation Marks</A
-></H2
-><P
->    The code of a <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function is specified in
-    <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> as a string literal.  If you
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="plpgsql-quote-tips"></a>35.2.1. Handling of Quotation Marks</h3></div></div>
+<div></div>
+</div>
+<p>    The code of a <span class="application">PL/pgSQL</span> function is specified in
+    <tt class="command">CREATE FUNCTION</tt> as a string literal.  If you
     write the string literal in the ordinary way with surrounding
     single quotes, then any single quotes inside the function body
     must be doubled; likewise any backslashes must be doubled.
@@ -179,284 +59,126 @@ CLASS="COMMAND"
     the code can become downright incomprehensible, because you can
     easily find yourself needing half a dozen or more adjacent quote marks.
     It's recommended that you instead write the function body as a
-    <SPAN
-CLASS="QUOTE"
->"dollar-quoted"</SPAN
-> string literal.  In the dollar-quoting
+    &#8220;<span class="quote">dollar-quoted</span>&#8221; string literal.  In the dollar-quoting
     approach, you never double any quote marks, but instead take care to
     choose a different dollar-quoting delimiter for each level of
-    nesting you need.  For example, you might write the <TT
-CLASS="COMMAND"
->CREATE
-    FUNCTION</TT
-> command as
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $PROC$
+    nesting you need.  For example, you might write the <tt class="command">CREATE
+    FUNCTION</tt> command as
+</p>
+<pre class="programlisting">CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $PROC$
           ....
-$PROC$ LANGUAGE plpgsql;</PRE
-><P>
+$PROC$ LANGUAGE plpgsql;</pre>
+<p>
     Within this, you might use quote marks for simple literal strings in
-    SQL commands and <TT
-CLASS="LITERAL"
->$$</TT
-> to delimit fragments of SQL commands
+    SQL commands and <tt class="literal">$$</tt> to delimit fragments of SQL commands
     that you are assembling as strings.  If you need to quote text that
-    includes <TT
-CLASS="LITERAL"
->$$</TT
->, you could use <TT
-CLASS="LITERAL"
->$Q$</TT
->, and so on.
-   </P
-><P
->    The following chart shows what you have to do when writing quote
+    includes <tt class="literal">$$</tt>, you could use <tt class="literal">$Q$</tt>, and so on.
+   </p>
+<p>    The following chart shows what you have to do when writing quote
     marks without dollar quoting.  It may be useful when translating
     pre-dollar quoting code into something more comprehensible.
-  </P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->1 quotation mark</DT
-><DD
-><P
->      To begin and end the function body, for example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION foo() RETURNS integer AS '
+  </p>
+<div class="variablelist"><dl>
+<dt><span class="term">1 quotation mark</span></dt>
+<dd>
+<p>      To begin and end the function body, for example:
+</p>
+<pre class="programlisting">CREATE FUNCTION foo() RETURNS integer AS '
           ....
-' LANGUAGE plpgsql;</PRE
-><P>
+' LANGUAGE plpgsql;</pre>
+<p>
       Anywhere within a single-quoted function body, quote marks
-      <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->must</I
-></SPAN
-> appear in pairs.
-     </P
-></DD
-><DT
->2 quotation marks</DT
-><DD
-><P
->      For string literals inside the function body, for example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->a_output := ''Blah'';
-SELECT * FROM users WHERE f_name=''foobar'';</PRE
-><P>
+      <span class="emphasis"><em>must</em></span> appear in pairs.
+     </p>
+</dd>
+<dt><span class="term">2 quotation marks</span></dt>
+<dd>
+<p>      For string literals inside the function body, for example:
+</p>
+<pre class="programlisting">a_output := ''Blah'';
+SELECT * FROM users WHERE f_name=''foobar'';</pre>
+<p>
       In the dollar-quoting approach, you'd just write
-</P><PRE
-CLASS="PROGRAMLISTING"
->a_output := 'Blah';
-SELECT * FROM users WHERE f_name='foobar';</PRE
-><P>
-      which is exactly what the <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> parser would see
+</p>
+<pre class="programlisting">a_output := 'Blah';
+SELECT * FROM users WHERE f_name='foobar';</pre>
+<p>
+      which is exactly what the <span class="application">PL/pgSQL</span> parser would see
       in either case.
-     </P
-></DD
-><DT
->4 quotation marks</DT
-><DD
-><P
->      When you need a single quotation mark in a string constant inside the
+     </p>
+</dd>
+<dt><span class="term">4 quotation marks</span></dt>
+<dd>
+<p>      When you need a single quotation mark in a string constant inside the
       function body, for example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->a_output := a_output || '' AND name LIKE ''''foobar'''' AND xyz''</PRE
-><P>
-      The value actually appended to <TT
-CLASS="LITERAL"
->a_output</TT
-> would be:
-      <TT
-CLASS="LITERAL"
-> AND name LIKE 'foobar' AND xyz</TT
->.
-     </P
-><P
->      In the dollar-quoting approach, you'd write
-</P><PRE
-CLASS="PROGRAMLISTING"
->a_output := a_output || $$ AND name LIKE 'foobar' AND xyz$$</PRE
-><P>
+</p>
+<pre class="programlisting">a_output := a_output || '' AND name LIKE ''''foobar'''' AND xyz''</pre>
+<p>
+      The value actually appended to <tt class="literal">a_output</tt> would be:
+      <tt class="literal"> AND name LIKE 'foobar' AND xyz</tt>.
+     </p>
+<p>      In the dollar-quoting approach, you'd write
+</p>
+<pre class="programlisting">a_output := a_output || $$ AND name LIKE 'foobar' AND xyz$$</pre>
+<p>
       being careful that any dollar-quote delimiters around this are not
-      just <TT
-CLASS="LITERAL"
->$$</TT
->.
-     </P
-></DD
-><DT
->6 quotation marks</DT
-><DD
-><P
->      When a single quotation mark in a string inside the function body is
+      just <tt class="literal">$$</tt>.
+     </p>
+</dd>
+<dt><span class="term">6 quotation marks</span></dt>
+<dd>
+<p>      When a single quotation mark in a string inside the function body is
       adjacent to the end of that string constant, for example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->a_output := a_output || '' AND name LIKE ''''foobar''''''</PRE
-><P>
-      The value appended to <TT
-CLASS="LITERAL"
->a_output</TT
-> would then be:
-      <TT
-CLASS="LITERAL"
-> AND name LIKE 'foobar'</TT
->.
-     </P
-><P
->      In the dollar-quoting approach, this becomes
-</P><PRE
-CLASS="PROGRAMLISTING"
->a_output := a_output || $$ AND name LIKE 'foobar'$$</PRE
-><P>
-     </P
-></DD
-><DT
->10 quotation marks</DT
-><DD
-><P
->      When you want two single quotation marks in a string constant (which
+</p>
+<pre class="programlisting">a_output := a_output || '' AND name LIKE ''''foobar''''''</pre>
+<p>
+      The value appended to <tt class="literal">a_output</tt> would then be:
+      <tt class="literal"> AND name LIKE 'foobar'</tt>.
+     </p>
+<p>      In the dollar-quoting approach, this becomes
+</p>
+<pre class="programlisting">a_output := a_output || $$ AND name LIKE 'foobar'$$</pre>
+<p>
+     </p>
+</dd>
+<dt><span class="term">10 quotation marks</span></dt>
+<dd>
+<p>      When you want two single quotation marks in a string constant (which
       accounts for 8 quotation marks) and this is adjacent to the end of that
       string constant (2 more).  You will probably only need that if
       you are writing a function that generates other functions, as in
-      <A
-HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX2"
->Example 35-3</A
->.
+      <a href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 35.3. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 35.3, &#8220;Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL&#8221;</a>.
       For example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->a_output := a_output || '' if v_'' || 
+</p>
+<pre class="programlisting">a_output := a_output || '' if v_'' || 
     referrer_keys.kind || '' like '''''''''' 
     || referrer_keys.key_string || '''''''''' 
     then return ''''''  || referrer_keys.referrer_type 
-    || ''''''; end if;''; </PRE
-><P>
-      The value of <TT
-CLASS="LITERAL"
->a_output</TT
-> would then be:
-</P><PRE
-CLASS="PROGRAMLISTING"
->if v_... like ''...'' then return ''...''; end if;</PRE
-><P>
-     </P
-><P
->      In the dollar-quoting approach, this becomes
-</P><PRE
-CLASS="PROGRAMLISTING"
->a_output := a_output || $$ if v_$$ || referrer_keys.kind || $$ like '$$
+    || ''''''; end if;''; </pre>
+<p>
+      The value of <tt class="literal">a_output</tt> would then be:
+</p>
+<pre class="programlisting">if v_... like ''...'' then return ''...''; end if;</pre>
+<p>
+     </p>
+<p>      In the dollar-quoting approach, this becomes
+</p>
+<pre class="programlisting">a_output := a_output || $$ if v_$$ || referrer_keys.kind || $$ like '$$
     || referrer_keys.key_string || $$'
     then return '$$  || referrer_keys.referrer_type 
-    || $$'; end if;$$; </PRE
-><P>
+    || $$'; end if;$$; </pre>
+<p>
       where we assume we only need to put single quote marks into
-      <TT
-CLASS="LITERAL"
->a_output</TT
->, because it will be re-quoted before use.
-     </P
-></DD
-></DL
-></DIV
-><P
->    A variant approach is to escape quotation marks in the function body
+      <tt class="literal">a_output</tt>, because it will be re-quoted before use.
+     </p>
+</dd>
+</dl></div>
+<p>    A variant approach is to escape quotation marks in the function body
     with a backslash rather than by doubling them.  With this method
-    you'll find yourself writing things like <TT
-CLASS="LITERAL"
->\'\'</TT
-> instead
-    of <TT
-CLASS="LITERAL"
->''''</TT
->.  Some find this easier to keep track of, some
+    you'll find yourself writing things like <tt class="literal">\'\'</tt> instead
+    of <tt class="literal">''''</tt>.  Some find this easier to keep track of, some
     do not.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql-structure.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> - <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Procedural Language</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Structure of <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

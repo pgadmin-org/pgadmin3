@@ -1,275 +1,92 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->System Columns</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Data Definition"
-HREF="ddl.html"><LINK
-REL="PREVIOUS"
-TITLE="Data Definition"
-HREF="ddl.html"><LINK
-REL="NEXT"
-TITLE="Default Values"
-HREF="ddl-default.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 5. Data Definition</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl-default.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="DDL-SYSTEM-COLUMNS"
->5.2. System Columns</A
-></H1
-><P
->   Every table has several <I
-CLASS="FIRSTTERM"
->system columns</I
-> that are
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>5.2. System Columns</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="previous" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="next" href="ddl-default.html" title="5.3. Default Values">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="ddl-system-columns"></a>5.2. System Columns</h2></div></div>
+<div></div>
+</div>
+<p>   Every table has several <i class="firstterm">system columns</i> that are
    implicitly defined by the system.  Therefore, these names cannot be
    used as names of user-defined columns.  (Note that these
    restrictions are separate from whether the name is a key word or
    not; quoting a name will not allow you to escape these
    restrictions.)  You do not really need to be concerned about these
    columns, just know they exist.
-  </P
-><A
-NAME="AEN1875"
-></A
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="STRUCTFIELD"
->oid</TT
-></DT
-><DD
-><P
->      <A
-NAME="AEN1884"
-></A
->
+  </p>
+<a name="id2523851"></a><div class="variablelist"><dl>
+<dt><span class="term"><tt class="structfield">oid</tt></span></dt>
+<dd><p>      <a name="id2523868"></a>
       The object identifier (object ID) of a row.  This is a serial
       number that is automatically added by
-      <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> to all table rows (unless
-      the table was created using <TT
-CLASS="LITERAL"
->WITHOUT OIDS</TT
->, in which
+      <span class="productname">PostgreSQL</span> to all table rows (unless
+      the table was created using <tt class="literal">WITHOUT OIDS</tt>, in which
       case this column is not present).  This column is of type
-      <TT
-CLASS="TYPE"
->oid</TT
-> (same name as the column); see <A
-HREF="datatype-oid.html"
->Section 8.12</A
-> for more information about the type.
-     </P
-></DD
-><DT
-><TT
-CLASS="STRUCTFIELD"
->tableoid</TT
-></DT
-><DD
-><A
-NAME="AEN1895"
-></A
-><P
->      The OID of the table containing this row.  This column is
+      <tt class="type">oid</tt> (same name as the column); see <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a> for more information about the type.
+     </p></dd>
+<dt><span class="term"><tt class="structfield">tableoid</tt></span></dt>
+<dd>
+<a name="id2523910"></a><p>      The OID of the table containing this row.  This column is
       particularly handy for queries that select from inheritance
       hierarchies, since without it, it's difficult to tell which
       individual table a row came from.  The
-      <TT
-CLASS="STRUCTFIELD"
->tableoid</TT
-> can be joined against the
-      <TT
-CLASS="STRUCTFIELD"
->oid</TT
-> column of
-      <TT
-CLASS="STRUCTNAME"
->pg_class</TT
-> to obtain the table name.
-     </P
-></DD
-><DT
-><TT
-CLASS="STRUCTFIELD"
->xmin</TT
-></DT
-><DD
-><A
-NAME="AEN1905"
-></A
-><P
->      The identity (transaction ID) of the inserting transaction for
+      <tt class="structfield">tableoid</tt> can be joined against the
+      <tt class="structfield">oid</tt> column of
+      <tt class="structname">pg_class</tt> to obtain the table name.
+     </p>
+</dd>
+<dt><span class="term"><tt class="structfield">xmin</tt></span></dt>
+<dd>
+<a name="id2523939"></a><p>      The identity (transaction ID) of the inserting transaction for
       this row version.  (A row version is an individual state of a
       row; each update of a row creates a new row version for the same
       logical row.)
-     </P
-></DD
-><DT
-><TT
-CLASS="STRUCTFIELD"
->cmin</TT
-></DT
-><DD
-><A
-NAME="AEN1912"
-></A
-><P
->      The command identifier (starting at zero) within the inserting
+     </p>
+</dd>
+<dt><span class="term"><tt class="structfield">cmin</tt></span></dt>
+<dd>
+<a name="id2523957"></a><p>      The command identifier (starting at zero) within the inserting
       transaction.
-     </P
-></DD
-><DT
-><TT
-CLASS="STRUCTFIELD"
->xmax</TT
-></DT
-><DD
-><A
-NAME="AEN1919"
-></A
-><P
->      The identity (transaction ID) of the deleting transaction, or
+     </p>
+</dd>
+<dt><span class="term"><tt class="structfield">xmax</tt></span></dt>
+<dd>
+<a name="id2523972"></a><p>      The identity (transaction ID) of the deleting transaction, or
       zero for an undeleted row version.  It is possible for this column to
       be nonzero in a visible row version: That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
       deletion was rolled back.
-     </P
-></DD
-><DT
-><TT
-CLASS="STRUCTFIELD"
->cmax</TT
-></DT
-><DD
-><A
-NAME="AEN1926"
-></A
-><P
->      The command identifier within the deleting transaction, or zero.
-     </P
-></DD
-><DT
-><TT
-CLASS="STRUCTFIELD"
->ctid</TT
-></DT
-><DD
-><A
-NAME="AEN1933"
-></A
-><P
->      The physical location of the row version within its table.  Note that
-      although the <TT
-CLASS="STRUCTFIELD"
->ctid</TT
-> can be used to
+     </p>
+</dd>
+<dt><span class="term"><tt class="structfield">cmax</tt></span></dt>
+<dd>
+<a name="id2523991"></a><p>      The command identifier within the deleting transaction, or zero.
+     </p>
+</dd>
+<dt><span class="term"><tt class="structfield">ctid</tt></span></dt>
+<dd>
+<a name="id2524006"></a><p>      The physical location of the row version within its table.  Note that
+      although the <tt class="structfield">ctid</tt> can be used to
       locate the row version very quickly, a row's
-      <TT
-CLASS="STRUCTFIELD"
->ctid</TT
-> will change each time it is
-      updated or moved by <TT
-CLASS="COMMAND"
->VACUUM FULL</TT
->.  Therefore
-      <TT
-CLASS="STRUCTFIELD"
->ctid</TT
-> is useless as a long-term row
+      <tt class="structfield">ctid</tt> will change each time it is
+      updated or moved by <tt class="command">VACUUM FULL</tt>.  Therefore
+      <tt class="structfield">ctid</tt> is useless as a long-term row
       identifier.  The OID, or even better a user-defined serial
       number, should be used to identify logical rows.
-     </P
-></DD
-></DL
-></DIV
-><P
->    OIDs are 32-bit quantities and are assigned from a single
+     </p>
+</dd>
+</dl></div>
+<p>    OIDs are 32-bit quantities and are assigned from a single
     cluster-wide counter.  In a large or long-lived database, it is
     possible for the counter to wrap around.  Hence, it is bad
     practice to assume that OIDs are unique, unless you take steps to
@@ -278,132 +95,36 @@ CLASS="STRUCTFIELD"
     However, OIDs can be used as well, provided that a few additional
     precautions are taken:
 
-    <P
-></P
-></P><UL
-><LI
-><P
->       A unique constraint should be created on the OID column of each
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       A unique constraint should be created on the OID column of each
        table for which the OID will be used to identify rows.
-      </P
-></LI
-><LI
-><P
->       OIDs should never be assumed to be unique across tables; use
-       the combination of <TT
-CLASS="STRUCTFIELD"
->tableoid</TT
-> and row OID if you
+      </p></li>
+<li><p>       OIDs should never be assumed to be unique across tables; use
+       the combination of <tt class="structfield">tableoid</tt> and row OID if you
        need a database-wide identifier.
-      </P
-></LI
-><LI
-><P
->       The tables in question should be created using <TT
-CLASS="LITERAL"
->WITH
-       OIDS</TT
-> to ensure forward compatibility with future
-       releases of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> in which OIDs
+      </p></li>
+<li><p>       The tables in question should be created using <tt class="literal">WITH
+       OIDS</tt> to ensure forward compatibility with future
+       releases of <span class="productname">PostgreSQL</span> in which OIDs
        are not included in all tables by default.
-      </P
-></LI
-></UL
-><P>
-   </P
-><P
->    Transaction identifiers are also 32-bit quantities.  In a
+      </p></li>
+</ul></div>
+<p>
+   </p>
+<p>    Transaction identifiers are also 32-bit quantities.  In a
     long-lived database it is possible for transaction IDs to wrap
     around.  This is not a fatal problem given appropriate maintenance
-    procedures; see <A
-HREF="maintenance.html"
->Chapter 21</A
-> for details.  It is
+    procedures; see <a href="maintenance.html" title="Chapter 21. Routine Database Maintenance Tasks">Chapter 21, <i>Routine Database Maintenance Tasks</i></a> for details.  It is
     unwise, however, to depend on the uniqueness of transaction IDs
     over the long term (more than one billion transactions).
-   </P
-><P
->    Command
+   </p>
+<p>    Command
     identifiers are also 32-bit quantities.  This creates a hard limit
-    of 2<SUP
->32</SUP
-> (4 billion) <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> commands
+    of 2<sup>32</sup> (4 billion) <span class="acronym">SQL</span> commands
     within a single transaction.  In practice this limit is not a
     problem --- note that the limit is on number of
-    <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> commands, not number of rows processed.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl-default.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Data Definition</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="ddl.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Default Values</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    <span class="acronym">SQL</span> commands, not number of rows processed.
+   </p>
+</div></body>
+</html>

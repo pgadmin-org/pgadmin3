@@ -1,393 +1,110 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Database Access</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PL/Python - Python Procedural Language"
-HREF="plpython.html"><LINK
-REL="PREVIOUS"
-TITLE="Trigger Functions"
-HREF="plpython-trigger.html"><LINK
-REL="NEXT"
-TITLE="Server Programming Interface"
-HREF="spi.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpython-trigger.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpython.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 38. PL/Python - Python Procedural Language</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpython.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PLPYTHON-DATABASE"
->38.3. Database Access</A
-></H1
-><P
->   The PL/Python language module automatically imports a Python module
-   called <TT
-CLASS="LITERAL"
->plpy</TT
->.  The functions and constants in
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>38.3. Database Access</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="plpython.html" title="Chapter 38. PL/Python - Python Procedural Language">
+<link rel="previous" href="plpython-trigger.html" title="38.2. Trigger Functions">
+<link rel="next" href="spi.html" title="Chapter 39. Server Programming Interface">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="plpython-database"></a>38.3. Database Access</h2></div></div>
+<div></div>
+</div>
+<p>   The PL/Python language module automatically imports a Python module
+   called <tt class="literal">plpy</tt>.  The functions and constants in
    this module are available to you in the Python code as
-   <TT
-CLASS="LITERAL"
->plpy.<VAR
-CLASS="REPLACEABLE"
->foo</VAR
-></TT
->.  At present
-   <TT
-CLASS="LITERAL"
->plpy</TT
-> implements the functions
-   <TT
-CLASS="LITERAL"
->plpy.debug("msg")</TT
->,
-   <TT
-CLASS="LITERAL"
->plpy.log("msg")</TT
->,
-   <TT
-CLASS="LITERAL"
->plpy.info("msg")</TT
->,
-   <TT
-CLASS="LITERAL"
->plpy.notice("msg")</TT
->,
-   <TT
-CLASS="LITERAL"
->plpy.warning("msg")</TT
->,
-   <TT
-CLASS="LITERAL"
->plpy.error("msg")</TT
->, and
-   <TT
-CLASS="LITERAL"
->plpy.fatal("msg")</TT
->.  They are mostly equivalent
-   to calling <TT
-CLASS="LITERAL"
->elog(<VAR
-CLASS="REPLACEABLE"
->LEVEL</VAR
->, "msg")</TT
->
-   from C code.<A
-NAME="AEN32679"
-></A
->  <CODE
-CLASS="FUNCTION"
->plpy.error</CODE
-> and
-   <CODE
-CLASS="FUNCTION"
->plpy.fatal</CODE
-> actually raise a Python exception
+   <tt class="literal">plpy.<i class="replaceable"><tt>foo</tt></i></tt>.  At present
+   <tt class="literal">plpy</tt> implements the functions
+   <tt class="literal">plpy.debug("msg")</tt>,
+   <tt class="literal">plpy.log("msg")</tt>,
+   <tt class="literal">plpy.info("msg")</tt>,
+   <tt class="literal">plpy.notice("msg")</tt>,
+   <tt class="literal">plpy.warning("msg")</tt>,
+   <tt class="literal">plpy.error("msg")</tt>, and
+   <tt class="literal">plpy.fatal("msg")</tt>.  They are mostly equivalent
+   to calling <tt class="literal">elog(<i class="replaceable"><tt>LEVEL</tt></i>, "msg")</tt>
+   from C code.<a name="id2651574"></a>  <tt class="function">plpy.error</tt> and
+   <tt class="function">plpy.fatal</tt> actually raise a Python exception
    which, if uncaught, causes the PL/Python module to call
-   <TT
-CLASS="LITERAL"
->elog(ERROR, msg)</TT
-> when the function handler
+   <tt class="literal">elog(ERROR, msg)</tt> when the function handler
    returns from the Python interpreter.  Long-jumping out of the
-   Python interpreter is probably not good.  <TT
-CLASS="LITERAL"
->raise
-   plpy.ERROR("msg")</TT
-> and <TT
-CLASS="LITERAL"
->raise
-   plpy.FATAL("msg")</TT
-> are equivalent to calling
-   <CODE
-CLASS="FUNCTION"
->plpy.error</CODE
-> and
-   <CODE
-CLASS="FUNCTION"
->plpy.fatal</CODE
->, respectively.
-  </P
-><P
->   Additionally, the <TT
-CLASS="LITERAL"
->plpy</TT
-> module provides two
-   functions called <CODE
-CLASS="FUNCTION"
->execute</CODE
-> and
-   <CODE
-CLASS="FUNCTION"
->prepare</CODE
->.  Calling
-   <CODE
-CLASS="FUNCTION"
->plpy.execute</CODE
-> with a query string and an
+   Python interpreter is probably not good.  <tt class="literal">raise
+   plpy.ERROR("msg")</tt> and <tt class="literal">raise
+   plpy.FATAL("msg")</tt> are equivalent to calling
+   <tt class="function">plpy.error</tt> and
+   <tt class="function">plpy.fatal</tt>, respectively.
+  </p>
+<p>   Additionally, the <tt class="literal">plpy</tt> module provides two
+   functions called <tt class="function">execute</tt> and
+   <tt class="function">prepare</tt>.  Calling
+   <tt class="function">plpy.execute</tt> with a query string and an
    optional limit argument causes that query to be run and the result
    to be returned in a result object.  The result object emulates a
    list or dictionary object.  The result object can be accessed by
    row number and column name.  It has these additional methods:
-   <CODE
-CLASS="FUNCTION"
->nrows</CODE
-> which returns the number of rows
-   returned by the query, and <CODE
-CLASS="FUNCTION"
->status</CODE
-> which is the
-   <CODE
-CLASS="FUNCTION"
->SPI_exec()</CODE
-> return value.  The result object
+   <tt class="function">nrows</tt> which returns the number of rows
+   returned by the query, and <tt class="function">status</tt> which is the
+   <tt class="function">SPI_execute()</tt> return value.  The result object
    can be modified.
-  </P
-><P
->   For example,
-</P><PRE
-CLASS="PROGRAMLISTING"
->rv = plpy.execute("SELECT * FROM my_table", 5)</PRE
-><P>
-   returns up to 5 rows from <TT
-CLASS="LITERAL"
->my_table</TT
->.  If
-   <TT
-CLASS="LITERAL"
->my_table</TT
-> has a column
-   <TT
-CLASS="LITERAL"
->my_column</TT
->, it would be accessed as
-</P><PRE
-CLASS="PROGRAMLISTING"
->foo = rv[i]["my_column"]</PRE
-><P>
-  </P
-><P
->   <A
-NAME="AEN32704"
-></A
->
-   The second function, <CODE
-CLASS="FUNCTION"
->plpy.prepare</CODE
->, prepares
+  </p>
+<p>   For example,
+</p>
+<pre class="programlisting">rv = plpy.execute("SELECT * FROM my_table", 5)</pre>
+<p>
+   returns up to 5 rows from <tt class="literal">my_table</tt>.  If
+   <tt class="literal">my_table</tt> has a column
+   <tt class="literal">my_column</tt>, it would be accessed as
+</p>
+<pre class="programlisting">foo = rv[i]["my_column"]</pre>
+<p>
+  </p>
+<p>   <a name="id2651719"></a>
+   The second function, <tt class="function">plpy.prepare</tt>, prepares
    the execution plan for a query.  It is called with a query string
    and a list of parameter types, if you have parameter references in
    the query.  For example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->plan = plpy.prepare("SELECT last_name FROM my_users WHERE first_name = $1", [ "text" ])</PRE
-><P>
-   <TT
-CLASS="LITERAL"
->text</TT
-> is the type of the variable you will be
-   passing for <TT
-CLASS="LITERAL"
->$1</TT
->.  After preparing a statement, you
-   use the function <CODE
-CLASS="FUNCTION"
->plpy.execute</CODE
-> to run it:
-</P><PRE
-CLASS="PROGRAMLISTING"
->rv = plpy.execute(plan, [ "name" ], 5)</PRE
-><P>
+</p>
+<pre class="programlisting">plan = plpy.prepare("SELECT last_name FROM my_users WHERE first_name = $1", [ "text" ])</pre>
+<p>
+   <tt class="literal">text</tt> is the type of the variable you will be
+   passing for <tt class="literal">$1</tt>.  After preparing a statement, you
+   use the function <tt class="function">plpy.execute</tt> to run it:
+</p>
+<pre class="programlisting">rv = plpy.execute(plan, [ "name" ], 5)</pre>
+<p>
    The third argument is the limit and is optional.
-  </P
-><P
->   In the current version, any database error encountered while
-   running a <SPAN
-CLASS="APPLICATION"
->PL/Python</SPAN
-> function will result
+  </p>
+<p>   In the current version, any database error encountered while
+   running a <span class="application">PL/Python</span> function will result
    in the immediate termination of that function by the server; it is
-   not possible to trap error conditions using Python <TT
-CLASS="LITERAL"
->try
-   ... catch</TT
-> constructs.  For example, a syntax error in an
-   SQL statement passed to the <TT
-CLASS="LITERAL"
->plpy.execute</TT
-> call
+   not possible to trap error conditions using Python <tt class="literal">try
+   ... catch</tt> constructs.  For example, a syntax error in an
+   SQL statement passed to the <tt class="literal">plpy.execute</tt> call
    will terminate the function.  This behavior may be changed in a
    future release.
-  </P
-><P
->   When you prepare a plan using the PL/Python module it is
-   automatically saved.  Read the SPI documentation (<A
-HREF="spi.html"
->Chapter 39</A
->) for a description of what this means.
+  </p>
+<p>   When you prepare a plan using the PL/Python module it is
+   automatically saved.  Read the SPI documentation (<a href="spi.html" title="Chapter 39. Server Programming Interface">Chapter 39, <i>Server Programming Interface</i></a>) for a description of what this means.
    In order to make effective use of this across function calls
    one needs to use one of the persistent storage dictionaries
-   <TT
-CLASS="LITERAL"
->SD</TT
-> or <TT
-CLASS="LITERAL"
->GD</TT
-> (see
-   <A
-HREF="plpython.html#PLPYTHON-FUNCS"
->Section 38.1</A
->). For example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION usesavedplan() RETURNS trigger AS $$
+   <tt class="literal">SD</tt> or <tt class="literal">GD</tt> (see
+   <a href="plpython.html#plpython-funcs" title="38.1. PL/Python Functions">Section 38.1, &#8220;PL/Python Functions&#8221;</a>). For example:
+</p>
+<pre class="programlisting">CREATE FUNCTION usesavedplan() RETURNS trigger AS $$
     if SD.has_key("plan"):
         plan = SD["plan"]
     else:
         plan = plpy.prepare("SELECT 1")
         SD["plan"] = plan
     # rest of function
-$$ LANGUAGE plpythonu;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpython-trigger.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Trigger Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="plpython.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Server Programming Interface</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+$$ LANGUAGE plpythonu;</pre>
+<p>
+  </p>
+</div></body>
+</html>

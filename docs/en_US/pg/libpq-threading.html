@@ -1,343 +1,67 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Behavior in Threaded Programs</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="libpq - C Library"
-HREF="libpq.html"><LINK
-REL="PREVIOUS"
-TITLE="The Password File"
-HREF="libpq-pgpass.html"><LINK
-REL="NEXT"
-TITLE="Building libpq Programs"
-HREF="libpq-build.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-pgpass.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 27. <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> - C Library</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-build.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="LIBPQ-THREADING"
->27.12. Behavior in Threaded Programs</A
-></H1
-><A
-NAME="AEN23317"
-></A
-><P
-><SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> is reentrant and thread-safe if the
-<TT
-CLASS="FILENAME"
->configure</TT
-> command-line option
-<TT
-CLASS="LITERAL"
->--enable-thread-safety</TT
-> has been used when the
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> distribution was built.  In
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>27.13. Behavior in Threaded Programs</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
+<link rel="previous" href="libpq-ssl.html" title="27.12. SSL Support">
+<link rel="next" href="libpq-build.html" title="27.14. Building libpq Programs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="libpq-threading"></a>27.13. Behavior in Threaded Programs</h2></div></div>
+<div></div>
+</div>
+<a name="id2611742"></a><p><span class="application">libpq</span> is reentrant and thread-safe if the
+<tt class="filename">configure</tt> command-line option
+<tt class="literal">--enable-thread-safety</tt> has been used when the
+<span class="productname">PostgreSQL</span> distribution was built.  In
 addition, you might need to use additional compiler command-line
 options when you compile your application code.  Refer to your
 system's documentation for information about how to build
 thread-enabled applications, or look in 
-<TT
-CLASS="FILENAME"
->src/Makefile.global</TT
-> for <TT
-CLASS="LITERAL"
->PTHREAD_CFLAGS</TT
->
-and <TT
-CLASS="LITERAL"
->PTHREAD_LIBS</TT
->.</P
-><P
->One restriction is that no two threads attempt to manipulate the same
-<TT
-CLASS="STRUCTNAME"
->PGconn</TT
-> object at the same time. In particular, you cannot
+<tt class="filename">src/Makefile.global</tt> for <tt class="literal">PTHREAD_CFLAGS</tt>
+and <tt class="literal">PTHREAD_LIBS</tt>.</p>
+<p>One restriction is that no two threads attempt to manipulate the same
+<tt class="structname">PGconn</tt> object at the same time. In particular, you cannot
 issue concurrent commands from different threads through the same
 connection object. (If you need to run concurrent commands, use
-multiple connections.)</P
-><P
-><TT
-CLASS="STRUCTNAME"
->PGresult</TT
-> objects are read-only after creation, and so can be 
-passed around freely between threads.</P
-><P
->The deprecated functions <CODE
-CLASS="FUNCTION"
->PQoidStatus</CODE
-> and
-<CODE
-CLASS="FUNCTION"
->fe_setauthsvc</CODE
-> are not thread-safe and should not be
-used in multithread programs.  <CODE
-CLASS="FUNCTION"
->PQoidStatus</CODE
-> can be
-replaced by <CODE
-CLASS="FUNCTION"
->PQoidValue</CODE
->.  There is no good reason to
-call <CODE
-CLASS="FUNCTION"
->fe_setauthsvc</CODE
-> at all.</P
-><P
-><SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> applications that use the
-<TT
-CLASS="LITERAL"
->crypt</TT
-> authentication method rely on the
-<TT
-CLASS="LITERAL"
->crypt()</TT
-> operating system function, which is often
-not thread-safe.<A
-NAME="AEN23342"
-></A
-> It is better to use the <TT
-CLASS="LITERAL"
->md5</TT
-> method,
-which is thread-safe on all platforms.</P
-><P
-><SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> must ignore <TT
-CLASS="LITERAL"
->SIGPIPE</TT
-> signals
-generated internally by <CODE
-CLASS="FUNCTION"
->send()</CODE
-> calls to backend processes.
-When <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> is configured without
-<TT
-CLASS="LITERAL"
->--enable-thread-safety</TT
->, <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> sets
-<TT
-CLASS="LITERAL"
->SIGPIPE</TT
-> to <TT
-CLASS="LITERAL"
->SIG_IGN</TT
-> before each
-<CODE
-CLASS="FUNCTION"
->send()</CODE
-> call and restores the original signal handler after
-completion. When <TT
-CLASS="LITERAL"
->--enable-thread-safety</TT
-> is used,
-<SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> installs its own <TT
-CLASS="LITERAL"
->SIGPIPE</TT
-> handler
+multiple connections.)</p>
+<p><tt class="structname">PGresult</tt> objects are read-only after creation, and so can be 
+passed around freely between threads.</p>
+<p>The deprecated functions <tt class="function">PQoidStatus</tt> and
+<tt class="function">fe_setauthsvc</tt> are not thread-safe and should not be
+used in multithread programs.  <tt class="function">PQoidStatus</tt> can be
+replaced by <tt class="function">PQoidValue</tt>.  There is no good reason to
+call <tt class="function">fe_setauthsvc</tt> at all.</p>
+<p><span class="application">libpq</span> applications that use the
+<tt class="literal">crypt</tt> authentication method rely on the
+<tt class="literal">crypt()</tt> operating system function, which is often
+not thread-safe.<a name="id2611875"></a> It is better to use the <tt class="literal">md5</tt> method,
+which is thread-safe on all platforms.</p>
+<p><span class="application">libpq</span> must ignore <tt class="literal">SIGPIPE</tt> signals
+generated internally by <tt class="function">send()</tt> calls to backend processes.
+When <span class="productname">PostgreSQL</span> is configured without
+<tt class="literal">--enable-thread-safety</tt>, <span class="application">libpq</span> sets
+<tt class="literal">SIGPIPE</tt> to <tt class="literal">SIG_IGN</tt> before each
+<tt class="function">send()</tt> call and restores the original signal handler after
+completion. When <tt class="literal">--enable-thread-safety</tt> is used,
+<span class="application">libpq</span> installs its own <tt class="literal">SIGPIPE</tt> handler
 before the first database connection.  This handler uses thread-local
-storage to determine if a <TT
-CLASS="LITERAL"
->SIGPIPE</TT
-> signal has been generated
-by a libpq <CODE
-CLASS="FUNCTION"
->send()</CODE
->. If an application wants to install
-its own <TT
-CLASS="LITERAL"
->SIGPIPE</TT
-> signal handler, it should call
-<CODE
-CLASS="FUNCTION"
->PQinSend()</CODE
-> to determine if it should ignore the
-<TT
-CLASS="LITERAL"
->SIGPIPE</TT
-> signal. This function is available in both
-thread-safe and non-thread-safe versions of <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->.</P
-><P
->If you experience problems with threaded applications, run
-the program in <TT
-CLASS="FILENAME"
->src/tools/thread</TT
-> to see if your
+storage to determine if a <tt class="literal">SIGPIPE</tt> signal has been generated
+by a libpq <tt class="function">send()</tt>. If an application wants to install
+its own <tt class="literal">SIGPIPE</tt> signal handler, it should call
+<tt class="function">PQinSend()</tt> to determine if it should ignore the
+<tt class="literal">SIGPIPE</tt> signal. This function is available in both
+thread-safe and non-thread-safe versions of <span class="application">libpq</span>.</p>
+<p>If you experience problems with threaded applications, run
+the program in <tt class="filename">src/tools/thread</tt> to see if your
 platform has thread-unsafe functions.  This program is run 
-by <TT
-CLASS="FILENAME"
->configure</TT
->, but for binary distributions
-your library might not match the library used to build the binaries.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-pgpass.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-build.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->The Password File</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libpq.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Building <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> Programs</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+by <tt class="filename">configure</tt>, but for binary distributions
+your library might not match the library used to build the binaries.</p>
+</div></body>
+</html>

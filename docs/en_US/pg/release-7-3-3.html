@@ -1,648 +1,125 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Release 7.3.3</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 7.3.4"
-HREF="release-7-3-4.html"><LINK
-REL="NEXT"
-TITLE="Release 7.3.2"
-HREF="release-7-3-2.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-3-4.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-3-2.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-7-3-3"
->E.12. Release 7.3.3</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2003-05-22</P
-></BLOCKQUOTE
-></DIV
-><P
->   This release contains a variety of fixes for version 7.3.2.
-  </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN65688"
->E.12.1. Migration to version 7.3.3</A
-></H2
-><P
->    A dump/restore is <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> required for those
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.12. Release 7.3.3</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="previous" href="release-7-3-4.html" title="E.11. Release 7.3.4">
+<link rel="next" href="release-7-3-2.html" title="E.13. Release 7.3.2">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-3"></a>E.12. Release 7.3.3</h2></div></div>
+<div></div>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2003-05-22</p>
+</div>
+<p>   This release contains a variety of fixes for version 7.3.2.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2760159"></a>E.12.1. Migration to version 7.3.3</h3></div></div>
+<div></div>
+</div>
+<p>    A dump/restore is <span class="emphasis"><em>not</em></span> required for those
     running version 7.3.*.
-   </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN65692"
->E.12.2. Changes</A
-></H2
-><P
-></P
-><UL
-><LI
-><P
->Repair sometimes-incorrect computation of StartUpID after a crash</P
-></LI
-><LI
-><P
->Avoid slowness with lots of deferred triggers in one transaction (Stephan)</P
-></LI
-><LI
-><P
->Don't lock referenced row when <TT
-CLASS="COMMAND"
->UPDATE</TT
-> doesn't change foreign key's value (Jan)</P
-></LI
-><LI
-><P
->Use <TT
-CLASS="COMMAND"
->-fPIC</TT
-> not <TT
-CLASS="COMMAND"
->-fpic</TT
-> on Sparc (Tom Callaway)</P
-></LI
-><LI
-><P
->Repair lack of schema-awareness in contrib/reindexdb</P
-></LI
-><LI
-><P
->Fix contrib/intarray error for zero-element result array (Teodor)</P
-></LI
-><LI
-><P
->Ensure createuser script will exit on control-C (Oliver)</P
-></LI
-><LI
-><P
->Fix errors when the type of a dropped column has itself been dropped</P
-></LI
-><LI
-><P
-><TT
-CLASS="COMMAND"
->CHECKPOINT</TT
-> does not cause database panic on failure in noncritical steps</P
-></LI
-><LI
-><P
->Accept 60 in seconds fields of timestamp, time, interval input values</P
-></LI
-><LI
-><P
->Issue notice, not error, if <TT
-CLASS="TYPE"
->TIMESTAMP</TT
->,
-<TT
-CLASS="TYPE"
-> TIME</TT
->, or <TT
-CLASS="TYPE"
->INTERVAL</TT
-> precision too large</P
-></LI
-><LI
-><P
->Fix <CODE
-CLASS="FUNCTION"
->abstime-to-time</CODE
-> cast function (fix is
-       not applied unless you <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
->)</P
-></LI
-><LI
-><P
->Fix <SPAN
-CLASS="APPLICATION"
->pg_proc</SPAN
-> entry for
-      <TT
-CLASS="TYPE"
->timestampt_izone</TT
-> (fix is not applied unless you
-        <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
->)</P
-></LI
-><LI
-><P
->Make <CODE
-CLASS="FUNCTION"
->EXTRACT(EPOCH FROM timestamp without time zone)</CODE
-> treat input as local time</P
-></LI
-><LI
-><P
-><TT
-CLASS="COMMAND"
->'now'::timestamptz</TT
-> gave wrong answer if timezone changed earlier in transaction</P
-></LI
-><LI
-><P
-><TT
-CLASS="ENVAR"
->HAVE_INT64_TIMESTAMP</TT
-> code for time with timezone overwrote its input</P
-></LI
-><LI
-><P
->Accept <TT
-CLASS="COMMAND"
->GLOBAL TEMP/TEMPORARY</TT
-> as a
-       synonym for <TT
-CLASS="COMMAND"
->TEMPORARY</TT
-></P
-></LI
-><LI
-><P
->Avoid improper schema-privilege-check failure in foreign-key triggers</P
-></LI
-><LI
-><P
->Fix bugs in foreign-key triggers for <TT
-CLASS="COMMAND"
->SET DEFAULT</TT
-> action</P
-></LI
-><LI
-><P
->Fix incorrect time-qual check in row fetch for
-       <TT
-CLASS="COMMAND"
->UPDATE</TT
-> and <TT
-CLASS="COMMAND"
->DELETE</TT
-> triggers</P
-></LI
-><LI
-><P
->Foreign-key clauses were parsed but ignored in
-       <TT
-CLASS="COMMAND"
->ALTER TABLE ADD COLUMN</TT
-></P
-></LI
-><LI
-><P
->Fix createlang script breakage for case where handler function already exists</P
-></LI
-><LI
-><P
->Fix misbehavior on zero-column tables in <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->, COPY, ANALYZE, other places</P
-></LI
-><LI
-><P
->Fix misbehavior of <CODE
-CLASS="FUNCTION"
->func_error()</CODE
-> on type names containing '%'</P
-></LI
-><LI
-><P
->Fix misbehavior of <CODE
-CLASS="FUNCTION"
->replace()</CODE
-> on strings containing '%'</P
-></LI
-><LI
-><P
->Regular-expression patterns containing certain multibyte characters failed</P
-></LI
-><LI
-><P
->Account correctly for <TT
-CLASS="COMMAND"
->NULL</TT
->s in more cases in join size estimation</P
-></LI
-><LI
-><P
->Avoid conflict with system definition of <CODE
-CLASS="FUNCTION"
->isblank()</CODE
-> function or macro</P
-></LI
-><LI
-><P
->Fix failure to convert large code point values in EUC_TW conversions (Tatsuo)</P
-></LI
-><LI
-><P
->Fix error recovery for <CODE
-CLASS="FUNCTION"
->SSL_read</CODE
->/<CODE
-CLASS="FUNCTION"
->SSL_write</CODE
-> calls</P
-></LI
-><LI
-><P
->Don't do early constant-folding of type coercion expressions</P
-></LI
-><LI
-><P
->Validate page header fields immediately after reading in any page</P
-></LI
-><LI
-><P
->Repair incorrect check for ungrouped variables in unnamed joins</P
-></LI
-><LI
-><P
->Fix buffer overrun in <CODE
-CLASS="FUNCTION"
->to_ascii</CODE
-> (Guido Notari)</P
-></LI
-><LI
-><P
->contrib/ltree fixes (Teodor)</P
-></LI
-><LI
-><P
->Fix core dump in deadlock detection on machines where char is unsigned</P
-></LI
-><LI
-><P
->Avoid running out of buffers in many-way indexscan (bug introduced in 7.3)</P
-></LI
-><LI
-><P
->Fix planner's selectivity estimation functions to handle domains properly</P
-></LI
-><LI
-><P
->Fix <SPAN
-CLASS="APPLICATION"
->dbmirror</SPAN
-> memory-allocation bug (Steven Singer)</P
-></LI
-><LI
-><P
->Prevent infinite loop in <CODE
-CLASS="FUNCTION"
->ln(numeric)</CODE
-> due to roundoff error</P
-></LI
-><LI
-><P
-><TT
-CLASS="COMMAND"
->GROUP BY</TT
-> got confused if there were multiple equal GROUP BY items</P
-></LI
-><LI
-><P
->Fix bad plan when inherited <TT
-CLASS="COMMAND"
->UPDATE</TT
->/<TT
-CLASS="COMMAND"
->DELETE</TT
-> references another inherited table</P
-></LI
-><LI
-><P
->Prevent clustering on incomplete (partial or non-NULL-storing) indexes</P
-></LI
-><LI
-><P
->Service shutdown request at proper time if it arrives while still starting up</P
-></LI
-><LI
-><P
->Fix left-links in temporary indexes (could make backwards scans miss entries)</P
-></LI
-><LI
-><P
->Fix incorrect handling of client_encoding setting in postgresql.conf (Tatsuo)</P
-></LI
-><LI
-><P
->Fix failure to respond to <TT
-CLASS="COMMAND"
->pg_ctl stop -m fast</TT
-> after Async_NotifyHandler runs</P
-></LI
-><LI
-><P
->Fix SPI for case where rule contains multiple statements of the same type</P
-></LI
-><LI
-><P
->Fix problem with checking for wrong type of access privilege in rule query</P
-></LI
-><LI
-><P
->Fix problem with <TT
-CLASS="COMMAND"
->EXCEPT</TT
-> in <TT
-CLASS="COMMAND"
->CREATE RULE</TT
-></P
-></LI
-><LI
-><P
->Prevent problem with dropping temp tables having serial columns</P
-></LI
-><LI
-><P
->Fix replace_vars_with_subplan_refs failure in complex views</P
-></LI
-><LI
-><P
->Fix regexp slowness in single-byte encodings (Tatsuo)</P
-></LI
-><LI
-><P
->Allow qualified type names in <TT
-CLASS="COMMAND"
->CREATE CAST</TT
->
-       and <TT
-CLASS="COMMAND"
-> DROP CAST</TT
-></P
-></LI
-><LI
-><P
->Accept <CODE
-CLASS="FUNCTION"
->SETOF type[]</CODE
->, which formerly had to
-       be written <CODE
-CLASS="FUNCTION"
->SETOF _type</CODE
-></P
-></LI
-><LI
-><P
->Fix <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> core dump in some cases with procedural languages</P
-></LI
-><LI
-><P
->Force ISO datestyle in <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> output, for portability (Oliver)</P
-></LI
-><LI
-><P
-><SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> failed to handle error return
-       from <CODE
-CLASS="FUNCTION"
->lo_read</CODE
-> (Oleg Drokin)</P
-></LI
-><LI
-><P
-><SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
-> failed with groups having no members (Nick Eskelinen)</P
-></LI
-><LI
-><P
-><SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
-> failed to recognize --globals-only switch</P
-></LI
-><LI
-><P
->pg_restore failed to restore blobs if -X disable-triggers is specified</P
-></LI
-><LI
-><P
->Repair intrafunction memory leak in plpgsql</P
-></LI
-><LI
-><P
->pltcl's <TT
-CLASS="COMMAND"
->elog</TT
-> command dumped core if given wrong parameters (Ian Harding)</P
-></LI
-><LI
-><P
->plpython used wrong value of <TT
-CLASS="ENVAR"
->atttypmod</TT
-> (Brad McLean)</P
-></LI
-><LI
-><P
->Fix improper quoting of boolean values in Python interface (D'Arcy)</P
-></LI
-><LI
-><P
->Added <CODE
-CLASS="FUNCTION"
->addDataType()</CODE
-> method to PGConnection interface for JDBC</P
-></LI
-><LI
-><P
->Fixed various problems with updateable ResultSets for JDBC (Shawn Green)</P
-></LI
-><LI
-><P
->Fixed various problems with DatabaseMetaData for JDBC (Kris Jurka, Peter Royal)</P
-></LI
-><LI
-><P
->Fixed problem with parsing table ACLs in JDBC</P
-></LI
-><LI
-><P
->Better error message for character set conversion problems in JDBC</P
-></LI
-></UL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-3-4.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-3-2.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 7.3.4</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 7.3.2</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2760169"></a>E.12.2. Changes</h3></div></div>
+<div></div>
+</div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Repair sometimes-incorrect computation of StartUpID after a crash</p></li>
+<li><p>Avoid slowness with lots of deferred triggers in one transaction (Stephan)</p></li>
+<li><p>Don't lock referenced row when <tt class="command">UPDATE</tt> doesn't change foreign key's value (Jan)</p></li>
+<li><p>Use <tt class="command">-fPIC</tt> not <tt class="command">-fpic</tt> on Sparc (Tom Callaway)</p></li>
+<li><p>Repair lack of schema-awareness in contrib/reindexdb</p></li>
+<li><p>Fix contrib/intarray error for zero-element result array (Teodor)</p></li>
+<li><p>Ensure createuser script will exit on control-C (Oliver)</p></li>
+<li><p>Fix errors when the type of a dropped column has itself been dropped</p></li>
+<li><p><tt class="command">CHECKPOINT</tt> does not cause database panic on failure in noncritical steps</p></li>
+<li><p>Accept 60 in seconds fields of timestamp, time, interval input values</p></li>
+<li><p>Issue notice, not error, if <tt class="type">TIMESTAMP</tt>,
+<tt class="type"> TIME</tt>, or <tt class="type">INTERVAL</tt> precision too large</p></li>
+<li><p>Fix <tt class="function">abstime-to-time</tt> cast function (fix is
+       not applied unless you <span class="application">initdb</span>)</p></li>
+<li><p>Fix <span class="application">pg_proc</span> entry for
+      <tt class="type">timestampt_izone</tt> (fix is not applied unless you
+        <span class="application">initdb</span>)</p></li>
+<li><p>Make <tt class="function">EXTRACT(EPOCH FROM timestamp without time zone)</tt> treat input as local time</p></li>
+<li><p><tt class="command">'now'::timestamptz</tt> gave wrong answer if timezone changed earlier in transaction</p></li>
+<li><p><tt class="envar">HAVE_INT64_TIMESTAMP</tt> code for time with timezone overwrote its input</p></li>
+<li><p>Accept <tt class="command">GLOBAL TEMP/TEMPORARY</tt> as a
+       synonym for <tt class="command">TEMPORARY</tt></p></li>
+<li><p>Avoid improper schema-privilege-check failure in foreign-key triggers</p></li>
+<li><p>Fix bugs in foreign-key triggers for <tt class="command">SET DEFAULT</tt> action</p></li>
+<li><p>Fix incorrect time-qual check in row fetch for
+       <tt class="command">UPDATE</tt> and <tt class="command">DELETE</tt> triggers</p></li>
+<li><p>Foreign-key clauses were parsed but ignored in
+       <tt class="command">ALTER TABLE ADD COLUMN</tt></p></li>
+<li><p>Fix createlang script breakage for case where handler function already exists</p></li>
+<li><p>Fix misbehavior on zero-column tables in <span class="application">pg_dump</span>, COPY, ANALYZE, other places</p></li>
+<li><p>Fix misbehavior of <tt class="function">func_error()</tt> on type names containing '%'</p></li>
+<li><p>Fix misbehavior of <tt class="function">replace()</tt> on strings containing '%'</p></li>
+<li><p>Regular-expression patterns containing certain multibyte characters failed</p></li>
+<li><p>Account correctly for <tt class="command">NULL</tt>s in more cases in join size estimation</p></li>
+<li><p>Avoid conflict with system definition of <tt class="function">isblank()</tt> function or macro</p></li>
+<li><p>Fix failure to convert large code point values in EUC_TW conversions (Tatsuo)</p></li>
+<li><p>Fix error recovery for <tt class="function">SSL_read</tt>/<tt class="function">SSL_write</tt> calls</p></li>
+<li><p>Don't do early constant-folding of type coercion expressions</p></li>
+<li><p>Validate page header fields immediately after reading in any page</p></li>
+<li><p>Repair incorrect check for ungrouped variables in unnamed joins</p></li>
+<li><p>Fix buffer overrun in <tt class="function">to_ascii</tt> (Guido Notari)</p></li>
+<li><p>contrib/ltree fixes (Teodor)</p></li>
+<li><p>Fix core dump in deadlock detection on machines where char is unsigned</p></li>
+<li><p>Avoid running out of buffers in many-way indexscan (bug introduced in 7.3)</p></li>
+<li><p>Fix planner's selectivity estimation functions to handle domains properly</p></li>
+<li><p>Fix <span class="application">dbmirror</span> memory-allocation bug (Steven Singer)</p></li>
+<li><p>Prevent infinite loop in <tt class="function">ln(numeric)</tt> due to roundoff error</p></li>
+<li><p><tt class="command">GROUP BY</tt> got confused if there were multiple equal GROUP BY items</p></li>
+<li><p>Fix bad plan when inherited <tt class="command">UPDATE</tt>/<tt class="command">DELETE</tt> references another inherited table</p></li>
+<li><p>Prevent clustering on incomplete (partial or non-NULL-storing) indexes</p></li>
+<li><p>Service shutdown request at proper time if it arrives while still starting up</p></li>
+<li><p>Fix left-links in temporary indexes (could make backwards scans miss entries)</p></li>
+<li><p>Fix incorrect handling of client_encoding setting in postgresql.conf (Tatsuo)</p></li>
+<li><p>Fix failure to respond to <tt class="command">pg_ctl stop -m fast</tt> after Async_NotifyHandler runs</p></li>
+<li><p>Fix SPI for case where rule contains multiple statements of the same type</p></li>
+<li><p>Fix problem with checking for wrong type of access privilege in rule query</p></li>
+<li><p>Fix problem with <tt class="command">EXCEPT</tt> in <tt class="command">CREATE RULE</tt></p></li>
+<li><p>Prevent problem with dropping temp tables having serial columns</p></li>
+<li><p>Fix replace_vars_with_subplan_refs failure in complex views</p></li>
+<li><p>Fix regexp slowness in single-byte encodings (Tatsuo)</p></li>
+<li><p>Allow qualified type names in <tt class="command">CREATE CAST</tt>
+       and <tt class="command"> DROP CAST</tt></p></li>
+<li><p>Accept <tt class="function">SETOF type[]</tt>, which formerly had to
+       be written <tt class="function">SETOF _type</tt></p></li>
+<li><p>Fix <span class="application">pg_dump</span> core dump in some cases with procedural languages</p></li>
+<li><p>Force ISO datestyle in <span class="application">pg_dump</span> output, for portability (Oliver)</p></li>
+<li><p><span class="application">pg_dump</span> failed to handle error return
+       from <tt class="function">lo_read</tt> (Oleg Drokin)</p></li>
+<li><p><span class="application">pg_dumpall</span> failed with groups having no members (Nick Eskelinen)</p></li>
+<li><p><span class="application">pg_dumpall</span> failed to recognize --globals-only switch</p></li>
+<li><p>pg_restore failed to restore blobs if -X disable-triggers is specified</p></li>
+<li><p>Repair intrafunction memory leak in plpgsql</p></li>
+<li><p>pltcl's <tt class="command">elog</tt> command dumped core if given wrong parameters (Ian Harding)</p></li>
+<li><p>plpython used wrong value of <tt class="envar">atttypmod</tt> (Brad McLean)</p></li>
+<li><p>Fix improper quoting of boolean values in Python interface (D'Arcy)</p></li>
+<li><p>Added <tt class="function">addDataType()</tt> method to PGConnection interface for JDBC</p></li>
+<li><p>Fixed various problems with updateable ResultSets for JDBC (Shawn Green)</p></li>
+<li><p>Fixed various problems with DatabaseMetaData for JDBC (Kris Jurka, Peter Royal)</p></li>
+<li><p>Fixed problem with parsing table ACLs in JDBC</p></li>
+<li><p>Better error message for character set conversion problems in JDBC</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

@@ -1,269 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->SPI_gettype</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Support Functions"
-HREF="spi-interface-support.html"><LINK
-REL="PREVIOUS"
-TITLE="SPI_getbinval"
-HREF="spi-spi-getbinval.html"><LINK
-REL="NEXT"
-TITLE="SPI_gettypeid"
-HREF="spi-spi-gettypeid.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getbinval.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getbinval.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-gettypeid.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-gettypeid.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-GETTYPE"
-></A
->SPI_gettype</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN33713"
-></A
-><H2
->Name</H2
->SPI_gettype&nbsp;--&nbsp;return the data type name of the specified column</DIV
-><A
-NAME="AEN33716"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN33718"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->char * SPI_gettype(TupleDesc <TT
-CLASS="PARAMETER"
->rowdesc</TT
->, int <TT
-CLASS="PARAMETER"
->colnumber</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33722"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_gettype</CODE
-> returns the data type name of the
-   specified column.  (You can use <CODE
-CLASS="FUNCTION"
->pfree</CODE
-> to
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_gettype</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="spi-interface-support.html" title="39.2. Interface Support Functions">
+<link rel="previous" href="spi-spi-getbinval.html" title="SPI_getbinval">
+<link rel="next" href="spi-spi-gettypeid.html" title="SPI_gettypeid">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-gettype"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_gettype &#8212; return the data type name of the specified column</p>
+</div>
+<a name="id2655711"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">char * SPI_gettype(TupleDesc <i class="parameter"><tt>rowdesc</tt></i>, int <i class="parameter"><tt>colnumber</tt></i>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2655735"></a><h2>Description</h2>
+<p>   <tt class="function">SPI_gettype</tt> returns the data type name of the
+   specified column.  (You can use <tt class="function">pfree</tt> to
    release the copy of the name when you don't need it anymore.)
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33727"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->TupleDesc <TT
-CLASS="PARAMETER"
->rowdesc</TT
-></TT
-></DT
-><DD
-><P
->      input row description
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->int <TT
-CLASS="PARAMETER"
->colnumber</TT
-></TT
-></DT
-><DD
-><P
->      column number (count starts at 1)
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33742"
-></A
-><H2
->Return Value</H2
-><P
->   The data type name of the specified column, or
-   <TT
-CLASS="SYMBOL"
->NULL</TT
-> on error.  <TT
-CLASS="VARNAME"
->SPI_result</TT
-> is
-   set to <TT
-CLASS="SYMBOL"
->SPI_ERROR_NOATTRIBUTE</TT
-> on error.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getbinval.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-gettypeid.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_getbinval</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi-interface-support.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_gettypeid</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2655754"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">TupleDesc <i class="parameter"><tt>rowdesc</tt></i></tt></span></dt>
+<dd><p>      input row description
+     </p></dd>
+<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>colnumber</tt></i></tt></span></dt>
+<dd><p>      column number (count starts at 1)
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2655790"></a><h2>Return Value</h2>
+<p>   The data type name of the specified column, or
+   <tt class="symbol">NULL</tt> on error.  <tt class="varname">SPI_result</tt> is
+   set to <tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt> on error.
+  </p>
+</div>
+</div></body>
+</html>

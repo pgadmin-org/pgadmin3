@@ -1,490 +1,157 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Procedural Languages</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Programming"
-HREF="server-programming.html"><LINK
-REL="PREVIOUS"
-TITLE="A Complete Example"
-HREF="trigger-example.html"><LINK
-REL="NEXT"
-TITLE="PL/pgSQL - SQL Procedural Language"
-HREF="plpgsql.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="trigger-example.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="triggers.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="XPLANG"
-></A
->Chapter 34. Procedural Languages</H1
-><A
-NAME="AEN30604"
-></A
-><P
->   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> allows users to add new
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 34. Procedural Languages</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="previous" href="trigger-example.html" title="33.4. A Complete Example">
+<link rel="next" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="xplang">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="xplang"></a>Chapter 34. Procedural Languages</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl><dt><span class="sect1"><a href="xplang.html#xplang-install">34.1. Installing Procedural Languages</a></span></dt></dl>
+</div>
+<a name="id2640882"></a><p>   <span class="productname">PostgreSQL</span> allows users to add new
    programming languages to be available for writing functions and
-   procedures.  These are called <I
-CLASS="FIRSTTERM"
->procedural
-   languages</I
-> (PL).  In the case of a function or trigger
+   procedures.  These are called <i class="firstterm">procedural
+   languages</i> (PL).  In the case of a function or trigger
    procedure written in a procedural language, the database server has
    no built-in knowledge about how to interpret the function's source
    text. Instead, the task is passed to a special handler that knows
    the details of the language.  The handler could either do all the
    work of parsing, syntax analysis, execution, etc. itself, or it
-   could serve as <SPAN
-CLASS="QUOTE"
->"glue"</SPAN
-> between
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> and an existing implementation
+   could serve as &#8220;<span class="quote">glue</span>&#8221; between
+   <span class="productname">PostgreSQL</span> and an existing implementation
    of a programming language.  The handler itself is a special
    C language function compiled into a shared object and
    loaded on demand.
-  </P
-><P
->   Writing a handler for a new procedural language is described in
-   <A
-HREF="plhandler.html"
->Chapter 45</A
->.  Several procedural languages are
-   available in the standard <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+  </p>
+<p>   Writing a handler for a new procedural language is described in
+   <a href="plhandler.html" title="Chapter 45. Writing A Procedural Language Handler">Chapter 45, <i>Writing A Procedural Language Handler</i></a>.  Several procedural languages are
+   available in the standard <span class="productname">PostgreSQL</span>
    distribution, which can serve as examples.
-  </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XPLANG-INSTALL"
->34.1. Installing Procedural Languages</A
-></H1
-><P
->    A procedural language must be <SPAN
-CLASS="QUOTE"
->"installed"</SPAN
-> into each
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="xplang-install"></a>34.1. Installing Procedural Languages</h2></div></div>
+<div></div>
+</div>
+<p>    A procedural language must be &#8220;<span class="quote">installed</span>&#8221; into each
     database where it is to be used.  But procedural languages installed in
-    the database <TT
-CLASS="LITERAL"
->template1</TT
-> are automatically available in all
+    the database <tt class="literal">template1</tt> are automatically available in all
     subsequently created databases. So the database administrator can
     decide which languages are available in which databases and can make
     some languages available by default if he chooses.
-   </P
-><P
->    For the languages supplied with the standard distribution, the
-    program <TT
-CLASS="COMMAND"
->createlang</TT
-> may be used to install the
+   </p>
+<p>    For the languages supplied with the standard distribution, the
+    program <tt class="command">createlang</tt> may be used to install the
     language instead of carrying out the details by hand.  For
     example, to install the language
-    <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> into the database
-    <TT
-CLASS="LITERAL"
->template1</TT
->, use
-</P><PRE
-CLASS="PROGRAMLISTING"
->createlang plpgsql template1</PRE
-><P>
+    <span class="application">PL/pgSQL</span> into the database
+    <tt class="literal">template1</tt>, use
+</p>
+<pre class="programlisting">createlang plpgsql template1</pre>
+<p>
     The manual procedure described below is only recommended for
-    installing custom languages that <TT
-CLASS="COMMAND"
->createlang</TT
->
+    installing custom languages that <tt class="command">createlang</tt>
     does not know about.
-   </P
-><DIV
-CLASS="PROCEDURE"
-><P
-><B
->     Manual Procedural Language Installation
-    </B
-></P
-><P
->     A procedural language is installed in a database in three steps,
+   </p>
+<div class="procedure">
+<p class="title"><b>     Manual Procedural Language Installation
+    </b></p>
+<p>     A procedural language is installed in a database in three steps,
      which must be carried out by a database superuser.  The
-     <TT
-CLASS="COMMAND"
->createlang</TT
-> program automates <A
-HREF="xplang.html#XPLANG-INSTALL-CR1"
->step 2</A
-> and <A
-HREF="xplang.html#XPLANG-INSTALL-CR2"
->step 3</A
->.
-    </P
-><OL
-TYPE="1"
-><LI
-><P
->      The shared object for the language handler must be compiled and
+     <tt class="command">createlang</tt> program automates <a href="xplang.html#xplang-install-cr1">Step 2</a> and <a href="xplang.html#xplang-install-cr2">Step 3</a>.
+    </p>
+<ol type="1">
+<li><p>      The shared object for the language handler must be compiled and
       installed into an appropriate library directory.  This works in the same
       way as building and installing modules with regular user-defined C
-      functions does; see <A
-HREF="xfunc-c.html#DFUNC"
->Section 31.7.6</A
->.
-     </P
-></LI
-><LI
-><A
-NAME="XPLANG-INSTALL-CR1"
-></A
-><P
->      The handler must be declared with the command
-</P><PRE
-CLASS="SYNOPSIS"
->CREATE FUNCTION <VAR
-CLASS="REPLACEABLE"
->handler_function_name</VAR
->()
+      functions does; see <a href="xfunc-c.html#dfunc" title="31.7.6. Compiling and Linking Dynamically-Loaded Functions">Section 31.7.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a>.
+     </p></li>
+<li>
+<a name="xplang-install-cr1"></a><p>      The handler must be declared with the command
+</p>
+<pre class="synopsis">CREATE FUNCTION <i class="replaceable"><tt>handler_function_name</tt></i>()
     RETURNS language_handler
-    AS '<VAR
-CLASS="REPLACEABLE"
->path-to-shared-object</VAR
->'
-    LANGUAGE C;</PRE
-><P>
-      The special return type of <TT
-CLASS="TYPE"
->language_handler</TT
-> tells
+    AS '<i class="replaceable"><tt>path-to-shared-object</tt></i>'
+    LANGUAGE C;</pre>
+<p>
+      The special return type of <tt class="type">language_handler</tt> tells
       the database system that this function does not return one of
-      the defined <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> data types and is not directly usable
-      in <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> statements.
-     </P
-></LI
-><LI
-><A
-NAME="XPLANG-INSTALL-CR2"
-></A
-><P
->      The PL must be declared with the command
-</P><PRE
-CLASS="SYNOPSIS"
->CREATE [<SPAN
-CLASS="OPTIONAL"
->TRUSTED</SPAN
->] [<SPAN
-CLASS="OPTIONAL"
->PROCEDURAL</SPAN
->] LANGUAGE <VAR
-CLASS="REPLACEABLE"
->language-name</VAR
->
-    HANDLER <VAR
-CLASS="REPLACEABLE"
->handler_function_name</VAR
->;</PRE
-><P>
-      The optional key word <TT
-CLASS="LITERAL"
->TRUSTED</TT
-> specifies that
+      the defined <span class="acronym">SQL</span> data types and is not directly usable
+      in <span class="acronym">SQL</span> statements.
+     </p>
+</li>
+<li>
+<a name="xplang-install-cr2"></a><p>      The PL must be declared with the command
+</p>
+<pre class="synopsis">CREATE [<span class="optional">TRUSTED</span>] [<span class="optional">PROCEDURAL</span>] LANGUAGE <i class="replaceable"><tt>language-name</tt></i>
+    HANDLER <i class="replaceable"><tt>handler_function_name</tt></i>;</pre>
+<p>
+      The optional key word <tt class="literal">TRUSTED</tt> specifies that
       ordinary database users that have no superuser privileges should
       be allowed to use this language to create functions and trigger
       procedures. Since PL functions are executed inside the database
-      server, the <TT
-CLASS="LITERAL"
->TRUSTED</TT
-> flag should only be given
+      server, the <tt class="literal">TRUSTED</tt> flag should only be given
       for languages that do not allow access to database server
       internals or the file system. The languages
-      <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->,
-      <SPAN
-CLASS="APPLICATION"
->PL/Tcl</SPAN
->, and
-      <SPAN
-CLASS="APPLICATION"
->PL/Perl</SPAN
->
+      <span class="application">PL/pgSQL</span>,
+      <span class="application">PL/Tcl</span>, and
+      <span class="application">PL/Perl</span>
       are considered trusted; the languages
-      <SPAN
-CLASS="APPLICATION"
->PL/TclU</SPAN
->,
-      <SPAN
-CLASS="APPLICATION"
->PL/PerlU</SPAN
->, and
-      <SPAN
-CLASS="APPLICATION"
->PL/PythonU</SPAN
->
+      <span class="application">PL/TclU</span>,
+      <span class="application">PL/PerlU</span>, and
+      <span class="application">PL/PythonU</span>
       are designed to provide unlimited functionality and should
-      <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> be marked trusted.
-     </P
-></LI
-></OL
-></DIV
-><P
->    <A
-HREF="xplang.html#XPLANG-INSTALL-EXAMPLE"
->Example 34-1</A
-> shows how the manual
+      <span class="emphasis"><em>not</em></span> be marked trusted.
+     </p>
+</li>
+</ol>
+</div>
+<p>    <a href="xplang.html#xplang-install-example" title="Example 34.1. Manual Installation of PL/pgSQL">Example 34.1, &#8220;Manual Installation of PL/pgSQL&#8221;</a> shows how the manual
     installation procedure would work with the language
-    <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->.
-   </P
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="XPLANG-INSTALL-EXAMPLE"
-></A
-><P
-><B
->Example 34-1. Manual Installation of <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></B
-></P
-><P
->      The following command tells the database server where to find the 
-      shared object for the <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> language's call handler function.
+    <span class="application">PL/pgSQL</span>.
+   </p>
+<div class="example">
+<a name="xplang-install-example"></a><p class="title"><b>Example 34.1. Manual Installation of <span class="application">PL/pgSQL</span></b></p>
+<p>      The following command tells the database server where to find the 
+      shared object for the <span class="application">PL/pgSQL</span> language's call handler function.
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION plpgsql_call_handler() RETURNS language_handler AS
-    '$libdir/plpgsql' LANGUAGE C;</PRE
-><P>
-     </P
-><P
->      The command
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TRUSTED PROCEDURAL LANGUAGE plpgsql
-    HANDLER plpgsql_call_handler;</PRE
-><P>
+</p>
+<pre class="programlisting">CREATE FUNCTION plpgsql_call_handler() RETURNS language_handler AS
+    '$libdir/plpgsql' LANGUAGE C;</pre>
+<p>
+     </p>
+<p>      The command
+</p>
+<pre class="programlisting">CREATE TRUSTED PROCEDURAL LANGUAGE plpgsql
+    HANDLER plpgsql_call_handler;</pre>
+<p>
       then defines that the previously declared call handler function
       should be invoked for functions and trigger procedures where the
-      language attribute is <TT
-CLASS="LITERAL"
->plpgsql</TT
->.
-     </P
-></DIV
-><P
->    In a default <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> installation,
-    the handler for the <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> language
-    is built and installed into the <SPAN
-CLASS="QUOTE"
->"library"</SPAN
->
-    directory. If <SPAN
-CLASS="APPLICATION"
->Tcl/Tk</SPAN
-> support is configured in, the handlers for
-    <SPAN
-CLASS="APPLICATION"
->PL/Tcl</SPAN
-> and <SPAN
-CLASS="APPLICATION"
->PL/TclU</SPAN
-> are also built and installed in the same
-    location.  Likewise, the <SPAN
-CLASS="APPLICATION"
->PL/Perl</SPAN
-> and <SPAN
-CLASS="APPLICATION"
->PL/PerlU</SPAN
-> handlers are built
-    and installed if Perl support is configured, and <SPAN
-CLASS="APPLICATION"
->PL/PythonU</SPAN
-> is
+      language attribute is <tt class="literal">plpgsql</tt>.
+     </p>
+</div>
+<p>    In a default <span class="productname">PostgreSQL</span> installation,
+    the handler for the <span class="application">PL/pgSQL</span> language
+    is built and installed into the &#8220;<span class="quote">library</span>&#8221;
+    directory. If <span class="application">Tcl/Tk</span> support is configured in, the handlers for
+    <span class="application">PL/Tcl</span> and <span class="application">PL/TclU</span> are also built and installed in the same
+    location.  Likewise, the <span class="application">PL/Perl</span> and <span class="application">PL/PerlU</span> handlers are built
+    and installed if Perl support is configured, and <span class="application">PL/PythonU</span> is
     installed if Python support is configured.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="trigger-example.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->A Complete Example</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="server-programming.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> - <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Procedural Language</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

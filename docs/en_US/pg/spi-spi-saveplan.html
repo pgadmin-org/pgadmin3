@@ -1,315 +1,72 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->SPI_saveplan</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Functions"
-HREF="spi.html#SPI-INTERFACE"><LINK
-REL="PREVIOUS"
-TITLE="SPI_cursor_close"
-HREF="spi-spi-cursor-close.html"><LINK
-REL="NEXT"
-TITLE="Interface Support Functions"
-HREF="spi-interface-support.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-close.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-close.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-interface-support.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-SAVEPLAN"
-></A
->SPI_saveplan</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN33476"
-></A
-><H2
->Name</H2
->SPI_saveplan&nbsp;--&nbsp;save a plan</DIV
-><A
-NAME="AEN33479"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN33481"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->void * SPI_saveplan(void * <TT
-CLASS="PARAMETER"
->plan</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33484"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_saveplan</CODE
-> saves a passed plan (prepared by
-   <CODE
-CLASS="FUNCTION"
->SPI_prepare</CODE
->) in memory protected from freeing
-   by <CODE
-CLASS="FUNCTION"
->SPI_finish</CODE
-> and by the transaction manager
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_saveplan</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
+<link rel="previous" href="spi-spi-cursor-close.html" title="SPI_cursor_close">
+<link rel="next" href="spi-interface-support.html" title="39.2. Interface Support Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-saveplan"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_saveplan &#8212; save a plan</p>
+</div>
+<a name="id2654970"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">void * SPI_saveplan(void * <i class="parameter"><tt>plan</tt></i>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2654988"></a><h2>Description</h2>
+<p>   <tt class="function">SPI_saveplan</tt> saves a passed plan (prepared by
+   <tt class="function">SPI_prepare</tt>) in memory protected from freeing
+   by <tt class="function">SPI_finish</tt> and by the transaction manager
    and returns a pointer to the saved plan.  This gives you the
    ability to reuse prepared plans in the subsequent invocations of
    your procedure in the current session.  You may save the pointer
    returned in a local variable.  Always check if this pointer is
-   <TT
-CLASS="SYMBOL"
->NULL</TT
-> or not either when preparing a plan or using
-   an already prepared plan in <CODE
-CLASS="FUNCTION"
->SPI_execp</CODE
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33492"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->void * <TT
-CLASS="PARAMETER"
->plan</TT
-></TT
-></DT
-><DD
-><P
->      the plan to be saved
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33501"
-></A
-><H2
->Return Value</H2
-><P
->   Pointer to the saved plan; <TT
-CLASS="SYMBOL"
->NULL</TT
-> if unsuccessful.
-   On error, <TT
-CLASS="VARNAME"
->SPI_result</TT
-> is set thus:
+   <tt class="symbol">NULL</tt> or not either when preparing a plan or using
+   an already prepared plan in <tt class="function">SPI_execute_plan</tt>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2655034"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">void * <i class="parameter"><tt>plan</tt></i></tt></span></dt>
+<dd><p>      the plan to be saved
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2655054"></a><h2>Return Value</h2>
+<p>   Pointer to the saved plan; <tt class="symbol">NULL</tt> if unsuccessful.
+   On error, <tt class="varname">SPI_result</tt> is set thus:
 
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_ARGUMENT</TT
-></DT
-><DD
-><P
->       if <TT
-CLASS="PARAMETER"
->plan</TT
-> is <TT
-CLASS="SYMBOL"
->NULL</TT
->
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_UNCONNECTED</TT
-></DT
-><DD
-><P
->       if called from an unconnected procedure
-      </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33519"
-></A
-><H2
->Notes</H2
-><P
->   If one of the objects (a table, function, etc.) referenced by the
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="symbol">SPI_ERROR_ARGUMENT</tt></span></dt>
+<dd><p>       if <i class="parameter"><tt>plan</tt></i> is <tt class="symbol">NULL</tt>
+      </p></dd>
+<dt><span class="term"><tt class="symbol">SPI_ERROR_UNCONNECTED</tt></span></dt>
+<dd><p>       if called from an unconnected procedure
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2655097"></a><h2>Notes</h2>
+<p>   If one of the objects (a table, function, etc.) referenced by the
    prepared plan is dropped during the session then the results of
-   <CODE
-CLASS="FUNCTION"
->SPI_execp</CODE
-> for this plan will be unpredictable.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-close.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-interface-support.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_cursor_close</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi.html#SPI-INTERFACE"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Interface Support Functions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   <tt class="function">SPI_execute_plan</tt> for this plan will be unpredictable.
+  </p>
+</div>
+</div></body>
+</html>

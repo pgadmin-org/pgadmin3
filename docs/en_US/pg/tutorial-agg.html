@@ -1,467 +1,168 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Aggregate Functions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The SQL Language"
-HREF="tutorial-sql.html"><LINK
-REL="PREVIOUS"
-TITLE="Joins Between Tables"
-HREF="tutorial-join.html"><LINK
-REL="NEXT"
-TITLE="Updates"
-HREF="tutorial-update.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-join.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 2. The <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Language</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-update.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TUTORIAL-AGG"
->2.7. Aggregate Functions</A
-></H1
-><A
-NAME="AEN793"
-></A
-><P
->    <A
-NAME="AEN796"
-></A
->
-    <A
-NAME="AEN798"
-></A
->
-    <A
-NAME="AEN800"
-></A
->
-    <A
-NAME="AEN802"
-></A
->
-    <A
-NAME="AEN804"
-></A
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>2.7. Aggregate Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
+<link rel="previous" href="tutorial-join.html" title="2.6. Joins Between Tables">
+<link rel="next" href="tutorial-update.html" title="2.8. Updates">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="tutorial-agg"></a>2.7. Aggregate Functions</h2></div></div>
+<div></div>
+</div>
+<a name="id2518608"></a><p>    <a name="id2518620"></a>
+    <a name="id2518627"></a>
+    <a name="id2518634"></a>
+    <a name="id2518640"></a>
+    <a name="id2518647"></a>
 
     Like  most  other relational database products, 
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> supports
+    <span class="productname">PostgreSQL</span> supports
     aggregate functions.
     An aggregate function computes a single result from multiple input rows.
     For example, there are aggregates to compute the
-    <CODE
-CLASS="FUNCTION"
->count</CODE
->, <CODE
-CLASS="FUNCTION"
->sum</CODE
->,
-    <CODE
-CLASS="FUNCTION"
->avg</CODE
-> (average), <CODE
-CLASS="FUNCTION"
->max</CODE
-> (maximum) and
-    <CODE
-CLASS="FUNCTION"
->min</CODE
-> (minimum) over a set of rows.
-   </P
-><P
->    As an example, we can find the highest low-temperature reading anywhere
+    <tt class="function">count</tt>, <tt class="function">sum</tt>,
+    <tt class="function">avg</tt> (average), <tt class="function">max</tt> (maximum) and
+    <tt class="function">min</tt> (minimum) over a set of rows.
+   </p>
+<p>    As an example, we can find the highest low-temperature reading anywhere
     with
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT max(temp_lo) FROM weather;</PRE
-><P>
+</p>
+<pre class="programlisting">SELECT max(temp_lo) FROM weather;</pre>
+<p>
 
-</P><PRE
-CLASS="SCREEN"
-> max
+</p>
+<pre class="screen"> max
 -----
   46
-(1 row)</PRE
-><P>
-   </P
-><P
->    <A
-NAME="AEN816"
-></A
->
+(1 row)</pre>
+<p>
+   </p>
+<p>    <a name="id2518712"></a>
 
     If we wanted to know what city (or cities) that reading occurred in,
     we might try
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT city FROM weather WHERE temp_lo = max(temp_lo);     <I
-CLASS="LINEANNOTATION"
->WRONG</I
-></PRE
-><P>
+</p>
+<pre class="programlisting">SELECT city FROM weather WHERE temp_lo = max(temp_lo);     <i class="lineannotation"><span class="lineannotation">WRONG</span></i></pre>
+<p>
 
     but this will not work since the aggregate
-    <CODE
-CLASS="FUNCTION"
->max</CODE
-> cannot be used in the
-    <TT
-CLASS="LITERAL"
->WHERE</TT
-> clause.  (This restriction exists because
-    the <TT
-CLASS="LITERAL"
->WHERE</TT
-> clause determines the rows that will
+    <tt class="function">max</tt> cannot be used in the
+    <tt class="literal">WHERE</tt> clause.  (This restriction exists because
+    the <tt class="literal">WHERE</tt> clause determines the rows that will
     go into the aggregation stage; so it has to be evaluated before
     aggregate functions are computed.)
     However, as is often the case
     the query can be restated to accomplish the intended result, here
-    by using a <I
-CLASS="FIRSTTERM"
->subquery</I
->:
+    by using a <i class="firstterm">subquery</i>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT city FROM weather
-    WHERE temp_lo = (SELECT max(temp_lo) FROM weather);</PRE
-><P>
+</p>
+<pre class="programlisting">SELECT city FROM weather
+    WHERE temp_lo = (SELECT max(temp_lo) FROM weather);</pre>
+<p>
 
-</P><PRE
-CLASS="SCREEN"
->     city
+</p>
+<pre class="screen">     city
 ---------------
  San Francisco
-(1 row)</PRE
-><P>
+(1 row)</pre>
+<p>
 
     This is OK because the subquery is an independent computation
     that computes its own aggregate separately from what is happening
     in the outer query.
-   </P
-><P
->    <A
-NAME="AEN827"
-></A
->
-    <A
-NAME="AEN829"
-></A
->
+   </p>
+<p>    <a name="id2518775"></a>
+    <a name="id2518782"></a>
 
-    Aggregates are also very useful in combination with <TT
-CLASS="LITERAL"
->GROUP
-    BY</TT
-> clauses.  For example, we can get the maximum low
+    Aggregates are also very useful in combination with <tt class="literal">GROUP
+    BY</tt> clauses.  For example, we can get the maximum low
     temperature observed in each city with
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT city, max(temp_lo)
+</p>
+<pre class="programlisting">SELECT city, max(temp_lo)
     FROM weather
-    GROUP BY city;</PRE
-><P>
+    GROUP BY city;</pre>
+<p>
 
-</P><PRE
-CLASS="SCREEN"
->     city      | max
+</p>
+<pre class="screen">     city      | max
 ---------------+-----
  Hayward       |  37
  San Francisco |  46
-(2 rows)</PRE
-><P>
+(2 rows)</pre>
+<p>
 
     which gives us one output row per city.  Each aggregate result is
     computed over the table rows matching that city.
     We can filter these grouped
-    rows using <TT
-CLASS="LITERAL"
->HAVING</TT
->:
+    rows using <tt class="literal">HAVING</tt>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT city, max(temp_lo)
+</p>
+<pre class="programlisting">SELECT city, max(temp_lo)
     FROM weather
     GROUP BY city
-    HAVING max(temp_lo) &#60; 40;</PRE
-><P>
+    HAVING max(temp_lo) &lt; 40;</pre>
+<p>
 
-</P><PRE
-CLASS="SCREEN"
->  city   | max
+</p>
+<pre class="screen">  city   | max
 ---------+-----
  Hayward |  37
-(1 row)</PRE
-><P>
+(1 row)</pre>
+<p>
 
     which gives us the same results for only the cities that have all
-    <TT
-CLASS="LITERAL"
->temp_lo</TT
-> values below 40.  Finally, if we only care about
+    <tt class="literal">temp_lo</tt> values below 40.  Finally, if we only care about
     cities whose
-    names begin with <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->S</TT
->"</SPAN
->, we might do
+    names begin with &#8220;<span class="quote"><tt class="literal">S</tt></span>&#8221;, we might do
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT city, max(temp_lo)
+</p>
+<pre class="programlisting">SELECT city, max(temp_lo)
     FROM weather
-    WHERE city LIKE 'S%'<A
-NAME="CO.TUTORIAL-AGG-LIKE"
-><B
->(1)</B
-></A
->
+    WHERE city LIKE 'S%'<a name="co.tutorial-agg-like"></a>(1)
     GROUP BY city
-    HAVING max(temp_lo) &#60; 40;</PRE
-><P>
-   <DIV
-CLASS="CALLOUTLIST"
-><DL
-COMPACT="COMPACT"
-><DT
-><A
-HREF="tutorial-agg.html#CO.TUTORIAL-AGG-LIKE"
-><B
->(1)</B
-></A
-></DT
-><DD
->      The <TT
-CLASS="LITERAL"
->LIKE</TT
-> operator does pattern matching and
-      is explained in <A
-HREF="functions-matching.html"
->Section 9.7</A
->.
-     </DD
-></DL
-></DIV
->
-   </P
-><P
->    It is important to understand the interaction between aggregates and
-    <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->'s <TT
-CLASS="LITERAL"
->WHERE</TT
-> and <TT
-CLASS="LITERAL"
->HAVING</TT
-> clauses.
-    The fundamental difference between <TT
-CLASS="LITERAL"
->WHERE</TT
-> and
-    <TT
-CLASS="LITERAL"
->HAVING</TT
-> is this: <TT
-CLASS="LITERAL"
->WHERE</TT
-> selects
+    HAVING max(temp_lo) &lt; 40;</pre>
+<p>
+   </p>
+<div class="calloutlist"><table border="0" summary="Callout list"><tr>
+<td width="5%" valign="top" align="left">
+<a href="#co.tutorial-agg-like">(1)</a> </td>
+<td valign="top" align="left"><p>      The <tt class="literal">LIKE</tt> operator does pattern matching and
+      is explained in <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a>.
+     </p></td>
+</tr></table></div>
+<p>
+   </p>
+<p>    It is important to understand the interaction between aggregates and
+    <span class="acronym">SQL</span>'s <tt class="literal">WHERE</tt> and <tt class="literal">HAVING</tt> clauses.
+    The fundamental difference between <tt class="literal">WHERE</tt> and
+    <tt class="literal">HAVING</tt> is this: <tt class="literal">WHERE</tt> selects
     input rows before groups and aggregates are computed (thus, it controls
     which rows go into the aggregate computation), whereas
-    <TT
-CLASS="LITERAL"
->HAVING</TT
-> selects group rows after groups and
+    <tt class="literal">HAVING</tt> selects group rows after groups and
     aggregates are computed.  Thus, the
-    <TT
-CLASS="LITERAL"
->WHERE</TT
-> clause must not contain aggregate functions;
+    <tt class="literal">WHERE</tt> clause must not contain aggregate functions;
     it makes no sense to try to use an aggregate to determine which rows
     will be inputs to the aggregates.  On the other hand,
-    <TT
-CLASS="LITERAL"
->HAVING</TT
-> clause always contains aggregate functions.
-    (Strictly speaking, you are allowed to write a <TT
-CLASS="LITERAL"
->HAVING</TT
->
+    <tt class="literal">HAVING</tt> clause always contains aggregate functions.
+    (Strictly speaking, you are allowed to write a <tt class="literal">HAVING</tt>
     clause that doesn't use aggregates, but it's wasteful: The same condition
-    could be used more efficiently at the <TT
-CLASS="LITERAL"
->WHERE</TT
-> stage.)
-   </P
-><P
->    Observe that we can apply the city name restriction in
-    <TT
-CLASS="LITERAL"
->WHERE</TT
->, since it needs no aggregate.  This is
-    more efficient than adding the restriction to <TT
-CLASS="LITERAL"
->HAVING</TT
->,
+    could be used more efficiently at the <tt class="literal">WHERE</tt> stage.)
+   </p>
+<p>    Observe that we can apply the city name restriction in
+    <tt class="literal">WHERE</tt>, since it needs no aggregate.  This is
+    more efficient than adding the restriction to <tt class="literal">HAVING</tt>,
     because we avoid doing the grouping and aggregate calculations
-    for all rows that fail the <TT
-CLASS="LITERAL"
->WHERE</TT
-> check.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-join.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-update.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Joins Between Tables</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Updates</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    for all rows that fail the <tt class="literal">WHERE</tt> check.
+   </p>
+</div></body>
+</html>

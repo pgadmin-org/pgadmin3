@@ -1,263 +1,48 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->SPI_cursor_move</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Functions"
-HREF="spi.html#SPI-INTERFACE"><LINK
-REL="PREVIOUS"
-TITLE="SPI_cursor_fetch"
-HREF="spi-spi-cursor-fetch.html"><LINK
-REL="NEXT"
-TITLE="SPI_cursor_close"
-HREF="spi-spi-cursor-close.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-fetch.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-fetch.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-close.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-close.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-CURSOR-MOVE"
-></A
->SPI_cursor_move</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN33411"
-></A
-><H2
->Name</H2
->SPI_cursor_move&nbsp;--&nbsp;move a cursor</DIV
-><A
-NAME="AEN33414"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN33416"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->void SPI_cursor_move(Portal <TT
-CLASS="PARAMETER"
->portal</TT
->, bool <TT
-CLASS="PARAMETER"
->forward</TT
->, int <TT
-CLASS="PARAMETER"
->count</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33421"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_cursor_move</CODE
-> skips over some number of rows
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_cursor_move</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
+<link rel="previous" href="spi-spi-cursor-fetch.html" title="SPI_cursor_fetch">
+<link rel="next" href="spi-spi-cursor-close.html" title="SPI_cursor_close">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-cursor-move"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_cursor_move &#8212; move a cursor</p>
+</div>
+<a name="id2654778"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">void SPI_cursor_move(Portal <i class="parameter"><tt>portal</tt></i>, bool <i class="parameter"><tt>forward</tt></i>, int <i class="parameter"><tt>count</tt></i>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2654808"></a><h2>Description</h2>
+<p>   <tt class="function">SPI_cursor_move</tt> skips over some number of rows
    in a cursor.  This is equivalent to the SQL command
-   <TT
-CLASS="COMMAND"
->MOVE</TT
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33426"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->Portal <TT
-CLASS="PARAMETER"
->portal</TT
-></TT
-></DT
-><DD
-><P
->      portal containing the cursor
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->bool <TT
-CLASS="PARAMETER"
->forward</TT
-></TT
-></DT
-><DD
-><P
->      true for move forward, false for move backward
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->int <TT
-CLASS="PARAMETER"
->count</TT
-></TT
-></DT
-><DD
-><P
->      maximum number of rows to move
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-fetch.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-close.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_cursor_fetch</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi.html#SPI-INTERFACE"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_cursor_close</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   <tt class="command">MOVE</tt>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2654827"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">Portal <i class="parameter"><tt>portal</tt></i></tt></span></dt>
+<dd><p>      portal containing the cursor
+     </p></dd>
+<dt><span class="term"><tt class="literal">bool <i class="parameter"><tt>forward</tt></i></tt></span></dt>
+<dd><p>      true for move forward, false for move backward
+     </p></dd>
+<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>count</tt></i></tt></span></dt>
+<dd><p>      maximum number of rows to move
+     </p></dd>
+</dl></div>
+</div>
+</div></body>
+</html>

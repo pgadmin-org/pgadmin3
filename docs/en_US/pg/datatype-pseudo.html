@@ -1,404 +1,112 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Pseudo-Types</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Data Types"
-HREF="datatype.html"><LINK
-REL="PREVIOUS"
-TITLE="Object Identifier Types"
-HREF="datatype-oid.html"><LINK
-REL="NEXT"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="datatype-oid.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="datatype.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 8. Data Types</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="datatype.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="DATATYPE-PSEUDO"
->8.13. Pseudo-Types</A
-></H1
-><A
-NAME="AEN5651"
-></A
-><A
-NAME="AEN5653"
-></A
-><A
-NAME="AEN5655"
-></A
-><A
-NAME="AEN5657"
-></A
-><A
-NAME="AEN5659"
-></A
-><A
-NAME="AEN5661"
-></A
-><A
-NAME="AEN5663"
-></A
-><A
-NAME="AEN5665"
-></A
-><A
-NAME="AEN5667"
-></A
-><A
-NAME="AEN5669"
-></A
-><P
->    The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> type system contains a
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>8.13. Pseudo-Types</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
+<link rel="previous" href="datatype-oid.html" title="8.12. Object Identifier Types">
+<link rel="next" href="functions.html" title="Chapter 9. Functions and Operators">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="datatype-pseudo"></a>8.13. Pseudo-Types</h2></div></div>
+<div></div>
+</div>
+<a name="id2539528"></a><a name="id2539539"></a><a name="id2539548"></a><a name="id2539557"></a><a name="id2539566"></a><a name="id2539575"></a><a name="id2539585"></a><a name="id2539594"></a><a name="id2539603"></a><a name="id2539612"></a><p>    The <span class="productname">PostgreSQL</span> type system contains a
     number of special-purpose entries that are collectively called
-    <I
-CLASS="FIRSTTERM"
->pseudo-types</I
->.  A pseudo-type cannot be used as a
+    <i class="firstterm">pseudo-types</i>.  A pseudo-type cannot be used as a
     column data type, but it can be used to declare a function's
     argument or result type.  Each of the available pseudo-types is
     useful in situations where a function's behavior does not
     correspond to simply taking or returning a value of a specific
-    <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> data type.  <A
-HREF="datatype-pseudo.html#DATATYPE-PSEUDOTYPES-TABLE"
->Table 8-20</A
-> lists the existing
+    <span class="acronym">SQL</span> data type.  <a href="datatype-pseudo.html#datatype-pseudotypes-table" title="Table 8.20. Pseudo-Types">Table 8.20, &#8220;Pseudo-Types&#8221;</a> lists the existing
     pseudo-types.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="DATATYPE-PSEUDOTYPES-TABLE"
-></A
-><P
-><B
->Table 8-20. Pseudo-Types</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="TYPE"
->any</TT
-></TD
-><TD
->Indicates that a function accepts any input data type whatever.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->anyarray</TT
-></TD
-><TD
->Indicates that a function accepts any array data type
-        (see <A
-HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 31.2.5</A
->).</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->anyelement</TT
-></TD
-><TD
->Indicates that a function accepts any data type
-        (see <A
-HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 31.2.5</A
->).</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->cstring</TT
-></TD
-><TD
->Indicates that a function accepts or returns a null-terminated C string.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->internal</TT
-></TD
-><TD
->Indicates that a function accepts or returns a server-internal
-        data type.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->language_handler</TT
-></TD
-><TD
->A procedural language call handler is declared to return <TT
-CLASS="TYPE"
->language_handler</TT
->.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->record</TT
-></TD
-><TD
->Identifies a function returning an unspecified row type.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->trigger</TT
-></TD
-><TD
->A trigger function is declared to return <TT
-CLASS="TYPE"
->trigger.</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->void</TT
-></TD
-><TD
->Indicates that a function returns no value.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->opaque</TT
-></TD
-><TD
->An obsolete type name that formerly served all the above purposes.</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->    Functions coded in C (whether built-in or dynamically loaded) may be
+   </p>
+<div class="table">
+<a name="datatype-pseudotypes-table"></a><p class="title"><b>Table 8.20. Pseudo-Types</b></p>
+<table summary="Pseudo-Types" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="type">any</tt></td>
+<td>Indicates that a function accepts any input data type whatever.</td>
+</tr>
+<tr>
+<td><tt class="type">anyarray</tt></td>
+<td>Indicates that a function accepts any array data type
+        (see <a href="extend-type-system.html#extend-types-polymorphic" title="31.2.5. Polymorphic Types">Section 31.2.5, &#8220;Polymorphic Types&#8221;</a>).</td>
+</tr>
+<tr>
+<td><tt class="type">anyelement</tt></td>
+<td>Indicates that a function accepts any data type
+        (see <a href="extend-type-system.html#extend-types-polymorphic" title="31.2.5. Polymorphic Types">Section 31.2.5, &#8220;Polymorphic Types&#8221;</a>).</td>
+</tr>
+<tr>
+<td><tt class="type">cstring</tt></td>
+<td>Indicates that a function accepts or returns a null-terminated C string.</td>
+</tr>
+<tr>
+<td><tt class="type">internal</tt></td>
+<td>Indicates that a function accepts or returns a server-internal
+        data type.</td>
+</tr>
+<tr>
+<td><tt class="type">language_handler</tt></td>
+<td>A procedural language call handler is declared to return <tt class="type">language_handler</tt>.</td>
+</tr>
+<tr>
+<td><tt class="type">record</tt></td>
+<td>Identifies a function returning an unspecified row type.</td>
+</tr>
+<tr>
+<td><tt class="type">trigger</tt></td>
+<td>A trigger function is declared to return <tt class="type">trigger.</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="type">void</tt></td>
+<td>Indicates that a function returns no value.</td>
+</tr>
+<tr>
+<td><tt class="type">opaque</tt></td>
+<td>An obsolete type name that formerly served all the above purposes.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>    Functions coded in C (whether built-in or dynamically loaded) may be
     declared to accept or return any of these pseudo data types.  It is up to
     the function author to ensure that the function will behave safely
     when a pseudo-type is used as an argument type.
-   </P
-><P
->    Functions coded in procedural languages may use pseudo-types only as
+   </p>
+<p>    Functions coded in procedural languages may use pseudo-types only as
     allowed by their implementation languages.  At present the procedural
     languages all forbid use of a pseudo-type as argument type, and allow
-    only <TT
-CLASS="TYPE"
->void</TT
-> and <TT
-CLASS="TYPE"
->record</TT
-> as a result type (plus
-    <TT
-CLASS="TYPE"
->trigger</TT
-> when the function is used as a trigger).  Some also
-    support polymorphic functions using the types <TT
-CLASS="TYPE"
->anyarray</TT
-> and
-    <TT
-CLASS="TYPE"
->anyelement</TT
->.
-   </P
-><P
->    The <TT
-CLASS="TYPE"
->internal</TT
-> pseudo-type is used to declare functions
+    only <tt class="type">void</tt> and <tt class="type">record</tt> as a result type (plus
+    <tt class="type">trigger</tt> when the function is used as a trigger).  Some also
+    support polymorphic functions using the types <tt class="type">anyarray</tt> and
+    <tt class="type">anyelement</tt>.
+   </p>
+<p>    The <tt class="type">internal</tt> pseudo-type is used to declare functions
     that are meant only to be called internally by the database
-    system, and not by direct invocation in a <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->
-    query.  If a function has at least one <TT
-CLASS="TYPE"
->internal</TT
->-type
-    argument then it cannot be called from <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->.  To
+    system, and not by direct invocation in a <span class="acronym">SQL</span>
+    query.  If a function has at least one <tt class="type">internal</tt>-type
+    argument then it cannot be called from <span class="acronym">SQL</span>.  To
     preserve the type safety of this restriction it is important to
     follow this coding rule: do not create any function that is
-    declared to return <TT
-CLASS="TYPE"
->internal</TT
-> unless it has at least one
-    <TT
-CLASS="TYPE"
->internal</TT
-> argument.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="datatype-oid.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Object Identifier Types</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="datatype.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Functions and Operators</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    declared to return <tt class="type">internal</tt> unless it has at least one
+    <tt class="type">internal</tt> argument.
+   </p>
+</div></body>
+</html>

@@ -1,666 +1,160 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->pg_operator</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_opclass"
-HREF="catalog-pg-opclass.html"><LINK
-REL="NEXT"
-TITLE="pg_proc"
-HREF="catalog-pg-proc.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-opclass.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-proc.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-OPERATOR"
->41.23. <TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></A
-></H1
-><A
-NAME="AEN51578"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-> stores information about operators.  See
-   <TT
-CLASS="COMMAND"
->CREATE OPERATOR</TT
-> and <A
-HREF="xoper.html"
->Section 31.11</A
-> for
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.23. pg_operator</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="previous" href="catalog-pg-opclass.html" title="41.22. pg_opclass">
+<link rel="next" href="catalog-pg-proc.html" title="41.24. pg_proc">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-operator"></a>41.23. <tt class="structname">pg_operator</tt></h2></div></div>
+<div></div>
+</div>
+<a name="id2723995"></a><p>   The catalog <tt class="structname">pg_operator</tt> stores information about operators.  See
+   <tt class="command">CREATE OPERATOR</tt> and <a href="xoper.html" title="31.12. User-Defined Operators">Section 31.12, &#8220;User-Defined Operators&#8221;</a> for
    details on these operator parameters.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN51584"
-></A
-><P
-><B
->Table 41-23. <TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprname</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Name of the operator</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprnamespace</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-namespace.html"
-><TT
-CLASS="STRUCTNAME"
->pg_namespace</TT
-></A
->.oid</TT
-></TD
-><TD
->       The OID of the namespace that contains this operator
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprowner</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-shadow.html"
-><TT
-CLASS="STRUCTNAME"
->pg_shadow</TT
-></A
->.usesysid</TT
-></TD
-><TD
->Owner of the operator</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprkind</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->char</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       <TT
-CLASS="LITERAL"
->b</TT
-> = infix (<SPAN
-CLASS="QUOTE"
->"both"</SPAN
->), <TT
-CLASS="LITERAL"
->l</TT
-> = prefix
-       (<SPAN
-CLASS="QUOTE"
->"left"</SPAN
->), <TT
-CLASS="LITERAL"
->r</TT
-> = postfix (<SPAN
-CLASS="QUOTE"
->"right"</SPAN
->)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprcanhash</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->This operator supports hash joins</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprleft</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->Type of the left operand</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprright</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->Type of the right operand</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprresult</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->Type of the result</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprcom</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-operator.html"
-><TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></A
->.oid</TT
-></TD
-><TD
->Commutator of this operator, if any</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprnegate</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-operator.html"
-><TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></A
->.oid</TT
-></TD
-><TD
->Negator of this operator, if any</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprlsortop</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-operator.html"
-><TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></A
->.oid</TT
-></TD
-><TD
->       If this operator supports merge joins, the operator that sorts
-       the type of the left-hand operand (<TT
-CLASS="LITERAL"
->L&lt;L</TT
->)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprrsortop</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-operator.html"
-><TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></A
->.oid</TT
-></TD
-><TD
->       If this operator supports merge joins, the operator that sorts
-       the type of the right-hand operand (<TT
-CLASS="LITERAL"
->R&lt;R</TT
->)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprltcmpop</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-operator.html"
-><TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></A
->.oid</TT
-></TD
-><TD
->       If this operator supports merge joins, the less-than operator that
-       compares the left and right operand types (<TT
-CLASS="LITERAL"
->L&lt;R</TT
->)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprgtcmpop</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-operator.html"
-><TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></A
->.oid</TT
-></TD
-><TD
->       If this operator supports merge joins, the greater-than operator that
-       compares the left and right operand types (<TT
-CLASS="LITERAL"
->L&gt;R</TT
->)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprcode</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->regproc</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-proc.html"
-><TT
-CLASS="STRUCTNAME"
->pg_proc</TT
-></A
->.oid</TT
-></TD
-><TD
->Function that implements this operator</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprrest</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->regproc</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-proc.html"
-><TT
-CLASS="STRUCTNAME"
->pg_proc</TT
-></A
->.oid</TT
-></TD
-><TD
->Restriction selectivity estimation function for this operator</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->oprjoin</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->regproc</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-proc.html"
-><TT
-CLASS="STRUCTNAME"
->pg_proc</TT
-></A
->.oid</TT
-></TD
-><TD
->Join selectivity estimation function for this operator</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   Unused column contain zeroes, for example <TT
-CLASS="STRUCTFIELD"
->oprleft</TT
-> is zero for a
+  </p>
+<div class="table">
+<a name="id2724023"></a><p class="title"><b>Table 41.23. <tt class="structname">pg_operator</tt> Columns</b></p>
+<table summary="pg_operator Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="structfield">oprname</tt></td>
+<td><tt class="type">name</tt></td>
+<td> </td>
+<td>Name of the operator</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprnamespace</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.oid</tt></td>
+<td>       The OID of the namespace that contains this operator
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">oprowner</tt></td>
+<td><tt class="type">int4</tt></td>
+<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usesysid</tt></td>
+<td>Owner of the operator</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprkind</tt></td>
+<td><tt class="type">char</tt></td>
+<td> </td>
+<td>
+<tt class="literal">b</tt> = infix (&#8220;<span class="quote">both</span>&#8221;), <tt class="literal">l</tt> = prefix
+       (&#8220;<span class="quote">left</span>&#8221;), <tt class="literal">r</tt> = postfix (&#8220;<span class="quote">right</span>&#8221;)
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">oprcanhash</tt></td>
+<td><tt class="type">bool</tt></td>
+<td> </td>
+<td>This operator supports hash joins</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprleft</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
+<td>Type of the left operand</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprright</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
+<td>Type of the right operand</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprresult</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
+<td>Type of the result</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprcom</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><tt class="structname">pg_operator</tt></a>.oid</tt></td>
+<td>Commutator of this operator, if any</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprnegate</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><tt class="structname">pg_operator</tt></a>.oid</tt></td>
+<td>Negator of this operator, if any</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprlsortop</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><tt class="structname">pg_operator</tt></a>.oid</tt></td>
+<td>       If this operator supports merge joins, the operator that sorts
+       the type of the left-hand operand (<tt class="literal">L&lt;L</tt>)
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">oprrsortop</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><tt class="structname">pg_operator</tt></a>.oid</tt></td>
+<td>       If this operator supports merge joins, the operator that sorts
+       the type of the right-hand operand (<tt class="literal">R&lt;R</tt>)
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">oprltcmpop</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><tt class="structname">pg_operator</tt></a>.oid</tt></td>
+<td>       If this operator supports merge joins, the less-than operator that
+       compares the left and right operand types (<tt class="literal">L&lt;R</tt>)
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">oprgtcmpop</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><tt class="structname">pg_operator</tt></a>.oid</tt></td>
+<td>       If this operator supports merge joins, the greater-than operator that
+       compares the left and right operand types (<tt class="literal">L&gt;R</tt>)
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">oprcode</tt></td>
+<td><tt class="type">regproc</tt></td>
+<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td>Function that implements this operator</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprrest</tt></td>
+<td><tt class="type">regproc</tt></td>
+<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td>Restriction selectivity estimation function for this operator</td>
+</tr>
+<tr>
+<td><tt class="structfield">oprjoin</tt></td>
+<td><tt class="type">regproc</tt></td>
+<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td>Join selectivity estimation function for this operator</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   Unused column contain zeroes, for example <tt class="structfield">oprleft</tt> is zero for a
    prefix operator.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-opclass.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-proc.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_opclass</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_proc</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

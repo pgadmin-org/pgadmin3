@@ -1,334 +1,157 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Partial Indexes</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Indexes"
-HREF="indexes.html"><LINK
-REL="PREVIOUS"
-TITLE="Operator Classes"
-HREF="indexes-opclass.html"><LINK
-REL="NEXT"
-TITLE="Examining Index Usage"
-HREF="indexes-examine.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-opclass.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 11. Indexes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes-examine.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INDEXES-PARTIAL"
->11.7. Partial Indexes</A
-></H1
-><A
-NAME="AEN13984"
-></A
-><P
->   A <I
-CLASS="FIRSTTERM"
->partial index</I
-> is an index built over a
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>11.7. Partial Indexes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="previous" href="indexes-opclass.html" title="11.6. Operator Classes">
+<link rel="next" href="indexes-examine.html" title="11.8. Examining Index Usage">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="indexes-partial"></a>11.7. Partial Indexes</h2></div></div>
+<div></div>
+</div>
+<a name="id2568676"></a><p>   A <i class="firstterm">partial index</i> is an index built over a
    subset of a table; the subset is defined by a conditional
-   expression (called the <I
-CLASS="FIRSTTERM"
->predicate</I
-> of the
+   expression (called the <i class="firstterm">predicate</i> of the
    partial index).  The index contains entries for only those table
    rows that satisfy the predicate.
-  </P
-><P
->   A major motivation for partial indexes is to avoid indexing common
+  </p>
+<p>   A major motivation for partial indexes is to avoid indexing common
    values.  Since a query searching for a common value (one that
    accounts for more than a few percent of all the table rows) will not
    use the index anyway, there is no point in keeping those rows in the
    index at all.  This reduces the size of the index, which will speed
    up queries that do use the index.  It will also speed up many table
    update operations because the index does not need to be
-   updated in all cases.  <A
-HREF="indexes-partial.html#INDEXES-PARTIAL-EX1"
->Example 11-1</A
-> shows a
+   updated in all cases.  <a href="indexes-partial.html#indexes-partial-ex1" title="Example 11.1. Setting up a Partial Index to Exclude Common Values">Example 11.1, &#8220;Setting up a Partial Index to Exclude Common Values&#8221;</a> shows a
    possible application of this idea.
-  </P
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="INDEXES-PARTIAL-EX1"
-></A
-><P
-><B
->Example 11-1. Setting up a Partial Index to Exclude Common Values</B
-></P
-><P
->    Suppose you are storing web server access logs in a database.
+  </p>
+<div class="example">
+<a name="indexes-partial-ex1"></a><p class="title"><b>Example 11.1. Setting up a Partial Index to Exclude Common Values</b></p>
+<p>    Suppose you are storing web server access logs in a database.
     Most accesses originate from the IP address range of your organization but
     some are from elsewhere (say, employees on dial-up connections).
     If your searches by IP are primarily for outside accesses,
     you probably do not need to index the IP range that corresponds to your
     organization's subnet.
-   </P
-><P
->    Assume a table like this:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TABLE access_log (
+   </p>
+<p>    Assume a table like this:
+</p>
+<pre class="programlisting">CREATE TABLE access_log (
     url varchar,
     client_ip inet,
     ...
-);</PRE
-><P>
-   </P
-><P
->    To create a partial index that suits our example, use a command
+);</pre>
+<p>
+   </p>
+<p>    To create a partial index that suits our example, use a command
     such as this:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE INDEX access_log_client_ip_ix ON access_log (client_ip)
-    WHERE NOT (client_ip &#62; inet '192.168.100.0' AND client_ip &#60; inet '192.168.100.255');</PRE
-><P>
-   </P
-><P
->    A typical query that can use this index would be:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM access_log WHERE url = '/index.html' AND client_ip = inet '212.78.10.32';</PRE
-><P>
+</p>
+<pre class="programlisting">CREATE INDEX access_log_client_ip_ix ON access_log (client_ip)
+    WHERE NOT (client_ip &gt; inet '192.168.100.0' AND client_ip &lt; inet '192.168.100.255');</pre>
+<p>
+   </p>
+<p>    A typical query that can use this index would be:
+</p>
+<pre class="programlisting">SELECT * FROM access_log WHERE url = '/index.html' AND client_ip = inet '212.78.10.32';</pre>
+<p>
     A query that cannot use this index is:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM access_log WHERE client_ip = inet '192.168.100.23';</PRE
-><P>
-   </P
-><P
->    Observe that this kind of partial index requires that the common
+</p>
+<pre class="programlisting">SELECT * FROM access_log WHERE client_ip = inet '192.168.100.23';</pre>
+<p>
+   </p>
+<p>    Observe that this kind of partial index requires that the common
     values be predetermined.  If the distribution of values is
     inherent (due to the nature of the application) and static (not
     changing over time), this is not difficult, but if the common values are
     merely due to the coincidental data load this can require a lot of
     maintenance work.
-   </P
-></DIV
-><P
->   Another possibility is to exclude values from the index that the
-   typical query workload is not interested in; this is shown in <A
-HREF="indexes-partial.html#INDEXES-PARTIAL-EX2"
->Example 11-2</A
->.  This results in the same
+   </p>
+</div>
+<p>   Another possibility is to exclude values from the index that the
+   typical query workload is not interested in; this is shown in <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a>.  This results in the same
    advantages as listed above, but it prevents the
-   <SPAN
-CLASS="QUOTE"
->"uninteresting"</SPAN
-> values from being accessed via that
+   &#8220;<span class="quote">uninteresting</span>&#8221; values from being accessed via that
    index at all, even if an index scan might be profitable in that
    case.  Obviously, setting up partial indexes for this kind of
    scenario will require a lot of care and experimentation.
-  </P
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="INDEXES-PARTIAL-EX2"
-></A
-><P
-><B
->Example 11-2. Setting up a Partial Index to Exclude Uninteresting Values</B
-></P
-><P
->    If you have a table that contains both billed and unbilled orders,
+  </p>
+<div class="example">
+<a name="indexes-partial-ex2"></a><p class="title"><b>Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values</b></p>
+<p>    If you have a table that contains both billed and unbilled orders,
     where the unbilled orders take up a small fraction of the total
     table and yet those are the most-accessed rows, you can improve
     performance by creating an index on just the unbilled rows.  The
     command to create the index would look like this:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE INDEX orders_unbilled_index ON orders (order_nr)
-    WHERE billed is not true;</PRE
-><P>
-   </P
-><P
->    A possible query to use this index would be
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM orders WHERE billed is not true AND order_nr &#60; 10000;</PRE
-><P>
+</p>
+<pre class="programlisting">CREATE INDEX orders_unbilled_index ON orders (order_nr)
+    WHERE billed is not true;</pre>
+<p>
+   </p>
+<p>    A possible query to use this index would be
+</p>
+<pre class="programlisting">SELECT * FROM orders WHERE billed is not true AND order_nr &lt; 10000;</pre>
+<p>
     However, the index can also be used in queries that do not involve
-    <TT
-CLASS="STRUCTFIELD"
->order_nr</TT
-> at all, e.g.,
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM orders WHERE billed is not true AND amount &#62; 5000.00;</PRE
-><P>
+    <tt class="structfield">order_nr</tt> at all, e.g.,
+</p>
+<pre class="programlisting">SELECT * FROM orders WHERE billed is not true AND amount &gt; 5000.00;</pre>
+<p>
     This is not as efficient as a partial index on the
-    <TT
-CLASS="STRUCTFIELD"
->amount</TT
-> column would be, since the system has to
+    <tt class="structfield">amount</tt> column would be, since the system has to
     scan the entire index.  Yet, if there are relatively few unbilled
     orders, using this partial index just to find the unbilled orders
     could be a win.
-   </P
-><P
->    Note that this query cannot use this index:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM orders WHERE order_nr = 3501;</PRE
-><P>
+   </p>
+<p>    Note that this query cannot use this index:
+</p>
+<pre class="programlisting">SELECT * FROM orders WHERE order_nr = 3501;</pre>
+<p>
     The order 3501 may be among the billed or among the unbilled
     orders.
-   </P
-></DIV
-><P
->   <A
-HREF="indexes-partial.html#INDEXES-PARTIAL-EX2"
->Example 11-2</A
-> also illustrates that the
+   </p>
+</div>
+<p>   <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a> also illustrates that the
    indexed column and the column used in the predicate do not need to
-   match.  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> supports partial
+   match.  <span class="productname">PostgreSQL</span> supports partial
    indexes with arbitrary predicates, so long as only columns of the
    table being indexed are involved.  However, keep in mind that the
    predicate must match the conditions used in the queries that
    are supposed to benefit from the index.  To be precise, a partial
    index can be used in a query only if the system can recognize that
-   the <TT
-CLASS="LITERAL"
->WHERE</TT
-> condition of the query mathematically implies
+   the <tt class="literal">WHERE</tt> condition of the query mathematically implies
    the predicate of the index.
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not have a sophisticated
+   <span class="productname">PostgreSQL</span> does not have a sophisticated
    theorem prover that can recognize mathematically equivalent
    expressions that are written in different forms.  (Not
    only is such a general theorem prover extremely difficult to
    create, it would probably be too slow to be of any real use.)
    The system can recognize simple inequality implications, for example
-   <SPAN
-CLASS="QUOTE"
->"x &lt; 1"</SPAN
-> implies <SPAN
-CLASS="QUOTE"
->"x &lt; 2"</SPAN
->; otherwise
+   &#8220;<span class="quote">x &lt; 1</span>&#8221; implies &#8220;<span class="quote">x &lt; 2</span>&#8221;; otherwise
    the predicate condition must exactly match part of the query's
-   <TT
-CLASS="LITERAL"
->WHERE</TT
-> condition
+   <tt class="literal">WHERE</tt> condition
    or the index will not be recognized to be usable.
-  </P
-><P
->   A third possible use for partial indexes does not require the
+  </p>
+<p>   A third possible use for partial indexes does not require the
    index to be used in queries at all.  The idea here is to create
-   a unique index over a subset of a table, as in <A
-HREF="indexes-partial.html#INDEXES-PARTIAL-EX3"
->Example 11-3</A
->.  This enforces uniqueness
+   a unique index over a subset of a table, as in <a href="indexes-partial.html#indexes-partial-ex3" title="Example 11.3. Setting up a Partial Unique Index">Example 11.3, &#8220;Setting up a Partial Unique Index&#8221;</a>.  This enforces uniqueness
    among the rows that satisfy the index predicate, without constraining
    those that do not.
-  </P
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="INDEXES-PARTIAL-EX3"
-></A
-><P
-><B
->Example 11-3. Setting up a Partial Unique Index</B
-></P
-><P
->    Suppose that we have a table describing test outcomes.  We wish
-    to ensure that there is only one <SPAN
-CLASS="QUOTE"
->"successful"</SPAN
-> entry for
+  </p>
+<div class="example">
+<a name="indexes-partial-ex3"></a><p class="title"><b>Example 11.3. Setting up a Partial Unique Index</b></p>
+<p>    Suppose that we have a table describing test outcomes.  We wish
+    to ensure that there is only one &#8220;<span class="quote">successful</span>&#8221; entry for
     a given subject and target combination, but there might be any number of
-    <SPAN
-CLASS="QUOTE"
->"unsuccessful"</SPAN
-> entries.  Here is one way to do it:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TABLE tests (
+    &#8220;<span class="quote">unsuccessful</span>&#8221; entries.  Here is one way to do it:
+</p>
+<pre class="programlisting">CREATE TABLE tests (
     subject text,
     target text,
     success boolean,
@@ -336,127 +159,31 @@ CLASS="PROGRAMLISTING"
 );
 
 CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
-    WHERE success;</PRE
-><P>
+    WHERE success;</pre>
+<p>
     This is a particularly efficient way of doing it when there are few
     successful tests and many unsuccessful ones.
-   </P
-></DIV
-><P
->   Finally, a partial index can also be used to override the system's
+   </p>
+</div>
+<p>   Finally, a partial index can also be used to override the system's
    query plan choices.  It may occur that data sets with peculiar
    distributions will cause the system to use an index when it really
    should not.  In that case the index can be set up so that it is not
    available for the offending query.  Normally,
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> makes reasonable choices about index
+   <span class="productname">PostgreSQL</span> makes reasonable choices about index
    usage (e.g., it avoids them when retrieving common values, so the
    earlier example really only saves index size, it is not required to
    avoid index usage), and grossly incorrect plan choices are cause
    for a bug report.
-  </P
-><P
->   Keep in mind that setting up a partial index indicates that you
+  </p>
+<p>   Keep in mind that setting up a partial index indicates that you
    know at least as much as the query planner knows, in particular you
    know when an index might be profitable.  Forming this knowledge
    requires experience and understanding of how indexes in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> work.  In most cases, the advantage of a
+   <span class="productname">PostgreSQL</span> work.  In most cases, the advantage of a
    partial index over a regular index will not be much.
-  </P
-><P
->   More information about partial indexes can be found in <A
-HREF="biblio.html#STON89B"
-><I
-><A
-HREF="http://s2k-ftp.CS.Berkeley.EDU:8000/postgres/papers/ERL-M89-17.pdf"
-TARGET="_top"
->The case for partial indexes</A
-></I
-></A
->, <A
-HREF="biblio.html#OLSON93"
-><I
->Partial indexing in POSTGRES: research project</I
-></A
->, and <A
-HREF="biblio.html#SESHADRI95"
-><I
-><A
-HREF="http://simon.cs.cornell.edu/home/praveen/papers/partindex.de95.ps.Z"
-TARGET="_top"
->Generalized Partial Indexes</A
-></I
-></A
->.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-opclass.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes-examine.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Operator Classes</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="indexes.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Examining Index Usage</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+<p>   More information about partial indexes can be found in [<a href="biblio.html#ston89b" title="[ston89b]">ston89b</a>], [<a href="biblio.html#olson93" title="[olson93]">olson93</a>], and [<a href="biblio.html#seshadri95" title="[seshadri95]">seshadri95</a>].
+  </p>
+</div></body>
+</html>

@@ -1,253 +1,49 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->SPI_copytuple</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Memory Management"
-HREF="spi-memory.html"><LINK
-REL="PREVIOUS"
-TITLE="SPI_pfree"
-HREF="spi-spi-pfree.html"><LINK
-REL="NEXT"
-TITLE="SPI_returntuple"
-HREF="spi-spi-returntuple.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-pfree.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-pfree.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-returntuple.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-returntuple.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-COPYTUPLE"
-></A
->SPI_copytuple</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN33948"
-></A
-><H2
->Name</H2
->SPI_copytuple&nbsp;--&nbsp;make a copy of a row in the upper executor context</DIV
-><A
-NAME="AEN33951"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN33953"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->HeapTuple SPI_copytuple(HeapTuple <TT
-CLASS="PARAMETER"
->row</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33956"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_copytuple</CODE
-> makes a copy of a row in the
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_copytuple</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="spi-memory.html" title="39.3. Memory Management">
+<link rel="previous" href="spi-spi-pfree.html" title="SPI_pfree">
+<link rel="next" href="spi-spi-returntuple.html" title="SPI_returntuple">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-copytuple"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_copytuple &#8212; make a copy of a row in the upper executor context</p>
+</div>
+<a name="id2656506"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">HeapTuple SPI_copytuple(HeapTuple <i class="parameter"><tt>row</tt></i>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2656524"></a><h2>Description</h2>
+<p>   <tt class="function">SPI_copytuple</tt> makes a copy of a row in the
    upper executor context.  This is normally used to return a modified
    row from a trigger.  In a function declared to return a composite
-   type, use <CODE
-CLASS="FUNCTION"
->SPI_returntuple</CODE
-> instead.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33961"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->HeapTuple <TT
-CLASS="PARAMETER"
->row</TT
-></TT
-></DT
-><DD
-><P
->      row to be copied
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33970"
-></A
-><H2
->Return Value</H2
-><P
->   the copied row; <TT
-CLASS="SYMBOL"
->NULL</TT
-> only if
-   <TT
-CLASS="PARAMETER"
->tuple</TT
-> is <TT
-CLASS="SYMBOL"
->NULL</TT
->
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-pfree.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-returntuple.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_pfree</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi-memory.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_returntuple</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   type, use <tt class="function">SPI_returntuple</tt> instead.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2656544"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">HeapTuple <i class="parameter"><tt>row</tt></i></tt></span></dt>
+<dd><p>      row to be copied
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2656564"></a><h2>Return Value</h2>
+<p>   the copied row; <tt class="symbol">NULL</tt> only if
+   <i class="parameter"><tt>tuple</tt></i> is <tt class="symbol">NULL</tt>
+  </p>
+</div>
+</div></body>
+</html>

@@ -1,383 +1,101 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->routine_privileges</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The Information Schema"
-HREF="information-schema.html"><LINK
-REL="PREVIOUS"
-TITLE="role_usage_grants"
-HREF="infoschema-role-usage-grants.html"><LINK
-REL="NEXT"
-TITLE="routines"
-HREF="infoschema-routines.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-role-usage-grants.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 30. The Information Schema</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-routines.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INFOSCHEMA-ROUTINE-PRIVILEGES"
->30.25. <TT
-CLASS="LITERAL"
->routine_privileges</TT
-></A
-></H1
-><P
->   The view <TT
-CLASS="LITERAL"
->routine_privileges</TT
-> identifies all
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>30.25. routine_privileges</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
+<link rel="previous" href="infoschema-role-usage-grants.html" title="30.24. role_usage_grants">
+<link rel="next" href="infoschema-routines.html" title="30.26. routines">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="infoschema-routine-privileges"></a>30.25. <tt class="literal">routine_privileges</tt></h2></div></div>
+<div></div>
+</div>
+<p>   The view <tt class="literal">routine_privileges</tt> identifies all
    privileges granted on functions to the current user or by the
    current user.  There is one row for each combination of function,
    grantor, and grantee.  Privileges granted to groups are identified
-   in the view <TT
-CLASS="LITERAL"
->role_routine_grants</TT
->.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN26404"
-></A
-><P
-><B
->Table 30-23. <TT
-CLASS="LITERAL"
->routine_privileges</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Data Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->grantor</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the user that granted the privilege</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->grantee</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the user or group that the privilege was granted to</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->specific_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the database containing the function (always the current database)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->specific_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the schema containing the function</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->specific_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       The <SPAN
-CLASS="QUOTE"
->"specific name"</SPAN
-> of the function.  See <A
-HREF="infoschema-routines.html"
->Section 30.26</A
-> for more information.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->routine_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the database containing the function (always the current database)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->routine_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the schema containing the function</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->routine_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the function (may be duplicated in case of overloading)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->privilege_type</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Always <TT
-CLASS="LITERAL"
->EXECUTE</TT
-> (the only privilege type for functions)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->is_grantable</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->YES</TT
-> if the privilege is grantable, <TT
-CLASS="LITERAL"
->NO</TT
-> if not</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   Note that the column <TT
-CLASS="LITERAL"
->grantee</TT
-> makes no
+   in the view <tt class="literal">role_routine_grants</tt>.
+  </p>
+<div class="table">
+<a name="id2622606"></a><p class="title"><b>Table 30.23. <tt class="literal">routine_privileges</tt> Columns</b></p>
+<table summary="routine_privileges Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal">grantor</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the user that granted the privilege</td>
+</tr>
+<tr>
+<td><tt class="literal">grantee</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the user or group that the privilege was granted to</td>
+</tr>
+<tr>
+<td><tt class="literal">specific_catalog</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the database containing the function (always the current database)</td>
+</tr>
+<tr>
+<td><tt class="literal">specific_schema</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the schema containing the function</td>
+</tr>
+<tr>
+<td><tt class="literal">specific_name</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>       The &#8220;<span class="quote">specific name</span>&#8221; of the function.  See <a href="infoschema-routines.html" title="30.26. routines">Section 30.26, &#8220;routines&#8221;</a> for more information.
+      </td>
+</tr>
+<tr>
+<td><tt class="literal">routine_catalog</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the database containing the function (always the current database)</td>
+</tr>
+<tr>
+<td><tt class="literal">routine_schema</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the schema containing the function</td>
+</tr>
+<tr>
+<td><tt class="literal">routine_name</tt></td>
+<td><tt class="type">sql_identifier</tt></td>
+<td>Name of the function (may be duplicated in case of overloading)</td>
+</tr>
+<tr>
+<td><tt class="literal">privilege_type</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>Always <tt class="literal">EXECUTE</tt> (the only privilege type for functions)</td>
+</tr>
+<tr>
+<td><tt class="literal">is_grantable</tt></td>
+<td><tt class="type">character_data</tt></td>
+<td>
+<tt class="literal">YES</tt> if the privilege is grantable, <tt class="literal">NO</tt> if not</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   Note that the column <tt class="literal">grantee</tt> makes no
    distinction between users and groups.  If you have users and groups
    with the same name, there is unfortunately no way to distinguish
-   them.  A future version of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+   them.  A future version of <span class="productname">PostgreSQL</span>
    will possibly prohibit having users and groups with the same name.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-role-usage-grants.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-routines.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->role_usage_grants</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="information-schema.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->routines</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

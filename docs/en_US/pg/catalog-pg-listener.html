@@ -1,285 +1,69 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->pg_listener</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_largeobject"
-HREF="catalog-pg-largeobject.html"><LINK
-REL="NEXT"
-TITLE="pg_namespace"
-HREF="catalog-pg-namespace.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-largeobject.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-namespace.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-LISTENER"
->41.20. <TT
-CLASS="STRUCTNAME"
->pg_listener</TT
-></A
-></H1
-><A
-NAME="AEN51390"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_listener</TT
-> supports the <TT
-CLASS="COMMAND"
->LISTEN</TT
->
-   and <TT
-CLASS="COMMAND"
->NOTIFY</TT
-> commands.  A listener creates an entry in
-   <TT
-CLASS="STRUCTNAME"
->pg_listener</TT
-> for each notification name
-   it is listening for.  A notifier scans <TT
-CLASS="STRUCTNAME"
->pg_listener</TT
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.20. pg_listener</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="previous" href="catalog-pg-largeobject.html" title="41.19. pg_largeobject">
+<link rel="next" href="catalog-pg-namespace.html" title="41.21. pg_namespace">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-listener"></a>41.20. <tt class="structname">pg_listener</tt></h2></div></div>
+<div></div>
+</div>
+<a name="id2723527"></a><p>   The catalog <tt class="structname">pg_listener</tt> supports the <tt class="command">LISTEN</tt>
+   and <tt class="command">NOTIFY</tt> commands.  A listener creates an entry in
+   <tt class="structname">pg_listener</tt> for each notification name
+   it is listening for.  A notifier scans <tt class="structname">pg_listener</tt>
    and updates each matching entry to show that a notification has occurred.
    The notifier also sends a signal (using the PID recorded in the table)
    to awaken the listener from sleep.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN51398"
-></A
-><P
-><B
->Table 41-20. <TT
-CLASS="STRUCTNAME"
->pg_listener</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relname</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Notify condition name.  (The name need not match any actual
-      relation in the database; the name <TT
-CLASS="STRUCTFIELD"
->relname</TT
-> is historical.)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->listenerpid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->PID of the server process that created this entry.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->notification</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Zero if no event is pending for this listener.  If an event is
+  </p>
+<div class="table">
+<a name="id2723566"></a><p class="title"><b>Table 41.20. <tt class="structname">pg_listener</tt> Columns</b></p>
+<table summary="pg_listener Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="structfield">relname</tt></td>
+<td><tt class="type">name</tt></td>
+<td> </td>
+<td>Notify condition name.  (The name need not match any actual
+      relation in the database; the name <tt class="structfield">relname</tt> is historical.)
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">listenerpid</tt></td>
+<td><tt class="type">int4</tt></td>
+<td> </td>
+<td>PID of the server process that created this entry.</td>
+</tr>
+<tr>
+<td><tt class="structfield">notification</tt></td>
+<td><tt class="type">int4</tt></td>
+<td> </td>
+<td>       Zero if no event is pending for this listener.  If an event is
        pending, the PID of the server process that sent the notification.
-      </TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-largeobject.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-namespace.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_largeobject</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_namespace</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

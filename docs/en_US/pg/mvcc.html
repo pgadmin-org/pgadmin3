@@ -1,311 +1,79 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Concurrency Control</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The SQL Language"
-HREF="sql.html"><LINK
-REL="PREVIOUS"
-TITLE="Examining Index Usage"
-HREF="indexes-examine.html"><LINK
-REL="NEXT"
-TITLE="Transaction Isolation"
-HREF="transaction-iso.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-examine.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="performance-tips.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="transaction-iso.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="MVCC"
-></A
->Chapter 12. Concurrency Control</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->12.1. <A
-HREF="mvcc.html#MVCC-INTRO"
->Introduction</A
-></DT
-><DT
->12.2. <A
-HREF="transaction-iso.html"
->Transaction Isolation</A
-></DT
-><DD
-><DL
-><DT
->12.2.1. <A
-HREF="transaction-iso.html#XACT-READ-COMMITTED"
->Read Committed Isolation Level</A
-></DT
-><DT
->12.2.2. <A
-HREF="transaction-iso.html#XACT-SERIALIZABLE"
->Serializable Isolation Level</A
-></DT
-></DL
-></DD
-><DT
->12.3. <A
-HREF="explicit-locking.html"
->Explicit Locking</A
-></DT
-><DD
-><DL
-><DT
->12.3.1. <A
-HREF="explicit-locking.html#LOCKING-TABLES"
->Table-Level Locks</A
-></DT
-><DT
->12.3.2. <A
-HREF="explicit-locking.html#LOCKING-ROWS"
->Row-Level Locks</A
-></DT
-><DT
->12.3.3. <A
-HREF="explicit-locking.html#LOCKING-DEADLOCKS"
->Deadlocks</A
-></DT
-></DL
-></DD
-><DT
->12.4. <A
-HREF="applevel-consistency.html"
->Data Consistency Checks at the Application Level</A
-></DT
-><DT
->12.5. <A
-HREF="locking-indexes.html"
->Locking and Indexes</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN14077"
-></A
-><P
->   This chapter describes the behavior of the
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database system when two or
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 12. Concurrency Control</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="sql.html" title="Part II. The SQL Language">
+<link rel="previous" href="indexes-examine.html" title="11.8. Examining Index Usage">
+<link rel="next" href="transaction-iso.html" title="12.2. Transaction Isolation">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="mvcc">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="mvcc"></a>Chapter 12. Concurrency Control</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="mvcc.html#mvcc-intro">12.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="transaction-iso.html">12.2. Transaction Isolation</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="transaction-iso.html#xact-read-committed">12.2.1. Read Committed Isolation Level</a></span></dt>
+<dt><span class="sect2"><a href="transaction-iso.html#xact-serializable">12.2.2. Serializable Isolation Level</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="explicit-locking.html">12.3. Explicit Locking</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="explicit-locking.html#locking-tables">12.3.1. Table-Level Locks</a></span></dt>
+<dt><span class="sect2"><a href="explicit-locking.html#locking-rows">12.3.2. Row-Level Locks</a></span></dt>
+<dt><span class="sect2"><a href="explicit-locking.html#locking-deadlocks">12.3.3. Deadlocks</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="applevel-consistency.html">12.4. Data Consistency Checks at the Application Level</a></span></dt>
+<dt><span class="sect1"><a href="locking-indexes.html">12.5. Locking and Indexes</a></span></dt>
+</dl>
+</div>
+<a name="id2569242"></a><p>   This chapter describes the behavior of the
+   <span class="productname">PostgreSQL</span> database system when two or
    more sessions try to access the same data at the same time.  The
    goals in that situation are to allow efficient access for all
    sessions while maintaining strict data integrity.  Every developer
    of database applications should be familiar with the topics covered
    in this chapter.
-  </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="MVCC-INTRO"
->12.1. Introduction</A
-></H1
-><A
-NAME="AEN14083"
-></A
-><P
->    Unlike traditional database systems which use locks for concurrency control,
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="mvcc-intro"></a>12.1. Introduction</h2></div></div>
+<div></div>
+</div>
+<a name="id2569270"></a><p>    Unlike traditional database systems which use locks for concurrency control,
+    <span class="productname">PostgreSQL</span>
     maintains data consistency by using a multiversion model
-    (Multiversion Concurrency Control, <ACRONYM
-CLASS="ACRONYM"
->MVCC</ACRONYM
->). 
+    (Multiversion Concurrency Control, <span class="acronym">MVCC</span>). 
     This means that while querying a database each transaction sees
-    a snapshot of data (a <I
-CLASS="FIRSTTERM"
->database version</I
->)
+    a snapshot of data (a <i class="firstterm">database version</i>)
     as it was some
     time ago, regardless of the current state of the underlying data.
     This protects the transaction from viewing inconsistent data that
     could be caused by (other) concurrent transaction updates on the same
-    data rows, providing <I
-CLASS="FIRSTTERM"
->transaction isolation</I
->
+    data rows, providing <i class="firstterm">transaction isolation</i>
     for each database session.
-   </P
-><P
->    The main advantage to using the <ACRONYM
-CLASS="ACRONYM"
->MVCC</ACRONYM
-> model of
+   </p>
+<p>    The main advantage to using the <span class="acronym">MVCC</span> model of
     concurrency control rather than locking is that in
-    <ACRONYM
-CLASS="ACRONYM"
->MVCC</ACRONYM
-> locks acquired for querying (reading) data
+    <span class="acronym">MVCC</span> locks acquired for querying (reading) data
     do not conflict with locks acquired for writing data, and so
     reading never blocks writing and writing never blocks reading.
-   </P
-><P
->    Table- and row-level locking facilities are also available in
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> for applications that cannot
-    adapt easily to <ACRONYM
-CLASS="ACRONYM"
->MVCC</ACRONYM
-> behavior.  However, proper
-    use of <ACRONYM
-CLASS="ACRONYM"
->MVCC</ACRONYM
-> will generally provide better
+   </p>
+<p>    Table- and row-level locking facilities are also available in
+    <span class="productname">PostgreSQL</span> for applications that cannot
+    adapt easily to <span class="acronym">MVCC</span> behavior.  However, proper
+    use of <span class="acronym">MVCC</span> will generally provide better
     performance than locks.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-examine.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="transaction-iso.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Examining Index Usage</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Transaction Isolation</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

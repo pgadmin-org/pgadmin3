@@ -1,336 +1,81 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->PL/Tcl - Tcl Procedural Language</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Programming"
-HREF="server-programming.html"><LINK
-REL="PREVIOUS"
-TITLE="Porting from Oracle PL/SQL"
-HREF="plpgsql-porting.html"><LINK
-REL="NEXT"
-TITLE="PL/Tcl Functions and Arguments"
-HREF="pltcl-functions.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql-porting.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plperl.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="pltcl-functions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="PLTCL"
-></A
->Chapter 36. PL/Tcl - Tcl Procedural Language</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->36.1. <A
-HREF="pltcl.html#PLTCL-OVERVIEW"
->Overview</A
-></DT
-><DT
->36.2. <A
-HREF="pltcl-functions.html"
->PL/Tcl Functions and Arguments</A
-></DT
-><DT
->36.3. <A
-HREF="pltcl-data.html"
->Data Values in PL/Tcl</A
-></DT
-><DT
->36.4. <A
-HREF="pltcl-global.html"
->Global Data in PL/Tcl</A
-></DT
-><DT
->36.5. <A
-HREF="pltcl-dbaccess.html"
->Database Access from PL/Tcl</A
-></DT
-><DT
->36.6. <A
-HREF="pltcl-trigger.html"
->Trigger Procedures in PL/Tcl</A
-></DT
-><DT
->36.7. <A
-HREF="pltcl-unknown.html"
->Modules and the <CODE
-CLASS="FUNCTION"
->unknown</CODE
-> command</A
-></DT
-><DT
->36.8. <A
-HREF="pltcl-procnames.html"
->Tcl Procedure Names</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN32058"
-></A
-><A
-NAME="AEN32060"
-></A
-><P
->   PL/Tcl is a loadable procedural language for the
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database system
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 36. PL/Tcl - Tcl Procedural Language</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="previous" href="plpgsql-porting.html" title="35.11. Porting from Oracle PL/SQL">
+<link rel="next" href="pltcl-functions.html" title="36.2. PL/Tcl Functions and Arguments">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="pltcl">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="pltcl"></a>Chapter 36. PL/Tcl - Tcl Procedural Language</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="pltcl.html#pltcl-overview">36.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-functions.html">36.2. PL/Tcl Functions and Arguments</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-data.html">36.3. Data Values in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-global.html">36.4. Global Data in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-dbaccess.html">36.5. Database Access from PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-trigger.html">36.6. Trigger Procedures in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-unknown.html">36.7. Modules and the unknown command</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-procnames.html">36.8. Tcl Procedure Names</a></span></dt>
+</dl>
+</div>
+<a name="id2648476"></a><a name="id2648486"></a><p>   PL/Tcl is a loadable procedural language for the
+   <span class="productname">PostgreSQL</span> database system
    that enables the Tcl language to be used to write functions and
    trigger procedures.
-  </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PLTCL-OVERVIEW"
->36.1. Overview</A
-></H1
-><P
->    PL/Tcl offers most of the capabilities a function
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="pltcl-overview"></a>36.1. Overview</h2></div></div>
+<div></div>
+</div>
+<p>    PL/Tcl offers most of the capabilities a function
     writer has in the C language, except for some restrictions.
-   </P
-><P
->    The good restriction is that everything is executed in a safe
+   </p>
+<p>    The good restriction is that everything is executed in a safe
     Tcl interpreter. In addition to the limited command set of safe Tcl, only
     a few commands are available to access the database via SPI and to raise
-    messages via <CODE
-CLASS="FUNCTION"
->elog()</CODE
->. There is no way to access internals of the
+    messages via <tt class="function">elog()</tt>. There is no way to access internals of the
     database server or to gain OS-level access under the permissions of the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server process, as a C function can do.
+    <span class="productname">PostgreSQL</span> server process, as a C function can do.
     Thus, any unprivileged database user may be
     permitted to use this language.
-   </P
-><P
->    The other, implementation restriction is that Tcl functions cannot
+   </p>
+<p>    The other, implementation restriction is that Tcl functions cannot
     be used to create input/output functions for new data types.
-   </P
-><P
->    Sometimes it is desirable to write Tcl functions that are not restricted
+   </p>
+<p>    Sometimes it is desirable to write Tcl functions that are not restricted
     to safe Tcl.  For example, one might want a Tcl function that sends
-    email.  To handle these cases, there is a variant of <SPAN
-CLASS="APPLICATION"
->PL/Tcl</SPAN
-> called <TT
-CLASS="LITERAL"
->PL/TclU</TT
->
+    email.  To handle these cases, there is a variant of <span class="application">PL/Tcl</span> called <tt class="literal">PL/TclU</tt>
     (for untrusted Tcl).  This is the exact same language except that a full
-    Tcl interpreter is used.  <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->If <SPAN
-CLASS="APPLICATION"
->PL/TclU</SPAN
-> is used, it must be
-    installed as an untrusted procedural language</I
-></SPAN
-> so that only
-    database superusers can create functions in it.  The writer of a <SPAN
-CLASS="APPLICATION"
->PL/TclU</SPAN
->
+    Tcl interpreter is used.  <span class="emphasis"><em>If <span class="application">PL/TclU</span> is used, it must be
+    installed as an untrusted procedural language</em></span> so that only
+    database superusers can create functions in it.  The writer of a <span class="application">PL/TclU</span>
     function must take care that the function cannot be used to do anything
     unwanted, since it will be able to do anything that could be done by
     a user logged in as the database administrator.
-   </P
-><P
->    The shared object for the <SPAN
-CLASS="APPLICATION"
->PL/Tcl</SPAN
-> and <SPAN
-CLASS="APPLICATION"
->PL/TclU</SPAN
-> call handlers is
+   </p>
+<p>    The shared object for the <span class="application">PL/Tcl</span> and <span class="application">PL/TclU</span> call handlers is
     automatically built and installed in the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 
+    <span class="productname">PostgreSQL</span> 
     library directory if Tcl/Tk support is specified
     in the configuration step of the installation procedure.  To install
-    <SPAN
-CLASS="APPLICATION"
->PL/Tcl</SPAN
-> and/or <SPAN
-CLASS="APPLICATION"
->PL/TclU</SPAN
-> in a particular database, use the
-    <TT
-CLASS="COMMAND"
->createlang</TT
-> program, for example
-    <TT
-CLASS="LITERAL"
->createlang pltcl <VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-></TT
-> or
-    <TT
-CLASS="LITERAL"
->createlang pltclu <VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-></TT
->.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql-porting.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="pltcl-functions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Porting from <SPAN
-CLASS="PRODUCTNAME"
->Oracle</SPAN
-> PL/SQL</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="server-programming.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->PL/Tcl Functions and Arguments</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    <span class="application">PL/Tcl</span> and/or <span class="application">PL/TclU</span> in a particular database, use the
+    <tt class="command">createlang</tt> program, for example
+    <tt class="literal">createlang pltcl <i class="replaceable"><tt>dbname</tt></i></tt> or
+    <tt class="literal">createlang pltclu <i class="replaceable"><tt>dbname</tt></i></tt>.
+   </p>
+</div>
+</div></body>
+</html>

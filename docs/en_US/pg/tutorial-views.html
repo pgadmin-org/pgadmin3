@@ -1,200 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Views</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Advanced Features"
-HREF="tutorial-advanced.html"><LINK
-REL="PREVIOUS"
-TITLE="Advanced Features"
-HREF="tutorial-advanced.html"><LINK
-REL="NEXT"
-TITLE="Foreign Keys"
-HREF="tutorial-fk.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 3. Advanced Features</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-fk.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TUTORIAL-VIEWS"
->3.2. Views</A
-></H1
-><A
-NAME="AEN901"
-></A
-><P
->    Refer back to the queries in <A
-HREF="tutorial-join.html"
->Section 2.6</A
->.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3.2. Views</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
+<link rel="previous" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
+<link rel="next" href="tutorial-fk.html" title="3.3. Foreign Keys">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="tutorial-views"></a>3.2. Views</h2></div></div>
+<div></div>
+</div>
+<a name="id2519197"></a><p>    Refer back to the queries in <a href="tutorial-join.html" title="2.6. Joins Between Tables">Section 2.6, &#8220;Joins Between Tables&#8221;</a>.
     Suppose the combined listing of weather records and city location
     is of particular interest to your application, but you do not want
     to type the query each time you need it.  You can create a
-    <I
-CLASS="FIRSTTERM"
->view</I
-> over the query, which gives a name to
+    <i class="firstterm">view</i> over the query, which gives a name to
     the query that you can refer to like an ordinary table.
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE VIEW myview AS
+</p>
+<pre class="programlisting">CREATE VIEW myview AS
     SELECT city, temp_lo, temp_hi, prcp, date, location
         FROM weather, cities
         WHERE city = name;
 
-SELECT * FROM myview;</PRE
-><P>
-   </P
-><P
->    Making liberal use of views is a key aspect of good SQL database
+SELECT * FROM myview;</pre>
+<p>
+   </p>
+<p>    Making liberal use of views is a key aspect of good SQL database
     design.  Views allow you to encapsulate the details of the
     structure of your tables, which may change as your application
     evolves, behind consistent interfaces.
-   </P
-><P
->    Views can be used in almost any place a real table can be used.
+   </p>
+<p>    Views can be used in almost any place a real table can be used.
     Building views upon other views is not uncommon.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-fk.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Advanced Features</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Foreign Keys</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div></body>
+</html>

@@ -1,875 +1,334 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Building The Documentation</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Documentation"
-HREF="docguide.html"><LINK
-REL="PREVIOUS"
-TITLE="Tool Sets"
-HREF="docguide-toolsets.html"><LINK
-REL="NEXT"
-TITLE="Documentation Authoring"
-HREF="docguide-authoring.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="docguide-toolsets.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="docguide.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix G. Documentation</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="docguide.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="docguide-authoring.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="DOCGUIDE-BUILD"
->G.3. Building The Documentation</A
-></H1
-><P
->   Once you have everything set up, change to the directory
-   <TT
-CLASS="FILENAME"
->doc/src/sgml</TT
-> and run one of the commands
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>G.3. Building The Documentation</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="docguide.html" title="Appendix G. Documentation">
+<link rel="previous" href="docguide-toolsets.html" title="G.2. Tool Sets">
+<link rel="next" href="docguide-authoring.html" title="G.4. Documentation Authoring">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="docguide-build"></a>G.3. Building The Documentation</h2></div></div>
+<div></div>
+</div>
+<p>   Once you have everything set up, change to the directory
+   <tt class="filename">doc/src/sgml</tt> and run one of the commands
    described in the following subsections to build the
    documentation. (Remember to use GNU make.)
-  </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN68868"
->G.3.1. HTML</A
-></H2
-><P
->    To build the <ACRONYM
-CLASS="ACRONYM"
->HTML</ACRONYM
-> version of the documentation:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->doc/src/sgml$ </SAMP
-><KBD
-CLASS="USERINPUT"
->gmake html</KBD
-></PRE
-><P>
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2772362"></a>G.3.1. HTML</h3></div></div>
+<div></div>
+</div>
+<p>    To build the <span class="acronym">HTML</span> version of the documentation:
+</p>
+<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake html</tt></b></pre>
+<p>
     This is also the default target.
-   </P
-><P
->    When the HTML documentation is built, the process also generates
+   </p>
+<p>    When the HTML documentation is built, the process also generates
     the linking information for the index entries.  Thus, if you want
     your documentation to have a concept index at the end, you need to
     build the HTML documentation once, and then build the
     documentation again in whatever format you like.
-   </P
-><P
->    To allow for easier handling in the final distribution, the files
+   </p>
+<p>    To allow for easier handling in the final distribution, the files
     comprising the HTML documentation are stored in a tar archive that
     is unpacked at installation time.  To create the
-    <ACRONYM
-CLASS="ACRONYM"
->HTML</ACRONYM
-> documentation package, use the commands
-</P><PRE
-CLASS="PROGRAMLISTING"
->cd doc/src
-gmake postgres.tar.gz</PRE
-><P>
+    <span class="acronym">HTML</span> documentation package, use the commands
+</p>
+<pre class="programlisting">cd doc/src
+gmake postgres.tar.gz</pre>
+<p>
     In the distribution, these archives live in the
-    <TT
-CLASS="FILENAME"
->doc</TT
-> directory and are installed by default
-    with <TT
-CLASS="COMMAND"
->gmake install</TT
->.
-  </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN68881"
->G.3.2. Manpages</A
-></H2
-><P
->   We use the <SPAN
-CLASS="APPLICATION"
->docbook2man</SPAN
-> utility to
-   convert <SPAN
-CLASS="PRODUCTNAME"
->DocBook</SPAN
->
-   <CODE
-CLASS="SGMLTAG"
->refentry</CODE
-> pages to *roff output suitable for man
+    <tt class="filename">doc</tt> directory and are installed by default
+    with <tt class="command">gmake install</tt>.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2772425"></a>G.3.2. Manpages</h3></div></div>
+<div></div>
+</div>
+<p>   We use the <span class="application">docbook2man</span> utility to
+   convert <span class="productname">DocBook</span>
+   <tt class="sgmltag-element">refentry</tt> pages to *roff output suitable for man
    pages.  The man pages are also distributed as a tar archive,
-   similar to the <ACRONYM
-CLASS="ACRONYM"
->HTML</ACRONYM
-> version.  To create the man
+   similar to the <span class="acronym">HTML</span> version.  To create the man
    page package, use the commands
-</P><PRE
-CLASS="PROGRAMLISTING"
->cd doc/src
-gmake man.tar.gz</PRE
-><P>
+</p>
+<pre class="programlisting">cd doc/src
+gmake man.tar.gz</pre>
+<p>
    which will result in a tar file being generated in the
-   <TT
-CLASS="FILENAME"
->doc/src</TT
-> directory.
-  </P
-><P
->   To generate quality man pages, it might be necessary to use a
+   <tt class="filename">doc/src</tt> directory.
+  </p>
+<p>   To generate quality man pages, it might be necessary to use a
    hacked version of the conversion utility or do some manual
    postprocessing.  All man pages should be manually inspected before
    distribution.
-  </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN68891"
->G.3.3. Print Output via <SPAN
-CLASS="APPLICATION"
->JadeTex</SPAN
-></A
-></H2
-><P
->    If you want to use <SPAN
-CLASS="APPLICATION"
->JadeTex</SPAN
-> to produce a
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2772472"></a>G.3.3. Print Output via <span class="application">JadeTex</span></h3></div></div>
+<div></div>
+</div>
+<p>    If you want to use <span class="application">JadeTex</span> to produce a
     printable rendition of the documentation, you can use one of the
     following commands:
 
-    <P
-></P
-></P><UL
-><LI
-><P
->       To make a <ACRONYM
-CLASS="ACRONYM"
->DVI</ACRONYM
-> version:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->doc/src/sgml$ </SAMP
-><KBD
-CLASS="USERINPUT"
->gmake postgres.dvi</KBD
-></PRE
-><P>
-      </P
-></LI
-><LI
-><P
->       To generate Postscript from the <ACRONYM
-CLASS="ACRONYM"
->DVI</ACRONYM
->:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->doc/src/sgml$ </SAMP
-><KBD
-CLASS="USERINPUT"
->gmake postgres.ps</KBD
-></PRE
-><P>
-      </P
-></LI
-><LI
-><P
->       To make a <ACRONYM
-CLASS="ACRONYM"
->PDF</ACRONYM
->:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->doc/src/sgml$ </SAMP
-><KBD
-CLASS="USERINPUT"
->gmake postgres.pdf</KBD
-></PRE
-><P>
-       (Of course you can also make a <ACRONYM
-CLASS="ACRONYM"
->PDF</ACRONYM
-> version
-       from the Postscript, but if you generate <ACRONYM
-CLASS="ACRONYM"
->PDF</ACRONYM
->
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>       To make a <span class="acronym">DVI</span> version:
+</p>
+<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake postgres.dvi</tt></b></pre>
+<p>
+      </p>
+</li>
+<li>
+<p>       To generate Postscript from the <span class="acronym">DVI</span>:
+</p>
+<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake postgres.ps</tt></b></pre>
+<p>
+      </p>
+</li>
+<li>
+<p>       To make a <span class="acronym">PDF</span>:
+</p>
+<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake postgres.pdf</tt></b></pre>
+<p>
+       (Of course you can also make a <span class="acronym">PDF</span> version
+       from the Postscript, but if you generate <span class="acronym">PDF</span>
        directly, it will have hyperlinks and other enhanced features.)
-      </P
-></LI
-></UL
-><P>
-   </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN68917"
->G.3.4. Print Output via <ACRONYM
-CLASS="ACRONYM"
->RTF</ACRONYM
-></A
-></H2
-><P
->    You can also create a printable version of the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    documentation by converting it to <ACRONYM
-CLASS="ACRONYM"
->RTF</ACRONYM
-> and
+      </p>
+</li>
+</ul></div>
+<p>
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2772566"></a>G.3.4. Print Output via <span class="acronym">RTF</span></h3></div></div>
+<div></div>
+</div>
+<p>    You can also create a printable version of the <span class="productname">PostgreSQL</span>
+    documentation by converting it to <span class="acronym">RTF</span> and
     applying minor formatting corrections using an office suite.
     Depending on the capabilities of the particular office suite, you
     can then convert the documentation to Postscript of
-    <ACRONYM
-CLASS="ACRONYM"
->PDF</ACRONYM
->.  The procedure below illustrates this
-    process using <SPAN
-CLASS="PRODUCTNAME"
->Applixware</SPAN
->.
-   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     It appears that current versions of the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> documentation
+    <span class="acronym">PDF</span>.  The procedure below illustrates this
+    process using <span class="productname">Applixware</span>.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     It appears that current versions of the <span class="productname">PostgreSQL</span> documentation
      trigger some bug in or exceed the size limit of OpenJade.  If the
-     build process of the <ACRONYM
-CLASS="ACRONYM"
->RTF</ACRONYM
-> version hangs for a
+     build process of the <span class="acronym">RTF</span> version hangs for a
      long time and the output file still has size 0, then you may have
      hit that problem.  (But keep in mind that a normal build takes 5
      to 10 minutes, so don't abort too soon.)
-    </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="PROCEDURE"
-><P
-><B
-><SPAN
-CLASS="PRODUCTNAME"
->Applixware</SPAN
-> <ACRONYM
-CLASS="ACRONYM"
->RTF</ACRONYM
-> Cleanup</B
-></P
-><P
->     <SPAN
-CLASS="APPLICATION"
->OpenJade</SPAN
-> omits specifying a default
+    </p>
+</div>
+<div class="procedure">
+<p class="title"><b><span class="productname">Applixware</span> <span class="acronym">RTF</span> Cleanup</b></p>
+<p>     <span class="application">OpenJade</span> omits specifying a default
      style for body text. In the past, this undiagnosed problem led to
      a long process of table of contents generation. However, with
-     great help from the <SPAN
-CLASS="PRODUCTNAME"
->Applixware</SPAN
-> folks
+     great help from the <span class="productname">Applixware</span> folks
      the symptom was diagnosed and a workaround is available.
-    </P
-><OL
-TYPE="1"
-><LI
-><P
->      Generate the <ACRONYM
-CLASS="ACRONYM"
->RTF</ACRONYM
-> version by typing:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->doc/src/sgml$ </SAMP
-><KBD
-CLASS="USERINPUT"
->gmake postgres.rtf</KBD
-></PRE
-><P>
-     </P
-></LI
-><LI
-><P
->      Repair the RTF file to correctly specify all styles, in
+    </p>
+<ol type="1">
+<li>
+<p>      Generate the <span class="acronym">RTF</span> version by typing:
+</p>
+<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake postgres.rtf</tt></b></pre>
+<p>
+     </p>
+</li>
+<li>
+<p>      Repair the RTF file to correctly specify all styles, in
       particular the default style. If the document contains
-      <CODE
-CLASS="SGMLTAG"
->refentry</CODE
-> sections, one must also replace
+      <tt class="sgmltag-element">refentry</tt> sections, one must also replace
       formatting hints which tie a preceding paragraph to the current
       paragraph, and instead tie the current paragraph to the
-      following one. A utility, <TT
-CLASS="COMMAND"
->fixrtf</TT
->, is
-      available in <TT
-CLASS="FILENAME"
->doc/src/sgml</TT
-> to accomplish
+      following one. A utility, <tt class="command">fixrtf</tt>, is
+      available in <tt class="filename">doc/src/sgml</tt> to accomplish
       these repairs:
 
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->doc/src/sgml$ </SAMP
-><KBD
-CLASS="USERINPUT"
->./fixrtf --refentry postgres.rtf</KBD
-></PRE
-><P>
-     </P
-><P
->      The script adds <TT
-CLASS="LITERAL"
->{\s0 Normal;}</TT
-> as the zeroth
+</p>
+<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>./fixrtf --refentry postgres.rtf</tt></b></pre>
+<p>
+     </p>
+<p>      The script adds <tt class="literal">{\s0 Normal;}</tt> as the zeroth
       style in the document. According to
-      <SPAN
-CLASS="PRODUCTNAME"
->Applixware</SPAN
->, the RTF standard would
+      <span class="productname">Applixware</span>, the RTF standard would
       prohibit adding an implicit zeroth style, though Microsoft Word
       happens to handle this case. For repairing
-      <CODE
-CLASS="SGMLTAG"
->refentry</CODE
-> sections, the script replaces
-      <TT
-CLASS="LITERAL"
->\keepn</TT
-> tags with <TT
-CLASS="LITERAL"
->\keep</TT
->.
-     </P
-></LI
-><LI
-><P
->      Open a new document in <SPAN
-CLASS="PRODUCTNAME"
->Applixware Words</SPAN
-> and
-      then import the <ACRONYM
-CLASS="ACRONYM"
->RTF</ACRONYM
-> file.
-     </P
-></LI
-><LI
-><P
->      Generate a new table of contents (ToC) using
-      <SPAN
-CLASS="PRODUCTNAME"
->Applixware</SPAN
->.
-     </P
-><OL
-CLASS="SUBSTEPS"
-TYPE="a"
-><LI
-><P
->        Select the existing ToC lines, from the beginning of the first
+      <tt class="sgmltag-element">refentry</tt> sections, the script replaces
+      <tt class="literal">\keepn</tt> tags with <tt class="literal">\keep</tt>.
+     </p>
+</li>
+<li><p>      Open a new document in <span class="productname">Applixware Words</span> and
+      then import the <span class="acronym">RTF</span> file.
+     </p></li>
+<li>
+<p>      Generate a new table of contents (ToC) using
+      <span class="productname">Applixware</span>.
+     </p>
+<ol type="a">
+<li><p>        Select the existing ToC lines, from the beginning of the first
         character on the first line to the last character of the last
         line.
-       </P
-></LI
-><LI
-><P
->        Build a new ToC using
-        <SPAN
-CLASS="GUIMENU"
->Tools</SPAN
->-&gt;<SPAN
-CLASS="GUISUBMENU"
->Book
-        Building</SPAN
->-&gt;<SPAN
-CLASS="GUIMENUITEM"
->Create Table of
-        Contents</SPAN
->. Select the first three
+       </p></li>
+<li><p>        Build a new ToC using
+        <span class="guimenu">Tools</span>-&gt;<span class="guisubmenu">Book
+        Building</span>-&gt;<span class="guimenuitem">Create Table of
+        Contents</span>. Select the first three
         levels of headers for inclusion in the ToC. This will replace
         the existing lines imported in the RTF with a native
-        <SPAN
-CLASS="PRODUCTNAME"
->Applixware</SPAN
-> ToC.
-       </P
-></LI
-><LI
-><P
->        Adjust the ToC formatting by using
-        <SPAN
-CLASS="GUIMENU"
->Format</SPAN
->-&gt;<SPAN
-CLASS="GUIMENUITEM"
->Style</SPAN
->,
+        <span class="productname">Applixware</span> ToC.
+       </p></li>
+<li>
+<p>        Adjust the ToC formatting by using
+        <span class="guimenu">Format</span>-&gt;<span class="guimenuitem">Style</span>,
         selecting each of the three ToC styles, and adjusting the
-        indents for <TT
-CLASS="LITERAL"
->First</TT
-> and
-        <TT
-CLASS="LITERAL"
->Left</TT
->. Use the following values:
+        indents for <tt class="literal">First</tt> and
+        <tt class="literal">Left</tt>. Use the following values:
 
-        <DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN68980"
-></A
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Style</TH
-><TH
->First Indent (inches)</TH
-><TH
->Left Indent (inches)</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->TOC-Heading 1</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->0.4</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->0.4</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->TOC-Heading 2</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->0.8</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->0.8</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->TOC-Heading 3</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->1.2</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->1.2</TT
-></TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
->
-       </P
-></LI
-></OL
-></LI
-><LI
-><P
->      Work through the document to:
+        </p>
+<div class="informaltable"><table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Style</th>
+<th>First Indent (inches)</th>
+<th>Left Indent (inches)</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal">TOC-Heading 1</tt></td>
+<td><tt class="literal">0.4</tt></td>
+<td><tt class="literal">0.4</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">TOC-Heading 2</tt></td>
+<td><tt class="literal">0.8</tt></td>
+<td><tt class="literal">0.8</tt></td>
+</tr>
+<tr>
+<td><tt class="literal">TOC-Heading 3</tt></td>
+<td><tt class="literal">1.2</tt></td>
+<td><tt class="literal">1.2</tt></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+       </p>
+</li>
+</ol>
+</li>
+<li>
+<p>      Work through the document to:
 
-      <P
-></P
-></P><UL
-><LI
-><P
->         Adjust page breaks.
-        </P
-></LI
-><LI
-><P
->         Adjust table column widths.
-        </P
-></LI
-></UL
-><P>
-     </P
-></LI
-><LI
-><P
->      Replace the right-justified page numbers in the Examples and
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>         Adjust page breaks.
+        </p></li>
+<li><p>         Adjust table column widths.
+        </p></li>
+</ul></div>
+<p>
+     </p>
+</li>
+<li><p>      Replace the right-justified page numbers in the Examples and
       Figures portions of the ToC with correct values. This only takes
       a few minutes.
-     </P
-></LI
-><LI
-><P
->       Delete the index section from the document if it is empty.
-     </P
-></LI
-><LI
-><P
->       Regenerate and adjust the table of contents.
-     </P
-><OL
-CLASS="SUBSTEPS"
-TYPE="a"
-><LI
-><P
->         Select the ToC field.
-        </P
-></LI
-><LI
-><P
->         Select <SPAN
-CLASS="GUIMENU"
->Tools</SPAN
->-&gt;<SPAN
-CLASS="GUISUBMENU"
->Book
-         Building</SPAN
->-&gt;<SPAN
-CLASS="GUIMENUITEM"
->Create Table of
-         Contents</SPAN
->.
-        </P
-></LI
-><LI
-><P
->         Unbind the ToC by selecting
-         <SPAN
-CLASS="GUIMENU"
->Tools</SPAN
->-&gt;<SPAN
-CLASS="GUISUBMENU"
->Field
-         Editing</SPAN
->-&gt;<SPAN
-CLASS="GUIMENUITEM"
->Unprotect</SPAN
->.
-        </P
-></LI
-><LI
-><P
->         Delete the first line in the ToC, which is an entry for the
+     </p></li>
+<li><p>       Delete the index section from the document if it is empty.
+     </p></li>
+<li>
+<p>       Regenerate and adjust the table of contents.
+     </p>
+<ol type="a">
+<li><p>         Select the ToC field.
+        </p></li>
+<li><p>         Select <span class="guimenu">Tools</span>-&gt;<span class="guisubmenu">Book
+         Building</span>-&gt;<span class="guimenuitem">Create Table of
+         Contents</span>.
+        </p></li>
+<li><p>         Unbind the ToC by selecting
+         <span class="guimenu">Tools</span>-&gt;<span class="guisubmenu">Field
+         Editing</span>-&gt;<span class="guimenuitem">Unprotect</span>.
+        </p></li>
+<li><p>         Delete the first line in the ToC, which is an entry for the
          ToC itself.
-        </P
-></LI
-></OL
-></LI
-><LI
-><P
->      Save the document as native <SPAN
-CLASS="PRODUCTNAME"
->Applixware
-      Words</SPAN
-> format to allow easier last minute editing
+        </p></li>
+</ol>
+</li>
+<li><p>      Save the document as native <span class="productname">Applixware
+      Words</span> format to allow easier last minute editing
       later.
-     </P
-></LI
-><LI
-><P
->      <SPAN
-CLASS="QUOTE"
->"Print"</SPAN
-> the document
+     </p></li>
+<li><p>      &#8220;<span class="quote">Print</span>&#8221; the document
       to a file in Postscript format.
-     </P
-></LI
-></OL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN69045"
->G.3.5. Plain Text Files</A
-></H2
-><P
->    Several files are distributed as plain text, for reading during
-    the installation process. The <TT
-CLASS="FILENAME"
->INSTALL</TT
-> file
-    corresponds to <A
-HREF="installation.html"
->Chapter 14</A
->, with some minor
+     </p></li>
+</ol>
+</div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2773055"></a>G.3.5. Plain Text Files</h3></div></div>
+<div></div>
+</div>
+<p>    Several files are distributed as plain text, for reading during
+    the installation process. The <tt class="filename">INSTALL</tt> file
+    corresponds to <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>, with some minor
     changes to account for the different context.  To recreate the
-    file, change to the directory <TT
-CLASS="FILENAME"
->doc/src/sgml</TT
->
-    and enter <KBD
-CLASS="USERINPUT"
->gmake INSTALL</KBD
->.  This will create
-    a file <TT
-CLASS="FILENAME"
->INSTALL.html</TT
-> that can be saved as text
-    with <SPAN
-CLASS="PRODUCTNAME"
->Netscape Navigator</SPAN
-> and put into
+    file, change to the directory <tt class="filename">doc/src/sgml</tt>
+    and enter <b class="userinput"><tt>gmake INSTALL</tt></b>.  This will create
+    a file <tt class="filename">INSTALL.html</tt> that can be saved as text
+    with <span class="productname">Netscape Navigator</span> and put into
     the place of the existing file.
-    <SPAN
-CLASS="PRODUCTNAME"
->Netscape</SPAN
-> seems to offer the best
-    quality for <ACRONYM
-CLASS="ACRONYM"
->HTML</ACRONYM
-> to text conversions (over
-    <SPAN
-CLASS="APPLICATION"
->lynx</SPAN
-> and
-    <SPAN
-CLASS="APPLICATION"
->w3m</SPAN
->).
-   </P
-><P
->    The file <TT
-CLASS="FILENAME"
->HISTORY</TT
-> can be created similarly,
-    using the command <KBD
-CLASS="USERINPUT"
->gmake HISTORY</KBD
->.  For the
-    file <TT
-CLASS="FILENAME"
->src/test/regress/README</TT
-> the command is
-    <KBD
-CLASS="USERINPUT"
->gmake regress_README</KBD
->.
-   </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN69063"
->G.3.6. Syntax Check</A
-></H2
-><P
->    Building the documentation can take very long.  But there is a
+    <span class="productname">Netscape</span> seems to offer the best
+    quality for <span class="acronym">HTML</span> to text conversions (over
+    <span class="application">lynx</span> and
+    <span class="application">w3m</span>).
+   </p>
+<p>    The file <tt class="filename">HISTORY</tt> can be created similarly,
+    using the command <b class="userinput"><tt>gmake HISTORY</tt></b>.  For the
+    file <tt class="filename">src/test/regress/README</tt> the command is
+    <b class="userinput"><tt>gmake regress_README</tt></b>.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2773154"></a>G.3.6. Syntax Check</h3></div></div>
+<div></div>
+</div>
+<p>    Building the documentation can take very long.  But there is a
     method to just check the correct syntax of the documentation
     files, which only takes a few seconds:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->doc/src/sgml$ </SAMP
-><KBD
-CLASS="USERINPUT"
->gmake check</KBD
-></PRE
-><P>
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="docguide-toolsets.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="docguide-authoring.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Tool Sets</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="docguide.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Documentation Authoring</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake check</tt></b></pre>
+<p>
+   </p>
+</div>
+</div></body>
+</html>

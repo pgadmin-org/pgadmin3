@@ -1,361 +1,114 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Querying a Table</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The SQL Language"
-HREF="tutorial-sql.html"><LINK
-REL="PREVIOUS"
-TITLE="Populating a Table With Rows"
-HREF="tutorial-populate.html"><LINK
-REL="NEXT"
-TITLE="Joins Between Tables"
-HREF="tutorial-join.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-populate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 2. The <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Language</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-join.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TUTORIAL-SELECT"
->2.5. Querying a Table</A
-></H1
-><P
->    <A
-NAME="AEN693"
-></A
->
-    <A
-NAME="AEN695"
-></A
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>2.5. Querying a Table</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
+<link rel="previous" href="tutorial-populate.html" title="2.4. Populating a Table With Rows">
+<link rel="next" href="tutorial-join.html" title="2.6. Joins Between Tables">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="tutorial-select"></a>2.5. Querying a Table</h2></div></div>
+<div></div>
+</div>
+<p>    <a name="id2518077"></a>
+    <a name="id2518084"></a>
 
     To retrieve data from a table, the table is
-    <I
-CLASS="FIRSTTERM"
->queried</I
->.  An <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->
-    <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement is used to do this.  The
+    <i class="firstterm">queried</i>.  An <span class="acronym">SQL</span>
+    <tt class="command">SELECT</tt> statement is used to do this.  The
     statement is divided into a select list (the part that lists the
     columns to be returned), a table list (the part that lists the
     tables from which to retrieve the data), and an optional
     qualification (the part that specifies any restrictions).  For
     example, to retrieve all the rows of table
-    <CODE
-CLASS="CLASSNAME"
->weather</CODE
->, type:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM weather;</PRE
-><P>
-    (here <TT
-CLASS="LITERAL"
->*</TT
-> means <SPAN
-CLASS="QUOTE"
->"all columns"</SPAN
->).
-     <A
-NAME="AEN704"
-HREF="#FTN.AEN704"
-><SPAN
-CLASS="footnote"
->[1]</SPAN
-></A
->
+    <tt class="classname">weather</tt>, type:
+</p>
+<pre class="programlisting">SELECT * FROM weather;</pre>
+<p>
+    (here <tt class="literal">*</tt> means &#8220;<span class="quote">all columns</span>&#8221;).
+     <sup>[<a name="id2518130" href="#ftn.id2518130">2</a>]</sup>
     The output should be:
 
-</P><PRE
-CLASS="SCREEN"
->     city      | temp_lo | temp_hi | prcp |    date
+</p>
+<pre class="screen">     city      | temp_lo | temp_hi | prcp |    date
 ---------------+---------+---------+------+------------
  San Francisco |      46 |      50 | 0.25 | 1994-11-27
  San Francisco |      43 |      57 |    0 | 1994-11-29
  Hayward       |      37 |      54 |      | 1994-11-29
-(3 rows)</PRE
-><P>
-   </P
-><P
->    You may specify any arbitrary expressions in the select list.  For 
+(3 rows)</pre>
+<p>
+   </p>
+<p>    You may specify any arbitrary expressions in the select list.  For 
     example, you can do:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;</PRE
-><P>
+</p>
+<pre class="programlisting">SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;</pre>
+<p>
     This should give:
-</P><PRE
-CLASS="SCREEN"
->     city      | temp_avg |    date
+</p>
+<pre class="screen">     city      | temp_avg |    date
 ---------------+----------+------------
  San Francisco |       48 | 1994-11-27
  San Francisco |       50 | 1994-11-29
  Hayward       |       45 | 1994-11-29
-(3 rows)</PRE
-><P>
-    Notice how the <TT
-CLASS="LITERAL"
->AS</TT
-> clause is used to relabel the
-    output column.  (The <TT
-CLASS="LITERAL"
->AS</TT
-> clause is optional.)
-   </P
-><P
->    Arbitrary Boolean operators (<TT
-CLASS="LITERAL"
->AND</TT
->,
-    <TT
-CLASS="LITERAL"
->OR</TT
->, and <TT
-CLASS="LITERAL"
->NOT</TT
->) are allowed in
+(3 rows)</pre>
+<p>
+    Notice how the <tt class="literal">AS</tt> clause is used to relabel the
+    output column.  (The <tt class="literal">AS</tt> clause is optional.)
+   </p>
+<p>    Arbitrary Boolean operators (<tt class="literal">AND</tt>,
+    <tt class="literal">OR</tt>, and <tt class="literal">NOT</tt>) are allowed in
     the qualification of a query.  For example, the following
     retrieves the weather of San Francisco on rainy days:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM weather
+</p>
+<pre class="programlisting">SELECT * FROM weather
     WHERE city = 'San Francisco'
-    AND prcp &#62; 0.0;</PRE
-><P>
+    AND prcp &gt; 0.0;</pre>
+<p>
     Result:
-</P><PRE
-CLASS="SCREEN"
->     city      | temp_lo | temp_hi | prcp |    date
+</p>
+<pre class="screen">     city      | temp_lo | temp_hi | prcp |    date
 ---------------+---------+---------+------+------------
  San Francisco |      46 |      50 | 0.25 | 1994-11-27
-(1 row)</PRE
-><P>
-   </P
-><P
->    <A
-NAME="AEN720"
-></A
->
-    <A
-NAME="AEN722"
-></A
->
-    <A
-NAME="AEN724"
-></A
->
+(1 row)</pre>
+<p>
+   </p>
+<p>    <a name="id2518230"></a>
+    <a name="id2518237"></a>
+    <a name="id2518243"></a>
 
     As a final note, you can request that the results of a query can
     be returned in sorted order or with duplicate rows removed:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT DISTINCT city
+</p>
+<pre class="programlisting">SELECT DISTINCT city
     FROM weather
-    ORDER BY city;</PRE
-><P>
+    ORDER BY city;</pre>
+<p>
 
-</P><PRE
-CLASS="SCREEN"
->     city
+</p>
+<pre class="screen">     city
 ---------------
  Hayward
  San Francisco
-(2 rows)</PRE
-><P>
+(2 rows)</pre>
+<p>
 
-    <TT
-CLASS="LITERAL"
->DISTINCT</TT
-> and <TT
-CLASS="LITERAL"
->ORDER BY</TT
-> can be
+    <tt class="literal">DISTINCT</tt> and <tt class="literal">ORDER BY</tt> can be
     used separately, of course.
-   </P
-></DIV
-><H3
-CLASS="FOOTNOTES"
->Notes</H3
-><TABLE
-BORDER="0"
-CLASS="FOOTNOTES"
-WIDTH="100%"
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-WIDTH="5%"
-><A
-NAME="FTN.AEN704"
-HREF="tutorial-select.html#AEN704"
-><SPAN
-CLASS="footnote"
->[1]</SPAN
-></A
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-WIDTH="95%"
-><P
->       While <TT
-CLASS="LITERAL"
->SELECT *</TT
-> is useful for off-the-cuff
+   </p>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id2518130" href="#id2518130">2</a>] </sup>       While <tt class="literal">SELECT *</tt> is useful for off-the-cuff
        queries, it is considered bad style in production code for
        maintenance reasons: adding a column to the table changes the results.
-      </P
-></TD
-></TR
-></TABLE
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-populate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-join.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Populating a Table With Rows</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Joins Between Tables</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </p></div>
+</div>
+</div></body>
+</html>

@@ -1,1275 +1,686 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Unsupported Features</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Conformance"
-HREF="features.html"><LINK
-REL="PREVIOUS"
-TITLE="SQL Conformance"
-HREF="features.html"><LINK
-REL="NEXT"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="features.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="features.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix D. SQL Conformance</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="features.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="UNSUPPORTED-FEATURES-SQL99"
->D.2. Unsupported Features</A
-></H1
-><P
->    The following features defined in <ACRONYM
-CLASS="ACRONYM"
->SQL99</ACRONYM
-> are not
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>D.2. Unsupported Features</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="features.html" title="Appendix D. SQL Conformance">
+<link rel="previous" href="features.html" title="Appendix D. SQL Conformance">
+<link rel="next" href="release.html" title="Appendix E. Release Notes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="unsupported-features-sql99"></a>D.2. Unsupported Features</h2></div></div>
+<div></div>
+</div>
+<p>    The following features defined in <span class="acronym">SQL99</span> are not
     implemented in this release of
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->. In a few cases, equivalent
+    <span class="productname">PostgreSQL</span>. In a few cases, equivalent
     functionality is available.
 
-    <DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN62921"
-></A
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Identifier</TH
-><TH
->Package</TH
-><TH
->Description</TH
-><TH
->Comment</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->B011</TD
-><TD
->Core</TD
-><TD
->Embedded Ada</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B013</TD
-><TD
->Core</TD
-><TD
->Embedded COBOL</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B014</TD
-><TD
->Core</TD
-><TD
->Embedded Fortran</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B015</TD
-><TD
->Core</TD
-><TD
->Embedded MUMPS</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B016</TD
-><TD
->Core</TD
-><TD
->Embedded Pascal</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B017</TD
-><TD
->Core</TD
-><TD
->Embedded PL/I</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B031</TD
-><TD
->&nbsp;</TD
-><TD
->Basic dynamic SQL</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B032</TD
-><TD
->&nbsp;</TD
-><TD
->Extended dynamic SQL</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B032-01</TD
-><TD
->&nbsp;</TD
-><TD
->&lt;describe input&gt; statement</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B041</TD
-><TD
->&nbsp;</TD
-><TD
->Extensions to embedded SQL exception declarations</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->B051</TD
-><TD
->&nbsp;</TD
-><TD
->Enhanced execution rights</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->E081</TD
-><TD
->Core</TD
-><TD
->Basic Privileges</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->E081-05</TD
-><TD
->Core</TD
-><TD
->UPDATE privilege at the column level</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->E081-07</TD
-><TD
->Core</TD
-><TD
->REFERENCES privilege at the column level</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->E121</TD
-><TD
->Core</TD
-><TD
->Basic cursor support</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->E121-06</TD
-><TD
->Core</TD
-><TD
->Positioned UPDATE statement</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->E121-07</TD
-><TD
->Core</TD
-><TD
->Positioned DELETE statement</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->E153</TD
-><TD
->Core</TD
-><TD
->Updatable queries with subqueries</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->E182</TD
-><TD
->Core</TD
-><TD
->Module language</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F121</TD
-><TD
->&nbsp;</TD
-><TD
->Basic diagnostics management</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F121-01</TD
-><TD
->&nbsp;</TD
-><TD
->GET DIAGNOSTICS statement</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F121-02</TD
-><TD
->&nbsp;</TD
-><TD
->SET TRANSACTION statement: DIAGNOSTICS SIZE clause</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F181</TD
-><TD
->&nbsp;</TD
-><TD
->Multiple module support</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F291</TD
-><TD
->&nbsp;</TD
-><TD
->UNIQUE predicate</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F301</TD
-><TD
->&nbsp;</TD
-><TD
->CORRESPONDING in query expressions</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F311</TD
-><TD
->Core</TD
-><TD
->Schema definition statement</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F311-04</TD
-><TD
->Core</TD
-><TD
->CREATE VIEW: WITH CHECK OPTION</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F341</TD
-><TD
->&nbsp;</TD
-><TD
->Usage tables</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F451</TD
-><TD
->&nbsp;</TD
-><TD
->Character set definition</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F461</TD
-><TD
->&nbsp;</TD
-><TD
->Named character sets</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F521</TD
-><TD
->Enhanced integrity management</TD
-><TD
->Assertions</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F641</TD
-><TD
->OLAP facilities</TD
-><TD
->Row and table constructors</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F661</TD
-><TD
->&nbsp;</TD
-><TD
->Simple tables</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F671</TD
-><TD
->Enhanced integrity management</TD
-><TD
->Subqueries in CHECK</TD
-><TD
->intentionally omitted</TD
-></TR
-><TR
-><TD
->F691</TD
-><TD
->&nbsp;</TD
-><TD
->Collation and translation</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F721</TD
-><TD
->&nbsp;</TD
-><TD
->Deferrable constraints</TD
-><TD
->foreign keys only</TD
-></TR
-><TR
-><TD
->F731</TD
-><TD
->&nbsp;</TD
-><TD
->INSERT column privileges</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F741</TD
-><TD
->&nbsp;</TD
-><TD
->Referential MATCH types</TD
-><TD
->no partial match yet</TD
-></TR
-><TR
-><TD
->F751</TD
-><TD
->&nbsp;</TD
-><TD
->View CHECK enhancements</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F811</TD
-><TD
->&nbsp;</TD
-><TD
->Extended flagging</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F812</TD
-><TD
->Core</TD
-><TD
->Basic flagging</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F813</TD
-><TD
->&nbsp;</TD
-><TD
->Extended flagging for "Core SQL Flagging" and "Catalog Lookup" only</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F821</TD
-><TD
->&nbsp;</TD
-><TD
->Local table references</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F831</TD
-><TD
->&nbsp;</TD
-><TD
->Full cursor update</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F831-01</TD
-><TD
->&nbsp;</TD
-><TD
->Updatable scrollable cursors</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->F831-02</TD
-><TD
->&nbsp;</TD
-><TD
->Updatable ordered cursors</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S011</TD
-><TD
->Core</TD
-><TD
->Distinct data types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S011-01</TD
-><TD
->Core</TD
-><TD
->USER_DEFINED_TYPES view</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S023</TD
-><TD
->Basic object support, SQL/MM support</TD
-><TD
->Basic structured types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S024</TD
-><TD
->Enhanced object support, SQL/MM support</TD
-><TD
->Enhanced structured types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S041</TD
-><TD
->Basic object support</TD
-><TD
->Basic reference types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S043</TD
-><TD
->Enhanced object support</TD
-><TD
->Enhanced reference types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S051</TD
-><TD
->Basic object support</TD
-><TD
->Create table of type</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S081</TD
-><TD
->Enhanced object support</TD
-><TD
->Subtables</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S091</TD
-><TD
->SQL/MM support</TD
-><TD
->Basic array support</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S091-01</TD
-><TD
->SQL/MM support</TD
-><TD
->Arrays of built-in data types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S091-02</TD
-><TD
->SQL/MM support</TD
-><TD
->Arrays of distinct types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S091-03</TD
-><TD
->SQL/MM support</TD
-><TD
->Array expressions</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S092</TD
-><TD
->SQL/MM support</TD
-><TD
->Arrays of user-defined types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S094</TD
-><TD
->&nbsp;</TD
-><TD
->Arrays of reference types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S151</TD
-><TD
->Basic object support</TD
-><TD
->Type predicate</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S161</TD
-><TD
->Enhanced object support</TD
-><TD
->Subtype treatment</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S201</TD
-><TD
->&nbsp;</TD
-><TD
->SQL routines on arrays</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S201-01</TD
-><TD
->&nbsp;</TD
-><TD
->Array parameters</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S201-02</TD
-><TD
->&nbsp;</TD
-><TD
->Array as result type of functions</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S231</TD
-><TD
->Enhanced object support</TD
-><TD
->Structured type locators</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S232</TD
-><TD
->&nbsp;</TD
-><TD
->Array locators</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S241</TD
-><TD
->Enhanced object support</TD
-><TD
->Transform functions</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S251</TD
-><TD
->&nbsp;</TD
-><TD
->User-defined orderings</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->S261</TD
-><TD
->&nbsp;</TD
-><TD
->Specific type method</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T011</TD
-><TD
->&nbsp;</TD
-><TD
->Timestamp in Information Schema</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T041</TD
-><TD
->Basic object support</TD
-><TD
->Basic LOB data type support</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T041-01</TD
-><TD
->Basic object support</TD
-><TD
->BLOB data type</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T041-02</TD
-><TD
->Basic object support</TD
-><TD
->CLOB data type</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T041-03</TD
-><TD
->Basic object support</TD
-><TD
->POSITION, LENGTH, LOWER, TRIM, UPPER, and SUBSTRING functions for LOB data types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T041-04</TD
-><TD
->Basic object support</TD
-><TD
->Concatenation of LOB data types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T041-05</TD
-><TD
->Basic object support</TD
-><TD
->LOB locator: non-holdable</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T042</TD
-><TD
->&nbsp;</TD
-><TD
->Extended LOB data type support</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T051</TD
-><TD
->&nbsp;</TD
-><TD
->Row types</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T111</TD
-><TD
->&nbsp;</TD
-><TD
->Updatable joins, unions, and columns</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T121</TD
-><TD
->&nbsp;</TD
-><TD
->WITH (excluding RECURSIVE) in query expression</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T131</TD
-><TD
->&nbsp;</TD
-><TD
->Recursive query</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T211</TD
-><TD
->Enhanced integrity management, Active database</TD
-><TD
->Basic trigger capability</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T211-05</TD
-><TD
->Enhanced integrity management, Active database</TD
-><TD
->Ability to specify a search condition that must be true before the trigger is invoked</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T211-06</TD
-><TD
->Enhanced integrity management, Active database</TD
-><TD
->Support for run-time rules for the interaction of triggers and constraints</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T211-08</TD
-><TD
->Enhanced integrity management, Active database</TD
-><TD
->Multiple triggers for the same event are executed in the order in which they were created</TD
-><TD
->intentionally omitted</TD
-></TR
-><TR
-><TD
->T251</TD
-><TD
->&nbsp;</TD
-><TD
->SET TRANSACTION statement: LOCAL option</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T261</TD
-><TD
->&nbsp;</TD
-><TD
->Chained transactions</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T281</TD
-><TD
->&nbsp;</TD
-><TD
->SELECT privilege with column granularity</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T301</TD
-><TD
->&nbsp;</TD
-><TD
->Functional Dependencies</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T321</TD
-><TD
->Core</TD
-><TD
->Basic SQL-invoked routines</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T321-02</TD
-><TD
->Core</TD
-><TD
->User-defined stored procedures with no overloading</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T321-04</TD
-><TD
->Core</TD
-><TD
->CALL statement</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T321-05</TD
-><TD
->Core</TD
-><TD
->RETURN statement</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T331</TD
-><TD
->&nbsp;</TD
-><TD
->Basic roles</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T332</TD
-><TD
->&nbsp;</TD
-><TD
->Extended roles</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T401</TD
-><TD
->&nbsp;</TD
-><TD
->INSERT into a cursor</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T411</TD
-><TD
->&nbsp;</TD
-><TD
->UPDATE statement: SET ROW option</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T431</TD
-><TD
->OLAP facilities</TD
-><TD
->CUBE and ROLLUP operations</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T461</TD
-><TD
->&nbsp;</TD
-><TD
->Symmetric BETWEEN predicate</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T471</TD
-><TD
->&nbsp;</TD
-><TD
->Result sets return value</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T491</TD
-><TD
->&nbsp;</TD
-><TD
->LATERAL derived table</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T511</TD
-><TD
->&nbsp;</TD
-><TD
->Transaction counts</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T541</TD
-><TD
->&nbsp;</TD
-><TD
->Updatable table references</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T561</TD
-><TD
->&nbsp;</TD
-><TD
->Holdable locators</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T571</TD
-><TD
->&nbsp;</TD
-><TD
->Array-returning external SQL-invoked functions</TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
->T601</TD
-><TD
->&nbsp;</TD
-><TD
->Local cursor references</TD
-><TD
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
->
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="features.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SQL Conformance</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="features.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release Notes</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    </p>
+<div class="informaltable"><table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Identifier</th>
+<th>Package</th>
+<th>Description</th>
+<th>Comment</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>B011</td>
+<td>Core</td>
+<td>Embedded Ada</td>
+<td> </td>
+</tr>
+<tr>
+<td>B013</td>
+<td>Core</td>
+<td>Embedded COBOL</td>
+<td> </td>
+</tr>
+<tr>
+<td>B014</td>
+<td>Core</td>
+<td>Embedded Fortran</td>
+<td> </td>
+</tr>
+<tr>
+<td>B015</td>
+<td>Core</td>
+<td>Embedded MUMPS</td>
+<td> </td>
+</tr>
+<tr>
+<td>B016</td>
+<td>Core</td>
+<td>Embedded Pascal</td>
+<td> </td>
+</tr>
+<tr>
+<td>B017</td>
+<td>Core</td>
+<td>Embedded PL/I</td>
+<td> </td>
+</tr>
+<tr>
+<td>B031</td>
+<td> </td>
+<td>Basic dynamic SQL</td>
+<td> </td>
+</tr>
+<tr>
+<td>B032</td>
+<td> </td>
+<td>Extended dynamic SQL</td>
+<td> </td>
+</tr>
+<tr>
+<td>B032-01</td>
+<td> </td>
+<td>&lt;describe input&gt; statement</td>
+<td> </td>
+</tr>
+<tr>
+<td>B041</td>
+<td> </td>
+<td>Extensions to embedded SQL exception declarations</td>
+<td> </td>
+</tr>
+<tr>
+<td>B051</td>
+<td> </td>
+<td>Enhanced execution rights</td>
+<td> </td>
+</tr>
+<tr>
+<td>E081</td>
+<td>Core</td>
+<td>Basic Privileges</td>
+<td> </td>
+</tr>
+<tr>
+<td>E081-05</td>
+<td>Core</td>
+<td>UPDATE privilege at the column level</td>
+<td> </td>
+</tr>
+<tr>
+<td>E081-07</td>
+<td>Core</td>
+<td>REFERENCES privilege at the column level</td>
+<td> </td>
+</tr>
+<tr>
+<td>E121</td>
+<td>Core</td>
+<td>Basic cursor support</td>
+<td> </td>
+</tr>
+<tr>
+<td>E121-06</td>
+<td>Core</td>
+<td>Positioned UPDATE statement</td>
+<td> </td>
+</tr>
+<tr>
+<td>E121-07</td>
+<td>Core</td>
+<td>Positioned DELETE statement</td>
+<td> </td>
+</tr>
+<tr>
+<td>E153</td>
+<td>Core</td>
+<td>Updatable queries with subqueries</td>
+<td> </td>
+</tr>
+<tr>
+<td>E182</td>
+<td>Core</td>
+<td>Module language</td>
+<td> </td>
+</tr>
+<tr>
+<td>F121</td>
+<td> </td>
+<td>Basic diagnostics management</td>
+<td> </td>
+</tr>
+<tr>
+<td>F121-01</td>
+<td> </td>
+<td>GET DIAGNOSTICS statement</td>
+<td> </td>
+</tr>
+<tr>
+<td>F121-02</td>
+<td> </td>
+<td>SET TRANSACTION statement: DIAGNOSTICS SIZE clause</td>
+<td> </td>
+</tr>
+<tr>
+<td>F181</td>
+<td> </td>
+<td>Multiple module support</td>
+<td> </td>
+</tr>
+<tr>
+<td>F291</td>
+<td> </td>
+<td>UNIQUE predicate</td>
+<td> </td>
+</tr>
+<tr>
+<td>F301</td>
+<td> </td>
+<td>CORRESPONDING in query expressions</td>
+<td> </td>
+</tr>
+<tr>
+<td>F311</td>
+<td>Core</td>
+<td>Schema definition statement</td>
+<td> </td>
+</tr>
+<tr>
+<td>F311-04</td>
+<td>Core</td>
+<td>CREATE VIEW: WITH CHECK OPTION</td>
+<td> </td>
+</tr>
+<tr>
+<td>F341</td>
+<td> </td>
+<td>Usage tables</td>
+<td> </td>
+</tr>
+<tr>
+<td>F451</td>
+<td> </td>
+<td>Character set definition</td>
+<td> </td>
+</tr>
+<tr>
+<td>F461</td>
+<td> </td>
+<td>Named character sets</td>
+<td> </td>
+</tr>
+<tr>
+<td>F521</td>
+<td>Enhanced integrity management</td>
+<td>Assertions</td>
+<td> </td>
+</tr>
+<tr>
+<td>F641</td>
+<td>OLAP facilities</td>
+<td>Row and table constructors</td>
+<td> </td>
+</tr>
+<tr>
+<td>F661</td>
+<td> </td>
+<td>Simple tables</td>
+<td> </td>
+</tr>
+<tr>
+<td>F671</td>
+<td>Enhanced integrity management</td>
+<td>Subqueries in CHECK</td>
+<td>intentionally omitted</td>
+</tr>
+<tr>
+<td>F691</td>
+<td> </td>
+<td>Collation and translation</td>
+<td> </td>
+</tr>
+<tr>
+<td>F721</td>
+<td> </td>
+<td>Deferrable constraints</td>
+<td>foreign keys only</td>
+</tr>
+<tr>
+<td>F731</td>
+<td> </td>
+<td>INSERT column privileges</td>
+<td> </td>
+</tr>
+<tr>
+<td>F741</td>
+<td> </td>
+<td>Referential MATCH types</td>
+<td>no partial match yet</td>
+</tr>
+<tr>
+<td>F751</td>
+<td> </td>
+<td>View CHECK enhancements</td>
+<td> </td>
+</tr>
+<tr>
+<td>F811</td>
+<td> </td>
+<td>Extended flagging</td>
+<td> </td>
+</tr>
+<tr>
+<td>F812</td>
+<td>Core</td>
+<td>Basic flagging</td>
+<td> </td>
+</tr>
+<tr>
+<td>F813</td>
+<td> </td>
+<td>Extended flagging for "Core SQL Flagging" and "Catalog Lookup" only</td>
+<td> </td>
+</tr>
+<tr>
+<td>F821</td>
+<td> </td>
+<td>Local table references</td>
+<td> </td>
+</tr>
+<tr>
+<td>F831</td>
+<td> </td>
+<td>Full cursor update</td>
+<td> </td>
+</tr>
+<tr>
+<td>F831-01</td>
+<td> </td>
+<td>Updatable scrollable cursors</td>
+<td> </td>
+</tr>
+<tr>
+<td>F831-02</td>
+<td> </td>
+<td>Updatable ordered cursors</td>
+<td> </td>
+</tr>
+<tr>
+<td>S011</td>
+<td>Core</td>
+<td>Distinct data types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S011-01</td>
+<td>Core</td>
+<td>USER_DEFINED_TYPES view</td>
+<td> </td>
+</tr>
+<tr>
+<td>S023</td>
+<td>Basic object support, SQL/MM support</td>
+<td>Basic structured types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S024</td>
+<td>Enhanced object support, SQL/MM support</td>
+<td>Enhanced structured types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S041</td>
+<td>Basic object support</td>
+<td>Basic reference types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S043</td>
+<td>Enhanced object support</td>
+<td>Enhanced reference types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S051</td>
+<td>Basic object support</td>
+<td>Create table of type</td>
+<td> </td>
+</tr>
+<tr>
+<td>S081</td>
+<td>Enhanced object support</td>
+<td>Subtables</td>
+<td> </td>
+</tr>
+<tr>
+<td>S091</td>
+<td>SQL/MM support</td>
+<td>Basic array support</td>
+<td> </td>
+</tr>
+<tr>
+<td>S091-01</td>
+<td>SQL/MM support</td>
+<td>Arrays of built-in data types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S091-02</td>
+<td>SQL/MM support</td>
+<td>Arrays of distinct types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S091-03</td>
+<td>SQL/MM support</td>
+<td>Array expressions</td>
+<td> </td>
+</tr>
+<tr>
+<td>S092</td>
+<td>SQL/MM support</td>
+<td>Arrays of user-defined types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S094</td>
+<td> </td>
+<td>Arrays of reference types</td>
+<td> </td>
+</tr>
+<tr>
+<td>S151</td>
+<td>Basic object support</td>
+<td>Type predicate</td>
+<td> </td>
+</tr>
+<tr>
+<td>S161</td>
+<td>Enhanced object support</td>
+<td>Subtype treatment</td>
+<td> </td>
+</tr>
+<tr>
+<td>S201</td>
+<td> </td>
+<td>SQL routines on arrays</td>
+<td> </td>
+</tr>
+<tr>
+<td>S201-01</td>
+<td> </td>
+<td>Array parameters</td>
+<td> </td>
+</tr>
+<tr>
+<td>S201-02</td>
+<td> </td>
+<td>Array as result type of functions</td>
+<td> </td>
+</tr>
+<tr>
+<td>S231</td>
+<td>Enhanced object support</td>
+<td>Structured type locators</td>
+<td> </td>
+</tr>
+<tr>
+<td>S232</td>
+<td> </td>
+<td>Array locators</td>
+<td> </td>
+</tr>
+<tr>
+<td>S241</td>
+<td>Enhanced object support</td>
+<td>Transform functions</td>
+<td> </td>
+</tr>
+<tr>
+<td>S251</td>
+<td> </td>
+<td>User-defined orderings</td>
+<td> </td>
+</tr>
+<tr>
+<td>S261</td>
+<td> </td>
+<td>Specific type method</td>
+<td> </td>
+</tr>
+<tr>
+<td>T011</td>
+<td> </td>
+<td>Timestamp in Information Schema</td>
+<td> </td>
+</tr>
+<tr>
+<td>T041</td>
+<td>Basic object support</td>
+<td>Basic LOB data type support</td>
+<td> </td>
+</tr>
+<tr>
+<td>T041-01</td>
+<td>Basic object support</td>
+<td>BLOB data type</td>
+<td> </td>
+</tr>
+<tr>
+<td>T041-02</td>
+<td>Basic object support</td>
+<td>CLOB data type</td>
+<td> </td>
+</tr>
+<tr>
+<td>T041-03</td>
+<td>Basic object support</td>
+<td>POSITION, LENGTH, LOWER, TRIM, UPPER, and SUBSTRING functions for LOB data types</td>
+<td> </td>
+</tr>
+<tr>
+<td>T041-04</td>
+<td>Basic object support</td>
+<td>Concatenation of LOB data types</td>
+<td> </td>
+</tr>
+<tr>
+<td>T041-05</td>
+<td>Basic object support</td>
+<td>LOB locator: non-holdable</td>
+<td> </td>
+</tr>
+<tr>
+<td>T042</td>
+<td> </td>
+<td>Extended LOB data type support</td>
+<td> </td>
+</tr>
+<tr>
+<td>T051</td>
+<td> </td>
+<td>Row types</td>
+<td> </td>
+</tr>
+<tr>
+<td>T111</td>
+<td> </td>
+<td>Updatable joins, unions, and columns</td>
+<td> </td>
+</tr>
+<tr>
+<td>T121</td>
+<td> </td>
+<td>WITH (excluding RECURSIVE) in query expression</td>
+<td> </td>
+</tr>
+<tr>
+<td>T131</td>
+<td> </td>
+<td>Recursive query</td>
+<td> </td>
+</tr>
+<tr>
+<td>T211</td>
+<td>Enhanced integrity management, Active database</td>
+<td>Basic trigger capability</td>
+<td> </td>
+</tr>
+<tr>
+<td>T211-05</td>
+<td>Enhanced integrity management, Active database</td>
+<td>Ability to specify a search condition that must be true before the trigger is invoked</td>
+<td> </td>
+</tr>
+<tr>
+<td>T211-06</td>
+<td>Enhanced integrity management, Active database</td>
+<td>Support for run-time rules for the interaction of triggers and constraints</td>
+<td> </td>
+</tr>
+<tr>
+<td>T211-08</td>
+<td>Enhanced integrity management, Active database</td>
+<td>Multiple triggers for the same event are executed in the order in which they were created</td>
+<td>intentionally omitted</td>
+</tr>
+<tr>
+<td>T251</td>
+<td> </td>
+<td>SET TRANSACTION statement: LOCAL option</td>
+<td> </td>
+</tr>
+<tr>
+<td>T261</td>
+<td> </td>
+<td>Chained transactions</td>
+<td> </td>
+</tr>
+<tr>
+<td>T281</td>
+<td> </td>
+<td>SELECT privilege with column granularity</td>
+<td> </td>
+</tr>
+<tr>
+<td>T301</td>
+<td> </td>
+<td>Functional Dependencies</td>
+<td> </td>
+</tr>
+<tr>
+<td>T321</td>
+<td>Core</td>
+<td>Basic SQL-invoked routines</td>
+<td> </td>
+</tr>
+<tr>
+<td>T321-02</td>
+<td>Core</td>
+<td>User-defined stored procedures with no overloading</td>
+<td> </td>
+</tr>
+<tr>
+<td>T321-04</td>
+<td>Core</td>
+<td>CALL statement</td>
+<td> </td>
+</tr>
+<tr>
+<td>T321-05</td>
+<td>Core</td>
+<td>RETURN statement</td>
+<td> </td>
+</tr>
+<tr>
+<td>T331</td>
+<td> </td>
+<td>Basic roles</td>
+<td> </td>
+</tr>
+<tr>
+<td>T332</td>
+<td> </td>
+<td>Extended roles</td>
+<td> </td>
+</tr>
+<tr>
+<td>T401</td>
+<td> </td>
+<td>INSERT into a cursor</td>
+<td> </td>
+</tr>
+<tr>
+<td>T411</td>
+<td> </td>
+<td>UPDATE statement: SET ROW option</td>
+<td> </td>
+</tr>
+<tr>
+<td>T431</td>
+<td>OLAP facilities</td>
+<td>CUBE and ROLLUP operations</td>
+<td> </td>
+</tr>
+<tr>
+<td>T461</td>
+<td> </td>
+<td>Symmetric BETWEEN predicate</td>
+<td> </td>
+</tr>
+<tr>
+<td>T471</td>
+<td> </td>
+<td>Result sets return value</td>
+<td> </td>
+</tr>
+<tr>
+<td>T491</td>
+<td> </td>
+<td>LATERAL derived table</td>
+<td> </td>
+</tr>
+<tr>
+<td>T511</td>
+<td> </td>
+<td>Transaction counts</td>
+<td> </td>
+</tr>
+<tr>
+<td>T541</td>
+<td> </td>
+<td>Updatable table references</td>
+<td> </td>
+</tr>
+<tr>
+<td>T561</td>
+<td> </td>
+<td>Holdable locators</td>
+<td> </td>
+</tr>
+<tr>
+<td>T571</td>
+<td> </td>
+<td>Array-returning external SQL-invoked functions</td>
+<td> </td>
+</tr>
+<tr>
+<td>T601</td>
+<td> </td>
+<td>Local cursor references</td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+   </p>
+</div></body>
+</html>

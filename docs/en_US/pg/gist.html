@@ -1,253 +1,55 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->GiST Indexes</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Internals"
-HREF="internals.html"><LINK
-REL="PREVIOUS"
-TITLE="Index Cost Estimation Functions"
-HREF="indexcost.html"><LINK
-REL="NEXT"
-TITLE="Extensibility"
-HREF="extensibility.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexcost.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexcost.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="page.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="extensibility.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="GIST"
-></A
->Chapter 48. GiST Indexes</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->48.1. <A
-HREF="gist.html#INTRO"
->Introduction</A
-></DT
-><DT
->48.2. <A
-HREF="extensibility.html"
->Extensibility</A
-></DT
-><DT
->48.3. <A
-HREF="implementation.html"
->Implementation</A
-></DT
-><DT
->48.4. <A
-HREF="limitations.html"
->Limitations</A
-></DT
-><DT
->48.5. <A
-HREF="examples.html"
->Examples</A
-></DT
-></DL
-></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INTRO"
->48.1. Introduction</A
-></H1
-><P
->   <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> stands for Generalized Search Tree.  It is a
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 48. GiST Indexes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="previous" href="indexcost.html" title="Chapter 47. Index Cost Estimation Functions">
+<link rel="next" href="extensibility.html" title="48.2. Extensibility">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="gist">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="gist"></a>Chapter 48. GiST Indexes</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="gist.html#intro">48.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="extensibility.html">48.2. Extensibility</a></span></dt>
+<dt><span class="sect1"><a href="implementation.html">48.3. Implementation</a></span></dt>
+<dt><span class="sect1"><a href="limitations.html">48.4. Limitations</a></span></dt>
+<dt><span class="sect1"><a href="examples.html">48.5. Examples</a></span></dt>
+</dl>
+</div>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="intro"></a>48.1. Introduction</h2></div></div>
+<div></div>
+</div>
+<p>   <span class="acronym">GiST</span> stands for Generalized Search Tree.  It is a
    balanced, tree-structured access method, that acts as a base template in
    which to implement arbitrary indexing schemes. B+-trees, R-trees and many
-   other indexing schemes can be implemented in <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
->.
- </P
-><P
->  One advantage of <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> is that it allows the development
+   other indexing schemes can be implemented in <span class="acronym">GiST</span>.
+ </p>
+<p>  One advantage of <span class="acronym">GiST</span> is that it allows the development
   of custom data types with the appropriate access methods, by
   an expert in the domain of the data type, rather than a database expert.
- </P
-><P
->    Some of the information here is derived from <A
-HREF="http://gist.cs.berkeley.edu/"
-TARGET="_top"
->the University of California at
-    Berkeley's GiST Indexing Project web site</A
-> and Marcel Kornacker's
+ </p>
+<p>    Some of the information here is derived from <a href="http://gist.cs.berkeley.edu/" target="_top">the University of California at
+    Berkeley's GiST Indexing Project web site</a> and Marcel Kornacker's
     thesis, 
-    <A
-HREF="http://citeseer.nj.nec.com/448594.html"
-TARGET="_top"
->Access Methods for
-    Next-Generation Database Systems</A
->.   The <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
->
-    implementation in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> is primarily
+    <a href="http://citeseer.nj.nec.com/448594.html" target="_top">Access Methods for
+    Next-Generation Database Systems</a>.   The <span class="acronym">GiST</span>
+    implementation in <span class="productname">PostgreSQL</span> is primarily
     maintained by Teodor Sigaev and Oleg Bartunov, and there is more
-    information on their website: <A
-HREF="http://www.sai.msu.su/~megera/postgres/gist/"
-TARGET="_top"
->http://www.sai.msu.su/~megera/postgres/gist/</A
->.
-  </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexcost.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="extensibility.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Index Cost Estimation Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="internals.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Extensibility</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    information on their website: <a href="http://www.sai.msu.su/~megera/postgres/gist/" target="_top">http://www.sai.msu.su/~megera/postgres/gist/</a>.
+  </p>
+</div>
+</div></body>
+</html>

@@ -1,1027 +1,363 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->pg_restore</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PostgreSQL Client Applications"
-HREF="reference-client.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_dumpall"
-HREF="app-pg-dumpall.html"><LINK
-REL="NEXT"
-TITLE="psql"
-HREF="app-psql.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-pg-dumpall.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-pg-dumpall.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-psql.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-psql.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="APP-PGRESTORE"
-></A
->pg_restore</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN45826"
-></A
-><H2
->Name</H2
->pg_restore&nbsp;--&nbsp;   restore a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database from an archive file created by pg_dump
-  </DIV
-><A
-NAME="AEN45830"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN45832"
-></A
-><H2
->Synopsis</H2
-><P
-><TT
-CLASS="COMMAND"
->pg_restore</TT
-> [<VAR
-CLASS="REPLACEABLE"
->option</VAR
->...] [<VAR
-CLASS="REPLACEABLE"
->filename</VAR
->]</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="APP-PGRESTORE-DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->   <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> is a utility for restoring a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database from an archive
-   created by <A
-HREF="app-pgdump.html"
->pg_dump</A
-> in one of the non-plain-text
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>pg_restore</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="previous" href="app-pg-dumpall.html" title="pg_dumpall">
+<link rel="next" href="app-psql.html" title="psql">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-pgrestore"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>pg_restore &#8212;    restore a <span class="productname">PostgreSQL</span> database from an archive file created by pg_dump
+  </p>
+</div>
+<a name="id2704280"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><tt class="command">pg_restore</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>filename</tt></i>]</p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="app-pgrestore-description"></a><h2>Description</h2>
+<p>   <span class="application">pg_restore</span> is a utility for restoring a
+   <span class="productname">PostgreSQL</span> database from an archive
+   created by <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> in one of the non-plain-text
    formats.  It will issue the commands necessary to reconstruct the
    database to the state it was in at the time it was saved.  The
-   archive files also allow <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> to
+   archive files also allow <span class="application">pg_restore</span> to
    be selective about what is restored, or even to reorder the items
    prior to being restored. The archive files are designed to be
    portable across architectures.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> can operate in two modes: If
+  </p>
+<p>   <span class="application">pg_restore</span> can operate in two modes: If
    a database name is specified, the archive is restored directly into
    the database.  (Large objects can only be restored by using such a direct
    database connection.)  Otherwise, a script containing the SQL
    commands necessary to rebuild the database is created (and written
    to a file or standard output), similar to the ones created by the
-   <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> plain text format.  Some of the
+   <span class="application">pg_dump</span> plain text format.  Some of the
    options controlling the script output are therefore analogous to
-   <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> options.
-  </P
-><P
->   Obviously, <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> cannot restore information
+   <span class="application">pg_dump</span> options.
+  </p>
+<p>   Obviously, <span class="application">pg_restore</span> cannot restore information
    that is not present in the archive file.  For instance, if the
-   archive was made using the <SPAN
-CLASS="QUOTE"
->"dump data as
-   <TT
-CLASS="COMMAND"
->INSERT</TT
-> commands"</SPAN
-> option,
-   <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> will not be able to load the data
-   using <TT
-CLASS="COMMAND"
->COPY</TT
-> statements.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="APP-PGRESTORE-OPTIONS"
-></A
-><H2
->Options</H2
-><P
->    <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> accepts the following command
+   archive was made using the &#8220;<span class="quote">dump data as
+   <tt class="command">INSERT</tt> commands</span>&#8221; option,
+   <span class="application">pg_restore</span> will not be able to load the data
+   using <tt class="command">COPY</tt> statements.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="app-pgrestore-options"></a><h2>Options</h2>
+<p>    <span class="application">pg_restore</span> accepts the following command
     line arguments.
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->filename</VAR
-></DT
-><DD
-><P
->       Specifies the location of the archive file to be restored.
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>filename</tt></i></span></dt>
+<dd><p>       Specifies the location of the archive file to be restored.
        If not specified, the standard input is used.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-a</TT
-><BR><TT
-CLASS="OPTION"
->--data-only</TT
-></DT
-><DD
-><P
->	Restore only the data, not the schema (data definitions).
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-c</TT
-><BR><TT
-CLASS="OPTION"
->--clean</TT
-></DT
-><DD
-><P
->	Clean (drop) database objects before recreating them.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-C</TT
-><BR><TT
-CLASS="OPTION"
->--create</TT
-></DT
-><DD
-><P
->        Create the database before restoring into it.  (When this
-        option is used, the database named with <TT
-CLASS="OPTION"
->-d</TT
-> is
-        used only to issue the initial <TT
-CLASS="COMMAND"
->CREATE DATABASE</TT
->
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--data-only</tt></span>
+</dt>
+<dd><p>	Restore only the data, not the schema (data definitions).
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-c</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--clean</tt></span>
+</dt>
+<dd><p>	Clean (drop) database objects before recreating them.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-C</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--create</tt></span>
+</dt>
+<dd><p>        Create the database before restoring into it.  (When this
+        option is used, the database named with <tt class="option">-d</tt> is
+        used only to issue the initial <tt class="command">CREATE DATABASE</tt>
         command.  All data is restored into the database name that
         appears in the archive.)
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-d <VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--dbname=<VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-></TT
-></DT
-><DD
-><P
->        Connect to database <VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-> and restore directly
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-d <i class="replaceable"><tt>dbname</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--dbname=<i class="replaceable"><tt>dbname</tt></i></tt></span>
+</dt>
+<dd><p>        Connect to database <i class="replaceable"><tt>dbname</tt></i> and restore directly
         into the database.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-e</TT
-><BR><TT
-CLASS="OPTION"
->--exit-on-error</TT
-></DT
-><DD
-><P
->        Exit if an error is encountered while sending SQL commands to
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--exit-on-error</tt></span>
+</dt>
+<dd><p>        Exit if an error is encountered while sending SQL commands to
         the database. The default is to continue and to display a count of 
         errors at the end of the restoration.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-f <VAR
-CLASS="REPLACEABLE"
->filename</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--file=<VAR
-CLASS="REPLACEABLE"
->filename</VAR
-></TT
-></DT
-><DD
-><P
->        Specify output file for generated script, or for the listing
-        when used with <TT
-CLASS="OPTION"
->-l</TT
->. Default is the standard
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-f <i class="replaceable"><tt>filename</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--file=<i class="replaceable"><tt>filename</tt></i></tt></span>
+</dt>
+<dd><p>        Specify output file for generated script, or for the listing
+        when used with <tt class="option">-l</tt>. Default is the standard
         output.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-F <VAR
-CLASS="REPLACEABLE"
->format</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--format=<VAR
-CLASS="REPLACEABLE"
->format</VAR
-></TT
-></DT
-><DD
-><P
->	Specify format of the archive.  It is not necessary to specify
-	the format, since <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> will
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-F <i class="replaceable"><tt>format</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--format=<i class="replaceable"><tt>format</tt></i></tt></span>
+</dt>
+<dd>
+<p>	Specify format of the archive.  It is not necessary to specify
+	the format, since <span class="application">pg_restore</span> will
 	determine the format automatically. If specified, it can be
 	one of the following:
 
-       <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->t</TT
-></DT
-><DD
-><P
->           The archive is a <TT
-CLASS="COMMAND"
->tar</TT
-> archive. Using this
+       </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">t</tt></span></dt>
+<dd><p>           The archive is a <tt class="command">tar</tt> archive. Using this
            archive format allows reordering and/or exclusion of schema
            elements at the time the database is restored. It is also
            possible to limit which data is reloaded at restore time.
-          </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->c</TT
-></DT
-><DD
-><P
->           The archive is in the custom format of
-           <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->. This is the most
+          </p></dd>
+<dt><span class="term"><tt class="literal">c</tt></span></dt>
+<dd><p>           The archive is in the custom format of
+           <span class="application">pg_dump</span>. This is the most
            flexible format in that it allows reordering of data load
            as well as schema elements.  This format is also compressed
            by default.
-          </P
-></DD
-></DL
-></DIV
-><P>
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-i</TT
-><BR><TT
-CLASS="OPTION"
->--ignore-version</TT
-></DT
-><DD
-><P
->	Ignore database version checks.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-I <VAR
-CLASS="REPLACEABLE"
->index</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--index=<VAR
-CLASS="REPLACEABLE"
->index</VAR
-></TT
-></DT
-><DD
-><P
->	Restore definition of named index only.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-l</TT
-><BR><TT
-CLASS="OPTION"
->--list</TT
-></DT
-><DD
-><P
->        List the contents of the archive. The output of this operation
-        can be used with the <TT
-CLASS="OPTION"
->-L</TT
-> option to restrict
+          </p></dd>
+</dl></div>
+<p>
+       </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--ignore-version</tt></span>
+</dt>
+<dd><p>	Ignore database version checks.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-I <i class="replaceable"><tt>index</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--index=<i class="replaceable"><tt>index</tt></i></tt></span>
+</dt>
+<dd><p>	Restore definition of named index only.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-l</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--list</tt></span>
+</dt>
+<dd><p>        List the contents of the archive. The output of this operation
+        can be used with the <tt class="option">-L</tt> option to restrict
         and reorder the items that are restored.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-L <VAR
-CLASS="REPLACEABLE"
->list-file</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--use-list=<VAR
-CLASS="REPLACEABLE"
->list-file</VAR
-></TT
-></DT
-><DD
-><P
->        Restore elements in <VAR
-CLASS="REPLACEABLE"
->list-file</VAR
-> only, and in the
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-L <i class="replaceable"><tt>list-file</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--use-list=<i class="replaceable"><tt>list-file</tt></i></tt></span>
+</dt>
+<dd><p>        Restore elements in <i class="replaceable"><tt>list-file</tt></i> only, and in the
         order they appear in the file. Lines can be moved and may also
-        be commented out by placing a <TT
-CLASS="LITERAL"
->;</TT
-> at the
+        be commented out by placing a <tt class="literal">;</tt> at the
         start of the line.  (See below for examples.)
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-O</TT
-><BR><TT
-CLASS="OPTION"
->--no-owner</TT
-></DT
-><DD
-><P
->        Do not output commands to set
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-O</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-owner</tt></span>
+</dt>
+<dd><p>        Do not output commands to set
 	ownership of objects to match the original database.
-	By default, <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> issues
-	<TT
-CLASS="COMMAND"
->SET SESSION AUTHORIZATION</TT
->
+	By default, <span class="application">pg_restore</span> issues
+	<tt class="command">SET SESSION AUTHORIZATION</tt>
 	statements to set ownership of created schema elements.
 	These statements will fail unless the initial connection to the
 	database is made by a superuser
 	(or the same user that owns all of the objects in the script).
-	With <TT
-CLASS="OPTION"
->-O</TT
->, any user name can be used for the
+	With <tt class="option">-O</tt>, any user name can be used for the
 	initial connection, and this user will own all the created objects.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-P <VAR
-CLASS="REPLACEABLE"
->function-name(argtype [, ...])</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--function=<VAR
-CLASS="REPLACEABLE"
->function-name(argtype [, ...])</VAR
-></TT
-></DT
-><DD
-><P
->        Restore the named function only.  Be careful to spell the function
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-P <i class="replaceable"><tt>function-name(argtype [, ...])</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--function=<i class="replaceable"><tt>function-name(argtype [, ...])</tt></i></tt></span>
+</dt>
+<dd><p>        Restore the named function only.  Be careful to spell the function
 	name and arguments exactly as they appear in the dump file's table
 	of contents.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-R</TT
-><BR><TT
-CLASS="OPTION"
->--no-reconnect</TT
-></DT
-><DD
-><P
->        This option is obsolete but still accepted for backwards
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-R</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-reconnect</tt></span>
+</dt>
+<dd><p>        This option is obsolete but still accepted for backwards
 	compatibility.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-s</TT
-><BR><TT
-CLASS="OPTION"
->--schema-only</TT
-></DT
-><DD
-><P
->        Restore only the schema (data definitions), not the data.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-s</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--schema-only</tt></span>
+</dt>
+<dd><p>        Restore only the schema (data definitions), not the data.
         Sequence values will be reset.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-S <VAR
-CLASS="REPLACEABLE"
->username</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--superuser=<VAR
-CLASS="REPLACEABLE"
->username</VAR
-></TT
-></DT
-><DD
-><P
->        Specify the superuser user name to use when disabling triggers.
-	This is only relevant if <TT
-CLASS="OPTION"
->--disable-triggers</TT
-> is used.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-t <VAR
-CLASS="REPLACEABLE"
->table</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--table=<VAR
-CLASS="REPLACEABLE"
->table</VAR
-></TT
-></DT
-><DD
-><P
->        Restore definition and/or data of named table only.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-T <VAR
-CLASS="REPLACEABLE"
->trigger</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--trigger=<VAR
-CLASS="REPLACEABLE"
->trigger</VAR
-></TT
-></DT
-><DD
-><P
->        Restore named trigger only.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-v</TT
-><BR><TT
-CLASS="OPTION"
->--verbose</TT
-></DT
-><DD
-><P
->	Specifies verbose mode.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-x</TT
-><BR><TT
-CLASS="OPTION"
->--no-privileges</TT
-><BR><TT
-CLASS="OPTION"
->--no-acl</TT
-></DT
-><DD
-><P
->	Prevent restoration of access privileges (grant/revoke commands).
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-X use-set-session-authorization</TT
-><BR><TT
-CLASS="OPTION"
->--use-set-session-authorization</TT
-></DT
-><DD
-><P
->	Output SQL standard SET SESSION AUTHORIZATION commands instead
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-S <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--superuser=<i class="replaceable"><tt>username</tt></i></tt></span>
+</dt>
+<dd><p>        Specify the superuser user name to use when disabling triggers.
+	This is only relevant if <tt class="option">--disable-triggers</tt> is used.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-t <i class="replaceable"><tt>table</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--table=<i class="replaceable"><tt>table</tt></i></tt></span>
+</dt>
+<dd><p>        Restore definition and/or data of named table only.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-T <i class="replaceable"><tt>trigger</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--trigger=<i class="replaceable"><tt>trigger</tt></i></tt></span>
+</dt>
+<dd><p>        Restore named trigger only.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-v</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--verbose</tt></span>
+</dt>
+<dd><p>	Specifies verbose mode.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-x</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--no-privileges</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-acl</tt></span>
+</dt>
+<dd><p>	Prevent restoration of access privileges (grant/revoke commands).
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X use-set-session-authorization</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--use-set-session-authorization</tt></span>
+</dt>
+<dd><p>	Output SQL standard SET SESSION AUTHORIZATION commands instead
 	of OWNER TO commands.  This makes the dump more standards compatible,
 	but depending on the history of the objects in the dump, may not
 	restore properly.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-X disable-triggers</TT
-><BR><TT
-CLASS="OPTION"
->--disable-triggers</TT
-></DT
-><DD
-><P
->        This option is only relevant when performing a data-only restore.
-	It instructs <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> to execute commands
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X disable-triggers</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--disable-triggers</tt></span>
+</dt>
+<dd>
+<p>        This option is only relevant when performing a data-only restore.
+	It instructs <span class="application">pg_restore</span> to execute commands
 	to temporarily disable triggers on the target tables while
 	the data is reloaded.  Use this if you have referential
 	integrity checks or other triggers on the tables that you
 	do not want to invoke during data reload.
-       </P
-><P
->        Presently, the commands emitted for
-	<TT
-CLASS="OPTION"
->--disable-triggers</TT
-> must be done as superuser.  So, you
-	should also specify a superuser name with <TT
-CLASS="OPTION"
->-S</TT
->, or
-	preferably run <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> as a
-	<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> superuser.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-><P
->    <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> also accepts
+       </p>
+<p>        Presently, the commands emitted for
+	<tt class="option">--disable-triggers</tt> must be done as superuser.  So, you
+	should also specify a superuser name with <tt class="option">-S</tt>, or
+	preferably run <span class="application">pg_restore</span> as a
+	<span class="productname">PostgreSQL</span> superuser.
+       </p>
+</dd>
+</dl></div>
+<p>
+   </p>
+<p>    <span class="application">pg_restore</span> also accepts
     the following command line arguments for connection parameters:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->-h <VAR
-CLASS="REPLACEABLE"
->host</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--host=<VAR
-CLASS="REPLACEABLE"
->host</VAR
-></TT
-></DT
-><DD
-><P
->	Specifies the host name of the machine on which the server is
+    </p>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host=<i class="replaceable"><tt>host</tt></i></tt></span>
+</dt>
+<dd><p>	Specifies the host name of the machine on which the server is
 	running.  If the value begins with a slash, it is used as the
 	directory for the Unix domain socket. The default is taken
-	from the <TT
-CLASS="ENVAR"
->PGHOST</TT
-> environment variable, if set,
+	from the <tt class="envar">PGHOST</tt> environment variable, if set,
 	else a Unix domain socket connection is attempted.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-p <VAR
-CLASS="REPLACEABLE"
->port</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--port=<VAR
-CLASS="REPLACEABLE"
->port</VAR
-></TT
-></DT
-><DD
-><P
->	Specifies the TCP port or local Unix domain socket file
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port=<i class="replaceable"><tt>port</tt></i></tt></span>
+</dt>
+<dd><p>	Specifies the TCP port or local Unix domain socket file
 	extension on which the server is listening for connections.
-	Defaults to the <TT
-CLASS="ENVAR"
->PGPORT</TT
-> environment variable, if
+	Defaults to the <tt class="envar">PGPORT</tt> environment variable, if
 	set, or a compiled-in default.
-        </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-U <VAR
-CLASS="REPLACEABLE"
->username</VAR
-></TT
-></DT
-><DD
-><P
->        Connect as the given user
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-W</TT
-></DT
-><DD
-><P
->        Force a password prompt.  This should happen automatically if
+        </p></dd>
+<dt><span class="term"><tt class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span></dt>
+<dd><p>        Connect as the given user
+       </p></dd>
+<dt><span class="term"><tt class="option">-W</tt></span></dt>
+<dd><p>        Force a password prompt.  This should happen automatically if
         the server requires password authentication.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46105"
-></A
-><H2
->Environment</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="ENVAR"
->PGHOST</TT
-><BR><TT
-CLASS="ENVAR"
->PGPORT</TT
-><BR><TT
-CLASS="ENVAR"
->PGUSER</TT
-></DT
-><DD
-><P
->      Default connection parameters
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="APP-PGRESTORE-DIAGNOSTICS"
-></A
-><H2
->Diagnostics</H2
-><P
->   When a direct database connection is specified using the
-   <TT
-CLASS="OPTION"
->-d</TT
-> option, <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
->
-   internally executes <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> statements. If you have
-   problems running <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
->, make sure
+       </p></dd>
+</dl></div>
+<p>
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2705048"></a><h2>Environment</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
+</dt>
+<dd><p>      Default connection parameters
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="app-pgrestore-diagnostics"></a><h2>Diagnostics</h2>
+<p>   When a direct database connection is specified using the
+   <tt class="option">-d</tt> option, <span class="application">pg_restore</span>
+   internally executes <span class="acronym">SQL</span> statements. If you have
+   problems running <span class="application">pg_restore</span>, make sure
    you are able to select information from the database using, for
-   example, <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="APP-PGRESTORE-NOTES"
-></A
-><H2
->Notes</H2
-><P
->   If your installation has any local additions to the
-   <TT
-CLASS="LITERAL"
->template1</TT
-> database, be careful to load the output of
-   <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> into a truly empty database;
+   example, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="app-pgrestore-notes"></a><h2>Notes</h2>
+<p>   If your installation has any local additions to the
+   <tt class="literal">template1</tt> database, be careful to load the output of
+   <span class="application">pg_restore</span> into a truly empty database;
    otherwise you are likely to get errors due to duplicate definitions
    of the added objects.  To make an empty database without any local
-   additions, copy from <TT
-CLASS="LITERAL"
->template0</TT
-> not <TT
-CLASS="LITERAL"
->template1</TT
->, for example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE DATABASE foo WITH TEMPLATE template0;</PRE
-><P>
-  </P
-><P
->   The limitations of <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> are detailed below.
+   additions, copy from <tt class="literal">template0</tt> not <tt class="literal">template1</tt>, for example:
+</p>
+<pre class="programlisting">CREATE DATABASE foo WITH TEMPLATE template0;</pre>
+<p>
+  </p>
+<p>   The limitations of <span class="application">pg_restore</span> are detailed below.
 
-   <P
-></P
-></P><UL
-><LI
-><P
->      When restoring data to a pre-existing table and the option
-      <TT
-CLASS="OPTION"
->--disable-triggers</TT
-> is used,
-      <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> emits commands
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      When restoring data to a pre-existing table and the option
+      <tt class="option">--disable-triggers</tt> is used,
+      <span class="application">pg_restore</span> emits commands
       to disable triggers on user tables before inserting the data then emits commands to
       re-enable them after the data has been inserted.  If the restore is stopped in the
       middle, the system catalogs may be left in the wrong state.
-     </P
-></LI
-><LI
-><P
->      <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> will not restore large objects for a single table. If
+     </p></li>
+<li><p>      <span class="application">pg_restore</span> will not restore large objects for a single table. If
       an archive contains large objects, then all large objects will be restored.
-     </P
-></LI
-></UL
-><P>
-  </P
-><P
->   See also the <A
-HREF="app-pgdump.html"
->pg_dump</A
-> documentation for details on
-   limitations of <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->.
-  </P
-><P
->   Once restored, it is wise to run <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> on each
+     </p></li>
+</ul></div>
+<p>
+  </p>
+<p>   See also the <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> documentation for details on
+   limitations of <span class="application">pg_dump</span>.
+  </p>
+<p>   Once restored, it is wise to run <tt class="command">ANALYZE</tt> on each
    restored table so the optimizer has useful statistics.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="APP-PGRESTORE-EXAMPLES"
-></A
-><H2
->Examples</H2
-><P
->   To dump a database called <TT
-CLASS="LITERAL"
->mydb</TT
-> that contains
-   large objects to a <TT
-CLASS="FILENAME"
->tar</TT
-> file:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="app-pgrestore-examples"></a><h2>Examples</h2>
+<p>   To dump a database called <tt class="literal">mydb</tt> that contains
+   large objects to a <tt class="filename">tar</tt> file:
 
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->pg_dump -Ft -b mydb &gt; db.tar</KBD
-></PRE
-><P>
-  </P
-><P
->   To reload this database (with large objects) to an
-   existing database called <TT
-CLASS="LITERAL"
->newdb</TT
->:
+</p>
+<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_dump -Ft -b mydb &gt; db.tar</tt></b></pre>
+<p>
+  </p>
+<p>   To reload this database (with large objects) to an
+   existing database called <tt class="literal">newdb</tt>:
 
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->pg_restore -d newdb db.tar</KBD
-></PRE
-><P>
-  </P
-><P
->   To reorder database items, it is first necessary to dump the table of
+</p>
+<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_restore -d newdb db.tar</tt></b></pre>
+<p>
+  </p>
+<p>   To reorder database items, it is first necessary to dump the table of
    contents of the archive:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->pg_restore -l archive.file &gt; archive.list</KBD
-></PRE
-><P>
+</p>
+<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_restore -l archive.file &gt; archive.list</tt></b></pre>
+<p>
    The listing file consists of a header and one line for each item, e.g.,
-</P><PRE
-CLASS="PROGRAMLISTING"
->;
+</p>
+<pre class="programlisting">;
 ; Archive created at Fri Jul 28 22:28:36 2000
 ;     dbname: birds
 ;     TOC Entries: 74
@@ -1043,147 +379,35 @@ CLASS="PROGRAMLISTING"
 10; 145433 TABLE map_resolutions postgres
 11; 145433 ACL map_resolutions
 12; 145443 TABLE hs_old postgres
-13; 145443 ACL hs_old</PRE
-><P>
+13; 145443 ACL hs_old</pre>
+<p>
    Semicolons start a comment, and the numbers at the start of lines refer to the
    internal archive ID assigned to each item.
-  </P
-><P
->   Lines in the file can be commented out, deleted, and reordered. For example,
-</P><PRE
-CLASS="PROGRAMLISTING"
->10; 145433 TABLE map_resolutions postgres
+  </p>
+<p>   Lines in the file can be commented out, deleted, and reordered. For example,
+</p>
+<pre class="programlisting">10; 145433 TABLE map_resolutions postgres
 ;2; 145344 TABLE species postgres
 ;4; 145359 TABLE nt_header postgres
 6; 145402 TABLE species_records postgres
-;8; 145416 TABLE ss_old postgres</PRE
-><P>
-   could be used as input to <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> and would only restore
+;8; 145416 TABLE ss_old postgres</pre>
+<p>
+   could be used as input to <span class="application">pg_restore</span> and would only restore
    items 10 and 6, in that order:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->pg_restore -L archive.list archive.file</KBD
-></PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46172"
-></A
-><H2
->History</H2
-><P
->   The <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> utility first appeared in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.1.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46177"
-></A
-><H2
->See Also</H2
-><A
-HREF="app-pgdump.html"
->pg_dump</A
->, <A
-HREF="app-pg-dumpall.html"
-><SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
-></A
->, <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-pg-dumpall.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-psql.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="reference-client.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_restore -L archive.list archive.file</tt></b></pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2705362"></a><h2>History</h2>
+<p>   The <span class="application">pg_restore</span> utility first appeared in
+   <span class="productname">PostgreSQL</span> 7.1.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2705380"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a>, <a href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a></span>
+</div>
+</div></body>
+</html>

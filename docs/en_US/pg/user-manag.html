@@ -1,351 +1,104 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Database Users and Privileges</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Administration"
-HREF="admin.html"><LINK
-REL="PREVIOUS"
-TITLE="Secure TCP/IP Connections with SSH Tunnels"
-HREF="ssh-tunnels.html"><LINK
-REL="NEXT"
-TITLE="User Attributes"
-HREF="user-attributes.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ssh-tunnels.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="managing-databases.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="user-attributes.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="USER-MANAG"
-></A
->Chapter 17. Database Users and Privileges</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->17.1. <A
-HREF="user-manag.html#DATABASE-USERS"
->Database Users</A
-></DT
-><DT
->17.2. <A
-HREF="user-attributes.html"
->User Attributes</A
-></DT
-><DT
->17.3. <A
-HREF="groups.html"
->Groups</A
-></DT
-><DT
->17.4. <A
-HREF="privileges.html"
->Privileges</A
-></DT
-><DT
->17.5. <A
-HREF="perm-functions.html"
->Functions and Triggers</A
-></DT
-></DL
-></DIV
-><P
->  Every database cluster contains a set of database users.  Those
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 17. Database Users and Privileges</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="previous" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
+<link rel="next" href="user-attributes.html" title="17.2. User Attributes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="user-manag">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="user-manag"></a>Chapter 17. Database Users and Privileges</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="user-manag.html#database-users">17.1. Database Users</a></span></dt>
+<dt><span class="sect1"><a href="user-attributes.html">17.2. User Attributes</a></span></dt>
+<dt><span class="sect1"><a href="groups.html">17.3. Groups</a></span></dt>
+<dt><span class="sect1"><a href="privileges.html">17.4. Privileges</a></span></dt>
+<dt><span class="sect1"><a href="perm-functions.html">17.5. Functions and Triggers</a></span></dt>
+</dl>
+</div>
+<p>  Every database cluster contains a set of database users.  Those
   users are separate from the users managed by the operating system on
   which the server runs.  Users own database objects (for example,
   tables) and can assign privileges on those objects to other users to
   control who has access to which object.
- </P
-><P
->  This chapter describes how to create and manage users and introduces
+ </p>
+<p>  This chapter describes how to create and manage users and introduces
   the privilege system.  More information about the various types of
-  database objects and the effects of privileges can be found in <A
-HREF="ddl.html"
->Chapter 5</A
->.
- </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="DATABASE-USERS"
->17.1. Database Users</A
-></H1
-><A
-NAME="AEN18359"
-></A
-><A
-NAME="AEN18361"
-></A
-><A
-NAME="AEN18363"
-></A
-><P
->   Database users are conceptually completely separate from
+  database objects and the effects of privileges can be found in <a href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a>.
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="database-users"></a>17.1. Database Users</h2></div></div>
+<div></div>
+</div>
+<a name="id2588727"></a><a name="id2588737"></a><a name="id2588743"></a><p>   Database users are conceptually completely separate from
    operating system users. In practice it might be convenient to
    maintain a correspondence, but this is not required. Database user
    names are global across a database cluster installation (and not
-   per individual database). To create a user use the <TT
-CLASS="COMMAND"
->CREATE
-   USER</TT
-> SQL command:
-</P><PRE
-CLASS="SYNOPSIS"
->CREATE USER <VAR
-CLASS="REPLACEABLE"
->name</VAR
->;</PRE
-><P>
-   <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> follows the rules for SQL
+   per individual database). To create a user use the <tt class="command">CREATE
+   USER</tt> SQL command:
+</p>
+<pre class="synopsis">CREATE USER <i class="replaceable"><tt>name</tt></i>;</pre>
+<p>
+   <i class="replaceable"><tt>name</tt></i> follows the rules for SQL
    identifiers: either unadorned without special characters, or
    double-quoted. To remove an existing user, use the analogous
-   <TT
-CLASS="COMMAND"
->DROP USER</TT
-> command:
-</P><PRE
-CLASS="SYNOPSIS"
->DROP USER <VAR
-CLASS="REPLACEABLE"
->name</VAR
->;</PRE
-><P>
-  </P
-><A
-NAME="AEN18373"
-></A
-><A
-NAME="AEN18375"
-></A
-><P
->   For convenience, the programs <TT
-CLASS="COMMAND"
->createuser</TT
->
-   and <TT
-CLASS="COMMAND"
->dropuser</TT
-> are provided as wrappers
+   <tt class="command">DROP USER</tt> command:
+</p>
+<pre class="synopsis">DROP USER <i class="replaceable"><tt>name</tt></i>;</pre>
+<p>
+  </p>
+<a name="id2588794"></a><a name="id2588799"></a><p>   For convenience, the programs <tt class="command">createuser</tt>
+   and <tt class="command">dropuser</tt> are provided as wrappers
    around these SQL commands that can be called from the shell command
    line:
-</P><PRE
-CLASS="SYNOPSIS"
->createuser <VAR
-CLASS="REPLACEABLE"
->name</VAR
->
-dropuser <VAR
-CLASS="REPLACEABLE"
->name</VAR
-></PRE
-><P>
-  </P
-><P
->   In order to bootstrap the database system, a freshly initialized
+</p>
+<pre class="synopsis">createuser <i class="replaceable"><tt>name</tt></i>
+dropuser <i class="replaceable"><tt>name</tt></i></pre>
+<p>
+  </p>
+<p>   In order to bootstrap the database system, a freshly initialized
    system always contains one predefined user. This user will have the
    fixed ID 1, and by default (unless altered when running
-   <TT
-CLASS="COMMAND"
->initdb</TT
->) it will have the same name as the
+   <tt class="command">initdb</tt>) it will have the same name as the
    operating system user that initialized the database
    cluster. Customarily, this user will be named
-   <TT
-CLASS="LITERAL"
->postgres</TT
->. In order to create more users you
+   <tt class="literal">postgres</tt>. In order to create more users you
    first have to connect as this initial user.
-  </P
-><P
->   Exactly one user identity is active for a connection to the
+  </p>
+<p>   Exactly one user identity is active for a connection to the
    database server.  The user name to use for a particular database
    connection is indicated by the client that is initiating the
    connection request in an application-specific fashion. For example,
-   the <TT
-CLASS="COMMAND"
->psql</TT
-> program uses the
-   <TT
-CLASS="OPTION"
->-U</TT
-> command line option to indicate the user to
+   the <tt class="command">psql</tt> program uses the
+   <tt class="option">-U</tt> command line option to indicate the user to
    connect as.  Many applications assume the name of the current
    operating system user by default (including
-   <TT
-CLASS="COMMAND"
->createuser</TT
-> and <TT
-CLASS="COMMAND"
->psql</TT
->).  Therefore it
+   <tt class="command">createuser</tt> and <tt class="command">psql</tt>).  Therefore it
    is convenient to maintain a naming correspondence between the two
    user sets.
-  </P
-><P
->   The set of database users a given client connection may connect as
+  </p>
+<p>   The set of database users a given client connection may connect as
    is determined by the client authentication setup, as explained in
-   <A
-HREF="client-authentication.html"
->Chapter 19</A
->. (Thus, a client is not
+   <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>. (Thus, a client is not
    necessarily limited to connect as the user with the same name as
    its operating system user, in the same way a person is not
    constrained in its login name by her real name.)  Since the user
    identity determines the set of privileges available to a connected
    client, it is important to carefully configure this when setting up
    a multiuser environment.
-  </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ssh-tunnels.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="user-attributes.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Secure TCP/IP Connections with <SPAN
-CLASS="APPLICATION"
->SSH</SPAN
-> Tunnels</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="admin.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->User Attributes</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

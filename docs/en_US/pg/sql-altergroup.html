@@ -1,327 +1,83 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->ALTER GROUP</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ALTER FUNCTION"
-HREF="sql-alterfunction.html"><LINK
-REL="NEXT"
-TITLE="ALTER INDEX"
-HREF="sql-alterindex.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterfunction.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterfunction.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterindex.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterindex.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ALTERGROUP"
-></A
->ALTER GROUP</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN34669"
-></A
-><H2
->Name</H2
->ALTER GROUP&nbsp;--&nbsp;change a user group</DIV
-><A
-NAME="AEN34672"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN34674"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ALTER GROUP <VAR
-CLASS="REPLACEABLE"
->groupname</VAR
-> ADD USER <VAR
-CLASS="REPLACEABLE"
->username</VAR
-> [, ... ]
-ALTER GROUP <VAR
-CLASS="REPLACEABLE"
->groupname</VAR
-> DROP USER <VAR
-CLASS="REPLACEABLE"
->username</VAR
-> [, ... ]
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER GROUP</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-alterfunction.html" title="ALTER FUNCTION">
+<link rel="next" href="sql-alterindex.html" title="ALTER INDEX">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-altergroup"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER GROUP &#8212; change a user group</p>
+</div>
+<a name="id2659050"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER GROUP <i class="replaceable"><tt>groupname</tt></i> ADD USER <i class="replaceable"><tt>username</tt></i> [, ... ]
+ALTER GROUP <i class="replaceable"><tt>groupname</tt></i> DROP USER <i class="replaceable"><tt>username</tt></i> [, ... ]
 
-ALTER GROUP <VAR
-CLASS="REPLACEABLE"
->groupname</VAR
-> RENAME TO <VAR
-CLASS="REPLACEABLE"
->newname</VAR
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34682"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER GROUP</TT
-> is used to change a user group.  The
+ALTER GROUP <i class="replaceable"><tt>groupname</tt></i> RENAME TO <i class="replaceable"><tt>newname</tt></i></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2659099"></a><h2>Description</h2>
+<p>   <tt class="command">ALTER GROUP</tt> is used to change a user group.  The
    first two variants add or remove users from a group. Only database
    superusers can use this command.  Adding a user to a group does not
    create the user. Similarly, removing a user from a group does not
    drop the user itself.
-  </P
-><P
->   The third variant changes the name of the group.  Only a database
+  </p>
+<p>   The third variant changes the name of the group.  Only a database
    superuser can rename groups.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34687"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->groupname</VAR
-></DT
-><DD
-><P
->      The name of the group to modify.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->username</VAR
-></DT
-><DD
-><P
->      Users which are to be added or removed from the group. The users
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2659119"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>groupname</tt></i></span></dt>
+<dd><p>      The name of the group to modify.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>username</tt></i></span></dt>
+<dd><p>      Users which are to be added or removed from the group. The users
       must exist.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->newname</VAR
-></DT
-><DD
-><P
->      The new name of the group.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34705"
-></A
-><H2
->Examples</H2
-><P
->   Add users to a group:
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>newname</tt></i></span></dt>
+<dd><p>      The new name of the group.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2659155"></a><h2>Examples</h2>
+<p>   Add users to a group:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER GROUP staff ADD USER karl, john;</PRE
-><P>
+</p>
+<pre class="programlisting">ALTER GROUP staff ADD USER karl, john;</pre>
+<p>
 
    Remove a user from a group:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER GROUP workers DROP USER beth;</PRE
-><P>
+</p>
+<pre class="programlisting">ALTER GROUP workers DROP USER beth;</pre>
+<p>
 
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34710"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->ALTER GROUP</TT
-> statement in the SQL
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2659174"></a><h2>Compatibility</h2>
+<p>   There is no <tt class="command">ALTER GROUP</tt> statement in the SQL
    standard. The concept of roles is similar.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34714"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-creategroup.html"
-><I
->CREATE GROUP</I
-></A
->, <A
-HREF="sql-dropgroup.html"
-><I
->DROP GROUP</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterfunction.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterindex.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ALTER FUNCTION</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ALTER INDEX</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2659188"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-creategroup.html">CREATE GROUP</a>, <a href="sql-dropgroup.html">DROP GROUP</a></span>
+</div>
+</div></body>
+</html>

@@ -1,203 +1,36 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Limitations</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="GiST Indexes"
-HREF="gist.html"><LINK
-REL="PREVIOUS"
-TITLE="Implementation"
-HREF="implementation.html"><LINK
-REL="NEXT"
-TITLE="Examples"
-HREF="examples.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="implementation.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="gist.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 48. GiST Indexes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="gist.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="examples.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="LIMITATIONS"
->48.4. Limitations</A
-></H1
-><P
->  The current implementation of <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> within
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> has some major limitations:
-  <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> access is not concurrent; the
-  <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> interface doesn't allow the development of certain
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>48.4. Limitations</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="gist.html" title="Chapter 48. GiST Indexes">
+<link rel="previous" href="implementation.html" title="48.3. Implementation">
+<link rel="next" href="examples.html" title="48.5. Examples">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="limitations"></a>48.4. Limitations</h2></div></div>
+<div></div>
+</div>
+<p>  The current implementation of <span class="acronym">GiST</span> within
+  <span class="productname">PostgreSQL</span> has some major limitations:
+  <span class="acronym">GiST</span> access is not concurrent; the
+  <span class="acronym">GiST</span> interface doesn't allow the development of certain
   data types, such as digital trees (see papers by Aoki et al); and there
   is not yet any support for write-ahead logging of updates in
-  <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> indexes.
- </P
-><P
->  Solutions to the concurrency problems appear in Marcel Kornacker's
+  <span class="acronym">GiST</span> indexes.
+ </p>
+<p>  Solutions to the concurrency problems appear in Marcel Kornacker's
   thesis; however these ideas have not yet been put into practice in the
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> implementation.
- </P
-><P
->  The lack of write-ahead logging is just a small matter of programming,
-  but since it isn't done yet, a crash could render a <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
->
+  <span class="productname">PostgreSQL</span> implementation.
+ </p>
+<p>  The lack of write-ahead logging is just a small matter of programming,
+  but since it isn't done yet, a crash could render a <span class="acronym">GiST</span>
   index inconsistent, forcing a REINDEX.
- </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="implementation.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="examples.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Implementation</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="gist.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Examples</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+ </p>
+</div></body>
+</html>

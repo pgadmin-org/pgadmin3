@@ -1,359 +1,82 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Sorting Rows</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Queries"
-HREF="queries.html"><LINK
-REL="PREVIOUS"
-TITLE="Combining Queries"
-HREF="queries-union.html"><LINK
-REL="NEXT"
-TITLE="LIMIT and OFFSET"
-HREF="queries-limit.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="queries-union.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="queries.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 7. Queries</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="queries.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="queries-limit.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="QUERIES-ORDER"
->7.5. Sorting Rows</A
-></H1
-><A
-NAME="AEN3175"
-></A
-><A
-NAME="AEN3177"
-></A
-><P
->   After a query has produced an output table (after the select list
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>7.5. Sorting Rows</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="queries.html" title="Chapter 7. Queries">
+<link rel="previous" href="queries-union.html" title="7.4. Combining Queries">
+<link rel="next" href="queries-limit.html" title="7.6. LIMIT and OFFSET">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="queries-order"></a>7.5. Sorting Rows</h2></div></div>
+<div></div>
+</div>
+<a name="id2530253"></a><a name="id2530263"></a><p>   After a query has produced an output table (after the select list
    has been processed) it can optionally be sorted.  If sorting is not
    chosen, the rows will be returned in random order.  The actual
    order in that case will depend on the scan and join plan types and
    the order on disk, but it must not be relied on.  A particular
    output ordering can only be guaranteed if the sort step is explicitly
    chosen.
-  </P
-><P
->   The <TT
-CLASS="LITERAL"
->ORDER BY</TT
-> clause specifies the sort order:
-</P><PRE
-CLASS="SYNOPSIS"
->SELECT <VAR
-CLASS="REPLACEABLE"
->select_list</VAR
->
-    FROM <VAR
-CLASS="REPLACEABLE"
->table_expression</VAR
->
-    ORDER BY <VAR
-CLASS="REPLACEABLE"
->column1</VAR
-> [<SPAN
-CLASS="OPTIONAL"
->ASC | DESC</SPAN
->] [<SPAN
-CLASS="OPTIONAL"
->, <VAR
-CLASS="REPLACEABLE"
->column2</VAR
-> [<SPAN
-CLASS="OPTIONAL"
->ASC | DESC</SPAN
->] ...</SPAN
->]</PRE
-><P>
-   <VAR
-CLASS="REPLACEABLE"
->column1</VAR
->, etc., refer to select list
+  </p>
+<p>   The <tt class="literal">ORDER BY</tt> clause specifies the sort order:
+</p>
+<pre class="synopsis">SELECT <i class="replaceable"><tt>select_list</tt></i>
+    FROM <i class="replaceable"><tt>table_expression</tt></i>
+    ORDER BY <i class="replaceable"><tt>column1</tt></i> [<span class="optional">ASC | DESC</span>] [<span class="optional">, <i class="replaceable"><tt>column2</tt></i> [<span class="optional">ASC | DESC</span>] ...</span>]</pre>
+<p>
+   <i class="replaceable"><tt>column1</tt></i>, etc., refer to select list
    columns.  These can be either the output name of a column (see
-   <A
-HREF="queries-select-lists.html#QUERIES-COLUMN-LABELS"
->Section 7.3.2</A
->) or the number of a column.  Some
+   <a href="queries-select-lists.html#queries-column-labels" title="7.3.2. Column Labels">Section 7.3.2, &#8220;Column Labels&#8221;</a>) or the number of a column.  Some
    examples:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT a, b FROM table1 ORDER BY a;
+</p>
+<pre class="programlisting">SELECT a, b FROM table1 ORDER BY a;
 SELECT a + b AS sum, c FROM table1 ORDER BY sum;
-SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</PRE
-><P>
-  </P
-><P
->   As an extension to the SQL standard, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> also allows ordering
+SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</pre>
+<p>
+  </p>
+<p>   As an extension to the SQL standard, <span class="productname">PostgreSQL</span> also allows ordering
    by arbitrary expressions:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT a, b FROM table1 ORDER BY a + b;</PRE
-><P>
-   References to column names in the <TT
-CLASS="LITERAL"
->FROM</TT
-> clause that are
+</p>
+<pre class="programlisting">SELECT a, b FROM table1 ORDER BY a + b;</pre>
+<p>
+   References to column names in the <tt class="literal">FROM</tt> clause that are
    renamed in the select list are also allowed:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT a AS b FROM table1 ORDER BY a;</PRE
-><P>
+</p>
+<pre class="programlisting">SELECT a AS b FROM table1 ORDER BY a;</pre>
+<p>
    But these extensions do not work in queries involving
-   <TT
-CLASS="LITERAL"
->UNION</TT
->, <TT
-CLASS="LITERAL"
->INTERSECT</TT
->, or <TT
-CLASS="LITERAL"
->EXCEPT</TT
->,
+   <tt class="literal">UNION</tt>, <tt class="literal">INTERSECT</tt>, or <tt class="literal">EXCEPT</tt>,
    and are not portable to other SQL databases.
-  </P
-><P
->   Each column specification may be followed by an optional
-   <TT
-CLASS="LITERAL"
->ASC</TT
-> or <TT
-CLASS="LITERAL"
->DESC</TT
-> to set the sort direction to
-   ascending or descending.  <TT
-CLASS="LITERAL"
->ASC</TT
-> order is the default.
+  </p>
+<p>   Each column specification may be followed by an optional
+   <tt class="literal">ASC</tt> or <tt class="literal">DESC</tt> to set the sort direction to
+   ascending or descending.  <tt class="literal">ASC</tt> order is the default.
    Ascending order puts smaller values first, where
-   <SPAN
-CLASS="QUOTE"
->"smaller"</SPAN
-> is defined in terms of the
-   <TT
-CLASS="LITERAL"
->&lt;</TT
-> operator.  Similarly, descending order is
-   determined with the <TT
-CLASS="LITERAL"
->&gt;</TT
-> operator.
-    <A
-NAME="AEN3208"
-HREF="#FTN.AEN3208"
-><SPAN
-CLASS="footnote"
->[1]</SPAN
-></A
->
-  </P
-><P
->   If more than one sort column is specified, the later entries are
+   &#8220;<span class="quote">smaller</span>&#8221; is defined in terms of the
+   <tt class="literal">&lt;</tt> operator.  Similarly, descending order is
+   determined with the <tt class="literal">&gt;</tt> operator.
+    <sup>[<a name="id2530431" href="#ftn.id2530431">3</a>]</sup>
+  </p>
+<p>   If more than one sort column is specified, the later entries are
    used to sort rows that are equal under the order imposed by the
    earlier sort columns.
-  </P
-></DIV
-><H3
-CLASS="FOOTNOTES"
->Notes</H3
-><TABLE
-BORDER="0"
-CLASS="FOOTNOTES"
-WIDTH="100%"
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-WIDTH="5%"
-><A
-NAME="FTN.AEN3208"
-HREF="queries-order.html#AEN3208"
-><SPAN
-CLASS="footnote"
->[1]</SPAN
-></A
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-WIDTH="95%"
-><P
->      Actually, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> uses the <I
-CLASS="FIRSTTERM"
->default B-tree
-      operator class</I
-> for the column's data type to determine the sort
-      ordering for <TT
-CLASS="LITERAL"
->ASC</TT
-> and <TT
-CLASS="LITERAL"
->DESC</TT
->.  Conventionally,
-      data types will be set up so that the <TT
-CLASS="LITERAL"
->&lt;</TT
-> and
-      <TT
-CLASS="LITERAL"
->&gt;</TT
-> operators correspond to this sort ordering,
+  </p>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id2530431" href="#id2530431">3</a>] </sup>      Actually, <span class="productname">PostgreSQL</span> uses the <i class="firstterm">default B-tree
+      operator class</i> for the column's data type to determine the sort
+      ordering for <tt class="literal">ASC</tt> and <tt class="literal">DESC</tt>.  Conventionally,
+      data types will be set up so that the <tt class="literal">&lt;</tt> and
+      <tt class="literal">&gt;</tt> operators correspond to this sort ordering,
       but a user-defined data type's designer could choose to do something
       different.
-     </P
-></TD
-></TR
-></TABLE
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="queries-union.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="queries-limit.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Combining Queries</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="queries.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->LIMIT</TT
-> and <TT
-CLASS="LITERAL"
->OFFSET</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+     </p></div>
+</div>
+</div></body>
+</html>

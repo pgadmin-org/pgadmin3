@@ -1,402 +1,131 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->VACUUM</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="UPDATE"
-HREF="sql-update.html"><LINK
-REL="NEXT"
-TITLE="PostgreSQL Client Applications"
-HREF="reference-client.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-update.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-update.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="reference-client.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="reference-client.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-VACUUM"
-></A
->VACUUM</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN43709"
-></A
-><H2
->Name</H2
->VACUUM&nbsp;--&nbsp;garbage-collect and optionally analyze a database</DIV
-><A
-NAME="AEN43712"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN43714"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] [ <VAR
-CLASS="REPLACEABLE"
->table</VAR
-> ]
-VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <VAR
-CLASS="REPLACEABLE"
->table</VAR
-> [ (<VAR
-CLASS="REPLACEABLE"
->column</VAR
-> [, ...] ) ] ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43719"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->VACUUM</TT
-> reclaims storage occupied by deleted tuples.
-   In normal <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> operation, tuples that
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>VACUUM</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-update.html" title="UPDATE">
+<link rel="next" href="reference-client.html" title="PostgreSQL Client Applications">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-vacuum"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>VACUUM &#8212; garbage-collect and optionally analyze a database</p>
+</div>
+<a name="id2697598"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] [ <i class="replaceable"><tt>table</tt></i> ]
+VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <i class="replaceable"><tt>table</tt></i> [ (<i class="replaceable"><tt>column</tt></i> [, ...] ) ] ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2697632"></a><h2>Description</h2>
+<p>   <tt class="command">VACUUM</tt> reclaims storage occupied by deleted tuples.
+   In normal <span class="productname">PostgreSQL</span> operation, tuples that
    are deleted or obsoleted by an update are not physically removed from
-   their table; they remain present until a <TT
-CLASS="COMMAND"
->VACUUM</TT
-> is
-   done.  Therefore it's necessary to do <TT
-CLASS="COMMAND"
->VACUUM</TT
->
+   their table; they remain present until a <tt class="command">VACUUM</tt> is
+   done.  Therefore it's necessary to do <tt class="command">VACUUM</tt>
    periodically, especially on frequently-updated tables.
-  </P
-><P
->   With no parameter, <TT
-CLASS="COMMAND"
->VACUUM</TT
-> processes every table in the
-   current database.  With a parameter, <TT
-CLASS="COMMAND"
->VACUUM</TT
-> processes
+  </p>
+<p>   With no parameter, <tt class="command">VACUUM</tt> processes every table in the
+   current database.  With a parameter, <tt class="command">VACUUM</tt> processes
    only that table.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->VACUUM ANALYZE</TT
-> performs a <TT
-CLASS="COMMAND"
->VACUUM</TT
->
-   and then an <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> for each selected table.  This
+  </p>
+<p>   <tt class="command">VACUUM ANALYZE</tt> performs a <tt class="command">VACUUM</tt>
+   and then an <tt class="command">ANALYZE</tt> for each selected table.  This
    is a handy combination form for routine maintenance scripts.  See
-   <A
-HREF="sql-analyze.html"
-><I
->ANALYZE</I
-></A
->
+   <a href="sql-analyze.html">ANALYZE</a>
    for more details about its processing.
-  </P
-><P
->   Plain <TT
-CLASS="COMMAND"
->VACUUM</TT
-> (without <TT
-CLASS="LITERAL"
->FULL</TT
->) simply reclaims
+  </p>
+<p>   Plain <tt class="command">VACUUM</tt> (without <tt class="literal">FULL</tt>) simply reclaims
    space and makes it
    available for re-use.  This form of the command can operate in parallel
    with normal reading and writing of the table, as an exclusive lock
-   is not obtained. <TT
-CLASS="COMMAND"
->VACUUM
-   FULL</TT
-> does more extensive processing, including moving of tuples
+   is not obtained. <tt class="command">VACUUM
+   FULL</tt> does more extensive processing, including moving of tuples
    across blocks to try to compact the table to the minimum number of disk
    blocks.  This form is much slower and requires an exclusive lock on each
    table while it is being processed.
-  </P
-><P
->   <TT
-CLASS="LITERAL"
->FREEZE</TT
-> is a special-purpose option that
-   causes tuples to be marked <SPAN
-CLASS="QUOTE"
->"frozen"</SPAN
-> as soon as possible,
+  </p>
+<p>   <tt class="literal">FREEZE</tt> is a special-purpose option that
+   causes tuples to be marked &#8220;<span class="quote">frozen</span>&#8221; as soon as possible,
    rather than waiting until they are quite old.  If this is done when there
    are no other open transactions in the same database, then it is guaranteed
-   that all tuples in the database are <SPAN
-CLASS="QUOTE"
->"frozen"</SPAN
-> and will not be
+   that all tuples in the database are &#8220;<span class="quote">frozen</span>&#8221; and will not be
    subject to transaction ID wraparound problems, no matter how long the
    database is left unvacuumed.
-   <TT
-CLASS="LITERAL"
->FREEZE</TT
-> is not recommended for routine use.  Its only
+   <tt class="literal">FREEZE</tt> is not recommended for routine use.  Its only
    intended usage is in connection with preparation of user-defined template
    databases, or other databases that are completely read-only and will not
-   receive routine maintenance <TT
-CLASS="COMMAND"
->VACUUM</TT
-> operations.
-   See <A
-HREF="maintenance.html"
->Chapter 21</A
-> for details.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43745"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->FULL</TT
-></DT
-><DD
-><P
->      Selects <SPAN
-CLASS="QUOTE"
->"full"</SPAN
-> vacuum, which may reclaim more
+   receive routine maintenance <tt class="command">VACUUM</tt> operations.
+   See <a href="maintenance.html" title="Chapter 21. Routine Database Maintenance Tasks">Chapter 21, <i>Routine Database Maintenance Tasks</i></a> for details.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2697786"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">FULL</tt></span></dt>
+<dd><p>      Selects &#8220;<span class="quote">full</span>&#8221; vacuum, which may reclaim more
       space, but takes much longer and exclusively locks the table.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->FREEZE</TT
-></DT
-><DD
-><P
->      Selects aggressive <SPAN
-CLASS="QUOTE"
->"freezing"</SPAN
-> of tuples.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->VERBOSE</TT
-></DT
-><DD
-><P
->      Prints a detailed vacuum activity report for each table.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->ANALYZE</TT
-></DT
-><DD
-><P
->      Updates statistics used by the planner to determine the most
+     </p></dd>
+<dt><span class="term"><tt class="literal">FREEZE</tt></span></dt>
+<dd><p>      Selects aggressive &#8220;<span class="quote">freezing</span>&#8221; of tuples.
+     </p></dd>
+<dt><span class="term"><tt class="literal">VERBOSE</tt></span></dt>
+<dd><p>      Prints a detailed vacuum activity report for each table.
+     </p></dd>
+<dt><span class="term"><tt class="literal">ANALYZE</tt></span></dt>
+<dd><p>      Updates statistics used by the planner to determine the most
       efficient way to execute a query.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->table</VAR
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of a specific table to
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
+<dd><p>      The name (optionally schema-qualified) of a specific table to
       vacuum. Defaults to all tables in the current database.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->column</VAR
-></DT
-><DD
-><P
->      The name of a specific column to analyze. Defaults to all columns.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43780"
-></A
-><H2
->Outputs</H2
-><P
->    When <TT
-CLASS="LITERAL"
->VERBOSE</TT
-> is specified, <TT
-CLASS="COMMAND"
->VACUUM</TT
-> emits
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>column</tt></i></span></dt>
+<dd><p>      The name of a specific column to analyze. Defaults to all columns.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2697867"></a><h2>Outputs</h2>
+<p>    When <tt class="literal">VERBOSE</tt> is specified, <tt class="command">VACUUM</tt> emits
     progress messages to indicate which table is currently being
     processed.  Various statistics about the tables are printed as well.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43785"
-></A
-><H2
->Notes</H2
-><P
->    We recommend that active production databases be
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2697888"></a><h2>Notes</h2>
+<p>    We recommend that active production databases be
     vacuumed frequently (at least nightly), in order to
     remove expired rows. After adding or deleting a large number
-    of rows, it may be a good idea to issue a <TT
-CLASS="COMMAND"
->VACUUM
-    ANALYZE</TT
-> command for the affected table. This will update the
+    of rows, it may be a good idea to issue a <tt class="command">VACUUM
+    ANALYZE</tt> command for the affected table. This will update the
     system catalogs with
     the results of all recent changes, and allow the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> query planner to make better
+    <span class="productname">PostgreSQL</span> query planner to make better
     choices in planning queries.
-   </P
-><P
->    The <TT
-CLASS="OPTION"
->FULL</TT
-> option is not recommended for routine use,
+   </p>
+<p>    The <tt class="option">FULL</tt> option is not recommended for routine use,
     but may be useful in special cases.  An example is when you have deleted
     most of the rows in a table and would like the table to physically shrink
-    to occupy less disk space.  <TT
-CLASS="COMMAND"
->VACUUM FULL</TT
-> will usually
-    shrink the table more than a plain <TT
-CLASS="COMMAND"
->VACUUM</TT
-> would.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43794"
-></A
-><H2
->Examples</H2
-><P
->   The following is an example from running <TT
-CLASS="COMMAND"
->VACUUM</TT
-> on a
+    to occupy less disk space.  <tt class="command">VACUUM FULL</tt> will usually
+    shrink the table more than a plain <tt class="command">VACUUM</tt> would.
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2697935"></a><h2>Examples</h2>
+<p>   The following is an example from running <tt class="command">VACUUM</tt> on a
    table in the regression database:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->regression=# VACUUM VERBOSE ANALYZE onek;
+</p>
+<pre class="programlisting">regression=# VACUUM VERBOSE ANALYZE onek;
 INFO:  vacuuming "public.onek"
 INFO:  index "onek_unique1" now contains 1000 tuples in 14 pages
 DETAIL:  3000 index tuples were removed.
@@ -423,101 +152,18 @@ There were 0 unused item pointers.
 CPU 0.07s/0.39u sec elapsed 1.56 sec.
 INFO:  analyzing "public.onek"
 INFO:  "onek": 36 pages, 1000 rows sampled, 1000 estimated total rows
-VACUUM</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43799"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->VACUUM</TT
-> statement in the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43803"
-></A
-><H2
->See Also</H2
-><A
-HREF="app-vacuumdb.html"
-><I
-><I
->vacuumdb</I
-></I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-update.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="reference-client.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->UPDATE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->PostgreSQL Client Applications</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+VACUUM</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2697976"></a><h2>Compatibility</h2>
+<p>   There is no <tt class="command">VACUUM</tt> statement in the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2697988"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-vacuumdb.html"><span class="application">vacuumdb</span></a></span>
+</div>
+</div></body>
+</html>

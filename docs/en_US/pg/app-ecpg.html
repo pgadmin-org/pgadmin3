@@ -1,530 +1,138 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->ecpg</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PostgreSQL Client Applications"
-HREF="reference-client.html"><LINK
-REL="PREVIOUS"
-TITLE="dropuser"
-HREF="app-dropuser.html"><LINK
-REL="NEXT"
-TITLE="pg_config"
-HREF="app-pgconfig.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-08-31T04:59:43"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-dropuser.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-dropuser.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-pgconfig.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-pgconfig.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="APP-ECPG"
-></A
-><SPAN
-CLASS="APPLICATION"
->ecpg</SPAN
-></H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN44972"
-></A
-><H2
->Name</H2
-><SPAN
-CLASS="APPLICATION"
->ecpg</SPAN
->&nbsp;--&nbsp;embedded SQL C preprocessor</DIV
-><A
-NAME="AEN44976"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN44978"
-></A
-><H2
->Synopsis</H2
-><P
-><TT
-CLASS="COMMAND"
->ecpg</TT
-> [<VAR
-CLASS="REPLACEABLE"
->option</VAR
->...]  <VAR
-CLASS="REPLACEABLE"
->file</VAR
->... </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="APP-ECPG-DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ecpg</TT
-> is the embedded SQL preprocessor for C
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ecpg</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta2 Documentation">
+<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="previous" href="app-dropuser.html" title="dropuser">
+<link rel="next" href="app-pgconfig.html" title="pg_config">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-ecpg"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p><span class="application">ecpg</span> &#8212; embedded SQL C preprocessor</p>
+</div>
+<a name="id2701537"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><tt class="command">ecpg</tt> [<i class="replaceable"><tt>option</tt></i>...]  <i class="replaceable"><tt>file</tt></i>... </p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="app-ecpg-description"></a><h2>Description</h2>
+<p>   <tt class="command">ecpg</tt> is the embedded SQL preprocessor for C
    programs.  It converts C programs with embedded SQL statements to
    normal C code by replacing the SQL invocations with special
    function calls.  The output files can then be processed with any C
    compiler tool chain.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->ecpg</TT
-> will convert each input file given on the
+  </p>
+<p>   <tt class="command">ecpg</tt> will convert each input file given on the
    command line to the corresponding C output file.  Input files
-   preferably have the extension <TT
-CLASS="FILENAME"
->.pgc</TT
->, in which
-   case the extension will be replaced by <TT
-CLASS="FILENAME"
->.c</TT
-> to
+   preferably have the extension <tt class="filename">.pgc</tt>, in which
+   case the extension will be replaced by <tt class="filename">.c</tt> to
    determine the output file name.  If the extension of the input file
-   is not <TT
-CLASS="FILENAME"
->.pgc</TT
->, then the output file name is
-   computed by appending <TT
-CLASS="LITERAL"
->.c</TT
-> to the full file name.
+   is not <tt class="filename">.pgc</tt>, then the output file name is
+   computed by appending <tt class="literal">.c</tt> to the full file name.
    The output file name can also be overridden using the
-   <TT
-CLASS="OPTION"
->-o</TT
-> option.
-  </P
-><P
->   This reference page does not describe the embedded SQL language.
-   See <A
-HREF="ecpg.html"
->Chapter 29</A
-> for more information on that topic.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44998"
-></A
-><H2
->Options</H2
-><P
->   <TT
-CLASS="COMMAND"
->ecpg</TT
-> accepts the following command-line
+   <tt class="option">-o</tt> option.
+  </p>
+<p>   This reference page does not describe the embedded SQL language.
+   See <a href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">Chapter 29, <i>ECPG - Embedded SQL in C</i></a> for more information on that topic.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2701642"></a><h2>Options</h2>
+<p>   <tt class="command">ecpg</tt> accepts the following command-line
    arguments:
 
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->-c</TT
-></DT
-><DD
-><P
->       Automatically generate certain C code from SQL code.  Currently, this
-       works for <TT
-CLASS="LITERAL"
->EXEC SQL TYPE</TT
->.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-C <VAR
-CLASS="REPLACEABLE"
->mode</VAR
-></TT
-></DT
-><DD
-><P
->       Set a compatibility mode.  <VAR
-CLASS="REPLACEABLE"
->mode</VAR
-> may
-       be <TT
-CLASS="LITERAL"
->INFORMIX</TT
-> or
-       <TT
-CLASS="LITERAL"
->INFORMIX_SE</TT
->.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-D <VAR
-CLASS="REPLACEABLE"
->symbol</VAR
-></TT
-></DT
-><DD
-><P
->       Define a C preprocessor symbol.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-i</TT
-></DT
-><DD
-><P
->       Parse system include files as well.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-I <VAR
-CLASS="REPLACEABLE"
->directory</VAR
-></TT
-></DT
-><DD
-><P
->       Specify an additional include path, used to find files included
-       via <TT
-CLASS="LITERAL"
->EXEC SQL INCLUDE</TT
->.  Defaults are
-       <TT
-CLASS="FILENAME"
->.</TT
-> (current directory),
-       <TT
-CLASS="FILENAME"
->/usr/local/include</TT
->, the
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> include directory which
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="option">-c</tt></span></dt>
+<dd><p>       Automatically generate certain C code from SQL code.  Currently, this
+       works for <tt class="literal">EXEC SQL TYPE</tt>.
+      </p></dd>
+<dt><span class="term"><tt class="option">-C <i class="replaceable"><tt>mode</tt></i></tt></span></dt>
+<dd><p>       Set a compatibility mode.  <i class="replaceable"><tt>mode</tt></i> may
+       be <tt class="literal">INFORMIX</tt> or
+       <tt class="literal">INFORMIX_SE</tt>.
+      </p></dd>
+<dt><span class="term"><tt class="option">-D <i class="replaceable"><tt>symbol</tt></i></tt></span></dt>
+<dd><p>       Define a C preprocessor symbol.
+      </p></dd>
+<dt><span class="term"><tt class="option">-i</tt></span></dt>
+<dd><p>       Parse system include files as well.
+      </p></dd>
+<dt><span class="term"><tt class="option">-I <i class="replaceable"><tt>directory</tt></i></tt></span></dt>
+<dd><p>       Specify an additional include path, used to find files included
+       via <tt class="literal">EXEC SQL INCLUDE</tt>.  Defaults are
+       <tt class="filename">.</tt> (current directory),
+       <tt class="filename">/usr/local/include</tt>, the
+       <span class="productname">PostgreSQL</span> include directory which
        is defined at compile time (default:
-       <TT
-CLASS="FILENAME"
->/usr/local/pgsql/include</TT
->), and
-       <TT
-CLASS="FILENAME"
->/usr/include</TT
->, in that order.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-o <VAR
-CLASS="REPLACEABLE"
->filename</VAR
-></TT
-></DT
-><DD
-><P
->       Specifies that <TT
-CLASS="COMMAND"
->ecpg</TT
-> should write all
-       its output to the given <VAR
-CLASS="REPLACEABLE"
->filename</VAR
->.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-r <VAR
-CLASS="REPLACEABLE"
->option</VAR
-></TT
-></DT
-><DD
-><P
->       Selects a run-time behavior.  Currently,
-       <VAR
-CLASS="REPLACEABLE"
->option</VAR
-> can only be
-       <TT
-CLASS="LITERAL"
->no_indicator</TT
->.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-t</TT
-></DT
-><DD
-><P
->       Turn on autocommit of transactions. In this mode, each SQL command is
+       <tt class="filename">/usr/local/pgsql/include</tt>), and
+       <tt class="filename">/usr/include</tt>, in that order.
+      </p></dd>
+<dt><span class="term"><tt class="option">-o <i class="replaceable"><tt>filename</tt></i></tt></span></dt>
+<dd><p>       Specifies that <tt class="command">ecpg</tt> should write all
+       its output to the given <i class="replaceable"><tt>filename</tt></i>.
+      </p></dd>
+<dt><span class="term"><tt class="option">-r <i class="replaceable"><tt>option</tt></i></tt></span></dt>
+<dd><p>       Selects a run-time behavior.  Currently,
+       <i class="replaceable"><tt>option</tt></i> can only be
+       <tt class="literal">no_indicator</tt>.
+      </p></dd>
+<dt><span class="term"><tt class="option">-t</tt></span></dt>
+<dd><p>       Turn on autocommit of transactions. In this mode, each SQL command is
        automatically committed unless it is inside an explicit
        transaction block. In the default mode, commands are committed
-       only when <TT
-CLASS="COMMAND"
->EXEC SQL COMMIT</TT
-> is issued.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-v</TT
-></DT
-><DD
-><P
->       Print additional information including the version and the
+       only when <tt class="command">EXEC SQL COMMIT</tt> is issued.
+      </p></dd>
+<dt><span class="term"><tt class="option">-v</tt></span></dt>
+<dd><p>       Print additional information including the version and the
        include path.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--help</TT
-></DT
-><DD
-><P
->       Show a brief summary of the command usage, then exit.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--version</TT
-></DT
-><DD
-><P
->       Output version information, then exit.
-      </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45078"
-></A
-><H2
->Notes</H2
-><P
->   When compiling the preprocessed C code files, the compiler needs to
-   be able to find the <SPAN
-CLASS="APPLICATION"
->ECPG</SPAN
-> header files in the
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> include directory.  Therefore, one might
-   have to use the <TT
-CLASS="OPTION"
->-I</TT
-> option when invoking the compiler
-   (e.g., <TT
-CLASS="LITERAL"
->-I/usr/local/pgsql/include</TT
->).
-  </P
-><P
->   Programs using C code with embedded SQL have to be linked against
-   the <TT
-CLASS="FILENAME"
->libecpg</TT
-> library, for example using the
-   linker options <TT
-CLASS="LITERAL"
->-L/usr/local/pgsql/lib -lecpg</TT
->.
-  </P
-><P
->   The value of either of these directories that is appropriate for
-   the installation can be found out using <A
-HREF="app-pgconfig.html"
->pg_config</A
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45090"
-></A
-><H2
->Examples</H2
-><P
->   If you have an embedded SQL C source file named
-   <TT
-CLASS="FILENAME"
->prog1.pgc</TT
->, you can create an executable
+      </p></dd>
+<dt><span class="term"><tt class="option">--help</tt></span></dt>
+<dd><p>       Show a brief summary of the command usage, then exit.
+      </p></dd>
+<dt><span class="term"><tt class="option">--version</tt></span></dt>
+<dd><p>       Output version information, then exit.
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2701856"></a><h2>Notes</h2>
+<p>   When compiling the preprocessed C code files, the compiler needs to
+   be able to find the <span class="application">ECPG</span> header files in the
+   <span class="productname">PostgreSQL</span> include directory.  Therefore, one might
+   have to use the <tt class="option">-I</tt> option when invoking the compiler
+   (e.g., <tt class="literal">-I/usr/local/pgsql/include</tt>).
+  </p>
+<p>   Programs using C code with embedded SQL have to be linked against
+   the <tt class="filename">libecpg</tt> library, for example using the
+   linker options <tt class="literal">-L/usr/local/pgsql/lib -lecpg</tt>.
+  </p>
+<p>   The value of either of these directories that is appropriate for
+   the installation can be found out using <a href="app-pgconfig.html" title="pg_config"><span class="refentrytitle"><a name="app-pgconfig-title"></a>pg_config</span></a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2701916"></a><h2>Examples</h2>
+<p>   If you have an embedded SQL C source file named
+   <tt class="filename">prog1.pgc</tt>, you can create an executable
    program using the following sequence of commands:
-</P><PRE
-CLASS="PROGRAMLISTING"
->ecpg prog1.pgc
+</p>
+<pre class="programlisting">ecpg prog1.pgc
 cc -I/usr/local/pgsql/include -c prog1.c
-cc -o prog1 prog1.o -L/usr/local/pgsql/lib -lecpg</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-dropuser.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-pgconfig.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->dropuser</SPAN
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="reference-client.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->pg_config</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+cc -o prog1 prog1.o -L/usr/local/pgsql/lib -lecpg</pre>
+<p>
+  </p>
+</div>
+</div></body>
+</html>
