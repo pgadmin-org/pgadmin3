@@ -421,6 +421,7 @@ wxString dlgTable::GetSql()
         }
         sql += (chkHasOids->GetValue() ? wxT("WITH OIDS;\n") : wxT("WITHOUT OIDS;\n"));
     }
+    AppendComment(sql, wxT("TABLE"), schema, table);
     sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + tabname);
 
     return sql;
