@@ -68,7 +68,6 @@ popd
 %install
 rm -rf %{buildroot}
 %makeinstall
-%find_lang wxstd
 
 pushd contrib/src/
         %makeinstall -C xrc
