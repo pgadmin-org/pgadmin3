@@ -44,20 +44,35 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-// Constants
+// Menu options
 enum
 {
-    mnuConnect = 1,
-    mnuPassword,
-    mnuSaveDefinition,
-    mnuSaveSchema,
-    mnuExit,
-    mnuUpgradeWizard,
-    mnuOptions,
-    mnuSystemObjects,
-    mnuContents,
-    mnuTipOfTheDay,
-    mnuAbout
+    MNU_CONNECT = 101,
+    MNU_PASSWORD = 102,
+    MNU_SAVEDEFINITION = 103,
+    MNU_SAVESCHEMA = 104,
+    MNU_EXIT = 105,
+    MNU_UPGRADEWIZARD = 106,
+    MNU_OPTIONS = 107,
+    MNU_SYSTEMOBJECTS = 108,
+    MNU_CONTENTS = 109,
+    MNU_TIPOFTHEDAY = 110,
+    MNU_ABOUT = 111
+};
+
+// Toolbar buttons
+enum
+{
+    BTN_CONNECT = 101,
+    BTN_REFRESH = 102,
+    BTN_CREATE = 103,
+    BTN_DROP = 104,
+    BTN_PROPERTIES = 105,
+    BTN_SQL = 106,
+    BTN_VIEWDATA = 107,
+    BTN_VACUUM = 108,
+    BTN_RECORD = 109,
+    BTN_STOP = 110,
 };
 
 #endif

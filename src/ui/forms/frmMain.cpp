@@ -69,8 +69,8 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
-    EVT_MENU(mnuExit,  frmMain::OnExit)
-    EVT_MENU(mnuAbout, frmMain::OnAbout)
+    EVT_MENU(MNU_EXIT, frmMain::OnExit)
+    EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
     EVT_SIZE(frmMain::OnSize)
     EVT_MOVE(frmMain::OnMove) 
 END_EVENT_TABLE()
@@ -87,33 +87,33 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // File Menu
     wxMenu *mnuFile = new wxMenu;
-    mnuFile->Append(mnuConnect, wxT("&Connect..."), wxT("Connect to a PostgreSQL server"));
-    mnuFile->Append(mnuPassword, wxT("C&hange password..."), wxT("Change your password"));
+    mnuFile->Append(MNU_CONNECT, wxT("&Connect..."), wxT("Connect to a PostgreSQL server"));
+    mnuFile->Append(MNU_PASSWORD, wxT("C&hange password..."), wxT("Change your password"));
     mnuFile->AppendSeparator();
-    mnuFile->Append(mnuSaveDefinition, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object"));
-    mnuFile->Append(mnuSaveSchema, wxT("S&ave DB schema..."), wxT("Save the schema of the current database"));
+    mnuFile->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object"));
+    mnuFile->Append(MNU_SAVESCHEMA, wxT("S&ave DB schema..."), wxT("Save the schema of the current database"));
     mnuFile->AppendSeparator();
-    mnuFile->Append(mnuExit, wxT("E&xit"), wxT("Quit this program"));
+    mnuFile->Append(MNU_EXIT, wxT("E&xit"), wxT("Quit this program"));
     mnuBar->Append(mnuFile, wxT("&File"));
 
     // Tools Menu
     wxMenu *mnuTools = new wxMenu;
-    mnuTools->Append(mnuUpgradeWizard, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard"));
+    mnuTools->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard"));
     mnuTools->AppendSeparator();
-    mnuTools->Append(mnuOptions, wxT("&Options..."), wxT("Show options dialog"));
+    mnuTools->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog"));
     mnuBar->Append(mnuTools, wxT("&Tools"));
 
     // View Menu
     wxMenu *mnuView = new wxMenu;
-    mnuView->Append(mnuSystemObjects, wxT("&System objects"), wxT("Show or hide system objects"));
+    mnuView->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects"));
     mnuBar->Append(mnuView, wxT("&View"));
 
     // Help Menu
     wxMenu *mnuHelp = new wxMenu;
-    mnuHelp->Append(mnuContents, wxT("&Help..."), wxT("Open the helpfile"));
-    mnuHelp->Append(mnuTipOfTheDay, wxT("&Tip of the day..."), wxT("Show a tip of the day"));
+    mnuHelp->Append(MNU_CONTENTS, wxT("&Help..."), wxT("Open the helpfile"));
+    mnuHelp->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."), wxT("Show a tip of the day"));
     mnuHelp->AppendSeparator();
-    mnuHelp->Append(mnuAbout, wxT("&About..."), wxT("Show about dialog"));
+    mnuHelp->Append(MNU_ABOUT, wxT("&About..."), wxT("Show about dialog"));
     mnuBar->Append(mnuHelp, wxT("&Help"));
 
     // Add the Menubar
@@ -152,19 +152,19 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     tlBarBitmaps[8] = wxBitmap(record_xpm);
     tlBarBitmaps[9] = wxBitmap(stop_xpm);
 
-    tlBar->AddTool(100, wxT("Connect"), tlBarBitmaps[0], wxT("Connect to a server"), wxITEM_NORMAL);
-    tlBar->AddTool(101, wxT("Refresh"), tlBarBitmaps[1], wxT("Refrsh the data below the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_CONNECT, wxT("Connect"), tlBarBitmaps[0], wxT("Connect to a server"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_REFRESH, wxT("Refresh"), tlBarBitmaps[1], wxT("Refrsh the data below the selected object"), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(102, wxT("Create"), tlBarBitmaps[2], wxT("Create a new object of the same type as the selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(103, wxT("Drop"), tlBarBitmaps[3], wxT("Drop the currently selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(104, wxT("Properties"), tlBarBitmaps[4], wxT("Display/edit the properties of the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_CREATE, wxT("Create"), tlBarBitmaps[2], wxT("Create a new object of the same type as the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_DROP, wxT("Drop"), tlBarBitmaps[3], wxT("Drop the currently selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_PROPERTIES, wxT("Properties"), tlBarBitmaps[4], wxT("Display/edit the properties of the selected object"), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(105, wxT("SQL"), tlBarBitmaps[5], wxT("Execute arbitrary SQL queries"), wxITEM_NORMAL);
-    tlBar->AddTool(106, wxT("View Data"), tlBarBitmaps[6], wxT("View the data in the selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(107, wxT("Vacuum"), tlBarBitmaps[7], wxT("Vacuum the current database or table"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_SQL, wxT("SQL"), tlBarBitmaps[5], wxT("Execute arbitrary SQL queries"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_VIEWDATA, wxT("View Data"), tlBarBitmaps[6], wxT("View the data in the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_VACUUM, wxT("Vacuum"), tlBarBitmaps[7], wxT("Vacuum the current database or table"), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(108, wxT("Record"), tlBarBitmaps[8], wxT("Record a query log"), wxITEM_NORMAL);
-    tlBar->AddTool(109, wxT("Stop"), tlBarBitmaps[9], wxT("Stop recording the query log"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_RECORD, wxT("Record"), tlBarBitmaps[8], wxT("Record a query log"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_STOP, wxT("Stop"), tlBarBitmaps[9], wxT("Stop recording the query log"), wxITEM_NORMAL);
 
     tlBar->Realize();
     
