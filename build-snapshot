@@ -3,7 +3,7 @@
 # Setup the build environment
 PATH=$PATH:/usr/local/bin
 PGDIR=/usr/local/pgsql
-WXDIR=/usr/local
+WXDIR=/usr/local/src/wxWindows-20030607/
 export PATH PGDIR WXDIR
 
 # Cleanup
@@ -22,7 +22,7 @@ ln -s -f /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.g
 cd /usr/local/src/pgadmin3
 
 # Now the build
-./configure --with-pgsql=$PGDIR --with-wx=$WXDIR
+./configure --with-pgsql=$PGDIR --with-wx=$WXDIR --enable-unicode --enable-gtk2
 make all
 /usr/bin/strip src/pgAdmin3
 
