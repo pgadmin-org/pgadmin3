@@ -116,7 +116,7 @@ pgObject *pgaAgent::ReadObjects(pgDatabase *database, wxTreeCtrl *browser)
 
     if (!exists.IsNull())
     {
-        agent = new pgaAgent(_("pgAgent"));
+        agent = new pgaAgent(_("pgAgent Jobs"));
         agent->iSetDatabase(database);
 
         if (browser)

@@ -23,8 +23,8 @@
 #include "pgaSchedule.h"
 
 
-pgaStep::pgaStep(pgaJob *_job, const wxString& newName)
-: pgaJobObject(_job, PGA_STEP, newName)
+pgaStep::pgaStep(pgCollection *_collection, const wxString& newName)
+: pgaJobObject(_collection->GetJob(), PGA_STEP, newName)
 {
     wxLogInfo(wxT("Creating a pgaStep object"));
 }
@@ -72,8 +72,8 @@ pgObject *pgaStep::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        pgaJob *obj=(pgaJob*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PGA_JOB)
+        pgCollection *obj=(pgCollection*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PGA_STEPS)
             Step = ReadObjects(obj, 0);
     }
     return Step;
@@ -81,13 +81,13 @@ pgObject *pgaStep::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgaStep *step=0;
 
-    pgSet *steps= job->GetDatabase()->ExecuteSet(
+    pgSet *steps= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT * FROM pgadmin.pga_jobstep\n")
-       wxT(" WHERE jstjobid=") + NumToStr(job->GetId()) + wxT("\n")
+       wxT(" WHERE jstjobid=") + NumToStr(collection->GetId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jstid"));
 
@@ -96,9 +96,9 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
         while (!steps->Eof())
         {
 
-            step = new pgaStep(job, steps->GetVal(wxT("jstname")));
+            step = new pgaStep(collection, steps->GetVal(wxT("jstname")));
             step->iSetId(steps->GetLong(wxT("jstid")));
-            step->iSetDatabase(job->GetDatabase());
+            step->iSetDatabase(collection->GetDatabase());
             step->iSetDbname(steps->GetVal(wxT("jstdbname")));
             step->iSetCode(steps->GetVal(wxT("jstcode")));
             step->iSetEnabled(steps->GetBool(wxT("jstenabled")));
@@ -131,7 +131,7 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
 
             if (browser)
             {
-                job->AppendBrowserItem(browser, step);
+                collection->AppendBrowserItem(browser, step);
 				steps->MoveNext();
             }
             else

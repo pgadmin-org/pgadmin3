@@ -112,7 +112,7 @@ pgObject *dlgStep::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgaStep::ReadObjects(job, 0, wxT("   AND jstid=") + NumToStr(id) + wxT("\n"));
+    pgObject *obj=pgaStep::ReadObjects(collection, 0, wxT("   AND jstid=") + NumToStr(id) + wxT("\n"));
     return obj;
 }
 

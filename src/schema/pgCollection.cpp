@@ -36,6 +36,9 @@
 #include "pgIndex.h"
 #include "pgRule.h"
 #include "pgTrigger.h"
+#include "pgaStep.h"
+#include "pgaSchedule.h"
+#include "pgaJob.h"
 #include "slCluster.h"
 
 
@@ -44,6 +47,7 @@ pgCollection::pgCollection(int newType, pgServer *sv)
 : pgObject(newType, typesList[newType].typName)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
+	job=0;
     schema=0;
     database=0;
     server= sv;
@@ -54,6 +58,7 @@ pgCollection::pgCollection(int newType, pgDatabase *db)
 : pgObject(newType, typesList[newType].typName)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
+	job=0;
     schema=0;
     database=db;
     server= database->GetServer();
@@ -64,11 +69,21 @@ pgCollection::pgCollection(int newType, pgSchema *sch)
 : pgObject(newType, typesList[newType].typName)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
+	job=0;
     schema = sch;
     database = sch->GetDatabase();
     server= database->GetServer();
 }
 
+pgCollection::pgCollection(int newType, pgaJob *jb)
+: pgObject(newType, typesList[newType].typName)
+{ 
+    wxLogInfo(wxT("Creating a pgCollection object")); 
+	job = jb;
+    schema=0;
+    database = job->GetDatabase();
+    server= database->GetServer();
+}
 
 pgCollection::~pgCollection()
 {
@@ -121,6 +136,8 @@ bool pgCollection::CanCreate()
         case PG_USERS:
         case PG_GROUPS:
         case PG_TABLESPACES:
+		case PGA_STEPS:
+		case PGA_SCHEDULES:
             return GetServer()->GetSuperUser();
         case PG_DATABASES:
             return GetServer()->GetCreatePrivilege();
@@ -178,6 +195,8 @@ int pgCollection::GetIcon()
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;
         case PG_TRIGGERS:           return PGICON_TRIGGER;
+		case PGA_STEPS:				return PGAICON_STEP;
+		case PGA_SCHEDULES:			return PGAICON_SCHEDULE;
         case SL_CLUSTERS:           return SLICON_CLUSTER;
         default:    return 0;
     }
@@ -280,6 +299,12 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
             case PG_TRIGGERS:
                 pgTrigger::ReadObjects(this, browser);
                 break;
+			case PGA_STEPS:
+				pgaStep::ReadObjects(this, browser);
+				break;
+			case PGA_SCHEDULES:
+				pgaSchedule::ReadObjects(this, browser);
+				break;
             case SL_CLUSTERS:
                 slCluster::ReadObjects(this, browser);
                 break;

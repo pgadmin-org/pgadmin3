@@ -17,6 +17,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "pgCollection.h"
 #include "pgConn.h"
 #include "pgObject.h"
 #include "pgaJob.h"
@@ -27,12 +28,12 @@
 class pgaStep : public pgaJobObject
 {
 public:
-    pgaStep(pgaJob *job, const wxString& newName = wxT(""));
+    pgaStep(pgCollection *collection, const wxString& newName = wxT(""));
     ~pgaStep();
 
     int GetIcon() { return PGAICON_STEP; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
 

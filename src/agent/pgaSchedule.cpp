@@ -28,8 +28,8 @@
 WX_DEFINE_OBJARRAY(wxArrayTimeSpan);
 
 
-pgaSchedule::pgaSchedule(pgaJob *_job, const wxString& newName)
-: pgaJobObject(_job, PGA_SCHEDULE, newName)
+pgaSchedule::pgaSchedule(pgCollection *_collection, const wxString& newName)
+: pgaJobObject(_collection->GetJob(), PGA_SCHEDULE, newName)
 {
     wxLogInfo(wxT("Creating a pgaSchedule object"));
 }
@@ -106,8 +106,8 @@ pgObject *pgaSchedule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        pgaJob *obj=(pgaJob*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PGA_JOB)
+        pgCollection *obj=(pgCollection*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PGA_SCHEDULES)
             schedule = ReadObjects(obj, 0);
     }
     return schedule;
@@ -115,13 +115,13 @@ pgObject *pgaSchedule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaSchedule::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgaSchedule *schedule=0;
 
-    pgSet *schedules= job->GetDatabase()->ExecuteSet(
+    pgSet *schedules= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT * FROM pgadmin.pga_schedule\n")
-       wxT(" WHERE jscjobid=") + NumToStr(job->GetId()) + wxT("\n")
+       wxT(" WHERE jscjobid=") + NumToStr(collection->GetId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jscid"));
 
@@ -130,9 +130,9 @@ pgObject *pgaSchedule::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxStr
         while (!schedules->Eof())
         {
 
-            schedule = new pgaSchedule(job, schedules->GetVal(wxT("jscname")));
+            schedule = new pgaSchedule(collection, schedules->GetVal(wxT("jscname")));
             schedule->iSetId(schedules->GetLong(wxT("jscid")));
-            schedule->iSetDatabase(job->GetDatabase());
+            schedule->iSetDatabase(collection->GetDatabase());
             schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
             schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));
             schedule->iSetSchedule(schedules->GetDateTime(wxT("jscsched")));
@@ -157,7 +157,7 @@ pgObject *pgaSchedule::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxStr
 
             if (browser)
             {
-                job->AppendBrowserItem(browser, schedule);
+                collection->AppendBrowserItem(browser, schedule);
 				schedules->MoveNext();
             }
             else

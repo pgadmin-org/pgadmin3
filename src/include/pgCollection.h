@@ -19,6 +19,7 @@
 #include "pgAdmin3.h"
 #include "pgObject.h"
 #include "pgSchema.h"
+#include "pgaJob.h"
 
 class pgServer;
 class pgDatabase;
@@ -30,6 +31,7 @@ public:
     pgCollection(int newType, pgServer *sv);
     pgCollection(int newType, pgDatabase *db);
     pgCollection(int newType, pgSchema *sch);
+	pgCollection(int newType, pgaJob *jb);
     ~pgCollection();
     virtual bool IsCollection() const { return true; }
     virtual bool IsCollectionForType(int objType) { return GetType() == objType-1; }
@@ -37,6 +39,7 @@ public:
     pgServer *GetServer() const { return server; }
     pgDatabase *GetDatabase() const { return database; }
     pgSchema *GetSchema() const { return schema; }
+	pgaJob *GetJob() const { return job; }
 
     int GetIcon();
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
@@ -50,6 +53,7 @@ private:
     pgServer *server;
     pgDatabase *database;
     pgSchema *schema;
+	pgaJob *job;
 };
 
 

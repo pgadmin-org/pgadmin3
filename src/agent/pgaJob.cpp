@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "pgObject.h"
+#include "pgCollection.h"
 #include "pgDatabase.h"
 #include "pgaAgent.h"
 #include "pgaJob.h"
@@ -60,11 +61,18 @@ void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         expandedKids=true;
 
         RemoveDummyChild(browser);
+
         // Log
         wxLogInfo(wxT("Adding child objects to Job."));
+        pgCollection *collection;
 
-        pgaStep::ReadObjects(this, browser);
-        pgaSchedule::ReadObjects(this, browser);
+        // Schedules
+        collection = new pgCollection(PGA_SCHEDULES, this);
+        AppendBrowserItem(browser, collection);
+
+        // Steps
+        collection = new pgCollection(PGA_STEPS, this);
+        AppendBrowserItem(browser, collection);
 
     }
 

@@ -81,8 +81,10 @@ pgTypes typesList[] =
 
     {__("Agent"), PGAICON_AGENT, 0, 0},
     {__("Job"), PGAICON_JOB, __("New Job"), __("Create a new Job") },
-    {__("Step"), PGAICON_STEP, __("New Step"), __("Create new Step") }, 
+	{__("Schedules"), PGAICON_SCHEDULE, 0, 0},
     {__("Schedule"), PGAICON_SCHEDULE, __("New Schedule"), __("Create new Schedule") },
+	{__("Steps"), PGAICON_STEP, 0, 0},
+    {__("Step"), PGAICON_STEP, __("New Step"), __("Create new Step") }, 
     
     {__("Replication"), SLICON_CLUSTER, __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster") },
     {__("Slony-I Cluster"), SLICON_CLUSTER, __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster") },

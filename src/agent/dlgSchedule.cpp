@@ -119,7 +119,7 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgaSchedule::ReadObjects(job, 0, wxT("   AND jscid=") + NumToStr(id) + wxT("\n"));
+    pgObject *obj=pgaSchedule::ReadObjects(collection, 0, wxT("   AND jscid=") + NumToStr(id) + wxT("\n"));
     return obj;
 }
 

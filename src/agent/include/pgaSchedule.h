@@ -17,6 +17,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "pgCollection.h"
 #include "pgConn.h"
 #include "pgObject.h"
 #include "pgaJob.h"
@@ -29,12 +30,12 @@ WX_DECLARE_OBJARRAY(wxTimeSpan, wxArrayTimeSpan);
 class pgaSchedule : public pgaJobObject
 {
 public:
-    pgaSchedule(pgaJob *job, const wxString& newName = wxT(""));
+    pgaSchedule(pgCollection *collection, const wxString& newName = wxT(""));
     ~pgaSchedule();
 
     int GetIcon() { return PGAICON_SCHEDULE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
 
