@@ -63,6 +63,7 @@ protected:
     void AppendQuoted(wxString &sql, const wxString &name);
 
     void OnPageSelect(wxNotebookEvent& event);
+    void OnKeyDown(wxKeyEvent& event);
     void OnOK(wxNotifyEvent &ev);
     void OnHelp(wxCommandEvent& ev);
     void OnCancel(wxNotifyEvent &ev);

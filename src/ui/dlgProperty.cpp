@@ -69,6 +69,9 @@ BEGIN_EVENT_TABLE(dlgProperty, wxDialog)
     EVT_BUTTON (XRCID("btnCancel"),                 dlgProperty::OnCancel)
     EVT_CLOSE(                                      dlgProperty::OnClose)
     EVT_MENU(MNU_HELP,                              dlgProperty::OnHelp)
+#ifdef __wxGTK__
+    EVT_KEYDOWN(                                    dlgProperty::OnKeyDown)
+#endif
 END_EVENT_TABLE();
 
 
@@ -112,6 +115,13 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
     size.SetHeight(20);
     statusBox=new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
     statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+}
+
+
+void dlgProperty::OnKeyDown(wxKeyEvent& event)
+{
+    event.m_metaDown=false;
+    event.Skip();
 }
 
 

@@ -67,7 +67,6 @@ private:
     wxSplitterWindow *horizontal, *vertical;
 
     void OnKeyDown(wxKeyEvent& event);
-
     void OnAbout(wxCommandEvent& event);
     void OnContents(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
@@ -79,29 +78,30 @@ private:
     void OnPassword(wxCommandEvent& event);
     void OnSaveDefinition(wxCommandEvent& event);
     void OnShowSystemObjects(wxCommandEvent& event);
-	void OnSql(wxCommandEvent& event);
-	void OnVacuum(wxCommandEvent& event);
-	void OnStatus(wxCommandEvent& event);
+    void OnSql(wxCommandEvent& event);
+    void OnVacuum(wxCommandEvent& event);
+    void OnStatus(wxCommandEvent& event);
 
     
     void OnPropSelChanged(wxListEvent& event);
     
     void OnTreeSelChanged(wxTreeEvent &event);
+    void OnTreeKeyDown(wxTreeEvent& event);
     void OnConnect(wxCommandEvent &ev);
     void OnSelActivated(wxTreeEvent& event);
-	void OnSelRightClick(wxTreeEvent& event);
+    void OnSelRightClick(wxTreeEvent& event);
     void OnCollapse(wxTreeEvent& event);
     void OnClose(wxCloseEvent& event);
 
-	void OnNew(wxCommandEvent& event);
+    void OnNew(wxCommandEvent& event);
     void OnCreate(wxCommandEvent &ev);
     void OnDrop(wxCommandEvent &ev);
     void OnDelete(wxCommandEvent &ev);
-	void OnProperties(wxCommandEvent &ev);
+    void OnProperties(wxCommandEvent &ev);
     void OnReload(wxCommandEvent &ev);
     void OnRefresh(wxCommandEvent &ev);
-	void OnDisconnect(wxCommandEvent &ev);
-	void OnQueryBuilder(wxCommandEvent &ev);
+    void OnDisconnect(wxCommandEvent &ev);
+    void OnQueryBuilder(wxCommandEvent &ev);
 
     void StoreServers();
     void RetrieveServers();

@@ -102,7 +102,10 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER,    frmMain::OnSelActivated)
     EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  frmMain::OnSelRightClick) 
     EVT_CLOSE(                              frmMain::OnClose)
+#ifdef __WXGTK__
     EVT_KEY_DOWN(                           frmMain::OnKeyDown)
+    EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
+#endif
 END_EVENT_TABLE()
 
 
@@ -112,6 +115,28 @@ void frmMain::OnKeyDown(wxKeyEvent& event)
 {
     event.m_metaDown=false;
     event.Skip();
+}
+
+
+// unfortunately, under GTK we won't get the original wxKeyEvent
+// to reset m_metaDown
+void frmMain::OnTreeKeyDown(wxTreeEvent& event)
+{
+    switch (event.GetKeyCode())
+    {
+	case WXK_F1:
+	    OnHelp(event);
+	    break;
+	case WXK_F5:
+	    OnRefresh(event);
+	    break;
+	case WXK_DELETE:
+	    OnDrop(event);
+	    break;
+	default:
+	    event.Skip();
+	    break;
+    }
 }
 
 
@@ -169,7 +194,7 @@ void frmMain::OnReload(wxCommandEvent& WXUNUSED(event))
     if (func)
     {
         StartMsg(wxT("Reloading library ") + func->GetBin());
-        bool rc=func->ReloadLibrary();
+        func->ReloadLibrary();
         EndMsg();
     }
 }

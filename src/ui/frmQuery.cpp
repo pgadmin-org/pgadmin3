@@ -17,6 +17,7 @@
 #include "pgAdmin3.h"
 #include "frmMain.h"
 #include "frmQuery.h"
+#include "frmSqlHelp.h"
 
 // Icons
 #include "images/sql.xpm"
@@ -27,7 +28,7 @@
 #include "images/clip_copy.xpm"
 #include "images/clip_paste.xpm"
 #include "images/edit_clear.xpm"
-#include "images/edit_find.xpm"
+//#include "images/edit_find.xpm"
 #include "images/edit_undo.xpm"
 #include "images/edit_redo.xpm"
 #include "images/query_execute.xpm"
@@ -61,7 +62,10 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
     EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
     EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
+    EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
+#ifdef __wxGTK__
     EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
+#endif
     EVT_STC_MODIFIED(CTL_SQLQUERY,    frmQuery::OnChange)
 END_EVENT_TABLE()
 
@@ -107,7 +111,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     updateRecentFiles();
 
-    wxAcceleratorEntry entries[6];
+    wxAcceleratorEntry entries[7];
 
     entries[0].Set(wxACCEL_ALT,                 (int)'E',      MNU_EXECUTE);
     entries[1].Set(wxACCEL_ALT,                 (int)'X',      MNU_EXPLAIN);
@@ -115,8 +119,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     entries[3].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
     entries[4].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
     entries[5].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
+    entries[6].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 
-    wxAcceleratorTable accel(6, entries);
+    wxAcceleratorTable accel(7, entries);
     SetAcceleratorTable(accel);
 
     queryMenu->Enable(MNU_CANCEL, false);
@@ -258,16 +263,149 @@ void frmQuery::OnKeyDown(wxKeyEvent& event)
 }
 
 
+void frmQuery::Go()
+{
+    Show(TRUE);
+    sqlQuery->SetFocus();
+}
+
+
 void frmQuery::OnExit(wxCommandEvent& event)
 {
     Close();
 }
 
 
-void frmQuery::Go()
+typedef struct __sqltokenhelp
 {
-    Show(TRUE);
-    sqlQuery->SetFocus();
+    wxChar *token;
+    wxChar *page;
+    int type;
+} SqlTokenHelp;
+
+
+SqlTokenHelp sqlTokenHelp[] =
+{
+    { wxT("ABORT"), 0, 0},
+    { wxT("ALTER"), 0, 2},
+    { wxT("ANALYZE"), 0, 0},
+    { wxT("BEGIN"), 0, 0},
+    { wxT("CHECKPOINT"), 0, 0},
+    { wxT("CLOSE"), 0, 0},
+    { wxT("CLUSTER"), 0, 0},
+    { wxT("COMMENT"), 0, 0},
+    { wxT("COMMIT"), 0, 0},
+    { wxT("COPY"), 0, 0},
+    { wxT("CREATE"), 0, 1},
+    { wxT("DEALLOCATE"), 0, 0},
+    { wxT("DECLARE"), 0, 0},
+    { wxT("DELETE"), 0, 0},
+    { wxT("DROP"), 0, 1},
+    { wxT("END"), 0, 0},
+    { wxT("EXECUTE"), 0, 0},
+    { wxT("EXPLAIN"), 0, 0},
+    { wxT("FETCH"), 0, 0},
+    { wxT("GRANT"), 0, 0},
+    { wxT("INSERT"), 0, 0},
+    { wxT("LISTEN"), 0, 0},
+    { wxT("LOAD"), 0, 0},
+    { wxT("LOCK"), 0, 0},
+    { wxT("MOVE"), 0, 0},
+    { wxT("NOTIFY"), 0, 0},
+    { wxT("END"), 0, 0},
+    { wxT("PREPARE"), 0, 0},
+    { wxT("REINDEX"), 0, 0},
+    { wxT("RESET"), 0, 0},
+    { wxT("REVOKE"), 0, 0},
+    { wxT("ROLLBACK"), 0, 0},
+    { wxT("SELECT"), 0, 0},
+    { wxT("SET"), 0, 0},
+    { wxT("SHOW"), 0, 0},
+    { wxT("START"), wxT("sql-start-transaction"), 0},
+    { wxT("TRUNCATE"), 0, 0},
+    { wxT("UNLISTEN"), 0, 0},
+    { wxT("UPDATE"), 0, 0},
+    { wxT("VACUUM"), 0, 0},
+    { wxT("AGGREGATE"), 0, 11},
+    { wxT("CAST"), 0, 11},
+    { wxT("CONSTRAINT"), 0, 11},
+    { wxT("CONVERSION"), 0, 11},
+    { wxT("DATABASE"), 0, 12},
+    { wxT("DOMAIN"), 0, 11},
+    { wxT("FUNCTION"), 0, 11},
+    { wxT("GROUP"), 0, 12},
+    { wxT("INDEX"), 0, 11},
+    { wxT("LANGUAGE"), 0, 11},
+    { wxT("OPERATOR"), 0, 11},
+    { wxT("RULE"), 0, 11},
+    { wxT("SCHEMA"), 0, 11},
+    { wxT("SEQUENCE"), 0, 11},
+    { wxT("TABLE"), 0, 12},
+    { wxT("TRIGGER"), 0, 12},
+    { wxT("TYPE"), 0, 11},
+    { wxT("USER"), 0, 12},
+    { wxT("VIEW"), 0, 11},
+    { 0, 0 }
+};
+
+
+
+void frmQuery::OnHelp(wxCommandEvent& event)
+{
+    wxString helpSite=settings->GetHelpSite();
+    wxString page;
+    wxString query=sqlQuery->GetSelectedText();
+    if (query.IsNull())
+        query = sqlQuery->GetText();
+    if (!query.IsEmpty())
+    {
+	wxStringTokenizer tokens(query);
+	query=tokens.GetNextToken();
+
+	SqlTokenHelp *sth=sqlTokenHelp;
+	while (sth->token)
+	{
+	    if (sth->type < 10 && query.IsSameAs(sth->token, false))
+	    {
+		if (sth->page)
+		    page = sth->page;
+		else
+		    page = wxT("sql-") + query.Lower();
+		if (sth->type)
+		{
+		    int type=sth->type+10;
+
+		    query=tokens.GetNextToken();
+		    sth=sqlTokenHelp;
+		    while (sth->token)
+		    {
+			if (sth->type >= type && query.IsSameAs(sth->token, false))
+			{
+			    if (sth->page)
+				page += sth->page;
+			    else
+				page += query.Lower();
+			    break;
+			}
+			sth++;
+		    }
+		    if (!sth->token)
+			page=wxT("sql-commands");
+		}
+		page += wxT(".html");
+		break;
+	    }
+	    sth++;
+	}
+    }
+
+    if (page.IsEmpty())
+	page=wxT("sql-commands.html");
+
+    frmSqlHelp *h=new frmSqlHelp(mainForm);
+    h->Show(true);
+    if (!h->Load(helpSite + page))
+        h->Destroy();
 }
 
 void frmQuery::OnCut(wxCommandEvent& ev)
@@ -683,5 +821,3 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
 
     setTools(false);
 }
-
-
