@@ -209,7 +209,7 @@ then
     then
         case "${WX_NEW_LDFLAGS}" in
             *libwx_mswud-*)
-                LIBS="$LIBS $(WX_HOME)/lib/libwx_mswud_stc-$(WX+VERSION).a $(WX_HOME)/lib/libwx_mswud_xrc-$(WX_VERSION).a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mswud_xrc-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
