@@ -25,10 +25,11 @@ schema/pgType.cpp schema/pgUser.cpp schema/pgView.cpp \
 schema/pgDatatype.cpp \
 agent/pgaAgent.cpp agent/pgaJob.cpp \
 agent/pgaStep.cpp agent/pgaSchedule.cpp \
+agent/dlgJob.cpp agent/dlgSchedule.cpp agent/dlgStep.cpp \
 ui/xh_sqlbox.cpp ui/xh_calb.cpp ui/calbox.cpp \
 ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
 ui/dlgAddTableView.cpp ui/dlgEditGridOptions.cpp \
-ui/events.cpp ui/frmAbout.cpp ui/frmIndexCheck.cpp \
+ui/events.cpp ui/frmAbout.cpp ui/frmIndexcheck.cpp \
 ui/frmChildTableViewFrame.cpp ui/frmConnect.cpp \
 ui/frmMain.cpp ui/frmOptions.cpp ui/frmPassword.cpp \
 ui/frmQuery.cpp ui/frmQueryBuilder.cpp ui/frmHelp.cpp \
@@ -60,9 +61,9 @@ include/dlgAggregate.h include/dlgCast.h include/dlgConversion.h \
 include/dlgSequence.h include/dlgSchema.h include/dlgTable.h \
 include/dlgOperator.h include/dlgView.h include/dlgRule.h \
 include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
-include/frmChildTableViewFrame.h include/frmConnect.h \ 
+include/frmChildTableViewFrame.h include/frmConnect.h \
 include/frmEditGrid.h include/dlgEditGridOptions.h include/frmMain.h \
-include/frmOptions.h include/frmPassword.h include/fromIndexCheck.h \
+include/frmOptions.h include/frmPassword.h include/frmIndexcheck.h \
 include/frmQBJoin.h include/frmQueryBuilder.h include/frmHelp.h \
 include/frmQuery.h include/frmSplash.h \
 include/frmStatus.h include/frmMaintenance.h \
@@ -79,10 +80,11 @@ include/pgRule.h include/pgSchema.h include/pgSequence.h \
 include/pgServer.h include/pgSet.h include/pgTable.h \
 include/pgTrigger.h include/pgType.h include/pgUser.h \
 include/pgView.h include/sysLogger.h include/utffile.h \
-include/calbox.h include/xh_calb.h include/xh_sqlbox.cpp \
+include/calbox.h include/xh_calb.h include/xh_sqlbox.h \
 include/sysSettings.h include/wxgridsel.h include/menu.h\
 agent/include/pgaAgent.h agent/include/pgaJob.h \
-agent/include/pgaStep.h agent/include/pgaSchedule.h
+agent/include/pgaStep.h agent/include/pgaSchedule.h\
+agent/include/dlgJob.h agent/include/dlgStep.h agent/include/dlgSchedule.h
   
 EXTRA_DIST = pgAdmin3.dsp pgAdmin3.dsw \
 include/images/*.xpm \

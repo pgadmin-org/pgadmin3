@@ -86,15 +86,15 @@ bool wxCalendarBox::Create(wxWindow *parent,
     m_btn = new wxBitmapButton(this, CTRLID_BTN, bmp, wxPoint(cs.x - bs.x, 0), wxSize(bs.x, cs.y));
 
     m_dlg = new wxDialog(this, CTRLID_CAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    m_dlg->Connect(wxID_ANY, wxID_ANY, wxEVT_ACTIVATE, (wxObjectEventFunction)wxCalendarBox::OnActivate, 0, this);
+    m_dlg->Connect(wxID_ANY, wxID_ANY, wxEVT_ACTIVATE, (wxObjectEventFunction)(wxCalendarEventFunction)&wxCalendarBox::OnActivate, 0, this);
 
-    m_cal = new wxCalendarCtrl(m_dlg, CTRLID_CAL, wxDefaultDateTime, wxPoint(0,0), wxDefaultSize);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, (wxObjectEventFunction)wxCalendarBox::OnSelChange, 0, this);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DOUBLECLICKED, (wxObjectEventFunction)wxCalendarBox::OnSelChange, 0, this);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DAY_CHANGED, (wxObjectEventFunction)wxCalendarBox::OnSelChange, 0, this);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_MONTH_CHANGED, (wxObjectEventFunction)wxCalendarBox::OnSelChange, 0, this);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_YEAR_CHANGED, (wxObjectEventFunction)wxCalendarBox::OnSelChange, 0, this);
+    m_cal = new wxCalendarCtrl(m_dlg, CTRLID_CAL, wxDefaultDateTime, wxPoint(0,0), wxDefaultSize, wxSUNKEN_BORDER);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
 
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DOUBLECLICKED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DAY_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_MONTH_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_YEAR_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     //Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)wxCalendarBox::OnSetFocus);
 
 #if 1

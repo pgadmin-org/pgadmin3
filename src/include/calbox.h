@@ -39,13 +39,13 @@ public:
     bool SetDate(const wxDateTime& date);
     wxDateTime GetDate();
 
-    bool SetLowerDateLimit(const wxDateTime& date = wxDefaultDateTime) { m_cal->SetLowerDateLimit(date); }
+    bool SetLowerDateLimit(const wxDateTime& date = wxDefaultDateTime) { return m_cal->SetLowerDateLimit(date); }
     const wxDateTime& GetLowerDateLimit() const { return m_cal->GetLowerDateLimit(); }
-    bool SetUpperDateLimit(const wxDateTime& date = wxDefaultDateTime) { m_cal->SetUpperDateLimit(date); }
+    bool SetUpperDateLimit(const wxDateTime& date = wxDefaultDateTime) { return m_cal->SetUpperDateLimit(date); }
     const wxDateTime& GetUpperDateLimit() const { return m_cal->GetUpperDateLimit(); }
 
     bool SetDateRange(const wxDateTime& lowerdate = wxDefaultDateTime, const wxDateTime& upperdate = wxDefaultDateTime)
-    { m_cal->SetDateRange(lowerdate, upperdate); }
+    { return m_cal->SetDateRange(lowerdate, upperdate); }
 
     wxCalendarDateAttr *GetAttr(size_t day) const { return m_cal->GetAttr(day); }
     void SetAttr(size_t day, wxCalendarDateAttr *attr) { m_cal->SetAttr(day, attr); }
