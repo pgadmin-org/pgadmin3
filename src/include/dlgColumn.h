@@ -37,8 +37,9 @@ private:
     pgColumn *column;
     pgTable *table;
     void OnChange(wxNotifyEvent &ev);
+    void OnSelChangeTyp(wxNotifyEvent &ev);
+ 
     wxArrayString typmods;
-
     wxString previousDefinition;
 
     DECLARE_EVENT_TABLE();

@@ -33,7 +33,7 @@
 
 BEGIN_EVENT_TABLE(dlgColumn, dlgProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgColumn::OnChange)
-    EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnChange)
+    EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
 END_EVENT_TABLE();
 
 
@@ -63,6 +63,7 @@ int dlgColumn::Go(bool modal)
     {
         // edit mode
         txtName->SetValue(column->GetName());
+        cbDatatype->Append(column->GetFullType());
         cbDatatype->SetValue(column->GetFullType());
         if (column->GetLength() >= 0)
             txtLength->SetValue(NumToStr(column->GetLength()));
@@ -185,38 +186,42 @@ pgObject *dlgColumn::CreateObject(pgCollection *collection)
 }
 
 
+void dlgColumn::OnSelChangeTyp(wxNotifyEvent &ev)
+{
+    if (!column)
+    {
+        int sel=cbDatatype->GetSelection();
+        if (sel >= 0)
+        {
+            wxString typmod=typmods.Item(sel);
+            isVarLen = (StrToLong(typmod.BeforeFirst(':')) == -1);
+            if (isVarLen)
+            {
+                Oid oid=StrToLong(typmod.Mid(typmod.Find(':')+1));
+                switch (oid)
+                {
+                    case 1231:
+                    case 1700:
+                        isVarPrec=true;
+                        break;
+                    default:
+                        isVarPrec=false;
+                        break;
+                }
+            }
+            else
+                isVarPrec=false;
+        }
+        txtLength->Enable(isVarLen);
+        txtPrecision->Enable(isVarPrec);
+        OnChange(ev);
+    }
+}
 
 void dlgColumn::OnChange(wxNotifyEvent &ev)
 {
     if (!column)
     {
-        if (ev.GetId() == XRCID("cbDatatype"))
-        {
-            int sel=cbDatatype->GetSelection();
-            if (sel >= 0)
-            {
-                wxString typmod=typmods.Item(sel);
-                isVarLen = (StrToLong(typmod.BeforeFirst(':')) == -1);
-                if (isVarLen)
-                {
-                    Oid oid=StrToLong(typmod.Mid(typmod.Find(':')+1));
-                    switch (oid)
-                    {
-                        case 1231:
-                        case 1700:
-                            isVarPrec=true;
-                            break;
-                        default:
-                            isVarPrec=false;
-                            break;
-                    }
-                }
-                else
-                    isVarPrec=false;
-            }
-            txtLength->Enable(isVarLen);
-            txtPrecision->Enable(isVarPrec);
-        }
 
         wxString name=txtName->GetValue();
         bool enable=true;
