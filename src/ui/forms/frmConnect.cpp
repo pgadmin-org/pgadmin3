@@ -67,6 +67,7 @@ void frmConnect::Init()
 
 void frmConnect::OnOK()
 {
+
     // Store the connection settings
     extern sysSettings *objSettings;
     objSettings->SetLastServer(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());

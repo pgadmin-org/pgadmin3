@@ -131,11 +131,12 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     SetMenuBar(mnuBar);
 
     // Status bar
-    CreateStatusBar(2);
-    static const int iWidths[6] = {-1, 100};
-    SetStatusWidths(2, iWidths);
-    SetStatusText(wxT("Ready."), 0);
-    SetStatusText(wxT("0 Secs"), 1);
+    CreateStatusBar(3);
+    static const int iWidths[3] = {0, -1, 100};
+    SetStatusWidths(3, iWidths);
+    SetStatusText(wxT(""), 0);
+    SetStatusText(wxT("Ready."), 1);
+    SetStatusText(wxT("0 Secs"), 2);
 
     // Toolbar bar
 
@@ -403,6 +404,7 @@ void frmMain::tvServer(pgServer *objServer)
 
     // Display the Server properties
     // This is the bit that puts it all on one line over 2 colums
+    StartMsg(wxT("Retrieving server properties"));
     lvProperties->InsertItem(0, wxT("Hostname"), 0);
     lvProperties->SetItem(0, 1, objServer->GetServer());
     lvProperties->InsertItem(0, wxT("Port"), 0);
@@ -415,4 +417,5 @@ void frmMain::tvServer(pgServer *objServer)
     lvProperties->SetItem(0, 1, objServer->GetUsername());
     lvProperties->InsertItem(0, wxT("Server Version"), 0);
     lvProperties->SetItem(0, 1, objServer->GetServerVersion());
+    EndMsg();
 }

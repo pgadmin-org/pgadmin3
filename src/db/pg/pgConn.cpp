@@ -63,7 +63,7 @@ pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxStr
     }
 
     bResolvedIP = TRUE;
-    szMsg.Printf(wxT("Server name: %s resolved to: %s"), szServer.c_str(), szHost.c_str());
+    szMsg.Printf(wxT("Server name: %s (resolved to: %s)"), szServer.c_str(), szHost.c_str());
     wxLogInfo(szMsg);
 
     // Create the connection string
@@ -96,6 +96,7 @@ pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxStr
     wxLogInfo(szMsg);
 
     objConn = PQconnectdb(szConn.c_str());
+    szDBHost = szServer;
 }
 
 pgConn::~pgConn()
@@ -113,8 +114,8 @@ int pgConn::ExecuteVoid(const wxString& szSQL)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxString szMsg;
-    szMsg.Printf(wxT("Executing void query: %s"), szSQL.c_str());
-    wxLogInfo(szMsg);
+    szMsg.Printf(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), szSQL.c_str());
+    wxLogStatus(szMsg);
     qryRes = PQexec(objConn, szSQL.c_str());
     int iRes = PQresultStatus(qryRes);
 
@@ -128,7 +129,8 @@ wxString pgConn::ExecuteScalar(const wxString& szSQL) const
     // Execute the query and get the status.
     PGresult *qryRes;
     wxString szMsg;
-    szMsg.Printf(wxT("Executing scalar query: %s"), szSQL.c_str());
+    int iPort = this->GetPort();
+    szMsg.Printf(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), iPort, szSQL.c_str());
     wxLogInfo(szMsg);
     qryRes = PQexec(objConn, szSQL.c_str());
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
@@ -151,7 +153,7 @@ pgSet *pgConn::ExecuteSet(const wxString& szSQL)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxString szMsg;
-    szMsg.Printf(wxT("Executing set query: %s"), szSQL.c_str());
+    szMsg.Printf(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), szSQL.c_str());
     wxLogInfo(szMsg);
     qryRes = PQexec(objConn, szSQL.c_str());
     pgSet *objSet = new pgSet(qryRes, objConn);
@@ -176,10 +178,10 @@ wxString pgConn::GetPassword() const
 
 wxString pgConn::GetHost() const
 {
-  return wxString(PQhost(objConn));
+  return szDBHost;
 }
 
-int pgConn::GetPort()
+int pgConn::GetPort() const
 {
   return atoi(PQport(objConn));
 }

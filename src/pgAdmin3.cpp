@@ -13,6 +13,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/app.h>
+#include <wx/timer.h>
 #include <wx/xrc/xmlres.h>
 
 #ifdef __WXMSW__
@@ -31,6 +32,8 @@
 frmMain *winMain;
 wxLog *objLogger;
 sysSettings *objSettings;
+wxStopWatch swTimer;
+wxString szTimer;
 
 IMPLEMENT_APP(pgAdmin3)
 
@@ -114,3 +117,31 @@ int pgAdmin3::OnExit()
     return 1;
 }
 
+// Global Stuff
+
+void StartMsg(const wxString& szNewMsg)
+{
+    szTimer.Printf("%s...", szNewMsg);
+    swTimer.Start(0);
+    wxLogStatus(szTimer);
+    winMain->stBar->SetStatusText(szTimer, 1);
+}
+
+void EndMsg()
+{
+
+    // Get the execution time & display it
+    float fTime = swTimer.Time();
+    wxString szTime, szMsg;
+    szTime.Printf("%.2f Secs", (fTime/1000));
+    winMain->stBar->SetStatusText(szTime, 2);
+
+    // Display the 'Done' message
+    szTimer.Append(" Done.");
+    szMsg.Printf("%s (%s)", szTimer, szTime);
+    wxLogStatus(szMsg);
+    winMain->stBar->SetStatusText(szTimer, 1);
+
+    szTimer.Empty();
+    
+}

@@ -29,6 +29,7 @@ public:
     frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
     ~frmMain();
     void OnTipOfTheDay();
+    wxStatusBar *stBar;
     
 private:
     wxTreeCtrl* tvBrowser;
@@ -37,7 +38,6 @@ private:
     wxNotebook* nbListViews;
     ctlSQLBox* txtSQLPane;
     wxMenuBar *mnuBar;
-    wxStatusBar *stBar;
     wxToolBar *tlBar;
     wxTreeItemId itmServers;
     void OnAbout(wxCommandEvent& event);

@@ -41,7 +41,7 @@ sysSettings::sysSettings() : sysConfig(APPNAME_S)
 
     // Log
     sysConfig.Read(wxT("LogFile"), &szLogFile, wxT("pgadmin.log")); 
-    sysConfig.Read(wxT("LogLevel"), &iLogLevel, LOG_INFO);
+    sysConfig.Read(wxT("LogLevel"), &iLogLevel, LOG_ERRORS);
 
     // Last Connection
     sysConfig.Read(wxT("Last Server"), &szLastServer, wxT("localhost")); 

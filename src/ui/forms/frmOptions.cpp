@@ -71,7 +71,7 @@ void frmOptions::OnOK()
           objSettings->SetLogLevel(LOG_ERRORS);
           break;
         case(2):
-          objSettings->SetLogLevel(LOG_INFO);
+          objSettings->SetLogLevel(LOG_SQL);
           break;
         case(3):
           objSettings->SetLogLevel(LOG_DEBUG);

@@ -54,7 +54,7 @@ public:
     wxString GetUser() const;
     wxString GetPassword() const;
     wxString GetHost() const;
-    int GetPort();
+    int GetPort() const;
     wxString GetTTY() const;
     wxString GetOptions() const;
     int GetBackendPID();
@@ -65,6 +65,7 @@ public:
 private:
     PGconn *objConn;
     bool bResolvedIP;
+    wxString szDBHost;
 };
 
 #endif

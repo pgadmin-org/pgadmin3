@@ -54,9 +54,11 @@ int pgServer::Connect() {
     }
 
     wxLogInfo(wxT("Attempting to create a connection object..."));
+    StartMsg(wxT("Connecting to database"));
     cnMaster = new pgConn(szServer, szDatabase, szUsername, szPassword, iPort);
 
     delete winConnect;
+    EndMsg();
     return cnMaster->GetStatus();
 }
 

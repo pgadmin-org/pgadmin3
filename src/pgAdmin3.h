@@ -37,4 +37,8 @@ public:
     virtual int OnExit();
 };
 
+// Global Stuff
+void StartMsg(const wxString& szMsg);
+void EndMsg();
+
 #endif
