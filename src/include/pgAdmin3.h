@@ -36,7 +36,7 @@
 #endif
 
 // Application Versions & Name
-#define VERSION wxT("0.8.0 Devel")
+#define VERSION wxT("0.9.0 BETA 1")
 #define APPNAME_L wxT("pgAdmin III")
 #define APPNAME_S wxT("pgadmin3")
 const float SERVER_MIN_VERSION = 7.3f;
