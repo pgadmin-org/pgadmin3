@@ -52,9 +52,8 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
             }
             sql += wxT("]");
         }
-        if (!GetDefault().IsNull())
-            sql += wxT(" DEFAULT ") + qtString(GetDefault());
-        // CONSTRAINT ....
+        AppendIfFilled(sql, wxT(" DEFAULT "), qtString(GetDefault()));
+        // CONSTRAINT Name Dont know where it's stored, may be omitted anyway
         if (notNull)
             sql += wxT(" NOT NULL");
 
@@ -83,7 +82,7 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
     int pos=0;
 
     InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+    InsertListItem(properties, pos++, wxT("OID"), GetOid());
     InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
     InsertListItem(properties, pos++, wxT("Base Type"), GetBasetype());
     if (GetLength() == -2)
@@ -93,16 +92,16 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         if (GetDimensions() || GetLength() < 0)
             InsertListItem(properties, pos++, wxT("Length"), wxT("variable"));
         else
-            InsertListItem(properties, pos++, wxT("Length"), NumToStr(GetLength()));
+            InsertListItem(properties, pos++, wxT("Length"), GetLength());
     }
     if (GetPrecision() >= 0)
-        InsertListItem(properties, pos++, wxT("Precision"), NumToStr(GetPrecision()));
+        InsertListItem(properties, pos++, wxT("Precision"), GetPrecision());
     // dimensions, delimiter missing
     if (GetDimensions())
-        InsertListItem(properties, pos++, wxT("Dimensions"), NumToStr(GetDimensions()));
+        InsertListItem(properties, pos++, wxT("Dimensions"), GetDimensions());
     InsertListItem(properties, pos++, wxT("Default"), GetDefault());
-    InsertListItem(properties, pos++, wxT("Not Null?"), BoolToYesNo(GetNotNull()));
-    InsertListItem(properties, pos++, wxT("System Domain?"), BoolToYesNo(GetSystemObject()));
+    InsertListItem(properties, pos++, wxT("Not Null?"), GetNotNull());
+    InsertListItem(properties, pos++, wxT("System Domain?"), GetSystemObject());
     InsertListItem(properties, pos++, wxT("Comment"), GetComment());
 }
 
@@ -118,10 +117,6 @@ void pgDomain::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
         // Log
         msg.Printf(wxT("Adding Domains to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
         wxLogInfo(msg);
-
-        // Add Domain node
-//        pgObject *addDomainObj = new pgObject(PG_ADD_DOMAIN, wxString("Add Domain"));
-//        browser->AppendItem(collection->GetId(), wxT("Add Domain..."), 4, -1, addDomainObj);
 
         // Get the Domains
         pgSet *domains= collection->GetDatabase()->ExecuteSet(wxT(
@@ -139,13 +134,13 @@ void pgDomain::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
             {
                 domain = new pgDomain(collection->GetSchema(), domains->GetVal(wxT("domname")));
 
-                domain->iSetOid(StrToDouble(domains->GetVal(wxT("oid"))));
+                domain->iSetOid(domains->GetOid(wxT("oid")));
                 domain->iSetOwner(domains->GetVal(wxT("domainowner")));
                 domain->iSetBasetype(domains->GetVal(wxT("basetype")));
-                domain->iSetBasetypeOid(StrToDouble(domains->GetVal(wxT("typbasetype"))));
-                long typlen=StrToLong(domains->GetVal(wxT("typlen")));
-                long typmod=StrToLong(domains->GetVal(wxT("typtypmod")));
-                bool isnum=StrToBool(domains->GetVal(wxT("isnumeric")));
+                domain->iSetBasetypeOid(domains->GetBool(wxT("typbasetype")));
+                long typlen=domains->GetLong(wxT("typlen"));
+                long typmod=domains->GetLong(wxT("typtypmod"));
+                bool isnum=domains->GetBool(wxT("isnumeric"));
                 long length=typlen, precision=-1;
                 if (typlen == -1 && typmod > 0)
                 {
@@ -162,8 +157,8 @@ void pgDomain::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
                 domain->iSetLength(length);
                 domain->iSetPrecision(precision);
                 domain->iSetDefault(domains->GetVal(wxT("typdefault")));
-                domain->iSetNotNull(StrToBool(domains->GetVal(wxT("typnotnull"))));
-                domain->iSetDimensions(StrToLong(domains->GetVal(wxT("typndims"))));
+                domain->iSetNotNull(domains->GetBool(wxT("typnotnull")));
+                domain->iSetDimensions(domains->GetLong(wxT("typndims")));
                 domain->iSetDelimiter(domains->GetVal(wxT("typdelim")));
 
                 browser->AppendItem(collection->GetId(), domain->GetIdentifier(), PGICON_DOMAIN, -1, domain);

@@ -60,12 +60,12 @@ void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     int pos=0;
 
     InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+    InsertListItem(properties, pos++, wxT("OID"), GetOid());
     InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
-    InsertListItem(properties, pos++, wxT("Trusted?"), BoolToYesNo(GetTrusted()));
+    InsertListItem(properties, pos++, wxT("Trusted?"), GetTrusted());
     InsertListItem(properties, pos++, wxT("Handler"), GetHandlerProc());
     InsertListItem(properties, pos++, wxT("Validator"), GetValidatorProc());
-    InsertListItem(properties, pos++, wxT("System Object?"), BoolToYesNo(GetSystemObject()));
+    InsertListItem(properties, pos++, wxT("System Object?"), GetSystemObject());
 }
 
 
@@ -98,11 +98,11 @@ void pgLanguage::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
 
                 language = new pgLanguage(languages->GetVal(wxT("lanname")));
                 language->SetDatabase(collection->GetDatabase());
-                language->iSetOid(StrToDouble(languages->GetVal(wxT("oid"))));
+                language->iSetOid(languages->GetOid(wxT("oid")));
                 language->iSetAcl(languages->GetVal(wxT("lanacl")));
                 language->iSetHandlerProc(languages->GetVal(wxT("lanproc")));
                 language->iSetValidatorProc(languages->GetVal(wxT("lanval")));
-                language->iSetTrusted(StrToBool(languages->GetVal(wxT("lanpltrusted"))));
+                language->iSetTrusted(languages->GetBool(wxT("lanpltrusted")));
 
                 browser->AppendItem(collection->GetId(), language->GetIdentifier(), PGICON_LANGUAGE, -1, language);
 	    

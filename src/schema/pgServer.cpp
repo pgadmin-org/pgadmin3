@@ -213,17 +213,17 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
             wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
     
             // Databases
-            pgCollection *collection = new pgCollection(PG_DATABASES, wxString("Databases"));
+            pgCollection *collection = new pgCollection(PG_DATABASES);
             collection->SetServer(this);
             browser->AppendItem(GetId(), collection->GetTypeName(), 2, -1, collection);
       
             // Groups
-            collection = new pgCollection(PG_GROUPS, wxString("Groups"));
+            collection = new pgCollection(PG_GROUPS);
             collection->SetServer(this);
             browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_GROUP, -1, collection);
     
             // Users
-            collection = new pgCollection(PG_USERS, wxString("Users"));
+            collection = new pgCollection(PG_USERS);
             collection->SetServer(this);
             browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_USER, -1, collection);
         }
@@ -244,14 +244,14 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         int pos=0;
         InsertListItem(properties, pos++, wxT("Hostname"), GetName());
         InsertListItem(properties, pos++, wxT("Description"), GetDescription());
-        InsertListItem(properties, pos++, wxT("Port"), NumToStr((long)GetPort()));
+        InsertListItem(properties, pos++, wxT("Port"), (long)GetPort());
         InsertListItem(properties, pos++, wxT("Initial Database"), GetDatabase());
         InsertListItem(properties, pos++, wxT("Username"), GetUsername());
         if (GetConnected())
         {
             InsertListItem(properties, pos++, wxT("Version String"), GetVersionString());
-            InsertListItem(properties, pos++, wxT("Version Number"), NumToStr(GetVersionNumber()));
-            InsertListItem(properties, pos++, wxT("Last System OID"), NumToStr(GetLastSystemOID()));
+            InsertListItem(properties, pos++, wxT("Version Number"), GetVersionNumber());
+            InsertListItem(properties, pos++, wxT("Last System OID"), GetLastSystemOID());
         }
         InsertListItem(properties, pos++, wxT("Connected?"), BoolToYesNo(GetConnected()));
     }

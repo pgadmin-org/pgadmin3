@@ -17,6 +17,7 @@
 #include "pgObject.h"
 #include "pgTrigger.h"
 #include "pgCollection.h"
+#include "pgFunction.h"
 
 
 
@@ -40,8 +41,17 @@ pgTrigger::~pgTrigger()
 
 wxString pgTrigger::GetSql(wxTreeCtrl *browser)
 {
-    if (sql.IsNull())
+    if (sql.IsNull() && this->triggerFunction)
     {
+        sql = wxT("CREATE TRIGGER ") + GetName()
+            + wxT(" ") + GetFireWhen() 
+            + wxT(" ") + GetEvent()
+            + wxT("\n    ON ") + GetQuotedFullTable()
+            + wxT(" FOR EACH ") + GetForEach()
+            + wxT("\n    EXECUTE PROCEDURE ") + triggerFunction->GetFullName()
+            + wxT(";\n");
+
+
     }
 
     return sql;
@@ -100,13 +110,13 @@ void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *p
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
         InsertListItem(properties, pos++, wxT("Fires"), GetFireWhen());
         InsertListItem(properties, pos++, wxT("Event"), GetEvent());
         InsertListItem(properties, pos++, wxT("For Each"), GetForEach());
         InsertListItem(properties, pos++, wxT("Function"), GetFunction());
-        InsertListItem(properties, pos++, wxT("Enabled?"), BoolToYesNo(GetEnabled()));
-        InsertListItem(properties, pos++, wxT("System Trigger?"), BoolToYesNo(GetSystemObject()));
+        InsertListItem(properties, pos++, wxT("Enabled?"), GetEnabled());
+        InsertListItem(properties, pos++, wxT("System Trigger?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 }
@@ -125,9 +135,11 @@ void pgTrigger::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTr
 
         // Get the Triggers
         pgSet *triggers= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT t.oid, tgname, proname, tgtype, tgenabled\n"
-            "  FROM pg_trigger t, pg_proc p\n"
-            " WHERE t.tgfoid = p.oid AND tgisconstraint = FALSE AND tgrelid = ") + collection->GetOidStr() + wxT("\n"
+            "SELECT t.oid, t.*, relname, nspname\n"
+            "  FROM pg_trigger t\n"
+            "  JOIN pg_class cl ON cl.oid=tgrelid\n"
+            "  JOIN pg_namespace na ON na.oid=relnamespace\n"
+            " WHERE NOT tgisconstraint AND tgrelid = ") + collection->GetOidStr() + wxT("\n"
             " ORDER BY tgname"));
 
         if (triggers)
@@ -136,14 +148,22 @@ void pgTrigger::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTr
             {
                 trigger = new pgTrigger(collection->GetSchema(), triggers->GetVal(wxT("tgname")));
 
-                trigger->iSetOid(StrToDouble(triggers->GetVal(wxT("oid"))));
+                trigger->iSetOid(triggers->GetOid(wxT("oid")));
                 trigger->iSetTableOid(collection->GetOid());
-                trigger->iSetFunction(triggers->GetVal(wxT("proname")));
-                trigger->iSetEnabled(StrToBool(triggers->GetVal(wxT("tgenabled"))));
-                trigger->iSetTriggerType(StrToLong(triggers->GetVal(wxT("tgtype"))));
+                trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
+                trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
+                trigger->iSetQuotedFullTable(qtIdent(triggers->GetVal(wxT("nspname")))+wxT(".")+qtIdent(triggers->GetVal(wxT("nspname"))));
 
-                browser->AppendItem(collection->GetId(), trigger->GetIdentifier(), PGICON_TRIGGER, -1, trigger);
-	    
+                wxTreeItemId item=browser->AppendItem(collection->GetId(), trigger->GetIdentifier(), PGICON_TRIGGER, -1, trigger);
+
+                pgFunction *fkt=pgFunction::AppendFunctions(trigger, collection->GetSchema(), browser, wxT(
+                    "WHERE pr.oid=") + triggers->GetVal(wxT("tgfoid")) + wxT("\n"));
+                if (fkt)
+                {
+                    trigger->iSetTriggerFunction(fkt);
+                    trigger->iSetFunction(fkt->GetName());
+                }
+
 			    triggers->MoveNext();
             }
 

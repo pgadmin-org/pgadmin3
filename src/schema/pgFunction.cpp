@@ -45,7 +45,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("CREATE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(")+GetArgTypes()
-            + wxT(") RETURNS ") + GetReturnType() 
+            + wxT(")\n    RETURNS ") + GetReturnType() 
             + wxT(" AS  '\n")
             + GetSource()
             + wxT("\n'  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
@@ -75,99 +75,110 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     int pos=0;
 
     InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+    InsertListItem(properties, pos++, wxT("OID"), GetOid());
     InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-    InsertListItem(properties, pos++, wxT("Argument Count"), NumToStr(GetArgCount()));
+    InsertListItem(properties, pos++, wxT("Argument Count"), GetArgCount());
     InsertListItem(properties, pos++, wxT("Arguments"), GetArgTypes());
     InsertListItem(properties, pos++, wxT("Returns"), GetReturnType());
     InsertListItem(properties, pos++, wxT("Language"), GetLanguage());
-    InsertListItem(properties, pos++, wxT("Returns a Set?"), BoolToYesNo(GetReturnAsSet()));
+    InsertListItem(properties, pos++, wxT("Returns a Set?"), GetReturnAsSet());
     InsertListItem(properties, pos++, wxT("Source"), GetSource());
     InsertListItem(properties, pos++, wxT("Volatility"), GetVolatility());
-    InsertListItem(properties, pos++, wxT("Secure Definer?"), BoolToYesNo(GetSecureDefiner()));
-    InsertListItem(properties, pos++, wxT("Strict?"), BoolToYesNo(GetIsStrict()));
-    InsertListItem(properties, pos++, wxT("System Function?"), BoolToYesNo(GetSystemObject()));
+    InsertListItem(properties, pos++, wxT("Secure Definer?"), GetSecureDefiner());
+    InsertListItem(properties, pos++, wxT("Strict?"), GetIsStrict());
+    InsertListItem(properties, pos++, wxT("System Function?"), GetSystemObject());
     InsertListItem(properties, pos++, wxT("Comment"), GetComment());
 }
 
 
 
-void pgFunction::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction)
 {
-    pgFunction *function;
+    pgFunction *function=0;
 
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Functions to schema ") + collection->GetSchema()->GetIdentifier());
-        wxString funcRestriction;
-        if (collection->GetType() == PG_TRIGGERFUNCTIONS)
-            funcRestriction = "   AND typname = 'trigger'\n";
-        else
-            funcRestriction = "   AND typname <> 'trigger'\n";
-
-        // Get the Functions
-        pgSet *functions= collection->GetDatabase()->ExecuteSet(wxT(
+    pgSet *functions= obj->GetDatabase()->ExecuteSet(wxT(
             "SELECT pr.oid, pr.*, TYP.typname, lanname, pg_get_userbyid(proowner) as funcowner\n"
             "  FROM pg_proc pr\n"
             "  JOIN pg_type TYP ON TYP.oid=prorettype\n"
             "  JOIN pg_language LNG ON LNG.oid=prolang\n"
-            " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"
-            + funcRestriction +
+            + restriction +
             " ORDER BY proname"));
 
-        if (functions)
+    if (functions)
+    {
+        while (!functions->Eof())
         {
-            while (!functions->Eof())
+            switch (obj->GetType())
             {
-                if (collection->GetType() == PG_TRIGGERFUNCTIONS)
-                    function = new pgTriggerFunction(collection->GetSchema(), functions->GetVal(wxT("proname")));
-                else
-                    function = new pgFunction(collection->GetSchema(), functions->GetVal(wxT("proname")));
+                case PG_FUNCTIONS:
+                case PG_TRIGGER:
+                    function = new pgFunction(schema, functions->GetVal(wxT("proname")));
+                    break;
+                case PG_TRIGGERFUNCTIONS:
+                    function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
+            }
+            function->iSetOid(functions->GetOid(wxT("oid")));
+            function->iSetOwner(functions->GetVal(wxT("funcowner")));
+            function->iSetArgCount(functions->GetLong(wxT("pronargs")));
+            function->iSetReturnType(functions->GetVal(wxT("typname")));
+            wxString oids=functions->GetVal(wxT("proargtypes"));
+            function->iSetArgTypeOids(oids);
 
-                function->iSetOid(StrToDouble(functions->GetVal(wxT("oid"))));
-                function->iSetOwner(functions->GetVal(wxT("funcowner")));
-                function->iSetArgCount(StrToLong(functions->GetVal(wxT("pronargs"))));
-                function->iSetReturnType(functions->GetVal(wxT("typname")));
-                wxString oids=functions->GetVal(wxT("proargtypes"));
-                function->iSetArgTypeOids(oids);
-
-                wxString str, argTypes;
-                wxStringTokenizer args(oids);
-                while (args.HasMoreTokens())
+            wxString str, argTypes;
+            wxStringTokenizer args(oids);
+            while (args.HasMoreTokens())
+            {
+                str = args.GetNextToken();
+                pgSet *set=obj->GetDatabase()->ExecuteSet(wxT(
+                    "SELECT typname FROM pg_type where oid=") + str);
+                if (set)
                 {
-                    str = args.GetNextToken();
-                    pgSet *set=collection->GetDatabase()->ExecuteSet(wxT(
-                        "SELECT typname FROM pg_type where oid=") + str);
-                    if (set)
-                    {
-                        if (!argTypes.IsNull())
-                            argTypes += wxT(", ");
-                        argTypes += set->GetVal(0);
-                        delete set;
-                    }
+                    if (!argTypes.IsNull())
+                        argTypes += wxT(", ");
+                    argTypes += set->GetVal(0);
+                    delete set;
                 }
-
-                function->iSetArgTypes(argTypes);
-
-                function->iSetLanguage(functions->GetVal(wxT("lanname")));
-                function->iSetSecureDefiner(StrToBool(functions->GetVal(wxT("prosecdef"))));
-                function->iSetReturnAsSet(StrToBool(functions->GetVal(wxT("proretset"))));
-                function->iSetIsStrict(StrToBool(functions->GetVal(wxT("proisstrict"))));
-                function->iSetSource(functions->GetVal(wxT("prosrc")));
-                wxString vol=functions->GetVal(wxT("provolatile"));
-                function->iSetVolatility(
-                    vol.IsSameAs("i") ? wxT("IMMUTABLE") : 
-                    vol.IsSameAs("s") ? wxT("STABLE") :
-                    vol.IsSameAs("v") ? wxT("VOLATILE") : wxT("unknown"));
-
-                browser->AppendItem(collection->GetId(), function->GetFullName(), PGICON_FUNCTION, -1, function);
-	    
-			    functions->MoveNext();
             }
 
-		    delete functions;
+            function->iSetArgTypes(argTypes);
+
+            function->iSetLanguage(functions->GetVal(wxT("lanname")));
+            function->iSetSecureDefiner(functions->GetBool(wxT("prosecdef")));
+            function->iSetReturnAsSet(functions->GetBool(wxT("proretset")));
+            function->iSetIsStrict(functions->GetBool(wxT("proisstrict")));
+            function->iSetSource(functions->GetVal(wxT("prosrc")));
+            wxString vol=functions->GetVal(wxT("provolatile"));
+            function->iSetVolatility(
+                vol.IsSameAs("i") ? wxT("IMMUTABLE") : 
+                vol.IsSameAs("s") ? wxT("STABLE") :
+                vol.IsSameAs("v") ? wxT("VOLATILE") : wxT("unknown"));
+
+            browser->AppendItem(obj->GetId(), function->GetFullName(), PGICON_FUNCTION, -1, function);
+	
+			functions->MoveNext();
         }
+
+		delete functions;
     }
+    return function;
 }
 
+
+void pgFunction::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+{
+    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
+    {
+        // Log
+        wxLogInfo(wxT("Adding Functions to schema ") + collection->GetSchema()->GetIdentifier());
+        wxString funcRestriction=wxT(
+            " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n");
+        if (collection->GetType() == PG_TRIGGERFUNCTIONS)
+            funcRestriction += "   AND typname = 'trigger'\n";
+        else
+            funcRestriction += "   AND typname <> 'trigger'\n";
+
+        // Get the Functions
+
+        AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
+    }
+}

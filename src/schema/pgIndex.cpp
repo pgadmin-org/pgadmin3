@@ -40,7 +40,7 @@ wxString pgIndex::GetCreate()
         str += wxT("UNIQUE ");
     str += wxT("INDEX ");
     str += qtIdent(GetName()) 
-        + wxT(" ON ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())+wxT(" (");
+        + wxT("\n    ON ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())+wxT("(");
 //        + wxT(" USING ") + ????
     if (GetProcName().IsNull())
         str += GetQuotedColumns();
@@ -52,8 +52,8 @@ wxString pgIndex::GetCreate()
     }
 
     str += wxT(")");
-     if (!GetConstraint().IsNull())
-        str += wxT(" WHERE ") + GetConstraint();
+    AppendIfFilled(str, wxT("\n    WHERE "), qtString(GetConstraint()));
+
     str += wxT(";\n");
     
     return str;
@@ -80,6 +80,9 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
     if (!expandedKids)
     {
         expandedKids = true;
+
+        // We cannot use SELECT IN (colNumbers) here because we couldn't be sure
+        // about the read order
         wxStringTokenizer collist(GetColumnNumbers());
         wxStringTokenizer args(procArgTypeList);
         wxString cn, ct;
@@ -154,7 +157,7 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
         if (GetProcName().IsNull())
             InsertListItem(properties, pos++, wxT("Columns"), GetColumns());
         else
@@ -162,12 +165,12 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
             InsertListItem(properties, pos++, wxT("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
             InsertListItem(properties, pos++, wxT("Operator Classes"), GetOperatorClasses());
         }
-        InsertListItem(properties, pos++, wxT("Unique?"), BoolToYesNo(GetIsUnique()));
-        InsertListItem(properties, pos++, wxT("Primary?"), BoolToYesNo(GetIsPrimary()));
-        InsertListItem(properties, pos++, wxT("Clustered?"), BoolToYesNo(GetIsClustered()));
+        InsertListItem(properties, pos++, wxT("Unique?"), GetIsUnique());
+        InsertListItem(properties, pos++, wxT("Primary?"), GetIsPrimary());
+        InsertListItem(properties, pos++, wxT("Clustered?"), GetIsClustered());
         InsertListItem(properties, pos++, wxT("Constraint"), GetConstraint());
         InsertListItem(properties, pos++, wxT("Index Type"), GetIndexType());
-        InsertListItem(properties, pos++, wxT("System index?"), BoolToYesNo(GetSystemObject()));
+        InsertListItem(properties, pos++, wxT("System index?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 }
@@ -205,15 +208,15 @@ void pgIndex::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
             while (!indexes->Eof())
             {
                 index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
-                index->iSetOid(StrToDouble(indexes->GetVal(wxT("oid"))));
+                index->iSetOid(indexes->GetOid(wxT("oid")));
                 index->iSetTableOid(collection->GetOid());
-                index->iSetIsClustered(StrToBool(indexes->GetVal(wxT("indisclustered"))));
-                index->iSetIsUnique(StrToBool(indexes->GetVal(wxT("indisunique"))));
-                index->iSetIsPrimary(StrToBool(indexes->GetVal(wxT("indisprimary"))));
+                index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
+                index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
+                index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));
                 index->iSetColumnNumbers(indexes->GetVal(wxT("indkey")));
                 index->iSetIdxSchema(indexes->GetVal(wxT("nspname")));
                 index->iSetIdxTable(indexes->GetVal(wxT("tabname")));
-                index->iSetRelTableOid(StrToDouble(indexes->GetVal(wxT("indrelid"))));
+                index->iSetRelTableOid(indexes->GetOid(wxT("indrelid")));
                 index->iSetProcArgTypeList(indexes->GetVal(wxT("proargtypes")));
                 index->iSetProcNamespace(indexes->GetVal(wxT("pronspname")));
                 index->iSetProcName(indexes->GetVal(wxT("proname")));

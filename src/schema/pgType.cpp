@@ -36,12 +36,11 @@ wxString pgType::GetSql(wxTreeCtrl *browser)
         sql = wxT("CREATE TYPE ") + GetQuotedFullIdentifier() 
             + wxT("(INPUT=") + qtIdent(GetInputFunction()) 
             + wxT(", OUTPUT=") + qtIdent(GetOutputFunction());
-        if (!GetDefault().IsNull())
-            sql += wxT(", DEFAULT=") + GetDefault();
+        AppendIfFilled(sql, wxT(", DEFAULT="), qtString(GetDefault()));
         if (!GetElement().IsNull())
         {
             sql += wxT(",\n       ELEMENT=") + GetElement()
-                + wxT(", DELIMITER=") + GetDelimiter();
+                + wxT(", DELIMITER='") + GetDelimiter() + wxT("'");
         }
         sql +=wxT(",\n       INTERNALLENGTH=") + NumToStr(GetInternalLength())
             + wxT(", ALIGNMENT=" + GetAlignment()
@@ -69,10 +68,10 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     int pos=0;
 
     InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+    InsertListItem(properties, pos++, wxT("OID"), GetOid());
     InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
     InsertListItem(properties, pos++, wxT("Alignment"), GetAlignment());
-    InsertListItem(properties, pos++, wxT("Internal Length"), NumToStr(GetInternalLength()));
+    InsertListItem(properties, pos++, wxT("Internal Length"), GetInternalLength());
     InsertListItem(properties, pos++, wxT("Default"), GetDefault());
     InsertListItem(properties, pos++, wxT("Passed by Value?"), BoolToYesNo(GetPassedByValue()));
     InsertListItem(properties, pos++, wxT("Delimiter"), GetDelimiter());
@@ -80,7 +79,7 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     InsertListItem(properties, pos++, wxT("Input Function"), GetInputFunction());
     InsertListItem(properties, pos++, wxT("Output Function"), GetOutputFunction());
     InsertListItem(properties, pos++, wxT("Storage"), GetStorage());
-    InsertListItem(properties, pos++, wxT("System Type?"), BoolToYesNo(GetSystemObject()));
+    InsertListItem(properties, pos++, wxT("System Type?"), GetSystemObject());
     InsertListItem(properties, pos++, wxT("Comment"), GetComment());
 }
 
@@ -97,10 +96,6 @@ void pgType::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
         msg.Printf(wxT("Adding Types to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
         wxLogInfo(msg);
 
-        // Add Type node
-//        pgObject *addTypeObj = new pgObject(PG_ADD_TYPE, wxString("Add Type"));
-//        browser->AppendItem(collection->GetId(), wxT("Add Type..."), 4, -1, addTypeObj);
-
         // Get the Types
         pgSet *types= collection->GetDatabase()->ExecuteSet(wxT(
             "SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element\n"
@@ -114,10 +109,10 @@ void pgType::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
             {
                 type = new pgType(collection->GetSchema(), types->GetVal(wxT("typname")));
 
-                type->iSetOid(StrToDouble(types->GetVal(wxT("oid"))));
+                type->iSetOid(types->GetOid(wxT("oid")));
                 type->iSetOwner(types->GetVal(wxT("typeowner")));
-                type->iSetPassedByValue(StrToBool(types->GetVal(wxT("typbyval"))));
-                type->iSetInternalLength(StrToLong(types->GetVal(wxT("typlen"))));
+                type->iSetPassedByValue(types->GetBool(wxT("typbyval")));
+                type->iSetInternalLength(types->GetLong(wxT("typlen")));
                 type->iSetDelimiter(types->GetVal(wxT("typdelim")));
                 type->iSetElement(types->GetVal(wxT("element")));
                 type->iSetInputFunction(types->GetVal(wxT("typinput")));

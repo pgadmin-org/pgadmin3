@@ -86,8 +86,8 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("Group Id"), NumToStr(GetGroupId()));
-        InsertListItem(properties, pos++, wxT("Member Count"), NumToStr(GetMemberCount()));
+        InsertListItem(properties, pos++, wxT("Group Id"), GetGroupId());
+        InsertListItem(properties, pos++, wxT("Member Count"), GetMemberCount());
         InsertListItem(properties, pos++, wxT("Members"), GetMembers());
     }
 }
@@ -111,7 +111,7 @@ void pgGroup::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
             while (!groups->Eof())
             {
                 group = new pgGroup(groups->GetVal(wxT("groname")));
-                group->iSetGroupId(StrToLong(groups->GetVal(wxT("grosysid"))));
+                group->iSetGroupId(groups->GetLong(wxT("grosysid")));
                 group->iSetServer(collection->GetServer());
                 wxString mids=groups->GetVal(wxT("grolist"));
                 mids = mids.Mid(1, mids.Length()-2);

@@ -21,7 +21,10 @@
 #include "pgDatabase.h"
 
 
+
 class pgCollection;
+class pgFunction;
+
 
 class pgTrigger : public pgSchemaObject
 {
@@ -41,13 +44,17 @@ public:
     void iSetTriggerType(const long l) { triggerType=l; }
     bool GetEnabled() const { return enabled; }
     void iSetEnabled(const bool b) {enabled=b; }
+    void iSetTriggerFunction(pgFunction *fkt) { triggerFunction=fkt; }
+    wxString GetQuotedFullTable() const { return quotedFullTable; }
+    void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
 
     wxString GetSql(wxTreeCtrl *browser);
 
 private:
-    wxString function;
+    wxString function, quotedFullTable;
     long triggerType;
     bool enabled;
+    pgFunction *triggerFunction;
 };
 
 #endif

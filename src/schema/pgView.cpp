@@ -155,7 +155,7 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     int pos=0;
 
     InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+    InsertListItem(properties, pos++, wxT("OID"), GetOid());
     InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
     InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
     InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
@@ -193,7 +193,7 @@ void pgView::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
             {
                 view = new pgView(collection->GetSchema(), views->GetVal(wxT("relname")));
 
-                view->iSetOid(StrToDouble(views->GetVal(wxT("oid"))));
+                view->iSetOid(views->GetOid(wxT("oid")));
                 view->iSetOwner(views->GetVal(wxT("Viewowner")));
                 view->iSetAcl(views->GetVal(wxT("relacl")));
                 view->iSetDefinition(views->GetVal(wxT("definition")));

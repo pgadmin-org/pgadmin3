@@ -119,13 +119,12 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
 
             // Languages
-            pgCollection *collection = new pgCollection(PG_LANGUAGES, wxString("Languages"));
-            collection->SetServer(GetServer());
+            pgCollection *collection = new pgCollection(PG_LANGUAGES);
             collection->SetDatabase(this);
             browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_LANGUAGE, -1, collection);
 
             // Schemas
-            collection = new pgCollection(PG_SCHEMAS, wxString("Schemas"));
+            collection = new pgCollection(PG_SCHEMAS);
             collection->SetServer(GetServer());
             collection->SetDatabase(this);
             browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_SCHEMA, -1, collection);
@@ -180,13 +179,13 @@ void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
             {
                 database = new pgDatabase(databases->GetVal(wxT("datname")));
                 database->SetServer(collection->GetServer());
-                database->iSetOid(StrToDouble(databases->GetVal(wxT("oid"))));
+                database->iSetOid(databases->GetOid(wxT("oid")));
                 database->iSetOwner(databases->GetVal(wxT("datowner")));
                 database->iSetAcl(databases->GetVal(wxT("datacl")));
                 database->iSetPath(databases->GetVal(wxT("datpath")));
                 database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
                 database->iSetVariables(databases->GetVal(wxT("datconfig")));
-                database->iSetAllowConnections(StrToBool(databases->GetVal(wxT("datallowconn"))));
+                database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
 
                 // Add the treeview node if required
                 if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 

@@ -39,14 +39,12 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
     {
         sql = wxT("CREATE User ") + GetQuotedIdentifier()
             + wxT(" WITH SYSID ") + NumToStr(userId);
-        if (!password.IsNull())
-            sql += wxT(" PASSWORD ENCRYPTED ") + GetPassword();
+        AppendIfFilled(sql, wxT(" PASSWORD ENCRYPTED "), GetPassword());
         if (GetCreateDatabase())    sql += wxT(" CREATEDB");
         else                        sql += wxT(" NOCREATEDB");
         if (GetUpdateCatalog())     sql += wxT(" CREATEUSER");
         else                        sql += wxT(" NOCREATEUSER");
-        if (!accountExpires.IsNull())
-            sql += wxT(" VALID UNTIL ") + GetAccountExpires();
+        AppendIfFilled(sql, wxT(" VALID UNTIL "), GetAccountExpires());
         sql +=wxT(";\n");
     }
     return sql;
@@ -100,10 +98,10 @@ void pgUser::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
 
                 user = new pgUser(users->GetVal(wxT("usename")));
                 user->iSetServer(collection->GetServer());
-                user->iSetUserId(StrToLong(users->GetVal(wxT("usesysid"))));
+                user->iSetUserId(users->GetLong(wxT("usesysid")));
                 user->iSetCreateDatabase(StrToBool(users->GetVal(wxT("usecreatedb"))));
-                user->iSetSuperuser(StrToBool(users->GetVal(wxT("usesuper"))));
-                user->iSetUpdateCatalog(StrToBool(users->GetVal(wxT("usecatupd"))));
+                user->iSetSuperuser(users->GetBool(wxT("usesuper")));
+                user->iSetUpdateCatalog(users->GetBool(wxT("usecatupd")));
                 user->iSetAccountExpires(users->GetVal(wxT("valuntil")));
                 user->iSetPassword(users->GetVal(wxT("passwd")));
 

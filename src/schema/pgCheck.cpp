@@ -44,7 +44,7 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
         sql = wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() 
             + wxT(";\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
-            + wxT(" ADD CONSTRAINT ") + GetConstraint() 
+            + wxT("\n    ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
     }
 
@@ -66,7 +66,7 @@ void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
         InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
@@ -98,7 +98,7 @@ void pgCheck::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
             {
                 check = new pgCheck(collection->GetSchema(), checks->GetVal(wxT("conname")));
 
-                check->iSetOid(StrToDouble(checks->GetVal(wxT("oid"))));
+                check->iSetOid(checks->GetOid(wxT("oid")));
                 check->iSetTableOid(collection->GetOid());
                 check->iSetDefinition(checks->GetVal(wxT("consrc")));
                 check->iSetFkTable(checks->GetVal(wxT("relname")));

@@ -62,46 +62,61 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         pgCollection *collection;
 
         // Aggregates
-        collection = new pgCollection(PG_AGGREGATES, wxString("Aggregates"));
+        collection = new pgCollection(PG_AGGREGATES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_AGGREGATE, -1, collection);
 
+        // Casts
+        collection = new pgCollection(PG_CASTS);
+        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_CAST, -1, collection);
+
+        // Conversions
+        collection = new pgCollection(PG_CONVERSIONS);
+        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_CONVERSION, -1, collection);
+
         // Domains
-        collection = new pgCollection(PG_DOMAINS, wxString("Domains"));
+        collection = new pgCollection(PG_DOMAINS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_DOMAIN, -1, collection);
 
         // Functions
-        collection = new pgCollection(PG_FUNCTIONS, wxString("Functions"));
+        collection = new pgCollection(PG_FUNCTIONS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_FUNCTION, -1, collection);
 
-        collection = new pgCollection(PG_TRIGGERFUNCTIONS, wxString("Trigger Functions"));
+        collection = new pgCollection(PG_TRIGGERFUNCTIONS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_FUNCTION, -1, collection);
 
         // Operators
-        collection = new pgCollection(PG_OPERATORS, wxString("Operators"));
+        collection = new pgCollection(PG_OPERATORS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_OPERATOR, -1, collection);
 
+        // Operator Classes
+        collection = new pgCollection(PG_OPERATORCLASSES);
+        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_OPERATORCLASS, -1, collection);
+
         // Sequences
-        collection = new pgCollection(PG_SEQUENCES, wxString("Sequences"));
+        collection = new pgCollection(PG_SEQUENCES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_SEQUENCE, -1, collection);
 
         // Tables
-        collection = new pgCollection(PG_TABLES, wxString("Tables"));
+        collection = new pgCollection(PG_TABLES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_TABLE, -1, collection);
 
         // Types
-        collection = new pgCollection(PG_TYPES, wxString("Types"));
+        collection = new pgCollection(PG_TYPES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_TYPE, -1, collection);
 
         // Views
-        collection = new pgCollection(PG_VIEWS, wxString("Views"));
+        collection = new pgCollection(PG_VIEWS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_VIEW, -1, collection);
     }
@@ -119,10 +134,10 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
         InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
         InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
-        InsertListItem(properties, pos++, wxT("System Object?"), BoolToYesNo(GetSystemObject()));
+        InsertListItem(properties, pos++, wxT("System Object?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 }
@@ -159,7 +174,7 @@ void pgSchema::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
 
                 schema = new pgSchema(schemas->GetVal(wxT("nspname")));
                 schema->SetDatabase(collection->GetDatabase());
-                schema->iSetOid(StrToDouble(schemas->GetVal(wxT("oid"))));
+                schema->iSetOid(schemas->GetOid(wxT("oid")));
                 schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
                 schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
 

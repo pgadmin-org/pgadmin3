@@ -30,6 +30,7 @@ public:
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+
     wxString GetVarTypename() const { return varTypename; }
     void iSetVarTypename(const wxString& s) { varTypename=s; }
     wxString GetDefault() const { return defaultVal; }
@@ -52,13 +53,21 @@ public:
     void iSetTyplen(const long l) { typlen=l; }
     long GetTypmod() const { return typmod; }
     void iSetTypmod(const long l) { typmod=l; }
+    wxString GetQuotedFullTable() const { return quotedFullTable; }
+    void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
+    wxString GetStorage() const {return storage; }
+    void iSetStorage(const wxString& s) { storage=s; }
+    long GetInheritedCount() const { return inheritedCount; }
+    void iSetInheritedCount(const long l) { inheritedCount=l; }
+
 
     wxString GetFullType();
+    wxString GetSql(wxTreeCtrl *browser);
 
 private:
-    wxString varTypename, defaultVal;
+    wxString varTypename, defaultVal, quotedFullTable, storage;
     long colNumber, length, precision, statistics;
-    long typlen, typmod;
+    long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray;
 };
 

@@ -39,7 +39,7 @@ wxString pgForeignKey::GetConstraint()
 //        +  wxT(") REFERENCES ") + qtIdent(GetRefSchema()) + wxT(".") + qtIdent(GetReferences()) 
         +  wxT(") REFERENCES ") + qtIdent(GetReferences()) 
         +  wxT(" (") + GetQuotedRefColumns()
-        +  wxT(")\n        ON UPDATE ") + GetOnUpdate()
+        +  wxT(")\n    ON UPDATE ") + GetOnUpdate()
         +  wxT(" ON DELETE ") + GetOnDelete();
     if (GetDeferrable())
     {
@@ -61,7 +61,7 @@ wxString pgForeignKey::GetSql(wxTreeCtrl *browser)
         sql = wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() 
             + wxT(";\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
-            + wxT(" ADD CONSTRAINT ") + GetConstraint() 
+            + wxT("\n    ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
     }
 
@@ -129,27 +129,6 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
         InsertListItem(properties, pos++, wxT("References"), GetReferences() 
             + wxT("(") +GetRefColumns() + wxT(")"));
 
-/*      wxStringTokenizer c1l=GetConkey();
-        wxStringTokenizer c2l=GetConfkey();
-        wxString c1, c2;
-
-        while (c1l.HasMoreTokens())
-        {
-            c1=c1l.GetNextToken();
-            c2=c2l.GetNextToken();
-            pgSet *set=ExecuteSet(wxT(
-                "SELECT a1.attname as conattname, a2.attname as confattname\n"
-                "  FROM pg_attribute a1, pg_attribute a2\n"
-                " WHERE a1.attrelid=") + GetTableOidStr() + wxT(" AND a1.attnum=") + c1 + wxT("\n"
-                "   AND a2.attrelid=") + GetRelTableOidStr() + wxT(" AND a2.attnum=") + c2);
-            if (set)
-            {
-                InsertListItem(properties, pos++, wxT(""), set->GetVal(0) + wxT(" -> ")+ set->GetVal(1));
-                delete set;
-            }
-        }
-*/
-
         InsertListItem(properties, pos++, wxT("On Update"), GetOnUpdate());
         InsertListItem(properties, pos++, wxT("On Delete"), GetOnDelete());
         InsertListItem(properties, pos++, wxT("Deferrable?"), BoolToYesNo(GetDeferrable()));
@@ -191,9 +170,9 @@ void pgForeignKey::ShowTreeCollection(pgCollection *collection, frmMain *form, w
             {
                 foreignKey = new pgForeignKey(collection->GetSchema(), foreignKeys->GetVal(wxT("conname")));
 
-                foreignKey->iSetOid(StrToDouble(foreignKeys->GetVal(wxT("oid"))));
+                foreignKey->iSetOid(foreignKeys->GetOid(wxT("oid")));
                 foreignKey->iSetTableOid(collection->GetOid());
-                foreignKey->iSetRelTableOid(StrToDouble(foreignKeys->GetVal(wxT("confrelid"))));
+                foreignKey->iSetRelTableOid(foreignKeys->GetOid(wxT("confrelid")));
                 foreignKey->iSetFkSchema(foreignKeys->GetVal(wxT("fknsp")));
                 foreignKey->iSetFkTable(foreignKeys->GetVal(wxT("fktab")));
                 foreignKey->iSetRefSchema(foreignKeys->GetVal(wxT("refnsp")));
@@ -219,8 +198,8 @@ void pgForeignKey::ShowTreeCollection(pgCollection *collection, frmMain *form, w
                 cn = cn.Mid(1, cn.Length()-2);
                 foreignKey->iSetConfkey(cn);
 
-                foreignKey->iSetDeferrable(StrToBool(foreignKeys->GetVal(wxT("condeferrable"))));
-                foreignKey->iSetDeferred(StrToBool(foreignKeys->GetVal(wxT("condeferred"))));
+                foreignKey->iSetDeferrable(foreignKeys->GetBool(wxT("condeferrable")));
+                foreignKey->iSetDeferred(foreignKeys->GetBool(wxT("condeferred")));
 
                 browser->AppendItem(collection->GetId(), foreignKey->GetFullName(), PGICON_KEY, -1, foreignKey);
 	    

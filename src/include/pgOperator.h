@@ -59,6 +59,8 @@ public:
     bool GetHashJoins() const { return hashJoins; }
     void iSetHashJoins(bool b) {  hashJoins=b; }
 
+    wxString GetSql(wxTreeCtrl *browser);
+
 private:
     wxString leftType, rightType, resultType,
              operatorFunction, joinFunction, restrictFunction,

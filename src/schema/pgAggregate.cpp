@@ -34,13 +34,11 @@ wxString pgAggregate::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("CREATE AGGREGATE ") + GetQuotedFullIdentifier() 
-            + wxT("(BASETYPE=") + GetFinalType()
+            + wxT("(\n    BASETYPE=") + GetFinalType()
             + wxT(", SFUNC=") + GetStateFunction()
             + wxT(", STYPE=") + GetStateType();
-        if (!GetFinalFunction())
-            sql += wxT(", FFUNC=") + GetFinalFunction();
-        if (!GetInitialCondition().IsNull())
-            sql += wxT(", INITCOND=") + GetInitialCondition();
+        AppendIfFilled(sql, wxT(", FFUNC="), qtIdent(GetFinalFunction()));
+        AppendIfFilled(sql, wxT(", INITCOND="), GetInitialCondition());
         sql += wxT(");\n");
     }
 
@@ -68,14 +66,14 @@ void pgAggregate::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl 
 
     InsertListItem(properties, pos++, wxT("Name"), GetName());
     InsertListItem(properties, pos++, wxT("Input Type"), GetInputType());
-    InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+    InsertListItem(properties, pos++, wxT("OID"), GetOid());
     InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
     InsertListItem(properties, pos++, wxT("State Type"), GetStateType());
     InsertListItem(properties, pos++, wxT("State Function"), GetStateFunction());
     InsertListItem(properties, pos++, wxT("Final Type"), GetFinalType());
     InsertListItem(properties, pos++, wxT("Final Function"), GetFinalFunction());
     InsertListItem(properties, pos++, wxT("Initial Condition"), GetInitialCondition());
-    InsertListItem(properties, pos++, wxT("System Aggregate?"), BoolToYesNo(GetSystemObject()));
+    InsertListItem(properties, pos++, wxT("System Aggregate?"), GetSystemObject());
     InsertListItem(properties, pos++, wxT("Comment"), GetComment());
 }
 
@@ -111,7 +109,7 @@ void pgAggregate::ShowTreeCollection(pgCollection *collection, frmMain *form, wx
             {
                 aggregate = new pgAggregate(collection->GetSchema(), aggregates->GetVal(wxT("aggname")));
 
-                aggregate->iSetOid(StrToDouble(aggregates->GetVal(wxT("oid"))));
+                aggregate->iSetOid(aggregates->GetOid(wxT("oid")));
                 aggregate->iSetOwner(aggregates->GetVal(wxT("aggowner")));
                 aggregate->iSetInputType(aggregates->GetVal(wxT("inputname")));
                 aggregate->iSetStateType(aggregates->GetVal(wxT("transname")));

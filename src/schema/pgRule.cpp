@@ -52,13 +52,13 @@ void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     int pos=0;
 
     InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+    InsertListItem(properties, pos++, wxT("OID"), GetOid());
     InsertListItem(properties, pos++, wxT("Event"), GetEvent());
     InsertListItem(properties, pos++, wxT("Condition"), GetCondition());
-    InsertListItem(properties, pos++, wxT("Do Instead?"), BoolToYesNo(GetDoInstead()));
+    InsertListItem(properties, pos++, wxT("Do Instead?"), GetDoInstead());
     InsertListItem(properties, pos++, wxT("Action"), GetAction());
     InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
-    InsertListItem(properties, pos++, wxT("System Rule?"), BoolToYesNo(GetSystemObject()));
+    InsertListItem(properties, pos++, wxT("System Rule?"), GetSystemObject());
     InsertListItem(properties, pos++, wxT("Comment"), GetComment());
 }
 
@@ -73,10 +73,6 @@ void pgRule::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
         // Log
         wxLogInfo(wxT("Adding Rules to schema ") + collection->GetSchema()->GetIdentifier());
 
-        // Add Rule node
-//        pgObject *addRuleObj = new pgObject(PG_ADD_Rule, wxString("Add Rule"));
-//        browser->AppendItem(collection->GetId(), wxT("Add Rule..."), 4, -1, addRuleObj);
-
         // Get the Rules
         pgSet *rules= collection->GetDatabase()->ExecuteSet(wxT(
             "SELECT oid, rulename, pg_get_ruledef(oid) as definition, is_instead, ev_type, ev_action, ev_qual\n"
@@ -89,10 +85,10 @@ void pgRule::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
             {
                 rule = new pgRule(collection->GetSchema(), rules->GetVal(wxT("rulename")));
 
-                rule->iSetOid(StrToDouble(rules->GetVal(wxT("oid"))));
+                rule->iSetOid(rules->GetOid(wxT("oid")));
                 rule->iSetTableOid(collection->GetOid());
                 rule->iSetDefinition(rules->GetVal(wxT("definition")));
-                rule->iSetDoInstead(StrToBool(rules->GetVal(wxT("is_instead"))));
+                rule->iSetDoInstead(rules->GetBool(wxT("is_instead")));
                 rule->iSetAction(rules->GetVal(wxT("ev_action")));
                 rule->iSetComment(rules->GetVal(wxT("ev_qual")));
                 char *evts[] = {0, "SELECT", "UPDATE", "INSERT", "DELETE"};

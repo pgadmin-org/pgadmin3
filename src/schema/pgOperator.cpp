@@ -29,6 +29,31 @@ pgOperator::~pgOperator()
 }
 
 
+wxString pgOperator::GetSql(wxTreeCtrl *browser)
+{
+    if (sql.IsNull())
+    {
+        sql = wxT("CREATE OPERATOR ") + GetQuotedFullIdentifier()
+            + wxT("(\n    PROCEDURE=") + qtIdent(GetOperatorFunction());
+        AppendIfFilled(sql, wxT(", LEFTARG="), qtIdent(GetLeftType()));
+        AppendIfFilled(sql, wxT(", RIGHTARG="), qtIdent(GetRightType()));
+        AppendIfFilled(sql, wxT(", COMMUTATOR="), qtIdent(GetCommutator()));
+        AppendIfFilled(sql, wxT(", RESTRICT="), qtIdent(GetRestrictFunction()));
+        if (GetHashJoins())  sql += wxT(", HASHES");
+        if (!leftSortOperator.IsNull() || !rightSortOperator.IsNull() ||
+            !lessOperator.IsNull() || !greaterOperator.IsNull())
+            sql += wxT(",\n    MERGES");
+        AppendIfFilled(sql, wxT(", SORT1="), qtIdent(GetLeftSortOperator()));
+        AppendIfFilled(sql, wxT(", SORT2="), qtIdent(GetRightSortOperator()));
+        AppendIfFilled(sql, wxT(", LTCMP="), qtIdent(GetLessOperator()));
+        AppendIfFilled(sql, wxT(", GTCMP="), qtIdent(GetGreaterOperator()));
+        sql += wxT(";\n");
+    }
+
+    return sql;
+}
+
+
 wxString pgOperator::GetFullName() const
 {
     return GetName() + wxT(" (") + GetLeftType() + wxT(", ") + GetRightType() + wxT(")");
@@ -46,22 +71,24 @@ void pgOperator::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     int pos=0;
 
     InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
+    InsertListItem(properties, pos++, wxT("OID"), GetOid());
     InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-    InsertListItem(properties, pos++, wxT("Left Type"), GetLeftType());
-    InsertListItem(properties, pos++, wxT("Right Type"), GetRightType());
+    InsertListItem(properties, pos++, wxT("Kind"), GetKind());
+    if (!leftType.IsNull())
+        InsertListItem(properties, pos++, wxT("Left Type"), GetLeftType());
+    if (!rightType.IsNull())
+        InsertListItem(properties, pos++, wxT("Right Type"), GetRightType());
     InsertListItem(properties, pos++, wxT("Result Type"), GetResultType());
     InsertListItem(properties, pos++, wxT("Operator Function"), GetOperatorFunction());
     InsertListItem(properties, pos++, wxT("Join Function"), GetJoinFunction());
     InsertListItem(properties, pos++, wxT("Restrict Function"), GetRestrictFunction());
     InsertListItem(properties, pos++, wxT("Commutator"), GetCommutator());
     InsertListItem(properties, pos++, wxT("Negator"), GetNegator());
-    InsertListItem(properties, pos++, wxT("Kind"), GetKind());
     InsertListItem(properties, pos++, wxT("Left Sort Operator"), GetLeftSortOperator());
     InsertListItem(properties, pos++, wxT("Right Sort Operator"), GetRightSortOperator());
     InsertListItem(properties, pos++, wxT("Less Than Operator"), GetLessOperator());
     InsertListItem(properties, pos++, wxT("Greater Than Operator"), GetGreaterOperator());
-    InsertListItem(properties, pos++, wxT("Hash Joins?"), BoolToYesNo(GetHashJoins()));
+    InsertListItem(properties, pos++, wxT("Hash Joins?"), GetHashJoins());
     InsertListItem(properties, pos++, wxT("Comment"), GetComment());
 }
 
@@ -106,7 +133,7 @@ void pgOperator::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
             while (!operators->Eof())
             {
                 oper = new pgOperator(collection->GetSchema(), operators->GetVal(wxT("oprname")));
-                oper->iSetOid(StrToDouble(operators->GetVal(wxT("oid"))));
+                oper->iSetOid(operators->GetOid(wxT("oid")));
                 oper->iSetLeftType(operators->GetVal(wxT("lefttype")));
 
                 oper->iSetLeftType(operators->GetVal(wxT("lefttype")));
@@ -125,7 +152,7 @@ void pgOperator::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
                 oper->iSetKind(kind.IsSameAs("b") ? wxT("infix") :
                                kind.IsSameAs("l") ? wxT("prefix") :
                                kind.IsSameAs("r") ? wxT("postfix") : wxT("unknown"));
-                oper->iSetHashJoins(StrToBool(operators->GetVal(wxT("oprcanhash"))));
+                oper->iSetHashJoins(operators->GetBool(wxT("oprcanhash")));
 
                 browser->AppendItem(collection->GetId(), oper->GetFullName(), PGICON_OPERATOR, -1, oper);
 	    
