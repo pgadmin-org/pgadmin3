@@ -200,11 +200,12 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     SetStatusText(_("Ready."), 1);
     SetStatusText(_("0 Secs"), 2);
 
-    wxAcceleratorEntry entries[3];
+    wxAcceleratorEntry entries[4];
     entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
     entries[1].Set(wxACCEL_NORMAL, WXK_DELETE, MNU_DELETE);
     entries[2].Set(wxACCEL_NORMAL, WXK_F1, MNU_HELP);
-    wxAcceleratorTable accel(3, entries);
+    entries[3].Set(wxACCEL_SHIFT, WXK_F10, MNU_CONTEXTMENU);
+    wxAcceleratorTable accel(4, entries);
 
     SetAcceleratorTable(accel);
 
@@ -377,8 +378,7 @@ void frmMain::Refresh(pgObject *data)
             browser->Delete(currentItem);
         }
     }
-    wxTreeEvent event;
-	OnTreeSelChanged(event);
+	execSelChange(currentItem);
     browser->Thaw();
     EndMsg();
 }

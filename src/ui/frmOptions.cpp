@@ -31,6 +31,7 @@ extern wxArrayString existingLangNames;
 
 #define nbOptions                   CTRL("nbOptions", wxNotebook)
 #define txtSqlHelpSite              CTRL("txtSqlHelpSite", wxTextCtrl)
+#define txtProxy                    CTRL("txtProxy", wxTextCtrl)
 #define txtLogfile                  CTRL("txtLogfile", wxTextCtrl)
 #define radLoglevel                 CTRL("radLoglevel", wxRadioBox)
 #define txtMaxRows                  CTRL("txtMaxRows", wxTextCtrl)
@@ -90,6 +91,7 @@ frmOptions::frmOptions(frmMain *parent)
     chkStickySql->SetValue(settings->GetStickySql());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
+    txtProxy->SetValue(settings->GetProxy());
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
 
 
@@ -185,9 +187,11 @@ void frmOptions::OnOK(wxCommandEvent &ev)
             settings->SetSqlHelpSite(txtSqlHelpSite->GetValue());
         else
             settings->SetSqlHelpSite(txtSqlHelpSite->GetValue() + wxT("/"));
-    } else
+    }
+    else
         settings->SetSqlHelpSite(wxT(""));
-
+    
+    settings->SetProxy(txtProxy->GetValue());
 
     int langNo=cbLanguage->GetSelection();
     if (langNo >= 0)

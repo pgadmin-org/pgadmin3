@@ -160,6 +160,8 @@ void pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
     browser->AppendItem(GetId(), label, object->GetIcon(), -1, object);
     if (object->IsCollection())
         object->ShowTreeDetail(browser);
+    else if (object->WantDummyChild())
+        browser->AppendItem(object->GetId(), wxT("Dummy"));
 }
 
 

@@ -83,16 +83,17 @@ private:
     void OnSql(wxCommandEvent& event);
     void OnMaintenance(wxCommandEvent& event);
     void OnStatus(wxCommandEvent& event);
+    void OnContextMenu(wxCommandEvent& event);
 
     
     void OnPropSelChanged(wxListEvent& event);
-    
     void OnTreeSelChanged(wxTreeEvent &event);
     void OnTreeKeyDown(wxTreeEvent& event);
     void OnConnect(wxCommandEvent &ev);
     void OnSelActivated(wxTreeEvent& event);
     void OnSelRightClick(wxTreeEvent& event);
     void OnCollapse(wxTreeEvent& event);
+    void OnExpand(wxTreeEvent& event);
     void OnClose(wxCloseEvent& event);
 
     void OnNew(wxCommandEvent& event);
@@ -105,6 +106,7 @@ private:
     void OnDisconnect(wxCommandEvent &ev);
     void OnQueryBuilder(wxCommandEvent &ev);
 
+    void execSelChange(wxTreeItemId item);
     void StoreServers();
     void RetrieveServers();
     int ReconnectServer(pgServer *server);

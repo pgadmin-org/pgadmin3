@@ -101,8 +101,10 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_NEW+PG_INDEX,              frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_RULE,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_TRIGGER,            frmMain::OnNew)
+    EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER,       frmMain::OnTreeSelChanged)
+    EVT_TREE_ITEM_EXPANDING(CTL_BROWSER,    frmMain::OnExpand)
     EVT_TREE_ITEM_COLLAPSING(CTL_BROWSER,   frmMain::OnCollapse)
     EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER,    frmMain::OnSelActivated)
     EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  frmMain::OnSelRightClick) 
@@ -278,6 +280,23 @@ void frmMain::OnCollapse(wxTreeEvent &event)
         event.Veto();
 #endif
     denyCollapseItem=wxTreeItemId();
+}
+
+
+void frmMain::OnExpand(wxTreeEvent &event)
+{
+    long cookie;
+    wxTreeItemId item=browser->GetFirstChild(event.GetItem(), cookie);
+    if (item && !browser->GetItemData(item))
+    {
+        // the expanding node has a dummy item.
+        // delete dummy item, and expand kids.
+        execSelChange(event.GetItem());
+
+        // we don't have any kids, so don't expand
+        if (!browser->GetChildrenCount(event.GetItem()))
+            event.Veto();
+    }
 }
 
 
@@ -527,6 +546,12 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 {
     denyCollapseItem=wxTreeItemId();
 	// Reset the listviews/SQL pane
+    execSelChange(event.GetItem());
+}
+
+
+void frmMain::execSelChange(wxTreeItemId item)
+{
     properties->ClearAll();
     properties->InsertColumn(0, _("Properties"), wxLIST_FORMAT_LEFT, 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
@@ -542,12 +567,19 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
-    wxTreeItemId item = browser->GetSelection();
     pgObject *data = (pgObject *)browser->GetItemData(item);
 
     // If we didn't get an object, then we may have a right click, or 
     // invalid click, so ignore.
     if (!data) return;
+
+    long cookie;
+    wxTreeItemId childItem=browser->GetFirstChild(item, cookie);
+    if (childItem && !browser->GetItemData(childItem))
+    {
+        // The child was a dummy item, which will be replaced by the following ShowTreeDetail by true items
+        browser->Delete(childItem);
+    }
 
     int type = data->GetType();
     pgServer *server=0;
@@ -713,7 +745,7 @@ void frmMain::OnDisconnect(wxCommandEvent &ev)
         browser->SetItemImage(item, PGICON_SERVERBAD, wxTreeItemIcon_Selected);
         browser->DeleteChildren(item);
         wxTreeEvent tev;
-        OnTreeSelChanged(tev);
+        execSelChange(item);
     }
 }
 
@@ -765,8 +797,32 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
 #endif
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
-// This handler will display a popup menu for the item
+// This handler will display a popup menu for the currently selected item
+////////////////////////////////////////////////////////////////////////////////
+void frmMain::OnContextMenu(wxCommandEvent& event)
+{
+    if (FindFocus() == browser)
+    {
+        wxRect rect;
+        browser->GetBoundingRect(browser->GetSelection(), rect);
+        wxPoint point = rect.GetPosition();
+	    wxPoint origin = GetClientAreaOrigin();
+
+	    // Because this Tree is inside a vertical splitter, we
+	    // must compensate for the size of the other elements
+	    point.x += origin.x;
+	    point.y += origin.y;
+
+	    // popup the menu
+	    PopupMenu(treeContextMenu, point);
+    }
+}
+
+    
+////////////////////////////////////////////////////////////////////////////////
+// This handler will display a popup menu for the item at the mouse position
 ////////////////////////////////////////////////////////////////////////////////
 void frmMain::OnSelRightClick(wxTreeEvent& event)
 {

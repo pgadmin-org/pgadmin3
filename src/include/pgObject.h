@@ -135,6 +135,7 @@ public:
     virtual bool CanDrop() { return false; }
     virtual bool CanMaintenance() { return false; }
     virtual bool RequireDropConfirm() { return false; }
+    virtual bool WantDummyChild() { return false; }
 
 protected:
     void CreateListColumns(wxListCtrl *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));

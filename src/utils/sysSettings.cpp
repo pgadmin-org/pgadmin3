@@ -15,6 +15,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/config.h>
+#include <wx/url.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -55,6 +56,8 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
         if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
             sqlHelpSite += wxT("/");
     }
+    Read(wxT("Proxy"), &proxy, wxT(""));
+    SetProxy(proxy);
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
     maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);
@@ -100,6 +103,7 @@ sysSettings::~sysSettings()
     Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
     Write(wxT("SqlHelpSite"), sqlHelpSite);
+    Write(wxT("Proxy"), proxy);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
     Write(wxT("frmQuery/FontPointSize"), fontPointSize);
@@ -107,6 +111,15 @@ sysSettings::~sysSettings()
     Write(wxT("frmQuery/FontStyle"), fontStyle);
     Write(wxT("frmQuery/FontWeight"), fontWeight);
     Write(wxT("frmQuery/FontFace"), fontFace);
+}
+
+
+void sysSettings::SetProxy(const wxString &s)
+{
+    proxy=s;
+    if (!s.IsEmpty() && s.Find(':') < 0)
+        proxy += wxT(":80");
+    wxURL::SetDefaultProxy(proxy);
 }
 
 //////////////////////////////////////////////////////////////////////////

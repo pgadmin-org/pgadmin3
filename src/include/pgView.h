@@ -34,6 +34,8 @@ public:
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanView() { return true; }
+    bool WantDummyChild() { return true; }
+
     wxMenu *GetNewMenu();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

@@ -271,6 +271,9 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             else    
                 browser->AppendItem(collectionItem, nodeName, data->GetIcon(), -1, data);
 
+            if (data->WantDummyChild())
+                browser->AppendItem(data->GetId(), wxT("Dummy"));
+
             if (browser->GetSelection() == collectionItem)
                 collection->ShowTreeDetail(browser, 0, properties);
             else

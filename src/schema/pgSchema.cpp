@@ -199,7 +199,7 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), schema->GetIdentifier(), PGICON_SCHEMA, -1, schema);
+                collection->AppendBrowserItem(browser, schema);
 				schemas->MoveNext();
             }
             else

@@ -67,6 +67,8 @@ public:
 
     wxString GetSqlHelpSite() const { return sqlHelpSite; }
     void SetSqlHelpSite(const wxString& s) { sqlHelpSite = s; }
+    wxString GetProxy() const { return proxy; }
+    void SetProxy(const wxString& s);
 
     bool GetExplainVerbose() const { return explainVerbose; }
     void SetExplainVerbose(const bool b) { explainVerbose=b; }
@@ -122,7 +124,7 @@ private:
 
     bool explainVerbose, explainAnalyze;
 
-    wxString sqlHelpSite;
+    wxString sqlHelpSite, proxy;
     wxString canonicalLanguage;
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
