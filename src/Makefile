@@ -13,8 +13,8 @@ OBJECTS = $(PROGRAM).o \
           ui/forms/frmAbout.o \
           ui/forms/frmMain.o \
           ui/forms/frmSplash.o \
-          ui/controls/ctlSQLBox.o
-
+          ui/controls/ctlSQLBox.o \
+          utils/sysLogger.o
 
 .SUFFIXES:	.o .cpp
 
@@ -30,3 +30,4 @@ clean:
 	rm -f *.o $(PROGRAM)
 	rm -f ui/*.o
 	rm -f ui/forms/*.o
+  rm -f utils/*.o

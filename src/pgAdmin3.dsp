@@ -121,6 +121,10 @@ SOURCE=.\pgAdmin3.cpp
 !ENDIF 
 
 # End Source File
+# Begin Source File
+
+SOURCE=.\utils\sysLogger.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -144,6 +148,10 @@ SOURCE=.\ui\forms\frmSplash.h
 # Begin Source File
 
 SOURCE=.\pgAdmin3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\utils\sysLogger.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

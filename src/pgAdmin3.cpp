@@ -14,6 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "utils/sysLogger.h"
 #include "ui/forms/frmMain.h"
 #include "ui/forms/frmSplash.h"
 
@@ -21,10 +22,19 @@ IMPLEMENT_APP(pgAdmin3)
 
 // Globals
 frmMain *winMain;
+wxLog *objLogger;
 
 // The Application!
 bool pgAdmin3::OnInit()
 {
+
+  // Setup logging first
+  objLogger = new sysLogger();
+  wxLog::SetActiveTarget(objLogger);
+
+  wxLogMessage("%s", "This is a message");
+
+
   // We need JPEG Support
   wxImage::AddHandler(new wxJPEGHandler);
   
