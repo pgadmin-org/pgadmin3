@@ -381,13 +381,13 @@ void frmQuery::OnChange(wxNotifyEvent& event)
 
 void frmQuery::openLastFile()
 {
-    FILE *f=fopen(lastPath.c_str(), "rb");
+    FILE *f=fopen(lastPath.c_str(), "rt");
     if (f)
     {
         fseek(f, 0, SEEK_END);
         int len=ftell(f);
         fseek(f, 0, SEEK_SET);
-        wxString buf("", len+1);
+        wxString buf("\0", len+1);
         fread((char*)buf.c_str(), len, 1, f);
         fclose(f);
         ((char*)buf.c_str())[len]=0;
