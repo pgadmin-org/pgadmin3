@@ -149,7 +149,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             wxT(" ORDER BY proname"));
 
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
-                    "SELECT oid, typname FROM pg_type"));
+                    "SELECT t.oid, t.typname, n.nspname FROM pg_type t, pg_namespace n WHERE t.typnamespace = n.oid"));
 
     if (functions)
     {
@@ -181,13 +181,18 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
                     while (types->GetVal(0) != str)
                         types->MoveNext();
 
-                    if (!argTypes.IsNull())
-		    {
+                    if (!argTypes.IsNull()) {
                         argTypes += wxT(", ");
                         quotedArgTypes += wxT(", ");
-		    }
-                    argTypes += types->GetVal(1);
-                    quotedArgTypes += qtIdent(types->GetVal(1));
+					}
+
+					if (types->GetVal(1) != wxT("pg_catalog")) {
+						argTypes += types->GetVal(2) + wxT(".") + types->GetVal(1);
+						quotedArgTypes += qtIdent(types->GetVal(2)) + wxT(".") + qtIdent(types->GetVal(1));
+					} else {
+						argTypes += types->GetVal(1);
+						quotedArgTypes += qtIdent(types->GetVal(1));
+					}
 
                 }
             }
