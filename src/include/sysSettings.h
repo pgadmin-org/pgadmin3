@@ -27,28 +27,28 @@ public:
 
     // frmMain size/position
     int GetFrmMainWidth();
-    void SetFrmMainWidth(int iNewVal);
+    void SetFrmMainWidth(const int iNewVal);
 
     int GetFrmMainHeight();
-    void SetFrmMainHeight(int iNewVal);
+    void SetFrmMainHeight(const int iNewVal);
 
     int GetFrmMainTop();
-    void SetFrmMainTop(int iNewVal);
+    void SetFrmMainTop(const int iNewVal);
 
     int GetFrmMainLeft();
-    void SetFrmMainLeft(int iNewVal);
+    void SetFrmMainLeft(const int iNewVal);
 
     // Tip Of The Day
     bool GetShowTipOfTheDay();
-    void SetShowTipOfTheDay(bool bNewVal);
+    void SetShowTipOfTheDay(const bool bNewVal);
     int GetNextTipOfTheDay();
-    void SetNextTipOfTheDay(int iNewVal);
+    void SetNextTipOfTheDay(const int iNewVal);
 
     // Log
     wxString GetLogFile() const;
     void SetLogFile(const wxString& szNewVal);
     int GetLogLevel();
-    void SetLogLevel(int iNewVal);
+    void SetLogLevel(const int iNewVal);
 
     // Last connection
     wxString GetLastServer() const;
@@ -58,7 +58,11 @@ public:
     wxString GetLastUsername() const;
     void SetLastUsername(const wxString& szNewVal);
     int GetLastPort();
-    void SetLastPort(int iNewVal);
+    void SetLastPort(const int iNewVal);
+
+    // Show System Objects
+    bool GetShowSystemObjects();
+    void SetShowSystemObjects(const bool bNewShowSystemObjects);
 
     // The main config object
     wxConfig sysConfig;
@@ -83,6 +87,9 @@ private:
     wxString szLastDatabase;
     wxString szLastUsername;
     int iLastPort;
+
+    // Show System Objects
+    bool bShowSystemObjects;
 };
 
 #endif

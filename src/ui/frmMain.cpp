@@ -91,6 +91,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_OPTIONS, frmMain::OnOptions)
     EVT_MENU(MNU_PASSWORD, frmMain::OnPassword)
     EVT_MENU(MNU_SAVEDEFINITION, frmMain::OnSaveDefinition)
+    EVT_MENU(MNU_SYSTEMOBJECTS, frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER, frmMain::OnSelChanged)
@@ -100,6 +101,9 @@ END_EVENT_TABLE()
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
+
+    extern sysSettings *objSettings;
+
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
 
@@ -125,7 +129,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // View Menu
     mnuView = new wxMenu();
-    mnuView->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects."));
+    mnuView->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects."), wxITEM_CHECK);
     mnuBar->Append(mnuView, wxT("&View"));
 
     // Help Menu
@@ -139,6 +143,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     // Add the Menubar and set some options
     SetMenuBar(mnuBar);
     mnuFile->Enable(MNU_PASSWORD, FALSE);
+    mnuView->Check(MNU_SYSTEMOBJECTS, objSettings->GetShowSystemObjects());
 
     // Status bar
     CreateStatusBar(3);
@@ -360,6 +365,41 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
         return;
     }
 
+}
+
+void frmMain::OnShowSystemObjects(wxCommandEvent& event)
+{
+    extern sysSettings *objSettings;
+
+    // Warn the user
+    if (wxMessageBox(wxT("Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n\nAre you sure you wish to continue?"),
+                     wxT("Continue?"), wxYES_NO | wxICON_QUESTION) == wxNO) {
+        mnuView->Check(MNU_SYSTEMOBJECTS, objSettings->GetShowSystemObjects());
+        return;
+    }
+
+    if (objSettings->GetShowSystemObjects()) {
+        objSettings->SetShowSystemObjects(FALSE);
+        mnuView->Check(MNU_SYSTEMOBJECTS, FALSE);
+    } else {
+        objSettings->SetShowSystemObjects(TRUE);
+        mnuView->Check(MNU_SYSTEMOBJECTS, TRUE);
+    }
+
+    wxLogInfo(wxT("Clearing treeview to toggle ShowSystemObjects"));
+
+    // Clear the treeview
+    tvBrowser->DeleteAllItems();
+
+    // Add the root node
+    pgObject *objServers = new pgObject(PG_SERVERS, wxString("Servers"));
+    itmServers = tvBrowser->AddRoot(wxT("Servers"), 0, -1, objServers);
+    pgObject *objAddServer = new pgObject(PG_ADD_SERVER, wxString("Add Server"));
+    wxTreeItemId itmAddServer = tvBrowser->AppendItem(itmServers, wxT("Add Server..."), 0, -1, objAddServer);
+    tvBrowser->Expand(itmServers);
+    tvBrowser->SelectItem(itmServers);
+
+    RetrieveServers();
 }
 
 void frmMain::OnAddServer()
@@ -765,6 +805,7 @@ void frmMain::svServer(pgServer *objServer)
 
 void frmMain::tvDatabases(pgCollection *objCollection)
 {
+    extern sysSettings *objSettings;
     wxString szMsg;
     pgDatabase *objDatabase;
 
@@ -795,8 +836,14 @@ void frmMain::tvDatabases(pgCollection *objCollection)
             objDatabase->iSetVariables(rsDatabases.GetVal(wxT("datconfig")));
             objDatabase->iSetAllowConnections(StrToBool(rsDatabases.GetVal(wxT("datallowconn"))));
 
-            // Add the treeview node
-            itmNewNode = tvBrowser->AppendItem(objCollection->GetId(), objDatabase->GetIdentifier(), 15, -1, objDatabase);
+            // Add the treeview node if required
+            if (objSettings->GetShowSystemObjects())
+                itmNewNode = tvBrowser->AppendItem(objCollection->GetId(), objDatabase->GetIdentifier(), 15, -1, objDatabase);
+            else {
+                if (!objDatabase->GetSystemObject())
+                    itmNewNode = tvBrowser->AppendItem(objCollection->GetId(), objDatabase->GetIdentifier(), 15, -1, objDatabase);
+            }
+
 
             rsDatabases.MoveNext();
         }

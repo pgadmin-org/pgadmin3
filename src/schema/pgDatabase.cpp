@@ -123,6 +123,16 @@ bool pgDatabase::GetConnected()
     return bConnected;
 }
 
+bool pgDatabase::GetSystemObject()
+{
+    if (objServer) {
+        if (this->GetName() == wxT("template0")) return TRUE;
+        return (this->GetOid() <= objServer->GetLastSystemOID());
+    } else {
+        return FALSE;
+    }
+}
+
 wxString pgDatabase::GetSql() const
 {
     wxString szSQL;

@@ -192,9 +192,5 @@ void pgObject::iSetAcl(const wxString& szNewVal)
 
 bool pgObject::GetSystemObject()
 {
-    return bSystemObject;
-}
-void pgObject::iSetSystemObject(bool bNewVal)
-{
-    bSystemObject = bNewVal;
+    return FALSE;
 }

@@ -64,8 +64,7 @@ public:
     void iSetComment(const wxString& szNewVal);
     wxString GetAcl() const;
     void iSetAcl(const wxString& szNewVal);
-    bool GetSystemObject();
-    void iSetSystemObject(bool bNewVal);
+    virtual bool GetSystemObject();
 
 protected:
     void vCtor(int iNewType = PG_NONE, const wxString& szNewName = wxString(""));
@@ -74,7 +73,6 @@ private:
     wxString szTypeName, szName, szOwner, szComment, szAcl;
     int iType;
     double dOid;
-    bool bSystemObject;
 };
 
 #endif

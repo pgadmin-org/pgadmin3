@@ -49,6 +49,9 @@ sysSettings::sysSettings() : sysConfig(APPNAME_S)
     sysConfig.Read(wxT("LastUsername"), &szLastUsername, wxT("postgres")); 
     sysConfig.Read(wxT("LastPort"), &iLastPort, 5432);
 
+    // Show System Objects
+    sysConfig.Read(wxT("ShowSystemObjects"), &bShowSystemObjects, FALSE); 
+
 }
 
 
@@ -70,7 +73,7 @@ int sysSettings::GetFrmMainWidth()
 {
     return iFrmMainWidth;
 }
-void sysSettings::SetFrmMainWidth(int iNewVal)
+void sysSettings::SetFrmMainWidth(const int iNewVal)
 {
     iFrmMainWidth = iNewVal;
 }
@@ -79,7 +82,7 @@ int sysSettings::GetFrmMainHeight()
 {
     return iFrmMainHeight;
 }
-void sysSettings::SetFrmMainHeight(int iNewVal)
+void sysSettings::SetFrmMainHeight(const int iNewVal)
 {
     iFrmMainHeight = iNewVal;
 }
@@ -88,7 +91,7 @@ int sysSettings::GetFrmMainTop()
 {
     return iFrmMainTop;
 }
-void sysSettings::SetFrmMainTop(int iNewVal)
+void sysSettings::SetFrmMainTop(const int iNewVal)
 {
     iFrmMainTop = iNewVal;
 }
@@ -97,7 +100,7 @@ int sysSettings::GetFrmMainLeft()
 {
     return iFrmMainLeft;
 }
-void sysSettings::SetFrmMainLeft(int iNewVal)
+void sysSettings::SetFrmMainLeft(const int iNewVal)
 {
     iFrmMainLeft = iNewVal;
 }
@@ -110,7 +113,7 @@ bool sysSettings::GetShowTipOfTheDay()
 {
     return bShowTipOfTheDay;
 }
-void sysSettings::SetShowTipOfTheDay(bool bNewVal)
+void sysSettings::SetShowTipOfTheDay(const bool bNewVal)
 {
     bShowTipOfTheDay = bNewVal;
     sysConfig.Write(wxT("ShowTipOfTheDay"), bShowTipOfTheDay);
@@ -120,7 +123,7 @@ int sysSettings::GetNextTipOfTheDay()
 {
     return iNextTipOfTheDay;
 }
-void sysSettings::SetNextTipOfTheDay(int iNewVal)
+void sysSettings::SetNextTipOfTheDay(const int iNewVal)
 {
     iNextTipOfTheDay = iNewVal;
     sysConfig.Write(wxT("NextTipOfTheDay"), iNextTipOfTheDay);
@@ -144,7 +147,7 @@ int sysSettings::GetLogLevel()
 {
     return iLogLevel;
 }
-void sysSettings::SetLogLevel(int iNewVal)
+void sysSettings::SetLogLevel(const int iNewVal)
 {
     iLogLevel = iNewVal;
     sysConfig.Write(wxT("LogLevel"), iLogLevel);
@@ -188,8 +191,22 @@ int sysSettings::GetLastPort()
 {
     return iLastPort;
 }
-void sysSettings::SetLastPort(int iNewVal)
+void sysSettings::SetLastPort(const int iNewVal)
 {
     iLastPort = iNewVal;
     sysConfig.Write(wxT("LastPort"), iLastPort);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Show System Objects
+//////////////////////////////////////////////////////////////////////////
+
+bool sysSettings::GetShowSystemObjects()
+{
+    return bShowSystemObjects;
+}
+void sysSettings::SetShowSystemObjects(const bool bNewVal)
+{
+    bShowSystemObjects = bNewVal;
+    sysConfig.Write(wxT("ShowSystemObjects"), bShowSystemObjects);
 }
