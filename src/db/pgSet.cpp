@@ -120,7 +120,7 @@ long pgSet::GetLong(int col) const
 
 long pgSet::GetLong(const wxString &col)
 {
-    return GetLong(ColNumber(col));
+    return GetLong((long)ColNumber(col));
 }
 
 
