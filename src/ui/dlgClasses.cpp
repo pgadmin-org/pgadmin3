@@ -220,6 +220,9 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
 
         wxLongLong startTime=wxGetLocalTimeMillis();
         thread->Run();
+        wxNotebook *nb=CTRL_NOTEBOOK("nbNotebook");
+        if (nb)
+            nb->SetSelection(nb->GetPageCount()-1);
 
         while (thread && thread->IsRunning())
         {
@@ -296,30 +299,44 @@ ExternProcessDialog::~ExternProcessDialog()
 void ExternProcessDialog::OnOK(wxCommandEvent& ev)
 {
     if (!done)
-    {
-        btnOK->Disable();
-
-        wxString cmd=GetCmd();
-        if (txtMessages)
-            txtMessages->AppendText(GetDisplayCmd() + END_OF_LINE);
-
-        process = new wxProcess(this);
-        process->Redirect();
-        if (wxExecute(cmd, wxEXEC_ASYNC, process))
-        {
-            if (txtMessages)
-            {
-                readStream();
-                timer->Start(100L);
-            }
-        }
-        else
-            delete process;
-    }
+        Execute(0);
     else
     {
         Abort();
         pgDialog::OnCancel(ev);
+    }
+}
+
+
+bool ExternProcessDialog::Execute(int step)
+{
+    btnOK->Disable();
+
+    if (txtMessages)
+        txtMessages->AppendText(GetDisplayCmd(step) + END_OF_LINE);
+
+    if (process)
+        delete process;
+
+    process = new wxProcess(this);
+    process->Redirect();
+    pid = wxExecute(GetCmd(step), wxEXEC_ASYNC, process);
+    if (pid)
+    {
+        wxNotebook *nb=CTRL_NOTEBOOK("nbNotebook");
+        if (nb)
+            nb->SetSelection(nb->GetPageCount()-1);
+        if (txtMessages)
+        {
+            checkStreams();
+            timer->Start(100L);
+        }
+        return true;
+    }
+    else
+    {
+        delete process;
+        return false;
     }
 }
 
@@ -346,11 +363,11 @@ void ExternProcessDialog::OnClose(wxCloseEvent &ev)
 
 void ExternProcessDialog::OnPollProcess(wxTimerEvent& event)
 {
-    readStream();
+    checkStreams();
 }
 
 
-void ExternProcessDialog::readStream()
+void ExternProcessDialog::checkStreams()
 {
     if (txtMessages && process)
     {
@@ -385,14 +402,26 @@ void ExternProcessDialog::readStream(wxInputStream *input)
 void ExternProcessDialog::OnEndProcess(wxProcessEvent &ev)
 {
     if (process)
+    {
+        btnOK->SetLabel(_("Done"));
         done=true;
-    readStream();
-
+    }
     timer->Stop();
+
+    if (txtMessages)
+    {
+        checkStreams();
+        txtMessages->AppendText(END_OF_LINE
+                              + wxString::Format(_("Process returned exit code %d."), ev.GetExitCode())
+                              + END_OF_LINE);
+    }
+
     if (process)
     {
+        wxKill(ev.GetPid(), wxSIGTERM);
         delete process;
         process=0;
+        pid=0;
     }
     btnOK->Enable();
     btnCancel->Enable();
@@ -407,6 +436,8 @@ void ExternProcessDialog::Abort()
         done=false;
         wxProcess *tmpProcess=process;
         process=0;
+        wxKill(pid, wxSIGTERM);
+        pid=0;
         delete tmpProcess;
     }
 }

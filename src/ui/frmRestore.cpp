@@ -20,6 +20,8 @@
 #include "sysLogger.h"
 #include "pgSchema.h"
 #include "pgTable.h"
+#include <wx/process.h>
+#include <wx/textbuf.h>
 
 // Icons
 #include "images/restore.xpm"
@@ -28,12 +30,6 @@
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
 #define txtFilename             CTRL_TEXT("txtFilename")
 #define btnFilename             CTRL_BUTTON("btnFilename")
-#define rbxFormat               CTRL_RADIOBOX("rbxFormat")
-#define chkBlobs                CTRL_CHECKBOX("chkBlobs")
-#define chkOid                  CTRL_CHECKBOX("chkOid")
-#define chkInsert               CTRL_CHECKBOX("chkInsert")
-#define chkDisableDollar        CTRL_CHECKBOX("chkDisableDollar")
-#define sbxPlainOptions         CTRL_STATICBOX("sbxPlainOptions")
 #define chkOnlyData             CTRL_CHECKBOX("chkOnlyData")
 #define chkOnlySchema           CTRL_CHECKBOX("chkOnlySchema")
 #define chkNoOwner              CTRL_CHECKBOX("chkNoOwner")
@@ -42,21 +38,25 @@
 #define chkDisableTrigger       CTRL_CHECKBOX("chkDisableTrigger")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
 
+#define lstContents             CTRL_LISTVIEW("lstContents")
+#define btnView                 CTRL_BUTTON("btnView")
+
 
 BEGIN_EVENT_TABLE(frmRestore, ExternProcessDialog)
-    EVT_TEXT(XRCID("txtFilename"),          frmRestore::OnChangeName)
+    EVT_TEXT(XRCID("txtFilename"),          frmRestore::OnChange)
     EVT_BUTTON(XRCID("btnFilename"),        frmRestore::OnSelectFilename)
-    EVT_RADIOBOX(XRCID("rbxFormat"),        frmRestore::OnChangePlain)
-    EVT_CHECKBOX(XRCID("chkOnlyData"),      frmRestore::OnChangePlain)
-    EVT_CHECKBOX(XRCID("chkOnlySchema"),    frmRestore::OnChangePlain)
-    EVT_CHECKBOX(XRCID("chkNoOwner"),       frmRestore::OnChangePlain)
+    EVT_BUTTON(XRCID("btnOK"),              frmRestore::OnOK)
+    EVT_BUTTON(XRCID("btnView"),            frmRestore::OnView)
+    EVT_END_PROCESS(-1,                     frmRestore::OnEndProcess)
+    EVT_CLOSE(                              ExternProcessDialog::OnClose)
 END_EVENT_TABLE()
 
 
 
-frmRestore::frmRestore(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
+frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form)
 {
     object=obj;
+    form=_form;
     wxLogInfo(wxT("Creating a restore dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -74,7 +74,7 @@ frmRestore::frmRestore(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     btnOK->Disable();
 
     wxCommandEvent ev;
-    OnChangePlain(ev);
+    OnChange(ev);
     CenterOnParent();
 }
 
@@ -102,35 +102,20 @@ void frmRestore::OnSelectFilename(wxCommandEvent &ev)
     if (file.ShowModal() == wxID_OK)
     {
         txtFilename->SetValue(file.GetPath());
-        OnChangeName(ev);
+        OnChange(ev);
     }
 }
 
 
-void frmRestore::OnChangeName(wxCommandEvent &ev)
+void frmRestore::OnChange(wxCommandEvent &ev)
 {
-    btnOK->Enable(!txtFilename->GetValue().IsEmpty());
+    bool filenameValid=!txtFilename->GetValue().IsEmpty();
+    btnOK->Enable(filenameValid);
+    btnView->Enable(filenameValid);
 }
 
 
-void frmRestore::OnChangePlain(wxCommandEvent &ev)
-{
-    bool isPlain = (rbxFormat->GetSelection() == 2);
-    sbxPlainOptions->Enable(isPlain);
-    chkBlobs->Enable(!isPlain);
-    chkOnlyData->Enable(isPlain && !chkOnlySchema->GetValue());
-    if (isPlain)
-        isPlain = !chkOnlyData->GetValue();
-
-    chkOnlySchema->Enable(isPlain);
-    chkNoOwner->Enable(isPlain);
-    chkDropDb->Enable(isPlain);
-    chkCreateDb->Enable(isPlain);
-    chkDisableTrigger->Enable(isPlain);
-}
-
-
-wxString frmRestore::GetCmd()
+wxString frmRestore::GetCmd(int step)
 {
     wxString cmd = getCmdPart1();
     pgServer *server=object->GetDatabase()->GetServer();
@@ -138,11 +123,11 @@ wxString frmRestore::GetCmd()
     if (!server->GetTrusted())
         cmd += wxT(" -W ") + server->GetPassword();
 
-    return cmd + getCmdPart2();
+    return cmd + getCmdPart2(step);
 }
 
 
-wxString frmRestore::GetDisplayCmd()
+wxString frmRestore::GetDisplayCmd(int step)
 {
     wxString cmd = getCmdPart1();
     pgServer *server=object->GetDatabase()->GetServer();
@@ -150,7 +135,7 @@ wxString frmRestore::GetDisplayCmd()
     if (!server->GetTrusted())
         cmd += wxT(" -W ****");
 
-    return cmd + getCmdPart2();
+    return cmd + getCmdPart2(step);
 }
 
 
@@ -168,67 +153,125 @@ wxString frmRestore::getCmdPart1()
 }
 
 
-wxString frmRestore::getCmdPart2()
+wxString frmRestore::getCmdPart2(int step)
 {
     wxString cmd;
     // if (server->GetSSL())
     // pg_dump doesn't support ssl
 
-    switch (rbxFormat->GetSelection())
+    if (step)
     {
-        case 0: // compressed
-        case 1: // tar
+        cmd.Append(wxT(" -l"));
+    }
+    else
+    {
+        if (chkOnlyData->GetValue())
+            cmd.Append(wxT(" -a"));
+        else
         {
-            if (chkBlobs->GetValue())
-                cmd.Append(wxT(" -b"));
-            break;
+            if (chkOnlySchema->GetValue())
+                cmd.Append(wxT(" -s"));
+            if (chkOnlySchema->GetValue())
+                cmd.Append(wxT(" -s"));
+            if (chkNoOwner->GetValue())
+                cmd.Append(wxT(" -O"));
+            if (chkCreateDb->GetValue())
+                cmd.Append(wxT(" -C"));
+            if (chkDropDb->GetValue())
+                cmd.Append(wxT(" -c"));
+            if (chkDisableTrigger->GetValue())
+                cmd.Append(wxT(" --disable-triggers"));
         }
-        case 2:
-        {
-            if (chkOnlyData->GetValue())
-                cmd.Append(wxT(" -a"));
-            else
-            {
-                if (chkOnlySchema->GetValue())
-                    cmd.Append(wxT(" -s"));
-                if (chkOnlySchema->GetValue())
-                    cmd.Append(wxT(" -s"));
-                if (chkNoOwner->GetValue())
-                    cmd.Append(wxT(" -O"));
-                if (chkCreateDb->GetValue())
-                    cmd.Append(wxT(" -C"));
-                if (chkDropDb->GetValue())
-                    cmd.Append(wxT(" -c"));
-                if (chkDisableTrigger->GetValue())
-                    cmd.Append(wxT(" --disable-triggers"));
-            }
-            break;
-        }
+        if (chkVerbose->GetValue())
+            cmd.Append(wxT(" -v"));
     }
 
-    if (chkOid->GetValue())
-        cmd.Append(wxT(" -o"));
-    if (chkInsert->GetValue())
-        cmd.Append(wxT(" -D"));
-    if (chkDisableDollar->GetValue())
-        cmd.Append(wxT(" --disable-dollar-quoting"));
-    if (chkVerbose->GetValue())
-        cmd.Append(wxT(" -v"));
 
-    cmd.Append(wxT(" -f \"") + txtFilename->GetValue() + wxT("\""));
-
-    pgSchema *schema=0;
-    if (object->GetType() == PG_SCHEMA)
-        schema =(pgSchema*)object;
-    else if (object->GetType() == PG_TABLE)
-        cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
-
-    if (schema)
-        cmd.Append(wxT(" -n ") + schema->GetQuotedIdentifier());
-
-    cmd.Append(wxT(" ") + object->GetDatabase()->GetQuotedIdentifier());
+    cmd.Append(wxT(" \"") + txtFilename->GetValue() + wxT("\""));
 
     return cmd;
+}
+
+
+void frmRestore::OnView(wxCommandEvent &ev)
+{
+    btnView->Disable();
+    btnOK->Disable();
+    viewRunning = true;
+    Execute(1);
+}
+
+
+void frmRestore::OnOK(wxCommandEvent &ev)
+{
+    viewRunning = false;
+    btnView->Disable();
+    wxMessageBox(wxT("Expecting too much..."));
+//    ExternProcessDialog::OnOK(ev);
+}
+
+
+void frmRestore::OnEndProcess(wxProcessEvent& ev)
+{
+    ExternProcessDialog::OnEndProcess(ev);
+
+    if (done && viewRunning && !ev.GetExitCode())
+    {
+        lstContents->CreateColumns(form, _("Type"), _("Name"));
+
+        wxString str=wxTextBuffer::Translate(txtMessages->GetValue(), wxTextFileType_Unix);
+
+        wxStringTokenizer line(str, wxT("\n"));
+        line.GetNextToken();
+        while (line.HasMoreTokens())
+        {
+            str=line.GetNextToken();
+            if (str.Left(2) == wxT(";"))
+                continue;
+
+            wxStringTokenizer col(str, wxT(" "));
+            col.GetNextToken();
+            if (!StrToLong(col.GetNextToken().c_str()))
+                continue;
+            col.GetNextToken();
+            wxString type=col.GetNextToken();
+
+            int id=-1;
+            int icon = -1;
+            wxString typname;
+
+            if (type == wxT("PROCEDURAL"))
+            {
+                id=PG_LANGUAGE;
+                type = col.GetNextToken();
+            }
+            else if (type == wxT("FK"))
+            {
+                id=PG_FOREIGNKEY;
+                type = col.GetNextToken();
+            }
+            else if (type == wxT("CONSTRAINT"))
+            {
+                typname = _("Constraint");
+                icon = PGICON_CONSTRAINT;
+            }
+            else
+                id = pgObject::GetTypeId(type);
+
+            wxString name = str.Mid(str.Find(type)+type.Length()+1).BeforeLast(' ');
+            if (id >= 0)
+            {
+                typname = wxGetTranslation(typesList[id].typName);
+                icon = typesList[id].typeIcon;
+            }
+            else if (typname.IsEmpty())
+                typname = type;
+
+            lstContents->AppendItem(icon, typname, name);
+        }
+
+        nbNotebook->SetSelection(1);
+    }
 }
 
 

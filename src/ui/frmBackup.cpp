@@ -44,12 +44,13 @@
 
 
 BEGIN_EVENT_TABLE(frmBackup, ExternProcessDialog)
-    EVT_TEXT(XRCID("txtFilename"),          frmBackup::OnChangeName)
+    EVT_TEXT(XRCID("txtFilename"),          frmBackup::OnChange)
     EVT_BUTTON(XRCID("btnFilename"),        frmBackup::OnSelectFilename)
     EVT_RADIOBOX(XRCID("rbxFormat"),        frmBackup::OnChangePlain)
     EVT_CHECKBOX(XRCID("chkOnlyData"),      frmBackup::OnChangePlain)
     EVT_CHECKBOX(XRCID("chkOnlySchema"),    frmBackup::OnChangePlain)
     EVT_CHECKBOX(XRCID("chkNoOwner"),       frmBackup::OnChangePlain)
+    EVT_CLOSE(                              ExternProcessDialog::OnClose)
 END_EVENT_TABLE()
 
 
@@ -66,6 +67,8 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     SetTitle(wxString::Format(_("Backup %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     canBlob = (obj->GetType() == PG_DATABASE);
+    chkBlobs->SetValue(canBlob);
+    chkDisableDollar->Enable(obj->GetConnection()->BackendMinimumVersion(7, 5));
 
     // Icon
     SetIcon(wxIcon(backup_xpm));
@@ -103,14 +106,15 @@ void frmBackup::OnSelectFilename(wxCommandEvent &ev)
     if (file.ShowModal() == wxID_OK)
     {
         txtFilename->SetValue(file.GetPath());
-        OnChangeName(ev);
+        OnChange(ev);
     }
 }
 
 
-void frmBackup::OnChangeName(wxCommandEvent &ev)
+void frmBackup::OnChange(wxCommandEvent &ev)
 {
-    btnOK->Enable(!txtFilename->GetValue().IsEmpty());
+    if (!process && !done)
+        btnOK->Enable(!txtFilename->GetValue().IsEmpty());
 }
 
 
@@ -131,7 +135,7 @@ void frmBackup::OnChangePlain(wxCommandEvent &ev)
 }
 
 
-wxString frmBackup::GetCmd()
+wxString frmBackup::GetCmd(int step)
 {
     wxString cmd = getCmdPart1();
     pgServer *server=object->GetDatabase()->GetServer();
@@ -143,7 +147,7 @@ wxString frmBackup::GetCmd()
 }
 
 
-wxString frmBackup::GetDisplayCmd()
+wxString frmBackup::GetDisplayCmd(int step)
 {
     wxString cmd = getCmdPart1();
     pgServer *server=object->GetDatabase()->GetServer();
@@ -178,14 +182,22 @@ wxString frmBackup::getCmdPart2()
     switch (rbxFormat->GetSelection())
     {
         case 0: // compressed
+        {
+            cmd.Append(wxT(" -F c"));
+            if (chkBlobs->GetValue())
+                cmd.Append(wxT(" -b"));
+            break;
+        }
         case 1: // tar
         {
+            cmd.Append(wxT(" -F t"));
             if (chkBlobs->GetValue())
                 cmd.Append(wxT(" -b"));
             break;
         }
         case 2:
         {
+            cmd.Append(wxT(" -F p"));
             if (chkOnlyData->GetValue())
                 cmd.Append(wxT(" -a"));
             else

@@ -201,7 +201,7 @@ int dlgProperty::Go(bool modal)
             readOnly=false;
         }
 
-        SetTitle(wxString(typesList[objectType].typName) + wxT(" ") + GetObject()->GetFullIdentifier());
+        SetTitle(wxString(wxGetTranslation(typesList[objectType].typName)) + wxT(" ") + GetObject()->GetFullIdentifier());
     }
     else
     {
@@ -319,6 +319,7 @@ void dlgProperty::PrepareTablespace(wxComboBox *cb, const wxChar *current)
         {
             cb->Append(wxEmptyString);
             FillCombobox(wxT("SELECT spcname FROM pg_tablespace WHERE spcname <> 'global' ORDER BY spcname"), cb);
+            cb->SetSelection(0);
         }
     }
     else

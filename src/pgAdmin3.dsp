@@ -377,23 +377,7 @@ SOURCE=.\utils\misc.cpp
 # Begin Source File
 
 SOURCE=.\utils\precomp.cpp
-
-!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Debug"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
-
 # ADD CPP /Yc"pgAdmin3.h"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1144,6 +1128,10 @@ SOURCE=.\include\images\arguments.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\backup.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\baddatabase.xpm
 # End Source File
 # Begin Source File
@@ -1357,6 +1345,10 @@ SOURCE=.\include\images\refresh.xpm
 # Begin Source File
 
 SOURCE=.\include\images\relationship.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\restore.xpm
 # End Source File
 # Begin Source File
 
@@ -1679,31 +1671,6 @@ SOURCE=.\agent\pgaStep.cpp
 # Begin Source File
 
 SOURCE=.\pgAdmin3.cpp
-
-!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
-
-# ADD CPP /Yc"pgadmin3.h"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
-
-# ADD CPP /Yc"pgadmin3.h"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Debug"
-
-# ADD CPP /Yc"pgadmin3.h"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
-
-# ADD CPP /Yc"pgadmin3.h"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
-
-# ADD CPP /Yc"pgadmin3.h"
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "misc files"

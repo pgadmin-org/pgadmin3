@@ -88,6 +88,7 @@ protected:
 public:
 
     static wxString GetPrivileges(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
+    static int GetTypeId(const wxString &typname);
 
     virtual void ShowProperties() const {};
     virtual pgDatabase *GetDatabase() const { return 0; }

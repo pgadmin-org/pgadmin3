@@ -82,8 +82,24 @@ pgTypes typesList[] =
     {__("Job"), PGAICON_JOB, __("New Job"), __("Create a new Job") },
     {__("Step"), PGAICON_STEP, __("New Step"), __("Create new Step") }, 
     {__("Schedule"), PGAICON_SCHEDULE, __("New Schedule"), __("Create new Schedule") },
-    {__("Unknown"), -1, 0, 0}
+    {__("Unknown"), -1, 0, 0},
+    {0,0,0,0}
 };
+
+
+
+int pgObject::GetTypeId(const wxString &typname)
+{
+    int id;
+
+    for (id=1 ; typesList[id].typName ; id++)
+    {
+        if (typname.IsSameAs(typesList[id].typName, false))
+            return id;
+    }
+
+    return -1;
+}
 
 
 pgObject::pgObject(int newType, const wxString& newName)

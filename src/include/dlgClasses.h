@@ -100,24 +100,24 @@ class ExternProcessDialog : public DialogWithHelp
 public:
     ExternProcessDialog(frmMain *frame);
     ~ExternProcessDialog();
-    virtual wxString GetDisplayCmd()=0;
-    virtual wxString GetCmd()=0;
-
+    virtual wxString GetDisplayCmd(int version)=0;
+    virtual wxString GetCmd(int step)=0;
+    bool Execute(int step=0);
+    void Abort();
 
 protected:
-    wxProcess *process;
-    bool done;
     wxTextCtrl *txtMessages;
+    wxProcess *process;
+    int pid;
+    bool done;
+
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
     void OnClose(wxCloseEvent& event);
     void OnEndProcess(wxProcessEvent& event);
 
-    void Abort();
-
-private:
     void OnPollProcess(wxTimerEvent& event);
-    void readStream();
+    void checkStreams();
     void readStream(wxInputStream *input);
 
     wxTimer *timer;

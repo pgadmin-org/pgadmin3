@@ -26,22 +26,27 @@
 class frmRestore : public ExternProcessDialog
 {
 public:
-    frmRestore(frmMain *form, pgObject *_object);
+    frmRestore(frmMain *_form, pgObject *_object);
     ~frmRestore();
 
     void Go();
-    wxString GetDisplayCmd();
-    wxString GetCmd();
+    wxString GetDisplayCmd(int step);
+    wxString GetCmd(int step);
     
 private:
     wxString GetHelpPage() const;
-    void OnChangeName(wxCommandEvent &ev);
+    void OnChange(wxCommandEvent &ev);
     void OnSelectFilename(wxCommandEvent &ev);
-    void OnChangePlain(wxCommandEvent &ev);
-    wxString getCmdPart1();
-    wxString getCmdPart2();
+    void OnView(wxCommandEvent &ev);
+    void OnOK(wxCommandEvent &ev);
+    void OnEndProcess(wxProcessEvent& event);
 
+    wxString getCmdPart1();
+    wxString getCmdPart2(int step);
+
+    frmMain *form;
     pgObject *object;
+    bool viewRunning;
 
     DECLARE_EVENT_TABLE()
 };

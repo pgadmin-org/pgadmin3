@@ -117,7 +117,9 @@ int dlgTable::Go(bool modal)
         txtComment->SetValue(table->GetComment());
 
         cbOwner->SetValue(table->GetOwner());
-        PrepareTablespace(cbTablespace, table->GetTablespace());
+        PrepareTablespace(cbTablespace);
+        if (!table->GetTablespace().IsEmpty())
+            cbTablespace->SetValue(table->GetTablespace());
 
         wxArrayString qitl=table->GetQuotedInheritedTablesList();
         size_t i;
@@ -128,8 +130,7 @@ int dlgTable::Go(bool modal)
         lbTables->Disable();
         cbTables->Disable();
         chkHasOids->Disable();
-        cbTablespace->Disable();
-
+        cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
         txtOID->Disable();
 
         wxCookieType cookie;
@@ -400,6 +401,13 @@ wxString dlgTable::GetSql()
         {
             sql += wxT("ALTER TABLE ") + tabname 
                 +  wxT(" WITHOUT OIDS;\n");
+        }
+        if (cbTablespace->GetValue() != table->GetTablespace())
+        {
+            if (cbTablespace->GetSelection() > 0)
+                sql += wxT("ALTER TABLE ") + tabname 
+                    +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+                    + wxT(";\n");
         }
     }
     else

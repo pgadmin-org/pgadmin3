@@ -30,12 +30,12 @@ public:
     ~frmBackup();
 
     void Go();
-    wxString GetDisplayCmd();
-    wxString GetCmd();
+    wxString GetDisplayCmd(int step);
+    wxString GetCmd(int step);
     
 private:
     wxString GetHelpPage() const;
-    void OnChangeName(wxCommandEvent &ev);
+    void OnChange(wxCommandEvent &ev);
     void OnSelectFilename(wxCommandEvent &ev);
     void OnChangePlain(wxCommandEvent &ev);
     wxString getCmdPart1();
