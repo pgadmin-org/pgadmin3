@@ -72,6 +72,7 @@ protected:
 
 
     pgConn *connection;
+    pgDatabase *database;
 
     frmMain *mainForm;
     ctlSQLBox *sqlPane;

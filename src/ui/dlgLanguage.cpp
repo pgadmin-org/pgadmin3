@@ -90,16 +90,12 @@ int dlgLanguage::Go(bool modal)
         {
             while (!set->Eof())
             {
-                wxString nspname=set->GetVal(wxT("nspname"));
-                if (nspname == wxT("public"))
-                    nspname=wxT("");
-                else
-                    nspname += wxT(".");
+                wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
 
                 if (set->GetOid(wxT("prorettype")) == 2280)
-                    cbHandler->Append(nspname + set->GetVal(wxT("proname")));
+                    cbHandler->Append(procname);
                 else
-                    cbValidator->Append(nspname + set->GetVal(wxT("proname")));
+                    cbValidator->Append(procname);
                 set->MoveNext();
             }
             delete set;

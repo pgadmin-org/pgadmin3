@@ -214,7 +214,7 @@ wxString dlgDomain::GetSql()
     else
     {
         // create mode
-        sql = wxT("CREATE DOMAIN ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(name)
+        sql = wxT("CREATE DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
             + wxT("\n   AS ") + GetQuotedTypename(cbDatatype->GetSelection());
         
         AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());

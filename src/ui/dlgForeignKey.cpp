@@ -360,12 +360,7 @@ int dlgForeignKey::Go(bool modal)
         {
             while (!set->Eof())
             {
-                wxString nsp=set->GetVal(0);
-                if (nsp == wxT("public"))
-                    nsp=wxT("");
-                else
-                    nsp += wxT(".");
-                cbReferences->Append(nsp + set->GetVal(1));
+                cbReferences->Append(database->GetSchemaPrefix(set->GetVal(0)) + set->GetVal(1));
                 set->MoveNext();
             }
             delete set;

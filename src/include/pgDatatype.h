@@ -19,6 +19,8 @@
 #include "pgSet.h"
 #include "pgConn.h"
 
+class pgDatabase;
+
 class pgDatatype
 {
 public:
@@ -43,8 +45,8 @@ private:
 class DatatypeReader
 {
 public:
-    DatatypeReader(pgConn *conn, bool withDomains=true);
-    DatatypeReader(pgConn *conn, const wxString &condition);
+    DatatypeReader(pgDatabase *db, bool withDomains=true);
+    DatatypeReader(pgDatabase *db, const wxString &condition);
     ~DatatypeReader() { if (set) delete set; }
     bool HasMore() const { return set && !set->Eof(); }
     void MoveNext() { if (set)  set->MoveNext(); }
@@ -63,7 +65,8 @@ public:
 
 private:
     pgSet *set;
-    void init(pgConn *conn, const wxString &condition);
+    pgDatabase *database;
+    void init(pgDatabase *db, const wxString &condition);
 };
 
 #endif

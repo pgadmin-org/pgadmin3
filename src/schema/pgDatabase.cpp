@@ -75,7 +75,9 @@ int pgDatabase::Connect()
             wxString exprname=conn->ExecuteScalar(wxT("SELECT proname FROM pg_proc WHERE proname='pg_get_viewdef' AND proargtypes[1]=16"));
             if (!exprname.IsEmpty())
                 prettyOption = wxT(", true");
-            
+        
+            searchPath = conn->ExecuteScalar(wxT("SHOW search_path"));
+
             return PGCONN_OK;
         }
         else
@@ -85,6 +87,37 @@ int pgDatabase::Connect()
         }
     }
 }
+
+
+wxString pgDatabase::GetSchemaPrefix(const wxString &name) const
+{
+    wxString sp=settings->GetSearchPath();
+    if (sp.IsEmpty())
+        sp = GetSearchPath();
+    sp += wxT(",pg_catalog");
+
+    wxStringTokenizer spt(sp, wxT(","));
+    while (spt.HasMoreTokens())
+    {
+        wxString tk=spt.GetNextToken().Strip(wxString::both);
+        if (tk == wxT("$user"))
+            continue;
+
+        if (tk == name)
+            return wxEmptyString;
+    }
+    return name + wxT(".");
+}
+
+
+wxString pgDatabase::GetQuotedSchemaPrefix(const wxString &name) const
+{
+    wxString str=GetSchemaPrefix(name);
+    if (!str.IsEmpty())
+        return qtIdent(str.Left(str.Length()-1)) + wxT(".");
+    return str;
+}
+
 
 bool pgDatabase::GetSystemObject() const
 {

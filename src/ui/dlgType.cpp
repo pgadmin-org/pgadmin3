@@ -197,12 +197,8 @@ int dlgType::Go(bool modal)
         {
             while (!set->Eof())
             {
-                wxString pn=set->GetVal(wxT("nspname"));
-                if (pn == wxT("pg_catalog") || pn == wxT("public"))
-                    pn = wxT("");
-                else
-                    pn += wxT(".");
-                pn += set->GetVal(wxT("proname"));
+                wxString pn = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+
                 cbInput->Append(pn);
                 cbOutput->Append(pn);
                 if (hasSendRcv)
@@ -334,7 +330,7 @@ wxString dlgType::GetSql()
     else
     {
         // Create Mode
-        sql = wxT("CREATE TYPE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName());
+        sql = wxT("CREATE TYPE ") + schema->GetQuotedPrefix() + qtIdent(GetName());
         if (rdbType->GetSelection())
         {
             sql += wxT("\n   (INPUT=");

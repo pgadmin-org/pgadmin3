@@ -49,6 +49,9 @@ public:
     void iSetVariables(const wxString& newVal) { variables = newVal; }
     bool GetAllowConnections() const { return allowConnections; }
     void iSetAllowConnections(bool newVal) { allowConnections = newVal; }
+    wxString GetSearchPath() const { return searchPath; }
+    wxString GetSchemaPrefix(const wxString &schemaname) const;
+    wxString GetQuotedSchemaPrefix(const wxString &schemaname) const;
     bool GetConnected() const { return connected; }
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }
@@ -65,7 +68,7 @@ public:
 
 private:
     pgConn *conn;
-    wxString path, encoding, variables;
+    wxString searchPath, path, encoding, variables;
     wxString prettyOption;
     bool allowConnections, connected, createPrivilege;
     long missingFKs;

@@ -99,15 +99,11 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
                     quotedTypesList += qtIdent(set->GetVal(wxT("attname"))) + wxT(" ");
 
                     pgDatatype dt(set->GetVal(wxT("typname")), set->GetLong(wxT("attndims")) > 0, set->GetLong(wxT("atttypmod")));
-                    wxString nspname=set->GetVal(wxT("nspname"));
-                    if (!nspname.IsSameAs(wxT("pg_catalog")))
-                    {
-                        typesList += nspname + wxT(".");
-                        quotedTypesList += qtIdent(nspname) + wxT(".");
-                    }
 
-                    typesList +=  dt.FullName();
-                    quotedTypesList += dt.QuotedFullName();
+                    wxString nspname=set->GetVal(wxT("nspname"));
+
+                    typesList += GetSchemaPrefix(nspname) + dt.FullName();
+                    quotedTypesList += GetQuotedSchemaPrefix(nspname) + dt.QuotedFullName();
 
                     set->MoveNext();
                 }

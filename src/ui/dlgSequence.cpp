@@ -218,8 +218,7 @@ wxString dlgSequence::GetSql()
     else
     {
         // create mode
-        sql = wxT("CREATE SEQUENCE ") + schema->GetQuotedFullIdentifier()
-            + wxT(".") + qtIdent(GetName());
+        sql = wxT("CREATE SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(GetName());
         if (chkCycled->GetValue())
             sql += wxT(" CYCLE");
         AppendIfFilled(sql, wxT("\n   INCREMENT "), txtIncrement->GetValue());
@@ -231,13 +230,12 @@ wxString dlgSequence::GetSql()
         sql += wxT(";\n");
         if (cbOwner->GetSelection() > 0)
         {
-            sql += wxT("ALTER TABLE ")  + schema->GetQuotedFullIdentifier()
-                + wxT(".") + qtIdent(GetName())
+            sql += wxT("ALTER TABLE ")  + schema->GetQuotedPrefix() + qtIdent(GetName())
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
         }
     }
 
-    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName()));
+    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(GetName()));
     AppendComment(sql, wxT("SEQUENCE"), schema, sequence);
 
     return sql;

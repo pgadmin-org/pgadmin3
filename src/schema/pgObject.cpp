@@ -144,7 +144,7 @@ void pgObject::ShowStatistics(ctlListView *statistics)
 }
 
 
-void pgObject::ShowDependency(ctlListView *list, const wxString &query)
+void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query)
 {
     list->AddColumn(_("Type"), 60);
     list->AddColumn(_("Name"), 100);
@@ -166,10 +166,11 @@ void pgObject::ShowDependency(ctlListView *list, const wxString &query)
 
             while (!set->Eof())
             {
-                wxString nspname=set->GetVal(wxT("nspname"));
                 wxString refname;
-                if (!nspname.IsEmpty() && nspname != wxT("public") && nspname != wxT("pg_catalog"))
-                    refname = nspname + wxT(".");
+                if (db)
+                    refname = db->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname")));
+                else
+                    refname = qtIdent(set->GetVal(wxT("nspname"))) + wxT(".");
 
                 wxString typestr=set->GetVal(wxT("type"));
                 int id;
@@ -250,7 +251,7 @@ void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const 
 
 void pgObject::ShowDependsOn(ctlListView *dependsOn)
 {
-    ShowDependency(dependsOn,
+    ShowDependency(GetDatabase(), dependsOn,
         wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
         wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
@@ -281,7 +282,7 @@ void pgObject::ShowDependsOn(ctlListView *dependsOn)
 
 void pgObject::ShowReferencedBy(ctlListView *referencedBy)
 {
-    ShowDependency(referencedBy,
+    ShowDependency(GetDatabase(), referencedBy,
         wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
         wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
@@ -667,6 +668,19 @@ bool pgDatabaseObject::CanCreate()
     return database->GetCreatePrivilege();
 }
 
+
+wxString pgDatabaseObject::GetSchemaPrefix(const wxString &schemaname) const
+{
+    return database->GetSchemaPrefix(schemaname);
+}
+
+
+wxString pgDatabaseObject::GetQuotedSchemaPrefix(const wxString &schemaname) const
+{
+    return database->GetQuotedSchemaPrefix(schemaname);
+}
+
+
 ///////////////////////////////////////////////////////////////
 
 bool pgSchemaObject::GetSystemObject() const
@@ -734,13 +748,13 @@ void pgSchemaObject::DisplayStatistics(ctlListView *statistics, const wxString& 
 
 wxString pgSchemaObject::GetFullIdentifier() const 
 {
-    return schema->GetName() + wxT(".")+GetName();
+    return schema->GetPrefix()+GetName();
 }
 
 
 wxString pgSchemaObject::GetQuotedFullIdentifier() const
 {
-    return qtIdent(schema->GetName()) + wxT(".") + GetQuotedIdentifier();
+    return schema->GetQuotedPrefix() + GetQuotedIdentifier();
 }
 
 

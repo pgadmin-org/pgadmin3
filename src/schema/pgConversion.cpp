@@ -46,7 +46,8 @@ wxString pgConversion::GetSql(wxTreeCtrl *browser)
         sql += wxT("CONVERSION ") + qtIdent(GetName())
             + wxT("\n  FOR '") + GetForEncoding() + wxT("'")
             + wxT("\n  TO '") + GetToEncoding() + wxT("'")
-            + wxT("\n  FROM ") + qtIdent(GetProcNamespace()) + wxT(".") + qtIdent(GetProc()) + wxT(";\n");
+            + wxT("\n  FROM ") + GetDatabase()->GetQuotedSchemaPrefix(GetProcNamespace()) 
+                + qtIdent(GetProc()) + wxT(";\n");
     }
 
     return sql;
@@ -63,7 +64,7 @@ void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("From"), GetForEncoding());
         properties->AppendItem(_("To"), GetToEncoding());
-        properties->AppendItem(_("Function"), GetProcNamespace() + wxT(".") + GetProc());
+        properties->AppendItem(_("Function"), GetSchemaPrefix(GetProcNamespace()) + GetProc());
         properties->AppendItem(_("Default?"), GetDefaultConversion());
         properties->AppendItem(_("System conversion?"), GetSystemObject());
 

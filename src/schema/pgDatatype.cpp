@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "pgDatatype.h"
+#include "pgDatabase.h"
 #include "pgDefs.h"
 
 
@@ -89,25 +90,26 @@ long pgDatatype::GetTypmod(const wxString &name, const wxString &len, const wxSt
 }
 
 
-DatatypeReader::DatatypeReader(pgConn *conn, const wxString &condition)
+DatatypeReader::DatatypeReader(pgDatabase *db, const wxString &condition)
 {
-    init(conn, condition);
+    init(db, condition);
 }
 
 
-DatatypeReader::DatatypeReader(pgConn *conn, bool withDomains)
+DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains)
 {
     wxString condition=wxT("typisdefined AND typtype ");
     if (withDomains)
         condition += wxT("IN ('b', 'd')");
     else
         condition += wxT("= 'b'");
-    init(conn, condition);
+    init(db, condition);
 }
 
-void DatatypeReader::init(pgConn *conn, const wxString &condition)
+void DatatypeReader::init(pgDatabase *db, const wxString &condition)
 {
-    set=conn->ExecuteSet(
+    database=db;
+    set=db->GetConnection()->ExecuteSet(
         wxT("SELECT typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname\n")
         wxT("  FROM pg_type t\n")
         wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
@@ -181,23 +183,13 @@ wxString DatatypeReader::GetSchema() const
 
 wxString DatatypeReader::GetSchemaPrefix() const
 {
-    wxString schema=set->GetVal(wxT("nspname"));
-    if (schema == wxT("pg_catalog"))
-        schema=wxT("");
-    else
-        schema += wxT(".");
-    return schema;
+    return database->GetSchemaPrefix(set->GetVal(wxT("nspname")));
 }
 
 
 wxString DatatypeReader::GetQuotedSchemaPrefix() const
 {
-    wxString schema=set->GetVal(wxT("nspname"));
-    if (schema == wxT("pg_catalog"))
-        schema=wxT("");
-    else
-        schema = qtIdent(schema) + wxT(".");
-    return schema;
+    return database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname")));
 }
 
 

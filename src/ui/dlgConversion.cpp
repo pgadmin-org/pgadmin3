@@ -74,7 +74,7 @@ int dlgConversion::Go(bool modal)
         cbTargetEncoding->Append(conversion->GetToEncoding());
         cbTargetEncoding->SetSelection(0);
 
-        cbFunction->Append(conversion->GetProcNamespace()+wxT(".")+conversion->GetProc());
+        cbFunction->Append(database->GetSchemaPrefix(conversion->GetProcNamespace()) + conversion->GetProc());
         cbFunction->SetSelection(0);
 
         if (!connection->BackendMinimumVersion(7, 4))
@@ -105,14 +105,8 @@ int dlgConversion::Go(bool modal)
         {
             while (!set->Eof())
             {
-                wxString nsp=set->GetVal(wxT("nspname"));
-                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
-                    nsp=wxT("");
-                else
-                    nsp += wxT(".");
-
-                functions.Add(qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("proname"))));
-                cbFunction->Append(nsp + set->GetVal(wxT("proname")));
+                functions.Add(database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname"))) + qtIdent(set->GetVal(wxT("proname"))));
+                cbFunction->Append(database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname")));
 
                 set->MoveNext();
             }
@@ -191,8 +185,7 @@ wxString dlgConversion::GetSql()
         sql = wxT("CREATE ");
         if (chkDefault->GetValue())
             sql += wxT("DEFAULT ");
-        sql += wxT("CONVERSION ") + schema->GetQuotedIdentifier() 
-            + wxT(".") + qtIdent(name)
+        sql += wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name)
             + wxT("\n   FOR ") + qtString(cbSourceEncoding->GetValue())
             + wxT(" TO ") + qtString(cbTargetEncoding->GetValue())
             + wxT("\n   FROM ") + functions.Item(cbFunction->GetSelection())

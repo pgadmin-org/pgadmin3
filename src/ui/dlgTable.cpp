@@ -251,8 +251,8 @@ int dlgTable::Go(bool modal)
         {
             while (!set->Eof())
             {
-                cbTables->Append(qtIdent(set->GetVal(wxT("nspname")))
-                        +wxT(".")+qtIdent(set->GetVal(wxT("relname"))));
+                cbTables->Append(database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname")))
+                        + qtIdent(set->GetVal(wxT("relname"))));
 
                 tableOids.Add(set->GetVal(wxT("oid")));
                 set->MoveNext();
@@ -303,7 +303,7 @@ wxString dlgTable::GetItemConstraintType(ctlListView *list, long pos)
 wxString dlgTable::GetSql()
 {
     wxString sql;
-    wxString tabname=schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName());
+    wxString tabname=schema->GetQuotedPrefix() + qtIdent(GetName());
 
     if (table)
     {

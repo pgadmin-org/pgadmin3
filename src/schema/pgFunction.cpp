@@ -178,7 +178,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
                 if (types)
                 {
                     types->MoveFirst();
-                    while (types->GetVal(0) != str)
+                    while (types->GetVal(wxT("oid")) != str)
                         types->MoveNext();
 
                     if (!argTypes.IsNull()) {
@@ -186,14 +186,8 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
                         quotedArgTypes += wxT(", ");
 					}
 
-					if (types->GetVal(1) != wxT("pg_catalog")) {
-						argTypes += types->GetVal(2) + wxT(".") + types->GetVal(1);
-						quotedArgTypes += qtIdent(types->GetVal(2)) + wxT(".") + qtIdent(types->GetVal(1));
-					} else {
-						argTypes += types->GetVal(1);
-						quotedArgTypes += qtIdent(types->GetVal(1));
-					}
-
+    				argTypes += obj->GetDatabase()->GetSchemaPrefix(types->GetVal(wxT("nspname"))) + types->GetVal(wxT("typname"));
+					quotedArgTypes += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtIdent(types->GetVal(wxT("typname")));
                 }
             }
 

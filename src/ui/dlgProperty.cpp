@@ -242,7 +242,7 @@ void dlgProperty::AppendComment(wxString &sql, const wxString &objType, pgSchema
     {
         sql += wxT("COMMENT ON ") + objType + wxT(" ");
         if (schema)
-           sql += schema->GetQuotedIdentifier() + wxT(".");
+           sql += schema->GetQuotedPrefix();
         sql += qtIdent(GetName()) + wxT(" IS ") + qtString(comment) + wxT(";\n");
     }
 }
@@ -250,6 +250,8 @@ void dlgProperty::AppendComment(wxString &sql, const wxString &objType, pgSchema
 
 void dlgProperty::AppendQuoted(wxString &sql, const wxString &name)
 {
+    // quick and quite dirty:
+    // !!! this is unsafe if the name itself contains a dot which isn't meant as separator between schema and object
     if (name.First('.') >= 0)
     {
         sql += qtIdent(name.BeforeFirst('.')) + wxT(".") + qtIdent(name.AfterFirst('.'));
@@ -574,6 +576,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         if (dlg->objectType < 0)
             dlg->objectType=type;
         dlg->connection=conn;
+        dlg->database=node->GetDatabase();
 
         if (type != node->GetType() && !node->IsCollection())
         {
@@ -704,7 +707,7 @@ void dlgTypeProperty::FillDatatype(wxComboBox *cb, bool withDomains)
 
 void dlgTypeProperty::FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDomains)
 {
-    DatatypeReader tr(connection, withDomains);
+    DatatypeReader tr(database, withDomains);
     while (tr.HasMore())
     {
         pgDatatype dt=tr.GetDatatype();

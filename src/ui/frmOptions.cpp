@@ -44,6 +44,7 @@ extern wxArrayString existingLangNames;
 #define chkShowUsersForPrivileges   CTRL_CHECKBOX("chkShowUsersForPrivileges")
 #define txtAutoRowCount             CTRL_TEXT("txtAutoRowCount")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
+#define txtSearchPath               CTRL_TEXT("txtSearchPath")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
 #define txtFont                     CTRL_TEXT("txtFont")
@@ -91,6 +92,7 @@ frmOptions::frmOptions(frmMain *parent)
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
     txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
     chkStickySql->SetValue(settings->GetStickySql());
+    txtSearchPath->SetValue(settings->GetSearchPath());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
     txtProxy->SetValue(settings->GetProxy());
@@ -180,6 +182,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetStickySql(chkStickySql->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());
+    settings->SetSearchPath(txtSearchPath->GetValue());
     settings->SetSQLFont(currentFont);
 
     // Make sure there's a slash on the end of the path

@@ -160,14 +160,8 @@ void dlgAggregate::OnChangeType(wxNotifyEvent &ev)
         {
             while (!set->Eof())
             {
-                wxString nsp=set->GetVal(wxT("nspname"));
-                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
-                    nsp=wxT("");
-                else
-                    nsp += wxT(".");
-
-                procedures.Add(qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("proname"))));
-                cbStateFunc->Append(nsp + set->GetVal(wxT("proname")));
+                procedures.Add(database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname"))) + qtIdent(set->GetVal(wxT("proname"))));
+                cbStateFunc->Append(database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname")));
 
                 set->MoveNext();
             }
@@ -186,14 +180,8 @@ void dlgAggregate::OnChangeType(wxNotifyEvent &ev)
         {
             while (!set->Eof())
             {
-                wxString nsp=set->GetVal(wxT("nspname"));
-                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
-                    nsp=wxT("");
-                else
-                    nsp += wxT(".");
-
-                procedures.Add(qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("proname"))));
-                cbFinalFunc->Append(nsp + set->GetVal(wxT("proname")));
+                procedures.Add(database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname"))) + qtIdent(set->GetVal(wxT("proname"))));
+                cbFinalFunc->Append(database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname")));
 
                 set->MoveNext();
             }
@@ -216,7 +204,7 @@ wxString dlgAggregate::GetSql()
     else
     {
         // create mode
-        sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(name)
+        sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
             + wxT("(\n   BASETYPE=") + GetQuotedTypename(cbBaseType->GetSelection())
             + wxT(",\n   SFUNC=") + procedures.Item(cbStateFunc->GetSelection())
             + wxT(", STYPE=") + GetQuotedTypename(cbStateType->GetSelection() +1); // skip "any" type
@@ -232,8 +220,7 @@ wxString dlgAggregate::GetSql()
         
         sql += wxT(");\n");
     }
-    AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedFullIdentifier() 
-                  + wxT(".") + qtIdent(name)
+    AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
                   + wxT("(") + GetQuotedTypename(cbBaseType->GetSelection())
                   +wxT(")"), aggregate);
 

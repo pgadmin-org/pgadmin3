@@ -129,13 +129,12 @@ wxString dlgView::GetSql()
 
     if (!view || txtSqlBox->GetText() != oldDefinition)
     {
-        sql += wxT("CREATE OR REPLACE VIEW ") + schema->GetQuotedFullIdentifier()
-            + wxT(".") + qtIdent(name) + wxT(" AS\n")
+        sql += wxT("CREATE OR REPLACE VIEW ") + schema->GetQuotedPrefix() + qtIdent(name) + wxT(" AS\n")
             + txtSqlBox->GetText()
             + wxT(";\n");
     }
 
-    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(name));
+    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
 
     AppendComment(sql, wxT("VIEW"), schema, view);
     return sql;

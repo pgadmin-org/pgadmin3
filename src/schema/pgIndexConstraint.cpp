@@ -24,7 +24,7 @@
 bool pgIndexConstraint::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(wxT(
-        "ALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
+        "ALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() + wxT(";"));
 }
 
@@ -63,9 +63,9 @@ wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("-- Constraint: ") + GetQuotedFullIdentifier() 
-            + wxT("\n\n-- ALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
+            + wxT("\n\n-- ALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() 
-            + wxT("\n\nALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
+            + wxT("\n\nALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
             + wxT("\n  ADD CONSTRAINT ")
             + GetCreate()
             + wxT(";\n")
@@ -89,7 +89,7 @@ void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlLi
             properties->AppendItem(_("Columns"), GetColumns());
         else
         {
-            properties->AppendItem(_("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
+            properties->AppendItem(_("Procedure "), GetSchemaPrefix(GetProcNamespace()) + GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
             properties->AppendItem(_("Operator classes"), GetOperatorClasses());
         }
         properties->AppendItem(_("Unique?"), GetIsUnique());

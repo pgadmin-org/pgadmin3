@@ -229,12 +229,13 @@ pgObject *pgColumn::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgColumn *column=0;
+    pgDatabase *database=collection->GetDatabase();
 
     wxString systemRestriction;
     if (!settings->GetShowSystemObjects())
         systemRestriction = wxT("\n   AND attnum > 0");
         
-    pgSet *columns= collection->GetDatabase()->ExecuteSet(
+    pgSet *columns= database->ExecuteSet(
         wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, CASE WHEN ty.typname = 'bpchar' THEN 'char' WHEN ty.typname = '_bpchar' THEN '_char' ELSE ty.typname END AS typname, tn.nspname as typnspname, et.typname as elemtypname, relname, na.nspname, att.attstattarget, description\n")
         wxT("  FROM pg_attribute att\n")
         wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
@@ -290,12 +291,12 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             }
             else
             {
-                column->iSetVarTypename(nsp + wxT(".") + dt.FullName());
-                column->iSetQuotedTypename(qtIdent(nsp) + wxT(".") + dt.QuotedFullName());
+                column->iSetVarTypename(database->GetSchemaPrefix(nsp) + dt.FullName());
+                column->iSetQuotedTypename(database->GetQuotedSchemaPrefix(nsp) + dt.QuotedFullName());
             }
 
             column->iSetNotNull(columns->GetBool(wxT("attnotnull")));
-            column->iSetQuotedFullTable(qtIdent(columns->GetVal(wxT("nspname"))) + wxT(".")
+            column->iSetQuotedFullTable(database->GetQuotedSchemaPrefix(columns->GetVal(wxT("nspname")))
                 + qtIdent(columns->GetVal(wxT("relname"))));
             column->iSetTableName(columns->GetVal(wxT("relname")));
             column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));

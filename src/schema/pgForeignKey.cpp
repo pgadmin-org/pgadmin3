@@ -34,7 +34,7 @@ pgForeignKey::~pgForeignKey()
 bool pgForeignKey::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(wxT(
-        "ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+        "ALTER TABLE ") + GetSchemaPrefix(fkSchema) + qtIdent(fkTable)
         + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier());
 }
 
@@ -45,7 +45,7 @@ wxString pgForeignKey::GetDefinition()
     // MATCH FULL/PARTIAL missing; where is this stored?!?
 
     sql = wxT("(") + GetQuotedFkColumns()
-        +  wxT(") REFERENCES ") + qtIdent(GetRefSchema()) + wxT(".") + qtIdent(GetReferences()) 
+        +  wxT(") REFERENCES ") + GetQuotedSchemaPrefix(GetRefSchema()) + qtIdent(GetReferences()) 
         +  wxT(" (") + GetQuotedRefColumns()
         +  wxT(") ON UPDATE ") + GetOnUpdate()
         +  wxT(" ON DELETE ") + GetOnDelete();
@@ -76,13 +76,13 @@ wxString pgForeignKey::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("-- Foreign Key: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-            + wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT("-- ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() + wxT(";")
-            + wxT("\n\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT("\n\nALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
             + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
         if (!GetComment().IsEmpty())
-            sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier() + wxT(" ON ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
                 +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
     }
 

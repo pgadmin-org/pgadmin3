@@ -125,7 +125,7 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
                 rule->iSetCondition(definition.Mid(wherePos+7, doPos-wherePos-7));
 
             rule->iSetDefinition(definition);
-            rule->iSetQuotedFullTable(qtIdent(rules->GetVal(wxT("nspname"))) + wxT(".")
+            rule->iSetQuotedFullTable(collection->GetDatabase()->GetSchemaPrefix(rules->GetVal(wxT("nspname"))) 
                 + qtIdent(rules->GetVal(wxT("relname"))));
             wxChar *evts[] = {0, wxT("SELECT"), wxT("UPDATE"), wxT("INSERT"), wxT("DELETE")};
             int evno=StrToLong(rules->GetVal(wxT("ev_type")));

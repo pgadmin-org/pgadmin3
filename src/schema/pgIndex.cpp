@@ -45,15 +45,15 @@ wxString pgIndex::GetCreate()
         str += wxT("UNIQUE ");
     str += wxT("INDEX ");
     str += qtIdent(GetName()) 
-        + wxT("\n  ON ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
+        + wxT("\n  ON ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
         + wxT("\n  USING ") + GetIndexType()
         + wxT("\n  (");
     if (GetProcName().IsNull())
         str += GetQuotedColumns();
     else
     {
-//        str += qtIdent(GetProcNamespace()) + wxT(".")+qtIdent(GetProcName())+wxT("(")+GetQuotedTypedColumns()+wxT(")");
-        str += qtIdent(GetProcNamespace()) + wxT(".")+qtIdent(GetProcName())+wxT("(")+GetQuotedColumns()+wxT(")");
+//        str += GetQuotedSchemaPrefix(GetProcNamespace()) + qtIdent(GetProcName())+wxT("(")+GetQuotedTypedColumns()+wxT(")");
+        str += GetQuotedSchemaPrefix(GetProcNamespace()) + qtIdent(GetProcName())+wxT("(")+GetQuotedColumns()+wxT(")");
         if (!this->GetOperatorClasses().IsNull())
             str += wxT(" ") + GetOperatorClasses();
     }
@@ -189,7 +189,7 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         if (!GetProcName().IsNull())
-            properties->AppendItem(_("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
+            properties->AppendItem(_("Procedure "), GetSchemaPrefix(GetProcNamespace())+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
         else
             properties->AppendItem(_("Columns"), GetColumns());
 

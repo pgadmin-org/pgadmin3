@@ -195,7 +195,7 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
             trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
             trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
             trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
-            trigger->iSetQuotedFullTable(qtIdent(triggers->GetVal(wxT("nspname")))+wxT(".")+qtIdent(triggers->GetVal(wxT("relname"))));
+            trigger->iSetQuotedFullTable(collection->GetDatabase()->GetQuotedSchemaPrefix(triggers->GetVal(wxT("nspname"))) + qtIdent(triggers->GetVal(wxT("relname"))));
             wxString arglist=triggers->GetVal(wxT("tgargs"));
             wxString args;
 

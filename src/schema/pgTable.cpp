@@ -271,10 +271,10 @@ void pgTable::UpdateInheritance()
             if (inheritedTableCount)
                 inheritedTables += wxT(", ");
             inheritedTables += props->GetVal(wxT("relname"));
-            quotedInheritedTables += qtIdent(props->GetVal(wxT("nspname")))
-                    +wxT(".")+qtIdent(props->GetVal(wxT("relname")));
-            quotedInheritedTablesList.Add(qtIdent(props->GetVal(wxT("nspname")))
-                    +wxT(".")+qtIdent(props->GetVal(wxT("relname"))));
+            quotedInheritedTables += GetQuotedSchemaPrefix(props->GetVal(wxT("nspname")))
+                    + qtIdent(props->GetVal(wxT("relname")));
+            quotedInheritedTablesList.Add(GetQuotedSchemaPrefix(props->GetVal(wxT("nspname")))
+                    + qtIdent(props->GetVal(wxT("relname"))));
             props->MoveNext();
             inheritedTableCount++;
         }

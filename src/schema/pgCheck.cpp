@@ -33,7 +33,7 @@ pgCheck::~pgCheck()
 bool pgCheck::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(
-        wxT("ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+        wxT("ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
         + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier());
     
 }
@@ -50,9 +50,9 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("-- Check: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-            + wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT("-- ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() 
-            + wxT(";\n\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT(";\n\nALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
             + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
         sql += GetCommentSql();

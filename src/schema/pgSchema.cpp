@@ -60,6 +60,7 @@ bool pgSchema::DropObject(wxFrame *frame, wxTreeCtrl *browser)
     return GetDatabase()->ExecuteVoid(wxT("DROP SCHEMA ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
+
 wxString pgSchema::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())

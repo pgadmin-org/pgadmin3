@@ -109,6 +109,7 @@ public:
 
     void AppendBrowserItem(wxTreeCtrl *browser, pgObject *object);
     void RemoveDummyChild(wxTreeCtrl *browser);
+    
     virtual wxString GetHelpPage(bool forCreate) const;
     virtual wxString GetFullName() const { return name; }
     virtual wxString GetIdentifier() const { return name; }
@@ -155,7 +156,7 @@ protected:
     
 private:
     static wxString GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
-    void ShowDependency(ctlListView *list, const wxString &query);
+    void ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query);
     wxString name, owner, comment, acl;
     int type;
     OID oid;
@@ -190,6 +191,10 @@ public:
     pgDatabase *GetDatabase() const {return database; }
     void iSetDatabase(pgDatabase *newDatabase) { database = newDatabase; }
 
+    // compiles a prefix from the schema name with '.', if necessary
+    wxString GetSchemaPrefix(const wxString &schemaname) const;
+    wxString GetQuotedSchemaPrefix(const wxString &schemaname) const;
+
     bool CanDrop();
     bool CanEdit() { return true; }
     bool CanCreate();
@@ -201,10 +206,10 @@ protected:
 
 
 // Object that lives in a schema
-class pgSchemaObject : public pgObject
+class pgSchemaObject : public pgDatabaseObject
 {
 public:
-    pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) : pgObject(newType, newName)
+    pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) : pgDatabaseObject(newType, newName)
         { tableOid=0; schema = newSchema; wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
 
     pgSchemaObject::~pgSchemaObject()

@@ -151,7 +151,7 @@ int dlgFunction::Go(bool modal)
 		if (!settings->GetShowSystemObjects()) 
 			restrict += wxT(" AND nspname NOT LIKE 'pg_toast%' AND nspname NOT LIKE 'pg_temp%'");
 
-		DatatypeReader tr(connection, restrict);
+		DatatypeReader tr(database, restrict);
         while (tr.HasMore())
         {
             pgDatatype dt=tr.GetDatatype();
@@ -353,8 +353,7 @@ wxString dlgFunction::GetSql()
     else
     {
         // create mode
-        name = schema->GetQuotedFullIdentifier() + wxT(".") 
-             + qtIdent(GetName()) 
+        name = schema->GetQuotedPrefix() + qtIdent(GetName()) 
              + wxT("(") + GetArgs(true) + wxT(")");
 
         sql = wxT("CREATE FUNCTION ") + name;

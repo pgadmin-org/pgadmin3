@@ -266,14 +266,8 @@ void dlgOperator::OnChangeType(wxNotifyEvent &ev)
         {
             while (!set->Eof())
             {
-                wxString nsp=set->GetVal(wxT("nspname"));
-                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
-                    nsp=wxT("");
-                else
-                    nsp += wxT(".");
-
-                procedures.Add(qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("proname"))));
-                wxString procname=nsp + set->GetVal(wxT("proname"));
+                procedures.Add(database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname"))) + qtIdent(set->GetVal(wxT("proname"))));
+                wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
                 cbProcedure->Append(procname);
                 if (binaryOp)
                 {
@@ -315,13 +309,7 @@ void dlgOperator::OnChangeType(wxNotifyEvent &ev)
         {
             while (!set->Eof())
             {
-                wxString nsp=set->GetVal(wxT("nspname"));
-                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
-                    nsp=wxT("");
-                else
-                    nsp += wxT(".");
-
-                wxString opname=nsp + set->GetVal(wxT("oprname"));
+                wxString opname=database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("oprname"));
 
                 cbCommutator->Append(opname);
                 cbNegator->Append(opname);
@@ -381,8 +369,7 @@ wxString dlgOperator::GetSql()
     else
     {
         // create mode
-        name = schema->GetQuotedFullIdentifier() + wxT(".") 
-	    + GetName() + wxT("(");
+        name = schema->GetQuotedPrefix() + GetName() + wxT("(");
 	if (cbLeftType->GetSelection() > 0)
 	    name += GetQuotedTypename(cbLeftType->GetSelection());
 	else
@@ -395,7 +382,7 @@ wxString dlgOperator::GetSql()
 	name += wxT(")");
 
 
-        sql = wxT("CREATE OPERATOR ") + schema->GetQuotedFullIdentifier() + wxT(".") + GetName()
+        sql = wxT("CREATE OPERATOR ") + schema->GetQuotedPrefix() + GetName()
             + wxT("(\n   PROCEDURE=") + procedures.Item(cbProcedure->GetSelection());
         
         AppendIfFilled(sql, wxT(",\n   LEFTARG="), GetQuotedTypename(cbLeftType->GetSelection()));

@@ -77,6 +77,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("StickySql"), &stickySql, true);
     Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
     Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
+    Read(wxT("SearchPath"), &searchPath, wxEmptyString);
 
     const wxLanguageInfo *langInfo;
     langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
@@ -113,6 +114,7 @@ sysSettings::~sysSettings()
     Write(wxT("Proxy"), proxy);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
+    Write(wxT("SearchPath"), searchPath);
     Write(wxT("frmQuery/FontPointSize"), fontPointSize);
     Write(wxT("frmQuery/FontFamily"), fontFamily);
     Write(wxT("frmQuery/FontStyle"), fontStyle);

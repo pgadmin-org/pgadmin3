@@ -30,6 +30,8 @@ public:
     ~pgSchema();
 
     int GetIcon() { return PGICON_SCHEMA; }
+    wxString GetPrefix() const { return database->GetSchemaPrefix(GetName()); }
+    wxString GetQuotedPrefix() const { return database->GetQuotedSchemaPrefix(GetName()); }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);

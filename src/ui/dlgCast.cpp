@@ -153,14 +153,8 @@ void dlgCast::OnChangeType(wxNotifyEvent &ev)
         {
             while (!set->Eof())
             {
-                wxString nsp=set->GetVal(wxT("nspname"));
-                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
-                    nsp=wxT("");
-                else
-                    nsp += wxT(".");
-
-                functions.Add(qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("proname"))));
-                cbFunction->Append(nsp + set->GetVal(wxT("proname")));
+                functions.Add(database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname"))) + qtIdent(set->GetVal(wxT("proname"))));
+                cbFunction->Append(database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname")));
 
                 set->MoveNext();
             }

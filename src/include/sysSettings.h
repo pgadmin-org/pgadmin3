@@ -95,6 +95,9 @@ public:
     bool GetDoubleClickProperties() const { return doubleClickProperties; }
     void SetDoubleClickProperties(const bool newval);
 
+    wxString GetSearchPath() const { return searchPath; }
+    void SetSearchPath(const wxString &s) { searchPath=s; }
+
     bool GetUnicodeFile() const { return unicodeFile; }
     void SetUnicodeFile(const bool b) {unicodeFile = b; }
 
@@ -163,6 +166,7 @@ private:
 
     int fontPointSize, fontFamily, fontStyle, fontWeight;
     wxString fontFace;
+    wxString searchPath;
 };
 
 #endif
