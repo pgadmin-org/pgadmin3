@@ -87,6 +87,7 @@ popd
 
 # Mandrake and RedHat do it by default. Needed for SuSE.
 strip --strip-debug %{_libdir}/libwx_gtk2ud-%{version}.a
+strip --strip-debug %{_bindir}/wxgtk2ud-%{version}-config
 strip --strip-debug %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
 strip --strip-debug %{_libdir}/libwx_gtk2ud_stc-%{version}.a
 
@@ -117,7 +118,7 @@ rm -rf %{buildroot}
 %files xrc
 %defattr(-, root, root)
 %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
-/bin/wxrc
+%{_bindir}/wxrc
 
 %files stc
 %defattr(-, root, root)
