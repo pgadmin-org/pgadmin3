@@ -81,7 +81,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     RestorePosition(-1, -1, 400, 240, 200, 150);
     SetTitle(_title);
     SetIcon(wxIcon(pgAdmin3_xpm));
-	statusBar = new  wxStatusBar(this, -1);
+	statusBar = new  wxStatusBar(this, -1, wxST_SIZEGRIP);
 	wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
 
     mainForm=form;

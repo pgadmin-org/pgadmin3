@@ -119,7 +119,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     if (XRCID("unkStatusBar"))
     {
         statusBox = 0;
-        statusBar = new wxStatusBar(this, -1);
+        statusBar = new wxStatusBar(this, -1, wxST_SIZEGRIP);
         wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
     }
     else
