@@ -104,6 +104,7 @@ ui/de_DE/pgadmin3.po \
 ui/el_GR/pgadmin3.po \
 ui/es_ES/pgadmin3.po \
 ui/fa_IR/pgadmin3.po \
+ui/fi_FI/pgadmin3.po \
 ui/fr_FR/pgadmin3.po \
 ui/gl_ES/pgadmin3.po \
 ui/hr_HR/pgadmin3.po \
@@ -145,6 +146,7 @@ ui/de_DE/pgadmin3.mo \
 ui/el_GR/pgadmin3.mo \
 ui/es_ES/pgadmin3.mo \
 ui/fa_IR/pgadmin3.mo \
+ui/fi_FI/pgadmin3.mo \
 ui/fr_FR/pgadmin3.mo \
 ui/hr_HR/pgadmin3.mo \
 ui/gl_ES/pgadmin3.mo \
