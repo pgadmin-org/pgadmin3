@@ -547,6 +547,9 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
         bool enable=rows.GetCount() > 0;
         if (enable)
         {
+            wxCommandEvent nullEvent;
+            OnSave(event);
+
             // check if a readonly line is selected
             int row, col;
             size_t i;
@@ -556,15 +559,18 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
                 row = rows.Item(i);
                 bool lineEnabled=false;
 
-                if (row != sqlGrid->GetNumberRows()-1)
+                if (row == sqlGrid->GetNumberRows()-1)
                 {
-                    for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+                    // the (*) line may not be deleted/copied
+                    enable=false;
+                    break;
+                }
+                for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+                {
+                    if (!sqlGrid->IsReadOnly(row, col))
                     {
-                        if (!sqlGrid->IsReadOnly(row, col))
-                        {
-                            lineEnabled=true;
-                            break;
-                        }
+                        lineEnabled=true;
+                        break;
                     }
                 }
 
@@ -575,11 +581,12 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
                 }
             }
         }
-        toolBar->EnableTool(MNU_DELETE,  enable);
+        toolBar->EnableTool(MNU_DELETE, enable);
         toolBar->EnableTool(MNU_COPY,  enable);
     }
     event.Skip();
 }
+
 
 void frmEditGrid::ShowForm(bool filter)
 {
