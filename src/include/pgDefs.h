@@ -41,5 +41,4 @@
 #define TRIGGER_TYPE_UPDATE				(1 << 4)
 
 
-
 #endif
