@@ -63,6 +63,15 @@ protected:
     void AppendComment(wxString &sql, const wxString &objName, pgObject *obj);
     void AppendQuoted(wxString &sql, const wxString &name);
 
+
+#if __GNUC__ >= 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
+    // ANSI spec 11.5 is quite brain dead about pointers of protected members: In order to access 
+    // them using the base class name, they can't be protected.
+    // apparently, only gcc 3.4 knows that; other compilers take protected as protected.
+public:
+
+#endif
+
     void OnPageSelect(wxNotebookEvent& event);
     void OnOK(wxCommandEvent &ev);
     void OnApply(wxCommandEvent &ev);
@@ -70,6 +79,7 @@ protected:
     void OnChangeOwner(wxCommandEvent &ev);
     void OnChangeStc(wxStyledTextEvent& event);
 
+protected:
     void AddUsers(wxComboBox *cb1, wxComboBox *cb2=0);
     void FillCombobox(const wxString &query, wxComboBox *cb1, wxComboBox *cb2=0);
     void PrepareTablespace(wxComboBox *cb, const wxChar *current=0);
