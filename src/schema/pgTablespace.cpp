@@ -78,12 +78,12 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
     }
 
     FillOwned(form->GetBrowser(), referencedBy, dblist, 
-        wxT("SELECT cl.relkind, COALESCE(cin.nspname, cln.nspname) as nspname, COALESCE(ci.relname, cl.relname) as relname, ci.relname as indname\n")
+        wxT("SELECT cl.relkind, COALESCE(cin.nspname, cln.nspname) as nspname, COALESCE(ci.relname, cl.relname) as relname, cl.relname as indname\n")
         wxT("  FROM pg_class cl\n")
         wxT("  JOIN pg_namespace cln ON cl.relnamespace=cln.oid\n")
         wxT("  LEFT OUTER JOIN pg_index ind ON ind.indexrelid=cl.oid\n")
         wxT("  LEFT OUTER JOIN pg_class ci ON ind.indrelid=ci.oid\n")
-        wxT("  JOIN pg_namespace cin ON ci.relnamespace=cin.oid\n")
+        wxT("  LEFT OUTER JOIN pg_namespace cin ON ci.relnamespace=cin.oid\n")
         wxT(" WHERE cl.reltablespace IN (") + tsoid + wxT(")\n")
         wxT("UNION ALL\n")
         wxT("SELECT 'n', null, nspname, null\n")
