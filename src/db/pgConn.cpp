@@ -62,13 +62,12 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
         memcpy(&(ipaddr),host->h_addr,host->h_length); 
 	    hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
 
-    } else {
-        hostip = server;
     }
+    else
+        hostip = server;
 
     resolvedIP = TRUE;
     wxLogInfo(wxT("Server name: %s (resolved to: %s)"), server.c_str(), hostip.c_str());
-    wxLogInfo(wxT("Server name: (resolved to: ")+ hostip);
 
     // Create the connection string
     wxString connstr;
@@ -124,7 +123,7 @@ bool pgConn::ExecuteVoid(const wxString& sql)
     // Check for errors
     if (res != PGRES_TUPLES_OK &&
         res != PGRES_COMMAND_OK)
-        wxLogError(wxT("%s"), PQerrorMessage(conn));
+        wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)));
 
 
     // Cleanup & exit
@@ -142,7 +141,7 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
     // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
     {
-        wxLogError(wxT("%s"), PQerrorMessage(conn));
+        wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)));
         PQclear(qryRes);
         return wxEmptyString;
     }
