@@ -18,4 +18,5 @@ xgettext -k_ -k__ -j -s -o pgadmin3.pot src/include/*.h
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/db/*.cpp
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/schema/*.cpp
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/ui/*.cpp
-wxrc -g src/ui/common/*.xrc | xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot -
+wxrc -g src/ui/common/*.xrc -o xrc.tmp
+xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot xrc.tmp
