@@ -137,6 +137,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_STATUS, wxT("Server Status"),             wxT("Displays the current database status."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_OPTIONS, wxT("&Options..."),              wxT("Show options dialog."));
+#ifdef __WXMAC__
+    wxApp::s_macPreferencesMenuItemId = MNU_OPTIONS;
+#endif
     menuBar->Append(toolsMenu, wxT("&Tools"));
 
     // View Menu
