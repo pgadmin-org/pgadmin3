@@ -266,7 +266,8 @@ wxString pgDatabase::GetSql(wxTreeCtrl *browser)
         sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n\n")
             + wxT("-- DROP DATABASE ") + GetQuotedIdentifier() + wxT(";")
             + wxT("\n\nCREATE DATABASE ") + GetQuotedIdentifier()
-            + wxT("\n  WITH ENCODING = ") + qtString(GetEncoding()) + wxT(";\n");
+            + wxT("\n  WITH OWNER = ") + qtIdent(GetOwner())
+            + wxT("\n       ENCODING = ") + qtString(GetEncoding()) + wxT(";\n");
 
         size_t i;
         for (i=0 ; i < variables.GetCount() ; i++)
