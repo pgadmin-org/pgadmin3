@@ -37,6 +37,8 @@ private:
     void OnSelChangeTyp(wxNotifyEvent &ev);
     void OnChangeMember(wxNotifyEvent &ev);
 
+    void showDefinition(bool isComposite);
+
     wxArrayString memberTypes;
     wxWindowList compositeWindows, externalWindows;
 

@@ -199,6 +199,11 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             type->iSetElement(types->GetVal(wxT("element")));
             type->iSetInputFunction(types->GetVal(wxT("typinput")));
             type->iSetOutputFunction(types->GetVal(wxT("typoutput")));
+            if (collection->GetConnection()->BackendMinimumVersion(7, 4))
+            {
+                type->iSetReceiveFunction(types->GetVal(wxT("typreceive")));
+                type->iSetSendFunction(types->GetVal(wxT("typsend")));
+            }
             wxString align=types->GetVal(wxT("typalign"));
             type->iSetAlignment( 
                 align == wxT("c") ? wxT("char") :
@@ -211,7 +216,7 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
                 storage == wxT("p") ? wxT("PLAIN") :
                 storage == wxT("e") ? wxT("EXTERNAL") :
                 storage == wxT("m") ? wxT("MAIN") :
-                storage == wxT("s") ? wxT("EXTENDED") : wxT("unknown"));
+                storage == wxT("x") ? wxT("EXTENDED") : wxT("unknown"));
 
             if (browser)
             {

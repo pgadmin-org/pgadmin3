@@ -36,6 +36,10 @@ public:
     void iSetInputFunction(const wxString& s) { inputFunction=s; }
     wxString GetOutputFunction() const { return outputFunction; }
     void iSetOutputFunction(const wxString& s) { outputFunction=s; }
+    wxString GetReceiveFunction() const { return receiveFunction; }
+    void iSetReceiveFunction(const wxString& s) { receiveFunction=s; }
+    wxString GetSendFunction() const { return sendFunction; }
+    void iSetSendFunction(const wxString& s) { sendFunction=s; }
     wxString GetDefault() const { return defaultVal; }
     void iSetDefault(const wxString& s) { defaultVal=s; }
     wxString GetElement()  { return element; }
@@ -65,7 +69,7 @@ public:
 
 private:
     wxString inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
-        typesList, quotedTypesList;
+        typesList, quotedTypesList, sendFunction, receiveFunction;
     long internalLength;
     bool passedByValue, isComposite, isRecordType;
     OID relOid;

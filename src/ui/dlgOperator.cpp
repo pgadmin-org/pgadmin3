@@ -328,7 +328,7 @@ wxString dlgOperator::GetSql()
     {
         // create mode
         sql = wxT("CREATE OPERATOR ") + schema->GetQuotedFullIdentifier() + wxT(".") + name
-            + wxT("(\n   PROCEDURE=") + cbProcedure->GetValue();
+            + wxT("(\n   PROCEDURE=") + procedures.Item(cbProcedure->GetSelection());
         
         AppendIfFilled(sql, wxT(",\n   LEFTARG="), GetQuotedTypename(cbLeftType->GetSelection()));
         AppendIfFilled(sql, wxT(",\n   RIGHTARG="), GetQuotedTypename(cbRightType->GetSelection()));

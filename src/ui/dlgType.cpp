@@ -28,8 +28,10 @@
 
 #define cbInput         CTRL("cbInput",             wxComboBox)
 #define cbOutput        CTRL("cbOutput",            wxComboBox)
+#define cbReceive       CTRL("cbReceive",           wxComboBox)
+#define cbSend          CTRL("cbSend",              wxComboBox)
 #define chkVariable     CTRL("chkVariable",         wxCheckBox)
-#define txtLength       CTRL("txtLength",           wxTextCtrl)
+#define txtIntLength    CTRL("txtIntLength",        wxTextCtrl)
 #define txtDefault      CTRL("txtDefault",          wxTextCtrl)
 #define cbElement       CTRL("cbElement",           wxComboBox)
 #define txtDelimiter    CTRL("txtDelimiter",        wxTextCtrl)
@@ -48,7 +50,7 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
 
     EVT_COMBOBOX(XRCID("cbInput"),                  dlgType::OnChange)
     EVT_COMBOBOX(XRCID("cbOutput"),                 dlgType::OnChange)
-    EVT_TEXT(XRCID("txtLength"),                    dlgType::OnChange)
+    EVT_TEXT(XRCID("txtIntLength"),                 dlgType::OnChange)
     EVT_CHECKBOX(XRCID("chkVariable"),              dlgType::OnChange)
     
     EVT_BUTTON(XRCID("btnAdd"),                     dlgType::OnVarAdd)
@@ -92,10 +94,8 @@ void dlgType::OnChangeMember(wxNotifyEvent &ev)
         && cbDatatype->GetSelection() >= 0);
 }
 
-
-void dlgType::OnTypeChange(wxNotifyEvent &ev)
+void dlgType::showDefinition(bool isComposite)
 {
-    bool isComposite = !rdbType->GetSelection();
     int i;
     
     i=externalWindows.GetCount();
@@ -105,7 +105,13 @@ void dlgType::OnTypeChange(wxNotifyEvent &ev)
     i=compositeWindows.GetCount();
     while (i--)
         compositeWindows.Item(i)->GetData()->Show(isComposite);
+}
 
+
+void dlgType::OnTypeChange(wxNotifyEvent &ev)
+{
+    showDefinition(!rdbType->GetSelection());
+    
     OnChange(ev);
 }
 
@@ -118,25 +124,61 @@ pgObject *dlgType::GetObject()
 
 int dlgType::Go(bool modal)
 {
-
     if (type)
     {
         // Edit Mode
-        txtName->SetValue(type->GetIdentifier());
-        txtOID->SetValue(NumToStr((long)type->GetOid()));
+        txtName->SetValue(type->GetIdentifier()); txtName->Disable();
+        txtOID->SetValue(NumToStr((long)type->GetOid())); txtOID->Disable();
+        rdbType->SetSelection(type->GetIsComposite() ? 0 : 1); rdbType->Disable();
 
-        txtName->Disable();
-        txtOID->Disable();
-        rdbType->Disable();
-        cbDatatype->Disable();
+        showDefinition(type->GetIsComposite());
+
+        cbInput->Append(type->GetInputFunction()); cbInput->SetSelection(0); cbInput->Disable();
+        cbOutput->Append(type->GetOutputFunction()); cbOutput->SetSelection(0); cbOutput->Disable();
+        cbReceive->Append(type->GetReceiveFunction()); cbReceive->SetSelection(0); cbReceive->Disable();
+        cbSend->Append(type->GetSendFunction()); cbSend->SetSelection(0); cbSend->Disable();
+
+        chkVariable->SetValue(type->GetInternalLength() < 0); chkVariable->Disable();
+        if (type->GetInternalLength() > 0)
+            txtIntLength->SetValue(NumToStr(type->GetInternalLength())); 
+        txtIntLength->Disable();
+        txtDefault->SetValue(type->GetDefault()); txtDefault->Disable();
+        cbElement->Append(type->GetElement()); cbElement->SetSelection(0); cbElement->Disable();
+        txtDelimiter->SetValue(type->GetDelimiter()); txtDelimiter->Disable();
+        chkByValue->SetValue(type->GetPassedByValue()); chkByValue->Disable();
+        cbAlignment->SetValue(type->GetAlignment()); cbAlignment->Disable();
+        cbStorage->SetValue(type->GetStorage()); cbStorage->Disable();
+
         txtMembername->Disable();
-        txtLength->Disable();
         btnAdd->Disable();
         btnRemove->Disable();
+
+        wxStringTokenizer members(type->GetTypesList(), wxT(","));
+        while (members.HasMoreTokens())
+        {
+            wxString str=members.GetNextToken().Strip(wxString::both);
+            AppendListItem(lstMembers, str.BeforeFirst(' '), str.AfterFirst(' '), 0);
+        }
+
+        cbDatatype->Disable();
+        txtLength->Disable();
     }
     else
     {
         // Create mode
+
+        bool hasSendRcv = connection->BackendMinimumVersion(7, 4);
+
+        if (hasSendRcv)
+        {
+            cbReceive->Append(wxEmptyString);
+            cbSend->Append(wxEmptyString);
+        }
+        else
+        {
+            cbReceive->Disable();
+            cbSend->Disable();
+        }
 
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT proname, nspname\n")
@@ -152,13 +194,19 @@ int dlgType::Go(bool modal)
         {
             while (!set->Eof())
             {
-                wxString nsp=set->GetVal(wxT("nspname"));
-                if (nsp == wxT("pg_catalog"))
-                    nsp = wxT("");
+                wxString pn=set->GetVal(wxT("nspname"));
+                if (pn == wxT("pg_catalog") || pn == wxT("public"))
+                    pn = wxT("");
                 else
-                    nsp += wxT(".");
-                cbInput->Append(nsp+set->GetVal(wxT("proname")));
-                cbOutput->Append(nsp+set->GetVal(wxT("proname")));
+                    pn += wxT(".");
+                pn += set->GetVal(wxT("proname"));
+                cbInput->Append(pn);
+                cbOutput->Append(pn);
+                if (hasSendRcv)
+                {
+                    cbOutput->Append(pn);
+                    cbOutput->Append(pn);
+                }
                 set->MoveNext();
             }
             delete set;
@@ -290,6 +338,29 @@ wxString dlgType::GetSql()
             AppendQuoted(sql, cbInput->GetValue());
             sql += wxT(", OUTPUT=");
             AppendQuoted(sql, cbOutput->GetValue());
+
+            if (connection->BackendMinimumVersion(7, 4))
+            {
+                if (cbReceive->GetSelection() > 0 || cbSend->GetSelection() > 0)
+                {
+                    if (cbReceive->GetSelection() > 0)
+                    {
+                        sql += wxT(",\n   RECEIVE=");
+                        AppendQuoted(sql, cbReceive->GetValue());
+                        if (cbSend->GetSelection() > 0)
+                        {
+                            sql += wxT(", SEND=");
+                            AppendQuoted(sql, cbSend->GetValue());
+                        }
+                    }
+                    else
+                    {
+                        sql += wxT(",\n   SEND=");
+                        AppendQuoted(sql, cbSend->GetValue());
+                    }
+                }
+
+            }
             sql += wxT(",\n    INTERNALLENGTH=");
             if (chkVariable->GetValue())
                 sql += wxT("VARIABLE");
