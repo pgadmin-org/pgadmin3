@@ -92,7 +92,7 @@ pgObject *pgRule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_RULES)
-            rule = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rw.ev_class=") + GetOidStr());
+            rule = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rw.oid=") + GetOidStr());
     }
     return rule;
 }
@@ -111,7 +111,7 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
         "  JOIN pg_namespace nsp ON nsp.oid=cl.relnamespace\n"
         "  LEFT OUTER JOIN pg_description des ON des.objoid=rw.oid\n"
         " WHERE ev_class = ") + NumToStr(collection->GetOid()) 
-        + restriction + wxT("::oid\n"
+        + restriction + wxT("\n"
         " ORDER BY rulename"));
 
     if (rules)
