@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -163,8 +163,8 @@ main(int argc, char **argv)
         /* Check to see that the backend connection was successfully made */
         if (PQstatus(conn) != CONNECTION_OK)
         {
-                fprintf(stderr, "Connection to database '%s' failed.\n", PQdb(conn));
-                fprintf(stderr, "%s", PQerrorMessage(conn));
+                fprintf(stderr, "Connection to database failed: %s",
+                        PQerrorMessage(conn));
                 exit_nicely(conn);
         }
 
@@ -317,8 +317,8 @@ main(int argc, char **argv)
         /* Check to see that the backend connection was successfully made */
         if (PQstatus(conn) != CONNECTION_OK)
         {
-                fprintf(stderr, "Connection to database '%s' failed.\n", PQdb(conn));
-                fprintf(stderr, "%s", PQerrorMessage(conn));
+                fprintf(stderr, "Connection to database failed: %s",
+                        PQerrorMessage(conn));
                 exit_nicely(conn);
         }
 
@@ -467,8 +467,8 @@ main(int argc, char **argv)
         /* Check to see that the backend connection was successfully made */
         if (PQstatus(conn) != CONNECTION_OK)
         {
-                fprintf(stderr, "Connection to database '%s' failed.\n", PQdb(conn));
-                fprintf(stderr, "%s", PQerrorMessage(conn));
+                fprintf(stderr, "Connection to database failed: %s",
+                        PQerrorMessage(conn));
                 exit_nicely(conn);
         }
 

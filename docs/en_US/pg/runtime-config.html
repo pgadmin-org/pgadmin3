@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="RUNTIME-CONFIG"
 >16.4. Run-time Configuration</A
 ></H1
 ><A
-NAME="AEN16118"
+NAME="AEN16121"
 ></A
 ><P
 >    There are a lot of configuration parameters that affect the
@@ -143,7 +143,7 @@ CLASS="LITERAL"
 CLASS="FILENAME"
 >postgresql.conf</TT
 ><A
-NAME="AEN16133"
+NAME="AEN16136"
 ></A
 >
     in the data directory. (A default file is installed there.) An
@@ -166,7 +166,7 @@ CLASS="LITERAL"
    </P
 ><P
 >    <A
-NAME="AEN16138"
+NAME="AEN16141"
 ></A
 >
     The configuration file is reread whenever the
@@ -326,8 +326,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="RUNTIME-CONFIG-CONFIGURATION-FILES"
->16.4.1. Configuration Files</A
+NAME="RUNTIME-CONFIG-FILE-LOCATIONS"
+>16.4.1. File Locations</A
 ></H2
 ><P
 ></P
@@ -336,80 +336,194 @@ CLASS="VARIABLELIST"
 ><DL
 ><DT
 ><A
-NAME="GUC-PGDATA"
+NAME="GUC-DATA-DIRECTORY"
 ></A
 ><TT
 CLASS="VARNAME"
->pgdata</TT
+>data_directory</TT
 > (<TT
 CLASS="TYPE"
 >string</TT
 >)</DT
 ><DD
 ><P
->         Specifies the directory to use for data storage (everything except
-         configuration files).
+>         Specifies the directory to use for data storage.
+         This option can only be set at server start.
        </P
 ></DD
 ><DT
 ><A
-NAME="GUC-HBA-CONF"
+NAME="GUC-CONFIG-FILE"
 ></A
 ><TT
 CLASS="VARNAME"
->hba_conf</TT
+>config_file</TT
 > (<TT
 CLASS="TYPE"
 >string</TT
 >)</DT
 ><DD
 ><P
->         Specifies the file name to use for configuration of host-based 
-         authentication (HBA).
+>         Specifies the main server configuration file
+	 (customarily called <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>).
+         This option can only be set on the postmaster command line.
        </P
 ></DD
 ><DT
 ><A
-NAME="GUC-IDENT-CONF"
+NAME="GUC-HBA-FILE"
 ></A
 ><TT
 CLASS="VARNAME"
->ident_conf</TT
+>hba_file</TT
 > (<TT
 CLASS="TYPE"
 >string</TT
 >)</DT
 ><DD
 ><P
->         Specifies the file name to use for configuration of 
+>         Specifies the configuration file for host-based authentication.
+         This option can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-IDENT-FILE"
+></A
+><TT
+CLASS="VARNAME"
+>ident_file</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>         Specifies the configuration file for
          <SPAN
 CLASS="APPLICATION"
 >ident</SPAN
 > authentication.
+         This option can only be set at server start.
        </P
 ></DD
 ><DT
 ><A
-NAME="EXTERNAL-PIDFILE"
+NAME="EXTERNAL-PID-FILE"
 ></A
 ><TT
 CLASS="VARNAME"
->external_pidfile</TT
+>external_pid_file</TT
 > (<TT
 CLASS="TYPE"
 >string</TT
 >)</DT
 ><DD
 ><P
->         Specifies the location of an additional <SPAN
+>         Specifies that the <SPAN
 CLASS="APPLICATION"
 >postmaster</SPAN
->
-         process-id (PID) file for use by server administration programs.
+> should create an
+	 additional process-id (PID) file for use by server administration
+	 programs.
+         This option can only be set at server start.
        </P
 ></DD
 ></DL
 ></DIV
+><P
+>      In a default installation, none of the above options is set explicitly
+      in the <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.  Instead, the
+      data directory is specified by the <TT
+CLASS="OPTION"
+>-D</TT
+> command-line
+      option or the <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable, and the
+      configuration files are all placed within the data directory.
+     </P
+><P
+>      It is also possible to separate the configuration files from the data
+      directory, which can ease administration.  (In particular it is often
+      easier to ensure that the configuration files are properly backed-up
+      when they are kept separate.)  To do this, the <TT
+CLASS="OPTION"
+>-D</TT
+>
+      command-line option or <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable
+      must point to the directory containing the configuration files,
+      and the <TT
+CLASS="VARNAME"
+>data_directory</TT
+> option is set in
+      <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> (or on the command line) to show
+      where the data directory is actually located.  Notice that
+      <TT
+CLASS="VARNAME"
+>data_directory</TT
+> overrides <TT
+CLASS="OPTION"
+>-D</TT
+> for the location
+      of the data directory, but not for the location of the configuration
+      files.
+     </P
+><P
+>      If you wish, you can specify the configuration file names and locations
+      individually using the options <TT
+CLASS="VARNAME"
+>config_file</TT
+>,
+      <TT
+CLASS="VARNAME"
+>hba_file</TT
+> and/or <TT
+CLASS="VARNAME"
+>ident_file</TT
+>.
+      <TT
+CLASS="VARNAME"
+>config_file</TT
+> can only be specified on the 
+      <TT
+CLASS="COMMAND"
+>postmaster</TT
+> command line, but the others can be
+      set within the main configuration file.  If all three options plus
+      <TT
+CLASS="VARNAME"
+>data_directory</TT
+> are explicitly set, then it is not necessary
+      to specify <TT
+CLASS="OPTION"
+>-D</TT
+> or <TT
+CLASS="ENVAR"
+>PGDATA</TT
+>.
+     </P
+><P
+>      When setting any of these options, a relative path will be interpreted
+      with respect to the directory in which the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
+      is started.
+     </P
 ></DIV
 ><DIV
 CLASS="SECT2"
@@ -1592,7 +1706,15 @@ CLASS="VARNAME"
 > reduce the extra I/O load
       caused by the background writer, but leave more work to be done
       at checkpoint time.  To reduce load spikes at checkpoints,
-      increase the values.
+      increase the values.  To disable background writing entirely,
+      set <TT
+CLASS="VARNAME"
+>bgwriter_percent</TT
+> and/or
+      <TT
+CLASS="VARNAME"
+>bgwriter_maxpages</TT
+> to zero.
      </P
 ></DIV
 ></DIV
@@ -2688,7 +2810,7 @@ NAME="RUNTIME-CONFIG-LOGGING"
 >16.4.6. Error Reporting and Logging</A
 ></H2
 ><A
-NAME="AEN16828"
+NAME="AEN16862"
 ></A
 ><DIV
 CLASS="SECT3"
@@ -2699,7 +2821,7 @@ NAME="RUNTIME-CONFIG-LOGGING-WHERE"
 >16.4.6.1. Where to log</A
 ></H3
 ><A
-NAME="AEN16832"
+NAME="AEN16866"
 ></A
 ><P
 ></P
@@ -3678,22 +3800,23 @@ CLASS="TYPE"
 >)</DT
 ><DD
 ><P
->        Causes the duration of every completed statement to be logged.
-        To use this option, it is recommended that you also enable
+>        Causes the duration of every completed statement which satisfies
         <TT
 CLASS="VARNAME"
 >log_statement</TT
-> and if not using <SPAN
+> to be logged.  When using this option, 
+        if you are not using <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
->
-        log the PID using <TT
+>, it is recommended 
+        that you log the PID or session ID using <TT
 CLASS="VARNAME"
 >log_line_prefix</TT
-> so that you
-        can link the statement to the duration using the process
-        ID. The default is off.  Only superusers can turn off this
-        option if it is enabled by the administrator.
+> 
+        or log the session ID so that you can link the statement to the 
+        duration using the process ID or session ID. The default is off.  
+        Only superusers can turn off this option if it is enabled by the 
+        administrator.
        </P
 ></DD
 ><DT
@@ -3739,7 +3862,7 @@ CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN17144"
+NAME="AEN17178"
 ></A
 ><TABLE
 BORDER="1"
@@ -5170,8 +5293,8 @@ CLASS="TYPE"
 >        This controls whether <TT
 CLASS="COMMAND"
 >CREATE TABLE</TT
->
-        and <TT
+> and
+        <TT
 CLASS="COMMAND"
 >CREATE TABLE AS</TT
 > will include OIDs in
@@ -5182,28 +5305,28 @@ CLASS="LITERAL"
         nor <TT
 CLASS="LITERAL"
 >WITHOUT OIDS</TT
-> have been specified. It
-        also determines whether OIDs will be included in tables
-        created by <TT
+> is specified. It also
+        determines whether OIDs will be included in tables created by
+        <TT
 CLASS="COMMAND"
 >SELECT INTO</TT
 >. In
         <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> 8.0.0beta3
+> 8.0.0beta4
         <TT
 CLASS="VARNAME"
 >default_with_oids</TT
-> defaults to
-        true. This is also the behavior of previous versions
-        of <SPAN
+> defaults to true. This is
+        also the behavior of previous versions of
+        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->. However, assuming
-        that tables will contain OIDs by default is not
-        encouraged. This option will probably default to false in a
-        future release of <SPAN
+>. However, assuming that
+        tables will contain OIDs by default is not encouraged. This
+        option will probably default to false in a future release of
+        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.
@@ -5220,11 +5343,7 @@ CLASS="PRODUCTNAME"
 CLASS="LITERAL"
 >WITH
         OIDS</TT
-> when issuing the <TT
-CLASS="COMMAND"
->CREATE
-        TABLE</TT
-> statements for the tables in question.
+> when those tables are created.
        </P
 ></DD
 ></DL

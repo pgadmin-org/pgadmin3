@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Release 7.3.8</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 7.4"
+HREF="release-7-4.html"><LINK
+REL="NEXT"
+TITLE="Release 7.3.7"
+HREF="release-7-3-7.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-10-25T00:24:33"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-4.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-7.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-3-8"
+>E.9. Release 7.3.8</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2004-10-22</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This release contains a variety of fixes from 7.3.7.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN67263"
+>E.9.1. Migration to version 7.3.8</A
+></H2
+><P
+>     A dump/restore is not required for those running 7.3.X.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN67266"
+>E.9.2. Changes</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>Repair possible failure to update hint bits on disk</P
+><P
+>Under rare circumstances this oversight could lead to 
+<SPAN
+CLASS="QUOTE"
+>"could not access transaction status"</SPAN
+> failures, which qualifies
+it as a potential-data-loss bug.</P
+></LI
+><LI
+><P
+>Ensure that hashed outer join does not miss tuples</P
+><P
+>Very large left joins using a hash join plan could fail to output unmatched
+left-side rows given just the right data distribution.</P
+></LI
+><LI
+><P
+>Disallow running pg_ctl as root</P
+><P
+>This is to guard against any possible security issues.</P
+></LI
+><LI
+><P
+>Avoid using temp files in /tmp in make_oidjoins_check</P
+><P
+>This has been reported as a security issue, though it's hardly worthy of
+concern since there is no reason for non-developers to use this script anyway.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-4.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-7.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 7.4</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.3.7</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

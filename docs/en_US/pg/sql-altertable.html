@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-ALTERTABLE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35464"
+NAME="AEN35556"
 ></A
 ><H2
 >Name</H2
 >ALTER TABLE&nbsp;--&nbsp;change the definition of a table</DIV
 ><A
-NAME="AEN35467"
+NAME="AEN35559"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35469"
+NAME="AEN35561"
 ></A
 ><H2
 >Synopsis</H2
@@ -221,7 +221,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35498"
+NAME="AEN35590"
 ></A
 ><H2
 >Description</H2
@@ -586,7 +586,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35619"
+NAME="AEN35711"
 ></A
 ><H2
 >Parameters</H2
@@ -747,7 +747,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35687"
+NAME="AEN35779"
 ></A
 ><H2
 >Notes</H2
@@ -829,6 +829,48 @@ CLASS="LITERAL"
     data.
    </P
 ><P
+>    The <TT
+CLASS="LITERAL"
+>USING</TT
+> option of <TT
+CLASS="LITERAL"
+>ALTER TYPE</TT
+> can actually
+    specify any expression involving the old values of the row; that is, it
+    can refer to other columns as well as the one being converted.  This allows
+    very general conversions to be done with the <TT
+CLASS="LITERAL"
+>ALTER TYPE</TT
+>
+    syntax.  Because of this flexibility, the <TT
+CLASS="LITERAL"
+>USING</TT
+>
+    expression is not applied to the column's default value (if any); the
+    result might not be a constant expression as required for a default.
+    This means that when there is no implicit or assignment cast from old to
+    new type, <TT
+CLASS="LITERAL"
+>ALTER TYPE</TT
+> may fail to convert the default even
+    though a <TT
+CLASS="LITERAL"
+>USING</TT
+> clause is supplied.  In such cases,
+    drop the default with <TT
+CLASS="LITERAL"
+>DROP DEFAULT</TT
+>, perform the <TT
+CLASS="LITERAL"
+>ALTER
+    TYPE</TT
+>, and then use <TT
+CLASS="LITERAL"
+>SET DEFAULT</TT
+> to add a suitable new
+    default.
+   </P
+><P
 >    If a table has any descendant tables, it is not permitted to add,
     rename, or change the type of a column in the parent table without doing
     the same to the descendants.  That is, <TT
@@ -876,7 +918,7 @@ HREF="ddl.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35717"
+NAME="AEN35819"
 ></A
 ><H2
 >Examples</H2
@@ -985,7 +1027,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35745"
+NAME="AEN35847"
 ></A
 ><H2
 >Compatibility</H2

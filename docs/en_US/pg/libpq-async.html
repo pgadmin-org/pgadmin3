@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -99,7 +99,7 @@ NAME="LIBPQ-ASYNC"
 >27.4. Asynchronous Command Processing</A
 ></H1
 ><A
-NAME="AEN22572"
+NAME="AEN22648"
 ></A
 ><P
 >The <CODE
@@ -164,22 +164,33 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQgetResult</CODE
 >.
-There are also <CODE
+There are also
+<CODE
 CLASS="FUNCTION"
 >PQsendQueryParams</CODE
-> and
+>,
+<CODE
+CLASS="FUNCTION"
+>PQsendPrepare</CODE
+>, and
 <CODE
 CLASS="FUNCTION"
 >PQsendQueryPrepared</CODE
->, which can be used with
-<CODE
+>,
+which can be used with <CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
-> to duplicate the functionality of
+> to duplicate the
+functionality of
 <CODE
 CLASS="FUNCTION"
 >PQexecParams</CODE
-> and <CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>PQprepare</CODE
+>, and
+<CODE
 CLASS="FUNCTION"
 >PQexecPrepared</CODE
 >
@@ -195,7 +206,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQsendQuery</CODE
 ><A
-NAME="AEN22602"
+NAME="AEN22680"
 ></A
 ></DT
 ><DD
@@ -235,7 +246,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQsendQueryParams</CODE
 ><A
-NAME="AEN22615"
+NAME="AEN22693"
 ></A
 ></DT
 ><DD
@@ -273,9 +284,52 @@ CLASS="FUNCTION"
 ><DT
 ><CODE
 CLASS="FUNCTION"
+>PQsendPrepare</CODE
+><A
+NAME="AEN22704"
+></A
+></DT
+><DD
+><P
+>        Sends a request to create a prepared statement with the given
+        parameters, without waiting for completion.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQsendPrepare(PGconn *conn,
+                  const char *stmtName,
+                  const char *query,
+                  int nParams,
+                  const Oid *paramTypes);</PRE
+><P>
+
+        This is an asynchronous version of <CODE
+CLASS="FUNCTION"
+>PQprepare</CODE
+>: it
+        returns 1 if it was able to dispatch the request, and 0 if not.
+        After a successful call, call <CODE
+CLASS="FUNCTION"
+>PQgetResult</CODE
+>
+        to determine whether the server successfully created the prepared
+        statement.
+        The function's parameters are handled identically to
+        <CODE
+CLASS="FUNCTION"
+>PQprepare</CODE
+>.  Like
+        <CODE
+CLASS="FUNCTION"
+>PQprepare</CODE
+>, it will not work on 2.0-protocol
+        connections.</P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
 >PQsendQueryPrepared</CODE
 ><A
-NAME="AEN22626"
+NAME="AEN22716"
 ></A
 ></DT
 ><DD
@@ -315,7 +369,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQgetResult</CODE
 ><A
-NAME="AEN22637"
+NAME="AEN22727"
 ></A
 ></DT
 ><DD
@@ -328,6 +382,10 @@ CLASS="FUNCTION"
           <CODE
 CLASS="FUNCTION"
 >PQsendQueryParams</CODE
+>,
+          <CODE
+CLASS="FUNCTION"
+>PQsendPrepare</CODE
 >, or
           <CODE
 CLASS="FUNCTION"
@@ -413,7 +471,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQconsumeInput</CODE
 ><A
-NAME="AEN22664"
+NAME="AEN22755"
 ></A
 ></DT
 ><DD
@@ -475,7 +533,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQisBusy</CODE
 ><A
-NAME="AEN22684"
+NAME="AEN22775"
 ></A
 ></DT
 ><DD
@@ -563,7 +621,7 @@ CLASS="FUNCTION"
 > can
 also attempt to cancel a command that is still being processed by the
 server.<A
-NAME="AEN22709"
+NAME="AEN22800"
 ></A
 >
 
@@ -577,7 +635,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQrequestCancel</CODE
 ><A
-NAME="AEN22716"
+NAME="AEN22807"
 ></A
 ></DT
 ><DD
@@ -663,7 +721,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQsetnonblocking</CODE
 ><A
-NAME="AEN22739"
+NAME="AEN22830"
 ></A
 ></DT
 ><DD
@@ -717,7 +775,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQisnonblocking</CODE
 ><A
-NAME="AEN22757"
+NAME="AEN22848"
 ></A
 ></DT
 ><DD
@@ -736,7 +794,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQflush</CODE
 ><A
-NAME="AEN22766"
+NAME="AEN22857"
 ></A
 ></DT
 ><DD

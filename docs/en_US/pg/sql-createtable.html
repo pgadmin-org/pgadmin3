@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATETABLE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38662"
+NAME="AEN38765"
 ></A
 ><H2
 >Name</H2
 >CREATE TABLE&nbsp;--&nbsp;define a new table</DIV
 ><A
-NAME="AEN38665"
+NAME="AEN38768"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38667"
+NAME="AEN38770"
 ></A
 ><H2
 >Synopsis</H2
@@ -293,7 +293,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38710"
+NAME="AEN38813"
 ></A
 ><H2
 >Parameters</H2
@@ -748,17 +748,10 @@ CLASS="REPLACEABLE"
     (table constraint)</DT
 ><DD
 ><P
->      Theses clauses specify a foreign key constraint, which specifies
+>      These clauses specify a foreign key constraint, which requires
       that a group of one or more columns of the new table must only
-      contain values which match against values in the referenced
-      column(s) <VAR
-CLASS="REPLACEABLE"
->refcolumn</VAR
->
-      of the referenced table <VAR
-CLASS="REPLACEABLE"
->reftable</VAR
->.  If <VAR
+      contain values that match values in the referenced
+      column(s) of some row of the referenced table.  If <VAR
 CLASS="REPLACEABLE"
 >refcolumn</VAR
 > is omitted, the
@@ -770,7 +763,7 @@ CLASS="REPLACEABLE"
       key constraint in the referenced table.
      </P
 ><P
->      A value inserted into these columns is matched against the
+>      A value inserted into the referencing column(s) is matched against the
       values of the referenced table and referenced columns using the
       given match type.  There are three match types: <TT
 CLASS="LITERAL"
@@ -814,7 +807,12 @@ CLASS="LITERAL"
       clause specifies the action to perform when a referenced column
       in the referenced table is being updated to a new value. If the
       row is updated, but the referenced column is not actually
-      changed, no action is done.  There are the following possible
+      changed, no action is done. Referential actions apart from the
+      check of <TT
+CLASS="LITERAL"
+>NO ACTION</TT
+> can not be deferred even if
+      the constraint is deferrable. There are the following possible
       actions for each clause:
 
       <P
@@ -830,8 +828,10 @@ CLASS="LITERAL"
 ><DD
 ><P
 >          Produce an error indicating that the deletion or update
-          would create a foreign key constraint violation.  This is
-          the default action.
+          would create a foreign key constraint violation.
+          If the constraint is deferred, this
+          error will be produced at constraint check time if there still
+          exist any referencing rows.  This is the default action.
          </P
 ></DD
 ><DT
@@ -841,12 +841,13 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->          Same as <TT
+>          Produce an error indicating that the deletion or update
+          would create a foreign key constraint violation.
+          This is the same as <TT
 CLASS="LITERAL"
 >NO ACTION</TT
-> except that this action
-          will not be deferred even if the rest of the constraint is
-          deferrable and deferred.
+> except that
+	  the check is not deferrable.
          </P
 ></DD
 ><DT
@@ -868,7 +869,7 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->          Set the referencing column values to null.
+>          Set the referencing column(s) to null.
          </P
 ></DD
 ><DT
@@ -878,7 +879,7 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->          Set the referencing column values to their default value.
+>          Set the referencing column(s) to their default values.
          </P
 ></DD
 ></DL
@@ -886,17 +887,10 @@ CLASS="LITERAL"
 ><P>
      </P
 ><P
->      If primary key column is updated frequently, it may be wise to
-      add an index to the foreign key column so that <TT
-CLASS="LITERAL"
->NO
-      ACTION</TT
-> and <TT
-CLASS="LITERAL"
->CASCADE</TT
-> actions
-      associated with the foreign key column can be more efficiently
-      performed.
+>      If the referenced column(s) are changed frequently, it may be wise to
+      add an index to the foreign key column so that referential actions
+      associated with the foreign key column can be performed more
+      efficiently.
      </P
 ></DD
 ><DT
@@ -1356,9 +1350,9 @@ CLASS="STRUCTNAME"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE cinemas (
-	id serial,
-	name text,
-	location text
+        id serial,
+        name text,
+        location text
 ) TABLESPACE diskvol1;</PRE
 ><P>
   </P
@@ -1380,7 +1374,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN39019"
+NAME="AEN39119"
 ></A
 ><H3
 >Temporary Tables</H3
@@ -1469,7 +1463,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN39040"
+NAME="AEN39140"
 ></A
 ><H3
 >Column Check Constraints</H3
@@ -1493,7 +1487,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN39046"
+NAME="AEN39146"
 ></A
 ><H3
 ><TT
@@ -1527,7 +1521,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN39055"
+NAME="AEN39155"
 ></A
 ><H3
 >Inheritance</H3
@@ -1551,7 +1545,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN39061"
+NAME="AEN39161"
 ></A
 ><H3
 >Object IDs</H3
@@ -1566,7 +1560,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN39065"
+NAME="AEN39165"
 ></A
 ><H3
 >Zero-column tables</H3
@@ -1591,7 +1585,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN39071"
+NAME="AEN39171"
 ></A
 ><H3
 >TABLESPACE and USING INDEX TABLESPACE</H3
@@ -1607,7 +1601,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39075"
+NAME="AEN39175"
 ></A
 ><H2
 >See Also</H2

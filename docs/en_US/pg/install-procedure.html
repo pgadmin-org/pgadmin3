@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -108,7 +108,7 @@ NAME="CONFIGURE"
 >Configuration</B
 ></P
 ><A
-NAME="AEN14959"
+NAME="AEN14968"
 ></A
 ><P
 >    The first step of the installation procedure is to configure the
@@ -650,7 +650,10 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->         Build the PL/Perl server-side language.
+>         Build the <SPAN
+CLASS="APPLICATION"
+>PL/Perl</SPAN
+> server-side language.
         </P
 ></DD
 ><DT
@@ -660,7 +663,10 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->         Build the PL/Python server-side language.
+>         Build the <SPAN
+CLASS="APPLICATION"
+>PL/Python</SPAN
+> server-side language.
         </P
 ></DD
 ><DT
@@ -670,36 +676,10 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->         Build <SPAN
+>         Build the <SPAN
 CLASS="APPLICATION"
 >PL/Tcl</SPAN
->, which requires Tcl/Tk
-         <TT
-CLASS="OPTION"
->--without-tk</TT
->.
-        </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--without-tk</TT
-></DT
-><DD
-><P
->         If you specify <TT
-CLASS="OPTION"
->--with-tcl</TT
-> and this option, then
-         the program that requires <SPAN
-CLASS="PRODUCTNAME"
->Tk</SPAN
->
-         (<SPAN
-CLASS="APPLICATION"
->pgtksh</SPAN
->) will be
-         excluded.
+> server-side language.
         </P
 ></DD
 ><DT
@@ -709,28 +689,18 @@ CLASS="OPTION"
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
 ></TT
-><BR><TT
-CLASS="OPTION"
->--with-tkconfig=<VAR
-CLASS="REPLACEABLE"
->DIRECTORY</VAR
-></TT
 ></DT
 ><DD
 ><P
->         Tcl/Tk installs the files <TT
+>         Tcl installs the file <TT
 CLASS="FILENAME"
 >tclConfig.sh</TT
-> and
-         <TT
-CLASS="FILENAME"
->tkConfig.sh</TT
->, which contain
-         configuration information needed to build modules
-         interfacing to Tcl or Tk. These files are normally found
-         automatically at their well-known locations, but if you want to
-         use a different version of Tcl or Tk you can specify the
-         directory in which to find them.
+>, which
+         contains configuration information needed to build modules
+         interfacing to Tcl. This file is normally found automatically
+         at a well-known location, but if you want to use a different
+         version of Tcl you can specify the directory in which to look
+         for it.
         </P
 ></DD
 ><DT
@@ -825,7 +795,7 @@ CLASS="OPTION"
 CLASS="ACRONYM"
 >PAM</ACRONYM
 ><A
-NAME="AEN15197"
+NAME="AEN15195"
 ></A
 >
          (Pluggable Authentication Modules) support.
@@ -1060,7 +1030,7 @@ CLASS="SCREEN"
 >Regression Tests</B
 ></P
 ><A
-NAME="AEN15270"
+NAME="AEN15268"
 ></A
 ><P
 >    If you want to test the newly built server before you install it,
@@ -1157,25 +1127,9 @@ CLASS="LITERAL"
     possibly can, you will have to do manual work.
    </P
 ><P
->    The standard installation provides only the header files needed for client
-    application development.  If you plan to do any server-side program
-    development (such as custom functions or data types written in C),
-    then you may want to install the entire <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    include tree into your target include directory.  To do that, enter
-</P><PRE
-CLASS="SCREEN"
-><KBD
-CLASS="USERINPUT"
->gmake install-all-headers</KBD
-></PRE
-><P>
-    This adds a megabyte or two to the installation footprint, and is only
-    useful if you don't plan to keep the whole source tree around for
-    reference.  (If you do, you can just use the source's include
-    directory when building server-side software.)
+>    The standard installation provides all the header files needed for client
+    application development as well as for any server-side program
+    development (such as custom functions or data types written in C).
    </P
 ><DIV
 CLASS="FORMALPARA"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Large Objects"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -160,7 +160,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23606"
+NAME="AEN23697"
 >28.3.1. Creating a Large Object</A
 ></H2
 ><P
@@ -170,7 +170,7 @@ CLASS="SYNOPSIS"
 >Oid lo_creat(PGconn *conn, int mode);</PRE
 ><P>
      <A
-NAME="AEN23610"
+NAME="AEN23701"
 ></A
 >
      creates a new large  object.  
@@ -211,7 +211,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23618"
+NAME="AEN23709"
 >28.3.2. Importing a Large Object</A
 ></H2
 ><P
@@ -221,7 +221,7 @@ CLASS="SYNOPSIS"
 >Oid lo_import(PGconn *conn, const char *filename);</PRE
 ><P>
      <A
-NAME="AEN23622"
+NAME="AEN23713"
 ></A
 >
      <VAR
@@ -238,7 +238,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23625"
+NAME="AEN23716"
 >28.3.3. Exporting a Large Object</A
 ></H2
 ><P
@@ -249,7 +249,7 @@ CLASS="SYNOPSIS"
 >int lo_export(PGconn *conn, Oid lobjId, const char *filename);</PRE
 ><P>
      <A
-NAME="AEN23629"
+NAME="AEN23720"
 ></A
 >
      The <TT
@@ -268,7 +268,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23633"
+NAME="AEN23724"
 >28.3.4. Opening an Existing Large Object</A
 ></H2
 ><P
@@ -278,7 +278,7 @@ CLASS="SYNOPSIS"
 >int lo_open(PGconn *conn, Oid lobjId, int mode);</PRE
 ><P>
      <A
-NAME="AEN23637"
+NAME="AEN23728"
 ></A
 >
      The <TT
@@ -327,7 +327,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23649"
+NAME="AEN23740"
 >28.3.5. Writing Data to a Large Object</A
 ></H2
 ><P
@@ -337,7 +337,7 @@ CLASS="SYNOPSIS"
 >int lo_write(PGconn *conn, int fd, const char *buf, size_t len);</PRE
 ><P>
      <A
-NAME="AEN23653"
+NAME="AEN23744"
 ></A
 > writes
      <TT
@@ -367,7 +367,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23660"
+NAME="AEN23751"
 >28.3.6. Reading Data from a Large Object</A
 ></H2
 ><P
@@ -377,7 +377,7 @@ CLASS="SYNOPSIS"
 >int lo_read(PGconn *conn, int fd, char *buf, size_t len);</PRE
 ><P>
      <A
-NAME="AEN23664"
+NAME="AEN23755"
 ></A
 > reads
      <TT
@@ -407,7 +407,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23671"
+NAME="AEN23762"
 >28.3.7. Seeking on a Large Object</A
 ></H2
 ><P
@@ -418,7 +418,7 @@ CLASS="SYNOPSIS"
 >int lo_lseek(PGconn *conn, int fd, int offset, int whence);</PRE
 ><P>
      <A
-NAME="AEN23675"
+NAME="AEN23766"
 ></A
 > This function moves the
      current location pointer for the large object described by
@@ -452,7 +452,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23683"
+NAME="AEN23774"
 >28.3.8. Obtaining the Seek Position of a Large Object</A
 ></H2
 ><P
@@ -463,7 +463,7 @@ CLASS="SYNOPSIS"
 >int lo_tell(PGconn *conn, int fd);</PRE
 ><P>
      <A
-NAME="AEN23687"
+NAME="AEN23778"
 ></A
 > If there is an error, the
      return value is negative.</P
@@ -473,7 +473,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23689"
+NAME="AEN23780"
 >28.3.9. Closing a Large Object Descriptor</A
 ></H2
 ><P
@@ -483,7 +483,7 @@ CLASS="SYNOPSIS"
 >int lo_close(PGconn *conn, int fd);</PRE
 ><P>
      <A
-NAME="AEN23693"
+NAME="AEN23784"
 ></A
 > where <TT
 CLASS="PARAMETER"
@@ -507,7 +507,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23699"
+NAME="AEN23790"
 >28.3.10. Removing a Large Object</A
 ></H2
 ><P
@@ -517,7 +517,7 @@ CLASS="SYNOPSIS"
 >int lo_unlink(PGconn *conn, Oid lobjId);</PRE
 ><P>
      <A
-NAME="AEN23703"
+NAME="AEN23794"
 ></A
 > The
      <TT

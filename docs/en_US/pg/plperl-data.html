@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Perl - Perl Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -115,7 +115,9 @@ CLASS="LITERAL"
 composite types.
   </P
 ><P
->   Here is an example of a PL/Perl function returning a rowset of a row type:
+>   Here is an example of a PL/Perl function returning a rowset of a
+   row type.  Note that a composite type is always represented as a
+   hash reference.
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE test (
@@ -161,7 +163,10 @@ $$ LANGUAGE plperl;
 ><P>
   </P
 ><P
->  Here is an example of a PL/Perl function returning a rowset of a composite type.
+>  Here is an example of a PL/Perl function returning a rowset of a
+composite type.  As a rowset is always a reference to an array
+and a composite type is always a reference to a hash, a rowset of a
+composite type is a reference to an array of hash references.
   </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TYPE testsetperl AS (f1 integer, f2 text, f3 text);

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Backup and Restore"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ NAME="MIGRATION"
 >22.4. Migration Between Releases</A
 ></H1
 ><A
-NAME="AEN20542"
+NAME="AEN20577"
 ></A
 ><A
-NAME="AEN20544"
+NAME="AEN20579"
 ></A
 ><P
 >   As a general rule, the internal data storage format is subject to
@@ -113,21 +113,38 @@ CLASS="PRODUCTNAME"
    storage formats. For example, releases 7.0.1, 7.1.2, and 7.2 are
    not compatible, whereas 7.1.1 and 7.1.2 are. When you update
    between compatible versions, you can simply replace the executables
-   and reuse the data area on disk. Otherwise you need to
-   <SPAN
+   and reuse the data area on disk. Otherwise you need to <SPAN
 CLASS="QUOTE"
->"back up"</SPAN
+>"back
+   up"</SPAN
 > your data and <SPAN
 CLASS="QUOTE"
 >"restore"</SPAN
-> it on the new
-   server, using <SPAN
+> it on the new server, using
+   <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
->. (There are checks in place
-   that prevent you from doing the wrong thing, so no harm can be done
-   by confusing these things.) The precise installation procedure is
-   not the subject of this section; those details are in <A
+>. There are checks in place that prevent you
+   from using a data area with an incompatible version of
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, so no harm can be done by
+   confusing these things. It is recommended that you use the
+   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> program from the newer version of
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to take advantage of any enhancements in
+   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> that may have been made. The precise
+   installation procedure is not the subject of this section; those
+   details are in <A
 HREF="installation.html"
 >Chapter 14</A
 >.
@@ -167,7 +184,7 @@ CLASS="PROGRAMLISTING"
 >pg_dumpall &#62; backup
 pg_ctl stop
 mv /usr/local/pgsql /usr/local/pgsql.old
-cd ~/postgresql-8.0.0beta3
+cd ~/postgresql-8.0.0beta4
 gmake install
 initdb -D /usr/local/pgsql/data
 postmaster -D /usr/local/pgsql/data

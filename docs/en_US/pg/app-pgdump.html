@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ NAME="APP-PGDUMP"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45580"
+NAME="AEN45696"
 ></A
 ><H2
 >Name</H2
@@ -105,12 +105,12 @@ CLASS="PRODUCTNAME"
 > database into a script file or other archive file 
   </DIV
 ><A
-NAME="AEN45584"
+NAME="AEN45700"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45586"
+NAME="AEN45702"
 ></A
 ><H2
 >Synopsis</H2
@@ -359,9 +359,17 @@ CLASS="COMMAND"
 	than <TT
 CLASS="COMMAND"
 >COPY</TT
->). This will make restoration very
-	slow, but it makes the archives more portable to other SQL database
-	management systems.
+>).  This will make restoration very slow;
+	it is mainly useful for making dumps that can be loaded into
+	non-<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> databases.  Note that
+	the restore may fail altogether if you have rearranged column order.
+	The <TT
+CLASS="OPTION"
+>-D</TT
+> option is safer, though even slower.
        </P
 ></DD
 ><DT
@@ -393,8 +401,12 @@ CLASS="REPLACEABLE"
 >column</VAR
 >, ...) VALUES
 	...</TT
->).  This will make restoration very slow,
-	but it is necessary if you desire to rearrange the column ordering.
+>).  This will make restoration very slow; it is mainly
+	useful for making dumps that can be loaded into
+	non-<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> databases.
        </P
 ></DD
 ><DT
@@ -959,7 +971,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45892"
+NAME="AEN46011"
 ></A
 ><H2
 >Environment</H2
@@ -1187,7 +1199,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45956"
+NAME="AEN46075"
 ></A
 ><H2
 >History</H2
@@ -1210,7 +1222,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45962"
+NAME="AEN46081"
 ></A
 ><H2
 >See Also</H2

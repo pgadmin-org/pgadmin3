@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -121,7 +121,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQexec</CODE
 ><A
-NAME="AEN21902"
+NAME="AEN21941"
 ></A
 ></DT
 ><DD
@@ -144,11 +144,12 @@ CLASS="STRUCTNAME"
           should be treated like a <TT
 CLASS="SYMBOL"
 >PGRES_FATAL_ERROR</TT
-> result.  Use
-          <CODE
+> result.
+          Use <CODE
 CLASS="FUNCTION"
 >PQerrorMessage</CODE
-> to get more information about the error.</P
+> to get more information
+          about such errors.</P
 ></DD
 ></DL
 ></DIV
@@ -189,7 +190,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQexecParams</CODE
 ><A
-NAME="AEN21921"
+NAME="AEN21960"
 ></A
 ></DT
 ><DD
@@ -332,9 +333,166 @@ CLASS="VARIABLELIST"
 ><DT
 ><CODE
 CLASS="FUNCTION"
+>PQprepare</CODE
+><A
+NAME="AEN21995"
+></A
+></DT
+><DD
+><P
+>          Submits a request to create a prepared statement with the
+          given parameters, and waits for completion.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGresult *PQprepare(PGconn *conn,
+                    const char *stmtName,
+                    const char *query,
+                    int nParams,
+                    const Oid *paramTypes);</PRE
+><P></P
+><P
+><CODE
+CLASS="FUNCTION"
+>PQprepare</CODE
+> creates a prepared statement for later execution with
+<CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+>.
+This feature allows commands
+that will be used repeatedly to be parsed and planned just once, rather
+than each time they are executed.
+<CODE
+CLASS="FUNCTION"
+>PQprepare</CODE
+> is supported only in protocol 3.0 and later
+connections; it will fail when using protocol 2.0.</P
+><P
+>The function creates a prepared statement named <TT
+CLASS="PARAMETER"
+>stmtName</TT
+>
+from the <TT
+CLASS="PARAMETER"
+>query</TT
+> string, which must contain a single SQL command.
+<TT
+CLASS="PARAMETER"
+>stmtName</TT
+> may be <TT
+CLASS="LITERAL"
+>""</TT
+> to create an unnamed statement,
+in which case any pre-existing unnamed statement is automatically replaced;
+otherwise it is an error if the statement name is already defined in the
+current session.
+If any parameters are used, they are referred
+to in the query as <TT
+CLASS="LITERAL"
+>$1</TT
+>, <TT
+CLASS="LITERAL"
+>$2</TT
+>, etc.
+<TT
+CLASS="PARAMETER"
+>nParams</TT
+> is the number of parameters for which types are
+pre-specified in the array <TT
+CLASS="PARAMETER"
+>paramTypes[]</TT
+>.  (The array pointer
+may be <TT
+CLASS="SYMBOL"
+>NULL</TT
+> when <TT
+CLASS="PARAMETER"
+>nParams</TT
+> is zero.)
+<TT
+CLASS="PARAMETER"
+>paramTypes[]</TT
+> specifies, by OID, the data types to be assigned to
+the parameter symbols.  If <TT
+CLASS="PARAMETER"
+>paramTypes</TT
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>,
+or any particular element in the array is zero, the server assigns a data type
+to the parameter symbol in the same way it would do for an untyped literal
+string.  Also, the query may use parameter symbols with numbers higher than
+<TT
+CLASS="PARAMETER"
+>nParams</TT
+>; data types will be inferred for these symbols as
+well.</P
+><P
+>As with <CODE
+CLASS="FUNCTION"
+>PQexec</CODE
+>, the result is normally a
+<TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> object whose contents indicate server-side
+success or failure.  A null result indicates out-of-memory or inability to
+send the command at all.
+Use <CODE
+CLASS="FUNCTION"
+>PQerrorMessage</CODE
+> to get more information
+about such errors.</P
+><P
+>At present, there is no way to determine the actual datatype inferred for
+any parameters whose types are not specified in <TT
+CLASS="PARAMETER"
+>paramTypes[]</TT
+>.
+This is a <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> omission that will probably be rectified
+in a future release.</P
+></DD
+></DL
+></DIV
+><P>
+
+Prepared statements for use with <CODE
+CLASS="FUNCTION"
+>PQexecPrepared</CODE
+> can also be
+created by executing SQL <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statements.  (But
+<CODE
+CLASS="FUNCTION"
+>PQprepare</CODE
+> is more flexible since it does not require
+parameter types to be pre-specified.)  Also, although there is no
+<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> function for deleting a prepared statement,
+the SQL <TT
+CLASS="COMMAND"
+>DEALLOCATE</TT
+> statement can be used for that purpose.</P
+><P
+><P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="FUNCTION"
 >PQexecPrepared</CODE
 ><A
-NAME="AEN21956"
+NAME="AEN22036"
 ></A
 ></DT
 ><DD
@@ -360,7 +518,8 @@ CLASS="FUNCTION"
 >PQexecParams</CODE
 >, but the
 command to be executed is specified by naming a previously-prepared
-statement, instead of giving a query string.  This feature allows commands
+statement, instead of giving a query string.
+This feature allows commands
 that will be used repeatedly to be parsed and planned just once, rather
 than each time they are executed.
 <CODE
@@ -382,33 +541,14 @@ the prepared statement's parameter types were determined when it was created).</
 ></DD
 ></DL
 ></DIV
-><P>
-
-Presently, prepared statements for use with <CODE
-CLASS="FUNCTION"
->PQexecPrepared</CODE
->
-must be set up by executing an SQL <TT
-CLASS="COMMAND"
->PREPARE</TT
-> command,
-which is typically sent with <CODE
-CLASS="FUNCTION"
->PQexec</CODE
-> (though any of
-<SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->'s query-submission functions may be used).
-A lower-level interface for preparing statements may be offered in a
-future release.</P
+><P></P
 ><P
 >The
 <TT
 CLASS="STRUCTNAME"
 >PGresult</TT
 ><A
-NAME="AEN21974"
+NAME="AEN22050"
 ></A
 >
 structure encapsulates the result returned by the server.
@@ -441,7 +581,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQresultStatus</CODE
 ><A
-NAME="AEN21984"
+NAME="AEN22060"
 ></A
 ></DT
 ><DD
@@ -594,7 +734,7 @@ HREF="libpq-notice-processing.html"
 CLASS="FUNCTION"
 >PQresStatus</CODE
 ><A
-NAME="AEN22048"
+NAME="AEN22124"
 ></A
 ></DT
 ><DD
@@ -615,7 +755,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQresultErrorMessage</CODE
 ><A
-NAME="AEN22057"
+NAME="AEN22133"
 ></A
 ></DT
 ><DD
@@ -675,7 +815,7 @@ when you want to know the status from the latest operation on the connection.</P
 CLASS="FUNCTION"
 >PQresultErrorField</CODE
 ><A
-NAME="AEN22076"
+NAME="AEN22152"
 ></A
 ></DT
 ><DD
@@ -918,7 +1058,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQclear</CODE
 ><A
-NAME="AEN22172"
+NAME="AEN22248"
 ></A
 ></DT
 ><DD
@@ -954,7 +1094,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQmakeEmptyPGresult</CODE
 ><A
-NAME="AEN22185"
+NAME="AEN22261"
 ></A
 ></DT
 ><DD
@@ -1034,7 +1174,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQntuples</CODE
 ><A
-NAME="AEN22209"
+NAME="AEN22285"
 ></A
 ></DT
 ><DD
@@ -1051,7 +1191,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQnfields</CODE
 ><A
-NAME="AEN22217"
+NAME="AEN22293"
 ></A
 ></DT
 ><DD
@@ -1068,7 +1208,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQfname</CODE
 ><A
-NAME="AEN22225"
+NAME="AEN22301"
 ></A
 ></DT
 ><DD
@@ -1099,7 +1239,7 @@ CLASS="SYMBOL"
 CLASS="FUNCTION"
 >PQfnumber</CODE
 ><A
-NAME="AEN22237"
+NAME="AEN22313"
 ></A
 ></DT
 ><DD
@@ -1154,7 +1294,7 @@ CLASS="LINEANNOTATION"
 CLASS="FUNCTION"
 >PQftable</CODE
 ><A
-NAME="AEN22255"
+NAME="AEN22331"
 ></A
 ></DT
 ><DD
@@ -1198,7 +1338,7 @@ CLASS="APPLICATION"
 CLASS="FUNCTION"
 >PQftablecol</CODE
 ><A
-NAME="AEN22270"
+NAME="AEN22346"
 ></A
 ></DT
 ><DD
@@ -1221,7 +1361,7 @@ or when using pre-3.0 protocol.</P
 CLASS="FUNCTION"
 >PQfformat</CODE
 ><A
-NAME="AEN22279"
+NAME="AEN22355"
 ></A
 ></DT
 ><DD
@@ -1243,7 +1383,7 @@ for future definition.)</P
 CLASS="FUNCTION"
 >PQftype</CODE
 ><A
-NAME="AEN22288"
+NAME="AEN22364"
 ></A
 ></DT
 ><DD
@@ -1277,7 +1417,7 @@ in the source tree.</P
 CLASS="FUNCTION"
 >PQfmod</CODE
 ><A
-NAME="AEN22300"
+NAME="AEN22376"
 ></A
 ></DT
 ><DD
@@ -1304,7 +1444,7 @@ in which case the value is always -1.</P
 CLASS="FUNCTION"
 >PQfsize</CODE
 ><A
-NAME="AEN22310"
+NAME="AEN22386"
 ></A
 ></DT
 ><DD
@@ -1331,7 +1471,7 @@ A negative value indicates the data type is variable-length.</P
 CLASS="FUNCTION"
 >PQbinaryTuples</CODE
 ><A
-NAME="AEN22320"
+NAME="AEN22396"
 ></A
 ></DT
 ><DD
@@ -1370,7 +1510,7 @@ returns 1 only if all columns of the result are binary (format 1).</P
 CLASS="FUNCTION"
 >PQgetvalue</CODE
 ><A
-NAME="AEN22334"
+NAME="AEN22410"
 ></A
 ></DT
 ><DD
@@ -1441,7 +1581,7 @@ CLASS="STRUCTNAME"
 CLASS="FUNCTION"
 >PQgetisnull</CODE
 ><A
-NAME="AEN22355"
+NAME="AEN22431"
 ></A
 ></DT
 ><DD
@@ -1467,7 +1607,7 @@ will return an empty string, not a null pointer, for a null field.)</P
 CLASS="FUNCTION"
 >PQgetlength</CODE
 ><A
-NAME="AEN22368"
+NAME="AEN22444"
 ></A
 ></DT
 ><DD
@@ -1507,7 +1647,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQprint</CODE
 ><A
-NAME="AEN22381"
+NAME="AEN22457"
 ></A
 ></DT
 ><DD
@@ -1572,7 +1712,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQcmdStatus</CODE
 ><A
-NAME="AEN22397"
+NAME="AEN22473"
 ></A
 ></DT
 ><DD
@@ -1604,7 +1744,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQcmdTuples</CODE
 ><A
-NAME="AEN22409"
+NAME="AEN22485"
 ></A
 ></DT
 ><DD
@@ -1680,13 +1820,13 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQoidValue</CODE
 ><A
-NAME="AEN22433"
+NAME="AEN22509"
 ></A
 ></DT
 ><DD
 ><P
 >          Returns the OID<A
-NAME="AEN22437"
+NAME="AEN22513"
 ></A
 > of the inserted row, if the <ACRONYM
 CLASS="ACRONYM"
@@ -1727,7 +1867,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQoidStatus</CODE
 ><A
-NAME="AEN22451"
+NAME="AEN22527"
 ></A
 ></DT
 ><DD
@@ -1785,10 +1925,10 @@ NAME="LIBPQ-EXEC-ESCAPE-STRING"
 >27.3.4. Escaping Strings for Inclusion in SQL Commands</A
 ></H2
 ><A
-NAME="AEN22467"
+NAME="AEN22543"
 ></A
 ><A
-NAME="AEN22469"
+NAME="AEN22545"
 ></A
 ><P
 ><CODE
@@ -1912,7 +2052,7 @@ NAME="LIBPQ-EXEC-ESCAPE-BYTEA"
 >27.3.5. Escaping Binary Strings for Inclusion in SQL Commands</A
 ></H2
 ><A
-NAME="AEN22501"
+NAME="AEN22577"
 ></A
 ><P
 ></P
@@ -1924,7 +2064,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQescapeBytea</CODE
 ><A
-NAME="AEN22508"
+NAME="AEN22584"
 ></A
 ></DT
 ><DD
@@ -2045,7 +2185,7 @@ CLASS="PRODUCTNAME"
 CLASS="FUNCTION"
 >PQunescapeBytea</CODE
 ><A
-NAME="AEN22539"
+NAME="AEN22615"
 ></A
 ></DT
 ><DD
@@ -2102,7 +2242,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQfreemem</CODE
 ><A
-NAME="AEN22557"
+NAME="AEN22633"
 ></A
 ></DT
 ><DD

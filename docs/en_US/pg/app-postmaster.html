@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN49258"
+NAME="AEN49377"
 ></A
 ><H2
 >Name</H2
@@ -107,12 +107,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > multiuser database server</DIV
 ><A
-NAME="AEN49262"
+NAME="AEN49381"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN49264"
+NAME="AEN49383"
 ></A
 ><H2
 >Synopsis</H2
@@ -161,7 +161,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49300"
+NAME="AEN49419"
 ></A
 ><H2
 >Description</H2
@@ -219,30 +219,27 @@ CLASS="COMMAND"
 > always manages the data
    from exactly one database cluster.  A database cluster is a
    collection of databases that is stored at a common file system
-   location.  When the <TT
-CLASS="COMMAND"
->postmaster</TT
-> starts it needs 
-   to know the location of the database cluster files (<SPAN
+   location (the <SPAN
 CLASS="QUOTE"
->"data 
-   area"</SPAN
->).  
+>"data area"</SPAN
+>).
    More than one <TT
 CLASS="COMMAND"
 >postmaster</TT
 > process can run on a system
-   at one time as long as they use different data areas and different
+   at one time, so long as they use different data areas and different
    communication ports (see below).  A data area is created with <A
 HREF="app-initdb.html"
 >initdb</A
 >.
   </P
 ><P
->   The <SPAN
-CLASS="QUOTE"
->"data area"</SPAN
-> is specified by the <TT
+>   When the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> starts it needs 
+   to know the location of the data area.
+   The location must be specified by the <TT
 CLASS="OPTION"
 >-D</TT
 > option
@@ -250,35 +247,22 @@ CLASS="OPTION"
 CLASS="ENVAR"
 >PGDATA</TT
 > environment variable; there is no default.
-   Typically, it points to a directory created by <SPAN
+   Typically, <TT
+CLASS="OPTION"
+>-D</TT
+> or <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> points
+   directly to the data area directory created by <SPAN
 CLASS="APPLICATION"
->   initdb</SPAN
->.  However, for administrative flexibility, you can
-   point to a directory containing only configuration files:
-   <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->, <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
->, and
-   <TT
-CLASS="FILENAME"
->pg_ident.conf</TT
->. You can then set
-   <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->'s <TT
-CLASS="VARNAME"
->pgdata</TT
-> variable to point to the
-   data directory. You can also point just to the server configuration file
-   like <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> and set its variables to point to the
-   other configuration files and the data directory.
+>initdb</SPAN
+>.
+   Other possible file layouts are discussed in
+   <A
+HREF="runtime-config.html#RUNTIME-CONFIG-FILE-LOCATIONS"
+>Section 16.4.1</A
+>.
   </P
 ></DIV
 ><DIV
@@ -397,8 +381,12 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	Specifies the file system location of the data directory.  See
-	discussion above.
+>        Specifies the file system location of the data directory or
+        configuration file(s).  See
+        <A
+HREF="runtime-config.html#RUNTIME-CONFIG-FILE-LOCATIONS"
+>Section 16.4.1</A
+> for details.
        </P
 ></DD
 ><DT
@@ -785,7 +773,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49490"
+NAME="AEN49606"
 ></A
 ><H2
 >Environment</H2
@@ -813,7 +801,7 @@ CLASS="ENVAR"
 ></DT
 ><DD
 ><P
->      Default data direction location
+>      Default data directory location
      </P
 ></DD
 ><DT
@@ -856,7 +844,7 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49519"
+NAME="AEN49635"
 ></A
 ><H2
 >Diagnostics</H2
@@ -952,7 +940,7 @@ CLASS="QUOTE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49541"
+NAME="AEN49657"
 ></A
 ><H2
 >Notes</H2
@@ -1180,7 +1168,7 @@ CLASS="FILENAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49599"
+NAME="AEN49715"
 ></A
 ><H2
 >See Also</H2

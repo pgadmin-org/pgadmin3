@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,14 +98,18 @@ CLASS="PRODUCTNAME"
 >Windows</SPAN
 ></H1
 ><A
-NAME="AEN15826"
+NAME="AEN15821"
 ></A
 ><P
 >  Although <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is written for
-  Unix-like operating systems, the C client library
+  Unix-like operating systems and compiles under
+  <SPAN
+CLASS="PRODUCTNAME"
+>MinGW</SPAN
+>, the C client library
   (<SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
@@ -113,14 +117,17 @@ CLASS="APPLICATION"
   (<SPAN
 CLASS="APPLICATION"
 >psql</SPAN
->) can be compiled natively under
-  Windows.  The makefiles included in the source distribution are
-  written for <SPAN
+>) can be compiled using other Windows
+  tool sets. Makefiles are included in the source distribution for
+  <SPAN
 CLASS="PRODUCTNAME"
 >Microsoft Visual C++</SPAN
-> and will
-  probably not work with other systems.  It should be possible to
-  compile the libraries manually in other cases.
+> and
+  <SPAN
+CLASS="PRODUCTNAME"
+>Borland C++</SPAN
+>. It should be possible to
+  compile the libraries manually for other configurations.
  </P
 ><DIV
 CLASS="TIP"
@@ -129,19 +136,19 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->   If you are using Windows 98 or newer you can build and use all of
-   <SPAN
+>   If you are using a Windows NT-based operating system or newer you can
+   build and use all of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > <SPAN
 CLASS="QUOTE"
->"the Unix way"</SPAN
->
-   if you install the <SPAN
+>"the
+   Unix way"</SPAN
+> if you install the <SPAN
 CLASS="PRODUCTNAME"
->Cygwin</SPAN
-> toolkit first.
-   In that case see <A
+>MinGW</SPAN
+>
+   toolkit first. In that case see <A
 HREF="installation.html"
 >Chapter 14</A
 >.
@@ -149,10 +156,13 @@ HREF="installation.html"
 ></BLOCKQUOTE
 ></DIV
 ><P
->  To build everything that you can on
-  <SPAN
+>  To build everything that you can on <SPAN
 CLASS="PRODUCTNAME"
 >Windows</SPAN
+>
+  using <SPAN
+CLASS="PRODUCTNAME"
+>Microsoft Visual C++</SPAN
 >, change into the
   <TT
 CLASS="FILENAME"
@@ -170,6 +180,24 @@ CLASS="PRODUCTNAME"
 >Visual C++</SPAN
 > in
   your path.
+ </P
+><P
+>  To build everything using using <SPAN
+CLASS="PRODUCTNAME"
+>Borland
+  C++</SPAN
+>, change into the <TT
+CLASS="FILENAME"
+>src</TT
+> directory
+  and type the command
+</P><PRE
+CLASS="SCREEN"
+><KBD
+CLASS="USERINPUT"
+>make -DCFG=Release /f bcc32.mak</KBD
+></PRE
+><P>
  </P
 ><P
 >  The following files will be built:
@@ -255,16 +283,17 @@ CLASS="SYMBOL"
 >  If you plan to do development using <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> on this machine, you will
-  have to add the <TT
+>
+  on this machine, you will have to add the
+  <TT
 CLASS="FILENAME"
 >src\include</TT
 > and
   <TT
 CLASS="FILENAME"
 >src\interfaces\libpq</TT
-> subdirectories of the
-  source tree to the include path in your compilers settings.
+> subdirectories of the source
+  tree to the include path in your compilers settings.
  </P
 ><P
 >  To use the library, you must add the

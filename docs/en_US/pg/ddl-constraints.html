@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.0beta3 Documentation"
+TITLE="PostgreSQL 8.0.0beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2004-09-27T02:56:59"></HEAD
+CONTENT="2004-10-25T00:24:33"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.0beta3 Documentation</TH
+>PostgreSQL 8.0.0beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -736,13 +736,23 @@ CLASS="EMPHASIS"
     <TT
 CLASS="LITERAL"
 >RESTRICT</TT
-> can also be written as <TT
+> prevents a statement from deleting a
+    referenced row. <TT
 CLASS="LITERAL"
->NO
-    ACTION</TT
-> and it's also the default if you do not specify
-    anything.  There are two other options for what should happen with
-    the foreign key columns when a primary key is deleted:
+>NO ACTION</TT
+> means that if any
+    referencing rows still exist when the constraint is checked, an error
+    is raised; this is the default if you do not specify anything.
+    (The essential difference between these choices is that
+    <TT
+CLASS="LITERAL"
+>NO ACTION</TT
+> allows the check to be deferred until
+    later in the transaction, whereas <TT
+CLASS="LITERAL"
+>RESTRICT</TT
+> does not.)
+    There are two other options:
     <TT
 CLASS="LITERAL"
 >SET NULL</TT
@@ -750,6 +760,8 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >SET DEFAULT</TT
 >.
+    These cause the referencing columns to be set to nulls or default
+    values, respectively, when the referenced row is deleted.
     Note that these do not excuse you from observing any constraints.
     For example, if an action specifies <TT
 CLASS="LITERAL"
@@ -777,7 +789,7 @@ HREF="dml.html"
    </P
 ><P
 >    Finally, we should mention that a foreign key must reference
-    columns that are either a primary key or form a unique constraint.
+    columns that either are a primary key or form a unique constraint.
     If the foreign key references a unique constraint, there are some
     additional possibilities regarding how null values are matched.
     These are explained in the reference documentation for
