@@ -17,7 +17,7 @@
 
 class pgTablespace;
 
-class dlgTablespace : public dlgProperty
+class dlgTablespace : public dlgSecurityProperty
 {
 public:
     dlgTablespace(frmMain *frame, pgTablespace *node=0);

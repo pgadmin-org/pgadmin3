@@ -135,6 +135,7 @@ void pgTablespace::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Location"), GetLocation());
+        properties->AppendItem(_("ACL"), GetAcl());
     }
 }
 
@@ -163,7 +164,7 @@ pgObject *pgTablespace::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 
 
     pgSet *tablespaces = collection->GetServer()->ExecuteSet(
-        wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser FROM pg_tablespace ts\n")
+        wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser, spcacl FROM pg_tablespace ts\n")
         + restriction + wxT(" ORDER BY spcname"));
 
     if (tablespaces)
@@ -176,6 +177,7 @@ pgObject *pgTablespace::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
             tablespace->iSetOid(tablespaces->GetOid(wxT("oid")));
             tablespace->iSetOwner(tablespaces->GetVal(wxT("spcuser")));
             tablespace->iSetLocation(tablespaces->GetVal(wxT("spclocation")));
+            tablespace->iSetAcl(tablespaces->GetVal(wxT("spcacl")));
 
 
             if (browser)

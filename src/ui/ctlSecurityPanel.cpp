@@ -270,6 +270,7 @@ void ctlSecurityPanel::CheckGrantOpt(int id)
 void ctlSecurityPanel::OnDelPriv(wxCommandEvent &ev)
 {
     lbPrivileges->DeleteCurrentItem();
+    ev.Skip();
 }
 
 
@@ -302,6 +303,7 @@ void ctlSecurityPanel::OnAddPriv(wxCommandEvent &ev)
         }
     }
     lbPrivileges->SetItem(pos, 1, value);
+    ev.Skip();
 }
 
 

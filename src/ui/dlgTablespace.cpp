@@ -29,7 +29,7 @@
 #define txtLocation     CTRL_TEXT("txtLocation")
 
 
-BEGIN_EVENT_TABLE(dlgTablespace, dlgProperty)
+BEGIN_EVENT_TABLE(dlgTablespace, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgTablespace::OnChange)
     EVT_TEXT(XRCID("txtLocation"),                  dlgTablespace::OnChange)
     EVT_TEXT(XRCID("cbOwner"),                      dlgTablespace::OnOwnerChange)
@@ -39,7 +39,7 @@ END_EVENT_TABLE();
 
 
 dlgTablespace::dlgTablespace(frmMain *frame, pgTablespace *node)
-: dlgProperty(frame, wxT("dlgTablespace"))
+: dlgSecurityProperty(frame, node, wxT("dlgTablespace"), wxT("CREATE"), "C")
 {
     tablespace=node;
     SetIcon(wxIcon(tablespace_xpm));
@@ -55,6 +55,7 @@ pgObject *dlgTablespace::GetObject()
 
 int dlgTablespace::Go(bool modal)
 {
+    AddGroups();
     AddUsers(cbOwner);
     txtComment->Disable();
 
@@ -73,7 +74,7 @@ int dlgTablespace::Go(bool modal)
     {
     }
 
-    return dlgProperty::Go(modal);
+    return dlgSecurityProperty::Go(modal);
 }
 
 
@@ -129,6 +130,7 @@ wxString dlgTablespace::GetSql()
         sql += wxT(" LOCATION ") + qtString(txtLocation->GetValue())
             +  wxT(";\n");
     }
+    sql += GetGrant(wxT("C"), wxT("TABLESPACE ") + name);
     return sql;
 }
 
