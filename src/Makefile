@@ -24,6 +24,7 @@ OBJECTS = $(PROGRAM).o \
           schema/pgCheck.o \
           schema/pgCollection.o \
           schema/pgColumn.o \
+          schema/pgConstraints.o \
           schema/pgConversion.o \
           schema/pgDatabase.o \
           schema/pgDomain.o \
@@ -31,6 +32,7 @@ OBJECTS = $(PROGRAM).o \
           schema/pgFunction.o \
           schema/pgGroup.o \
           schema/pgIndex.o \
+          schema/pgIndexConstraint.o \
           schema/pgLanguage.o \
           schema/pgObject.o \
           schema/pgOperator.o \
