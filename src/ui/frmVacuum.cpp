@@ -29,12 +29,13 @@ BEGIN_EVENT_TABLE(frmVacuum, DialogWithHelp)
     EVT_CLOSE(                          frmVacuum::OnClose)
 END_EVENT_TABLE()
 
-#define chkFull     CTRL("chkFull", wxCheckBox)
-#define chkFreeze   CTRL("chkFreeze", wxCheckBox)
-#define chkAnalyze  CTRL("chkAnalyze", wxCheckBox)
-#define stBitmap    CTRL("stBitmap", wxStaticBitmap)
-#define btnOK       CTRL("btnOK", wxButton)
-#define btnCancel   CTRL("btnCancel", wxButton)
+#define chkFull         CTRL("chkFull", wxCheckBox)
+#define chkFreeze       CTRL("chkFreeze", wxCheckBox)
+#define chkAnalyze      CTRL("chkAnalyze", wxCheckBox)
+#define chkAnalyzeOnly  CTRL("chkAnalyzeOnly", wxCheckBox)
+#define stBitmap        CTRL("stBitmap", wxStaticBitmap)
+#define btnOK           CTRL("btnOK", wxButton)
+#define btnCancel       CTRL("btnCancel", wxButton)
 
 
 
@@ -86,14 +87,20 @@ void frmVacuum::OnOK(wxCommandEvent& ev)
     {
         btnOK->Disable();
 
-        wxString sql=wxT("VACUUM ");
+        wxString sql;
+        if (chkAnalyzeOnly->GetValue())
+            sql = wxT("ANALYZE ");
+        else
+        {
+            sql=wxT("VACUUM ");
 
-        if (chkFull->GetValue())
-            sql += wxT("FULL ");
-        if (chkFreeze->GetValue())
-            sql += wxT("FREEZE ");
-        if (chkAnalyze->GetValue())
-            sql += wxT("ANALYZE ");
+            if (chkFull->GetValue())
+                sql += wxT("FULL ");
+            if (chkFreeze->GetValue())
+                sql += wxT("FREEZE ");
+            if (chkAnalyze->GetValue())
+                sql += wxT("ANALYZE ");
+        }
 
         if (object->GetType() != PG_DATABASE)
             sql += object->GetTypeName() + wxT(" ")
@@ -115,6 +122,8 @@ void frmVacuum::OnOK(wxCommandEvent& ev)
             // here could be the animation
         }
 
+        if (thread->DataSet() != NULL)
+            wxLogDebug(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()));
         if (thread)
         {
             btnOK->SetLabel(_("Done"));
