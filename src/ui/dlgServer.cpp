@@ -56,6 +56,25 @@ dlgServer::dlgServer(frmMain *frame, pgServer *node)
 {
     SetIcon(wxIcon(server_xpm));
     server=node;
+
+    cbDatabase->Append(settings->GetLastDatabase());
+    cbDatabase->SetSelection(0);
+    txtPort->SetValue(NumToStr((long)settings->GetLastPort()));    
+    cbSSL->SetSelection(settings->GetLastSSL());
+    txtUsername->SetValue(settings->GetLastUsername());
+    chkNeedPwd->SetValue(true);
+}
+
+
+dlgServer::~dlgServer()
+{
+    if (!server)
+    {
+        settings->SetLastDatabase(cbDatabase->GetValue());
+        settings->SetLastPort(StrToLong(txtPort->GetValue()));
+        settings->SetLastSSL(cbSSL->GetSelection());
+        settings->SetLastUsername(txtUsername->GetValue());
+    }
 }
 
 
@@ -159,6 +178,8 @@ int dlgServer::Go(bool modal)
     else
     {
         SetTitle(_("Add server"));
+
+#if 0
         cbDatabase->Append(settings->GetLastDatabase());
 
         txtName->SetValue(settings->GetLastServer());
@@ -168,7 +189,7 @@ int dlgServer::Go(bool modal)
         cbDatabase->SetSelection(0);
         txtUsername->SetValue(settings->GetLastUsername());
         chkNeedPwd->SetValue(true);
-
+#endif
     }
 
     int rc=dlgProperty::Go(modal);

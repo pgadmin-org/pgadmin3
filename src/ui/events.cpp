@@ -618,13 +618,15 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
 {
     int rc = PGCONN_BAD;
     
+    dlgServer dlg(this, 0);
+
     while (rc != PGCONN_OK)
     {
-        dlgServer dlg(this, 0);
         if (dlg.GoNew() != wxID_OK)
             return;
 
         pgServer *server=(pgServer*)dlg.CreateObject(0);
+
         rc = server->Connect(this, false, dlg.GetPassword());
 
         switch (rc)
