@@ -70,6 +70,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
 
     cbSSL->Append(wxEmptyString);
 
+#ifdef SSL
     cbSSL->Append(_("require"));
     cbSSL->Append(_("prefer"));
 
@@ -78,6 +79,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
         cbSSL->Append(_("allow"));
         cbSSL->Append(_("disable"));
     }
+#endif
 
     if (ssl > cbSSL->GetCount() || ssl < 0)
         ssl = 0;

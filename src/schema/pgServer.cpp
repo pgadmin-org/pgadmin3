@@ -279,18 +279,29 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, _("Hostname"), GetName());
         InsertListItem(properties, pos++, _("Description"), GetDescription());
         InsertListItem(properties, pos++, _("Port"), (long)GetPort());
-	if (ssl > 0)
-	{
-	    wxString sslMode;
-	    switch (ssl)
-	    {
-		case 1: sslMode = _("require"); break;
-		case 2: sslMode = _("prefer"); break;
-		case 3: sslMode = _("allow"); break;
-		case 4: sslMode = _("disable"); break;
-	    }
-	    InsertListItem(properties, pos++, _("SSL Mode"), sslMode);
-	}
+
+#ifdef SSL
+        if (GetConnected())
+        {
+            InsertListItem(properties, pos++, _("Encryption"), 
+                conn->IsSSLconnected() ? wxT("SSL encrypted") : _("not encrypted"));
+        }
+        else
+        {
+            if (ssl > 0)
+            {
+                wxString sslMode;
+                switch (ssl)
+                {
+                    case 1: sslMode = _("require"); break;
+                    case 2: sslMode = _("prefer"); break;
+                    case 3: sslMode = _("allow"); break;
+                    case 4: sslMode = _("disable"); break;
+                }
+                InsertListItem(properties, pos++, _("SSL Mode"), sslMode);
+            }
+        }
+#endif
         InsertListItem(properties, pos++, _("Initial database"), GetDatabase());
         InsertListItem(properties, pos++, _("Username"), GetUsername());
         InsertListItem(properties, pos++, _("Trusted?"), GetTrusted());

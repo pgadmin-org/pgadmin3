@@ -62,7 +62,7 @@ int pgDatabase::Connect()
         return conn->GetStatus();
     else
     {
-		conn = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());       
+		conn = new pgConn(GetServer()->GetName(), GetName(), GetServer()->GetUsername(), GetServer()->GetPassword(), GetServer()->GetPort(), GetServer()->GetSSL());
 		if (conn->GetStatus() == PGCONN_OK)
         {
             // Now we're connected.

@@ -4,7 +4,7 @@
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
-CFG=pgAdmin3 - Win32 Unicode Release
+CFG=pgAdmin3 - Win32 Unicode SSL Release
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
@@ -13,7 +13,7 @@ CFG=pgAdmin3 - Win32 Unicode Release
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "pgAdmin3.mak" CFG="pgAdmin3 - Win32 Unicode Release"
+!MESSAGE NMAKE /f "pgAdmin3.mak" CFG="pgAdmin3 - Win32 Unicode SSL Release"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
@@ -21,6 +21,8 @@ CFG=pgAdmin3 - Win32 Unicode Release
 !MESSAGE "pgAdmin3 - Win32 Debug" (based on "Win32 (x86) Application")
 !MESSAGE "pgAdmin3 - Win32 Unicode Debug" (based on "Win32 (x86) Application")
 !MESSAGE "pgAdmin3 - Win32 Unicode Release" (based on "Win32 (x86) Application")
+!MESSAGE "pgAdmin3 - Win32 Unicode SSL Debug" (based on "Win32 (x86) Application")
+!MESSAGE "pgAdmin3 - Win32 Unicode SSL Release" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -144,6 +146,64 @@ LINK32=link.exe
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib libpq.lib wxxrc.lib regex.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
 # SUBTRACT LINK32 /pdb:none
 
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "pgAdmin3___Win32_Unicode_SSL_Debug"
+# PROP BASE Intermediate_Dir "pgAdmin3___Win32_Unicode_SSL_Debug"
+# PROP BASE Ignore_Export_Lib 0
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "Unicode_SSL_Debug"
+# PROP Intermediate_Dir "Unicode_SSL_Debug"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "include/" /I "c:/wxWindows_2.5/include" /I "c:/wxWindows_2.5/contrib/include" /I "c:/wxWindows_2.5/lib/mswd" /I "c:/postgresql/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /FAcs /FR /FD /c
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "include/" /I "c:/wxWindows_2.5/include" /I "c:/wxWindows_2.5/contrib/include" /I "c:/wxWindows_2.5/lib/mswd" /I "c:/postgresql/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /FR /FD /c
+# SUBTRACT CPP /YX /Yc /Yu
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD BASE RSC /l 0x809 /i "c:/wxWindows_2.5/include" /i "c:/wxWindows_2.5/contrib/include" /d "_DEBUG"
+# ADD RSC /l 0x809 /i "c:/wxWindows_2.5/include" /i "c:/wxWindows_2.5/contrib/include" /d "_DEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswud.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib libpq.lib wxxrcd.lib regexd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswud.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib libpq.lib wxxrcd.lib regexd.lib ssleay32.lib libeay32.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "pgAdmin3___Win32_Unicode_SSL_Release"
+# PROP BASE Intermediate_Dir "pgAdmin3___Win32_Unicode_SSL_Release"
+# PROP BASE Ignore_Export_Lib 0
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "Unicode_SSL_Release"
+# PROP Intermediate_Dir "Unicode_SSL_Release"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wxWindows_2.5/include" /I "c:/wxWindows_2.5/contrib/include" /I "c:/wxWindows_2.5/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /FAcs /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wxWindows_2.5/include" /I "c:/wxWindows_2.5/contrib/include" /I "c:/wxWindows_2.5/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /FD /c
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD BASE RSC /l 0x809 /i "c:/wxWindows_2.5/include" /i "c:/wxWindows_2.5/contrib/include" /d "NDEBUG"
+# ADD RSC /l 0x809 /i "c:/wxWindows_2.5/include" /i "c:/wxWindows_2.5/contrib/include" /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib libpq.lib wxxrc.lib regex.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
+# SUBTRACT BASE LINK32 /pdb:none
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib libpq.lib wxxrc.lib regex.lib ssleay32.lib libeay32.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
+# SUBTRACT LINK32 /pdb:none
+
 !ENDIF 
 
 # Begin Target
@@ -152,6 +212,8 @@ LINK32=link.exe
 # Name "pgAdmin3 - Win32 Debug"
 # Name "pgAdmin3 - Win32 Unicode Debug"
 # Name "pgAdmin3 - Win32 Unicode Release"
+# Name "pgAdmin3 - Win32 Unicode SSL Debug"
+# Name "pgAdmin3 - Win32 Unicode SSL Release"
 # Begin Group "src"
 
 # PROP Default_Filter ""
@@ -247,6 +309,10 @@ SOURCE=.\schema\pgObject.cpp
 !ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Debug"
 
 !ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
 
 !ENDIF 
 
@@ -1308,6 +1374,16 @@ SOURCE=.\pgAdmin3.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
+
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
+
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
 
 # SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu

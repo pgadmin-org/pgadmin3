@@ -55,6 +55,10 @@ double libpqVersion=0.0;
 #define LANG_FILE   wxT("pgadmin3.lng")
 
 
+#ifdef SSL
+extern "C" extern const char *SSL_version_str;
+#endif
+
 
 IMPLEMENT_APP(pgAdmin3)
 
@@ -118,6 +122,9 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("Not compiled against wxWindows 2.5 or above: using ") wxVERSION_STRING);
 #endif
 
+#ifdef SSL
+    wxLogInfo(wxT("Compiled with ") + wxString::FromAscii(SSL_version_str));
+#endif
 
     locale.AddCatalogLookupPathPrefix(uiPath);
     

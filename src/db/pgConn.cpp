@@ -160,6 +160,17 @@ pgConn::~pgConn()
 }
 
 
+#ifdef SSL
+// we don't define USE_SSL so we don't get ssl.h included
+extern "C" extern void *PQgetssl(PGconn *conn);
+
+bool pgConn::IsSSLconnected()
+{
+    return (PQstatus(conn) == CONNECTION_OK && PQgetssl(conn) != NULL);
+}
+#endif
+
+
 void pgConn::RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg)
 {
     noticeArg=arg;

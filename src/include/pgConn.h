@@ -67,7 +67,9 @@ public:
     OID GetLastSystemOID() const { return lastSystemOID; }
     bool BackendMinimumVersion(int major, int minor);
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
-
+#ifdef SSL
+    bool IsSSLconnected();
+#endif
     PGconn *connection() { return conn; }
     void Notice(const char *msg);
 

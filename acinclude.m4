@@ -84,6 +84,8 @@ fi], [
     fi
 ])
 
+CPPFLAGS="$CPPFLAGS -DSSL"
+
 #
 # Check for libpq libraries and headers
 #
