@@ -90,7 +90,7 @@ include/images/encoding.xpm include/images/event.xpm \
 include/images/file_open.xpm include/images/file_save.xpm \
 include/images/foreignkey.xpm include/images/forward.xpm \
 include/images/function.xpm \
-include/images/group.xpm include/images/hiproperty.xpm \
+include/images/group.xpm \
 include/images/indexcolumn.xpm include/images/index.xpm \
 include/images/key.xpm include/images/language.xpm \
 include/images/namespace.xpm \
