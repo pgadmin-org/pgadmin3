@@ -507,29 +507,35 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
     if (firstCall)
     {
         firstCall=false;
-        wxString helpfile=docPath + wxT("/") + settings->GetCanonicalLanguage() + wxT("/pgadmin3");
+        wxString helpdir=docPath + wxT("/") + settings->GetCanonicalLanguage();
 
-        if (!wxFile::Exists(helpfile + wxT(".hhp")) &&
-#ifdef __WXMSW__
-            !wxFile::Exists(helpfile + wxT(".chm")) &&
+        if (!wxFile::Exists(helpdir + wxT("/pgadmin3..hhp")) &&
+#if defined(__WXMSW__) || wxUSE_LIBMSPACK
+            !wxFile::Exists(helpdir + wxT("/pgadmin3.chm")) &&
 #endif
-            !wxFile::Exists(helpfile + wxT(".zip")))
-            helpfile=docPath + wxT("/en_US/pgadmin3");
+            !wxFile::Exists(helpdir + wxT("pgadmin3.zip")))
+            helpdir=docPath + wxT("/en_US");
 
 #ifdef __WXMSW__
 #ifndef __WXDEBUG__
-        if (wxFile::Exists(helpfile + wxT(".chm")))
+       if (wxFile::Exists(helpdir + wxT("/pgadmin3.chm")))
         {
             helpCtl=new wxCHMHelpController();
-            helpCtl->Initialize(helpfile);
+            helpCtl->Initialize(helpdir);
         }
         else
 #endif
 #endif
-        if (wxFile::Exists(helpfile + wxT(".hhp")) || wxFile::Exists(helpfile + wxT(".zip")))
+#if wxUSE_LIBMSPACK
+        if (wxFile::Exists(helpdir + wxT("/pgadmin3.chm")) ||
+            wxFile::Exists(helpdir + wxT("/pgadmin3.hhp")) || wxFile::Exists(helpdir + wxT("/pgadmin3.zip")))
+#else
+        if (wxFile::Exists(helpdir + wxT("/pgadmin3.hhp")) || wxFile::Exists(helpdir + wxT("/pgadmin3.zip")))
+#endif
         {
             helpCtl=new wxHtmlHelpController();
-            helpCtl->Initialize(helpfile);
+			((wxHtmlHelpController*)helpCtl)->SetTempDir(helpdir);
+            helpCtl->Initialize(helpdir + wxT("/pgadmin3"));
         }
     }
 
