@@ -23,10 +23,10 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "utils/sysLogger.h"
-#include "utils/sysSettings.h"
-#include "ui/forms/frmMain.h"
-#include "ui/forms/frmSplash.h"
+#include "sysLogger.h"
+#include "sysSettings.h"
+#include "frmMain.h"
+#include "frmSplash.h"
 
 // Globals
 frmMain *winMain;

@@ -13,22 +13,22 @@ WXDIR = /usr/local/wx2
 # You shouldn't need to edit below here.
 
 PROGRAM = pgAdmin3
-CFLAGS  = `wx-config --cflags` -I$(PGDIR)/include 
+CFLAGS  = `wx-config --cflags` -Iinclude -I$(PGDIR)/include 
 LDFLAGS = `wx-config --libs` -lstc -lpq -lwxxrc -L$(PGDIR)/lib -L$(WXDIR)/lib 
 
 OBJECTS = $(PROGRAM).o \
-          db/pg/pgConn.o \
-          db/pg/pgSet.o \
-          schema/pg/pgObject.o \
-          schema/pg/pgServer.o \
-          ui/forms/frmAbout.o \
-          ui/forms/frmConnect.o \
-          ui/forms/frmMain.o \
-          ui/forms/frmOptions.o \
-          ui/forms/frmPassword.o \
-          ui/forms/frmSplash.o \
-          ui/forms/frmUpgradeWizard.o \
-          ui/controls/ctlSQLBox.o \
+          db/pgConn.o \
+          db/pgSet.o \
+          schema/pgObject.o \
+          schema/pgServer.o \
+          ui/frmAbout.o \
+          ui/frmConnect.o \
+          ui/frmMain.o \
+          ui/frmOptions.o \
+          ui/frmPassword.o \
+          ui/frmSplash.o \
+          ui/frmUpgradeWizard.o \
+          ui/ctlSQLBox.o \
           utils/sysLogger.o \
           utils/sysSettings.o
 
@@ -44,8 +44,8 @@ $(PROGRAM):	$(OBJECTS)
 
 clean:
 	rm -f *.o $(PROGRAM)
-	rm -f db/pg/*.o
-	rm -f schema/pg/*.o
-	rm -f ui/forms/*.o
-	rm -f ui/controls/*.o
+	rm -f db/*.o
+	rm -f schema/*.o
+	rm -f ui/*.o
+	rm -f ui/*.o
 	rm -f utils/*.o

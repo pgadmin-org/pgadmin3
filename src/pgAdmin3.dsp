@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O1 /Ob2 /I "c:/wx2/include" /I "c:/wx2/contrib/include" /I "c:/wx2/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O1 /Ob2 /I "include/" /I "c:/wx2/include" /I "c:/wx2/contrib/include" /I "c:/wx2/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "c:/wx2/include" /I "c:/wx2/contrib/include" /I "c:/wx2/lib/mswd" /I "c:/postgresql/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "include/" /I "c:/wx2/include" /I "c:/wx2/contrib/include" /I "c:/wx2/lib/mswd" /I "c:/postgresql/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FR /FD /c
 # SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
@@ -95,66 +95,34 @@ LINK32=link.exe
 # Begin Group "db"
 
 # PROP Default_Filter ""
-# Begin Group "pg2"
-
-# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\db\pg\pgConn.cpp
+SOURCE=.\db\pgConn.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\db\pg\pgConn.h
+SOURCE=.\db\pgSet.cpp
 # End Source File
-# Begin Source File
-
-SOURCE=.\db\pg\pgSet.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\db\pg\pgSet.h
-# End Source File
-# End Group
 # End Group
 # Begin Group "schema"
 
 # PROP Default_Filter ""
-# Begin Group "pg"
-
-# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\schema\pg\pgDatabase.cpp
+SOURCE=.\schema\pgDatabase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\schema\pg\pgDatabase.h
+SOURCE=.\schema\pgObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\schema\pg\pgObject.cpp
+SOURCE=.\schema\pgServer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\schema\pg\pgObject.h
+SOURCE=.\schema\pgUser.cpp
 # End Source File
-# Begin Source File
-
-SOURCE=.\schema\pg\pgServer.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\schema\pg\pgServer.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\schema\pg\pgUser.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\schema\pg\pgUser.h
-# End Source File
-# End Group
 # End Group
 # Begin Group "utils"
 
@@ -165,27 +133,7 @@ SOURCE=.\utils\sysLogger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\utils\sysLogger.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\utils\sysSettings.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\utils\sysSettings.h
-# End Source File
-# End Group
-# Begin Group "controls"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\ui\controls\ctlSQLBox.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\controls\ctlSQLBox.h
 # End Source File
 # End Group
 # Begin Group "ui"
@@ -223,71 +171,46 @@ SOURCE=.\ui\gtk\frmOptions.xrc
 SOURCE=.\ui\gtk\frmPassword.xrc
 # End Source File
 # End Group
-# Begin Group "forms"
-
-# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\ui\forms\frmAbout.cpp
+SOURCE=.\ui\ctlSQLBox.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\forms\frmAbout.h
+SOURCE=.\ui\frmAbout.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\forms\frmConnect.cpp
+SOURCE=.\ui\frmConnect.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\forms\frmConnect.h
+SOURCE=.\ui\frmMain.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\forms\frmMain.cpp
+SOURCE=.\ui\frmOptions.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\forms\frmMain.h
+SOURCE=.\ui\frmPassword.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\forms\frmOptions.cpp
+SOURCE=.\ui\frmSplash.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\forms\frmOptions.h
+SOURCE=.\ui\frmUpgradeWizard.cpp
 # End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmPassword.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmPassword.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmSplash.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmSplash.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmUpgradeWizard.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\forms\frmUpgradeWizard.h
-# End Source File
-# End Group
 # Begin Source File
 
 SOURCE=.\ui\pgAdmin3.rc
 # End Source File
 # End Group
+# Begin Group "include"
+
+# PROP Default_Filter ""
 # Begin Group "images"
 
 # PROP Default_Filter "xpm"
@@ -480,9 +403,74 @@ SOURCE=.\images\view.xpm
 SOURCE=.\images\viewdata.xpm
 # End Source File
 # End Group
-# Begin Group "include"
+# Begin Source File
 
-# PROP Default_Filter ""
+SOURCE=.\include\ctlSQLBox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmAbout.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmConnect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmMain.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmOptions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmPassword.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmSplash.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmUpgradeWizard.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgAdmin3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgConn.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgDatabase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgObject.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgServer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgSet.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgUser.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\sysLogger.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\sysSettings.h
+# End Source File
 # End Group
 # Begin Source File
 
@@ -500,10 +488,6 @@ SOURCE=.\pgAdmin3.cpp
 
 !ENDIF 
 
-# End Source File
-# Begin Source File
-
-SOURCE=.\pgAdmin3.h
 # End Source File
 # Begin Source File
 

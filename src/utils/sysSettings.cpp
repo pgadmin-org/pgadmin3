@@ -17,7 +17,7 @@
 #include <wx/config.h>
 
 // App headers
-#include "../pgAdmin3.h"
+#include "pgAdmin3.h"
 #include "sysSettings.h"
 #include "sysLogger.h"
 

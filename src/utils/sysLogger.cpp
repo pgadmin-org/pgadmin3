@@ -14,7 +14,7 @@
 #include <wx/datetime.h>
 
 // App headers
-#include "../pgAdmin3.h"
+#include "pgAdmin3.h"
 #include "sysLogger.h"
 
 void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
