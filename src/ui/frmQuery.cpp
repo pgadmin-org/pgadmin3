@@ -23,6 +23,13 @@
 // Bitmaps
 #include "images/file_open.xpm"
 #include "images/file_save.xpm"
+#include "images/clip_cut.xpm"
+#include "images/clip_copy.xpm"
+#include "images/clip_paste.xpm"
+#include "images/edit_clear.xpm"
+#include "images/edit_find.xpm"
+#include "images/edit_undo.xpm"
+#include "images/edit_redo.xpm"
 #include "images/query_execute.xpm"
 #include "images/query_explain.xpm"
 #include "images/query_cancel.xpm"
@@ -30,18 +37,31 @@
 
 BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_CLOSE(                      frmQuery::OnClose)
-    EVT_MENU(BTN_OPEN,              frmQuery::OnOpen)
-    EVT_MENU(BTN_SAVE,              frmQuery::OnSave)
-    EVT_MENU(BTN_EXECUTE,           frmQuery::OnExecute)
-    EVT_MENU(BTN_EXPLAIN,           frmQuery::OnExplain)
-    EVT_MENU(BTN_CANCEL,            frmQuery::OnCancel)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
     EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
     EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
+    EVT_MENU(MNU_RECENT+1,          frmQuery::OnRecent)
+    EVT_MENU(MNU_RECENT+2,          frmQuery::OnRecent)
+    EVT_MENU(MNU_RECENT+3,          frmQuery::OnRecent)
+    EVT_MENU(MNU_RECENT+4,          frmQuery::OnRecent)
+    EVT_MENU(MNU_RECENT+5,          frmQuery::OnRecent)
+    EVT_MENU(MNU_RECENT+6,          frmQuery::OnRecent)
+    EVT_MENU(MNU_RECENT+7,          frmQuery::OnRecent)
+    EVT_MENU(MNU_RECENT+8,          frmQuery::OnRecent)
+    EVT_MENU(MNU_RECENT+9,          frmQuery::OnRecent)
+    EVT_MENU(MNU_EXIT,              frmQuery::OnExit)
+    EVT_MENU(MNU_CUT,               frmQuery::OnCut)
+    EVT_MENU(MNU_COPY,              frmQuery::OnCopy)
+    EVT_MENU(MNU_PASTE,             frmQuery::OnPaste)
+    EVT_MENU(MNU_CLEAR,             frmQuery::OnClear)
+    EVT_MENU(MNU_FIND,              frmQuery::OnFind)
+    EVT_MENU(MNU_UNDO,              frmQuery::OnUndo)
+    EVT_MENU(MNU_REDO,              frmQuery::OnRedo)
     EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
     EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
     EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
-    EVT_STC_CHANGE(CTL_SQLQUERY,    frmQuery::OnChange)
+//    EVT_STC_CHANGE(CTL_SQLQUERY,    frmQuery::OnChange)
+    EVT_STC_MODIFIED(CTL_SQLQUERY,    frmQuery::OnChange)
 END_EVENT_TABLE()
 
 
@@ -58,10 +78,23 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     menuBar = new wxMenuBar();
 
     fileMenu = new wxMenu();
+    recentFileMenu = new wxMenu();
     fileMenu->Append(MNU_OPEN, wxT("&Open..."), wxT("Open a query file"));
     fileMenu->Append(MNU_SAVE, wxT("&Save"), wxT("Save current file"));
     fileMenu->Append(MNU_SAVEAS, wxT("Save &as..."), wxT("Save file under new name"));
+    fileMenu->Append(MNU_RECENT, wxT("&Recent files"), recentFileMenu);
+    fileMenu->Append(MNU_EXIT, wxT("Exit"), wxT("Exit query window"));
+
     menuBar->Append(fileMenu, wxT("&File"));
+
+    editMenu = new wxMenu();
+    editMenu->Append(MNU_CUT, wxT("Cu&t"), wxT("Cut selected text to clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_COPY, wxT("&Copy"), wxT("Copy selected text to clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_PASTE, wxT("&Paste"), wxT("Paste selected text from clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_CLEAR, wxT("C&lear window"), wxT("Clear edit window"), wxITEM_NORMAL);
+    editMenu->AppendSeparator();
+    editMenu->Append(MNU_UNDO, wxT("&Undo"), wxT("Undo last action"), wxITEM_NORMAL);
+    editMenu->Append(MNU_REDO, wxT("&Redo"), wxT("Redo last action"), wxITEM_NORMAL);
 
     queryMenu = new wxMenu();
     queryMenu->Append(MNU_EXECUTE, wxT("&Execute"), wxT("Execute query"));
@@ -69,6 +102,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu->Append(MNU_CANCEL, wxT("&Cancel"), wxT("Cancel query"));
     menuBar->Append(queryMenu, wxT("&Query"));
     SetMenuBar(menuBar);
+
+    updateRecentFiles();
 
 #ifdef __WIN32__    
     wxAcceleratorEntry entries[6];
@@ -83,7 +118,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     SetAcceleratorTable(accel);
 #endif
 
-    fileMenu->Enable(MNU_SAVE, false);
     queryMenu->Enable(MNU_CANCEL, false);
 
     int iWidths[4] = {0, -1, 110, 110};
@@ -97,15 +131,23 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-    toolBar->AddTool(BTN_OPEN, wxT("Open"), wxBitmap(file_open_xpm), wxT("Open file"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_SAVE, wxT("Save"), wxBitmap(file_save_xpm), wxT("Save file"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_EXECUTE, wxT("Execute"), wxBitmap(query_execute_xpm), wxT("Execute query"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_EXPLAIN, wxT("Explain"), wxBitmap(query_explain_xpm), wxT("Explain query"), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_CANCEL, wxT("Cancel"), wxBitmap(query_cancel_xpm), wxT("Cancel query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_OPEN, wxT("Open"), wxBitmap(file_open_xpm), wxT("Open file"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_SAVE, wxT("Save"), wxBitmap(file_save_xpm), wxT("Save file"), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_CUT, wxT("Cut"), wxBitmap(clip_cut_xpm), wxT("Cut selected text to clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_COPY, wxT("Copy"), wxBitmap(clip_copy_xpm), wxT("Copy selected text to clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_PASTE, wxT("Paste"), wxBitmap(clip_paste_xpm), wxT("Paste selected text from clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_CLEAR, wxT("Clear window"), wxBitmap(edit_clear_xpm), wxT("Clear edit window"), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_UNDO, wxT("Undo"), wxBitmap(edit_undo_xpm), wxT("Undo last action"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REDO, wxT("Redo"), wxBitmap(edit_redo_xpm), wxT("Redo last action"), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_EXECUTE, wxT("Execute"), wxBitmap(query_execute_xpm), wxT("Execute query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXPLAIN, wxT("Explain"), wxBitmap(query_explain_xpm), wxT("Explain query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_CANCEL, wxT("Cancel"), wxBitmap(query_cancel_xpm), wxT("Cancel query"), wxITEM_NORMAL);
 
     toolBar->Realize();
     setTools(false);
-    toolBar->EnableTool(BTN_SAVE, false);
 
     horizontal = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
     horizontal->SetMinimumPaneSize(50);
@@ -126,11 +168,12 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
         splitpos = GetSize().y-50;
     horizontal->SplitHorizontally(sqlQuery, output, splitpos);
 
+
     sqlQuery->SetText(query);
     changed = !query.IsNull();
     if (changed)
         setExtendedTitle();
-    sqlQuery->SelectAll();
+    updateMenu();
 }
 
 
@@ -153,12 +196,117 @@ frmQuery::~frmQuery()
 }
 
 
+
+void frmQuery::updateRecentFiles()
+{
+    wxString lastFiles[10]; // 0 will be unused for convenience
+    int i, maxFiles=9;
+    int recentIndex=maxFiles;
+
+    for (i=1 ; i <= maxFiles ; i++)
+    {
+        lastFiles[i] = settings->Read(wxT("RecentFiles/") + wxString((char)('0'+i)), wxT(""));
+#ifdef __WIN32__
+        if (!lastPath.IsNull() && !lastPath.CmpNoCase(lastFiles[i]))
+#else
+        if (!lastPath.IsNull() && !lastPath.CompareTo(lastFiles[i]))
+#endif
+            recentIndex=i;
+    }
+    while (i <= maxFiles)
+        lastFiles[i++] = wxT("");
+
+    if (recentIndex > 1 && !lastPath.IsNull())
+    {
+        for (i=recentIndex ; i > 1 ; i--)
+            lastFiles[i] = lastFiles[i-1];
+        lastFiles[1] = lastPath;
+    }
+
+    i=recentFileMenu->GetMenuItemCount();
+    while (i)
+    {
+        wxMenuItem *item = recentFileMenu->Remove(MNU_RECENT+i);
+        if (item)
+            delete item;
+        i--;
+    }
+
+    for (i=1 ; i <= maxFiles ; i++)
+    {
+        settings->Write(wxT("RecentFiles/") + wxString((char)('0'+i)), lastFiles[i]);
+
+
+        if (!lastFiles[i].IsNull())
+            recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString((char)('0'+i)) + wxT("  ") + lastFiles[i]);
+    }
+}
+
+void frmQuery::OnRecent(wxCommandEvent& event)
+{
+    int fileNo=event.GetId() - MNU_RECENT;
+    lastPath = settings->Read(wxT("RecentFiles/") + wxString((char)('0'+fileNo)), wxT(""));
+
+    if (!lastPath.IsNull())
+    {
+        int dirsep;
+#ifdef __WIN32__
+        dirsep = lastPath.Find('\\', true);
+#else
+        dirsep = lastPath.Find('/', true);
+#endif
+        lastDir = lastPath.Mid(0, dirsep);
+        lastFilename = lastPath.Mid(dirsep+1);
+        openLastFile();
+    }
+}
+
+
+void frmQuery::OnExit(wxCommandEvent& event)
+{
+    Close();
+}
+
+
 void frmQuery::Go()
 {
     Show(TRUE);
     sqlQuery->SetFocus();
 }
 
+void frmQuery::OnCut(wxCommandEvent& ev)
+{
+    sqlQuery->Cut();
+}
+
+void frmQuery::OnCopy(wxCommandEvent& ev)
+{
+    sqlQuery->Copy();
+}
+
+void frmQuery::OnPaste(wxCommandEvent& ev)
+{
+    sqlQuery->Paste();
+}
+
+void frmQuery::OnClear(wxCommandEvent& ev)
+{
+    sqlQuery->ClearAll();
+}
+
+void frmQuery::OnFind(wxCommandEvent& ev)
+{
+}
+
+void frmQuery::OnUndo(wxCommandEvent& ev)
+{
+    sqlQuery->Undo();
+}
+
+void frmQuery::OnRedo(wxCommandEvent& ev)
+{
+    sqlQuery->Redo();
+}
 
 void frmQuery::setExtendedTitle()
 {
@@ -170,10 +318,24 @@ void frmQuery::setExtendedTitle()
         SetTitle(title+chgStr);
     else
     {
-        fileMenu->Enable(MNU_SAVE, true);
-        toolBar->EnableTool(BTN_SAVE, true);
         SetTitle(title + wxT(" - [") + lastPath + wxT("]") + chgStr);
     }
+}
+
+
+void frmQuery::updateMenu()
+{
+    bool canUndo=sqlQuery->CanUndo();
+    toolBar->EnableTool(MNU_UNDO, canUndo);
+    editMenu->Enable(MNU_UNDO, canUndo);
+
+    bool canRedo=sqlQuery->CanRedo();
+    toolBar->EnableTool(MNU_REDO, canRedo);
+    editMenu->Enable(MNU_REDO, canRedo);
+
+    bool canPaste=sqlQuery->CanPaste();
+    toolBar->EnableTool(MNU_PASTE, canPaste);
+    editMenu->Enable(MNU_PASTE, canPaste);
 }
 
 
@@ -216,9 +378,31 @@ void frmQuery::OnChange(wxNotifyEvent& event)
     {
         changed=true;
         setExtendedTitle();
+        updateMenu();
     }
 }
 
+
+void frmQuery::openLastFile()
+{
+    FILE *f=fopen(lastPath.c_str(), "rb");
+    if (f)
+    {
+        fseek(f, 0, SEEK_END);
+        int len=ftell(f);
+        fseek(f, 0, SEEK_SET);
+        wxString buf("", len+1);
+        fread((char*)buf.c_str(), len, 1, f);
+        fclose(f);
+        ((char*)buf.c_str())[len]=0;
+        sqlQuery->SetText(buf);
+        wxYield();  // needed to process sqlQuery modify event
+        changed = false;
+        setExtendedTitle();
+        updateRecentFiles();
+    }
+}
+        
 void frmQuery::OnOpen(wxCommandEvent& event)
 {
     wxFileDialog dlg(this, wxT("Open query file"), lastDir, wxT(""), 
@@ -229,25 +413,18 @@ void frmQuery::OnOpen(wxCommandEvent& event)
         lastDir = dlg.GetDirectory();
         lastPath = dlg.GetPath();
 
-        FILE *f=fopen(lastPath.c_str(), "rb");
-        if (f)
-        {
-            fseek(f, 0, SEEK_END);
-            int len=ftell(f);
-            fseek(f, 0, SEEK_SET);
-            wxString buf("", len+1);
-            fread((char*)buf.c_str(), len, 1, f);
-            fclose(f);
-            ((char*)buf.c_str())[len]=0;
-            sqlQuery->SetText(buf);
-            changed = false;
-            setExtendedTitle();
-        }
+        openLastFile();
     }
 }
 
 void frmQuery::OnSave(wxCommandEvent& event)
 {
+    if (lastPath.IsNull())
+    {
+        OnSaveAs(event);
+        return;
+    }
+
     FILE *f=fopen(lastPath.c_str(), "w+t");
     if (f)
     {
@@ -258,6 +435,7 @@ void frmQuery::OnSave(wxCommandEvent& event)
         fclose(f);
         changed=false;
         setExtendedTitle();
+        updateRecentFiles();
     }
 }
 
@@ -279,7 +457,7 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
 
 void frmQuery::OnCancel(wxCommandEvent& event)
 {
-    toolBar->EnableTool(BTN_CANCEL, FALSE);
+    toolBar->EnableTool(MNU_CANCEL, FALSE);
     queryMenu->Enable(MNU_CANCEL, FALSE);
     SetStatusText(wxT("Cancelling."), STATUSPOS_MSGS);
 
@@ -320,9 +498,9 @@ void frmQuery::OnExecute(wxCommandEvent& event)
 
 void frmQuery::setTools(const bool running)
 {
-    toolBar->EnableTool(BTN_EXECUTE, !running);
-    toolBar->EnableTool(BTN_EXPLAIN, !running);
-    toolBar->EnableTool(BTN_CANCEL, running);
+    toolBar->EnableTool(MNU_EXECUTE, !running);
+    toolBar->EnableTool(MNU_EXPLAIN, !running);
+    toolBar->EnableTool(MNU_CANCEL, running);
     queryMenu->Enable(MNU_EXECUTE, !running);
     queryMenu->Enable(MNU_EXPLAIN, !running);
     queryMenu->Enable(MNU_CANCEL, running);
