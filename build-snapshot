@@ -18,6 +18,7 @@ rm -rf ./src
 cd src
 make clean
 make all
+/usr/bin/strip pgAdmin3
 cd ..
 
 # Build a clean distro
@@ -29,4 +30,4 @@ cp ./src/tips.txt ./pgadmin3
 cp ./src/ui/common/*.xrc ./pgadmin3/ui/common
 
 # Build the snapshot and file it.
-/bin/tar czf /var/www/htdocs/pgadmin3-`/usr/bin/date -I`-`usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz pgadmin3
+/bin/tar czf /var/www/htdocs/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz pgadmin3
