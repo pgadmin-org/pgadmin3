@@ -40,6 +40,7 @@ public:
     bool GetSystemObject() const { return schemaTyp < 1; }
 
     bool RequireDropConfirm() { return true; }
+    bool WantDummyChild() { return true; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxMenu *GetNewMenu();
