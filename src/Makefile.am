@@ -112,8 +112,8 @@ include/images/operatorclass.xpm \
 include/images/operator.xpm include/images/pgAdmin3.ico \
 include/images/pgAdmin3.xpm include/images/primarykey.xpm \
 include/images/properties.xpm include/images/property.xpm \
-include/images/public.xpm include/images/query_cancel.xpm \
-include/images/query_execute.xpm \
+include/images/public.xpm include/images/querybuilder.xpm \
+include/images/query_cancel.xpm include/images/query_execute.xpm \
 include/images/query_explain.xpm include/images/readdata.xpm \
 include/images/refresh.xpm include/images/relationship.xpm \
 include/images/reload.xpm include/images/rule.xpm \
