@@ -3,7 +3,8 @@
 %define wxGTK2_version 20031010.4
 %define withwxconfig wxgtk2ud-2.5-config
 %define desktop_vendor pgadmin
-%define __strip /bin/true
+%define debug_package %{nil}
+%define __os_install_post /usr/lib/rpm/brp-compress
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
@@ -31,6 +32,8 @@ PostgreSQL Tools.
 %setup -q
 
 %build
+export CFLAGS=""
+export CXXFLAGS=""
 %configure --enable-debug --enable-static --with-wx-config=%{withwxconfig}
 make all
 
