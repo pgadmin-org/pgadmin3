@@ -114,7 +114,7 @@ include/images/trigger.xpm include/images/type.xpm \
 include/images/unique.xpm include/images/unknown.xpm \
 include/images/user.xpm include/images/vacuum.xpm \
 include/images/viewdata.xpm include/images/view.xpm \
-ui/ar_AE/pgadmin3.po ui/de_DE/pgadmin3.po ui/fr_FR/pgadmin3.po \
+ui/de_DE/pgadmin3.po ui/fr_FR/pgadmin3.po \
 ui/hr_HR/pgadmin3.po ui/id_ID/pgadmin3.po ui/it_IT/pgadmin3.po \
 ui/ja_JP/pgadmin3.po ui/pl_PL/pgadmin3.po ui/tr_TR/pgadmin3.po \
 ui/zh_CN/pgadmin3.po
