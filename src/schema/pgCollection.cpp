@@ -124,25 +124,13 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
     {
         case PG_DATABASES:
             pgDatabase::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            form->SetButtons(true, true, true, true, false, false, false);
-            if (properties)
-                ShowList(typeNameList[GetType()+1], browser, properties);
-            UpdateChildCount(browser);
-            return;
+            break;
         case PG_GROUPS:
             pgGroup::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            form->SetButtons(true, true, true, true, false, false, false);
-            if (properties)
-                ShowList(typeNameList[GetType()+1], browser, properties);
-            UpdateChildCount(browser);
-            return;
+            break;
         case PG_USERS:
             pgUser::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            form->SetButtons(true, true, true, true, false, false, false);
-            if (properties)
-                ShowList(typeNameList[GetType()+1], browser, properties);
-            UpdateChildCount(browser);
-            return;
+            break;
         case PG_LANGUAGES:
             pgLanguage::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
             break;
@@ -205,8 +193,6 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
             return;
     }
     UpdateChildCount(browser);
-    if (form)
-        form->SetButtons(true, true, true, true, true, false, false);
     if (properties)
         ShowList(typeNameList[GetType()+1], browser, properties);
 }

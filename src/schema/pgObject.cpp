@@ -67,11 +67,33 @@ pgObject::pgObject(int newType, const wxString& newName)
 
     name = newName;
     expandedKids=false;
+    needReread=false;
 }
 
 
 void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
+    if (form)
+    {
+        bool canSql;
+        switch (GetType())
+        {
+            case PG_SERVERS:
+            case PG_SERVER:
+            case PG_DATABASES:
+            case PG_GROUPS:
+            case PG_GROUP:
+            case PG_USERS:
+            case PG_USER:
+                canSql=false;
+            default:
+                canSql=true;
+        }
+        form->SetButtons(TRUE, CanCreate(), CanDrop(), CanEdit(), canSql, CanView(), CanVacuum());
+        SetContextInfo(form);
+    }
+
+    wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
     StartMsg(wxT("Retrieving ") + typeName + wxT(" details"));
     ShowTreeDetail(browser, form, properties, statistics, sqlPane);
     EndMsg();
@@ -262,6 +284,14 @@ pgDatabase *pgObject::GetDatabase()
 }
 
 
+
+void pgSchemaObject::SetContextInfo(frmMain *form)
+{
+    form->SetDatabase(schema->GetDatabase());
+}
+
+
+
 pgSet *pgSchemaObject::ExecuteSet(const wxString& sql)
 {
     return schema->GetDatabase()->ExecuteSet(sql);
@@ -269,25 +299,11 @@ pgSet *pgSchemaObject::ExecuteSet(const wxString& sql)
 
 
 
-void pgSchemaObject::SetButtons(frmMain *form, bool canVacuum)
-{
-    if (form)
-    {
-        wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier().c_str());
-        form->SetButtons(TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, canVacuum);
-        form->SetDatabase(schema->GetDatabase());
-    }
-}
-
-
 void pgSchemaObject::DisplayStatistics(wxListCtrl *statistics, const wxString& query)
 {
     if (statistics)
     {
-        wxString msg;
-    
-        msg.Printf(wxT("Displaying statistics for %s on %s"), GetTypeName().c_str(), GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Displaying statistics for %s on %s"), GetTypeName().c_str(), GetSchema()->GetIdentifier().c_str());
 
         // Add the statistics view columns
         CreateListColumns(statistics, wxT("Statistic"), wxT("Value"));

@@ -100,10 +100,16 @@ public:
     wxString GetCommentSql();
     pgDatabase *GetDatabase();
 
-    virtual void SetDirty() { sql=wxT(""); expandedKids=0; }
+    virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }
     virtual void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index) { return; }
     virtual wxString GetFullIdentifier() const { return GetName(); }
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(GetName()); }
+    virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
+    virtual bool CanCreate() { return false; }
+    virtual bool CanView() { return false; }
+    virtual bool CanEdit() { return false; }
+    virtual bool CanDrop() { return false; }
+    virtual bool CanVacuum() { return false; }
 
 protected:
     static void CreateListColumns(wxListCtrl *properties, const wxString &left=wxT("Property"), const wxString &right=wxT("Value"));
@@ -116,10 +122,12 @@ protected:
         { InsertListItem(list, pos, str1, BoolToYesNo(b)); }
     static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const double d)
         { InsertListItem(list, pos, str1, NumToStr(d)); }
+
+    virtual void SetContextInfo(frmMain *form) {}
     virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
         =0;
 
-    bool expandedKids;
+    bool expandedKids, needReread;
     wxString sql;
     
 private:
@@ -142,14 +150,16 @@ public:
     pgSchema *GetSchema() const {return schema; }
     pgSet *ExecuteSet(const wxString& sql);
     void DisplayStatistics(wxListCtrl *statistics, const wxString& query);
-    void SetButtons(frmMain *form, bool canVacuum=false);
     double GetTableOid() const {return tableOid; }
     void iSetTableOid(const double d) { tableOid=d; }
     wxString GetTableOidStr() const {return NumToStr(tableOid) + wxT("::oid"); }
     virtual wxString GetFullIdentifier() const;
     virtual wxString GetQuotedFullIdentifier() const;
 
+
 protected:
+    virtual void SetContextInfo(frmMain *form);
+
     pgSchema *schema;
     double tableOid;
 };

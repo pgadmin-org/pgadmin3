@@ -215,11 +215,9 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
 
         // Write the file
         wxFile *file = new wxFile(filename.GetPath(), wxFile::write);
-        if (!file->Write(sqlPane->GetText())) {
-            wxString msg;
-            msg.Printf(wxT("Failed to write to the output file: %s"), filename.GetPath().c_str());
-            wxLogError(msg);
-        }
+        if (!file->Write(sqlPane->GetText()))
+            wxLogError(wxT("Failed to write to the output file: %s"), filename.GetPath().c_str());
+
         file->Close();
         return;
 
@@ -257,7 +255,9 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
     servers = browser->AddRoot(wxT("Servers"), PGICON_SERVER, -1, serversObj);
     browser->Expand(servers);
     browser->SelectItem(servers);
-
+#ifdef __WIN32__
+    denyCollapseItem = servers;
+#endif
     RetrieveServers();
 }
 
@@ -278,9 +278,8 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
         OnAddServer(ev);
 
     } else if (res == PGCONN_BAD)  {
-        wxString msg;
-        msg.Printf(wxT("Error connecting to the server: %s"), server->GetLastError().c_str());
-        wxLogError(wxT(msg));
+        wxLogError(wxT("Error connecting to the server: %s"), server->GetLastError().c_str());
+
         delete server;
         OnAddServer(ev);
 
@@ -338,7 +337,6 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     {
         case PG_SERVER:
             StartMsg(wxT("Retrieving server properties"));
-            SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
 
             server = (pgServer *)data;
             if (!server->GetConnected())
@@ -358,20 +356,9 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
         case PG_DATABASES:
         case PG_GROUPS:
         case PG_USERS:
-            data->ShowTree(this, browser, properties, statistics, sqlPane);
-            SetButtons(true, true, false, false, false, false, false);
-            break;
-
         case PG_DATABASE:
-            data->ShowTree(this, browser, properties, statistics, sqlPane);
-            SetButtons(true, true, true, true, true, false, true);
-            break;
-
         case PG_GROUP:
         case PG_USER:
-            data->ShowTree(this, browser, properties, statistics, sqlPane);
-            SetButtons(true, true, true, true, false, false, false);
-            break;
         case PG_LANGUAGES:
         case PG_LANGUAGE:
         case PG_SCHEMAS:
@@ -419,6 +406,7 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     }
     sqlPane->SetText(data->GetSql(browser));
 }
+
 
 void frmMain::OnConnect(wxCommandEvent &ev)
 {
@@ -507,8 +495,8 @@ void frmMain::OnDrop(wxCommandEvent &ev)
             msg.Printf(wxT("Are you sure you wish to remove the server: %s?"), data->GetIdentifier().c_str());
 			if (wxMessageBox(msg, wxT("Remove Server?"), wxYES_NO | wxICON_QUESTION) == wxYES) {
 
-                msg.Printf(wxT("Removing server: %s"), data->GetIdentifier().c_str());
-                wxLogInfo(msg);
+                wxLogInfo(wxT("Removing server: %s"), data->GetIdentifier().c_str());
+
                 browser->Delete(item);
 
                 // Reset the Servers node text
@@ -528,17 +516,47 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
     // Refresh - Clear the treeview below the current selection
 
     long cookie;
-    wxTreeItemId item1 = browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item1);
-    data->SetDirty();
+    wxTreeItemId currentItem = browser->GetSelection();
+    pgObject *data;
 
-    wxTreeItemId item2 = browser->GetFirstChild(item1, cookie);
-    while (item2) {
-        browser->Delete(item2);
-        item2 = browser->GetFirstChild(item1, cookie);
+    wxTreeItemId item;
+    
+    while ((item=browser->GetFirstChild(currentItem, cookie)) != NULL)
+    {
+        data = (pgObject *)browser->GetItemData(item);
+        wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
+            + data->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+        // delete data will be performed by browser->Delete
+        browser->Delete(item);
     }
 
-		// refresh information about the object
+	// refresh information about the object
+
+    data = (pgObject *)browser->GetItemData(currentItem);
+    data->SetDirty();
+    
+    pgObject *newData = data->Refresh(browser, currentItem);
+
+    if (newData != data)
+    {
+        wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
+            + data->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+        delete data;
+
+        if (newData)
+        {
+            wxLogInfo(wxT("Replacing with new Node ") + newData->GetTypeName() + wxT(" ") 
+                + newData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+            browser->SetItemData(currentItem, newData);
+        }
+        else
+        {
+            wxLogInfo(wxT("No object to replace: vanished after refresh."));
+            browser->SetItemData(currentItem, 0);
+            browser->Delete(currentItem);
+            return;
+        }
+    }
     wxTreeEvent event;
 	OnTreeSelChanged(event);
 }
