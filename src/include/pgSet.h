@@ -13,6 +13,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/datetime.h>
 
 // PostgreSQL headers
 #include <libpq-fe.h>
