@@ -24,7 +24,7 @@ public:
 	wxListCtrl(parent, id, wxPoint(0,16), wxSize(100,100),
 		wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxNO_BORDER|wxLC_HRULES)
 	{
-		//
+		dblClick = FALSE;
 	}
 
 	// Methods
@@ -53,6 +53,11 @@ public:
 		return GetItemText(item);
 	}
 
+	void SetDblClickFlag(bool newDblClick)
+	{
+		dblClick = newDblClick;
+	}
+
 	int GetCount()
 	{
 		return GetItemCount();
@@ -63,8 +68,14 @@ private:
 	// Events
     void OnMotion(wxMouseEvent& event);
 
+    // Horrible kludge to stop double clicks opening the join dialogue,
+	// Ideally the DnD code should be reviewed to prevent this in a more elegant
+	// fashion.
+	bool dblClick;
+
 	// Macros
 	DECLARE_EVENT_TABLE()
+
 };
 
 ////////////////////////////////////////////////////////////////////////////////

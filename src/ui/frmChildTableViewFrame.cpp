@@ -189,8 +189,9 @@ void frmChildTableViewFrame::OnDoubleClick(wxCommandEvent& event)
 {
 	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
 
-	int tmpitem = event.GetInt();
+	int tmpitem = m_columnlist->GetSelection();
 	tmpparent->AddColumn(this, tmpitem);
+	m_columnlist->SetDblClickFlag(TRUE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -379,7 +380,7 @@ void frmChildTableViewFrame::OnLeftUp(wxMouseEvent &event)
 void myList::OnMotion(wxMouseEvent &event)
 {
 
-	if (event.m_leftDown)
+	if (event.m_leftDown && !dblClick)
 	{
 
 		frmChildTableViewFrame *tmpparent = 
@@ -416,6 +417,7 @@ void myList::OnMotion(wxMouseEvent &event)
 	}
 	else
 	{
+		dblClick = FALSE;
 		event.Skip();
 	}
 
