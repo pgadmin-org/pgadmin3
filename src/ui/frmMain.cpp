@@ -431,7 +431,7 @@ void frmMain::Refresh(pgObject *data)
         }
     }
     if (currentItem)
-        execSelChange(currentItem, true);
+        execSelChange(currentItem, currentItem == browser->GetSelection());
     browser->Thaw();
     EndMsg();
 }

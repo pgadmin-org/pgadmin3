@@ -685,15 +685,17 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 
 void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 {
-    properties->ClearAll();
-    properties->AddColumn(_("Properties"), 500);
-    properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
-    sqlPane->Clear();
+    if (currentNode)
+    {
+        properties->ClearAll();
+        properties->AddColumn(_("Properties"), 500);
+        properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
+        sqlPane->Clear();
 
-    // Reset the toolbar & password menu options
-	// Handle the menus associated with the buttons
-    SetButtons(0);
-
+        // Reset the toolbar & password menu options
+	    // Handle the menus associated with the buttons
+        SetButtons(0);
+    }
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
@@ -1136,42 +1138,43 @@ void frmMain::OnDrop(wxCommandEvent &ev)
                 if (properties->GetSelectedItemCount() == 1)
                 {
                     dropSingleObject(data, false);
-                    return;
                 }
-
-                if (data->RequireDropConfirm() || settings->GetConfirmDelete())
+                else
                 {
-                    wxMessageDialog msg(this, _("Are you sure you wish to drop multiple objects?"),
-                            _("Drop multiple objects?"), wxYES_NO | wxICON_QUESTION);
-                    if (msg.ShowModal() != wxID_YES)
+                    if (data->RequireDropConfirm() || settings->GetConfirmDelete())
                     {
-                        return;
-                    }
-                }
-
-                bool done=true;
-                long count=0;
-                while (done && data && index >= 0)
-                {
-                    if (data->GetSystemObject())
-                    {
-                        wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s"), 
-                            data->GetTranslatedTypeName().c_str(), ""), 
-                            _("Trying to drop system object"), wxICON_EXCLAMATION);
-                        msg.ShowModal();
-                        return;
+                        wxMessageDialog msg(this, _("Are you sure you wish to drop multiple objects?"),
+                                _("Drop multiple objects?"), wxYES_NO | wxICON_QUESTION);
+                        if (msg.ShowModal() != wxID_YES)
+                        {
+                            return;
+                        }
                     }
 
-                    done = dropSingleObject(data, false);
-
-                    if (done)
+                    bool done=true;
+                    long count=0;
+                    while (done && data && index >= 0)
                     {
-                        properties->DeleteItem(index);
-                        count++;
-                        index = properties->GetFirstSelected();
+                        if (data->GetSystemObject())
+                        {
+                            wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s"), 
+                                data->GetTranslatedTypeName().c_str(), ""), 
+                                _("Trying to drop system object"), wxICON_EXCLAMATION);
+                            msg.ShowModal();
+                            return;
+                        }
 
-                        if (index >= 0)
-                            data=collection->FindChild(browser, index);
+                        done = dropSingleObject(data, false);
+
+                        if (done)
+                        {
+                            properties->DeleteItem(index);
+                            count++;
+                            index = properties->GetFirstSelected();
+
+                            if (index >= 0)
+                                data=collection->FindChild(browser, index);
+                        }
                     }
                 }
                 Refresh(collection);

@@ -27,6 +27,7 @@ BEGIN_EVENT_TABLE(ctlSecurityPanel, wxPanel)
     EVT_LIST_ITEM_SELECTED(CTL_LBPRIV,  ctlSecurityPanel::OnPrivSelChange)
     EVT_BUTTON(CTL_ADDPRIV,             ctlSecurityPanel::OnAddPriv)
     EVT_BUTTON(CTL_DELPRIV,             ctlSecurityPanel::OnDelPriv)
+    EVT_TEXT(CTL_CBGROUP,               ctlSecurityPanel::OnGroupChange)
     EVT_CHECKBOX(CTL_ALLPRIV,           ctlSecurityPanel::OnPrivCheckAll)
     EVT_CHECKBOX(CTL_ALLPRIVGRANT,      ctlSecurityPanel::OnPrivCheckAllGrant)
     EVT_CHECKBOX(CTL_PRIVCB,            ctlSecurityPanel::OnPrivCheck)
@@ -215,6 +216,15 @@ wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &
 }
 
 
+void ctlSecurityPanel::OnGroupChange(wxCommandEvent &ev)
+{
+    cbGroups->GuessSelection();
+    wxString name=cbGroups->GetGuessedStringSelection();
+
+    btnAddPriv->Enable(!name.Strip(wxString::both).IsEmpty());
+}
+
+    
 void ctlSecurityPanel::OnPrivCheckAll(wxCommandEvent& ev)
 {
     bool all=allPrivileges->GetValue();
@@ -278,7 +288,7 @@ void ctlSecurityPanel::OnDelPriv(wxCommandEvent &ev)
 
 void ctlSecurityPanel::OnAddPriv(wxCommandEvent &ev)
 {
-    wxString name=cbGroups->GetValue();
+    wxString name=cbGroups->GetGuessedStringSelection();
 
     long pos=lbPrivileges->FindItem(-1, name);
     if (pos < 0)
@@ -348,6 +358,7 @@ void ctlSecurityPanel::OnPrivSelChange(wxListEvent &ev)
             CheckGrantOpt(i);
         }
     }
+    btnAddPriv->Enable();
 }
 
 

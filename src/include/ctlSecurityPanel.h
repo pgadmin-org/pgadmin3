@@ -58,6 +58,7 @@ protected:
 
     void OnPrivSelChange(wxListEvent &ev);
     void OnAddPriv(wxCommandEvent& ev);
+    void OnGroupChange(wxCommandEvent &ev);
     void OnDelPriv(wxCommandEvent& ev);
     void OnPrivCheck(wxCommandEvent& ev);
     void OnPrivCheckAll(wxCommandEvent& ev);

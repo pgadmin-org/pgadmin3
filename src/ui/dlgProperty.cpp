@@ -398,24 +398,24 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
         {
             wxString nodeName=data->GetFullName();
             size_t pos=0;
-            wxTreeItemId item;
+            wxTreeItemId newItem;
 
             if (data->GetType() != PG_COLUMN)
             {
                 // columns should be appended, not inserted alphabetically
 
                 wxCookieType cookie;
-                item=browser->GetFirstChild(collectionItem, cookie);
-                while (item)
+                newItem=browser->GetFirstChild(collectionItem, cookie);
+                while (newItem)
                 {
-                    if (browser->GetItemText(item) > nodeName)
+                    if (browser->GetItemText(newItem) > nodeName)
                         break;
                     pos++;
-                    item=browser->GetNextChild(collectionItem, cookie);
+                    newItem=browser->GetNextChild(collectionItem, cookie);
                 }
             }
 
-            if (item)
+            if (newItem)
                 browser->InsertItem(collectionItem, pos, nodeName, data->GetIcon(), -1, data);
             else    
                 browser->AppendItem(collectionItem, nodeName, data->GetIcon(), -1, data);
@@ -423,7 +423,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             if (data->WantDummyChild())
                 browser->AppendItem(data->GetId(), wxT("Dummy"));
 
-            if (browser->GetSelection() == collectionItem)
+            if (browser->GetSelection() == item)
                 collection->ShowTreeDetail(browser, 0, mainForm->GetProperties());
             else
                 collection->UpdateChildCount(browser);
@@ -479,6 +479,7 @@ void dlgProperty::ShowObject()
                 break;
             collectionItem=mainForm->GetBrowser()->GetItemParent(collectionItem);
         }
+
         /*
         if (!collectionItem)
         {

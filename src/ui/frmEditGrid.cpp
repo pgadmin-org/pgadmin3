@@ -835,6 +835,45 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
 
 
 
+wxArrayInt ctlSQLGrid::GetSelectedRows() const
+{
+    wxArrayInt rows, rows2;
+
+    wxGridCellCoordsArray tl=GetSelectionBlockTopLeft(), br=GetSelectionBlockBottomRight();
+
+    int maxCol=((ctlSQLGrid*)this)->GetNumberCols() -1;
+    size_t i;
+    for (i=0 ; i < tl.GetCount() ; i++)
+    {
+        wxGridCellCoords c1=tl.Item(i), c2=br.Item(i);
+        if (c1.GetCol() != 0 || c2.GetCol() != maxCol)
+            return rows2;
+
+        int j;
+        for (j=c1.GetRow() ; j <= c2.GetRow() ; j++)
+            rows.Add(j);
+    }
+
+    rows2=wxGrid::GetSelectedRows();
+
+    rows.Sort(ArrayCmp);
+    rows2.Sort(ArrayCmp);
+
+    size_t i2=0, cellRowMax=rows.GetCount();
+
+    for (i=0 ; i < rows2.GetCount() ; i++)
+    {
+        int row=rows2.Item(i);
+        while (i2 < cellRowMax && rows.Item(i2) < row)
+            i2++;
+        if (i2 == cellRowMax || row != rows.Item(i2))
+            rows.Add(row);
+    }
+
+    return rows;
+}
+
+
 class sqlGridTextEditor : public wxGridCellTextEditor
 {
 public:

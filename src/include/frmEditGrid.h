@@ -74,6 +74,7 @@ public:
     sqlTable *GetTable() { return (sqlTable*)wxGrid::GetTable(); }
     wxSize GetBestSize(int row, int col);
     void ResizeEditor(int row, int col);
+    wxArrayInt GetSelectedRows() const;
 
 #if wxCHECK_VERSION(2,5,0)
     // problems are fixed
