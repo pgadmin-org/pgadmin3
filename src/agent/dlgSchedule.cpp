@@ -24,37 +24,35 @@
 
 
 // pointer to controls
+#define	txtID				CTRL_TEXT("txtID")
 #define chkEnabled          CTRL_CHECKBOX("chkEnabled")
-#define cbKind              CTRL_COMBOBOX("cbKind")
-#define timInterval         CTRL_TIME("timInterval")
 #define calStart            CTRL_CALENDAR("calStart")
 #define timStart            CTRL_TIME("timStart")
 #define calEnd              CTRL_CALENDAR("calEnd")
 #define timEnd              CTRL_TIME("timEnd")
-#define calSchedule         CTRL_CALENDAR("calSchedule")
-#define timSchedule         CTRL_TIME("timSchedule")
-#define pnlSchedule         CTRL_PANEL("pnlSchedule")
-#define lstIntervals        CTRL_TIME("lstIntervals")
-#define timOffset           CTRL_TIME("timOffset")
-#define btnAddInterval      CTRL_BUTTON("btnAddInterval")
-#define btnChangeInterval   CTRL_BUTTON("btnChangeInterval")
-#define btnRemoveInterval   CTRL_BUTTON("btnRemoveInterval")
+#define chkWeekDays			CTRL_CHECKLISTBOX("chkWeekDays")
+#define chkMonthDays		CTRL_CHECKLISTBOX("chkMonthDays")
+#define chkMonths			CTRL_CHECKLISTBOX("chkMonths")
+#define chkHours			CTRL_CHECKLISTBOX("chkHours")
+#define chkMinutes			CTRL_CHECKLISTBOX("chkMinutes")
+#define lstExceptions       CTRL_LISTCTRL("lstExceptions")
+#define timExceptionTime	CTRL_TIME("timExceptionTime")
+#define calExceptionTime	CTRL_CALENDAR("calExceptionTime")
+#define btnAddException     CTRL_BUTTON("btnAddException")
+#define btnChangeException  CTRL_BUTTON("btnChangeException")
+#define btnRemoveException  CTRL_BUTTON("btnRemoveException")
 
 
 BEGIN_EVENT_TABLE(dlgSchedule, dlgAgentProperty)
-    EVT_CHECKBOX(XRCID("chkEnabled"),               dlgProperty::OnChange)
-    EVT_COMBOBOX(XRCID("cbKind"),                   dlgSchedule::OnChangeKind)
-    EVT_SPIN(XRCID("timInterval"),                  dlgSchedule::OnChangeSpin)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),     dlgSchedule::OnChangeCal)
-    EVT_SPIN(XRCID("timStart"),                     dlgSchedule::OnChangeSpin)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),       dlgSchedule::OnChangeCal)
-    EVT_SPIN(XRCID("timEnd"),                       dlgSchedule::OnChangeSpin)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calSchedule"),  dlgSchedule::OnChangeCal)
-    EVT_SPIN(XRCID("timSchedule"),                  dlgSchedule::OnChangeSpin)
-    EVT_LIST_ITEM_SELECTED(XRCID("lstIntervals"),   dlgSchedule::OnSelChangeInterval)
-    EVT_BUTTON(XRCID("btnAddInterval"),             dlgSchedule::OnAddInterval)
-    EVT_BUTTON(XRCID("btnChangeInterval"),          dlgSchedule::OnChangeInterval)
-    EVT_BUTTON(XRCID("btnRemoveInterval"),          dlgSchedule::OnRemoveInterval)
+    EVT_CHECKBOX(XRCID("chkEnabled"),                dlgProperty::OnChange)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),      dlgSchedule::OnChangeCal)
+    EVT_SPIN(XRCID("timStart"),                      dlgSchedule::OnChangeSpin)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),        dlgSchedule::OnChangeCal)
+    EVT_SPIN(XRCID("timEnd"),                        dlgSchedule::OnChangeSpin)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstExceptions"),   dlgSchedule::OnSelChangeException)
+    EVT_BUTTON(XRCID("btnAddException"),             dlgSchedule::OnAddException)
+    EVT_BUTTON(XRCID("btnChangeException"),          dlgSchedule::OnChangeException)
+    EVT_BUTTON(XRCID("btnRemoveException"),          dlgSchedule::OnRemoveException)
 END_EVENT_TABLE();
 
 
@@ -70,10 +68,10 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
     else
         jobId=0;
 
-    timInterval->SetMax(365*24*60*60 -1, true);
+    btnChangeException->Disable();
+    btnRemoveException->Disable();
 
-    btnChangeInterval->Disable();
-    btnRemoveInterval->Disable();
+	txtID->Disable();
 }
 
 
@@ -88,6 +86,7 @@ int dlgSchedule::Go(bool modal)
     if (schedule)
     {
         // edit mode
+		txtID->SetValue(NumToStr(schedule->GetScheduleId()));
         chkEnabled->SetValue(schedule->GetEnabled());
         calStart->SetDate(schedule->GetStart());
         timStart->SetTime(schedule->GetStart());
@@ -100,7 +99,6 @@ int dlgSchedule::Go(bool modal)
             timEnd->Disable();
 
         wxNotifyEvent ev;
-        OnChangeKind(ev);
     }
     else
     {
@@ -119,45 +117,6 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
     return obj;
 }
 
-
-void dlgSchedule::OnChangeKind(wxCommandEvent &ev)
-{
-    switch (cbKind->GetSelection())
-    {
-        case 0: // repeat
-            timInterval->Enable();
-            pnlSchedule->Disable();
-            break;
-        case 1: // single
-            timInterval->Disable();
-            pnlSchedule->Disable();
-            break;
-        case 2: // day
-            timOffset->SetMax(24*60*60-1);
-            timInterval->Disable();
-            pnlSchedule->Enable();
-            break;
-        case 3: // week
-            timOffset->SetMax(7*24*60*60-1, true);
-            timInterval->Disable();
-            pnlSchedule->Enable();
-            break;
-        case 4: // month
-            timOffset->SetMax(31*24*60*60-1, true);
-            timInterval->Disable();
-            pnlSchedule->Enable();
-            break;
-        case 5: // year
-            timOffset->SetMax(365*24*60*60-1, true);
-            timInterval->Disable();
-            pnlSchedule->Enable();
-            break;
-        default:
-            break;
-    }
-    
-    CheckChange();
-}
 
 void dlgSchedule::OnChangeCal(wxCalendarEvent &ev)
 {
@@ -192,27 +151,27 @@ void dlgSchedule::CheckChange()
 }
 
 
-void dlgSchedule::OnSelChangeInterval(wxListEvent &ev)
+void dlgSchedule::OnSelChangeException(wxListEvent &ev)
 {
-    btnChangeInterval->Enable();
-    btnRemoveInterval->Enable();
+    btnChangeException->Enable();
+    btnRemoveException->Enable();
 }
 
 
-void dlgSchedule::OnAddInterval(wxCommandEvent &ev)
-{
-}
-
-
-void dlgSchedule::OnChangeInterval(wxCommandEvent &ev)
+void dlgSchedule::OnAddException(wxCommandEvent &ev)
 {
 }
 
 
-void dlgSchedule::OnRemoveInterval(wxCommandEvent &ev)
+void dlgSchedule::OnChangeException(wxCommandEvent &ev)
 {
-    btnChangeInterval->Disable();
-    btnRemoveInterval->Disable();
+}
+
+
+void dlgSchedule::OnRemoveException(wxCommandEvent &ev)
+{
+    btnChangeException->Disable();
+    btnRemoveException->Disable();
 }
 
 
@@ -228,20 +187,17 @@ wxString dlgSchedule::GetInsertSql()
     if (!schedule)
     {
         wxString name=GetName();
-        wxString kind = wxT("nsdwmy")[cbKind->GetSelection()];
         wxString jscjobid, list=wxT("NULL");
         if (jobId)
             jscjobid = NumToStr(jobId);
         else
             jscjobid = wxT("<id>");
-        sql = wxT("INSERT INTO pgagent.pga_jobschedule (jscjobid, jscname, jscdesc, jscenabled, jsckind, ")
-              wxT("jscstart, jscend, jscschedule, jsclist)\n")
+        sql = wxT("INSERT INTO pgagent.pga_jobschedule (jscjobid, jscname, jscdesc, jscenabled, jscstart, jscend)\n")
               wxT("VALUES(") + jscjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
-                + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtString(kind) + wxT(", ") 
-                + DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT(", ")
-                + DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue()) + wxT(", ")
-                + DateToAnsiStr(calSchedule->GetDate() + timSchedule->GetValue()) + wxT(", ")
-                + list + wxT(")");
+                + BoolToStr(chkEnabled->GetValue()) 
+				+ DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT(", ") 
+				+ DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue())
+                + wxT(")");
 
     }
     return sql;
@@ -253,7 +209,7 @@ wxString dlgSchedule::GetUpdateSql()
     wxString sql, name;
     name=GetName();
 
-    if (job)
+    if (schedule)
     {
         // edit mode
     }

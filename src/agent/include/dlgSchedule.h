@@ -42,11 +42,10 @@ private:
     
     void OnChangeCal(wxCalendarEvent &ev);
     void OnChangeSpin(wxSpinEvent &ev);
-    void OnChangeKind(wxCommandEvent &ev);
-    void OnSelChangeInterval(wxListEvent &ev);
-    void OnAddInterval(wxCommandEvent &ev);
-    void OnChangeInterval(wxCommandEvent &ev);
-    void OnRemoveInterval(wxCommandEvent &ev);
+    void OnSelChangeException(wxListEvent &ev);
+    void OnAddException(wxCommandEvent &ev);
+    void OnChangeException(wxCommandEvent &ev);
+    void OnRemoveException(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -14,13 +14,14 @@
             <pos>70,5d</pos>
             <size>135,-1d</size>
           </object>
-          <object class="wxStaticText" name="stOID">
-            <label>OID</label>
+          <object class="wxStaticText" name="stID">
+            <label>ID</label> 
             <pos>5,22d</pos>
           </object>
-          <object class="wxTextCtrl" name="txtOID">
+          <object class="wxTextCtrl" name="txtID"> 
             <pos>70,20d</pos>
             <size>135,-1d</size>
+            <style>wxTE_READONLY</style>
           </object>
           <object class="wxStaticText" name="stEnabled">
             <label>Enabled</label>
@@ -32,111 +33,276 @@
             <label></label>
             <size>12,12d</size>
           </object>
-          <object class="wxStaticText" name="stKind">
-            <label>Kind</label>
-            <pos>5,52d</pos>
-          </object>
-          <object class="wxComboBox" name="cbKind">
-            <selection>0</selection>
-            <pos>70,50d</pos>
-            <size>135,12d</size>
-            <content>
-              <item>repeat</item>
-              <item>single</item>
-              <item>daily</item>
-              <item>weekly</item>
-              <item>monthly</item>
-              <item>yearly</item>
-            </content>
-            <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-          </object>
-          <object class="wxStaticText" name="stSchedule">
-            <label>Schedule</label>
-            <pos>5,67d</pos>
-          </object>
-          <object class="wxCalendarBox" name="calSchedule">
-            <pos>70,65d</pos>
-            <size>65,-1d</size>
-            <style>wxCAL_MONDAY_FIRST</style>
-          </object>
-          <object class="wxTimeSpinCtrl" name="timSchedule">
-            <pos>140,65d</pos>
-            <size>65,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stInterval">
-            <label>Interval</label>
-            <pos>5,82d</pos>
-          </object>
-          <object class="wxTimeSpinCtrl" name="timInterval">
-            <pos>70,80d</pos>
-            <size>135,-1d</size>
-            <style>wxSP_WRAP</style>
-          </object>
           <object class="wxStaticText" name="stStart">
             <label>Start</label>
-            <pos>5,97d</pos>
+            <pos>5,52d</pos>
           </object>
           <object class="wxCalendarBox" name="calStart">
-            <pos>70,95d</pos>
-            <size>65,-1d</size>
+            <pos>70,50d</pos>
+            <size>65,12d</size>
             <style>wxCAL_MONDAY_FIRST</style>
           </object>
           <object class="wxTimeSpinCtrl" name="timStart">
-            <pos>140,95d</pos>
-            <size>65,-1d</size>
+            <pos>140,50d</pos>
+            <size>65,12d</size>
           </object>
           <object class="wxStaticText" name="stEnd">
             <label>End</label>
-            <pos>5,112d</pos>
+            <pos>5,67d</pos>
           </object>
           <object class="wxCalendarBox" name="calEnd">
-            <pos>70,110d</pos>
-            <size>65,-1d</size>
+            <pos>70,65d</pos>
+            <size>65,12d</size>
             <style>wxCAL_MONDAY_FIRST</style>
           </object>
           <object class="wxTimeSpinCtrl" name="timEnd">
-            <pos>140,110d</pos>
-            <size>65,-1d</size>
+            <pos>140,65d</pos>
+            <size>65,12d</size>
           </object>
           <object class="wxStaticText" name="stComment">
             <label>Comment</label>
-            <pos>5,1270d</pos>
+            <pos>5,82d</pos>
           </object>
           <object class="wxTextCtrl" name="txtComment">
-            <pos>70,1250d</pos>
-            <size>135,72d</size>
+            <pos>70,82d</pos>
+            <size>135,112d</size>
             <style>wxTE_MULTILINE</style>
           </object>
         </object>
         <selected>1</selected>
       </object>
       <object class="notebookpage">
-        <label>Custom schedule</label>
-        <object class="wxPanel" name="pnlSchedule">
-          <object class="wxListCtrl" name="lstIntervals">
+        <label>Days</label>
+        <object class="wxPanel" name="pnlDays">
+          <object class="wxStaticText" name="stWeekDays">
+            <label>Week Days</label>
+            <pos>5,7d</pos>
+          </object>
+          <object class="wxCheckListBox" name="chkWeekDays">
+            <content>
+              <item>Sunday</item>
+              <item>Monday</item>
+              <item>Tuesday</item>
+              <item>Wednesday</item>
+              <item>Thursday</item>
+              <item>Friday</item>
+              <item>Saturday</item>
+            </content>
+            <pos>70,5d</pos>
+            <size>135,59d</size>
+          </object>
+          <object class="wxStaticText" name="stMonthDays">
+            <label>Month Days</label>
+            <pos>5,72d</pos>
+          </object>
+          <object class="wxCheckListBox" name="chkMonthDays">
+            <content>
+              <item>1st</item>
+              <item>2nd</item>
+              <item>3rd</item>
+              <item>4th</item>
+              <item>5th</item>
+              <item>6th</item>
+              <item>7th</item>
+              <item>8th</item>
+              <item>9th</item>
+              <item>10th</item>
+              <item>11th</item>
+              <item>12th</item>
+              <item>13th</item>
+              <item>14th</item>
+              <item>15th</item>
+              <item>16th</item>
+              <item>17th</item>
+              <item>18th</item>
+              <item>19th</item>
+              <item>20th</item>
+              <item>21st</item>
+              <item>22nd</item>
+              <item>23rd</item>
+              <item>24th</item>
+              <item>25th</item>
+              <item>26th</item>
+              <item>27th</item>
+              <item>28th</item>
+              <item>29th</item>
+              <item>30th</item>
+              <item>31st</item>
+              <item>Last day</item>
+            </content>
+            <pos>70,70d</pos>
+            <size>135,59d</size>
+          </object>
+          <object class="wxStaticText" name="stMonths">
+            <label>Months</label>
+            <pos>5,138d</pos>
+          </object>
+          <object class="wxCheckListBox" name="chkMonths">
+            <content>
+              <item>January</item>
+              <item>February</item>
+              <item>March</item>
+              <item>April</item>
+              <item>May</item>
+              <item>June</item>
+              <item>July</item>
+              <item>August</item>
+              <item>September</item>
+              <item>October</item>
+              <item>November</item>
+              <item>December</item>
+            </content>
+            <pos>70,136d</pos>
+            <size>135,59d</size>
+          </object>
+        </object>
+      </object>
+      <object class="notebookpage">
+        <label>Times</label>
+        <object class="wxPanel" name="pnlTimes">
+          <object class="wxStaticText" name="stHours">
+            <label>Hours</label>
+            <pos>5,7d</pos>
+          </object>
+          <object class="wxCheckListBox" name="chkHours">
+            <content>
+              <item>00</item>
+              <item>01</item>
+              <item>02</item>
+              <item>03</item>
+              <item>04</item>
+              <item>05</item>
+              <item>06</item>
+              <item>07</item>
+              <item>08</item>
+              <item>09</item>
+              <item>10</item>
+              <item>11</item>
+              <item>12</item>
+              <item>13</item>
+              <item>14</item>
+              <item>15</item>
+              <item>16</item>
+              <item>17</item>
+              <item>18</item>
+              <item>19</item>
+              <item>20</item>
+              <item>21</item>
+              <item>22</item>
+              <item>23</item>
+            </content>
+            <pos>70,5d</pos>
+            <size>135,91d</size>
+          </object>
+          <object class="wxStaticText" name="stMinutes">
+            <label>Minutes</label>
+            <pos>5,106d</pos>
+          </object>
+          <object class="wxCheckListBox" name="chkMinutes">
+            <content>
+              <item checked="False">00</item>
+              <item checked="False">01</item>
+              <item checked="False">02</item>
+              <item checked="False">03</item>
+              <item checked="False">04</item>
+              <item checked="False">05</item>
+              <item checked="False">06</item>
+              <item checked="False">07</item>
+              <item checked="False">08</item>
+              <item checked="False">09</item>
+              <item checked="False">10</item>
+              <item checked="False">11</item>
+              <item checked="False">12</item>
+              <item checked="False">13</item>
+              <item checked="False">14</item>
+              <item checked="False">15</item>
+              <item checked="False">16</item>
+              <item checked="False">17</item>
+              <item checked="False">18</item>
+              <item checked="False">19</item>
+              <item checked="False">20</item>
+              <item checked="False">21</item>
+              <item checked="False">22</item>
+              <item checked="False">23</item>
+              <item checked="False">24</item>
+              <item checked="False">25</item>
+              <item checked="False">26</item>
+              <item checked="False">27</item>
+              <item checked="False">28</item>
+              <item checked="False">29</item>
+              <item checked="False">30</item>
+              <item checked="False">31</item>
+              <item checked="False">32</item>
+              <item checked="False">33</item>
+              <item checked="False">34</item>
+              <item checked="False">35</item>
+              <item checked="False">36</item>
+              <item checked="False">37</item>
+              <item checked="False">38</item>
+              <item checked="False">39</item>
+              <item checked="False">40</item>
+              <item checked="False">41</item>
+              <item checked="False">42</item>
+              <item checked="False">43</item>
+              <item checked="False">44</item>
+              <item checked="False">45</item>
+              <item checked="False">46</item>
+              <item checked="False">47</item>
+              <item checked="False">48</item>
+              <item checked="False">49</item>
+              <item checked="False">50</item>
+              <item checked="False">51</item>
+              <item checked="False">52</item>
+              <item checked="False">53</item>
+              <item checked="False">54</item>
+              <item checked="False">55</item>
+              <item checked="False">55</item>
+              <item checked="False">56</item>
+              <item checked="False">57</item>
+              <item checked="False">58</item>
+              <item checked="False">59</item>
+            </content>
+            <pos>70,104d</pos>
+            <size>135,91d</size>
+          </object>
+        </object>
+      </object>
+      <object class="notebookpage">
+        <label>Exceptions</label>
+        <object class="wxPanel" name="pnlExceptions">
+          <object class="wxListCtrl" name="lstExceptions">
             <pos>5,5d</pos>
             <size>200,155d</size>
             <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
           </object>
-          <object class="wxStaticText" name="stOffset">
-            <label>Time offset</label>
-            <pos>5,167d</pos>
+          <object class="wxStaticText" name="stTime">
+            <label>Time</label>
+            <pos>5,166d</pos>
           </object>
-          <object class="wxTimeSpinCtrl" name="timOffset">
-            <pos>5,180d</pos>
-            <size>65,-1d</size>
+          <object class="wxTimeSpinCtrl" name="timExceptionTime">
+            <pos>33,164d</pos>
+            <size>65,12d</size>
           </object>
-          <object class="wxButton" name="btnChangeInterval">
+          <object class="wxStaticText" name="stDate">
+            <label>Date</label>
+            <pos>5,182d</pos>
+          </object>
+          <object class="wxCalendarBox" name="calExceptionDate">
+            <pos>33,180d</pos>
+            <size>65,15d</size>
+            <style>wxCAL_MONDAY_FIRST</style>
+          </object>
+          <object class="wxButton" name="btnChangeException">
             <label>Change</label>
             <pos>100,163d</pos>
             <size>50,-1d</size>
           </object>
-          <object class="wxButton" name="btnAddInterval">
+          <object class="wxButton" name="btnAddException">
             <label>Add</label>
             <pos>100,180d</pos>
             <size>50,-1d</size>
           </object>
-          <object class="wxButton" name="btnRemoveInterval">
+          <object class="wxButton" name="btnRemoveException">
             <label>Remove</label>
             <pos>155,180d</pos>
             <size>50,-1d</size>
@@ -160,6 +326,5 @@
       <pos>166,220d</pos>
     </object>
     <size>218,238d</size>
-    <style></style>
   </object>
 </resource>

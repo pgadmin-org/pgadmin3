@@ -39,7 +39,7 @@ pgaSchedule::~pgaSchedule()
 
 bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetJobId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetScheduleId()));
 }
 
 
@@ -55,7 +55,7 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("ID"), GetJobId());
+        properties->AppendItem(_("ID"), GetScheduleId());
         properties->AppendItem(_("Enabled"), GetEnabled());
 
         properties->AppendItem(_("Start date"), GetStart());
@@ -104,7 +104,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
         {
 
             schedule = new pgaSchedule(collection, schedules->GetVal(wxT("jscname")));
-            schedule->iSetJobId(schedules->GetLong(wxT("jscid")));
+            schedule->iSetScheduleId(schedules->GetLong(wxT("jscid")));
             schedule->iSetDatabase(collection->GetDatabase());
             schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
             schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));
@@ -160,13 +160,14 @@ wxString pgaSchedule::GetMinutesString()
 {
 	size_t x = 0;
 	bool isWildcard = true;
-	wxString res;
+	wxString res, tmp;
 
 	for (x=0; x <= minutes.Length();x++)
 	{
 		if (minutes[x] == 't')
 		{
-			res.Printf(wxT("%s%d, "), res, x);
+			tmp.Printf(wxT("%.2d, "), x);
+			res += tmp;
 			isWildcard = false;
 		}
 	}
@@ -191,13 +192,14 @@ wxString pgaSchedule::GetHoursString()
 {
 	size_t x = 0;
 	bool isWildcard = true;
-	wxString res;
+	wxString res, tmp;
 
 	for (x=0; x <= hours.Length();x++)
 	{
 		if (hours[x] == 't')
 		{
-			res.Printf(wxT("%s%d, "), res, x);
+			tmp.Printf(wxT("%.2d, "), x);
+			res += tmp;
 			isWildcard = false;
 		}
 	}
@@ -287,14 +289,17 @@ wxString pgaSchedule::GetMonthdaysString()
 {
 	size_t x = 0;
 	bool isWildcard = true;
-	wxString res;
+	wxString res, tmp;
 
 	for (x=0; x <= monthdays.Length();x++)
 	{
 		if (monthdays[x] == 't')
 		{
 			if (x < 31)
-				res.Printf(wxT("%s%d, "), res, x + 1);
+			{
+				tmp.Printf(wxT("%.2d, "), x);
+				res += tmp;
+			}
 			else
 			{
 				res += _("Last day");
