@@ -43,9 +43,9 @@ BEGIN_EVENT_TABLE(frmExport, pgDialog)
     EVT_RADIOBUTTON(XRCID("rbQuoteStrings"),frmExport::OnChange)
     EVT_RADIOBUTTON(XRCID("rbQuoteAll"),    frmExport::OnChange)
     EVT_BUTTON(XRCID("btnFilename"),        frmExport::OnBrowseFile)
-    EVT_BUTTON(XRCID("wxID_HELP"),          frmExport::OnHelp)
-    EVT_BUTTON(XRCID("wxID_OK"),            frmExport::OnOK)
-    EVT_BUTTON(XRCID("wxID_CANCEL"),        frmExport::OnCancel)
+    EVT_BUTTON(wxID_HELP,                   frmExport::OnHelp)
+    EVT_BUTTON(wxID_OK,                     frmExport::OnOK)
+    EVT_BUTTON(wxID_CANCEL,                 frmExport::OnCancel)
 END_EVENT_TABLE()
 
 

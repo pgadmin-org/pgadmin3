@@ -28,9 +28,9 @@
 
 
 BEGIN_EVENT_TABLE(frmPassword, pgDialog)
-    EVT_BUTTON (XRCID("wxID_HELP"),   frmPassword::OnHelp)
-    EVT_BUTTON (XRCID("wxID_OK"),     frmPassword::OnOK)
-    EVT_BUTTON (XRCID("wxID_CANCEL"), frmPassword::OnCancel)
+    EVT_BUTTON (wxID_HELP,            frmPassword::OnHelp)
+    EVT_BUTTON (wxID_OK,              frmPassword::OnOK)
+    EVT_BUTTON (wxID_CANCEL,          frmPassword::OnCancel)
 END_EVENT_TABLE()
 
 

@@ -67,9 +67,9 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstArguments"),   dlgFunction::OnSelChangeArg)
     EVT_TEXT(XRCID("txtArgName"),                   dlgFunction::OnChangeArgName)
-    EVT_BUTTON(XRCID("wxID_ADD"),                   dlgFunction::OnAddArg)
+    EVT_BUTTON(wxID_ADD,                            dlgFunction::OnAddArg)
     EVT_BUTTON(XRCID("wxID_CHANGE"),                dlgFunction::OnChangeArg)
-    EVT_BUTTON(XRCID("wxID_REMOVE"),                dlgFunction::OnRemoveArg)
+    EVT_BUTTON(wxID_REMOVE,                         dlgFunction::OnRemoveArg)
 END_EVENT_TABLE();
 
 

@@ -47,7 +47,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_TEXT(XRCID("txtUsername"),                  dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbSSL"),                    dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkNeedPwd"),               dlgServer::OnChangeNeedPwd)
-    EVT_BUTTON(XRCID("wxID_OK"),                    dlgServer::OnOK)
+    EVT_BUTTON(wxID_OK,                             dlgServer::OnOK)
 END_EVENT_TABLE();
 
 

@@ -341,6 +341,16 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->AddHandler(new ctlSQLBoxXmlHandler);
     wxXmlResource::Get()->AddHandler(new ctlComboBoxXmlHandler);
 
+#define chkXRC(id) XRCID(#id) == id
+    wxASSERT_MSG(
+        chkXRC(wxID_OK) &&
+        chkXRC(wxID_CANCEL) && 
+        chkXRC(wxID_HELP) &&
+        chkXRC(wxID_APPLY) &&
+        chkXRC(wxID_ADD) &&
+        chkXRC(wxID_REMOVE), wxT("XRC ID not correctly assigned."));
+    // if this assert fires, some event table uses XRCID(...) instead of wxID_... directly
+        
 
     // examine libpq version
     libpqVersion=7.3;

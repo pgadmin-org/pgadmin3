@@ -72,9 +72,9 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_TEXT(XRCID("cbOwner"),                      dlgProperty::OnChangeOwner)
     EVT_TEXT(XRCID("txtComment"),                   dlgProperty::OnChange)
     
-    EVT_BUTTON(XRCID("wxID_HELP"),                  dlgProperty::OnHelp)
-    EVT_BUTTON(XRCID("wxID_OK"),                    dlgProperty::OnOK)
-    EVT_BUTTON(XRCID("wxID_APPLY"),                 dlgProperty::OnApply)
+    EVT_BUTTON(wxID_HELP,                           dlgProperty::OnHelp)
+    EVT_BUTTON(wxID_OK,                             dlgProperty::OnOK)
+    EVT_BUTTON(wxID_APPLY,                          dlgProperty::OnApply)
 END_EVENT_TABLE();
 
 
@@ -1256,7 +1256,7 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
 
 
 BEGIN_EVENT_TABLE(dlgOidProperty, dlgProperty)
-    EVT_BUTTON (XRCID("wxID_OK"),                   dlgOidProperty::OnOK)
+    EVT_BUTTON (wxID_OK,                            dlgOidProperty::OnOK)
 END_EVENT_TABLE();
 
 dlgOidProperty::dlgOidProperty(frmMain *frame, const wxString &resName)

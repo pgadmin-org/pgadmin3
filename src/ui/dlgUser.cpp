@@ -58,8 +58,8 @@ BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_BUTTON(XRCID("btnDelGroup"),                dlgUser::OnGroupRemove)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgUser::OnVarSelChange)
-    EVT_BUTTON(XRCID("wxID_ADD"),                   dlgUser::OnVarAdd)
-    EVT_BUTTON(XRCID("wxID_REMOVE"),                dlgUser::OnVarRemove)
+    EVT_BUTTON(wxID_ADD,                            dlgUser::OnVarAdd)
+    EVT_BUTTON(wxID_REMOVE,                         dlgUser::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgUser::OnVarnameSelChange)
 END_EVENT_TABLE();
 

@@ -46,9 +46,9 @@
 #define pnlFilter                   CTRL_PANEL("pnlFilter")
 
 BEGIN_EVENT_TABLE(dlgEditGridOptions, pgDialog)
-    EVT_BUTTON               (XRCID("wxID_OK"),     dlgEditGridOptions::OnOK)
-    EVT_BUTTON               (XRCID("wxID_CANCEL"), dlgEditGridOptions::OnCancel)
-    EVT_BUTTON               (XRCID("wxID_REMOVE"), dlgEditGridOptions::OnRemove)
+    EVT_BUTTON               (wxID_OK,              dlgEditGridOptions::OnOK)
+    EVT_BUTTON               (wxID_CANCEL,          dlgEditGridOptions::OnCancel)
+    EVT_BUTTON               (wxID_REMOVE,          dlgEditGridOptions::OnRemove)
     EVT_BUTTON               (XRCID("btnAsc"),      dlgEditGridOptions::OnAsc)
     EVT_BUTTON               (XRCID("btnDesc"),     dlgEditGridOptions::OnDesc)
     EVT_BUTTON               (XRCID("btnValidate"), dlgEditGridOptions::OnValidate)
