@@ -31,6 +31,18 @@ BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2
 %description
 pgAdmin3 is the graphical administration interface of PostgreSQL.
 
+%package i18N-de_DE
+Summary: pgAdmin3 German localisation file
+Requires: %{name} = %{version}-%{release}
+
+%package i18N-fr_FR
+Summary: pgAdmin3 French localisation file
+Requires: %{name} = %{version}-%{release}
+
+%package i18N-ja_JP
+Summary: pgAdmin3 Japanese localisation file
+Requires: %{name} = %{version}-%{release}
+
 %prep
 %setup -q
 
@@ -47,7 +59,23 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%{prefix}
+%{prefix}/bin
+%{prefix}/share/pgadmin3/tips.txt
+%{prefix}/share/pgadmin3/ui/
+%{prefix}/share/pgadmin3/docs
+%{prefix}/share/pgadmin3/ui/common
+
+%files i18N-de_DE
+%defattr(-, root, root)
+%{prefix}/share/pgadmin3/ui/de_DE
+
+%files i18N-fr_FR
+%defattr(-, root, root)
+%{prefix}/share/pgadmin3/ui/fr_FR
+
+%files i18N-ja_JP
+%defattr(-, root, root)
+%{prefix}/share/pgadmin3/ui/ja_JP
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <jm.poure@freesurf.fr>
