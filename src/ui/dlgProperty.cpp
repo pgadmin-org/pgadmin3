@@ -17,6 +17,9 @@
 #include "ctlSQLBox.h"
 #include "pgCollection.h"
 
+// Images
+#include "images/properties.xpm"
+
 #include "frmMain.h"
 #include "dlgProperty.h"
 #include "dlgUser.h"
@@ -54,6 +57,7 @@ dlgProperty::dlgProperty(wxFrame *frame, const wxString &resName) : wxDialog()
         wxMessageBox(wxT("Problem with resource ") + resName + wxT(": Notebook not found.\nPrepare to crash!"));
         return;
     }
+    SetIcon(wxIcon(properties_xpm));
 }
 
 
