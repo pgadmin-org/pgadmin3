@@ -74,9 +74,9 @@ public:
 
 protected:
     frmMain *mainForm;
+    void OnHelp(wxCommandEvent& ev);
 
 private:
-    void OnHelp(wxCommandEvent& ev);
     virtual wxString GetHelpPage() const = 0;
 
     DECLARE_EVENT_TABLE();
