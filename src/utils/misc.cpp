@@ -107,7 +107,7 @@ wxString NumToStr(long value)
 wxString NumToStr(OID value)
 {
     wxString result;
-    result.Printf(wxT("%u"), (long)value);
+    result.Printf(wxT("%lu"), (long)value);
     return result;
 }
 
@@ -120,8 +120,9 @@ long StrToLong(const wxString& value)
 
 OID StrToOid(const wxString& value)
 {
-    return (OID)atol(value.ToAscii());
+    return (OID)strtoul(value.ToAscii(), 0, 10);
 }
+
 
 wxString NumToStr(double value)
 {

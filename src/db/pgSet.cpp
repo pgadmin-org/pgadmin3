@@ -255,7 +255,11 @@ wxULongLong pgSet::GetLongLong(const wxString &col) const
 
 OID pgSet::GetOid(const int col) const
 {
-    return (OID)GetLong(col);
+    char *c=PQgetvalue(res, pos-1, col);
+    if (c)
+        return (OID)strtoul(c, 0, 10);
+    else
+        return 0;
 }
 
 
