@@ -62,9 +62,9 @@ make
 pushd contrib/src/xrc
   make
 popd
-pushd contrib/utils/wxrc
-  make
-popd
+#pushd contrib/utils/wxrc
+#  make
+#popd
 
 pushd contrib/src/stc
   make
