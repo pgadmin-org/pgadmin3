@@ -33,6 +33,8 @@ public:
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
 
 
+    wxString GetAccessMethod() const {return accessMethod; }
+    void iSetAccessMethod(const wxString&s) { accessMethod=s; }
     wxString GetInType() const {return inType; }
     void iSetInType(const wxString&s) { inType=s; }
     wxString GetKeyType() const {return keyType; }
@@ -45,7 +47,10 @@ public:
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
-    wxString inType, keyType;
+    wxString inType, keyType, accessMethod;
+    wxArrayString operators;
+    wxArrayString functions;
+    wxArrayString functionOids;
     bool opcDefault;
 };
 
