@@ -1,4 +1,7 @@
 set -x
+if ! ([ -x config ]); then 
+  mkdir config
+fi
 aclocal && \
 autoheader && \
 automake --foreign --add-missing --copy && \
