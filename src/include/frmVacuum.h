@@ -23,14 +23,18 @@
 class frmVacuum : public wxDialog
 {
 public:
-    frmVacuum(frmMain *form, wxString& info);
+    frmVacuum(frmMain *form, pgObject *_object);
     ~frmVacuum();
 
-    int Go();
+    void Go();
     
 private:
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
+    void OnClose(wxCloseEvent& event);
+    void Abort();
+    pgObject *object;
+    pgQueryThread *thread;
     DECLARE_EVENT_TABLE()
 };
 

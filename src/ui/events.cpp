@@ -40,6 +40,8 @@
 #include "frmQueryBuilder.h"
 #include "frmEditGrid.h"
 #include "dlgProperty.h"
+#include "frmVacuum.h"
+
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
@@ -201,8 +203,10 @@ void frmMain::OnVacuum(wxCommandEvent &ev)
     if (data->GetType() != PG_TABLE && data->GetType() != PG_DATABASE)
         return;
 
-    data->Vacuum(this);
+    frmVacuum *frm=new frmVacuum(this, data);
+    frm->Go();
 }
+
 
 void frmMain::OnSql(wxCommandEvent &ev)
 {

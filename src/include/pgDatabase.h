@@ -57,7 +57,6 @@ public:
 
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
-    bool Vacuum(frmMain *form);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:

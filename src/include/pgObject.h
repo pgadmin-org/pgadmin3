@@ -123,7 +123,6 @@ public:
     virtual bool CanDrop() { return false; }
     virtual bool CanVacuum() { return false; }
     virtual bool RequireDropConfirm() { return false; }
-    virtual bool Vacuum(frmMain *form) { return false; }
 
 protected:
     static void CreateListColumns(wxListCtrl *properties, const wxString &left=wxT("Property"), const wxString &right=wxT("Value"));
