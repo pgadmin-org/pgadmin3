@@ -146,7 +146,7 @@ wxString dlgView::GetSql()
 
     sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(name));
 
-    AppendComment(sql, wxT("TABLE"), schema, view);
+    AppendComment(sql, wxT("VIEW"), schema, view);
     return sql;
 }
 
