@@ -139,9 +139,9 @@ int pgAdmin3::OnExit()
 
 void pgAdmin3::LoadXrc(const wxString file)
 {
-    wxString msg, xrc;
-    msg.Printf(wxT("Loading %s"), file.c_str());
-    wxLogInfo(msg);
+    wxLogInfo(wxT("Loading %s"), file.c_str());
+
+    wxString xrc;
     xrc.Printf("%s/%s", XRC_PATH, file.c_str());
     wxXmlResource::Get()->Load(xrc);
 }

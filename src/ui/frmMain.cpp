@@ -535,10 +535,8 @@ void frmMain::StoreServers()
 
     // Write the server count
     settings->Write(wxT("Servers/Count"), numServers);
-    wxString msg;
-    msg.Printf("Stored %d servers.", numServers);
-    wxLogInfo(msg);
 
+    wxLogInfo("Stored %d servers.", numServers);
 }
 
 void frmMain::RetrieveServers()

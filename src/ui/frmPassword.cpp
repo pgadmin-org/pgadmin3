@@ -59,10 +59,9 @@ void frmPassword::OnOK(wxCommandEvent& event)
     }
 
     // Set the new password
-    if (!server->SetPassword(XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue())) {
-        wxString msg;
-        msg.Printf(wxT("The password could not be changed!"));
-        wxLogError(msg);
+    if (!server->SetPassword(XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue()))
+    {
+        wxLogError(wxT("The password could not be changed!"));
         return;
     }
 

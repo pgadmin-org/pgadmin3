@@ -35,4 +35,9 @@ private:
     void WriteLog(const wxString& msg);
 };
 
+#define wxLOG_Sql (wxLOG_User+1)
+
+DECLARE_LOG_FUNCTION(Sql);
+
+
 #endif

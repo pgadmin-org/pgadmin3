@@ -12,14 +12,38 @@
 #include <wx/wx.h>
 #include <wx/ffile.h>
 #include <wx/datetime.h>
+#include <wx/log.h>
 
 // App headers
 #include "pgAdmin3.h"
 #include "sysLogger.h"
+extern sysSettings *settings;
+
+
+// IMPLEMENT_LOG_FUNCTION(Sql) from wx../common/log.c
+void wxVLogSql(const wxChar *szFormat, va_list argptr)
+{
+    static char s_szBuf[4096];
+
+    if (settings->GetLogLevel() >= LOG_SQL)
+    {
+        wxVsnprintf(s_szBuf, sizeof(s_szBuf), szFormat, argptr);
+        wxLog::OnLog(wxLOG_Sql, s_szBuf, time(NULL));
+
+    }
+}
+
+void wxLogSql(const wxChar *szFormat, ...)
+{
+    va_list argptr;
+    va_start(argptr, szFormat);
+    wxVLogSql(szFormat, argptr);
+    va_end(argptr);
+}
+
 
 void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 {
-    extern sysSettings *settings;
     wxString msgtype, preamble;
     int icon = 0;
 
@@ -56,8 +80,12 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
             msgtype = wxT("STATUS ");
             break;
 
+        case wxLOG_Sql:
+            msgtype = wxT("QUERY  ");
+            break;
+
         case wxLOG_Trace:
-            msgtype = wxT("TRACE   ");
+            msgtype = wxT("TRACE  ");
             break;
 
         case wxLOG_Debug:
@@ -82,20 +110,24 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 	delete time;
 
     // Display the message if required
-    switch (settings->GetLogLevel()) {
+    switch (settings->GetLogLevel())
+    {
         case LOG_NONE:
             break;
 
         case LOG_ERRORS:
-            if ((level == wxLOG_FatalError) || \
-                (level == wxLOG_Error)) WriteLog(fullmsg);
+            if (level == wxLOG_FatalError || 
+                level == wxLOG_Error)
+                WriteLog(fullmsg);
             break;
 
         case LOG_SQL:
-            if ((level == wxLOG_FatalError) || \
-                (level == wxLOG_Error) || \
-                (level == wxLOG_Message) || \
-                (level == wxLOG_Status)) WriteLog(fullmsg);
+            if (level == wxLOG_FatalError ||
+                level == wxLOG_Error ||
+                level == wxLOG_Message ||
+                level == wxLOG_Status ||
+                level == wxLOG_Sql)
+                WriteLog(fullmsg);
             break;
 
         case LOG_DEBUG:
@@ -126,3 +158,4 @@ void sysLogger::WriteLog(const wxString& msg)
    file.Write(msg + "\n");
    file.Close();
 }
+

@@ -26,6 +26,7 @@
 #include "pgSet.h"
 #include "pgConn.h"
 #include "pgAdmin3.h"
+#include "sysLogger.h"
 
 pgSet::pgSet(PGresult *newRes, PGconn *newConn)
 {
@@ -36,9 +37,8 @@ pgSet::pgSet(PGresult *newRes, PGconn *newConn)
     // Make sure we have tuples
     if (PQresultStatus(res) != PGRES_TUPLES_OK)
     {
-        wxString msg;
-        msg.Printf(wxT("%s"), PQerrorMessage(conn));
-        wxLogError(msg);
+        wxLogError(wxT("%s"), PQerrorMessage(conn));
+
         eof = TRUE;
         bof = TRUE;
         pos = 0;
@@ -134,19 +134,18 @@ wxString pgSet::ExecuteScalar(const wxString& sql) const
 {
     // Execute the query and get the status.
     PGresult *qryRes;
-    wxString msg;
-    msg.Printf(wxT("Set sub-query: %s"), sql.c_str());
-    wxLogInfo(sql);
+
+    wxLogSql(wxT("Set sub-query: %s"), sql.c_str());
+
     qryRes = PQexec(conn, sql.c_str());
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
         return wxString("");
     }
 
     // Retrieve the query result and return it.
-    wxString result;
-    result.Printf("%s", PQgetvalue(qryRes, 0, 0));
-    msg.Printf(wxT("Query result: %s"), result.c_str());
-    wxLogInfo(msg);
+    wxString result=PQgetvalue(qryRes, 0, 0);
+    
+    wxLogInfo(wxT("Query result: %s"), result.c_str());
 
     // Cleanup & exit
     PQclear(qryRes);
