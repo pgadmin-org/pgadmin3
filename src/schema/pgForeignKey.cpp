@@ -43,7 +43,7 @@ wxString pgForeignKey::GetDefinition()
     // MATCH FULL/PARTIAL missing; where is this stored?!?
 
     sql = wxT("(") + GetQuotedFkColumns()
-        +  wxT(") REFERENCES ") + qtIdent(GetReferences()) 
+        +  wxT(") REFERENCES ") + qtIdent(GetRefSchema()) + wxT(".") + qtIdent(GetReferences()) 
         +  wxT(" (") + GetQuotedRefColumns()
         +  wxT(") ON UPDATE ") + GetOnUpdate()
         +  wxT(" ON DELETE ") + GetOnDelete();
@@ -75,7 +75,7 @@ wxString pgForeignKey::GetSql(wxTreeCtrl *browser)
     {
         sql = wxT("-- Foreign Key: ") + GetQuotedFullIdentifier() + wxT("\n\n")
             + wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
-            + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier()
+            + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() + wxT(";")
             + wxT("\n\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");

@@ -602,96 +602,100 @@ wxString sqlTable::MakeKey(cacheLine *line)
 void sqlTable::StoreLine()
 {
     GetView()->BeginBatch();
+    bool done=false;
+    bool stored = false;
+    cacheLine *line;
+
     if (lastRow >= 0)
     {
-        bool done=false;
+        line=GetLine(lastRow);
+        stored = line->stored;
+    }
 
-        cacheLine *line=GetLine(lastRow);
 
-        int i;
-        wxString colList, valList;
+    int i;
+    wxString colList, valList;
 
-        if (line->stored)
+    if (stored)
+    {
+        // UPDATE
+        for (i=(hasOids? 1 : 0) ; i<nCols ; i++)
         {
-            // UPDATE
-            for (i=(hasOids? 1 : 0) ; i<nCols ; i++)
+            if (columns[i].type == PGOID_TYPE_BOOL)  // bool
+                line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
+
+            if (savedLine.cols[i] != line->cols[i])
             {
-                if (columns[i].type == PGOID_TYPE_BOOL)  // bool
-                    line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
-
-                if (savedLine.cols[i] != line->cols[i])
-                {
-                    if (!valList.IsNull())
-                        valList += wxT(", ");
-                    valList += qtIdent(columns[i].name) + wxT("=") + columns[i].Quote(line->cols[i]);
-                }
+                if (!valList.IsNull())
+                    valList += wxT(", ");
+                valList += qtIdent(columns[i].name) + wxT("=") + columns[i].Quote(line->cols[i]);
             }
-
-            if (valList.IsEmpty())
-                done=true;
-            else
-                done=connection->ExecuteVoid(wxT(
-                    "UPDATE ") + tableName + wxT(
-                    " SET ") + valList + wxT(
-                    " WHERE ") + MakeKey(&savedLine));
         }
-        else
-        {
-            // INSERT
 
-            for (i=0 ; i<nCols ; i++)
+        if (valList.IsEmpty())
+            done=true;
+        else
+            done=connection->ExecuteVoid(wxT(
+                "UPDATE ") + tableName + wxT(
+                " SET ") + valList + wxT(
+                " WHERE ") + MakeKey(&savedLine));
+    }
+    else
+    {
+        // INSERT
+
+        for (i=0 ; i<nCols ; i++)
+        {
+            if (!columns[i].attr->IsReadOnly() && !line->cols[i].IsEmpty())
             {
-                if (!columns[i].attr->IsReadOnly() && !line->cols[i].IsEmpty())
+                if (!colList.IsNull())
                 {
-                    if (!colList.IsNull())
-                    {
-                        valList += wxT(", ");
-                        colList += wxT(", ");
-                    }
-                    colList += qtIdent(columns[i].name);
-                    if (columns[i].type == PGOID_TYPE_BOOL)
-                        line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
-                    valList += columns[i].Quote(line->cols[i]);
+                    valList += wxT(", ");
+                    colList += wxT(", ");
                 }
+                colList += qtIdent(columns[i].name);
+                if (columns[i].type == PGOID_TYPE_BOOL)
+                    line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
+                valList += columns[i].Quote(line->cols[i]);
             }
-            
-            pgSet *set=connection->ExecuteSet(
-                wxT("INSERT INTO ") + tableName
-                + wxT("(") + colList 
-                + wxT(") VALUES (") + valList
-                + wxT(")"));
+        }
+        
+        pgSet *set=connection->ExecuteSet(
+            wxT("INSERT INTO ") + tableName
+            + wxT("(") + colList 
+            + wxT(") VALUES (") + valList
+            + wxT(")"));
+        if (set)
+        {
+            if (hasOids)
+                line->cols[0] = NumToStr((long)set->GetInsertedOid());
+            delete set;
+
+            done=true;
+            rowsStored++;
+            ((wxFrame*)GetView()->GetParent())->SetStatusText(wxString::Format(wxT("%d rows."), GetNumberStoredRows()));
+            if (rowsAdded == rowsStored)
+                GetView()->AppendRows();
+
+            // Read back what we inserted to get default vals
+            set=connection->ExecuteSet(
+                wxT("SELECT * FROM ") + tableName + 
+                wxT(" WHERE ") + MakeKey(line));
             if (set)
             {
-                if (hasOids)
-                    line->cols[0] = NumToStr((long)set->GetInsertedOid());
-                delete set;
-
-                done=true;
-                rowsStored++;
-                ((wxFrame*)GetView()->GetParent())->SetStatusText(wxString::Format(wxT("%d rows."), GetNumberStoredRows()));
-                if (rowsAdded == rowsStored)
-                    GetView()->AppendRows();
-
-                // Read back what we inserted to get default vals
-                set=connection->ExecuteSet(
-                    wxT("SELECT * FROM ") + tableName + 
-                    wxT(" WHERE ") + MakeKey(line));
-                if (set)
+                for (i=(hasOids?1:0) ; i < nCols ; i++)
                 {
-                    for (i=(hasOids?1:0) ; i < nCols ; i++)
-                    {
-                        line->cols[i] = set->GetVal(columns[i].name);
-                    }
-                    delete set;
+                    line->cols[i] = set->GetVal(columns[i].name);
                 }
-
+                delete set;
             }
+
         }
-        if (done)
-        {
-            line->stored = true;
-            lastRow = -1;
-        }
+    }
+    if (done)
+    {
+        line->stored = true;
+        lastRow = -1;
     }
     GetView()->EndBatch();
 }
