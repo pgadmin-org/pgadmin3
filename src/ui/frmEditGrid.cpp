@@ -146,6 +146,14 @@ void frmEditGrid::SetSortCols(const wxString &cols)
 	} 
 }
 
+void frmEditGrid::SetFilter(const wxString &filter) 
+{ 
+	if (rowFilter != filter) { 
+		rowFilter = filter; 
+		optionsChanged = true;
+	} 
+}
+
 #define EXTRAEXTENT_HEIGHT 6
 #define EXTRAEXTENT_WIDTH  6
 
@@ -435,7 +443,7 @@ void frmEditGrid::OnSave(wxCommandEvent& event)
 void frmEditGrid::OnOptions(wxCommandEvent& event)
 {
 	optionsChanged = false;
-    dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, sqlGrid);
+    dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, connection, tableName, sqlGrid);
     winOptions->ShowModal();
 
 	if (optionsChanged) Go();
@@ -525,6 +533,10 @@ void frmEditGrid::Go()
     if (hasOids)
         qry += wxT("oid, ");
     qry += wxT("* FROM ") + tableName;
+    if (!rowFilter.IsEmpty())
+    {
+        qry += wxT(" WHERE ") + rowFilter;
+    }
     if (!orderBy.IsEmpty())
     {
         qry += wxT(" ORDER BY ") + orderBy;

@@ -43,7 +43,7 @@ class dlgEditGridOptions : public wxDialog
 public:
 
 	// Construction
-    dlgEditGridOptions(frmEditGrid *parent, ctlSQLGrid *grid);
+    dlgEditGridOptions(frmEditGrid *parent, pgConn *conn, const wxString &rel, ctlSQLGrid *grid);
 
 private:
 
@@ -52,10 +52,16 @@ private:
 	void OnRemove(wxCommandEvent &ev);
 	void OnAsc(wxCommandEvent &ev);
 	void OnDesc(wxCommandEvent &ev);
+	void OnValidate(wxCommandEvent &ev);
     void OnCboColumnsChange(wxCommandEvent &ev);
     void OnLstSortColsChange(wxCommandEvent &ev);
+	bool Validate();
 	frmEditGrid *parent;
+	pgConn *connection;
+	wxString relation;
 	ctlSQLGrid *editGrid;
+	ctlSQLBox *filter;
+	wxMBConv *conv;
 
 	// Macros
 	DECLARE_EVENT_TABLE()

@@ -153,6 +153,8 @@ public:
     void Go();
 	wxString GetSortCols() const { return orderBy; } ;
 	void SetSortCols(const wxString &cols);
+	wxString GetFilter() const { return rowFilter; } ;
+	void SetFilter(const wxString &filter);
 
 private:
     void OnClose(wxCloseEvent& event);
@@ -183,6 +185,7 @@ private:
     wxString tableName;
     wxString primaryKeyColNumbers;
     wxString orderBy;
+	wxString rowFilter;
 
     DECLARE_EVENT_TABLE();
 };

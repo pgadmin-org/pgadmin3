@@ -49,20 +49,24 @@ BEGIN_EVENT_TABLE(dlgEditGridOptions, wxDialog)
     EVT_BUTTON               (XRCID("btnOK"),       dlgEditGridOptions::OnOK)
     EVT_BUTTON               (XRCID("btnCancel"),   dlgEditGridOptions::OnCancel)
 	EVT_BUTTON               (XRCID("btnRemove"),   dlgEditGridOptions::OnRemove)
-	EVT_BUTTON               (XRCID("btnAsc"),   dlgEditGridOptions::OnAsc)
-	EVT_BUTTON               (XRCID("btnDesc"),  dlgEditGridOptions::OnDesc)
+	EVT_BUTTON               (XRCID("btnAsc"),      dlgEditGridOptions::OnAsc)
+	EVT_BUTTON               (XRCID("btnDesc"),     dlgEditGridOptions::OnDesc)
+	EVT_BUTTON               (XRCID("btnValidate"), dlgEditGridOptions::OnValidate)
 	EVT_COMBOBOX             (XRCID("cboColumns"),  dlgEditGridOptions::OnCboColumnsChange) 
 	EVT_LIST_ITEM_SELECTED   (XRCID("lstSortCols"), dlgEditGridOptions::OnLstSortColsChange) 
 	EVT_LIST_ITEM_DESELECTED (XRCID("lstSortCols"), dlgEditGridOptions::OnLstSortColsChange) 
 END_EVENT_TABLE()
 
-dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
+dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxString &rel, ctlSQLGrid *grid)
 {
     wxLogInfo(wxT("Creating an edit grid options dialogue"));
     editGrid=grid;
+	connection=conn;
+	relation=rel;
 	parent=win;
     wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, parent, wxT("dlgEditGridOptions")); 
+	conv = &wxConvLibc;
 
     // Icon
     SetIcon(wxIcon(sortfilter_xpm));
@@ -85,6 +89,12 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
     rightSize = lstSortCols->GetClientSize().GetWidth()-leftSize;
 	lstSortCols->InsertColumn(0, _("Column name"), wxLIST_FORMAT_LEFT, leftSize);
 	lstSortCols->InsertColumn(1, _("Sort order"), wxLIST_FORMAT_LEFT, rightSize);
+
+	// Setup the filter SQL box. This is an XRC 'unknown' control so must
+	// be manually created and attache to the XRC global resource.
+	filter = new ctlSQLBox(this);
+	wxXmlResource::Get()->AttachUnknownControl(wxT("sqlFilter"), filter);
+	filter->SetText(parent->GetFilter());
 
 	// Get the current sort columns, and populate the listbox.
 	// The current columns will be parsed char by char to allow us
@@ -179,6 +189,12 @@ void dlgEditGridOptions::OnDesc(wxCommandEvent &ev)
     OnLstSortColsChange(nullEvent);
 }
 
+void dlgEditGridOptions::OnValidate(wxCommandEvent &ev)
+{
+    if (Validate()) 
+		wxMessageBox(_("Filter string syntax validates OK!"), _("Syntax Validation"), wxICON_INFORMATION);
+}
+
 void dlgEditGridOptions::OnCboColumnsChange(wxCommandEvent &ev)
 {
 	// Set the command buttons appropriately
@@ -207,6 +223,9 @@ void dlgEditGridOptions::OnCancel(wxCommandEvent &ev)
 
 void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
 {
+	// Check the filter syntax
+    if (!Validate()) return;
+
 	wxString sortCols;
 	long x, count = lstSortCols->GetItemCount();
 
@@ -225,6 +244,67 @@ void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
 	}
 
 	parent->SetSortCols(sortCols);
+	parent->SetFilter(filter->GetText().Trim());
     Destroy();
 }
 
+bool dlgEditGridOptions::Validate()
+{
+	StartMsg(_("Validating filter string,,,"));
+	filter->MarkerDeleteAll(0);
+	if (!filter->GetText().Trim().Length()) {
+		EndMsg();
+		return false;
+	}
+
+	wxString sql = wxT("EXPLAIN SELECT * FROM ") + relation + wxT(" WHERE ");
+	int queryOffset = sql.Length();
+	sql += filter->GetText();
+
+	PGresult *qryRes;
+    qryRes = PQexec(connection->connection(), sql.mb_str(*conv));
+    int res = PQresultStatus(qryRes);
+
+    // Check for errors
+    if (res == PGRES_TUPLES_OK ||
+        res == PGRES_COMMAND_OK)
+    {
+		// No errors, all OK!
+		EndMsg();
+		return true;
+    }
+
+	// Figure out where the error is
+    wxString errMsg = wxString(PQerrorMessage(connection->connection()), *conv).c_str();
+
+    wxString atChar=wxT(" at character ");
+    int chp=errMsg.Find(atChar);
+
+    if (chp > 0)
+    {
+        int selStart=filter->GetSelectionStart(), selEnd=filter->GetSelectionEnd();
+        if (selStart == selEnd)
+            selStart=0;
+
+        long errPos=0;
+        errMsg.Mid(chp+atChar.Length()).ToLong(&errPos);
+        errPos -= queryOffset;  // do not count EXPLAIN or similar
+		wxLogError(wxString::Format(_("ERROR: Syntax error at character %d!"), errPos));
+
+        int line=0, maxLine = filter->GetLineCount();
+        while (line < maxLine && filter->GetLineEndPosition(line) < errPos + selStart+1)
+            line++;
+        if (line < maxLine)
+        {
+            filter->MarkerAdd(line, 0);
+            filter->EnsureVisible(line);
+        }
+    } else {
+		wxLogError(errMsg);
+	}
+
+	// Cleanup
+    PQclear(qryRes);
+	EndMsg();
+	return false;
+}
