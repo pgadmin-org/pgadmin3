@@ -162,7 +162,8 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         // fk, pk lesen
         pgSet *set = ExecuteSet(
             wxT("SELECT indkey FROM pg_index\n")
-            wxT(" WHERE indrelid=") + GetTableOidStr());
+            wxT(" WHERE indrelid=") + GetTableOidStr() +
+			wxT(" AND indisprimary"));
         if (set)
         {
             wxString indkey, str;
