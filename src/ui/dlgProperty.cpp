@@ -460,7 +460,8 @@ void dlgProperty::ShowObject()
         {
             mainForm->GetBrowser()->DeleteChildren(newData->GetId());
 
-            newData->ShowTree(mainForm, mainForm->GetBrowser(), mainForm->GetProperties(), 0);
+            if (item == mainForm->GetBrowser()->GetSelection())
+                newData->ShowTree(mainForm, mainForm->GetBrowser(), mainForm->GetProperties(), 0);
             mainForm->GetBrowser()->SetItemText(item, newData->GetFullName());
             mainForm->GetSqlPane()->SetReadOnly(false);
             mainForm->GetSqlPane()->SetText(newData->GetSql(mainForm->GetBrowser()));
