@@ -68,7 +68,7 @@ pgAdmin3 japanese translation by Hiroshi Saito <saito@inetrt.skcapi.co.jp>.
 %setup -q
 
 %build
-%configure --enable-debug --enable-static --with-wx-config=%{with_wx_config} --with-pgsql=%{with_pgsql} --with-pqsql-include=%{with_pgsql_include}
+%configure --enable-debug --enable-static --with-wx-config=%{with_wx_config} --with-pgsql=%{with_pgsql} --with-pgsql-include=%{with_pgsql_include}
 make all
 
 %install
