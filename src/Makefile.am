@@ -147,6 +147,14 @@ ui/ur_PK/pgadmin3.po \
 ui/zh_CN/pgadmin3.po \
 ui/zh_TW/pgadmin3.po
 
+##############################################################################
+#
+# Note, Only include translations above and below that are officially 
+# published. These are listed at: 
+#                              http://www.pgadmin.org/pgadmin3/translation.php
+#
+##############################################################################
+
 nobase_dist_pkgdata_DATA = \
 ui/wxstd.mo \
 ui/pgadmin3.lng \
