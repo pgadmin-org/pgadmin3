@@ -19,7 +19,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 # http://snake.pgadmin.org in the directory of your distribution.
 # 
 
-BuildRequires: autoconf >= 2.57, automake >= 1.7.2, wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
+BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
 
 %description
 pgAdmin3 is the graphical administration interface of PostgreSQL.
