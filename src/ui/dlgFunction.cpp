@@ -146,7 +146,8 @@ int dlgFunction::Go(bool modal)
         else
             sqlBox->SetText(function->GetSource());
 
-        txtName->Disable();
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
         cbReturntype->Disable();
         cbDatatype->Disable();
         lstArguments->Disable();
@@ -218,6 +219,7 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
     {
 
         EnableOK(txtComment->GetValue() != function->GetComment()
+              || txtName->GetValue() != function->GetName()
               || cbVolatility->GetValue() != function->GetVolatility()
               || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
               || chkSetof->GetValue() != function->GetReturnAsSet()
@@ -333,16 +335,24 @@ wxString dlgFunction::GetArgs(bool quoted)
 
 wxString dlgFunction::GetSql()
 {
-    wxString sql, name;
+    wxString sql;
+    wxString name;
 
+
+    bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
+    bool didChange = !function 
+        || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
+        || (!isC && sqlBox->GetText() != function->GetSource());
 
     if (function)
     {
         // edit mode
-        name = function->GetQuotedFullIdentifier()
-             + wxT("(") + function->GetArgTypes() + wxT(")");
-        
-        sql = wxT("CREATE OR REPLACE FUNCTION ") + name;
+
+        name = function->GetQuotedFullIdentifier() 
+                            + wxT("(") + GetArgs(true) + wxT(")");
+
+        if (didChange)
+            sql += wxT("CREATE OR REPLACE FUNCTION ") + name;
     }
     else
     {
@@ -353,28 +363,32 @@ wxString dlgFunction::GetSql()
 
         sql = wxT("CREATE FUNCTION ") + name;
     }
-    sql += wxT(" RETURNS ");
-    if (chkSetof->GetValue())
-        sql += wxT("SETOF ");
-    sql += cbReturntype->GetValue()
-        + wxT(" AS\n");
 
-    if (cbLanguage->GetValue().IsSameAs(wxT("C"), false))
+    if (didChange)
     {
-        sql += qtString(txtObjectFile->GetValue());
-        if (!txtLinkSymbol->GetValue().IsEmpty())
-            sql += wxT(", ") + qtString(txtLinkSymbol->GetValue());
-    }
-    else
-        sql += qtString(sqlBox->GetText());
-    sql += wxT("\nLANGUAGE ") + qtString(cbLanguage->GetValue())
-        +  wxT(" ") + cbVolatility->GetValue();
-    if (chkStrict->GetValue())
-        sql += wxT(" STRICT");
-    if (chkSecureDefiner->GetValue())
-        sql += wxT(" SECURITY DEFINER");
+        sql += wxT(" RETURNS ");
+        if (chkSetof->GetValue())
+            sql += wxT("SETOF ");
+        sql += cbReturntype->GetValue()
+            + wxT(" AS\n");
 
-    sql += wxT(";\n");
+        if (cbLanguage->GetValue().IsSameAs(wxT("C"), false))
+        {
+            sql += qtString(txtObjectFile->GetValue());
+            if (!txtLinkSymbol->GetValue().IsEmpty())
+                sql += wxT(", ") + qtString(txtLinkSymbol->GetValue());
+        }
+        else
+            sql += qtString(sqlBox->GetText());
+        sql += wxT("\nLANGUAGE ") + qtString(cbLanguage->GetValue())
+            +  wxT(" ") + cbVolatility->GetValue();
+        if (chkStrict->GetValue())
+            sql += wxT(" STRICT");
+        if (chkSecureDefiner->GetValue())
+            sql += wxT(" SECURITY DEFINER");
+
+        sql += wxT(";\n");
+    }
 
     wxString comment=txtComment->GetValue();
     if ((function && function->GetComment() != comment) 
@@ -385,6 +399,10 @@ wxString dlgFunction::GetSql()
             + wxT(";\n");
     }
     sql += GetGrant(wxT("-"), wxT("FUNCTION ") + name);
+
+    if (function && GetName() != function->GetName())
+        sql += wxT("ALTER FUNCTION ") + name 
+             + wxT(" RENAME TO ") + GetName() + wxT(";\n");
 
     return sql;
 }
