@@ -35,15 +35,15 @@ make all
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
-strip --strip-debug %{buildroot}/usr/bin/pgadmin3
+strip --strip-debug %{_bindir}/%{name}
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-/usr/bin
-/usr/share
+%{_bindir}/%{name}
+%{_datadir}
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
