@@ -46,7 +46,7 @@ frmHelp::frmHelp(wxWindow *fr)
 {
     SetIcon(wxIcon(pgAdmin3_xpm));
 
-    ;
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxToolBar *toolBar=CreateToolBar();
     toolBar->SetToolBitmapSize(wxSize(24, 24));
 

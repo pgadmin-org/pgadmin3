@@ -34,6 +34,10 @@
 #include "pgIndex.h"
 #include "pgRule.h"
 #include "pgTrigger.h"
+#include "pgaInstance.h"
+#include "pgaJob.h"
+
+
 
 pgCollection::pgCollection(int newType, pgServer *sv)
 : pgObject(newType, typesList[newType].typName)
@@ -170,6 +174,8 @@ int pgCollection::GetIcon()
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;
         case PG_TRIGGERS:           return PGICON_TRIGGER;
+        case PGA_INSTANCES:         return PGAICON_INSTANCE;
+        case PGA_JOBS:              return PGAICON_JOB;
         default:    return 0;
     }
 }
@@ -267,6 +273,12 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
                 break;
             case PG_TRIGGERS:
                 pgTrigger::ReadObjects(this, browser);
+                break;
+            case PGA_INSTANCES:
+                pgaInstance::ReadObjects(this, browser);
+                break;
+            case PGA_JOBS:
+                pgaJob::ReadObjects(this, browser);
                 break;
             default:
                 return;

@@ -23,6 +23,8 @@ schema/pgSequence.cpp schema/pgServer.cpp \
 schema/pgTable.cpp schema/pgTrigger.cpp \
 schema/pgType.cpp schema/pgUser.cpp schema/pgView.cpp \
 schema/pgDatatype.cpp \
+agent/pgaAgent.cpp agent/pgaInstance.cpp agent/pgaJob.cpp \
+agent/pgaStep.cpp agent/pgaSchedule.cpp \
 ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
 ui/dlgAddTableView.cpp ui/events.cpp ui/frmAbout.cpp \
 ui/frmChildTableViewFrame.cpp ui/frmConnect.cpp \
@@ -74,7 +76,9 @@ include/pgRule.h include/pgSchema.h include/pgSequence.h \
 include/pgServer.h include/pgSet.h include/pgTable.h \
 include/pgTrigger.h include/pgType.h include/pgUser.h \
 include/pgView.h include/sysLogger.h \
-include/sysSettings.h include/wxgridsel.h include/menu.h
+include/sysSettings.h include/wxgridsel.h include/menu.h\
+agent/include/pgaAgent.h agent/include/pgaInstance.h agent/include/pgaJob.h \
+agent/include/pgaStep.h agent/include/pgaSchedule.h
   
 EXTRA_DIST = pgAdmin3.dsp pgAdmin3.dsw \
 include/images/aggregate.xpm \

@@ -52,7 +52,7 @@ protected:
 
     void EnableOK(bool enable);
 
-    void CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize=100);
+    void CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize=60);
     int AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon);
 
     void CheckValid(bool &enable, const bool condition, const wxString &msg);

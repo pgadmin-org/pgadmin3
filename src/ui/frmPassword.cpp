@@ -32,6 +32,7 @@ frmPassword::frmPassword(wxFrame *parent)
 {
     wxLogInfo(wxT("Creating a change password dialogue"));
 
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmPassword")); 
 
     // Icon

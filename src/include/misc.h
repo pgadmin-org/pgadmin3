@@ -13,6 +13,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/datetime.h>
 #include <wx/tokenzr.h>
 
 typedef unsigned long OID;
@@ -50,11 +51,13 @@ extern sysSettings *settings;
 
 // Conversions
 wxString BoolToStr(bool value);         // english; used for config values
+wxString DateToAnsiStr(const wxDateTime &datetime);
+
 bool StrToBool(const wxString& value);  // english
 long StrToLong(const wxString& value);
 double StrToDouble(const wxString& value);
 wxULongLong StrToLongLong(const wxString& value);
-
+wxDateTime StrToDateTime(const wxString &value);
 OID StrToOid(const wxString& value);
 
 // nls aware
@@ -63,6 +66,7 @@ wxString NumToStr(long value);
 wxString NumToStr(double value);
 wxString NumToStr(OID value);
 wxString NumToStr(wxLongLong value);
+wxString DateToStr(const wxDateTime &datetime);
 
 // Quoting
 wxString qtString(const wxString& value);
@@ -159,7 +163,13 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_CONSTRAINT,
     PGICON_PRIMARYKEY,
     PGICON_UNIQUE,
-    PGICON_PUBLIC
+    PGICON_PUBLIC,
+    PGAICON_AGENT,
+    PGAICON_INSTANCE,
+    PGAICON_JOB,
+    PGAICON_JOBDISABLED,
+    PGAICON_STEP,
+    PGAICON_SCHEDULE
 };
 
 

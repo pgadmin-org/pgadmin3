@@ -85,12 +85,13 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     readOnly=false;
     objectType=-1;
     sqlPane=0;
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, frame, resName);
     nbNotebook = CTRL("nbNotebook", wxNotebook);
 
     if (!nbNotebook)
     {
-        wxMessageBox(_("Problem with resource ") + resName + _(": Notebook not found.\nPrepare to crash!"));
+        wxMessageBox(wxString::Format(_("Problem with resource %s: Notebook not found.\nPrepare to crash!"), resName.c_str()));
         return;
     }
     SetIcon(wxIcon(properties_xpm));
@@ -111,12 +112,13 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
         statusBox=CTRL("txtStatus", wxTextCtrl);
     else
     {
+        wxSize stdTxtSize=ConvertDialogToPixels(wxSize(0, 12));
         wxSize size=GetSize();
-        size.SetHeight(size.GetHeight()+20);
+        size.SetHeight(size.GetHeight()+stdTxtSize.GetHeight());
         SetSize(size);
         size=GetClientSize();
-        wxPoint pos(0, size.GetHeight()-20);
-        size.SetHeight(20);
+        wxPoint pos(0, size.GetHeight()-stdTxtSize.GetHeight());
+        size.SetHeight(stdTxtSize.GetHeight());
         statusBox = new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
     }
     statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
@@ -600,6 +602,8 @@ void dlgProperty::CreateListColumns(wxListCtrl *list, const wxString &left, cons
     }
     else
     {
+        if (leftSize)
+            leftSize = ConvertDialogToPixels(wxPoint(leftSize, 0)).x;
         rightSize = width-leftSize-20;
     }
     if (!leftSize)
@@ -883,44 +887,66 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
 
     if (privilegeCount)
     {
-        wxWindow *page = new wxWindow(nbNotebook, -1, wxDefaultPosition, wxDefaultSize);
+        wxPanel *page = new wxPanel(nbNotebook, -1, wxDefaultPosition, wxDefaultSize);
         privCheckboxes = new wxCheckBox*[privilegeCount*2];
         int i=0;
 
         nbNotebook->AddPage(page, _("Security"));
+
+        wxPoint zeroPos=ConvertDialogToPixels(wxPoint(5, 5));
+        wxSize chkSize=ConvertDialogToPixels(wxSize(65,12));
+        wxSize btnSize=ConvertDialogToPixels(wxSize(50,15));
+        wxSize spcSize=ConvertDialogToPixels(wxSize(3, 3));
 
         if (obj && !obj->CanCreate())
         {
             // We can't create, so we won't be allowed to change privileges either
             // later, we can check individually too.
 
-            lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-20), wxSUNKEN_BORDER|wxLC_REPORT);
+            lbPrivileges = new wxListView(page, CTL_LBPRIV, zeroPos, 
+                wxSize(width - zeroPos.x * 2, height - zeroPos.y * 2), wxSUNKEN_BORDER|wxLC_REPORT);
             CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
             cbGroups=0;
         }
         else
         {
-            lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount+ (needAll ? 0 : 20)), wxSUNKEN_BORDER|wxLC_REPORT);
+            int y = height 
+                - spcSize.GetHeight()
+                - zeroPos.y * 2
+                - chkSize.GetHeight() * (4 + privilegeCount + (needAll ? 0 : 1));
+
+            lbPrivileges = new wxListView(page, CTL_LBPRIV, 
+                zeroPos, 
+                wxSize(width - zeroPos.x * 2, y - zeroPos.y - spcSize.GetHeight()), wxSUNKEN_BORDER|wxLC_REPORT);
 
             CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
-            int y=height-105-20*privilegeCount + (needAll ? 0 : 20);
 
-            btnAddPriv = new wxButton(page, CTL_ADDPRIV, _("Add/Change"), wxPoint(10, y), wxSize(75, 25));
-            btnDelPriv = new wxButton(page, CTL_DELPRIV, _("Remove"), wxPoint(95, y), wxSize(75, 25));
-            y += 35;
+            btnAddPriv = new wxButton(page, CTL_ADDPRIV, _("Add/Change"), 
+                wxPoint(zeroPos.x, y), btnSize);
+            btnDelPriv = new wxButton(page, CTL_DELPRIV, _("Remove"), 
+                wxPoint(zeroPos.x * 2 + btnSize.GetWidth(), y), btnSize);
+            y += zeroPos.y + btnSize.GetHeight();
 
-            new wxStaticBox(page, -1, _("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount-(needAll?0:20)));
-            y += 15;
+            new wxStaticBox(page, -1, _("Privileges"), 
+                wxPoint(zeroPos.x, y), 
+                wxSize(width - zeroPos.x*2, btnSize.GetHeight() + chkSize.GetHeight() * (2 + privilegeCount-(needAll?0:1))));
+            y += zeroPos.y + spcSize.GetHeight();
 
-            stGroup = new wxStaticText(page, CTL_STATICGROUP, _("Group"), wxPoint(20, y+3), wxSize(100, 20));
-            cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(130, y), wxSize(width-145, 100), 0, 0, wxCB_DROPDOWN|wxCB_READONLY);
-            y += 25;
+            stGroup = new wxStaticText(page, CTL_STATICGROUP, _("Group"), wxPoint(zeroPos.x * 2, y+3), chkSize);
+            cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), 
+                wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
+                wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
+            y += btnSize.GetHeight();
 
             if (needAll)
             {
-                allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), wxPoint(20, y), wxSize(100, 20));
-                allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
-                y += 20;
+                allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), 
+                    wxPoint(zeroPos.x * 2, y), 
+                    chkSize);
+                allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), 
+                    wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
+                    wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
+                y += chkSize.GetHeight();
                 allPrivilegesGrant->Disable();
             }
             cbGroups->Append(wxT("public"));
@@ -930,13 +956,17 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
             {
                 wxString priv=privileges.GetNextToken();
                 wxCheckBox *cb;
-                cb=new wxCheckBox(page, CTL_PRIVCB+i, priv, wxPoint(20, y), wxSize(100, 20));
+                cb=new wxCheckBox(page, CTL_PRIVCB+i, priv, 
+                    wxPoint(zeroPos.x * 2, y), 
+                    chkSize);
                 privCheckboxes[i++] = cb;
-                cb=new wxCheckBox(page, CTL_PRIVCB+i, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
+                cb=new wxCheckBox(page, CTL_PRIVCB+i, wxT("WITH GRANT OPTION"), 
+                    wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
+                    wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
                 cb->Disable();
                 privCheckboxes[i++] = cb;
 
-                y += 20;
+                y += chkSize.GetHeight();
             }
         }
 

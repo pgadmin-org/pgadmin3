@@ -176,6 +176,21 @@ bool pgSet::GetBool(const wxString &col) const
 }
 
 
+wxDateTime pgSet::GetDateTime(const int col) const
+{
+    wxDateTime dt;
+    wxString str=GetVal(col);
+    dt.ParseDateTime(str);
+    return dt;
+}
+
+
+wxDateTime pgSet::GetDateTime(const wxString &col) const
+{
+    return GetDateTime(ColNumber(col));
+}
+
+
 double pgSet::GetDouble(const int col) const
 {
     char *c=PQgetvalue(res, pos-1, col);

@@ -677,6 +677,13 @@ void frmMain::setDisplay(pgObject *data, wxListCtrl *props, wxListCtrl *stats, c
         case PG_RULE:
         case PG_TRIGGERS:
         case PG_TRIGGER:
+        case PGA_AGENT:
+        case PGA_INSTANCES:
+        case PGA_INSTANCE:
+        case PGA_JOBS:
+        case PGA_JOB:
+        case PGA_STEP:
+        case PGA_SCHEDULE:
             data->ShowTree(this, browser, props, stats, sqlbox);
             break;
         default:        

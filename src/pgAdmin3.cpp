@@ -290,6 +290,72 @@ bool pgAdmin3::OnInit()
 
     for (i=0 ; i < count ; i++)
     {
+#if 0
+        // pixel -> dlgunit translation
+        FILE *f=fopen(files.Item(i).ToAscii(), "r+b");
+        if (f)
+        {
+            int len=50000;
+            char *buffer=new char[len+1];
+            memset(buffer, 0, len);
+            len = fread(buffer, 1, len, f);
+            buffer[len]=0;
+            fseek(f, 0, SEEK_SET);
+
+            char *bp=buffer;
+
+            char *pos, *size, *end;
+            int x, y;
+            
+            do
+            {
+                pos = strstr(bp, "<pos>");
+                size = strstr(bp, "<size>");
+
+                if (pos && (!size || pos < size))
+                {
+                    pos += 5;
+                    fwrite(bp, 1, pos-bp, f);
+
+                    end = strstr(pos, "</pos>");
+                    if (end[-1] == 'd')
+                        bp = pos;
+                    else
+                    {
+                        sscanf(pos, "%d,%d", &x, &y);
+                        x = (x*4)/6;    y = (y*8)/13;
+                        fprintf(f, "%d,%dd", x, y);
+
+                        bp = end;
+                    }
+                }
+                else if (size)
+                {
+                    size += 6;
+                    fwrite(bp, 1, size-bp, f);
+
+                    end = strstr(size, "</size>");
+                    if (end[-1] == 'd')
+                        bp = size;
+                    else
+                    {
+                        sscanf(size, "%d,%d", &x, &y);
+                        x = (x*4)/6;    y = (y*8)/13;
+                        fprintf(f, "%d,%dd", x, y);
+                       bp = end;
+                    }
+                }
+            }
+            while (pos || size);
+
+            fwrite(bp, 1, strlen(bp), f);
+            fclose(f);
+            delete buffer;
+        }
+
+#endif
+
+        
         wxLogInfo(wxT("Loading %s"), files.Item(i).c_str());
         wxXmlResource::Get()->Load(files.Item(i));
     }

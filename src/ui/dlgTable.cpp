@@ -81,12 +81,12 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
     txtOID->Disable();
     btnRemoveTable->Disable();
 
-    CreateListColumns(lstColumns, _("Column name"), _("Definition"), 150);
+    CreateListColumns(lstColumns, _("Column name"), _("Definition"), 90);
     lstColumns->InsertColumn(2, wxT("Inherited from table"), wxLIST_FORMAT_LEFT, 0);
     lstColumns->InsertColumn(3, wxT("Column definition"), wxLIST_FORMAT_LEFT, 0);
     lstColumns->InsertColumn(4, wxT("Column"), wxLIST_FORMAT_LEFT, 0);
 
-    CreateListColumns(lstConstraints, _("Constraint name"), _("Definition"), 150);
+    CreateListColumns(lstConstraints, _("Constraint name"), _("Definition"), 90);
 }
 
 

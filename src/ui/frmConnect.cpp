@@ -53,6 +53,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
 {
     wxLogInfo(wxT("Creating a connect dialogue"));
 
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, form, wxT("frmConnect")); 
 
     // Icon

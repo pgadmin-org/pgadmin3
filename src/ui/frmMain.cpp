@@ -89,12 +89,13 @@ WX_DEFINE_LIST(windowList);
 #include "images/help2.xpm"
 
 
-
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-
 	// Current database
+    wxWindowBase::SetFont(settings->GetSystemFont());
+
+    wxLogInfo(wxT("Using fontmetrics %d %d"), GetCharWidth(), GetCharHeight());
 	m_database = NULL;
     denyCollapseItem=wxTreeItemId();
 
@@ -293,6 +294,14 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     images->Add(wxIcon(constraints_xpm));
     images->Add(wxIcon(primarykey_xpm));
     images->Add(wxIcon(unique_xpm));
+    images->Add(wxIcon(public_xpm));
+
+    // agent, instance, job, jobdisabled, step, schedule
+    images->Add(wxIcon(public_xpm));
+    images->Add(wxIcon(public_xpm));
+    images->Add(wxIcon(public_xpm));
+    images->Add(wxIcon(public_xpm));
+    images->Add(wxIcon(public_xpm));
     images->Add(wxIcon(public_xpm));
 
     browser->SetImageList(images);

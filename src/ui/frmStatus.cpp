@@ -43,6 +43,7 @@ void frmStatus::OnClose(wxCommandEvent &event)
 frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const wxPoint& pos, const wxSize& size)
 {
     wxLogInfo(wxT("Creating server status box"));
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, form, wxT("frmStatus")); 
     SetTitle(_title);
     SetIcon(wxIcon(pgAdmin3_xpm));

@@ -56,8 +56,12 @@ enum PG_OBJTYPE
     PG_INDEXES,         PG_INDEX,
     PG_RULES,           PG_RULE,
     PG_TRIGGERS,        PG_TRIGGER,
-
     PG_CONSTRAINTS,     PG_PRIMARYKEY, PG_UNIQUE, PG_CHECK, PG_FOREIGNKEY,
+    PGA_AGENT,
+    PGA_INSTANCES,      PGA_INSTANCE,
+    PGA_JOBS,           PGA_JOB,
+    PGA_STEP,
+    PGA_SCHEDULE,
     
     PG_UNKNOWN
 };
@@ -148,6 +152,8 @@ protected:
         { InsertListItem(list, pos, str1, NumToStr(d)); }
     void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const OID o)
         { InsertListItem(list, pos, str1, NumToStr(o)); }
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxDateTime &d)
+        { InsertListItem(list, pos, str1, DateToStr(d)); }
 
     void AppendMenu(wxMenu *menu, int type=-1);
     virtual void SetContextInfo(frmMain *form) {}

@@ -98,11 +98,14 @@ public:
     void SetUnicodeFile(const bool b) {unicodeFile = b; }
 
     wxFont GetSQLFont() const { return wxFont(fontPointSize, fontFamily, fontStyle, fontWeight, false, fontFace); }
+    wxFont GetSystemFont() const { return systemFont; }
     void SetSQLFont(const wxFont &font);
     wxString GetCanonicalLanguage() const { return canonicalLanguage; }
 
 
 private:
+
+    wxFont systemFont; 
 
     // Tip Of The Day
     bool showTipOfTheDay;

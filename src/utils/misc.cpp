@@ -14,7 +14,10 @@
 #include <wx/timer.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/file.h>
+#include <wx/textbuf.h>
 #include <wx/help.h>
+#include <wx/fontenc.h>
+#include "utffile.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/helpchm.h>
@@ -29,7 +32,6 @@
 #include "pgAdmin3.h"
 #include "frmMain.h"
 #include "frmHelp.h"
-
 
 extern "C"
 {
@@ -186,6 +188,32 @@ double StrToDouble(const wxString& value)
 wxULongLong StrToLongLong(const wxString &value)
 {
     return atolonglong(value.ToAscii());
+}
+
+
+wxString DateToAnsiStr(const wxDateTime &datetime)
+{
+    if (!datetime.IsValid())
+        return wxEmptyString;
+
+    return datetime.FormatISODate() + wxT(" ") + datetime.FormatISOTime();
+}
+
+
+wxString DateToStr(const wxDateTime &datetime)
+{
+    if (!datetime.IsValid())
+        return wxEmptyString;
+
+    return datetime.FormatDate() + wxT(" ") + datetime.FormatTime();
+}
+
+
+wxDateTime StrToDateTime(const wxString &value)
+{
+    wxDateTime dt;
+    dt.ParseDateTime(value);
+    return dt;
 }
 
 
@@ -387,70 +415,36 @@ wxString FileRead(const wxString &filename, wxWindow *errParent, int format)
 {
     wxString str;
 
-    wxFile file(filename);
+    wxFontEncoding encoding;
+    if (format > 0)
+        encoding = wxFONTENCODING_UTF8;
+    else
+        encoding=wxFONTENCODING_DEFAULT;
+
+    wxUtfFile file(filename, wxFile::read, encoding);
+
     if (file.IsOpened())
-    {
-        int len=file.Length();
-        char *buf=new char[len+1];
-        memset(buf, 0, len+1);
-        file.Read(buf, len);
-        file.Close();
+        file.Read(str);
 
-#if wxUSE_UNICODE
-        if (format < 0)
-            format = (settings->GetUnicodeFile() ? 1 : 0);
- 
-        size_t nLen;
-        if (format)
-            nLen = wxConvUTF8.MB2WC(0, buf, 0);
-        else
-            nLen = wxConvLibc.MB2WC(0, buf, 0);
-
-        if (nLen == (size_t) -1)
-        {
-            // Format error
-            if (errParent)
-                wxMessageDialog (errParent, _("File cannot be opened with this format.\nPlease chose another format."), 
-                _("FATAL"), wxOK|wxCENTRE|wxICON_ERROR).ShowModal();
-        }
-        else
-        {
-            str=wxString(' ', nLen);
-            if (format)
-                wxConvUTF8.MB2WC((wxChar*)str.c_str(), buf, nLen);
-            else
-                wxConvLibc.MB2WC((wxChar*)str.c_str(), buf, nLen);
-            str.Replace(wxT("\r"), wxT(""));
-        }
-#else
-        str=buf;
-        str.Replace(wxT("\r"), wxT(""));
-#endif
-        delete[] buf;
-    }
-    return str;
+    return wxTextBuffer::Translate(str, wxTextFileType_Unix);   // we want only \n
 }
 
 
 bool FileWrite(const wxString &filename, const wxString &data, int format)
 {
-    wxFile file(filename, wxFile::write);
-    if (file.IsOpened())
-    {
-        wxString buf=data;
-#ifdef __WIN32__
-        buf.Replace(wxT("\n"), wxT("\r\n"));
-#endif
-        if (format < 0)
-            format = settings->GetUnicodeFile() ? 1 : 0;
+    wxFontEncoding encoding;
+    if (format < 0)
+        format = settings->GetUnicodeFile() ? 1 : 0;
 
-        if (format == 1)
-            file.Write(buf, wxConvUTF8);
-        else
-            file.Write(buf, wxConvLibc);
-        file.Close();
-        return true;
-    }
+    if (format > 0)
+        encoding = wxFONTENCODING_UTF8;
+    else
+        encoding=wxFONTENCODING_DEFAULT;
+
+    wxUtfFile file(filename, wxFile::write, encoding);
+    if (file.IsOpened())
+        return file.Write(wxTextBuffer::Translate(data));
+
     return false;
 }
 

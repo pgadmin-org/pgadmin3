@@ -57,6 +57,7 @@ frmExport::frmExport(ctlSQLResult *parent)
     data=parent;
     wxLogInfo(wxT("Creating the export dialogue"));
 
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmExport")); 
 
     // Icon

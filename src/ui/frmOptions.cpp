@@ -60,7 +60,7 @@ frmOptions::frmOptions(frmMain *parent)
 {
     wxLogInfo(wxT("Creating an options dialogue"));
     mainForm=parent;
-
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmOptions")); 
 
     // Icon

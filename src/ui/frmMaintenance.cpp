@@ -56,6 +56,7 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : DialogWithHelp(fo
     thread=0;
     wxLogInfo(wxT("Creating a maintenance dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, form, wxT("frmMaintenance"));
     SetTitle(wxString::Format(_("Maintain %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
 

@@ -25,6 +25,12 @@
 
 extern wxString docPath;
 
+
+// as long as wx doesn't know this font
+#define wxSYS_ICONTITLE_FONT    wxSYS_DEFAULT_GUI_FONT
+
+
+
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
 	// Keith 2003.03.05
@@ -33,6 +39,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     // wxLogInfo(wxT("Creating sSettings object and loading settings"));
 
     // Tip Of The Day
+    systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
     Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, TRUE); 
     Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 

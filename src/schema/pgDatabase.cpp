@@ -18,6 +18,7 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgCollection.h"
+#include "pgaAgent.h"
 
 
 pgDatabase::pgDatabase(const wxString& newName)
@@ -159,6 +160,9 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
             // Schemas
             collection = new pgCollection(PG_SCHEMAS, this);
             AppendBrowserItem(browser, collection);
+
+            // pgAgent
+            pgaAgent::ReadObjects(this, browser);
         }
     }
 
@@ -270,12 +274,12 @@ void pgDatabase::ShowStatistics(pgCollection *collection, wxListCtrl *statistics
 
     // Add the statistics view columns
     statistics->ClearAll();
-    statistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
-    statistics->InsertColumn(1, wxT("Backends"), wxLIST_FORMAT_LEFT, 75);
-    statistics->InsertColumn(2, wxT("Xact Committed"), wxLIST_FORMAT_LEFT, 100);
-    statistics->InsertColumn(3, wxT("Xact Rolled Back"), wxLIST_FORMAT_LEFT, 100);
-    statistics->InsertColumn(4, wxT("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
-    statistics->InsertColumn(5, wxT("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(0, _("Database"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(1, _("Backends"), wxLIST_FORMAT_LEFT, 75);
+    statistics->InsertColumn(2, _("Xact Committed"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(3, _("Xact Rolled Back"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(4, _("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(5, _("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
 
     pgSet *stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
     if (stats)

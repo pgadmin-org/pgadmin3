@@ -68,6 +68,8 @@ public:
     bool GetBool(const wxString &col) const;
     double GetDouble(const int col) const;
     double GetDouble(const wxString &col) const;
+    wxDateTime GetDateTime(const int col) const;
+    wxDateTime GetDateTime(const wxString &col) const;
     wxULongLong GetLongLong(const int col) const;
     wxULongLong GetLongLong(const wxString &col) const;
     OID GetOid(const int col) const;

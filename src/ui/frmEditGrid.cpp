@@ -59,8 +59,9 @@ END_EVENT_TABLE()
 frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, const wxPoint& pos, const wxSize& size, pgSchemaObject *obj)
 : wxFrame(NULL, -1, _title, pos, size)
 {
-    SetIcon(wxIcon(viewdata_xpm));
     wxLogInfo(wxT("Creating EditGrid"));
+    SetIcon(wxIcon(viewdata_xpm));
+    wxWindowBase::SetFont(settings->GetSystemFont());
     connection=_conn;
     mainForm=form;
     thread=0;

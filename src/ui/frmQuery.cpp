@@ -86,6 +86,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     conn=_conn;
 
     SetIcon(wxIcon(sql_xpm));
+    wxWindowBase::SetFont(settings->GetSystemFont());
     wxLogInfo(wxT("Creating SQL Query box"));
     menuBar = new wxMenuBar();
 

@@ -49,10 +49,14 @@ pgTypes typesList[] =
     {__("Rules"), 0, 0},            {__("Rule"), __("New Rule"), __("Create a new Rule.") },
     {__("Triggers"), 0, 0},         {__("Trigger"), __("New Trigger"), __("Add a new Trigger.") },
     {__("Constraints"), 0, 0},      
-        {__("Primary Key"), __("New Primary Key"), __("Create a Primary Key.") },
-        {__("Unique"), __("New Unique Constraint"), __("Add a new Unique Constraint.") },
-        {__("Check"), __("New Check Constraint"), __("Add a new Check Constraint.") },
-        {__("Foreign Key"), __("New Foreign Key"), __("Add a new Foreign Key.") },
+    {__("Primary Key"), __("New Primary Key"), __("Create a Primary Key.") },
+    {__("Unique"), __("New Unique Constraint"), __("Add a new Unique Constraint.") },
+    {__("Check"), __("New Check Constraint"), __("Add a new Check Constraint.") },
+    {__("Foreign Key"), __("New Foreign Key"), __("Add a new Foreign Key.") },
+    {__("Agent"), 0, 0},
+    {__("Instances"), 0, 0},        {__("Instance"), 0, 0},
+    {__("Tasks"), 0, 0},            {__("Task"), __("New Task"), __("Create a new task") },
+    {__("Step"), 0, 0}, { __("Schedule"), 0, 0 },
     {__("Unknown"), 0, 0}
 };
 
@@ -143,8 +147,8 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
 void pgObject::CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right)
 {
     list->ClearAll();
-    list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, 150);
-    list->InsertColumn(1, right, wxLIST_FORMAT_LEFT, 700);
+    list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, list->ConvertDialogToPixels(wxPoint(90,0)).x);
+    list->InsertColumn(1, right, wxLIST_FORMAT_LEFT, list->ConvertDialogToPixels(wxPoint(450,0)).x);
 }
 
 
