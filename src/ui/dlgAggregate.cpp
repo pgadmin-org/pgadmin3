@@ -28,8 +28,8 @@
 
 // pointer to controls
 #define txtOwner            CTRL_TEXT("txtOwner")
-#define cbBaseType          CTRL_COMBOBOX("cbBaseType")
-#define cbStateType         CTRL_COMBOBOX("cbStateType")
+#define cbBaseType          CTRL_COMBOBOX2("cbBaseType")
+#define cbStateType         CTRL_COMBOBOX2("cbStateType")
 #define cbStateFunc         CTRL_COMBOBOX("cbStateFunc")
 #define cbFinalFunc         CTRL_COMBOBOX("cbFinalFunc")
 #define txtInitial          CTRL_TEXT("txtInitial")
@@ -126,8 +126,8 @@ void dlgAggregate::OnChange(wxCommandEvent &ev)
         wxString name=GetName();
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbBaseType->GetSelection() >=0, _("Please select base datatype."));
-        CheckValid(enable, cbStateType->GetSelection() >=0, _("Please select state datatype."));
+        CheckValid(enable, cbBaseType->GetGuessedSelection() >=0, _("Please select base datatype."));
+        CheckValid(enable, cbStateType->GetGuessedSelection() >=0, _("Please select state datatype."));
         CheckValid(enable, cbStateFunc->GetSelection() >= 0, _("Please specify state function."));
 
         EnableOK(enable);
@@ -153,7 +153,7 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
     cbStateFunc->Clear();
     cbFinalFunc->Clear();
 
-    if (cbBaseType->GetSelection() >= 0 && cbStateType->GetSelection() >= 0)
+    if (cbBaseType->GetGuessedSelection() >= 0 && cbStateType->GetGuessedSelection() >= 0)
     {
         wxString qry=
             wxT("SELECT proname, nspname, prorettype\n")
@@ -164,10 +164,10 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
 
 
         pgSet *set=connection->ExecuteSet(qry +
-            wxT("\n   AND prorettype = ") + GetTypeOid(cbStateType->GetSelection()+1) +
-            wxT("\n   AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetSelection()+1) +
+            wxT("\n   AND prorettype = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
+            wxT("\n   AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
             wxT("\n   AND (proargtypes[1]= 0 OR proargtypes[1]= ") 
-            + GetTypeOid(cbBaseType->GetSelection()) + wxT(")"));
+            + GetTypeOid(cbBaseType->GetGuessedSelection()) + wxT(")"));
 
         if (set)
         {
@@ -186,7 +186,7 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
         cbFinalFunc->Append(wxT(" "));
 
         set=connection->ExecuteSet(qry +
-            wxT("\n   AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetSelection()+1) +
+            wxT("\n   AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
             wxT("\n   AND proargtypes[1]= 0"));
 
         if (set)
@@ -219,9 +219,9 @@ wxString dlgAggregate::GetSql()
         // create mode
         name=GetName();
         sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
-            + wxT("(\n   BASETYPE=") + GetQuotedTypename(cbBaseType->GetSelection())
+            + wxT("(\n   BASETYPE=") + GetQuotedTypename(cbBaseType->GetGuessedSelection())
             + wxT(",\n   SFUNC=") + procedures.Item(cbStateFunc->GetSelection())
-            + wxT(", STYPE=") + GetQuotedTypename(cbStateType->GetSelection() +1); // skip "any" type
+            + wxT(", STYPE=") + GetQuotedTypename(cbStateType->GetGuessedSelection() +1); // skip "any" type
 
         if (cbFinalFunc->GetSelection() > 0)
         {
@@ -235,7 +235,7 @@ wxString dlgAggregate::GetSql()
         sql += wxT(");\n");
     }
     AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
-                  + wxT("(") + GetQuotedTypename(cbBaseType->GetSelection())
+                  + wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection())
                   +wxT(")"), aggregate);
 
     return sql;

@@ -46,6 +46,8 @@ public:
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
     wxString GetPath() const { return path; };
     void iSetPath(const wxString& newVal) { path = newVal; }
+    wxString GetTablespace() const { return tablespace; };
+    void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
     wxString GetEncoding() const { return encoding; }
     void iSetEncoding(const wxString& newVal) { encoding = newVal; }
     wxArrayString& GetVariables() { return variables; }
@@ -77,7 +79,7 @@ private:
     pgConn *conn;
     bool connected;
     bool useServerConnection;
-    wxString searchPath, path, encoding;
+    wxString searchPath, path, tablespace, encoding;
     wxString prettyOption;
     bool allowConnections, createPrivilege;
     long missingFKs;

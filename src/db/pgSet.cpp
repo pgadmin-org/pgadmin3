@@ -386,7 +386,8 @@ int pgQueryThread::execute()
         }
         if (lastResult)
         {
-            appendMessage(wxString::Format(_("Query result with %d rows discarded.\n"), PQntuples(lastResult)));
+            if (PQntuples(lastResult))
+                appendMessage(wxString::Format(_("Query result with %d rows discarded.\n"), PQntuples(lastResult)));
             PQclear(lastResult);
         }
         lastResult=res;

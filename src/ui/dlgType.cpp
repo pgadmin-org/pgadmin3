@@ -35,7 +35,7 @@
 #define chkVariable     CTRL_CHECKBOX("chkVariable")
 #define txtIntLength    CTRL_TEXT("txtIntLength")
 #define txtDefault      CTRL_TEXT("txtDefault")
-#define cbElement       CTRL_COMBOBOX("cbElement")
+#define cbElement       CTRL_COMBOBOX2("cbElement")
 #define txtDelimiter    CTRL_TEXT("txtDelimiter")
 #define chkByValue      CTRL_CHECKBOX("chkByValue")
 #define cbAlignment     CTRL_COMBOBOX("cbAlignment")
@@ -93,7 +93,7 @@ dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
 void dlgType::OnChangeMember(wxCommandEvent &ev)
 {
     btnAdd->Enable(!txtMembername->GetValue().Strip(wxString::both).IsEmpty() 
-        && cbDatatype->GetSelection() >= 0);
+        && cbDatatype->GetGuessedSelection() >= 0);
 }
 
 void dlgType::showDefinition(bool isComposite)
@@ -291,11 +291,11 @@ void dlgType::OnVarAdd(wxCommandEvent &ev)
         {
             pos = lstMembers->GetItemCount();
             lstMembers->InsertItem(pos, name, 0);
-            memberTypes.Add(GetTypeInfo(cbDatatype->GetSelection()));
+            memberTypes.Add(GetTypeInfo(cbDatatype->GetGuessedSelection()));
         }
         else
         {
-            memberTypes.Insert(GetTypeInfo(cbDatatype->GetSelection()), pos);
+            memberTypes.Insert(GetTypeInfo(cbDatatype->GetGuessedSelection()), pos);
             memberTypes.RemoveAt(pos+1);
         }
         lstMembers->SetItem(pos, 1, type);

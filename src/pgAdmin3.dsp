@@ -348,6 +348,10 @@ SOURCE=.\schema\pgTable.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgTablespace.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgTrigger.cpp
 # End Source File
 # Begin Source File
@@ -485,6 +489,10 @@ SOURCE=.\ui\dlgSequence.cpp
 # Begin Source File
 
 SOURCE=.\ui\dlgTable.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgTablespace.cpp
 # End Source File
 # Begin Source File
 
@@ -682,21 +690,6 @@ SOURCE=.\ui\frmExport.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmGrantWizard.cpp
-
-!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Debug"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
-
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -746,6 +739,10 @@ SOURCE=.\ui\pgAdmin3.rc
 
 SOURCE=.\ui\calbox.cpp
 # SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\ctlComboBox.cpp
 # End Source File
 # Begin Source File
 
@@ -974,6 +971,10 @@ SOURCE=.\include\pgTable.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgTablespace.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\pgTrigger.h
 # End Source File
 # Begin Source File
@@ -1067,6 +1068,10 @@ SOURCE=.\include\dlgSequence.h
 # Begin Source File
 
 SOURCE=.\include\dlgTable.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgTablespace.h
 # End Source File
 # Begin Source File
 
@@ -1370,6 +1375,10 @@ SOURCE=.\include\images\table.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\tablespace.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\trigger.xpm
 # End Source File
 # Begin Source File
@@ -1530,6 +1539,10 @@ SOURCE=.\include\calbox.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\ctlComboBox.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\ctlListView.h
 # End Source File
 # Begin Source File
@@ -1656,89 +1669,5 @@ SOURCE=.\tips.txt
 SOURCE=..\TODO.txt
 # End Source File
 # End Group
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\blank.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\bullseye.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\cdrom.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\computer.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\drive.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\file1.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\floppy.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\folder1.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\folder2.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\hand.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\magnif1.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\noentry.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\pbrush.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\pencil.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\pntleft.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\pntright.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\query.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\removble.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\rightarr.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\roller.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\watch1.cur
-# End Source File
 # End Target
 # End Project

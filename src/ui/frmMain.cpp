@@ -48,6 +48,7 @@ WX_DEFINE_LIST(windowList);
 #include "images/baddatabase.xpm"
 #include "images/check.xpm"
 #include "images/closeddatabase.xpm"
+#include "images/tablespace.xpm"
 #include "images/cast.xpm"
 #include "images/conversion.xpm"
 #include "images/column.xpm"
@@ -186,6 +187,7 @@ frmMain::frmMain(const wxString& title)
     viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),              _("Refresh the selected object."));
+    viewMenu->Append(MNU_COUNT, _("&Count"),                      _("Count rows in the selected object."));
     menuBar->Append(viewMenu, _("&Display"));
 
     // Help Menu
@@ -207,6 +209,7 @@ frmMain::frmMain(const wxString& title)
     // Tree Context Menu
     newContextMenu = new wxMenu();
     treeContextMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),		  _("Refresh the selected object."));
+    treeContextMenu->Append(MNU_COUNT, _("&Count"),               _("Count rows in the selected object."));
     treeContextMenu->Append(MNU_RELOAD, _("Re&load module"),	  _("Reload library module which implements this function."));
     treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), newContextMenu, _("Create a new object."));
     treeContextMenu->AppendSeparator();
@@ -313,6 +316,7 @@ frmMain::frmMain(const wxString& title)
     images->Add(wxIcon(database_xpm));
     images->Add(wxIcon(language_xpm));
     images->Add(wxIcon(namespace_xpm));
+    images->Add(wxIcon(tablespace_xpm));
     images->Add(wxIcon(aggregate_xpm));
     images->Add(wxIcon(function_xpm));
     images->Add(wxIcon(operator_xpm));
@@ -883,6 +887,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
 	viewMenu->Enable(MNU_REFRESH, refresh);
+	viewMenu->Enable(MNU_COUNT, false);
     toolsMenu->Enable(MNU_RELOAD, false);
 
 	treeContextMenu->Enable(MNU_CREATE, create);
@@ -897,6 +902,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
 	treeContextMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
     treeContextMenu->Enable(MNU_RELOAD, false);
+    treeContextMenu->Enable(MNU_COUNT, false);
 }
 
 

@@ -49,6 +49,8 @@ public:
     void iSetPrimaryKeyName(const wxString& s) {primaryKeyName = s; }
     double GetEstimatedRows() const { return estimatedRows; }
     void iSetEstimatedRows(const double d) { estimatedRows=d; }
+    wxString GetTablespace() const { return tablespace; };
+    void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
     wxULongLong GetRows() const { return rows; }
     long GetInheritedTableCount() { if (inheritedTableCount < 0) UpdateInheritance(); return inheritedTableCount; }
     wxString GetInheritedTables() { GetInheritedTableCount(); return inheritedTables; }
@@ -76,7 +78,7 @@ private:
     bool hasOids, hasSubclass, rowsCounted;
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
-        primaryKeyName, primaryKeyColNumbers;
+        primaryKeyName, primaryKeyColNumbers, tablespace;
     wxArrayString quotedInheritedTablesList;
 };
 

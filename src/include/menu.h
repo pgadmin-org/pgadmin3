@@ -54,6 +54,7 @@ enum
     MNU_RECORD,
     MNU_STOP,
     MNU_STATUS,
+    MNU_COUNT,
     MNU_APPEND,
     MNU_DELETE,
     MNU_OPEN,

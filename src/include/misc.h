@@ -57,8 +57,9 @@ extern sysSettings *settings;
 #define CTRL_TEXT(id)           (XRCCTRL(*this, id, wxTextCtrl))
 #define CTRL_LISTBOX(id)        (XRCCTRL(*this, id, wxListBox))
 #define CTRL_LISTCTRL(id)       (XRCCTRL(*this, id, wxListCtrl))
+#define CTRL_COMBOBOX(id)       (XRCCTRL(*this, id, wxComboBox))
 #define CTRL_LISTVIEW(id)       ((ctlListView*)(XRCCTRL(*this, id, wxListCtrl)))
-#define CTRL_COMBOBOX(id)       ((ctlComboBox*)(XRCCTRL(*this, id, wxComboBox)))
+#define CTRL_COMBOBOX2(id)      ((ctlComboBox*)(XRCCTRL(*this, id, wxComboBox)))
 #define CTRL_CHECKBOX(id)       (XRCCTRL(*this, id, wxCheckBox))
 #define CTRL_RADIOBOX(id)       (XRCCTRL(*this, id, wxRadioBox))
 #define CTRL_BUTTON(id)         (XRCCTRL(*this, id, wxButton))
@@ -143,6 +144,7 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_DATABASE,
     PGICON_LANGUAGE,
     PGICON_SCHEMA,
+    PGICON_TABLESPACE,
     PGICON_AGGREGATE,
     PGICON_FUNCTION,
     PGICON_OPERATOR,

@@ -46,18 +46,25 @@ int ctlComboBox::GuessSelection()
 }
 
 
-int ctlComboBox::GetSelection() const
+int ctlComboBox::GetGuessedSelection() const
 {
-    int sel=wxComboBox::GetSelection();
+    int sel=wxChoice::GetSelection();
     if (sel < 0)
         sel = FindString(GetValue());
     return sel;
 }
 
-
-wxString ctlComboBox::GetStringSelection() const
+int ctlComboBox::GetSelection() const
 {
-    int sel=GetSelection();
+    int sel=wxChoice::GetSelection();
+    if (sel < 0)
+        sel = FindString(GetValue());
+    return sel;
+}
+
+wxString ctlComboBox::GetGuessedStringSelection() const
+{
+    int sel=GetGuessedSelection();
     if (sel < 0)
         return wxEmptyString;
     else

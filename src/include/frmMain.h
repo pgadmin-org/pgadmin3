@@ -100,6 +100,7 @@ private:
     void OnIndexcheck(wxCommandEvent& event);
     void OnGrantWizard(wxCommandEvent& event);
     void OnStatus(wxCommandEvent& event);
+    void OnCount(wxCommandEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
     

@@ -39,6 +39,8 @@ pgTypes typesList[] =
     {__("Language"), PGICON_LANGUAGE, __("New Language"), __("Create a new Language.") },
     {__("Schemas"), PGICON_SCHEMA, 0, 0},
     {__("Schema"), PGICON_SCHEMA, __("New Schema"), __("Create a new Schema.") },
+    {__("Tablespaces"), PGICON_TABLESPACE, 0, 0},
+    {__("Tablespace"), PGICON_TABLESPACE, __("New Tablespace"), __("Create a new Tablespace.") },
     {__("Aggregates"), PGICON_AGGREGATE, 0, 0},
     {__("Aggregate"), PGICON_AGGREGATE, __("New Aggregate"), __("Create a new Aggregate.") },
     {__("Casts"), PGICON_CAST, 0, 0},
@@ -363,6 +365,8 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *propert
             case PG_SERVERS:
             case PG_SERVER:
             case PG_DATABASES:
+            case PG_TABLESPACES:
+            case PG_TABLESPACE:
             case PG_GROUPS:
             case PG_GROUP:
             case PG_USERS:
@@ -561,11 +565,16 @@ pgConn *pgObject::GetConnection() const
     pgDatabase *db;
     switch (type)
     {
+        case PG_SERVER:
+            conn=((pgServer*)this)->connection();
+            break;
         case PG_DATABASES:
         case PG_USER:
         case PG_USERS:
         case PG_GROUP:
         case PG_GROUPS:
+        case PG_TABLESPACES:
+        case PG_TABLESPACE:
             conn=((pgServerObject*)this)->GetServer()->connection();
             break;
         default:

@@ -78,6 +78,7 @@ public:
     void ShowStatistics(ctlListView *statistics);
     wxString GetHelpPage(bool forCreate) const { return wxT("managing-databases"); }
     int GetIcon() { return PGICON_SERVER; }
+    wxMenu *GetNewMenu();
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser) { return true; }
     bool CanDrop() { return true; }

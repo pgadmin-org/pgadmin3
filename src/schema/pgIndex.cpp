@@ -59,9 +59,16 @@ wxString pgIndex::GetCreate()
     }
 
     str += wxT(")");
+    AppendIfFilled(str, wxT("\n  TABLESPACE "), qtIdent(tablespace));
     AppendIfFilled(str, wxT("\n  WHERE "), GetConstraint());
 
     str += wxT(";\n");
+
+    if (GetConnection()->BackendMinimumVersion(7, 5))
+        if (GetIsClustered())
+            str += wxT("ALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
+                +  wxT(" CLUSTER ON ") + qtIdent(GetName())
+                + wxT(";\n");
     
     return str;
 }
@@ -188,6 +195,8 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
 
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
+        if (!tablespace.IsEmpty())
+            properties->AppendItem(_("Tablespace"), tablespace);
         if (!GetProcName().IsNull())
             properties->AppendItem(_("Procedure "), GetSchemaPrefix(GetProcNamespace())+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
         else
@@ -229,6 +238,11 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     if (collection->GetConnection()->BackendMinimumVersion(7, 4))
     {
         proname = wxT("indnatts, ");
+        if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+        {
+            proname += wxT("spcname, ");
+            projoin = wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=cls.reltablespace\n");
+        }
     }
     else
     {
@@ -286,6 +300,8 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             if (collection->GetConnection()->BackendMinimumVersion(7, 4))
             {
                 index->iSetColumnCount(indexes->GetLong(wxT("indnatts")));
+                if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+                    index->iSetTablespace(indexes->GetVal(wxT("spcname")));
             }
             else
             {

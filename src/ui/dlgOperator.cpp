@@ -28,9 +28,8 @@
 
 // pointer to controls
 #define txtOwner            CTRL_TEXT("txtOwner")
-#define cbLeftType          CTRL_COMBOBOX("cbLeftType")
-#define cbRightType         CTRL_COMBOBOX("cbRightType")
-#define cbLeftType          CTRL_COMBOBOX("cbLeftType")
+#define cbLeftType          CTRL_COMBOBOX2("cbLeftType")
+#define cbRightType         CTRL_COMBOBOX2("cbRightType")
 #define cbProcedure         CTRL_COMBOBOX("cbProcedure")
 #define cbRestrict          CTRL_COMBOBOX("cbRestrict")
 #define cbJoin              CTRL_COMBOBOX("cbJoin")
@@ -185,8 +184,8 @@ pgObject *dlgOperator::CreateObject(pgCollection *collection)
     pgObject *obj=pgOperator::ReadObjects(collection, 0,
          wxT("\n   AND op.oprname=") + qtString(GetName()) +
          wxT("\n   AND op.oprnamespace=") + schema->GetOidStr() +
-         wxT("\n   AND op.oprleft = ") + GetTypeOid(cbLeftType->GetSelection()) +
-         wxT("\n   AND op.oprright = ") + GetTypeOid(cbRightType->GetSelection()));
+         wxT("\n   AND op.oprleft = ") + GetTypeOid(cbLeftType->GetGuessedSelection()) +
+         wxT("\n   AND op.oprright = ") + GetTypeOid(cbRightType->GetGuessedSelection()));
 
     return obj;
 }
@@ -203,7 +202,7 @@ void dlgOperator::OnChange(wxCommandEvent &ev)
         wxString name=GetName();
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbLeftType->GetSelection()>0 || cbRightType->GetSelection() > 0 , _("Please select left or right datatype."));
+        CheckValid(enable, cbLeftType->GetGuessedSelection()>0 || cbRightType->GetGuessedSelection() > 0 , _("Please select left or right datatype."));
         CheckValid(enable, cbProcedure->GetSelection() >= 0, _("Please specify a procedure."));
 
         EnableOK(enable);
@@ -225,7 +224,7 @@ void dlgOperator::OnChangeTypeRight(wxCommandEvent &ev)
 
 void dlgOperator::OnChangeType(wxCommandEvent &ev)
 {
-    bool binaryOp=cbLeftType->GetSelection() > 0 && cbRightType->GetSelection() > 0;
+    bool binaryOp=cbLeftType->GetGuessedSelection() > 0 && cbRightType->GetGuessedSelection() > 0;
 
     cbRestrict->Enable(binaryOp);
     cbJoin->Enable(binaryOp);
@@ -256,7 +255,7 @@ void dlgOperator::OnChangeType(wxCommandEvent &ev)
         cbJoin->SetSelection(0);
 
 
-    if (cbLeftType->GetSelection() > 0 || cbRightType->GetSelection() > 0)
+    if (cbLeftType->GetGuessedSelection() > 0 || cbRightType->GetGuessedSelection() > 0)
     {
         wxString qry=
             wxT("SELECT proname, nspname\n")
@@ -264,14 +263,14 @@ void dlgOperator::OnChangeType(wxCommandEvent &ev)
             wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
             wxT(" WHERE proargtypes[0] = ");
 
-        if (cbLeftType->GetSelection() > 0)
-            qry += GetTypeOid(cbLeftType->GetSelection());
+        if (cbLeftType->GetGuessedSelection() > 0)
+            qry += GetTypeOid(cbLeftType->GetGuessedSelection());
 
         if (binaryOp)
             qry += wxT("\n   AND proargtypes[1] = ");
 
-        if (cbRightType->GetSelection() > 0)
-            qry += GetTypeOid(cbRightType->GetSelection());
+        if (cbRightType->GetGuessedSelection() > 0)
+            qry += GetTypeOid(cbRightType->GetGuessedSelection());
 
         pgSet *set=connection->ExecuteSet(qry);
         if (set)
@@ -296,17 +295,17 @@ void dlgOperator::OnChangeType(wxCommandEvent &ev)
              wxT("  FROM pg_operator o\n")
              wxT("  JOIN pg_namespace n ON n.oid=oprnamespace\n");
 
-        if (cbLeftType->GetSelection() > 0)
-            qry += wxT(" WHERE oprleft = ") + GetTypeOid(cbLeftType->GetSelection());
+        if (cbLeftType->GetGuessedSelection() > 0)
+            qry += wxT(" WHERE oprleft = ") + GetTypeOid(cbLeftType->GetGuessedSelection());
 
 
-        if (cbRightType->GetSelection() > 0)
+        if (cbRightType->GetGuessedSelection() > 0)
         {
             if (binaryOp)
                 qry += wxT("\n   AND oprright = ");
             else
                 qry += wxT(" WHERE oprright = ");
-            qry += GetTypeOid(cbRightType->GetSelection());
+            qry += GetTypeOid(cbRightType->GetGuessedSelection());
         }
 
         cbCommutator->Append(wxT(" "));
@@ -354,7 +353,7 @@ void dlgOperator::OnChangeJoin(wxCommandEvent &ev)
 
 
 
-void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, ctlComboBox *cb)
+void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBox *cb)
 {
     wxString op=cb->GetValue().Trim();
     if (!op.IsNull())
@@ -382,13 +381,13 @@ wxString dlgOperator::GetSql()
     {
         // create mode
         name = schema->GetQuotedPrefix() + GetName() + wxT("(");
-	if (cbLeftType->GetSelection() > 0)
-	    name += GetQuotedTypename(cbLeftType->GetSelection());
+	if (cbLeftType->GetGuessedSelection() > 0)
+	    name += GetQuotedTypename(cbLeftType->GetGuessedSelection());
 	else
 	    name += wxT("NONE");
 	name += wxT(", ");
-	if (cbRightType->GetSelection() > 0)
-	    name += GetQuotedTypename(cbRightType->GetSelection());
+	if (cbRightType->GetGuessedSelection() > 0)
+	    name += GetQuotedTypename(cbRightType->GetGuessedSelection());
 	else
 	    name += wxT("NONE");
 	name += wxT(")");
@@ -397,12 +396,12 @@ wxString dlgOperator::GetSql()
         sql = wxT("CREATE OPERATOR ") + schema->GetQuotedPrefix() + GetName()
             + wxT("(\n   PROCEDURE=") + procedures.Item(cbProcedure->GetSelection());
         
-        AppendIfFilled(sql, wxT(",\n   LEFTARG="), GetQuotedTypename(cbLeftType->GetSelection()));
-        AppendIfFilled(sql, wxT(",\n   RIGHTARG="), GetQuotedTypename(cbRightType->GetSelection()));
+        AppendIfFilled(sql, wxT(",\n   LEFTARG="), GetQuotedTypename(cbLeftType->GetGuessedSelection()));
+        AppendIfFilled(sql, wxT(",\n   RIGHTARG="), GetQuotedTypename(cbRightType->GetGuessedSelection()));
         AppendIfFilled(sql, wxT(",\n   COMMUTATOR="), cbCommutator->GetValue().Trim());
         AppendIfFilled(sql, wxT(",\n   NEGATOR="), cbNegator->GetValue().Trim());
         
-        if (cbLeftType->GetSelection() > 0 && cbRightType->GetSelection() > 0)
+        if (cbLeftType->GetGuessedSelection() > 0 && cbRightType->GetGuessedSelection() > 0)
         {
             if (cbRestrict->GetSelection() > 0)
                 sql += wxT(",\n   RESTRICT=") + procedures.Item(cbRestrict->GetSelection()-1);

@@ -20,6 +20,7 @@
 #include "pgGroup.h"
 #include "pgUser.h"
 #include "pgLanguage.h"
+#include "pgTablespace.h"
 #include "pgAggregate.h"
 #include "pgCast.h"
 #include "pgConversion.h"
@@ -118,6 +119,7 @@ bool pgCollection::CanCreate()
     {
         case PG_USERS:
         case PG_GROUPS:
+        case PG_TABLESPACES:
             return GetServer()->GetSuperUser();
         case PG_DATABASES:
             return GetServer()->GetCreatePrivilege();
@@ -158,6 +160,7 @@ int pgCollection::GetIcon()
         case PG_CASTS:              return PGICON_CAST;
         case PG_LANGUAGES:          return PGICON_LANGUAGE;
         case PG_SCHEMAS:            return PGICON_SCHEMA;
+        case PG_TABLESPACES:        return PGICON_TABLESPACE;
         case PG_AGGREGATES:         return PGICON_AGGREGATE;
         case PG_CONVERSIONS:        return PGICON_CONVERSION;
         case PG_DOMAINS:            return PGICON_DOMAIN;
@@ -222,6 +225,9 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
                 break;
             case PG_SCHEMAS:
                 pgSchema::ReadObjects(this, browser);
+                break;
+            case PG_TABLESPACES:
+                pgTablespace::ReadObjects(this, browser);
                 break;
             case PG_AGGREGATES:
                 pgAggregate::ReadObjects(this, browser);

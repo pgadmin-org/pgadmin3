@@ -39,7 +39,7 @@
 #define lstVariables    CTRL_LISTVIEW("lstVariables")
 #define btnAdd          CTRL_BUTTON("btnAdd")
 #define btnRemove       CTRL_BUTTON("btnRemove")
-#define cbVarname       CTRL_COMBOBOX("cbVarname")
+#define cbVarname       CTRL_COMBOBOX2("cbVarname")
 #define txtValue        CTRL_TEXT("txtValue")
 #define chkValue        CTRL_CHECKBOX("chkValue")
 

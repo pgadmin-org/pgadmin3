@@ -35,13 +35,14 @@
 // Images
 #include "images/table.xpm"
 
-#define cbOwner         CTRL_COMBOBOX("cbOwner")
+#define cbOwner         CTRL_COMBOBOX2("cbOwner")
 #define stHasOids       CTRL_STATIC("stHasOids")
 #define chkHasOids      CTRL_CHECKBOX("chkHasOids")
 #define lbTables        CTRL_LISTBOX("lbTables")
 #define btnAddTable     CTRL_BUTTON("btnAddTable")
 #define btnRemoveTable  CTRL_BUTTON("btnRemoveTable")
 #define cbTables        CTRL_COMBOBOX("cbTables")
+#define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 
 #define btnAddCol       CTRL_BUTTON("btnAddCol")
 #define btnChangeCol    CTRL_BUTTON("btnChangeCol")
@@ -58,6 +59,7 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtComment"),                   dlgTable::OnChange)
     EVT_CHECKBOX(XRCID("chkHasOids"),               dlgTable::OnChange)
     EVT_TEXT(XRCID("cbOwner"),                      dlgTable::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgTable::OnChange)
     EVT_BUTTON(XRCID("btnAddTable"),                dlgTable::OnAddTable)
     EVT_BUTTON(XRCID("btnRemoveTable"),             dlgTable::OnRemoveTable)
     EVT_LISTBOX(XRCID("lbTables"),                  dlgTable::OnSelChangeTable)
@@ -115,6 +117,7 @@ int dlgTable::Go(bool modal)
         txtComment->SetValue(table->GetComment());
 
         cbOwner->SetValue(table->GetOwner());
+        PrepareTablespace(cbTablespace, table->GetTablespace());
 
         wxArrayString qitl=table->GetQuotedInheritedTablesList();
         size_t i;
@@ -125,6 +128,7 @@ int dlgTable::Go(bool modal)
         lbTables->Disable();
         cbTables->Disable();
         chkHasOids->Disable();
+        cbTablespace->Disable();
 
         txtOID->Disable();
 
@@ -233,6 +237,7 @@ int dlgTable::Go(bool modal)
     {
         // create mode
         btnChangeCol->Hide();
+        PrepareTablespace(cbTablespace);
 
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
@@ -439,6 +444,7 @@ wxString dlgTable::GetSql()
         }
         sql += wxT("\n) ");
 
+
         if (lbTables->GetCount() > 0)
         {
             sql += wxT("\nINHERITS (");
@@ -452,9 +458,13 @@ wxString dlgTable::GetSql()
             }
             sql += wxT(")\n");
         }
-        sql += (chkHasOids->GetValue() ? wxT("WITH OIDS;\n") : wxT("WITHOUT OIDS;\n"));
+        sql += (chkHasOids->GetValue() ? wxT("WITH OIDS") : wxT("WITHOUT OIDS"));
+        if (cbTablespace->GetSelection() > 0)
+            sql += wxT("\nTABLESPACE ") + qtIdent(cbTablespace->GetValue());
 
-        if (cbOwner->GetSelection() > 0)
+        sql += wxT(";\n");
+
+        if (cbOwner->GetGuessedSelection() > 0)
             sql += wxT("ALTER TABLE ") + tabname 
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
                 + wxT(";\n");

@@ -61,6 +61,8 @@ public:
     void iSetIdxSchema(const wxString& s) { idxSchema=s; }
     OID GetRelTableOid() const { return relTableOid; }
     void iSetRelTableOid(const OID d) { relTableOid=d; }
+    wxString GetTablespace() const { return tablespace; };
+    void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
 
     wxString GetProcName() const { return procName; }
     void iSetProcName(const wxString& s) { procName=s; }
@@ -85,7 +87,7 @@ protected:
     void ReadColumnDetails();
 
 private:
-    wxString columnNumbers, columns, quotedColumns, indexType, idxTable, idxSchema, constraint;
+    wxString columnNumbers, columns, quotedColumns, indexType, idxTable, idxSchema, constraint, tablespace;
     wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
     long columnCount;
     bool isUnique, isPrimary, isClustered;

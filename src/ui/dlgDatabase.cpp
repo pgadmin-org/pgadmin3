@@ -23,13 +23,15 @@
 
 
 // pointer to controls
-#define cbOwner         CTRL_COMBOBOX("cbOwner")
+#define cbOwner         CTRL_COMBOBOX2("cbOwner")
 #define cbEncoding      CTRL_COMBOBOX("cbEncoding")
 #define cbTemplate      CTRL_COMBOBOX("cbTemplate")
+#define stPath          CTRL_STATIC("txtPath")
 #define txtPath         CTRL_TEXT("txtPath")
+#define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 
 #define lstVariables    CTRL_LISTVIEW("lstVariables")
-#define cbVarname       CTRL_COMBOBOX("cbVarname")
+#define cbVarname       CTRL_COMBOBOX2("cbVarname")
 #define txtValue        CTRL_TEXT("txtValue")
 #define chkValue        CTRL_CHECKBOX("chkValue")
 #define btnAdd          CTRL_BUTTON("btnAdd")
@@ -40,7 +42,9 @@
 BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgDatabase::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgDatabase::OnChange)
-
+    EVT_TEXT(XRCID("txtPath"),                      dlgDatabase::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgDatabase::OnChange)
+    EVT_TEXT(XRCID("cbEncoding"),                   dlgDatabase::OnChange)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgDatabase::OnVarSelChange)
     EVT_BUTTON(XRCID("btnAdd"),                     dlgDatabase::OnVarAdd)
     EVT_BUTTON(XRCID("btnRemove"),                  dlgDatabase::OnVarRemove)
@@ -81,6 +85,14 @@ int dlgDatabase::Go(bool modal)
     AddGroups();
     AddUsers(cbOwner);
 
+    if (connection->BackendMinimumVersion(7, 5))
+    {
+        stPath->SetLabel(_("Namespace"));
+        txtPath->Hide();
+    }
+    else
+        cbTablespace->Hide();
+
     if (database)
     {
         // edit mode
@@ -96,7 +108,11 @@ int dlgDatabase::Go(bool modal)
 
         txtName->SetValue(database->GetName());
         txtOID->SetValue(NumToStr((long)database->GetOid()));
+
+        PrepareTablespace(cbTablespace, database->GetTablespace());
         txtPath->SetValue(database->GetPath());
+        txtPath->Disable();
+
         cbEncoding->Append(database->GetEncoding());
         cbEncoding->SetSelection(0);
         txtComment->SetValue(database->GetComment());
@@ -104,7 +120,6 @@ int dlgDatabase::Go(bool modal)
 
         txtName->Disable();
         cbOwner->Disable();
-        txtPath->Disable();
         cbTemplate->Disable();
         cbEncoding->Disable();
 
@@ -144,21 +159,14 @@ int dlgDatabase::Go(bool modal)
         // create mode
 
         txtComment->Disable();
-        cbTemplate->Append(wxT(""));
         cbVarname->Disable();
         txtValue->Disable();
 
-        pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT datname FROM pg_database ORDER BY datname"));
-        if (set)
-        {
-            while (!set->Eof())
-            {
-                cbTemplate->Append(set->GetVal(0));
-                set->MoveNext();
-            }
-            delete set;
-        }
+        PrepareTablespace(cbTablespace);
+
+        cbTemplate->Append(wxEmptyString);
+        FillCombobox(wxT("SELECT datname FROM pg_database ORDER BY datname"), cbTemplate);
+
         long encNo=0;
         wxString encStr;
         do
@@ -348,6 +356,7 @@ wxString dlgDatabase::GetSql()
         AppendIfFilled(sql, wxT("\n       OWNER="), qtIdent(cbOwner->GetValue()));
         AppendIfFilled(sql, wxT("\n       TEMPLATE="), qtIdent(cbTemplate->GetValue()));
         AppendIfFilled(sql, wxT("\n       LOCATION="), txtPath->GetValue());
+        AppendIfFilled(sql, wxT("\n       TABLESPACE="), qtIdent(cbTablespace->GetValue()));
 
         sql += wxT(";\n");
 

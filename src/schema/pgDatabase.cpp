@@ -311,6 +311,8 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         properties->AppendItem(_("ACL"), GetAcl());
         if (!GetPath().IsEmpty())
             properties->AppendItem(_("Path"), GetPath());
+        if (!tablespace.IsEmpty())
+            properties->AppendItem(_("Tablespace"), GetTablespace());
         properties->AppendItem(_("Encoding"), GetEncoding());
 
         size_t i;
@@ -361,13 +363,24 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 {
     pgDatabase *database=0;
 
-    pgSet *databases = collection->GetServer()->ExecuteSet(
-       wxT("SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, ")
-              wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
-              wxT("has_database_privilege(db.oid, 'CREATE') as cancreate\n")
-       wxT("  FROM pg_database db\n")
-       + restriction +
-       wxT(" ORDER BY datname"));
+    pgSet *databases;
+    if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+        databases = collection->GetServer()->ExecuteSet(
+           wxT("SELECT db.oid, datname, spcname, datallowconn, datconfig, datacl, ")
+                  wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
+                  wxT("has_database_privilege(db.oid, 'CREATE') as cancreate\n")
+           wxT("  FROM pg_database db\n")
+           wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
+           + restriction +
+           wxT(" ORDER BY datname"));
+    else
+        databases = collection->GetServer()->ExecuteSet(
+           wxT("SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, ")
+                  wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
+                  wxT("has_database_privilege(db.oid, 'CREATE') as cancreate\n")
+           wxT("  FROM pg_database db\n")
+           + restriction +
+           wxT(" ORDER BY datname"));
     
     if (databases)
     {
@@ -378,13 +391,17 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             database->iSetOid(databases->GetOid(wxT("oid")));
             database->iSetOwner(databases->GetVal(wxT("datowner")));
             database->iSetAcl(databases->GetVal(wxT("datacl")));
-            database->iSetPath(databases->GetVal(wxT("datpath")));
             database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
             database->iSetCreatePrivilege(databases->GetBool(wxT("cancreate")));
             wxString str=databases->GetVal(wxT("datconfig"));
             if (!str.IsEmpty())
                 FillArray(database->GetVariables(), str.Mid(1, str.Length()-2));
             database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
+
+            if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+                database->iSetTablespace(databases->GetVal(wxT("spcname")));
+            else
+                database->iSetPath(databases->GetVal(wxT("datpath")));
 
             // Add the treeview node if required
             if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 

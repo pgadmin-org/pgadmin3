@@ -197,9 +197,13 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         }
 
         if (GetHasOids())
-            sql += wxT("WITH OIDS;\n");
+            sql += wxT("\nWITH OIDS");
         else
-            sql += wxT("WITHOUT OIDS;\n");
+            sql += wxT("\nWITHOUT OIDS");
+
+        AppendIfFilled(sql, wxT(" TABLESPACE "), qtIdent(tablespace));
+
+        sql += wxT(";\n");
 
         sql += GetGrant(wxT("arwdRxt")) 
             + GetCommentSql();
@@ -372,6 +376,8 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
+        if (!tablespace.IsEmpty())
+            properties->AppendItem(_("Tablespace"), tablespace);
         properties->AppendItem(_("ACL"), GetAcl());
         if (GetPrimaryKey().IsNull())
             properties->AppendItem(_("Primary key"), _("<no primary key>"));
@@ -383,7 +389,7 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         if (rowsCounted)
             properties->AppendItem(_("Rows (counted)"), rows);
         else
-            properties->AppendItem(_("Rows (counted)"), _("Refresh to count rows"));
+            properties->AppendItem(_("Rows (counted)"), _("not counted"));
 
         properties->AppendItem(_("Inherits tables"), GetHasSubclass());
         properties->AppendItem(_("Inherited tables count"), GetInheritedTableCount());
@@ -429,11 +435,7 @@ pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_TABLES)
-        {
             table = (pgTable*)ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
-            if (table && table->GetRows() == 0)
-                table->UpdateRows();
-        }
     }
     return table;
 }
@@ -444,16 +446,32 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 {
     pgTable *table=0;
 
-    pgSet *tables= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
-                wxT("relhassubclass, reltuples, description, conname, conkey\n")
-        wxT("  FROM pg_class rel\n")
-        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid AND des.objsubid=0\n")
-        wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
-        wxT(" WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
-        + restriction + 
-        wxT(" ORDER BY relname"));
-
+    pgSet *tables;
+    if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+    {
+        tables= collection->GetDatabase()->ExecuteSet(
+            wxT("SELECT rel.oid, relname, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
+                    wxT("relhassubclass, reltuples, description, conname, conkey\n")
+            wxT("  FROM pg_class rel\n")
+            wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid AND des.objsubid=0\n")
+            wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
+            wxT(" WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+            + restriction + 
+            wxT(" ORDER BY relname"));
+    }
+    else
+    {
+        tables= collection->GetDatabase()->ExecuteSet(
+            wxT("SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
+                    wxT("relhassubclass, reltuples, description, conname, conkey\n")
+            wxT("  FROM pg_class rel\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid AND des.objsubid=0\n")
+            wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
+            wxT(" WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+            + restriction + 
+            wxT(" ORDER BY relname"));
+    }
     if (tables)
     {
         while (!tables->Eof())
@@ -463,6 +481,8 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             table->iSetOid(tables->GetOid(wxT("oid")));
             table->iSetOwner(tables->GetVal(wxT("relowner")));
             table->iSetAcl(tables->GetVal(wxT("relacl")));
+            if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+                table->iSetTablespace(tables->GetVal(wxT("spcname")));
             table->iSetComment(tables->GetVal(wxT("description")));
             table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
             table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));

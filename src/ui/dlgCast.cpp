@@ -26,8 +26,8 @@
 
 
 // pointer to controls
-#define cbSourceType        CTRL_COMBOBOX("cbSourceType")
-#define cbTargetType        CTRL_COMBOBOX("cbTargetType")
+#define cbSourceType        CTRL_COMBOBOX2("cbSourceType")
+#define cbTargetType        CTRL_COMBOBOX2("cbTargetType")
 #define cbFunction          CTRL_COMBOBOX("cbFunction")
 #define chkImplicit         CTRL_CHECKBOX("chkImplicit")
 #define stComment           CTRL_STATIC("stComment")
@@ -101,8 +101,8 @@ int dlgCast::Go(bool modal)
 pgObject *dlgCast::CreateObject(pgCollection *collection)
 {
     pgObject *obj=pgCast::ReadObjects(collection, 0,
-         wxT(" WHERE castsource = ") + GetTypeOid(cbSourceType->GetSelection()) +
-         wxT("\n   AND casttarget = ") + GetTypeOid(cbTargetType->GetSelection()));
+         wxT(" WHERE castsource = ") + GetTypeOid(cbSourceType->GetGuessedSelection()) +
+         wxT("\n   AND casttarget = ") + GetTypeOid(cbTargetType->GetGuessedSelection()));
 
     return obj;
 }
@@ -117,8 +117,8 @@ void dlgCast::OnChange(wxCommandEvent &ev)
     else
     {
         bool enable=true;
-        CheckValid(enable, cbSourceType->GetSelection()>0, _("Please specify source datatype."));
-        CheckValid(enable, cbTargetType->GetSelection() > 0 , _("Please select target datatype."));
+        CheckValid(enable, cbSourceType->GetGuessedSelection() > 0, _("Please specify source datatype."));
+        CheckValid(enable, cbTargetType->GetGuessedSelection() > 0, _("Please select target datatype."));
 
         if (enable)
             txtName->SetValue(cbSourceType->GetValue() + wxT(" -> ") + cbTargetType->GetValue());
@@ -134,7 +134,7 @@ void dlgCast::OnChangeType(wxCommandEvent &ev)
 {
     functions.Clear();
 
-    if (cbSourceType->GetSelection() > 0 && cbTargetType->GetSelection() > 0)
+    if (cbSourceType->GetGuessedSelection() > 0 && cbTargetType->GetGuessedSelection() > 0)
     {
         functions.Add(wxEmptyString);
         cbFunction->Append(wxT(" "));
@@ -144,10 +144,10 @@ void dlgCast::OnChangeType(wxCommandEvent &ev)
             wxT("  FROM pg_proc p\n")
             wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
             wxT(" WHERE proargtypes[0] = ")
-            +  GetTypeOid(cbSourceType->GetSelection())
+            +  GetTypeOid(cbSourceType->GetGuessedSelection())
             +  wxT("\n   AND proargtypes[1] = 0")
                wxT("\n   AND prorettype = ")
-            +  GetTypeOid(cbTargetType->GetSelection());
+            +  GetTypeOid(cbTargetType->GetGuessedSelection());
 
         pgSet *set=connection->ExecuteSet(qry);
         if (set)

@@ -39,6 +39,7 @@
 #include "pgSet.h"
 #include "pgServer.h"
 #include "pgObject.h"
+#include "pgTable.h"
 #include "pgCollection.h"
 #include "pgFunction.h"
 #include "frmQueryBuilder.h"
@@ -74,6 +75,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
     EVT_MENU(MNU_EXIT,                      frmMain::OnExit)
     EVT_MENU(MNU_STATUS,                    frmMain::OnStatus)
+    EVT_MENU(MNU_COUNT,                     frmMain::OnCount)
     EVT_MENU(MNU_VIEWDATA,                  frmMain::OnViewData)
     EVT_MENU(MNU_VIEWFILTEREDDATA,          frmMain::OnViewFilteredData)
     EVT_MENU(MNU_OPTIONS,                   frmMain::OnOptions)
@@ -89,6 +91,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_NEW+PG_LANGUAGE,           frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_CAST,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_SCHEMA,             frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_TABLESPACE,         frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_AGGREGATE,          frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_CONVERSION,         frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_DOMAIN,             frmMain::OnNew)
@@ -331,6 +334,19 @@ void frmMain::OnStatus(wxCommandEvent &event)
         frmStatus *status = new frmStatus(this, txt, conn);
         frames.Append(status);
         status->Go();
+    }
+}
+
+
+void frmMain::OnCount(wxCommandEvent &event)
+{
+    pgObject *data = GetSelectedObject();
+    if (!data)
+        return;
+    if (data->GetType() == PG_TABLE)
+    {
+        ((pgTable*)data)->UpdateRows();
+        data->ShowTreeDetail(0, 0, properties);
     }
 }
 
@@ -674,6 +690,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     bool canReindex=false;
     bool canIndexCheck=false;
     bool canGrantWizard=false;
+    bool canCount=false;
 
     bool showTree=true;
 
@@ -717,6 +734,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             canGrantWizard=true;
             break;
         case PG_TABLE:
+            canCount=true;
         case PG_CONSTRAINTS:
         case PG_FOREIGNKEY:
             canIndexCheck=true;
@@ -728,6 +746,8 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_USER:
         case PG_LANGUAGES:
         case PG_LANGUAGE:
+        case PG_TABLESPACES:
+        case PG_TABLESPACE:
         case PG_AGGREGATES:
         case PG_AGGREGATE:
         case PG_CASTS:
@@ -833,6 +853,8 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     treeContextMenu->Enable(MNU_GRANTWIZARD, canGrantWizard);
     treeContextMenu->Enable(MNU_DISCONNECT, canDisconnect);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
+    viewMenu->Enable(MNU_COUNT, canCount);
+    treeContextMenu->Enable(MNU_COUNT, canCount);
 }
 
 

@@ -25,7 +25,8 @@
 
 
 #define txtIncrement        CTRL_TEXT("txtIncrement")
-#define cbOwner             CTRL_COMBOBOX("cbOwner")
+#define cbOwner             CTRL_COMBOBOX2("cbOwner")
+#define cbTablespace        CTRL_COMBOBOX("cbTablespace")
 #define txtMin              CTRL_TEXT("txtMin")
 #define txtMax              CTRL_TEXT("txtMax")
 #define txtStart            CTRL_TEXT("txtStart")
@@ -38,6 +39,7 @@
 BEGIN_EVENT_TABLE(dlgSequence, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgSequence::OnChange)
     EVT_TEXT(XRCID("cbOwner"),                      dlgSequence::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgSequence::OnChange)
     EVT_TEXT(XRCID("txtStart"),                     dlgSequence::OnChange)
     EVT_TEXT(XRCID("txtMin"),                       dlgSequence::OnChange)
     EVT_TEXT(XRCID("txtMax"),                       dlgSequence::OnChange)
@@ -97,10 +99,12 @@ int dlgSequence::Go(bool modal)
             txtCache->Disable();
             chkCycled->Disable();
         }
+        PrepareTablespace(cbTablespace, schema->GetTablespace());
     }
     else
     {
         // create mode
+        PrepareTablespace(cbTablespace);
         txtIncrement->SetValidator(numericValidator);
         txtMin->SetValidator(numericValidator);
         txtMax->SetValidator(numericValidator);
@@ -226,9 +230,10 @@ wxString dlgSequence::GetSql()
         AppendIfFilled(sql, wxT("\n   MINVALUE "), txtMin->GetValue());
         AppendIfFilled(sql, wxT("\n   MAXVALUE "), txtMax->GetValue());
         AppendIfFilled(sql, wxT("\n   CACHE "), txtCache->GetValue());
+        AppendIfFilled(sql, wxT("\n   TABLESPACE "), qtIdent(cbTablespace->GetValue()));
 
         sql += wxT(";\n");
-        if (cbOwner->GetSelection() > 0)
+        if (cbOwner->GetGuessedSelection() > 0)
         {
             sql += wxT("ALTER TABLE ")  + schema->GetQuotedPrefix() + qtIdent(GetName())
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");

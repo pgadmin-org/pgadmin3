@@ -35,7 +35,7 @@ private:
     void OnChangeTypeRight(wxCommandEvent &ev);
     void OnChangeJoin(wxCommandEvent &ev);
 
-    void AppendFilledOperator(wxString &sql, wxChar *txt, ctlComboBox *cb);
+    void AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBox *cb);
 
     pgSchema *schema;
     pgOperator *oper;

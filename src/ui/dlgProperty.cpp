@@ -37,6 +37,7 @@
 #include "dlgCast.h"
 #include "dlgLanguage.h"
 #include "dlgSchema.h"
+#include "dlgTablespace.h"
 #include "dlgAggregate.h"
 #include "dlgConversion.h"
 #include "dlgDomain.h"
@@ -274,6 +275,55 @@ void dlgProperty::AppendQuoted(wxString &sql, const wxString &name)
     }
     else
         sql += qtIdent(name);
+}
+
+
+void dlgProperty::FillCombobox(const wxString &query, wxComboBox *cb1, wxComboBox *cb2)
+{
+    if (!cb1 && !cb2)
+        return;
+
+    pgSet *set=connection->ExecuteSet(query);
+    if (set)
+    {
+        while (!set->Eof())
+        {
+            if (cb1)
+                cb1->Append(set->GetVal(0));
+            if (cb2)
+                cb2->Append(set->GetVal(0));
+            set->MoveNext();
+        }
+    }
+}
+
+
+void dlgProperty::AddUsers(wxComboBox *cb1, wxComboBox *cb2)
+{
+    FillCombobox(wxT("SELECT usename FROM pg_user ORDER BY usename"), cb1, cb2);
+}
+
+
+void dlgProperty::PrepareTablespace(wxComboBox *cb, const wxChar *current)
+{
+    wxASSERT(cb != 0);
+
+    if (connection->BackendMinimumVersion(7, 5))
+    {
+        if (current)
+        {
+            cb->Append(current);
+            cb->SetSelection(0);
+            cb->Disable();
+        }
+        else
+        {
+            cb->Append(wxEmptyString);
+            FillCombobox(wxT("SELECT spcname FROM pg_tablespace WHERE spcname <> 'global' ORDER BY spcname"), cb);
+        }
+    }
+    else
+        cb->Disable();
 }
 
 
@@ -519,6 +569,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_DATABASE:
         case PG_DATABASES:
             dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
+            break;
+        case PG_TABLESPACE:
+        case PG_TABLESPACES:
+            dlg=new dlgTablespace(frame, (pgTablespace*)currentNode);
             break;
         case PG_CAST:
         case PG_CASTS:
@@ -842,7 +896,7 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
 
 void dlgTypeProperty::CheckLenEnable()
 {
-    int sel=cbDatatype->GetSelection();
+    int sel=cbDatatype->GetGuessedSelection();
     if (sel >= 0)
     {
         wxString info=types.Item(sel);
@@ -1028,35 +1082,16 @@ void dlgSecurityProperty::AddGroups(ctlComboBox *comboBox)
 }
 
 
-void dlgSecurityProperty::AddUsers(ctlComboBox *comboBox)
+void dlgSecurityProperty::AddUsers(ctlComboBox *combobox)
 {
-    if ((!securityPage || !securityPage->cbGroups) && !comboBox)
-        return;
-    
-    if (!settings->GetShowUsersForPrivileges() && !comboBox)
-        return;
-
-    pgSet *set=connection->ExecuteSet(wxT("SELECT usename FROM pg_user ORDER BY usename"));
-
-    if (set)
+    if (securityPage && securityPage->cbGroups && settings->GetShowUsersForPrivileges())
     {
-        if (securityPage && securityPage->cbGroups && settings->GetShowUsersForPrivileges())
-            securityPage->stGroup->SetLabel(_("Group/User"));
-
-        while (!set->Eof())
-        {
-            if (securityPage && securityPage->cbGroups && settings->GetShowUsersForPrivileges())
-                securityPage->cbGroups->Append(set->GetVal(0));
-
-            if (comboBox)
-                comboBox->Append(set->GetVal(0));
-
-            set->MoveNext();
-        }
-        delete set;
+        securityPage->stGroup->SetLabel(_("Group/User"));
+        dlgProperty::AddUsers(securityPage->cbGroups, combobox);
     }
+    else
+        dlgProperty::AddUsers(combobox);
 }
-
 
 
 void dlgSecurityProperty::OnAddPriv(wxCommandEvent &ev)

@@ -23,12 +23,13 @@
 
 
 // pointer to controls
-#define cbOwner         CTRL_COMBOBOX("cbOwner")
-
+#define cbOwner         CTRL_COMBOBOX2("cbOwner")
+#define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgSchema::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgSchema::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgSchema::OnChange)
 END_EVENT_TABLE();
 
 
@@ -62,14 +63,14 @@ int dlgSchema::Go(bool modal)
         txtOID->SetValue(NumToStr((long)schema->GetOid()));
         txtComment->SetValue(schema->GetComment());
         cbOwner->SetValue(schema->GetOwner());
-
-        if (!connection->BackendMinimumVersion(7, 4))
-            txtName->Disable();
+        PrepareTablespace(cbTablespace, schema->GetTablespace());
         cbOwner->Disable();
+        cbTablespace->Disable();
     }
     else
     {
         // create mode
+        PrepareTablespace(cbTablespace);
     }
 
     return dlgSecurityProperty::Go(modal);
@@ -119,6 +120,7 @@ wxString dlgSchema::GetSql()
         // create mode
         sql = wxT("CREATE SCHEMA ") + qtIdent(name);
         AppendIfFilled(sql, wxT("\n       AUTHORIZATION "), qtIdent(cbOwner->GetValue()));
+        AppendIfFilled(sql, wxT("\n       TABLESPACE "), qtIdent(cbTablespace->GetValue()));
         sql += wxT(";\n");
 
     }

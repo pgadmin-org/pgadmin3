@@ -155,7 +155,7 @@ void dlgDomain::OnChange(wxCommandEvent &ev)
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbDatatype->GetSelection() >=0, _("Please select a datatype."));
+        CheckValid(enable, cbDatatype->GetGuessedSelection() >=0, _("Please select a datatype."));
         CheckValid(enable, !isVarLen || txtLength->GetValue().IsEmpty()
             || (varlen >= minVarLen && varlen <= maxVarLen && NumToStr(varlen) == txtLength->GetValue()),
             _("Please specify valid length."));
@@ -216,7 +216,7 @@ wxString dlgDomain::GetSql()
     {
         // create mode
         sql = wxT("CREATE DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
-            + wxT("\n   AS ") + GetQuotedTypename(cbDatatype->GetSelection());
+            + wxT("\n   AS ") + GetQuotedTypename(cbDatatype->GetGuessedSelection());
         
         AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());
         if (chkNotNull->GetValue())

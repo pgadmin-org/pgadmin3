@@ -53,6 +53,21 @@ pgServer::~pgServer()
 }
 
 
+wxMenu *pgServer::GetNewMenu()
+{
+    wxMenu *menu=0;
+    if (connected && GetSuperUser())
+    {
+        menu=new wxMenu();
+        AppendMenu(menu, PG_DATABASE);
+        AppendMenu(menu, PG_TABLESPACE);
+        AppendMenu(menu, PG_GROUP);
+        AppendMenu(menu, PG_USER);
+    }
+    return menu;
+}
+
+
 wxString pgServer::GetFullName() const
 {
     if (GetDescription().Length() > 0)
@@ -259,7 +274,13 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             // Databases
             pgCollection *collection = new pgCollection(PG_DATABASES, this);
             AppendBrowserItem(browser, collection);
-      
+
+            if (conn->BackendMinimumVersion(7, 5))
+            {
+                // Tablespaces
+                collection = new pgCollection(PG_TABLESPACES, this);
+                AppendBrowserItem(browser, collection);
+            }
             // Groups
             collection = new pgCollection(PG_GROUPS, this);
             AppendBrowserItem(browser, collection);

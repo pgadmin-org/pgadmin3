@@ -69,6 +69,7 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
             + wxT("\n  CACHE ") + GetCacheValue().ToString();
         if (GetCycled())
             sql += wxT("\n  CYCLE");
+        AppendIfFilled(sql, wxT("\n  TABLESPACE "), qtIdent(tablespace));
         sql += wxT(";\n")
             + GetGrant(wxT("arwdRxt"), wxT("TABLE"))
             + GetCommentSql();
@@ -87,6 +88,8 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
+        if (!tablespace.IsEmpty())
+            properties->AppendItem(_("Tablespace"), tablespace);
         properties->AppendItem(_("ACL"), GetAcl());
         properties->AppendItem(_("Current value"), GetLastValue());
         properties->AppendItem(_("Minimum"), GetMinValue());
@@ -142,14 +145,28 @@ pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 {
     pgSequence *sequence=0;
 
-    pgSet *sequences= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT cl.oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl, description\n")
-        wxT("  FROM pg_class cl\n")
-        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n")
-        wxT(" WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr()
-        + restriction + wxT("\n")
-        wxT(" ORDER BY relname"));
-
+    pgSet *sequences;
+    if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+    {
+        sequences = collection->GetDatabase()->ExecuteSet(
+            wxT("SELECT cl.oid, relname, spcname, pg_get_userbyid(relowner) AS seqowner, relacl, description\n")
+            wxT("  FROM pg_class cl\n")
+            wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=cl.reltablespace\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n")
+            wxT(" WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr()
+            + restriction + wxT("\n")
+            wxT(" ORDER BY relname"));
+    }
+    else
+    {
+        sequences = collection->GetDatabase()->ExecuteSet(
+            wxT("SELECT cl.oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl, description\n")
+            wxT("  FROM pg_class cl\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n")
+            wxT(" WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr()
+            + restriction + wxT("\n")
+            wxT(" ORDER BY relname"));
+    }
     if (sequences)
     {
         while (!sequences->Eof())
@@ -161,6 +178,8 @@ pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             sequence->iSetComment(sequences->GetVal(wxT("description")));
             sequence->iSetOwner(sequences->GetVal(wxT("seqowner")));
             sequence->iSetAcl(sequences->GetVal(wxT("relacl")));
+            if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+                sequence->iSetTablespace(sequences->GetVal(wxT("spcname")));
 
             if (browser)
             {

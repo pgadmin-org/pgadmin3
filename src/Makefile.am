@@ -25,7 +25,7 @@ schema/pgLanguage.cpp schema/pgObject.cpp \
 schema/pgOperator.cpp schema/pgOperatorClass.cpp \
 schema/pgRule.cpp schema/pgSchema.cpp \
 schema/pgSequence.cpp schema/pgServer.cpp \
-schema/pgTable.cpp schema/pgTrigger.cpp \
+schema/pgTable.cpp schema/pgTablespace.cpp schema/pgTrigger.cpp \
 schema/pgType.cpp schema/pgUser.cpp schema/pgView.cpp \
 schema/pgDatatype.cpp \
 agent/pgaAgent.cpp agent/pgaJob.cpp \
@@ -44,7 +44,7 @@ ui/frmQuery.cpp ui/frmQueryBuilder.cpp ui/frmHelp.cpp \
 ui/frmQBJoin.cpp ui/frmSplash.cpp ui/frmMaintenance.cpp \
 ui/frmEditGrid.cpp ui/dlgProperty.cpp ui/dlgUser.cpp \
 ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
-ui/dlgSchema.cpp ui/dlgDomain.cpp ui/dlgTable.cpp \
+ui/dlgSchema.cpp ui/dlgDomain.cpp ui/dlgTable.cpp ui/dlgTablespace.cpp \
 ui/dlgColumn.cpp ui/dlgIndex.cpp ui/dlgFunction.cpp \
 ui/dlgView.cpp ui/dlgRule.cpp ui/dlgOperator.cpp \
 ui/dlgAggregate.cpp ui/dlgCast.cpp ui/dlgConversion.cpp \
@@ -67,7 +67,7 @@ include/dlgIndexConstraint.h include/dlgIndex.h \
 include/dlgLanguage.h include/dlgProperty.h include/dlgType.h \
 include/dlgView.h include/dlgRule.h include/dlgOperator.h \
 include/dlgAggregate.h include/dlgCast.h include/dlgConversion.h \
-include/dlgSequence.h include/dlgSchema.h include/dlgTable.h \
+include/dlgSequence.h include/dlgSchema.h include/dlgTable.h include/dlgTablespace.h \
 include/dlgOperator.h include/dlgView.h include/dlgRule.h \
 include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
 include/frmChildTableViewFrame.h include/frmConnect.h \
@@ -78,7 +78,7 @@ include/frmQuery.h include/frmSplash.h \
 include/frmStatus.h include/frmMaintenance.h \
 include/misc.h include/pgAdmin3.h include/pgAggregate.h \
 include/pgCast.h include/pgCheck.h include/pgCollection.h \
-include/pgColumn.h include/pgConn.h \
+include/pgColumn.h include/pgConn.h include/pgTablespace.h \
 include/pgConstraints.h include/pgConversion.h \
 include/pgDatabase.h include/pgDomain.h \
 include/pgForeignKey.h include/pgFunction.h \
@@ -183,3 +183,4 @@ ui/zh_CN/wxstd.mo
 
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
 AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
+AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include

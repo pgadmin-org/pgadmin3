@@ -25,8 +25,10 @@
 #include "images/index.xpm"
 
 
+#define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 #define cbType          CTRL_COMBOBOX("cbType")
 #define chkUnique       CTRL_CHECKBOX("chkUnique")
+#define chkClustered    CTRL_CHECKBOX("chkClustered")
 #define txtWhere        CTRL_TEXT("txtWhere")
 
 #define btnAddCol       CTRL_BUTTON("btnAddCol")
@@ -37,6 +39,7 @@
 BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgIndexBase::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgIndexBase::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgIndexBase::OnChange)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexBase::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexBase::OnRemoveCol)
 END_EVENT_TABLE();
@@ -76,7 +79,6 @@ int dlgIndexBase::Go(bool modal)
         // edit mode: view only
         txtName->SetValue(index->GetName());
         txtName->Disable();
-
         btnAddCol->Disable();
         btnRemoveCol->Disable();
         cbColumns->Disable();
@@ -167,6 +169,9 @@ wxString dlgIndexBase::GetColumns()
 
 BEGIN_EVENT_TABLE(dlgIndex, dlgIndexBase)
     EVT_TEXT(XRCID("txtName"),                      dlgIndex::OnChange)
+    EVT_TEXT(XRCID("txtComment"),                   dlgIndex::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgIndex::OnChange)
+    EVT_CHECKBOX(XRCID("chkClustered"),             dlgIndex::OnChange)
 END_EVENT_TABLE();
 
         
@@ -180,7 +185,7 @@ void dlgIndex::OnChange(wxCommandEvent &ev)
 {
     if (index)
     {
-        EnableOK(txtComment->GetValue() != index->GetComment());
+        EnableOK(txtComment->GetValue() != index->GetComment() || chkClustered->GetValue() != index->GetIsClustered());
     }
     else
     {
@@ -196,21 +201,27 @@ void dlgIndex::OnChange(wxCommandEvent &ev)
 
 int dlgIndex::Go(bool modal)
 {
+    if (!connection->BackendMinimumVersion(7, 4))
+        chkClustered->Disable();
+
     if (index)
     {
         // edit mode: view only
         
         cbType->Append(index->GetIndexType());
         chkUnique->SetValue(index->GetIsUnique());
+        chkClustered->SetValue(index->GetIsClustered());
         txtWhere->SetValue(index->GetConstraint());
         cbType->SetSelection(0);
         cbType->Disable();
         txtWhere->Disable();
         chkUnique->Disable();
+        PrepareTablespace(cbTablespace, index->GetTablespace());
     }
     else
     {
         // create mode
+        PrepareTablespace(cbTablespace);
         cbType->Append(wxT(""));
         pgSet *set=connection->ExecuteSet(wxT(
             "SELECT amname FROM pg_am"));
@@ -235,20 +246,30 @@ wxString dlgIndex::GetSql()
 
     if (table)
     {
+        wxString name=GetName();
         if (!index)
         {
             sql = wxT("CREATE ");
             if (chkUnique->GetValue())
                 sql += wxT("UNIQUE ");
-            sql += wxT("INDEX ") + qtIdent(GetName());
+            sql += wxT("INDEX ") + qtIdent(name);
             sql += wxT("\n   ON ") + table->GetQuotedFullIdentifier();
             AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
             sql += wxT(" (") + GetColumns()
                 + wxT(")");
 
-
+            AppendIfFilled(sql, wxT("\n       TABLESPACE "), qtIdent(cbTablespace->GetValue()));
             AppendIfFilled(sql, wxT(" WHERE "), txtWhere->GetValue());
             sql +=  wxT(";\n");
+        }
+        if (connection->BackendMinimumVersion(7, 4))
+        {
+            if (index && index->GetIsClustered() && !chkClustered->GetValue())
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT(" SET WITHOUT CLUSTER;\n");
+            else if (chkClustered->GetValue() && (!index || !index->GetIsClustered()))
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT(" CLUSTER ON ") + qtIdent(name) + wxT(";\n");
         }
         AppendComment(sql, wxT("INDEX"), table->GetSchema(), index);
     }

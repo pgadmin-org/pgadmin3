@@ -30,7 +30,7 @@
 
 // pointer to controls
 #define txtArguments        CTRL_TEXT("txtArguments")
-#define cbReturntype        CTRL_COMBOBOX("cbReturntype")
+#define cbReturntype        CTRL_COMBOBOX2("cbReturntype")
 #define cbLanguage          CTRL_COMBOBOX("cbLanguage")
 #define chkSetof            CTRL_CHECKBOX("chkSetof")
 #define cbVolatility        CTRL_COMBOBOX("cbVolatility")
@@ -40,7 +40,6 @@
 #define lstArguments        CTRL_LISTBOX("lstArguments")
 #define btnAdd              CTRL_BUTTON("btnAdd")
 #define btnRemove           CTRL_BUTTON("btnRemove")
-#define cbDatatype          CTRL_COMBOBOX("cbDatatype")
 
 #define pnlParameter        CTRL_PANEL("pnlParameter")
 #define sbxDefinition       CTRL_STATICBOX("sbxDefinition")
@@ -240,7 +239,7 @@ void dlgFunction::OnChange(wxCommandEvent &ev)
         bool enable=true;
 
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbReturntype->GetSelection() >= 0, _("Please select return type."));
+        CheckValid(enable, cbReturntype->GetGuessedSelection() >= 0, _("Please select return type."));
         CheckValid(enable, cbLanguage->GetSelection() >= 0, _("Please select language."));
         if (isC)
         {
@@ -313,7 +312,7 @@ void dlgFunction::OnSelChangeType(wxCommandEvent &ev)
 void dlgFunction::OnAddArg(wxCommandEvent &ev)
 {
     lstArguments->Append(cbDatatype->GetValue());
-    argOids.Add(typOids.Item(cbDatatype->GetSelection()));
+    argOids.Add(typOids.Item(cbDatatype->GetGuessedSelection()));
     txtArguments->SetValue(GetArgs());
 }
 

@@ -70,6 +70,9 @@ protected:
     void OnApply(wxCommandEvent &ev);
     void OnClose(wxCloseEvent &ev);
 
+    void AddUsers(wxComboBox *cb1, wxComboBox *cb2=0);
+    void FillCombobox(const wxString &query, wxComboBox *cb1, wxComboBox *cb2=0);
+    void PrepareTablespace(wxComboBox *cb, const wxChar *current=0);
 
     pgConn *connection;
     pgDatabase *database;
@@ -95,7 +98,7 @@ private:
 };
 
 
-#define cbDatatype      CTRL_COMBOBOX("cbDatatype")
+#define cbDatatype      CTRL_COMBOBOX2("cbDatatype")
 
 
 class dlgTypeProperty : public dlgProperty

@@ -22,6 +22,10 @@ class ctlComboBox : public wxComboBox
 public:
     ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr=0);
     int GuessSelection();
+    int GetGuessedSelection() const;
+    wxString GetGuessedStringSelection() const;
+private:
+    // MS VC6 will call wxComboBox::GetSelection instead, so we can't overload these.
     int GetSelection() const;
     wxString GetStringSelection() const;
 };

@@ -198,14 +198,14 @@ wxString dlgColumn::GetSql()
                 {
                     sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                         +  wxT(" ALTER ") + qtIdent(name) + wxT(" TYPE ")
-                        +  GetQuotedTypename(cbDatatype->GetSelection());
+                        +  GetQuotedTypename(cbDatatype->GetGuessedSelection());
                 }
             }
             else
             {
                 wxString sqlPart;
                 if (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
-                    sqlPart = wxT("atttypid=") + GetTypeOid(cbDatatype->GetSelection());
+                    sqlPart = wxT("atttypid=") + GetTypeOid(cbDatatype->GetGuessedSelection());
 
 
                 if (!sqlPart.IsEmpty() || 
@@ -309,7 +309,7 @@ wxString dlgColumn::GetSql()
             {
                 sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                     + wxT("\n   ADD COLUMN ") + qtIdent(name)
-                    + wxT(" ") + GetQuotedTypename(cbDatatype->GetSelection())
+                    + wxT(" ") + GetQuotedTypename(cbDatatype->GetGuessedSelection())
                     + wxT(";\n");
 
                 if (!isSerial && chkNotNull->GetValue())
@@ -341,8 +341,7 @@ wxString dlgColumn::GetSql()
 wxString dlgColumn::GetDefinition()
 {
     wxString sql, col;
-
-    sql = GetQuotedTypename(cbDatatype->GetSelection());
+    sql = GetQuotedTypename(cbDatatype->GetGuessedSelection());
     if (chkNotNull->GetValue())
         sql += wxT(" NOT NULL");
 
@@ -427,7 +426,7 @@ void dlgColumn::OnChange(wxCommandEvent &ev)
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbDatatype->GetSelection() >= 0, _("Please select a datatype."));
+        CheckValid(enable, cbDatatype->GetGuessedSelection() >= 0, _("Please select a datatype."));
         CheckValid(enable, !isVarLen || txtLength->GetValue().IsEmpty() 
             || (varlen >= minVarLen && varlen <= maxVarLen && NumToStr(varlen) == txtLength->GetValue()),
             _("Please specify valid length."));
