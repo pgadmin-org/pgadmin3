@@ -270,7 +270,7 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
     // Check the result, and handle it as appropriate
     if (res == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
-        browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
+        browser->AppendItem(servers, server->GetFullName(), PGICON_SERVER, -1, server);
         browser->Expand(servers);
 
     } else if (res == PGCONN_DNSERR)  {
