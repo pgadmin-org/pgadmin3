@@ -188,11 +188,19 @@ wxString ctlSQLResult::GetErrorMessage()
 
 
 
-long ctlSQLResult::NumRows()
+long ctlSQLResult::NumRows() const
 {
     if (thread && thread->DataValid())
         return thread->DataSet()->NumRows();
     return 0;
+}
+
+
+long ctlSQLResult::InsertedCount() const
+{
+    if (thread)
+        return thread->RowsInserted();
+    return -1;
 }
 
 

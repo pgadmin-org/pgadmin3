@@ -60,6 +60,16 @@ OID pgSet::ColTypeOid(int col) const
 }
 
 
+long pgSet::GetInsertedCount() const
+{
+    char *cnt=PQcmdTuples(res);
+    if (!*cnt)
+        return -1;
+    else
+        return atol(cnt);
+}
+
+
 pgTypClass pgSet::ColTypClass(int col) const
 {
     wxString typoid=ExecuteScalar(
@@ -315,6 +325,7 @@ void pgQueryThread::appendMessage(const wxString &str)
 
 int pgQueryThread::execute()
 {
+    rowsInserted = -1L;
     wxLongLong startTime=wxGetLocalTimeMillis();
 
     wxLogSql(wxT("Thread Query %s"), query.c_str());
@@ -381,6 +392,12 @@ int pgQueryThread::execute()
         dataSet = new pgSet(result, conn->conn, *conn->conv, conn->needColQuoting);
         dataSet->MoveFirst();
         dataSet->GetVal(0);
+    }
+    else if (rc == PGRES_COMMAND_OK)
+    {
+        char *s=PQcmdTuples(result);
+        if (*s)
+            rowsInserted = atol(s);
     }
     return(1);
 }

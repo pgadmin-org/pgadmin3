@@ -58,6 +58,7 @@ public:
     pgTypClass ColTypClass(int col) const;
 
     OID GetInsertedOid() const { return PQoidValue(res); }
+    long GetInsertedCount() const;
     int ColSize(int col) const { return PQfsize(res, col); }
     bool IsNull(int col) const { return (PQgetisnull(res, pos-1, col) != 0); }
     int ColScale(int col) const;
@@ -101,6 +102,7 @@ public:
     bool DataValid() const { return dataSet != NULL; }
     pgSet *DataSet() { return dataSet; }
     int ReturnCode() const { return rc; }
+    long RowsInserted() const { return rowsInserted; }
     wxString GetMessagesAndClear();
     bool IsRunning() const;
     void appendMessage(const wxString &str);
@@ -108,6 +110,7 @@ public:
 private:
     int rc;
     int resultToRetrieve;
+    long rowsInserted;
 
     wxString query;
     pgConn *conn;

@@ -857,9 +857,14 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             output->SetSelection(1);
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
-                showMessage(wxString::Format(_("Query returned successfully with no result in %s ms."),
-                    elapsedQuery.ToString().c_str()), _("OK."));
-//                wxMessageBox(illegal string for translation...("Query returned successfully with no result in ") + qTime, _("Query Results"), wxICON_INFORMATION | wxOK);
+                int insertedCount = sqlResult->InsertedCount();
+                if (insertedCount < 0)
+                    showMessage(wxString::Format(_("Query returned successfully with no result in %s ms."),
+                        elapsedQuery.ToString().c_str()), _("OK."));
+                else
+                    showMessage(wxString::Format(_("Query returned successfully: %d rows affected, %s ms execution time."),
+                        insertedCount, elapsedQuery.ToString().c_str()), 
+                        wxString::Format(_("%d rows affected."), insertedCount));
             }
             else
             {
