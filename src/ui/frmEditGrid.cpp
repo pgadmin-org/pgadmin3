@@ -549,6 +549,227 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
 
 
 
+class sqlGridTextEditor : public wxGridCellTextEditor
+{
+public:
+    sqlGridTextEditor(int len=0) { textlen=len; }
+    virtual wxGridCellEditor *Clone() const { return new sqlGridTextEditor(textlen); }
+    void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
+
+protected:
+    int textlen;
+};
+
+
+
+
+void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler)
+{
+    m_control = new wxTextCtrl(parent, id, wxEmptyString,
+                               wxDefaultPosition, wxDefaultSize
+#if defined(__WXMSW__)
+                               , wxTE_PROCESS_TAB | wxTE_MULTILINE | wxTE_DONTWRAP |
+                                 wxTE_AUTO_SCROLL
+#endif
+                              );
+
+    // set max length allowed in the textctrl, if the parameter was set
+    if (textlen > 0)
+    {
+        Text()->SetMaxLength(textlen);
+    }
+
+    wxGridCellEditor::Create(parent, id, evtHandler);
+}
+
+
+
+class sqlGridNumericEditor : public wxGridCellTextEditor
+{
+public:
+    sqlGridNumericEditor(int len=-1, int prec=-1) {numlen=len; numprec=prec; }
+    virtual wxGridCellEditor *Clone() const { return new sqlGridNumericEditor(numlen, numprec); }
+    virtual void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
+
+    virtual bool IsAcceptedKey(wxKeyEvent& event);
+    virtual void BeginEdit(int row, int col, wxGrid* grid);
+    virtual bool EndEdit(int row, int col, wxGrid* grid);
+
+    virtual void Reset() {DoReset(m_startValue); }
+    virtual void StartingKey(wxKeyEvent& event);
+    virtual void SetParameters(const wxString& params);
+
+protected:
+    int numlen, numprec;
+    wxString m_startValue;
+
+};
+
+
+
+void sqlGridNumericEditor::StartingKey(wxKeyEvent& event)
+{
+    int keycode = event.GetKeyCode();
+    bool allowed=false;
+
+    switch (keycode)
+    {
+        case WXK_DECIMAL:
+        case WXK_NUMPAD_DECIMAL:
+        case '.':
+            if (numprec)
+                allowed=true;
+            break;
+        case '+':
+        case WXK_ADD:
+        case WXK_NUMPAD_ADD:
+        case '-':
+        case WXK_SUBTRACT:
+        case WXK_NUMPAD_SUBTRACT:
+
+        case WXK_NUMPAD0:
+        case WXK_NUMPAD1:
+        case WXK_NUMPAD2:
+        case WXK_NUMPAD3:
+        case WXK_NUMPAD4:
+        case WXK_NUMPAD5:
+        case WXK_NUMPAD6:
+        case WXK_NUMPAD7:
+        case WXK_NUMPAD8:
+        case WXK_NUMPAD9:
+            allowed=true;
+            break;
+        default:
+            if (wxIsdigit(keycode))
+                allowed =true;
+            break;
+    
+    }
+    if (allowed)
+        wxGridCellTextEditor::StartingKey(event);
+    else
+        event.Skip();
+}
+
+
+
+bool sqlGridNumericEditor::IsAcceptedKey(wxKeyEvent& event)
+{
+    if ( wxGridCellEditor::IsAcceptedKey(event) )
+    {
+        int keycode = event.GetKeyCode();
+        switch ( keycode )
+        {
+            case WXK_DECIMAL:
+            case WXK_NUMPAD_DECIMAL:
+                return (numprec != 0);
+
+            case '+':
+            case WXK_ADD:
+            case WXK_NUMPAD_ADD:
+            case '-':
+            case WXK_SUBTRACT:
+            case WXK_NUMPAD_SUBTRACT:
+
+            case WXK_NUMPAD0:
+            case WXK_NUMPAD1:
+            case WXK_NUMPAD2:
+            case WXK_NUMPAD3:
+            case WXK_NUMPAD4:
+            case WXK_NUMPAD5:
+            case WXK_NUMPAD6:
+            case WXK_NUMPAD7:
+            case WXK_NUMPAD8:
+            case WXK_NUMPAD9:
+                return true;
+            default:
+                return wxIsdigit(keycode) != 0;
+        }
+    }
+
+    return false;
+}
+
+
+
+void sqlGridNumericEditor::BeginEdit(int row, int col, wxGrid* grid)
+{
+    m_startValue = grid->GetTable()->GetValue(row, col);
+
+
+    wxString value = m_startValue;
+    // localize value here
+
+    DoBeginEdit(value);
+}
+
+
+
+bool sqlGridNumericEditor::EndEdit(int row, int col, wxGrid* grid)
+{
+    wxASSERT_MSG(m_control,
+                 wxT("The sqlGridNumericEditor must be Created first!"));
+
+    bool changed = FALSE;
+    wxString value = Text()->GetValue();
+
+    // de-localize value here
+
+    if (value != m_startValue)
+        changed = TRUE;
+
+    if (changed)
+        grid->GetTable()->SetValue(row, col, value);
+
+    m_startValue = wxEmptyString;
+    Text()->SetValue(m_startValue);
+
+    return changed;
+}
+
+
+void sqlGridNumericEditor::SetParameters(const wxString& params)
+{
+    if ( !params )
+    {
+        // reset to default
+        numlen=-1;
+        numprec=-1;
+    }
+    else
+    {
+        long tmp;
+        if ( params.BeforeFirst(_T(',')).ToLong(&tmp) )
+        {
+            numlen = (int)tmp;
+
+            if ( params.AfterFirst(_T(',')).ToLong(&tmp) )
+            {
+                numprec = (int)tmp;
+
+                // skip the error message below
+                return;
+            }
+        }
+    }
+}
+
+
+void sqlGridNumericEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler)
+{
+    m_control = new wxTextCtrl(parent, id, wxEmptyString,
+                               wxDefaultPosition, wxDefaultSize
+#if defined(__WXMSW__)
+                               , wxTE_NO_VSCROLL| wxTE_DONTWRAP |
+                                 wxTE_AUTO_SCROLL
+#endif
+                              );
+
+    wxGridCellEditor::Create(parent, id, evtHandler);
+    Text()->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
+}
+
+
 
 
 sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName, const Oid _relid, bool _hasOid, const wxString& _pkCols, char _relkind)
@@ -605,6 +826,8 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
         for (i=(hasOids ? 1 : 0) ; i < nCols ; i++)
         {
+            wxGridCellEditor *editor=0;
+
             columns[i].name = colSet->GetVal(wxT("attname"));
             columns[i].typeName = colSet->GetVal(wxT("typname"));
 
@@ -630,7 +853,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                 case PGOID_TYPE_BOOL:
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
-                    columns[i].attr->SetEditor(new wxGridCellBoolEditor());
+                    editor = new wxGridCellBoolEditor();
                     break;
                 case PGOID_TYPE_INT8:
                     SetNumberEditor(i, 20);
@@ -651,7 +874,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                 case PGOID_TYPE_FLOAT8:
                     columns[i].numeric = true;
                     columns[i].attr->SetReadOnly(false);
-                    columns[i].attr->SetEditor(new wxGridCellFloatEditor());
+                    editor = new sqlGridNumericEditor();
                     break;
                 case PGOID_TYPE_MONEY:
                 case PGOID_TYPE_NUMERIC:
@@ -661,8 +884,8 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     int len=columns[i].size();
                     int prec=columns[i].precision();
                     if (prec>0)
-                        len -= (prec+1);
-                    columns[i].attr->SetEditor(new wxGridCellFloatEditor(len, prec));
+                        len -= (prec);
+                    editor = new sqlGridNumericEditor(len, prec);
                     break;
                 }
                 case PGOID_TYPE_BYTEA:
@@ -672,8 +895,11 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                 default:
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
+                    editor = new sqlGridTextEditor();
                     break;
             }
+            if (editor)
+                columns[i].attr->SetEditor(editor);
 
             if (relkind != 'r' || (!hasOids && primaryKeyColNumbers.IsNull()))
             {
@@ -794,10 +1020,9 @@ wxString sqlTable::GetRowLabelValue(int row)
 
 void sqlTable::SetNumberEditor(int col, int len)
 {
-    wxGridCellNumberEditor *editor=new wxGridCellNumberEditor();
     columns[col].numeric = true;
     columns[col].attr->SetReadOnly(false);
-    columns[col].attr->SetEditor(editor);
+    columns[col].attr->SetEditor(new sqlGridNumericEditor(len, 0));
 }
 
 
@@ -1237,7 +1462,7 @@ int sqlCellAttr::precision()
         return (typmod-4) & 0x7fff;
     }
     else
-        return 0;
+        return -1;
 }
 
 
