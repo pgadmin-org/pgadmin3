@@ -89,6 +89,9 @@ install: build
 
 	# Add here commands to install the package into debian/pgadmin3.
 	$(MAKE) install prefix=$(CURDIR)/debian/pgadmin3/usr
+	cp $(CURDIR)/src/include/images/elephant48.xpm $(CURDIR)/debian/pgadmin3/usr/share/pixmaps/pgadmin3.xpm
+	chmod 644 $(CURDIR)/debian/pgadmin3/usr/share/pixmaps/pgadmin3.xpm
+	touch TODO.txt	# To avoid error while building package if this file does not exist
 
 
 # Build architecture-independent files here.
