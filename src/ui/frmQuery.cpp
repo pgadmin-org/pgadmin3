@@ -897,7 +897,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             if (rowsTotal == rowsReadTotal)
                 SetStatusText(wxString::Format(_("%d rows."), rowsTotal), STATUSPOS_ROWS);
             else
-                SetStatusText(wxString::Format(_("%l of %l rows"), rowsReadTotal, rowsTotal), STATUSPOS_ROWS);
+                SetStatusText(wxString::Format(_("%ld of %ld rows"), rowsReadTotal, rowsTotal), STATUSPOS_ROWS);
         }
     }
 
