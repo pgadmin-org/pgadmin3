@@ -180,14 +180,14 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 
     // Make sure there's a slash on the end of the path
 
-    if (txtSqlHelpSite->GetValue().Last() == '/' || txtSqlHelpSite->GetValue().Last() == '\\')
-        settings->SetSqlHelpSite(txtSqlHelpSite->GetValue());
-    else
-#ifdef __WIN32__
-        settings->SetSqlHelpSite(txtSqlHelpSite->GetValue() + wxT("\\"));
-#else
-        settings->SetSqlHelpSite(txtSqlHelpSite->GetValue() + wxT("/"));
-#endif
+    if (txtSqlHelpSite->GetValue().length() != 0) {
+        if (txtSqlHelpSite->GetValue().Last() == '/' || txtSqlHelpSite->GetValue().Last() == '\\')
+            settings->SetSqlHelpSite(txtSqlHelpSite->GetValue());
+        else
+            settings->SetSqlHelpSite(txtSqlHelpSite->GetValue() + wxT("/"));
+    } else
+        settings->SetSqlHelpSite(wxT(""));
+
 
     int langNo=cbLanguage->GetSelection();
     if (langNo >= 0)

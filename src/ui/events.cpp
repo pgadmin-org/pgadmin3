@@ -230,7 +230,10 @@ void frmMain::OnContents(wxCommandEvent& event)
 
 void frmMain::OnPgsqlHelp(wxCommandEvent& event)
 {
-    DisplayPgSqlHelp(this, wxT("index"));
+    if (settings->GetSqlHelpSite().length() != 0) 
+        frmHelp::LoadSqlDoc(this, wxT("index.html"));
+    else
+        DisplayHelp(this, wxT("pg/index"));
 }
 
 
@@ -245,7 +248,7 @@ void frmMain::OnFaq(wxCommandEvent& event)
 
 void frmMain::OnBugreport(wxCommandEvent& event)
 {
-    frmHelp::LoadLocalDoc(this, wxT("bugreport.html"), pgAdmin3_xpm);
+    DisplayHelp(this, wxT("bugreport"));
 }
 
 
@@ -261,7 +264,13 @@ void frmMain::OnHelp(wxCommandEvent& event)
     if (page.IsEmpty())
         page = wxT("sql-commands.html");
 
-    frmHelp::LoadSqlDoc(this, page);
+    if (settings->GetSqlHelpSite().length() != 0) 
+        frmHelp::LoadSqlDoc(this, page);
+    else
+        if (page.length() > 4)
+            DisplayHelp(this, wxT("pg/") + page.BeforeLast('.'));
+        else
+            DisplayHelp(this, wxT("pg/") + page);
 }
 
 

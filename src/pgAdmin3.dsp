@@ -1321,10 +1321,6 @@ SOURCE=.\pgAdmin3.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\bugreport.html
-# End Source File
-# Begin Source File
-
 SOURCE=..\BUGS.txt
 # End Source File
 # Begin Source File
