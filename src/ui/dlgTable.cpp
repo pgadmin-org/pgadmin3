@@ -266,6 +266,7 @@ int dlgTable::Go(bool modal)
     btnChangeCol->Disable();
     btnRemoveCol->Disable();
     btnRemoveConstr->Disable();
+    btnOK->Disable();
 
     return dlgSecurityProperty::Go();
 }
@@ -499,13 +500,7 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
         bool changed=false;
         if (connection->BackendMinimumVersion(7, 4) || lstColumns->GetItemCount() > 0)
         {
-            if (GetName() != table->GetName() ||
-                txtComment->GetValue() != table->GetComment() ||
-                cbOwner->GetValue() != table->GetOwner())
-//                 (hasPK && chkHasOids->GetValue() != table->GetHasOids())
-                changed=true;
-            else
-                changed = !GetSql().IsEmpty();
+            changed = !GetSql().IsEmpty();
         }
         EnableOK(changed);
     }

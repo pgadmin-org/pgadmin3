@@ -1051,7 +1051,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                         str = str.Mid(1, str.Length()-2);
 
                     wxString name=str.BeforeLast('=');
-                    wxString value=str.Mid(name.Length()+1);
+                    wxString value=str.Mid(name.Length()+1).BeforeLast('/');
 
                     int icon=PGICON_USER;
 
@@ -1169,10 +1169,10 @@ void dlgSecurityProperty::OnPrivSelChange(wxListEvent &ev)
         allPrivilegesGrant->SetValue(false);
         allPrivilegesGrant->Disable();
     }
-    long pos=lbPrivileges->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    long pos=lbPrivileges->GetSelection();
     if (pos >= 0)
     {
-        wxString name=lbPrivileges->GetItemText(pos);
+        wxString name=lbPrivileges->GetText(pos);
         wxString value=lbPrivileges->GetText(pos, 1);
 
         pos=cbGroups->FindString(name);

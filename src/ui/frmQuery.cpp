@@ -243,7 +243,7 @@ frmQuery::~frmQuery()
     settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
 
-    sqlResult->Destroy(); // to make sure conn is unused
+    sqlResult->Abort(); // to make sure conn is unused
     if (conn)
         delete conn;
 }
