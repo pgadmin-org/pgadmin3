@@ -19,6 +19,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "misc.h"
 
 // Class declarations
 class pgSet
@@ -45,6 +46,16 @@ public:
     int ColScale(int col) const;
     wxString GetVal(int col) const { return wxString(PQgetvalue(res, pos -1, col)); }
     wxString GetVal(const wxString& col) const;
+    long GetLong(int col) const { return StrToLong(GetVal(col)); }
+    long GetLong(const wxString &col) { return StrToLong(GetVal(col)); }
+    bool GetBool(int col) const { return StrToBool(GetVal(col)); }
+    bool GetBool(const wxString &col) const { return StrToBool(GetVal(col)); }
+    double GetDouble(int col) const { return StrToDouble(GetVal(col)); }
+    double GetDouble(const wxString &col) const { return StrToDouble(GetVal(col)); }
+    // we may replace double oid some time by an own data type
+    double GetOid(int col) const { return StrToDouble(GetVal(col)); }
+    double GetOid(const wxString &col) const { return StrToDouble(GetVal(col)); }
+
 
 private:
     PGconn *conn;
