@@ -85,6 +85,11 @@ pushd contrib/src/stc
 %makeinstall
 popd
 
+# Mandrake and RedHat do it by default. Needed for SuSE.
+strip --strip-debug %{_libdir}/libwx_gtk2ud-%{version}.a
+strip --strip-debug %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
+strip --strip-debug %{_libdir}/libwx_gtk2ud_stc-%{version}.a
+
 %clean
 rm -rf %{buildroot}
 
