@@ -26,10 +26,6 @@
 extern wxString docPath;
 
 
-// as long as wx doesn't know this font
-#define wxSYS_ICONTITLE_FONT    wxSYS_DEFAULT_GUI_FONT
-
-
 
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
