@@ -31,6 +31,11 @@
 #include "frmHelp.h"
 
 
+extern "C"
+{
+#include "parser/keywords.h"
+}
+
 // we dont have an appropriate wxLongLong method
 #ifdef __WIN32__
 #define atolonglong _atoi64
@@ -250,6 +255,14 @@ wxString qtIdent(const wxString& value)
 
     int pos = 0;
 
+#if 0
+    if (ScanKeywordLookup(value.ToAscii()))
+    {
+        result.Append(wxT("\""));
+        result.Prepend(wxT("\""));
+        return result;
+    }
+#endif
     // Replace Double Quotes
     result.Replace(wxT("\""), wxT("\"\""));
 	
