@@ -74,7 +74,7 @@ frmVacuum::~frmVacuum()
 
 wxString frmVacuum::GetHelpPage() const
 {
-    return wxT("sql-vacuum.html");
+    return wxT("sql-vacuum");
 }
 
 void frmVacuum::Abort()

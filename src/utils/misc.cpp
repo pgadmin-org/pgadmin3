@@ -14,6 +14,11 @@
 #include <wx/timer.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/file.h>
+#include <wx/help.h>
+
+#ifdef __WXMSW__
+#include <wx/msw/helpchm.h>
+#endif
 
 // Standard headers
 #include <stdlib.h>
@@ -414,11 +419,10 @@ bool FileWrite(const wxString &filename, const wxString &data, int format)
 }
 
 
-
 void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 {
     extern wxString docPath;
-    static wxHtmlHelpController *helpCtl=0;
+    static wxHelpControllerBase *helpCtl=0;
     static bool firstCall=true;
 
     if (firstCall)
@@ -426,9 +430,23 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
         firstCall=false;
         wxString helpfile=docPath + wxT("/") + settings->GetCanonicalLanguage() + wxT("/pgadmin3");
 
-        if (!wxFile::Exists(helpfile + wxT(".hhp")) && !wxFile::Exists(helpfile + wxT(".zip")))
+        if (!wxFile::Exists(helpfile + wxT(".hhp")) &&
+#ifdef __WXMSW__
+            !wxFile::Exists(helpfile + wxT(".chm")) &&
+#endif
+            !wxFile::Exists(helpfile + wxT(".zip")))
             helpfile=docPath + wxT("/en_US/pgadmin3");
 
+#ifdef __WXMSW__
+#ifndef __WXDEBUG__
+        if (wxFile::Exists(helpfile + wxT(".chm")))
+        {
+            helpCtl=new wxCHMHelpController();
+            helpCtl->Initialize(helpfile);
+        }
+        else
+#endif
+#endif
         if (wxFile::Exists(helpfile + wxT(".hhp")) || wxFile::Exists(helpfile + wxT(".zip")))
         {
             helpCtl=new wxHtmlHelpController();
@@ -451,6 +469,17 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
         frmHelp::LoadLocalDoc(wnd, helpTopic + wxT(".html"), icon);
     }
 }
+
+
+void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
+{
+    if (settings->GetSqlHelpSite().length() != 0) 
+        frmHelp::LoadSqlDoc(wnd, helpTopic  + wxT(".html"));
+    else
+        DisplayHelp(wnd, wxT("pg/") + helpTopic, icon);
+}
+
+
 
 BEGIN_EVENT_TABLE(DialogWithHelp, wxDialog)
     EVT_MENU(MNU_HELP,                  DialogWithHelp::OnHelp)
@@ -478,5 +507,5 @@ void DialogWithHelp::OnHelp(wxCommandEvent& ev)
     wxString page=GetHelpPage();
 
     if (!page.IsEmpty())
-        frmHelp::LoadSqlDoc(this, page);
+        DisplaySqlHelp(this, page);
 }

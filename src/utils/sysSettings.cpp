@@ -48,7 +48,8 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
 
-    Read(wxT("SqlHelpSite"), &sqlHelpSite, docPath + wxT("/en_US/pg/"));
+//    Read(wxT("SqlHelpSite"), &sqlHelpSite, docPath + wxT("/en_US/pg/"));
+    Read(wxT("SqlHelpSite"), &sqlHelpSite, wxT(""));
     if (sqlHelpSite.length() > 0) {
         if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
             sqlHelpSite += wxT("/");

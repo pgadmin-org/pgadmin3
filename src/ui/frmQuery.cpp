@@ -428,43 +428,42 @@ void frmQuery::OnHelp(wxCommandEvent& event)
 	    while (sth->token)
 	    {
 	        if (sth->type < 10 && query.IsSameAs(sth->token, false))
-	        {
-		    if (sth->page)
-		        page = sth->page;
-		    else
-		        page = wxT("sql-") + query.Lower();
-		    if (sth->type)
-		    {
-		        int type=sth->type+10;
-
-		        query=tokens.GetNextToken();
-		        sth=sqlTokenHelp;
-		        while (sth->token)
+	            {
+		        if (sth->page)
+		            page = sth->page;
+		        else
+		            page = wxT("sql-") + query.Lower();
+		        if (sth->type)
 		        {
-			    if (sth->type >= type && query.IsSameAs(sth->token, false))
-			    {
-			        if (sth->page)
-				    page += sth->page;
-			        else
-				    page += query.Lower();
-			        break;
-			    }
-			    sth++;
+		            int type=sth->type+10;
+
+		            query=tokens.GetNextToken();
+		            sth=sqlTokenHelp;
+		            while (sth->token)
+		            {
+			        if (sth->type >= type && query.IsSameAs(sth->token, false))
+			        {
+			            if (sth->page)
+				        page += sth->page;
+			            else
+				        page += query.Lower();
+			            break;
+			        }
+			        sth++;
+		            }
+		            if (!sth->token)
+			        page=wxT("sql-commands");
 		        }
-		        if (!sth->token)
-			    page=wxT("sql-commands");
-		    }
-		    page += wxT(".html");
-		    break;
+		        break;
 	        }
 	        sth++;
 	    }
     }
 
     if (page.IsEmpty())
-	page=wxT("sql-commands.html");
+    	page=wxT("sql-commands");
 
-    frmHelp::LoadSqlDoc(this, page);
+    DisplaySqlHelp(this, page);
 }
 
 

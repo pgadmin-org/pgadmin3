@@ -23,7 +23,7 @@ public:
     int GetIcon() { return PGICON_CONSTRAINT; }
     bool IsCollectionForType(int objType);
     bool CanCreate() { return true; };
-    wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable.html"); }
+    wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable"); }
     wxMenu *GetNewMenu();
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);

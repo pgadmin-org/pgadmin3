@@ -227,10 +227,7 @@ void frmMain::OnContents(wxCommandEvent& event)
 
 void frmMain::OnPgsqlHelp(wxCommandEvent& event)
 {
-    if (settings->GetSqlHelpSite().length() != 0) 
-        frmHelp::LoadSqlDoc(this, wxT("index.html"));
-    else
-        DisplayHelp(this, wxT("pg/index"));
+    DisplaySqlHelp(this, wxT("index"));
 }
 
 
@@ -259,15 +256,9 @@ void frmMain::OnHelp(wxCommandEvent& event)
         page=obj->GetHelpPage(true);
 
     if (page.IsEmpty())
-        page = wxT("sql-commands.html");
+        page = wxT("sql-commands");
 
-    if (settings->GetSqlHelpSite().length() != 0) 
-        frmHelp::LoadSqlDoc(this, page);
-    else
-        if (page.length() > 4)
-            DisplayHelp(this, wxT("pg/") + page.BeforeLast('.'));
-        else
-            DisplayHelp(this, wxT("pg/") + page);
+    DisplaySqlHelp(this, page);
 }
 
 

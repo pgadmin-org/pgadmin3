@@ -63,7 +63,7 @@ public:
     bool CanReload();
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
-    wxString GetHelpPage(bool forCreate) const { return wxT("sql-createfunction.html"); }
+    wxString GetHelpPage(bool forCreate) const { return wxT("sql-createfunction"); }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 protected:

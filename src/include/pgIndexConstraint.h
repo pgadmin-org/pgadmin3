@@ -22,7 +22,7 @@ public:
     wxString GetDefinition();
     wxString GetCreate();
     wxString GetSql(wxTreeCtrl *browser);
-    wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable.html"); }
+    wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable"); }
 
 protected:
     pgIndexConstraint(pgSchema *newSchema, const wxString& newName, int type)
