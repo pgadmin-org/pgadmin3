@@ -56,7 +56,10 @@ double libpqVersion=0.0;
 
 
 #ifdef SSL
-extern "C" extern const char *SSL_version_str;
+extern "C"
+{
+extern const char *SSL_version_str;
+}
 #endif
 
 
