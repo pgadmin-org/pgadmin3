@@ -5,7 +5,8 @@
 # Makefile - Makefile for *nix systems
 bin_PROGRAMS = pgadmin3
 
-pgadmin3_SOURCES = pgAdmin3.cpp db/pgConn.cpp db/pgSet.cpp \
+pgadmin3_SOURCES = pgAdmin3.cpp \
+db/pgConn.cpp db/pgSet.cpp db/keywords.c \
 schema/pgAggregate.cpp schema/pgCast.cpp \
 schema/pgCheck.cpp schema/pgCollection.cpp \
 schema/pgColumn.cpp schema/pgConstraints.cpp \
@@ -40,7 +41,8 @@ ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = include/copyright.h include/version.h include/ctlSQLBox.h \
 include/ctlSQLResult.h include/dlgAddTableView.h \
-include/pgDefs.h include/pgDatatype.h \
+include/parser/parse.h include/parser/keywords.h include/nodes/parsenodes.h \
+include/postgres.h include/pgDefs.h include/pgDatatype.h \
 include/dlgCheck.h include/dlgColumn.h \
 include/dlgDatabase.h include/dlgDomain.h include/frmExport.h \
 include/dlgForeignKey.h include/dlgFunction.h include/dlgGroup.h \
@@ -159,7 +161,6 @@ nobase_dist_pkgdata_DATA = \
 ui/wxstd.mo \
 ui/pgadmin3.lng \
 ui/af_ZA/pgadmin3.mo \
-ui/ar/pgadmin3.mo \
 ui/ar_SA/pgadmin3.mo \
 ui/cs_CZ/pgadmin3.mo \
 ui/da_DK/pgadmin3.mo \
