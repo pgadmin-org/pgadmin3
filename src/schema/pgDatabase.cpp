@@ -165,11 +165,15 @@ wxString pgDatabase::GetSchemaPrefix(const wxString &name) const
     if (name.IsEmpty())
         return name;
 
+    wxString sp=wxT("public,pg_catalog");
+
+#if 0
+    // this wasn't really a good idea for object creation/modification.
     wxString sp=settings->GetSearchPath();
     if (sp.IsEmpty())
         sp = GetSearchPath();
     sp += wxT(",pg_catalog");
-
+#endif
     wxStringTokenizer spt(sp, wxT(","));
     while (spt.HasMoreTokens())
     {
