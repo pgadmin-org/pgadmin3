@@ -216,7 +216,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     //Setup a Browser imagelist
     wxImageList *ilBrowser = new wxImageList(16, 16);
     tvBrowser->SetImageList(ilBrowser);
-
+	
     //Stuff the Image List
     ilBrowser->Add(wxIcon(server_xpm));
     ilBrowser->Add(wxIcon(serverbad_xpm));
@@ -263,7 +263,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     wxColour colBack;
     colBack = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
     lvStatistics->SetBackgroundColour(colBack);
-
+	
     // Load servers
     RetrieveServers();
 }
@@ -446,7 +446,6 @@ void frmMain::ReconnectServer(pgServer *objServer)
 {
     // Create a server object and connect it.
     int iRes = objServer->Connect(TRUE);
-
     // Check the result, and handle it as appropriate
     if (iRes == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
@@ -923,21 +922,17 @@ void frmMain::svDatabases(pgCollection *objCollection)
 
 void frmMain::tvDatabase(pgDatabase *objDatabase)
 {
-
     wxString szMsg;
-
     if (objDatabase->Connect() == PGCONN_OK) {
-
         // Set the icon if required
         if (tvBrowser->GetItemImage(objDatabase->GetId(), wxTreeItemIcon_Normal) != 2) {
             tvBrowser->SetItemImage(objDatabase->GetId(), 2, wxTreeItemIcon_Normal);
-            tvBrowser->SetItemImage(objDatabase->GetId(), 2, wxTreeItemIcon_Selected);
-            wxTreeItemId itmDatabases = tvBrowser->GetParent(objDatabase->GetId());
-            tvBrowser->Collapse(itmDatabases);
-            tvBrowser->Expand(itmDatabases);
-            tvBrowser->SelectItem(objDatabase->GetId());
+			tvBrowser->SetItemImage(objDatabase->GetId(), 2, wxTreeItemIcon_Selected);
+			wxTreeItemId itmDatabases = tvBrowser->GetParent(objDatabase->GetId());
+			tvBrowser->Collapse(itmDatabases);
+			tvBrowser->Expand(itmDatabases);
+			tvBrowser->SelectItem(objDatabase->GetId());
         }
-
         // Add child nodes if necessary
         if (tvBrowser->GetChildrenCount(objDatabase->GetId(), FALSE) != 2) {
 

@@ -141,17 +141,24 @@ wxString pgConn::ExecuteScalar(const wxString& szSQL) const
     szMsg.Printf(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), iPort, szSQL.c_str());
     wxLogInfo(szMsg);
     qryRes = PQexec(objConn, szSQL.c_str());
-
+        
     // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
-        wxString szMsg;
         szMsg.Printf(wxT("%s"), PQerrorMessage(objConn));
         wxLogError(szMsg);
         PQclear(qryRes);
         return wxString("");
     }
 
-    // Retrieve the query result and return it.
+	// Check for a returned row
+    if (PQntuples(qryRes) < 1) {
+		szMsg.Printf(wxT("Query returned no tuples"));
+        wxLogInfo(szMsg);
+        PQclear(qryRes);
+        return wxString("");
+	}
+	
+	// Retrieve the query result and return it.
     wxString szResult;
     szResult.Printf("%s", PQgetvalue(qryRes, 0, 0));
     szMsg.Printf(wxT("Query result: %s"), szResult.c_str());

@@ -49,7 +49,7 @@ int pgDatabase::Connect() {
 
             // As we connected, we should now get the comments
             wxString szSQL, szComment;
-            szSQL.Printf(wxT("SELECT description FROM pg_description WHERE objoid = %f"), this->GetOid());
+            szSQL.Printf(wxT("SELECT description FROM pg_description WHERE objoid = %s"), NumToStr(this->GetOid()).c_str());
             szComment = cnDatabase->ExecuteScalar(szSQL);
             if (szComment != "(null)") {
                 this->iSetComment(szComment);
