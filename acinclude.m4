@@ -91,10 +91,24 @@ fi], [
         then
             LIBS="$LIBS -lwxxrc -lstc $WX_NEW_LDFLAGS"
         else
-            LIBS="$LIBS -lwx_gtkd_stc-2.4 -lwx_gtkd_xrc-2.4 $WX_NEW_LDFLAGS"
+            case "${host}" in
+            *-*-linux-*) 
+                LIBS="$LIBS -lwx_gtkd_stc-2.4 -lwx_gtkd_xrc-2.4"
+                LIBS="$LIBS $WX_NEW_LDFLAGS" ;;
+            *-apple-darwin*)
+                LIBS="$LIBS -lwx_macd_stc-2.4 -lwx_macd_xrc-2.4"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                LDFLAGS="$LDFLAGS -flat_namespace" ;;
+            *) ;;
+            esac
         fi
         WX_NEW_CPPFLAGS=`${WX_CONFIG} --cxxflags`
         CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS"
+        case "${host}" in
+        *-apple-darwin*)
+            CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti" ;;
+        *) ;;
+        esac
         AC_LANG_SAVE
         AC_LANG_C
         #AC_CHECK_LIB(what,what,[wx_lib=yes],[wx_lib=no])
