@@ -29,6 +29,8 @@ public:
     pgObject *GetObject();
     wxString GetDefinition();
     wxString GetPreviousDefinition() { return previousDefinition; }
+	wxString GetComment() {	return txtComment->GetValue(); }
+	wxString GetStatistics() {	return CTRL_TEXT("txtAttstattarget")->GetValue(); }
 
     int Go(bool modal);
 
