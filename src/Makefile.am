@@ -28,7 +28,7 @@ agent/pgaStep.cpp agent/pgaSchedule.cpp \
 ui/xh_sqlbox.cpp ui/xh_calb.cpp ui/calbox.cpp \
 ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
 ui/dlgAddTableView.cpp ui/dlgEditGridOptions.cpp \
-ui/events.cpp ui/frmAbout.cpp \
+ui/events.cpp ui/frmAbout.cpp ui/frmIndexCheck.cpp \
 ui/frmChildTableViewFrame.cpp ui/frmConnect.cpp \
 ui/frmMain.cpp ui/frmOptions.cpp ui/frmPassword.cpp \
 ui/frmQuery.cpp ui/frmQueryBuilder.cpp ui/frmHelp.cpp \
@@ -62,7 +62,7 @@ include/dlgOperator.h include/dlgView.h include/dlgRule.h \
 include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
 include/frmChildTableViewFrame.h include/frmConnect.h \ 
 include/frmEditGrid.h include/dlgEditGridOptions.h include/frmMain.h \
-include/frmOptions.h include/frmPassword.h \
+include/frmOptions.h include/frmPassword.h include/fromIndexCheck.h \
 include/frmQBJoin.h include/frmQueryBuilder.h include/frmHelp.h \
 include/frmQuery.h include/frmSplash.h \
 include/frmStatus.h include/frmMaintenance.h \
