@@ -1,5 +1,5 @@
-pgAdmin III
-===========
+pgAdmin III README
+==================
 
 Introduction
 ------------
