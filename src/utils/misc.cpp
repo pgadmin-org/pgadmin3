@@ -130,7 +130,7 @@ wxString NumToStr(double value)
     
     if (decsep.Length() == 0) {
         decsep.Printf("%lf", 1.2);
-        decsep = decsep.Mid(1,1);
+        decsep = decsep[(unsigned int)1];
     }
 
     result.Printf("%lf", value);

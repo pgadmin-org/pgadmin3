@@ -203,9 +203,15 @@ float pgConn::GetVersionNumber()
     int major, minor;
     wxString version;
 
+    static wxString decsep;
+    if (decsep.Length() == 0) {
+        decsep.Printf("%lf", 1.2);
+        decsep = decsep[(unsigned int)1];
+    }
+
 	if (sscanf(GetVersionString(), "%*s %d.%d", &major, &minor) >= 2)
 	{
-		version.Printf("%d.%d", major, minor);
+		version.Printf("%d%s%d", major, decsep, minor);
 	}
 	return (float) atof(version.c_str());
 }
