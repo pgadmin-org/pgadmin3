@@ -15,32 +15,10 @@
 #include <wx/listctrl.h>
 #include <wx/thread.h>
 
-#include <libpq-fe.h>
-#include "pgConn.h"
 #include "pgSet.h"
+#include "pgConn.h"
 
 
-
-class queryThread : public wxThread
-{
-private:
-    wxString query;
-    PGconn *conn;
-
-public:
-    queryThread(PGconn *_conn, const wxString &qry);
-    ~queryThread();
-    virtual void *Entry();
-
-    int running;
-    int rc;
-    PGresult *result;
-    wxString messages;
-    pgSet *dataSet;
-
-private:
-    int execute();
-};
 
 
 #define CTLSQL_RUNNING 100  // must be greater than ExecStatusType PGRES_xxx values
@@ -64,7 +42,7 @@ public:
     wxString GetErrorMessage();
 
 private:
-    queryThread *thread;
+    pgQueryThread *thread;
     pgConn *conn;
     long rowsRetrieved;
 };

@@ -64,5 +64,30 @@ private:
     wxString ExecuteScalar(const wxString& sql) const;
 };
 
+
+
+class pgQueryThread : public wxThread
+{
+public:
+    pgQueryThread(PGconn *_conn, const wxString &qry);
+    ~pgQueryThread();
+
+    virtual void *Entry();
+    bool DataValid() const { return dataSet != NULL; }
+    pgSet *DataSet() { return dataSet; }
+    int ReturnCode() const { return rc; }
+    wxString GetMessages() const { return messages; }
+private:
+    int rc;
+
+    wxString query;
+    PGconn *conn;
+    PGresult *result;
+    wxString messages;
+    pgSet *dataSet;
+
+    int execute();
+};
+
 #endif
 

@@ -37,7 +37,7 @@ int ctlSQLResult::Execute(const wxString &query)
     ClearAll();
     rowsRetrieved=0;
 
-    thread = new queryThread(conn->connection(), query);
+    thread = new pgQueryThread(conn->connection(), query);
 
     if (thread->Create() != wxTHREAD_NO_ERROR)
     {
@@ -64,23 +64,23 @@ int ctlSQLResult::Abort()
 
 int ctlSQLResult::RetrieveOne()
 {
-    if (!thread || !thread->dataSet)
+    if (!thread || !thread->DataValid())
         return -1;
 
-    if (thread->rc != PGRES_TUPLES_OK)
+    if (thread->ReturnCode() != PGRES_TUPLES_OK)
         return -1;
 
     if (!rowsRetrieved)
     {
         int w, h;
         GetSize(&w, &h);
-        InsertColumn(0, thread->dataSet->ColName(0), wxLIST_FORMAT_LEFT, w);
+        InsertColumn(0, thread->DataSet()->ColName(0), wxLIST_FORMAT_LEFT, w);
 
-        while (!thread->dataSet->Eof())
+        while (!thread->DataSet()->Eof())
         {
-            InsertItem(rowsRetrieved, thread->dataSet->GetVal(0));
+            InsertItem(rowsRetrieved, thread->DataSet()->GetVal(0));
             rowsRetrieved++;
-            thread->dataSet->MoveNext();
+            thread->DataSet()->MoveNext();
         }
         return rowsRetrieved;
     }
@@ -90,14 +90,14 @@ int ctlSQLResult::RetrieveOne()
 
 int ctlSQLResult::Retrieve(long chunk)
 {
-    if (!thread || !thread->dataSet)
+    if (!thread || !thread->DataValid())
         return 0;
 
     if (chunk<0)
-        chunk=thread->dataSet->NumRows();
+        chunk=thread->DataSet()->NumRows();
     wxLogInfo("retrieve %d: did %d from %d", chunk, rowsRetrieved, NumRows());
 
-    long col, nCols=thread->dataSet->NumCols();
+    long col, nCols=thread->DataSet()->NumCols();
     if (!rowsRetrieved)
     {
         wxString colName, colType;
@@ -106,24 +106,24 @@ int ctlSQLResult::Retrieve(long chunk)
 
         for (col=0 ; col < nCols ; col++)
         {
-            colName = thread->dataSet->ColName(col);
-            colType = thread->dataSet->ColType(col);
+            colName = thread->DataSet()->ColName(col);
+            colType = thread->DataSet()->ColType(col);
             InsertColumn(col+1, colName +wxT(" (")+ colType +wxT(")"), wxLIST_FORMAT_LEFT, -1);
         }
     }
 
     long count=0;
-    while (chunk-- && !thread->dataSet->Eof())
+    while (chunk-- && !thread->DataSet()->Eof())
     {
         InsertItem(rowsRetrieved, NumToStr(rowsRetrieved+1L));
 
         for (col=0 ; col < nCols ; col++)
         {
-            wxString value = thread->dataSet->GetVal(col);
+            wxString value = thread->DataSet()->GetVal(col);
             SetItem(rowsRetrieved, col+1, value);
         }
         
-        thread->dataSet->MoveNext();
+        thread->DataSet()->MoveNext();
         rowsRetrieved++;
         count++;
     }
@@ -136,7 +136,7 @@ int ctlSQLResult::Retrieve(long chunk)
 wxString ctlSQLResult::GetMessages()
 {
     if (thread)
-        return thread->messages;
+        return thread->GetMessages();
     return wxString();
 }
 
@@ -151,8 +151,8 @@ wxString ctlSQLResult::GetErrorMessage()
 
 long ctlSQLResult::NumRows()
 {
-    if (thread && thread->dataSet)
-        return thread->dataSet->NumRows();
+    if (thread && thread->DataValid())
+        return thread->DataSet()->NumRows();
     return 0;
 }
 
@@ -165,90 +165,7 @@ int ctlSQLResult::RunStatus()
     if (thread->IsRunning())
         return CTLSQL_RUNNING;
 
-    return thread->rc;
+    return thread->ReturnCode();
 }
 
 
-
-queryThread::queryThread(PGconn *_conn, const wxString &qry) : wxThread(wxTHREAD_JOINABLE)
-{
-    running = 1;
-
-    query = qry;
-    conn=_conn;
-    dataSet=0;
-    result=0;
-    PQsetnonblocking(conn, 1);
-}
-
-
-queryThread::~queryThread()
-{
-    if (dataSet)
-        delete dataSet;
-}
-
-
-int queryThread::execute()
-{
-    wxLongLong startTime=wxGetLocalTimeMillis();
-
-    if (!PQsendQuery(conn, query.c_str()))
-        return(0);
-
-    while (running > 0)
-    {
-        if (TestDestroy())
-        {
-            if (!PQrequestCancel(conn)) // could not abort; abort failed.
-            {
-                running=-1;
-                return(-1);
-            }
-        }
-        if (!PQconsumeInput(conn))
-            return(0);
-        if (PQisBusy(conn))
-        {
-            Yield();
-            wxUsleep(10);
-            continue;
-        }
-
-        // only the last result set will be returned
-        // all others are discarded
-        PGresult *res=PQgetResult(conn);
-        wxLongLong elapsed=wxGetLocalTimeMillis() - startTime;
-        startTime = wxGetLocalTimeMillis();
-        if (!res)
-            break;
-        if (result)
-        {
-            messages += wxT(
-                "Query result with ") + NumToStr((long)PQntuples(result)) + wxT(" rows discarded.\n");
-            PQclear(result);
-        }
-        result=res;
-    }
-    messages += wxT("\n");
-    running=0;
-    rc=PQresultStatus(result);
-
-    if (rc == PGRES_TUPLES_OK)
-    {
-        dataSet = new pgSet(result, conn);
-        dataSet->MoveFirst();
-        dataSet->GetVal(0);
-    }
-    return(1);
-}
-
-
-void *queryThread::Entry()
-{
-    wxLogInfo(wxT("Running query %s"), query.c_str());
-
-    execute();
-
-    return(NULL);
-}
