@@ -7,7 +7,7 @@
 
 
 CC = g++
-PGDIR = /usr/local/pgsql
+PGDIR = /usr/local/pgsql-7.3
 WXDIR = /usr/local/wx2
 
 # You shouldn't need to edit below here.
@@ -45,7 +45,7 @@ OBJECTS = $(PROGRAM).o \
           schema/pgUser.o \
           schema/pgView.o \
           ui/ctlSQLBox.o \
-	  ui\ctlSQLResult.o \
+	  ui/ctlSQLResult.o \
           ui/dlgAddTableView.o \
           ui/events.o \
           ui/frmAbout.o \
