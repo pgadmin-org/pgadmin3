@@ -480,8 +480,9 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 
 void frmMain::OnAddServer(wxCommandEvent &ev)
 {
-    // Create a server object and connec it.
-    pgServer *server = new pgServer(settings->GetLastServer(), settings->GetLastDatabase(), settings->GetLastUsername(), settings->GetLastPort(), settings->GetLastSSL());
+    // Create a server object and connect it.
+    pgServer *server = new pgServer(settings->GetLastServer(), settings->GetLastDatabase(), 
+        settings->GetLastUsername(), settings->GetLastPort(), false, settings->GetLastSSL());
     int res = server->Connect(this);
 
     // Check the result, and handle it as appropriate
