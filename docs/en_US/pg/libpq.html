@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Interfaces"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="client-interfaces.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="client-interfaces.html#AEN19948"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="largeobjects.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="libpq-status.html"
 ACCESSKEY="N"
@@ -228,7 +240,10 @@ HREF="libpq-example.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN19281"
+NAME="AEN19956"
+></A
+><A
+NAME="AEN19958"
 ></A
 ><P
 >   <SPAN
@@ -301,12 +316,16 @@ CLASS="FILENAME"
 >   Client programs that use <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> must include the
-   header file <TT
+> must
+   include the header file
+   <TT
 CLASS="FILENAME"
 >libpq-fe.h</TT
-> and must link with the
-   <SPAN
+><A
+NAME="AEN19981"
+></A
+>
+   and must link with the <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > library.
@@ -331,25 +350,29 @@ CLASS="PRODUCTNAME"
    <TT
 CLASS="STRUCTNAME"
 >PGconn</TT
-> object which is obtained from the function
-   <CODE
+><A
+NAME="AEN19989"
+></A
+> object which
+   is obtained from the function <CODE
 CLASS="FUNCTION"
 >PQconnectdb</CODE
-> or <CODE
+> or
+   <CODE
 CLASS="FUNCTION"
 >PQsetdbLogin</CODE
->.  Note that
-   these functions will always return a non-null object pointer,
-   unless perhaps there is too little memory even to allocate the
-   <TT
+>.  Note that these functions will always
+   return a non-null object pointer, unless perhaps there is too
+   little memory even to allocate the <TT
 CLASS="STRUCTNAME"
 >PGconn</TT
-> object.  The <CODE
+> object.
+   The <CODE
 CLASS="FUNCTION"
 >PQstatus</CODE
-> function
-   should be called to check whether a connection was successfully
-   made before queries are sent via the connection object.
+> function should be called to check
+   whether a connection was successfully made before queries are sent
+   via the connection object.
 
    <P
 ></P
@@ -360,6 +383,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQconnectdb</CODE
+><A
+NAME="AEN19999"
+></A
 ></DT
 ><DD
 ><P
@@ -426,15 +452,21 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->      Name of host to connect to. 
-      If this begins with a slash, it specifies Unix-domain communication
-      rather than TCP/IP communication; the value is the name of the
-      directory in which the socket file is stored.
-      The default is to connect to a Unix-domain socket in
+>      Name of host to connect to.<A
+NAME="AEN20021"
+></A
+>
+      If this begins with a slash, it specifies Unix-domain
+      communication rather than TCP/IP communication; the value is the
+      name of the directory in which the socket file is stored.  The
+      default is to connect to a Unix-domain socket in
       <TT
 CLASS="FILENAME"
 >/tmp</TT
->.
+>.<A
+NAME="AEN20024"
+></A
+>
      </P
 ></DD
 ><DT
@@ -536,8 +568,12 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->      Port number to connect to at the server host,
-      or socket file name extension for Unix-domain connections.
+>      Port number to connect to at the server host, or socket file
+      name extension for Unix-domain
+      connections.<A
+NAME="AEN20056"
+></A
+>
      </P
 ></DD
 ><DT
@@ -612,74 +648,80 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->      This option determines whether or with what priority an <ACRONYM
+>       This option determines whether or with what priority an
+       <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
->
-      connection will be negotiated with the server. There are four
-      modes: <VAR
+> connection will be negotiated with the
+       server. There are four modes: <VAR
 CLASS="LITERAL"
 >disable</VAR
-> will attempt only an unencrypted
-      <ACRONYM
+> will attempt
+       only an unencrypted <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
-> connection; <VAR
+> connection;
+       <VAR
 CLASS="LITERAL"
 >allow</VAR
-> will negotiate,
-      trying first a non-<ACRONYM
+> will negotiate, trying first a
+       non-<ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
-> connection, then if that fails,
-      trying an <ACRONYM
+> connection, then if that fails, trying an
+       <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
 > connection; <VAR
 CLASS="LITERAL"
 >prefer</VAR
->
-	  (the default) will negotiate, trying first an <ACRONYM
+> (the default)
+       will negotiate, trying first an <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
 > connection,
-	  then if that fails, trying a regular non-<ACRONYM
+       then if that fails, trying a regular non-<ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
-> connection;
-      <VAR
+>
+       connection; <VAR
 CLASS="LITERAL"
 >require</VAR
-> will try only an <ACRONYM
+> will try only an
+       <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
 > connection.
-	 </P
+      </P
 ><P
->	  If <SPAN
+>       If <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is compiled without SSL support,
-	  using option <VAR
+       using option <VAR
 CLASS="LITERAL"
 >require</VAR
-> will cause an error, and options
-	  <VAR
+> will cause an error, and
+       options <VAR
 CLASS="LITERAL"
 >allow</VAR
 > and <VAR
 CLASS="LITERAL"
 >prefer</VAR
-> will be tolerated but
-	  <SPAN
+> will be
+       tolerated but <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> will be unable to negotiate an <ACRONYM
+> will be unable to negotiate
+       an <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
 >
-	  connection.
-     </P
+       connection.<A
+NAME="AEN20112"
+></A
+>
+      </P
 ></DD
 ><DT
 ><VAR
@@ -688,49 +730,50 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->	  This option is deprecated in favor of the <VAR
+>       This option is deprecated in favor of the <VAR
 CLASS="LITERAL"
 >sslmode</VAR
 >
-	  setting.
-	 </P
+       setting.
+      </P
 ><P
->      If set to 1, an <ACRONYM
+>       If set to 1, an <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
-> connection to the server is required
-	  (this is equivalent to <VAR
+> connection to the server
+       is required (this is equivalent to <VAR
 CLASS="LITERAL"
 >sslmode</VAR
-> <VAR
+>
+       <VAR
 CLASS="LITERAL"
 >require</VAR
->).
-      <SPAN
+>).  <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> will then refuse to connect if the server does not
-      accept an <ACRONYM
+> will then refuse
+       to connect if the server does not accept an
+       <ACRONYM
 CLASS="ACRONYM"
 >SSL</ACRONYM
-> connection.
-      If set to 0 (default), <SPAN
+> connection.  If set to 0 (default),
+       <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> will negotiate the connection
-	  type with the server (equivalent to <VAR
+> will negotiate the connection type with
+       the server (equivalent to <VAR
 CLASS="LITERAL"
 >sslmode</VAR
-> <VAR
+>
+       <VAR
 CLASS="LITERAL"
 >prefer</VAR
->).
-      This option is only available if
-      <SPAN
+>).  This option is only available if
+       <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is compiled with SSL support.
-     </P
+      </P
 ></DD
 ><DT
 ><VAR
@@ -773,6 +816,9 @@ HREF="libpq-envars.html"
 ><CODE
 CLASS="FUNCTION"
 >PQsetdbLogin</CODE
+><A
+NAME="AEN20143"
+></A
 ></DT
 ><DD
 ><P
@@ -801,6 +847,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQsetdb</CODE
+><A
+NAME="AEN20153"
+></A
 ></DT
 ><DD
 ><P
@@ -832,14 +881,20 @@ CLASS="PARAMETER"
 ><CODE
 CLASS="FUNCTION"
 >PQconnectStart</CODE
+><A
+NAME="AEN20165"
+></A
 ><BR><CODE
 CLASS="FUNCTION"
 >PQconnectPoll</CODE
+><A
+NAME="AEN20169"
+></A
 ></DT
 ><DD
 ><P
 >   <A
-NAME="AEN19473"
+NAME="AEN20173"
 ></A
 >
    Make a connection to the database server in a nonblocking manner.
@@ -1194,6 +1249,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQconndefaults</CODE
+><A
+NAME="AEN20277"
+></A
 ></DT
 ><DD
 ><P
@@ -1255,6 +1313,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQfinish</CODE
+><A
+NAME="AEN20293"
+></A
 ></DT
 ><DD
 ><P
@@ -1294,6 +1355,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQreset</CODE
+><A
+NAME="AEN20308"
+></A
 ></DT
 ><DD
 ><P
@@ -1314,9 +1378,15 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQresetStart</CODE
+><A
+NAME="AEN20317"
+></A
 ><BR><CODE
 CLASS="FUNCTION"
 >PQresetPoll</CODE
+><A
+NAME="AEN20321"
+></A
 ></DT
 ><DD
 ><P

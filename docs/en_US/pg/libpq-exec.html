@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,22 +37,31 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="libpq-status.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 27. <SPAN
@@ -67,7 +71,15 @@ CLASS="APPLICATION"
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="libpq-async.html"
 ACCESSKEY="N"
@@ -108,6 +120,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQexec</CODE
+><A
+NAME="AEN20557"
+></A
 ></DT
 ><DD
 ><P
@@ -126,11 +141,11 @@ CLASS="STRUCTNAME"
           out-of-memory conditions or serious errors such as inability
           to send the command to the server.
           If a null pointer is returned, it
-	  should be treated like a <TT
+          should be treated like a <TT
 CLASS="SYMBOL"
 >PGRES_FATAL_ERROR</TT
 > result.  Use
-	  <CODE
+          <CODE
 CLASS="FUNCTION"
 >PQerrorMessage</CODE
 > to get more information about the error.</P
@@ -167,12 +182,15 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQexecParams</CODE
+><A
+NAME="AEN20574"
+></A
 ></DT
 ><DD
 ><P
 >          Submits a command to the server and waits for the result,
-	  with the ability to pass parameters separately from the SQL
-	  command text.
+          with the ability to pass parameters separately from the SQL
+          command text.
 </P><PRE
 CLASS="SYNOPSIS"
 >PGresult *PQexecParams(PGconn *conn,
@@ -303,11 +321,14 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQexecPrepared</CODE
+><A
+NAME="AEN20607"
+></A
 ></DT
 ><DD
 ><P
 >          Sends a request to execute a prepared statement with given
-	  parameters, and waits for the result.
+          parameters, and waits for the result.
 </P><PRE
 CLASS="SYNOPSIS"
 >PGresult *PQexecPrepared(PGconn *conn,
@@ -370,27 +391,33 @@ CLASS="APPLICATION"
 A lower-level interface for preparing statements may be offered in a
 future release.</P
 ><P
->The <TT
-CLASS="STRUCTNAME"
->PGresult</TT
-> structure encapsulates the result
-returned by the server.
-<SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> application programmers should be careful to
-maintain the <TT
-CLASS="STRUCTNAME"
->PGresult</TT
-> abstraction.  Use the accessor functions below to get
-at the contents of <TT
-CLASS="STRUCTNAME"
->PGresult</TT
->.  Avoid directly referencing the fields of the
+>The
 <TT
 CLASS="STRUCTNAME"
 >PGresult</TT
-> structure because they are subject to change in the future.
+><A
+NAME="AEN20625"
+></A
+>
+structure encapsulates the result returned by the server.
+<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> application programmers should be
+careful to maintain the <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> abstraction.
+Use the accessor functions below to get at the contents of
+<TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+>.  Avoid directly referencing the
+fields of the <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> structure because they
+are subject to change in the future.
 
 <P
 ></P
@@ -401,6 +428,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQresultStatus</CODE
+><A
+NAME="AEN20635"
+></A
 ></DT
 ><DD
 ><P
@@ -551,14 +581,17 @@ HREF="libpq-notice-processing.html"
 ><CODE
 CLASS="FUNCTION"
 >PQresStatus</CODE
+><A
+NAME="AEN20699"
+></A
 ></DT
 ><DD
 ><P
->	Converts the enumerated type returned by <CODE
+>        Converts the enumerated type returned by <CODE
 CLASS="FUNCTION"
 >PQresultStatus</CODE
 > into
-	a string constant describing the status code.
+        a string constant describing the status code.
 </P><PRE
 CLASS="SYNOPSIS"
 >char *PQresStatus(ExecStatusType status);</PRE
@@ -568,6 +601,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQresultErrorMessage</CODE
+><A
+NAME="AEN20708"
+></A
 ></DT
 ><DD
 ><P
@@ -616,6 +652,9 @@ when you want to know the status from the latest operation on the connection.</P
 ><CODE
 CLASS="FUNCTION"
 >PQresultErrorField</CODE
+><A
+NAME="AEN20725"
+></A
 ></DT
 ><DD
 ><P
@@ -810,6 +849,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQclear</CODE
+><A
+NAME="AEN20803"
+></A
 ></DT
 ><DD
 ><P
@@ -843,6 +885,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQmakeEmptyPGresult</CODE
+><A
+NAME="AEN20816"
+></A
 ></DT
 ><DD
 ><P
@@ -920,6 +965,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQntuples</CODE
+><A
+NAME="AEN20840"
+></A
 ></DT
 ><DD
 ><P
@@ -934,6 +982,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQnfields</CODE
+><A
+NAME="AEN20848"
+></A
 ></DT
 ><DD
 ><P
@@ -948,6 +999,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQfname</CODE
+><A
+NAME="AEN20856"
+></A
 ></DT
 ><DD
 ><P
@@ -965,6 +1019,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQfnumber</CODE
+><A
+NAME="AEN20865"
+></A
 ></DT
 ><DD
 ><P
@@ -982,6 +1039,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQftable</CODE
+><A
+NAME="AEN20874"
+></A
 ></DT
 ><DD
 ><P
@@ -1023,6 +1083,9 @@ CLASS="APPLICATION"
 ><CODE
 CLASS="FUNCTION"
 >PQftablecol</CODE
+><A
+NAME="AEN20889"
+></A
 ></DT
 ><DD
 ><P
@@ -1043,6 +1106,9 @@ or when using pre-3.0 protocol.</P
 ><CODE
 CLASS="FUNCTION"
 >PQfformat</CODE
+><A
+NAME="AEN20898"
+></A
 ></DT
 ><DD
 ><P
@@ -1062,6 +1128,9 @@ for future definition.)</P
 ><CODE
 CLASS="FUNCTION"
 >PQftype</CODE
+><A
+NAME="AEN20907"
+></A
 ></DT
 ><DD
 ><P
@@ -1093,6 +1162,9 @@ in the source tree.</P
 ><CODE
 CLASS="FUNCTION"
 >PQfmod</CODE
+><A
+NAME="AEN20919"
+></A
 ></DT
 ><DD
 ><P
@@ -1117,6 +1189,9 @@ in which case the value is always -1.</P
 ><CODE
 CLASS="FUNCTION"
 >PQfsize</CODE
+><A
+NAME="AEN20929"
+></A
 ></DT
 ><DD
 ><P
@@ -1141,6 +1216,9 @@ A negative value indicates the data type is variable-length.</P
 ><CODE
 CLASS="FUNCTION"
 >PQbinaryTuples</CODE
+><A
+NAME="AEN20939"
+></A
 ></DT
 ><DD
 ><P
@@ -1177,11 +1255,14 @@ returns 1 only if all columns of the result are binary (format 1).</P
 ><CODE
 CLASS="FUNCTION"
 >PQgetvalue</CODE
+><A
+NAME="AEN20953"
+></A
 ></DT
 ><DD
 ><P
 >            Returns a single field value of one row
-	    of a <TT
+            of a <TT
 CLASS="STRUCTNAME"
 >PGresult</TT
 >.
@@ -1236,6 +1317,9 @@ CLASS="STRUCTNAME"
 ><CODE
 CLASS="FUNCTION"
 >PQgetisnull</CODE
+><A
+NAME="AEN20972"
+></A
 ></DT
 ><DD
 ><P
@@ -1259,6 +1343,9 @@ will return an empty string, not a null pointer, for a null field.)</P
 ><CODE
 CLASS="FUNCTION"
 >PQgetlength</CODE
+><A
+NAME="AEN20985"
+></A
 ></DT
 ><DD
 ><P
@@ -1296,6 +1383,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQprint</CODE
+><A
+NAME="AEN20998"
+></A
 ></DT
 ><DD
 ><P
@@ -1358,11 +1448,14 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQcmdStatus</CODE
+><A
+NAME="AEN21014"
+></A
 ></DT
 ><DD
 ><P
 >          Returns the command status tag from the SQL command that
-	  generated the <TT
+          generated the <TT
 CLASS="STRUCTNAME"
 >PGresult</TT
 >.
@@ -1378,10 +1471,13 @@ data such as the number of rows processed.</P
 ><CODE
 CLASS="FUNCTION"
 >PQcmdTuples</CODE
+><A
+NAME="AEN21024"
+></A
 ></DT
 ><DD
 ><P
->	  Returns the number of rows affected by the SQL command.
+>          Returns the number of rows affected by the SQL command.
 </P><PRE
 CLASS="SYNOPSIS"
 >char * PQcmdTuples(PGresult *res);</PRE
@@ -1391,14 +1487,14 @@ CLASS="SYNOPSIS"
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > command that generated the
-	  <TT
+          <TT
 CLASS="STRUCTNAME"
 >PGresult</TT
 > was <TT
 CLASS="COMMAND"
 >INSERT</TT
 >,
-	  <TT
+          <TT
 CLASS="COMMAND"
 >UPDATE</TT
 >, <TT
@@ -1408,30 +1504,37 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >MOVE</TT
 >,
-	  or <TT
+          or <TT
 CLASS="COMMAND"
 >FETCH</TT
 >, this returns a
-	  string containing the number of rows affected.  If the
+          string containing the number of rows affected.  If the
           command was anything else, it returns the empty string.</P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQoidValue</CODE
+><A
+NAME="AEN21040"
+></A
 ></DT
 ><DD
 ><P
->          Returns the OID of the inserted row, if the
-	  <ACRONYM
+>          Returns the OID<A
+NAME="AEN21044"
+></A
+> of the inserted row, if the
+          <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> command was an <TT
+> command was an
+          <TT
 CLASS="COMMAND"
 >INSERT</TT
->
-	  that inserted exactly one row into a table that has OIDs.
-          Otherwise, returns <VAR
+> that inserted exactly one row into
+          a table that has OIDs.  Otherwise, returns
+          <VAR
 CLASS="LITERAL"
 >InvalidOid</VAR
 >.
@@ -1444,6 +1547,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQoidStatus</CODE
+><A
+NAME="AEN21054"
+></A
 ></DT
 ><DD
 ><P
@@ -1492,7 +1598,10 @@ NAME="LIBPQ-EXEC-ESCAPE-STRING"
 >27.3.4. Escaping Strings for Inclusion in SQL Commands</A
 ></H2
 ><A
-NAME="AEN20260"
+NAME="AEN21068"
+></A
+><A
+NAME="AEN21070"
 ></A
 ><P
 ><CODE
@@ -1601,7 +1710,7 @@ NAME="LIBPQ-EXEC-ESCAPE-BYTEA"
 >27.3.5. Escaping Binary Strings for Inclusion in SQL Commands</A
 ></H2
 ><A
-NAME="AEN20288"
+NAME="AEN21098"
 ></A
 ><P
 ></P
@@ -1612,6 +1721,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQescapeBytea</CODE
+><A
+NAME="AEN21105"
+></A
 ></DT
 ><DD
 ><P
@@ -1708,20 +1820,31 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQfreemem()</CODE
 > when the result is no longer needed.
-   The return string has all special characters replaced
-   so that they can be properly processed by the PostgreSQL string literal
-   parser, and the <TT
+   The return string has all special characters replaced so that they
+   can be properly processed by the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> string literal parser, and
+   the <TT
 CLASS="TYPE"
 >bytea</TT
-> input function. A terminating zero
-   byte is also added.  The single quotes that must surround
-   PostgreSQL string literals are not part of the result string.
+> input function. A terminating zero byte is
+   also added.  The single quotes that must surround
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> string literals are not part
+   of the result string.
   </P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQunescapeBytea</CODE
+><A
+NAME="AEN21136"
+></A
 ></DT
 ><DD
 ><P
@@ -1776,6 +1899,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQfreemem</CODE
+><A
+NAME="AEN21154"
+></A
 ></DT
 ><DD
 ><P

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-dropview.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropview.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-execute.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-execute.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-END"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42363"
+NAME="AEN40455"
 ></A
 ><H2
 >Name</H2
 >END&nbsp;--&nbsp;commit the current transaction</DIV
+><A
+NAME="AEN40458"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42366"
+NAME="AEN40460"
 ></A
 ><H2
 >Synopsis</H2
@@ -102,7 +117,7 @@ CLASS="SYNOPSIS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42368"
+NAME="AEN40462"
 ></A
 ><H2
 >Description</H2
@@ -112,8 +127,12 @@ CLASS="COMMAND"
 >END</TT
 > commits the current transaction. All changes
    made by the transaction become visible to others and are guaranteed
-   to be durable if a crash occurs.  It is a PostgreSQL extension that
-   is equivalent to <A
+   to be durable if a crash occurs.  This command is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension
+   that is equivalent to <A
 HREF="sql-commit.html"
 ><I
 >COMMIT</I
@@ -124,7 +143,7 @@ HREF="sql-commit.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42373"
+NAME="AEN40468"
 ></A
 ><H2
 >Parameters</H2
@@ -152,42 +171,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42383"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->COMMIT</SAMP
-></DT
-><DD
-><P
->      Message returned if the transaction was successfully committed.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->WARNING:  COMMIT: no transaction in progress</SAMP
-></DT
-><DD
-><P
->      Message if there is no transaction in progress.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN42396"
+NAME="AEN40478"
 ></A
 ><H2
 >Notes</H2
@@ -200,11 +184,18 @@ HREF="sql-rollback.html"
 > to
    abort a transaction.
   </P
+><P
+>   Issuing <TT
+CLASS="COMMAND"
+>END</TT
+> when not inside a transaction does
+   no harm, but it will provoke a warning message.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42400"
+NAME="AEN40484"
 ></A
 ><H2
 >Examples</H2
@@ -219,7 +210,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42404"
+NAME="AEN40488"
 ></A
 ><H2
 >Compatibility</H2
@@ -239,6 +230,29 @@ HREF="sql-commit.html"
 >, which is
    specified in the SQL standard.
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40494"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+>, <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+>, <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

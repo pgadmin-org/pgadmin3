@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Information Schema"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="infoschema-column-udt-usage.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. The Information Schema</TD
+>Chapter 32. The Information Schema</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="infoschema-constraint-column-usage.html"
 ACCESSKEY="N"
@@ -81,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-COLUMNS"
->33.9. <VAR
+>32.9. <VAR
 CLASS="LITERAL"
 >columns</VAR
 ></A
@@ -102,11 +114,11 @@ CLASS="LITERAL"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN26776"
+NAME="AEN25680"
 ></A
 ><P
 ><B
->Table 33-7. <VAR
+>Table 32-7. <VAR
 CLASS="LITERAL"
 >columns</VAR
 > Columns</B
@@ -310,7 +322,10 @@ CLASS="LITERAL"
 >data_type</VAR
 > identifies a character type,
        the maximum possible length in octets (bytes) of a datum (this
-       should not be of concern to PostgreSQL users); null for all
+       should not be of concern to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> users); null for all
        other data types.
       </TD
 ></TR
@@ -720,14 +735,21 @@ CLASS="TYPE"
 ></DIV
 ><P
 >   Since data types can be defined in a variety of ways in SQL, and
-   PostgreSQL contains additional ways to define data types, their
-   representation in the information schema can be somewhat difficult.
-   The column <VAR
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> contains additional ways to
+   define data types, their representation in the information schema
+   can be somewhat difficult.  The column <VAR
 CLASS="LITERAL"
 >data_type</VAR
-> is supposed to identify the
-   underlying built-in type of the column.  In PostgreSQL, this means
-   that the type is defined in the system catalog schema
+>
+   is supposed to identify the underlying built-in type of the column.
+   In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, this means that the type
+   is defined in the system catalog schema
    <VAR
 CLASS="LITERAL"
 >pg_catalog</VAR
@@ -746,13 +768,17 @@ CLASS="LITERAL"
 >udt_catalog</VAR
 >
    always identify the underlying data type of the column, even if the
-   column is based on a domain.  (Since PostgreSQL treats built-in
-   types like user-defined types, built-in types appear here as well.
-   This is an extension of the SQL standard.)  These columns should be
-   used if an application wants to process data differently according
-   to the type, because in that case it wouldn't matter if the column
-   is really based on a domain.  If the column is based on a domain,
-   the identity of the domain is stored in the columns
+   column is based on a domain.  (Since
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> treats built-in types like
+   user-defined types, built-in types appear here as well.  This is an
+   extension of the SQL standard.)  These columns should be used if an
+   application wants to process data differently according to the
+   type, because in that case it wouldn't matter if the column is
+   really based on a domain.  If the column is based on a domain, the
+   identity of the domain is stored in the columns
    <VAR
 CLASS="LITERAL"
 >domain_name</VAR

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="app-postgres.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-postgres.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="internals.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="internals.html"
 ACCESSKEY="N"
@@ -86,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN50178"
+NAME="AEN48186"
 ></A
 ><H2
 >Name</H2
@@ -94,10 +106,13 @@ NAME="AEN50178"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > multiuser database server</DIV
+><A
+NAME="AEN48190"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN50182"
+NAME="AEN48192"
 ></A
 ><H2
 >Synopsis</H2
@@ -146,7 +161,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50218"
+NAME="AEN48228"
 ></A
 ><H2
 >Description</H2
@@ -681,7 +696,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50385"
+NAME="AEN48395"
 ></A
 ><H2
 >Environment</H2
@@ -720,8 +735,8 @@ CLASS="ENVAR"
 ><DD
 ><P
 >      Default value of the <VAR
-CLASS="LITERAL"
->datestyle</VAR
+CLASS="VARNAME"
+>DATESTYLE</VAR
 > run-time
       parameter.  (The use of this environment variable is deprecated.)
      </P
@@ -764,37 +779,24 @@ HREF="manage-ag-alternate-locs.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50419"
+NAME="AEN48429"
 ></A
 ><H2
 >Diagnostics</H2
 ><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->semget: No space left on device</SAMP
-></DT
-><DD
-><P
->	If you see this message, you probably need to configure
-	your kernel for shared memory and semaphores as described in <A
+>    A failure message mentioning <VAR
+CLASS="LITERAL"
+>semget</VAR
+> or <VAR
+CLASS="LITERAL"
+>shmget</VAR
+>
+    probably indicates you need to configure your kernel to provide adequate
+    shared memory and semaphores.  For more discussion see <A
 HREF="kernel-resources.html"
 >Section 16.5</A
 >.
-	If you run multiple instances of
-	<TT
-CLASS="COMMAND"
->postmaster</TT
->
-	on a single host, or have a kernel with particularly small shared memory
-	and/or semaphore limits, you may have to reconfigure your kernel to increase
-	its shared memory or semaphore parameters.
-       </P
+   </P
 ><DIV
 CLASS="TIP"
 ><BLOCKQUOTE
@@ -802,38 +804,25 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->	  You may be able to postpone
-	  reconfiguring your kernel by decreasing <VAR
-CLASS="OPTION"
->-B</VAR
-> to reduce
-	  the shared memory consumption of <SPAN
+>     You may be able to postpone reconfiguring your kernel by decreasing
+     <VAR
+CLASS="VARNAME"
+>shared_buffers</VAR
+> to reduce the shared memory consumption
+     of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->,
-	  and/or by reducing <VAR
-CLASS="OPTION"
->-N</VAR
-> to reduce the semaphore
-	  consumption.
-	 </P
+>, and/or by reducing
+     <VAR
+CLASS="VARNAME"
+>max_connections</VAR
+> to reduce the semaphore consumption.
+    </P
 ></BLOCKQUOTE
 ></DIV
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->StreamServerPort: cannot bind to port</SAMP
-></DT
-><DD
 ><P
->	If you see this message, you should make certain that there is no
-	other <TT
-CLASS="COMMAND"
->postmaster</TT
->
-	process already running on the same port number.  The easiest way to
-	determine this is by using the command
+>    A failure message suggesting that another postmaster is already running
+    should be checked carefully, for example by using the command
 </P><PRE
 CLASS="SCREEN"
 ><SAMP
@@ -852,50 +841,37 @@ CLASS="PROMPT"
 >$</SAMP
 > <KBD
 CLASS="USERINPUT"
->ps -e | grep postmaster</KBD
+>ps -ef | grep postmaster</KBD
 ></PRE
 ><P>
-	depending on your system.
-       </P
+    depending on your system.  If you are certain that no conflicting
+    postmaster is running, you may remove the lock file mentioned in the
+    message and try again.
+   </P
 ><P
->	If you 
-	are sure that no other
-	<TT
+>    A failure message indicating inability to bind to a port may indicate
+    that that port is already in use by some non-PostgreSQL process.
+    You may also get this error if you terminate the
+    <TT
 CLASS="COMMAND"
 >postmaster</TT
 >
-	processes are running and you still get this error, try specifying a
-	different port using the
-	<VAR
-CLASS="LITERAL"
->-p</VAR
->
-	option.  You may also get this error if you terminate the
-	<TT
-CLASS="COMMAND"
->postmaster</TT
->
-	and immediately restart it using the same port; in this case, you must
-	simply wait a few seconds until the operating system closes the port
-	before trying again.  Finally, you may get this error if you specify
-	a port number that your operating system considers to be reserved.
-	For example, many versions of Unix consider port numbers under 1024 to
-	be <SPAN
+    and immediately restart it using the same port; in this case, you must
+    simply wait a few seconds until the operating system closes the port
+    before trying again.  Finally, you may get this error if you specify
+    a port number that your operating system considers to be reserved.
+    For example, many versions of Unix consider port numbers under 1024 to
+    be <SPAN
 CLASS="QUOTE"
 >"trusted"</SPAN
 >
-	and only permit the Unix superuser to access them.
-       </P
-></DD
-></DL
-></DIV
-><P>
+    and only permit the Unix superuser to access them.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50452"
+NAME="AEN48450"
 ></A
 ><H2
 >Notes</H2
@@ -1085,8 +1061,8 @@ CLASS="USERINPUT"
 ></PRE
 ><P>
    Either form overrides whatever setting might exist for <VAR
-CLASS="LITERAL"
->sort_mem</VAR
+CLASS="VARNAME"
+>SORT_MEM</VAR
 >
    in <TT
 CLASS="FILENAME"
@@ -1115,7 +1091,7 @@ CLASS="FILENAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50508"
+NAME="AEN48506"
 ></A
 ><H2
 >See Also</H2

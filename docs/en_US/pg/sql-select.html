@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-rollback.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-rollback.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-selectinto.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-selectinto.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-SELECT"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43673"
+NAME="AEN41749"
 ></A
 ><H2
 >Name</H2
 >SELECT&nbsp;--&nbsp;retrieve rows from a table or view</DIV
+><A
+NAME="AEN41752"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43676"
+NAME="AEN41754"
 ></A
 ><H2
 >Synopsis</H2
@@ -219,7 +234,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43712"
+NAME="AEN41790"
 ></A
 ><H2
 >Description</H2
@@ -501,7 +516,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43777"
+NAME="AEN41855"
 ></A
 ><H2
 >Parameters</H2
@@ -1893,20 +1908,23 @@ CLASS="LITERAL"
     <VAR
 CLASS="LITERAL"
 >LIMIT</VAR
-> for compatibility with PostgreSQL
-    versions before 7.3.  It effectively executes after
-    <VAR
+> for compatibility with
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> versions before 7.3.  It
+    effectively executes after <VAR
 CLASS="LITERAL"
 >LIMIT</VAR
->, however, and so that is the recommended
-    place to write it.
+>, however, and
+    so that is the recommended place to write it.
    </P
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44154"
+NAME="AEN42233"
 ></A
 ><H2
 >Examples</H2
@@ -2086,7 +2104,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44179"
+NAME="AEN42258"
 ></A
 ><H2
 >Compatibility</H2
@@ -2101,7 +2119,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN44183"
+NAME="AEN42262"
 ></A
 ><H3
 >Omitted <VAR
@@ -2182,23 +2200,27 @@ CLASS="PROGRAMLISTING"
 >SELECT distributors.* FROM distributors d, distributors distributors;</PRE
 ><P>
     that he will actually get.  To help detect this sort of mistake,
-    PostgreSQL will warn if the implicit-<VAR
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will warn if the
+    implicit-<VAR
 CLASS="LITERAL"
 >FROM</VAR
->
-    feature is used in a <TT
+> feature is used in a
+    <TT
 CLASS="COMMAND"
 >SELECT</TT
-> statement that also
-    contains an explicit <VAR
+> statement that also contains an explicit
+    <VAR
 CLASS="LITERAL"
 >FROM</VAR
-> clause.  Also, it is
-    possible to disable the implicit-<VAR
+> clause.  Also, it is possible to disable
+    the implicit-<VAR
 CLASS="LITERAL"
 >FROM</VAR
-> feature
-    by setting the <VAR
+> feature by setting the
+    <VAR
 CLASS="VARNAME"
 >ADD_MISSING_FROM</VAR
 > parameter to false.
@@ -2207,7 +2229,7 @@ CLASS="VARNAME"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN44207"
+NAME="AEN42287"
 ></A
 ><H3
 >The <VAR
@@ -2239,7 +2261,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN44215"
+NAME="AEN42295"
 ></A
 ><H3
 >Namespace Available to <VAR
@@ -2292,7 +2314,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN44228"
+NAME="AEN42308"
 ></A
 ><H3
 >Nonstandard Clauses</H3

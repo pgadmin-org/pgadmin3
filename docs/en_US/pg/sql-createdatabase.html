@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-createconversion.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createconversion.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-createdomain.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-createdomain.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-CREATEDATABASE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38388"
+NAME="AEN36879"
 ></A
 ><H2
 >Name</H2
 >CREATE DATABASE&nbsp;--&nbsp;create a new database</DIV
+><A
+NAME="AEN36882"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38391"
+NAME="AEN36884"
 ></A
 ><H2
 >Synopsis</H2
@@ -121,7 +136,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38398"
+NAME="AEN36891"
 ></A
 ><H2
 >Description</H2
@@ -134,6 +149,19 @@ CLASS="COMMAND"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database.
+  </P
+><P
+>   To create a database, you must be a superuser or have the special
+   <VAR
+CLASS="LITERAL"
+>CREATEDB</VAR
+> privilege.
+   See <A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+>.
   </P
 ><P
 >   Normally, the creator becomes the owner of the new database.
@@ -182,6 +210,8 @@ CLASS="FILENAME"
 >/usr/local/pgsql/data</TT
 >),
    are allowed as well.
+   In either case, the final path name must be absolute and must not
+   contain any single quotes.
   </P
 ><P
 >   By default, the new database will be created by cloning the standard
@@ -222,10 +252,10 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38420"
+NAME="AEN36916"
 ></A
 ><H2
->Parameter</H2
+>Parameters</H2
 ><P
 ></P
 ><DIV
@@ -318,119 +348,27 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38455"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE DATABASE</SAMP
-></DT
-><DD
-><P
->	Message returned if the database was successfully created.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  user '<VAR
-CLASS="REPLACEABLE"
->username</VAR
->' is not allowed to create/drop databases</SAMP
-></DT
-><DD
-><P
->        You must have the special <VAR
-CLASS="LITERAL"
->CREATEDB</VAR
-> privilege to create databases.
-        See <A
-HREF="sql-createuser.html"
-><I
->CREATE USER</I
-></A
->.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  createdb: database "<VAR
-CLASS="REPLACEABLE"
->name</VAR
->" already exists</SAMP
-></DT
-><DD
-><P
->	This occurs if a database with the specified name already
-	exists.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  database path may not contain single quotes</SAMP
-></DT
-><DD
-><P
->	The database location
-        <VAR
-CLASS="REPLACEABLE"
->dbpath</VAR
-> cannot contain
-        single quotes. This is required so that the shell commands that
-        create the database directory can execute safely.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  CREATE DATABASE: may not be called in a transaction block</SAMP
-></DT
-><DD
-><P
->        If you have an explicit transaction block in progress you cannot call
-        <TT
-CLASS="COMMAND"
->CREATE DATABASE</TT
->. You must finish the transaction first.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  Unable to create database directory '<VAR
-CLASS="REPLACEABLE"
->path</VAR
->'.</SAMP
-><BR><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  Could not initialize database directory.</SAMP
-></DT
-><DD
-><P
->        These are most likely related to insufficient permissions on the data
-        directory, a full disk, or other file system problems. The user under
-        which the database server is running must have access to the location.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38497"
+NAME="AEN36951"
 ></A
 ><H2
 >Notes</H2
+><P
+>    <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> cannot be executed inside a transaction
+    block.
+   </P
+><P
+>    Errors along the line of <SPAN
+CLASS="QUOTE"
+>"could not initialize database directory"</SPAN
+>
+    are most likely related to insufficient permissions on the data
+    directory, a full disk, or other file system problems.  When using an
+    alternate location, the user under
+    which the database server is running must have access to the location.
+   </P
 ><P
 >    Use <A
 HREF="sql-dropdatabase.html"
@@ -452,7 +390,8 @@ HREF="app-createdb.html"
    </P
 ><P
 >   There are security issues involved with using alternate database
-   locations specified with absolute path names.  See <A
+   locations specified with absolute path names; this is why the feature
+   is not enabled by default.  See <A
 HREF="manage-ag-alternate-locs.html"
 >Section 18.5</A
 > for more information.
@@ -480,7 +419,7 @@ HREF="manage-ag-templatedbs.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38510"
+NAME="AEN36968"
 ></A
 ><H2
 >Examples</H2
@@ -521,7 +460,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38519"
+NAME="AEN36977"
 ></A
 ><H2
 >Compatibility</H2

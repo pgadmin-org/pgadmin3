@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Managing Databases"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="manage-ag-createdb.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 18. Managing Databases</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="manage-ag-config.html"
 ACCESSKEY="N"
@@ -92,15 +104,18 @@ CLASS="COMMAND"
    <VAR
 CLASS="LITERAL"
 >template1</VAR
->.  Thus that database is the <SPAN
+>.<A
+NAME="AEN17469"
+></A
+> Thus that
+   database is the <SPAN
 CLASS="QUOTE"
 >"template"</SPAN
->
-   from which new databases are made.  If you add objects to
-   <VAR
+> from which new databases are
+   made.  If you add objects to <VAR
 CLASS="LITERAL"
 >template1</VAR
->, these objects 
+>, these objects
    will be copied into subsequently created user databases.  This
    behavior allows site-local modifications to the standard set of
    objects in databases.  For example, if you install the procedural
@@ -111,56 +126,61 @@ CLASS="APPLICATION"
 CLASS="LITERAL"
 >template1</VAR
 >, it will
-   automatically be available in user databases without any extra action
-   being taken when those databases are made.
+   automatically be available in user databases without any extra
+   action being taken when those databases are made.
   </P
 ><P
->   There is a second standard system database named <VAR
+>   There is a second standard system database named
+   <VAR
 CLASS="LITERAL"
 >template0</VAR
->.
-   This database contains the same data as the initial contents of
+>.<A
+NAME="AEN17477"
+></A
+> This
+   database contains the same data as the initial contents of
    <VAR
 CLASS="LITERAL"
 >template1</VAR
->, that is, only the standard objects predefined by
-   your version of <SPAN
+>, that is, only the standard objects
+   predefined by your version of
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->.
-     <VAR
+>.  <VAR
 CLASS="LITERAL"
 >template0</VAR
-> should never be changed 
-   after <TT
+>
+   should never be changed after <TT
 CLASS="COMMAND"
 >initdb</TT
->.  By instructing <TT
+>.  By instructing
+   <TT
 CLASS="COMMAND"
 >CREATE DATABASE</TT
-> to
-   copy <VAR
+> to copy <VAR
 CLASS="LITERAL"
 >template0</VAR
-> instead of <VAR
+> instead
+   of <VAR
 CLASS="LITERAL"
 >template1</VAR
->, you can
-   create a <SPAN
+>, you can create a <SPAN
 CLASS="QUOTE"
 >"virgin"</SPAN
-> user database that contains none of the
-   site-local additions in <VAR
+> user
+   database that contains none of the site-local additions in
+   <VAR
 CLASS="LITERAL"
 >template1</VAR
->.  This is particularly
-   handy when restoring a <VAR
+>.  This is particularly handy when restoring a
+   <VAR
 CLASS="LITERAL"
 >pg_dump</VAR
-> dump: the dump script should
-   be restored in a virgin database to ensure that one recreates the
-   correct contents of the dumped database, without any conflicts with
-   additions that may now be present in <VAR
+> dump: the dump script should be restored in a
+   virgin database to ensure that one recreates the correct contents
+   of the dumped database, without any conflicts with additions that
+   may now be present in <VAR
 CLASS="LITERAL"
 >template1</VAR
 >.
@@ -219,6 +239,9 @@ CLASS="COMMAND"
 >   Two useful flags exist in <VAR
 CLASS="LITERAL"
 >pg_database</VAR
+><A
+NAME="AEN17503"
+></A
 > for each
    database: the columns <VAR
 CLASS="LITERAL"

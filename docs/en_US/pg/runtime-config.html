@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="postmaster-start.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 16. Server Run-time Environment</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="kernel-resources.html"
 ACCESSKEY="N"
@@ -84,16 +96,17 @@ NAME="RUNTIME-CONFIG"
 >16.4. Run-time Configuration</A
 ></H1
 ><A
-NAME="AEN14864"
+NAME="AEN15395"
 ></A
 ><P
->    There are a lot of configuration parameters that affect the behavior
-    of the database system. Here we describe how to set them and the
-    following subsections will discuss each in detail.
+>    There are a lot of configuration parameters that affect the
+    behavior of the database system. In this subsection, we describe
+    how to set configuration parameters; the following subsections
+    discuss each parameter in detail.
    </P
 ><P
 >    All parameter names are case-insensitive. Every parameter takes a
-    value of one of the four types: Boolean, integer, floating point,
+    value of one of the four types: boolean, integer, floating point,
     and string. Boolean values are <VAR
 CLASS="LITERAL"
 >ON</VAR
@@ -129,9 +142,12 @@ CLASS="LITERAL"
     <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
-> in the data directory. (A
-    default file is installed there.) An example of what this file might
-    look like is:
+><A
+NAME="AEN15410"
+></A
+>
+    in the data directory. (A default file is installed there.) An
+    example of what this file might look like is:
 </P><PRE
 CLASS="PROGRAMLISTING"
 ># This is a comment
@@ -139,9 +155,9 @@ log_connections = yes
 syslog = 2
 search_path = '$user, public'</PRE
 ><P>
-    As you see, options are one per line. The equal sign between name
-    and value is optional. Whitespace is insignificant and blank lines
-    are ignored. Hash marks (<VAR
+    One option is specified per line. The equal sign between name and
+    value is optional. Whitespace is insignificant and blank lines are
+    ignored. Hash marks (<VAR
 CLASS="LITERAL"
 >#</VAR
 >) introduce comments
@@ -150,27 +166,29 @@ CLASS="LITERAL"
    </P
 ><P
 >    <A
-NAME="AEN14882"
+NAME="AEN15415"
 ></A
 >
-    The configuration file is reread whenever the <TT
+    The configuration file is reread whenever the
+    <TT
 CLASS="COMMAND"
 >postmaster</TT
 > process receives a
     <SPAN
 CLASS="SYSTEMITEM"
 >SIGHUP</SPAN
-> signal (which is most easily sent by means of
-    <VAR
+> signal (which is most easily sent by means
+    of <VAR
 CLASS="LITERAL"
 >pg_ctl reload</VAR
 >). The <TT
 CLASS="COMMAND"
 >postmaster</TT
-> also propagates this
-    signal to all currently running server processes so that existing
-    sessions also get the new value. Alternatively, you can send the
-    signal to a single server process directly.
+>
+    also propagates this signal to all currently running server
+    processes so that existing sessions also get the new
+    value. Alternatively, you can send the signal to a single server
+    process directly.
    </P
 ><P
 >    A second way to set these configuration parameters is to give them
@@ -212,8 +230,11 @@ CLASS="APPLICATION"
     number.
    </P
 ><P
->    Some options can be changed in individual SQL sessions with the
-    <TT
+>    Some options can be changed in individual <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
+    sessions with the <TT
 CLASS="COMMAND"
 >SET</TT
 > command, for example:
@@ -221,19 +242,23 @@ CLASS="COMMAND"
 CLASS="SCREEN"
 >SET ENABLE_SEQSCAN TO OFF;</PRE
 ><P>
-    See the SQL command language reference for details on the syntax.
+    See the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command language reference for
+    details on the syntax.
    </P
 ><P
 >    Furthermore, it is possible to assign a set of option settings to
     a user or a database.  Whenever a session is started, the default
     settings for the user and database involved are loaded.  The
-    commands <VAR
-CLASS="LITERAL"
->ALTER DATABASE</VAR
-> and <VAR
-CLASS="LITERAL"
+    commands <TT
+CLASS="COMMAND"
+>ALTER DATABASE</TT
+> and <TT
+CLASS="COMMAND"
 >ALTER
-    USER</VAR
+    USER</TT
 >, respectively, are used to configure these
     settings.  Such per-database settings override anything received
     from the <TT
@@ -253,7 +278,7 @@ CLASS="STRUCTNAME"
     <A
 HREF="runtime-config.html#RUNTIME-PGSETTINGS-TABLE"
 >Table 16-1</A
->.  This form allows the
+>.  This table allows the
     configuration data to be joined with other tables and have a
     selection criteria applied.
    </P
@@ -439,14 +464,17 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->TCPIP_SOCKET</VAR
+>tcpip_socket</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)</DT
 ><DD
 ><P
->        If this is true, then the server will accept TCP/IP connections.
+>        If this is true, then the server will accept TCP/IP connections.<A
+NAME="AEN15513"
+></A
+>
         Otherwise only local Unix domain socket connections are
         accepted. It is off by default. This option can only be set at
         server start.
@@ -455,7 +483,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->MAX_CONNECTIONS</VAR
+>max_connections</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -464,12 +492,12 @@ CLASS="TYPE"
 ><P
 >        Determines the maximum number of concurrent connections to the
         database server. The default is typically 100, but may be less
-	if your kernel settings will not support it (as determined
-	during <SPAN
+        if your kernel settings will not support it (as determined
+        during <SPAN
 CLASS="APPLICATION"
 >initdb</SPAN
->).
-	This parameter can only be set at server start.
+>).  This parameter can only be
+        set at server start.
        </P
 ><P
 >        Increasing this parameter may cause <SPAN
@@ -491,7 +519,7 @@ HREF="kernel-resources.html#SYSVIPC"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SUPERUSER_RESERVED_CONNECTIONS</VAR
+>superuser_reserved_connections</VAR
 >
       (<TT
 CLASS="TYPE"
@@ -534,7 +562,7 @@ CLASS="VARNAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->PORT</VAR
+>port</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -548,7 +576,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->UNIX_SOCKET_DIRECTORY</VAR
+>unix_socket_directory</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -567,7 +595,7 @@ CLASS="FILENAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->UNIX_SOCKET_GROUP</VAR
+>unix_socket_group</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -579,7 +607,7 @@ CLASS="TYPE"
         server.)  In combination with the option
         <VAR
 CLASS="VARNAME"
->UNIX_SOCKET_PERMISSIONS</VAR
+>unix_socket_permissions</VAR
 > this can be used as
         an additional access control mechanism for this socket type.
         By default this is the empty string, which uses the default
@@ -590,7 +618,7 @@ CLASS="VARNAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->UNIX_SOCKET_PERMISSIONS</VAR
+>unix_socket_permissions</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -626,7 +654,7 @@ CLASS="LITERAL"
 > (only user and group, see also under
         <VAR
 CLASS="VARNAME"
->UNIX_SOCKET_GROUP</VAR
+>unix_socket_group</VAR
 >) and <VAR
 CLASS="LITERAL"
 >0700</VAR
@@ -649,7 +677,7 @@ HREF="client-authentication.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
->VIRTUAL_HOST</VAR
+>virtual_host</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -668,7 +696,7 @@ CLASS="SYSTEMITEM"
 ><DT
 ><VAR
 CLASS="VARNAME"
->RENDEZVOUS_NAME</VAR
+>rendezvous_name</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -698,7 +726,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->AUTHENTICATION_TIMEOUT</VAR
+>authentication_timeout</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -713,13 +741,13 @@ CLASS="TYPE"
         <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
-> file.
+> file. The default is 60.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->SSL</VAR
+>ssl</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -740,7 +768,7 @@ HREF="ssl-tcp.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
->PASSWORD_ENCRYPTION</VAR
+>password_encryption</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -768,7 +796,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->KRB_SERVER_KEYFILE</VAR
+>krb_server_keyfile</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -785,7 +813,7 @@ HREF="auth-methods.html#KERBEROS-AUTH"
 ><DT
 ><VAR
 CLASS="VARNAME"
->DB_USER_NAMESPACE</VAR
+>db_user_namespace</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -851,7 +879,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="RUNTIME-CONFIG-RESOURCE"
->16.4.2. Resource Usage (Except WAL)</A
+>16.4.2. Resource Consumption</A
 ></H2
 ><DIV
 CLASS="SECT3"
@@ -869,7 +897,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SHARED_BUFFERS</VAR
+>shared_buffers</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -877,25 +905,25 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Sets the number of shared memory buffers used by the database
-        server. The default is typically 1000, but may be less
-	if your kernel settings will not support it (as determined
-	during <SPAN
+        server. The default is typically 1000, but may be less if your
+        kernel settings will not support it (as determined during
+        <SPAN
 CLASS="APPLICATION"
 >initdb</SPAN
->).  Each buffer is 8192
-        bytes, unless a different value of <VAR
+>).  Each buffer is 8192 bytes, unless a
+        different value of <VAR
 CLASS="LITERAL"
 >BLCKSZ</VAR
-> was chosen
-	when building the server.  This setting must be at least 16,
-	as well as at least twice the value of
-	<VAR
+> was chosen when building
+        the server.  This setting must be at least 16, as well as at
+        least twice the value of <VAR
 CLASS="VARNAME"
->MAX_CONNECTIONS</VAR
->; however, settings significantly
-	higher than the minimum are usually needed for good performance.
-        Values of a few thousand are recommended for production installations.
-	This option can only be set at server start.
+>max_connections</VAR
+>;
+        however, settings significantly higher than the minimum are
+        usually needed for good performance.  Values of a few thousand
+        are recommended for production installations.  This option can
+        only be set at server start.
        </P
 ><P
 >        Increasing this parameter may cause <SPAN
@@ -917,7 +945,7 @@ HREF="kernel-resources.html#SYSVIPC"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SORT_MEM</VAR
+>sort_mem</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -934,7 +962,7 @@ CLASS="TYPE"
         sort operations simultaneously.  So the total memory used could be many
         times the value of <VAR
 CLASS="VARNAME"
->SORT_MEM</VAR
+>sort_mem</VAR
 >. Sort operations are used
         by <VAR
 CLASS="LITERAL"
@@ -952,13 +980,13 @@ CLASS="LITERAL"
 CLASS="COMMAND"
 >CREATE INDEX</TT
 > is used when restoring a database, it might
-        be good to temporary increase this value during a restore.
+        be good to temporarily increase this value during a restore.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->VACUUM_MEM</VAR
+>vacuum_mem</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -994,7 +1022,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->MAX_FSM_PAGES</VAR
+>max_fsm_pages</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1014,7 +1042,7 @@ CLASS="VARNAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->MAX_FSM_RELATIONS</VAR
+>max_fsm_relations</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1047,7 +1075,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->MAX_FILES_PER_PROCESS</VAR
+>max_files_per_process</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1088,7 +1116,7 @@ CLASS="FILENAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->PRELOAD_LIBRARIES</VAR
+>preload_libraries</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -1096,10 +1124,10 @@ CLASS="TYPE"
 ><DD
 ><P
 >        This variable specifies one or more shared libraries that are
-        to be preloaded at server start. A parameterless initialization
-	function can optionally be called for each library.  To specify
-	that, add a colon and the name of the initialization function after
-	the library name. For example
+        to be preloaded at server start. A parameterless
+        initialization function can optionally be called for each
+        library.  To specify that, add a colon and the name of the
+        initialization function after the library name. For example
         <VAR
 CLASS="LITERAL"
 >'$libdir/mylib:mylib_init'</VAR
@@ -1111,8 +1139,8 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >mylib_init</VAR
 >
-        to be executed. If more than one library is to be loaded, separate
-	their names with commas.
+        to be executed. If more than one library is to be loaded,
+        separate their names with commas.
        </P
 ><P
 >        If <VAR
@@ -1125,23 +1153,26 @@ CLASS="LITERAL"
         server will fail to start.
        </P
 ><P
->        PostgreSQL procedural language libraries may be preloaded in this way,
-        typically by using the syntax
-	<VAR
+>        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language
+        libraries may be preloaded in this way, typically by using the
+        syntax <VAR
 CLASS="LITERAL"
 >'$libdir/plXXX:plXXX_init'</VAR
->
-	where <VAR
+> where
+        <VAR
 CLASS="LITERAL"
 >XXX</VAR
 > is <VAR
 CLASS="LITERAL"
 >pgsql</VAR
->, 
-        <VAR
+>, <VAR
 CLASS="LITERAL"
 >perl</VAR
->, <VAR
+>,
+        <VAR
 CLASS="LITERAL"
 >tcl</VAR
 >, or <VAR
@@ -1192,7 +1223,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->FSYNC</VAR
+>fsync</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1220,35 +1251,49 @@ CLASS="EMPHASIS"
         related to this.)
        </P
 ><P
->        However, this operation does slow down
+>        However, using <CODE
+CLASS="FUNCTION"
+>fsync()</CODE
+> results in a
+        performance penalty: when a transaction is committed,
         <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> because at transaction commit it has
-        wait for the operating system to flush the write-ahead log.
-        Without <CODE
-CLASS="FUNCTION"
->fsync</CODE
->, the operating system is allowed to
-        do its best in buffering, sorting, and delaying writes, which
-        can considerably increase performance. However, if the system
-        crashes, the results of the last few committed transactions may
-        be lost in part or whole. In the worst case, unrecoverable data
-        corruption may occur.
-       </P
-><P
->        For the above reasons, everyone can decide for himself what to
-        do with the <VAR
+> must wait for the
+        operating system to flush the write-ahead log to disk.  When
+        <VAR
 CLASS="VARNAME"
 >fsync</VAR
-> option.  Some administrators
-        always leave it off, some turn it off only for bulk loads,
-        where there is a clear restart point if something goes wrong,
-        and some leave it on just to be on the safe side.  The default
-        is on so that you are on the safe side.  If you trust your
-        operating system, your hardware, and your utility company (or
-        better your battery backup), you can consider disabling
-        <VAR
+> is disabled, the operating system is
+        allowed to do its best in buffering, ordering, and delaying
+        writes. This can result in significantly improved performance.
+        However, if the system crashes, the results of the last few
+        committed transactions may be lost in part or whole. In the
+        worst case, unrecoverable data corruption may occur.
+       </P
+><P
+>        Due to the risks involved, there is no universally correct
+        setting for <VAR
+CLASS="VARNAME"
+>fsync</VAR
+>. Some administrators
+        always disable <VAR
+CLASS="VARNAME"
+>fsync</VAR
+>, while others only
+        turn it off for bulk loads, where there is a clear restart
+        point if something goes wrong, whereas some administrators
+        always leave <VAR
+CLASS="VARNAME"
+>fsync</VAR
+> enabled. The default is
+        to enable <VAR
+CLASS="VARNAME"
+>fsync</VAR
+>, for maximum reliability.
+        If you trust your operating system, your hardware, and your
+        utility company (or your battery backup), you can consider
+        disabling <VAR
 CLASS="VARNAME"
 >fsync</VAR
 >.
@@ -1264,7 +1309,7 @@ CLASS="FILENAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->WAL_SYNC_METHOD</VAR
+>wal_sync_method</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -1275,21 +1320,21 @@ CLASS="TYPE"
         values are
         <VAR
 CLASS="LITERAL"
->FSYNC</VAR
+>fsync</VAR
 > (call <CODE
 CLASS="FUNCTION"
 >fsync()</CODE
 > at each commit),
         <VAR
 CLASS="LITERAL"
->FDATASYNC</VAR
+>fdatasync</VAR
 > (call <CODE
 CLASS="FUNCTION"
 >fdatasync()</CODE
 > at each commit),
         <VAR
 CLASS="LITERAL"
->OPEN_SYNC</VAR
+>open_sync</VAR
 > (write WAL files with <CODE
 CLASS="FUNCTION"
 >open()</CODE
@@ -1299,7 +1344,7 @@ CLASS="SYMBOL"
 >), and
         <VAR
 CLASS="LITERAL"
->OPEN_DATASYNC</VAR
+>open_datasync</VAR
 > (write WAL files with <CODE
 CLASS="FUNCTION"
 >open()</CODE
@@ -1318,7 +1363,7 @@ CLASS="FILENAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->WAL_BUFFERS</VAR
+>wal_buffers</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1349,17 +1394,17 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->CHECKPOINT_SEGMENTS</VAR
+>checkpoint_segments</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
 >)</DT
 ><DD
 ><P
->        Maximum distance between automatic WAL checkpoints, in log file
-        segments (each segment is normally 16 megabytes).
-        This option can only be set at server start or in the
-        <TT
+>        Maximum distance between automatic WAL checkpoints, in log
+        file segments (each segment is normally 16 megabytes). The
+        default is three.  This option can only be set at server start
+        or in the <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
 > file.
@@ -1368,81 +1413,85 @@ CLASS="FILENAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->CHECKPOINT_TIMEOUT</VAR
+>checkpoint_timeout</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
 >)</DT
 ><DD
 ><P
->        Maximum time between automatic WAL checkpoints, in seconds.
-        This option can only be set at server start or in the
-        <TT
+>        Maximum time between automatic WAL checkpoints, in
+        seconds. The default is 300 seconds.  This option can only be
+        set at server start or in the <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
-> file.
+>
+        file.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->CHECKPOINT_WARNING</VAR
+>checkpoint_warning</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
 >)</DT
 ><DD
 ><P
->        Send a message to the server logs if checkpoints caused by the
-        filling of checkpoint segment files happens more frequently than
-        this number of seconds.  Zero turns off the warning.
+>        Write a message to the server logs if checkpoints caused by
+        the filling of checkpoint segment files happens more
+        frequently than this number of seconds.  The default is 30
+        seconds.  Zero turns off the warning.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->COMMIT_DELAY</VAR
+>commit_delay</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
 >)</DT
 ><DD
 ><P
->        Time delay between writing a commit record to the WAL buffer and
-        flushing the buffer out to disk, in microseconds. A nonzero
-        delay allows multiple transactions to be committed with only one
-        <CODE
+>        Time delay between writing a commit record to the WAL buffer
+        and flushing the buffer out to disk, in microseconds. A
+        nonzero delay allows multiple transactions to be committed
+        with only one <CODE
 CLASS="FUNCTION"
->fsync</CODE
-> system call, if system load is high
-        enough additional transactions may become ready to commit within
-        the given interval. But the delay is just wasted if no other
-        transactions become ready to commit. Therefore, the delay is
-        only performed if at least <VAR
+>fsync()</CODE
+> system call, if
+        system load is high enough additional transactions may become
+        ready to commit within the given interval. But the delay is
+        just wasted if no other transactions become ready to
+        commit. Therefore, the delay is only performed if at least
+        <VAR
 CLASS="VARNAME"
->COMMIT_SIBLINGS</VAR
-> other transactions
-        are active at the instant that a server process has written its commit
-        record.
+>commit_siblings</VAR
+> other transactions are
+        active at the instant that a server process has written its
+        commit record. The default is zero (no delay).
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->COMMIT_SIBLINGS</VAR
+>commit_siblings</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
 >)</DT
 ><DD
 ><P
->        Minimum number of concurrent open transactions to require before
-        performing the <VAR
+>        Minimum number of concurrent open transactions to require
+        before performing the <VAR
 CLASS="VARNAME"
->COMMIT_DELAY</VAR
-> delay. A larger value
-        makes it more probable that at least one other transaction will
-        become ready to commit during the delay interval.
+>commit_delay</VAR
+> delay. A larger
+        value makes it more probable that at least one other
+        transaction will become ready to commit during the delay
+        interval. The default is five.
        </P
 ></DD
 ></DL
@@ -1455,7 +1504,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="RUNTIME-CONFIG-QUERY"
->16.4.4. Query Tuning</A
+>16.4.4. Query Planning</A
 ></H2
 ><DIV
 CLASS="SECT3"
@@ -1463,8 +1512,39 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="RUNTIME-CONFIG-QUERY-ENABLE"
->16.4.4.1. Planner Method Enabling</A
+>16.4.4.1. Planner Method Configuration</A
 ></H3
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       These configuration parameters provide a crude method for
+       influencing the query plans chosen by the query optimizer. If
+       the default plan chosen by the optimizer for a particular query
+       is not optimal, a temporary solution may be found by using one
+       of these configuration parameters to force the optimizer to
+       choose a better plan. Other ways to improve the quality of the
+       plans chosen by the optimizer include configuring the <A
+HREF="runtime-config.html#RUNTIME-CONFIG-QUERY-CONSTANTS"
+><I
+>Planner Cost Constants</I
+></A
+>, running
+       <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> more frequently, and increasing the
+       amount of statistics collected for a particular column using
+       <TT
+CLASS="COMMAND"
+>ALTER TABLE SET STATISTICS</TT
+>.
+      </P
+></BLOCKQUOTE
+></DIV
 ><P
 ></P
 ><DIV
@@ -1473,22 +1553,22 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->ENABLE_HASHAGG</VAR
+>enable_hashagg</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)</DT
 ><DD
 ><P
->        Enables or disables the query planner's use of hashed aggregation
-        plan types. The default is on. This is used for debugging the query
-        planner.
+>        Enables or disables the query planner's use of hashed
+        aggregation plan types. The default is on. This is used for
+        debugging the query planner.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->ENABLE_HASHJOIN</VAR
+>enable_hashjoin</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1496,14 +1576,14 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Enables or disables the query planner's use of hash-join plan
-        types. The default is on. This is used for debugging the
-        query planner.
+        types. The default is on. This is used for debugging the query
+        planner.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->ENABLE_INDEXSCAN</VAR
+>enable_indexscan</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1511,14 +1591,14 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Enables or disables the query planner's use of index-scan plan
-        types. The default is on. This is used to debugging the
-        query planner.
+        types. The default is on. This is used for debugging the query
+        planner.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->ENABLE_MERGEJOIN</VAR
+>enable_mergejoin</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1526,14 +1606,14 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Enables or disables the query planner's use of merge-join plan
-        types. The default is on. This is used for debugging the
-        query planner.
+        types. The default is on. This is used for debugging the query
+        planner.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->ENABLE_NESTLOOP</VAR
+>enable_nestloop</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1550,7 +1630,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->ENABLE_SEQSCAN</VAR
+>enable_seqscan</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1567,7 +1647,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->ENABLE_SORT</VAR
+>enable_sort</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1584,7 +1664,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->ENABLE_TIDSCAN</VAR
+>enable_tidscan</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1594,9 +1674,9 @@ CLASS="TYPE"
 >        Enables or disables the query planner's use of <ACRONYM
 CLASS="ACRONYM"
 >TID</ACRONYM
-> scan plan
-        types. The default is on. This is used for debugging the
-        query planner.
+>
+        scan plan types. The default is on. This is used for debugging
+        the query planner.
        </P
 ></DD
 ></DL
@@ -1635,7 +1715,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->EFFECTIVE_CACHE_SIZE</VAR
+>effective_cache_size</VAR
 > (<TT
 CLASS="TYPE"
 >floating point</TT
@@ -1643,19 +1723,19 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Sets the planner's assumption about the effective size of the
-        disk cache (that is, the portion of the kernel's disk cache that
-        will be used for <SPAN
+        disk cache (that is, the portion of the kernel's disk cache
+        that will be used for <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> data
-        files). This is measured in disk pages, which are normally 8 kB
-        each.
+>
+        data files). This is measured in disk pages, which are
+        normally 8192 bytes each. The default is 1000.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->RANDOM_PAGE_COST</VAR
+>random_page_cost</VAR
 > (<TT
 CLASS="TYPE"
 >floating point</TT
@@ -1665,14 +1745,15 @@ CLASS="TYPE"
 >        Sets the query planner's estimate of the cost of a
         nonsequentially fetched disk page. This is measured as a
         multiple of the cost of a sequential page fetch. A higher
-        value makes it more likely a sequential scan will be used,
-        a lower value makes it more likely an index scan will be used.
+        value makes it more likely a sequential scan will be used, a
+        lower value makes it more likely an index scan will be
+        used. The default is four.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->CPU_TUPLE_COST</VAR
+>cpu_tuple_cost</VAR
 > (<TT
 CLASS="TYPE"
 >floating point</TT
@@ -1681,13 +1762,13 @@ CLASS="TYPE"
 ><P
 >        Sets the query planner's estimate of the cost of processing
         each tuple during a query. This is measured as a fraction of
-        the cost of a sequential page fetch.
+        the cost of a sequential page fetch. The default is 0.01.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->CPU_INDEX_TUPLE_COST</VAR
+>cpu_index_tuple_cost</VAR
 > (<TT
 CLASS="TYPE"
 >floating point</TT
@@ -1696,13 +1777,14 @@ CLASS="TYPE"
 ><P
 >        Sets the query planner's estimate of the cost of processing
         each index tuple during an index scan. This is measured as a
-        fraction of the cost of a sequential page fetch.
+        fraction of the cost of a sequential page fetch. The default
+        is 0.001.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->CPU_OPERATOR_COST</VAR
+>cpu_operator_cost</VAR
 > (<TT
 CLASS="TYPE"
 >floating point</TT
@@ -1714,7 +1796,7 @@ CLASS="TYPE"
 CLASS="LITERAL"
 >WHERE</VAR
 > clause. This is measured as a fraction of
-        the cost of a sequential page fetch.
+        the cost of a sequential page fetch. The default is 0.0025.
        </P
 ></DD
 ></DL
@@ -1736,7 +1818,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->GEQO</VAR
+>geqo</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -1748,14 +1830,14 @@ CLASS="TYPE"
         searching. This is on by default. See also the various other
         <VAR
 CLASS="VARNAME"
->GEQO_</VAR
+>geqo_</VAR
 > settings.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->GEQO_THRESHOLD</VAR
+>geqo_threshold</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1782,31 +1864,25 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->GEQO_EFFORT</VAR
+>geqo_effort</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
 >)<BR><VAR
 CLASS="VARNAME"
->GEQO_GENERATIONS</VAR
+>geqo_generations</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
 >)<BR><VAR
 CLASS="VARNAME"
->GEQO_POOL_SIZE</VAR
+>geqo_pool_size</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
 >)<BR><VAR
 CLASS="VARNAME"
->GEQO_RANDOM_SEED</VAR
-> (<TT
-CLASS="TYPE"
->integer</TT
->)<BR><VAR
-CLASS="VARNAME"
->GEQO_SELECTION_BIAS</VAR
+>geqo_selection_bias</VAR
 > (<TT
 CLASS="TYPE"
 >floating point</TT
@@ -1832,9 +1908,7 @@ CLASS="LITERAL"
         is roughly proportional to the sum of pool size and generations.
         The selection bias is the selective pressure within the
         population. Values can be from 1.50 to 2.00; the latter is the
-        default. The random seed can be set to get reproducible results
-        from the algorithm. If it is set to -1 then the algorithm
-        behaves non-deterministically.
+        default.
        </P
 ></DD
 ></DL
@@ -1856,7 +1930,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->DEFAULT_STATISTICS_TARGET</VAR
+>default_statistics_target</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1873,13 +1947,13 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >ANALYZE</TT
 >, but may improve the quality of the planner's
-        estimates. The default value is 10.
+        estimates. The default is 10.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->FROM_COLLAPSE_LIMIT</VAR
+>from_collapse_limit</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1891,15 +1965,15 @@ CLASS="TYPE"
         reduce planning time but may yield inferior query plans.
         The default is 8.  It is usually wise to keep this less than
         <VAR
-CLASS="LITERAL"
->GEQO_THRESHOLD</VAR
+CLASS="VARNAME"
+>geqo_threshold</VAR
 >.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->JOIN_COLLAPSE_LIMIT</VAR
+>join_collapse_limit</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1916,8 +1990,8 @@ CLASS="LITERAL"
 > items whenever a list of no more than
         this many items would result.  Usually this is set the same as
         <VAR
-CLASS="LITERAL"
->FROM_COLLAPSE_LIMIT</VAR
+CLASS="VARNAME"
+>from_collapse_limit</VAR
 >.  Setting it to 1 prevents any
         flattening of inner <VAR
 CLASS="LITERAL"
@@ -1943,6 +2017,9 @@ CLASS="SECT2"
 NAME="RUNTIME-CONFIG-LOGGING"
 >16.4.5. Error Reporting and Logging</A
 ></H2
+><A
+NAME="AEN16003"
+></A
 ><DIV
 CLASS="SECT3"
 ><H3
@@ -1951,6 +2028,9 @@ CLASS="SECT3"
 NAME="RUNTIME-CONFIG-LOGGING-SYSLOG"
 >16.4.5.1. Syslog</A
 ></H3
+><A
+NAME="AEN16007"
+></A
 ><P
 ></P
 ><DIV
@@ -1959,7 +2039,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SYSLOG</VAR
+>syslog</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -1994,7 +2074,7 @@ CLASS="SYSTEMITEM"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SYSLOG_FACILITY</VAR
+>syslog_facility</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -2054,7 +2134,7 @@ CLASS="APPLICATION"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SYSLOG_IDENT</VAR
+>syslog_ident</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -2099,7 +2179,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->CLIENT_MIN_MESSAGES</VAR
+>client_min_messages</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -2148,15 +2228,15 @@ CLASS="LITERAL"
 >LOG</VAR
 > has a different
         rank here than in <VAR
-CLASS="LITERAL"
->LOG_MIN_MESSAGES</VAR
+CLASS="VARNAME"
+>log_min_messages</VAR
 >.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_MIN_MESSAGES</VAR
+>log_min_messages</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -2215,8 +2295,8 @@ CLASS="LITERAL"
 >LOG</VAR
 > has a different rank here than in
         <VAR
-CLASS="LITERAL"
->CLIENT_MIN_MESSAGES</VAR
+CLASS="VARNAME"
+>client_min_messages</VAR
 >.
         Only superusers can increase this option.
        </P
@@ -2224,7 +2304,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_ERROR_VERBOSITY</VAR
+>log_error_verbosity</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -2249,7 +2329,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_MIN_ERROR_STATEMENT</VAR
+>log_min_error_statement</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -2316,7 +2396,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_MIN_DURATION_STATEMENT</VAR
+>log_min_duration_statement</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -2342,7 +2422,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SILENT_MODE</VAR
+>silent_mode</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2489,57 +2569,58 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->DEBUG_PRINT_PARSE</VAR
+>debug_print_parse</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->DEBUG_PRINT_REWRITTEN</VAR
+>debug_print_rewritten</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->DEBUG_PRINT_PLAN</VAR
+>debug_print_plan</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->DEBUG_PRETTY_PRINT</VAR
+>debug_pretty_print</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)</DT
 ><DD
 ><P
->        These options enable various debugging output to be sent to the
-        client or server log. For each executed query, they print the resulting
-        parse tree, the query rewriter output, or the execution plan.
+>        These options enable various debugging output to be sent to
+        the client or server log. For each executed query, they print
+        the resulting parse tree, the query rewriter output, or the
+        execution plan.  <VAR
+CLASS="VARNAME"
+>debug_pretty_print</VAR
+> indents
+        these displays to produce a more readable but much longer
+        output format.  <VAR
+CLASS="VARNAME"
+>client_min_messages</VAR
+> or
         <VAR
-CLASS="OPTION"
->DEBUG_PRETTY_PRINT</VAR
-> indents these displays to
-        produce a more readable but much longer output format.
+CLASS="VARNAME"
+>log_min_messages</VAR
+> must be
         <VAR
-CLASS="OPTION"
->CLIENT_MIN_MESSAGES</VAR
-> or <VAR
-CLASS="OPTION"
->LOG_MIN_MESSAGES</VAR
->
-        must be <VAR
 CLASS="LITERAL"
 >DEBUG1</VAR
-> or lower to send output to the client
-        or server logs.
+> or lower to send output to the
+        client or server logs. These options are off by default.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_CONNECTIONS</VAR
+>log_connections</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2558,7 +2639,7 @@ CLASS="FILENAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_DURATION</VAR
+>log_duration</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2568,13 +2649,13 @@ CLASS="TYPE"
 >        Causes the duration of every completed statement to be logged.
         To use this option, enable <VAR
 CLASS="VARNAME"
->LOG_STATEMENT</VAR
+>log_statement</VAR
 > and
         <VAR
 CLASS="VARNAME"
->LOG_PID</VAR
+>log_pid</VAR
 > so you can link the statement to the
-        duration using the process ID.
+        duration using the process ID. The default is off.
         Only superusers can turn off this option if it is enabled by
         the administrator.
        </P
@@ -2582,7 +2663,7 @@ CLASS="VARNAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_PID</VAR
+>log_pid</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2602,14 +2683,14 @@ CLASS="APPLICATION"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_STATEMENT</VAR
+>log_statement</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)</DT
 ><DD
 ><P
->        Causes each SQL statement to be logged.
+>        Causes each SQL statement to be logged. The default is off.
         Only superusers can turn off this option if it is enabled by
         the administrator.
        </P
@@ -2617,7 +2698,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_TIMESTAMP</VAR
+>log_timestamp</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2631,7 +2712,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_HOSTNAME</VAR
+>log_hostname</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2648,7 +2729,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_SOURCE_PORT</VAR
+>log_source_port</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2690,25 +2771,25 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LOG_STATEMENT_STATS</VAR
+>log_statement_stats</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->LOG_PARSER_STATS</VAR
+>log_parser_stats</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->LOG_PLANNER_STATS</VAR
+>log_planner_stats</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->LOG_EXECUTOR_STATS</VAR
+>log_executor_stats</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2717,9 +2798,9 @@ CLASS="TYPE"
 ><P
 >        For each query, write performance statistics of the respective
         module to the server log. This is a crude profiling
-        instrument.
-        Only superusers can turn off this option if it is enabled by
-        the administrator.
+        instrument. All of these options are disabled by default.
+        Only superusers can turn off any of these options if they have
+        been enabled by the administrator.
        </P
 ></DD
 ></DL
@@ -2741,7 +2822,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->STATS_START_COLLECTOR</VAR
+>stats_start_collector</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2758,7 +2839,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->STATS_COMMAND_STRING</VAR
+>stats_command_string</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2785,13 +2866,13 @@ HREF="monitoring.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
->STATS_BLOCK_LEVEL</VAR
+>stats_block_level</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->STATS_ROW_LEVEL</VAR
+>stats_row_level</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2818,7 +2899,7 @@ HREF="monitoring.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
->STATS_RESET_ON_SERVER_START</VAR
+>stats_reset_on_server_start</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -2859,7 +2940,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SEARCH_PATH</VAR
+>search_path</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -2948,23 +3029,26 @@ CLASS="LITERAL"
        </P
 ><P
 >        The current effective value of the search path can be examined
-        via the SQL function <CODE
+        via the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> function
+        <CODE
 CLASS="FUNCTION"
 >current_schemas()</CODE
->.  This is not
-        quite the same as examining the value of
-        <VAR
+>.  This is not quite the same as
+        examining the value of <VAR
 CLASS="VARNAME"
 >search_path</VAR
->, since <CODE
+>, since
+        <CODE
 CLASS="FUNCTION"
 >current_schemas()</CODE
->
-        shows how the requests appearing in <VAR
+> shows how the requests
+        appearing in <VAR
 CLASS="VARNAME"
 >search_path</VAR
->
-        were resolved.
+> were resolved.
        </P
 ><P
 >        For more information on schema handling, see <A
@@ -2976,7 +3060,7 @@ HREF="ddl-schemas.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
->DEFAULT_TRANSACTION_ISOLATION</VAR
+>default_transaction_isolation</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3011,7 +3095,7 @@ HREF="sql-set-transaction.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
->DEFAULT_TRANSACTION_READ_ONLY</VAR
+>default_transaction_read_only</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3032,7 +3116,7 @@ HREF="sql-set-transaction.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
->STATEMENT_TIMEOUT</VAR
+>statement_timeout</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -3040,7 +3124,8 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Aborts any statement that takes over the specified number of
-        milliseconds.  A value of zero turns off the timer.
+        milliseconds.  A value of zero turns off the timer, which is
+        the default value.
        </P
 ></DD
 ></DL
@@ -3062,7 +3147,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->DATESTYLE</VAR
+>datestyle</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3134,7 +3219,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->TIMEZONE</VAR
+>timezone</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3152,7 +3237,7 @@ HREF="datatype-datetime.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
->AUSTRALIAN_TIMEZONES</VAR
+>australian_timezones</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3181,7 +3266,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->EXTRA_FLOAT_DIGITS</VAR
+>extra_float_digits</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -3213,7 +3298,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->CLIENT_ENCODING</VAR
+>client_encoding</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3227,7 +3312,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LC_MESSAGES</VAR
+>lc_messages</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3254,7 +3339,7 @@ HREF="charset.html#LOCALE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LC_MONETARY</VAR
+>lc_monetary</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3278,7 +3363,7 @@ HREF="charset.html#LOCALE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LC_NUMERIC</VAR
+>lc_numeric</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3302,7 +3387,7 @@ HREF="charset.html#LOCALE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->LC_TIME</VAR
+>lc_time</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3339,7 +3424,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->EXPLAIN_PRETTY_PRINT</VAR
+>explain_pretty_print</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3349,14 +3434,15 @@ CLASS="TYPE"
 >        Determines whether <TT
 CLASS="COMMAND"
 >EXPLAIN VERBOSE</TT
-> uses the indented
-        or non-indented format for displaying detailed query-tree dumps.
+> uses the
+        indented or non-indented format for displaying detailed
+        query-tree dumps. The default is on.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="VARNAME"
->DYNAMIC_LIBRARY_PATH</VAR
+>dynamic_library_path</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3379,7 +3465,7 @@ CLASS="COMMAND"
 ><P
 >        The value for <VAR
 CLASS="VARNAME"
->DYNAMIC_LIBRARY_PATH</VAR
+>dynamic_library_path</VAR
 > has to be a colon-separated
         list of absolute directory names. If a directory name starts
         with the special value <VAR
@@ -3429,7 +3515,7 @@ CLASS="FILENAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->MAX_EXPR_DEPTH</VAR
+>max_expr_depth</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -3437,9 +3523,9 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Sets the maximum expression nesting depth of the parser. The
-        default value is high enough for any normal query, but you can
-        raise it if needed. (But if you raise it too high, you run
-        the risk of server crashes due to stack overflow.)
+        default value of 10000 is high enough for any normal query,
+        but you can raise it if needed. (But if you raise it too high,
+        you run the risk of server crashes due to stack overflow.)
        </P
 ></DD
 ></DL
@@ -3462,7 +3548,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->DEADLOCK_TIMEOUT</VAR
+>deadlock_timeout</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -3488,7 +3574,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->MAX_LOCKS_PER_TRANSACTION</VAR
+>max_locks_per_transaction</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -3527,7 +3613,7 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="RUNTIME-CONFIG-COMPATIBLE-VERSION"
->16.4.9.1. Previous Postgres Versions</A
+>16.4.9.1. Previous PostgreSQL Versions</A
 ></H3
 ><P
 ></P
@@ -3537,7 +3623,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->ADD_MISSING_FROM</VAR
+>add_missing_from</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3575,7 +3661,7 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->REGEX_FLAVOR</VAR
+>regex_flavor</VAR
 > (<TT
 CLASS="TYPE"
 >string</TT
@@ -3596,7 +3682,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >basic</VAR
 >.
-        The usual default is <VAR
+        The default is <VAR
 CLASS="LITERAL"
 >advanced</VAR
 >.  The <VAR
@@ -3613,7 +3699,7 @@ CLASS="PRODUCTNAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->SQL_INHERITANCE</VAR
+>sql_inheritance</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3654,7 +3740,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->TRANSFORM_NULL_EQUALS</VAR
+>transform_null_equals</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3758,16 +3844,19 @@ NAME="RUNTIME-CONFIG-DEVELOPER"
 >16.4.10. Developer Options</A
 ></H2
 ><P
->     The following options are intended for work on the PostgreSQL source,
-     and in some cases to assist with recovery of
-     severely damaged databases.  There should be no reason to use them in
-     a production database setup.  As such, they have been excluded from the
-     sample <TT
+>     The following options are intended for work on the
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> source, and in some cases
+     to assist with recovery of severely damaged databases.  There
+     should be no reason to use them in a production database setup.
+     As such, they have been excluded from the sample
+     <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
-> file.
-     Note that many of these options require special
-     source compilation flags to work at all.
+> file.  Note that many of these
+     options require special source compilation flags to work at all.
     </P
 ><P
 ></P
@@ -3777,7 +3866,7 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="VARNAME"
->DEBUG_ASSERTIONS</VAR
+>debug_assertions</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3817,7 +3906,7 @@ CLASS="PRODUCTNAME"
 ><DT
 ><VAR
 CLASS="VARNAME"
->PRE_AUTH_DELAY</VAR
+>pre_auth_delay</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -3834,7 +3923,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->TRACE_NOTIFY</VAR
+>trace_notify</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3849,15 +3938,15 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >NOTIFY</TT
 >
-        commands.
+        commands.  <VAR
+CLASS="VARNAME"
+>client_min_messages</VAR
+> or
         <VAR
-CLASS="OPTION"
->CLIENT_MIN_MESSAGES</VAR
-> or <VAR
-CLASS="OPTION"
->LOG_MIN_MESSAGES</VAR
->
-        must be <VAR
+CLASS="VARNAME"
+>log_min_messages</VAR
+> must be
+        <VAR
 CLASS="LITERAL"
 >DEBUG1</VAR
 > or lower to send this output to the
@@ -3867,43 +3956,43 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="VARNAME"
->TRACE_LOCKS</VAR
+>trace_locks</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->TRACE_LWLOCKS</VAR
+>trace_lwlocks</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->TRACE_USERLOCKS</VAR
+>trace_userlocks</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->TRACE_LOCK_OIDMIN</VAR
+>trace_lock_oidmin</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->TRACE_LOCK_TABLE</VAR
+>trace_lock_table</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->DEBUG_DEADLOCKS</VAR
+>debug_deadlocks</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
 >)<BR><VAR
 CLASS="VARNAME"
->LOG_BTREE_BUILD_STATS</VAR
+>log_btree_build_stats</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT
@@ -3916,7 +4005,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->WAL_DEBUG</VAR
+>wal_debug</VAR
 > (<TT
 CLASS="TYPE"
 >integer</TT
@@ -3929,7 +4018,7 @@ CLASS="TYPE"
 ><DT
 ><VAR
 CLASS="VARNAME"
->ZERO_DAMAGED_PAGES</VAR
+>zero_damaged_pages</VAR
 > (<TT
 CLASS="TYPE"
 >boolean</TT

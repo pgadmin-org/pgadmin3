@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,22 +37,31 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="libpq-fastpath.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 27. <SPAN
@@ -67,7 +71,15 @@ CLASS="APPLICATION"
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="libpq-copy.html"
 ACCESSKEY="N"
@@ -87,7 +99,7 @@ NAME="LIBPQ-NOTIFY"
 >27.6. Asynchronous Notification</A
 ></H1
 ><A
-NAME="AEN20559"
+NAME="AEN21405"
 ></A
 ><P
 ><SPAN
@@ -122,21 +134,26 @@ not necessary for there to be any associated table.</P
 ><SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> applications submit <TT
+> applications submit
+<TT
 CLASS="COMMAND"
 >LISTEN</TT
 > and <TT
 CLASS="COMMAND"
 >UNLISTEN</TT
->
-commands as ordinary SQL commands.  The arrival of <TT
+> commands as
+ordinary SQL commands.  The arrival of <TT
 CLASS="COMMAND"
 >NOTIFY</TT
 >
-messages can subsequently be detected by calling <CODE
+messages can subsequently be detected by calling
+<CODE
 CLASS="FUNCTION"
 >PQnotifies</CODE
->.</P
+>.<A
+NAME="AEN21421"
+></A
+></P
 ><P
 >The function <CODE
 CLASS="FUNCTION"
@@ -145,11 +162,11 @@ CLASS="FUNCTION"
           returns  the next notification from a list of unhandled
           notification messages received from the server.  It returns a null pointer if
           there are no pending notifications.  Once a notification is
-	  returned from <CODE
+          returned from <CODE
 CLASS="FUNCTION"
 >PQnotifies</CODE
 >, it is considered handled and will be
-	  removed from the list of notifications.
+          removed from the list of notifications.
 </P><PRE
 CLASS="SYNOPSIS"
 >PGnotify* PQnotifies(PGconn *conn);

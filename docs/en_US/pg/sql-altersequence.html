@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-alterschema.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-altertable.html"
 ACCESSKEY="N"
@@ -83,17 +95,20 @@ NAME="SQL-ALTERSEQUENCE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN36638"
+NAME="AEN35248"
 ></A
 ><H2
 >Name</H2
 >   ALTER SEQUENCE
   &nbsp;--&nbsp;   alter the definition of a sequence generator
   </DIV
+><A
+NAME="AEN35251"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN36641"
+NAME="AEN35253"
 ></A
 ><H2
 >Synopsis</H2
@@ -121,16 +136,35 @@ CLASS="REPLACEABLE"
 >cache</VAR
 > ] [ [ NO ] CYCLE ]
   </PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-ALTERSEQUENCE-1"
+NAME="AEN35261"
 ></A
-><H3
->    Inputs
-   </H3
+><H2
+>Description</H2
 ><P
->&#13;    <P
+>   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> changes the parameters of an existing
+   sequence generator.  Any parameter not specifically set in the
+   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> command retains its prior setting.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35266"
+></A
+><H2
+>Parameters</H2
+><P
+>    <P
 ></P
 ></P><DIV
 CLASS="VARIABLELIST"
@@ -227,9 +261,9 @@ CLASS="OPTION"
 	 <VAR
 CLASS="REPLACEABLE"
 >start</VAR
+></VAR
 >
-	 clause</VAR
-> enables the sequence to re-begin anywhere.
+	 clause changes the current value of the sequence.
        </P
 ></DD
 ><DT
@@ -312,111 +346,12 @@ CLASS="OPTION"
    </P
 ></DIV
 ><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ALTERSEQUENCE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ALTER SEQUENCE
-       </SAMP
-></DT
-><DD
-><P
->	Message returned if the command is successful.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  AlterSequence: MINVALUE (<VAR
-CLASS="REPLACEABLE"
->start</VAR
->) can't be &#62;= MAXVALUE (<VAR
-CLASS="REPLACEABLE"
->max</VAR
->)
-       </SAMP
-></DT
-><DD
-><P
->	If the specified starting value is out of range.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  AlterSequence: START value (<VAR
-CLASS="REPLACEABLE"
->start</VAR
->) can't be &#60; MINVALUE (<VAR
-CLASS="REPLACEABLE"
->min</VAR
->)
-       </SAMP
-></DT
-><DD
-><P
->	If the specified starting value is out of range.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  AlterSequence: MINVALUE (<VAR
-CLASS="REPLACEABLE"
->min</VAR
->) can't be &#62;= MAXVALUE (<VAR
-CLASS="REPLACEABLE"
->max</VAR
->)
-       </SAMP
-></DT
-><DD
-><P
->	If the minimum and maximum values are inconsistent.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-></DIV
-><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ALTERSEQUENCE-1"
+NAME="AEN35331"
 ></A
 ><H2
->   Description
-  </H2
-><P
->   See <A
-HREF="sql-createsequence.html"
->CREATE SEQUENCE</A
-> for limitations, and uses
-   of sequences.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-SQL-ALTERSEQUENCE-2"
-></A
-><H2
->   Usage
-  </H2
+>Examples</H2
 ><P
 >   Restart a sequence called <VAR
 CLASS="LITERAL"
@@ -431,32 +366,36 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ALTERSEQUENCE-5"
+NAME="AEN35336"
 ></A
 ><H2
->   Notes
-  </H2
+>Notes</H2
 ><P
->   To avoid blocking of concurrent transactions that obtain numbers from the same
-   sequence, a nextval operation is never rolled back; that is, once a value has 
-   been fetched it is considered used, even if the transaction that did the nextval
-   later aborts. This means that aborted transactions may leave unused "holes" in
-   the sequence of assigned values. setval operations are never rolled back, either.
+>   To avoid blocking of concurrent transactions that obtain numbers from the
+   same sequence, <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> is never rolled back;
+   the changes take effect immediately and are not reversible.
   </P
 ><P
 >   <TT
 CLASS="COMMAND"
 >ALTER SEQUENCE</TT
-> will not immediately affect backends, other than the
-   current one, which have cached sequence values. They must use up all cached values
-   prior to noticing the changed sequence parameters.  The current backend will be 
-   immediatly affected.
+> will not immediately affect
+   <VAR
+CLASS="LITERAL"
+>nextval</VAR
+> results in backends,
+   other than the current one, that have preallocated (cached) sequence
+   values. They will use up all cached values prior to noticing the changed
+   sequence parameters.  The current backend will be affected immediately.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ALTERSEQUENCE-3"
+NAME="AEN35343"
 ></A
 ><H2
 >   Compatibility
@@ -464,7 +403,7 @@ NAME="R1-SQL-ALTERSEQUENCE-3"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="R2-SQL-ALTERSEQUENCE-4"
+NAME="AEN35345"
 ></A
 ><H3
 >    SQL99

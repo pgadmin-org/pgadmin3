@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,22 +37,31 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="libpq-exec.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 27. <SPAN
@@ -67,7 +71,15 @@ CLASS="APPLICATION"
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="libpq-fastpath.html"
 ACCESSKEY="N"
@@ -87,7 +99,7 @@ NAME="LIBPQ-ASYNC"
 >27.4. Asynchronous Command Processing</A
 ></H1
 ><A
-NAME="AEN20349"
+NAME="AEN21168"
 ></A
 ><P
 >The <CODE
@@ -182,13 +194,16 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQsendQuery</CODE
+><A
+NAME="AEN21198"
+></A
 ></DT
 ><DD
 ><P
 >          Submits a command to the server without
-	  waiting for the result(s).  1 is returned if the command was
-	  successfully dispatched and 0 if not (in which case, use
-	  <CODE
+          waiting for the result(s).  1 is returned if the command was
+          successfully dispatched and 0 if not (in which case, use
+          <CODE
 CLASS="FUNCTION"
 >PQerrorMessage</CODE
 > to get more information about the failure).
@@ -197,7 +212,7 @@ CLASS="SYNOPSIS"
 >int PQsendQuery(PGconn *conn, const char *command);</PRE
 ><P>
 
-	  After successfully calling <CODE
+          After successfully calling <CODE
 CLASS="FUNCTION"
 >PQsendQuery</CODE
 >, call
@@ -205,25 +220,28 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQgetResult</CODE
 > one or more
-	  times to obtain the results.  <CODE
+          times to obtain the results.  <CODE
 CLASS="FUNCTION"
 >PQsendQuery</CODE
 > may not be called
-	  again (on the same connection) until <CODE
+          again (on the same connection) until <CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
 > has returned a null pointer,
-	  indicating that the command is done.</P
+          indicating that the command is done.</P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQsendQueryParams</CODE
+><A
+NAME="AEN21211"
+></A
 ></DT
 ><DD
 ><P
 >          Submits a command and separate parameters to the server without
-	  waiting for the result(s).
+          waiting for the result(s).
 </P><PRE
 CLASS="SYNOPSIS"
 >int PQsendQueryParams(PGconn *conn,
@@ -236,31 +254,34 @@ CLASS="SYNOPSIS"
                       int resultFormat);</PRE
 ><P>
 
-	This is equivalent to <CODE
+        This is equivalent to <CODE
 CLASS="FUNCTION"
 >PQsendQuery</CODE
 > except that
-	query parameters can be specified separately from the query string.
-	The function's parameters are handled identically to
-	<CODE
+        query parameters can be specified separately from the query string.
+        The function's parameters are handled identically to
+        <CODE
 CLASS="FUNCTION"
 >PQexecParams</CODE
 >.  Like
-	<CODE
+        <CODE
 CLASS="FUNCTION"
 >PQexecParams</CODE
 >, it will not work on 2.0-protocol
-	connections, and it allows only one command in the query string.</P
+        connections, and it allows only one command in the query string.</P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQsendQueryPrepared</CODE
+><A
+NAME="AEN21222"
+></A
 ></DT
 ><DD
 ><P
 >          Sends a request to execute a prepared statement with given
-	  parameters, without waiting for the result(s).
+          parameters, without waiting for the result(s).
 </P><PRE
 CLASS="SYNOPSIS"
 >int PQsendQueryPrepared(PGconn *conn,
@@ -272,76 +293,79 @@ CLASS="SYNOPSIS"
                         int resultFormat);</PRE
 ><P>
 
-	This is similar to <CODE
+        This is similar to <CODE
 CLASS="FUNCTION"
 >PQsendQueryParams</CODE
 >, but the
-	command to be executed is specified by naming a previously-prepared
-	statement, instead of giving a query string.
-	The function's parameters are handled identically to
-	<CODE
+        command to be executed is specified by naming a previously-prepared
+        statement, instead of giving a query string.
+        The function's parameters are handled identically to
+        <CODE
 CLASS="FUNCTION"
 >PQexecPrepared</CODE
 >.  Like
-	<CODE
+        <CODE
 CLASS="FUNCTION"
 >PQexecPrepared</CODE
 >, it will not work on 2.0-protocol
-	connections.</P
+        connections.</P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
+><A
+NAME="AEN21233"
+></A
 ></DT
 ><DD
 ><P
 >          Waits for the next result from a prior
-	  <CODE
+          <CODE
 CLASS="FUNCTION"
 >PQsendQuery</CODE
 >,
-	  <CODE
+          <CODE
 CLASS="FUNCTION"
 >PQsendQueryParams</CODE
 >, or
-	  <CODE
+          <CODE
 CLASS="FUNCTION"
 >PQsendQueryPrepared</CODE
 > call,
-	  and returns it.  A null pointer is returned when the command is complete
-	  and there will be no more results.
+          and returns it.  A null pointer is returned when the command is complete
+          and there will be no more results.
 </P><PRE
 CLASS="SYNOPSIS"
 >PGresult *PQgetResult(PGconn *conn);</PRE
 ><P></P
 ><P
->	  <CODE
+>          <CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
 > must be called repeatedly until it returns a null pointer,
-	  indicating that the command is done.  (If called when no command is
-	  active, <CODE
+          indicating that the command is done.  (If called when no command is
+          active, <CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
 > will just return a null pointer at once.)
-	  Each non-null result from <CODE
+          Each non-null result from <CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
 > should be processed using
-	  the same <TT
+          the same <TT
 CLASS="STRUCTNAME"
 >PGresult</TT
 > accessor functions previously described.
-	  Don't forget to free each result object with <CODE
+          Don't forget to free each result object with <CODE
 CLASS="FUNCTION"
 >PQclear</CODE
 > when done with it.
-	  Note that <CODE
+          Note that <CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
 > will block only if a command is active and the
-	  necessary response data has not yet been read by <CODE
+          necessary response data has not yet been read by <CODE
 CLASS="FUNCTION"
 >PQconsumeInput</CODE
 >.</P
@@ -388,10 +412,13 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQconsumeInput</CODE
+><A
+NAME="AEN21260"
+></A
 ></DT
 ><DD
 ><P
->	  If input is available from the server, consume it.
+>          If input is available from the server, consume it.
 </P><PRE
 CLASS="SYNOPSIS"
 >int PQconsumeInput(PGconn *conn);</PRE
@@ -447,6 +474,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQisBusy</CODE
+><A
+NAME="AEN21280"
+></A
 ></DT
 ><DD
 ><P
@@ -523,14 +553,19 @@ HREF="libpq-notify.html"
 >Section 27.6</A
 >).</P
 ><P
->A client that uses <CODE
+>A client that uses
+<CODE
 CLASS="FUNCTION"
 >PQsendQuery</CODE
 >/<CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
+> can
+also attempt to cancel a command that is still being processed by the
+server.<A
+NAME="AEN21305"
+></A
 >
-can also attempt to cancel a command that is still being processed by the server.
 
 <P
 ></P
@@ -541,11 +576,14 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQrequestCancel</CODE
+><A
+NAME="AEN21312"
+></A
 ></DT
 ><DD
 ><P
->	  Requests that the server abandon
-	  processing of the current command.
+>          Requests that the server abandon
+          processing of the current command.
 </P><PRE
 CLASS="SYNOPSIS"
 >int PQrequestCancel(PGconn *conn);</PRE
@@ -621,6 +659,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQsetnonblocking</CODE
+><A
+NAME="AEN21334"
+></A
 ></DT
 ><DD
 ><P
@@ -672,6 +713,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQisnonblocking</CODE
+><A
+NAME="AEN21352"
+></A
 ></DT
 ><DD
 ><P
@@ -688,6 +732,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQflush</CODE
+><A
+NAME="AEN21361"
+></A
 ></DT
 ><DD
 ><P

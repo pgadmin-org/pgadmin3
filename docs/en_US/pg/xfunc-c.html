@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,32 +37,49 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="xfunc-internal.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 34. Extending <ACRONYM
+>Chapter 33. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="xfunc-overload.html"
 ACCESSKEY="N"
@@ -84,8 +96,11 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XFUNC-C"
->34.7. C-Language Functions</A
+>33.7. C-Language Functions</A
 ></H1
+><A
+NAME="AEN28959"
+></A
 ><P
 >    User-defined functions can be written in C (or a language that can
     be made compatible with C, such as C++).  Such functions are
@@ -134,8 +149,11 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XFUNC-C-DYNLOAD"
->34.7.1. Dynamic Loading</A
+>33.7.1. Dynamic Loading</A
 ></H2
+><A
+NAME="AEN28974"
+></A
 ><P
 >    The first time a user-defined function in a particular
     loadable object file is called in a session,
@@ -179,7 +197,7 @@ CLASS="PRODUCTNAME"
 > package
 	library directory
        name, which is determined at build time.<A
-NAME="AEN30039"
+NAME="AEN28987"
 ></A
 >
       </P
@@ -192,7 +210,7 @@ NAME="AEN30039"
 CLASS="VARNAME"
 >dynamic_library_path</VAR
 >.<A
-NAME="AEN30044"
+NAME="AEN28992"
 ></A
 >
       </P
@@ -264,7 +282,7 @@ CLASS="COMMAND"
      FUNCTION</TT
 > command.  See <A
 HREF="xfunc-c.html#DFUNC"
->Section 34.7.6</A
+>Section 33.7.6</A
 > for additional
      information.
     </P
@@ -334,32 +352,38 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30071"
->34.7.2. Base Types in C-Language Functions</A
+NAME="XFUNC-C-BASETYPE"
+>33.7.2. Base Types in C-Language Functions</A
 ></H2
+><A
+NAME="AEN29021"
+></A
 ><P
 >     To know how to write C-language functions, you need to know how
-     PostgreSQL internally represents base data types and how they can
-     be passed to and from functions.
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> internally represents base
+     data types and how they can be passed to and from functions.
      Internally, <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> regards a
-     base type as a <SPAN
+> regards a base
+     type as a <SPAN
 CLASS="QUOTE"
 >"blob of memory"</SPAN
->.   The  user-defined  
-     functions that you define over a type in turn define the 
-     way  that  <SPAN
+>.  The user-defined
+     functions that you define over a type in turn define the way that
+     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> can operate  
-     on  it.  That is, <SPAN
+> can operate on it.  That
+     is, <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> will 
-     only store and retrieve the data from disk and use  your  
-     user-defined functions to input, process, and output the data.
+> will only store and
+     retrieve the data from disk and use your user-defined functions
+     to input, process, and output the data.
     </P
 ><P
 >     Base types can have one of three internal formats:
@@ -531,7 +555,7 @@ CLASS="LITERAL"
 ><P
 >     <A
 HREF="xfunc-c.html#XFUNC-C-TYPE-TABLE"
->Table 34-1</A
+>Table 33-1</A
 > specifies which C type
      corresponds to which SQL type when writing a C-language function
      that uses a built-in type of <SPAN
@@ -559,7 +583,7 @@ NAME="XFUNC-C-TYPE-TABLE"
 ></A
 ><P
 ><B
->Table 34-1. Equivalent C Types for Built-In SQL Types</B
+>Table 33-1. Equivalent C Types for Built-In SQL Types</B
 ></P
 ><TABLE
 BORDER="1"
@@ -1116,8 +1140,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30340"
->34.7.3. Calling Conventions Version 0 for C-Language Functions</A
+NAME="AEN29292"
+>33.7.3. Calling Conventions Version 0 for C-Language Functions</A
 ></H2
 ><P
 >     We present the <SPAN
@@ -1258,22 +1282,26 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
 > stands for the
-     directory of the shared library file (for instance the PostgreSQL
-     tutorial directory, which contains the code for the examples used
-     in this section).  (Better style would be to use just
-     <VAR
+     directory of the shared library file (for instance the
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> tutorial directory, which
+     contains the code for the examples used in this section).
+     (Better style would be to use just <VAR
 CLASS="LITERAL"
 >'funcs'</VAR
-> in the <VAR
+> in the
+     <VAR
 CLASS="LITERAL"
 >AS</VAR
-> clause, after having
-     added <VAR
+> clause, after having added
+     <VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
-> to the search path.
-     In any case, we may omit the system-specific extension for a
-     shared library, commonly <VAR
+> to the search path.  In any
+     case, we may omit the system-specific extension for a shared
+     library, commonly <VAR
 CLASS="LITERAL"
 >.so</VAR
 > or
@@ -1312,8 +1340,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30366"
->34.7.4. Calling Conventions Version 1 for C-Language Functions</A
+NAME="AEN29319"
+>33.7.4. Calling Conventions Version 1 for C-Language Functions</A
 ></H2
 ><P
 >     The version-1 calling convention relies on macros to suppress most
@@ -1620,15 +1648,15 @@ CLASS="LITERAL"
 >     Finally, the version-1 function call conventions make it possible
      to return set results (<A
 HREF="xfunc-c.html#XFUNC-C-RETURN-SET"
->Section 34.7.9</A
+>Section 33.7.9</A
 >) and
      implement trigger functions (<A
 HREF="triggers.html"
->Chapter 37</A
+>Chapter 36</A
 >) and
      procedural-language call handlers (<A
 HREF="xfunc-plhandler.html"
->Section 34.9</A
+>Section 33.9</A
 >).  Version-1 code is also more
      portable than version-0, because it does not break restrictions
      on function call protocol in the C standard.  For more details
@@ -1644,23 +1672,27 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30424"
->34.7.5. Writing Code</A
+NAME="AEN29377"
+>33.7.5. Writing Code</A
 ></H2
 ><P
 >     Before we turn to the more advanced topics, we should discuss
-     some coding rules for PostgreSQL C-language functions.  While it
-     may be possible to load functions written in languages other than
-     C into <SPAN
+     some coding rules for <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->, this is usually
-     difficult (when it is possible at all) because other languages,
-     such as C++, FORTRAN, or Pascal often do not follow the same
-     calling convention as C.  That is, other languages do not pass
-     argument and return values between functions in the same way.
-     For this reason, we will assume that your C-language functions
-     are actually written in C.
+>
+     C-language functions.  While it may be possible to load functions
+     written in languages other than C into
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, this is usually difficult
+     (when it is possible at all) because other languages, such as
+     C++, FORTRAN, or Pascal often do not follow the same calling
+     convention as C.  That is, other languages do not pass argument
+     and return values between functions in the same way.  For this
+     reason, we will assume that your C-language functions are
+     actually written in C.
     </P
 ><P
 >     The basic rules for writing and building C functions are as follows:
@@ -1675,7 +1707,7 @@ CLASS="LITERAL"
 >pg_config
         --includedir-server</VAR
 ><A
-NAME="AEN30433"
+NAME="AEN29387"
 ></A
 >
         to find out where the <SPAN
@@ -1716,9 +1748,15 @@ CLASS="PRODUCTNAME"
         <CODE
 CLASS="FUNCTION"
 >palloc</CODE
+><A
+NAME="AEN29399"
+></A
 > and <CODE
 CLASS="FUNCTION"
 >pfree</CODE
+><A
+NAME="AEN29402"
+></A
 >
         instead of the corresponding C library functions
         <CODE
@@ -1816,7 +1854,7 @@ CLASS="PRODUCTNAME"
 > always
         requires special flags.  See <A
 HREF="xfunc-c.html#DFUNC"
->Section 34.7.6</A
+>Section 33.7.6</A
 > for a
         detailed explanation of how to do it for your particular
         operating system.
@@ -1832,7 +1870,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="DFUNC"
->34.7.6. Compiling and Linking Dynamically-Loaded Functions</A
+>33.7.6. Compiling and Linking Dynamically-Loaded Functions</A
 ></H2
 ><P
 >  Before you are able to use your
@@ -1840,12 +1878,17 @@ NAME="DFUNC"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > extension functions written in
-  C, they must be compiled and linked in a special way to produce a file
-  that can be dynamically loaded by the server.  To be
-  precise, a <I
+  C, they must be compiled and linked in a special way to produce a
+  file that can be dynamically loaded by the server.  To be precise, a
+  <I
 CLASS="FIRSTTERM"
 >shared library</I
-> needs to be created.
+> needs to be
+  created.<A
+NAME="AEN29433"
+></A
+>
+
  </P
 ><P
 >  For information beyond what is contained in this section
@@ -1875,25 +1918,29 @@ CLASS="PRODUCTNAME"
  </P
 ><P
 >  <A
-NAME="AEN30481"
+NAME="AEN29442"
 ></A
->
-  Creating shared libraries is generally analogous to linking
-  executables:  first the source files are compiled into object files,
-  then the object files are linked together.  The object files need to
-  be created as <I
+> Creating shared libraries is generally
+  analogous to linking executables: first the source files are
+  compiled into object files, then the object files are linked
+  together.  The object files need to be created as
+  <I
 CLASS="FIRSTTERM"
 >position-independent code</I
 >
   (<ACRONYM
 CLASS="ACRONYM"
 >PIC</ACRONYM
->), which conceptually means that they can be
-  placed at an arbitrary location in memory when they are loaded by the
-  executable.  (Object files intended for executables are usually not compiled
-  that way.)  The command to link a shared library contains special
-  flags to distinguish it from linking an executable. --- At least
-  this is the theory.  On some systems the practice is much uglier.
+>),<A
+NAME="AEN29446"
+></A
+> which
+  conceptually means that they can be placed at an arbitrary location
+  in memory when they are loaded by the executable.  (Object files
+  intended for executables are usually not compiled that way.)  The
+  command to link a shared library contains special flags to
+  distinguish it from linking an executable. --- At least this is the
+  theory.  On some systems the practice is much uglier.
  </P
 ><P
 >  In the following examples we assume that your source code is in a
@@ -2333,7 +2380,7 @@ CLASS="COMMAND"
 ><P
 >  Refer back to <A
 HREF="xfunc-c.html#XFUNC-C-DYNLOAD"
->Section 34.7.1</A
+>Section 33.7.1</A
 > about where the
   server expects to find the shared library files.
  </P
@@ -2343,8 +2390,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30643"
->34.7.7. Composite-Type Arguments in C-Language Functions</A
+NAME="AEN29617"
+>33.7.7. Composite-Type Arguments in C-Language Functions</A
 ></H2
 ><P
 >     Composite types do not  have  a  fixed  layout  like  C
@@ -2476,8 +2523,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30664"
->34.7.8. Returning Rows (Composite Types) from C-Language Functions</A
+NAME="AEN29638"
+>33.7.8. Returning Rows (Composite Types) from C-Language Functions</A
 ></H2
 ><P
 >     To return a row or composite-type value from a C-language
@@ -2690,7 +2737,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XFUNC-C-RETURN-SET"
->34.7.9. Returning Sets from C-Language Functions</A
+>33.7.9. Returning Sets from C-Language Functions</A
 ></H2
 ><P
 >     There is also a special API that provides support for returning
@@ -3091,8 +3138,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30765"
->34.7.10. Polymorphic Arguments and Return Types</A
+NAME="AEN29739"
+>33.7.10. Polymorphic Arguments and Return Types</A
 ></H2
 ><P
 >     C-language functions may be declared to accept and
@@ -3108,8 +3155,8 @@ CLASS="TYPE"
 >anyarray</TT
 >.
      See <A
-HREF="type-system.html#TYPES-POLYMORPHIC"
->Section 34.2.1</A
+HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
+>Section 33.2.1</A
 > for a more detailed explanation
      of polymorphic functions. When function arguments or return types
      are defined as polymorphic types, the function author cannot know

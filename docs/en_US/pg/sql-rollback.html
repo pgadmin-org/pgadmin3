@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-revoke.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-revoke.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-select.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-select.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-ROLLBACK"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43624"
+NAME="AEN41702"
 ></A
 ><H2
 >Name</H2
 >ROLLBACK&nbsp;--&nbsp;abort the current transaction</DIV
+><A
+NAME="AEN41705"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43627"
+NAME="AEN41707"
 ></A
 ><H2
 >Synopsis</H2
@@ -102,7 +117,7 @@ CLASS="SYNOPSIS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43629"
+NAME="AEN41709"
 ></A
 ><H2
 >Description</H2
@@ -117,7 +132,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43633"
+NAME="AEN41713"
 ></A
 ><H2
 >Parameters</H2
@@ -145,42 +160,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43643"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ROLLBACK</SAMP
-></DT
-><DD
-><P
->      Message returned if successful.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->WARNING:  ROLLBACK: no transaction in progress</SAMP
-></DT
-><DD
-><P
->      If there is not any transaction currently in progress.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43656"
+NAME="AEN41723"
 ></A
 ><H2
 >Notes</H2
@@ -193,11 +173,18 @@ HREF="sql-commit.html"
 > to
    successfully terminate a transaction.
   </P
+><P
+>   Issuing <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+> when not inside a transaction does
+   no harm, but it will provoke a warning message.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43660"
+NAME="AEN41729"
 ></A
 ><H2
 >Examples</H2
@@ -212,7 +199,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43664"
+NAME="AEN41733"
 ></A
 ><H2
 >Compatibility</H2
@@ -227,6 +214,24 @@ CLASS="LITERAL"
    WORK</VAR
 >. Otherwise, this command is fully conforming.
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41738"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+>, <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

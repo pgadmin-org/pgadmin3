@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Queries"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="queries-table-expressions.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 7. Queries</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="queries.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="queries-union.html"
 ACCESSKEY="N"
@@ -84,7 +96,7 @@ NAME="QUERIES-SELECT-LISTS"
 >7.3. Select Lists</A
 ></H1
 ><A
-NAME="AEN2646"
+NAME="AEN2919"
 ></A
 ><P
 >   As shown in the previous section,
@@ -115,6 +127,9 @@ CLASS="SECT2"
 NAME="QUERIES-SELECT-LIST-ITEMS"
 >7.3.1. Select-List Items</A
 ></H2
+><A
+NAME="AEN2928"
+></A
 ><P
 >    The simplest kind of select list is <VAR
 CLASS="LITERAL"
@@ -167,6 +182,12 @@ CLASS="LITERAL"
 CLASS="PROGRAMLISTING"
 >SELECT tbl1.a, tbl2.a, tbl1.b FROM ...</PRE
 ><P>
+    When working with multiple tables, it can also be useful to ask for
+    all the columns of a particular table:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT tbl1.*, tbl2.a FROM ...</PRE
+><P>
     (See also <A
 HREF="queries-table-expressions.html#QUERIES-WHERE"
 >Section 7.2.2</A
@@ -195,7 +216,7 @@ NAME="QUERIES-COLUMN-LABELS"
 >7.3.2. Column Labels</A
 ></H2
 ><A
-NAME="AEN2673"
+NAME="AEN2949"
 ></A
 ><P
 >    The entries in the select list can be assigned names for further
@@ -250,7 +271,10 @@ NAME="QUERIES-DISTINCT"
 >7.3.3. DISTINCT</A
 ></H2
 ><A
-NAME="AEN2687"
+NAME="AEN2963"
+></A
+><A
+NAME="AEN2965"
 ></A
 ><P
 >    After the select list has been processed, the result table may
@@ -280,7 +304,11 @@ CLASS="LITERAL"
     can be used to select the default behavior of retaining all rows.)
    </P
 ><P
->    Obviously, two rows are considered distinct if they differ in at
+>    <A
+NAME="AEN2975"
+></A
+>
+    Obviously, two rows are considered distinct if they differ in at
     least one column value.  Null values are considered equal in this
     comparison.
    </P

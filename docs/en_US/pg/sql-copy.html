@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-commit.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-commit.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-createaggregate.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-createaggregate.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-COPY"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37709"
+NAME="AEN36230"
 ></A
 ><H2
 >Name</H2
 >COPY&nbsp;--&nbsp;copy data between files and tables</DIV
+><A
+NAME="AEN36233"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37712"
+NAME="AEN36235"
 ></A
 ><H2
 >Synopsis</H2
@@ -146,7 +161,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37724"
+NAME="AEN36247"
 ></A
 ><H2
 >Description</H2
@@ -220,7 +235,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37741"
+NAME="AEN36264"
 ></A
 ><H2
 >Parameters</H2
@@ -365,32 +380,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37797"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->COPY</SAMP
-></DT
-><DD
-><P
->      The copy operation completed successfully.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37805"
+NAME="AEN36320"
 ></A
 ><H2
 >Notes</H2
@@ -435,7 +425,7 @@ CLASS="COMMAND"
     they must reside on or be accessible to the database server machine,
     not the client. They must be accessible to and readable or writable
     by the <SPAN
-CLASS="APPLICATION"
+CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user (the user ID the
     server runs as), not the client. <TT
@@ -530,14 +520,14 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37839"
+NAME="AEN36354"
 ></A
 ><H2
 >File Formats</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN37841"
+NAME="AEN36356"
 ></A
 ><H3
 >Text Format</H3
@@ -608,7 +598,7 @@ CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN37856"
+NAME="AEN36371"
 ></A
 ><TABLE
 BORDER="1"
@@ -755,7 +745,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN37904"
+NAME="AEN36419"
 ></A
 ><H3
 >Binary Format</H3
@@ -765,7 +755,7 @@ CLASS="COMMAND"
 >COPY BINARY</TT
 > changed in
     <SPAN
-CLASS="APPLICATION"
+CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 7.4. The new format consists
     of a file header, zero or more tuples containing the row data, and
@@ -774,7 +764,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN37909"
+NAME="AEN36424"
 ></A
 ><H4
 >File Header</H4
@@ -868,7 +858,7 @@ is left for a later release.
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN37935"
+NAME="AEN36450"
 ></A
 ><H4
 >Tuples</H4
@@ -895,7 +885,7 @@ to be specified.
 ><P
 >To determine the appropriate binary format for the actual tuple data you
 should consult the <SPAN
-CLASS="APPLICATION"
+CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > source, in
 particular the <CODE
@@ -926,7 +916,7 @@ OIDs to be shown as null if that ever proves desirable.
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN37948"
+NAME="AEN36463"
 ></A
 ><H4
 >File Trailer</H4
@@ -945,7 +935,7 @@ NAME="AEN37948"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37952"
+NAME="AEN36467"
 ></A
 ><H2
 >Examples</H2
@@ -1022,7 +1012,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37969"
+NAME="AEN36484"
 ></A
 ><H2
 >Compatibility</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="app-clusterdb.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-clusterdb.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="app-createlang.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="app-createlang.html"
 ACCESSKEY="N"
@@ -86,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45267"
+NAME="AEN43286"
 ></A
 ><H2
 >Name</H2
@@ -94,10 +106,13 @@ NAME="AEN45267"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database</DIV
+><A
+NAME="AEN43290"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45271"
+NAME="AEN43292"
 ></A
 ><H2
 >Synopsis</H2
@@ -156,20 +171,15 @@ HREF="sql-createdatabase.html"
 ><I
 >CREATE DATABASE</I
 ></A
->.  The database server must be 
-   running on the targeted host. There is nothing special about creating 
-   databases via this or other methods.  Also, any default settings and 
-   environment variables used by the <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> 
-   front-end library will apply.
+>.
+   There is no effective difference between creating databases via
+   this utility and via other methods for accessing the server.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45292"
+NAME="AEN43312"
 ></A
 ><H2
 >Options</H2
@@ -444,69 +454,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45403"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE DATABASE</SAMP
-></DT
-><DD
-><P
->The database was successfully created.</P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->createdb: Database creation failed.</SAMP
-></DT
-><DD
-><P
->(Says it all.)</P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->createdb: Comment creation failed. (Database was created.)</SAMP
-></DT
-><DD
-><P
->       The comment/description for the database could not be created.
-       The database itself will have been created already. You can use the
-       <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command <TT
-CLASS="COMMAND"
->COMMENT ON DATABASE</TT
-> to
-       create the comment later on.
-       </P
-></DD
-></DL
-></DIV
-><P
->    If there is an error condition, the backend error message will be displayed.
-    See <A
-HREF="sql-createdatabase.html"
-><I
->CREATE DATABASE</I
-></A
->
-    for possibilities.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45425"
+NAME="AEN43423"
 ></A
 ><H2
 >Environment</H2
@@ -556,7 +504,37 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-APP-CREATEDB-2"
+NAME="AEN43442"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   In case of difficulty, see <A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+> and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for
+   discussions of potential problems and error messages.
+   The database server must be running at the
+   targeted host.  Also, any default connection settings and environment
+   variables used by the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end
+   library will apply.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43448"
 ></A
 ><H2
 >Examples</H2
@@ -626,7 +604,7 @@ CLASS="COMPUTEROUTPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45463"
+NAME="AEN43467"
 ></A
 ><H2
 >See Also</H2

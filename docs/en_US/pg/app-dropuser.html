@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="app-droplang.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-droplang.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="app-ecpg.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="app-ecpg.html"
 ACCESSKEY="N"
@@ -86,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN46144"
+NAME="AEN44132"
 ></A
 ><H2
 >Name</H2
@@ -94,10 +106,13 @@ NAME="AEN46144"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user account</DIV
+><A
+NAME="AEN44136"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN46148"
+NAME="AEN44138"
 ></A
 ><H2
 >Synopsis</H2
@@ -116,7 +131,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46155"
+NAME="AEN44145"
 ></A
 ><H2
 >Description</H2
@@ -162,20 +177,15 @@ HREF="sql-dropuser.html"
 ><I
 >DROP USER</I
 ></A
->.  The database server must be running
-   on the targeted host.  There is nothing special about removing
-   users via this or other methods.  Also, any default settings and
-   environment variables used by the <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->
-   front-end library will apply.
+>.
+   There is no effective difference between dropping users via
+   this utility and via other methods for accessing the server.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46169"
+NAME="AEN44158"
 ></A
 ><H2
 >Options</H2
@@ -254,7 +264,7 @@ CLASS="OPTION"
 ><P
 >   <SPAN
 CLASS="APPLICATION"
->createuser</SPAN
+>dropuser</SPAN
 > also accepts the following
    command-line arguments for connection parameters:
     
@@ -347,7 +357,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46239"
+NAME="AEN44228"
 ></A
 ><H2
 >Environment</H2
@@ -378,61 +388,37 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46251"
+NAME="AEN44240"
 ></A
 ><H2
 >Diagnostics</H2
 ><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->DROP USER</SAMP
-></DT
-><DD
-><P
->        The user was successfully removed.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->dropuser: deletion of user "<VAR
-CLASS="REPLACEABLE"
->username</VAR
->" failed</SAMP
-></DT
-><DD
-><P
->        Something went wrong. The user was not removed.
-       </P
-></DD
-></DL
-></DIV
-><P
->    If there is an error condition, the backend error message will be displayed.
-    See <A
+>   In case of difficulty, see <A
 HREF="sql-dropuser.html"
 ><I
 >DROP USER</I
 ></A
->
-    and <A
+> and <A
 HREF="app-psql.html"
 ><SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 ></A
-> for possibilities.
-   </P
+> for
+   discussions of potential problems and error messages.
+   The database server must be running at the
+   targeted host.  Also, any default connection settings and environment
+   variables used by the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end
+   library will apply.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46268"
+NAME="AEN44246"
 ></A
 ><H2
 >Examples</H2
@@ -495,7 +481,7 @@ DROP USER</SAMP
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46285"
+NAME="AEN44263"
 ></A
 ><H2
 >See Also</H2

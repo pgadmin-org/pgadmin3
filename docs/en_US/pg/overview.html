@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Internals"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="internals.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="internals.html#AEN48513"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="connect-estab.html"
 ACCESSKEY="N"
@@ -81,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="OVERVIEW"
 ></A
->Chapter 44. Overview of PostgreSQL Internals</H1
+>Chapter 43. Overview of PostgreSQL Internals</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,36 +102,36 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->44.1. <A
+>43.1. <A
 HREF="overview.html#QUERY-PATH"
 >The Path of a Query</A
 ></DT
 ><DT
->44.2. <A
+>43.2. <A
 HREF="connect-estab.html"
 >How Connections are Established</A
 ></DT
 ><DT
->44.3. <A
+>43.3. <A
 HREF="parser-stage.html"
 >The Parser Stage</A
 ></DT
 ><DD
 ><DL
 ><DT
->44.3.1. <A
-HREF="parser-stage.html#AEN50603"
+>43.3.1. <A
+HREF="parser-stage.html#AEN48601"
 >Parser</A
 ></DT
 ><DT
->44.3.2. <A
-HREF="parser-stage.html#AEN50639"
+>43.3.2. <A
+HREF="parser-stage.html#AEN48637"
 >Transformation Process</A
 ></DT
 ></DL
 ></DD
 ><DT
->44.4. <A
+>43.4. <A
 HREF="rule-system.html"
 >The <SPAN
 CLASS="PRODUCTNAME"
@@ -127,12 +139,12 @@ CLASS="PRODUCTNAME"
 > Rule System</A
 ></DT
 ><DT
->44.5. <A
+>43.5. <A
 HREF="planner-optimizer.html"
 >Planner/Optimizer</A
 ></DT
 ><DT
->44.6. <A
+>43.6. <A
 HREF="executor.html"
 >Executor</A
 ></DT
@@ -181,7 +193,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="QUERY-PATH"
->44.1. The Path of a Query</A
+>43.1. The Path of a Query</A
 ></H1
 ><P
 >    Here we give a short overview of the stages a query has to pass in

@@ -2,14 +2,14 @@
 <HTML
 ><HEAD
 ><TITLE
->Terminology and Notation</TITLE
+>Conventions</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Preface"
@@ -18,20 +18,15 @@ REL="PREVIOUS"
 TITLE="A Brief History of PostgreSQL"
 HREF="history.html"><LINK
 REL="NEXT"
-TITLE="Bug Reporting Guidelines"
-HREF="bug-reporting.html"><LINK
+TITLE="Further Information"
+HREF="resources.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,31 +37,48 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="history.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="preface.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Preface</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
 ><A
-HREF="bug-reporting.html"
+HREF="preface.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="resources.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,8 +93,84 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="NOTATION"
->3. Terminology and Notation</A
+>Conventions</A
 ></H1
+><P
+>  This book uses the following typographical conventions to mark
+  certain portions of text: new terms, foreign phrases, and other
+  important passages are emphasized in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>italics</I
+></SPAN
+>.
+  Everything that represents input or output of the computer, in
+  particular commands, program code, and screen output, is shown in a
+  monospaced font (<VAR
+CLASS="LITERAL"
+>example</VAR
+>).  Within such
+  passages, italics (<VAR
+CLASS="REPLACEABLE"
+>example</VAR
+>) indicate
+  placeholders; you must insert an actual value instead of the placeholder.
+  On occasion, parts of program code are emphasized in bold face
+  (<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+><VAR
+CLASS="LITERAL"
+>example</VAR
+></B
+></SPAN
+>), if they have been
+  added or changed since the preceding example.
+ </P
+><P
+>  The following conventions are used in the synopsis of a command:
+  brackets (<VAR
+CLASS="LITERAL"
+>[</VAR
+> and <VAR
+CLASS="LITERAL"
+>]</VAR
+>) indicate
+  optional parts.  (In the synopsis of a Tcl command, question marks
+  (<VAR
+CLASS="LITERAL"
+>?</VAR
+>) are used instead, as is usual in Tcl.)  Braces
+  (<VAR
+CLASS="LITERAL"
+>{</VAR
+> and <VAR
+CLASS="LITERAL"
+>}</VAR
+>) and vertical lines
+  (<VAR
+CLASS="LITERAL"
+>|</VAR
+>) indicate that you must choose one
+  alternative.  Dots (<VAR
+CLASS="LITERAL"
+>...</VAR
+>) mean that the preceding element
+  can be repeated.
+ </P
+><P
+>  Where it enhances the clarity, SQL commands are preceded by the
+  prompt <VAR
+CLASS="LITERAL"
+>=&gt;</VAR
+>, and shell commands are preceded by the
+  prompt <VAR
+CLASS="LITERAL"
+>$</VAR
+>.  Normally, prompts are not shown, though.
+ </P
 ><P
 >  An <I
 CLASS="FIRSTTERM"
@@ -97,98 +185,9 @@ CLASS="FIRSTTERM"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > system.  These terms should not
-  be interpreted too narrowly; this documentation set does not have fixed
+  be interpreted too narrowly; this book does not have fixed
   presumptions about system administration procedures.
  </P
-><P
->  We use <TT
-CLASS="FILENAME"
->/usr/local/pgsql/</TT
-> as the root
-  directory of the installation and <TT
-CLASS="FILENAME"
->/usr/local/pgsql/data</TT
->
-  as the directory with the database files.  These directories may vary
-  on your site, details can be derived in <A
-HREF="installation.html"
->Chapter 14</A
->.
- </P
-><P
->  In a command synopsis, brackets
-  (<VAR
-CLASS="LITERAL"
->[</VAR
-> and <VAR
-CLASS="LITERAL"
->]</VAR
->) indicate an optional phrase or keyword.
-  Anything in braces
-  (<VAR
-CLASS="LITERAL"
->{</VAR
-> and <VAR
-CLASS="LITERAL"
->}</VAR
->) and containing vertical bars
-  (<VAR
-CLASS="LITERAL"
->|</VAR
->)
-  indicates that you must choose one alternative.
- </P
-><P
->  Examples will show commands executed from various accounts and programs.
-  Commands executed from a Unix shell may be preceded with a dollar sign
-  (<SPAN
-CLASS="QUOTE"
->"<VAR
-CLASS="LITERAL"
->$</VAR
->"</SPAN
->).  Commands executed from particular user
-  accounts such as <SPAN
-CLASS="SYSTEMITEM"
->root</SPAN
-> or <SPAN
-CLASS="SYSTEMITEM"
->postgres</SPAN
-> are specially flagged and explained.
-  <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> commands may be preceded with
-  <SPAN
-CLASS="QUOTE"
->"<VAR
-CLASS="LITERAL"
->=&gt;</VAR
->"</SPAN
->
-  or will have no leading prompt, depending on the context.
- </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->   The notation for
-   flagging commands is not universally consistent throughout the
-   documentation set.
-   Please report problems to the documentation mailing list
-   <CODE
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:pgsql-docs@postgresql.org"
->pgsql-docs@postgresql.org</A
->&#62;</CODE
->.
-  </P
-></BLOCKQUOTE
-></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -224,7 +223,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="bug-reporting.html"
+HREF="resources.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -251,7 +250,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Bug Reporting Guidelines</TD
+>Further Information</TD
 ></TR
 ></TABLE
 ></DIV

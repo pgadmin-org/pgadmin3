@@ -9,10 +9,10 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="PREVIOUS"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="NEXT"
 TITLE="A Brief History of PostgreSQL"
@@ -21,14 +21,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="PREFACE"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -39,29 +34,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="index.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="index.html#AEN3"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="history.html"
 ACCESSKEY="N"
@@ -87,7 +99,7 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->1. <A
+><A
 HREF="preface.html#INTRO-WHATIS"
 >What is <SPAN
 CLASS="PRODUCTNAME"
@@ -95,7 +107,7 @@ CLASS="PRODUCTNAME"
 >?</A
 ></DT
 ><DT
->2. <A
+><A
 HREF="history.html"
 >A Brief History of <SPAN
 CLASS="PRODUCTNAME"
@@ -103,113 +115,217 @@ CLASS="PRODUCTNAME"
 ></A
 ></DT
 ><DT
->3. <A
+><A
 HREF="notation.html"
->Terminology and Notation</A
+>Conventions</A
 ></DT
 ><DT
->4. <A
+><A
+HREF="resources.html"
+>Further Information</A
+></DT
+><DT
+><A
 HREF="bug-reporting.html"
 >Bug Reporting Guidelines</A
 ></DT
 ></DL
 ></DIV
+><P
+>  This book is the official documentation of
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  It is being written by the
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> developers and other
+  volunteers in parallel to the development of the
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> software.  It describes all
+  the functionality that the current version of
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> officially supports.
+ </P
+><P
+>  To make the large amount of information about
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> manageable, this book has been
+  organized in several parts.  Each part is targeted at a different
+  class of users, or at users in different stages of their
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> experience:
+
+  <P
+></P
+></P><UL
+><LI
+><P
+>     <A
+HREF="tutorial.html"
+>Part I</A
+> is an informal introduction for new users.
+    </P
+></LI
+><LI
+><P
+>     <A
+HREF="sql.html"
+>Part II</A
+> documents the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> query
+     language environment, including data types and functions, as well
+     as user-level performance tuning.  Every
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user should read this.
+    </P
+></LI
+><LI
+><P
+>     <A
+HREF="admin.html"
+>Part III</A
+> describes the installation and
+     administration of the server.  Everyone that runs a
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server, be it for private
+     use or for others, should read this part.
+    </P
+></LI
+><LI
+><P
+>     <A
+HREF="client-interfaces.html"
+>Part IV</A
+> describes the programming
+     interfaces for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> client
+     programs.
+    </P
+></LI
+><LI
+><P
+>     <A
+HREF="server-programming.html"
+>Part V</A
+> contains information for
+     advanced users about the extensibility capabilities of the
+     server.  Topics are, for instance, user-defined data types and
+     functions.
+    </P
+></LI
+><LI
+><P
+>     <A
+HREF="reference.html"
+>Part VI</A
+> contains information about the syntax
+     of SQL commands, client and server programs.  This part supports
+     the other parts with structured information sorted by command or
+     program.
+    </P
+></LI
+></UL
+><P>
+ </P
 ><DIV
 CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
 NAME="INTRO-WHATIS"
->1. What is <SPAN
+>What is <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >?</A
 ></H1
 ><P
->    <SPAN
+>   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is an object-relational
-    database management system (<ACRONYM
+   database management system (<ACRONYM
 CLASS="ACRONYM"
 >ORDBMS</ACRONYM
 >) based on
-    <A
+   <A
 HREF="http://s2k-ftp.CS.Berkeley.EDU:8000/postgres/postgres.html"
 TARGET="_top"
->    <SPAN
+>   <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES, Version 4.2</SPAN
 ></A
->,
-    developed at the University of California at Berkeley Computer
-    Science Department.  The <SPAN
-CLASS="PRODUCTNAME"
->POSTGRES</SPAN
->
-    project, led by Professor Michael Stonebraker, was sponsored by
-    the Defense Advanced Research Projects Agency
-    (<ACRONYM
-CLASS="ACRONYM"
->DARPA</ACRONYM
->), the Army Research Office
-    (<ACRONYM
-CLASS="ACRONYM"
->ARO</ACRONYM
->), the National Science Foundation
-    (<ACRONYM
-CLASS="ACRONYM"
->NSF</ACRONYM
->), and ESL, Inc.
-   </P
+>, developed
+   at the University of California at Berkeley Computer Science
+   Department.  POSTGRES pioneered many concepts that only became
+   available in some commercial database systems much later.
+  </P
 ><P
->    <SPAN
+>   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> is an open-source descendant of
-    this original Berkeley code.  It provides SQL92/SQL99 language support
-    and other modern features.
-   </P
-><P
->    <SPAN
-CLASS="PRODUCTNAME"
->POSTGRES</SPAN
-> pioneered many of the
-    object-relational concepts now becoming available in some commercial
-    databases.
-    Traditional   relational  database  management  systems
-    (<ACRONYM
-CLASS="ACRONYM"
->RDBMS</ACRONYM
->) support a data model consisting of a collection
-    of named relations, containing attributes of a specific
-    type.  In current commercial  systems,  possible  types
-    include  floating  point  numbers,  integers, character
-    strings, money, and dates.  It is  commonly  recognized
-    that  this model is inadequate for future data-processing applications.
-    The relational  model  successfully  replaced  previous
-    models  in  part  because  of its <SPAN
-CLASS="QUOTE"
->"Spartan simplicity"</SPAN
->.
-    However, this simplicity makes  the
-    implementation  of  certain applications very difficult.
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> offers  substantial additional
-    power  by  incorporating  the following additional
-    concepts in such a way that  users  can  easily
-    extend the system:
+> is an open-source descendant
+   of this original Berkeley code.  It supports SQL92 and SQL99 and
+   offers many modern features:
 
-    <P
+   <P
 ></P
 ></P><UL
 COMPACT="COMPACT"
 ><LI
 ><SPAN
->inheritance</SPAN
+>complex queries</SPAN
 ></LI
+><LI
+><SPAN
+>foreign keys</SPAN
+></LI
+><LI
+><SPAN
+>triggers</SPAN
+></LI
+><LI
+><SPAN
+>views</SPAN
+></LI
+><LI
+><SPAN
+>transactional integrity</SPAN
+></LI
+><LI
+><SPAN
+>multiversion concurrency control</SPAN
+></LI
+></UL
+><P>
+
+   Also, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can be extended by the
+   user in many ways, for example by adding new
+
+   <P
+></P
+></P><UL
+COMPACT="COMPACT"
 ><LI
 ><SPAN
 >data types</SPAN
@@ -218,62 +334,34 @@ COMPACT="COMPACT"
 ><SPAN
 >functions</SPAN
 ></LI
-></UL
-><P>
-   </P
-><P
->    Other features provide additional power and flexibility:
-
-    <P
-></P
-></P><UL
-COMPACT="COMPACT"
 ><LI
 ><SPAN
->constraints</SPAN
+>operators</SPAN
 ></LI
 ><LI
 ><SPAN
->triggers</SPAN
+>aggregate functions</SPAN
 ></LI
 ><LI
 ><SPAN
->rules</SPAN
+>index methods</SPAN
 ></LI
 ><LI
 ><SPAN
->transactional integrity</SPAN
+>procedural languages</SPAN
 ></LI
 ></UL
 ><P>
-   </P
+  </P
 ><P
->    These features put <SPAN
+>   And because of the liberal license,
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> into the
-    category of databases referred to as
-    <I
-CLASS="FIRSTTERM"
->object-relational</I
->. Note that this is distinct
-    from those referred to as <I
-CLASS="FIRSTTERM"
->object-oriented</I
->,
-    which in general are not as well suited to supporting
-    traditional relational database languages.
-    So, although <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> has some
-    object-oriented features, it is firmly in the relational database
-    world. In fact, some commercial databases have recently
-    incorporated features pioneered by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
-   </P
+> can be used, modified, and
+   distributed by everyone free of charge for any purpose, be it
+   private, commercial, or academic.
+  </P
 ></DIV
 ></DIV
 ><DIV
@@ -320,7 +408,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->PostgreSQL 7.4beta2 Documentation</TD
+>PostgreSQL 7.4beta3 Documentation</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="app-createuser.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-createuser.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="app-droplang.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="app-droplang.html"
 ACCESSKEY="N"
@@ -86,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45848"
+NAME="AEN43842"
 ></A
 ><H2
 >Name</H2
@@ -94,10 +106,13 @@ NAME="AEN45848"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database</DIV
+><A
+NAME="AEN43846"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45852"
+NAME="AEN43848"
 ></A
 ><H2
 >Synopsis</H2
@@ -116,7 +131,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45859"
+NAME="AEN43855"
 ></A
 ><H2
 >Description</H2
@@ -145,20 +160,15 @@ HREF="sql-dropdatabase.html"
 ><I
 >DROP DATABASE</I
 ></A
->.  The database server must be 
-   running on the targeted host. There is nothing special
-   about dropping databases via this or other methods. Also, any
-   default settings and environment variables used by the
-   <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> front-end library will apply.
+>.
+   There is no effective difference between dropping databases via
+   this utility and via other methods for accessing the server.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45869"
+NAME="AEN43864"
 ></A
 ><H2
 >Options</H2
@@ -233,7 +243,7 @@ CLASS="OPTION"
 ><P
 >   <SPAN
 CLASS="APPLICATION"
->createdb</SPAN
+>dropdb</SPAN
 > also accepts the following
    command-line arguments for connection parameters:
 
@@ -325,50 +335,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45938"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->DROP DATABASE</SAMP
-></DT
-><DD
-><P
->The database was successfully removed.</P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->dropdb: Database removal failed.</SAMP
-></DT
-><DD
-><P
->Something didn't work out.</P
-></DD
-></DL
-></DIV
-><P
->    If there is an error condition, the backend error message will be displayed.
-    See <A
-HREF="sql-dropdatabase.html"
-><I
->DROP DATABASE</I
-></A
->
-    for possibilities.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45953"
+NAME="AEN43933"
 ></A
 ><H2
 >Environment</H2
@@ -399,7 +366,37 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-APP-DROPDB-2"
+NAME="AEN43945"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   In case of difficulty, see <A
+HREF="sql-dropdatabase.html"
+><I
+>DROP DATABASE</I
+></A
+> and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for
+   discussions of potential problems and error messages.
+   The database server must be running at the
+   targeted host.  Also, any default connection settings and environment
+   variables used by the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end
+   library will apply.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43951"
 ></A
 ><H2
 >Examples</H2
@@ -462,7 +459,7 @@ DROP DATABASE</SAMP
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45982"
+NAME="AEN43968"
 ></A
 ><H2
 >See Also</H2

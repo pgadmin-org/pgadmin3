@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,25 +37,34 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="plpgsql-cursors.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 40. <SPAN
+>Chapter 39. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -70,7 +74,15 @@ CLASS="ACRONYM"
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="plpgsql-trigger.html"
 ACCESSKEY="N"
@@ -87,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-ERRORS-AND-MESSAGES"
->40.9. Errors and Messages</A
+>39.9. Errors and Messages</A
 ></H1
 ><P
 >    Use the <TT
@@ -119,42 +131,46 @@ CLASS="OPTIONAL"
     Possible levels are <VAR
 CLASS="LITERAL"
 >DEBUG</VAR
-> (write the message to
-    the server log), <VAR
+>,
+    <VAR
 CLASS="LITERAL"
 >LOG</VAR
-> (write the message to the
-    server log with a higher priority), <VAR
+>, <VAR
 CLASS="LITERAL"
 >INFO</VAR
 >,
     <VAR
 CLASS="LITERAL"
 >NOTICE</VAR
-> and <VAR
+>, <VAR
 CLASS="LITERAL"
 >WARNING</VAR
-> (write
-    the message to the server log and send it to the client, with
-    respectively higher priorities), and <VAR
+>,
+    and <VAR
 CLASS="LITERAL"
 >EXCEPTION</VAR
->
-    (raise an error and abort the current transaction). Whether
-    messages of a particular priority are reported to the client,
+>.
+    <VAR
+CLASS="LITERAL"
+>EXCEPTION</VAR
+> raises an error and aborts the current
+    transaction; the other levels only generate messages of different
+    priority levels.
+    Whether messages of a particular priority are reported to the client,
     written to the server log, or both is controlled by the
     <VAR
-CLASS="OPTION"
+CLASS="VARNAME"
 >log_min_messages</VAR
 > and
     <VAR
-CLASS="OPTION"
+CLASS="VARNAME"
 >client_min_messages</VAR
-> configuration variables. See
-    <A
+> configuration
+    variables. See <A
 HREF="runtime-config.html"
 >Section 16.4</A
-> for more information.
+> for more
+    information.
    </P
 ><P
 >    Inside the format string, <VAR
@@ -180,14 +196,14 @@ CLASS="LITERAL"
     <VAR
 CLASS="LITERAL"
 >%</VAR
-> in the string.
+> in the string:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >RAISE NOTICE ''Calling cs_create_job(%)'', v_job_id;</PRE
 ><P>
    </P
 ><P
->    This example will abort the transaction with the given error message.
+>    This example will abort the transaction with the given error message:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >RAISE EXCEPTION ''Inexistent ID --&#62; %'', user_id;</PRE
@@ -217,13 +233,9 @@ CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 >
      currently does when it encounters an abort during execution of a
-     function or trigger procedure is to write some additional
-     <VAR
-CLASS="LITERAL"
->NOTICE</VAR
-> level log messages telling in which
-     function and where (line number and type of statement) this
-     happened.  The error always stops execution of the function.
+     function or trigger procedure is to add some fields to the message
+     telling in which function and where (line number and type of statement)
+     the error happened.  The error always stops execution of the function.
     </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-lock.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-lock.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-notify.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-notify.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-MOVE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43230"
+NAME="AEN41314"
 ></A
 ><H2
 >Name</H2
 >MOVE&nbsp;--&nbsp;reposition a cursor</DIV
+><A
+NAME="AEN41317"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43233"
+NAME="AEN41319"
 ></A
 ><H2
 >Synopsis</H2
@@ -108,7 +123,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43237"
+NAME="AEN41323"
 ></A
 ><H2
 >Description</H2
@@ -140,26 +155,34 @@ HREF="sql-fetch.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43245"
+NAME="AEN41331"
 ></A
 ><H2
->Diagnostics</H2
+>Outputs</H2
 ><P
->   The count returned in <TT
+>   On successful completion, a <TT
 CLASS="COMMAND"
 >MOVE</TT
->'s status string is
-   the count of the number of rows that would have been returned by
-   the equivalent <TT
-CLASS="COMMAND"
->FETCH</TT
-> command.
+> command returns a command
+   tag of the form
+</P><PRE
+CLASS="SCREEN"
+>MOVE <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+></PRE
+><P>
+   The <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+> is the number
+   of rows moved over (possibly zero).
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43250"
+NAME="AEN41338"
 ></A
 ><H2
 >Examples</H2
@@ -186,7 +209,7 @@ COMMIT WORK;</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43253"
+NAME="AEN41341"
 ></A
 ><H2
 >Compatibility</H2

@@ -2,7 +2,7 @@
 <HTML
 ><HEAD
 ><TITLE
->PostgreSQL 7.4beta2 Documentation</TITLE
+>PostgreSQL 7.4beta3 Documentation</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
@@ -15,14 +15,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="BOOK"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="BOOK"
 ><A
@@ -34,7 +29,7 @@ CLASS="TITLEPAGE"
 CLASS="TITLE"
 ><A
 NAME="POSTGRES"
->PostgreSQL 7.4beta2 Documentation</A
+>PostgreSQL 7.4beta3 Documentation</A
 ></H1
 ><H3
 CLASS="CORPAUTHOR"
@@ -61,7 +56,7 @@ HREF="preface.html"
 ><DD
 ><DL
 ><DT
->1. <A
+><A
 HREF="preface.html#INTRO-WHATIS"
 >What is <SPAN
 CLASS="PRODUCTNAME"
@@ -69,7 +64,7 @@ CLASS="PRODUCTNAME"
 >?</A
 ></DT
 ><DT
->2. <A
+><A
 HREF="history.html"
 >A Brief History of <SPAN
 CLASS="PRODUCTNAME"
@@ -77,12 +72,17 @@ CLASS="PRODUCTNAME"
 ></A
 ></DT
 ><DT
->3. <A
+><A
 HREF="notation.html"
->Terminology and Notation</A
+>Conventions</A
 ></DT
 ><DT
->4. <A
+><A
+HREF="resources.html"
+>Further Information</A
+></DT
+><DT
+><A
 HREF="bug-reporting.html"
 >Bug Reporting Guidelines</A
 ></DT
@@ -303,17 +303,6 @@ CLASS="ACRONYM"
 ></DT
 ><DT
 >32. <A
-HREF="pygresql.html"
-><SPAN
-CLASS="APPLICATION"
->PyGreSQL</SPAN
-> - <SPAN
-CLASS="APPLICATION"
->Python</SPAN
-> Interface</A
-></DT
-><DT
->33. <A
 HREF="information-schema.html"
 >The Information Schema</A
 ></DT
@@ -327,7 +316,7 @@ HREF="server-programming.html"
 ><DD
 ><DL
 ><DT
->34. <A
+>33. <A
 HREF="extend.html"
 >Extending <ACRONYM
 CLASS="ACRONYM"
@@ -335,32 +324,32 @@ CLASS="ACRONYM"
 ></A
 ></DT
 ><DT
->35. <A
+>34. <A
 HREF="indexcost.html"
 >Index Cost Estimation Functions</A
 ></DT
 ><DT
->36. <A
+>35. <A
 HREF="rules.html"
 >The Rule System</A
 ></DT
 ><DT
->37. <A
+>36. <A
 HREF="triggers.html"
 >Triggers</A
 ></DT
 ><DT
->38. <A
+>37. <A
 HREF="spi.html"
 >Server Programming Interface</A
 ></DT
 ><DT
->39. <A
+>38. <A
 HREF="xplang.html"
 >Procedural Languages</A
 ></DT
 ><DT
->40. <A
+>39. <A
 HREF="plpgsql.html"
 ><SPAN
 CLASS="APPLICATION"
@@ -371,17 +360,17 @@ CLASS="ACRONYM"
 > Procedural Language</A
 ></DT
 ><DT
->41. <A
+>40. <A
 HREF="pltcl.html"
 >PL/Tcl - Tcl Procedural Language</A
 ></DT
 ><DT
->42. <A
+>41. <A
 HREF="plperl.html"
 >PL/Perl - Perl Procedural Language</A
 ></DT
 ><DT
->43. <A
+>42. <A
 HREF="plpython.html"
 >PL/Python - Python Procedural Language</A
 ></DT
@@ -419,37 +408,37 @@ HREF="internals.html"
 ><DD
 ><DL
 ><DT
->44. <A
+>43. <A
 HREF="overview.html"
 >Overview of PostgreSQL Internals</A
 ></DT
 ><DT
->45. <A
+>44. <A
 HREF="catalogs.html"
 >System Catalogs</A
 ></DT
 ><DT
->46. <A
+>45. <A
 HREF="protocol.html"
 >Frontend/Backend Protocol</A
 ></DT
 ><DT
->47. <A
+>46. <A
 HREF="page.html"
 >Page Files</A
 ></DT
 ><DT
->48. <A
+>47. <A
 HREF="geqo.html"
 >Genetic Query Optimization</A
 ></DT
 ><DT
->49. <A
+>48. <A
 HREF="gist.html"
 >GiST Indexes</A
 ></DT
 ><DT
->50. <A
+>49. <A
 HREF="bki.html"
 ><ACRONYM
 CLASS="ACRONYM"
@@ -457,12 +446,12 @@ CLASS="ACRONYM"
 > Backend Interface</A
 ></DT
 ><DT
->51. <A
+>50. <A
 HREF="source.html"
 >PostgreSQL Coding Conventions</A
 ></DT
 ><DT
->52. <A
+>51. <A
 HREF="compiler.html"
 ><SPAN
 CLASS="APPLICATION"
@@ -470,7 +459,7 @@ CLASS="APPLICATION"
 > Default Optimizations</A
 ></DT
 ><DT
->53. <A
+>52. <A
 HREF="nls.html"
 >Native Language Support</A
 ></DT
@@ -1020,598 +1009,598 @@ CLASS="CLASSNAME"
 > Configuration Properties</A
 ></DT
 ><DT
->33-1. <A
-HREF="infoschema-information-schema-catalog-name.html#AEN26487"
+>32-1. <A
+HREF="infoschema-information-schema-catalog-name.html#AEN25388"
 ><VAR
 CLASS="LITERAL"
 >information_schema_catalog_name</VAR
 > Columns</A
 ></DT
 ><DT
->33-2. <A
-HREF="infoschema-applicable-roles.html#AEN26509"
+>32-2. <A
+HREF="infoschema-applicable-roles.html#AEN25410"
 ><VAR
 CLASS="LITERAL"
 >applicable_roles</VAR
 > Columns</A
 ></DT
 ><DT
->33-3. <A
-HREF="infoschema-check-constraints.html#AEN26542"
+>32-3. <A
+HREF="infoschema-check-constraints.html#AEN25443"
 ><VAR
 CLASS="LITERAL"
 >check_constraints</VAR
 > Columns</A
 ></DT
 ><DT
->33-4. <A
-HREF="infoschema-column-domain-usage.html#AEN26581"
+>32-4. <A
+HREF="infoschema-column-domain-usage.html#AEN25482"
 ><VAR
 CLASS="LITERAL"
 >column_domain_usage</VAR
 > Columns</A
 ></DT
 ><DT
->33-5. <A
-HREF="infoschema-column-privileges.html#AEN26646"
+>32-5. <A
+HREF="infoschema-column-privileges.html#AEN25548"
 ><VAR
 CLASS="LITERAL"
 >column_privileges</VAR
 > Columns</A
 ></DT
 ><DT
->33-6. <A
-HREF="infoschema-column-udt-usage.html#AEN26718"
+>32-6. <A
+HREF="infoschema-column-udt-usage.html#AEN25622"
 ><VAR
 CLASS="LITERAL"
 >column_udt_usage</VAR
 > Columns</A
 ></DT
 ><DT
->33-7. <A
-HREF="infoschema-columns.html#AEN26776"
+>32-7. <A
+HREF="infoschema-columns.html#AEN25680"
 ><VAR
 CLASS="LITERAL"
 >columns</VAR
 > Columns</A
 ></DT
 ><DT
->33-8. <A
-HREF="infoschema-constraint-column-usage.html#AEN27022"
+>32-8. <A
+HREF="infoschema-constraint-column-usage.html#AEN25930"
 ><VAR
 CLASS="LITERAL"
 >constraint_column_usage</VAR
 > Columns</A
 ></DT
 ><DT
->33-9. <A
-HREF="infoschema-constraint-table-usage.html#AEN27080"
+>32-9. <A
+HREF="infoschema-constraint-table-usage.html#AEN25988"
 ><VAR
 CLASS="LITERAL"
 >constraint_table_usage</VAR
 > Columns</A
 ></DT
 ><DT
->33-10. <A
-HREF="infoschema-data-type-privileges.html#AEN27131"
+>32-10. <A
+HREF="infoschema-data-type-privileges.html#AEN26039"
 ><VAR
 CLASS="LITERAL"
 >domain_constraints</VAR
 > Columns</A
 ></DT
 ><DT
->33-11. <A
-HREF="infoschema-domain-constraints.html#AEN27179"
+>32-11. <A
+HREF="infoschema-domain-constraints.html#AEN26087"
 ><VAR
 CLASS="LITERAL"
 >domain_constraints</VAR
 > Columns</A
 ></DT
 ><DT
->33-12. <A
-HREF="infoschema-domain-udt-usage.html#AEN27246"
+>32-12. <A
+HREF="infoschema-domain-udt-usage.html#AEN26155"
 ><VAR
 CLASS="LITERAL"
 >domain_udt_usage</VAR
 > Columns</A
 ></DT
 ><DT
->33-13. <A
-HREF="infoschema-domains.html#AEN27297"
+>32-13. <A
+HREF="infoschema-domains.html#AEN26206"
 ><VAR
 CLASS="LITERAL"
 >domains</VAR
 > Columns</A
 ></DT
 ><DT
->33-14. <A
-HREF="infoschema-element-types.html#AEN27485"
+>32-14. <A
+HREF="infoschema-element-types.html#AEN26395"
 ><VAR
 CLASS="LITERAL"
 >element_types</VAR
 > Columns</A
 ></DT
 ><DT
->33-15. <A
-HREF="infoschema-enabled-roles.html#AEN27681"
+>32-15. <A
+HREF="infoschema-enabled-roles.html#AEN26591"
 ><VAR
 CLASS="LITERAL"
 >enabled_roles</VAR
 > Columns</A
 ></DT
 ><DT
->33-16. <A
-HREF="infoschema-key-column-usage.html#AEN27702"
+>32-16. <A
+HREF="infoschema-key-column-usage.html#AEN26612"
 ><VAR
 CLASS="LITERAL"
 >key_column_usage</VAR
 > Columns</A
 ></DT
 ><DT
->33-17. <A
-HREF="infoschema-parameters.html#AEN27765"
+>32-17. <A
+HREF="infoschema-parameters.html#AEN26675"
 ><VAR
 CLASS="LITERAL"
 >parameters</VAR
 > Columns</A
 ></DT
 ><DT
->33-18. <A
-HREF="infoschema-referential-constraints.html#AEN27973"
+>32-18. <A
+HREF="infoschema-referential-constraints.html#AEN26883"
 ><VAR
 CLASS="LITERAL"
 >referential_constraints</VAR
 > Columns</A
 ></DT
 ><DT
->33-19. <A
-HREF="infoschema-role-column-grants.html#AEN28056"
+>32-19. <A
+HREF="infoschema-role-column-grants.html#AEN26966"
 ><VAR
 CLASS="LITERAL"
 >role_column_grants</VAR
 > Columns</A
 ></DT
 ><DT
->33-20. <A
-HREF="infoschema-role-routine-grants.html#AEN28126"
+>32-20. <A
+HREF="infoschema-role-routine-grants.html#AEN27036"
 ><VAR
 CLASS="LITERAL"
 >role_routine_grants</VAR
 > Columns</A
 ></DT
 ><DT
->33-21. <A
-HREF="infoschema-role-table-grants.html#AEN28207"
+>32-21. <A
+HREF="infoschema-role-table-grants.html#AEN27117"
 ><VAR
 CLASS="LITERAL"
 >role_table_grants</VAR
 > Columns</A
 ></DT
 ><DT
->33-22. <A
-HREF="infoschema-role-usage-grants.html#AEN28281"
+>32-22. <A
+HREF="infoschema-role-usage-grants.html#AEN27193"
 ><VAR
 CLASS="LITERAL"
 >role_usage_grants</VAR
 > Columns</A
 ></DT
 ><DT
->33-23. <A
-HREF="infoschema-routine-privileges.html#AEN28348"
+>32-23. <A
+HREF="infoschema-routine-privileges.html#AEN27260"
 ><VAR
 CLASS="LITERAL"
 >routine_privileges</VAR
 > Columns</A
 ></DT
 ><DT
->33-24. <A
-HREF="infoschema-routines.html#AEN28430"
+>32-24. <A
+HREF="infoschema-routines.html#AEN27343"
 ><VAR
 CLASS="LITERAL"
 >routines</VAR
 > Columns</A
 ></DT
 ><DT
->33-25. <A
-HREF="infoschema-schemata.html#AEN28789"
+>32-25. <A
+HREF="infoschema-schemata.html#AEN27703"
 ><VAR
 CLASS="LITERAL"
 >schemata</VAR
 > Columns</A
 ></DT
 ><DT
->33-26. <A
-HREF="infoschema-sql-features.html#AEN28847"
+>32-26. <A
+HREF="infoschema-sql-features.html#AEN27762"
 ><VAR
 CLASS="LITERAL"
 >sql_features</VAR
 > Columns</A
 ></DT
 ><DT
->33-27. <A
-HREF="infoschema-sql-implementation-info.html#AEN28906"
+>32-27. <A
+HREF="infoschema-sql-implementation-info.html#AEN27821"
 ><VAR
 CLASS="LITERAL"
 >sql_implementation_info</VAR
 > Columns</A
 ></DT
 ><DT
->33-28. <A
-HREF="infoschema-sql-languages.html#AEN28953"
+>32-28. <A
+HREF="infoschema-sql-languages.html#AEN27870"
 ><VAR
 CLASS="LITERAL"
 >sql_languages</VAR
 > Columns</A
 ></DT
 ><DT
->33-29. <A
-HREF="infoschema-sql-packages.html#AEN29018"
+>32-29. <A
+HREF="infoschema-sql-packages.html#AEN27936"
 ><VAR
 CLASS="LITERAL"
 >sql_packages</VAR
 > Columns</A
 ></DT
 ><DT
->33-30. <A
-HREF="infoschema-sql-sizing.html#AEN29065"
+>32-30. <A
+HREF="infoschema-sql-sizing.html#AEN27984"
 ><VAR
 CLASS="LITERAL"
 >sql_sizing</VAR
 > Columns</A
 ></DT
 ><DT
->33-31. <A
-HREF="infoschema-sql-sizing-profiles.html#AEN29105"
+>32-31. <A
+HREF="infoschema-sql-sizing-profiles.html#AEN28024"
 ><VAR
 CLASS="LITERAL"
 >sql_sizing_profiles</VAR
 > Columns</A
 ></DT
 ><DT
->33-32. <A
-HREF="infoschema-table-constraints.html#AEN29150"
+>32-32. <A
+HREF="infoschema-table-constraints.html#AEN28069"
 ><VAR
 CLASS="LITERAL"
 >table_constraints</VAR
 > Columns</A
 ></DT
 ><DT
->33-33. <A
-HREF="infoschema-table-privileges.html#AEN29228"
+>32-33. <A
+HREF="infoschema-table-privileges.html#AEN28147"
 ><VAR
 CLASS="LITERAL"
 >table_privileges</VAR
 > Columns</A
 ></DT
 ><DT
->33-34. <A
-HREF="infoschema-tables.html#AEN29302"
+>32-34. <A
+HREF="infoschema-tables.html#AEN28222"
 ><VAR
 CLASS="LITERAL"
 >tables</VAR
 > Columns</A
 ></DT
 ><DT
->33-35. <A
-HREF="infoschema-triggers.html#AEN29374"
+>32-35. <A
+HREF="infoschema-triggers.html#AEN28294"
 ><VAR
 CLASS="LITERAL"
 >triggers</VAR
 > Columns</A
 ></DT
 ><DT
->33-36. <A
-HREF="infoschema-usage-privileges.html#AEN29492"
+>32-36. <A
+HREF="infoschema-usage-privileges.html#AEN28417"
 ><VAR
 CLASS="LITERAL"
 >usage_privileges</VAR
 > Columns</A
 ></DT
 ><DT
->33-37. <A
-HREF="infoschema-view-column-usage.html#AEN29562"
+>32-37. <A
+HREF="infoschema-view-column-usage.html#AEN28487"
 ><VAR
 CLASS="LITERAL"
 >view_column_usage</VAR
 > Columns</A
 ></DT
 ><DT
->33-38. <A
-HREF="infoschema-view-table-usage.html#AEN29622"
+>32-38. <A
+HREF="infoschema-view-table-usage.html#AEN28547"
 ><VAR
 CLASS="LITERAL"
 >view_table_usage</VAR
 > Columns</A
 ></DT
 ><DT
->33-39. <A
-HREF="infoschema-views.html#AEN29673"
+>32-39. <A
+HREF="infoschema-views.html#AEN28598"
 ><VAR
 CLASS="LITERAL"
 >views</VAR
 > Columns</A
 ></DT
 ><DT
->34-1. <A
+>33-1. <A
 HREF="xfunc-c.html#XFUNC-C-TYPE-TABLE"
 >Equivalent C Types for Built-In SQL Types</A
 ></DT
 ><DT
->34-2. <A
+>33-2. <A
 HREF="xindex.html#XINDEX-BTREE-STRAT-TABLE"
 >B-tree Strategies</A
 ></DT
 ><DT
->34-3. <A
+>33-3. <A
 HREF="xindex.html#XINDEX-HASH-STRAT-TABLE"
 >Hash Strategies</A
 ></DT
 ><DT
->34-4. <A
+>33-4. <A
 HREF="xindex.html#XINDEX-RTREE-STRAT-TABLE"
 >R-tree Strategies</A
 ></DT
 ><DT
->34-5. <A
+>33-5. <A
 HREF="xindex.html#XINDEX-BTREE-SUPPORT-TABLE"
 >B-tree Support Functions</A
 ></DT
 ><DT
->34-6. <A
+>33-6. <A
 HREF="xindex.html#XINDEX-HASH-SUPPORT-TABLE"
 >Hash Support Functions</A
 ></DT
 ><DT
->34-7. <A
+>33-7. <A
 HREF="xindex.html#XINDEX-RTREE-SUPPORT-TABLE"
 >R-tree Support Functions</A
 ></DT
 ><DT
->34-8. <A
+>33-8. <A
 HREF="xindex.html#XINDEX-GIST-SUPPORT-TABLE"
 >GiST Support Functions</A
 ></DT
 ><DT
->45-1. <A
+>44-1. <A
 HREF="catalogs.html#CATALOG-TABLE"
 >System Catalogs</A
 ></DT
 ><DT
->45-2. <A
-HREF="catalog-pg-aggregate.html#AEN50911"
+>44-2. <A
+HREF="catalog-pg-aggregate.html#AEN48909"
 ><TT
 CLASS="STRUCTNAME"
 >pg_aggregate</TT
 > Columns</A
 ></DT
 ><DT
->45-3. <A
-HREF="catalog-pg-am.html#AEN50980"
+>44-3. <A
+HREF="catalog-pg-am.html#AEN48978"
 ><TT
 CLASS="STRUCTNAME"
 >pg_am</TT
 > Columns</A
 ></DT
 ><DT
->45-4. <A
-HREF="catalog-pg-amop.html#AEN51190"
+>44-4. <A
+HREF="catalog-pg-amop.html#AEN49188"
 ><TT
 CLASS="STRUCTNAME"
 >pg_amop</TT
 > Columns</A
 ></DT
 ><DT
->45-5. <A
-HREF="catalog-pg-amproc.html#AEN51242"
+>44-5. <A
+HREF="catalog-pg-amproc.html#AEN49240"
 ><TT
 CLASS="STRUCTNAME"
 >pg_amproc</TT
 > Columns</A
 ></DT
 ><DT
->45-6. <A
-HREF="catalog-pg-attrdef.html#AEN51288"
+>44-6. <A
+HREF="catalog-pg-attrdef.html#AEN49286"
 ><TT
 CLASS="STRUCTNAME"
 >pg_attrdef</TT
 > Columns</A
 ></DT
 ><DT
->45-7. <A
-HREF="catalog-pg-attribute.html#AEN51341"
+>44-7. <A
+HREF="catalog-pg-attribute.html#AEN49341"
 ><TT
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 > Columns</A
 ></DT
 ><DT
->45-8. <A
-HREF="catalog-pg-cast.html#AEN51510"
+>44-8. <A
+HREF="catalog-pg-cast.html#AEN49510"
 ><TT
 CLASS="STRUCTFIELD"
 >pg_cast</TT
 > Columns</A
 ></DT
 ><DT
->45-9. <A
-HREF="catalog-pg-class.html#AEN51573"
+>44-9. <A
+HREF="catalog-pg-class.html#AEN49573"
 ><TT
 CLASS="STRUCTNAME"
 >pg_class</TT
 > Columns</A
 ></DT
 ><DT
->45-10. <A
-HREF="catalog-pg-constraint.html#AEN51809"
+>44-10. <A
+HREF="catalog-pg-constraint.html#AEN49809"
 ><TT
 CLASS="STRUCTNAME"
 >pg_constraint</TT
 > Columns</A
 ></DT
 ><DT
->45-11. <A
-HREF="catalog-pg-conversion.html#AEN51958"
+>44-11. <A
+HREF="catalog-pg-conversion.html#AEN49958"
 ><TT
 CLASS="STRUCTNAME"
 >pg_conversion</TT
 > Columns</A
 ></DT
 ><DT
->45-12. <A
-HREF="catalog-pg-database.html#AEN52039"
+>44-12. <A
+HREF="catalog-pg-database.html#AEN50039"
 ><TT
 CLASS="STRUCTNAME"
 >pg_database</TT
 > Columns</A
 ></DT
 ><DT
->45-13. <A
-HREF="catalog-pg-depend.html#AEN52145"
+>44-13. <A
+HREF="catalog-pg-depend.html#AEN50145"
 ><TT
 CLASS="STRUCTNAME"
 >pg_depend</TT
 > Columns</A
 ></DT
 ><DT
->45-14. <A
-HREF="catalog-pg-description.html#AEN52261"
+>44-14. <A
+HREF="catalog-pg-description.html#AEN50263"
 ><TT
 CLASS="STRUCTNAME"
 >pg_description</TT
 > Columns</A
 ></DT
 ><DT
->45-15. <A
-HREF="catalog-pg-group.html#AEN52317"
+>44-15. <A
+HREF="catalog-pg-group.html#AEN50319"
 ><TT
 CLASS="STRUCTNAME"
 >pg_group</TT
 > Columns</A
 ></DT
 ><DT
->45-16. <A
-HREF="catalog-pg-index.html#AEN52360"
+>44-16. <A
+HREF="catalog-pg-index.html#AEN50362"
 ><TT
 CLASS="STRUCTNAME"
 >pg_index</TT
 > Columns</A
 ></DT
 ><DT
->45-17. <A
-HREF="catalog-pg-inherits.html#AEN52469"
+>44-17. <A
+HREF="catalog-pg-inherits.html#AEN50471"
 ><TT
 CLASS="STRUCTNAME"
 >pg_inherits</TT
 > Columns</A
 ></DT
 ><DT
->45-18. <A
-HREF="catalog-pg-language.html#AEN52516"
+>44-18. <A
+HREF="catalog-pg-language.html#AEN50518"
 ><TT
 CLASS="STRUCTNAME"
 >pg_language</TT
 > Columns</A
 ></DT
 ><DT
->45-19. <A
-HREF="catalog-pg-largeobject.html#AEN52592"
+>44-19. <A
+HREF="catalog-pg-largeobject.html#AEN50594"
 ><TT
 CLASS="STRUCTNAME"
 >pg_largeobject</TT
 > Columns</A
 ></DT
 ><DT
->45-20. <A
-HREF="catalog-pg-listener.html#AEN52640"
+>44-20. <A
+HREF="catalog-pg-listener.html#AEN50642"
 ><TT
 CLASS="STRUCTNAME"
 >pg_listener</TT
 > Columns</A
 ></DT
 ><DT
->45-21. <A
-HREF="catalog-pg-namespace.html#AEN52680"
+>44-21. <A
+HREF="catalog-pg-namespace.html#AEN50682"
 ><TT
 CLASS="STRUCTNAME"
 >pg_namespace</TT
 > Columns</A
 ></DT
 ><DT
->45-22. <A
-HREF="catalog-pg-opclass.html#AEN52724"
+>44-22. <A
+HREF="catalog-pg-opclass.html#AEN50726"
 ><TT
 CLASS="STRUCTNAME"
 >pg_opclass</TT
 > Columns</A
 ></DT
 ><DT
->45-23. <A
-HREF="catalog-pg-operator.html#AEN52816"
+>44-23. <A
+HREF="catalog-pg-operator.html#AEN50818"
 ><TT
 CLASS="STRUCTNAME"
 >pg_operator</TT
 > Columns</A
 ></DT
 ><DT
->45-24. <A
-HREF="catalog-pg-proc.html#AEN53012"
+>44-24. <A
+HREF="catalog-pg-proc.html#AEN51014"
 ><TT
 CLASS="STRUCTNAME"
 >pg_proc</TT
 > Columns</A
 ></DT
 ><DT
->45-25. <A
-HREF="catalog-pg-rewrite.html#AEN53164"
+>44-25. <A
+HREF="catalog-pg-rewrite.html#AEN51166"
 ><TT
 CLASS="STRUCTNAME"
 >pg_rewrite</TT
 > Columns</A
 ></DT
 ><DT
->45-26. <A
-HREF="catalog-pg-shadow.html#AEN53251"
+>44-26. <A
+HREF="catalog-pg-shadow.html#AEN51253"
 ><TT
 CLASS="STRUCTNAME"
 >pg_shadow</TT
 > Columns</A
 ></DT
 ><DT
->45-27. <A
-HREF="catalog-pg-statistic.html#AEN53337"
+>44-27. <A
+HREF="catalog-pg-statistic.html#AEN51339"
 ><TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
 > Columns</A
 ></DT
 ><DT
->45-28. <A
-HREF="catalog-pg-trigger.html#AEN53444"
+>44-28. <A
+HREF="catalog-pg-trigger.html#AEN51446"
 ><TT
 CLASS="STRUCTNAME"
 >pg_trigger</TT
 > Columns</A
 ></DT
 ><DT
->45-29. <A
-HREF="catalog-pg-type.html#AEN53568"
+>44-29. <A
+HREF="catalog-pg-type.html#AEN51570"
 ><TT
 CLASS="STRUCTNAME"
 >pg_type</TT
 > Columns</A
 ></DT
 ><DT
->47-1. <A
+>46-1. <A
 HREF="page.html#PAGE-TABLE"
 >Sample Page Layout</A
 ></DT
 ><DT
->47-2. <A
+>46-2. <A
 HREF="page.html#PAGEHEADERDATA-TABLE"
 >PageHeaderData Layout</A
 ></DT
 ><DT
->47-3. <A
+>46-3. <A
 HREF="page.html#HEAPTUPLEHEADERDATA-TABLE"
 >HeapTupleHeaderData Layout</A
 ></DT
@@ -1659,7 +1648,7 @@ CLASS="LOT"
 >List of Figures</B
 ></DT
 ><DT
->48-1. <A
+>47-1. <A
 HREF="geqo-intro2.html#GEQO-DIAGRAM"
 >Structured Diagram of a Genetic Algorithm</A
 ></DT
@@ -1675,7 +1664,7 @@ CLASS="LOT"
 ></DT
 ><DT
 >8-1. <A
-HREF="datatype-character.html#AEN3457"
+HREF="datatype-character.html#AEN3761"
 >Using the character types</A
 ></DT
 ><DT
@@ -1688,37 +1677,37 @@ CLASS="TYPE"
 ></DT
 ><DT
 >8-3. <A
-HREF="datatype-bit.html#AEN4726"
+HREF="datatype-bit.html#AEN5049"
 >Using the bit string types</A
 ></DT
 ><DT
 >10-1. <A
-HREF="typeconv-oper.html#AEN12328"
+HREF="typeconv-oper.html#AEN12799"
 >Exponentiation Operator Type Resolution</A
 ></DT
 ><DT
 >10-2. <A
-HREF="typeconv-oper.html#AEN12335"
+HREF="typeconv-oper.html#AEN12806"
 >String Concatenation Operator Type Resolution</A
 ></DT
 ><DT
 >10-3. <A
-HREF="typeconv-oper.html#AEN12347"
+HREF="typeconv-oper.html#AEN12818"
 >Absolute-Value and Factorial Operator Type Resolution</A
 ></DT
 ><DT
 >10-4. <A
-HREF="typeconv-func.html#AEN12401"
+HREF="typeconv-func.html#AEN12875"
 >Rounding Function Argument Type Resolution</A
 ></DT
 ><DT
 >10-5. <A
-HREF="typeconv-func.html#AEN12414"
+HREF="typeconv-func.html#AEN12888"
 >Substring Function Type Resolution</A
 ></DT
 ><DT
 >10-6. <A
-HREF="typeconv-query.html#AEN12455"
+HREF="typeconv-query.html#AEN12929"
 ><TT
 CLASS="TYPE"
 >character</TT
@@ -1726,17 +1715,17 @@ CLASS="TYPE"
 ></DT
 ><DT
 >10-7. <A
-HREF="typeconv-union-case.html#AEN12501"
+HREF="typeconv-union-case.html#AEN12984"
 >Type Resolution with Underspecified Types in a Union</A
 ></DT
 ><DT
 >10-8. <A
-HREF="typeconv-union-case.html#AEN12507"
+HREF="typeconv-union-case.html#AEN12990"
 >Type Resolution in a Simple Union</A
 ></DT
 ><DT
 >10-9. <A
-HREF="typeconv-union-case.html#AEN12516"
+HREF="typeconv-union-case.html#AEN12999"
 >Type Resolution in a Transposed Union</A
 ></DT
 ><DT
@@ -1820,7 +1809,7 @@ CLASS="ACRONYM"
 ></DT
 ><DT
 >31-2. <A
-HREF="jdbc-query.html#AEN23426"
+HREF="jdbc-query.html#AEN24366"
 >Setting fetch size to turn cursors on and off.</A
 ></DT
 ><DT
@@ -1847,7 +1836,7 @@ CLASS="TYPE"
 ></DT
 ><DT
 >31-6. <A
-HREF="jdbc-callproc.html#AEN23541"
+HREF="jdbc-callproc.html#AEN24481"
 >Treating <TT
 CLASS="TYPE"
 >refcursor</TT
@@ -1887,7 +1876,7 @@ CLASS="ACRONYM"
 > Code Example</A
 ></DT
 ><DT
->39-1. <A
+>38-1. <A
 HREF="xplang.html#XPLANG-INSTALL-EXAMPLE"
 >Manual Installation of <SPAN
 CLASS="APPLICATION"
@@ -1895,7 +1884,7 @@ CLASS="APPLICATION"
 ></A
 ></DT
 ><DT
->40-1. <A
+>39-1. <A
 HREF="plpgsql-trigger.html#PLPGSQL-TRIGGER-EXAMPLE"
 >A <SPAN
 CLASS="APPLICATION"
@@ -1903,7 +1892,7 @@ CLASS="APPLICATION"
 > Trigger Procedure</A
 ></DT
 ><DT
->40-2. <A
+>39-2. <A
 HREF="plpgsql-porting.html#PGSQL-PORTING-EX1"
 >Porting a Simple Function from <SPAN
 CLASS="APPLICATION"
@@ -1914,7 +1903,7 @@ CLASS="APPLICATION"
 ></A
 ></DT
 ><DT
->40-3. <A
+>39-3. <A
 HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX2"
 >Porting a Function that Creates Another Function from <SPAN
 CLASS="APPLICATION"
@@ -1925,7 +1914,7 @@ CLASS="APPLICATION"
 ></A
 ></DT
 ><DT
->40-4. <A
+>39-4. <A
 HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX3"
 >Porting a Procedure With String Manipulation and
     <VAR
@@ -1941,7 +1930,7 @@ CLASS="APPLICATION"
 ></A
 ></DT
 ><DT
->40-5. <A
+>39-5. <A
 HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX4"
 >Porting a Procedure from <SPAN
 CLASS="APPLICATION"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="app-psql.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-psql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="reference-server.html"
 ACCESSKEY="N"
@@ -86,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN49039"
+NAME="AEN47043"
 ></A
 ><H2
 >Name</H2
@@ -94,10 +106,13 @@ NAME="AEN49039"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database</DIV
+><A
+NAME="AEN47047"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN49043"
+NAME="AEN47049"
 ></A
 ><H2
 >Synopsis</H2
@@ -130,7 +145,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49079"
+NAME="AEN47085"
 ></A
 ><H2
 >Description</H2
@@ -164,37 +179,13 @@ HREF="sql-vacuum.html"
 ></A
 >.
    There is no effective difference between vacuuming databases via
-   this or other methods.  The database server must be running at the
-   targeted host.  Also, any default settings and environment
-   variables used by the <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> front-end
-   library will apply.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->vacuumdb</SPAN
-> might need to connect several
-   times to the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server, asking
-   for a password each time. It is convenient to have a
-   <TT
-CLASS="FILENAME"
->$HOME/.pgpass</TT
-> file in such cases. See <A
-HREF="libpq-pgpass.html"
->Section 27.11</A
-> for more information.
+   this utility and via other methods for accessing the server.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49095"
+NAME="AEN47095"
 ></A
 ><H2
 >Options</H2
@@ -477,62 +468,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49210"
-></A
-><H2
->Diagnostics</H2
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->VACUUM</SAMP
-></DT
-><DD
-><P
->        The database was successfully vacuumed.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->vacuumdb: Vacuum failed.</SAMP
-></DT
-><DD
-><P
->        Something went wrong. <SPAN
-CLASS="APPLICATION"
->vacuumdb</SPAN
-> is only a wrapper
-        script. See <A
-HREF="sql-vacuum.html"
-><I
->VACUUM</I
-></A
->
-        and <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> for a detailed
-        discussion of error messages and potential problems.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN49227"
+NAME="AEN47210"
 ></A
 ><H2
 >Environment</H2
@@ -566,7 +502,63 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49241"
+NAME="AEN47224"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   In case of difficulty, see <A
+HREF="sql-vacuum.html"
+><I
+>VACUUM</I
+></A
+> and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for
+   discussions of potential problems and error messages.
+   The database server must be running at the
+   targeted host.  Also, any default connection settings and environment
+   variables used by the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end
+   library will apply.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47230"
+></A
+><H2
+>Notes</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> might need to connect several
+   times to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server, asking
+   for a password each time. It is convenient to have a
+   <TT
+CLASS="FILENAME"
+>$HOME/.pgpass</TT
+> file in such cases. See <A
+HREF="libpq-pgpass.html"
+>Section 27.11</A
+> for more information.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47237"
 ></A
 ><H2
 >Examples</H2
@@ -632,7 +624,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN49260"
+NAME="AEN47256"
 ></A
 ><H2
 >See Also</H2

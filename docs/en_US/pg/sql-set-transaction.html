@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-set-session-authorization.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-show.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-show.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-SET-TRANSACTION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44570"
+NAME="AEN42628"
 ></A
 ><H2
 >Name</H2
 >SET TRANSACTION&nbsp;--&nbsp;set the characteristics of the current transaction</DIV
+><A
+NAME="AEN42631"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44573"
+NAME="AEN42633"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,7 +120,7 @@ SET SESSION CHARACTERISTICS AS TRANSACTION
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44575"
+NAME="AEN42635"
 ></A
 ><H2
 >Description</H2
@@ -268,7 +283,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44617"
+NAME="AEN42677"
 ></A
 ><H2
 >Notes</H2
@@ -297,18 +312,21 @@ NAME="R1-SQL-SET-TRANSACTION-3"
 ><H2
 >Compatibility</H2
 ><P
->   Both commands are defined in the SQL standard.
+>   Both commands are defined in the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard.
    <VAR
 CLASS="LITERAL"
 >SERIALIZABLE</VAR
 > is the default transaction
-   isolation level in <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->; in PostgreSQL it is
-   <VAR
+   isolation level in the standard; in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> the default is
+   ordinarily <VAR
 CLASS="LITERAL"
->READ COMMITED</VAR
+>READ COMMITTED</VAR
 >, but you can change it as
    described above.  <SPAN
 CLASS="PRODUCTNAME"

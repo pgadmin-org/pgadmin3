@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Internals"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="protocol-changes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="geqo.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="geqo.html"
 ACCESSKEY="N"
@@ -81,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="PAGE"
 ></A
->Chapter 47. Page Files</H1
+>Chapter 46. Page Files</H1
 ><BLOCKQUOTE
 CLASS="ABSTRACT"
 ><DIV
@@ -89,7 +101,7 @@ CLASS="ABSTRACT"
 ><P
 ></P
 ><A
-NAME="AEN55276"
+NAME="AEN53280"
 ></A
 ><P
 >A description of the database file page format.</P
@@ -123,7 +135,7 @@ an item is a tuple (row); in an index, an item is an index entry.</P
 ><P
 >&#13;<A
 HREF="page.html#PAGE-TABLE"
->Table 47-1</A
+>Table 46-1</A
 > shows the basic layout of a page.
 There are five parts to each page.&#13;</P
 ><DIV
@@ -133,7 +145,7 @@ NAME="PAGE-TABLE"
 ></A
 ><P
 ><B
->Table 47-1. Sample Page Layout</B
+>Table 46-1. Sample Page Layout</B
 ></P
 ><TABLE
 BORDER="1"
@@ -186,7 +198,7 @@ data. Empty in ordinary tables.</TD
 >&#13;  The first 20 bytes of each page consists of a page header
   (PageHeaderData). Its format is detailed in <A
 HREF="page.html#PAGEHEADERDATA-TABLE"
->Table 47-2</A
+>Table 46-2</A
 >. The first two fields deal with WAL
   related stuff. This is followed by three 2-byte integer fields
   (<TT
@@ -212,7 +224,7 @@ NAME="PAGEHEADERDATA-TABLE"
 ></A
 ><P
 ><B
->Table 47-2. PageHeaderData Layout</B
+>Table 46-2. PageHeaderData Layout</B
 ></P
 ><TABLE
 BORDER="1"
@@ -382,7 +394,7 @@ CLASS="STRUCTFIELD"
   detailed
   in <A
 HREF="page.html#HEAPTUPLEHEADERDATA-TABLE"
->Table 47-3</A
+>Table 46-3</A
 >.  The actual user data
   (fields of the tuple) begins at the offset indicated by
   <TT
@@ -433,7 +445,7 @@ NAME="HEAPTUPLEHEADERDATA-TABLE"
 ></A
 ><P
 ><B
->Table 47-3. HeapTupleHeaderData Layout</B
+>Table 46-3. HeapTupleHeaderData Layout</B
 ></P
 ><TABLE
 BORDER="1"

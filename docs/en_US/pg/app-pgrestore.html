@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="app-pg-dumpall.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pg-dumpall.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="app-pgtclsh.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="app-pgtclsh.html"
 ACCESSKEY="N"
@@ -83,7 +95,7 @@ NAME="APP-PGRESTORE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47088"
+NAME="AEN45074"
 ></A
 ><H2
 >Name</H2
@@ -92,10 +104,13 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database from an archive file created by pg_dump
   </DIV
+><A
+NAME="AEN45078"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47092"
+NAME="AEN45080"
 ></A
 ><H2
 >Synopsis</H2
@@ -147,8 +162,8 @@ CLASS="APPLICATION"
 >pg_restore</SPAN
 > can operate in two modes: If
    a database name is specified, the archive is restored directly into
-   the database.  Large objects can only be restored by using a direct
-   database connection.  Otherwise, a script containing the SQL
+   the database.  (Large objects can only be restored by using such a direct
+   database connection.)  Otherwise, a script containing the SQL
    commands necessary to rebuild the database is created (and written
    to a file or standard output), similar to the ones created by the
    <SPAN
@@ -466,17 +481,28 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->        Restore items in the original dump order. By default
+>        Restore items in the order they were originally generated within
         <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> will dump items in an order
-        convenient to <SPAN
+>.  This option has no known
+	practical use, since <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
->, then save the
-        archive in a modified OID order. This option overrides the OID
-        ordering.
+> generates
+	the items in an order convenient to it, which is unlikely to be a
+	safe order for restoring them.  (This is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> the order
+	in which the items are ultimately listed in the archive's table of
+	contents.)  See also <VAR
+CLASS="OPTION"
+>-r</VAR
+>.
        </P
 ></DD
 ><DT
@@ -489,17 +515,16 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->        Restore items in the OID order. By default
-        <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> will dump items in an order
-        convenient to <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->, then save the
-        archive in a modified OID order. This option enforces strict
-        OID ordering.
+>        Restore items in order by OID.  This option is of limited usefulness,
+	since OID is only an approximate indication of original creation
+	order.  This option overrides <VAR
+CLASS="OPTION"
+>-N</VAR
+> if both are specified.
+	See also <VAR
+CLASS="OPTION"
+>-r</VAR
+>.
        </P
 ></DD
 ><DT
@@ -555,19 +580,53 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->        Restore items in modified OID order. By default
-        <SPAN
+>        Rearrange items by object type (this occurs after the sorting
+	specified by <VAR
+CLASS="OPTION"
+>-N</VAR
+> or <VAR
+CLASS="OPTION"
+>-o</VAR
+>, if
+	given).  The rearrangement is intended to give the best possible
+	restore performance.
+       </P
+><P
+>        When none of <VAR
+CLASS="OPTION"
+>-N</VAR
+>, <VAR
+CLASS="OPTION"
+>-o</VAR
+>, and
+	<VAR
+CLASS="OPTION"
+>-r</VAR
+> appear, <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+> restores
+	items in the order they appear in the dump's table of contents,
+	or in the order they appear in the  <VAR
+CLASS="REPLACEABLE"
+>list-file</VAR
+> if <VAR
+CLASS="OPTION"
+>-L</VAR
+> is
+	given.  The combination of <VAR
+CLASS="OPTION"
+>-o</VAR
+> and <VAR
+CLASS="OPTION"
+>-r</VAR
+>
+	duplicates the sorting done by <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> will dump items in an order
-        convenient to <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->, then save the
-        archive in a modified OID order. Most objects will be restored
-        in OID order, but some things (e.g., rules and indexes) will
-        be restored at the end of the process irrespective of their
-        OIDs. This option is the default.
+>
+	before creating the dump's table of contents,
+	and so it is normally unnecessary to specify it.
        </P
 ></DD
 ><DT
@@ -904,7 +963,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47396"
+NAME="AEN45396"
 ></A
 ><H2
 >Environment</H2
@@ -1168,7 +1227,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47463"
+NAME="AEN45463"
 ></A
 ><H2
 >History</H2
@@ -1177,13 +1236,16 @@ NAME="AEN47463"
 CLASS="APPLICATION"
 >pg_restore</SPAN
 > utility first appeared in
-   PostgreSQL 7.1.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.1.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47467"
+NAME="AEN45468"
 ></A
 ><H2
 >See Also</H2

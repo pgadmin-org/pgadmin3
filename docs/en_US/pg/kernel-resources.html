@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="runtime-config.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 16. Server Run-time Environment</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="postmaster-shutdown.html"
 ACCESSKEY="N"
@@ -105,10 +117,10 @@ NAME="SYSVIPC"
 >16.5.1. Shared Memory and Semaphores</A
 ></H2
 ><A
-NAME="AEN16255"
+NAME="AEN16810"
 ></A
 ><A
-NAME="AEN16257"
+NAME="AEN16812"
 ></A
 ><P
 >    Shared memory and semaphores are collectively referred to as
@@ -341,7 +353,7 @@ CLASS="VARNAME"
 ></DIV
 ><P
 >    <A
-NAME="AEN16344"
+NAME="AEN16899"
 ></A
 > The most important
     shared memory parameter is <VAR
@@ -778,19 +790,78 @@ CLASS="FILENAME"
 >.
        </P
 ><P
->        Linux has poor default memory overcommit behavior.  Rather than
-        failing if it can not reserve enough memory, it returns success, 
-        but later fails when the memory can't be mapped and terminates 
-        the application with <VAR
-CLASS="LITERAL"
->kill -9</VAR
->.  To prevent unpredictable 
-        process termination, use:
+>	Linux kernel version 2.4.* has poor default memory overcommit 
+	behavior, which can result in the postmaster being killed by the 
+	kernel due to memory demands by another process if the system 
+	runs out of memory.
+	</P
+><P
+>	The symptom of this occuring is a kernel message looking like 
+	this (consult your system documentation and configuration on 
+	where to look for such a message):
+</P><PRE
+CLASS="PROGRAMLISTING"
+> Out of Memory: Killed process 12345 (postmaster). </PRE
+><P>
+	</P
+><P
+>	To avoid this situation, run <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
+	on a machine where you 
+	can be sure that other processes will not run the machine out 
+	of memory. If your kernel supports strict and/or paranoid modes 
+	of overcommit handling, you can also relieve this problem by 
+	altering the system's default behaviour. This can be determined 
+	by examining the function <CODE
+CLASS="FUNCTION"
+>vm_enough_memory</CODE
+>
+	in the file <TT
+CLASS="FILENAME"
+>mm/mmap.c</TT
+> in the kernel source. 
+	If this file reveals that strict and/or paranoid modes are 
+	supported by your kernel, turn one of these modes on by using
+</P><PRE
+CLASS="PROGRAMLISTING"
+>sysctl -w vm.overcommit_memory=2</PRE
+><P>
+	 for strict mode or
 </P><PRE
 CLASS="PROGRAMLISTING"
 >sysctl -w vm.overcommit_memory=3</PRE
 ><P>
-        Note, you will need enough swap space to cover all your memory needs.
+	for paranoid mode, or placing an equivalent entry in 
+	<TT
+CLASS="FILENAME"
+>/etc/sysctl.conf</TT
+>.
+	</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	 Warning: using these settings in a kernel which does not support 
+	 these modes will almost certainly increase the danger of the 
+	 kernel killing the postmaster, rather than reducing it. 
+	 If in any doubt, consult a kernel expert or your kernel vendor.
+	</P
+></BLOCKQUOTE
+></DIV
+><P
+>	These modes are expected to be supported in all 2.6 and later 
+	kernels. Some vendor 2.4 kernels may also support these modes. 
+	However, it is known that some vendor documents suggest that 
+	they support them while examination of the kernel source reveals 
+	that they do not.
+	</P
+><P
+>        Note, you will need enough swap space to cover all your memory needs.
        </P
 ></DD
 ><DT
@@ -972,7 +1043,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN16533"
+NAME="AEN17109"
 >16.5.2. Resource Limits</A
 ></H2
 ><P

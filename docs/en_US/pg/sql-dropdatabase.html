@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-dropconversion.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropconversion.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-dropdomain.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-dropdomain.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-DROPDATABASE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41334"
+NAME="AEN39634"
 ></A
 ><H2
 >Name</H2
 >DROP DATABASE&nbsp;--&nbsp;remove a database</DIV
+><A
+NAME="AEN39637"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41337"
+NAME="AEN39639"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,7 +120,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41340"
+NAME="AEN39642"
 ></A
 ><H2
 >Description</H2
@@ -116,6 +131,12 @@ CLASS="COMMAND"
 > drops a database. It removes the
    catalog entries for the database and deletes the directory
    containing the data.  It can only be executed by the database owner.
+   Also, it cannot be executed while you or anyone else are connected
+   to the target database.  (Connect to <VAR
+CLASS="LITERAL"
+>template1</VAR
+> or any
+   other database to issue this command.) 
   </P
 ><P
 >   <TT
@@ -127,7 +148,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41346"
+NAME="AEN39649"
 ></A
 ><H2
 >Parameters</H2
@@ -152,60 +173,17 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41354"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->DROP DATABASE</SAMP
-></DT
-><DD
-><P
->        This message is returned if the command was successful.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->DROP DATABASE: cannot be executed on the currently open database</SAMP
-></DT
-><DD
-><P
->        You cannot be connected to the database you are about to remove.
-        Instead, connect to <VAR
-CLASS="LITERAL"
->template1</VAR
-> or any other
-        database and run this command again.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->DROP DATABASE: may not be called in a transaction block</SAMP
-></DT
-><DD
-><P
->        You must finish the transaction in progress before you can call this command.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41373"
+NAME="AEN39657"
 ></A
 ><H2
 >Notes</H2
+><P
+>    <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+> cannot be executed inside a transaction
+    block.
+   </P
 ><P
 >   This command cannot be executed while connected to the target
    database. Thus, it might be more convenient to use the program
@@ -223,7 +201,7 @@ HREF="app-dropdb.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41377"
+NAME="AEN39663"
 ></A
 ><H2
 >Compatibility</H2
@@ -237,7 +215,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41381"
+NAME="AEN39667"
 ></A
 ><H2
 >See Also</H2

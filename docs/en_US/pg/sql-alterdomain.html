@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-alterdatabase.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-alterfunction.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-alterfunction.html"
 ACCESSKEY="N"
@@ -83,17 +95,20 @@ NAME="SQL-ALTERDOMAIN"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN36255"
+NAME="AEN34909"
 ></A
 ><H2
 >Name</H2
 >   ALTER DOMAIN
   &nbsp;--&nbsp;   change the definition of a domain
   </DIV
+><A
+NAME="AEN34912"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN36258"
+NAME="AEN34914"
 ></A
 ><H2
 >Synopsis</H2
@@ -137,129 +152,14 @@ CLASS="REPLACEABLE"
 >new_owner</VAR
 > 
   </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ALTERDOMAIN-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
-> domain </VAR
-></DT
-><DD
-><P
->	The name (possibly schema-qualified) of an existing domain to
-	alter.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
-> domain_constraint </VAR
-></DT
-><DD
-><P
->	New domain constraint for the domain.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
-> constraint_name </VAR
-></DT
-><DD
-><P
->	Name of an existing constraint to drop.
-       </P
-></DD
-><DT
->CASCADE</DT
-><DD
-><P
->        Automatically drop objects that depend on the constraint.
-       </P
-></DD
-><DT
->RESTRICT</DT
-><DD
-><P
->        Refuse to drop the constraint if there are any dependent
-	objects. This is the default behavior.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->new_owner</VAR
-></DT
-><DD
-><P
->	The user name of the new owner of the domain.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ALTERDOMAIN-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ALTER DOMAIN</SAMP
-></DT
-><DD
-><P
->	Message returned from domain alteration.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR</SAMP
-></DT
-><DD
-><P
->	Message returned if domain is not available.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ALTERDOMAIN-1"
+NAME="AEN34925"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -344,11 +244,84 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ALTERDOMAIN-2"
+NAME="AEN34957"
 ></A
 ><H2
->   Usage
-  </H2
+>Parameters</H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+> domain </VAR
+></DT
+><DD
+><P
+>	The name (possibly schema-qualified) of an existing domain to
+	alter.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+> domain_constraint </VAR
+></DT
+><DD
+><P
+>	New domain constraint for the domain.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+> constraint_name </VAR
+></DT
+><DD
+><P
+>	Name of an existing constraint to drop.
+       </P
+></DD
+><DT
+>CASCADE</DT
+><DD
+><P
+>        Automatically drop objects that depend on the constraint.
+       </P
+></DD
+><DT
+>RESTRICT</DT
+><DD
+><P
+>        Refuse to drop the constraint if there are any dependent
+	objects. This is the default behavior.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>new_owner</VAR
+></DT
+><DD
+><P
+>	The user name of the new owner of the domain.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34989"
+></A
+><H2
+>Examples</H2
 ><P
 >   To add a NOT NULL constraint to a domain:
    </P><PRE
@@ -380,6 +353,28 @@ CLASS="PROGRAMLISTING"
 >ALTER DOMAIN zipcode DROP CONSTRAINT zipchk;
    </PRE
 ><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN34998"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>ALTER DOMAIN</TT
+> statement is compatible with SQL99,
+   except for the <VAR
+CLASS="LITERAL"
+>OWNER</VAR
+> variant, which is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
   </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Routine Database Maintenance Tasks"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="maintenance.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="maintenance.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 21. Routine Database Maintenance Tasks</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="maintenance.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="logfile-maintenance.html"
 ACCESSKEY="N"
@@ -84,35 +96,23 @@ NAME="ROUTINE-REINDEX"
 >21.2. Routine Reindexing</A
 ></H1
 ><A
-NAME="AEN18251"
+NAME="AEN18895"
 ></A
 ><P
->   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> is unable to reuse B-tree index
-   pages in certain cases. The problem is that if indexed rows are
-   deleted, those index pages can only be reused by rows with similar
-   values. For example, if indexed rows are deleted and newly
-   inserted/updated rows have much higher values, the new rows can't use
-   the index space made available by the deleted rows. Instead, such
-   new rows must be placed on new index pages. In such cases, disk
-   space used by the index will grow indefinitely, even if
-   <TT
-CLASS="COMMAND"
->VACUUM</TT
-> is run frequently.
-  </P
-><P
->   As a solution, you can use the <TT
+>   In some situations it is worthwhile to rebuild indexes periodically
+   with the <TT
 CLASS="COMMAND"
 >REINDEX</TT
-> command
-   periodically to discard pages used by deleted rows. There is also
+> command. (There is also
    <TT
 CLASS="FILENAME"
 >contrib/reindexdb</TT
-> which can reindex an entire database.
+> which can reindex an entire database.)
+   However, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.4 has substantially reduced the need
+   for this activity compared to earlier releases.
   </P
 ></DIV
 ><DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-truncate.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-truncate.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-update.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-update.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-UNLISTEN"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44814"
+NAME="AEN42861"
 ></A
 ><H2
 >Name</H2
 >UNLISTEN&nbsp;--&nbsp;stop listening for a notification</DIV
+><A
+NAME="AEN42864"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44817"
+NAME="AEN42866"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,7 +120,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44820"
+NAME="AEN42869"
 ></A
 ><H2
 >Description</H2
@@ -157,7 +172,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44833"
+NAME="AEN42882"
 ></A
 ><H2
 >Parameters</H2
@@ -192,50 +207,26 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44846"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->UNLISTEN</SAMP
-></DT
-><DD
-><P
->      Message returned when the command has executed.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44854"
+NAME="AEN42895"
 ></A
 ><H2
 >Notes</H2
 ><P
->   You unlisten something you were not listening for; no warning or error will appear.
+>   You may unlisten something you were not listening for; no warning or error
+   will appear.
   </P
 ><P
 >   At the end of each session, <TT
 CLASS="COMMAND"
 >UNLISTEN *</TT
-> ist
+> is
    automatically executed.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44859"
+NAME="AEN42900"
 ></A
 ><H2
 >Examples</H2
@@ -246,7 +237,7 @@ NAME="AEN44859"
 CLASS="PROGRAMLISTING"
 >LISTEN virtual;
 NOTIFY virtual;
-Asynchronous NOTIFY 'virtual' from backend with pid '8448' received</PRE
+Asynchronous notification "virtual" received from server process with PID 8448.</PRE
 ><P>
   </P
 ><P
@@ -256,8 +247,8 @@ CLASS="COMMAND"
 > has been executed, further <TT
 CLASS="COMMAND"
 >NOTIFY</TT
-> commands will be
-   ignored:
+>
+   commands will be ignored:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -270,7 +261,7 @@ NOTIFY virtual;
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44867"
+NAME="AEN42908"
 ></A
 ><H2
 >Compatibility</H2
@@ -280,6 +271,24 @@ CLASS="COMMAND"
 >UNLISTEN</TT
 > command in the SQL standard.
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42912"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-listen.html"
+><I
+>LISTEN</I
+></A
+>, <A
+HREF="sql-notify.html"
+><I
+>NOTIFY</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

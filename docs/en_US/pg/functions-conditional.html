@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="functions-sequence.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="functions-misc.html"
 ACCESSKEY="N"
@@ -84,10 +96,10 @@ NAME="FUNCTIONS-CONDITIONAL"
 >9.12. Conditional Expressions</A
 ></H1
 ><A
-NAME="AEN10844"
+NAME="AEN11286"
 ></A
 ><A
-NAME="AEN10846"
+NAME="AEN11288"
 ></A
 ><P
 >   This section describes the <ACRONYM
@@ -117,7 +129,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10853"
+NAME="AEN11295"
 >9.12.1. <VAR
 CLASS="LITERAL"
 >CASE</VAR
@@ -324,24 +336,39 @@ CLASS="SCREEN"
  2 | two
  3 | other</PRE
 ><P>
-    </P
+   </P
+><P
+>    A <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression does not evaluate any subexpressions
+    that are not needed to determine the result.  For example, this is a
+    possible way of avoiding a division-by-zero failure:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ... WHERE CASE WHEN x &lt;&gt; 0 THEN y/x &gt; 1.5 ELSE false END;</PRE
+><P>
+   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10900"
+NAME="AEN11345"
 >9.12.2. <VAR
 CLASS="LITERAL"
 >COALESCE</VAR
 ></A
 ></H2
+><A
+NAME="AEN11348"
+></A
 ><PRE
 CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
->COALESCE</CODE
+>coalesce</CODE
 >(<VAR
 CLASS="REPLACEABLE"
 >value</VAR
@@ -354,7 +381,8 @@ CLASS="OPTIONAL"
 CLASS="FUNCTION"
 >COALESCE</CODE
 > function returns the first of its
-   arguments that is not null.  This is often useful to substitute a
+   arguments that is not null.  Null is returned only if all arguments
+   are null.  This is often useful to substitute a
    default value for null values when data is retrieved for display,
    for example:
 </P><PRE
@@ -362,20 +390,32 @@ CLASS="PROGRAMLISTING"
 >SELECT COALESCE(description, short_description, '(none)') ...</PRE
 ><P>
   </P
+><P
+>    Like a <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression, <CODE
+CLASS="FUNCTION"
+>COALESCE</CODE
+> will
+    not evaluate arguments that are not needed to determine the result;
+    that is, arguments to the right of the first non-null argument are
+    not evaluated.
+   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10910"
+NAME="AEN11360"
 >9.12.3. <VAR
 CLASS="LITERAL"
 >NULLIF</VAR
 ></A
 ></H2
 ><A
-NAME="AEN10913"
+NAME="AEN11363"
 ></A
 ><PRE
 CLASS="SYNOPSIS"

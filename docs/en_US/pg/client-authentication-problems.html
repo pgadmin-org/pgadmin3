@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Authentication"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="auth-methods.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 19. Client Authentication</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="charset.html"
 ACCESSKEY="N"
@@ -90,7 +102,7 @@ NAME="CLIENT-AUTHENTICATION-PROBLEMS"
 ><P
 ></P><PRE
 CLASS="PROGRAMLISTING"
->No pg_hba.conf entry for host 123.123.123.123, user andym, database testdb</PRE
+>FATAL:  no pg_hba.conf entry for host "123.123.123.123", user "andym", database "testdb"</PRE
 ><P>
     This is what you are most likely to get if you succeed in contacting
     the server, but it does not want to talk to you. As the message
@@ -104,7 +116,7 @@ CLASS="FILENAME"
 ><P
 ></P><PRE
 CLASS="PROGRAMLISTING"
->Password authentication failed for user 'andym'</PRE
+>FATAL:  Password authentication failed for user "andym"</PRE
 ><P>
     Messages like this indicate that you contacted the server, and it is
     willing to talk to you, but not until you pass the authorization
@@ -119,24 +131,32 @@ CLASS="FILENAME"
 ><P
 ></P><PRE
 CLASS="PROGRAMLISTING"
->FATAL 1:  user "andym" does not exist</PRE
+>FATAL:  user "andym" does not exist</PRE
 ><P>
     The indicated user name was not found.
    </P
 ><P
 ></P><PRE
 CLASS="PROGRAMLISTING"
->FATAL 1:  Database "testdb" does not exist in the system catalog.</PRE
+>FATAL:  database "testdb" does not exist</PRE
 ><P>
     The database you are trying to connect to does not exist. Note that
     if you do not specify a database name, it defaults to the database
     user name, which may or may not be the right thing.
    </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
 ><P
->    Note that the server log may contain more information about an
+><B
+>Tip: </B
+>    The server log may contain more information about an
     authentication failure than is reported to the client. If you are
     confused about the reason for a failure, check the log.
    </P
+></BLOCKQUOTE
+></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="install-upgrading.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="installation.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 14. Installation Instructions</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="installation.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="install-post.html"
 ACCESSKEY="N"
@@ -96,7 +108,7 @@ NAME="CONFIGURE"
 >Configuration</B
 ></P
 ><A
-NAME="AEN13692"
+NAME="AEN14210"
 ></A
 ><P
 >    The first step of the installation procedure is to configure the
@@ -615,19 +627,7 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->         Build the Python interface module and the PL/Python
-         server-side language. You need to have root access to be able
-         to install the Python module at its default place
-         (<TT
-CLASS="FILENAME"
->/usr/lib/python<VAR
-CLASS="REPLACEABLE"
->x</VAR
->.<VAR
-CLASS="REPLACEABLE"
->y</VAR
-></TT
->).
+>         Build the PL/Python server-side language.
         </P
 ></DD
 ><DT
@@ -859,8 +859,11 @@ CLASS="OPTION"
 >	 Build with <ACRONYM
 CLASS="ACRONYM"
 >PAM</ACRONYM
-> (Pluggable Authentication Modules)
-	 support.
+><A
+NAME="AEN14460"
+></A
+>
+	 (Pluggable Authentication Modules) support.
         </P
 ></DD
 ><DT
@@ -889,6 +892,19 @@ CLASS="OPTION"
 ><DD
 ><P
 >	 Build with Rendezvous support.
+        </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>--disable-spinlocks</VAR
+></DT
+><DD
+><P
+>         Allows source builds to succeed without CPU spinlock support.
+         Lack of spinlock support will produce poor performance.
+         This option is to be used only by platforms lacking
+         spinlock support.
         </P
 ></DD
 ><DT
@@ -1058,7 +1074,7 @@ CLASS="SCREEN"
 >Regression Tests</B
 ></P
 ><A
-NAME="AEN14006"
+NAME="AEN14528"
 ></A
 ><P
 >    If you want to test the newly built server before you install it,
@@ -1155,23 +1171,6 @@ CLASS="LITERAL"
     perfect knowledge of how to strip every unneeded byte from an
     executable file, so if you want to save all the disk space you
     possibly can, you will have to do manual work.
-   </P
-><P
->    If you built the Python interfaces and you were not the
-    root user when you executed the above command then that part of
-    the installation probably failed. In that case you should become
-    the root user and then do
-</P><PRE
-CLASS="SCREEN"
-><KBD
-CLASS="USERINPUT"
->gmake -C src/interfaces/python install</KBD
-></PRE
-><P>
-    If you do not have root access you are on your own: 
-    you can still take the required files and place them in 
-    other directories where Python can find them, but how to 
-    do that is left as an exercise.
    </P
 ><P
 >    The standard installation provides only the header files needed for client

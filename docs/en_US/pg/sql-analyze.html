@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-alteruser.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteruser.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-begin.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-begin.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-ANALYZE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37245"
+NAME="AEN35789"
 ></A
 ><H2
 >Name</H2
 >ANALYZE&nbsp;--&nbsp;collect statistics about a database</DIV
+><A
+NAME="AEN35792"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37248"
+NAME="AEN35794"
 ></A
 ><H2
 >Synopsis</H2
@@ -108,7 +123,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37252"
+NAME="AEN35798"
 ></A
 ><H2
 >Description</H2
@@ -116,13 +131,13 @@ NAME="AEN37252"
 >   <TT
 CLASS="COMMAND"
 >ANALYZE</TT
-> collects statistics about the contents of
-   tables in the database, and stores the results in
-   the system table <VAR
+> collects statistics about the contents
+   of tables in the database, and stores the results in the system
+   table <VAR
 CLASS="LITERAL"
 >pg_statistic</VAR
->.  Subsequently,
-   the query planner uses the statistics to help determine the most efficient
+>.  Subsequently, the query
+   planner uses these statistics to help determine the most efficient
    execution plans for queries.
   </P
 ><P
@@ -141,7 +156,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37260"
+NAME="AEN35806"
 ></A
 ><H2
 >Parameters</H2
@@ -187,32 +202,26 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37278"
+NAME="AEN35824"
 ></A
 ><H2
->Diagnostics</H2
+>Outputs</H2
 ><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ANALYZE</SAMP
-></DT
-><DD
-><P
->      The command is complete.
-     </P
-></DD
-></DL
-></DIV
+>    When <VAR
+CLASS="LITERAL"
+>VERBOSE</VAR
+> is specified, <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> emits
+    progress messages to indicate which table is currently being
+    processed.  Various statistics about the tables are printed as well.
+   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37286"
+NAME="AEN35829"
 ></A
 ><H2
 >Notes</H2
@@ -239,90 +248,104 @@ CLASS="COMMAND"
 >   Unlike <TT
 CLASS="COMMAND"
 >VACUUM FULL</TT
->,
+>, <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>
+   requires only a read lock on the target table, so it can run in
+   parallel with other activity on the table.
+  </P
+><P
+>   The statistics collected by <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> usually
+   include a list of some of the most common values in each column and
+   a histogram showing the approximate data distribution in each
+   column.  One or both of these may be omitted if
    <TT
 CLASS="COMMAND"
 >ANALYZE</TT
-> requires
-   only a read lock on the target table, so it can run in parallel with
-   other activity on the table.
-  </P
-><P
->   For large tables, <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> takes a random sample of the
-   table contents, rather than examining every row.  This allows even very
-   large tables to be analyzed in a small amount of time.  Note, however,
-   that the statistics are only approximate, and will change slightly each
-   time <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> is run, even if the actual table contents
-   did not change.  This may result in small changes in the planner's
-   estimated costs shown by <TT
-CLASS="COMMAND"
->EXPLAIN</TT
->.
-  </P
-><P
->   The collected statistics usually include a list of some of the most common
-   values in each column and a histogram showing the approximate data
-   distribution in each column.  One or both of these may be omitted if
-   <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> deems them uninteresting (for example, in
-   a unique-key column, there are no common values) or if the column
-   data type does not support the appropriate operators.  There is more
-   information about the statistics in <A
+> deems them uninteresting (for example,
+   in a unique-key column, there are no common values) or if the
+   column data type does not support the appropriate operators.  There
+   is more information about the statistics in <A
 HREF="maintenance.html"
 >Chapter 21</A
 >.
   </P
 ><P
+>   For large tables, <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> takes a random sample
+   of the table contents, rather than examining every row.  This
+   allows even very large tables to be analyzed in a small amount of
+   time.  Note, however, that the statistics are only approximate, and
+   will change slightly each time <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> is run,
+   even if the actual table contents did not change.  This may result
+   in small changes in the planner's estimated costs shown by
+   <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+>. In rare situations, this
+   non-determinism will cause the query optimizer to choose a
+   different query plan between runs of <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>. To
+   avoid this, raise the amount of statistics collected by
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>, as described below.
+  </P
+><P
 >   The extent of analysis can be controlled by adjusting the
    <VAR
-CLASS="LITERAL"
->default_statistics_target</VAR
-> parameter variable, or on a
-   column-by-column basis by setting the per-column
-   statistics target with <TT
+CLASS="VARNAME"
+>DEFAULT_STATISTICS_TARGET</VAR
+> parameter variable, or
+   on a column-by-column basis by setting the per-column statistics
+   target with <TT
 CLASS="COMMAND"
 >ALTER TABLE ... ALTER COLUMN ... SET
    STATISTICS</TT
-> (see
-   <A
+> (see <A
 HREF="sql-altertable.html"
 ><I
 >ALTER TABLE</I
 ></A
->).  The
-   target value sets the maximum number of entries in the most-common-value
-   list and the maximum number of bins in the histogram.  The default
-   target value is 10, but this can be adjusted up or down to trade off
-   accuracy of planner estimates against the time taken for
+>).  The target value sets the
+   maximum number of entries in the most-common-value list and the
+   maximum number of bins in the histogram.  The default target value
+   is 10, but this can be adjusted up or down to trade off accuracy of
+   planner estimates against the time taken for
    <TT
 CLASS="COMMAND"
 >ANALYZE</TT
-> and the amount of space occupied
-   in <VAR
+> and the amount of space occupied in
+   <VAR
 CLASS="LITERAL"
 >pg_statistic</VAR
->.
-   In particular, setting the statistics target to zero disables collection of
-   statistics for that column.  It may be useful to do that for columns that
-   are never used as part of the <VAR
+>.  In particular, setting the
+   statistics target to zero disables collection of statistics for
+   that column.  It may be useful to do that for columns that are
+   never used as part of the <VAR
 CLASS="LITERAL"
 >WHERE</VAR
 >, <VAR
 CLASS="LITERAL"
 >GROUP BY</VAR
->, or <VAR
+>,
+   or <VAR
 CLASS="LITERAL"
 >ORDER BY</VAR
-> clauses of
-   queries, since the planner will have no use for statistics on such columns.
+> clauses of queries, since the planner will
+   have no use for statistics on such columns.
   </P
 ><P
 >   The largest statistics target among the columns being analyzed determines
@@ -337,7 +360,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37313"
+NAME="AEN35859"
 ></A
 ><H2
 >Compatibility</H2

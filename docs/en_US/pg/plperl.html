@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="pltcl-procnames.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="plpython.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="plperl-data.html"
 ACCESSKEY="N"
@@ -81,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="PLPERL"
 ></A
->Chapter 42. PL/Perl - Perl Procedural Language</H1
+>Chapter 41. PL/Perl - Perl Procedural Language</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,37 +102,37 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->42.1. <A
+>41.1. <A
 HREF="plperl.html#PLPERL-FUNCS"
 >PL/Perl Functions and Arguments</A
 ></DT
 ><DT
->42.2. <A
+>41.2. <A
 HREF="plperl-data.html"
 >Data Values in PL/Perl</A
 ></DT
 ><DT
->42.3. <A
+>41.3. <A
 HREF="plperl-database.html"
 >Database Access from PL/Perl</A
 ></DT
 ><DT
->42.4. <A
+>41.4. <A
 HREF="plperl-trusted.html"
 >Trusted and Untrusted PL/Perl</A
 ></DT
 ><DT
->42.5. <A
+>41.5. <A
 HREF="plperl-missing.html"
 >Missing Features</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN35741"
+NAME="AEN34390"
 ></A
 ><A
-NAME="AEN35743"
+NAME="AEN34392"
 ></A
 ><P
 >   PL/Perl is a loadable procedural language that enables you to write
@@ -178,7 +190,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPERL-FUNCS"
->42.1. PL/Perl Functions and Arguments</A
+>41.1. PL/Perl Functions and Arguments</A
 ></H1
 ><P
 >   To create a function in the PL/Perl language, use the standard syntax:
@@ -224,14 +236,17 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   If an SQL null value is passed to a function, the argument value
-   will appear as <SPAN
+>   If an SQL null value<A
+NAME="AEN34418"
+></A
+> is passed to a function,
+   the argument value will appear as <SPAN
 CLASS="QUOTE"
 >"undefined"</SPAN
-> in Perl.  The above function
-   definition will not behave very nicely with null inputs (in fact,
-   it will act as though they are zeroes).  We could add
-   <VAR
+> in Perl.  The
+   above function definition will not behave very nicely with null
+   inputs (in fact, it will act as though they are zeroes).  We could
+   add <VAR
 CLASS="LITERAL"
 >STRICT</VAR
 > to the function definition to make

@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Interfaces"
 HREF="client-interfaces.html"><LINK
 REL="PREVIOUS"
-TITLE="export"
-HREF="pygresql-pglargeobject-export.html"><LINK
+TITLE="Further Reading"
+HREF="jdbc-reading.html"><LINK
 REL="NEXT"
 TITLE="Data Types"
 HREF="infoschema-datatypes.html"><LINK
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
-HREF="pygresql-pglargeobject-export.html"
+HREF="jdbc-reading.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="jdbc.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="server-programming.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="infoschema-datatypes.html"
 ACCESSKEY="N"
@@ -81,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="INFORMATION-SCHEMA"
 ></A
->Chapter 33. The Information Schema</H1
+>Chapter 32. The Information Schema</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,17 +102,17 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->33.1. <A
+>32.1. <A
 HREF="information-schema.html#INFOSCHEMA-SCHEMA"
 >The Schema</A
 ></DT
 ><DT
->33.2. <A
+>32.2. <A
 HREF="infoschema-datatypes.html"
 >Data Types</A
 ></DT
 ><DT
->33.3. <A
+>32.3. <A
 HREF="infoschema-information-schema-catalog-name.html"
 ><VAR
 CLASS="LITERAL"
@@ -108,7 +120,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.4. <A
+>32.4. <A
 HREF="infoschema-applicable-roles.html"
 ><VAR
 CLASS="LITERAL"
@@ -116,7 +128,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.5. <A
+>32.5. <A
 HREF="infoschema-check-constraints.html"
 ><VAR
 CLASS="LITERAL"
@@ -124,7 +136,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.6. <A
+>32.6. <A
 HREF="infoschema-column-domain-usage.html"
 ><VAR
 CLASS="LITERAL"
@@ -132,7 +144,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.7. <A
+>32.7. <A
 HREF="infoschema-column-privileges.html"
 ><VAR
 CLASS="LITERAL"
@@ -140,7 +152,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.8. <A
+>32.8. <A
 HREF="infoschema-column-udt-usage.html"
 ><VAR
 CLASS="LITERAL"
@@ -148,7 +160,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.9. <A
+>32.9. <A
 HREF="infoschema-columns.html"
 ><VAR
 CLASS="LITERAL"
@@ -156,7 +168,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.10. <A
+>32.10. <A
 HREF="infoschema-constraint-column-usage.html"
 ><VAR
 CLASS="LITERAL"
@@ -164,7 +176,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.11. <A
+>32.11. <A
 HREF="infoschema-constraint-table-usage.html"
 ><VAR
 CLASS="LITERAL"
@@ -172,7 +184,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.12. <A
+>32.12. <A
 HREF="infoschema-data-type-privileges.html"
 ><VAR
 CLASS="LITERAL"
@@ -180,7 +192,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.13. <A
+>32.13. <A
 HREF="infoschema-domain-constraints.html"
 ><VAR
 CLASS="LITERAL"
@@ -188,7 +200,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.14. <A
+>32.14. <A
 HREF="infoschema-domain-udt-usage.html"
 ><VAR
 CLASS="LITERAL"
@@ -196,7 +208,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.15. <A
+>32.15. <A
 HREF="infoschema-domains.html"
 ><VAR
 CLASS="LITERAL"
@@ -204,7 +216,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.16. <A
+>32.16. <A
 HREF="infoschema-element-types.html"
 ><VAR
 CLASS="LITERAL"
@@ -212,7 +224,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.17. <A
+>32.17. <A
 HREF="infoschema-enabled-roles.html"
 ><VAR
 CLASS="LITERAL"
@@ -220,7 +232,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.18. <A
+>32.18. <A
 HREF="infoschema-key-column-usage.html"
 ><VAR
 CLASS="LITERAL"
@@ -228,7 +240,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.19. <A
+>32.19. <A
 HREF="infoschema-parameters.html"
 ><VAR
 CLASS="LITERAL"
@@ -236,7 +248,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.20. <A
+>32.20. <A
 HREF="infoschema-referential-constraints.html"
 ><VAR
 CLASS="LITERAL"
@@ -244,7 +256,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.21. <A
+>32.21. <A
 HREF="infoschema-role-column-grants.html"
 ><VAR
 CLASS="LITERAL"
@@ -252,7 +264,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.22. <A
+>32.22. <A
 HREF="infoschema-role-routine-grants.html"
 ><VAR
 CLASS="LITERAL"
@@ -260,7 +272,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.23. <A
+>32.23. <A
 HREF="infoschema-role-table-grants.html"
 ><VAR
 CLASS="LITERAL"
@@ -268,7 +280,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.24. <A
+>32.24. <A
 HREF="infoschema-role-usage-grants.html"
 ><VAR
 CLASS="LITERAL"
@@ -276,7 +288,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.25. <A
+>32.25. <A
 HREF="infoschema-routine-privileges.html"
 ><VAR
 CLASS="LITERAL"
@@ -284,7 +296,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.26. <A
+>32.26. <A
 HREF="infoschema-routines.html"
 ><VAR
 CLASS="LITERAL"
@@ -292,7 +304,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.27. <A
+>32.27. <A
 HREF="infoschema-schemata.html"
 ><VAR
 CLASS="LITERAL"
@@ -300,7 +312,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.28. <A
+>32.28. <A
 HREF="infoschema-sql-features.html"
 ><VAR
 CLASS="LITERAL"
@@ -308,7 +320,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.29. <A
+>32.29. <A
 HREF="infoschema-sql-implementation-info.html"
 ><VAR
 CLASS="LITERAL"
@@ -316,7 +328,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.30. <A
+>32.30. <A
 HREF="infoschema-sql-languages.html"
 ><VAR
 CLASS="LITERAL"
@@ -324,7 +336,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.31. <A
+>32.31. <A
 HREF="infoschema-sql-packages.html"
 ><VAR
 CLASS="LITERAL"
@@ -332,7 +344,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.32. <A
+>32.32. <A
 HREF="infoschema-sql-sizing.html"
 ><VAR
 CLASS="LITERAL"
@@ -340,7 +352,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.33. <A
+>32.33. <A
 HREF="infoschema-sql-sizing-profiles.html"
 ><VAR
 CLASS="LITERAL"
@@ -348,7 +360,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.34. <A
+>32.34. <A
 HREF="infoschema-table-constraints.html"
 ><VAR
 CLASS="LITERAL"
@@ -356,7 +368,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.35. <A
+>32.35. <A
 HREF="infoschema-table-privileges.html"
 ><VAR
 CLASS="LITERAL"
@@ -364,7 +376,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.36. <A
+>32.36. <A
 HREF="infoschema-tables.html"
 ><VAR
 CLASS="LITERAL"
@@ -372,7 +384,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.37. <A
+>32.37. <A
 HREF="infoschema-triggers.html"
 ><VAR
 CLASS="LITERAL"
@@ -380,7 +392,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.38. <A
+>32.38. <A
 HREF="infoschema-usage-privileges.html"
 ><VAR
 CLASS="LITERAL"
@@ -388,7 +400,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.39. <A
+>32.39. <A
 HREF="infoschema-view-column-usage.html"
 ><VAR
 CLASS="LITERAL"
@@ -396,7 +408,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.40. <A
+>32.40. <A
 HREF="infoschema-view-table-usage.html"
 ><VAR
 CLASS="LITERAL"
@@ -404,7 +416,7 @@ CLASS="LITERAL"
 ></A
 ></DT
 ><DT
->33.41. <A
+>32.41. <A
 HREF="infoschema-views.html"
 ><VAR
 CLASS="LITERAL"
@@ -414,18 +426,29 @@ CLASS="LITERAL"
 ></DL
 ></DIV
 ><A
-NAME="AEN26442"
+NAME="AEN25340"
 ></A
 ><P
 >  The information schema consists of a set of views that contain
   information about the objects defined in the current database.  The
   information schema is defined in the SQL standard and can therefore
   be expected to be portable and remain stable --- unlike the system
-  catalogs, which are specific to PostgreSQL and are modelled after
+  catalogs, which are specific to
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> and are modelled after
   implementation concerns.  The information schema views do not,
-  however, contain information about PostgreSQL-specific features; to
-  inquire about those you need to query the system catalogs or other
-  PostgreSQL-specific views.
+  however, contain information about
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-specific features; to inquire
+  about those you need to query the system catalogs or other
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-specific views.
  </P
 ><DIV
 CLASS="SECT1"
@@ -433,7 +456,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-SCHEMA"
->33.1. The Schema</A
+>32.1. The Schema</A
 ></H1
 ><P
 >   The information schema itself is a schema named
@@ -472,7 +495,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="pygresql-pglargeobject-export.html"
+HREF="jdbc-reading.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -500,7 +523,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->export</TD
+>Further Reading</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

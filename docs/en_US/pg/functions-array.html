@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="functions-misc.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="functions-aggregate.html"
 ACCESSKEY="N"
@@ -368,6 +380,50 @@ CLASS="CALSTABLE"
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
+>array_cat</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>anyarray</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>     concatenate two arrays, returning <VAR
+CLASS="LITERAL"
+>NULL</VAR
+>
+     for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>array_cat(ARRAY[1,2,3], ARRAY[4,5])</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{1,2,3,4,5}</VAR
+></TD
+></TR
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
 >array_append</CODE
 >
       (<TT
@@ -412,11 +468,11 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
->array_cat</CODE
+>array_prepend</CODE
 >
       (<TT
 CLASS="TYPE"
->anyarray</TT
+>anyelement</TT
 >, <TT
 CLASS="TYPE"
 >anyarray</TT
@@ -430,11 +486,11 @@ CLASS="TYPE"
 >anyarray</TT
 ></TD
 ><TD
->     concatenate two arrays, returning <VAR
+>     append an element to the beginning of an array, returning
+     <VAR
 CLASS="LITERAL"
 >NULL</VAR
->
-     for <VAR
+> for <VAR
 CLASS="LITERAL"
 >NULL</VAR
 > inputs
@@ -442,12 +498,12 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->array_cat(ARRAY[1,2,3], ARRAY[4,5,6])</VAR
+>array_prepend(1, ARRAY[2,3])</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->{1,2,3,4,5,6}</VAR
+>{1,2,3}</VAR
 ></TD
 ></TR
 ><TR
@@ -480,7 +536,7 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->array_dims(array[[1,2,3],[4,5,6]])</VAR
+>array_dims(array[[1,2,3], [4,5,6]])</VAR
 ></TD
 ><TD
 ><VAR
@@ -538,14 +594,14 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >      <CODE
 CLASS="FUNCTION"
->array_prepend</CODE
+>array_upper</CODE
 >
       (<TT
 CLASS="TYPE"
->anyelement</TT
+>anyarray</TT
 >, <TT
 CLASS="TYPE"
->anyarray</TT
+>integer</TT
 >)
      </VAR
 >
@@ -553,10 +609,10 @@ CLASS="TYPE"
 ><TD
 ><TT
 CLASS="TYPE"
->anyarray</TT
+>integer</TT
 ></TD
 ><TD
->     append an element to the beginning of an array, returning
+>     returns upper bound of the requested array dimension, returning
      <VAR
 CLASS="LITERAL"
 >NULL</VAR
@@ -568,12 +624,12 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->array_prepend(1, ARRAY[2,3])</VAR
+>array_upper(ARRAY[1,2,3,4], 1)</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->{1,2,3}</VAR
+>4</VAR
 ></TD
 ></TR
 ><TR
@@ -612,56 +668,12 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->array_to_string(array[1.1,2.2,3.3]::numeric(4,2)[],'~^~')</VAR
+>array_to_string(array[1, 2, 3], '~^~')</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->1.10~^~2.20~^~3.30</VAR
-></TD
-></TR
-><TR
-><TD
->     <VAR
-CLASS="LITERAL"
->      <CODE
-CLASS="FUNCTION"
->array_upper</CODE
->
-      (<TT
-CLASS="TYPE"
->anyarray</TT
->, <TT
-CLASS="TYPE"
->integer</TT
->)
-     </VAR
->
-    </TD
-><TD
-><TT
-CLASS="TYPE"
->integer</TT
-></TD
-><TD
->     returns upper bound of the requested array dimension, returning
-     <VAR
-CLASS="LITERAL"
->NULL</VAR
-> for <VAR
-CLASS="LITERAL"
->NULL</VAR
-> inputs
-    </TD
-><TD
-><VAR
-CLASS="LITERAL"
->array_upper(array_append(ARRAY[1,2,3], 4), 1)</VAR
-></TD
-><TD
-><VAR
-CLASS="LITERAL"
->4</VAR
+>1~^~2~^~3</VAR
 ></TD
 ></TR
 ><TR
@@ -700,12 +712,12 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->string_to_array('1.10~^~2.20~^~3.30','~^~')::float8[]</VAR
+>string_to_array( 'xx~^~yy~^~zz', '~^~')</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->{1.1,2.2,3.3}</VAR
+>{xx,yy,zz}</VAR
 ></TD
 ></TR
 ></TBODY

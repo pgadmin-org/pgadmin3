@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,22 +37,31 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="libpq.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 27. <SPAN
@@ -67,7 +71,15 @@ CLASS="APPLICATION"
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="libpq-exec.html"
 ACCESSKEY="N"
@@ -98,11 +110,11 @@ CLASS="TIP"
 ><B
 >Tip: </B
 ><A
-NAME="AEN19630"
+NAME="AEN20340"
 ></A
 >
 <A
-NAME="AEN19632"
+NAME="AEN20342"
 ></A
 >
 <SPAN
@@ -163,6 +175,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQdb</CODE
+><A
+NAME="AEN20360"
+></A
 ></DT
 ><DD
 ><P
@@ -176,6 +191,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQuser</CODE
+><A
+NAME="AEN20368"
+></A
 ></DT
 ><DD
 ><P
@@ -189,6 +207,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQpass</CODE
+><A
+NAME="AEN20376"
+></A
 ></DT
 ><DD
 ><P
@@ -202,6 +223,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQhost</CODE
+><A
+NAME="AEN20384"
+></A
 ></DT
 ><DD
 ><P
@@ -215,6 +239,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQport</CODE
+><A
+NAME="AEN20392"
+></A
 ></DT
 ><DD
 ><P
@@ -228,6 +255,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQtty</CODE
+><A
+NAME="AEN20400"
+></A
 ></DT
 ><DD
 ><P
@@ -235,12 +265,12 @@ CLASS="FUNCTION"
 CLASS="ACRONYM"
 >TTY</ACRONYM
 > of the connection.
-	 (This is obsolete, since the server no longer pays attention
-	 to the <ACRONYM
+         (This is obsolete, since the server no longer pays attention
+         to the <ACRONYM
 CLASS="ACRONYM"
 >TTY</ACRONYM
 > setting, but the function remains
-	 for backwards compatibility.)
+         for backwards compatibility.)
 </P><PRE
 CLASS="SYNOPSIS"
 >char *PQtty(const PGconn *conn);</PRE
@@ -250,6 +280,9 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQoptions</CODE
+><A
+NAME="AEN20410"
+></A
 ></DT
 ><DD
 ><P
@@ -278,6 +311,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQstatus</CODE
+><A
+NAME="AEN20421"
+></A
 ></DT
 ><DD
 ><P
@@ -340,6 +376,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQtransactionStatus</CODE
+><A
+NAME="AEN20440"
+></A
 ></DT
 ><DD
 ><P
@@ -418,6 +457,9 @@ deprecated and does not exist in later server versions.</P
 ><CODE
 CLASS="FUNCTION"
 >PQparameterStatus</CODE
+><A
+NAME="AEN20460"
+></A
 ></DT
 ><DD
 ><P
@@ -443,50 +485,47 @@ CLASS="LITERAL"
 > (cannot change after startup);
 <VAR
 CLASS="LITERAL"
->server_encoding</VAR
-> (also not presently changeable after start);
-<VAR
-CLASS="LITERAL"
 >client_encoding</VAR
 >,
 <VAR
 CLASS="LITERAL"
 >is_superuser</VAR
+>,
+<VAR
+CLASS="LITERAL"
+>session_authorization</VAR
 >, and
 <VAR
 CLASS="LITERAL"
 >DateStyle</VAR
 >.</P
 ><P
->Pre-3.0-protocol servers do not report parameter settings,
-but <SPAN
+>Pre-3.0-protocol servers do not report parameter settings, but
+<SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> includes logic to obtain values for 
+> includes logic to obtain values for
 <VAR
 CLASS="LITERAL"
 >server_version</VAR
->, <VAR
-CLASS="LITERAL"
->server_encoding</VAR
->, and
-<VAR
+>, and <VAR
 CLASS="LITERAL"
 >client_encoding</VAR
->.  Applications are encouraged to use
-<CODE
+>.
+Applications are encouraged to use <CODE
 CLASS="FUNCTION"
 >PQparameterStatus</CODE
-> rather than ad-hoc code to determine these
-values.  (Beware however that on a pre-3.0 connection, changing
-<VAR
+>
+rather than ad-hoc code to determine these values.  (Beware however
+that on a pre-3.0 connection, changing <VAR
 CLASS="LITERAL"
 >client_encoding</VAR
-> via <TT
+> via
+<TT
 CLASS="COMMAND"
 >SET</TT
-> after connection startup
-will not be reflected by <CODE
+> after connection startup will not be reflected by
+<CODE
 CLASS="FUNCTION"
 >PQparameterStatus</CODE
 >.)</P
@@ -495,6 +534,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQprotocolVersion</CODE
+><A
+NAME="AEN20483"
+></A
 ></DT
 ><DD
 ><P
@@ -519,11 +561,14 @@ only protocol 2.0.  (Protocol 1.0 is obsolete and not supported by libpq.)</P
 ><CODE
 CLASS="FUNCTION"
 >PQerrorMessage</CODE
+><A
+NAME="AEN20492"
+></A
 ></DT
 ><DD
 ><P
 >       <A
-NAME="AEN19763"
+NAME="AEN20496"
 ></A
 >
        Returns the error message most recently generated by
@@ -557,6 +602,9 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQsocket</CODE
+><A
+NAME="AEN20507"
+></A
 ></DT
 ><DD
 ><P
@@ -575,14 +623,21 @@ CLASS="SYNOPSIS"
 ><CODE
 CLASS="FUNCTION"
 >PQbackendPID</CODE
+><A
+NAME="AEN20515"
+></A
 ></DT
 ><DD
 ><P
 >       Returns the process <ACRONYM
 CLASS="ACRONYM"
 >ID</ACRONYM
-> of the backend server process
-       handling this connection.
+>
+       (PID)<A
+NAME="AEN20520"
+></A
+> of the backend server
+       process handling this connection.
 </P><PRE
 CLASS="SYNOPSIS"
 >int PQbackendPID(const PGconn *conn);</PRE
@@ -612,11 +667,14 @@ CLASS="ACRONYM"
 ><CODE
 CLASS="FUNCTION"
 >PQgetssl</CODE
+><A
+NAME="AEN20533"
+></A
 ></DT
 ><DD
 ><P
 >       <A
-NAME="AEN19794"
+NAME="AEN20537"
 ></A
 >
        Returns the SSL structure used in the connection, or null

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Python - Python Procedural Language"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="plpython-trigger.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpython.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. PL/Python - Python Procedural Language</TD
+>Chapter 42. PL/Python - Python Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="plpython.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="reference.html"
 ACCESSKEY="N"
@@ -81,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPYTHON-DATABASE"
->43.3. Database Access</A
+>42.3. Database Access</A
 ></H1
 ><P
 >   The PL/Python language module automatically imports a Python module
@@ -136,7 +148,10 @@ CLASS="REPLACEABLE"
 >LEVEL</VAR
 >, "msg")</VAR
 >
-   from C code.  <CODE
+   from C code.<A
+NAME="AEN34614"
+></A
+>  <CODE
 CLASS="FUNCTION"
 >plpy.error</CODE
 > and
@@ -227,13 +242,17 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   The second function, <CODE
+>   <A
+NAME="AEN34639"
+></A
+>
+   The second function, <CODE
 CLASS="FUNCTION"
 >plpy.prepare</CODE
->, prepares the
-   execution plan for a query.  It is called with a query string and a
-   list of parameter types, if you have parameter references in the
-   query.  For example:
+>, prepares
+   the execution plan for a query.  It is called with a query string
+   and a list of parameter types, if you have parameter references in
+   the query.  For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >plan = plpy.prepare("SELECT last_name FROM my_users WHERE first_name = $1", [ "text" ])</PRE
@@ -279,7 +298,7 @@ CLASS="LITERAL"
 >   When you prepare a plan using the PL/Python module it is
    automatically saved.  Read the SPI documentation (<A
 HREF="spi.html"
->Chapter 38</A
+>Chapter 37</A
 >) for a description of what this means.
    In order to make effective use of this across function calls
    one needs to use one of the persistent storage dictionaries
@@ -292,7 +311,7 @@ CLASS="LITERAL"
 > (see
    <A
 HREF="plpython.html#PLPYTHON-FUNCS"
->Section 43.1</A
+>Section 42.1</A
 >). For example:
 </P><PRE
 CLASS="PROGRAMLISTING"

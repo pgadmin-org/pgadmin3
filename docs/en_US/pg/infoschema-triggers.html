@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Information Schema"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="infoschema-tables.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. The Information Schema</TD
+>Chapter 32. The Information Schema</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="infoschema-usage-privileges.html"
 ACCESSKEY="N"
@@ -81,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INFOSCHEMA-TRIGGERS"
->33.37. <VAR
+>32.37. <VAR
 CLASS="LITERAL"
 >triggers</VAR
 ></A
@@ -97,11 +109,11 @@ CLASS="LITERAL"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN29374"
+NAME="AEN28294"
 ></A
 ><P
 ><B
->Table 33-35. <VAR
+>Table 32-35. <VAR
 CLASS="LITERAL"
 >triggers</VAR
 > Columns</B
@@ -359,9 +371,16 @@ CLASS="TYPE"
 ></TABLE
 ></DIV
 ><P
->   Triggers in PostgreSQL have two incompatibilities with the SQL
-   standard that affect the representation in the information schema.
-   First, trigger names are local to the table in PostgreSQL, rather
+>   Triggers in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> have two
+   incompatibilities with the SQL standard that affect the
+   representation in the information schema.  First, trigger names are
+   local to the table in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, rather
    than independent schema objects.  Therefore there may be duplicate
    trigger names defined in one schema, as long as they belong to
    different tables.  (<VAR
@@ -373,19 +392,23 @@ CLASS="LITERAL"
 >trigger_schema</VAR
 > are really the values pertaining
    to the table that the trigger is defined on.)  Second, triggers can
-   be defined to fire on multiple events in PostgreSQL (e.g.,
-   <VAR
+   be defined to fire on multiple events in
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> (e.g., <VAR
 CLASS="LITERAL"
->ON INSERT OR UPDATE</VAR
->), whereas the SQL standard
-   only allows one.  If a trigger is defined to fire on multiple
-   events, it is represented as multiple rows in the information
-   schema, one for each type of event.  As a consequence of these two
-   issues, the primary key of the view <VAR
+>ON INSERT OR
+   UPDATE</VAR
+>), whereas the SQL standard only allows one.  If a
+   trigger is defined to fire on multiple events, it is represented as
+   multiple rows in the information schema, one for each type of
+   event.  As a consequence of these two issues, the primary key of
+   the view <VAR
 CLASS="LITERAL"
 >triggers</VAR
-> is
-   really <VAR
+> is really
+   <VAR
 CLASS="LITERAL"
 >(trigger_catalog, trigger_schema, trigger_name,
    event_object_name, event_manipulation)</VAR

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="ddl-default.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 5. Data Definition</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="ddl.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="ddl-inherit.html"
 ACCESSKEY="N"
@@ -83,6 +95,9 @@ CLASS="SECT1"
 NAME="DDL-CONSTRAINTS"
 >5.4. Constraints</A
 ></H1
+><A
+NAME="AEN1886"
+></A
 ><P
 >   Data types are a way to limit the kind of data that can be stored
    in a table.  For many applications, however, the constraint they
@@ -105,9 +120,15 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1752"
+NAME="AEN1890"
 >5.4.1. Check Constraints</A
 ></H2
+><A
+NAME="AEN1892"
+></A
+><A
+NAME="AEN1894"
+></A
 ><P
 >    A check constraint is the most generic constraint type.  It allows
     you to specify that the value in a certain column must satisfy an
@@ -137,6 +158,9 @@ CLASS="LITERAL"
     involve the column thus constrained, otherwise the constraint
     would not make too much sense.
    </P
+><A
+NAME="AEN1902"
+></A
 ><P
 >    You can also give the constraint a separate name.  This clarifies
     error messages and allows you to refer to the constraint when you
@@ -212,6 +236,9 @@ CLASS="PROGRAMLISTING"
 ><P>
     It's a matter of taste.
    </P
+><A
+NAME="AEN1915"
+></A
 ><P
 >    It should be noted that a check constraint is satisfied if the
     check expression evaluates to true or the null value.  Since most
@@ -226,9 +253,15 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1770"
+NAME="AEN1919"
 >5.4.2. Not-Null Constraints</A
 ></H2
+><A
+NAME="AEN1921"
+></A
+><A
+NAME="AEN1923"
+></A
 ><P
 >    A not-null constraint simply specifies that a column must not
     assume the null value.  A syntax example:
@@ -334,9 +367,15 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1791"
+NAME="AEN1945"
 >5.4.3. Unique Constraints</A
 ></H2
+><A
+NAME="AEN1947"
+></A
+><A
+NAME="AEN1949"
+></A
 ><P
 >    Unique constraints ensure that the data contained in a column or a
     group of columns is unique with respect to all the rows in the
@@ -397,6 +436,9 @@ CLASS="EMPHASIS"
 );</PRE
 ><P>
    </P
+><A
+NAME="AEN1963"
+></A
 ><P
 >    In general, a unique constraint is violated when there are (at
     least) two rows in the table where the values of each of the
@@ -416,9 +458,15 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1805"
+NAME="AEN1967"
 >5.4.4. Primary Keys</A
 ></H2
+><A
+NAME="AEN1969"
+></A
+><A
+NAME="AEN1971"
+></A
 ><P
 >    Technically, a primary key constraint is simply a combination of a
     unique constraint and a not-null constraint.  So, the following
@@ -490,6 +538,15 @@ CLASS="SECT2"
 NAME="DDL-CONSTRAINTS-FK"
 >5.4.5. Foreign Keys</A
 ></H2
+><A
+NAME="AEN1986"
+></A
+><A
+NAME="AEN1988"
+></A
+><A
+NAME="AEN1991"
+></A
 ><P
 >    A foreign key constraint specifies that the values in a column (or
     a group of columns) must match the values appearing in some row
@@ -607,6 +664,12 @@ CREATE TABLE order_items (
     Note also that the primary key overlaps with the foreign keys in
     the last table.
    </P
+><A
+NAME="AEN2010"
+></A
+><A
+NAME="AEN2013"
+></A
 ><P
 >    We know that the foreign keys disallow creation of orders that
     do not relate to any products.  But what if a product is removed

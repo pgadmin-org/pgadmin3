@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="functions-formatting.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="functions-geometry.html"
 ACCESSKEY="N"
@@ -166,12 +178,12 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->timestamp '2001-09-28 01:00' + interval '23 hours'</VAR
+>date '2001-09-28' + integer '7'</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->timestamp '2001-09-29 00:00'</VAR
+>date '2001-10-05'</VAR
 ></TD
 ></TR
 ><TR
@@ -200,7 +212,92 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
+>date '2001-09-28' + time '03:00'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>timestamp '2001-09-28 03:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>+</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>time '03:00' + date '2001-09-28'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>timestamp '2001-09-28 03:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>+</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '1 day' + interval '1 hour'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '1 day 01:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>+</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>timestamp '2001-09-28 01:00' + interval '23 hours'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>timestamp '2001-09-29 00:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>+</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
 >time '01:00' + interval '3 hours'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>time '04:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>+</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '3 hours' + time '01:00'</VAR
 ></TD
 ><TD
 ><VAR
@@ -217,12 +314,46 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->timestamp '2001-09-28 23:00' - interval '23 hours'</VAR
+>- interval '23 hours'</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->timestamp '2001-09-28'</VAR
+>interval '-23:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>-</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>date '2001-10-01' - date '2001-09-28'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>integer '3'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>-</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>date '2001-10-01' - integer '7'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>date '2001-09-24'</VAR
 ></TD
 ></TR
 ><TR
@@ -251,6 +382,23 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
+>time '05:00' - time '03:00'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '02:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>-</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
 >time '05:00' - interval '2 hours'</VAR
 ></TD
 ><TD
@@ -268,12 +416,63 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
+>timestamp '2001-09-28 23:00' - interval '23 hours'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>timestamp '2001-09-28 00:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>-</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '1 day' - interval '1 hour'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '23:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>-</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
 >interval '2 hours' - time '05:00'</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->time '03:00:00'</VAR
+>time '03:00'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>-</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>timestamp '2001-09-29 03:00' - timestamp '2001-09-27 12:00'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '1 day 15:00'</VAR
 ></TD
 ></TR
 ><TR
@@ -285,12 +484,29 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->interval '1 hour' * int '3'</VAR
+>double precision '3.5' * interval '1 hour'</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->interval '03:00'</VAR
+>interval '03:30'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>*</VAR
+> </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '1 hour' * double precision '3.5'</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>interval '03:30'</VAR
 ></TD
 ></TR
 ><TR
@@ -302,12 +518,12 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->interval '1 hour' / int '3'</VAR
+>interval '1 hour' / double precision '1.5'</VAR
 ></TD
 ><TD
 ><VAR
 CLASS="LITERAL"
->interval '00:20'</VAR
+>interval '00:40'</VAR
 ></TD
 ></TR
 ></TBODY
@@ -594,7 +810,7 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->2001-02-16 20:00:00+00</VAR
+>2001-02-16 20:00:00</VAR
 ></TD
 ></TR
 ><TR
@@ -833,19 +1049,73 @@ HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
 >
 	</TD
 ><TD
-><VAR
-CLASS="LITERAL"
->timeofday()</VAR
-></TD
+>&nbsp;</TD
 ><TD
-><VAR
-CLASS="LITERAL"
->Wed Feb 21 17:01:13.000126 2001 EST</VAR
-></TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
+><P
+>    In addition to these functions, the SQL <VAR
+CLASS="LITERAL"
+>OVERLAPS</VAR
+> keyword is
+    supported:
+</P><PRE
+CLASS="SYNOPSIS"
+>( <VAR
+CLASS="REPLACEABLE"
+>start1</VAR
+>, <VAR
+CLASS="REPLACEABLE"
+>end1</VAR
+> ) OVERLAPS ( <VAR
+CLASS="REPLACEABLE"
+>start2</VAR
+>, <VAR
+CLASS="REPLACEABLE"
+>end2</VAR
+> )
+( <VAR
+CLASS="REPLACEABLE"
+>start1</VAR
+>, <VAR
+CLASS="REPLACEABLE"
+>length1</VAR
+> ) OVERLAPS ( <VAR
+CLASS="REPLACEABLE"
+>start2</VAR
+>, <VAR
+CLASS="REPLACEABLE"
+>length2</VAR
+> )</PRE
+><P>
+    This expression yields true when two time periods (defined by their
+    endpoints) overlap, false when they do not overlap.  The endpoints
+    can be specified as pairs of dates, times, or timestamps; or as
+    a date, time, or timestamp followed by an interval.
+   </P
+><PRE
+CLASS="SCREEN"
+>SELECT (DATE '2001-02-16', DATE '2001-12-21') OVERLAPS
+       (DATE '2001-10-30', DATE '2002-10-30');
+<I
+CLASS="LINEANNOTATION"
+>Result: </I
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>true</SAMP
+>
+SELECT (DATE '2001-02-16', INTERVAL '100 days') OVERLAPS
+       (DATE '2001-10-30', DATE '2002-10-30');
+<I
+CLASS="LINEANNOTATION"
+>Result: </I
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>false</SAMP
+></PRE
 ><DIV
 CLASS="SECT2"
 ><H2
@@ -1053,13 +1323,13 @@ CLASS="TYPE"
        </P
 ><PRE
 CLASS="SCREEN"
->SELECT EXTRACT(EPOCH FROM TIMESTAMP '2001-02-16 20:38:40');
+>SELECT EXTRACT(EPOCH FROM TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-08');
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
 ><SAMP
 CLASS="COMPUTEROUTPUT"
->982352320</SAMP
+>982384720</SAMP
 >
 
 SELECT EXTRACT(EPOCH FROM INTERVAL '5 days 3 hours');
@@ -1257,8 +1527,8 @@ CLASS="LITERAL"
 ><P
 >        The seconds field, including fractional parts (0 -
         59<A
-NAME="AEN9725"
-HREF="#FTN.AEN9725"
+NAME="AEN10163"
+HREF="#FTN.AEN10163"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN
@@ -1486,23 +1756,38 @@ CLASS="REPLACEABLE"
     <TT
 CLASS="TYPE"
 >timestamp</TT
->.  (Values of type <TT
+> or <TT
+CLASS="TYPE"
+>interval</TT
+>.
+    (Values of type <TT
 CLASS="TYPE"
 >date</TT
 > and
     <TT
 CLASS="TYPE"
 >time</TT
-> are cast automatically.)
+> are cast automatically, to <TT
+CLASS="TYPE"
+>timestamp</TT
+> or
+    <TT
+CLASS="TYPE"
+>interval</TT
+> respectively.)
     <VAR
 CLASS="REPLACEABLE"
 >field</VAR
 > selects to which precision to
-    truncate the time stamp value.  The return value is of type
+    truncate the input value.  The return value is of type
     <TT
 CLASS="TYPE"
 >timestamp</TT
-> with all fields that are less than the
+> or <TT
+CLASS="TYPE"
+>interval</TT
+>
+    with all fields that are less significant than the
     selected one set to zero (or one, for day and month).
    </P
 ><P
@@ -1608,7 +1893,7 @@ CLASS="LINEANNOTATION"
 >Result: </I
 ><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-02-16 20:00:00+00</SAMP
+>2001-02-16 20:00:00</SAMP
 >
 
 SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
@@ -1617,7 +1902,7 @@ CLASS="LINEANNOTATION"
 >Result: </I
 ><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-01-01 00:00:00+00</SAMP
+>2001-01-01 00:00:00</SAMP
 ></PRE
 ><P>
    </P
@@ -1634,7 +1919,7 @@ CLASS="LITERAL"
 ></A
 ></H2
 ><A
-NAME="AEN9835"
+NAME="AEN10277"
 ></A
 ><P
 >    The <VAR
@@ -1820,10 +2105,10 @@ NAME="FUNCTIONS-DATETIME-CURRENT"
 >9.8.4. Current Date/Time</A
 ></H2
 ><A
-NAME="AEN9896"
+NAME="AEN10338"
 ></A
 ><A
-NAME="AEN9899"
+NAME="AEN10341"
 ></A
 ><P
 >    The following functions are available to obtain the current date and/or
@@ -2085,8 +2370,8 @@ ALIGN="LEFT"
 VALIGN="TOP"
 WIDTH="5%"
 ><A
-NAME="FTN.AEN9725"
-HREF="functions-datetime.html#AEN9725"
+NAME="FTN.AEN10163"
+HREF="functions-datetime.html#AEN10163"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN

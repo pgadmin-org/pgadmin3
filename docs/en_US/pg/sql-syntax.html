@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql.html#AEN993"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="ddl.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-expressions.html"
 ACCESSKEY="N"
@@ -113,7 +125,7 @@ HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
 ></DT
 ><DT
 >4.1.4. <A
-HREF="sql-syntax.html#AEN1211"
+HREF="sql-syntax.html#AEN1286"
 >Special Characters</A
 ></DT
 ><DT
@@ -137,22 +149,22 @@ HREF="sql-expressions.html"
 ><DL
 ><DT
 >4.2.1. <A
-HREF="sql-expressions.html#AEN1439"
+HREF="sql-expressions.html#AEN1524"
 >Column References</A
 ></DT
 ><DT
 >4.2.2. <A
-HREF="sql-expressions.html#AEN1462"
+HREF="sql-expressions.html#AEN1549"
 >Positional Parameters</A
 ></DT
 ><DT
 >4.2.3. <A
-HREF="sql-expressions.html#AEN1471"
+HREF="sql-expressions.html#AEN1563"
 >Operator Invocations</A
 ></DT
 ><DT
 >4.2.4. <A
-HREF="sql-expressions.html#AEN1497"
+HREF="sql-expressions.html#AEN1592"
 >Function Calls</A
 ></DT
 ><DT
@@ -185,7 +197,7 @@ HREF="sql-expressions.html#SYNTAX-EXPRESS-EVAL"
 ></DL
 ></DIV
 ><A
-NAME="AEN952"
+NAME="AEN1010"
 ></A
 ><P
 >  This chapter describes the syntax of SQL.  It forms the foundation
@@ -209,6 +221,9 @@ CLASS="SECT1"
 NAME="SQL-SYNTAX-LEXICAL"
 >4.1. Lexical Structure</A
 ></H1
+><A
+NAME="AEN1018"
+></A
 ><P
 >   SQL input consists of a sequence of
    <I
@@ -300,9 +315,7 @@ CLASS="TOKEN"
 > in order to be complete.  The
    precise syntax rules for each command are described in <A
 HREF="reference.html"
->Part VI in <I
->PostgreSQL 7.4beta2 Documentation</I
-></A
+>Part VI</A
 >.
   </P
 ><DIV
@@ -314,10 +327,13 @@ NAME="SQL-SYNTAX-IDENTIFIERS"
 >4.1.1. Identifiers and Key Words</A
 ></H2
 ><A
-NAME="AEN984"
+NAME="AEN1044"
 ></A
 ><A
-NAME="AEN986"
+NAME="AEN1047"
+></A
+><A
+NAME="AEN1050"
 ></A
 ><P
 >    Tokens such as <TT
@@ -394,7 +410,11 @@ CLASS="LITERAL"
     standard.
    </P
 ><P
->    The system uses no more than <TT
+>    <A
+NAME="AEN1071"
+></A
+>
+    The system uses no more than <TT
 CLASS="SYMBOL"
 >NAMEDATALEN</TT
 >-1
@@ -416,7 +436,7 @@ CLASS="FILENAME"
    </P
 ><P
 >    <A
-NAME="AEN1012"
+NAME="AEN1079"
 ></A
 >
     Identifier and key word names are case insensitive.  Therefore
@@ -438,7 +458,7 @@ CLASS="PROGRAMLISTING"
    </P
 ><P
 >    <A
-NAME="AEN1019"
+NAME="AEN1086"
 ></A
 >
     There is a second kind of identifier:  the <I
@@ -510,8 +530,8 @@ CLASS="LITERAL"
 > are different from these three and
     each other.
     <A
-NAME="AEN1037"
-HREF="#FTN.AEN1037"
+NAME="AEN1104"
+HREF="#FTN.AEN1104"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN
@@ -528,7 +548,7 @@ NAME="SQL-SYNTAX-CONSTANTS"
 >4.1.2. Constants</A
 ></H2
 ><A
-NAME="AEN1045"
+NAME="AEN1112"
 ></A
 ><P
 >    There are three kinds of <I
@@ -554,11 +574,11 @@ NAME="SQL-SYNTAX-STRINGS"
 >4.1.2.1. String Constants</A
 ></H3
 ><A
-NAME="AEN1052"
+NAME="AEN1119"
 ></A
 ><P
 >     <A
-NAME="AEN1056"
+NAME="AEN1123"
 ></A
 >
      A string constant in SQL is an arbitrary sequence of characters
@@ -672,7 +692,7 @@ NAME="SQL-SYNTAX-BIT-STRINGS"
 >4.1.2.2. Bit-String Constants</A
 ></H3
 ><A
-NAME="AEN1084"
+NAME="AEN1151"
 ></A
 ><P
 >     Bit-string constants look like string constants with a
@@ -716,11 +736,11 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN1096"
+NAME="AEN1163"
 >4.1.2.3. Numeric Constants</A
 ></H3
 ><A
-NAME="AEN1098"
+NAME="AEN1165"
 ></A
 ><P
 >     Numeric constants are accepted in these general forms:
@@ -807,7 +827,19 @@ CLASS="LITERALLAYOUT"
 >
     </P
 ><P
->     A numeric constant that contains neither a decimal point nor an
+>     <A
+NAME="AEN1191"
+></A
+>
+     <A
+NAME="AEN1193"
+></A
+>
+     <A
+NAME="AEN1195"
+></A
+>
+     A numeric constant that contains neither a decimal point nor an
      exponent is initially presumed to be type <TT
 CLASS="TYPE"
 >integer</TT
@@ -836,19 +868,22 @@ CLASS="TYPE"
     </P
 ><P
 >     The initially assigned data type of a numeric constant is just a
-     starting point for the type resolution algorithms.  In most
-     cases the constant will be automatically coerced to the most
-     appropriate type depending on context.  When necessary, you
-     can force a numeric value to be interpreted as a specific
-     data type by casting it.  For example, you can force a numeric
-     value to be treated as type <TT
+     starting point for the type resolution algorithms.  In most cases
+     the constant will be automatically coerced to the most
+     appropriate type depending on context.  When necessary, you can
+     force a numeric value to be interpreted as a specific data type
+     by casting it.<A
+NAME="AEN1204"
+></A
+>
+     For example, you can force a numeric value to be treated as type
+     <TT
 CLASS="TYPE"
 >real</TT
 > (<TT
 CLASS="TYPE"
 >float4</TT
->)
-     by writing
+>) by writing
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -866,7 +901,7 @@ NAME="SQL-SYNTAX-CONSTANTS-GENERIC"
 >4.1.2.4. Constants of Other Types</A
 ></H3
 ><A
-NAME="AEN1136"
+NAME="AEN1211"
 ></A
 ><P
 >     A constant of an <SPAN
@@ -980,11 +1015,11 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN1166"
+NAME="AEN1241"
 >4.1.2.5. Array constants</A
 ></H3
 ><A
-NAME="AEN1168"
+NAME="AEN1243"
 ></A
 ><P
 >     The general format of an array constant is the following:
@@ -1053,7 +1088,7 @@ NAME="SQL-SYNTAX-OPERATORS"
 >4.1.3. Operators</A
 ></H2
 ><A
-NAME="AEN1187"
+NAME="AEN1262"
 ></A
 ><P
 >    An operator is a sequence of up to <TT
@@ -1142,7 +1177,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1211"
+NAME="AEN1286"
 >4.1.4. Special Characters</A
 ></H2
 ><P
@@ -1264,7 +1299,7 @@ NAME="SQL-SYNTAX-COMMENTS"
 >4.1.5. Comments</A
 ></H2
 ><A
-NAME="AEN1246"
+NAME="AEN1321"
 ></A
 ><P
 >    A comment is an arbitrary sequence of characters beginning with
@@ -1308,7 +1343,7 @@ NAME="SQL-PRECEDENCE"
 >4.1.6. Lexical Precedence</A
 ></H2
 ><A
-NAME="AEN1258"
+NAME="AEN1333"
 ></A
 ><P
 >    <A
@@ -1695,8 +1730,8 @@ ALIGN="LEFT"
 VALIGN="TOP"
 WIDTH="5%"
 ><A
-NAME="FTN.AEN1037"
-HREF="sql-syntax.html#AEN1037"
+NAME="FTN.AEN1104"
+HREF="sql-syntax.html#AEN1104"
 ><SPAN
 CLASS="footnote"
 >[1]</SPAN

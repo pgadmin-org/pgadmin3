@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,32 +37,49 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="xaggr.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 34. Extending <ACRONYM
+>Chapter 33. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="xoper.html"
 ACCESSKEY="N"
@@ -84,10 +96,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XTYPES"
->34.11. User-Defined Types</A
+>33.11. User-Defined Types</A
 ></H1
 ><A
-NAME="AEN30892"
+NAME="AEN29870"
 ></A
 ><P
 >   As described above, there are two kinds of data types in
@@ -110,20 +122,28 @@ CLASS="FILENAME"
   </P
 ><P
 >  <A
-NAME="AEN30902"
+NAME="AEN29880"
 ></A
 >
   <A
-NAME="AEN30904"
+NAME="AEN29882"
 ></A
 >
-  A user-defined type must always have input and output functions.
+  A user-defined type must always have input and output
+  functions.<A
+NAME="AEN29884"
+></A
+><A
+NAME="AEN29887"
+></A
+>
   These functions determine how the type appears in strings (for input
   by the user and output to the user) and how the type is organized in
   memory.  The input function takes a null-terminated character string
-  as its argument and returns the internal (in memory) representation of
-  the type.  The output function takes the internal representation of
-  the type as argument and returns a null-terminated character string.
+  as its argument and returns the internal (in memory) representation
+  of the type.  The output function takes the internal representation
+  of the type as argument and returns a null-terminated character
+  string.
  </P
 ><P
 >  Suppose we want to define a type <TT
@@ -255,7 +275,7 @@ CLASS="PRODUCTNAME"
 > automatically provides support
   for arrays of that
   type.<A
-NAME="AEN30925"
+NAME="AEN29909"
 ></A
 > For historical reasons, the array type
   has the same name as the base type with the underscore character
@@ -268,7 +288,7 @@ CLASS="LITERAL"
 >  If the values of your data type might exceed a few hundred bytes in
   size (in internal form), you should mark them
   TOAST-able.<A
-NAME="AEN30930"
+NAME="AEN29914"
 ></A
 > To do this, the internal
   representation must follow the standard layout for variable-length

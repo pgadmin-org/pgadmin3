@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,22 +37,31 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="libpq-notify.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 27. <SPAN
@@ -67,7 +71,15 @@ CLASS="APPLICATION"
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="libpq-control.html"
 ACCESSKEY="N"
@@ -90,7 +102,7 @@ CLASS="COMMAND"
 > Command</A
 ></H1
 ><A
-NAME="AEN20618"
+NAME="AEN21467"
 ></A
 ><P
 > The <TT
@@ -217,6 +229,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQnfields</CODE
+><A
+NAME="AEN21504"
+></A
 ></DT
 ><DD
 ><P
@@ -226,38 +241,44 @@ CLASS="FUNCTION"
 ><CODE
 CLASS="FUNCTION"
 >PQbinaryTuples</CODE
+><A
+NAME="AEN21512"
+></A
 ></DT
 ><DD
 ><P
 >                0 indicates the overall copy format is textual (rows
-		separated by newlines, columns separated by separator
-		characters, etc).
-		1 indicates the overall copy format is binary.
-		See <A
+                separated by newlines, columns separated by separator
+                characters, etc).
+                1 indicates the overall copy format is binary.
+                See <A
 HREF="sql-copy.html"
 ><I
 >COPY</I
 ></A
 >
-		for more information.</P
+                for more information.</P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQfformat</CODE
+><A
+NAME="AEN21521"
+></A
 ></DT
 ><DD
 ><P
 >          Returns the format code (0 for text, 1 for binary) associated
-	  with each column of the copy operation.  The per-column format
-	  codes will always be zero when the overall copy format is textual,
-	  but the binary format can support both text and binary columns.
-	  (However, as of the current implementation of <TT
+          with each column of the copy operation.  The per-column format
+          codes will always be zero when the overall copy format is textual,
+          but the binary format can support both text and binary columns.
+          (However, as of the current implementation of <TT
 CLASS="COMMAND"
 >COPY</TT
 >,
-	  only binary columns appear in a binary copy; so the per-column
-	  formats always match the overall format at present.)</P
+          only binary columns appear in a binary copy; so the per-column
+          formats always match the overall format at present.)</P
 ></DD
 ></DL
 ></DIV
@@ -303,6 +324,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQputCopyData</CODE
+><A
+NAME="AEN21539"
+></A
 ></DT
 ><DD
 ><P
@@ -351,6 +375,9 @@ HREF="sql-copy.html"
 ><CODE
 CLASS="FUNCTION"
 >PQputCopyEnd</CODE
+><A
+NAME="AEN21555"
+></A
 ></DT
 ><DD
 ><P
@@ -447,6 +474,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQgetCopyData</CODE
+><A
+NAME="AEN21584"
+></A
 ></DT
 ><DD
 ><P
@@ -564,6 +594,9 @@ CLASS="VARIABLELIST"
 ><CODE
 CLASS="FUNCTION"
 >PQgetline</CODE
+><A
+NAME="AEN21616"
+></A
 ></DT
 ><DD
 ><P
@@ -622,6 +655,9 @@ for a terminator line).</P
 ><CODE
 CLASS="FUNCTION"
 >PQgetlineAsync</CODE
+><A
+NAME="AEN21634"
+></A
 ></DT
 ><DD
 ><P
@@ -706,6 +742,9 @@ than the room actually available.)</P
 ><CODE
 CLASS="FUNCTION"
 >PQputline</CODE
+><A
+NAME="AEN21658"
+></A
 ></DT
 ><DD
 ><P
@@ -767,6 +806,9 @@ having sent the actual data.</P
 ><CODE
 CLASS="FUNCTION"
 >PQputnbytes</CODE
+><A
+NAME="AEN21677"
+></A
 ></DT
 ><DD
 ><P
@@ -793,6 +835,9 @@ specified directly.  Use this procedure when sending binary data.</P
 ><CODE
 CLASS="FUNCTION"
 >PQendcopy</CODE
+><A
+NAME="AEN21688"
+></A
 ></DT
 ><DD
 ><P

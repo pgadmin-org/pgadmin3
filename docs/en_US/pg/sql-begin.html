@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-analyze.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-analyze.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-checkpoint.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-checkpoint.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-BEGIN"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37321"
+NAME="AEN35867"
 ></A
 ><H2
 >Name</H2
 >BEGIN&nbsp;--&nbsp;start a transaction block</DIV
+><A
+NAME="AEN35870"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37324"
+NAME="AEN35872"
 ></A
 ><H2
 >Synopsis</H2
@@ -102,23 +117,12 @@ CLASS="SYNOPSIS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37326"
+NAME="AEN35874"
 ></A
 ><H2
 >Description</H2
 ><P
->   By default, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> executes
-   transactions in <SPAN
-CLASS="QUOTE"
->"autocommit"</SPAN
-> mode, that is, each
-   statement is executed in its own transaction and a commit is
-   implicitly performed at the end of the statement (if execution was
-   successful, otherwise a rollback is done).
-   <TT
+>   <TT
 CLASS="COMMAND"
 >BEGIN</TT
 > initiates a transaction block, that is,
@@ -136,19 +140,36 @@ HREF="sql-rollback.html"
 ><I
 >ROLLBACK</I
 ></A
->.  Statements
-   are executed more quickly in a transaction block, because
+> is given.
+   By default (without <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>),
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> executes
+   transactions in <SPAN
+CLASS="QUOTE"
+>"autocommit"</SPAN
+> mode, that is, each
+   statement is executed in its own transaction and a commit is
+   implicitly performed at the end of the statement (if execution was
+   successful, otherwise a rollback is done).
+  </P
+><P
+>   Statements are executed more quickly in a transaction block, because
    transaction start/commit requires significant CPU and disk
    activity. Execution of multiple statements inside a transaction is
-   also useful to ensure consistency when changing several related
-   tables: other sessions will be unable to see the intermediate states
+   also useful to ensure consistency when making several related changes:
+   other sessions will be unable to see the intermediate states
    wherein not all the related updates have been done.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37335"
+NAME="AEN35885"
 ></A
 ><H2
 >Parameters</H2
@@ -176,43 +197,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37345"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->BEGIN</SAMP
-></DT
-><DD
-><P
->      This signifies that a new transaction has been started.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->WARNING:  BEGIN: already a transaction in progress</SAMP
-></DT
-><DD
-><P
->      This indicates that a transaction was already in progress.  The
-      current transaction is not affected.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37358"
+NAME="AEN35895"
 ></A
 ><H2
 >Notes</H2
@@ -241,13 +226,20 @@ HREF="sql-rollback.html"
 >ROLLBACK</I
 ></A
 >
-   to terminate a transaction.
+   to terminate a transaction block.
+  </P
+><P
+>   Issuing <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> when already inside a transaction block will
+   provoke a warning message.  The state of the transaction is not affected.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37366"
+NAME="AEN35905"
 ></A
 ><H2
 >Examples</H2
@@ -263,7 +255,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37370"
+NAME="AEN35909"
 ></A
 ><H2
 >Compatibility</H2
@@ -301,6 +293,24 @@ CLASS="LITERAL"
    different purpose in embedded SQL. You are advised to be careful
    about the transaction semantics when porting database applications.
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35920"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+>, <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

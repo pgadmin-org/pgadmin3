@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-update.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-update.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="reference-client.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-VACUUM"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44965"
+NAME="AEN43014"
 ></A
 ><H2
 >Name</H2
 >VACUUM&nbsp;--&nbsp;garbage-collect and optionally analyze a database</DIV
+><A
+NAME="AEN43017"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44968"
+NAME="AEN43019"
 ></A
 ><H2
 >Synopsis</H2
@@ -112,7 +127,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44973"
+NAME="AEN43024"
 ></A
 ><H2
 >Description</H2
@@ -224,7 +239,7 @@ HREF="maintenance.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44999"
+NAME="AEN43050"
 ></A
 ><H2
 >Parameters</H2
@@ -308,78 +323,26 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45034"
+NAME="AEN43085"
 ></A
 ><H2
->Diagnostics</H2
+>Outputs</H2
 ><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->VACUUM</SAMP
-></DT
-><DD
-><P
->      The command is complete.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->INFO:  --Relation <VAR
-CLASS="REPLACEABLE"
->table</VAR
->--</SAMP
-></DT
-><DD
-><P
->      The report header for <VAR
-CLASS="REPLACEABLE"
->table</VAR
->.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->INFO:  Pages 98: Changed 25, Reapped 74, Empty 0, New 0;
-         Tup 1000: Vac 3000, Crash 0, UnUsed 0, MinLen 188, MaxLen 188;
-         Re-using: Free/Avail. Space 586952/586952; EndEmpty/Avail. Pages 0/74.
-         Elapsed 0/0 sec.</SAMP
-></DT
-><DD
-><P
->      The analysis for <VAR
-CLASS="REPLACEABLE"
->table</VAR
-> itself.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->INFO:  Index <VAR
-CLASS="REPLACEABLE"
->index</VAR
->: Pages 28;
-         Tuples 1000: Deleted 3000. Elapsed 0/0 sec.</SAMP
-></DT
-><DD
-><P
->      The analysis for an index on the target table.
-     </P
-></DD
-></DL
-></DIV
+>    When <VAR
+CLASS="LITERAL"
+>VERBOSE</VAR
+> is specified, <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> emits
+    progress messages to indicate which table is currently being
+    processed.  Various statistics about the tables are printed as well.
+   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45061"
+NAME="AEN43090"
 ></A
 ><H2
 >Notes</H2
@@ -420,7 +383,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45070"
+NAME="AEN43099"
 ></A
 ><H2
 >Examples</H2
@@ -428,26 +391,38 @@ NAME="AEN45070"
 >   The following is an example from running <TT
 CLASS="COMMAND"
 >VACUUM</TT
-> on a table
-   in the regression database:
+> on a
+   table in the regression database:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->=&#62; VACUUM VERBOSE ANALYZE onek;
-INFO:  --Relation onek--
-INFO:  Index onek_unique1: Pages 14; Tuples 1000: Deleted 3000.
-        CPU 0.00s/0.11u sec elapsed 0.12 sec.
-INFO:  Index onek_unique2: Pages 16; Tuples 1000: Deleted 3000.
-        CPU 0.00s/0.10u sec elapsed 0.10 sec.
-INFO:  Index onek_hundred: Pages 13; Tuples 1000: Deleted 3000.
-        CPU 0.00s/0.10u sec elapsed 0.10 sec.
-INFO:  Index onek_stringu1: Pages 31; Tuples 1000: Deleted 3000.
-        CPU 0.01s/0.09u sec elapsed 0.10 sec.
-INFO:  Removed 3000 tuples in 70 pages.
-        CPU 0.02s/0.04u sec elapsed 0.07 sec.
-INFO:  Pages 94: Changed 0, Empty 0; Tup 1000: Vac 3000, Keep 0, UnUsed 0.
-        Total CPU 0.05s/0.45u sec elapsed 0.59 sec.
-INFO:  Analyzing onek
+>regression=# VACUUM VERBOSE ANALYZE onek;
+INFO:  vacuuming "public.onek"
+INFO:  index "onek_unique1" now contains 1000 tuples in 14 pages
+DETAIL:  3000 index tuples were removed.
+0 index pages have been deleted, 0 are currently reusable.
+CPU 0.01s/0.08u sec elapsed 0.18 sec.
+INFO:  index "onek_unique2" now contains 1000 tuples in 16 pages
+DETAIL:  3000 index tuples were removed.
+0 index pages have been deleted, 0 are currently reusable.
+CPU 0.00s/0.07u sec elapsed 0.23 sec.
+INFO:  index "onek_hundred" now contains 1000 tuples in 13 pages
+DETAIL:  3000 index tuples were removed.
+0 index pages have been deleted, 0 are currently reusable.
+CPU 0.01s/0.08u sec elapsed 0.17 sec.
+INFO:  index "onek_stringu1" now contains 1000 tuples in 48 pages
+DETAIL:  3000 index tuples were removed.
+0 index pages have been deleted, 0 are currently reusable.
+CPU 0.01s/0.09u sec elapsed 0.59 sec.
+INFO:  "onek": removed 3000 tuples in 108 pages
+DETAIL:  CPU 0.01s/0.06u sec elapsed 0.07 sec.
+INFO:  "onek": found 3000 removable, 1000 nonremovable tuples in 143 pages
+DETAIL:  0 dead tuples cannot be removed yet.
+There were 0 unused item pointers.
+0 pages are entirely empty.
+CPU 0.07s/0.39u sec elapsed 1.56 sec.
+INFO:  analyzing "public.onek"
+INFO:  "onek": 36 pages, 1000 rows sampled, 1000 estimated total rows
 VACUUM</PRE
 ><P>
   </P
@@ -455,7 +430,7 @@ VACUUM</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45075"
+NAME="AEN43104"
 ></A
 ><H2
 >Compatibility</H2
@@ -469,7 +444,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45079"
+NAME="AEN43108"
 ></A
 ><H2
 >See Also</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-deallocate.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-deallocate.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-delete.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-delete.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-DECLARE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN40946"
+NAME="AEN39271"
 ></A
 ><H2
 >Name</H2
 >DECLARE&nbsp;--&nbsp;define a cursor</DIV
+><A
+NAME="AEN39274"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN40949"
+NAME="AEN39276"
 ></A
 ><H2
 >Synopsis</H2
@@ -113,7 +128,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40954"
+NAME="AEN39281"
 ></A
 ><H2
 >Description</H2
@@ -142,9 +157,10 @@ CLASS="COMMAND"
    format.  Once the information comes back in text form, the client
    application may need to convert it to a binary format to manipulate
    it.  In addition, data in the text format is often larger in size
-   than in the binary format.  Binary cursors return the data in the
-   native binary representation.  Nevertheless, if you intend to
-   display the data as text anyway, retrieving it in text form will
+   than in the binary format.  Binary cursors return the data in a
+   binary representation that may be more easily manipulated.
+   Nevertheless, if you intend to display the data as text anyway,
+   retrieving it in text form will
    save you some effort on the client side.
   </P
 ><P
@@ -154,7 +170,8 @@ CLASS="LITERAL"
 >1</VAR
 > with a default cursor
    whereas with a binary cursor you would get
-   a 4-byte value containing the internal representation of the value.
+   a 4-byte field containing the internal representation of the value
+   (in big-endian byte order).
   </P
 ><P
 >   Binary cursors should be used carefully.  Many applications,
@@ -165,36 +182,33 @@ CLASS="APPLICATION"
    handle binary cursors and expect data to come back in the text
    format.
   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
 ><P
->   The string representation is architecture-neutral whereas binary
-   representation can differ between different machine architectures.
-   <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
-><SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not resolve
-   byte ordering or representation issues for binary
-   cursors.</I
-></SPAN
->  Therefore, if your client machine and server
-   machine use different representations (e.g.,
-   <SPAN
+><B
+>Note: </B
+>    When the client application uses the <SPAN
 CLASS="QUOTE"
->"big-endian"</SPAN
-> versus <SPAN
-CLASS="QUOTE"
->"little-endian"</SPAN
->), you
-   will probably not want your data returned in binary format.
-  </P
+>"extended query"</SPAN
+> protocol
+    to issue a <TT
+CLASS="COMMAND"
+>FETCH</TT
+> command, the Bind protocol message
+    specifies whether data is to be retrieved in text or binary format.
+    This choice overrides the way that the cursor is defined.  The concept
+    of a binary cursor as such is thus obsolete when using extended query
+    protocol --- any cursor can be treated as either text or binary.
+   </P
+></BLOCKQUOTE
+></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40970"
+NAME="AEN39296"
 ></A
 ><H2
 >Parameters</H2
@@ -210,11 +224,7 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->      The name of the cursor to be used in subsequent
-      <TT
-CLASS="COMMAND"
->FETCH</TT
-> operations.
+>      The name of the cursor to be created.
      </P
 ></DD
 ><DT
@@ -236,9 +246,12 @@ CLASS="LITERAL"
 ><P
 >      Indicates that data retrieved from the cursor should be
       unaffected by updates to the tables underlying the cursor while
-      the cursor exists.  In PostgreSQL, all cursors are insensitive;
-      this key word currently has no effect and is present for
-      compatibility with the SQL standard.
+      the cursor exists.  In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>,
+      all cursors are insensitive; this key word currently has no
+      effect and is present for compatibility with the SQL standard.
      </P
 ></DD
 ><DT
@@ -396,70 +409,31 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41041"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->DECLARE CURSOR</SAMP
-></DT
-><DD
-><P
->      The message returned if the cursor was successfully defined.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  cursor "<VAR
-CLASS="REPLACEABLE"
->cursorname</VAR
->" already exists</SAMP
-></DT
-><DD
-><P
->      This error occurs if a cursor with the same name already exists.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->ERROR:  DECLARE CURSOR may only be used in begin/end transaction blocks</SAMP
-></DT
-><DD
-><P
->      This error occurs if the cursor is not declared within a
-      transaction block, and <VAR
-CLASS="LITERAL"
->WITH HOLD</VAR
-> is not
-      specified.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41061"
+NAME="AEN39367"
 ></A
 ><H2
 >Notes</H2
 ><P
->    If <VAR
+>    Unless <VAR
 CLASS="LITERAL"
 >WITH HOLD</VAR
-> is not specified, the cursor
+> is specified, the cursor
     created by this command can only be used within the current
-    transaction. Use
+    transaction.  Thus, <TT
+CLASS="COMMAND"
+>DECLARE</TT
+> without <VAR
+CLASS="LITERAL"
+>WITH
+    HOLD</VAR
+> is useless outside a transaction block: the cursor would
+    survive only to the completion of the statement.  Therefore
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> reports an error if this
+    command is used outside a transaction block.
+    Use
     <A
 HREF="sql-begin.html"
 ><I
@@ -564,7 +538,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41086"
+NAME="AEN39395"
 ></A
 ><H2
 >Examples</H2
@@ -586,7 +560,7 @@ HREF="sql-fetch.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41091"
+NAME="AEN39400"
 ></A
 ><H2
 >Compatibility</H2

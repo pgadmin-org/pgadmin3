@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,22 +37,31 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="ecpg-descriptors.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 30. <SPAN
@@ -70,7 +74,15 @@ CLASS="ACRONYM"
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="ecpg-include.html"
 ACCESSKEY="N"
@@ -99,7 +111,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22794"
+NAME="AEN23716"
 >30.9.1. Setting Callbacks</A
 ></H2
 ><P
@@ -365,7 +377,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22875"
+NAME="AEN23797"
 >30.9.2. sqlca</A
 ></H2
 ><P
@@ -564,7 +576,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22920"
+NAME="AEN23842"
 >30.9.3. <VAR
 CLASS="LITERAL"
 >SQLSTATE</VAR
@@ -616,13 +628,17 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >SQLSTATE</VAR
 > codes are for the
-    most part defined in the SQL standard.  The PostgreSQL server
-    natively supports <VAR
+    most part defined in the SQL standard.  The
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server natively supports
+    <VAR
 CLASS="LITERAL"
 >SQLSTATE</VAR
-> error codes;
-    therefore a high degree of consistency can be achieved by using
-    this error code scheme throughout all applications.
+> error codes; therefore a high degree
+    of consistency can be achieved by using this error code scheme
+    throughout all applications.
    </P
 ><P
 >    <VAR
@@ -636,14 +652,17 @@ CLASS="LITERAL"
     affected zero rows, and no specific negative values.  Therefore,
     this scheme can only achieve poor portability and does not have a
     hierarchical code assignment.  Historically, the embedded SQL
-    processor for PostgreSQL has assigned some specific
-    <VAR
+    processor for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has assigned
+    some specific <VAR
 CLASS="LITERAL"
 >SQLCODE</VAR
-> values for its use, which are listed
-    below with their numeric value and their symbolic name.  Remember
-    that these are not portable to other SQL implementations.  To
-    simplify the porting of applications to the
+> values for its use, which
+    are listed below with their numeric value and their symbolic name.
+    Remember that these are not portable to other SQL implementations.
+    To simplify the porting of applications to the
     <VAR
 CLASS="LITERAL"
 >SQLSTATE</VAR
@@ -825,9 +844,13 @@ CLASS="SYMBOL"
 >)</DT
 ><DD
 ><P
->       The statement sent to the PostgreSQL server was empty.  (This
-       cannot normally happen in an embedded SQL program, so it may
-       point to an internal error.)  (SQLSTATE YE002)
+>       The statement sent to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+       server was empty.  (This cannot normally happen in an embedded
+       SQL program, so it may point to an internal error.)  (SQLSTATE
+       YE002)
       </P
 ></DD
 ><DT

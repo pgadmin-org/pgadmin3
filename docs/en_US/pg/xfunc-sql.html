@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,32 +37,49 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="xfunc.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 34. Extending <ACRONYM
+>Chapter 33. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="xfunc-pl.html"
 ACCESSKEY="N"
@@ -84,13 +96,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XFUNC-SQL"
->34.4. Query Language (<ACRONYM
+>33.4. Query Language (<ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 >) Functions</A
 ></H1
 ><A
-NAME="AEN29848"
+NAME="AEN28786"
 ></A
 ><P
 >    SQL functions execute an arbitrary list of SQL statements, returning
@@ -110,20 +122,23 @@ CLASS="LITERAL"
    </P
 ><P
 >    <A
-NAME="AEN29855"
+NAME="AEN28794"
 ></A
->
-    Alternatively, an SQL function may be declared to return a set,
-    by specifying the function's return type
-    as <VAR
+> Alternatively,
+    an SQL function may be declared to return a set, by specifying the
+    function's return type as <VAR
 CLASS="LITERAL"
->SETOF <VAR
+>SETOF
+    <VAR
 CLASS="REPLACEABLE"
 >sometype</VAR
 ></VAR
->.  In this case
-    all rows of the last query's result are returned.  Further details
-    appear below.
+>.<A
+NAME="AEN28799"
+></A
+>
+    In this case all rows of the last query's result are returned.
+    Further details appear below.
    </P
 ><P
 >    The body of an SQL function should be a list of one or more SQL
@@ -175,8 +190,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29871"
->34.4.1. <ACRONYM
+NAME="AEN28812"
+>33.4.1. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions on Base Types</A
@@ -345,8 +360,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29902"
->34.4.2. <ACRONYM
+NAME="AEN28843"
+>33.4.2. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions on Composite Types</A
@@ -405,7 +420,15 @@ CLASS="LITERAL"
 CLASS="COMMAND"
 >SELECT</TT
 > command uses a table name to denote
-     the entire current row of that table as a composite value.
+     the entire current row of that table as a composite value.  The table
+     row can alternatively be referenced like this:
+</P><PRE
+CLASS="SCREEN"
+>SELECT name, double_salary(emp.*) AS dream
+    FROM emp
+    WHERE emp.cubicle ~= point '(2,1)';</PRE
+><P>
+     which emphasizes its row nature.
     </P
 ><P
 >     It is also possible to build a function that returns a composite type.
@@ -546,8 +569,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29936"
->34.4.3. <ACRONYM
+NAME="AEN28878"
+>33.4.3. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions as Table Sources</A
@@ -601,8 +624,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29945"
->34.4.4. <ACRONYM
+NAME="AEN28887"
+>33.4.4. <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions Returning Sets</A
@@ -721,8 +744,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29963"
->34.4.5. Polymorphic <ACRONYM
+NAME="AEN28905"
+>33.4.5. Polymorphic <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions</A
@@ -744,8 +767,8 @@ CLASS="TYPE"
 >anyarray</TT
 >.
      See <A
-HREF="type-system.html#TYPES-POLYMORPHIC"
->Section 34.2.1</A
+HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
+>Section 33.2.1</A
 > for a more detailed explanation
      of polymorphic functions. Here is a polymorphic function
      <CODE

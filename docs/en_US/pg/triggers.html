@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="rules-triggers.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="spi.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="trigger-manager.html"
 ACCESSKEY="N"
@@ -81,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="TRIGGERS"
 ></A
->Chapter 37. Triggers</H1
+>Chapter 36. Triggers</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,27 +102,30 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->37.1. <A
+>36.1. <A
 HREF="triggers.html#TRIGGER-DEFINITION"
 >Trigger Definition</A
 ></DT
 ><DT
->37.2. <A
+>36.2. <A
 HREF="trigger-manager.html"
 >Interaction with the Trigger Manager</A
 ></DT
 ><DT
->37.3. <A
+>36.3. <A
 HREF="trigger-datachanges.html"
 >Visibility of Data Changes</A
 ></DT
 ><DT
->37.4. <A
+>36.4. <A
 HREF="trigger-example.html"
 >A Complete Example</A
 ></DT
 ></DL
 ></DIV
+><A
+NAME="AEN31172"
+></A
 ><P
 >   This chapter describes how to write trigger functions.  In
    particular, it describes the C-language interface for trigger
@@ -141,7 +156,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRIGGER-DEFINITION"
->37.1. Trigger Definition</A
+>36.1. Trigger Definition</A
 ></H1
 ><P
 >    If a trigger event occurs, the trigger manager is called by the
@@ -253,24 +268,28 @@ CLASS="COMMAND"
    </P
 ><P
 >    When a trigger is being defined, arguments can be specified for
-    it.  The purpose of including arguments in the trigger definition
-    is to allow different triggers with similar requirements to call
-    the same function.  As an example, there could be a generalized
-    trigger function that takes as its arguments two column names and
-    puts the current user in one and the current time stamp in the
-    other.  Properly written, this trigger function would be
-    independent of the specific table it is triggering on.  So the
-    same function could be used for <TT
-CLASS="COMMAND"
->INSERT</TT
-> events
-    on any table with suitable columns, to automatically track creation
-    of records in a transaction table for example. It could also be
-    used to track last-update events if defined as an
+    it.<A
+NAME="AEN31206"
+></A
+> The purpose of including arguments in the
+    trigger definition is to allow different triggers with similar
+    requirements to call the same function.  As an example, there
+    could be a generalized trigger function that takes as its
+    arguments two column names and puts the current user in one and
+    the current time stamp in the other.  Properly written, this
+    trigger function would be independent of the specific table it is
+    triggering on.  So the same function could be used for
     <TT
 CLASS="COMMAND"
+>INSERT</TT
+> events on any table with suitable
+    columns, to automatically track creation of records in a
+    transaction table for example. It could also be used to track
+    last-update events if defined as an <TT
+CLASS="COMMAND"
 >UPDATE</TT
-> trigger.
+>
+    trigger.
    </P
 ></DIV
 ></DIV

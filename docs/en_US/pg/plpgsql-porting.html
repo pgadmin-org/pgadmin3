@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,25 +37,34 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="plpgsql-trigger.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 40. <SPAN
+>Chapter 39. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -70,7 +74,15 @@ CLASS="ACRONYM"
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="pltcl.html"
 ACCESSKEY="N"
@@ -87,16 +99,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-PORTING"
->40.11. Porting from <SPAN
+>39.11. Porting from <SPAN
 CLASS="PRODUCTNAME"
 >Oracle</SPAN
 > PL/SQL</A
 ></H1
 ><A
-NAME="AEN35219"
+NAME="AEN33848"
 ></A
 ><A
-NAME="AEN35221"
+NAME="AEN33851"
 ></A
 ><P
 >   This section explains differences between
@@ -147,11 +159,11 @@ CLASS="PRODUCTNAME"
 ></LI
 ><LI
 ><P
->       You can overload functions in <SPAN
+>       You can overload function names in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->. This is often used to work 
-       around the lack of default parameters.
+>. This is
+       often used to work around the lack of default parameters.
       </P
 ></LI
 ><LI
@@ -165,7 +177,7 @@ CLASS="LITERAL"
 >FOR</VAR
 > statement.  (See <A
 HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX2"
->Example 40-3</A
+>Example 39-3</A
 >.)
       </P
 ></LI
@@ -177,7 +189,7 @@ CLASS="PRODUCTNAME"
 > you need to escape single
        quotes in the function body. See <A
 HREF="plpgsql-development-tips.html#PLPGSQL-QUOTE-TIPS"
->Section 40.2.1</A
+>Section 39.2.1</A
 >.
       </P
 ></LI
@@ -195,13 +207,13 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN35250"
->40.11.1. Porting Examples</A
+NAME="AEN33881"
+>39.11.1. Porting Examples</A
 ></H2
 ><P
 >    <A
 HREF="plpgsql-porting.html#PGSQL-PORTING-EX1"
->Example 40-2</A
+>Example 39-2</A
 > shows how to port a simple
     function from <SPAN
 CLASS="APPLICATION"
@@ -218,7 +230,7 @@ NAME="PGSQL-PORTING-EX1"
 ></A
 ><P
 ><B
->Example 40-2. Porting a Simple Function from <SPAN
+>Example 39-2. Porting a Simple Function from <SPAN
 CLASS="APPLICATION"
 >PL/SQL</SPAN
 > to <SPAN
@@ -309,7 +321,11 @@ CLASS="LITERAL"
         <VAR
 CLASS="LITERAL"
 >RETURNS</VAR
-> in PostgreSQL.
+> in
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
        </P
 ></LI
 ><LI
@@ -364,7 +380,7 @@ END;
 ><P
 >    <A
 HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX2"
->Example 40-3</A
+>Example 39-3</A
 > shows how to port a
     function that creates another function and how to handle to
     ensuing quoting problems.
@@ -376,7 +392,7 @@ NAME="PLPGSQL-PORTING-EX2"
 ></A
 ><P
 ><B
->Example 40-3. Porting a Function that Creates Another Function from <SPAN
+>Example 39-3. Porting a Function that Creates Another Function from <SPAN
 CLASS="APPLICATION"
 >PL/SQL</SPAN
 > to <SPAN
@@ -471,7 +487,7 @@ END;
 ><P
 >    <A
 HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX3"
->Example 40-4</A
+>Example 39-4</A
 > shows how to port a function
     with <VAR
 CLASS="LITERAL"
@@ -485,9 +501,13 @@ CLASS="PRODUCTNAME"
 CLASS="FUNCTION"
 >instr</CODE
 > function, but you can work around it
-    using a combination of other functions.  In <A
+    using a combination of other
+    functions.<A
+NAME="AEN33945"
+></A
+> In <A
 HREF="plpgsql-porting.html#PLPGSQL-PORTING-APPENDIX"
->Section 40.11.3</A
+>Section 39.11.3</A
 > there is a
     <SPAN
 CLASS="APPLICATION"
@@ -506,7 +526,7 @@ NAME="PLPGSQL-PORTING-EX3"
 ></A
 ><P
 ><B
->Example 40-4. Porting a Procedure With String Manipulation and
+>Example 39-4. Porting a Procedure With String Manipulation and
     <VAR
 CLASS="LITERAL"
 >OUT</VAR
@@ -621,7 +641,7 @@ END;
 ><P
 >    <A
 HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX4"
->Example 40-5</A
+>Example 39-5</A
 > shows how to port a procedure
     that uses numerous features that are specific to Oracle.
    </P
@@ -632,7 +652,7 @@ NAME="PLPGSQL-PORTING-EX4"
 ></A
 ><P
 ><B
->Example 40-5. Porting a Procedure from <SPAN
+>Example 39-5. Porting a Procedure from <SPAN
 CLASS="APPLICATION"
 >PL/SQL</SPAN
 > to <SPAN
@@ -849,22 +869,26 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-PORTING-OTHER"
->40.11.2. Other Things to Watch For</A
+>39.11.2. Other Things to Watch For</A
 ></H2
 ><P
 >    This section explains a few other things to watch for when porting
     Oracle <SPAN
 CLASS="APPLICATION"
 >PL/SQL</SPAN
-> functions to PostgreSQL.
+> functions to
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
    </P
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN35373"
->40.11.2.1. <TT
+NAME="AEN34008"
+>39.11.2.1. <TT
 CLASS="COMMAND"
 >EXECUTE</TT
 ></A
@@ -891,7 +915,7 @@ CLASS="FUNCTION"
 >quote_string(text)</CODE
 > as described in <A
 HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN"
->Section 40.6.4</A
+>Section 39.6.4</A
 >.  Constructs of the
      type <VAR
 CLASS="LITERAL"
@@ -906,7 +930,7 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="PLPGSQL-PORTING-OPTIMIZATION"
->40.11.2.2. Optimizing <SPAN
+>39.11.2.2. Optimizing <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > Functions</A
@@ -951,7 +975,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-PORTING-APPENDIX"
->40.11.3. Appendix</A
+>39.11.3. Appendix</A
 ></H2
 ><P
 >    This section contains the code for an Oracle-compatible

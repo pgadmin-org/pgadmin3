@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="app-createlang.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-createlang.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="app-dropdb.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="app-dropdb.html"
 ACCESSKEY="N"
@@ -86,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45632"
+NAME="AEN43638"
 ></A
 ><H2
 >Name</H2
@@ -94,10 +106,13 @@ NAME="AEN45632"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user account</DIV
+><A
+NAME="AEN43642"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45636"
+NAME="AEN43644"
 ></A
 ><H2
 >Synopsis</H2
@@ -116,7 +131,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45643"
+NAME="AEN43651"
 ></A
 ><H2
 >Description</H2
@@ -168,32 +183,15 @@ HREF="sql-createuser.html"
 ><I
 >CREATE USER</I
 ></A
->.  The database server must be 
-   running on the targeted host. There is nothing special
-   about creating users via this or other methods. Also, any
-   default settings and environment variables used by the
-   <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> front-end library will apply.
-  </P
-><P
->   Passwords can only be added later or changed using the
-   <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command <A
-HREF="sql-alteruser.html"
-><I
->ALTER USER</I
-></A
 >.
+   There is no effective difference between creating users via
+   this utility and via other methods for accessing the server.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45662"
+NAME="AEN43666"
 ></A
 ><H2
 >Options</H2
@@ -258,6 +256,7 @@ CLASS="OPTION"
 ><P
 >	The new user is not allowed to create other users (i.e.,
 	the new user is a regular user, not a superuser).
+	This is the default.
        </P
 ></DD
 ><DT
@@ -284,6 +283,7 @@ CLASS="OPTION"
 ><DD
 ><P
 >	The new user is not allowed to create databases.
+	This is the default.
        </P
 ></DD
 ><DT
@@ -314,7 +314,7 @@ CLASS="OPTION"
 ><DD
 ><P
 >	Encrypts the user's password stored in the database. If not
-	specified, the default is used.
+	specified, the default password behavior is used.
        </P
 ></DD
 ><DT
@@ -348,7 +348,7 @@ CLASS="OPTION"
 ><DD
 ><P
 >	Does not encrypt the user's password stored in the database. If
-	not specified, the default is used.
+	not specified, the default password behavior is used.
        </P
 ></DD
 ><DT
@@ -486,7 +486,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45787"
+NAME="AEN43791"
 ></A
 ><H2
 >Environment</H2
@@ -517,55 +517,37 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45799"
+NAME="AEN43803"
 ></A
 ><H2
 >Diagnostics</H2
 ><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE USER</SAMP
-></DT
-><DD
-><P
->        The user was successfully created.
-       </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->createuser: creation of user "<VAR
-CLASS="REPLACEABLE"
->username</VAR
->" failed</SAMP
-></DT
-><DD
-><P
->        Something went wrong. The user was not created.
-       </P
-></DD
-></DL
-></DIV
-><P
->    If there is an error condition, the backend error message will be displayed.
-    See <A
+>   In case of difficulty, see <A
 HREF="sql-createuser.html"
 ><I
 >CREATE USER</I
 ></A
->
-    for possibilities.
-   </P
+> and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for
+   discussions of potential problems and error messages.
+   The database server must be running at the
+   targeted host.  Also, any default connection settings and environment
+   variables used by the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end
+   library will apply.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45815"
+NAME="AEN43809"
 ></A
 ><H2
 >Examples</H2
@@ -637,7 +619,7 @@ CLASS="COMPUTEROUTPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45835"
+NAME="AEN43829"
 ></A
 ><H2
 >See Also</H2

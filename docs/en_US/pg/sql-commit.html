@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-comment.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-comment.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="sql-copy.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="sql-copy.html"
 ACCESSKEY="N"
@@ -83,15 +95,18 @@ NAME="SQL-COMMIT"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37660"
+NAME="AEN36183"
 ></A
 ><H2
 >Name</H2
 >COMMIT&nbsp;--&nbsp;commit the current transaction</DIV
+><A
+NAME="AEN36186"
+></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37663"
+NAME="AEN36188"
 ></A
 ><H2
 >Synopsis</H2
@@ -102,7 +117,7 @@ CLASS="SYNOPSIS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37665"
+NAME="AEN36190"
 ></A
 ><H2
 >Description</H2
@@ -118,7 +133,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37669"
+NAME="AEN36194"
 ></A
 ><H2
 >Parameters</H2
@@ -146,42 +161,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37679"
-></A
-><H2
->Diagnostics</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->COMMIT</SAMP
-></DT
-><DD
-><P
->      Message returned if the transaction was successfully committed.
-     </P
-></DD
-><DT
-><SAMP
-CLASS="COMPUTEROUTPUT"
->WARNING:  COMMIT: no transaction in progress</SAMP
-></DT
-><DD
-><P
->      Message if there is no transaction in progress.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37692"
+NAME="AEN36204"
 ></A
 ><H2
 >Notes</H2
@@ -194,11 +174,18 @@ HREF="sql-rollback.html"
 > to
    abort a transaction.
   </P
+><P
+>   Issuing <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> when not inside a transaction does
+   no harm, but it will provoke a warning message.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37696"
+NAME="AEN36210"
 ></A
 ><H2
 >Examples</H2
@@ -213,7 +200,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37700"
+NAME="AEN36214"
 ></A
 ><H2
 >Compatibility</H2
@@ -228,6 +215,24 @@ CLASS="LITERAL"
    WORK</VAR
 >. Otherwise, this command is fully conforming.
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36219"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+>, <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

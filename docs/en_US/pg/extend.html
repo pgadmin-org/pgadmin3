@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -19,19 +19,14 @@ TITLE="Server Programming"
 HREF="server-programming.html"><LINK
 REL="NEXT"
 TITLE="The PostgreSQL Type System"
-HREF="type-system.html"><LINK
+HREF="extend-type-system.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,31 +37,48 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="server-programming.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="server-programming.html#AEN28652"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
 ><A
-HREF="type-system.html"
+HREF="indexcost.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="extend-type-system.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="EXTEND"
 ></A
->Chapter 34. Extending <ACRONYM
+>Chapter 33. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></H1
@@ -93,25 +105,25 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->34.1. <A
+>33.1. <A
 HREF="extend.html#EXTEND-HOW"
 >How Extensibility Works</A
 ></DT
 ><DT
->34.2. <A
-HREF="type-system.html"
+>33.2. <A
+HREF="extend-type-system.html"
 >The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > Type System</A
 ></DT
 ><DT
->34.3. <A
+>33.3. <A
 HREF="xfunc.html"
 >User-Defined Functions</A
 ></DT
 ><DT
->34.4. <A
+>33.4. <A
 HREF="xfunc-sql.html"
 >Query Language (<ACRONYM
 CLASS="ACRONYM"
@@ -121,40 +133,40 @@ CLASS="ACRONYM"
 ><DD
 ><DL
 ><DT
->34.4.1. <A
-HREF="xfunc-sql.html#AEN29871"
+>33.4.1. <A
+HREF="xfunc-sql.html#AEN28812"
 ><ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions on Base Types</A
 ></DT
 ><DT
->34.4.2. <A
-HREF="xfunc-sql.html#AEN29902"
+>33.4.2. <A
+HREF="xfunc-sql.html#AEN28843"
 ><ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions on Composite Types</A
 ></DT
 ><DT
->34.4.3. <A
-HREF="xfunc-sql.html#AEN29936"
+>33.4.3. <A
+HREF="xfunc-sql.html#AEN28878"
 ><ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions as Table Sources</A
 ></DT
 ><DT
->34.4.4. <A
-HREF="xfunc-sql.html#AEN29945"
+>33.4.4. <A
+HREF="xfunc-sql.html#AEN28887"
 ><ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > Functions Returning Sets</A
 ></DT
 ><DT
->34.4.5. <A
-HREF="xfunc-sql.html#AEN29963"
+>33.4.5. <A
+HREF="xfunc-sql.html#AEN28905"
 >Polymorphic <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
@@ -163,149 +175,149 @@ CLASS="ACRONYM"
 ></DL
 ></DD
 ><DT
->34.5. <A
+>33.5. <A
 HREF="xfunc-pl.html"
 >Procedural Language Functions</A
 ></DT
 ><DT
->34.6. <A
+>33.6. <A
 HREF="xfunc-internal.html"
 >Internal Functions</A
 ></DT
 ><DT
->34.7. <A
+>33.7. <A
 HREF="xfunc-c.html"
 >C-Language Functions</A
 ></DT
 ><DD
 ><DL
 ><DT
->34.7.1. <A
+>33.7.1. <A
 HREF="xfunc-c.html#XFUNC-C-DYNLOAD"
 >Dynamic Loading</A
 ></DT
 ><DT
->34.7.2. <A
-HREF="xfunc-c.html#AEN30071"
+>33.7.2. <A
+HREF="xfunc-c.html#XFUNC-C-BASETYPE"
 >Base Types in C-Language Functions</A
 ></DT
 ><DT
->34.7.3. <A
-HREF="xfunc-c.html#AEN30340"
+>33.7.3. <A
+HREF="xfunc-c.html#AEN29292"
 >Calling Conventions Version 0 for C-Language Functions</A
 ></DT
 ><DT
->34.7.4. <A
-HREF="xfunc-c.html#AEN30366"
+>33.7.4. <A
+HREF="xfunc-c.html#AEN29319"
 >Calling Conventions Version 1 for C-Language Functions</A
 ></DT
 ><DT
->34.7.5. <A
-HREF="xfunc-c.html#AEN30424"
+>33.7.5. <A
+HREF="xfunc-c.html#AEN29377"
 >Writing Code</A
 ></DT
 ><DT
->34.7.6. <A
+>33.7.6. <A
 HREF="xfunc-c.html#DFUNC"
 >Compiling and Linking Dynamically-Loaded Functions</A
 ></DT
 ><DT
->34.7.7. <A
-HREF="xfunc-c.html#AEN30643"
+>33.7.7. <A
+HREF="xfunc-c.html#AEN29617"
 >Composite-Type Arguments in C-Language Functions</A
 ></DT
 ><DT
->34.7.8. <A
-HREF="xfunc-c.html#AEN30664"
+>33.7.8. <A
+HREF="xfunc-c.html#AEN29638"
 >Returning Rows (Composite Types) from C-Language Functions</A
 ></DT
 ><DT
->34.7.9. <A
+>33.7.9. <A
 HREF="xfunc-c.html#XFUNC-C-RETURN-SET"
 >Returning Sets from C-Language Functions</A
 ></DT
 ><DT
->34.7.10. <A
-HREF="xfunc-c.html#AEN30765"
+>33.7.10. <A
+HREF="xfunc-c.html#AEN29739"
 >Polymorphic Arguments and Return Types</A
 ></DT
 ></DL
 ></DD
 ><DT
->34.8. <A
+>33.8. <A
 HREF="xfunc-overload.html"
 >Function Overloading</A
 ></DT
 ><DT
->34.9. <A
+>33.9. <A
 HREF="xfunc-plhandler.html"
 >Procedural Language Handlers</A
 ></DT
 ><DT
->34.10. <A
+>33.10. <A
 HREF="xaggr.html"
 >User-Defined Aggregates</A
 ></DT
 ><DT
->34.11. <A
+>33.11. <A
 HREF="xtypes.html"
 >User-Defined Types</A
 ></DT
 ><DT
->34.12. <A
+>33.12. <A
 HREF="xoper.html"
 >User-defined Operators</A
 ></DT
 ><DT
->34.13. <A
+>33.13. <A
 HREF="xoper-optimization.html"
 >Operator Optimization Information</A
 ></DT
 ><DD
 ><DL
 ><DT
->34.13.1. <A
-HREF="xoper-optimization.html#AEN30965"
+>33.13.1. <A
+HREF="xoper-optimization.html#AEN29955"
 ><VAR
 CLASS="LITERAL"
 >COMMUTATOR</VAR
 ></A
 ></DT
 ><DT
->34.13.2. <A
-HREF="xoper-optimization.html#AEN30990"
+>33.13.2. <A
+HREF="xoper-optimization.html#AEN29980"
 ><VAR
 CLASS="LITERAL"
 >NEGATOR</VAR
 ></A
 ></DT
 ><DT
->34.13.3. <A
-HREF="xoper-optimization.html#AEN31006"
+>33.13.3. <A
+HREF="xoper-optimization.html#AEN29996"
 ><VAR
 CLASS="LITERAL"
 >RESTRICT</VAR
 ></A
 ></DT
 ><DT
->34.13.4. <A
-HREF="xoper-optimization.html#AEN31056"
+>33.13.4. <A
+HREF="xoper-optimization.html#AEN30046"
 ><VAR
 CLASS="LITERAL"
 >JOIN</VAR
 ></A
 ></DT
 ><DT
->34.13.5. <A
-HREF="xoper-optimization.html#AEN31088"
+>33.13.5. <A
+HREF="xoper-optimization.html#AEN30078"
 ><VAR
 CLASS="LITERAL"
 >HASHES</VAR
 ></A
 ></DT
 ><DT
->34.13.6. <A
-HREF="xoper-optimization.html#AEN31108"
+>33.13.6. <A
+HREF="xoper-optimization.html#AEN30098"
 ><VAR
 CLASS="LITERAL"
 >MERGES</VAR
@@ -326,39 +338,39 @@ CLASS="LITERAL"
 ></DL
 ></DD
 ><DT
->34.14. <A
+>33.14. <A
 HREF="xindex.html"
 >Interfacing Extensions To Indexes</A
 ></DT
 ><DD
 ><DL
 ><DT
->34.14.1. <A
+>33.14.1. <A
 HREF="xindex.html#XINDEX-IM"
 >Index Methods and Operator Classes</A
 ></DT
 ><DT
->34.14.2. <A
+>33.14.2. <A
 HREF="xindex.html#XINDEX-STRATEGIES"
 >Index Method Strategies</A
 ></DT
 ><DT
->34.14.3. <A
+>33.14.3. <A
 HREF="xindex.html#XINDEX-SUPPORT"
 >Index Method Support Routines</A
 ></DT
 ><DT
->34.14.4. <A
+>33.14.4. <A
 HREF="xindex.html#XINDEX-EXAMPLE"
 >An Example</A
 ></DT
 ><DT
->34.14.5. <A
+>33.14.5. <A
 HREF="xindex.html#XINDEX-OPCLASS-DEPENDENCIES"
 >System Dependencies on Operator Classes</A
 ></DT
 ><DT
->34.14.6. <A
+>33.14.6. <A
 HREF="xindex.html#XINDEX-OPCLASS-FEATURES"
 >Special Features of Operator Classes</A
 ></DT
@@ -367,7 +379,7 @@ HREF="xindex.html#XINDEX-OPCLASS-FEATURES"
 ></DL
 ></DIV
 ><A
-NAME="AEN29734"
+NAME="AEN28659"
 ></A
 ><P
 >   In  the  sections  that follow, we will discuss how you
@@ -389,7 +401,7 @@ STYLE="list-style-type: disc"
 ><P
 >      functions (starting in <A
 HREF="xfunc.html"
->Section 34.3</A
+>Section 33.3</A
 >)
      </P
 ></LI
@@ -398,7 +410,7 @@ STYLE="list-style-type: disc"
 ><P
 >      aggregates (starting in <A
 HREF="xaggr.html"
->Section 34.10</A
+>Section 33.10</A
 >)
      </P
 ></LI
@@ -407,7 +419,7 @@ STYLE="list-style-type: disc"
 ><P
 >      data types (starting in <A
 HREF="xtypes.html"
->Section 34.11</A
+>Section 33.11</A
 >)
      </P
 ></LI
@@ -416,7 +428,7 @@ STYLE="list-style-type: disc"
 ><P
 >      operators (starting in <A
 HREF="xoper.html"
->Section 34.12</A
+>Section 33.12</A
 >)
      </P
 ></LI
@@ -425,7 +437,7 @@ STYLE="list-style-type: disc"
 ><P
 >      operator classes for indexes (starting in <A
 HREF="xindex.html"
->Section 34.14</A
+>Section 33.14</A
 >)
      </P
 ></LI
@@ -438,7 +450,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="EXTEND-HOW"
->34.1. How Extensibility Works</A
+>33.1. How Extensibility Works</A
 ></H1
 ><P
 >    <SPAN
@@ -483,26 +495,31 @@ CLASS="ACRONYM"
 > vendor.
    </P
 ><P
->    The PostgreSQL server can moreover incorporate user-written code into
-    itself through dynamic loading.  That is, the user  can
-    specify  an  object code file (e.g., a shared library) that implements a new type or  function,
-    and <SPAN
+>    The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> will load it as required.  Code written 
-    in <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> is even more trivial to add to the  server.
-    This ability to modify its operation <SPAN
-CLASS="QUOTE"
->"on the fly"</SPAN
-> makes
+> server can moreover
+    incorporate user-written code into itself through dynamic loading.
+    That is, the user can specify an object code file (e.g., a shared
+    library) that implements a new type or function, and
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> uniquely suited for rapid prototyping  of  new
-    applications and storage structures.
+> will load it as required.
+    Code written in <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> is even more trivial to add
+    to the server.  This ability to modify its operation <SPAN
+CLASS="QUOTE"
+>"on the
+    fly"</SPAN
+> makes <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uniquely
+    suited for rapid prototyping of new applications and storage
+    structures.
    </P
 ></DIV
 ></DIV
@@ -540,7 +557,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="type-system.html"
+HREF="extend-type-system.html"
 ACCESSKEY="N"
 >Next</A
 ></TD

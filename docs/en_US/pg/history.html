@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Preface"
@@ -18,20 +18,15 @@ REL="PREVIOUS"
 TITLE="Preface"
 HREF="preface.html"><LINK
 REL="NEXT"
-TITLE="Terminology and Notation"
+TITLE="Conventions"
 HREF="notation.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="preface.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="preface.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Preface</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="preface.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="notation.html"
 ACCESSKEY="N"
@@ -81,58 +93,68 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="HISTORY"
->2. A Brief History of <SPAN
+>A Brief History of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 ></A
 ></H1
+><A
+NAME="AEN93"
+></A
 ><P
->  The object-relational database management system now known as 
+>  The object-relational database management system now known as
   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> (and briefly called
-  <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
->) is derived from the
+> is derived from the
   <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
-> package written at the University of
-  California at Berkeley.  With over a decade of
+> package written at the
+  University of California at Berkeley.  With over a decade of
   development behind it, <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> 
-  is the most advanced open-source database available anywhere,
-  offering multiversion concurrency control, supporting almost
-  all SQL constructs (including subselects, transactions, and
-  user-defined types and functions), and having a wide range of
-  language bindings available (including C, C++, Java, Perl, Tcl, and Python).
+> is now
+  the most advanced open-source database available anywhere.
  </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN70"
->2.1. The Berkeley <SPAN
+NAME="HISTORY-BERKELEY"
+>The Berkeley <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
 > Project</A
 ></H2
+><A
+NAME="AEN103"
+></A
 ><P
->   Implementation of the <SPAN
+>   The <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
-> 
-   <ACRONYM
+> project, led by Professor
+   Michael Stonebraker, was sponsored by the Defense Advanced Research
+   Projects Agency (<ACRONYM
 CLASS="ACRONYM"
->DBMS</ACRONYM
-> began in 1986.  The
-   initial  concepts  for  the  system  were  presented in
-   <A
+>DARPA</ACRONYM
+>), the Army Research
+   Office (<ACRONYM
+CLASS="ACRONYM"
+>ARO</ACRONYM
+>), the National Science Foundation
+   (<ACRONYM
+CLASS="ACRONYM"
+>NSF</ACRONYM
+>), and ESL, Inc.  The implementation of
+   <SPAN
+CLASS="PRODUCTNAME"
+>POSTGRES</SPAN
+> began in 1986.  The initial
+   concepts for the system were presented in <A
 HREF="biblio.html#STON86"
 ><I
 ><A
@@ -145,9 +167,7 @@ CLASS="PRODUCTNAME"
 ></I
 ></A
 >
-   and the definition of the initial  data  model
-   appeared in 
-   <A
+   and the definition of the initial data model appeared in <A
 HREF="biblio.html#ROWE87"
 ><I
 ><A
@@ -159,10 +179,8 @@ CLASS="PRODUCTNAME"
 > data model</A
 ></I
 ></A
->.
-   The design of the rule system at
-   that time was described in  
-   <A
+>.  The design of the rule system at that time was
+   described in <A
 HREF="biblio.html#STON87A"
 ><I
 >The design of the <SPAN
@@ -170,10 +188,8 @@ CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
 > rules system</I
 ></A
->.
-   The  rationale
-   and  architecture  of the storage manager were detailed in 
-   <A
+>.  The rationale and
+   architecture of the storage manager were detailed in <A
 HREF="biblio.html#STON87B"
 ><I
 ><A
@@ -190,17 +206,17 @@ CLASS="PRODUCTNAME"
 ><P
 >   <SPAN
 CLASS="PRODUCTNAME"
->Postgres</SPAN
-> has undergone  several  major  releases  since
-   then.   The  first <SPAN
+>POSTGRES</SPAN
+> has undergone several major
+   releases since then.  The first <SPAN
 CLASS="QUOTE"
 >"demoware"</SPAN
-> system became operational
-   in 1987 and was shown at the  1988  <ACRONYM
+> system
+   became operational in 1987 and was shown at the 1988
+   <ACRONYM
 CLASS="ACRONYM"
 >ACM-SIGMOD</ACRONYM
->  
-   Conference.   Version 1, described in 
+> Conference.  Version 1, described in
    <A
 HREF="biblio.html#STON90A"
 ><I
@@ -213,9 +229,8 @@ CLASS="PRODUCTNAME"
 ></A
 ></I
 ></A
->, was released
-   to a few external users in June 1989.  In response to a
-   critique  of  the  first rule system 
+>, was released to a few external users in
+   June 1989.  In response to a critique of the first rule system
    (<A
 HREF="biblio.html#STON89"
 ><I
@@ -228,10 +243,7 @@ CLASS="PRODUCTNAME"
 > rules system</A
 ></I
 ></A
->), 
-   the rule
-   system was  redesigned 
-   (<A
+>), the rule system was redesigned (<A
 HREF="biblio.html#STON90B"
 ><I
 ><A
@@ -240,37 +252,31 @@ TARGET="_top"
 >On Rules, Procedures, Caching and Views in Database Systems</A
 ></I
 ></A
->)
-   and  Version  2  was
-   released  in  June 1990 with the new rule system.  
-   Version 3 appeared in 1991 and added support for  multiple
-   storage  managers,  an  improved  query executor, and a
-   rewritten rule  system.   For  the  most  part, subsequent
-   releases  until <SPAN
+>) and Version 2 was released in June 1990 with
+   the new rule system.  Version 3 appeared in 1991 and added support
+   for multiple storage managers, an improved query executor, and a
+   rewritten rule system.  For the most part, subsequent releases
+   until <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
-> (see below)
-   focused on portability and reliability.
+> (see below) focused on
+   portability and reliability.
   </P
 ><P
 >   <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
-> has been  used
-   to  implement  many  different
-   research and production applications.  These include: a
-   financial data analysis system, a  jet  engine  
-   performance   monitoring   package,   an   asteroid  tracking
-   database, a medical information database,  and  several
-   geographic information systems.  
+> has been used to implement many
+   different research and production applications.  These include: a
+   financial data analysis system, a jet engine performance monitoring
+   package, an asteroid tracking database, a medical information
+   database, and several geographic information systems.
    <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
-> has also been
-   used as an educational tool  at  several  universities.
-   Finally,  
-   Illustra  Information  Technologies (later merged into
-   <A
+> has also been used as an
+   educational tool at several universities.  Finally, Illustra
+   Information Technologies (later merged into <A
 HREF="http://www.informix.com/"
 TARGET="_top"
 ><SPAN
@@ -282,33 +288,30 @@ CLASS="PRODUCTNAME"
 HREF="http://www.ibm.com/"
 TARGET="_top"
 >IBM</A
->.)
-   picked up
-   the code and commercialized it.
+>.)  picked up the code and
+   commercialized it.  In late 1992,
    <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
->  became  the  primary  data manager
-   for  the
-   <A
+> became the primary data manager
+   for the <A
 HREF="http://meteora.ucsd.edu/s2k/s2k_home.html"
 TARGET="_top"
->Sequoia 2000</A
->
-   scientific computing project in late 1992.
+>Sequoia
+   2000</A
+> scientific computing project.
   </P
 ><P
->   The size of the  external  user  community
-   nearly  doubled  during  1993.   It became increasingly
-   obvious that maintenance of the prototype code and 
-   support  was  taking  up large amounts of time that should
-   have been devoted to database research.  In  an  effort
-   to  reduce  this support burden, the Berkeley
+>   The size of the external user community nearly doubled during 1993.
+   It became increasingly obvious that maintenance of the prototype
+   code and support was taking up large amounts of time that should
+   have been devoted to database research.  In an effort to reduce
+   this support burden, the Berkeley
    <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
-> project officially
-   ended with Version 4.2.
+> project officially ended with
+   Version 4.2.
   </P
 ></DIV
 ><DIV
@@ -316,24 +319,27 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN98"
->2.2. <SPAN
+NAME="HISTORY-POSTGRES95"
+><SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
 ></A
 ></H2
+><A
+NAME="AEN136"
+></A
 ><P
->   In 1994, Andrew Yu and Jolly Chen
-   added a SQL language interpreter to <SPAN
+>   In 1994, Andrew Yu and Jolly Chen added a SQL language interpreter
+   to <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
->.
+>.  Under a new name,
    <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
 > was subsequently released to
-   the Web to find its own way in the world as an
-   open-source descendant of the original <SPAN
+   the web to find its own way in the world as an open-source
+   descendant of the original <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
 >
@@ -343,19 +349,19 @@ CLASS="PRODUCTNAME"
 >   <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
-> code was completely
-   ANSI C and trimmed in size by 25%. Many
-   internal changes improved performance and maintainability. 
-   <SPAN
+> code was completely ANSI C
+   and trimmed in size by 25%. Many internal changes improved
+   performance and
+   maintainability. <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
-> release 1.0.x ran about  30-50%
-   faster  on  the  Wisconsin  Benchmark compared to 
-   <SPAN
+> release
+   1.0.x ran about 30-50% faster on the Wisconsin Benchmark compared
+   to <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
->, Version 4.2.
-   Apart from bug fixes, the following were the major enhancements:
+>, Version 4.2.  Apart from
+   bug fixes, the following were the major enhancements:
 
    <P
 ></P
@@ -366,30 +372,25 @@ CLASS="PRODUCTNAME"
       <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> (implemented in the server).
-      Subqueries were not supported until
-      <SPAN
+> (implemented in the server).  Subqueries
+      were not supported until <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> (see below), but they
-      could be imitated in <SPAN
+>
+      (see below), but they could be imitated in
+      <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
 > with user-defined
       <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> functions. Aggregates were
-      re-implemented.  Support for the GROUP BY query clause was also added.
-      The <TT
-CLASS="FILENAME"
->libpq</TT
-> interface remained
-      available  for  <ACRONYM
-CLASS="ACRONYM"
->C</ACRONYM
->  
-      programs.
+> functions. Aggregate functions were
+      re-implemented.  Support for the <VAR
+CLASS="LITERAL"
+>GROUP BY</VAR
+>
+      query clause was also added.
      </P
 ></LI
 ><LI
@@ -398,11 +399,12 @@ CLASS="ACRONYM"
       (<SPAN
 CLASS="APPLICATION"
 >psql</SPAN
->) was provided for interactive SQL queries
-      using <ACRONYM
+>) was provided for interactive
+      SQL queries, which used <ACRONYM
 CLASS="ACRONYM"
 >GNU</ACRONYM
-> <SPAN
+>
+      <SPAN
 CLASS="APPLICATION"
 >Readline</SPAN
 >.
@@ -410,39 +412,39 @@ CLASS="APPLICATION"
 ></LI
 ><LI
 ><P
->      A new  front-end  library,  <TT
+>      A new front-end library, <TT
 CLASS="FILENAME"
 >libpgtcl</TT
 >,
-      supported  <ACRONYM
+      supported <ACRONYM
 CLASS="ACRONYM"
 >Tcl</ACRONYM
->-based  clients.   A sample shell, 
+>-based clients.  A sample shell,
       <TT
 CLASS="COMMAND"
 >pgtclsh</TT
->, provided new Tcl  commands  to  interface
-      <SPAN
+>, provided new Tcl commands to
+      interface <SPAN
 CLASS="APPLICATION"
 >Tcl</SPAN
->
-      programs with the <SPAN
+> programs with the
+      <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
-> backend.
+> server.
      </P
 ></LI
 ><LI
 ><P
->      The  large-object interface was overhauled. The Inversion large objects were
-      the  only  mechanism for  storing  large objects.
-      (The Inversion file system was removed.)
+>      The large-object interface was overhauled. The inversion large
+      objects were the only mechanism for storing large objects.  (The
+      inversion file system was removed.)
      </P
 ></LI
 ><LI
 ><P
->      The  instance-level  rule  system  was removed.
-      Rules were still available as rewrite rules.
+>      The instance-level rule system was removed.  Rules were still
+      available as rewrite rules.
      </P
 ></LI
 ><LI
@@ -450,12 +452,13 @@ CLASS="PRODUCTNAME"
 >      A short tutorial introducing regular <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> features as
-      well as those of <SPAN
+>
+      features as well as those of
+      <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
-> was
-      distributed with the source code
+> was distributed with the
+      source code
      </P
 ></LI
 ><LI
@@ -463,19 +466,20 @@ CLASS="PRODUCTNAME"
 >      <ACRONYM
 CLASS="ACRONYM"
 >GNU</ACRONYM
-> make (instead of  <ACRONYM
+> make (instead of <ACRONYM
 CLASS="ACRONYM"
 >BSD</ACRONYM
->  make)  was  used
-      for  the build.  Also,  <SPAN
+>
+      make) was used for the build.  Also,
+      <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
->  could  be
-      compiled with an unpatched <SPAN
+> could be compiled with an
+      unpatched <SPAN
 CLASS="PRODUCTNAME"
 >GCC</SPAN
->
-      (data alignment of  doubles  was fixed).
+> (data alignment of
+      doubles was fixed).
      </P
 ></LI
 ></UL
@@ -487,8 +491,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN144"
->2.3. <SPAN
+NAME="AEN180"
+><SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 ></A
@@ -497,8 +501,8 @@ CLASS="PRODUCTNAME"
 >   By 1996, it became clear that the name <SPAN
 CLASS="QUOTE"
 >"Postgres95"</SPAN
-> would
-   not stand the test of time. We chose a new name,
+>
+   would not stand the test of time. We chose a new name,
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -506,80 +510,42 @@ CLASS="PRODUCTNAME"
    between the original <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
-> and the more
-   recent versions with <ACRONYM
+> and the
+   more recent versions with <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> capability.  At the same
-   time, we set the version numbering to start at 6.0, putting the
-   numbers back into the sequence originally begun by the Berkeley
-   <SPAN
+> capability.  At
+   the same time, we set the version numbering to start at 6.0,
+   putting the numbers back into the sequence originally begun by the
+   Berkeley <SPAN
 CLASS="PRODUCTNAME"
 >POSTGRES</SPAN
 > project.
   </P
 ><P
->   The emphasis during development of <SPAN
+>   The emphasis during development of
+   <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
->
-   was on identifying and understanding existing problems in the backend code.
-   With <SPAN
+> was on identifying and
+   understanding existing problems in the server code.  With
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->, 
-   the emphasis has shifted to augmenting features and capabilities, although
-   work continues in all areas.
+>, the emphasis has shifted to
+   augmenting features and capabilities, although work continues in
+   all areas.
   </P
 ><P
->   Major enhancements in <SPAN
+>   Details about what has happened in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> include:
+> since
+   then can be found in <A
+HREF="release.html"
+>Appendix D</A
+>.
   </P
-><P
-></P
-><UL
-><LI
-><P
->     Table-level locking has been replaced by multiversion concurrency control,
-     which allows readers to continue reading consistent data during writer activity
-     and enables hot backups from <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> while the database stays available for
-     queries.
-    </P
-></LI
-><LI
-><P
->     Important backend features, including subselects, defaults, 
-     constraints, and triggers, have been implemented.
-    </P
-></LI
-><LI
-><P
->     Additional <ACRONYM
-CLASS="ACRONYM"
->SQL92</ACRONYM
->-compliant language features have been added,
-     including primary keys, quoted identifiers, literal string type coercion,
-     type casting, and binary and hexadecimal integer input.
-    </P
-></LI
-><LI
-><P
->     Built-in types have been improved, including new wide-range date/time types 
-     and additional geometric type support.
-    </P
-></LI
-><LI
-><P
->     Overall backend code speed has been increased by approximately 20-40%, 
-     and backend start-up time has decreased by 80% since version 6.0 was released.
-    </P
-></LI
-></UL
 ></DIV
 ></DIV
 ><DIV
@@ -640,7 +606,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Terminology and Notation</TD
+>Conventions</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="creating-cluster.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 >Chapter 16. Server Run-time Environment</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="runtime-config.html"
 ACCESSKEY="N"
@@ -90,7 +102,7 @@ NAME="POSTMASTER-START"
 CLASS="COMMAND"
 >postmaster</TT
 >.<A
-NAME="AEN14733"
+NAME="AEN15256"
 ></A
 >
    The <TT
@@ -164,7 +176,7 @@ HREF="runtime-config.html"
 > below. In particular, in order
    for the server to accept
    TCP/IP<A
-NAME="AEN14752"
+NAME="AEN15275"
 ></A
 > connections
    (rather than just Unix-domain socket ones), you must specify the
@@ -180,7 +192,7 @@ CLASS="OPTION"
 CLASS="COMMAND"
 >pg_ctl</TT
 ><A
-NAME="AEN14757"
+NAME="AEN15280"
 ></A
 >
    is provided to simplify some tasks.  For example:
@@ -204,8 +216,11 @@ CLASS="COMMAND"
   </P
 ><P
 >   Normally, you will want to start the database server when the
-   computer boots. Autostart scripts are operating system-specific.
-   There are a few distributed with
+   computer boots.<A
+NAME="AEN15287"
+></A
+> Autostart scripts are operating
+   system-specific.  There are a few distributed with
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -275,7 +290,7 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > source distribution.
       <A
-NAME="AEN14781"
+NAME="AEN15307"
 ></A
 >
      </P
@@ -291,7 +306,7 @@ CLASS="FILENAME"
 >/etc/rc.local</TT
 >:
       <A
-NAME="AEN14787"
+NAME="AEN15314"
 ></A
 >
 </P><PRE
@@ -310,7 +325,7 @@ CLASS="PRODUCTNAME"
 >Linux</SPAN
 > systems either add
       <A
-NAME="AEN14793"
+NAME="AEN15321"
 ></A
 >
 </P><PRE
@@ -346,7 +361,7 @@ CLASS="PRODUCTNAME"
 >Linux</SPAN
 > start scripts, depending on
       preference. <A
-NAME="AEN14804"
+NAME="AEN15333"
 ></A
 >
      </P
@@ -363,7 +378,7 @@ CLASS="FILENAME"
 > that contains
       the following line:
       <A
-NAME="AEN14810"
+NAME="AEN15340"
 ></A
 >
 </P><PRE
@@ -425,9 +440,9 @@ NAME="POSTMASTER-START-FAILURES"
 ><P
 ></P><PRE
 CLASS="SCREEN"
->FATAL: StreamServerPort: bind() failed: Address already in use
-        Is another postmaster already running on port 5432?
-        If not, wait a few seconds an retry.</PRE
+>LOG:  could not bind IPv4 socket: Address already in use
+HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+FATAL:  could not create TCP/IP listen socket</PRE
 ><P>
      This usually means just what it suggests: you tried to start
      another <TT
@@ -450,24 +465,24 @@ CLASS="SCREEN"
 CLASS="USERINPUT"
 >postmaster -i -p 666</KBD
 >
-FATAL: StreamServerPort: bind() failed: Permission denied
-        Is another postmaster already running on port 666?
-        If not, wait a few seconds an retry.</PRE
+LOG:  could not bind IPv4 socket: Permission denied
+HINT:  Is another postmaster already running on port 666? If not, wait a few seconds and retry.
+FATAL:  could not create TCP/IP listen socket</PRE
 ><P>
     </P
 ><P
 >     A message like
 </P><PRE
 CLASS="SCREEN"
->IpcMemoryCreate: shmget(key=5440001, size=83918612, 01600) failed: Invalid argument
-FATAL 1:  ShmemCreate: cannot create region</PRE
+>FATAL:  could not create shared memory segment: Invalid argument
+DETAIL:  Failed syscall was shmget(key=5440001, size=4011376640, 03600).</PRE
 ><P>
      probably means your kernel's limit on the size of shared memory is
-     smaller than the buffer area <SPAN
+     smaller than the work area <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-     is trying to create (83918612 bytes in this example). Or it could
+     is trying to create (4011376640 bytes in this example). Or it could
      mean that you do not have System-V-style shared memory support
      configured into your kernel at all. As a temporary workaround, you
      can try starting the server with a smaller-than-normal number
@@ -477,14 +492,15 @@ CLASS="OPTION"
 > switch). You will eventually want
      to reconfigure your kernel to increase the allowed shared memory
      size. You may also see this message when trying to start multiple
-     servers on the same machine if their total space requested
+     servers on the same machine, if their total space requested
      exceeds the kernel limit.
     </P
 ><P
 >     An error like
 </P><PRE
 CLASS="SCREEN"
->IpcSemaphoreCreate: semget(key=5440026, num=16, 01600) failed: No space left on device</PRE
+>FATAL:  could not create semaphores: No space left on device
+DETAIL:  Failed syscall was semget(5440126, 17, 03600).</PRE
 ><P>
      does <SPAN
 CLASS="emphasis"
@@ -551,7 +567,7 @@ NAME="CLIENT-CONNECTION-PROBLEMS"
 ></P><PRE
 CLASS="SCREEN"
 >psql: could not connect to server: Connection refused
-        Is the server running on host server.joe.com and accepting
+        Is the server running on host "server.joe.com" and accepting
         TCP/IP connections on port 5432?</PRE
 ><P>
      This is the generic <SPAN
@@ -567,7 +583,7 @@ CLASS="QUOTE"
      communication to a local server:
 </P><PRE
 CLASS="SCREEN"
->psql: could not connect to server: Connection refused
+>psql: could not connect to server: No such file or directory
         Is the server running locally and accepting
         connections on Unix domain socket "/tmp/.s.PGSQL.5432"?</PRE
 ><P>

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,32 +37,49 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="xoper-optimization.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 34. Extending <ACRONYM
+>Chapter 33. Extending <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="indexcost.html"
 ACCESSKEY="N"
@@ -84,8 +96,11 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XINDEX"
->34.14. Interfacing Extensions To Indexes</A
+>33.14. Interfacing Extensions To Indexes</A
 ></H1
+><A
+NAME="AEN30152"
+></A
 ><P
 >   The procedures described thus far let you define new types, new
    functions, and new operators. However, we cannot yet define an
@@ -136,7 +151,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-IM"
->34.14.1. Index Methods and Operator Classes</A
+>33.14.1. Index Methods and Operator Classes</A
 ></H2
 ><P
 >   The <CODE
@@ -162,24 +177,30 @@ CLASS="CLASSNAME"
   </P
 ><P
 >   The routines for an index method do not directly know anything
-   about the data types that the index method will operate on.  Instead, an
-   <I
+   about the data types that the index method will operate on.
+   Instead, an <I
 CLASS="FIRSTTERM"
->operator class</I
-> identifies the set of operations that the
-   index method needs to use to work with a particular data type.
-   Operator classes are so called because one thing they specify is the set
-   of <VAR
+>operator
+   class</I
+><A
+NAME="AEN30173"
+></A
+>
+   identifies the set of operations that the index method needs to use
+   to work with a particular data type.  Operator classes are so
+   called because one thing they specify is the set of
+   <VAR
 CLASS="LITERAL"
 >WHERE</VAR
->-clause operators that can be used with an index (i.e., can be
-   converted into an index-scan qualification).  An operator class may also
-   specify some <I
+>-clause operators that can be used with an index
+   (i.e., can be converted into an index-scan qualification).  An
+   operator class may also specify some <I
 CLASS="FIRSTTERM"
->support procedures</I
-> that are needed by the
-   internal operations of the index method, but do not directly
-   correspond to any <VAR
+>support
+   procedures</I
+> that are needed by the internal operations of the
+   index method, but do not directly correspond to any
+   <VAR
 CLASS="LITERAL"
 >WHERE</VAR
 >-clause operator that can be used with the index.
@@ -214,7 +235,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-STRATEGIES"
->34.14.2. Index Method Strategies</A
+>33.14.2. Index Method Strategies</A
 ></H2
 ><P
 >   The operators associated with an operator class are identified by
@@ -260,7 +281,7 @@ CLASS="QUOTE"
 ><P
 >   The B-tree index method defines five strategies, shown in <A
 HREF="xindex.html#XINDEX-BTREE-STRAT-TABLE"
->Table 34-2</A
+>Table 33-2</A
 >.
   </P
 ><DIV
@@ -270,7 +291,7 @@ NAME="XINDEX-BTREE-STRAT-TABLE"
 ></A
 ><P
 ><B
->Table 34-2. B-tree Strategies</B
+>Table 33-2. B-tree Strategies</B
 ></P
 ><TABLE
 BORDER="1"
@@ -321,7 +342,7 @@ CLASS="CALSTABLE"
 >   Hash indexes express only bitwise equality, and so they use only one
    strategy, shown in <A
 HREF="xindex.html#XINDEX-HASH-STRAT-TABLE"
->Table 34-3</A
+>Table 33-3</A
 >.
   </P
 ><DIV
@@ -331,7 +352,7 @@ NAME="XINDEX-HASH-STRAT-TABLE"
 ></A
 ><P
 ><B
->Table 34-3. Hash Strategies</B
+>Table 33-3. Hash Strategies</B
 ></P
 ><TABLE
 BORDER="1"
@@ -358,7 +379,7 @@ CLASS="CALSTABLE"
 >   R-tree indexes express rectangle-containment relationships.
    They use eight strategies, shown in <A
 HREF="xindex.html#XINDEX-RTREE-STRAT-TABLE"
->Table 34-4</A
+>Table 33-4</A
 >.
   </P
 ><DIV
@@ -368,7 +389,7 @@ NAME="XINDEX-RTREE-STRAT-TABLE"
 ></A
 ><P
 ><B
->Table 34-4. R-tree Strategies</B
+>Table 33-4. R-tree Strategies</B
 ></P
 ><TABLE
 BORDER="1"
@@ -485,7 +506,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-SUPPORT"
->34.14.3. Index Method Support Routines</A
+>33.14.3. Index Method Support Routines</A
 ></H2
 ><P
 >   Strategies aren't usually enough information for the system to figure
@@ -512,7 +533,7 @@ CLASS="QUOTE"
 ><P
 >   B-trees require a single support function, shown in <A
 HREF="xindex.html#XINDEX-BTREE-SUPPORT-TABLE"
->Table 34-5</A
+>Table 33-5</A
 >.
   </P
 ><DIV
@@ -522,7 +543,7 @@ NAME="XINDEX-BTREE-SUPPORT-TABLE"
 ></A
 ><P
 ><B
->Table 34-5. B-tree Support Functions</B
+>Table 33-5. B-tree Support Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -551,7 +572,7 @@ CLASS="CALSTABLE"
 ><P
 >   Hash indexes likewise require one support function, shown in <A
 HREF="xindex.html#XINDEX-HASH-SUPPORT-TABLE"
->Table 34-6</A
+>Table 33-6</A
 >.
   </P
 ><DIV
@@ -561,7 +582,7 @@ NAME="XINDEX-HASH-SUPPORT-TABLE"
 ></A
 ><P
 ><B
->Table 34-6. Hash Support Functions</B
+>Table 33-6. Hash Support Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -588,7 +609,7 @@ CLASS="CALSTABLE"
 >   R-tree indexes require three support functions,
    shown in <A
 HREF="xindex.html#XINDEX-RTREE-SUPPORT-TABLE"
->Table 34-7</A
+>Table 33-7</A
 >.
   </P
 ><DIV
@@ -598,7 +619,7 @@ NAME="XINDEX-RTREE-SUPPORT-TABLE"
 ></A
 ><P
 ><B
->Table 34-7. R-tree Support Functions</B
+>Table 33-7. R-tree Support Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -637,7 +658,7 @@ CLASS="CALSTABLE"
 >   GiST indexes require seven support functions,
    shown in <A
 HREF="xindex.html#XINDEX-GIST-SUPPORT-TABLE"
->Table 34-8</A
+>Table 33-8</A
 >.
   </P
 ><DIV
@@ -647,7 +668,7 @@ NAME="XINDEX-GIST-SUPPORT-TABLE"
 ></A
 ><P
 ><B
->Table 34-8. GiST Support Functions</B
+>Table 33-8. GiST Support Functions</B
 ></P
 ><TABLE
 BORDER="1"
@@ -718,7 +739,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-EXAMPLE"
->34.14.4. An Example</A
+>33.14.4. An Example</A
 ></H2
 ><P
 >   Now that we have seen the ideas, here is the promised example of
@@ -731,7 +752,7 @@ CLASS="LITERAL"
    a set of operators.  The procedure for defining operators was
    discussed in <A
 HREF="xoper.html"
->Section 34.12</A
+>Section 33.12</A
 >.  For an operator class on
    B-trees, the operators we require are:
 
@@ -961,10 +982,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-OPCLASS-DEPENDENCIES"
->34.14.5. System Dependencies on Operator Classes</A
+>33.14.5. System Dependencies on Operator Classes</A
 ></H2
 ><A
-NAME="AEN31420"
+NAME="AEN30415"
 ></A
 ><P
 >   <SPAN
@@ -1059,7 +1080,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-OPCLASS-FEATURES"
->34.14.6. Special Features of Operator Classes</A
+>33.14.6. Special Features of Operator Classes</A
 ></H2
 ><P
 >   There are two special features of operator classes that we have

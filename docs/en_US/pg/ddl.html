@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta2 Documentation"
+TITLE="PostgreSQL 7.4beta3 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,14 +24,9 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-08-27T02:55:32"></HEAD
+CONTENT="2003-09-15T14:41:50"></HEAD
 ><BODY
 CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -42,29 +37,46 @@ CELLPADDING="0"
 CELLSPACING="0"
 ><TR
 ><TH
-COLSPAN="3"
+COLSPAN="5"
 ALIGN="center"
->PostgreSQL 7.4beta2 Documentation</TH
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
 ></TR
 ><TR
 ><TD
 WIDTH="10%"
 ALIGN="left"
-VALIGN="bottom"
+VALIGN="top"
 ><A
 HREF="sql-expressions.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
 ><TD
-WIDTH="80%"
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
-VALIGN="bottom"
+VALIGN="top"
+><A
+HREF="dml.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
 ><A
 HREF="ddl-system-columns.html"
 ACCESSKEY="N"
@@ -113,22 +125,22 @@ HREF="ddl-constraints.html"
 ><DL
 ><DT
 >5.4.1. <A
-HREF="ddl-constraints.html#AEN1752"
+HREF="ddl-constraints.html#AEN1890"
 >Check Constraints</A
 ></DT
 ><DT
 >5.4.2. <A
-HREF="ddl-constraints.html#AEN1770"
+HREF="ddl-constraints.html#AEN1919"
 >Not-Null Constraints</A
 ></DT
 ><DT
 >5.4.3. <A
-HREF="ddl-constraints.html#AEN1791"
+HREF="ddl-constraints.html#AEN1945"
 >Unique Constraints</A
 ></DT
 ><DT
 >5.4.4. <A
-HREF="ddl-constraints.html#AEN1805"
+HREF="ddl-constraints.html#AEN1967"
 >Primary Keys</A
 ></DT
 ><DT
@@ -152,37 +164,37 @@ HREF="ddl-alter.html"
 ><DL
 ><DT
 >5.6.1. <A
-HREF="ddl-alter.html#AEN1927"
+HREF="ddl-alter.html#AEN2110"
 >Adding a Column</A
 ></DT
 ><DT
 >5.6.2. <A
-HREF="ddl-alter.html#AEN1933"
+HREF="ddl-alter.html#AEN2119"
 >Removing a Column</A
 ></DT
 ><DT
 >5.6.3. <A
-HREF="ddl-alter.html#AEN1937"
+HREF="ddl-alter.html#AEN2126"
 >Adding a Constraint</A
 ></DT
 ><DT
 >5.6.4. <A
-HREF="ddl-alter.html#AEN1943"
+HREF="ddl-alter.html#AEN2135"
 >Removing a Constraint</A
 ></DT
 ><DT
 >5.6.5. <A
-HREF="ddl-alter.html#AEN1951"
+HREF="ddl-alter.html#AEN2146"
 >Changing the Default</A
 ></DT
 ><DT
 >5.6.6. <A
-HREF="ddl-alter.html#AEN1957"
+HREF="ddl-alter.html#AEN2155"
 >Renaming a Column</A
 ></DT
 ><DT
 >5.6.7. <A
-HREF="ddl-alter.html#AEN1961"
+HREF="ddl-alter.html#AEN2162"
 >Renaming a Table</A
 ></DT
 ></DL
@@ -221,7 +233,7 @@ HREF="ddl-schemas.html#DDL-SCHEMAS-PRIV"
 ></DT
 ><DT
 >5.8.5. <A
-HREF="ddl-schemas.html#AEN2117"
+HREF="ddl-schemas.html#DDL-SCHEMAS-CATALOG"
 >The System Catalog Schema</A
 ></DT
 ><DT
@@ -260,9 +272,7 @@ HREF="ddl-depend.html"
   such as views, functions, and triggers.  Detailed information on
   these topics is found in <A
 HREF="server-programming.html"
->Part V in <I
->PostgreSQL 7.4beta2 Documentation</I
-></A
+>Part V</A
 >.
  </P
 ><DIV
@@ -273,6 +283,15 @@ CLASS="SECT1"
 NAME="DDL-BASICS"
 >5.1. Table Basics</A
 ></H1
+><A
+NAME="AEN1743"
+></A
+><A
+NAME="AEN1745"
+></A
+><A
+NAME="AEN1747"
+></A
 ><P
 >   A table in a relational database is much like a table on paper: It
    consists of rows and columns.  The number and order of the columns
@@ -336,6 +355,9 @@ CLASS="TYPE"
 > for values
    containing both date and time.
   </P
+><A
+NAME="AEN1761"
+></A
 ><P
 >   To create a table, you use the aptly named <VAR
 CLASS="LITERAL"
@@ -418,6 +440,9 @@ CLASS="TIP"
    However, defining a table with anywhere near this many columns is
    highly unusual and often a questionable design.
   </P
+><A
+NAME="AEN1779"
+></A
 ><P
 >   If you no longer need a table, you can remove it using the
    <TT
