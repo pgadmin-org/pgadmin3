@@ -57,6 +57,14 @@ frmHelp::frmHelp(frmMain *fr)
     toolBar->AddTool(MNU_REFRESH, wxT("Reload"), barBitmaps[2], wxT("Reload current page."), wxITEM_NORMAL);
     toolBar->Realize();
 
+    wxAcceleratorEntry entries[2];
+
+    entries[0].Set(wxACCEL_ALT, WXK_LEFT,   MNU_BACK);
+    entries[1].Set(wxACCEL_ALT, WXK_RIGHT,  MNU_FORWARD);
+    wxAcceleratorTable accel(2, entries);
+    SetAcceleratorTable(accel);
+
+    
     CreateStatusBar();
     htmlWindow = new ctlHelpWindow(this);
     htmlWindow->SetRelatedFrame(this, APPNAME_L wxT(" - %s"));
@@ -151,8 +159,6 @@ void frmHelp::OnForward(wxCommandEvent &ev)
     currentPage=htmlWindow->GetOpenedPage();
     CheckToolBar();
 }
-
-
 
 
 ctlHelpWindow::ctlHelpWindow(frmHelp *frm) 
