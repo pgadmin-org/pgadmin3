@@ -35,7 +35,7 @@ make all
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
-strip --strip-debug %{_bindir}/%{name}
+strip --strip-debug %{buildroot}/%{_bindir}/%{name}
 
 %clean
 rm -rf %{buildroot}
