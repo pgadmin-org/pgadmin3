@@ -132,7 +132,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         }
     }
 
-    GetServer()->SetLastDatabase(GetName());
+    GetServer()->iSetLastDatabase(GetName());
 
     if (properties)
     {
@@ -161,7 +161,6 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
 
 void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    extern sysSettings *settings;
     pgDatabase *database;
 
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0) {

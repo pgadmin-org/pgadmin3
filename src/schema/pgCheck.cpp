@@ -99,6 +99,7 @@ void pgCheck::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
                 check = new pgCheck(collection->GetSchema(), checks->GetVal(wxT("conname")));
 
                 check->iSetOid(StrToDouble(checks->GetVal(wxT("oid"))));
+                check->iSetTableOid(collection->GetOid());
                 check->iSetDefinition(checks->GetVal(wxT("consrc")));
                 check->iSetFkTable(checks->GetVal(wxT("relname")));
                 check->iSetFkSchema(checks->GetVal(wxT("nspname")));

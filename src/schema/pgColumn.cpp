@@ -159,7 +159,7 @@ void pgColumn::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
         wxLogInfo(msg);
 
         // Get the Columns
-        extern sysSettings *settings;
+
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
             systemRestriction = "\n   AND attnum > 0 AND attisdropped IS FALSE";

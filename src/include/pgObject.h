@@ -88,7 +88,7 @@ public:
 
     virtual wxString GetFullName() const { return name; }
     virtual wxString GetIdentifier() const { return name; }
-    virtual wxString GetFullIdentifier() const {return GetOwner() + wxT(".")+GetFullName(); }
+    virtual wxString GetFullIdentifier() const {return GetName() + wxT(".")+GetFullName(); }
     virtual wxString GetQuotedFullIdentifier() const {return qtIdent(GetOwner()) + wxT(".")+qtIdent(GetFullName()); }
     virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
 

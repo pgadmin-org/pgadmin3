@@ -90,6 +90,7 @@ void pgRule::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
                 rule = new pgRule(collection->GetSchema(), rules->GetVal(wxT("rulename")));
 
                 rule->iSetOid(StrToDouble(rules->GetVal(wxT("oid"))));
+                rule->iSetTableOid(collection->GetOid());
                 rule->iSetDefinition(rules->GetVal(wxT("definition")));
                 rule->iSetDoInstead(StrToBool(rules->GetVal(wxT("is_instead"))));
                 rule->iSetAction(rules->GetVal(wxT("ev_action")));

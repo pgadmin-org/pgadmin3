@@ -48,7 +48,7 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 {
     form->SetDatabase(GetDatabase());
     form->SetButtons(true, true, true, true, true, false, true);
-    GetDatabase()->GetServer()->SetLastSchema(GetName());
+    GetDatabase()->GetServer()->iSetLastSchema(GetName());
 
     if (!expandedKids)
     {
@@ -135,7 +135,6 @@ void pgSchema::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
         msg.Printf(wxT("Adding schemas to database %s"), collection->GetDatabase()->GetIdentifier().c_str());
         wxLogInfo(msg);
 
-        extern sysSettings *settings;
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
             systemRestriction = "   AND nspname NOT LIKE 'pg\\_temp\\_%%'\n";

@@ -18,15 +18,15 @@
 #include "pgTrigger.h"
 #include "pgCollection.h"
 
-// PostgreSQL headers
-// some dummy definitions to make the compiler happy
-#define CATALOG(x) typedef struct x
-#define NameData int
-#define int2 int
-#define int2vector int
-#define bytea int
 
-#include <pg_trigger.h>
+
+// These constants come from pgsql/src/include/catalog/pg_trigger.h
+#define TRIGGER_TYPE_ROW				(1 << 0)
+#define TRIGGER_TYPE_BEFORE				(1 << 1)
+#define TRIGGER_TYPE_INSERT				(1 << 2)
+#define TRIGGER_TYPE_DELETE				(1 << 3)
+#define TRIGGER_TYPE_UPDATE				(1 << 4)
+
 
 pgTrigger::pgTrigger(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, PG_TRIGGER, newName)
@@ -137,6 +137,7 @@ void pgTrigger::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTr
                 trigger = new pgTrigger(collection->GetSchema(), triggers->GetVal(wxT("tgname")));
 
                 trigger->iSetOid(StrToDouble(triggers->GetVal(wxT("oid"))));
+                trigger->iSetTableOid(collection->GetOid());
                 trigger->iSetFunction(triggers->GetVal(wxT("proname")));
                 trigger->iSetEnabled(StrToBool(triggers->GetVal(wxT("tgenabled"))));
                 trigger->iSetTriggerType(StrToLong(triggers->GetVal(wxT("tgtype"))));

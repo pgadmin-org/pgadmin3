@@ -35,7 +35,10 @@ wxString pgIndex::GetCreate()
     wxString str;
 // no functional indexes so far
 
-    str = wxT("CREATE INDEX ") + qtIdent(GetName()) 
+    str = wxT("CREATE ");
+    if (GetIsUnique())
+        str += wxT("INDEX ");
+    str += qtIdent(GetName()) 
         + wxT(" ON ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
 //        + wxT(" USING ") + ????
         + wxT(" (") + GetQuotedColumns() + wxT(")");
@@ -145,7 +148,7 @@ void pgIndex::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
             {
                 index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
                 index->iSetOid(StrToDouble(indexes->GetVal(wxT("oid"))));
-                index->iSetTableOid(StrToDouble(indexes->GetVal(wxT("indrelid"))));
+                index->iSetTableOid(collection->GetOid());
                 index->iSetIsClustered(StrToBool(indexes->GetVal(wxT("indisclustered"))));
                 index->iSetIsUnique(StrToBool(indexes->GetVal(wxT("indisunique"))));
                 index->iSetIsPrimary(StrToBool(indexes->GetVal(wxT("indisprimary"))));

@@ -15,7 +15,8 @@
 #include "pgAdmin3.h"
 #include "pgCollection.h"
 #include "pgServer.h"
-
+#include "pgGroup.h"
+#include "pgUser.h"
 #include "pgLanguage.h"
 #include "pgAggregate.h"
 #include "pgDomain.h"
@@ -122,6 +123,20 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
     {
         case PG_DATABASES:
             pgDatabase::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
+            form->SetButtons(true, true, true, true, false, false, false);
+            if (properties)
+                ShowList(typeNameList[GetType()+1], browser, properties);
+            UpdateChildCount(browser);
+            return;
+        case PG_GROUPS:
+            pgGroup::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
+            form->SetButtons(true, true, true, true, false, false, false);
+            if (properties)
+                ShowList(typeNameList[GetType()+1], browser, properties);
+            UpdateChildCount(browser);
+            return;
+        case PG_USERS:
+            pgUser::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
             form->SetButtons(true, true, true, true, false, false, false);
             if (properties)
                 ShowList(typeNameList[GetType()+1], browser, properties);
