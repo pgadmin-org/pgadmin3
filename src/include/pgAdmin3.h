@@ -18,12 +18,6 @@
 // App headers
 #include "sysSettings.h"
 
-// Application Versions & Name
-#define VERSION wxT("0.1.1 Devel")
-#define APPNAME_L wxT("pgAdmin III")
-#define APPNAME_S wxT("pgadmin3")
-const float SERVER_MIN_VERSION = 7.3f;
-
 // XRC Path
 
 #ifdef __WXMSW__
@@ -33,6 +27,13 @@ const float SERVER_MIN_VERSION = 7.3f;
 #undef VERSION
 #define XRC_PATH wxT("/ui/gtk")
 #endif
+
+// Application Versions & Name
+#define VERSION wxT("0.1.1 Devel")
+#define APPNAME_L wxT("pgAdmin III")
+#define APPNAME_S wxT("pgadmin3")
+const float SERVER_MIN_VERSION = 7.3f;
+
 
 #define XRC_COMMON_PATH wxT("/ui/common")
 
