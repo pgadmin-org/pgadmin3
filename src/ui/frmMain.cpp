@@ -509,6 +509,8 @@ pgObject *frmMain::GetSelectedObject()
     if (data->IsCollection())
     {
 	    wxWindow *win=wxWindow::FindFocus();
+        if (!win)
+            return data;
 		if (win == listViews)
 		{
 		    if (listViews->GetSelection())
