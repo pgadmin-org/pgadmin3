@@ -90,6 +90,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
     EVT_MENU(MNU_OPTIONS, frmMain::OnOptions)
     EVT_MENU(MNU_PASSWORD, frmMain::OnPassword)
+    EVT_MENU(MNU_SAVEDEFINITION, frmMain::OnSaveDefinition)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER, frmMain::OnSelChanged)
@@ -135,12 +136,13 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     mnuHelp->Append(MNU_ABOUT, wxT("&About..."), wxT("Show about dialog."));
     mnuBar->Append(mnuHelp, wxT("&Help"));
 
-    // Add the Menubar
+    // Add the Menubar and set some options
     SetMenuBar(mnuBar);
+    mnuFile->Enable(MNU_PASSWORD, FALSE);
 
     // Status bar
     CreateStatusBar(3);
-    static const int iWidths[3] = {0, -1, 100};
+    int iWidths[3] = {0, -1, 100};
     SetStatusWidths(3, iWidths);
     SetStatusText(wxT(""), 0);
     SetStatusText(wxT("Ready."), 1);
@@ -202,6 +204,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     nbListViews->AddPage(lvStatistics, wxT("Statistics"));
     txtSQLPane = new ctlSQLBox(splHorizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
     txtSQLPane->SetBackgroundColour(*wxLIGHT_GREY);
+    txtSQLPane->SetReadOnly(TRUE);
     splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
     splHorizontal->SetMinimumPaneSize(50);
 
@@ -324,7 +327,38 @@ void frmMain::OnPassword(wxCommandEvent& event)
             wxLogError(wxT("You must select a server before changing your password!"));
             break;
     }
+}
 
+void frmMain::OnSaveDefinition(wxCommandEvent& event)
+{
+
+    wxLogInfo(wxT("Saving object definition"));
+
+    if (txtSQLPane->GetText() == wxT("")) {
+        wxLogError(wxT("There is nothing in the SQL pane to save!"));
+        return;
+    }
+
+    wxFileDialog dlgFile(this, wxT("Select output file"), wxT(""), wxT(""), wxT("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"));
+    dlgFile.SetStyle(wxSAVE | wxOVERWRITE_PROMPT);
+
+    // Show the dialogue
+    if (dlgFile.ShowModal() == wxID_OK) {
+
+        // Write the file
+        wxFile *fSQL = new wxFile(dlgFile.GetPath(), wxFile::write);
+        if (!fSQL->Write(txtSQLPane->GetText())) {
+            wxString szMsg;
+            szMsg.Printf(wxT("Failed to write to the output file: %s"), dlgFile.GetPath().c_str());
+            wxLogError(szMsg);
+        }
+        fSQL->Close();
+        return;
+
+    } else {
+        wxLogInfo(wxT("User cancelled"));
+        return;
+    }
 
 }
 
@@ -396,13 +430,16 @@ void frmMain::ReconnectServer(pgServer *objServer)
 
 void frmMain::OnSelChanged()
 {
-    // Reset the listviews
+    // Reset the listviews/SQL pane
     lvProperties->ClearAll();
     lvProperties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
     lvProperties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
     lvStatistics->ClearAll();
     lvStatistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
     lvStatistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
+    txtSQLPane->SetReadOnly(FALSE);
+    txtSQLPane->SetText(wxT(""));
+    txtSQLPane->SetReadOnly(TRUE);
 
     // Reset the toolbar & password menu option
     SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
@@ -891,4 +928,9 @@ void frmMain::tvDatabase(pgDatabase *objDatabase)
     lvProperties->SetItem(9, 1, BoolToYesNo(objDatabase->GetSystemObject()));
     lvProperties->InsertItem(10, wxT("Comment?"), 0);
     lvProperties->SetItem(10, 1, objDatabase->GetComment());
+
+    // Set the SQL Pane text
+    txtSQLPane->SetReadOnly(FALSE);
+    txtSQLPane->SetText(objDatabase->GetSql());
+    txtSQLPane->SetReadOnly(TRUE);
 }

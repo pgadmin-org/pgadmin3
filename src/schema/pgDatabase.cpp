@@ -123,4 +123,15 @@ bool pgDatabase::GetConnected()
     return bConnected;
 }
 
+wxString pgDatabase::GetSql() const
+{
+    wxString szSQL;
+    szSQL.Printf(wxT("CREATE DATABASE %s WITH ENCODING = %s;"),
+                 this->GetQuotedIdentifier(), qtString(szEncoding));
 
+    if (!this->GetComment().IsEmpty())
+        szSQL.Printf(wxT("%s\nCOMMENT ON DATABASE %s IS %s;"),
+                     szSQL.c_str(), this->GetQuotedIdentifier(), qtString(this->GetComment()));
+
+    return szSQL;
+}

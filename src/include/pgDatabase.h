@@ -37,6 +37,7 @@ public:
     bool GetAllowConnections();
     void iSetAllowConnections(bool bNewVal);
     bool GetConnected();
+    wxString GetSql() const;
 
     int Connect();
 

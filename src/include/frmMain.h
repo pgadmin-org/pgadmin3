@@ -49,6 +49,7 @@ private:
     void OnUpgradeWizard(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);
     void OnPassword(wxCommandEvent& event);
+    void OnSaveDefinition(wxCommandEvent& event);
     void OnSelChanged();
     void OnSelActivated();
     void OnDrop();
