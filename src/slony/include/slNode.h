@@ -46,7 +46,7 @@ public:
     void iSetConnInfo(const wxString s) { connInfo = s; }
     long GetPid() { return pid; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxMenu *GetNewMenu();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

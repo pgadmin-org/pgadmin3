@@ -63,7 +63,7 @@ public:
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }
     
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     bool CanMaintenance() { return true; }
     bool CanBackup() { return connected; }
     bool CanRestore() { return connected; }

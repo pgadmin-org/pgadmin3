@@ -31,9 +31,12 @@ pgIndex::~pgIndex()
 {
 }
 
-bool pgIndex::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgIndex::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP INDEX ") + GetQuotedFullIdentifier() + wxT(";"));
+    wxString sql=wxT("DROP INDEX ") + GetQuotedFullIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 wxString pgIndex::GetCreate()

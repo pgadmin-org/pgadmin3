@@ -37,7 +37,7 @@ pgaSchedule::~pgaSchedule()
 }
 
 
-bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetJobId()));
 }

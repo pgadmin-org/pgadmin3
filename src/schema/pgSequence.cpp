@@ -29,9 +29,12 @@ pgSequence::~pgSequence()
 {
 }
 
-bool pgSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP SEQUENCE ") + GetQuotedFullIdentifier() + wxT(";"));
+    wxString sql = wxT("DROP SEQUENCE ") + GetQuotedFullIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 

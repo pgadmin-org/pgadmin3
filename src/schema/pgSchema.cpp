@@ -55,9 +55,12 @@ wxMenu *pgSchema::GetNewMenu()
 }
 
 
-bool pgSchema::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgSchema::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP SCHEMA ") + GetQuotedFullIdentifier() + wxT(";"));
+    wxString sql = wxT("DROP SCHEMA ") + GetQuotedFullIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 

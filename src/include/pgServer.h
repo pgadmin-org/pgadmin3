@@ -96,7 +96,7 @@ public:
     int GetIcon() { return PGICON_SERVER; }
     wxMenu *GetNewMenu();
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser) { return true; }
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded) { return true; }
     bool CanEdit() { return true; }
     bool CanDrop() { return true; }
 

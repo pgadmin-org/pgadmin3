@@ -247,7 +247,7 @@ void pgDatabase::AppendSchemaChange(const wxString &sql)
     schemaChanges.Append(wxT("\n\n"));
 }
 
-bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     if (useServerConnection)
     {

@@ -40,9 +40,12 @@ pgTrigger::~pgTrigger()
     }
 }
 
-bool pgTrigger::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgTrigger::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable());
+    wxString sql = wxT("DROP TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 

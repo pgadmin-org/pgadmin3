@@ -30,9 +30,12 @@ pgType::~pgType()
 {
 }
 
-bool pgType::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgType::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP TYPE ") + GetQuotedFullIdentifier() + wxT(";"));
+    wxString sql = wxT("DROP TYPE ") + GetQuotedFullIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 wxString pgType::GetSql(wxTreeCtrl *browser)

@@ -35,7 +35,7 @@ slPath::~slPath()
 }
 
 
-bool slPath::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool slPath::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 

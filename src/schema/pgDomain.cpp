@@ -30,9 +30,12 @@ pgDomain::~pgDomain()
 {
 }
 
-bool pgDomain::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgDomain::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP DOMAIN ") + GetQuotedFullIdentifier() + wxT(";"));
+    wxString sql=wxT("DROP DOMAIN ") + GetQuotedFullIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 wxString pgDomain::GetSql(wxTreeCtrl *browser)

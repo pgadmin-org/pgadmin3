@@ -30,9 +30,12 @@ pgFunction::~pgFunction()
 }
 
 
-bool pgFunction::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgFunction::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(");"));
+    wxString sql=wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(")");
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 pgFunction::pgFunction(pgSchema *newSchema, int newType, const wxString& newName)

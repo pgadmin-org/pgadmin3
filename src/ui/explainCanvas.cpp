@@ -94,7 +94,7 @@ void ExplainCanvas::SetExplainString(const wxString &str)
     int x0 = rootShape->GetWidth()*3;
     int y0 = rootShape->GetHeight()*3/2;
     int xoffs = rootShape->GetWidth()*3;
-    int yoffs = rootShape->GetHeight()*3/2;
+    int yoffs = rootShape->GetHeight()*5/4;
 
     wxNode *current = GetDiagram()->GetShapeList()->GetFirst();
     while (current)

@@ -28,9 +28,12 @@ pgCast::~pgCast()
 {
 }
 
-bool pgCast::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgCast::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP CAST (") + GetSourceType() + wxT(" AS ") + GetTargetType() + wxT(")"));
+    wxString sql=wxT("DROP CAST (") + GetSourceType() + wxT(" AS ") + GetTargetType() + wxT(")");
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 wxString pgCast::GetSql(wxTreeCtrl *browser)

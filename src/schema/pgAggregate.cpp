@@ -29,9 +29,12 @@ pgAggregate::~pgAggregate()
 {
 }
 
-bool pgAggregate::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgAggregate::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(");"));
+    wxString sql=wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(")");
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 wxString pgAggregate::GetSql(wxTreeCtrl *browser)

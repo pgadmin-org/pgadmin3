@@ -77,6 +77,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_DISCONNECT,                frmMain::OnDisconnect)
     EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
     EVT_MENU(MNU_DROP,                      frmMain::OnDrop)
+    EVT_MENU(MNU_DROPCASCADED,              frmMain::OnDropCascaded)
     EVT_MENU(MNU_CREATE,                    frmMain::OnCreate)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
     EVT_MENU(MNU_STATUS,                    frmMain::OnStatus)
@@ -722,17 +723,20 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
 
 void frmMain::OnPropSelChanged(wxListEvent& event)
 {
-    wxTreeItemId item=browser->GetSelection();
-    pgObject *data=(pgObject*)browser->GetItemData(item);
-    if (data && data->IsCollection())
+    if (properties->GetSelectedItemCount() == 1)
     {
-        currentObject=((pgCollection*)data)->FindChild(browser, event.GetIndex());
-        if (currentObject)
+        wxTreeItemId item=browser->GetSelection();
+        pgObject *data=(pgObject*)browser->GetItemData(item);
+        if (data && data->IsCollection())
         {
-            setDisplay(currentObject);
-            sqlPane->SetReadOnly(false);
-            sqlPane->SetText(currentObject->GetSql(browser));
-            sqlPane->SetReadOnly(true);
+            currentObject=((pgCollection*)data)->FindChild(browser, event.GetIndex());
+            if (currentObject)
+            {
+                setDisplay(currentObject);
+                sqlPane->SetReadOnly(false);
+                sqlPane->SetText(currentObject->GetSql(browser));
+                sqlPane->SetReadOnly(true);
+            }
         }
     }
 }
@@ -1148,6 +1152,7 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
     }
 
     appendIfEnabled(MNU_DROP);
+    appendIfEnabled(MNU_DROPCASCADED);
     appendIfEnabled(MNU_PROPERTIES);
 
 
@@ -1212,13 +1217,25 @@ void frmMain::OnDelete(wxCommandEvent &ev)
 }
 
 
+void frmMain::OnDropCascaded(wxCommandEvent &ev)
+{
+    execDrop(ev, true);
+}
+
+
 void frmMain::OnDrop(wxCommandEvent &ev)
+{
+    execDrop(ev, false);
+}
+
+
+void frmMain::execDrop(wxCommandEvent &ev, bool cascaded)
 {
     wxTreeItemId item=browser->GetSelection();
     pgCollection *collection = (pgCollection*)browser->GetItemData(item);
 
     if (collection == currentObject)
-        dropSingleObject(currentObject, true);
+        dropSingleObject(currentObject, true, cascaded);
     else
     {
         if (collection && collection->IsCollection())
@@ -1235,14 +1252,24 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 
                 if (properties->GetSelectedItemCount() == 1)
                 {
-                    dropSingleObject(data, true);
+                    dropSingleObject(data, true, cascaded);
                 }
                 else
                 {
-                    if (data->RequireDropConfirm() || settings->GetConfirmDelete())
+                    if (cascaded || data->RequireDropConfirm() || settings->GetConfirmDelete())
                     {
-                        wxMessageDialog msg(this, _("Are you sure you wish to drop multiple objects?"),
-                                _("Drop multiple objects?"), wxYES_NO | wxICON_QUESTION);
+                        wxString text, caption;
+                        if (cascaded)
+                        {
+                            text = _("Are you sure you wish to drop multiple objects including all objects that depend on them?");
+                            caption = _("Drop multiple objects cascaded?");
+                        }
+                        else
+                        {
+                            text = _("Are you sure you wish to drop multiple objects?");
+                            caption = _("Drop multiple objects?");
+                        }
+                        wxMessageDialog msg(this, text, caption, wxYES_NO | wxICON_QUESTION);
                         if (msg.ShowModal() != wxID_YES)
                         {
                             return;
@@ -1262,7 +1289,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
                             return;
                         }
 
-                        done = dropSingleObject(data, false);
+                        done = dropSingleObject(data, false, cascaded);
 
                         if (done)
                         {
@@ -1282,7 +1309,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 }
 
 
-bool frmMain::dropSingleObject(pgObject *data, bool updateFinal)
+bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 {
     if (updateFinal)
     {
@@ -1299,18 +1326,29 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal)
             return false;
         }
 
-        if (data->RequireDropConfirm() || settings->GetConfirmDelete())
+        if (cascaded || data->RequireDropConfirm() || settings->GetConfirmDelete())
         {
-            wxMessageDialog msg(this, wxString::Format(_("Are you sure you wish to drop %s %s?"),
-                    data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str()),
-                    wxString::Format(_("Drop %s?"), data->GetTranslatedTypeName().c_str()), wxYES_NO | wxICON_QUESTION);
+            wxString text, caption;
+            if (cascaded)
+            {
+                text = wxString::Format(_("Are you sure you wish to drop %s %s including all objects that depend on it?"),
+                    data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str());
+                caption = wxString::Format(_("Drop %s cascaded?"), data->GetTranslatedTypeName().c_str());
+            }
+            else
+            {
+                text = wxString::Format(_("Are you sure you wish to drop %s %s?"),
+                    data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str());
+                caption = wxString::Format(_("Drop %s?"), data->GetTranslatedTypeName().c_str());
+            }
+            wxMessageDialog msg(this, text, caption, wxYES_NO | wxICON_QUESTION);
             if (msg.ShowModal() != wxID_YES)
             {
                 return false;
             }
         }
     }
-    bool done=data->DropObject(this, browser);
+    bool done=data->DropObject(this, browser, cascaded);
 
     if (done)
     {

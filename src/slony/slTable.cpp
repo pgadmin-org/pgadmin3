@@ -35,7 +35,7 @@ slTable::~slTable()
 }
 
 
-bool slTable::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool slTable::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 

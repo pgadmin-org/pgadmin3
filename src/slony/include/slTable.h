@@ -40,7 +40,7 @@ public:
     void iSetIndexName(const wxString s) { indexName = s; }
     const wxArrayString &GetTriggers() { return triggers; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

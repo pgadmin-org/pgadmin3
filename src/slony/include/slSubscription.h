@@ -56,7 +56,7 @@ public:
   
     bool CanCreate();
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

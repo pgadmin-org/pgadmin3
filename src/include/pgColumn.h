@@ -83,7 +83,7 @@ public:
     wxString GetSerialSchema() const { return serialSchema; }
     void iSetSerialSchema(const wxString &s) { serialSchema=s; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     bool GetSystemObject() const { return colNumber < 0; }
     wxString GetSql(wxTreeCtrl *browser);
 	wxString GetCommentSql();

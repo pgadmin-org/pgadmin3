@@ -146,7 +146,7 @@ public:
     virtual void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);
     virtual void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
-    virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
+    virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded=false) {return false; }
     virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
     virtual int GetIcon()=0;
 
@@ -155,6 +155,7 @@ public:
     virtual bool CanView() { return false; }
     virtual bool CanEdit() { return false; }
     virtual bool CanDrop() { return false; }
+    virtual bool CanDropCascaded() { return false; }
     virtual bool CanMaintenance() { return false; }
     virtual bool RequireDropConfirm() { return false; }
     virtual bool WantDummyChild() { return false; }

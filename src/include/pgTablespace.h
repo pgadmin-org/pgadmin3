@@ -30,7 +30,7 @@ public:
     wxString GetLocation() const { return location; };
     void iSetLocation(const wxString& newVal) { location = newVal; }
     
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     bool RequireDropConfirm() { return true; }
     pgConn *connection();
 

@@ -32,6 +32,7 @@ public:
     int GetIcon() { return PGICON_CONVERSION; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    bool CanDropCascaded() { return true; }
 
     wxString GetProc() const { return proc; }
     void iSetProc(const wxString &s) { proc=s; }
@@ -44,7 +45,7 @@ public:
     bool GetDefaultConversion() const { return defaultConversion; }
     void iSetDefaultConversion(const bool b) { defaultConversion=b; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

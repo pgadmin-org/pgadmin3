@@ -84,7 +84,7 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
 }
 
 
-bool pgTablespace::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgTablespace::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetConnection()->ExecuteVoid(wxT("DROP TABLESPACE ") + GetQuotedFullIdentifier() + wxT(";"));
 }

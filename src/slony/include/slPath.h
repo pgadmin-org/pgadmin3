@@ -39,7 +39,7 @@ public:
     void iSetConnRetry(long l) { connRetry = l; }
     long GetConnRetry() { return connRetry; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

@@ -108,8 +108,21 @@ wxString frmBackup::GetHelpPage() const
 
 void frmBackup::OnSelectFilename(wxCommandEvent &ev)
 {
-    wxFileDialog file(this, _("Select backup filename"), wxGetHomeDir(), txtFilename->GetValue(), 
-        _("Backup files (*.backup)|*.backup|All files (*.*)|*.*"));
+    wxString title, prompt;
+
+    if (rbxFormat->GetSelection() == 2) // plain
+    {
+        title  = _("Select output file");
+        prompt = _("Query files (*.sql)|*.sql|All files (*.*)|*.*");
+    }
+    else
+    {
+        title  = _("Select backup filename");
+        prompt = _("Backup files (*.backup)|*.backup|All files (*.*)|*.*");
+    }
+
+    
+    wxFileDialog file(this, title, wxGetHomeDir(), txtFilename->GetValue(), prompt);
 
     if (file.ShowModal() == wxID_OK)
     {

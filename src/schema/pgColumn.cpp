@@ -51,7 +51,7 @@ bool pgColumn::IsReferenced()
 }
 
 
-bool pgColumn::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgColumn::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     wxString sql = wxT("ALTER TABLE ") + GetQuotedFullTable();
              sql += wxT(" DROP COLUMN ") + GetQuotedIdentifier();

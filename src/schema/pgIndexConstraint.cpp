@@ -21,7 +21,7 @@
 
 
 
-bool pgIndexConstraint::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgIndexConstraint::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT(
         "ALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())

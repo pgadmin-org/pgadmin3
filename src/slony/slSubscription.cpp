@@ -35,7 +35,7 @@ slSubscription::~slSubscription()
 }
 
 
-bool slSubscription::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool slSubscription::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
         wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 

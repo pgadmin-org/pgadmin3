@@ -47,7 +47,7 @@ wxMenu *pgaJob::GetNewMenu()
 }
 
 
-bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_job WHERE jobid=") + NumToStr(GetJobId()));
 }

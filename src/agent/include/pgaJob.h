@@ -32,7 +32,7 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
 
     wxString GetJobclass() const { return jobclass; }
     void iSetJobclass(const wxString &s) { jobclass=s; }

@@ -35,7 +35,7 @@ pgaStep::~pgaStep()
 }
 
 
-bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobstep WHERE jstid=") + NumToStr(GetJobId()));
 }

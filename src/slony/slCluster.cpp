@@ -62,7 +62,7 @@ wxMenu *slCluster::GetNewMenu()
 }
 
 
-bool slCluster::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool slCluster::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
         wxT("SELECT ") + GetSchemaPrefix() + wxT("uninstallnode();\n")

@@ -34,6 +34,7 @@ public:
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+    bool CanDropCascaded() { return true; }
 
     wxString GetProcArgs() const { return procArgs; }
     wxString GetQuotedTypedColumns() const { return quotedTypedColumns; }
@@ -78,7 +79,7 @@ public:
     void iSetOperatorClassList(const wxString& s) { operatorClassList=s; }
     void iSetProcArgTypeList(const wxString& s) { procArgTypeList=s; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetCreate();
     bool CanRestore() { return true; }
     wxString GetSql(wxTreeCtrl *browser);

@@ -30,9 +30,12 @@ pgOperatorClass::~pgOperatorClass()
 {
 }
 
-bool pgOperatorClass::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgOperatorClass::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP OPERATOR CLASS ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod() + wxT(";"));
+    wxString sql=wxT("DROP OPERATOR CLASS ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)

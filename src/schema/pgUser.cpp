@@ -34,7 +34,7 @@ pgUser::~pgUser()
 
 
 
-bool pgUser::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgUser::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     if (GetUpdateCatalog())
     {

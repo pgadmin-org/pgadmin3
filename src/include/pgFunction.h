@@ -34,6 +34,7 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
     static pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
+    bool CanDropCascaded() { return true; }
 
     wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
     wxString GetArgTypeNames() const { return argTypeNames; }
@@ -70,7 +71,7 @@ public:
     void iSetIsStrict(bool b) { isStrict = b; }
 
     bool CanRestore() { return true; }
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetSql(wxTreeCtrl *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-createfunction"); }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

@@ -35,7 +35,7 @@ slListen::~slListen()
 }
 
 
-bool slListen::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool slListen::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 

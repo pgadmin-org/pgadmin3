@@ -184,6 +184,7 @@ frmMain::frmMain(const wxString& title)
     editMenu->AppendSeparator();
     editMenu->Append(MNU_CREATE, _("&Create"),                    _("Create a new object of the same type as the selected object."));
     editMenu->Append(MNU_DROP, _("&Delete/Drop\tDel"),            _("Delete/Drop the selected object."));
+    editMenu->Append(MNU_DROPCASCADED, _("Drop cascaded"),        _("Drop the selected object and all objects dependent on it."));
     editMenu->Append(MNU_PROPERTIES, _("&Properties"),    		  _("Display/edit the properties of the selected object."));
     menuBar->Append(editMenu, _("&Edit"));
 
@@ -987,6 +988,7 @@ void frmMain::SetButtons(pgObject *obj)
     bool refresh=false,
          create=false,
          drop=false,
+         dropCascaded=false,
          properties=false,
          sql=false,
          viewData=false,
@@ -1006,6 +1008,7 @@ void frmMain::SetButtons(pgObject *obj)
         refresh = true;
         create = obj->CanCreate();
         drop = obj->CanDrop();
+        dropCascaded = obj->CanDropCascaded();
         properties = obj->CanEdit();
         viewData = obj->CanView();
         maintenance = obj->CanMaintenance();
@@ -1053,6 +1056,7 @@ void frmMain::SetButtons(pgObject *obj)
 	// Handle the menus associated with the buttons
 	editMenu->Enable(MNU_CREATE, create);
 	editMenu->Enable(MNU_DROP, drop);
+	editMenu->Enable(MNU_DROPCASCADED, dropCascaded);
 	editMenu->Enable(MNU_PROPERTIES, properties);
 	toolsMenu->Enable(MNU_CONNECT, false);
 	toolsMenu->Enable(MNU_DISCONNECT, false);

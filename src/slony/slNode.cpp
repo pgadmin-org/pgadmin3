@@ -51,7 +51,7 @@ bool slNode::CanDrop()
 }
 
 
-bool slNode::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool slNode::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 

@@ -31,6 +31,7 @@ public:
     void SetSchema(pgSchema *newSchema) { schema = newSchema; }
     pgSchema *GetSchema() const {return schema; }
     int GetIcon() { return PGICON_AGGREGATE; }
+    bool CanDropCascaded() { return true; }
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
@@ -48,7 +49,7 @@ public:
     wxString GetInitialCondition() { return initialCondition; }
     void iSetInitialCondition(const wxString& s) { initialCondition=s; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

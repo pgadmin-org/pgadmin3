@@ -29,7 +29,7 @@ pgOperator::~pgOperator()
 {
 }
 
-bool pgOperator::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgOperator::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     wxString sql = wxT("DROP OPERATOR ") + GetFullIdentifier();
     
@@ -42,6 +42,9 @@ bool pgOperator::DropObject(wxFrame *frame, wxTreeCtrl *browser)
         sql += wxT(", ") + qtTypeIdent(GetLeftType()) + wxT(")");
     else
         sql += wxT(", NONE)");
+
+    if (cascaded)
+        sql += wxT(" CASCADE");
 
     return GetDatabase()->ExecuteVoid(sql);
 }

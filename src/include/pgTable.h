@@ -36,6 +36,7 @@ public:
 
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
+    bool CanDropCascaded() { return true; }
 
     bool GetHasOids() const { return hasOids; }
     void iSetHasOids(bool b) { hasOids=b; }
@@ -60,7 +61,7 @@ public:
     bool GetHasSubclass() const { return hasSubclass; }
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void UpdateRows();
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     bool CanView() { return true; }
     bool CanMaintenance() { return true; }
     bool CanBackup() { return true; }

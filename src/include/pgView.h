@@ -32,8 +32,9 @@ public:
     int GetIcon() { return PGICON_VIEW; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    bool CanDropCascaded() { return true; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     bool CanView() { return true; }
     bool WantDummyChild() { return true; }
 

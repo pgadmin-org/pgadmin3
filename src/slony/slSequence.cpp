@@ -35,7 +35,7 @@ slSequence::~slSequence()
 }
 
 
-bool slSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool slSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 

@@ -31,9 +31,12 @@ pgLanguage::~pgLanguage()
     wxLogInfo(wxT("Destroying a pgLanguage object"));
 }
 
-bool pgLanguage::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgLanguage::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP LANGUAGE ") + GetQuotedFullIdentifier() + wxT(";"));
+    wxString sql=wxT("DROP LANGUAGE ") + GetQuotedFullIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 wxString pgLanguage::GetSql(wxTreeCtrl *browser)

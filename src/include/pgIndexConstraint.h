@@ -19,7 +19,7 @@ class pgIndexConstraint : public pgIndex
 {
 public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browse, bool cascadedr);
     wxString GetDefinition();
     wxString GetCreate();
     wxString GetSql(wxTreeCtrl *browser);

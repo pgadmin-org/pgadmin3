@@ -31,7 +31,7 @@ pgForeignKey::~pgForeignKey()
 }
 
 
-bool pgForeignKey::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgForeignKey::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT(
         "ALTER TABLE ") + GetSchemaPrefix(fkSchema) + qtIdent(fkTable)

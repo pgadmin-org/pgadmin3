@@ -67,7 +67,7 @@ public:
     wxString GetQuotedRefColumns() const { return quotedRefColumns; }
     wxString GetCoveringIndex() const { return coveringIndex; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable"); }

@@ -52,7 +52,7 @@ wxMenu *slSet::GetNewMenu()
 }
 
 
-bool slSet::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool slSet::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 

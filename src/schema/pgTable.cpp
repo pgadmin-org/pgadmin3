@@ -66,9 +66,12 @@ wxString pgTable::GetHelpPage(bool forCreate) const
 }
 
 
-bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP TABLE ") + GetQuotedFullIdentifier() + wxT(";"));
+    wxString sql = wxT("DROP TABLE ") + GetQuotedFullIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 

@@ -46,7 +46,7 @@ public:
     bool GetDeferred() const { return deferred; }
     void iSetDeferred(const bool b) { deferred=b; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable"); }

@@ -39,9 +39,12 @@ wxMenu *pgView::GetNewMenu()
 }
 
 
-bool pgView::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgView::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP VIEW ") + GetQuotedFullIdentifier() + wxT(";"));
+    wxString sql = wxT("DROP VIEW ") + GetQuotedFullIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
 }
 
 wxString pgView::GetSql(wxTreeCtrl *browser)

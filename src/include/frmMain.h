@@ -133,6 +133,7 @@ private:
     void OnNew(wxCommandEvent& event);
     void OnCreate(wxCommandEvent &ev);
     void OnDrop(wxCommandEvent &ev);
+    void OnDropCascaded(wxCommandEvent &ev);
     void OnDelete(wxCommandEvent &ev);
     void OnProperties(wxCommandEvent &ev);
     void OnStartService(wxCommandEvent &ev);
@@ -144,7 +145,8 @@ private:
     void OnOnlineUpdate(wxCommandEvent& event);
     void OnOnlineUpdateNewData(wxCommandEvent& event);
 
-    bool dropSingleObject(pgObject *data, bool updateFinal);
+    void execDrop(wxCommandEvent &ev, bool cascaded);
+    bool dropSingleObject(pgObject *data, bool updateFinal, bool cascaded);
     void doPopup(wxWindow *win, wxPoint point, pgObject *object);
     void appendIfEnabled(int id);
     bool checkAlive();

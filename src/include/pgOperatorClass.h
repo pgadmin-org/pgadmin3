@@ -50,7 +50,7 @@ public:
 
     bool CanCreate() { return false; }
     bool CanEdit() { return false; }
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-createopclass"); }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

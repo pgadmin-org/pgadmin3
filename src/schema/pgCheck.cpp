@@ -30,7 +30,7 @@ pgCheck::~pgCheck()
 }
 
 
-bool pgCheck::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+bool pgCheck::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
         wxT("ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
