@@ -339,7 +339,7 @@ wxString dlgDatabase::GetSql()
             + wxT("\n  WITH ENCODING=") + qtString(cbEncoding->GetValue());
 
         AppendIfFilled(sql, wxT("\n       OWNER="), qtIdent(cbOwner->GetValue()));
-        AppendIfFilled(sql, wxT("\n       TEMPLATE="), cbTemplate->GetValue());
+        AppendIfFilled(sql, wxT("\n       TEMPLATE="), qtIdent(cbTemplate->GetValue()));
         AppendIfFilled(sql, wxT("\n       LOCATION="), txtPath->GetValue());
 
         sql += wxT(";\n");
