@@ -75,15 +75,18 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, cha
 #endif
 
         wxPoint zeroPos=ConvertDialogToPixels(wxPoint(5, 5));
+
+        btnAddPriv = new wxButton(this, CTL_ADDPRIV, _("Add/Change"));
+        wxSize btnSize=btnAddPriv->GetSize();
         wxSize chkSize=ConvertDialogToPixels(wxSize(65,12));
-        wxSize btnSize=ConvertDialogToPixels(wxSize(50,-1)); // preliminary height; will be BestSize
         wxSize spcSize=ConvertDialogToPixels(wxSize(2, 2));
 
         {
             int y = height 
                 - spcSize.GetHeight()
                 - zeroPos.y * 2
-                - chkSize.GetHeight() * (4 + privilegeCount + (needAll ? 0 : 1));
+			    - btnSize.GetHeight()
+                - chkSize.GetHeight() * (3 + privilegeCount + (needAll ? 0 : 1));
 
             lbPrivileges = new ctlListView(this, CTL_LBPRIV, 
                 zeroPos, 
@@ -91,9 +94,7 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, cha
 
             lbPrivileges->CreateColumns(imgList, _("User/Group"), _("Privileges"), -1);
 
-            btnAddPriv = new wxButton(this, CTL_ADDPRIV, _("Add/Change"), 
-                wxPoint(zeroPos.x, y), btnSize);
-            btnSize = btnAddPriv->GetSize();
+			btnAddPriv->Move(wxPoint(zeroPos.x, y)); 
             btnDelPriv = new wxButton(this, CTL_DELPRIV, _("Remove"), 
                 wxPoint(zeroPos.x * 2 + btnSize.GetWidth(), y), btnSize);
             y += zeroPos.y + btnSize.GetHeight();
