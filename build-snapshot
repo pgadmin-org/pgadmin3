@@ -15,13 +15,11 @@ rm -rf ./src
 /usr/bin/cvs update -d -C
 
 # Clean build
-cd src
 /bin/sh bootstrap
 ./configure --with-pgsql=$PGDIR --with-wx=$WXDIR
 make clean
 make all
-/usr/bin/strip pgAdmin3
-cd ..
+/usr/bin/strip src/pgAdmin3
 
 # Build a clean distro
 mkdir ./pgadmin3
