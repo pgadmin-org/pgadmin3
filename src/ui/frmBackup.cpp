@@ -75,6 +75,12 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     // Icon
     SetIcon(wxIcon(backup_xpm));
 
+	// fix translation problem
+	wxString dollarLabel=wxGetTranslation(_("Disable $$ quoting"));
+	dollarLabel.Replace(wxT("$$"), wxT("$"));
+	chkDisableDollar->SetLabel(dollarLabel);
+	chkDisableDollar->SetSize(chkDisableDollar->GetBestSize());
+
     txtMessages = CTRL_TEXT("txtMessages");
     txtMessages->SetMaxLength(0L);
     btnOK->Disable();
@@ -140,7 +146,6 @@ void frmBackup::OnChangePlain(wxCommandEvent &ev)
 wxString frmBackup::GetCmd(int step)
 {
     wxString cmd = getCmdPart1();
-    pgServer *server=object->GetDatabase()->GetServer();
 
     return cmd + getCmdPart2();
 }
@@ -149,7 +154,6 @@ wxString frmBackup::GetCmd(int step)
 wxString frmBackup::GetDisplayCmd(int step)
 {
     wxString cmd = getCmdPart1();
-    pgServer *server=object->GetDatabase()->GetServer();
 
     return cmd + getCmdPart2();
 }
