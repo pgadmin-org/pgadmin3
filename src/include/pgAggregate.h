@@ -46,6 +46,7 @@ public:
     wxString GetInitialCondition() { return initialCondition; }
     void iSetInitialCondition(const wxString& s) { initialCondition=s; }
 
+    wxString GetSql(wxTreeCtrl *browser);
 
 private:
     pgSchema *schema;

@@ -29,6 +29,25 @@ pgAggregate::~pgAggregate()
 }
 
 
+wxString pgAggregate::GetSql(wxTreeCtrl *browser)
+{
+    if (sql.IsNull())
+    {
+        sql = wxT("CREATE AGGREGATE ") + GetQuotedFullIdentifier() 
+            + wxT("(BASETYPE=") + GetFinalType()
+            + wxT(", SFUNC=") + GetStateFunction()
+            + wxT(", STYPE=") + GetStateType();
+        if (!GetFinalFunction())
+            sql += wxT(", FFUNC=") + GetFinalFunction();
+        if (!GetInitialCondition().IsNull())
+            sql += wxT(", INITCOND=") + GetInitialCondition();
+        sql += wxT(");\n");
+    }
+
+    return sql;
+}
+
+
 wxString pgAggregate::GetFullName() const
 {
     return GetName() + wxT("(") + GetInputType() + wxT(")");
