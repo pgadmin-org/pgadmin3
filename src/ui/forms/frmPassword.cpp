@@ -20,7 +20,7 @@
 // Icons
 #include "../../images/pgAdmin3.xpm"
 
-BEGIN_EVENT_TABLE(frmOptions, wxDialog)
+BEGIN_EVENT_TABLE(frmPassword, wxDialog)
   EVT_BUTTON (XRCID("btnOK"), frmPassword::OnOK)
   EVT_BUTTON (XRCID("btnCancel"), frmPassword::OnCancel)
 END_EVENT_TABLE()
