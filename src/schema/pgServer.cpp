@@ -134,6 +134,9 @@ bool pgServer::Disconnect(frmMain *form)
 }
 
 
+#define SERVICEBUFSIZE  10000
+
+
 bool pgServer::StartService()
 {
     bool done=false;
@@ -145,14 +148,56 @@ bool pgServer::StartService()
         {
             DWORD rc = ::GetLastError();
             if (rc == ERROR_SERVICE_ALREADY_RUNNING)
+            {
+                GetServerRunning();
                 return true;
-
+            }
             // report error
             wxLogError(__("Failed to start server %s: Errcode=%d\nCheck event log for details."),
                 serviceId.c_str(), rc);
         }
         else
+        {
             GetServerRunning();     // ignore result, just to wait for startup
+
+            LPENUM_SERVICE_STATUS sbuf = (LPENUM_SERVICE_STATUS) new char[SERVICEBUFSIZE];
+            DWORD bytesNeeded, servicesReturned=0;
+            ::EnumDependentServices(serviceHandle, SERVICE_INACTIVE, sbuf, SERVICEBUFSIZE, &bytesNeeded, &servicesReturned);
+            if (servicesReturned > 0)
+            {
+                DWORD i;
+                wxString services;
+                for (i=0 ; i < servicesReturned ; i++)
+                    services += wxT("   ") + wxString(sbuf[i].lpDisplayName) + wxT("\n");
+
+                wxMessageDialog msg(0, _("There are dependent services configured:\n\n")
+                        + services + _("\nStart dependent services too?"), _("Dependent services running"),
+                            wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
+                
+                if (msg.ShowModal() == wxID_YES)
+                {
+                    for (i=0 ; i < servicesReturned ; i++)
+                    {
+                        SC_HANDLE h=::OpenService(scmHandle, sbuf[i].lpServiceName, GENERIC_EXECUTE|GENERIC_READ);
+                        if (h)
+                        {
+                            if (!::StartService(h, 0, 0))
+                                done=false;
+                            CloseServiceHandle(h);
+                        }
+                        else
+                            done=false;
+                    }
+                    if (!done)
+                    {
+                        wxMessageDialog msg(0, _("One or more dependent services didn't start; see the eventlog for details."), _("Service start problem"),
+                                    wxICON_EXCLAMATION |wxOK);
+                        msg.ShowModal();
+                        done=true;
+                    }
+                }
+            }
+        }
     }
 #else
 	wxString res = ExecProcess(serviceId + wxT(" start"));
@@ -169,13 +214,51 @@ bool pgServer::StopService()
     if (serviceHandle)
     {
         SERVICE_STATUS st;
+
         done = (::ControlService(serviceHandle, SERVICE_CONTROL_STOP, &st) != 0);
         if (!done)
         {
-            DWORD rc = ::GetLastError();
+            if (::GetLastError() == ERROR_DEPENDENT_SERVICES_RUNNING)
+            {
+                LPENUM_SERVICE_STATUS sbuf = (LPENUM_SERVICE_STATUS) new char[SERVICEBUFSIZE];
+                DWORD bytesNeeded, servicesReturned=0;
+                ::EnumDependentServices(serviceHandle, SERVICE_ACTIVE, sbuf, SERVICEBUFSIZE, &bytesNeeded, &servicesReturned);
+                
+                done=true;
+
+                if (servicesReturned)
+                {
+                    DWORD i;
+                    wxString services;
+                    for (i=0 ; i < servicesReturned ; i++)
+                        services += wxT("   ") + wxString(sbuf[i].lpDisplayName) + wxT("\n");
+
+                    wxMessageDialog msg(0, _("There are dependent services running:\n\n")
+                            + services + _("\nStop dependent services?"), _("Dependent services running"),
+                                wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
+                    if (msg.ShowModal() != wxID_YES)
+                        return false;
+
+                    for (i=0 ; done && i < servicesReturned ; i++)
+                    {
+                        SC_HANDLE h=::OpenService(scmHandle, sbuf[i].lpServiceName, GENERIC_EXECUTE|GENERIC_READ);
+                        if (h)
+                        {
+                            done = (::ControlService(h, SERVICE_CONTROL_STOP, &st) != 0);
+                            CloseServiceHandle(h);
+                        }
+                        else
+                            done=false;
+                    }
+                    if (done)
+                        done = (::ControlService(serviceHandle, SERVICE_CONTROL_STOP, &st) != 0);
+                }
+            }
             // report error
-            wxLogError(__("Failed to stop server %s: Errcode=%d\nCheck event log for details."),
-                serviceId.c_str(), rc);
+
+            if (!done)
+                wxLogError(__("Failed to stop server %s: Errcode=%d\nCheck event log for details."),
+                    serviceId.c_str(), ::GetLastError());
         }
     }
 #else
