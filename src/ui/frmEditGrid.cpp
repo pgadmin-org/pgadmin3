@@ -300,7 +300,7 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
         wxString str;
         for (i=0 ; i < rows.GetCount() ; i++)
         {
-            str.Append(sqlGrid->GetTable()->GetExportLine(i));
+            str.Append(sqlGrid->GetTable()->GetExportLine(rows.Item(i)));
     
             if (rows.GetCount() > 1)
                 str.Append(END_OF_LINE);
