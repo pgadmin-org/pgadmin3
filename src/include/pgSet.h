@@ -21,6 +21,16 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 
+
+typedef enum
+{
+    PGTYPCLASS_NUMERIC,
+    PGTYPCLASS_BOOL,
+    PGTYPCLASS_STRING,
+    PGTYPCLASS_DATE,
+    PGTYPCLASS_OTHER
+} pgTypClass;
+
 // Class declarations
 class pgSet
 {
@@ -39,13 +49,15 @@ public:
     bool Bof() const { return (!nRows || pos < 1); }
     bool Eof() const { return (!nRows || pos > nRows); }
     wxString ColName(int col) const;
-    Oid ColTypeOid(int col) const;
+    OID ColTypeOid(int col) const;
     wxString ColType(int col) const;
+    pgTypClass ColTypClass(int col) const;
 
-    Oid GetInsertedOid() const { return PQoidValue(res); }
+    OID GetInsertedOid() const { return PQoidValue(res); }
     int ColSize(int col) const { return PQfsize(res, col); }
     int ColScale(int col) const;
     int ColNumber(const wxString &colName) const;
+
 
     wxString GetVal(const int col) const;
     wxString GetVal(const wxString& col) const;

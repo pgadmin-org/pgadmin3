@@ -14,7 +14,7 @@
 // PostgreSQL headers
 #include <libpq-fe.h>
 
-// Network headers
+
 
 #if 0
 #ifdef __WXMSW__
@@ -30,6 +30,7 @@
 #include "pgConn.h"
 #include "pgAdmin3.h"
 #include "sysLogger.h"
+#include "pgDefs.h"
 
 pgSet::pgSet(PGresult *newRes, PGconn *newConn)
 {
@@ -62,9 +63,49 @@ pgSet::~pgSet()
 
 
 
-Oid pgSet::ColTypeOid(int col) const
+OID pgSet::ColTypeOid(int col) const
 {
     return PQftype(res, col);
+}
+
+
+pgTypClass pgSet::ColTypClass(int col) const
+{
+    wxString typoid=ExecuteScalar(
+        wxT("SELECT CASE WHEN typbasetype=0 THEN oid else typbasetype END AS basetype\n")
+        wxT("  FROM pg_type WHERE oid=") + NumToStr(ColTypeOid(col)));
+
+    switch (StrToLong(typoid))
+    {
+        case PGOID_TYPE_BOOL:
+            return PGTYPCLASS_BOOL;
+
+        case PGOID_TYPE_INT8:
+        case PGOID_TYPE_INT2:
+        case PGOID_TYPE_INT4:
+        case PGOID_TYPE_OID:
+        case PGOID_TYPE_XID:
+        case PGOID_TYPE_TID:
+        case PGOID_TYPE_CID:
+        case PGOID_TYPE_FLOAT4:
+        case PGOID_TYPE_FLOAT8:
+        case PGOID_TYPE_MONEY:
+        case PGOID_TYPE_BIT:
+        case PGOID_TYPE_NUMERIC:
+            return PGTYPCLASS_NUMERIC;
+        case PGOID_TYPE_BYTEA:
+        case PGOID_TYPE_CHAR:
+        case PGOID_TYPE_NAME:
+        case PGOID_TYPE_TEXT:
+        case PGOID_TYPE_VARCHAR:
+            return PGTYPCLASS_STRING;
+        case PGOID_TYPE_TIMESTAMP:
+        case PGOID_TYPE_TIME:
+        case PGOID_TYPE_INTERVAL:
+            return PGTYPCLASS_DATE;
+        default:
+            return PGTYPCLASS_OTHER;
+    }
 }
 
 
