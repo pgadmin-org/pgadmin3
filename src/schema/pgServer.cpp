@@ -60,13 +60,7 @@ wxString pgServer::GetFullName() const
 
 int pgServer::Connect(wxFrame *form, bool lockFields) 
 {
-    wxLogInfo(wxT("Getting connection details..."));
-
     wxLogInfo(wxT("Attempting to create a connection object..."));
-    StartMsg(wxT("Connecting to database without password"));
-
-//    if (lockFields && !database.IsNull() && !username.IsNull() && port)
-//        conn= new pgConn(GetName(), database, username, password, port);   
 
     if (!conn || conn->GetStatus() != PGCONN_OK)
     {
@@ -100,14 +94,17 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
             if (!trusted)
                 iSetPassword(winConnect.GetPassword());
         }
-        StartMsg(wxT("Connecting to database"));
+        if (password.IsNull())
+            StartMsg(wxT("Connecting to database without password"));
+        else
+            StartMsg(wxT("Connecting to database"));
         conn = new pgConn(GetName(), database, username, password, port);   
-	    if (!conn) {
+        EndMsg();
+        if (!conn) {
             wxLogError(wxT("Couldn't create a connection object!"));
             return PGCONN_BAD;
         }
     }
-    EndMsg();
     int status = conn->GetStatus();
     if (status == PGCONN_OK) {
 
@@ -190,10 +187,10 @@ wxString pgServer::GetLastError() const
         if (conn->GetLastError() != wxT("")) {
             msg.Printf(wxT("%s\n%s"), error.c_str(), conn->GetLastError().c_str());
         } else {
-            msg.Printf(wxT("%s"), error.c_str());
+            msg=error;
         }
     } else {
-        msg.Printf(wxT("%s"), conn->GetLastError().c_str());
+        msg=conn->GetLastError();
     }
     return msg;
 }
