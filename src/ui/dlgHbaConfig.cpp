@@ -29,6 +29,7 @@ BEGIN_EVENT_TABLE(dlgHbaConfig, DialogWithHelp)
     EVT_BUTTON (wxID_OK,                dlgHbaConfig::OnOK)
     EVT_BUTTON (wxID_CANCEL,            dlgHbaConfig::OnCancel)
     EVT_BUTTON(wxID_REFRESH,	     	dlgHbaConfig::OnAddValue)
+    EVT_CHECKBOX(XRCID("chkEnabled"),   dlgHbaConfig::OnChange)
     EVT_COMBOBOX(XRCID("cbType"),       dlgHbaConfig::OnChange)
     EVT_TEXT(XRCID("cbDatabase"),       dlgHbaConfig::OnChange)
     EVT_TEXT(XRCID("cbUser"),           dlgHbaConfig::OnChange)
@@ -309,6 +310,7 @@ void dlgHbaConfig::OnOK(wxCommandEvent& ev)
     line->ipaddress = txtIPaddress->GetValue();
     line->method = (pgHbaConfigLine::pgHbaMethod)cbMethod->GetSelection();
     line->option = txtOption->GetValue();
+    line->changed = true;
 
     EndModal(wxID_OK);
 }

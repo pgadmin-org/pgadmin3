@@ -257,13 +257,14 @@ void frmHbaConfig::OnEditSetting(wxListEvent& event)
         if (lines.Item(i).item == pos)
         {
             pgHbaConfigLine &line = lines.Item(i);
+            bool isLastLine = (i == lines.GetCount()-1 && line.isComment && !line.GetConnectType());
 
             dlgHbaConfig dlg(this, &line, conn);
             if (dlg.Go() == wxID_OK)
             {
                 UpdateDisplay(line);
 
-                if (line.isComment && !line.GetConnectType())
+                if (isLastLine)
                 {
                     long pos=listEdit->AppendItem(0, wxEmptyString);
                     pgHbaConfigLine *line=new pgHbaConfigLine();

@@ -359,16 +359,22 @@ const wxChar *pgHbaMethodStrings[] =
 };
 
 
+bool IsSpaceChar(wxChar c, const wxChar *spaceChars=wxT("\t "))
+{
+    return wxStrchr(spaceChars, c) != NULL;
+}
+
+
 void SkipSpace(const wxChar* &ptr, const wxChar *spaceChars=wxT("\t "))
 {
-    while (*ptr && wxStrchr(wxT("\t "), *ptr))
+    while (*ptr && IsSpaceChar(*ptr))
         ptr++;
 }
 
 
 void SkipNonspace(const wxChar* &ptr, const wxChar *spaceChars=wxT("\t "))
 {
-    while (*ptr && !wxStrchr(wxT("\t "), *ptr))
+    while (*ptr && !IsSpaceChar(*ptr))
         ptr++;
 }
 
@@ -385,6 +391,7 @@ pgHbaConfigLine::pgHbaConfigLine(const wxString &line)
 void pgHbaConfigLine::Init(const wxString &line)
 {
     connectType = PGC_INVALIDCONF;
+    changed = false;
 
     if (line.IsEmpty())
         return;
@@ -426,7 +433,7 @@ void pgHbaConfigLine::Init(const wxString &line)
 
     while (*p2)
     {
-        if (wxStrchr(wxT("\n "), *p2) && !quoted)
+        if (!quoted && IsSpaceChar(*p2))
             break;
         if (*p2 == '"')
             quoted ^= quoted;
@@ -442,7 +449,7 @@ void pgHbaConfigLine::Init(const wxString &line)
     quoted=false;
     while (*p3)
     {
-        if (wxStrchr(wxT("\n "), *p3) && !quoted)
+        if (!quoted && IsSpaceChar(*p3))
             break;
         if (*p3 == '"')
             quoted ^= quoted;
@@ -462,7 +469,7 @@ void pgHbaConfigLine::Init(const wxString &line)
     else
     {
         bool hasCidr=false;
-        while (*p4 && !wxStrchr(wxT("\n "), *p4))
+        while (*p4 && !IsSpaceChar(*p4))
         {
             if (*p4 == '/')
                 hasCidr=true;
@@ -516,17 +523,26 @@ const wxChar *pgHbaConfigLine::GetMethod()
 
 wxString pgHbaConfigLine::GetText()
 {
-    if (!DidChange())
+    if (!changed)
         return text;
 
     wxString str;
+    wxString tabspace=wxT("\t ");
+    if (isComment)
+        str = wxT("# ");
+
+    str += GetConnectType() 
+        +  tabspace + database
+        +  tabspace + user;
+
+    if (connectType != PGC_LOCAL)
+        str += tabspace + ipaddress;
+
+    str += tabspace + GetMethod();
+
+    if (connectType >= PGC_IDENT && !option.IsEmpty())
+        str += tabspace + option;
+
     return str;
 }
 
-
-bool pgHbaConfigLine::DidChange()
-{
-    if (isComment)
-        return false;
-    return false;
-}

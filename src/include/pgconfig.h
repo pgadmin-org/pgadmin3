@@ -55,7 +55,6 @@ public:
     wxString GetText();
     const wxChar *GetConnectType();
     const wxChar *GetMethod();
-    bool DidChange();
     void Init(const wxString &line);
 
     enum pgHbaConnectType
@@ -88,6 +87,7 @@ public:
     long item;
 
     bool isComment;
+    bool changed;
 };
 
 class pgSettingItem
