@@ -454,7 +454,7 @@ bool pgSchemaObject::GetSystemObject() const
 {
     if (!schema)
         return false;
-    return schema->GetOid() < GetConnection()->GetLastSystemOID();
+    return GetOid() < GetConnection()->GetLastSystemOID();
 }
 
 

@@ -1048,6 +1048,10 @@ SOURCE=.\include\images\operatorclass.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\pgAdmin3.ico
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\pgAdmin3.xpm
 # End Source File
 # Begin Source File
