@@ -62,16 +62,16 @@ enum
 // Toolbar buttons
 enum
 {
-    BTN_CONNECT = 101,
-    BTN_REFRESH = 102,
-    BTN_CREATE = 103,
-    BTN_DROP = 104,
-    BTN_PROPERTIES = 105,
-    BTN_SQL = 106,
-    BTN_VIEWDATA = 107,
-    BTN_VACUUM = 108,
-    BTN_RECORD = 109,
-    BTN_STOP = 110,
+    BTN_CONNECT = 201,
+    BTN_REFRESH = 202,
+    BTN_CREATE = 203,
+    BTN_DROP = 204,
+    BTN_PROPERTIES = 205,
+    BTN_SQL = 206,
+    BTN_VIEWDATA = 207,
+    BTN_VACUUM = 208,
+    BTN_RECORD = 209,
+    BTN_STOP = 210,
 };
 
 #endif
