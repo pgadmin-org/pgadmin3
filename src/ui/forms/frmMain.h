@@ -11,15 +11,11 @@
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/textctrl.h>
+#include <wx/notebook.h>
 
 // Class declarations
 class frmMain : public wxFrame
 {
-protected:
-  wxTreeCtrl* CreateTreeCtrl();
-  wxListCtrl* CreateListCtrl();
-  wxTextCtrl* CreateTextCtrl();
-
 public:
   frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
   void OnExit(wxCommandEvent& event);
@@ -29,6 +25,11 @@ public:
   wxToolBar *tlBar;
 
 private:
+  wxTreeCtrl* tvBrowser;
+  wxListCtrl* lvProperties;
+  wxListCtrl* lvStatistics;
+  wxTextCtrl* txtSQLPane;
+  wxNotebook* nbListViews;
   DECLARE_EVENT_TABLE()
 };
 

@@ -13,21 +13,8 @@
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/textctrl.h>
-
-// fl framework headers
-#include <wx/fl/controlbar.h>
-#include <wx/fl/barhintspl.h>    // bevel for bars with "X"s and grooves
-#include <wx/fl/rowdragpl.h>     // NC-look with draggable rows
-#include <wx/fl/cbcustom.h>      // customization plugin
-#include <wx/fl/hintanimpl.h>
-#include <wx/fl/gcupdatesmgr.h>  // smooth d&d
-#include <wx/fl/antiflickpl.h>   // double-buffered repaint of decorations
-#include <wx/fl/dyntbar.h>       // auto-layout toolbar
-#include <wx/fl/dyntbarhnd.h>    // control-bar dimension handler for it
-#include <wx/fl/panedrawpl.h>
-#include <wx/fl/bardragpl.h>
-#include <wx/fl/cbcustom.h>
-
+#include <wx/notebook.h>
+#include <wx/splitter.h>
 
 // App headers
 #include "../pgAdmin3.h"
@@ -106,72 +93,48 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
   stBar = GetStatusBar();
   // tlBar = GetToolBar();
 
-  int cbWidth  = 90;
-  int cbHeight = 60;
+  // Setup the vertical splitter & treeview
+  wxSplitterWindow* splVertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
+  wxSplitterWindow* splHorizontal = new wxSplitterWindow(splVertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
+  tvBrowser = new wxTreeCtrl(splVertical, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
+  splVertical->SplitVertically(tvBrowser, splHorizontal, 200);
+  splVertical->SetMinimumPaneSize(50);
 
-  wxPanel* pArea = new wxPanel();  
-  pArea->Create( this, -1 );
-  wxFrameLayout* pLayout = new wxFrameLayout(this, pArea, TRUE);
-  pLayout->SetUpdatesManager(new cbGCUpdatesMgr());  
-  pLayout->PushDefaultPlugins();
-  pLayout->AddPlugin(CLASSINFO(cbSimpleCustomizationPlugin));
-  pLayout->AddPlugin(CLASSINFO(cbBarDragPlugin));
-  pLayout->AddPlugin(CLASSINFO(cbPaneDrawPlugin));
-  pLayout->AddPlugin(CLASSINFO(cbBarHintsPlugin));
-  pLayout->AddPlugin(CLASSINFO(cbHintAnimationPlugin));
-  pLayout->AddPlugin(CLASSINFO(cbRowDragPlugin ));
-  pLayout->AddPlugin(CLASSINFO(cbAntiflickerPlugin));
-  pLayout->AddPlugin(CLASSINFO(cbSimpleCustomizationPlugin));
-  
-  cbDimInfo dimTreeView(200,200, 300,300, 200,450, FALSE, 3, 3);
-  cbDimInfo dimListView(200,500, 300,300, 450,200, FALSE, 3, 3);
-  cbDimInfo dimSQLView(200,500, 300,300, 350,250, FALSE, 3, 3);
+  // Setup the horizontal splitter for the listview & sql pane
+  wxNotebook* nbListViews = new wxNotebook(splHorizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
+  lvProperties = new wxListCtrl(nbListViews, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
+  lvStatistics = new wxListCtrl(nbListViews, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
+  nbListViews->AddPage(lvProperties, "Properties");
+  nbListViews->AddPage(lvStatistics, "Statistics");
+  txtSQLPane = new wxTextCtrl(splHorizontal, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
+  txtSQLPane->SetBackgroundColour(*wxLIGHT_GREY);
+  splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
+  splHorizontal->SetMinimumPaneSize(50);
 
-  pLayout->AddBar(CreateTreeCtrl(), dimTreeView, FL_ALIGN_LEFT, 0, 0,   "TreeView");
-  pLayout->AddBar(CreateListCtrl(), dimListView, FL_ALIGN_RIGHT, 0, 0,   "ListView");
-  pLayout->AddBar(CreateTextCtrl(), dimSQLView, FL_ALIGN_RIGHT, 0, 1,   "SQL");
+  // Add some treeview items
+  wxTreeItemId itmDummy = tvBrowser->AddRoot("Root node");
+	tvBrowser->AppendItem(itmDummy, "Child Node #1");
+	tvBrowser->AppendItem(itmDummy, "Child Node #2");
+	tvBrowser->Expand(itmDummy);
+	itmDummy = tvBrowser->AppendItem(itmDummy, "Child Node #3");
+	tvBrowser->AppendItem(itmDummy, "Child Node #4");
+	tvBrowser->AppendItem(itmDummy, "Child Node #5");
 
-  pLayout->RecalcLayout();
-}
-
-wxTreeCtrl* frmMain::CreateTreeCtrl()
-{
-  wxTreeCtrl* pTree = new wxTreeCtrl(this, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSUNKEN_BORDER);
-
-  // Add some items
-  wxTreeItemId pTreeItem = pTree->AddRoot("Root node");
-	pTree->AppendItem(pTreeItem, "Child Node #1");
-	pTree->AppendItem(pTreeItem, "Child Node #2");
-	pTree->Expand(pTreeItem);
-	pTreeItem = pTree->AppendItem(pTreeItem, "Child Node #3");
-	pTree->AppendItem(pTreeItem, "Child Node #4");
-	pTree->AppendItem(pTreeItem, "Child Node #5");
-
-  return pTree;
-}
-
-wxListCtrl* frmMain::CreateListCtrl()
-{
-  wxListCtrl* pList = new wxListCtrl(this, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSUNKEN_BORDER);
-
-  // Add some items
-	pList->InsertColumn(1, "This is Column #1", wxLIST_FORMAT_LEFT, 200);
-	pList->InsertColumn(2, "This is Column #2", wxLIST_FORMAT_LEFT, 200);
-	pList->InsertItem(1, "This is Listview item #1");
-	pList->InsertItem(1, "This is Listview item #2");
-	pList->InsertItem(1, "This is Listview item #3");
-
-  return pList;
-}
-
-wxTextCtrl* frmMain::CreateTextCtrl()
-{
-  wxTextCtrl* pText = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxSUNKEN_BORDER);
+  // Add some listview items
+	lvProperties->InsertColumn(1, "Property", wxLIST_FORMAT_LEFT, 100);
+	lvProperties->InsertColumn(2, "Value", wxLIST_FORMAT_LEFT, 400);
+	lvProperties->InsertItem(1, "Property #1");
+	lvProperties->InsertItem(1, "Property #2");
+	lvProperties->InsertItem(1, "Property #3");
+	lvStatistics->InsertColumn(1, "Statistic", wxLIST_FORMAT_LEFT, 100);
+	lvStatistics->InsertColumn(2, "Value", wxLIST_FORMAT_LEFT, 400);
+	lvStatistics->InsertItem(1, "Statistic #1");
+	lvStatistics->InsertItem(1, "Statistic #2");
+	lvStatistics->InsertItem(1, "Statistic #3");
 
   // Add some text
-  pText->SetValue("SQL Pane");
+  txtSQLPane->SetValue("SQL Pane");
 
-  return pText;
 }
 
 // Event handlers
