@@ -22,12 +22,12 @@
 class frmAbout : public wxDialog
 {
 public:
-  frmAbout(wxFrame *parent);
-  void OnPaint(wxPaintEvent&);
-  
+    frmAbout(wxFrame *parent);
+    void OnPaint(wxPaintEvent&);
+    
 private:
-  wxBitmap imgAbout;
-  DECLARE_EVENT_TABLE()
+    wxBitmap imgAbout;
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

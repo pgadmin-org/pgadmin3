@@ -156,7 +156,7 @@ SOURCE=.\utils\sysLogger.h
 # End Group
 # Begin Group "Resource Files"
 
-# PROP Default_Filter "rc,ico"
+# PROP Default_Filter "rc"
 # Begin Source File
 
 SOURCE=.\ui\pgAdmin3.rc
@@ -172,10 +172,18 @@ SOURCE=.\Makefile
 # End Group
 # Begin Group "Images"
 
-# PROP Default_Filter "ico,jpg,xpm"
+# PROP Default_Filter "xpm"
 # Begin Source File
 
-SOURCE=.\images\pgAdmin3.ico
+SOURCE=.\images\connect.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\create.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\drop.xpm
 # End Source File
 # Begin Source File
 
@@ -183,7 +191,35 @@ SOURCE=.\images\pgAdmin3.xpm
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\splash.jpg
+SOURCE=.\images\properties.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\record.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\refresh.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\splash.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\sql.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\stop.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\vacuum.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\viewdata.xpm
 # End Source File
 # End Group
 # End Target

@@ -22,12 +22,12 @@
 class frmSplash : public wxFrame
 {
 public:
-  frmSplash(wxFrame *parent);
-  void OnPaint(wxPaintEvent&);
-  
+    frmSplash(wxFrame *parent);
+    void OnPaint(wxPaintEvent&);
+    
 private:
-  wxBitmap imgSplash;
-  DECLARE_EVENT_TABLE()
+    wxBitmap imgSplash;
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

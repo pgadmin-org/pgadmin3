@@ -16,6 +16,12 @@
 #include "../../pgAdmin3.h"
 #include "frmSplash.h"
 
+// Icons
+#include "../../images/pgAdmin3.xpm"
+
+// Splash
+#include "../../images/splash.xpm"
+
 BEGIN_EVENT_TABLE(frmSplash, wxFrame)
 EVT_PAINT(frmSplash::OnPaint)
 END_EVENT_TABLE()
@@ -23,16 +29,22 @@ END_EVENT_TABLE()
 frmSplash::frmSplash(wxFrame *parent)
 : wxFrame(parent, -1, "", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW)
 {
-  imgSplash = wxBitmap("images/splash.jpg", wxBITMAP_TYPE_JPEG);
-  SetClientSize(imgSplash.GetWidth(), imgSplash.GetHeight());
-  wxString szVersion = "Version: ";
-  szVersion.Append(VERSION);
-  wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
-  Center();
+    
+    // Icon
+    SetIcon(wxIcon(pgadmin3_xpm));
+    
+    // Image
+    imgSplash = wxBitmap(splash_xpm);
+    
+    SetClientSize(imgSplash.GetWidth(), imgSplash.GetHeight());
+    wxString szVersion = "Version: ";
+    szVersion.Append(VERSION);
+    wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
+    Center();
 }
 
 void frmSplash::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-  wxPaintDC dc(this);
-  dc.DrawBitmap(imgSplash, 0, 0);
+    wxPaintDC dc(this);
+    dc.DrawBitmap(imgSplash, 0, 0);
 }

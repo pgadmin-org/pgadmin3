@@ -29,12 +29,12 @@
 
 void sysLogger::DoLogString(const wxChar *msg, time_t timestamp)
 {
-  wxDateTime *dtTimestamp = new wxDateTime(timestamp);
-  wxString szMsg = "DoLogString:\n\nMessage: ";
-  szMsg.Append(msg);
-  szMsg.Append("\nTimestamp: ");
-  szMsg.Append(dtTimestamp->FormatISODate());
-  szMsg.Append(" ");
-  szMsg.Append(dtTimestamp->FormatISOTime());
-  wxMessageBox(szMsg);
+    wxDateTime *dtTimestamp = new wxDateTime(timestamp);
+    wxString szMsg = "DoLogString:\n\nMessage: ";
+    szMsg.Append(msg);
+    szMsg.Append("\nTimestamp: ");
+    szMsg.Append(dtTimestamp->FormatISODate());
+    szMsg.Append(" ");
+    szMsg.Append(dtTimestamp->FormatISOTime());
+    wxMessageBox(szMsg);
 }

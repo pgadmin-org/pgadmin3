@@ -21,7 +21,7 @@
 class pgAdmin3 : public wxApp
 {
 public:
-  virtual bool OnInit();
+    virtual bool OnInit();
 };
 
 #endif

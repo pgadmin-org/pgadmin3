@@ -21,8 +21,8 @@
 class sysLogger : public wxLog
 {
 public:
-  //virtual void DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp);
-  virtual void DoLogString(const wxChar *msg, time_t timestamp);
+    //virtual void DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp);
+    virtual void DoLogString(const wxChar *msg, time_t timestamp);
 };
 
 #endif

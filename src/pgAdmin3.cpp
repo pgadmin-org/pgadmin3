@@ -27,31 +27,25 @@ wxLog *objLogger;
 // The Application!
 bool pgAdmin3::OnInit()
 {
-
-  // Setup logging first
-  objLogger = new sysLogger();
-  wxLog::SetActiveTarget(objLogger);
-
-  wxLogMessage("%s", "This is a message");
-
-
-  // We need JPEG Support
-  wxImage::AddHandler(new wxJPEGHandler);
-  
-  // Show the splash screen
-  frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
-  SetTopWindow(winSplash);
-  winSplash->Show(TRUE);
-  
+    
+    // Setup logging first
+    objLogger = new sysLogger();
+    wxLog::SetActiveTarget(objLogger);
+    
+    // Show the splash screen
+    frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
+    SetTopWindow(winSplash);
+    winSplash->Show(TRUE);
+    
 #ifndef _DEBUG
-  wxSleep(2);
+    wxSleep(2);
 #endif
-  
-  // Create & show the main form
-  winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(750, 550));
-  winMain->Show(TRUE);
-  
-  winSplash->Close();
-  
-  return TRUE;
+    
+    // Create & show the main form
+    winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(750, 550));
+    winMain->Show(TRUE);
+    
+    winSplash->Close();
+    
+    return TRUE;
 }
