@@ -110,7 +110,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     if (conn) 
     {
        int encodeNo = settings->Read(wxT("ClientEncoding"), (long)0);
-       wxLogInfo(wxT("Setting client_encoding to '%s'"), pg_clientencoding_tb[encodeNo]);
+       wxLogInfo(wxT("Setting client_encoding to '%s'"), pg_clientencoding_tb[encodeNo].c_str());
        if (PQsetClientEncoding(conn, pg_clientencoding_tb[encodeNo].ToAscii()))
            wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
     }
