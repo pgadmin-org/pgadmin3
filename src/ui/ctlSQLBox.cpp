@@ -449,5 +449,8 @@ ctlSQLBox::~ctlSQLBox()
 {
     wxLogInfo(wxT("Destroying a ctlSQLBox"));
     if (m_dlgFind)
+    {
         m_dlgFind->Destroy();
+        delete m_dlgFind;
+    }
 }
