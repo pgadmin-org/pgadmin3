@@ -134,7 +134,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_DISCONNECT, _("&Disconnect"),           _("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_SQL, _("SQL"),                          _("Execute arbitrary SQL queries."));
+#ifdef __WXDEBUG__
     toolsMenu->Append(MNU_QUERYBUILDER, _("&Query Builder"),      _("Start the query builder."));
+#endif
 	toolsMenu->Append(MNU_VIEWDATA, _("View Data"),               _("View the data in the selected object."));
     toolsMenu->Append(MNU_VACUUM, _("Vacuum"),                    _("Vacuum the current database or table."));
     toolsMenu->Append(MNU_RELOAD, _("Reload module"),             _("Reload library module which implements this function."));
@@ -660,7 +662,9 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	toolsMenu->Enable(MNU_CONNECT, false);
 	toolsMenu->Enable(MNU_DISCONNECT, false);
 	toolsMenu->Enable(MNU_SQL, sql);
+#if __WXDEBUG__
 	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
+#endif
 	toolsMenu->Enable(MNU_VACUUM, vacuum);
 	toolsMenu->Enable(MNU_STATUS, sql);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);

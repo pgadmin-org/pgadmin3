@@ -222,10 +222,8 @@ bool pgAdmin3::OnInit()
 #endif
     SetAppName(APPNAME_L);
 
-#ifndef _DEBUG
-	#ifndef __WXMSW__
-		wxYield();
-	#endif
+#ifndef __WXDEBUG__
+    wxYield();
     wxSleep(2);
 #endif
 
