@@ -115,20 +115,38 @@ include/images/trigger.xpm include/images/type.xpm \
 include/images/unique.xpm include/images/unknown.xpm \
 include/images/user.xpm include/images/vacuum.xpm \
 include/images/viewdata.xpm include/images/view.xpm \
-ui/de_DE/pgadmin3.po ui/fr_FR/pgadmin3.po \
-ui/hr_HR/pgadmin3.po ui/id_ID/pgadmin3.po ui/it_IT/pgadmin3.po \
-ui/ja_JP/pgadmin3.po ui/pl_PL/pgadmin3.po ui/ro_RO/pgadmin3.po \
-ui/tr_TR/pgadmin3.po ui/zh_CN/pgadmin3.po
+ui/de_DE/pgadmin3.po \
+ui/fa_IR/pgadmin3.po \
+ui/fr_FR/pgadmin3.po \
+ui/hr_HR/pgadmin3.po \
+ui/id_ID/pgadmin3.po \
+ui/it_IT/pgadmin3.po \
+ui/ja_JP/pgadmin3.po \
+ui/pl_PL/pgadmin3.po \
+ui/ro_RO/pgadmin3.po \
+ui/tr_TR/pgadmin3.po \
+ui/zh_CN/pgadmin3.po
 
 nobase_dist_pkgdata_DATA = tips.txt ui/common/*.xrc \
 ui/wxstd.mo \
-ui/de_DE/pgadmin3.mo ui/fr_FR/pgadmin3.mo \
-ui/hr_HR/pgadmin3.mo ui/id_ID/pgadmin3.mo ui/it_IT/pgadmin3.mo \
-ui/ja_JP/pgadmin3.mo ui/pl_PL/pgadmin3.mo ui/ro_RO/pgadmin3.mo \
-ui/tr_TR/pgadmin3.mo ui/zh_CN/pgadmin3.mo \
-ui/de_DE/wxstd.mo ui/fr_FR/wxstd.mo \
-ui/id_ID/wxstd.mo ui/it_IT/wxstd.mo \
-ui/ja_JP/wxstd.mo ui/pl_PL/wxstd.mo \
-ui/tr_TR/wxstd.mo ui/zh_CN/wxstd.mo
+ui/de_DE/pgadmin3.mo \
+ui/fa_IR/pgadmin3.mo \
+ui/fr_FR/pgadmin3.mo \
+ui/hr_HR/pgadmin3.mo \
+ui/id_ID/pgadmin3.mo \
+ui/it_IT/pgadmin3.mo \
+ui/ja_JP/pgadmin3.mo \
+ui/pl_PL/pgadmin3.mo \
+ui/ro_RO/pgadmin3.mo \
+ui/tr_TR/pgadmin3.mo \
+ui/zh_CN/pgadmin3.mo \
+ui/de_DE/wxstd.mo \
+ui/fr_FR/wxstd.mo \
+ui/id_ID/wxstd.mo \
+ui/it_IT/wxstd.mo \
+ui/ja_JP/wxstd.mo \
+ui/pl_PL/wxstd.mo \
+ui/tr_TR/wxstd.mo \
+ui/zh_CN/wxstd.mo
 
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(WX_HOME)
