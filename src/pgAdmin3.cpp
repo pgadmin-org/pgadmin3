@@ -99,6 +99,8 @@ bool pgAdmin3::OnInit()
 {
     // we are here
     loadPath=wxPathOnly(argv[0]);
+	if (loadPath.IsEmpty())
+		loadPath = wxT(".");
 
     // evaluate all working paths
 #ifdef __WIN32__
