@@ -284,7 +284,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         if (GetConnected())
         {
             InsertListItem(properties, pos++, _("Encryption"), 
-                conn->IsSSLconnected() ? wxT("SSL encrypted") : _("not encrypted"));
+                conn->IsSSLconnected() ? _("SSL encrypted") : _("not encrypted"));
         }
         else
         {
