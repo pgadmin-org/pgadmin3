@@ -70,7 +70,7 @@ DialogWithHelp((frmMain*)parent)
     cbType->Append(wxT("local"));
     cbType->Append(wxT("host"));
     cbType->Append(wxT("hostssl"));
-    cbType->Append(wxT("hostmossl"));
+    cbType->Append(wxT("hostnossl"));
 
     cbDatabase->Append(wxT("all"));
     cbDatabase->Append(wxT("sameuser"));
@@ -80,6 +80,7 @@ DialogWithHelp((frmMain*)parent)
     cbUser->Append(wxT("all"));
 
     cbMethod->Append(wxT("trust"));
+    cbMethod->Append(wxT("reject"));
     cbMethod->Append(wxT("md5"));
     cbMethod->Append(wxT("crypt"));
     cbMethod->Append(wxT("password"));
