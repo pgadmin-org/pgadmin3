@@ -20,6 +20,9 @@
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
 #include <wx/fs_zip.h>
+#include "xh_calb.h"
+#include "xh_sqlbox.h"
+
 
 // Windows headers
 #ifdef __WXMSW__
@@ -281,6 +284,8 @@ bool pgAdmin3::OnInit()
 
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();
+    wxXmlResource::Get()->AddHandler(new wxCalendarBoxXmlHandler);
+    wxXmlResource::Get()->AddHandler(new ctlSQLBoxXmlHandler);
 
 
     // examine libpq version

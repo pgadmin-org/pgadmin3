@@ -28,15 +28,14 @@
 
 // pointer to controls
 #define pnlDefinition CTRL("pnlDefinition", wxPanel)
-#define txtSqlBox CTRL("txtSqlBox", wxTextCtrl)
+#define txtSqlBox CTRL("txtSqlBox", ctlSQLBox)
 
 
-#define CTL_SQLBOX  188
 
 BEGIN_EVENT_TABLE(dlgView, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgView::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgView::OnChange)
-    EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgView::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgView::OnChange)
 END_EVENT_TABLE();
 
 
@@ -48,15 +47,6 @@ dlgView::dlgView(frmMain *frame, pgView *node, pgSchema *sch)
     view=node;
 
     txtOID->Disable();
-
-    sqlBox=new ctlSQLBox(pnlDefinition, CTL_SQLBOX, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
-
-    wxWindow *placeholder=CTRL("txtSqlBox", wxTextCtrl);
-    wxSizer *sizer=placeholder->GetContainingSizer();
-    sizer->Add(sqlBox, 1, wxRIGHT|wxGROW, 5);
-    sizer->Remove(placeholder);
-    delete placeholder;
-    sizer->Layout();
 }
 
 
@@ -79,7 +69,7 @@ int dlgView::Go(bool modal)
         txtName->SetValue(view->GetName());
         txtOID->SetValue(NumToStr(view->GetOid()));
         txtComment->SetValue(view->GetComment());
-        sqlBox->SetText(oldDefinition);
+        txtSqlBox->SetText(oldDefinition);
     }
     else
     {
@@ -105,7 +95,7 @@ void dlgView::OnChange(wxNotifyEvent &ev)
     if (view)
     {
         EnableOK(txtComment->GetValue() != view->GetComment()
-              || sqlBox->GetText() != oldDefinition
+              || txtSqlBox->GetText() != oldDefinition
               || name != view->GetName());
     }
     else
@@ -113,7 +103,7 @@ void dlgView::OnChange(wxNotifyEvent &ev)
         bool enable=true;
 
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, sqlBox->GetText().Length() > 14 , _("Please enter function definition."));
+        CheckValid(enable, txtSqlBox->GetText().Length() > 14 , _("Please enter function definition."));
 
         EnableOK(enable);
     }
@@ -136,11 +126,11 @@ wxString dlgView::GetSql()
         }
     }
 
-    if (!view || sqlBox->GetText() != oldDefinition)
+    if (!view || txtSqlBox->GetText() != oldDefinition)
     {
         sql += wxT("CREATE OR REPLACE VIEW ") + schema->GetQuotedFullIdentifier()
             + wxT(".") + qtIdent(name) + wxT(" AS\n")
-            + sqlBox->GetText()
+            + txtSqlBox->GetText()
             + wxT(";\n");
     }
 

@@ -44,6 +44,7 @@
 #include "frmHelp.h"
 #include "dlgProperty.h"
 #include "frmMaintenance.h"
+#include "frmIndexcheck.h"
 
 extern wxString loadPath;
 
@@ -52,6 +53,7 @@ extern wxString loadPath;
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_SQL,                       frmMain::OnSql)
     EVT_MENU(MNU_MAINTENANCE,               frmMain::OnMaintenance)
+    EVT_MENU(MNU_INDEXCHECK,                frmMain::OnIndexcheck)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_HELP,                      frmMain::OnHelp)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
@@ -101,6 +103,9 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_NEW+PG_INDEX,              frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_RULE,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_TRIGGER,            frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PGA_JOB,               frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PGA_STEP,              frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PGA_SCHEDULE,          frmMain::OnNew)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER,       frmMain::OnTreeSelChanged)
@@ -289,7 +294,7 @@ void frmMain::OnExpand(wxTreeEvent &event)
     {
         // the expanding node has a dummy item.
         // delete dummy item, and expand kids.
-        execSelChange(event.GetItem());
+        execSelChange(event.GetItem(), browser->GetSelection() == item);
 
         // we don't have any kids, so don't expand
         if (!browser->GetChildrenCount(event.GetItem()))
@@ -359,6 +364,18 @@ void frmMain::OnMaintenance(wxCommandEvent &ev)
     if (data)
     {
         frmMaintenance *frm=new frmMaintenance(this, data);
+        frm->Go();
+    }
+}
+
+
+void frmMain::OnIndexcheck(wxCommandEvent &ev)
+{
+    pgObject *data = GetSelectedObject();
+
+    if (data)
+    {
+        frmIndexcheck *frm=new frmIndexcheck(this, data);
         frm->Go();
     }
 }
@@ -558,11 +575,11 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 {
     denyCollapseItem=wxTreeItemId();
 	// Reset the listviews/SQL pane
-    execSelChange(event.GetItem());
+    execSelChange(event.GetItem(), true);
 }
 
 
-void frmMain::execSelChange(wxTreeItemId item)
+void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 {
     properties->ClearAll();
     properties->InsertColumn(0, _("Properties"), wxLIST_FORMAT_LEFT, 500);
@@ -585,11 +602,16 @@ void frmMain::execSelChange(wxTreeItemId item)
     // invalid click, so ignore.
     if (!data) return;
 
-    properties->Freeze();
-    statistics->Freeze();
-    setDisplay(data, properties, statistics, sqlPane);
-    properties->Thaw();
-    statistics->Thaw();
+    if (currentNode)
+    {
+        properties->Freeze();
+        statistics->Freeze();
+        setDisplay(data, properties, statistics, sqlPane);
+        properties->Thaw();
+        statistics->Thaw();
+    }
+    else
+        setDisplay(data, 0, 0, 0);
 }
 
 
@@ -678,9 +700,6 @@ void frmMain::setDisplay(pgObject *data, wxListCtrl *props, wxListCtrl *stats, c
         case PG_TRIGGERS:
         case PG_TRIGGER:
         case PGA_AGENT:
-        case PGA_INSTANCES:
-        case PGA_INSTANCE:
-        case PGA_JOBS:
         case PGA_JOB:
         case PGA_STEP:
         case PGA_SCHEDULE:
@@ -763,7 +782,7 @@ void frmMain::OnDisconnect(wxCommandEvent &ev)
         browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Normal);
         browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Selected);
         browser->DeleteChildren(server->GetId());
-        execSelChange(server->GetId());
+        execSelChange(server->GetId(), true);
     }
 }
 

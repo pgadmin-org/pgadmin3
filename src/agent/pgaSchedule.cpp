@@ -22,8 +22,8 @@
 #include "pgaSchedule.h"
 
 
-pgaSchedule::pgaSchedule(pgaJob *job, const wxString& newName)
-: pgaJobObject(job, PGA_SCHEDULE, newName)
+pgaSchedule::pgaSchedule(pgaJob *_job, const wxString& newName)
+: pgaJobObject(_job, PGA_SCHEDULE, newName)
 {
     wxLogInfo(wxT("Creating a pgaSchedule object"));
 }
@@ -84,7 +84,7 @@ pgObject *pgaSchedule::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxStr
     pgaSchedule *schedule=0;
 
     pgSet *schedules= job->GetDatabase()->ExecuteSet(
-       wxT("SELECT sc.oid, * from pg_schedule sc\n")
+       wxT("SELECT sc.oid, * from pga_schedule sc\n")
        wxT(" WHERE sc.jscjoboid=") + job->GetOidStr() + wxT("\n")
        + restriction +
        wxT(" ORDER BY sc.oid"));
@@ -106,7 +106,7 @@ pgObject *pgaSchedule::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxStr
             wxString kinds;
             switch (kindc)
             {
-                case 'n':   kinds = _("normal");            break;
+                case 'n':   kinds = _("repeat");            break;
                 case 's':   kinds = _("single");            break;
                 case 'd':   kinds = _("daily") ;            break;
                 case 'w':   kinds = _("weekly");            break;

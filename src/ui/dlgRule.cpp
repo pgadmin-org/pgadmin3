@@ -33,9 +33,8 @@
 #define txtCondition    CTRL("txtCondition", wxTextCtrl)
 
 #define pnlDefinition   CTRL("pnlDefinition", wxPanel)
-#define txtSqlBox       CTRL("txtSqlBox", wxTextCtrl)
+#define txtSqlBox       CTRL("txtSqlBox", ctlSQLBox)
 
-#define CTL_SQLBOX  188
 
 BEGIN_EVENT_TABLE(dlgRule, dlgProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgRule::OnChange)
@@ -47,7 +46,7 @@ BEGIN_EVENT_TABLE(dlgRule, dlgProperty)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgRule::OnChange)
     EVT_CHECKBOX(XRCID("chkDoInstead"),             dlgRule::OnChange)
     EVT_RADIOBOX(XRCID("rbxEvent"),                 dlgRule::OnChange)
-    EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgRule::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtSQlBox"),            dlgRule::OnChange)
 END_EVENT_TABLE();
 
 
@@ -59,15 +58,6 @@ dlgRule::dlgRule(frmMain *frame, pgRule *node, pgTable *tab)
     rule=node;
 
     txtOID->Disable();
-
-    sqlBox=new ctlSQLBox(pnlDefinition, CTL_SQLBOX, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
-
-    wxWindow *placeholder=CTRL("txtSqlBox", wxTextCtrl);
-    wxSizer *sizer=placeholder->GetContainingSizer();
-    sizer->Add(sqlBox, 1, wxRIGHT|wxGROW, 5);
-    sizer->Remove(placeholder);
-    delete placeholder;
-    sizer->Layout();
 }
 
 
@@ -102,7 +92,7 @@ int dlgRule::Go(bool modal)
         rbxEvent->SetStringSelection(rule->GetEvent());
         txtCondition->SetValue(rule->GetCondition());
         txtComment->SetValue(rule->GetComment());
-        sqlBox->SetText(oldDefinition);
+        txtSqlBox->SetText(oldDefinition);
 
         txtName->Disable();
     }
@@ -131,7 +121,7 @@ bool dlgRule::didChange()
 
     if (GetName() != rule->GetName())
         return true;
-    if (sqlBox->GetText().Strip(wxString::both) != oldDefinition)
+    if (txtSqlBox->GetText().Strip(wxString::both) != oldDefinition)
         return true;
     if (chkDoInstead->GetValue() != rule->GetDoInstead())
         return true;
@@ -139,7 +129,7 @@ bool dlgRule::didChange()
         return true;
     if (txtCondition->GetValue() != rule->GetCondition())
         return true;
-    if (sqlBox->GetText() != oldDefinition)
+    if (txtSqlBox->GetText() != oldDefinition)
         return true;
 
     return false;
@@ -162,7 +152,7 @@ void dlgRule::OnChange(wxNotifyEvent &ev)
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         CheckValid(enable, rbxEvent->GetSelection() >= 0,
                     _("Please select at an event."));
-        CheckValid(enable, !sqlBox->GetTextLength() || sqlBox->GetTextLength() > 6 , _("Please enter function definition."));
+        CheckValid(enable, !txtSqlBox->GetTextLength() || txtSqlBox->GetTextLength() > 6 , _("Please enter function definition."));
 
         EnableOK(enable);
     }
@@ -186,9 +176,9 @@ wxString dlgRule::GetSql()
         if (chkDoInstead->GetValue())
             sql += wxT("INSTEAD ");
     
-        if (sqlBox->GetTextLength())
+        if (txtSqlBox->GetTextLength())
         {
-            sql += wxT("\n") + sqlBox->GetText().Strip(wxString::both);
+            sql += wxT("\n") + txtSqlBox->GetText().Strip(wxString::both);
             if (sql.Right(1) != wxT(";"))
                 sql += wxT(";");
         }

@@ -34,8 +34,8 @@ public:
     void iSetUserId(const long l) { userId=l; }
     wxString GetConfigList() const { return configList; }
     void iSetConfigList(const wxString& s) { configList=s; }
-    wxString GetAccountExpires() const { return accountExpires; }
-    void iSetAccountExpires(const wxString& s) { accountExpires=s; }
+    wxDateTime GetAccountExpires() const { return accountExpires; }
+    void iSetAccountExpires(const wxDateTime & dt) { accountExpires=dt; }
     wxString GetPassword() const { return password; }
     void iSetPassword(const wxString& s) { password=s; }
     bool GetCreateDatabase() const { return createDatabase; }
@@ -58,7 +58,8 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
 
 private:
-    wxString accountExpires, password, configList;
+    wxString password, configList;
+    wxDateTime accountExpires;
     bool createDatabase, superuser, updateCatalog;
     wxArrayString groupsIn;
     long userId;

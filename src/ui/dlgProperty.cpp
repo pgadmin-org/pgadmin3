@@ -52,6 +52,9 @@
 #include "dlgTrigger.h"
 #include "dlgType.h"
 #include "dlgView.h"
+#include "dlgJob.h"
+#include "dlgStep.h"
+#include "dlgSchedule.h"
 
 #include "pgTable.h"
 #include "pgColumn.h"
@@ -288,6 +291,63 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 }
 
 
+
+void dlgProperty::ShowObject()
+{
+    pgObject *data=GetObject();
+    if (data)
+    {
+        pgObject *newData=data->Refresh(mainForm->GetBrowser(), item);
+        if (newData && newData != data)
+        {
+            mainForm->GetBrowser()->SetItemData(item, newData);
+            mainForm->GetBrowser()->SetItemImage(item, newData->GetIcon(), wxTreeItemIcon_Normal);
+            mainForm->GetBrowser()->SetItemImage(item, newData->GetIcon(), wxTreeItemIcon_Selected);
+            newData->SetId(item);
+            delete data;
+        }
+        if (newData)
+        {
+            mainForm->GetBrowser()->DeleteChildren(newData->GetId());
+
+            newData->ShowTree(mainForm, mainForm->GetBrowser(), properties, statistics, 0);
+            mainForm->GetBrowser()->SetItemText(item, newData->GetFullName());
+            mainForm->GetSqlPane()->SetReadOnly(false);
+            mainForm->GetSqlPane()->SetText(newData->GetSql(mainForm->GetBrowser()));
+            mainForm->GetSqlPane()->SetReadOnly(true);
+        }
+    }
+    else
+    {
+        wxTreeItemId collectionItem=item;
+
+        while (collectionItem)
+        {
+            // search up the tree for our collection
+            if (tryUpdate(collectionItem))
+                break;
+            collectionItem=mainForm->GetBrowser()->GetItemParent(collectionItem);
+        }
+        /*
+        if (!collectionItem)
+        {
+            // search leaves for our collection
+            // shouldn't become necessary
+            long cookie;
+            collectionItem=mainForm->GetBrowser()->GetFirstChild(item, cookie);
+
+            while (collectionItem)
+            {
+                if (tryUpdate(collectionItem))
+                    break;
+                collectionItem=mainForm->GetBrowser()->GetNextChild(item, cookie);
+            }
+        }
+        */
+    }
+}
+
+        
 void dlgProperty::OnOK(wxNotifyEvent &ev)
 {
 
@@ -306,55 +366,7 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
             return;
         }
 
-        pgObject *data=GetObject();
-        if (data)
-        {
-            pgObject *newData=data->Refresh(mainForm->GetBrowser(), item);
-            if (newData && newData != data)
-            {
-                mainForm->GetBrowser()->SetItemData(item, newData);
-                newData->SetId(item);
-                delete data;
-            }
-            if (newData)
-            {
-                mainForm->GetBrowser()->DeleteChildren(newData->GetId());
-
-                newData->ShowTree(mainForm, mainForm->GetBrowser(), properties, statistics, 0);
-                mainForm->GetBrowser()->SetItemText(item, newData->GetFullName());
-                mainForm->GetSqlPane()->SetReadOnly(false);
-                mainForm->GetSqlPane()->SetText(newData->GetSql(mainForm->GetBrowser()));
-                mainForm->GetSqlPane()->SetReadOnly(true);
-            }
-        }
-        else
-        {
-            wxTreeItemId collectionItem=item;
-
-            while (collectionItem)
-            {
-                // search up the tree for our collection
-                if (tryUpdate(collectionItem))
-                    break;
-                collectionItem=mainForm->GetBrowser()->GetItemParent(collectionItem);
-            }
-            /*
-            if (!collectionItem)
-            {
-                // search leaves for our collection
-                // shouldn't become necessary
-                long cookie;
-                collectionItem=mainForm->GetBrowser()->GetFirstChild(item, cookie);
-
-                while (collectionItem)
-                {
-                    if (tryUpdate(collectionItem))
-                        break;
-                    collectionItem=mainForm->GetBrowser()->GetNextChild(item, cookie);
-                }
-            }
-            */
-        }
+        ShowObject();
     }
 
     Destroy();
@@ -518,6 +530,15 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_RULES:
             dlg=new dlgRule(frame, (pgRule*)currentNode, (pgTable*)parentNode);
             break;
+        case PGA_JOB:
+            dlg=new dlgJob(frame, (pgaJob*)currentNode);
+            break;
+        case PGA_STEP:
+            dlg=new dlgStep(frame, (pgaStep*)currentNode, (pgaJob*)parentNode);
+            break;
+        case PGA_SCHEDULE:
+            dlg=new dlgSchedule(frame, (pgaSchedule*)currentNode, (pgaJob*)parentNode);
+            break;
         default:
             break;
     }
@@ -626,6 +647,10 @@ int dlgProperty::AppendListItem(wxListCtrl *list, const wxString& str1, const wx
         list->SetItem(pos, 1, str2);
     return pos;
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////
 
 
 dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
@@ -801,6 +826,9 @@ void dlgTypeProperty::CheckLenEnable()
 }
 
 
+/////////////////////////////////////////////////////////////////////////////
+
+
 dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, pgTable *parentNode)
 : dlgProperty(frame, resName)
 {
@@ -869,6 +897,10 @@ int dlgCollistProperty::Go(bool modal)
 }
 
 
+
+/////////////////////////////////////////////////////////////////////////////
+
+
 BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
     EVT_LIST_ITEM_SELECTED(CTL_LBPRIV,  dlgSecurityProperty::OnPrivSelChange)
     EVT_BUTTON(CTL_ADDPRIV,             dlgSecurityProperty::OnAddPriv)
@@ -914,7 +946,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
 
         if (obj && !obj->CanCreate())
         {
-            // We can't create, so we won't be allowed to change privileges either
+            // We can't create, so we won't be allowed to change privileges either.
             // later, we can check individually too.
 
             lbPrivileges = new wxListView(page, CTL_LBPRIV, zeroPos, 
@@ -997,7 +1029,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                 {
                     wxString str=tokens.GetNextToken();
                     if (str[0U]== '"')
-                        str = str.Mid(1);
+                        str = str.Mid(1, str.Length()-2);
 
                     wxString name=str.BeforeLast('=');
                     wxString value=str.Mid(name.Length()+1);
@@ -1110,6 +1142,8 @@ void dlgSecurityProperty::OnPrivCheckAll(wxCommandEvent& ev)
 
 void dlgSecurityProperty::OnPrivSelChange(wxListEvent &ev)
 {
+    if (!cbGroups)
+        return;
     if (allPrivileges)
     {
         allPrivileges->SetValue(false);
@@ -1313,4 +1347,71 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
         sql += pgObject::GetPrivileges(allPattern, wxT(""), grantObject, name);
     }
     return sql;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+BEGIN_EVENT_TABLE(dlgOidProperty, dlgProperty)
+END_EVENT_TABLE();
+
+dlgOidProperty::dlgOidProperty(frmMain *frame, const wxString &resName)
+: dlgProperty(frame, resName)
+{
+    oid=0;
+}
+
+
+
+wxString dlgOidProperty::GetSql()
+{
+    return GetInsertSql() + wxT("\n\n") + GetUpdateSql();
+}
+
+
+void dlgOidProperty::OnOK(wxNotifyEvent &ev)
+{
+
+    if (IsModal())
+    {
+        EndModal(0);
+        return;
+    }
+
+    wxString sql;
+    bool needShow=false;
+    
+    sql=GetInsertSql();
+    if (!sql.IsEmpty())
+    {
+        pgSet *set=connection->ExecuteSet(sql);
+        if (set)
+        {
+            oid = set->GetInsertedOid();
+            delete set;
+        }
+        if (!set || !oid)
+        {
+            return;
+        }
+        needShow=true;
+    }
+
+    sql=GetUpdateSql();
+    if (!sql.IsEmpty())
+    {
+        if (!connection->ExecuteVoid(sql))
+        {
+            // error message is displayed inside ExecuteVoid
+            return;
+        }
+        needShow=true;
+    }
+
+    if (needShow)
+        ShowObject();
+
+    Destroy();
+    dlgProperty::OnOK(ev);
 }

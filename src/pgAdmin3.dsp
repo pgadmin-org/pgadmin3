@@ -642,14 +642,6 @@ SOURCE=.\ui\common\xrcDialogs.cpp
 # PROP Default_Filter "*.cpp"
 # Begin Source File
 
-SOURCE=.\ui\ctlSQLBox.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\ctlSQLResult.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\ui\dlgEditGridOptions.cpp
 # End Source File
 # Begin Source File
@@ -675,6 +667,10 @@ SOURCE=.\ui\frmExport.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmHelp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmIndexcheck.cpp
 # End Source File
 # Begin Source File
 
@@ -709,6 +705,30 @@ SOURCE=.\ui\frmStatus.cpp
 SOURCE=.\ui\pgAdmin3.rc
 # End Source File
 # End Group
+# Begin Group "Controls"
+
+# PROP Default_Filter "*.cpp"
+# Begin Source File
+
+SOURCE=.\ui\calbox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\ctlSQLBox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\ctlSQLResult.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\xh_calb.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\xh_sqlbox.cpp
+# End Source File
+# End Group
 # End Group
 # Begin Group "include"
 
@@ -716,6 +736,10 @@ SOURCE=.\ui\pgAdmin3.rc
 # Begin Group "ui includes"
 
 # PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\include\calbox.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\include\ctlSQLBox.h
@@ -758,6 +782,10 @@ SOURCE=.\include\frmHelp.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\frmIndexcheck.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\frmMain.h
 # End Source File
 # Begin Source File
@@ -791,6 +819,14 @@ SOURCE=.\include\frmSplash.h
 # Begin Source File
 
 SOURCE=.\include\frmStatus.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\xh_calb.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\xh_sqlbox.h
 # End Source File
 # End Group
 # Begin Group "schema includes"
@@ -1018,6 +1054,10 @@ SOURCE=.\include\dlgView.h
 # PROP Default_Filter "*.xpm"
 # Begin Source File
 
+SOURCE=.\include\images\agent.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\aggregate.xpm
 # End Source File
 # Begin Source File
@@ -1162,6 +1202,14 @@ SOURCE=.\include\images\indexcolumn.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\job.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\jobdisabled.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\key.xpm
 # End Source File
 # Begin Source File
@@ -1210,6 +1258,10 @@ SOURCE=.\include\images\query_cancel.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\query_execfile.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\query_execute.xpm
 # End Source File
 # Begin Source File
@@ -1231,6 +1283,10 @@ SOURCE=.\include\images\relationship.xpm
 # Begin Source File
 
 SOURCE=.\include\images\rule.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\schedule.xpm
 # End Source File
 # Begin Source File
 
@@ -1259,6 +1315,10 @@ SOURCE=.\include\images\sql.xpm
 # Begin Source File
 
 SOURCE=.\include\images\statistics.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\step.xpm
 # End Source File
 # Begin Source File
 
@@ -1338,11 +1398,19 @@ SOURCE=.\include\wxgridsel.h
 # PROP Default_Filter "*.h"
 # Begin Source File
 
-SOURCE=.\agent\include\pgaAgent.h
+SOURCE=.\agent\include\dlgJob.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\agent\include\pgaInstance.h
+SOURCE=.\agent\include\dlgSchedule.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\agent\include\dlgStep.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\agent\include\pgaAgent.h
 # End Source File
 # Begin Source File
 
@@ -1435,11 +1503,19 @@ SOURCE=.\Makefile.am
 # PROP Default_Filter "*.cpp"
 # Begin Source File
 
-SOURCE=.\agent\pgaAgent.cpp
+SOURCE=.\agent\dlgJob.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\agent\pgaInstance.cpp
+SOURCE=.\agent\dlgSchedule.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\agent\dlgStep.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\agent\pgaAgent.cpp
 # End Source File
 # Begin Source File
 
@@ -1512,89 +1588,5 @@ SOURCE=.\tips.txt
 SOURCE=..\TODO.txt
 # End Source File
 # End Group
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\blank.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\bullseye.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\cdrom.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\computer.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\drive.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\file1.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\floppy.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\folder1.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\folder2.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\hand.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\magnif1.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\noentry.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\pbrush.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\pencil.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\pntleft.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\pntright.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\query.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\removble.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\rightarr.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\roller.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\wx\msw\watch1.cur
-# End Source File
 # End Target
 # End Project

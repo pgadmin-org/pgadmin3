@@ -16,7 +16,6 @@
 
 class pgSchema;
 class pgFunction;
-class ctlSQLBox;
 
 class dlgFunction : public dlgSecurityProperty
 {
@@ -41,13 +40,12 @@ private:
 
     wxString GetArgs(bool quoted=false);
     void ReplaceSizer(wxWindow *w, bool isC, int border);
-    wxSizer *libSizer;
 
-    ctlSQLBox *sqlBox;
     wxArrayString typOids;
     wxArrayString types;
     wxArrayString argOids;
 
+    wxSizer *libcSizer;
 
     DECLARE_EVENT_TABLE();
 };

@@ -23,7 +23,7 @@
 
 
 pgaStep::pgaStep(pgaJob *_job, const wxString& newName)
-: pgaJobObject(job, PGA_STEP, newName)
+: pgaJobObject(_job, PGA_STEP, newName)
 {
     wxLogInfo(wxT("Creating a pgaStep object"));
 }
@@ -49,10 +49,11 @@ void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Enabled"), GetEnabled());
         InsertListItem(properties, pos++, _("Kind"), GetKind());
         InsertListItem(properties, pos++, _("Database"), GetDbname());
         InsertListItem(properties, pos++, _("Code"), GetCode());
-        InsertListItem(properties, pos++, _("On Error"), GetOnError());
+        InsertListItem(properties, pos++, _("On error"), GetOnError());
 
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
@@ -80,7 +81,7 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
     pgaStep *step=0;
 
     pgSet *steps= job->GetDatabase()->ExecuteSet(
-       wxT("SELECT st.oid, st.*, datname from pg_jobstep st\n")
+       wxT("SELECT st.oid, st.*, datname from pga_jobstep st\n")
        wxT("  LEFT OUTER JOIN pg_database db ON db.oid=st.jstdboid")
        wxT(" WHERE st.jstjoboid=") + job->GetOidStr() + wxT("\n")
        + restriction +
@@ -96,6 +97,7 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
             step->iSetDatabase(job->GetDatabase());
             step->iSetDbname(steps->GetVal(wxT("datname")));
             step->iSetCode(steps->GetVal(wxT("jstcode")));
+            step->iSetEnabled(steps->GetBool(wxT("jstenabled")));
 
             wxChar kindc = *steps->GetVal(wxT("jstkind")).c_str();
             wxString kinds;

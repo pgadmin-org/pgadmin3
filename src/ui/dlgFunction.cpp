@@ -47,10 +47,9 @@
 #define txtObjectFile       CTRL("txtObjectFile", wxTextCtrl)
 #define stLinkSymbol        CTRL("stLinkSymbol", wxStaticText)
 #define txtLinkSymbol       CTRL("txtLinkSymbol", wxTextCtrl)
-
+#define txtSqlBox           CTRL("txtSqlBox", ctlSQLBox)
 
 #define TXTOBJ_LIB  wxT("$libdir/")
-#define CTL_SQLBOX  188
 
 BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgFunction::OnChange)
@@ -61,7 +60,7 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_CHECKBOX(XRCID("chkSecureDefiner"),         dlgFunction::OnChange)
     EVT_TEXT(XRCID("txtObjectFile"),                dlgFunction::OnChange)
     EVT_TEXT(XRCID("txtLinkSymbol"),                dlgFunction::OnChange)
-    EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgFunction::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgFunction::OnChange)
 
     EVT_TEXT(XRCID("cbReturntype"),                 dlgFunction::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgFunction::OnSelChangeType)
@@ -85,16 +84,7 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
     btnAdd->Disable();
     btnRemove->Disable();
 
-    sqlBox=new ctlSQLBox(pnlParameter, CTL_SQLBOX, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
-
-    wxWindow *placeholder=CTRL("txtSqlBox", wxTextCtrl);
-    wxSizer *sizer=placeholder->GetContainingSizer();
-    sizer->Add(sqlBox, 1, wxRIGHT|wxGROW, 5);
-    sizer->Remove(placeholder);
-    delete placeholder;
-    sizer->Layout();
-
-    libSizer = stObjectFile->GetContainingSizer();
+    libcSizer = stObjectFile->GetContainingSizer();
 }
 
 
@@ -144,7 +134,7 @@ int dlgFunction::Go(bool modal)
             txtLinkSymbol->SetValue(function->GetSource());
         }
         else
-            sqlBox->SetText(function->GetSource());
+            txtSqlBox->SetText(function->GetSource());
 
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
@@ -226,7 +216,7 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
               || chkStrict->GetValue() != function->GetIsStrict()
               || cbLanguage->GetValue() != function->GetLanguage()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
-              || (!isC && sqlBox->GetText() != function->GetSource()));
+              || (!isC && txtSqlBox->GetText() != function->GetSource()));
     }
     else
     {
@@ -244,7 +234,7 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
         }
         else
         {
-            CheckValid(enable, !sqlBox->GetText().IsEmpty(), _("Please enter function source code."));
+            CheckValid(enable, !txtSqlBox->GetText().IsEmpty(), _("Please enter function source code."));
         }
 
         EnableOK(enable);
@@ -255,9 +245,9 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
 void dlgFunction::ReplaceSizer(wxWindow *w, bool isC, int border)
 {
     if (isC && !w->GetContainingSizer())
-        libSizer->Add(w, 0, wxLEFT|wxTOP, border);
+        libcSizer->Add(w, 0, wxLEFT|wxTOP, border);
     else
-        libSizer->Remove(w);
+        libcSizer->Remove(w);
 }
 
         
@@ -269,15 +259,15 @@ void dlgFunction::OnSelChangeLanguage(wxNotifyEvent &ev)
     txtObjectFile->Show(isC);
     stLinkSymbol->Show(isC);
     txtLinkSymbol->Show(isC);
-    sqlBox->Show(!isC);
+    txtSqlBox->Show(!isC);
 
     ReplaceSizer(stObjectFile, isC, 3);
     ReplaceSizer(txtObjectFile, isC, 0);
     ReplaceSizer(stLinkSymbol, isC, 3);
     ReplaceSizer(txtLinkSymbol, isC, 0);
 
-    libSizer->Layout();
-    sqlBox->GetContainingSizer()->Layout();
+    libcSizer->Layout();
+    txtSqlBox->GetContainingSizer()->Layout();
 
     OnChange(ev);
 }
@@ -342,7 +332,7 @@ wxString dlgFunction::GetSql()
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
     bool didChange = !function 
         || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
-        || (!isC && sqlBox->GetText() != function->GetSource());
+        || (!isC && txtSqlBox->GetText() != function->GetSource());
 
     if (function)
     {
@@ -381,9 +371,9 @@ wxString dlgFunction::GetSql()
         else
         {
             if (connection->BackendMinimumVersion(7, 5))
-                sql += qtDocumentHere(sqlBox->GetText());
+                sql += qtDocumentHere(txtSqlBox->GetText());
             else
-                sql += qtString(sqlBox->GetText());
+                sql += qtString(txtSqlBox->GetText());
         }
         sql += wxT("\nLANGUAGE ") + qtString(cbLanguage->GetValue())
             +  wxT(" ") + cbVolatility->GetValue();

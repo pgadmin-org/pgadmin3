@@ -54,9 +54,9 @@ pgTypes typesList[] =
     {__("Check"), __("New Check Constraint"), __("Add a new Check Constraint.") },
     {__("Foreign Key"), __("New Foreign Key"), __("Add a new Foreign Key.") },
     {__("Agent"), 0, 0},
-    {__("Instances"), 0, 0},        {__("Instance"), 0, 0},
-    {__("Tasks"), 0, 0},            {__("Task"), __("New Task"), __("Create a new task") },
-    {__("Step"), 0, 0}, { __("Schedule"), 0, 0 },
+    {__("Job"), __("New Job"), __("Create a new Job") },
+    {__("Step"), __("New Step"), __("Create new Step") }, 
+    {__("Schedule"), __("New Schedule"), __("Create new Schedule") },
     {__("Unknown"), 0, 0}
 };
 
@@ -403,6 +403,10 @@ pgDatabase *pgObject::GetDatabase() const
         case PG_LANGUAGE:
         case PG_SCHEMA:
         case PG_CAST:
+        case PGA_AGENT:
+        case PGA_JOB:
+        case PGA_STEP:
+        case PGA_SCHEDULE:
             db=((pgDatabaseObject*)this)->GetDatabase();
             break;
         case PG_AGGREGATE:

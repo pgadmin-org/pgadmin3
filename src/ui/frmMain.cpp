@@ -88,6 +88,11 @@ WX_DEFINE_LIST(windowList);
 #include "images/primarykey.xpm"
 #include "images/unique.xpm"
 #include "images/help2.xpm"
+#include "images/agent.xpm"
+#include "images/job.xpm"
+#include "images/jobdisabled.xpm"
+#include "images/step.xpm"
+#include "images/schedule.xpm"
 
 
 #if wxDIALOG_UNIT_COMPATIBILITY
@@ -161,6 +166,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_QUERYBUILDER, _("Query &builder"),      _("Start the query builder."));
 	toolsMenu->Append(MNU_VIEWDATA, _("View &Data"),              _("View the data in the selected object."));
     toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
+    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
     toolsMenu->Append(MNU_RELOAD, _("Re&load module"),            _("Reload library module which implements this function."));
     toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
     menuBar->Append(toolsMenu, _("&Tools"));
@@ -195,7 +201,8 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), newContextMenu, _("Create a new object."));
     treeContextMenu->AppendSeparator();
 	treeContextMenu->Append(MNU_VIEWDATA, _("View &Data"),        _("View the data in the selected object."));
-    treeContextMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),    _("Maintain the current database or table."));
+    treeContextMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),   _("Maintain the current database or table."));
+    treeContextMenu->Append(MNU_INDEXCHECK, _("&FK Index check"), _("Checks existence of foreign key indexes"));
     treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),        _("Connect to the selected server."));
     treeContextMenu->Append(MNU_DISCONNECT, _("&Disconnect"),     _("Disconnect from the selected server."));
     treeContextMenu->AppendSeparator();
@@ -280,7 +287,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     horizontal->SetMinimumPaneSize(50);
 
     //Setup the global imagelist
-	images = new wxImageList(16, 16, true, 35);
+	images = new wxImageList(16, 16, true, 50);
     images->Add(wxIcon(property_xpm));
     images->Add(wxIcon(statistics_xpm));
     images->Add(wxIcon(servers_xpm));
@@ -317,13 +324,12 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     images->Add(wxIcon(unique_xpm));
     images->Add(wxIcon(public_xpm));
 
-    // agent, instance, job, jobdisabled, step, schedule
-    images->Add(wxIcon(public_xpm));
-    images->Add(wxIcon(public_xpm));
-    images->Add(wxIcon(public_xpm));
-    images->Add(wxIcon(public_xpm));
-    images->Add(wxIcon(public_xpm));
-    images->Add(wxIcon(public_xpm));
+    // agent, job, jobdisabled, step, schedule
+    images->Add(wxIcon(agent_xpm));
+    images->Add(wxIcon(job_xpm));
+    images->Add(wxIcon(jobdisabled_xpm));
+    images->Add(wxIcon(step_xpm));
+    images->Add(wxIcon(schedule_xpm));
 
     browser->SetImageList(images);
 
@@ -407,7 +413,7 @@ void frmMain::Refresh(pgObject *data)
             browser->Delete(currentItem);
         }
     }
-	execSelChange(currentItem);
+	execSelChange(currentItem, true);
     browser->Thaw();
     EndMsg();
 }
@@ -710,6 +716,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	toolsMenu->Enable(MNU_SQL, sql);
 	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
 	toolsMenu->Enable(MNU_MAINTENANCE, maintenance);
+    toolsMenu->Enable(MNU_INDEXCHECK, false);
 	toolsMenu->Enable(MNU_STATUS, sql);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	viewMenu->Enable(MNU_REFRESH, refresh);
@@ -722,6 +729,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	treeContextMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_PROPERTIES, properties);
 	treeContextMenu->Enable(MNU_MAINTENANCE, maintenance);
+	treeContextMenu->Enable(MNU_INDEXCHECK, false);
 	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
     treeContextMenu->Enable(MNU_RELOAD, false);
 }

@@ -30,9 +30,11 @@ public:
 
     int GetIcon() { return enabled ? PGAICON_JOB : PGAICON_JOBDISABLED; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
+    static pgObject *ReadObjects(pgaAgent *agent, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
+    wxString GetJobclass() const { return jobclass; }
+    void iSetJobclass(const wxString &s) { jobclass=s; }
     bool GetEnabled() const { return enabled; }
     void iSetEnabled(const bool b) { enabled=b; }
     wxDateTime GetCreated() const { return created; }
@@ -43,20 +45,25 @@ public:
     void iSetNextrun(const wxDateTime &d) { nextrun=d; }
     wxDateTime GetLastrun() const { return lastrun; }
     void iSetLastrun(const wxDateTime &d) { lastrun=d; }
+    wxString GetLastresult() const { return lastresult; }
+    void iSetLastresult(const wxString &s) { lastresult = s; }
     long GetAgentId() const { return agentId; }
     void iSetAgentId(const long l) { agentId=l; }
 
-    bool CanCreate() { return false; }
+    wxMenu *GetNewMenu();
+    bool CanCreate() { return true; }
     bool CanView() { return false; }
-    bool CanEdit() { return false; }
-    bool CanDrop() { return false; }
+    bool CanEdit() { return true; }
+    bool CanDrop() { return true; }
     bool WantDummyChild() { return true; }
 
 private:
     bool enabled;
     wxDateTime created, changed, nextrun, lastrun;
+    wxString lastresult, jobclass;
     long agentId;
 };
+
 
 class pgaJobObject : public pgDatabaseObject
 {

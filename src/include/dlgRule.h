@@ -37,8 +37,6 @@ private:
 
     bool didChange();
 
-    ctlSQLBox *sqlBox;
-
     DECLARE_EVENT_TABLE();
 };
 

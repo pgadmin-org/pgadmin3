@@ -107,7 +107,7 @@ wxString BoolToYesNo(bool value)
 
 wxString BoolToStr(bool value)
 {
-    return value ? wxT("Yes") : wxT("No");
+    return value ? wxT("true") : wxT("false");
 }
 
 

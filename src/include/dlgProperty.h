@@ -51,6 +51,7 @@ protected:
     dlgProperty(frmMain *frame, const wxString &resName);
 
     void EnableOK(bool enable);
+    void ShowObject();
 
     void CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize=60);
     int AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon);
@@ -166,6 +167,24 @@ private:
     wxCheckBox **privCheckboxes;
     wxCheckBox *allPrivileges, *allPrivilegesGrant;
     DECLARE_EVENT_TABLE();
+};
+
+
+
+class dlgOidProperty : public dlgProperty
+{
+public:
+
+protected:
+    dlgOidProperty(frmMain *frame, const wxString &resName);
+    void OnOK(wxNotifyEvent &ev);
+    virtual wxString GetInsertSql() =0;
+    virtual wxString GetUpdateSql() =0;
+    wxString GetSql();
+
+    DECLARE_EVENT_TABLE();
+
+    OID oid;
 };
 
 

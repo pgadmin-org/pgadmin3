@@ -10,6 +10,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include "calbox.h"
 
 // Images
 #include "images/user.xpm"
@@ -24,6 +25,7 @@
 // pointer to controls
 #define txtID           CTRL("txtID", wxTextCtrl)
 #define txtPasswd       CTRL("txtPasswd", wxTextCtrl)
+#define datValidUntil   CTRL("datValidUntil", wxCalendarBox)
 #define chkCreateDB     CTRL("chkCreateDB", wxCheckBox)
 #define chkCreateUser   CTRL("chkCreateUser", wxCheckBox)
 
@@ -42,6 +44,7 @@
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgUser::OnChange)
+    EVT_LISTBOX_DCLICK(XRCID("datValidUntil"),      dlgUser::OnChange)
     
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsNotIn"),      dlgUser::OnGroupAdd)
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsIn"),         dlgUser::OnGroupRemove)
@@ -104,6 +107,7 @@ int dlgUser::Go(bool modal)
         txtID->SetValue(NumToStr(user->GetUserId()));
         chkCreateDB->SetValue(user->GetCreateDatabase());
         chkCreateUser->SetValue(user->GetSuperuser());
+        datValidUntil->SetDate(user->GetAccountExpires());
         txtName->Disable();
         txtID->Disable();
 
@@ -118,6 +122,7 @@ int dlgUser::Go(bool modal)
         {
             chkCreateDB->Disable();
             chkCreateUser->Disable();
+            datValidUntil->Disable();
             txtPasswd->Disable();
             btnAddGroup->Disable();
             btnDelGroup->Disable();
@@ -322,6 +327,14 @@ wxString dlgUser::GetSql()
                 sql += wxT(" NOCREATEUSER");
         }
 
+        if (DateToStr(datValidUntil->GetDate()) != DateToStr(user->GetAccountExpires()))
+        {
+            if (datValidUntil->GetDate().IsValid())
+                sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate())); 
+            else
+                sql += wxT("\n   VALID UNTIL 'infinity'");
+        }
+
         if (!sql.IsNull())
             sql = wxT("ALTER USER ") + user->GetQuotedFullIdentifier() + sql + wxT(";\n");
 
@@ -415,6 +428,10 @@ wxString dlgUser::GetSql()
             sql += wxT(" CREATEDB");
         if (createUser)
             sql += wxT(" CREATEUSER");
+        if (datValidUntil->GetDate().IsValid())
+            sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate())); 
+        else
+            sql += wxT("\n   VALID UNTIL 'infinity'");
         sql += wxT(";\n");
 
         int cnt=lstVariables->GetItemCount();

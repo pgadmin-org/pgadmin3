@@ -53,7 +53,7 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
         else                        sql += wxT(" NOCREATEDB");
         if (GetUpdateCatalog())     sql += wxT(" CREATEUSER");
         else                        sql += wxT(" NOCREATEUSER");
-        AppendIfFilled(sql, wxT(" VALID UNTIL "), GetAccountExpires());
+        AppendIfFilled(sql, wxT(" VALID UNTIL "), DateToStr(GetAccountExpires()));
         sql +=wxT(";\n");
         if (!configList.IsEmpty())
         {
@@ -180,7 +180,7 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             user->iSetCreateDatabase(users->GetBool(wxT("usecreatedb")));
             user->iSetSuperuser(users->GetBool(wxT("usesuper")));
             user->iSetUpdateCatalog(users->GetBool(wxT("usecatupd")));
-            user->iSetAccountExpires(users->GetVal(wxT("valuntil")));
+            user->iSetAccountExpires(users->GetDateTime(wxT("valuntil")));
             user->iSetPassword(users->GetVal(wxT("passwd")));
             wxString str=users->GetVal(wxT("useconfig"));
             if (!str.IsEmpty())

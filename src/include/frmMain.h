@@ -82,6 +82,7 @@ private:
     void OnShowSystemObjects(wxCommandEvent& event);
     void OnSql(wxCommandEvent& event);
     void OnMaintenance(wxCommandEvent& event);
+    void OnIndexcheck(wxCommandEvent& event);
     void OnStatus(wxCommandEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
@@ -106,7 +107,7 @@ private:
     void OnDisconnect(wxCommandEvent &ev);
     void OnQueryBuilder(wxCommandEvent &ev);
 
-    void execSelChange(wxTreeItemId item);
+    void execSelChange(wxTreeItemId item, bool currentNode);
     void setDisplay(pgObject *data, wxListCtrl *props=0, wxListCtrl *stats=0, ctlSQLBox *sqlbox=0);
     void StoreServers();
     void RetrieveServers();

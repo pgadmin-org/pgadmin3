@@ -76,7 +76,7 @@ pgObject *pgaInstance::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
     pgaInstance *instance=0;
 
     pgSet *instances= collection->GetDatabase()->ExecuteSet(
-       wxT("SELECT * FROM pg_jobagent\n")
+       wxT("SELECT * FROM pga_jobagent\n")
        + restriction +
        wxT(" ORDER BY logintime"));
 

@@ -120,7 +120,7 @@ void frmMaintenance::OnAction(wxCommandEvent& ev)
     chkAnalyze->Enable(isVacuum);
 
     bool isReindex = (rbxAction->GetSelection() == 2);
-    sbxReindexOptions->Enable(isReindex);
+    sbxReindexOptions->Enable(isReindex && object->GetType() == PG_DATABASE || object->GetType() == PG_INDEX);
     chkForce->Enable(isReindex && object->GetType() == PG_DATABASE);
     chkRecreate->Enable(isReindex && object->GetType() == PG_INDEX);
 }
