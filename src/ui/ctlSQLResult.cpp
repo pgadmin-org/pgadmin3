@@ -13,6 +13,7 @@
 
 
 #include "ctlSQLResult.h"
+#include "frmExport.h"
 
 
 ctlSQLResult::ctlSQLResult(wxWindow *parent, pgConn *_conn, wxWindowID id, const wxPoint& pos, const wxSize& size)
@@ -30,12 +31,24 @@ ctlSQLResult::~ctlSQLResult()
 }
 
 
+bool ctlSQLResult::Export()
+{
+    if (!CanExport())
+        return false;
+    
+    frmExport export(this);
+    return export.ShowModal() > 0;
+}
+
 
 int ctlSQLResult::Execute(const wxString &query)
 {
     Abort();
     ClearAll();
     rowsRetrieved=0;
+    colNames.Empty();
+    colTypes.Empty();
+    colTypClasses.Empty();
 
     thread = new pgQueryThread(conn->connection(), query);
 
@@ -74,6 +87,10 @@ int ctlSQLResult::RetrieveOne()
     {
         int w, h;
         GetSize(&w, &h);
+        colNames.Add(thread->DataSet()->ColName(0));
+        colTypes.Add(wxT(""));
+        colTypClasses.Add(0L);
+
         InsertColumn(0, thread->DataSet()->ColName(0), wxLIST_FORMAT_LEFT, w);
 
         while (!thread->DataSet()->Eof())
@@ -101,13 +118,20 @@ int ctlSQLResult::Retrieve(long chunk)
     if (!rowsRetrieved)
     {
         wxString colName, colType;
+        colTypes.Add(wxT(""));
+        colTypClasses.Add(0L);
 
         InsertColumn(0, wxT("Row"), wxLIST_FORMAT_RIGHT, 30);
+        colNames.Add(wxT("Row"));
 
         for (col=0 ; col < nCols ; col++)
         {
             colName = thread->DataSet()->ColName(col);
             colType = thread->DataSet()->ColType(col);
+            colNames.Add(colName);
+            colTypes.Add(colType);
+            colTypClasses.Add(thread->DataSet()->ColTypClass(col));
+
             InsertColumn(col+1, colName +wxT(" (")+ colType +wxT(")"), wxLIST_FORMAT_LEFT, -1);
         }
     }

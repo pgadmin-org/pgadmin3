@@ -42,6 +42,7 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
     EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
     EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
+    EVT_MENU(MNU_EXPORT,            frmQuery::OnExport)
     EVT_MENU(MNU_RECENT+1,          frmQuery::OnRecent)
     EVT_MENU(MNU_RECENT+2,          frmQuery::OnRecent)
     EVT_MENU(MNU_RECENT+3,          frmQuery::OnRecent)
@@ -88,6 +89,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     fileMenu->Append(MNU_OPEN, _("&Open..."), _("Open a query file"));
     fileMenu->Append(MNU_SAVE, _("&Save"), _("Save current file"));
     fileMenu->Append(MNU_SAVEAS, _("Save &as..."), _("Save file under new name"));
+    fileMenu->AppendSeparator();
+    fileMenu->Append(MNU_EXPORT, _("Export"), _("Export data to file"));
+    fileMenu->AppendSeparator();
     fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
     fileMenu->Append(MNU_EXIT, _("Exit"), _("Exit query window"));
 
@@ -158,7 +162,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
 
     toolBar->Realize();
-    setTools(false);
 
     horizontal = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
     horizontal->SetMinimumPaneSize(50);
@@ -185,6 +188,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     if (changed)
         setExtendedTitle();
     updateMenu();
+    setTools(false);
 }
 
 
@@ -260,11 +264,16 @@ void frmQuery::OnRecent(wxCommandEvent& event)
 }
 
 
-
 void frmQuery::OnKeyDown(wxKeyEvent& event)
 {
     event.m_metaDown=false;
     event.Skip();
+}
+
+
+void frmQuery::OnExport(wxCommandEvent &ev)
+{
+    sqlResult->Export();
 }
 
 
@@ -586,7 +595,7 @@ void frmQuery::OnCancel(wxCommandEvent& event)
 {
     toolBar->EnableTool(MNU_CANCEL, FALSE);
     queryMenu->Enable(MNU_CANCEL, FALSE);
-    SetStatusText(wxT("Cancelling."), STATUSPOS_MSGS);
+    SetStatusText(_("Cancelling."), STATUSPOS_MSGS);
 
     sqlResult->Abort();
     aborted=true;
@@ -626,7 +635,9 @@ void frmQuery::setTools(const bool running)
     queryMenu->Enable(MNU_EXECUTE, !running);
     queryMenu->Enable(MNU_EXPLAIN, !running);
     queryMenu->Enable(MNU_CANCEL, running);
+    fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
 }
+
 
 void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
 {
@@ -642,6 +653,7 @@ void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
 
 void frmQuery::execQuery(const wxString &query, const bool singleResult, const int queryOffset)
 {
+    long rowsReadTotal=0;
     setTools(true);
 
     bool wasChanged = changed;
@@ -657,7 +669,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
     if (sqlResult->Execute(query) >= 0)
     {
         SetStatusText(wxT(""), STATUSPOS_SECS);
-        SetStatusText(wxT("Query is running."), STATUSPOS_MSGS);
+        SetStatusText(_("Query is running."), STATUSPOS_MSGS);
         SetStatusText(wxT(""), STATUSPOS_ROWS);
         msgResult->Clear();
         Update();
@@ -721,7 +733,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
         }
         else
         {
-            long rowsReadTotal=0, rowsTotal=sqlResult->NumRows();
+            long rowsTotal=sqlResult->NumRows();
 
             if (singleResult)
             {
@@ -795,8 +807,8 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                 SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
 
                 msgResult->AppendText(
-                    wxT("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n")
-                    wxT("Data retrieval runtime: ") + elapsedRetrieve.ToString() + wxT(" ms.\n"));
+                    _("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n") +
+                    _("Data retrieval runtime: ") + elapsedRetrieve.ToString() + wxT(" ms.\n"));
 
                 if (rowsReadTotal == sqlResult->NumRows())
                     showMessage(wxString::Format(_("%ld rows retrieved."), rowsReadTotal), _("OK."));
@@ -816,4 +828,8 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
     }
 
     setTools(false);
+    if (rowsReadTotal)
+    {
+        fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
+    }
 }

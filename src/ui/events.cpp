@@ -53,6 +53,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_HELP,                      frmMain::OnHelp)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
+    EVT_MENU(MNU_BUGREPORT,                 frmMain::OnBugreport)
     EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
     EVT_MENU(MNU_ABOUT,                     frmMain::OnAbout)
     EVT_MENU(MNU_ADDSERVER,                 frmMain::OnAddServer)
@@ -231,6 +232,23 @@ void frmMain::OnFaq(wxCommandEvent& event)
     frmHelp *h=new frmHelp(this);
     h->Show(true);
     if (!h->Load(wxT("http://www.pgadmin.org/pgadmin3/faq/")))
+        h->Destroy();
+}
+
+
+void frmMain::OnBugreport(wxCommandEvent& event)
+{
+    frmHelp *h=new frmHelp(this);
+    h->Show(true);
+
+#ifdef __WIN32__
+    extern wxString loadPath;
+    wxString bugfile = loadPath + wxT("/bugreport.html");
+#else
+    wxString bugfile = DATA_DIR wxT("bugreport.html");
+#endif
+
+    if (!h->Load(wxT("file:") + bugfile))
         h->Destroy();
 }
 
@@ -510,8 +528,10 @@ void frmMain::OnPropSelChanged(wxListEvent& event)
 {
     wxTreeItemId item=browser->GetSelection();
     pgObject *data=(pgObject*)browser->GetItemData(item);
-    if (data)
+    if (data && data->IsCollection())
+    {
         data->SetSql(browser, sqlPane, event.GetIndex());
+    }
 }
 
 

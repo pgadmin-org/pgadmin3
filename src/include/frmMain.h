@@ -72,6 +72,7 @@ private:
     void OnHelp(wxCommandEvent& event);
     void OnPgsqlHelp(wxCommandEvent& event);
     void OnFaq(wxCommandEvent& event);
+    void OnBugreport(wxCommandEvent& event);
     void OnAddServer(wxCommandEvent &ev);
     void OnExit(wxCommandEvent& event);
     void OnViewData(wxCommandEvent& event);

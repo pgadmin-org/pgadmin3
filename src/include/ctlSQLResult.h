@@ -37,9 +37,16 @@ public:
     int RetrieveOne();
     int Abort();
 
+    bool Export();
+    bool CanExport() { return rowsRetrieved>0 && colNames.GetCount() > 0; }
+
     int RunStatus();
     wxString GetMessages();
     wxString GetErrorMessage();
+
+    wxArrayString colNames;
+    wxArrayString colTypes;
+    wxArrayLong colTypClasses;
 
 private:
     pgQueryThread *thread;

@@ -158,6 +158,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     helpMenu->Append(MNU_PGSQLHELP, _("PostgreSQL Help"),         _("Display help on PostgreSQL database system."));
     helpMenu->Append(MNU_TIPOFTHEDAY, _("&Tip of the day..."),    _("Show a tip of the day."));
     helpMenu->AppendSeparator();
+    helpMenu->Append(MNU_BUGREPORT, _("Bugreport"),               _("How to send a bugreport to the pgAdmin Development Team."));
     helpMenu->Append(MNU_ABOUT, _("&About..."),                   _("Show about dialog."));
 #ifdef __WXMAC__
     wxApp::s_macAboutMenuItemId = MNU_ABOUT;

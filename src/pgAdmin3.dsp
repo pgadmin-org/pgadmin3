@@ -541,6 +541,10 @@ SOURCE=.\ui\frmEditGrid.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmExport.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmHelp.cpp
 # End Source File
 # Begin Source File
@@ -609,6 +613,10 @@ SOURCE=.\include\frmConnect.h
 # Begin Source File
 
 SOURCE=.\include\frmEditGrid.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmExport.h
 # End Source File
 # Begin Source File
 

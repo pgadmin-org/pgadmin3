@@ -20,7 +20,7 @@ schema/pgSequence.cpp schema/pgServer.cpp \
 schema/pgTable.cpp schema/pgTrigger.cpp \
 schema/pgType.cpp schema/pgUser.cpp schema/pgView.cpp \
 schema/pgDatatype.cpp \
-ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp \
+ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
 ui/dlgAddTableView.cpp ui/events.cpp ui/frmAbout.cpp \
 ui/frmChildTableViewFrame.cpp ui/frmConnect.cpp \
 ui/frmMain.cpp ui/frmOptions.cpp ui/frmPassword.cpp \
@@ -41,7 +41,7 @@ noinst_HEADERS = include/copyright.h include/ctlSQLBox.h \
 include/ctlSQLResult.h include/dlgAddTableView.h \
 include/pgDefs.h include/pgDatatype.h \
 include/dlgCheck.h include/dlgColumn.h \
-include/dlgDatabase.h include/dlgDomain.h \
+include/dlgDatabase.h include/dlgDomain.h include/frmExport.h \
 include/dlgForeignKey.h include/dlgFunction.h include/dlgGroup.h \
 include/dlgIndexConstraint.h include/dlgIndex.h \
 include/dlgLanguage.h include/dlgProperty.h include/dlgType.h \
