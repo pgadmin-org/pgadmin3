@@ -23,6 +23,10 @@
     #include <netinet/in.h>
 #endif
 
+#ifndef INADDR_NONE
+#define INADDR_NONE (-1)
+#endif
+
 // App headers
 #include "pgConn.h"
 #include "pgAdmin3.h"

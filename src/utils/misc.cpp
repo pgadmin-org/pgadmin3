@@ -22,6 +22,7 @@
 
 // Standard headers
 #include <stdlib.h>
+#include <locale.h>
 
 // App headers
 #include "misc.h"
