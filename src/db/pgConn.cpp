@@ -60,7 +60,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 		}
 
         memcpy(&(ipaddr),host->h_addr,host->h_length); 
-	    hostip.Printf(wxT("%s"), inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
+	    hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
 
     } else {
         hostip = server;
@@ -68,6 +68,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
     resolvedIP = TRUE;
     wxLogInfo(wxT("Server name: %s (resolved to: %s)"), server.c_str(), hostip.c_str());
+    wxLogInfo(wxT("Server name: (resolved to: ")+ hostip);
 
     // Create the connection string
     wxString connstr;
