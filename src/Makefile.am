@@ -170,14 +170,28 @@ ui/sv_SE/pgadmin3.mo \
 ui/tr_TR/pgadmin3.mo \
 ui/zh_CN/pgadmin3.mo \
 ui/zh_TW/pgadmin3.mo \
+ui/af_ZA/wxstd.mo \
+ui/ca_ES/wxstd.mo \
+ui/cs_CZ/wxstd.mo \
+ui/da_DK/wxstd.mo \
 ui/de_DE/wxstd.mo \
+ui/el_GR/wxstd.mo \
+ui/es_ES/wxstd.mo \
+ui/fi_FI/wxstd.mo \
 ui/fr_FR/wxstd.mo \
+ui/hu_HU/wxstd.mo \
 ui/id_ID/wxstd.mo \
 ui/it_IT/wxstd.mo \
 ui/ja_JP/wxstd.mo \
+ui/nl_NL/wxstd.mo \
 ui/pl_PL/wxstd.mo \
+ui/pt_BR/wxstd.mo \
+ui/ru_RU/wxstd.mo \
+ui/sl_SI/wxstd.mo \
+ui/sv_SE/wxstd.mo \
 ui/tr_TR/wxstd.mo \
-ui/zh_CN/wxstd.mo
+ui/zh_CN/wxstd.mo \
+ui/zh_TW/wxstd.mo
 
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
 AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
