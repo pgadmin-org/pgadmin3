@@ -98,7 +98,7 @@ int dlgTrigger::Go(bool modal)
 				+ NumToStr(connection->GetLastSystemOID()) + wxT(")");
 
         pgSet *set=connection->ExecuteSet(
-            wxT("SELECT proname FROM pg_proc WHERE prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
+            wxT("SELECT quote_ident(nspname) || '.' || quote_ident(proname) FROM pg_proc, pg_namespace WHERE pg_proc.pronamespace = pg_namespace.oid AND prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
         if (set)
         {
             while (!set->Eof())
@@ -158,7 +158,7 @@ wxString dlgTrigger::GetSql()
             sql += wxT("ROW");
         else
             sql += wxT("STATEMENT");
-        sql += wxT("\n   EXECUTE PROCEDURE ") + qtIdent(cbFunction->GetValue())
+        sql += wxT("\n   EXECUTE PROCEDURE ") + cbFunction->GetValue()
             + wxT("(") + txtArguments->GetValue()
             + wxT(");\n");
     }
@@ -173,7 +173,7 @@ pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 {
     pgObject *obj=pgTrigger::ReadObjects(collection, 0, 
         wxT("\n   AND tgname=") + qtString(GetName()) +
-        wxT("\n   AND tgreloid=") + table->GetOidStr() +
+        wxT("\n   AND tgrelid=") + table->GetOidStr() +
         wxT("\n   AND relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
 }

@@ -239,12 +239,18 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 
     // Setup the data tab
     data = new ctlSQLResult(notebook, database->connection(), CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
-    
+
+    // And the messages
+    msgResult = new wxTextCtrl(notebook, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    msgHistory = new wxTextCtrl(notebook, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+
 	notebook->AddPage(design, _("Design"));
 	//notebook->AddPage(design, _("Union"));
 	//notebook->AddPage(design, _("Global"));
     notebook->AddPage(sql, _("SQL"));
 	notebook->AddPage(data, _("Data"));
+    notebook->AddPage(msgResult, _("Messages"));
+    notebook->AddPage(msgHistory, _("History"));
 
 	// Set the drop target
 	design->SetDropTarget(new DnDDesign(this));
