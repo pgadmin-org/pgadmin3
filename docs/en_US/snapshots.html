@@ -23,7 +23,7 @@ div.Section1
   <h3>pgAdmin3 CVS snapshots in binary formats</h3>
 
   <p>
-  pgAdmin3 CVS snapshots are available for several platforms, including GNU/Linux and Microsoft Windows 2000/XP. Several ports are in preparation, including MacOsX and FreeBSD. We are doing our best to update these snapshots almost nightly.
+  pgAdmin3 CVS snapshots are available for several platforms, including GNU/Linux, FreeBSD and Microsoft Windows 2000/XP. Several ports are in preparation, including MacOsX. We are doing our best to update these snapshots almost nightly.
 	</p>
 
   <p>
@@ -41,6 +41,7 @@ div.Section1
       <li><a href="#deb">GNU/Linux Debian</a>
       <li><a href="#rpm">GNU/Linux RedHat 9, SuSE 8.2, Mandrake 9.1</a>
       <li><a href="#slackware">GNU/Linux Slackware 9.0</a>
+      <li><a href="#freebsd">FreeBSD 5.1</a>
       <li><a href="#win">Microsoft Windows 2000 & XP</a>
       </li>
 		</ul>
@@ -48,7 +49,7 @@ div.Section1
 
   <a name="#deb">
   <h3>GNU/Linux Debian</h3>
-  Packager: Raphaël Enrici
+  Packager: Raphaï¿½ Enrici
   <p>
   	<ul>
       <li>Binary packages
@@ -156,6 +157,36 @@ div.Section1
        </li>
     </ul>
   </p><br>
+
+  <a name="#freebsd">
+  <h3>FreeBSD 5.1</h3>
+  Packager: Hiroshi Saito
+  <p>
+    pgAdmin3 binary packages are compiled statically against wxGTK 2.5. Therefore there is not need to install wxGTK 2.5 libraries. pgAdmin3 binaries are compiled with Unicode and debugging mode and linked against GTK2. The binaries are localised in several languages and include the latest PostgreSQL documentation.
+
+    <ul>
+    <li>Installation<br>
+      <p>
+      # pkg_add pgadmin3-yyyymmdd.tgz
+      </p>
+
+    <li>Create a symlink to pgadmin3 binary<br>
+      <p>
+      # ln -sf /usr/local/pgadmin3/bin/pgadmin3 /usr/local/bin/pgadmin3
+      </p>
+
+    <li>Check that pgadmin3 is in the path<br>
+      <p>
+      # which pgadmin3
+      # /usr/local/bin/pgadmin3
+      <p>
+
+    <li>UnInstall<br>
+      <p>
+      # pkg_delete pgadmin3-0.1.1
+      </p>
+     </ul>
+  </p>
 
   <a name="#win">
   <h3>Microsoft Windows 2000 & XP</h3>
