@@ -78,7 +78,7 @@ pushd contrib/src/xrc
 %makeinstall
 popd
 pushd contrib/utils/wxrc
-cp -r wxrc %{_bindir}/
+cp -r wxrc %{buildroot}/%{_bindir}/
 popd
 
 pushd contrib/src/stc
