@@ -50,8 +50,11 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
     {
         sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")\n")
             + wxT("CREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes()
-            + wxT(")\n  RETURNS ") + GetReturnType() 
-            + wxT(" AS ")
+            + wxT(")\n  RETURNS ");
+        if (GetReturnAsSet())
+            sql += wxT("SETOF ");
+        sql +=GetReturnType() 
+            + wxT(" AS\n")
             + qtString(GetSource())
             + wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
 
@@ -82,7 +85,14 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, wxT("Returns"), GetReturnType());
         InsertListItem(properties, pos++, wxT("Language"), GetLanguage());
         InsertListItem(properties, pos++, wxT("Returns a Set?"), GetReturnAsSet());
-        InsertListItem(properties, pos++, wxT("Source"), GetSource());
+        if (GetLanguage().IsSameAs(wxT("C"), false))
+        {
+            InsertListItem(properties, pos++, wxT("Object File"), GetBin());
+            InsertListItem(properties, pos++, wxT("Link Symbol"), GetSource());
+        }
+        else
+            InsertListItem(properties, pos++, wxT("Source"), GetSource());
+
         InsertListItem(properties, pos++, wxT("Volatility"), GetVolatility());
         InsertListItem(properties, pos++, wxT("Secure Definer?"), GetSecureDefiner());
         InsertListItem(properties, pos++, wxT("Strict?"), GetIsStrict());
@@ -156,6 +166,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             function->iSetReturnAsSet(functions->GetBool(wxT("proretset")));
             function->iSetIsStrict(functions->GetBool(wxT("proisstrict")));
             function->iSetSource(functions->GetVal(wxT("prosrc")));
+            function->iSetBin(functions->GetVal(wxT("probin")));
             wxString vol=functions->GetVal(wxT("provolatile"));
             function->iSetVolatility(
                 vol.IsSameAs("i") ? wxT("IMMUTABLE") : 

@@ -296,6 +296,7 @@ pgConn *pgObject::GetConnection()
     pgDatabase *db;
     switch (type)
     {
+        case PG_DATABASES:
         case PG_USER:
         case PG_USERS:
         case PG_GROUP:
@@ -316,9 +317,6 @@ pgDatabase *pgObject::GetDatabase()
     pgDatabase *db=0;
     switch (GetType())
     {
-        case PG_DATABASE:
-            db=(pgDatabase*)this;
-            break;
         case PG_USERS:
         case PG_GROUPS:
         case PG_LANGUAGES:
@@ -341,6 +339,9 @@ pgDatabase *pgObject::GetDatabase()
         case PG_TRIGGERS:
         case PG_CONSTRAINTS:
             db=((pgCollection*)this)->GetDatabase();
+            break;
+        case PG_DATABASE:
+            db=(pgDatabase*)this;
             break;
         case PG_LANGUAGE:
         case PG_SCHEMA:

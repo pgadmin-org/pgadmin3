@@ -22,6 +22,7 @@
 #include "dlgForeignKey.h"
 #include "dlgCheck.h"
 
+#include "pgSchema.h"
 #include "pgTable.h"
 #include "pgColumn.h"
 #include "pgCheck.h"
@@ -32,7 +33,6 @@
 // Images
 #include "images/table.xpm"
 
-#define cbSchema        CTRL("cbSchema",        wxComboBox)
 #define cbOwner         CTRL("cbOwner",         wxComboBox)
 #define stHasOids       CTRL("stHasOids",       wxStaticText)
 #define chkHasOids      CTRL("chkHasOids",      wxCheckBox)
@@ -60,11 +60,11 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_LIST_ITEM_SELECTED(XRCID("lstConstraints"), dlgTable::OnSelChangeConstr)
 END_EVENT_TABLE();
 
-
-dlgTable::dlgTable(frmMain *frame, pgTable *node)
+dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
 : dlgSecurityProperty(frame, node, wxT("dlgTable"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCE,TRIGGER"), "arwdRxt")
 {
     SetIcon(wxIcon(table_xpm));
+    schema=sch;
     table=node;
     column=0;
 
@@ -96,14 +96,11 @@ int dlgTable::Go(bool modal)
         txtOID->SetValue(NumToStr(table->GetOid()));
         chkHasOids->SetValue(table->GetHasOids());
 
-        cbSchema->Append(table->GetSchema()->GetName());
-        cbSchema->SetSelection(0);
         cbOwner->SetValue(table->GetOwner());
 
         txtOID->Disable();
         stHasOids->Disable();
         chkHasOids->Disable();
-        cbSchema->Disable();
 
         long cookie;
         pgObject *data;
@@ -204,29 +201,6 @@ int dlgTable::Go(bool modal)
     else
     {
         // create mode
-        wxString systemRestriction;
-        if (!settings->GetShowSystemObjects())
-            systemRestriction = wxT("   AND oid >= 100\n");
-
-        pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT nspname FROM pg_namespace nsp\n"
-            " WHERE nspname NOT LIKE 'pg\\_temp\\_%'\n") + systemRestriction);
-
-        if (set)
-        {
-            int publicPos=0;
-            while (!set->Eof())
-            {
-                cbSchema->Append(set->GetVal(0));
-                if (set->GetVal(0) == "public")
-                    publicPos = cbSchema->GetCount() -1;
-                set->MoveNext();
-            }
-            delete set;
-
-            cbSchema->SetSelection(publicPos);
-        }
-
     }
 
     FillConstraint();
@@ -270,10 +244,6 @@ wxString dlgTable::GetItemConstraintType(wxListCtrl *list, long pos)
 wxString dlgTable::GetSql()
 {
     wxString sql;
-
-    wxString schema=cbSchema->GetValue();
-    if (!schema.IsEmpty())
-        schema = qtIdent(schema) + wxT(".");
 
     if (table)
     {
@@ -344,7 +314,7 @@ wxString dlgTable::GetSql()
     }
     else
     {
-        sql = wxT("CREATE TABLE ") + schema + qtIdent(txtName->GetValue())
+        sql = wxT("CREATE TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(txtName->GetValue())
             + wxT("\n(");
 
         int pos;
@@ -372,7 +342,7 @@ wxString dlgTable::GetSql()
 
         sql += wxT("\n);\n");
     }
-    sql += GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema + qtIdent(txtName->GetValue()));
+    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(txtName->GetValue()));
 
     return sql;
 }
@@ -393,14 +363,10 @@ void dlgTable::FillConstraint()
 pgObject *dlgTable::CreateObject(pgCollection *collection)
 {
     wxString name=txtName->GetValue();
-    wxString schema=cbSchema->GetValue();
-    if (schema.IsEmpty())
-        schema = wxT("public");
 
     pgObject *obj=pgTable::ReadObjects(collection, 0, wxT(
         "\n   AND rel.relname=") + qtString(name) + wxT(
-        "\n   AND rek.relnamespace=(SELECT oid FROM pg_namespace WHERE nspname=") + 
-        qtString(schema) + wxT(")"));
+        "\n   AND rek.relnamespace=") + schema->GetOidStr());
 
     return obj;
 }

@@ -47,6 +47,8 @@ public:
     void iSetVolatility(const wxString& s) { volatility = s; }
     wxString GetSource() const { return source; }
     void iSetSource(const wxString& s) { source=s; }
+    wxString GetBin() const { return bin; }
+    void iSetBin(const wxString& s) { bin=s; }
     long GetArgCount() const { return argCount; }
     void iSetArgCount(long ac) { argCount = ac; }
     bool GetReturnAsSet() const { return returnAsSet; }
@@ -57,6 +59,8 @@ public:
     void iSetIsStrict(bool b) { isStrict = b; }
 
     bool CanDrop() { return true; }
+    bool CanEdit() { return true; }
+    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
@@ -65,7 +69,7 @@ protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxString(""));
 
 private:
-    wxString argTypeOids, argTypes, returnType, language, volatility, source;
+    wxString argTypeOids, argTypes, returnType, language, volatility, source, bin;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount;
 };

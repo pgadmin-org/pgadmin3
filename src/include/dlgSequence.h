@@ -4,23 +4,23 @@
 // Copyright (C) 2002, The pgAdmin Development Team
 // This software is released under the pgAdmin Public Licence
 //
-// dlgDomain.h - Domain property 
+// dlgSequence.h - Sequence property 
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __DLG_DOMAINPROP
-#define __DLG_DOMAINPROP
+#ifndef __DLG_SEQUENCEPROP
+#define __DLG_SEQUENCEPROP
 
 #include "dlgProperty.h"
 
 class pgSchema;
-class pgDomain;
+class pgSequence;
 
-class dlgDomain : public dlgProperty
+class dlgSequence : public dlgSecurityProperty
 {
 public:
-    dlgDomain(frmMain *frame, pgDomain *dom, pgSchema *sch);
+    dlgSequence(frmMain *frame, pgSequence *seq, pgSchema *sch);
     int Go(bool modal);
 
     wxString GetSql();
@@ -28,13 +28,10 @@ public:
     pgObject *GetObject();
 
 private:
-    void OnChange(wxNotifyEvent &ev);
-    void OnSelChangeTyp(wxNotifyEvent &ev);
-
     pgSchema *schema;
-    pgDomain *domain;
-    wxArrayString typmods;
-    bool isVarLen, isVarPrec;
+    pgSequence *sequence;
+
+    void OnChange(wxNotifyEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

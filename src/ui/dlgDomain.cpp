@@ -15,6 +15,8 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "dlgDomain.h"
+
+#include "pgSchema.h"
 #include "pgDomain.h"
 
 // Images
@@ -40,10 +42,11 @@ BEGIN_EVENT_TABLE(dlgDomain, dlgProperty)
 END_EVENT_TABLE();
 
 
-dlgDomain::dlgDomain(frmMain *frame, pgDomain *node)
+dlgDomain::dlgDomain(frmMain *frame, pgDomain *node, pgSchema *sch)
 : dlgProperty(frame, wxT("dlgDomain"))
 {
     SetIcon(wxIcon(domain_xpm));
+    schema=sch;
     domain=node;
     isVarLen=false;
     isVarPrec=false;
@@ -69,7 +72,7 @@ int dlgDomain::Go(bool modal)
         txtName->SetValue(domain->GetName());
         txtOID->SetValue(NumToStr((long)domain->GetOid()));
         txtOwner->SetValue(domain->GetOwner());
-        cbBasetype->SetValue(domain->GetBasetype());
+        cbBasetype->Append(domain->GetBasetype());
         cbBasetype->SetSelection(0);
         if (domain->GetLength() >= 0)
         {
@@ -121,7 +124,10 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 {
     wxString name=txtName->GetValue();
 
-    pgObject *obj=pgDomain::ReadObjects(collection, 0, wxT("   AND d.typname=") + qtString(name) + wxT("\n"));
+    pgObject *obj=pgDomain::ReadObjects(collection, 0, 
+        wxT("   AND d.typname=") + qtString(name) + 
+        wxT("\n   AND typnamespace=") + schema->GetOidStr() +
+        wxT("\n"));
     return obj;
 }
 
@@ -197,7 +203,7 @@ wxString dlgDomain::GetSql()
     else
     {
         // create mode
-        sql = wxT("CREATE DOMAIN ") + qtIdent(name)
+        sql = wxT("CREATE DOMAIN ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(name)
             + wxT("\n   AS ");
         AppendQuoted(sql, cbBasetype->GetValue());
 

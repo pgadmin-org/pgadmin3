@@ -1,0 +1,350 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+// Copyright (C) 2002, The pgAdmin Development Team
+// This software is released under the pgAdmin Public Licence
+//
+// dlgFunction.cpp - PostgreSQL Function Property
+//
+//////////////////////////////////////////////////////////////////////////
+
+// wxWindows headers
+#include <wx/wx.h>
+
+// App headers
+#include "pgAdmin3.h"
+#include "misc.h"
+#include "ctlSQLBox.h"
+#include "dlgFunction.h"
+#include "pgFunction.h"
+#include "pgCollection.h"
+
+// Images
+#include "images/function.xpm"
+
+
+// pointer to controls
+#define txtArguments        CTRL("txtArguments", wxTextCtrl)
+#define cbReturntype        CTRL("cbReturntype", wxComboBox)
+#define cbLanguage          CTRL("cbLanguage", wxComboBox)
+#define cbVolatility        CTRL("cbVolatility", wxComboBox)
+#define chkSetof            CTRL("chkSetof", wxCheckBox)
+#define chkStrict           CTRL("chkStrict", wxCheckBox)
+#define chkSecureDefiner    CTRL("chkSecureDefiner", wxCheckBox)
+
+#define lstArguments        CTRL("lstArguments", wxListBox)
+#define btnAdd              CTRL("btnAdd", wxButton)
+#define btnRemove           CTRL("btnRemove", wxButton)
+#define cbDatatype          CTRL("cbDatatype", wxComboBox)
+
+#define pnlParameter        CTRL("pnlParameter", wxPanel)
+#define sbxDefinition       CTRL("sbxDefinition", wxStaticBox)
+#define stObjectFile        CTRL("stObjectFile", wxStaticText)
+#define txtObjectFile       CTRL("txtObjectFile", wxTextCtrl)
+#define stLinkSymbol        CTRL("stLinkSymbol", wxStaticText)
+#define txtLinkSymbol       CTRL("txtLinkSymbol", wxTextCtrl)
+
+
+#define CTL_SQLBOX  188
+
+BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
+    EVT_TEXT(XRCID("txtName"),                      dlgFunction::OnChange)
+    EVT_TEXT(XRCID("txtComment"),                   dlgFunction::OnChange)
+    EVT_COMBOBOX(XRCID("cbVolatility"),             dlgFunction::OnChange)
+    EVT_CHECKBOX(XRCID("chkSetof"),                 dlgFunction::OnChange)
+    EVT_CHECKBOX(XRCID("chkStrict"),                dlgFunction::OnChange)
+    EVT_CHECKBOX(XRCID("chkSecureDefiner"),         dlgFunction::OnChange)
+    EVT_TEXT(XRCID("txtObjectFile"),                dlgFunction::OnChange)
+    EVT_TEXT(XRCID("txtLinkSymbol"),                dlgFunction::OnChange)
+    EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgFunction::OnChange)
+
+    EVT_COMBOBOX(XRCID("cbReturntype"),             dlgFunction::OnChange)
+    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgFunction::OnSelChangeType)
+    EVT_COMBOBOX(XRCID("cbLanguage"),               dlgFunction::OnSelChangeLanguage)
+
+    EVT_LISTBOX(XRCID("lstArguments"),              dlgFunction::OnSelChangeArg)
+    EVT_BUTTON(XRCID("btnAdd"),                     dlgFunction::OnAddArg)
+    EVT_BUTTON(XRCID("btnRemove"),                  dlgFunction::OnRemoveArg)
+END_EVENT_TABLE();
+
+
+dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
+: dlgSecurityProperty(frame, node, wxT("dlgFunction"), wxT("EXECUTE"), "X")
+{
+    SetIcon(wxIcon(function_xpm));
+    schema=sch;
+    function=node;
+
+    txtOID->Disable();
+    txtArguments->Disable();
+    btnAdd->Disable();
+    btnRemove->Disable();
+
+    wxPoint position=sbxDefinition->GetPosition();
+    position.x += 10;
+    position.y += 20;
+    wxSize size=sbxDefinition->GetSize();
+    size.SetHeight(size.GetHeight()-30);
+    size.SetWidth(size.GetWidth()-20);
+    sqlBox=new ctlSQLBox(pnlParameter, CTL_SQLBOX, position, size, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
+}
+
+
+pgObject *dlgFunction::GetObject()
+{
+    return function;
+}
+
+
+int dlgFunction::Go(bool modal)
+{
+    AddGroups();
+    AddUsers();
+
+    pgSet *lang=connection->ExecuteSet(wxT("SELECT lanname FROM pg_language"));
+    if (lang)
+    {
+        while (!lang->Eof())
+        {
+            cbLanguage->Append(lang->GetVal(0));
+            lang->MoveNext();
+        }
+        delete lang;
+    }
+    if (function)
+    {
+        // edit mode
+        txtName->SetValue(function->GetName());
+        txtOID->SetValue(NumToStr((long)function->GetOid()));
+        txtComment->SetValue(function->GetComment());
+        txtArguments->SetValue(function->GetArgTypes());
+        cbReturntype->Append(function->GetReturnType());
+        cbReturntype->SetSelection(0);
+
+        cbLanguage->SetValue(function->GetLanguage());
+        cbVolatility->SetValue(function->GetVolatility());
+
+        chkSetof->SetValue(function->GetReturnAsSet());
+        chkStrict->SetValue(function->GetIsStrict());
+        chkSecureDefiner->SetValue(function->GetSecureDefiner());
+
+        if (function->GetLanguage().IsSameAs(wxT("C"), false))
+        {
+            txtObjectFile->SetValue(function->GetBin());
+            txtLinkSymbol->SetValue(function->GetSource());
+        }
+        else
+            sqlBox->SetText(function->GetSource());
+
+        txtName->Disable();
+        cbReturntype->Disable();
+    }
+    else
+    {
+        // create mode
+        pgSet *set=connection->ExecuteSet(wxT(
+            "SELECT CASE WHEN COALESCE(t.typelem, 0) = 0 OR SUBSTR(t.typname, 1,1) <> '_' THEN t.typname ELSE b.typname || '[]' END AS typname, t.typlen, t.oid, nspname\n"
+            "  FROM pg_type t\n"
+            "  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n"
+            "  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n"
+            " WHERE t.typisdefined AND t.typtype IN ('b', 'd')\n"
+            " ORDER BY t.typtype DESC, (t.typelem>0)::bool, COALESCE(b.typname, t.typname)"));
+
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                wxString nsp=set->GetVal(wxT("nspname"));
+                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
+                    nsp = wxT("");
+                else
+                    nsp += wxT(".");
+
+                typOids.Add(set->GetVal(2));
+                cbDatatype->Append(nsp + set->GetVal(0));
+                if (objectType != PG_TRIGGERFUNCTION)
+                    cbReturntype->Append(nsp + set->GetVal(0));
+
+                set->MoveNext();
+            }
+            delete set;
+        }
+
+        if (objectType == PG_TRIGGERFUNCTION)
+        {
+            cbReturntype->Append(wxT("trigger"));
+            cbReturntype->SetSelection(0);
+            cbReturntype->Disable();
+        }
+
+        long sel=cbLanguage->FindString(wxT("sql"));
+        if (sel >= 0)
+            cbLanguage->SetSelection(sel);
+    }
+
+    wxNotifyEvent event;
+    OnSelChangeLanguage(event);
+
+    return dlgSecurityProperty::Go(modal);
+}
+
+
+pgObject *dlgFunction::CreateObject(pgCollection *collection)
+{
+    wxString sql=wxT(" WHERE proname=") + qtString(txtName->GetValue()) +
+        wxT("\n   AND pronamespace=") + schema->GetOidStr();
+
+    long argCount;
+    for (argCount=0 ; argCount < (int)argOids.GetCount() ; argCount++)
+        sql += wxT("\n   AND proargtypes[") + argOids.Item(argCount) + wxT("] = 0");
+
+    sql += wxT("\n   AND proargtypes[") + NumToStr(argCount) + wxT("] = 0\n");
+
+    pgObject *obj=pgFunction::AppendFunctions(collection, collection->GetSchema(), 0, sql);
+    return obj;
+}
+
+
+void dlgFunction::OnChange(wxNotifyEvent &ev)
+{
+    if (function)
+    {
+        bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
+        EnableOK(txtComment->GetValue() != function->GetComment()
+              || cbVolatility->GetValue() != function->GetVolatility()
+              || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
+              || chkStrict->GetValue() != function->GetIsStrict()
+              || cbLanguage->GetValue() != function->GetLanguage()
+              || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
+              || (!isC && sqlBox->GetText() != function->GetSource()));
+    }
+    else
+    {
+        wxString name=txtName->GetValue();
+
+        EnableOK(!name.IsEmpty() 
+                && cbReturntype->GetSelection() >= 0 
+                && cbLanguage->GetSelection() >= 0);
+    }
+}
+
+
+void dlgFunction::OnSelChangeLanguage(wxNotifyEvent &ev)
+{
+    bool isC=(cbLanguage->GetValue().IsSameAs(wxT("C"), false));
+
+    stObjectFile->Show(isC);
+    txtObjectFile->Show(isC);
+    stLinkSymbol->Show(isC);
+    txtLinkSymbol->Show(isC);
+    sqlBox->Show(!isC);
+    OnChange(ev);
+}
+
+
+void dlgFunction::OnSelChangeArg(wxNotifyEvent &ev)
+{
+    btnRemove->Enable();
+}
+
+
+void dlgFunction::OnSelChangeType(wxNotifyEvent &ev)
+{
+    btnAdd->Enable();
+}
+
+
+void dlgFunction::OnAddArg(wxNotifyEvent &ev)
+{
+    lstArguments->Append(cbDatatype->GetValue());
+    argOids.Add(typOids.Item(cbDatatype->GetSelection()));
+    txtArguments->SetValue(GetArgs());
+}
+
+
+void dlgFunction::OnRemoveArg(wxNotifyEvent &ev)
+{
+    int sel=lstArguments->GetSelection();
+    argOids.RemoveAt(sel);
+    lstArguments->Delete(sel);
+    btnRemove->Disable();
+    txtArguments->SetValue(GetArgs());
+}
+
+
+wxString dlgFunction::GetArgs(bool quoted)
+{
+    wxString args;
+    int i;
+    for (i=0 ; i < lstArguments->GetCount() ; i++)
+    {
+        if (i)
+            args += wxT(", ");
+        if (quoted)
+            AppendQuoted(args, lstArguments->GetString(i));
+        else
+            args += lstArguments->GetString(i);
+    }
+
+    return args;
+}
+
+
+wxString dlgFunction::GetSql()
+{
+    wxString sql, name;
+
+
+    if (function)
+    {
+        // edit mode
+        name = function->GetQuotedFullIdentifier();
+        
+        sql = wxT("CREATE OR REPLACE FUNCTION ") + name;
+    }
+    else
+    {
+        // create mode
+        name = schema->GetQuotedFullIdentifier() + wxT(".") 
+             + qtIdent(txtName->GetValue()) 
+             + wxT("(") + GetArgs(true) + wxT(")");
+
+        sql = wxT("CREATE FUNCTION ") + name;
+    }
+    sql += wxT(" RETURNS ");
+    if (chkSetof->GetValue())
+        sql += wxT("SETOF ");
+    sql += cbReturntype->GetValue()
+        + wxT(" AS\n");
+
+    if (cbLanguage->GetValue().IsSameAs(wxT("C"), false))
+    {
+        sql += qtString(txtObjectFile->GetValue());
+        if (!txtLinkSymbol->GetValue().IsEmpty())
+            sql += wxT(", ") + qtString(txtLinkSymbol->GetValue());
+    }
+    else
+        sql += qtString(sqlBox->GetText());
+    sql += wxT("\nLANGUAGE ") + qtString(cbLanguage->GetValue())
+        +  wxT(" ") + cbVolatility->GetValue();
+    if (chkStrict->GetValue())
+        sql += wxT(" STRICT");
+    if (chkSecureDefiner->GetValue())
+        sql += wxT(" SECURE DEFINER");
+
+    sql += wxT(";\n");
+
+    wxString comment=txtComment->GetValue();
+    if ((function && function->GetComment() != comment) 
+        || (!function && !comment.IsEmpty()))
+    {
+        sql += wxT("COMMENT ON FUNCTION ") + name 
+            + wxT(" IS ") + qtString(comment)
+            + wxT(";\n");
+    }
+    sql += GetGrant(wxT("-"), wxT("FUNCTION ") + name);
+
+    return sql;
+}
+
+

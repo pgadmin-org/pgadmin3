@@ -290,6 +290,10 @@ SOURCE=.\ui\dlgForeignKey.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\dlgFunction.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgGroup.cpp
 # End Source File
 # Begin Source File
@@ -311,6 +315,10 @@ SOURCE=.\ui\dlgProperty.cpp
 # Begin Source File
 
 SOURCE=.\ui\dlgSchema.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgSequence.cpp
 # End Source File
 # Begin Source File
 
@@ -674,6 +682,10 @@ SOURCE=.\include\dlgForeignKey.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\dlgFunction.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgGroup.h
 # End Source File
 # Begin Source File
@@ -695,6 +707,10 @@ SOURCE=.\include\dlgProperty.h
 # Begin Source File
 
 SOURCE=.\include\dlgSchema.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgSequence.h
 # End Source File
 # Begin Source File
 

@@ -16,7 +16,7 @@
 
 
 ctlSQLResult::ctlSQLResult(wxWindow *parent, pgConn *_conn, wxWindowID id, const wxPoint& pos, const wxSize& size)
-: wxListView(parent, id, pos, size, wxLC_REPORT | wxSIMPLE_BORDER)
+: wxListView(parent, id, pos, size, wxLC_REPORT | wxSUNKEN_BORDER)
 {
     conn=_conn;
     thread=0;

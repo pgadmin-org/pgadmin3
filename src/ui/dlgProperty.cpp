@@ -30,15 +30,18 @@
 #include "dlgLanguage.h"
 #include "dlgSchema.h"
 #include "dlgDomain.h"
+#include "dlgFunction.h"
 #include "dlgTable.h"
 #include "dlgColumn.h"
 #include "dlgIndex.h"
 #include "dlgIndexConstraint.h"
 #include "dlgForeignKey.h"
 #include "dlgCheck.h"
+#include "dlgSequence.h"
 
 #include "pgTable.h"
 #include "pgColumn.h"
+#include "pgTrigger.h"
 
 enum
 {
@@ -106,7 +109,7 @@ int dlgProperty::Go(bool modal)
 
 void dlgProperty::CreateAdditionalPages()
 {
-    sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
+    sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_READONLY | wxTE_RICH2);
     sqlPageNo=nbNotebook->GetPageCount();
     nbNotebook->AddPage(sqlPane, wxT("SQL"));
 }
@@ -287,11 +290,19 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
             break;
         case PG_DOMAIN:
         case PG_DOMAINS:
-            dlg=new dlgDomain(frame, (pgDomain*)currentNode);
+            dlg=new dlgDomain(frame, (pgDomain*)currentNode, (pgSchema*)parentNode);
+            break;
+        case PG_TRIGGERFUNCTION:
+            if (parentNode->GetType() == PG_TRIGGER)
+                parentNode = ((pgTrigger*)parentNode)->GetSchema();
+        case PG_FUNCTION:
+        case PG_FUNCTIONS:
+        case PG_TRIGGERFUNCTIONS:
+            dlg=new dlgFunction(frame, (pgFunction*)currentNode, (pgSchema*)parentNode);
             break;
         case PG_TABLE:
         case PG_TABLES:
-            dlg=new dlgTable(frame, (pgTable*)currentNode);
+            dlg=new dlgTable(frame, (pgTable*)currentNode, (pgSchema*)parentNode);
             break;
         case PG_COLUMN:
         case PG_COLUMNS:
@@ -313,7 +324,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
         case PG_CHECK:
             dlg=new dlgCheck(frame, (pgCheck*)currentNode, (pgTable*)parentNode);
             break;
-            
+        case PG_SEQUENCE:
+        case PG_SEQUENCES:
+            dlg=new dlgSequence(frame, (pgSequence*)currentNode, (pgSchema*)parentNode);
+            break;
         default:
             break;
     }

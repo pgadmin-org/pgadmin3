@@ -14,13 +14,14 @@
 
 #include "dlgProperty.h"
 
+class pgSchema;
 class pgTable;
 class pgColumn;
 
 class dlgTable : public dlgSecurityProperty
 {
 public:
-    dlgTable(frmMain *frame, pgTable *db);
+    dlgTable(frmMain *frame, pgTable *db, pgSchema *sch);
     int Go(bool modal);
 
     wxString GetSql();
@@ -28,6 +29,7 @@ public:
     pgObject *GetObject();
 
 private:
+    pgSchema *schema;
     pgTable *table;
     pgColumn *column;
     void OnChange(wxNotifyEvent &ev);
