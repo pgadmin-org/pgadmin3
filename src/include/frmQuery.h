@@ -20,6 +20,8 @@
 #include "ctlSQLResult.h"
 
 
+class ExplainCanvas;
+
 class frmQuery : public pgFrame
 {
 public:
@@ -33,6 +35,7 @@ private:
     ctlSQLBox *sqlQuery;
     wxNotebook *output;
     ctlSQLResult *sqlResult;
+    ExplainCanvas *explainCanvas;
     wxTextCtrl *msgResult, *msgHistory;
     pgConn *conn;
     wxLongLong elapsedQuery, elapsedRetrieve;
@@ -65,7 +68,7 @@ private:
     bool CheckChanged(bool canVeto);
     void OpenLastFile();
     void updateMenu(wxObject *obj=0);
-    void execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0, bool toFile=false);
+    bool execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0, bool toFile=false);
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();

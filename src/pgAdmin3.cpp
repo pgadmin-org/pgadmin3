@@ -21,7 +21,6 @@
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
 
-
 // Windows headers
 #ifdef __WXMSW__
   #include <winsock.h>
@@ -37,8 +36,6 @@
 #include <wx/renderer.h>
 #endif
 #endif 
-
-
 
 // App headers
 #include "pgAdmin3.h"
@@ -58,6 +55,10 @@
 #include "xh_timespin.h"
 #include "xh_sqlbox.h"
 #include "xh_ctlcombo.h"
+
+
+#include <wx/ogl/ogl.h>
+
 
 // Globals
 frmMain *winMain=0;
@@ -385,6 +386,8 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->Load(uiPath+COMMON_DIR + wxT("/*.xrc"));
 #endif
 
+
+    wxOGLInitialize();
 
     // Set some defaults
     SetAppName(APPNAME_L);

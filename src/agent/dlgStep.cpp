@@ -49,7 +49,7 @@ dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
     step=node;
     job=j;
     if (job)
-        jobId=job->GetId();
+        jobId=job->GetJobId();
     else
         jobId=0;
 
@@ -112,7 +112,7 @@ pgObject *dlgStep::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgaStep::ReadObjects(collection, 0, wxT("   AND jstid=") + NumToStr(id) + wxT("\n"));
+    pgObject *obj=pgaStep::ReadObjects(collection, 0, wxT("   AND jstid=") + NumToStr(jobId) + wxT("\n"));
     return obj;
 }
 
@@ -244,7 +244,7 @@ wxString dlgStep::GetUpdateSql()
         if (!vars.IsEmpty())
             sql = wxT("UPDATE pgagent.pga_jobstep\n")
                   wxT("   SET ") + vars + wxT("\n")
-                  wxT(" WHERE jstid=") + NumToStr(step->GetId());
+                  wxT(" WHERE jstid=") + NumToStr(step->GetJobId());
     }
     else
     {

@@ -37,7 +37,7 @@ pgaStep::~pgaStep()
 
 bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobstep WHERE jstid=") + NumToStr(GetId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobstep WHERE jstid=") + NumToStr(GetJobId()));
 }
 
 
@@ -53,7 +53,7 @@ void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("ID"), GetId());
+        properties->AppendItem(_("ID"), GetJobId());
         properties->AppendItem(_("Enabled"), GetEnabled());
         properties->AppendItem(_("Kind"), GetKind());
         properties->AppendItem(_("Database"), GetDbname());
@@ -87,7 +87,7 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
     pgSet *steps= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT * FROM pgagent.pga_jobstep\n")
-       wxT(" WHERE jstjobid=") + NumToStr(collection->GetJob()->GetId()) + wxT("\n")
+       wxT(" WHERE jstjobid=") + NumToStr(collection->GetJob()->GetJobId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jstid"));
 
@@ -97,7 +97,7 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
         {
 
             step = new pgaStep(collection, steps->GetVal(wxT("jstname")));
-            step->iSetId(steps->GetLong(wxT("jstid")));
+            step->iSetJobId(steps->GetLong(wxT("jstid")));
             step->iSetDatabase(collection->GetDatabase());
             step->iSetDbname(steps->GetVal(wxT("jstdbname")));
             step->iSetCode(steps->GetVal(wxT("jstcode")));

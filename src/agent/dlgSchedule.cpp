@@ -66,7 +66,7 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
     schedule=node;
     job=j;
     if (job)
-        jobId=job->GetId();
+        jobId=job->GetJobId();
     else
         jobId=0;
 
@@ -119,7 +119,7 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgaSchedule::ReadObjects(collection, 0, wxT("   AND jscid=") + NumToStr(id) + wxT("\n"));
+    pgObject *obj=pgaSchedule::ReadObjects(collection, 0, wxT("   AND jscid=") + NumToStr(jobId) + wxT("\n"));
     return obj;
 }
 

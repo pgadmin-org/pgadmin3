@@ -62,7 +62,7 @@ void pgaSchedule::iSetIntervalList(const wxString &s)
 
 bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobschedule WHERE jscid=") + NumToStr(GetId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobschedule WHERE jscid=") + NumToStr(GetJobId()));
 }
 
 
@@ -78,7 +78,7 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("ID"), GetId());
+        properties->AppendItem(_("ID"), GetJobId());
         properties->AppendItem(_("Enabled"), GetEnabled());
         properties->AppendItem(_("Type"), GetKind());
         if (kindChar == 'n' || kindChar == 's')
@@ -121,7 +121,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
     pgSet *schedules= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT * FROM pgagent.pga_schedule\n")
-       wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetId()) + wxT("\n")
+       wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetJobId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jscid"));
 
@@ -131,7 +131,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
         {
 
             schedule = new pgaSchedule(collection, schedules->GetVal(wxT("jscname")));
-            schedule->iSetId(schedules->GetLong(wxT("jscid")));
+            schedule->iSetJobId(schedules->GetLong(wxT("jscid")));
             schedule->iSetDatabase(collection->GetDatabase());
             schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
             schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));

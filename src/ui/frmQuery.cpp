@@ -19,6 +19,7 @@
 #include "frmQuery.h"
 #include "frmHelp.h"
 #include "menu.h"
+#include "explainCanvas.h"
 
 #include <wx/clipbrd.h>
 
@@ -70,6 +71,13 @@ END_EVENT_TABLE()
 
 
 
+enum
+{
+    RESULT_PAGE=0,
+    EXPLAIN_PAGE,
+    MSG_PAGE,
+    HISTORY_PAGE
+};
 
 frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query)
 : pgFrame(NULL, _title)
@@ -196,10 +204,12 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     sqlResult = new ctlSQLResult(output, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
+    explainCanvas = new ExplainCanvas(output);
     msgResult = new wxTextCtrl(output, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
     msgHistory = new wxTextCtrl(output, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
 
     output->AddPage(sqlResult, _("Data Output"));
+    output->AddPage(explainCanvas, _("Explain"));
     output->AddPage(msgResult, _("Messages"));
     output->AddPage(msgHistory, _("History"));
 
@@ -797,7 +807,23 @@ void frmQuery::OnExplain(wxCommandEvent& event)
     if (analyze)
         sql += wxT(";\nROLLBACK;");
 
-    execQuery(sql, resultToRetrieve, true, offset);
+    if (execQuery(sql, resultToRetrieve, true, offset))
+    {
+        if (!verbose)
+        {
+            int i;
+            wxString str;
+            for (i=0 ; i < sqlResult->NumRows() ; i++)
+            {
+                if (i)
+                    str.Append(wxT("\n"));
+                str.Append(sqlResult->GetItemText(i));
+            }
+            explainCanvas->SetExplainString(str);
+            output->SetSelection(EXPLAIN_PAGE);
+        }
+    }
+
     sqlQuery->SetFocus();
 }
 
@@ -856,12 +882,16 @@ void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
     SetStatusText(str, STATUSPOS_MSGS);
 }
 
-void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singleResult, const int queryOffset, bool toFile)
+bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singleResult, const int queryOffset, bool toFile)
 {
+    bool done=false;
+
     long rowsReadTotal=0;
     setTools(true);
     queryMenu->Enable(MNU_SAVEHISTORY, true);
     queryMenu->Enable(MNU_CLEARHISTORY, true);
+
+    explainCanvas->Clear();
 
     bool wasChanged = changed;
     sqlQuery->MarkerDeleteAll(0);
@@ -913,9 +943,11 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
         if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
         {
-            output->SetSelection(1);
+            output->SetSelection(MSG_PAGE);
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
+                done = true;
+
                 int insertedCount = sqlResult->InsertedCount();
                 OID insertedOid = sqlResult->InsertedOid();
                 if (insertedCount < 0)
@@ -973,7 +1005,8 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         }
         else
         {
-            output->SetSelection(0);
+            done = true;
+            output->SetSelection(RESULT_PAGE);
             long rowsTotal=sqlResult->NumRows();
 
             if (toFile)
@@ -1104,4 +1137,6 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
     {
         fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
     }
+
+    return done;
 }

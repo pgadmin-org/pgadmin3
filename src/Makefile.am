@@ -57,6 +57,7 @@ $(srcdir)/slony/slSequence.cpp $(srcdir)/slony/slTable.cpp $(srcdir)/slony/slSub
 $(srcdir)/slony/dlgRepCluster.cpp $(srcdir)/slony/dlgRepNode.cpp $(srcdir)/slony/dlgRepListen.cpp \
 $(srcdir)/slony/dlgRepPath.cpp $(srcdir)/slony/dlgRepSet.cpp $(srcdir)/slony/dlgRepSequence.cpp \
 $(srcdir)/slony/dlgRepTable.cpp $(srcdir)/slony/dlgRepSubscription.cpp $(srcdir)/slony/slFunctions.cpp \
+$(srcdir)/ui/explainCanvas.cpp $(srcdir)/ui/explainShape.cpp \
 $(srcdir)/ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = $(srcdir)/include/copyright.h $(srcdir)/include/version.h $(srcdir)/include/ctlSQLBox.h \
@@ -99,6 +100,7 @@ $(srcdir)/include/sysSettings.h $(srcdir)/include/sysProcess.h $(srcdir)/include
 $(srcdir)/include/pgconfig.h $(srcdir)/include/update.h $(srcdir)/include/frmUpdate.h \
 $(srcdir)/include/dlgHbaConfig.h $(srcdir)/include/dlgMainConfig.h $(srcdir)/include/frmHint.h \
 $(srcdir)/include/frmConfig.h $(srcdir)/include/frmHbaConfig.h $(srcdir)/include/frmMainConfig.h \
+$(srcdir)/include/explainCanvas.h \
 $(srcdir)/agent/include/pgaJob.h \
 $(srcdir)/agent/include/pgaStep.h $(srcdir)/agent/include/pgaSchedule.h \
 $(srcdir)/agent/include/dlgJob.h $(srcdir)/agent/include/dlgStep.h \

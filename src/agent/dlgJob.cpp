@@ -156,7 +156,7 @@ int dlgJob::Go(bool modal)
 
 pgObject *dlgJob::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgaJob::ReadObjects(collection, 0, wxT("   AND jobid=") + NumToStr(id) + wxT("\n"));
+    pgObject *obj=pgaJob::ReadObjects(collection, 0, wxT("   AND jobid=") + NumToStr(jobId) + wxT("\n"));
     return obj;
 }
 
@@ -349,7 +349,7 @@ wxString dlgJob::GetUpdateSql()
 
         if (!vars.IsEmpty())
             sql = wxT("UPDATE pgagent.pga_job SET ") + vars + wxT("\n")
-                  wxT(" WHERE jobid=") + NumToStr(job->GetId());
+                  wxT(" WHERE jobid=") + NumToStr(job->GetJobId());
 
     }
     else
@@ -378,7 +378,7 @@ wxString dlgJob::GetUpdateSql()
     for (index = 0 ; index < (int)tmpSteps.GetCount() ; index++)
     {
         sql += wxT("DELETE FROM pgagent.pga_jobstep WHERE jobid=") 
-            + NumToStr(((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetId()) + wxT(";\n");
+            + NumToStr(((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetJobId()) + wxT(";\n");
     }
 
     wxArrayString tmpSchedules = previousSchedules;
@@ -399,7 +399,7 @@ wxString dlgJob::GetUpdateSql()
     for (index = 0 ; index < (int)tmpSchedules.GetCount() ; index++)
     {
         sql += wxT("DELETE FROM pgagent.pga_jobschedule WHERE jobid=") 
-            + NumToStr(((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetId()) + wxT(";\n");
+            + NumToStr(((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetJobId()) + wxT(";\n");
     }
 
 	return sql;

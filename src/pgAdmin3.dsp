@@ -55,7 +55,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswud.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib libpq.lib wxxrcd.lib regexd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.5.4/lib" /libpath:"c:/wxWidgets-2.5.4/contrib/lib" /libpath:"c:/postgresql/lib"
-# ADD LINK32 libpq.lib wxbase25ud.lib wxbase25ud_xml.lib wxbase25ud_net.lib wxmsw25ud_adv.lib wxmsw25ud_core.lib wxmsw25ud_html.lib wxregexud.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib wxmsw25ud_stc.lib wxmsw25ud_xrc.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.5.4/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
+# ADD LINK32 libpq.lib wxbase25ud.lib wxbase25ud_xml.lib wxbase25ud_net.lib wxmsw25ud_adv.lib wxmsw25ud_core.lib wxmsw25ud_html.lib wxregexud.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib wxmsw25ud_stc.lib wxmsw25ud_ogl.lib wxmsw25ud_xrc.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.5.4/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
+# SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
 
@@ -83,7 +84,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib libpq.lib wxxrc.lib regex.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.5.4/lib" /libpath:"c:/wxWidgets-2.5.4/contrib/lib" /libpath:"c:/postgresql/lib"
 # SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 libpq.lib wxbase25u.lib wxbase25u_xml.lib wxbase25u_net.lib wxmsw25u_adv.lib wxmsw25u_core.lib wxmsw25u_html.lib wxregexu.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib wxmsw25u_stc.lib wxmsw25u_xrc.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.5.4/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
+# ADD LINK32 libpq.lib wxbase25u.lib wxbase25u_xml.lib wxbase25u_net.lib wxmsw25u_adv.lib wxmsw25u_core.lib wxmsw25u_html.lib wxregexu.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib wxmsw25u_stc.lib wxmsw25u_ogl.lib wxmsw25u_xrc.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.5.4/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -674,6 +675,14 @@ SOURCE=.\ui\ctlSQLResult.cpp
 # Begin Source File
 
 SOURCE=.\ui\dlgClasses.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\explainCanvas.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\explainShape.cpp
 # End Source File
 # Begin Source File
 
@@ -1555,6 +1564,10 @@ SOURCE=.\include\ctlSQLResult.h
 # Begin Source File
 
 SOURCE=.\include\dlgClasses.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\explainCanvas.h
 # End Source File
 # Begin Source File
 

@@ -252,95 +252,95 @@ then
     then
         case "${WX_NEW_LDFLAGS}" in
             *libwx_mswud-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswud_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mswud_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_mswu-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswu_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswu_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mswu_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_mswd-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswd_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mswd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mswd_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_msw-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_msw_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_msw_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_msw_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_macud-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macud_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_macud_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macud_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_macd-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macd_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_macd_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macd_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_mac-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mac_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_mac_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mac_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk2ud-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2ud_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk2ud_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2ud_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk2d-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2d_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2d_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2d_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk2d_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2d_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2d_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2d_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk2u-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2u_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2u_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2u_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk2u_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2u_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2u_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2u_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtkud-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkud_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkud_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtkud_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkud_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkud_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtkd-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkd_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkd_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtkd_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkd_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkd_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk-*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk_core*)
-                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk_stc-${WX_VERSION}.a"
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *)
@@ -349,99 +349,99 @@ then
     else
         case "${WX_NEW_LDFLAGS}" in
             *libwx_mswud-*)
-                LIBS="$LIBS -lwx_mswud_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_mswud_stc-${WX_VERSION} -lwx_mswud_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_mswu-*)
-                LIBS="$LIBS -lwx_mswu_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_mswu_stc-${WX_VERSION} -lwx_mswu_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_mswd-*)
-                LIBS="$LIBS -lwx_mswd_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_mswd_stc-${WX_VERSION} -lwx_mswd_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *libwx_msw-*)
-                LIBS="$LIBS -lwx_msw_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_msw_stc-${WX_VERSION} -lwx_msw_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 LDFLAGS="$LDFLAGS -mwindows -Wl,--subsystem,windows"
                 ;;
             *wx_macud-*)
-                LIBS="$LIBS -lwx_macud_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_macud_stc-${WX_VERSION} -lwx_macud_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_macud_core*)
-                LIBS="$LIBS -lwx_macud_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_macud_stc-${WX_VERSION} -lwx_macud_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_macd-*)
-                LIBS="$LIBS -lwx_macd_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_macd_stc-${WX_VERSION} -lwx_macd_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_macd_core*)
-                LIBS="$LIBS -lwx_macd_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_macd_stc-${WX_VERSION} -lwx_macd_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_mac-*)
-                LIBS="$LIBS -lwx_mac_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_mac_stc-${WX_VERSION} -lwx_mac_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_mac_core*)
-                LIBS="$LIBS -lwx_mac_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_mac_stc-${WX_VERSION} -lwx_mac_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk2ud-*)
-                LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION} -lwx_gtk2ud_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk2ud_core*)
-                LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION} -lwx_gtk2ud_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk2d-*)
-                LIBS="$LIBS -lwx_gtk2d_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk2d_stc-${WX_VERSION} -lwx_gtk2d_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk2d_core*)
-                LIBS="$LIBS -lwx_gtk2d_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk2d_stc-${WX_VERSION} -lwx_gtk2d_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk2u-*)
-                LIBS="$LIBS -lwx_gtk2u_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk2u_stc-${WX_VERSION} -lwx_gtk2u_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk2u_core*)
-                LIBS="$LIBS -lwx_gtk2u_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk2u_stc-${WX_VERSION} -lwx_gtk2u_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtkud-*)
-                LIBS="$LIBS -lwx_gtkud_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtkud_stc-${WX_VERSION} -lwx_gtkud_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtkud_core*)
-                LIBS="$LIBS -lwx_gtkud_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtkud_stc-${WX_VERSION} -lwx_gtkud_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtkd-*)
-                LIBS="$LIBS -lwx_gtkd_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtkd_stc-${WX_VERSION} -lwx_gtkd_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtkd_core*)
-                LIBS="$LIBS -lwx_gtkd_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtkd_stc-${WX_VERSION} -lwx_gtkd_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk-*)
-                LIBS="$LIBS -lwx_gtk_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk_stc-${WX_VERSION} -lwx_gtk_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk_core*)
-                LIBS="$LIBS -lwx_gtk_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk_stc-${WX_VERSION} -lwx_gtk_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *wx_gtk2_*)
-                LIBS="$LIBS -lwx_gtk2_stc-${WX_VERSION}"
+                LIBS="$LIBS -lwx_gtk2_stc-${WX_VERSION} -lwx_gtk2_ogl-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *)
@@ -466,6 +466,11 @@ then
     if test ! -f "${WX_HOME}/include/wx-2.5/wx/stc/stc.h"
     then
         AC_MSG_ERROR([you need to install the stc package from wxWindows/contrib/src/stc])
+        wx_wx_h="no"
+    fi
+    if test ! -f "${WX_HOME}/include/wx-2.5/wx/ogl/ogl.h"
+    then
+        AC_MSG_ERROR([you need to install the ogl package from wxWindows/contrib/src/ogl with wxUSE_DEPRECATED=0])
         wx_wx_h="no"
     fi
     if test "$wx_wx_h" = "yes"
