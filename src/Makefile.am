@@ -81,7 +81,8 @@ include/images/closedown.xpm include/images/closeup.xpm \
 include/images/column.xpm include/images/connect.xpm \
 include/images/constraints.xpm \
 include/images/conversion.xpm include/images/create.xpm \
-include/images/database.xpm include/images/dnd_copy.xpm \
+include/images/database.xpm include/images/delete.xpm \
+include/images/dnd_copy.xpm \
 include/images/dnd_move.xpm include/images/dnd_none.xpm \
 include/images/domain.xpm include/images/drop.xpm \
 include/images/edit_clear.xpm include/images/edit_find.xpm \
@@ -100,14 +101,14 @@ include/images/pgAdmin3.xpm include/images/primarykey.xpm \
 include/images/properties.xpm include/images/property.xpm \
 include/images/public.xpm include/images/query_cancel.xpm \
 include/images/query_execute.xpm \
-include/images/query_explain.xpm \
+include/images/query_explain.xpm include/images/readdata.xpm \
 include/images/refresh.xpm include/images/relationship.xpm \
 include/images/reload.xpm include/images/rule.xpm \
 include/images/sequence.xpm include/images/serverbad.xpm \
 include/images/servers.xpm include/images/server.xpm \
 include/images/splash.xpm include/images/sql.xpm \
 include/images/statistics.xpm include/images/storage.xpm \
-include/images/table.xpm \
+include/images/storedata.xpm include/images/table.xpm \
 include/images/triggerfunction.xpm \
 include/images/trigger.xpm include/images/type.xpm \
 include/images/unique.xpm include/images/unknown.xpm \
