@@ -23,10 +23,9 @@
 
 
 // pointer to controls
-#define cbOwner         CTRL_COMBOBOX2("cbOwner")
 #define cbEncoding      CTRL_COMBOBOX("cbEncoding")
 #define cbTemplate      CTRL_COMBOBOX("cbTemplate")
-#define stPath          CTRL_STATIC("txtPath")
+#define stPath          CTRL_STATIC("stPath")
 #define txtPath         CTRL_TEXT("txtPath")
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 
@@ -87,7 +86,7 @@ int dlgDatabase::Go(bool modal)
 
     if (connection->BackendMinimumVersion(7, 5))
     {
-        stPath->SetLabel(_("Namespace"));
+        stPath->SetLabel(_("Tablespace"));
         txtPath->Hide();
     }
     else

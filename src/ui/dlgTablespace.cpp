@@ -27,7 +27,6 @@
 
 // pointer to controls
 #define txtLocation     CTRL_TEXT("txtLocation")
-#define cbOwner         CTRL_COMBOBOX2("cbOwner")
 
 
 BEGIN_EVENT_TABLE(dlgTablespace, dlgProperty)

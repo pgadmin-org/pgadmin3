@@ -238,9 +238,9 @@ frmMain::frmMain(const wxString& title)
     statusBar = CreateStatusBar(3);
     int iWidths[3] = {0, -1, 100};
     SetStatusWidths(3, iWidths);
-    SetStatusText(wxT(""), 0);
-    SetStatusText(_("Ready."), 1);
-    SetStatusText(_("0 Secs"), 2);
+    statusBar->SetStatusText(wxT(""), 0);
+    statusBar->SetStatusText(_("Ready."), 1);
+    statusBar->SetStatusText(_("0 Secs"), 2);
 
     wxAcceleratorEntry entries[4];
     entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
@@ -455,13 +455,13 @@ void frmMain::OnPageChange(wxNotebookEvent& event)
     switch (event.GetSelection())
     {
         case NBP_STATISTICS:
-            data->ShowStatistics(statistics);
+            data->ShowStatistics(this, statistics);
             break;
         case NBP_DEPENDSON:
-            data->ShowDependsOn(dependsOn);
+            data->ShowDependsOn(this, dependsOn);
             break;
         case NBP_REFERENCEDBY:
-            data->ShowReferencedBy(referencedBy);
+            data->ShowReferencedBy(this, referencedBy);
             break;
         default:
             break;
@@ -939,4 +939,11 @@ void frmMain::EndMsg()
         wxLogStatus(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
         wxEndBusyCursor();
     }
+}
+
+
+void frmMain::SetStatusText(const wxString &msg)
+{
+    statusBar->SetStatusText(msg, 1);
+    statusBar->SetStatusText(wxEmptyString, 2);
 }

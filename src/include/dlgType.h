@@ -42,7 +42,6 @@ private:
     void showDefinition(bool isComposite);
 
     wxArrayString memberTypes;
-    wxWindowList compositeWindows, externalWindows;
 
     DECLARE_EVENT_TABLE();
 };

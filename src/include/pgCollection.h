@@ -40,7 +40,7 @@ public:
 
     int GetIcon();
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowStatistics(ctlListView *statistics);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowList(const wxString& name, wxTreeCtrl *browser, ctlListView *properties);
     void UpdateChildCount(wxTreeCtrl *browser, int substract=0);
     pgObject *FindChild(wxTreeCtrl *browser, const int index);

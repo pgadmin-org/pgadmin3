@@ -35,13 +35,12 @@
 // Images
 #include "images/table.xpm"
 
-#define cbOwner         CTRL_COMBOBOX2("cbOwner")
 #define stHasOids       CTRL_STATIC("stHasOids")
 #define chkHasOids      CTRL_CHECKBOX("chkHasOids")
 #define lbTables        CTRL_LISTBOX("lbTables")
 #define btnAddTable     CTRL_BUTTON("btnAddTable")
 #define btnRemoveTable  CTRL_BUTTON("btnRemoveTable")
-#define cbTables        CTRL_COMBOBOX("cbTables")
+#define cbTables        CTRL_COMBOBOX2("cbTables")
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 
 #define btnAddCol       CTRL_BUTTON("btnAddCol")
@@ -58,8 +57,9 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgTable::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgTable::OnChange)
     EVT_CHECKBOX(XRCID("chkHasOids"),               dlgTable::OnChange)
-    EVT_TEXT(XRCID("cbOwner"),                      dlgTable::OnChange)
+    EVT_TEXT(XRCID("cbOwner"),                      dlgTable::OnChangeOwner)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgTable::OnChange)
+    EVT_TEXT(XRCID("cbTables"),                     dlgTable::OnChangeTable)
     EVT_BUTTON(XRCID("btnAddTable"),                dlgTable::OnAddTable)
     EVT_BUTTON(XRCID("btnRemoveTable"),             dlgTable::OnRemoveTable)
     EVT_LISTBOX(XRCID("lbTables"),                  dlgTable::OnSelChangeTable)
@@ -502,6 +502,19 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 }
 
 
+void dlgTable::OnChangeOwner(wxCommandEvent &ev)
+{
+    cbOwner->GuessSelection();
+    OnChange(ev);
+}
+
+
+void dlgTable::OnChangeTable(wxCommandEvent &ev)
+{
+    cbTables->GuessSelection();
+}
+
+
 void dlgTable::OnChange(wxCommandEvent &ev)
 {
     if (table)
@@ -527,7 +540,7 @@ void dlgTable::OnChange(wxCommandEvent &ev)
 
 void dlgTable::OnAddTable(wxCommandEvent &ev)
 {
-    int sel=cbTables->GetSelection();
+    int sel=cbTables->GetGuessedSelection();
     if (sel >= 0)
     {
         wxString tabname=cbTables->GetValue();

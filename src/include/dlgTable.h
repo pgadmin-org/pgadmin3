@@ -34,6 +34,8 @@ private:
     pgTable *table;
 
     void OnChange(wxCommandEvent &ev);
+    void OnChangeOwner(wxCommandEvent &ev);
+    void OnChangeTable(wxCommandEvent &ev);
 
     void OnAddTable(wxCommandEvent &ev);
     void OnRemoveTable(wxCommandEvent &ev);

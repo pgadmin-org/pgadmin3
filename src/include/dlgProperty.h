@@ -30,6 +30,7 @@ class ctlSecurityPanel;
 #define txtComment      CTRL_TEXT("txtComment")
 #define lstColumns      CTRL_LISTVIEW("lstColumns")
 #define cbColumns       CTRL_COMBOBOX("cbColumns")
+#define cbOwner         CTRL_COMBOBOX2("cbOwner")
 
 class dlgProperty : public DialogWithHelp
 {
@@ -69,6 +70,7 @@ protected:
     void OnCancel(wxCommandEvent &ev);
     void OnApply(wxCommandEvent &ev);
     void OnClose(wxCloseEvent &ev);
+    void OnChangeOwner(wxCommandEvent &ev);
 
     void AddUsers(wxComboBox *cb1, wxComboBox *cb2=0);
     void FillCombobox(const wxString &query, wxComboBox *cb1, wxComboBox *cb2=0);

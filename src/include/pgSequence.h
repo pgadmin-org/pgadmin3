@@ -31,7 +31,7 @@ public:
 
     int GetIcon() { return PGICON_SEQUENCE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowStatistics(ctlListView *statistics);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
     wxString GetTablespace() const { return tablespace; };

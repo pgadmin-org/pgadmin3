@@ -129,9 +129,9 @@ public:
 
     virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0)
         =0;
-    virtual void ShowStatistics(ctlListView *statistics);
-    virtual void ShowDependsOn(ctlListView *dependsOn, const wxString &where=wxEmptyString);
-    virtual void ShowReferencedBy(ctlListView *referencedBy, const wxString &where=wxEmptyString);
+    virtual void ShowStatistics(frmMain *form, ctlListView *statistics);
+    virtual void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);
+    virtual void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
     virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
     virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }

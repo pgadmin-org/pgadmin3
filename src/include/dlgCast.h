@@ -30,6 +30,8 @@ public:
 private:
     void OnChange(wxCommandEvent &ev);
     void OnChangeType(wxCommandEvent &ev);
+    void OnChangeTypeSrc(wxCommandEvent &ev);
+    void OnChangeTypeTrg(wxCommandEvent &ev);
 
     pgCast *cast;
     wxArrayString functions;

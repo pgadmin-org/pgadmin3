@@ -44,6 +44,10 @@
 #define txtMembername   CTRL_TEXT("txtMembername")
 #define btnAdd          CTRL_BUTTON("btnAdd")
 #define btnRemove       CTRL_BUTTON("btnRemove")
+#define pnlDefinition   CTRL_PANEL("pnlDefinition")
+#define pnlDefinitionExtern     CTRL_PANEL("pnlDefinitionExtern")
+#define pnlDefinitionComposite  CTRL_PANEL("pnlDefinitionComposite")
+
 
 BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgType::OnChange)
@@ -73,17 +77,6 @@ dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
     SetIcon(wxIcon(type_xpm));
     lstMembers->CreateColumns(frame, _("Member"), _("Data type"), -1);
 
-
-    wxWindow *defPage=cbInput->GetParent();
-    externalWindows = defPage->GetChildren();
-    compositeWindows =  lstMembers->GetParent()->GetChildren();
-
-    int i=compositeWindows.GetCount();
-    while (i--)
-        compositeWindows.Item(i)->GetData()->Reparent(defPage);
-
-    nbNotebook->DeletePage(2);
-
     wxNotifyEvent event;
     OnTypeChange(event);
     txtOID->Disable();
@@ -98,15 +91,8 @@ void dlgType::OnChangeMember(wxCommandEvent &ev)
 
 void dlgType::showDefinition(bool isComposite)
 {
-    int i;
-    
-    i=externalWindows.GetCount();
-    while (i--)
-        externalWindows.Item(i)->GetData()->Show(!isComposite);
-
-    i=compositeWindows.GetCount();
-    while (i--)
-        compositeWindows.Item(i)->GetData()->Show(isComposite);
+    pnlDefinitionExtern->Show(!isComposite);
+    pnlDefinitionComposite->Show(isComposite);
 }
 
 

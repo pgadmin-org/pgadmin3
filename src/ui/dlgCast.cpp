@@ -35,8 +35,8 @@
 
 
 BEGIN_EVENT_TABLE(dlgCast, dlgTypeProperty)
-    EVT_TEXT(XRCID("cbSourceType"),                 dlgCast::OnChangeType)
-    EVT_TEXT(XRCID("cbTargetType"),                 dlgCast::OnChangeType)
+    EVT_TEXT(XRCID("cbSourceType"),                 dlgCast::OnChangeTypeSrc)
+    EVT_TEXT(XRCID("cbTargetType"),                 dlgCast::OnChangeTypeTrg)
     EVT_TEXT(XRCID("txtComment"),                   dlgCast::OnChange)
 END_EVENT_TABLE();
 
@@ -127,6 +127,19 @@ void dlgCast::OnChange(wxCommandEvent &ev)
 
         EnableOK(enable);
     }
+}
+
+
+void dlgCast::OnChangeTypeSrc(wxCommandEvent &ev)
+{
+    cbSourceType->GuessSelection();
+    OnChangeType(ev);
+}
+
+void dlgCast::OnChangeTypeTrg(wxCommandEvent &ev)
+{
+    cbTargetType->GuessSelection();
+    OnChangeType(ev);
 }
 
 

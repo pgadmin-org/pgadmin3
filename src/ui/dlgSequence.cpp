@@ -38,7 +38,7 @@
 
 BEGIN_EVENT_TABLE(dlgSequence, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgSequence::OnChange)
-    EVT_TEXT(XRCID("cbOwner"),                      dlgSequence::OnChange)
+    EVT_TEXT(XRCID("cbOwner"),                      dlgSequence::OnChangeOwner)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgSequence::OnChange)
     EVT_TEXT(XRCID("txtStart"),                     dlgSequence::OnChange)
     EVT_TEXT(XRCID("txtMin"),                       dlgSequence::OnChange)
@@ -124,6 +124,13 @@ pgObject *dlgSequence::CreateObject(pgCollection *collection)
         wxT("\n   AND relnamespace=") + schema->GetOidStr());
          
     return obj;
+}
+
+
+void dlgSequence::OnChangeOwner(wxCommandEvent &ev)
+{
+    cbOwner->GuessSelection();
+    OnChange(ev);
 }
 
 

@@ -31,9 +31,9 @@ public:
 
     int GetIcon() { return PGICON_COLUMN; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowStatistics(ctlListView *statistics);
-    void ShowDependsOn(ctlListView *dependsOn, const wxString &where=wxEmptyString);
-    void ShowReferencedBy(ctlListView *referencedBy, const wxString &where=wxEmptyString);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
+    void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);
+    void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
     wxString GetDefinition();

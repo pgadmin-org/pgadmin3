@@ -60,17 +60,17 @@ bool pgColumn::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
-void pgColumn::ShowDependsOn(ctlListView *dependsOn, const wxString &where)
+void pgColumn::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where)
 {
-    pgObject::ShowDependsOn(dependsOn, 
+    pgObject::ShowDependsOn(form, dependsOn, 
         wxT("\n WHERE dep.objid=") + NumToStr(tableOid) +
         wxT(" AND dep.objsubid=") + NumToStr(colNumber));
 }
 
 
-void pgColumn::ShowReferencedBy(ctlListView *referencedBy, const wxString &where)
+void pgColumn::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where)
 {
-    pgObject::ShowReferencedBy(referencedBy, 
+    pgObject::ShowReferencedBy(form, referencedBy, 
         wxT("\n WHERE dep.refobjid=") + NumToStr(tableOid) +
         wxT(" AND dep.refobjsubid=") + NumToStr(colNumber));
 }
@@ -235,7 +235,7 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 }
 
 
-void pgColumn::ShowStatistics(ctlListView *statistics)
+void pgColumn::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     DisplayStatistics(statistics,
         wxT("SELECT null_frac AS ") + qtIdent(_("Null Fraction")) +

@@ -27,14 +27,13 @@
 
 
 // pointer to controls
-#define cbOwner             CTRL_COMBOBOX("cbOwner")
 #define chkNotNull          CTRL_CHECKBOX("chkNotNull")
 #define txtDefault          CTRL_TEXT("txtDefault")
 #define txtCheck            CTRL_TEXT("txtCheck")
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgDomain::OnChange)
-    EVT_TEXT(XRCID("cbOwner"),                      dlgDomain::OnChange)
+    EVT_TEXT(XRCID("cbOwner"),                      dlgDomain::OnChangeOwner)
     EVT_TEXT(XRCID("txtLength"),                    dlgDomain::OnChange)
     EVT_TEXT(XRCID("txtPrecision"),                 dlgDomain::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgDomain::OnSelChangeTyp)
@@ -136,6 +135,13 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 }
 
 
+void dlgDomain::OnChangeOwner(wxCommandEvent &ev)
+{
+    cbOwner->GuessSelection();
+    OnChange(ev);
+}
+
+
 void dlgDomain::OnChange(wxCommandEvent &ev)
 {
     if (domain)
@@ -225,7 +231,7 @@ wxString dlgDomain::GetSql()
             sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
         sql += wxT(";\n");
 
-        if (cbOwner->GetSelection() > 0)
+        if (cbOwner->GetGuessedSelection() > 0)
         {
             sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier()
                 +  wxT(" USER TO ") + qtIdent(cbOwner->GetValue())

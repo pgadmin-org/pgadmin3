@@ -75,7 +75,7 @@ public:
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowStatistics(ctlListView *statistics);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
     wxString GetHelpPage(bool forCreate) const { return wxT("managing-databases"); }
     int GetIcon() { return PGICON_SERVER; }
     wxMenu *GetNewMenu();

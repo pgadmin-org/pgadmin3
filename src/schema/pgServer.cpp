@@ -344,7 +344,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 }
 
 
-void pgServer::ShowStatistics(ctlListView *statistics)
+void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     if (conn)
     {

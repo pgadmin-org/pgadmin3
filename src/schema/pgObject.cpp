@@ -138,7 +138,7 @@ wxMenu *pgObject::GetNewMenu()
 }
 
 
-void pgObject::ShowStatistics(ctlListView *statistics)
+void pgObject::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     statistics->ClearAll();
     statistics->AddColumn(_("Statistics"), 500);
@@ -272,7 +272,7 @@ void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const 
 }
 
 
-void pgObject::ShowDependsOn(ctlListView *dependsOn, const wxString &wh)
+void pgObject::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &wh)
 {
     wxString where;
     if (wh.IsEmpty())
@@ -313,7 +313,7 @@ void pgObject::ShowDependsOn(ctlListView *dependsOn, const wxString &wh)
 }
 
 
-void pgObject::ShowReferencedBy(ctlListView *referencedBy, const wxString &wh)
+void pgObject::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &wh)
 {
     wxString where;
     if (wh.IsEmpty())
@@ -357,8 +357,22 @@ void pgObject::ShowReferencedBy(ctlListView *referencedBy, const wxString &wh)
 
 void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlSQLBox *sqlPane)
 {
+    pgConn *conn=GetConnection();
+    if (conn)
+    {
+        int status = conn->GetStatus();
+        if (status == PGCONN_BROKEN || status == PGCONN_BAD)
+        {
+            form->SetStatusText(_(" Connection broken."));
+            return;
+        }
+    }
+
+    wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
     if (form)
     {
+        form->StartMsg(wxString::Format(_("Retrieving %s details"), wxGetTranslation(GetTypeName())));
+
         bool canSql;
         switch (GetType())
         {
@@ -382,28 +396,27 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *propert
 
         ctlListView *statistics=form->GetStatistics();
         if (statistics)
-            ShowStatistics(statistics);
+            ShowStatistics(form, statistics);
 
         ctlListView *dependsOn=form->GetDependsOn();
         if (dependsOn)
         {
             dependsOn->ClearAll();
             if (!IsCollection())
-                ShowDependsOn(dependsOn);
+                ShowDependsOn(form, dependsOn);
         }
         ctlListView *referencedBy=form->GetReferencedBy();
         if (referencedBy)
         {
             referencedBy->ClearAll();
             if (!IsCollection())
-                ShowReferencedBy(referencedBy);
+                ShowReferencedBy(form, referencedBy);
         }
     }
 
-    wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
-    form->StartMsg(wxString::Format(_("Retrieving %s details"), wxGetTranslation(GetTypeName())));
     ShowTreeDetail(browser, form, properties, sqlPane);
-    form->EndMsg();
+    if (form)
+        form->EndMsg();
 }
 
 

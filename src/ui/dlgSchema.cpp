@@ -23,7 +23,6 @@
 
 
 // pointer to controls
-#define cbOwner         CTRL_COMBOBOX2("cbOwner")
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)

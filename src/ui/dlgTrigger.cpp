@@ -28,7 +28,7 @@
 
 // pointer to controls
 #define chkRow          CTRL_CHECKBOX("chkRow")
-#define cbFunction      CTRL_COMBOBOX("cbFunction")
+#define cbFunction      CTRL_COMBOBOX2("cbFunction")
 #define txtArguments    CTRL_TEXT("txtArguments")
 #define rdbFires        CTRL_RADIOBOX("rdbFires")
 #define chkInsert       CTRL_CHECKBOX("chkInsert")
@@ -41,7 +41,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_CHECKBOX(XRCID("chkInsert"),                dlgTrigger::OnChange)
     EVT_CHECKBOX(XRCID("chkUpdate"),                dlgTrigger::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgTrigger::OnChange)
-    EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChange)
+    EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChangeFunc)
     EVT_TEXT(XRCID("txtArguments"),                 dlgTrigger::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgTrigger::OnChange)
 END_EVENT_TABLE();
@@ -182,6 +182,13 @@ pgObject *dlgTrigger::CreateObject(pgCollection *collection)
         wxT("\n   AND tgrelid=") + table->GetOidStr() +
         wxT("\n   AND relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
+}
+
+
+void dlgTrigger::OnChangeFunc(wxCommandEvent &ev)
+{
+    cbFunction->GuessSelection();
+    OnChange(ev);
 }
 
 

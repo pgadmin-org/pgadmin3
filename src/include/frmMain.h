@@ -43,6 +43,7 @@ public:
 
     void StartMsg(const wxString& msg);
     void EndMsg();
+    void SetStatusText(const wxString &msg);
 
     void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool maintenance);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }

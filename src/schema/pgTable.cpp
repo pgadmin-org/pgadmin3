@@ -402,7 +402,7 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
 }
 
 
-void pgTable::ShowStatistics(ctlListView *statistics)
+void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     DisplayStatistics(statistics, 
         wxT("SELECT seq_scan AS ") + qtIdent(_("Sequential Scans")) +

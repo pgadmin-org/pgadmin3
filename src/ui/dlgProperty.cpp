@@ -66,10 +66,11 @@
 
 BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgProperty::OnPageSelect)  
-    EVT_BUTTON (XRCID("btnHelp"),                   dlgProperty::OnHelp)
-    EVT_BUTTON (XRCID("btnOK"),                     dlgProperty::OnOK)
-    EVT_BUTTON (XRCID("btnApply"),                  dlgProperty::OnApply)
-    EVT_BUTTON (XRCID("btnCancel"),                 dlgProperty::OnCancel)
+    EVT_TEXT(XRCID("cbOwner"),                      dlgProperty::OnChangeOwner)
+    EVT_BUTTON(XRCID("btnHelp"),                    dlgProperty::OnHelp)
+    EVT_BUTTON(XRCID("btnOK"),                      dlgProperty::OnOK)
+    EVT_BUTTON(XRCID("btnApply"),                   dlgProperty::OnApply)
+    EVT_BUTTON(XRCID("btnCancel"),                  dlgProperty::OnCancel)
     EVT_CLOSE(                                      dlgProperty::OnClose)
 END_EVENT_TABLE();
 
@@ -327,6 +328,14 @@ void dlgProperty::PrepareTablespace(wxComboBox *cb, const wxChar *current)
 }
 
 
+void dlgProperty::OnChangeOwner(wxCommandEvent &ev)
+{
+    ctlComboBox *cb=cbOwner;
+    if (cb)
+        cb->GuessSelection();
+}
+
+
 void dlgProperty::OnClose(wxCloseEvent &ev)
 {
     if (IsModal())
@@ -568,8 +577,15 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
             break;
         case PG_DATABASE:
         case PG_DATABASES:
+        {
+            if (asNew)
+            {
+                // use the server's connection to avoid "template1 in use"
+                conn=parentNode->GetConnection();
+            }
             dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
             break;
+        }
         case PG_TABLESPACE:
         case PG_TABLESPACES:
             dlg=new dlgTablespace(frame, (pgTablespace*)currentNode);
@@ -698,6 +714,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 
 void dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 {
+    pgConn *conn=node->GetConnection();
+    if (!conn || conn->GetStatus() != PGCONN_OK)
+        return;
+
     dlgProperty *dlg=CreateDlg(frame, node, true, type);
 
     if (dlg)
@@ -715,7 +735,7 @@ void dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 void dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node)
 {
     pgConn *conn=node->GetConnection();
-    if (!conn)
+    if (!conn || conn->GetStatus() != PGCONN_OK)
         return;
 
     dlgProperty *dlg=CreateDlg(frame, node, false);

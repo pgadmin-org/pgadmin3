@@ -288,7 +288,7 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
 }
 
 
-void pgCollection::ShowStatistics(ctlListView *statistics)
+void pgCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     switch (GetType())
     {

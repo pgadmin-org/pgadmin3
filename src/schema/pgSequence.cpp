@@ -104,7 +104,7 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 
 
 
-void pgSequence::ShowStatistics(ctlListView *statistics)
+void pgSequence::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     wxLogInfo(wxT("Displaying statistics for sequence on ") +GetSchema()->GetIdentifier());
 

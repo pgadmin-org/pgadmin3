@@ -298,6 +298,7 @@ void dlgFunction::OnSelChangeArg(wxCommandEvent &ev)
 void dlgFunction::OnChangeReturn(wxCommandEvent &ev)
 {
     cbReturntype->GuessSelection();
+    OnChange(ev);
 }
 
 

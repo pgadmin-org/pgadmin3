@@ -30,6 +30,7 @@ public:
 
 private:
     void OnChange(wxCommandEvent &ev);
+    void OnChangeOwner(wxCommandEvent &ev);
     void OnSelChangeTyp(wxCommandEvent &ev);
 
     pgSchema *schema;

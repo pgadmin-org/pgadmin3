@@ -33,6 +33,7 @@ private:
     pgTrigger *trigger;
 
     void OnChange(wxCommandEvent &ev);
+    void OnChangeFunc(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };
