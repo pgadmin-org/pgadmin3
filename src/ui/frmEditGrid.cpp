@@ -38,6 +38,7 @@
 #include "images/readdata.xpm"
 #include "images/delete.xpm"
 #include "images/edit_undo.xpm"
+#include "images/sortfilter.xpm"
 #include "images/help.xpm"
 
 
@@ -93,7 +94,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected lines."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_OPTIONS, _("Options"), wxBitmap(delete_xpm), _("Sort/filter options."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_OPTIONS, _("Options"), wxBitmap(sortfilter_xpm), _("Sort/filter options."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."));
 

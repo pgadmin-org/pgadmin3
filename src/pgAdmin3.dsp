@@ -650,7 +650,7 @@ SOURCE=.\ui\ctlSQLResult.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\dlgEditGridOptions.cpp
+SOURCE=.\ui\dlgEditGridOptions.cpp
 # End Source File
 # Begin Source File
 

@@ -34,7 +34,7 @@
 #include "pgView.h"
 
 // Icons
-#include "images/viewdata.xpm"
+#include "images/sortfilter.xpm"
 
 #define nbOptions                   CTRL("nbOptions", wxNotebook)
 #define btnAsc						CTRL("btnAsc", wxButton)
@@ -65,7 +65,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
     wxXmlResource::Get()->LoadDialog(this, parent, wxT("dlgEditGridOptions")); 
 
     // Icon
-    SetIcon(wxIcon(viewdata_xpm));
+    SetIcon(wxIcon(sortfilter_xpm));
     CenterOnParent();
 
 	int cols = grid->GetNumberCols();
