@@ -227,7 +227,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     barBitmaps[7] = wxBitmap(vacuum_xpm);
 
     toolBar->AddTool(MNU_ADDSERVER, _("Add Server"), barBitmaps[0], _("Add a connection to a server."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_REFRESH, _("Refresh"), barBitmaps[1], _("Refresh the data below the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REFRESH, _("Refresh"), barBitmaps[1], _("Refresh the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_CREATE, _("Create"), barBitmaps[2], _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_DROP, _("Drop"), barBitmaps[3], _("Drop the currently selected object."), wxITEM_NORMAL);

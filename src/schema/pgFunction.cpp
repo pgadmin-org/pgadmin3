@@ -79,7 +79,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
         if (GetIsStrict())
             sql += wxT(" STRICT");
         if (GetSecureDefiner())
-            sql += wxT(" SECURE DEFINER");
+            sql += wxT(" SECURITY DEFINER");
         sql += wxT(";\n")
             + GetCommentSql();
     }
@@ -112,7 +112,7 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
             InsertListItem(properties, pos++, _("Source"), GetSource());
 
         InsertListItem(properties, pos++, _("Volatility"), GetVolatility());
-        InsertListItem(properties, pos++, _("Secure Definer?"), GetSecureDefiner());
+        InsertListItem(properties, pos++, _("Security Definer?"), GetSecureDefiner());
         InsertListItem(properties, pos++, _("Strict?"), GetIsStrict());
         InsertListItem(properties, pos++, _("ACL"), GetAcl());
         InsertListItem(properties, pos++, _("System Function?"), GetSystemObject());

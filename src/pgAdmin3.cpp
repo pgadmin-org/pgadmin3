@@ -48,9 +48,14 @@ int is_absolute_path()
     return 0;
 }
 
+
+
+
 // The Application!
 bool pgAdmin3::OnInit()
 {
+    // we are here
+    loadPath=wxPathOnly(argv[0]);
 
     // Load the Settings
 #ifdef __WXMSW__
@@ -69,6 +74,86 @@ bool pgAdmin3::OnInit()
     wxLogInfo(msg);
     wxLogInfo(wxT("##############################################################"));
 
+
+    
+    wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN);
+
+    if (langId == wxLANGUAGE_UNKNOWN)
+    {
+        wxArrayInt existingLangs;
+        const wxLanguageInfo *langInfo;
+
+        int langNo=2;       // skipping default, unknown
+        long langCount=0;
+
+        while (true)
+        {
+            langInfo=wxLocale::GetLanguageInfo(langNo);
+            if (!langInfo)
+                break;
+
+            if (!langInfo->CanonicalName.IsEmpty() && 
+#ifdef __WIN32__
+                (wxDir::Exists(loadPath + MO_PATH + wxT("/") + langInfo->CanonicalName) ||
+                 wxDir::Exists(loadPath + wxT("/..") MO_PATH + wxT("/") + langInfo->CanonicalName)))
+#else
+                (wxDir::Exists(DATADIR + MO_PATH + wxT("/") + langInfo->CanonicalName) ||
+                 wxDir::Exists(loadPath +  MO_PATH + wxT("/") + langInfo->CanonicalName)))
+#endif
+            {
+                existingLangs.Add(langNo);
+                langCount++;
+            }
+            langNo++;
+        }
+
+        if (langCount)
+        {
+            wxString *langNames=new wxString[langCount+1];
+            langNames[0] = wxT("Default");
+
+            for (langNo = 0; langNo < langCount ; langNo++)
+            {
+                langInfo = wxLocale::GetLanguageInfo(existingLangs.Item(langNo));
+                langNames[langNo+1] = wxGetTranslation(langInfo->Description) + wxT(" (")
+                    + langInfo->CanonicalName + wxT(")");
+            }
+
+            langNo = wxGetSingleChoiceIndex(_("Please choose language:"), _("Language"), 
+                langCount+1, langNames);
+            if (langNo >= 0)
+            {
+                if (langNo)
+                    langId = (wxLanguage)wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1))->Language;
+                else
+                    langId = wxLANGUAGE_DEFAULT;
+                settings->Write(wxT("LanguageId"), (long)langId);
+            }
+            delete[] langNames;
+        }
+    }
+
+    if (langId != wxLANGUAGE_UNKNOWN)
+    {
+        locale.Init(langId);
+
+#ifdef __WIN32__
+        locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
+        locale.AddCatalogLookupPathPrefix(loadPath + wxT("/..") MO_PATH);
+#else
+        locale.AddCatalogLookupPathPrefix(DATADIR MO_PATH);
+        locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
+#endif
+
+        locale.AddCatalog(wxT("pgadmin3"));
+#ifdef __LINUX__
+        {
+            wxLogNull noLog;
+            locale.AddCatalog(wxT("fileutils"));
+        }
+#endif
+    }
+
     // Show the splash screen
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     if (!winSplash) 
@@ -79,6 +164,7 @@ bool pgAdmin3::OnInit()
 	  winSplash->Update();
       wxYield();
     }
+
 	
     // Startup the windows sockets if required
 #ifdef __WXMSW__
@@ -96,7 +182,6 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->InitAllHandlers();
 
 
-    loadPath=wxPathOnly(argv[0]);
 
 #ifdef __WIN32__
     bool done;

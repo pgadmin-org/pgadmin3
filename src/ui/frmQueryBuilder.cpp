@@ -1480,7 +1480,7 @@ void frmQueryBuilder::OnClose(wxCloseEvent& event)
         if (!m_lastPath.IsNull())
             fn = wxT(" in file ") + m_lastPath;
 
-        wxMessageDialog msg(this, wxString::Format(_("The text %s has m_changed.\n"), fn.c_str()) +
+        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\n"), fn.c_str()) +
                     _("Do you want to save changes?"), _("pgAdmin III Query"), 
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
                     (event.CanVeto() ? wxCANCEL : 0));

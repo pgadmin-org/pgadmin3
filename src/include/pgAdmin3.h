@@ -43,6 +43,8 @@ const float SERVER_MIN_VERSION = 7.3f;
 
 
 #define XRC_COMMON_PATH wxT("/ui/common")
+#define MO_PATH wxT("/ui")
+
 
 // Class declarations
 class pgAdmin3 : public wxApp
@@ -52,6 +54,8 @@ public:
     virtual int OnExit();
 
 private:
+    wxLocale locale;
+
     bool LoadAllXrc(const wxString dir);
 };
 
