@@ -11,6 +11,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include "calbox.h"
+#include "timespin.h"
 
 // App headers
 #include "pgAdmin3.h"
@@ -25,20 +26,26 @@
 // pointer to controls
 #define chkEnabled          CTRL("chkEnabled", wxCheckBox)
 #define cbKind              CTRL("cbKind", wxComboBox)
+#define timInterval         CTRL("timInterval", wxTimeSpinCtrl)
 #define calStart            CTRL("calStart", wxCalendarBox)
+#define timStart            CTRL("timStart", wxTimeSpinCtrl)
 #define calEnd              CTRL("calEnd", wxCalendarBox)
+#define timEnd              CTRL("timEnd", wxTimeSpinCtrl)
 #define calSchedule         CTRL("calSchedule", wxCalendarBox)
-#define txtInterval         CTRL("txtInterval", wxTextCtrl)
+#define timSchedule         CTRL("timSchedule", wxTimeSpinCtrl)
 
 
 BEGIN_EVENT_TABLE(dlgSchedule, dlgOidProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgSchedule::OnChange)
     EVT_CHECKBOX(XRCID("chkEnabled"),               dlgSchedule::OnChange)
     EVT_COMBOBOX(XRCID("cbKind"),                   dlgSchedule::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("txtStart"),     dlgSchedule::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("txtEnd"),       dlgSchedule::OnChange)
+    EVT_SPIN(XRCID("timInterval"),                  dlgSchedule::OnChange)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),     dlgSchedule::OnChange)
+    EVT_SPIN(XRCID("timStart"),                     dlgSchedule::OnChange)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),       dlgSchedule::OnChange)
+    EVT_SPIN(XRCID("timEnd"),                       dlgSchedule::OnChange)
     EVT_CALENDAR_SEL_CHANGED(XRCID("calSchedule"),  dlgSchedule::OnChange)
-    EVT_TEXT(XRCID("txtInterval"),                  dlgSchedule::OnChange)
+    EVT_SPIN(XRCID("timSchedule"),                  dlgSchedule::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgSchedule::OnChange)
 END_EVENT_TABLE();
 
@@ -54,6 +61,7 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
     else
         jobOid=0;
 
+    timInterval->SetMax(365*24*60*60 -1, true);
     txtOID->Disable();
 }
 
@@ -74,10 +82,18 @@ int dlgSchedule::Go(bool modal)
         chkEnabled->SetValue(schedule->GetEnabled());
         cbKind->SetSelection(wxString(wxT("nsdwmy")).Find(schedule->GetKindChar()));
         calStart->SetDate(schedule->GetStart());
+        timStart->SetTime(schedule->GetStart());
         if (schedule->GetEnd().IsValid())
+        {
             calEnd->SetDate(schedule->GetEnd());
+            timEnd->SetTime(schedule->GetEnd());
+        }
+        else
+            timEnd->Disable();
         calSchedule->SetDate(schedule->GetSchedule());
-        txtInterval->SetValue(schedule->GetIntervalList());
+        timSchedule->SetTime(schedule->GetSchedule());
+        timInterval->SetValue(schedule->GetIntervalList().Item(0));
+
         txtComment->SetValue(schedule->GetComment());
     }
     else
@@ -100,6 +116,8 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 
 void dlgSchedule::OnChange(wxNotifyEvent &ev)
 {
+    timEnd->Enable(calEnd->GetDate().IsValid());
+
     wxString name=GetName();
     bool enable;
     if (schedule)

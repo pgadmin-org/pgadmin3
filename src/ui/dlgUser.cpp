@@ -11,6 +11,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include "calbox.h"
+#include "timespin.h"
 
 // Images
 #include "images/user.xpm"
@@ -26,6 +27,7 @@
 #define txtID           CTRL("txtID", wxTextCtrl)
 #define txtPasswd       CTRL("txtPasswd", wxTextCtrl)
 #define datValidUntil   CTRL("datValidUntil", wxCalendarBox)
+#define timValidUntil   CTRL("timValidUntil", wxTimeSpinCtrl)
 #define chkCreateDB     CTRL("chkCreateDB", wxCheckBox)
 #define chkCreateUser   CTRL("chkCreateUser", wxCheckBox)
 
@@ -44,7 +46,8 @@
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgUser::OnChange)
-    EVT_LISTBOX_DCLICK(XRCID("datValidUntil"),      dlgUser::OnChange)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("datValidUntil"),dlgUser::OnChange)
+    EVT_SPIN(XRCID("timValidUntil"),                dlgUser::OnChange)
     
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsNotIn"),      dlgUser::OnGroupAdd)
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsIn"),         dlgUser::OnGroupRemove)
@@ -108,6 +111,7 @@ int dlgUser::Go(bool modal)
         chkCreateDB->SetValue(user->GetCreateDatabase());
         chkCreateUser->SetValue(user->GetSuperuser());
         datValidUntil->SetDate(user->GetAccountExpires());
+        timValidUntil->SetTime(user->GetAccountExpires());
         txtName->Disable();
         txtID->Disable();
 
@@ -117,6 +121,8 @@ int dlgUser::Go(bool modal)
             wxString token=cfgTokens.GetNextToken();
             AppendListItem(lstVariables, token.BeforeFirst('='), token.AfterFirst('='), 0);
         }
+
+        timValidUntil->Enable(!readOnly && user->GetAccountExpires().IsValid());
 
         if (readOnly)
         {
@@ -158,6 +164,7 @@ int dlgUser::Go(bool modal)
     else
     {
         txtID->SetValidator(numericValidator);
+        timValidUntil->Disable();
     }
 
     return dlgProperty::Go(modal);
@@ -166,6 +173,11 @@ int dlgUser::Go(bool modal)
 
 void dlgUser::OnChange(wxNotifyEvent &ev)
 {
+    bool timEn=datValidUntil->GetDate().IsValid();
+    timValidUntil->Enable(timEn);
+    if (!timEn)
+        timValidUntil->SetTime(wxDefaultDateTime);
+
     if (!user)
     {
         wxString name=GetName();
@@ -330,7 +342,7 @@ wxString dlgUser::GetSql()
         if (DateToStr(datValidUntil->GetDate()) != DateToStr(user->GetAccountExpires()))
         {
             if (datValidUntil->GetDate().IsValid())
-                sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate())); 
+                sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate() + timValidUntil->GetValue())); 
             else
                 sql += wxT("\n   VALID UNTIL 'infinity'");
         }
@@ -429,7 +441,7 @@ wxString dlgUser::GetSql()
         if (createUser)
             sql += wxT(" CREATEUSER");
         if (datValidUntil->GetDate().IsValid())
-            sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate())); 
+            sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate() + timValidUntil->GetValue())); 
         else
             sql += wxT("\n   VALID UNTIL 'infinity'");
         sql += wxT(";\n");

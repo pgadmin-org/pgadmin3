@@ -10,6 +10,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/arrimpl.cpp>
 
 // App headers
 #include "pgAdmin3.h"
@@ -20,6 +21,9 @@
 #include "pgaSchedule.h"
 #include "pgaStep.h"
 #include "pgaSchedule.h"
+
+
+WX_DEFINE_OBJARRAY(wxArrayTimeSpan);
 
 
 pgaSchedule::pgaSchedule(pgaJob *_job, const wxString& newName)
@@ -33,6 +37,25 @@ pgaSchedule::~pgaSchedule()
     wxLogInfo(wxT("Destroying a pgaSchedule object"));
 }
 
+
+void pgaSchedule::iSetIntervalList(const wxString &s)
+{
+    if (s[0] == '{')
+        intervalListString = s.Mid(1, s.Length()-2);
+    else
+        intervalListString = s;
+
+    wxStringTokenizer tk(intervalListString, wxT(","));
+
+    while (tk.HasMoreTokens())
+    {
+        wxString str=tk.GetNextToken();
+
+        int h, m, s;
+        wxSscanf(str, wxT("%d:%d:%d"), &h, &m, &s);
+        intervalList.Add(wxTimeSpan(h, m, s));
+    }
+}
 
 
 void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
@@ -54,7 +77,13 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl 
         if (kindChar == 'n' || kindChar == 's')
             InsertListItem(properties, pos++, _("Scheduled"), GetSchedule());
         if (kindChar != 's')
-            InsertListItem(properties, pos++, _("Interval"), GetIntervalList());
+        {
+            wxTimeSpan ts=intervalList.Item(0);
+            if (ts.GetDays() > 0)
+                InsertListItem(properties, pos++, _("Interval"), ts.Format(wxT("%D:%H:%M:%S")));
+            else
+                InsertListItem(properties, pos++, _("Interval"), ts.Format(wxT("%H:%M:%S")));
+        }
         InsertListItem(properties, pos++, _("Start date"), GetStart());
         InsertListItem(properties, pos++, _("End date"), GetEnd());
 

@@ -64,10 +64,14 @@ private:
     wxButton *m_btn;
     wxString m_format;
 
-    bool m_dropped, m_processing;
+    bool m_dropped;
 
     void Init();
-    void OnPaintButton(wxPaintEvent& event);
+    void DropDown(bool down=true);
+
+    void OnText(wxCommandEvent &ev);
+    void OnEditKey(wxKeyEvent & event);
+    void OnCalKey(wxKeyEvent & event);
     void OnClick(wxMouseEvent &ev);
     void OnSelChange(wxCalendarEvent &ev);
     void OnActivate(wxActivateEvent &ev);

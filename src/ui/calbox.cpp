@@ -18,12 +18,12 @@
 #define CTRLID_BTN  103
 
 BEGIN_EVENT_TABLE(wxCalendarBox, wxControl)
-//    EVT_PAINT(wxCalendarBox::OnPaint)
     EVT_BUTTON(CTRLID_BTN, wxCalendarBox::OnClick)
+    EVT_TEXT(CTRLID_TXT, wxCalendarBox::OnText)
 END_EVENT_TABLE()
 
-
 IMPLEMENT_DYNAMIC_CLASS(wxCalendarBox, wxControl)
+
 
 
 wxCalendarBox::wxCalendarBox(wxWindow *parent,
@@ -64,9 +64,6 @@ bool wxCalendarBox::Create(wxWindow *parent,
     wxSize cs=GetClientSize();
     wxSize bs=ConvertDialogToPixels(wxSize(10, 0));
 
-
-    m_txt=new wxTextCtrl(this, CTRLID_TXT, txt, wxPoint(0,0), wxSize(cs.x-bs.x-1, cs.y), wxNO_BORDER); //WS_VISIBLE);
-
     wxBitmap bmp(8, 4);
     {
         wxMemoryDC dc;
@@ -83,19 +80,25 @@ bool wxCalendarBox::Create(wxWindow *parent,
         dc.SelectObject(wxNullBitmap);
     }
     
+    m_txt=new wxTextCtrl(this, CTRLID_TXT, txt, wxPoint(0,0), wxSize(cs.x-bs.x-1, cs.y), wxNO_BORDER);
+    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, (wxObjectEventFunction)&wxCalendarBox::OnEditKey, 0, this);
+    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KILL_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnKillFocus, 0, this);
+    SetFormat(wxT("%x"));
+
     m_btn = new wxBitmapButton(this, CTRLID_BTN, bmp, wxPoint(cs.x - bs.x, 0), wxSize(bs.x, cs.y));
 
     m_dlg = new wxDialog(this, CTRLID_CAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    m_dlg->Connect(wxID_ANY, wxID_ANY, wxEVT_ACTIVATE, (wxObjectEventFunction)(wxCalendarEventFunction)&wxCalendarBox::OnActivate, 0, this);
+    m_dlg->Connect(wxID_ANY, wxID_ANY, wxEVT_ACTIVATE, (wxObjectEventFunction)&wxCalendarBox::OnActivate, 0, this);
 
     m_cal = new wxCalendarCtrl(m_dlg, CTRLID_CAL, wxDefaultDateTime, wxPoint(0,0), wxDefaultSize, wxSUNKEN_BORDER);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
+    m_cal->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, (wxObjectEventFunction)&wxCalendarBox::OnCalKey, 0, this);
 
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DOUBLECLICKED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DAY_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_MONTH_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_YEAR_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
-    //Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)wxCalendarBox::OnSetFocus);
+    Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)wxCalendarBox::OnSetFocus);
 
 #if 1
     // GetBestSize doesn't work correctly
@@ -140,10 +143,7 @@ void wxCalendarBox::Init()
     m_cal = NULL;
     m_btn = NULL;
 
-    SetFormat(wxT("%x"));
-
     m_dropped = false;
-    m_processing = false;
 }
 
 
@@ -247,6 +247,25 @@ bool wxCalendarBox::SetFormat(const wxChar *fmt)
             m_format.Append(*p++);
     }
 
+    if (m_txt)
+    {
+        wxStringList valList;
+        wxChar c;
+        for (c='0'; c <= '9'; c++)
+            valList.Add(wxString(c, 1));
+        wxChar *p=(wxChar*)m_format.c_str();
+        while (*p)
+        {
+            if (*p == '%')
+                p += 2;
+            else
+                valList.Add(wxString(*p++, 1));
+        }
+        wxTextValidator tv(wxFILTER_INCLUDE_CHAR_LIST);
+        tv.SetIncludeList(valList);
+        
+        m_txt->SetValidator(tv);
+    }
     return true;
 }
 
@@ -278,36 +297,59 @@ bool wxCalendarBox::SetDate(const wxDateTime& date)
 }
 
 
-void wxCalendarBox::OnClick(wxMouseEvent& event)
+void wxCalendarBox::DropDown(bool down)
 {
     if (m_dlg)
     {
-        if (m_txt->GetValue().IsEmpty())
-            m_cal->SetDate(wxDateTime::Today());
+        if (down)
+        {
+            if (m_txt->GetValue().IsEmpty())
+                m_cal->SetDate(wxDateTime::Today());
+            else
+            {
+                wxDateTime dt;
+                dt.ParseFormat(m_txt->GetValue(), m_format);
+                m_cal->SetDate(dt);
+            }
+            wxPoint pos=GetParent()->ClientToScreen(GetPosition());
+
+            m_dlg->Move(pos.x, pos.y + GetSize().y);
+            m_dlg->Show();
+            m_dropped = true;
+        }
         else
         {
-            wxDateTime dt;
-            dt.ParseFormat(m_txt->GetValue(), m_format);
-            m_cal->SetDate(dt);
+            m_dlg->Hide();
+            m_dropped = false;
         }
-        wxPoint pos=GetParent()->ClientToScreen(GetPosition());
-
-        m_dlg->Move(pos.x, pos.y + GetSize().y);
-        m_dlg->Show();
-        m_dropped = true;
     }
+}
+
+    
+void wxCalendarBox::OnClick(wxMouseEvent& event)
+{
+    DropDown();
 }
 
 
 void wxCalendarBox::OnSetFocus(wxFocusEvent &ev)
 {
     if (m_txt)
+    {
         m_txt->SetFocus();
+        m_txt->SetSelection(0, 100);
+    }
 }
 
 
 void wxCalendarBox::OnKillFocus(wxFocusEvent &ev)
 {
+    wxDateTime dt;
+    dt.ParseFormat(m_txt->GetValue(), m_format);
+    if (!dt.IsValid())
+        m_txt->SetValue(wxEmptyString);
+    else
+        m_txt->SetValue(dt.Format(m_format));
 }
 
 
@@ -315,8 +357,7 @@ void wxCalendarBox::OnActivate(wxActivateEvent &ev)
 {
     if (!ev.GetActive())
     {
-        m_dlg->Hide();
-        m_dropped = false;
+        DropDown(false);
     }
 }
 
@@ -328,44 +369,55 @@ void wxCalendarBox::OnSelChange(wxCalendarEvent &ev)
         m_txt->SetValue(m_cal->GetDate().FormatDate());
         if (ev.GetEventType() == wxEVT_CALENDAR_DOUBLECLICKED)
         {
-            m_dlg->Hide();
-            m_dropped = false;
+            DropDown(false);
             m_txt->SetFocus();
         }
     }
+    ev.SetEventObject(this);
+    ev.SetId(GetId());
     GetParent()->ProcessEvent(ev);
 }
 
 
-void wxCalendarBox::OnPaintButton(wxPaintEvent &ev)
+void wxCalendarBox::OnText(wxCommandEvent &ev)
 {
-    if (m_processing)
+    ev.SetEventObject(this);
+    ev.SetId(GetId());
+    GetParent()->ProcessEvent(ev);
+
+    // We'll create an additional event if the date is valid.
+    // If the date isn't valid, the user's probable in the middle of typing
+    wxString txt=m_txt->GetValue();
+    wxDateTime dt;
+    if (!txt.IsEmpty())
     {
-        ev.Skip();
-        return;
+        dt.ParseFormat(txt, m_format);
+        if (!dt.IsValid())
+            return;
     }
-    m_processing = true;
-    m_btn->ProcessEvent(ev);
-    m_processing = false;
 
-    wxPaintDC dc(m_btn);
-    dc.SetBackgroundMode(wxTRANSPARENT);
-    dc.SetBrush(*wxBLACK_BRUSH);
-    dc.SetPen(*wxBLACK_PEN);
+    wxCalendarEvent cev(m_cal, wxEVT_CALENDAR_SEL_CHANGED);
+    cev.SetEventObject(this);
+    cev.SetId(GetId());
+    cev.SetDate(dt);
 
-    wxSize cs=m_btn->GetClientSize();
-    wxPoint pt[3];
+    GetParent()->ProcessEvent(cev);
+}
 
 
-    pt[0].x = cs.x/2 - 3;
-    pt[0].y = cs.y/2 - 2;
-    pt[1].x = cs.x/2 + 3;
-    pt[1].y = cs.y/2 - 2;
-    pt[2].x = cs.x/2;
-    pt[2].y = cs.y/2 + 1;
+void wxCalendarBox::OnEditKey(wxKeyEvent & ev)
+{
+    if (ev.GetKeyCode() == WXK_DOWN && !ev.HasModifiers())
+        DropDown();
+    else
+        ev.Skip();
+}
 
-    dc.SetClippingRegion(pt[0].x, pt[0].y, pt[1].x+1, pt[2].y+1);
-    dc.DrawPolygon(3, pt);
-    dc.DestroyClippingRegion();
-    ev.Skip();
+
+void wxCalendarBox::OnCalKey(wxKeyEvent & ev)
+{
+    if (ev.GetKeyCode() == WXK_ESCAPE && !ev.HasModifiers())
+        DropDown(false);
+    else
+        ev.Skip();
 }

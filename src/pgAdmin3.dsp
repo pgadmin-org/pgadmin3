@@ -722,11 +722,19 @@ SOURCE=.\ui\ctlSQLResult.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\timespin.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\xh_calb.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\ui\xh_sqlbox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\xh_timespin.cpp
 # End Source File
 # End Group
 # End Group
@@ -822,11 +830,19 @@ SOURCE=.\include\frmStatus.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\timespin.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\xh_calb.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\include\xh_sqlbox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\xh_timespin.h
 # End Source File
 # End Group
 # Begin Group "schema includes"

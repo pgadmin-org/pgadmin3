@@ -22,6 +22,9 @@
 // Class declarations
 
 
+WX_DECLARE_OBJARRAY(wxTimeSpan, wxArrayTimeSpan);
+
+
 class pgaSchedule : public pgaJobObject
 {
 public:
@@ -45,12 +48,14 @@ public:
     void iSetEnd(const wxDateTime &d) { end=d; }
     wxDateTime GetSchedule() const { return schedule; }
     void iSetSchedule(const wxDateTime &d) { schedule=d; }
-    wxString GetIntervalList() const { return intervalList; }
-    void iSetIntervalList(const wxString &s) { intervalList = s; }
+    wxString GetIntervalListString() const { return intervalListString; }
+    void iSetIntervalList(const wxString &s);
+    wxArrayTimeSpan GetIntervalList() const { return intervalList; }
 
 private:
     bool enabled;
-    wxString kind, intervalList;
+    wxString kind, intervalListString;
+    wxArrayTimeSpan intervalList;
     wxDateTime start, end, schedule;
     wxChar kindChar;
 };
