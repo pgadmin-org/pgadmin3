@@ -230,7 +230,8 @@ wxString dlgSequence::GetSql()
         sql += wxT(";\n");
         if (cbOwner->GetSelection() > 0)
         {
-            sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
+            sql += wxT("ALTER TABLE ")  + schema->GetQuotedFullIdentifier()
+                + wxT(".") + qtIdent(GetName())
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
         }
     }

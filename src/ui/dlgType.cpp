@@ -148,6 +148,7 @@ int dlgType::Go(bool modal)
         chkByValue->SetValue(type->GetPassedByValue()); chkByValue->Disable();
         cbAlignment->SetValue(type->GetAlignment()); cbAlignment->Disable();
         cbStorage->SetValue(type->GetStorage()); cbStorage->Disable();
+        txtComment->SetValue(type->GetComment());
 
         txtMembername->Disable();
         btnAdd->Disable();
