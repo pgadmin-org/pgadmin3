@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: pgadmin3\n"
-"POT-Creation-Date: 2003-09-09 16:16+0200\n"
+"POT-Creation-Date: 2004-08-11 22:54+0200\n"
 "PO-Revision-Date: 2003-08-18 15:55+0100\n"
 "Last-Translator: Andreas Pflug <Andreas.Pflug@web.de>\n"
 "Language-Team: Boris Pran & Darko Prenosil <finteh@finteh.hr>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ui/frmMaintenance.cpp:221
+#: src/ui/dlgClasses.cpp:253
 msgid ""
 "\n"
 "Cancelled.\n"
@@ -20,7 +20,7 @@ msgstr ""
 "\n"
 "Prekinuto.\n"
 
-#: src/ui/frmQuery.cpp:885 src/ui/frmQuery.cpp:887
+#: src/ui/frmQuery.cpp:1125
 msgid ""
 "\n"
 "Retrieve all rows anyway?"
@@ -28,51 +28,79 @@ msgstr ""
 "\n"
 "Ipak dohvatiti sve retke?"
 
-#: src/utils/misc.cpp:86 src/utils/misc.cpp:91
+#: src/schema/pgObject.cpp:384
+msgid " Connection broken."
+msgstr ""
+
+#: src/ui/frmMain.cpp:1052
 msgid " Done."
 msgstr "Gotovo."
 
+#: src/schema/pgTablespace.cpp:40
+#, fuzzy
+msgid " Retrieving tablespace usage"
+msgstr "Dohvaćam detalje - %s"
+
+#: src/schema/pgUser.cpp:89
+#, fuzzy
+msgid " Retrieving user owned objects"
+msgstr "Dohvaćam svojstva servera"
+
+#: src/ui/frmStatus.cpp:682
+#, fuzzy
+msgid " current"
+msgstr "Spremi tekuću datoteku"
+
 # standard
 # standard
 # standard
-#: standard input:377
+#: standard input:511
 msgid "\""
 msgstr "\""
 
-#: src/utils/misc.cpp:82 src/utils/misc.cpp:87
+#: src/ui/frmMain.cpp:1048
 #, c-format
 msgid "%.2f secs"
 msgstr "%.2f sekundi"
 
-#: src/ui/frmQuery.cpp:870 src/ui/frmQuery.cpp:872
+#: src/ui/frmQuery.cpp:1040
+#, fuzzy, c-format
+msgid "%d rows affected."
+msgstr "%d redaka dohvaćeno."
+
+#: src/ui/frmEditGrid.cpp:314
+#, fuzzy, c-format
+msgid "%d rows copied to clipboard."
+msgstr "Izreži obavrani tekst u 'clipboard'"
+
+#: src/ui/frmQuery.cpp:1109
 #, c-format
 msgid "%d rows retrieved."
 msgstr "%d redaka dohvaćeno."
 
-#: src/ui/frmEditGrid.cpp:341 src/ui/frmEditGrid.cpp:439
-#: src/ui/frmMaintenance.cpp:212 src/ui/frmQuery.cpp:960
-#: src/ui/frmEditGrid.cpp:433 src/ui/frmEditGrid.cpp:532
-#: src/ui/frmQuery.cpp:962
+#: src/ui/dlgClasses.cpp:242 src/ui/frmEditGrid.cpp:503
+#: src/ui/frmEditGrid.cpp:625 src/ui/frmQuery.cpp:1085
+#: src/ui/frmQuery.cpp:1200
 #, c-format
 msgid "%d rows."
 msgstr "%d redaka."
 
-#: src/ui/frmQuery.cpp:953 src/ui/frmQuery.cpp:955
+#: src/ui/frmQuery.cpp:1193
 #, c-format
 msgid "%ld  rows not retrieved."
 msgstr "%ld  redaka nije dohvaćeno."
 
-#: src/ui/frmQuery.cpp:962 src/ui/frmQuery.cpp:964
+#: src/ui/frmQuery.cpp:1202
 #, c-format
 msgid "%ld of %ld rows"
 msgstr "%ld od %ld redaka"
 
-#: src/ui/frmQuery.cpp:949 src/ui/frmQuery.cpp:951
+#: src/ui/frmQuery.cpp:1189
 #, c-format
 msgid "%ld rows retrieved."
 msgstr "%ld redaka dohvaćeno."
 
-#: src/ui/frmMain.cpp:164
+#: src/ui/frmMain.cpp:209
 msgid "&About..."
 msgstr "&O programu"
 
@@ -81,24 +109,27 @@ msgstr "&O programu"
 # standard input:14
 # standard
 # standard
-#: standard input:467 input:468
+#: standard input:620
 msgid "&Add"
 msgstr "&Dodaj"
 
-#: src/ui/frmChildTableViewFrame.cpp:234
 #, c-format
 msgid "&Add %s to query"
 msgstr "&Dodaj %s u upit"
 
-#: src/ui/frmMain.cpp:112
+#: src/ui/frmMain.cpp:153
 msgid "&Add Server..."
 msgstr "&Dodaj Server..."
 
-#: src/ui/frmQueryBuilder.cpp:122 src/ui/frmQueryBuilder.cpp:179
 msgid "&Add Table/View..."
 msgstr "&Dodaj Tablicu/Pogled..."
 
-#: src/ui/frmMain.cpp:163
+#: src/ui/frmMain.cpp:185
+#, fuzzy
+msgid "&Backup"
+msgstr "Natrag"
+
+#: src/ui/frmMain.cpp:208
 msgid "&Bugreport"
 msgstr "&Izvještaj o grešci"
 
@@ -122,13 +153,12 @@ msgstr "&Izvještaj o grešci"
 # standard
 # standard
 # standard
-#: src/ui/frmQueryBuilder.cpp:117 standard input:367 input:391 input:409
-#: input:445 input:453 input:459 input:490 input:446 input:454 input:460
-#: input:491
+#: standard input:52 input:501 input:525 input:532 input:539 input:557
+#: input:598 input:606 input:612 input:640
 msgid "&Cancel"
 msgstr "&Odustani"
 
-#: src/ui/frmQuery.cpp:129
+#: src/ui/frmQuery.cpp:140
 msgid "&Cancel\tAlt-Break"
 msgstr "&Prekini\tAlt-Break"
 
@@ -137,23 +167,31 @@ msgstr "&Prekini\tAlt-Break"
 # standard input:3
 # standard
 # standard
-#: standard input:343
+#: standard input:472
 msgid "&Close"
 msgstr "&Zatvori"
 
-#: src/ui/frmChildTableViewFrame.cpp:245
 msgid "&Close Table/View"
 msgstr "&Zatvori Tablicu/Pogled"
 
-#: src/ui/frmMain.cpp:135 src/ui/frmMain.cpp:179
+#: src/ui/frmMain.cpp:178
+#, fuzzy
+msgid "&Connect"
+msgstr "&Uspostavi vezu"
+
 msgid "&Connect..."
 msgstr "&Uspostavi vezu"
 
-#: src/ui/frmQuery.cpp:110
+#: src/ui/frmQuery.cpp:120
 msgid "&Copy\tCtrl-C"
 msgstr "&Kopiraj\tCtrl-C"
 
-#: src/ui/frmMain.cpp:128 src/ui/frmMain.cpp:182
+#: src/ui/frmMain.cpp:197
+#, fuzzy
+msgid "&Count"
+msgstr "Izreži"
+
+#: src/ui/frmMain.cpp:169
 msgid "&Create"
 msgstr "&Načini"
 
@@ -162,7 +200,7 @@ msgstr "&Načini"
 # standard input:29
 # standard
 # standard
-#: standard input:439 input:440
+#: standard input:592
 msgid "&Debug (not recommended for normal use)"
 msgstr "&Debug (nije preporučeno za normalnu upotrebu)"
 
@@ -171,15 +209,14 @@ msgstr "&Debug (nije preporučeno za normalnu upotrebu)"
 # src/ui/frmEditGrid.cpp:63 standard input:16
 # standard
 # standard
-#: standard input:469 input:470
+#: standard input:622
 msgid "&Delete"
 msgstr "&Obriši"
 
-#: src/ui/frmMain.cpp:183
 msgid "&Delete/Drop"
 msgstr "&Obriši/Ukloni"
 
-#: src/ui/frmMain.cpp:129
+#: src/ui/frmMain.cpp:170
 msgid "&Delete/Drop\tDel"
 msgstr "&Obriši/Ukloni\tDel"
 
@@ -188,19 +225,18 @@ msgstr "&Obriši/Ukloni\tDel"
 # standard input:8
 # standard
 # standard
-#: standard input:348
+#: standard input:477
 msgid "&Deselect All"
 msgstr "&Poništi izbor"
 
-#: src/ui/frmMain.cpp:180
 msgid "&Disconnect"
 msgstr "&Prekini vezu"
 
-#: src/ui/frmMain.cpp:153
+#: src/ui/frmMain.cpp:198
 msgid "&Display"
 msgstr "&Prikaz"
 
-#: src/ui/frmMain.cpp:131 src/ui/frmQuery.cpp:115
+#: src/ui/frmMain.cpp:172 src/ui/frmQuery.cpp:125
 msgid "&Edit"
 msgstr "&Ispravak"
 
@@ -209,47 +245,48 @@ msgstr "&Ispravak"
 # standard input:27
 # standard
 # standard
-#: standard input:436 input:437
+#: standard input:589
 msgid "&Errors only"
 msgstr "&Samo greške"
 
-#: src/ui/frmQueryBuilder.cpp:115
 msgid "&Execute"
 msgstr "&Izvrši"
 
-#: src/ui/frmQuery.cpp:118
+#: src/ui/frmQuery.cpp:128
 msgid "&Execute\tF5"
 msgstr "&Izvrši\tF5"
 
-#: src/ui/frmQuery.cpp:98
+#: src/ui/frmQuery.cpp:108
 msgid "&Export"
 msgstr "&Izvezi"
 
-#: src/ui/frmMain.cpp:121 src/ui/frmQuery.cpp:103
-#: src/ui/frmQueryBuilder.cpp:111
+#: src/ui/frmMain.cpp:162 src/ui/frmQuery.cpp:113
 msgid "&File"
 msgstr "&Datoteka"
 
-#: src/ui/frmQuery.cpp:114
+#: src/ui/frmQuery.cpp:124
 msgid "&Find\tCtrl-F"
 msgstr "&Pronađi\tCtrl-F"
 
+#: src/ui/frmMain.cpp:188
+msgid "&Grant Wizard"
+msgstr ""
+
 # standard
 # standard
-#: src/ui/frmMain.cpp:168 src/ui/frmQuery.cpp:135 standard input:365 input:389
-#: input:407 input:441 input:451 input:442 input:452
+#: src/ui/frmMain.cpp:213 src/ui/frmQuery.cpp:146 standard input:50 input:499
+#: input:523 input:530 input:537 input:555 input:594 input:604 input:637
 msgid "&Help"
 msgstr "&Pomoć"
 
-#: src/ui/frmMain.cpp:157 src/ui/frmQuery.cpp:133
+#: src/ui/frmMain.cpp:202 src/ui/frmQuery.cpp:144
 msgid "&Help..."
 msgstr "&Pomoć..."
 
-#: src/ui/frmChildTableViewFrame.cpp:241
 msgid "&Join To..."
 msgstr "&Pridruži ..."
 
-#: src/ui/frmMain.cpp:143 src/ui/frmMain.cpp:178
+#: src/ui/frmMain.cpp:184
 msgid "&Maintenance"
 msgstr ""
 
@@ -258,7 +295,7 @@ msgstr ""
 # standard input:26
 # standard
 # standard
-#: standard input:435 input:436
+#: standard input:588
 msgid "&No logging"
 msgstr "&Bez loga"
 
@@ -285,28 +322,27 @@ msgstr "&Bez loga"
 # standard
 # standard
 # standard
-#: standard input:344 input:366 input:390 input:408 input:443 input:452
-#: input:460 input:488 input:444 input:453 input:461 input:489
+#: standard input:51 input:473 input:500 input:524 input:531 input:538
+#: input:556 input:596 input:605 input:613 input:639
 msgid "&OK"
 msgstr "&OK"
 
-#: src/ui/frmQueryBuilder.cpp:107
 msgid "&Open..."
 msgstr "&Otvori"
 
-#: src/ui/frmQuery.cpp:94
+#: src/ui/frmQuery.cpp:104
 msgid "&Open...\tCtrl-O"
 msgstr "&Otvori...\tCtrl-O"
 
-#: src/ui/frmMain.cpp:115
+#: src/ui/frmMain.cpp:156
 msgid "&Options..."
 msgstr "&Opcije..."
 
-#: src/ui/frmQuery.cpp:111
+#: src/ui/frmQuery.cpp:121
 msgid "&Paste\tCtrl-V"
 msgstr "&Nalijepi\tCtrl-V"
 
-#: src/ui/frmMain.cpp:160
+#: src/ui/frmMain.cpp:205
 msgid "&PostgreSQL Help"
 msgstr "&PostgreSQL pomoć"
 
@@ -315,82 +351,86 @@ msgstr "&PostgreSQL pomoć"
 # standard input:2
 # standard
 # standard
-#: src/ui/frmMain.cpp:130 src/ui/frmMain.cpp:184 standard input:473 input:474
+#: src/ui/frmMain.cpp:171
 msgid "&Properties"
 msgstr "&Svojstva"
 
-#: src/ui/frmQuery.cpp:130 src/ui/frmQueryBuilder.cpp:118
+#: src/ui/frmQuery.cpp:141
 msgid "&Query"
 msgstr "&Upit"
 
-#: src/ui/frmQueryBuilder.cpp:130
 msgid "&Query Analyzer"
 msgstr "&Analizator upita"
 
-#: src/ui/frmQueryBuilder.cpp:128
 msgid "&Query Builder"
 msgstr "&Graditelj upita"
 
-#: src/ui/frmMain.cpp:138
+#: src/ui/frmMain.cpp:181
 msgid "&Query tool"
 msgstr "&Alat upita"
 
-#: src/ui/frmQuery.cpp:100
+#: src/ui/frmQuery.cpp:110
 msgid "&Recent files"
 msgstr "&Nedavno otvarane datoteke"
 
-#: src/ui/frmQuery.cpp:107
+#: src/ui/frmQuery.cpp:117
 msgid "&Redo\tCtrl-Y"
 msgstr "&Ponovi\tCtrl-Y"
 
-#: src/ui/frmMain.cpp:159 src/ui/frmQuery.cpp:134
+#: src/ui/frmMain.cpp:186
+msgid "&Restore"
+msgstr ""
+
+#: src/ui/frmMain.cpp:204 src/ui/frmQuery.cpp:145
 msgid "&SQL Help\tF1"
 msgstr "&SQL pomoć\tF1"
 
-#: src/ui/frmQueryBuilder.cpp:108
 msgid "&Save"
 msgstr "&Spremi"
 
-#: src/ui/frmQuery.cpp:95
+#: src/ui/frmQuery.cpp:105
 msgid "&Save\tCtrl-S"
 msgstr "&Spremi\tCtrl-S"
 
-#: src/ui/frmMain.cpp:110
+#: src/ui/frmMain.cpp:151
 msgid "&Save definition..."
 msgstr "&Spremi definiciju"
 
-#: src/ui/frmMain.cpp:145
+#: src/ui/frmMain.cpp:189
 msgid "&Server Status"
 msgstr "&Status servera"
 
-#: src/ui/frmMain.cpp:150
+#: src/ui/frmMain.cpp:194
 msgid "&System objects"
 msgstr "&Sistemski objekti"
 
-#: src/ui/frmMain.cpp:161
+#: src/ui/frmMain.cpp:206
+#, fuzzy
+msgid "&Tip of the day"
+msgstr "&Savjet dana"
+
 msgid "&Tip of the day..."
 msgstr "&Savjet dana"
 
-#: src/ui/frmMain.cpp:146 src/ui/frmQueryBuilder.cpp:124
+#: src/ui/frmMain.cpp:190
 msgid "&Tools"
 msgstr "&Alati"
 
-#: src/ui/frmQuery.cpp:106
+#: src/ui/frmQuery.cpp:116
 msgid "&Undo\tCtrl-Z"
 msgstr "&Korak natrag\tCtrl-Z"
 
-#: src/ui/frmQueryBuilder.cpp:134
+#: standard input:638
 msgid "&View"
 msgstr "&Pogled"
 
 # standard
 # standard
 # standard
-#: standard input:378
+#: standard input:512
 msgid "'"
 msgstr "'"
 
-#: src/ui/frmQueryBuilder.cpp:1365
 #, c-format
 msgid ""
 "'%s' is not a valid identifier. It must start with A-Z or a-z or _ and can "
@@ -406,19 +446,19 @@ msgstr ""
 # standard
 # standard
 # standard
-#: standard input:374
+#: standard input:508
 msgid ","
 msgstr ","
 
-#: src/ui/frmQuery.cpp:788 src/ui/frmQuery.cpp:790
+#: src/ui/frmQuery.cpp:987
 msgid "-- Executing query:\n"
 msgstr "-- Izvršavam upit:\n"
 
-#: src/ui/dlgProperty.cpp:380 src/ui/dlgProperty.cpp:383
+#: src/ui/dlgProperty.cpp:590
 msgid "-- definition incomplete"
 msgstr "-- definicija nekompletna."
 
-#: src/ui/dlgProperty.cpp:378 src/ui/dlgProperty.cpp:381
+#: src/ui/dlgProperty.cpp:588
 msgid "-- nothing to change"
 msgstr "-- ništa za izmjenu"
 
@@ -427,15 +467,14 @@ msgstr "-- ništa za izmjenu"
 # standard input:23
 # standard
 # standard
-#: standard input:388 input:422 input:432 input:423 input:433
+#: standard input:481 input:522 input:567 input:575 input:585 input:628
 msgid "..."
 msgstr "..."
 
-#: src/ui/frmMain.cpp:201
+#: src/ui/frmMain.cpp:231
 msgid "0 Secs"
 msgstr "0 sekundi"
 
-#: src/ui/dlgProperty.cpp:92
 msgid ""
 ": Notebook not found.\n"
 "Prepare to crash!"
@@ -446,7 +485,7 @@ msgstr ""
 # standard
 # standard
 # standard
-#: standard input:373
+#: standard input:507
 msgid ";"
 msgstr ";"
 
@@ -455,7 +494,7 @@ msgstr ";"
 # standard input:16
 # standard
 # standard
-#: standard input:195
+#: standard input:256
 msgid "< operator"
 msgstr "< operator"
 
@@ -467,17 +506,25 @@ msgstr "< operator"
 # standard input:10
 # standard
 # standard
-#: standard input:141 input:322
+#: standard input:175 input:449
 msgid "<<"
 msgstr "<<"
 
-#: src/ui/frmHelp.cpp:132
+#: src/ui/frmHelp.cpp:127
 #, c-format
 msgid "<html><body>Loading %s</body></html>"
 msgstr "<html><body>Učitavanje %s</body></html>"
 
-#: src/schema/pgTable.cpp:328 src/schema/pgTable.cpp:329
-#: src/schema/pgTable.cpp:332
+#: src/ui/dlgColumn.cpp:136
+#, fuzzy
+msgid "<new sequence>"
+msgstr "Nova Sekvencija"
+
+#: src/schema/pgTable.cpp:384
+#, fuzzy
+msgid "<no primary key>"
+msgstr "Primarni ključ"
+
 msgid "<none>"
 msgstr "<none>"
 
@@ -486,7 +533,7 @@ msgstr "<none>"
 # standard input:17
 # standard
 # standard
-#: standard input:196
+#: standard input:257
 msgid "> operator"
 msgstr "> operator"
 
@@ -498,11 +545,16 @@ msgstr "> operator"
 # standard input:9
 # standard
 # standard
-#: standard input:140 input:321
+#: standard input:174 input:448
 msgid ">>"
 msgstr ">>"
 
-#: src/utils/sysLogger.cpp:75
+#: src/ui/frmStatus.cpp:775
+#, fuzzy
+msgid "A cancel signal was sent to the selected server process(es)."
+msgstr "Uspostavi vezu sa odabranim serverom."
+
+#: src/utils/sysLogger.cpp:77
 msgid ""
 "A fatal error has occured:\n"
 "\n"
@@ -510,12 +562,14 @@ msgstr ""
 "Došlo je do fatalne greške:\n"
 "\n"
 
-#: src/schema/pgDatabase.cpp:176 src/schema/pgFunction.cpp:122
-#: src/schema/pgLanguage.cpp:64 src/schema/pgSchema.cpp:149
-#: src/schema/pgSequence.cpp:90 src/schema/pgTable.cpp:326
-#: src/schema/pgView.cpp:83 src/schema/pgSchema.cpp:150
-#: src/schema/pgTable.cpp:327 src/schema/pgView.cpp:85
-#: src/schema/pgTable.cpp:330
+#: src/ui/frmStatus.cpp:812
+msgid "A terminate signal was sent to the selected server process(es)."
+msgstr ""
+
+#: src/schema/pgDatabase.cpp:336 src/schema/pgFunction.cpp:117
+#: src/schema/pgLanguage.cpp:64 src/schema/pgSchema.cpp:157
+#: src/schema/pgSequence.cpp:93 src/schema/pgTable.cpp:382
+#: src/schema/pgTablespace.cpp:134 src/schema/pgView.cpp:85
 msgid "ACL"
 msgstr "ACL"
 
@@ -524,13 +578,13 @@ msgstr "ACL"
 # standard input:9
 # standard
 # standard
-#: standard input:266
+#: standard input:392
 msgid "AFTER"
 msgstr "AFTER"
 
 # standard
 # standard
-#: standard input:396 input:401
+#: standard input:544 input:549
 msgid "ANALYZE"
 msgstr "ANALYZE"
 
@@ -539,7 +593,7 @@ msgstr "ANALYZE"
 # standard input:17
 # standard
 # standard
-#: standard input:470 input:471
+#: standard input:623
 msgid "AND"
 msgstr "AND"
 
@@ -551,18 +605,31 @@ msgstr "AND"
 # standard input:18
 # standard
 # standard
-#: standard input:442 input:444 input:489 input:443 input:445 input:490
+#: standard input:99
+#, fuzzy
+msgid "Accept the current options and close the dialogue."
+msgstr "Prihvati tekuće postavke i zatvori dijalog."
+
+# standard input:32
+# standard input:18
+# standard input:32
+# standard input:18
+# standard input:32
+# standard input:18
+# standard
+# standard
+#: standard input:595 input:597
 msgid "Accept the current settings and close the dialogue."
 msgstr "Prihvati tekuće postavke i zatvori dijalog."
 
 # standard
 # standard
-#: src/schema/pgIndex.cpp:200 src/schema/pgIndexConstraint.cpp:98
-#: src/schema/pgOperatorClass.cpp:162 standard input:149
+#: src/schema/pgIndex.cpp:210 src/schema/pgIndexConstraint.cpp:106
+#: src/schema/pgOperatorClass.cpp:162 standard input:184
 msgid "Access method"
 msgstr "Metoda za pristup"
 
-#: src/schema/pgUser.cpp:116
+#: src/schema/pgUser.cpp:208 standard input:443
 msgid "Account expires"
 msgstr "Korisnički račun ističe"
 
@@ -571,7 +638,7 @@ msgstr "Korisnički račun ističe"
 # src/schema/pgRule.cpp:77 standard input:12
 # standard
 # standard
-#: src/schema/pgRule.cpp:66 standard input:98
+#: src/schema/pgRule.cpp:66 standard input:129
 msgid "Action"
 msgstr "Akcija"
 
@@ -592,12 +659,12 @@ msgstr "Akcija"
 # standard input:9 standard input:12
 # standard
 # standard
-#: standard input:96 input:129 input:154 input:165 input:246 input:250
-#: input:253
+#: standard input:127 input:161 input:190 input:202 input:221 input:225
+#: input:297 input:364 input:368 input:371
 msgid "Add"
 msgstr "Dodaj"
 
-#: src/ui/frmMain.cpp:214 src/ui/frmMain.cpp:215
+#: src/ui/frmMain.cpp:245
 msgid "Add Server"
 msgstr "Dodaj Server"
 
@@ -606,41 +673,53 @@ msgstr "Dodaj Server"
 # standard input:1
 # standard
 # standard
-#: standard input:341
+#: standard input:470
 msgid "Add Tables/Views"
 msgstr "Dodaj Tablicu/Pogled"
 
-#: src/ui/frmMain.cpp:112 src/ui/frmMain.cpp:214 src/ui/frmMain.cpp:215
+#: src/ui/frmMain.cpp:153 src/ui/frmMain.cpp:245
 msgid "Add a connection to a server."
 msgstr "Dodaj vezu sa serverom."
 
-#: src/schema/pgObject.cpp:55 src/schema/pgObject.cpp:54
+#: src/schema/pgObject.cpp:79
 msgid "Add a new Check Constraint."
 msgstr "Dodaj novu Provjeru ograničenja."
 
-#: src/schema/pgObject.cpp:48 src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:69
 msgid "Add a new Column."
 msgstr "Dodaj novi stupac."
 
-#: src/schema/pgObject.cpp:56 src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:80
 msgid "Add a new Foreign Key."
 msgstr "Dodaj novi Vanjski ključ."
 
-#: src/schema/pgObject.cpp:49 src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:71
 msgid "Add a new Index."
 msgstr "Dodaj novi Indeks."
 
-#: src/schema/pgObject.cpp:51 src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:75
 msgid "Add a new Trigger."
 msgstr "Dodaj novi Okidač."
 
-#: src/schema/pgObject.cpp:54 src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:78
 msgid "Add a new Unique Constraint."
 msgstr "Dodaj novo Ograničenje za unikatnost."
 
-#: src/ui/frmQueryBuilder.cpp:123 src/ui/frmQueryBuilder.cpp:180
 msgid "Add a table or view to the datagram."
 msgstr "Dodaj tablicu ili pogled u datagram."
+
+#: src/ui/dlgServer.cpp:160
+#, fuzzy
+msgid "Add server"
+msgstr "Dodaj Server"
+
+#: standard input:102
+msgid "Add the select column for ascending sort."
+msgstr ""
+
+#: standard input:104
+msgid "Add the select column for descending sort."
+msgstr ""
 
 # src/ui/dlgProperty.cpp:816 standard input:25
 # src/ui/dlgProperty.cpp:816 standard input:32
@@ -653,21 +732,50 @@ msgstr "Dodaj tablicu ili pogled u datagram."
 # src/ui/dlgProperty.cpp:816 src/ui/dlgProperty.cpp:853 standard input:14
 # standard
 # standard
-#: src/ui/dlgProperty.cpp:904 standard input:66 input:308 input:326
-#: src/ui/dlgProperty.cpp:907
+#: src/ui/ctlSecurityPanel.cpp:79 standard input:74 input:434 input:453
 msgid "Add/Change"
 msgstr "Novi/Izmjena"
 
-#: src/schema/pgObject.cpp:36 src/ui/frmQueryBuilder.cpp:215
-#: src/schema/pgObject.cpp:35
+# standard input:10
+# standard input:18
+# standard input:8
+# standard input:7
+# standard input:9 standard input:12
+# standard input:10
+# standard input:18
+# standard input:8
+# standard input:7
+# standard input:9 standard input:12
+# standard input:10
+# standard input:18
+# standard input:8
+# standard input:7
+# standard input:9 standard input:12
+# standard
+# standard
+#: standard input:327
+#, fuzzy
+msgid "Address"
+msgstr "Dodaj"
+
+# src/schema/pgType.cpp:133 standard input:17
+# src/schema/pgType.cpp:133 standard input:17
+# src/schema/pgType.cpp:133 standard input:17
+# standard
+# standard
+#: src/schema/pgObject.cpp:81
+#, fuzzy
+msgid "Agent"
+msgstr "Poravnanje"
+
+#: src/schema/pgObject.cpp:45
 msgid "Aggregate"
 msgstr "Agregat"
 
-#: src/schema/pgObject.cpp:36 src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:44
 msgid "Aggregates"
 msgstr "Agregati"
 
-#: src/ui/frmQueryBuilder.cpp:213
 msgid "Alias"
 msgstr "Alias"
 
@@ -676,15 +784,15 @@ msgstr "Alias"
 # src/schema/pgType.cpp:133 standard input:17
 # standard
 # standard
-#: src/schema/pgType.cpp:133 standard input:292
+#: src/schema/pgType.cpp:131 standard input:419
 msgid "Alignment"
 msgstr "Poravnanje"
 
-#: src/schema/pgDatabase.cpp:186
+#: src/schema/pgDatabase.cpp:352
 msgid "Allow connections?"
 msgstr "Dozvoliti veze ?"
 
-#: src/utils/sysLogger.cpp:81
+#: src/utils/sysLogger.cpp:83
 msgid ""
 "An error has occured:\n"
 "\n"
@@ -695,16 +803,39 @@ msgstr ""
 # standard input:5
 # standard input:5
 # standard
-#: src/ui/frmQuery.cpp:123
+#: src/ui/frmQuery.cpp:134
 msgid "Analyze"
 msgstr "Analiziraj"
 
-#: src/ui/events.cpp:823 src/ui/events.cpp:879 src/ui/events.cpp:889
+#: standard input:167 input:467
+msgid "Apply"
+msgstr ""
+
+#: src/ui/frmMain.cpp:183 src/ui/frmMain.cpp:254
+#, fuzzy
+msgid "Apply a filter and view the data in the selected object."
+msgstr "Pokaži podatke odabranog objekta"
+
+#: src/ui/frmStatus.cpp:739
+msgid "Are you sure the logfile should be rotated?"
+msgstr ""
+
+#: src/ui/frmStatus.cpp:758
+#, fuzzy
+msgid "Are you sure you wish to cancel the selected query(s)?"
+msgstr "Jeste li sigurni da želite ukloniti  %s %s?"
+
+#: src/ui/events.cpp:1131
 #, c-format
 msgid "Are you sure you wish to drop %s %s?"
 msgstr "Jeste li sigurni da želite ukloniti  %s %s?"
 
-#: src/schema/pgFunction.cpp:106
+#: src/ui/frmStatus.cpp:794
+#, fuzzy
+msgid "Are you sure you wish to terminate the selected server process(es)?"
+msgstr "Jeste li sigurni da želite ukloniti  %s %s?"
+
+#: src/schema/pgFunction.cpp:101
 msgid "Argument count"
 msgstr "Broj argumenata"
 
@@ -716,27 +847,70 @@ msgstr "Broj argumenata"
 # src/schema/pgfunction.cpp:102 standard input:6
 # standard
 # standard
-#: src/schema/pgFunction.cpp:107 standard input:114 input:127 input:263
+#: src/schema/pgFunction.cpp:102 standard input:146 input:159 input:389
 msgid "Arguments"
 msgstr "Argumenti"
 
+#: src/ui/dlgEditGridOptions.cpp:125 src/ui/dlgEditGridOptions.cpp:147
+#: src/ui/dlgEditGridOptions.cpp:180 standard input:101
+msgid "Ascending"
+msgstr ""
+
+#: standard input:121
+msgid "Auto FK index"
+msgstr ""
+
+# standard input:5
+# standard input:5
+# standard input:5
+# standard
+# standard
+#: standard input:108
+#, fuzzy
+msgid "Available Columns"
+msgstr "Stupci desne tablice"
+
+#: src/schema/pgColumn.cpp:243
+msgid "Average Width"
+msgstr ""
+
 # standard input:8
 # standard input:8
 # standard input:8
 # standard
 # standard
-#: standard input:265
+#: standard input:391
 msgid "BEFORE"
 msgstr "BEFORE"
 
-#: src/ui/frmHelp.cpp:53
+#: src/ui/frmHelp.cpp:55
 msgid "Back"
 msgstr "Natrag"
 
-#: src/ui/frmHelp.cpp:53
+#: src/ui/frmHelp.cpp:55
 msgid "Back to previous page."
 msgstr "Natrag na prethodnu stranicu."
 
+#: src/schema/pgDatabase.cpp:477
+#, fuzzy
+msgid "Backends"
+msgstr "Natrag"
+
+#: standard input:478
+#, fuzzy
+msgid "Backup"
+msgstr "Natrag"
+
+#: src/ui/frmBackup.cpp:67
+#, c-format
+msgid "Backup %s %s"
+msgstr ""
+
+#: src/ui/frmBackup.cpp:104 src/ui/frmRestore.cpp:127
+#, fuzzy
+msgid "Backup files (*.backup)|*.backup|All files (*.*)|*.*"
+msgstr "Datoteke upita (*.sql)|*.sql|Sve datoteke (*.*)|*.*"
+
 # standard input:5
 # standard input:5
 # standard input:5
@@ -745,24 +919,52 @@ msgstr "Natrag na prethodnu stranicu."
 # standard input:5
 # standard
 # standard
-#: src/schema/pgDomain.cpp:96 standard input:77
+#: src/schema/pgDomain.cpp:96 standard input:85
 msgid "Base type"
 msgstr "Osnovni tip."
 
+# src/schema/pgdatabase.cpp:191 standard input:22
+# src/schema/pgdatabase.cpp:191 standard input:22
+# src/schema/pgdatabase.cpp:191 standard input:22
+# standard
+# standard
+#: standard input:345
+#, fuzzy
+msgid "Batch"
+msgstr "Staza"
+
+# standard input:4
+# standard input:4
+# standard input:4
+# standard
+# standard
+#: standard input:486
+#, fuzzy
+msgid "Blobs"
+msgstr "Zatvori"
+
+#: src/schema/pgDatabase.cpp:481
+msgid "Blocks Hit"
+msgstr ""
+
+#: src/schema/pgDatabase.cpp:480
+msgid "Blocks Read"
+msgstr ""
+
 # standard input:24
 # standard input:24
 # standard input:24
 # standard
 # standard
-#: standard input:433 input:434
+#: standard input:586
 msgid "Browse for a logfile."
 msgstr "Traži log datoteku."
 
-#: src/ui/frmMain.cpp:113
+#: src/ui/frmMain.cpp:154
 msgid "C&hange password..."
 msgstr "&Promjena lozinke..."
 
-#: src/ui/frmQuery.cpp:112
+#: src/ui/frmQuery.cpp:122
 msgid "C&lear window"
 msgstr "P&očisti prozor"
 
@@ -771,14 +973,18 @@ msgstr "P&očisti prozor"
 # standard input:15 standard input:20
 # standard
 # standard
-#: standard input:101 input:106
+#: standard input:132 input:137
 msgid "CASCADE"
 msgstr "CASCADE"
+
+#: standard input:483
+msgid "COMPRESS"
+msgstr ""
 
 # standard
 # standard
 # standard
-#: standard input:371
+#: standard input:505
 msgid "CR/LF"
 msgstr "CR/LF"
 
@@ -787,11 +993,11 @@ msgstr "CR/LF"
 # standard input:12
 # standard
 # standard
-#: standard input:465 input:466
+#: standard input:618
 msgid "CROSS JOIN"
 msgstr "CROSS JOIN"
 
-#: src/ui/frmExport.cpp:233
+#: src/ui/frmExport.cpp:267
 msgid "CSV files (*.csv)|*.csv|Data files (*.dat)|*.dat|All files (*.*)|*.*"
 msgstr ""
 "CSV datoteke (*.csv)|*.csv|Datoteke podataka(*.dat)|*.dat|Sve datoteke (*.*)|"
@@ -802,11 +1008,10 @@ msgstr ""
 # src/schema/pgSequence.cpp:95 standard input:8
 # standard
 # standard
-#: src/schema/pgSequence.cpp:95 standard input:233
+#: src/schema/pgSequence.cpp:98 standard input:320
 msgid "Cache"
 msgstr "Cache-irati"
 
-#: src/ui/frmQueryBuilder.cpp:589
 msgid "Can't add another column to the query."
 msgstr "Ne mogu dodati još jedan stupac u upit."
 
@@ -878,10 +1083,11 @@ msgstr "Ne mogu dodati još jedan stupac u upit."
 # src/ui/frmQueryBuilder.cpp:171 standard input:7
 # standard
 # standard
-#: src/ui/frmQuery.cpp:184 src/ui/frmQueryBuilder.cpp:171 standard input:13
-#: input:24 input:33 input:44 input:56 input:72 input:86 input:111 input:135
-#: input:146 input:158 input:169 input:179 input:201 input:216 input:224
-#: input:238 input:257 input:274 input:312 input:332 input:340
+#: src/ui/frmQuery.cpp:197 standard input:13 input:24 input:33 input:46
+#: input:64 input:80 input:94 input:96 input:142 input:169 input:180 input:194
+#: input:206 input:229 input:240 input:262 input:277 input:301 input:310
+#: input:325 input:338 input:355 input:375 input:383 input:400 input:438
+#: input:459 input:469 input:643 input:646
 msgid "Cancel"
 msgstr "Odustani"
 
@@ -893,41 +1099,44 @@ msgstr "Odustani"
 # standard input:20
 # standard
 # standard
-#: standard input:446 input:491 input:447 input:492
+#: standard input:97 input:599
 msgid "Cancel any changes and close the dialogue."
 msgstr "Odustani od svih promjena i zatvori dijalog."
 
-#: src/ui/frmQuery.cpp:129 src/ui/frmQuery.cpp:184
-#: src/ui/frmQueryBuilder.cpp:117 src/ui/frmQueryBuilder.cpp:171
+#: src/ui/frmQuery.cpp:140 src/ui/frmQuery.cpp:197 src/ui/frmStatus.cpp:775
 msgid "Cancel query"
 msgstr "Prekini upit"
 
-#: src/ui/frmChildTableViewFrame.cpp:393
+#: src/ui/frmStatus.cpp:758
+#, fuzzy
+msgid "Cancel query?"
+msgstr "Prekini upit"
+
 msgid "Cancelled"
 msgstr "Prekinuto"
 
-#: src/ui/frmQuery.cpp:685 src/ui/frmQuery.cpp:687
+#: src/ui/frmQuery.cpp:868
 msgid "Cancelling."
 msgstr "Prekidam."
 
-#: src/ui/events.cpp:814 src/ui/events.cpp:870 src/ui/events.cpp:880
+#: src/ui/events.cpp:1122
 #, c-format
 msgid "Cannot drop system %s %s."
 msgstr "Ne mogu ukloniti sistem %s %s."
 
-#: src/pgAdmin3.cpp:232 src/pgAdmin3.cpp:239 src/pgAdmin3.cpp:242
+#: src/pgAdmin3.cpp:327
 msgid "Cannot initialise the networking subsystem!"
 msgstr "Ne mogu inicijalizirati mrežni podsustav!"
 
-#: src/utils/sysLogger.cpp:194
+#: src/utils/sysLogger.cpp:196
 msgid "Cannot open the logfile!"
 msgstr "Ne mogu otvoriti log datoteku!"
 
-#: src/schema/pgObject.cpp:37 src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:47
 msgid "Cast"
 msgstr "Dodjela tipa"
 
-#: src/schema/pgObject.cpp:37 src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:46
 msgid "Casts"
 msgstr "Dodjele tipova"
 
@@ -936,7 +1145,7 @@ msgstr "Dodjele tipova"
 # standard input:8
 # standard
 # standard
-#: standard input:249
+#: standard input:160 input:220 input:224 input:296 input:367
 msgid "Change"
 msgstr "Promijeni"
 
@@ -945,15 +1154,28 @@ msgstr "Promijeni"
 # standard input:1
 # standard
 # standard
-#: standard input:447 input:448
+#: standard input:600
 msgid "Change Password"
 msgstr "Promijeni lozinku"
 
-#: src/ui/frmMain.cpp:113
+#: src/ui/frmMain.cpp:154
 msgid "Change your password."
 msgstr "Promijeni svoju lozinku"
 
-#: src/ui/events.cpp:449 src/ui/events.cpp:468 src/ui/events.cpp:473
+# standard input:8
+# standard input:8
+# standard input:8
+# standard
+# standard
+#: standard input:214
+#, fuzzy
+msgid "Changed"
+msgstr "Promijeni"
+
+#: src/ui/dlgProperty.cpp:552 src/ui/dlgProperty.cpp:554
+msgid "Changes applied."
+msgstr ""
+
 msgid ""
 "Changing the 'Show System Objects' option will cause all connections to be "
 "closed, and the treeview to be rebuilt.\n"
@@ -970,18 +1192,31 @@ msgstr ""
 # standard input:5
 # standard
 # standard
-#: src/schema/pgDomain.cpp:100 src/schema/pgObject.cpp:55
-#: src/ui/dlgTable.cpp:477 standard input:29 input:79
-#: src/schema/pgObject.cpp:54
+#: src/schema/pgDomain.cpp:100 src/schema/pgObject.cpp:79
+#: src/ui/dlgTable.cpp:475 standard input:29 input:87
 msgid "Check"
 msgstr "Provjera"
 
-#: src/ui/frmQueryBuilder.cpp:1446
+#: src/ui/frmIndexcheck.cpp:49
+#, c-format
+msgid "Check Foreign Key indexes on %s %s"
+msgstr ""
+
+# src/schema/pgObject.cpp:55 src/ui/dlgTable.cpp:360 standard input:5
+# src/schema/pgObject.cpp:55 src/ui/dlgTable.cpp:360 standard input:5
+# standard input:5
+# standard
+# standard
+#: standard input:528 input:535
+#, fuzzy
+msgid "Check all"
+msgstr "Provjera"
+
 #, c-format
 msgid "Check for unbalanced single quote marks in the condition for row #%d."
 msgstr "Provjeri nezatvorene jednostruke navodnike u uvjetu za redak #%d.."
 
-#: src/schema/pgForeignKey.cpp:140
+#: src/schema/pgForeignKey.cpp:153
 msgid "Child columns"
 msgstr "Podstupci"
 
@@ -990,23 +1225,23 @@ msgstr "Podstupci"
 # standard input:15
 # standard
 # standard
-#: standard input:468 input:469
+#: standard input:621
 msgid "Choose the operator for comparison."
 msgstr "Izaberite operator za uspoređivanje."
 
-#: src/ui/frmQuery.cpp:112 src/ui/frmQuery.cpp:175
+#: src/ui/frmQuery.cpp:122 src/ui/frmQuery.cpp:187
 msgid "Clear edit window"
 msgstr "Počisti prozor editora"
 
-#: src/ui/frmQuery.cpp:127
+#: src/ui/frmQuery.cpp:138
 msgid "Clear history"
 msgstr "Počisti povijest"
 
-#: src/ui/frmQuery.cpp:127
+#: src/ui/frmQuery.cpp:138
 msgid "Clear history window."
 msgstr "Počisti prozor povijesti"
 
-#: src/ui/frmQuery.cpp:175
+#: src/ui/frmQuery.cpp:187
 msgid "Clear window"
 msgstr "Počisti prozor"
 
@@ -1015,34 +1250,49 @@ msgstr "Počisti prozor"
 # standard input:4
 # standard
 # standard
-#: standard input:495 input:496
+#: standard input:652
 msgid "Close"
 msgstr "Zatvori"
 
-#: src/ui/frmQueryBuilder.cpp:110
+#: src/ui/frmMain.cpp:557
+msgid ""
+"Close database browser? If you abort, the object browser will not show "
+"accurate data."
+msgstr ""
+
+#: src/ui/frmMain.cpp:587
+msgid ""
+"Close server browser? If you abort, the object browser will not show "
+"accurate data."
+msgstr ""
+
 msgid "Close this Window."
 msgstr "Zatvori ovaj prozor."
 
-#: src/schema/pgIndex.cpp:199 src/schema/pgIndexConstraint.cpp:97
+#: standard input:186
+#, fuzzy
+msgid "Clustered"
+msgstr "Klasteriran ?"
+
+#: src/schema/pgIndex.cpp:209 src/schema/pgIndexConstraint.cpp:105
 msgid "Clustered?"
 msgstr "Klasteriran ?"
 
-#: src/schema/pgObject.cpp:48 src/ui/frmQueryBuilder.cpp:209
-#: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:69
 msgid "Column"
 msgstr "Stupac"
 
-#: src/ui/dlgTable.cpp:84
+#: src/ui/dlgEditGridOptions.cpp:91 src/ui/dlgTable.cpp:83
 msgid "Column name"
 msgstr "Ime stupca"
 
 # standard
 # standard
-#: standard input:379
+#: standard input:513
 msgid "Column names"
 msgstr "Imena stupaca"
 
-#: src/db/pgSet.cpp:124
+#: src/db/pgSet.cpp:144
 msgid "Column not found in pgSet: "
 msgstr "Stupac nije pronađen u pgSet-u."
 
@@ -1060,7 +1310,7 @@ msgstr "Stupac nije pronađen u pgSet-u."
 # standard input:7
 # standard
 # standard
-#: standard input:372
+#: standard input:506
 msgid "Column separator"
 msgstr "Seperator kolone"
 
@@ -1078,9 +1328,9 @@ msgstr "Seperator kolone"
 # standard input:7
 # standard
 # standard
-#: src/schema/pgIndex.cpp:194 src/schema/pgIndexConstraint.cpp:89
-#: src/schema/pgObject.cpp:48 src/ui/dlgIndex.cpp:51 src/ui/dlgIndex.cpp:61
-#: standard input:93 input:153 input:164 input:248 src/schema/pgObject.cpp:47
+#: src/schema/pgIndex.cpp:204 src/schema/pgIndexConstraint.cpp:97
+#: src/schema/pgObject.cpp:68 src/ui/dlgIndex.cpp:53 src/ui/dlgIndex.cpp:63
+#: standard input:124 input:189 input:201 input:366
 msgid "Columns"
 msgstr "Stupci"
 
@@ -1143,21 +1393,21 @@ msgstr "Stupci"
 # src/schema/pgtrigger.cpp:147 standard input:4
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:81 src/schema/pgCheck.cpp:76
-#: src/schema/pgCollection.cpp:83 src/schema/pgColumn.cpp:186
-#: src/schema/pgDatabase.cpp:189 src/schema/pgDomain.cpp:103
-#: src/schema/pgForeignKey.cpp:150 src/schema/pgFunction.cpp:124
-#: src/schema/pgIndex.cpp:203 src/schema/pgIndexConstraint.cpp:101
-#: src/schema/pgOperator.cpp:123 src/schema/pgRule.cpp:75
-#: src/schema/pgSchema.cpp:151 src/schema/pgSequence.cpp:98
-#: src/schema/pgTable.cpp:345 src/schema/pgTrigger.cpp:147
-#: src/schema/pgType.cpp:152 src/schema/pgView.cpp:86 standard input:10
-#: input:21 input:30 input:41 input:53 input:64 input:83 input:92 input:125
-#: input:152 input:163 input:187 input:212 input:221 input:235 input:247
-#: input:271 input:281 input:336 src/schema/pgAggregate.cpp:87
-#: src/schema/pgOperator.cpp:135 src/schema/pgSchema.cpp:152
-#: src/schema/pgTable.cpp:346 src/schema/pgView.cpp:88
-#: src/schema/pgTable.cpp:349
+#: src/schema/pgAggregate.cpp:87 src/schema/pgCast.cpp:73
+#: src/schema/pgCheck.cpp:82 src/schema/pgCollection.cpp:87
+#: src/schema/pgColumn.cpp:234 src/schema/pgConversion.cpp:71
+#: src/schema/pgDatabase.cpp:357 src/schema/pgDomain.cpp:103
+#: src/schema/pgForeignKey.cpp:164 src/schema/pgFunction.cpp:119
+#: src/schema/pgIndex.cpp:213 src/schema/pgIndexConstraint.cpp:109
+#: src/schema/pgLanguage.cpp:70 src/schema/pgOperator.cpp:135
+#: src/schema/pgOperatorClass.cpp:172 src/schema/pgRule.cpp:75
+#: src/schema/pgSchema.cpp:159 src/schema/pgSequence.cpp:101
+#: src/schema/pgTable.cpp:401 src/schema/pgTrigger.cpp:147
+#: src/schema/pgType.cpp:150 src/schema/pgView.cpp:88 standard input:10
+#: input:21 input:30 input:43 input:61 input:72 input:91 input:123 input:157
+#: input:188 input:200 input:218 input:237 input:248 input:273 input:293
+#: input:307 input:322 input:351 input:365 input:380 input:397 input:408
+#: input:464
 msgid "Comment"
 msgstr "Komentar"
 
@@ -1166,8 +1416,7 @@ msgstr "Komentar"
 # src/schema/pgOperator.cpp:109 standard input:12
 # standard
 # standard
-#: src/schema/pgOperator.cpp:113 standard input:191
-#: src/schema/pgOperator.cpp:125
+#: src/schema/pgOperator.cpp:125 standard input:252
 msgid "Commutator"
 msgstr "Komutator"
 
@@ -1176,7 +1425,7 @@ msgstr "Komutator"
 # standard input:5
 # standard
 # standard
-#: standard input:279
+#: standard input:406
 msgid "Composite"
 msgstr "Kompozitni"
 
@@ -1185,7 +1434,7 @@ msgstr "Kompozitni"
 # src/schema/pgRule.cpp:75 src/ui/frmQueryBuilder.cpp:217 standard input:10
 # standard
 # standard
-#: src/schema/pgRule.cpp:64 src/ui/frmQueryBuilder.cpp:217 standard input:211
+#: src/schema/pgRule.cpp:64 standard input:272
 msgid "Condition"
 msgstr "Uvjet"
 
@@ -1194,7 +1443,7 @@ msgstr "Uvjet"
 # standard input:4
 # standard
 # standard
-#: standard input:450 input:451
+#: standard input:603
 msgid "Confirm Password"
 msgstr "Potvrdi lozinku"
 
@@ -1203,8 +1452,18 @@ msgstr "Potvrdi lozinku"
 # standard input:10
 # standard
 # standard
-#: standard input:417 input:418
+#: standard input:570
 msgid "Confirm object deletion?"
+msgstr "Potvrdi brisanje objekta ?"
+
+# standard input:10
+# standard input:10
+# standard input:10
+# standard
+# standard
+#: src/schema/pgUser.cpp:43 src/ui/dlgUser.cpp:200
+#, fuzzy
+msgid "Confirm superuser deletion"
 msgstr "Potvrdi brisanje objekta ?"
 
 # standard input:1
@@ -1212,31 +1471,71 @@ msgstr "Potvrdi brisanje objekta ?"
 # standard input:1
 # standard
 # standard
-#: standard input:349
+#: standard input:47
+#, fuzzy
+msgid "Connect to Server"
+msgstr "Uspostavi vezu sa Serverom"
+
+# standard input:1
+# standard input:1
+# standard input:1
+# standard
+# standard
 msgid "Connect to a Server"
 msgstr "Uspostavi vezu sa Serverom"
 
-#: src/ui/frmChildTableViewFrame.cpp:236 src/ui/frmChildTableViewFrame.cpp:246
-#: src/ui/frmMain.cpp:135 src/ui/frmMain.cpp:179
+#: src/ui/frmMain.cpp:178
 msgid "Connect to the selected server."
 msgstr "Uspostavi vezu sa odabranim serverom."
 
-#: src/schema/pgDatabase.cpp:187 src/schema/pgServer.cpp:303
-#: src/schema/pgServer.cpp:314
+#: src/schema/pgDatabase.cpp:353 src/schema/pgServer.cpp:487
 msgid "Connected?"
 msgstr "Veza uspostavljena?"
 
+# standard input:1
+# standard input:1
+# standard input:1
+# standard
+# standard
+#: src/schema/pgServer.cpp:277
+#, fuzzy
+msgid "Connecting to database"
+msgstr "Uspostavi vezu sa Serverom"
+
+#: src/schema/pgServer.cpp:275
+msgid "Connecting to database without password"
+msgstr ""
+
+#: src/ui/frmStatus.cpp:514
+msgid "Connection broken."
+msgstr ""
+
+#: src/ui/frmMain.cpp:558
+#, c-format
+msgid "Connection to database %s lost."
+msgstr ""
+
+#: src/db/pgConn.cpp:356
+#, fuzzy
+msgid "Connection to database broken."
+msgstr "Dodaj vezu sa serverom."
+
+#: src/ui/frmMain.cpp:588
+#, fuzzy, c-format
+msgid "Connection to server %s lost."
+msgstr "Dodaj vezu sa serverom."
+
 # standard input:5
 # standard input:5
 # standard input:5
 # standard
 # standard
-#: src/schema/pgIndex.cpp:201 src/schema/pgIndexConstraint.cpp:99 standard
-#: input:151
+#: src/schema/pgIndex.cpp:211 src/schema/pgIndexConstraint.cpp:107
+#: src/ui/frmRestore.cpp:378 standard input:187
 msgid "Constraint"
 msgstr "Ograničenje"
 
-#: src/ui/dlgTable.cpp:89
+#: src/ui/dlgTable.cpp:88
 msgid "Constraint name"
 msgstr "Naziv Ograničenja"
 
@@ -1245,31 +1544,34 @@ msgstr "Naziv Ograničenja"
 # src/schema/pgObject.cpp:52 standard input:11
 # standard
 # standard
-#: src/schema/pgObject.cpp:52 standard input:252 src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:76 standard input:370
 msgid "Constraints"
 msgstr "Ograničenja"
 
-#: src/schema/pgCast.cpp:67 src/schema/pgCast.cpp:70
+#: standard input:635
+#, fuzzy
+msgid "Contents"
+msgstr "Kontekst"
+
+#: src/schema/pgCast.cpp:70
 msgid "Context"
 msgstr "Kontekst"
 
-#: src/ui/events.cpp:450 src/ui/events.cpp:469 src/ui/events.cpp:474
 msgid "Continue?"
 msgstr "Nastaviti ?"
 
-#: src/schema/pgObject.cpp:38 src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:49
 msgid "Conversion"
 msgstr "Konverzija"
 
-#: src/schema/pgObject.cpp:38 src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:48
 msgid "Conversions"
 msgstr "Konverzije"
 
-#: src/ui/frmChildTableViewFrame.cpp:391
 msgid "Copied"
 msgstr "Kopiran"
 
-#: src/ui/frmQuery.cpp:173
+#: src/ui/frmEditGrid.cpp:102 src/ui/frmQuery.cpp:185
 msgid "Copy"
 msgstr "Kopiraj"
 
@@ -1278,148 +1580,206 @@ msgstr "Kopiraj"
 # standard input:18
 # standard
 # standard
-#: standard input:427 input:428
+#: standard input:580
 msgid "Copy SQL from main form to SQL dialogue"
 msgstr "Kopiraj SQL iz glavne forme u SQL dijalog"
 
-#: src/ui/frmQuery.cpp:110 src/ui/frmQuery.cpp:173
+#: src/ui/frmEditGrid.cpp:102
+#, fuzzy
+msgid "Copy selected lines to clipboard"
+msgstr "Kopiraj odabrani tekst u 'clipboard'"
+
+#: src/ui/frmQuery.cpp:120 src/ui/frmQuery.cpp:185
 msgid "Copy selected text to clipboard"
 msgstr "Kopiraj odabrani tekst u 'clipboard'"
 
-#: src/db/pgConn.cpp:68
+# src/schema/pgRule.cpp:75 src/ui/frmQueryBuilder.cpp:217 standard input:10
+# src/schema/pgRule.cpp:75 src/ui/frmQueryBuilder.cpp:217 standard input:10
+# src/schema/pgRule.cpp:75 src/ui/frmQueryBuilder.cpp:217 standard input:10
+# standard
+# standard
+#: src/schema/pgColumn.cpp:248
+#, fuzzy
+msgid "Correlation"
+msgstr "Uvjet"
+
+#: src/db/pgConn.cpp:82
 #, c-format
 msgid "Could not resolve hostname %s"
 msgstr "Ne mogu naći ime hosta %s"
 
-#: src/schema/pgServer.cpp:100
+#: src/schema/pgServer.cpp:261
 msgid "Couldn't create a connection dialogue!"
 msgstr "Ne mogu kreirati dijalog  za vezu sa serverom!"
 
-#: src/schema/pgServer.cpp:126
+#: src/schema/pgServer.cpp:284
 msgid "Couldn't create a connection object!"
 msgstr "Ne mogu kreirati objekt  za vezu sa serverom!"
 
-#: src/db/pgConn.cpp:265 src/db/pgConn.cpp:276 src/db/pgConn.cpp:279
+#: src/db/pgConn.cpp:330
 msgid "Couldn't create a pgSet object!"
 msgstr "Ne mogu kreirati pgSet objekt!"
 
-#: src/pgAdmin3.cpp:306 src/pgAdmin3.cpp:313 src/pgAdmin3.cpp:316
+#: src/pgAdmin3.cpp:467
 msgid "Couldn't create the main window!"
 msgstr "Ne mogu kreirati glavni prozor!"
 
-#: src/pgAdmin3.cpp:218 src/pgAdmin3.cpp:225 src/pgAdmin3.cpp:228
+#: src/pgAdmin3.cpp:313
 msgid "Couldn't create the splash screen!"
 msgstr "Ne mogu kreirati 'splash' prozor!"
 
-#: src/ui/events.cpp:197 src/ui/events.cpp:199
+#: src/ui/events.cpp:218
 msgid "Couldn't open a tips.txt file!"
 msgstr "Otvaranje datoteke tips.txt nije uspjelo!"
 
 # standard input:17
 # standard
 # standard
-#: standard input:426 input:427
+#: standard input:579
 msgid "Count rows if estimated less than"
 msgstr "Procjena broja redaka manja od"
 
-#: src/ui/frmMain.cpp:217 src/ui/frmMain.cpp:218
+#: src/ui/frmMain.cpp:197
+#, fuzzy
+msgid "Count rows in the selected object."
+msgstr "Osvježi izabrani objekt."
+
+#: src/schema/pgForeignKey.cpp:157
+msgid "Covering index"
+msgstr ""
+
+#: src/ui/frmMain.cpp:248
 msgid "Create"
 msgstr "Načini"
 
-#: src/schema/pgObject.cpp:53 src/schema/pgObject.cpp:52
+#: standard input:495
+#, fuzzy
+msgid "Create DB"
+msgstr "Načini"
+
+#: src/schema/pgObject.cpp:77
 msgid "Create a Primary Key."
 msgstr "Načinij primarni ključ."
 
-#: src/schema/pgObject.cpp:36 src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:45
 msgid "Create a new Aggregate."
 msgstr "Načini novi agregat."
 
-#: src/schema/pgObject.cpp:37 src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:47
 msgid "Create a new Cast."
 msgstr "Načini novu Dodjelu tip."
 
-#: src/schema/pgObject.cpp:38 src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:49
 msgid "Create a new Conversion."
 msgstr "Načini novu konverziju."
 
-#: src/schema/pgObject.cpp:31 src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:33
 msgid "Create a new Database."
 msgstr "Načini novu Bazu podataka."
 
-#: src/schema/pgObject.cpp:39 src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:51
 msgid "Create a new Domain."
 msgstr "Načini novu Domenu."
 
-#: src/schema/pgObject.cpp:40 src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:53
 msgid "Create a new Function."
 msgstr "Načini novu Funkciju."
 
-#: src/schema/pgObject.cpp:32 src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:35
 msgid "Create a new Group."
 msgstr "Načini novu Grupu."
 
-#: src/schema/pgObject.cpp:34 src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:82
+#, fuzzy
+msgid "Create a new Job"
+msgstr "Načini novi objekt."
+
+#: src/schema/pgObject.cpp:39
 msgid "Create a new Language."
 msgstr "Načini novi Jezik."
 
-#: src/schema/pgObject.cpp:43 src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:59
 msgid "Create a new Operator Class."
 msgstr "Načini novu Klasu operatora."
 
-#: src/schema/pgObject.cpp:42 src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:57
 msgid "Create a new Operator."
 msgstr "Načini novi Operator."
 
-#: src/schema/pgObject.cpp:50 src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:73
 msgid "Create a new Rule."
 msgstr "Načini novo Pravilo."
 
-#: src/schema/pgObject.cpp:35 src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:41
 msgid "Create a new Schema."
 msgstr "Načini novu Šemu."
 
-#: src/schema/pgObject.cpp:44 src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:61
 msgid "Create a new Sequence."
 msgstr "Načini novu Sekvenciju."
 
-#: src/schema/pgObject.cpp:30 src/schema/pgObject.cpp:29
+#: src/schema/pgObject.cpp:31
 msgid "Create a new Server connection."
 msgstr "Načini novu Vezu sa serverom."
 
-#: src/schema/pgObject.cpp:45 src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:63
 msgid "Create a new Table."
 msgstr "Načini novu Tablicu."
 
-#: src/schema/pgObject.cpp:41 src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:43
+#, fuzzy
+msgid "Create a new Tablespace."
+msgstr "Načini novu Tablicu."
+
+#: src/schema/pgObject.cpp:55
 msgid "Create a new Trigger Function."
 msgstr "Načini novu funkciju Okidača."
 
-#: src/schema/pgObject.cpp:46 src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:65
 msgid "Create a new Type."
 msgstr "Načini novi Tip."
 
-#: src/schema/pgObject.cpp:33 src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:37
 msgid "Create a new User."
 msgstr "Načinij novog Korisnika."
 
-#: src/schema/pgObject.cpp:47 src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:67
 msgid "Create a new View."
 msgstr "Načini Pogled."
 
-#: src/ui/frmMain.cpp:128 src/ui/frmMain.cpp:182 src/ui/frmMain.cpp:217
-#: src/ui/frmMain.cpp:218
+#: src/ui/frmMain.cpp:169 src/ui/frmMain.cpp:248
 msgid "Create a new object of the same type as the selected object."
 msgstr "Načini novi objekt istog tipa kao i odabrani objekt."
 
-#: src/ui/frmMain.cpp:126 src/ui/frmMain.cpp:175
+#: src/ui/frmMain.cpp:167
 msgid "Create a new object."
 msgstr "Načini novi objekt."
 
-#: src/schema/pgUser.cpp:118
+#: src/schema/pgUser.cpp:210
 msgid "Create databases?"
 msgstr "Načiniti Bazu podataka?"
 
-#: src/ui/frmQuery.cpp:109
+#: src/schema/pgObject.cpp:84
+#, fuzzy
+msgid "Create new Schedule"
+msgstr "Načini novu Šemu."
+
+#: src/schema/pgObject.cpp:83
+#, fuzzy
+msgid "Create new Step"
+msgstr "Načini novu Šemu."
+
+#: standard input:213
+#, fuzzy
+msgid "Created"
+msgstr "Načini"
+
+#: src/ui/frmMain.cpp:185
+#, fuzzy
+msgid "Creates a backup of the current database to a local file"
+msgstr "Reorganiziraj tekuću bazu ili tablicu."
+
+#: src/ui/frmQuery.cpp:119
 msgid "Cu&t\tCtrl-X"
 msgstr "&Isijeci\tCtrl-X"
 
@@ -1428,22 +1788,34 @@ msgstr "&Isijeci\tCtrl-X"
 # standard input:2
 # standard
 # standard
-#: standard input:448 input:449
+#: standard input:601
 msgid "Current Password"
 msgstr "Važeća lozinka"
 
 # standard input:2
 # standard input:2
 # standard input:2
-#: src/schema/pgSequence.cpp:91 src/ui/dlgSequence.cpp:89
+#: src/schema/pgServer.cpp:508
+#, fuzzy
+msgid "Current Query"
+msgstr "Trenutna vrijednost"
+
+# standard input:2
+# standard input:2
+# standard input:2
+#: src/schema/pgSequence.cpp:94 src/ui/dlgSequence.cpp:82
 msgid "Current value"
 msgstr "Trenutna vrijednost"
 
-#: src/ui/frmQuery.cpp:172
+#: standard input:294
+msgid "Custom schedule"
+msgstr ""
+
+#: src/ui/frmQuery.cpp:184
 msgid "Cut"
 msgstr "Izreži"
 
-#: src/ui/frmQuery.cpp:109 src/ui/frmQuery.cpp:172
+#: src/ui/frmQuery.cpp:119 src/ui/frmQuery.cpp:184
 msgid "Cut selected text to clipboard"
 msgstr "Izreži obavrani tekst u 'clipboard'"
 
@@ -1452,7 +1824,7 @@ msgstr "Izreži obavrani tekst u 'clipboard'"
 # src/schema/pgSequence.cpp:96 standard input:9
 # standard
 # standard
-#: src/schema/pgSequence.cpp:96 standard input:234
+#: src/schema/pgSequence.cpp:99 standard input:321
 msgid "Cycled"
 msgstr "Cikličan"
 
@@ -1464,19 +1836,27 @@ msgstr "Cikličan"
 # standard input:13
 # standard
 # standard
-#: standard input:209 input:270
+#: standard input:270 input:396
 msgid "DELETE"
 msgstr "DELETE"
 
-#: src/ui/frmQueryBuilder.cpp:250
 msgid "Data"
 msgstr "Podaci"
 
-#: src/ui/frmQuery.cpp:199
+#: src/ui/frmQuery.cpp:213
 msgid "Data Output"
 msgstr "Podaci"
 
-#: src/ui/frmQuery.cpp:944 src/ui/frmQuery.cpp:946
+#: standard input:100
+#, fuzzy
+msgid "Data Sorting"
+msgstr "Prekid."
+
+#: src/ui/frmQuery.cpp:1098
+msgid "Data export aborted."
+msgstr ""
+
+#: src/ui/frmQuery.cpp:1184
 msgid "Data retrieval runtime: "
 msgstr "Vrijeme dohvaćanja podataka: "
 
@@ -1488,13 +1868,20 @@ msgstr "Vrijeme dohvaćanja podataka: "
 # src/ui/dlgtype.cpp:69 src/ui/dlgtype.cpp:70 standard input:29
 # standard
 # standard
-#: src/schema/pgColumn.cpp:177 src/ui/dlgType.cpp:72 standard input:36
-#: input:305
+#: src/schema/pgColumn.cpp:222 src/ui/dlgType.cpp:76 standard input:36
+#: input:431
 msgid "Data type"
 msgstr "Tip podatka"
 
-#: src/schema/pgObject.cpp:31 src/ui/frmStatus.cpp:56
-#: src/schema/pgObject.cpp:30
+#: src/ui/frmQuery.cpp:1096
+msgid "Data written to file."
+msgstr ""
+
+#: src/schema/pgDatabase.cpp:476 src/schema/pgObject.cpp:33
+#: src/schema/pgServer.cpp:507 src/schema/pgTablespace.cpp:44
+#: src/schema/pgTablespace.cpp:63 src/schema/pgUser.cpp:93
+#: src/schema/pgUser.cpp:125 src/ui/frmStatus.cpp:97 src/ui/frmStatus.cpp:107
+#: standard input:343
 msgid "Database"
 msgstr "Baza podataka"
 
@@ -1503,11 +1890,11 @@ msgstr "Baza podataka"
 # standard input:1
 # standard
 # standard
-#: standard input:492 input:493
+#: standard input:641
 msgid "Database Status"
 msgstr "Status Baze podataka"
 
-#: src/schema/pgObject.cpp:31 src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:32
 msgid "Databases"
 msgstr "Baze podataka"
 
@@ -1522,12 +1909,21 @@ msgstr "Baze podataka"
 # src/schema/pgdomain.cpp:78 src/ui/frmOptions.cpp:83 standard input:13
 # standard
 # standard
-#: src/pgAdmin3.cpp:181 src/schema/pgColumn.cpp:178 src/schema/pgDomain.cpp:99
-#: src/schema/pgType.cpp:135 src/ui/frmOptions.cpp:96 standard input:49
-#: input:78 input:289 src/ui/frmOptions.cpp:98 src/pgAdmin3.cpp:188
-#: src/pgAdmin3.cpp:191
+#: src/pgAdmin3.cpp:270 src/schema/pgColumn.cpp:223 src/schema/pgDomain.cpp:99
+#: src/schema/pgType.cpp:133 src/ui/frmOptions.cpp:105 standard input:57
+#: input:86 input:416
 msgid "Default"
 msgstr "Predpostavljeno"
+
+# standard input:6
+# standard input:6
+# standard input:6
+# standard
+# standard
+#: src/schema/pgDatabase.cpp:344
+#, fuzzy
+msgid "Default schema"
+msgstr "Predpost. vrijed."
 
 # standard input:6
 # standard input:6
@@ -1538,7 +1934,7 @@ msgstr "Predpostavljeno"
 msgid "Default value"
 msgstr "Predpost. vrijed."
 
-#: src/schema/pgConversion.cpp:67 src/schema/pgOperatorClass.cpp:160
+#: src/schema/pgConversion.cpp:68 src/schema/pgOperatorClass.cpp:160
 msgid "Default?"
 msgstr "Predpostavljeno?"
 
@@ -1553,11 +1949,11 @@ msgstr "Predpostavljeno?"
 # standard input:3
 # standard
 # standard
-#: standard input:27 input:90 input:161
+#: standard input:27 input:119 input:198
 msgid "Deferrable"
 msgstr "Odgodivo"
 
-#: src/schema/pgCheck.cpp:73 src/schema/pgForeignKey.cpp:146
+#: src/schema/pgCheck.cpp:79 src/schema/pgForeignKey.cpp:160
 msgid "Deferrable?"
 msgstr "Odgodivo?"
 
@@ -1572,7 +1968,7 @@ msgstr "Odgodivo?"
 # standard input:4
 # standard
 # standard
-#: standard input:28 input:91 input:162
+#: standard input:28 input:120 input:199
 msgid "Deferred"
 msgstr "Odgođeno"
 
@@ -1590,47 +1986,63 @@ msgstr "Odgođeno"
 # src/ui/dlgTable.cpp:75 standard input:5
 # standard
 # standard
-#: src/schema/pgCheck.cpp:72 src/schema/pgRule.cpp:68 src/schema/pgRule.cpp:72
-#: src/schema/pgView.cpp:84 src/ui/dlgTable.cpp:84 src/ui/dlgTable.cpp:89
-#: standard input:130 input:213 input:282 input:303 input:337
-#: src/schema/pgView.cpp:86
+#: src/schema/pgCheck.cpp:78 src/schema/pgRule.cpp:68 src/schema/pgRule.cpp:72
+#: src/schema/pgView.cpp:86 src/ui/dlgTable.cpp:83 src/ui/dlgTable.cpp:88
+#: standard input:163 input:274 input:352 input:409 input:465
 msgid "Definition"
 msgstr "Definicija"
 
 # src/ui/frmEditGrid.cpp:63 standard input:16
 # src/ui/frmEditGrid.cpp:63 standard input:16
 # src/ui/frmEditGrid.cpp:63 standard input:16
-#: src/ui/frmEditGrid.cpp:89 src/ui/frmEditGrid.cpp:91
+#: src/ui/frmEditGrid.cpp:104
 msgid "Delete"
 msgstr "&Obriši"
 
-#: src/ui/frmEditGrid.cpp:89 src/ui/frmEditGrid.cpp:91
+#: src/ui/frmEditGrid.cpp:104
 msgid "Delete selected lines."
 msgstr "Obriši izabrane linije."
 
-#: src/ui/frmMain.cpp:129 src/ui/frmMain.cpp:183
+#: src/ui/frmMain.cpp:170
 msgid "Delete/Drop the selected object."
 msgstr "Obriši/Ukloni odabrani objekt."
 
+#: src/schema/pgUser.cpp:42 src/ui/dlgUser.cpp:199
+msgid ""
+"Deleting a superuser might result in unwanted behaviour (e.g. when restoring "
+"the database).\n"
+"Are you sure?"
+msgstr ""
+
 # src/schema/pgType.cpp:140 standard input:15
 # src/schema/pgType.cpp:140 standard input:15
 # src/schema/pgType.cpp:140 standard input:15
 # standard
 # standard
-#: src/schema/pgType.cpp:140 standard input:291
+#: src/schema/pgType.cpp:138 standard input:418
 msgid "Delimiter"
 msgstr "Separator"
 
+#: src/ui/frmMain.cpp:284
+#, fuzzy
+msgid "Depends on"
+msgstr "Dimenzije"
+
+#: src/ui/dlgEditGridOptions.cpp:122 src/ui/dlgEditGridOptions.cpp:142
+#: src/ui/dlgEditGridOptions.cpp:194 standard input:103
+#, fuzzy
+msgid "Descending"
+msgstr "Dizajn"
+
 # src/schema/pgServer.cpp:266 standard input:2
 # src/schema/pgServer.cpp:266 standard input:2
 # src/schema/pgServer.cpp:266 standard input:2
 # standard
 # standard
-#: src/schema/pgServer.cpp:280 standard input:350
+#: src/schema/pgServer.cpp:453 standard input:328
 msgid "Description"
 msgstr "Opis"
 
-#: src/ui/frmQueryBuilder.cpp:246
 msgid "Design"
 msgstr "Dizajn"
 
@@ -1638,39 +2050,50 @@ msgstr "Dizajn"
 msgid "Dimensions"
 msgstr "Dimenzije"
 
-#: src/ui/frmMain.cpp:136
+#: standard input:489
+msgid "Disable $$ quoting"
+msgstr ""
+
+#: standard input:497 input:633
+#, fuzzy
+msgid "Disable Trigger"
+msgstr "Novi Okidač"
+
+#: src/ui/frmMain.cpp:179
 msgid "Disconnec&t"
 msgstr "&Prekini vezu"
 
-#: src/ui/frmMain.cpp:136 src/ui/frmMain.cpp:180
+#: src/ui/frmMain.cpp:179
 msgid "Disconnect from the selected server."
 msgstr "Prekini vezu sa odabranim serverom."
 
-#: src/ui/frmMain.cpp:160
+#: src/ui/frmMain.cpp:205
 msgid "Display help on PostgreSQL database system."
 msgstr "Prikaži pomoć za PostgreSQL."
 
-#: src/ui/frmEditGrid.cpp:91 src/ui/frmMain.cpp:159 src/ui/frmMain.cpp:225
-#: src/ui/frmQuery.cpp:134 src/ui/frmQuery.cpp:186 src/ui/frmMain.cpp:226
-#: src/ui/frmEditGrid.cpp:93
+#: src/ui/frmEditGrid.cpp:108 src/ui/frmMain.cpp:204 src/ui/frmMain.cpp:257
+#: src/ui/frmQuery.cpp:145 src/ui/frmQuery.cpp:199
 msgid "Display help on SQL commands."
 msgstr "Prikaži pomoć za SQL naredbe."
 
-#: src/ui/frmMain.cpp:130 src/ui/frmMain.cpp:184 src/ui/frmMain.cpp:219
-#: src/ui/frmMain.cpp:220
+#: src/ui/frmMain.cpp:171 src/ui/frmMain.cpp:250
 msgid "Display/edit the properties of the selected object."
 msgstr "Prilkaži/ispravi svojstva odabranog objekta."
 
-#: src/ui/frmMain.cpp:145
+#: src/ui/frmMain.cpp:189
 msgid "Displays the current database status."
 msgstr "Prikaži trenutni status baze podataka."
+
+#: src/schema/pgColumn.cpp:244
+msgid "Distinct Values"
+msgstr ""
 
 # standard input:9
 # standard input:9
 # standard input:9
 # standard
 # standard
-#: standard input:210
+#: standard input:271
 msgid "Do instead"
 msgstr "Napravi umjesto"
 
@@ -1686,65 +2109,81 @@ msgstr "Napravi umjesto?"
 # standard input:9
 # standard
 # standard
-#: standard input:416 input:417
+#: standard input:569
 msgid "Do not prompt for unsaved files on exit"
 msgstr "Izađi bez obavjesti o nespremljnim datotekama."
 
-#: src/ui/frmQueryBuilder.cpp:1485
 msgid "Do you want to save changes?"
 msgstr "Želite li spremiti izmjene?"
 
-#: src/schema/pgObject.cpp:39 src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:51
 msgid "Domain"
 msgstr "Domena"
 
-#: src/schema/pgObject.cpp:39 src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:50
 msgid "Domains"
 msgstr "Domene"
 
-#: src/ui/frmMaintenance.cpp:217
+#: src/ui/dlgClasses.cpp:248 src/ui/dlgClasses.cpp:408
+#: src/ui/frmRestore.cpp:325
 msgid "Done"
 msgstr "Gotovo"
 
-#: src/ui/frmQueryBuilder.cpp:1046
+#: src/ui/frmStatus.cpp:300 src/ui/frmStatus.cpp:402 src/ui/frmStatus.cpp:463
+#, fuzzy
+msgid "Done."
+msgstr "Gotovo."
+
 msgid "Double right-handed joins are not allowed.\n"
 msgstr "Dvostruke 'desne veze' nisu dopuštene.\n"
 
-#: src/ui/frmMain.cpp:218 src/ui/frmMain.cpp:219
+#: src/ui/frmMain.cpp:249
 msgid "Drop"
 msgstr "Ukloni"
 
-#: src/ui/events.cpp:825 src/ui/events.cpp:881 src/ui/events.cpp:891
+#: src/ui/events.cpp:1133
 #, c-format
 msgid "Drop %s?"
 msgstr "Ukloni %s ?"
 
-#: src/ui/frmMain.cpp:218 src/ui/frmMain.cpp:219
+#: standard input:496
+#, fuzzy
+msgid "Drop DB"
+msgstr "Ukloni"
+
+#: src/ui/frmMain.cpp:249
 msgid "Drop the currently selected object."
 msgstr "Ukloni odabrani objekt."
 
-#: src/ui/frmQueryBuilder.cpp:110
+#: src/schema/pgDatabase.cpp:247
+msgid "Dropping database not allowed"
+msgstr ""
+
 msgid "E&xit"
 msgstr "&Izlaz"
 
-#: src/ui/frmMain.cpp:120 src/ui/frmQuery.cpp:101
+#: src/ui/frmMain.cpp:161 src/ui/frmQuery.cpp:111
 msgid "E&xit\tAlt-F4"
 msgstr "I&zlaz\tAlt-F4"
 
-#: src/ui/frmQueryBuilder.cpp:116
 msgid "E&xplain"
 msgstr "&Objasni"
 
-#: src/ui/frmQuery.cpp:119
+#: src/ui/frmQuery.cpp:130
 msgid "E&xplain\tF7"
 msgstr "&Objasni\tF7"
+
+#: src/ui/dlgEditGridOptions.cpp:308
+#, c-format
+msgid "ERROR: Syntax error at character %d!"
+msgstr ""
 
 # standard input:25
 # standard input:25
 # standard input:25
 # standard
 # standard
-#: standard input:300
+#: standard input:427
 msgid "EXTENDED"
 msgstr "EXTENDED"
 
@@ -1753,7 +2192,7 @@ msgstr "EXTENDED"
 # standard input:24
 # standard
 # standard
-#: standard input:299
+#: standard input:426
 msgid "EXTERNAL"
 msgstr "EXTERNAL"
 
@@ -1762,9 +2201,14 @@ msgstr "EXTERNAL"
 # src/schema/pgType.cpp:139 standard input:14
 # standard
 # standard
-#: src/schema/pgType.cpp:139 standard input:290
+#: src/schema/pgType.cpp:137 standard input:417
 msgid "Element"
 msgstr "Element"
+
+#: standard input:210 input:211 input:281 input:342
+#, fuzzy
+msgid "Enabled"
+msgstr "Aktivan?"
 
 #: src/schema/pgTrigger.cpp:145
 msgid "Enabled?"
@@ -1775,7 +2219,7 @@ msgstr "Aktivan?"
 # src/schema/pgdatabase.cpp:192 standard input:5
 # standard
 # standard
-#: src/schema/pgDatabase.cpp:179 standard input:61 input:380
+#: src/schema/pgDatabase.cpp:341 standard input:69 input:514
 msgid "Encoding"
 msgstr "Enkodiranje"
 
@@ -1784,17 +2228,20 @@ msgstr "Enkodiranje"
 # src/schema/pgServer.cpp:266 standard input:2
 # standard
 # standard
-#: src/schema/pgServer.cpp:286
+#: src/schema/pgServer.cpp:459
 #, fuzzy
 msgid "Encryption"
 msgstr "Opis"
+
+#: standard input:292
+msgid "End"
+msgstr ""
 
 # standard input:3
 # standard input:3
 # standard input:3
 # standard
 # standard
-#: standard input:351
 msgid "Enter a description of this database connection."
 msgstr "Unesi opis za ovu vezu sa serverom."
 
@@ -1803,16 +2250,21 @@ msgstr "Unesi opis za ovu vezu sa serverom."
 # standard input:22
 # standard
 # standard
-#: standard input:431 input:432
+#: standard input:584
 msgid "Enter a filename to write application logs to."
 msgstr "Unesi ime datoteke u koju će biti zapisivan log."
+
+#: standard input:115
+msgid ""
+"Enter the filter string to apply to the data. SQL syntax should be used as "
+"the string will be used as a 'WHERE' clause."
+msgstr ""
 
 # standard input:5
 # standard input:5
 # standard input:5
 # standard
 # standard
-#: standard input:353
 msgid "Enter the hostname or IP address of the server to connect to."
 msgstr "Unesi ime ili IP adresu servera."
 
@@ -1821,7 +2273,6 @@ msgstr "Unesi ime ili IP adresu servera."
 # standard input:10
 # standard
 # standard
-#: standard input:359
 msgid ""
 "Enter the name of the database on the server to use to make the initial "
 "connection. Normally this will be template1."
@@ -1834,7 +2285,7 @@ msgstr ""
 # standard input:15
 # standard
 # standard
-#: standard input:364
+#: standard input:49
 msgid "Enter the password to use when connecting to the server."
 msgstr "Unesi lozinku za spajanje na server."
 
@@ -1843,7 +2294,7 @@ msgstr "Unesi lozinku za spajanje na server."
 # standard input:7
 # standard
 # standard
-#: standard input:414
+#: standard input:562
 msgid "Enter the path or URL to the PostgreSQL documentation"
 msgstr "Unesi stazu ili URL za PostgreSQL dokumentaciju."
 
@@ -1852,7 +2303,6 @@ msgstr "Unesi stazu ili URL za PostgreSQL dokumentaciju."
 # standard input:7
 # standard
 # standard
-#: standard input:355
 msgid "Enter the port number that the server is listening on."
 msgstr "Unesite port na kojem server sluša."
 
@@ -1861,20 +2311,17 @@ msgstr "Unesite port na kojem server sluša."
 # standard input:12
 # standard
 # standard
-#: standard input:361
 msgid "Enter the username to use when connecting to the server."
 msgstr "Unesite korisničko ime za spajanje na server."
 
-#: src/ui/events.cpp:497 src/ui/events.cpp:516 src/ui/events.cpp:521
+#: src/ui/events.cpp:640
 #, c-format
 msgid "Error connecting to the server: %s"
 msgstr "Greška kod uspostavljanja veze sa serverom: %s"
 
-#: src/ui/frmChildTableViewFrame.cpp:389
 msgid "Error!"
 msgstr "Greška!"
 
-#: src/ui/frmQueryBuilder.cpp:1116
 msgid "Error: No table or no column"
 msgstr "Greška:Nema tablice ili stupca"
 
@@ -1883,7 +2330,7 @@ msgstr "Greška:Nema tablice ili stupca"
 # standard input:28
 # standard
 # standard
-#: standard input:437 input:438
+#: standard input:590
 msgid "Errors and N&otices"
 msgstr "Greške i &Obavijesti"
 
@@ -1892,7 +2339,7 @@ msgstr "Greške i &Obavijesti"
 # standard input:28
 # standard
 # standard
-#: standard input:438 input:439
+#: standard input:591
 msgid "Errors, Notices, &SQL"
 msgstr "Greške Obavijesti i &SQL"
 
@@ -1901,7 +2348,7 @@ msgstr "Greške Obavijesti i &SQL"
 # src/schema/pgtrigger.cpp:142 standard input:4
 # standard
 # standard
-#: src/schema/pgRule.cpp:63 src/schema/pgTrigger.cpp:142 standard input:205
+#: src/schema/pgRule.cpp:63 src/schema/pgTrigger.cpp:142 standard input:266
 msgid "Event"
 msgstr "Događaj"
 
@@ -1910,59 +2357,64 @@ msgstr "Događaj"
 # standard input:10
 # standard
 # standard
-#: standard input:267
+#: standard input:393
 msgid "Events"
 msgstr "Događaji"
 
-#: src/ui/frmQuery.cpp:182 src/ui/frmQueryBuilder.cpp:169
+#: src/ui/frmQuery.cpp:194
 msgid "Execute"
 msgstr "Izvrši"
 
-#: src/ui/frmMain.cpp:138 src/ui/frmMain.cpp:221 src/ui/frmMain.cpp:222
+#: src/ui/frmMain.cpp:181 src/ui/frmMain.cpp:252
 msgid "Execute arbitrary SQL queries."
 msgstr "Izvrši proizvoljne SQL upite."
 
-#: src/ui/frmQuery.cpp:118 src/ui/frmQuery.cpp:182
-#: src/ui/frmQueryBuilder.cpp:115 src/ui/frmQueryBuilder.cpp:169
+#: src/ui/frmQuery.cpp:128 src/ui/frmQuery.cpp:194
 msgid "Execute query"
 msgstr "Izvrši upit"
 
-#: src/ui/frmQuery.cpp:101
+#: src/ui/frmQuery.cpp:129 src/ui/frmQuery.cpp:195
+msgid "Execute query, write result to file"
+msgstr ""
+
+#: src/ui/frmQuery.cpp:129 src/ui/frmQuery.cpp:195
+#, fuzzy
+msgid "Execute to file"
+msgstr "Izaberite log datoteku"
+
+#: src/ui/frmQuery.cpp:111
 msgid "Exit query window"
 msgstr "Izlaz iz prozora za upite"
 
-#: src/ui/frmQuery.cpp:183 src/ui/frmQueryBuilder.cpp:170
+#: src/ui/frmQuery.cpp:196
 msgid "Explain"
 msgstr "Objasni"
 
-#: src/ui/frmQuery.cpp:124
+#: src/ui/frmQuery.cpp:135
 msgid "Explain &options"
 msgstr "Opcije vezane za &objašnjenje"
 
-#: src/ui/frmQuery.cpp:123
+#: src/ui/frmQuery.cpp:134
 msgid "Explain analyse query"
 msgstr "Objasni i analiziraj upit"
 
-#: src/ui/frmQuery.cpp:119 src/ui/frmQuery.cpp:183
-#: src/ui/frmQueryBuilder.cpp:116 src/ui/frmQueryBuilder.cpp:170
+#: src/ui/frmQuery.cpp:130 src/ui/frmQuery.cpp:196
 msgid "Explain query"
 msgstr "Objasni upit"
 
-#: src/ui/frmQuery.cpp:122
+#: src/ui/frmQuery.cpp:133
 msgid "Explain verbose query"
 msgstr "Objasni upit opširno"
 
 # standard
 # standard
-#: src/ui/frmQuery.cpp:98 standard input:368
+#: src/ui/frmQuery.cpp:108 standard input:502
 msgid "Export data to file"
 msgstr "Izvezi podatke u datoteku"
 
-#: src/ui/frmQueryBuilder.cpp:211
 msgid "Expression"
 msgstr "Izraz"
 
-#: src/ui/frmQueryBuilder.cpp:1290
 msgid "Expression Error"
 msgstr "Greška u izrazu"
 
@@ -1971,26 +2423,33 @@ msgstr "Greška u izrazu"
 # standard input:6
 # standard
 # standard
-#: standard input:280
+#: standard input:407
 msgid "External"
 msgstr "Vanjski"
 
-#: src/utils/misc.cpp:381 src/utils/sysLogger.cpp:194 src/utils/misc.cpp:394
+#: src/utils/sysLogger.cpp:196
 msgid "FATAL"
 msgstr "FATAL"
+
+# standard
+# standard
+#: standard input:122
+#, fuzzy
+msgid "FK index name"
+msgstr "Ime datoteke"
 
 # standard input:8
 # standard input:8
 # standard input:8
 # standard
 # standard
-#: standard input:403
+#: standard input:551
 msgid "FORCE"
 msgstr "FORCE"
 
 # standard
 # standard
-#: standard input:400
+#: standard input:548
 msgid "FREEZE"
 msgstr "FREEZE"
 
@@ -1999,7 +2458,7 @@ msgstr "FREEZE"
 # standard input:11
 # standard
 # standard
-#: standard input:399
+#: standard input:547
 msgid "FULL"
 msgstr "FULL"
 
@@ -2008,21 +2467,39 @@ msgstr "FULL"
 # standard input:11
 # standard
 # standard
-#: standard input:464 input:465
+#: standard input:617
 msgid "FULL JOIN"
 msgstr "FULL JOIN"
 
-#: src/ui/frmExport.cpp:127
+#: standard input:348
+#, fuzzy
+msgid "Fail"
+msgstr "&Datoteka"
+
+#: src/ui/frmExport.cpp:146
 #, c-format
 msgid "Failed to open file %s."
 msgstr "Neuspjelo otvaranje datoteke %s."
 
-#: src/ui/events.cpp:438 src/ui/events.cpp:457 src/ui/events.cpp:462
+#: src/schema/pgServer.cpp:145
+#, c-format
+msgid ""
+"Failed to start server %s: Errcode=%d\n"
+"Check event log for details."
+msgstr ""
+
+#: src/schema/pgServer.cpp:168
+#, c-format
+msgid ""
+"Failed to stop server %s: Errcode=%d\n"
+"Check event log for details."
+msgstr ""
+
+#: src/ui/events.cpp:545
 #, c-format
 msgid "Failed to write to the output file: %s"
 msgstr "Neuspjelo pisanje u izlaznu datoteku: %s"
 
-#: src/utils/misc.cpp:380 src/utils/misc.cpp:393
 msgid ""
 "File cannot be opened with this format.\n"
 "Please chose another format."
@@ -2032,31 +2509,42 @@ msgstr ""
 
 # standard
 # standard
-#: standard input:387
+#: standard input:480 input:521 input:627
 msgid "Filename"
 msgstr "Ime datoteke"
 
+#: standard input:111
+#, fuzzy
+msgid "Filter"
+msgstr "&Datoteka"
+
+#: standard input:114
+msgid "Filter String (eg. oid > 10 AND oid < 50)"
+msgstr ""
+
+#: src/ui/dlgEditGridOptions.cpp:207
+msgid "Filter string syntax validates OK!"
+msgstr ""
+
 # standard input:8
 # standard input:8
 # standard input:8
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:78 standard input:8
-#: src/schema/pgAggregate.cpp:84
+#: src/schema/pgAggregate.cpp:84 standard input:8
 msgid "Final function"
 msgstr "Finalna funkcija"
 
-#: src/schema/pgAggregate.cpp:77 src/schema/pgAggregate.cpp:83
+#: src/schema/pgAggregate.cpp:83
 msgid "Final type"
 msgstr "Finalni tip"
 
-#: src/ui/frmQuery.cpp:180
+#: src/ui/frmQuery.cpp:192
 msgid "Find"
 msgstr "Pronađi"
 
-#: src/ui/ctlSQLBox.cpp:365 src/ui/ctlSQLBox.cpp:410 src/ui/ctlSQLBox.cpp:416
-#: src/ui/frmQuery.cpp:114 src/ui/frmQuery.cpp:180 src/ui/ctlSQLBox.cpp:364
-#: src/ui/ctlSQLBox.cpp:409 src/ui/ctlSQLBox.cpp:415
+#: src/ui/ctlSQLBox.cpp:385 src/ui/ctlSQLBox.cpp:430 src/ui/ctlSQLBox.cpp:436
+#: src/ui/frmQuery.cpp:124 src/ui/frmQuery.cpp:192
 msgid "Find text"
 msgstr "Pronađi tekst"
 
@@ -2065,13 +2553,13 @@ msgstr "Pronađi tekst"
 # src/schema/pgtrigger.cpp:140 src/schema/pgtrigger.cpp:141 standard input:7
 # standard
 # standard
-#: src/schema/pgTrigger.cpp:141 standard input:264
+#: src/schema/pgTrigger.cpp:141 standard input:390
 msgid "Fires"
 msgstr "Okida"
 
 # standard
 # standard
-#: standard input:421 input:422
+#: standard input:566 input:574
 msgid "Font"
 msgstr "Font"
 
@@ -2083,28 +2571,37 @@ msgstr "Za svaki"
 msgid "For type"
 msgstr "Za tip"
 
-#: src/schema/pgObject.cpp:56 src/ui/dlgTable.cpp:475
-#: src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:80 src/ui/dlgTable.cpp:473
 msgid "Foreign Key"
 msgstr "Vanjski ključ"
 
-#: src/schema/pgColumn.cpp:181
+#: standard input:533
+#, fuzzy
+msgid "Foreign Key Check"
+msgstr "Vanjski ključ"
+
+#: src/schema/pgColumn.cpp:227
 msgid "Foreign key?"
 msgstr "Vanjski ključ?"
 
-#: src/ui/frmHelp.cpp:54
+#: standard input:482
+#, fuzzy
+msgid "Format"
+msgstr "Naprijed"
+
+#: src/ui/frmHelp.cpp:56
 msgid "Forward"
 msgstr "Naprijed"
 
-#: src/ui/frmHelp.cpp:54
+#: src/ui/frmHelp.cpp:56
 msgid "Forward to next page."
 msgstr "Naprijed na sljedeću stranicu."
 
-#: src/ui/frmMain.cpp:158
+#: src/ui/frmMain.cpp:203
 msgid "Frequently asked questions about pgAdmin III."
 msgstr "Često postavljana pitanja o pgAdmin III."
 
-#: src/schema/pgConversion.cpp:64
+#: src/schema/pgConversion.cpp:65
 msgid "From"
 msgstr "Od"
 
@@ -2116,14 +2613,14 @@ msgstr "Od"
 # src/schema/pgtrigger.cpp:144 standard input:8
 # standard
 # standard
-#: src/schema/pgCast.cpp:66 src/schema/pgConversion.cpp:66
-#: src/schema/pgObject.cpp:40 src/schema/pgTrigger.cpp:144 standard input:19
-#: input:52 src/schema/pgObject.cpp:39 src/schema/pgCast.cpp:67
-#: src/schema/pgCast.cpp:69
+#: src/schema/pgCast.cpp:67 src/schema/pgCast.cpp:69
+#: src/schema/pgConversion.cpp:67 src/schema/pgObject.cpp:53
+#: src/schema/pgTrigger.cpp:144 src/ui/frmRestore.cpp:182 standard input:19
+#: input:60
 msgid "Function"
 msgstr "Funkcija"
 
-#: src/schema/pgObject.cpp:40 src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:52
 msgid "Functions"
 msgstr "Funkcije"
 
@@ -2132,40 +2629,57 @@ msgstr "Funkcije"
 # standard input:2
 # standard
 # standard
-#: standard input:411
+#: standard input:559
 msgid "General"
 msgstr "Općenito"
 
-#: src/schema/pgOperator.cpp:120 src/schema/pgOperator.cpp:132
+#: standard input:526
+msgid "Grant Wizard"
+msgstr ""
+
+#: src/ui/frmStatus.cpp:112
+#, fuzzy
+msgid "Granted"
+msgstr "Načini"
+
+#: src/ui/frmMain.cpp:188
+msgid "Grants rights to multiple objects"
+msgstr ""
+
+#: src/schema/pgOperator.cpp:132
 msgid "Greater than operator"
 msgstr "Operator 'veći od'"
 
-#: src/schema/pgObject.cpp:32 src/ui/dlgProperty.cpp:911
-#: src/ui/dlgProperty.cpp:914 src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:35 src/ui/ctlSecurityPanel.cpp:107
 msgid "Group"
 msgstr "Grupa"
 
-#: src/schema/pgGroup.cpp:95
+#: src/schema/pgGroup.cpp:95 standard input:172
 msgid "Group ID"
 msgstr "ID grupe"
 
 # src/schema/pgObject.cpp:32 standard input:8
 # src/schema/pgObject.cpp:32 standard input:8
 # src/schema/pgObject.cpp:32 standard input:8
-#: src/ui/dlgProperty.cpp:1022 src/ui/dlgProperty.cpp:1025
+#: src/ui/dlgProperty.cpp:1181 src/ui/frmGrantWizard.cpp:196
 msgid "Group/User"
 msgstr "Grupe/Korisnici"
 
+#: standard input:171
+#, fuzzy
+msgid "Groupname"
+msgstr "Grupa"
+
 # src/schema/pgObject.cpp:32 standard input:8
 # src/schema/pgObject.cpp:32 standard input:8
 # src/schema/pgObject.cpp:32 standard input:8
 # standard
 # standard
-#: src/schema/pgObject.cpp:32 standard input:320 src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:34 standard input:447
 msgid "Groups"
 msgstr "Grupe"
 
-#: standard input:415
+#: standard input:563
 msgid "HTTP proxy"
 msgstr ""
 
@@ -2174,7 +2688,7 @@ msgstr ""
 # src/schema/pgLanguage.cpp:66 standard input:6
 # standard
 # standard
-#: src/schema/pgLanguage.cpp:66 standard input:175
+#: src/schema/pgLanguage.cpp:66 standard input:235
 msgid "Handler"
 msgstr "Rukovatelj"
 
@@ -2183,30 +2697,46 @@ msgstr "Rukovatelj"
 # standard input:5
 # standard
 # standard
-#: standard input:243
+#: standard input:361
 msgid "Has OIDs"
 msgstr "Ima OID-e"
 
-#: src/schema/pgTable.cpp:343 src/schema/pgTable.cpp:344
-#: src/schema/pgTable.cpp:347
+#: src/schema/pgTable.cpp:399
 msgid "Has OIDs?"
 msgstr "Ima OID-e?"
 
+#: src/schema/pgTable.cpp:417
+msgid "Heap Blocks Hit"
+msgstr ""
+
+#: src/schema/pgTable.cpp:416
+msgid "Heap Blocks Read"
+msgstr ""
+
 # standard
 # standard
-#: src/ui/frmEditGrid.cpp:91 src/ui/frmQuery.cpp:186 standard input:11
-#: input:22 input:31 input:42 input:54 input:70 input:84 input:109 input:133
-#: input:144 input:156 input:167 input:177 input:199 input:214 input:222
-#: input:236 input:255 input:272 input:310 input:330 input:338
-#: src/ui/frmEditGrid.cpp:93
+#: src/ui/frmEditGrid.cpp:108 src/ui/frmQuery.cpp:199 standard input:11
+#: input:22 input:31 input:44 input:62 input:78 input:92 input:140 input:166
+#: input:178 input:192 input:204 input:227 input:238 input:260 input:275
+#: input:299 input:308 input:323 input:336 input:353 input:373 input:381
+#: input:398 input:436 input:457 input:466
 msgid "Help"
 msgstr "&Pomoć"
 
-#: src/ui/frmQuery.cpp:201
+#: src/ui/events.cpp:563
+#, fuzzy
+msgid "Hide system objects"
+msgstr "Pokaži ili sakrij sistemske objekte"
+
+#: src/schema/pgColumn.cpp:247
+msgid "Histogram Bounds"
+msgstr ""
+
+#: src/ui/frmQuery.cpp:215
 msgid "History"
 msgstr "Povijest"
 
-#: src/schema/pgServer.cpp:279
+#: src/schema/pgServer.cpp:452
 msgid "Hostname"
 msgstr "Ime hosta"
 
@@ -2215,15 +2745,13 @@ msgstr "Ime hosta"
 # standard input:3
 # standard
 # standard
-#: standard input:474 input:475
 msgid "Hostname/IP Address"
 msgstr "Ime hosta / IP Adresa"
 
-#: src/ui/frmMain.cpp:163
+#: src/ui/frmMain.cpp:208
 msgid "How to send a bugreport to the pgAdmin Development Team."
 msgstr "Kako poslati izvještaj o grešci pgAdmin razvojnom timu."
 
-#: src/ui/frmChildTableViewFrame.cpp:394
 msgid "Huh?"
 msgstr "Molim?"
 
@@ -2232,7 +2760,7 @@ msgstr "Molim?"
 # standard input:10
 # standard
 # standard
-#: standard input:121
+#: standard input:153
 msgid "IMMUTABLE"
 msgstr "IMMUTABLE"
 
@@ -2241,7 +2769,7 @@ msgstr "IMMUTABLE"
 # standard input:8
 # standard
 # standard
-#: standard input:461 input:462
+#: standard input:614
 msgid "INNER JOIN"
 msgstr "INNER JOIN"
 
@@ -2253,13 +2781,17 @@ msgstr "INNER JOIN"
 # standard input:11
 # standard
 # standard
-#: standard input:207 input:268
+#: standard input:268 input:394
 msgid "INSERT"
 msgstr "INSERT"
 
+#: standard input:350
+msgid "Ignore"
+msgstr ""
+
 # standard
 # standard
-#: standard input:188
+#: standard input:249
 msgid "Implementation"
 msgstr "Implementacija"
 
@@ -2272,7 +2804,7 @@ msgstr "Implementacija"
 msgid "Implicit"
 msgstr "Implicitno"
 
-#: src/ui/frmPassword.cpp:59
+#: src/ui/frmPassword.cpp:66
 msgid "Incorrect password!"
 msgstr "Neispravna lozinka!"
 
@@ -2281,54 +2813,77 @@ msgstr "Neispravna lozinka!"
 # src/schema/pgSequence.cpp:94 standard input:4
 # standard
 # standard
-#: src/schema/pgSequence.cpp:94 standard input:229
+#: src/schema/pgSequence.cpp:97 standard input:316
 msgid "Increment"
 msgstr "Korak"
 
-#: src/schema/pgObject.cpp:49 src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:71
 msgid "Index"
 msgstr "Indeks"
 
-#: src/schema/pgObject.cpp:49 src/schema/pgObject.cpp:48
+#: src/schema/pgTable.cpp:419
+msgid "Index Blocks Hit"
+msgstr ""
+
+#: src/schema/pgTable.cpp:418
+msgid "Index Blocks Read"
+msgstr ""
+
+#: src/schema/pgTable.cpp:411
+#, fuzzy
+msgid "Index Scans"
+msgstr "Indeksi"
+
+#: src/schema/pgIndex.cpp:222
+#, fuzzy
+msgid "Index Size"
+msgstr "Indeksi"
+
+#: src/schema/pgTable.cpp:412
+msgid "Index Tuples Fetched"
+msgstr ""
+
+#: src/schema/pgObject.cpp:70
 msgid "Indexes"
 msgstr "Indeksi"
 
-#: src/schema/pgColumn.cpp:183 src/ui/dlgTable.cpp:174
+#: src/schema/pgColumn.cpp:229 src/ui/dlgTable.cpp:171
 msgid "Inherited"
 msgstr "Naslijeđene"
 
-#: src/ui/dlgTable.cpp:544
+#: src/ui/dlgTable.cpp:542
 #, c-format
 msgid "Inherited from table %s"
 msgstr "Naslijeđeno od  tablice %s"
 
-#: src/schema/pgTable.cpp:342 src/schema/pgTable.cpp:343
-#: src/schema/pgTable.cpp:346
+#: src/schema/pgTable.cpp:398
 msgid "Inherited tables"
 msgstr "Naslijeđene tablice"
 
-#: src/schema/pgTable.cpp:340 src/schema/pgTable.cpp:341
-#: src/schema/pgTable.cpp:344
+#: src/schema/pgTable.cpp:396
 msgid "Inherited tables count"
 msgstr "Broj naslijeđenih tablica"
 
 # standard
 # standard
-#: standard input:244
+#: standard input:362
 msgid "Inherits from tables"
 msgstr "Naslijeđuje od tablica"
 
-#: src/schema/pgTable.cpp:339 src/schema/pgTable.cpp:340
-#: src/schema/pgTable.cpp:343
+#: src/schema/pgTable.cpp:395
 msgid "Inherits tables"
 msgstr "Naslijeđuje tablice"
+
+#: standard input:332
+#, fuzzy
+msgid "Initial DB"
+msgstr "Inicijalno?"
 
 # src/schema/pgServer.cpp:268 standard input:9
 # src/schema/pgServer.cpp:268 standard input:9
 # src/schema/pgServer.cpp:268 standard input:9
 # standard
 # standard
-#: standard input:480 input:481
 msgid "Initial Database"
 msgstr "Inicijalna baza"
 
@@ -2337,8 +2892,7 @@ msgstr "Inicijalna baza"
 # standard input:9
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:79 standard input:9
-#: src/schema/pgAggregate.cpp:85
+#: src/schema/pgAggregate.cpp:85 standard input:9
 msgid "Initial condition"
 msgstr "Inicijalni uvjet"
 
@@ -2347,11 +2901,21 @@ msgstr "Inicijalni uvjet"
 # standard input:8
 # standard
 # standard
-#: src/schema/pgServer.cpp:294 standard input:357 src/schema/pgServer.cpp:305
+#: src/schema/pgServer.cpp:478
 msgid "Initial database"
 msgstr "Inicijalna baza"
 
-#: src/schema/pgCheck.cpp:74 src/schema/pgForeignKey.cpp:147
+# standard input:8
+# standard input:8
+# standard input:8
+# standard
+# standard
+#: src/schema/pgDatabase.cpp:246
+#, fuzzy
+msgid "Initial database can't be dropped."
+msgstr "Inicijalna baza"
+
+#: src/schema/pgCheck.cpp:80 src/schema/pgForeignKey.cpp:161
 msgid "Initially?"
 msgstr "Inicijalno?"
 
@@ -2360,32 +2924,53 @@ msgstr "Inicijalno?"
 # standard input:9
 # standard
 # standard
-#: src/schema/pgType.cpp:142 standard input:283
+#: src/schema/pgType.cpp:140 standard input:410
 msgid "Input function"
 msgstr "Ulazna funkcija"
 
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:72 standard input:5
-#: src/schema/pgAggregate.cpp:78
+#: src/schema/pgAggregate.cpp:78 standard input:5
 msgid "Input type"
 msgstr "Ulazni tip"
 
+#: standard input:488
+msgid "Insert commands"
+msgstr ""
+
 # standard input:11
 # standard input:11
 # standard input:11
 # standard
 # standard
-#: src/schema/pgType.cpp:134 standard input:287
+#: src/schema/pgType.cpp:132 standard input:414
 msgid "Internal length"
 msgstr "Interna dužina"
+
+# standard input:2
+# standard input:2
+# standard input:2
+# standard
+# standard
+#: standard input:290
+#, fuzzy
+msgid "Interval"
+msgstr "Općenito"
+
+#: src/schema/pgObject.cpp:82
+msgid "Job"
+msgstr ""
+
+#: standard input:212
+msgid "Job class"
+msgstr ""
 
 # standard input:1
 # standard input:1
 # standard input:1
 # standard
 # standard
-#: standard input:454 input:455
+#: standard input:607
 msgid "Join"
 msgstr "Veza"
 
@@ -2394,18 +2979,17 @@ msgstr "Veza"
 # standard input:3
 # standard
 # standard
-#: standard input:456 input:457
+#: standard input:609
 msgid "Join Type"
 msgstr "Vrsta veze"
 
 # standard
 # standard
-#: src/schema/pgOperator.cpp:115 standard input:190
-#: src/schema/pgOperator.cpp:127
+#: src/schema/pgOperator.cpp:127 standard input:251
 msgid "Join function"
 msgstr "Funkcija udruživanja"
 
-#: src/schema/pgOperator.cpp:106 src/schema/pgOperator.cpp:118
+#: src/schema/pgOperator.cpp:118 standard input:282 input:346
 msgid "Kind"
 msgstr "Vrsta"
 
@@ -2414,14 +2998,14 @@ msgstr "Vrsta"
 # standard input:9
 # standard
 # standard
-#: standard input:462 input:463
+#: standard input:615
 msgid "LEFT JOIN"
 msgstr "LEFT JOIN"
 
 # standard
 # standard
 # standard
-#: standard input:370
+#: standard input:504
 msgid "LF"
 msgstr "LF"
 
@@ -2433,26 +3017,32 @@ msgstr "LF"
 # src/schema/pgfunction.cpp:104 standard input:3
 # standard
 # standard
-#: src/schema/pgFunction.cpp:109 src/schema/pgObject.cpp:34 standard input:117
-#: src/schema/pgObject.cpp:33
+#: src/schema/pgFunction.cpp:104 src/schema/pgObject.cpp:39 standard input:149
 msgid "Language"
 msgstr "Jezik"
 
-#: src/schema/pgObject.cpp:34 src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:38
 msgid "Languages"
 msgstr "Jezici"
 
+#: standard input:217
+msgid "Last result"
+msgstr ""
+
+#: standard input:216
+msgid "Last run"
+msgstr ""
+
 # standard input:11
 # standard input:11
 # standard input:11
 # standard
 # standard
-#: src/schema/pgServer.cpp:301 standard input:482 input:483
-#: src/schema/pgServer.cpp:312
+#: src/schema/pgServer.cpp:485
 msgid "Last system OID"
 msgstr "Poslijednji sistemski OID"
 
-#: src/schema/pgOperator.cpp:117 src/schema/pgOperator.cpp:129
+#: src/schema/pgOperator.cpp:129
 msgid "Left Sort operator"
 msgstr "Lijevi operator sortiranja"
 
@@ -2461,7 +3051,7 @@ msgstr "Lijevi operator sortiranja"
 # standard input:2
 # standard
 # standard
-#: standard input:455 input:456
+#: standard input:608
 msgid "Left Table Columns"
 msgstr "Stupci lijeve tablice"
 
@@ -2470,7 +3060,7 @@ msgstr "Stupci lijeve tablice"
 # standard input:14
 # standard
 # standard
-#: standard input:193
+#: standard input:254
 msgid "Left sort op"
 msgstr "Lijevi sort operator"
 
@@ -2479,8 +3069,7 @@ msgstr "Lijevi sort operator"
 # standard input:5
 # standard
 # standard
-#: src/schema/pgOperator.cpp:108 standard input:184
-#: src/schema/pgOperator.cpp:120
+#: src/schema/pgOperator.cpp:120 standard input:245
 msgid "Left type"
 msgstr "Lijevi tip"
 
@@ -2495,15 +3084,25 @@ msgstr "Lijevi tip"
 # standard input:30
 # standard
 # standard
-#: standard input:37 input:80 input:306
+#: standard input:37 input:88 input:432
 msgid "Length"
 msgstr "Dužina"
 
-#: src/schema/pgOperator.cpp:119 src/schema/pgOperator.cpp:131
+#: src/schema/pgOperator.cpp:131
 msgid "Less Than operator"
 msgstr "Operator 'manji od'"
 
-#: src/ui/frmQuery.cpp:885 src/ui/frmQuery.cpp:887
+# standard input:25
+# standard input:25
+# standard input:25
+# standard
+# standard
+#: src/ui/frmStatus.cpp:137
+#, fuzzy
+msgid "Level"
+msgstr "Nivo logiranja"
+
+#: src/ui/frmQuery.cpp:1125
 msgid "Limit exceeded"
 msgstr "Premašeno ograničenje"
 
@@ -2512,18 +3111,22 @@ msgstr "Premašeno ograničenje"
 # standard input:21
 # standard
 # standard
-#: src/schema/pgFunction.cpp:114 standard input:132
+#: src/schema/pgFunction.cpp:109 standard input:165
 msgid "Link symbol"
 msgstr "Simbol za link"
 
-#: src/ui/dlgForeignKey.cpp:193
+#: standard input:109
+msgid "Lists the columns that the data will be sorted by."
+msgstr ""
+
+#: src/ui/dlgForeignKey.cpp:279
 msgid "Local"
 msgstr "Lokal"
 
 # standard
 # standard
 # standard
-#: standard input:381
+#: standard input:515
 msgid "Local charset"
 msgstr "Lokalni karakter set"
 
@@ -2532,38 +3135,65 @@ msgstr "Lokalni karakter set"
 # standard input:8
 # standard
 # standard
-#: standard input:94
+#: standard input:125
 msgid "Local column"
 msgstr "Lokalni stupac"
 
+# src/schema/pgRule.cpp:77 standard input:12
+# src/schema/pgRule.cpp:77 standard input:12
+# src/schema/pgRule.cpp:77 standard input:12
+# standard
+# standard
+#: src/schema/pgTablespace.cpp:133 standard input:378
+#, fuzzy
+msgid "Location"
+msgstr "Akcija"
+
+#: standard input:645
+#, fuzzy
+msgid "Locks"
+msgstr "Lokal"
+
 # standard input:25
 # standard input:25
 # standard input:25
 # standard
 # standard
-#: standard input:434 input:435
+#: standard input:587
 msgid "Log Level"
 msgstr "Nivo logiranja"
 
-#: src/ui/frmOptions.cpp:246 src/ui/frmQuery.cpp:473 src/ui/frmOptions.cpp:250
+#: src/ui/frmStatus.cpp:139
+msgid "Log entry"
+msgstr ""
+
+#: src/ui/frmOptions.cpp:276 src/ui/frmQuery.cpp:498
 msgid "Log files (*.log)|*.log|All files (*.*)|*.*"
 msgstr "Log datoteke (*.log)|*.log|Sve datoteke (*.*)|*.*"
 
+#: standard input:648
+msgid "Logfile"
+msgstr ""
+
 # standard input:20
 # standard input:20
 # standard input:20
 # standard
 # standard
-#: standard input:429 input:430
+#: standard input:582
 msgid "Logfile (%ID will be replaced with the Process ID)"
 msgstr "Log datoteka (%ID biti će zamjenjena sa ID procesa)"
+
+#: src/ui/frmStatus.cpp:739
+msgid "Logfile rotation"
+msgstr ""
 
 # standard input:19
 # standard input:19
 # standard input:19
 # standard
 # standard
-#: standard input:428 input:429
+#: standard input:581
 msgid "Logging"
 msgstr "Prijava"
 
@@ -2572,27 +3202,26 @@ msgstr "Prijava"
 # standard input:26
 # standard
 # standard
-#: standard input:301
+#: standard input:428
 msgid "MAIN"
 msgstr "MAIN"
 
-#: src/ui/frmMaintenance.cpp:60
+#: src/ui/frmMaintenance.cpp:55
 #, c-format
 msgid "Maintain %s %s"
 msgstr ""
 
-#: src/ui/frmMain.cpp:143 src/ui/frmMain.cpp:178 src/ui/frmMain.cpp:223
-#: src/ui/frmMain.cpp:224
+#: src/ui/frmMain.cpp:184 src/ui/frmMain.cpp:255
 #, fuzzy
 msgid "Maintain the current database or table."
 msgstr "Reorganiziraj tekuću bazu ili tablicu."
 
 # standard
-#: src/ui/frmMain.cpp:223 standard input:392 src/ui/frmMain.cpp:224
+#: src/ui/frmMain.cpp:255 standard input:540
 msgid "Maintenance"
 msgstr ""
 
-#: standard input:394
+#: standard input:542
 #, fuzzy
 msgid "Maintenance operation"
 msgstr "Operator 'veći od'"
@@ -2602,7 +3231,7 @@ msgstr "Operator 'veći od'"
 # standard input:16
 # standard
 # standard
-#: standard input:425 input:426
+#: standard input:578
 msgid "Max. characters per column"
 msgstr "Max. broj znakova po stupcu"
 
@@ -2611,7 +3240,7 @@ msgstr "Max. broj znakova po stupcu"
 # src/schema/pgSequence.cpp:93 standard input:7
 # standard
 # standard
-#: src/schema/pgSequence.cpp:93 standard input:232
+#: src/schema/pgSequence.cpp:96 standard input:319
 msgid "Maximum"
 msgstr "Maksimum"
 
@@ -2620,7 +3249,7 @@ msgstr "Maksimum"
 # standard input:14
 # standard
 # standard
-#: standard input:423 input:424
+#: standard input:576
 msgid "Maximum rows to retrieve"
 msgstr "Maksimalni broj redaka za dohvatiti"
 
@@ -2629,12 +3258,12 @@ msgstr "Maksimalni broj redaka za dohvatiti"
 # standard input:15
 # standard
 # standard
-#: standard input:424 input:425
+#: standard input:577
 msgid "Maximums rows to retrieve into output window; 0 = unlimited"
 msgstr ""
 "Maksimalni broj redaka za dohvatiti u ulazno/izlazni prozor, 0 = neograničeno"
 
-#: src/ui/dlgType.cpp:72
+#: src/ui/dlgType.cpp:76
 msgid "Member"
 msgstr "Član"
 
@@ -2647,7 +3276,7 @@ msgstr "Broj članova"
 # standard input:28
 # standard
 # standard
-#: standard input:304
+#: standard input:430
 msgid "Member name"
 msgstr "Ime člana"
 
@@ -2656,13 +3285,14 @@ msgstr "Ime člana"
 # src/schema/pgGroup.cpp:94 src/schema/pgType.cpp:129 standard input:4
 # standard
 # standard
-#: src/schema/pgGroup.cpp:97 src/schema/pgType.cpp:129 standard input:139
+#: src/schema/pgGroup.cpp:97 src/schema/pgType.cpp:127 standard input:173
 msgid "Members"
 msgstr "Članovi"
 
 # standard
 # standard
-#: src/ui/frmQuery.cpp:200 standard input:406
+#: src/ui/frmGrantWizard.cpp:171 src/ui/frmIndexcheck.cpp:61
+#: src/ui/frmQuery.cpp:214 standard input:498 input:554 input:636
 msgid "Messages"
 msgstr "Poruke"
 
@@ -2671,11 +3301,23 @@ msgstr "Poruke"
 # src/schema/pgSequence.cpp:92 standard input:6
 # standard
 # standard
-#: src/schema/pgSequence.cpp:92 standard input:231
+#: src/schema/pgSequence.cpp:95 standard input:318
 msgid "Minimum"
 msgstr "Minimum"
 
-#: src/ui/frmChildTableViewFrame.cpp:392
+#: src/ui/frmStatus.cpp:111
+#, fuzzy
+msgid "Mode"
+msgstr "Preseljeno"
+
+#: src/schema/pgColumn.cpp:246
+msgid "Most Common Frequencies"
+msgstr ""
+
+#: src/schema/pgColumn.cpp:245
+msgid "Most Common Values"
+msgstr ""
+
 msgid "Moved"
 msgstr "Preseljeno"
 
@@ -2684,7 +3326,7 @@ msgstr "Preseljeno"
 # standard input:13
 # standard
 # standard
-#: standard input:466 input:467
+#: standard input:619
 msgid "Multiple Column Joins"
 msgstr "Veze po više stupaca"
 
@@ -2750,97 +3392,122 @@ msgstr "Veze po više stupaca"
 # src/schema/pgtrigger.cpp:139 standard input:2
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:71 src/schema/pgCast.cpp:62
-#: src/schema/pgCheck.cpp:70 src/schema/pgColumn.cpp:175
-#: src/schema/pgConversion.cpp:61 src/schema/pgDatabase.cpp:173
-#: src/schema/pgDomain.cpp:93 src/schema/pgForeignKey.cpp:138
-#: src/schema/pgFunction.cpp:103 src/schema/pgGroup.cpp:94
-#: src/schema/pgIndex.cpp:189 src/schema/pgIndexConstraint.cpp:86
-#: src/schema/pgLanguage.cpp:62 src/schema/pgOperator.cpp:103
-#: src/schema/pgOperatorClass.cpp:157 src/schema/pgRule.cpp:61
-#: src/schema/pgSchema.cpp:146 src/schema/pgSequence.cpp:87
-#: src/schema/pgTable.cpp:323 src/schema/pgTrigger.cpp:139
-#: src/schema/pgType.cpp:124 src/schema/pgUser.cpp:114
-#: src/schema/pgView.cpp:80 standard input:2 input:15 input:26 input:35
-#: input:46 input:58 input:74 input:88 input:113 input:148 input:160 input:171
-#: input:181 input:203 input:218 input:226 input:240 input:259 input:276
-#: input:334 src/schema/pgAggregate.cpp:77 src/schema/pgOperator.cpp:115
-#: src/schema/pgSchema.cpp:147 src/schema/pgTable.cpp:324
-#: src/schema/pgView.cpp:82 src/schema/pgTable.cpp:327
+#: src/schema/pgAggregate.cpp:77 src/schema/pgCast.cpp:62
+#: src/schema/pgCheck.cpp:76 src/schema/pgColumn.cpp:220
+#: src/schema/pgConversion.cpp:62 src/schema/pgDatabase.cpp:333
+#: src/schema/pgDomain.cpp:93 src/schema/pgForeignKey.cpp:151
+#: src/schema/pgFunction.cpp:98 src/schema/pgGroup.cpp:94
+#: src/schema/pgIndex.cpp:197 src/schema/pgIndexConstraint.cpp:94
+#: src/schema/pgLanguage.cpp:62 src/schema/pgObject.cpp:169
+#: src/schema/pgOperator.cpp:115 src/schema/pgOperatorClass.cpp:157
+#: src/schema/pgRule.cpp:61 src/schema/pgSchema.cpp:152
+#: src/schema/pgSequence.cpp:88 src/schema/pgTable.cpp:377
+#: src/schema/pgTablespace.cpp:45 src/schema/pgTablespace.cpp:130
+#: src/schema/pgTrigger.cpp:139 src/schema/pgType.cpp:122
+#: src/schema/pgUser.cpp:94 src/schema/pgUser.cpp:206 src/schema/pgView.cpp:82
+#: src/ui/dlgFunction.cpp:115 src/ui/frmRestore.cpp:343 standard input:2
+#: input:15 input:26 input:35 input:54 input:66 input:82 input:117 input:144
+#: input:182 input:196 input:208 input:231 input:242 input:264 input:279
+#: input:303 input:312 input:340 input:357 input:377 input:385 input:402
+#: input:461
 msgid "Name"
 msgstr "Naziv"
 
-#: src/ui/dlgType.cpp:246
+#: src/ui/dlgType.cpp:238
 msgid "Name may not start with '_'."
 msgstr ""
 
+# standard input:3
+# standard input:3
+# standard input:3
+# standard
+# standard
+#: standard input:48
+#, fuzzy
+msgid "Need password"
+msgstr "Nova Lozinka"
+
+# standard input:3
+# standard input:3
+# standard input:3
+# standard
+# standard
+#: src/schema/pgServer.cpp:480
+#, fuzzy
+msgid "Need password?"
+msgstr "Nova Lozinka"
+
 # src/schema/pgOperator.cpp:110 standard input:13
 # src/schema/pgOperator.cpp:110 standard input:13
 # src/schema/pgOperator.cpp:110 standard input:13
 # standard
 # standard
-#: src/schema/pgOperator.cpp:114 standard input:192
-#: src/schema/pgOperator.cpp:126
+#: src/schema/pgOperator.cpp:126 standard input:253
 msgid "Negator"
 msgstr "Negator"
 
-#: src/ui/frmMain.cpp:126 src/ui/frmMain.cpp:175
+#: src/ui/frmMain.cpp:167
 msgid "New &Object"
 msgstr "Novi &Objekt"
 
-#: src/schema/pgObject.cpp:36 src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:45
 msgid "New Aggregate"
 msgstr "Novi Agregat"
 
-#: src/schema/pgObject.cpp:37 src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:47
 msgid "New Cast"
 msgstr "Nova Dodjela tipa"
 
-#: src/schema/pgObject.cpp:55 src/schema/pgObject.cpp:54
+#: src/schema/pgObject.cpp:79
 msgid "New Check Constraint"
 msgstr "Nova Provjera ograničenja"
 
-#: src/schema/pgObject.cpp:48 src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:69
 msgid "New Column"
 msgstr "Novi stupac"
 
-#: src/schema/pgObject.cpp:38 src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:49
 msgid "New Conversion"
 msgstr "Nova konverzija"
 
-#: src/schema/pgObject.cpp:31 src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:33
 msgid "New Database"
 msgstr "Nova Baza podataka"
 
-#: src/schema/pgObject.cpp:39 src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:51
 msgid "New Domain"
 msgstr "Nova Domena"
 
-#: src/schema/pgObject.cpp:56 src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:80
 msgid "New Foreign Key"
 msgstr "Novi Vanjski ključ"
 
-#: src/schema/pgObject.cpp:40 src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:53
 msgid "New Function"
 msgstr "Nova Funkcija"
 
-#: src/schema/pgObject.cpp:32 src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:35
 msgid "New Group"
 msgstr "Nova Grupa"
 
-#: src/schema/pgObject.cpp:49 src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:71
 msgid "New Index"
 msgstr "Novi Indeks"
 
-#: src/schema/pgObject.cpp:34 src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:82
+#, fuzzy
+msgid "New Job"
+msgstr "Nova Grupa"
+
+#: src/schema/pgObject.cpp:39
 msgid "New Language"
 msgstr "Novi Jezik"
 
-#: src/schema/pgObject.cpp:42 src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:57
 msgid "New Operator"
 msgstr "Novi Operator"
 
-#: src/schema/pgObject.cpp:43 src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:59
 msgid "New Operator Class"
 msgstr "Nova Klasa operatora"
 
@@ -2849,89 +3516,120 @@ msgstr "Nova Klasa operatora"
 # standard input:3
 # standard
 # standard
-#: standard input:449 input:450
+#: standard input:602
 msgid "New Password"
 msgstr "Nova Lozinka"
 
-#: src/schema/pgObject.cpp:53 src/schema/pgObject.cpp:52
+#: src/schema/pgObject.cpp:77
 msgid "New Primary Key"
 msgstr "Novi Primarni ključ"
 
-#: src/schema/pgObject.cpp:50 src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:73
 msgid "New Rule"
 msgstr "Novo Pravilo"
 
-#: src/schema/pgObject.cpp:35 src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:84
+#, fuzzy
+msgid "New Schedule"
+msgstr "Nova Šema"
+
+#: src/schema/pgObject.cpp:41
 msgid "New Schema"
 msgstr "Nova Šema"
 
-#: src/schema/pgObject.cpp:44 src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:61
 msgid "New Sequence"
 msgstr "Nova Sekvencija"
 
-#: src/schema/pgObject.cpp:30 src/schema/pgObject.cpp:29
+#: src/schema/pgObject.cpp:31
 msgid "New Server"
 msgstr "Novi Server"
 
-#: src/schema/pgObject.cpp:45 src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:83
+#, fuzzy
+msgid "New Step"
+msgstr "Novi Server"
+
+#: src/schema/pgObject.cpp:63
 msgid "New Table"
 msgstr "Nova Tablica"
 
-#: src/schema/pgObject.cpp:51 src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:43
+#, fuzzy
+msgid "New Tablespace"
+msgstr "Nova Tablica"
+
+#: src/schema/pgObject.cpp:75
 msgid "New Trigger"
 msgstr "Novi Okidač"
 
-#: src/schema/pgObject.cpp:41 src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:55
 msgid "New Trigger Function"
 msgstr "Nova funkcija Okidača"
 
-#: src/schema/pgObject.cpp:46 src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:65
 msgid "New Type"
 msgstr "Novi Tip"
 
-#: src/schema/pgObject.cpp:54 src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:78
 msgid "New Unique Constraint"
 msgstr "Novi Ograničenje za unikatnost"
 
-#: src/schema/pgObject.cpp:33 src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:37
 msgid "New User"
 msgstr "Novi Korisnik"
 
-#: src/schema/pgObject.cpp:47 src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:67
 msgid "New View"
 msgstr "Novi Pogled"
 
-#: src/ui/dlgColumn.cpp:271
+#: src/ui/dlgColumn.cpp:397
 msgid "New length must not be less than old length."
 msgstr "Nova dužina ne može biti manja od stare."
 
-#: src/ui/dlgColumn.cpp:273
+#: src/ui/dlgColumn.cpp:400
 msgid "New precision must not be less than old precision."
 msgstr "Nova preciznost ne može biti manja od stare."
 
-#: src/ui/dlgColumn.cpp:275
+#: src/ui/dlgColumn.cpp:402
 msgid "New total digits must not be less than old total digits."
 msgstr "Novi ukupni broj znakova ne može biti manji od starog."
 
-#: src/ui/frmQueryBuilder.cpp:597 src/utils/misc.cpp:97 src/utils/misc.cpp:102
+#: standard input:215
+msgid "Next run"
+msgstr ""
+
+#: src/ui/frmStatus.cpp:374 src/utils/misc.cpp:67
 msgid "No"
 msgstr "Ne"
 
-#: src/ui/frmEditGrid.cpp:402 src/ui/frmEditGrid.cpp:495
+#: src/ui/frmEditGrid.cpp:580
 msgid "No Table or view."
 msgstr "Nije Tablica ili Pogled."
 
-#: src/ui/events.cpp:532 src/ui/frmMain.cpp:307 src/ui/events.cpp:557
-#: src/ui/frmMain.cpp:308 src/ui/events.cpp:569
+#: src/db/pgConn.cpp:358
+#, fuzzy
+msgid "No connection to database."
+msgstr "Dodaj vezu sa serverom."
+
+#: src/ui/frmQuery.cpp:1102
+msgid "No data to export."
+msgstr ""
+
+#: standard input:494 input:632
+#, fuzzy
+msgid "No owner"
+msgstr "Ništa"
+
+#: src/ui/events.cpp:687 src/ui/frmMain.cpp:351
 msgid "No properties are available for the current selection"
 msgstr "Svojstva nisu raspoloživa za odabrane objekte."
 
-#: src/ui/events.cpp:535 src/ui/frmMain.cpp:313 src/ui/events.cpp:560
-#: src/ui/frmMain.cpp:314 src/ui/events.cpp:572
+#: src/schema/pgObject.cpp:161 src/ui/frmMain.cpp:357
 msgid "No statistics are available for the current selection"
 msgstr "Statistika nije raspoloživa za odabrane objekte."
 
-#: src/schema/pgObject.cpp:29 src/schema/pgObject.cpp:28
+#: src/schema/pgObject.cpp:29
 msgid "None"
 msgstr "Ništa"
 
@@ -2943,7 +3641,7 @@ msgstr "Ništa"
 # standard input:9
 # standard
 # standard
-#: standard input:40 input:82
+#: standard input:41 input:90
 msgid "Not NULL"
 msgstr "Nije NULL"
 
@@ -2953,21 +3651,25 @@ msgstr "Nije NULL"
 # standard input:9
 # standard input:7
 # standard input:9
-#: src/schema/pgColumn.cpp:179 src/schema/pgDomain.cpp:101
+#: src/schema/pgColumn.cpp:225 src/schema/pgDomain.cpp:101
 msgid "Not NULL?"
 msgstr "Nije NULL?"
 
-#: src/ui/ctlSQLBox.cpp:416 src/ui/ctlSQLBox.cpp:415
+#: src/ui/ctlSQLBox.cpp:436
 msgid "Not implemented"
 msgstr "Nije implementirano"
 
-#: src/ui/dlgProperty.cpp:561 src/ui/dlgProperty.cpp:564
+#: src/ui/dlgProperty.cpp:797 src/ui/dlgProperty.cpp:821
 msgid "Not implemented."
 msgstr "Nije implementirano."
 
-#: src/ui/frmChildTableViewFrame.cpp:390
 msgid "Nothing"
 msgstr "Ništa"
+
+#: src/schema/pgColumn.cpp:242
+#, fuzzy
+msgid "Null Fraction"
+msgstr "Nova Funkcija"
 
 # src/schema/pgtrigger.cpp:139 standard input:3
 # src/schema/pgtrigger.cpp:139 standard input:3
@@ -3016,21 +3718,19 @@ msgstr "Ništa"
 # src/schema/pgtrigger.cpp:140 standard input:3
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:73 src/schema/pgCast.cpp:63
-#: src/schema/pgCheck.cpp:71 src/schema/pgConversion.cpp:62
-#: src/schema/pgDatabase.cpp:174 src/schema/pgDomain.cpp:94
-#: src/schema/pgForeignKey.cpp:139 src/schema/pgFunction.cpp:104
-#: src/schema/pgIndex.cpp:190 src/schema/pgIndexConstraint.cpp:87
-#: src/schema/pgLanguage.cpp:63 src/schema/pgOperator.cpp:104
+#: src/schema/pgAggregate.cpp:79 src/schema/pgCast.cpp:63
+#: src/schema/pgCheck.cpp:77 src/schema/pgConversion.cpp:63
+#: src/schema/pgDatabase.cpp:334 src/schema/pgDomain.cpp:94
+#: src/schema/pgForeignKey.cpp:152 src/schema/pgFunction.cpp:99
+#: src/schema/pgIndex.cpp:198 src/schema/pgIndexConstraint.cpp:95
+#: src/schema/pgLanguage.cpp:63 src/schema/pgOperator.cpp:116
 #: src/schema/pgOperatorClass.cpp:158 src/schema/pgRule.cpp:62
-#: src/schema/pgSchema.cpp:147 src/schema/pgSequence.cpp:88
-#: src/schema/pgTable.cpp:324 src/schema/pgTrigger.cpp:140
-#: src/schema/pgType.cpp:125 src/schema/pgView.cpp:81 standard input:3
-#: input:16 input:47 input:59 input:75 input:115 input:172 input:182 input:204
-#: input:219 input:227 input:241 input:260 input:277 input:335
-#: src/schema/pgAggregate.cpp:79 src/schema/pgOperator.cpp:116
-#: src/schema/pgSchema.cpp:148 src/schema/pgTable.cpp:325
-#: src/schema/pgView.cpp:83 src/schema/pgTable.cpp:328
+#: src/schema/pgSchema.cpp:153 src/schema/pgSequence.cpp:89
+#: src/schema/pgTable.cpp:378 src/schema/pgTablespace.cpp:131
+#: src/schema/pgTrigger.cpp:140 src/schema/pgType.cpp:123
+#: src/schema/pgView.cpp:83 standard input:3 input:16 input:55 input:67
+#: input:83 input:147 input:209 input:232 input:243 input:265 input:280
+#: input:304 input:313 input:341 input:358 input:386 input:403 input:462
 msgid "OID"
 msgstr "OID"
 
@@ -3102,15 +3802,15 @@ msgstr "OID"
 # standard input:6
 # standard
 # standard
-#: standard input:12 input:23 input:32 input:43 input:55 input:71 input:85
-#: input:110 input:134 input:145 input:157 input:168 input:178 input:200
-#: input:215 input:223 input:237 input:256 input:273 input:311 input:331
-#: input:339
+#: src/ui/frmRestore.cpp:309 standard input:12 input:23 input:32 input:45
+#: input:63 input:79 input:93 input:98 input:141 input:168 input:179 input:193
+#: input:205 input:228 input:239 input:261 input:276 input:300 input:309
+#: input:324 input:337 input:354 input:374 input:382 input:399 input:437
+#: input:458 input:468
 msgid "OK"
 msgstr "OK"
 
-#: src/ui/frmQuery.cpp:824 src/ui/frmQuery.cpp:870 src/ui/frmQuery.cpp:949
-#: src/ui/frmQuery.cpp:826 src/ui/frmQuery.cpp:872 src/ui/frmQuery.cpp:951
+#: src/ui/frmQuery.cpp:1028 src/ui/frmQuery.cpp:1109 src/ui/frmQuery.cpp:1189
 msgid "OK."
 msgstr "OK."
 
@@ -3119,7 +3819,7 @@ msgstr "OK."
 # standard input:18
 # standard
 # standard
-#: standard input:471 input:472
+#: standard input:624
 msgid "OR"
 msgstr "OR"
 
@@ -3128,16 +3828,20 @@ msgstr "OR"
 # standard input:20
 # standard
 # standard
-#: src/schema/pgFunction.cpp:113 standard input:131
+#: src/schema/pgFunction.cpp:108 standard input:164
 msgid "Object file"
 msgstr "Objektna datoteka"
+
+#: src/schema/pgDatabase.cpp:356
+msgid "Old style FKs"
+msgstr ""
 
 # src/schema/pgforeignkey.cpp:145 standard input:18
 # src/schema/pgforeignkey.cpp:145 standard input:18
 # src/schema/pgforeignkey.cpp:145 standard input:18
 # standard
 # standard
-#: standard input:104
+#: standard input:135
 msgid "On Delete"
 msgstr "Kod brisanja"
 
@@ -3146,42 +3850,69 @@ msgstr "Kod brisanja"
 # src/schema/pgforeignkey.cpp:144 standard input:13
 # standard
 # standard
-#: standard input:99
+#: standard input:130
 msgid "On Update"
 msgstr "Kod ažuriranja"
 
 # src/schema/pgforeignkey.cpp:145 standard input:18
 # src/schema/pgforeignkey.cpp:145 standard input:18
 # src/schema/pgforeignkey.cpp:145 standard input:18
-#: src/schema/pgForeignKey.cpp:145
+#: src/schema/pgForeignKey.cpp:159
 msgid "On delete"
 msgstr "Kod brisanja"
 
+# src/schema/pgObject.cpp:42 standard input:4
+# src/schema/pgObject.cpp:42 standard input:4
+# src/schema/pgObject.cpp:42 standard input:4
+# standard
+# standard
+#: standard input:347
+#, fuzzy
+msgid "On error"
+msgstr "Operator"
+
 # src/schema/pgforeignkey.cpp:144 standard input:13
 # src/schema/pgforeignkey.cpp:144 standard input:13
 # src/schema/pgforeignkey.cpp:144 standard input:13
-#: src/schema/pgForeignKey.cpp:144
+#: src/schema/pgForeignKey.cpp:158
 msgid "On update"
 msgstr "Kod ažuriranja"
 
-#: src/ui/frmQuery.cpp:169 src/ui/frmQueryBuilder.cpp:167
+#: src/ui/frmQuery.cpp:1034
+#, c-format
+msgid "One Row with OID %d inserted."
+msgstr ""
+
+# src/schema/pgforeignkey.cpp:144 standard input:13
+# src/schema/pgforeignkey.cpp:144 standard input:13
+# src/schema/pgforeignkey.cpp:144 standard input:13
+#: standard input:492 input:629
+#, fuzzy
+msgid "Only data"
+msgstr "Kod ažuriranja"
+
+#: standard input:493 input:630
+#, fuzzy
+msgid "Only schema"
+msgstr "Sistemska Šema?"
+
+#: src/ui/frmQuery.cpp:181
 msgid "Open"
 msgstr "Otvori"
 
-#: src/ui/frmQuery.cpp:94 src/ui/frmQueryBuilder.cpp:107
+#: src/ui/frmQuery.cpp:104
 msgid "Open a query file"
 msgstr "Otvori datoteku upita"
 
-#: src/ui/frmQuery.cpp:169 src/ui/frmQueryBuilder.cpp:167
+#: src/ui/frmQuery.cpp:181
 msgid "Open file"
 msgstr "Otvori datoteku"
 
-#: src/ui/frmQuery.cpp:614 src/ui/frmQueryBuilder.cpp:1524
-#: src/ui/frmQuery.cpp:616
+#: src/ui/frmQuery.cpp:790
 msgid "Open query file"
 msgstr "Otvori datoteku upita"
 
-#: src/ui/frmMain.cpp:157 src/ui/frmQuery.cpp:133
+#: src/ui/frmMain.cpp:202 src/ui/frmQuery.cpp:144
 msgid "Open the pgAdmin III helpfile."
 msgstr "Otvori pgAdmin III datoteku pomoći."
 
@@ -3190,31 +3921,29 @@ msgstr "Otvori pgAdmin III datoteku pomoći."
 # src/schema/pgObject.cpp:42 standard input:4
 # standard
 # standard
-#: src/schema/pgObject.cpp:42 standard input:457 input:458
-#: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:57 standard input:610
 msgid "Operator"
 msgstr "Operator"
 
-#: src/schema/pgObject.cpp:43 src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:59
 msgid "Operator Class"
 msgstr "Klasa Operatora"
 
-#: src/schema/pgObject.cpp:43 src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:58
 msgid "Operator Classes"
 msgstr "Klase Operatora"
 
-#: src/schema/pgIndex.cpp:196 src/schema/pgIndexConstraint.cpp:93
+#: src/schema/pgIndex.cpp:206 src/schema/pgIndexConstraint.cpp:101
 msgid "Operator classes"
 msgstr "Klase Operatora"
 
 # standard
 # standard
-#: src/schema/pgOperator.cpp:112 standard input:186
-#: src/schema/pgOperator.cpp:124
+#: src/schema/pgOperator.cpp:124 standard input:247
 msgid "Operator function"
 msgstr "Operatorske funkcije"
 
-#: src/schema/pgObject.cpp:42 src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:56
 msgid "Operators"
 msgstr "Operatori"
 
@@ -3223,26 +3952,21 @@ msgstr "Operatori"
 # standard input:1
 # standard
 # standard
-#: standard input:393 input:410
+#: src/ui/frmEditGrid.cpp:106 standard input:479 input:541 input:558 input:626
 msgid "Options"
 msgstr "Opcije"
 
-#: src/ui/frmQuery.cpp:124
+#: src/ui/frmQuery.cpp:135
 msgid "Options modifying Explain output"
 msgstr "Opcije mijenjaju izgled objašnjenja"
 
-#: src/ui/frmQueryBuilder.cpp:219 src/ui/frmQueryBuilder.cpp:221
-#: src/ui/frmQueryBuilder.cpp:223 src/ui/frmQueryBuilder.cpp:225
-#: src/ui/frmQueryBuilder.cpp:227
 msgid "Or"
 msgstr "Ili"
 
-#: src/ui/frmEditGrid.cpp:1255 src/ui/frmEditGrid.cpp:1313
-#: src/ui/frmEditGrid.cpp:1690 src/ui/frmEditGrid.cpp:1748
+#: src/ui/frmEditGrid.cpp:1817 src/ui/frmEditGrid.cpp:1875
 msgid "Out of Memory for cacheLinePool"
 msgstr "Nema memorije za cacheLinePool"
 
-#: src/ui/frmQueryBuilder.cpp:205
 msgid "Output"
 msgstr "Izlaz"
 
@@ -3251,7 +3975,7 @@ msgstr "Izlaz"
 # standard input:10
 # standard
 # standard
-#: src/schema/pgType.cpp:143 standard input:284
+#: src/schema/pgType.cpp:141 standard input:411
 msgid "Output function"
 msgstr "Izlazna funkcija"
 
@@ -3278,20 +4002,19 @@ msgstr "Izlazna funkcija"
 # standard input:4
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:74 src/schema/pgConversion.cpp:63
-#: src/schema/pgDatabase.cpp:175 src/schema/pgDomain.cpp:95
-#: src/schema/pgFunction.cpp:105 src/schema/pgOperator.cpp:105
-#: src/schema/pgOperatorClass.cpp:159 src/schema/pgSchema.cpp:148
-#: src/schema/pgSequence.cpp:89 src/schema/pgTable.cpp:325
-#: src/schema/pgType.cpp:126 src/schema/pgView.cpp:82 standard input:4
-#: input:48 input:60 input:76 input:183 input:220 input:228 input:242
-#: src/schema/pgAggregate.cpp:80 src/schema/pgOperator.cpp:117
-#: src/schema/pgSchema.cpp:149 src/schema/pgTable.cpp:326
-#: src/schema/pgView.cpp:84 src/schema/pgTable.cpp:329
+#: src/schema/pgAggregate.cpp:80 src/schema/pgConversion.cpp:64
+#: src/schema/pgDatabase.cpp:335 src/schema/pgDomain.cpp:95
+#: src/schema/pgFunction.cpp:100 src/schema/pgOperator.cpp:117
+#: src/schema/pgOperatorClass.cpp:159 src/schema/pgSchema.cpp:154
+#: src/schema/pgSequence.cpp:90 src/schema/pgTable.cpp:379
+#: src/schema/pgTablespace.cpp:132 src/schema/pgType.cpp:124
+#: src/schema/pgView.cpp:84 standard input:4 input:56 input:68 input:84
+#: input:145 input:244 input:305 input:314 input:359 input:379 input:404
+#: input:463
 msgid "Owner"
 msgstr "Vlasnik"
 
-#: src/ui/frmStatus.cpp:55
+#: src/ui/frmStatus.cpp:96 src/ui/frmStatus.cpp:106
 msgid "PID"
 msgstr "PID"
 
@@ -3300,20 +4023,30 @@ msgstr "PID"
 # standard input:23
 # standard
 # standard
-#: standard input:298
+#: standard input:425 input:485
 msgid "PLAIN"
 msgstr "PLAIN"
 
+# standard input:2
+# standard input:2
+# standard
+# standard
+# standard
+#: standard input:491
+#, fuzzy
+msgid "PLAIN options"
+msgstr "Opcije za VACUUM"
+
 # standard input:15
 # standard input:15
 # standard input:15
 # standard
 # standard
-#: standard input:126
+#: standard input:158
 msgid "Parameter"
 msgstr "Parametar"
 
-#: src/schema/pgType.cpp:136
+#: src/schema/pgType.cpp:134
 msgid "Passed by Value?"
 msgstr "Prenešeno po vrijednosti?"
 
@@ -3322,7 +4055,7 @@ msgstr "Prenešeno po vrijednosti?"
 # standard input:16
 # standard
 # standard
-#: standard input:302
+#: standard input:429
 msgid "Passed by value"
 msgstr "Prenešeno po vrijednosti"
 
@@ -3334,23 +4067,23 @@ msgstr "Prenešeno po vrijednosti"
 # standard input:14
 # standard
 # standard
-#: standard input:316 input:363
+#: standard input:335 input:442
 msgid "Password"
 msgstr "Lozinka"
 
-#: src/ui/frmPassword.cpp:77
+#: src/ui/frmPassword.cpp:84
 msgid "Password successfully changed!"
 msgstr "Lozinka uspješno promjenjena!"
 
-#: src/ui/frmPassword.cpp:65
+#: src/ui/frmPassword.cpp:72
 msgid "Passwords do not match!"
 msgstr "Lozinka ne odgovara!"
 
-#: src/ui/frmQuery.cpp:174
+#: src/ui/frmQuery.cpp:186
 msgid "Paste"
 msgstr "Nalijepi"
 
-#: src/ui/frmQuery.cpp:111 src/ui/frmQuery.cpp:174
+#: src/ui/frmQuery.cpp:121 src/ui/frmQuery.cpp:186
 msgid "Paste selected text from clipboard"
 msgstr "Nalijepi odabrani tekst iz clipboard-a"
 
@@ -3359,137 +4092,172 @@ msgstr "Nalijepi odabrani tekst iz clipboard-a"
 # src/schema/pgdatabase.cpp:191 standard input:22
 # standard
 # standard
-#: src/schema/pgDatabase.cpp:178 standard input:63
+#: src/schema/pgDatabase.cpp:338 standard input:71
 msgid "Path"
 msgstr "Staza"
 
-#: src/pgAdmin3.cpp:191 src/pgAdmin3.cpp:198 src/pgAdmin3.cpp:201
+#: src/pgAdmin3.cpp:280
 msgid "Please choose user language:"
 msgstr "Odaberite korisnički jezik:"
 
-#: src/ui/dlgRule.cpp:165 src/ui/dlgView.cpp:116
+#: src/ui/dlgRule.cpp:149 src/ui/dlgView.cpp:101
 msgid "Please enter function definition."
 msgstr "Unesite definiciju funkcije."
 
-#: src/ui/dlgFunction.cpp:247
+#: src/ui/dlgFunction.cpp:282
 msgid "Please enter function source code."
 msgstr "Unesite izvorni kod funkcije."
 
-#: src/ui/dlgColumn.cpp:295 src/ui/dlgDomain.cpp:157
+#: src/schema/pgServer.cpp:250
+#, c-format
+msgid ""
+"Please enter password for user %s\n"
+"on server %s (%s)"
+msgstr ""
+
+#: src/ui/dlgColumn.cpp:424 src/ui/dlgDomain.cpp:149
 msgid "Please select a datatype."
 msgstr "Izaberite tip podataka."
 
-#: src/ui/dlgRule.cpp:164
+#: src/ui/dlgRule.cpp:148
 msgid "Please select at an event."
 msgstr "Izaberite događaj."
 
-#: src/ui/dlgAggregate.cpp:125 src/ui/dlgAggregate.cpp:127
+#: src/ui/dlgAggregate.cpp:126
 msgid "Please select base datatype."
 msgstr "Izaberite tip podataka."
 
-#: src/ui/dlgFunction.cpp:239
+#: src/ui/dlgFunction.cpp:274
 msgid "Please select language."
 msgstr "Izaberite jezik."
 
-#: src/ui/dlgOperator.cpp:172 src/ui/dlgOperator.cpp:173
+#: src/ui/dlgOperator.cpp:195
 msgid "Please select left or right datatype."
 msgstr "Izaberite lijevi ili desni tip podatka."
 
-#: src/ui/dlgFunction.cpp:238
+#: src/ui/dlgFunction.cpp:273
 msgid "Please select return type."
 msgstr "Izaberite povratni tip podataka."
 
-#: src/ui/dlgAggregate.cpp:126 src/ui/dlgAggregate.cpp:128
+#: src/ui/dlgAggregate.cpp:127
 msgid "Please select state datatype."
 msgstr "Izaberite tip podataka stanja."
 
-#: src/ui/dlgCast.cpp:119
+#: src/ui/dlgCast.cpp:116
 msgid "Please select target datatype."
 msgstr "Izaberite ciljni tip podataka."
 
-#: src/ui/dlgOperator.cpp:173 src/ui/dlgOperator.cpp:174
+#: src/ui/dlgForeignKey.cpp:158 src/ui/dlgForeignKey.cpp:170
+#, fuzzy
+msgid "Please specify FK index name."
+msgstr "Navedite ime."
+
+#: src/ui/dlgOperator.cpp:196
 msgid "Please specify a procedure."
 msgstr "Navedite proceduru."
 
-#: src/ui/dlgTrigger.cpp:193 src/ui/dlgTrigger.cpp:195
+#: src/ui/dlgServer.cpp:223
+#, fuzzy
+msgid "Please specify address."
+msgstr "Navedite ime."
+
+#: src/ui/dlgTrigger.cpp:201
 msgid "Please specify at least one action."
 msgstr "Navedite najmanje jednu akciju."
 
-#: src/ui/dlgType.cpp:250
+#: src/ui/dlgType.cpp:242
 msgid "Please specify at least two members."
 msgstr "Navedite najmanje dva člana."
 
-#: src/ui/dlgIndex.cpp:144 src/ui/dlgTable.cpp:517 src/ui/dlgForeignKey.cpp:84
-#: src/ui/dlgIndex.cpp:190
+#: src/ui/dlgForeignKey.cpp:168 src/ui/dlgIndex.cpp:141
+#: src/ui/dlgIndex.cpp:188 src/ui/dlgTable.cpp:515
 msgid "Please specify columns."
 msgstr "Navedite stupce."
 
-#: src/ui/dlgCheck.cpp:67
+#: src/ui/dlgCheck.cpp:66
 msgid "Please specify condition."
 msgstr "Navedite uvjet."
 
-#: src/ui/dlgConversion.cpp:164 src/ui/dlgConversion.cpp:163
+#: src/ui/dlgConversion.cpp:158
 msgid "Please specify conversion function."
 msgstr "Navedite funkciju pretvorbe."
 
-#: src/ui/dlgType.cpp:255
+#: src/ui/dlgServer.cpp:224
+#, fuzzy
+msgid "Please specify description."
+msgstr "Navedite uvjet."
+
+#: src/ui/dlgType.cpp:247
 msgid "Please specify input conversion function."
 msgstr "Navedite ulaznu funkciju pretvorbe."
 
-#: src/ui/dlgType.cpp:257
+#: src/ui/dlgType.cpp:249
 msgid "Please specify internal storage length."
 msgstr "Navedite internu dužinu spremišta."
 
-#: src/ui/dlgLanguage.cpp:132
+#: src/ui/dlgLanguage.cpp:129
 msgid "Please specify language handler."
 msgstr "Navedite rukovatelja jezikom."
 
-#: src/ui/dlgAggregate.cpp:124 src/ui/dlgColumn.cpp:294
-#: src/ui/dlgConversion.cpp:161 src/ui/dlgDatabase.cpp:195
-#: src/ui/dlgDomain.cpp:156 src/ui/dlgFunction.cpp:237 src/ui/dlgGroup.cpp:113
-#: src/ui/dlgIndex.cpp:189 src/ui/dlgLanguage.cpp:131
-#: src/ui/dlgOperator.cpp:171 src/ui/dlgRule.cpp:162 src/ui/dlgSchema.cpp:97
-#: src/ui/dlgSequence.cpp:143 src/ui/dlgTable.cpp:515
-#: src/ui/dlgTrigger.cpp:190 src/ui/dlgUser.cpp:169 src/ui/dlgView.cpp:115
-#: src/ui/dlgAggregate.cpp:126 src/ui/dlgOperator.cpp:172
-#: src/ui/dlgTrigger.cpp:192 src/ui/dlgType.cpp:245
-#: src/ui/dlgConversion.cpp:160
+#: src/ui/dlgTablespace.cpp:89
+#, fuzzy
+msgid "Please specify location."
+msgstr "Navedite uvjet."
+
+#: src/ui/dlgAggregate.cpp:125 src/ui/dlgColumn.cpp:423
+#: src/ui/dlgConversion.cpp:155 src/ui/dlgDatabase.cpp:209
+#: src/ui/dlgDomain.cpp:148 src/ui/dlgFunction.cpp:272 src/ui/dlgGroup.cpp:113
+#: src/ui/dlgIndex.cpp:187 src/ui/dlgLanguage.cpp:128
+#: src/ui/dlgOperator.cpp:194 src/ui/dlgRule.cpp:146 src/ui/dlgSchema.cpp:95
+#: src/ui/dlgSequence.cpp:139 src/ui/dlgTable.cpp:513
+#: src/ui/dlgTablespace.cpp:88 src/ui/dlgTrigger.cpp:198
+#: src/ui/dlgType.cpp:237 src/ui/dlgUser.cpp:224 src/ui/dlgView.cpp:100
 msgid "Please specify name."
 msgstr "Navedite ime."
 
-#: src/ui/dlgFunction.cpp:243
+#: src/ui/dlgFunction.cpp:278
 msgid "Please specify object library."
 msgstr "Navedite biblioteku objekta."
 
-#: src/ui/dlgType.cpp:256
+#: src/ui/dlgType.cpp:248
 msgid "Please specify output conversion function."
 msgstr "Navedite izlaznu funkciju pretvorbe."
 
-#: src/ui/dlgCast.cpp:118
+#: src/ui/dlgServer.cpp:225
+#, fuzzy
+msgid "Please specify port."
+msgstr "Navedite proceduru."
+
+#: src/ui/dlgCast.cpp:115
 msgid "Please specify source datatype."
 msgstr "Navedite vrstu podataka za izvor"
 
-#: src/ui/dlgConversion.cpp:162 src/ui/dlgConversion.cpp:161
+#: src/ui/dlgConversion.cpp:156
 msgid "Please specify source encoding."
 msgstr "Navedite vrstu enkodiranja za izvora"
 
-#: src/ui/dlgAggregate.cpp:127 src/ui/dlgAggregate.cpp:129
+#: src/ui/dlgAggregate.cpp:128
 msgid "Please specify state function."
 msgstr "Navedite funkciju stanja."
 
-#: src/ui/dlgConversion.cpp:163 src/ui/dlgConversion.cpp:162
+#: src/ui/dlgConversion.cpp:157
 msgid "Please specify target encoding."
 msgstr "Navedite vrstu enkodiranja cilja"
 
-#: src/ui/dlgTrigger.cpp:191 src/ui/dlgTrigger.cpp:193
+#: src/ui/dlgTrigger.cpp:199
 msgid "Please specify trigger function."
 msgstr "Navedite funkciju Okidača."
 
-#: src/ui/dlgColumn.cpp:298 src/ui/dlgDomain.cpp:160
+#: src/ui/dlgServer.cpp:226
+#, fuzzy
+msgid "Please specify user name"
+msgstr "Navedite ime."
+
+#: src/ui/dlgColumn.cpp:427 src/ui/dlgDomain.cpp:152
 msgid "Please specify valid length."
 msgstr "Navedite važeću dužinu."
 
-#: src/ui/dlgColumn.cpp:301 src/ui/dlgDomain.cpp:163
+#: src/ui/dlgColumn.cpp:430 src/ui/dlgDomain.cpp:155
 msgid "Please specify valid numeric precision (0.."
 msgstr "Navedite numeričku preciznost (0.."
 
@@ -3501,11 +4269,11 @@ msgstr "Navedite numeričku preciznost (0.."
 # src/schema/pgServer.cpp:267 standard input:5
 # standard
 # standard
-#: src/schema/pgServer.cpp:281 standard input:354 input:476 input:477
+#: src/schema/pgServer.cpp:454 standard input:330
 msgid "Port"
 msgstr "Port"
 
-#: src/schema/pgColumn.cpp:176
+#: src/schema/pgColumn.cpp:221
 msgid "Position"
 msgstr "Pozicija"
 
@@ -3514,7 +4282,6 @@ msgstr "Pozicija"
 # standard input:15
 # standard
 # standard
-#: standard input:486 input:487
 msgid "PostgreSQL Description"
 msgstr "PostgreSQL opis"
 
@@ -3523,7 +4290,6 @@ msgstr "PostgreSQL opis"
 # standard input:13
 # standard
 # standard
-#: standard input:484 input:485
 msgid "PostgreSQL Version"
 msgstr "PostgreSQL verzija"
 
@@ -3538,43 +4304,67 @@ msgstr "PostgreSQL verzija"
 # standard input:31
 # standard
 # standard
-#: standard input:38 input:81 input:307
+#: standard input:38 input:89 input:433
 msgid "Precision"
 msgstr "Preciznost"
 
-#: src/schema/pgObject.cpp:53 src/ui/dlgTable.cpp:472
-#: src/schema/pgObject.cpp:52
+# src/schema/pgforeignkey.cpp:141 standard input:3
+# src/schema/pgforeignkey.cpp:141 standard input:3
+# src/schema/pgforeignkey.cpp:141 standard input:3
+# standard
+# standard
+#: standard input:565
+#, fuzzy
+msgid "Preferences"
+msgstr "Referencira"
+
+#: src/schema/pgObject.cpp:77 src/ui/dlgTable.cpp:470
 msgid "Primary Key"
 msgstr "Primarni ključ."
 
-#: src/schema/pgTable.cpp:328 src/schema/pgTable.cpp:330
-#: src/schema/pgTable.cpp:329 src/schema/pgTable.cpp:331
-#: src/schema/pgTable.cpp:332 src/schema/pgTable.cpp:334
+#: src/schema/pgTable.cpp:384 src/schema/pgTable.cpp:386
 msgid "Primary key"
 msgstr "Primarni ključ"
 
-#: src/schema/pgColumn.cpp:180
+#: src/schema/pgColumn.cpp:226
 msgid "Primary key?"
 msgstr "Primarni ključ?"
 
-#: src/schema/pgIndex.cpp:198 src/schema/pgIndexConstraint.cpp:96
+#: src/schema/pgIndex.cpp:208 src/schema/pgIndexConstraint.cpp:104
 msgid "Primary?"
 msgstr "Primarni?"
 
-#: src/ui/dlgProperty.cpp:894 src/ui/dlgProperty.cpp:901
-#: src/ui/dlgProperty.cpp:908 src/ui/dlgProperty.cpp:897
-#: src/ui/dlgProperty.cpp:904 src/ui/dlgProperty.cpp:911
+#: src/ui/ctlSecurityPanel.cpp:50 src/ui/ctlSecurityPanel.cpp:95
+#: src/ui/ctlSecurityPanel.cpp:102
 msgid "Privileges"
 msgstr "Dopuštenja"
 
-#: src/ui/dlgProperty.cpp:92
+#: src/ui/frmGrantWizard.cpp:50
+#, fuzzy, c-format
+msgid "Privileges for %s %s"
+msgstr "Dopuštenja"
+
 msgid "Problem with resource "
 msgstr "Problem s resursima "
 
-#: src/schema/pgIndex.cpp:192 src/schema/pgIndexConstraint.cpp:92
+#: src/ui/dlgProperty.cpp:95
+#, fuzzy, c-format
+msgid ""
+"Problem with resource %s: Notebook not found.\n"
+"Prepare to crash!"
+msgstr ""
+": 'Notebook' nije pronađen.\n"
+"Pripremi se za rušenje!"
+
+#: src/schema/pgIndex.cpp:202 src/schema/pgIndexConstraint.cpp:100
 msgid "Procedure "
 msgstr "Procedura"
 
+#: src/ui/dlgClasses.cpp:417
+#, c-format
+msgid "Process returned exit code %d."
+msgstr ""
+
 # src/ui/frmMain.cpp:316 standard input:1
 # src/ui/frmMain.cpp:316 standard input:1
 # src/ui/frmMain.cpp:316 standard input:1
@@ -3643,17 +4433,16 @@ msgstr "Procedura"
 # src/ui/frmMain.cpp:316 src/ui/frmMain.cpp:319 standard input:1
 # standard
 # standard
-#: src/ui/events.cpp:531 src/ui/frmMain.cpp:219 src/ui/frmMain.cpp:248
-#: src/ui/frmMain.cpp:306 standard input:1 input:14 input:25 input:34 input:45
-#: input:57 input:73 input:87 input:112 input:136 input:147 input:159
-#: input:170 input:180 input:202 input:217 input:225 input:239 input:258
-#: input:275 input:313 input:333 src/ui/events.cpp:556 src/ui/frmMain.cpp:220
-#: src/ui/frmMain.cpp:249 src/ui/frmMain.cpp:307 src/ui/events.cpp:568
+#: src/ui/events.cpp:686 src/ui/frmMain.cpp:250 src/ui/frmMain.cpp:282
+#: src/ui/frmMain.cpp:350 standard input:1 input:14 input:25 input:34 input:53
+#: input:65 input:81 input:116 input:143 input:170 input:181 input:195
+#: input:207 input:230 input:241 input:263 input:278 input:302 input:311
+#: input:326 input:339 input:356 input:376 input:384 input:401 input:439
+#: input:460
 msgid "Properties"
 msgstr "Svojstva"
 
-#: src/include/pgObject.h:140 src/include/pgObject.h:141
-#: src/include/pgObject.h:139
+#: src/include/pgObject.h:155
 msgid "Property"
 msgstr "Svojstvo"
 
@@ -3662,21 +4451,18 @@ msgstr "Svojstvo"
 # src/ui/frmQueryBuilder.cpp:1196 src/ui/frmStatus.cpp:56 standard input:13
 # standard
 # standard
-#: src/ui/frmQueryBuilder.cpp:1196 src/ui/frmStatus.cpp:58 standard input:420
-#: input:421
+#: src/ui/frmStatus.cpp:101 src/ui/frmStatus.cpp:103 src/ui/frmStatus.cpp:115
+#: src/ui/frmStatus.cpp:117 standard input:573
 msgid "Query"
 msgstr "Upit"
 
-#: src/ui/frmMain.cpp:140
 msgid "Query &builder"
 msgstr "&Graditelj upita"
 
-#: src/ui/frmQueryBuilder.cpp:1525 src/ui/frmQueryBuilder.cpp:1568
 msgid "Query files (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "Datoteke upita (*.sql)|*.sql|Sve datoteke (*.*)|*.*"
 
-#: src/ui/frmQuery.cpp:615 src/ui/frmQuery.cpp:656 src/ui/frmQuery.cpp:617
-#: src/ui/frmQuery.cpp:658
+#: src/ui/frmQuery.cpp:791 src/ui/frmQuery.cpp:834
 msgid ""
 "Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|"
 "*.*"
@@ -3684,60 +4470,77 @@ msgstr ""
 "Datoteke upita (*.sql)|*.sql|UTF-8 datoteke upita (*.usql)|*.usql|All files "
 "(*.*)|*.*"
 
-#: src/ui/frmQuery.cpp:784 src/ui/frmQuery.cpp:786
+#: src/db/pgSet.cpp:384
+#, c-format
+msgid "Query inserted one rows with OID %d.\n"
+msgstr ""
+
+#: src/ui/frmQuery.cpp:983
 msgid "Query is running."
 msgstr "Upit se izvršava."
 
-#: src/db/pgSet.cpp:346
+#: src/db/pgSet.cpp:390
 #, c-format
 msgid "Query result with %d rows discarded.\n"
 msgstr "Odbačen rezultat upita od %d redaka.\n"
 
-#: src/db/pgSet.cpp:341
+#: src/db/pgSet.cpp:382
 #, c-format
 msgid "Query result with %d rows will be returned.\n"
 msgstr "Rezultat upita od %d redaka će biti vraćen.\n"
 
-#: src/ui/frmQuery.cpp:823 src/ui/frmQuery.cpp:825
+#: src/ui/frmQuery.cpp:1027
 #, c-format
 msgid "Query returned successfully with no result in %s ms."
+msgstr "Upit je izvršen uspješno bez rezultata u %s ms."
+
+#: src/ui/frmQuery.cpp:1038
+#, fuzzy, c-format
+msgid "Query returned successfully: %d rows affected, %s ms execution time."
+msgstr "Upit je izvršen uspješno bez rezultata u %s ms."
+
+#: src/ui/frmQuery.cpp:1032
+#, fuzzy, c-format
+msgid ""
+"Query returned successfully: one row with OID %d inserted, %s ms execution "
+"time."
 msgstr "Upit je izvršen uspješno bez rezultata u %s ms."
 
 # src/ui/frmQueryBuilder.cpp:1196 src/ui/frmStatus.cpp:56 standard input:13
 # src/ui/frmQueryBuilder.cpp:1196 src/ui/frmStatus.cpp:56 standard input:13
 # src/ui/frmQueryBuilder.cpp:1196 src/ui/frmStatus.cpp:56 standard input:13
-#: src/ui/frmMain.cpp:221 src/ui/frmMain.cpp:222
+#: src/ui/frmMain.cpp:252
 msgid "Query tool"
 msgstr "Alat upita"
 
-#: src/ui/frmMain.cpp:120
+#: src/ui/frmMain.cpp:161
 msgid "Quit this program."
 msgstr "Izlaz iz programa."
 
 # standard
 # standard
-#: standard input:376
+#: standard input:510
 msgid "Quote char"
 msgstr "Znak navodnika"
 
 # standard
 # standard
-#: standard input:383
+#: standard input:517
 msgid "Quoting"
 msgstr "Stavljanje u navodnike"
 
 # standard
-#: standard input:404
+#: standard input:552
 msgid "RECREATE"
 msgstr "RECREATE"
 
 # standard
-#: standard input:397
+#: standard input:545
 msgid "REINDEX"
 msgstr "REINDEX"
 
 # standard
-#: standard input:402
+#: standard input:550
 msgid "REINDEX options"
 msgstr ""
 
@@ -3746,7 +4549,7 @@ msgstr ""
 # standard input:14 standard input:19
 # standard
 # standard
-#: standard input:100 input:105
+#: standard input:131 input:136
 msgid "RESTRICT"
 msgstr "RESTRICT"
 
@@ -3755,22 +4558,21 @@ msgstr "RESTRICT"
 # standard input:10
 # standard
 # standard
-#: standard input:463 input:464
+#: standard input:616
 msgid "RIGHT JOIN"
 msgstr "RIGHT JOIN"
 
 # src/ui/frmMain.cpp:227 standard input:3
 # src/ui/frmMain.cpp:227 standard input:3
 # src/ui/frmMain.cpp:227 src/ui/frmMain.cpp:230 standard input:3
-#: src/ui/frmMain.cpp:152 src/ui/frmMain.cpp:173
+#: src/ui/frmMain.cpp:196
 msgid "Re&fresh\tF5"
 msgstr "Osvježi\tF5"
 
-#: src/ui/frmMain.cpp:144 src/ui/frmMain.cpp:174
 msgid "Re&load module"
 msgstr "Ponovno učitavanje modu&la"
 
-#: src/ui/ctlSQLBox.cpp:410 src/ui/ctlSQLBox.cpp:409
+#: src/ui/ctlSQLBox.cpp:430
 msgid "Reached end of the document"
 msgstr "Dosegnut kraj dokumenta"
 
@@ -3779,11 +4581,11 @@ msgstr "Dosegnut kraj dokumenta"
 # standard input:8
 # standard
 # standard
-#: standard input:415 input:416
+#: standard input:568
 msgid "Read and write Unicode UTF-8 files"
 msgstr "Čitanje i pisanje UTF-8 datoteka"
 
-#: src/ui/frmMain.cpp:200
+#: src/ui/frmMain.cpp:230
 msgid "Ready."
 msgstr "Spreman."
 
@@ -3792,20 +4594,25 @@ msgstr "Spreman."
 # standard input:5
 # standard
 # standard
-#: src/schema/pgType.cpp:146 standard input:285
+#: src/schema/pgType.cpp:144 standard input:412
 msgid "Receive function"
 msgstr ""
 
-#: src/ui/frmQuery.cpp:178
+#: src/ui/frmQuery.cpp:190
 msgid "Redo"
 msgstr "Ponovi"
 
-#: src/ui/frmQuery.cpp:107 src/ui/frmQuery.cpp:178
+#: src/ui/frmQuery.cpp:117 src/ui/frmQuery.cpp:190
 msgid "Redo last action"
 msgstr "Ponovi zadnju akciju"
 
-#: src/ui/dlgForeignKey.cpp:193
+#: src/ui/dlgForeignKey.cpp:279
 msgid "Referenced"
+msgstr "Referenciran"
+
+#: src/ui/frmMain.cpp:285
+#, fuzzy
+msgid "Referenced by"
 msgstr "Referenciran"
 
 # src/schema/pgforeignkey.cpp:141 standard input:3
@@ -3813,7 +4620,7 @@ msgstr "Referenciran"
 # src/schema/pgforeignkey.cpp:141 standard input:3
 # standard
 # standard
-#: src/schema/pgForeignKey.cpp:141 standard input:89
+#: src/schema/pgForeignKey.cpp:154 standard input:118
 msgid "References"
 msgstr "Referencira"
 
@@ -3822,7 +4629,7 @@ msgstr "Referencira"
 # standard input:9
 # standard
 # standard
-#: standard input:95
+#: standard input:126
 msgid "Referencing"
 msgstr "Referenciranje"
 
@@ -3831,8 +4638,7 @@ msgstr "Referenciranje"
 # src/ui/frmMain.cpp:227 src/ui/frmMain.cpp:230 standard input:3
 # standard
 # standard
-#: src/ui/frmEditGrid.cpp:86 src/ui/frmMain.cpp:215 standard input:494
-#: src/ui/frmMain.cpp:216 input:495 src/ui/frmEditGrid.cpp:88
+#: src/ui/frmEditGrid.cpp:99 src/ui/frmMain.cpp:246 standard input:651
 msgid "Refresh"
 msgstr "Osvježi"
 
@@ -3841,39 +4647,48 @@ msgstr "Osvježi"
 # standard input:2
 # standard
 # standard
-#: standard input:493 input:494
+#: standard input:650
 msgid "Refresh rate (seconds)"
 msgstr "Učestalost osvježavanja(sek)"
 
-#: src/ui/frmMain.cpp:152 src/ui/frmMain.cpp:173 src/ui/frmMain.cpp:215
-#: src/ui/frmQueryBuilder.cpp:129 src/ui/frmQueryBuilder.cpp:131
-#: src/ui/frmMain.cpp:216
+#: src/ui/frmMain.cpp:196 src/ui/frmMain.cpp:246
 msgid "Refresh the selected object."
 msgstr "Osvježi izabrani objekt."
 
-#: src/schema/pgTable.cpp:335 src/schema/pgTable.cpp:336
-#: src/schema/pgTable.cpp:339
 msgid "Refresh to count rows"
 msgstr "Osvježi do broja redaka"
 
-#: src/ui/frmMain.cpp:347 src/ui/frmMain.cpp:348
+#: src/ui/frmMain.cpp:391
+#, fuzzy, c-format
+msgid "Refreshing %s"
+msgstr "Osvježavanje %s..."
+
 #, c-format
 msgid "Refreshing %s..."
 msgstr "Osvježavanje %s..."
 
-#: src/ui/frmEditGrid.cpp:406 src/ui/frmEditGrid.cpp:499
+#: src/ui/frmEditGrid.cpp:588
 msgid "Refreshing data, please wait."
 msgstr "Osvježavanje podataka, pričekajte."
 
-#: src/ui/frmHelp.cpp:55
+#: src/ui/frmStatus.cpp:251 src/ui/frmStatus.cpp:342 src/ui/frmStatus.cpp:461
+#, fuzzy
+msgid "Refreshing."
+msgstr "Osvježavanje %s..."
+
+#: src/ui/frmStatus.cpp:108
+#, fuzzy
+msgid "Relation"
+msgstr "Ponovi zadnju akciju"
+
+#: src/ui/frmHelp.cpp:57
 msgid "Reload"
 msgstr "Ponovno učitaj"
 
-#: src/ui/frmHelp.cpp:55
+#: src/ui/frmHelp.cpp:57
 msgid "Reload current page."
 msgstr "Ponovno učitaj tekuću stranicu."
 
-#: src/ui/frmMain.cpp:144 src/ui/frmMain.cpp:174
 msgid "Reload library module which implements this function."
 msgstr "Ponovno učitaj bibliotečni modul u kojem je ova funkcija."
 
@@ -3904,38 +4719,90 @@ msgstr "Ponovno učitaj bibliotečni modul u kojem je ova funkcija."
 # src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:15
 # standard
 # standard
-#: src/ui/dlgProperty.cpp:905 standard input:67 input:97 input:128 input:155
-#: input:166 input:245 input:251 input:254 input:309 input:327
-#: src/ui/dlgProperty.cpp:908
+#: src/ui/ctlSecurityPanel.cpp:98 standard input:75 input:105 input:128
+#: input:162 input:191 input:203 input:222 input:226 input:298 input:363
+#: input:369 input:372 input:435 input:454
 msgid "Remove"
 msgstr "Ukloni"
 
-#: src/ui/frmMain.cpp:476 src/ui/frmMain.cpp:494
+#: standard input:106
+#, fuzzy
+msgid "Remove the selected sort column."
+msgstr "Osvježi izabrani objekt."
+
+# src/ui/dlgProperty.cpp:817 standard input:26
+# src/ui/dlgProperty.cpp:817 standard input:11
+# src/ui/dlgProperty.cpp:817 standard input:17
+# src/ui/dlgProperty.cpp:817 standard input:9
+# src/ui/dlgProperty.cpp:817 standard input:8
+# src/ui/dlgProperty.cpp:817 standard input:10 standard input:13
+# src/ui/dlgProperty.cpp:817 standard input:33
+# src/ui/dlgProperty.cpp:817 standard input:15
+# src/ui/dlgProperty.cpp:817 standard input:26
+# src/ui/dlgProperty.cpp:817 standard input:11
+# src/ui/dlgProperty.cpp:817 standard input:17
+# src/ui/dlgProperty.cpp:817 standard input:9
+# src/ui/dlgProperty.cpp:817 standard input:8
+# src/ui/dlgProperty.cpp:817 standard input:10 standard input:13
+# src/ui/dlgProperty.cpp:817 standard input:33
+# src/ui/dlgProperty.cpp:817 standard input:15
+# src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:26
+# src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:11
+# src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:17
+# src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:9
+# src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:8
+# src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:10
+# standard input:13
+# src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:33
+# src/ui/dlgProperty.cpp:817 src/ui/dlgProperty.cpp:854 standard input:15
+# standard
+# standard
+#: standard input:625
+#, fuzzy
+msgid "Restore"
+msgstr "Ukloni"
+
+#: src/ui/frmRestore.cpp:74
+#, c-format
+msgid "Restore %s %s"
+msgstr ""
+
+#: src/ui/frmMain.cpp:186
+msgid "Restores a backup from a local file"
+msgstr ""
+
+#: src/ui/frmMain.cpp:698
 msgid "Restoring previous environment"
 msgstr "Restauriraj prethodnu okolinu"
 
 # standard
 # standard
-#: src/schema/pgOperator.cpp:116 standard input:189
-#: src/schema/pgOperator.cpp:128
+#: src/schema/pgOperator.cpp:128 standard input:250
 msgid "Restrict function"
 msgstr "Funkcija zabrane"
 
-#: src/schema/pgOperator.cpp:111 src/schema/pgOperator.cpp:123
+# standard
+# standard
+#: src/schema/pgObject.cpp:170
+#, fuzzy
+msgid "Restriction"
+msgstr "Funkcija zabrane"
+
+#: src/schema/pgOperator.cpp:123
 msgid "Result type"
 msgstr "Rezultantni tip"
 
-#: src/schema/pgObject.cpp:138 src/schema/pgObject.cpp:137
+#: src/schema/pgObject.cpp:392
 #, c-format
 msgid "Retrieving %s details"
 msgstr "Dohvaćam detalje - %s"
 
-#: src/ui/frmQuery.cpp:874 src/ui/frmQuery.cpp:876
+#: src/ui/frmQuery.cpp:1113
 #, c-format
 msgid "Retrieving data: %d rows."
 msgstr "Dohvaćam %d redak(a) podataka."
 
-#: src/ui/events.cpp:566 src/ui/events.cpp:598 src/ui/events.cpp:612
+#: src/ui/events.cpp:738
 msgid "Retrieving server properties"
 msgstr "Dohvaćam svojstva servera"
 
@@ -3944,11 +4811,11 @@ msgstr "Dohvaćam svojstva servera"
 # standard input:5
 # standard
 # standard
-#: src/schema/pgFunction.cpp:108 standard input:116
+#: src/schema/pgFunction.cpp:103 standard input:148
 msgid "Return type"
 msgstr "Povratni tip"
 
-#: src/schema/pgFunction.cpp:110
+#: src/schema/pgFunction.cpp:105
 msgid "Returns a set?"
 msgstr "Vraća skup?"
 
@@ -3957,11 +4824,11 @@ msgstr "Vraća skup?"
 # standard input:11
 # standard
 # standard
-#: standard input:122
+#: standard input:154
 msgid "Returns set"
 msgstr "Vraća skup."
 
-#: src/schema/pgOperator.cpp:118 src/schema/pgOperator.cpp:130
+#: src/schema/pgOperator.cpp:130
 msgid "Right Sort operator"
 msgstr "Desni operator sortiranja"
 
@@ -3970,7 +4837,7 @@ msgstr "Desni operator sortiranja"
 # standard input:5
 # standard
 # standard
-#: standard input:458 input:459
+#: standard input:611
 msgid "Right Table Columns"
 msgstr "Stupci desne tablice"
 
@@ -3979,7 +4846,7 @@ msgstr "Stupci desne tablice"
 # standard input:15
 # standard
 # standard
-#: standard input:194
+#: standard input:255
 msgid "Right sort op"
 msgstr "Desni operator sortiranja"
 
@@ -3988,18 +4855,21 @@ msgstr "Desni operator sortiranja"
 # standard input:6
 # standard
 # standard
-#: src/schema/pgOperator.cpp:110 standard input:185
-#: src/schema/pgOperator.cpp:122
+#: src/schema/pgOperator.cpp:122 standard input:246
 msgid "Right type"
 msgstr "Desni tip"
 
-#: src/ui/ctlSQLResult.cpp:124
+#: standard input:649
+msgid "Rotate"
+msgstr ""
+
+#: src/ui/ctlSQLResult.cpp:189
 msgid "Row"
 msgstr "Redak"
 
 # standard
 # standard
-#: standard input:369
+#: standard input:503
 msgid "Row separator"
 msgstr "Separator retka"
 
@@ -4008,35 +4878,36 @@ msgstr "Separator retka"
 # standard input:4
 # standard
 # standard
-#: standard input:261
+#: standard input:387
 msgid "Row trigger"
 msgstr "Okidač za redak"
 
-#: src/schema/pgTable.cpp:335 src/schema/pgTable.cpp:337
-#: src/schema/pgTable.cpp:336 src/schema/pgTable.cpp:338
-#: src/schema/pgTable.cpp:339 src/schema/pgTable.cpp:341
+#: src/schema/pgTable.cpp:391 src/schema/pgTable.cpp:393
 msgid "Rows (counted)"
 msgstr "Reci (nastavak)"
 
-#: src/schema/pgTable.cpp:332 src/schema/pgTable.cpp:333
-#: src/schema/pgTable.cpp:336
+#: src/schema/pgTable.cpp:388
 msgid "Rows (estimated)"
 msgstr "Redaka (procjena)"
 
-#: src/schema/pgObject.cpp:50 src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:73
 msgid "Rule"
 msgstr "Pravilo"
 
-#: src/schema/pgObject.cpp:50 src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:72
 msgid "Rules"
 msgstr "Pravila"
+
+#: src/schema/pgServer.cpp:489
+msgid "Running?"
+msgstr ""
 
 # standard input:5
 # standard input:5
 # standard input:5
 # standard
 # standard
-#: standard input:206
+#: standard input:267
 msgid "SELECT"
 msgstr "SELECT"
 
@@ -4045,7 +4916,7 @@ msgstr "SELECT"
 # standard input:17 standard input:22
 # standard
 # standard
-#: standard input:103 input:108
+#: standard input:134 input:139
 msgid "SET DEFAULT"
 msgstr "SET DEFAULT"
 
@@ -4054,19 +4925,19 @@ msgstr "SET DEFAULT"
 # standard input:16 standard input:21
 # standard
 # standard
-#: standard input:102 input:107
+#: standard input:133 input:138
 msgid "SET NULL"
 msgstr "SET NULL"
 
-#: src/ui/frmQueryBuilder.cpp:249
+#: standard input:344
 msgid "SQL"
 msgstr "SQL"
 
-#: src/ui/frmMain.cpp:225 src/ui/frmMain.cpp:226
+#: src/ui/frmMain.cpp:257
 msgid "SQL Help"
 msgstr "SQL pomoć"
 
-#: src/ui/events.cpp:430 src/ui/events.cpp:449 src/ui/events.cpp:454
+#: src/ui/events.cpp:537
 msgid "SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "SQL Skripte (*.sql)|*.sql|Sve datoteke (*.*)|*.*"
 
@@ -4075,19 +4946,19 @@ msgstr "SQL Skripte (*.sql)|*.sql|Sve datoteke (*.*)|*.*"
 # standard input:6
 # standard
 # standard
-#: standard input:413
+#: standard input:561
 msgid "SQL help site"
 msgstr "SQL help site"
 
-#: standard input:356
+#: standard input:331
 msgid "SSL"
 msgstr "SSL"
 
-#: src/schema/pgServer.cpp:292 src/schema/pgServer.cpp:301
+#: src/schema/pgServer.cpp:474
 msgid "SSL Mode"
 msgstr ""
 
-#: src/schema/pgServer.cpp:287
+#: src/schema/pgServer.cpp:460
 msgid "SSL encrypted"
 msgstr ""
 
@@ -4096,71 +4967,81 @@ msgstr ""
 # standard input:9
 # standard
 # standard
-#: standard input:120
+#: standard input:152
 msgid "STABLE"
 msgstr "STABLE"
 
-#: src/ui/frmEditGrid.cpp:84 src/ui/frmQuery.cpp:170
-#: src/ui/frmQueryBuilder.cpp:168 src/ui/frmEditGrid.cpp:86
+#: src/ui/frmEditGrid.cpp:97 src/ui/frmQuery.cpp:182
 msgid "Save"
 msgstr "Spremi"
 
-#: src/ui/frmQuery.cpp:96 src/ui/frmQueryBuilder.cpp:109
+#: src/ui/frmQuery.cpp:106
 msgid "Save &as..."
 msgstr "Spremi k&ao..."
 
-#: src/ui/frmQuery.cpp:95 src/ui/frmQueryBuilder.cpp:108
+#: src/ui/frmQuery.cpp:105
 msgid "Save current file"
 msgstr "Spremi tekuću datoteku"
 
-#: src/ui/frmQuery.cpp:170 src/ui/frmQueryBuilder.cpp:168
+#: src/ui/frmQuery.cpp:182
 msgid "Save file"
 msgstr "Spremi datoteku"
 
-#: src/ui/frmQuery.cpp:96 src/ui/frmQueryBuilder.cpp:109
+#: src/ui/frmQuery.cpp:106
 msgid "Save file under new name"
 msgstr "Spremi datoteku sa novim imenom"
 
-#: src/ui/frmQuery.cpp:126 src/ui/frmQuery.cpp:472
+#: src/ui/frmQuery.cpp:137 src/ui/frmQuery.cpp:497
 msgid "Save history"
 msgstr "Spremi povijest"
 
-#: src/ui/frmQuery.cpp:126
+#: src/ui/frmQuery.cpp:137
 msgid "Save history of executed commands."
 msgstr "Spremi povijest izvršenih komandi"
 
-#: src/ui/frmQuery.cpp:655 src/ui/frmQueryBuilder.cpp:1567
-#: src/ui/frmQuery.cpp:657
+#: src/ui/frmQuery.cpp:833
 msgid "Save query file as"
 msgstr "Spremi datoteku upita kao"
 
-#: src/ui/frmMain.cpp:110
+#: src/ui/frmMain.cpp:151
 msgid "Save the SQL definition of the selected object."
 msgstr "Spremi SQL definiciju izabranog objekta."
 
-#: src/ui/frmEditGrid.cpp:84 src/ui/frmEditGrid.cpp:86
+#: src/ui/frmEditGrid.cpp:97
 msgid "Saved the changed row."
 msgstr "Spremi izmjenjeni redak,"
 
-#: src/schema/pgObject.cpp:35 src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:84 standard input:289
+msgid "Schedule"
+msgstr ""
+
+#: standard input:223
+#, fuzzy
+msgid "Schedules"
+msgstr "Šeme"
+
+#: src/schema/pgObject.cpp:41
 msgid "Schema"
 msgstr "Šema"
 
-#: src/schema/pgObject.cpp:35 src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:40
 msgid "Schemas"
 msgstr "Šeme"
 
-#: src/ui/dlgProperty.cpp:886 src/ui/dlgProperty.cpp:889
+#: standard input:564
+msgid "Search path"
+msgstr ""
+
 msgid "Security"
 msgstr "Sigurnost"
 
 # standard
 # standard
-#: standard input:124
+#: standard input:156
 msgid "Security of definer"
 msgstr "Definicija sigurnosti"
 
-#: src/schema/pgFunction.cpp:120
+#: src/schema/pgFunction.cpp:115
 msgid "Security of definer?"
 msgstr "Definicija sigurnosti?"
 
@@ -4169,19 +5050,28 @@ msgstr "Definicija sigurnosti?"
 # standard input:7
 # standard
 # standard
-#: standard input:347
+#: standard input:476
 msgid "Select &All"
 msgstr "Iz&aberi sve"
 
-#: src/ui/frmExport.cpp:232
+#: standard input:110
+msgid "Select a column to add to the sort list."
+msgstr ""
+
+#: src/ui/frmBackup.cpp:103 src/ui/frmRestore.cpp:126
+#, fuzzy
+msgid "Select backup filename"
+msgstr "Izaberite ime izlazne datoteke"
+
+#: src/ui/frmExport.cpp:266
 msgid "Select export filename"
 msgstr "Izaberite ime izlazne datoteke"
 
-#: src/ui/frmOptions.cpp:246 src/ui/frmOptions.cpp:250
+#: src/ui/frmOptions.cpp:276
 msgid "Select log file"
 msgstr "Izaberite log datoteku"
 
-#: src/ui/events.cpp:430 src/ui/events.cpp:449 src/ui/events.cpp:454
+#: src/ui/events.cpp:537
 msgid "Select output file"
 msgstr "Izaberite izlaznu datoteku"
 
@@ -4190,31 +5080,60 @@ msgstr "Izaberite izlaznu datoteku"
 # standard input:30
 # standard
 # standard
-#: standard input:440 input:441
+#: standard input:593
 msgid "Select the level of detail to record in the logfile."
 msgstr "Izaberite nivo detalja "
 
+# standard input:2
+# standard input:2
+# standard input:2
 # standard
 # standard
-#: standard input:286
+#: standard input:107
+#, fuzzy
+msgid "Selected Columns"
+msgstr "Stupci lijeve tablice"
+
+# src/schema/pgRule.cpp:77 standard input:12
+# src/schema/pgRule.cpp:77 standard input:12
+# src/schema/pgRule.cpp:77 standard input:12
+# standard
+# standard
+#: standard input:527 input:534
+#, fuzzy
+msgid "Selection"
+msgstr "Akcija"
+
+# standard
+# standard
+#: standard input:413
 msgid "Send Function"
 msgstr "Funkcija slanja"
 
 # standard input:7
 # standard input:7
 # standard input:7
-#: src/schema/pgType.cpp:147
+#: src/schema/pgType.cpp:145
 msgid "Send function"
 msgstr "Funkcija slanja"
 
-#: src/schema/pgObject.cpp:44 src/schema/pgObject.cpp:43
+#: src/schema/pgColumn.cpp:224 src/schema/pgObject.cpp:61 standard input:40
 msgid "Sequence"
 msgstr "Sekvencija"
 
-#: src/schema/pgObject.cpp:44 src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:60
 msgid "Sequences"
 msgstr "Sekvencije"
 
+#: src/schema/pgTable.cpp:409
+#, fuzzy
+msgid "Sequential Scans"
+msgstr "Sekvencije"
+
+#: src/schema/pgTable.cpp:410
+msgid "Sequential Tuples Read"
+msgstr ""
+
 # src/schema/pgObject.cpp:30 standard input:4
 # src/schema/pgObject.cpp:30 standard input:1
 # src/schema/pgObject.cpp:30 standard input:4
@@ -4223,27 +5142,37 @@ msgstr "Sekvencije"
 # src/schema/pgObject.cpp:30 standard input:1
 # standard
 # standard
-#: src/schema/pgObject.cpp:30 standard input:352 input:472 input:473
-#: src/schema/pgObject.cpp:29
+#: src/schema/pgObject.cpp:31
 msgid "Server"
 msgstr "Server"
 
-#: src/schema/pgObject.cpp:30 src/ui/frmMain.cpp:302 src/ui/frmMain.cpp:303
-#: src/schema/pgObject.cpp:29
+#: src/schema/pgObject.cpp:30 src/ui/frmMain.cpp:346
 msgid "Servers"
 msgstr "Serveri"
 
-#: src/ui/events.cpp:509 src/ui/frmMain.cpp:639 src/ui/events.cpp:528
-#: src/ui/frmMain.cpp:642 src/ui/events.cpp:533 src/ui/frmMain.cpp:660
+#: src/ui/events.cpp:627 src/ui/frmMain.cpp:942
 #, c-format
 msgid "Servers (%d)"
 msgstr "Serveri (%d)"
 
-#: src/ui/frmMain.cpp:161
+# src/schema/pgObject.cpp:30 standard input:4
+# src/schema/pgObject.cpp:30 standard input:1
+# src/schema/pgObject.cpp:30 standard input:4
+# src/schema/pgObject.cpp:30 standard input:1
+# src/schema/pgObject.cpp:30 standard input:4
+# src/schema/pgObject.cpp:30 standard input:1
+# standard
+# standard
+#: standard input:329
+#, fuzzy
+msgid "Service"
+msgstr "Server"
+
+#: src/ui/frmMain.cpp:206
 msgid "Show a tip of the day."
 msgstr "Pokaži savjet dana."
 
-#: src/ui/frmMain.cpp:164
+#: src/ui/frmMain.cpp:209
 msgid "Show about dialog."
 msgstr "Pokaži O programu ... dijalog"
 
@@ -4252,28 +5181,51 @@ msgstr "Pokaži O programu ... dijalog"
 # standard input:12
 # standard
 # standard
-#: standard input:419 input:420
+#: standard input:572
 msgid "Show object properties on double click in treeview?"
 msgstr "Pokazati svojstva objekta na dvostruki klik u drvetu?"
 
-#: src/ui/frmMain.cpp:115
+#: src/ui/frmMain.cpp:156
 msgid "Show options dialog."
 msgstr "Pokaži dijalog s opcijama"
 
-#: src/ui/frmMain.cpp:150
+#: src/ui/frmMain.cpp:194
 msgid "Show or hide system objects."
 msgstr "Pokaži ili sakrij sistemske objekte"
 
+#: src/ui/events.cpp:570
+#, fuzzy
+msgid "Show system objects"
+msgstr "&Sistemski objekti"
+
 # standard input:11
 # standard input:11
 # standard input:11
 # standard
 # standard
-#: standard input:418 input:419
+#: standard input:571
 msgid "Show users for privileges?"
 msgstr "Pokazati korisnike za zadano dopuštenje?"
 
-#: src/schema/pgFunction.cpp:117
+#: standard input:631
+#, fuzzy
+msgid "Single object"
+msgstr "&Sistemski objekti"
+
+#: src/schema/pgDatabase.cpp:483 src/schema/pgTable.cpp:531
+#: src/schema/pgTablespace.cpp:231
+msgid "Size"
+msgstr ""
+
+#: src/ui/dlgEditGridOptions.cpp:92
+msgid "Sort order"
+msgstr ""
+
+#: src/ui/frmEditGrid.cpp:106
+msgid "Sort/filter options."
+msgstr ""
+
+#: src/schema/pgFunction.cpp:112
 msgid "Source"
 msgstr "Izvor"
 
@@ -4282,7 +5234,7 @@ msgstr "Izvor"
 # standard input:6
 # standard
 # standard
-#: standard input:50
+#: standard input:58
 msgid "Source encoding"
 msgstr "Enkodiranje izvora"
 
@@ -4300,21 +5252,40 @@ msgstr "Vrsta izvora"
 # standard input:5
 # standard
 # standard
-#: src/ui/frmStatus.cpp:60 standard input:230
+#: src/ui/frmStatus.cpp:100 src/ui/frmStatus.cpp:114 standard input:291
+#: input:317
 msgid "Start"
 msgstr "Start"
 
-#: src/ui/frmMain.cpp:140
+# standard input:13
+# standard input:13
+# standard input:13
+# standard
+# standard
+#: src/ui/frmMain.cpp:176
+#, fuzzy
+msgid "Start PostgreSQL Service"
+msgstr "PostgreSQL verzija"
+
+#: src/ui/frmMain.cpp:176
+#, fuzzy
+msgid "Start service"
+msgstr "Statistika"
+
 msgid "Start the query builder."
 msgstr "Pokreni graditelja upita"
+
+#: src/ui/events.cpp:235
+#, fuzzy
+msgid "Starting service"
+msgstr "Statistika"
 
 # standard input:7
 # standard input:7
 # standard input:7
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:76 standard input:7
-#: src/schema/pgAggregate.cpp:82
+#: src/schema/pgAggregate.cpp:82 standard input:7
 msgid "State function"
 msgstr "Funkcija stanja"
 
@@ -4323,29 +5294,63 @@ msgstr "Funkcija stanja"
 # standard input:6
 # standard
 # standard
-#: src/schema/pgAggregate.cpp:75 standard input:6
-#: src/schema/pgAggregate.cpp:81
+#: src/schema/pgAggregate.cpp:81 standard input:6
 msgid "State type"
 msgstr "Tip stanja"
 
-#: src/schema/pgObject.cpp:500 src/schema/pgSequence.cpp:106
-#: src/schema/pgObject.cpp:502 src/schema/pgObject.cpp:512
+#: src/schema/pgObject.cpp:817 src/schema/pgSequence.cpp:112
+#: src/schema/pgTablespace.cpp:148
 msgid "Statistic"
 msgstr "Statistika"
 
-#: src/ui/events.cpp:534 src/ui/frmMain.cpp:249 src/ui/frmMain.cpp:312
-#: src/ui/events.cpp:559 src/ui/frmMain.cpp:250 src/ui/frmMain.cpp:313
-#: src/ui/events.cpp:571
+#: src/schema/pgColumn.cpp:230 src/schema/pgObject.cpp:160
+#: src/ui/frmMain.cpp:283 src/ui/frmMain.cpp:356 standard input:42
 msgid "Statistics"
 msgstr "Statistike"
+
+# standard input:5
+# standard input:5
+# standard input:5
+# standard
+# standard
+#: standard input:642
+#, fuzzy
+msgid "Status"
+msgstr "Start"
+
+#: src/schema/pgObject.cpp:83
+msgid "Step"
+msgstr ""
+
+#: standard input:219
+msgid "Steps"
+msgstr ""
+
+# standard input:13
+# standard input:13
+# standard input:13
+# standard
+# standard
+#: src/ui/frmMain.cpp:177
+#, fuzzy
+msgid "Stop PostgreSQL Service"
+msgstr "PostgreSQL verzija"
+
+#: src/ui/frmMain.cpp:177
+msgid "Stop service"
+msgstr ""
+
+#: src/ui/events.cpp:249
+msgid "Stopping service"
+msgstr ""
 
 # src/schema/pgType.cpp:144 standard input:22
 # src/schema/pgType.cpp:144 standard input:22
 # standard input:22
 # standard
 # standard
-#: src/schema/pgColumn.cpp:182 src/schema/pgOperatorClass.cpp:164
-#: src/schema/pgType.cpp:149 standard input:297
+#: src/schema/pgColumn.cpp:228 src/schema/pgOperatorClass.cpp:164
+#: src/schema/pgType.cpp:147 standard input:424
 msgid "Storage"
 msgstr "Spremište"
 
@@ -4354,15 +5359,30 @@ msgstr "Spremište"
 # standard input:12
 # standard
 # standard
-#: standard input:123
+#: standard input:155
 msgid "Strict"
 msgstr "Strogo"
 
-#: src/schema/pgFunction.cpp:121
+#: src/schema/pgFunction.cpp:116
 msgid "Strict?"
 msgstr "Strogo?"
 
-#: src/schema/pgUser.cpp:117
+#: standard input:349
+#, fuzzy
+msgid "Succeed"
+msgstr "Izvor"
+
+# standard input:7
+# standard input:7
+# standard input:7
+# standard
+# standard
+#: standard input:446
+#, fuzzy
+msgid "Superuser (can create users)"
+msgstr "Korisnik može načiniti novog korisnika"
+
+#: src/schema/pgUser.cpp:209
 msgid "Superuser?"
 msgstr "Super korisnik?"
 
@@ -4371,14 +5391,14 @@ msgstr "Super korisnik?"
 # standard input:18
 # standard
 # standard
-#: standard input:197
+#: standard input:258
 msgid "Supports hash"
 msgstr "Podržava hash"
 
 # standard input:18
 # standard input:18
 # standard input:18
-#: src/schema/pgOperator.cpp:121 src/schema/pgOperator.cpp:133
+#: src/schema/pgOperator.cpp:133
 msgid "Supports hash?"
 msgstr "Podržava hash?"
 
@@ -4387,27 +5407,37 @@ msgstr "Podržava hash?"
 # standard input:19
 # standard
 # standard
-#: standard input:198
+#: standard input:259
 msgid "Supports merge"
 msgstr "Podržava spajanje"
 
-#: src/schema/pgAggregate.cpp:80 src/schema/pgAggregate.cpp:86
+# src/schema/pgLanguage.cpp:67 standard input:7
+# src/schema/pgLanguage.cpp:67 standard input:7
+# src/schema/pgLanguage.cpp:67 standard input:7
+# standard
+# standard
+#: src/ui/dlgEditGridOptions.cpp:207
+#, fuzzy
+msgid "Syntax Validation"
+msgstr "Validator"
+
+#: src/schema/pgAggregate.cpp:86
 msgid "System aggregate?"
 msgstr "Sistemski Agregat?"
 
-#: src/schema/pgCast.cpp:68 src/schema/pgCast.cpp:71
+#: src/schema/pgCast.cpp:71
 msgid "System cast?"
 msgstr "Sistemska dodjela tipa?"
 
-#: src/schema/pgColumn.cpp:185
+#: src/schema/pgColumn.cpp:233
 msgid "System column?"
 msgstr "Sistemski stupac?"
 
-#: src/schema/pgConversion.cpp:68
+#: src/schema/pgConversion.cpp:69
 msgid "System conversion?"
 msgstr "Sistemska Konverzija?"
 
-#: src/schema/pgDatabase.cpp:188
+#: src/schema/pgDatabase.cpp:354
 msgid "System database?"
 msgstr "Sistemska Baza podataka?"
 
@@ -4415,15 +5445,15 @@ msgstr "Sistemska Baza podataka?"
 msgid "System domain?"
 msgstr "Sistemska Domena?"
 
-#: src/schema/pgForeignKey.cpp:149
+#: src/schema/pgForeignKey.cpp:163
 msgid "System foreign key?"
 msgstr "Sistemski Vanjski ključ?"
 
-#: src/schema/pgFunction.cpp:123
+#: src/schema/pgFunction.cpp:118
 msgid "System function?"
 msgstr "Sistemska Funkcija?"
 
-#: src/schema/pgIndex.cpp:202 src/schema/pgIndexConstraint.cpp:100
+#: src/schema/pgIndex.cpp:212 src/schema/pgIndexConstraint.cpp:108
 msgid "System index?"
 msgstr "Sistemski Indeks?"
 
@@ -4431,11 +5461,25 @@ msgstr "Sistemski Indeks?"
 msgid "System language?"
 msgstr "Sistemski Jezik?"
 
+#: src/ui/events.cpp:562
+msgid ""
+"System objects will not be removed from the object tree until a refresh is "
+"performed.\n"
+"Close all connections now?"
+msgstr ""
+
+#: src/ui/events.cpp:569
+msgid ""
+"System objects will not show in the the object tree until a refresh is "
+"performed.\n"
+"Close all connections now?"
+msgstr ""
+
 #: src/schema/pgOperatorClass.cpp:170
 msgid "System operator class?"
 msgstr "Sistemska Klasa operatora?"
 
-#: src/schema/pgOperator.cpp:122 src/schema/pgOperator.cpp:134
+#: src/schema/pgOperator.cpp:134
 msgid "System operator?"
 msgstr "Sistemski operator?"
 
@@ -4443,16 +5487,15 @@ msgstr "Sistemski operator?"
 msgid "System rule?"
 msgstr "Sistemsko Pravilo?"
 
-#: src/schema/pgSchema.cpp:150 src/schema/pgSchema.cpp:151
+#: src/schema/pgSchema.cpp:158
 msgid "System schema?"
 msgstr "Sistemska Šema?"
 
-#: src/schema/pgSequence.cpp:97
+#: src/schema/pgSequence.cpp:100
 msgid "System sequence?"
 msgstr "Sistemska Sekvencija?"
 
-#: src/schema/pgTable.cpp:344 src/schema/pgTable.cpp:345
-#: src/schema/pgTable.cpp:348
+#: src/schema/pgTable.cpp:400
 msgid "System table?"
 msgstr "Sistemska Tablica?"
 
@@ -4460,17 +5503,30 @@ msgstr "Sistemska Tablica?"
 msgid "System trigger?"
 msgstr "Sistemski Okidač?"
 
-#: src/schema/pgType.cpp:151
+#: src/schema/pgType.cpp:149
 msgid "System type?"
 msgstr "Sistemski Tip?"
 
-#: src/schema/pgView.cpp:85 src/schema/pgView.cpp:87
+#: src/schema/pgView.cpp:87
 msgid "System view?"
 msgstr "Sistemski Pogled?"
 
-#: src/schema/pgObject.cpp:45 src/ui/frmQueryBuilder.cpp:207
-#: src/schema/pgObject.cpp:44
+#: standard input:484
+msgid "TAR"
+msgstr ""
+
+#: src/ui/frmStatus.cpp:110
+msgid "TX"
+msgstr ""
+
+#: src/schema/pgObject.cpp:63 src/schema/pgTable.cpp:526
+#: src/ui/frmRestore.cpp:183
 msgid "Table"
+msgstr "Tablica"
+
+#: src/schema/pgTable.cpp:426
+#, fuzzy
+msgid "Table Size"
 msgstr "Tablica"
 
 # src/schema/pgObject.cpp:45 standard input:5
@@ -4478,7 +5534,7 @@ msgstr "Tablica"
 # src/schema/pgObject.cpp:45 standard input:5
 # standard
 # standard
-#: src/schema/pgObject.cpp:45 standard input:345 src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:62 standard input:474
 msgid "Tables"
 msgstr "Tablice"
 
@@ -4487,16 +5543,45 @@ msgstr "Tablice"
 # standard input:2
 # standard
 # standard
-#: standard input:342
+#: standard input:471
 msgid "Tables/Views"
 msgstr "Tablice/Pogledi"
+
+# src/schema/pgObject.cpp:45 standard input:5
+# src/schema/pgObject.cpp:45 standard input:5
+# src/schema/pgObject.cpp:45 standard input:5
+# standard
+# standard
+#: src/schema/pgDatabase.cpp:340 src/schema/pgIndex.cpp:200
+#: src/schema/pgObject.cpp:43 src/schema/pgSchema.cpp:156
+#: src/schema/pgSequence.cpp:92 src/schema/pgTable.cpp:381
+#: src/schema/pgTablespace.cpp:230 src/schema/pgUser.cpp:128
+#: src/ui/dlgDatabase.cpp:89 standard input:183 input:197 input:306 input:315
+#: input:360
+#, fuzzy
+msgid "Tablespace"
+msgstr "Tablice"
+
+#: src/schema/pgTablespace.cpp:151
+msgid "Tablespace Size"
+msgstr ""
+
+# src/schema/pgObject.cpp:45 standard input:5
+# src/schema/pgObject.cpp:45 standard input:5
+# src/schema/pgObject.cpp:45 standard input:5
+# standard
+# standard
+#: src/schema/pgObject.cpp:42
+#, fuzzy
+msgid "Tablespaces"
+msgstr "Tablice"
 
 # standard input:7
 # standard input:7
 # standard input:7
 # standard
 # standard
-#: standard input:51
+#: standard input:59
 msgid "Target encoding"
 msgstr "Enkodiranje cilja"
 
@@ -4514,11 +5599,29 @@ msgstr "Ciljni tip"
 # standard input:21
 # standard
 # standard
-#: standard input:62
+#: standard input:70
 msgid "Template"
 msgstr "Predložak"
 
-#: src/schema/pgServer.cpp:147
+# standard input:21
+# standard input:21
+# standard input:21
+# standard
+# standard
+#: standard input:644 input:647
+#, fuzzy
+msgid "Terminate"
+msgstr "Predložak"
+
+#: src/ui/frmStatus.cpp:812
+msgid "Terminate process"
+msgstr ""
+
+#: src/ui/frmStatus.cpp:794
+msgid "Terminate process?"
+msgstr ""
+
+#: src/schema/pgServer.cpp:305
 #, c-format
 msgid "The PostgreSQL server must be at least version %2.1f!"
 msgstr "PostgreSQL server mora biti najmanje verzije %2.1f!"
@@ -4528,7 +5631,6 @@ msgstr "PostgreSQL server mora biti najmanje verzije %2.1f!"
 # standard input:16
 # standard
 # standard
-#: standard input:487 input:488
 msgid "The PostgreSQL server's version string."
 msgstr "PostgreSQL verzija."
 
@@ -4537,7 +5639,6 @@ msgstr "PostgreSQL verzija."
 # standard input:14
 # standard
 # standard
-#: standard input:485 input:486
 msgid "The PostgreSQL version number."
 msgstr "PostgreSQL broj verzije."
 
@@ -4546,7 +5647,6 @@ msgstr "PostgreSQL broj verzije."
 # standard input:4
 # standard
 # standard
-#: standard input:475 input:476
 msgid "The hostname or TCP/IP address of the server."
 msgstr "Ime hosta ili TCP/IP adresa servera."
 
@@ -4555,7 +5655,6 @@ msgstr "Ime hosta ili TCP/IP adresa servera."
 # standard input:10
 # standard
 # standard
-#: standard input:481 input:482
 msgid "The initial database used when connecting to the server."
 msgstr "Baza podataka korištena za prvotnu vezu sa serverom."
 
@@ -4564,16 +5663,15 @@ msgstr "Baza podataka korištena za prvotnu vezu sa serverom."
 # standard input:12
 # standard
 # standard
-#: standard input:483 input:484
 msgid "The last OID used by the server."
 msgstr "Posljednji OID korišten na serveru."
 
-#: src/ui/frmQuery.cpp:884 src/ui/frmQuery.cpp:886
+#: src/ui/frmQuery.cpp:1124
 #, c-format
 msgid "The maximum of %ld rows is exceeded (total %ld)."
 msgstr "Maksimalni broj redaka (%ld) je premašen (ukupno %ld)."
 
-#: src/ui/frmPassword.cpp:72
+#: src/ui/frmPassword.cpp:79
 msgid "The password could not be changed!"
 msgstr "Lozinka se ne može promjeniti!"
 
@@ -4582,16 +5680,14 @@ msgstr "Lozinka se ne može promjeniti!"
 # standard input:6
 # standard
 # standard
-#: standard input:477 input:478
 msgid "The port number the server is listening on."
 msgstr "Port na kojem server sluša."
 
-#: src/ui/frmQueryBuilder.cpp:1484
 #, c-format
 msgid "The text %s has changed.\n"
 msgstr "Tekst %s je promjenjen.\n"
 
-#: src/ui/frmQuery.cpp:562 src/ui/frmQuery.cpp:564
+#: src/ui/frmQuery.cpp:699 src/ui/frmQuery.cpp:769
 #, c-format
 msgid ""
 "The text %s has changed.\n"
@@ -4605,15 +5701,14 @@ msgstr ""
 # standard input:8
 # standard
 # standard
-#: standard input:479 input:480
 msgid "The username used when connecting to the server."
 msgstr "Korisničko ime korišteno za spajanje na server."
 
-#: src/ui/events.cpp:426 src/ui/events.cpp:445 src/ui/events.cpp:450
+#: src/ui/events.cpp:533
 msgid "There is nothing in the SQL pane to save!"
 msgstr "U SQL pogledu nema ništa za spremiti!"
 
-#: src/ui/frmEditGrid.cpp:281 src/ui/frmEditGrid.cpp:373
+#: src/ui/frmEditGrid.cpp:436
 msgid ""
 "There is unsaved data in a row.\n"
 "Do you want to store to the database?"
@@ -4621,40 +5716,62 @@ msgstr ""
 "Postoje nespremjeni podaci.u retku.\n"
 "Spremiti u bazu poadataka ?"
 
-#: src/ui/frmQueryBuilder.cpp:1193
 #, c-format
 msgid ""
 "This query will return %d results.\n"
 "Load all results?"
 msgstr "Upit će vratiti %d rezultat(a).\\ Da ih sve učitam?"
 
-#: src/include/copyright.h:19
+#: src/include/copyright.h:20
 msgid "This software is released under the Artistic License."
 msgstr "Ovaj je program izdan pod Artistic Licencijom."
 
-#: src/schema/pgConversion.cpp:65
+#: standard input:295
+msgid "Time offset"
+msgstr ""
+
+#: src/ui/frmStatus.cpp:133
+msgid "Timestamp"
+msgstr ""
+
+#: src/schema/pgConversion.cpp:66
 msgid "To"
 msgstr "U"
 
-#: src/ui/frmQuery.cpp:954 src/ui/frmQuery.cpp:956
+#: src/schema/pgTable.cpp:421
+msgid "Toast Blocks Hit"
+msgstr ""
+
+#: src/schema/pgTable.cpp:420
+msgid "Toast Blocks Read"
+msgstr ""
+
+#: src/schema/pgTable.cpp:423
+msgid "Toast Index Blocks Hit"
+msgstr ""
+
+#: src/schema/pgTable.cpp:422
+msgid "Toast Index Blocks Read"
+msgstr ""
+
+#: src/ui/frmQuery.cpp:1194
 #, c-format
 msgid "Total %ld rows.\n"
 msgstr "Ukupno redaka %ld.\n"
 
-#: src/ui/frmMaintenance.cpp:214 src/ui/frmQuery.cpp:943
-#: src/ui/frmQuery.cpp:945
+#: src/ui/dlgClasses.cpp:245 src/ui/frmQuery.cpp:1183
 msgid "Total query runtime: "
 msgstr "Ukupno vrijeme upita: "
 
-#: src/schema/pgObject.cpp:51 src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:75
 msgid "Trigger"
 msgstr "Okidač"
 
-#: src/schema/pgObject.cpp:41 src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:55
 msgid "Trigger Function"
 msgstr "Funkcija Okidača"
 
-#: src/schema/pgObject.cpp:41 src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:54
 msgid "Trigger Functions"
 msgstr "Funkcije Okidača"
 
@@ -4663,11 +5780,11 @@ msgstr "Funkcije Okidača"
 # standard input:5
 # standard
 # standard
-#: standard input:262
+#: standard input:388
 msgid "Trigger function"
 msgstr "Funkcija Okidača"
 
-#: src/schema/pgObject.cpp:51 src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:74
 msgid "Triggers"
 msgstr "Okidači"
 
@@ -4679,35 +5796,80 @@ msgstr "Okidači"
 # standard input:13
 # standard
 # standard
-#: standard input:173 input:174 input:362
+#: standard input:233 input:234
 msgid "Trusted"
 msgstr "Povjerljiv"
 
-#: src/schema/pgLanguage.cpp:65 src/schema/pgServer.cpp:296
-#: src/schema/pgServer.cpp:307
+#: src/schema/pgLanguage.cpp:65
 msgid "Trusted?"
 msgstr "Povjerljiv?"
 
-#: src/ui/frmQueryBuilder.cpp:1048
 msgid ""
 "Try switching it to the lefthand side in one\n"
 "or more relationships."
 msgstr ""
 
-#: src/ui/events.cpp:816 src/ui/events.cpp:872 src/ui/events.cpp:882
+#: src/ui/events.cpp:1124
 msgid "Trying to drop system object"
 msgstr "Pokušaj brisanja sistemskog objekta"
 
+# src/schema/pgforeignkey.cpp:145 standard input:18
+# src/schema/pgforeignkey.cpp:145 standard input:18
+# src/schema/pgforeignkey.cpp:145 standard input:18
+# standard
+# standard
+#: src/schema/pgTable.cpp:415
+#, fuzzy
+msgid "Tuples Deleted"
+msgstr "Kod brisanja"
+
+#: src/schema/pgTable.cpp:413
+msgid "Tuples Inserted"
+msgstr ""
+
+# src/schema/pgforeignkey.cpp:144 standard input:13
+# src/schema/pgforeignkey.cpp:144 standard input:13
+# src/schema/pgforeignkey.cpp:144 standard input:13
+# standard
+# standard
+#: src/schema/pgTable.cpp:414
+#, fuzzy
+msgid "Tuples Updated"
+msgstr "Kod ažuriranja"
+
+# src/schema/pgforeignkey.cpp:145 standard input:18
+# src/schema/pgforeignkey.cpp:145 standard input:18
+# src/schema/pgforeignkey.cpp:145 standard input:18
+#: src/schema/pgTable.cpp:529
+#, fuzzy
+msgid "Tuples deleted"
+msgstr "Kod brisanja"
+
+#: src/schema/pgTable.cpp:527
+msgid "Tuples inserted"
+msgstr ""
+
+# src/schema/pgforeignkey.cpp:144 standard input:13
+# src/schema/pgforeignkey.cpp:144 standard input:13
+# src/schema/pgforeignkey.cpp:144 standard input:13
+#: src/schema/pgTable.cpp:528
+#, fuzzy
+msgid "Tuples updated"
+msgstr "Kod ažuriranja"
+
 # src/schema/pgObject.cpp:46 standard input:4
 # src/schema/pgObject.cpp:46 standard input:4
 # src/schema/pgObject.cpp:46 standard input:4
 # standard
 # standard
-#: src/schema/pgObject.cpp:46 standard input:278 src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:65 src/schema/pgObject.cpp:168
+#: src/schema/pgTablespace.cpp:43 src/schema/pgUser.cpp:92
+#: src/ui/dlgFunction.cpp:115 src/ui/dlgFunction.cpp:117
+#: src/ui/frmRestore.cpp:343 standard input:405
 msgid "Type"
 msgstr "Tip"
 
-#: src/schema/pgObject.cpp:46 src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:64
 msgid "Types"
 msgstr "Tipovi"
 
@@ -4719,30 +5881,34 @@ msgstr "Tipovi"
 # standard input:12
 # standard
 # standard
-#: standard input:208 input:269
+#: standard input:269 input:395
 msgid "UPDATE"
 msgstr "UPDATE"
 
-#: src/ui/frmEditGrid.cpp:87 src/ui/frmQuery.cpp:177 src/ui/frmEditGrid.cpp:89
+#: standard input:529 input:536
+msgid "Uncheck all"
+msgstr ""
+
+#: src/ui/frmEditGrid.cpp:100 src/ui/frmQuery.cpp:189
 msgid "Undo"
 msgstr "Korak natrag"
 
-#: src/ui/frmEditGrid.cpp:87 src/ui/frmEditGrid.cpp:89
+#: src/ui/frmEditGrid.cpp:100
 msgid "Undo change of data."
 msgstr "Zanemari izmjene nad podacima."
 
-#: src/ui/frmQuery.cpp:106 src/ui/frmQuery.cpp:177
+#: src/ui/frmQuery.cpp:116 src/ui/frmQuery.cpp:189
 msgid "Undo last action"
 msgstr "Poništi zadnju akciju"
 
-#: src/ui/frmEditGrid.cpp:1044 src/ui/frmEditGrid.cpp:1479
+#: src/ui/frmEditGrid.cpp:1606
 msgid "Unexpected empty cache line: dataSet already closed."
 msgstr "Neočekivano prazan cache: dataSet je već zatvoren."
 
 # standard
 # standard
 # standard
-#: standard input:382
+#: standard input:516
 msgid "Unicode UTF-8"
 msgstr "Unicode UTF-8"
 
@@ -4751,33 +5917,32 @@ msgstr "Unicode UTF-8"
 # standard input:4
 # standard
 # standard
-#: src/schema/pgObject.cpp:54 src/ui/dlgTable.cpp:476 standard input:150
-#: src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:78 src/ui/dlgTable.cpp:474 standard input:185
 msgid "Unique"
 msgstr "Unikatan"
 
-#: src/schema/pgIndex.cpp:197 src/schema/pgIndexConstraint.cpp:95
+#: src/schema/pgIndex.cpp:207 src/schema/pgIndexConstraint.cpp:103
 msgid "Unique?"
 msgstr "Unikatni?"
 
-#: src/schema/pgObject.cpp:57 src/schema/pgObject.cpp:56
+#: src/schema/pgObject.cpp:85
 msgid "Unknown"
 msgstr "Nepoznato"
 
-#: src/ui/ctlSQLBox.cpp:427 src/ui/ctlSQLBox.cpp:426
+#: src/ui/ctlSQLBox.cpp:447
 msgid "Unknown find dialog event!"
 msgstr "Nepoznati događaj na dijalogu za pronalaženje teksta."
 
-#: src/ui/frmEditGrid.cpp:281 src/ui/frmEditGrid.cpp:373
+#: src/ui/frmEditGrid.cpp:436
 msgid "Unsaved data"
 msgstr "Nespremljeni podaci"
 
-#: src/schema/pgUser.cpp:119
+#: src/schema/pgUser.cpp:211
 msgid "Update catalogs?"
 msgstr "Ažuriranje kataloga?"
 
-#: src/schema/pgObject.cpp:33 src/ui/frmStatus.cpp:57
-#: src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:37 src/schema/pgServer.cpp:506
+#: src/ui/frmStatus.cpp:98 src/ui/frmStatus.cpp:109
 msgid "User"
 msgstr "Korisnik"
 
@@ -4789,7 +5954,7 @@ msgstr "Korisnik"
 # src/schema/pgUser.cpp:115 standard input:3
 # standard
 # standard
-#: src/schema/pgUser.cpp:115 standard input:138 input:315
+#: src/schema/pgUser.cpp:207 standard input:441
 msgid "User ID"
 msgstr "Korisnički ID"
 
@@ -4798,7 +5963,7 @@ msgstr "Korisnički ID"
 # standard input:5
 # standard
 # standard
-#: standard input:317
+#: standard input:444
 msgid "User Privileges"
 msgstr "Korisnička prava"
 
@@ -4807,7 +5972,7 @@ msgstr "Korisnička prava"
 # standard input:6
 # standard
 # standard
-#: standard input:318
+#: standard input:445
 msgid "User can create databases"
 msgstr "Korisnik može načiniti bazu podataka"
 
@@ -4816,19 +5981,16 @@ msgstr "Korisnik može načiniti bazu podataka"
 # standard input:7
 # standard
 # standard
-#: standard input:319
 msgid "User can create users"
 msgstr "Korisnik može načiniti novog korisnika"
 
 # standard
 # standard
-#: src/pgAdmin3.cpp:191 standard input:412 src/pgAdmin3.cpp:198
-#: src/pgAdmin3.cpp:201
+#: src/pgAdmin3.cpp:280 standard input:560
 msgid "User language"
 msgstr "Korisnički Jezik"
 
-#: src/ui/dlgProperty.cpp:894 src/ui/dlgProperty.cpp:901
-#: src/ui/dlgProperty.cpp:897 src/ui/dlgProperty.cpp:904
+#: src/ui/ctlSecurityPanel.cpp:95
 msgid "User/Group"
 msgstr "Korisnik / Grupa"
 
@@ -4846,18 +6008,17 @@ msgstr "Korisnik / Grupa"
 # src/schema/pgServer.cpp:269 standard input:7
 # standard
 # standard
-#: src/schema/pgServer.cpp:295 standard input:137 input:314 input:360
-#: input:478 input:479 src/schema/pgServer.cpp:306
+#: src/schema/pgServer.cpp:479 standard input:333 input:440
 msgid "Username"
 msgstr "Korisničko ime"
 
-#: src/schema/pgObject.cpp:33 src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:36
 msgid "Users"
 msgstr "Korisnici"
 
 # standard
 # standard
-#: standard input:395
+#: standard input:543
 msgid "VACUUM"
 msgstr "VACUUM"
 
@@ -4866,7 +6027,7 @@ msgstr "VACUUM"
 # standard
 # standard
 # standard
-#: standard input:398
+#: standard input:546
 msgid "VACUUM options"
 msgstr "Opcije za VACUUM"
 
@@ -4875,7 +6036,7 @@ msgstr "Opcije za VACUUM"
 # standard input:8
 # standard
 # standard
-#: standard input:119
+#: standard input:151
 msgid "VOLATILE"
 msgstr "VOLATILE"
 
@@ -4884,15 +6045,31 @@ msgstr "VOLATILE"
 # src/schema/pgLanguage.cpp:67 standard input:7
 # standard
 # standard
-#: src/schema/pgLanguage.cpp:67 standard input:176
+#: standard input:112
+#, fuzzy
+msgid "Validate"
+msgstr "Validator"
+
+#: standard input:113
+msgid "Validate the syntax of the filter string."
+msgstr ""
+
+#: src/ui/dlgEditGridOptions.cpp:269
+msgid "Validating filter string"
+msgstr ""
+
+# src/schema/pgLanguage.cpp:67 standard input:7
+# src/schema/pgLanguage.cpp:67 standard input:7
+# src/schema/pgLanguage.cpp:67 standard input:7
+# standard
+# standard
+#: src/schema/pgLanguage.cpp:67 standard input:236
 msgid "Validator"
 msgstr "Validator"
 
-#: src/include/pgObject.h:140 src/schema/pgObject.cpp:500
-#: src/schema/pgSequence.cpp:106 src/ui/dlgDatabase.cpp:55
-#: src/ui/dlgUser.cpp:68 src/include/pgObject.h:141
-#: src/schema/pgObject.cpp:502 src/include/pgObject.h:139
-#: src/schema/pgObject.cpp:512
+#: src/include/pgObject.h:155 src/schema/pgObject.cpp:817
+#: src/schema/pgSequence.cpp:112 src/schema/pgTablespace.cpp:148
+#: src/ui/dlgDatabase.cpp:57 src/ui/dlgUser.cpp:73
 msgid "Value"
 msgstr "Vrijednost"
 
@@ -4901,7 +6078,7 @@ msgstr "Vrijednost"
 # src/ui/dlgUser.cpp:66 standard input:12
 # standard
 # standard
-#: src/ui/dlgDatabase.cpp:55 src/ui/dlgUser.cpp:68 standard input:288
+#: src/ui/dlgDatabase.cpp:57 src/ui/dlgUser.cpp:73 standard input:415
 msgid "Variable"
 msgstr "Varijabla"
 
@@ -4913,7 +6090,7 @@ msgstr "Varijabla"
 # standard input:16
 # standard
 # standard
-#: standard input:68 input:328
+#: standard input:76 input:455
 msgid "Variable Name"
 msgstr "Ime varijable"
 
@@ -4925,7 +6102,7 @@ msgstr "Ime varijable"
 # standard input:17
 # standard
 # standard
-#: standard input:69 input:329
+#: standard input:77 input:456
 msgid "Variable Value"
 msgstr "Vrijednost varijable"
 
@@ -4937,42 +6114,56 @@ msgstr "Vrijednost varijable"
 # standard input:13
 # standard
 # standard
-#: standard input:65 input:325
+#: standard input:73 input:452
 msgid "Variables"
 msgstr "Varijable"
 
-#: src/ui/frmQuery.cpp:122
+#: src/ui/frmQuery.cpp:133
 msgid "Verbose"
 msgstr "Opširno"
 
 # standard
 # standard
-#: standard input:405
+#: standard input:490 input:553 input:634
 msgid "Verbose messages"
 msgstr "Opširne poruke"
 
-#: src/schema/pgServer.cpp:300 src/schema/pgServer.cpp:311
+#: src/schema/pgServer.cpp:484
 msgid "Version number"
 msgstr "Broj verzije"
 
-#: src/schema/pgServer.cpp:299 src/schema/pgServer.cpp:310
+#: src/schema/pgServer.cpp:483
 msgid "Version string"
 msgstr "Tekst verzije"
 
-#: src/schema/pgObject.cpp:47 src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:67
 msgid "View"
 msgstr "Pogled"
 
-#: src/ui/frmMain.cpp:142 src/ui/frmMain.cpp:177
+#: src/ui/frmMain.cpp:182
 msgid "View &Data"
 msgstr "Pokaži po&datke"
 
-#: src/ui/frmMain.cpp:222 src/ui/frmMain.cpp:223
+#: src/ui/frmMain.cpp:253
 msgid "View Data"
 msgstr "Pokaži podatke"
 
-#: src/ui/frmMain.cpp:142 src/ui/frmMain.cpp:177 src/ui/frmMain.cpp:222
-#: src/ui/frmMain.cpp:223
+#: standard input:95
+#, fuzzy
+msgid "View Data Options"
+msgstr "Pokaži podatke"
+
+#: src/ui/frmMain.cpp:183
+#, fuzzy
+msgid "View F&iltered Data"
+msgstr "Pokaži po&datke"
+
+#: src/ui/frmMain.cpp:254
+#, fuzzy
+msgid "View Filtered Data"
+msgstr "Pokaži podatke"
+
+#: src/ui/frmMain.cpp:182 src/ui/frmMain.cpp:253
 msgid "View the data in the selected object."
 msgstr "Pokaži podatke odabranog objekta"
 
@@ -4981,7 +6172,7 @@ msgstr "Pokaži podatke odabranog objekta"
 # src/schema/pgObject.cpp:47 standard input:6
 # standard
 # standard
-#: src/schema/pgObject.cpp:47 standard input:346 src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:66 standard input:475
 msgid "Views"
 msgstr "Pogledi"
 
@@ -4990,11 +6181,11 @@ msgstr "Pogledi"
 # src/schema/pgfunction.cpp:114 standard input:7
 # standard
 # standard
-#: src/schema/pgFunction.cpp:119 standard input:118
+#: src/schema/pgFunction.cpp:114 standard input:150
 msgid "Volatility"
 msgstr "Ishlapivost"
 
-#: src/utils/sysLogger.cpp:87
+#: src/utils/sysLogger.cpp:89
 msgid ""
 "Warning:\n"
 "\n"
@@ -5002,15 +6193,29 @@ msgstr ""
 "Upozorenje:\n"
 "\n"
 
-#: src/ui/frmQueryBuilder.cpp:596 src/utils/misc.cpp:97 src/utils/misc.cpp:102
+#: standard input:487
+msgid "With OIDs"
+msgstr ""
+
+#: src/ui/frmQuery.cpp:1089
+msgid "Writing data."
+msgstr ""
+
+#: src/schema/pgDatabase.cpp:478
+msgid "Xact Committed"
+msgstr ""
+
+#: src/schema/pgDatabase.cpp:479
+msgid "Xact Rolled Back"
+msgstr ""
+
+#: src/ui/frmStatus.cpp:372 src/utils/misc.cpp:67
 msgid "Yes"
 msgstr "Da"
 
-#: src/ui/frmChildTableViewFrame.cpp:434
 msgid "You cannot join on the asterisk."
 msgstr "Ne možete načiniti vezu sa zvjezdicom."
 
-#: src/ui/frmQueryBuilder.cpp:1289
 msgid ""
 "You cannot leave both the column and expression blank.\n"
 "\n"
@@ -5020,11 +6225,9 @@ msgstr ""
 "\n"
 "Kliknite na 'OK' da biste izrazu dodjelili podrazumjevanu funkciju."
 
-#: src/ui/frmQueryBuilder.cpp:1149
 msgid "You must add at least on column."
 msgstr "Morate dodati barem jedan stupac."
 
-#: src/ui/frmQueryBuilder.cpp:1047
 #, c-format
 msgid ""
 "You must redraw your joins so that \"%s\"\n"
@@ -5033,17 +6236,16 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/ui/events.cpp:329 src/ui/events.cpp:348
+#: src/ui/events.cpp:398
 msgid "You must select a server before changing your password!"
 msgstr "Morate odabrati server prije nego mjenjate lozinku!"
 
-#: src/ui/frmQBJoin.cpp:189
 msgid ""
 "You must select one column from the left table and one column from the right "
 "table."
 msgstr "Morate odabrati jedan stupac iz lijeve i jedan iz desne tablice."
 
-#: src/ui/frmEditGrid.cpp:479 src/ui/frmEditGrid.cpp:573
+#: src/ui/frmEditGrid.cpp:663
 msgid "aborting."
 msgstr "Prekid."
 
@@ -5052,12 +6254,11 @@ msgstr "Prekid."
 # standard input:8
 # standard
 # standard
-#: standard input:386
+#: standard input:520
 msgid "all columns"
 msgstr "Svi stupci"
 
-#: src/schema/pgServer.cpp:289 src/ui/frmConnect.cpp:78
-#: src/schema/pgServer.cpp:298 src/ui/frmConnect.cpp:79
+#: src/schema/pgServer.cpp:471 src/ui/dlgServer.cpp:124
 msgid "allow"
 msgstr ""
 
@@ -5066,12 +6267,15 @@ msgstr ""
 # standard input:18
 # standard
 # standard
-#: standard input:293
+#: standard input:420
 msgid "char"
 msgstr "char"
 
-#: src/schema/pgServer.cpp:290 src/ui/frmConnect.cpp:79
-#: src/schema/pgServer.cpp:299 src/ui/frmConnect.cpp:80
+#: standard input:285
+msgid "daily"
+msgstr ""
+
+#: src/schema/pgServer.cpp:472 src/ui/dlgServer.cpp:125
 #, fuzzy
 msgid "disable"
 msgstr "Tablica"
@@ -5081,16 +6285,20 @@ msgstr "Tablica"
 # standard input:21
 # standard
 # standard
-#: standard input:296
+#: standard input:423
 msgid "double"
 msgstr "double"
+
+#: src/ui/frmStatus.cpp:435
+msgid "file logging not enabled"
+msgstr ""
 
 # standard input:19
 # standard input:19
 # standard input:19
 # standard
 # standard
-#: standard input:294
+#: standard input:421
 msgid "int2"
 msgstr "int2"
 
@@ -5099,7 +6307,7 @@ msgstr "int2"
 # standard input:20
 # standard
 # standard
-#: standard input:295
+#: standard input:422
 msgid "int4"
 msgstr "int4"
 
@@ -5111,18 +6319,37 @@ msgstr "int4"
 # standard input:12
 # standard
 # standard
-#: standard input:143 input:324
+#: standard input:177 input:451
 msgid "member"
 msgstr "član"
 
+#: standard input:287
+msgid "monthly"
+msgstr ""
+
+# standard input:3
+# standard input:3
+# standard input:3
+# standard
+# standard
+#: standard input:334
+#, fuzzy
+msgid "need password"
+msgstr "Nova Lozinka"
+
 # standard
 # standard
 # standard
-#: standard input:384
+#: standard input:518
 msgid "no quoting"
 msgstr "bez navodnika"
 
-#: src/schema/pgServer.cpp:287
+#: src/schema/pgTable.cpp:393
+#, fuzzy
+msgid "not counted"
+msgstr "Reci (nastavak)"
+
+#: src/schema/pgServer.cpp:460
 msgid "not encrypted"
 msgstr ""
 
@@ -5134,7 +6361,7 @@ msgstr ""
 # standard input:11
 # standard
 # standard
-#: standard input:142 input:323
+#: standard input:176 input:450
 msgid "not member"
 msgstr "nije član"
 
@@ -5143,20 +6370,19 @@ msgstr "nije član"
 # src/schema/pgObject.cpp:52 standard input:11
 # standard
 # standard
-#: standard input:385
+#: standard input:519
 msgid "only strings"
 msgstr "Samo stringovi"
 
-#: src/ui/frmMain.cpp:158
+#: src/ui/frmMain.cpp:203
 msgid "pgAdmin III &FAQ"
 msgstr "pgAdmin III &FAQ"
 
-#: src/ui/frmQuery.cpp:562 src/ui/frmQueryBuilder.cpp:1485
-#: src/ui/frmQuery.cpp:564
+#: src/ui/frmQuery.cpp:699 src/ui/frmQuery.cpp:769
 msgid "pgAdmin III Query"
 msgstr "pgAdmin III Query"
 
-#: src/ui/events.cpp:503 src/ui/events.cpp:522 src/ui/events.cpp:527
+#: src/ui/events.cpp:647
 msgid "pgServer object didn't initialise because the user aborted."
 msgstr "pgServer objekt se nije inicijalizirao jer je korisnik izvršio prekid."
 
@@ -5165,22 +6391,33 @@ msgstr "pgServer objekt se nije inicijalizirao jer je korisnik izvršio prekid."
 # standard input:21
 # standard
 # standard
-#: standard input:430 input:431
+#: standard input:583
 msgid "pgadmin3&%ID.log"
 msgstr "pgadmin3&%ID.log"
 
-#: src/schema/pgServer.cpp:288 src/ui/frmConnect.cpp:74
-#: src/schema/pgServer.cpp:297 src/ui/frmConnect.cpp:75
+#: src/ui/frmStatus.cpp:492
+msgid "pgadmin:Logfile rotated."
+msgstr ""
+
+#: src/schema/pgServer.cpp:470 src/ui/dlgServer.cpp:120
 msgid "prefer"
 msgstr ""
 
-#: src/ui/frmQuery.cpp:163 src/ui/frmQueryBuilder.cpp:158
+#: src/ui/frmQuery.cpp:175
 msgid "ready"
 msgstr "spreman"
 
-#: src/schema/pgServer.cpp:287 src/ui/frmConnect.cpp:73
-#: src/schema/pgServer.cpp:296 src/ui/frmConnect.cpp:74
+#: standard input:283
+#, fuzzy
+msgid "repeat"
+msgstr "Načini"
+
+#: src/schema/pgServer.cpp:469 src/ui/dlgServer.cpp:119
 msgid "require"
+msgstr ""
+
+#: standard input:284
+msgid "single"
 msgstr ""
 
 # standard input:9
@@ -5188,14 +6425,21 @@ msgstr ""
 # standard input:9
 # standard
 # standard
-#: standard input:358
 msgid "template1"
 msgstr "template1"
+
+#: standard input:286
+msgid "weekly"
+msgstr ""
+
+#: standard input:288
+msgid "yearly"
+msgstr ""
 
 # standard
 # standard
 # standard
-#: standard input:375
+#: standard input:509
 msgid "|"
 msgstr "|"
 
