@@ -27,9 +27,9 @@
 
 
 // pointer to controls
-#define txtDefault      CTRL("txtDefault", wxTextCtrl)
-#define chkNotNull      CTRL("chkNotNull", wxCheckBox)
-#define txtAttstattarget      CTRL("txtAttstattarget",      wxTextCtrl)
+#define txtDefault          CTRL("txtDefault", wxTextCtrl)
+#define chkNotNull          CTRL("chkNotNull", wxCheckBox)
+#define txtAttstattarget    CTRL("txtAttstattarget", wxTextCtrl)
 
 
 
@@ -54,6 +54,7 @@ dlgColumn::dlgColumn(frmMain *frame, pgColumn *node, pgTable *parentNode)
     wxASSERT(!table || table->GetType() == PG_TABLE);
 
     objectType=PG_COLUMN;
+    txtAttstattarget->SetValidator(numericValidator);
 }
 
 
