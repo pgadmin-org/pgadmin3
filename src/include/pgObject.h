@@ -47,32 +47,29 @@ enum PG_OBJTYPE
 class pgObject : public wxTreeItemData
 {
 public:
-    pgObject(int iNewType = PG_NONE, const wxString& szNewName = wxString(""));
+    pgObject(int newType = PG_NONE, const wxString& newName = wxString(""));
     ~pgObject();
 
     int GetType();
     wxString GetTypeName() const;
-    void iSetName(const wxString& szNewVal);
+    void iSetName(const wxString& newVal);
     wxString GetName() const;
     virtual wxString GetIdentifier() const;
     virtual wxString GetQuotedIdentifier() const;
     double GetOid();
-    void iSetOid(double lNewVal);
+    void iSetOid(double newVal);
     wxString GetOwner() const;
-    void iSetOwner(const wxString& szNewVal);
+    void iSetOwner(const wxString& newVal);
     wxString GetComment() const;
-    void iSetComment(const wxString& szNewVal);
+    void iSetComment(const wxString& newVal);
     wxString GetAcl() const;
-    void iSetAcl(const wxString& szNewVal);
+    void iSetAcl(const wxString& newVal);
     virtual bool GetSystemObject();
 
-protected:
-    void vCtor(int iNewType = PG_NONE, const wxString& szNewName = wxString(""));
-
 private:
-    wxString szTypeName, szName, szOwner, szComment, szAcl;
-    int iType;
-    double dOid;
+    wxString typeName, name, owner, comment, acl;
+    int type;
+    double oid;
 };
 
 #endif

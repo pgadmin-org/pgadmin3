@@ -32,6 +32,7 @@ OBJECTS = $(PROGRAM).o \
           ui/frmSplash.o \
           ui/frmUpgradeWizard.o \
           ui/ctlSQLBox.o \
+          utils/misc.o \
           utils/sysLogger.o \
           utils/sysSettings.o
 

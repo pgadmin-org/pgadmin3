@@ -31,18 +31,18 @@ public:
     frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
     ~frmMain();
     void OnTipOfTheDay();
-    wxStatusBar *stBar;
+    wxStatusBar *statusBar;
     
 private:
-    wxTreeCtrl *tvBrowser;
-    wxListCtrl *lvProperties;
-    wxListCtrl *lvStatistics;
-    wxNotebook *nbListViews;
-    ctlSQLBox *txtSQLPane;
-    wxMenuBar *mnuBar;
-    wxMenu *mnuFile, *mnuTools, *mnuView, *mnuHelp;
-    wxToolBar *tlBar;
-    wxTreeItemId itmServers;
+    wxTreeCtrl *browser;
+    wxListCtrl *properties;
+    wxListCtrl *statistics;
+    wxNotebook *listViews;
+    ctlSQLBox *sqlPane;
+    wxMenuBar *menuBar;
+    wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu;
+    wxToolBar *toolBar;
+    wxTreeItemId servers;
     void OnAbout(wxCommandEvent& event);
     void OnAddServer();
     void OnExit(wxCommandEvent& event);
@@ -55,20 +55,20 @@ private:
     void OnSelActivated();
     void OnDrop();
     void OnRefresh();
-    void SetButtons(bool bRefresh, bool bCreate, bool bDrop, bool bProperties, bool bSQL, bool bViewData, bool bVacuum);
+    void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum);
 
     // Treeview  handlers
-    void tvServer(pgServer *objServer);
-    void tvDatabases(pgCollection *objCollection);
-    void tvDatabase(pgDatabase *objDatabase);
+    void tvServer(pgServer *server);
+    void tvDatabases(pgCollection *collection);
+    void tvDatabase(pgDatabase *database);
 
     // Statistics Handlers
-    void svServer(pgServer *objServer);
-    void svDatabases(pgCollection *objCollection);
+    void svServer(pgServer *server);
+    void svDatabases(pgCollection *collection);
 
     void StoreServers();
     void RetrieveServers();
-    void ReconnectServer(pgServer *objServer);
+    void ReconnectServer(pgServer *server);
     DECLARE_EVENT_TABLE()
 };
 

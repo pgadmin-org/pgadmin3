@@ -30,11 +30,11 @@ BEGIN_EVENT_TABLE(frmConnect, wxDialog)
     EVT_BUTTON (XRCID("btnCancel"), frmConnect::OnCancel)
 END_EVENT_TABLE()
 
-frmConnect::frmConnect(pgServer *parent, const wxString& szServer, const wxString& szDatabase, const wxString& szUsername, int iPort)
+frmConnect::frmConnect(pgServer *parent, const wxString& server, const wxString& database, const wxString& username, int port)
 {
 
     wxLogInfo(wxT("Creating a connect dialogue"));
-    extern sysSettings *objSettings;
+    extern sysSettings *settings;
 
     wxXmlResource::Get()->LoadDialog(this, (wxFrame *) NULL, "frmConnect"); 
 
@@ -43,12 +43,12 @@ frmConnect::frmConnect(pgServer *parent, const wxString& szServer, const wxStrin
     Center();
 
     // Setup the default values
-    XRCCTRL(*this, "txtServer", wxTextCtrl)->SetValue(szServer);
-    XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetValue(szDatabase);
-    XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetValue(szUsername);
-    wxString szPort;
-    szPort.Printf("%d", iPort);
-    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetValue(szPort);
+    XRCCTRL(*this, "txtServer", wxTextCtrl)->SetValue(server);
+    XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetValue(database);
+    XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetValue(username);
+    wxString sport;
+    sport.Printf("%d", port);
+    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetValue(sport);
 
     objParent = parent;
 }
@@ -70,11 +70,11 @@ void frmConnect::OnOK()
 {
 
     // Store the connection settings
-    extern sysSettings *objSettings;
-    objSettings->SetLastServer(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
-    objSettings->SetLastDatabase(XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue());
-    objSettings->SetLastUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
-    objSettings->SetLastPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
+    extern sysSettings *settings;
+    settings->SetLastServer(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
+    settings->SetLastDatabase(XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue());
+    settings->SetLastUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
+    settings->SetLastPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
 
     // Pass the settings back to the pgServer that called me
     objParent->iSetName(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());

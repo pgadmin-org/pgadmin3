@@ -36,13 +36,13 @@ frmSplash::frmSplash(wxFrame *parent)
     SetIcon(wxIcon(pgAdmin3_xpm));
 
     // Image
-    imgSplash = wxBitmap(splash_xpm);
+    splash = wxBitmap(splash_xpm);
     
-    SetClientSize(imgSplash.GetWidth(), imgSplash.GetHeight());
-    wxString szVersion = wxT("Version: ");
-    szVersion.Append(VERSION);
+    SetClientSize(splash.GetWidth(), splash.GetHeight());
+    wxString version = wxT("Version: ");
+    version.Append(VERSION);
 	(void)new wxPanel(this, -1, wxPoint(10,155), wxSize(0,0));
-	(void)new wxStaticText(this, -1,szVersion, wxPoint(10,155));
+	(void)new wxStaticText(this, -1, version, wxPoint(10,155));
     this->Center();
 }
 
@@ -54,5 +54,5 @@ frmSplash::~frmSplash()
 void frmSplash::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
     wxPaintDC dc(this);
-    dc.DrawBitmap(imgSplash, 0, 0);
+    dc.DrawBitmap(splash, 0, 0);
 }

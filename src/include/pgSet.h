@@ -24,7 +24,7 @@
 class pgSet
 {
 public:
-    pgSet(PGresult *objNewRes, PGconn *objNewConn);
+    pgSet(PGresult *newRes, PGconn *newConn);
     ~pgSet();
     long NumRows();
     long NumCols();
@@ -35,19 +35,19 @@ public:
     long CurrentPos();
     bool Eof();
     bool Bof();
-    wxString ColName(int iCol) const;
-    wxString ColType(int iCol) const;
-    int ColSize(int iCol);
-    int ColScale(int iCol);
-    wxString GetVal(int iCol) const;
-    wxString GetVal(const wxString& szCol) const;
+    wxString ColName(int col) const;
+    wxString ColType(int col) const;
+    int ColSize(int col);
+    int ColScale(int col);
+    wxString GetVal(int col) const;
+    wxString GetVal(const wxString& col) const;
 
 private:
-    PGconn *objConn;
-    PGresult *objRes;
-    long lPos;
-    bool bEof, bBof;
-    wxString ExecuteScalar(const wxString& szSQL) const;
+    PGconn *conn;
+    PGresult *res;
+    long pos;
+    bool eof, bof;
+    wxString ExecuteScalar(const wxString& sql) const;
 };
 
 #endif

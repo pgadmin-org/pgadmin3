@@ -47,7 +47,7 @@ void frmPassword::OnOK()
 {
 
     // Is the old password right?
-    if (XRCCTRL(*this, "txtCurrent", wxTextCtrl)->GetValue() != objServer->GetPassword()) {
+    if (XRCCTRL(*this, "txtCurrent", wxTextCtrl)->GetValue() != server->GetPassword()) {
         wxLogError(wxT("Incorrect password!"));
         return;
     }
@@ -59,10 +59,10 @@ void frmPassword::OnOK()
     }
 
     // Set the new password
-    if (!objServer->SetPassword(XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue())) {
-        wxString szMsg;
-        szMsg.Printf(wxT("The password could not be changed!"));
-        wxLogError(szMsg);
+    if (!server->SetPassword(XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue())) {
+        wxString msg;
+        msg.Printf(wxT("The password could not be changed!"));
+        wxLogError(msg);
         return;
     }
 
@@ -76,7 +76,7 @@ void frmPassword::OnCancel()
     this->Destroy();
 }
 
-void frmPassword::SetServer(pgServer *objNewServer)
+void frmPassword::SetServer(pgServer *newServer)
 {
-    objServer = objNewServer;
+    server = newServer;
 }

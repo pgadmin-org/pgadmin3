@@ -32,7 +32,7 @@ public:
     virtual void DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp);
 
 private:
-    void WriteLog(const wxString& szMsg);
+    void WriteLog(const wxString& msg);
 };
 
 #endif

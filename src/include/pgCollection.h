@@ -23,13 +23,13 @@
 class pgCollection : public pgObject
 {
 public:
-    pgCollection(int iNewType = PG_NONE, const wxString& szNewName = wxString(""));
+    pgCollection(int newType = PG_NONE, const wxString& newName = wxString(""));
     ~pgCollection();
     pgServer *GetServer();
-    void SetServer(pgServer *objNewServer);
+    void SetServer(pgServer *newServer);
 
 private:
-    pgServer *objServer;
+    pgServer *server;
 };
 
 #endif

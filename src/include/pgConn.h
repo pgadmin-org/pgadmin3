@@ -47,11 +47,11 @@ enum
 class pgConn
 {
 public:
-    pgConn(const wxString& szServer = wxString(""), const wxString& szDatabase = wxString(""), const wxString& szUsername = wxString(""), const wxString& szPassword = wxString(""), int iPort = 5432);
+    pgConn(const wxString& server = wxString(""), const wxString& database = wxString(""), const wxString& username = wxString(""), const wxString& password = wxString(""), int port = 5432);
     ~pgConn();
-    int ExecuteVoid(const wxString& szSQL);
-    wxString ExecuteScalar(const wxString& szSQL) const;
-    pgSet *ExecuteSet(const wxString& szSQL);
+    int ExecuteVoid(const wxString& sql);
+    wxString ExecuteScalar(const wxString& sql) const;
+    pgSet *ExecuteSet(const wxString& sql);
     wxString GetUser() const;
     wxString GetPassword() const;
     wxString GetHost() const;
@@ -66,9 +66,9 @@ public:
     long GetLastSystemOID();
 
 private:
-    PGconn *objConn;
-    bool bResolvedIP;
-    wxString szDBHost;
+    PGconn *conn;
+    bool resolvedIP;
+    wxString dbHost;
 };
 
 #endif

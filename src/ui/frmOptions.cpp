@@ -32,7 +32,7 @@ frmOptions::frmOptions(wxFrame *parent)
 {
 
     wxLogInfo(wxT("Creating an options dialogue"));
-    extern sysSettings *objSettings;
+    extern sysSettings *settings;
 
     wxXmlResource::Get()->LoadDialog(this, parent, "frmOptions"); 
 
@@ -40,8 +40,8 @@ frmOptions::frmOptions(wxFrame *parent)
     SetIcon(wxIcon(pgAdmin3_xpm));
     Center();
 
-    XRCCTRL(*this, "txtLogfile", wxTextCtrl)->SetValue(objSettings->GetLogFile());
-    XRCCTRL(*this, "radLoglevel", wxRadioBox)->SetSelection(objSettings->GetLogLevel());
+    XRCCTRL(*this, "txtLogfile", wxTextCtrl)->SetValue(settings->GetLogFile());
+    XRCCTRL(*this, "radLoglevel", wxRadioBox)->SetSelection(settings->GetLogLevel());
 }
 
 frmOptions::~frmOptions()
@@ -51,33 +51,33 @@ frmOptions::~frmOptions()
 
 void frmOptions::OnOK()
 {
-    extern sysSettings *objSettings;
+    extern sysSettings *settings;
 
     // Logfile
-    wxString szLogFile = XRCCTRL(*this, "txtLogfile", wxTextCtrl)->GetValue();
-    wxLogInfo(wxT("Setting logfile to: %s"), szLogFile.c_str());
-    objSettings->SetLogFile(szLogFile);
+    wxString logFile = XRCCTRL(*this, "txtLogfile", wxTextCtrl)->GetValue();
+    wxLogInfo(wxT("Setting logfile to: %s"), logFile.c_str());
+    settings->SetLogFile(logFile);
 
     // Loglevel
-    wxString szLogInfo = XRCCTRL(*this, "radLoglevel", wxRadioBox)->GetStringSelection();
-    wxLogInfo(wxT("Setting loglevel to: %s"),szLogInfo.c_str());
-    int iSel = XRCCTRL(*this, "radLoglevel", wxRadioBox)->GetSelection();
+    wxString logInfo = XRCCTRL(*this, "radLoglevel", wxRadioBox)->GetStringSelection();
+    wxLogInfo(wxT("Setting loglevel to: %s"),logInfo.c_str());
+    int sel = XRCCTRL(*this, "radLoglevel", wxRadioBox)->GetSelection();
 
-    switch(iSel) {
+    switch(sel) {
         case(0):
-          objSettings->SetLogLevel(LOG_NONE);
+          settings->SetLogLevel(LOG_NONE);
           break;
         case(1):
-          objSettings->SetLogLevel(LOG_ERRORS);
+          settings->SetLogLevel(LOG_ERRORS);
           break;
         case(2):
-          objSettings->SetLogLevel(LOG_SQL);
+          settings->SetLogLevel(LOG_SQL);
           break;
         case(3):
-          objSettings->SetLogLevel(LOG_DEBUG);
+          settings->SetLogLevel(LOG_DEBUG);
           break;
         default:
-          objSettings->SetLogLevel(LOG_ERRORS);
+          settings->SetLogLevel(LOG_ERRORS);
           break;
     }
     this->Destroy();
@@ -90,7 +90,7 @@ void frmOptions::OnCancel()
 
 void frmOptions::OnBrowseLogFile()
 {
-    wxFileDialog dlgLogFile(this, wxT("Select log file"), wxT(""), wxT(""), wxT("Log files (*.log)|*.log|All files (*.*)|*.*"));
-    dlgLogFile.SetDirectory(wxGetHomeDir());
-    if (dlgLogFile.ShowModal() == wxID_OK) XRCCTRL(*this, "txtLogfile", wxTextCtrl)->SetValue(dlgLogFile.GetPath());
+    wxFileDialog logFile(this, wxT("Select log file"), wxT(""), wxT(""), wxT("Log files (*.log)|*.log|All files (*.*)|*.*"));
+    logFile.SetDirectory(wxGetHomeDir());
+    if (logFile.ShowModal() == wxID_OK) XRCCTRL(*this, "txtLogfile", wxTextCtrl)->SetValue(logFile.GetPath());
 }

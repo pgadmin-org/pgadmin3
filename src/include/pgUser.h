@@ -24,17 +24,17 @@
 class pgUser : public pgObject
 {
 public:
-    pgUser(const wxString& szNewName = wxString(""));
+    pgUser(const wxString& newName = wxString(""));
     ~pgUser();
     pgServer *GetServer();
-    void SetServer(pgServer *objNewServer);
+    void SetServer(pgServer *newServer);
 
     // User Specific
     int GetUserID();
 
 private:
-    int iUserID;
-    pgServer *objServer;
+    int userId;
+    pgServer *server;
 };
 
 #endif

@@ -24,10 +24,10 @@ class frmPassword : public wxDialog
 public:
     frmPassword(wxFrame *parent);
     ~frmPassword();
-    void SetServer(pgServer *objNewServer);
+    void SetServer(pgServer *newServer);
     
 private:
-    pgServer *objServer;
+    pgServer *server;
     void OnOK();
     void OnCancel();
     DECLARE_EVENT_TABLE()

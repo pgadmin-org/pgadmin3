@@ -23,11 +23,11 @@
 class pgServer : public pgObject
 {
 public:
-    pgServer(const wxString& szNewServer = wxString(""), const wxString& szNewDatabase = wxString(""), const wxString& szNewUsername = wxString(""), int iNewPort = 5432);
+    pgServer(const wxString& newServer = wxString(""), const wxString& newDatabase = wxString(""), const wxString& newUsername = wxString(""), int newPort = 5432);
     ~pgServer();
     int GetType();
     wxString GetTypeName() const;
-    int Connect(bool bLockFields = FALSE);
+    int Connect(bool lockFields = FALSE);
     wxString GetIdentifier() const;
     wxString GetVersionString();
     float GetVersionNumber();
@@ -38,23 +38,23 @@ public:
     wxString GetLastError() const;
     int GetPort();
     bool GetConnected();
-    void iSetDatabase(const wxString& szNewVal);
-    void iSetUsername(const wxString& szNewVal);
-    void iSetPassword(const wxString& szNewVal);
-    bool SetPassword(const wxString& szNewVal);
-    void iSetPort(int iNewVal);
-    int ExecuteVoid(const wxString& szSQL);
-    wxString ExecuteScalar(const wxString& szSQL) const;
-    pgSet ExecuteSet(const wxString& szSQL);
+    void iSetDatabase(const wxString& newVal);
+    void iSetUsername(const wxString& newVal);
+    void iSetPassword(const wxString& newVal);
+    bool SetPassword(const wxString& newVal);
+    void iSetPort(int newVal);
+    int ExecuteVoid(const wxString& sql);
+    wxString ExecuteScalar(const wxString& sql) const;
+    pgSet ExecuteSet(const wxString& sql);
 
 private:
-    pgConn *cnMaster;
-    bool bConnected;
-    wxString szDatabase, szUsername, szPassword, szVer, szError;
-    int iPort;
-    double dLastSystemOID;
-    float fVer;
-    wxFrame *winParent;
+    pgConn *conn;
+    bool connected;
+    wxString database, username, password, ver, error;
+    int port;
+    double lastSystemOID;
+    float versionNum;
+    wxFrame *parentWin;
 };
 
 #endif

@@ -19,99 +19,105 @@
 
 void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 {
-    extern sysSettings *objSettings;
-    wxString szType, szPreamble;
-    int iIcon;
+    extern sysSettings *settings;
+    wxString msgtype, preamble;
+    int icon = 0;
 
     switch (level) {
         case wxLOG_FatalError:
-            szType = wxT("FATAL  ");
-            szPreamble = wxT("A fatal error has occured:\n\n");
-            iIcon = wxICON_ERROR;
+            msgtype = wxT("FATAL  ");
+            preamble = wxT("A fatal error has occured:\n\n");
+            icon = wxICON_ERROR;
             break;
+
         case wxLOG_Error:
-            szType = wxT("ERROR  ");
-            szPreamble = wxT("An error has occured:\n\n");
-            iIcon = wxICON_ERROR;
+            msgtype = wxT("ERROR  ");
+            preamble = wxT("An error has occured:\n\n");
+            icon = wxICON_ERROR;
             break;
+
         case wxLOG_Warning:
-            szType = wxT("WARNING");
-            szPreamble = wxT("Warning:\n\n");
-            iIcon = wxICON_EXCLAMATION;
+            msgtype = wxT("WARNING");
+            preamble = wxT("Warning:\n\n");
+            icon = wxICON_EXCLAMATION;
             break;
+
         case wxLOG_Message:
-            szType = wxT("MESSAGE");
-            szPreamble = wxT("");
-            iIcon = wxICON_INFORMATION;
+            msgtype = wxT("MESSAGE");
+            preamble = wxT("");
+            icon = wxICON_INFORMATION;
             break;
+
         case wxLOG_Info:
-            szType = wxT("INFO   ");
-            iIcon = 0;
+            msgtype = wxT("INFO   ");
             break;
+
         case wxLOG_Status:
-            szType = wxT("STATUS ");
-            iIcon = 0;
+            msgtype = wxT("STATUS ");
             break;
+
         case wxLOG_Trace:
-            szType = wxT("TRACE   ");
-            iIcon = 0;
+            msgtype = wxT("TRACE   ");
             break;
+
         case wxLOG_Debug:
-            szType = wxT("DEBUG  ");
-            iIcon = 0;
+            msgtype = wxT("DEBUG  ");
             break;
+
         default:
-            szType = wxT("UNKNOWN");
-            iIcon = wxICON_INFORMATION;
+            msgtype = wxT("UNKNOWN");
+            icon = wxICON_INFORMATION;
             break;
     }
 
     // Convert the timestamp
-    wxDateTime *dtTimestamp = new wxDateTime(timestamp);
-    wxString szMsg;
+    wxDateTime *time = new wxDateTime(timestamp);
+    wxString fullmsg;
 
     // Build the message.
-    szMsg << dtTimestamp->FormatISODate() << " " << dtTimestamp->FormatISOTime() << " " << szType << ": " << msg;
+    fullmsg << time->FormatISODate() << " " << time->FormatISOTime() << " " << msgtype << ": " << msg;
 
     // Display the message if required
-    switch (objSettings->GetLogLevel()) {
+    switch (settings->GetLogLevel()) {
         case LOG_NONE:
             break;
 
         case LOG_ERRORS:
             if ((level == wxLOG_FatalError) || \
-                (level == wxLOG_Error)) WriteLog(szMsg);
+                (level == wxLOG_Error)) WriteLog(fullmsg);
             break;
 
         case LOG_SQL:
             if ((level == wxLOG_FatalError) || \
                 (level == wxLOG_Error) || \
                 (level == wxLOG_Message) || \
-                (level == wxLOG_Status)) WriteLog(szMsg);
+                (level == wxLOG_Status)) WriteLog(fullmsg);
             break;
 
         case LOG_DEBUG:
-            WriteLog(szMsg);
+            WriteLog(fullmsg);
             break;
     }
 
     // Display a messagebox if required.
-    if (iIcon != 0) wxMessageBox(szPreamble + msg, APPNAME_L, wxOK | wxCENTRE | iIcon);
+    if (icon != 0) wxMessageBox(preamble + msg, APPNAME_L, wxOK | wxCENTRE | icon);
 }
 
-void sysLogger::WriteLog(const wxString& szMsg)
+void sysLogger::WriteLog(const wxString& msg)
 {
-    extern sysSettings *objSettings;
-    wxString szPID, szLogFile;
-    szPID.Printf("%d", wxGetProcessId());
-    szLogFile.Printf("%s", objSettings->GetLogFile().c_str());
-    szLogFile.Replace("%ID", szPID);
-    wxFFile fpLog(szLogFile, "a");
-    if (!fpLog.IsOpened()) {
+    extern sysSettings *settings;
+    wxString pid, logfile;
+
+    pid.Printf("%d", wxGetProcessId());
+    logfile.Printf("%s", settings->GetLogFile().c_str());
+    logfile.Replace("%ID", pid);
+
+    wxFFile file(logfile, "a");
+    if (!file.IsOpened()) {
         wxMessageBox(wxT("Cannot open the logfile!"), wxT("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
         return;
     }
 
-   fpLog.Write(szMsg + "\n");
-   fpLog.Close();
+   file.Write(msg + "\n");
+   file.Close();
 }

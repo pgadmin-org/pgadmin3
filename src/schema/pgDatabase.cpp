@@ -13,22 +13,19 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "misc.h"
 #include "pgDatabase.h"
 #include "pgObject.h"
 #include "pgServer.h"
 
 
-pgDatabase::pgDatabase(const wxString& szNewName)
-: pgObject()
+pgDatabase::pgDatabase(const wxString& newName)
+: pgObject(PG_DATABASE, newName)
 {
-
     wxLogInfo(wxT("Creating a pgDatabase object"));
 
-    // Call the 'virtual' ctor
-    vCtor(PG_DATABASE, szNewName);
-
-    bAllowConnections = TRUE;
-    bConnected = FALSE;
+    allowConnections = TRUE;
+    connected = FALSE;
 }
 
 pgDatabase::~pgDatabase()
@@ -37,37 +34,33 @@ pgDatabase::~pgDatabase()
 }
 
 int pgDatabase::Connect() {
-    if (!bAllowConnections) {
+    if (!allowConnections) {
         return PGCONN_REFUSED;
     }
-    if (bConnected) {
-        return cnDatabase->GetStatus();
+    if (connected) {
+        return database->GetStatus();
     } else {
 
-        cnDatabase = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());
-        if (cnDatabase->GetStatus() == PGCONN_OK) {
+        database = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());
+        if (database->GetStatus() == PGCONN_OK) {
 
             // As we connected, we should now get the comments
-            wxString szSQL, szComment;
-            szSQL.Printf(wxT("SELECT description FROM pg_description WHERE objoid = %s"), NumToStr(this->GetOid()).c_str());
-            szComment = cnDatabase->ExecuteScalar(szSQL);
-            if (szComment != "(null)") {
-                this->iSetComment(szComment);
+            wxString sql, rawcomment;
+            sql.Printf(wxT("SELECT description FROM pg_description WHERE objoid = %s"), NumToStr(this->GetOid()).c_str());
+            rawcomment = database->ExecuteScalar(sql);
+            if (rawcomment != "(null)") {
+                this->iSetComment(rawcomment);
             }
 
             // Now we're connected.
-            bConnected = TRUE;
+            connected = TRUE;
             return PGCONN_OK;
 
         } else {
 
-            wxString szMsg;
-			#ifdef __WXMSW__
-                szMsg.Printf(wxT("%s"), cnDatabase->GetLastError);
-            #else
-			    szMsg.Printf(wxT("%s"), cnDatabase->GetLastError().c_str());
-            #endif
-			wxLogError(szMsg);
+            wxString msg;
+			msg.Printf(wxT("%s"), database->GetLastError().c_str());
+			wxLogError(msg);
             return PGCONN_BAD;
         }
     }
@@ -75,59 +68,59 @@ int pgDatabase::Connect() {
 
 // Parent objects
 pgServer *pgDatabase::GetServer() {
-    return objServer;
+    return server;
 }
 
-void pgDatabase::SetServer(pgServer *objNewServer) {
-    objServer = objNewServer;
+void pgDatabase::SetServer(pgServer *newServer) {
+    server = newServer;
 }
 
 wxString pgDatabase::GetPath() const
 {
-    return szPath;
+    return path;
 }
-void pgDatabase::iSetPath(const wxString& szNewVal)
+void pgDatabase::iSetPath(const wxString& newVal)
 {
-    szPath = szNewVal;
+    path = newVal;
 }
 
 wxString pgDatabase::GetEncoding() const
 {
-    return szEncoding;
+    return encoding;
 }
-void pgDatabase::iSetEncoding(const wxString& szNewVal)
+void pgDatabase::iSetEncoding(const wxString& newVal)
 {
-    szEncoding = szNewVal;
+    encoding = newVal;
 }
 
 wxString pgDatabase::GetVariables() const
 {
-    return szVariables;
+    return variables;
 }
-void pgDatabase::iSetVariables(const wxString& szNewVal)
+void pgDatabase::iSetVariables(const wxString& newVal)
 {
-    szVariables = szNewVal;
+    variables = newVal;
 }
 
 bool pgDatabase::GetAllowConnections()
 {
-    return bAllowConnections;
+    return allowConnections;
 }
-void pgDatabase::iSetAllowConnections(bool bNewVal)
+void pgDatabase::iSetAllowConnections(bool newVal)
 {
-    bAllowConnections = bNewVal;
+    allowConnections = newVal;
 }
 
 bool pgDatabase::GetConnected()
 {
-    return bConnected;
+    return connected;
 }
 
 bool pgDatabase::GetSystemObject()
 {
-    if (objServer) {
+    if (server) {
         if (this->GetName() == wxT("template0")) return TRUE;
-        return (this->GetOid() <= objServer->GetLastSystemOID());
+        return (this->GetOid() <= server->GetLastSystemOID());
     } else {
         return FALSE;
     }
@@ -135,13 +128,13 @@ bool pgDatabase::GetSystemObject()
 
 wxString pgDatabase::GetSql() const
 {
-    wxString szSQL;
-    szSQL.Printf(wxT("CREATE DATABASE %s WITH ENCODING = %s;"),
-                 this->GetQuotedIdentifier().c_str(), qtString(szEncoding).c_str());
+    wxString sql;
+    sql.Printf(wxT("CREATE DATABASE %s WITH ENCODING = %s;"),
+                 this->GetQuotedIdentifier().c_str(), qtString(this->GetEncoding()).c_str());
 
     if (!this->GetComment().IsEmpty())
-        szSQL.Printf(wxT("%s\nCOMMENT ON DATABASE %s IS %s;"),
-                     szSQL.c_str(), this->GetQuotedIdentifier().c_str(), qtString(this->GetComment()).c_str());
+        sql.Printf(wxT("%s\nCOMMENT ON DATABASE %s IS %s;"),
+                     sql.c_str(), this->GetQuotedIdentifier().c_str(), qtString(this->GetComment()).c_str());
 
-    return szSQL;
+    return sql;
 }

@@ -27,7 +27,7 @@ public:
     void OnPaint(wxPaintEvent&);
     
 private:
-    wxBitmap imgAbout;
+    wxBitmap about;
     DECLARE_EVENT_TABLE()
 };
 

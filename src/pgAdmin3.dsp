@@ -133,6 +133,10 @@ SOURCE=.\schema\pgUser.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\utils\misc.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\sysLogger.cpp
 # End Source File
 # Begin Source File
@@ -438,6 +442,10 @@ SOURCE=.\include\frmSplash.h
 # Begin Source File
 
 SOURCE=.\include\frmUpgradeWizard.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\misc.h
 # End Source File
 # Begin Source File
 

@@ -26,161 +26,165 @@
 // App headers
 #include "pgConn.h"
 #include "pgAdmin3.h"
+#include "misc.h"
 #include "pgSet.h"
 
-pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxString& szUsername, const wxString& szPassword, int iPort)
+pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port)
 {
     wxLogInfo(wxT("Creating pgConn object"));
-    wxString szMsg, szHost;
+    wxString msg, hostip;
 
     // Check the hostname/ipaddress
-    struct hostent *heHost;
-    unsigned long lIPAddr;
+    struct hostent *host;
+    unsigned long addr;
     
 #ifdef __WXMSW__
-    struct in_addr saAddr;
+    struct in_addr ipaddr;
 #else
-    unsigned long saAddr;
+    unsigned long ipaddr;
 #endif
     
     
-    lIPAddr = inet_addr(szServer.c_str());
-	if (lIPAddr == INADDR_NONE) // szServer is not an IP address
+    addr = inet_addr(server.c_str());
+	if (addr == INADDR_NONE) // szServer is not an IP address
 	{
-		heHost = gethostbyname(szServer.c_str());
-		if (heHost == NULL)
+		host = gethostbyname(server.c_str());
+		if (host == NULL)
 		{
-            bResolvedIP = FALSE;
-            szMsg.Printf("Could not resolve hostname: %s", szServer.c_str());
-			wxLogError(szMsg);
+            resolvedIP = FALSE;
+            msg.Printf("Could not resolve hostname: %s", server.c_str());
+			wxLogError(msg);
 			return;
 		}
 
-        memcpy(&(saAddr),heHost->h_addr,heHost->h_length); 
-	    szHost.Printf("%s", inet_ntoa(*((struct in_addr*) heHost->h_addr_list[0])));
+        memcpy(&(ipaddr),host->h_addr,host->h_length); 
+	    hostip.Printf("%s", inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
 
     } else {
-        szHost = szServer;
+        hostip = server;
     }
 
-    bResolvedIP = TRUE;
-    szMsg.Printf(wxT("Server name: %s (resolved to: %s)"), szServer.c_str(), szHost.c_str());
-    wxLogInfo(szMsg);
+    resolvedIP = TRUE;
+    msg.Printf(wxT("Server name: %s (resolved to: %s)"), server.c_str(), hostip.c_str());
+    wxLogInfo(msg);
 
     // Create the connection string
-    wxString szConn;
-    if (!szServer.IsEmpty()) {
-      szConn.Append(wxT(" hostaddr="));
-      szConn.Append(szHost);
+    wxString connstr;
+    if (!server.IsEmpty()) {
+      connstr.Append(wxT(" hostaddr="));
+      connstr.Append(hostip);
     }
-    if (!szDatabase.IsEmpty()) {
-      szConn.Append(wxT(" dbname="));
-      szConn.Append(szDatabase);
+    if (!database.IsEmpty()) {
+      connstr.Append(wxT(" dbname="));
+      connstr.Append(database);
     }
-    if (!szUsername.IsEmpty()) {
-      szConn.Append(wxT(" user="));
-      szConn.Append(szUsername);
+    if (!username.IsEmpty()) {
+      connstr.Append(wxT(" user="));
+      connstr.Append(username);
     }
-    if (!szPassword.IsEmpty()) {
-      szConn.Append(wxT(" password="));
-      szConn.Append(szPassword);
+    if (!password.IsEmpty()) {
+      connstr.Append(wxT(" password="));
+      connstr.Append(password);
     }
-    if (iPort > 0) {
-      szConn.Append(wxT(" port="));
-      szConn.Append(NumToStr((double)iPort));
+    if (port > 0) {
+      connstr.Append(wxT(" port="));
+      connstr.Append(NumToStr((double)port));
     }
-    szConn.Trim(FALSE);
+    connstr.Trim(FALSE);
 
     // Open the connection
-    szMsg.Printf(wxT("Opening connection with connection string: %s"), szConn.c_str());
-    wxLogInfo(szMsg);
+    msg.Printf(wxT("Opening connection with connection string: %s"), connstr.c_str());
+    wxLogInfo(msg);
 
-    objConn = PQconnectdb(szConn.c_str());
-    szDBHost = szServer;
+    conn = PQconnectdb(connstr.c_str());
+    dbHost = server;
 }
 
 pgConn::~pgConn()
 {
     wxLogInfo(wxT("Destroying pgConn object"));
-    PQfinish(objConn);
+    PQfinish(conn);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Execute SQL
 //////////////////////////////////////////////////////////////////////////
 
-int pgConn::ExecuteVoid(const wxString& szSQL)
+int pgConn::ExecuteVoid(const wxString& sql)
 {
     // Execute the query and get the status.
     PGresult *qryRes;
-    wxString szMsg;
-    szMsg.Printf(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), szSQL.c_str());
-    wxLogStatus(szMsg);
-    qryRes = PQexec(objConn, szSQL.c_str());
-    int iRes = PQresultStatus(qryRes);
+    wxString msg;
+    msg.Printf(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
+    wxLogStatus(msg);
+    qryRes = PQexec(conn, sql.c_str());
+    int res = PQresultStatus(qryRes);
 
     // Check for errors
-    if (PQresultStatus(qryRes) != PGRES_TUPLES_OK &&
-        PQresultStatus(qryRes) != PGRES_COMMAND_OK) {
-        wxString szMsg;
-        szMsg.Printf(wxT("%s"), PQerrorMessage(objConn));
-        wxLogError(szMsg);
+    if (res != PGRES_TUPLES_OK &&
+        res != PGRES_COMMAND_OK) {
+        msg.Printf(wxT("%s"), PQerrorMessage(conn));
+        wxLogError(msg);
     }
 
     // Cleanup & exit
     PQclear(qryRes);
-    return iRes;
+    return res;
 }
 
-wxString pgConn::ExecuteScalar(const wxString& szSQL) const
+wxString pgConn::ExecuteScalar(const wxString& sql) const
 {
     // Execute the query and get the status.
     PGresult *qryRes;
-    wxString szMsg;
-    int iPort = this->GetPort();
-    szMsg.Printf(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), iPort, szSQL.c_str());
-    wxLogInfo(szMsg);
-    qryRes = PQexec(objConn, szSQL.c_str());
+    wxString msg;
+    msg.Printf(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
+    wxLogInfo(msg);
+    qryRes = PQexec(conn, sql.c_str());
         
     // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
-        szMsg.Printf(wxT("%s"), PQerrorMessage(objConn));
-        wxLogError(szMsg);
+        msg.Printf(wxT("%s"), PQerrorMessage(conn));
+        wxLogError(msg);
         PQclear(qryRes);
         return wxString("");
     }
 
 	// Check for a returned row
     if (PQntuples(qryRes) < 1) {
-		szMsg.Printf(wxT("Query returned no tuples"));
-        wxLogInfo(szMsg);
+		msg.Printf(wxT("Query returned no tuples"));
+        wxLogInfo(msg);
         PQclear(qryRes);
         return wxString("");
 	}
 	
 	// Retrieve the query result and return it.
-	wxString szResult;
-    szResult.Printf("%s", PQgetvalue(qryRes, 0, 0));
-    szMsg.Printf(wxT("Query result: %s"), szResult.c_str());
-    wxLogInfo(szMsg);
+	wxString result;
+    result.Printf("%s", PQgetvalue(qryRes, 0, 0));
+    msg.Printf(wxT("Query result: %s"), result.c_str());
+    wxLogInfo(msg);
 
     // Cleanup & exit
     PQclear(qryRes);
-    return szResult;
+    return result;
 }
 
-pgSet *pgConn::ExecuteSet(const wxString& szSQL)
+pgSet *pgConn::ExecuteSet(const wxString& sql)
 {
     // Execute the query and get the status.
     PGresult *qryRes;
-    wxString szMsg;
-    szMsg.Printf(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), szSQL.c_str());
-    wxLogInfo(szMsg);
-    qryRes = PQexec(objConn, szSQL.c_str());
-    pgSet *objSet = new pgSet(qryRes, objConn);
-
-    // Don't cleanup here, let the pgSet do that itself.
-    return objSet;
+    wxString msg;
+    msg.Printf(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
+    wxLogInfo(msg);
+    qryRes = PQexec(conn, sql.c_str());
+    pgSet *set = new pgSet(qryRes, conn);
+    if (!set) {
+        wxLogError(wxT("Couldn't create a pgSet object!"));
+        PQclear(qryRes);
+        return NULL;
+    } else {
+        // Don't cleanup here, let the pgSet do that itself.
+        return set;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -189,43 +193,43 @@ pgSet *pgConn::ExecuteSet(const wxString& szSQL)
 
 wxString pgConn::GetUser() const
 {
-  return wxString(PQuser(objConn));
+  return wxString(PQuser(conn));
 }
 
 wxString pgConn::GetPassword() const
 {
-  return wxString(PQpass(objConn));
+  return wxString(PQpass(conn));
 }
 
 wxString pgConn::GetHost() const
 {
-  return szDBHost;
+  return dbHost;
 }
 
 int pgConn::GetPort() const
 {
-  return atoi(PQport(objConn));
+  return atoi(PQport(conn));
 }
 
 wxString pgConn::GetTTY() const
 {
-  return wxString(PQtty(objConn));
+  return wxString(PQtty(conn));
 }
 
 wxString pgConn::GetOptions() const
 {
-  return wxString(PQoptions(objConn));
+  return wxString(PQoptions(conn));
 }
 
 int pgConn::GetBackendPID()
 {
-    return PQbackendPID(objConn);
+    return PQbackendPID(conn);
 }
 
 int pgConn::GetStatus()
 {
-    if(bResolvedIP) {
-	    return PQstatus(objConn);
+    if(resolvedIP) {
+	    return PQstatus(conn);
     } else {
         return PGCONN_DNSERR;
     }
@@ -233,32 +237,32 @@ int pgConn::GetStatus()
 
 wxString pgConn::GetLastError() const
 {
-	return wxString(PQerrorMessage(objConn));
+	return wxString(PQerrorMessage(conn));
 }
 
 wxString pgConn::GetVersionString() const
 {
-	wxString szSQL;
-    szSQL.Printf("SELECT version();");
-	return ExecuteScalar(szSQL);
+	wxString sql;
+    sql.Printf("SELECT version();");
+	return ExecuteScalar(sql);
 }
 
 float pgConn::GetVersionNumber()
 {
-    int iMajor, iMinor;
-    wxString szVersion;
+    int major, minor;
+    wxString version;
 
-	if (sscanf(GetVersionString(), "%*s %d.%d", &iMajor, &iMinor) >= 2)
+	if (sscanf(GetVersionString(), "%*s %d.%d", &major, &minor) >= 2)
 	{
-		szVersion.Printf("%d.%d", iMajor, iMinor);
+		version.Printf("%d.%d", major, minor);
 	}
-	return (float) atof(szVersion.c_str());
+	return (float) atof(version.c_str());
 }
 
 
 long pgConn::GetLastSystemOID()
 {
-	wxString szSQL;
-    szSQL.Printf("SELECT datlastsysoid FROM pg_database LIMIT 1;");
-	return atol(ExecuteScalar(szSQL));
+	wxString sql;
+    sql.Printf("SELECT datlastsysoid FROM pg_database LIMIT 1;");
+	return atol(ExecuteScalar(sql));
 }

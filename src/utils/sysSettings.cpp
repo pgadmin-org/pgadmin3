@@ -21,32 +21,32 @@
 #include "sysSettings.h"
 #include "sysLogger.h"
 
-sysSettings::sysSettings(const wxString& szName) : wxConfig(szName)
+sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
     wxLogInfo(wxT("Creating sSettings object and loading settings"));
 
     // frMain size/position
-    iFrmMainWidth = this->Read(wxT("frmMain/Width"), 750);
-    iFrmMainHeight = this->Read(wxT("frmMain/Height"), 550);
-    iFrmMainTop = this->Read(wxT("frmMain/Top"), 50);
-    iFrmMainLeft = this->Read(wxT("frmMain/Left"), 50);
+    frmMainWidth = this->Read(wxT("frmMain/Width"), 750);
+    frmMainHeight = this->Read(wxT("frmMain/Height"), 550);
+    frmMainTop = this->Read(wxT("frmMain/Top"), 50);
+    frmMainLeft = this->Read(wxT("frmMain/Left"), 50);
 
     // Tip Of The Day
-    this->Read(wxT("ShowTipOfTheDay"), &bShowTipOfTheDay, TRUE); 
-    this->Read(wxT("NextTipOfTheDay"), &iNextTipOfTheDay, 0); 
+    this->Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, TRUE); 
+    this->Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 
     // Log
-    this->Read(wxT("LogFile"), &szLogFile, wxT("pgadmin.log")); 
-    this->Read(wxT("LogLevel"), &iLogLevel, LOG_ERRORS);
+    this->Read(wxT("LogFile"), &logFile, wxT("pgadmin.log")); 
+    this->Read(wxT("LogLevel"), &logLevel, LOG_ERRORS);
 
     // Last Connection
-    this->Read(wxT("LastServer"), &szLastServer, wxT("localhost")); 
-    this->Read(wxT("LastDatabase"), &szLastDatabase, wxT("template1")); 
-    this->Read(wxT("LastUsername"), &szLastUsername, wxT("postgres")); 
-    this->Read(wxT("LastPort"), &iLastPort, 5432);
+    this->Read(wxT("LastServer"), &lastServer, wxT("localhost")); 
+    this->Read(wxT("LastDatabase"), &lastDatabase, wxT("template1")); 
+    this->Read(wxT("LastUsername"), &lastUsername, wxT("postgres")); 
+    this->Read(wxT("LastPort"), &lastPort, 5432);
 
     // Show System Objects
-    this->Read(wxT("ShowSystemObjects"), &bShowSystemObjects, FALSE); 
+    this->Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
 
 }
 
@@ -55,10 +55,10 @@ sysSettings::~sysSettings()
 {
     wxLogInfo(wxT("Destroying sysSettings object and saving settings"));
     // frMain size/position
-    this->Write(wxT("frmMain/Width"), iFrmMainWidth);
-    this->Write(wxT("frmMain/Height"), iFrmMainHeight);
-    this->Write(wxT("frmMain/Top"), iFrmMainTop);
-    this->Write(wxT("frmMain/Left"), iFrmMainLeft);
+    this->Write(wxT("frmMain/Width"), frmMainWidth);
+    this->Write(wxT("frmMain/Height"), frmMainHeight);
+    this->Write(wxT("frmMain/Top"), frmMainTop);
+    this->Write(wxT("frmMain/Left"), frmMainLeft);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,38 +67,38 @@ sysSettings::~sysSettings()
 
 int sysSettings::GetFrmMainWidth()
 {
-    return iFrmMainWidth;
+    return frmMainWidth;
 }
-void sysSettings::SetFrmMainWidth(const int iNewVal)
+void sysSettings::SetFrmMainWidth(const int newval)
 {
-    iFrmMainWidth = iNewVal;
+    frmMainWidth = newval;
 }
 
 int sysSettings::GetFrmMainHeight()
 {
-    return iFrmMainHeight;
+    return frmMainHeight;
 }
-void sysSettings::SetFrmMainHeight(const int iNewVal)
+void sysSettings::SetFrmMainHeight(const int newval)
 {
-    iFrmMainHeight = iNewVal;
+    frmMainHeight = newval;
 }
 
 int sysSettings::GetFrmMainTop()
 {
-    return iFrmMainTop;
+    return frmMainTop;
 }
-void sysSettings::SetFrmMainTop(const int iNewVal)
+void sysSettings::SetFrmMainTop(const int newval)
 {
-    iFrmMainTop = iNewVal;
+    frmMainTop = newval;
 }
 
 int sysSettings::GetFrmMainLeft()
 {
-    return iFrmMainLeft;
+    return frmMainLeft;
 }
-void sysSettings::SetFrmMainLeft(const int iNewVal)
+void sysSettings::SetFrmMainLeft(const int newval)
 {
-    iFrmMainLeft = iNewVal;
+    frmMainLeft = newval;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,22 +107,22 @@ void sysSettings::SetFrmMainLeft(const int iNewVal)
 
 bool sysSettings::GetShowTipOfTheDay()
 {
-    return bShowTipOfTheDay;
+    return showTipOfTheDay;
 }
-void sysSettings::SetShowTipOfTheDay(const bool bNewVal)
+void sysSettings::SetShowTipOfTheDay(const bool newval)
 {
-    bShowTipOfTheDay = bNewVal;
-    this->Write(wxT("ShowTipOfTheDay"), bShowTipOfTheDay);
+    showTipOfTheDay = newval;
+    this->Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
 }
 
 int sysSettings::GetNextTipOfTheDay()
 {
-    return iNextTipOfTheDay;
+    return nextTipOfTheDay;
 }
-void sysSettings::SetNextTipOfTheDay(const int iNewVal)
+void sysSettings::SetNextTipOfTheDay(const int newval)
 {
-    iNextTipOfTheDay = iNewVal;
-    this->Write(wxT("NextTipOfTheDay"), iNextTipOfTheDay);
+    nextTipOfTheDay = newval;
+    this->Write(wxT("NextTipOfTheDay"), nextTipOfTheDay);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -131,22 +131,22 @@ void sysSettings::SetNextTipOfTheDay(const int iNewVal)
 
 wxString sysSettings::GetLogFile() const
 {
-    return szLogFile;
+    return logFile;
 }
-void sysSettings::SetLogFile(const wxString& szNewVal)
+void sysSettings::SetLogFile(const wxString& newval)
 {
-    szLogFile = szNewVal;
-    this->Write(wxT("LogFile"), szLogFile);
+    logFile = newval;
+    this->Write(wxT("LogFile"), logFile);
 }
 
 int sysSettings::GetLogLevel()
 {
-    return iLogLevel;
+    return logLevel;
 }
-void sysSettings::SetLogLevel(const int iNewVal)
+void sysSettings::SetLogLevel(const int newval)
 {
-    iLogLevel = iNewVal;
-    this->Write(wxT("LogLevel"), iLogLevel);
+    logLevel = newval;
+    this->Write(wxT("LogLevel"), logLevel);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -155,42 +155,42 @@ void sysSettings::SetLogLevel(const int iNewVal)
 
 wxString sysSettings::GetLastServer() const
 {
-    return szLastServer;
+    return lastServer;
 }
-void sysSettings::SetLastServer(const wxString& szNewVal)
+void sysSettings::SetLastServer(const wxString& newval)
 {
-    szLastServer = szNewVal;
-    this->Write(wxT("LastServer"), szLastServer);
+    lastServer = newval;
+    this->Write(wxT("LastServer"), lastServer);
 }
 
 wxString sysSettings::GetLastDatabase() const
 {
-    return szLastDatabase;
+    return lastDatabase;
 }
-void sysSettings::SetLastDatabase(const wxString& szNewVal)
+void sysSettings::SetLastDatabase(const wxString& newval)
 {
-    szLastDatabase = szNewVal;
-    this->Write(wxT("LastDatabase"), szLastDatabase);
+    lastDatabase = newval;
+    this->Write(wxT("LastDatabase"), lastDatabase);
 }
 
 wxString sysSettings::GetLastUsername() const
 {
-    return szLastUsername;
+    return lastUsername;
 }
-void sysSettings::SetLastUsername(const wxString& szNewVal)
+void sysSettings::SetLastUsername(const wxString& newval)
 {
-    szLastUsername = szNewVal;
-    this->Write(wxT("LastUsername"), szLastUsername);
+    lastUsername = newval;
+    this->Write(wxT("LastUsername"), lastUsername);
 }
 
 int sysSettings::GetLastPort()
 {
-    return iLastPort;
+    return lastPort;
 }
-void sysSettings::SetLastPort(const int iNewVal)
+void sysSettings::SetLastPort(const int newval)
 {
-    iLastPort = iNewVal;
-    this->Write(wxT("LastPort"), iLastPort);
+    lastPort = newval;
+    this->Write(wxT("LastPort"), lastPort);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -199,10 +199,10 @@ void sysSettings::SetLastPort(const int iNewVal)
 
 bool sysSettings::GetShowSystemObjects()
 {
-    return bShowSystemObjects;
+    return showSystemObjects;
 }
-void sysSettings::SetShowSystemObjects(const bool bNewVal)
+void sysSettings::SetShowSystemObjects(const bool newval)
 {
-    bShowSystemObjects = bNewVal;
-    this->Write(wxT("ShowSystemObjects"), bShowSystemObjects);
+    showSystemObjects = newval;
+    this->Write(wxT("ShowSystemObjects"), showSystemObjects);
 }

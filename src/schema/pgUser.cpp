@@ -16,14 +16,10 @@
 #include "pgUser.h"
 #include "pgObject.h"
 
-pgUser::pgUser(const wxString& szNewName)
-: pgObject()
+pgUser::pgUser(const wxString& newName)
+: pgObject(PG_USER, newName)
 {
-
     wxLogInfo(wxT("Creating a pgUser object"));
-
-    // Call the 'virtual' ctor
-    vCtor(PG_USER, szNewName);
 }
 
 pgUser::~pgUser()
@@ -32,14 +28,14 @@ pgUser::~pgUser()
 }
 
 int pgUser::GetUserID() {
-    return iUserID;
+    return userId;
 }
 
 // Parent objects
 pgServer *pgUser::GetServer() {
-    return objServer;
+    return server;
 }
 
-void pgUser::SetServer(pgServer *objNewServer) {
-    objServer = objNewServer;
+void pgUser::SetServer(pgServer *newServer) {
+    server = newServer;
 }

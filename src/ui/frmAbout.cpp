@@ -36,14 +36,15 @@ frmAbout::frmAbout(wxFrame *parent)
     SetIcon(wxIcon(pgAdmin3_xpm));
 
     // Image
-    imgAbout = wxBitmap(splash_xpm);
+    about = wxBitmap(splash_xpm);
 
-    SetClientSize(imgAbout.GetWidth(), imgAbout.GetHeight());
-    wxString szVersion = wxT("Version: ");
-    szVersion.Append(VERSION);
-// Creating a 0 size panel is the only way to position the static text on unix. If you know a better way..!
+    SetClientSize(about.GetWidth(), about.GetHeight());
+    wxString version = wxT("Version: ");
+    version.Append(VERSION);
+
+    // Creating a 0 size panel is the only way to position the static text on unix. If you know a better way..!
 	(void)new wxPanel(this, -1, wxPoint(10,155), wxSize(0,0));
-	(void)new wxStaticText(this, -1,szVersion, wxPoint(10,155));
+	(void)new wxStaticText(this, -1, version, wxPoint(10,155));
 	this->Center();
 }
 
@@ -55,6 +56,6 @@ frmAbout::~frmAbout()
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
 	wxPaintDC dc(this);
-	dc.DrawBitmap(imgAbout, 0, 0);
+	dc.DrawBitmap(about, 0, 0);
 	
 }

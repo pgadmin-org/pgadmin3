@@ -22,72 +22,72 @@
 class sysSettings : public wxConfig
 {
 public:
-    sysSettings(const wxString& szName);
+    sysSettings(const wxString& name);
     ~sysSettings();
 
     // frmMain size/position
     int GetFrmMainWidth();
-    void SetFrmMainWidth(const int iNewVal);
+    void SetFrmMainWidth(const int newval);
 
     int GetFrmMainHeight();
-    void SetFrmMainHeight(const int iNewVal);
+    void SetFrmMainHeight(const int newval);
 
     int GetFrmMainTop();
-    void SetFrmMainTop(const int iNewVal);
+    void SetFrmMainTop(const int newval);
 
     int GetFrmMainLeft();
-    void SetFrmMainLeft(const int iNewVal);
+    void SetFrmMainLeft(const int newval);
 
     // Tip Of The Day
     bool GetShowTipOfTheDay();
-    void SetShowTipOfTheDay(const bool bNewVal);
+    void SetShowTipOfTheDay(const bool newval);
     int GetNextTipOfTheDay();
-    void SetNextTipOfTheDay(const int iNewVal);
+    void SetNextTipOfTheDay(const int newval);
 
     // Log
     wxString GetLogFile() const;
-    void SetLogFile(const wxString& szNewVal);
+    void SetLogFile(const wxString& newval);
     int GetLogLevel();
-    void SetLogLevel(const int iNewVal);
+    void SetLogLevel(const int newval);
 
     // Last connection
     wxString GetLastServer() const;
-    void SetLastServer(const wxString& szNewVal);
+    void SetLastServer(const wxString& newval);
     wxString GetLastDatabase() const;
-    void SetLastDatabase(const wxString& szNewVal);
+    void SetLastDatabase(const wxString& newval);
     wxString GetLastUsername() const;
-    void SetLastUsername(const wxString& szNewVal);
+    void SetLastUsername(const wxString& newval);
     int GetLastPort();
-    void SetLastPort(const int iNewVal);
+    void SetLastPort(const int newval);
 
     // Show System Objects
     bool GetShowSystemObjects();
-    void SetShowSystemObjects(const bool bNewShowSystemObjects);
+    void SetShowSystemObjects(const bool newval);
 
 private:
 
     // frmMain size/position
-    int iFrmMainWidth;
-    int iFrmMainHeight;
-    int iFrmMainTop;
-    int iFrmMainLeft;
+    int frmMainWidth;
+    int frmMainHeight;
+    int frmMainTop;
+    int frmMainLeft;
 
     // Tip Of The Day
-    bool bShowTipOfTheDay;
-    int iNextTipOfTheDay;
+    bool showTipOfTheDay;
+    int nextTipOfTheDay;
 
     // Log
-    wxString szLogFile;
-    int iLogLevel;
+    wxString logFile;
+    int logLevel;
 
     // Last connection
-    wxString szLastServer;
-    wxString szLastDatabase;
-    wxString szLastUsername;
-    int iLastPort;
+    wxString lastServer;
+    wxString lastDatabase;
+    wxString lastUsername;
+    int lastPort;
 
     // Show System Objects
-    bool bShowSystemObjects;
+    bool showSystemObjects;
 };
 
 #endif

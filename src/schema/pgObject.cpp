@@ -14,109 +14,103 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "misc.h"
 #include "pgObject.h"
 #include "pgServer.h"
 
 
-pgObject::pgObject(int iNewType, const wxString& szNewName)
+pgObject::pgObject(int newType, const wxString& newName)
 : wxTreeItemData()
 {
     wxLogInfo(wxT("Creating a pgObject object"));
 
-    // Call the 'virtual' ctor
-    vCtor(iNewType, szNewName);
-}
-
-void pgObject::vCtor(int iNewType, const wxString& szNewName)
-{
-
     // Set the typename and type
-    iType = iNewType;
-    switch(iNewType){
+    type = newType;
+    switch(type){
         case PG_NONE:
-            szTypeName = wxT("None");
+            typeName = wxT("None");
             break;
 
         case PG_SERVERS:
-            szTypeName = wxT("Servers");
+            typeName = wxT("Servers");
             break;
 
         case PG_ADD_SERVER:
-            szTypeName = wxT("Add Server");
+            typeName = wxT("Add Server");
             break;
 
         case PG_SERVER:
-            szTypeName = wxT("Server");
+            typeName = wxT("Server");
             break;
 
         case PG_DATABASES:
-            szTypeName = wxT("Databases");
+            typeName = wxT("Databases");
             break;
 
         case PG_ADD_DATABASE:
-            szTypeName = wxT("Add Database");
+            typeName = wxT("Add Database");
             break;
 
         case PG_DATABASE:
-            szTypeName = wxT("Database");
+            typeName = wxT("Database");
             break;
 
         case PG_GROUPS:
-            szTypeName = wxT("Groups");
+            typeName = wxT("Groups");
             break;
 
         case PG_ADD_GROUP:
-            szTypeName = wxT("Add Group");
+            typeName = wxT("Add Group");
             break;
 
         case PG_GROUP:
-            szTypeName = wxT("Group");
+            typeName = wxT("Group");
             break;
 
         case PG_USERS:
-            szTypeName = wxT("Users");
+            typeName = wxT("Users");
             break;
 
         case PG_ADD_USER:
-            szTypeName = wxT("Add User");
+            typeName = wxT("Add User");
             break;
 
         case PG_USER:
-            szTypeName = wxT("User");
+            typeName = wxT("User");
             break;
 
         case PG_LANGUAGES:
-            szTypeName = wxT("Languages");
+            typeName = wxT("Languages");
             break;
 
         case PG_ADD_LANGUAGE:
-            szTypeName = wxT("Add Language");
+            typeName = wxT("Add Language");
             break;
 
         case PG_LANGUAGE:
-            szTypeName = wxT("Language");
+            typeName = wxT("Language");
             break;
 
         case PG_SCHEMAS:
-            szTypeName = wxT("Schemas");
+            typeName = wxT("Schemas");
             break;
 
         case PG_ADD_SCHEMA:
-            szTypeName = wxT("Add Schema");
+            typeName = wxT("Add Schema");
             break;
 
         case PG_SCHEMA:
-            szTypeName = wxT("Schema");
+            typeName = wxT("Schema");
             break;
 
         default:
-            szTypeName = wxT("None");
+            typeName = wxT("None");
             break;
 
 
     }
 
-    szName = szNewName;
+    name = newName;
 }
 
 pgObject::~pgObject()
@@ -126,68 +120,68 @@ pgObject::~pgObject()
 
 int pgObject::GetType()
 {
-    return iType;
+    return type;
 }
 
 wxString pgObject::GetTypeName() const
 {
-    return szTypeName;
+    return typeName;
 }
 
 wxString pgObject::GetName() const
 {
-    return szName;
+    return name;
 }
-void pgObject::iSetName(const wxString& szNewVal)
+void pgObject::iSetName(const wxString& newVal)
 {
-    szName = szNewVal;
+    name = newVal;
 }
 
 
 wxString pgObject::GetIdentifier() const
 {
-    return szName;
+    return name;
 }
 
 wxString pgObject::GetQuotedIdentifier() const
 {
-    return qtIdent(szName);
+    return qtIdent(name);
 }
 
 double pgObject::GetOid()
 {
-    return dOid;
+    return oid;
 }
-void pgObject::iSetOid(double dNewVal)
+void pgObject::iSetOid(double newVal)
 {
-    dOid = dNewVal;
+    oid = newVal;
 }
 
 wxString pgObject::GetOwner() const
 {
-    return szOwner;
+    return owner;
 }
-void pgObject::iSetOwner(const wxString& szNewVal)
+void pgObject::iSetOwner(const wxString& newVal)
 {
-    szOwner = szNewVal;
+    owner = newVal;
 }
 
 wxString pgObject::GetComment() const
 {
-    return szComment;
+    return comment;
 }
-void pgObject::iSetComment(const wxString& szNewVal)
+void pgObject::iSetComment(const wxString& newVal)
 {
-    szComment = szNewVal;
+    comment = newVal;
 }
 
 wxString pgObject::GetAcl() const
 {
-    return szAcl;
+    return acl;
 }
-void pgObject::iSetAcl(const wxString& szNewVal)
+void pgObject::iSetAcl(const wxString& newVal)
 {
-    szAcl = szNewVal;
+    acl = newVal;
 }
 
 bool pgObject::GetSystemObject()

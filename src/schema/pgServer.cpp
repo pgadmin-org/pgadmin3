@@ -13,24 +13,24 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "misc.h"
 #include "frmConnect.h"
 #include "pgServer.h"
 #include "pgObject.h"
 
 
-pgServer::pgServer(const wxString& szNewName, const wxString& szNewDatabase, const wxString& szNewUsername, int iNewPort)
-: pgObject()
+pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const wxString& newUsername, int newPort)
+: pgObject(PG_SERVER, newName)
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
 
-    vCtor(PG_SERVER, szNewName);
-    szDatabase = szNewDatabase;
-    szUsername = szNewUsername;
-    iPort = iNewPort;
+    database = newDatabase;
+    username = newUsername;
+    port = newPort;
 
-    bConnected = FALSE;
-    fVer = 0.0;
-    dLastSystemOID = 0;
+    connected = FALSE;
+    versionNum = 0.0;
+    lastSystemOID = 0;
 }
 
 pgServer::~pgServer()
@@ -48,11 +48,16 @@ wxString pgServer::GetTypeName() const
     return wxString("Server");
 }
 
-int pgServer::Connect(bool bLockFields) {
+int pgServer::Connect(bool lockFields) {
 
     wxLogInfo(wxT("Getting connection details..."));
-    frmConnect *winConnect = new frmConnect(this, this->GetName(), szDatabase, szUsername, iPort);
-    if (bLockFields) winConnect->LockFields();
+    frmConnect *winConnect = new frmConnect(this, this->GetName(), database, username, port);
+    if (!winConnect) {
+        wxLogError(wxT("Couldn't create a connection dialogue!"));
+        return PGCONN_BAD;
+    }
+
+    if (lockFields) winConnect->LockFields();
 
     if (winConnect->ShowModal() != 0) {
         delete winConnect;
@@ -61,43 +66,47 @@ int pgServer::Connect(bool bLockFields) {
 
     wxLogInfo(wxT("Attempting to create a connection object..."));
     StartMsg(wxT("Connecting to database"));
-    cnMaster = new pgConn(this->GetName(), szDatabase, szUsername, szPassword, iPort);
+    conn = new pgConn(this->GetName(), database, username, password, port);
+    if (!conn) {
+        wxLogError(wxT("Couldn't create a connection object!"));
+        return PGCONN_BAD;
+    }
 
     delete winConnect;
     EndMsg();
-    int iStatus = cnMaster->GetStatus();
-    if (iStatus == PGCONN_OK) {
+    int status = conn->GetStatus();
+    if (status == PGCONN_OK) {
 
         // Check the server version
-        if (cnMaster->GetVersionNumber() >= SERVER_MIN_VERSION) {
-            bConnected = TRUE;
+        if (conn->GetVersionNumber() >= SERVER_MIN_VERSION) {
+            connected = TRUE;
         } else {
-            szError.Printf(wxT("The PostgreSQL server must be at least version %1.1f!"), SERVER_MIN_VERSION);
-            bConnected = FALSE;
+            error.Printf(wxT("The PostgreSQL server must be at least version %1.1f!"), SERVER_MIN_VERSION);
+            connected = FALSE;
             return PGCONN_BAD;
         }
 
     } else {
-        bConnected = FALSE;
+        connected = FALSE;
     }
 
-    return iStatus;
+    return status;
 }
 
 wxString pgServer::GetIdentifier() const
 {
-    wxString szID;
-    szID.Printf(wxT("%s:%d"), GetName().c_str(), iPort);
-    return wxString(szID);
+    wxString id;
+    id.Printf(wxT("%s:%d"), GetName().c_str(), port);
+    return wxString(id);
 }
 
 wxString pgServer::GetVersionString()
 {
-    if (bConnected) {
-      if (szVer.IsEmpty()) {
-          szVer = wxString(cnMaster->GetVersionString());
+    if (connected) {
+      if (ver.IsEmpty()) {
+          ver = wxString(conn->GetVersionString());
       }
-      return szVer;
+      return ver;
     } else {
         return wxString("");
     }
@@ -105,11 +114,11 @@ wxString pgServer::GetVersionString()
 
 float pgServer::GetVersionNumber()
 {
-    if (bConnected) {
-      if (fVer == 0) {
-          fVer = cnMaster->GetVersionNumber();
+    if (connected) {
+      if (versionNum == 0) {
+          versionNum = conn->GetVersionNumber();
       }
-      return fVer;
+      return versionNum;
     } else {
         return 0.0;
     }
@@ -117,11 +126,11 @@ float pgServer::GetVersionNumber()
 
 double pgServer::GetLastSystemOID()
 {
-    if (bConnected) {
-      if (dLastSystemOID == 0) {
-          dLastSystemOID = cnMaster->GetLastSystemOID();
+    if (connected) {
+      if (lastSystemOID == 0) {
+          lastSystemOID = conn->GetLastSystemOID();
       }
-      return dLastSystemOID;
+      return lastSystemOID;
     } else {
         return 0;
     }
@@ -129,37 +138,37 @@ double pgServer::GetLastSystemOID()
 
 wxString pgServer::GetDatabase() const
 {
-    return szDatabase;
+    return database;
 }
-void pgServer::iSetDatabase(const wxString& szNewVal)
+void pgServer::iSetDatabase(const wxString& newVal)
 {
-    szDatabase = szNewVal;
+    database = newVal;
 }
 
 wxString pgServer::GetUsername() const
 {
-    return szUsername;
+    return username;
 }
-void pgServer::iSetUsername(const wxString& szNewVal)
+void pgServer::iSetUsername(const wxString& newVal)
 {
-    szUsername = szNewVal;
+    username = newVal;
 }
 
 wxString pgServer::GetPassword() const
 {
-    return szPassword;
+    return password;
 }
-void pgServer::iSetPassword(const wxString& szNewVal)
+void pgServer::iSetPassword(const wxString& newVal)
 {
-    szPassword = szNewVal;
+    password = newVal;
 }
-bool pgServer::SetPassword(const wxString& szNewVal)
+bool pgServer::SetPassword(const wxString& newVal)
 {
-    wxString szSQL;
-    szSQL.Printf(wxT("ALTER USER %s WITH PASSWORD %s;"), qtIdent(szUsername).c_str(), qtString(szNewVal).c_str());
-    int x = cnMaster->ExecuteVoid(szSQL);
+    wxString sql;
+    sql.Printf(wxT("ALTER USER %s WITH PASSWORD %s;"), qtIdent(username).c_str(), qtString(newVal).c_str());
+    int x = conn->ExecuteVoid(sql);
     if (x == PGCONN_COMMAND_OK) {
-        szPassword = szNewVal;
+        password = newVal;
         return TRUE;
     } else {
         return FALSE;
@@ -168,44 +177,44 @@ bool pgServer::SetPassword(const wxString& szNewVal)
 
 int pgServer::GetPort()
 {
-    return iPort;
+    return port;
 }
-void pgServer::iSetPort(int iNewVal)
+void pgServer::iSetPort(int newVal)
 {
-    iPort = iNewVal;
+    port = newVal;
 }
 
 wxString pgServer::GetLastError() const
 {
-    wxString szMsg;
-    if (szError != wxT("")) {
-        if (cnMaster->GetLastError() != wxT("")) {
-            szMsg.Printf(wxT("%s\n%s"), szError.c_str(), cnMaster->GetLastError().c_str());
+    wxString msg;
+    if (error != wxT("")) {
+        if (conn->GetLastError() != wxT("")) {
+            msg.Printf(wxT("%s\n%s"), error.c_str(), conn->GetLastError().c_str());
         } else {
-            szMsg.Printf(wxT("%s"), szError.c_str());
+            msg.Printf(wxT("%s"), error.c_str());
         }
     } else {
-        szMsg.Printf(wxT("%s"), cnMaster->GetLastError().c_str());
+        msg.Printf(wxT("%s"), conn->GetLastError().c_str());
     }
-    return szMsg;
+    return msg;
 }
 
 bool pgServer::GetConnected()
 {
-    return bConnected;
+    return connected;
 }
 
-int pgServer::ExecuteVoid(const wxString& szSQL)
+int pgServer::ExecuteVoid(const wxString& sql)
 {
-    return cnMaster->ExecuteVoid(szSQL);
+    return conn->ExecuteVoid(sql);
 }
 
-wxString pgServer::ExecuteScalar(const wxString& szSQL) const
+wxString pgServer::ExecuteScalar(const wxString& sql) const
 {
-    return cnMaster->ExecuteScalar(szSQL);
+    return conn->ExecuteScalar(sql);
 }
 
-pgSet pgServer::ExecuteSet(const wxString& szSQL)
+pgSet pgServer::ExecuteSet(const wxString& sql)
 {
-    return *cnMaster->ExecuteSet(szSQL);
+    return *conn->ExecuteSet(sql);
 }

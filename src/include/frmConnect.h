@@ -23,7 +23,7 @@
 class frmConnect : public wxDialog
 {
 public:
-    frmConnect(pgServer *parent, const wxString& szServer = wxString(""), const wxString& szDatabase = wxString(""), const wxString& szUsername = wxString(""), int iPort = 5432);
+    frmConnect(pgServer *parent, const wxString& server = wxString(""), const wxString& database = wxString(""), const wxString& username = wxString(""), int port = 5432);
     ~frmConnect();
     void Init();
     wxString GetServer();

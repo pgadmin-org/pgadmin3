@@ -24,6 +24,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "misc.h"
 #include "frmMain.h"
 #include "frmAbout.h"
 #include "frmConnect.h"
@@ -102,48 +103,48 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
 
-    extern sysSettings *objSettings;
+    extern sysSettings *settings;
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
 
     // Build menus
-    mnuBar = new wxMenuBar();
+    menuBar = new wxMenuBar();
 
     // File Menu
-    mnuFile = new wxMenu();
-    mnuFile->Append(MNU_ADDSERVER, wxT("&Add Server..."), wxT("Add a connection to a server."));
-    mnuFile->Append(MNU_PASSWORD, wxT("C&hange password..."), wxT("Change your password."));
-    mnuFile->AppendSeparator();
-    mnuFile->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object."));
-    mnuFile->AppendSeparator();
-    mnuFile->Append(MNU_EXIT, wxT("E&xit"), wxT("Quit this program."));
-    mnuBar->Append(mnuFile, wxT("&File"));
+    fileMenu = new wxMenu();
+    fileMenu->Append(MNU_ADDSERVER, wxT("&Add Server..."), wxT("Add a connection to a server."));
+    fileMenu->Append(MNU_PASSWORD, wxT("C&hange password..."), wxT("Change your password."));
+    fileMenu->AppendSeparator();
+    fileMenu->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object."));
+    fileMenu->AppendSeparator();
+    fileMenu->Append(MNU_EXIT, wxT("E&xit"), wxT("Quit this program."));
+    menuBar->Append(fileMenu, wxT("&File"));
 
     // Tools Menu
-    mnuTools = new wxMenu();
-    mnuTools->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard."));
-    mnuTools->AppendSeparator();
-    mnuTools->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog."));
-    mnuBar->Append(mnuTools, wxT("&Tools"));
+    toolsMenu = new wxMenu();
+    toolsMenu->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard."));
+    toolsMenu->AppendSeparator();
+    toolsMenu->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog."));
+    menuBar->Append(toolsMenu, wxT("&Tools"));
 
     // View Menu
-    mnuView = new wxMenu();
-    mnuView->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects."), wxITEM_CHECK);
-    mnuBar->Append(mnuView, wxT("&View"));
+    viewMenu = new wxMenu();
+    viewMenu->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects."), wxITEM_CHECK);
+    menuBar->Append(viewMenu, wxT("&View"));
 
     // Help Menu
-    mnuHelp = new wxMenu();
-    mnuHelp->Append(MNU_CONTENTS, wxT("&Help..."), wxT("Open the helpfile."));
-    mnuHelp->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."), wxT("Show a tip of the day."));
-    mnuHelp->AppendSeparator();
-    mnuHelp->Append(MNU_ABOUT, wxT("&About..."), wxT("Show about dialog."));
-    mnuBar->Append(mnuHelp, wxT("&Help"));
+    helpMenu = new wxMenu();
+    helpMenu->Append(MNU_CONTENTS, wxT("&Help..."), wxT("Open the helpfile."));
+    helpMenu->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."), wxT("Show a tip of the day."));
+    helpMenu->AppendSeparator();
+    helpMenu->Append(MNU_ABOUT, wxT("&About..."), wxT("Show about dialog."));
+    menuBar->Append(helpMenu, wxT("&Help"));
 
     // Add the Menubar and set some options
-    SetMenuBar(mnuBar);
-    mnuFile->Enable(MNU_PASSWORD, FALSE);
-    mnuView->Check(MNU_SYSTEMOBJECTS, objSettings->GetShowSystemObjects());
+    SetMenuBar(menuBar);
+    fileMenu->Enable(MNU_PASSWORD, FALSE);
+    viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
 
     // Status bar
     CreateStatusBar(3);
@@ -158,111 +159,111 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     CreateToolBar();
 
     // Return objects
-    stBar = GetStatusBar();
-    tlBar = GetToolBar();
+    statusBar = GetStatusBar();
+    toolBar = GetToolBar();
 
     // Set up toolbar
-    wxBitmap tlBarBitmaps[10];
-    tlBar->SetToolBitmapSize(wxSize(32, 32));
-    tlBarBitmaps[0] = wxBitmap(connect_xpm);
-    tlBarBitmaps[1] = wxBitmap(refresh_xpm);
-    tlBarBitmaps[2] = wxBitmap(create_xpm);
-    tlBarBitmaps[3] = wxBitmap(drop_xpm);
-    tlBarBitmaps[4] = wxBitmap(properties_xpm);
-    tlBarBitmaps[5] = wxBitmap(sql_xpm);
-    tlBarBitmaps[6] = wxBitmap(viewdata_xpm);
-    tlBarBitmaps[7] = wxBitmap(vacuum_xpm);
-    tlBarBitmaps[8] = wxBitmap(record_xpm);
-    tlBarBitmaps[9] = wxBitmap(stop_xpm);
+    wxBitmap barBitmaps[10];
+    toolBar->SetToolBitmapSize(wxSize(32, 32));
+    barBitmaps[0] = wxBitmap(connect_xpm);
+    barBitmaps[1] = wxBitmap(refresh_xpm);
+    barBitmaps[2] = wxBitmap(create_xpm);
+    barBitmaps[3] = wxBitmap(drop_xpm);
+    barBitmaps[4] = wxBitmap(properties_xpm);
+    barBitmaps[5] = wxBitmap(sql_xpm);
+    barBitmaps[6] = wxBitmap(viewdata_xpm);
+    barBitmaps[7] = wxBitmap(vacuum_xpm);
+    barBitmaps[8] = wxBitmap(record_xpm);
+    barBitmaps[9] = wxBitmap(stop_xpm);
 
-    tlBar->AddTool(BTN_ADDSERVER, wxT("Add Server"), tlBarBitmaps[0], wxT("Add a connection to a server."), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_REFRESH, wxT("Refresh"), tlBarBitmaps[1], wxT("Refrsh the data below the selected object."), wxITEM_NORMAL);
-    tlBar->AddSeparator();
-    tlBar->AddTool(BTN_CREATE, wxT("Create"), tlBarBitmaps[2], wxT("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_DROP, wxT("Drop"), tlBarBitmaps[3], wxT("Drop the currently selected object."), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_PROPERTIES, wxT("Properties"), tlBarBitmaps[4], wxT("Display/edit the properties of the selected object."), wxITEM_NORMAL);
-    tlBar->AddSeparator();
-    tlBar->AddTool(BTN_SQL, wxT("SQL"), tlBarBitmaps[5], wxT("Execute arbitrary SQL queries."), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_VIEWDATA, wxT("View Data"), tlBarBitmaps[6], wxT("View the data in the selected object."), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_VACUUM, wxT("Vacuum"), tlBarBitmaps[7], wxT("Vacuum the current database or table."), wxITEM_NORMAL);
-    tlBar->AddSeparator();
-    tlBar->AddTool(BTN_RECORD, wxT("Record"), tlBarBitmaps[8], wxT("Record a query log."), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_STOP, wxT("Stop"), tlBarBitmaps[9], wxT("Stop recording the query log."), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_ADDSERVER, wxT("Add Server"), barBitmaps[0], wxT("Add a connection to a server."), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_REFRESH, wxT("Refresh"), barBitmaps[1], wxT("Refrsh the data below the selected object."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(BTN_CREATE, wxT("Create"), barBitmaps[2], wxT("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_DROP, wxT("Drop"), barBitmaps[3], wxT("Drop the currently selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_PROPERTIES, wxT("Properties"), barBitmaps[4], wxT("Display/edit the properties of the selected object."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(BTN_SQL, wxT("SQL"), barBitmaps[5], wxT("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_VIEWDATA, wxT("View Data"), barBitmaps[6], wxT("View the data in the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_VACUUM, wxT("Vacuum"), barBitmaps[7], wxT("Vacuum the current database or table."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(BTN_RECORD, wxT("Record"), barBitmaps[8], wxT("Record a query log."), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_STOP, wxT("Stop"), barBitmaps[9], wxT("Stop recording the query log."), wxITEM_NORMAL);
 
     // Display the bar and configure buttons. 
-    tlBar->Realize();
+    toolBar->Realize();
     SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
-    tlBar->EnableTool(BTN_STOP, FALSE);
+    toolBar->EnableTool(BTN_STOP, FALSE);
     
     // Setup the vertical splitter & treeview
-    wxSplitterWindow* splVertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
-    wxSplitterWindow* splHorizontal = new wxSplitterWindow(splVertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
-    tvBrowser = new wxTreeCtrl(splVertical, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
-    splVertical->SplitVertically(tvBrowser, splHorizontal, 200);
-    splVertical->SetMinimumPaneSize(50);
+    wxSplitterWindow* vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
+    wxSplitterWindow* horizontal = new wxSplitterWindow(vertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
+    browser = new wxTreeCtrl(vertical, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
+    vertical->SplitVertically(browser, horizontal, 200);
+    vertical->SetMinimumPaneSize(50);
 
     // Setup the horizontal splitter for the listview & sql pane
-    wxNotebook* nbListViews = new wxNotebook(splHorizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
-    lvProperties = new wxListCtrl(nbListViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
-    lvStatistics = new wxListCtrl(nbListViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
-    nbListViews->AddPage(lvProperties, wxT("Properties"));
-    nbListViews->AddPage(lvStatistics, wxT("Statistics"));
-    txtSQLPane = new ctlSQLBox(splHorizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
-    txtSQLPane->SetBackgroundColour(*wxLIGHT_GREY);
-    txtSQLPane->SetReadOnly(TRUE);
-    splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
-    splHorizontal->SetMinimumPaneSize(50);
+    wxNotebook* listViews = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
+    properties = new wxListCtrl(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
+    statistics = new wxListCtrl(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
+    listViews->AddPage(properties, wxT("Properties"));
+    listViews->AddPage(statistics, wxT("Statistics"));
+    sqlPane = new ctlSQLBox(horizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
+    sqlPane->SetBackgroundColour(*wxLIGHT_GREY);
+    sqlPane->SetReadOnly(TRUE);
+    horizontal->SplitHorizontally(listViews, sqlPane, 300);
+    horizontal->SetMinimumPaneSize(50);
 
     //Setup a Browser imagelist
-    wxImageList *ilBrowser = new wxImageList(16, 16);
-    tvBrowser->SetImageList(ilBrowser);
+    wxImageList *browserImages = new wxImageList(16, 16);
+    browser->SetImageList(browserImages);
 	
     //Stuff the Image List
-    ilBrowser->Add(wxIcon(server_xpm));
-    ilBrowser->Add(wxIcon(serverbad_xpm));
-    ilBrowser->Add(wxIcon(database_xpm));
-    ilBrowser->Add(wxIcon(language_xpm));
-    ilBrowser->Add(wxIcon(namespace_xpm));
-    ilBrowser->Add(wxIcon(aggregate_xpm));
-    ilBrowser->Add(wxIcon(function_xpm));
-    ilBrowser->Add(wxIcon(operator_xpm));
-    ilBrowser->Add(wxIcon(sequence_xpm));
-    ilBrowser->Add(wxIcon(table_xpm));
-    ilBrowser->Add(wxIcon(type_xpm));
-    ilBrowser->Add(wxIcon(view_xpm));
-    ilBrowser->Add(wxIcon(user_xpm));
-    ilBrowser->Add(wxIcon(group_xpm));
-    ilBrowser->Add(wxIcon(baddatabase_xpm));
-    ilBrowser->Add(wxIcon(closeddatabase_xpm));
+    browserImages->Add(wxIcon(server_xpm));
+    browserImages->Add(wxIcon(serverbad_xpm));
+    browserImages->Add(wxIcon(database_xpm));
+    browserImages->Add(wxIcon(language_xpm));
+    browserImages->Add(wxIcon(namespace_xpm));
+    browserImages->Add(wxIcon(aggregate_xpm));
+    browserImages->Add(wxIcon(function_xpm));
+    browserImages->Add(wxIcon(operator_xpm));
+    browserImages->Add(wxIcon(sequence_xpm));
+    browserImages->Add(wxIcon(table_xpm));
+    browserImages->Add(wxIcon(type_xpm));
+    browserImages->Add(wxIcon(view_xpm));
+    browserImages->Add(wxIcon(user_xpm));
+    browserImages->Add(wxIcon(group_xpm));
+    browserImages->Add(wxIcon(baddatabase_xpm));
+    browserImages->Add(wxIcon(closeddatabase_xpm));
 
 
     // Add the root node
-    pgObject *objServers = new pgObject(PG_SERVERS, wxString("Servers"));
-    itmServers = tvBrowser->AddRoot(wxT("Servers"), 0, -1, objServers);
-    pgObject *objAddServer = new pgObject(PG_ADD_SERVER, wxString("Add Server"));
-    wxTreeItemId itmAddServer = tvBrowser->AppendItem(itmServers, wxT("Add Server..."), 0, -1, objAddServer);
-    tvBrowser->Expand(itmServers);
+    pgObject *serversObj = new pgObject(PG_SERVERS, wxString("Servers"));
+    servers = browser->AddRoot(wxT("Servers"), 0, -1, serversObj);
+    pgObject *addServerObj = new pgObject(PG_ADD_SERVER, wxString("Add Server"));
+    browser->AppendItem(servers, wxT("Add Server..."), 0, -1, addServerObj);
+    browser->Expand(servers);
 
     // Setup the property imagelist
-    wxImageList *ilProperties = new wxImageList(16, 16);
-    lvProperties->SetImageList(ilProperties, wxIMAGE_LIST_SMALL);
-    ilProperties->Add(wxIcon(property_xpm));
+    wxImageList *propertiesImages = new wxImageList(16, 16);
+    properties->SetImageList(propertiesImages, wxIMAGE_LIST_SMALL);
+    propertiesImages->Add(wxIcon(property_xpm));
 
     // Add the property view columns
-    lvProperties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
-    lvProperties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
+    properties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
+    properties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
 
     // Setup a statistics view imagelist
-    wxImageList *ilStatistics = new wxImageList(16, 16);
-    lvStatistics->SetImageList(ilStatistics, wxIMAGE_LIST_SMALL);
-    ilStatistics->Add(wxIcon(statistics_xpm));
+    wxImageList *statisticsImages = new wxImageList(16, 16);
+    statistics->SetImageList(statisticsImages, wxIMAGE_LIST_SMALL);
+    statisticsImages->Add(wxIcon(statistics_xpm));
 
     // Add the statistics view columns & set the colour
-    lvStatistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
-    lvStatistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
-    wxColour colBack;
-    colBack = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
-    lvStatistics->SetBackgroundColour(colBack);
+    statistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
+    statistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
+    wxColour background;
+    background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
+    statistics->SetBackgroundColour(background);
 	
     // Load servers
     RetrieveServers();
@@ -270,14 +271,14 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
 frmMain::~frmMain()
 {
-    extern sysSettings *objSettings;
-    objSettings->SetFrmMainWidth(GetSize().x);
-    objSettings->SetFrmMainHeight(GetSize().y);
-    objSettings->SetFrmMainLeft(GetPosition().x);
-    objSettings->SetFrmMainTop(GetPosition().y);
+    extern sysSettings *settings;
+    settings->SetFrmMainWidth(GetSize().x);
+    settings->SetFrmMainHeight(GetSize().y);
+    settings->SetFrmMainLeft(GetPosition().x);
+    settings->SetFrmMainTop(GetPosition().y);
 
     // Clear the treeview
-    tvBrowser->DeleteAllItems();
+    browser->DeleteAllItems();
 }
 
 // Event handlers
@@ -300,10 +301,10 @@ void frmMain::OnUpgradeWizard(wxCommandEvent& WXUNUSED(event))
 }
 void frmMain::OnTipOfTheDay()
 {
-    extern sysSettings *objSettings;
-    wxTipProvider *tipProvider = wxCreateFileTipProvider(wxT("tips.txt"), objSettings->GetNextTipOfTheDay());
-    objSettings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
-    objSettings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
+    extern sysSettings *settings;
+    wxTipProvider *tipProvider = wxCreateFileTipProvider(wxT("tips.txt"), settings->GetNextTipOfTheDay());
+    settings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
+    settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
     delete tipProvider;
 }
 
@@ -320,13 +321,13 @@ void frmMain::OnPassword(wxCommandEvent& event)
     // We need to pass the server to the password form
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
-    wxTreeItemId itmX = tvBrowser->GetSelection();
-    pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
-    int iType(itmData->GetType());
+    wxTreeItemId item = browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
+    int type = data->GetType();
 
-    switch (iType) {
+    switch (type) {
         case PG_SERVER:
-            winPassword->SetServer((pgServer *)itmData);
+            winPassword->SetServer((pgServer *)data);
             winPassword->Show(TRUE);
             break;
 
@@ -342,25 +343,25 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
 
     wxLogInfo(wxT("Saving object definition"));
 
-    if (txtSQLPane->GetText() == wxT("")) {
+    if (sqlPane->GetText() == wxT("")) {
         wxLogError(wxT("There is nothing in the SQL pane to save!"));
         return;
     }
 
-    wxFileDialog dlgFile(this, wxT("Select output file"), wxT(""), wxT(""), wxT("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"));
-    dlgFile.SetStyle(wxSAVE | wxOVERWRITE_PROMPT);
+    wxFileDialog filename(this, wxT("Select output file"), wxT(""), wxT(""), wxT("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"));
+    filename.SetStyle(wxSAVE | wxOVERWRITE_PROMPT);
 
     // Show the dialogue
-    if (dlgFile.ShowModal() == wxID_OK) {
+    if (filename.ShowModal() == wxID_OK) {
 
         // Write the file
-        wxFile *fSQL = new wxFile(dlgFile.GetPath(), wxFile::write);
-        if (!fSQL->Write(txtSQLPane->GetText())) {
-            wxString szMsg;
-            szMsg.Printf(wxT("Failed to write to the output file: %s"), dlgFile.GetPath().c_str());
-            wxLogError(szMsg);
+        wxFile *file = new wxFile(filename.GetPath(), wxFile::write);
+        if (!file->Write(sqlPane->GetText())) {
+            wxString msg;
+            msg.Printf(wxT("Failed to write to the output file: %s"), filename.GetPath().c_str());
+            wxLogError(msg);
         }
-        fSQL->Close();
+        file->Close();
         return;
 
     } else {
@@ -372,99 +373,99 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
 
 void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 {
-    extern sysSettings *objSettings;
+    extern sysSettings *settings;
 
     // Warn the user
     if (wxMessageBox(wxT("Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n\nAre you sure you wish to continue?"),
                      wxT("Continue?"), wxYES_NO | wxICON_QUESTION) == wxNO) {
-        mnuView->Check(MNU_SYSTEMOBJECTS, objSettings->GetShowSystemObjects());
+        viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
         return;
     }
 
-    if (objSettings->GetShowSystemObjects()) {
-        objSettings->SetShowSystemObjects(FALSE);
-        mnuView->Check(MNU_SYSTEMOBJECTS, FALSE);
+    if (settings->GetShowSystemObjects()) {
+        settings->SetShowSystemObjects(FALSE);
+        viewMenu->Check(MNU_SYSTEMOBJECTS, FALSE);
     } else {
-        objSettings->SetShowSystemObjects(TRUE);
-        mnuView->Check(MNU_SYSTEMOBJECTS, TRUE);
+        settings->SetShowSystemObjects(TRUE);
+        viewMenu->Check(MNU_SYSTEMOBJECTS, TRUE);
     }
 
     wxLogInfo(wxT("Clearing treeview to toggle ShowSystemObjects"));
 
     // Clear the treeview
-    tvBrowser->DeleteAllItems();
+    browser->DeleteAllItems();
 
     // Add the root node
-    pgObject *objServers = new pgObject(PG_SERVERS, wxString("Servers"));
-    itmServers = tvBrowser->AddRoot(wxT("Servers"), 0, -1, objServers);
-    pgObject *objAddServer = new pgObject(PG_ADD_SERVER, wxString("Add Server"));
-    wxTreeItemId itmAddServer = tvBrowser->AppendItem(itmServers, wxT("Add Server..."), 0, -1, objAddServer);
-    tvBrowser->Expand(itmServers);
-    tvBrowser->SelectItem(itmServers);
+    pgObject *serversObj = new pgObject(PG_SERVERS, wxString("Servers"));
+    servers = browser->AddRoot(wxT("Servers"), 0, -1, serversObj);
+    pgObject *addServerObj = new pgObject(PG_ADD_SERVER, wxString("Add Server"));
+    browser->AppendItem(servers, wxT("Add Server..."), 0, -1, addServerObj);
+    browser->Expand(servers);
+    browser->SelectItem(servers);
 
     RetrieveServers();
 }
 
 void frmMain::OnAddServer()
 {
-    extern sysSettings *objSettings;
+    extern sysSettings *settings;
 
     // Create a server object and connec it.
-    pgServer *objServer = new pgServer(objSettings->GetLastServer(), objSettings->GetLastDatabase(), objSettings->GetLastUsername(), objSettings->GetLastPort());
-    int iRes = objServer->Connect();
+    pgServer *server = new pgServer(settings->GetLastServer(), settings->GetLastDatabase(), settings->GetLastUsername(), settings->GetLastPort());
+    int res = server->Connect();
 
     // Check the result, and handle it as appropriate
-    if (iRes == PGCONN_OK) {
+    if (res == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
-        tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 0, -1, objServer);
-        tvBrowser->Expand(itmServers);
+        browser->AppendItem(servers, server->GetIdentifier(), 0, -1, server);
+        browser->Expand(servers);
 
-    } else if (iRes == PGCONN_DNSERR)  {
-        delete objServer;
+    } else if (res == PGCONN_DNSERR)  {
+        delete server;
         OnAddServer();
 
-    } else if (iRes == PGCONN_BAD)  {
-        wxString szMsg;
-        szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->GetLastError().c_str());
-        wxLogError(wxT(szMsg));
-        delete objServer;
+    } else if (res == PGCONN_BAD)  {
+        wxString msg;
+        msg.Printf(wxT("Error connecting to the server: %s"), server->GetLastError().c_str());
+        wxLogError(wxT(msg));
+        delete server;
         OnAddServer();
 
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
-        delete objServer;
+        delete server;
     }
 
     // Reset the Servers node text
-    wxString szLabel;
-    szLabel.Printf(wxT("Servers (%d)"), tvBrowser->GetChildrenCount(itmServers, FALSE) - 1);
-    tvBrowser->SetItemText(itmServers, szLabel);
+    wxString label;
+    label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE) - 1);
+    browser->SetItemText(servers, label);
     StoreServers();
 }
 
-void frmMain::ReconnectServer(pgServer *objServer)
+void frmMain::ReconnectServer(pgServer *server)
 {
     // Create a server object and connect it.
-    int iRes = objServer->Connect(TRUE);
+    int res = server->Connect(TRUE);
     // Check the result, and handle it as appropriate
-    if (iRes == PGCONN_OK) {
+    if (res == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
-        tvBrowser->SetItemImage(objServer->GetId(), 0, wxTreeItemIcon_Normal);
-        tvBrowser->SetItemImage(objServer->GetId(), 0, wxTreeItemIcon_Selected);
-		tvBrowser->Collapse(itmServers);
-        tvBrowser->Expand(itmServers);
-		tvBrowser->SelectItem(itmServers);
-		tvBrowser->SelectItem(objServer->GetId());
+        browser->SetItemImage(server->GetId(), 0, wxTreeItemIcon_Normal);
+        browser->SetItemImage(server->GetId(), 0, wxTreeItemIcon_Selected);
+		browser->Collapse(servers);
+        browser->Expand(servers);
+		browser->SelectItem(servers);
+		browser->SelectItem(server->GetId());
 		
-    } else if (iRes == PGCONN_DNSERR)  {
-        delete objServer;
+    } else if (res == PGCONN_DNSERR)  {
+        delete server;
         OnAddServer();
 
-    } else if (iRes == PGCONN_BAD)  {
-        wxString szMsg;
-        szMsg.Printf(wxT("%s"), objServer->GetLastError().c_str());
-        wxLogError(wxT(szMsg));
-        ReconnectServer(objServer);
+    } else if (res == PGCONN_BAD)  {
+        wxString msg;
+        msg.Printf(wxT("%s"), server->GetLastError().c_str());
+        wxLogError(wxT(msg));
+        ReconnectServer(server);
 		
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
@@ -474,53 +475,53 @@ void frmMain::ReconnectServer(pgServer *objServer)
 void frmMain::OnSelChanged()
 {
 	// Reset the listviews/SQL pane
-    lvProperties->ClearAll();
-    lvProperties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
-    lvProperties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
-    lvStatistics->ClearAll();
-    lvStatistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
-    lvStatistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
-    txtSQLPane->SetReadOnly(FALSE);
-    txtSQLPane->SetText(wxT(""));
-    txtSQLPane->SetReadOnly(TRUE);
+    properties->ClearAll();
+    properties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
+    properties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
+    statistics->ClearAll();
+    statistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
+    statistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
+    sqlPane->SetReadOnly(FALSE);
+    sqlPane->SetText(wxT(""));
+    sqlPane->SetReadOnly(TRUE);
 
     // Reset the toolbar & password menu option
     SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
-    mnuFile->Enable(MNU_PASSWORD, FALSE);
+    fileMenu->Enable(MNU_PASSWORD, FALSE);
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
-    wxTreeItemId itmX = tvBrowser->GetSelection();
-    pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
+    wxTreeItemId item = browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
 
     // If we didn't get an object, then we may have a right click, or 
     // invalid click, so ignore.
-    if (!itmData) return;
+    if (!data) return;
 
-    int iType(itmData->GetType());
+    int type = data->GetType();
 
-    switch (iType) {
+    switch (type) {
         case PG_SERVER:
             StartMsg(wxT("Retrieving server properties"));
             SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
-            tvServer((pgServer *)itmData);
-            svServer((pgServer *)itmData);
+            tvServer((pgServer *)data);
+            svServer((pgServer *)data);
             EndMsg();
             break;
 
         case PG_DATABASES:
             StartMsg(wxT("Retrieving database details"));
             SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
-            tvDatabases((pgCollection *)itmData);
-            svDatabases((pgCollection *)itmData);
+            tvDatabases((pgCollection *)data);
+            svDatabases((pgCollection *)data);
             EndMsg();
             break;
 
         case PG_DATABASE:
             StartMsg(wxT("Retrieving database details"));
             SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
-            tvDatabase((pgDatabase *)itmData);
-            //svDatabases((pgCollection *)itmData);
+            tvDatabase((pgDatabase *)data);
+            //svDatabases((pgCollection *)data);
             EndMsg();
             break;
 
@@ -537,20 +538,20 @@ void frmMain::OnSelActivated()
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
 
-    wxTreeItemId itmX = tvBrowser->GetSelection();
-    pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
-    int iType(itmData->GetType());
-    pgServer *objServer;
+    wxTreeItemId item = browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
+    int type = data->GetType();
+    pgServer *server;
 
-    switch (iType) {
+    switch (type) {
         case PG_ADD_SERVER:
             OnAddServer();
             break;
 
         case PG_SERVER:
-            objServer = (pgServer *)itmData;
-            if (!objServer->GetConnected()) {
-                ReconnectServer(objServer);
+            server = (pgServer *)data;
+            if (!server->GetConnected()) {
+                ReconnectServer(server);
             }
             break;
 
@@ -564,50 +565,50 @@ void frmMain::StoreServers()
     wxLogInfo(wxT("Storing listed servers for later..."));
 
     // Store the currently listed servers for later retrieval.
-    extern sysSettings *objSettings;
+    extern sysSettings *settings;
 
     // Write the individual servers
     // Iterate through all the child nodes of the Servers node
-    long lCookie;
-    wxString szKey;
-    pgObject *itmData;
-    pgServer *objServer;
-    int iServers = 0;
+    long cookie;
+    wxString key;
+    pgObject *data;
+    pgServer *server;
+    int numServers = 0;
 
-    wxTreeItemId itmX = tvBrowser->GetFirstChild(itmServers, lCookie);
-    while (itmX) {
-        itmData = (pgObject *)tvBrowser->GetItemData(itmX);
-        if (itmData->GetType() == PG_SERVER) {
+    wxTreeItemId item = browser->GetFirstChild(servers, cookie);
+    while (item) {
+        data = (pgObject *)browser->GetItemData(item);
+        if (data->GetType() == PG_SERVER) {
             // We have a sever, so cast the object and save the settings
-            ++iServers;
-            objServer = (pgServer *)itmData;
+            ++numServers;
+            server = (pgServer *)data;
 
             // Hostname
-            szKey.Printf("Servers/Server%d", iServers);
-            objSettings->Write(szKey, objServer->GetName());
+            key.Printf("Servers/Server%d", numServers);
+            settings->Write(key, server->GetName());
 
             // Port
-            szKey.Printf("Servers/Port%d", iServers);
-            objSettings->Write(szKey, objServer->GetPort());
+            key.Printf("Servers/Port%d", numServers);
+            settings->Write(key, server->GetPort());
 
             // Database
-            szKey.Printf("Servers/Database%d", iServers);
-            objSettings->Write(szKey, objServer->GetDatabase());
+            key.Printf("Servers/Database%d", numServers);
+            settings->Write(key, server->GetDatabase());
 
             // Username
-            szKey.Printf("Servers/Username%d", iServers);
-            objSettings->Write(szKey, objServer->GetUsername());
+            key.Printf("Servers/Username%d", numServers);
+            settings->Write(key, server->GetUsername());
         }
 
         // Get the next item
-        itmX = tvBrowser->GetNextChild(itmServers, lCookie);
+        item = browser->GetNextChild(servers, cookie);
     }
 
     // Write the server count
-    objSettings->Write(wxT("Servers/Count"), iServers);
-    wxString szMsg;
-    szMsg.Printf("Stored %d servers.", iServers);
-    wxLogInfo(szMsg);
+    settings->Write(wxT("Servers/Count"), numServers);
+    wxString msg;
+    msg.Printf("Stored %d servers.", numServers);
+    wxLogInfo(msg);
 
 }
 
@@ -616,42 +617,42 @@ void frmMain::RetrieveServers()
     // Retrieve previously stored servers
     wxLogInfo(wxT("Reloading servers..."));
 
-    extern sysSettings *objSettings;
+    extern sysSettings *settings;
 
-    int iServers;
-    objSettings->Read(wxT("Servers/Count"), &iServers, 0);
+    int numServers;
+    settings->Read(wxT("Servers/Count"), &numServers, 0);
 
-    int iLoop, iPort;
-    wxString szKey, szServer, szDatabase, szUsername;
-    pgServer * objServer;
+    int loop, port;
+    wxString key, servername, database, username;
+    pgServer *server;
 
-    for (iLoop = 1; iLoop <= iServers; ++iLoop) {
+    for (loop = 1; loop <= numServers; ++loop) {
         
         // Server
-        szKey.Printf("Servers/Server%d", iLoop);
-        objSettings->Read(szKey, &szServer, wxT(""));
+        key.Printf("Servers/Server%d", loop);
+        settings->Read(key, &servername, wxT(""));
 
         // Port
-        szKey.Printf("Servers/Port%d", iLoop);
-        objSettings->Read(szKey, &iPort, 0);
+        key.Printf("Servers/Port%d", loop);
+        settings->Read(key, &port, 0);
 
         // Database
-        szKey.Printf("Servers/Database%d", iLoop);
-        objSettings->Read(szKey, &szDatabase, wxT(""));
+        key.Printf("Servers/Database%d", loop);
+        settings->Read(key, &database, wxT(""));
 
         // Username
-        szKey.Printf("Servers/Username%d", iLoop);
-        objSettings->Read(szKey, &szUsername, wxT(""));
+        key.Printf("Servers/Username%d", loop);
+        settings->Read(key, &username, wxT(""));
 
         // Add the Server node
-        objServer = new pgServer(szServer, szDatabase, szUsername, iPort);
-        tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 1, -1, objServer);
+        server = new pgServer(servername, database, username, port);
+        browser->AppendItem(servers, server->GetIdentifier(), 1, -1, server);
     }
 
     // Reset the Servers node text
-    wxString szLabel;
-    szLabel.Printf(wxT("Servers (%d)"), tvBrowser->GetChildrenCount(itmServers, FALSE) - 1);
-    tvBrowser->SetItemText(itmServers, szLabel);
+    wxString label;
+    label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE) - 1);
+    browser->SetItemText(servers, label);
 }
 
 void frmMain::OnDrop()
@@ -660,23 +661,23 @@ void frmMain::OnDrop()
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
-    wxTreeItemId itmX = tvBrowser->GetSelection();
-    pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
-    int iType(itmData->GetType());
-    wxString szMsg, szLabel;
+    wxTreeItemId item = browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
+    int type = data->GetType();
+    wxString msg, label;
 
-    switch (iType) {
+    switch (type) {
         case PG_SERVER:
-            szMsg.Printf(wxT("Are you sure you wish to remove the server: %s?"), itmData->GetIdentifier().c_str());
-            if (wxMessageBox(szMsg, wxT("Remove Server?"), wxYES_NO | wxICON_QUESTION) == wxYES) {
+            msg.Printf(wxT("Are you sure you wish to remove the server: %s?"), data->GetIdentifier().c_str());
+			if (wxMessageBox(msg, wxT("Remove Server?"), wxYES_NO | wxICON_QUESTION) == wxYES) {
 
-                szMsg.Printf(wxT("Removing server: %s"), itmData->GetIdentifier().c_str());
-                wxLogInfo(szMsg);
-                tvBrowser->Delete(itmX);
+                msg.Printf(wxT("Removing server: %s"), data->GetIdentifier().c_str());
+                wxLogInfo(msg);
+                browser->Delete(item);
 
                 // Reset the Servers node text
-                szLabel.Printf(wxT("Servers (%d)"), tvBrowser->GetChildrenCount(itmServers, FALSE) - 1);
-                tvBrowser->SetItemText(itmServers, szLabel);
+                label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE) - 1);
+                browser->SetItemText(servers, label);
                 StoreServers();
             }
             break;
@@ -690,297 +691,294 @@ void frmMain::OnRefresh()
 {
     // Refresh - Clear the treeview below the current selection
 
-    long lCookie;
-    wxTreeItemId itmY = tvBrowser->GetSelection();
-    wxTreeItemId itmX = tvBrowser->GetFirstChild(itmY, lCookie);
-    while (itmX) {
-        tvBrowser->Delete(itmX);
-        itmX = tvBrowser->GetFirstChild(itmY, lCookie);
+    long cookie;
+    wxTreeItemId item1 = browser->GetSelection();
+    wxTreeItemId item2 = browser->GetFirstChild(item1, cookie);
+    while (item2) {
+        browser->Delete(item2);
+        item2 = browser->GetFirstChild(item1, cookie);
     }
 }
 
-void frmMain::SetButtons(bool bRefresh, bool bCreate, bool bDrop, bool bProperties, bool bSQL, bool bViewData, bool bVacuum)
+void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum)
 {
-    tlBar->EnableTool(BTN_REFRESH, bRefresh);
-    tlBar->EnableTool(BTN_CREATE, bCreate);
-    tlBar->EnableTool(BTN_DROP, bDrop);
-    tlBar->EnableTool(BTN_PROPERTIES, bProperties);
-    tlBar->EnableTool(BTN_SQL, bSQL);
-    tlBar->EnableTool(BTN_VIEWDATA, bViewData);
-    tlBar->EnableTool(BTN_VACUUM, bVacuum);
+    toolBar->EnableTool(BTN_REFRESH, refresh);
+    toolBar->EnableTool(BTN_CREATE, create);
+    toolBar->EnableTool(BTN_DROP, drop);
+    toolBar->EnableTool(BTN_PROPERTIES, properties);
+    toolBar->EnableTool(BTN_SQL, sql);
+    toolBar->EnableTool(BTN_VIEWDATA, viewData);
+    toolBar->EnableTool(BTN_VACUUM, vacuum);
 }
 
-void frmMain::tvServer(pgServer *objServer)
+void frmMain::tvServer(pgServer *server)
 {
     // This handler will primarily deal with displaying item
     // properties in the main window.
 
-    wxString szMsg;
+    wxString msg;
 
     // Add child nodes if necessary
-    if (objServer->GetConnected()) {
+    if (server->GetConnected()) {
 
         // Reset password menu option
-        mnuFile->Enable(MNU_PASSWORD, TRUE);
+        fileMenu->Enable(MNU_PASSWORD, TRUE);
 
-        if (tvBrowser->GetChildrenCount(objServer->GetId(), FALSE) != 3) {
+        if (browser->GetChildrenCount(server->GetId(), FALSE) != 3) {
 
             // Log
-            szMsg.Printf(wxT("Adding child object to server %s"), objServer->GetIdentifier().c_str());
-            wxLogInfo(szMsg);
+            msg.Printf(wxT("Adding child object to server %s"), server->GetIdentifier().c_str());
+            wxLogInfo(msg);
     
             // Databases
-            pgCollection *objCollection = new pgCollection(PG_DATABASES, wxString("Databases"));
-            objCollection->SetServer(objServer);
-            wxTreeItemId itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objCollection->GetTypeName(), 2, -1, objCollection);
+            pgCollection *collection = new pgCollection(PG_DATABASES, wxString("Databases"));
+            collection->SetServer(server);
+            browser->AppendItem(server->GetId(), collection->GetTypeName(), 2, -1, collection);
       
             // Groups
-            objCollection = new pgCollection(PG_GROUPS, wxString("Groups"));
-            objCollection->SetServer(objServer);
-            itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objCollection->GetTypeName(), 13, -1, objCollection);
+            collection = new pgCollection(PG_GROUPS, wxString("Groups"));
+            collection->SetServer(server);
+            browser->AppendItem(server->GetId(), collection->GetTypeName(), 13, -1, collection);
     
             // Users
-            objCollection = new pgCollection(PG_USERS, wxString("Users"));
-            objCollection->SetServer(objServer);
-            itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objCollection->GetTypeName(), 12, -1, objCollection);
+            collection = new pgCollection(PG_USERS, wxString("Users"));
+            collection->SetServer(server);
+            browser->AppendItem(server->GetId(), collection->GetTypeName(), 12, -1, collection);
         }
     }
 
 
-    szMsg.Printf(wxT("Displaying properties for server %s"), objServer->GetIdentifier().c_str());
-    wxLogInfo(szMsg);
+    msg.Printf(wxT("Displaying properties for server %s"), server->GetIdentifier().c_str());
+    wxLogInfo(msg);
 
     // Add the properties view columns
-    lvProperties->ClearAll();
-    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
+    properties->ClearAll();
+    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
+    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
 
     // Display the Server properties
-    lvProperties->InsertItem(0, wxT("Hostname"), 0);
-    lvProperties->SetItem(0, 1, objServer->GetName());
+    properties->InsertItem(0, wxT("Hostname"), 0);
+    properties->SetItem(0, 1, server->GetName());
 
-    lvProperties->InsertItem(1, wxT("Port"), 0);
-    lvProperties->SetItem(1, 1, NumToStr((double)objServer->GetPort()));
+    properties->InsertItem(1, wxT("Port"), 0);
+    properties->SetItem(1, 1, NumToStr((double)server->GetPort()));
 
-    lvProperties->InsertItem(2, wxT("Initial Database"), 0);
-    lvProperties->SetItem(2, 1, objServer->GetDatabase());
+    properties->InsertItem(2, wxT("Initial Database"), 0);
+    properties->SetItem(2, 1, server->GetDatabase());
 
-    lvProperties->InsertItem(3, wxT("Username"), 0);
-    lvProperties->SetItem(3, 1, objServer->GetUsername());
+    properties->InsertItem(3, wxT("Username"), 0);
+    properties->SetItem(3, 1, server->GetUsername());
 
-    lvProperties->InsertItem(4, wxT("Version String"), 0);
-    lvProperties->SetItem(4, 1, objServer->GetVersionString());
+    properties->InsertItem(4, wxT("Version String"), 0);
+    properties->SetItem(4, 1, server->GetVersionString());
 
-    lvProperties->InsertItem(5, wxT("Version Number"), 0);
-    lvProperties->SetItem(5, 1, NumToStr(objServer->GetVersionNumber()));
+    properties->InsertItem(5, wxT("Version Number"), 0);
+    properties->SetItem(5, 1, NumToStr(server->GetVersionNumber()));
 
-    lvProperties->InsertItem(6, wxT("Last System OID"), 0);
-    lvProperties->SetItem(6, 1, NumToStr(objServer->GetLastSystemOID()));
+    properties->InsertItem(6, wxT("Last System OID"), 0);
+    properties->SetItem(6, 1, NumToStr(server->GetLastSystemOID()));
 
-    lvProperties->InsertItem(7, wxT("Connected?"), 0);
-    lvProperties->SetItem(7, 1, BoolToYesNo(objServer->GetConnected()));
+    properties->InsertItem(7, wxT("Connected?"), 0);
+    properties->SetItem(7, 1, BoolToYesNo(server->GetConnected()));
 }
 
-void frmMain::svServer(pgServer *objServer)
+void frmMain::svServer(pgServer *server)
 {
-    if(!objServer->GetConnected()) return;
+    if(!server->GetConnected()) return;
     
-    wxString szMsg;
-    szMsg.Printf(wxT("Displaying statistics for server %s"), objServer->GetIdentifier().c_str());
-    wxLogInfo(szMsg);
+    wxString msg;
+    msg.Printf(wxT("Displaying statistics for server %s"), server->GetIdentifier().c_str());
+    wxLogInfo(msg);
 
     // Add the statistics view columns
-    lvStatistics->ClearAll();
-    lvStatistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(1, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
-    lvStatistics->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(3, wxT("Current Query"), wxLIST_FORMAT_LEFT, 400);
+    statistics->ClearAll();
+    statistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(1, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
+    statistics->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(3, wxT("Current Query"), wxLIST_FORMAT_LEFT, 400);
 
-    pgSet rsStat = objServer->ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
+    pgSet stats = server->ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
 
-    while (!rsStat.Eof()) {
-        lvStatistics->InsertItem(rsStat.CurrentPos() - 1, rsStat.GetVal(wxT("datname")), 0);
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 1, rsStat.GetVal(wxT("procpid")));
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 2, rsStat.GetVal(wxT("usename")));
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 3, rsStat.GetVal(wxT("current_query")));
-        rsStat.MoveNext();
+    while (!stats.Eof()) {
+        statistics->InsertItem(stats.CurrentPos() - 1, stats.GetVal(wxT("datname")), 0);
+        statistics->SetItem(stats.CurrentPos() - 1, 1, stats.GetVal(wxT("procpid")));
+        statistics->SetItem(stats.CurrentPos() - 1, 2, stats.GetVal(wxT("usename")));
+        statistics->SetItem(stats.CurrentPos() - 1, 3, stats.GetVal(wxT("current_query")));
+        stats.MoveNext();
     }
 
 
 }
 
 
-void frmMain::tvDatabases(pgCollection *objCollection)
+void frmMain::tvDatabases(pgCollection *collection)
 {
-    extern sysSettings *objSettings;
-    wxString szMsg;
-    pgDatabase *objDatabase;
+    extern sysSettings *settings;
+    wxString msg;
+    pgDatabase *database;
 
-    if (tvBrowser->GetChildrenCount(objCollection->GetId(), FALSE) == 0) {
+    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0) {
 
         // Log
-        szMsg.Printf(wxT("Adding databases to server %s"), objCollection->GetServer()->GetIdentifier().c_str());
-        wxLogInfo(szMsg);
+        msg.Printf(wxT("Adding databases to server %s"), collection->GetServer()->GetIdentifier().c_str());
+        wxLogInfo(msg);
 
         // Add Database node
-        pgObject *objAddDatabase = new pgObject(PG_ADD_DATABASE, wxString("Add Database"));
-        wxTreeItemId itmAddDatabase = tvBrowser->AppendItem(objCollection->GetId(), wxT("Add Database..."), 2, -1, objAddDatabase);
+        pgObject *addDatabaseObj = new pgObject(PG_ADD_DATABASE, wxString("Add Database"));
+        browser->AppendItem(collection->GetId(), wxT("Add Database..."), 2, -1, addDatabaseObj);
 
         // Get the databases
-        pgSet rsDatabases = objCollection->GetServer()->ExecuteSet(wxT("SELECT oid, datname, datpath, datallowconn, datconfig, datacl, pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner FROM pg_database"));
+        pgSet databases = collection->GetServer()->ExecuteSet(wxT("SELECT oid, datname, datpath, datallowconn, datconfig, datacl, pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner FROM pg_database"));
 
-        wxTreeItemId itmNewNode;
+        while (!databases.Eof()) {
 
-        while (!rsDatabases.Eof()) {
-
-            objDatabase = new pgDatabase(rsDatabases.GetVal(wxT("datname")));
-            objDatabase->SetServer(objCollection->GetServer());
-            objDatabase->iSetOid(StrToDouble(rsDatabases.GetVal(wxT("oid"))));
-            objDatabase->iSetOwner(rsDatabases.GetVal(wxT("datowner")));
-            objDatabase->iSetAcl(rsDatabases.GetVal(wxT("datacl")));
-            objDatabase->iSetPath(rsDatabases.GetVal(wxT("datpath")));
-            objDatabase->iSetEncoding(rsDatabases.GetVal(wxT("serverencoding")));
-            objDatabase->iSetVariables(rsDatabases.GetVal(wxT("datconfig")));
-            objDatabase->iSetAllowConnections(StrToBool(rsDatabases.GetVal(wxT("datallowconn"))));
+            database = new pgDatabase(databases.GetVal(wxT("datname")));
+            database->SetServer(collection->GetServer());
+            database->iSetOid(StrToDouble(databases.GetVal(wxT("oid"))));
+            database->iSetOwner(databases.GetVal(wxT("datowner")));
+            database->iSetAcl(databases.GetVal(wxT("datacl")));
+            database->iSetPath(databases.GetVal(wxT("datpath")));
+            database->iSetEncoding(databases.GetVal(wxT("serverencoding")));
+            database->iSetVariables(databases.GetVal(wxT("datconfig")));
+            database->iSetAllowConnections(StrToBool(databases.GetVal(wxT("datallowconn"))));
 
             // Add the treeview node if required
-            if (objSettings->GetShowSystemObjects())
-                itmNewNode = tvBrowser->AppendItem(objCollection->GetId(), objDatabase->GetIdentifier(), 15, -1, objDatabase);
+            if (settings->GetShowSystemObjects())
+                browser->AppendItem(collection->GetId(), database->GetIdentifier(), 15, -1, database);
             else {
-                if (!objDatabase->GetSystemObject())
-                    itmNewNode = tvBrowser->AppendItem(objCollection->GetId(), objDatabase->GetIdentifier(), 15, -1, objDatabase);
+                if (!database->GetSystemObject())
+                    browser->AppendItem(collection->GetId(), database->GetIdentifier(), 15, -1, database);
             }
 
 
-            rsDatabases.MoveNext();
+            databases.MoveNext();
         }
 
         // Reset the Databases node text
-        wxString szLabel;
-        szLabel.Printf(wxT("Databases (%d)"), tvBrowser->GetChildrenCount(objCollection->GetId(), FALSE) - 1);
-        tvBrowser->SetItemText(objCollection->GetId(), szLabel);
+        wxString label;
+        label.Printf(wxT("Databases (%d)"), browser->GetChildrenCount(collection->GetId(), FALSE) - 1);
+        browser->SetItemText(collection->GetId(), label);
 
     }
 
     // Display the properties.
 
-    long lCookie;
-    int iCount = 0;
-    wxString szKey;
-    pgObject *itmData;
+    long cookie;
+    int count = 0;
+    wxString key;
+    pgObject *data;
 
     // Setup listview
-    lvProperties->ClearAll();
-    lvProperties->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
-    lvProperties->InsertColumn(1, wxT("Comment"), wxLIST_FORMAT_LEFT, 400);
+    properties->ClearAll();
+    properties->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+    properties->InsertColumn(1, wxT("Comment"), wxLIST_FORMAT_LEFT, 400);
 
-    wxTreeItemId itmCollection = objCollection->GetId();
-    wxTreeItemId itmX = tvBrowser->GetFirstChild(itmCollection, lCookie);
-    while (itmX) {
-        itmData = (pgObject *)tvBrowser->GetItemData(itmX);
-        if (itmData->GetType() == PG_DATABASE) {
+    wxTreeItemId item = browser->GetFirstChild(collection->GetId(), cookie);
+    while (item) {
+        data = (pgObject *)browser->GetItemData(item);
+        if (data->GetType() == PG_DATABASE) {
 
-            objDatabase = (pgDatabase *)itmData;
+            database = (pgDatabase *)data;
 
-            lvProperties->InsertItem(0, objDatabase->GetName(), 0);
-            lvProperties->SetItem(0, 1, objDatabase->GetComment());
+            properties->InsertItem(0, database->GetName(), 0);
+            properties->SetItem(0, 1, database->GetComment());
         }
 
         // Get the next item
-        itmX = tvBrowser->GetNextChild(itmServers, lCookie);
+        item = browser->GetNextChild(servers, cookie);
     }
 }
 
-void frmMain::svDatabases(pgCollection *objCollection)
+void frmMain::svDatabases(pgCollection *collection)
 {
     
-    wxString szMsg;
-    szMsg.Printf(wxT("Displaying statistics for databases on %s"), objCollection->GetServer()->GetIdentifier().c_str());
-    wxLogInfo(szMsg);
+    wxString msg;
+    msg.Printf(wxT("Displaying statistics for databases on %s"), collection->GetServer()->GetIdentifier().c_str());
+    wxLogInfo(msg);
 
     // Add the statistics view columns
-    lvStatistics->ClearAll();
-    lvStatistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(1, wxT("Backends"), wxLIST_FORMAT_LEFT, 75);
-    lvStatistics->InsertColumn(2, wxT("Xact Committed"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(3, wxT("Xact Rolled Back"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(4, wxT("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(5, wxT("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
+    statistics->ClearAll();
+    statistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(1, wxT("Backends"), wxLIST_FORMAT_LEFT, 75);
+    statistics->InsertColumn(2, wxT("Xact Committed"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(3, wxT("Xact Rolled Back"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(4, wxT("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(5, wxT("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
 
-    pgSet rsStat = objCollection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
+    pgSet stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
 
-    while (!rsStat.Eof()) {
-        lvStatistics->InsertItem(rsStat.CurrentPos() - 1, rsStat.GetVal(wxT("datname")), 0);
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 1, rsStat.GetVal(wxT("numbackends")));
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 2, rsStat.GetVal(wxT("xact_commit")));
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 3, rsStat.GetVal(wxT("xact_rollback")));
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 4, rsStat.GetVal(wxT("blks_read")));
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 5, rsStat.GetVal(wxT("blks_hit")));
-        rsStat.MoveNext();
+    while (!stats.Eof()) {
+        statistics->InsertItem(stats.CurrentPos() - 1, stats.GetVal(wxT("datname")), 0);
+        statistics->SetItem(stats.CurrentPos() - 1, 1, stats.GetVal(wxT("numbackends")));
+        statistics->SetItem(stats.CurrentPos() - 1, 2, stats.GetVal(wxT("xact_commit")));
+        statistics->SetItem(stats.CurrentPos() - 1, 3, stats.GetVal(wxT("xact_rollback")));
+        statistics->SetItem(stats.CurrentPos() - 1, 4, stats.GetVal(wxT("blks_read")));
+        statistics->SetItem(stats.CurrentPos() - 1, 5, stats.GetVal(wxT("blks_hit")));
+        stats.MoveNext();
     }
 }
 
-void frmMain::tvDatabase(pgDatabase *objDatabase)
+void frmMain::tvDatabase(pgDatabase *database)
 {
-    wxString szMsg;
-    if (objDatabase->Connect() == PGCONN_OK) {
+    wxString msg;
+    if (database->Connect() == PGCONN_OK) {
         // Set the icon if required
-        if (tvBrowser->GetItemImage(objDatabase->GetId(), wxTreeItemIcon_Normal) != 2) {
-            tvBrowser->SetItemImage(objDatabase->GetId(), 2, wxTreeItemIcon_Normal);
-			tvBrowser->SetItemImage(objDatabase->GetId(), 2, wxTreeItemIcon_Selected);
-			wxTreeItemId itmDatabases = tvBrowser->GetParent(objDatabase->GetId());
-			tvBrowser->Collapse(itmDatabases);
-			tvBrowser->Expand(itmDatabases);
-			tvBrowser->SelectItem(objDatabase->GetId());
+        if (browser->GetItemImage(database->GetId(), wxTreeItemIcon_Normal) != 2) {
+            browser->SetItemImage(database->GetId(), 2, wxTreeItemIcon_Normal);
+			browser->SetItemImage(database->GetId(), 2, wxTreeItemIcon_Selected);
+			wxTreeItemId databases = browser->GetParent(database->GetId());
+			browser->Collapse(databases);
+			browser->Expand(databases);
+			browser->SelectItem(database->GetId());
         }
         // Add child nodes if necessary
-        if (tvBrowser->GetChildrenCount(objDatabase->GetId(), FALSE) != 2) {
+        if (browser->GetChildrenCount(database->GetId(), FALSE) != 2) {
 
             // Log
-            szMsg.Printf(wxT("Adding child object to database %s"), objDatabase->GetIdentifier().c_str());
-            wxLogInfo(szMsg);
+            msg.Printf(wxT("Adding child object to database %s"), database->GetIdentifier().c_str());
+            wxLogInfo(msg);
 
             // Languages
-            pgCollection *objCollection = new pgCollection(PG_LANGUAGES, wxString("Languages"));
-            objCollection->SetServer(objDatabase->GetServer());
-            wxTreeItemId itmNewNode = tvBrowser->AppendItem(objDatabase->GetId(), objCollection->GetTypeName(), 3, -1, objCollection);
+            pgCollection *collection = new pgCollection(PG_LANGUAGES, wxString("Languages"));
+            collection->SetServer(database->GetServer());
+            browser->AppendItem(database->GetId(), collection->GetTypeName(), 3, -1, collection);
   
             // Schemas
-            objCollection = new pgCollection(PG_SCHEMAS, wxString("Schemas"));
-            objCollection->SetServer(objDatabase->GetServer());
-            itmNewNode = tvBrowser->AppendItem(objDatabase->GetId(), objCollection->GetTypeName(), 4, -1, objCollection);
+            collection = new pgCollection(PG_SCHEMAS, wxString("Schemas"));
+            collection->SetServer(database->GetServer());
+            browser->AppendItem(database->GetId(), collection->GetTypeName(), 4, -1, collection);
         }
     }
     // Setup listview
-    lvProperties->ClearAll();
-    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 350);
+    properties->ClearAll();
+    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
+    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 350);
 
-    lvProperties->InsertItem(0, wxT("Name"), 0);
-    lvProperties->SetItem(0, 1, objDatabase->GetName());
-    lvProperties->InsertItem(1, wxT("OID"), 0);
-    lvProperties->SetItem(1, 1, NumToStr(objDatabase->GetOid()));
-    lvProperties->InsertItem(2, wxT("Owner"), 0);
-    lvProperties->SetItem(2, 1, objDatabase->GetOwner());
-    lvProperties->InsertItem(3, wxT("ACL"), 0);
-    lvProperties->SetItem(3, 1, objDatabase->GetAcl());
-    lvProperties->InsertItem(4, wxT("Path"), 0);
-    lvProperties->SetItem(4, 1, objDatabase->GetPath());
-    lvProperties->InsertItem(5, wxT("Encoding"), 0);
-    lvProperties->SetItem(5, 1, objDatabase->GetEncoding());
-    lvProperties->InsertItem(6, wxT("Variables"), 0);
-    lvProperties->SetItem(6, 1, objDatabase->GetVariables());
-    lvProperties->InsertItem(7, wxT("Allow Connections?"), 0);
-    lvProperties->SetItem(7, 1, BoolToYesNo(objDatabase->GetAllowConnections()));
-    lvProperties->InsertItem(8, wxT("Connected?"), 0);
-    lvProperties->SetItem(8, 1, BoolToYesNo(objDatabase->GetConnected()));
-    lvProperties->InsertItem(9, wxT("System Database?"), 0);
-    lvProperties->SetItem(9, 1, BoolToYesNo(objDatabase->GetSystemObject()));
-    lvProperties->InsertItem(10, wxT("Comment?"), 0);
-    lvProperties->SetItem(10, 1, objDatabase->GetComment());
+    properties->InsertItem(0, wxT("Name"), 0);
+    properties->SetItem(0, 1, database->GetName());
+    properties->InsertItem(1, wxT("OID"), 0);
+    properties->SetItem(1, 1, NumToStr(database->GetOid()));
+    properties->InsertItem(2, wxT("Owner"), 0);
+    properties->SetItem(2, 1, database->GetOwner());
+    properties->InsertItem(3, wxT("ACL"), 0);
+    properties->SetItem(3, 1, database->GetAcl());
+    properties->InsertItem(4, wxT("Path"), 0);
+    properties->SetItem(4, 1, database->GetPath());
+    properties->InsertItem(5, wxT("Encoding"), 0);
+    properties->SetItem(5, 1, database->GetEncoding());
+    properties->InsertItem(6, wxT("Variables"), 0);
+    properties->SetItem(6, 1, database->GetVariables());
+    properties->InsertItem(7, wxT("Allow Connections?"), 0);
+    properties->SetItem(7, 1, BoolToYesNo(database->GetAllowConnections()));
+    properties->InsertItem(8, wxT("Connected?"), 0);
+    properties->SetItem(8, 1, BoolToYesNo(database->GetConnected()));
+    properties->InsertItem(9, wxT("System Database?"), 0);
+    properties->SetItem(9, 1, BoolToYesNo(database->GetSystemObject()));
+    properties->InsertItem(10, wxT("Comment?"), 0);
+    properties->SetItem(10, 1, database->GetComment());
 
     // Set the SQL Pane text
-    txtSQLPane->SetReadOnly(FALSE);
-    txtSQLPane->SetText(objDatabase->GetSql());
-    txtSQLPane->SetReadOnly(TRUE);
+    sqlPane->SetReadOnly(FALSE);
+    sqlPane->SetText(database->GetSql());
+    sqlPane->SetReadOnly(TRUE);
 }

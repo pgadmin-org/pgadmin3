@@ -38,25 +38,7 @@ public:
     virtual int OnExit();
 
 private:
-    void LoadXrc(const wxString szFile);
+    void LoadXrc(const wxString file);
 };
-
-// Global Stuff
-void StartMsg(const wxString& szMsg);
-void EndMsg();
-int wxCALLBACK ListSort(long itm1, long itm2, long sortData);
-
-// Conversions
-wxString StrToYesNo(const wxString& szVal);
-wxString BoolToYesNo(bool bVal);
-bool StrToBool(const wxString& szVal);
-wxString NumToStr(long nVal);
-long StrToLong(const wxString& szVal);
-wxString NumToStr(double nVal);
-double StrToDouble(const wxString& szVal);
-
-// Quoting
-wxString qtString(const wxString& szVal);
-wxString qtIdent(const wxString& szVal);
 
 #endif

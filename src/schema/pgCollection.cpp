@@ -17,14 +17,10 @@
 #include "pgServer.h"
 
 
-pgCollection::pgCollection(int iNewType, const wxString& szNewName)
-: pgObject()
+pgCollection::pgCollection(int newType, const wxString& newName)
+: pgObject(newType, newName)
 {
-
     wxLogInfo(wxT("Creating a pgCollection object"));
-
-    // Call the 'virtual' ctor
-    vCtor(iNewType, szNewName);
 }
 
 pgCollection::~pgCollection()
@@ -34,9 +30,9 @@ pgCollection::~pgCollection()
 
 // Parent objects
 pgServer *pgCollection::GetServer() {
-    return objServer;
+    return server;
 }
 
-void pgCollection::SetServer(pgServer *objNewServer) {
-    objServer = objNewServer;
+void pgCollection::SetServer(pgServer *newServer) {
+    server = newServer;
 }
