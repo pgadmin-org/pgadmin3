@@ -31,7 +31,7 @@ pgAggregate::~pgAggregate()
 
 bool pgAggregate::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(")"));
+    return GetDatabase()->ExecuteVoid(wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(");"));
 }
 
 wxString pgAggregate::GetSql(wxTreeCtrl *browser)
@@ -39,16 +39,18 @@ wxString pgAggregate::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("-- Aggregate: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-            + wxT("-- DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(")")
+            + wxT("-- DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(");")
             + wxT("\n\nCREATE AGGREGATE ") + GetQuotedFullIdentifier() 
             + wxT("(\n  BASETYPE=") + GetInputType()
             + wxT(",\n  SFUNC=") + GetStateFunction()
             + wxT(",\n  STYPE=") + GetStateType();
-        AppendIfFilled(sql, wxT(",\n  FFUNC="), qtIdent(GetFinalFunction()));
+        AppendIfFilled(sql, wxT(",\n  FINALFUNC="), qtIdent(GetFinalFunction()));
         if (GetInitialCondition().length() > 0)
           sql += wxT(",\n  INITCOND=") + qtString(GetInitialCondition());
         sql += wxT("\n);\n")
-            + GetOwnerSql(8, 0);
+            + GetOwnerSql(8, 0, wxT("AGGREGATE ") + GetQuotedFullIdentifier() 
+                + wxT("(") + qtIdent(GetInputType())
+                + wxT(")"));
 
         if (!GetComment().IsNull())
         {
