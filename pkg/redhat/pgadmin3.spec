@@ -43,7 +43,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root)
 %{_bindir}/%{name}
-%{_datadir}
+%{_datadir}/%{name}
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
