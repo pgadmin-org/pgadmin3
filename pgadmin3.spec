@@ -1,9 +1,9 @@
 %define major_version      0.1.1
 %define minor_version      %(date +%Y%m%d)
 %define wxGTK2_version     20030607
-%define with_wx_config     --with-wx-config=wxgtk2ud-2.5-config
-%define with_pgsql         --with-pgsql=/usr
-%define with_pgsql_include --with-pgsql-include=/usr/include
+%define with_wx_config     wxgtk2ud-2.5-config
+%define with_pgsql         /usr
+%define with_pgsql_include /usr/include
 
 # Mandrake 91
 # %define with_pgsql_include --with-pgsql-include=/usr/include/pgsql
@@ -68,7 +68,7 @@ pgAdmin3 japanese translation by Hiroshi Saito <saito@inetrt.skcapi.co.jp>.
 %setup -q
 
 %build
-%configure --enable-debug --enable-static %{with_wx_config} %{with_pgsql} %{with_pgsql_include}
+%configure --enable-debug --enable-static --with-wx-config=%{with_wx_config} --with-pgsql=%{with_pgsql} --with-pqsql-include=%{with_pgsql_include}
 make all
 
 %install
