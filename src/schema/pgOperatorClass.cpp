@@ -38,7 +38,7 @@ wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Operator Class: \"") + GetName() + wxT("\"\n")
+        sql = wxT("-- Operator Class: \"") + GetName() + wxT("\"\n");
         sql += wxT("CREATE OPERATOR CLASS ") + GetQuotedFullIdentifier();
         if (GetOpcDefault())
             sql += wxT("DEFAULT ");

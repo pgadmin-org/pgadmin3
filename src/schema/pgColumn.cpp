@@ -30,6 +30,13 @@ pgColumn::~pgColumn()
 {
 }
 
+bool pgColumn::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    wxString sql = wxT("ALTER TABLE ") + GetQuotedFullTable();
+             sql += wxT(" DROP COLUMN ") + GetQuotedIdentifier();
+    
+    return GetDatabase()->ExecuteVoid(sql);
+}
 
 wxString pgColumn::GetSql(wxTreeCtrl *browser)
 {
@@ -201,7 +208,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
     wxString systemRestriction;
     if (!settings->GetShowSystemObjects())
-        systemRestriction = "\n   AND attnum > 0 AND attisdropped IS FALSE";
+        systemRestriction = "\n   AND attnum > 0"; // Should we ever see dropped columns?  AND attisdropped IS FALSE";
 
 
     pgSet *columns= collection->GetDatabase()->ExecuteSet(wxT(

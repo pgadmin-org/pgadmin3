@@ -29,6 +29,13 @@ pgCheck::~pgCheck()
 }
 
 
+bool pgCheck::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    wxString sql = wxT("ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable);
+             sql += wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier();
+    
+    return GetDatabase()->ExecuteVoid(sql);
+}
 
 wxString pgCheck::GetConstraint()
 {

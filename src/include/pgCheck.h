@@ -41,6 +41,8 @@ public:
     wxString GetDefinition() const { return definition; }
     void iSetDefinition(const wxString& s) { definition=s; }
 
+    bool CanDrop() { return true; }
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
