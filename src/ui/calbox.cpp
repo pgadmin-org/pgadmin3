@@ -21,7 +21,7 @@
 BEGIN_EVENT_TABLE(wxCalendarBox, wxControl)
     EVT_BUTTON(CTRLID_BTN, wxCalendarBox::OnClick)
     EVT_TEXT(CTRLID_TXT, wxCalendarBox::OnText)
-//    EVT_SET_FOCUS(wxCalendarBox::OnSetFocus)
+    EVT_CHILD_FOCUS(wxCalendarBox::OnChildSetFocus)
 END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(wxCalendarBox, wxControl)
@@ -89,10 +89,8 @@ bool wxCalendarBox::Create(wxWindow *parent,
     SetFormat(wxT("%x"));
 
     m_btn = new wxBitmapButton(this, CTRLID_BTN, bmp, wxPoint(cs.x - bs.x, 0), wxSize(bs.x, cs.y));
-    m_btn->Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnButtonSetFocus);
 
     m_dlg = new wxDialog(this, CTRLID_CAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    m_dlg->Connect(wxID_ANY, wxID_ANY, wxEVT_ACTIVATE, (wxObjectEventFunction)&wxCalendarBox::OnActivate, 0, this);
     m_dlg->SetFont(GetFont());
 
     wxPanel *panel=new wxPanel(m_dlg, CTRLID_PAN, wxPoint(0, 0), wxDefaultSize, wxSUNKEN_BORDER|wxCLIP_CHILDREN);
@@ -332,26 +330,32 @@ void wxCalendarBox::DropDown(bool down)
         }
         else
         {
-            m_dlg->Hide();
+			if (m_dropped)
+				m_dlg->Hide();
             m_dropped = false;
         }
     }
 }
 
 
-void wxCalendarBox::OnButtonSetFocus(wxFocusEvent &ev)
+void wxCalendarBox::OnChildSetFocus(wxChildFocusEvent &ev)
 {
-    wxWindow *w=ev.GetWindow();
-    while (w)
-    {
-        if (w == m_dlg)
-        {
-            m_ignoreDrop = true;
-            break;
-        }
-        w = w->GetParent();
-    }
     ev.Skip();
+
+	wxWindow  *w=(wxWindow*)ev.GetEventObject();
+	while (w)
+	{
+		if (w == m_dlg)
+			return;
+		w = w->GetParent();
+	}
+
+	if (m_dropped)
+	{
+		DropDown(false);
+		if (ev.GetEventObject() == m_btn)
+			m_ignoreDrop = true;
+    }
 }
 
     
@@ -388,15 +392,6 @@ void wxCalendarBox::OnKillFocus(wxFocusEvent &ev)
         m_txt->SetValue(wxEmptyString);
     else
         m_txt->SetValue(dt.Format(m_format));
-}
-
-
-void wxCalendarBox::OnActivate(wxActivateEvent &ev)
-{
-    if (!ev.GetActive())
-    {
-        DropDown(false);
-    }
 }
 
 

@@ -74,10 +74,9 @@ private:
     void OnCalKey(wxKeyEvent & event);
     void OnClick(wxMouseEvent &ev);
     void OnSelChange(wxCalendarEvent &ev);
-    void OnActivate(wxActivateEvent &ev);
     void OnSetFocus(wxFocusEvent &ev);
     void OnKillFocus(wxFocusEvent &ev);
-    void OnButtonSetFocus(wxFocusEvent &ev);
+    void OnChildSetFocus(wxChildFocusEvent &ev);
 
     DECLARE_DYNAMIC_CLASS(wxCalendarBox)
     DECLARE_EVENT_TABLE()
