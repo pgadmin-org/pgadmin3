@@ -53,7 +53,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
         sqlHelpSite += wxT("\\");
 #else
-    Read(wxT("SqlHelpSite"), &sqlHelpSite, loadPath + wxT("../share/pgadmin3/docs/en_US/pg/"));
+    Read(wxT("SqlHelpSite"), &sqlHelpSite, DATA_DIR DOC_PATH wxT("/en_US/pg/"));
     if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
         sqlHelpSite += wxT("/");
 #endif
