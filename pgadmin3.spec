@@ -5,7 +5,7 @@
 %define withpgsql          /usr
 %define withpgsqlinclude   /usr/include
 
-# Mandrake 91
+# Mandrake 91 & SuSE 8.2
 # %define withpgsql_include --with-pgsql-include=/usr/include/pgsql
 
 Summary: Graphical client for PostgreSQL.
