@@ -34,7 +34,11 @@ PostgreSQL Tools.
 %build
 export CFLAGS=""
 export CXXFLAGS=""
-%configure --enable-debug --enable-static --with-wx-config=%{withwxconfig}
+%ifarch x86_64 amd64
+%configure --enable-static --with-wx-config=%{withwxconfig} --with-wx=/usr/local --with-ssl LDFLAGS=-L/usr/X11R6/lib64
+%else
+%configure --enable-static --with-wx-config=%{withwxconfig} --with-wx=/usr/local --with-ssl
+%endif
 make all
 
 %install
@@ -59,6 +63,10 @@ rm -rf %{buildroot}
 %{_datadir}/applications
 
 %changelog
+* Thur Feb 10 2005 Dave Page <dpage@pgadmin.org>
+- 1.2.0
+- Add 64 bit libs per Vasilev Max
+
 * Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
 - Initial build
 

@@ -36,7 +36,11 @@ PostgreSQL Tools.
 %build
 export CFLAGS=""
 export CXXFLAGS=""
-%configure --with-wx-config=%{withwxconfig} --with-wx=/usr
+%ifarch x86_64 amd64
+%configure --with-wx-config=%{withwxconfig} --with-wx=/usr --with-ssl LDFLAGS=-L/usr/X11R6/lib64
+%else
+%configure --with-wx-config=%{withwxconfig} --with-wx=/usr --with-ssl
+%endif
 make all
 
 %install
@@ -63,6 +67,10 @@ rm -rf %{buildroot}
 %{_datadir}/applications
 
 %changelog
+* Thur Feb 10 2005 Dave Page <dpage@pgadmin.org>
+- 1.2.0
+- Add 64 bit libs per Vasilev Max
+
 * Tue Dec 3 2004 Hugo Ferreira <hmf at inescporto.pt>
 - 1.2.0 
 - Some changes for MDK 10.1 (name, BuildRequires, minor_version to 1mdk  and 
