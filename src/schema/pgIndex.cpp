@@ -51,7 +51,8 @@ wxString pgIndex::GetCreate()
         str += GetQuotedColumns();
     else
     {
-        str += qtIdent(GetProcNamespace()) + wxT(".")+qtIdent(GetProcName())+wxT("(")+GetQuotedTypedColumns()+wxT(")");
+//        str += qtIdent(GetProcNamespace()) + wxT(".")+qtIdent(GetProcName())+wxT("(")+GetQuotedTypedColumns()+wxT(")");
+        str += qtIdent(GetProcNamespace()) + wxT(".")+qtIdent(GetProcName())+wxT("(")+GetQuotedColumns()+wxT(")");
         if (!this->GetOperatorClasses().IsNull())
             str += wxT(" ") + GetOperatorClasses();
     }
