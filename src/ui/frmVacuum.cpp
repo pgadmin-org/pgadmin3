@@ -53,7 +53,7 @@ frmVacuum::frmVacuum(frmMain *form, pgObject *obj) : DialogWithHelp(form)
     wxLogInfo(wxT("Creating a vacuum dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxXmlResource::Get()->LoadDialog(this, form, wxT("frmVacuum"));
-    SetTitle(_("Maintain ") + object->GetTypeName() + wxT(" ") + object->GetFullIdentifier());
+    SetTitle(wxString::Format(_("Maintain %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     // Icon
     SetIcon(wxIcon(vacuum_xpm));
