@@ -52,7 +52,7 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
         else
         {
             sql = wxT("-- Column: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-                + wxT("-- ALTER TABLE ") + GetQuotedFullIdentifier()
+                + wxT("-- ALTER TABLE ") + GetQuotedFullTable()
                 + wxT(" DROP COLUMN ") + GetQuotedIdentifier()
                 
                 + wxT("\n\nALTER TABLE ") + GetQuotedFullTable()
