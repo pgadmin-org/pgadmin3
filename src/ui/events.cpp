@@ -449,6 +449,8 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     int type = data->GetType();
     pgServer *server;
 
+    properties->Freeze();
+    statistics->Freeze();
     switch (type)
     {
         case PG_SERVER:
@@ -518,8 +520,10 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
             data->ShowTree(this, browser, properties, statistics, sqlPane);
             break;
         default:        
-			return; 
+			break;;
     }
+    properties->Thaw();
+    statistics->Thaw();
     sqlPane->SetText(data->GetSql(browser));
 }
 
@@ -678,6 +682,8 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 
     wxTreeItemId item;
     
+    browser->Freeze();
+
     while ((item=browser->GetFirstChild(currentItem, cookie)) != 0)
     {
         data = (pgObject *)browser->GetItemData(item);
@@ -718,6 +724,7 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
     }
     wxTreeEvent event;
 	OnTreeSelChanged(event);
+    browser->Thaw();
 }
 
 void frmMain::OnDisconnect(wxCommandEvent &ev)
