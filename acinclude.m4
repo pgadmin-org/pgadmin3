@@ -166,10 +166,10 @@ else
 fi], [
     AC_MSG_RESULT(yes)
     WX_HOME=/usr/local/wx2
-    if test ! -f "${WX_HOME}/include/wx/wx.h"
+    if test ! -f "${WX_HOME}/include/wx/wx-2.5/wx.h"
     then
         WX_HOME=/usr/local
-        if test ! -f "${WX_HOME}/include/wx/wx.h"
+        if test ! -f "${WX_HOME}/include/wx/wx-2.5/wx.h"
         then
             WX_HOME=/usr
         fi
@@ -428,7 +428,7 @@ then
     fi
 
     WX_NEW_CPPFLAGS=`${WX_CONFIG} --cxxflags`
-    CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -I${WX_HOME}/include"
+    CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -I${WX_HOME}/include/wx-2.5"
     case "${host}" in
         *-apple-darwin*)
             CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
