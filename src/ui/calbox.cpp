@@ -117,24 +117,30 @@ bool wxCalendarBox::Create(wxWindow *parent,
     yearSize.x = width;
 
     wxPoint yearPosition = yearControl->GetPosition();
-#define YEARPOS_ADD 4
-    width = yearPosition.x + yearSize.x+YEARPOS_ADD;
-    if (width < calSize.x-2)
-        width = calSize.x-2;
 
-	int calPos = (width-calSize.x)/2 -2;
+#ifdef __WXMSW__
+#define CALBORDER   0
+#else
+#define CALBORDER   4
+#endif
+
+    width = yearPosition.x + yearSize.x+2+CALBORDER/2;
+    if (width < calSize.x-4)
+        width = calSize.x-4;
+
+	int calPos = (width-calSize.x)/2;
 	if (calPos == -1)
 	{
 		calPos = 0;
 		width += 2;
 	}
     m_cal->SetSize(calPos, 0, calSize.x, calSize.y);
-    yearControl->SetSize(width-yearSize.x-YEARPOS_ADD, yearPosition.y, yearSize.x, yearSize.y);
+    yearControl->SetSize(width-yearSize.x-CALBORDER, yearPosition.y, yearSize.x, yearSize.y);
 	m_cal->GetMonthControl()->Move(0, 0);
 
 
 
-    panel->SetClientSize(width, calSize.y+2);
+    panel->SetClientSize(width, calSize.y-2+CALBORDER);
     m_dlg->SetClientSize(panel->GetSize());
 
     return TRUE;
