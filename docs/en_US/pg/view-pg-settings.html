@@ -1,0 +1,393 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>pg_settings</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_rules"
+HREF="view-pg-rules.html"><LINK
+REL="NEXT"
+TITLE="pg_stats"
+HREF="view-pg-stats.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-11-16T21:52:34"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 7.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-rules.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 43. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-stats.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="VIEW-PG-SETTINGS"
+>43.34. <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+></A
+></H1
+><A
+NAME="AEN52061"
+></A
+><P
+>   The view <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+> provides access to
+   run-time parameters of the server.  It is essentially an alternative
+   interface to the <TT
+CLASS="COMMAND"
+>SHOW</TT
+> and <TT
+CLASS="COMMAND"
+>SET</TT
+> commands.
+   It also provides access to some facts about each parameter that are
+   not directly available from <TT
+CLASS="COMMAND"
+>SHOW</TT
+>, such as minimum and
+   maximum values.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN52068"
+></A
+><P
+><B
+>Table 43-34. <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>run-time configuration parameter name</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>setting</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>current value of the parameter</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>context</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>context required to set the parameter's value</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>vartype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>parameter type (<VAR
+CLASS="LITERAL"
+>bool</VAR
+>, <VAR
+CLASS="LITERAL"
+>integer</VAR
+>,
+       <VAR
+CLASS="LITERAL"
+>real</VAR
+>, or <VAR
+CLASS="LITERAL"
+>string</VAR
+>)
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>source</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>source of the current parameter value</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>min_val</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>minimum allowed value of the parameter (NULL for nonnumeric
+      values)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>max_val</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>maximum allowed value of the parameter (NULL for nonnumeric
+      values)</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   The <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+> view cannot be inserted into or
+   deleted from, but it can be updated.  An <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> applied
+   to a row of <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+> is equivalent to executing
+   the <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> command on that named
+   parameter. The change only affects the value used by the current
+   session. If an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> is issued within a transaction
+   that is later aborted, the effects of the <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> command
+   disappear when the transaction is rolled back. Once the surrounding
+   transaction is committed, the effects will persist until the end of the
+   session, unless overridden by another <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> or
+   <TT
+CLASS="COMMAND"
+>SET</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-rules.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-stats.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_rules</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
