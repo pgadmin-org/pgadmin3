@@ -31,7 +31,7 @@ EVT_PAINT(frmAbout::OnPaint)
 END_EVENT_TABLE()
 
 frmAbout::frmAbout(wxFrame *parent)
-: wxDialog(parent, -1, APPNAME_L, wxDefaultPosition, wxDefaultSize, wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
+: wxDialog(parent, -1, APPNAME_L, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
 {
 
     wxLogInfo(wxT("Creating an about box"));
