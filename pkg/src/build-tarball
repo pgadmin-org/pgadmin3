@@ -1,0 +1,36 @@
+# pgAdmin III - PostgreSQL Tools
+# Copyright (C) 2002 - 2003, The pgAdmin Development Team
+# This software is released under the Artistic Licence
+#
+# build-tarball - Build a source tarball 
+
+#! /bin/sh
+
+# Setup the build environment
+PATH=$PATH:/usr/local/bin
+PGDIR=/usr/local/pgsql
+WXDIR=/usr/local/
+export PATH PGDIR WXDIR
+
+# Cleanup
+cd /usr/local/src/pgadmin3
+rm -rf ./slackpack
+rm -rf ./doc
+rm -rf ./pkg
+rm -rf ./src
+
+# CVS update
+/usr/bin/cvs update -d -C
+
+# Bootstrap
+/bin/sh bootstrap
+
+# Configure for the local OS
+./configure --with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug
+
+# Make and store the source tarball
+make dist
+if [ -e pgadmin3-0.8.0.tar.gz ]; then
+	mv pgadmin3-0.8.0.tar.gz /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz
+	ln -s -f src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz /usr/local/apache/htdocs/pgadmin3-src.tar.gz
+fi
