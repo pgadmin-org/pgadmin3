@@ -138,7 +138,7 @@ int dlgFunction::Go(bool modal)
         if (objectType != PG_TRIGGERFUNCTION)
         {
             wxStringTokenizer types(function->GetArgTypes(), wxT(", "));
-            int cnt=0;
+            size_t cnt=0;
 
             while (types.HasMoreTokens())
             {
@@ -146,7 +146,12 @@ int dlgFunction::Go(bool modal)
                 if (str.IsEmpty())
                     continue;
                 if (typeColNo)
-                    lstArguments->AppendItem(-1, function->GetArgNames().Item(cnt++), str);
+                {
+                    if (cnt < function->GetArgNames().GetCount())
+                        lstArguments->AppendItem(-1, function->GetArgNames().Item(cnt++), str);
+                    else
+                        lstArguments->AppendItem(-1, wxEmptyString, str);
+                }
                 else
                     lstArguments->AppendItem(-1, str);
             }
@@ -353,9 +358,11 @@ void dlgFunction::OnChangeArgName(wxCommandEvent &ev)
         argNameRow = lstArguments->FindItem(-1, txtArgName->GetValue());
 
     int pos=lstArguments->GetSelection();
-    int typeno=cbDatatype->GetGuessedSelection();
-    btnAdd->Enable(argNameRow < 0 && typeno >= 0);
-    btnChange->Enable(pos >= 0 && typeno >= 0);
+
+    bool typeValid = (function != 0 || cbDatatype->GetGuessedSelection() >= 0);
+
+    btnAdd->Enable(argNameRow < 0 && typeValid);
+    btnChange->Enable(pos >= 0 && typeValid);
     btnRemove->Enable(pos >= 0);
 }
 
