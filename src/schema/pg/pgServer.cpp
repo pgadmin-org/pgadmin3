@@ -44,10 +44,11 @@ wxString pgServer::GetTypeName() const
     return wxString("Server");
 }
 
-int pgServer::Connect() {
+int pgServer::Connect(bool bLockFields) {
 
     wxLogInfo(wxT("Getting connection details..."));
     frmConnect *winConnect = new frmConnect(this, szServer, szDatabase, szUsername, iPort);
+    if (bLockFields) winConnect->LockFields();
 
     if (winConnect->ShowModal() != 0) {
         delete winConnect;
@@ -85,7 +86,19 @@ wxString pgServer::GetServerVersion()
       }
       return szVer;
     } else {
-        return wxString("Not Connected");
+        return wxString("");
+    }
+}
+
+wxString pgServer::GetLastSystemOID()
+{
+    if (bConnected) {
+      if (szLastSystemOID.IsEmpty()) {
+          szLastSystemOID = wxString(cnMaster->GetLastSystemOID());
+      }
+      return szLastSystemOID;
+    } else {
+        return wxString("");
     }
 }
 
@@ -146,4 +159,19 @@ wxString pgServer::GetLastError() const
 bool pgServer::GetConnected()
 {
     return bConnected;
+}
+
+int pgServer::ExecuteVoid(const wxString& szSQL)
+{
+    return cnMaster->ExecuteVoid(szSQL);
+}
+
+wxString pgServer::ExecuteScalar(const wxString& szSQL) const
+{
+    return cnMaster->ExecuteScalar(szSQL);
+}
+
+pgSet pgServer::ExecuteSet(const wxString& szSQL)
+{
+    return *cnMaster->ExecuteSet(szSQL);
 }

@@ -61,6 +61,7 @@ public:
     int GetStatus();
     wxString GetLastError() const;
     wxString GetServerVersion() const;
+    wxString GetLastSystemOID() const;
 
 private:
     PGconn *objConn;

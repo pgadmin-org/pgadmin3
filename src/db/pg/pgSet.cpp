@@ -135,8 +135,10 @@ wxString pgSet::ColName(int iCol) const
 
 wxString pgSet::ColType(int iCol) const
 {
-    // TODO
-    return wxString("");
+    wxString szSQL, szResult;
+    szSQL.Printf("SELECT typname FROM pg_type WHERE oid = %d", PQftype(objRes, iCol -1));
+    szResult = ExecuteScalar(szSQL);
+    return szResult;
 }
 
 int pgSet::ColSize(int iCol)
@@ -157,6 +159,29 @@ wxString pgSet::GetVal(int iCol) const
 
 wxString pgSet::GetVal(const wxString& szCol) const
 {
-    int iCol = PQfnumber(objRes, szCol.c_str()) + 1;
+    int iCol = PQfnumber(objRes, szCol.c_str());
     return GetVal(iCol);
+}
+
+wxString pgSet::ExecuteScalar(const wxString& szSQL) const
+{
+    // Execute the query and get the status.
+    PGresult *qryRes;
+    wxString szMsg;
+    szMsg.Printf(wxT("Set sub-query: %s"), szSQL.c_str());
+    wxLogInfo(szMsg);
+    qryRes = PQexec(objConn, szSQL.c_str());
+    if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
+        return wxString("");
+    }
+
+    // Retrieve the query result and return it.
+    wxString szResult;
+    szResult.Printf("%s", PQgetvalue(qryRes, 0, 0));
+    szMsg.Printf(wxT("Query result: %s"), szResult.c_str());
+    wxLogInfo(szMsg);
+
+    // Cleanup & exit
+    PQclear(qryRes);
+    return szResult;
 }

@@ -10,6 +10,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/settings.h>
 #include <wx/xrc/xmlres.h>
 
 
@@ -114,4 +115,21 @@ wxString frmConnect::GetPassword()
 long frmConnect::GetPort()
 {
     return atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue());
+}
+
+void frmConnect::LockFields()
+{
+    wxColour colBack;
+    colBack = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
+
+    XRCCTRL(*this, "txtServer", wxTextCtrl)->SetEditable(FALSE);
+    XRCCTRL(*this, "txtServer", wxTextCtrl)->SetBackgroundColour(colBack);
+    XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetEditable(FALSE);
+    XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetBackgroundColour(colBack);
+    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetEditable(FALSE);
+    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetBackgroundColour(colBack);
+    XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetEditable(FALSE);
+    XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetBackgroundColour(colBack);
+
+    this->Refresh();
 }

@@ -47,7 +47,13 @@ private:
     void OnOptions(wxCommandEvent& event);
     void OnSelChanged();
     void OnSelActivated();
+
+    // Treeview  handlers
     void tvServer(pgServer *objServer);
+
+    // Statistics Handlers
+    void svServer(pgServer *objServer);
+
     void StoreServers();
     void RetrieveServers();
     void ReconnectServer(pgServer *objServer);

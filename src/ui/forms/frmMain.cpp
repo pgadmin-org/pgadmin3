@@ -11,6 +11,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/splitter.h>
+#include <wx/settings.h>
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
@@ -30,6 +31,7 @@
 #include "frmUpgradeWizard.h"
 #include "../controls/ctlSQLBox.h"
 #include "../../db/pg/pgConn.h"
+#include "../../db/pg/pgSet.h"
 #include "../../schema/pg/pgServer.h"
 #include "../../schema/pg/pgObject.h"
 
@@ -232,8 +234,8 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     ilProperties->Add(wxIcon(property_xpm));
 
     // Add the property view columns
-    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
+    lvProperties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
+    lvProperties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
 
     //Setup a listview imagemap
     wxImageList *ilStatistics = new wxImageList(16, 16);
@@ -242,9 +244,12 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     //Stuff the BrowserImage Listu:
     ilStatistics->Add(wxIcon(statistics_xpm));
 
-    // Add the statistics view columns
-    lvStatistics->InsertColumn(0, wxT("Statistic"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
+    // Add the statistics view columns & set the colour
+    lvStatistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
+    lvStatistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
+    wxColour colBack;
+    colBack = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
+    lvStatistics->SetBackgroundColour(colBack);
 
     // Load servers
     RetrieveServers();
@@ -321,13 +326,18 @@ void frmMain::OnAddServer()
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
         delete objServer;
     }
+
+    // Reset the Servers node text
+    wxString szLabel;
+    szLabel.Printf(wxT("Servers (%d)"), tvBrowser->GetChildrenCount(itmServers, FALSE) - 1);
+    tvBrowser->SetItemText(itmServers, szLabel);
     StoreServers();
 }
 
 void frmMain::ReconnectServer(pgServer *objServer)
 {
     // Create a server object and connect it.
-    int iRes = objServer->Connect();
+    int iRes = objServer->Connect(TRUE);
 
     // Check the result, and handle it as appropriate
     if (iRes == PGCONN_OK) {
@@ -336,6 +346,7 @@ void frmMain::ReconnectServer(pgServer *objServer)
         tvBrowser->SetItemImage(objServer->GetId(), 0, wxTreeItemIcon_Selected);
         tvBrowser->Collapse(itmServers);
         tvBrowser->Expand(itmServers);
+        tvBrowser->SelectItem(objServer->GetId());
 
     } else if (iRes == PGCONN_DNSERR)  {
         delete objServer;
@@ -350,15 +361,17 @@ void frmMain::ReconnectServer(pgServer *objServer)
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
     }
-
-    // Refresh the listview
-    OnSelChanged();
 }
 
 void frmMain::OnSelChanged()
 {
-    lvProperties->DeleteAllItems();
-    lvStatistics->DeleteAllItems();
+    // Reset the listviews
+    lvProperties->ClearAll();
+    lvProperties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
+    lvProperties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
+    lvStatistics->ClearAll();
+    lvStatistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
+    lvStatistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
@@ -368,7 +381,10 @@ void frmMain::OnSelChanged()
 
     switch (iType) {
         case PG_SERVER:
+            StartMsg(wxT("Retrieving server properties"));
             tvServer((pgServer *)itmData);
+            svServer((pgServer *)itmData);
+            EndMsg();
             break;
 
         default:
@@ -501,6 +517,11 @@ void frmMain::RetrieveServers()
         objServer = new pgServer(szServer, szDatabase, szUsername, iPort);
         tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 1, -1, objServer);
     }
+
+    // Reset the Servers node text
+    wxString szLabel;
+    szLabel.Printf(wxT("Servers (%d)"), tvBrowser->GetChildrenCount(itmServers, FALSE) - 1);
+    tvBrowser->SetItemText(itmServers, szLabel);
 }
 
 void frmMain::tvServer(pgServer *objServer)
@@ -508,28 +529,68 @@ void frmMain::tvServer(pgServer *objServer)
     // This handler will primarily deal with displaying item
     // properties in the main window.
 
+    wxString szMsg;
+    szMsg.Printf(wxT("Displaying properties for server %s"), objServer->GetIdentifier());
+    wxLogInfo(szMsg);
+
+    // Add the properties view columns
+    lvProperties->ClearAll();
+    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
+    lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
+
     // Display the Server properties
-    // This is the bit that puts it all on one line over 2 colums
-    StartMsg(wxT("Retrieving server properties"));
     lvProperties->InsertItem(0, wxT("Hostname"), 0);
     lvProperties->SetItem(0, 1, objServer->GetServer());
-    lvProperties->InsertItem(0, wxT("Port"), 0);
+
+    lvProperties->InsertItem(1, wxT("Port"), 0);
     wxString szTemp;
     szTemp.Printf("%d", objServer->GetPort());
-    lvProperties->SetItem(0, 1, szTemp);
-    lvProperties->InsertItem(0, wxT("Initial Database"), 0);
-    lvProperties->SetItem(0, 1, objServer->GetDatabase());
-    lvProperties->InsertItem(0, wxT("Username"), 0);
-    lvProperties->SetItem(0, 1, objServer->GetUsername());
-    lvProperties->InsertItem(0, wxT("Server Version"), 0);
-    lvProperties->SetItem(0, 1, objServer->GetServerVersion());
-    lvProperties->InsertItem(0, wxT("Connected?"), 0);
-    if (objServer->GetConnected()) {
-        lvProperties->SetItem(0, 1, wxT("Yes"));
-    } else {
-        lvProperties->SetItem(0, 1, wxT("No"));
-    }
-    lvProperties->SortItems(ListSort, 0);
+    lvProperties->SetItem(1, 1, szTemp);
 
-    EndMsg();
+    lvProperties->InsertItem(2, wxT("Initial Database"), 0);
+    lvProperties->SetItem(2, 1, objServer->GetDatabase());
+
+    lvProperties->InsertItem(3, wxT("Username"), 0);
+    lvProperties->SetItem(3, 1, objServer->GetUsername());
+
+    lvProperties->InsertItem(4, wxT("Server Version"), 0);
+    lvProperties->SetItem(4, 1, objServer->GetServerVersion());
+
+    lvProperties->InsertItem(5, wxT("Last System OID"), 0);
+    lvProperties->SetItem(5, 1, objServer->GetLastSystemOID());
+
+    lvProperties->InsertItem(6, wxT("Connected?"), 0);
+    if (objServer->GetConnected()) {
+        lvProperties->SetItem(6, 1, wxT("Yes"));
+    } else {
+        lvProperties->SetItem(6, 1, wxT("No"));
+    }
+}
+
+void frmMain::svServer(pgServer *objServer)
+{
+    if(!objServer->GetConnected()) return;
+    
+    wxString szMsg;
+    szMsg.Printf(wxT("Displaying statistics for server %s"), objServer->GetIdentifier());
+    wxLogInfo(szMsg);
+
+    // Add the statistics view columns
+    lvStatistics->ClearAll();
+    lvStatistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(1, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
+    lvStatistics->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(3, wxT("Current Query"), wxLIST_FORMAT_LEFT, 400);
+
+    pgSet rsStat = objServer->ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
+
+    while (!rsStat.Eof()) {
+        lvStatistics->InsertItem(rsStat.CurrentPos() - 1, rsStat.GetVal(wxT("datname")), 0);
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 1, rsStat.GetVal(wxT("procpid")));
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 2, rsStat.GetVal(wxT("usename")));
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 3, rsStat.GetVal(wxT("current_query")));
+        rsStat.MoveNext();
+    }
+
+
 }

@@ -31,6 +31,7 @@ public:
     wxString GetUsername();
     wxString GetPassword();
     long GetPort();
+    void LockFields();
     
 private:
     pgServer *objParent;

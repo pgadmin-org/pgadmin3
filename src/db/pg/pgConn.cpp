@@ -221,3 +221,10 @@ wxString pgConn::GetServerVersion() const
     szSQL.Printf("SELECT version();");
 	return ExecuteScalar(szSQL);
 }
+
+wxString pgConn::GetLastSystemOID() const
+{
+	wxString szSQL;
+    szSQL.Printf("SELECT datlastsysoid FROM pg_database LIMIT 1;");
+	return ExecuteScalar(szSQL);
+}

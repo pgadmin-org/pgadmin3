@@ -47,6 +47,7 @@ private:
     PGresult *objRes;
     long lPos;
     bool bEof, bBof;
+    wxString ExecuteScalar(const wxString& szSQL) const;
 };
 
 #endif
