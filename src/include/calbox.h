@@ -1,13 +1,13 @@
-///////////////////////////////////////////////////////////////////////////////
-// Name:        calbox.h
-// Purpose:     date-picker control box
-// Author:      Andreas Pflug
-// Modified by:
-// Created:     12.10.03
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id$
-// Copyright:   (c) 2003 Andreas Pflug <pgadmin@pse-consulting.de>
-// Licence:     Artistic Licence
-///////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2002 - 2004, The pgAdmin Development Team
+// This software is released under the Artistic Licence
+//
+// calbox.h - Date-picker control box
+//
+//////////////////////////////////////////////////////////////////////////
 
 #ifndef _WX_CALBOX_H_
 #define _WX_CALBOX_H_

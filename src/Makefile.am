@@ -1,8 +1,13 @@
+#######################################################################
+#
 # pgAdmin III - PostgreSQL Tools
-# Copyright (C) 2002 - 2003, The pgAdmin Development Team
+# Copyright (C) 2002 - 2004, The pgAdmin Development Team
 # This software is released under the Artistic Licence
 #
-# Makefile - Makefile for *nix systems
+# Makefile.am - Makefile for *nix systems
+#
+#######################################################################
+
 bin_PROGRAMS = pgadmin3
 
 #  db/keywords.c  needs to be added

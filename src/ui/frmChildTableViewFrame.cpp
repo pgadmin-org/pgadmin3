@@ -2,10 +2,10 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id$
-// Copyright (C) 2002 - 2003, The pgAdmin Development Team
+// Copyright (C) 2002 - 2004, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// frmChildfrmChildTableViewFrame.h - The query builder child frames
+// frmChildTableViewFrame.h - The query builder child frames
 //
 //////////////////////////////////////////////////////////////////////////
 

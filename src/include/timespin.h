@@ -1,14 +1,13 @@
-///////////////////////////////////////////////////////////////////////////////
-// Name:        timespin.h
-// Purpose:     timeSpan SpinCtrl
-// Author:      Andreas Pflug
-// Modified by:
-// Created:     19.10.03
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id$
-// Copyright:   (c) 2003 Andreas Pflug <pgadmin@pse-consulting.de>
-// Licence:     Artistic Licence
-///////////////////////////////////////////////////////////////////////////////
-
+// Copyright (C) 2002 - 2004, The pgAdmin Development Team
+// This software is released under the Artistic Licence
+//
+// timespin.h - timeSpan SpinCtrl
+//
+//////////////////////////////////////////////////////////////////////////
 
 #ifndef _WX_TIMESPIN_H_
 #define _WX_TIMESPIN_H_

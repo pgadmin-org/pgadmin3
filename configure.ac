@@ -1,6 +1,6 @@
 AC_PREREQ(2.57)
 AC_REVISION($Revision$)
-AC_COPYRIGHT(Copyright 2002 - 2003 The pgAdmin3 Development Team)
+AC_COPYRIGHT(Copyright 2002 - 2004 The pgAdmin Development Team)
 AC_INIT(pgadmin3, 1.1.0, pgadmin-support@postgresql.org)
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_SRCDIR([src/pgAdmin3.cpp])

@@ -2,7 +2,7 @@
 REM #######################################################################
 REM #
 REM # pgAdmin III - PostgreSQL Tools
-REM # Copyright (C) 2002 - 2003, The pgAdmin Development Team
+REM # Copyright (C) 2002 - 2004, The pgAdmin Development Team
 REM # This software is released under the Artistic Licence
 REM #
 REM # stringextract.bat - extract strings from sources 
