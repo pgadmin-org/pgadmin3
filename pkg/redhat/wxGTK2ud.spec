@@ -75,9 +75,9 @@ pushd contrib/src/
 popd
 
 # RedHat does it by default. Needed for SuSE and Mandrake.
-strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud-%{version}.a
-strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_xrc-%{version}.a
-strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_stc-%{version}.a
+#strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud-%{version}.a
+#strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_xrc-%{version}.a
+#strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_stc-%{version}.a
 
 %clean
 rm -rf %{buildroot}
