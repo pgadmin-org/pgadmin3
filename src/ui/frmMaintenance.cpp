@@ -187,7 +187,7 @@ void frmMaintenance::OnOK(wxCommandEvent& ev)
         }
 
 
-        thread=new pgQueryThread(object->GetConnection()->connection(), sql);
+        thread=new pgQueryThread(object->GetConnection(), sql);
         if (thread->Create() != wxTHREAD_NO_ERROR)
         {
             Abort();

@@ -48,7 +48,7 @@ pgDatatype::pgDatatype(const wxString &typname, long numdims, long typmod)
         }
         else if (name == wxT("time") || name == wxT("timetz")
               || name == wxT("timestamp") || name == wxT("timestamptz")
-              || name == wxT("interval"))
+              || name == wxT("interval")  || name == wxT("bit"))
         {
             prec=0;
             len=typmod;
@@ -65,6 +65,28 @@ pgDatatype::pgDatatype(const wxString &typname, long numdims, long typmod)
     else
         len=prec=0;
 }
+
+
+long pgDatatype::GetTypmod(const wxString &name, const wxString &len, const wxString &prec)
+{
+    if (len.IsEmpty())
+        return -1;
+    if (name == wxT("numeric"))
+    {
+        return (((long)StrToLong(len) << 16) + StrToLong(prec)) +4;
+    }
+    else if (name == wxT("time") || name == wxT("timetz")
+          || name == wxT("timestamp") || name == wxT("timestamptz")
+          || name == wxT("interval")  || name == wxT("bit"))
+    {
+        return StrToLong(len);
+    }
+    else
+    {
+        return StrToLong(len)+4;
+    }
+}
+
 
 DatatypeReader::DatatypeReader(pgConn *conn, const wxString &condition)
 {

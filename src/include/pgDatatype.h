@@ -29,6 +29,8 @@ public:
     wxString QuotedFullName() const { return qtIdent(name) + length + array; }
     long Length() const { return len; }
     long Precision() const { return prec; }
+    static long GetTypmod(const wxString &name, const wxString &len, const wxString &prec);
+
 private:
     wxString name;
     wxString length;
