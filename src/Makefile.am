@@ -26,7 +26,7 @@ $(srcdir)/schema/pgSequence.cpp $(srcdir)/schema/pgServer.cpp \
 $(srcdir)/schema/pgTable.cpp $(srcdir)/schema/pgTablespace.cpp $(srcdir)/schema/pgTrigger.cpp \
 $(srcdir)/schema/pgType.cpp $(srcdir)/schema/pgUser.cpp $(srcdir)/schema/pgView.cpp \
 $(srcdir)/schema/pgDatatype.cpp \
-$(srcdir)/agent/pgaAgent.cpp $(srcdir)/agent/pgaJob.cpp \
+$(srcdir)/agent/pgaJob.cpp \
 $(srcdir)/agent/pgaStep.cpp $(srcdir)/agent/pgaSchedule.cpp \
 $(srcdir)/agent/dlgJob.cpp $(srcdir)/agent/dlgSchedule.cpp $(srcdir)/agent/dlgStep.cpp \
 $(srcdir)/ui/xh_sqlbox.cpp $(srcdir)/ui/xh_calb.cpp $(srcdir)/ui/xh_timespin.cpp $(srcdir)/ui/xh_ctlcombo.cpp \
@@ -99,7 +99,7 @@ $(srcdir)/include/sysSettings.h $(srcdir)/include/sysProcess.h $(srcdir)/include
 $(srcdir)/include/pgconfig.h $(srcdir)/include/update.h $(srcdir)/include/frmUpdate.h \
 $(srcdir)/include/dlgHbaConfig.h $(srcdir)/include/dlgMainConfig.h $(srcdir)/include/frmHint.h \
 $(srcdir)/include/frmConfig.h $(srcdir)/include/frmHbaConfig.h $(srcdir)/include/frmMainConfig.h \
-$(srcdir)/agent/include/pgaAgent.h $(srcdir)/agent/include/pgaJob.h \
+$(srcdir)/agent/include/pgaJob.h \
 $(srcdir)/agent/include/pgaStep.h $(srcdir)/agent/include/pgaSchedule.h \
 $(srcdir)/agent/include/dlgJob.h $(srcdir)/agent/include/dlgStep.h \
 $(srcdir)/agent/include/dlgSchedule.h $(srcdir)/slony/include/slObject.h \
