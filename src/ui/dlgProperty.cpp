@@ -315,7 +315,9 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
                 mainForm->GetBrowser()->DeleteChildren(newData->GetId());
 
                 newData->ShowTree(mainForm, mainForm->GetBrowser(), properties, statistics, 0);
+                mainForm->GetSqlPane()->SetReadOnly(false);
                 mainForm->GetSqlPane()->SetText(newData->GetSql(mainForm->GetBrowser()));
+                mainForm->GetSqlPane()->SetReadOnly(true);
             }
         }
         else
