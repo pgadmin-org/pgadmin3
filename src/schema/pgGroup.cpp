@@ -57,27 +57,30 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
     {
         expandedKids=true;
 
-        wxString ml=memberIds;
-        ml.Replace(wxT(" "), wxT(","));
-        pgSet *set=server->ExecuteSet(wxT(
-            "SELECT usename FROM pg_user WHERE usesysid IN (") + ml + wxT(")"));
-        if (set)
+        if (!memberIds.IsEmpty())
         {
-            while (!set->Eof())
+            wxString ml=memberIds;
+            ml.Replace(wxT(" "), wxT(","));
+            pgSet *set=server->ExecuteSet(wxT(
+                "SELECT usename FROM pg_user WHERE usesysid IN (") + ml + wxT(")"));
+            if (set)
             {
-                wxString user=set->GetVal(0);
-                if (memberCount)
+                while (!set->Eof())
                 {
-                    members += wxT(", ");
-                    quotedMembers += wxT(", ");
+                    wxString user=set->GetVal(0);
+                    if (memberCount)
+                    {
+                        members += wxT(", ");
+                        quotedMembers += wxT(", ");
+                    }
+                    members += user;
+                    quotedMembers += qtIdent(user);
+                    memberCount++;
+                    usersIn.Add(user);
+                    set->MoveNext();
                 }
-                members += user;
-                quotedMembers += qtIdent(user);
-                memberCount++;
-                usersIn.Add(user);
-                set->MoveNext();
+                delete set;
             }
-            delete set;
         }
     }
 
