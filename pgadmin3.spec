@@ -28,7 +28,6 @@ pgAdmin3 is the graphical administration interface of PostgreSQL.
 %setup -q
 
 %build
-sh bootstrap
 sh configure --enable-debug --enable-unicode --enable-gtk2
 make all
 
