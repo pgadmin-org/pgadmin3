@@ -16,6 +16,8 @@ rm -rf ./src
 
 # Clean build
 cd src
+/bin/sh bootstrap
+./configure --with-pgsql=$PGDIR --with-wx=$WXDIR
 make clean
 make all
 /usr/bin/strip pgAdmin3
