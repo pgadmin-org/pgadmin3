@@ -5,10 +5,13 @@
 # Makefile - Makefile for *nix systems
 SUBDIRS = src
 EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt \
-		pkg/debian/* \
-		pkg/redhat/* \
-		pkg/slackware/* \
-		pkg/src/*
+		pkg/debian/rules pkg/debian/README.debian \
+		pkg/debian/docs pkg/debian/dirs \
+		pkg/debian/copyright pkg/debian/control \
+		pkg/debian/changelog \
+		pkg/redhat/pgadmin3.spec \
+		pkg/slackware/build-package pkg/slackware/slack-desc \
+		pkg/src/build-tarball
 
 nobase_dist_pkgdata_DATA = \
 		docs/en_US/pg/*.gif docs/en_US/pg/*.html docs/en_US/pg/*.css \
