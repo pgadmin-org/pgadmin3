@@ -388,9 +388,9 @@ void frmQuery::openLastFile()
         int len=ftell(f);
         fseek(f, 0, SEEK_SET);
         wxString buf("\0", len+1);
+        memset((char*)buf.c_str(), 0, len+1);
         fread((char*)buf.c_str(), len, 1, f);
         fclose(f);
-        ((char*)buf.c_str())[len]=0;
         sqlQuery->SetText(buf);
         wxYield();  // needed to process sqlQuery modify event
         changed = false;
