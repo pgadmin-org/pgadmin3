@@ -1,8 +1,12 @@
 %define major_version 0.1.1
 %define minor_version %(date +%Y%m%d)
 %define wxGTK2_version 20030607
-%define wxGTK2_config --with-wx-config=wxgtk2ud-2.5-config
-%define pgsql_include --with-pgsql-include=/usr
+%define with_wx_config     --with-wx-config=wxgtk2ud-2.5-config
+%define with_pgsql         --with-pgsql=/usr
+%define with_pgsql_include --with-pgsql-include=/usr
+
+# Mandrake 91
+# %define with_pgsql_include --with-pgsql-include=/usr/include/pgsql
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
@@ -30,7 +34,7 @@ pgAdmin3 is the graphical administration interface of PostgreSQL.
 %setup -q
 
 %build
-%configure --enable-debug --enable-static %{wxGTK2_config} %{pgsql_include}
+%configure --enable-debug --enable-static %{with_wx_config} %{with_pgsql} %{with_pgsql_include}
 make all
 
 %install
