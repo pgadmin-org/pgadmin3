@@ -101,8 +101,9 @@ public:
     bool GetUnicodeFile() const { return unicodeFile; }
     void SetUnicodeFile(const bool b) {unicodeFile = b; }
 
-    wxFont GetSQLFont() const { return wxFont(fontPointSize, fontFamily, fontStyle, fontWeight, false, fontFace); }
+    wxFont GetSQLFont() const { return wxFont(sqlFontPointSize, sqlFontFamily, sqlFontStyle, sqlFontWeight, false, sqlFontFace); }
     wxFont GetSystemFont() const { return systemFont; }
+    void SetFont(const wxFont &font);
     void SetSQLFont(const wxFont &font);
     wxString GetCanonicalLanguage() const { return canonicalLanguage; }
 
@@ -164,9 +165,12 @@ private:
     bool stickySql, unicodeFile;
     bool doubleClickProperties;
 
+    wxString searchPath;
+
     int fontPointSize, fontFamily, fontStyle, fontWeight;
     wxString fontFace;
-    wxString searchPath;
+    int sqlFontPointSize, sqlFontFamily, sqlFontStyle, sqlFontWeight;
+    wxString sqlFontFace;
 };
 
 #endif

@@ -27,7 +27,7 @@
 // Icons
 #include "images/pgAdmin3.xpm"
 
-extern wxLocale locale;
+extern wxLocale *locale;
 extern wxArrayInt existingLangs;
 extern wxArrayString existingLangNames;
 
@@ -38,6 +38,7 @@ extern wxArrayString existingLangNames;
 #define radLoglevel                 CTRL_RADIOBOX("radLoglevel")
 #define txtMaxRows                  CTRL_TEXT("txtMaxRows")
 #define txtMaxColSize               CTRL_TEXT("txtMaxColSize")
+#define txtFont                     CTRL_TEXT("txtFont")
 #define chkUnicodeFile              CTRL_CHECKBOX("chkUnicodeFile")
 #define chkAskSaveConfirm           CTRL_CHECKBOX("chkAskSaveConfirm")
 #define chkAskDelete                CTRL_CHECKBOX("chkAskDelete")
@@ -47,12 +48,13 @@ extern wxArrayString existingLangNames;
 #define txtSearchPath               CTRL_TEXT("txtSearchPath")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
-#define txtFont                     CTRL_TEXT("txtFont")
+#define txtSqlFont                  CTRL_TEXT("txtSqlFont")
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
     EVT_MENU(MNU_HELP,                        frmOptions::OnHelp)
     EVT_BUTTON (XRCID("btnFont"),             frmOptions::OnFontSelect)
+    EVT_BUTTON (XRCID("btnSqlFont"),          frmOptions::OnSqlFontSelect)
     EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
     EVT_BUTTON (XRCID("btnOK"),               frmOptions::OnOK)
     EVT_BUTTON (XRCID("btnHelp"),             frmOptions::OnHelp)
@@ -119,8 +121,10 @@ frmOptions::frmOptions(frmMain *parent)
     }
     cbLanguage->SetSelection(sel);
 
-    currentFont=settings->GetSQLFont();
+    currentFont=settings->GetSystemFont();
     txtFont->SetValue(currentFont.GetFaceName() + wxT(".") + NumToStr((long)currentFont.GetPointSize()));
+    currentSqlFont=settings->GetSQLFont();
+    txtSqlFont->SetValue(currentSqlFont.GetFaceName() + wxT(".") + NumToStr((long)currentSqlFont.GetPointSize()));
 }
 
 
@@ -183,7 +187,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());
     settings->SetSearchPath(txtSearchPath->GetValue());
-    settings->SetSQLFont(currentFont);
+    settings->SetFont(currentFont);
+    settings->SetSQLFont(currentSqlFont);
 
     // Make sure there's a slash on the end of the path
 
@@ -211,15 +216,17 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         }
         if (langId != (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN))
         {
-            if (locale.Init(langId))
+            delete locale;
+            locale = new wxLocale();
+            if (locale->Init(langId))
             {
 #ifdef __LINUX__
                 {
                     wxLogNull noLog;
-                    locale.AddCatalog(wxT("fileutils"));
+                    locale->AddCatalog(wxT("fileutils"));
                 }
 #endif
-                locale.AddCatalog(wxT("pgadmin3"));
+                locale->AddCatalog(wxT("pgadmin3"));
                 settings->Write(wxT("LanguageId"), (long)langId);
             }
         }
@@ -231,10 +238,24 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 
 
 
-void frmOptions::OnFontSelect(wxCommandEvent &ev)
+void frmOptions::OnSqlFontSelect(wxCommandEvent &ev)
 {
     wxFontData fd;
     fd.SetInitialFont(settings->GetSQLFont());
+    wxFontDialog dlg(this, fd);
+
+    if (dlg.ShowModal() == wxID_OK)
+    {
+        currentSqlFont=dlg.GetFontData().GetChosenFont();
+        txtSqlFont->SetValue(currentSqlFont.GetFaceName() + wxT(".") + NumToStr((long)currentSqlFont.GetPointSize()));
+    }
+}
+
+
+void frmOptions::OnFontSelect(wxCommandEvent &ev)
+{
+    wxFontData fd;
+    fd.SetInitialFont(settings->GetSystemFont());
     wxFontDialog dlg(this, fd);
 
     if (dlg.ShowModal() == wxID_OK)
@@ -243,8 +264,6 @@ void frmOptions::OnFontSelect(wxCommandEvent &ev)
         txtFont->SetValue(currentFont.GetFaceName() + wxT(".") + NumToStr((long)currentFont.GetPointSize()));
     }
 }
-
-
 void frmOptions::OnCancel(wxCommandEvent &ev)
 {
     Destroy();

@@ -38,7 +38,6 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     // wxLogInfo(wxT("Creating sSettings object and loading settings"));
 
     // Tip Of The Day
-    systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
     Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, TRUE); 
     Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 
@@ -84,16 +83,28 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     if (langInfo)
         canonicalLanguage=langInfo->CanonicalName;
 
+    Read(wxT("FontPointSize"), &fontPointSize, 0);
+    Read(wxT("FontFace"), &fontFace, wxEmptyString);
+    Read(wxT("FontFamily"), &fontFamily, 0);
+    Read(wxT("FontStyle"), &fontStyle, 0);
+    Read(wxT("FontWeight"), &fontWeight, 0);
+
+    if (fontFace.IsEmpty())
+        systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
+    else
+        systemFont = wxFont(fontPointSize, fontFamily, fontStyle, fontWeight, false, fontFace);
+
 #ifdef __WXMSW__
-    Read(wxT("frmQuery/FontPointSize"), &fontPointSize, 9);
-    Read(wxT("frmQuery/FontFace"), &fontFace, wxT("Courier New"));
+    Read(wxT("frmQuery/FontPointSize"), &sqlFontPointSize, 9);
+    Read(wxT("frmQuery/FontFace"), &sqlFontFace, wxT("Courier New"));
 #else
-    Read(wxT("frmQuery/FontPointSize"), &fontPointSize, 12);
-    Read(wxT("frmQuery/FontFace"), &fontFace, wxT("monospace"));
+    Read(wxT("frmQuery/FontPointSize"), &sqlFontPointSize, 12);
+    Read(wxT("frmQuery/FontFace"), &sqlFontFace, wxT("monospace"));
 #endif
-    Read(wxT("frmQuery/FontFamily"), &fontFamily, wxTELETYPE);
-    Read(wxT("frmQuery/FontStyle"), &fontStyle, wxNORMAL);
-    Read(wxT("frmQuery/FontWeight"), &fontWeight, wxNORMAL);
+    Read(wxT("frmQuery/FontFamily"), &sqlFontFamily, wxTELETYPE);
+    Read(wxT("frmQuery/FontStyle"), &sqlFontStyle, wxNORMAL);
+    Read(wxT("frmQuery/FontWeight"), &sqlFontWeight, wxNORMAL);
+
 }
 
 
@@ -115,11 +126,30 @@ sysSettings::~sysSettings()
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
     Write(wxT("SearchPath"), searchPath);
-    Write(wxT("frmQuery/FontPointSize"), fontPointSize);
-    Write(wxT("frmQuery/FontFamily"), fontFamily);
-    Write(wxT("frmQuery/FontStyle"), fontStyle);
-    Write(wxT("frmQuery/FontWeight"), fontWeight);
-    Write(wxT("frmQuery/FontFace"), fontFace);
+    Write(wxT("FontPointSize"), fontPointSize);
+    Write(wxT("FontFamily"), fontFamily);
+    Write(wxT("FontStyle"), fontStyle);
+    Write(wxT("FontWeight"), fontWeight);
+
+    wxFont stdFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
+    if (fontPointSize == stdFont.GetPointSize() &&
+        fontFamily == stdFont.GetFamily() &&
+        fontStyle == stdFont.GetStyle() &&
+        fontWeight == stdFont.GetWeight() &&
+        fontFace == stdFont.GetFaceName())
+    {
+        Write(wxT("FontFace"), wxEmptyString);
+    }
+    else
+    {
+        Write(wxT("FontFace"), fontFace);
+    }
+
+    Write(wxT("frmQuery/FontPointSize"), sqlFontPointSize);
+    Write(wxT("frmQuery/FontFamily"), sqlFontFamily);
+    Write(wxT("frmQuery/FontStyle"), sqlFontStyle);
+    Write(wxT("frmQuery/FontWeight"), sqlFontWeight);
+    Write(wxT("frmQuery/FontFace"), sqlFontFace);
 }
 
 
@@ -303,11 +333,25 @@ void sysSettings::SetFrmQueryBuilderPos(wxPoint pos)
 }
 
 
-void sysSettings::SetSQLFont(const wxFont &font)
+void sysSettings::SetFont(const wxFont &font)
 {
     fontPointSize=font.GetPointSize();
     fontFamily=font.GetFamily();
     fontStyle=font.GetStyle();
     fontWeight=font.GetWeight();
     fontFace=font.GetFaceName();
+    if (fontFace.IsEmpty())
+        systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
+    else
+        systemFont = wxFont(fontPointSize, fontFamily, fontStyle, fontWeight, false, fontFace);
+}
+
+
+void sysSettings::SetSQLFont(const wxFont &font)
+{
+    sqlFontPointSize=font.GetPointSize();
+    sqlFontFamily=font.GetFamily();
+    sqlFontStyle=font.GetStyle();
+    sqlFontWeight=font.GetWeight();
+    sqlFontFace=font.GetFaceName();
 }

@@ -195,11 +195,11 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
 void frmMain::OnTipOfTheDay(wxCommandEvent& WXUNUSED(event))
 {
 extern wxString docPath;
-extern wxLocale locale;
+extern wxLocale *locale;
 
     wxString file;
     
-    file = docPath + wxT("/") + locale.GetCanonicalName() + wxT("/tips.txt");
+    file = docPath + wxT("/") + locale->GetCanonicalName() + wxT("/tips.txt");
 
     if (!wxFile::Exists(file))
         file = docPath + wxT("/en_US/tips.txt");    

@@ -54,7 +54,7 @@ wxLog *logger;
 sysSettings *settings;
 wxArrayInt existingLangs;
 wxArrayString existingLangNames;
-wxLocale locale;
+wxLocale *locale=0;
 
 wxString loadPath;      // Where the program is loaded from
 wxString docPath;       // Where docs are stored
@@ -166,7 +166,8 @@ bool pgAdmin3::OnInit()
 #endif
 #endif
 
-    locale.AddCatalogLookupPathPrefix(uiPath);
+    locale = new wxLocale();
+    locale->AddCatalogLookupPathPrefix(uiPath);
     
     long langCount=0;
     const wxLanguageInfo *langInfo;
@@ -213,12 +214,12 @@ bool pgAdmin3::OnInit()
 
     if (langId == wxLANGUAGE_UNKNOWN)
     {
-        locale.Init(wxLANGUAGE_DEFAULT);
-        locale.AddCatalog(wxT("pgadmin3"));
+        locale->Init(wxLANGUAGE_DEFAULT);
+        locale->AddCatalog(wxT("pgadmin3"));
 #ifdef __LINUX__
         {
             wxLogNull noLog;
-            locale.AddCatalog(wxT("fileutils"));
+            locale->AddCatalog(wxT("fileutils"));
         }
 #endif
 
@@ -246,15 +247,17 @@ bool pgAdmin3::OnInit()
 
     if (langId != wxLANGUAGE_UNKNOWN)
     {
-        if (locale.Init(langId))
+        delete locale;
+        locale = new wxLocale();
+        if (locale->Init(langId))
         {
 #ifdef __LINUX__
             {
                 wxLogNull noLog;
-                locale.AddCatalog(wxT("fileutils"));
+                locale->AddCatalog(wxT("fileutils"));
             }
 #endif
-            locale.AddCatalog(wxT("pgadmin3"));
+            locale->AddCatalog(wxT("pgadmin3"));
             settings->Write(wxT("LanguageId"), (long)langId);
         }
     }

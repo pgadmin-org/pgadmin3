@@ -29,9 +29,10 @@ public:
     
 private:
     frmMain *mainForm;
-    wxFont currentFont;
+    wxFont currentFont, currentSqlFont;
 
     void OnBrowseLogFile(wxCommandEvent &ev);
+    void OnSqlFontSelect(wxCommandEvent &ev);
     void OnFontSelect(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);
