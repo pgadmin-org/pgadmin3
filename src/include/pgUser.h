@@ -29,6 +29,7 @@ public:
 
 
     // User Specific
+    bool GetSystemObject() const { return userId < 100; }
     long GetUserId() const { return userId; }
     void iSetUserId(const long l) { userId=l; }
     wxString GetAccountExpires() const { return accountExpires; }
