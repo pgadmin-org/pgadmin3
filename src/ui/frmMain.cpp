@@ -106,8 +106,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     // Build menus
     menuBar = new wxMenuBar();
 
-    newMenu = 0;
-
         // File Menu
     fileMenu = new wxMenu();
     fileMenu->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."),wxT("Save the SQL definition of the selected object."));
@@ -125,6 +123,8 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // Edit Menu
     editMenu = new wxMenu();
+    newMenu=new wxMenu();
+    editMenu->Append(MNU_NEWOBJECT, wxT("New &Object"), newMenu, wxT("Create a new object."));
     editMenu->AppendSeparator();
     editMenu->Append(MNU_CREATE, wxT("&Create"),                    wxT("Create a new object of the same type as the selected object."));
     editMenu->Append(MNU_DROP, wxT("&Delete/Drop"),         		wxT("Delete/Drop the selected object."));
@@ -165,10 +165,12 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 #endif 
     menuBar->Append(helpMenu, wxT("&Help"));
 
-    // Tree Context Menu
     treeContextMenu = new wxMenu();
-    treeContextMenu->Append(MNU_RELOAD, wxT("Reload module"),       wxT("Reload library module which implements this function."));
+    // Tree Context Menu
+    newContextMenu = new wxMenu();
     treeContextMenu->Append(MNU_REFRESH, wxT("&Refresh"),   		wxT("Refresh the selected object."));
+    treeContextMenu->Append(MNU_RELOAD, wxT("Reload module"),       wxT("Reload library module which implements this function."));
+    treeContextMenu->Append(MNU_NEWOBJECT, wxT("New &Object"), newContextMenu, wxT("Create a new object."));
     treeContextMenu->AppendSeparator();
 	treeContextMenu->Append(MNU_VIEWDATA, wxT("View Data"),         wxT("View the data in the selected object."));
     treeContextMenu->Append(MNU_VACUUM, wxT("Vacuum"),              wxT("Vacuum the current database or table."));
@@ -179,9 +181,13 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     treeContextMenu->Append(MNU_DROP, wxT("&Delete/Drop"),  		wxT("Delete/Drop the selected object."));
     treeContextMenu->Append(MNU_PROPERTIES, wxT("&Properties"),     wxT("Display/edit the properties of the selected object."));
 
+
     // Add the Menubar and set some options
     SetMenuBar(menuBar);
-    fileMenu->Enable(MNU_PASSWORD, FALSE);
+
+    editMenu->Enable(MNU_NEWOBJECT, false);
+    treeContextMenu->Enable(MNU_NEWOBJECT, false);
+    fileMenu->Enable(MNU_PASSWORD, false);
     viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
 
     // Status bar
@@ -342,14 +348,6 @@ frmMain::~frmMain()
 
     // Clear the treeview
     browser->DeleteAllItems();
-
-    if (newMenu)
-    {
-        editMenu->Remove(MNU_NEWOBJECT);
-        treeContextMenu->Remove(MNU_NEWOBJECT);
-        delete newMenu;
-        newMenu=0;
-    }
 
     delete treeContextMenu;
 	delete images;

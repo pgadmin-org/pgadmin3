@@ -60,7 +60,7 @@ private:
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenuBar *menuBar;
-    wxMenu *fileMenu, *editMenu, *newMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu;
+    wxMenu *fileMenu, *editMenu, *newMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu, *newContextMenu;
     wxToolBar *toolBar;
     wxTreeItemId servers;
 	wxImageList *images;

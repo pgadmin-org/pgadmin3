@@ -632,23 +632,46 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     statistics->Thaw();
     sqlPane->SetText(data->GetSql(browser));
 
-    if (newMenu)
+    unsigned int i;
+    wxMenuItem *menuItem;
+    i=newMenu->GetMenuItemCount();
+    while (i--)
     {
-        editMenu->Remove(MNU_NEWOBJECT);
-        treeContextMenu->Remove(MNU_NEWOBJECT);
-        delete newMenu;
+        menuItem=newMenu->GetMenuItems().Item(i)->GetData();
+        if (menuItem)
+            delete newMenu->Remove(menuItem);
     }
-    newMenu=data->GetNewMenu();
-    if (newMenu)
+
+    i=newContextMenu->GetMenuItemCount();
+    while (i--)
     {
-        editMenu->Prepend(MNU_NEWOBJECT, wxT("New &Object"), newMenu, wxT("Create a new object."));
-        treeContextMenu->Prepend(MNU_NEWOBJECT, wxT("New &Object"), newMenu, wxT("Create a new object."));
-        
-        if (!newMenu->GetMenuItemCount() || !data->CanCreate())
+        menuItem=newContextMenu->GetMenuItems().Item(i)->GetData();
+        if (menuItem)
+            delete newContextMenu->Remove(menuItem);
+    }
+
+    editMenu->Enable(MNU_NEWOBJECT, false);
+    treeContextMenu->Enable(MNU_NEWOBJECT, false);
+
+    wxMenu *indivMenu=data->GetNewMenu();
+    if (indivMenu)
+    {
+        if (indivMenu->GetMenuItemCount())
         {
-            editMenu->Enable(MNU_NEWOBJECT, false);
-            treeContextMenu->Enable(MNU_NEWOBJECT, false);
+            editMenu->Enable(MNU_NEWOBJECT, true);
+            treeContextMenu->Enable(MNU_NEWOBJECT, true);
+
+            for (i=0 ; i < indivMenu->GetMenuItemCount() ; i++)
+            {
+                menuItem=indivMenu->GetMenuItems().Item(i)->GetData();
+                newMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+                newContextMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+            }
         }
+        delete indivMenu;
+    }
+    else
+    {
     }
     toolsMenu->Enable(MNU_RELOAD, canReload);
     treeContextMenu->Enable(MNU_RELOAD, canReload);
