@@ -521,7 +521,7 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 
     wxTreeItemId item;
     
-    while ((item=browser->GetFirstChild(currentItem, cookie)) != NULL)
+    while ((item=browser->GetFirstChild(currentItem, cookie)) != 0)
     {
         data = (pgObject *)browser->GetItemData(item);
         wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 

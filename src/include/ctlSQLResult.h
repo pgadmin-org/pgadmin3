@@ -69,8 +69,4 @@ private:
     long rowsRetrieved;
 };
 
-
-
-
-
 #endif
