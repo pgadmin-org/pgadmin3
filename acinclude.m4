@@ -362,7 +362,7 @@ then
     fi
     if test ! -f "${WX_HOME}/include/wx/xrc/xml.h"
     then
-        AC_MSG_ERROR([you need to install the xrc package from wxWindows/contrib/src/stc])
+        AC_MSG_ERROR([you need to install the xrc package from wxWindows/contrib/src/xrc])
         wx_wx_h="no"
     fi
     if test "$wx_wx_h" = "yes"
