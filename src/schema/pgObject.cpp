@@ -474,7 +474,7 @@ wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString&
               
     grant += user;
 
-    return grant;
+    return grant; 
 }
 
 
@@ -724,8 +724,8 @@ void pgSchemaObject::DisplayStatistics(ctlListView *statistics, const wxString& 
         {
             int col=0;
             while (col++ < stats->NumCols())
+              if (!stats->ColName(col).IsEmpty())
                 statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
-
             delete stats;
         }
     }
