@@ -54,15 +54,15 @@ public:
     bool ExecuteVoid(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
-    wxString GetUser() const { return wxString(PQuser(conn), wxConvUTF8); }
-    wxString GetPassword() const { return wxString(PQpass(conn), wxConvUTF8); }
+    wxString GetUser() const { return wxString(PQuser(conn), *conv); }
+    wxString GetPassword() const { return wxString(PQpass(conn), *conv); }
     wxString GetHost() const { return dbHost; }
     int GetPort() const { return atoi(PQport(conn)); };
-    wxString GetTTY() const { return wxString(PQtty(conn), wxConvUTF8); }
-    wxString GetOptions() const { return wxString(PQoptions(conn), wxConvUTF8); }
+    wxString GetTTY() const { return wxString(PQtty(conn), *conv); }
+    wxString GetOptions() const { return wxString(PQoptions(conn), *conv); }
     int GetBackendPID() const { return PQbackendPID(conn); }
     int GetStatus() const;
-    wxString GetLastError() const { return wxString(PQerrorMessage(conn), wxConvUTF8); }
+    wxString GetLastError() const { return wxString(PQerrorMessage(conn), *conv); }
     wxString GetVersionString();
     OID GetLastSystemOID() const { return lastSystemOID; }
     bool BackendMinimumVersion(int major, int minor);
@@ -76,7 +76,7 @@ public:
 private:
     PGconn *conn;
     int minorVersion, majorVersion;
-    wxMBConv &conv;
+    wxMBConv *conv;
     bool resolvedIP, needColQuoting;
     wxString dbHost;
     OID lastSystemOID;

@@ -381,7 +381,7 @@ int pgQueryThread::execute()
 
     if (rc == PGRES_TUPLES_OK)
     {
-        dataSet = new pgSet(result, conn->conn, conn->conv, conn->needColQuoting);
+        dataSet = new pgSet(result, conn->conn, *conn->conv, conn->needColQuoting);
         dataSet->MoveFirst();
         dataSet->GetVal(0);
     }
