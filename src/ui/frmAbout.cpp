@@ -41,8 +41,10 @@ frmAbout::frmAbout(wxFrame *parent)
     SetClientSize(imgAbout.GetWidth(), imgAbout.GetHeight());
     wxString szVersion = wxT("Version: ");
     szVersion.Append(VERSION);
-    wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
-    Center();
+// Creating a 0 size panel is the only way to position the static text on unix. If you know a better way..!
+	(void)new wxPanel(this, -1, wxPoint(10,155), wxSize(0,0));
+	(void)new wxStaticText(this, -1,szVersion, wxPoint(10,155));
+	this->Center();
 }
 
 frmAbout::~frmAbout()
@@ -52,6 +54,7 @@ frmAbout::~frmAbout()
 
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-    wxPaintDC dc(this);
-    dc.DrawBitmap(imgAbout, 0, 0);
+	wxPaintDC dc(this);
+	dc.DrawBitmap(imgAbout, 0, 0);
+	
 }

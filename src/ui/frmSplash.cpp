@@ -41,8 +41,9 @@ frmSplash::frmSplash(wxFrame *parent)
     SetClientSize(imgSplash.GetWidth(), imgSplash.GetHeight());
     wxString szVersion = wxT("Version: ");
     szVersion.Append(VERSION);
-    wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
-    Center();
+	(void)new wxPanel(this, -1, wxPoint(10,155), wxSize(0,0));
+	(void)new wxStaticText(this, -1,szVersion, wxPoint(10,155));
+    this->Center();
 }
 
 frmSplash::~frmSplash()

@@ -59,7 +59,8 @@ bool pgAdmin3::OnInit()
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     SetTopWindow(winSplash);
     winSplash->Show(TRUE);
-
+	winSplash->Refresh();
+	
     // Startup the windows sockets if required
 #ifdef __WXMSW__
     WSADATA	wsaData;
@@ -81,7 +82,11 @@ bool pgAdmin3::OnInit()
     SetAppName(APPNAME_L);
 
 #ifndef _DEBUG
+	#ifndef __WXMSW__
+		wxYield();
+	#endif
     wxSleep(2);
+	
 #endif
 
     // Create & show the main form
