@@ -112,9 +112,18 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu = new wxMenu();
     queryMenu->Append(MNU_EXECUTE, _("&Execute"), _("Execute query"));
     queryMenu->Append(MNU_EXPLAIN, _("E&xplain"), _("Explain query"));
+
+    wxMenu *eo=new wxMenu();
+    eo->Append(MNU_VERBOSE, _("Verbose"), _("Explain verbose query"), wxITEM_CHECK);
+    eo->Append(MNU_ANALYZE, _("Analyze"), _("Explain analyse query"), wxITEM_CHECK);
+    queryMenu->Append(MNU_EXPLAINOPTIONS, _("Explain options"), eo, _("Options modifying Explain output"));
+    queryMenu->AppendSeparator();
     queryMenu->Append(MNU_CANCEL, _("&Cancel"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
     SetMenuBar(menuBar);
+
+    queryMenu->Check(MNU_VERBOSE, settings->GetExplainVerbose());
+    queryMenu->Check(MNU_ANALYZE, settings->GetExplainAnalyze());
 
     updateRecentFiles();
 
@@ -201,6 +210,8 @@ frmQuery::~frmQuery()
     settings->Write(wxT("frmQuery/Left"), GetPosition().x);
     settings->Write(wxT("frmQuery/Top"), GetPosition().y);
     settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
+    settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
+    settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
     if (conn)
         delete conn;
 }
@@ -610,7 +621,29 @@ void frmQuery::OnExplain(wxCommandEvent& event)
 
     if (query.IsNull())
         return;
-    execQuery(wxT("EXPLAIN ") + query, true, 8);
+    wxString sql;
+    int resultToRetrieve=1;
+    bool verbose=queryMenu->IsChecked(MNU_VERBOSE), analyze=queryMenu->IsChecked(MNU_ANALYZE);
+
+    if (analyze)
+    {
+        sql += wxT("\nBEGIN;\n");
+        resultToRetrieve++;
+    }
+    sql += wxT("EXPLAIN ");
+    if (analyze)
+        sql += wxT("ANALYZE ");
+    if (verbose)
+        sql += wxT("VERBOSE ");
+    
+    int offset=sql.Length();
+
+    sql += query;
+
+    if (analyze)
+        sql += wxT(";\nROLLBACK;");
+
+    execQuery(sql, resultToRetrieve, true, offset);
     sqlQuery->SetFocus();
 }
 
@@ -651,7 +684,7 @@ void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
     SetStatusText(str, STATUSPOS_MSGS);
 }
 
-void frmQuery::execQuery(const wxString &query, const bool singleResult, const int queryOffset)
+void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singleResult, const int queryOffset)
 {
     long rowsReadTotal=0;
     setTools(true);
@@ -666,7 +699,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
 
     aborted=false;
     
-    if (sqlResult->Execute(query) >= 0)
+    if (sqlResult->Execute(query, resultToRetrieve) >= 0)
     {
         SetStatusText(wxT(""), STATUSPOS_SECS);
         SetStatusText(_("Query is running."), STATUSPOS_MSGS);

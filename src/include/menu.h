@@ -61,6 +61,9 @@ enum
     MNU_CANCEL,
     MNU_EXECUTE,
     MNU_EXPLAIN,
+    MNU_EXPLAINOPTIONS,
+    MNU_VERBOSE,
+    MNU_ANALYZE,
     MNU_RELOAD,
     MNU_RECENT, // leave space for recent file entries
     MNU_NEW=MNU_RECENT+15

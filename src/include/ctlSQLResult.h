@@ -30,7 +30,7 @@ public:
     ~ctlSQLResult();
 
 
-    int Execute(const wxString &query);
+    int Execute(const wxString &query, int resultToDisplay=0); // > 0: resultset to display, <=0: last result
     long NumRows();
 
     int Retrieve(long chunk=-1);

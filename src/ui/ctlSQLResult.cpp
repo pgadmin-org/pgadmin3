@@ -41,7 +41,7 @@ bool ctlSQLResult::Export()
 }
 
 
-int ctlSQLResult::Execute(const wxString &query)
+int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
 {
     Abort();
     ClearAll();
@@ -50,7 +50,7 @@ int ctlSQLResult::Execute(const wxString &query)
     colTypes.Empty();
     colTypClasses.Empty();
 
-    thread = new pgQueryThread(conn->connection(), query);
+    thread = new pgQueryThread(conn->connection(), query, resultToRetrieve);
 
     if (thread->Create() != wxTHREAD_NO_ERROR)
     {

@@ -67,6 +67,11 @@ public:
     wxString GetSqlHelpSite() const { return sqlHelpSite; }
     void SetSqlHelpSite(const wxString& s) { sqlHelpSite = s; }
 
+    bool GetExplainVerbose() const { return explainVerbose; }
+    void SetExplainVerbose(const bool b) { explainVerbose=b; }
+    bool GetExplainAnalyze() const { return explainAnalyze; }
+    void SetExplainAnalyze(const bool b) { explainAnalyze=b; }
+
     bool GetShowUsersForPrivileges() const { return showUsersForPrivileges; }
     void SetShowUsersForPrivileges(const bool b) { showUsersForPrivileges=b; }
 
@@ -107,6 +112,8 @@ private:
 
     // Show System Objects
     bool showSystemObjects;
+
+    bool explainVerbose, explainAnalyze;
 
     wxString pgAdminHelpSite;
     wxString sqlHelpSite;

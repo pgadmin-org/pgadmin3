@@ -254,12 +254,14 @@ wxString pgSet::ExecuteScalar(const wxString& sql) const
 
 
 
-pgQueryThread::pgQueryThread(PGconn *_conn, const wxString &qry) : wxThread(wxTHREAD_JOINABLE)
+pgQueryThread::pgQueryThread(PGconn *_conn, const wxString &qry, int _resultToRetrieve) 
+: wxThread(wxTHREAD_JOINABLE)
 {
     query = qry;
     conn=_conn;
     dataSet=0;
     result=0;
+    resultToRetrieve=_resultToRetrieve;
     rc=-1;
     PQsetnonblocking(conn, 1);
 }
@@ -281,6 +283,8 @@ int pgQueryThread::execute()
     if (!PQsendQuery(conn, query.mb_str(wxConvUTF8)))
         return(0);
 
+    int resultsRetrieved=0;
+    PGresult *lastResult=0;
     while (true)
     {
         if (TestDestroy())
@@ -302,20 +306,33 @@ int pgQueryThread::execute()
             continue;
         }
 
-        // only the last result set will be returned
+        // If resultToRetrieve is given, the nth result will be returned, 
+        // otherwise the last result set will be returned.
         // all others are discarded
         PGresult *res=PQgetResult(conn);
 
         startTime = wxGetLocalTimeMillis();
         if (!res)
             break;
-        if (result)
+
+        resultsRetrieved++;
+        if (resultsRetrieved == resultToRetrieve)
         {
-            messages.Printf(_("Query result with %d rows discarded.\n"), PQntuples(result));
-            PQclear(result);
+            result=res;
+            messages.Printf(_("Query result with %d rows will be returned.\n"), PQntuples(result));
+            continue;
         }
-        result=res;
+        if (lastResult)
+        {
+            messages.Printf(_("Query result with %d rows discarded.\n"), PQntuples(lastResult));
+            PQclear(lastResult);
+        }
+        lastResult=res;
     }
+
+    if (!result)
+        result = lastResult;
+
     messages += wxT("\n");
     rc=PQresultStatus(result);
 

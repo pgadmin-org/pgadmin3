@@ -85,7 +85,7 @@ private:
 class pgQueryThread : public wxThread
 {
 public:
-    pgQueryThread(PGconn *_conn, const wxString &qry);
+    pgQueryThread(PGconn *_conn, const wxString &qry, int resultToRetrieve=-1);
     ~pgQueryThread();
 
     virtual void *Entry();
@@ -97,6 +97,7 @@ public:
 
 private:
     int rc;
+    int resultToRetrieve;
 
     wxString query;
     PGconn *conn;

@@ -62,7 +62,7 @@ private:
     void updateRecentFiles();
     void openLastFile();
     void updateMenu();
-    void execQuery(const wxString &query, const bool singleResult=false, const int queryOffset=0);
+    void execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0);
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
