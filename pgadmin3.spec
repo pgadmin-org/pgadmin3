@@ -11,15 +11,20 @@ Source: pgadmin3-%{pgadmin_version}.tar.gz
 URL: http://www.pgadmin.org/
 BuildRoot: %{_tmppath}/%{name}-root
 
-Requires: gtk2 >= 2.2
+#
+# I am not sure of dependencies until we build wxGTK 2.5 cvs RPMs
+#
+
+Requires: gtk2 >= 2.2, glibc >= 2.3.2, libjpeg-6b-26 >= 6b, libpng >= 1.2.2, pango >= 1.2.1, libstdc++ >= 3.2.2, openssl >= 0.9.7, libtiff >= 3.5.7
+  
 
 #
-# Warning: wxWindows 2.5 CVS version > 20030607
-# needs to be installed from source with the following options:
+# wxWindows 2.5 CVS version > 20030607 is needed
+# Please install from source with the following options:
 # ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
 #
-# Also, you need to compile the following contributions in wxWindows contrib/src
-# stc (Styled Text Control) xrc
+# Also, compile the following contributions in wxWindows contrib/src
+# stc (Styled Text Control), xrc (xml dialogs description)
 #
 BuildRequires: autoconf >= 2.57, automake >= 1.7.5, gtk2-devel >= 2.2, postgresql >= 7.3.2, openssl-devel >= 0.9.7
 
