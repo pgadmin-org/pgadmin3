@@ -166,7 +166,8 @@ wxString frmBackup::getCmdPart1()
     wxString cmd=backupExecutable;
 
     pgServer *server=object->GetDatabase()->GetServer();
-    cmd += wxT(" -h ") + server->GetName()
+    cmd +=  wxT(" -i")
+            wxT(" -h ") + server->GetName()
          +  wxT(" -p ") + NumToStr((long)server->GetPort())
          +  wxT(" -U ") + server->GetUsername();
     return cmd;

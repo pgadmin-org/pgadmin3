@@ -33,11 +33,11 @@
 #define btnFilename             CTRL_BUTTON("btnFilename")
 #define chkOnlyData             CTRL_CHECKBOX("chkOnlyData")
 #define chkOnlySchema           CTRL_CHECKBOX("chkOnlySchema")
+#define chkSingleObject         CTRL_CHECKBOX("chkSingleObject")
 #define chkNoOwner              CTRL_CHECKBOX("chkNoOwner")
-#define chkCreateDb             CTRL_CHECKBOX("chkCreateDb")
-#define chkDropDb               CTRL_CHECKBOX("chkDropDb")
 #define chkDisableTrigger       CTRL_CHECKBOX("chkDisableTrigger")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
+#define stSingleObject          CTRL_STATIC("stSingleObject")
 
 #define lstContents             CTRL_LISTVIEW("lstContents")
 #define btnView                 CTRL_BUTTON("btnView")
@@ -45,10 +45,14 @@
 
 BEGIN_EVENT_TABLE(frmRestore, ExternProcessDialog)
     EVT_TEXT(XRCID("txtFilename"),          frmRestore::OnChangeName)
+    EVT_CHECKBOX(XRCID("chkOnlyData"),      frmRestore::OnChangeData)
+    EVT_CHECKBOX(XRCID("chkOnlySchema"),    frmRestore::OnChangeSchema)
+    EVT_CHECKBOX(XRCID("chkSingleObject"),  frmRestore::OnChange)
     EVT_BUTTON(XRCID("btnFilename"),        frmRestore::OnSelectFilename)
     EVT_BUTTON(XRCID("btnOK"),              frmRestore::OnOK)
     EVT_BUTTON(XRCID("btnView"),            frmRestore::OnView)
     EVT_END_PROCESS(-1,                     frmRestore::OnEndProcess)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstContents"), frmRestore::OnChangeList)
     EVT_CLOSE(                              ExternProcessDialog::OnClose)
 END_EVENT_TABLE()
 
@@ -57,6 +61,12 @@ END_EVENT_TABLE()
 frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form)
 {
     object=obj;
+
+    if (object->GetType() == PG_SERVER)
+        server = (pgServer*)object;
+    else
+        server=object->GetDatabase()->GetServer();
+
     form=_form;
     wxLogInfo(wxT("Creating a restore dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
@@ -66,6 +76,24 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
     SetTitle(wxString::Format(_("Restore %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
+
+    if (object->GetType() != PG_DATABASE)
+    {
+        if (object->GetType() == PG_TABLE)
+        {
+            chkOnlySchema->SetValue(false);
+            chkOnlyData->SetValue(true);
+        }
+        else
+        {
+            chkOnlySchema->SetValue(true);
+            chkOnlyData->SetValue(false);
+        }
+        chkSingleObject->SetValue(true);
+        chkOnlyData->Disable();
+        chkOnlySchema->Disable();
+        chkSingleObject->Disable();
+    }
 
     // Icon
     SetIcon(wxIcon(restore_xpm));
@@ -109,6 +137,34 @@ void frmRestore::OnSelectFilename(wxCommandEvent &ev)
 }
 
 
+void frmRestore::OnChangeData(wxCommandEvent &ev)
+{
+    if (chkOnlyData->GetValue())
+    {
+        chkOnlySchema->SetValue(false);
+        chkOnlySchema->Disable();
+    }
+    else
+        chkOnlySchema->Enable();
+
+    OnChange(ev);
+}
+
+
+void frmRestore::OnChangeSchema(wxCommandEvent &ev)
+{
+    if (chkOnlySchema->GetValue())
+    {
+        chkOnlyData->SetValue(false);
+        chkOnlyData->Disable();
+    }
+    else
+        chkOnlyData->Enable();
+
+    OnChange(ev);
+}
+
+
 void frmRestore::OnChangeName(wxCommandEvent &ev)
 {
     wxString name=txtFilename->GetValue();
@@ -141,9 +197,45 @@ void frmRestore::OnChangeName(wxCommandEvent &ev)
 }
 
 
+void frmRestore::OnChangeList(wxListEvent &ev)
+{
+    OnChange(ev);
+}
+
+
 void frmRestore::OnChange(wxCommandEvent &ev)
 {
-    btnOK->Enable(filenameValid);
+    bool singleValid = !chkSingleObject->GetValue();
+    if (!singleValid)
+    {
+        switch(object->GetType())
+        {
+            case PG_DATABASE:
+            {
+                int sel=lstContents->GetSelection();
+                if (sel >= 0)
+                {
+                    wxString type=lstContents->GetText(sel, 0);
+                    if ((type == _("Function") && !chkOnlyData->GetValue()) || 
+                        (type == _("Table") && !chkOnlySchema->GetValue()))
+                    {
+                        singleValid = true;
+                        stSingleObject->SetLabel(type + wxT(" ") + lstContents->GetText(sel, 1));
+                    }
+                }
+                break;
+            }
+            case PG_TABLE:
+            case PG_FUNCTION:
+            {
+                singleValid=true;
+                stSingleObject->SetLabel(object->GetTranslatedTypeName() + wxT(" ") + object->GetName());
+
+                break;
+            }
+        }
+    }
+    btnOK->Enable(filenameValid && singleValid);
     btnView->Enable(filenameValid);
 }
 
@@ -151,9 +243,8 @@ void frmRestore::OnChange(wxCommandEvent &ev)
 wxString frmRestore::GetCmd(int step)
 {
     wxString cmd = getCmdPart1();
-    pgServer *server=object->GetDatabase()->GetServer();
 
-    if (!server->GetTrusted())
+    if (server->GetNeedPwd())
         cmd += wxT(" -W ") + server->GetPassword();
 
     return cmd + getCmdPart2(step);
@@ -163,9 +254,8 @@ wxString frmRestore::GetCmd(int step)
 wxString frmRestore::GetDisplayCmd(int step)
 {
     wxString cmd = getCmdPart1();
-    pgServer *server=object->GetDatabase()->GetServer();
 
-    if (!server->GetTrusted())
+    if (server->GetNeedPwd())
         cmd += wxT(" -W ****");
 
     return cmd + getCmdPart2(step);
@@ -178,10 +268,11 @@ wxString frmRestore::getCmdPart1()
 
     wxString cmd=restoreExecutable;
 
-    pgServer *server=object->GetDatabase()->GetServer();
-    cmd += wxT(" -h ") + server->GetName()
-         +  wxT(" -p ") + NumToStr((long)server->GetPort())
-         +  wxT(" -U ") + server->GetUsername();
+    cmd += wxT(" -i")
+           wxT(" -h ") + server->GetName()
+         + wxT(" -p ") + NumToStr((long)server->GetPort())
+         + wxT(" -U ") + qtIdent(server->GetUsername())
+         + wxT(" -d ") + qtIdent(object->GetDatabase()->GetName());
     return cmd;
 }
 
@@ -199,21 +290,48 @@ wxString frmRestore::getCmdPart2(int step)
     else
     {
         if (chkOnlyData->GetValue())
+        {
             cmd.Append(wxT(" -a"));
+        }
         else
         {
-            if (chkOnlySchema->GetValue())
-                cmd.Append(wxT(" -s"));
-            if (chkOnlySchema->GetValue())
-                cmd.Append(wxT(" -s"));
             if (chkNoOwner->GetValue())
                 cmd.Append(wxT(" -O"));
-            if (chkCreateDb->GetValue())
-                cmd.Append(wxT(" -C"));
-            if (chkDropDb->GetValue())
-                cmd.Append(wxT(" -c"));
+        }
+
+        if (chkOnlySchema->GetValue())
+        {
+            cmd.Append(wxT(" -s"));
+        }
+        else
+        {
             if (chkDisableTrigger->GetValue())
-                cmd.Append(wxT(" --disable-triggers"));
+            cmd.Append(wxT(" --disable-triggers"));
+        }
+
+        if (chkSingleObject->GetValue())
+        {
+            switch (object->GetType())
+            {
+                case PG_DATABASE:
+                {
+                    int sel=lstContents->GetSelection();
+                    if (lstContents->GetText(sel, 0) == _("Function"))
+                        cmd.Append(wxT(" -P ") + qtIdent(lstContents->GetText(sel, 1).BeforeLast('(')));
+                    else if (lstContents->GetText(sel, 0) == _("Table"))
+                        cmd.Append(wxT(" -t ") + qtIdent(lstContents->GetText(sel, 1)));
+                    else
+                        return wxT("restore: internal pgadmin error.");   // shouldn't happen!
+
+                    break;
+                }
+                case PG_TABLE:
+                    cmd.Append(wxT(" -t ") + object->GetQuotedIdentifier());
+                    break;
+                case PG_FUNCTION:
+                    cmd.Append(wxT(" -P ") + object->GetQuotedIdentifier());
+                    break;
+            }
         }
         if (chkVerbose->GetValue())
             cmd.Append(wxT(" -v"));
@@ -231,7 +349,9 @@ void frmRestore::OnView(wxCommandEvent &ev)
     btnView->Disable();
     btnOK->Disable();
     viewRunning = true;
-    Execute(1);
+    Execute(1, false);
+    btnOK->SetLabel(_("OK"));
+    done=0;
 }
 
 
@@ -240,7 +360,7 @@ void frmRestore::OnOK(wxCommandEvent &ev)
     viewRunning = false;
     btnView->Disable();
 
-#if 0
+#if 1
     ExternProcessDialog::OnOK(ev);
 #else   // demo mode
     if (!done)
@@ -262,12 +382,18 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
 
     if (done && viewRunning && !ev.GetExitCode())
     {
+        done = false;
+
         lstContents->CreateColumns(form, _("Type"), _("Name"));
 
         wxString str=wxTextBuffer::Translate(txtMessages->GetValue(), wxTextFileType_Unix);
 
         wxStringTokenizer line(str, wxT("\n"));
         line.GetNextToken();
+        
+        lstContents->Freeze();
+        wxBeginBusyCursor();
+
         while (line.HasMoreTokens())
         {
             str=line.GetNextToken();
@@ -315,6 +441,8 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
             lstContents->AppendItem(icon, typname, name);
         }
 
+        lstContents->Thaw();
+        wxEndBusyCursor();
         nbNotebook->SetSelection(1);
     }
 }

@@ -308,9 +308,10 @@ void ExternProcessDialog::OnOK(wxCommandEvent& ev)
 }
 
 
-bool ExternProcessDialog::Execute(int step)
+bool ExternProcessDialog::Execute(int step, bool finalStep)
 {
     btnOK->Disable();
+    final=finalStep;
 
     if (txtMessages)
         txtMessages->AppendText(GetDisplayCmd(step) + END_OF_LINE);
@@ -403,7 +404,8 @@ void ExternProcessDialog::OnEndProcess(wxProcessEvent &ev)
 {
     if (process)
     {
-        btnOK->SetLabel(_("Done"));
+        if (final)
+            btnOK->SetLabel(_("Done"));
         done=true;
     }
     timer->Stop();

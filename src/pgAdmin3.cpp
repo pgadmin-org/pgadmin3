@@ -54,6 +54,7 @@
 #include "xh_calb.h"
 #include "xh_timespin.h"
 #include "xh_sqlbox.h"
+#include "xh_ctlcombo.h"
 
 // Globals
 frmMain *winMain;
@@ -338,6 +339,7 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->AddHandler(new wxCalendarBoxXmlHandler);
     wxXmlResource::Get()->AddHandler(new wxTimeSpinXmlHandler);
     wxXmlResource::Get()->AddHandler(new ctlSQLBoxXmlHandler);
+    wxXmlResource::Get()->AddHandler(new ctlComboBoxXmlHandler);
 
 
     // examine libpq version

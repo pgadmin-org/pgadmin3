@@ -17,8 +17,11 @@
 
 
 ctlComboBox::ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr)
-: wxComboBox(wnd, id, wxEmptyString, pos, siz, attr)
+: wxComboBox(wnd, id, wxEmptyString, pos, siz, 0, NULL, attr)
 {
+#ifdef __WXGTK__
+    SetEditable(false);
+#endif
 }
 
 

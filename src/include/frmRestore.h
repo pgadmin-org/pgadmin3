@@ -40,6 +40,9 @@ private:
     void OnSelectFilename(wxCommandEvent &ev);
     void OnView(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);
+    void OnChangeData(wxCommandEvent &ev);
+    void OnChangeSchema(wxCommandEvent &ev);
+    void OnChangeList(wxListEvent &ev);
     void OnEndProcess(wxProcessEvent& event);
 
     wxString getCmdPart1();
@@ -47,6 +50,7 @@ private:
 
     frmMain *form;
     pgObject *object;
+    pgServer *server;
     bool viewRunning, filenameValid;
 
     DECLARE_EVENT_TABLE()

@@ -102,14 +102,14 @@ public:
     ~ExternProcessDialog();
     virtual wxString GetDisplayCmd(int version)=0;
     virtual wxString GetCmd(int step)=0;
-    bool Execute(int step=0);
+    bool Execute(int step=0, bool finalStep=true);
     void Abort();
 
 protected:
     wxTextCtrl *txtMessages;
     wxProcess *process;
     int pid;
-    bool done;
+    bool done, final;
 
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);

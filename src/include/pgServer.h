@@ -62,8 +62,6 @@ public:
     bool GetSuperUser() const { return superUser; }
     void iSetSuperUser(const bool b) { superUser=b; }
 
-    frmMain *GetParentFrame() { return parentWin; }
-
     pgConn *CreateConn(wxString dbName=wxEmptyString);
 
     wxString GetLastDatabase() const { return lastDatabase; }
@@ -99,7 +97,6 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser) { return true; }
     bool CanEdit() { return true; }
     bool CanDrop() { return true; }
-    bool CanRestore() { return connected; }
 
     pgConn *connection() { return conn; }
     
@@ -112,7 +109,6 @@ private:
     bool trusted, discovered, createPrivilege, superUser;
     OID lastSystemOID;
     wxString versionNum;
-    frmMain *parentWin;
 
 #ifdef WIN32
     SC_HANDLE scmHandle;

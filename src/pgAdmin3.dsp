@@ -639,6 +639,11 @@ SOURCE=.\ui\xh_calb.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\xh_ctlcombo.cpp
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\xh_sqlbox.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
@@ -1438,6 +1443,10 @@ SOURCE=.\include\timespin.h
 # Begin Source File
 
 SOURCE=.\include\xh_calb.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\xh_ctlcombo.h
 # End Source File
 # Begin Source File
 

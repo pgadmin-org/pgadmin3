@@ -59,7 +59,7 @@ extern sysSettings *settings;
 #define CTRL_LISTCTRL(id)       (XRCCTRL(*this, id, wxListCtrl))
 #define CTRL_COMBOBOX(id)       (XRCCTRL(*this, id, wxComboBox))
 #define CTRL_LISTVIEW(id)       ((ctlListView*)(XRCCTRL(*this, id, wxListCtrl)))
-#define CTRL_COMBOBOX2(id)      ((ctlComboBox*)(XRCCTRL(*this, id, wxComboBox)))
+#define CTRL_COMBOBOX2(id)      (XRCCTRL(*this, id, ctlComboBox))
 #define CTRL_CHECKBOX(id)       (XRCCTRL(*this, id, wxCheckBox))
 #define CTRL_RADIOBOX(id)       (XRCCTRL(*this, id, wxRadioBox))
 #define CTRL_BUTTON(id)         (XRCCTRL(*this, id, wxButton))

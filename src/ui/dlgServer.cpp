@@ -172,8 +172,7 @@ int dlgServer::Go(bool modal)
 
     int rc=dlgProperty::Go(modal);
 
-    if (!server)
-        CheckChange();
+    CheckChange();
 
     return rc;
 }
@@ -215,12 +214,13 @@ void dlgServer::CheckChange()
     {
         enable =  name != server->GetName()
                || txtDescription->GetValue() != server->GetDescription()
+               || txtService->GetValue() != server->GetServiceID()
                || StrToLong(txtPort->GetValue()) != server->GetPort()
                || txtUsername->GetValue() != server->GetUsername()
                || chkNeedPwd->GetValue() != server->GetNeedPwd();
     }
 
-    CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+    CheckValid(enable, !name.IsEmpty(), _("Please specify address."));
     CheckValid(enable, !txtDescription->GetValue().IsEmpty(), _("Please specify description."));
     CheckValid(enable, StrToLong(txtPort->GetValue()) > 0, _("Please specify port."));
     CheckValid(enable, !txtUsername->GetValue().IsEmpty(), _("Please specify user name"));
