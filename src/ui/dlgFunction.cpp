@@ -108,6 +108,9 @@ int dlgFunction::Go(bool modal)
     AddGroups();
     AddUsers(cbOwner);
 
+    if (!connection->BackendMinimumVersion(8, 0))
+        cbOwner->Disable();
+
     // the listview's column that contains the type name
     typeColNo = (connection->BackendMinimumVersion(7, 5) ? 1 : 0);
 
