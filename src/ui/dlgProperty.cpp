@@ -953,7 +953,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                 {
                     wxString str=tokens.GetNextToken();
                     if (str[0U]== '"')
-                        str = str.Mid(1);
+                        str = str.Mid(1, str.Length()-2);
 
                     wxString name=str.BeforeLast('=');
                     wxString value=str.Mid(name.Length()+1);
@@ -1066,6 +1066,8 @@ void dlgSecurityProperty::OnPrivCheckAll(wxCommandEvent& ev)
 
 void dlgSecurityProperty::OnPrivSelChange(wxListEvent &ev)
 {
+    if (!cbGroups)
+        return;
     if (allPrivileges)
     {
         allPrivileges->SetValue(false);
