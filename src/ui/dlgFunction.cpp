@@ -84,6 +84,9 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
     btnAdd->Disable();
     btnRemove->Disable();
 
+    txtSqlBox->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+    txtSqlBox->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
+
     libcSizer = stObjectFile->GetContainingSizer();
 }
 
