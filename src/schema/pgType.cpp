@@ -141,6 +141,11 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
             }
             InsertListItem(properties, pos++, _("Input Function"), GetInputFunction());
             InsertListItem(properties, pos++, _("Output Function"), GetOutputFunction());
+            if (GetConnection()->BackendMinimumVersion(7, 4))
+            {
+            InsertListItem(properties, pos++, _("Receive Function"), GetReceiveFunction());
+            InsertListItem(properties, pos++, _("Send Function"), GetSendFunction());
+            }
             InsertListItem(properties, pos++, _("Storage"), GetStorage());
         }
         InsertListItem(properties, pos++, _("System Type?"), GetSystemObject());
