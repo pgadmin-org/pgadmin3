@@ -137,8 +137,10 @@ int dlgDatabase::Go(bool modal)
 
         txtComment->Disable();
         cbTemplate->Append(wxT(""));
+        cbVarname->Disable();
+        txtValue->Disable();
 
-        pgSet *set=database->ExecuteSet(wxT(
+        pgSet *set=connection->ExecuteSet(wxT(
             "SELECT datname FROM pg_database ORDER BY datname"));
         if (set)
         {
@@ -153,7 +155,7 @@ int dlgDatabase::Go(bool modal)
         wxString encStr;
         do
         {
-            encStr=database->ExecuteScalar(
+            encStr=connection->ExecuteScalar(
                 wxT("SELECT pg_encoding_to_char(") + NumToStr(encNo) + wxT(")"));
             if (!encStr.IsEmpty())
                 cbEncoding->Append(encStr);

@@ -217,6 +217,7 @@ void dlgForeignKey::OnSelChangeRef(wxNotifyEvent &ev)
             set->MoveNext();
         }
         delete set;
+        cbRefColumns->SetSelection(0);
     }
 }
 
@@ -364,6 +365,7 @@ int dlgForeignKey::Go(bool modal)
                 set->MoveNext();
             }
             delete set;
+            cbReferences->SetSelection(0);
         }
     }
 

@@ -1,41 +1,43 @@
 <ul>
-	<li>Known issues
-  		<ul>
-            <li>[Object Tree] missing schema for function return type if table type (are there more cases?)
-			<li>[Query Builder] Menu item 'Query Browser' causes Segfault under unix - crash after qbForm->Show() in frmQueryBuilder::OnSize() at layout.LayoutMDIFrame(this). QB currently disabled.
-			<li>[Object Tree] Adding an unnamed constraint isn't reflected immediately in the tree.
-			<li>[Windows] Alt+Tab Icon is system default.
-            <li>[non-unicode build] Reading unicode files won't convert
-            <li>[gtk] Segfault when refreshing a schema in the treeview that has been dropped through SQL. Works in XP.
-		</ul>
-	<li>Known wxWindows issues
-		<ul>
-			<li>[all Controls with gtk] Paste from other apps will fail for non-unicode apps (fixed in pgadmin3-wx snapshot, submitted to wx as 776217).
-			<li>[Object Tree] Scrollbar doesn scroll page by page under gtk
-            <li>[Main listview] Background behind the tabs doesn't redraw on Win XP and 2003.
-		</ul>
-	<li>Known issues, but might stay unfixed
-  		<ul>
-			<li>[Object Tree] M$ Context menu key doesn't work in Windows (WxWindows bug?).
-			<li>[Object Tree] Dropped servers reappear when changing "display system objects" due to the disconnect/tree refresh.
-		</ul>
-	<li>Fixed issues
-	  	<ul>
-			<li>AP 2003-11-30 [Help-gtk] When selecting text in the	help window, pgadmin crashes (wxWin issue)
-            <li>DP 2003-10-02 [Connect Dlg] When connecting to a new server, if logon fails all info is remembered except Description.
-            <li>DP 2003-10-02 [Query Builder] frmAddTableView: you have to double click buttons!
-            <li>DP 2003-10-02 Query Builder active in debug builds only.
-			<li>AP 2003-08-28 [Edit Grid] wxGridCellFloatEditor appears to round floats - 1.5151515151515151515151515152 will become 1.515152
-			<li>AP 2003-08-28 [Data Viewer] In-place edit control doesn't have autoscroll if text initially fits into control. Also will not accept more input than can be isplayed at once, even if pasting data in.
-			<li>DP/AP 2003-07-23 [Help System]	Inconsistent error reporting, doesn't currently work on Win32 at all.
-			<li>AP 2003-04-29 [Schema Browser]	Segfault under unix if server connection fails for non password reasons.
-			<li>AP 2003-04-29 [Query Tool]	Barfs unde unix when explaining query plan - not reproduceable.
-			<li>AP 2003-04-29 [Schema Browser]	Aggregate types are not schema qualified. - looks ok to me (fixed by DP?).
-			<li>AP 2003-05-03 [Schema Browser]	Comments do not work.
-			<li>AP 2003-05-04 [Schema Browser]	Fix Icons.
-			<li>AP 2003-05-04 [Schema Browser]	OPERATOR CLASSES need work. Secondary (onclick) discovery SQL has an error.
-			<li>AP 2003-06-17 [Edit/Results Grids]    Scrollbars often do not appear until the window is resized following data load.
-			<li>AP 2003-08-11 [Table Editor] Generates invalid SQL when table includes Foreign Key.
-		</ul>
+    <li>Known issues
+    <ul>
+        <li>[Object Tree] missing schema for function return type if table type (are there more cases?)
+	<li>[Query Builder] Menu item 'Query Browser' causes Segfault under unix - crash after qbForm->Show() in frmQueryBuilder::OnSize() at layout.LayoutMDIFrame(this). QB currently disabled.
+	<li>[Object Tree] Adding an unnamed constraint isn't reflected immediately in the tree.
+	<li>[Windows] Alt+Tab Icon is system default.
+        <li>[non-unicode build] Reading unicode files won't convert (wx not capable)
+        <li>[gtk] Segfault when refreshing a schema in the treeview that has been dropped through SQL. Works in XP.
+        <li>[all] Multi-value variables (db and user) handled incorrectly (e.g. search_path)
+        <li>[Edit Grid] multi-row deletes don't work
+    </ul>
+    <li>Known wxWindows issues
+    <ul>
+	<li>[all Controls with gtk] Paste from other apps will fail for non-unicode apps (fixed in pgadmin3-wx snapshot, submitted to wx as 776217).
+	<li>[Object Tree] Scrollbar doesn scroll page by page under gtk
+        <li>[Main listview] Background behind the tabs doesn't redraw on Win XP and 2003.
+    </ul>
+    <li>Known issues, but might stay unfixed
+    <ul>
+	<li>[Object Tree] M$ Context menu key doesn't work in Windows (WxWindows bug?).
+	<li>[Object Tree] Dropped servers reappear when changing "display system objects" due to the disconnect/tree refresh.
+    </ul>
+    <li>Fixed issues
+    <ul>
+	<li>AP 2003-11-30 [Help-gtk] When selecting text in the	help window, pgadmin crashes (wxWin issue)
+        <li>DP 2003-10-02 [Connect Dlg] When connecting to a new server, if logon fails all info is remembered except Description.
+        <li>DP 2003-10-02 [Query Builder] frmAddTableView: you have to double click buttons!
+        <li>DP 2003-10-02 Query Builder active in debug builds only.
+	<li>AP 2003-08-28 [Edit Grid] wxGridCellFloatEditor appears to round floats - 1.5151515151515151515151515152 will become 1.515152
+	<li>AP 2003-08-28 [Data Viewer] In-place edit control doesn't have autoscroll if text initially fits into control. Also will not accept more input than can be isplayed at once, even if pasting data in.
+	<li>DP/AP 2003-07-23 [Help System]	Inconsistent error reporting, doesn't currently work on Win32 at all.
+	<li>AP 2003-04-29 [Schema Browser]	Segfault under unix if server connection fails for non password reasons.
+	<li>AP 2003-04-29 [Query Tool]	Barfs unde unix when explaining query plan - not reproduceable.
+	<li>AP 2003-04-29 [Schema Browser]	Aggregate types are not schema qualified. - looks ok to me (fixed by DP?).
+	<li>AP 2003-05-03 [Schema Browser]	Comments do not work.
+	<li>AP 2003-05-04 [Schema Browser]	Fix Icons.
+	<li>AP 2003-05-04 [Schema Browser]	OPERATOR CLASSES need work. Secondary (onclick) discovery SQL has an error.
+	<li>AP 2003-06-17 [Edit/Results Grids]    Scrollbars often do not appear until the window is resized following data load.
+	<li>AP 2003-08-11 [Table Editor] Generates invalid SQL when table includes Foreign Key.
+    </ul>
 </ul>
 
