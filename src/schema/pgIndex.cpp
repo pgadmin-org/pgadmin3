@@ -237,7 +237,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
                     wxT("  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n");
     }
     pgSet *indexes= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
+        wxT("SELECT DISTINCT ON(cls.oid) cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
         wxT("       ") + proname + wxT("tab.relname as tabname, indclass, CASE contype WHEN 'p' THEN desp.description ELSE des.description END AS description,\n")
         wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n")
         wxT("  FROM pg_index idx\n")
@@ -252,7 +252,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
         wxT("  LEFT OUTER JOIN pg_description desp ON (desp.objoid=con.oid AND desp.objsubid = 0)\n")
         wxT(" WHERE indrelid = ") + collection->GetOidStr()
         + restriction + wxT("\n")
-        wxT(" ORDER BY cls.relname"));
+        wxT(" ORDER BY cls.oid, cls.relname"));
 
     if (indexes)
     {
