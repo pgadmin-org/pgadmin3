@@ -117,7 +117,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
         hasOids = table->GetHasOids();
         tableName = table->GetQuotedFullIdentifier();
         primaryKeyColNumbers = table->GetPrimaryKeyColNumbers();
-        orderBy = table->GetPrimaryKey();
+        orderBy = table->GetQuotedPrimaryKey();
         if (orderBy.IsEmpty() && hasOids)
             orderBy=wxT("oid");
     }
@@ -504,7 +504,7 @@ void frmEditGrid::Go()
     qry += wxT("* FROM ") + tableName;
     if (!orderBy.IsEmpty())
     {
-        qry += wxT(" ORDER BY ") + qtIdent(orderBy);
+        qry += wxT(" ORDER BY ") + orderBy;
     }
 
     thread=new pgQueryThread(connection->connection(), qry);

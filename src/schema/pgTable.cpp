@@ -303,9 +303,12 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
             if (set)
             {
                 if (!primaryKey.IsNull())
+                {
+                    quotedPrimaryKey += wxT(", ");
                     primaryKey += wxT(", ");
-
+                }
                 primaryKey += set->GetVal(0);
+                quotedPrimaryKey += qtIdent(set->GetVal(0));
                 delete set;
             }
         }

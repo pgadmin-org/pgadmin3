@@ -38,6 +38,8 @@ public:
     void iSetHasOids(bool b) { hasOids=b; }
     wxString GetPrimaryKey() const { return primaryKey; }
     void iSetPrimaryKey(const wxString& s) {primaryKey = s; }
+    wxString GetQuotedPrimaryKey() const { return quotedPrimaryKey; }
+    void iSetQuotedPrimaryKey(const wxString& s) {quotedPrimaryKey = s; }
     wxString GetPrimaryKeyColNumbers() const { return primaryKeyColNumbers; }
     void iSetPrimaryKeyColNumbers(const wxString& s) {primaryKeyColNumbers = s; }
     wxString GetPrimaryKeyName() const { return primaryKeyName; }
@@ -68,7 +70,8 @@ private:
     long rows, estimatedRows;
     bool hasOids, hasSubclass;
     long inheritedTableCount;
-    wxString quotedInheritedTables, inheritedTables, primaryKey, primaryKeyName, primaryKeyColNumbers;
+    wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
+        primaryKeyName, primaryKeyColNumbers;
     wxArrayString quotedInheritedTablesList;
 };
 
