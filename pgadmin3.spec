@@ -1,12 +1,13 @@
-%define pgadmin_version %(date +%Y%m%d)
+%define major_version 0.1.1
+%define minor_version %(date +%Y%m%d)
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
-Version: %{pgadmin_version}
-Release: %{rel}
+Version: %{major_version}
+Release: %{minor_version}
 License: Artistic
 Group: Applications/Databases
-Source: pgadmin3-%{pgadmin_version}.tar.gz
+Source: pgadmin3-%{version}.tar.gz
 URL: http://www.pgadmin.org/
 Packager: pgAdmin project <pgadmin-hackers@postgresql.org>
 BuildRoot: %{_tmppath}/%{name}-root
