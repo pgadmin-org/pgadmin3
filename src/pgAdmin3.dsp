@@ -1149,6 +1149,10 @@ SOURCE=.\include\copyright.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\languages.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\menu.h
 # End Source File
 # Begin Source File
