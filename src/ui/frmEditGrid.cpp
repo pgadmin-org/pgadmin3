@@ -488,6 +488,18 @@ void frmEditGrid::OnOptions(wxCommandEvent& event)
 	if (optionsChanged) Go();
 }
 
+template < class T >
+int ArrayCmp(T *a, T *b)
+{
+	if (*a == *b)
+		return 0;
+
+	if (*a > *b)
+		return 1;
+	else
+		return -1;
+}
+
 void frmEditGrid::OnDelete(wxCommandEvent& event)
 {
 	wxMessageDialog msg(this, _("Are you sure you wish to delete the selected row(s)?"), _("Delete rows?"), wxYES_NO | wxICON_QUESTION);
@@ -498,22 +510,17 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
     wxArrayInt delrows=sqlGrid->GetSelectedRows();
     int i=delrows.GetCount();
 
+	// Sort the grid so we always delete last->first, otherwise we 
+	// could end up deleting anything because the array returned by 
+	// GetSelectedRows is in the order that rows were selected by
+	// the user.
+	delrows.Sort(ArrayCmp);
+
     // don't care a lot about optimizing here; doing it line by line
     // just as sqlTable::DeleteRows does
-	if (delrows.Item(i-1) > delrows.Item(0))
-	{
-		while (i--)
-			sqlGrid->DeleteRows(delrows.Item(i), 1);
-	}
-	else
-	{
-		int j = 0;
-		while (j < i)
-		{
-			sqlGrid->DeleteRows(delrows.Item(j), 1);
-			++j;
-		}
-	}
+	while (i--)
+		sqlGrid->DeleteRows(delrows.Item(i), 1);
+
 
     sqlGrid->EndBatch();
 
