@@ -371,7 +371,7 @@ void dlgProperty::OnCancel(wxNotifyEvent &ev)
 
 void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 {
-    if (sqlPane && event.GetSelection() == nbNotebook->GetPageCount()-1)
+    if (sqlPane && event.GetSelection() == (int)nbNotebook->GetPageCount()-1)
     {
         sqlPane->SetReadOnly(false);
         if (btnOK->IsEnabled())
@@ -1177,7 +1177,7 @@ void dlgSecurityProperty::OnDelPriv(wxNotifyEvent &ev)
 
 wxString dlgSecurityProperty::GetHelpPage() const
 {
-    if (nbNotebook->GetSelection() == nbNotebook->GetPageCount()-2)
+    if (nbNotebook->GetSelection() == (int)nbNotebook->GetPageCount()-2)
         return wxT("sql-grant");
     else
         return dlgProperty::GetHelpPage();
