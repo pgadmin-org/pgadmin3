@@ -55,6 +55,7 @@ public:
 
     OID GetInsertedOid() const { return PQoidValue(res); }
     int ColSize(int col) const { return PQfsize(res, col); }
+    bool IsNull(int col) const { return (PQgetisnull(res, pos-1, col) != 0); }
     int ColScale(int col) const;
     int ColNumber(const wxString &colName) const;
 

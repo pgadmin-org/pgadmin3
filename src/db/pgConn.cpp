@@ -170,7 +170,7 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxLogSql(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.ToAscii());
+    qryRes = PQexec(conn, sql.mb_str(wxConvUTF8));
         
     // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
@@ -205,14 +205,26 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
     PGresult *qryRes;
     wxLogSql(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
     qryRes = PQexec(conn, sql.mb_str(wxConvUTF8));
-    pgSet *set = new pgSet(qryRes, conn);
-    if (!set) {
-        wxLogError(__("Couldn't create a pgSet object!"));
+
+    int status= PQresultStatus(qryRes);
+
+    if (status == PGRES_TUPLES_OK || status == PGRES_COMMAND_OK)
+    {
+        pgSet *set = new pgSet(qryRes, conn);
+        if (!set)
+        {
+            wxLogError(__("Couldn't create a pgSet object!"));
+            PQclear(qryRes);
+        }
+    	return set;
+    }
+    else
+    {
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), wxConvUTF8).c_str());
         PQclear(qryRes);
-        return NULL;
     }
 
-	return set;
+    return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////

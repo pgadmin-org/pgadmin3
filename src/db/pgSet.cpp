@@ -41,9 +41,6 @@ pgSet::pgSet(PGresult *newRes, PGconn *newConn)
     // Make sure we have tuples
     if (PQresultStatus(res) != PGRES_TUPLES_OK)
     {
-        if (PQresultStatus(res) != PGRES_COMMAND_OK)
-            wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), wxConvUTF8).c_str());
-
         nRows = 0;
         pos = 0;
     }
