@@ -76,11 +76,11 @@ void dlgForeignKey::OnChange(wxNotifyEvent &ev)
     if (foreignKey)
     {
         btnOK->Enable(txtComment->GetValue() != foreignKey->GetComment());
-        txtComment->Enable(!GetName().IsEmpty());
     }
     else
     {
         bool enable=true;
+        txtComment->Enable(!GetName().IsEmpty());
         CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
         EnableOK(enable);
     }
@@ -284,11 +284,10 @@ wxString dlgForeignKey::GetSql()
         sql +=wxT(" FOREIGN KEY ") + GetDefinition()
             + wxT(";\n");
     }
-    else
-    {
-        AppendComment(sql, wxT("CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
-                +  wxT(".") + qtIdent(name), foreignKey);
-    }
+    if (!name.IsEmpty())
+        AppendComment(sql, wxT("CONSTRAINT ") + qtIdent(name) 
+            + wxT(" ON ") + table->GetQuotedFullIdentifier(), foreignKey);
+
     return sql;
 }
 

@@ -371,17 +371,16 @@ wxString dlgTable::GetSql()
             + wxT("\n(");
 
         int pos;
-        bool hadComma=false;
+        bool needComma=false;
         for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
         {
             if (GetListText(lstColumns, pos, 2).IsEmpty())
             {
                 // standard definition, not inherited
-                if (!hadComma)
-                {
+                if (needComma)
                     sql += wxT(", ");
-                    hadComma=true;
-                }
+                else
+                    needComma=true;
 
                 wxString name=lstColumns->GetItemText(pos);
                 wxString definition = GetListText(lstColumns, pos, 1);
@@ -396,11 +395,11 @@ wxString dlgTable::GetSql()
             wxString name=lstConstraints->GetItemText(pos);
             wxString definition = GetListText(lstConstraints, pos, 1);
 
-            if (!hadComma)
-            {
-                sql += wxT(",\n   ");
-                hadComma=true;
-            }
+            if (needComma)
+                sql += wxT(", ");
+            else
+                needComma=true;
+
             AppendIfFilled(sql, wxT("CONSTRAINT "), qtIdent(name));
 
             sql += wxT(" ") + GetItemConstraintType(lstConstraints, pos) + wxT(" ") + definition;

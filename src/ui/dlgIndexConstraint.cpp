@@ -103,11 +103,11 @@ wxString dlgIndexConstraint::GetSql()
         sql +=wxT(" PRIMARY KEY ") + GetDefinition()
             + wxT(";\n");
     }
-    else
-    {
-        AppendComment(sql, wxT("CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
-                +  wxT(".") + qtIdent(name), index);
-    }
+
+    if (!name.IsEmpty())
+        AppendComment(sql, wxT("CONSTRAINT ") + qtIdent(name) 
+            + wxT(" ON ") + table->GetQuotedFullIdentifier(), index);
+
     return sql;
 }
 

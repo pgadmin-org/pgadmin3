@@ -138,10 +138,8 @@ void dlgIndexBase::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        wxString name=GetName();
-        
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        txtComment->Enable(!GetName().IsEmpty());
         CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         EnableOK(enable);
     }
@@ -184,9 +182,10 @@ void dlgIndex::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        txtComment->Enable(!GetName().IsEmpty());
+        wxString name=GetName();
 
         bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
         EnableOK(enable);
     }

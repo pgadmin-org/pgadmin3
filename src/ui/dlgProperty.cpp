@@ -653,7 +653,7 @@ void dlgTypeProperty::FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDom
     {
         pgDatatype dt=tr.GetDatatype();
 
-        AddType(wxT(" "), tr.GetOid(), tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
+        AddType(wxT("?"), tr.GetOid(), tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
         cb->Append(tr.GetSchemaPrefix() + dt.FullName());
         if (cb2)
             cb2->Append(tr.GetSchemaPrefix() + dt.FullName());

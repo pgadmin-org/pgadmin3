@@ -160,7 +160,7 @@ wxString dlgColumn::GetSql()
             if (txtDefault->GetValue() != column->GetDefault())
             {
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    +  wxT(" ALTER ") + qtIdent(column->GetName());
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(column->GetName());
                 if (txtDefault->GetValue().IsEmpty())
                     sql += wxT(" DROP DEFAULT");
                 else
@@ -168,11 +168,22 @@ wxString dlgColumn::GetSql()
 
                 sql += wxT(";\n");
             }
+            if (chkNotNull->GetValue() != column->GetNotNull())
+            {
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(column->GetName());
+                if (chkNotNull->GetValue())
+                    sql += wxT(" SET");
+                else
+                    sql += wxT(" DROP");
+
+                sql += wxT(" NOT NULL;\n");
+            }
         }
         else
         {
             sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                + wxT("\n   ADD ") + qtIdent(GetName())
+                + wxT("\n   ADD COLUMN ") + qtIdent(GetName())
                 + wxT(" ") + GetDefinition()
                 + wxT(";\n");
         }
@@ -248,6 +259,7 @@ void dlgColumn::OnChange(wxNotifyEvent &ev)
             enable = GetName() != column->GetName()
                     || txtDefault->GetValue() != column->GetDefault()
                     || txtComment->GetValue() != column->GetComment()
+                    || chkNotNull->GetValue() != column->GetNotNull()
                     || (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
                     || (isVarLen && varlen != column->GetLength())
                     || (isVarPrec && varprec != column->GetPrecision());

@@ -58,12 +58,12 @@ void dlgCheck::OnChange(wxNotifyEvent &ev)
 {
     if (check)
     {
-        txtComment->Enable(!GetName().IsEmpty());
         btnOK->Enable(txtComment->GetValue() != check->GetComment());
     }
     else
     {
         bool enable=true;
+        txtComment->Enable(!GetName().IsEmpty());
         CheckValid(enable, !txtWhere->GetValue().IsEmpty(), _("Please specify condition."));
         EnableOK(enable);
     }
@@ -128,11 +128,9 @@ wxString dlgCheck::GetSql()
         sql +=wxT(" CHECK ") + GetDefinition()
             + wxT(";\n");
     }
-    else
-    {
-        AppendComment(sql, wxT("CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
-                + wxT(".") + qtIdent(name), check);
-    }
+    if (!name.IsEmpty())
+        AppendComment(sql, wxT("CONSTRAINT ") + qtIdent(name) 
+            + wxT(" ON ") + table->GetQuotedFullIdentifier(), check);
     return sql;
 }
 
