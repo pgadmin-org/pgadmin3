@@ -19,11 +19,11 @@
 class cacheLine
 {
 public:
-    cacheLine() { cols=0; stored=false; }
+    cacheLine() { cols=0; stored=false; readOnly=false; }
     ~cacheLine() { if (cols) delete[] cols; }
 
     wxString *cols;
-    bool stored;
+    bool stored, readOnly;
 };
 
 
@@ -147,6 +147,7 @@ public:
 
 private:
     void OnClose(wxCloseEvent& event);
+    void OnHelp(wxCommandEvent& event);
     void OnRefresh(wxCommandEvent& event);
     void OnDelete(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);

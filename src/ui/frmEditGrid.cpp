@@ -44,6 +44,7 @@ BEGIN_EVENT_TABLE(frmEditGrid, wxFrame)
     EVT_MENU(MNU_DELETE,    frmEditGrid::OnDelete)
     EVT_MENU(MNU_SAVE,      frmEditGrid::OnSave)
     EVT_MENU(MNU_UNDO,      frmEditGrid::OnUndo)
+    EVT_MENU(MNU_HELP,      frmEditGrid::OnHelp)
     EVT_CLOSE(              frmEditGrid::OnClose)
     EVT_KEY_DOWN(           frmEditGrid::OnKey)
     EVT_GRID_RANGE_SELECT(frmEditGrid::OnGridSelectCells)
@@ -102,6 +103,18 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
     toolBar->EnableTool(MNU_UNDO, false);
     toolBar->EnableTool(MNU_DELETE, false);
 
+
+    wxAcceleratorEntry entries[4];
+
+    entries[0].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
+    entries[1].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_REFRESH);
+    entries[2].Set(wxACCEL_CTRL,                (int)'Z',      MNU_UNDO);
+    entries[3].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+
+    wxAcceleratorTable accel(4, entries);
+    SetAcceleratorTable(accel);
+
+
     if (obj->GetType() == PG_TABLE)
     {
         pgTable *table = (pgTable*)obj;
@@ -151,34 +164,110 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
 
 
 
+void frmEditGrid::OnHelp(wxCommandEvent &ev)
+{
+    mainForm->DisplayHelp(wxT("frmEditGrid"));
+}
+
+
 void frmEditGrid::OnKey(wxKeyEvent &event)
 {
     int curcol=sqlGrid->GetGridCursorCol();
     int currow=sqlGrid->GetGridCursorRow();
     int keycode=event.GetKeyCode();
+    wxCommandEvent ev;
 
     switch (keycode)
     {
 #if 0
         // the control will catch these :-(
         case WXK_UP:
+            OnSave(ev);
             if (currow)
                 sqlGrid->SetGridCursor(currow-1, curcol);
             return;
         case WXK_DOWN:
+            OnSave(ev);
             sqlGrid->SetGridCursor(currow+1, curcol);
             return;
 #endif
-        case WXK_RETURN:
-            if (curcol == sqlGrid->GetNumberCols()-1)
-                sqlGrid->SetGridCursor(currow+1, hasOids ? 1 : 0);
-            else
-                sqlGrid->SetGridCursor(currow, curcol+1);
-    
+        case WXK_DELETE:
+        {
+            if (!sqlGrid->IsCurrentCellReadOnly())
+            {
+                sqlGrid->EnableCellEditControl();
+                sqlGrid->ShowCellEditControl();
+
+                wxGridCellEditor *edit=sqlGrid->GetCellEditor(currow, curcol);
+                if (edit)
+                {
+                    wxControl *ctl=edit->GetControl();
+                    if (ctl)
+                    {
+                        wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
+                        if (txt)
+                            txt->SetValue(wxEmptyString);
+                    }
+                    edit->DecRef();
+                }
+            }
             return;
+        }
+        case WXK_RETURN:
+            // check for shift etc.
+            if (event.ControlDown() || event.ShiftDown())
+            {
+                // Inject a RETURN into the control
+                wxGridCellEditor *edit=sqlGrid->GetCellEditor(currow, curcol);
+                if (edit)
+                {
+                    wxControl *ctl=edit->GetControl();
+                    if (ctl)
+                    {
+                        wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
+                        if (txt && txt->IsMultiLine())
+                        {
+                            long from, to;
+                            txt->GetSelection(&from, &to);
+#if __WXMSW__
+                            txt->Replace(from, to, wxT("\r\n"));
+#else
+                            txt->Replace(from, to, wxT("\n"));
+#endif
+                        }
+                    }
+                    edit->DecRef();
+                }
+                return;
+            }
+            else
+            {
+                if (curcol == sqlGrid->GetNumberCols()-1)
+                {
+                    curcol=0;
+                    currow++;
+                    // locate first editable column
+                    while (sqlGrid->IsReadOnly(currow, curcol) && curcol < sqlGrid->GetNumberCols())
+                        curcol++;
+                    // next line is completely read-only
+                    if (curcol == sqlGrid->GetNumberCols())
+                        return;
+
+                }
+                else
+                    curcol++;
+
+                OnSave(ev);
+                sqlGrid->SetGridCursor(currow, curcol);
+    
+                return;
+            }
         default:
             if (sqlGrid->IsEditable() && keycode >= WXK_SPACE && keycode < WXK_START)
             {
+                if (sqlGrid->IsCurrentCellReadOnly())
+                    return;
+
                 toolBar->EnableTool(MNU_SAVE, true);
                 toolBar->EnableTool(MNU_UNDO, true);
             }
@@ -190,6 +279,27 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
 
 void frmEditGrid::OnClose(wxCloseEvent& event)
 {
+    if (toolBar->GetToolEnabled(MNU_SAVE))
+    {
+        int flag=wxYES_NO;
+        if (event.CanVeto())
+            flag |= wxCANCEL;
+
+        wxMessageDialog msg(this, _("There's unsaved data.\nStore to database?"), _("Unsaved data"),
+            flag);
+        switch (msg.ShowModal())
+        {
+            case wxID_YES:
+            {
+                wxCommandEvent ev;
+                OnSave(ev);
+                break;
+            }
+            case wxID_CANCEL:
+                event.Veto();
+                return;
+        }
+    }
     Abort();
     Destroy();
 }
@@ -205,6 +315,7 @@ void frmEditGrid::OnUndo(wxCommandEvent& event)
 
 void frmEditGrid::OnRefresh(wxCommandEvent& event)
 {
+    sqlGrid->DisableCellEditControl();
     Go();
 }
 
@@ -251,9 +362,38 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
     if (sqlGrid->GetEditable())
     {
         wxArrayInt rows=sqlGrid->GetSelectedRows();
+
         bool enable=rows.GetCount() > 0;
         if (enable)
-            enable = (rows.GetCount() != 1 || rows.Item(0) != sqlGrid->GetNumberRows()-1);
+        {
+            // check if a readonly line is selected
+            int row, col;
+            size_t i;
+
+            for (i=0 ; i < rows.GetCount() ; i++)
+            {
+                row = rows.Item(i);
+                bool lineEnabled=false;
+
+                if (row != sqlGrid->GetNumberRows()-1)
+                {
+                    for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+                    {
+                        if (!sqlGrid->IsReadOnly(row, col))
+                        {
+                            lineEnabled=true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!lineEnabled)
+                {
+                    enable=false;
+                    break;
+                }
+            }
+        }
         toolBar->EnableTool(MNU_DELETE,  enable);
     }
     event.Skip();
@@ -679,10 +819,15 @@ wxString sqlTable::MakeKey(cacheLine *line)
         while (collist.HasMoreTokens())
         {
             cn=StrToLong(collist.GetNextToken());
+
+            wxString colval=line->cols[cn-1];
+            if (colval.IsEmpty())
+                return wxEmptyString;
+
             if (!where.IsEmpty())
                 where += wxT(" AND ");
             where += qtIdent(columns[cn-1].name) + wxT(" = ") 
-                  + line->cols[cn-1] + wxT("::") + columns[cn-1].typeName;
+                  + colval + wxT("::") + columns[cn-1].typeName;
         }
     }
     return where;
@@ -727,6 +872,7 @@ void sqlTable::StoreLine()
         if (line->stored)
         {
             // UPDATE
+
             for (i=(hasOids? 1 : 0) ; i<nCols ; i++)
             {
                 if (columns[i].type == PGOID_TYPE_BOOL)  // bool
@@ -743,10 +889,14 @@ void sqlTable::StoreLine()
             if (valList.IsEmpty())
                 done=true;
             else
+            {
+                wxString key=MakeKey(&savedLine);
+                wxASSERT(!key.IsEmpty());
                 done=connection->ExecuteVoid(wxT(
                     "UPDATE ") + tableName + wxT(
                     " SET ") + valList + wxT(
-                    " WHERE ") + MakeKey(&savedLine));
+                    " WHERE ") + key);
+            }
         }
         else
         {
@@ -786,18 +936,31 @@ void sqlTable::StoreLine()
                     GetView()->AppendRows();
 
                 // Read back what we inserted to get default vals
-                set=connection->ExecuteSet(
-                    wxT("SELECT * FROM ") + tableName + 
-                    wxT(" WHERE ") + MakeKey(line));
-                if (set)
-                {
-                    for (i=(hasOids?1:0) ; i < nCols ; i++)
-                    {
-                        line->cols[i] = set->GetVal(columns[i].name);
-                    }
-                    delete set;
-                }
+                wxString key=MakeKey(line);
 
+                if (key.IsEmpty())
+                {
+                    // That's a problem: obviously, the key generated isn't present
+                    // because it's serial or default or otherwise generated in the backend
+                    // we don't get.
+                    // That's why the whole line is declared readonly.
+
+                    line->readOnly=true;
+                }
+                else
+                {
+                    set=connection->ExecuteSet(
+                        wxT("SELECT * FROM ") + tableName + 
+                        wxT(" WHERE ") + key);
+                    if (set)
+                    {
+                        for (i=(hasOids?1:0) ; i < nCols ; i++)
+                        {
+                            line->cols[i] = set->GetVal(columns[i].name);
+                        }
+                        delete set;
+                    }
+                }
             }
         }
         if (done)
@@ -826,7 +989,8 @@ void sqlTable::SetValue(int row, int col, const wxString &value)
 
     if (row != lastRow)
     {
-        StoreLine();
+        if (lastRow >= 0)
+            StoreLine();
 
         if (!line->cols)
             line->cols = new wxString[nCols];
@@ -880,7 +1044,17 @@ wxString sqlTable::GetValue(int row, int col)
 
             int i;
             for (i=0 ; i < nCols ; i++)
-                line->cols[i] = thread->DataSet()->GetVal(i);
+            {
+                wxString val= thread->DataSet()->GetVal(i);
+                if (val.IsEmpty())
+                {
+                    if (!thread->DataSet()->IsNull(i))
+                        val = wxT("''");
+                }
+                else if (val == wxT("''"))
+                    val = wxT("\\'\\'");
+                line->cols[i] = val;
+            }
             rowsCached++;
 
             if (rowsCached == nRows)
@@ -957,8 +1131,10 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
 
         if (line->stored)
         {
+            wxString key=MakeKey(line);
+            wxASSERT(!key.IsEmpty());
             bool done=connection->ExecuteVoid(wxT(
-                "DELETE FROM ") + tableName + wxT(" WHERE ") + MakeKey(line));
+                "DELETE FROM ") + tableName + wxT(" WHERE ") + key);
             if (!done)
                 break;
 
@@ -1000,21 +1176,37 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
 
 wxGridCellAttr* sqlTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind  kind)
 {
-    columns[col].attr->IncRef();
-    return columns[col].attr;
+    cacheLine *line=GetLine(row);
+    if (line && line->readOnly)
+    {
+        wxGridCellAttr *attr=new wxGridCellAttr(columns[col].attr);
+        attr->SetReadOnly();
+        return attr;
+    }
+    else
+    {
+        columns[col].attr->IncRef();
+        return columns[col].attr;
+    }
 }
 
 
 
 wxString sqlCellAttr::Quote(const wxString& value)
 {
-    if (numeric)
-    {
-        if (value.IsEmpty())
-            return wxT("NULL::") + typeName;
-        return value + wxT("::") + typeName;
-    }
-    return qtString(value) + wxT("::") + typeName;
+    wxString str;
+    if (value.IsEmpty())
+        str=wxT("NULL");
+    else if (numeric)
+        str = value;
+    else if (value == wxT("\\'\\'"))
+        str = qtString(wxT("''"));
+    else if (value == wxT("''"))
+        str = wxT("''");
+    else
+        str=qtString(value);
+
+    return str + wxT("::") + typeName;
 }
 
 
