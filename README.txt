@@ -18,3 +18,9 @@ Unix:  Please see docs/en_US/unix_compilation.html for details of building
 Win32: pgAdmin III can be compiled on Windows using MS Visual C++. We use 6.0
        with service pack 5. The project workspace file can be found in the 
        src directory.
+
+Translation
+-----------
+
+Translation into your preferred language is easily possible even for 
+non-programmers. Please see docs/en_US/translation_*.html for further details.
