@@ -31,6 +31,25 @@ pgSchema::~pgSchema()
     wxLogInfo(wxT("Destroying a pgSchema object"));
 }
 
+
+wxMenu *pgSchema::GetNewMenu()
+{
+    wxMenu *menu=pgObject::GetNewMenu();
+    AppendMenu(menu, PG_AGGREGATE);
+    AppendMenu(menu, PG_CONVERSION);
+    AppendMenu(menu, PG_DOMAIN);
+    AppendMenu(menu, PG_FUNCTION);
+    AppendMenu(menu, PG_TRIGGERFUNCTION);
+    AppendMenu(menu, PG_OPERATOR);
+    AppendMenu(menu, PG_OPERATORCLASS);
+    AppendMenu(menu, PG_SEQUENCE);
+    AppendMenu(menu, PG_TABLE);
+    AppendMenu(menu, PG_TYPE);
+    AppendMenu(menu, PG_VIEW);
+    return menu;
+}
+
+
 bool pgSchema::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(wxT("DROP SCHEMA ") + GetQuotedFullIdentifier());

@@ -39,6 +39,14 @@ pgDatabase::~pgDatabase()
 }
 
 
+wxMenu *pgDatabase::GetNewMenu()
+{
+    wxMenu *menu=pgObject::GetNewMenu();
+    AppendMenu(menu, PG_CAST);
+    AppendMenu(menu, PG_LANGUAGE);
+    AppendMenu(menu, PG_SCHEMA);
+    return menu;
+}
 int pgDatabase::Connect()
 {
     if (!allowConnections)
@@ -179,8 +187,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         while (vars.HasMoreTokens())
         {
             wxString str=vars.GetNextToken();
-            wxString name=str.BeforeFirst('=');
-            InsertListItem(properties, pos++, name, str.Mid(name.Length()+1));
+            InsertListItem(properties, pos++, str.BeforeFirst('='), str.AfterFirst('='));
         }
         InsertListItem(properties, pos++, wxT("Allow Connections?"), GetAllowConnections());
         InsertListItem(properties, pos++, wxT("Connected?"), GetConnected());

@@ -38,6 +38,7 @@
 #include "dlgForeignKey.h"
 #include "dlgCheck.h"
 #include "dlgSequence.h"
+#include "dlgTrigger.h"
 
 #include "pgTable.h"
 #include "pgColumn.h"
@@ -67,7 +68,7 @@ END_EVENT_TABLE();
 
 dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
 {
-    objectType=PG_NONE;
+    objectType=-1;
     sqlPane=0;
     sqlPageNo=-1;
     mainForm = frame;
@@ -90,6 +91,38 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
 
     numericValidator.SetStyle(wxFILTER_NUMERIC);
     btnOK->Disable();
+
+    wxSize size=GetSize();
+    size.SetHeight(size.GetHeight()+20);
+    SetSize(size);
+
+    size=GetClientSize();
+    wxPoint pos(0, size.GetHeight()-20);
+    size.SetHeight(20);
+    statusBox=new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
+    statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+}
+
+
+
+void dlgProperty::CheckValid(bool &enable, const bool condition, const wxString &msg)
+{
+    if (enable)
+    {
+        if (!condition)
+        {
+            statusBox->SetValue(msg);
+            enable=false;
+        }
+    }
+}
+
+
+void dlgProperty::EnableOK(bool enable)
+{
+    btnOK->Enable(enable);
+    if (enable)
+        statusBox->SetValue(wxT(""));
 }
 
 
@@ -133,12 +166,9 @@ void dlgProperty::AppendComment(wxString &sql, const wxString &objName, pgObject
 
 void dlgProperty::AppendQuoted(wxString &sql, const wxString &name)
 {
-    wxString nsp;
-    wxString tab;
     if (name.First('.') >= 0)
     {
-        nsp = name.BeforeFirst('.');
-        sql += qtIdent(nsp) + wxT(".") + qtIdent(name.Mid(nsp.Length()+1));
+        sql += qtIdent(name.BeforeFirst('.')) + wxT(".") + qtIdent(name.AfterFirst('.'));
     }
     else
         sql += qtIdent(name);
@@ -192,17 +222,17 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
         {
             pgCollection *collection=0;
 
-            wxTreeItemId collectionItem=mainForm->GetBrowser()->GetItemParent(item);
+            wxTreeItemId collectionItem=item;
 
             while (collectionItem)
             {
                 collection = (pgCollection*)mainForm->GetBrowser()->GetItemData(collectionItem);
-                if (collection && collection->IsCollectionForType(objectType))
+                if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
                 {
                     data = CreateObject(collection);
                     if (data)
                     {
-                        mainForm->GetBrowser()->AppendItem(collectionItem, data->GetFullIdentifier(), data->GetIcon(), -1, data);
+                        mainForm->GetBrowser()->AppendItem(collectionItem, data->GetFullName(), data->GetIcon(), -1, data);
 
                         if (mainForm->GetBrowser()->GetSelection() == collectionItem)
                             collection->ShowTreeDetail(mainForm->GetBrowser(), 0, properties);
@@ -248,25 +278,40 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 
 
 
-dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
+dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type)
 {
-    dlgProperty *dlg=0;
-    pgObject *currentNode, *parentNode=0;
+    pgConn *conn=node->GetConnection();
+    if (!conn)
+        return 0;
+
+    if (type < 0)
+    {
+        type=node->GetType();
+        if (node->IsCollection())
+            type++;
+    }
+
+    pgObject *currentNode, *parentNode;
     if (asNew)
-        currentNode=NULL;
+        currentNode=0;
     else
         currentNode=node;
-    parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
-                            frame->GetBrowser()->GetItemParent(
-                                node->GetId()));
+
+    if (type != node->GetType())
+        parentNode = node;
+    else
+        parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
+                                frame->GetBrowser()->GetItemParent(
+                                    node->GetId()));
 
     if (parentNode && parentNode->IsCollection())
         parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
                                 frame->GetBrowser()->GetItemParent(
                                     parentNode->GetId()));
 
+    dlgProperty *dlg=0;
 
-    switch (node->GetType())
+    switch (type)
     {
         case PG_USER:
         case PG_USERS:
@@ -328,6 +373,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
         case PG_SEQUENCES:
             dlg=new dlgSequence(frame, (pgSequence*)currentNode, (pgSchema*)parentNode);
             break;
+        case PG_TRIGGER:
+        case PG_TRIGGERS:
+            dlg=new dlgTrigger(frame, (pgTrigger*)currentNode, (pgTable*)parentNode);
+            break;
         default:
             break;
     }
@@ -335,24 +384,38 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
     if (dlg)
     {
         dlg->CenterOnParent();
+        if (dlg->objectType < 0)
+            dlg->objectType=type;
+        dlg->connection=conn;
+
+        if (type != node->GetType() && !node->IsCollection())
+        {
+            long cookie;
+            wxTreeItemId collectionItem=frame->GetBrowser()->GetFirstChild(node->GetId(), cookie);
+            while (collectionItem)
+            {
+                pgCollection *collection=(pgCollection*)frame->GetBrowser()->GetItemData(collectionItem);
+                if (collection && collection->IsCollection() && collection->IsCollectionForType(type))
+                    break;
+
+                collectionItem=frame->GetBrowser()->GetNextChild(node->GetId(), cookie);
+            }
+            dlg->item=collectionItem;
+        }
+        else
+            dlg->item=node->GetId();
     }
     return dlg;
 }
 
 
-void dlgProperty::CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, pgConn *conn)
+void dlgProperty::CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, int type)
 {
-    dlgProperty *dlg=CreateDlg(frame, node, true);
-    pgObject *obj=0;
+    dlgProperty *dlg=CreateDlg(frame, node, true, type);
 
     if (dlg)
     {
-        dlg->connection=conn;
         dlg->properties = properties;
-        dlg->item=node->GetId();
-        dlg->objectType=node->GetType();
-        if (node->IsCollection())
-            dlg->objectType++;
 
         dlg->SetTitle(wxString("Creating new ") + typeNameList[dlg->objectType]);
 
@@ -364,21 +427,20 @@ void dlgProperty::CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgO
 }
 
 
-void dlgProperty::EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node, pgConn *conn)
+void dlgProperty::EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node)
 {
+    pgConn *conn=node->GetConnection();
+    if (!conn)
+        return;
+
     dlgProperty *dlg=CreateDlg(frame, node, false);
     pgObject *obj=0;
 
     if (dlg)
     {
-        dlg->connection=conn;
         dlg->properties = properties;
         dlg->statistics=statistics;
         dlg->sqlFormPane=sqlbox;
-        dlg->item=node->GetId();
-        dlg->objectType=node->GetType();
-        if (node->IsCollection())
-            dlg->objectType++;
 
         dlg->SetTitle(wxString("") + typeNameList[dlg->objectType] + wxT(" ") + node->GetFullIdentifier());
 
@@ -805,7 +867,7 @@ void dlgSecurityProperty::EnableOK(bool enable)
         else
             enable=true;
     }
-    btnOK->Enable(enable);
+    dlgProperty::EnableOK(enable);
 }
 
 

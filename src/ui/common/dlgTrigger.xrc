@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <resource>
-  <object class="wxDialog" name="dlgDomain">
+  <object class="wxDialog" name="dlgTrigger">
     <title></title>
     <object class="wxNotebook" name="nbNotebook">
       <object class="notebookpage">
@@ -22,64 +22,76 @@
             <pos>100,35</pos>
             <size>200,20</size>
           </object>
-          <object class="wxStaticText" name="stOwner">
-            <label>Owner</label>
+          <object class="wxStaticText" name="stRow">
+            <label>Row trigger</label>
             <pos>10,63</pos>
           </object>
-          <object class="wxTextCtrl" name="txtOwner">
+          <object class="wxCheckBox" name="chkRow">
+            <label></label>
+            <checked>1</checked>
             <pos>100,60</pos>
-            <size>200,20</size>
+            <size>20,20</size>
           </object>
-          <object class="wxStaticText" name="stBasetype">
-            <label>Base type</label>
+          <object class="wxStaticText" name="stFunction">
+            <label>Trigger function</label>
             <pos>10,88</pos>
           </object>
-          <object class="wxComboBox" name="cbBasetype">
+          <object class="wxComboBox" name="cbFunction">
             <content/>
             <pos>100,85</pos>
             <size>200,200</size>
-            <style>wxCB_READONLY|wxCB_DROPDOWN</style>
           </object>
-          <object class="wxStaticText" name="stDefault">
-            <label>Default</label>
+          <object class="wxStaticText" name="stArguments">
+            <label>Arguments</label>
             <pos>10,113</pos>
           </object>
-          <object class="wxTextCtrl" name="txtDefault">
+          <object class="wxTextCtrl" name="txtArguments">
             <pos>100,110</pos>
             <size>200,20</size>
           </object>
-          <object class="wxStaticText" name="stLength">
-            <label>Length</label>
-            <pos>10,138</pos>
+          <object class="wxStaticText" name="stFires">
+            <label>Fires</label>
+            <pos>10,143</pos>
           </object>
-          <object class="wxTextCtrl" name="txtLength">
-            <pos>100,135</pos>
-            <size>50,20</size>
-          </object>
-          <object class="wxStaticText" name="stPrecision">
-            <label>Precision</label>
-            <pos>190,138</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtPrecision">
-            <pos>250,135</pos>
-            <size>50,20</size>
-          </object>
-          <object class="wxStaticText" name="stNotNull">
-            <label>Not NULL</label>
-            <pos>10,163</pos>
-          </object>
-          <object class="wxCheckBox" name="chkNotNull">
+          <object class="wxRadioBox" name="rdbFires">
             <label></label>
-            <pos>100,160</pos>
-            <size>20,20</size>
+            <content>
+              <item>BEFORE</item>
+              <item>AFTER</item>
+            </content>
+            <selection>0</selection>
+            <pos>100,130</pos>
+            <size>200,40</size>
+            <style>wxRA_SPECIFY_ROWS</style>
+          </object>
+          <object class="wxStaticText" name="stEvents">
+            <label>Events</label>
+            <pos>10,183</pos>
+          </object>
+          <object class="wxStaticBox" name="stbEvent">
+            <label></label>
+            <pos>100,170</pos>
+            <size>200,75</size>
+          </object>
+          <object class="wxCheckBox" name="chkInsert">
+            <label>INSERT</label>
+            <pos>110,185</pos>
+          </object>
+          <object class="wxCheckBox" name="chkUpdate">
+            <label>UPDATE</label>
+            <pos>110,205</pos>
+          </object>
+          <object class="wxCheckBox" name="chkDelete">
+            <label>DELETE</label>
+            <pos>110,225</pos>
           </object>
           <object class="wxStaticText" name="stComment">
             <label>Comment</label>
-            <pos>10,188</pos>
+            <pos>10,253</pos>
           </object>
           <object class="wxTextCtrl" name="txtComment">
-            <pos>100,185</pos>
-            <size>200,135</size>
+            <pos>100,250</pos>
+            <size>200,70</size>
             <style>wxTE_MULTILINE</style>
           </object>
         </object>

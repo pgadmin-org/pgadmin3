@@ -14,6 +14,7 @@
 
 #include "pgCollection.h"
 
+class pgTable;
 class pgConstraints : public pgCollection
 {
 public:
@@ -21,9 +22,11 @@ public:
     ~pgConstraints();
     int GetIcon() { return PGICON_CONSTRAINT; }
     bool IsCollectionForType(int objType);
-    bool CanCreate() { return false; };
+    bool CanCreate() { return true; };
+    wxMenu *GetNewMenu();
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+    pgTable *table;
 };
 
 

@@ -14,19 +14,12 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "pgDefs.h"
 #include "pgObject.h"
+
 #include "pgTrigger.h"
 #include "pgCollection.h"
 #include "pgFunction.h"
-
-
-
-// These constants come from pgsql/src/include/catalog/pg_trigger.h
-#define TRIGGER_TYPE_ROW				(1 << 0)
-#define TRIGGER_TYPE_BEFORE				(1 << 1)
-#define TRIGGER_TYPE_INSERT				(1 << 2)
-#define TRIGGER_TYPE_DELETE				(1 << 3)
-#define TRIGGER_TYPE_UPDATE				(1 << 4)
 
 
 pgTrigger::pgTrigger(pgSchema *newSchema, const wxString& newName)

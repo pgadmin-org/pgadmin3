@@ -35,12 +35,12 @@ class pgServer;
 enum PG_OBJTYPE
 {
     PG_NONE,
-    PG_SERVERS,         PG_SERVER,          PG_ADD_SERVER,
-    PG_DATABASES,       PG_DATABASE,        PG_ADD_DATABASE,
-    PG_GROUPS,          PG_GROUP,           PG_ADD_GROUP,
-    PG_USERS,           PG_USER,            PG_ADD_USER,
-    PG_LANGUAGES,       PG_LANGUAGE,        PG_ADD_LANGUAGE,
-    PG_SCHEMAS,         PG_SCHEMA,          PG_ADD_SCHEMA,
+    PG_SERVERS,         PG_SERVER,
+    PG_DATABASES,       PG_DATABASE,
+    PG_GROUPS,          PG_GROUP,
+    PG_USERS,           PG_USER,
+    PG_LANGUAGES,       PG_LANGUAGE,
+    PG_SCHEMAS,         PG_SCHEMA,
     PG_AGGREGATES,      PG_AGGREGATE,
     PG_CASTS,           PG_CAST,
     PG_CONVERSIONS,     PG_CONVERSION,
@@ -100,6 +100,7 @@ public:
     virtual wxString GetIdentifier() const { return name; }
     virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
 
+    virtual wxMenu *GetNewMenu();
     virtual wxString GetSql(wxTreeCtrl *browser) { return wxT(""); }
     wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""), bool noOwner=false);
     wxString GetCommentSql();
@@ -138,6 +139,7 @@ protected:
     void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const double d)
         { InsertListItem(list, pos, str1, NumToStr(d)); }
 
+    void AppendMenu(wxMenu *menu, int type=-1);
     virtual void SetContextInfo(frmMain *form) {}
 
     bool expandedKids, needReread;

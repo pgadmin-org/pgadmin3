@@ -24,12 +24,12 @@
 char *typeNameList[] =
 {
     "None",
-    "Servers",          "Server",       "Add Server",
-    "Databases",        "Database",     "Add Database",
-    "Groups",           "Group",        "Add Group",
-    "Users",            "User",         "Add User",
-    "Languages",        "Language",     "Add Language",
-    "Schemas",          "Schema",       "Add Schema",
+    "Servers",          "Server",
+    "Databases",        "Database",
+    "Groups",           "Group",
+    "Users",            "User",
+    "Languages",        "Language",
+    "Schemas",          "Schema",
     "Aggregates",       "Aggregate",
     "Casts",            "Cast",
     "Conversions",      "Conversion",
@@ -66,6 +66,27 @@ pgObject::pgObject(int newType, const wxString& newName)
     name = newName;
     expandedKids=false;
     needReread=false;
+}
+
+
+void pgObject::AppendMenu(wxMenu *menu, int type)
+{
+    if (type < 0)
+    {
+        type=GetType();
+        if (IsCollection())
+            type++;
+    }
+    menu->Append(MNU_NEW+type, wxString("New ") + typeNameList[type], wxString("Create a new ") + typeNameList[type] + wxT("."));
+}
+
+
+wxMenu *pgObject::GetNewMenu()
+{
+    wxMenu *menu=new wxMenu();
+    if (CanCreate())
+        AppendMenu(menu);
+    return menu;
 }
 
 
@@ -271,7 +292,7 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantOn
             if (str.Left(1) == '"')
                 str = str.Mid(1, str.Length()-2);
             user=str.BeforeFirst('=');
-            str=str.Mid(user.Length()+1).BeforeFirst('/');
+            str=str.AfterFirst('=').BeforeFirst('/');
             if (user == wxT(""))
                 user=wxT("public");
             else

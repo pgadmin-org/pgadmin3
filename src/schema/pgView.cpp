@@ -28,6 +28,15 @@ pgView::~pgView()
 {
 }
 
+
+wxMenu *pgView::GetNewMenu()
+{
+    wxMenu *menu=pgObject::GetNewMenu();
+    AppendMenu(menu, PG_RULE);
+    return menu;
+}
+
+
 bool pgView::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(wxT("DROP VIEW ") + GetQuotedFullIdentifier());

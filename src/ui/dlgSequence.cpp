@@ -119,7 +119,9 @@ void dlgSequence::OnChange(wxNotifyEvent &ev)
     {
         wxString name=txtName->GetValue();
 
-        EnableOK(!name.IsEmpty());
+        bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        EnableOK(enable);
     }
 }
 

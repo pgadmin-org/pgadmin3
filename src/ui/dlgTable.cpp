@@ -366,7 +366,7 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 
     pgObject *obj=pgTable::ReadObjects(collection, 0, wxT(
         "\n   AND rel.relname=") + qtString(name) + wxT(
-        "\n   AND rek.relnamespace=") + schema->GetOidStr());
+        "\n   AND rel.relnamespace=") + schema->GetOidStr());
 
     return obj;
 }
@@ -389,7 +389,13 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
         EnableOK(changed);
     }
     else
-        EnableOK(!txtName->GetValue().IsEmpty() && lstColumns->GetItemCount() > 0);
+    {
+        wxString name=txtName->GetValue();
+        bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
+        EnableOK(enable);
+    }
 }
 
 

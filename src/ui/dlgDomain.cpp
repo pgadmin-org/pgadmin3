@@ -14,8 +14,9 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "dlgDomain.h"
+#include "pgDefs.h"
 
+#include "dlgDomain.h"
 #include "pgSchema.h"
 #include "pgDomain.h"
 
@@ -126,7 +127,7 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 
     pgObject *obj=pgDomain::ReadObjects(collection, 0, 
         wxT("   AND d.typname=") + qtString(name) + 
-        wxT("\n   AND typnamespace=") + schema->GetOidStr() +
+        wxT("\n   AND d.typnamespace=") + schema->GetOidStr() +
         wxT("\n"));
     return obj;
 }
@@ -140,22 +141,20 @@ void dlgDomain::OnChange(wxNotifyEvent &ev)
     else
     {
         wxString name=txtName->GetValue();
-        int varlen=StrToLong(txtLength->GetValue()), 
-            varprec=StrToLong(txtPrecision->GetValue());
+        long varlen=StrToLong(txtLength->GetValue()), 
+             varprec=StrToLong(txtPrecision->GetValue());
 
         txtPrecision->Enable(isVarPrec && varlen > 0);
+
         bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        CheckValid(enable, cbBasetype->GetSelection() >=0, wxT("Please select a datatype."));
+        CheckValid(enable, isVarLen || txtLength->GetValue().IsEmpty() || varlen >0,
+            wxT("Please specify valid length."));
+        CheckValid(enable, !txtPrecision->IsEnabled() || (varprec >= 0 && varprec <= varlen),
+            wxT("Please specify valid numeric precision (0..") + NumToStr(varlen) + wxT(")."));
 
-        if (name.IsEmpty())
-            enable=false;
-        else if (cbBasetype->GetSelection() < 0)
-            enable=false;
-        else if (isVarLen && !txtLength->GetValue().IsEmpty() && varlen < 1)
-            enable=false;
-        else if (txtPrecision->IsEnabled() && (varprec < 0 || varprec > varlen))
-            enable=false;
-
-        btnOK->Enable(enable);
+        EnableOK(enable);
     }
 }
 
@@ -173,8 +172,8 @@ void dlgDomain::OnSelChangeTyp(wxNotifyEvent &ev)
             Oid oid=StrToLong(typmod.Mid(typmod.Find(':')+1));
             switch (oid)
             {
-                case 1231:
-                case 1700:
+                case PGOID_TYPE_NUMERIC_ARRAY:
+                case PGOID_TYPE_NUMERIC:
                     isVarPrec=true;
                     break;
                 default:

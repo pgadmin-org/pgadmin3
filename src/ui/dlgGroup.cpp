@@ -94,14 +94,19 @@ int dlgGroup::Go(bool modal)
 
 void dlgGroup::OnChange(wxNotifyEvent &ev)
 {
-    if (!group)
+    if (group)
+    {
+        btnOK->Enable(!GetSql().IsEmpty());
+    }
+    else
     {
         wxString name=txtName->GetValue();
 
-        btnOK->Enable(!name.IsEmpty());
+        bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+
+        EnableOK(enable);
     }
-    else
-        btnOK->Enable(!GetSql().IsEmpty());
 }
 
 

@@ -119,8 +119,9 @@ void dlgDatabase::OnChange(wxNotifyEvent &ev)
     if (!database)
     {
         wxString name=txtName->GetValue();
-
-        btnOK->Enable(!name.IsEmpty());
+        bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        EnableOK(enable);
     }
 }
 

@@ -64,6 +64,31 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_QUERYBUILDER,              frmMain::OnQueryBuilder)
+    EVT_MENU(MNU_NEW+PG_DATABASE,           frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_USER,               frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_GROUP,              frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_LANGUAGE,           frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_CAST,               frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_SCHEMA,             frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_AGGREGATE,          frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_CONVERSION,         frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_DOMAIN,             frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_FUNCTION,           frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_TRIGGERFUNCTION,    frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_OPERATOR,           frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_OPERATORCLASS,      frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_SEQUENCE,           frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_TABLE,              frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_TYPE,               frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_VIEW,               frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_COLUMN,             frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_PRIMARYKEY,         frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_FOREIGNKEY,         frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_UNIQUE,             frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_CHECK,              frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_INDEX,              frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_RULE,               frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_TRIGGER,            frmMain::OnNew)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER,       frmMain::OnTreeSelChanged)
     EVT_TREE_ITEM_COLLAPSING(CTL_BROWSER,   frmMain::OnCollapse)
@@ -407,6 +432,7 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 	// Handle the menus associated with the buttons
     SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
 
+
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
     wxTreeItemId item = browser->GetSelection();
@@ -496,6 +522,25 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     properties->Thaw();
     statistics->Thaw();
     sqlPane->SetText(data->GetSql(browser));
+
+    if (newMenu)
+    {
+        editMenu->Remove(MNU_NEWOBJECT);
+        treeContextMenu->Remove(MNU_NEWOBJECT);
+        delete newMenu;
+    }
+    newMenu=data->GetNewMenu();
+    if (newMenu)
+    {
+        editMenu->Prepend(MNU_NEWOBJECT, wxT("New &Object"), newMenu, wxT("Create a new object."));
+        treeContextMenu->Prepend(MNU_NEWOBJECT, wxT("New &Object"), newMenu, wxT("Create a new object."));
+        
+        if (!newMenu->GetMenuItemCount() || !data->CanCreate())
+        {
+            editMenu->Enable(MNU_NEWOBJECT, false);
+            treeContextMenu->Enable(MNU_NEWOBJECT, false);
+        }
+    }
 }
 
 
@@ -526,10 +571,6 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
     wxCommandEvent nullEvent;
 
     switch (type) {
-        case PG_ADD_SERVER:
-            OnAddServer(nullEvent);
-            break;
-
         case PG_SERVER:
             server = (pgServer *)data;
             if (!server->GetConnected())
@@ -677,14 +718,25 @@ void frmMain::OnCreate(wxCommandEvent &ev)
 
     if (data)
     {
-        pgConn *conn=data->GetConnection();
-        if (!conn)
-            return;
-
-        dlgProperty::CreateObjectDialog(this, properties, data, conn);
+        dlgProperty::CreateObjectDialog(this, properties, data, -1);
     }
 }
 
+
+void frmMain::OnNew(wxCommandEvent &ev)
+{
+    int type=ev.GetId() - MNU_NEW;
+    if (type == PG_SERVER)
+    {
+        OnConnect(ev);
+        return;
+    }
+    wxTreeItemId item = browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
+
+    if (data)
+        dlgProperty::CreateObjectDialog(this, properties, data, type);
+}
 
 
 void frmMain::OnProperties(wxCommandEvent &ev)
@@ -693,13 +745,7 @@ void frmMain::OnProperties(wxCommandEvent &ev)
     pgObject *data = (pgObject *)browser->GetItemData(item);
 
     if (data)
-    {
-        pgConn *conn=data->GetConnection();
-        if (!conn)
-            return;
-
-        dlgProperty::EditObjectDialog(this, properties, statistics, sqlPane, data, conn);
-    }
+        dlgProperty::EditObjectDialog(this, properties, statistics, sqlPane, data);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -62,7 +62,11 @@ void dlgCheck::OnChange(wxNotifyEvent &ev)
         btnOK->Enable(txtComment->GetValue() != check->GetComment());
     }
     else
-        btnOK->Enable(!txtWhere->GetValue().IsEmpty());
+    {
+        bool enable=true;
+        CheckValid(enable, !txtWhere->GetValue().IsEmpty(), wxT("Please specify condition."));
+        EnableOK(enable);
+    }
 }
 
 

@@ -59,6 +59,7 @@ public:
     bool CanView() { return true; }
     bool CanVacuum() { return true; }
 
+    wxMenu *GetNewMenu();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

@@ -25,11 +25,14 @@
 const float SERVER_MIN_VERSION = 7.3f;
 
 // XRC Path
+
 #ifdef __WXMSW__
-  #define XRC_PATH wxT("/ui/win32")
+#define XRC_PATH wxT("/ui/win32")
 #else
-  #define XRC_PATH wxT("/ui/gtk")
+#include "config.h"
+#define XRC_PATH wxT("/ui/gtk")
 #endif
+
 #define XRC_COMMON_PATH wxT("/ui/common")
 
 // Class declarations

@@ -13,6 +13,7 @@
 
 
 #include "pgAdmin3.h"
+#include "pgTable.h"
 #include "pgConstraints.h"
 #include "pgIndexConstraint.h"
 #include "pgCheck.h"
@@ -32,14 +33,25 @@ pgConstraints::~pgConstraints()
 }
 
 
+wxMenu *pgConstraints::GetNewMenu()
+{
+    wxMenu *menu=new wxMenu();
+    if (table->GetPrimaryKey().IsEmpty())
+        AppendMenu(menu, PG_PRIMARYKEY);
+    AppendMenu(menu, PG_FOREIGNKEY);
+    AppendMenu(menu, PG_UNIQUE);
+    AppendMenu(menu, PG_CHECK);
+    return menu;
+}
+
 bool pgConstraints::IsCollectionForType(int objType)
 {
     switch (objType)
     {
-        case PG_CHECK:
         case PG_FOREIGNKEY:
         case PG_PRIMARYKEY:
         case PG_UNIQUE:
+        case PG_CHECK:
             return true;
         default:
             return false;
@@ -51,6 +63,11 @@ void pgConstraints::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtr
 {
     if (browser->GetChildrenCount(GetId(), FALSE) == 0)
     {
+        wxTreeItemId id=browser->GetItemParent(GetId());
+        wxASSERT(id);
+        table = (pgTable*)browser->GetItemData(id);
+        wxASSERT(table && table->GetType() == PG_TABLE);
+
         pgPrimaryKey::ReadObjects(this, browser);
         pgForeignKey::ReadObjects(this, browser);
         pgUnique::ReadObjects(this, browser);

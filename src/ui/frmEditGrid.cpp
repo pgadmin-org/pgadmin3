@@ -21,7 +21,9 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "pgDefs.h"
 #include "frmMain.h"
+
 #include "frmEditGrid.h"
 #include "pgTable.h"
 #include "pgView.h"
@@ -428,34 +430,34 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             int len=0;
             switch (columns[i].type)
             {
-                case 16:    // bool
+                case PGOID_TYPE_BOOL:
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
                     columns[i].attr->SetEditor(new wxGridCellBoolEditor());
                     break;
-                case 20:    // int8
+                case PGOID_TYPE_INT8:
                     SetNumberEditor(i, 20);
                     break;
-                case 21:    // int2
+                case PGOID_TYPE_INT2:
                     SetNumberEditor(i, 5);
                     break;
-                case 23:    // int4
+                case PGOID_TYPE_INT4:
                     SetNumberEditor(i, 10);
                     break;
-                case 26:    // oid
-                case 27:    // tid
-                case 28:    // xid
-                case 29:    // cid
+                case PGOID_TYPE_OID:
+                case PGOID_TYPE_TID:
+                case PGOID_TYPE_XID:
+                case PGOID_TYPE_CID:
                     SetNumberEditor(i, 10);
                     break;
-                case 700:   // float4
-                case 701:   // float8
+                case PGOID_TYPE_FLOAT4:
+                case PGOID_TYPE_FLOAT8:
                     columns[i].numeric = true;
                     columns[i].attr->SetReadOnly(false);
                     columns[i].attr->SetEditor(new wxGridCellFloatEditor());
                     break;
-                case 790:   // money
-                case 1700:  // numeric
+                case PGOID_TYPE_MONEY:
+                case PGOID_TYPE_NUMERIC:
                 {
                     columns[i].numeric = true;
                     columns[i].attr->SetReadOnly(false);
@@ -466,10 +468,10 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     columns[i].attr->SetEditor(new wxGridCellFloatEditor(len, prec));
                     break;
                 }
-                case 2:     // bytea
-                case 3:     // char
-                case 4:     // name
-                case 10:    // test
+                case PGOID_TYPE_BYTEA:
+                case PGOID_TYPE_CHAR:
+                case PGOID_TYPE_NAME:
+                case PGOID_TYPE_TEXT:
                 default:
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
@@ -644,7 +646,7 @@ void sqlTable::StoreLine()
             // UPDATE
             for (i=(hasOids? 1 : 0) ; i<nCols ; i++)
             {
-                if (columns[i].type == 16)  // bool
+                if (columns[i].type == PGOID_TYPE_BOOL)  // bool
                     line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
 
                 if (savedLine.cols[i] != line->cols[i])
@@ -677,7 +679,7 @@ void sqlTable::StoreLine()
                         colList += wxT(", ");
                     }
                     colList += qtIdent(columns[i].name);
-                    if (columns[i].type == 16)  // bool
+                    if (columns[i].type == PGOID_TYPE_BOOL)
                         line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
                     valList += columns[i].Quote(line->cols[i]);
                 }
@@ -782,7 +784,7 @@ wxString sqlTable::GetValue(int row, int col)
             }
         }
     }
-    if (columns[col].type == 16)
+    if (columns[col].type == PGOID_TYPE_BOOL)
         line->cols[col] = (StrToBool(line->cols[col]) ? wxT("TRUE") : wxT("FALSE"));
 
     val = line->cols[col];
@@ -804,7 +806,7 @@ bool sqlTable::CanSetValueAs(int row, int col, const wxString& typeName)
 
     switch (columns[col].type)
     {
-        case 16:
+        case PGOID_TYPE_BOOL:
             return typeName == wxGRID_VALUE_BOOL;
         default:
             return false;

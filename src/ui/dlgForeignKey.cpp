@@ -79,7 +79,11 @@ void dlgForeignKey::OnChange(wxNotifyEvent &ev)
         txtComment->Enable(!txtName->GetValue().IsEmpty());
     }
     else
-        btnOK->Enable(lstColumns->GetItemCount() > 0);
+    {
+        bool enable=true;
+        CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
+        EnableOK(enable);
+    }
 }
 
 
@@ -104,7 +108,7 @@ void dlgForeignKey::OnSelChangeRef(wxNotifyEvent &ev)
     if (tab.Find('.') >= 0)
     {
         nsp=tab.BeforeFirst('.');
-        tab=tab.Mid(nsp.Length()+1);
+        tab=tab.AfterFirst('.');
     }
     else
         nsp=wxT("public");

@@ -326,6 +326,10 @@ SOURCE=.\ui\dlgTable.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\dlgTrigger.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgUser.cpp
 # End Source File
 # End Group
@@ -718,6 +722,10 @@ SOURCE=.\include\dlgTable.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\dlgTrigger.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgUser.h
 # End Source File
 # End Group
@@ -1004,6 +1012,10 @@ SOURCE=.\include\misc.h
 # Begin Source File
 
 SOURCE=.\include\pgAdmin3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgDefs.h
 # End Source File
 # Begin Source File
 

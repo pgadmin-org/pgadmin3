@@ -122,6 +122,7 @@ enum
     MNU_REFRESH,
     MNU_CONNECT,
     MNU_DISCONNECT,
+    MNU_NEWOBJECT,
     MNU_DROP,
     MNU_PROPERTIES,
     MNU_QUERYBUILDER,
@@ -147,7 +148,8 @@ enum
     MNU_CANCEL,
     MNU_EXECUTE,
     MNU_EXPLAIN,
-    MNU_RECENT   // must be last, because recent file numbers are added automatically
+    MNU_RECENT,
+    MNU_NEW=MNU_RECENT+15
 };
 
 

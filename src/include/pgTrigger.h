@@ -20,8 +20,6 @@
 #include "pgServer.h"
 #include "pgDatabase.h"
 
-
-
 class pgCollection;
 class pgFunction;
 
@@ -54,6 +52,8 @@ public:
     void SetDirty();
 
     bool CanDrop() { return true; }
+    bool CanEdit() { return true; }
+    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

@@ -99,8 +99,7 @@ int dlgUser::Go(bool modal)
         while (cfgTokens.HasMoreTokens())
         {
             wxString token=cfgTokens.GetNextToken();
-            wxString name=token.BeforeFirst('=');
-            AppendListItem(lstVariables, name, token.Mid(name.Length()+1), 0);
+            AppendListItem(lstVariables, token.BeforeFirst('='), token.AfterFirst('='), 0);
         }
     }
     else
@@ -118,7 +117,9 @@ void dlgUser::OnChange(wxNotifyEvent &ev)
     {
         wxString name=txtName->GetValue();
 
-        btnOK->Enable(!name.IsEmpty());
+        bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        EnableOK(enable);
     }
     else
     {

@@ -14,6 +14,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "pgDefs.h"
+
 #include "pgObject.h"
 #include "pgColumn.h"
 #include "pgCollection.h"
@@ -226,12 +228,17 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
     wxString systemRestriction;
     if (!settings->GetShowSystemObjects())
-        systemRestriction = "\n   AND attnum > 0"; // Should we ever see dropped columns?  AND attisdropped IS FALSE";
+        systemRestriction = "\n   AND attnum > 0";
 
+    wxString numTypes
+        = NumToStr(PGOID_TYPE_NUMERIC)
+        + wxT(", ")
+        + NumToStr(PGOID_TYPE_NUMERIC_ARRAY);
 
     pgSet *columns= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT att.*, def.*, ty.typname, et.typname as elemtypname, relname, nspname,\n"
-        "       CASE WHEN atttypid IN (1231,1700) OR ty.typbasetype IN (1231,1700) "
+        "       CASE WHEN atttypid IN (") +  numTypes + wxT(") "
+                    "OR ty.typbasetype IN (") + numTypes + wxT(") "
                     "THEN 1 ELSE 0 END AS isnumeric, description\n"
         "  FROM pg_attribute att\n"
         "  JOIN pg_type ty ON ty.oid=atttypid\n"
@@ -242,6 +249,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
         "  LEFT OUTER JOIN pg_description des ON des.objoid=attrelid AND des.objsubid=attnum\n"
         " WHERE attrelid = ") + collection->GetOidStr() 
         + restriction + systemRestriction + wxT("\n"
+        "   AND attisdropped IS FALSE\n"
         " ORDER BY attnum"));
 
     if (columns)

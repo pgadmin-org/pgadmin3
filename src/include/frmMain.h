@@ -60,7 +60,7 @@ private:
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenuBar *menuBar;
-    wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu;
+    wxMenu *fileMenu, *editMenu, *newMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu;
     wxToolBar *toolBar;
     wxTreeItemId servers;
 	wxImageList *images;
@@ -89,6 +89,7 @@ private:
     void OnCollapse(wxTreeEvent& event);
     void OnClose(wxCloseEvent& event);
 
+	void OnNew(wxCommandEvent& event);
     void OnCreate(wxCommandEvent &ev);
     void OnDrop(wxCommandEvent &ev);
 	void OnProperties(wxCommandEvent &ev);

@@ -14,7 +14,10 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "pgDefs.h"
+
 #include "dlgColumn.h"
+#include "pgSchema.h"
 #include "pgColumn.h"
 #include "pgTable.h"
 
@@ -178,7 +181,13 @@ wxString dlgColumn::GetDefinition()
 
 pgObject *dlgColumn::CreateObject(pgCollection *collection)
 {
-    return 0;
+    pgObject *obj;
+    obj=pgColumn::ReadObjects(collection, 0, 
+        wxT("\n   AND attname=") + qtString(txtName->GetValue()) +
+        wxT("\n   AND relname=") + qtString(table->GetName()) +
+        wxT("\n   AND relnamespace=") + table->GetSchema()->GetOidStr() +
+        wxT("\n"));
+    return obj;
 }
 
 
@@ -196,8 +205,8 @@ void dlgColumn::OnSelChangeTyp(wxNotifyEvent &ev)
                 Oid oid=StrToLong(typmod.Mid(typmod.Find(':')+1));
                 switch (oid)
                 {
-                    case 1231:
-                    case 1700:
+                    case PGOID_TYPE_NUMERIC_ARRAY:
+                    case PGOID_TYPE_NUMERIC:
                         isVarPrec=true;
                         break;
                     default:
@@ -218,22 +227,21 @@ void dlgColumn::OnChange(wxNotifyEvent &ev)
 {
     if (!column)
     {
-        int varlen=StrToLong(txtLength->GetValue()), 
-            varprec=StrToLong(txtPrecision->GetValue());
+        long varlen=StrToLong(txtLength->GetValue()), 
+             varprec=StrToLong(txtPrecision->GetValue());
         txtPrecision->Enable(isVarPrec && varlen > 0);
 
         wxString name=txtName->GetValue();
-        bool enable=true;
-        if (name.IsEmpty())
-            enable=false;
-        else if (cbDatatype->GetSelection() < 0)
-            enable=false;
-        else if (isVarLen && !txtLength->GetValue().IsEmpty() && varlen < 1)
-            enable=false;
-        else if (txtPrecision->IsEnabled() && (varprec < 0 || varprec > varlen))
-            enable=false;
 
-        btnOK->Enable(enable);
+        bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        CheckValid(enable, cbDatatype->GetSelection() >= 0, wxT("Please select a datatype."));
+        CheckValid(enable, isVarLen || txtLength->GetValue().IsEmpty() || varlen >0,
+            wxT("Please specify valid length."));
+        CheckValid(enable, !txtPrecision->IsEnabled() || (varprec >= 0 && varprec <= varlen),
+            wxT("Please specify valid numeric precision (0..") + NumToStr(varlen) + wxT(")."));
+
+        EnableOK(enable);
     }
 }
 

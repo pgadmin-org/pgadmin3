@@ -105,17 +105,25 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     // Build menus
     menuBar = new wxMenuBar();
 
-    // File Menu
+    newMenu = 0;
+
+        // File Menu
     fileMenu = new wxMenu();
     fileMenu->Append(MNU_ADDSERVER, wxT("&Add Server..."),          wxT("Add a connection to a server."));
     fileMenu->Append(MNU_PASSWORD, wxT("C&hange password..."),      wxT("Change your password."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."),wxT("Save the SQL definition of the selected object."));
-    fileMenu->Append(MNU_DROP, wxT("&Delete/Drop"),         		wxT("Delete/Drop the selected object."));
-    fileMenu->Append(MNU_PROPERTIES, wxT("&Properties"),    		wxT("Display/edit the properties of the selected object."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, wxT("E&xit"),                        wxT("Quit this program."));
     menuBar->Append(fileMenu, wxT("&File"));
+
+    // Edit Menu
+    editMenu = new wxMenu();
+    editMenu->AppendSeparator();
+    editMenu->Append(MNU_CREATE, wxT("&Create"),                    wxT("Create a new object of the same type as the selected object."));
+    editMenu->Append(MNU_DROP, wxT("&Delete/Drop"),         		wxT("Delete/Drop the selected object."));
+    editMenu->Append(MNU_PROPERTIES, wxT("&Properties"),    		wxT("Display/edit the properties of the selected object."));
+    menuBar->Append(editMenu, wxT("&Edit"));
 
     // Tools Menu
     toolsMenu = new wxMenu();
@@ -148,15 +156,15 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // Tree Context Menu
     treeContextMenu = new wxMenu();
+    treeContextMenu->Append(MNU_REFRESH, wxT("&Refresh"),   		wxT("Refresh the selected object."));
+    treeContextMenu->AppendSeparator();
+	treeContextMenu->Append(MNU_VIEWDATA, wxT("View Data"),         wxT("View the data in the selected object."));
+    treeContextMenu->Append(MNU_VACUUM, wxT("Vacuum"),              wxT("Vacuum the current database or table."));
     treeContextMenu->Append(MNU_CONNECT, wxT("&Connect..."),    	wxT("Connect to the selected server."));
     treeContextMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"),     wxT("Disconnect from the selected server."));
     treeContextMenu->AppendSeparator();
-	treeContextMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),wxT("Start the query builder."));
-	treeContextMenu->Append(MNU_VIEWDATA, wxT("View Data"),         wxT("View the data in the selected object."));
-    treeContextMenu->Append(MNU_VACUUM, wxT("Vacuum"),              wxT("Vacuum the current database or table."));
-    treeContextMenu->AppendSeparator();
+    treeContextMenu->Append(MNU_CREATE, wxT("&Create"),                    wxT("Create a new object of the same type as the selected object."));
     treeContextMenu->Append(MNU_DROP, wxT("&Delete/Drop"),  		wxT("Delete/Drop the selected object."));
-    treeContextMenu->Append(MNU_REFRESH, wxT("&Refresh"),   		wxT("Refresh the selected object."));
     treeContextMenu->Append(MNU_PROPERTIES, wxT("&Properties"),     wxT("Display/edit the properties of the selected object."));
 
     // Add the Menubar and set some options
@@ -234,7 +242,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     listViews->AddPage(properties, wxT("Properties"));
     listViews->AddPage(statistics, wxT("Statistics"));
     sqlPane = new ctlSQLBox(horizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
-    sqlPane->SetBackgroundColour(*wxLIGHT_GREY);
 
     splitpos=settings->Read(wxT("frmMain/SplitHorizontal"), 300);
     if (splitpos < 50)
@@ -298,9 +305,11 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     // Add the statistics view columns & set the colour
     statistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
     statistics->InsertItem(0, wxT("No statistics are available for the current selection"), PGICON_STATISTICS);
+
     wxColour background;
     background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
     statistics->SetBackgroundColour(background);
+    sqlPane->SetBackgroundColour(background);
 
     // Load servers
     RetrieveServers();
@@ -320,6 +329,14 @@ frmMain::~frmMain()
 
     // Clear the treeview
     browser->DeleteAllItems();
+
+    if (newMenu)
+    {
+        editMenu->Remove(MNU_NEWOBJECT);
+        treeContextMenu->Remove(MNU_NEWOBJECT);
+        delete newMenu;
+        newMenu=0;
+    }
 
     delete treeContextMenu;
 	delete images;
@@ -640,8 +657,9 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
     toolBar->EnableTool(MNU_VACUUM, vacuum);
 
 	// Handle the menus associated with the buttons
-	fileMenu->Enable(MNU_DROP, drop);
-	fileMenu->Enable(MNU_PROPERTIES, properties);
+	editMenu->Enable(MNU_CREATE, create);
+	editMenu->Enable(MNU_DROP, drop);
+	editMenu->Enable(MNU_PROPERTIES, properties);
 	toolsMenu->Enable(MNU_CONNECT, false);
 	toolsMenu->Enable(MNU_DISCONNECT, false);
 	toolsMenu->Enable(MNU_SQL, sql);
@@ -650,14 +668,14 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	toolsMenu->Enable(MNU_STATUS, sql);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	viewMenu->Enable(MNU_REFRESH, refresh);
+
+	treeContextMenu->Enable(MNU_CREATE, create);
 	treeContextMenu->Enable(MNU_DROP, drop);
 	treeContextMenu->Enable(MNU_CONNECT, false);
 	treeContextMenu->Enable(MNU_DISCONNECT, false);
 	treeContextMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_PROPERTIES, properties);
-	treeContextMenu->Enable(MNU_QUERYBUILDER, sql);
 	treeContextMenu->Enable(MNU_VACUUM, vacuum);
 	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
-
 }
 

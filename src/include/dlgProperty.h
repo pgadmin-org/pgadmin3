@@ -33,8 +33,8 @@ class pgTable;
 class dlgProperty : public wxDialog
 {
 public:
-    static void CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, pgConn *conn);
-    static void EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node, pgConn *conn);
+    static void CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, int type);
+    static void EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node);
 
     wxString GetName();
 
@@ -49,10 +49,13 @@ public:
 protected:
     dlgProperty(frmMain *frame, const wxString &resName);
 
+    void EnableOK(bool enable);
+
     void CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize=100);
     void AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon);
 
-    static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew);
+    void CheckValid(bool &enable, const bool condition, const wxString &msg);
+    static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type=-1);
     void AppendComment(wxString &sql, const wxString &objName, pgObject *obj=0);
     void AppendQuoted(wxString &sql, const wxString &name);
 
@@ -71,6 +74,7 @@ protected:
 
     wxTextValidator numericValidator;
 
+    wxTextCtrl *statusBox;
     int width, height;
     int sqlPageNo;
     wxTreeItemId item;

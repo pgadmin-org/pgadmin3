@@ -106,7 +106,9 @@ int dlgFunction::Go(bool modal)
     {
         while (!lang->Eof())
         {
-            cbLanguage->Append(lang->GetVal(0));
+            wxString language=lang->GetVal(0);
+            if (objectType != PG_TRIGGERFUNCTION || !language.IsSameAs(wxT("SQL"), false))
+                cbLanguage->Append(language);
             lang->MoveNext();
         }
         delete lang;
@@ -170,14 +172,17 @@ int dlgFunction::Go(bool modal)
             delete set;
         }
 
+        long sel;
         if (objectType == PG_TRIGGERFUNCTION)
         {
             cbReturntype->Append(wxT("trigger"));
             cbReturntype->SetSelection(0);
             cbReturntype->Disable();
+            sel=cbLanguage->FindString(wxT("c"));
         }
+        else
+            sel=cbLanguage->FindString(wxT("sql"));
 
-        long sel=cbLanguage->FindString(wxT("sql"));
         if (sel >= 0)
             cbLanguage->SetSelection(sel);
     }
@@ -210,6 +215,7 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
     if (function)
     {
         bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
+
         EnableOK(txtComment->GetValue() != function->GetComment()
               || cbVolatility->GetValue() != function->GetVolatility()
               || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
@@ -222,9 +228,13 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
     {
         wxString name=txtName->GetValue();
 
-        EnableOK(!name.IsEmpty() 
-                && cbReturntype->GetSelection() >= 0 
-                && cbLanguage->GetSelection() >= 0);
+        bool enable=true;
+
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        CheckValid(enable, cbReturntype->GetSelection() >= 0, wxT("Please select return type."));
+        CheckValid(enable, cbLanguage->GetSelection() >= 0, wxT("Please select language."));
+
+        EnableOK(enable);
     }
 }
 

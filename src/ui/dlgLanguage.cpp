@@ -14,6 +14,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "pgDefs.h"
+
 #include "dlgLanguage.h"
 #include "pgLanguage.h"
 
@@ -80,12 +82,13 @@ int dlgLanguage::Go(bool modal)
             "SELECT nspname, proname, prorettype\n"
             "  FROM pg_proc p\n"
             "  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n"
-            " WHERE prorettype=2280 OR (prorettype=2278 and proargtypes[0]=26)"));
+            " WHERE prorettype=2280 OR (prorettype=") + NumToStr(PGOID_TYPE_VOID) +
+            wxT(" AND proargtypes[0]=") + NumToStr(PGOID_TYPE_LANGUAGE_HANDLER) + wxT(")"));
         if (set)
         {
             while (!set->Eof())
             {
-                wxString nspname;
+                wxString nspname=set->GetVal(wxT("nspname"));
                 if (nspname == wxT("public"))
                     nspname=wxT("");
                 else
@@ -123,7 +126,10 @@ void dlgLanguage::OnChange(wxNotifyEvent &ev)
     {
         wxString name=txtName->GetValue();
 
-        EnableOK(!name.IsEmpty() && !cbHandler->GetValue().IsEmpty());
+        bool enable=true;
+        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
+        CheckValid(enable, !cbHandler->GetValue().IsEmpty(), wxT("Please specify language handler."));
+        EnableOK(enable);
     }
 }
 

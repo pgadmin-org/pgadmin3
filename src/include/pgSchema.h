@@ -43,6 +43,7 @@ public:
     bool RequireDropConfirm() { return true; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    wxMenu *GetNewMenu();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

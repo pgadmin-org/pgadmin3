@@ -131,8 +131,7 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         while (cfgTokens.HasMoreTokens())
         {
             wxString token=cfgTokens.GetNextToken();
-            wxString varName=token.BeforeFirst('=');
-            InsertListItem(properties, pos++, varName, token.Mid(varName.Length()+1));
+            InsertListItem(properties, pos++, token.BeforeFirst('='), token.AfterFirst('='));
         }
     }
 }

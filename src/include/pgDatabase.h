@@ -60,6 +60,7 @@ public:
     pgConn *connection() { return conn; }
     int Connect();
 
+    wxMenu *GetNewMenu();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
