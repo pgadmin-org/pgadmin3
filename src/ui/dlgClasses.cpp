@@ -320,6 +320,12 @@ bool ExternProcessDialog::Execute(int step, bool finalStep)
         delete process;
 
     process = new wxProcess(this);
+    size_t i;
+    for (i=0 ; i < environment.GetCount() ; i++)
+    {
+        wxString str=environment.Item(i);
+        wxSetEnv(str.BeforeFirst('='), str.AfterFirst('='));
+    }
     process->Redirect();
     pid = wxExecute(GetCmd(step), wxEXEC_ASYNC, process);
     if (pid)

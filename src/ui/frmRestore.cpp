@@ -102,6 +102,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
     txtMessages->SetMaxLength(0L);
     btnOK->Disable();
     filenameValid=false;
+    environment.Add(wxT("PGPASSWORD=") + server->GetPassword());
 
     wxCommandEvent ev;
     OnChange(ev);
@@ -244,9 +245,6 @@ wxString frmRestore::GetCmd(int step)
 {
     wxString cmd = getCmdPart1();
 
-    if (server->GetNeedPwd())
-        cmd += wxT(" -W ") + server->GetPassword();
-
     return cmd + getCmdPart2(step);
 }
 
@@ -254,9 +252,6 @@ wxString frmRestore::GetCmd(int step)
 wxString frmRestore::GetDisplayCmd(int step)
 {
     wxString cmd = getCmdPart1();
-
-    if (server->GetNeedPwd())
-        cmd += wxT(" -W ****");
 
     return cmd + getCmdPart2(step);
 }

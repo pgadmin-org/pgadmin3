@@ -70,6 +70,8 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     chkBlobs->SetValue(canBlob);
     chkDisableDollar->Enable(obj->GetConnection()->BackendMinimumVersion(7, 5));
 
+    environment.Add(wxT("PGPASSWORD=") + object->GetDatabase()->GetServer()->GetPassword());
+
     // Icon
     SetIcon(wxIcon(backup_xpm));
 
@@ -140,9 +142,6 @@ wxString frmBackup::GetCmd(int step)
     wxString cmd = getCmdPart1();
     pgServer *server=object->GetDatabase()->GetServer();
 
-    if (!server->GetTrusted())
-        cmd += wxT(" -W ") + server->GetPassword();
-
     return cmd + getCmdPart2();
 }
 
@@ -151,9 +150,6 @@ wxString frmBackup::GetDisplayCmd(int step)
 {
     wxString cmd = getCmdPart1();
     pgServer *server=object->GetDatabase()->GetServer();
-
-    if (!server->GetTrusted())
-        cmd += wxT(" -W ****");
 
     return cmd + getCmdPart2();
 }
