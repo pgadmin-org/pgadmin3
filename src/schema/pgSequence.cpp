@@ -38,7 +38,7 @@ void pgSequence::UpdateValues()
 {
     pgSet *sequence=ExecuteSet(
         wxT("SELECT last_value, min_value, max_value, cache_value, is_cycled, increment_by\n")
-        wxT("  FROM ") + qtIdent(GetName()));
+        wxT("  FROM ") + GetQuotedFullIdentifier());
     if (sequence)
     {
         lastValue = sequence->GetLongLong(wxT("last_value"));
