@@ -25,6 +25,7 @@ schema/pgType.cpp schema/pgUser.cpp schema/pgView.cpp \
 schema/pgDatatype.cpp \
 agent/pgaAgent.cpp agent/pgaInstance.cpp agent/pgaJob.cpp \
 agent/pgaStep.cpp agent/pgaSchedule.cpp \
+ui/xh_sqlbox.cpp ui/xh_calb.cpp ui/calbox.cpp \
 ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
 ui/dlgAddTableView.cpp ui/dlgEditGridOptions.cpp \
 ui/events.cpp ui/frmAbout.cpp \
@@ -59,7 +60,7 @@ include/dlgAggregate.h include/dlgCast.h include/dlgConversion.h \
 include/dlgSequence.h include/dlgSchema.h include/dlgTable.h \
 include/dlgOperator.h include/dlgView.h include/dlgRule.h \
 include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
-include/frmChildTableViewFrame.h include/frmConnect.h \
+include/frmChildTableViewFrame.h include/frmConnect.h \ 
 include/frmEditGrid.h include/dlgEditGridOptions.h include/frmMain.h \
 include/frmOptions.h include/frmPassword.h \
 include/frmQBJoin.h include/frmQueryBuilder.h include/frmHelp.h \
@@ -78,6 +79,7 @@ include/pgRule.h include/pgSchema.h include/pgSequence.h \
 include/pgServer.h include/pgSet.h include/pgTable.h \
 include/pgTrigger.h include/pgType.h include/pgUser.h \
 include/pgView.h include/sysLogger.h include/utffile.h \
+include/calbox.h include/xh_calb.h include/xh_sqlbox.cpp \
 include/sysSettings.h include/wxgridsel.h include/menu.h\
 agent/include/pgaAgent.h agent/include/pgaInstance.h agent/include/pgaJob.h \
 agent/include/pgaStep.h agent/include/pgaSchedule.h
