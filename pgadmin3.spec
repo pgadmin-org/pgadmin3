@@ -1,10 +1,9 @@
 %define pgadmin_version %(date +%Y%m%d)
-%define pgadmin_release rh%(rpm -q --qf='%{VERSION}' redhat-release | sed 's/\\..*$//')
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
 Version: %{pgadmin_version}
-Release: %{pgadmin_release}
+Release: %{rel}
 License: Artistic
 Group: Applications/Databases
 Source: pgadmin3-%{pgadmin_version}.tar.gz
