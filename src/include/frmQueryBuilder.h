@@ -20,7 +20,7 @@
 #include "frmMain.h"
 #include "frmChildTableViewFrame.h"
 #include "dlgAddTableView.h"
-#include "ctlSQLresult.h"
+#include "ctlSQLResult.h"
 
 struct JoinStruct
 {
@@ -86,6 +86,7 @@ private:
 
     wxToolBar *toolBar;
 	wxSashLayoutWindow *m_sashwindow;
+    wxTextCtrl *msgResult, *msgHistory;
 	wxNotebook *notebook;
 	wxGrid *design;
     ctlSQLResult *data;
