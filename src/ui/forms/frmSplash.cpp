@@ -31,8 +31,8 @@ frmSplash::frmSplash(wxFrame *parent)
 {
     
     // Icon
-    SetIcon(wxIcon(pgadmin3_xpm));
-    
+    SetIcon(wxIcon(pgAdmin3_xpm));
+
     // Image
     imgSplash = wxBitmap(splash_xpm);
     

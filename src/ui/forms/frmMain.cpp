@@ -47,13 +47,13 @@ END_EVENT_TABLE()
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-    
+
     // Icon
-    SetIcon(wxIcon(pgadmin3_xpm));
-    
+    SetIcon(wxIcon(pgAdmin3_xpm));
+
     // Build menus
     mnuBar = new wxMenuBar();
-    
+
     // File Menu
     wxMenu *mnuFile = new wxMenu;
     mnuFile->Append(mnuConnect, "&Connect...", "Connect to a PostgreSQL server");
@@ -121,16 +121,15 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     tlBarBitmaps[8] = wxBitmap(record_xpm);
     tlBarBitmaps[9] = wxBitmap(stop_xpm);
 
-    tlBar->AddTool(100, _T("Save"), tlBarBitmaps[0], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(101, _T("Save"), tlBarBitmaps[1], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(102, _T("Save"), tlBarBitmaps[2], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(103, _T("Save"), tlBarBitmaps[3], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(104, _T("Save"), tlBarBitmaps[4], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(105, _T("Save"), tlBarBitmaps[5], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(106, _T("Save"), tlBarBitmaps[6], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(107, _T("Save"), tlBarBitmaps[7], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(108, _T("Save"), tlBarBitmaps[8], _T("Toggle button 1"), wxITEM_CHECK);
-    tlBar->AddTool(109, _T("Save"), tlBarBitmaps[9], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(100, _T("Save"), tlBarBitmaps[0], _T("Toggle button 1"), wxITEM_NORMAL);
+    tlBar->AddTool(101, _T("Save"), tlBarBitmaps[1], _T("Toggle button 1"), wxITEM_NORMAL);
+    tlBar->AddTool(102, _T("Save"), tlBarBitmaps[2], _T("Toggle button 1"), wxITEM_NORMAL);
+    tlBar->AddTool(103, _T("Save"), tlBarBitmaps[3], _T("Toggle button 1"), wxITEM_NORMAL);
+    tlBar->AddTool(104, _T("Save"), tlBarBitmaps[4], _T("Toggle button 1"), wxITEM_NORMAL);
+    tlBar->AddTool(105, _T("Save"), tlBarBitmaps[5], _T("Toggle button 1"), wxITEM_NORMAL);
+    tlBar->AddTool(107, _T("Save"), tlBarBitmaps[7], _T("Toggle button 1"), wxITEM_NORMAL);
+    tlBar->AddTool(108, _T("Save"), tlBarBitmaps[8], _T("Toggle button 1"), wxITEM_NORMAL);
+    tlBar->AddTool(109, _T("Save"), tlBarBitmaps[9], _T("Toggle button 1"), wxITEM_NORMAL);
     
     
     

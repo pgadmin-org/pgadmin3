@@ -29,10 +29,10 @@ END_EVENT_TABLE()
 frmAbout::frmAbout(wxFrame *parent)
 : wxDialog(parent, -1, "About pgAdmin III", wxDefaultPosition, wxDefaultSize, wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
 {
-    
+
     // Icon
-    SetIcon(wxIcon(pgadmin3_xpm));
-    
+    SetIcon(wxIcon(pgAdmin3_xpm));
+
     // Image
     imgAbout = wxBitmap(splash_xpm);
 
