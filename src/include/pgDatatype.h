@@ -8,6 +8,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef __DATATYPE_INC
+#define __DATATYPE_INC
 
 #include <wx/wx.h>
 
@@ -57,3 +59,5 @@ public:
 private:
     pgSet *set;
 };
+
+#endif

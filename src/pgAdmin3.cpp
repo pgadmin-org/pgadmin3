@@ -101,9 +101,9 @@ bool pgAdmin3::OnInit()
         done=LoadAllXrc(loadPath + wxT("/../ui/common"));
 #else
     bool done;
-    done=LoadAllXrc(DATA_DIR wxT("/") + XRC_PATH);
+    done=LoadAllXrc(DATA_DIR XRC_PATH);
     if (!done)
-        done=LoadAllXrc(loadPath + wxT("/") + XRC_PATH);
+        done=LoadAllXrc(loadPath + XRC_PATH);
 
     done=LoadAllXrc(DATA_DIR wxT("/ui/common"));
     if (!done)
