@@ -58,7 +58,7 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
     {
         if (!connection->ExecuteVoid(sql))
         {
-            wxMessageBox("Houston, we got a problem.\nPlease tell those pga3 programmers to code some error detail messages.");
+            // error message is displayed inside ExecuteVoid
             return;
         }
 
