@@ -200,6 +200,8 @@ wxDateTime pgSet::GetDateTime(const int col) const
 {
     wxDateTime dt;
     wxString str=GetVal(col);
+    /* This hasn't just been used. ( Is not infinity ) */
+    if ( !str.IsEmpty() )
     dt.ParseDateTime(str);
     return dt;
 }

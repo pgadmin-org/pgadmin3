@@ -54,7 +54,8 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
         else                        sql += wxT(" NOCREATEDB");
         if (GetUpdateCatalog())     sql += wxT(" CREATEUSER");
         else                        sql += wxT(" NOCREATEUSER");
-        AppendIfFilled(sql, wxT(" VALID UNTIL "), DateToStr(GetAccountExpires()));
+        if (GetAccountExpires().IsValid())
+        AppendIfFilled(sql, wxT(" VALID UNTIL "), qtString(DateToAnsiStr(GetAccountExpires())));
         sql +=wxT(";\n");
         if (!configList.IsEmpty())
         {

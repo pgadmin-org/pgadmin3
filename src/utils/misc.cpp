@@ -220,6 +220,8 @@ wxString DateToStr(const wxDateTime &datetime)
 wxDateTime StrToDateTime(const wxString &value)
 {
     wxDateTime dt;
+    /* This hasn't just been used. ( Is not infinity ) */
+    if ( !value.IsEmpty() )
     dt.ParseDateTime(value);
     return dt;
 }
