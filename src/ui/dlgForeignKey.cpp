@@ -217,6 +217,7 @@ void dlgForeignKey::OnSelChangeRef(wxCommandEvent &ev)
         delete set;
         cbRefColumns->SetSelection(0);
     }
+    OnSelChangeRefCol(ev);
 }
 
 
@@ -365,6 +366,9 @@ int dlgForeignKey::Go(bool modal)
     }
 
     processing=false;
+
+    wxCommandEvent nullEvent;
+    OnSelChangeRef(nullEvent);
 
     return dlgCollistProperty::Go(modal);
 }
