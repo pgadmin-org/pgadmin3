@@ -305,8 +305,6 @@ bool pgDatabase::Vacuum(frmMain *form)
 
 	switch (optval)
     {
-		case -1:
-			return false;
 		case 0:
 	        opts = wxT("");
             break;
@@ -331,6 +329,9 @@ bool pgDatabase::Vacuum(frmMain *form)
         case 7:
             opts = wxT(" FULL FREEZE ANALYZE");
             break;
+
+        default:
+			return false;
 	}
 
     StartMsg(wxT("Vacuuming database ") + GetName() + wxT("..."));

@@ -496,8 +496,6 @@ bool pgTable::Vacuum(frmMain *form)
 
 	switch (optval)
     {
-		case -1:
-			return false;
 		case 0:
 	        opts = wxT("");
             break;
@@ -522,6 +520,9 @@ bool pgTable::Vacuum(frmMain *form)
         case 7:
             opts = wxT(" FULL FREEZE ANALYZE");
             break;
+
+        default:
+			return false;
 	}
 
     StartMsg(wxT("Vacuuming table ") + GetName() + wxT("..."));
