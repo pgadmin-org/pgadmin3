@@ -341,6 +341,7 @@ void wxCalendarBox::DropDown(bool down)
 void wxCalendarBox::OnChildSetFocus(wxChildFocusEvent &ev)
 {
     ev.Skip();
+    m_ignoreDrop = false;
 
 	wxWindow  *w=(wxWindow*)ev.GetEventObject();
 	while (w)
