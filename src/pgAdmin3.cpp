@@ -78,14 +78,6 @@ double libpqVersion=0.0;
 #define LANG_FILE   wxT("pgadmin3.lng")
 
 
-#ifdef SSL
-extern "C"
-{
-extern const char *SSL_version_str;
-}
-#endif
-
-
 IMPLEMENT_APP(pgAdmin3)
 
 
@@ -178,7 +170,7 @@ bool pgAdmin3::OnInit()
 #endif
 
 #ifdef SSL
-    wxLogInfo(wxT("Compiled with ") + wxString::FromAscii(SSL_version_str));
+    wxLogInfo(wxT("Compiled with dynamically linked SSL support"));
 #endif
 
 #if wxCHECK_VERSION(2,5,1)

@@ -12,7 +12,6 @@
 #ifndef PGADMIN3_H
 #define PGADMIN3_H
 
-
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/listctrl.h>
