@@ -184,10 +184,19 @@ void frmEditGrid::Go()
         return;
     }
     SetStatusText(NumToStr(thread->DataSet()->NumRows()) + wxT(" rows."), 0);
+
     sqlGrid->BeginBatch();
+
+    // to force the grid to create scrollbars, we make sure the size  so small that scrollbars are needed 
+    // later, we will resize the grid's parent to force the correkct size (now including scrollbars, even if
+    // they are suppressed initially
+    sqlGrid->SetSize(10,10);
     sqlGrid->SetTable(new sqlTable(connection, thread, tableName, relid, hasOids, primaryKeyColNumbers, relkind), true);
     sqlGrid->EndBatch();
-    sqlGrid->FitInside();
+
+    wxSizeEvent event;
+    event.m_size = GetSize();
+    OnSize(event);
 }
 
 
@@ -231,7 +240,7 @@ END_EVENT_TABLE();
 
 
 ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
-: wxGrid(parent, id, pos, size)
+: wxGrid(parent, id, pos, size, wxWANTS_CHARS|wxVSCROLL|wxHSCROLL)
 {
 }
 
@@ -305,17 +314,20 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
     }
     if (table)
     {
+
+
+	int col;
+	wxCoord w, h, wmax;
+
         done= wxGrid::SetTable(table, takeOwnership);
 
-	    int col;
-	    wxCoord w, h, wmax;
-	    wxClientDC dc(this);
-	    dc.SetFont(GetLabelFont());
+	wxClientDC dc(this);
+	dc.SetFont(GetLabelFont());
 
-	    for (col=0 ; col < m_numCols ; col++)
-	    {
+	for (col=0 ; col < m_numCols ; col++)
+	{
             wxString str=GetColLabelValue(col);
-	        dc.GetTextExtent(str.BeforeFirst('\n'), &wmax, &h);
+	    dc.GetTextExtent(str.BeforeFirst('\n'), &wmax, &h);
             int crPos=str.Find('\n');
             if (crPos)
             {
@@ -328,7 +340,7 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
                 wmax = 40;
 
             SetColSize(col, wmax);
-	    }
+	}
     }
     return done;
 }
