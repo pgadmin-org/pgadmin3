@@ -4,7 +4,7 @@
 #
 # Makefile - Makefile for *nix systems
 CC = g++
-LDFLAGS = --static --static-libgcc @LDFLAGS@ -lpq
+LDFLAGS = --static --static-libgcc @LDFLAGS@ -lpq -lcrypt
 CPPFLAGS = @CPPFLAGS@ -g -Iinclude
 INSTALLDIR = @prefix@
 
@@ -89,8 +89,10 @@ clean:
 	rm -f utils/*.o
 
 install:
+	mkdir -p $(INSTALLDIR)/
 	cp pgAdmin3 $(INSTALLDIR)/
 	mkdir -p $(INSTALLDIR)/ui/common/
-	cp ui/common/*.xrc
-	mkdir -p $(INSTALLDIR)/ui/gtk
-	cp ui/gtk/*.xrc $(INSTALLDIR)/ui/gtk
+	cp ui/common/*.xrc $(INSTALLDIR)/ui/common/
+# still unused
+#	mkdir -p $(INSTALLDIR)/ui/gtk
+#	cp ui/gtk/*.xrc $(INSTALLDIR)/ui/gtk
