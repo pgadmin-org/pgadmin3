@@ -565,7 +565,6 @@ void frmMain::StoreServers()
 
     // Store the currently listed servers for later retrieval.
     extern sysSettings *objSettings;
-    wxConfig *sysConfig = &objSettings->sysConfig;
 
     // Write the individual servers
     // Iterate through all the child nodes of the Servers node
@@ -585,19 +584,19 @@ void frmMain::StoreServers()
 
             // Hostname
             szKey.Printf("Servers/Server%d", iServers);
-            sysConfig->Write(szKey, objServer->GetName());
+            objSettings->Write(szKey, objServer->GetName());
 
             // Port
             szKey.Printf("Servers/Port%d", iServers);
-            sysConfig->Write(szKey, objServer->GetPort());
+            objSettings->Write(szKey, objServer->GetPort());
 
             // Database
             szKey.Printf("Servers/Database%d", iServers);
-            sysConfig->Write(szKey, objServer->GetDatabase());
+            objSettings->Write(szKey, objServer->GetDatabase());
 
             // Username
             szKey.Printf("Servers/Username%d", iServers);
-            sysConfig->Write(szKey, objServer->GetUsername());
+            objSettings->Write(szKey, objServer->GetUsername());
         }
 
         // Get the next item
@@ -605,7 +604,7 @@ void frmMain::StoreServers()
     }
 
     // Write the server count
-    sysConfig->Write(wxT("Servers/Count"), iServers);
+    objSettings->Write(wxT("Servers/Count"), iServers);
     wxString szMsg;
     szMsg.Printf("Stored %d servers.", iServers);
     wxLogInfo(szMsg);
@@ -618,10 +617,9 @@ void frmMain::RetrieveServers()
     wxLogInfo(wxT("Reloading servers..."));
 
     extern sysSettings *objSettings;
-    wxConfig *sysConfig = &objSettings->sysConfig;
 
     int iServers;
-    sysConfig->Read(wxT("Servers/Count"), &iServers, 0);
+    objSettings->Read(wxT("Servers/Count"), &iServers, 0);
 
     int iLoop, iPort;
     wxString szKey, szServer, szDatabase, szUsername;
@@ -631,19 +629,19 @@ void frmMain::RetrieveServers()
         
         // Server
         szKey.Printf("Servers/Server%d", iLoop);
-        sysConfig->Read(szKey, &szServer, wxT(""));
+        objSettings->Read(szKey, &szServer, wxT(""));
 
         // Port
         szKey.Printf("Servers/Port%d", iLoop);
-        sysConfig->Read(szKey, &iPort, 0);
+        objSettings->Read(szKey, &iPort, 0);
 
         // Database
         szKey.Printf("Servers/Database%d", iLoop);
-        sysConfig->Read(szKey, &szDatabase, wxT(""));
+        objSettings->Read(szKey, &szDatabase, wxT(""));
 
         // Username
         szKey.Printf("Servers/Username%d", iLoop);
-        sysConfig->Read(szKey, &szUsername, wxT(""));
+        objSettings->Read(szKey, &szUsername, wxT(""));
 
         // Add the Server node
         objServer = new pgServer(szServer, szDatabase, szUsername, iPort);

@@ -19,10 +19,10 @@
 #include "pgAdmin3.h"
 
 // Class declarations
-class sysSettings
+class sysSettings : public wxConfig
 {
 public:
-    sysSettings();
+    sysSettings(const wxString& szName);
     ~sysSettings();
 
     // frmMain size/position
@@ -64,8 +64,6 @@ public:
     bool GetShowSystemObjects();
     void SetShowSystemObjects(const bool bNewShowSystemObjects);
 
-    // The main config object
-    wxConfig sysConfig;
 private:
 
     // frmMain size/position

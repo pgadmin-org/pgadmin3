@@ -43,7 +43,11 @@ bool pgAdmin3::OnInit()
 {
 
     // Load the Settings
-    objSettings = new sysSettings();
+#ifdef __WXMSW__
+    objSettings = new sysSettings(APPNAME_L);
+#else
+    objSettings = new sysSettings(APPNAME_S);
+#endif
 
     // Setup logging
     objLogger = new sysLogger();
