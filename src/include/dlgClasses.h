@@ -114,11 +114,11 @@ protected:
 
 #if __GNUC__ >= 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
 public:
+#endif
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
     void OnClose(wxCloseEvent& event);
 protected:
-#endif
 
     void OnEndProcess(wxProcessEvent& event);
     void OnPollProcess(wxTimerEvent& event);
