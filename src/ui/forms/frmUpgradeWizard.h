@@ -33,7 +33,7 @@ public:
 private:
     wxBitmap imgAbout;
     wxListCtrl* lvVersions;
-    wxTextCtrl* txtLabel;
+    wxTextCtrl* txtpgAdminwebsite;
     wxCheckBox* chkAuto;
     DECLARE_EVENT_TABLE()
 
