@@ -49,6 +49,7 @@ if [ -x src/pgAdmin3 ]; then
 	cd slackpack
 	/sbin/makepkg --chown y pgadmin3.tgz 
 	if [ -e pgadmin3.tgz ]; then
-		mv pgadmin3.tgz /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
+		cp pgadmin3.tgz /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
+		cp slack-desc /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.txt
 	fi
 fi
