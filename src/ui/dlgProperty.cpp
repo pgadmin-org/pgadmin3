@@ -597,18 +597,17 @@ void dlgProperty::CreateListColumns(wxListCtrl *list, const wxString &left, cons
     int rightSize;
     if (leftSize < 0)
     {
-        leftSize = rightSize = width/2-10
-            -2; // border
+        leftSize = rightSize = list->GetClientSize().GetWidth()/2;
     }
     else
     {
         if (leftSize)
             leftSize = ConvertDialogToPixels(wxPoint(leftSize, 0)).x;
-        rightSize = width-leftSize-20;
+        rightSize = list->GetClientSize().GetWidth()-leftSize;
     }
     if (!leftSize)
     {
-        list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, width);
+        list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, list->GetClientSize().GetWidth());
     }
     else
     {
@@ -896,7 +895,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
         wxPoint zeroPos=ConvertDialogToPixels(wxPoint(5, 5));
         wxSize chkSize=ConvertDialogToPixels(wxSize(65,12));
         wxSize btnSize=ConvertDialogToPixels(wxSize(50,15));
-        wxSize spcSize=ConvertDialogToPixels(wxSize(3, 3));
+        wxSize spcSize=ConvertDialogToPixels(wxSize(2, 2));
 
         if (obj && !obj->CanCreate())
         {

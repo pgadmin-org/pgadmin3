@@ -148,13 +148,7 @@ wxString dlgColumn::GetSql()
                 (isVarLen && StrToLong(txtLength->GetValue()) != column->GetLength()) ||
                 (isVarPrec && StrToLong(txtPrecision->GetValue()) != column->GetPrecision()))
             {
-                long typmod;
-                if (isVarPrec)
-                    typmod = (StrToLong(txtLength->GetValue()) << 16) + StrToLong(txtPrecision->GetValue()) +4;
-                else if (isVarLen)
-                    typmod = StrToLong(txtLength->GetValue()) +4;
-                else
-                    typmod=-1;
+                long typmod = pgDatatype::GetTypmod(column->GetRawTypename(), txtLength->GetValue(), txtPrecision->GetValue());
 
                 if (!sqlPart.IsEmpty())
                     sqlPart += wxT(", ");
