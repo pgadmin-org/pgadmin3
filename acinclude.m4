@@ -70,7 +70,10 @@ if test -n "${LIBPQ_HOME}"
 then
     LIBPQ_OLD_LDFLAGS=$LDFLAGS
     LIBPQ_OLD_CPPFLAGS=$CPPFLAGS
-    LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib"
+    if test "$pg_release_build" == "yes"
+    then
+	    LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib"
+    fi
     CPPFLAGS="$CPPFLAGS -I${LIBPQ_HOME}/include"
     LIBS="$LIBS -lssl -lcrypto"
     AC_LANG_SAVE
@@ -86,7 +89,7 @@ then
         then
 	        LIBS="$LIBS -lpq"
 	else
-	        LIBS="$LIBS ${LIBPQ_HOME}/lib/libpq.a"
+	        LIBS="$LIBS ${LIBPQ_HOME}/lib/libpq.a -lcrypt"
 	fi
     else
         AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
@@ -136,7 +139,10 @@ fi], [
         else
             WX_CONFIG="${WX_HOME}/bin/wx-config"
         fi
-        LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
+	if test "$pg_release_build" == "yes"
+	then
+	        LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
+	fi
         WX_OLD_LDFLAGS=$LDFLAGS
         WX_OLD_CPPFLAGS=$CPPFLAGS
         if test "$pg_release_build" == "yes"
