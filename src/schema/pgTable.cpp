@@ -27,6 +27,7 @@
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, PG_TABLE, newName)
 {
+    inheritedTableCount=0;
     rows=-1;
 }
 
@@ -392,6 +393,8 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
         if (settings->GetAutoRowCountThreshold() >= GetEstimatedRows())
             UpdateRows();
+
+        UpdateInheritance();
     }
 
     if (properties)

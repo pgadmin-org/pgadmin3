@@ -70,6 +70,7 @@ int dlgDomain::Go(bool modal)
         txtOID->SetValue(NumToStr((long)domain->GetOid()));
         txtOwner->SetValue(domain->GetOwner());
         cbDatatype->Append(domain->GetBasetype());
+        types.Add(domain->GetBasetype());
         cbDatatype->SetSelection(0);
         if (domain->GetLength() >= 0)
         {

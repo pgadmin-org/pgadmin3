@@ -610,18 +610,25 @@ int dlgTypeProperty::Go(bool modal)
 
 wxString dlgTypeProperty::GetQuotedTypename()
 {
-    wxString sql = types.Item(cbDatatype->GetSelection()).AfterFirst(':');
+    wxString sql;
 
-    if (isVarLen && StrToLong(txtLength->GetValue()) > 0)
+    int sel=cbDatatype->GetSelection();
+    
+    if (sel >= 0)
     {
-        sql += wxT("(") + txtLength->GetValue();
-        if (isVarPrec)
+        sql = types.Item(sel).AfterFirst(':');
+
+        if (isVarLen && StrToLong(txtLength->GetValue()) > 0)
         {
-            wxString varprec=txtPrecision->GetValue();
-            if (!varprec.IsEmpty())
-                sql += wxT(", ") + varprec;
+            sql += wxT("(") + txtLength->GetValue();
+            if (isVarPrec)
+            {
+                wxString varprec=txtPrecision->GetValue();
+                if (!varprec.IsEmpty())
+                    sql += wxT(", ") + varprec;
+            }
+            sql += wxT(")");
         }
-        sql += wxT(")");
     }
     return sql;
 }

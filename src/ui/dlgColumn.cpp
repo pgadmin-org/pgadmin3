@@ -69,6 +69,7 @@ int dlgColumn::Go(bool modal)
         txtName->SetValue(column->GetName());
         cbDatatype->Append(column->GetVarTypename());
         cbDatatype->SetValue(column->GetVarTypename());
+        types.Add(column->GetVarTypename());
         if (column->GetLength() >= 0)
             txtLength->SetValue(NumToStr(column->GetLength()));
         if (column->GetPrecision() >= 0)
@@ -87,6 +88,7 @@ int dlgColumn::Go(bool modal)
     {
         // create mode
         FillDatatype(cbDatatype);
+        cbDatatype->Append(wxT("serial"));
     }
     return dlgTypeProperty::Go(modal);
 }

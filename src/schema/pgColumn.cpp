@@ -82,10 +82,21 @@ wxString pgColumn::GetDefinition()
 {
     wxString sql;
     sql = GetQuotedTypename();
-    if (GetNotNull())
-        sql += wxT(" NOT NULL");
-    AppendIfFilled(sql, wxT(" DEFAULT "), GetDefault());
 
+    if (sql== wxT("int4") && GetDefault() == wxT("nextval('") 
+                        + GetQuotedFullTable() 
+                        + wxT("_") + GetName() + wxT("_seq'::text)"))
+    {
+        sql = wxT("serial");
+        if (GetNotNull())
+            sql += wxT(" NOT NULL");
+    }
+    else
+    {
+        if (GetNotNull())
+            sql += wxT(" NOT NULL");
+        AppendIfFilled(sql, wxT(" DEFAULT "), GetDefault());
+    }
     return sql;
 }
 
