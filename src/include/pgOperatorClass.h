@@ -49,7 +49,7 @@ public:
 private:
     wxString inType, keyType, accessMethod;
     wxArrayString operators;
-    wxArrayString functions;
+    wxArrayString functions, quotedFunctions;
     wxArrayString functionOids;
     bool opcDefault;
 };

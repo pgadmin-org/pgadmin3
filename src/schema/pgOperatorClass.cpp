@@ -41,8 +41,8 @@ wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
         sql = wxT("-- Operator Class: \"") + GetName() + wxT("\"\n");
         sql += wxT("CREATE OPERATOR CLASS ") + GetQuotedFullIdentifier();
         if (GetOpcDefault())
-            sql += wxT("DEFAULT ");
-        sql += wxT(" FOR TYPE ") + GetInType()
+            sql += wxT(" DEFAULT");
+        sql += wxT("\n   FOR TYPE ") + GetInType()
             +  wxT(" USING ") + GetAccessMethod() 
             +  wxT(" AS");
         unsigned int i;
@@ -61,7 +61,7 @@ wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
             if (needComma)
                 sql += wxT(",");
 
-            sql += wxT("\n   FUNCTION ") + functions.Item(i);
+            sql += wxT("\n   FUNCTION ") + quotedFunctions.Item(i);
             needComma=true;
         }
         sql += wxT(";\n");
@@ -81,7 +81,7 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
         set=ExecuteSet(wxT(
             "SELECT amopstrategy, amopreqcheck, oprname, lt.typname as lefttype, rt.typname as righttype\n"
             "  FROM pg_amop am\n"
-            "  JOIN pg_operator op ON amopoid=op.oid\n"
+            "  JOIN pg_operator op ON amopopr=op.oid\n"
             "  LEFT OUTER JOIN pg_type lt ON lt.oid=oprleft\n"
             "  LEFT OUTER JOIN pg_type rt ON rt.oid=oprright\n"
             " WHERE amopclaid=") + GetOidStr()+ wxT("\n"
@@ -90,7 +90,7 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
         {
             while (!set->Eof())
             {
-                wxString str=set->GetVal(wxT("ampostrategy")) + wxT(" ") + qtIdent(set->GetVal(wxT("oprname")));
+                wxString str=set->GetVal(wxT("amopstrategy")) + wxT("  ") + set->GetVal(wxT("oprname"));
                 wxString lt=set->GetVal(wxT("lefttype"));
                 wxString rt=set->GetVal(wxT("righttype"));
                 if (!lt.IsEmpty() || !rt.IsEmpty())
@@ -131,9 +131,8 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
                 pgFunction *function=pgFunction::AppendFunctions(this, GetSchema(), 0, wxT("   AND pr.oid=") + amproc);
                 if (function)
                 {
-                    wxString str=set->GetVal(wxT("amprocnum")) + wxT(" ") + function->GetQuotedFullIdentifier();
-
-                    functions.Add(str);
+                    functions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") + function->GetFullIdentifier());
+                    quotedFunctions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") + function->GetQuotedFullIdentifier());
                     delete function;
                 }
 
@@ -183,7 +182,7 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
     pgOperatorClass *operatorClass=0;
 
     pgSet *operatorClasses= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT op.*, it.typname as intypename, dt.typname as keytypename, amname\n"
+        "SELECT op.oid, op.*, it.typname as intypename, dt.typname as keytypename, amname\n"
         "  FROM pg_opclass op\n"
         "  JOIN pg_am am ON am.oid=opcamid\n"
         "  JOIN pg_type it ON it.oid=opcintype\n"
@@ -199,6 +198,7 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
             operatorClass = new pgOperatorClass(
                         collection->GetSchema(), operatorClasses->GetVal(wxT("opcname")));
 
+            operatorClass->iSetOid(operatorClasses->GetOid(wxT("oid")));
             operatorClass->iSetOwner(operatorClasses->GetVal(wxT("opcowner")));
             operatorClass->iSetAccessMethod(operatorClasses->GetVal(wxT("amname")));
             operatorClass->iSetInType(operatorClasses->GetVal(wxT("intypename")));
