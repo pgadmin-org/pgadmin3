@@ -111,7 +111,7 @@ private:
 
 #ifdef __WXMSW__
     void OnContextMenu(wxContextMenuEvent& event)
-        { ExecRightClick(ScreenToClient(event.GetPosition())); }
+        { wxPoint pt=ScreenToClient(event.GetPosition()); ExecRightClick(pt); }
 #else
     void OnRightUp(wxMouseEvent& event)
         { wxPoint pt=event.GetPosition(); ExecRightClick(pt); }
