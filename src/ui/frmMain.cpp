@@ -176,7 +176,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
-    entries[0].Set(wxACCEL_ALT,    WXK_F5, MNU_REFRESH);
+    entries[1].Set(wxACCEL_ALT,    WXK_F5, MNU_REFRESH);
     wxAcceleratorTable accel(2, entries);
 
     SetAcceleratorTable(accel);
