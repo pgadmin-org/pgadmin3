@@ -455,7 +455,10 @@ void frmMain::ReconnectServer(pgServer *server)
         wxString msg;
         msg.Printf(wxT("%s"), server->GetLastError().c_str());
         wxLogError(wxT(msg));
-        ReconnectServer(server);
+
+	// Keith 2003.03.31 
+	// Isn't this recursive?
+        // ReconnectServer(server);
 		
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
