@@ -66,7 +66,7 @@ void EndMsg()
         // Get the execution time & display it
         float timeval = stopwatch.Time();
         wxString time;
-        time.Printf(wxT("%.2f secs"), (timeval/1000));
+        time.Printf(_("%.2f secs"), (timeval/1000));
         winMain->statusBar->SetStatusText(time, 2);
 
         // Display the 'Done' message
