@@ -12,7 +12,7 @@
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/image.h>
-#include <wx/spinbutt.h>
+#include <wx/spinctrl.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -26,13 +26,14 @@
 BEGIN_EVENT_TABLE(frmStatus, wxDialog)
     EVT_BUTTON(XRCID("btnRefresh"),         frmStatus::OnRefresh)
     EVT_BUTTON (XRCID("btnClose"),          frmStatus::OnClose)
-    EVT_SPIN(XRCID("spnRefreshRate"),       frmStatus::OnRateChange)
+    EVT_SPINCTRL(XRCID("spnRefreshRate"),   frmStatus::OnRateChange)
+    EVT_TEXT(XRCID("spnRefreshRate"),       frmStatus::OnRateChange)
     EVT_TIMER(TIMER_ID,                     frmStatus::OnRefresh)
 END_EVENT_TABLE();
 
 
 #define statusList      CTRL("lstStatus", wxListCtrl)
-#define spnRefreshRate  CTRL("spnRefreshRate", wxSpinButton)
+#define spnRefreshRate  CTRL("spnRefreshRate", wxSpinCtrl)
 
 void frmStatus::OnClose(wxCommandEvent &event)
 {
@@ -128,7 +129,8 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                 statusList->SetItem(row, 1, dataSet->GetVal(wxT("datname")));
                 statusList->SetItem(row, 2, dataSet->GetVal(wxT("usename")));
                 statusList->SetItem(row, 3, dataSet->GetVal(wxT("current_query")));
-        //            statusList->SetItem(row, 4, dataSet->GetVal(wxT("query_start")));
+                wxString query=dataSet->GetVal(wxT("query_start"));
+                statusList->SetItem(row, 4, query.Left(250));
 
                 row++;
             }
