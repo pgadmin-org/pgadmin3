@@ -9,10 +9,14 @@ else
     AC_MSG_RESULT(no)
 fi], [
     AC_MSG_RESULT(yes)
-    LIBPQ_HOME=/usr/local
+    LIBPQ_HOME=/usr/local/pgsql
     if test ! -f "${LIBPQ_HOME}/include/libpq-fe.h"
     then
-        LIBPQ_HOME=/usr
+        LIBPQ_HOME=/usr/local
+        if test ! -f "${LIBPQ_HOME}/include/libpq-fe.h"
+        then
+            LIBPQ_HOME=/usr
+        fi
     fi
 ])
 
@@ -56,10 +60,14 @@ else
     AC_MSG_RESULT(no)
 fi], [
     AC_MSG_RESULT(yes)
-    WX_HOME=/usr/local
+    WX_HOME=/usr/local/wx2
     if test ! -f "${WX_HOME}/include/wx/wx.h"
     then
-        WX_HOME=/usr
+        WX_HOME=/usr/local
+        if test ! -f "${WX_HOME}/include/wx/wx.h"
+        then
+            WX_HOME=/usr
+        fi
     fi
     ])
 
