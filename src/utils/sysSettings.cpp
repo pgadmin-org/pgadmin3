@@ -21,7 +21,11 @@
 #include "sysSettings.h"
 #include "sysLogger.h"
 
-sysSettings::sysSettings() : sysConfig(APPNAME)
+#ifdef _MSW_
+sysSettings::sysSettings() : sysConfig(APPNAME_L)
+#else
+sysSettings::sysSettings() : sysConfig(APPNAME_S)
+#endif
 {
     wxLogDebug(wxT("Creating sSettings object and loading settings"));
 

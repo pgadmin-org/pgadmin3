@@ -42,6 +42,10 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent = (wxWindow *) NULL, wxWindowID id = -1, c
     // SQL Lexer and keywords.
     this->SetLexer(wxSTC_LEX_SQL);
     this->SetKeyWords(0, SQL_KEYWORDS);
+
+    // Font
+    wxFont fntSQLBox(10, wxMODERN, wxNORMAL, wxNORMAL);
+    this->StyleSetFont(wxSTC_STYLE_DEFAULT, fntSQLBox);
     
 }
 

@@ -19,7 +19,8 @@
 
 // Application Version & Name
 #define VERSION wxT("1.0.0 Devel")
-#define APPNAME wxT("pgAdmin III")
+#define APPNAME_L wxT("pgAdmin III")
+#define APPNAME_S wxT("pgadmin3")
 
 // Class declarations
 class pgAdmin3 : public wxApp

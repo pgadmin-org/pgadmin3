@@ -38,7 +38,7 @@ bool pgAdmin3::OnInit()
     wxLog::SetActiveTarget(objLogger);
 
     wxString szMsg;
-    szMsg << "# " << APPNAME << " Version " << VERSION << " Startup";
+    szMsg << "# " << APPNAME_L << " Version " << VERSION << " Startup";
     wxLogInfo(wxT("##############################################################"));
     wxLogInfo(szMsg);
     wxLogInfo(wxT("##############################################################"));
@@ -52,14 +52,14 @@ bool pgAdmin3::OnInit()
 #ifdef _WXMSW_
     SetAuto3D(TRUE);
 #endif
-    SetAppName(APPNAME);
+    SetAppName(APPNAME_L);
 
 #ifndef _DEBUG
     wxSleep(2);
 #endif
 
     // Create & show the main form
-    winMain = new frmMain(APPNAME, wxPoint(objSettings->GetFrmMainLeft(), objSettings->GetFrmMainTop()), wxSize(objSettings->GetFrmMainWidth(), objSettings->GetFrmMainHeight()));
+    winMain = new frmMain(APPNAME_L, wxPoint(objSettings->GetFrmMainLeft(), objSettings->GetFrmMainTop()), wxSize(objSettings->GetFrmMainWidth(), objSettings->GetFrmMainHeight()));
     winMain->Show(TRUE);
     SetTopWindow(winMain);
     SetExitOnFrameDelete(TRUE);
