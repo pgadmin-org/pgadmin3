@@ -33,8 +33,9 @@ public:
     long GetPort();
     
 private:
-    void OK();
-    void Cancel();
+    pgServer *objParent;
+    void OnOK();
+    void OnCancel();
     DECLARE_EVENT_TABLE()
 };
 

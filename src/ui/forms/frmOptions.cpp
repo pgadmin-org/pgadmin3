@@ -23,9 +23,9 @@
 #include "../../images/pgAdmin3.xpm"
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
-  EVT_BUTTON (XRCID("btnOK"), frmOptions::OK)
-  EVT_BUTTON (XRCID("btnCancel"), frmOptions::Cancel)
-  EVT_BUTTON (XRCID("btnBrowseLogfile"), frmOptions::BrowseLogFile)
+  EVT_BUTTON (XRCID("btnOK"), frmOptions::OnOK)
+  EVT_BUTTON (XRCID("btnCancel"), frmOptions::OnCancel)
+  EVT_BUTTON (XRCID("btnBrowseLogfile"), frmOptions::OnBrowseLogFile)
 END_EVENT_TABLE()
 
 frmOptions::frmOptions(wxFrame *parent)
@@ -49,7 +49,7 @@ frmOptions::~frmOptions()
     wxLogInfo(wxT("Destroying an options dialogue"));
 }
 
-void frmOptions::OK()
+void frmOptions::OnOK()
 {
     extern sysSettings *objSettings;
 
@@ -83,12 +83,12 @@ void frmOptions::OK()
     this->Destroy();
 }
 
-void frmOptions::Cancel()
+void frmOptions::OnCancel()
 {
     this->Destroy();
 }
 
-void frmOptions::BrowseLogFile()
+void frmOptions::OnBrowseLogFile()
 {
     wxFileDialog dlgLogFile(this, wxT("Select log file"), wxT(""), wxT(""), wxT("Log files (*.log)|*.log|All files (*.*)|*.*"));
     dlgLogFile.SetDirectory(wxGetHomeDir());

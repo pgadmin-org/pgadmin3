@@ -47,18 +47,11 @@ int pgServer::Connect() {
 
     wxLogInfo(wxT("Getting connection details..."));
     frmConnect *winConnect = new frmConnect(this, szServer, szDatabase, szUsername, iPort);
-    ;
 
     if (winConnect->ShowModal() != 0) {
         delete winConnect;
         return PGCONN_ABORTED;
     }
-
-    szServer = winConnect->GetServer();
-    szDatabase = winConnect->GetDatabase();
-    szUsername = winConnect->GetUsername();
-    szPassword = winConnect->GetPassword();
-    iPort = winConnect->GetPort();
 
     wxLogInfo(wxT("Attempting to create a connection object..."));
     cnMaster = new pgConn(szServer, szDatabase, szUsername, szPassword, iPort);
@@ -86,7 +79,7 @@ wxString pgServer::GetServer() const
 {
     return szServer;
 }
-void pgServer::SetServer(const wxString& szNewVal)
+void pgServer::iSetServer(const wxString& szNewVal)
 {
     szServer = szNewVal;
 }
@@ -95,7 +88,7 @@ wxString pgServer::GetDatabase() const
 {
     return szDatabase;
 }
-void pgServer::SetDatabase(const wxString& szNewVal)
+void pgServer::iSetDatabase(const wxString& szNewVal)
 {
     szDatabase = szNewVal;
 }
@@ -104,7 +97,7 @@ wxString pgServer::GetUsername() const
 {
     return szUsername;
 }
-void pgServer::SetUsername(const wxString& szNewVal)
+void pgServer::iSetUsername(const wxString& szNewVal)
 {
     szUsername = szNewVal;
 }
@@ -113,7 +106,7 @@ wxString pgServer::GetPassword() const
 {
     return szPassword;
 }
-void pgServer::SetPassword(const wxString& szNewVal)
+void pgServer::iSetPassword(const wxString& szNewVal)
 {
     szPassword = szNewVal;
 }
@@ -122,7 +115,7 @@ int pgServer::GetPort()
 {
     return iPort;
 }
-void pgServer::SetPort(int iNewVal)
+void pgServer::iSetPort(int iNewVal)
 {
     iPort = iNewVal;
 }

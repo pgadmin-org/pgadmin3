@@ -25,8 +25,8 @@
 
 BEGIN_EVENT_TABLE(frmConnect, wxDialog)
     EVT_INIT_DIALOG(frmConnect::Init)
-    EVT_BUTTON (XRCID("btnOK"), frmConnect::OK)
-    EVT_BUTTON (XRCID("btnCancel"), frmConnect::Cancel)
+    EVT_BUTTON (XRCID("btnOK"), frmConnect::OnOK)
+    EVT_BUTTON (XRCID("btnCancel"), frmConnect::OnCancel)
 END_EVENT_TABLE()
 
 frmConnect::frmConnect(pgServer *parent, const wxString& szServer, const wxString& szDatabase, const wxString& szUsername, int iPort)
@@ -48,6 +48,8 @@ frmConnect::frmConnect(pgServer *parent, const wxString& szServer, const wxStrin
     wxString szPort;
     szPort.Printf("%d", iPort);
     XRCCTRL(*this, "txtPort", wxTextCtrl)->SetValue(szPort);
+
+    objParent = parent;
 }
 
 frmConnect::~frmConnect()
@@ -63,7 +65,7 @@ void frmConnect::Init()
     XRCCTRL(*this, "txtPassword", wxTextCtrl)->SetFocus();
 }
 
-void frmConnect::OK()
+void frmConnect::OnOK()
 {
     // Store the connection settings
     extern sysSettings *objSettings;
@@ -72,11 +74,18 @@ void frmConnect::OK()
     objSettings->SetLastUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
     objSettings->SetLastPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
 
+    // Pass the settings back to the pgServer that called me
+    objParent->iSetServer(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
+    objParent->iSetDatabase(XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue());
+    objParent->iSetUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
+    objParent->iSetPassword(XRCCTRL(*this, "txtPassword", wxTextCtrl)->GetValue());
+    objParent->iSetPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
+
     // Close the dialogue
     this->EndModal(0);
 }
 
-void frmConnect::Cancel()
+void frmConnect::OnCancel()
 {
     this->EndModal(1);
 }

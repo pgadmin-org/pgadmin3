@@ -25,9 +25,9 @@ public:
     ~frmOptions();
     
 private:
-    void OK();
-    void Cancel();
-    void BrowseLogFile();
+    void OnOK();
+    void OnCancel();
+    void OnBrowseLogFile();
     DECLARE_EVENT_TABLE()
 };
 

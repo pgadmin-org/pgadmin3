@@ -33,15 +33,16 @@ public:
     wxString GetIdentifier() const;
     wxString GetServerVersion();
     wxString GetServer() const;
-    void SetServer(const wxString& szNewVal);
     wxString GetDatabase() const;
-    void SetDatabase(const wxString& szNewVal);
     wxString GetUsername() const;
-    void SetUsername(const wxString& szNewVal);
     wxString GetPassword() const;
-    void SetPassword(const wxString& szNewVal);
-    void SetPort(int iNewVal);
     int GetPort();
+    void iSetServer(const wxString& szNewVal);
+    void iSetDatabase(const wxString& szNewVal);
+    void iSetUsername(const wxString& szNewVal);
+    void iSetPassword(const wxString& szNewVal);
+    void iSetPort(int iNewVal);
+
 
 private:
     wxString szServer, szDatabase, szUsername, szPassword, szVer;
