@@ -242,8 +242,8 @@ void dlgType::OnChange(wxNotifyEvent &ev)
         bool isComposite=!rdbType->GetSelection();
 
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
-        CheckValid(enable, !name.StartsWith(wxT("_")), wxT("Name may not start with '_'."));
+        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, !name.StartsWith(wxT("_")), _("Name may not start with '_'."));
 
         if (isComposite)
         {

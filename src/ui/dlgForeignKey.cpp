@@ -81,7 +81,7 @@ void dlgForeignKey::OnChange(wxNotifyEvent &ev)
     {
         bool enable=true;
         txtComment->Enable(!GetName().IsEmpty());
-        CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
+        CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         EnableOK(enable);
     }
 }

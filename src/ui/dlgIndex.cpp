@@ -187,7 +187,7 @@ void dlgIndex::OnChange(wxNotifyEvent &ev)
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
+        CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         EnableOK(enable);
     }
 }
