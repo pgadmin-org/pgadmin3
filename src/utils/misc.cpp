@@ -530,3 +530,23 @@ void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
         DisplayHelp(wnd, wxT("pg/") + helpTopic, icon);
 }
 
+
+#ifndef WIN32
+wxString ExecProcess(const wxString &cmd)
+{
+    wxString res;
+	FILE *f=popen(cmd.ToAscii(), "r");
+
+	if (f)
+	{
+		char buffer[1024];
+		int cnt;
+		while ((cnt = fread(buffer, 1, 1024, f)) > 0)
+		{
+			res += wxString::FromAscii(buffer);
+		}
+		pclose(f);
+	}
+	return res;
+}
+#endif

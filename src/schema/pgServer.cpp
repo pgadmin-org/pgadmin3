@@ -149,6 +149,9 @@ bool pgServer::StartService()
         else
             GetServerRunning();     // ignore result, just to wait for startup
     }
+#else
+	wxString res = ExecProcess(serviceId + wxT(" start"));
+	done = (res.Find(wxT("tarting")) > 0);
 #endif
     return done;
 }
@@ -170,9 +173,13 @@ bool pgServer::StopService()
                 serviceId.c_str(), rc);
         }
     }
+#else
+	wxString res = ExecProcess(serviceId + wxT(" stop"));
+	done = (res.Find(wxT("stopped")) > 0);
 #endif
     return done;
 }
+
 
 bool pgServer::GetServerRunning()
 {
@@ -202,6 +209,11 @@ bool pgServer::GetServerRunning()
                 break;
         }
     }
+#else
+
+	wxString res = ExecProcess(serviceId + wxT(" status"));
+	done = (res.Find(wxT("PID: ")) > 0);
+
 #endif
     return done;
 }
@@ -227,7 +239,7 @@ bool pgServer::GetServerControllable()
 #ifdef WIN32
     return serviceHandle != 0;
 #else
-    return false;
+    return !serviceId.IsEmpty();
 #endif
 }
 

@@ -133,6 +133,9 @@ bool FileWrite(const wxString &filename, const wxString &data, int format=-1);
 void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon=0);
 void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon=0);
 
+#ifndef WIN32
+wxString ExecProcess(const wxString &cmd);
+#endif
 
 
 enum        // depends on frmMain browserImages->Add order!
