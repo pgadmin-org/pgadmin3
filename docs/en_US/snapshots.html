@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link rel="STYLESHEET" type="text/css" href="pg/stylesheet.css">
   <title>pgAdmin3 CVS snapshots</title>
   <style>
@@ -49,41 +49,121 @@ div.Section1
 
   <a name="#deb">
   <h3>GNU/Linux Debian</h3>
-  Packager: Raphaël Enrici
-  <p>
-  	<ul>
-      <li>Binary packages
-      <p>
-      pgAdmin3 binary packages are compiled statically against wxGTK 2.5. Therefore there is not need to install wxGTK 2.5 libraries. pgAdmin3 binaries are compiled with Unicode and debugging mode and linked against GTK2. The binaries are localised in several languages and include the latest PostgreSQL documentation.
-      </p>
+  Packager: RaphaÃ«l Enrici<br>
 
-      <p>
-			The packages are available on pgAdmin apt repository, if you want to install pgAdmin3 on a Debian subsystem please follow these instructions :
-      </p>
+  The packages are available from pgAdmin apt repository.
+  If you want to install pgAdmin3 on a Debian subsystem
+  please follow these instructions :
 
-      <ol>
-      	<li>Debian WOODY
-				<br>
-        edit /etc/apt/sources.list and add the following line :<br>
-        deb http://www.pgadmin.org/snapshots/linux/debian woody pgadmin<br>
-				<br>
-        Then do this as root:<br>
-        apt-get update<br>
-        apt-get install pgadmin3<br>
-				<br>
-        <li>Others (testing/unstable) will come soon
-      </ol>
-
+    <ul>
+      <li>APT Configuration<br>
+      Edit /etc/apt/sources.list and add the following line:
       <br>
-      <li>wxGTK 2.5 libraries
-      	<p>
-        The libraries will be available soon in .deb format.</p>
-       </li>
-    </ul>
-  </p><br>
+      <ul>
+        <li>For Debian WOODY:<br>
+        # deb http://www.pgadmin.org/snapshots/linux/debian woody pgadmin
+        <br>
+
+        <li>For Debian TESTING:<br>
+        # deb http://www.pgadmin.org/snapshots/linux/debian testing pgadmin
+        <br>
+
+        <li>For Debian UNSTABLE:<br>
+        deb http://www.pgadmin.org/snapshots/linux/debian unstable pgadmin
+      </ul>
+      <br>
+
+      <li>Installation<br>
+      After you configured you sources.list as mentioned above,
+      simply do this as root:
+      <br>
+      # apt-get update<br>
+      # apt-get install pgadmin3<br>
+      Launch the software by typing "pgadmin3" and have fun!
+      Please, feel free to report any problem to
+      <a href="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers list</a>.
+      Thanks!
+      <br><br>
+
+      <li>DEVELOPERS' CORNER<br>
+      If you want to get the source packages simply modify your /etc/apt/sources.list:
+      <ul>
+        <li>For Debian WOODY:<br>
+        # deb-src http://www.pgadmin.org/snapshots/linux/debian woody pgadmin
+        <br>
+
+        <li>For Debian TESTING:<br>
+        # deb-src http://www.pgadmin.org/snapshots/linux/debian testing pgadmin
+        <br>
+
+        <li>For Debian UNSTABLE:<br>
+        # deb-src http://www.pgadmin.org/snapshots/linux/debian unstable pgadmin
+        <br>
+      </ul>
+      <br>
+
+        You may also want to check wxWindows 2.5 cvs version static packages
+        which were used to build pgadmin3 packages:
+        <br>
+        (PLEASE REMEMBER, THESE PACKAGES ARE REALLY EXPERIMENTAL,
+        THEY CAN BREAK YOUR SYSTEM!!  YOU HAVE BEEN WARNED!)
+        <br>
+
+        Binaries and sources are available for woody, testing and unstable:<br>
+
+        <ul>
+          <li>For Debian WOODY:<br>
+          # deb http://www.pgadmin.org/snapshots/linux/debian experimental/woody wxwindows-pgadmin3<br>
+          # deb-src http://www.pgadmin.org/snapshots/linux/debian experimental/woody wxwindows-pgadmin3<br>
+
+          <li>For Debian TESTING:<br>
+          # deb http://www.pgadmin.org/snapshots/linux/debian experimental/testing wxwindows-pgadmin3<br>
+          # deb-src http://www.pgadmin.org/snapshots/linux/debian experimental/testing wxwindows-pgadmin3<br>
+
+          <li>For Debian UNSTABLE:<br>
+          # deb http://www.pgadmin.org/snapshots/linux/debian experimental/unstable wxwindows-pgadmin3<br>
+        deb-src http://www.pgadmin.org/snapshots/linux/debian experimental/unstable wxwindows-pgadmin3<br>
+        </ul>
+        <br>
+
+        It contains the three following packages which were
+        used to build pgadmin3:<br>
+          <ul>
+            <li>pgadmin3-libwxgtk2ud2.5
+            <li>pgadmin3-libwxgtk2ud2.5-contrib
+            <li>pgadmin3-libwxgtk2ud2.5-dev
+          </ul>
+        <br>
+        And if you want sources of the three precedent packages:<br>
+        # deb-src http://www.pgadmin.org/snapshots/linux/debian experimental/woody wxwindows-pgadmin3<br>
+        <br>
+
+
+        <li>To compile and rebuild the pgadmin3 package:<br>
+        <ol>
+          <li>First, as root<br>
+          # apt-get update<br>
+          # apt-get build-dep pgadmin3 <br>
+          This should install pgadmin3-wxwindows* packages.<br>
+
+          <li>Then as a normal user<br>
+          Fetch the source
+          # apt-get source pgadmin3<br>
+          # cd pgadmin3-0.1.1<br>
+          Compile and build the package
+          # dpkg-buildpackage -rfakeroot<br>
+          # cd .. ; ls *.deb<br>
+
+          <li>Or as root (not recommended)<br>
+          Fetch,compile & build the package<br>
+          # apt-get --compile source pgadmin3<br>
+        </ol>
+  Any comments are welcome.<br>
+  </ul>
+  <br>
 
 <a name="#rpm">
-	<h3>GNU/Linux Mandrake 9.1, RedHat 9, SuSE 8.0</h3>
+	<h3>GNU/Linux Mandrake 9.1, RedHat 9, SuSE 8.2</h3>
   Packager: Jean-Michel POURE
   <p>
   	<ul>
@@ -155,7 +235,7 @@ div.Section1
         find that the <a href="unix_compilation.html">compilation instructions</a>
         detail the exact steps required.</span></p>
        </li>
-    </ul>
+    </ol>
   </p><br>
 
   <a name="#freebsd">
