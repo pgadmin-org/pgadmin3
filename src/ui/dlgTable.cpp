@@ -54,6 +54,7 @@
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgTable::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgTable::OnChange)
+    EVT_CHECKBOX(XRCID("chkHasOids"),               dlgTable::OnChange)
     EVT_COMBOBOX(XRCID("cbOwner"),                  dlgTable::OnChange)
     EVT_BUTTON(XRCID("btnAddTable"),                dlgTable::OnAddTable)
     EVT_BUTTON(XRCID("btnRemoveTable"),             dlgTable::OnRemoveTable)
@@ -121,10 +122,9 @@ int dlgTable::Go(bool modal)
         btnAddTable->Disable();
         lbTables->Disable();
         cbTables->Disable();
+        chkHasOids->Disable();
 
         txtOID->Disable();
-        stHasOids->Disable();
-        chkHasOids->Disable();
 
         long cookie;
         pgObject *data=0;
@@ -313,10 +313,10 @@ wxString dlgTable::GetSql()
                 +  wxT(" RENAME TO ") + qtIdent(GetName())
                 +  wxT(";\n");
 
-
         if (cbOwner->GetValue() != table->GetOwner())
             sql += wxT("ALTER TABLE ") + tabname 
-                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue());
+                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+                + wxT(";\n");
 
 
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
@@ -346,15 +346,20 @@ wxString dlgTable::GetSql()
 
         for (pos=0; pos < lstConstraints->GetItemCount() ; pos++)
         {
-            definition=qtIdent(lstConstraints->GetItemText(pos)) 
-                        + wxT(" ") + GetItemConstraintType(lstConstraints, pos) 
+            wxString conname= qtIdent(lstConstraints->GetItemText(pos));
+            if (!conname.IsEmpty())
+                definition = conname;
+            definition += wxT(" ") + GetItemConstraintType(lstConstraints, pos) 
                         + wxT(" ") + GetListText(lstConstraints, pos, 1);
             index=tmpDef.Index(definition);
             if (index >= 0)
                 tmpDef.RemoveAt(index);
             else
                 sql += wxT("ALTER TABLE ") + tabname
-                    +  wxT(" ADD CONSTRAINT ") + definition + wxT(";\n");
+                    +  wxT(" ADD");
+            AppendIfFilled(sql, wxT(" CONSTRAINT "), conname);
+
+            sql += wxT(" ") + definition + wxT(";\n");
         }
 
         for (index=0 ; index < (int)tmpDef.GetCount() ; index++)
@@ -366,6 +371,11 @@ wxString dlgTable::GetSql()
                 definition = definition.BeforeFirst(' ');
             sql += wxT("ALTER TABLE ") + tabname
                 +  wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n");
+        }
+        if (hasPK && chkHasOids->GetValue() != table->GetHasOids())
+        {
+            sql += wxT("ALTER TABLE ") + tabname 
+                +  wxT(" WITHOUT OIDS;\n");
         }
     }
     else
@@ -424,6 +434,11 @@ wxString dlgTable::GetSql()
             sql += wxT(")\n");
         }
         sql += (chkHasOids->GetValue() ? wxT("WITH OIDS;\n") : wxT("WITHOUT OIDS;\n"));
+
+        if (cbOwner->GetSelection() > 0)
+            sql += wxT("ALTER TABLE ") + tabname 
+                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+                + wxT(";\n");
     }
     AppendComment(sql, wxT("TABLE"), schema, table);
     sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + tabname);
@@ -437,6 +452,8 @@ void dlgTable::FillConstraint()
     cbConstrType->Clear();
     if (!hasPK)
         cbConstrType->Append(_("Primary Key"));
+
+//    chkHasOids->Enable(!table || (table && table->GetHasOids() && hasPK && connection->BackendMinimumVersion(7, 4)));
     cbConstrType->Append(_("Foreign Key"));
     cbConstrType->Append(_("Unique"));
     cbConstrType->Append(_("Check"));
@@ -466,6 +483,7 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
             if (GetName() != table->GetName() ||
                 txtComment->GetValue() != table->GetComment() ||
                 cbOwner->GetValue() != table->GetOwner())
+//                 (hasPK && chkHasOids->GetValue() != table->GetHasOids())
                 changed=true;
             else
                 changed = !GetSql().IsEmpty();
