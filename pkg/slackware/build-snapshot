@@ -55,6 +55,7 @@ if [ -x src/pgadmin3 ]; then
 
 	# Build the snapshot and file it.
 	cd slackpack
+        /usr/bin/strip usr/bin/pgadmin3
 	/sbin/makepkg --chown y pgadmin3.tgz 
 	if [ -e pgadmin3.tgz ]; then
 		cp pgadmin3.tgz /usr/local/apache/htdocs/snapshots/linux/slackware9/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
