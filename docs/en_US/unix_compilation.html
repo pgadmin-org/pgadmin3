@@ -12,12 +12,18 @@
 
 <p>
 If you plan to contribute code, pgAdmin3 requires wxWindows from CVS version &gt;
-20030607. Use a recent GNU/Linux distro because GTK2.2 is needed. You will also need
-a copy of PostgreSQL on your development system. 
+20030607. Use a recent GNU/Linux distro because recent versions of GTK2.2, automake and autoconf
+are needed. You will also need a copy of PostgreSQL on your development system.
 
 <ol>
-<li>Install wxWindows from source as follows:<br><blockquote><pre>	
-# cd &lt;wx source directory&gt;
+<li>Download the latest wxWindows source tarball:<br><blockquote><pre>
+# wx_version=$(date +%Y%m%d)
+# wget http://wxwindows.sourceforge.net/snapshots/wx-cvs-$wx_version.tar.bz2
+# tar -zjf wx-cvs-$wx_version.tar.bz2
+</pre></blockquote>&nbsp;</li>
+
+<li>Install wxWindows from source as follows:<br><blockquote><pre>
+# cd &lt;wx wx-cvs-$wx_version&gt;
 # ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
 # make
 # make install
