@@ -117,7 +117,7 @@ pgObject *pgGroup::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     pgGroup *group=0;
 
     pgSet *groups= collection->GetServer()->ExecuteSet(wxT(
-        "SELECT * from pg_group") + restriction);
+        "SELECT * from pg_group") + restriction + wxT(" ORDER BY groname"));
 
     if (groups)
     {

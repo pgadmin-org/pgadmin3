@@ -167,7 +167,7 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
         tabname=wxT("pg_user");
 
     pgSet *users = collection->GetServer()->ExecuteSet(wxT(
-        "SELECT * FROM ") + tabname + restriction);
+        "SELECT * FROM ") + tabname + restriction + wxT(" ORDER BY usename"));
 
     if (users)
     {
