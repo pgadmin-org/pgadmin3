@@ -141,8 +141,7 @@ int dlgConversion::Go(bool modal)
 pgObject *dlgConversion::CreateObject(pgCollection *collection)
 {
     pgObject *obj=pgConversion::ReadObjects(collection, 0,
-         wxT("\n WHERE conname = ") + qtString(GetName()) +
-         wxT("\n   AND connamespace = ") + schema->GetOidStr());
+         wxT("\n AND conname = ") + qtString(GetName()));
 
     return obj;
 }
