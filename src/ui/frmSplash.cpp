@@ -39,10 +39,10 @@ frmSplash::frmSplash(wxFrame *parent)
     splash = wxBitmap(splash_xpm);
     
     SetClientSize(splash.GetWidth(), splash.GetHeight());
-    wxString version = wxT(" Version: " VERSION " ");
+    wxString version = wxT(" "VERSION" ("__DATE__") ");
 
-    (void)new wxPanel(this, -1, wxPoint(10,155), wxSize(0,0));
-	(void)new wxStaticText(this, -1, version, wxPoint(10,155));
+    (void)new wxPanel(this, -1, wxPoint(7,155), wxSize(0,0));
+	(void)new wxStaticText(this, -1, version, wxPoint(7,155));
     Center();
 }
 

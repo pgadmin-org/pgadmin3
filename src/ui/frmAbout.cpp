@@ -39,11 +39,11 @@ frmAbout::frmAbout(wxFrame *parent)
     about = wxBitmap(splash_xpm);
 
     SetClientSize(about.GetWidth(), about.GetHeight());
-    wxString version = wxT(" Version: " VERSION " " __DATE__ " ");
+    wxString version = wxT(" "VERSION" ("__DATE__") ");
 
     // Creating a 0 size panel is the only way to position the static text on unix. If you know a better way..!
-	(void)new wxPanel(this, -1, wxPoint(10,155), wxSize(0,0));
-	(void)new wxStaticText(this, -1, version, wxPoint(10,155));
+	(void)new wxPanel(this, -1, wxPoint(7,155), wxSize(0,0));
+	(void)new wxStaticText(this, -1, version, wxPoint(7,155));
 	this->Center();
 }
 
