@@ -28,6 +28,7 @@ public:
     pgDomain(pgSchema *newSchema, const wxString& newName = wxString(""));
     ~pgDomain();
 
+    int GetIcon() { return PGICON_DOMAIN; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
     wxString GetBasetype() const { return basetype; }
@@ -53,9 +54,9 @@ public:
 
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString basetype, defaultVal, delimiter;
     long length, precision, dimensions;
     long typlen, typmod;

@@ -41,6 +41,7 @@ public:
 	
     wxString ColName(int col) const { return wxString(PQfname(res, col)); }
 
+    Oid ColTypeOid(int col) const;
     wxString ColType(int col) const;
     int ColSize(int col) const { return PQfsize(res, col); }
     int ColScale(int col) const;

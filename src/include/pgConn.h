@@ -49,7 +49,7 @@ class pgConn
 public:
     pgConn(const wxString& server = wxString(""), const wxString& database = wxString(""), const wxString& username = wxString(""), const wxString& password = wxString(""), int port = 5432);
     ~pgConn();
-    int ExecuteVoid(const wxString& sql);
+    bool ExecuteVoid(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
     wxString GetUser() const { return wxString(PQuser(conn)); }

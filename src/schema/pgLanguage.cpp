@@ -20,7 +20,7 @@
 #include "frmMain.h"
 
 pgLanguage::pgLanguage(const wxString& newName)
-: pgObject(PG_LANGUAGE, newName)
+: pgDatabaseObject(PG_LANGUAGE, newName)
 {
     wxLogInfo(wxT("Creating a pgLanguage object"));
 }
@@ -101,7 +101,7 @@ pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
         {
 
             language = new pgLanguage(languages->GetVal(wxT("lanname")));
-            language->SetDatabase(collection->GetDatabase());
+            language->iSetDatabase(collection->GetDatabase());
             language->iSetOid(languages->GetOid(wxT("oid")));
             language->iSetAcl(languages->GetVal(wxT("lanacl")));
             language->iSetHandlerProc(languages->GetVal(wxT("lanproc")));

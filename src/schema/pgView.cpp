@@ -192,7 +192,7 @@ gotToken:
         sql = wxT("CREATE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
             + fc
             + wxT("\n\n") 
-            + GetGrant(wxT("View"))
+            + GetGrant(wxT("Table"))
             + GetCommentSql();
     }
     return sql;

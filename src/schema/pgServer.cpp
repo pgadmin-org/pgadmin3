@@ -175,8 +175,8 @@ bool pgServer::SetPassword(const wxString& newVal)
 {
     wxString sql;
     sql.Printf(wxT("ALTER USER %s WITH PASSWORD %s;"), qtIdent(username).c_str(), qtString(newVal).c_str());
-    int x = conn->ExecuteVoid(sql);
-    if (x == PGCONN_COMMAND_OK) {
+    bool executed = conn->ExecuteVoid(sql);
+    if (executed) {
         password = newVal;
         return TRUE;
     } else {

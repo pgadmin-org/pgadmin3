@@ -199,11 +199,14 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         if (GetHasOids())
             sql += wxT("WITH OIDS;\n");
         else
-            sql += wxT("WITHOUT OIDS;\n\n");
+            sql += wxT("WITHOUT OIDS;\n")
+                + GetGrant() 
+                + wxT("\n\n");
 
         // add indexes here
 
         // add triggers here 
+
 
     }
     return sql;

@@ -21,7 +21,7 @@
 #include "pgServer.h"
 
 // Class declarations
-class pgUser : public pgObject
+class pgUser : public pgServerObject
 {
 public:
     pgUser(const wxString& newName = wxString(""));
@@ -29,7 +29,6 @@ public:
 
 
     // User Specific
-    void iSetServer(pgServer *s) { server=s; }
     long GetUserId() const { return userId; }
     void iSetUserId(const long l) { userId=l; }
     wxString GetAccountExpires() const { return accountExpires; }
@@ -43,18 +42,24 @@ public:
     bool GetUpdateCatalog() const { return updateCatalog; }
     void iSetUpdateCatalog(const bool b) { updateCatalog=b; }
 
+    // Tree object creation
+    int GetIcon() { return PGICON_USER; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
-
+    
+    // virtual methods
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    bool CanCreate() { return true; }
+    bool CanDrop() { return true; }
+    bool CanEdit() { return true; }
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString accountExpires, password;
     bool createDatabase, superuser, updateCatalog;
     long userId;
-    pgServer *server;
 };
 
 #endif

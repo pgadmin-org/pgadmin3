@@ -90,6 +90,70 @@ void pgCollection::UpdateChildCount(wxTreeCtrl *browser, int substract)
 }
 
 
+bool pgCollection::CanCreate()
+{
+    switch (GetType())
+    {
+        case PG_USERS:
+        case PG_GROUPS:
+        case PG_DATABASES:
+        case PG_CASTS:
+        case PG_LANGUAGES:
+        case PG_SCHEMAS:
+        case PG_AGGREGATES:
+        case PG_CONVERSIONS:
+        case PG_FUNCTIONS:
+        case PG_TRIGGERFUNCTIONS:
+        case PG_OPERATORS:
+        case PG_OPERATORCLASSES:
+        case PG_SEQUENCES:
+        case PG_TABLES:
+        case PG_TYPES:
+        case PG_VIEWS:
+        case PG_CHECKS:
+        case PG_COLUMNS:
+        case PG_FOREIGNKEYS:
+        case PG_INDEXES:
+        case PG_RULES:
+        case PG_TRIGGERS:
+            return true;
+        default:
+            return false;
+    }
+}
+
+
+int pgCollection::GetIcon()
+{
+    switch (GetType())
+    {
+        case PG_SERVERS:            return PGICON_SERVER;
+        case PG_USERS:              return PGICON_USER;
+        case PG_GROUPS:             return PGICON_GROUP;
+        case PG_DATABASES:          return PGICON_DATABASE;
+        case PG_CASTS:              return PGICON_CAST;
+        case PG_LANGUAGES:          return PGICON_LANGUAGE;
+        case PG_SCHEMAS:            return PGICON_SCHEMA;
+        case PG_AGGREGATES:         return PGICON_AGGREGATE;
+        case PG_CONVERSIONS:        return PGICON_CONVERSION;
+        case PG_FUNCTIONS:          return PGICON_FUNCTION;
+        case PG_TRIGGERFUNCTIONS:   return PGICON_TRIGGERFUNCTION;
+        case PG_OPERATORS:          return PGICON_OPERATOR;
+        case PG_OPERATORCLASSES:    return PGICON_OPERATORCLASS;
+        case PG_SEQUENCES:          return PGICON_SEQUENCE;
+        case PG_TABLES:             return PGICON_TABLE;
+        case PG_TYPES:              return PGICON_TYPE;
+        case PG_VIEWS:              return PGICON_VIEW;
+        case PG_CHECKS:             return PGICON_CHECK;
+        case PG_COLUMNS:            return PGICON_COLUMN;
+        case PG_FOREIGNKEYS:        return PGICON_KEY;
+        case PG_INDEXES:            return PGICON_INDEX;
+        case PG_RULES:              return PGICON_RULE;
+        case PG_TRIGGERS:           return PGICON_TRIGGER;
+        default:    return -1;
+    }
+}
+
 
 void pgCollection::SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, int index)
 {

@@ -17,7 +17,6 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgServer.h"
-#include "pgLanguage.h"
 #include "frmMain.h"
 
 
@@ -26,9 +25,9 @@ char *typeNameList[] =
 {
     "None",
     "Servers",          "Server",       "Add Server",
-    "Databases",        "Databases",    "Add Database",
-    "Groups",           "Groups",       "Add Group",
-    "Users",            "Users",        "Add User",
+    "Databases",        "Database",     "Add Database",
+    "Groups",           "Group",        "Add Group",
+    "Users",            "User",         "Add User",
     "Languages",        "Language",     "Add Language",
     "Schemas",          "Schema",       "Add Schema",
     "Aggregates",       "Aggregate",
@@ -148,10 +147,11 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
         while (acls.HasMoreTokens())
         {
             str=acls.GetNextToken();
+
             if (str.Left(1) == '"')
                 str = str.Mid(1, str.Length()-2);
             user=str.BeforeFirst('=');
-            str=str.Mid(user.Length()+1);
+            str=str.Mid(user.Length()+1).BeforeFirst('/');
             if (user == wxT(""))
                 user=wxT("public");
             else
@@ -166,11 +166,6 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
                 rights = wxT("ALL");
             else
             {
-                if (str.Find('a') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("INSERT"));
-                }
                 if (str.Find('r') >= 0) 
                 {
                     if (!rights.IsNull()) rights.Append(wxT(", "));
@@ -180,6 +175,11 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
                 {
                     if (!rights.IsNull()) rights.Append(wxT(", "));
                     rights.Append(wxT("UPDATE"));
+                }
+                if (str.Find('a') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("INSERT"));
                 }
                 if (str.Find('d') >= 0)
                 {
@@ -194,17 +194,32 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
                 if (str.Find('x') >= 0)
                 {
                     if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("REFERENCES"));
+                    rights.Append(wxT("REFERENCE"));
                 }
                 if (str.Find('t') >= 0)
                 {
                     if (!rights.IsNull()) rights.Append(wxT(", "));
                     rights.Append(wxT("TRIGGER"));
                 }
+                if (str.Find('X') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("EXECUTE"));
+                }
                 if (str.Find('U') >= 0)
                 {
                     if (!rights.IsNull()) rights.Append(wxT(", "));
                     rights.Append(wxT("USAGE"));
+                }
+                if (str.Find('C') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("CREATE"));
+                }
+                if (str.Find('T') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("TEMPORARY"));
                 }
             }
             if (rights.IsNull())    grant += wxT("REVOKE ALL");
@@ -225,6 +240,31 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
 }
 
 
+
+pgConn *pgObject::GetConnection()
+{
+    pgConn *conn=0;
+    pgDatabase *db;
+    switch (type)
+    {
+        case PG_USER:
+        case PG_USERS:
+        case PG_GROUP:
+        case PG_GROUPS:
+            conn=((pgServerObject*)this)->GetServer()->connection();
+            break;
+        default:
+            db=GetDatabase();
+            if (db)
+                conn=db->connection();
+            break;
+    }
+    return conn;    
+}
+
+
+
+
 pgDatabase *pgObject::GetDatabase()
 {
     pgDatabase *db=0;
@@ -233,6 +273,8 @@ pgDatabase *pgObject::GetDatabase()
         case PG_DATABASE:
             db=(pgDatabase*)this;
             break;
+        case PG_USERS:
+        case PG_GROUPS:
         case PG_LANGUAGES:
         case PG_SCHEMAS:
         case PG_AGGREGATES:
@@ -256,13 +298,11 @@ pgDatabase *pgObject::GetDatabase()
             db=((pgCollection*)this)->GetDatabase();
             break;
         case PG_LANGUAGE:
-            db=((pgLanguage*)this)->GetDatabase();
-            break;
         case PG_SCHEMA:
-            db=((pgSchema*)this)->GetDatabase();
+        case PG_CAST:
+            db=((pgDatabaseObject*)this)->GetDatabase();
             break;
         case PG_AGGREGATE:
-        case PG_CAST:
         case PG_CONVERSION:
         case PG_DOMAIN:
         case PG_FUNCTION:

@@ -21,7 +21,7 @@
 
 
 pgGroup::pgGroup(const wxString& newName)
-: pgObject(PG_GROUP, newName)
+: pgServerObject(PG_GROUP, newName)
 {
     wxLogInfo(wxT("Creating a pgGroup object"));
     memberCount=0;

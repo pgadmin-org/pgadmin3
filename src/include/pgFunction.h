@@ -29,12 +29,13 @@ public:
     ~pgFunction();
 
 
+    int GetIcon() { return PGICON_FUNCTION; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
 
     static pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
 
-    virtual bool IsTriggerFunction() const { return false; }
+    bool IsTriggerFunction() const { return returnType.IsSameAs(wxT("trigger")); }
 
     wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
     wxString GetArgTypes() const { return argTypes; }
@@ -74,7 +75,7 @@ class pgTriggerFunction : public pgFunction
 {
 public:
     pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxString(""));
-    virtual bool IsTriggerFunction() const { return true; }
+    int GetIcon() { return PGICON_TRIGGERFUNCTION; }
 };
 
 #endif

@@ -27,6 +27,8 @@ class pgCollection : public pgObject
 public:
     pgCollection(int newType = PG_NONE);
     ~pgCollection();
+    virtual bool IsCollection() const { return true; }
+
     pgServer *GetServer() const { return server; }
     void SetServer(pgServer *newServer) { server = newServer; }
     pgDatabase *GetDatabase() const { return database; }
@@ -40,15 +42,26 @@ public:
     void SetInfo(pgSchema *schema)
         { SetInfo(schema->GetDatabase()->GetServer(), schema->GetDatabase(), schema); }
 
+    int GetIcon();
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     void ShowList(const wxString& name, wxTreeCtrl *browser, wxListCtrl *properties);
     void UpdateChildCount(wxTreeCtrl *browser, int substract=0);
     void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index);
+    bool CanCreate();
 
 private:
     pgServer *server;
     pgDatabase *database;
     pgSchema *schema;
 };
+
+
+class pgServers: public pgCollection
+{
+public:
+    pgServers() : pgCollection(PG_SERVERS) {}
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0) {};
+};
+
 
 #endif

@@ -26,8 +26,9 @@ class frmMain;
 class pgDatabase;
 class pgSchema;
 class pgCollection;
+class pgConn;
 class pgSet;
-
+class pgServer;
 
 // This enum lists the type of objects that may be included in the treeview
 // as objects. If changing, update typeNameList[] as well.
@@ -87,7 +88,9 @@ public:
     void iSetComment(const wxString& newVal) { comment = newVal; }
     wxString GetAcl() const { return acl; }
     void iSetAcl(const wxString& newVal) { acl = newVal; }
-    virtual bool GetSystemObject() const { return FALSE; }
+    virtual bool GetSystemObject() const { return false; }
+    virtual bool IsCollection() const { return false; }
+
     void ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
 
 
@@ -99,12 +102,19 @@ public:
     wxString GetGrant(const wxString& grantFor=wxT(""), bool noOwner=false);
     wxString GetCommentSql();
     pgDatabase *GetDatabase();
+    pgConn *GetConnection();
 
     virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }
     virtual void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index) { return; }
     virtual wxString GetFullIdentifier() const { return GetName(); }
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(GetName()); }
+
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
+    virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
+    virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
+    virtual int GetIcon()=0;
+
+    virtual bool NeedCascadedDrop() { return false; }
     virtual bool CanCreate() { return false; }
     virtual bool CanView() { return false; }
     virtual bool CanEdit() { return false; }
@@ -137,6 +147,37 @@ private:
 };
 
 
+// Object that lives under a server
+class pgServerObject : public pgObject
+{
+public:
+    pgServerObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
+
+    void iSetServer(pgServer *s) { server=s; }
+    pgServer *GetServer() { return server; }
+
+protected:
+    pgServer *server;
+};
+
+
+
+// Object that lives in a database
+class pgDatabaseObject : public pgObject
+{
+public:
+    pgDatabaseObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
+
+    pgDatabase *GetDatabase() const {return database; }
+    void iSetDatabase(pgDatabase *newDatabase) { database = newDatabase; }
+
+protected:
+    pgDatabase *database;
+};
+
+
+
+// Object that lives in a schema
 class pgSchemaObject : public pgObject
 {
 public:

@@ -20,7 +20,7 @@
 #include "frmMain.h"
 
 pgCast::pgCast(const wxString& newName)
-: pgObject(PG_CAST, newName)
+: pgDatabaseObject(PG_CAST, newName)
 {
 }
 
@@ -103,6 +103,7 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             cast = new pgCast(name);
 
             cast->iSetOid(casts->GetOid(wxT("oid")));
+            cast->iSetDatabase(collection->GetDatabase());
             cast->iSetSourceType(casts->GetVal(wxT("srctyp")));
             cast->iSetTargetType(casts->GetVal(wxT("trgtyp")));
             cast->iSetCastFunction(casts->GetVal(wxT("proname")));

@@ -60,10 +60,17 @@ pgSet::~pgSet()
 }
 
 
+
+Oid pgSet::ColTypeOid(int col) const
+{
+    return PQftype(res, col);
+}
+
+
 wxString pgSet::ColType(int col) const
 {
     wxString szSQL, szResult;
-    szSQL.Printf("SELECT typname FROM pg_type WHERE oid = %d", PQftype(res, col));
+    szSQL.Printf("SELECT typname FROM pg_type WHERE oid = %d", ColTypeOid(col));
     szResult = ExecuteScalar(szSQL);
     return szResult;
 }

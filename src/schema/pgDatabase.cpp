@@ -22,7 +22,7 @@
 
 
 pgDatabase::pgDatabase(const wxString& newName)
-: pgObject(PG_DATABASE, newName)
+: pgServerObject(PG_DATABASE, newName)
 {
     wxLogInfo(wxT("Creating a pgDatabase object"));
 
@@ -179,7 +179,7 @@ void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
             while (!databases->Eof())
             {
                 database = new pgDatabase(databases->GetVal(wxT("datname")));
-                database->SetServer(collection->GetServer());
+                database->iSetServer(collection->GetServer());
                 database->iSetOid(databases->GetOid(wxT("oid")));
                 database->iSetOwner(databases->GetVal(wxT("datowner")));
                 database->iSetAcl(databases->GetVal(wxT("datacl")));

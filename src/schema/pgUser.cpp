@@ -21,7 +21,7 @@
 
 
 pgUser::pgUser(const wxString& newName)
-: pgObject(PG_USER, newName)
+: pgServerObject(PG_USER, newName)
 {
     wxLogInfo(wxT("Creating a pgUser object"));
 }
@@ -31,6 +31,12 @@ pgUser::~pgUser()
     wxLogInfo(wxT("Destroying a pgUser object"));
 }
 
+
+
+bool pgUser::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return server->ExecuteVoid(wxT("DROP USER ") + GetQuotedFullIdentifier());
+}
 
 
 wxString pgUser::GetSql(wxTreeCtrl *browser)

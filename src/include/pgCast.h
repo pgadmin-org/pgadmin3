@@ -22,7 +22,7 @@
 
 class pgCollection;
 
-class pgCast : public pgObject
+class pgCast : public pgDatabaseObject
 {
 public:
     pgCast(const wxString& newName = wxString(""));
@@ -30,6 +30,7 @@ public:
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+    int GetIcon() { return PGICON_CAST; }
 
     wxString GetSourceType() const { return sourceType; }
     void iSetSourceType(const wxString& s) { sourceType=s; }
@@ -45,9 +46,9 @@ public:
 
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString sourceType, targetType, castFunction, castContext, castNamespace;
 };
 

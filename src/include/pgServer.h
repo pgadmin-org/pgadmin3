@@ -18,15 +18,7 @@
 #include "pgAdmin3.h"
 #include "pgConn.h"
 #include "pgObject.h"
-
 // Class declarations
-
-class pgServers: public pgObject
-{
-public:
-    pgServers() : pgObject(PG_SERVERS, wxString("Servers")) {}
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0) {};
-};
 
 
 class pgServer : public pgObject
@@ -64,11 +56,17 @@ public:
     bool SetPassword(const wxString& newVal);
 
     void iSetPort(int newVal) { port = newVal; }
-    int ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
+    bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     pgSet *ExecuteSet(const wxString& sql) { 
 		return conn->ExecuteSet(sql); }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
+    int GetIcon() { return PGICON_SERVER; }
+
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser) { return true; }
+    bool CanDrop() { return true; }
+
+    pgConn *connection() { return conn; }
     
 private:
     pgConn *conn;

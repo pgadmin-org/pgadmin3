@@ -109,7 +109,7 @@ pgConn::~pgConn()
 // Execute SQL
 //////////////////////////////////////////////////////////////////////////
 
-int pgConn::ExecuteVoid(const wxString& sql)
+bool pgConn::ExecuteVoid(const wxString& sql)
 {
     // Execute the query and get the status.
     PGresult *qryRes;
@@ -126,7 +126,7 @@ int pgConn::ExecuteVoid(const wxString& sql)
 
     // Cleanup & exit
     PQclear(qryRes);
-    return res;
+    return res == PGRES_TUPLES_OK || res == PGRES_COMMAND_OK;
 }
 
 wxString pgConn::ExecuteScalar(const wxString& sql)

@@ -21,7 +21,7 @@
 
 
 pgSchema::pgSchema(const wxString& newName)
-: pgObject(PG_SCHEMA, newName)
+: pgDatabaseObject(PG_SCHEMA, newName)
 {
     wxLogInfo(wxT("Creating a pgSchema object"));
 }
@@ -169,7 +169,7 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
         {
 
             schema = new pgSchema(schemas->GetVal(wxT("nspname")));
-            schema->SetDatabase(collection->GetDatabase());
+            schema->iSetDatabase(collection->GetDatabase());
             schema->iSetOid(schemas->GetOid(wxT("oid")));
             schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
             schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
