@@ -74,8 +74,7 @@ frmOptions::~frmOptions()
     wxLogDebug(wxT("Destroying an options dialogue"));
 }
 
-void 
-frmOptions::OK()
+void frmOptions::OK()
 {
     extern sysSettings *objSettings;
 
@@ -109,14 +108,12 @@ frmOptions::OK()
     this->Destroy();
 }
 
-void 
-frmOptions::Cancel()
+void frmOptions::Cancel()
 {
     this->Destroy();
 }
 
-void 
-frmOptions::BrowseLogFile()
+void frmOptions::BrowseLogFile()
 {
     wxFileDialog dlgLogFile(this, wxT("Select log file"), wxT(""), wxT(""), wxT("Log files (*.log)|*.log|All files (*.*)|*.*"));
     dlgLogFile.SetDirectory(wxGetHomeDir());
