@@ -14,28 +14,37 @@ rm -rf ./src
 # CVS update
 /usr/bin/cvs update -d -C
 
-# Bootstrap and make a source tarball
+# Bootstrap
 /bin/sh bootstrap
-cd /usr/local/src
-/bin/tar czf /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz --exclude CVS --exclude autom4te.cache pgadmin3
-ln -s -f /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz /usr/local/apache/htdocs/pgadmin3-Alpha-src.tar.gz
-cd /usr/local/src/pgadmin3
 
-# Now the build
+# Configure for the local OS
 ./configure --with-pgsql=$PGDIR --with-wx=$WXDIR --enable-unicode --enable-gtk2 --enable-debug
+
+# Make and store the source tarball
+make dist
+if [ -e pgadmin3-0.1.1.tar.gz ]; then
+	mv pgadmin3-0.1.1.tar.gz /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz
+	ln -s -f /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz /usr/local/apache/htdocs/pgadmin3-Alpha-src.tar.gz
+fi
+
+# Now make the binary build
 make all
 /usr/bin/strip src/pgAdmin3
 
 # Build a clean distro
 if [ -x src/pgAdmin3 ]; then
-  mkdir ./pgadmin3
-  mkdir ./pgadmin3/ui
-  mkdir ./pgadmin3/ui/common
-  cp ./src/pgAdmin3 ./pgadmin3
-  cp ./src/tips.txt ./pgadmin3
-  cp ./src/ui/common/*.xrc ./pgadmin3/ui/common
+	mkdir -p ./pgadmin3/bin
+	mkdir -p ./pgadmin3/share/pgadmin3/ui/common
+	mkdir -p ./pgadmin3/share/pgadmin3/docs/en_US/pg
 
-  # Build the snapshot and file it.
-  /bin/tar czf /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz pgadmin3
+	cp ./src/pgAdmin3 ./pgadmin3/bin/
+	cp ./src/tips.txt ./pgadmin3/share/pgadmin3/
+	cp ./src/ui/common/*.xrc ./pgadmin3/share/pgadmin3/ui/common/
+	cp ./docs/en_US/pg/*.html ./pgadmin3/share/pgadmin3/docs/en_US/pg/
+	cp ./docs/en_US/pg/*.gif ./pgadmin3/share/pgadmin3/docs/en_US/pg/
+	cp ./docs/en_US/pg/*.css ./pgadmin3/share/pgadmin3/docs/en_US/pg/
+
+	# Build the snapshot and file it.
+	/bin/tar czf /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz pgadmin3
   ln -s -f /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz /usr/local/apache/htdocs/pgadmin3-Alpha-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz
 fi
