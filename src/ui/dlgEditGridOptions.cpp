@@ -254,7 +254,7 @@ bool dlgEditGridOptions::Validate()
 	filter->MarkerDeleteAll(0);
 	if (!filter->GetText().Trim().Length()) {
 		EndMsg();
-		return false;
+		return true;
 	}
 
 	wxString sql = wxT("EXPLAIN SELECT * FROM ") + relation + wxT(" WHERE ");
