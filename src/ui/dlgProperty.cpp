@@ -1016,7 +1016,7 @@ void dlgSecurityProperty::AddUsers(wxComboBox *comboBox)
     if (set)
     {
         if (cbGroups && settings->GetShowUsersForPrivileges())
-            stGroup->SetLabel(wxT("Group/User"));
+            stGroup->SetLabel(_("Group/User"));
 
         while (!set->Eof())
         {

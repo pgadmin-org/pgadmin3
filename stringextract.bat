@@ -46,4 +46,5 @@ wxrc -g src/ui/common/frmQBJoin.xrc | xgettext -k_ -k__ -L C -j -s -o pgadmin3.p
 wxrc -g src/ui/common/frmServer.xrc | xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot -
 wxrc -g src/ui/common/frmStatus.xrc | xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot -
 wxrc -g src/ui/common/frmVacuum.xrc | xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot -
+wxrc -g src/ui/common/frmExport.xrc | xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot -
 

@@ -192,6 +192,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     output->AddPage(sqlResult, _("Data Output"));
     output->AddPage(msgResult, _("Messages"));
+    //output->AddPage(msgHistory, _("History"));
 
     int splitpos=settings->Read(wxT("frmQuery/Split"), 250);
     if (splitpos < 50)
