@@ -18,7 +18,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 # Only with latest environments. Not needed. Will be deleted later.
 #Requires: gtk2 >= 2.2, glibc >= 2.3.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.2.1, libstdc++ >= 3.2.2, openssl >= 0.9.6, libtiff >= 3.5.7, zlib >= 1.1.4, glib2 >= 2.2.1, postgresql-libs >= 7.3.2, atk >= 1.2, freetype >= 2.1, fontconfig >= 2.1
 
-Requires: gtk2 >= 2.0, glibc >= 2.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.1, libstdc++ >= 3.2, openssl >= 0.9.6, libtiff >= 3.5.7, zlib >= 1.1.4, glib2 >= 2, postgresql-libs >= 7.3.2, atk >= 1, freetype >= 2.1, fontconfig >= 2
+#Requires: gtk2 >= 2.0, glibc >= 2.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.1, libstdc++ >= 3.2, openssl >= 0.9.6, libtiff >= 3.5.7, zlib >= 1.1.4, glib2 >= 2, postgresql-libs >= 7.3.2, atk >= 1, freetype >= 2.1, fontconfig >= 2
 
   
 # Suse: freetype2
@@ -28,7 +28,7 @@ Requires: gtk2 >= 2.0, glibc >= 2.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.1
 # RPM and SRPMs snapshots can be found on http://snake.pgadmin.org
 # in the directory of your distribution.
 # 
-BuildRequires: autoconf >= 2.57, automake >= 1.7.2, postgresql >= 7.3.2, postgresql-devel, postgresql-libs, wxGTK2ud-cvs >= 20030607, wxGTK2ud-cvs-devel, wxGTK2ud-cvs-stc, wxGTK2ud-cvs-xrc
+BuildRequires: autoconf >= 2.57, automake >= 1.7.2, wxGTK2ud-cvs >= 20030607, wxGTK2ud-cvs-devel, wxGTK2ud-cvs-stc, wxGTK2ud-cvs-xrc
 
 %description
 pgAdmin3 is the graphical administration interface of PostgreSQL.
