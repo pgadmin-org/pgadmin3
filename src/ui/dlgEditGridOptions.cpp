@@ -95,16 +95,16 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
 
 	for (pos = 0; pos < len; pos++) {
 		if (inColumn) {
-            if (sortCols[pos] == '"') inQuote = !inQuote;
-			if (!inQuote && sortCols[pos] == ' ')
+            if (sortCols.GetChar(pos) == '"') inQuote = !inQuote;
+			if (!inQuote && sortCols.GetChar(pos) == ' ')
 			    inColumn = false;
 			else
-				if (sortCols[pos] != '"') col += sortCols[pos];
+				if (sortCols.GetChar(pos) != '"') col += sortCols.GetChar(pos);
 		} else {
-			if (sortCols[pos] == ',') {
+			if (sortCols.GetChar(pos) == ',') {
 			    inColumn = true;
 			    lstSortCols->InsertItem(itm, col);
-				if (dir[0] == 'A') {
+				if (dir.GetChar(0) == 'A') {
 	                lstSortCols->SetItem(itm, 1, wxT("Ascending"));
 	                lstSortCols->SetItemData(itm, 0); 
 				} else {
@@ -116,7 +116,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
 				++pos;
 				++itm;
             } else {
-				dir += sortCols[pos];
+				dir += sortCols.GetChar(pos);
 			}
         }
 	}
@@ -124,7 +124,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
 	// Insert the last column
 	if (col.Length() > 0) {
 		lstSortCols->InsertItem(itm, col);
-		if (dir[0] == 'A') {
+		if (dir.GetChar(0) == 'A') {
 		    lstSortCols->SetItem(itm, 1, wxT("Ascending"));
 			lstSortCols->SetItemData(itm, 0); 
 		} else {
