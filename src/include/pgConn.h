@@ -63,13 +63,14 @@ public:
     int GetStatus() const;
     wxString GetLastError() const { return wxString(PQerrorMessage(conn), wxConvUTF8); }
     wxString GetVersionString();
-    float GetVersionNumber();
     long GetLastSystemOID();
+    bool BackendMinimumVersion(int major, int minor);
 
     PGconn *connection() { return conn; }
 private:
 
     PGconn *conn;
+    int minorVersion, majorVersion;
     bool resolvedIP;
     wxString dbHost;
 };

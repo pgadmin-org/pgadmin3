@@ -39,6 +39,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     struct hostent *host;
     unsigned long addr;
     conn=0;
+    majorVersion=0;
     
 #ifdef __WXMSW__
     struct in_addr ipaddr;
@@ -227,27 +228,20 @@ int pgConn::GetStatus() const
     }
 }
 
+
 wxString pgConn::GetVersionString()
 {
 	return ExecuteScalar(wxT("SELECT version();"));
 }
 
-float pgConn::GetVersionNumber()
+
+bool pgConn::BackendMinimumVersion(int major, int minor)
 {
-    int major, minor;
-    wxString version;
-
-    static wxString decsep;
-    if (decsep.Length() == 0) {
-        decsep.Printf(wxT("%lf"), 1.2);
-        decsep = decsep[(unsigned int)1];
+    if (!majorVersion)
+    {
+	    sscanf(GetVersionString().ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
     }
-
-	if (sscanf(GetVersionString().ToAscii(), "%*s %d.%d", &major, &minor) >= 2)
-	{
-		version.Printf(wxT("%d%s%d"), major, decsep.c_str(), minor);
-	}
-	return StrToDouble(version);
+	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
 }
 
 

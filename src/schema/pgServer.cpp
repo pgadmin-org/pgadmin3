@@ -30,7 +30,6 @@ pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const w
     port = newPort;
 
     connected = FALSE;
-    versionNum = 0.0;
     lastSystemOID = 0;
 
 	// Keith 2003.03.05
@@ -120,7 +119,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
     if (status == PGCONN_OK)
     {
         // Check the server version
-        if (conn->GetVersionNumber() >= SERVER_MIN_VERSION)
+        if (conn->BackendMinimumVersion(7, 3))
         {
             connected = TRUE;
             pgSet *set=ExecuteSet(wxT("SELECT usecreatedb, usesuper from pg_user where usename=current_user"));
@@ -167,16 +166,19 @@ wxString pgServer::GetVersionString()
 }
 
 
-float pgServer::GetVersionNumber()
+wxString pgServer::GetVersionNumber()
 {
-    if (connected) {
-      if (versionNum == 0) {
-          versionNum = conn->GetVersionNumber();
-      }
-      return versionNum;
-    } else {
-        return 0.0;
-    }
+    if (connected)
+    {
+        if (versionNum.IsEmpty())
+        {
+            int major=0, minor=0;
+            sscanf(GetVersionString().ToAscii(), "%*s %d.%d", &major, &minor);
+            versionNum.Printf(wxT("%d.%d"), major, minor);
+        }
+
+    } 
+    return versionNum;
 }
 
 

@@ -31,7 +31,7 @@ public:
     int Connect(wxFrame *form, bool lockFields = FALSE);
     wxString GetIdentifier() const;
     wxString GetVersionString();
-    float GetVersionNumber();
+    wxString GetVersionNumber();
     OID GetLastSystemOID();
     wxString GetDatabase() const { return database; }
     wxString GetUsername() const { return username; }
@@ -83,7 +83,7 @@ private:
     int port;
     bool trusted, createPrivilege, superUser;
     OID lastSystemOID;
-    float versionNum;
+    wxString versionNum;
     wxFrame *parentWin;
 };
 

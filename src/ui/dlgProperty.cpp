@@ -1148,7 +1148,7 @@ void dlgSecurityProperty::EnableOK(bool enable)
 
 bool dlgSecurityProperty::GrantAllowed() const
 {
-    if (connection->GetVersionNumber() < 7.4)
+    if (!connection->BackendMinimumVersion(7, 4))
         return false;
 
     wxString user=cbGroups->GetValue();

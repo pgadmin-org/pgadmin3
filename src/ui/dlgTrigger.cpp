@@ -106,7 +106,7 @@ int dlgTrigger::Go(bool modal)
             }
             delete set;
         }
-        if (connection->GetVersionNumber() <= 7.3)
+        if (!connection->BackendMinimumVersion(7, 4))
         {
             chkRow->SetValue(true);
             chkRow->Disable();
