@@ -276,7 +276,7 @@ void wxTimeSpinCtrl::DoSpin(int diff)
 }
 
 
-void wxTimeSpinCtrl::OnText(wxNotifyEvent &ev)
+void wxTimeSpinCtrl::OnText(wxCommandEvent &ev)
 {
     long time=GetTextTime();
     if (time >= 0)
@@ -360,8 +360,6 @@ long wxTimeSpinCtrl::GetTextTime()
 {
     int t1, t2, t3, t4;
     int scanned=wxSscanf(m_txt->GetValue(), wxT("%d:%d:%d:%d"), &t1, &t2, &t3, &t4);
-
-    long time=0;
 
     switch (scanned)
     {

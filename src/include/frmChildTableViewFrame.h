@@ -111,7 +111,7 @@ private:
 	// Events
 	void OnMove(wxMoveEvent& event);
 	void OnSize(wxSizeEvent& event);
-	void OnDoubleClick(wxCommandEvent& event);
+	void OnDoubleClick(wxListEvent& event);
 	void OnClose(wxCommandEvent& event);
 	void OnCloseWindow(wxCloseEvent& event);
 	void OnAddColumn(wxCommandEvent& event);

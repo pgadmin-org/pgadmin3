@@ -30,13 +30,13 @@ public:
 private:
     pgSchema *schema;
     pgType *type;
-    void OnChange(wxNotifyEvent &ev);
-    void OnTypeChange(wxNotifyEvent &ev);
-    void OnVarAdd(wxNotifyEvent &ev);
-    void OnVarRemove(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnTypeChange(wxCommandEvent &ev);
+    void OnVarAdd(wxCommandEvent &ev);
+    void OnVarRemove(wxCommandEvent &ev);
     void OnVarSelChange(wxListEvent &ev);
-    void OnSelChangeTyp(wxNotifyEvent &ev);
-    void OnChangeMember(wxNotifyEvent &ev);
+    void OnSelChangeTyp(wxCommandEvent &ev);
+    void OnChangeMember(wxCommandEvent &ev);
 
     void showDefinition(bool isComposite);
 

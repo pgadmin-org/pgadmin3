@@ -137,7 +137,7 @@ bool dlgRule::didChange()
 }
 
 
-void dlgRule::OnChange(wxNotifyEvent &ev)
+void dlgRule::OnChange(wxCommandEvent &ev)
 {
     wxString name=GetName();
     if (rule)

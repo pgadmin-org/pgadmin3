@@ -29,7 +29,7 @@ public:
     pgObject *GetObject();
 
 private:
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
 
     pgConversion *conversion;
     pgSchema *schema;

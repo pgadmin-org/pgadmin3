@@ -492,7 +492,7 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 }
 
 
-void dlgTable::OnChange(wxNotifyEvent &ev)
+void dlgTable::OnChange(wxCommandEvent &ev)
 {
     if (table)
     {
@@ -515,7 +515,7 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgTable::OnAddTable(wxNotifyEvent &ev)
+void dlgTable::OnAddTable(wxCommandEvent &ev)
 {
     int sel=cbTables->GetSelection();
     if (sel >= 0)
@@ -547,7 +547,7 @@ void dlgTable::OnAddTable(wxNotifyEvent &ev)
 }
 
 
-void dlgTable::OnRemoveTable(wxNotifyEvent &ev)
+void dlgTable::OnRemoveTable(wxCommandEvent &ev)
 {
     int sel=lbTables->GetSelection();
     if (sel >= 0)
@@ -571,13 +571,13 @@ void dlgTable::OnRemoveTable(wxNotifyEvent &ev)
 }
 
 
-void dlgTable::OnSelChangeTable(wxListEvent &ev)
+void dlgTable::OnSelChangeTable(wxCommandEvent &ev)
 {
     btnRemoveTable->Enable();
 }
 
 
-void dlgTable::OnChangeCol(wxNotifyEvent &ev)
+void dlgTable::OnChangeCol(wxCommandEvent &ev)
 {
     long pos=lstColumns->GetSelection();
     pgColumn *column=(pgColumn*) StrToLong(lstColumns->GetText(pos, 4));
@@ -596,7 +596,7 @@ void dlgTable::OnChangeCol(wxNotifyEvent &ev)
 }
 
 
-void dlgTable::OnAddCol(wxNotifyEvent &ev)
+void dlgTable::OnAddCol(wxCommandEvent &ev)
 {
     dlgColumn col(mainForm, NULL, table);
     col.CenterOnParent();
@@ -608,7 +608,7 @@ void dlgTable::OnAddCol(wxNotifyEvent &ev)
 }
 
 
-void dlgTable::OnRemoveCol(wxNotifyEvent &ev)
+void dlgTable::OnRemoveCol(wxCommandEvent &ev)
 {
     lstColumns->DeleteCurrentItem();
 
@@ -629,7 +629,7 @@ void dlgTable::OnSelChangeCol(wxListEvent &ev)
 }
 
 
-void dlgTable::OnAddConstr(wxNotifyEvent &ev)
+void dlgTable::OnAddConstr(wxCommandEvent &ev)
 {
     int sel=cbConstrType->GetSelection();
     if (hasPK)
@@ -687,7 +687,7 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
 }
 
 
-void dlgTable::OnRemoveConstr(wxNotifyEvent &ev)
+void dlgTable::OnRemoveConstr(wxCommandEvent &ev)
 {
     int pos=lstConstraints->GetSelection();
     if (pos < 0)

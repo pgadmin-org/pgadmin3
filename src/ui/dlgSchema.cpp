@@ -84,7 +84,7 @@ pgObject *dlgSchema::CreateObject(pgCollection *collection)
 }
 
 
-void dlgSchema::OnChange(wxNotifyEvent &ev)
+void dlgSchema::OnChange(wxCommandEvent &ev)
 {
     if (schema)
     {

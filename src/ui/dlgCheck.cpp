@@ -45,7 +45,7 @@ dlgCheck::dlgCheck(frmMain *frame, pgCheck *node, pgTable *parentNode)
 }
 
 
-void dlgCheck::OnCheckDeferrable(wxNotifyEvent &ev)
+void dlgCheck::OnCheckDeferrable(wxCommandEvent &ev)
 {
     bool canDef=chkDeferrable->GetValue();
     stDeferred->Enable(canDef);
@@ -55,7 +55,7 @@ void dlgCheck::OnCheckDeferrable(wxNotifyEvent &ev)
 }
 
 
-void dlgCheck::OnChange(wxNotifyEvent &ev)
+void dlgCheck::OnChange(wxCommandEvent &ev)
 {
     if (check)
     {

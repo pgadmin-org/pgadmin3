@@ -71,7 +71,7 @@ dlgForeignKey::dlgForeignKey(frmMain *frame, ctlListView *colList)
 }
 
 
-void dlgForeignKey::OnCheckDeferrable(wxNotifyEvent &ev)
+void dlgForeignKey::OnCheckDeferrable(wxCommandEvent &ev)
 {
     bool canDef=chkDeferrable->GetValue();
     stDeferred->Enable(canDef);
@@ -92,7 +92,7 @@ wxString dlgForeignKey::DefaultIndexName(const wxString &name)
 }
 
 
-void dlgForeignKey::OnChange(wxNotifyEvent &ev)
+void dlgForeignKey::OnChange(wxCommandEvent &ev)
 {
     if (processing)
         return;
@@ -175,19 +175,19 @@ void dlgForeignKey::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgForeignKey::OnSelChangeCol(wxNotifyEvent &ev)
+void dlgForeignKey::OnSelChangeCol(wxListEvent &ev)
 {
     btnRemoveRef->Enable();
 }
 
 
-void dlgForeignKey::OnSelChangeRefCol(wxNotifyEvent &ev)
+void dlgForeignKey::OnSelChangeRefCol(wxCommandEvent &ev)
 {
     btnAddRef->Enable(cbColumns->GetSelection() >= 0 && cbRefColumns->GetSelection() >= 0);
 }
 
 
-void dlgForeignKey::OnSelChangeRef(wxNotifyEvent &ev)
+void dlgForeignKey::OnSelChangeRef(wxCommandEvent &ev)
 {
     cbRefColumns->Clear();
 
@@ -222,7 +222,7 @@ void dlgForeignKey::OnSelChangeRef(wxNotifyEvent &ev)
 }
 
 
-void dlgForeignKey::OnAddRef(wxNotifyEvent &ev)
+void dlgForeignKey::OnAddRef(wxCommandEvent &ev)
 {
     wxString col=cbColumns->GetValue();
     wxString ref=cbRefColumns->GetValue();
@@ -240,7 +240,7 @@ void dlgForeignKey::OnAddRef(wxNotifyEvent &ev)
 }
 
 
-void dlgForeignKey::OnRemoveRef(wxNotifyEvent &ev)
+void dlgForeignKey::OnRemoveRef(wxCommandEvent &ev)
 {
     long pos=lstColumns->GetSelection();
 

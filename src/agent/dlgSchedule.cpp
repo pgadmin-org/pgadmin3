@@ -13,8 +13,6 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include "calbox.h"
-#include "timespin.h"
 
 // App headers
 #include "misc.h"
@@ -47,13 +45,13 @@ BEGIN_EVENT_TABLE(dlgSchedule, dlgOidProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgSchedule::OnChange)
     EVT_CHECKBOX(XRCID("chkEnabled"),               dlgSchedule::OnChange)
     EVT_COMBOBOX(XRCID("cbKind"),                   dlgSchedule::OnChangeKind)
-    EVT_SPIN(XRCID("timInterval"),                  dlgSchedule::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),     dlgSchedule::OnChange)
-    EVT_SPIN(XRCID("timStart"),                     dlgSchedule::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),       dlgSchedule::OnChange)
-    EVT_SPIN(XRCID("timEnd"),                       dlgSchedule::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calSchedule"),  dlgSchedule::OnChange)
-    EVT_SPIN(XRCID("timSchedule"),                  dlgSchedule::OnChange)
+    EVT_SPIN(XRCID("timInterval"),                  dlgSchedule::OnChangeSpin)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),     dlgSchedule::OnChangeCal)
+    EVT_SPIN(XRCID("timStart"),                     dlgSchedule::OnChangeSpin)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),       dlgSchedule::OnChangeCal)
+    EVT_SPIN(XRCID("timEnd"),                       dlgSchedule::OnChangeSpin)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calSchedule"),  dlgSchedule::OnChangeCal)
+    EVT_SPIN(XRCID("timSchedule"),                  dlgSchedule::OnChangeSpin)
     EVT_TEXT(XRCID("txtComment"),                   dlgSchedule::OnChange)
     EVT_LIST_ITEM_SELECTED(XRCID("lstIntervals"),   dlgSchedule::OnSelChangeInterval)
     EVT_BUTTON(XRCID("btnAddInterval"),             dlgSchedule::OnAddInterval)
@@ -132,7 +130,7 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 }
 
 
-void dlgSchedule::OnChangeKind(wxNotifyEvent &ev)
+void dlgSchedule::OnChangeKind(wxCommandEvent &ev)
 {
     switch (cbKind->GetSelection())
     {
@@ -170,8 +168,19 @@ void dlgSchedule::OnChangeKind(wxNotifyEvent &ev)
     OnChange(ev);
 }
 
+void dlgSchedule::OnChangeCal(wxCalendarEvent &ev)
+{
+    OnChange(*(wxCommandEvent*)&ev);
+}
 
-void dlgSchedule::OnChange(wxNotifyEvent &ev)
+
+void dlgSchedule::OnChangeSpin(wxSpinEvent &ev)
+{
+    OnChange(*(wxCommandEvent*)&ev);
+}
+
+
+void dlgSchedule::OnChange(wxCommandEvent &ev)
 {
     timEnd->Enable(calEnd->GetDate().IsValid());
 

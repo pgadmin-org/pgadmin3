@@ -13,8 +13,6 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include "calbox.h"
-#include "timespin.h"
 
 // Images
 #include "images/user.xpm"
@@ -48,8 +46,8 @@
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgUser::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("datValidUntil"),dlgUser::OnChange)
-    EVT_SPIN(XRCID("timValidUntil"),                dlgUser::OnChange)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("datValidUntil"),dlgUser::OnChangeCal)
+    EVT_SPIN(XRCID("timValidUntil"),                dlgUser::OnChangeSpin)
     
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsNotIn"),      dlgUser::OnGroupAdd)
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsIn"),         dlgUser::OnGroupRemove)
@@ -174,7 +172,19 @@ int dlgUser::Go(bool modal)
 }
 
 
-void dlgUser::OnChange(wxNotifyEvent &ev)
+void dlgUser::OnChangeCal(wxCalendarEvent &ev)
+{
+	OnChange(*(wxCommandEvent*)&ev);
+}
+
+
+void dlgUser::OnChangeSpin(wxSpinEvent &ev)
+{
+	OnChange(*(wxCommandEvent*)&ev);
+}
+
+
+void dlgUser::OnChange(wxCommandEvent &ev)
 {
     bool timEn=datValidUntil->GetDate().IsValid();
     timValidUntil->Enable(timEn);
@@ -196,7 +206,7 @@ void dlgUser::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgUser::OnGroupAdd(wxNotifyEvent &ev)
+void dlgUser::OnGroupAdd(wxCommandEvent &ev)
 {
     if (!readOnly)
     {
@@ -211,7 +221,7 @@ void dlgUser::OnGroupAdd(wxNotifyEvent &ev)
 }
 
 
-void dlgUser::OnGroupRemove(wxNotifyEvent &ev)
+void dlgUser::OnGroupRemove(wxCommandEvent &ev)
 {
     if (!readOnly)
     {
@@ -226,7 +236,7 @@ void dlgUser::OnGroupRemove(wxNotifyEvent &ev)
 }
 
 
-void dlgUser::OnVarnameSelChange(wxNotifyEvent &ev)
+void dlgUser::OnVarnameSelChange(wxCommandEvent &ev)
 {
     int sel=cbVarname->GetSelection();
     if (sel >= 0)
@@ -268,7 +278,7 @@ void dlgUser::OnVarSelChange(wxListEvent &ev)
 }
 
 
-void dlgUser::OnVarAdd(wxNotifyEvent &ev)
+void dlgUser::OnVarAdd(wxCommandEvent &ev)
 {
     wxString name=cbVarname->GetValue();
     wxString value;
@@ -294,7 +304,7 @@ void dlgUser::OnVarAdd(wxNotifyEvent &ev)
 }
 
 
-void dlgUser::OnVarRemove(wxNotifyEvent &ev)
+void dlgUser::OnVarRemove(wxCommandEvent &ev)
 {
     lstVariables->DeleteCurrentItem();
     OnChange(ev);

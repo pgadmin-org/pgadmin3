@@ -124,7 +124,7 @@ pgObject *dlgStep::CreateObject(pgCollection *collection)
 }
 
 
-void dlgStep::OnChange(wxNotifyEvent &ev)
+void dlgStep::OnChange(wxCommandEvent &ev)
 {
     wxString name=GetName();
     bool enable;

@@ -67,8 +67,8 @@ protected:
     void AppendQuoted(wxString &sql, const wxString &name);
 
     void OnPageSelect(wxNotebookEvent& event);
-    void OnOK(wxNotifyEvent &ev);
-    void OnCancel(wxNotifyEvent &ev);
+    void OnOK(wxCommandEvent &ev);
+    void OnCancel(wxCommandEvent &ev);
     void OnClose(wxCloseEvent &ev);
 
 
@@ -152,8 +152,8 @@ protected:
 
 private:
     void OnPrivSelChange(wxListEvent &ev);
-    void OnAddPriv(wxNotifyEvent& ev);
-    void OnDelPriv(wxNotifyEvent& ev);
+    void OnAddPriv(wxCommandEvent& ev);
+    void OnDelPriv(wxCommandEvent& ev);
     void OnPrivCheck(wxCommandEvent& ev);
     void OnPrivCheckAll(wxCommandEvent& ev);
     void OnPrivCheckAllGrant(wxCommandEvent& ev);
@@ -182,7 +182,7 @@ public:
 
 protected:
     dlgOidProperty(frmMain *frame, const wxString &resName);
-    void OnOK(wxNotifyEvent &ev);
+    void OnOK(wxCommandEvent &ev);
     bool executeSql();
     virtual wxString GetInsertSql() =0;
     virtual wxString GetUpdateSql() =0;

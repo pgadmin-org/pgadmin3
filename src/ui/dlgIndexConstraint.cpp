@@ -81,7 +81,7 @@ wxString dlgIndexConstraint::GetDefinition()
 }
 
 
-void dlgIndexConstraint::OnCheckDeferrable(wxNotifyEvent &ev)
+void dlgIndexConstraint::OnCheckDeferrable(wxCommandEvent &ev)
 {
     bool canDef=chkDeferrable->GetValue();
     stDeferred->Enable(canDef);

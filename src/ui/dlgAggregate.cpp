@@ -114,7 +114,7 @@ pgObject *dlgAggregate::CreateObject(pgCollection *collection)
 }
 
 
-void dlgAggregate::OnChange(wxNotifyEvent &ev)
+void dlgAggregate::OnChange(wxCommandEvent &ev)
 {
     if (aggregate)
     {
@@ -134,7 +134,7 @@ void dlgAggregate::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgAggregate::OnChangeType(wxNotifyEvent &ev)
+void dlgAggregate::OnChangeType(wxCommandEvent &ev)
 {
     procedures.Clear();
     cbStateFunc->Clear();

@@ -72,7 +72,7 @@ private:
     void OnText(wxCommandEvent &ev);
     void OnEditKey(wxKeyEvent & event);
     void OnCalKey(wxKeyEvent & event);
-    void OnClick(wxMouseEvent &ev);
+    void OnClick(wxCommandEvent &ev);
     void OnSelChange(wxCalendarEvent &ev);
     void OnSetFocus(wxFocusEvent &ev);
     void OnKillFocus(wxFocusEvent &ev);

@@ -101,7 +101,7 @@ int dlgGroup::Go(bool modal)
 }
 
 
-void dlgGroup::OnChange(wxNotifyEvent &ev)
+void dlgGroup::OnChange(wxCommandEvent &ev)
 {
     if (group)
     {
@@ -119,7 +119,7 @@ void dlgGroup::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgGroup::OnUserAdd(wxNotifyEvent &ev)
+void dlgGroup::OnUserAdd(wxCommandEvent &ev)
 {
     if (!readOnly)
     {
@@ -134,7 +134,7 @@ void dlgGroup::OnUserAdd(wxNotifyEvent &ev)
 }
 
 
-void dlgGroup::OnUserRemove(wxNotifyEvent &ev)
+void dlgGroup::OnUserRemove(wxCommandEvent &ev)
 {
     if (!readOnly)
     {

@@ -84,7 +84,8 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 	// Setup the buttons
 	wxCommandEvent nullEvent;
 	OnCboColumnsChange(nullEvent);
-    OnLstSortColsChange(nullEvent);
+	wxListEvent nullLstEvent;
+    OnLstSortColsChange(nullLstEvent);
 
 	// Setup the list box
     int leftSize = 140, rightSize;
@@ -176,9 +177,9 @@ void dlgEditGridOptions::OnAsc(wxCommandEvent &ev)
 	cboColumns->Delete(cboColumns->GetSelection());
 
 	// Setup the buttons
-	wxCommandEvent nullEvent;
-	OnCboColumnsChange(nullEvent);
-    OnLstSortColsChange(nullEvent);
+	OnCboColumnsChange(ev);
+	wxListEvent nullLstEvent;
+    OnLstSortColsChange(nullLstEvent);
 }
 
 void dlgEditGridOptions::OnDesc(wxCommandEvent &ev)
@@ -190,9 +191,9 @@ void dlgEditGridOptions::OnDesc(wxCommandEvent &ev)
 	cboColumns->Delete(cboColumns->GetSelection());
 
 	// Setup the buttons
-	wxCommandEvent nullEvent;
-	OnCboColumnsChange(nullEvent);
-    OnLstSortColsChange(nullEvent);
+	OnCboColumnsChange(ev);
+	wxListEvent nullLstEvent;
+    OnLstSortColsChange(nullLstEvent);
 }
 
 void dlgEditGridOptions::OnValidate(wxCommandEvent &ev)
@@ -213,7 +214,7 @@ void dlgEditGridOptions::OnCboColumnsChange(wxCommandEvent &ev)
 	}
 }
 
-void dlgEditGridOptions::OnLstSortColsChange(wxCommandEvent &ev)
+void dlgEditGridOptions::OnLstSortColsChange(wxListEvent &ev)
 {
 	// Set the command buttons appropriately
 	if (lstSortCols->GetSelectedItemCount() == 0)

@@ -29,8 +29,8 @@ public:
     pgObject *GetObject();
 
 private:
-    void OnChange(wxNotifyEvent &ev);
-    void OnSelChangeTyp(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnSelChangeTyp(wxCommandEvent &ev);
 
     pgSchema *schema;
     pgDomain *domain;

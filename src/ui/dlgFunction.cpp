@@ -208,7 +208,7 @@ pgObject *dlgFunction::CreateObject(pgCollection *collection)
 }
 
 
-void dlgFunction::OnChange(wxNotifyEvent &ev)
+void dlgFunction::OnChange(wxCommandEvent &ev)
 {
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
     if (function)
@@ -257,7 +257,7 @@ void dlgFunction::ReplaceSizer(wxWindow *w, bool isC, int border)
 }
 
         
-void dlgFunction::OnSelChangeLanguage(wxNotifyEvent &ev)
+void dlgFunction::OnSelChangeLanguage(wxCommandEvent &ev)
 {
     bool isC=(cbLanguage->GetValue().IsSameAs(wxT("C"), false));
 
@@ -279,21 +279,21 @@ void dlgFunction::OnSelChangeLanguage(wxNotifyEvent &ev)
 }
 
 
-void dlgFunction::OnSelChangeArg(wxNotifyEvent &ev)
+void dlgFunction::OnSelChangeArg(wxCommandEvent &ev)
 {
     if (objectType != PG_TRIGGERFUNCTION)
         btnRemove->Enable();
 }
 
 
-void dlgFunction::OnSelChangeType(wxNotifyEvent &ev)
+void dlgFunction::OnSelChangeType(wxCommandEvent &ev)
 {
     if (objectType != PG_TRIGGERFUNCTION)
         btnAdd->Enable();
 }
 
 
-void dlgFunction::OnAddArg(wxNotifyEvent &ev)
+void dlgFunction::OnAddArg(wxCommandEvent &ev)
 {
     lstArguments->Append(cbDatatype->GetValue());
     argOids.Add(typOids.Item(cbDatatype->GetSelection()));
@@ -301,7 +301,7 @@ void dlgFunction::OnAddArg(wxNotifyEvent &ev)
 }
 
 
-void dlgFunction::OnRemoveArg(wxNotifyEvent &ev)
+void dlgFunction::OnRemoveArg(wxCommandEvent &ev)
 {
     int sel=lstArguments->GetSelection();
     argOids.RemoveAt(sel);

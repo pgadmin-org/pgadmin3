@@ -192,7 +192,7 @@ pgObject *dlgOperator::CreateObject(pgCollection *collection)
 }
 
 
-void dlgOperator::OnChange(wxNotifyEvent &ev)
+void dlgOperator::OnChange(wxCommandEvent &ev)
 {
     if (oper)
     {
@@ -211,7 +211,7 @@ void dlgOperator::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgOperator::OnChangeType(wxNotifyEvent &ev)
+void dlgOperator::OnChangeType(wxCommandEvent &ev)
 {
     bool binaryOp=cbLeftType->GetSelection() > 0 && cbRightType->GetSelection() > 0;
 
@@ -330,7 +330,7 @@ void dlgOperator::OnChangeType(wxNotifyEvent &ev)
 }
 
 
-void dlgOperator::OnChangeJoin(wxNotifyEvent &ev)
+void dlgOperator::OnChangeJoin(wxCommandEvent &ev)
 {
     bool implicitMerges = (cbLeftSort->GetSelection() > 0 || cbRightSort->GetSelection() > 0
                || cbLess->GetSelection() > 0 || cbGreater->GetSelection() > 0);

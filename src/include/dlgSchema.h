@@ -29,7 +29,7 @@ public:
 
 private:
     pgSchema *schema;
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

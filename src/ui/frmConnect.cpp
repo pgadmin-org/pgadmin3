@@ -100,7 +100,7 @@ void frmConnect::OnHelp(wxCommandEvent &ev)
 }
 
 
-void frmConnect::OnTrustChange(wxNotifyEvent& ev)
+void frmConnect::OnTrustChange(wxCommandEvent& ev)
 {
     txtPassword->Enable(!chkTrusted->GetValue());
 }

@@ -360,7 +360,7 @@ void wxCalendarBox::OnChildSetFocus(wxChildFocusEvent &ev)
 }
 
     
-void wxCalendarBox::OnClick(wxMouseEvent& event)
+void wxCalendarBox::OnClick(wxCommandEvent& event)
 {
     if (m_ignoreDrop)
     {

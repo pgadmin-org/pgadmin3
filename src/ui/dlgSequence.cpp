@@ -123,7 +123,7 @@ pgObject *dlgSequence::CreateObject(pgCollection *collection)
 }
 
 
-void dlgSequence::OnChange(wxNotifyEvent &ev)
+void dlgSequence::OnChange(wxCommandEvent &ev)
 {
     wxString name=GetName();
     if (sequence)

@@ -384,7 +384,7 @@ void dlgProperty::ShowObject()
 }
 
         
-void dlgProperty::OnOK(wxNotifyEvent &ev)
+void dlgProperty::OnOK(wxCommandEvent &ev)
 {
 
     if (IsModal())
@@ -414,7 +414,7 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
 }
 
 
-void dlgProperty::OnCancel(wxNotifyEvent &ev)
+void dlgProperty::OnCancel(wxCommandEvent &ev)
 {
     if (IsModal())
         EndModal(-1);
@@ -1253,7 +1253,7 @@ void dlgSecurityProperty::ExecPrivCheck(int id)
 }
 
 
-void dlgSecurityProperty::OnAddPriv(wxNotifyEvent &ev)
+void dlgSecurityProperty::OnAddPriv(wxCommandEvent &ev)
 {
     wxString name=cbGroups->GetValue();
 
@@ -1287,7 +1287,7 @@ void dlgSecurityProperty::OnAddPriv(wxNotifyEvent &ev)
 }
 
 
-void dlgSecurityProperty::OnDelPriv(wxNotifyEvent &ev)
+void dlgSecurityProperty::OnDelPriv(wxCommandEvent &ev)
 {
     lbPrivileges->DeleteItem(lbPrivileges->GetSelection());
     securityChanged=true;
@@ -1456,7 +1456,7 @@ bool dlgOidProperty::executeSql()
 }
 
 
-void dlgOidProperty::OnOK(wxNotifyEvent &ev)
+void dlgOidProperty::OnOK(wxCommandEvent &ev)
 {
     if (IsModal())
     {

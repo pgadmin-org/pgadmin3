@@ -15,7 +15,6 @@
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/image.h>
-#include <wx/spinctrl.h>
 
 // App headers
 #include "frmStatus.h"
@@ -28,10 +27,10 @@
 BEGIN_EVENT_TABLE(frmStatus, wxDialog)
     EVT_BUTTON(XRCID("btnRefresh"),         frmStatus::OnRefresh)
     EVT_BUTTON (XRCID("btnClose"),          frmStatus::OnClose)
-    EVT_SPINCTRL(XRCID("spnRefreshRate"),   frmStatus::OnRateChange)
+    EVT_SPINCTRL(XRCID("spnRefreshRate"),   frmStatus::OnRateChangeSpin)
     EVT_TEXT(XRCID("spnRefreshRate"),       frmStatus::OnRateChange)
 	EVT_NOTEBOOK_PAGE_CHANGING(XRCID("nbStatus"),       frmStatus::OnNotebookPageChanged)
-    EVT_TIMER(TIMER_ID,                     frmStatus::OnRefresh)
+    EVT_TIMER(TIMER_ID,                     frmStatus::OnRefreshTimer)
 END_EVENT_TABLE();
 
 
@@ -126,6 +125,12 @@ void frmStatus::OnNotebookPageChanged(wxNotebookEvent& event)
 }
 
 
+void frmStatus::OnRateChangeSpin(wxSpinEvent &event)
+{
+	OnRateChange(*(wxCommandEvent*)&event);
+}
+
+
 void frmStatus::OnRateChange(wxCommandEvent &event)
 {
     if (timer)
@@ -140,6 +145,11 @@ void frmStatus::OnRateChange(wxCommandEvent &event)
     }
 }
 
+
+void frmStatus::OnRefreshTimer(wxTimerEvent &event)
+{
+	OnRefresh(*(wxCommandEvent*)&event);
+}
 
 
 void frmStatus::OnRefresh(wxCommandEvent &event)

@@ -31,15 +31,15 @@ private:
     pgDatabase *database;
     wxArrayString varInfo;
 
-    void OnChange(wxNotifyEvent &ev);
-    void OnGroupAdd(wxNotifyEvent &ev);
-    void OnGroupRemove(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnGroupAdd(wxCommandEvent &ev);
+    void OnGroupRemove(wxCommandEvent &ev);
 
-    void OnVarAdd(wxNotifyEvent &ev);
-    void OnVarRemove(wxNotifyEvent &ev);
+    void OnVarAdd(wxCommandEvent &ev);
+    void OnVarRemove(wxCommandEvent &ev);
     void OnVarSelChange(wxListEvent &ev);
 
-    void OnVarnameSelChange(wxNotifyEvent &ev);
+    void OnVarnameSelChange(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

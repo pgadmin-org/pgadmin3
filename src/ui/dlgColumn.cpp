@@ -345,7 +345,7 @@ pgObject *dlgColumn::CreateObject(pgCollection *collection)
 }
 
 
-void dlgColumn::OnSelChangeTyp(wxNotifyEvent &ev)
+void dlgColumn::OnSelChangeTyp(wxCommandEvent &ev)
 {
     CheckLenEnable();
     if (column && column->GetLength() <= 0)
@@ -364,7 +364,7 @@ void dlgColumn::OnSelChangeTyp(wxNotifyEvent &ev)
 }
 
 
-void dlgColumn::OnChange(wxNotifyEvent &ev)
+void dlgColumn::OnChange(wxCommandEvent &ev)
 {
     long varlen=StrToLong(txtLength->GetValue()), 
          varprec=StrToLong(txtPrecision->GetValue());

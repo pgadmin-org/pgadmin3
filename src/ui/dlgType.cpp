@@ -90,7 +90,7 @@ dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
 }
 
 
-void dlgType::OnChangeMember(wxNotifyEvent &ev)
+void dlgType::OnChangeMember(wxCommandEvent &ev)
 {
     btnAdd->Enable(!txtMembername->GetValue().Strip(wxString::both).IsEmpty() 
         && cbDatatype->GetSelection() >= 0);
@@ -110,7 +110,7 @@ void dlgType::showDefinition(bool isComposite)
 }
 
 
-void dlgType::OnTypeChange(wxNotifyEvent &ev)
+void dlgType::OnTypeChange(wxCommandEvent &ev)
 {
     showDefinition(!rdbType->GetSelection());
     
@@ -217,7 +217,7 @@ int dlgType::Go(bool modal)
 }
 
 
-void dlgType::OnSelChangeTyp(wxNotifyEvent &ev)
+void dlgType::OnSelChangeTyp(wxCommandEvent &ev)
 {
     if (!type)
     {
@@ -228,7 +228,7 @@ void dlgType::OnSelChangeTyp(wxNotifyEvent &ev)
 }
 
 
-void dlgType::OnChange(wxNotifyEvent &ev)
+void dlgType::OnChange(wxCommandEvent &ev)
 {
     if (type)
     {
@@ -272,7 +272,7 @@ void dlgType::OnVarSelChange(wxListEvent &ev)
 }
 
 
-void dlgType::OnVarAdd(wxNotifyEvent &ev)
+void dlgType::OnVarAdd(wxCommandEvent &ev)
 {
     wxString name=txtMembername->GetValue().Strip(wxString::both);
     wxString type=cbDatatype->GetValue();
@@ -297,7 +297,7 @@ void dlgType::OnVarAdd(wxNotifyEvent &ev)
 }
 
 
-void dlgType::OnVarRemove(wxNotifyEvent &ev)
+void dlgType::OnVarRemove(wxCommandEvent &ev)
 {
     long pos=lstMembers->GetSelection();
 

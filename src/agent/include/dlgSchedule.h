@@ -14,6 +14,8 @@
 #define __DLG_SCHEDULEPROP
 
 #include "dlgProperty.h"
+#include "timespin.h"
+#include "calbox.h"
 
 class pgaSchedule;
 class pgaJob;
@@ -35,8 +37,10 @@ private:
     OID jobOid;
     pgaSchedule *schedule;
     pgaJob *job;
-    void OnChange(wxNotifyEvent &ev);
-    void OnChangeKind(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnChangeCal(wxCalendarEvent &ev);
+    void OnChangeSpin(wxSpinEvent &ev);
+    void OnChangeKind(wxCommandEvent &ev);
     void OnSelChangeInterval(wxListEvent &ev);
     void OnAddInterval(wxCommandEvent &ev);
     void OnChangeInterval(wxCommandEvent &ev);

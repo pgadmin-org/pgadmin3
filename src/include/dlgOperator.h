@@ -29,9 +29,9 @@ public:
     pgObject *GetObject();
 
 private:
-    void OnChange(wxNotifyEvent &ev);
-    void OnChangeType(wxNotifyEvent &ev);
-    void OnChangeJoin(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnChangeType(wxCommandEvent &ev);
+    void OnChangeJoin(wxCommandEvent &ev);
 
     void AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBox *cb);
 

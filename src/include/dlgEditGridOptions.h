@@ -55,7 +55,7 @@ private:
 	void OnDesc(wxCommandEvent &ev);
 	void OnValidate(wxCommandEvent &ev);
     void OnCboColumnsChange(wxCommandEvent &ev);
-    void OnLstSortColsChange(wxCommandEvent &ev);
+    void OnLstSortColsChange(wxListEvent &ev);
 	bool Validate();
 	frmEditGrid *parent;
 	pgConn *connection;

@@ -29,11 +29,11 @@ public:
 
 protected:
     pgIndex *index;
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
 
 private:
-    void OnAddCol(wxNotifyEvent &ev);
-    void OnRemoveCol(wxNotifyEvent &ev);
+    void OnAddCol(wxCommandEvent &ev);
+    void OnRemoveCol(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };
@@ -49,7 +49,7 @@ public:
     pgObject *CreateObject(pgCollection *collection);
 
 private:
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE();
 };
 

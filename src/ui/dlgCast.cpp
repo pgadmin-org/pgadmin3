@@ -107,7 +107,7 @@ pgObject *dlgCast::CreateObject(pgCollection *collection)
 }
 
 
-void dlgCast::OnChange(wxNotifyEvent &ev)
+void dlgCast::OnChange(wxCommandEvent &ev)
 {
     if (cast)
     {
@@ -129,7 +129,7 @@ void dlgCast::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgCast::OnChangeType(wxNotifyEvent &ev)
+void dlgCast::OnChangeType(wxCommandEvent &ev)
 {
     functions.Clear();
 

@@ -28,8 +28,8 @@ public:
     pgObject *GetObject();
 
 private:
-    void OnChange(wxNotifyEvent &ev);
-    void OnChangeType(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnChangeType(wxCommandEvent &ev);
 
     pgCast *cast;
     wxArrayString functions;

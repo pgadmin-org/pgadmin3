@@ -34,7 +34,7 @@ private:
     pgView *view;
     wxString oldDefinition;
 
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

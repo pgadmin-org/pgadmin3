@@ -136,7 +136,7 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 }
 
 
-void dlgDomain::OnChange(wxNotifyEvent &ev)
+void dlgDomain::OnChange(wxCommandEvent &ev)
 {
     if (domain)
     {
@@ -169,7 +169,7 @@ void dlgDomain::OnChange(wxNotifyEvent &ev)
 
 
 
-void dlgDomain::OnSelChangeTyp(wxNotifyEvent &ev)
+void dlgDomain::OnSelChangeTyp(wxCommandEvent &ev)
 {
     if (!domain)
     {

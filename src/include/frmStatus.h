@@ -16,6 +16,7 @@
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/listctrl.h>
+#include <wx/spinctrl.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -36,7 +37,9 @@ private:
     void OnHelp(wxCommandEvent& ev);
     void OnClose(wxCommandEvent &event);
     void OnRefresh(wxCommandEvent &event);
+    void OnRefreshTimer(wxTimerEvent &event);
     void OnRateChange(wxCommandEvent &event);
+    void OnRateChangeSpin(wxSpinEvent &event);
 	void OnNotebookPageChanged(wxNotebookEvent& event);
     frmMain *mainForm;
     pgConn *connection;

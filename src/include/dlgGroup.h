@@ -29,9 +29,9 @@ public:
 
 private:
     pgGroup *group;
-    void OnChange(wxNotifyEvent &ev);
-    void OnUserAdd(wxNotifyEvent &ev);
-    void OnUserRemove(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnUserAdd(wxCommandEvent &ev);
+    void OnUserRemove(wxCommandEvent &ev);
 
     wxArrayString usersIn;
 

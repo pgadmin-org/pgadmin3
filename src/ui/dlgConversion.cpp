@@ -142,7 +142,7 @@ pgObject *dlgConversion::CreateObject(pgCollection *collection)
 }
 
 
-void dlgConversion::OnChange(wxNotifyEvent &ev)
+void dlgConversion::OnChange(wxCommandEvent &ev)
 {
     if (conversion)
     {

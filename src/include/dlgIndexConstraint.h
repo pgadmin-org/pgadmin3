@@ -33,7 +33,7 @@ public:
     wxString GetHelpPage() const { return wxT("sql-altertable"); }
 
 private:
-    void OnCheckDeferrable(wxNotifyEvent &ev);
+    void OnCheckDeferrable(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE();
 };
 

@@ -186,7 +186,7 @@ pgObject *dlgDatabase::CreateObject(pgCollection *collection)
 }
 
 
-void dlgDatabase::OnChange(wxNotifyEvent &ev)
+void dlgDatabase::OnChange(wxCommandEvent &ev)
 {
     if (database)
     {
@@ -201,7 +201,7 @@ void dlgDatabase::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgDatabase::OnVarnameSelChange(wxNotifyEvent &ev)
+void dlgDatabase::OnVarnameSelChange(wxCommandEvent &ev)
 {
     int sel=cbVarname->GetSelection();
     if (sel >= 0)
@@ -243,7 +243,7 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
 }
 
 
-void dlgDatabase::OnVarAdd(wxNotifyEvent &ev)
+void dlgDatabase::OnVarAdd(wxCommandEvent &ev)
 {
     wxString name=cbVarname->GetValue();
     wxString value;
@@ -269,7 +269,7 @@ void dlgDatabase::OnVarAdd(wxNotifyEvent &ev)
 }
 
 
-void dlgDatabase::OnVarRemove(wxNotifyEvent &ev)
+void dlgDatabase::OnVarRemove(wxCommandEvent &ev)
 {
     lstVariables->DeleteCurrentItem();
     OnChange(ev);
@@ -349,5 +349,3 @@ wxString dlgDatabase::GetSql()
 
     return sql;
 }
-
-

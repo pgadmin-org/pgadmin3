@@ -32,12 +32,12 @@ private:
     pgSchema *schema;
     pgFunction *function;
 
-    void OnChange(wxNotifyEvent &ev);
-    void OnSelChangeLanguage(wxNotifyEvent &ev);
-    void OnSelChangeArg(wxNotifyEvent &ev);
-    void OnSelChangeType(wxNotifyEvent &ev);
-    void OnAddArg(wxNotifyEvent &ev);
-    void OnRemoveArg(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnSelChangeLanguage(wxCommandEvent &ev);
+    void OnSelChangeArg(wxCommandEvent &ev);
+    void OnSelChangeType(wxCommandEvent &ev);
+    void OnAddArg(wxCommandEvent &ev);
+    void OnRemoveArg(wxCommandEvent &ev);
 
     wxString GetArgs(bool quoted=false);
     void ReplaceSizer(wxWindow *w, bool isC, int border);

@@ -32,8 +32,8 @@ private:
     pgSchema *schema;
     pgAggregate *aggregate;
 
-    void OnChange(wxNotifyEvent &ev);
-    void OnChangeType(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnChangeType(wxCommandEvent &ev);
     
     wxArrayString procedures;
 

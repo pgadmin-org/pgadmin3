@@ -33,8 +33,8 @@ public:
 private:
     pgCheck *check;
     pgTable *table;
-    void OnChange(wxNotifyEvent &ev);
-    void OnCheckDeferrable(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnCheckDeferrable(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

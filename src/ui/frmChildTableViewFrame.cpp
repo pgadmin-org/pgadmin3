@@ -188,7 +188,7 @@ frmChildTableViewFrame::~frmChildTableViewFrame()
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void frmChildTableViewFrame::OnDoubleClick(wxCommandEvent& event)
+void frmChildTableViewFrame::OnDoubleClick(wxListEvent& event)
 {
 	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
 

@@ -101,7 +101,7 @@ int dlgIndexBase::Go(bool modal)
 }
 
 
-void dlgIndexBase::OnAddCol(wxNotifyEvent &ev)
+void dlgIndexBase::OnAddCol(wxCommandEvent &ev)
 {
     wxString col=cbColumns->GetValue();
     if (!col.IsEmpty())
@@ -117,7 +117,7 @@ void dlgIndexBase::OnAddCol(wxNotifyEvent &ev)
 }
 
 
-void dlgIndexBase::OnRemoveCol(wxNotifyEvent &ev)
+void dlgIndexBase::OnRemoveCol(wxCommandEvent &ev)
 {
     long pos=lstColumns->GetSelection();
     if (pos >= 0)
@@ -132,7 +132,7 @@ void dlgIndexBase::OnRemoveCol(wxNotifyEvent &ev)
 }
 
 
-void dlgIndexBase::OnChange(wxNotifyEvent &ev)
+void dlgIndexBase::OnChange(wxCommandEvent &ev)
 {
     if (index)
     {
@@ -176,7 +176,7 @@ dlgIndex::dlgIndex(frmMain *frame, pgIndex *index, pgTable *parentNode)
 }
 
 
-void dlgIndex::OnChange(wxNotifyEvent &ev)
+void dlgIndex::OnChange(wxCommandEvent &ev)
 {
     if (index)
     {

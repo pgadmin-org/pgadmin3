@@ -38,13 +38,13 @@ private:
 
     wxString DefaultIndexName(const wxString &name);
 
-    void OnChange(wxNotifyEvent &ev);
-    void OnCheckDeferrable(wxNotifyEvent &ev);
-    void OnSelChangeCol(wxNotifyEvent &ev);
-    void OnSelChangeRef(wxNotifyEvent &ev);
-    void OnSelChangeRefCol(wxNotifyEvent &ev);
-    void OnAddRef(wxNotifyEvent &ev);
-    void OnRemoveRef(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnCheckDeferrable(wxCommandEvent &ev);
+    void OnSelChangeCol(wxListEvent &ev);
+    void OnSelChangeRef(wxCommandEvent &ev);
+    void OnSelChangeRefCol(wxCommandEvent &ev);
+    void OnAddRef(wxCommandEvent &ev);
+    void OnRemoveRef(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -14,6 +14,8 @@
 #define __DLG_USERPROP
 
 #include "dlgProperty.h"
+#include "calbox.h"
+#include "timespin.h"
 
 class pgUser;
 
@@ -31,15 +33,17 @@ private:
     pgUser *user;
     wxArrayString varInfo;
 
-    void OnChange(wxNotifyEvent &ev);
-    void OnGroupAdd(wxNotifyEvent &ev);
-    void OnGroupRemove(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnChangeSpin(wxSpinEvent &ev);
+    void OnChangeCal(wxCalendarEvent &ev);
+    void OnGroupAdd(wxCommandEvent &ev);
+    void OnGroupRemove(wxCommandEvent &ev);
 
-    void OnVarAdd(wxNotifyEvent &ev);
-    void OnVarRemove(wxNotifyEvent &ev);
+    void OnVarAdd(wxCommandEvent &ev);
+    void OnVarRemove(wxCommandEvent &ev);
     void OnVarSelChange(wxListEvent &ev);
 
-    void OnVarnameSelChange(wxNotifyEvent &ev);
+    void OnVarnameSelChange(wxCommandEvent &ev);
 
     wxArrayString groupsIn;
 

@@ -34,7 +34,7 @@ private:
     pgRule *rule;
     wxString oldDefinition;
 
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
 
     bool didChange();
 

@@ -115,7 +115,7 @@ pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 }
 
 
-void dlgLanguage::OnChange(wxNotifyEvent &ev)
+void dlgLanguage::OnChange(wxCommandEvent &ev)
 {
     if (language)
     {

@@ -35,8 +35,8 @@ public:
 private:
     pgColumn *column;
     pgTable *table;
-    void OnChange(wxNotifyEvent &ev);
-    void OnSelChangeTyp(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
+    void OnSelChangeTyp(wxCommandEvent &ev);
  
     wxString previousDefinition;
     wxArrayString sequences;

@@ -46,7 +46,7 @@ private:
     void OnHelp(wxCommandEvent& ev);
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
-    void OnTrustChange(wxNotifyEvent& ev);
+    void OnTrustChange(wxCommandEvent& ev);
     DECLARE_EVENT_TABLE()
 };
 

@@ -33,19 +33,19 @@ private:
     pgSchema *schema;
     pgTable *table;
 
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
 
-    void OnAddTable(wxNotifyEvent &ev);
-    void OnRemoveTable(wxNotifyEvent &ev);
-    void OnSelChangeTable(wxListEvent &ev);
+    void OnAddTable(wxCommandEvent &ev);
+    void OnRemoveTable(wxCommandEvent &ev);
+    void OnSelChangeTable(wxCommandEvent &ev);
 
-    void OnAddCol(wxNotifyEvent &ev);
-    void OnChangeCol(wxNotifyEvent &ev);
-    void OnRemoveCol(wxNotifyEvent &ev);
+    void OnAddCol(wxCommandEvent &ev);
+    void OnChangeCol(wxCommandEvent &ev);
+    void OnRemoveCol(wxCommandEvent &ev);
     void OnSelChangeCol(wxListEvent &ev);
 
-    void OnAddConstr(wxNotifyEvent &ev);
-    void OnRemoveConstr(wxNotifyEvent &ev);
+    void OnAddConstr(wxCommandEvent &ev);
+    void OnRemoveConstr(wxCommandEvent &ev);
     void OnSelChangeConstr(wxListEvent &ev);
 
     void FillConstraint();

@@ -36,7 +36,7 @@ private:
     ctlSQLBox *sqlBox;
     pgaStep *step;
     pgaJob *job;
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -90,7 +90,7 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
 }
 
 
-void dlgView::OnChange(wxNotifyEvent &ev)
+void dlgView::OnChange(wxCommandEvent &ev)
 {
     wxString name=GetName();
     if (view)
