@@ -69,7 +69,7 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
-#ifdef __wxGTK__
+#ifdef __WXGTK__
     EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
 #endif
     EVT_STC_MODIFIED(CTL_SQLQUERY,    frmQuery::OnChange)

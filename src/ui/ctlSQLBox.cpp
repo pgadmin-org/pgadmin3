@@ -289,7 +289,9 @@ LexerModule lmPostgreSQL(SCLEX_AUTOMATIC, ColouriseSQLDoc, "sql");
 
 
 BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
+#ifdef __WXGTK__
     EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
+#endif
     EVT_MENU(MNU_FIND,ctlSQLBox::OnFind)
     EVT_FIND(-1, ctlSQLBox::OnFindDialog)
     EVT_FIND_NEXT(-1, ctlSQLBox::OnFindDialog)
