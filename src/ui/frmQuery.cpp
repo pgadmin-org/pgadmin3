@@ -68,6 +68,7 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
     EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
+    EVT_ACTIVATE(                   frmQuery::OnActivate)
 #ifdef __wxGTK__
     EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
 #endif
@@ -94,7 +95,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
     fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_EXPORT, _("&Export\tCtrl-X"),  _("Export data to file"));
+    fileMenu->Append(MNU_EXPORT, _("&Export"),  _("Export data to file"));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"), _("Exit query window"));
@@ -141,18 +142,17 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     updateRecentFiles();
 
-    wxAcceleratorEntry entries[8];
+    wxAcceleratorEntry entries[7];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
     entries[1].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
-    entries[2].Set(wxACCEL_CTRL,                (int)'X',      MNU_EXPORT);
-    entries[3].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
-    entries[4].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
-    entries[5].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
-    entries[6].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
-    entries[7].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+    entries[2].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
+    entries[3].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
+    entries[4].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
+    entries[5].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
+    entries[6].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 
-    wxAcceleratorTable accel(8, entries);
+    wxAcceleratorTable accel(7, entries);
     SetAcceleratorTable(accel);
 
     queryMenu->Enable(MNU_CANCEL, false);
@@ -279,6 +279,14 @@ void frmQuery::updateRecentFiles()
             recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString::Format(wxT("%d"), i) + wxT("  ") + lastFiles[i]);
     }
 }
+
+
+void frmQuery::OnActivate(wxActivateEvent& event)
+{
+    if (event.GetActive())
+        updateMenu();
+}
+
 
 void frmQuery::OnRecent(wxCommandEvent& event)
 {

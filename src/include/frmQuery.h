@@ -61,6 +61,7 @@ private:
     void OnSaveHistory(wxCommandEvent& event);
     void OnClearHistory(wxCommandEvent& event);
     void OnKeyDown(wxKeyEvent& event);
+    void OnActivate(wxActivateEvent& event);
 
     void updateRecentFiles();
     void openLastFile();
