@@ -37,7 +37,6 @@ if [ -x src/pgAdmin3 ]; then
 	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/common
 	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/pg
 
-	cp ./slack-desc ./slackpack/
 	cp ./src/pgAdmin3 ./slackpack/usr/local/pgadmin3/bin/
 	cp ./src/tips.txt ./slackpack/usr/local/pgadmin3/share/pgadmin3/
 	cp ./src/ui/common/*.xrc ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/common/
@@ -50,6 +49,7 @@ if [ -x src/pgAdmin3 ]; then
 	/sbin/makepkg --chown y pgadmin3.tgz 
 	if [ -e pgadmin3.tgz ]; then
 		cp pgadmin3.tgz /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
-		cp slack-desc /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.txt
+		ln -s -f /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz /usr/local/apache/htdocs/pgadmin3-Alpha-Slackware90.tar.gz
+		cp ../slack-desc /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.txt
 	fi
 fi
