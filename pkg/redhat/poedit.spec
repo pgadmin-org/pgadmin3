@@ -1,3 +1,5 @@
+%define wxGTK2_version 20030707
+
 Summary:       Gettext catalogs editor
 Name:          poedit
 Version:       1.2.2
@@ -9,6 +11,8 @@ URL:           http://poedit.sourceforge.net
 Packager:      Vaclav Slavik <vaclav.slavik@matfyz.cz>
 Provides:      poedit
 BuildRoot:     %{_tmppath}/%{name}-%{version}
+
+BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}
 
 %description
 poEdit is cross-platform gettext catalogs (.po files) editor. It is built with
