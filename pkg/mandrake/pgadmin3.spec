@@ -1,21 +1,23 @@
-%define major_version 1.1.0
-%define minor_version %(date +%Y%m%d)
-%define wxGTK2_version 20031010.8
-%define withwxconfig wxgtk2ud-2.5-config
-%define desktop_vendor pgadmin
-%define debug_package %{nil}
+%define name		pgadmin3
+%define major_version 	1.2.0
+%define minor_version 	1mdk
+%define wxGTK2_version 	2.5.3
+%define withwxconfig 	wx-config
+%define desktop_vendor 	pgadmin
+%define debug_package 	%{nil}
 %define __os_install_post /usr/lib/rpm/brp-compress
 
-Summary: Graphical client for PostgreSQL.
-Name: pgadmin3
-Version: %{major_version}
-Release: %{minor_version}
-License: Artistic
-Group: Applications/Databases
-Source: pgadmin3-%{major_version}.tar.bz2
-URL: http://www.pgadmin.org/
-Packager: pgAdmin project <pgadmin-hackers@postgresql.org>
-BuildRoot: %{_tmppath}/%{name}-root
+Summary:	Graphical client for PostgreSQL.
+Name: 		%{name}
+Version:	%{major_version}
+Release:	%{minor_version}
+License: 	Artistic
+Group: 		Databases
+Source: 	%{name}-%{major_version}.tar.bz2
+URL: 		http://www.pgadmin.org/
+Packager: 	pgAdmin project <pgadmin-hackers@postgresql.org>
+BuildRoot: 	%{_tmppath}/%{name}-root
+BuildRequires:  postgresql postgresql-devel
 
 #
 # When rebuilding, wxWindows 2.5 CVS version is needed.
@@ -23,7 +25,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 # http://www.pgadmin.org/pgadmin3/development.php page in the Snapshots section
 #
 
-BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
+#BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
 
 %description
 PostgreSQL Tools.
@@ -34,7 +36,7 @@ PostgreSQL Tools.
 %build
 export CFLAGS=""
 export CXXFLAGS=""
-configure --with-wx-config=%{withwxconfig} --with-wx=/usr
+%configure --with-wx-config=%{withwxconfig} --with-wx=/usr
 make all
 
 %install
@@ -53,15 +55,29 @@ desktop-file-install --vendor %{desktop_vendor} --delete-original  --dir %{build
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, 755 )
+%doc LICENCE.txt README.txt BUGS.txt
+%doc docs/en_US/*
 %{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_datadir}/applications
 
 %changelog
-* Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
-- Initial build
+* Tue Dec 3 2004 Hugo Ferreira <hmf at inescporto.pt>
+- 1.2.0 
+- Some changes for MDK 10.1 (name, BuildRequires, minor_version to 1mdk  and 
+  Group to Databases). Checked w/ rpmlint. Still has problems.
 
-* Sat Dec 04 2004 Hugo Ferreira <hmf@inescporto.pt>
-- Mandrake 10.1 Version
+* Wed Nov 17 2004 Devrim GUNDUZ <devrim@gunduz.org>
+- 1.2.0 RC2 
+
+* Mon Nov 15 2004 Devrim GUNDUZ <devrim@gunduz.org>
+- 1.2.0 RC1 rebuilt
+- Fixed spec file so that beta and rc tags will be considered. (Note: AFAICS my previous rpms were broken :( )
+
+* Thu Nov 4 2004 Devrim GUNDUZ <devrim@gunduz.org>
+- 1.2.0 RC1
+
+* Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
+- 1.2.0 Initial build
 
