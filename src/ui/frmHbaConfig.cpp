@@ -55,7 +55,7 @@ frmHbaConfig::frmHbaConfig(frmMain *parent, pgServer *server)
 
     if (conn)
     {
-        serverFileName = conn->ExecuteScalar(wxT("SHOW hba_conf"));
+        serverFileName = conn->ExecuteScalar(wxT("SHOW hba_file"));
         if (serverFileName == wxT("unset") || serverFileName.IsEmpty())
             serverFileName = wxT("pg_hba.conf");
 

@@ -149,25 +149,26 @@ dlgHbaConfig::~dlgHbaConfig()
 
 wxString dlgHbaConfig::GetHelpPage() const
 {
-    return wxT("pg/client-authentication");
+    return wxT("client-authentication");
     // auth-methods#auth-trust #auth-password #kerberos-auth #auth-ident #auth-pam
 }
 
 
 void dlgHbaConfig::OnAddDatabase(wxCommandEvent& ev)
 {
-    if (cbDatabase->GetSelection() < 3)
+    int sel = cbDatabase->GetSelection();
+    if (sel < 3)
         return;
 
     wxString newDatabase;
     if (database == wxT("all") || database == wxT("sameuser") || database == wxT("samegroup") || database.Left(1) == wxT("@"))
         database = wxEmptyString;
 
-    if (cbDatabase->GetSelection() == 3)    // file
+    if (sel == 3)    // file
         newDatabase = wxT("@");
     else
     {
-        wxString str=cbDatabase->GetValue();
+        wxString str=cbDatabase->GetString(sel);
         if (str.Find(' ') >= 0)
             str = wxT("\"") + str + wxT("\"");
 
@@ -201,12 +202,13 @@ void dlgHbaConfig::OnAddDatabase(wxCommandEvent& ev)
 
 void dlgHbaConfig::OnAddUser(wxCommandEvent& ev)
 {
-    if (cbUser->GetSelection() < 1)
+    int sel = cbUser->GetSelection();
+    if (sel < 1)
         return;
 
     wxString newUser;
 
-    wxString str=cbUser->GetValue();
+    wxString str=cbUser->GetString(sel);
     if (str.Left(6) == wxT("group "))
     {
         if (str.Find(' ', true) > 5)

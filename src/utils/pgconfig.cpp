@@ -540,7 +540,7 @@ wxString pgHbaConfigLine::GetText()
 
     str += tabspace + GetMethod();
 
-    if (connectType >= PGC_IDENT && !option.IsEmpty())
+    if (method >= PGC_IDENT && !option.IsEmpty())
         str += tabspace + option;
 
     return str;
