@@ -51,6 +51,7 @@ public:
     wxImageList *GetImageList() { return images; }
     wxTreeCtrl *GetBrowser() { return browser; }
     ctlSQLBox *GetSqlPane() { return sqlPane; }
+    ctlListView *GetProperties() { return properties; }
     ctlListView *GetStatistics();
     ctlListView *GetDependsOn();
     ctlListView *GetReferencedBy();

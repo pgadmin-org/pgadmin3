@@ -89,6 +89,8 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     readOnly=false;
     objectType=-1;
     sqlPane=0;
+    processing=false;
+    mainForm=frame;
     wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, frame, resName);
     nbNotebook = CTRL_NOTEBOOK("nbNotebook");
@@ -304,7 +306,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
                 browser->AppendItem(data->GetId(), wxT("Dummy"));
 
             if (browser->GetSelection() == collectionItem)
-                collection->ShowTreeDetail(browser, 0, properties);
+                collection->ShowTreeDetail(browser, 0, mainForm->GetProperties());
             else
                 collection->UpdateChildCount(browser);
         }
@@ -333,7 +335,7 @@ void dlgProperty::ShowObject()
         {
             mainForm->GetBrowser()->DeleteChildren(newData->GetId());
 
-            newData->ShowTree(mainForm, mainForm->GetBrowser(), properties, 0);
+            newData->ShowTree(mainForm, mainForm->GetBrowser(), mainForm->GetProperties(), 0);
             mainForm->GetBrowser()->SetItemText(item, newData->GetFullName());
             mainForm->GetSqlPane()->SetReadOnly(false);
             mainForm->GetSqlPane()->SetText(newData->GetSql(mainForm->GetBrowser()));
@@ -594,14 +596,12 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 }
 
 
-void dlgProperty::CreateObjectDialog(frmMain *frame, ctlListView *properties, pgObject *node, int type)
+void dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 {
     dlgProperty *dlg=CreateDlg(frame, node, true, type);
 
     if (dlg)
     {
-        dlg->properties = properties;
-
         dlg->SetTitle(wxGetTranslation(typesList[dlg->objectType].newString));
 
         dlg->CreateAdditionalPages();
@@ -612,7 +612,7 @@ void dlgProperty::CreateObjectDialog(frmMain *frame, ctlListView *properties, pg
 }
 
 
-void dlgProperty::EditObjectDialog(frmMain *frame, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlbox, pgObject *node)
+void dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node)
 {
     pgConn *conn=node->GetConnection();
     if (!conn)
@@ -622,10 +622,6 @@ void dlgProperty::EditObjectDialog(frmMain *frame, ctlListView *properties, ctlL
 
     if (dlg)
     {
-        dlg->properties = properties;
-        dlg->statistics=statistics;
-        dlg->sqlFormPane=sqlbox;
-
         dlg->SetTitle(wxString(wxGetTranslation(typesList[dlg->objectType].typName)) + wxT(" ") + node->GetFullIdentifier());
 
         dlg->CreateAdditionalPages();

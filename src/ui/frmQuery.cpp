@@ -236,11 +236,14 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 frmQuery::~frmQuery()
 {
     wxLogInfo(wxT("Destroying SQL Query box"));
+
     mainForm->RemoveFrame(this);
     settings->Write(wxT("frmQuery"), GetSize(), GetPosition());
     settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
     settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
+
+    sqlResult->Destroy(); // to make sure conn is unused
     if (conn)
         delete conn;
 }
@@ -598,6 +601,19 @@ void frmQuery::OnClose(wxCloseEvent& event)
                 event.Veto();
                 return;
         }
+    }
+    Hide();
+
+    if (queryMenu->IsEnabled(MNU_CANCEL))
+    {
+        wxCommandEvent ev;
+        OnCancel(ev);
+    }
+
+    while (sqlResult->RunStatus() == CTLSQL_RUNNING)
+    {
+        wxLogInfo(wxT("SQL Query box: Waiting for query to abort"));
+        wxSleep(1);
     }
     Destroy();
 }

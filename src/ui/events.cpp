@@ -981,7 +981,7 @@ void frmMain::OnCreate(wxCommandEvent &ev)
 
     if (data)
     {
-        dlgProperty::CreateObjectDialog(this, properties, data, -1);
+        dlgProperty::CreateObjectDialog(this, data, -1);
     }
 }
 
@@ -997,7 +997,7 @@ void frmMain::OnNew(wxCommandEvent &ev)
     pgObject *data = GetSelectedObject();
 
     if (data)
-        dlgProperty::CreateObjectDialog(this, properties, data, type);
+        dlgProperty::CreateObjectDialog(this, data, type);
 }
 
 
@@ -1006,7 +1006,7 @@ void frmMain::OnProperties(wxCommandEvent &ev)
     pgObject *data = GetSelectedObject();
 
     if (data)
-        dlgProperty::EditObjectDialog(this, properties, statistics, sqlPane, data);
+        dlgProperty::EditObjectDialog(this, sqlPane, data);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

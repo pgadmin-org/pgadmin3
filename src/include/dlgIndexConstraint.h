@@ -30,6 +30,7 @@ public:
     int Go(bool modal);
     wxString GetDefinition();
     wxString GetSql();
+    wxString GetHelpPage() const { return wxT("sql-altertable"); }
 
 private:
     void OnCheckDeferrable(wxNotifyEvent &ev);

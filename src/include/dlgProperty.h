@@ -21,6 +21,7 @@
 
 class pgSchema;
 class pgTable;
+class frmMain;
 
 #define txtName         CTRL_TEXT("txtName")
 #define txtOID          CTRL_TEXT("txtOID")
@@ -34,8 +35,8 @@ class pgTable;
 class dlgProperty : public DialogWithHelp
 {
 public:
-    static void CreateObjectDialog(frmMain *frame, ctlListView *properties, pgObject *node, int type);
-    static void EditObjectDialog(frmMain *frame, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlbox, pgObject *node);
+    static void CreateObjectDialog(frmMain *frame, pgObject *node, int type);
+    static void EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node);
 
     wxString GetName();
 
@@ -72,9 +73,8 @@ protected:
 
     pgConn *connection;
 
+    frmMain *mainForm;
     ctlSQLBox *sqlPane;
-    ctlListView *properties, *statistics;
-    ctlSQLBox *sqlFormPane;
 
     wxTextValidator numericValidator;
 
@@ -84,6 +84,7 @@ protected:
     wxTreeItemId item;
     int objectType;
     bool readOnly;
+    bool processing;
 
 private:
     bool tryUpdate(wxTreeItemId collectionItem);

@@ -28,11 +28,15 @@ public:
     wxString GetDefinition();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    wxString GetHelpPage() const { return wxT("sql-altertable"); }
 
     int Go(bool modal);
 
 private:
     pgForeignKey *foreignKey;
+    wxString savedIndexName, savedFKName;
+
+    wxString DefaultIndexName(const wxString &name);
 
     void OnChange(wxNotifyEvent &ev);
     void OnCheckDeferrable(wxNotifyEvent &ev);

@@ -54,6 +54,7 @@ public:
     wxString GetInheritedTables() { GetInheritedTableCount(); return inheritedTables; }
     wxString GetQuotedInheritedTables() { GetInheritedTableCount(); return quotedInheritedTables; }
     wxArrayString GetQuotedInheritedTablesList() { GetInheritedTableCount(); return quotedInheritedTablesList; }
+    wxString GetCoveringIndex(wxTreeCtrl *browser, const wxString &collist);
     bool GetHasSubclass() const { return hasSubclass; }
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void UpdateRows();

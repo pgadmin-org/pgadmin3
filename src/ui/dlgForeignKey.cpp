@@ -26,6 +26,11 @@
 #define stDeferred      CTRL_STATIC("stDeferred")
 #define cbReferences    CTRL_COMBOBOX("cbReferences")
 
+#define stAutoIndex     CTRL_STATIC("stAutoIndex")
+#define chkAutoIndex    CTRL_CHECKBOX("chkAutoIndex")
+#define stIndexName     CTRL_STATIC("stIndexName")
+#define txtIndexName    CTRL_TEXT("txtIndexName")
+
 #define cbRefColumns    CTRL_COMBOBOX("cbRefColumns")
 #define btnAddRef       CTRL_BUTTON("btnAddRef")
 #define btnRemoveRef    CTRL_BUTTON("btnRemoveRef")
@@ -36,8 +41,11 @@
 
 BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
     EVT_TEXT(XRCID("txtName"),                  dlgForeignKey::OnChange)
-    EVT_TEXT(XRCID("txtComment"),               dlgForeignKey::OnChange)
     EVT_CHECKBOX(XRCID("chkDeferrable"),        dlgForeignKey::OnCheckDeferrable)
+    EVT_CHECKBOX(XRCID("chkAutoIndex") ,        dlgForeignKey::OnChange)
+    EVT_TEXT(XRCID("txtIndexName"),             dlgForeignKey::OnChange)
+    EVT_TEXT(XRCID("txtComment"),               dlgForeignKey::OnChange)
+
     EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"), dlgForeignKey::OnSelChangeCol)
     EVT_TEXT(XRCID("cbReferences"),             dlgForeignKey::OnSelChangeRef)
     EVT_TEXT(XRCID("cbColumns"),                dlgForeignKey::OnSelChangeRefCol)
@@ -62,6 +70,7 @@ dlgForeignKey::dlgForeignKey(frmMain *frame, ctlListView *colList)
     objectType=PG_FOREIGNKEY;
 }
 
+
 void dlgForeignKey::OnCheckDeferrable(wxNotifyEvent &ev)
 {
     bool canDef=chkDeferrable->GetValue();
@@ -72,17 +81,95 @@ void dlgForeignKey::OnCheckDeferrable(wxNotifyEvent &ev)
 }
 
 
+wxString dlgForeignKey::DefaultIndexName(const wxString &name)
+{
+    if (name.Left(3) == wxT("fk_"))
+        return wxT("fki_") + name.Mid(3);
+    else if (name.Left(3) == wxT("FK_"))
+        return wxT("FKI_") + name.Mid(3);
+    else
+        return wxT("fki_") + name;
+}
+
+
 void dlgForeignKey::OnChange(wxNotifyEvent &ev)
 {
+    if (processing)
+        return;
+
+    processing=true;
+
+    wxString name=GetName();
+
+    wxString cols;
+    int pos;
+    for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+    {
+        if (pos)
+            cols += wxT(", ");
+        cols += qtIdent(lstColumns->GetText(pos));
+    }
+
+
+    wxString coveringIndex;
+    if (table)
+        coveringIndex = table->GetCoveringIndex(mainForm->GetBrowser(), cols);
+
+    if (coveringIndex.IsEmpty())
+    {
+        if (!chkAutoIndex->IsEnabled())
+        {
+            chkAutoIndex->Enable();
+            txtIndexName->Enable();
+            txtIndexName->SetValue(savedIndexName);
+        }
+
+        wxString idxName=txtIndexName->GetValue().Strip(wxString::both);
+
+        if (name != savedFKName || idxName == savedIndexName)
+        {
+            if (idxName.IsEmpty() || idxName == DefaultIndexName(savedFKName))
+            {
+                idxName = DefaultIndexName(name);
+                txtIndexName->SetValue(idxName);
+            }
+        }
+        savedIndexName = idxName;
+    }
+    else
+    {
+        if (chkAutoIndex->IsEnabled())
+            savedIndexName=txtIndexName->GetValue();
+
+        txtIndexName->SetValue(coveringIndex);
+        chkAutoIndex->SetValue(false);
+
+        txtIndexName->Disable();
+        chkAutoIndex->Disable();
+    }
+
+    savedFKName = name;
+    processing = false;
+
     if (foreignKey)
     {
-        btnOK->Enable(txtComment->GetValue() != foreignKey->GetComment());
+        bool enable=true;
+        if (chkAutoIndex->GetValue())
+        {
+            CheckValid(enable, !txtIndexName->GetValue().IsEmpty(),
+                _("Please specify FK index name."));
+        }
+        else
+            enable = txtComment->GetValue() != foreignKey->GetComment();
+        EnableOK(enable);
     }
     else
     {
         bool enable=true;
-        txtComment->Enable(!GetName().IsEmpty());
+        txtComment->Enable(name.IsEmpty());
         CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
+        CheckValid(enable, !chkAutoIndex->GetValue() || !txtIndexName->GetValue().IsEmpty(),
+            _("Please specify FK index name."));
         EnableOK(enable);
     }
 }
@@ -193,8 +280,16 @@ int dlgForeignKey::Go(bool modal)
 {
     CreateListColumns(lstColumns, _("Local"), _("Referenced"), -1);
 
+    processing=true;    // protect from OnChange execution
+
     btnAddRef->Disable();
     btnRemoveRef->Disable();
+
+    if (readOnly)
+    {
+        chkAutoIndex->Disable();
+        txtIndexName->Disable();
+    }
 
 
     if (foreignKey)
@@ -216,7 +311,14 @@ int dlgForeignKey::Go(bool modal)
         rbOnUpdate->Disable();
         rbOnDelete->Disable();
 
-	txtComment->SetValue(foreignKey->GetComment());
+        chkAutoIndex->SetValue(false);
+        txtIndexName->SetValue(foreignKey->GetCoveringIndex());
+        if (!txtIndexName->GetValue().IsEmpty())
+        {
+            chkAutoIndex->Disable();
+            txtIndexName->Disable();
+        }
+        txtComment->SetValue(foreignKey->GetComment());
 	    
         btnAddRef->Disable();
         btnRemoveRef->Disable();
@@ -270,6 +372,8 @@ int dlgForeignKey::Go(bool modal)
         }
     }
 
+    processing=false;
+
     return dlgCollistProperty::Go(modal);
 }
 
@@ -291,6 +395,23 @@ wxString dlgForeignKey::GetSql()
         AppendComment(sql, wxT("CONSTRAINT ") + qtIdent(name) 
             + wxT(" ON ") + table->GetQuotedFullIdentifier(), foreignKey);
 
+    if (chkAutoIndex->GetValue())
+    {
+        sql += wxT("CREATE INDEX ") + qtIdent(txtIndexName->GetValue())
+            +  wxT(" ON ") + table->GetQuotedFullIdentifier()
+            +  wxT("(");
+
+        int pos;
+        for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+        {
+            if (pos)
+                sql += wxT(", ");
+
+            sql += qtIdent(lstColumns->GetText(pos));
+        }
+
+        sql += wxT(");\n");
+    }
     return sql;
 }
 

@@ -26,6 +26,7 @@ public:
     wxString GetDefinition();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    wxString GetHelpPage() const { return wxT("sql-altertable"); }
 
     int Go(bool modal);
 

@@ -65,6 +65,7 @@ public:
     wxString GetRefColumns() const { return refColumns; }
     wxString GetQuotedFkColumns() const { return quotedFkColumns; }
     wxString GetQuotedRefColumns() const { return quotedRefColumns; }
+    wxString GetCoveringIndex() const { return coveringIndex; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetConstraint();
@@ -75,7 +76,7 @@ public:
 private:
     wxString onUpdate, onDelete, conkey, confkey,
              fkTable, fkSchema, references, refSchema;
-    wxString fkColumns, refColumns, quotedFkColumns, quotedRefColumns;
+    wxString fkColumns, refColumns, quotedFkColumns, quotedRefColumns, coveringIndex;
     bool deferrable, deferred;
     OID relTableOid;
 };

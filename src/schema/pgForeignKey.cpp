@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "pgObject.h"
+#include "pgTable.h"
 #include "pgForeignKey.h"
 #include "pgCollection.h"
 
@@ -104,6 +105,7 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         wxStringTokenizer c2l(GetConfkey(), wxT(","));
         wxString c1, c2;
 
+        // resolve column names
         while (c1l.HasMoreTokens())
         {
             c1=c1l.GetNextToken();
@@ -129,6 +131,17 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
                 delete set;
             }
         }
+        wxTreeItemId item=browser->GetItemParent(GetId());
+        while (item)
+        {
+            pgTable *table=(pgTable*)browser->GetItemData(item);
+            if (table->GetType() == PG_TABLE)
+            {
+                coveringIndex = table->GetCoveringIndex(browser, fkColumns);
+                break;
+            }
+            item = browser->GetItemParent(item);
+        }
     }
 
     if (properties)
@@ -138,6 +151,7 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), NumToStr(GetOid()));
         properties->AppendItem(_("Child columns"), GetFkColumns());
+        properties->AppendItem(_("Covering index"), GetCoveringIndex());
         properties->AppendItem(_("References"), GetReferences() 
             + wxT("(") +GetRefColumns() + wxT(")"));
 

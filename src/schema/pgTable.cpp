@@ -208,6 +208,39 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
 }
 
 
+wxString pgTable::GetCoveringIndex(wxTreeCtrl *browser, const wxString &collist)
+{
+    // delivers the name of the index which covers the named columns
+    wxCookieType cookie;
+
+    wxTreeItemId collItem=browser->GetFirstChild(GetId(), cookie);
+    while (collItem)
+    {
+        pgObject *data=(pgObject*)browser->GetItemData(collItem);
+        if (data && (data->GetType() == PG_CONSTRAINTS || data->GetType() == PG_INDEXES))
+        {
+            wxCookieType cookie2;
+            wxTreeItemId item=browser->GetFirstChild(collItem, cookie2);
+            while (item)
+            {
+                pgIndex *index=(pgIndex*)browser->GetItemData(item);
+                if (index && (index->GetType() == PG_INDEX || index->GetType() == PG_PRIMARYKEY || index->GetType() == PG_UNIQUE))
+                {
+                    index->ShowTreeDetail(browser);
+                    if (collist == index->GetColumns() || 
+                        collist + wxT(",") == index->GetColumns().Left(collist.Length()+1))
+                        return index->GetName();
+                }
+                item=browser->GetNextChild(collItem, cookie2);
+            }
+        }
+        collItem=browser->GetNextChild(GetId(), cookie);
+    }
+
+    return wxEmptyString;
+}
+
+
 void pgTable::UpdateRows()
 {
     pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ") + GetQuotedFullIdentifier());
