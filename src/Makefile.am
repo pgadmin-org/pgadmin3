@@ -130,6 +130,7 @@ ui/el_GR/pgadmin3.po \
 ui/es_ES/pgadmin3.po \
 ui/fa_IR/pgadmin3.po \
 ui/fr_FR/pgadmin3.po \
+ui/gl_ES/pgadmin3.po \
 ui/hr_HR/pgadmin3.po \
 ui/hu_HU/pgadmin3.po \
 ui/id_ID/pgadmin3.po \
@@ -140,6 +141,7 @@ ui/pl_PL/pgadmin3.po \
 ui/pt_BR/pgadmin3.po \
 ui/ro_RO/pgadmin3.po \
 ui/ru_RU/pgadmin3.po \
+ui/sr_YU/pgadmin3.po \
 ui/sv_SE/pgadmin3.po \
 ui/tr_TR/pgadmin3.po \
 ui/zh_CN/pgadmin3.po \
@@ -165,6 +167,7 @@ ui/es_ES/pgadmin3.mo \
 ui/fa_IR/pgadmin3.mo \
 ui/fr_FR/pgadmin3.mo \
 ui/hr_HR/pgadmin3.mo \
+ui/gl_ES/pgadmin3.mo \
 ui/hu_HU/pgadmin3.mo \
 ui/id_ID/pgadmin3.mo \
 ui/it_IT/pgadmin3.mo \
@@ -174,6 +177,7 @@ ui/pl_PL/pgadmin3.mo \
 ui/pt_BR/pgadmin3.mo \
 ui/ro_RO/pgadmin3.mo \
 ui/ru_RU/pgadmin3.mo \
+ui/sr_YU/pgadmin3.mo \
 ui/sv_SE/pgadmin3.mo \
 ui/tr_TR/pgadmin3.mo \
 ui/zh_CN/pgadmin3.mo \
