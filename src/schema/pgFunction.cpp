@@ -80,9 +80,14 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
             sql += wxT(" STRICT");
         if (GetSecureDefiner())
             sql += wxT(" SECURITY DEFINER");
-        sql += wxT(";\n")
-            + GetCommentSql();
+        sql += wxT(";\n");
+
+    if (!GetComment().IsNull())
+    {
+        sql += wxT("COMMENT ON FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")")
+            + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
     }
+}
 
     return sql;
 }
