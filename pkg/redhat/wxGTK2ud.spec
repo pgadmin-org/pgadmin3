@@ -56,7 +56,7 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 %setup -q
 
 %build
-./configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
+./configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared --prefix=/usr
 make clean
 make
 
@@ -82,16 +82,8 @@ strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_stc-%{version}.a
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
-#ln -s /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
-%postun -p /sbin/ldconfig
-#rm -fr /usr/include/wx/setup.h
-
-%post xrc -p /sbin/ldconfig
-%postun xrc -p /sbin/ldconfig
-
-%post stc -p /sbin/ldconfig
-%postun stc -p /sbin/ldconfig
+%post ln -s /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
+%postun rm -fr /usr/include/wx/setup.h
 
 %files
 %defattr(-,root,root)
