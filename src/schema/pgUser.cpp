@@ -219,7 +219,7 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
                 groupList += wxT(", ");
             groupList += groupsIn.Item(index);
         }
-        properties->AppendItem(wxT("Member of"), groupList);
+        properties->AppendItem(_("Member of"), groupList);
 
         for (index=0; index < configList.GetCount() ; index++)
         {
