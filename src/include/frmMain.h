@@ -132,6 +132,7 @@ private:
     void OnCheckAlive(wxCommandEvent& event);
 
     void doPopup(wxPoint point, pgObject *object);
+    void appendIfEnabled(int id);
     void execSelChange(wxTreeItemId item, bool currentNode);
     bool checkAlive();
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);

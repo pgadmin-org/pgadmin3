@@ -960,17 +960,25 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
 }
 
 
+void frmMain::appendIfEnabled(int id)
+{
+    if (menuBar->IsEnabled(id))
+    {
+        wxMenuItem *menuItem=menuBar->FindItem(id);
+        if (menuItem)
+            treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
+    }
+}
+
 void frmMain::doPopup(wxPoint point, pgObject *object)
 {
     if (treeContextMenu)
         delete treeContextMenu;
 
     treeContextMenu = new wxMenu();
-    if (object)
-        treeContextMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),		  _("Refresh the selected object."));
 
-    if (viewMenu->IsEnabled(MNU_COUNT))
-        treeContextMenu->Append(MNU_COUNT, _("&Count"),               _("Count rows in the selected object."));
+    appendIfEnabled(MNU_REFRESH);
+    appendIfEnabled(MNU_COUNT);
 
     if (object)
     {
@@ -978,7 +986,10 @@ void frmMain::doPopup(wxPoint point, pgObject *object)
         if (indivMenu)
         {
             if (indivMenu->GetMenuItemCount() > 1)
-                treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), indivMenu, _("Create a new object."));
+            {
+                wxMenuItem *menuItem = menuBar->FindItem(MNU_NEWOBJECT);
+                treeContextMenu->Append(MNU_NEWOBJECT, menuItem->GetLabel(), indivMenu, menuItem->GetHelp());
+            }
             else
             {
                 if (indivMenu->GetMenuItemCount() == 1)
@@ -991,53 +1002,38 @@ void frmMain::doPopup(wxPoint point, pgObject *object)
         }
     }
 
-    bool canView = toolsMenu->IsEnabled(MNU_VIEWDATA),
-         canViewFiltered = toolsMenu->IsEnabled(MNU_VIEWFILTEREDDATA),
-         canMaint = toolsMenu->IsEnabled(MNU_MAINTENANCE),
-         canIndex = toolsMenu->IsEnabled(MNU_INDEXCHECK),
-         canGrant = toolsMenu->IsEnabled(MNU_GRANTWIZARD),
-         canConnect = toolsMenu->IsEnabled(MNU_CONNECT),
-         canDisconnect = toolsMenu->IsEnabled(MNU_DISCONNECT),
-         canStart = toolsMenu->IsEnabled(MNU_STARTSERVICE),
-         canStop = toolsMenu->IsEnabled(MNU_STOPSERVICE);
+    int currentSize = treeContextMenu->GetMenuItemCount();
 
-    if (canView || canViewFiltered || canMaint || canIndex || canGrant || canConnect || canDisconnect || canStart || canStop)
+    appendIfEnabled(MNU_VIEWDATA);
+    appendIfEnabled(MNU_VIEWFILTEREDDATA);
+    appendIfEnabled(MNU_MAINTENANCE);
+    appendIfEnabled(MNU_INDEXCHECK);
+    appendIfEnabled(MNU_GRANTWIZARD);
+    appendIfEnabled(MNU_STARTSERVICE);
+    appendIfEnabled(MNU_STOPSERVICE);
+    appendIfEnabled(MNU_CONNECT);
+    appendIfEnabled(MNU_DISCONNECT);
+
+    int newSize = treeContextMenu->GetMenuItemCount();
+    if (newSize > currentSize)
     {
-        treeContextMenu->AppendSeparator();
-        if (canView)
-	        treeContextMenu->Append(MNU_VIEWDATA, _("View &Data"),        _("View the data in the selected object."));
-        if (canViewFiltered)
-	        treeContextMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"),  _("Apply a filter and view the data in the selected object."));
-        if (canMaint)
-            treeContextMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),   _("Maintain the current database or table."));
-        if (canIndex)
-            treeContextMenu->Append(MNU_INDEXCHECK, _("&FK Index check"), _("Checks existence of foreign key indexes"));
-        if (canGrant)
-            treeContextMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),  _("Grants rights to multiple objects"));
-        if (canStart)
-            treeContextMenu->Append(MNU_STARTSERVICE, _("Start service"), _("Start PostgreSQL Service"));
-        if (canStop)
-            treeContextMenu->Append(MNU_STOPSERVICE, _("Stop service"),   _("Stop PostgreSQL Service"));
-        if (canConnect)
-            treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),        _("Connect to the selected server."));
-        if (canDisconnect)
-            treeContextMenu->Append(MNU_DISCONNECT, _("&Disconnect"),     _("Disconnect from the selected server."));
+        treeContextMenu->InsertSeparator(currentSize);
+        currentSize = newSize +1;
     }
 
+    appendIfEnabled(MNU_DROP);
+    appendIfEnabled(MNU_PROPERTIES);
 
-    bool canDrop = editMenu->IsEnabled(MNU_DROP),
-         canEdit = editMenu->IsEnabled(MNU_PROPERTIES);
-    
-    if (canDrop || canEdit)
+
+    newSize = treeContextMenu->GetMenuItemCount();
+    if (newSize > currentSize)
     {
-        treeContextMenu->AppendSeparator();
-        if (canDrop)
-            treeContextMenu->Append(MNU_DROP, _("&Delete/Drop"),  	      _("Delete/Drop the selected object."));
-        if (canEdit)
-            treeContextMenu->Append(MNU_PROPERTIES, _("&Properties"),     _("Display/edit the properties of the selected object."));
+        treeContextMenu->InsertSeparator(currentSize);
+        currentSize = newSize +1;
     }
 
-    PopupMenu(treeContextMenu, point);
+    if (currentSize)
+        PopupMenu(treeContextMenu, point);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
