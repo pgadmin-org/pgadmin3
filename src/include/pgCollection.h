@@ -25,7 +25,7 @@
 class pgCollection : public pgObject
 {
 public:
-    pgCollection(int newType = PG_NONE, const wxString& newName = wxString(""));
+    pgCollection(int newType = PG_NONE);
     ~pgCollection();
     pgServer *GetServer() const { return server; }
     void SetServer(pgServer *newServer) { server = newServer; }

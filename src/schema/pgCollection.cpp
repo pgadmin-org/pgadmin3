@@ -19,9 +19,12 @@
 #include "pgUser.h"
 #include "pgLanguage.h"
 #include "pgAggregate.h"
+#include "pgCast.h"
+#include "pgConversion.h"
 #include "pgDomain.h"
 #include "pgFunction.h"
 #include "pgOperator.h"
+#include "pgOperatorClass.h"
 #include "pgSequence.h"
 #include "pgTable.h"
 #include "pgType.h"
@@ -37,8 +40,8 @@
 
 extern char *typeNameList[]; 
 
-pgCollection::pgCollection(int newType, const wxString& newName)
-: pgObject(newType, newName)
+pgCollection::pgCollection(int newType)
+: pgObject(newType, typeNameList[newType])
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
 }
@@ -151,6 +154,12 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
         case PG_AGGREGATES:
             pgAggregate::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
             break;
+        case PG_CASTS:
+            pgCast::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
+            break;
+        case PG_CONVERSIONS:
+            pgConversion::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
+            break;
         case PG_DOMAINS:
             pgDomain::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
             break;
@@ -160,6 +169,9 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
             break;
         case PG_OPERATORS:
             pgOperator::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
+            break;
+        case PG_OPERATORCLASSES:
+            pgOperatorClass::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
             break;
         case PG_SEQUENCES:
             pgSequence::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);

@@ -378,6 +378,10 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
         case PG_SCHEMA:
         case PG_AGGREGATES:
         case PG_AGGREGATE:
+        case PG_CASTS:
+        case PG_CAST:
+        case PG_CONVERSIONS:
+        case PG_CONVERSION:
         case PG_DOMAINS:
         case PG_DOMAIN:
         case PG_FUNCTIONS:
@@ -386,6 +390,8 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
         case PG_TRIGGERFUNCTION:
         case PG_OPERATORS:
         case PG_OPERATOR:
+        case PG_OPERATORCLASSES:
+        case PG_OPERATORCLASS:
         case PG_SEQUENCES:
         case PG_SEQUENCE:
         case PG_TABLES:

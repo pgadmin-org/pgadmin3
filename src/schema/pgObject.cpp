@@ -32,10 +32,13 @@ char *typeNameList[] =
     "Languages",        "Language",     "Add Language",
     "Schemas",          "Schema",       "Add Schema",
     "Aggregates",       "Aggregate",
+    "Casts",            "Cast",
+    "Conversions",      "Conversion",
     "Domains",          "Domain",
     "Functions",        "Function",
     "Trigger Functions","Trigger Function",
     "Operators",        "Operator",
+    "Operator Classes", "Operator Class",
     "Sequences",        "Sequence",
     "Tables",           "Table",
     "Types",            "Type",
@@ -197,10 +200,13 @@ pgDatabase *pgObject::GetDatabase()
         case PG_LANGUAGES:
         case PG_SCHEMAS:
         case PG_AGGREGATES:
+        case PG_CASTS:
+        case PG_CONVERSIONS:
         case PG_DOMAINS:
         case PG_FUNCTIONS:
         case PG_TRIGGERFUNCTIONS:
         case PG_OPERATORS:
+        case PG_OPERATORCLASSES:
         case PG_SEQUENCES:
         case PG_TABLES:
         case PG_TYPES:
@@ -220,10 +226,13 @@ pgDatabase *pgObject::GetDatabase()
             db=((pgSchema*)this)->GetDatabase();
             break;
         case PG_AGGREGATE:
+        case PG_CAST:
+        case PG_CONVERSION:
         case PG_DOMAIN:
         case PG_FUNCTION:
         case PG_TRIGGERFUNCTION:
         case PG_OPERATOR:
+        case PG_OPERATORCLASS:
         case PG_SEQUENCE:
         case PG_TABLE:
         case PG_TYPE:

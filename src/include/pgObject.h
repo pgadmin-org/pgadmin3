@@ -41,10 +41,13 @@ enum PG_OBJTYPE
     PG_LANGUAGES,       PG_LANGUAGE,        PG_ADD_LANGUAGE,
     PG_SCHEMAS,         PG_SCHEMA,          PG_ADD_SCHEMA,
     PG_AGGREGATES,      PG_AGGREGATE,
+    PG_CASTS,           PG_CAST,
+    PG_CONVERSIONS,     PG_CONVERSION,
     PG_DOMAINS,         PG_DOMAIN,
     PG_FUNCTIONS,       PG_FUNCTION,
     PG_TRIGGERFUNCTIONS,PG_TRIGGERFUNCTION,
     PG_OPERATORS,       PG_OPERATOR,
+    PG_OPERATORCLASSES, PG_OPERATORCLASS,
     PG_SEQUENCES,       PG_SEQUENCE,
     PG_TABLES,          PG_TABLE,
     PG_TYPES,           PG_TYPE,
@@ -104,6 +107,14 @@ public:
 
 protected:
     static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2);
+    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const char *s)
+        { InsertListItem(list, pos, str1, wxString(s)); }
+    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const long l)
+        { InsertListItem(list, pos, str1, NumToStr(l)); }
+    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const bool b)
+        { InsertListItem(list, pos, str1, BoolToYesNo(b)); }
+    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const double d)
+        { InsertListItem(list, pos, str1, NumToStr(d)); }
     virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
         =0;
 

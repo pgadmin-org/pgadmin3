@@ -281,6 +281,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     browserImages->Add(wxIcon(rule_xpm));
     browserImages->Add(wxIcon(trigger_xpm));
     browserImages->Add(wxIcon(key_xpm));
+    browserImages->Add(wxIcon(public_xpm));
+    browserImages->Add(wxIcon(public_xpm));
+    browserImages->Add(wxIcon(public_xpm));
 
     // Add the root node
     pgObject *serversObj = new pgServers();
