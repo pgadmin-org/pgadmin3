@@ -18,6 +18,7 @@
 #define HINT_MISSINGIDENT   wxT("conn-ident")
 #define HINT_PRIMARYKEY     wxT("pk")
 #define HINT_FKINDEX        wxT("fki")
+#define HINT_VACUUM         wxT("vacuum")
 
 class frmMain;
 class frmHint : public DialogWithHelp

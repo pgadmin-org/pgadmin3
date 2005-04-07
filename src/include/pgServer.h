@@ -117,6 +117,7 @@ private:
 #ifdef WIN32
     SC_HANDLE scmHandle;
     SC_HANDLE serviceHandle;
+    wxArrayString GetDependentServices(SC_HANDLE handle);
 #endif
 };
 

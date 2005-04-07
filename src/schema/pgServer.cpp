@@ -135,6 +135,40 @@ bool pgServer::Disconnect(frmMain *form)
 
 
 #define SERVICEBUFSIZE  10000
+#define QUERYBUFSIZE    256     
+
+#ifdef WIN32
+wxArrayString pgServer::GetDependentServices(SC_HANDLE handle)
+{
+    wxArrayString services;
+    LPENUM_SERVICE_STATUS sbuf = (LPENUM_SERVICE_STATUS) new char[SERVICEBUFSIZE];
+
+    DWORD servicesReturned=0, bytesNeeded;
+    ::EnumDependentServices(handle, SERVICE_STATE_ALL, sbuf, SERVICEBUFSIZE, &bytesNeeded, &servicesReturned);
+
+
+    DWORD i;
+    for (i=0 ; i < servicesReturned ; i++)
+    {
+        SC_HANDLE h=::OpenService(scmHandle, sbuf[i].lpServiceName, SERVICE_QUERY_CONFIG);
+        if (h)
+        {
+            char buffer[QUERYBUFSIZE];
+            LPQUERY_SERVICE_CONFIG qsc=(LPQUERY_SERVICE_CONFIG)buffer;
+            if(::QueryServiceConfig(h, qsc, QUERYBUFSIZE, &bytesNeeded))
+            {
+                if (qsc->dwStartType != SERVICE_DISABLED)
+                    services.Add(sbuf[i].lpServiceName);
+            }
+
+            ::CloseServiceHandle(h);
+        }
+    }
+    delete[] sbuf;
+
+    return services;
+}
+#endif
 
 
 bool pgServer::StartService()
@@ -160,25 +194,24 @@ bool pgServer::StartService()
         {
             GetServerRunning();     // ignore result, just to wait for startup
 
-            LPENUM_SERVICE_STATUS sbuf = (LPENUM_SERVICE_STATUS) new char[SERVICEBUFSIZE];
-            DWORD bytesNeeded, servicesReturned=0;
-            ::EnumDependentServices(serviceHandle, SERVICE_INACTIVE, sbuf, SERVICEBUFSIZE, &bytesNeeded, &servicesReturned);
-            if (servicesReturned > 0)
+            wxArrayString services=GetDependentServices(serviceHandle);
+
+            if (services.GetCount() > 0)
             {
-                DWORD i;
-                wxString services;
-                for (i=0 ; i < servicesReturned ; i++)
-                    services += wxT("   ") + wxString(sbuf[i].lpDisplayName) + wxT("\n");
+                size_t i;
+                wxString serviceString;
+                for (i=0 ; i < services.GetCount() ; i++)
+                    serviceString += wxT("   ") + services.Item(i) + wxT("\n");
 
                 wxMessageDialog msg(0, _("There are dependent services configured:\n\n")
-                        + services + _("\nStart dependent services too?"), _("Dependent services running"),
+                        + serviceString + _("\nStart dependent services too?"), _("Dependent services"),
                             wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
                 
                 if (msg.ShowModal() == wxID_YES)
                 {
-                    for (i=0 ; i < servicesReturned ; i++)
+                    for (i=0 ; i < services.GetCount() ; i++)
                     {
-                        SC_HANDLE h=::OpenService(scmHandle, sbuf[i].lpServiceName, GENERIC_EXECUTE|GENERIC_READ);
+                        SC_HANDLE h=::OpenService(scmHandle, services.Item(i), GENERIC_EXECUTE|GENERIC_READ);
                         if (h)
                         {
                             if (!::StartService(h, 0, 0))
@@ -234,7 +267,7 @@ bool pgServer::StopService()
                         services += wxT("   ") + wxString(sbuf[i].lpDisplayName) + wxT("\n");
 
                     wxMessageDialog msg(0, _("There are dependent services running:\n\n")
-                            + services + _("\nStop dependent services?"), _("Dependent services running"),
+                            + services + _("\nStop dependent services?"), _("Dependent services"),
                                 wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
                     if (msg.ShowModal() != wxID_YES)
                         return false;

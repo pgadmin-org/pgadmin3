@@ -15,6 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "frmHint.h"
 #include "pgObject.h"
 #include "pgTable.h"
 #include "pgCollection.h"
@@ -405,6 +406,24 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Has OIDs?"), GetHasOids());
         properties->AppendItem(_("System table?"), GetSystemObject());
         properties->AppendItem(_("Comment"), GetComment());
+
+        bool showHint=false;
+        if (rowsCounted)
+        {
+            if (!estimatedRows || (estimatedRows == 1000 && rows != 1000))
+                showHint = (rows >= 20);
+            else
+            {
+                wxULongLong quot = rows*10 / estimatedRows;
+                showHint = ((quot > 12 || quot < 8) && (rows+20 < estimatedRows || rows > estimatedRows+20));
+            }
+        }
+        else if (estimatedRows == 1000)
+        {
+            showHint = true;
+        }
+        if (form && showHint)
+            frmHint::ShowHint((wxWindow*)form, HINT_VACUUM, GetFullIdentifier());
     }
 }
 

@@ -67,6 +67,11 @@ hintArray[]=
         wxT("ddl-constraints#ddl-constraints-fk"),
         HINT_CANSUPPRESS|HINT_CANABORT
     },
+    {   HINT_VACUUM,
+        __("Running VACUUM recommended"),
+        wxT("maintenance#routine-vacuuming"),
+        HINT_CANSUPPRESS
+    },
     { 0,0,0,0 }
 };
 
