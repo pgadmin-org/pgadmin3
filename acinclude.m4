@@ -65,13 +65,17 @@ AC_DEFUN([ENABLE_STATIC],
 ])
 
 ############################
-# Static build of pgAdmin3 #
+# Build an pgAdmin III.app  #
 ############################
 AC_DEFUN([ENABLE_APPBUNDLE],
 [AC_ARG_ENABLE(appbundle,
-[ --enable-appbundle   Build PgAdminIII.app],
+[ --enable-appbundle   Build pgAdmin3.app],
 [pg_appbundle=yes
 prefix=$(pwd)/tmp
+bundledir="$(pwd)/pgAdmin3.app"
+bindir="$bundledir/Contents/MacOS"
+datadir="$bundledir/Contents/SharedSupport"
+AC_SUBST(bundledir)
 ],
 [pg_appbundle=no])
 ])

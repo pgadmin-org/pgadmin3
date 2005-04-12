@@ -150,7 +150,7 @@ $(srcdir)/ui/zh_TW/pgadmin3.po
 #
 ##############################################################################
 
-nobase_dist_pkgdata_DATA = $(srcdir)/ui/common/*.xrc \
+TMP_ui = $(srcdir)/ui/common/*.xrc \
 $(srcdir)/ui/wxstd.mo \
 $(srcdir)/ui/pgadmin3.lng \
 $(srcdir)/ui/pg_settings.csv \
@@ -196,7 +196,20 @@ $(srcdir)/ui/tr_TR/wxstd.mo \
 $(srcdir)/ui/zh_CN/wxstd.mo \
 $(srcdir)/ui/zh_TW/wxstd.mo
 
+if !APPBUNDLE
+
+nobase_dist_pkgdata_DATA = $(TMP_ui)
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
 AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
 AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
 
+else
+
+nobase_dist_data_DATA = $(TMP_ui)
+AM_CXXFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
+AM_CPPFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
+AM_CFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
+install-exec-hook:
+	(cd $(bindir); mv pgadmin3 "pgAdmin3")
+
+endif

@@ -31,6 +31,7 @@ AC_CHECK_FUNCS([gethostbyname inet_ntoa memmove memset strchr])
 
 # Custom checks
 ENABLE_APPBUNDLE
+AM_CONDITIONAL([APPBUNDLE], [test x$pg_appbundle = xyes])
 CHECK_WX_CONFIG_BINARY
 CHECK_PGSQL_INCLUDE
 ENABLE_DEBUG
@@ -39,5 +40,7 @@ CHECK_PGSQL
 CHECK_WXWINDOWS
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+                 src/Makefile
+		 pkg/Makefile
+		 pkg/mac/Makefile])
 AC_OUTPUT
