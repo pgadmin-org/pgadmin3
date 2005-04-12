@@ -183,6 +183,13 @@ void frmHbaConfig::WriteFile(pgConn *conn)
 
     if (DoWriteFile(str, conn))
     {
+        changed=false;
+        fileMenu->Enable(MNU_SAVE, false);
+        editMenu->Enable(MNU_UNDO, false);
+        toolBar->EnableTool(MNU_SAVE, false);
+        toolBar->EnableTool(MNU_UNDO, false);
+
+		// make intermediate change current
         for (i=0 ; i < lines.GetCount() ; i++)
             lines.Item(i).Init(lines.Item(i).GetText());
     }
