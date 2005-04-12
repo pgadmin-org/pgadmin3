@@ -60,7 +60,7 @@ BEGIN_EVENT_TABLE(dlgJob, dlgAgentProperty)
     EVT_LIST_ITEM_SELECTED(XRCID("lstSchedules"),   dlgJob::OnSelChangeSchedule)
     EVT_BUTTON(XRCID("btnChangeSchedule"),          dlgJob::OnChangeSchedule)
     EVT_BUTTON(XRCID("btnAddSchedule"),             dlgJob::OnAddSchedule)
-    EVT_BUTTON(XRCID("btnRemoveStedule"),           dlgJob::OnRemoveSchedule)
+    EVT_BUTTON(XRCID("btnRemoveSchedule"),          dlgJob::OnRemoveSchedule)
 END_EVENT_TABLE();
 
 
@@ -202,7 +202,7 @@ int dlgJob::Go(bool modal)
 
 pgObject *dlgJob::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgaJob::ReadObjects(collection, 0, wxT("   AND jobid=") + NumToStr(recId) + wxT("\n"));
+    pgObject *obj=pgaJob::ReadObjects(collection, 0, wxT("   WHERE jobid=") + NumToStr(recId) + wxT("\n"));
     return obj;
 }
 
@@ -423,7 +423,7 @@ wxString dlgJob::GetUpdateSql()
 
     for (index = 0 ; index < (int)tmpSteps.GetCount() ; index++)
     {
-        sql += wxT("DELETE FROM pgagent.pga_jobstep WHERE jobid=") 
+        sql += wxT("DELETE FROM pgagent.pga_jobstep WHERE jstid=") 
             + NumToStr(((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetRecId()) + wxT(";\n");
     }
 
@@ -444,7 +444,7 @@ wxString dlgJob::GetUpdateSql()
 
     for (index = 0 ; index < (int)tmpSchedules.GetCount() ; index++)
     {
-        sql += wxT("DELETE FROM pgagent.pga_jobschedule WHERE jobid=") 
+        sql += wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") 
             + NumToStr(((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetRecId()) + wxT(";\n");
     }
 

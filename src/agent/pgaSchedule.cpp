@@ -96,7 +96,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
        wxT("SELECT * FROM pgagent.pga_schedule\n")
        wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetRecId()) + wxT("\n")
        + restriction +
-       wxT(" ORDER BY jscid"));
+       wxT(" ORDER BY jscname"));
 
     if (schedules)
     {

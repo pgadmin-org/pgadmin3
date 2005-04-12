@@ -89,7 +89,7 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
        wxT("SELECT * FROM pgagent.pga_jobstep\n")
        wxT(" WHERE jstjobid=") + NumToStr(collection->GetJob()->GetRecId()) + wxT("\n")
        + restriction +
-       wxT(" ORDER BY jstid"));
+       wxT(" ORDER BY jstname"));
 
     if (steps)
     {

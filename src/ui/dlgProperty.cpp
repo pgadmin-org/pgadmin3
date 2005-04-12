@@ -1312,14 +1312,20 @@ bool dlgAgentProperty::executeSql()
     sql=GetInsertSql();
     if (!sql.IsEmpty())
     {
-		if (sql.Contains(wxT("<id>")) && sql.StartsWith(wxT("INSERT INTO pgagent.pga_job")))
+		if (sql.Contains(wxT("<id>")))
 		{
-			recId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
+			if (sql.StartsWith(wxT("INSERT INTO pgagent.pga_job")))
+				recId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
+			else if (sql.StartsWith(wxT("INSERT INTO pgagent.pga_schedule")))
+				recId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
+			else if (sql.StartsWith(wxT("INSERT INTO pgagent.pga_jobstep")))
+				recId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
 
             int pos;
             while ((pos=sql.Find(wxT("<id>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(recId) + sql.Mid(pos+4);
 		}
+
 
         pgSet *set=connection->ExecuteSet(sql);
         if (set)
