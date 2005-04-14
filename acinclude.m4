@@ -218,10 +218,10 @@ else
 fi], [
     AC_MSG_RESULT(yes)
     WX_HOME=/usr/local/wx2
-    if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h"
+    if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h" -a ! -f "${WX_HOME}/include/wx-2.6/wx/wx.h"
     then
         WX_HOME=/usr/local
-        if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h"
+        if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h" -a ! -f "${WX_HOME}/include/wx-2.6/wx/wx.h"
         then
             WX_HOME=/usr
         fi
@@ -276,9 +276,6 @@ then
             ;;
         2.5*)
             WX_VERSION="2.5"
-            ;;
-        2.4*)
-            WX_VERSION="2.4"
             ;;
         *)
             ;;
@@ -503,7 +500,7 @@ then
     fi
 
     WX_NEW_CPPFLAGS=`${WX_CONFIG} --cxxflags`
-    CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -I${WX_HOME}/include/wx-2.5"
+    CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -I${WX_HOME}/include/wx-${WX_VERSION}"
     case "${host}" in
         *-apple-darwin*)
             CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
@@ -512,16 +509,16 @@ then
             ;;
     esac
     wx_wx_h="yes"
-    if test ! -f "${WX_HOME}/include/wx-2.5/wx/version.h"
+    if test ! -f "${WX_HOME}/include/wx-${WX_VERSION}/wx/version.h"
     then
         wx_wx_h="no"
     fi
-    if test ! -f "${WX_HOME}/include/wx-2.5/wx/stc/stc.h"
+    if test ! -f "${WX_HOME}/include/wx-${WX_VERSION}/wx/stc/stc.h"
     then
         AC_MSG_ERROR([you need to install the stc package from wxWindows/contrib/src/stc])
         wx_wx_h="no"
     fi
-    if test ! -f "${WX_HOME}/include/wx-2.5/wx/ogl/ogl.h"
+    if test ! -f "${WX_HOME}/include/wx-${WX_VERSION}/wx/ogl/ogl.h"
     then
         AC_MSG_ERROR([you need to install the ogl package from wxWindows/contrib/src/ogl with wxUSE_DEPRECATED=0])
         wx_wx_h="no"
