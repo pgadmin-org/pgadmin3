@@ -53,6 +53,7 @@ CFLAGS="-Wall -g -O0"
 CXXFLAGS="-Wall -g -O0"],
 [pg_debug_build=no])
 ])
+AC_SUBST(pg_debug_build)
 
 ############################
 # Static build of pgAdmin3 #

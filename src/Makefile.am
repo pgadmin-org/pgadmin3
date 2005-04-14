@@ -210,6 +210,11 @@ AM_CXXFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/inc
 AM_CPPFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
 AM_CFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
 install-exec-hook:
-	(cd $(bindir); mv pgadmin3 "pgAdmin3")
+	cd $(bindir) ;\
+	mv pgadmin3 tmp ;\
+	mv tmp pgAdmin3 ;\
+	if test "$(pg_debug_build)" = "no"; then \
+		strip pgAdmin3 ;\
+	fi
 
 endif
