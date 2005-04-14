@@ -71,24 +71,33 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     unsigned long ipaddr;
 #endif
     
-    
-    addr = inet_addr(server.ToAscii());
-	if (addr == INADDR_NONE) // szServer is not an IP address
-	{
-		host = gethostbyname(server.ToAscii());
-		if (host == NULL)
-		{
-            connStatus = PGCONN_DNSERR;
-            wxLogError(__("Could not resolve hostname %s"), server.c_str());
-			return;
-		}
+#ifndef __WXMSW__
+    if (!(server.IsEmpty() || server.StartsWith(wxT("/"))))
+    {
+#endif
+        addr = inet_addr(server.ToAscii());
+        if (addr == INADDR_NONE) // szServer is not an IP address
+        {
+            host = gethostbyname(server.ToAscii());
+            if (host == NULL)
+            {
+                connStatus = PGCONN_DNSERR;
+                wxLogError(__("Could not resolve hostname %s"), server.c_str());
+                return;
+            }
 
-        memcpy(&(ipaddr),host->h_addr,host->h_length); 
-	    hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
-		hostname = server;
+        	memcpy(&(ipaddr),host->h_addr,host->h_length); 
+	    	hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
+            hostname = server;
+        }
+    	else
+    	    hostip = server;
+#ifndef __WXMSW__
     }
     else
-        hostip = server;
+        hostname = server;
+#endif
+    
 
     wxLogInfo(wxT("Server name: %s (resolved to: %s)"), server.c_str(), hostip.c_str());
 
@@ -98,7 +107,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
       connstr.Append(wxT(" host="));
       connstr.Append(qtString(hostname));
     }
-    if (!server.IsEmpty()) {
+    if (!hostip.IsEmpty()) {
       connstr.Append(wxT(" hostaddr="));
       connstr.Append(qtString(hostip));
     }
@@ -138,7 +147,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
         }
     }
     connstr.Trim(FALSE);
-
+    
     // Open the connection
     wxLogInfo(wxT("Opening connection with connection string: %s"), connstr.c_str());
 
