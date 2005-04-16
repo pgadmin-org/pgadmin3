@@ -293,9 +293,12 @@ wxString dlgSchedule::GetUpdateSql()
 		}
 		else
 		{
-			if (!vars.IsEmpty())
+			if (schedule->GetEnd().IsValid())
+			{
+				if (!vars.IsEmpty())
 					vars.Append(wxT(", "));
-			vars.Append(wxT("jscend = NULL"));
+				vars.Append(wxT("jscend = NULL"));
+			}
 		}
 
         if (ChkListBox2StrArray(chkMinutes) != schedule->GetMinutes())
