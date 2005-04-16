@@ -210,11 +210,11 @@ wxString dlgSchedule::GetInsertSql()
         if (jobId)
             jscjobid = NumToStr(jobId);
         else
-            jscjobid = wxT("<id>");
+            jscjobid = wxT("<JobId>");
 
 		// Build the various arrays of values
         sql = wxT("INSERT INTO pgagent.pga_schedule (jscid, jscjobid, jscname, jscdesc, jscminutes, jschours, jscweekdays, jscmonthdays, jscmonths, jscenabled, jscstart, jscend)\n")
-              wxT("VALUES(<id>, ") + jscjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
+              wxT("VALUES(<SchId>, ") + jscjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
 				+ wxT("'") + ChkListBox2PgArray(chkMinutes) + wxT("', ")
 				+ wxT("'") + ChkListBox2PgArray(chkHours) + wxT("', ")
 				+ wxT("'") + ChkListBox2PgArray(chkWeekdays) + wxT("', ")

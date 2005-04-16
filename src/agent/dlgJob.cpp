@@ -246,9 +246,15 @@ void dlgJob::OnChangeStep(wxCommandEvent &ev)
         lstSteps->SetItem(pos, 1, step.GetComment());
 
         if (lstSteps->GetText(pos, 3).IsEmpty())
-            lstSteps->SetItem(pos, 2, step.GetInsertSql());
+		{
+			wxString *stepSql = new wxString(step.GetInsertSql());
+			lstSteps->SetItemData(pos, (long)stepSql);
+		}
         else
-            lstSteps->SetItem(pos, 2, step.GetUpdateSql());
+		{
+			wxString *stepSql = new wxString(step.GetUpdateSql());
+			lstSteps->SetItemData(pos, (long)stepSql);
+		}
 
         CheckChange();
     }
@@ -270,7 +276,8 @@ void dlgJob::OnAddStep(wxCommandEvent &ev)
     if (step.Go(true) >= 0)
     {
         int pos = lstSteps->AppendItem(PGAICON_STEP, step.GetName(), step.GetComment());
-        lstSteps->SetItem(pos, 2, step.GetInsertSql());
+		wxString *stepSql = new wxString(step.GetInsertSql());
+		lstSteps->SetItemData(pos, (long)stepSql);
         CheckChange();
     }
 }
@@ -278,6 +285,7 @@ void dlgJob::OnAddStep(wxCommandEvent &ev)
 
 void dlgJob::OnRemoveStep(wxCommandEvent &ev)
 {
+	delete (wxString *)lstSteps->GetItemData(lstSteps->GetSelection());
     lstSteps->DeleteCurrentItem();
 
     btnChangeStep->Disable();
@@ -309,9 +317,15 @@ void dlgJob::OnChangeSchedule(wxCommandEvent &ev)
         lstSchedules->SetItem(pos, 1, schedule.GetComment());
 
         if (lstSchedules->GetText(pos, 3).IsEmpty())
-            lstSchedules->SetItem(pos, 2, schedule.GetInsertSql());
+		{
+			wxString *scheduleSql = new wxString(schedule.GetInsertSql());
+			lstSchedules->SetItemData(pos, (long)scheduleSql);
+		}
         else
-            lstSchedules->SetItem(pos, 2, schedule.GetUpdateSql());
+		{
+			wxString *scheduleSql = new wxString(schedule.GetUpdateSql());
+			lstSchedules->SetItemData(pos, (long)scheduleSql);
+		}
 
         CheckChange();
     }
@@ -326,7 +340,8 @@ void dlgJob::OnAddSchedule(wxCommandEvent &ev)
     if (schedule.Go(true) >= 0)
     {
         int pos = lstSchedules->AppendItem(PGAICON_SCHEDULE, schedule.GetName(), schedule.GetComment());
-        lstSchedules->SetItem(pos, 2, schedule.GetInsertSql());
+        wxString *scheduleSql = new wxString(schedule.GetInsertSql());
+		lstSchedules->SetItemData(pos, (long)scheduleSql);
         CheckChange();
     }
 }
@@ -334,6 +349,7 @@ void dlgJob::OnAddSchedule(wxCommandEvent &ev)
 
 void dlgJob::OnRemoveSchedule(wxCommandEvent &ev)
 {
+	delete (wxString *)lstSchedules->GetItemData(lstSchedules->GetSelection());
     lstSchedules->DeleteCurrentItem();
 
     btnChangeSchedule->Disable();
@@ -350,7 +366,7 @@ wxString dlgJob::GetInsertSql()
     if (!job)
     {
         sql = wxT("INSERT INTO pgagent.pga_job (jobid, jobjclid, jobname, jobdesc, jobenabled)\n")
-              wxT("SELECT <id>, jcl.jclid, ") + qtString(GetName()) + 
+              wxT("SELECT <JobId>, jcl.jclid, ") + qtString(GetName()) + 
               wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ") + BoolToStr(chkEnabled->GetValue()) + wxT("\n")
               wxT("  FROM pgagent.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue());
     }
@@ -416,9 +432,13 @@ wxString dlgJob::GetUpdateSql()
             if (index >= 0)
                 tmpSteps.RemoveAt(index);
         }
-        str=lstSteps->GetText(pos, 2);
-        if (!str.IsEmpty())
-            sql += str + wxT(";\n");
+		
+		if(lstSteps->GetItemData(pos))
+		{
+			str=*(wxString *)lstSteps->GetItemData(pos);
+			if (!str.IsEmpty())
+	            sql += str + wxT(";\n");
+		}
     }
 
     for (index = 0 ; index < (int)tmpSteps.GetCount() ; index++)
@@ -437,9 +457,12 @@ wxString dlgJob::GetUpdateSql()
             if (index >= 0)
                 tmpSchedules.RemoveAt(index);
         }
-        str=lstSchedules->GetText(pos, 2);
-        if (!str.IsEmpty())
-            sql += str + wxT(";\n");
+		if(lstSchedules->GetItemData(pos))
+		{
+			str=*(wxString *)lstSchedules->GetItemData(pos);
+			if (!str.IsEmpty())
+	            sql += str + wxT(";\n");
+		}
     }
 
     for (index = 0 ; index < (int)tmpSchedules.GetCount() ; index++)
