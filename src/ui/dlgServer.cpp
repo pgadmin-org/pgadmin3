@@ -244,7 +244,7 @@ void dlgServer::CheckChange()
 
     CheckValid(enable, !txtDescription->GetValue().IsEmpty(), _("Please specify description."));
 
-#ifdef __xxxWXMSW__
+#ifdef __WXMSW__
     CheckValid(enable, !name.IsEmpty(), _("Please specify address."));
     CheckValid(enable, StrToLong(txtPort->GetValue()) > 0, _("Please specify port."));
 #else
