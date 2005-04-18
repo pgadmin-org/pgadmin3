@@ -479,9 +479,10 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 
 wxString pgServer::GetIdentifier() const
 {
-    wxString id;
-    id.Printf(wxT("%s:%d"), GetName().c_str(), port);
-    return wxString(id);
+    if (GetName().IsEmpty() || GetName().StartsWith(wxT("/")))
+        return wxT("local:") + GetName();
+
+    return wxString::Format(wxT("%s:%d"), GetName().c_str(), port);
 }
 
 
@@ -611,34 +612,39 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
         // Display the Server properties
 
-        properties->AppendItem(_("Hostname"), GetName());
         properties->AppendItem(_("Description"), GetDescription());
-        properties->AppendItem(_("Port"), (long)GetPort());
+        if (GetName().IsEmpty() || GetName().StartsWith(wxT("/")))
+            properties->AppendItem(_("Hostname"), wxT("local:") + GetName());
+        else
+        {
+            properties->AppendItem(_("Hostname"), GetName());
+            properties->AppendItem(_("Port"), (long)GetPort());
+#ifdef SSL
+            if (GetConnected())
+            {
+                properties->AppendItem(_("Encryption"), 
+                    conn->IsSSLconnected() ? _("SSL encrypted") : _("not encrypted"));
+            }
+            else
+            {
+                if (ssl > 0)
+                {
+                    wxString sslMode;
+                    switch (ssl)
+                    {
+                        case 1: sslMode = _("require"); break;
+                        case 2: sslMode = _("prefer"); break;
+                        case 3: sslMode = _("allow"); break;
+                        case 4: sslMode = _("disable"); break;
+                    }
+                    properties->AppendItem(_("SSL Mode"), sslMode);
+                }
+            }
+#endif
+        }
         if (!serviceId.IsEmpty())
             properties->AppendItem(_("Service"), serviceId);
 
-#ifdef SSL
-        if (GetConnected())
-        {
-            properties->AppendItem(_("Encryption"), 
-                conn->IsSSLconnected() ? _("SSL encrypted") : _("not encrypted"));
-        }
-        else
-        {
-            if (ssl > 0)
-            {
-                wxString sslMode;
-                switch (ssl)
-                {
-                    case 1: sslMode = _("require"); break;
-                    case 2: sslMode = _("prefer"); break;
-                    case 3: sslMode = _("allow"); break;
-                    case 4: sslMode = _("disable"); break;
-                }
-                properties->AppendItem(_("SSL Mode"), sslMode);
-            }
-        }
-#endif
         properties->AppendItem(_("Initial database"), GetDatabaseName());
         properties->AppendItem(_("Username"), GetUsername());
         properties->AppendItem(_("Need password?"), GetNeedPwd());

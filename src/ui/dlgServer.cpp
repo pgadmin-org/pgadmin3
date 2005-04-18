@@ -61,7 +61,8 @@ dlgServer::dlgServer(frmMain *frame, pgServer *node)
 
     cbDatabase->Append(settings->GetLastDatabase());
     cbDatabase->SetSelection(0);
-    txtPort->SetValue(NumToStr((long)settings->GetLastPort()));    
+    if (settings->GetLastPort())
+        txtPort->SetValue(NumToStr((long)settings->GetLastPort()));    
     cbSSL->SetSelection(settings->GetLastSSL());
     txtUsername->SetValue(settings->GetLastUsername());
     chkNeedPwd->SetValue(true);
@@ -166,7 +167,8 @@ int dlgServer::Go(bool modal)
         cbDatabase->Append(server->GetDatabaseName());
         txtDescription->SetValue(server->GetDescription());
         txtService->SetValue(server->GetServiceID());
-        txtPort->SetValue(NumToStr((long)server->GetPort()));
+        if (server->GetPort())
+            txtPort->SetValue(NumToStr((long)server->GetPort()));
         cbSSL->SetSelection(server->GetSSL());
         cbDatabase->SetValue(server->GetDatabaseName());
         txtUsername->SetValue(server->GetUsername());
@@ -240,11 +242,18 @@ void dlgServer::CheckChange()
                || chkNeedPwd->GetValue() != server->GetNeedPwd();
     }
 
-#ifdef __WXMSW__
-    CheckValid(enable, !name.IsEmpty(), _("Please specify address."));
-#endif
     CheckValid(enable, !txtDescription->GetValue().IsEmpty(), _("Please specify description."));
+
+#ifdef __xxxWXMSW__
+    CheckValid(enable, !name.IsEmpty(), _("Please specify address."));
     CheckValid(enable, StrToLong(txtPort->GetValue()) > 0, _("Please specify port."));
+#else
+    bool isPipe = (name.IsEmpty() || name.StartsWith(wxT("/")));
+    txtPort->Enable(!isPipe);
+    cbSSL->Enable(!isPipe);
+    if (!isPipe)
+        CheckValid(enable, StrToLong(txtPort->GetValue()) > 0, _("Please specify port."));
+#endif
     CheckValid(enable, !txtUsername->GetValue().IsEmpty(), _("Please specify user name"));
 
     EnableOK(enable);
