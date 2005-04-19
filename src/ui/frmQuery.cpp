@@ -923,7 +923,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         {
             elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
             SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
-            wxYield();
+			wxYield();
             if (elapsedQuery < 200)
                 wxMilliSleep(10);
             else

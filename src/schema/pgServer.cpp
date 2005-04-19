@@ -479,10 +479,14 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 
 wxString pgServer::GetIdentifier() const
 {
-    if (GetName().IsEmpty() || GetName().StartsWith(wxT("/")))
-        return wxT("local:") + GetName();
-
-    return wxString::Format(wxT("%s:%d"), GetName().c_str(), port);
+    wxString idstr;
+    if (GetName().IsEmpty())
+        idstr.Printf(wxT("local:.s.PGSQL.%d"), port);
+	else if (GetName().StartsWith(wxT("/")))
+        idstr.Printf(wxT("local:%s/.s.PGSQL.%d"), GetName().c_str(), port);
+	else
+	    idstr.Printf(wxT("%s:%d"), GetName().c_str(), port);
+    return idstr;
 }
 
 
@@ -614,7 +618,10 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
         properties->AppendItem(_("Description"), GetDescription());
         if (GetName().IsEmpty() || GetName().StartsWith(wxT("/")))
+		{
             properties->AppendItem(_("Hostname"), wxT("local:") + GetName());
+            properties->AppendItem(_("Port"), (long)GetPort());
+		}
         else
         {
             properties->AppendItem(_("Hostname"), GetName());
