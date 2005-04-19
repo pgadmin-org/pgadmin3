@@ -135,6 +135,7 @@ pgObject::pgObject(int newType, const wxString& newName)
     name = newName;
     expandedKids=false;
     needReread=false;
+    hintShown=false;
 }
 
 

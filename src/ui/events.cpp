@@ -66,6 +66,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_GRANTWIZARD,               frmMain::OnGrantWizard)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
+    EVT_MENU(MNU_HINT,                      frmMain::OnHint)
     EVT_MENU(MNU_ONLINEUPDATE,              frmMain::OnOnlineUpdate)
     EVT_MENU(MNU_ONLINEUPDATE_NEWDATA,      frmMain::OnOnlineUpdateNewData)
     EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
@@ -437,6 +438,13 @@ void frmMain::OnCount(wxCommandEvent &event)
         if (currentObject == (pgObject*)browser->GetItemData(item))
             currentObject->ShowTreeDetail(0, 0, properties);
     }
+}
+
+
+void frmMain::OnHint(wxCommandEvent &event)
+{
+    if (currentObject)
+        currentObject->ShowHint(this);
 }
 
 
@@ -822,6 +830,8 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
          canGrantWizard=false,
          canCount=false;
 
+    bool canHint=data->GetCanHint();
+
     bool showTree=true;
 
     switch (type)
@@ -1000,6 +1010,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     toolsMenu->Enable(MNU_STOPSERVICE, canStop);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
     viewMenu->Enable(MNU_COUNT, canCount);
+    helpMenu->Enable(MNU_HINT, canHint);
 //    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
 }
 
@@ -1097,6 +1108,7 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
     }
 
     appendIfEnabled(MNU_REFRESH);
+    appendIfEnabled(MNU_HINT);
 
     if (browser->GetSelection() == object->GetId())
         appendIfEnabled(MNU_COUNT);

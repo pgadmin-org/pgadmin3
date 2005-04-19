@@ -118,6 +118,7 @@ public:
     void iSetAcl(const wxString& newVal) { acl = newVal; }
     virtual bool GetSystemObject() const { return false; }
     virtual bool IsCollection() const { return false; }
+    virtual void ShowHint(frmMain *form) {}
 
     void ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlSQLBox *sqlPane);
 
@@ -161,6 +162,7 @@ public:
     virtual bool WantDummyChild() { return false; }
     virtual bool CanBackup() { return false; }
     virtual bool CanRestore() { return false; }
+    virtual bool GetCanHint() { return false; }
 
 protected:
     void CreateListColumns(ctlListView *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));
@@ -170,6 +172,7 @@ protected:
 
     bool expandedKids, needReread;
     wxString sql;
+    bool hintShown;
     
 private:
     static void AppendRight(wxString &rights, const wxString& acl, wxChar c, wxChar *rightName);

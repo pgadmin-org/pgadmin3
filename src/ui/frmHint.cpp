@@ -32,6 +32,7 @@
 
 #define HINT_CANSUPPRESS 1
 #define HINT_CANABORT    2
+#define HINT_CANFIX      4
 
 struct
 {
@@ -70,13 +71,14 @@ hintArray[]=
     {   HINT_VACUUM,
         __("Running VACUUM recommended"),
         wxT("maintenance#routine-vacuuming"),
-        HINT_CANSUPPRESS
+        HINT_CANSUPPRESS | HINT_CANFIX
     },
     { 0,0,0,0 }
 };
 
 
 BEGIN_EVENT_TABLE(frmHint, DialogWithHelp)
+    EVT_BUTTON(XRCID("btnFix"), frmHint::OnFix)
 END_EVENT_TABLE();
 
 
@@ -84,6 +86,8 @@ END_EVENT_TABLE();
 
 #define chkSuppress     CTRL_CHECKBOX("chkSuppress")
 #define htmlHint        (XRCCTRL(*this, "htmlHint", wxHtmlWindow))
+#define btnFix          CTRL_BUTTON("btnFix")
+
 
 frmHint::frmHint(wxWindow *fr, int hintno, const wxString &info) : DialogWithHelp(0)
 {
@@ -120,7 +124,8 @@ frmHint::frmHint(wxWindow *fr, int hintno, const wxString &info) : DialogWithHel
         chkSuppress->Disable();
     if (!(hintArray[hintno].flags & HINT_CANABORT))
         btnCancel->Disable();
-
+    if (!(hintArray[hintno].flags & HINT_CANFIX))
+        btnFix->Hide();
     currentHint = hintno;
 };
 
@@ -204,8 +209,14 @@ int frmHint::ShowHint(wxWindow *fr, const wxString &hint, const wxString &info)
         rc = frm->ShowModal();
         delete frm;
 
-        if (!(hintArray[hintno].flags & HINT_CANABORT))
+        if ((rc == wxID_CANCEL || rc == -1) && !(hintArray[hintno].flags & HINT_CANABORT))
             rc = wxID_OK;
     }
     return rc;
+}
+
+
+void frmHint::OnFix(wxCommandEvent &ev)
+{
+    EndDialog(HINT_RC_FIX);
 }

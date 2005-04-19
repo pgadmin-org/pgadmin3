@@ -238,6 +238,7 @@ frmMain::frmMain(const wxString& title)
     helpMenu->Append(MNU_FAQ, _("pgAdmin III &FAQ"),              _("Frequently asked questions about pgAdmin III."));
     helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
     helpMenu->Append(MNU_PGSQLHELP, _("&PostgreSQL Help"),        _("Display help on PostgreSQL database system."));
+    helpMenu->Append(MNU_HINT, _("Hints"),                        _("Display helpful hints on current object."));
     helpMenu->Append(MNU_TIPOFTHEDAY, _("&Tip of the day"),       _("Show a tip of the day."));
     helpMenu->AppendSeparator();
     helpMenu->Append(MNU_ONLINEUPDATE, _("Online Update"),        _("Check online for updates"));
@@ -1120,6 +1121,8 @@ void frmMain::SetButtons(pgObject *obj)
 
     viewMenu->Enable(MNU_REFRESH, refresh);
 	viewMenu->Enable(MNU_COUNT, false);
+
+    helpMenu->Enable(MNU_HINT, false);
 }
 
 

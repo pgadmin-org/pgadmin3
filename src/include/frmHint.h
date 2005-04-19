@@ -20,6 +20,9 @@
 #define HINT_FKINDEX        wxT("fki")
 #define HINT_VACUUM         wxT("vacuum")
 
+#define HINT_RC_FIX         42
+
+
 class frmMain;
 class frmHint : public DialogWithHelp
 {
@@ -32,6 +35,7 @@ private:
     frmHint(wxWindow *fr, int hint, const wxString &info=wxEmptyString);
     ~frmHint();
 
+    void OnFix(wxCommandEvent &ev);
     static int GetHintNo(const wxString &hint);
     static bool WantHint(int hintno);
     wxString GetHelpPage() const;
