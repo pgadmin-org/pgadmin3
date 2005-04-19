@@ -218,5 +218,5 @@ int frmHint::ShowHint(wxWindow *fr, const wxString &hint, const wxString &info)
 
 void frmHint::OnFix(wxCommandEvent &ev)
 {
-    EndDialog(HINT_RC_FIX);
+    EndModal(HINT_RC_FIX);
 }
