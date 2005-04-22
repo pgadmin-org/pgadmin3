@@ -149,23 +149,6 @@ void frmHint::SetHint(int hintno, const wxString &info)
     wxArrayInt hintnos;
     hintnos.Add(hintno);
     SetHint(hintnos, info);
-#if 0
-
-    wxString page=GetPage(hintArray[hintno].hintPage);
-
-    if (!info.IsEmpty())
-        page.Replace(wxT("<INFO>"), info);
-
-    htmlHint->SetPage(page);
-    chkSuppress->SetValue(false);
-    if (force || !(hintArray[hintno].flags & HINT_CANSUPPRESS))
-        chkSuppress->Disable();
-    if (force || !(hintArray[hintno].flags & HINT_CANABORT))
-        btnCancel->Disable();
-    if (!(hintArray[hintno].flags & HINT_CANFIX))
-        btnFix->Hide();
-    currentHint = hintno;
-#endif
 };
 
 
@@ -174,69 +157,76 @@ void frmHint::SetHint(const wxArrayInt &hintnos, const wxString &info)
 {
     currentHint = hintnos.Item(0);
     if (hintnos.GetCount() == 1)
+    {
         SetTitle(_("pgAdmin III Guru Hint") + wxString(wxT(" - ")) + wxGetTranslation(hintArray[currentHint].hintCaption));
+
+        wxString page=GetPage(hintArray[currentHint].hintPage);
+        page.Replace(wxT("<INFO>"), info);
+
+        htmlHint->SetPage(page);
+    }
     else
+    {
         SetTitle(_("pgAdmin III Guru Hints"));
 
+        wxString header = GetPage(wxT("multiple"));
+        wxString pages;
 
-
-    wxString header = GetPage(wxT("multiple"));
-    wxString pages;
-
-    if (header.IsEmpty())
-    {
-        header = 
-            wxT("<html><head>\n")
-            wxT("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1252\">\n")
-            wxT("<link rel=\"STYLESHEET\" type=\"text/css\" href=\"../pgadmin3.css\">\n")
-            wxT("<title>Guru Hints</title></head>\n")
-            wxT("<body><p>\n");
-    }
-    else
-    {
-        int o=header.Find(wxT("</body>"));
-        if (o > 0)
-            header = header.Left(o) + wxT("<p>");
-    }
-
-    size_t i;
-    for (i=0 ; i < hintnos.GetCount() ; i++)
-    {
-        int hintno=hintnos.Item(i);
-        wxString page=GetPage(hintArray[hintno].hintPage);
-        int a=page.Find(wxT("<body>"));
-        int o=page.Find(wxT("</body>"));
-        if (a<0)
-            a=0;
-        if (o < 0)
-            o=wxSTRING_MAXLEN;
-
-
-        int ha=page.Find(wxT("<H3>"));
-        int ho=page.Find(wxT("</H3>"));
-        if (ha < 0)
-            ha=page.Find(wxT("<h3>"));
-        if (ho < 0)
-            ho=page.Find(wxT("</h3>"));
-
-        if (ha > a && ho > ha)
+        if (header.IsEmpty())
         {
-            wxString hintTitle=page.Mid(ha+4, ho-ha-4);
-
-            pages  += page.Mid(a, ha-a)
-                   + wxT("<H3><A Name=\"") + hintArray[hintno].hintPage + wxT("\">")
-                   + hintTitle + wxT("</A>")
-                   + page.Mid(ho, o-ho);
-            header += wxString(wxT("<A HREF=\"#")) + hintArray[hintno].hintPage + wxT("\">")
-                   + hintTitle + wxT("</A><BR>");
+            header = 
+                wxT("<html><head>\n")
+                wxT("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1252\">\n")
+                wxT("<link rel=\"STYLESHEET\" type=\"text/css\" href=\"../pgadmin3.css\">\n")
+                wxT("<title>Guru Hints</title></head>\n")
+                wxT("<body><p>\n");
         }
         else
-            pages += page.Mid(a, o-a);
+        {
+            int o=header.Find(wxT("</body>"));
+            if (o > 0)
+                header = header.Left(o) + wxT("<p>");
+        }
+
+        size_t i;
+        for (i=0 ; i < hintnos.GetCount() ; i++)
+        {
+            int hintno=hintnos.Item(i);
+            wxString page=GetPage(hintArray[hintno].hintPage);
+            int a=page.Find(wxT("<body>"));
+            int o=page.Find(wxT("</body>"));
+            if (a<0)
+                a=0;
+            if (o < 0)
+                o=wxSTRING_MAXLEN;
+
+
+            int ha=page.Find(wxT("<H3>"));
+            int ho=page.Find(wxT("</H3>"));
+            if (ha < 0)
+                ha=page.Find(wxT("<h3>"));
+            if (ho < 0)
+                ho=page.Find(wxT("</h3>"));
+
+            if (ha > a && ho > ha)
+            {
+                wxString hintTitle=page.Mid(ha+4, ho-ha-4);
+
+                pages  += page.Mid(a, ha-a)
+                       + wxT("<H3><A Name=\"") + hintArray[hintno].hintPage + wxT("\">")
+                       + hintTitle + wxT("</A>")
+                       + page.Mid(ho, o-ho);
+                header += wxString(wxT("<A HREF=\"#")) + hintArray[hintno].hintPage + wxT("\">")
+                       + hintTitle + wxT("</A><BR>");
+            }
+            else
+                pages += page.Mid(a, o-a);
+        }
+
+        pages.Replace(wxT("<INFO>"), info);
+
+        htmlHint->SetPage(header + wxT("</p>") + pages + wxT("</body></html>\n"));
     }
-
-    pages.Replace(wxT("<INFO>"), info);
-
-    htmlHint->SetPage(header + wxT("</p>") + pages + wxT("</body></html>\n"));
 
     chkSuppress->SetValue(false);
 

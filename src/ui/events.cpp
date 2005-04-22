@@ -830,8 +830,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
          canGrantWizard=false,
          canCount=false;
 
-    bool canHint=data->GetCanHint();
-
     bool showTree=true;
 
     switch (type)
@@ -1003,6 +1001,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     else
     {
     }
+    bool canHint=data->GetCanHint();
     toolsMenu->Enable(MNU_CONNECT, canConnect);
     toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
     toolsMenu->Enable(MNU_GRANTWIZARD, canGrantWizard);
@@ -1011,6 +1010,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
     viewMenu->Enable(MNU_COUNT, canCount);
     helpMenu->Enable(MNU_HINT, canHint);
+    toolBar->EnableTool(MNU_HINT, canHint);
 //    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
 }
 
