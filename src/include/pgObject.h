@@ -118,7 +118,7 @@ public:
     void iSetAcl(const wxString& newVal) { acl = newVal; }
     virtual bool GetSystemObject() const { return false; }
     virtual bool IsCollection() const { return false; }
-    virtual void ShowHint(frmMain *form) {}
+    virtual void ShowHint(frmMain *form, bool force) {}
 
     void ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlSQLBox *sqlPane);
 

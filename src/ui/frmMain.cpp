@@ -53,6 +53,18 @@ WX_DEFINE_LIST(windowList);
 // Icons
 #include "images/pgAdmin3.xpm"
 #include "images/elephant32.xpm"
+#include "images/drop.xpm"
+#include "images/vacuum.xpm"
+#include "images/viewdata.xpm"
+#include "images/viewfiltereddata.xpm"
+#include "images/properties.xpm"
+#include "images/property.xpm"
+#include "images/public.xpm"
+#include "images/refresh.xpm"
+#include "images/relationship.xpm"
+#include "images/hint2.xpm"
+#include "images/help2.xpm"
+
 #include "images/aggregate.xpm"
 #include "images/baddatabase.xpm"
 #include "images/check.xpm"
@@ -65,7 +77,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/create.xpm"
 #include "images/database.xpm"
 #include "images/domain.xpm"
-#include "images/drop.xpm"
 #include "images/function.xpm"
 #include "images/group.xpm"
 #include "images/index.xpm"
@@ -74,11 +85,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/namespace.xpm"
 #include "images/operator.xpm"
 #include "images/operatorclass.xpm"
-#include "images/properties.xpm"
-#include "images/property.xpm"
-#include "images/public.xpm"
-#include "images/refresh.xpm"
-#include "images/relationship.xpm"
 #include "images/rule.xpm"
 #include "images/sequence.xpm"
 #include "images/server.xpm"
@@ -90,15 +96,11 @@ WX_DEFINE_LIST(windowList);
 #include "images/trigger.xpm"
 #include "images/type.xpm"
 #include "images/user.xpm"
-#include "images/vacuum.xpm"
 #include "images/view.xpm"
-#include "images/viewdata.xpm"
-#include "images/viewfiltereddata.xpm"
 #include "images/triggerfunction.xpm"
 #include "images/constraints.xpm"
 #include "images/primarykey.xpm"
 #include "images/unique.xpm"
-#include "images/help2.xpm"
 #include "images/job.xpm"
 #include "images/jobdisabled.xpm"
 #include "images/step.xpm"
@@ -292,6 +294,7 @@ frmMain::frmMain(const wxString& title)
     toolBar->AddTool(MNU_VIEWFILTEREDDATA, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_MAINTENANCE, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
     toolBar->AddSeparator();
+    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm), _("Display helpful hints on current object."));
     toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
 
     // Display the bar and configure buttons. 
@@ -1038,7 +1041,8 @@ void frmMain::SetButtons(pgObject *obj)
          config=false,
          set=false,
          setissubscribed=false,
-         cluster=false;
+         cluster=false,
+         hint=false;
 
     if (obj)
     {
@@ -1053,6 +1057,7 @@ void frmMain::SetButtons(pgObject *obj)
         maintenance = obj->CanMaintenance();
         backup = obj->CanBackup();
         restore = obj->CanRestore();
+        hint = obj->GetCanHint();
         status = server != 0 && server->GetSuperUser();
         config = status && conn && conn->HasFeature(FEATURE_FILEREAD);
 
@@ -1091,6 +1096,7 @@ void frmMain::SetButtons(pgObject *obj)
     toolBar->EnableTool(MNU_VIEWDATA, viewData);
     toolBar->EnableTool(MNU_VIEWFILTEREDDATA, viewData);
     toolBar->EnableTool(MNU_MAINTENANCE, maintenance);
+    toolBar->EnableTool(MNU_HINT, hint);
 
 	// Handle the menus associated with the buttons
 	editMenu->Enable(MNU_CREATE, create);
@@ -1122,7 +1128,7 @@ void frmMain::SetButtons(pgObject *obj)
     viewMenu->Enable(MNU_REFRESH, refresh);
 	viewMenu->Enable(MNU_COUNT, false);
 
-    helpMenu->Enable(MNU_HINT, false);
+    helpMenu->Enable(MNU_HINT, hint);
 }
 
 

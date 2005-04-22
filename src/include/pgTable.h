@@ -33,7 +33,7 @@ public:
     wxString GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collectionId, int type);
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    void ShowHint(frmMain *form);
+    void ShowHint(frmMain *form, bool force);
 
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
@@ -77,6 +77,7 @@ public:
 
 private:
     void UpdateInheritance();
+    bool GetVacuumHint();
 
     wxULongLong rows;
     double estimatedRows;

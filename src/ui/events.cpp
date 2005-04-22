@@ -444,7 +444,7 @@ void frmMain::OnCount(wxCommandEvent &event)
 void frmMain::OnHint(wxCommandEvent &event)
 {
     if (currentObject)
-        currentObject->ShowHint(this);
+        currentObject->ShowHint(this, true);
 }
 
 

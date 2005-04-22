@@ -1043,15 +1043,11 @@ SOURCE=.\include\dlgView.h
 # PROP Default_Filter "*.xpm"
 # Begin Source File
 
-SOURCE=.\include\images\agent.xpm
-# End Source File
-# Begin Source File
-
 SOURCE=.\include\images\aggregate.xpm
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\images\arguments.xpm
+SOURCE=.\include\images\back.xpm
 # End Source File
 # Begin Source File
 
@@ -1163,6 +1159,90 @@ SOURCE=.\include\images\edit_undo.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\elephant32.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\elephant48.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\encoding.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\event.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_aggregate.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_append.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_group.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_hash.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_join.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_limit.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_materialize.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_merge.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_nested.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_result.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_scan.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_seek.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_setop.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_sort.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_subplan.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_unique.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\ex_unknown.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\file_open.xpm
 # End Source File
 # Begin Source File
@@ -1172,6 +1252,10 @@ SOURCE=.\include\images\file_save.xpm
 # Begin Source File
 
 SOURCE=.\include\images\foreignkey.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\forward.xpm
 # End Source File
 # Begin Source File
 
@@ -1195,11 +1279,11 @@ SOURCE=.\include\images\hint.xpm
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\images\index.xpm
+SOURCE=.\include\images\hint2.xpm
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\images\indexcolumn.xpm
+SOURCE=.\include\images\index.xpm
 # End Source File
 # Begin Source File
 
@@ -1228,10 +1312,6 @@ SOURCE=.\include\images\operator.xpm
 # Begin Source File
 
 SOURCE=.\include\images\operatorclass.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\pgAdmin3.ico
 # End Source File
 # Begin Source File
 
@@ -1280,6 +1360,10 @@ SOURCE=.\include\images\refresh.xpm
 # Begin Source File
 
 SOURCE=.\include\images\relationship.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\reload.xpm
 # End Source File
 # Begin Source File
 
@@ -1332,6 +1416,10 @@ SOURCE=.\include\images\slset.xpm
 # Begin Source File
 
 SOURCE=.\include\images\slsubscription.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\sortfilter.xpm
 # End Source File
 # Begin Source File
 

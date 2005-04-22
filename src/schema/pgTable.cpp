@@ -408,15 +408,21 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("System table?"), GetSystemObject());
         properties->AppendItem(_("Comment"), GetComment());
 
-        if (form && GetCanHint() && !hintShown)
+        if (form && GetVacuumHint() && !hintShown)
         {
-            ShowHint(form);
+            ShowHint(form, false);
         }
     }
 }
 
 
 bool pgTable::GetCanHint()
+{
+    return (GetVacuumHint() || primaryKey.IsEmpty());
+}
+
+
+bool pgTable::GetVacuumHint()
 {
     bool canHint=false;
 
@@ -438,10 +444,24 @@ bool pgTable::GetCanHint()
 }
 
 
-void pgTable::ShowHint(frmMain *form)
+void pgTable::ShowHint(frmMain *form, bool force)
 {
     hintShown = true;
-    int rc=frmHint::ShowHint(form, HINT_VACUUM, GetFullIdentifier());
+    int rc;
+    
+    if (force)
+    {
+        wxArrayString hints;
+        if (GetVacuumHint())
+            hints.Add(HINT_VACUUM);
+        if (primaryKey.IsEmpty())
+            hints.Add(HINT_PRIMARYKEY);
+
+        rc=frmHint::ShowHint(form, hints, GetFullIdentifier());
+    }
+    else
+        rc=frmHint::ShowHint(form, HINT_VACUUM, GetFullIdentifier(), force);
+
     if (rc == HINT_RC_FIX)
     {
         frmMaintenance *frm=new frmMaintenance(form, this);
