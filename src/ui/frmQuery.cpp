@@ -203,10 +203,10 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     output->AddPage(msgResult, _("Messages"));
     output->AddPage(msgHistory, _("History"));
 
-    sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS,(wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
-    sqlResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
-    msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
-    msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&frmQuery::OnFocus);
+    sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
+    sqlResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+    msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+    msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 
     int splitpos=settings->Read(wxT("frmQuery/Split"), 250);
     if (splitpos < 50)

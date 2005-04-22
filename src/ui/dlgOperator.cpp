@@ -143,7 +143,7 @@ int dlgOperator::Go(bool modal)
     else
     {
         // create mode
-        wxStringList incl;
+        wxArrayString incl;
         incl.Add(wxT("+"));
         incl.Add(wxT("-"));
         incl.Add(wxT("*"));
@@ -164,7 +164,7 @@ int dlgOperator::Go(bool modal)
         incl.Add(wxT("$"));
 
         wxTextValidator validator(wxFILTER_INCLUDE_CHAR_LIST);
-        validator.SetIncludeList(incl);
+        validator.SetIncludes(incl);
         txtName->SetValidator(validator);
 
         AddType(wxT(" "), 0);

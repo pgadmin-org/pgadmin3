@@ -57,16 +57,16 @@ bool wxTimeSpinCtrl::Create(wxWindow *parent,
     wxSize ss=m_spn->GetBestSize();
 
     m_txt=new wxTextCtrl(this, CTRLID_TXT, wxEmptyString, wxPoint(0,0), wxSize(cs.x-ss.x, cs.y), wxNO_BORDER|wxWANTS_CHARS);
-    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, (wxObjectEventFunction)&wxTimeSpinCtrl::OnEditKey, 0, this);
-    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KILL_FOCUS, (wxObjectEventFunction)&wxTimeSpinCtrl::OnKillFocus, 0, this);
+    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(wxTimeSpinCtrl::OnEditKey), 0, this);
+    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(wxTimeSpinCtrl::OnKillFocus), 0, this);
 
-    wxStringList valList;
+    wxArrayString valArray;
     wxChar c;
     for (c='0'; c <= '9'; c++)
-        valList.Add(wxString(c, 1));
-    valList.Add(wxT(":"));
+        valArray.Add(wxString(c, 1));
+    valArray.Add(wxT(":"));
     wxTextValidator tv(wxFILTER_INCLUDE_CHAR_LIST);
-    tv.SetIncludeList(valList);
+    tv.SetIncludes(valArray);
     m_txt->SetValidator(tv);
 
     m_spn->SetSize(ss.x, cs.y);
