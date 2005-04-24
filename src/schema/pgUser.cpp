@@ -163,7 +163,7 @@ void pgUser::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wx
         wxT(" WHERE oprowner = ") + uid + wxT(" AND op.oid > ") + sysoid + wxT("\n")
         wxT(" ORDER BY 1,2,3"));
             
-    form->EndMsg();
+    form->EndMsg(set != 0);
 }
 
 

@@ -80,7 +80,7 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
         wxT("        OR (cl.reltablespace=0 AND dattablespace = ") + GetOidStr() + wxT("))\n")
         wxT(" ORDER BY 1,2,3"));
 
-    form->EndMsg();
+    form->EndMsg(set != 0);
 }
 
 

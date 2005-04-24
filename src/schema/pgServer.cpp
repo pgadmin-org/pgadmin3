@@ -414,10 +414,10 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
             form->StartMsg(_("Connecting to database"));
 
         conn = new pgConn(GetName(), database, username, password, port, ssl);
-        form->EndMsg();
 
         if (!conn)
         {
+            form->EndMsg(false);
             wxLogError(__("Couldn't create a connection object!"));
             return PGCONN_BAD;
         }
@@ -466,13 +466,16 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
         {
             error.Printf(_("The PostgreSQL server must be at least version %2.1f!"), SERVER_MIN_VERSION);
             connected = false;
-            return PGCONN_BAD;
+            status = PGCONN_BAD;
         }
 
     }
     else
+    {
         connected = FALSE;
+    }
 
+    form->EndMsg(connected && status == PGCONN_OK);
     return status;
 }
 

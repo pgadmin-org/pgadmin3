@@ -444,6 +444,8 @@ void frmMain::Refresh(pgObject *data)
     
     pgObject *newData = data->Refresh(browser, currentItem);
 
+    bool done = !data->GetConnection() || data->GetConnection()->GetStatus() == PGCONN_OK;
+
     if (newData != data)
     {
         wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
@@ -472,7 +474,7 @@ void frmMain::Refresh(pgObject *data)
     if (currentItem)
         execSelChange(currentItem, currentItem == browser->GetSelection());
     browser->Thaw();
-    EndMsg();
+    EndMsg(done);
 }
 
 
@@ -752,7 +754,7 @@ int frmMain::ReconnectServer(pgServer *server)
                 browser->Expand(item);
                 browser->EnsureVisible(item);
             }
-            EndMsg();
+            EndMsg(item);
             return res;
         }
         case PGCONN_DNSERR:
@@ -1148,7 +1150,7 @@ void frmMain::StartMsg(const wxString& msg)
 }
 
 
-void frmMain::EndMsg()
+void frmMain::EndMsg(bool done)
 {
     msgLevel--;
 
@@ -1161,7 +1163,11 @@ void frmMain::EndMsg()
         statusBar->SetStatusText(time, 2);
 
         // Display the 'Done' message
-        statusBar->SetStatusText(timermsg + _(" Done."), 1);
+        if (done)
+            statusBar->SetStatusText(timermsg + _(" Done."), 1);
+        else
+            statusBar->SetStatusText(timermsg + _(" Failed."), 1);
+
         wxLogStatus(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
         wxEndBusyCursor();
     }

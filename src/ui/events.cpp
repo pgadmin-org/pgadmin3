@@ -259,7 +259,7 @@ void frmMain::OnStartService(wxCommandEvent& WXUNUSED(event))
         bool rc = server->StartService();
         if (rc)
             execSelChange(server->GetId(), true);
-        EndMsg();
+        EndMsg(rc);
     }
 }
 
@@ -284,7 +284,7 @@ void frmMain::OnStopService(wxCommandEvent& WXUNUSED(event))
 			OnDisconnect(nullEvent);
             execSelChange(server->GetId(), true);
 		}
-        EndMsg();
+        EndMsg(rc);
     }
 }
 

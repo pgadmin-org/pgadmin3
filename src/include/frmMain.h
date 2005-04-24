@@ -43,7 +43,7 @@ public:
     wxString GetHelpPage() const;
 
     void StartMsg(const wxString& msg);
-    void EndMsg();
+    void EndMsg(bool done=true);
     void SetStatusText(const wxString &msg);
     void SetCurrentObject(pgObject *data) { currentObject = data; }
 

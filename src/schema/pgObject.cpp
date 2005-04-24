@@ -434,7 +434,7 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *propert
 
     ShowTreeDetail(browser, form, properties, sqlPane);
     if (form)
-        form->EndMsg();
+        form->EndMsg(!GetConnection() || GetConnection()->GetStatus() == PGCONN_OK);
 }
 
 
