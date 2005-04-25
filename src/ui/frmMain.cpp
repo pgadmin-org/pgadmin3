@@ -178,6 +178,9 @@ frmMain::frmMain(const wxString& title)
     fileMenu->Append(MNU_HBAFILECONFIG, _("Open pg_hba.conf"),    _("Open configuration editor with pg_hba.conf."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
+#ifdef __WXMAC__
+    wxApp::s_macExitMenuItemId = MNU_EXIT;
+#endif
     menuBar->Append(fileMenu, _("&File"));
 
     // Edit Menu
