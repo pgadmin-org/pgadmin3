@@ -3,18 +3,22 @@
 # This software is released under the Artistic Licence
 #
 # Makefile - Makefile for *nix systems
-SUBDIRS = src pkg
+
+SUBDIRS = src pkg xtra
+
 EXTRA_DIST = \
-		$(top_srcdir)/README.txt \
-		$(top_srcdir)/BUGS.txt \
-		$(top_srcdir)/LICENCE.txt
+	$(top_srcdir)/README.txt \
+	$(top_srcdir)/BUGS.txt \
+	$(top_srcdir)/LICENCE.txt
 
 TMP_docs = \
-		$(top_srcdir)/docs/en_US/pg/*.html \
-		$(top_srcdir)/docs/en_US/pg/*.css \
-		$(top_srcdir)/docs/en_US/images/*.png $(top_srcdir)/docs/en_US/*.html \
-		$(top_srcdir)/docs/en_US/*.css $(top_srcdir)/docs/en_US/pgadmin3.hh* \
-		$(top_srcdir)/docs/en_US/tips.txt
+	$(top_srcdir)/docs/en_US/pg/*.html \
+	$(top_srcdir)/docs/en_US/pg/*.css \
+	$(top_srcdir)/docs/en_US/images/*.png \
+	$(top_srcdir)/docs/en_US/*.html \
+	$(top_srcdir)/docs/en_US/*.css \
+	$(top_srcdir)/docs/en_US/pgadmin3.hh* \
+	$(top_srcdir)/docs/en_US/tips.txt
 
 if !APPBUNDLE
 nobase_dist_pkgdata_DATA = $(TMP_docs)

@@ -49,5 +49,7 @@ AC_CONFIG_FILES([Makefile
 		 pkg/redhat/Makefile
 		 pkg/slackware/Makefile
 		 pkg/src/Makefile
-		 pkg/win32/Makefile])
+		 pkg/win32/Makefile
+		 xtra/Makefile
+		 xtra/pgagent/Makefile])
 AC_OUTPUT

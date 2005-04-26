@@ -112,7 +112,8 @@ $(srcdir)/slony/include/slTable.h $(srcdir)/slony/include/slSubscription.h \
 $(srcdir)/slony/include/dlgRepCluster.h $(srcdir)/slony/include/dlgRepNode.h \
 $(srcdir)/slony/include/dlgRepListen.h $(srcdir)/slony/include/dlgRepPath.h \
 $(srcdir)/slony/include/dlgRepSet.h $(srcdir)/slony/include/dlgRepSequence.h \
-$(srcdir)/slony/include/dlgRepSubscription.h $(srcdir)/slony/include/slFunctions.h
+$(srcdir)/slony/include/dlgRepSubscription.h $(srcdir)/slony/include/dlgRepProperty.h \
+$(srcdir)/slony/include/dlgRepTable.h $(srcdir)/slony/include/slFunctions.h
 
   
 EXTRA_DIST = $(srcdir)/pgAdmin3.dsp $(srcdir)/pgAdmin3.dsw \
