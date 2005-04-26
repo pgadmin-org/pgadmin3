@@ -126,10 +126,6 @@ SOURCE=.\include\connection.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\copyright.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\include\job.h
 # End Source File
 # Begin Source File
@@ -139,10 +135,6 @@ SOURCE=.\include\misc.h
 # Begin Source File
 
 SOURCE=.\include\pgAgent.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\version.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"
