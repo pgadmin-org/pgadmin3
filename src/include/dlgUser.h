@@ -39,6 +39,7 @@ private:
     void OnChangeSuperuser(wxCommandEvent &ev);
     void OnChangeSpin(wxSpinEvent &ev);
     void OnChangeCal(wxCalendarEvent &ev);
+    void OnChangeDate(wxDateEvent &ev);
     void OnGroupAdd(wxCommandEvent &ev);
     void OnGroupRemove(wxCommandEvent &ev);
 

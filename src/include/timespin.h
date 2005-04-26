@@ -62,6 +62,9 @@ private:
     long spinValue, maxSpinValue;
     bool canWrap, hasDay;
 
+    wxSize DoGetBestSize() const;
+    void OnSize(wxSizeEvent& event);
+
     DECLARE_DYNAMIC_CLASS(wxTimeSpinCtrl)
     DECLARE_EVENT_TABLE()
     DECLARE_NO_COPY_CLASS(wxTimeSpinCtrl)

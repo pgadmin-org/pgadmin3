@@ -14,7 +14,40 @@
 
 #include "wx/calctrl.h"
 
+#if wxUSE_DATEPICKCTRL
+#define pgUSE_WX_CAL  0
+#else
+#define pgUSE_WX_CAL  0
+#endif
 
+#if pgUSE_WX_CAL
+#include "wx/datectrl.h"
+
+
+#ifdef __WXMSW__
+
+#include "wx/generic/datectrl.h"
+#define wxDPC   wxDatePickerCtrlGeneric
+
+#else
+
+#define wxDPC   wxDatePickerCtrl
+
+#endif
+
+class wxCalendarBox : public wxDPC
+{
+public:
+    wxCalendarBox();
+    wxCalendarBox(wxWindow *parent,
+                   wxWindowID id,
+                   const wxDateTime& date = wxDefaultDateTime,
+                   const wxPoint& pos = wxDefaultPosition,
+                   const wxSize& size = wxDefaultSize);
+};
+
+
+#else
 class wxCalendarBox : public wxControl
 {
 public:
@@ -36,8 +69,8 @@ public:
                             long style,
                             const wxString& name);
 
-    bool SetDate(const wxDateTime& date);
-    wxDateTime GetDate();
+    bool SetValue(const wxDateTime& date);
+    wxDateTime GetValue();
 
     bool SetLowerDateLimit(const wxDateTime& date = wxDefaultDateTime) { return m_cal->SetLowerDateLimit(date); }
     const wxDateTime& GetLowerDateLimit() const { return m_cal->GetLowerDateLimit(); }
@@ -69,6 +102,9 @@ private:
     void Init();
     void DropDown(bool down=true);
 
+    wxSize DoGetBestSize() const;
+    void OnSize(wxSizeEvent& event);
+
     void OnText(wxCommandEvent &ev);
     void OnEditKey(wxKeyEvent & event);
     void OnCalKey(wxKeyEvent & event);
@@ -83,6 +119,7 @@ private:
     DECLARE_NO_COPY_CLASS(wxCalendarBox)
 };
 
+#endif
 
 #endif // _WX_CALBOX_H_
 

@@ -13,6 +13,43 @@
 
 #include "calbox.h"
 
+
+#if pgUSE_WX_CAL
+
+
+wxCalendarBox::wxCalendarBox(wxWindow *parent,
+                            wxWindowID id,
+                            const wxDateTime& date,
+                            const wxPoint& pos,
+                            const wxSize& size)
+: wxDPC(parent, id, date, pos, size, wxDP_DROPDOWN|wxDP_SHOWCENTURY|wxDP_ALLOWNONE)
+{
+}
+
+wxCalendarBox::wxCalendarBox() : wxDPC()
+{
+}
+
+#else
+
+#if defined(__WXMSW__)
+    #define TXTCTRL_FLAGS     wxNO_BORDER
+    #define CALBORDER         0
+    #define TXTPOSX           0
+    #define TXTPOSY           1
+#elif defined(__WXGTK__)
+    #define TXTCTRL_FLAGS     0
+    #define CALBORDER         4
+    #define TXTPOSX           0
+    #define TXTPOSY           0
+#else
+    #define TXTCTRL_FLAGS     0
+    #define CALBORDER         4
+    #define TXTPOSX           0
+    #define TXTPOSY           0
+#endif
+
+
 #define CTRLID_TXT  101
 #define CTRLID_CAL  102
 #define CTRLID_BTN  103
@@ -22,6 +59,7 @@ BEGIN_EVENT_TABLE(wxCalendarBox, wxControl)
     EVT_BUTTON(CTRLID_BTN, wxCalendarBox::OnClick)
     EVT_TEXT(CTRLID_TXT, wxCalendarBox::OnText)
     EVT_CHILD_FOCUS(wxCalendarBox::OnChildSetFocus)
+    EVT_SIZE(wxCalendarBox::OnSize)
 END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(wxCalendarBox, wxControl)
@@ -61,8 +99,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
         return false;
     }
 
-    SetWindowStyle(style | wxWANTS_CHARS);
-    SetFont(parent->GetFont());
+    InheritAttributes();
 
     wxSize cs=GetClientSize();
     wxSize bs=ConvertDialogToPixels(wxSize(10, 0));
@@ -83,12 +120,12 @@ bool wxCalendarBox::Create(wxWindow *parent,
         dc.SelectObject(wxNullBitmap);
     }
     
-    m_txt=new wxTextCtrl(this, CTRLID_TXT, txt, wxPoint(0,0), wxSize(cs.x-bs.x-1, cs.y), wxNO_BORDER);
+    m_txt=new wxTextCtrl(this, CTRLID_TXT, txt, wxDefaultPosition, size, TXTCTRL_FLAGS);
     m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(wxCalendarBox::OnEditKey), 0, this);
     m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(wxCalendarBox::OnKillFocus), 0, this);
     SetFormat(wxT("%x"));
 
-    m_btn = new wxBitmapButton(this, CTRLID_BTN, bmp, wxPoint(cs.x - bs.x, 0), wxSize(bs.x, cs.y));
+    m_btn = new wxBitmapButton(this, CTRLID_BTN, bmp, wxDefaultPosition, bs);
 
     m_dlg = new wxDialog(this, CTRLID_CAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     m_dlg->SetFont(GetFont());
@@ -118,12 +155,6 @@ bool wxCalendarBox::Create(wxWindow *parent,
 
     wxPoint yearPosition = yearControl->GetPosition();
 
-#ifdef __WXMSW__
-#define CALBORDER   0
-#else
-#define CALBORDER   4
-#endif
-
     width = yearPosition.x + yearSize.x+2+CALBORDER/2;
     if (width < calSize.x-4)
         width = calSize.x-4;
@@ -138,12 +169,13 @@ bool wxCalendarBox::Create(wxWindow *parent,
     yearControl->SetSize(width-yearSize.x-CALBORDER/2, yearPosition.y, yearSize.x, yearSize.y);
 	m_cal->GetMonthControl()->Move(0, 0);
 
+    SetBestFittingSize(size);
 
 
     panel->SetClientSize(width+CALBORDER/2, calSize.y-2+CALBORDER);
     m_dlg->SetClientSize(panel->GetSize());
 
-    return TRUE;
+    return true;
 }
 
 
@@ -186,6 +218,31 @@ void wxCalendarBox::DoMoveWindow(int x, int y, int w, int h)
     {
         DropDown();
     }
+}
+
+
+wxSize wxCalendarBox::DoGetBestSize() const
+{
+    int bh=m_btn->GetBestSize().y;
+    int eh=m_txt->GetBestSize().y;
+    return wxSize(DEFAULT_ITEM_WIDTH, bh > eh ? bh : eh);
+}
+
+
+void wxCalendarBox::OnSize(wxSizeEvent& event)
+{
+    if ( m_btn )
+    {
+        wxSize sz = GetClientSize();
+
+        wxSize bs=m_btn->GetSize();
+        int eh=m_txt->GetBestSize().y;
+
+        m_txt->SetSize(TXTPOSX, TXTPOSY, sz.x-bs.x-TXTPOSX, sz.y > eh ? eh-TXTPOSY : sz.y-TXTPOSY);
+        m_btn->SetSize(sz.x - bs.x, 0, bs.x, sz.y);
+    }
+
+    event.Skip();
 }
 
 
@@ -281,7 +338,7 @@ bool wxCalendarBox::SetFormat(const wxChar *fmt)
 }
 
 
-wxDateTime wxCalendarBox::GetDate()
+wxDateTime wxCalendarBox::GetValue()
 {
     wxDateTime dt;
     wxString txt=m_txt->GetValue();
@@ -293,7 +350,7 @@ wxDateTime wxCalendarBox::GetDate()
 }
 
 
-bool wxCalendarBox::SetDate(const wxDateTime& date)
+bool wxCalendarBox::SetValue(const wxDateTime& date)
 {
     bool retval=false;
 
@@ -428,11 +485,7 @@ void wxCalendarBox::OnText(wxCommandEvent &ev)
     wxString txt=m_txt->GetValue();
     wxDateTime dt;
     if (!txt.IsEmpty())
-    {
         dt.ParseFormat(txt, m_format);
-        if (!dt.IsValid())
-            return;
-    }
 
     wxCalendarEvent cev(m_cal, wxEVT_CALENDAR_SEL_CHANGED);
     cev.SetEventObject(this);
@@ -459,3 +512,4 @@ void wxCalendarBox::OnCalKey(wxKeyEvent & ev)
     else
         ev.Skip();
 }
+#endif

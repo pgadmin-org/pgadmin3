@@ -23,6 +23,7 @@ BEGIN_EVENT_TABLE(wxTimeSpinCtrl, wxControl)
     EVT_SPIN_UP(CTRLID_SPN, wxTimeSpinCtrl::OnSpinUp)
     EVT_SPIN_DOWN(CTRLID_SPN, wxTimeSpinCtrl::OnSpinDown)
     EVT_SET_FOCUS(wxTimeSpinCtrl::OnSetFocus)
+    EVT_SIZE(wxTimeSpinCtrl::OnSize)
 END_EVENT_TABLE()
 
 
@@ -75,7 +76,27 @@ bool wxTimeSpinCtrl::Create(wxWindow *parent,
     canWrap = (style & wxSP_WRAP) != 0;
     SetMax(24*60*60 -1);
 
+    SetBestFittingSize(size);
+
     return true;
+}
+
+#define TXTPOSX 0
+#define TXTPOSY 0
+void wxTimeSpinCtrl::OnSize(wxSizeEvent& event)
+{
+    if ( m_spn )
+    {
+        wxSize sz = GetClientSize();
+
+        wxSize ss=m_spn->GetSize();
+        int eh=m_txt->GetBestSize().y;
+
+        m_txt->SetSize(TXTPOSX, TXTPOSY, sz.x-ss.x-TXTPOSX, sz.y > eh ? eh-TXTPOSY : sz.y-TXTPOSY);
+        m_spn->SetSize(sz.x - ss.x, 0, ss.x, sz.y);
+    }
+
+    event.Skip();
 }
 
 
@@ -100,6 +121,12 @@ void wxTimeSpinCtrl::Init()
     m_txt = NULL;
     m_spn = NULL;
     spinValue = 0;
+}
+
+
+wxSize wxTimeSpinCtrl::DoGetBestSize() const
+{
+    return wxSize(DEFAULT_ITEM_WIDTH, m_txt->GetBestSize().y);
 }
 
 

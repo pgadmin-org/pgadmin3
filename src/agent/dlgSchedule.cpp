@@ -92,11 +92,11 @@ int dlgSchedule::Go(bool modal)
 		recId = schedule->GetRecId();
 		txtID->SetValue(NumToStr(recId));
         chkEnabled->SetValue(schedule->GetEnabled());
-        calStart->SetDate(schedule->GetStart());
+        calStart->SetValue(schedule->GetStart());
         timStart->SetTime(schedule->GetStart());
         if (schedule->GetEnd().IsValid())
         {
-            calEnd->SetDate(schedule->GetEnd());
+            calEnd->SetValue(schedule->GetEnd());
             timEnd->SetTime(schedule->GetEnd());
         }
         else
@@ -150,7 +150,7 @@ void dlgSchedule::OnChangeSpin(wxSpinEvent &ev)
 
 void dlgSchedule::CheckChange()
 {
-    timEnd->Enable(calEnd->GetDate().IsValid());
+    timEnd->Enable(calEnd->GetValue().IsValid());
 
     wxString name=GetName();
     bool enable;
@@ -165,7 +165,7 @@ void dlgSchedule::CheckChange()
         enable=true;
     }
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-	CheckValid(enable, calStart->GetDate().IsValid(), _("Please specify start date."));
+	CheckValid(enable, calStart->GetValue().IsValid(), _("Please specify start date."));
     EnableOK(enable);
 }
 
@@ -221,10 +221,10 @@ wxString dlgSchedule::GetInsertSql()
 				+ wxT("'") + ChkListBox2PgArray(chkMonthdays) + wxT("', ")
 				+ wxT("'") + ChkListBox2PgArray(chkMonths) + wxT("', ")
                 + BoolToStr(chkEnabled->GetValue()) + wxT(", ") 
-				+ wxT("'") + DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT("'");
+				+ wxT("'") + DateToAnsiStr(calStart->GetValue() + timStart->GetValue()) + wxT("'");
 		
-		if (calEnd->GetDate().IsValid())
-			sql += wxT(", '") + DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue()) + wxT("'");
+		if (calEnd->GetValue().IsValid())
+			sql += wxT(", '") + DateToAnsiStr(calEnd->GetValue() + timEnd->GetValue()) + wxT("'");
 		else
 			sql += wxT(", NULL");
 
@@ -265,30 +265,30 @@ wxString dlgSchedule::GetUpdateSql()
             vars.Append(wxT("jscenabled = ") + BoolToStr(chkEnabled->IsChecked()));
         }
 
-        if (calStart->GetDate() + timStart->GetValue() != schedule->GetStart())
+        if (calStart->GetValue() + timStart->GetValue() != schedule->GetStart())
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jscstart = '") + DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT("'"));
+            vars.Append(wxT("jscstart = '") + DateToAnsiStr(calStart->GetValue() + timStart->GetValue()) + wxT("'"));
         }
 
 
-		if (calEnd->GetDate().IsValid())
+		if (calEnd->GetValue().IsValid())
 		{
 			if (schedule->GetEnd().IsValid())
 			{
-				if (calEnd->GetDate() + timEnd->GetValue() != schedule->GetEnd())
+				if (calEnd->GetValue() + timEnd->GetValue() != schedule->GetEnd())
 				{
 					if (!vars.IsEmpty())
 						vars.Append(wxT(", "));
-					vars.Append(wxT("jscend = '") + DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue()) + wxT("'"));
+					vars.Append(wxT("jscend = '") + DateToAnsiStr(calEnd->GetValue() + timEnd->GetValue()) + wxT("'"));
 				}
 			}
 			else
 			{
 				if (!vars.IsEmpty())
 					vars.Append(wxT(", "));
-				vars.Append(wxT("jscend = '") + DateToAnsiStr(calEnd->GetDate() + wxTimeSpan()) + wxT("'"));
+				vars.Append(wxT("jscend = '") + DateToAnsiStr(calEnd->GetValue() + wxTimeSpan()) + wxT("'"));
 			}
 		}
 		else

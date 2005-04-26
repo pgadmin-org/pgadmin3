@@ -47,6 +47,7 @@
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_CALENDAR_SEL_CHANGED(XRCID("datValidUntil"),dlgUser::OnChangeCal)
+    EVT_DATE_CHANGED(XRCID("datValidUntil"),        dlgUser::OnChangeDate)
     EVT_SPIN(XRCID("timValidUntil"),                dlgUser::OnChangeSpin)
     
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsNotIn"),      dlgUser::OnGroupAdd)
@@ -111,7 +112,7 @@ int dlgUser::Go(bool modal)
         txtID->SetValue(NumToStr(user->GetUserId()));
         chkCreateDB->SetValue(user->GetCreateDatabase());
         chkCreateUser->SetValue(user->GetSuperuser());
-        datValidUntil->SetDate(user->GetAccountExpires());
+        datValidUntil->SetValue(user->GetAccountExpires());
         timValidUntil->SetTime(user->GetAccountExpires());
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
@@ -189,6 +190,16 @@ void dlgUser::OnChangeCal(wxCalendarEvent &ev)
 }
 
 
+void dlgUser::OnChangeDate(wxDateEvent &ev)
+{
+	CheckChange();
+
+    bool timEn=ev.GetDate().IsValid();
+    timValidUntil->Enable(timEn);
+    if (!timEn)
+        timValidUntil->SetTime(wxDefaultDateTime);
+}
+
 void dlgUser::OnChangeSpin(wxSpinEvent &ev)
 {
 	CheckChange();
@@ -226,7 +237,7 @@ void dlgUser::OnChangePasswd(wxCommandEvent &ev)
 
 void dlgUser::CheckChange()
 {
-    bool timEn=datValidUntil->GetDate().IsValid();
+    bool timEn=datValidUntil->GetValue().IsValid();
     timValidUntil->Enable(timEn);
     if (!timEn)
         timValidUntil->SetTime(wxDefaultDateTime);
@@ -399,10 +410,10 @@ wxString dlgUser::GetSql()
                 options += wxT(" NOCREATEUSER");
         }
 
-        if (DateToStr(datValidUntil->GetDate()) != DateToStr(user->GetAccountExpires()))
+        if (DateToStr(datValidUntil->GetValue()) != DateToStr(user->GetAccountExpires()))
         {
-            if (datValidUntil->GetDate().IsValid())
-                options += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate() + timValidUntil->GetValue())); 
+            if (datValidUntil->GetValue().IsValid())
+                options += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
             else
                 options += wxT("\n   VALID UNTIL 'infinity'");
         }
@@ -498,8 +509,8 @@ wxString dlgUser::GetSql()
             sql += wxT(" CREATEDB");
         if (createUser)
             sql += wxT(" CREATEUSER");
-        if (datValidUntil->GetDate().IsValid())
-            sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate() + timValidUntil->GetValue())); 
+        if (datValidUntil->GetValue().IsValid())
+            sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
         else
             sql += wxT("\n   VALID UNTIL 'infinity'");
         sql += wxT(";\n");
