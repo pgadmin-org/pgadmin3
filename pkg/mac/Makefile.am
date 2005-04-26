@@ -5,9 +5,9 @@
 # Makefile - Makefile for *nix systems
 
 EXTRA_DIST = \
-		$(top_srcdir)/pkg/mac/Info.plist \
-		"$(top_srcdir)/pkg/mac/pgadmin3.icns" \
-		$(top_srcdir)/pkg/mac/PkgInfo
+		$(srcdir)/Info.plist \
+		$(srcdir)/pgadmin3.icns \
+		$(srcdir)/PkgInfo
 
 if APPBUNDLE
 install-exec-hook:

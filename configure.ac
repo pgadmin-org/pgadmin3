@@ -42,5 +42,12 @@ CHECK_WXWINDOWS
 AC_CONFIG_FILES([Makefile
                  src/Makefile
 		 pkg/Makefile
-		 pkg/mac/Makefile])
+		 pkg/debian/Makefile
+		 pkg/fc1/Makefile
+		 pkg/mac/Makefile
+		 pkg/mandrake/Makefile
+		 pkg/redhat/Makefile
+		 pkg/slackware/Makefile
+		 pkg/src/Makefile
+		 pkg/win32/Makefile])
 AC_OUTPUT

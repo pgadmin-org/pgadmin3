@@ -4,7 +4,5 @@
 #
 # Makefile - Makefile for *nix systems
 
-SUBDIRS = debian fc1 mac mandrake redhat slackware src win32
-
 EXTRA_DIST = \
-		$(srcdir)/pgadmin3.desktop
+	$(srcdir)/pgadmin3.spec 

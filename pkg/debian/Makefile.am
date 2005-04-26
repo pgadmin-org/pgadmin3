@@ -3,8 +3,13 @@
 # This software is released under the Artistic Licence
 #
 # Makefile - Makefile for *nix systems
-
-SUBDIRS = debian fc1 mac mandrake redhat slackware src win32
-
 EXTRA_DIST = \
-		$(srcdir)/pgadmin3.desktop
+	$(srcdir)/README.Debian \
+	$(srcdir)/changelog \
+	$(srcdir)/control \
+	$(srcdir)/copyright 
+	$(srcdir)/dirs \
+	$(srcdir)/docs \
+	$(srcdir)/make-deb \
+	$(srcdir)/pgadmin3.menu \
+	$(srcdir)/rules
