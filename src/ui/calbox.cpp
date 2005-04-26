@@ -225,7 +225,7 @@ wxSize wxCalendarBox::DoGetBestSize() const
 {
     int bh=m_btn->GetBestSize().y;
     int eh=m_txt->GetBestSize().y;
-    return wxSize(DEFAULT_ITEM_WIDTH, bh > eh ? bh : eh);
+    return wxSize(100, bh > eh ? bh : eh);
 }
 
 

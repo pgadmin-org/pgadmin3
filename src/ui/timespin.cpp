@@ -126,7 +126,7 @@ void wxTimeSpinCtrl::Init()
 
 wxSize wxTimeSpinCtrl::DoGetBestSize() const
 {
-    return wxSize(DEFAULT_ITEM_WIDTH, m_txt->GetBestSize().y);
+    return wxSize(100, m_txt->GetBestSize().y);
 }
 
 
