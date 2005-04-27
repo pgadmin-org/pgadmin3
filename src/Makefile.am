@@ -204,6 +204,10 @@ AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include
 AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
 AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
 
+# Automake trys to execute install-exec-hook if it appears anywhere in the file, so we need a dummy
+# for non-APPBUNDLE cases.
+install-exec-hook:
+
 else
 
 nobase_dist_data_DATA = $(TMP_ui)
