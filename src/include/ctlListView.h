@@ -53,5 +53,4 @@ public:
     void DeleteCurrentItem() { DeleteItem(GetSelection()); }
 };
 
-
 #endif

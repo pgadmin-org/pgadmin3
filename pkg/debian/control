@@ -1,13 +1,31 @@
 Source: pgadmin3
 Section: misc
 Priority: optional
-Maintainer: pgAdmin project <pgadmin-hackers@postgresql.org>
-Build-Depends: debhelper (>> 3.0.0), postgresql-dev, pgadmin3-libwxgtk2ud2.5-dev (>= 2.5.0-0.0+cvs20031010.7), pgadmin3-libwxgtk2ud2.5-contrib (>= 2.5.0-0.0+cvs20031010.7)
-Standards-Version: 3.5.2
+Maintainer: Raphael Enrici <blacknoz@club-internet.fr>
+Build-Depends: debhelper (>= 4.1.0), postgresql-dev (>=7.3), devscripts, libwxgtk2.5-dev (>= 2.5.3.2)
+Standards-Version: 3.6.1
 
 Package: pgadmin3
 Architecture: any
-Depends: ${shlibs:Depends}
-Description: Graphical client for PostgreSQL.
- pgAdmin3 is the graphical administration interface of PostgreSQL.
- Please see http://www.pgadmin.org/ for bug reports
+Depends: pgadmin3-data (= ${Source-Version}), ${shlibs:Depends}
+Description: Graphical administration tool for PostgreSQL
+ pgAdmin III is a database design and management application for use with 
+ PostgreSQL. It is written in C++ using the wxWidgets (http://www.wxwidgets.org)
+ cross-platform framework to allow it to run on multiple platforms.
+ .
+ Homepage: http://www.pgadmin.org/
+
+Package: pgadmin3-data
+Architecture: all
+Depends: pgadmin3 (= ${Source-Version})
+Conflicts: pgadmin3 (<< 1.0.2-1)
+Replaces: pgadmin3 (<< 1.0.2-1)
+Description: Graphical administration tool for PostgreSQL - documentation
+ pgAdmin III is a database design and management application for use with 
+ PostgreSQL. It is written in C++ using the wxWidgets (http://www.wxwidgets.org)
+ cross-platform framework to allow it to run on multiple platforms.
+ .
+ This package contains the documentation for pgAdmin III in English language.
+ This package is mandatory to get the pgAdmin III help system to run smoothly.
+ .
+ Homepage: http://www.pgadmin.org/
