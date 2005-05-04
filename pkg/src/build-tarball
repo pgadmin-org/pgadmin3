@@ -23,8 +23,8 @@ rm -rf ./doc
 rm -rf ./pkg
 rm -rf ./src
 
-# CVS update
-/usr/bin/cvs update -d -C
+# SVN update
+/usr/local/bin/svn update
 
 # Touch the makefiles to ensure make dist doesn't get confused.
 touch Makefile.am
@@ -42,6 +42,6 @@ touch src/Makefile.am
 # Make and store the source tarball
 make dist
 if [ -e pgadmin3-1.3.0.tar.gz ]; then
-	mv pgadmin3-1.3.0.tar.gz /usr/local/apache/htdocs/snapshots/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz
-	ln -s -f src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz /usr/local/apache/htdocs/snapshots/pgadmin3-src.tar.gz
+	mv pgadmin3-1.3.0.tar.gz /var/www/developer.pgadmin.org/snapshots/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz
+	ln -s -f src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz /var/www/developer.pgadmin.org/snapshots/pgadmin3-src.tar.gz
 fi
