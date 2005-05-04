@@ -9,23 +9,21 @@
 <body>
 
 <H3>Compilation on unix platforms</H3>
-<P>If you plan to contribute code, pgAdmin3 requires wxWidgets 2.5.3. On
-Mac OSX systems, you may need to use a newer CVS snapshot (the OSX port of pgAdmin
-is currently experimental).
+<P>If you plan to contribute code, pgAdmin3 requires wxWidgets 2.6.0. 
  Use a recent GNU/Linux distro because
 recent versions of GTK2.2, automake and autoconf are needed. You will
 also need a copy of PostgreSQL on your development system to link
 libpq. We recommend using libpq 7.4 or newer, compiled with --enable-thread-safety.
 </P>
 <OL>
-	<LI><P>Download wxWidgets 2.5.3 from <a href="http://www.wxwidgets.org">the wxWidgets website</a>. 
+	<LI><P>Download wxWidgets 2.6.0 from <a href="http://www.wxwidgets.org">the wxWidgets website</a>. 
 	</P>
-	<PRE># wget http://heanet.dl.sourceforge.net/sourceforge/wxWidgets/wxGTK-2.5.3.tar.gz
-# tar -zxf wxGTK-2.5.3.tar.gz</PRE>
-	<LI><P>Install wxWidgets from source as follows (note, that release builds of pgAdmin should be built without the --enable-debug flag): 
+	<PRE># wget http://heanet.dl.sourceforge.net/sourceforge/wxWidgets/wxGTK-2.6.0.tar.gz
+# tar -zxf wxGTK-2.6.0.tar.gz</PRE>
+	<LI><P>Install wxWidgets from source as follows: 
 	</P>
-	<PRE># cd wxWidgets-2.5.3
-# ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug --enable-mimetype=no
+	<PRE># cd wxWidgets-2.6.0
+# ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
 # make
 # make install
 # ldconfig</PRE>
@@ -35,19 +33,11 @@ libpq. We recommend using libpq 7.4 or newer, compiled with --enable-thread-safe
 # make
 # make install
 # ldconfig</PRE>
-	<LI><P>Install the wxWidgets Object Graphics Library as follows: 
-	</P>
-	<PRE STYLE="margin-right: 1cm"># cd ../ogl
-# make
-# make install
-# ldconfig</PRE>
 	<LI><P>Download and unpack the pgAdmin source code. 
 	</P>
-	<PRE>If you wish to use CVS code:
+	<PRE>If you wish to use SVN code:
 	
-# CVSROOT=:pserver:anonymous@cvs.pgadmin.org:/projects export CVSROOT
-# cvs login
-# cvs -z9 checkout pgadmin3
+# svn co svn://svn.pgadmin.org/trunk/pgadmin3
 # cd pgadmin3
 # sh bootstrap
 
@@ -57,7 +47,7 @@ or, if you wish to use the latest source tarball:
 # tar -zxvf pgadmin3-src.tar.gz
 # cd pgadmin3
 
-Now the source is downloaded (note, that release builds of pgAdmin should be built without the --enable-debug flag):
+Now the source is downloaded:
 
 # ./configure --enable-static --enable-debug
 # make all
