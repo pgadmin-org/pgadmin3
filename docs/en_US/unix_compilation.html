@@ -9,22 +9,20 @@
 <body>
 
 <H3>Compilation on unix platforms</H3>
-<P>If you plan to contribute code, pgAdmin3 requires wxWidgets 2.5.3. On
-Mac OSX systems, you may need to use a newer CVS snapshot (the OSX port of pgAdmin
-is currently experimental).
+<P>If you plan to contribute code, pgAdmin3 requires wxWidgets 2.6.0. 
  Use a recent GNU/Linux distro because
 recent versions of GTK2.2, automake and autoconf are needed. You will
 also need a copy of PostgreSQL on your development system to link
 libpq. We recommend using libpq 7.4 or newer, compiled with --enable-thread-safety.
 </P>
 <OL>
-	<LI><P>Download wxWidgets 2.5.3 from <a href="http://www.wxwidgets.org">the wxWidgets website</a>. 
+	<LI><P>Download wxWidgets 2.6.0 from <a href="http://www.wxwidgets.org">the wxWidgets website</a>. 
 	</P>
-	<PRE># wget http://heanet.dl.sourceforge.net/sourceforge/wxWidgets/wxGTK-2.5.3.tar.gz
-# tar -zxf wxGTK-2.5.3.tar.gz</PRE>
+	<PRE># wget http://heanet.dl.sourceforge.net/sourceforge/wxWidgets/wxGTK-2.6.0.tar.gz
+# tar -zxf wxGTK-2.6.0.tar.gz</PRE>
 	<LI><P>Install wxWidgets from source as follows: 
 	</P>
-	<PRE># cd wxWidgets-2.5.3
+	<PRE># cd wxWidgets-2.6.0
 # ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
 # make
 # make install
@@ -37,11 +35,9 @@ libpq. We recommend using libpq 7.4 or newer, compiled with --enable-thread-safe
 # ldconfig</PRE>
 	<LI><P>Download and unpack the pgAdmin source code. 
 	</P>
-	<PRE>If you wish to use CVS code:
+	<PRE>If you wish to use SVN code:
 	
-# CVSROOT=:pserver:anonymous@cvs.pgadmin.org:/projects export CVSROOT
-# cvs login
-# cvs -z9 checkout pgadmin3
+# svn co svn://svn.pgadmin.org/trunk/pgadmin3
 # cd pgadmin3
 # sh bootstrap
 
