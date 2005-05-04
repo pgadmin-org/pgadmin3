@@ -23,8 +23,8 @@ rm -rf ./doc
 rm -rf ./pkg
 rm -rf ./src
 
-# CVS update
-/usr/bin/cvs update -d -C
+# SVN update
+/usr/local/bin/svn update 
 
 # Bootstrap
 /bin/sh bootstrap
@@ -68,7 +68,7 @@ if [ -x src/pgadmin3 ]; then
         /usr/bin/strip usr/bin/pgadmin3
 	/sbin/makepkg --chown y pgadmin3.tgz 
 	if [ -e pgadmin3.tgz ]; then
-		cp pgadmin3.tgz /usr/local/apache/htdocs/snapshots/linux/slackware$1/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
-		ln -s -f linux/slackware$1/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz /usr/local/apache/htdocs/snapshots/pgadmin3-slackware$1.tgz
+		cp pgadmin3.tgz /var/www/developer.pgadmin.org/snapshots/linux/slackware/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
+		ln -s -f linux/slackware/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz /var/www/developer.pgadmin.org/snapshots/pgadmin3-slackware.tgz
 	fi
 fi
