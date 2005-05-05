@@ -36,7 +36,7 @@
 #define HINT_YESNO       8
 
 
-struct
+struct make_dumb_compilers_happy        // unnamed structs don't make all compilers happy...
 {
     const wxChar *hintPage;
     const wxChar *hintCaption;
