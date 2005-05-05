@@ -10,7 +10,10 @@
 
 bin_PROGRAMS = pgadmin3
 
-pgadmin3_SOURCES = $(srcdir)/pgAdmin3.cpp \
+pgadmin3_SOURCES = \
+$(srcdir)/pgAdmin3.cpp \
+$(srcdir)/main/dlgClasses.cpp $(srcdir)/main/events.cpp \
+\
 $(srcdir)/db/pgConn.cpp $(srcdir)/db/pgSet.cpp $(srcdir)/db/keywords.c \
 $(srcdir)/schema/pgAggregate.cpp $(srcdir)/schema/pgCast.cpp \
 $(srcdir)/schema/pgCheck.cpp $(srcdir)/schema/pgCollection.cpp \
@@ -36,10 +39,10 @@ $(srcdir)/ctl/calbox.cpp $(srcdir)/ctl/timespin.cpp $(srcdir)/ctl/ctlListView.cp
 $(srcdir)/ctl/ctlSQLBox.cpp $(srcdir)/ctl/ctlSQLResult.cpp \
 $(srcdir)/ctl/explainCanvas.cpp $(srcdir)/ctl/explainShape.cpp \
 \
-$(srcdir)/dlg/dlgClasses.cpp $(srcdir)/dlg/dlgEditGridOptions.cpp $(srcdir)/dlg/dlgConnect.cpp \
+$(srcdir)/dlg/dlgEditGridOptions.cpp $(srcdir)/dlg/dlgConnect.cpp \
 $(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp \
 \
-$(srcdir)/frm/frmExport.cpp  $(srcdir)/frm/events.cpp $(srcdir)/frm/frmAbout.cpp \
+$(srcdir)/frm/frmExport.cpp $(srcdir)/frm/frmAbout.cpp \
 $(srcdir)/frm/frmIndexcheck.cpp  $(srcdir)/frm/frmMain.cpp \
 $(srcdir)/frm/frmOptions.cpp $(srcdir)/frm/frmPassword.cpp $(srcdir)/frm/frmQuery.cpp \
 $(srcdir)/frm/frmHelp.cpp $(srcdir)/frm/frmSplash.cpp $(srcdir)/frm/frmMaintenance.cpp \
