@@ -279,103 +279,103 @@ SOURCE=.\utils\utffile.cpp
 # PROP Default_Filter "*.cpp"
 # Begin Source File
 
-SOURCE=.\ui\dlgAggregate.cpp
+SOURCE=.\dlg\dlgAggregate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgCast.cpp
+SOURCE=.\dlg\dlgCast.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgCheck.cpp
+SOURCE=.\dlg\dlgCheck.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgColumn.cpp
+SOURCE=.\dlg\dlgColumn.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgConversion.cpp
+SOURCE=.\dlg\dlgConversion.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgDatabase.cpp
+SOURCE=.\dlg\dlgDatabase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgDomain.cpp
+SOURCE=.\dlg\dlgDomain.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgForeignKey.cpp
+SOURCE=.\dlg\dlgForeignKey.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgFunction.cpp
+SOURCE=.\dlg\dlgFunction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgGroup.cpp
+SOURCE=.\dlg\dlgGroup.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgIndex.cpp
+SOURCE=.\dlg\dlgIndex.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgIndexConstraint.cpp
+SOURCE=.\dlg\dlgIndexConstraint.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgLanguage.cpp
+SOURCE=.\dlg\dlgLanguage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgOperator.cpp
+SOURCE=.\dlg\dlgOperator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgProperty.cpp
+SOURCE=.\dlg\dlgProperty.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgRule.cpp
+SOURCE=.\dlg\dlgRule.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgSchema.cpp
+SOURCE=.\dlg\dlgSchema.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgSequence.cpp
+SOURCE=.\dlg\dlgSequence.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgServer.cpp
+SOURCE=.\dlg\dlgServer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgTable.cpp
+SOURCE=.\dlg\dlgTable.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgTablespace.cpp
+SOURCE=.\dlg\dlgTablespace.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgTrigger.cpp
+SOURCE=.\dlg\dlgTrigger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgType.cpp
+SOURCE=.\dlg\dlgType.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgUser.cpp
+SOURCE=.\dlg\dlgUser.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgView.cpp
+SOURCE=.\dlg\dlgView.cpp
 # End Source File
 # End Group
 # Begin Group "xrc dialogs"
@@ -535,178 +535,190 @@ SOURCE=.\ui\common\xrcDialogs.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group
-# Begin Group "Main windows"
+# Begin Group "Forms"
 
-# PROP Default_Filter "*.cpp"
+# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\ui\dlgConnect.cpp
+SOURCE=.\frm\frmAbout.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgEditGridOptions.cpp
+SOURCE=.\frm\frmBackup.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgHbaConfig.cpp
+SOURCE=.\frm\frmConfig.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgMainConfig.cpp
+SOURCE=.\frm\frmEditGrid.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\events.cpp
+SOURCE=.\frm\frmExport.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmAbout.cpp
+SOURCE=.\frm\frmGrantWizard.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmBackup.cpp
+SOURCE=.\frm\frmHbaConfig.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmConfig.cpp
+SOURCE=.\frm\frmHelp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmEditGrid.cpp
+SOURCE=.\frm\frmHint.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmExport.cpp
+SOURCE=.\frm\frmIndexcheck.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmGrantWizard.cpp
+SOURCE=.\frm\frmMain.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmHbaConfig.cpp
+SOURCE=.\frm\frmMainConfig.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmHelp.cpp
+SOURCE=.\frm\frmMaintenance.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmHint.cpp
+SOURCE=.\frm\frmOptions.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmIndexcheck.cpp
+SOURCE=.\frm\frmPassword.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmMain.cpp
+SOURCE=.\frm\frmQuery.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmMainConfig.cpp
+SOURCE=.\frm\frmRestore.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmMaintenance.cpp
+SOURCE=.\frm\frmSplash.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmOptions.cpp
+SOURCE=.\frm\frmStatus.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmPassword.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmQuery.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmRestore.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmSplash.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmStatus.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmUpdate.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\pgAdmin3.rc
+SOURCE=.\frm\frmUpdate.cpp
 # End Source File
 # End Group
-# Begin Group "base classes"
+# Begin Group "Main"
 
-# PROP Default_Filter "*.cpp"
+# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\ui\calbox.cpp
+SOURCE=.\main\dlgClasses.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\main\events.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\main\pgAdmin3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\main\pgAdmin3.rc
+# End Source File
+# End Group
+# Begin Group "Dialogs"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\dlg\dlgConnect.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\dlg\dlgEditGridOptions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\dlg\dlgHbaConfig.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\dlg\dlgMainConfig.cpp
+# End Source File
+# End Group
+# Begin Group "Controls"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctl\calbox.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\ctlComboBox.cpp
+SOURCE=.\ctl\ctlComboBox.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\ctlListView.cpp
+SOURCE=.\ctl\ctlListView.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\ctlSecurityPanel.cpp
+SOURCE=.\ctl\ctlSecurityPanel.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\ctlSQLBox.cpp
+SOURCE=.\ctl\ctlSQLBox.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\ctlSQLResult.cpp
+SOURCE=.\ctl\ctlSQLResult.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\dlgClasses.cpp
+SOURCE=.\ctl\explainCanvas.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\explainCanvas.cpp
+SOURCE=.\ctl\explainShape.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\explainShape.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\timespin.cpp
+SOURCE=.\ctl\timespin.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\xh_calb.cpp
+SOURCE=.\ctl\xh_calb.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\xh_ctlcombo.cpp
+SOURCE=.\ctl\xh_ctlcombo.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\xh_sqlbox.cpp
+SOURCE=.\ctl\xh_sqlbox.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\xh_timespin.cpp
+SOURCE=.\ctl\xh_timespin.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group
@@ -1891,10 +1903,6 @@ SOURCE=..\Makefile.am
 SOURCE=.\Makefile.am
 # End Source File
 # End Group
-# Begin Source File
-
-SOURCE=.\pgAdmin3.cpp
-# End Source File
 # End Group
 # Begin Group "misc files"
 

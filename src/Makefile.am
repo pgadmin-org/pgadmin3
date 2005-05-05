@@ -26,38 +26,47 @@ $(srcdir)/schema/pgSequence.cpp $(srcdir)/schema/pgServer.cpp \
 $(srcdir)/schema/pgTable.cpp $(srcdir)/schema/pgTablespace.cpp $(srcdir)/schema/pgTrigger.cpp \
 $(srcdir)/schema/pgType.cpp $(srcdir)/schema/pgUser.cpp $(srcdir)/schema/pgView.cpp \
 $(srcdir)/schema/pgDatatype.cpp \
-$(srcdir)/agent/pgaJob.cpp \
-$(srcdir)/agent/pgaStep.cpp $(srcdir)/agent/pgaSchedule.cpp \
+\
+$(srcdir)/agent/pgaJob.cpp $(srcdir)/agent/pgaStep.cpp $(srcdir)/agent/pgaSchedule.cpp \
 $(srcdir)/agent/dlgJob.cpp $(srcdir)/agent/dlgSchedule.cpp $(srcdir)/agent/dlgStep.cpp \
-$(srcdir)/ui/xh_sqlbox.cpp $(srcdir)/ui/xh_calb.cpp $(srcdir)/ui/xh_timespin.cpp $(srcdir)/ui/xh_ctlcombo.cpp \
-$(srcdir)/ui/ctlSecurityPanel.cpp $(srcdir)/ui/dlgClasses.cpp $(srcdir)/ui/ctlComboBox.cpp \
-$(srcdir)/ui/calbox.cpp $(srcdir)/ui/timespin.cpp $(srcdir)/ui/ctlListView.cpp \
-$(srcdir)/ui/ctlSQLBox.cpp $(srcdir)/ui/ctlSQLResult.cpp $(srcdir)/ui/frmExport.cpp \
-$(srcdir)/ui/dlgEditGridOptions.cpp $(srcdir)/ui/events.cpp $(srcdir)/ui/frmAbout.cpp \
-$(srcdir)/ui/frmIndexcheck.cpp $(srcdir)/ui/dlgConnect.cpp $(srcdir)/ui/frmMain.cpp \
-$(srcdir)/ui/frmOptions.cpp $(srcdir)/ui/frmPassword.cpp $(srcdir)/ui/frmQuery.cpp \
-$(srcdir)/ui/frmHelp.cpp $(srcdir)/ui/frmSplash.cpp $(srcdir)/ui/frmMaintenance.cpp \
-$(srcdir)/ui/frmBackup.cpp $(srcdir)/ui/frmRestore.cpp $(srcdir)/ui/frmGrantWizard.cpp \
-$(srcdir)/ui/frmEditGrid.cpp $(srcdir)/ui/dlgProperty.cpp $(srcdir)/ui/dlgUser.cpp \
-$(srcdir)/ui/dlgServer.cpp $(srcdir)/ui/dlgGroup.cpp $(srcdir)/ui/dlgDatabase.cpp $(srcdir)/ui/dlgLanguage.cpp \
-$(srcdir)/ui/dlgSchema.cpp $(srcdir)/ui/dlgDomain.cpp $(srcdir)/ui/dlgTable.cpp $(srcdir)/ui/dlgTablespace.cpp \
-$(srcdir)/ui/dlgColumn.cpp $(srcdir)/ui/dlgIndex.cpp $(srcdir)/ui/dlgFunction.cpp \
-$(srcdir)/ui/dlgView.cpp $(srcdir)/ui/dlgRule.cpp $(srcdir)/ui/dlgOperator.cpp \
-$(srcdir)/ui/dlgAggregate.cpp $(srcdir)/ui/dlgCast.cpp $(srcdir)/ui/dlgConversion.cpp \
-$(srcdir)/ui/dlgIndexConstraint.cpp $(srcdir)/ui/dlgForeignKey.cpp \
-$(srcdir)/ui/dlgSequence.cpp $(srcdir)/ui/dlgTrigger.cpp $(srcdir)/ui/dlgType.cpp \
-$(srcdir)/ui/dlgCheck.cpp $(srcdir)/ui/frmStatus.cpp utils/misc.cpp \
-$(srcdir)/ui/dlgHbaConfig.cpp $(srcdir)/ui/dlgMainConfig.cpp $(srcdir)/ui/frmUpdate.cpp \
-$(srcdir)/ui/frmConfig.cpp $(srcdir)/ui/frmHbaConfig.cpp $(srcdir)/ui/frmMainConfig.cpp $(srcdir)/ui/frmHint.cpp \
+\
+$(srcdir)/ctl/xh_sqlbox.cpp $(srcdir)/ctl/xh_calb.cpp $(srcdir)/ctl/xh_timespin.cpp $(srcdir)/ctl/xh_ctlcombo.cpp \
+$(srcdir)/ctl/ctlSecurityPanel.cpp $(srcdir)/ctl/ctlComboBox.cpp \
+$(srcdir)/ctl/calbox.cpp $(srcdir)/ctl/timespin.cpp $(srcdir)/ctl/ctlListView.cpp \
+$(srcdir)/ctl/ctlSQLBox.cpp $(srcdir)/ctl/ctlSQLResult.cpp \
+$(srcdir)/ctl/explainCanvas.cpp $(srcdir)/ctl/explainShape.cpp \
+\
+$(srcdir)/dlg/dlgClasses.cpp $(srcdir)/dlg/dlgEditGridOptions.cpp $(srcdir)/dlg/dlgConnect.cpp \
+$(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp \
+\
+$(srcdir)/frm/frmExport.cpp  $(srcdir)/frm/events.cpp $(srcdir)/frm/frmAbout.cpp \
+$(srcdir)/frm/frmIndexcheck.cpp  $(srcdir)/frm/frmMain.cpp \
+$(srcdir)/frm/frmOptions.cpp $(srcdir)/frm/frmPassword.cpp $(srcdir)/frm/frmQuery.cpp \
+$(srcdir)/frm/frmHelp.cpp $(srcdir)/frm/frmSplash.cpp $(srcdir)/frm/frmMaintenance.cpp \
+$(srcdir)/frm/frmBackup.cpp $(srcdir)/frm/frmRestore.cpp $(srcdir)/frm/frmGrantWizard.cpp \
+$(srcdir)/frm/frmEditGrid.cpp $(srcdir)/frm/frmStatus.cpp $(srcdir)/frm/frmUpdate.cpp \
+$(srcdir)/frm/frmConfig.cpp $(srcdir)/frm/frmHbaConfig.cpp $(srcdir)/frm/frmMainConfig.cpp $(srcdir)/frm/frmHint.cpp \
+\
+$(srcdir)/dlg/dlgProperty.cpp $(srcdir)/dlg/dlgUser.cpp \
+$(srcdir)/dlg/dlgServer.cpp $(srcdir)/dlg/dlgGroup.cpp $(srcdir)/dlg/dlgDatabase.cpp $(srcdir)/dlg/dlgLanguage.cpp \
+$(srcdir)/dlg/dlgSchema.cpp $(srcdir)/dlg/dlgDomain.cpp $(srcdir)/dlg/dlgTable.cpp $(srcdir)/dlg/dlgTablespace.cpp \
+$(srcdir)/dlg/dlgColumn.cpp $(srcdir)/dlg/dlgIndex.cpp $(srcdir)/dlg/dlgFunction.cpp \
+$(srcdir)/dlg/dlgView.cpp $(srcdir)/dlg/dlgRule.cpp $(srcdir)/dlg/dlgOperator.cpp \
+$(srcdir)/dlg/dlgAggregate.cpp $(srcdir)/dlg/dlgCast.cpp $(srcdir)/dlg/dlgConversion.cpp \
+$(srcdir)/dlg/dlgIndexConstraint.cpp $(srcdir)/dlg/dlgForeignKey.cpp \
+$(srcdir)/dlg/dlgSequence.cpp $(srcdir)/dlg/dlgTrigger.cpp $(srcdir)/dlg/dlgType.cpp \
+$(srcdir)/dlg/dlgCheck.cpp \
+\
 $(srcdir)/utils/sysLogger.cpp $(srcdir)/utils/sysSettings.cpp $(srcdir)/utils/sysProcess.cpp \
-$(srcdir)/utils/utffile.cpp $(srcdir)/utils/pgconfig.cpp $(srcdir)/utils/update.cpp \
+utils/misc.cpp $(srcdir)/utils/utffile.cpp $(srcdir)/utils/pgconfig.cpp $(srcdir)/utils/update.cpp \
+\
 $(srcdir)/slony/slObject.cpp $(srcdir)/slony/slCluster.cpp $(srcdir)/slony/slNode.cpp \
 $(srcdir)/slony/slPath.cpp $(srcdir)/slony/slListen.cpp $(srcdir)/slony/slSet.cpp \
 $(srcdir)/slony/slSequence.cpp $(srcdir)/slony/slTable.cpp $(srcdir)/slony/slSubscription.cpp \
 $(srcdir)/slony/dlgRepCluster.cpp $(srcdir)/slony/dlgRepNode.cpp $(srcdir)/slony/dlgRepListen.cpp \
 $(srcdir)/slony/dlgRepPath.cpp $(srcdir)/slony/dlgRepSet.cpp $(srcdir)/slony/dlgRepSequence.cpp \
 $(srcdir)/slony/dlgRepTable.cpp $(srcdir)/slony/dlgRepSubscription.cpp $(srcdir)/slony/slFunctions.cpp \
-$(srcdir)/ui/explainCanvas.cpp $(srcdir)/ui/explainShape.cpp \
+\
 $(srcdir)/ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = $(srcdir)/include/copyright.h $(srcdir)/include/version.h $(srcdir)/include/ctlSQLBox.h \
