@@ -1313,7 +1313,7 @@ bool dlgAgentProperty::executeSql()
     if (!sql.IsEmpty())
     {
 		int pos;
-		long jobId, schId, stpId;
+		long jobId=0, schId=0, stpId=0;
 		if (sql.Contains(wxT("<JobId>")))
 		{
 			jobId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));

@@ -564,7 +564,7 @@ void frmMain::RemoveFrame(wxWindow *frame)
 bool frmMain::checkAlive()
 {
     bool userInformed = false;
-    bool closeIt;
+    bool closeIt = false;
 
     wxCookieType cookie;
     wxTreeItemId serverItem=browser->GetFirstChild(servers, cookie);
@@ -661,7 +661,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
         return item;
 
     wxCookieType cookie;
-    pgObject *data;
+    pgObject *data=0;
     item = browser->GetFirstChild(server->GetId(), cookie);
     while (item)
     {

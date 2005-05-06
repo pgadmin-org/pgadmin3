@@ -238,7 +238,7 @@ void wxTimeSpinCtrl::OnSpinDown(wxSpinEvent &ev)
 void wxTimeSpinCtrl::DoSpin(int diff)
 {
     int tp=GetTimePart();
-    long oldValue, maxValue, mult;
+    long oldValue=0, maxValue=0, mult=0;
 
     switch (tp)
     {

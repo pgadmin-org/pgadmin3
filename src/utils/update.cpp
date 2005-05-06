@@ -108,7 +108,6 @@ wxThread *BackgroundCheckUpdates(frmMain *mainForm)
         return 0;
 
     wxDateTime lastRun = StrToDateTime(settings->Read(wxT("Updates/LastRun"), wxEmptyString));
-    bool needsUpdate=false;
 
     if (lastRun.IsValid())
     {
