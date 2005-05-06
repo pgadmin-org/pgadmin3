@@ -1256,7 +1256,6 @@ void frmMain::execDrop(wxCommandEvent &ev, bool cascaded)
 
             if (index >= 0)
             {
-                long firstSelected = index;
                 pgObject *data=collection->FindChild(browser, index);
 
                 if (!data || !data->CanDrop())

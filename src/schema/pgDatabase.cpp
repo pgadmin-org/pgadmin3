@@ -158,7 +158,7 @@ wxString pgDatabase::ExecuteScalar(const wxString& sql)
 
 bool pgDatabase::ExecuteVoid(const wxString& sql)
 {
-    bool rc;
+    bool rc=0;
     if (connection())
     {
         rc = connection()->ExecuteVoid(sql);

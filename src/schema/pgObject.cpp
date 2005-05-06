@@ -662,7 +662,7 @@ bool pgServerObject::CanCreate()
 
 void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query)
 {
-    pgCollection *databases;
+    pgCollection *databases=0;
 
     wxCookieType cookie;
     wxTreeItemId item=browser->GetFirstChild(GetServer()->GetId(), cookie);
