@@ -757,7 +757,10 @@ int frmMain::ReconnectServer(pgServer *server)
                 browser->Expand(item);
                 browser->EnsureVisible(item);
             }
-            EndMsg(item);
+			if (item)
+				EndMsg(true);
+			else
+				EndMsg(false);
             return res;
         }
         case PGCONN_DNSERR:
