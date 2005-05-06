@@ -632,7 +632,7 @@ SOURCE=.\main\events.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\main\pgAdmin3.cpp
+SOURCE=.\pgAdmin3.cpp
 # End Source File
 # Begin Source File
 
