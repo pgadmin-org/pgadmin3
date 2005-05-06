@@ -87,6 +87,7 @@ bool dialogTestMode=false;
 
 #define DOC_DIR     wxT("/docs")
 #define UI_DIR      wxT("/ui")
+#define IL8N_DIR    wxT("/il8n")
 #define COMMON_DIR  wxT("/common")
 #define SCRIPT_DIR  wxT("/scripts")
 #define HELPER_DIR  wxT("/helper")
@@ -179,7 +180,11 @@ bool pgAdmin3::OnInit()
     backupExecutable  = path.FindValidPath(wxT("pg_dump.exe"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore.exe"));
 
-    if (wxDir::Exists(loadPath + UI_DIR))
+    if (wxDir::Exists(loadPath + IL8N_DIR))
+        uiPath = loadPath + IL8N_DIR;
+    else if (wxDir::Exists(loadPath + wxT("/../..") + IL8N_DIR))
+        uiPath = loadPath + wxT("/../..") + IL8N_DIR;
+    else if (wxDir::Exists(loadPath + UI_DIR))
         uiPath = loadPath + UI_DIR;
     else
         uiPath = loadPath + wxT("/..") UI_DIR;
@@ -202,14 +207,24 @@ bool pgAdmin3::OnInit()
             path.Add(dataDir + HELPER_DIR) ;
         if (wxDir::Exists(dataDir + SCRIPT_DIR))
             path.Add(dataDir + SCRIPT_DIR) ;
-        if (wxDir::Exists(dataDir + UI_DIR))
-          uiPath = dataDir + UI_DIR ;
+
+        if (wxDir::Exists(dataDir + IL8N_DIR))
+          uiPath = dataDir + IL8N_DIR;
+        else if (wxDir::Exists(dataDir + UI_DIR))
+          uiPath = dataDir + UI_DIR;
+
         if (wxDir::Exists(dataDir + DOC_DIR))
           docPath = dataDir + DOC_DIR ;
     }
 
     if (uiPath.IsEmpty())
-        uiPath = loadPath + UI_DIR ;
+	{
+        if (wxDir::Exists(loadPath + IL8N_DIR))
+			uiPath = loadPath + IL8N_DIR;
+		else
+			uiPath = loadPath + UI_DIR ;
+	}
+
     if (docPath.IsEmpty())
         docPath = loadPath + wxT("/..") DOC_DIR ;
 
@@ -221,7 +236,11 @@ bool pgAdmin3::OnInit()
     backupExecutable  = path.FindValidPath(wxT("pg_dump"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore"));
 
-    if (wxDir::Exists(DATA_DIR UI_DIR))
+    if (wxDir::Exists(DATA_DIR IL8N_DIR))
+        uiPath = DATA_DIR IL8N_DIR;
+    else if (wxDir::Exists(loadpath + IL8N_DIR))
+        uiPath = loadPath + IL8N_DIR;
+    else if (wxDir::Exists(DATA_DIR UI_DIR))
         uiPath = DATA_DIR UI_DIR;
     else
         uiPath = loadPath + UI_DIR;

@@ -40,6 +40,7 @@ CHECK_PGSQL
 CHECK_WXWINDOWS
 
 AC_CONFIG_FILES([Makefile
+		 il8n/Makefile
                  src/Makefile
 		 pkg/Makefile
 		 pkg/debian/Makefile

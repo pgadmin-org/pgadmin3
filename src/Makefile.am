@@ -128,86 +128,15 @@ $(srcdir)/slony/include/dlgRepSubscription.h $(srcdir)/slony/include/dlgRepPrope
 $(srcdir)/slony/include/dlgRepTable.h $(srcdir)/slony/include/slFunctions.h
 
   
-EXTRA_DIST = $(srcdir)/pgAdmin3.dsp $(srcdir)/pgAdmin3.dsw \
+EXTRA_DIST = i\
+$(srcdir)/pgAdmin3.dsp \
+$(srcdir)/pgAdmin3.dsw \
 $(srcdir)/include/images/*.xpm \
-$(srcdir)/include/images/pgAdmin3.ico \
-$(srcdir)/ui/af_ZA/pgadmin3.po \
-$(srcdir)/ui/ar_SA/pgadmin3.po \
-$(srcdir)/ui/ca_ES/pgadmin3.po \
-$(srcdir)/ui/da_DK/pgadmin3.po \
-$(srcdir)/ui/de_DE/pgadmin3.po \
-$(srcdir)/ui/es_ES/pgadmin3.po \
-$(srcdir)/ui/fi_FI/pgadmin3.po \
-$(srcdir)/ui/fr_FR/pgadmin3.po \
-$(srcdir)/ui/hu_HU/pgadmin3.po \
-$(srcdir)/ui/id_ID/pgadmin3.po \
-$(srcdir)/ui/it_IT/pgadmin3.po \
-$(srcdir)/ui/ja_JP/pgadmin3.po \
-$(srcdir)/ui/lv_LV/pgadmin3.po \
-$(srcdir)/ui/nl_NL/pgadmin3.po \
-$(srcdir)/ui/pl_PL/pgadmin3.po \
-$(srcdir)/ui/pt_PT/pgadmin3.po \
-$(srcdir)/ui/ru_RU/pgadmin3.po \
-$(srcdir)/ui/sk_SK/pgadmin3.po \
-$(srcdir)/ui/sl_SI/pgadmin3.po \
-$(srcdir)/ui/sr_YU/pgadmin3.po \
-$(srcdir)/ui/tr_TR/pgadmin3.po \
-$(srcdir)/ui/zh_CN/pgadmin3.po \
-$(srcdir)/ui/zh_TW/pgadmin3.po
+$(srcdir)/include/images/pgAdmin3.ico
 
-##############################################################################
-#
-# Note, Only include translations above and below that are officially 
-# published. These are listed at: 
-#                              http://www.pgadmin.org/pgadmin3/translation.php
-#
-##############################################################################
-
-TMP_ui = $(srcdir)/ui/common/*.xrc \
-$(srcdir)/ui/wxstd.mo \
-$(srcdir)/ui/pgadmin3.lng \
-$(srcdir)/ui/pg_settings.csv \
-$(srcdir)/ui/af_ZA/pgadmin3.mo \
-$(srcdir)/ui/ar_SA/pgadmin3.mo \
-$(srcdir)/ui/ca_ES/pgadmin3.mo \
-$(srcdir)/ui/da_DK/pgadmin3.mo \
-$(srcdir)/ui/de_DE/pgadmin3.mo \
-$(srcdir)/ui/es_ES/pgadmin3.mo \
-$(srcdir)/ui/fi_FI/pgadmin3.mo \
-$(srcdir)/ui/fr_FR/pgadmin3.mo \
-$(srcdir)/ui/hu_HU/pgadmin3.mo \
-$(srcdir)/ui/id_ID/pgadmin3.mo \
-$(srcdir)/ui/it_IT/pgadmin3.mo \
-$(srcdir)/ui/ja_JP/pgadmin3.mo \
-$(srcdir)/ui/lv_LV/pgadmin3.mo \
-$(srcdir)/ui/nl_NL/pgadmin3.mo \
-$(srcdir)/ui/pl_PL/pgadmin3.mo \
-$(srcdir)/ui/pt_PT/pgadmin3.mo \
-$(srcdir)/ui/ru_RU/pgadmin3.mo \
-$(srcdir)/ui/sk_SK/pgadmin3.mo \
-$(srcdir)/ui/sl_SI/pgadmin3.mo \
-$(srcdir)/ui/sr_YU/pgadmin3.mo \
-$(srcdir)/ui/tr_TR/pgadmin3.mo \
-$(srcdir)/ui/zh_CN/pgadmin3.mo \
-$(srcdir)/ui/zh_TW/pgadmin3.mo \
-$(srcdir)/ui/af_ZA/wxstd.mo \
-$(srcdir)/ui/ca_ES/wxstd.mo \
-$(srcdir)/ui/da_DK/wxstd.mo \
-$(srcdir)/ui/de_DE/wxstd.mo \
-$(srcdir)/ui/es_ES/wxstd.mo \
-$(srcdir)/ui/fi_FI/wxstd.mo \
-$(srcdir)/ui/fr_FR/wxstd.mo \
-$(srcdir)/ui/hu_HU/wxstd.mo \
-$(srcdir)/ui/id_ID/wxstd.mo \
-$(srcdir)/ui/it_IT/wxstd.mo \
-$(srcdir)/ui/ja_JP/wxstd.mo \
-$(srcdir)/ui/nl_NL/wxstd.mo \
-$(srcdir)/ui/pl_PL/wxstd.mo \
-$(srcdir)/ui/ru_RU/wxstd.mo \
-$(srcdir)/ui/sl_SI/wxstd.mo \
-$(srcdir)/ui/tr_TR/wxstd.mo \
-$(srcdir)/ui/zh_CN/wxstd.mo \
-$(srcdir)/ui/zh_TW/wxstd.mo
+TMP_ui = \
+$(srcdir)/ui/common/*.xrc \
+$(srcdir)/ui/pg_settings.csv 
 
 if !APPBUNDLE
 
