@@ -238,7 +238,7 @@ bool pgAdmin3::OnInit()
 
     if (wxDir::Exists(DATA_DIR IL8N_DIR))
         uiPath = DATA_DIR IL8N_DIR;
-    else if (wxDir::Exists(loadpath + IL8N_DIR))
+    else if (wxDir::Exists(loadPath + IL8N_DIR))
         uiPath = loadPath + IL8N_DIR;
     else if (wxDir::Exists(DATA_DIR UI_DIR))
         uiPath = DATA_DIR UI_DIR;
