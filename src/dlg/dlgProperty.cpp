@@ -992,14 +992,14 @@ wxString dlgTypeProperty::GetTypeOid(int sel)
 wxString dlgTypeProperty::GetQuotedTypename(int sel)
 {
     wxString sql;
-	bool isArray = FALSE;
+	bool isArray = false;
 
     if (sel >= 0)
     {
         sql = types.Item(sel).AfterFirst(':');
 		if (sql.Contains(wxT("[]"))) {
 			sql = sql.BeforeFirst('[');
-			isArray = TRUE;
+			isArray = true;
 		}
 
         if (isVarLen && txtLength)

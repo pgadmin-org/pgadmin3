@@ -230,10 +230,10 @@ wxString pgDatabase::GetQuotedSchemaPrefix(const wxString &name) const
 bool pgDatabase::GetSystemObject() const
 {
     if (server) {
-        if (this->GetName() == wxT("template0")) return TRUE;
+        if (this->GetName() == wxT("template0")) return true;
         return (this->GetOid() <= server->GetLastSystemOID());
     } else {
-        return FALSE;
+        return false;
     }
 }
 
@@ -307,7 +307,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         }
 
             // Add child nodes if necessary
-        if (browser->GetChildrenCount(GetId(), FALSE) == 0)
+        if (browser->GetChildrenCount(GetId(), false) == 0)
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
             pgCollection *collection;

@@ -25,9 +25,6 @@
 // App headers
 #include "sysSettings.h"
 
-#define __(str) wxT(str)
-
-
 // XRC Path
 #ifdef __WXMSW__
 #define XRC_PATH wxT("/ui/win32")
@@ -57,19 +54,6 @@ const float SERVER_MIN_VERSION = 7.3f;
 #define SPLASH_X0       6
 #define SPLASH_Y0       114
 #define SPLASH_OFFS     15
-
-
-// Class declarations
-class pgAdmin3 : public wxApp
-{
-public:
-    virtual bool OnInit();
-    virtual int OnExit();
-
-private:
-
-    bool LoadAllXrc(const wxString dir);
-};
 
 
 #endif // PGADMIN3_H

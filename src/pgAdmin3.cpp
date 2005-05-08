@@ -20,7 +20,6 @@
 #include <wx/imagjpeg.h>
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
-#include <wx/stdpaths.h>
 
 // Windows headers
 #ifdef __WXMSW__
@@ -43,13 +42,11 @@
 #include "copyright.h"
 #include "version.h"
 #include "misc.h"
-#include "sysLogger.h"
 #include "sysSettings.h"
 #include "update.h"
 #include "frmMain.h"
 #include "frmConfig.h"
 #include "frmSplash.h"
-#include <wx/socket.h>
 #include <wx/dir.h>
 #include <wx/fs_zip.h>
 #include "xh_calb.h"
@@ -57,6 +54,7 @@
 #include "xh_sqlbox.h"
 #include "xh_ctlcombo.h"
 
+#include "base/appbase.h"
 
 #include <wx/ogl/ogl.h>
 
@@ -65,15 +63,11 @@
 frmMain *winMain=0;
 wxThread *updateThread=0;
 
-wxLog *logger;
 sysSettings *settings;
 wxArrayInt existingLangs;
 wxArrayString existingLangNames;
 wxLocale *locale=0;
 
-wxString loadPath;              // Where the program is loaded from
-wxString docPath;               // Where docs are stored
-wxString uiPath;                // Where ui data is stored
 wxString backupExecutable;      // complete filename of pg_dump and pg_restore, if available
 wxString restoreExecutable;
 
@@ -81,18 +75,25 @@ wxString slony1BaseScript;
 wxString slony1FunctionScript;
 wxString slony1XxidScript;
 
-double libpqVersion=0.0;
 
 bool dialogTestMode=false;
 
-#define DOC_DIR     wxT("/docs")
-#define UI_DIR      wxT("/ui")
-#define IL8N_DIR    wxT("/il8n")
-#define COMMON_DIR  wxT("/common")
-#define SCRIPT_DIR  wxT("/scripts")
-#define HELPER_DIR  wxT("/helper")
+
 #define LANG_FILE   wxT("pgadmin3.lng")
 
+
+
+// Class declarations
+class pgAdmin3 : public pgAppBase
+{
+public:
+    virtual bool OnInit();
+    virtual int OnExit();
+
+private:
+
+    bool LoadAllXrc(const wxString dir);
+};
 
 IMPLEMENT_APP(pgAdmin3)
 
@@ -118,9 +119,7 @@ public:
 bool pgAdmin3::OnInit()
 {
     // we are here
-    loadPath=wxPathOnly(argv[0]);
-	if (loadPath.IsEmpty())
-		loadPath = wxT(".");
+    InitPaths();
 
     frmConfig::tryMode configMode=frmConfig::NONE;
 
@@ -176,82 +175,12 @@ bool pgAdmin3::OnInit()
     // evaluate all working paths
 
 #if defined(__WXMSW__)
-
     backupExecutable  = path.FindValidPath(wxT("pg_dump.exe"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore.exe"));
-
-    if (wxDir::Exists(loadPath + IL8N_DIR))
-        uiPath = loadPath + IL8N_DIR;
-    else if (wxDir::Exists(loadPath + wxT("/../..") + IL8N_DIR))
-        uiPath = loadPath + wxT("/../..") + IL8N_DIR;
-    else if (wxDir::Exists(loadPath + UI_DIR))
-        uiPath = loadPath + UI_DIR;
-    else
-        uiPath = loadPath + wxT("/..") UI_DIR;
-
-    if (wxDir::Exists(loadPath + DOC_DIR))
-        docPath = loadPath + DOC_DIR;
-    else
-        docPath = loadPath + wxT("/../..") DOC_DIR;
-    
-#elif defined(__WXMAC__)
-
-    //When using wxStandardPaths on OSX, wx defaults to the unix,
-    //not to the mac variants. Therefor, we request wxStandardPathsCF
-    //directly.
-    wxStandardPathsCF stdPaths ;
-    wxString dataDir = stdPaths.GetDataDir() ;
-    if (dataDir) {
-        wxFprintf(stderr, wxT("DataDir: ") + dataDir + wxT("\n")) ;
-	if (wxDir::Exists(dataDir + HELPER_DIR))
-            path.Add(dataDir + HELPER_DIR) ;
-        if (wxDir::Exists(dataDir + SCRIPT_DIR))
-            path.Add(dataDir + SCRIPT_DIR) ;
-
-        if (wxDir::Exists(dataDir + IL8N_DIR))
-          uiPath = dataDir + IL8N_DIR;
-        else if (wxDir::Exists(dataDir + UI_DIR))
-          uiPath = dataDir + UI_DIR;
-
-        if (wxDir::Exists(dataDir + DOC_DIR))
-          docPath = dataDir + DOC_DIR ;
-    }
-
-    if (uiPath.IsEmpty())
-	{
-        if (wxDir::Exists(loadPath + IL8N_DIR))
-			uiPath = loadPath + IL8N_DIR;
-		else
-			uiPath = loadPath + UI_DIR ;
-	}
-
-    if (docPath.IsEmpty())
-        docPath = loadPath + wxT("/..") DOC_DIR ;
-
-    backupExecutable  = path.FindValidPath(wxT("pg_dump"));
-    restoreExecutable = path.FindValidPath(wxT("pg_restore"));
-
 #else
-
     backupExecutable  = path.FindValidPath(wxT("pg_dump"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore"));
-
-    if (wxDir::Exists(DATA_DIR IL8N_DIR))
-        uiPath = DATA_DIR IL8N_DIR;
-    else if (wxDir::Exists(loadPath + IL8N_DIR))
-        uiPath = loadPath + IL8N_DIR;
-    else if (wxDir::Exists(DATA_DIR UI_DIR))
-        uiPath = DATA_DIR UI_DIR;
-    else
-        uiPath = loadPath + UI_DIR;
-
-    if (wxDir::Exists(DATA_DIR DOC_DIR))
-        docPath = DATA_DIR DOC_DIR;
-    else
-        docPath = loadPath + wxT("/..") DOC_DIR;
-
 #endif
-
 
     slony1BaseScript=path.FindValidPath(wxT("slony1_base.sql"));
     slony1FunctionScript=path.FindValidPath(wxT("slony1_funcs.sql"));
@@ -266,8 +195,7 @@ bool pgAdmin3::OnInit()
 #endif
 
 	// Setup logging
-    logger = new sysLogger();
-    wxLog::SetActiveTarget(logger);
+    InitLogger();
 
     wxString msg;
     msg << wxT("# ") << APPNAME_L << wxT(" Version ") << VERSION_STR << wxT(" Startup");
@@ -298,7 +226,7 @@ bool pgAdmin3::OnInit()
 #endif
 
     locale = new wxLocale();
-    locale->AddCatalogLookupPathPrefix(uiPath);
+    locale->AddCatalogLookupPathPrefix(i18nPath);
 
     wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_DEFAULT);
     if (locale->Init(langId))
@@ -317,7 +245,7 @@ bool pgAdmin3::OnInit()
     const wxLanguageInfo *langInfo;
     int langNo;
 
-    wxString langfile=FileRead(uiPath + wxT("/") LANG_FILE, 1);
+    wxString langfile=FileRead(i18nPath + wxT("/") LANG_FILE, 1);
 
     if (!langfile.IsEmpty())
     {
@@ -343,7 +271,7 @@ bool pgAdmin3::OnInit()
                 if (englishName == langInfo->Description && 
                     (langInfo->CanonicalName == wxT("en_US") || 
                     (!langInfo->CanonicalName.IsEmpty() && 
-                     wxDir::Exists(uiPath + wxT("/") + langInfo->CanonicalName))))
+                     wxDir::Exists(i18nPath + wxT("/") + langInfo->CanonicalName))))
                 {
                     existingLangs.Add(langNo);
                     existingLangNames.Add(translatedName);
@@ -362,19 +290,14 @@ bool pgAdmin3::OnInit()
     else
     {
         SetTopWindow(winSplash);
-        winSplash->Show(TRUE);
+        winSplash->Show();
 	    winSplash->Update();
         wxYield();
     }
 
 	
     // Startup the windows sockets if required
-#ifdef __WXMSW__
-    WSADATA	wsaData;
-    if (WSAStartup(MAKEWORD(1, 1), &wsaData) != 0) {
-        wxLogFatalError(__("Cannot initialise the networking subsystem!"));   
-    }
-#endif
+    InitNetwork();
 
     wxImage::AddHandler(new wxJPEGHandler());
     wxImage::AddHandler(new wxPNGHandler());
@@ -389,53 +312,8 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->AddHandler(new ctlSQLBoxXmlHandler);
     wxXmlResource::Get()->AddHandler(new ctlComboBoxXmlHandler);
 
-#define chkXRC(id) XRCID(#id) == id
-    wxASSERT_MSG(
-        chkXRC(wxID_OK) &&
-        chkXRC(wxID_CANCEL) && 
-        chkXRC(wxID_HELP) &&
-        chkXRC(wxID_APPLY) &&
-        chkXRC(wxID_ADD) &&
-        chkXRC(wxID_STOP) &&
-        chkXRC(wxID_REMOVE)&&
-        chkXRC(wxID_REFRESH) &&
-        chkXRC(wxID_CLOSE), 
-        wxT("XRC ID not correctly assigned."));
-    // if this assert fires, some event table uses XRCID(...) instead of wxID_... directly
-        
 
-    // examine libpq version
-    libpqVersion=7.3;
-    PQconninfoOption *cio=PQconndefaults();
-
-    if (cio)
-    {
-        PQconninfoOption *co=cio;
-        while (co->keyword)
-        {
-            if (!strcmp(co->keyword, "sslmode"))
-            {
-                libpqVersion=7.4;
-                break;
-            }
-            co++;
-        }
-        PQconninfoFree(cio);
-    }
-
-
-#ifdef EMBED_XRC
-
-    // resources are loaded from memory
-    extern void InitXmlResource();
-    InitXmlResource();
-
-#else
-
-    // for debugging, dialog resources are read from file
-    wxXmlResource::Get()->Load(uiPath+COMMON_DIR + wxT("/*.xrc"));
-#endif
-
+    InitXml();
 
     wxOGLInitialize();
 
@@ -482,7 +360,6 @@ bool pgAdmin3::OnInit()
 
     else
     {
-        wxSocketBase::Initialize();
 
         // Create & show the main form
         winMain = new frmMain(APPNAME_L);
@@ -492,9 +369,9 @@ bool pgAdmin3::OnInit()
 
         // updateThread = BackgroundCheckUpdates(winMain);
 
-        winMain->Show(TRUE);
+        winMain->Show();
         SetTopWindow(winMain);
-        SetExitOnFrameDelete(TRUE);
+        SetExitOnFrameDelete(true);
 
         if (winSplash)
         {
@@ -508,8 +385,9 @@ bool pgAdmin3::OnInit()
         if (settings->GetShowTipOfTheDay()) winMain->OnTipOfTheDay(evt);
     }
 
-    return TRUE;
+    return true;
 }
+
 
 // Not the Application!
 int pgAdmin3::OnExit()
@@ -523,12 +401,5 @@ int pgAdmin3::OnExit()
     // Delete the settings object to ensure settings are saved.
     delete settings;
 
-#ifdef __WXMSW__
-	WSACleanup();
-#endif
-    return 1;
-
-	// Keith 2003.03.05
-	// We must delete this after cleanup to prevent memory leaks
-    delete logger;
+    return pgAppBase::OnExit();
 }

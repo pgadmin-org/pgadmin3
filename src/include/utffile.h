@@ -24,7 +24,7 @@ public:
     wxUtfFile(const wxChar *szFileName, OpenMode mode = read, wxFontEncoding encoding=wxFONTENCODING_DEFAULT);
     wxUtfFile(int fd, wxFontEncoding encoding=wxFONTENCODING_DEFAULT);
 
-    bool Create(const wxChar *szFileName, bool bOverwrite = FALSE, int access = wxS_DEFAULT, wxFontEncoding encoding=wxFONTENCODING_DEFAULT);
+    bool Create(const wxChar *szFileName, bool bOverwrite = false, int access = wxS_DEFAULT, wxFontEncoding encoding=wxFONTENCODING_DEFAULT);
     bool Open(const wxChar *szFileName, OpenMode mode = read, int access = wxS_DEFAULT, wxFontEncoding encoding=wxFONTENCODING_DEFAULT);
     void Attach(int fd, wxFontEncoding encoding=wxFONTENCODING_DEFAULT);
 

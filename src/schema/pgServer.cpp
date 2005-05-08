@@ -34,7 +34,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     port = newPort;
     ssl=_ssl;
 
-    connected = FALSE;
+    connected = false;
     lastSystemOID = 0;
 
     conn = NULL;
@@ -472,7 +472,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
     }
     else
     {
-        connected = FALSE;
+        connected = false;
     }
 
     form->EndMsg(connected && status == PGCONN_OK);
@@ -540,13 +540,15 @@ bool pgServer::SetPassword(const wxString& newVal)
     wxString sql;
     sql.Printf(wxT("ALTER USER %s WITH PASSWORD %s;"), qtIdent(username).c_str(), qtString(newVal).c_str());
     bool executed = conn->ExecuteVoid(sql);
-    if (executed) {
+    if (executed)
+    {
         password = newVal;
-        return TRUE;
-    } else {
-        return FALSE;
+        return false;
     }
+    else
+        return false;
 }
+
 
 wxString pgServer::GetLastError() const
 {
@@ -580,7 +582,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
     if (GetConnected()) {
 
         // Reset password menu option
-//        form->fileMenu->Enable(MNU_PASSWORD, TRUE);
+//        form->fileMenu->Enable(MNU_PASSWORD, true);
 
         if (!expandedKids)
         {

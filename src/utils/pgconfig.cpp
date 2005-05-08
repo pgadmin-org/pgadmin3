@@ -189,13 +189,13 @@ pgSettingFileReader::pgSettingFileReader(bool localized)
 {
 
     wxUtfFile file;
-    extern wxString uiPath;
+    extern wxString i18nPath;
 
-    wxString path=uiPath + wxT("/") + settings->GetCanonicalLanguage() +wxT("/pg_settings.csv");
+    wxString path=i18nPath + wxT("/") + settings->GetCanonicalLanguage() +wxT("/pg_settings.csv");
     if (localized && wxFile::Exists(path))
         file.Open(path);
     else
-        file.Open(uiPath+wxT("/pg_settings.csv"));
+        file.Open(i18nPath+wxT("/pg_settings.csv"));
 
     if (file.IsOpened())
     {

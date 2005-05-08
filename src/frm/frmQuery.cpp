@@ -768,8 +768,8 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
 
 void frmQuery::OnCancel(wxCommandEvent& event)
 {
-    toolBar->EnableTool(MNU_CANCEL, FALSE);
-    queryMenu->Enable(MNU_CANCEL, FALSE);
+    toolBar->EnableTool(MNU_CANCEL, false);
+    queryMenu->Enable(MNU_CANCEL, false);
     SetStatusText(_("Cancelling."), STATUSPOS_MSGS);
 
     sqlResult->Abort();

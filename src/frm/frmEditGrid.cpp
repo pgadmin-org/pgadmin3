@@ -918,9 +918,9 @@ void sqlGridTextEditor::BeginEdit(int row, int col, wxGrid *grid)
 
 bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
 {
-    bool changed = FALSE;
+    bool changed = false;
     wxString value = Text()->GetValue();
-    changed = TRUE;
+    changed = true;
 
     if (changed)
         grid->GetTable()->SetValue(row, col, value);
@@ -1069,13 +1069,13 @@ bool sqlGridNumericEditor::EndEdit(int row, int col, wxGrid* grid)
     wxASSERT_MSG(m_control,
                  wxT("The sqlGridNumericEditor must be Created first!"));
 
-    bool changed = FALSE;
+    bool changed = false;
     wxString value = Text()->GetValue();
 
     // de-localize value here
 
     if (value != m_startValue)
-        changed = TRUE;
+        changed = true;
 
     if (changed)
         grid->GetTable()->SetValue(row, col, value);

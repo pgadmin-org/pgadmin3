@@ -124,7 +124,7 @@ void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, ctlListVi
 void pgCollection::UpdateChildCount(wxTreeCtrl *browser, int substract)
 {
     wxString label;
-    label.Printf(wxString(wxGetTranslation(GetName())) + wxT(" (%d)"), browser->GetChildrenCount(GetId(), FALSE) -substract);
+    label.Printf(wxString(wxGetTranslation(GetName())) + wxT(" (%d)"), browser->GetChildrenCount(GetId(), false) -substract);
     browser->SetItemText(GetId(), label);
 }
 
@@ -231,7 +231,7 @@ pgObject *pgCollection::FindChild(wxTreeCtrl *browser, int index)
 
 void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-    if (browser->GetChildrenCount(GetId(), FALSE) == 0)
+    if (browser->GetChildrenCount(GetId(), false) == 0)
     {
         switch (GetType())
         {

@@ -65,7 +65,7 @@ bool pgConstraints::IsCollectionForType(int objType)
 
 void pgConstraints::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-    if (browser->GetChildrenCount(GetId(), FALSE) == 0)
+    if (browser->GetChildrenCount(GetId(), false) == 0)
     {
         wxTreeItemId id=browser->GetItemParent(GetId());
         wxASSERT(id);

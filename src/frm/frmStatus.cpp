@@ -74,7 +74,7 @@ void ChangeButtonId(wxButton *btn, int id, const wxChar *txt)
 frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 {
     wxLogInfo(wxT("Creating server status box"));
-	loaded = FALSE;
+	loaded = false;
 
 
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -163,7 +163,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 	btnCancelLk->Enable(false);
 	btnTerminateLk->Enable(false);
 
-	loaded = TRUE;
+	loaded = true;
 }
 
 

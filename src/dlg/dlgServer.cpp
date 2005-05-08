@@ -35,8 +35,6 @@
 #define txtPassword     CTRL_TEXT("txtPassword")
 
 
-extern double libpqVersion;
-
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgServer::OnPageSelect)  
@@ -154,7 +152,7 @@ int dlgServer::Go(bool modal)
     cbSSL->Append(_("require"));
     cbSSL->Append(_("prefer"));
 
-    if (libpqVersion > 7.3)
+    if (pgConnBase::GetLibpqVersion() > 7.3)
     {
         cbSSL->Append(_("allow"));
         cbSSL->Append(_("disable"));

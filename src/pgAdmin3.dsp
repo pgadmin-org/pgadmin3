@@ -251,10 +251,6 @@ SOURCE=.\utils\precomp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\utils\sysLogger.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\utils\sysProcess.cpp
 # End Source File
 # Begin Source File
@@ -1595,10 +1591,6 @@ SOURCE=.\include\pgDefs.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\pgfeatures.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\include\sysLogger.h
 # End Source File
 # Begin Source File
@@ -1620,18 +1612,6 @@ SOURCE=.\include\utffile.h
 # Begin Source File
 
 SOURCE=.\include\version.h
-# End Source File
-# End Group
-# Begin Group "db includes"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\include\pgConn.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\pgSet.h
 # End Source File
 # End Group
 # Begin Group "ui base includes"
@@ -1770,6 +1750,46 @@ SOURCE=.\slony\include\slSubscription.h
 SOURCE=.\slony\include\slTable.h
 # End Source File
 # End Group
+# Begin Group "base includes"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\include\base\appbase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\base\base.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\base\pgConnBase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\base\pgDefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\base\pgSetBase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\base\sysLogger.h
+# End Source File
+# End Group
+# Begin Group "db includes"
+
+# PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\include\pgConn.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgSet.h
+# End Source File
+# End Group
 # End Group
 # Begin Group "agent"
 
@@ -1901,6 +1921,34 @@ SOURCE=..\Makefile.am
 # Begin Source File
 
 SOURCE=.\Makefile.am
+# End Source File
+# End Group
+# Begin Group "base"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\base\appbase.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\base\base.cpp
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
+SOURCE=.\base\pgConnBase.cpp
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
+SOURCE=.\base\pgSetBase.cpp
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
+SOURCE=.\base\sysLogger.cpp
+# SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group
 # End Group

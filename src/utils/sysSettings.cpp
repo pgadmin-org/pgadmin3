@@ -39,6 +39,8 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     // Log
     Read(wxT("LogFile"), &logFile, wxT("pgadmin.log")); 
     Read(wxT("LogLevel"), &logLevel, LOG_ERRORS);
+    sysLogger::logFile = logFile;
+    sysLogger::logLevel = logLevel;
 
     // Last Connection
     Read(wxT("LastServer"), &lastServer, wxT("localhost")); 
@@ -264,11 +266,13 @@ void sysSettings::SetNextTipOfTheDay(const int newval)
 void sysSettings::SetLogFile(const wxString& newval)
 {
     logFile = newval;
+    sysLogger::logFile = newval;
 }
 
 void sysSettings::SetLogLevel(const int newval)
 {
     logLevel = newval;
+    sysLogger::logLevel = newval;
 }
 
 //////////////////////////////////////////////////////////////////////////

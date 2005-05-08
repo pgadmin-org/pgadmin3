@@ -183,7 +183,7 @@ void frmMain::OnTreeKeyDown(wxTreeEvent& event)
 
 void frmMain::OnExit(wxCommandEvent& event)
 {
-    Close(FALSE);   // Allow sub windows to stop us
+    Close(false);   // Allow sub windows to stop us
     event.Skip();
 }
 
@@ -327,8 +327,9 @@ wxString frmMain::GetHelpPage() const
 void frmMain::OnOptions(wxCommandEvent& event)
 {
     frmOptions *winOptions = new frmOptions(this);
-    winOptions->Show(TRUE);
+    winOptions->Show();
 }
+
 
 void frmMain::OnCollapse(wxTreeEvent &event)
 {
@@ -468,7 +469,7 @@ void frmMain::OnPassword(wxCommandEvent& event)
         switch (type) {
             case PG_SERVER:
                 winPassword->SetServer((pgServer *)currentObject);
-                winPassword->Show(TRUE);
+                winPassword->Show();
                 break;
 
             default:
@@ -700,7 +701,7 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
                 browser->AppendItem(servers, server->GetFullName(), PGICON_SERVER, -1, server);
                 browser->Expand(servers);
                 wxString label;
-                label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
+                label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, false));
                 browser->SetItemText(servers, label);
                 StoreServers();
                 return;

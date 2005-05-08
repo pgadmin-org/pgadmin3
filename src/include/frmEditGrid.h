@@ -79,7 +79,7 @@ public:
 #if wxCHECK_VERSION(2,5,0)
     // problems are fixed
 #else
-    bool SetTable(wxGridTableBase *table, bool takeOwnership=FALSE);
+    bool SetTable(wxGridTableBase *table, bool takeOwnership=false);
 #endif
 };
 

@@ -207,7 +207,7 @@ void pgFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
 void pgFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     frmAbout *winAbout = new frmAbout(this);
-    winAbout->Show(TRUE);
+    winAbout->Show();
 }
 
 

@@ -130,7 +130,7 @@ int dlgOperator::Go(bool modal)
         chkCanHash->SetValue(oper->GetHashJoins());
         if (!oper->GetLeftSortOperator().IsNull() || !oper->GetRightSortOperator().IsNull() ||
             !oper->GetLessOperator().IsNull() || !oper->GetGreaterOperator().IsNull())
-            chkCanMerge->SetValue(TRUE);
+            chkCanMerge->SetValue(true);
 
 
         txtName->Disable();

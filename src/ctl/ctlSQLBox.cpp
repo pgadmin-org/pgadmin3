@@ -373,7 +373,7 @@ void ctlSQLBox::OnFind(wxCommandEvent& ev)
     {
         m_dlgFind = new wxFindReplaceDialog(this, &m_findData, _("Find text"), 0);
 
-        m_dlgFind->Show(TRUE);
+        m_dlgFind->Show(true);
     }
     else
         m_dlgFind->SetFocus();

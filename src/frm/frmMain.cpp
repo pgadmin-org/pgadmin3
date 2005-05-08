@@ -303,7 +303,7 @@ frmMain::frmMain(const wxString& title)
     // Display the bar and configure buttons. 
     toolBar->Realize();
     SetButtons();
-    toolBar->EnableTool(MNU_STOP, FALSE);
+    toolBar->EnableTool(MNU_STOP, false);
     
     // Setup the vertical splitter & treeview
     vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
@@ -733,7 +733,7 @@ int frmMain::ReconnectServer(pgServer *server)
     wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
         server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
 
-    int res = server->Connect(this, TRUE);
+    int res = server->Connect(this, true);
 
     // Check the result, and handle it as appropriate
     wxTreeItemId item;
@@ -1027,7 +1027,7 @@ void frmMain::RetrieveServers()
 
     // Reset the Servers node text
     wxString label;
-    label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
+    label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, false));
     browser->SetItemText(servers, label);
 
 }
