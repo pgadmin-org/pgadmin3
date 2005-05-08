@@ -58,6 +58,7 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTables"),                     dlgTable::OnChangeTable)
     EVT_BUTTON(XRCID("btnAddTable"),                dlgTable::OnAddTable)
     EVT_BUTTON(XRCID("btnRemoveTable"),             dlgTable::OnRemoveTable)
@@ -126,7 +127,7 @@ int dlgTable::Go(bool modal)
         btnAddTable->Disable();
         lbTables->Disable();
         cbTables->Disable();
-        chkHasOids->Disable();
+        chkHasOids->Enable(table->GetHasOids() && connection->BackendMinimumVersion(8, 0));
         cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
 
         wxCookieType cookie;
@@ -387,10 +388,10 @@ wxString dlgTable::GetSql()
             sql += wxT("ALTER TABLE ") + tabname
                 +  wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n");
         }
-        if (hasPK && chkHasOids->GetValue() != table->GetHasOids())
+        if (chkHasOids->GetValue() != table->GetHasOids())
         {
             sql += wxT("ALTER TABLE ") + tabname 
-                +  wxT(" WITHOUT OIDS;\n");
+                +  wxT(" SET WITHOUT OIDS;\n");
         }
         if (cbTablespace->GetValue() != table->GetTablespace())
         {
