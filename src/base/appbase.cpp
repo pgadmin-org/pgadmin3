@@ -9,6 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "pgAdmin3.h"
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/dir.h>
@@ -30,7 +32,6 @@ wxLog *logger;
 
 #define DOC_DIR     wxT("/docs")
 #define UI_DIR      wxT("/ui")
-#define COMMON_DIR  wxT("/common")
 #define I18N_DIR    wxT("/i18n")
 
 #define SCRIPT_DIR  wxT("/scripts")
@@ -152,7 +153,7 @@ void pgAppBase::InitXml()
 #else
 
     // for debugging, dialog resources are read from file
-    wxXmlResource::Get()->Load(uiPath+COMMON_DIR + wxT("/*.xrc"));
+    wxXmlResource::Get()->Load(uiPath + wxT("/*.xrc"));
 #endif
 
 }

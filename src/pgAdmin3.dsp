@@ -379,155 +379,155 @@ SOURCE=.\dlg\dlgView.cpp
 # PROP Default_Filter ".xrc"
 # Begin Source File
 
-SOURCE=.\ui\common\dlgAggregate.xrc
+SOURCE=.\ui\dlgAggregate.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgCast.xrc
+SOURCE=.\ui\dlgCast.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgCheck.xrc
+SOURCE=.\ui\dlgCheck.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgColumn.xrc
+SOURCE=.\ui\dlgColumn.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgConversion.xrc
+SOURCE=.\ui\dlgConversion.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgDatabase.xrc
+SOURCE=.\ui\dlgDatabase.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgDomain.xrc
+SOURCE=.\ui\dlgDomain.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgEditGridOptions.xrc
+SOURCE=.\ui\dlgEditGridOptions.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgForeignKey.xrc
+SOURCE=.\ui\dlgForeignKey.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgFunction.xrc
+SOURCE=.\ui\dlgFunction.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgGroup.xrc
+SOURCE=.\ui\dlgGroup.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgHbaConfig.xrc
+SOURCE=.\ui\dlgHbaConfig.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgIndex.xrc
+SOURCE=.\ui\dlgIndex.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgIndexConstraint.xrc
+SOURCE=.\ui\dlgIndexConstraint.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgJob.xrc
+SOURCE=.\ui\dlgJob.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgLanguage.xrc
+SOURCE=.\ui\dlgLanguage.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgMainConfig.xrc
+SOURCE=.\ui\dlgMainConfig.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgOperator.xrc
+SOURCE=.\ui\dlgOperator.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgRule.xrc
+SOURCE=.\ui\dlgRule.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgSchedule.xrc
+SOURCE=.\ui\dlgSchedule.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgSchema.xrc
+SOURCE=.\ui\dlgSchema.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgSequence.xrc
+SOURCE=.\ui\dlgSequence.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgStep.xrc
+SOURCE=.\ui\dlgStep.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgTable.xrc
+SOURCE=.\ui\dlgTable.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgTrigger.xrc
+SOURCE=.\ui\dlgTrigger.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgType.xrc
+SOURCE=.\ui\dlgType.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgUser.xrc
+SOURCE=.\ui\dlgUser.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\dlgView.xrc
+SOURCE=.\ui\dlgView.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmAddTableView.xrc
+SOURCE=.\ui\frmAddTableView.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmConnect.xrc
+SOURCE=.\ui\frmConnect.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmExport.xrc
+SOURCE=.\ui\frmExport.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmOptions.xrc
+SOURCE=.\ui\frmOptions.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmPassword.xrc
+SOURCE=.\ui\frmPassword.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmQBJoin.xrc
+SOURCE=.\ui\frmQBJoin.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmServer.xrc
+SOURCE=.\ui\frmServer.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmStatus.xrc
+SOURCE=.\ui\frmStatus.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\frmVacuum.xrc
+SOURCE=.\ui\frmVacuum.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\common\xrcDialogs.cpp
+SOURCE=.\ui\xrcDialogs.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group

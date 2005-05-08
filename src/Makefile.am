@@ -74,7 +74,7 @@ $(srcdir)/slony/dlgRepCluster.cpp $(srcdir)/slony/dlgRepNode.cpp $(srcdir)/slony
 $(srcdir)/slony/dlgRepPath.cpp $(srcdir)/slony/dlgRepSet.cpp $(srcdir)/slony/dlgRepSequence.cpp \
 $(srcdir)/slony/dlgRepTable.cpp $(srcdir)/slony/dlgRepSubscription.cpp $(srcdir)/slony/slFunctions.cpp \
 \
-$(srcdir)/ui/common/xrcDialogs.cpp
+$(srcdir)/ui/xrcDialogs.cpp
 
 noinst_HEADERS = \
 $(srcdir)/include/base/base.h $(srcdir)/include/base/appbase.h $(srcdir)/include/base/sysLogger.h \
@@ -142,7 +142,7 @@ $(srcdir)/include/images/*.xpm \
 $(srcdir)/include/images/pgAdmin3.ico
 
 TMP_ui = \
-$(srcdir)/ui/common/*.xrc
+$(srcdir)/ui/*.xrc
 
 if !APPBUNDLE
 
