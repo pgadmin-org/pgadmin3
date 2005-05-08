@@ -95,6 +95,37 @@ protected:
 
 
 
+class pgSetIterator
+{
+public:
+    pgSetIterator(pgSetBase *s);
+    ~pgSetIterator();
+
+    bool RowsLeft();
+    pgSetBase *Set() { return set; }
+
+    wxString GetVal(const int col) const { return set->GetVal(col); }
+    wxString GetVal(const wxString& col) const { return set->GetVal(col); }
+    long GetLong(const int col) const { return set->GetLong(col); }
+    long GetLong(const wxString &col) { return set->GetLong(col); }
+    bool GetBool(const int col) const { return set->GetBool(col); }
+    bool GetBool(const wxString &col) const { return set->GetBool(col); }
+    double GetDouble(const int col) const { return set->GetDouble(col); }
+    double GetDouble(const wxString &col) const { return set->GetDouble(col); }
+    wxDateTime GetDateTime(const int col) const { return set->GetDateTime(col); }
+    wxDateTime GetDateTime(const wxString &col) const  { return set->GetDateTime(col); }
+    wxULongLong GetLongLong(const int col) const { return set->GetLongLong(col); }
+    wxULongLong GetLongLong(const wxString &col) const { return set->GetLongLong(col); }
+    OID GetOid(const int col) const { return set->GetOid(col); }
+    OID GetOid(const wxString &col) const { return set->GetOid(col); }
+
+protected:
+    pgSetBase *set;
+    bool first;
+};
+
+
+
 class pgQueryThreadBase : public wxThread
 {
 public:

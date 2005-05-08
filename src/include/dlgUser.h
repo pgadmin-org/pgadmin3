@@ -14,8 +14,8 @@
 #define __DLG_USERPROP
 
 #include "dlgProperty.h"
-#include "calbox.h"
-#include "timespin.h"
+#include "ctl/calbox.h"
+#include "ctl/timespin.h"
 
 class pgUser;
 

@@ -10,8 +10,8 @@
 //////////////////////////////////////////////////////////////////////////
  
 #include "wx/wx.h"
-#include "xh_timespin.h"
-#include "timespin.h"
+#include "ctl/timespin.h"
+#include "ctl/xh_timespin.h"
 
 
 IMPLEMENT_DYNAMIC_CLASS(wxTimeSpinXmlHandler, wxXmlResourceHandler)

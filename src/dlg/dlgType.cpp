@@ -76,7 +76,7 @@ dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
     type=node;
     schema=sch;
     SetIcon(wxIcon(type_xpm));
-    lstMembers->CreateColumns(frame, _("Member"), _("Data type"), -1);
+    lstMembers->CreateColumns(0, _("Member"), _("Data type"), -1);
 
     wxNotifyEvent event;
     OnTypeChange(event);

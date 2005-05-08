@@ -74,7 +74,7 @@ dlgUser::dlgUser(frmMain *frame, pgUser *node)
 {
     user=node;
     SetIcon(wxIcon(user_xpm));
-    lstVariables->CreateColumns(frame, _("Variable"), _("Value"), -1);
+    lstVariables->CreateColumns(0, _("Variable"), _("Value"), -1);
     btnOK->Disable();
     chkValue->Hide();
 }

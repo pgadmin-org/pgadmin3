@@ -11,12 +11,11 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/imaglist.h>
 
 // App headers
-#include "pgAdmin3.h"
-#include "ctlListView.h"
-#include <wx/imaglist.h>
-#include "frmMain.h"
+#include "ctl/ctlListView.h"
+#include "base/base.h"
 
 
 ctlListView::ctlListView(wxWindow *p, int id, wxPoint pos, wxSize siz, long attr)
@@ -57,13 +56,6 @@ long ctlListView::AppendItem(int icon, const wxChar *val, const wxChar *val2, co
         SetItem(pos, 2, val3);
 
     return pos;
-}
-
-
-
-void ctlListView::CreateColumns(frmMain *form, const wxString &left, const wxString &right, int leftSize)
-{
-    CreateColumns(form ? form->GetImageList() : (wxImageList*)0, left, right, leftSize);
 }
 
 

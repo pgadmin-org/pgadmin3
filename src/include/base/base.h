@@ -17,6 +17,10 @@
 #include <wx/datetime.h>
 #include <wx/tokenzr.h>
 
+class wxImageList;
+extern wxImageList *imageList;
+
+
 #define __(str) wxT(str)
 
 typedef unsigned long OID;
@@ -76,6 +80,7 @@ extern sysSettings *settings;
 #define CTRL_NOTEBOOK(id)       (XRCCTRL(*this, id, wxNotebook))
 #define CTRL_SPIN(id)           (XRCCTRL(*this, id, wxSpinCtrl))
 #define CTRL_CHECKLISTBOX(id)   (XRCCTRL(*this, id, wxCheckListBox))
+#define CTRL_DATEPICK(id)       (XRCCTRL(*this, id, wxDatePickerCtrl))
 
 // Conversions
 wxString BoolToStr(bool value);         // english; used for config values

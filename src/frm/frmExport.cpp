@@ -15,7 +15,7 @@
 #include "pgAdmin3.h"
 #include <wx/file.h>
 #include "frmExport.h"
-#include "ctlSQLResult.h"
+#include "ctl/ctlSQLResult.h"
 #include "sysSettings.h"
 #include "misc.h"
 

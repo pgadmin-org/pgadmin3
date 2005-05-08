@@ -13,7 +13,7 @@
 #include <wx/wx.h>
 
 
-#include "ctlSQLResult.h"
+#include "ctl/ctlSQLResult.h"
 #include "frmExport.h"
 
 

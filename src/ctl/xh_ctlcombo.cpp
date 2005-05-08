@@ -10,8 +10,8 @@
 //////////////////////////////////////////////////////////////////////////
  
 #include "wx/wx.h"
-#include "xh_ctlcombo.h"
-#include "ctlComboBox.h"
+#include "ctl/ctlComboBox.h"
+#include "ctl/xh_ctlcombo.h"
 
 IMPLEMENT_DYNAMIC_CLASS(ctlComboBoxXmlHandler, wxComboBoxXmlHandler)
 

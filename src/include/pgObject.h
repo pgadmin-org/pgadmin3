@@ -15,7 +15,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/treectrl.h>
-#include "ctlSQLBox.h"
+#include "ctl/ctlSQLBox.h"
 
 // App headers
 #include "pgAdmin3.h"

@@ -32,7 +32,7 @@
 #include "frmPassword.h"
 #include "frmQuery.h"
 #include "frmStatus.h"
-#include "ctlSQLBox.h"
+#include "ctl/ctlSQLBox.h"
 #include "pgConn.h"
 #include "pgLanguage.h"
 #include "pgDatabase.h"

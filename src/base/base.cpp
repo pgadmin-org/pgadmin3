@@ -20,6 +20,7 @@
 // App headers
 #include "base/base.h"
 
+wxImageList *imageList=0;
 
 // we dont have an appropriate wxLongLong method
 #ifdef __WIN32__

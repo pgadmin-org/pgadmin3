@@ -17,7 +17,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 
-#include "ctlSQLResult.h"
+#include "ctl/ctlSQLResult.h"
 
 
 class ExplainCanvas;

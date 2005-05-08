@@ -10,8 +10,8 @@
 //////////////////////////////////////////////////////////////////////////
  
 #include "wx/wx.h"
-#include "xh_sqlbox.h"
-#include "ctlSQLBox.h"
+#include "ctl/xh_sqlbox.h"
+#include "ctl/ctlSQLBox.h"
 
 
 IMPLEMENT_DYNAMIC_CLASS(ctlSQLBoxXmlHandler, wxXmlResourceHandler)

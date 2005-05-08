@@ -295,7 +295,7 @@ pgObject *dlgForeignKey::CreateObject(pgCollection *collection)
 
 int dlgForeignKey::Go(bool modal)
 {
-    lstColumns->CreateColumns(this->mainForm, _("Local"), _("Referenced"), -1);
+    lstColumns->CreateColumns(0, _("Local"), _("Referenced"), -1);
 
     processing=true;    // protect from OnChange execution
 

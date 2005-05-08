@@ -15,7 +15,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "ctlSQLBox.h"
+#include "ctl/ctlSQLBox.h"
 
 
 #include "menu.h"

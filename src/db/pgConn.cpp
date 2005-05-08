@@ -44,6 +44,7 @@
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid)
 : pgConnBase(server, database, username, password, port, sslmode, oid)
 {
+    memset(features, 0, sizeof(features));
 }
 
 wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)

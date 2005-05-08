@@ -15,28 +15,35 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include "base/base.h"
 
-
-#ifdef __WXMSW__
+class pgConnBase;
 class wxComboBoxFix : public wxComboBox
 {
 public:
-    wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
-};
-#else
-#define wxComboBoxFix wxComboBox
-#endif
+    wxComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr);
+    int FillLongKey(pgConnBase *conn, const wxChar *qry);
+    int FillOidKey(pgConnBase *conn, const wxChar *qry);
+    int FillStringKey(pgConnBase *conn, const wxChar *qry);
+    long GetLongKey(int sel);
+    OID GetOIDKey(int sel);
+    wxString GetStringKey(int sel);
+    bool SetKey(long val);
+    bool SetKey(OID val);
+    bool SetKey(const wxString &val);
 
-class ctlComboBox : public wxComboBox
+#ifdef __WXMSW__
+    wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
+#endif
+};
+
+class ctlComboBox : public wxComboBoxFix
 {
 public:
     ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr=0);
     int GuessSelection(wxCommandEvent &ev);
     int GetGuessedSelection() const;
     wxString GetGuessedStringSelection() const;
-#ifdef __WXMSW__
-    wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
-#endif
     int GetSelection() const;
 };
 

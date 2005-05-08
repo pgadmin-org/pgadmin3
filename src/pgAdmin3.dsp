@@ -666,10 +666,12 @@ SOURCE=.\ctl\calbox.cpp
 # Begin Source File
 
 SOURCE=.\ctl\ctlComboBox.cpp
+# SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\ctl\ctlListView.cpp
+# SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
@@ -1619,15 +1621,15 @@ SOURCE=.\include\version.h
 # PROP Default_Filter "*.h"
 # Begin Source File
 
-SOURCE=.\include\calbox.h
+SOURCE=.\include\ctl\calbox.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\ctlComboBox.h
+SOURCE=.\include\ctl\ctlComboBox.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\ctlListView.h
+SOURCE=.\include\ctl\ctlListView.h
 # End Source File
 # Begin Source File
 
@@ -1635,11 +1637,11 @@ SOURCE=.\include\ctlSecurityPanel.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\ctlSQLBox.h
+SOURCE=.\include\ctl\ctlSQLBox.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\ctlSQLResult.h
+SOURCE=.\include\ctl\ctlSQLResult.h
 # End Source File
 # Begin Source File
 
@@ -1651,23 +1653,23 @@ SOURCE=.\include\explainCanvas.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\timespin.h
+SOURCE=.\include\ctl\timespin.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\xh_calb.h
+SOURCE=.\include\ctl\xh_calb.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\xh_ctlcombo.h
+SOURCE=.\include\ctl\xh_ctlcombo.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\xh_sqlbox.h
+SOURCE=.\include\ctl\xh_sqlbox.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\xh_timespin.h
+SOURCE=.\include\ctl\xh_timespin.h
 # End Source File
 # End Group
 # Begin Group "slony includes"
@@ -1929,6 +1931,7 @@ SOURCE=.\Makefile.am
 # Begin Source File
 
 SOURCE=.\base\appbase.cpp
+# SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 

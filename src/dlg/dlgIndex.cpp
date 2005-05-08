@@ -51,7 +51,7 @@ dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *nod
     index=node;
     wxASSERT(!table || table->GetType() == PG_TABLE);
 
-    lstColumns->CreateColumns(frame, _("Columns"), wxT(""), 0);
+    lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
 }
 
 
@@ -61,7 +61,7 @@ dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, ctlListView 
     SetIcon(wxIcon(index_xpm));
     index=0;
     
-    lstColumns->CreateColumns(frame, _("Columns"), wxT(""), 0);
+    lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
 }
 
 

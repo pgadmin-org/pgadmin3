@@ -11,7 +11,7 @@
 
 #include <wx/wx.h>
 
-#include "calbox.h"
+#include "ctl/calbox.h"
 
 
 #if pgUSE_WX_CAL

@@ -84,14 +84,14 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
 
     btnRemoveTable->Disable();
 
-    lstColumns->CreateColumns(frame, _("Column name"), _("Definition"), 90);
+    lstColumns->CreateColumns(0, _("Column name"), _("Definition"), 90);
     lstColumns->AddColumn(wxT("Inherited from table"), 0);
     lstColumns->AddColumn(wxT("Column definition"), 0);
 	lstColumns->AddColumn(wxT("Column comment"), 0);
 	lstColumns->AddColumn(wxT("Column statistics"), 0);
     lstColumns->AddColumn(wxT("Column"), 0);
 
-    lstConstraints->CreateColumns(frame, _("Constraint name"), _("Definition"), 90);
+    lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
 }
 
 

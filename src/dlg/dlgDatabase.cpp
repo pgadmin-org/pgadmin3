@@ -57,7 +57,7 @@ dlgDatabase::dlgDatabase(frmMain *frame, pgDatabase *node)
 {
     SetIcon(wxIcon(database_xpm));
     database=node;
-    lstVariables->CreateColumns(frame, _("Variable"), _("Value"));
+    lstVariables->CreateColumns(0, _("Variable"), _("Value"));
 
     chkValue->Hide();
 }

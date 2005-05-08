@@ -76,11 +76,11 @@ dlgJob::dlgJob(frmMain *frame, pgaJob *node)
     txtNextrun->Disable();
     txtLastrun->Disable();
     txtLastresult->Disable();
-    lstSteps->CreateColumns(frame, _("Step"), _("Comment"), 90);
+    lstSteps->CreateColumns(0, _("Step"), _("Comment"), 90);
     lstSteps->AddColumn(wxT("cmd"), 0);
     lstSteps->AddColumn(wxT("id"), 0);
 
-    lstSchedules->CreateColumns(frame, _("Schedule"), _("Comment"), 90);
+    lstSchedules->CreateColumns(0, _("Schedule"), _("Comment"), 90);
     lstSchedules->AddColumn(wxT("cmd"), 0);
     lstSchedules->AddColumn(wxT("id"), 0);
     btnChangeStep->Disable();

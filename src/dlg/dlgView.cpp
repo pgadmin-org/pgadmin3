@@ -17,7 +17,7 @@
 #include "misc.h"
 #include "pgDefs.h"
 
-#include "ctlSQLBox.h"
+#include "ctl/ctlSQLBox.h"
 #include "dlgView.h"
 #include "pgView.h"
 #include "pgCollection.h"

@@ -10,8 +10,8 @@
 //////////////////////////////////////////////////////////////////////////
  
 #include "wx/wx.h"
-#include "xh_calb.h"
-#include "calbox.h"
+#include "ctl/xh_calb.h"
+#include "ctl/calbox.h"
 
 
 IMPLEMENT_DYNAMIC_CLASS(wxCalendarBoxXmlHandler, wxXmlResourceHandler)

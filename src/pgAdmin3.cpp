@@ -49,10 +49,10 @@
 #include "frmSplash.h"
 #include <wx/dir.h>
 #include <wx/fs_zip.h>
-#include "xh_calb.h"
-#include "xh_timespin.h"
-#include "xh_sqlbox.h"
-#include "xh_ctlcombo.h"
+#include "ctl/xh_calb.h"
+#include "ctl/xh_timespin.h"
+#include "ctl/xh_sqlbox.h"
+#include "ctl/xh_ctlcombo.h"
 
 #include "base/appbase.h"
 

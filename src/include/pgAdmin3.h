@@ -18,8 +18,8 @@
 #include <wx/xrc/xmlres.h>
 
 #include "misc.h"
-#include "ctlListView.h"
-#include "ctlComboBox.h"
+#include "ctl/ctlListView.h"
+#include "ctl/ctlComboBox.h"
 #include "dlgClasses.h"
 
 // App headers

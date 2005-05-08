@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
  
 #include <wx/wx.h>
-#include "timespin.h"
+#include "ctl/timespin.h"
 
 
 #define CTRLID_TXT  101

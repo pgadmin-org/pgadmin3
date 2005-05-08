@@ -14,8 +14,8 @@
 #define __DLG_SCHEDULEPROP
 
 #include "dlgProperty.h"
-#include "timespin.h"
-#include "calbox.h"
+#include "ctl/timespin.h"
+#include "ctl/calbox.h"
 
 class pgaSchedule;
 class pgaJob;

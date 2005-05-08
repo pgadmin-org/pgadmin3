@@ -17,7 +17,7 @@
 #include "misc.h"
 #include "pgDefs.h"
 
-#include "ctlSQLBox.h"
+#include "ctl/ctlSQLBox.h"
 #include "dlgFunction.h"
 #include "pgFunction.h"
 #include "pgCollection.h"
@@ -120,9 +120,9 @@ int dlgFunction::Go(bool modal)
     if (objectType != PG_TRIGGERFUNCTION)
     {
         if (typeColNo)
-            lstArguments->CreateColumns((wxImageList*)0, _("Name"), _("Type"));
+            lstArguments->CreateColumns(0, _("Name"), _("Type"));
         else
-            lstArguments->CreateColumns((wxImageList*)0, _("Type"), wxEmptyString, 0);
+            lstArguments->CreateColumns(0, _("Type"), wxEmptyString, 0);
     }
     if (!typeColNo)
         txtArgName->Disable();

@@ -286,6 +286,39 @@ static void pgNoticeProcessor(void *arg, const char *message)
 }
 
 
+
+
+//////////////////////////////////////////////////////////////////
+
+pgSetIterator::pgSetIterator(pgSetBase *s)
+{
+    set=s;
+    first=true;
+}
+
+
+pgSetIterator::~pgSetIterator()
+{
+    if (set)
+        delete set;
+}
+
+bool pgSetIterator::RowsLeft()
+{
+    if (!set)
+        return false;
+
+    if (first)
+        first=false;
+    else
+        set->MoveNext();
+
+    return !set->Eof();
+}
+
+
+////////////////////////////////////////////////////
+
 pgQueryThreadBase::pgQueryThreadBase(pgConnBase *_conn, const wxString &qry, int _resultToRetrieve) 
 : wxThread(wxTHREAD_JOINABLE)
 {

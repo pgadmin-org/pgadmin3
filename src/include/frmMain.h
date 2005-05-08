@@ -21,7 +21,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "ctlSQLBox.h"
+#include "ctl/ctlSQLBox.h"
 #include "pgServer.h"
 #include "pgCollection.h"
 #include "pgDatabase.h"

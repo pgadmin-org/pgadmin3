@@ -35,7 +35,7 @@
 #include "menu.h"
 #include "pgfeatures.h"
 #include "frmMain.h"
-#include "ctlSQLBox.h"
+#include "ctl/ctlSQLBox.h"
 #include "pgConn.h"
 #include "pgDatabase.h"
 #include "pgSet.h"
@@ -338,71 +338,71 @@ frmMain::frmMain(const wxString& title)
     horizontal->SetMinimumPaneSize(50);
 
     //Setup the global imagelist
-	images = new wxImageList(16, 16, true, 50);
-    images->Add(wxIcon(property_xpm));
-    images->Add(wxIcon(statistics_xpm));
-    images->Add(wxIcon(servers_xpm));
-    images->Add(wxIcon(server_xpm));
-    images->Add(wxIcon(serverbad_xpm));
-    images->Add(wxIcon(database_xpm));
-    images->Add(wxIcon(language_xpm));
-    images->Add(wxIcon(namespace_xpm));
-    images->Add(wxIcon(tablespace_xpm));
-    images->Add(wxIcon(aggregate_xpm));
-    images->Add(wxIcon(function_xpm));
-    images->Add(wxIcon(operator_xpm));
-    images->Add(wxIcon(sequence_xpm));
-    images->Add(wxIcon(table_xpm));
-    images->Add(wxIcon(type_xpm));
-    images->Add(wxIcon(view_xpm));
-    images->Add(wxIcon(user_xpm));
-    images->Add(wxIcon(group_xpm));
-    images->Add(wxIcon(baddatabase_xpm));
-    images->Add(wxIcon(closeddatabase_xpm));
-    images->Add(wxIcon(domain_xpm));
-    images->Add(wxIcon(check_xpm));
-    images->Add(wxIcon(column_xpm));
-    images->Add(wxIcon(relationship_xpm));
-    images->Add(wxIcon(index_xpm));
-    images->Add(wxIcon(rule_xpm));
-    images->Add(wxIcon(trigger_xpm));
-    images->Add(wxIcon(foreignkey_xpm));
-    images->Add(wxIcon(cast_xpm));
-    images->Add(wxIcon(conversion_xpm));
-    images->Add(wxIcon(operatorclass_xpm));
-    images->Add(wxIcon(triggerfunction_xpm));
-    images->Add(wxIcon(constraints_xpm));
-    images->Add(wxIcon(primarykey_xpm));
-    images->Add(wxIcon(unique_xpm));
-    images->Add(wxIcon(public_xpm));
+	imageList = new wxImageList(16, 16, true, 50);
+    imageList->Add(wxIcon(property_xpm));
+    imageList->Add(wxIcon(statistics_xpm));
+    imageList->Add(wxIcon(servers_xpm));
+    imageList->Add(wxIcon(server_xpm));
+    imageList->Add(wxIcon(serverbad_xpm));
+    imageList->Add(wxIcon(database_xpm));
+    imageList->Add(wxIcon(language_xpm));
+    imageList->Add(wxIcon(namespace_xpm));
+    imageList->Add(wxIcon(tablespace_xpm));
+    imageList->Add(wxIcon(aggregate_xpm));
+    imageList->Add(wxIcon(function_xpm));
+    imageList->Add(wxIcon(operator_xpm));
+    imageList->Add(wxIcon(sequence_xpm));
+    imageList->Add(wxIcon(table_xpm));
+    imageList->Add(wxIcon(type_xpm));
+    imageList->Add(wxIcon(view_xpm));
+    imageList->Add(wxIcon(user_xpm));
+    imageList->Add(wxIcon(group_xpm));
+    imageList->Add(wxIcon(baddatabase_xpm));
+    imageList->Add(wxIcon(closeddatabase_xpm));
+    imageList->Add(wxIcon(domain_xpm));
+    imageList->Add(wxIcon(check_xpm));
+    imageList->Add(wxIcon(column_xpm));
+    imageList->Add(wxIcon(relationship_xpm));
+    imageList->Add(wxIcon(index_xpm));
+    imageList->Add(wxIcon(rule_xpm));
+    imageList->Add(wxIcon(trigger_xpm));
+    imageList->Add(wxIcon(foreignkey_xpm));
+    imageList->Add(wxIcon(cast_xpm));
+    imageList->Add(wxIcon(conversion_xpm));
+    imageList->Add(wxIcon(operatorclass_xpm));
+    imageList->Add(wxIcon(triggerfunction_xpm));
+    imageList->Add(wxIcon(constraints_xpm));
+    imageList->Add(wxIcon(primarykey_xpm));
+    imageList->Add(wxIcon(unique_xpm));
+    imageList->Add(wxIcon(public_xpm));
 
     // job, jobdisabled, step, schedule
-    images->Add(wxIcon(job_xpm));
-    images->Add(wxIcon(jobdisabled_xpm));
-    images->Add(wxIcon(step_xpm));
-    images->Add(wxIcon(schedule_xpm));
+    imageList->Add(wxIcon(job_xpm));
+    imageList->Add(wxIcon(jobdisabled_xpm));
+    imageList->Add(wxIcon(step_xpm));
+    imageList->Add(wxIcon(schedule_xpm));
 
     // slony cluster, node, path, listen, set, subscription
-    images->Add(wxIcon(slcluster_xpm));
-    images->Add(wxIcon(slnode_xpm));
-    images->Add(wxIcon(slpath_xpm));
-    images->Add(wxIcon(sllisten_xpm));
-    images->Add(wxIcon(slset_xpm));
-    images->Add(wxIcon(slsubscription_xpm));
+    imageList->Add(wxIcon(slcluster_xpm));
+    imageList->Add(wxIcon(slnode_xpm));
+    imageList->Add(wxIcon(slpath_xpm));
+    imageList->Add(wxIcon(sllisten_xpm));
+    imageList->Add(wxIcon(slset_xpm));
+    imageList->Add(wxIcon(slsubscription_xpm));
 
-    browser->SetImageList(images);
+    browser->SetImageList(imageList);
 
     // Add the root node
     pgObject *serversObj = new pgServers();
     servers = browser->AddRoot(_("Servers"), PGICON_SERVERS, -1, serversObj);
 
-    properties->SetImageList(images, wxIMAGE_LIST_SMALL);
+    properties->SetImageList(imageList, wxIMAGE_LIST_SMALL);
     // Add the property view columns
     properties->AddColumn(_("Properties"), 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
 
 
-    statistics->SetImageList(images, wxIMAGE_LIST_SMALL);
+    statistics->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 
     wxColour background;
     background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
@@ -429,7 +429,6 @@ frmMain::~frmMain()
 
     if (treeContextMenu)
         delete treeContextMenu;
-	delete images;
 }
 
 

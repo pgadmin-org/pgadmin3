@@ -380,7 +380,7 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
     {
         done = false;
 
-        lstContents->CreateColumns(form, _("Type"), _("Name"));
+        lstContents->CreateColumns(0, _("Type"), _("Name"));
 
         wxString str=wxTextBuffer::Translate(txtMessages->GetValue(), wxTextFileType_Unix);
 

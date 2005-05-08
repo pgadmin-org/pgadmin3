@@ -86,7 +86,6 @@ public:
 protected:
     PGconn *conn;
     int lastResultStatus;
-    bool features[32];
 
     int connStatus;
     int minorVersion, majorVersion;
