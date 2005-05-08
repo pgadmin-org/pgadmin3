@@ -31,7 +31,7 @@ wxLog *logger;
 #define DOC_DIR     wxT("/docs")
 #define UI_DIR      wxT("/ui")
 #define COMMON_DIR  wxT("/common")
-#define I18N_DIR    wxT("/il8n")
+#define I18N_DIR    wxT("/i18n")
 
 #define SCRIPT_DIR  wxT("/scripts")
 #define HELPER_DIR  wxT("/helper")

@@ -9,6 +9,7 @@
 #######################################################################
 
 EXTRA_DIST = \
+$(srcdir)/wxstd.pot \
 $(srcdir)/af_ZA/pgadmin3.po \
 $(srcdir)/ar_SA/pgadmin3.po \
 $(srcdir)/ca_ES/pgadmin3.po \
@@ -89,11 +90,11 @@ $(srcdir)/zh_TW/wxstd.mo
 
 install-data-local:
 	for DIR in `ls -d ??_??`; do \
-		$(mkinstalldirs) $(datadir)/ui/$$DIR; \
+		$(mkinstalldirs) $(datadir)/i18n/$$DIR; \
 		for FILE in `ls $$DIR/*.mo`; do \
-			$(install_sh) -c -m 644 $$FILE $(datadir)/ui/$$DIR; \
+			$(install_sh) -c -m 644 $$FILE $(datadir)/i18n/$$DIR; \
 		done \
 	done
-	$(install_sh) -c -m 644 pgadmin3.lng $(datadir)/ui/$$DIR
-	$(install_sh) -c -m 644 wxstd.mo $(datadir)/ui/$$DIR
+	$(install_sh) -c -m 644 pgadmin3.lng $(datadir)/i18n/$$DIR
+	$(install_sh) -c -m 644 wxstd.mo $(datadir)/i18n/$$DIR
 
