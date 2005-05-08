@@ -13,7 +13,7 @@
 
 if test -f pgadmin3.pot; then
 
-  for GETTEXTDIR in il8n/??_?? ; do
+  for GETTEXTDIR in i18n/??_?? ; do
   	echo "Entering $GETTEXTDIR."
     cd $GETTEXTDIR
     echo "Updating from CVS."
@@ -22,7 +22,7 @@ if test -f pgadmin3.pot; then
     msgmerge --update pgadmin3.po ../../pgadmin3.pot
     cd ../..
   done
-  cd il8n
+  cd i18n
   echo "Committing changes to CVS."
   cvs commit -m "Automatic merge using stringmerge script." 
 fi

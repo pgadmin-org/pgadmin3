@@ -4,7 +4,7 @@
 #
 # Makefile - Makefile for *nix systems
 
-SUBDIRS = il8n src pkg xtra
+SUBDIRS = i18n src pkg xtra
 
 EXTRA_DIST = \
 	$(top_srcdir)/README.txt \

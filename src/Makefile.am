@@ -135,7 +135,7 @@ $(srcdir)/slony/include/dlgRepSubscription.h $(srcdir)/slony/include/dlgRepPrope
 $(srcdir)/slony/include/dlgRepTable.h $(srcdir)/slony/include/slFunctions.h
 
   
-EXTRA_DIST = i\
+EXTRA_DIST = \
 $(srcdir)/pgAdmin3.dsp \
 $(srcdir)/pgAdmin3.dsw \
 $(srcdir)/include/images/*.xpm \

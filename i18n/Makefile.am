@@ -8,93 +8,36 @@
 #
 #######################################################################
 
-EXTRA_DIST = \
-$(srcdir)/wxstd.pot \
-$(srcdir)/af_ZA/pgadmin3.po \
-$(srcdir)/ar_SA/pgadmin3.po \
-$(srcdir)/ca_ES/pgadmin3.po \
-$(srcdir)/da_DK/pgadmin3.po \
-$(srcdir)/de_DE/pgadmin3.po \
-$(srcdir)/es_ES/pgadmin3.po \
-$(srcdir)/fi_FI/pgadmin3.po \
-$(srcdir)/fr_FR/pgadmin3.po \
-$(srcdir)/hu_HU/pgadmin3.po \
-$(srcdir)/id_ID/pgadmin3.po \
-$(srcdir)/it_IT/pgadmin3.po \
-$(srcdir)/ja_JP/pgadmin3.po \
-$(srcdir)/lv_LV/pgadmin3.po \
-$(srcdir)/nl_NL/pgadmin3.po \
-$(srcdir)/pl_PL/pgadmin3.po \
-$(srcdir)/pt_PT/pgadmin3.po \
-$(srcdir)/ru_RU/pgadmin3.po \
-$(srcdir)/sk_SK/pgadmin3.po \
-$(srcdir)/sl_SI/pgadmin3.po \
-$(srcdir)/sr_YU/pgadmin3.po \
-$(srcdir)/tr_TR/pgadmin3.po \
-$(srcdir)/zh_CN/pgadmin3.po \
-$(srcdir)/zh_TW/pgadmin3.po
+# Define the list of 'published' languages. This should match those
+# at  http://www.pgadmin.org/translation.php. These are the only ones
+# that will be installed, but all will be shipped in the source tarball.
 
-##############################################################################
-#
-# Note, Only include translations above and below that are officially 
-# published. These are listed at: 
-#                              http://www.pgadmin.org/pgadmin3/translation.php
-#
-##############################################################################
+PUB_TX = af_ZA ar_SA ca_ES da_DK de_DE el_GR es_ES fi_FI fr_FR hu_HU \
+	id_ID it_IT ja_JP lv_LV nl_NL pl_PL pt_PT ru_RU sk_SK sl_SI \
+	sr_YU tr_TR zh_CN zh_TW
+
+
+EXTRA_DIST = \
+	$(srcdir)/wxstd.pot \
+	$(srcdir)/??_??/pgadmin3.po
 
 TMP_ui = \
-$(srcdir)/wxstd.mo \
-$(srcdir)/pgadmin3.lng \
-$(srcdir)/pg_settings.csv 
-$(srcdir)/af_ZA/pgadmin3.mo \
-$(srcdir)/ar_SA/pgadmin3.mo \
-$(srcdir)/ca_ES/pgadmin3.mo \
-$(srcdir)/da_DK/pgadmin3.mo \
-$(srcdir)/de_DE/pgadmin3.mo \
-$(srcdir)/es_ES/pgadmin3.mo \
-$(srcdir)/fi_FI/pgadmin3.mo \
-$(srcdir)/fr_FR/pgadmin3.mo \
-$(srcdir)/hu_HU/pgadmin3.mo \
-$(srcdir)/id_ID/pgadmin3.mo \
-$(srcdir)/it_IT/pgadmin3.mo \
-$(srcdir)/ja_JP/pgadmin3.mo \
-$(srcdir)/lv_LV/pgadmin3.mo \
-$(srcdir)/nl_NL/pgadmin3.mo \
-$(srcdir)/pl_PL/pgadmin3.mo \
-$(srcdir)/pt_PT/pgadmin3.mo \
-$(srcdir)/ru_RU/pgadmin3.mo \
-$(srcdir)/sk_SK/pgadmin3.mo \
-$(srcdir)/sl_SI/pgadmin3.mo \
-$(srcdir)/sr_YU/pgadmin3.mo \
-$(srcdir)/tr_TR/pgadmin3.mo \
-$(srcdir)/zh_CN/pgadmin3.mo \
-$(srcdir)/zh_TW/pgadmin3.mo \
-$(srcdir)/af_ZA/wxstd.mo \
-$(srcdir)/ca_ES/wxstd.mo \
-$(srcdir)/da_DK/wxstd.mo \
-$(srcdir)/de_DE/wxstd.mo \
-$(srcdir)/es_ES/wxstd.mo \
-$(srcdir)/fi_FI/wxstd.mo \
-$(srcdir)/fr_FR/wxstd.mo \
-$(srcdir)/hu_HU/wxstd.mo \
-$(srcdir)/id_ID/wxstd.mo \
-$(srcdir)/it_IT/wxstd.mo \
-$(srcdir)/ja_JP/wxstd.mo \
-$(srcdir)/nl_NL/wxstd.mo \
-$(srcdir)/pl_PL/wxstd.mo \
-$(srcdir)/ru_RU/wxstd.mo \
-$(srcdir)/sl_SI/wxstd.mo \
-$(srcdir)/tr_TR/wxstd.mo \
-$(srcdir)/zh_CN/wxstd.mo \
-$(srcdir)/zh_TW/wxstd.mo
+	$(srcdir)/wxstd.mo \
+	$(srcdir)/pgadmin3.lng \
+	$(srcdir)/pg_settings.csv \
+	$(srcdir)/??_??/pgadmin3.mo \
+	$(srcdir)/??_??/wxstd.mo
+
 
 install-data-local:
-	for DIR in `ls -d ??_??`; do \
-		$(mkinstalldirs) $(datadir)/i18n/$$DIR; \
+	$(mkinstalldirs) $(datadir)/pgadmin3/i18n
+	@pub_tx='$(PUB_TX)'; \
+	for DIR in $$pub_tx; do \
+		$(mkinstalldirs) $(datadir)/pgadmin3/i18n/$$DIR; \
 		for FILE in `ls $$DIR/*.mo`; do \
-			$(install_sh) -c -m 644 $$FILE $(datadir)/i18n/$$DIR; \
+			$(install_sh) -c -m 644 $$FILE $(datadir)/pgadmin3/i18n/$$DIR/; \
 		done \
 	done
-	$(install_sh) -c -m 644 pgadmin3.lng $(datadir)/i18n/$$DIR
-	$(install_sh) -c -m 644 wxstd.mo $(datadir)/i18n/$$DIR
+	$(install_sh) -c -m 644 pgadmin3.lng $(datadir)/pgadmin3/i18n/$$DIR
+	$(install_sh) -c -m 644 wxstd.mo $(datadir)/pgadmin3/i18n/$$DIR
 
