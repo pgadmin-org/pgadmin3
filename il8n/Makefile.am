@@ -44,6 +44,7 @@ $(srcdir)/zh_TW/pgadmin3.po
 TMP_ui = \
 $(srcdir)/wxstd.mo \
 $(srcdir)/pgadmin3.lng \
+$(srcdir)/pg_settings.csv 
 $(srcdir)/af_ZA/pgadmin3.mo \
 $(srcdir)/ar_SA/pgadmin3.mo \
 $(srcdir)/ca_ES/pgadmin3.mo \

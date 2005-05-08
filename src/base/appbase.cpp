@@ -77,7 +77,13 @@ void pgAppBase::InitPaths()
         path.Add(dataDir + SCRIPT_DIR) ;
 
 #else // other *ixes
-    dataDir = DATA_DIR;
+
+// Data path (defined by configure under Unix).
+#ifndef DATA_DIR
+#define DATA_DIR "./"
+#endif
+
+    dataDir = wxString::FromAscii(DATA_DIR);
 #endif
 
 
@@ -87,20 +93,34 @@ void pgAppBase::InitPaths()
             i18nPath = dataDir + I18N_DIR;
         
         if (wxDir::Exists(dataDir + UI_DIR))
-          uiPath = dataDir + UI_DIR;
+            uiPath = dataDir + UI_DIR;
 
         if (wxDir::Exists(dataDir + DOC_DIR))
-          docPath = dataDir + DOC_DIR ;
+            docPath = dataDir + DOC_DIR ;
     }
 
     if (i18nPath.IsEmpty())
-		i18nPath = loadPath + I18N_DIR;
-
+    {
+        if (wxDir::Exists(loadPath + I18N_DIR))
+            i18nPath = loadPath + I18N_DIR;
+        else
+            i18nPath = loadPath + wxT("/..") I18N_DIR;
+    }
     if (uiPath.IsEmpty())
-        uiPath = loadPath + UI_DIR))
+    {
+        if (wxDir::Exists(loadPath + UI_DIR))
+            uiPath = loadPath + UI_DIR;
+        else 
+            uiPath = loadPath + wxT("/..") UI_DIR;
+    }
 
     if (docPath.IsEmpty())
-        docPath = loadPath + wxT("/..") DOC_DIR ;
+    {
+        if (wxDir::Exists(loadPath + DOC_DIR))
+            docPath = loadPath + DOC_DIR ;
+        else
+            docPath = loadPath + wxT("/..") DOC_DIR ;
+    }
 #endif
 }
 
@@ -149,7 +169,7 @@ void pgAppBase::InitNetwork()
 {
     // Startup the windows sockets if required
 #ifdef __WXMSW__
-    WSADATA	wsaData;
+    WSADATA    wsaData;
     if (WSAStartup(MAKEWORD(1, 1), &wsaData) != 0) {
         wxLogFatalError(__("Cannot initialise the networking subsystem!"));   
     }
@@ -163,7 +183,7 @@ void pgAppBase::InitNetwork()
 int pgAppBase::OnExit()
 {
 #ifdef __WXMSW__
-	WSACleanup();
+    WSACleanup();
 #endif
 
     return 1;

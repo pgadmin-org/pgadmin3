@@ -33,7 +33,7 @@
 // App headers
 #include "base/pgConnBase.h"
 #include "base/base.h"
-#include "sysLogger.h"
+#include "base/sysLogger.h"
 
 
 double pgConnBase::libpqVersion=8.0;

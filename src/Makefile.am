@@ -13,8 +13,8 @@ bin_PROGRAMS = pgadmin3
 pgadmin3_SOURCES = \
 $(srcdir)/pgAdmin3.cpp \
 \
-$(srcdir)/base/base.cpp $(srcdir)/base/appBase.cpp $(srcdir)/base/sysLogger.cpp \
-$(srcdir)/base/pgConnBase.cpp $(srcdir)/base/pgSetBase.cpp \ 
+$(srcdir)/base/base.cpp $(srcdir)/base/appbase.cpp $(srcdir)/base/sysLogger.cpp \
+$(srcdir)/base/pgConnBase.cpp $(srcdir)/base/pgSetBase.cpp \
 \
 $(srcdir)/main/dlgClasses.cpp $(srcdir)/main/events.cpp \
 \
@@ -64,7 +64,7 @@ $(srcdir)/dlg/dlgIndexConstraint.cpp $(srcdir)/dlg/dlgForeignKey.cpp \
 $(srcdir)/dlg/dlgSequence.cpp $(srcdir)/dlg/dlgTrigger.cpp $(srcdir)/dlg/dlgType.cpp \
 $(srcdir)/dlg/dlgCheck.cpp \
 \
-$(srcdir)/utils/sysLogger.cpp $(srcdir)/utils/sysSettings.cpp $(srcdir)/utils/sysProcess.cpp \
+$(srcdir)/utils/sysSettings.cpp $(srcdir)/utils/sysProcess.cpp \
 utils/misc.cpp $(srcdir)/utils/utffile.cpp $(srcdir)/utils/pgconfig.cpp $(srcdir)/utils/update.cpp \
 \
 $(srcdir)/slony/slObject.cpp $(srcdir)/slony/slCluster.cpp $(srcdir)/slony/slNode.cpp \
@@ -77,7 +77,7 @@ $(srcdir)/slony/dlgRepTable.cpp $(srcdir)/slony/dlgRepSubscription.cpp $(srcdir)
 $(srcdir)/ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = \
-$(srcdir)/include/base/base.h $(srcdir)/include/base/appbase.h $(srcdir)/include/base/syslogger.h \
+$(srcdir)/include/base/base.h $(srcdir)/include/base/appbase.h $(srcdir)/include/base/sysLogger.h \
 $(srcdir)/include/base/pgDefs.h $(srcdir)/include/base/pgConnBase.h $(srcdir)/include/base/pgSetBase.h \
 $(srcdir)/include/copyright.h $(srcdir)/include/version.h $(srcdir)/include/ctlSQLBox.h \
 $(srcdir)/include/ctlSQLResult.h $(srcdir)/include/ctlListView.h \
@@ -142,8 +142,7 @@ $(srcdir)/include/images/*.xpm \
 $(srcdir)/include/images/pgAdmin3.ico
 
 TMP_ui = \
-$(srcdir)/ui/common/*.xrc \
-$(srcdir)/ui/pg_settings.csv 
+$(srcdir)/ui/common/*.xrc
 
 if !APPBUNDLE
 
