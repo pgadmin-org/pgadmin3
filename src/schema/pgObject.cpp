@@ -385,7 +385,7 @@ void pgObject::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const 
         wxT("  LEFT JOIN pg_rewrite rw ON dep.objid=rw.oid\n")
         wxT("  LEFT JOIN pg_class clrw ON clrw.oid=rw.ev_class\n")
         wxT("  LEFT JOIN pg_namespace nsrw ON cl.relnamespace=nsrw.oid\n")
-        wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
+        wxT("  LEFT JOIN pg_language la ON dep.objid=la.oid\n")
         wxT("  LEFT JOIN pg_namespace ns ON dep.objid=ns.oid\n")
         + where, wxT("classid"));
 }
