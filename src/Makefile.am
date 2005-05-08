@@ -12,6 +12,10 @@ bin_PROGRAMS = pgadmin3
 
 pgadmin3_SOURCES = \
 $(srcdir)/pgAdmin3.cpp \
+\
+$(srcdir)/base/base.cpp $(srcdir)/base/appBase.cpp $(srcdir)/base/sysLogger.cpp \
+$(srcdir)/base/pgConnBase.cpp $(srcdir)/base/pgSetBase.cpp \ 
+\
 $(srcdir)/main/dlgClasses.cpp $(srcdir)/main/events.cpp \
 \
 $(srcdir)/db/pgConn.cpp $(srcdir)/db/pgSet.cpp $(srcdir)/db/keywords.c \
@@ -72,7 +76,10 @@ $(srcdir)/slony/dlgRepTable.cpp $(srcdir)/slony/dlgRepSubscription.cpp $(srcdir)
 \
 $(srcdir)/ui/common/xrcDialogs.cpp
 
-noinst_HEADERS = $(srcdir)/include/copyright.h $(srcdir)/include/version.h $(srcdir)/include/ctlSQLBox.h \
+noinst_HEADERS = \
+$(srcdir)/include/base/base.h $(srcdir)/include/base/appbase.h $(srcdir)/include/base/syslogger.h \
+$(srcdir)/include/base/pgDefs.h $(srcdir)/include/base/pgConnBase.h $(srcdir)/include/base/pgSetBase.h \
+$(srcdir)/include/copyright.h $(srcdir)/include/version.h $(srcdir)/include/ctlSQLBox.h \
 $(srcdir)/include/ctlSQLResult.h $(srcdir)/include/ctlListView.h \
 $(srcdir)/include/parser/parse.h $(srcdir)/include/parser/keywords.h $(srcdir)/include/nodes/parsenodes.h \
 $(srcdir)/include/postgres.h $(srcdir)/include/pgDefs.h $(srcdir)/include/pgDatatype.h \
