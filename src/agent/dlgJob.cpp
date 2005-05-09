@@ -31,6 +31,7 @@
 #define	txtID				CTRL_TEXT("txtID")
 #define chkEnabled          CTRL_CHECKBOX("chkEnabled")
 #define cbJobclass          CTRL_COMBOBOX("cbJobclass")
+#define txtHostAgent        CTRL_TEXT("txtHostAgent")
 #define txtCreated          CTRL_TEXT("txtCreated")
 #define txtChanged          CTRL_TEXT("txtChanged")
 #define txtNextrun          CTRL_TEXT("txtNextrun")
@@ -51,6 +52,7 @@
 BEGIN_EVENT_TABLE(dlgJob, dlgAgentProperty)
     EVT_CHECKBOX(XRCID("chkEnabled"),               dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbJobclass"),               dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtHostAgent"),                 dlgProperty::OnChange)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstSteps"),       dlgJob::OnSelChangeStep)
     EVT_BUTTON(XRCID("btnChangeStep"),              dlgJob::OnChangeStep)
@@ -116,6 +118,7 @@ int dlgJob::Go(bool modal)
 		txtID->SetValue(NumToStr(recId));
         cbJobclass->SetValue(job->GetJobclass());
         chkEnabled->SetValue(job->GetEnabled());
+		txtHostAgent->SetValue(job->GetHostAgent());
         txtCreated->SetValue(DateToStr(job->GetCreated()));
         txtChanged->SetValue(DateToStr(job->GetChanged()));
         txtNextrun->SetValue(DateToStr(job->GetNextrun()));
@@ -215,7 +218,8 @@ void dlgJob::CheckChange()
     {
         enable  =  txtComment->GetValue() != job->GetComment()
                 || name != job->GetName()
-                || chkEnabled->GetValue() != job->GetEnabled();
+                || chkEnabled->GetValue() != job->GetEnabled()
+				|| txtHostAgent->GetValue() != job->GetHostAgent();
         if (!enable)
         {
             enable = !GetUpdateSql().IsEmpty();
@@ -377,9 +381,10 @@ wxString dlgJob::GetInsertSql()
 
     if (!job)
     {
-        sql = wxT("INSERT INTO pgagent.pga_job (jobid, jobjclid, jobname, jobdesc, jobenabled)\n")
+        sql = wxT("INSERT INTO pgagent.pga_job (jobid, jobjclid, jobname, jobdesc, jobenabled, jobhostagent)\n")
               wxT("SELECT <JobId>, jcl.jclid, ") + qtString(GetName()) + 
-              wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ") + BoolToStr(chkEnabled->GetValue()) + wxT("\n")
+              wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ") + BoolToStr(chkEnabled->GetValue()) + 
+			  wxT(", ") + qtString(txtHostAgent->GetValue()) + wxT("\n")
               wxT("  FROM pgagent.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue());
     }
     return sql;
@@ -413,6 +418,12 @@ wxString dlgJob::GetUpdateSql()
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
             vars.Append(wxT("jobenabled = ") + BoolToStr(chkEnabled->GetValue()));
+        }
+        if (txtHostAgent->GetValue() != job->GetHostAgent())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jobhostagent = ") + qtString(txtHostAgent->GetValue()));
         }
         if (txtComment->GetValue() != job->GetComment())
         {

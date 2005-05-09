@@ -82,14 +82,15 @@ void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("ID"), GetRecId());
         properties->AppendItem(_("Enabled"), GetEnabled());
+		properties->AppendItem(_("Host agent"), GetHostAgent());
         properties->AppendItem(_("Job class"), GetJobclass());
         properties->AppendItem(_("Created"), GetCreated());
         properties->AppendItem(_("Changed"), GetChanged());
         properties->AppendItem(_("Next run"), GetNextrun());
         properties->AppendItem(_("Last run"), GetLastrun());
         properties->AppendItem(_("Last result"), GetLastresult());
-		if (!GetAgent().IsEmpty())
-			properties->AppendItem(_("Running at"), GetAgent());
+		if (!GetCurrentAgent().IsEmpty())
+			properties->AppendItem(_("Running at"), GetCurrentAgent());
 		else
 			properties->AppendItem(_("Running at"), _("Not currently running"));
 
@@ -137,12 +138,13 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             job->iSetEnabled(jobs->GetBool(wxT("jobenabled")));
             job->iSetJobclass(jobs->GetVal(wxT("jclname")));
+			job->iSetHostAgent(jobs->GetVal(wxT("jobhostagent")));
             job->iSetCreated(jobs->GetDateTime(wxT("jobcreated")));
             job->iSetChanged(jobs->GetDateTime(wxT("jobchanged")));
             job->iSetNextrun(jobs->GetDateTime(wxT("jobnextrun")));
             job->iSetLastrun(jobs->GetDateTime(wxT("joblastrun")));
             job->iSetLastresult(jobs->GetVal(wxT("joblastresult")));
-			job->iSetAgent(jobs->GetVal(wxT("jagstation")));
+			job->iSetCurrentAgent(jobs->GetVal(wxT("jagstation")));
 
             if (browser)
             {

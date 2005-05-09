@@ -48,8 +48,10 @@ public:
     void iSetLastrun(const wxDateTime &d) { lastrun=d; }
     wxString GetLastresult() const { return lastresult; }
     void iSetLastresult(const wxString &s) { lastresult = s; }
-    wxString GetAgent() const { return agent; }
-    void iSetAgent(const wxString &s) { agent=s; }
+    wxString GetCurrentAgent() const { return currentAgent; }
+    void iSetCurrentAgent(const wxString &s) { currentAgent=s; }
+    wxString GetHostAgent() const { return hostAgent; }
+    void iSetHostAgent(const wxString &s) { hostAgent=s; }
     long GetRecId() const { return recId; }
     void iSetRecId(const long l) { recId=l; }
 
@@ -63,7 +65,7 @@ public:
 private:
     bool enabled;
     wxDateTime created, changed, nextrun, lastrun;
-    wxString lastresult, jobclass, agent;
+    wxString lastresult, jobclass, currentAgent, hostAgent;
     long recId;
 };
 
