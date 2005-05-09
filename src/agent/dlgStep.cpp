@@ -140,6 +140,10 @@ void dlgStep::CheckChange()
     {
         enable=true;
     }
+
+	if (statusBar)
+		statusBar->SetStatusText(wxEmptyString);
+
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
     CheckValid(enable, sqlBox->GetLength() > 0, _("Please specify code to execute."));
     EnableOK(enable);

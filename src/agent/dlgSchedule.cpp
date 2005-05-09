@@ -30,29 +30,34 @@
 #define timStart            CTRL_TIME("timStart")
 #define calEnd              CTRL_CALENDAR("calEnd")
 #define timEnd              CTRL_TIME("timEnd")
-#define chkWeekdays			CTRL_CHECKLISTBOX("chkWeekDays")
-#define chkMonthdays		CTRL_CHECKLISTBOX("chkMonthDays")
+#define chkWeekdays			CTRL_CHECKLISTBOX("chkWeekdays")
+#define chkMonthdays		CTRL_CHECKLISTBOX("chkMonthdays")
 #define chkMonths			CTRL_CHECKLISTBOX("chkMonths")
 #define chkHours			CTRL_CHECKLISTBOX("chkHours")
 #define chkMinutes			CTRL_CHECKLISTBOX("chkMinutes")
-#define lstExceptions       CTRL_LISTCTRL("lstExceptions")
-#define timExceptionTime	CTRL_TIME("timExceptionTime")
-#define calExceptionTime	CTRL_CALENDAR("calExceptionTime")
+#define lstExceptions       CTRL_LISTVIEW("lstExceptions")
+#define timException     	CTRL_TIME("timException")
+#define calException    	CTRL_CALENDAR("calException")
 #define btnAddException     CTRL_BUTTON("btnAddException")
 #define btnChangeException  CTRL_BUTTON("btnChangeException")
 #define btnRemoveException  CTRL_BUTTON("btnRemoveException")
 
 
 BEGIN_EVENT_TABLE(dlgSchedule, dlgAgentProperty)
-    EVT_CHECKBOX(XRCID("chkEnabled"),                dlgProperty::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),      dlgSchedule::OnChangeCal)
-    EVT_SPIN(XRCID("timStart"),                      dlgSchedule::OnChangeSpin)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),        dlgSchedule::OnChangeCal)
-    EVT_SPIN(XRCID("timEnd"),                        dlgSchedule::OnChangeSpin)
+    EVT_CHECKBOX(XRCID("chkEnabled"),                dlgSchedule::OnChange)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),      dlgSchedule::OnChange)
+    EVT_TEXT(XRCID("timStart"),                      dlgSchedule::OnChange)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),        dlgSchedule::OnChange)
+    EVT_TEXT(XRCID("timEnd"),                      dlgSchedule::OnChange)
     EVT_LIST_ITEM_SELECTED(XRCID("lstExceptions"),   dlgSchedule::OnSelChangeException)
     EVT_BUTTON(XRCID("btnAddException"),             dlgSchedule::OnAddException)
     EVT_BUTTON(XRCID("btnChangeException"),          dlgSchedule::OnChangeException)
     EVT_BUTTON(XRCID("btnRemoveException"),          dlgSchedule::OnRemoveException)
+	EVT_CHECKLISTBOX(XRCID("chkWeekdays"),           dlgSchedule::OnChange)
+	EVT_CHECKLISTBOX(XRCID("chkMonthdays"),          dlgSchedule::OnChange)
+	EVT_CHECKLISTBOX(XRCID("chkMonths"),             dlgSchedule::OnChange)
+	EVT_CHECKLISTBOX(XRCID("chkHours"),              dlgSchedule::OnChange)
+	EVT_CHECKLISTBOX(XRCID("chkMinutes"),            dlgSchedule::OnChange)
 END_EVENT_TABLE();
 
 
@@ -67,6 +72,10 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
         jobId=job->GetRecId();
     else
         jobId=0;
+
+	lstExceptions->CreateColumns(0, _("Date"), _("Time"), 90);
+	lstExceptions->AddColumn(wxT("dirty"), 0);
+	lstExceptions->AddColumn(wxT("id"), 0);
 
 	txtID->Disable();
 
@@ -118,6 +127,49 @@ int dlgSchedule::Go(bool modal)
 		for (x=0; x<schedule->GetMinutes().Length(); x++ )
 			if (schedule->GetMinutes()[x] == 't') chkMinutes->Check(x, true);
 
+		wxString id, dateToken, timeToken;
+		wxDateTime val;
+		long pos;
+		wxStringTokenizer tkz(schedule->GetExceptions(), wxT("|"));
+
+		while (tkz.HasMoreTokens() )
+		{
+			dateToken.Empty();
+			timeToken.Empty();
+
+			// First is the ID
+			id = tkz.GetNextToken();
+
+			// Look for a date
+			if (tkz.HasMoreTokens())
+				dateToken = tkz.GetNextToken();
+
+			// Look for a time
+			if (tkz.HasMoreTokens())
+				timeToken = tkz.GetNextToken();
+
+			if (!dateToken.IsEmpty() && !timeToken.IsEmpty())
+			{
+				val.ParseDate(dateToken);
+				val.ParseTime(timeToken);
+				pos = lstExceptions->AppendItem(0, val.FormatDate(), val.FormatTime());
+			}
+			else if (!dateToken.IsEmpty() && timeToken.IsEmpty())
+			{
+				val.ParseDate(dateToken);
+				pos = lstExceptions->AppendItem(0, val.FormatDate(), _("<any>"));
+			}
+			else if (dateToken.IsEmpty() && !timeToken.IsEmpty())
+			{
+				val.ParseTime(timeToken);
+				pos = lstExceptions->AppendItem(0, _("<any>"), val.FormatTime());
+			}
+
+			lstExceptions->SetItem(pos, 2, BoolToStr(false));
+			lstExceptions->SetItem(pos, 3, NumToStr(pos));
+
+		}
+
         wxNotifyEvent ev;
     }
     else
@@ -136,37 +188,33 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 }
 
 
-void dlgSchedule::OnChangeCal(wxCalendarEvent &ev)
+void dlgSchedule::OnChange(wxCalendarEvent &ev)
 {
     CheckChange();
 }
 
-
-void dlgSchedule::OnChangeSpin(wxSpinEvent &ev)
+void dlgSchedule::OnChange(wxCommandEvent &ev)
 {
     CheckChange();
 }
-
 
 void dlgSchedule::CheckChange()
 {
     timEnd->Enable(calEnd->GetValue().IsValid());
 
     wxString name=GetName();
-    bool enable;
-    if (schedule)
-    {
-        enable  =  name != schedule->GetName()
-                || chkEnabled->GetValue() != schedule->GetEnabled()
-                || txtComment->GetValue() != schedule->GetComment();
-    }
-    else
-    {
-        enable=true;
-    }
+    bool enable = true;
+
+	if (statusBar)
+		statusBar->SetStatusText(wxEmptyString);
+
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 	CheckValid(enable, calStart->GetValue().IsValid(), _("Please specify start date."));
-    EnableOK(enable);
+
+	if (enable)
+		EnableOK(!GetSql().IsEmpty());
+	else
+		EnableOK(false);
 }
 
 
@@ -179,6 +227,51 @@ void dlgSchedule::OnSelChangeException(wxListEvent &ev)
 
 void dlgSchedule::OnAddException(wxCommandEvent &ev)
 {
+	if (!calException->GetValue().IsValid() && timException->GetValue().IsNull())
+	{
+		wxMessageBox(_("You must enter a valid date and/or time!"), _("Add exception"), wxICON_EXCLAMATION | wxOK, this);
+		return;
+	}
+
+	wxString exDate, exTime;
+
+	if (calException->GetValue().IsValid())
+		exDate = calException->GetValue().FormatDate();
+	else
+		exDate = _("<any>");
+
+	if (!timException->GetValue().IsNull())
+		exTime = timException->GetValue().Format();
+	else
+		exTime = _("<any>");
+
+	for (int pos=0; pos < lstExceptions->GetItemCount(); pos++)
+	{
+
+		if (lstExceptions->GetText(pos, 0) == exDate &&
+			lstExceptions->GetText(pos, 1) == exTime)
+		{
+			wxMessageBox(_("The specified exception already exists!"), _("Add exception"), wxICON_EXCLAMATION | wxOK, this);
+			return;
+		}
+
+		if (lstExceptions->GetText(pos, 0) == exDate &&
+			lstExceptions->GetText(pos, 1) == _("<any>"))
+		{
+			wxMessageBox(_("An exception already exists for any time on this date!"), _("Add exception"), wxICON_EXCLAMATION | wxOK, this);
+			return;
+		}
+
+		if (lstExceptions->GetText(pos, 1) == exTime &&
+			lstExceptions->GetText(pos, 0) == _("<any>"))
+		{
+			wxMessageBox(_("An exception already exists for this time on any date!"), _("Add exception"), wxICON_EXCLAMATION | wxOK, this);
+			return;
+		}
+	}
+
+	lstExceptions->AppendItem(0, exDate, exTime);
+	CheckChange();
 }
 
 
@@ -189,8 +282,16 @@ void dlgSchedule::OnChangeException(wxCommandEvent &ev)
 
 void dlgSchedule::OnRemoveException(wxCommandEvent &ev)
 {
+	if (lstExceptions->GetText(lstExceptions->GetFocusedItem(), 3) != wxEmptyString)
+	{
+		deleteExceptions.Add(lstExceptions->GetText(lstExceptions->GetFocusedItem(), 3));
+	}
+    lstExceptions->DeleteCurrentItem();
+
     btnChangeException->Disable();
     btnRemoveException->Disable();
+
+	CheckChange();
 }
 
 

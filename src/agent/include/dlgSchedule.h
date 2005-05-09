@@ -40,8 +40,10 @@ private:
     pgaSchedule *schedule;
     pgaJob *job;
     
-    void OnChangeCal(wxCalendarEvent &ev);
-    void OnChangeSpin(wxSpinEvent &ev);
+	wxArrayString deleteExceptions;
+
+    void OnChange(wxCommandEvent &ev);
+    void OnChange(wxCalendarEvent &ev);
     void OnSelChangeException(wxListEvent &ev);
     void OnAddException(wxCommandEvent &ev);
     void OnChangeException(wxCommandEvent &ev);

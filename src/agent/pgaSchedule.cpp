@@ -65,6 +65,7 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView
 		properties->AppendItem(_("Weekdays"), GetWeekdaysString());
 		properties->AppendItem(_("Monthdays"), GetMonthdaysString());
 		properties->AppendItem(_("Months"), GetMonthsString());
+		properties->AppendItem(_("Exceptions"), GetExceptionsString());
 
         properties->AppendItem(_("Comment"), GetComment());
     }
@@ -141,6 +142,27 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
             schedule->iSetComment(schedules->GetVal(wxT("jscdesc")));
 
+			pgSet *exceptions =  collection->GetDatabase()->ExecuteSet(
+				wxT("SELECT * FROM pgagent.pga_exception\n")
+				wxT(" WHERE jexscid=") + NumToStr(schedule->GetRecId()) + wxT("\n"));
+	
+			tmp.Empty();
+		    if (exceptions)
+			{
+				while (!exceptions->Eof())
+				{
+					tmp += exceptions->GetVal(wxT("jexid"));
+					tmp += wxT("|");
+					tmp += exceptions->GetVal(wxT("jexdate"));
+					tmp += wxT("|");
+				    tmp += exceptions->GetVal(wxT("jextime"));
+					tmp += wxT("|");
+
+					exceptions->MoveNext();
+				}
+			}
+			schedule->iSetExceptions(tmp);
+			delete exceptions;
 
             if (browser)
             {
@@ -408,4 +430,56 @@ wxString pgaSchedule::GetMonthsString()
 	}
 
 	return res;
+}
+
+wxString pgaSchedule::GetExceptionsString()
+{
+	wxString tmp, token, dateToken, timeToken;
+	wxDateTime val;
+	wxStringTokenizer tkz(exceptions, wxT("|"));
+
+	while (tkz.HasMoreTokens() )
+	{
+
+		dateToken.Empty();
+		timeToken.Empty();
+
+		// First is the ID which can be ignored
+		token = tkz.GetNextToken();
+
+		// Look for a date
+		if (tkz.HasMoreTokens())
+			dateToken = tkz.GetNextToken();
+
+		// Look for a time
+		if (tkz.HasMoreTokens())
+			timeToken = tkz.GetNextToken();
+
+        if (tmp.IsEmpty())
+			tmp += wxT("[");
+		else
+			tmp += wxT(", [");
+
+	    if (!dateToken.IsEmpty() && !timeToken.IsEmpty())
+		{
+			val.ParseDate(dateToken);
+			val.ParseTime(timeToken);
+			tmp += val.Format();
+		}
+	    else if (!dateToken.IsEmpty() && timeToken.IsEmpty())
+		{
+			val.ParseDate(dateToken);
+			tmp += val.FormatDate();
+		}
+	    else if (dateToken.IsEmpty() && !timeToken.IsEmpty())
+		{
+			val.ParseTime(timeToken);
+			tmp += val.FormatTime();
+		}
+
+		tmp += wxT("]");
+
+	}
+
+	return tmp;
 }

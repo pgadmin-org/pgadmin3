@@ -212,7 +212,7 @@ pgObject *dlgJob::CreateObject(pgCollection *collection)
 
 void dlgJob::CheckChange()
 {
-    bool enable=true, foundone = false;
+    bool enable=true;
     wxString name=GetName();
     if (job)
     {
@@ -226,22 +226,10 @@ void dlgJob::CheckChange()
         }
     }
 
-	long pos;
-    for (pos=0 ; pos < lstSteps->GetItemCount() ; pos++)
-    {
-		if(lstSteps->GetItemData(pos))
-			foundone = true;
-    }
+	if (statusBar)
+		statusBar->SetStatusText(wxEmptyString);
 
-    for (pos=0 ; pos < lstSchedules->GetItemCount() ; pos++)
-    {
-		if(lstSchedules->GetItemData(pos))
-			foundone = true;
-    }
-	if (foundone)
-		enable = true;
-
-    CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+    CheckValid(enable, !txtName->GetValue().IsEmpty(), _("Please specify name."));
 
     EnableOK(enable);
 }

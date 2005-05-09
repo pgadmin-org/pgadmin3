@@ -65,11 +65,15 @@ public:
 	wxString GetMonthsString();
 	void iSetMonths(const wxString &s) { months = s; }
 
+	wxString GetExceptions() const { return exceptions; }
+	wxString GetExceptionsString();
+	void iSetExceptions(const wxString &s) { exceptions = s; }
+
 private:
     bool enabled;
     wxDateTime start, end;
 	long recId;
-	wxString minutes, hours, weekdays, monthdays, months;
+	wxString minutes, hours, weekdays, monthdays, months, exceptions;
 };
 
 #endif
