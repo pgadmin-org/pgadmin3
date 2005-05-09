@@ -79,8 +79,13 @@ $(srcdir)/ui/xrcDialogs.cpp
 noinst_HEADERS = \
 $(srcdir)/include/base/base.h $(srcdir)/include/base/appbase.h $(srcdir)/include/base/sysLogger.h \
 $(srcdir)/include/base/pgDefs.h $(srcdir)/include/base/pgConnBase.h $(srcdir)/include/base/pgSetBase.h \
-$(srcdir)/include/copyright.h $(srcdir)/include/version.h $(srcdir)/include/ctlSQLBox.h \
-$(srcdir)/include/ctlSQLResult.h $(srcdir)/include/ctlListView.h \
+$(srcdir)/include/copyright.h $(srcdir)/include/version.h\
+\
+$(srcdir)/include/ctl/ctlSQLBox.h $(srcdir)/include/ctl/ctlSQLResult.h \
+$(srcdir)/include/ctl/ctlListView.h $(srcdir)/include/ctl/calbox.h \
+$(srcdir)/include/ctl/timespin.h $(srcdir)/include/ctl/ctlComboBox.h \
+$(srcdir)/include/ctl/xh_timespin.h $(srcdir)/include/ctl/xh_calb.h $(srcdir)/include/ctl/xh_sqlbox.h \
+$(srcdir)/include/ctl/xh_ctlcombo.h \
 $(srcdir)/include/parser/parse.h $(srcdir)/include/parser/keywords.h $(srcdir)/include/nodes/parsenodes.h \
 $(srcdir)/include/postgres.h $(srcdir)/include/pgDefs.h $(srcdir)/include/pgDatatype.h \
 $(srcdir)/include/ctlSecurityPanel.h $(srcdir)/include/dlgClasses.h $(srcdir)/include/frmGrantWizard.h \
@@ -113,8 +118,6 @@ $(srcdir)/include/pgRule.h $(srcdir)/include/pgSchema.h $(srcdir)/include/pgSequ
 $(srcdir)/include/pgServer.h $(srcdir)/include/pgSet.h $(srcdir)/include/pgTable.h \
 $(srcdir)/include/pgTrigger.h $(srcdir)/include/pgType.h $(srcdir)/include/pgUser.h \
 $(srcdir)/include/pgView.h $(srcdir)/include/sysLogger.h $(srcdir)/include/utffile.h \
-$(srcdir)/include/calbox.h $(srcdir)/include/timespin.h $(srcdir)/include/ctlComboBox.h \
-$(srcdir)/include/xh_timespin.h $(srcdir)/include/xh_calb.h $(srcdir)/include/xh_sqlbox.h $(srcdir)/include/xh_ctlcombo.h \
 $(srcdir)/include/sysSettings.h $(srcdir)/include/sysProcess.h $(srcdir)/include/wxgridsel.h $(srcdir)/include/menu.h\
 $(srcdir)/include/pgconfig.h $(srcdir)/include/update.h $(srcdir)/include/frmUpdate.h \
 $(srcdir)/include/dlgHbaConfig.h $(srcdir)/include/dlgMainConfig.h $(srcdir)/include/frmHint.h \

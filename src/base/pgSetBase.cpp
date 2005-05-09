@@ -182,7 +182,7 @@ long pgSetBase::GetLong(const int col) const
 }
 
 
-long pgSetBase::GetLong(const wxString &col)
+long pgSetBase::GetLong(const wxString &col) const
 {
     char *c=PQgetvalue(res, pos-1, ColNumber(col));
     if (c)
@@ -289,6 +289,13 @@ static void pgNoticeProcessor(void *arg, const char *message)
 
 
 //////////////////////////////////////////////////////////////////
+
+pgSetIterator::pgSetIterator(pgConnBase *conn, const wxString &qry)
+{
+    set=conn->ExecuteSet(qry);
+    first=true;
+}
+
 
 pgSetIterator::pgSetIterator(pgSetBase *s)
 {

@@ -66,7 +66,7 @@ public:
     wxString GetVal(const int col) const;
     wxString GetVal(const wxString& col) const;
     long GetLong(const int col) const;
-    long GetLong(const wxString &col);
+    long GetLong(const wxString &col) const;
     bool GetBool(const int col) const;
     bool GetBool(const wxString &col) const;
     double GetDouble(const int col) const;
@@ -99,15 +99,17 @@ class pgSetIterator
 {
 public:
     pgSetIterator(pgSetBase *s);
+    pgSetIterator(pgConnBase *conn, const wxString &sql);
     ~pgSetIterator();
 
     bool RowsLeft();
+	bool IsValid() { return set != 0; }
     pgSetBase *Set() { return set; }
 
     wxString GetVal(const int col) const { return set->GetVal(col); }
     wxString GetVal(const wxString& col) const { return set->GetVal(col); }
     long GetLong(const int col) const { return set->GetLong(col); }
-    long GetLong(const wxString &col) { return set->GetLong(col); }
+	long GetLong(const wxString &col) const { return set->GetLong(col); }
     bool GetBool(const int col) const { return set->GetBool(col); }
     bool GetBool(const wxString &col) const { return set->GetBool(col); }
     double GetDouble(const int col) const { return set->GetDouble(col); }

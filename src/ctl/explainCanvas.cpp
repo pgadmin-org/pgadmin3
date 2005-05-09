@@ -91,10 +91,10 @@ void ExplainCanvas::SetExplainString(const wxString &str)
     }
 
 
-    int x0 = rootShape->GetWidth()*3;
-    int y0 = rootShape->GetHeight()*3/2;
-    int xoffs = rootShape->GetWidth()*3;
-    int yoffs = rootShape->GetHeight()*5/4;
+    int x0 = (int)(rootShape->GetWidth()*3);
+    int y0 = (int)(rootShape->GetHeight()*3/2);
+    int xoffs = (int)(rootShape->GetWidth()*3);
+    int yoffs = (int)(rootShape->GetHeight()*5/4);
 
     wxNode *current = GetDiagram()->GetShapeList()->GetFirst();
     while (current)
@@ -144,7 +144,7 @@ void ExplainCanvas::SetExplainString(const wxString &str)
 void ExplainCanvas::ShowPopup(ExplainShape *s)
 {
     int sx, sy;
-    CalcScrolledPosition(s->GetX(), s->GetY(), &sx, &sy);
+    CalcScrolledPosition((int)s->GetX(), (int)s->GetY(), &sx, &sy);
 
     popup->SetShape(s);
 
