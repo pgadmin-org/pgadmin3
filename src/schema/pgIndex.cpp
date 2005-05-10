@@ -273,7 +273,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
         wxT("  JOIN pg_am am ON am.oid=cls.relam\n")
         wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0')\n")
         wxT("  LEFT OUTER JOIN pg_constraint con ON (con.tableoid = dep.refclassid AND con.oid = dep.refobjid)\n")
-        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=con.oid\n")
         wxT("  LEFT OUTER JOIN pg_description desp ON (desp.objoid=con.oid AND desp.objsubid = 0)\n")
         wxT(" WHERE indrelid = ") + collection->GetOidStr()
         + restriction + wxT("\n")
