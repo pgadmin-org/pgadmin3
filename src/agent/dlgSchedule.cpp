@@ -44,20 +44,20 @@
 
 
 BEGIN_EVENT_TABLE(dlgSchedule, dlgAgentProperty)
-    EVT_CHECKBOX(XRCID("chkEnabled"),                dlgSchedule::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),      dlgSchedule::OnChange)
-    EVT_TEXT(XRCID("timStart"),                      dlgSchedule::OnChange)
-    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),        dlgSchedule::OnChange)
-    EVT_TEXT(XRCID("timEnd"),                      dlgSchedule::OnChange)
+    EVT_CHECKBOX(XRCID("chkEnabled"),                dlgSchedule::OnChangeCom)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),      dlgSchedule::OnChangeCal)
+    EVT_TEXT(XRCID("timStart"),                      dlgSchedule::OnChangeCom)
+    EVT_CALENDAR_SEL_CHANGED(XRCID("calEnd"),        dlgSchedule::OnChangeCal)
+    EVT_TEXT(XRCID("timEnd"),                        dlgSchedule::OnChangeCom)
     EVT_LIST_ITEM_SELECTED(XRCID("lstExceptions"),   dlgSchedule::OnSelChangeException)
     EVT_BUTTON(XRCID("btnAddException"),             dlgSchedule::OnAddException)
     EVT_BUTTON(XRCID("btnChangeException"),          dlgSchedule::OnChangeException)
     EVT_BUTTON(XRCID("btnRemoveException"),          dlgSchedule::OnRemoveException)
-	EVT_CHECKLISTBOX(XRCID("chkWeekdays"),           dlgSchedule::OnChange)
-	EVT_CHECKLISTBOX(XRCID("chkMonthdays"),          dlgSchedule::OnChange)
-	EVT_CHECKLISTBOX(XRCID("chkMonths"),             dlgSchedule::OnChange)
-	EVT_CHECKLISTBOX(XRCID("chkHours"),              dlgSchedule::OnChange)
-	EVT_CHECKLISTBOX(XRCID("chkMinutes"),            dlgSchedule::OnChange)
+	EVT_CHECKLISTBOX(XRCID("chkWeekdays"),           dlgSchedule::OnChangeCom)
+	EVT_CHECKLISTBOX(XRCID("chkMonthdays"),          dlgSchedule::OnChangeCom)
+	EVT_CHECKLISTBOX(XRCID("chkMonths"),             dlgSchedule::OnChangeCom)
+	EVT_CHECKLISTBOX(XRCID("chkHours"),              dlgSchedule::OnChangeCom)
+	EVT_CHECKLISTBOX(XRCID("chkMinutes"),            dlgSchedule::OnChangeCom)
 END_EVENT_TABLE();
 
 
@@ -188,12 +188,12 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 }
 
 
-void dlgSchedule::OnChange(wxCalendarEvent &ev)
+void dlgSchedule::OnChangeCal(wxCalendarEvent &ev)
 {
     CheckChange();
 }
 
-void dlgSchedule::OnChange(wxCommandEvent &ev)
+void dlgSchedule::OnChangeCom(wxCommandEvent &ev)
 {
     CheckChange();
 }
