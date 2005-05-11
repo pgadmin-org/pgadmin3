@@ -1,72 +1,328 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>DROP AGGREGATE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-delete.html" title="DELETE">
-<link rel="next" href="sql-dropcast.html" title="DROP CAST">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-dropaggregate"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>DROP AGGREGATE &#8212; remove an aggregate function</p>
-</div>
-<a name="id2687351"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">DROP AGGREGATE <i class="replaceable"><tt>name</tt></i> ( <i class="replaceable"><tt>type</tt></i> ) [ CASCADE | RESTRICT ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687378"></a><h2>Description</h2>
-<p>   <tt class="command">DROP AGGREGATE</tt> will delete an existing
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>DROP AGGREGATE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DELETE"
+HREF="sql-delete.html"><LINK
+REL="NEXT"
+TITLE="DROP CAST"
+HREF="sql-dropcast.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-delete.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-delete.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropcast.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropcast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPAGGREGATE"
+></A
+>DROP AGGREGATE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN41805"
+></A
+><H2
+>Name</H2
+>DROP AGGREGATE&nbsp;--&nbsp;remove an aggregate function</DIV
+><A
+NAME="AEN41808"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN41810"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP AGGREGATE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( <TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+> ) [ CASCADE | RESTRICT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41814"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP AGGREGATE</TT
+> will delete an existing
    aggregate function. To execute this command the current
    user must be the owner of the aggregate function.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687392"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing aggregate function.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>type</tt></i></span></dt>
-<dd><p>      The argument data type of the aggregate function, or
-      <tt class="literal">*</tt> if the function accepts any data type.
-     </p></dd>
-<dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
-<dd><p>      Automatically drop objects that depend on the aggregate function.
-     </p></dd>
-<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
-<dd><p>      Refuse to drop the aggregate function if any objects depend on
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41818"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing aggregate function.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+></DT
+><DD
+><P
+>      The argument data type of the aggregate function, or
+      <TT
+CLASS="LITERAL"
+>*</TT
+> if the function accepts any data type.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the aggregate function.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>      Refuse to drop the aggregate function if any objects depend on
       it.  This is the default.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687449"></a><h2>Examples</h2>
-<p>   To remove the aggregate function <tt class="literal">myavg</tt> for type
-   <tt class="type">integer</tt>:
-</p>
-<pre class="programlisting">DROP AGGREGATE myavg(integer);</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687472"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">DROP AGGREGATE</tt> statement in the SQL
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41842"
+></A
+><H2
+>Examples</H2
+><P
+>   To remove the aggregate function <TT
+CLASS="LITERAL"
+>myavg</TT
+> for type
+   <TT
+CLASS="TYPE"
+>integer</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP AGGREGATE myavg(integer);</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41848"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>DROP AGGREGATE</TT
+> statement in the SQL
    standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687484"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alteraggregate.html">ALTER AGGREGATE</a>, <a href="sql-createaggregate.html">CREATE AGGREGATE</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41852"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alteraggregate.html"
+><I
+>ALTER AGGREGATE</I
+></A
+>, <A
+HREF="sql-createaggregate.html"
+><I
+>CREATE AGGREGATE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-delete.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropcast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DELETE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP CAST</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

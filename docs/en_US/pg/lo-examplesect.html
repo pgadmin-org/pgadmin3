@@ -1,30 +1,133 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>28.5. Example Program</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="largeobjects.html" title="Chapter 28. Large Objects">
-<link rel="previous" href="lo-funcs.html" title="28.4. Server-Side Functions">
-<link rel="next" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="lo-examplesect"></a>28.5. Example Program</h2></div></div>
-<div></div>
-</div>
-<p>     <a href="lo-examplesect.html#lo-example" title="Example 28.1. Large Objects with libpq Example Program">Example 28.1, &#8220;Large Objects with libpq Example Program&#8221;</a> is a sample program which shows how the large object  
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Example Program</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Large Objects"
+HREF="largeobjects.html"><LINK
+REL="PREVIOUS"
+TITLE="Server-Side Functions"
+HREF="lo-funcs.html"><LINK
+REL="NEXT"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="lo-funcs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="largeobjects.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 28. Large Objects</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="largeobjects.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LO-EXAMPLESECT"
+>28.5. Example Program</A
+></H1
+><P
+>     <A
+HREF="lo-examplesect.html#LO-EXAMPLE"
+>Example 28-1</A
+> is a sample program which shows how the large object  
      interface
-     in  <span class="application">libpq</span>  can  be used.  Parts of the program are 
+     in  <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>  can  be used.  Parts of the program are 
      commented out but are left in the source for  the  reader's
      benefit.  This program can also be found in
-     <tt class="filename">src/test/examples/testlo.c</tt> in the source distribution.</p>
-<div class="example">
-<a name="lo-example"></a><p class="title"><b>Example 28.1. Large Objects with <span class="application">libpq</span> Example Program</b></p>
-<pre class="programlisting">/*--------------------------------------------------------------
+     <TT
+CLASS="FILENAME"
+>src/test/examples/testlo.c</TT
+> in the source distribution.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="LO-EXAMPLE"
+></A
+><P
+><B
+>Example 28-1. Large Objects with <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> Example Program</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>/*--------------------------------------------------------------
  *
  * testlo.c--
  *    test using large objects with libpq
@@ -34,14 +137,14 @@
  *--------------------------------------------------------------
  */
 #include &lt;stdio.h&gt;
-#include "libpq-fe.h"
-#include "libpq/libpq-fs.h"
+#include &quot;libpq-fe.h&quot;
+#include &quot;libpq/libpq-fs.h&quot;
 
 #define BUFSIZE          1024
 
 /*
  * importFile
- *    import file "in_filename" into database as large object "lobjOid"
+ *    import file &quot;in_filename&quot; into database as large object &quot;lobjOid&quot;
  *
  */
 Oid
@@ -60,7 +163,7 @@ importFile(PGconn *conn, char *filename)
     fd = open(filename, O_RDONLY, 0666);
     if (fd &lt; 0)
     {                           /* error */
-        fprintf(stderr, "can't open unix file %s\n", filename);
+        fprintf(stderr, &quot;can't open unix file %s\n&quot;, filename);
     }
 
     /*
@@ -68,7 +171,7 @@ importFile(PGconn *conn, char *filename)
      */
     lobjId = lo_creat(conn, INV_READ | INV_WRITE);
     if (lobjId == 0)
-        fprintf(stderr, "can't create large object\n");
+        fprintf(stderr, &quot;can't create large object\n&quot;);
 
     lobj_fd = lo_open(conn, lobjId, INV_WRITE);
 
@@ -79,7 +182,7 @@ importFile(PGconn *conn, char *filename)
     {
         tmp = lo_write(conn, lobj_fd, buf, nbytes);
         if (tmp &lt; nbytes)
-            fprintf(stderr, "error while reading large object\n");
+            fprintf(stderr, &quot;error while reading large object\n&quot;);
     }
 
     (void) close(fd);
@@ -99,7 +202,7 @@ pickout(PGconn *conn, Oid lobjId, int start, int len)
     lobj_fd = lo_open(conn, lobjId, INV_READ);
     if (lobj_fd &lt; 0)
     {
-        fprintf(stderr, "can't open large object %d\n",
+        fprintf(stderr, &quot;can't open large object %d\n&quot;,
                 lobjId);
     }
 
@@ -111,11 +214,11 @@ pickout(PGconn *conn, Oid lobjId, int start, int len)
     {
         nbytes = lo_read(conn, lobj_fd, buf, len - nread);
         buf[nbytes] = ' ';
-        fprintf(stderr, "&gt;&gt;&gt; %s", buf);
+        fprintf(stderr, &quot;&gt;&gt;&gt; %s&quot;, buf);
         nread += nbytes;
     }
     free(buf);
-    fprintf(stderr, "\n");
+    fprintf(stderr, &quot;\n&quot;);
     lo_close(conn, lobj_fd);
 }
 
@@ -131,7 +234,7 @@ overwrite(PGconn *conn, Oid lobjId, int start, int len)
     lobj_fd = lo_open(conn, lobjId, INV_READ);
     if (lobj_fd &lt; 0)
     {
-        fprintf(stderr, "can't open large object %d\n",
+        fprintf(stderr, &quot;can't open large object %d\n&quot;,
                 lobjId);
     }
 
@@ -149,12 +252,12 @@ overwrite(PGconn *conn, Oid lobjId, int start, int len)
         nwritten += nbytes;
     }
     free(buf);
-    fprintf(stderr, "\n");
+    fprintf(stderr, &quot;\n&quot;);
     lo_close(conn, lobj_fd);
 }
 
 /*
- * exportFile *    export large object "lobjOid" to file "out_filename"
+ * exportFile *    export large object &quot;lobjOid&quot; to file &quot;out_filename&quot;
  *
  */
 void
@@ -167,12 +270,12 @@ exportFile(PGconn *conn, Oid lobjId, char *filename)
     int         fd;
 
     /*
-     * create an inversion "object"
+     * create an inversion &quot;object&quot;
      */
     lobj_fd = lo_open(conn, lobjId, INV_READ);
     if (lobj_fd &lt; 0)
     {
-        fprintf(stderr, "can't open large object %d\n",
+        fprintf(stderr, &quot;can't open large object %d\n&quot;,
                 lobjId);
     }
 
@@ -182,7 +285,7 @@ exportFile(PGconn *conn, Oid lobjId, char *filename)
     fd = open(filename, O_CREAT | O_WRONLY, 0666);
     if (fd &lt; 0)
     {                           /* error */
-        fprintf(stderr, "can't open unix file %s\n",
+        fprintf(stderr, &quot;can't open unix file %s\n&quot;,
                 filename);
     }
 
@@ -194,7 +297,7 @@ exportFile(PGconn *conn, Oid lobjId, char *filename)
         tmp = write(fd, buf, nbytes);
         if (tmp &lt; nbytes)
         {
-            fprintf(stderr, "error while writing %s\n",
+            fprintf(stderr, &quot;error while writing %s\n&quot;,
                     filename);
         }
     }
@@ -224,7 +327,7 @@ main(int argc, char **argv)
 
     if (argc != 4)
     {
-        fprintf(stderr, "Usage: %s database_name in_filename out_filename\n",
+        fprintf(stderr, &quot;Usage: %s database_name in_filename out_filename\n&quot;,
                 argv[0]);
         exit(1);
     }
@@ -241,36 +344,106 @@ main(int argc, char **argv)
     /* check to see that the backend connection was successfully made */
     if (PQstatus(conn) == CONNECTION_BAD)
     {
-        fprintf(stderr, "Connection to database '%s' failed.\n", database);
-        fprintf(stderr, "%s", PQerrorMessage(conn));
+        fprintf(stderr, &quot;Connection to database '%s' failed.\n&quot;, database);
+        fprintf(stderr, &quot;%s&quot;, PQerrorMessage(conn));
         exit_nicely(conn);
     }
 
-    res = PQexec(conn, "begin");
+    res = PQexec(conn, &quot;begin&quot;);
     PQclear(res);
 
-    printf("importing file %s\n", in_filename);
+    printf(&quot;importing file %s\n&quot;, in_filename);
 /*  lobjOid = importFile(conn, in_filename); */
     lobjOid = lo_import(conn, in_filename);
 /*
-    printf("as large object %d.\n", lobjOid);
+    printf(&quot;as large object %d.\n&quot;, lobjOid);
 
-    printf("picking out bytes 1000-2000 of the large object\n");
+    printf(&quot;picking out bytes 1000-2000 of the large object\n&quot;);
     pickout(conn, lobjOid, 1000, 1000);
 
-    printf("overwriting bytes 1000-2000 of the large object with X's\n");
+    printf(&quot;overwriting bytes 1000-2000 of the large object with X's\n&quot;);
     overwrite(conn, lobjOid, 1000, 1000);
 */
 
-    printf("exporting large object to file %s\n", out_filename);
+    printf(&quot;exporting large object to file %s\n&quot;, out_filename);
 /*    exportFile(conn, lobjOid, out_filename); */
     lo_export(conn, lobjOid, out_filename);
 
-    res = PQexec(conn, "end");
+    res = PQexec(conn, &quot;end&quot;);
     PQclear(res);
     PQfinish(conn);
     exit(0);
-}</pre>
-</div>
-</div></body>
-</html>
+}</PRE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="lo-funcs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Server-Side Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="largeobjects.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> in C</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

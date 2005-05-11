@@ -1,46 +1,137 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>3.4. Transactions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
-<link rel="previous" href="tutorial-fk.html" title="3.3. Foreign Keys">
-<link rel="next" href="tutorial-inheritance.html" title="3.5. Inheritance">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-transactions"></a>3.4. Transactions</h2></div></div>
-<div></div>
-</div>
-<a name="id2519707"></a><p>    <i class="firstterm">Transactions</i> are a fundamental concept of all database
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Transactions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Advanced Features"
+HREF="tutorial-advanced.html"><LINK
+REL="PREVIOUS"
+TITLE="Foreign Keys"
+HREF="tutorial-fk.html"><LINK
+REL="NEXT"
+TITLE="Inheritance"
+HREF="tutorial-inheritance.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-fk.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-advanced.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Advanced Features</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-advanced.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-inheritance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-TRANSACTIONS"
+>3.4. Transactions</A
+></H1
+><A
+NAME="AEN964"
+></A
+><P
+>    <I
+CLASS="FIRSTTERM"
+>Transactions</I
+> are a fundamental concept of all database
     systems.  The essential point of a transaction is that it bundles
     multiple steps into a single, all-or-nothing operation.  The intermediate
     states between the steps are not visible to other concurrent transactions,
     and if some failure occurs that prevents the transaction from completing,
     then none of the steps affect the database at all.
-   </p>
-<p>    For example, consider a bank database that contains balances for various
+   </P
+><P
+>    For example, consider a bank database that contains balances for various
     customer accounts, as well as total deposit balances for branches.
     Suppose that we want to record a payment of $100.00 from Alice's account
     to Bob's account.  Simplifying outrageously, the SQL commands for this
     might look like
 
-</p>
-<pre class="programlisting">UPDATE accounts SET balance = balance - 100.00
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE accounts SET balance = balance - 100.00
     WHERE name = 'Alice';
 UPDATE branches SET balance = balance - 100.00
     WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Alice');
 UPDATE accounts SET balance = balance + 100.00
     WHERE name = 'Bob';
 UPDATE branches SET balance = balance + 100.00
-    WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Bob');</pre>
-<p>
-   </p>
-<p>    The details of these commands are not important here; the important
+    WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Bob');</PRE
+><P>
+   </P
+><P
+>    The details of these commands are not important here; the important
     point is that there are several separate updates involved to accomplish
     this rather simple operation.  Our bank's officers will want to be
     assured that either all these updates happen, or none of them happen.
@@ -49,11 +140,18 @@ UPDATE branches SET balance = balance + 100.00
     remain a happy customer if she was debited without Bob being credited.
     We need a guarantee that if something goes wrong partway through the
     operation, none of the steps executed so far will take effect.  Grouping
-    the updates into a <i class="firstterm">transaction</i> gives us this guarantee.
-    A transaction is said to be <i class="firstterm">atomic</i>: from the point of
+    the updates into a <I
+CLASS="FIRSTTERM"
+>transaction</I
+> gives us this guarantee.
+    A transaction is said to be <I
+CLASS="FIRSTTERM"
+>atomic</I
+>: from the point of
     view of other transactions, it either happens completely or not at all.
-   </p>
-<p>    We also want a
+   </P
+><P
+>    We also want a
     guarantee that once a transaction is completed and acknowledged by
     the database system, it has indeed been permanently recorded
     and won't be lost even if a crash ensues shortly thereafter.
@@ -63,8 +161,9 @@ UPDATE branches SET balance = balance + 100.00
     A transactional database guarantees that all the updates made by
     a transaction are logged in permanent storage (i.e., on disk) before
     the transaction is reported complete.
-   </p>
-<p>    Another important property of transactional databases is closely
+   </P
+><P
+>    Another important property of transactional databases is closely
     related to the notion of atomic updates: when multiple transactions
     are running concurrently, each one should not be able to see the
     incomplete changes made by others.  For example, if one transaction
@@ -76,70 +175,136 @@ UPDATE branches SET balance = balance + 100.00
     so far by an open transaction are invisible to other transactions
     until the transaction completes, whereupon all the updates become
     visible simultaneously.
-   </p>
-<p>    In <span class="productname">PostgreSQL</span>, a transaction is set up by surrounding
+   </P
+><P
+>    In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, a transaction is set up by surrounding
     the SQL commands of the transaction with
-    <tt class="command">BEGIN</tt> and <tt class="command">COMMIT</tt> commands.  So our banking
+    <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> and <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> commands.  So our banking
     transaction would actually look like
 
-</p>
-<pre class="programlisting">BEGIN;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
 UPDATE accounts SET balance = balance - 100.00
     WHERE name = 'Alice';
 -- etc etc
-COMMIT;</pre>
-<p>
-   </p>
-<p>    If, partway through the transaction, we decide we do not want to
+COMMIT;</PRE
+><P>
+   </P
+><P
+>    If, partway through the transaction, we decide we do not want to
     commit (perhaps we just noticed that Alice's balance went negative),
-    we can issue the command <tt class="command">ROLLBACK</tt> instead of
-    <tt class="command">COMMIT</tt>, and all our updates so far will be canceled.
-   </p>
-<p>    <span class="productname">PostgreSQL</span> actually treats every SQL statement as being
-    executed within a transaction.  If you do not issue a <tt class="command">BEGIN</tt>
+    we can issue the command <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+> instead of
+    <TT
+CLASS="COMMAND"
+>COMMIT</TT
+>, and all our updates so far will be canceled.
+   </P
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> actually treats every SQL statement as being
+    executed within a transaction.  If you do not issue a <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>
     command, 
-    then each individual statement has an implicit <tt class="command">BEGIN</tt> and
-    (if successful) <tt class="command">COMMIT</tt> wrapped around it.  A group of
-    statements surrounded by <tt class="command">BEGIN</tt> and <tt class="command">COMMIT</tt>
-    is sometimes called a <i class="firstterm">transaction block</i>.
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     Some client libraries issue <tt class="command">BEGIN</tt> and <tt class="command">COMMIT</tt>
+    then each individual statement has an implicit <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> and
+    (if successful) <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> wrapped around it.  A group of
+    statements surrounded by <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> and <TT
+CLASS="COMMAND"
+>COMMIT</TT
+>
+    is sometimes called a <I
+CLASS="FIRSTTERM"
+>transaction block</I
+>.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Some client libraries issue <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> and <TT
+CLASS="COMMAND"
+>COMMIT</TT
+>
      commands automatically, so that you may get the effect of transaction
      blocks without asking.  Check the documentation for the interface
      you are using.
-    </p>
-</div>
-<p>    It's possible to control the statements in a transaction in a more
-    granular fashion through the use of <i class="firstterm">savepoints</i>.  Savepoints
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    It's possible to control the statements in a transaction in a more
+    granular fashion through the use of <I
+CLASS="FIRSTTERM"
+>savepoints</I
+>.  Savepoints
     allow you to selectively discard parts of the transaction, while
     committing the rest.  After defining a savepoint with
-    <tt class="command">SAVEPOINT</tt>, you can if needed roll back to the savepoint
-    with <tt class="command">ROLLBACK TO</tt>.  All the transaction's database changes
+    <TT
+CLASS="COMMAND"
+>SAVEPOINT</TT
+>, you can if needed roll back to the savepoint
+    with <TT
+CLASS="COMMAND"
+>ROLLBACK TO</TT
+>.  All the transaction's database changes
     between defining the savepoint and rolling back to it are discarded, but
     changes earlier than the savepoint are kept.
-   </p>
-<p>    After rolling back to a savepoint, it continues to be defined, so you can
+   </P
+><P
+>    After rolling back to a savepoint, it continues to be defined, so you can
     roll back to it several times.  Conversely, if you are sure you won't need
     to roll back to a particular savepoint again, it can be released, so the
     system can free some resources.  Keep in mind that either releasing or
     rolling back to a savepoint
     will automatically release all savepoints that were defined after it.
-   </p>
-<p>    All this is happening within the transaction block, so none of it
+   </P
+><P
+>    All this is happening within the transaction block, so none of it
     is visible to other database sessions.  When and if you commit the
     transaction block, the committed actions become visible as a unit
     to other sessions, while the rolled-back actions never become visible
     at all.
-   </p>
-<p>    Remembering the bank database, suppose we debit $100.00 from Alice's
+   </P
+><P
+>    Remembering the bank database, suppose we debit $100.00 from Alice's
     account, and credit Bob's account, only to find later that we should
     have credited Wally's account.  We could do it using savepoints like
     this:
 
-</p>
-<pre class="programlisting">BEGIN;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
 UPDATE accounts SET balance = balance - 100.00
     WHERE name = 'Alice';
 SAVEPOINT my_savepoint;
@@ -149,15 +314,83 @@ UPDATE accounts SET balance = balance + 100.00
 ROLLBACK TO my_savepoint;
 UPDATE accounts SET balance = balance + 100.00
     WHERE name = 'Wally';
-COMMIT;</pre>
-<p>
-   </p>
-<p>    This example is, of course, oversimplified, but there's a lot of control
+COMMIT;</PRE
+><P>
+   </P
+><P
+>    This example is, of course, oversimplified, but there's a lot of control
     to be had over a transaction block through the use of savepoints.
-    Moreover, <tt class="command">ROLLBACK TO</tt> is the only way to regain control of a
+    Moreover, <TT
+CLASS="COMMAND"
+>ROLLBACK TO</TT
+> is the only way to regain control of a
     transaction block that was put in aborted state by the
     system due to an error, short of rolling it back completely and starting
     again.
-   </p>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-fk.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-inheritance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Foreign Keys</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-advanced.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Inheritance</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

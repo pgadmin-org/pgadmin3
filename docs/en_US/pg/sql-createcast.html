@@ -1,149 +1,478 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CREATE CAST</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createaggregate.html" title="CREATE AGGREGATE">
-<link rel="next" href="sql-createconstraint.html" title="CREATE CONSTRAINT TRIGGER">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createcast"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>CREATE CAST &#8212; define a new cast</p>
-</div>
-<a name="id2673774"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replaceable"><tt>targettype</tt></i>)
-    WITH FUNCTION <i class="replaceable"><tt>funcname</tt></i> (<i class="replaceable"><tt>argtypes</tt></i>)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CREATE CAST</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE AGGREGATE"
+HREF="sql-createaggregate.html"><LINK
+REL="NEXT"
+TITLE="CREATE CONSTRAINT TRIGGER"
+HREF="sql-createconstraint.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createaggregate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createaggregate.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createconstraint.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createconstraint.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATECAST"
+></A
+>CREATE CAST</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38606"
+></A
+><H2
+>Name</H2
+>CREATE CAST&nbsp;--&nbsp;define a new cast</DIV
+><A
+NAME="AEN38609"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38611"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE CAST (<TT
+CLASS="REPLACEABLE"
+><I
+>sourcetype</I
+></TT
+> AS <TT
+CLASS="REPLACEABLE"
+><I
+>targettype</I
+></TT
+>)
+    WITH FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>argtypes</I
+></TT
+>)
     [ AS ASSIGNMENT | AS IMPLICIT ]
 
-CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replaceable"><tt>targettype</tt></i>)
+CREATE CAST (<TT
+CLASS="REPLACEABLE"
+><I
+>sourcetype</I
+></TT
+> AS <TT
+CLASS="REPLACEABLE"
+><I
+>targettype</I
+></TT
+>)
     WITHOUT FUNCTION
-    [ AS ASSIGNMENT | AS IMPLICIT ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-createcast-description"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE CAST</tt> defines a new cast.  A cast
+    [ AS ASSIGNMENT | AS IMPLICIT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE CAST</TT
+> defines a new cast.  A cast
    specifies how to perform a conversion between
    two data types.  For example,
-</p>
-<pre class="programlisting">SELECT CAST(42 AS text);</pre>
-<p>
-   converts the integer constant 42 to type <tt class="type">text</tt> by
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT CAST(42 AS text);</PRE
+><P>
+   converts the integer constant 42 to type <TT
+CLASS="TYPE"
+>text</TT
+> by
    invoking a previously specified function, in this case
-   <tt class="literal">text(int4)</tt>. (If no suitable cast has been defined, the
+   <TT
+CLASS="LITERAL"
+>text(int4)</TT
+>. (If no suitable cast has been defined, the
    conversion fails.)
-  </p>
-<p>   Two types may be <i class="firstterm">binary compatible</i>, which
-   means that they can be converted into one another &#8220;<span class="quote">for
-   free</span>&#8221; without invoking any function.  This requires that
+  </P
+><P
+>   Two types may be <I
+CLASS="FIRSTTERM"
+>binary compatible</I
+>, which
+   means that they can be converted into one another <SPAN
+CLASS="QUOTE"
+>"for
+   free"</SPAN
+> without invoking any function.  This requires that
    corresponding values use the same internal representation.  For
-   instance, the types <tt class="type">text</tt> and <tt class="type">varchar</tt> are
+   instance, the types <TT
+CLASS="TYPE"
+>text</TT
+> and <TT
+CLASS="TYPE"
+>varchar</TT
+> are
    binary compatible.
-  </p>
-<p>   By default, a cast can be invoked only by an explicit cast request,
-   that is an explicit <tt class="literal">CAST(<i class="replaceable"><tt>x</tt></i> AS
-   <i class="replaceable"><tt>typename</tt></i>)</tt> or
-   <i class="replaceable"><tt>x</tt></i><tt class="literal">::</tt><i class="replaceable"><tt>typename</tt></i>
+  </P
+><P
+>   By default, a cast can be invoked only by an explicit cast request,
+   that is an explicit <TT
+CLASS="LITERAL"
+>CAST(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> AS
+   <TT
+CLASS="REPLACEABLE"
+><I
+>typename</I
+></TT
+>)</TT
+> or
+   <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+><TT
+CLASS="LITERAL"
+>::</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>typename</I
+></TT
+>
    construct.
-  </p>
-<p>   If the cast is marked <tt class="literal">AS ASSIGNMENT</tt> then it can be invoked
+  </P
+><P
+>   If the cast is marked <TT
+CLASS="LITERAL"
+>AS ASSIGNMENT</TT
+> then it can be invoked
    implicitly when assigning a value to a column of the target data type.
-   For example, supposing that <tt class="literal">foo.f1</tt> is a column of
-   type <tt class="type">text</tt>, then
-</p>
-<pre class="programlisting">INSERT INTO foo (f1) VALUES (42);</pre>
-<p>
-   will be allowed if the cast from type <tt class="type">integer</tt> to type
-   <tt class="type">text</tt> is marked <tt class="literal">AS ASSIGNMENT</tt>, otherwise
+   For example, supposing that <TT
+CLASS="LITERAL"
+>foo.f1</TT
+> is a column of
+   type <TT
+CLASS="TYPE"
+>text</TT
+>, then
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO foo (f1) VALUES (42);</PRE
+><P>
+   will be allowed if the cast from type <TT
+CLASS="TYPE"
+>integer</TT
+> to type
+   <TT
+CLASS="TYPE"
+>text</TT
+> is marked <TT
+CLASS="LITERAL"
+>AS ASSIGNMENT</TT
+>, otherwise
    not.
-   (We generally use the term <i class="firstterm">assignment
-   cast</i> to describe this kind of cast.)
-  </p>
-<p>   If the cast is marked <tt class="literal">AS IMPLICIT</tt> then it can be invoked
+   (We generally use the term <I
+CLASS="FIRSTTERM"
+>assignment
+   cast</I
+> to describe this kind of cast.)
+  </P
+><P
+>   If the cast is marked <TT
+CLASS="LITERAL"
+>AS IMPLICIT</TT
+> then it can be invoked
    implicitly in any context, whether assignment or internally in an
-   expression.  For example, since <tt class="literal">||</tt> takes <tt class="type">text</tt>
+   expression.  For example, since <TT
+CLASS="LITERAL"
+>||</TT
+> takes <TT
+CLASS="TYPE"
+>text</TT
+>
    operands,
-</p>
-<pre class="programlisting">SELECT 'The time is ' || now();</pre>
-<p>
-   will be allowed only if the cast from type <tt class="type">timestamp</tt> to
-   <tt class="type">text</tt> is marked <tt class="literal">AS IMPLICIT</tt>.  Otherwise it
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT 'The time is ' || now();</PRE
+><P>
+   will be allowed only if the cast from type <TT
+CLASS="TYPE"
+>timestamp</TT
+> to
+   <TT
+CLASS="TYPE"
+>text</TT
+> is marked <TT
+CLASS="LITERAL"
+>AS IMPLICIT</TT
+>.  Otherwise it
    will be necessary to write the cast explicitly, for example
-</p>
-<pre class="programlisting">SELECT 'The time is ' || CAST(now() AS text);</pre>
-<p>
-   (We generally use the term <i class="firstterm">implicit
-   cast</i> to describe this kind of cast.)
-  </p>
-<p>   It is wise to be conservative about marking casts as implicit.  An
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT 'The time is ' || CAST(now() AS text);</PRE
+><P>
+   (We generally use the term <I
+CLASS="FIRSTTERM"
+>implicit
+   cast</I
+> to describe this kind of cast.)
+  </P
+><P
+>   It is wise to be conservative about marking casts as implicit.  An
    overabundance of implicit casting paths can cause
-   <span class="productname">PostgreSQL</span> to choose surprising
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to choose surprising
    interpretations of commands, or to be unable to resolve commands at
    all because there are multiple possible interpretations.  A good
    rule of thumb is to make a cast implicitly invokable only for
    information-preserving transformations between types in the same
-   general type category.  For example, the cast from <tt class="type">int2</tt> to
-   <tt class="type">int4</tt> can reasonably be implicit, but the cast from
-   <tt class="type">float8</tt> to <tt class="type">int4</tt> should probably be
-   assignment-only.  Cross-type-category casts, such as <tt class="type">text</tt>
-   to <tt class="type">int4</tt>, are best made explicit-only.
-  </p>
-<p>   To be able to create a cast, you must own the source or the target
+   general type category.  For example, the cast from <TT
+CLASS="TYPE"
+>int2</TT
+> to
+   <TT
+CLASS="TYPE"
+>int4</TT
+> can reasonably be implicit, but the cast from
+   <TT
+CLASS="TYPE"
+>float8</TT
+> to <TT
+CLASS="TYPE"
+>int4</TT
+> should probably be
+   assignment-only.  Cross-type-category casts, such as <TT
+CLASS="TYPE"
+>text</TT
+>
+   to <TT
+CLASS="TYPE"
+>int4</TT
+>, are best made explicit-only.
+  </P
+><P
+>   To be able to create a cast, you must own the source or the target
    data type.  To create a binary-compatible cast, you must be superuser.
    (This restriction is made because an erroneous binary-compatible cast
    conversion can easily crash the server.)
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2674047"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>sourcetype</tt></i></span></dt>
-<dd><p>       The name of the source data type of the cast.
-      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>targettype</tt></i></span></dt>
-<dd><p>       The name of the target data type of the cast.
-      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>funcname</tt></i>(<i class="replaceable"><tt>argtypes</tt></i>)</span></dt>
-<dd><p>       The function used to perform the cast.  The function name may
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38666"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>sourcetype</I
+></TT
+></DT
+><DD
+><P
+>       The name of the source data type of the cast.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>targettype</I
+></TT
+></DT
+><DD
+><P
+>       The name of the target data type of the cast.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>argtypes</I
+></TT
+>)</DT
+><DD
+><P
+>       The function used to perform the cast.  The function name may
        be schema-qualified.  If it is not, the function will be looked
        up in the schema search path.  The function's result data type must
        match the target type of the cast.   Its arguments are discussed below.
-      </p></dd>
-<dt><span class="term"><tt class="literal">WITHOUT FUNCTION</tt></span></dt>
-<dd><p>       Indicates that the source type and the target type are binary
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>WITHOUT FUNCTION</TT
+></DT
+><DD
+><P
+>       Indicates that the source type and the target type are binary
        compatible, so no function is required to perform the cast.
-      </p></dd>
-<dt><span class="term"><tt class="literal">AS ASSIGNMENT</tt></span></dt>
-<dd><p>       Indicates that the cast may be invoked implicitly in assignment
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>AS ASSIGNMENT</TT
+></DT
+><DD
+><P
+>       Indicates that the cast may be invoked implicitly in assignment
        contexts.
-      </p></dd>
-<dt><span class="term"><tt class="literal">AS IMPLICIT</tt></span></dt>
-<dd><p>       Indicates that the cast may be invoked implicitly in any context.
-      </p></dd>
-</dl></div>
-<p>   Cast implementation functions may have one to three arguments.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>AS IMPLICIT</TT
+></DT
+><DD
+><P
+>       Indicates that the cast may be invoked implicitly in any context.
+      </P
+></DD
+></DL
+></DIV
+><P
+>   Cast implementation functions may have one to three arguments.
    The first argument type must be identical to the cast's source type.
    The second argument,
-   if present, must be type <tt class="type">integer</tt>; it receives the type
-   modifier associated with the destination type, or <tt class="literal">-1</tt>
+   if present, must be type <TT
+CLASS="TYPE"
+>integer</TT
+>; it receives the type
+   modifier associated with the destination type, or <TT
+CLASS="LITERAL"
+>-1</TT
+>
    if there is none.  The third argument,
-   if present, must be type <tt class="type">boolean</tt>; it receives <tt class="literal">true</tt>
-   if the cast is an explicit cast, <tt class="literal">false</tt> otherwise.
+   if present, must be type <TT
+CLASS="TYPE"
+>boolean</TT
+>; it receives <TT
+CLASS="LITERAL"
+>true</TT
+>
+   if the cast is an explicit cast, <TT
+CLASS="LITERAL"
+>false</TT
+> otherwise.
    (Bizarrely, the SQL spec demands different behaviors for explicit and
    implicit casts in some cases.  This argument is supplied for functions
    that must implement such casts.  It is not recommended that you design
    your own data types so that this matters.)
-  </p>
-<p>   Ordinarily a cast must have different source and target data types.
+  </P
+><P
+>   Ordinarily a cast must have different source and target data types.
    However, it is allowed to declare a cast with identical source and
    target types if it has a cast implementation function with more than one
    argument.  This is used to represent type-specific length coercion
@@ -152,84 +481,265 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
    second argument.  (Since the grammar presently permits only certain
    built-in data types to have type modifiers, this feature is of no
    use for user-defined target types, but we mention it for completeness.)
-  </p>
-<p>   When a cast has different source and
+  </P
+><P
+>   When a cast has different source and
    target types and a function that takes more than one argument, it
    represents converting from one type to another and applying a length
    coercion in a single step.  When no such entry is available, coercion
    to a type that uses a type modifier involves two steps, one to
    convert between data types and a second to apply the modifier.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-createcast-notes"></a><h2>Notes</h2>
-<p>   Use <a href="sql-dropcast.html">DROP CAST</a> to remove user-defined casts.
-  </p>
-<p>   Remember that if you want to be able to convert types both ways you
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="sql-dropcast.html"
+><I
+>DROP CAST</I
+></A
+> to remove user-defined casts.
+  </P
+><P
+>   Remember that if you want to be able to convert types both ways you
    need to declare casts both ways explicitly.
-  </p>
-<p>   Prior to <span class="productname">PostgreSQL</span> 7.3, every function that had
+  </P
+><P
+>   Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3, every function that had
    the same name as a data type, returned that data type, and took one
    argument of a different type was automatically a cast function.
    This convention has been abandoned in face of the introduction of
    schemas and to be able to represent binary compatible casts in the
    system catalogs.  The built-in cast functions still follow this naming
    scheme, but they have to be shown as casts in the system catalog
-   <tt class="structname">pg_cast</tt> as well.
-  </p>
-<p>   While not required, it is recommended that you continue to follow this old
+   <TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+> as well.
+  </P
+><P
+>   While not required, it is recommended that you continue to follow this old
    convention of naming cast implementation functions after the target data
    type.  Many users are used to being able to cast data types using a
    function-style notation, that is
-   <i class="replaceable"><tt>typename</tt></i>(<i class="replaceable"><tt>x</tt></i>).  This notation is in fact
+   <TT
+CLASS="REPLACEABLE"
+><I
+>typename</I
+></TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>).  This notation is in fact
    nothing more nor less than a call of the cast implementation function; it
    is not specially treated as a cast.  If your conversion functions are not
    named to support this convention then you will have surprised users.
-   Since <span class="productname">PostgreSQL</span> allows overloading of the same function
+   Since <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows overloading of the same function
    name with different argument types, there is no difficulty in having
    multiple conversion functions from different types that all use the
    target type's name.
-  </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>   There is one small lie in the preceding paragraph: there is still one
-   case in which <tt class="structname">pg_cast</tt> will be used to resolve the
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   There is one small lie in the preceding paragraph: there is still one
+   case in which <TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+> will be used to resolve the
    meaning of an apparent function call.  If a
-   function call <i class="replaceable"><tt>name</tt></i>(<i class="replaceable"><tt>x</tt></i>) matches no
-   actual function, but <i class="replaceable"><tt>name</tt></i> is the name of a data type
-   and <tt class="structname">pg_cast</tt> shows a binary-compatible cast to this
-   type from the type of <i class="replaceable"><tt>x</tt></i>, then the call will be construed
+   function call <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>) matches no
+   actual function, but <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> is the name of a data type
+   and <TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+> shows a binary-compatible cast to this
+   type from the type of <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>, then the call will be construed
    as an explicit cast.  This exception is made so that binary-compatible
    casts can be invoked using functional syntax, even though they lack
    any function.
-   </p>
-</div>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-createcast-examples"></a><h2>Examples</h2>
-<p>   To create a cast from type <tt class="type">text</tt> to type
-   <tt class="type">int4</tt> using the function <tt class="literal">int4(text)</tt>:
-</p>
-<pre class="programlisting">CREATE CAST (text AS int4) WITH FUNCTION int4(text);</pre>
-<p>
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To create a cast from type <TT
+CLASS="TYPE"
+>text</TT
+> to type
+   <TT
+CLASS="TYPE"
+>int4</TT
+> using the function <TT
+CLASS="LITERAL"
+>int4(text)</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE CAST (text AS int4) WITH FUNCTION int4(text);</PRE
+><P>
    (This cast is already predefined in the system.)
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-createcast-compat"></a><h2>Compatibility</h2>
-<p>   The <tt class="command">CREATE CAST</tt> command conforms to SQL:1999,
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-COMPAT"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>CREATE CAST</TT
+> command conforms to SQL:1999,
    except that SQL:1999 does not make provisions for binary-compatible
    types or extra arguments to implementation functions.
-   <tt class="literal">AS IMPLICIT</tt> is a <span class="productname">PostgreSQL</span> 
+   <TT
+CLASS="LITERAL"
+>AS IMPLICIT</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
    extension, too.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-createcast-seealso"></a><h2>See Also</h2>
-<p>   <a href="sql-createfunction.html">CREATE FUNCTION</a>,
-   <a href="sql-createtype.html">CREATE TYPE</a>,
-   <a href="sql-dropcast.html">DROP CAST</a>
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-SEEALSO"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+>,
+   <A
+HREF="sql-createtype.html"
+><I
+>CREATE TYPE</I
+></A
+>,
+   <A
+HREF="sql-dropcast.html"
+><I
+>DROP CAST</I
+></A
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createaggregate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createconstraint.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE AGGREGATE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE CONSTRAINT TRIGGER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

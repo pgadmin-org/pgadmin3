@@ -1,662 +1,2004 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 8. Data Types</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql.html" title="Part II. The SQL Language">
-<link rel="previous" href="queries-limit.html" title="7.6. LIMIT and OFFSET">
-<link rel="next" href="datatype-money.html" title="8.2. Monetary Types">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="datatype">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="datatype"></a>Chapter 8. Data Types</h2></div></div>
-<div></div>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="datatype.html#datatype-numeric">8.1. Numeric Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="datatype.html#datatype-int">8.1.1. Integer Types</a></span></dt>
-<dt><span class="sect2"><a href="datatype.html#datatype-numeric-decimal">8.1.2. Arbitrary Precision Numbers</a></span></dt>
-<dt><span class="sect2"><a href="datatype.html#datatype-float">8.1.3. Floating-Point Types</a></span></dt>
-<dt><span class="sect2"><a href="datatype.html#datatype-serial">8.1.4. Serial Types</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-money.html">8.2. Monetary Types</a></span></dt>
-<dt><span class="sect1"><a href="datatype-character.html">8.3. Character Types</a></span></dt>
-<dt><span class="sect1"><a href="datatype-binary.html">8.4. Binary Data Types</a></span></dt>
-<dt><span class="sect1"><a href="datatype-datetime.html">8.5. Date/Time Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-input">8.5.1. Date/Time Input</a></span></dt>
-<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-output">8.5.2. Date/Time Output</a></span></dt>
-<dt><span class="sect2"><a href="datatype-datetime.html#datatype-timezones">8.5.3. Time Zones</a></span></dt>
-<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-internals">8.5.4. Internals</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-boolean.html">8.6. Boolean Type</a></span></dt>
-<dt><span class="sect1"><a href="datatype-geometric.html">8.7. Geometric Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536782">8.7.1. Points</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536826">8.7.2. Line Segments</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2536924">8.7.3. Boxes</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2537024">8.7.4. Paths</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2537145">8.7.5. Polygons</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2537232">8.7.6. Circles</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-net-types.html">8.8. Network Address Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="datatype-net-types.html#datatype-inet">8.8.1. inet</a></span></dt>
-<dt><span class="sect2"><a href="datatype-net-types.html#datatype-cidr">8.8.2. cidr</a></span></dt>
-<dt><span class="sect2"><a href="datatype-net-types.html#datatype-inet-vs-cidr">8.8.3. inet vs. cidr</a></span></dt>
-<dt><span class="sect2"><a href="datatype-net-types.html#datatype-macaddr">8.8.4. macaddr</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-bit.html">8.9. Bit String Types</a></span></dt>
-<dt><span class="sect1"><a href="arrays.html">8.10. Arrays</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="arrays.html#id2538098">8.10.1. Declaration of Array Types</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2538206">8.10.2. Array Value Input</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2538399">8.10.3. Accessing Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2538589">8.10.4. Modifying Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2538808">8.10.5. Searching in Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2538859">8.10.6. Array Input and Output Syntax</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="rowtypes.html">8.11. Composite Types</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="rowtypes.html#id2539131">8.11.1. Declaration of Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2539228">8.11.2. Composite Value Input</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2539347">8.11.3. Accessing Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2539420">8.11.4. Modifying Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2539480">8.11.5. Composite Type Input and Output Syntax</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="datatype-oid.html">8.12. Object Identifier Types</a></span></dt>
-<dt><span class="sect1"><a href="datatype-pseudo.html">8.13. Pseudo-Types</a></span></dt>
-</dl>
-</div>
-<a name="id2531215"></a><a name="id2531223"></a><p>   <span class="productname">PostgreSQL</span> has a rich set of native data 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Data Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
+REL="PREVIOUS"
+TITLE="LIMIT and OFFSET"
+HREF="queries-limit.html"><LINK
+REL="NEXT"
+TITLE="Monetary Types"
+HREF="datatype-money.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries-limit.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-money.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DATATYPE"
+></A
+>Chapter 8. Data Types</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>8.1. <A
+HREF="datatype.html#DATATYPE-NUMERIC"
+>Numeric Types</A
+></DT
+><DD
+><DL
+><DT
+>8.1.1. <A
+HREF="datatype.html#DATATYPE-INT"
+>Integer Types</A
+></DT
+><DT
+>8.1.2. <A
+HREF="datatype.html#DATATYPE-NUMERIC-DECIMAL"
+>Arbitrary Precision Numbers</A
+></DT
+><DT
+>8.1.3. <A
+HREF="datatype.html#DATATYPE-FLOAT"
+>Floating-Point Types</A
+></DT
+><DT
+>8.1.4. <A
+HREF="datatype.html#DATATYPE-SERIAL"
+>Serial Types</A
+></DT
+></DL
+></DD
+><DT
+>8.2. <A
+HREF="datatype-money.html"
+>Monetary Types</A
+></DT
+><DT
+>8.3. <A
+HREF="datatype-character.html"
+>Character Types</A
+></DT
+><DT
+>8.4. <A
+HREF="datatype-binary.html"
+>Binary Data Types</A
+></DT
+><DT
+>8.5. <A
+HREF="datatype-datetime.html"
+>Date/Time Types</A
+></DT
+><DD
+><DL
+><DT
+>8.5.1. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-INPUT"
+>Date/Time Input</A
+></DT
+><DT
+>8.5.2. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-OUTPUT"
+>Date/Time Output</A
+></DT
+><DT
+>8.5.3. <A
+HREF="datatype-datetime.html#DATATYPE-TIMEZONES"
+>Time Zones</A
+></DT
+><DT
+>8.5.4. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-INTERNALS"
+>Internals</A
+></DT
+></DL
+></DD
+><DT
+>8.6. <A
+HREF="datatype-boolean.html"
+>Boolean Type</A
+></DT
+><DT
+>8.7. <A
+HREF="datatype-geometric.html"
+>Geometric Types</A
+></DT
+><DD
+><DL
+><DT
+>8.7.1. <A
+HREF="datatype-geometric.html#AEN4985"
+>Points</A
+></DT
+><DT
+>8.7.2. <A
+HREF="datatype-geometric.html#AEN4998"
+>Line Segments</A
+></DT
+><DT
+>8.7.3. <A
+HREF="datatype-geometric.html#AEN5026"
+>Boxes</A
+></DT
+><DT
+>8.7.4. <A
+HREF="datatype-geometric.html#AEN5054"
+>Paths</A
+></DT
+><DT
+>8.7.5. <A
+HREF="datatype-geometric.html#AEN5087"
+>Polygons</A
+></DT
+><DT
+>8.7.6. <A
+HREF="datatype-geometric.html#AEN5112"
+>Circles</A
+></DT
+></DL
+></DD
+><DT
+>8.8. <A
+HREF="datatype-net-types.html"
+>Network Address Types</A
+></DT
+><DD
+><DL
+><DT
+>8.8.1. <A
+HREF="datatype-net-types.html#DATATYPE-INET"
+><TT
+CLASS="TYPE"
+>inet</TT
+></A
+></DT
+><DT
+>8.8.2. <A
+HREF="datatype-net-types.html#DATATYPE-CIDR"
+><TT
+CLASS="TYPE"
+>cidr</TT
+></A
+></DT
+><DT
+>8.8.3. <A
+HREF="datatype-net-types.html#DATATYPE-INET-VS-CIDR"
+><TT
+CLASS="TYPE"
+>inet</TT
+> vs. <TT
+CLASS="TYPE"
+>cidr</TT
+></A
+></DT
+><DT
+>8.8.4. <A
+HREF="datatype-net-types.html#DATATYPE-MACADDR"
+><TT
+CLASS="TYPE"
+>macaddr</TT
+></A
+></DT
+></DL
+></DD
+><DT
+>8.9. <A
+HREF="datatype-bit.html"
+>Bit String Types</A
+></DT
+><DT
+>8.10. <A
+HREF="arrays.html"
+>Arrays</A
+></DT
+><DD
+><DL
+><DT
+>8.10.1. <A
+HREF="arrays.html#AEN5368"
+>Declaration of Array Types</A
+></DT
+><DT
+>8.10.2. <A
+HREF="arrays.html#AEN5389"
+>Array Value Input</A
+></DT
+><DT
+>8.10.3. <A
+HREF="arrays.html#AEN5422"
+>Accessing Arrays</A
+></DT
+><DT
+>8.10.4. <A
+HREF="arrays.html#AEN5455"
+>Modifying Arrays</A
+></DT
+><DT
+>8.10.5. <A
+HREF="arrays.html#AEN5491"
+>Searching in Arrays</A
+></DT
+><DT
+>8.10.6. <A
+HREF="arrays.html#AEN5500"
+>Array Input and Output Syntax</A
+></DT
+></DL
+></DD
+><DT
+>8.11. <A
+HREF="rowtypes.html"
+>Composite Types</A
+></DT
+><DD
+><DL
+><DT
+>8.11.1. <A
+HREF="rowtypes.html#AEN5546"
+>Declaration of Composite Types</A
+></DT
+><DT
+>8.11.2. <A
+HREF="rowtypes.html#AEN5561"
+>Composite Value Input</A
+></DT
+><DT
+>8.11.3. <A
+HREF="rowtypes.html#AEN5582"
+>Accessing Composite Types</A
+></DT
+><DT
+>8.11.4. <A
+HREF="rowtypes.html#AEN5593"
+>Modifying Composite Types</A
+></DT
+><DT
+>8.11.5. <A
+HREF="rowtypes.html#AEN5604"
+>Composite Type Input and Output Syntax</A
+></DT
+></DL
+></DD
+><DT
+>8.12. <A
+HREF="datatype-oid.html"
+>Object Identifier Types</A
+></DT
+><DT
+>8.13. <A
+HREF="datatype-pseudo.html"
+>Pseudo-Types</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN3346"
+></A
+><A
+NAME="AEN3348"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has a rich set of native data 
    types available to users.
-   Users may add new types to <span class="productname">PostgreSQL</span> using the
-   <tt class="command">CREATE TYPE</tt> command.
-  </p>
-<p>   <a href="datatype.html#datatype-table" title="Table 8.1. Data Types">Table 8.1, &#8220;Data Types&#8221;</a> shows all the built-in general-purpose data
+   Users may add new types to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> using the
+   <TT
+CLASS="COMMAND"
+>CREATE TYPE</TT
+> command.
+  </P
+><P
+>   <A
+HREF="datatype.html#DATATYPE-TABLE"
+>Table 8-1</A
+> shows all the built-in general-purpose data
    types. Most of the alternative names listed in the 
-   &#8220;<span class="quote">Aliases</span>&#8221; column are the names used internally by
-   <span class="productname">PostgreSQL</span> for historical reasons.  In
+   <SPAN
+CLASS="QUOTE"
+>"Aliases"</SPAN
+> column are the names used internally by
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> for historical reasons.  In
    addition, some internally used or deprecated types are available,
    but they are not listed here.
-  </p>
-<div class="table">
-<a name="datatype-table"></a><p class="title"><b>Table 8.1. Data Types</b></p>
-<table summary="Data Types" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Aliases</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="type">bigint</tt></td>
-<td><tt class="type">int8</tt></td>
-<td>signed eight-byte integer</td>
-</tr>
-<tr>
-<td><tt class="type">bigserial</tt></td>
-<td><tt class="type">serial8</tt></td>
-<td>autoincrementing eight-byte integer</td>
-</tr>
-<tr>
-<td><tt class="type">bit [ (<i class="replaceable"><tt>n</tt></i>) ]</tt></td>
-<td> </td>
-<td>fixed-length bit string</td>
-</tr>
-<tr>
-<td><tt class="type">bit varying [ (<i class="replaceable"><tt>n</tt></i>) ]</tt></td>
-<td><tt class="type">varbit</tt></td>
-<td>variable-length bit string</td>
-</tr>
-<tr>
-<td><tt class="type">boolean</tt></td>
-<td><tt class="type">bool</tt></td>
-<td>logical Boolean (true/false)</td>
-</tr>
-<tr>
-<td><tt class="type">box</tt></td>
-<td> </td>
-<td>rectangular box in the plane</td>
-</tr>
-<tr>
-<td><tt class="type">bytea</tt></td>
-<td> </td>
-<td>binary data (&#8220;<span class="quote">byte array</span>&#8221;)</td>
-</tr>
-<tr>
-<td><tt class="type">character varying [ (<i class="replaceable"><tt>n</tt></i>) ]</tt></td>
-<td><tt class="type">varchar [ (<i class="replaceable"><tt>n</tt></i>) ]</tt></td>
-<td>variable-length character string</td>
-</tr>
-<tr>
-<td><tt class="type">character [ (<i class="replaceable"><tt>n</tt></i>) ]</tt></td>
-<td><tt class="type">char [ (<i class="replaceable"><tt>n</tt></i>) ]</tt></td>
-<td>fixed-length character string</td>
-</tr>
-<tr>
-<td><tt class="type">cidr</tt></td>
-<td> </td>
-<td>IPv4 or IPv6 network address</td>
-</tr>
-<tr>
-<td><tt class="type">circle</tt></td>
-<td> </td>
-<td>circle in the plane</td>
-</tr>
-<tr>
-<td><tt class="type">date</tt></td>
-<td> </td>
-<td>calendar date (year, month, day)</td>
-</tr>
-<tr>
-<td><tt class="type">double precision</tt></td>
-<td><tt class="type">float8</tt></td>
-<td>double precision floating-point number</td>
-</tr>
-<tr>
-<td><tt class="type">inet</tt></td>
-<td> </td>
-<td>IPv4 or IPv6 host address</td>
-</tr>
-<tr>
-<td><tt class="type">integer</tt></td>
-<td>
-<tt class="type">int</tt>, <tt class="type">int4</tt>
-</td>
-<td>signed four-byte integer</td>
-</tr>
-<tr>
-<td><tt class="type">interval [ (<i class="replaceable"><tt>p</tt></i>) ]</tt></td>
-<td> </td>
-<td>time span</td>
-</tr>
-<tr>
-<td><tt class="type">line</tt></td>
-<td> </td>
-<td>infinite line in the plane</td>
-</tr>
-<tr>
-<td><tt class="type">lseg</tt></td>
-<td> </td>
-<td>line segment in the plane</td>
-</tr>
-<tr>
-<td><tt class="type">macaddr</tt></td>
-<td> </td>
-<td>MAC address</td>
-</tr>
-<tr>
-<td><tt class="type">money</tt></td>
-<td> </td>
-<td>currency amount</td>
-</tr>
-<tr>
-<td><tt class="type">numeric [ (<i class="replaceable"><tt>p</tt></i>,
-         <i class="replaceable"><tt>s</tt></i>) ]</tt></td>
-<td><tt class="type">decimal [ (<i class="replaceable"><tt>p</tt></i>,
-         <i class="replaceable"><tt>s</tt></i>) ]</tt></td>
-<td>exact numeric of selectable precision</td>
-</tr>
-<tr>
-<td><tt class="type">path</tt></td>
-<td> </td>
-<td>geometric path in the plane</td>
-</tr>
-<tr>
-<td><tt class="type">point</tt></td>
-<td> </td>
-<td>geometric point in the plane</td>
-</tr>
-<tr>
-<td><tt class="type">polygon</tt></td>
-<td> </td>
-<td>closed geometric path in the plane</td>
-</tr>
-<tr>
-<td><tt class="type">real</tt></td>
-<td><tt class="type">float4</tt></td>
-<td>single precision floating-point number</td>
-</tr>
-<tr>
-<td><tt class="type">smallint</tt></td>
-<td><tt class="type">int2</tt></td>
-<td>signed two-byte integer</td>
-</tr>
-<tr>
-<td><tt class="type">serial</tt></td>
-<td><tt class="type">serial4</tt></td>
-<td>autoincrementing four-byte integer</td>
-</tr>
-<tr>
-<td><tt class="type">text</tt></td>
-<td> </td>
-<td>variable-length character string</td>
-</tr>
-<tr>
-<td><tt class="type">time [ (<i class="replaceable"><tt>p</tt></i>) ] [ without time zone ]</tt></td>
-<td> </td>
-<td>time of day</td>
-</tr>
-<tr>
-<td><tt class="type">time [ (<i class="replaceable"><tt>p</tt></i>) ] with time zone</tt></td>
-<td><tt class="type">timetz</tt></td>
-<td>time of day, including time zone</td>
-</tr>
-<tr>
-<td><tt class="type">timestamp [ (<i class="replaceable"><tt>p</tt></i>) ] [ without time zone ]</tt></td>
-<td> </td>
-<td>date and time</td>
-</tr>
-<tr>
-<td><tt class="type">timestamp [ (<i class="replaceable"><tt>p</tt></i>) ] with time zone</tt></td>
-<td><tt class="type">timestamptz</tt></td>
-<td>date and time, including time zone</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Compatibility</h3>
-<p>    The following types (or spellings thereof) are specified by
-    <span class="acronym">SQL</span>: <tt class="type">bit</tt>, <tt class="type">bit
-    varying</tt>, <tt class="type">boolean</tt>, <tt class="type">char</tt>,
-    <tt class="type">character varying</tt>, <tt class="type">character</tt>,
-    <tt class="type">varchar</tt>, <tt class="type">date</tt>, <tt class="type">double
-    precision</tt>, <tt class="type">integer</tt>, <tt class="type">interval</tt>,
-    <tt class="type">numeric</tt>, <tt class="type">decimal</tt>, <tt class="type">real</tt>,
-    <tt class="type">smallint</tt>, <tt class="type">time</tt> (with or without time zone),
-    <tt class="type">timestamp</tt> (with or without time zone).
-   </p>
-</div>
-<p>   Each data type has an external representation determined by its input
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-TABLE"
+></A
+><P
+><B
+>Table 8-1. Data Types</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Aliases</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int8</TT
+></TD
+><TD
+>signed eight-byte integer</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>bigserial</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>serial8</TT
+></TD
+><TD
+>autoincrementing eight-byte integer</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>bit [ (<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>) ]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>fixed-length bit string</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>bit varying [ (<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>) ]</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>varbit</TT
+></TD
+><TD
+>variable-length bit string</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>logical Boolean (true/false)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>box</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>rectangular box in the plane</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>binary data (<SPAN
+CLASS="QUOTE"
+>"byte array"</SPAN
+>)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>character varying [ (<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>) ]</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>varchar [ (<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>) ]</TT
+></TD
+><TD
+>variable-length character string</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>character [ (<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>) ]</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char [ (<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>) ]</TT
+></TD
+><TD
+>fixed-length character string</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>cidr</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>IPv4 or IPv6 network address</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>circle</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>circle in the plane</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>date</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>calendar date (year, month, day)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>double precision</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>float8</TT
+></TD
+><TD
+>double precision floating-point number</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>inet</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>IPv4 or IPv6 host address</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+>, <TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>signed four-byte integer</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>interval [ (<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>) ]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>time span</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>line</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>infinite line in the plane</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>lseg</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>line segment in the plane</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>macaddr</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>MAC address</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>money</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>currency amount</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>numeric [ (<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>,
+         <TT
+CLASS="REPLACEABLE"
+><I
+>s</I
+></TT
+>) ]</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>decimal [ (<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>,
+         <TT
+CLASS="REPLACEABLE"
+><I
+>s</I
+></TT
+>) ]</TT
+></TD
+><TD
+>exact numeric of selectable precision</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>path</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>geometric path in the plane</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>geometric point in the plane</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>polygon</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>closed geometric path in the plane</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>real</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>float4</TT
+></TD
+><TD
+>single precision floating-point number</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>smallint</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int2</TT
+></TD
+><TD
+>signed two-byte integer</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>serial</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>serial4</TT
+></TD
+><TD
+>autoincrementing four-byte integer</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>variable-length character string</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>time [ (<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>) ] [ without time zone ]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>time of day</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>time [ (<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>) ] with time zone</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>timetz</TT
+></TD
+><TD
+>time of day, including time zone</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>timestamp [ (<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>) ] [ without time zone ]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>date and time</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>timestamp [ (<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>) ] with time zone</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>timestamptz</TT
+></TD
+><TD
+>date and time, including time zone</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Compatibility: </B
+>    The following types (or spellings thereof) are specified by
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>: <TT
+CLASS="TYPE"
+>bit</TT
+>, <TT
+CLASS="TYPE"
+>bit
+    varying</TT
+>, <TT
+CLASS="TYPE"
+>boolean</TT
+>, <TT
+CLASS="TYPE"
+>char</TT
+>,
+    <TT
+CLASS="TYPE"
+>character varying</TT
+>, <TT
+CLASS="TYPE"
+>character</TT
+>,
+    <TT
+CLASS="TYPE"
+>varchar</TT
+>, <TT
+CLASS="TYPE"
+>date</TT
+>, <TT
+CLASS="TYPE"
+>double
+    precision</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>, <TT
+CLASS="TYPE"
+>interval</TT
+>,
+    <TT
+CLASS="TYPE"
+>numeric</TT
+>, <TT
+CLASS="TYPE"
+>decimal</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>,
+    <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>time</TT
+> (with or without time zone),
+    <TT
+CLASS="TYPE"
+>timestamp</TT
+> (with or without time zone).
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   Each data type has an external representation determined by its input
    and output functions.  Many of the built-in types have
    obvious external formats.  However, several types are either unique
-   to <span class="productname">PostgreSQL</span>, such as geometric
+   to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, such as geometric
    paths, or have several possibilities for formats, such as the date
    and time types.
    Some of the input and output functions are not invertible.  That is,
    the result of an output function may lose accuracy when compared to
    the original input.
-  </p>
-<div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="datatype-numeric"></a>8.1. Numeric Types</h2></div></div>
-<div></div>
-</div>
-<a name="id2531751"></a><p>    Numeric types consist of two-, four-, and eight-byte integers,
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-NUMERIC"
+>8.1. Numeric Types</A
+></H1
+><A
+NAME="AEN3584"
+></A
+><P
+>    Numeric types consist of two-, four-, and eight-byte integers,
     four- and eight-byte floating-point numbers, and selectable-precision
-    decimals.  <a href="datatype.html#datatype-numeric-table" title="Table 8.2. Numeric Types">Table 8.2, &#8220;Numeric Types&#8221;</a> lists the
+    decimals.  <A
+HREF="datatype.html#DATATYPE-NUMERIC-TABLE"
+>Table 8-2</A
+> lists the
     available types.
-   </p>
-<div class="table">
-<a name="datatype-numeric-table"></a><p class="title"><b>Table 8.2. Numeric Types</b></p>
-<table summary="Numeric Types" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Storage Size</th>
-<th>Description</th>
-<th>Range</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="type">smallint</tt></td>
-<td>2 bytes</td>
-<td>small-range integer</td>
-<td>-32768 to +32767</td>
-</tr>
-<tr>
-<td><tt class="type">integer</tt></td>
-<td>4 bytes</td>
-<td>usual choice for integer</td>
-<td>-2147483648 to +2147483647</td>
-</tr>
-<tr>
-<td><tt class="type">bigint</tt></td>
-<td>8 bytes</td>
-<td>large-range integer</td>
-<td>-9223372036854775808 to 9223372036854775807</td>
-</tr>
-<tr>
-<td><tt class="type">decimal</tt></td>
-<td>variable</td>
-<td>user-specified precision, exact</td>
-<td>no limit</td>
-</tr>
-<tr>
-<td><tt class="type">numeric</tt></td>
-<td>variable</td>
-<td>user-specified precision, exact</td>
-<td>no limit</td>
-</tr>
-<tr>
-<td><tt class="type">real</tt></td>
-<td>4 bytes</td>
-<td>variable-precision, inexact</td>
-<td>6 decimal digits precision</td>
-</tr>
-<tr>
-<td><tt class="type">double precision</tt></td>
-<td>8 bytes</td>
-<td>variable-precision, inexact</td>
-<td>15 decimal digits precision</td>
-</tr>
-<tr>
-<td><tt class="type">serial</tt></td>
-<td>4 bytes</td>
-<td>autoincrementing integer</td>
-<td>1 to 2147483647</td>
-</tr>
-<tr>
-<td><tt class="type">bigserial</tt></td>
-<td>8 bytes</td>
-<td>large autoincrementing integer</td>
-<td>1 to 9223372036854775807</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>    The syntax of constants for the numeric types is described in
-    <a href="sql-syntax.html#sql-syntax-constants" title="4.1.2. Constants">Section 4.1.2, &#8220;Constants&#8221;</a>.  The numeric types have a
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-NUMERIC-TABLE"
+></A
+><P
+><B
+>Table 8-2. Numeric Types</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Storage Size</TH
+><TH
+>Description</TH
+><TH
+>Range</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>smallint</TT
+></TD
+><TD
+>2 bytes</TD
+><TD
+>small-range integer</TD
+><TD
+>-32768 to +32767</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>4 bytes</TD
+><TD
+>usual choice for integer</TD
+><TD
+>-2147483648 to +2147483647</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+>8 bytes</TD
+><TD
+>large-range integer</TD
+><TD
+>-9223372036854775808 to 9223372036854775807</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>decimal</TT
+></TD
+><TD
+>variable</TD
+><TD
+>user-specified precision, exact</TD
+><TD
+>no limit</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>numeric</TT
+></TD
+><TD
+>variable</TD
+><TD
+>user-specified precision, exact</TD
+><TD
+>no limit</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>real</TT
+></TD
+><TD
+>4 bytes</TD
+><TD
+>variable-precision, inexact</TD
+><TD
+>6 decimal digits precision</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>double precision</TT
+></TD
+><TD
+>8 bytes</TD
+><TD
+>variable-precision, inexact</TD
+><TD
+>15 decimal digits precision</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>serial</TT
+></TD
+><TD
+>4 bytes</TD
+><TD
+>autoincrementing integer</TD
+><TD
+>1 to 2147483647</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>bigserial</TT
+></TD
+><TD
+>8 bytes</TD
+><TD
+>large autoincrementing integer</TD
+><TD
+>1 to 9223372036854775807</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    The syntax of constants for the numeric types is described in
+    <A
+HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
+>Section 4.1.2</A
+>.  The numeric types have a
     full set of corresponding arithmetic operators and
-    functions. Refer to <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a> for more
+    functions. Refer to <A
+HREF="functions.html"
+>Chapter 9</A
+> for more
     information.  The following sections describe the types in detail.
-   </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="datatype-int"></a>8.1.1. Integer Types</h3></div></div>
-<div></div>
-</div>
-<a name="id2531937"></a><a name="id2531948"></a><a name="id2531957"></a><a name="id2531966"></a><a name="id2531974"></a><a name="id2531982"></a><p>     The types <tt class="type">smallint</tt>, <tt class="type">integer</tt>, and
-     <tt class="type">bigint</tt> store whole numbers, that is, numbers without
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DATATYPE-INT"
+>8.1.1. Integer Types</A
+></H2
+><A
+NAME="AEN3658"
+></A
+><A
+NAME="AEN3660"
+></A
+><A
+NAME="AEN3662"
+></A
+><A
+NAME="AEN3664"
+></A
+><A
+NAME="AEN3667"
+></A
+><A
+NAME="AEN3670"
+></A
+><P
+>     The types <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>, and
+     <TT
+CLASS="TYPE"
+>bigint</TT
+> store whole numbers, that is, numbers without
      fractional components, of various ranges.  Attempts to store
      values outside of the allowed range will result in an error.
-    </p>
-<p>     The type <tt class="type">integer</tt> is the usual choice, as it offers
+    </P
+><P
+>     The type <TT
+CLASS="TYPE"
+>integer</TT
+> is the usual choice, as it offers
      the best balance between range, storage size, and performance.
-     The <tt class="type">smallint</tt> type is generally only used if disk
-     space is at a premium.  The <tt class="type">bigint</tt> type should only
-     be used if the <tt class="type">integer</tt> range is not sufficient,
+     The <TT
+CLASS="TYPE"
+>smallint</TT
+> type is generally only used if disk
+     space is at a premium.  The <TT
+CLASS="TYPE"
+>bigint</TT
+> type should only
+     be used if the <TT
+CLASS="TYPE"
+>integer</TT
+> range is not sufficient,
      because the latter is definitely faster.
-    </p>
-<p>     The <tt class="type">bigint</tt> type may not function correctly on all
+    </P
+><P
+>     The <TT
+CLASS="TYPE"
+>bigint</TT
+> type may not function correctly on all
      platforms, since it relies on compiler support for eight-byte
-     integers.  On a machine without such support, <tt class="type">bigint</tt>
-     acts the same as <tt class="type">integer</tt> (but still takes up eight
+     integers.  On a machine without such support, <TT
+CLASS="TYPE"
+>bigint</TT
+>
+     acts the same as <TT
+CLASS="TYPE"
+>integer</TT
+> (but still takes up eight
      bytes of storage).  However, we are not aware of any reasonable
      platform where this is actually the case.
-    </p>
-<p>     <span class="acronym">SQL</span> only specifies the integer types
-     <tt class="type">integer</tt> (or <tt class="type">int</tt>) and
-     <tt class="type">smallint</tt>.  The type <tt class="type">bigint</tt>, and the
-     type names <tt class="type">int2</tt>, <tt class="type">int4</tt>, and
-     <tt class="type">int8</tt> are extensions, which are shared with various
-     other <span class="acronym">SQL</span> database systems.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="datatype-numeric-decimal"></a>8.1.2. Arbitrary Precision Numbers</h3></div></div>
-<div></div>
-</div>
-<a name="id2532092"></a><a name="id2532104"></a><p>     The type <tt class="type">numeric</tt> can store numbers with up to 1000
+    </P
+><P
+>     <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> only specifies the integer types
+     <TT
+CLASS="TYPE"
+>integer</TT
+> (or <TT
+CLASS="TYPE"
+>int</TT
+>) and
+     <TT
+CLASS="TYPE"
+>smallint</TT
+>.  The type <TT
+CLASS="TYPE"
+>bigint</TT
+>, and the
+     type names <TT
+CLASS="TYPE"
+>int2</TT
+>, <TT
+CLASS="TYPE"
+>int4</TT
+>, and
+     <TT
+CLASS="TYPE"
+>int8</TT
+> are extensions, which are shared with various
+     other <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> database systems.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DATATYPE-NUMERIC-DECIMAL"
+>8.1.2. Arbitrary Precision Numbers</A
+></H2
+><A
+NAME="AEN3698"
+></A
+><A
+NAME="AEN3700"
+></A
+><P
+>     The type <TT
+CLASS="TYPE"
+>numeric</TT
+> can store numbers with up to 1000
      digits of precision and perform calculations exactly. It is
      especially recommended for storing monetary amounts and other
      quantities where exactness is required. However, arithmetic on
-     <tt class="type">numeric</tt> values is very slow compared to the integer
+     <TT
+CLASS="TYPE"
+>numeric</TT
+> values is very slow compared to the integer
      types, or to the floating-point types described in the next section.
-    </p>
-<p>     In what follows we use these terms:  The
-     <i class="firstterm">scale</i> of a <tt class="type">numeric</tt> is the
+    </P
+><P
+>     In what follows we use these terms:  The
+     <I
+CLASS="FIRSTTERM"
+>scale</I
+> of a <TT
+CLASS="TYPE"
+>numeric</TT
+> is the
      count of decimal digits in the fractional part, to the right of
-     the decimal point.  The <i class="firstterm">precision</i> of a
-     <tt class="type">numeric</tt> is the total count of significant digits in
+     the decimal point.  The <I
+CLASS="FIRSTTERM"
+>precision</I
+> of a
+     <TT
+CLASS="TYPE"
+>numeric</TT
+> is the total count of significant digits in
      the whole number, that is, the number of digits to both sides of
      the decimal point.  So the number 23.5141 has a precision of 6
      and a scale of 4.  Integers can be considered to have a scale of
      zero.
-    </p>
-<p>     Both the maximum precision and the maximum scale of a
-     <tt class="type">numeric</tt> column can be
-     configured.  To declare a column of type <tt class="type">numeric</tt> use
+    </P
+><P
+>     Both the maximum precision and the maximum scale of a
+     <TT
+CLASS="TYPE"
+>numeric</TT
+> column can be
+     configured.  To declare a column of type <TT
+CLASS="TYPE"
+>numeric</TT
+> use
      the syntax
-</p>
-<pre class="programlisting">NUMERIC(<i class="replaceable"><tt>precision</tt></i>, <i class="replaceable"><tt>scale</tt></i>)</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>NUMERIC(<TT
+CLASS="REPLACEABLE"
+><I
+>precision</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>scale</I
+></TT
+>)</PRE
+><P>
      The precision must be positive, the scale zero or positive.
      Alternatively,
-</p>
-<pre class="programlisting">NUMERIC(<i class="replaceable"><tt>precision</tt></i>)</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>NUMERIC(<TT
+CLASS="REPLACEABLE"
+><I
+>precision</I
+></TT
+>)</PRE
+><P>
      selects a scale of 0.  Specifying
-</p>
-<pre class="programlisting">NUMERIC</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>NUMERIC</PRE
+><P>
      without any precision or scale creates a column in which numeric
      values of any precision and scale can be stored, up to the
      implementation limit on precision.  A column of this kind will
      not coerce input values to any particular scale, whereas
-     <tt class="type">numeric</tt> columns with a declared scale will coerce
-     input values to that scale.  (The <span class="acronym">SQL</span> standard
+     <TT
+CLASS="TYPE"
+>numeric</TT
+> columns with a declared scale will coerce
+     input values to that scale.  (The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard
      requires a default scale of 0, i.e., coercion to integer
      precision.  We find this a bit useless.  If you're concerned
      about portability, always specify the precision and scale
      explicitly.)
-    </p>
-<p>     If the scale of a value to be stored is greater than the declared
+    </P
+><P
+>     If the scale of a value to be stored is greater than the declared
      scale of the column, the system will round the value to the specified
      number of fractional digits.  Then, if the number of digits to the
      left of the decimal point exceeds the declared precision minus the
      declared scale, an error is raised.
-    </p>
-<p>     Numeric values are physically stored without any extra leading or
+    </P
+><P
+>     Numeric values are physically stored without any extra leading or
      trailing zeroes.  Thus, the declared precision and scale of a column
-     are maximums, not fixed allocations.  (In this sense the <tt class="type">numeric</tt>
-     type is more akin to <tt class="type">varchar(<i class="replaceable"><tt>n</tt></i>)</tt>
-     than to <tt class="type">char(<i class="replaceable"><tt>n</tt></i>)</tt>.)
-    </p>
-<p>     In addition to ordinary numeric values, the <tt class="type">numeric</tt>
-     type allows the special value <tt class="literal">NaN</tt>, meaning 
-     &#8220;<span class="quote">not-a-number</span>&#8221;.  Any operation on <tt class="literal">NaN</tt>
-     yields another <tt class="literal">NaN</tt>.  When writing this value
+     are maximums, not fixed allocations.  (In this sense the <TT
+CLASS="TYPE"
+>numeric</TT
+>
+     type is more akin to <TT
+CLASS="TYPE"
+>varchar(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+>
+     than to <TT
+CLASS="TYPE"
+>char(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+>.)
+    </P
+><P
+>     In addition to ordinary numeric values, the <TT
+CLASS="TYPE"
+>numeric</TT
+>
+     type allows the special value <TT
+CLASS="LITERAL"
+>NaN</TT
+>, meaning 
+     <SPAN
+CLASS="QUOTE"
+>"not-a-number"</SPAN
+>.  Any operation on <TT
+CLASS="LITERAL"
+>NaN</TT
+>
+     yields another <TT
+CLASS="LITERAL"
+>NaN</TT
+>.  When writing this value
      as a constant in a SQL command, you must put quotes around it,
-     for example <tt class="literal">UPDATE table SET x = 'NaN'</tt>.  On input,
-     the string <tt class="literal">NaN</tt> is recognized in a case-insensitive manner.
-    </p>
-<p>     The types <tt class="type">decimal</tt> and <tt class="type">numeric</tt> are
-     equivalent.  Both types are part of the <span class="acronym">SQL</span>
+     for example <TT
+CLASS="LITERAL"
+>UPDATE table SET x = 'NaN'</TT
+>.  On input,
+     the string <TT
+CLASS="LITERAL"
+>NaN</TT
+> is recognized in a case-insensitive manner.
+    </P
+><P
+>     The types <TT
+CLASS="TYPE"
+>decimal</TT
+> and <TT
+CLASS="TYPE"
+>numeric</TT
+> are
+     equivalent.  Both types are part of the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
      standard.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="datatype-float"></a>8.1.3. Floating-Point Types</h3></div></div>
-<div></div>
-</div>
-<a name="id2532309"></a><a name="id2532319"></a><a name="id2532328"></a><a name="id2532336"></a><a name="id2532345"></a><p>     The data types <tt class="type">real</tt> and <tt class="type">double
-     precision</tt> are inexact, variable-precision numeric types.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DATATYPE-FLOAT"
+>8.1.3. Floating-Point Types</A
+></H2
+><A
+NAME="AEN3743"
+></A
+><A
+NAME="AEN3745"
+></A
+><A
+NAME="AEN3747"
+></A
+><A
+NAME="AEN3750"
+></A
+><A
+NAME="AEN3753"
+></A
+><P
+>     The data types <TT
+CLASS="TYPE"
+>real</TT
+> and <TT
+CLASS="TYPE"
+>double
+     precision</TT
+> are inexact, variable-precision numeric types.
      In practice, these types are usually implementations of
-     <span class="acronym">IEEE</span> Standard 754 for Binary Floating-Point
+     <ACRONYM
+CLASS="ACRONYM"
+>IEEE</ACRONYM
+> Standard 754 for Binary Floating-Point
      Arithmetic (single and double precision, respectively), to the
      extent that the underlying processor, operating system, and
      compiler support it.
-    </p>
-<p>     Inexact means that some values cannot be converted exactly to the
+    </P
+><P
+>     Inexact means that some values cannot be converted exactly to the
      internal format and are stored as approximations, so that storing
      and printing back out a value may show slight discrepancies.
      Managing these errors and how they propagate through calculations
      is the subject of an entire branch of mathematics and computer
      science and will not be discussed further here, except for the
      following points:
-     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>        If you require exact storage and calculations (such as for
-        monetary amounts), use the <tt class="type">numeric</tt> type instead.
-       </p></li>
-<li><p>        If you want to do complicated calculations with these types
+     <P
+></P
+></P><UL
+><LI
+><P
+>        If you require exact storage and calculations (such as for
+        monetary amounts), use the <TT
+CLASS="TYPE"
+>numeric</TT
+> type instead.
+       </P
+></LI
+><LI
+><P
+>        If you want to do complicated calculations with these types
         for anything important, especially if you rely on certain
         behavior in boundary cases (infinity, underflow), you should
         evaluate the implementation carefully.
-       </p></li>
-<li><p>        Comparing two floating-point values for equality may or may
+       </P
+></LI
+><LI
+><P
+>        Comparing two floating-point values for equality may or may
         not work as expected.
-       </p></li>
-</ul></div>
-<p>
-    </p>
-<p>     On most platforms, the <tt class="type">real</tt> type has a range of at least
+       </P
+></LI
+></UL
+><P>
+    </P
+><P
+>     On most platforms, the <TT
+CLASS="TYPE"
+>real</TT
+> type has a range of at least
      1E-37 to 1E+37 with a precision of at least 6 decimal digits.  The
-     <tt class="type">double precision</tt> type typically has a range of around
+     <TT
+CLASS="TYPE"
+>double precision</TT
+> type typically has a range of around
      1E-307 to 1E+308 with a precision of at least 15 digits.  Values that
      are too large or too small will cause an error.  Rounding may
      take place if the precision of an input number is too high.
      Numbers too close to zero that are not representable as distinct
      from zero will cause an underflow error.
-    </p>
-<p>     In addition to ordinary numeric values, the floating-point types
+    </P
+><P
+>     In addition to ordinary numeric values, the floating-point types
      have several special values:
-</p>
-<div class="literallayout"><p><tt class="literal">Infinity</tt><br>
-<tt class="literal">-Infinity</tt><br>
-<tt class="literal">NaN</tt></p></div>
-<p>
+<P
+CLASS="LITERALLAYOUT"
+><TT
+CLASS="LITERAL"
+>Infinity</TT
+><br>
+<TT
+CLASS="LITERAL"
+>-Infinity</TT
+><br>
+<TT
+CLASS="LITERAL"
+>NaN</TT
+></P
+>
      These represent the IEEE 754 special values
-     &#8220;<span class="quote">infinity</span>&#8221;, &#8220;<span class="quote">negative infinity</span>&#8221;, and
-     &#8220;<span class="quote">not-a-number</span>&#8221;, respectively.  (On a machine whose
+     <SPAN
+CLASS="QUOTE"
+>"infinity"</SPAN
+>, <SPAN
+CLASS="QUOTE"
+>"negative infinity"</SPAN
+>, and
+     <SPAN
+CLASS="QUOTE"
+>"not-a-number"</SPAN
+>, respectively.  (On a machine whose
      floating-point arithmetic does not follow IEEE 754, these values
      will probably not work as expected.)  When writing these values
      as constants in a SQL command, you must put quotes around them,
-     for example <tt class="literal">UPDATE table SET x = 'Infinity'</tt>.  On input,
+     for example <TT
+CLASS="LITERAL"
+>UPDATE table SET x = 'Infinity'</TT
+>.  On input,
      these strings are recognized in a case-insensitive manner.
-    </p>
-<p>     <span class="productname">PostgreSQL</span> also supports the SQL-standard
-     notations <tt class="type">float</tt> and
-     <tt class="type">float(<i class="replaceable"><tt>p</tt></i>)</tt> for specifying
-     inexact numeric types.  Here, <i class="replaceable"><tt>p</tt></i> specifies
+    </P
+><P
+>     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> also supports the SQL-standard
+     notations <TT
+CLASS="TYPE"
+>float</TT
+> and
+     <TT
+CLASS="TYPE"
+>float(<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>)</TT
+> for specifying
+     inexact numeric types.  Here, <TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+> specifies
      the minimum acceptable precision in binary digits.
-     <span class="productname">PostgreSQL</span> accepts 
-     <tt class="type">float(1)</tt> to <tt class="type">float(24)</tt> as selecting the
-     <tt class="type">real</tt> type, while 
-     <tt class="type">float(25)</tt> to <tt class="type">float(53)</tt> select
-     <tt class="type">double precision</tt>.  Values of <i class="replaceable"><tt>p</tt></i>
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> accepts 
+     <TT
+CLASS="TYPE"
+>float(1)</TT
+> to <TT
+CLASS="TYPE"
+>float(24)</TT
+> as selecting the
+     <TT
+CLASS="TYPE"
+>real</TT
+> type, while 
+     <TT
+CLASS="TYPE"
+>float(25)</TT
+> to <TT
+CLASS="TYPE"
+>float(53)</TT
+> select
+     <TT
+CLASS="TYPE"
+>double precision</TT
+>.  Values of <TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>
      outside the allowed range draw an error.
-     <tt class="type">float</tt> with no precision specified is taken to mean
-     <tt class="type">double precision</tt>.
-    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>      Prior to <span class="productname">PostgreSQL</span> 7.4, the precision in
-      <tt class="type">float(<i class="replaceable"><tt>p</tt></i>)</tt> was taken to mean
+     <TT
+CLASS="TYPE"
+>float</TT
+> with no precision specified is taken to mean
+     <TT
+CLASS="TYPE"
+>double precision</TT
+>.
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.4, the precision in
+      <TT
+CLASS="TYPE"
+>float(<TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+>)</TT
+> was taken to mean
       so many decimal digits.  This has been corrected to match the SQL
       standard, which specifies that the precision is measured in binary
-      digits.  The assumption that <tt class="type">real</tt> and
-      <tt class="type">double precision</tt> have exactly 24 and 53 bits in the
+      digits.  The assumption that <TT
+CLASS="TYPE"
+>real</TT
+> and
+      <TT
+CLASS="TYPE"
+>double precision</TT
+> have exactly 24 and 53 bits in the
       mantissa respectively is correct for IEEE-standard floating point
       implementations.  On non-IEEE platforms it may be off a little, but
-      for simplicity the same ranges of <i class="replaceable"><tt>p</tt></i> are used
+      for simplicity the same ranges of <TT
+CLASS="REPLACEABLE"
+><I
+>p</I
+></TT
+> are used
       on all platforms.
-     </p>
-</div>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="datatype-serial"></a>8.1.4. Serial Types</h3></div></div>
-<div></div>
-</div>
-<a name="id2532585"></a><a name="id2532594"></a><a name="id2532603"></a><a name="id2532613"></a><a name="id2532622"></a><a name="id2532630"></a><p>     The data types <tt class="type">serial</tt> and <tt class="type">bigserial</tt>
+     </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DATATYPE-SERIAL"
+>8.1.4. Serial Types</A
+></H2
+><A
+NAME="AEN3806"
+></A
+><A
+NAME="AEN3808"
+></A
+><A
+NAME="AEN3810"
+></A
+><A
+NAME="AEN3812"
+></A
+><A
+NAME="AEN3814"
+></A
+><A
+NAME="AEN3817"
+></A
+><P
+>     The data types <TT
+CLASS="TYPE"
+>serial</TT
+> and <TT
+CLASS="TYPE"
+>bigserial</TT
+>
      are not true types, but merely
      a notational convenience for setting up unique identifier columns
-     (similar to the <tt class="literal">AUTO_INCREMENT</tt> property
+     (similar to the <TT
+CLASS="LITERAL"
+>AUTO_INCREMENT</TT
+> property
      supported by some other databases). In the current
      implementation, specifying
 
-</p>
-<pre class="programlisting">CREATE TABLE <i class="replaceable"><tt>tablename</tt></i> (
-    <i class="replaceable"><tt>colname</tt></i> SERIAL
-);</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+> (
+    <TT
+CLASS="REPLACEABLE"
+><I
+>colname</I
+></TT
+> SERIAL
+);</PRE
+><P>
 
      is equivalent to specifying:
 
-</p>
-<pre class="programlisting">CREATE SEQUENCE <i class="replaceable"><tt>tablename</tt></i>_<i class="replaceable"><tt>colname</tt></i>_seq;
-CREATE TABLE <i class="replaceable"><tt>tablename</tt></i> (
-    <i class="replaceable"><tt>colname</tt></i> integer DEFAULT nextval('<i class="replaceable"><tt>tablename</tt></i>_<i class="replaceable"><tt>colname</tt></i>_seq') NOT NULL
-);</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SEQUENCE <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>_<TT
+CLASS="REPLACEABLE"
+><I
+>colname</I
+></TT
+>_seq;
+CREATE TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+> (
+    <TT
+CLASS="REPLACEABLE"
+><I
+>colname</I
+></TT
+> integer DEFAULT nextval('<TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>_<TT
+CLASS="REPLACEABLE"
+><I
+>colname</I
+></TT
+>_seq') NOT NULL
+);</PRE
+><P>
 
      Thus, we have created an integer column and arranged for its default
-     values to be assigned from a sequence generator.  A <tt class="literal">NOT NULL</tt>
+     values to be assigned from a sequence generator.  A <TT
+CLASS="LITERAL"
+>NOT NULL</TT
+>
      constraint is applied to ensure that a null value cannot be explicitly
      inserted, either.  In most cases you would also want to attach a
-     <tt class="literal">UNIQUE</tt> or <tt class="literal">PRIMARY KEY</tt> constraint to prevent
+     <TT
+CLASS="LITERAL"
+>UNIQUE</TT
+> or <TT
+CLASS="LITERAL"
+>PRIMARY KEY</TT
+> constraint to prevent
      duplicate values from being inserted by accident, but this is
      not automatic.
-    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>      Prior to <span class="productname">PostgreSQL</span> 7.3, <tt class="type">serial</tt>
-      implied <tt class="literal">UNIQUE</tt>.  This is no longer automatic.  If
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3, <TT
+CLASS="TYPE"
+>serial</TT
+>
+      implied <TT
+CLASS="LITERAL"
+>UNIQUE</TT
+>.  This is no longer automatic.  If
       you wish a serial column to be in a unique constraint or a 
       primary key, it must now be specified, same as with
       any other data type.
-     </p>
-</div>
-<p>     To insert the next value of the sequence into the <tt class="type">serial</tt>
-     column, specify that the <tt class="type">serial</tt>
+     </P
+></BLOCKQUOTE
+></DIV
+><P
+>     To insert the next value of the sequence into the <TT
+CLASS="TYPE"
+>serial</TT
+>
+     column, specify that the <TT
+CLASS="TYPE"
+>serial</TT
+>
      column should be assigned its default value. This can be done
      either by excluding the column from the list of columns in
-     the <tt class="command">INSERT</tt> statement, or through the use of
-     the <tt class="literal">DEFAULT</tt> key word.
-    </p>
-<p>     The type names <tt class="type">serial</tt> and <tt class="type">serial4</tt> are
-     equivalent: both create <tt class="type">integer</tt> columns.  The type
-     names <tt class="type">bigserial</tt> and <tt class="type">serial8</tt> work just
-     the same way, except that they create a <tt class="type">bigint</tt>
-     column.  <tt class="type">bigserial</tt> should be used if you anticipate
-     the use of more than 2<sup>31</sup> identifiers over the
+     the <TT
+CLASS="COMMAND"
+>INSERT</TT
+> statement, or through the use of
+     the <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> key word.
+    </P
+><P
+>     The type names <TT
+CLASS="TYPE"
+>serial</TT
+> and <TT
+CLASS="TYPE"
+>serial4</TT
+> are
+     equivalent: both create <TT
+CLASS="TYPE"
+>integer</TT
+> columns.  The type
+     names <TT
+CLASS="TYPE"
+>bigserial</TT
+> and <TT
+CLASS="TYPE"
+>serial8</TT
+> work just
+     the same way, except that they create a <TT
+CLASS="TYPE"
+>bigint</TT
+>
+     column.  <TT
+CLASS="TYPE"
+>bigserial</TT
+> should be used if you anticipate
+     the use of more than 2<SUP
+>31</SUP
+> identifiers over the
      lifetime of the table.
-    </p>
-<p>     The sequence created for a <tt class="type">serial</tt> column is
+    </P
+><P
+>     The sequence created for a <TT
+CLASS="TYPE"
+>serial</TT
+> column is
      automatically dropped when the owning column is dropped, and
      cannot be dropped otherwise.  (This was not true in
-     <span class="productname">PostgreSQL</span> releases before 7.3.  Note
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> releases before 7.3.  Note
      that this automatic drop linkage will not occur for a sequence
      created by reloading a dump from a pre-7.3 database; the dump
      file does not contain the information needed to establish the
      dependency link.) Furthermore, this dependency between sequence
-     and column is made only for the <tt class="type">serial</tt> column itself. If
+     and column is made only for the <TT
+CLASS="TYPE"
+>serial</TT
+> column itself. If
      any other columns reference the sequence (perhaps by manually
-     calling the <tt class="function">nextval</tt> function), they will be broken
-     if the sequence is removed. Using a <tt class="type">serial</tt> column's sequence
+     calling the <CODE
+CLASS="FUNCTION"
+>nextval</CODE
+> function), they will be broken
+     if the sequence is removed. Using a <TT
+CLASS="TYPE"
+>serial</TT
+> column's sequence
      in such a fashion is considered bad form; if you wish to feed several
      columns from the same sequence generator, create the sequence as an
      independent object.
-    </p>
-</div>
-</div>
-</div></body>
-</html>
+    </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries-limit.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-money.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>LIMIT</TT
+> and <TT
+CLASS="LITERAL"
+>OFFSET</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Monetary Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,57 +1,289 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>27.14. Behavior in Threaded Programs</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
-<link rel="previous" href="libpq-ssl.html" title="27.13. SSL Support">
-<link rel="next" href="libpq-build.html" title="27.15. Building libpq Programs">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="libpq-threading"></a>27.14. Behavior in Threaded Programs</h2></div></div>
-<div></div>
-</div>
-<a name="id2616784"></a><p><span class="application">libpq</span> is reentrant and thread-safe if the
-<tt class="filename">configure</tt> command-line option
-<tt class="literal">--enable-thread-safety</tt> was used when the
-<span class="productname">PostgreSQL</span> distribution was built.  In
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Behavior in Threaded Programs</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="SSL Support"
+HREF="libpq-ssl.html"><LINK
+REL="NEXT"
+TITLE="Building libpq Programs"
+HREF="libpq-build.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-ssl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 27. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-build.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-THREADING"
+>27.14. Behavior in Threaded Programs</A
+></H1
+><A
+NAME="AEN24742"
+></A
+><P
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is reentrant and thread-safe if the
+<TT
+CLASS="FILENAME"
+>configure</TT
+> command-line option
+<TT
+CLASS="LITERAL"
+>--enable-thread-safety</TT
+> was used when the
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> distribution was built.  In
 addition, you might need to use additional compiler command-line
 options when you compile your application code.  Refer to your
 system's documentation for information about how to build
 thread-enabled applications, or look in 
-<tt class="filename">src/Makefile.global</tt> for <tt class="literal">PTHREAD_CFLAGS</tt>
-and <tt class="literal">PTHREAD_LIBS</tt>.</p>
-<p>One restriction is that no two threads attempt to manipulate the same
-<tt class="structname">PGconn</tt> object at the same time. In particular, you cannot
+<TT
+CLASS="FILENAME"
+>src/Makefile.global</TT
+> for <TT
+CLASS="LITERAL"
+>PTHREAD_CFLAGS</TT
+>
+and <TT
+CLASS="LITERAL"
+>PTHREAD_LIBS</TT
+>.</P
+><P
+>One restriction is that no two threads attempt to manipulate the same
+<TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object at the same time. In particular, you cannot
 issue concurrent commands from different threads through the same
 connection object. (If you need to run concurrent commands, use
-multiple connections.)</p>
-<p><tt class="structname">PGresult</tt> objects are read-only after creation, and so can be 
-passed around freely between threads.</p>
-<p>The deprecated functions
-<tt class="function">PQrequestCancel</tt>,
-<tt class="function">PQoidStatus</tt> and
-<tt class="function">fe_setauthsvc</tt>
+multiple connections.)</P
+><P
+><TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> objects are read-only after creation, and so can be 
+passed around freely between threads.</P
+><P
+>The deprecated functions
+<CODE
+CLASS="FUNCTION"
+>PQrequestCancel</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>PQoidStatus</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>fe_setauthsvc</CODE
+>
 are not thread-safe and should not be used in multithread programs.
-<tt class="function">PQrequestCancel</tt> can be replaced by
-<tt class="function">PQcancel</tt>.
-<tt class="function">PQoidStatus</tt> can be replaced by
-<tt class="function">PQoidValue</tt>.
-There is no good reason to call <tt class="function">fe_setauthsvc</tt> at all.</p>
-<p><span class="application">libpq</span> applications that use the
-<tt class="literal">crypt</tt> authentication method rely on the
-<tt class="literal">crypt()</tt> operating system function, which is often
-not thread-safe.<a name="id2616934"></a> It is better to use the <tt class="literal">md5</tt> method,
-which is thread-safe on all platforms.</p>
-<p>If you experience problems with threaded applications, run
-the program in <tt class="filename">src/tools/thread</tt> to see if your
+<CODE
+CLASS="FUNCTION"
+>PQrequestCancel</CODE
+> can be replaced by
+<CODE
+CLASS="FUNCTION"
+>PQcancel</CODE
+>.
+<CODE
+CLASS="FUNCTION"
+>PQoidStatus</CODE
+> can be replaced by
+<CODE
+CLASS="FUNCTION"
+>PQoidValue</CODE
+>.
+There is no good reason to call <CODE
+CLASS="FUNCTION"
+>fe_setauthsvc</CODE
+> at all.</P
+><P
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> applications that use the
+<TT
+CLASS="LITERAL"
+>crypt</TT
+> authentication method rely on the
+<TT
+CLASS="LITERAL"
+>crypt()</TT
+> operating system function, which is often
+not thread-safe.<A
+NAME="AEN24770"
+></A
+> It is better to use the <TT
+CLASS="LITERAL"
+>md5</TT
+> method,
+which is thread-safe on all platforms.</P
+><P
+>If you experience problems with threaded applications, run
+the program in <TT
+CLASS="FILENAME"
+>src/tools/thread</TT
+> to see if your
 platform has thread-unsafe functions.  This program is run 
-by <tt class="filename">configure</tt>, but for binary distributions
-your library might not match the library used to build the binaries.</p>
-</div></body>
-</html>
+by <TT
+CLASS="FILENAME"
+>configure</TT
+>, but for binary distributions
+your library might not match the library used to build the binaries.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-ssl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-build.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SSL Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Building <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> Programs</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

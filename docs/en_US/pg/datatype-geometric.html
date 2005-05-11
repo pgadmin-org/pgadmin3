@@ -1,245 +1,1013 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>8.7. Geometric Types</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="previous" href="datatype-boolean.html" title="8.6. Boolean Type">
-<link rel="next" href="datatype-net-types.html" title="8.8. Network Address Types">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="datatype-geometric"></a>8.7. Geometric Types</h2></div></div>
-<div></div>
-</div>
-<p>    Geometric data types represent two-dimensional spatial
-    objects. <a href="datatype-geometric.html#datatype-geo-table" title="Table 8.16. Geometric Types">Table 8.16, &#8220;Geometric Types&#8221;</a> shows the geometric
-    types available in <span class="productname">PostgreSQL</span>.  The
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Geometric Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="PREVIOUS"
+TITLE="Boolean Type"
+HREF="datatype-boolean.html"><LINK
+REL="NEXT"
+TITLE="Network Address Types"
+HREF="datatype-net-types.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype-boolean.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Data Types</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-net-types.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-GEOMETRIC"
+>8.7. Geometric Types</A
+></H1
+><P
+>    Geometric data types represent two-dimensional spatial
+    objects. <A
+HREF="datatype-geometric.html#DATATYPE-GEO-TABLE"
+>Table 8-16</A
+> shows the geometric
+    types available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  The
     most fundamental type, the point, forms the basis for all of the
     other types.
-   </p>
-<div class="table">
-<a name="datatype-geo-table"></a><p class="title"><b>Table 8.16. Geometric Types</b></p>
-<table summary="Geometric Types" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Storage Size</th>
-<th>Representation</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="type">point</tt></td>
-<td>16 bytes</td>
-<td>Point on the plane</td>
-<td>(x,y)</td>
-</tr>
-<tr>
-<td><tt class="type">line</tt></td>
-<td>32 bytes</td>
-<td>Infinite line (not fully implemented)</td>
-<td>((x1,y1),(x2,y2))</td>
-</tr>
-<tr>
-<td><tt class="type">lseg</tt></td>
-<td>32 bytes</td>
-<td>Finite line segment</td>
-<td>((x1,y1),(x2,y2))</td>
-</tr>
-<tr>
-<td><tt class="type">box</tt></td>
-<td>32 bytes</td>
-<td>Rectangular box</td>
-<td>((x1,y1),(x2,y2))</td>
-</tr>
-<tr>
-<td><tt class="type">path</tt></td>
-<td>16+16n bytes</td>
-<td>Closed path (similar to polygon)</td>
-<td>((x1,y1),...)</td>
-</tr>
-<tr>
-<td><tt class="type">path</tt></td>
-<td>16+16n bytes</td>
-<td>Open path</td>
-<td>[(x1,y1),...]</td>
-</tr>
-<tr>
-<td><tt class="type">polygon</tt></td>
-<td>40+16n bytes</td>
-<td>Polygon (similar to closed path)</td>
-<td>((x1,y1),...)</td>
-</tr>
-<tr>
-<td><tt class="type">circle</tt></td>
-<td>24 bytes</td>
-<td>Circle</td>
-<td>&lt;(x,y),r&gt; (center and radius)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>    A rich set of functions and operators is available to perform various geometric
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-GEO-TABLE"
+></A
+><P
+><B
+>Table 8-16. Geometric Types</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Storage Size</TH
+><TH
+>Representation</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>16 bytes</TD
+><TD
+>Point on the plane</TD
+><TD
+>(x,y)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>line</TT
+></TD
+><TD
+>32 bytes</TD
+><TD
+>Infinite line (not fully implemented)</TD
+><TD
+>((x1,y1),(x2,y2))</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>lseg</TT
+></TD
+><TD
+>32 bytes</TD
+><TD
+>Finite line segment</TD
+><TD
+>((x1,y1),(x2,y2))</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>box</TT
+></TD
+><TD
+>32 bytes</TD
+><TD
+>Rectangular box</TD
+><TD
+>((x1,y1),(x2,y2))</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>path</TT
+></TD
+><TD
+>16+16n bytes</TD
+><TD
+>Closed path (similar to polygon)</TD
+><TD
+>((x1,y1),...)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>path</TT
+></TD
+><TD
+>16+16n bytes</TD
+><TD
+>Open path</TD
+><TD
+>[(x1,y1),...]</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>polygon</TT
+></TD
+><TD
+>40+16n bytes</TD
+><TD
+>Polygon (similar to closed path)</TD
+><TD
+>((x1,y1),...)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="TYPE"
+>circle</TT
+></TD
+><TD
+>24 bytes</TD
+><TD
+>Circle</TD
+><TD
+>&lt;(x,y),r&gt; (center and radius)</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    A rich set of functions and operators is available to perform various geometric
     operations such as scaling, translation, rotation, and determining 
-    intersections.  They are explained in <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a>.
-   </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2536782"></a>8.7.1. Points</h3></div></div>
-<div></div>
-</div>
-<a name="id2536786"></a><p>     Points are the fundamental two-dimensional building block for geometric types.
-     Values of type <tt class="type">point</tt> are specified using the following syntax:
+    intersections.  They are explained in <A
+HREF="functions-geometry.html"
+>Section 9.10</A
+>.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN4985"
+>8.7.1. Points</A
+></H2
+><A
+NAME="AEN4987"
+></A
+><P
+>     Points are the fundamental two-dimensional building block for geometric types.
+     Values of type <TT
+CLASS="TYPE"
+>point</TT
+> are specified using the following syntax:
 
-</p>
-<pre class="synopsis">( <i class="replaceable"><tt>x</tt></i> , <i class="replaceable"><tt>y</tt></i> )
-  <i class="replaceable"><tt>x</tt></i> , <i class="replaceable"><tt>y</tt></i></pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>( <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+> )
+  <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
 
-     where <i class="replaceable"><tt>x</tt></i> and <i class="replaceable"><tt>y</tt></i> are the respective
+     where <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> and <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+> are the respective
      coordinates as floating-point numbers.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2536826"></a>8.7.2. Line Segments</h3></div></div>
-<div></div>
-</div>
-<a name="id2536829"></a><a name="id2536835"></a><p>     Line segments (<tt class="type">lseg</tt>) are represented by pairs of points.
-     Values of type <tt class="type">lseg</tt> are specified using the following syntax:
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN4998"
+>8.7.2. Line Segments</A
+></H2
+><A
+NAME="AEN5000"
+></A
+><A
+NAME="AEN5002"
+></A
+><P
+>     Line segments (<TT
+CLASS="TYPE"
+>lseg</TT
+>) are represented by pairs of points.
+     Values of type <TT
+CLASS="TYPE"
+>lseg</TT
+> are specified using the following syntax:
 
-</p>
-<pre class="synopsis">( ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ( <i class="replaceable"><tt>x2</tt></i> , <i class="replaceable"><tt>y2</tt></i> ) )
-  ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ( <i class="replaceable"><tt>x2</tt></i> , <i class="replaceable"><tt>y2</tt></i> )  
-    <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i>   ,   <i class="replaceable"><tt>x2</tt></i> , <i class="replaceable"><tt>y2</tt></i></pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>( ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ( <TT
+CLASS="REPLACEABLE"
+><I
+>x2</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y2</I
+></TT
+> ) )
+  ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ( <TT
+CLASS="REPLACEABLE"
+><I
+>x2</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y2</I
+></TT
+> )  
+    <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+>   ,   <TT
+CLASS="REPLACEABLE"
+><I
+>x2</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y2</I
+></TT
+></PRE
+><P>
 
      where
-     <tt class="literal">(<i class="replaceable"><tt>x1</tt></i>,<i class="replaceable"><tt>y1</tt></i>)</tt>
+     <TT
+CLASS="LITERAL"
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+>,<TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+>)</TT
+>
      and
-     <tt class="literal">(<i class="replaceable"><tt>x2</tt></i>,<i class="replaceable"><tt>y2</tt></i>)</tt>
+     <TT
+CLASS="LITERAL"
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x2</I
+></TT
+>,<TT
+CLASS="REPLACEABLE"
+><I
+>y2</I
+></TT
+>)</TT
+>
      are the end points of the line segment.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2536924"></a>8.7.3. Boxes</h3></div></div>
-<div></div>
-</div>
-<a name="id2536927"></a><a name="id2536933"></a><p>     Boxes are represented by pairs of points that are opposite
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5026"
+>8.7.3. Boxes</A
+></H2
+><A
+NAME="AEN5028"
+></A
+><A
+NAME="AEN5030"
+></A
+><P
+>     Boxes are represented by pairs of points that are opposite
      corners of the box.
-     Values of type <tt class="type">box</tt> are specified using the following syntax:
+     Values of type <TT
+CLASS="TYPE"
+>box</TT
+> are specified using the following syntax:
 
-</p>
-<pre class="synopsis">( ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ( <i class="replaceable"><tt>x2</tt></i> , <i class="replaceable"><tt>y2</tt></i> ) )
-  ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ( <i class="replaceable"><tt>x2</tt></i> , <i class="replaceable"><tt>y2</tt></i> )  
-    <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i>   ,   <i class="replaceable"><tt>x2</tt></i> , <i class="replaceable"><tt>y2</tt></i></pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>( ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ( <TT
+CLASS="REPLACEABLE"
+><I
+>x2</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y2</I
+></TT
+> ) )
+  ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ( <TT
+CLASS="REPLACEABLE"
+><I
+>x2</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y2</I
+></TT
+> )  
+    <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+>   ,   <TT
+CLASS="REPLACEABLE"
+><I
+>x2</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y2</I
+></TT
+></PRE
+><P>
 
      where
-     <tt class="literal">(<i class="replaceable"><tt>x1</tt></i>,<i class="replaceable"><tt>y1</tt></i>)</tt>
+     <TT
+CLASS="LITERAL"
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+>,<TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+>)</TT
+>
      and
-     <tt class="literal">(<i class="replaceable"><tt>x2</tt></i>,<i class="replaceable"><tt>y2</tt></i>)</tt>
+     <TT
+CLASS="LITERAL"
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x2</I
+></TT
+>,<TT
+CLASS="REPLACEABLE"
+><I
+>y2</I
+></TT
+>)</TT
+>
      are any two opposite corners of the box.
-    </p>
-<p>     Boxes are output using the first syntax.
+    </P
+><P
+>     Boxes are output using the first syntax.
      The corners are reordered on input to store
      the upper right corner, then the lower left corner.
      Other corners of the box can be entered, but the lower
      left and upper right corners are determined from the input and stored.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2537024"></a>8.7.4. Paths</h3></div></div>
-<div></div>
-</div>
-<a name="id2537028"></a><p>     Paths are represented by lists of connected points. Paths can be
-     <i class="firstterm">open</i>, where
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5054"
+>8.7.4. Paths</A
+></H2
+><A
+NAME="AEN5056"
+></A
+><P
+>     Paths are represented by lists of connected points. Paths can be
+     <I
+CLASS="FIRSTTERM"
+>open</I
+>, where
      the first and last points in the list are not considered connected, or
-     <i class="firstterm">closed</i>,
+     <I
+CLASS="FIRSTTERM"
+>closed</I
+>,
      where the first and last points are considered connected.
-    </p>
-<p>     Values of type <tt class="type">path</tt> are specified using the following syntax:
+    </P
+><P
+>     Values of type <TT
+CLASS="TYPE"
+>path</TT
+> are specified using the following syntax:
 
-</p>
-<pre class="synopsis">( ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ... , ( <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i> ) )
-[ ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ... , ( <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i> ) ]
-  ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ... , ( <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i> )  
-  ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i>   , ... ,   <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i> )  
-    <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i>   , ... ,   <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i>    </pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>( ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ... , ( <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+> ) )
+[ ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ... , ( <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+> ) ]
+  ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ... , ( <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+> )  
+  ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+>   , ... ,   <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+> )  
+    <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+>   , ... ,   <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+>    </PRE
+><P>
 
      where the points are the end points of the line segments
-     comprising the path.  Square brackets (<tt class="literal">[]</tt>) indicate
-     an open path, while parentheses (<tt class="literal">()</tt>) indicate a
+     comprising the path.  Square brackets (<TT
+CLASS="LITERAL"
+>[]</TT
+>) indicate
+     an open path, while parentheses (<TT
+CLASS="LITERAL"
+>()</TT
+>) indicate a
      closed path.
-    </p>
-<p>     Paths are output using the first syntax.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2537145"></a>8.7.5. Polygons</h3></div></div>
-<div></div>
-</div>
-<a name="id2537149"></a><p>     Polygons are represented by lists of points (the vertexes of the
+    </P
+><P
+>     Paths are output using the first syntax.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5087"
+>8.7.5. Polygons</A
+></H2
+><A
+NAME="AEN5089"
+></A
+><P
+>     Polygons are represented by lists of points (the vertexes of the
      polygon). Polygons should probably be
      considered equivalent to closed paths, but are stored differently 
      and have their own set of support routines.
-    </p>
-<p>     Values of type <tt class="type">polygon</tt> are specified using the following syntax:
+    </P
+><P
+>     Values of type <TT
+CLASS="TYPE"
+>polygon</TT
+> are specified using the following syntax:
 
-</p>
-<pre class="synopsis">( ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ... , ( <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i> ) )
-  ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ... , ( <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i> )  
-  ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i>   , ... ,   <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i> )  
-    <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i>   , ... ,   <i class="replaceable"><tt>xn</tt></i> , <i class="replaceable"><tt>yn</tt></i>    </pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>( ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ... , ( <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+> ) )
+  ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+> ) , ... , ( <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+> )  
+  ( <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+>   , ... ,   <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+> )  
+    <TT
+CLASS="REPLACEABLE"
+><I
+>x1</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y1</I
+></TT
+>   , ... ,   <TT
+CLASS="REPLACEABLE"
+><I
+>xn</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>yn</I
+></TT
+>    </PRE
+><P>
 
      where the points are the end points of the line segments
      comprising the boundary of the polygon.
-    </p>
-<p>     Polygons are output using the first syntax.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2537232"></a>8.7.6. Circles</h3></div></div>
-<div></div>
-</div>
-<a name="id2537236"></a><p>     Circles are represented by a center point and a radius.
-     Values of type <tt class="type">circle</tt> are specified using the following syntax:
+    </P
+><P
+>     Polygons are output using the first syntax.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5112"
+>8.7.6. Circles</A
+></H2
+><A
+NAME="AEN5114"
+></A
+><P
+>     Circles are represented by a center point and a radius.
+     Values of type <TT
+CLASS="TYPE"
+>circle</TT
+> are specified using the following syntax:
 
-</p>
-<pre class="synopsis">&lt; ( <i class="replaceable"><tt>x</tt></i> , <i class="replaceable"><tt>y</tt></i> ) , <i class="replaceable"><tt>r</tt></i> &gt;
-( ( <i class="replaceable"><tt>x</tt></i> , <i class="replaceable"><tt>y</tt></i> ) , <i class="replaceable"><tt>r</tt></i> )
-  ( <i class="replaceable"><tt>x</tt></i> , <i class="replaceable"><tt>y</tt></i> ) , <i class="replaceable"><tt>r</tt></i>  
-    <i class="replaceable"><tt>x</tt></i> , <i class="replaceable"><tt>y</tt></i>   , <i class="replaceable"><tt>r</tt></i>  </pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>&lt; ( <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+> ) , <TT
+CLASS="REPLACEABLE"
+><I
+>r</I
+></TT
+> &gt;
+( ( <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+> ) , <TT
+CLASS="REPLACEABLE"
+><I
+>r</I
+></TT
+> )
+  ( <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+> ) , <TT
+CLASS="REPLACEABLE"
+><I
+>r</I
+></TT
+>  
+    <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> , <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+>   , <TT
+CLASS="REPLACEABLE"
+><I
+>r</I
+></TT
+>  </PRE
+><P>
 
      where
-     <tt class="literal">(<i class="replaceable"><tt>x</tt></i>,<i class="replaceable"><tt>y</tt></i>)</tt>
-     is the center and <i class="replaceable"><tt>r</tt></i> is the radius of the circle.
-    </p>
-<p>     Circles are output using the first syntax.
-    </p>
-</div>
-</div></body>
-</html>
+     <TT
+CLASS="LITERAL"
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>,<TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+>)</TT
+>
+     is the center and <TT
+CLASS="REPLACEABLE"
+><I
+>r</I
+></TT
+> is the radius of the circle.
+    </P
+><P
+>     Circles are output using the first syntax.
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype-boolean.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-net-types.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Boolean Type</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Network Address Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

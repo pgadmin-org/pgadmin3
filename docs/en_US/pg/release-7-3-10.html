@@ -1,0 +1,395 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Release 7.3.10</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 7.4"
+HREF="release-7-4.html"><LINK
+REL="NEXT"
+TITLE="Release 7.3.9"
+HREF="release-7-3-9.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-4.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-9.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-3-10"
+>E.14. Release 7.3.10</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2005-05-09</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This release contains a variety of fixes from 7.3.9, including several
+    security-related issues.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN70378"
+>E.14.1. Migration to version 7.3.10</A
+></H2
+><P
+>     A dump/restore is not required for those running 7.3.X.  However,
+     it is one possible way of handling a significant security problem
+     that has been found in the initial contents of 7.3.X system
+     catalogs.  A dump/initdb/reload sequence using 7.3.10's initdb will
+     automatically correct this problem.
+    </P
+><P
+>     The security problem is that the built-in character set encoding
+     conversion functions can be invoked from SQL commands by unprivileged
+     users, but the functions were not designed for such use and are not
+     secure against malicious choices of arguments.  The fix involves changing
+     the declared parameter list of these functions so that they can no longer
+     be invoked from SQL commands.  (This does not affect their normal use
+     by the encoding conversion machinery.)
+     It is strongly recommended that all installations repair this error,
+     either by initdb or by following the manual repair procedure given
+     below.  The error at least allows unprivileged database users to crash
+     their server process, and may allow unprivileged users to gain the
+     privileges of a database superuser.
+    </P
+><P
+>     If you wish not to do an initdb, perform the following procedure instead.
+     As the database superuser, do:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
+UPDATE pg_proc SET proargtypes[3] = 'internal'::regtype
+WHERE pronamespace = 11 AND pronargs = 5
+      AND proargtypes[2] = 'cstring'::regtype;
+-- The command should report having updated 90 rows;
+-- if not, rollback and investigate instead of committing!
+COMMIT;</PRE
+><P>
+    </P
+><P
+>     The above procedure must be carried out in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>each</I
+></SPAN
+> database
+     of an installation, including <TT
+CLASS="LITERAL"
+>template1</TT
+>, and ideally
+     including <TT
+CLASS="LITERAL"
+>template0</TT
+> as well.  If you do not fix the
+     template databases then any subsequently created databases will contain
+     the same error.  <TT
+CLASS="LITERAL"
+>template1</TT
+> can be fixed in the same way
+     as any other database, but fixing <TT
+CLASS="LITERAL"
+>template0</TT
+> requires
+     additional steps.  First, from any database issue
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</PRE
+><P>
+      Next connect to <TT
+CLASS="LITERAL"
+>template0</TT
+> and perform the above repair
+      procedure.  Finally, do
+</P><PRE
+CLASS="PROGRAMLISTING"
+>-- re-freeze template0:
+VACUUM FREEZE;
+-- and protect it against future alterations:
+UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN70393"
+>E.14.2. Changes</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>Change encoding function signature to prevent
+misuse</P
+></LI
+><LI
+><P
+>Repair ancient race condition that allowed a transaction to be
+seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
+than for other purposes</P
+><P
+>This is an extremely serious bug since it could lead to apparent
+data inconsistencies being briefly visible to applications.</P
+></LI
+><LI
+><P
+>Repair race condition between relation extension and
+VACUUM</P
+><P
+>This could theoretically have caused loss of a page's worth of
+freshly-inserted data, although the scenario seems of very low probability.
+There are no known cases of it having caused more than an Assert failure.</P
+></LI
+><LI
+><P
+>Fix comparisons of <TT
+CLASS="TYPE"
+>TIME WITH TIME ZONE</TT
+> values</P
+><P
+>The comparison code was wrong in the case where the
+<TT
+CLASS="LITERAL"
+>--enable-integer-datetimes</TT
+> configuration switch had been used.
+NOTE: if you have an index on a <TT
+CLASS="TYPE"
+>TIME WITH TIME ZONE</TT
+> column,
+it will need to be <TT
+CLASS="COMMAND"
+>REINDEX</TT
+>ed after installing this update, because
+the fix corrects the sort order of column values.</P
+></LI
+><LI
+><P
+>Fix <CODE
+CLASS="FUNCTION"
+>EXTRACT(EPOCH)</CODE
+> for
+<TT
+CLASS="TYPE"
+>TIME WITH TIME ZONE</TT
+> values</P
+></LI
+><LI
+><P
+>Fix mis-display of negative fractional seconds in
+<TT
+CLASS="TYPE"
+>INTERVAL</TT
+> values</P
+><P
+>This error only occurred when the
+<TT
+CLASS="LITERAL"
+>--enable-integer-datetimes</TT
+> configuration switch had been used.</P
+></LI
+><LI
+><P
+>Additional buffer overrun checks in plpgsql
+(Neil)</P
+></LI
+><LI
+><P
+>Fix pg_dump to dump trigger names containing <TT
+CLASS="LITERAL"
+>%</TT
+>
+correctly (Neil)</P
+></LI
+><LI
+><P
+>Prevent <CODE
+CLASS="FUNCTION"
+>to_char(interval)</CODE
+> from dumping core for
+month-related formats</P
+></LI
+><LI
+><P
+>Fix <TT
+CLASS="FILENAME"
+>contrib/pgcrypto</TT
+> for newer OpenSSL builds
+(Marko Kreen)</P
+></LI
+><LI
+><P
+>Still more 64-bit fixes for
+<TT
+CLASS="FILENAME"
+>contrib/intagg</TT
+></P
+></LI
+><LI
+><P
+>Prevent incorrect optimization of functions returning
+<TT
+CLASS="TYPE"
+>RECORD</TT
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-4.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-9.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 7.4</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.3.9</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,49 +1,257 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>pg_controldata</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
-<link rel="previous" href="app-ipcclean.html" title="ipcclean">
-<link rel="next" href="app-pg-ctl.html" title="pg_ctl">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-pgcontroldata"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>pg_controldata &#8212; display control information of a <span class="productname">PostgreSQL</span> database cluster</p>
-</div>
-<a name="id2720637"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">pg_controldata</tt> [<i class="replaceable"><tt>datadir</tt></i>]</p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="r1-app-pgcontroldata-1"></a><h2>Description</h2>
-<p>   <tt class="command">pg_controldata</tt> prints information initialized during
-   <tt class="command">initdb</tt>, such as the catalog version and server locale.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_controldata</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="PREVIOUS"
+TITLE="ipcclean"
+HREF="app-ipcclean.html"><LINK
+REL="NEXT"
+TITLE="pg_ctl"
+HREF="app-pg-ctl.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-ipcclean.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-ipcclean.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pg-ctl.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pg-ctl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-PGCONTROLDATA"
+></A
+><SPAN
+CLASS="APPLICATION"
+>pg_controldata</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN50372"
+></A
+><H2
+>Name</H2
+>pg_controldata&nbsp;--&nbsp;display control information of a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster</DIV
+><A
+NAME="AEN50376"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN50378"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>pg_controldata</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-PGCONTROLDATA-1"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>pg_controldata</TT
+> prints information initialized during
+   <TT
+CLASS="COMMAND"
+>initdb</TT
+>, such as the catalog version and server locale.
    It also shows information about write-ahead logging and checkpoint 
    processing.  This information is cluster-wide, and not specific to any one
    database.
-  </p>
-<p>   This utility may only be run by the user who initialized the cluster because
+  </P
+><P
+>   This utility may only be run by the user who initialized the cluster because
    it requires read access to the data directory.
    You can specify the data directory on the command line, or use 
-   the environment variable <tt class="envar">PGDATA</tt>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2720702"></a><h2>Environment</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="envar">PGDATA</tt></span></dt>
-<dd><p>      Default data directory location
-     </p></dd>
-</dl></div>
-</div>
-</div></body>
-</html>
+   the environment variable <TT
+CLASS="ENVAR"
+>PGDATA</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50390"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATA</TT
+></DT
+><DD
+><P
+>      Default data directory location
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-ipcclean.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pg-ctl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>ipcclean</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

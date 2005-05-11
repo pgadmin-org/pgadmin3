@@ -1,54 +1,268 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SPI_repalloc</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="spi-memory.html" title="39.3. Memory Management">
-<link rel="previous" href="spi-spi-palloc.html" title="SPI_palloc">
-<link rel="next" href="spi-spi-pfree.html" title="SPI_pfree">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-realloc"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SPI_repalloc &#8212; reallocate memory in the upper executor context</p>
-</div>
-<a name="id2662792"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">void * SPI_repalloc(void * <i class="parameter"><tt>pointer</tt></i>, Size <i class="parameter"><tt>size</tt></i>)</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2662815"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_repalloc</tt> changes the size of a memory
-   segment previously allocated using <tt class="function">SPI_palloc</tt>.
-  </p>
-<p>   This function is no longer different from plain
-   <tt class="function">repalloc</tt>.  It's kept just for backward
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>SPI_repalloc</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Memory Management"
+HREF="spi-memory.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_palloc"
+HREF="spi-spi-palloc.html"><LINK
+REL="NEXT"
+TITLE="SPI_pfree"
+HREF="spi-spi-pfree.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-palloc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-palloc.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-pfree.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-pfree.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-REALLOC"
+></A
+>SPI_repalloc</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN35769"
+></A
+><H2
+>Name</H2
+>SPI_repalloc&nbsp;--&nbsp;reallocate memory in the upper executor context</DIV
+><A
+NAME="AEN35772"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN35774"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>void * SPI_repalloc(void * <TT
+CLASS="PARAMETER"
+>pointer</TT
+>, Size <TT
+CLASS="PARAMETER"
+>size</TT
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35778"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_repalloc</CODE
+> changes the size of a memory
+   segment previously allocated using <CODE
+CLASS="FUNCTION"
+>SPI_palloc</CODE
+>.
+  </P
+><P
+>   This function is no longer different from plain
+   <CODE
+CLASS="FUNCTION"
+>repalloc</CODE
+>.  It's kept just for backward
    compatibility of existing code.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2662844"></a><h2>Arguments</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">void * <i class="parameter"><tt>pointer</tt></i></tt></span></dt>
-<dd><p>      pointer to existing storage to change
-     </p></dd>
-<dt><span class="term"><tt class="literal">Size <i class="parameter"><tt>size</tt></i></tt></span></dt>
-<dd><p>      size in bytes of storage to allocate
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2662880"></a><h2>Return Value</h2>
-<p>   pointer to new storage space of specified size with the contents
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35785"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>void * <TT
+CLASS="PARAMETER"
+>pointer</TT
+></TT
+></DT
+><DD
+><P
+>      pointer to existing storage to change
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>Size <TT
+CLASS="PARAMETER"
+>size</TT
+></TT
+></DT
+><DD
+><P
+>      size in bytes of storage to allocate
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35800"
+></A
+><H2
+>Return Value</H2
+><P
+>   pointer to new storage space of specified size with the contents
    copied from the existing area
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-palloc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-pfree.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_palloc</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-memory.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_pfree</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

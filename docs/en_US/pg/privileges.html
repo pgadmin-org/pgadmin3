@@ -1,67 +1,297 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>17.4. Privileges</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="user-manag.html" title="Chapter 17. Database Users and Privileges">
-<link rel="previous" href="groups.html" title="17.3. Groups">
-<link rel="next" href="perm-functions.html" title="17.5. Functions and Triggers">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="privileges"></a>17.4. Privileges</h2></div></div>
-<div></div>
-</div>
-<a name="id2592758"></a><a name="id2592768"></a><a name="id2592777"></a><a name="id2592786"></a><p>   When an object is created, it is assigned an owner. The
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Privileges</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Database Users and Privileges"
+HREF="user-manag.html"><LINK
+REL="PREVIOUS"
+TITLE="Groups"
+HREF="groups.html"><LINK
+REL="NEXT"
+TITLE="Functions and Triggers"
+HREF="perm-functions.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="groups.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 17. Database Users and Privileges</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="perm-functions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PRIVILEGES"
+>17.4. Privileges</A
+></H1
+><A
+NAME="AEN19553"
+></A
+><A
+NAME="AEN19555"
+></A
+><A
+NAME="AEN19557"
+></A
+><A
+NAME="AEN19559"
+></A
+><P
+>   When an object is created, it is assigned an owner. The
    owner is normally the user that executed the creation statement.
    For most kinds of objects, the initial state is that only the owner
    (or a superuser) can do anything with the object. To allow
-   other users to use it, <i class="firstterm">privileges</i> must be
+   other users to use it, <I
+CLASS="FIRSTTERM"
+>privileges</I
+> must be
    granted.
-   There are several different kinds of privilege: <tt class="literal">SELECT</tt>,
-   <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, <tt class="literal">DELETE</tt>,
-   <tt class="literal">RULE</tt>, <tt class="literal">REFERENCES</tt>, <tt class="literal">TRIGGER</tt>,
-   <tt class="literal">CREATE</tt>, <tt class="literal">TEMPORARY</tt>, <tt class="literal">EXECUTE</tt>,
-   and <tt class="literal">USAGE</tt>. For more
+   There are several different kinds of privilege: <TT
+CLASS="LITERAL"
+>SELECT</TT
+>,
+   <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, <TT
+CLASS="LITERAL"
+>DELETE</TT
+>,
+   <TT
+CLASS="LITERAL"
+>RULE</TT
+>, <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+>, <TT
+CLASS="LITERAL"
+>TRIGGER</TT
+>,
+   <TT
+CLASS="LITERAL"
+>CREATE</TT
+>, <TT
+CLASS="LITERAL"
+>TEMPORARY</TT
+>, <TT
+CLASS="LITERAL"
+>EXECUTE</TT
+>,
+   and <TT
+CLASS="LITERAL"
+>USAGE</TT
+>. For more
    information on the different types of privileges supported by
-   <span class="productname">PostgreSQL</span>, see the
-   <a href="sql-grant.html">GRANT</a> reference page.
-  </p>
-<p>   To assign privileges, the <tt class="command">GRANT</tt> command is
-   used. So, if <tt class="literal">joe</tt> is an existing user, and
-   <tt class="literal">accounts</tt> is an existing table, the privilege to
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, see the
+   <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> reference page.
+  </P
+><P
+>   To assign privileges, the <TT
+CLASS="COMMAND"
+>GRANT</TT
+> command is
+   used. So, if <TT
+CLASS="LITERAL"
+>joe</TT
+> is an existing user, and
+   <TT
+CLASS="LITERAL"
+>accounts</TT
+> is an existing table, the privilege to
    update the table can be granted with
-</p>
-<pre class="programlisting">GRANT UPDATE ON accounts TO joe;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT UPDATE ON accounts TO joe;</PRE
+><P>
    To grant a privilege to a group, use
-</p>
-<pre class="programlisting">GRANT SELECT ON accounts TO GROUP staff;</pre>
-<p>
-   The special name <tt class="literal">PUBLIC</tt> can
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT SELECT ON accounts TO GROUP staff;</PRE
+><P>
+   The special name <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+> can
    be used to grant a privilege to every user on the system. Writing
-   <tt class="literal">ALL</tt> in place of a specific privilege specifies that all
+   <TT
+CLASS="LITERAL"
+>ALL</TT
+> in place of a specific privilege specifies that all
    privileges that apply to the object will be granted.
-  </p>
-<p>   To revoke a privilege, use the fittingly named
-   <tt class="command">REVOKE</tt> command:
-</p>
-<pre class="programlisting">REVOKE ALL ON accounts FROM PUBLIC;</pre>
-<p>
-  </p>
-<p>   The special privileges of an object's owner (i.e., the right to modify
+  </P
+><P
+>   To revoke a privilege, use the fittingly named
+   <TT
+CLASS="COMMAND"
+>REVOKE</TT
+> command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>REVOKE ALL ON accounts FROM PUBLIC;</PRE
+><P>
+  </P
+><P
+>   The special privileges of an object's owner (i.e., the right to modify
    or destroy the object) are always implicit in being the owner,
    and cannot be granted or revoked.  But the owner can choose
    to revoke his own ordinary privileges, for example to make a
    table read-only for himself as well as others.
-  </p>
-<p>   An object can be assigned to a new owner with an <tt class="command">ALTER</tt>
+  </P
+><P
+>   An object can be assigned to a new owner with an <TT
+CLASS="COMMAND"
+>ALTER</TT
+>
    command of the appropriate kind for the object.  Only superusers can do
    this.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="groups.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="perm-functions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Groups</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Functions and Triggers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

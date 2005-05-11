@@ -1,84 +1,284 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 42. Frontend/Backend Protocol</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="internals.html" title="Part VII. Internals">
-<link rel="previous" href="view-pg-views.html" title="41.39. pg_views">
-<link rel="next" href="protocol-flow.html" title="42.2. Message Flow">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="protocol">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="protocol"></a>Chapter 42. Frontend/Backend Protocol</h2></div></div>
-<div></div>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="protocol.html#protocol-overview">42.1. Overview</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="protocol.html#protocol-message-concepts">42.1.1. Messaging Overview</a></span></dt>
-<dt><span class="sect2"><a href="protocol.html#protocol-query-concepts">42.1.2. Extended Query Overview</a></span></dt>
-<dt><span class="sect2"><a href="protocol.html#protocol-format-codes">42.1.3. Formats and Format Codes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="protocol-flow.html">42.2. Message Flow</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="protocol-flow.html#id2737012">42.2.1. Start-Up</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2737251">42.2.2. Simple Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2737489">42.2.3. Extended Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2516024">42.2.4. Function Call</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#protocol-copy">42.2.5. COPY Operations</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#protocol-async">42.2.6. Asynchronous Operations</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2738465">42.2.7. Cancelling Requests in Progress</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2738527">42.2.8. Termination</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2738593">42.2.9. SSL Session Encryption</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="protocol-message-types.html">42.3. Message Data Types</a></span></dt>
-<dt><span class="sect1"><a href="protocol-message-formats.html">42.4. Message Formats</a></span></dt>
-<dt><span class="sect1"><a href="protocol-error-fields.html">42.5. Error and Notice Message Fields</a></span></dt>
-<dt><span class="sect1"><a href="protocol-changes.html">42.6. Summary of Changes since Protocol 2.0</a></span></dt>
-</dl>
-</div>
-<p>  <span class="productname">PostgreSQL</span> uses a message-based protocol
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Frontend/Backend Protocol</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Internals"
+HREF="internals.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_views"
+HREF="view-pg-views.html"><LINK
+REL="NEXT"
+TITLE="Message Flow"
+HREF="protocol-flow.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-views.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="source.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-flow.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="PROTOCOL"
+></A
+>Chapter 42. Frontend/Backend Protocol</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>42.1. <A
+HREF="protocol.html#PROTOCOL-OVERVIEW"
+>Overview</A
+></DT
+><DD
+><DL
+><DT
+>42.1.1. <A
+HREF="protocol.html#PROTOCOL-MESSAGE-CONCEPTS"
+>Messaging Overview</A
+></DT
+><DT
+>42.1.2. <A
+HREF="protocol.html#PROTOCOL-QUERY-CONCEPTS"
+>Extended Query Overview</A
+></DT
+><DT
+>42.1.3. <A
+HREF="protocol.html#PROTOCOL-FORMAT-CODES"
+>Formats and Format Codes</A
+></DT
+></DL
+></DD
+><DT
+>42.2. <A
+HREF="protocol-flow.html"
+>Message Flow</A
+></DT
+><DD
+><DL
+><DT
+>42.2.1. <A
+HREF="protocol-flow.html#AEN55747"
+>Start-Up</A
+></DT
+><DT
+>42.2.2. <A
+HREF="protocol-flow.html#AEN55816"
+>Simple Query</A
+></DT
+><DT
+>42.2.3. <A
+HREF="protocol-flow.html#AEN55878"
+>Extended Query</A
+></DT
+><DT
+>42.2.4. <A
+HREF="protocol-flow.html#AEN55919"
+>Function Call</A
+></DT
+><DT
+>42.2.5. <A
+HREF="protocol-flow.html#PROTOCOL-COPY"
+>COPY Operations</A
+></DT
+><DT
+>42.2.6. <A
+HREF="protocol-flow.html#PROTOCOL-ASYNC"
+>Asynchronous Operations</A
+></DT
+><DT
+>42.2.7. <A
+HREF="protocol-flow.html#AEN55993"
+>Cancelling Requests in Progress</A
+></DT
+><DT
+>42.2.8. <A
+HREF="protocol-flow.html#AEN56001"
+>Termination</A
+></DT
+><DT
+>42.2.9. <A
+HREF="protocol-flow.html#AEN56010"
+><ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> Session Encryption</A
+></DT
+></DL
+></DD
+><DT
+>42.3. <A
+HREF="protocol-message-types.html"
+>Message Data Types</A
+></DT
+><DT
+>42.4. <A
+HREF="protocol-message-formats.html"
+>Message Formats</A
+></DT
+><DT
+>42.5. <A
+HREF="protocol-error-fields.html"
+>Error and Notice Message Fields</A
+></DT
+><DT
+>42.6. <A
+HREF="protocol-changes.html"
+>Summary of Changes since Protocol 2.0</A
+></DT
+></DL
+></DIV
+><P
+>  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses a message-based protocol
   for communication between frontends and backends (clients and servers).
-  The protocol is supported over <span class="acronym">TCP/IP</span> and also over
+  The protocol is supported over <ACRONYM
+CLASS="ACRONYM"
+>TCP/IP</ACRONYM
+> and also over
   Unix-domain sockets.  Port number 5432 has been registered with IANA as
   the customary TCP port number for servers supporting this protocol, but
   in practice any non-privileged port number may be used.
- </p>
-<p>  This document describes version 3.0 of the protocol, implemented in
-  <span class="productname">PostgreSQL</span> 7.4 and later.  For descriptions
+ </P
+><P
+>  This document describes version 3.0 of the protocol, implemented in
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.4 and later.  For descriptions
   of the earlier protocol versions, see previous releases of the
-  <span class="productname">PostgreSQL</span> documentation.  A single server
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> documentation.  A single server
   can support multiple protocol versions.  The initial
   startup-request message tells the server which protocol version the
   client is attempting to use, and then the server follows that protocol
   if it is able.
- </p>
-<p>  Higher level features built on this protocol (for example, how
-  <span class="application">libpq</span> passes certain environment
+ </P
+><P
+>  Higher level features built on this protocol (for example, how
+  <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> passes certain environment
   variables when the connection is established) are covered elsewhere.
- </p>
-<p>   In order to serve multiple clients efficiently, the server launches
-   a new &#8220;<span class="quote">backend</span>&#8221; process for each client.
+ </P
+><P
+>   In order to serve multiple clients efficiently, the server launches
+   a new <SPAN
+CLASS="QUOTE"
+>"backend"</SPAN
+> process for each client.
    In the current implementation, a new child
    process is created immediately after an incoming connection is detected.
    This is transparent to the protocol, however.  For purposes of the
-   protocol, the terms &#8220;<span class="quote">backend</span>&#8221; and &#8220;<span class="quote">server</span>&#8221; are
-   interchangeable; likewise &#8220;<span class="quote">frontend</span>&#8221; and &#8220;<span class="quote">client</span>&#8221;
+   protocol, the terms <SPAN
+CLASS="QUOTE"
+>"backend"</SPAN
+> and <SPAN
+CLASS="QUOTE"
+>"server"</SPAN
+> are
+   interchangeable; likewise <SPAN
+CLASS="QUOTE"
+>"frontend"</SPAN
+> and <SPAN
+CLASS="QUOTE"
+>"client"</SPAN
+>
    are interchangeable.
-  </p>
-<div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="protocol-overview"></a>42.1. Overview</h2></div></div>
-<div></div>
-</div>
-<p>   The protocol has separate phases for startup and normal operation.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PROTOCOL-OVERVIEW"
+>42.1. Overview</A
+></H1
+><P
+>   The protocol has separate phases for startup and normal operation.
    In the startup phase, the frontend opens a connection to the server
    and authenticates itself to the satisfaction of the server.  (This might
    involve a single message, or multiple messages depending on the
@@ -86,129 +286,275 @@
    status information to the frontend, and finally enters normal operation.
    Except for the initial startup-request message, this part of the
    protocol is driven by the server.
-  </p>
-<p>   During normal operation, the frontend sends queries and
+  </P
+><P
+>   During normal operation, the frontend sends queries and
    other commands to the backend, and the backend sends back query results
-   and other responses.  There are a few cases (such as <tt class="command">NOTIFY</tt>)
+   and other responses.  There are a few cases (such as <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>)
    wherein the
    backend will send unsolicited messages, but for the most part this portion
    of a session is driven by frontend requests.
-  </p>
-<p>   Termination of the session is normally by frontend choice, but can be
+  </P
+><P
+>   Termination of the session is normally by frontend choice, but can be
    forced by the backend in certain cases.  In any case, when the backend
    closes the connection, it will roll back any open (incomplete) transaction
    before exiting.
-  </p>
-<p>   Within normal operation, SQL commands can be executed through either of
-   two sub-protocols.  In the &#8220;<span class="quote">simple query</span>&#8221; protocol, the frontend
+  </P
+><P
+>   Within normal operation, SQL commands can be executed through either of
+   two sub-protocols.  In the <SPAN
+CLASS="QUOTE"
+>"simple query"</SPAN
+> protocol, the frontend
    just sends a textual query string, which is parsed and immediately
-   executed by the backend.  In the &#8220;<span class="quote">extended query</span>&#8221; protocol,
+   executed by the backend.  In the <SPAN
+CLASS="QUOTE"
+>"extended query"</SPAN
+> protocol,
    processing of queries is separated into multiple steps: parsing,
    binding of parameter values, and execution.  This offers flexibility
    and performance benefits, at the cost of extra complexity.
-  </p>
-<p>   Normal operation has additional sub-protocols for special operations
-   such as <tt class="command">COPY</tt>.
-  </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="protocol-message-concepts"></a>42.1.1. Messaging Overview</h3></div></div>
-<div></div>
-</div>
-<p>   All communication is through a stream of messages.  The first byte of a
+  </P
+><P
+>   Normal operation has additional sub-protocols for special operations
+   such as <TT
+CLASS="COMMAND"
+>COPY</TT
+>.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PROTOCOL-MESSAGE-CONCEPTS"
+>42.1.1. Messaging Overview</A
+></H2
+><P
+>   All communication is through a stream of messages.  The first byte of a
    message identifies the message type, and the next four bytes specify the
    length of the rest of the message (this length count includes itself, but
    not the message-type byte).  The remaining contents of the message are
    determined by the message type.  For historical reasons, the very first
    message sent by the client (the startup message) has no initial
    message-type byte.
-  </p>
-<p>   To avoid losing synchronization with the message stream, both servers and
+  </P
+><P
+>   To avoid losing synchronization with the message stream, both servers and
    clients typically read an entire message into a buffer (using the byte
    count) before attempting to process its contents.  This allows easy
    recovery if an error is detected while processing the contents.  In
    extreme situations (such as not having enough memory to buffer the
    message), the receiver may use the byte count to determine how much
    input to skip before it resumes reading messages.
-  </p>
-<p>   Conversely, both servers and clients must take care never to send an
+  </P
+><P
+>   Conversely, both servers and clients must take care never to send an
    incomplete message.  This is commonly done by marshaling the entire message
    in a buffer before beginning to send it.  If a communications failure
    occurs partway through sending or receiving a message, the only sensible
    response is to abandon the connection, since there is little hope of
    recovering message-boundary synchronization.
-  </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="protocol-query-concepts"></a>42.1.2. Extended Query Overview</h3></div></div>
-<div></div>
-</div>
-<p>    In the extended-query protocol, execution of SQL commands is divided
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PROTOCOL-QUERY-CONCEPTS"
+>42.1.2. Extended Query Overview</A
+></H2
+><P
+>    In the extended-query protocol, execution of SQL commands is divided
     into multiple steps.  The state retained between steps is represented
-    by two types of objects: <i class="firstterm">prepared statements</i> and
-    <i class="firstterm">portals</i>.  A prepared statement represents the result of
+    by two types of objects: <I
+CLASS="FIRSTTERM"
+>prepared statements</I
+> and
+    <I
+CLASS="FIRSTTERM"
+>portals</I
+>.  A prepared statement represents the result of
     parsing, semantic analysis, and planning of a textual query string.  A
     prepared statement is not necessarily ready to execute, because it may
-    lack specific values for <i class="firstterm">parameters</i>.  A portal represents
+    lack specific values for <I
+CLASS="FIRSTTERM"
+>parameters</I
+>.  A portal represents
     a ready-to-execute or already-partially-executed statement, with any
-    missing parameter values filled in.  (For <tt class="command">SELECT</tt> statements,
+    missing parameter values filled in.  (For <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statements,
     a portal is equivalent to an open cursor, but we choose to use a different
-    term since cursors don't handle non-<tt class="command">SELECT</tt> statements.)
-   </p>
-<p>    The overall execution cycle consists of a <i class="firstterm">parse</i> step,
+    term since cursors don't handle non-<TT
+CLASS="COMMAND"
+>SELECT</TT
+> statements.)
+   </P
+><P
+>    The overall execution cycle consists of a <I
+CLASS="FIRSTTERM"
+>parse</I
+> step,
     which creates a prepared statement from a textual query string; a
-    <i class="firstterm">bind</i> step, which creates a portal given a prepared
+    <I
+CLASS="FIRSTTERM"
+>bind</I
+> step, which creates a portal given a prepared
     statement and values for any needed parameters; and an
-    <i class="firstterm">execute</i> step that runs a portal's query.  In the case of
-    a query that returns rows (<tt class="command">SELECT</tt>, <tt class="command">SHOW</tt>, etc),
+    <I
+CLASS="FIRSTTERM"
+>execute</I
+> step that runs a portal's query.  In the case of
+    a query that returns rows (<TT
+CLASS="COMMAND"
+>SELECT</TT
+>, <TT
+CLASS="COMMAND"
+>SHOW</TT
+>, etc),
     the execute step can be told to fetch only
     a limited number of rows, so that multiple execute steps may be needed
     to complete the operation.
-   </p>
-<p>    The backend can keep track of multiple prepared statements and portals
+   </P
+><P
+>    The backend can keep track of multiple prepared statements and portals
     (but note that these exist only within a session, and are never shared
     across sessions).  Existing prepared statements and portals are
     referenced by names assigned when they were created.  In addition,
-    an &#8220;<span class="quote">unnamed</span>&#8221; prepared statement and portal exist.  Although these
+    an <SPAN
+CLASS="QUOTE"
+>"unnamed"</SPAN
+> prepared statement and portal exist.  Although these
     behave largely the same as named objects, operations on them are optimized
     for the case of executing a query only once and then discarding it,
     whereas operations on named objects are optimized on the expectation
     of multiple uses.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="protocol-format-codes"></a>42.1.3. Formats and Format Codes</h3></div></div>
-<div></div>
-</div>
-<p>    Data of a particular data type might be transmitted in any of several
-    different <i class="firstterm">formats</i>.  As of <span class="productname">PostgreSQL</span> 7.4
-    the only supported formats are &#8220;<span class="quote">text</span>&#8221; and &#8220;<span class="quote">binary</span>&#8221;,
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PROTOCOL-FORMAT-CODES"
+>42.1.3. Formats and Format Codes</A
+></H2
+><P
+>    Data of a particular data type might be transmitted in any of several
+    different <I
+CLASS="FIRSTTERM"
+>formats</I
+>.  As of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.4
+    the only supported formats are <SPAN
+CLASS="QUOTE"
+>"text"</SPAN
+> and <SPAN
+CLASS="QUOTE"
+>"binary"</SPAN
+>,
     but the protocol makes provision for future extensions.  The desired
-    format for any value is specified by a <i class="firstterm">format code</i>.
+    format for any value is specified by a <I
+CLASS="FIRSTTERM"
+>format code</I
+>.
     Clients may specify a format code for each transmitted parameter value
     and for each column of a query result.  Text has format code zero,
     binary has format code one, and all other format codes are reserved
     for future definition.
-   </p>
-<p>    The text representation of values is whatever strings are produced
+   </P
+><P
+>    The text representation of values is whatever strings are produced
     and accepted by the input/output conversion functions for the
     particular data type.  In the transmitted representation, there is
     no trailing null character; the frontend must add one to received
     values if it wants to process them as C strings.
     (The text format does not allow embedded nulls, by the way.)
-   </p>
-<p>    Binary representations for integers use network byte order (most
+   </P
+><P
+>    Binary representations for integers use network byte order (most
     significant byte first).  For other data types consult the documentation
     or source code to learn about the binary representation.  Keep in mind
     that binary representations for complex data types may change across
     server versions; the text format is usually the more portable choice.
-   </p>
-</div>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-views.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-flow.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_views</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="internals.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Message Flow</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

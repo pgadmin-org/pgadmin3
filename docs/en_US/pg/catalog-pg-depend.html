@@ -1,144 +1,504 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.13. pg_depend</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-database.html" title="41.12. pg_database">
-<link rel="next" href="catalog-pg-description.html" title="41.14. pg_description">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-depend"></a>41.13. <tt class="structname">pg_depend</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2730139"></a><p>   The catalog <tt class="structname">pg_depend</tt> records the dependency
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_depend</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_database"
+HREF="catalog-pg-database.html"><LINK
+REL="NEXT"
+TITLE="pg_description"
+HREF="catalog-pg-description.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-database.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-description.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-DEPEND"
+>41.13. <TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+></A
+></H1
+><A
+NAME="AEN53172"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+> records the dependency
    relationships between database objects.  This information allows
-   <tt class="command">DROP</tt> commands to find which other objects must be dropped
-   by <tt class="command">DROP CASCADE</tt> or prevent dropping in the <tt class="command">DROP
-   RESTRICT</tt> case.
-  </p>
-<div class="table">
-<a name="id2730175"></a><p class="title"><b>Table 41.13. <tt class="structname">pg_depend</tt> Columns</b></p>
-<table summary="pg_depend Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="structfield">classid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
-<td>The OID of the system catalog the dependent object is in</td>
-</tr>
-<tr>
-<td><tt class="structfield">objid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td>any OID column</td>
-<td>The OID of the specific dependent object</td>
-</tr>
-<tr>
-<td><tt class="structfield">objsubid</tt></td>
-<td><tt class="type">int4</tt></td>
-<td> </td>
-<td>       For a table column, this is the column number (the
-       <tt class="structfield">objid</tt> and <tt class="structfield">classid</tt> refer to the
+   <TT
+CLASS="COMMAND"
+>DROP</TT
+> commands to find which other objects must be dropped
+   by <TT
+CLASS="COMMAND"
+>DROP CASCADE</TT
+> or prevent dropping in the <TT
+CLASS="COMMAND"
+>DROP
+   RESTRICT</TT
+> case.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN53179"
+></A
+><P
+><B
+>Table 41-13. <TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>classid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The OID of the system catalog the dependent object is in</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>objid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+>any OID column</TD
+><TD
+>The OID of the specific dependent object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>objsubid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       For a table column, this is the column number (the
+       <TT
+CLASS="STRUCTFIELD"
+>objid</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>classid</TT
+> refer to the
        table itself).  For all other object types, this column is
        zero.
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">refclassid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
-<td>The OID of the system catalog the referenced object is in</td>
-</tr>
-<tr>
-<td><tt class="structfield">refobjid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td>any OID column</td>
-<td>The OID of the specific referenced object</td>
-</tr>
-<tr>
-<td><tt class="structfield">refobjsubid</tt></td>
-<td><tt class="type">int4</tt></td>
-<td> </td>
-<td>       For a table column, this is the column number (the
-       <tt class="structfield">refobjid</tt> and <tt class="structfield">refclassid</tt> refer
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>refclassid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The OID of the system catalog the referenced object is in</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>refobjid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+>any OID column</TD
+><TD
+>The OID of the specific referenced object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>refobjsubid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       For a table column, this is the column number (the
+       <TT
+CLASS="STRUCTFIELD"
+>refobjid</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>refclassid</TT
+> refer
        to the table itself).  For all other object types, this column
        is zero.
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">deptype</tt></td>
-<td><tt class="type">char</tt></td>
-<td> </td>
-<td>       A code defining the specific semantics of this dependency relationship; see text.
-      </td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   In all cases, a <tt class="structname">pg_depend</tt> entry indicates that the
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>deptype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       A code defining the specific semantics of this dependency relationship; see text.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   In all cases, a <TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+> entry indicates that the
    referenced object may not be dropped without also dropping the dependent
    object.  However, there are several subflavors identified by
-   <tt class="structfield">deptype</tt>:
+   <TT
+CLASS="STRUCTFIELD"
+>deptype</TT
+>:
 
-   </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="symbol">DEPENDENCY_NORMAL</tt> (<tt class="literal">n</tt>)</span></dt>
-<dd><p>       A normal relationship between separately-created objects.  The
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>DEPENDENCY_NORMAL</TT
+> (<TT
+CLASS="LITERAL"
+>n</TT
+>)</DT
+><DD
+><P
+>       A normal relationship between separately-created objects.  The
        dependent object may be dropped without affecting the
        referenced object.  The referenced object may only be dropped
-       by specifying <tt class="literal">CASCADE</tt>, in which case the dependent
+       by specifying <TT
+CLASS="LITERAL"
+>CASCADE</TT
+>, in which case the dependent
        object is dropped, too.  Example: a table column has a normal
        dependency on its data type.
-      </p></dd>
-<dt><span class="term"><tt class="symbol">DEPENDENCY_AUTO</tt> (<tt class="literal">a</tt>)</span></dt>
-<dd><p>       The dependent object can be dropped separately from the
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>DEPENDENCY_AUTO</TT
+> (<TT
+CLASS="LITERAL"
+>a</TT
+>)</DT
+><DD
+><P
+>       The dependent object can be dropped separately from the
        referenced object, and should be automatically dropped
-       (regardless of <tt class="literal">RESTRICT</tt> or <tt class="literal">CASCADE</tt>
+       (regardless of <TT
+CLASS="LITERAL"
+>RESTRICT</TT
+> or <TT
+CLASS="LITERAL"
+>CASCADE</TT
+>
        mode) if the referenced object is dropped.  Example: a named
        constraint on a table is made autodependent on the table, so
        that it will go away if the table is dropped.
-      </p></dd>
-<dt><span class="term"><tt class="symbol">DEPENDENCY_INTERNAL</tt> (<tt class="literal">i</tt>)</span></dt>
-<dd><p>       The dependent object was created as part of creation of the
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>DEPENDENCY_INTERNAL</TT
+> (<TT
+CLASS="LITERAL"
+>i</TT
+>)</DT
+><DD
+><P
+>       The dependent object was created as part of creation of the
        referenced object, and is really just a part of its internal
-       implementation.  A <tt class="command">DROP</tt> of the dependent object
+       implementation.  A <TT
+CLASS="COMMAND"
+>DROP</TT
+> of the dependent object
        will be disallowed outright (we'll tell the user to issue a
-       <tt class="command">DROP</tt> against the referenced object, instead).  A
-       <tt class="command">DROP</tt> of the referenced object will be propagated
+       <TT
+CLASS="COMMAND"
+>DROP</TT
+> against the referenced object, instead).  A
+       <TT
+CLASS="COMMAND"
+>DROP</TT
+> of the referenced object will be propagated
        through to drop the dependent object whether
-       <tt class="command">CASCADE</tt> is specified or not.  Example: a trigger
+       <TT
+CLASS="COMMAND"
+>CASCADE</TT
+> is specified or not.  Example: a trigger
        that's created to enforce a foreign-key constraint is made
        internally dependent on the constraint's
-       <tt class="structname">pg_constraint</tt> entry.
-      </p></dd>
-<dt><span class="term"><tt class="symbol">DEPENDENCY_PIN</tt> (<tt class="literal">p</tt>)</span></dt>
-<dd><p>       There is no dependent object; this type of entry is a signal
+       <TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+> entry.
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>DEPENDENCY_PIN</TT
+> (<TT
+CLASS="LITERAL"
+>p</TT
+>)</DT
+><DD
+><P
+>       There is no dependent object; this type of entry is a signal
        that the system itself depends on the referenced object, and so
        that object must never be deleted.  Entries of this type are
-       created only by <tt class="command">initdb</tt>.  The columns for the
+       created only by <TT
+CLASS="COMMAND"
+>initdb</TT
+>.  The columns for the
        dependent object contain zeroes.
-      </p></dd>
-</dl></div>
-<p>
+      </P
+></DD
+></DL
+></DIV
+><P>
 
    Other dependency flavors may be needed in future.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-database.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-description.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

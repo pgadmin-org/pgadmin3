@@ -1,148 +1,605 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>createlang</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="app-createdb.html" title="createdb">
-<link rel="next" href="app-createuser.html" title="createuser">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-createlang"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>createlang &#8212; define a new <span class="productname">PostgreSQL</span> procedural language</p>
-</div>
-<a name="id2706538"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">createlang</tt> [<i class="replaceable"><tt>connection-option</tt></i>...]  <i class="replaceable"><tt>langname</tt></i>  [<i class="replaceable"><tt>dbname</tt></i>]<br><tt class="command">createlang</tt> [<i class="replaceable"><tt>connection-option</tt></i>...]  [--list] |  [-l]   <i class="replaceable"><tt>dbname</tt></i> </p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706620"></a><h2>Description</h2>
-<p>   <span class="application">createlang</span> is a utility for adding a new 
-   programming language to a <span class="productname">PostgreSQL</span> database.
-   <span class="application">createlang</span> can handle all the languages
-   supplied in the default <span class="productname">PostgreSQL</span> distribution, but
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>createlang</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="createdb"
+HREF="app-createdb.html"><LINK
+REL="NEXT"
+TITLE="createuser"
+HREF="app-createuser.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-createdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-createdb.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createuser.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createuser.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-CREATELANG"
+></A
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN46339"
+></A
+><H2
+>Name</H2
+>createlang&nbsp;--&nbsp;define a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DIV
+><A
+NAME="AEN46343"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN46345"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>createlang</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>connection-option</I
+></TT
+>...]  <TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+>  [<TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+>]<BR><TT
+CLASS="COMMAND"
+>createlang</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>connection-option</I
+></TT
+>...]  --list | -l   <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46363"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+> is a utility for adding a new 
+   programming language to a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.
+   <SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+> can handle all the languages
+   supplied in the default <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> distribution, but
    not languages provided by other parties.
-  </p>
-<p>   Although backend programming languages can be added directly using
-   several <span class="acronym">SQL</span> commands, it is recommended to use
-   <span class="application">createlang</span> because it performs a number
+  </P
+><P
+>   Although backend programming languages can be added directly using
+   several <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands, it is recommended to use
+   <SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+> because it performs a number
    of checks and is much easier to use. See
-   <a href="sql-createlanguage.html">CREATE LANGUAGE</a>
+   <A
+HREF="sql-createlanguage.html"
+><I
+>CREATE LANGUAGE</I
+></A
+>
    for additional information.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706678"></a><h2>Options</h2>
-<p>    <span class="application">createlang</span> accepts the following command-line arguments:
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46374"
+></A
+><H2
+>Options</H2
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+> accepts the following command-line arguments:
     
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>langname</tt></i></span></dt>
-<dd><p>	Specifies the name of the procedural programming language to be
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the name of the procedural programming language to be
 	defined.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">[<span class="optional">-d</span>] <i class="replaceable"><tt>dbname</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">[<span class="optional">--dbname</span>] <i class="replaceable"><tt>dbname</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies to which database the language should be added.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>-d</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>--dbname</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies to which database the language should be added.
         The default is to use the database with the same name as the
         current system user.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
-</dt>
-<dd><p>        Display SQL commands as they are executed.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-l</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--list</tt></span>
-</dt>
-<dd><p>        Show a list of already installed languages in the target database.
-       </p></dd>
-<dt><span class="term"><tt class="option">-L <i class="replaceable"><tt>directory</tt></i></tt></span></dt>
-<dd><p>	Specifies the directory in which the language interpreter is
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo</TT
+></DT
+><DD
+><P
+>        Display SQL commands as they are executed.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-l</TT
+><BR><TT
+CLASS="OPTION"
+>--list</TT
+></DT
+><DD
+><P
+>        Show a list of already installed languages in the target database.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-L <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the directory in which the language interpreter is
         to be found.  The directory is normally found automatically; this
         option is primarily for debugging purposes.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-<p>    <span class="application">createlang</span> also accepts 
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+> also accepts 
     the following command-line arguments for connection parameters:
     
-    </p>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the host name of the machine on which the 
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the host name of the machine on which the 
 	server
 	is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the TCP port or local Unix domain socket file 
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
-</dt>
-<dd><p>        User name to connect as.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
-</dt>
-<dd><p>        Force password prompt.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706862"></a><h2>Environment</h2>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGDATABASE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
-</dt>
-<dd><p>      Default connection parameters
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706885"></a><h2>Diagnostics</h2>
-<p>    Most error messages are self-explanatory. If not, run
-    <span class="application">createlang</span> with the <tt class="option">--echo</tt>
-    option and see under the respective <span class="acronym">SQL</span> command
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        User name to connect as.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>        Force password prompt.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46452"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+><BR><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46466"
+></A
+><H2
+>Diagnostics</H2
+><P
+>    Most error messages are self-explanatory. If not, run
+    <SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+> with the <TT
+CLASS="OPTION"
+>--echo</TT
+>
+    option and see under the respective <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command
     for details.
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706906"></a><h2>Notes</h2>
-<p>   Use <a href="app-droplang.html" title="droplang"><span class="refentrytitle"><a name="app-droplang-title"></a><span class="application">droplang</span></span></a> to remove a language.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706918"></a><h2>Examples</h2>
-<p>    To install the language <tt class="literal">pltcl</tt> into the database
-    <tt class="literal">template1</tt>:
-</p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>createlang pltcl template1</tt></b></pre>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706950"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-droplang.html" title="droplang"><span class="refentrytitle"><a name="app-droplang-title"></a><span class="application">droplang</span></span></a>, <a href="sql-createlanguage.html">CREATE LANGUAGE</a></span>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46472"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
+> to remove a language.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46476"
+></A
+><H2
+>Examples</H2
+><P
+>    To install the language <TT
+CLASS="LITERAL"
+>pltcl</TT
+> into the database
+    <TT
+CLASS="LITERAL"
+>template1</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>createlang pltcl template1</KBD
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46484"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
+>, <A
+HREF="sql-createlanguage.html"
+><I
+>CREATE LANGUAGE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-createdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createuser.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

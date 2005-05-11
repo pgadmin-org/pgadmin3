@@ -1,55 +1,263 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2.2. Concepts</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="previous" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="next" href="tutorial-table.html" title="2.3. Creating a New Table">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-concepts"></a>2.2. Concepts</h2></div></div>
-<div></div>
-</div>
-<p>    <a name="id2517828"></a>
-    <a name="id2517834"></a>
-    <a name="id2517841"></a>
-    <a name="id2517848"></a>
-    <a name="id2517855"></a>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Concepts</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="tutorial-sql.html"><LINK
+REL="PREVIOUS"
+TITLE="The SQL Language"
+HREF="tutorial-sql.html"><LINK
+REL="NEXT"
+TITLE="Creating a New Table"
+HREF="tutorial-table.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-table.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-CONCEPTS"
+>2.2. Concepts</A
+></H1
+><P
+>    <A
+NAME="AEN605"
+></A
+>
+    <A
+NAME="AEN607"
+></A
+>
+    <A
+NAME="AEN609"
+></A
+>
+    <A
+NAME="AEN611"
+></A
+>
+    <A
+NAME="AEN613"
+></A
+>
 
-    <span class="productname">PostgreSQL</span> is a <i class="firstterm">relational
-    database management system</i> (<span class="acronym">RDBMS</span>).
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is a <I
+CLASS="FIRSTTERM"
+>relational
+    database management system</I
+> (<ACRONYM
+CLASS="ACRONYM"
+>RDBMS</ACRONYM
+>).
     That means it is a system for managing data stored in
-    <i class="firstterm">relations</i>.  Relation is essentially a
-    mathematical term for <i class="firstterm">table</i>.  The notion of
+    <I
+CLASS="FIRSTTERM"
+>relations</I
+>.  Relation is essentially a
+    mathematical term for <I
+CLASS="FIRSTTERM"
+>table</I
+>.  The notion of
     storing data in tables is so commonplace today that it might
     seem inherently obvious, but there are a number of other ways of
     organizing databases.  Files and directories on Unix-like
     operating systems form an example of a hierarchical database.  A
     more modern development is the object-oriented database.
-   </p>
-<p>    <a name="id2517892"></a>
-    <a name="id2517899"></a>
+   </P
+><P
+>    <A
+NAME="AEN621"
+></A
+>
+    <A
+NAME="AEN623"
+></A
+>
 
-    Each table is a named collection of <i class="firstterm">rows</i>.
+    Each table is a named collection of <I
+CLASS="FIRSTTERM"
+>rows</I
+>.
     Each row of a given table has the same set of named
-    <i class="firstterm">columns</i>,
+    <I
+CLASS="FIRSTTERM"
+>columns</I
+>,
     and each column is of a specific data type.  Whereas columns have
     a fixed order in each row, it is important to remember that SQL
     does not guarantee the order of the rows within the table in any
     way (although they can be explicitly sorted for display).
-   </p>
-<p>    <a name="id2517922"></a>
-    <a name="id2517928"></a>
+   </P
+><P
+>    <A
+NAME="AEN628"
+></A
+>
+    <A
+NAME="AEN630"
+></A
+>
 
     Tables are grouped into databases, and a collection of databases
-    managed by a single <span class="productname">PostgreSQL</span> server
-    instance constitutes a database <i class="firstterm">cluster</i>.
-   </p>
-</div></body>
-</html>
+    managed by a single <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server
+    instance constitutes a database <I
+CLASS="FIRSTTERM"
+>cluster</I
+>.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-table.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Language</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating a New Table</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

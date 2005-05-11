@@ -1,379 +1,1308 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>postmaster</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
-<link rel="previous" href="app-postgres.html" title="postgres">
-<link rel="next" href="internals.html" title="Part VII. Internals">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-postmaster"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>postmaster &#8212; <span class="productname">PostgreSQL</span> multiuser database server</p>
-</div>
-<a name="id2723858"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">postmaster</tt> [-A   [0] |  [1] ] [-B <i class="replaceable"><tt>nbuffers</tt></i>] [-c <i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>] [-d <i class="replaceable"><tt>debug-level</tt></i>] [-D <i class="replaceable"><tt>datadir</tt></i>] [-F] [-h <i class="replaceable"><tt>hostname</tt></i>] [-i] [-k <i class="replaceable"><tt>directory</tt></i>] [-l] [-N <i class="replaceable"><tt>max-connections</tt></i>] [-o <i class="replaceable"><tt>extra-options</tt></i>] [-p <i class="replaceable"><tt>port</tt></i>] [-S] [--<i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>] [[-n] |  [-s]]</p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2724039"></a><h2>Description</h2>
-<p>   <tt class="command">postmaster</tt> is the
-   <span class="productname">PostgreSQL</span> multiuser database server.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>postmaster</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="PREVIOUS"
+TITLE="postgres"
+HREF="app-postgres.html"><LINK
+REL="NEXT"
+TITLE="Internals"
+HREF="internals.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-postgres.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-postgres.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="internals.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="internals.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-POSTMASTER"
+></A
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN51138"
+></A
+><H2
+>Name</H2
+>postmaster&nbsp;--&nbsp;<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> multiuser database server</DIV
+><A
+NAME="AEN51142"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN51144"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>postmaster</TT
+> [-A   0 | 1 ] [-B <TT
+CLASS="REPLACEABLE"
+><I
+>nbuffers</I
+></TT
+>] [-c <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>=<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+>] [-d <TT
+CLASS="REPLACEABLE"
+><I
+>debug-level</I
+></TT
+>] [-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+>] [-F] [-h <TT
+CLASS="REPLACEABLE"
+><I
+>hostname</I
+></TT
+>] [-i] [-k <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+>] [-l] [-N <TT
+CLASS="REPLACEABLE"
+><I
+>max-connections</I
+></TT
+>] [-o <TT
+CLASS="REPLACEABLE"
+><I
+>extra-options</I
+></TT
+>] [-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+>] [-S] [--<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>=<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+>] [-n | -s]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51180"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>postmaster</TT
+> is the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> multiuser database server.
    In order for a client application to access a database it connects
    (over a network or locally) to a running
-   <tt class="command">postmaster</tt>.  The
-   <tt class="command">postmaster</tt> then starts a separate server
-   process (&#8220;<span class="quote"><a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a></span>&#8221;) to handle
-   the connection.  The <tt class="command">postmaster</tt> also
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+>.  The
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+> then starts a separate server
+   process (<SPAN
+CLASS="QUOTE"
+>"<A
+HREF="app-postgres.html"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></A
+>"</SPAN
+>) to handle
+   the connection.  The <TT
+CLASS="COMMAND"
+>postmaster</TT
+> also
    manages the communication among server processes.
-  </p>
-<p>   By default the <tt class="command">postmaster</tt> starts in the
+  </P
+><P
+>   By default the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> starts in the
    foreground and prints log messages to the standard error stream.  In
-   practical applications the <tt class="command">postmaster</tt>
+   practical applications the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
    should be started as a background process, perhaps at boot time.
-  </p>
-<p>   One <tt class="command">postmaster</tt> always manages the data
+  </P
+><P
+>   One <TT
+CLASS="COMMAND"
+>postmaster</TT
+> always manages the data
    from exactly one database cluster.  A database cluster is a
    collection of databases that is stored at a common file system
-   location (the &#8220;<span class="quote">data area</span>&#8221;).
-   More than one <tt class="command">postmaster</tt> process can run on a system
+   location (the <SPAN
+CLASS="QUOTE"
+>"data area"</SPAN
+>).
+   More than one <TT
+CLASS="COMMAND"
+>postmaster</TT
+> process can run on a system
    at one time, so long as they use different data areas and different
-   communication ports (see below).  A data area is created with <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>.
-  </p>
-<p>   When the <tt class="command">postmaster</tt> starts it needs 
+   communication ports (see below).  A data area is created with <A
+HREF="app-initdb.html"
+>initdb</A
+>.
+  </P
+><P
+>   When the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> starts it needs 
    to know the location of the data area.
-   The location must be specified by the <tt class="option">-D</tt> option
-   or the <tt class="envar">PGDATA</tt> environment variable; there is no default.
-   Typically, <tt class="option">-D</tt> or <tt class="envar">PGDATA</tt> points
-   directly to the data area directory created by <span class="application">initdb</span>.
+   The location must be specified by the <TT
+CLASS="OPTION"
+>-D</TT
+> option
+   or the <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable; there is no default.
+   Typically, <TT
+CLASS="OPTION"
+>-D</TT
+> or <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> points
+   directly to the data area directory created by <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+>.
    Other possible file layouts are discussed in
-   <a href="runtime-config.html#runtime-config-file-locations" title="16.4.1. File Locations">Section 16.4.1, &#8220;File Locations&#8221;</a>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="app-postmaster-options"></a><h2>Options</h2>
-<p>    <tt class="command">postmaster</tt> accepts the following
+   <A
+HREF="runtime-config.html#RUNTIME-CONFIG-FILE-LOCATIONS"
+>Section 16.4.1</A
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-POSTMASTER-OPTIONS"
+></A
+><H2
+>Options</H2
+><P
+>    <TT
+CLASS="COMMAND"
+>postmaster</TT
+> accepts the following
     command line arguments.  For a detailed discussion of the options
-    consult <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>.  You can also save typing most of these
+    consult <A
+HREF="runtime-config.html"
+>Section 16.4</A
+>.  You can also save typing most of these
     options by setting up a configuration file.
     
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="option">-A 0|1</tt></span></dt>
-<dd><p>        Enables run-time assertion checks, which is a debugging aid to
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-A 0|1</TT
+></DT
+><DD
+><P
+>        Enables run-time assertion checks, which is a debugging aid to
         detect programming mistakes.  This option is only available if
-        assertions were enabled when <span class="productname">PostgreSQL</span> was
+        assertions were enabled when <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> was
         compiled. If so, the default is on.
-       </p></dd>
-<dt><span class="term"><tt class="option">-B <i class="replaceable"><tt>nbuffers</tt></i></tt></span></dt>
-<dd><p>	Sets the number of shared buffers for use by the server
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-B <TT
+CLASS="REPLACEABLE"
+><I
+>nbuffers</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Sets the number of shared buffers for use by the server
 	processes.  The default value of this parameter is chosen
-	automatically by <span class="application">initdb</span>; refer to <a href="runtime-config.html#runtime-config-resource-memory" title="16.4.3.1. Memory">Section 16.4.3.1, &#8220;Memory&#8221;</a> for more information.
-       </p></dd>
-<dt><span class="term"><tt class="option">-c <i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i></tt></span></dt>
-<dd><p>        Sets a named run-time parameter. The configuration parameters
-        supported by <span class="productname">PostgreSQL</span> are
-        described in <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>. Most of the
+	automatically by <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+>; refer to <A
+HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE-MEMORY"
+>Section 16.4.3.1</A
+> for more information.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-c <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>=<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Sets a named run-time parameter. The configuration parameters
+        supported by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> are
+        described in <A
+HREF="runtime-config.html"
+>Section 16.4</A
+>. Most of the
         other command line options are in fact short forms of such a
-        parameter assignment.  <tt class="option">-c</tt> can appear multiple times
+        parameter assignment.  <TT
+CLASS="OPTION"
+>-c</TT
+> can appear multiple times
         to set multiple parameters.
-       </p></dd>
-<dt><span class="term"><tt class="option">-d <i class="replaceable"><tt>debug-level</tt></i></tt></span></dt>
-<dd><p>        Sets the debug level.  The higher this value is set, the more
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-d <TT
+CLASS="REPLACEABLE"
+><I
+>debug-level</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Sets the debug level.  The higher this value is set, the more
         debugging output is written to the server log.  Values are from
         1 to 5.
-       </p></dd>
-<dt><span class="term"><tt class="option">-D <i class="replaceable"><tt>datadir</tt></i></tt></span></dt>
-<dd><p>        Specifies the file system location of the data directory or
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies the file system location of the data directory or
         configuration file(s).  See
-        <a href="runtime-config.html#runtime-config-file-locations" title="16.4.1. File Locations">Section 16.4.1, &#8220;File Locations&#8221;</a> for details.
-       </p></dd>
-<dt><span class="term"><tt class="option">-F</tt></span></dt>
-<dd>
-<p>        Disables <tt class="function">fsync</tt> calls for improved
+        <A
+HREF="runtime-config.html#RUNTIME-CONFIG-FILE-LOCATIONS"
+>Section 16.4.1</A
+> for details.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-F</TT
+></DT
+><DD
+><P
+>        Disables <CODE
+CLASS="FUNCTION"
+>fsync</CODE
+> calls for improved
         performance, at the risk of data corruption in the event of a
         system crash.  Specifying this option is equivalent to
-        disabling the <a href="runtime-config.html#guc-fsync">fsync</a> configuration
+        disabling the <A
+HREF="runtime-config.html#GUC-FSYNC"
+>fsync</A
+> configuration
         parameter. Read the detailed documentation before using this!
-       </p>
-<p>        <tt class="option">--fsync=true</tt> has the opposite effect
+       </P
+><P
+>        <TT
+CLASS="OPTION"
+>--fsync=true</TT
+> has the opposite effect
         of this option.
-       </p>
-</dd>
-<dt><span class="term"><tt class="option">-h <i class="replaceable"><tt>hostname</tt></i></tt></span></dt>
-<dd><p>        Specifies the IP host name or address on which the
-        <tt class="command">postmaster</tt> is to listen for TCP/IP
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>hostname</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies the IP host name or address on which the
+        <TT
+CLASS="COMMAND"
+>postmaster</TT
+> is to listen for TCP/IP
         connections from client applications.  The value can also be a
-        space-separated list of addresses, or <tt class="literal">*</tt> to specify
+        space-separated list of addresses, or <TT
+CLASS="LITERAL"
+>*</TT
+> to specify
         listening on all available interfaces.  An empty value
         specifies not listening on any IP addresses, in which case
         only Unix-domain sockets can be used to connect to the
-        <tt class="command">postmaster</tt>.  Defaults to listening only on
-        <span class="systemitem">localhost</span>.
-        Specifying this option is equivalent to setting the <a href="runtime-config.html#guc-listen-addresses">listen_addresses</a> configuration parameter.
-       </p></dd>
-<dt><span class="term"><tt class="option">-i</tt></span></dt>
-<dd>
-<p>        Allows remote clients to connect via TCP/IP (Internet domain)
+        <TT
+CLASS="COMMAND"
+>postmaster</TT
+>.  Defaults to listening only on
+        <SPAN
+CLASS="SYSTEMITEM"
+>localhost</SPAN
+>.
+        Specifying this option is equivalent to setting the <A
+HREF="runtime-config.html#GUC-LISTEN-ADDRESSES"
+>listen_addresses</A
+> configuration parameter.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-i</TT
+></DT
+><DD
+><P
+>        Allows remote clients to connect via TCP/IP (Internet domain)
         connections.  Without this option, only local connections are
         accepted.  This option is equivalent to setting
-        <tt class="varname">listen_addresses</tt> to <tt class="literal">*</tt> in
-        <tt class="filename">postgresql.conf</tt> or via <tt class="option">-h</tt>.
-       </p>
-<p>        This option is deprecated since it does not allow access to the
-        full functionality of <a href="runtime-config.html#guc-listen-addresses">listen_addresses</a>.
-        It's usually better to set <tt class="varname">listen_addresses</tt> directly.
-       </p>
-</dd>
-<dt><span class="term"><tt class="option">-k <i class="replaceable"><tt>directory</tt></i></tt></span></dt>
-<dd><p>	Specifies the directory of the Unix-domain socket on which the
-	<tt class="command">postmaster</tt> is to listen for
+        <TT
+CLASS="VARNAME"
+>listen_addresses</TT
+> to <TT
+CLASS="LITERAL"
+>*</TT
+> in
+        <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> or via <TT
+CLASS="OPTION"
+>-h</TT
+>.
+       </P
+><P
+>        This option is deprecated since it does not allow access to the
+        full functionality of <A
+HREF="runtime-config.html#GUC-LISTEN-ADDRESSES"
+>listen_addresses</A
+>.
+        It's usually better to set <TT
+CLASS="VARNAME"
+>listen_addresses</TT
+> directly.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-k <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the directory of the Unix-domain socket on which the
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
+> is to listen for
 	connections from client applications.  The default is normally
-	<tt class="filename">/tmp</tt>, but can be changed at build time.
-       </p></dd>
-<dt><span class="term"><tt class="option">-l</tt></span></dt>
-<dd><p>	Enables secure connections using <span class="acronym">SSL</span>.
-	<span class="productname">PostgreSQL</span> must have been compiled with
-	support for <span class="acronym">SSL</span> for this option to be
-	available. For more information on using <span class="acronym">SSL</span>,
-	refer to <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a>.
-       </p></dd>
-<dt><span class="term"><tt class="option">-N <i class="replaceable"><tt>max-connections</tt></i></tt></span></dt>
-<dd><p>	Sets the maximum number of client connections that this
-	<tt class="command">postmaster</tt> will accept.  By
+	<TT
+CLASS="FILENAME"
+>/tmp</TT
+>, but can be changed at build time.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-l</TT
+></DT
+><DD
+><P
+>	Enables secure connections using <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>.
+	<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> must have been compiled with
+	support for <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> for this option to be
+	available. For more information on using <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>,
+	refer to <A
+HREF="ssl-tcp.html"
+>Section 16.8</A
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-N <TT
+CLASS="REPLACEABLE"
+><I
+>max-connections</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Sets the maximum number of client connections that this
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
+> will accept.  By
 	default, this value is 32, but it can be set as high as your
 	system will support.  (Note that
-	<tt class="option">-B</tt> is required to be at least twice
-	<tt class="option">-N</tt>.  See <a href="kernel-resources.html" title="16.5. Managing Kernel Resources">Section 16.5, &#8220;Managing Kernel Resources&#8221;</a> for a discussion of
+	<TT
+CLASS="OPTION"
+>-B</TT
+> is required to be at least twice
+	<TT
+CLASS="OPTION"
+>-N</TT
+>.  See <A
+HREF="kernel-resources.html"
+>Section 16.5</A
+> for a discussion of
 	system resource requirements for large numbers of client
 	connections.) Specifying this option is equivalent to setting the
-	<a href="runtime-config.html#guc-max-connections">max_connections</a> configuration parameter.
-       </p></dd>
-<dt><span class="term"><tt class="option">-o <i class="replaceable"><tt>extra-options</tt></i></tt></span></dt>
-<dd><p>	The command line-style options specified in <i class="replaceable"><tt>extra-options</tt></i> are passed to
+	<A
+HREF="runtime-config.html#GUC-MAX-CONNECTIONS"
+>max_connections</A
+> configuration parameter.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-o <TT
+CLASS="REPLACEABLE"
+><I
+>extra-options</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	The command line-style options specified in <TT
+CLASS="REPLACEABLE"
+><I
+>extra-options</I
+></TT
+> are passed to
 	all server processes started by this
-	<tt class="command">postmaster</tt>.  See <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a> for possibilities.  If the option
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
+>.  See <A
+HREF="app-postgres.html"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></A
+> for possibilities.  If the option
 	string contains any spaces, the entire string must be quoted.
-       </p></dd>
-<dt><span class="term"><tt class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span></dt>
-<dd><p>	Specifies the TCP/IP port or local Unix domain socket file
-	extension on which the <tt class="command">postmaster</tt>
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the TCP/IP port or local Unix domain socket file
+	extension on which the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
 	is to listen for connections from client applications.
-	Defaults to the value of the <tt class="envar">PGPORT</tt> environment
-	variable, or if <tt class="envar">PGPORT</tt> is not set, then
+	Defaults to the value of the <TT
+CLASS="ENVAR"
+>PGPORT</TT
+> environment
+	variable, or if <TT
+CLASS="ENVAR"
+>PGPORT</TT
+> is not set, then
 	defaults to the value established during compilation (normally
 	5432).  If you specify a port other than the default port,
 	then all client applications must specify the same port using
-	either command-line options or <tt class="envar">PGPORT</tt>.
-       </p></dd>
-<dt><span class="term"><tt class="option">-S</tt></span></dt>
-<dd>
-<p>	Specifies that the <tt class="command">postmaster</tt>
+	either command-line options or <TT
+CLASS="ENVAR"
+>PGPORT</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-S</TT
+></DT
+><DD
+><P
+>	Specifies that the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
 	process should start up in silent mode.  That is, it will
 	disassociate from the user's (controlling) terminal, start its
 	own process group, and redirect its standard output and
-	standard error to <tt class="filename">/dev/null</tt>.
-       </p>
-<p>        Using this switch discards all logging output, which is
+	standard error to <TT
+CLASS="FILENAME"
+>/dev/null</TT
+>.
+       </P
+><P
+>        Using this switch discards all logging output, which is
 	probably not what you want, since it makes it very difficult
 	to troubleshoot problems.  See below for a better way to start
-	the <tt class="command">postmaster</tt> in the background.
-       </p>
-<p>        <tt class="option">--silent-mode=false</tt> has the opposite effect
+	the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> in the background.
+       </P
+><P
+>        <TT
+CLASS="OPTION"
+>--silent-mode=false</TT
+> has the opposite effect
         of this option.
-       </p>
-</dd>
-<dt><span class="term"><tt class="option">--<i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i></tt></span></dt>
-<dd><p>        Sets a named run-time parameter; a shorter form of
-        <tt class="option">-c</tt>.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-<p>    Two additional command line options are available for debugging
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>--<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>=<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Sets a named run-time parameter; a shorter form of
+        <TT
+CLASS="OPTION"
+>-c</TT
+>.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    Two additional command line options are available for debugging
     problems that cause a server process to die abnormally.  The
     ordinary strategy in this situation is to notify all other server
     processes that they must terminate and then reinitialize the
     shared memory and semaphores.  This is because an errant server
     process could have corrupted some shared state before terminating.
     These options select alternative behaviors of the
-    <tt class="command">postmaster</tt> in this situation.
-    <span class="emphasis"><em>Neither option is intended for use in ordinary
-    operation.</em></span>
-   </p>
-<p>   </p>
-<p>    These special-case options are:
+    <TT
+CLASS="COMMAND"
+>postmaster</TT
+> in this situation.
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Neither option is intended for use in ordinary
+    operation.</I
+></SPAN
+>
+   </P
+><P
+>   </P
+><P
+>    These special-case options are:
 
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="option">-n</tt></span></dt>
-<dd><p>	<tt class="command">postmaster</tt>
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-n</TT
+></DT
+><DD
+><P
+>	<TT
+CLASS="COMMAND"
+>postmaster</TT
+>
 	will not reinitialize shared data structures.  A knowledgeable system
 	programmer can then use a debugger
 	to examine shared memory and semaphore state.
-       </p></dd>
-<dt><span class="term"><tt class="option">-s</tt></span></dt>
-<dd><p>	<tt class="command">postmaster</tt>
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-s</TT
+></DT
+><DD
+><P
+>	<TT
+CLASS="COMMAND"
+>postmaster</TT
+>
 	will stop all other server processes by sending the signal
-	<tt class="literal">SIGSTOP</tt>,
+	<TT
+CLASS="LITERAL"
+>SIGSTOP</TT
+>,
 	but will not cause them to terminate.  This permits system programmers
 	to collect core dumps from all server processes by hand.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2724747"></a><h2>Environment</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="envar">PGCLIENTENCODING</tt></span></dt>
-<dd><p>      Default character encoding used by clients.  (The clients may
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51367"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGCLIENTENCODING</TT
+></DT
+><DD
+><P
+>      Default character encoding used by clients.  (The clients may
       override this individually.)  This value can also be set in the
       configuration file.
-     </p></dd>
-<dt><span class="term"><tt class="envar">PGDATA</tt></span></dt>
-<dd><p>      Default data directory location
-     </p></dd>
-<dt><span class="term"><tt class="envar">PGDATESTYLE</tt></span></dt>
-<dd><p>      Default value of the <a href="runtime-config.html#guc-datestyle">DateStyle</a> run-time
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATA</TT
+></DT
+><DD
+><P
+>      Default data directory location
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATESTYLE</TT
+></DT
+><DD
+><P
+>      Default value of the <A
+HREF="runtime-config.html#GUC-DATESTYLE"
+>DateStyle</A
+> run-time
       parameter.  (The use of this environment variable is deprecated.)
-     </p></dd>
-<dt><span class="term"><tt class="envar">PGPORT</tt></span></dt>
-<dd><p>      Default port (preferably set in the configuration file)
-     </p></dd>
-<dt><span class="term"><tt class="envar">TZ</tt></span></dt>
-<dd><p>      Server time zone
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2724804"></a><h2>Diagnostics</h2>
-<p>    A failure message mentioning <tt class="literal">semget</tt> or <tt class="literal">shmget</tt>
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGPORT</TT
+></DT
+><DD
+><P
+>      Default port (preferably set in the configuration file)
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>TZ</TT
+></DT
+><DD
+><P
+>      Server time zone
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51396"
+></A
+><H2
+>Diagnostics</H2
+><P
+>    A failure message mentioning <TT
+CLASS="LITERAL"
+>semget</TT
+> or <TT
+CLASS="LITERAL"
+>shmget</TT
+>
     probably indicates you need to configure your kernel to provide adequate
-    shared memory and semaphores.  For more discussion see <a href="kernel-resources.html" title="16.5. Managing Kernel Resources">Section 16.5, &#8220;Managing Kernel Resources&#8221;</a>.
-   </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>     You may be able to postpone reconfiguring your kernel by
-     decreasing <a href="runtime-config.html#guc-shared-buffers">shared_buffers</a> to reduce the
-     shared memory consumption of <span class="productname">PostgreSQL</span>, and/or
-     by reducing <a href="runtime-config.html#guc-max-connections">max_connections</a> to reduce the
+    shared memory and semaphores.  For more discussion see <A
+HREF="kernel-resources.html"
+>Section 16.5</A
+>.
+   </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>     You may be able to postpone reconfiguring your kernel by
+     decreasing <A
+HREF="runtime-config.html#GUC-SHARED-BUFFERS"
+>shared_buffers</A
+> to reduce the
+     shared memory consumption of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, and/or
+     by reducing <A
+HREF="runtime-config.html#GUC-MAX-CONNECTIONS"
+>max_connections</A
+> to reduce the
      semaphore consumption.
-    </p>
-</div>
-<p>    A failure message suggesting that another postmaster is already running
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    A failure message suggesting that another postmaster is already running
     should be checked carefully, for example by using the command
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>ps ax | grep postmaster</tt></b></pre>
-<p>
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>ps ax | grep postmaster</KBD
+></PRE
+><P>
         or
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>ps -ef | grep postmaster</tt></b></pre>
-<p>
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>ps -ef | grep postmaster</KBD
+></PRE
+><P>
     depending on your system.  If you are certain that no conflicting
     postmaster is running, you may remove the lock file mentioned in the
     message and try again.
-   </p>
-<p>    A failure message indicating inability to bind to a port may
+   </P
+><P
+>    A failure message indicating inability to bind to a port may
     indicate that that port is already in use by some
-    non-<span class="productname">PostgreSQL</span> process.  You may also
-    get this error if you terminate the <tt class="command">postmaster</tt>
+    non-<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> process.  You may also
+    get this error if you terminate the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
     and immediately restart it using the same port; in this case, you
     must simply wait a few seconds until the operating system closes
     the port before trying again.  Finally, you may get this error if
     you specify a port number that your operating system considers to
     be reserved.  For example, many versions of Unix consider port
-    numbers under 1024 to be &#8220;<span class="quote">trusted</span>&#8221; and only permit
+    numbers under 1024 to be <SPAN
+CLASS="QUOTE"
+>"trusted"</SPAN
+> and only permit
     the Unix superuser to access them.
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2724920"></a><h2>Notes</h2>
-<p>   If at all possible, <span class="emphasis"><em>do not</em></span> use
-   <tt class="literal">SIGKILL</tt> to kill the
-   <tt class="command">postmaster</tt>.  Doing so will prevent
-   <tt class="command">postmaster</tt> from freeing the system
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51418"
+></A
+><H2
+>Notes</H2
+><P
+>   If at all possible, <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>do not</I
+></SPAN
+> use
+   <TT
+CLASS="LITERAL"
+>SIGKILL</TT
+> to kill the
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+>.  Doing so will prevent
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+> from freeing the system
    resources (e.g., shared memory and semaphores) that it holds before
    terminating.  This may cause problems for starting a fresh
-   <tt class="command">postmaster</tt> run.
-  </p>
-<p>   To terminate the <tt class="command">postmaster</tt> normally,
-   the signals <tt class="literal">SIGTERM</tt>, <tt class="literal">SIGINT</tt>,
-   or <tt class="literal">SIGQUIT</tt> can be used.  The first will wait for
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+> run.
+  </P
+><P
+>   To terminate the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> normally,
+   the signals <TT
+CLASS="LITERAL"
+>SIGTERM</TT
+>, <TT
+CLASS="LITERAL"
+>SIGINT</TT
+>,
+   or <TT
+CLASS="LITERAL"
+>SIGQUIT</TT
+> can be used.  The first will wait for
    all clients to terminate before quitting, the second will
    forcefully disconnect all clients, and the third will quit
    immediately without proper shutdown, resulting in a recovery run
-   during restart.   The <tt class="literal">SIGHUP</tt> signal will 
+   during restart.   The <TT
+CLASS="LITERAL"
+>SIGHUP</TT
+> signal will 
    reload the server configuration files.
-  </p>
-<p>   The utility command <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a> can be used to
-   start and shut down the <tt class="command">postmaster</tt>
+  </P
+><P
+>   The utility command <A
+HREF="app-pg-ctl.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></A
+> can be used to
+   start and shut down the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
    safely and comfortably.
-  </p>
-<p>   The <tt class="option">--</tt> options will not work on <span class="systemitem">FreeBSD</span> or <span class="systemitem">OpenBSD</span>.
-   Use <tt class="option">-c</tt> instead. This is a bug in the affected operating
-   systems; a future release of <span class="productname">PostgreSQL</span>
+  </P
+><P
+>   The <TT
+CLASS="OPTION"
+>--</TT
+> options will not work on <SPAN
+CLASS="SYSTEMITEM"
+>FreeBSD</SPAN
+> or <SPAN
+CLASS="SYSTEMITEM"
+>OpenBSD</SPAN
+>.
+   Use <TT
+CLASS="OPTION"
+>-c</TT
+> instead. This is a bug in the affected operating
+   systems; a future release of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
    will provide a workaround if this is not fixed.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="app-postmaster-examples"></a><h2>Examples</h2>
-<p>   To start <tt class="command">postmaster</tt> in the background
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-POSTMASTER-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To start <TT
+CLASS="COMMAND"
+>postmaster</TT
+> in the background
    using default values, type:
 
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>nohup postmaster &gt;logfile 2&gt;&amp;1 &lt;/dev/null &amp;</tt></b></pre>
-<p>
-  </p>
-<p>   To start <tt class="command">postmaster</tt> with a specific
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>nohup postmaster &gt;logfile 2&gt;&amp;1 &lt;/dev/null &amp;</KBD
+></PRE
+><P>
+  </P
+><P
+>   To start <TT
+CLASS="COMMAND"
+>postmaster</TT
+> with a specific
    port:
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>postmaster -p 1234</tt></b></pre>
-<p>
-   This command will start up <tt class="command">postmaster</tt>
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>postmaster -p 1234</KBD
+></PRE
+><P>
+   This command will start up <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
    communicating through the port 1234. In order to connect to this
-   <tt class="command">postmaster</tt> using <span class="application">psql</span>, you would need to
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+> using <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, you would need to
    run it as
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>psql -p 1234</tt></b></pre>
-<p>
-   or set the environment variable <tt class="envar">PGPORT</tt>:
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>export PGPORT=1234</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>psql</tt></b></pre>
-<p>
-  </p>
-<p>   Named run-time parameters can be set in either of these styles:
-</p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>postmaster -c work_mem=1234</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>postmaster --work-mem=1234</tt></b></pre>
-<p>
-   Either form overrides whatever setting might exist for <tt class="varname">work_mem</tt>
-   in <tt class="filename">postgresql.conf</tt>.  Notice that underscores in parameter
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>psql -p 1234</KBD
+></PRE
+><P>
+   or set the environment variable <TT
+CLASS="ENVAR"
+>PGPORT</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>export PGPORT=1234</KBD
+>
+<SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>psql</KBD
+></PRE
+><P>
+  </P
+><P
+>   Named run-time parameters can be set in either of these styles:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>postmaster -c work_mem=1234</KBD
+>
+<SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>postmaster --work-mem=1234</KBD
+></PRE
+><P>
+   Either form overrides whatever setting might exist for <TT
+CLASS="VARNAME"
+>work_mem</TT
+>
+   in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>.  Notice that underscores in parameter
    names can be written as either underscore or dash on the command line.
-  </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>   Except for short-term experiments,
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>   Except for short-term experiments,
    it's probably better practice to edit the setting in
-   <tt class="filename">postgresql.conf</tt> than to rely on a command-line switch
+   <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> than to rely on a command-line switch
    to set a parameter.
-  </p>
-</div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2725220"></a><h2>See Also</h2>
-<p>   <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,
-   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a>
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51476"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="app-initdb.html"
+>initdb</A
+>,
+   <A
+HREF="app-pg-ctl.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></A
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-postgres.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="internals.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Internals</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

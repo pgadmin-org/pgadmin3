@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Release 7.2.8</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 7.3"
+HREF="release-7-3.html"><LINK
+REL="NEXT"
+TITLE="Release 7.2.7"
+HREF="release-7-2-7.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-2-7.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-2-8"
+>E.25. Release 7.2.8</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2005-05-09</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This release contains a variety of fixes from 7.2.7, including one
+    security-related issue.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN71720"
+>E.25.1. Migration to version 7.2.8</A
+></H2
+><P
+>     A dump/restore is not required for those running 7.2.X.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN71723"
+>E.25.2. Changes</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>Repair ancient race condition that allowed a transaction to be
+seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
+than for other purposes</P
+><P
+>This is an extremely serious bug since it could lead to apparent
+data inconsistencies being briefly visible to applications.</P
+></LI
+><LI
+><P
+>Repair race condition between relation extension and
+VACUUM</P
+><P
+>This could theoretically have caused loss of a page's worth of
+freshly-inserted data, although the scenario seems of very low probability.
+There are no known cases of it having caused more than an Assert failure.</P
+></LI
+><LI
+><P
+>Fix <CODE
+CLASS="FUNCTION"
+>EXTRACT(EPOCH)</CODE
+> for
+<TT
+CLASS="TYPE"
+>TIME WITH TIME ZONE</TT
+> values</P
+></LI
+><LI
+><P
+>Additional buffer overrun checks in plpgsql
+(Neil)</P
+></LI
+><LI
+><P
+>Fix pg_dump to dump index names and trigger names containing
+<TT
+CLASS="LITERAL"
+>%</TT
+> correctly (Neil)</P
+></LI
+><LI
+><P
+>Prevent <CODE
+CLASS="FUNCTION"
+>to_char(interval)</CODE
+> from dumping core for
+month-related formats</P
+></LI
+><LI
+><P
+>Fix <TT
+CLASS="FILENAME"
+>contrib/pgcrypto</TT
+> for newer OpenSSL builds
+(Marko Kreen)</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-2-7.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 7.3</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.2.7</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

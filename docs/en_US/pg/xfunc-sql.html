@@ -1,61 +1,224 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>31.4. Query Language (SQL) Functions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
-<link rel="previous" href="xfunc.html" title="31.3. User-Defined Functions">
-<link rel="next" href="xfunc-overload.html" title="31.5. Function Overloading">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="xfunc-sql"></a>31.4. Query Language (<span class="acronym">SQL</span>) Functions</h2></div></div>
-<div></div>
-</div>
-<a name="id2632389"></a><p>    SQL functions execute an arbitrary list of SQL statements, returning
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Query Language (SQL) Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL"
+HREF="extend.html"><LINK
+REL="PREVIOUS"
+TITLE="User-Defined Functions"
+HREF="xfunc.html"><LINK
+REL="NEXT"
+TITLE="Function Overloading"
+HREF="xfunc-overload.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xfunc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 31. Extending <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc-overload.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XFUNC-SQL"
+>31.4. Query Language (<ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>) Functions</A
+></H1
+><A
+NAME="AEN29421"
+></A
+><P
+>    SQL functions execute an arbitrary list of SQL statements, returning
     the result of the last query in the list.
     In the simple (non-set)
     case, the first row of the last query's result will be returned.
-    (Bear in mind that &#8220;<span class="quote">the first row</span>&#8221; of a multirow
-    result is not well-defined unless you use <tt class="literal">ORDER BY</tt>.)
+    (Bear in mind that <SPAN
+CLASS="QUOTE"
+>"the first row"</SPAN
+> of a multirow
+    result is not well-defined unless you use <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+>.)
     If the last query happens
     to return no rows at all, the null value will be returned.
-   </p>
-<p>    <a name="id2632423"></a> Alternatively,
+   </P
+><P
+>    <A
+NAME="AEN29429"
+></A
+> Alternatively,
     an SQL function may be declared to return a set, by specifying the
-    function's return type as <tt class="literal">SETOF
-    <i class="replaceable"><tt>sometype</tt></i></tt>.<a name="id2632443"></a>
+    function's return type as <TT
+CLASS="LITERAL"
+>SETOF
+    <TT
+CLASS="REPLACEABLE"
+><I
+>sometype</I
+></TT
+></TT
+>.<A
+NAME="AEN29434"
+></A
+>
     In this case all rows of the last query's result are returned.
     Further details appear below.
-   </p>
-<p>    The body of an SQL function must be a list of SQL
+   </P
+><P
+>    The body of an SQL function must be a list of SQL
     statements separated by semicolons.  A semicolon after the last
     statement is optional.  Unless the function is declared to return
-    <tt class="type">void</tt>, the last statement must be a <tt class="command">SELECT</tt>.
-   </p>
-<p>     Any collection of commands in the  <span class="acronym">SQL</span>
+    <TT
+CLASS="TYPE"
+>void</TT
+>, the last statement must be a <TT
+CLASS="COMMAND"
+>SELECT</TT
+>.
+   </P
+><P
+>     Any collection of commands in the  <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
      language can be packaged together and defined as a function.
-     Besides <tt class="command">SELECT</tt> queries, the commands can include data
-     modification queries (<tt class="command">INSERT</tt>,
-     <tt class="command">UPDATE</tt>, and <tt class="command">DELETE</tt>), as well as
+     Besides <TT
+CLASS="COMMAND"
+>SELECT</TT
+> queries, the commands can include data
+     modification queries (<TT
+CLASS="COMMAND"
+>INSERT</TT
+>,
+     <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and <TT
+CLASS="COMMAND"
+>DELETE</TT
+>), as well as
      other SQL commands. (The only exception is that you can't put
-     <tt class="command">BEGIN</tt>, <tt class="command">COMMIT</tt>, <tt class="command">ROLLBACK</tt>, or
-     <tt class="command">SAVEPOINT</tt> commands into a <span class="acronym">SQL</span> function.)
+     <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>, <TT
+CLASS="COMMAND"
+>COMMIT</TT
+>, <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+>, or
+     <TT
+CLASS="COMMAND"
+>SAVEPOINT</TT
+> commands into a <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> function.)
      However, the final command 
-     must be a <tt class="command">SELECT</tt> that returns whatever is
+     must be a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> that returns whatever is
      specified as the function's return type.  Alternatively, if you
      want to define a SQL function that performs actions but has no
-     useful value to return, you can define it as returning <tt class="type">void</tt>.
-     In that case, the function body must not end with a <tt class="command">SELECT</tt>.
+     useful value to return, you can define it as returning <TT
+CLASS="TYPE"
+>void</TT
+>.
+     In that case, the function body must not end with a <TT
+CLASS="COMMAND"
+>SELECT</TT
+>.
      For example, this function removes rows with negative salaries from
-     the <tt class="literal">emp</tt> table:
+     the <TT
+CLASS="LITERAL"
+>emp</TT
+> table:
 
-</p>
-<pre class="screen">CREATE FUNCTION clean_emp() RETURNS void AS '
+</P><PRE
+CLASS="SCREEN"
+>CREATE FUNCTION clean_emp() RETURNS void AS '
     DELETE FROM emp
         WHERE salary &lt; 0;
 ' LANGUAGE SQL;
@@ -65,43 +228,92 @@ SELECT clean_emp();
  clean_emp
 -----------
 
-(1 row)</pre>
-<p>
-    </p>
-<p>    The syntax of the <tt class="command">CREATE FUNCTION</tt> command requires
+(1 row)</PRE
+><P>
+    </P
+><P
+>    The syntax of the <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command requires
     the function body to be written as a string constant.  It is usually
-    most convenient to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) for the string constant.
+    most convenient to use dollar quoting (see <A
+HREF="sql-syntax.html#SQL-SYNTAX-DOLLAR-QUOTING"
+>Section 4.1.2.2</A
+>) for the string constant.
     If you choose to use regular single-quoted string constant syntax,
-    you must escape single quote marks (<tt class="literal">'</tt>) and backslashes
-    (<tt class="literal">\</tt>) used in the body of the function, typically by
-    doubling them (see <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>).
-   </p>
-<p>    Arguments to the SQL function are referenced in the function
-    body using the syntax <tt class="literal">$<i class="replaceable"><tt>n</tt></i></tt>: <tt class="literal">$1</tt>
-    refers to the first argument, <tt class="literal">$2</tt> to the second, and so on.
+    you must escape single quote marks (<TT
+CLASS="LITERAL"
+>'</TT
+>) and backslashes
+    (<TT
+CLASS="LITERAL"
+>\</TT
+>) used in the body of the function, typically by
+    doubling them (see <A
+HREF="sql-syntax.html#SQL-SYNTAX-STRINGS"
+>Section 4.1.2.1</A
+>).
+   </P
+><P
+>    Arguments to the SQL function are referenced in the function
+    body using the syntax <TT
+CLASS="LITERAL"
+>$<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></TT
+>: <TT
+CLASS="LITERAL"
+>$1</TT
+>
+    refers to the first argument, <TT
+CLASS="LITERAL"
+>$2</TT
+> to the second, and so on.
     If an argument is of a composite type, then the dot notation,
-    e.g., <tt class="literal">$1.name</tt>, may be used to access attributes
+    e.g., <TT
+CLASS="LITERAL"
+>$1.name</TT
+>, may be used to access attributes
     of the argument.  The arguments can only be used as data values,
     not as identifiers.  Thus for example this is reasonable:
-</p>
-<pre class="programlisting">INSERT INTO mytable VALUES ($1);</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO mytable VALUES ($1);</PRE
+><P>
 but this will not work:
-</p>
-<pre class="programlisting">INSERT INTO $1 VALUES (42);</pre>
-<p>
-   </p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2632650"></a>31.4.1. <span class="acronym">SQL</span> Functions on Base Types</h3></div></div>
-<div></div>
-</div>
-<p>     The simplest possible <span class="acronym">SQL</span> function has no arguments and
-     simply returns a base type, such as <tt class="type">integer</tt>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO $1 VALUES (42);</PRE
+><P>
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN29469"
+>31.4.1. <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions on Base Types</A
+></H2
+><P
+>     The simplest possible <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> function has no arguments and
+     simply returns a base type, such as <TT
+CLASS="TYPE"
+>integer</TT
+>:
      
-</p>
-<pre class="screen">CREATE FUNCTION one() RETURNS integer AS $$
+</P><PRE
+CLASS="SCREEN"
+>CREATE FUNCTION one() RETURNS integer AS $$
     SELECT 1 AS result;
 $$ LANGUAGE SQL;
 
@@ -114,21 +326,42 @@ SELECT one();
 
  one
 -----
-   1</pre>
-<p>
-    </p>
-<p>     Notice that we defined a column alias within the function body for the result of the function
-     (with  the  name <tt class="literal">result</tt>),  but this column alias is not visible
-     outside the function.  Hence,  the  result  is labeled <tt class="literal">one</tt>
-     instead of <tt class="literal">result</tt>.
-    </p>
-<p>     It is almost as easy to define <span class="acronym">SQL</span> functions  
+   1</PRE
+><P>
+    </P
+><P
+>     Notice that we defined a column alias within the function body for the result of the function
+     (with  the  name <TT
+CLASS="LITERAL"
+>result</TT
+>),  but this column alias is not visible
+     outside the function.  Hence,  the  result  is labeled <TT
+CLASS="LITERAL"
+>one</TT
+>
+     instead of <TT
+CLASS="LITERAL"
+>result</TT
+>.
+    </P
+><P
+>     It is almost as easy to define <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> functions  
      that take base types as arguments.  In the example below, notice
-     how we refer to the arguments within the function as <tt class="literal">$1</tt>
-     and <tt class="literal">$2</tt>.
+     how we refer to the arguments within the function as <TT
+CLASS="LITERAL"
+>$1</TT
+>
+     and <TT
+CLASS="LITERAL"
+>$2</TT
+>.
 
-</p>
-<pre class="screen">CREATE FUNCTION add_em(integer, integer) RETURNS integer AS $$
+</P><PRE
+CLASS="SCREEN"
+>CREATE FUNCTION add_em(integer, integer) RETURNS integer AS $$
     SELECT $1 + $2;
 $$ LANGUAGE SQL;
 
@@ -136,62 +369,86 @@ SELECT add_em(1, 2) AS answer;
 
  answer
 --------
-      3</pre>
-<p>
-    </p>
-<p>     Here is a more useful function, which might be used to debit a
+      3</PRE
+><P>
+    </P
+><P
+>     Here is a more useful function, which might be used to debit a
      bank account:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION tf1 (integer, numeric) RETURNS integer AS $$
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION tf1 (integer, numeric) RETURNS integer AS $$
     UPDATE bank 
         SET balance = balance - $2
         WHERE accountno = $1;
     SELECT 1;
-$$ LANGUAGE SQL;</pre>
-<p>
+$$ LANGUAGE SQL;</PRE
+><P>
 
      A user could execute this function to debit account 17 by $100.00 as
      follows:
 
-</p>
-<pre class="programlisting">SELECT tf1(17, 100.0);</pre>
-<p>
-    </p>
-<p>     In practice one would probably like a more useful result from the
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT tf1(17, 100.0);</PRE
+><P>
+    </P
+><P
+>     In practice one would probably like a more useful result from the
      function than a constant 1, so a more likely definition
      is
 
-</p>
-<pre class="programlisting">CREATE FUNCTION tf1 (integer, numeric) RETURNS numeric AS $$
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION tf1 (integer, numeric) RETURNS numeric AS $$
     UPDATE bank 
         SET balance = balance - $2
         WHERE accountno = $1;
     SELECT balance FROM bank WHERE accountno = $1;
-$$ LANGUAGE SQL;</pre>
-<p>
+$$ LANGUAGE SQL;</PRE
+><P>
 
      which adjusts the balance and returns the new balance.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2632764"></a>31.4.2. <span class="acronym">SQL</span> Functions on Composite Types</h3></div></div>
-<div></div>
-</div>
-<p>     When writing  functions with arguments of composite
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN29490"
+>31.4.2. <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions on Composite Types</A
+></H2
+><P
+>     When writing  functions with arguments of composite
      types, we must  not  only  specify  which
-     argument  we  want (as we did above with <tt class="literal">$1</tt> and <tt class="literal">$2</tt>) but
+     argument  we  want (as we did above with <TT
+CLASS="LITERAL"
+>$1</TT
+> and <TT
+CLASS="LITERAL"
+>$2</TT
+>) but
      also the desired attribute (field) of  that  argument.   For  example,
      suppose that 
-     <tt class="type">emp</tt> is a table containing employee data, and therefore
+     <TT
+CLASS="TYPE"
+>emp</TT
+> is a table containing employee data, and therefore
      also the name of the composite type of each row of the table.  Here
-     is a function <tt class="function">double_salary</tt> that computes what someone's
+     is a function <CODE
+CLASS="FUNCTION"
+>double_salary</CODE
+> that computes what someone's
      salary would be if it were doubled:
 
-</p>
-<pre class="screen">CREATE TABLE emp (
+</P><PRE
+CLASS="SCREEN"
+>CREATE TABLE emp (
     name        text,
     salary      numeric,
     age         integer,
@@ -208,86 +465,124 @@ SELECT name, double_salary(emp.*) AS dream
 
  name | dream
 ------+-------
- Bill |  8400</pre>
-<p>
-    </p>
-<p>     Notice the use of the syntax <tt class="literal">$1.salary</tt>
+ Bill |  8400</PRE
+><P>
+    </P
+><P
+>     Notice the use of the syntax <TT
+CLASS="LITERAL"
+>$1.salary</TT
+>
      to select one field of the argument row value.  Also notice
-     how the calling <tt class="command">SELECT</tt> command uses <tt class="literal">*</tt>
+     how the calling <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command uses <TT
+CLASS="LITERAL"
+>*</TT
+>
      to select
      the entire current row of a table as a composite value.  The table
      row can alternatively be referenced using just the table name,
      like this:
-</p>
-<pre class="screen">SELECT name, double_salary(emp) AS dream
+</P><PRE
+CLASS="SCREEN"
+>SELECT name, double_salary(emp) AS dream
     FROM emp
-    WHERE emp.cubicle ~= point '(2,1)';</pre>
-<p>
+    WHERE emp.cubicle ~= point '(2,1)';</PRE
+><P>
      but this usage is deprecated since it's easy to get confused.
-    </p>
-<p>     Sometimes it is handy to construct a composite argument value
-     on-the-fly.  This can be done with the <tt class="literal">ROW</tt> construct.
+    </P
+><P
+>     Sometimes it is handy to construct a composite argument value
+     on-the-fly.  This can be done with the <TT
+CLASS="LITERAL"
+>ROW</TT
+> construct.
      For example, we could adjust the data being passed to the function:
-</p>
-<pre class="screen">SELECT name, double_salary(ROW(name, salary*1.1, age, cubicle)) AS dream
-    FROM emp;</pre>
-<p>
-    </p>
-<p>     It is also possible to build a function that returns a composite type.
+</P><PRE
+CLASS="SCREEN"
+>SELECT name, double_salary(ROW(name, salary*1.1, age, cubicle)) AS dream
+    FROM emp;</PRE
+><P>
+    </P
+><P
+>     It is also possible to build a function that returns a composite type.
      This is an example of a function 
-     that returns a single <tt class="type">emp</tt> row:
+     that returns a single <TT
+CLASS="TYPE"
+>emp</TT
+> row:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION new_emp() RETURNS emp AS $$
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION new_emp() RETURNS emp AS $$
     SELECT text 'None' AS name,
         1000.0 AS salary,
         25 AS age,
         point '(2,2)' AS cubicle;
-$$ LANGUAGE SQL;</pre>
-<p>
+$$ LANGUAGE SQL;</PRE
+><P>
 
      In this example we have specified each of  the  attributes
      with  a  constant value, but any computation
      could have been substituted for these constants.
-    </p>
-<p>     Note two important things about defining the function:
+    </P
+><P
+>     Note two important things about defining the function:
 
-     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>        The select list order in the query must be exactly the same as
+     <P
+></P
+></P><UL
+><LI
+><P
+>        The select list order in the query must be exactly the same as
         that in which the columns appear in the table associated
         with the composite type.  (Naming the columns, as we did above,
         is irrelevant to the system.)
-       </p></li>
-<li>
-<p>        You must typecast the expressions to match the
+       </P
+></LI
+><LI
+><P
+>        You must typecast the expressions to match the
         definition of the composite type, or you will get errors like this:
-</p>
-<pre class="screen"><tt class="computeroutput">ERROR:  function declared to return emp returns varchar instead of text at column 1</tt></pre>
-<p>
-       </p>
-</li>
-</ul></div>
-<p>
-    </p>
-<p>     A different way to define the same function is:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  function declared to return emp returns varchar instead of text at column 1</SAMP
+></PRE
+><P>
+       </P
+></LI
+></UL
+><P>
+    </P
+><P
+>     A different way to define the same function is:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION new_emp() RETURNS emp AS $$
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION new_emp() RETURNS emp AS $$
     SELECT ROW('None', 1000.0, 25, '(2,2)')::emp;
-$$ LANGUAGE SQL;</pre>
-<p>
+$$ LANGUAGE SQL;</PRE
+><P>
 
-     Here we wrote a <tt class="command">SELECT</tt> that returns just a single
+     Here we wrote a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> that returns just a single
      column of the correct composite type.  This isn't really better
      in this situation, but it is a handy alternative in some cases
-     [mdash ] for example, if we need to compute the result by calling
+     &mdash; for example, if we need to compute the result by calling
      another function that returns the desired composite value.
-    </p>
-<p>     We could call this function directly in either of two ways:
+    </P
+><P
+>     We could call this function directly in either of two ways:
 
-</p>
-<pre class="screen">SELECT new_emp();
+</P><PRE
+CLASS="SCREEN"
+>SELECT new_emp();
 
          new_emp
 --------------------------
@@ -297,49 +592,64 @@ SELECT * FROM new_emp();
 
  name | salary | age | cubicle
 ------+--------+-----+---------
- None | 1000.0 |  25 | (2,2)</pre>
-<p>
+ None | 1000.0 |  25 | (2,2)</PRE
+><P>
 
-     The second way is described more fully in <a href="xfunc-sql.html#xfunc-sql-table-functions" title="31.4.3. SQL Functions as Table Sources">Section 31.4.3, &#8220;SQL Functions as Table Sources&#8221;</a>.
-    </p>
-<p>     When you use a function that returns a composite type,
+     The second way is described more fully in <A
+HREF="xfunc-sql.html#XFUNC-SQL-TABLE-FUNCTIONS"
+>Section 31.4.3</A
+>.
+    </P
+><P
+>     When you use a function that returns a composite type,
      you might want only one field (attribute) from its result.
      You can do that with syntax like this:
 
-</p>
-<pre class="screen">SELECT (new_emp()).name;
+</P><PRE
+CLASS="SCREEN"
+>SELECT (new_emp()).name;
 
  name
 ------
- None</pre>
-<p>
+ None</PRE
+><P>
 
      The extra parentheses are needed to keep the parser from getting
      confused.  If you try to do it without them, you get something like this:
 
-</p>
-<pre class="screen">SELECT new_emp().name;
+</P><PRE
+CLASS="SCREEN"
+>SELECT new_emp().name;
 ERROR:  syntax error at or near "." at character 17
 LINE 1: SELECT new_emp().name;
-                        ^</pre>
-<p>
-    </p>
-<p>     Another option is to use
+                        ^</PRE
+><P>
+    </P
+><P
+>     Another option is to use
      functional notation for extracting an attribute.  The  simple  way 
      to explain this is that we can use the
-     notations <tt class="literal">attribute(table)</tt>  and  <tt class="literal">table.attribute</tt>
+     notations <TT
+CLASS="LITERAL"
+>attribute(table)</TT
+>  and  <TT
+CLASS="LITERAL"
+>table.attribute</TT
+>
      interchangeably.
 
-</p>
-<pre class="screen">SELECT name(new_emp());
+</P><PRE
+CLASS="SCREEN"
+>SELECT name(new_emp());
 
  name
 ------
- None</pre>
-<p>
+ None</PRE
+><P>
 
-</p>
-<pre class="screen">-- This is the same as:
+</P><PRE
+CLASS="SCREEN"
+>-- This is the same as:
 -- SELECT emp.name AS youngster FROM emp WHERE emp.age &lt; 30;
 
 SELECT name(emp) AS youngster FROM emp WHERE age(emp) &lt; 30;
@@ -347,33 +657,57 @@ SELECT name(emp) AS youngster FROM emp WHERE age(emp) &lt; 30;
  youngster
 -----------
  Sam
- Andy</pre>
-<p>
-    </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>      The equivalence between functional notation and attribute notation
+ Andy</PRE
+><P>
+    </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>      The equivalence between functional notation and attribute notation
       makes it possible to use functions on composite types to emulate
-      &#8220;<span class="quote">computed fields</span>&#8221;.
-      <a name="id2633024"></a>
-      <a name="id2633031"></a>
+      <SPAN
+CLASS="QUOTE"
+>"computed fields"</SPAN
+>.
+      <A
+NAME="AEN29535"
+></A
+>
+      <A
+NAME="AEN29537"
+></A
+>
       For example, using the previous definition
-      for <tt class="literal">double_salary(emp)</tt>, we can write
+      for <TT
+CLASS="LITERAL"
+>double_salary(emp)</TT
+>, we can write
 
-</p>
-<pre class="screen">SELECT emp.name, emp.double_salary FROM emp;</pre>
-<p>
+</P><PRE
+CLASS="SCREEN"
+>SELECT emp.name, emp.double_salary FROM emp;</PRE
+><P>
 
       An application using this wouldn't need to be directly aware that
-      <tt class="literal">double_salary</tt> isn't a real column of the table.
+      <TT
+CLASS="LITERAL"
+>double_salary</TT
+> isn't a real column of the table.
       (You can also emulate computed fields with views.)
-     </p>
-</div>
-<p>     Another way to use a function returning a row result is to pass the
+     </P
+></BLOCKQUOTE
+></DIV
+><P
+>     Another way to use a function returning a row result is to pass the
      result to another function that accepts the correct row type as input:
 
-</p>
-<pre class="screen">CREATE FUNCTION getname(emp) RETURNS text AS $$
+</P><PRE
+CLASS="SCREEN"
+>CREATE FUNCTION getname(emp) RETURNS text AS $$
     SELECT $1.name;
 $$ LANGUAGE SQL;
 
@@ -381,30 +715,42 @@ SELECT getname(new_emp());
  getname
 ---------
  None
-(1 row)</pre>
-<p>
-    </p>
-<p>     Another way to use a function that returns a composite type is to
+(1 row)</PRE
+><P>
+    </P
+><P
+>     Another way to use a function that returns a composite type is to
      call it as a table function, as described below.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="xfunc-sql-table-functions"></a>31.4.3. <span class="acronym">SQL</span> Functions as Table Sources</h3></div></div>
-<div></div>
-</div>
-<p>     All SQL functions may be used in the <tt class="literal">FROM</tt> clause of a query,
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="XFUNC-SQL-TABLE-FUNCTIONS"
+>31.4.3. <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions as Table Sources</A
+></H2
+><P
+>     All SQL functions may be used in the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause of a query,
      but it is particularly useful for functions returning composite types.
      If the function is defined to return a base type, the table function
      produces a one-column table.  If the function is defined to return
      a composite type, the table function produces a column for each attribute
      of the composite type.
-    </p>
-<p>     Here is an example:
+    </P
+><P
+>     Here is an example:
 
-</p>
-<pre class="screen">CREATE TABLE foo (fooid int, foosubid int, fooname text);
+</P><PRE
+CLASS="SCREEN"
+>CREATE TABLE foo (fooid int, foosubid int, fooname text);
 INSERT INTO foo VALUES (1, 1, 'Joe');
 INSERT INTO foo VALUES (1, 2, 'Ed');
 INSERT INTO foo VALUES (2, 1, 'Mary');
@@ -418,50 +764,81 @@ SELECT *, upper(fooname) FROM getfoo(1) AS t1;
  fooid | foosubid | fooname | upper
 -------+----------+---------+-------
      1 |        1 | Joe     | JOE
-(2 rows)</pre>
-<p>
+(2 rows)</PRE
+><P>
 
      As the example shows, we can work with the columns of the function's
      result just the same as if they were columns of a regular table.
-    </p>
-<p>     Note that we only got one row out of the function.  This is because
-     we did not use <tt class="literal">SETOF</tt>.  That is described in the next section.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2633135"></a>31.4.4. <span class="acronym">SQL</span> Functions Returning Sets</h3></div></div>
-<div></div>
-</div>
-<p>     When an SQL function is declared as returning <tt class="literal">SETOF
-     <i class="replaceable"><tt>sometype</tt></i></tt>, the function's final
-     <tt class="command">SELECT</tt> query is executed to completion, and each row it
+    </P
+><P
+>     Note that we only got one row out of the function.  This is because
+     we did not use <TT
+CLASS="LITERAL"
+>SETOF</TT
+>.  That is described in the next section.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN29555"
+>31.4.4. <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions Returning Sets</A
+></H2
+><P
+>     When an SQL function is declared as returning <TT
+CLASS="LITERAL"
+>SETOF
+     <TT
+CLASS="REPLACEABLE"
+><I
+>sometype</I
+></TT
+></TT
+>, the function's final
+     <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query is executed to completion, and each row it
      outputs is returned as an element of the result set.
-    </p>
-<p>     This feature is normally used when calling the function in the <tt class="literal">FROM</tt>
+    </P
+><P
+>     This feature is normally used when calling the function in the <TT
+CLASS="LITERAL"
+>FROM</TT
+>
      clause.  In this case each row returned by the function becomes
      a row of the table seen by the query.  For example, assume that
-     table <tt class="literal">foo</tt> has the same contents as above, and we say:
+     table <TT
+CLASS="LITERAL"
+>foo</TT
+> has the same contents as above, and we say:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION getfoo(int) RETURNS SETOF foo AS $$
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION getfoo(int) RETURNS SETOF foo AS $$
     SELECT * FROM foo WHERE fooid = $1;
 $$ LANGUAGE SQL;
 
-SELECT * FROM getfoo(1) AS t1;</pre>
-<p>
+SELECT * FROM getfoo(1) AS t1;</PRE
+><P>
 
      Then we would get:
-</p>
-<pre class="screen"> fooid | foosubid | fooname
+</P><PRE
+CLASS="SCREEN"
+> fooid | foosubid | fooname
 -------+----------+---------
      1 |        1 | Joe
      1 |        2 | Ed
-(2 rows)</pre>
-<p>
-    </p>
-<p>     Currently, functions returning sets may also be called in the select list
+(2 rows)</PRE
+><P>
+    </P
+><P
+>     Currently, functions returning sets may also be called in the select list
      of a query.  For each row that the query
      generates by itself, the function returning set is invoked, and an output
      row is generated for each element of the function's result set. Note,
@@ -469,8 +846,9 @@ SELECT * FROM getfoo(1) AS t1;</pre>
      releases. The following is an example function returning a set from the
      select list:
 
-</p>
-<pre class="screen">CREATE FUNCTION listchildren(text) RETURNS SETOF text AS $$
+</P><PRE
+CLASS="SCREEN"
+>CREATE FUNCTION listchildren(text) RETURNS SETOF text AS $$
     SELECT name FROM nodes WHERE parent = $1
 $$ LANGUAGE SQL;
 
@@ -501,29 +879,63 @@ SELECT name, listchildren(name) FROM nodes;
  Top    | Child3
  Child1 | SubChild1
  Child1 | SubChild2
-(5 rows)</pre>
-<p>
+(5 rows)</PRE
+><P>
 
-     In the last <tt class="command">SELECT</tt>,
-     notice that no output row appears for <tt class="literal">Child2</tt>, <tt class="literal">Child3</tt>, etc.
-     This happens because <tt class="function">listchildren</tt> returns an empty set
+     In the last <TT
+CLASS="COMMAND"
+>SELECT</TT
+>,
+     notice that no output row appears for <TT
+CLASS="LITERAL"
+>Child2</TT
+>, <TT
+CLASS="LITERAL"
+>Child3</TT
+>, etc.
+     This happens because <CODE
+CLASS="FUNCTION"
+>listchildren</CODE
+> returns an empty set
      for those arguments, so no result rows are generated.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2633256"></a>31.4.5. Polymorphic <span class="acronym">SQL</span> Functions</h3></div></div>
-<div></div>
-</div>
-<p>     <span class="acronym">SQL</span> functions may be declared to accept and
-     return the polymorphic types <tt class="type">anyelement</tt> and
-     <tt class="type">anyarray</tt>.  See <a href="extend-type-system.html#extend-types-polymorphic" title="31.2.5. Polymorphic Types">Section 31.2.5, &#8220;Polymorphic Types&#8221;</a> for a more detailed
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN29573"
+>31.4.5. Polymorphic <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions</A
+></H2
+><P
+>     <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> functions may be declared to accept and
+     return the polymorphic types <TT
+CLASS="TYPE"
+>anyelement</TT
+> and
+     <TT
+CLASS="TYPE"
+>anyarray</TT
+>.  See <A
+HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
+>Section 31.2.5</A
+> for a more detailed
      explanation of polymorphic functions. Here is a polymorphic
-     function <tt class="function">make_array</tt> that builds up an array
+     function <CODE
+CLASS="FUNCTION"
+>make_array</CODE
+> that builds up an array
      from two arbitrary data type elements:
-</p>
-<pre class="screen">CREATE FUNCTION make_array(anyelement, anyelement) RETURNS anyarray AS $$
+</P><PRE
+CLASS="SCREEN"
+>CREATE FUNCTION make_array(anyelement, anyelement) RETURNS anyarray AS $$
     SELECT ARRAY[$1, $2];
 $$ LANGUAGE SQL;
 
@@ -531,24 +943,43 @@ SELECT make_array(1, 2) AS intarray, make_array('a'::text, 'b') AS textarray;
  intarray | textarray
 ----------+-----------
  {1,2}    | {a,b}
-(1 row)</pre>
-<p>
-    </p>
-<p>     Notice the use of the typecast <tt class="literal">'a'::text</tt>
-     to specify that the argument is of type <tt class="type">text</tt>. This is
+(1 row)</PRE
+><P>
+    </P
+><P
+>     Notice the use of the typecast <TT
+CLASS="LITERAL"
+>'a'::text</TT
+>
+     to specify that the argument is of type <TT
+CLASS="TYPE"
+>text</TT
+>. This is
      required if the argument is just a string literal, since otherwise
      it would be treated as type
-     <tt class="type">unknown</tt>, and array of <tt class="type">unknown</tt> is not a valid
+     <TT
+CLASS="TYPE"
+>unknown</TT
+>, and array of <TT
+CLASS="TYPE"
+>unknown</TT
+> is not a valid
      type.
      Without the typecast, you will get errors like this:
-</p>
-<pre class="screen"><tt class="computeroutput">ERROR:  could not determine "anyarray"/"anyelement" type because input has type "unknown"</tt></pre>
-<p>
-    </p>
-<p>     It is permitted to have polymorphic arguments with a fixed
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  could not determine "anyarray"/"anyelement" type because input has type "unknown"</SAMP
+></PRE
+><P>
+    </P
+><P
+>     It is permitted to have polymorphic arguments with a fixed
      return type, but the converse is not. For example:
-</p>
-<pre class="screen">CREATE FUNCTION is_greater(anyelement, anyelement) RETURNS boolean AS $$
+</P><PRE
+CLASS="SCREEN"
+>CREATE FUNCTION is_greater(anyelement, anyelement) RETURNS boolean AS $$
     SELECT $1 &gt; $2;
 $$ LANGUAGE SQL;
 
@@ -562,9 +993,73 @@ CREATE FUNCTION invalid_func() RETURNS anyelement AS $$
     SELECT 1;
 $$ LANGUAGE SQL;
 ERROR:  cannot determine result data type
-DETAIL:  A function returning "anyarray" or "anyelement" must have at least one argument of either type.</pre>
-<p>
-    </p>
-</div>
-</div></body>
-</html>
+DETAIL:  A function returning "anyarray" or "anyelement" must have at least one argument of either type.</PRE
+><P>
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xfunc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc-overload.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>User-Defined Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="extend.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Function Overloading</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

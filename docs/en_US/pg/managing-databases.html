@@ -1,63 +1,203 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 18. Managing Databases</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="previous" href="perm-functions.html" title="17.5. Functions and Triggers">
-<link rel="next" href="manage-ag-createdb.html" title="18.2. Creating a Database">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="managing-databases">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="managing-databases"></a>Chapter 18. Managing Databases</h2></div></div>
-<div></div>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="managing-databases.html#manage-ag-overview">18.1. Overview</a></span></dt>
-<dt><span class="sect1"><a href="manage-ag-createdb.html">18.2. Creating a Database</a></span></dt>
-<dt><span class="sect1"><a href="manage-ag-templatedbs.html">18.3. Template Databases</a></span></dt>
-<dt><span class="sect1"><a href="manage-ag-config.html">18.4. Database Configuration</a></span></dt>
-<dt><span class="sect1"><a href="manage-ag-dropdb.html">18.5. Destroying a Database</a></span></dt>
-<dt><span class="sect1"><a href="manage-ag-tablespaces.html">18.6. Tablespaces</a></span></dt>
-</dl>
-</div>
-<a name="id2593024"></a><p>  Every instance of a running <span class="productname">PostgreSQL</span>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Managing Databases</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Administration"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Functions and Triggers"
+HREF="perm-functions.html"><LINK
+REL="NEXT"
+TITLE="Creating a Database"
+HREF="manage-ag-createdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="perm-functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="manage-ag-createdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="MANAGING-DATABASES"
+></A
+>Chapter 18. Managing Databases</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>18.1. <A
+HREF="managing-databases.html#MANAGE-AG-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>18.2. <A
+HREF="manage-ag-createdb.html"
+>Creating a Database</A
+></DT
+><DT
+>18.3. <A
+HREF="manage-ag-templatedbs.html"
+>Template Databases</A
+></DT
+><DT
+>18.4. <A
+HREF="manage-ag-config.html"
+>Database Configuration</A
+></DT
+><DT
+>18.5. <A
+HREF="manage-ag-dropdb.html"
+>Destroying a Database</A
+></DT
+><DT
+>18.6. <A
+HREF="manage-ag-tablespaces.html"
+>Tablespaces</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN19600"
+></A
+><P
+>  Every instance of a running <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
   server manages one or more databases.  Databases are therefore the
-  topmost hierarchical level for organizing <span class="acronym">SQL</span>
-  objects (&#8220;<span class="quote">database objects</span>&#8221;).  This chapter describes
+  topmost hierarchical level for organizing <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
+  objects (<SPAN
+CLASS="QUOTE"
+>"database objects"</SPAN
+>).  This chapter describes
   the properties of databases, and how to create, manage, and destroy
   them.
- </p>
-<div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="manage-ag-overview"></a>18.1. Overview</h2></div></div>
-<div></div>
-</div>
-<a name="id2593061"></a><p>   A database is a named collection of <span class="acronym">SQL</span> objects
-   (&#8220;<span class="quote">database objects</span>&#8221;).  Generally, every database
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MANAGE-AG-OVERVIEW"
+>18.1. Overview</A
+></H1
+><A
+NAME="AEN19608"
+></A
+><P
+>   A database is a named collection of <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> objects
+   (<SPAN
+CLASS="QUOTE"
+>"database objects"</SPAN
+>).  Generally, every database
    object (tables, functions, etc.) belongs to one and only one
    database.  (But there are a few system catalogs, for example
-   <tt class="literal">pg_database</tt>, that belong to a whole cluster and
+   <TT
+CLASS="LITERAL"
+>pg_database</TT
+>, that belong to a whole cluster and
    are accessible from each database within the cluster.)  More
    accurately, a database is a collection of schemas and the schemas
    contain the tables, functions, etc.  So the full hierarchy is:
    server, database, schema, table (or some other kind of object,
    such as a function).
-  </p>
-<p>   When connecting to the database server, a client must specify in
+  </P
+><P
+>   When connecting to the database server, a client must specify in
    its connection request the name of the database it wants to connect
    to. It is not possible to access more than one database per
    connection. (But an application is not restricted in the number of
    connections it opens to the same or other databases.)  Databases are
    physically separated and access control is managed at the
-   connection level.  If one <span class="productname">PostgreSQL</span> server
+   connection level.  If one <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server
    instance is to house projects or users that should be separate and
    for the most part unaware of each other, it is therefore
    recommendable to put them into separate databases.  If the projects
@@ -65,27 +205,135 @@
    resources they should be put in the same database, but possibly
    into separate schemas.  Schemas are a purely logical structure and who can
    access what is managed by the privilege system.  More information about
-   managing schemas is in <a href="ddl-schemas.html" title="5.8. Schemas">Section 5.8, &#8220;Schemas&#8221;</a>.
-  </p>
-<p>   Databases are created with the <tt class="command">CREATE DATABASE</tt> command
-   (see <a href="manage-ag-createdb.html" title="18.2. Creating a Database">Section 18.2, &#8220;Creating a Database&#8221;</a>) and destroyed with the
-   <tt class="command">DROP DATABASE</tt> command
-   (see <a href="manage-ag-dropdb.html" title="18.5. Destroying a Database">Section 18.5, &#8220;Destroying a Database&#8221;</a>).
+   managing schemas is in <A
+HREF="ddl-schemas.html"
+>Section 5.8</A
+>.
+  </P
+><P
+>   Databases are created with the <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> command
+   (see <A
+HREF="manage-ag-createdb.html"
+>Section 18.2</A
+>) and destroyed with the
+   <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+> command
+   (see <A
+HREF="manage-ag-dropdb.html"
+>Section 18.5</A
+>).
    To determine the set of existing databases, examine the
-   <tt class="structname">pg_database</tt> system catalog, for example
-</p>
-<pre class="synopsis">SELECT datname FROM pg_database;</pre>
-<p>
-   The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <tt class="literal">\l</tt> meta-command
-   and <tt class="option">-l</tt> command-line option are also useful for listing the
+   <TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+> system catalog, for example
+</P><PRE
+CLASS="SYNOPSIS"
+>SELECT datname FROM pg_database;</PRE
+><P>
+   The <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> program's <TT
+CLASS="LITERAL"
+>\l</TT
+> meta-command
+   and <TT
+CLASS="OPTION"
+>-l</TT
+> command-line option are also useful for listing the
    existing databases.
-  </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>    The <span class="acronym">SQL</span> standard calls databases &#8220;<span class="quote">catalogs</span>&#8221;, but there
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard calls databases <SPAN
+CLASS="QUOTE"
+>"catalogs"</SPAN
+>, but there
     is no difference in practice.
-   </p>
-</div>
-</div>
-</div></body>
-</html>
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="perm-functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="manage-ag-createdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functions and Triggers</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating a Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

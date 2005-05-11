@@ -1,121 +1,443 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>DELETE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-declare.html" title="DECLARE">
-<link rel="next" href="sql-dropaggregate.html" title="DROP AGGREGATE">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-delete"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>DELETE &#8212; delete rows of a table</p>
-</div>
-<a name="id2687038"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">DELETE FROM [ ONLY ] <i class="replaceable"><tt>table</tt></i> [ WHERE <i class="replaceable"><tt>condition</tt></i> ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687066"></a><h2>Description</h2>
-<p>   <tt class="command">DELETE</tt> deletes rows that satisfy the
-   <tt class="literal">WHERE</tt> clause from the specified table.  If the
-   <tt class="literal">WHERE</tt> clause is absent, the effect is to delete
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>DELETE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DECLARE"
+HREF="sql-declare.html"><LINK
+REL="NEXT"
+TITLE="DROP AGGREGATE"
+HREF="sql-dropaggregate.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-declare.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-declare.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropaggregate.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropaggregate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DELETE"
+></A
+>DELETE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN41730"
+></A
+><H2
+>Name</H2
+>DELETE&nbsp;--&nbsp;delete rows of a table</DIV
+><A
+NAME="AEN41733"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN41735"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DELETE FROM [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41739"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DELETE</TT
+> deletes rows that satisfy the
+   <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause from the specified table.  If the
+   <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause is absent, the effect is to delete
    all rows in the table.  The result is a valid, but empty table.
-  </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>     <a href="sql-truncate.html">TRUNCATE</a> is a
-     <span class="productname">PostgreSQL</span> extension that provides a
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>     <A
+HREF="sql-truncate.html"
+><I
+>TRUNCATE</I
+></A
+> is a
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension that provides a
      faster mechanism to remove all rows from a table.
-    </p>
-</div>
-<p>   By default, <tt class="command">DELETE</tt> will delete rows in the
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>   By default, <TT
+CLASS="COMMAND"
+>DELETE</TT
+> will delete rows in the
    specified table and all its subtables. If you wish to delete only
    from the specific table mentioned, you must use the
-   <tt class="literal">ONLY</tt> clause.
-  </p>
-<p>   You must have the <tt class="literal">DELETE</tt> privilege on the table
-   to delete from it, as well as the <tt class="literal">SELECT</tt>
-   privilege for any table whose values are read in the <i class="replaceable"><tt>condition</tt></i>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687153"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing table.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>condition</tt></i></span></dt>
-<dd><p>      A value expression that returns a value of type
-      <tt class="type">boolean</tt> that determines the rows which are to be
+   <TT
+CLASS="LITERAL"
+>ONLY</TT
+> clause.
+  </P
+><P
+>   You must have the <TT
+CLASS="LITERAL"
+>DELETE</TT
+> privilege on the table
+   to delete from it, as well as the <TT
+CLASS="LITERAL"
+>SELECT</TT
+>
+   privilege for any table whose values are read in the <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41756"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing table.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+></DT
+><DD
+><P
+>      A value expression that returns a value of type
+      <TT
+CLASS="TYPE"
+>boolean</TT
+> that determines the rows which are to be
       deleted.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687185"></a><h2>Outputs</h2>
-<p>   On successful completion, a <tt class="command">DELETE</tt> command returns a command
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41770"
+></A
+><H2
+>Outputs</H2
+><P
+>   On successful completion, a <TT
+CLASS="COMMAND"
+>DELETE</TT
+> command returns a command
    tag of the form
-</p>
-<pre class="screen">DELETE <i class="replaceable"><tt>count</tt></i></pre>
-<p>
-   The <i class="replaceable"><tt>count</tt></i> is the number
-   of rows deleted.  If <i class="replaceable"><tt>count</tt></i> is
-   0, no rows matched the <i class="replaceable"><tt>condition</tt></i> (this is not considered
+</P><PRE
+CLASS="SCREEN"
+>DELETE <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+></PRE
+><P>
+   The <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> is the number
+   of rows deleted.  If <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> is
+   0, no rows matched the <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> (this is not considered
    an error).
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687228"></a><h2>Notes</h2>
-<p>   <span class="productname">PostgreSQL</span> lets you reference columns of
-   other tables in the <tt class="literal">WHERE</tt> condition.  For example, to
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41779"
+></A
+><H2
+>Notes</H2
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> lets you reference columns of
+   other tables in the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> condition.  For example, to
    delete all films produced by a given producer, one might do
-</p>
-<pre class="programlisting">DELETE FROM films
-  WHERE producer_id = producers.id AND producers.name = 'foo';</pre>
-<p>
-   What is essentially happening here is a join between <tt class="structname">films</tt>
-   and <tt class="structname">producers</tt>, with all successfully joined
-   <tt class="structname">films</tt> rows being marked for deletion.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM films
+  WHERE producer_id = producers.id AND producers.name = 'foo';</PRE
+><P>
+   What is essentially happening here is a join between <TT
+CLASS="STRUCTNAME"
+>films</TT
+>
+   and <TT
+CLASS="STRUCTNAME"
+>producers</TT
+>, with all successfully joined
+   <TT
+CLASS="STRUCTNAME"
+>films</TT
+> rows being marked for deletion.
    This syntax is not standard.  A more standard way to do it is
-</p>
-<pre class="programlisting">DELETE FROM films
-  WHERE producer_id IN (SELECT id FROM producers WHERE name = 'foo');</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM films
+  WHERE producer_id IN (SELECT id FROM producers WHERE name = 'foo');</PRE
+><P>
    In some cases the join style is easier to write or faster to
    execute than the sub-select style.  One objection to the join style
    is that there is no explicit list of what tables are being used,
    which makes the style somewhat error-prone; also it cannot handle
    self-joins.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687281"></a><h2>Examples</h2>
-<p>   Delete all films but musicals:
-</p>
-<pre class="programlisting">DELETE FROM films WHERE kind &lt;&gt; 'Musical';</pre>
-<p>
-  </p>
-<p>   Clear the table <tt class="literal">films</tt>:
-</p>
-<pre class="programlisting">DELETE FROM films;</pre>
-<p>      
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687309"></a><h2>Compatibility</h2>
-<p>   This command conforms to the SQL standard, except that the ability to
-   reference other tables in the <tt class="literal">WHERE</tt> clause is a
-   <span class="productname">PostgreSQL</span> extension.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41789"
+></A
+><H2
+>Examples</H2
+><P
+>   Delete all films but musicals:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM films WHERE kind &lt;&gt; 'Musical';</PRE
+><P>
+  </P
+><P
+>   Clear the table <TT
+CLASS="LITERAL"
+>films</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM films;</PRE
+><P>      
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41796"
+></A
+><H2
+>Compatibility</H2
+><P
+>   This command conforms to the SQL standard, except that the ability to
+   reference other tables in the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-declare.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropaggregate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DECLARE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP AGGREGATE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

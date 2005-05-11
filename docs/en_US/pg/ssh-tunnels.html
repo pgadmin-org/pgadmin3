@@ -1,65 +1,263 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>16.8. Secure TCP/IP Connections with SSH Tunnels</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
-<link rel="previous" href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">
-<link rel="next" href="user-manag.html" title="Chapter 17. Database Users and Privileges">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ssh-tunnels"></a>16.8. Secure TCP/IP Connections with <span class="application">SSH</span> Tunnels</h2></div></div>
-<div></div>
-</div>
-<a name="id2592058"></a><p>   One can use <span class="application">SSH</span> to encrypt the network
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Secure TCP/IP Connections with SSH Tunnels</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Run-time Environment"
+HREF="runtime.html"><LINK
+REL="PREVIOUS"
+TITLE="Secure TCP/IP Connections with SSL"
+HREF="ssl-tcp.html"><LINK
+REL="NEXT"
+TITLE="Database Users and Privileges"
+HREF="user-manag.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ssl-tcp.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 16. Server Run-time Environment</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SSH-TUNNELS"
+>16.9. Secure TCP/IP Connections with <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> Tunnels</A
+></H1
+><A
+NAME="AEN19417"
+></A
+><P
+>   One can use <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> to encrypt the network
    connection between clients and a
-   <span class="productname">PostgreSQL</span> server. Done properly, this
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server. Done properly, this
    provides an adequately secure network connection, even for non-SSL-capable
    clients.
-  </p>
-<p>   First make sure that an <span class="application">SSH</span> server is
+  </P
+><P
+>   First make sure that an <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> server is
    running properly on the same machine as the
-   <span class="productname">PostgreSQL</span> server and that you can log in using
-   <tt class="command">ssh</tt> as some user. Then you can establish a secure
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server and that you can log in using
+   <TT
+CLASS="COMMAND"
+>ssh</TT
+> as some user. Then you can establish a secure
    tunnel with a command like this from the client machine:
-</p>
-<pre class="programlisting">ssh -L 3333:foo.com:5432 joe@foo.com</pre>
-<p>
-   The first number in the <tt class="option">-L</tt> argument, 3333, is the
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ssh -L 3333:foo.com:5432 joe@foo.com</PRE
+><P>
+   The first number in the <TT
+CLASS="OPTION"
+>-L</TT
+> argument, 3333, is the
    port number of your end of the tunnel; it can be chosen freely. The
    second number, 5432, is the remote end of the tunnel: the port
    number your server is using. The name or IP address between
    the port numbers is the host with the database server you are going
    to connect to. In order to connect to the database server using
    this tunnel, you connect to port 3333 on the local machine:
-</p>
-<pre class="programlisting">psql -h localhost -p 3333 template1</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>psql -h localhost -p 3333 template1</PRE
+><P>
    To the database server it will then look as though you are really
-   user <tt class="literal">joe@foo.com</tt> and it will use whatever
+   user <TT
+CLASS="LITERAL"
+>joe@foo.com</TT
+> and it will use whatever
    authentication procedure was configured for connections from this
    user and host.  Note that the server will not think the connection is
    SSL-encrypted, since in fact it is not encrypted between the
-   <span class="application">SSH</span> server and the
-   <span class="productname">PostgreSQL</span> server.  This should not pose any
+   <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> server and the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server.  This should not pose any
    extra security risk as long as they are on the same machine.
-  </p>
-<p>   In order for the
+  </P
+><P
+>   In order for the
    tunnel setup to succeed you must be allowed to connect via
-   <tt class="command">ssh</tt> as <tt class="literal">joe@foo.com</tt>, just
-   as if you had attempted to use <tt class="command">ssh</tt> to set up a
+   <TT
+CLASS="COMMAND"
+>ssh</TT
+> as <TT
+CLASS="LITERAL"
+>joe@foo.com</TT
+>, just
+   as if you had attempted to use <TT
+CLASS="COMMAND"
+>ssh</TT
+> to set up a
    terminal session.
-  </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>    Several other applications exist that can provide secure tunnels using
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>    Several other applications exist that can provide secure tunnels using
     a procedure similar in concept to the one just described.
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ssl-tcp.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Secure TCP/IP Connections with SSL</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Database Users and Privileges</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

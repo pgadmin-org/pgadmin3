@@ -1,72 +1,345 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER OPERATOR</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-alterlanguage.html" title="ALTER LANGUAGE">
-<link rel="next" href="sql-alteropclass.html" title="ALTER OPERATOR CLASS">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-alteroperator"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ALTER OPERATOR &#8212; change the definition of an operator</p>
-</div>
-<a name="id2666184"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ALTER OPERATOR <i class="replaceable"><tt>name</tt></i> ( { <i class="replaceable"><tt>lefttype</tt></i> | NONE } , { <i class="replaceable"><tt>righttype</tt></i> | NONE } ) OWNER TO <i class="replaceable"><tt>newowner</tt></i></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2666215"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER OPERATOR</tt> changes the definition of
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER OPERATOR</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER LANGUAGE"
+HREF="sql-alterlanguage.html"><LINK
+REL="NEXT"
+TITLE="ALTER OPERATOR CLASS"
+HREF="sql-alteropclass.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterlanguage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterlanguage.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alteropclass.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alteropclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTEROPERATOR"
+></A
+>ALTER OPERATOR</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN36750"
+></A
+><H2
+>Name</H2
+>ALTER OPERATOR&nbsp;--&nbsp;change the definition of an operator</DIV
+><A
+NAME="AEN36753"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN36755"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER OPERATOR <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( { <TT
+CLASS="REPLACEABLE"
+><I
+>lefttype</I
+></TT
+> | NONE } , { <TT
+CLASS="REPLACEABLE"
+><I
+>righttype</I
+></TT
+> | NONE } ) OWNER TO <TT
+CLASS="REPLACEABLE"
+><I
+>newowner</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36761"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER OPERATOR</TT
+> changes the definition of
    an operator.  The only currently available functionality is to change the
    owner of the operator.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2666229"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing operator.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>lefttype</tt></i></span></dt>
-<dd><p>      The data type of the operator's left operand; write
-      <tt class="literal">NONE</tt> if the operator has no left operand.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>righttype</tt></i></span></dt>
-<dd><p>      The data type of the operator's right operand; write
-      <tt class="literal">NONE</tt> if the operator has no right operand.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>newowner</tt></i></span></dt>
-<dd><p>      The new owner of the operator.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36765"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing operator.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>lefttype</I
+></TT
+></DT
+><DD
+><P
+>      The data type of the operator's left operand; write
+      <TT
+CLASS="LITERAL"
+>NONE</TT
+> if the operator has no left operand.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>righttype</I
+></TT
+></DT
+><DD
+><P
+>      The data type of the operator's right operand; write
+      <TT
+CLASS="LITERAL"
+>NONE</TT
+> if the operator has no right operand.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>newowner</I
+></TT
+></DT
+><DD
+><P
+>      The new owner of the operator.
       You must be a superuser to change the owner of an operator.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2666293"></a><h2>Examples</h2>
-<p>   Change the owner of a custom operator <tt class="literal">a @@ b</tt> for type <tt class="type">text</tt>:
-</p>
-<pre class="programlisting">ALTER OPERATOR @@ (text, text) OWNER TO joe;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2666315"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">ALTER OPERATOR</tt> statement in
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36790"
+></A
+><H2
+>Examples</H2
+><P
+>   Change the owner of a custom operator <TT
+CLASS="LITERAL"
+>a @@ b</TT
+> for type <TT
+CLASS="TYPE"
+>text</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER OPERATOR @@ (text, text) OWNER TO joe;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36796"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>ALTER OPERATOR</TT
+> statement in
    the SQL standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2666328"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createoperator.html">CREATE OPERATOR</a>, <a href="sql-dropoperator.html">DROP OPERATOR</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36800"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createoperator.html"
+><I
+>CREATE OPERATOR</I
+></A
+>, <A
+HREF="sql-dropoperator.html"
+><I
+>DROP OPERATOR</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterlanguage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alteropclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER LANGUAGE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER OPERATOR CLASS</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,133 +1,528 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER SEQUENCE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-alterschema.html" title="ALTER SCHEMA">
-<link rel="next" href="sql-altertable.html" title="ALTER TABLE">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-altersequence"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>   ALTER SEQUENCE
-   &#8212;    change the definition of a sequence generator
-  </p>
-</div>
-<a name="id2666713"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ALTER SEQUENCE <i class="replaceable"><tt>name</tt></i> [ INCREMENT [ BY ] <i class="replaceable"><tt>increment</tt></i> ]
-    [ MINVALUE <i class="replaceable"><tt>minvalue</tt></i> | NO MINVALUE ] [ MAXVALUE <i class="replaceable"><tt>maxvalue</tt></i> | NO MAXVALUE ]
-    [ RESTART [ WITH ] <i class="replaceable"><tt>start</tt></i> ] [ CACHE <i class="replaceable"><tt>cache</tt></i> ] [ [ NO ] CYCLE ]
-  </pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2666768"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER SEQUENCE</tt> changes the parameters of an existing
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER SEQUENCE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER SCHEMA"
+HREF="sql-alterschema.html"><LINK
+REL="NEXT"
+TITLE="ALTER TABLE"
+HREF="sql-altertable.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERSEQUENCE"
+></A
+>ALTER SEQUENCE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN36916"
+></A
+><H2
+>Name</H2
+>   ALTER SEQUENCE
+  &nbsp;--&nbsp;   change the definition of a sequence generator
+  </DIV
+><A
+NAME="AEN36919"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN36921"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER SEQUENCE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [ INCREMENT [ BY ] <TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+> ]
+    [ MINVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> | NO MINVALUE ] [ MAXVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+> | NO MAXVALUE ]
+    [ RESTART [ WITH ] <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> ] [ CACHE <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+> ] [ [ NO ] CYCLE ]
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36929"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> changes the parameters of an existing
    sequence generator.  Any parameter not specifically set in the
-   <tt class="command">ALTER SEQUENCE</tt> command retains its prior setting.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2666788"></a><h2>Parameters</h2>
-<p>    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>        The name (optionally schema-qualified) of a sequence to be altered.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>increment</tt></i></span></dt>
-<dd><p>        The clause <tt class="literal">INCREMENT BY <i class="replaceable"><tt>increment</tt></i></tt> is
+   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> command retains its prior setting.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36934"
+></A
+><H2
+>Parameters</H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>        The name (optionally schema-qualified) of a sequence to be altered.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+></DT
+><DD
+><P
+>        The clause <TT
+CLASS="LITERAL"
+>INCREMENT BY <TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+></TT
+> is
         optional. A positive value will make an ascending sequence, a
         negative one a descending sequence.  If unspecified, the old
         increment value will be maintained.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><i xmlns="" class="replaceable"><tt>minvalue</tt></i></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NO MINVALUE</tt></span>
-</dt>
-<dd><p>        The optional clause <tt class="literal">MINVALUE <i class="replaceable"><tt>minvalue</tt></i></tt> determines
-        the minimum value a sequence can generate. If <tt class="literal">NO
-        MINVALUE</tt> is specified, the defaults of 1 and
-        -2<sup>63</sup>-1 for ascending and descending sequences,
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+><BR><TT
+CLASS="LITERAL"
+>NO MINVALUE</TT
+></DT
+><DD
+><P
+>        The optional clause <TT
+CLASS="LITERAL"
+>MINVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+></TT
+> determines
+        the minimum value a sequence can generate. If <TT
+CLASS="LITERAL"
+>NO
+        MINVALUE</TT
+> is specified, the defaults of 1 and
+        -2<SUP
+>63</SUP
+>-1 for ascending and descending sequences,
         respectively, will be used.  If neither option is specified,
         the current minimum value will be maintained.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><i xmlns="" class="replaceable"><tt>maxvalue</tt></i></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NO MAXVALUE</tt></span>
-</dt>
-<dd><p>        The optional clause <tt class="literal">MAXVALUE <i class="replaceable"><tt>maxvalue</tt></i></tt> determines
-        the maximum value for the sequence. If <tt class="literal">NO
-        MAXVALUE</tt> is specified, the defaults are
-        2<sup>63</sup>-1 and -1 for ascending and descending
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+><BR><TT
+CLASS="LITERAL"
+>NO MAXVALUE</TT
+></DT
+><DD
+><P
+>        The optional clause <TT
+CLASS="LITERAL"
+>MAXVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+></TT
+> determines
+        the maximum value for the sequence. If <TT
+CLASS="LITERAL"
+>NO
+        MAXVALUE</TT
+> is specified, the defaults are
+        2<SUP
+>63</SUP
+>-1 and -1 for ascending and descending
         sequences, respectively, will be used.  If neither option is
         specified, the current maximum value will be maintained.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>start</tt></i></span></dt>
-<dd><p>        The optional clause <tt class="literal">RESTART WITH <i class="replaceable"><tt>start</tt></i></tt> changes the
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+></DT
+><DD
+><P
+>        The optional clause <TT
+CLASS="LITERAL"
+>RESTART WITH <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+></TT
+> changes the
         current value of the sequence.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>cache</tt></i></span></dt>
-<dd><p>        The clause <tt class="literal">CACHE <i class="replaceable"><tt>cache</tt></i></tt> enables
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+></DT
+><DD
+><P
+>        The clause <TT
+CLASS="LITERAL"
+>CACHE <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+></TT
+> enables
         sequence numbers to be preallocated and stored in memory for
         faster access. The minimum value is 1 (only one value can be
         generated at a time, i.e., no cache).  If unspecified, the old
         cache value will be maintained.
-       </p></dd>
-<dt><span class="term">CYCLE</span></dt>
-<dd><p>        The optional <tt class="literal">CYCLE</tt> key word may be used to enable
+       </P
+></DD
+><DT
+>CYCLE</DT
+><DD
+><P
+>        The optional <TT
+CLASS="LITERAL"
+>CYCLE</TT
+> key word may be used to enable
         the sequence to wrap around when the
-        <i class="replaceable"><tt>maxvalue</tt></i> or
-        <i class="replaceable"><tt>minvalue</tt></i> has been
+        <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+> or
+        <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> has been
         reached by
         an ascending or descending sequence respectively. If the limit is
         reached, the next number generated will be the
-        <i class="replaceable"><tt>minvalue</tt></i> or
-        <i class="replaceable"><tt>maxvalue</tt></i>,
+        <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> or
+        <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+>,
         respectively.
-       </p></dd>
-<dt><span class="term">NO CYCLE</span></dt>
-<dd><p>        If the optional <tt class="literal">NO CYCLE</tt> key word is
-        specified, any calls to <tt class="function">nextval</tt> after the
+       </P
+></DD
+><DT
+>NO CYCLE</DT
+><DD
+><P
+>        If the optional <TT
+CLASS="LITERAL"
+>NO CYCLE</TT
+> key word is
+        specified, any calls to <CODE
+CLASS="FUNCTION"
+>nextval</CODE
+> after the
         sequence has reached its maximum value will return an error.
-        If neither <tt class="literal">CYCLE</tt> or <tt class="literal">NO
-        CYCLE</tt> are specified, the old cycle behaviour will be
+        If neither <TT
+CLASS="LITERAL"
+>CYCLE</TT
+> or <TT
+CLASS="LITERAL"
+>NO
+        CYCLE</TT
+> are specified, the old cycle behaviour will be
         maintained.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2667037"></a><h2>Examples</h2>
-<p>   Restart a sequence called <tt class="literal">serial</tt>, at 105:
-</p>
-<pre class="programlisting">ALTER SEQUENCE serial RESTART WITH 105;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2667056"></a><h2>Notes</h2>
-<p>   To avoid blocking of concurrent transactions that obtain numbers from the
-   same sequence, <tt class="command">ALTER SEQUENCE</tt> is never rolled back;
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37003"
+></A
+><H2
+>Examples</H2
+><P
+>   Restart a sequence called <TT
+CLASS="LITERAL"
+>serial</TT
+>, at 105:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER SEQUENCE serial RESTART WITH 105;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37008"
+></A
+><H2
+>Notes</H2
+><P
+>   To avoid blocking of concurrent transactions that obtain numbers from the
+   same sequence, <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> is never rolled back;
    the changes take effect immediately and are not reversible.
-  </p>
-<p>   <tt class="command">ALTER SEQUENCE</tt> will not immediately affect
-   <tt class="literal">nextval</tt> results in backends,
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> will not immediately affect
+   <TT
+CLASS="LITERAL"
+>nextval</TT
+> results in backends,
    other than the current one, that have preallocated (cached) sequence
    values. They will use up all cached values prior to noticing the changed
    sequence parameters.  The current backend will be affected immediately.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2667089"></a><h2>Compatibility</h2>
-<p>   <tt class="command">ALTER SEQUENCE</tt> conforms with <span class="acronym">SQL:2003</span>.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37015"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> conforms with <ACRONYM
+CLASS="ACRONYM"
+>SQL:2003</ACRONYM
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER SCHEMA</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER TABLE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

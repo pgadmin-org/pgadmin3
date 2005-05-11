@@ -1,58 +1,261 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>48.3. Implementation</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="gist.html" title="Chapter 48. GiST Indexes">
-<link rel="previous" href="extensibility.html" title="48.2. Extensibility">
-<link rel="next" href="limitations.html" title="48.4. Limitations">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="implementation"></a>48.3. Implementation</h2></div></div>
-<div></div>
-</div>
-<p>   There are seven methods that an index operator class for
-   <span class="acronym">GiST</span> must provide:
- </p>
-<div class="variablelist"><dl>
-<dt><span class="term">consistent</span></dt>
-<dd><p>       Given a predicate <tt class="literal">p</tt> on a tree page, and a user
-       query, <tt class="literal">q</tt>, this method will return false if it is
-       certain that both <tt class="literal">p</tt> and <tt class="literal">q</tt> cannot
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Implementation</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="GiST Indexes"
+HREF="gist.html"><LINK
+REL="PREVIOUS"
+TITLE="Extensibility"
+HREF="extensibility.html"><LINK
+REL="NEXT"
+TITLE="Limitations"
+HREF="limitations.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extensibility.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gist.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 48. GiST Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gist.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="limitations.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="IMPLEMENTATION"
+>48.3. Implementation</A
+></H1
+><P
+>   There are seven methods that an index operator class for
+   <ACRONYM
+CLASS="ACRONYM"
+>GiST</ACRONYM
+> must provide:
+ </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>consistent</DT
+><DD
+><P
+>       Given a predicate <TT
+CLASS="LITERAL"
+>p</TT
+> on a tree page, and a user
+       query, <TT
+CLASS="LITERAL"
+>q</TT
+>, this method will return false if it is
+       certain that both <TT
+CLASS="LITERAL"
+>p</TT
+> and <TT
+CLASS="LITERAL"
+>q</TT
+> cannot
        be true for a given data item.
-      </p></dd>
-<dt><span class="term">union</span></dt>
-<dd><p>       This method consolidates information in the tree.  Given a set of
+      </P
+></DD
+><DT
+>union</DT
+><DD
+><P
+>       This method consolidates information in the tree.  Given a set of
        entries, this function generates a new predicate that is true for all
        the entries.
-      </p></dd>
-<dt><span class="term">compress</span></dt>
-<dd><p>       Converts the data item into a format suitable for physical storage in
+      </P
+></DD
+><DT
+>compress</DT
+><DD
+><P
+>       Converts the data item into a format suitable for physical storage in
        an index page.
-      </p></dd>
-<dt><span class="term">decompress</span></dt>
-<dd><p>       The reverse of the <tt class="function">compress</tt> method.  Converts the
+      </P
+></DD
+><DT
+>decompress</DT
+><DD
+><P
+>       The reverse of the <CODE
+CLASS="FUNCTION"
+>compress</CODE
+> method.  Converts the
        index representation of the data item into a format that can be
        manipulated by the database.
-      </p></dd>
-<dt><span class="term">penalty</span></dt>
-<dd><p>       Returns a value indicating the &#8220;<span class="quote">cost</span>&#8221; of inserting the new
+      </P
+></DD
+><DT
+>penalty</DT
+><DD
+><P
+>       Returns a value indicating the <SPAN
+CLASS="QUOTE"
+>"cost"</SPAN
+> of inserting the new
        entry into a particular branch of the tree.  items will be inserted
-       down the path of least <tt class="function">penalty</tt> in the tree.
-      </p></dd>
-<dt><span class="term">picksplit</span></dt>
-<dd><p>       When a page split is necessary, this function decides which entries on
+       down the path of least <CODE
+CLASS="FUNCTION"
+>penalty</CODE
+> in the tree.
+      </P
+></DD
+><DT
+>picksplit</DT
+><DD
+><P
+>       When a page split is necessary, this function decides which entries on
        the page are to stay on the old page, and which are to move to the new
        page.
-      </p></dd>
-<dt><span class="term">same</span></dt>
-<dd><p>       Returns true if two entries are identical, false otherwise.
-      </p></dd>
-</dl></div>
-</div></body>
-</html>
+      </P
+></DD
+><DT
+>same</DT
+><DD
+><P
+>       Returns true if two entries are identical, false otherwise.
+      </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extensibility.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="limitations.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Extensibility</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gist.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Limitations</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

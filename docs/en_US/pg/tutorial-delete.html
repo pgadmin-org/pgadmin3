@@ -1,52 +1,226 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2.9. Deletions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="previous" href="tutorial-update.html" title="2.8. Updates">
-<link rel="next" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-delete"></a>2.9. Deletions</h2></div></div>
-<div></div>
-</div>
-<a name="id2519388"></a><p>    Rows can be removed from a table using the <tt class="command">DELETE</tt>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Deletions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="tutorial-sql.html"><LINK
+REL="PREVIOUS"
+TITLE="Updates"
+HREF="tutorial-update.html"><LINK
+REL="NEXT"
+TITLE="Advanced Features"
+HREF="tutorial-advanced.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-advanced.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-DELETE"
+>2.9. Deletions</A
+></H1
+><A
+NAME="AEN905"
+></A
+><P
+>    Rows can be removed from a table using the <TT
+CLASS="COMMAND"
+>DELETE</TT
+>
     command.
     Suppose you are no longer interested in the weather of Hayward.
     Then you can do the following to delete those rows from the table:
-</p>
-<pre class="programlisting">DELETE FROM weather WHERE city = 'Hayward';</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM weather WHERE city = 'Hayward';</PRE
+><P>
 
     All weather records belonging to Hayward are removed.
 
-</p>
-<pre class="programlisting">SELECT * FROM weather;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM weather;</PRE
+><P>
 
-</p>
-<pre class="screen">     city      | temp_lo | temp_hi | prcp |    date
+</P><PRE
+CLASS="SCREEN"
+>     city      | temp_lo | temp_hi | prcp |    date
 ---------------+---------+---------+------+------------
  San Francisco |      46 |      50 | 0.25 | 1994-11-27
  San Francisco |      41 |      55 |    0 | 1994-11-29
-(2 rows)</pre>
-<p>
-   </p>
-<p>    One should be wary of statements of the form
-</p>
-<pre class="synopsis">DELETE FROM <i class="replaceable"><tt>tablename</tt></i>;</pre>
-<p>
+(2 rows)</PRE
+><P>
+   </P
+><P
+>    One should be wary of statements of the form
+</P><PRE
+CLASS="SYNOPSIS"
+>DELETE FROM <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>;</PRE
+><P>
 
-    Without a qualification, <tt class="command">DELETE</tt> will
-    remove  <span class="emphasis"><em>all</em></span>  rows from the given table, leaving it
+    Without a qualification, <TT
+CLASS="COMMAND"
+>DELETE</TT
+> will
+    remove  <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>all</I
+></SPAN
+>  rows from the given table, leaving it
     empty.  The system will not request confirmation before
     doing this!
-   </p>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-advanced.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Updates</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Advanced Features</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,87 +1,343 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2.3. Creating a New Table</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="previous" href="tutorial-concepts.html" title="2.2. Concepts">
-<link rel="next" href="tutorial-populate.html" title="2.4. Populating a Table With Rows">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-table"></a>2.3. Creating a New Table</h2></div></div>
-<div></div>
-</div>
-<a name="id2517960"></a><p>    You  can  create  a  new  table by specifying the table
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Creating a New Table</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="tutorial-sql.html"><LINK
+REL="PREVIOUS"
+TITLE="Concepts"
+HREF="tutorial-concepts.html"><LINK
+REL="NEXT"
+TITLE="Populating a Table With Rows"
+HREF="tutorial-populate.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-concepts.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-populate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-TABLE"
+>2.3. Creating a New Table</A
+></H1
+><A
+NAME="AEN638"
+></A
+><P
+>    You  can  create  a  new  table by specifying the table
     name, along with all column names and their types:
 
-</p>
-<pre class="programlisting">CREATE TABLE weather (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE weather (
     city            varchar(80),
     temp_lo         int,           -- low temperature
     temp_hi         int,           -- high temperature
     prcp            real,          -- precipitation
     date            date
-);</pre>
-<p>
+);</PRE
+><P>
 
-    You can enter this into <tt class="command">psql</tt> with the line
-    breaks.  <tt class="command">psql</tt> will recognize that the command
+    You can enter this into <TT
+CLASS="COMMAND"
+>psql</TT
+> with the line
+    breaks.  <TT
+CLASS="COMMAND"
+>psql</TT
+> will recognize that the command
     is not terminated until the semicolon.
-   </p>
-<p>    White space (i.e., spaces, tabs, and newlines) may be used freely
+   </P
+><P
+>    White space (i.e., spaces, tabs, and newlines) may be used freely
     in SQL commands.  That means you can type the command aligned
     differently than above, or even all on one line.  Two dashes
-    (&#8220;<span class="quote"><tt class="literal">--</tt></span>&#8221;) introduce comments.
+    (<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>--</TT
+>"</SPAN
+>) introduce comments.
     Whatever follows them is ignored up to the end of the line.  SQL
     is case insensitive about key words and identifiers, except
     when identifiers are double-quoted to preserve the case (not done
     above).
-   </p>
-<p>    <tt class="type">varchar(80)</tt> specifies a data type that can store
+   </P
+><P
+>    <TT
+CLASS="TYPE"
+>varchar(80)</TT
+> specifies a data type that can store
     arbitrary character strings up to 80 characters in length.
-    <tt class="type">int</tt> is the normal integer type.  <tt class="type">real</tt> is
+    <TT
+CLASS="TYPE"
+>int</TT
+> is the normal integer type.  <TT
+CLASS="TYPE"
+>real</TT
+> is
     a type for storing single precision floating-point numbers.
-    <tt class="type">date</tt> should be self-explanatory.  (Yes, the column of
-    type <tt class="type">date</tt> is also named <tt class="literal">date</tt>.
-    This may be convenient or confusing [mdash ] you choose.)
-   </p>
-<p>    <span class="productname">PostgreSQL</span> supports the standard
-    <span class="acronym">SQL</span> types <tt class="type">int</tt>,
-    <tt class="type">smallint</tt>, <tt class="type">real</tt>, <tt class="type">double
-    precision</tt>, <tt class="type">char(<i class="replaceable"><tt>N</tt></i>)</tt>,
-    <tt class="type">varchar(<i class="replaceable"><tt>N</tt></i>)</tt>, <tt class="type">date</tt>,
-    <tt class="type">time</tt>, <tt class="type">timestamp</tt>, and
-    <tt class="type">interval</tt>, as well as other types of general utility
+    <TT
+CLASS="TYPE"
+>date</TT
+> should be self-explanatory.  (Yes, the column of
+    type <TT
+CLASS="TYPE"
+>date</TT
+> is also named <TT
+CLASS="LITERAL"
+>date</TT
+>.
+    This may be convenient or confusing &mdash; you choose.)
+   </P
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports the standard
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> types <TT
+CLASS="TYPE"
+>int</TT
+>,
+    <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+    precision</TT
+>, <TT
+CLASS="TYPE"
+>char(<TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+>)</TT
+>,
+    <TT
+CLASS="TYPE"
+>varchar(<TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+>)</TT
+>, <TT
+CLASS="TYPE"
+>date</TT
+>,
+    <TT
+CLASS="TYPE"
+>time</TT
+>, <TT
+CLASS="TYPE"
+>timestamp</TT
+>, and
+    <TT
+CLASS="TYPE"
+>interval</TT
+>, as well as other types of general utility
     and a rich set of geometric types.
-    <span class="productname">PostgreSQL</span> can be customized with an
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can be customized with an
     arbitrary number of user-defined data types.  Consequently, type
     names are not syntactical key words, except where required to
-    support special cases in the <span class="acronym">SQL</span> standard.
-   </p>
-<p>    The second example will store cities and their associated
+    support special cases in the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard.
+   </P
+><P
+>    The second example will store cities and their associated
     geographical location:
-</p>
-<pre class="programlisting">CREATE TABLE cities (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE cities (
     name            varchar(80),
     location        point
-);</pre>
-<p>
-    The <tt class="type">point</tt> type is an example of a
-    <span class="productname">PostgreSQL</span>-specific data type.
-   </p>
-<p>    <a name="id2518138"></a>
+);</PRE
+><P>
+    The <TT
+CLASS="TYPE"
+>point</TT
+> type is an example of a
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-specific data type.
+   </P
+><P
+>    <A
+NAME="AEN676"
+></A
+>
 
     Finally, it should be mentioned that if you don't need a table any
     longer or want to recreate it differently you can remove it using
     the following command:
-</p>
-<pre class="synopsis">DROP TABLE <i class="replaceable"><tt>tablename</tt></i>;</pre>
-<p>
-   </p>
-</div></body>
-</html>
+</P><PRE
+CLASS="SYNOPSIS"
+>DROP TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-concepts.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-populate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Concepts</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Populating a Table With Rows</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

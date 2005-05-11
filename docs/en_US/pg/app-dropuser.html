@@ -1,151 +1,590 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>dropuser</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="app-droplang.html" title="droplang">
-<link rel="next" href="app-ecpg.html" title="ecpg">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-dropuser"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>dropuser &#8212; remove a <span class="productname">PostgreSQL</span> user account</p>
-</div>
-<a name="id2708471"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">dropuser</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>username</tt></i>]</p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708505"></a><h2>Description</h2>
-<p>   <span class="application">dropuser</span> removes an existing
-   <span class="productname">PostgreSQL</span> user
-   <span class="emphasis"><em>and</em></span> the databases which that user owned.
-   Only superusers (users with <tt class="literal">usesuper</tt> set in
-   the <tt class="literal">pg_shadow</tt> table) can destroy 
-   <span class="productname">PostgreSQL</span> users.
-  </p>
-<p>   <span class="application">dropuser</span> is a wrapper around the
-   <span class="acronym">SQL</span> command <a href="sql-dropuser.html">DROP USER</a>.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>dropuser</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="droplang"
+HREF="app-droplang.html"><LINK
+REL="NEXT"
+TITLE="ecpg"
+HREF="app-ecpg.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-droplang.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-droplang.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-ecpg.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-ecpg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-DROPUSER"
+></A
+><SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN46991"
+></A
+><H2
+>Name</H2
+>dropuser&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account</DIV
+><A
+NAME="AEN46995"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN46997"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>dropuser</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+>...] [<TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47004"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> removes an existing
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user
+   <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>and</I
+></SPAN
+> the databases which that user owned.
+   Only superusers (users with <TT
+CLASS="LITERAL"
+>usesuper</TT
+> set in
+   the <TT
+CLASS="LITERAL"
+>pg_shadow</TT
+> table) can destroy 
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> users.
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> is a wrapper around the
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+>.
    There is no effective difference between dropping users via
    this utility and via other methods for accessing the server.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708569"></a><h2>Options</h2>
-<p>   <span class="application">dropuser</span> accepts the following command-line arguments:
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47017"
+></A
+><H2
+>Options</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> accepts the following command-line arguments:
 
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>username</tt></i></span></dt>
-<dd><p>	Specifies the name of the <span class="productname">PostgreSQL</span> user to be removed. 
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the name of the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user to be removed. 
 	You will be prompted for a name if none is specified on the command line.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
-</dt>
-<dd><p>        Echo the commands that <span class="application">dropuser</span> generates
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo</TT
+></DT
+><DD
+><P
+>        Echo the commands that <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> generates
 	and sends to the server.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--interactive</tt></span>
-</dt>
-<dd><p>        Prompt for confirmation before actually removing the user.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-q</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--quiet</tt></span>
-</dt>
-<dd><p>        Do not display a response.
-       </p></dd>
-</dl></div>
-<p>
-  </p>
-<p>   <span class="application">dropuser</span> also accepts the following
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-i</TT
+><BR><TT
+CLASS="OPTION"
+>--interactive</TT
+></DT
+><DD
+><P
+>        Prompt for confirmation before actually removing the user.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-q</TT
+><BR><TT
+CLASS="OPTION"
+>--quiet</TT
+></DT
+><DD
+><P
+>        Do not display a response.
+       </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> also accepts the following
    command-line arguments for connection parameters:
     
-   </p>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the host name of the machine on which the 
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the host name of the machine on which the 
 	server
 	is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the TCP port or local Unix domain socket file 
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
-</dt>
-<dd><p>        User name to connect as (not the user name to drop)
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
-</dt>
-<dd><p>        Force password prompt (to connect to the server, not for the
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        User name to connect as (not the user name to drop)
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>        Force password prompt (to connect to the server, not for the
         password of the user to be dropped).
-       </p></dd>
-</dl></div>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708736"></a><h2>Environment</h2>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
-</dt>
-<dd><p>      Default connection parameters
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708756"></a><h2>Diagnostics</h2>
-<p>   In case of difficulty, see <a href="sql-dropuser.html">DROP USER</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
+       </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47087"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47099"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   In case of difficulty, see <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+> and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment
-   variables used by the <span class="application">libpq</span> front-end
+   variables used by the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end
    library will apply.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708787"></a><h2>Examples</h2>
-<p>    To remove user <tt class="literal">joe</tt> from the default database
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47105"
+></A
+><H2
+>Examples</H2
+><P
+>    To remove user <TT
+CLASS="LITERAL"
+>joe</TT
+> from the default database
     server:
-</p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>dropuser joe</tt></b>
-<tt class="computeroutput">DROP USER</tt></pre>
-<p>
-   </p>
-<p>    To remove user <tt class="literal">joe</tt> using the server on host
-    <tt class="literal">eden</tt>, port 5000, with verification and a peek at the underlying
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>dropuser joe</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP USER</SAMP
+></PRE
+><P>
+   </P
+><P
+>    To remove user <TT
+CLASS="LITERAL"
+>joe</TT
+> using the server on host
+    <TT
+CLASS="LITERAL"
+>eden</TT
+>, port 5000, with verification and a peek at the underlying
     command:
-</p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>dropuser -p 5000 -h eden -i -e joe</tt></b>
-<tt class="computeroutput">User "joe" and any owned databases will be permanently deleted.
-Are you sure? (y/n) </tt><b class="userinput"><tt>y</tt></b>
-<tt class="computeroutput">DROP USER "joe"
-DROP USER</tt></pre>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708866"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a>, <a href="sql-dropuser.html">DROP USER</a></span>
-</div>
-</div></body>
-</html>
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>dropuser -p 5000 -h eden -i -e joe</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>User "joe" and any owned databases will be permanently deleted.
+Are you sure? (y/n) </SAMP
+><KBD
+CLASS="USERINPUT"
+>y</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP USER "joe"
+DROP USER</SAMP
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47122"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-createuser.html"
+><SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+></A
+>, <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-droplang.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-ecpg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,187 +1,736 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>createdb</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="app-clusterdb.html" title="clusterdb">
-<link rel="next" href="app-createlang.html" title="createlang">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-createdb"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>createdb &#8212; create a new <span class="productname">PostgreSQL</span> database</p>
-</div>
-<a name="id2705929"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">createdb</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>dbname</tt></i>] [<i class="replaceable"><tt>description</tt></i>]</p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="r1-app-createdb-1"></a><h2>   Description
-  </h2>
-<p>   <span class="application">createdb</span> creates a new <span class="productname">PostgreSQL</span>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>createdb</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="clusterdb"
+HREF="app-clusterdb.html"><LINK
+REL="NEXT"
+TITLE="createlang"
+HREF="app-createlang.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-clusterdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-clusterdb.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createlang.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createlang.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-CREATEDB"
+></A
+><SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN46144"
+></A
+><H2
+>Name</H2
+>createdb&nbsp;--&nbsp;create a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DIV
+><A
+NAME="AEN46148"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN46150"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>createdb</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+>...] [<TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+>] [<TT
+CLASS="REPLACEABLE"
+><I
+>description</I
+></TT
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-CREATEDB-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+> creates a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
    database.
-  </p>
-<p>   Normally, the database user who executes this command becomes the owner of
+  </P
+><P
+>   Normally, the database user who executes this command becomes the owner of
    the new database.
-   However a different owner can be specified via the <tt class="option">-O</tt>
+   However a different owner can be specified via the <TT
+CLASS="OPTION"
+>-O</TT
+>
    option, if the executing user has appropriate privileges.
-  </p>
-<p>   <span class="application">createdb</span> is a wrapper around the
-   <span class="acronym">SQL</span> command <a href="sql-createdatabase.html">CREATE DATABASE</a>.
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+> is a wrapper around the
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command <A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+>.
    There is no effective difference between creating databases via
    this utility and via other methods for accessing the server.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706026"></a><h2>Options</h2>
-<p>   <span class="application">createdb</span> accepts the following command-line arguments:
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46170"
+></A
+><H2
+>Options</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+> accepts the following command-line arguments:
 
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>dbname</tt></i></span></dt>
-<dd><p>        Specifies the name of the database to be created.  The name must be
-        unique among all <span class="productname">PostgreSQL</span> databases in this cluster.
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></DT
+><DD
+><P
+>        Specifies the name of the database to be created.  The name must be
+        unique among all <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> databases in this cluster.
         The default is to create a database with the same name as the
         current system user.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>description</tt></i></span></dt>
-<dd><p>        Specifies a comment to be associated with the newly created
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>description</I
+></TT
+></DT
+><DD
+><P
+>        Specifies a comment to be associated with the newly created
         database.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-D <i class="replaceable"><tt>tablespace</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--tablespace <i class="replaceable"><tt>tablespace</tt></i></tt></span>
-</dt>
-<dd><p>        Specifies the default tablespace for the database.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
-</dt>
-<dd><p>        Echo the commands that <span class="application">createdb</span> generates
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-D <TT
+CLASS="REPLACEABLE"
+><I
+>tablespace</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--tablespace <TT
+CLASS="REPLACEABLE"
+><I
+>tablespace</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies the default tablespace for the database.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo</TT
+></DT
+><DD
+><P
+>        Echo the commands that <SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+> generates
         and sends to the server.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-E <i class="replaceable"><tt>encoding</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--encoding <i class="replaceable"><tt>encoding</tt></i></tt></span>
-</dt>
-<dd><p>        Specifies the character encoding scheme to be used in this
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-E <TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--encoding <TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies the character encoding scheme to be used in this
         database. The character sets supported by the
-        <span class="productname">PostgreSQL</span> server are described in
-        <a href="multibyte.html#multibyte-charset-supported" title="20.2.1. Supported Character Sets">Section 20.2.1, &#8220;Supported Character Sets&#8221;</a>.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-O <i class="replaceable"><tt>owner</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--owner <i class="replaceable"><tt>owner</tt></i></tt></span>
-</dt>
-<dd><p>        Specifies the database user who will own the new database.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-q</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--quiet</tt></span>
-</dt>
-<dd><p>        Do not display a response.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-T <i class="replaceable"><tt>template</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--template <i class="replaceable"><tt>template</tt></i></tt></span>
-</dt>
-<dd><p>        Specifies the template database from which to build this database.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-<p>    The options <tt class="option">-D</tt>, <tt class="option">-E</tt>,
-    <tt class="option">-O</tt>, and
-    <tt class="option">-T</tt> correspond to options of the underlying
-    SQL command <a href="sql-createdatabase.html">CREATE DATABASE</a>; see there for more information
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server are described in
+        <A
+HREF="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED"
+>Section 20.2.1</A
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-O <TT
+CLASS="REPLACEABLE"
+><I
+>owner</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--owner <TT
+CLASS="REPLACEABLE"
+><I
+>owner</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies the database user who will own the new database.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-q</TT
+><BR><TT
+CLASS="OPTION"
+>--quiet</TT
+></DT
+><DD
+><P
+>        Do not display a response.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-T <TT
+CLASS="REPLACEABLE"
+><I
+>template</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--template <TT
+CLASS="REPLACEABLE"
+><I
+>template</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies the template database from which to build this database.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    The options <TT
+CLASS="OPTION"
+>-D</TT
+>, <TT
+CLASS="OPTION"
+>-E</TT
+>,
+    <TT
+CLASS="OPTION"
+>-O</TT
+>, and
+    <TT
+CLASS="OPTION"
+>-T</TT
+> correspond to options of the underlying
+    SQL command <A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+>; see there for more information
     about them.
-   </p>
-<p>    <span class="application">createdb</span> also accepts the following
+   </P
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+> also accepts the following
     command-line arguments for connection parameters:
 
-    </p>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
-</dt>
-<dd><p>        Specifies the host name of the machine on which the 
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies the host name of the machine on which the 
         server is running.  If the value begins with a slash, it is used 
         as the directory for the Unix domain socket.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
-</dt>
-<dd><p>        Specifies the TCP port or the local Unix domain socket file 
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies the TCP port or the local Unix domain socket file 
         extension on which the server is listening for connections.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
-</dt>
-<dd><p>        User name to connect as
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
-</dt>
-<dd><p>        Force password prompt.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706322"></a><h2>Environment</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="envar">PGDATABASE</tt></span></dt>
-<dd><p>      If set, the name of the database to create, unless overridden on
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        User name to connect as
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>        Force password prompt.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46282"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+></DT
+><DD
+><P
+>      If set, the name of the database to create, unless overridden on
       the command line.
-     </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
-</dt>
-<dd><p>      Default connection parameters.  <tt class="envar">PGUSER</tt> also
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters.  <TT
+CLASS="ENVAR"
+>PGUSER</TT
+> also
       determines the name of the database to create, if it is not
-      specified on the command line or by <tt class="envar">PGDATABASE</tt>.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706361"></a><h2>Diagnostics</h2>
-<p>   In case of difficulty, see <a href="sql-createdatabase.html">CREATE DATABASE</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
+      specified on the command line or by <TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+>.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46301"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   In case of difficulty, see <A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+> and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment
-   variables used by the <span class="application">libpq</span> front-end
+   variables used by the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end
    library will apply.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706392"></a><h2>Examples</h2>
-<p>    To create the database <tt class="literal">demo</tt> using the default
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46307"
+></A
+><H2
+>Examples</H2
+><P
+>    To create the database <TT
+CLASS="LITERAL"
+>demo</TT
+> using the default
     database server:
-</p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>createdb demo</tt></b>
-<tt class="computeroutput">CREATE DATABASE</tt></pre>
-<p>
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>createdb demo</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE DATABASE</SAMP
+></PRE
+><P>
     The response is the same as you would have gotten from running the
-    <tt class="command">CREATE DATABASE</tt> <span class="acronym">SQL</span> command.
-   </p>
-<p>    To create the database <tt class="literal">demo</tt> using the
-    server on host <tt class="literal">eden</tt>, port 5000, using the
-    <tt class="literal">LATIN1</tt> encoding scheme with a look at the
+    <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command.
+   </P
+><P
+>    To create the database <TT
+CLASS="LITERAL"
+>demo</TT
+> using the
+    server on host <TT
+CLASS="LITERAL"
+>eden</TT
+>, port 5000, using the
+    <TT
+CLASS="LITERAL"
+>LATIN1</TT
+> encoding scheme with a look at the
     underlying command:
-</p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>createdb -p 5000 -h eden -E LATIN1 -e demo</tt></b>
-<tt class="computeroutput">CREATE DATABASE "demo" WITH ENCODING = 'LATIN1'</tt>
-<tt class="computeroutput">CREATE DATABASE</tt></pre>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2706483"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-dropdb.html" title="dropdb"><span class="refentrytitle"><a name="app-dropdb-title"></a><span class="application">dropdb</span></span></a>, <a href="sql-createdatabase.html">CREATE DATABASE</a></span>
-</div>
-</div></body>
-</html>
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>createdb -p 5000 -h eden -E LATIN1 -e demo</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE DATABASE "demo" WITH ENCODING = 'LATIN1'</SAMP
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE DATABASE</SAMP
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46326"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-dropdb.html"
+><SPAN
+CLASS="APPLICATION"
+>dropdb</SPAN
+></A
+>, <A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-clusterdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-createlang.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

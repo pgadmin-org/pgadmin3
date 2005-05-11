@@ -1,64 +1,304 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>35.9. Errors and Messages</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
-<link rel="previous" href="plpgsql-cursors.html" title="35.8. Cursors">
-<link rel="next" href="plpgsql-trigger.html" title="35.10. Trigger Procedures">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-errors-and-messages"></a>35.9. Errors and Messages</h2></div></div>
-<div></div>
-</div>
-<p>    Use the <tt class="command">RAISE</tt> statement to report messages and
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Errors and Messages</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/pgSQL - SQL Procedural Language"
+HREF="plpgsql.html"><LINK
+REL="PREVIOUS"
+TITLE="Cursors"
+HREF="plpgsql-cursors.html"><LINK
+REL="NEXT"
+TITLE="Trigger Procedures"
+HREF="plpgsql-trigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-cursors.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 35. <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> - <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-trigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPGSQL-ERRORS-AND-MESSAGES"
+>35.9. Errors and Messages</A
+></H1
+><P
+>    Use the <TT
+CLASS="COMMAND"
+>RAISE</TT
+> statement to report messages and
     raise errors.
 
-</p>
-<pre class="synopsis">RAISE <i class="replaceable"><tt>level</tt></i> '<i class="replaceable"><tt>format</tt></i>' [<span class="optional">, <i class="replaceable"><tt>variable</tt></i> [<span class="optional">, ...</span>]</span>];</pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>RAISE <TT
+CLASS="REPLACEABLE"
+><I
+>level</I
+></TT
+> '<TT
+CLASS="REPLACEABLE"
+><I
+>format</I
+></TT
+>' [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>]</SPAN
+>];</PRE
+><P>
 
-    Possible levels are <tt class="literal">DEBUG</tt>,
-    <tt class="literal">LOG</tt>, <tt class="literal">INFO</tt>,
-    <tt class="literal">NOTICE</tt>, <tt class="literal">WARNING</tt>,
-    and <tt class="literal">EXCEPTION</tt>.
-    <tt class="literal">EXCEPTION</tt> raises an error (which normally aborts the
+    Possible levels are <TT
+CLASS="LITERAL"
+>DEBUG</TT
+>,
+    <TT
+CLASS="LITERAL"
+>LOG</TT
+>, <TT
+CLASS="LITERAL"
+>INFO</TT
+>,
+    <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>, <TT
+CLASS="LITERAL"
+>WARNING</TT
+>,
+    and <TT
+CLASS="LITERAL"
+>EXCEPTION</TT
+>.
+    <TT
+CLASS="LITERAL"
+>EXCEPTION</TT
+> raises an error (which normally aborts the
     current transaction); the other levels only generate messages of different
     priority levels.
     Whether messages of a particular priority are reported to the client,
     written to the server log, or both is controlled by the
-    <a href="runtime-config.html#guc-log-min-messages">log_min_messages</a> and
-    <a href="runtime-config.html#guc-client-min-messages">client_min_messages</a> configuration
-    variables. See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more
+    <A
+HREF="runtime-config.html#GUC-LOG-MIN-MESSAGES"
+>log_min_messages</A
+> and
+    <A
+HREF="runtime-config.html#GUC-CLIENT-MIN-MESSAGES"
+>client_min_messages</A
+> configuration
+    variables. See <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> for more
     information.
-   </p>
-<p>    Inside the format string, <tt class="literal">%</tt> is replaced by the
+   </P
+><P
+>    Inside the format string, <TT
+CLASS="LITERAL"
+>%</TT
+> is replaced by the
     next optional argument's string representation. Write
-    <tt class="literal">%%</tt> to emit a literal <tt class="literal">%</tt>. Note
+    <TT
+CLASS="LITERAL"
+>%%</TT
+> to emit a literal <TT
+CLASS="LITERAL"
+>%</TT
+>. Note
     that the optional arguments must presently be simple variables,
     not expressions, and the format must be a simple string literal.
-   </p>
-<p>    In this example, the value of <tt class="literal">v_job_id</tt> will replace the
-    <tt class="literal">%</tt> in the string:
-</p>
-<pre class="programlisting">RAISE NOTICE 'Calling cs_create_job(%)', v_job_id;</pre>
-<p>
-   </p>
-<p>    This example will abort the transaction with the given error message:
-</p>
-<pre class="programlisting">RAISE EXCEPTION 'Nonexistent ID --&gt; %', user_id;</pre>
-<p>
-   </p>
-<p>     <tt class="command">RAISE EXCEPTION</tt> presently always generates
-     the same SQLSTATE code, <tt class="literal">P0001</tt>, no matter what message
+   </P
+><P
+>    In this example, the value of <TT
+CLASS="LITERAL"
+>v_job_id</TT
+> will replace the
+    <TT
+CLASS="LITERAL"
+>%</TT
+> in the string:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>RAISE NOTICE 'Calling cs_create_job(%)', v_job_id;</PRE
+><P>
+   </P
+><P
+>    This example will abort the transaction with the given error message:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>RAISE EXCEPTION 'Nonexistent ID --&#62; %', user_id;</PRE
+><P>
+   </P
+><P
+>     <TT
+CLASS="COMMAND"
+>RAISE EXCEPTION</TT
+> presently always generates
+     the same SQLSTATE code, <TT
+CLASS="LITERAL"
+>P0001</TT
+>, no matter what message
      it is invoked with.  It is possible to trap this exception with
-     <tt class="literal">EXCEPTION ... WHEN RAISE_EXCEPTION THEN ...</tt> but there
-     is no way to tell one <tt class="command">RAISE</tt> from another.
-    </p>
-</div></body>
-</html>
+     <TT
+CLASS="LITERAL"
+>EXCEPTION ... WHEN RAISE_EXCEPTION THEN ...</TT
+> but there
+     is no way to tell one <TT
+CLASS="COMMAND"
+>RAISE</TT
+> from another.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-cursors.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-trigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Cursors</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Trigger Procedures</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

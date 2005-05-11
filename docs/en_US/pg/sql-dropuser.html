@@ -1,76 +1,319 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>DROP USER</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-droptype.html" title="DROP TYPE">
-<link rel="next" href="sql-dropview.html" title="DROP VIEW">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-dropuser"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>DROP USER &#8212; remove a database user account</p>
-</div>
-<a name="id2690357"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">DROP USER <i class="replaceable"><tt>name</tt></i></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690376"></a><h2>Description</h2>
-<p>   <tt class="command">DROP USER</tt> removes the specified user.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>DROP USER</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP TYPE"
+HREF="sql-droptype.html"><LINK
+REL="NEXT"
+TITLE="DROP VIEW"
+HREF="sql-dropview.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droptype.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droptype.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropview.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPUSER"
+></A
+>DROP USER</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42742"
+></A
+><H2
+>Name</H2
+>DROP USER&nbsp;--&nbsp;remove a database user account</DIV
+><A
+NAME="AEN42745"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42747"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP USER <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42750"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP USER</TT
+> removes the specified user.
    It does not remove tables, views, or other objects owned by the user. If the
    user owns any database, an error is raised.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690390"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>      The name of the user to remove.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690406"></a><h2>Notes</h2>
-<p>   <span class="productname">PostgreSQL</span> includes a program <a href="app-dropuser.html"><span class="application">dropuser</span></a> that has the
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42754"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name of the user to remove.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42762"
+></A
+><H2
+>Notes</H2
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> includes a program <A
+HREF="app-dropuser.html"
+><I
+><I
+>dropuser</I
+></I
+></A
+> that has the
    same functionality as this command (in fact, it calls this command)
    but can be run from the command shell.
-  </p>
-<p>   To drop a user who owns a database, first drop the database or change
+  </P
+><P
+>   To drop a user who owns a database, first drop the database or change
    its ownership.
-  </p>
-<p>   It is unwise to drop a user who either owns any database objects or has any
+  </P
+><P
+>   It is unwise to drop a user who either owns any database objects or has any
    granted permissions on objects.  Currently, this is only enforced for
    the case of owners of databases, but it is likely that future versions of
-   <span class="productname">PostgreSQL</span> will check other cases.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690447"></a><h2>Examples</h2>
-<p>   To drop a user account:
-</p>
-<pre class="programlisting">DROP USER jonathan;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690459"></a><h2>Compatibility</h2>
-<p>   The <tt class="command">DROP USER</tt> statement is a
-   <span class="productname">PostgreSQL</span> extension.  The SQL standard
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will check other cases.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42770"
+></A
+><H2
+>Examples</H2
+><P
+>   To drop a user account:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP USER jonathan;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42774"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>DROP USER</TT
+> statement is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.  The SQL standard
    leaves the definition of users to the implementation.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2690478"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alteruser.html">ALTER USER</a>, <a href="sql-createuser.html">CREATE USER</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42779"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alteruser.html"
+><I
+>ALTER USER</I
+></A
+>, <A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droptype.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP TYPE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP VIEW</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

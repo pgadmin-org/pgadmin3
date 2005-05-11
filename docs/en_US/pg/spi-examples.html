@@ -1,31 +1,127 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>39.5. Examples</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="spi.html" title="Chapter 39. Server Programming Interface">
-<link rel="previous" href="spi-visibility.html" title="39.4. Visibility of Data Changes">
-<link rel="next" href="reference.html" title="Part VI. Reference">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="spi-examples"></a>39.5. Examples</h2></div></div>
-<div></div>
-</div>
-<p>   This section contains a very simple example of SPI usage. The
-   procedure <tt class="function">execq</tt> takes an SQL command as its
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Examples</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming Interface"
+HREF="spi.html"><LINK
+REL="PREVIOUS"
+TITLE="Visibility of Data Changes"
+HREF="spi-visibility.html"><LINK
+REL="NEXT"
+TITLE="Reference"
+HREF="reference.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-visibility.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 39. Server Programming Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SPI-EXAMPLES"
+>39.5. Examples</A
+></H1
+><P
+>   This section contains a very simple example of SPI usage. The
+   procedure <CODE
+CLASS="FUNCTION"
+>execq</CODE
+> takes an SQL command as its
    first argument and a row count as its second, executes the command
-   using <tt class="function">SPI_exec</tt> and returns the number of rows
+   using <CODE
+CLASS="FUNCTION"
+>SPI_exec</CODE
+> and returns the number of rows
    that were processed by the command.  You can find more complex
    examples for SPI in the source tree in
-   <tt class="filename">src/test/regress/regress.c</tt> and in
-   <tt class="filename">contrib/spi</tt>.
-  </p>
-<pre class="programlisting">#include "executor/spi.h"
+   <TT
+CLASS="FILENAME"
+>src/test/regress/regress.c</TT
+> and in
+   <TT
+CLASS="FILENAME"
+>contrib/spi</TT
+>.
+  </P
+><PRE
+CLASS="PROGRAMLISTING"
+>#include "executor/spi.h"
 
 int execq(text *sql, int cnt);
 
@@ -49,7 +145,7 @@ execq(text *sql, int cnt)
      * If this is a SELECT and some rows were fetched,
      * then the rows are printed via elog(INFO).
      */
-    if (ret == SPI_OK_SELECT &amp;&amp; SPI_processed &gt; 0)
+    if (ret == SPI_OK_SELECT &#38;&#38; SPI_processed &gt; 0)
     {
         TupleDesc tupdesc = SPI_tuptable-&gt;tupdesc;
         SPITupleTable *tuptable = SPI_tuptable;
@@ -72,24 +168,34 @@ execq(text *sql, int cnt)
     pfree(command);
 
     return (proc);
-}</pre>
-<p>   (This function uses call convention version 0, to make the example
+}</PRE
+><P
+>   (This function uses call convention version 0, to make the example
    easier to understand.  In real applications you should use the new
    version 1 interface.)
-  </p>
-<p>   This is how you declare the function after having compiled it into
+  </P
+><P
+>   This is how you declare the function after having compiled it into
    a shared library:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION execq(text, integer) RETURNS integer
-    AS '<i class="replaceable"><tt>filename</tt></i>'
-    LANGUAGE C;</pre>
-<p>
-  </p>
-<p>   Here is a sample session:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION execq(text, integer) RETURNS integer
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>'
+    LANGUAGE C;</PRE
+><P>
+  </P
+><P
+>   Here is a sample session:
 
-</p>
-<pre class="programlisting">=&gt; SELECT execq('CREATE TABLE a (x integer)', 0);
+</P><PRE
+CLASS="PROGRAMLISTING"
+>=&gt; SELECT execq('CREATE TABLE a (x integer)', 0);
  execq
 -------
      0
@@ -159,8 +265,72 @@ INSERT 0 2
  2                  -- 2 rows * 1 (x in first row)
  6                  -- 3 rows (2 + 1 just inserted) * 2 (x in second row)
 (4 rows)               ^^^^^^ 
-                       rows visible to execq() in different invocations</pre>
-<p>
-  </p>
-</div></body>
-</html>
+                       rows visible to execq() in different invocations</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-visibility.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Visibility of Data Changes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Reference</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

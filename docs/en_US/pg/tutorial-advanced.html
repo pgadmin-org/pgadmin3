@@ -1,54 +1,251 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 3. Advanced Features</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="tutorial.html" title="Part I. Tutorial">
-<link rel="previous" href="tutorial-delete.html" title="2.9. Deletions">
-<link rel="next" href="tutorial-views.html" title="3.2. Views">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="tutorial-advanced">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="tutorial-advanced"></a>Chapter 3. Advanced Features</h2></div></div>
-<div></div>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="tutorial-advanced.html#tutorial-advanced-intro">3.1. Introduction</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-views.html">3.2. Views</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-fk.html">3.3. Foreign Keys</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-transactions.html">3.4. Transactions</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-inheritance.html">3.5. Inheritance</a></span></dt>
-<dt><span class="sect1"><a href="tutorial-conclusion.html">3.6. Conclusion</a></span></dt>
-</dl>
-</div>
-<div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-advanced-intro"></a>3.1. Introduction</h2></div></div>
-<div></div>
-</div>
-<p>    In the previous chapter we have covered the basics of using
-    <span class="acronym">SQL</span> to store and access your data in
-    <span class="productname">PostgreSQL</span>.  We will now discuss some
-    more advanced features of <span class="acronym">SQL</span> that simplify
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Advanced Features</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Tutorial"
+HREF="tutorial.html"><LINK
+REL="PREVIOUS"
+TITLE="Deletions"
+HREF="tutorial-delete.html"><LINK
+REL="NEXT"
+TITLE="Views"
+HREF="tutorial-views.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-delete.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-views.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="TUTORIAL-ADVANCED"
+></A
+>Chapter 3. Advanced Features</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>3.1. <A
+HREF="tutorial-advanced.html#TUTORIAL-ADVANCED-INTRO"
+>Introduction</A
+></DT
+><DT
+>3.2. <A
+HREF="tutorial-views.html"
+>Views</A
+></DT
+><DT
+>3.3. <A
+HREF="tutorial-fk.html"
+>Foreign Keys</A
+></DT
+><DT
+>3.4. <A
+HREF="tutorial-transactions.html"
+>Transactions</A
+></DT
+><DT
+>3.5. <A
+HREF="tutorial-inheritance.html"
+>Inheritance</A
+></DT
+><DT
+>3.6. <A
+HREF="tutorial-conclusion.html"
+>Conclusion</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-ADVANCED-INTRO"
+>3.1. Introduction</A
+></H1
+><P
+>    In the previous chapter we have covered the basics of using
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> to store and access your data in
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  We will now discuss some
+    more advanced features of <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> that simplify
     management and prevent loss or corruption of your data.  Finally,
-    we will look at some <span class="productname">PostgreSQL</span>
+    we will look at some <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     extensions.
-   </p>
-<p>    This chapter will on occasion refer to examples found in <a href="tutorial-sql.html" title="Chapter 2. The SQL Language">Chapter 2, <i>The SQL Language</i></a> to change or improve them, so it will be
+   </P
+><P
+>    This chapter will on occasion refer to examples found in <A
+HREF="tutorial-sql.html"
+>Chapter 2</A
+> to change or improve them, so it will be
     of advantage if you have read that chapter.  Some examples from
     this chapter can also be found in
-    <tt class="filename">advanced.sql</tt> in the tutorial directory.  This
+    <TT
+CLASS="FILENAME"
+>advanced.sql</TT
+> in the tutorial directory.  This
     file also contains some example data to load, which is not
-    repeated here.  (Refer to <a href="tutorial-sql.html#tutorial-sql-intro" title="2.1. Introduction">Section 2.1, &#8220;Introduction&#8221;</a> for
+    repeated here.  (Refer to <A
+HREF="tutorial-sql.html#TUTORIAL-SQL-INTRO"
+>Section 2.1</A
+> for
     how to use the file.)
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-delete.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-views.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Deletions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Views</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

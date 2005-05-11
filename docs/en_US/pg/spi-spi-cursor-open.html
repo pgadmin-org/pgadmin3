@@ -1,84 +1,369 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SPI_cursor_open</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
-<link rel="previous" href="spi-spi-execp.html" title="SPI_execp">
-<link rel="next" href="spi-spi-cursor-find.html" title="SPI_cursor_find">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-cursor-open"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SPI_cursor_open &#8212; set up a cursor using a plan created with <tt class="function">SPI_prepare</tt></p>
-</div>
-<a name="id2660804"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">Portal SPI_cursor_open(const char * <i class="parameter"><tt>name</tt></i>, void * <i class="parameter"><tt>plan</tt></i>,
-                       Datum * <i class="parameter"><tt>values</tt></i>, const char * <i class="parameter"><tt>nulls</tt></i>,
-                       bool <i class="parameter"><tt>read_only</tt></i>)</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2660847"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_cursor_open</tt> sets up a cursor (internally,
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>SPI_cursor_open</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Functions"
+HREF="spi.html#SPI-INTERFACE"><LINK
+REL="PREVIOUS"
+TITLE="SPI_execp"
+HREF="spi-spi-execp.html"><LINK
+REL="NEXT"
+TITLE="SPI_cursor_find"
+HREF="spi-spi-cursor-find.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-execp.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-execp.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-cursor-find.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-cursor-find.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-CURSOR-OPEN"
+></A
+>SPI_cursor_open</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN35154"
+></A
+><H2
+>Name</H2
+>SPI_cursor_open&nbsp;--&nbsp;set up a cursor using a plan created with <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+></DIV
+><A
+NAME="AEN35158"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN35160"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>Portal SPI_cursor_open(const char * <TT
+CLASS="PARAMETER"
+>name</TT
+>, void * <TT
+CLASS="PARAMETER"
+>plan</TT
+>,
+                       Datum * <TT
+CLASS="PARAMETER"
+>values</TT
+>, const char * <TT
+CLASS="PARAMETER"
+>nulls</TT
+>,
+                       bool <TT
+CLASS="PARAMETER"
+>read_only</TT
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35167"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_cursor_open</CODE
+> sets up a cursor (internally,
    a portal) that will execute a plan prepared by
-   <tt class="function">SPI_prepare</tt>.  The parameters have the same
+   <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+>.  The parameters have the same
    meanings as the corresponding parameters to
-   <tt class="function">SPI_execute_plan</tt>.
-  </p>
-<p>   Using a cursor instead of executing the plan directly has two
+   <CODE
+CLASS="FUNCTION"
+>SPI_execute_plan</CODE
+>.
+  </P
+><P
+>   Using a cursor instead of executing the plan directly has two
    benefits.  First, the result rows can be retrieved a few at a time,
    avoiding memory overrun for queries that return many rows.  Second,
    a portal can outlive the current procedure (it can, in fact, live
    to the end of the current transaction).  Returning the portal name
    to the procedure's caller provides a way of returning a row set as
    result.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2660890"></a><h2>Arguments</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>name</tt></i></tt></span></dt>
-<dd><p>      name for portal, or <tt class="symbol">NULL</tt> to let the system
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35174"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>const char * <TT
+CLASS="PARAMETER"
+>name</TT
+></TT
+></DT
+><DD
+><P
+>      name for portal, or <TT
+CLASS="SYMBOL"
+>NULL</TT
+> to let the system
       select a name
-     </p></dd>
-<dt><span class="term"><tt class="literal">void * <i class="parameter"><tt>plan</tt></i></tt></span></dt>
-<dd><p>      execution plan (returned by <tt class="function">SPI_prepare</tt>)
-     </p></dd>
-<dt><span class="term"><tt class="literal">Datum * <i class="parameter"><tt>values</tt></i></tt></span></dt>
-<dd><p>      An array of actual parameter values.  Must have same length as the
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>void * <TT
+CLASS="PARAMETER"
+>plan</TT
+></TT
+></DT
+><DD
+><P
+>      execution plan (returned by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+>)
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>Datum * <TT
+CLASS="PARAMETER"
+>values</TT
+></TT
+></DT
+><DD
+><P
+>      An array of actual parameter values.  Must have same length as the
       plan's number of arguments.
-     </p></dd>
-<dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>nulls</tt></i></tt></span></dt>
-<dd>
-<p>      An array describing which parameters are null.  Must have same length as
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>const char * <TT
+CLASS="PARAMETER"
+>nulls</TT
+></TT
+></DT
+><DD
+><P
+>      An array describing which parameters are null.  Must have same length as
       the plan's number of arguments.
-      <tt class="literal">n</tt> indicates a null value (entry in
-      <i class="parameter"><tt>values</tt></i> will be ignored); a space indicates a
-      nonnull value (entry in <i class="parameter"><tt>values</tt></i> is valid).
-     </p>
-<p>      If <i class="parameter"><tt>nulls</tt></i> is <tt class="symbol">NULL</tt> then
-      <tt class="function">SPI_cursor_open</tt> assumes that no parameters are
+      <TT
+CLASS="LITERAL"
+>n</TT
+> indicates a null value (entry in
+      <TT
+CLASS="PARAMETER"
+>values</TT
+> will be ignored); a space indicates a
+      nonnull value (entry in <TT
+CLASS="PARAMETER"
+>values</TT
+> is valid).
+     </P
+><P
+>      If <TT
+CLASS="PARAMETER"
+>nulls</TT
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+> then
+      <CODE
+CLASS="FUNCTION"
+>SPI_cursor_open</CODE
+> assumes that no parameters are
       null.
-     </p>
-</dd>
-<dt><span class="term"><tt class="literal">bool <i class="parameter"><tt>read_only</tt></i></tt></span></dt>
-<dd><p>      <tt class="literal">true</tt> for read-only execution
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2661029"></a><h2>Return Value</h2>
-<p>   pointer to portal containing the cursor, or <tt class="symbol">NULL</tt>
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>bool <TT
+CLASS="PARAMETER"
+>read_only</TT
+></TT
+></DT
+><DD
+><P
+>      <TT
+CLASS="LITERAL"
+>true</TT
+> for read-only execution
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35217"
+></A
+><H2
+>Return Value</H2
+><P
+>   pointer to portal containing the cursor, or <TT
+CLASS="SYMBOL"
+>NULL</TT
+>
    on error
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-execp.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-cursor-find.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_execp</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_cursor_find</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

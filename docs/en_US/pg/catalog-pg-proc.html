@@ -1,183 +1,625 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.24. pg_proc</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-operator.html" title="41.23. pg_operator">
-<link rel="next" href="catalog-pg-rewrite.html" title="41.25. pg_rewrite">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-proc"></a>41.24. <tt class="structname">pg_proc</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2732435"></a><p>   The catalog <tt class="structname">pg_proc</tt> stores information about functions (or procedures).
-   See <a href="sql-createfunction.html">CREATE FUNCTION</a>
-   and <a href="xfunc.html" title="31.3. User-Defined Functions">Section 31.3, &#8220;User-Defined Functions&#8221;</a> for more information.
-  </p>
-<p>   The table contains data for aggregate functions as well as plain functions.
-   If <tt class="structfield">proisagg</tt> is true, there should be a matching
-   row in <tt class="structfield">pg_aggregate</tt>.
-  </p>
-<div class="table">
-<a name="id2732479"></a><p class="title"><b>Table 41.24. <tt class="structname">pg_proc</tt> Columns</b></p>
-<table summary="pg_proc Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="structfield">proname</tt></td>
-<td><tt class="type">name</tt></td>
-<td> </td>
-<td>Name of the function</td>
-</tr>
-<tr>
-<td><tt class="structfield">pronamespace</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.oid</tt></td>
-<td>       The OID of the namespace that contains this function
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">proowner</tt></td>
-<td><tt class="type">int4</tt></td>
-<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usesysid</tt></td>
-<td>Owner of the function</td>
-</tr>
-<tr>
-<td><tt class="structfield">prolang</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-language.html" title="41.18. pg_language"><tt class="structname">pg_language</tt></a>.oid</tt></td>
-<td>Implementation language or call interface of this function</td>
-</tr>
-<tr>
-<td><tt class="structfield">proisagg</tt></td>
-<td><tt class="type">bool</tt></td>
-<td> </td>
-<td>Function is an aggregate function</td>
-</tr>
-<tr>
-<td><tt class="structfield">prosecdef</tt></td>
-<td><tt class="type">bool</tt></td>
-<td> </td>
-<td>Function is a security definer (i.e., a &#8220;<span class="quote">setuid</span>&#8221;
-      function)</td>
-</tr>
-<tr>
-<td><tt class="structfield">proisstrict</tt></td>
-<td><tt class="type">bool</tt></td>
-<td> </td>
-<td>       Function returns null if any call argument is null.  In that
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_proc</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_operator"
+HREF="catalog-pg-operator.html"><LINK
+REL="NEXT"
+TITLE="pg_rewrite"
+HREF="catalog-pg-rewrite.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-operator.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-rewrite.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-PROC"
+>41.24. <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+></H1
+><A
+NAME="AEN54043"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+> stores information about functions (or procedures).
+   See <A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+>
+   and <A
+HREF="xfunc.html"
+>Section 31.3</A
+> for more information.
+  </P
+><P
+>   The table contains data for aggregate functions as well as plain functions.
+   If <TT
+CLASS="STRUCTFIELD"
+>proisagg</TT
+> is true, there should be a matching
+   row in <TT
+CLASS="STRUCTFIELD"
+>pg_aggregate</TT
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN54052"
+></A
+><P
+><B
+>Table 41-24. <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Name of the function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>pronamespace</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.oid</TT
+></TD
+><TD
+>       The OID of the namespace that contains this function
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proowner</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</TT
+></TD
+><TD
+>Owner of the function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>prolang</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-language.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_language</TT
+></A
+>.oid</TT
+></TD
+><TD
+>Implementation language or call interface of this function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proisagg</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Function is an aggregate function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>prosecdef</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Function is a security definer (i.e., a <SPAN
+CLASS="QUOTE"
+>"setuid"</SPAN
+>
+      function)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proisstrict</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Function returns null if any call argument is null.  In that
        case the function won't actually be called at all.  Functions
-       that are not &#8220;<span class="quote">strict</span>&#8221; must be prepared to handle
+       that are not <SPAN
+CLASS="QUOTE"
+>"strict"</SPAN
+> must be prepared to handle
        null inputs.
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">proretset</tt></td>
-<td><tt class="type">bool</tt></td>
-<td> </td>
-<td>Function returns a set (i.e., multiple values of the specified
-      data type)</td>
-</tr>
-<tr>
-<td><tt class="structfield">provolatile</tt></td>
-<td><tt class="type">char</tt></td>
-<td> </td>
-<td>
-<tt class="structfield">provolatile</tt> tells whether the function's
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proretset</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Function returns a set (i.e., multiple values of the specified
+      data type)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>provolatile</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       <TT
+CLASS="STRUCTFIELD"
+>provolatile</TT
+> tells whether the function's
        result depends only on its input arguments, or is affected by outside
        factors.
-       It is <tt class="literal">i</tt> for &#8220;<span class="quote">immutable</span>&#8221; functions,
+       It is <TT
+CLASS="LITERAL"
+>i</TT
+> for <SPAN
+CLASS="QUOTE"
+>"immutable"</SPAN
+> functions,
        which always deliver the same result for the same inputs.
-       It is <tt class="literal">s</tt> for &#8220;<span class="quote">stable</span>&#8221; functions,
+       It is <TT
+CLASS="LITERAL"
+>s</TT
+> for <SPAN
+CLASS="QUOTE"
+>"stable"</SPAN
+> functions,
        whose results (for fixed inputs) do not change within a scan.
-       It is <tt class="literal">v</tt> for &#8220;<span class="quote">volatile</span>&#8221; functions,
-       whose results may change at any time.  (Use <tt class="literal">v</tt> also
+       It is <TT
+CLASS="LITERAL"
+>v</TT
+> for <SPAN
+CLASS="QUOTE"
+>"volatile"</SPAN
+> functions,
+       whose results may change at any time.  (Use <TT
+CLASS="LITERAL"
+>v</TT
+> also
        for functions with side-effects, so that calls to them cannot get
        optimized away.)
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">pronargs</tt></td>
-<td><tt class="type">int2</tt></td>
-<td> </td>
-<td>Number of arguments</td>
-</tr>
-<tr>
-<td><tt class="structfield">prorettype</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
-<td>Data type of the return value</td>
-</tr>
-<tr>
-<td><tt class="structfield">proargtypes</tt></td>
-<td><tt class="type">oidvector</tt></td>
-<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
-<td>An array with the data types of the function arguments</td>
-</tr>
-<tr>
-<td><tt class="structfield">proargnames</tt></td>
-<td><tt class="type">text[]</tt></td>
-<td> </td>
-<td>        An array with the names of the function arguments.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>pronargs</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int2</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Number of arguments</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>prorettype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</TT
+></TD
+><TD
+>Data type of the return value</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proargtypes</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oidvector</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</TT
+></TD
+><TD
+>An array with the data types of the function arguments</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proargnames</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text[]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>        An array with the names of the function arguments.
         Arguments without a name are set to empty strings in the array.
         If none of the arguments have a name, this field may be null.
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">prosrc</tt></td>
-<td><tt class="type">text</tt></td>
-<td> </td>
-<td>       This tells the function handler how to invoke the function.  It
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>prosrc</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       This tells the function handler how to invoke the function.  It
        might be the actual source code of the function for interpreted
        languages, a link symbol, a file name, or just about anything
        else, depending on the implementation language/call convention.
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">probin</tt></td>
-<td><tt class="type">bytea</tt></td>
-<td> </td>
-<td>Additional information about how to invoke the function.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>probin</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Additional information about how to invoke the function.
       Again, the interpretation is language-specific.
-      </td>
-</tr>
-<tr>
-<td><tt class="structfield">proacl</tt></td>
-<td><tt class="type">aclitem[]</tt></td>
-<td> </td>
-<td>       Access privileges; see
-       <a href="sql-grant.html">GRANT</a> and
-       <a href="sql-revoke.html">REVOKE</a>
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>proacl</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>aclitem[]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Access privileges; see
+       <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> and
+       <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+>
        for details.
-      </td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   For compiled functions, both built-in and dynamically loaded,
-   <tt class="structfield">prosrc</tt> contains the function's C-language
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   For compiled functions, both built-in and dynamically loaded,
+   <TT
+CLASS="STRUCTFIELD"
+>prosrc</TT
+> contains the function's C-language
    name (link symbol).  For all other currently-known language types,
-   <tt class="structfield">prosrc</tt> contains the function's source
-   text.  <tt class="structfield">probin</tt> is unused except for
+   <TT
+CLASS="STRUCTFIELD"
+>prosrc</TT
+> contains the function's source
+   text.  <TT
+CLASS="STRUCTFIELD"
+>probin</TT
+> is unused except for
    dynamically-loaded C functions, for which it gives the name of the
    shared library file containing the function.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-operator.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-rewrite.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

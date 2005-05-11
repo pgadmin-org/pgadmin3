@@ -1,159 +1,495 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>UPDATE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-unlisten.html" title="UNLISTEN">
-<link rel="next" href="sql-vacuum.html" title="VACUUM">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-update"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>UPDATE &#8212; update rows of a table</p>
-</div>
-<a name="id2704477"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">UPDATE [ ONLY ] <i class="replaceable"><tt>table</tt></i> SET <i class="replaceable"><tt>column</tt></i> = { <i class="replaceable"><tt>expression</tt></i> | DEFAULT } [, ...]
-    [ FROM <i class="replaceable"><tt>fromlist</tt></i> ]
-    [ WHERE <i class="replaceable"><tt>condition</tt></i> ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2704522"></a><h2>Description</h2>
-<p>   <tt class="command">UPDATE</tt> changes the values of the specified
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>UPDATE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="UNLISTEN"
+HREF="sql-unlisten.html"><LINK
+REL="NEXT"
+TITLE="VACUUM"
+HREF="sql-vacuum.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-unlisten.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-unlisten.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-vacuum.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-vacuum.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-UPDATE"
+></A
+>UPDATE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45756"
+></A
+><H2
+>Name</H2
+>UPDATE&nbsp;--&nbsp;update rows of a table</DIV
+><A
+NAME="AEN45759"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45761"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>UPDATE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> SET <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> = { <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> | DEFAULT } [, ...]
+    [ FROM <TT
+CLASS="REPLACEABLE"
+><I
+>fromlist</I
+></TT
+> ]
+    [ WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45768"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> changes the values of the specified
    columns in all rows that satisfy the condition. Only the columns to
-   be modified need be mentioned in the <tt class="literal">SET</tt> clause;
+   be modified need be mentioned in the <TT
+CLASS="LITERAL"
+>SET</TT
+> clause;
    columns not explicitly modified retain their previous values.
-  </p>
-<p>   By default, <tt class="command">UPDATE</tt> will update rows in the
+  </P
+><P
+>   By default, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> will update rows in the
    specified table and all its subtables. If you wish to only update
-   the specific table mentioned, you must use the <tt class="literal">ONLY</tt>
+   the specific table mentioned, you must use the <TT
+CLASS="LITERAL"
+>ONLY</TT
+>
    clause.
-  </p>
-<p>   There are two ways to modify a table using information contained in
+  </P
+><P
+>   There are two ways to modify a table using information contained in
    other tables in the database: using sub-selects, or specifying
-   additional tables in the <tt class="literal">FROM</tt> clause. Which
+   additional tables in the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause. Which
    technique is more appropriate depends on the specific
    circumstances.
-  </p>
-<p>   You must have the <tt class="literal">UPDATE</tt> privilege on the table
-   to update it, as well as the <tt class="literal">SELECT</tt>
+  </P
+><P
+>   You must have the <TT
+CLASS="LITERAL"
+>UPDATE</TT
+> privilege on the table
+   to update it, as well as the <TT
+CLASS="LITERAL"
+>SELECT</TT
+>
    privilege to any table whose values are read in the
-   <i class="replaceable"><tt>expression</tt></i>s or
-   <i class="replaceable"><tt>condition</tt></i>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2704601"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
-<dd><p>      The name (optionally schema-qualified) of the table to update.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>column</tt></i></span></dt>
-<dd><p>      The name of a column in <i class="replaceable"><tt>table</tt></i>.
+   <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>s or
+   <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45783"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of the table to update.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+></DT
+><DD
+><P
+>      The name of a column in <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>.
       The column name can be qualified with a subfield name or array
       subscript, if needed.
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>expression</tt></i></span></dt>
-<dd><p>      An expression to assign to the column.  The expression may use the
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+></DT
+><DD
+><P
+>      An expression to assign to the column.  The expression may use the
       old values of this and other columns in the table.
-     </p></dd>
-<dt><span class="term"><tt class="literal">DEFAULT</tt></span></dt>
-<dd><p>      Set the column to its default value (which will be NULL if no
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DEFAULT</TT
+></DT
+><DD
+><P
+>      Set the column to its default value (which will be NULL if no
       specific default expression has been assigned to it).
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>fromlist</tt></i></span></dt>
-<dd><p>      A list of table expressions, allowing columns from other tables
-      to appear in the <tt class="literal">WHERE</tt> condition and the update
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>fromlist</I
+></TT
+></DT
+><DD
+><P
+>      A list of table expressions, allowing columns from other tables
+      to appear in the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> condition and the update
       expressions. This is similar to the list of tables that can be
-      specified in the <a href="sql-select.html#sql-from"><tt class="literal">FROM</tt> Clause</a> of a <tt class="command">SELECT</tt>
+      specified in the <A
+HREF="sql-select.html#SQL-FROM"
+><I
+><I
+>FROM</I
+> Clause</I
+></A
+> of a <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
       statement.  Note that the target table must not appear in the
-      <i class="replaceable"><tt>fromlist</tt></i>, unless you intend a self-join (in which
-      case it must appear with an alias in the <i class="replaceable"><tt>fromlist</tt></i>).
-     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>condition</tt></i></span></dt>
-<dd><p>      An expression that returns a value of type <tt class="type">boolean</tt>.
-      Only rows for which this expression returns <tt class="literal">true</tt>
+      <TT
+CLASS="REPLACEABLE"
+><I
+>fromlist</I
+></TT
+>, unless you intend a self-join (in which
+      case it must appear with an alias in the <TT
+CLASS="REPLACEABLE"
+><I
+>fromlist</I
+></TT
+>).
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+></DT
+><DD
+><P
+>      An expression that returns a value of type <TT
+CLASS="TYPE"
+>boolean</TT
+>.
+      Only rows for which this expression returns <TT
+CLASS="LITERAL"
+>true</TT
+>
       will be updated.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2704726"></a><h2>Outputs</h2>
-<p>   On successful completion, an <tt class="command">UPDATE</tt> command returns a command
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45824"
+></A
+><H2
+>Outputs</H2
+><P
+>   On successful completion, an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> command returns a command
    tag of the form
-</p>
-<pre class="screen">UPDATE <i class="replaceable"><tt>count</tt></i></pre>
-<p>
-   The <i class="replaceable"><tt>count</tt></i> is the number
-   of rows updated.  If <i class="replaceable"><tt>count</tt></i> is
-   0, no rows matched the <i class="replaceable"><tt>condition</tt></i> (this is not considered
+</P><PRE
+CLASS="SCREEN"
+>UPDATE <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+></PRE
+><P>
+   The <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> is the number
+   of rows updated.  If <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> is
+   0, no rows matched the <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> (this is not considered
    an error).
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2704769"></a><h2>Notes</h2>
-<p>   When a <tt class="literal">FROM</tt> clause is present, what essentially happens
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45833"
+></A
+><H2
+>Notes</H2
+><P
+>   When a <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause is present, what essentially happens
    is that the target table is joined to the tables mentioned in the
-   <i class="replaceable"><tt>fromlist</tt></i>, and each output row of the join
+   <TT
+CLASS="REPLACEABLE"
+><I
+>fromlist</I
+></TT
+>, and each output row of the join
    represents an update operation for the target table.  When using
-   <tt class="literal">FROM</tt> you should ensure that the join
+   <TT
+CLASS="LITERAL"
+>FROM</TT
+> you should ensure that the join
    produces at most one output row for each row to be modified.  In
    other words, a target row shouldn't join to more than one row from
    the other table(s).  If it does, then only one of the join rows
    will be used to update the target row, but which one will be used
    is not readily predictable.
-  </p>
-<p>   Because of this indeterminancy, referencing other tables only within
+  </P
+><P
+>   Because of this indeterminancy, referencing other tables only within
    sub-selects is safer, though often harder to read and slower than
    using a join.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2704805"></a><h2>Examples</h2>
-<p>   Change the word <tt class="literal">Drama</tt> to <tt class="literal">Dramatic</tt> in the
-   column <tt class="structfield">kind</tt> of the table <tt class="structname">films</tt>:
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45840"
+></A
+><H2
+>Examples</H2
+><P
+>   Change the word <TT
+CLASS="LITERAL"
+>Drama</TT
+> to <TT
+CLASS="LITERAL"
+>Dramatic</TT
+> in the
+   column <TT
+CLASS="STRUCTFIELD"
+>kind</TT
+> of the table <TT
+CLASS="STRUCTNAME"
+>films</TT
+>:
 
-</p>
-<pre class="programlisting">UPDATE films SET kind = 'Dramatic' WHERE kind = 'Drama';</pre>
-<p>
-  </p>
-<p>   Adjust temperature entries and reset precipitation to its default
-   value in one row of the table <tt class="structname">weather</tt>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE films SET kind = 'Dramatic' WHERE kind = 'Drama';</PRE
+><P>
+  </P
+><P
+>   Adjust temperature entries and reset precipitation to its default
+   value in one row of the table <TT
+CLASS="STRUCTNAME"
+>weather</TT
+>:
 
-</p>
-<pre class="programlisting">UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
-  WHERE city = 'San Francisco' AND date = '2003-07-03';</pre>
-<p>
-  </p>
-<p>   Increment the sales count of the salesperson who manages the
-   account for Acme Corporation, using the <tt class="literal">FROM</tt>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
+  WHERE city = 'San Francisco' AND date = '2003-07-03';</PRE
+><P>
+  </P
+><P
+>   Increment the sales count of the salesperson who manages the
+   account for Acme Corporation, using the <TT
+CLASS="LITERAL"
+>FROM</TT
+>
    clause syntax:
-</p>
-<pre class="programlisting">UPDATE employees SET sales_count = sales_count + 1 FROM accounts
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE employees SET sales_count = sales_count + 1 FROM accounts
   WHERE accounts.name = 'Acme Corporation'
-  AND employees.id = accounts.sales_person;</pre>
-<p>
+  AND employees.id = accounts.sales_person;</PRE
+><P>
 
    Perform the same operation, using a sub-select in the
-   <tt class="literal">WHERE</tt> clause:
-</p>
-<pre class="programlisting">UPDATE employees SET sales_count = sales_count + 1 WHERE id =
-  (SELECT sales_person FROM accounts WHERE name = 'Acme Corporation');</pre>
-<p>
+   <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE employees SET sales_count = sales_count + 1 WHERE id =
+  (SELECT sales_person FROM accounts WHERE name = 'Acme Corporation');</PRE
+><P>
 
    Attempt to insert a new stock item along with the quantity of stock. If
    the item already exists, instead update the stock count of the existing
    item. To do this without failing the entire transaction, use savepoints.
-</p>
-<pre class="programlisting">BEGIN;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
 -- other operations
 SAVEPOINT sp1;
 INSERT INTO wines VALUES('Chateau Lafite 2003', '24');
@@ -162,22 +498,113 @@ INSERT INTO wines VALUES('Chateau Lafite 2003', '24');
 ROLLBACK TO sp1;
 UPDATE wines SET stock = stock + 24 WHERE winename = 'Chateau Lafite 2003';
 -- continue with other operations, and eventually
-COMMIT;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2704902"></a><h2>Compatibility</h2>
-<p>   This command conforms to the <span class="acronym">SQL</span> standard, except
-   that the <tt class="literal">FROM</tt> clause is a
-   <span class="productname">PostgreSQL</span> extension.
-  </p>
-<p>   Some other database systems offer a <tt class="literal">FROM</tt> option in which
-   the target table is supposed to be listed again within <tt class="literal">FROM</tt>.
-   That is not how <span class="productname">PostgreSQL</span> interprets
-   <tt class="literal">FROM</tt>.  Be careful when porting applications that use this
+COMMIT;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45857"
+></A
+><H2
+>Compatibility</H2
+><P
+>   This command conforms to the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard, except
+   that the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+><P
+>   Some other database systems offer a <TT
+CLASS="LITERAL"
+>FROM</TT
+> option in which
+   the target table is supposed to be listed again within <TT
+CLASS="LITERAL"
+>FROM</TT
+>.
+   That is not how <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interprets
+   <TT
+CLASS="LITERAL"
+>FROM</TT
+>.  Be careful when porting applications that use this
    extension.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-unlisten.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-vacuum.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>UNLISTEN</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>VACUUM</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

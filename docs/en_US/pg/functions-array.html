@@ -1,202 +1,732 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.14. Array Functions and Operators</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-conditional.html" title="9.13. Conditional Expressions">
-<link rel="next" href="functions-aggregate.html" title="9.15. Aggregate Functions">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-array"></a>9.14. Array Functions and Operators</h2></div></div>
-<div></div>
-</div>
-<p>   <a href="functions-array.html#array-operators-table" title="Table 9.35. array Operators">Table 9.35, &#8220;array Operators&#8221;</a> shows the operators
-   available for <tt class="type">array</tt> types.
-  </p>
-<div class="table">
-<a name="array-operators-table"></a><p class="title"><b>Table 9.35. <tt class="type">array</tt> Operators</b></p>
-<table summary="array Operators" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Operator</th>
-<th>Description</th>
-<th>Example</th>
-<th>Result</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="literal">=</tt></td>
-<td>equal</td>
-<td><tt class="literal">ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3]</tt></td>
-<td><tt class="literal">t</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">&lt;&gt;</tt></td>
-<td>not equal</td>
-<td><tt class="literal">ARRAY[1,2,3] &lt;&gt; ARRAY[1,2,4]</tt></td>
-<td><tt class="literal">t</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">&lt;</tt></td>
-<td>less than</td>
-<td><tt class="literal">ARRAY[1,2,3] &lt; ARRAY[1,2,4]</tt></td>
-<td><tt class="literal">t</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">&gt;</tt></td>
-<td>greater than</td>
-<td><tt class="literal">ARRAY[1,4,3] &gt; ARRAY[1,2,4]</tt></td>
-<td><tt class="literal">t</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">&lt;=</tt></td>
-<td>less than or equal</td>
-<td><tt class="literal">ARRAY[1,2,3] &lt;= ARRAY[1,2,3]</tt></td>
-<td><tt class="literal">t</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">&gt;=</tt></td>
-<td>greater than or equal</td>
-<td><tt class="literal">ARRAY[1,4,3] &gt;= ARRAY[1,4,3]</tt></td>
-<td><tt class="literal">t</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">||</tt></td>
-<td>array-to-array concatenation</td>
-<td><tt class="literal">ARRAY[1,2,3] || ARRAY[4,5,6]</tt></td>
-<td><tt class="literal">{1,2,3,4,5,6}</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">||</tt></td>
-<td>array-to-array concatenation</td>
-<td><tt class="literal">ARRAY[1,2,3] || ARRAY[[4,5,6],[7,8,9]]</tt></td>
-<td><tt class="literal">{{1,2,3},{4,5,6},{7,8,9}}</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">||</tt></td>
-<td>element-to-array concatenation</td>
-<td><tt class="literal">3 || ARRAY[4,5,6]</tt></td>
-<td><tt class="literal">{3,4,5,6}</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">||</tt></td>
-<td>array-to-element concatenation</td>
-<td><tt class="literal">ARRAY[4,5,6] || 7</tt></td>
-<td><tt class="literal">{4,5,6,7}</tt></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   See <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a> for more details about array operator
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Array Functions and Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Conditional Expressions"
+HREF="functions-conditional.html"><LINK
+REL="NEXT"
+TITLE="Aggregate Functions"
+HREF="functions-aggregate.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-conditional.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-aggregate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-ARRAY"
+>9.14. Array Functions and Operators</A
+></H1
+><P
+>   <A
+HREF="functions-array.html#ARRAY-OPERATORS-TABLE"
+>Table 9-35</A
+> shows the operators
+   available for <TT
+CLASS="TYPE"
+>array</TT
+> types.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="ARRAY-OPERATORS-TABLE"
+></A
+><P
+><B
+>Table 9-35. <TT
+CLASS="TYPE"
+>array</TT
+> Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Operator</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>=</TT
+> </TD
+><TD
+>equal</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>t</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> </TD
+><TD
+>not equal</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[1,2,3] &lt;&gt; ARRAY[1,2,4]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>t</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;</TT
+> </TD
+><TD
+>less than</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[1,2,3] &lt; ARRAY[1,2,4]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>t</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&gt;</TT
+> </TD
+><TD
+>greater than</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[1,4,3] &gt; ARRAY[1,2,4]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>t</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;=</TT
+> </TD
+><TD
+>less than or equal</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[1,2,3] &lt;= ARRAY[1,2,3]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>t</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&gt;=</TT
+> </TD
+><TD
+>greater than or equal</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[1,4,3] &gt;= ARRAY[1,4,3]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>t</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>||</TT
+> </TD
+><TD
+>array-to-array concatenation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[1,2,3] || ARRAY[4,5,6]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>{1,2,3,4,5,6}</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>||</TT
+> </TD
+><TD
+>array-to-array concatenation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[1,2,3] || ARRAY[[4,5,6],[7,8,9]]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>{{1,2,3},{4,5,6},{7,8,9}}</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>||</TT
+> </TD
+><TD
+>element-to-array concatenation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>3 || ARRAY[4,5,6]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>{3,4,5,6}</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>||</TT
+> </TD
+><TD
+>array-to-element concatenation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ARRAY[4,5,6] || 7</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>{4,5,6,7}</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   See <A
+HREF="arrays.html"
+>Section 8.10</A
+> for more details about array operator
    behavior.
-  </p>
-<p>   <a href="functions-array.html#array-functions-table" title="Table 9.36. array Functions">Table 9.36, &#8220;array Functions&#8221;</a> shows the functions
-   available for use with array types. See <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a>
+  </P
+><P
+>   <A
+HREF="functions-array.html#ARRAY-FUNCTIONS-TABLE"
+>Table 9-36</A
+> shows the functions
+   available for use with array types. See <A
+HREF="arrays.html"
+>Section 8.10</A
+>
    for more discussion and examples of the use of these functions.
-  </p>
-<div class="table">
-<a name="array-functions-table"></a><p class="title"><b>Table 9.36. <tt class="type">array</tt> Functions</b></p>
-<table summary="array Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Return Type</th>
-<th>Description</th>
-<th>Example</th>
-<th>Result</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><tt class="literal">      <tt class="function">array_cat</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">anyarray</tt>)
-     </tt></td>
-<td><tt class="type">anyarray</tt></td>
-<td>concatenate two arrays</td>
-<td><tt class="literal">array_cat(ARRAY[1,2,3], ARRAY[4,5])</tt></td>
-<td><tt class="literal">{1,2,3,4,5}</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">      <tt class="function">array_append</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">anyelement</tt>)
-     </tt></td>
-<td><tt class="type">anyarray</tt></td>
-<td>append an element to the end of an array</td>
-<td><tt class="literal">array_append(ARRAY[1,2], 3)</tt></td>
-<td><tt class="literal">{1,2,3}</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">      <tt class="function">array_prepend</tt>
-      (<tt class="type">anyelement</tt>, <tt class="type">anyarray</tt>)
-     </tt></td>
-<td><tt class="type">anyarray</tt></td>
-<td>append an element to the beginning of an array</td>
-<td><tt class="literal">array_prepend(1, ARRAY[2,3])</tt></td>
-<td><tt class="literal">{1,2,3}</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">      <tt class="function">array_dims</tt>
-      (<tt class="type">anyarray</tt>)
-     </tt></td>
-<td><tt class="type">text</tt></td>
-<td>returns a text representation of array's dimensions</td>
-<td><tt class="literal">array_dims(array[[1,2,3], [4,5,6]])</tt></td>
-<td><tt class="literal">[1:2][1:3]</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">      <tt class="function">array_lower</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">integer</tt>)
-     </tt></td>
-<td><tt class="type">integer</tt></td>
-<td>returns lower bound of the requested array dimension</td>
-<td><tt class="literal">array_lower(array_prepend(0, ARRAY[1,2,3]), 1)</tt></td>
-<td><tt class="literal">0</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">      <tt class="function">array_upper</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">integer</tt>)
-     </tt></td>
-<td><tt class="type">integer</tt></td>
-<td>returns upper bound of the requested array dimension</td>
-<td><tt class="literal">array_upper(ARRAY[1,2,3,4], 1)</tt></td>
-<td><tt class="literal">4</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">      <tt class="function">array_to_string</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">text</tt>)
-     </tt></td>
-<td><tt class="type">text</tt></td>
-<td>concatenates array elements using provided delimiter</td>
-<td><tt class="literal">array_to_string(array[1, 2, 3], '~^~')</tt></td>
-<td><tt class="literal">1~^~2~^~3</tt></td>
-</tr>
-<tr>
-<td><tt class="literal">      <tt class="function">string_to_array</tt>
-      (<tt class="type">text</tt>, <tt class="type">text</tt>)
-     </tt></td>
-<td><tt class="type">text[]</tt></td>
-<td>splits string into array elements using provided delimiter</td>
-<td><tt class="literal">string_to_array( 'xx~^~yy~^~zz', '~^~')</tt></td>
-<td><tt class="literal">{xx,yy,zz}</tt></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></body>
-</html>
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="ARRAY-FUNCTIONS-TABLE"
+></A
+><P
+><B
+>Table 9-36. <TT
+CLASS="TYPE"
+>array</TT
+> Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>     <TT
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_cat</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>anyarray</TT
+>)
+     </TT
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>concatenate two arrays</TD
+><TD
+><TT
+CLASS="LITERAL"
+>array_cat(ARRAY[1,2,3], ARRAY[4,5])</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>{1,2,3,4,5}</TT
+></TD
+></TR
+><TR
+><TD
+>     <TT
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_append</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>anyelement</TT
+>)
+     </TT
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>append an element to the end of an array</TD
+><TD
+><TT
+CLASS="LITERAL"
+>array_append(ARRAY[1,2], 3)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>{1,2,3}</TT
+></TD
+></TR
+><TR
+><TD
+>     <TT
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_prepend</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyelement</TT
+>, <TT
+CLASS="TYPE"
+>anyarray</TT
+>)
+     </TT
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>append an element to the beginning of an array</TD
+><TD
+><TT
+CLASS="LITERAL"
+>array_prepend(1, ARRAY[2,3])</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>{1,2,3}</TT
+></TD
+></TR
+><TR
+><TD
+>     <TT
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_dims</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>)
+     </TT
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>returns a text representation of array's dimensions</TD
+><TD
+><TT
+CLASS="LITERAL"
+>array_dims(array[[1,2,3], [4,5,6]])</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>[1:2][1:3]</TT
+></TD
+></TR
+><TR
+><TD
+>     <TT
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_lower</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>)
+     </TT
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>returns lower bound of the requested array dimension</TD
+><TD
+><TT
+CLASS="LITERAL"
+>array_lower(array_prepend(0, ARRAY[1,2,3]), 1)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>0</TT
+></TD
+></TR
+><TR
+><TD
+>     <TT
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_upper</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>)
+     </TT
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>returns upper bound of the requested array dimension</TD
+><TD
+><TT
+CLASS="LITERAL"
+>array_upper(ARRAY[1,2,3,4], 1)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>4</TT
+></TD
+></TR
+><TR
+><TD
+>     <TT
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_to_string</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>text</TT
+>)
+     </TT
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>concatenates array elements using provided delimiter</TD
+><TD
+><TT
+CLASS="LITERAL"
+>array_to_string(array[1, 2, 3], '~^~')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>1~^~2~^~3</TT
+></TD
+></TR
+><TR
+><TD
+>     <TT
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>string_to_array</CODE
+>
+      (<TT
+CLASS="TYPE"
+>text</TT
+>, <TT
+CLASS="TYPE"
+>text</TT
+>)
+     </TT
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>text[]</TT
+></TD
+><TD
+>splits string into array elements using provided delimiter</TD
+><TD
+><TT
+CLASS="LITERAL"
+>string_to_array( 'xx~^~yy~^~zz', '~^~')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>{xx,yy,zz}</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-conditional.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-aggregate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Conditional Expressions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Aggregate Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

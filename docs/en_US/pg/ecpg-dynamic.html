@@ -1,61 +1,163 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>29.7. Dynamic SQL</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-<link rel="previous" href="ecpg-variables.html" title="29.6. Using Host Variables">
-<link rel="next" href="ecpg-descriptors.html" title="29.8. Using SQL Descriptor Areas">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-dynamic"></a>29.7. Dynamic SQL</h2></div></div>
-<div></div>
-</div>
-<p>   In many cases, the particular SQL statements that an application
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Dynamic SQL</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Using Host Variables"
+HREF="ecpg-variables.html"><LINK
+REL="NEXT"
+TITLE="Using SQL Descriptor Areas"
+HREF="ecpg-descriptors.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-variables.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 29. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-descriptors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-DYNAMIC"
+>29.7. Dynamic SQL</A
+></H1
+><P
+>   In many cases, the particular SQL statements that an application
    has to execute are known at the time the application is written.
    In some cases, however, the SQL statements are composed at run time
    or provided by an external source.  In these cases you cannot embed
    the SQL statements directly into the C source code, but there is a
    facility that allows you to call arbitrary SQL statements that you
    provide in a string variable.
-  </p>
-<p>   The simplest way to execute an arbitrary SQL statement is to use
-   the command <tt class="command">EXECUTE IMMEDIATE</tt>.  For example:
-</p>
-<pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;
+  </P
+><P
+>   The simplest way to execute an arbitrary SQL statement is to use
+   the command <TT
+CLASS="COMMAND"
+>EXECUTE IMMEDIATE</TT
+>.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL BEGIN DECLARE SECTION;
 const char *stmt = "CREATE TABLE test1 (...);";
 EXEC SQL END DECLARE SECTION;
 
-EXEC SQL EXECUTE IMMEDIATE :stmt;</pre>
-<p>
+EXEC SQL EXECUTE IMMEDIATE :stmt;</PRE
+><P>
    You may not execute statements that retrieve data (e.g.,
-   <tt class="command">SELECT</tt>) this way.
-  </p>
-<p>   A more powerful way to execute arbitrary SQL statements is to
+   <TT
+CLASS="COMMAND"
+>SELECT</TT
+>) this way.
+  </P
+><P
+>   A more powerful way to execute arbitrary SQL statements is to
    prepare them once and execute the prepared statement as often as
    you like.  It is also possible to prepare a generalized version of
    a statement and then execute specific versions of it by
    substituting parameters.  When preparing the statement, write
    question marks where you want to substitute parameters later.  For
    example:
-</p>
-<pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL BEGIN DECLARE SECTION;
 const char *stmt = "INSERT INTO test1 VALUES(?, ?);";
 EXEC SQL END DECLARE SECTION;
 
 EXEC SQL PREPARE mystmt FROM :stmt;
  ...
-EXEC SQL EXECUTE mystmt USING 42, 'foobar';</pre>
-<p>
+EXEC SQL EXECUTE mystmt USING 42, 'foobar';</PRE
+><P>
    If the statement you are executing returns values, then add an
-   <tt class="literal">INTO</tt> clause:
-</p>
-<pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;
+   <TT
+CLASS="LITERAL"
+>INTO</TT
+> clause:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL BEGIN DECLARE SECTION;
 const char *stmt = "SELECT a, b, c FROM test1 WHERE a &gt; ?";
 int v1, v2;
 VARCHAR v3;
@@ -63,17 +165,97 @@ EXEC SQL END DECLARE SECTION;
 
 EXEC SQL PREPARE mystmt FROM :stmt;
  ...
-EXEC SQL EXECUTE mystmt INTO v1, v2, v3 USING 37;</pre>
-<p>
-   An <tt class="command">EXECUTE</tt> command may have an
-   <tt class="literal">INTO</tt> clause, a <tt class="literal">USING</tt> clause,
+EXEC SQL EXECUTE mystmt INTO v1, v2, v3 USING 37;</PRE
+><P>
+   An <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> command may have an
+   <TT
+CLASS="LITERAL"
+>INTO</TT
+> clause, a <TT
+CLASS="LITERAL"
+>USING</TT
+> clause,
    both, or neither.
-  </p>
-<p>   When you don't need the prepared statement anymore, you should
+  </P
+><P
+>   When you don't need the prepared statement anymore, you should
    deallocate it:
-</p>
-<pre class="programlisting">EXEC SQL DEALLOCATE PREPARE <i class="replaceable"><tt>name</tt></i>;</pre>
-<p>
-  </p>
-</div></body>
-</html>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL DEALLOCATE PREPARE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-variables.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-descriptors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Using Host Variables</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Using SQL Descriptor Areas</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

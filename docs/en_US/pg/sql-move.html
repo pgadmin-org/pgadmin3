@@ -1,54 +1,211 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>MOVE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-lock.html" title="LOCK">
-<link rel="next" href="sql-notify.html" title="NOTIFY">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-move"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>MOVE &#8212; position a cursor</p>
-</div>
-<a name="id2694911"></a><a name="id2694920"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">MOVE [ <i class="replaceable"><tt>direction</tt></i> { FROM | IN } ] <i class="replaceable"><tt>cursorname</tt></i></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2694948"></a><h2>Description</h2>
-<p>   <tt class="command">MOVE</tt> repositions a cursor without retrieving any data.
-   <tt class="command">MOVE</tt> works exactly like the <tt class="command">FETCH</tt>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>MOVE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="LOCK"
+HREF="sql-lock.html"><LINK
+REL="NEXT"
+TITLE="NOTIFY"
+HREF="sql-notify.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-lock.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-lock.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-notify.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-notify.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-MOVE"
+></A
+>MOVE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43783"
+></A
+><H2
+>Name</H2
+>MOVE&nbsp;--&nbsp;position a cursor</DIV
+><A
+NAME="AEN43786"
+></A
+><A
+NAME="AEN43788"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN43791"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>MOVE [ <TT
+CLASS="REPLACEABLE"
+><I
+>direction</I
+></TT
+> { FROM | IN } ] <TT
+CLASS="REPLACEABLE"
+><I
+>cursorname</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43795"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>MOVE</TT
+> repositions a cursor without retrieving any data.
+   <TT
+CLASS="COMMAND"
+>MOVE</TT
+> works exactly like the <TT
+CLASS="COMMAND"
+>FETCH</TT
+>
    command, except it only positions the cursor and does not return rows.
-  </p>
-<p>   Refer to 
-   <a href="sql-fetch.html">FETCH</a>
+  </P
+><P
+>   Refer to 
+   <A
+HREF="sql-fetch.html"
+><I
+>FETCH</I
+></A
+>
    for details on syntax and usage.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2694986"></a><h2>Outputs</h2>
-<p>   On successful completion, a <tt class="command">MOVE</tt> command returns a command
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43803"
+></A
+><H2
+>Outputs</H2
+><P
+>   On successful completion, a <TT
+CLASS="COMMAND"
+>MOVE</TT
+> command returns a command
    tag of the form
-</p>
-<pre class="screen">MOVE <i class="replaceable"><tt>count</tt></i></pre>
-<p>
-   The <i class="replaceable"><tt>count</tt></i> is the number
-   of rows that a <tt class="command">FETCH</tt> command with the same parameters
+</P><PRE
+CLASS="SCREEN"
+>MOVE <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+></PRE
+><P>
+   The <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> is the number
+   of rows that a <TT
+CLASS="COMMAND"
+>FETCH</TT
+> command with the same parameters
    would have returned (possibly zero).
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2695023"></a><h2>Examples</h2>
-<pre class="programlisting">BEGIN WORK;
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43811"
+></A
+><H2
+>Examples</H2
+><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN WORK;
 DECLARE liahona CURSOR FOR SELECT * FROM films;
 
 -- Skip the first 5 rows:
@@ -64,16 +221,107 @@ FETCH 1 FROM liahona;
 
 -- Close the cursor liahona and end the transaction:
 CLOSE liahona;
-COMMIT WORK;</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2695038"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">MOVE</tt> statement in the SQL standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2695051"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-declare.html">DECLARE</a>, <a href="sql-fetch.html">FETCH</a></span>
-</div>
-</div></body>
-</html>
+COMMIT WORK;</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43814"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>MOVE</TT
+> statement in the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43818"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-close.html"
+><I
+>CLOSE</I
+></A
+>, <A
+HREF="sql-declare.html"
+><I
+>DECLARE</I
+></A
+>, <A
+HREF="sql-fetch.html"
+><I
+>FETCH</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-lock.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-notify.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>LOCK</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>NOTIFY</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

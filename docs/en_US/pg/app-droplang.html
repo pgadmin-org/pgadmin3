@@ -1,142 +1,584 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>droplang</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="app-dropdb.html" title="dropdb">
-<link rel="next" href="app-dropuser.html" title="dropuser">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-droplang"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>droplang &#8212; remove a <span class="productname">PostgreSQL</span> procedural language</p>
-</div>
-<a name="id2708025"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">droplang</tt> [<i class="replaceable"><tt>connection-option</tt></i>...]  <i class="replaceable"><tt>langname</tt></i>  [<i class="replaceable"><tt>dbname</tt></i>]<br><tt class="command">droplang</tt> [<i class="replaceable"><tt>connection-option</tt></i>...]  [--list] |  [-l]   <i class="replaceable"><tt>dbname</tt></i> </p></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="r1-app-droplang-1"></a><h2>   Description
-  </h2>
-<p>   <span class="application">droplang</span> is a utility for removing an 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>droplang</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="dropdb"
+HREF="app-dropdb.html"><LINK
+REL="NEXT"
+TITLE="dropuser"
+HREF="app-dropuser.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-dropdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-dropdb.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-dropuser.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-dropuser.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-DROPLANG"
+></A
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN46840"
+></A
+><H2
+>Name</H2
+>droplang&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DIV
+><A
+NAME="AEN46844"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN46846"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>droplang</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>connection-option</I
+></TT
+>...]  <TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+>  [<TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+>]<BR><TT
+CLASS="COMMAND"
+>droplang</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>connection-option</I
+></TT
+>...]  --list | -l   <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-DROPLANG-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> is a utility for removing an 
    existing programming language from a
-   <span class="productname">PostgreSQL</span> database.
-   <span class="application">droplang</span> can drop any procedural language,
-   even those not supplied by the <span class="productname">PostgreSQL</span> distribution.
-  </p>
-<p>   Although backend programming languages can be removed directly using
-   several <span class="acronym">SQL</span> commands, it is recommended to use
-   <span class="application">droplang</span> because it performs a number
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.
+   <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> can drop any procedural language,
+   even those not supplied by the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> distribution.
+  </P
+><P
+>   Although backend programming languages can be removed directly using
+   several <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands, it is recommended to use
+   <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> because it performs a number
    of checks and is much easier to use. See
-   <a href="sql-droplanguage.html">DROP LANGUAGE</a>
+   <A
+HREF="sql-droplanguage.html"
+><I
+>DROP LANGUAGE</I
+></A
+>
    for more.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708167"></a><h2>Options</h2>
-<p>    <span class="application">droplang</span> accepts the following command line arguments:
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46875"
+></A
+><H2
+>Options</H2
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> accepts the following command line arguments:
     
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>langname</tt></i></span></dt>
-<dd><p>	Specifies the name of the backend programming language to be removed.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">[<span class="optional">-d</span>] <i class="replaceable"><tt>dbname</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">[<span class="optional">--dbname</span>] <i class="replaceable"><tt>dbname</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies from which database the language should be removed.
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the name of the backend programming language to be removed.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>-d</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>--dbname</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies from which database the language should be removed.
         The default is to use the database with the same name as the
         current system user.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
-</dt>
-<dd><p>        Display SQL commands as they are executed.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-l</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--list</tt></span>
-</dt>
-<dd><p>        Show a list of already installed languages in the target database.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-<p>    <span class="application">droplang</span> also accepts 
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo</TT
+></DT
+><DD
+><P
+>        Display SQL commands as they are executed.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-l</TT
+><BR><TT
+CLASS="OPTION"
+>--list</TT
+></DT
+><DD
+><P
+>        Show a list of already installed languages in the target database.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> also accepts 
     the following command line arguments for connection parameters:
     
-    </p>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the host name of the machine on which the 
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the host name of the machine on which the 
 	server
 	is running.  If host begins with a slash, it is used 
 	as the directory for the Unix domain socket.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
-</dt>
-<dd><p>	Specifies the Internet TCP/IP port or local Unix domain socket file 
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the Internet TCP/IP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
-</dt>
-<dd><p>        User name to connect as
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
-</dt>
-<dd><p>        Force password prompt.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708336"></a><h2>Environment</h2>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGDATABASE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
-</dt>
-<dd><p>      Default connection parameters
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708359"></a><h2>Diagnostics</h2>
-<p>    Most error messages are self-explanatory. If not, run
-    <span class="application">droplang</span> with the <tt class="option">--echo</tt>
-    option and see under the respective <span class="acronym">SQL</span> command
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        User name to connect as
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>        Force password prompt.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46947"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+><BR><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46961"
+></A
+><H2
+>Diagnostics</H2
+><P
+>    Most error messages are self-explanatory. If not, run
+    <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> with the <TT
+CLASS="OPTION"
+>--echo</TT
+>
+    option and see under the respective <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command
     for details.
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708380"></a><h2>Notes</h2>
-<p>   Use <a href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a> to add a language.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708392"></a><h2>Examples</h2>
-<p>    To remove the language <tt class="literal">pltcl</tt>:
-</p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>droplang pltcl dbname</tt></b></pre>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2708417"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a>, <a href="sql-droplanguage.html">DROP LANGUAGE</a></span>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46967"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+> to add a language.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46971"
+></A
+><H2
+>Examples</H2
+><P
+>    To remove the language <TT
+CLASS="LITERAL"
+>pltcl</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>droplang pltcl dbname</KBD
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46978"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+>, <A
+HREF="sql-droplanguage.html"
+><I
+>DROP LANGUAGE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-dropdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-dropuser.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>dropdb</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

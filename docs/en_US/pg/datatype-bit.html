@@ -1,71 +1,336 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>8.9. Bit String Types</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="previous" href="datatype-net-types.html" title="8.8. Network Address Types">
-<link rel="next" href="arrays.html" title="8.10. Arrays">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="datatype-bit"></a>8.9. Bit String Types</h2></div></div>
-<div></div>
-</div>
-<a name="id2537915"></a><p>    Bit strings are strings of 1's and 0's.  They can be used to store
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Bit String Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="PREVIOUS"
+TITLE="Network Address Types"
+HREF="datatype-net-types.html"><LINK
+REL="NEXT"
+TITLE="Arrays"
+HREF="arrays.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype-net-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Data Types</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="arrays.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-BIT"
+>8.9. Bit String Types</A
+></H1
+><A
+NAME="AEN5324"
+></A
+><P
+>    Bit strings are strings of 1's and 0's.  They can be used to store
     or visualize bit masks.  There are two SQL bit types:
-    <tt class="type">bit(<i class="replaceable"><tt>n</tt></i>)</tt> and <tt class="type">bit
-    varying(<i class="replaceable"><tt>n</tt></i>)</tt>, where
-    <i class="replaceable"><tt>n</tt></i> is a positive integer.
-   </p>
-<p>    <tt class="type">bit</tt> type data must match the length
-    <i class="replaceable"><tt>n</tt></i> exactly; it is an error to attempt to
-    store shorter or longer bit strings.  <tt class="type">bit varying</tt> data is
+    <TT
+CLASS="TYPE"
+>bit(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+> and <TT
+CLASS="TYPE"
+>bit
+    varying(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+>, where
+    <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> is a positive integer.
+   </P
+><P
+>    <TT
+CLASS="TYPE"
+>bit</TT
+> type data must match the length
+    <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> exactly; it is an error to attempt to
+    store shorter or longer bit strings.  <TT
+CLASS="TYPE"
+>bit varying</TT
+> data is
     of variable length up to the maximum length
-    <i class="replaceable"><tt>n</tt></i>; longer strings will be rejected.
-    Writing <tt class="type">bit</tt> without a length is equivalent to
-    <tt class="literal">bit(1)</tt>, while <tt class="type">bit varying</tt> without a length
+    <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>; longer strings will be rejected.
+    Writing <TT
+CLASS="TYPE"
+>bit</TT
+> without a length is equivalent to
+    <TT
+CLASS="LITERAL"
+>bit(1)</TT
+>, while <TT
+CLASS="TYPE"
+>bit varying</TT
+> without a length
     specification means unlimited length.
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     If one explicitly casts a bit-string value to
-     <tt class="type">bit(<i class="replaceable"><tt>n</tt></i>)</tt>, it will be truncated or
-     zero-padded on the right to be exactly <i class="replaceable"><tt>n</tt></i> bits,
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     If one explicitly casts a bit-string value to
+     <TT
+CLASS="TYPE"
+>bit(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+>, it will be truncated or
+     zero-padded on the right to be exactly <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> bits,
      without raising an error.  Similarly,
      if one explicitly casts a bit-string value to
-     <tt class="type">bit varying(<i class="replaceable"><tt>n</tt></i>)</tt>, it will be truncated
-     on the right if it is more than <i class="replaceable"><tt>n</tt></i> bits.
-    </p>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     Prior to <span class="productname">PostgreSQL</span> 7.2, <tt class="type">bit</tt> data
+     <TT
+CLASS="TYPE"
+>bit varying(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+>, it will be truncated
+     on the right if it is more than <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> bits.
+    </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.2, <TT
+CLASS="TYPE"
+>bit</TT
+> data
      was always silently truncated or zero-padded on the right, with
      or without an explicit cast. This was changed to comply with the
-     <span class="acronym">SQL</span> standard.
-    </p>
-</div>
-<p>    Refer to <a href="sql-syntax.html#sql-syntax-bit-strings" title="4.1.2.3. Bit-String Constants">Section 4.1.2.3, &#8220;Bit-String Constants&#8221;</a> for information about the syntax
+     <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Refer to <A
+HREF="sql-syntax.html#SQL-SYNTAX-BIT-STRINGS"
+>Section 4.1.2.3</A
+> for information about the syntax
     of bit string constants.  Bit-logical operators and string
-    manipulation functions are available; see <a href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">Section 9.6, &#8220;Bit String Functions and Operators&#8221;</a>.
-   </p>
-<div class="example">
-<a name="id2538050"></a><p class="title"><b>Example 8.3. Using the bit string types</b></p>
-<pre class="programlisting">CREATE TABLE test (a BIT(3), b BIT VARYING(5));
+    manipulation functions are available; see <A
+HREF="functions-bitstring.html"
+>Section 9.6</A
+>.
+   </P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN5357"
+></A
+><P
+><B
+>Example 8-3. Using the bit string types</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE test (a BIT(3), b BIT VARYING(5));
 INSERT INTO test VALUES (B'101', B'00');
 INSERT INTO test VALUES (B'10', B'101');
-<tt class="computeroutput">ERROR:  bit string length 2 does not match type bit(3)</tt>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  bit string length 2 does not match type bit(3)</SAMP
+>
 INSERT INTO test VALUES (B'10'::bit(3), B'101');
 SELECT * FROM test;
-<tt class="computeroutput">  a  |  b
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>  a  |  b
 -----+-----
  101 | 00
- 100 | 101</tt></pre>
-</div>
-</div></body>
-</html>
+ 100 | 101</SAMP
+></PRE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype-net-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="arrays.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Network Address Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Arrays</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

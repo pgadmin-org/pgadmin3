@@ -1,148 +1,452 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>33.3. Rules on INSERT, UPDATE, and DELETE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="rules.html" title="Chapter 33. The Rule System">
-<link rel="previous" href="rules-views.html" title="33.2. Views and the Rule System">
-<link rel="next" href="rules-privileges.html" title="33.4. Rules and Privileges">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="rules-update"></a>33.3. Rules on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and <tt class="command">DELETE</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2644154"></a><a name="id2644169"></a><a name="id2644183"></a><p>    Rules that are defined on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
-    and <tt class="command">DELETE</tt> are significantly different from the view rules
-    described in the previous section. First, their <tt class="command">CREATE
-    RULE</tt> command allows more:
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Rules on INSERT, UPDATE, and DELETE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Rule System"
+HREF="rules.html"><LINK
+REL="PREVIOUS"
+TITLE="Views and the Rule System"
+HREF="rules-views.html"><LINK
+REL="NEXT"
+TITLE="Rules and Privileges"
+HREF="rules-privileges.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-views.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 33. The Rule System</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-privileges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RULES-UPDATE"
+>33.3. Rules on <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and <TT
+CLASS="COMMAND"
+>DELETE</TT
+></A
+></H1
+><A
+NAME="AEN31815"
+></A
+><A
+NAME="AEN31818"
+></A
+><A
+NAME="AEN31821"
+></A
+><P
+>    Rules that are defined on <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>,
+    and <TT
+CLASS="COMMAND"
+>DELETE</TT
+> are significantly different from the view rules
+    described in the previous section. First, their <TT
+CLASS="COMMAND"
+>CREATE
+    RULE</TT
+> command allows more:
 
-    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>            They are allowed to have no action.
-        </p></li>
-<li><p>            They can have multiple actions.
-        </p></li>
-<li><p>            They can be <tt class="literal">INSTEAD</tt> or <tt class="literal">ALSO</tt> (default).
-        </p></li>
-<li><p>            The pseudorelations <tt class="literal">NEW</tt> and <tt class="literal">OLD</tt> become useful.
-        </p></li>
-<li><p>            They can have rule qualifications.
-        </p></li>
-</ul></div>
-<p>
+    <P
+></P
+></P><UL
+><LI
+><P
+>            They are allowed to have no action.
+        </P
+></LI
+><LI
+><P
+>            They can have multiple actions.
+        </P
+></LI
+><LI
+><P
+>            They can be <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> or <TT
+CLASS="LITERAL"
+>ALSO</TT
+> (default).
+        </P
+></LI
+><LI
+><P
+>            The pseudorelations <TT
+CLASS="LITERAL"
+>NEW</TT
+> and <TT
+CLASS="LITERAL"
+>OLD</TT
+> become useful.
+        </P
+></LI
+><LI
+><P
+>            They can have rule qualifications.
+        </P
+></LI
+></UL
+><P>
 
     Second, they don't modify the query tree in place. Instead they
     create zero or more new query trees and can throw away the
-    original one.</p>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2644274"></a>33.3.1. How Update Rules Work</h3></div></div>
-<div></div>
-</div>
-<p>    Keep the syntax
+    original one.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN31844"
+>33.3.1. How Update Rules Work</A
+></H2
+><P
+>    Keep the syntax
 
-</p>
-<pre class="programlisting">CREATE RULE <i class="replaceable"><tt>rule_name</tt></i> AS ON <i class="replaceable"><tt>event</tt></i>
-    TO <i class="replaceable"><tt>object</tt></i> [WHERE <i class="replaceable"><tt>rule_qualification</tt></i>]
-    DO [ALSO|INSTEAD] [<i class="replaceable"><tt>action</tt></i> | (<i class="replaceable"><tt>actions</tt></i>) | NOTHING];</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE RULE <TT
+CLASS="REPLACEABLE"
+><I
+>rule_name</I
+></TT
+> AS ON <TT
+CLASS="REPLACEABLE"
+><I
+>event</I
+></TT
+>
+    TO <TT
+CLASS="REPLACEABLE"
+><I
+>object</I
+></TT
+> [WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>rule_qualification</I
+></TT
+>]
+    DO [ALSO|INSTEAD] [<TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> | (<TT
+CLASS="REPLACEABLE"
+><I
+>actions</I
+></TT
+>) | NOTHING];</PRE
+><P>
 
     in mind.
-    In the following, <i class="firstterm">update rules</i> means rules that are defined
-    on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, or <tt class="command">DELETE</tt>.</p>
-<p>    Update rules get applied by the rule system when the result
+    In the following, <I
+CLASS="FIRSTTERM"
+>update rules</I
+> means rules that are defined
+    on <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or <TT
+CLASS="COMMAND"
+>DELETE</TT
+>.</P
+><P
+>    Update rules get applied by the rule system when the result
     relation and the command type of a query tree are equal to the
-    object and event given in the <tt class="command">CREATE RULE</tt> command.
+    object and event given in the <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> command.
     For update rules, the rule system creates a list of query trees.
     Initially the query-tree list is empty.
-    There can be zero (<tt class="literal">NOTHING</tt> key word), one, or multiple actions.
+    There can be zero (<TT
+CLASS="LITERAL"
+>NOTHING</TT
+> key word), one, or multiple actions.
     To simplify, we will look at a rule with one action. This rule
-    can have a qualification or not and it can be <tt class="literal">INSTEAD</tt> or <tt class="literal">ALSO</tt> (default).</p>
-<p>    What is a rule qualification? It is a restriction that tells
+    can have a qualification or not and it can be <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> or <TT
+CLASS="LITERAL"
+>ALSO</TT
+> (default).</P
+><P
+>    What is a rule qualification? It is a restriction that tells
     when the actions of the rule should be done and when not. This
-    qualification can only reference the pseudorelations <tt class="literal">NEW</tt> and/or <tt class="literal">OLD</tt>,
+    qualification can only reference the pseudorelations <TT
+CLASS="LITERAL"
+>NEW</TT
+> and/or <TT
+CLASS="LITERAL"
+>OLD</TT
+>,
     which basically represent the relation that was given as object (but with a
-    special meaning).</p>
-<p>    So we have four cases that produce the following query trees for
+    special meaning).</P
+><P
+>    So we have four cases that produce the following query trees for
     a one-action rule.
 
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term">No qualification and <tt class="literal">ALSO</tt></span></dt>
-<dd><p>        the query tree from the rule action with the original query
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>No qualification and <TT
+CLASS="LITERAL"
+>ALSO</TT
+></DT
+><DD
+><P
+>        the query tree from the rule action with the original query
         tree's qualification added
-       </p></dd>
-<dt><span class="term">No qualification but <tt class="literal">INSTEAD</tt></span></dt>
-<dd><p>        the query tree from the rule action with the original query
+       </P
+></DD
+><DT
+>No qualification but <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+></DT
+><DD
+><P
+>        the query tree from the rule action with the original query
         tree's qualification added
-       </p></dd>
-<dt><span class="term">Qualification given and <tt class="literal">ALSO</tt></span></dt>
-<dd><p>        the query tree from the rule action with the rule
+       </P
+></DD
+><DT
+>Qualification given and <TT
+CLASS="LITERAL"
+>ALSO</TT
+></DT
+><DD
+><P
+>        the query tree from the rule action with the rule
         qualification and the original query tree's qualification
         added
-       </p></dd>
-<dt><span class="term">Qualification given and <tt class="literal">INSTEAD</tt></span></dt>
-<dd><p>        the query tree from the rule action with the rule
+       </P
+></DD
+><DT
+>Qualification given and <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+></DT
+><DD
+><P
+>        the query tree from the rule action with the rule
         qualification and the original query tree's qualification; and
         the original query tree with the negated rule qualification
         added
-       </p></dd>
-</dl></div>
-<p>
+       </P
+></DD
+></DL
+></DIV
+><P>
 
-    Finally, if the rule is <tt class="literal">ALSO</tt>, the unchanged original query tree is
-    added to the list. Since only qualified <tt class="literal">INSTEAD</tt> rules already add the
+    Finally, if the rule is <TT
+CLASS="LITERAL"
+>ALSO</TT
+>, the unchanged original query tree is
+    added to the list. Since only qualified <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> rules already add the
     original query tree, we end up with either one or two output query trees
-    for a rule with one action.</p>
-<p>    For <tt class="literal">ON INSERT</tt> rules, the original query (if not suppressed by <tt class="literal">INSTEAD</tt>)
+    for a rule with one action.</P
+><P
+>    For <TT
+CLASS="LITERAL"
+>ON INSERT</TT
+> rules, the original query (if not suppressed by <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+>)
     is done before any actions added by rules.  This allows the actions to
-    see the inserted row(s).  But for <tt class="literal">ON UPDATE</tt> and <tt class="literal">ON
-    DELETE</tt> rules, the original query is done after the actions added by rules.
+    see the inserted row(s).  But for <TT
+CLASS="LITERAL"
+>ON UPDATE</TT
+> and <TT
+CLASS="LITERAL"
+>ON
+    DELETE</TT
+> rules, the original query is done after the actions added by rules.
     This ensures that the actions can see the to-be-updated or to-be-deleted
     rows; otherwise, the actions might do nothing because they find no rows
-    matching their qualifications.</p>
-<p>    The query trees generated from rule actions are thrown into the
+    matching their qualifications.</P
+><P
+>    The query trees generated from rule actions are thrown into the
     rewrite system again, and maybe more rules get applied resulting
     in more or less query trees.
     So a rule's actions must have either a different
     command type or a different result relation than the rule itself is
     on, otherwise this recursive process will end up in an infinite loop.
     (Recursive expansion of a rule will be detected and reported as an
-    error.)</p>
-<p>    The query trees found in the actions of the
-    <tt class="structname">pg_rewrite</tt> system catalog are only
+    error.)</P
+><P
+>    The query trees found in the actions of the
+    <TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+> system catalog are only
     templates. Since they can reference the range-table entries for
-    <tt class="literal">NEW</tt> and <tt class="literal">OLD</tt>, some substitutions have to be made before they can be
-    used. For any reference to <tt class="literal">NEW</tt>, the target list of the original
+    <TT
+CLASS="LITERAL"
+>NEW</TT
+> and <TT
+CLASS="LITERAL"
+>OLD</TT
+>, some substitutions have to be made before they can be
+    used. For any reference to <TT
+CLASS="LITERAL"
+>NEW</TT
+>, the target list of the original
     query is searched for a corresponding entry. If found, that
-    entry's expression replaces the reference. Otherwise, <tt class="literal">NEW</tt> means the
-    same as <tt class="literal">OLD</tt> (for an <tt class="command">UPDATE</tt>) or is replaced by
-    a null value (for an <tt class="command">INSERT</tt>). Any reference to <tt class="literal">OLD</tt> is
+    entry's expression replaces the reference. Otherwise, <TT
+CLASS="LITERAL"
+>NEW</TT
+> means the
+    same as <TT
+CLASS="LITERAL"
+>OLD</TT
+> (for an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>) or is replaced by
+    a null value (for an <TT
+CLASS="COMMAND"
+>INSERT</TT
+>). Any reference to <TT
+CLASS="LITERAL"
+>OLD</TT
+> is
     replaced by a reference to the range-table entry that is the
-    result relation.</p>
-<p>    After the system is done applying update rules, it applies view rules to the
+    result relation.</P
+><P
+>    After the system is done applying update rules, it applies view rules to the
     produced query tree(s).  Views cannot insert new update actions so
-    there is no need to apply update rules to the output of view rewriting.</p>
-<div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2644573"></a>33.3.1.1. A First Rule Step by Step</h4></div></div>
-<div></div>
-</div>
-<p>    Say we want to trace changes to the <tt class="literal">sl_avail</tt> column in the
-    <tt class="literal">shoelace_data</tt> relation. So we set up a log table
+    there is no need to apply update rules to the output of view rewriting.</P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN31907"
+>33.3.1.1. A First Rule Step by Step</A
+></H3
+><P
+>    Say we want to trace changes to the <TT
+CLASS="LITERAL"
+>sl_avail</TT
+> column in the
+    <TT
+CLASS="LITERAL"
+>shoelace_data</TT
+> relation. So we set up a log table
     and a rule that conditionally writes a log entry when an
-    <tt class="command">UPDATE</tt> is performed on
-    <tt class="literal">shoelace_data</tt>.
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> is performed on
+    <TT
+CLASS="LITERAL"
+>shoelace_data</TT
+>.
 
-</p>
-<pre class="programlisting">CREATE TABLE shoelace_log (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE shoelace_log (
     sl_name    text,          -- shoelace changed
     sl_avail   integer,       -- new available value
     log_who    text,          -- who did it
@@ -156,132 +460,217 @@ CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data
                                     NEW.sl_avail,
                                     current_user,
                                     current_timestamp
-                                );</pre>
-<p>    Now someone does:
+                                );</PRE
+><P></P
+><P
+>    Now someone does:
 
-</p>
-<pre class="programlisting">UPDATE shoelace_data SET sl_avail = 6 WHERE sl_name = 'sl7';</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE shoelace_data SET sl_avail = 6 WHERE sl_name = 'sl7';</PRE
+><P>
 
     and we look at the log table:
 
-</p>
-<pre class="programlisting">SELECT * FROM shoelace_log;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM shoelace_log;
 
  sl_name | sl_avail | log_who | log_when                        
 ---------+----------+---------+----------------------------------
  sl7     |        6 | Al      | Tue Oct 20 16:14:45 1998 MET DST
-(1 row)</pre>
-<p>
-   </p>
-<p>    That's what we expected. What happened in the background is the following.
+(1 row)</PRE
+><P>
+   </P
+><P
+>    That's what we expected. What happened in the background is the following.
     The parser created the query tree
 
-</p>
-<pre class="programlisting">UPDATE shoelace_data SET sl_avail = 6
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE shoelace_data SET sl_avail = 6
   FROM shoelace_data shoelace_data
- WHERE shoelace_data.sl_name = 'sl7';</pre>
-<p>
+ WHERE shoelace_data.sl_name = 'sl7';</PRE
+><P>
 
-    There is a rule <tt class="literal">log_shoelace</tt> that is <tt class="literal">ON UPDATE</tt> with the rule
+    There is a rule <TT
+CLASS="LITERAL"
+>log_shoelace</TT
+> that is <TT
+CLASS="LITERAL"
+>ON UPDATE</TT
+> with the rule
     qualification expression
 
-</p>
-<pre class="programlisting">NEW.sl_avail &lt;&gt; OLD.sl_avail</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>NEW.sl_avail &lt;&gt; OLD.sl_avail</PRE
+><P>
 
     and the action
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log VALUES (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log VALUES (
        *NEW*.sl_name, *NEW*.sl_avail,
        current_user, current_timestamp )
-  FROM shoelace_data *NEW*, shoelace_data *OLD*;</pre>
-<p>
+  FROM shoelace_data *NEW*, shoelace_data *OLD*;</PRE
+><P>
 
     (This looks a little strange since you can't normally write
-    <tt class="literal">INSERT ... VALUES ... FROM</tt>.  The <tt class="literal">FROM</tt>
+    <TT
+CLASS="LITERAL"
+>INSERT ... VALUES ... FROM</TT
+>.  The <TT
+CLASS="LITERAL"
+>FROM</TT
+>
     clause here is just to indicate that there are range-table entries
-    in the query tree for <tt class="literal">*NEW*</tt> and <tt class="literal">*OLD*</tt>.
+    in the query tree for <TT
+CLASS="LITERAL"
+>*NEW*</TT
+> and <TT
+CLASS="LITERAL"
+>*OLD*</TT
+>.
     These are needed so that they can be referenced by variables in
-    the <tt class="command">INSERT</tt> command's query tree.)</p>
-<p>    The rule is a qualified <tt class="literal">ALSO</tt> rule, so the rule system
+    the <TT
+CLASS="COMMAND"
+>INSERT</TT
+> command's query tree.)</P
+><P
+>    The rule is a qualified <TT
+CLASS="LITERAL"
+>ALSO</TT
+> rule, so the rule system
     has to return two query trees: the modified rule action and the original
     query tree. In step 1, the range table of the original query is
     incorporated into the rule's action query tree. This results in:
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log VALUES (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log VALUES (
        *NEW*.sl_name, *NEW*.sl_avail,
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
-       <span><b class="emphasis">shoelace_data shoelace_data</b></span>;</pre>
-<p>
+       <B
+CLASS="EMPHASIS"
+>shoelace_data shoelace_data</B
+>;</PRE
+><P>
 
     In step 2, the rule qualification is added to it, so the result set
-    is restricted to rows where <tt class="literal">sl_avail</tt> changes:
+    is restricted to rows where <TT
+CLASS="LITERAL"
+>sl_avail</TT
+> changes:
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log VALUES (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log VALUES (
        *NEW*.sl_name, *NEW*.sl_avail,
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
        shoelace_data shoelace_data
- <span><b class="emphasis">WHERE *NEW*.sl_avail &lt;&gt; *OLD*.sl_avail</b></span>;</pre>
-<p>
+ <B
+CLASS="EMPHASIS"
+>WHERE *NEW*.sl_avail &lt;&gt; *OLD*.sl_avail</B
+>;</PRE
+><P>
 
-    (This looks even stranger, since <tt class="literal">INSERT ... VALUES</tt> doesn't have
-    a <tt class="literal">WHERE</tt> clause either, but the planner and executor will have no
+    (This looks even stranger, since <TT
+CLASS="LITERAL"
+>INSERT ... VALUES</TT
+> doesn't have
+    a <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause either, but the planner and executor will have no
     difficulty with it.  They need to support this same functionality
-    anyway for <tt class="literal">INSERT ... SELECT</tt>.)
-   </p>
-<p>    In step 3, the original query tree's qualification is added,
+    anyway for <TT
+CLASS="LITERAL"
+>INSERT ... SELECT</TT
+>.)
+   </P
+><P
+>    In step 3, the original query tree's qualification is added,
     restricting the result set further to only the rows that would have been touched
     by the original query:
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log VALUES (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log VALUES (
        *NEW*.sl_name, *NEW*.sl_avail,
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
        shoelace_data shoelace_data
  WHERE *NEW*.sl_avail &lt;&gt; *OLD*.sl_avail
-   <span><b class="emphasis">AND shoelace_data.sl_name = 'sl7'</b></span>;</pre>
-<p>
-   </p>
-<p>    Step 4 replaces references to <tt class="literal">NEW</tt> by the target list entries from the
+   <B
+CLASS="EMPHASIS"
+>AND shoelace_data.sl_name = 'sl7'</B
+>;</PRE
+><P>
+   </P
+><P
+>    Step 4 replaces references to <TT
+CLASS="LITERAL"
+>NEW</TT
+> by the target list entries from the
     original query tree or by the matching variable references
     from the result relation:
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log VALUES (
-       <span><b class="emphasis">shoelace_data.sl_name</b></span>, <span><b class="emphasis">6</b></span>,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log VALUES (
+       <B
+CLASS="EMPHASIS"
+>shoelace_data.sl_name</B
+>, <B
+CLASS="EMPHASIS"
+>6</B
+>,
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
        shoelace_data shoelace_data
- WHERE <span><b class="emphasis">6</b></span> &lt;&gt; *OLD*.sl_avail
-   AND shoelace_data.sl_name = 'sl7';</pre>
-<p>
+ WHERE <B
+CLASS="EMPHASIS"
+>6</B
+> &lt;&gt; *OLD*.sl_avail
+   AND shoelace_data.sl_name = 'sl7';</PRE
+><P>
 
-   </p>
-<p>    Step 5 changes <tt class="literal">OLD</tt> references into result relation references:
+   </P
+><P
+>    Step 5 changes <TT
+CLASS="LITERAL"
+>OLD</TT
+> references into result relation references:
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log VALUES (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log VALUES (
        shoelace_data.sl_name, 6,
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
        shoelace_data shoelace_data
- WHERE 6 &lt;&gt; <span><b class="emphasis">shoelace_data.sl_avail</b></span>
-   AND shoelace_data.sl_name = 'sl7';</pre>
-<p>
-   </p>
-<p>    That's it.  Since the rule is <tt class="literal">ALSO</tt>, we also output the
+ WHERE 6 &lt;&gt; <B
+CLASS="EMPHASIS"
+>shoelace_data.sl_avail</B
+>
+   AND shoelace_data.sl_name = 'sl7';</PRE
+><P>
+   </P
+><P
+>    That's it.  Since the rule is <TT
+CLASS="LITERAL"
+>ALSO</TT
+>, we also output the
     original query tree.  In short, the output from the rule system
     is a list of two query trees that correspond to these statements:
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log VALUES (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log VALUES (
        shoelace_data.sl_name, 6,
        current_user, current_timestamp )
   FROM shoelace_data
@@ -289,103 +678,182 @@ CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data
    AND shoelace_data.sl_name = 'sl7';
 
 UPDATE shoelace_data SET sl_avail = 6
- WHERE sl_name = 'sl7';</pre>
-<p>
+ WHERE sl_name = 'sl7';</PRE
+><P>
 
     These are executed in this order, and that is exactly what
     the rule was meant to do.
-   </p>
-<p>    The substitutions and the added qualifications
+   </P
+><P
+>    The substitutions and the added qualifications
     ensure that, if the original query would be, say,
 
-</p>
-<pre class="programlisting">UPDATE shoelace_data SET sl_color = 'green'
- WHERE sl_name = 'sl7';</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE shoelace_data SET sl_color = 'green'
+ WHERE sl_name = 'sl7';</PRE
+><P>
 
     no log entry would get written.  In that case, the original query
     tree does not contain a target list entry for
-    <tt class="literal">sl_avail</tt>, so <tt class="literal">NEW.sl_avail</tt> will get
-    replaced by <tt class="literal">shoelace_data.sl_avail</tt>.  Thus, the extra
+    <TT
+CLASS="LITERAL"
+>sl_avail</TT
+>, so <TT
+CLASS="LITERAL"
+>NEW.sl_avail</TT
+> will get
+    replaced by <TT
+CLASS="LITERAL"
+>shoelace_data.sl_avail</TT
+>.  Thus, the extra
     command generated by the rule is
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log VALUES (
-       shoelace_data.sl_name, <span><b class="emphasis">shoelace_data.sl_avail</b></span>,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log VALUES (
+       shoelace_data.sl_name, <B
+CLASS="EMPHASIS"
+>shoelace_data.sl_avail</B
+>,
        current_user, current_timestamp )
   FROM shoelace_data
- WHERE <span><b class="emphasis">shoelace_data.sl_avail</b></span> &lt;&gt; shoelace_data.sl_avail
-   AND shoelace_data.sl_name = 'sl7';</pre>
-<p>
+ WHERE <B
+CLASS="EMPHASIS"
+>shoelace_data.sl_avail</B
+> &lt;&gt; shoelace_data.sl_avail
+   AND shoelace_data.sl_name = 'sl7';</PRE
+><P>
 
     and that qualification will never be true.
-   </p>
-<p>    It will also work if the original query modifies multiple rows. So
+   </P
+><P
+>    It will also work if the original query modifies multiple rows. So
     if someone issued the command
 
-</p>
-<pre class="programlisting">UPDATE shoelace_data SET sl_avail = 0
- WHERE sl_color = 'black';</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE shoelace_data SET sl_avail = 0
+ WHERE sl_color = 'black';</PRE
+><P>
 
-    four rows in fact get updated (<tt class="literal">sl1</tt>, <tt class="literal">sl2</tt>, <tt class="literal">sl3</tt>, and <tt class="literal">sl4</tt>).
-    But <tt class="literal">sl3</tt> already has <tt class="literal">sl_avail = 0</tt>.   In this case, the original
+    four rows in fact get updated (<TT
+CLASS="LITERAL"
+>sl1</TT
+>, <TT
+CLASS="LITERAL"
+>sl2</TT
+>, <TT
+CLASS="LITERAL"
+>sl3</TT
+>, and <TT
+CLASS="LITERAL"
+>sl4</TT
+>).
+    But <TT
+CLASS="LITERAL"
+>sl3</TT
+> already has <TT
+CLASS="LITERAL"
+>sl_avail = 0</TT
+>.   In this case, the original
     query trees qualification is different and that results
     in the extra query tree
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log
 SELECT shoelace_data.sl_name, 0,
        current_user, current_timestamp
   FROM shoelace_data
  WHERE 0 &lt;&gt; shoelace_data.sl_avail
-   AND <span><b class="emphasis">shoelace_data.sl_color = 'black'</b></span>;</pre>
-<p>
+   AND <B
+CLASS="EMPHASIS"
+>shoelace_data.sl_color = 'black'</B
+>;</PRE
+><P>
 
     being generated by the rule.  This query tree will surely insert
-    three new log entries. And that's absolutely correct.</p>
-<p>    Here we can see why it is important that the original query tree
-    is executed last.  If the <tt class="command">UPDATE</tt> had been
+    three new log entries. And that's absolutely correct.</P
+><P
+>    Here we can see why it is important that the original query tree
+    is executed last.  If the <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> had been
     executed first, all the rows would have already been set to zero, so the
-    logging <tt class="command">INSERT</tt> would not find any row where
-    <tt class="literal">0 &lt;&gt; shoelace_data.sl_avail</tt>.</p>
-</div>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="rules-update-views"></a>33.3.2. Cooperation with Views</h3></div></div>
-<div></div>
-</div>
-<a name="id2645036"></a><p>    A simple way to protect view relations from the mentioned
-    possibility that someone can try to run <tt class="command">INSERT</tt>,
-    <tt class="command">UPDATE</tt>, or <tt class="command">DELETE</tt> on them is
+    logging <TT
+CLASS="COMMAND"
+>INSERT</TT
+> would not find any row where
+    <TT
+CLASS="LITERAL"
+>0 &lt;&gt; shoelace_data.sl_avail</TT
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="RULES-UPDATE-VIEWS"
+>33.3.2. Cooperation with Views</A
+></H2
+><A
+NAME="AEN31979"
+></A
+><P
+>    A simple way to protect view relations from the mentioned
+    possibility that someone can try to run <TT
+CLASS="COMMAND"
+>INSERT</TT
+>,
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or <TT
+CLASS="COMMAND"
+>DELETE</TT
+> on them is
     to let those query trees get thrown away.  So we create the rules
 
-</p>
-<pre class="programlisting">CREATE RULE shoe_ins_protect AS ON INSERT TO shoe
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE RULE shoe_ins_protect AS ON INSERT TO shoe
     DO INSTEAD NOTHING;
 CREATE RULE shoe_upd_protect AS ON UPDATE TO shoe
     DO INSTEAD NOTHING;
 CREATE RULE shoe_del_protect AS ON DELETE TO shoe
-    DO INSTEAD NOTHING;</pre>
-<p>
+    DO INSTEAD NOTHING;</PRE
+><P>
 
     If someone now tries to do any of these operations on the view
-    relation <tt class="literal">shoe</tt>, the rule system will
+    relation <TT
+CLASS="LITERAL"
+>shoe</TT
+>, the rule system will
     apply these rules. Since the rules have
-    no actions and are <tt class="literal">INSTEAD</tt>, the resulting list of
+    no actions and are <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+>, the resulting list of
     query trees will be empty and the whole query will become
     nothing because there is nothing left to be optimized or
-    executed after the rule system is done with it.</p>
-<p>    A more sophisticated way to use the rule system is to
+    executed after the rule system is done with it.</P
+><P
+>    A more sophisticated way to use the rule system is to
     create rules that rewrite the query tree into one that
     does the right operation on the real tables. To do that
-    on the <tt class="literal">shoelace</tt> view, we create
+    on the <TT
+CLASS="LITERAL"
+>shoelace</TT
+> view, we create
     the following rules:
 
-</p>
-<pre class="programlisting">CREATE RULE shoelace_ins AS ON INSERT TO shoelace
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE RULE shoelace_ins AS ON INSERT TO shoelace
     DO INSTEAD
     INSERT INTO shoelace_data VALUES (
            NEW.sl_name,
@@ -408,18 +876,23 @@ CREATE RULE shoelace_upd AS ON UPDATE TO shoelace
 CREATE RULE shoelace_del AS ON DELETE TO shoelace
     DO INSTEAD
     DELETE FROM shoelace_data
-     WHERE sl_name = OLD.sl_name;</pre>
-<p>
-   </p>
-<p>    Now assume that once in a while, a pack of shoelaces arrives at
+     WHERE sl_name = OLD.sl_name;</PRE
+><P>
+   </P
+><P
+>    Now assume that once in a while, a pack of shoelaces arrives at
     the shop and a big parts list along with it.  But you don't want
-    to manually update the <tt class="literal">shoelace</tt> view every
+    to manually update the <TT
+CLASS="LITERAL"
+>shoelace</TT
+> view every
     time.  Instead we setup two little tables: one where you can
     insert the items from the part list, and one with a special
     trick. The creation commands for these are:
 
-</p>
-<pre class="programlisting">CREATE TABLE shoelace_arrive (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE shoelace_arrive (
     arr_name    text,
     arr_quant   integer
 );
@@ -433,27 +906,32 @@ CREATE RULE shoelace_ok_ins AS ON INSERT TO shoelace_ok
     DO INSTEAD
     UPDATE shoelace
        SET sl_avail = sl_avail + NEW.ok_quant
-     WHERE sl_name = NEW.ok_name;</pre>
-<p>
+     WHERE sl_name = NEW.ok_name;</PRE
+><P>
 
-    Now you can fill the table <tt class="literal">shoelace_arrive</tt> with
+    Now you can fill the table <TT
+CLASS="LITERAL"
+>shoelace_arrive</TT
+> with
     the data from the parts list:
 
-</p>
-<pre class="programlisting">SELECT * FROM shoelace_arrive;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM shoelace_arrive;
 
  arr_name | arr_quant
 ----------+-----------
  sl3      |        10
  sl6      |        20
  sl8      |        20
-(3 rows)</pre>
-<p>
+(3 rows)</PRE
+><P>
 
     Take a quick look at the current data:
     
-</p>
-<pre class="programlisting">SELECT * FROM shoelace;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM shoelace;
 
  sl_name  | sl_avail | sl_color | sl_len | sl_unit | sl_len_cm
 ----------+----------+----------+--------+---------+-----------
@@ -465,19 +943,21 @@ CREATE RULE shoelace_ok_ins AS ON INSERT TO shoelace_ok
  sl8      |        1 | brown    |     40 | inch    |     101.6
  sl5      |        4 | brown    |      1 | m       |       100
  sl6      |        0 | brown    |    0.9 | m       |        90
-(8 rows)</pre>
-<p>
+(8 rows)</PRE
+><P>
 
     Now move the arrived shoelaces in:
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_ok SELECT * FROM shoelace_arrive;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_ok SELECT * FROM shoelace_arrive;</PRE
+><P>
 
     and check the results:
 
-</p>
-<pre class="programlisting">SELECT * FROM shoelace ORDER BY sl_name;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM shoelace ORDER BY sl_name;
 
  sl_name  | sl_avail | sl_color | sl_len | sl_unit | sl_len_cm
 ----------+----------+----------+--------+---------+-----------
@@ -499,39 +979,58 @@ SELECT * FROM shoelace_log;
  sl3     |       10 | Al     | Tue Oct 20 19:25:16 1998 MET DST
  sl6     |       20 | Al     | Tue Oct 20 19:25:16 1998 MET DST
  sl8     |       21 | Al     | Tue Oct 20 19:25:16 1998 MET DST
-(4 rows)</pre>
-<p>
-   </p>
-<p>    It's a long way from the one <tt class="literal">INSERT ... SELECT</tt>
+(4 rows)</PRE
+><P>
+   </P
+><P
+>    It's a long way from the one <TT
+CLASS="LITERAL"
+>INSERT ... SELECT</TT
+>
     to these results. And the description of the query-tree
     transformation will be the last in this chapter.  First, there is
     the parser's output
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_ok
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_ok
 SELECT shoelace_arrive.arr_name, shoelace_arrive.arr_quant
-  FROM shoelace_arrive shoelace_arrive, shoelace_ok shoelace_ok;</pre>
-<p>
+  FROM shoelace_arrive shoelace_arrive, shoelace_ok shoelace_ok;</PRE
+><P>
 
-    Now the first rule <tt class="literal">shoelace_ok_ins</tt> is applied and turns this
+    Now the first rule <TT
+CLASS="LITERAL"
+>shoelace_ok_ins</TT
+> is applied and turns this
     into
 
-</p>
-<pre class="programlisting">UPDATE shoelace
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE shoelace
    SET sl_avail = shoelace.sl_avail + shoelace_arrive.arr_quant
   FROM shoelace_arrive shoelace_arrive, shoelace_ok shoelace_ok,
        shoelace_ok *OLD*, shoelace_ok *NEW*,
        shoelace shoelace
- WHERE shoelace.sl_name = shoelace_arrive.arr_name;</pre>
-<p>
+ WHERE shoelace.sl_name = shoelace_arrive.arr_name;</PRE
+><P>
 
-    and throws away the original <tt class="command">INSERT</tt> on
-    <tt class="literal">shoelace_ok</tt>.  This rewritten query is passed to
+    and throws away the original <TT
+CLASS="COMMAND"
+>INSERT</TT
+> on
+    <TT
+CLASS="LITERAL"
+>shoelace_ok</TT
+>.  This rewritten query is passed to
     the rule system again, and the second applied rule
-    <tt class="literal">shoelace_upd</tt> produces
+    <TT
+CLASS="LITERAL"
+>shoelace_upd</TT
+> produces
 
-</p>
-<pre class="programlisting">UPDATE shoelace_data
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE shoelace_data
    SET sl_name = shoelace.sl_name,
        sl_avail = shoelace.sl_avail + shoelace_arrive.arr_quant,
        sl_color = shoelace.sl_color,
@@ -542,16 +1041,26 @@ SELECT shoelace_arrive.arr_name, shoelace_arrive.arr_quant
        shoelace shoelace, shoelace *OLD*,
        shoelace *NEW*, shoelace_data shoelace_data
  WHERE shoelace.sl_name = shoelace_arrive.arr_name
-   AND shoelace_data.sl_name = shoelace.sl_name;</pre>
-<p>
+   AND shoelace_data.sl_name = shoelace.sl_name;</PRE
+><P>
 
-    Again it's an <tt class="literal">INSTEAD</tt> rule and the previous query tree is trashed.
-    Note that this query still uses the view <tt class="literal">shoelace</tt>.
+    Again it's an <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> rule and the previous query tree is trashed.
+    Note that this query still uses the view <TT
+CLASS="LITERAL"
+>shoelace</TT
+>.
     But the rule system isn't finished with this step, so it continues
-    and applies the <tt class="literal">_RETURN</tt> rule on it, and we get
+    and applies the <TT
+CLASS="LITERAL"
+>_RETURN</TT
+> rule on it, and we get
 
-</p>
-<pre class="programlisting">UPDATE shoelace_data
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE shoelace_data
    SET sl_name = s.sl_name,
        sl_avail = s.sl_avail + shoelace_arrive.arr_quant,
        sl_color = s.sl_color,
@@ -564,14 +1073,18 @@ SELECT shoelace_arrive.arr_name, shoelace_arrive.arr_quant
        shoelace *OLD*, shoelace *NEW*,
        shoelace_data s, unit u
  WHERE s.sl_name = shoelace_arrive.arr_name
-   AND shoelace_data.sl_name = s.sl_name;</pre>
-<p>
+   AND shoelace_data.sl_name = s.sl_name;</PRE
+><P>
 
-    Finally, the rule <tt class="literal">log_shoelace</tt> gets applied,
+    Finally, the rule <TT
+CLASS="LITERAL"
+>log_shoelace</TT
+> gets applied,
     producing the extra query tree
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log
 SELECT s.sl_name,
        s.sl_avail + shoelace_arrive.arr_quant,
        current_user,
@@ -586,17 +1099,22 @@ SELECT s.sl_name,
        shoelace_log shoelace_log
  WHERE s.sl_name = shoelace_arrive.arr_name
    AND shoelace_data.sl_name = s.sl_name
-   AND (s.sl_avail + shoelace_arrive.arr_quant) &lt;&gt; s.sl_avail;</pre>
-<p>
+   AND (s.sl_avail + shoelace_arrive.arr_quant) &lt;&gt; s.sl_avail;</PRE
+><P>
     
     After that the rule system runs out of rules and returns the 
     generated query trees.
-   </p>
-<p>    So we end up with two final query trees that are equivalent to the
-    <span class="acronym">SQL</span> statements
+   </P
+><P
+>    So we end up with two final query trees that are equivalent to the
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> statements
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace_log
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace_log
 SELECT s.sl_name,
        s.sl_avail + shoelace_arrive.arr_quant,
        current_user,
@@ -613,22 +1131,30 @@ UPDATE shoelace_data
        shoelace_data shoelace_data,
        shoelace_data s
  WHERE s.sl_name = shoelace_arrive.sl_name
-   AND shoelace_data.sl_name = s.sl_name;</pre>
-<p>
+   AND shoelace_data.sl_name = s.sl_name;</PRE
+><P>
 
     The result is that data coming from one relation inserted into another,
     changed into updates on a third, changed into updating
     a fourth plus logging that final update in a fifth
-    gets reduced into two queries.</p>
-<p>    There is a little detail that's a bit ugly. Looking at the two
-    queries, it turns out that the <tt class="literal">shoelace_data</tt>
+    gets reduced into two queries.</P
+><P
+>    There is a little detail that's a bit ugly. Looking at the two
+    queries, it turns out that the <TT
+CLASS="LITERAL"
+>shoelace_data</TT
+>
     relation appears twice in the range table where it could
     definitely be reduced to one. The planner does not handle it and
     so the execution plan for the rule systems output of the
-    <tt class="command">INSERT</tt> will be
+    <TT
+CLASS="COMMAND"
+>INSERT</TT
+> will be
 
-</p>
-<pre class="literallayout">Nested Loop
+</P><PRE
+CLASS="LITERALLAYOUT"
+>Nested Loop
   -&gt;  Merge Join
         -&gt;  Seq Scan
               -&gt;  Sort
@@ -636,80 +1162,107 @@ UPDATE shoelace_data
         -&gt;  Seq Scan
               -&gt;  Sort
                     -&gt;  Seq Scan on shoelace_arrive
-  -&gt;  Seq Scan on shoelace_data</pre>
-<p>
+  -&gt;  Seq Scan on shoelace_data</PRE
+><P>
 
     while omitting the extra range table entry would result in a
 
-</p>
-<pre class="literallayout">Merge Join
+</P><PRE
+CLASS="LITERALLAYOUT"
+>Merge Join
   -&gt;  Seq Scan
         -&gt;  Sort
               -&gt;  Seq Scan on s
   -&gt;  Seq Scan
         -&gt;  Sort
-              -&gt;  Seq Scan on shoelace_arrive</pre>
-<p>
+              -&gt;  Seq Scan on shoelace_arrive</PRE
+><P>
 
     which produces exactly the same entries in the log table.  Thus,
     the rule system caused one extra scan on the table
-    <tt class="literal">shoelace_data</tt> that is absolutely not
+    <TT
+CLASS="LITERAL"
+>shoelace_data</TT
+> that is absolutely not
     necessary. And the same redundant scan is done once more in the
-    <tt class="command">UPDATE</tt>. But it was a really hard job to make
-    that all possible at all.</p>
-<p>    Now we make a final demonstration of the
-    <span class="productname">PostgreSQL</span> rule system and its power.
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>. But it was a really hard job to make
+    that all possible at all.</P
+><P
+>    Now we make a final demonstration of the
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> rule system and its power.
     Say you add some shoelaces with extraordinary colors to your
     database:
 
-</p>
-<pre class="programlisting">INSERT INTO shoelace VALUES ('sl9', 0, 'pink', 35.0, 'inch', 0.0);
-INSERT INTO shoelace VALUES ('sl10', 1000, 'magenta', 40.0, 'inch', 0.0);</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO shoelace VALUES ('sl9', 0, 'pink', 35.0, 'inch', 0.0);
+INSERT INTO shoelace VALUES ('sl10', 1000, 'magenta', 40.0, 'inch', 0.0);</PRE
+><P>
 
     We would like to make a view to check which
-    <tt class="literal">shoelace</tt> entries do not fit any shoe in color.
+    <TT
+CLASS="LITERAL"
+>shoelace</TT
+> entries do not fit any shoe in color.
     The view for this is
 
-</p>
-<pre class="programlisting">CREATE VIEW shoelace_mismatch AS
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE VIEW shoelace_mismatch AS
     SELECT * FROM shoelace WHERE NOT EXISTS
-        (SELECT shoename FROM shoe WHERE slcolor = sl_color);</pre>
-<p>
+        (SELECT shoename FROM shoe WHERE slcolor = sl_color);</PRE
+><P>
 
     Its output is
 
-</p>
-<pre class="programlisting">SELECT * FROM shoelace_mismatch;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM shoelace_mismatch;
 
  sl_name | sl_avail | sl_color | sl_len | sl_unit | sl_len_cm
 ---------+----------+----------+--------+---------+-----------
  sl9     |        0 | pink     |     35 | inch    |      88.9
- sl10    |     1000 | magenta  |     40 | inch    |     101.6</pre>
-<p>
-   </p>
-<p>    Now we want to set it up so that mismatching shoelaces that are
+ sl10    |     1000 | magenta  |     40 | inch    |     101.6</PRE
+><P>
+   </P
+><P
+>    Now we want to set it up so that mismatching shoelaces that are
     not in stock are deleted from the database.
-    To make it a little harder for <span class="productname">PostgreSQL</span>,
+    To make it a little harder for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>,
     we don't delete it directly. Instead we create one more view
 
-</p>
-<pre class="programlisting">CREATE VIEW shoelace_can_delete AS
-    SELECT * FROM shoelace_mismatch WHERE sl_avail = 0;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE VIEW shoelace_can_delete AS
+    SELECT * FROM shoelace_mismatch WHERE sl_avail = 0;</PRE
+><P>
 
     and do it this way:
 
-</p>
-<pre class="programlisting">DELETE FROM shoelace WHERE EXISTS
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM shoelace WHERE EXISTS
     (SELECT * FROM shoelace_can_delete
-             WHERE sl_name = shoelace.sl_name);</pre>
-<p>
+             WHERE sl_name = shoelace.sl_name);</PRE
+><P>
 
-    <span class="foreignphrase"><i class="foreignphrase">Voilà</i></span>:
+    <I
+CLASS="FOREIGNPHRASE"
+>Voilà</I
+>:
 
-</p>
-<pre class="programlisting">SELECT * FROM shoelace;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM shoelace;
 
  sl_name | sl_avail | sl_color | sl_len | sl_unit | sl_len_cm
 ---------+----------+----------+--------+---------+-----------
@@ -722,19 +1275,88 @@ INSERT INTO shoelace VALUES ('sl10', 1000, 'magenta', 40.0, 'inch', 0.0);</pre>
  sl10    |     1000 | magenta  |     40 | inch    |     101.6
  sl5     |        4 | brown    |      1 | m       |       100
  sl6     |       20 | brown    |    0.9 | m       |        90
-(9 rows)</pre>
-<p>
-   </p>
-<p>    A <tt class="command">DELETE</tt> on a view, with a subquery qualification that
+(9 rows)</PRE
+><P>
+   </P
+><P
+>    A <TT
+CLASS="COMMAND"
+>DELETE</TT
+> on a view, with a subquery qualification that
     in total uses 4 nesting/joined views, where one of them
     itself has a subquery qualification containing a view
     and where calculated view columns are used,
     gets rewritten into 
     one single query tree that deletes the requested data
-    from a real table.</p>
-<p>    There are probably only a few situations out in the real world
+    from a real table.</P
+><P
+>    There are probably only a few situations out in the real world
     where such a construct is necessary. But it makes you feel
-    comfortable that it works.</p>
-</div>
-</div></body>
-</html>
+    comfortable that it works.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-views.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-privileges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Views and the Rule System</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="rules.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Rules and Privileges</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

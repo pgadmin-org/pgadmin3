@@ -1,38 +1,161 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>31.11. User-Defined Types</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
-<link rel="previous" href="xaggr.html" title="31.10. User-Defined Aggregates">
-<link rel="next" href="xoper.html" title="31.12. User-Defined Operators">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="xtypes"></a>31.11. User-Defined Types</h2></div></div>
-<div></div>
-</div>
-<a name="id2638226"></a><p>   As described in <a href="extend-type-system.html" title="31.2. The PostgreSQL Type System">Section 31.2, &#8220;The PostgreSQL Type System&#8221;</a>,
-   <span class="productname">PostgreSQL</span> can be extended to support new
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>User-Defined Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL"
+HREF="extend.html"><LINK
+REL="PREVIOUS"
+TITLE="User-Defined Aggregates"
+HREF="xaggr.html"><LINK
+REL="NEXT"
+TITLE="User-Defined Operators"
+HREF="xoper.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xaggr.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 31. Extending <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xoper.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XTYPES"
+>31.11. User-Defined Types</A
+></H1
+><A
+NAME="AEN30658"
+></A
+><P
+>   As described in <A
+HREF="extend-type-system.html"
+>Section 31.2</A
+>,
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can be extended to support new
    data types.  This section describes how to define new base types,
-   which are data types defined below the level of the <span class="acronym">SQL</span>
+   which are data types defined below the level of the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
    language.  Creating a new base type requires implementing functions
    to operate on the type in a low-level language, usually C.
-  </p>
-<p>   The examples in this section can be found in
-   <tt class="filename">complex.sql</tt> and <tt class="filename">complex.c</tt>
-   in the <tt class="filename">src/tutorial</tt> directory of the source distribution.
-   See the <tt class="filename">README</tt> file in that directory for instructions
+  </P
+><P
+>   The examples in this section can be found in
+   <TT
+CLASS="FILENAME"
+>complex.sql</TT
+> and <TT
+CLASS="FILENAME"
+>complex.c</TT
+>
+   in the <TT
+CLASS="FILENAME"
+>src/tutorial</TT
+> directory of the source distribution.
+   See the <TT
+CLASS="FILENAME"
+>README</TT
+> file in that directory for instructions
    about running the examples.
-  </p>
-<p>  <a name="id2638290"></a>
-  <a name="id2638297"></a>
+  </P
+><P
+>  <A
+NAME="AEN30671"
+></A
+>
+  <A
+NAME="AEN30673"
+></A
+>
   A user-defined type must always have input and output
-  functions.<a name="id2638306"></a><a name="id2638314"></a>
+  functions.<A
+NAME="AEN30675"
+></A
+><A
+NAME="AEN30678"
+></A
+>
   These functions determine how the type appears in strings (for input
   by the user and output to the user) and how the type is organized in
   memory.  The input function takes a null-terminated character string
@@ -42,32 +165,46 @@
   string.  If we want to do anything more with the type than merely
   store it, we must provide additional functions to implement whatever
   operations we'd like to have for the type.
- </p>
-<p>  Suppose we want to define a type <tt class="type">complex</tt> that represents
+ </P
+><P
+>  Suppose we want to define a type <TT
+CLASS="TYPE"
+>complex</TT
+> that represents
   complex numbers. A natural way to represent a complex number in
   memory would be the following C structure:
 
-</p>
-<pre class="programlisting">typedef struct Complex {
+</P><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct Complex {
     double      x;
     double      y;
-} Complex;</pre>
-<p>
+} Complex;</PRE
+><P>
 
   We will need to make this a pass-by-reference type, since it's too
-  large to fit into a single <tt class="type">Datum</tt> value.
- </p>
-<p>  As the external string representation of the type, we choose a
-  string of the form <tt class="literal">(x,y)</tt>.
- </p>
-<p>  The input and output functions are usually not hard to write,
+  large to fit into a single <TT
+CLASS="TYPE"
+>Datum</TT
+> value.
+ </P
+><P
+>  As the external string representation of the type, we choose a
+  string of the form <TT
+CLASS="LITERAL"
+>(x,y)</TT
+>.
+ </P
+><P
+>  The input and output functions are usually not hard to write,
   especially the output function.  But when defining the external
   string representation of the type, remember that you must eventually
   write a complete and robust parser for that representation as your
   input function.  For instance:
 
-</p>
-<pre class="programlisting">PG_FUNCTION_INFO_V1(complex_in);
+</P><PRE
+CLASS="PROGRAMLISTING"
+>PG_FUNCTION_INFO_V1(complex_in);
 
 Datum
 complex_in(PG_FUNCTION_ARGS)
@@ -87,13 +224,14 @@ complex_in(PG_FUNCTION_ARGS)
     result-&gt;x = x;
     result-&gt;y = y;
     PG_RETURN_POINTER(result);
-}</pre>
-<p>
+}</PRE
+><P>
 
   The output function can simply be:
 
-</p>
-<pre class="programlisting">PG_FUNCTION_INFO_V1(complex_out);
+</P><PRE
+CLASS="PROGRAMLISTING"
+>PG_FUNCTION_INFO_V1(complex_out);
 
 Datum
 complex_out(PG_FUNCTION_ARGS)
@@ -104,25 +242,34 @@ complex_out(PG_FUNCTION_ARGS)
     result = (char *) palloc(100);
     snprintf(result, 100, "(%g,%g)", complex-&gt;x, complex-&gt;y);
     PG_RETURN_CSTRING(result);
-}</pre>
-<p>
- </p>
-<p>  You should be careful to make the input and output functions inverses of
+}</PRE
+><P>
+ </P
+><P
+>  You should be careful to make the input and output functions inverses of
   each other.  If you do not, you will have severe problems when you
   need to dump your data into a file and then read it back in.  This
   is a particularly common problem when floating-point numbers are
   involved.
- </p>
-<p>  Optionally, a user-defined type can provide binary input and output
+ </P
+><P
+>  Optionally, a user-defined type can provide binary input and output
   routines.  Binary I/O is normally faster but less portable than textual
   I/O.  As with textual I/O, it is up to you to define exactly what the
   external binary representation is.  Most of the built-in data types
   try to provide a machine-independent binary representation.  For
-  <tt class="type">complex</tt>, we will piggy-back on the binary I/O converters
-  for type <tt class="type">float8</tt>:
+  <TT
+CLASS="TYPE"
+>complex</TT
+>, we will piggy-back on the binary I/O converters
+  for type <TT
+CLASS="TYPE"
+>float8</TT
+>:
 
-</p>
-<pre class="programlisting">PG_FUNCTION_INFO_V1(complex_recv);
+</P><PRE
+CLASS="PROGRAMLISTING"
+>PG_FUNCTION_INFO_V1(complex_recv);
 
 Datum
 complex_recv(PG_FUNCTION_ARGS)
@@ -148,82 +295,215 @@ complex_send(PG_FUNCTION_ARGS)
     pq_sendfloat8(&amp;buf, complex-&gt;x);
     pq_sendfloat8(&amp;buf, complex-&gt;y);
     PG_RETURN_BYTEA_P(pq_endtypsend(&amp;buf));
-}</pre>
-<p>
- </p>
-<p>  To define the <tt class="type">complex</tt> type, we need to create the
+}</PRE
+><P>
+ </P
+><P
+>  To define the <TT
+CLASS="TYPE"
+>complex</TT
+> type, we need to create the
   user-defined I/O functions before creating the type:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION complex_in(cstring)
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION complex_in(cstring)
     RETURNS complex
-    AS '<i class="replaceable"><tt>filename</tt></i>'
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>'
     LANGUAGE C IMMUTABLE STRICT;
 
 CREATE FUNCTION complex_out(complex)
     RETURNS cstring
-    AS '<i class="replaceable"><tt>filename</tt></i>'
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>'
     LANGUAGE C IMMUTABLE STRICT;
 
 CREATE FUNCTION complex_recv(internal)
    RETURNS complex
-   AS '<i class="replaceable"><tt>filename</tt></i>'
+   AS '<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>'
    LANGUAGE C IMMUTABLE STRICT;
 
 CREATE FUNCTION complex_send(complex)
    RETURNS bytea
-   AS '<i class="replaceable"><tt>filename</tt></i>'
-   LANGUAGE C IMMUTABLE STRICT;</pre>
-<p>
+   AS '<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>'
+   LANGUAGE C IMMUTABLE STRICT;</PRE
+><P>
 
   Notice that the declarations of the input and output functions must
   reference the not-yet-defined type.  This is allowed, but will draw
   warning messages that may be ignored.  The input function must
   appear first.
- </p>
-<p>  Finally, we can declare the data type:
-</p>
-<pre class="programlisting">CREATE TYPE complex (
+ </P
+><P
+>  Finally, we can declare the data type:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TYPE complex (
    internallength = 16, 
    input = complex_in,
    output = complex_out,
    receive = complex_recv,
    send = complex_send,
    alignment = double
-);</pre>
-<p>
- </p>
-<p>  When you define a new base type,
-  <span class="productname">PostgreSQL</span> automatically provides support
+);</PRE
+><P>
+ </P
+><P
+>  When you define a new base type,
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> automatically provides support
   for arrays of that
-  type.<a name="id2638536"></a> For historical reasons, the array type
+  type.<A
+NAME="AEN30706"
+></A
+> For historical reasons, the array type
   has the same name as the base type with the underscore character
-  (<tt class="literal">_</tt>) prepended.
- </p>
-<p>  Once the data type exists, we can declare additional functions to
+  (<TT
+CLASS="LITERAL"
+>_</TT
+>) prepended.
+ </P
+><P
+>  Once the data type exists, we can declare additional functions to
   provide useful operations on the data type.  Operators can then be
   defined atop the functions, and if needed, operator classes can be
   created to support indexing of the data type.  These additional
   layers are discussed in following sections.
- </p>
-<p>   <a name="id2638563"></a>
+ </P
+><P
+>   <A
+NAME="AEN30712"
+></A
+>
   If the values of your data type might exceed a few hundred bytes in
   size (in internal form), you should make the data type
-  <span class="acronym">TOAST</span>-able (see <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a>).
+  <ACRONYM
+CLASS="ACRONYM"
+>TOAST</ACRONYM
+>-able (see <A
+HREF="storage-toast.html"
+>Section 49.2</A
+>).
   To do this, the internal
   representation must follow the standard layout for variable-length
-  data: the first four bytes must be an <tt class="type">int32</tt> containing
+  data: the first four bytes must be an <TT
+CLASS="TYPE"
+>int32</TT
+> containing
   the total length in bytes of the datum (including itself).  The C
   functions operating on the data type must be careful to unpack any
-  toasted values they are handed, by using <tt class="function">PG_DETOAST_DATUM</tt>.
+  toasted values they are handed, by using <CODE
+CLASS="FUNCTION"
+>PG_DETOAST_DATUM</CODE
+>.
   (This detail is customarily hidden by defining type-specific
-  <tt class="function">GETARG</tt> macros.) Then, 
-  when running the <tt class="command">CREATE TYPE</tt> command, specify the
-  internal length as <tt class="literal">variable</tt> and select the appropriate
+  <CODE
+CLASS="FUNCTION"
+>GETARG</CODE
+> macros.) Then, 
+  when running the <TT
+CLASS="COMMAND"
+>CREATE TYPE</TT
+> command, specify the
+  internal length as <TT
+CLASS="LITERAL"
+>variable</TT
+> and select the appropriate
   storage option.
- </p>
-<p>  For further details see the description of the
-  <a href="sql-createtype.html">CREATE TYPE</a> command.
- </p>
-</div></body>
-</html>
+ </P
+><P
+>  For further details see the description of the
+  <A
+HREF="sql-createtype.html"
+><I
+>CREATE TYPE</I
+></A
+> command.
+ </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xaggr.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xoper.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>User-Defined Aggregates</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="extend.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>User-Defined Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,95 +1,408 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CREATE TABLESPACE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createtableas.html" title="CREATE TABLE AS">
-<link rel="next" href="sql-createtrigger.html" title="CREATE TRIGGER">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createtablespace"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>CREATE TABLESPACE &#8212; define a new tablespace</p>
-</div>
-<a name="id2683252"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">CREATE TABLESPACE <i class="replaceable"><tt>tablespacename</tt></i> [ OWNER <i class="replaceable"><tt>username</tt></i> ] LOCATION '<i class="replaceable"><tt>directory</tt></i>'</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2683286"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE TABLESPACE</tt> registers a new cluster-wide
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CREATE TABLESPACE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE TABLE AS"
+HREF="sql-createtableas.html"><LINK
+REL="NEXT"
+TITLE="CREATE TRIGGER"
+HREF="sql-createtrigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtableas.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtableas.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createtrigger.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createtrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATETABLESPACE"
+></A
+>CREATE TABLESPACE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN40839"
+></A
+><H2
+>Name</H2
+>CREATE TABLESPACE&nbsp;--&nbsp;define a new tablespace</DIV
+><A
+NAME="AEN40842"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN40844"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE TABLESPACE <TT
+CLASS="REPLACEABLE"
+><I
+>tablespacename</I
+></TT
+> [ OWNER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> ] LOCATION '<TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+>'</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40849"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE TABLESPACE</TT
+> registers a new cluster-wide
    tablespace.  The tablespace name must be distinct from the name of any
    existing tablespace in the database cluster.
-  </p>
-<p>   A tablespace allows superusers to define an alternative location on
+  </P
+><P
+>   A tablespace allows superusers to define an alternative location on
    the file system where the data files containing database objects
    (such as tables and indexes) may reside.
-  </p>
-<p>   A user with appropriate privileges can pass
-   <i class="replaceable"><tt>tablespacename</tt></i> to
-   <tt class="command">CREATE DATABASE</tt>, <tt class="command">CREATE TABLE</tt>,
-   <tt class="command">CREATE INDEX</tt> or <tt class="command">ADD CONSTRAINT</tt> to have the data
+  </P
+><P
+>   A user with appropriate privileges can pass
+   <TT
+CLASS="REPLACEABLE"
+><I
+>tablespacename</I
+></TT
+> to
+   <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+>, <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+>,
+   <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+> or <TT
+CLASS="COMMAND"
+>ADD CONSTRAINT</TT
+> to have the data
    files for these objects stored within the specified tablespace.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2683340"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>tablespacename</tt></i></span></dt>
-<dd><p>        The name of a tablespace to be created.  The name cannot
-        begin with <tt class="literal">pg_</tt>, as such names
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40860"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>tablespacename</I
+></TT
+></DT
+><DD
+><P
+>        The name of a tablespace to be created.  The name cannot
+        begin with <TT
+CLASS="LITERAL"
+>pg_</TT
+>, as such names
         are reserved for system tablespaces.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>username</tt></i></span></dt>
-<dd><p>        The name of the user who will own the tablespace.  If omitted,
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>        The name of the user who will own the tablespace.  If omitted,
         defaults to the user executing the command.  Only superusers
         may create tablespaces, but they can assign ownership of tablespaces
         to non-superusers.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>directory</tt></i></span></dt>
-<dd><p>        The directory that will be used for the tablespace. The directory
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></DT
+><DD
+><P
+>        The directory that will be used for the tablespace. The directory
         must be empty and must be owned by the
-        <span class="productname">PostgreSQL</span> system user.  The directory must be
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> system user.  The directory must be
         specified by an absolute path name.
-       </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2683397"></a><h2>Notes</h2>
-<p>   Tablespaces are only supported on systems that support symbolic links.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2683404"></a><h2>Examples</h2>
-<p>   Create a tablespace <tt class="literal">dbspace</tt> at <tt class="literal">/data/dbs</tt>:
-</p>
-<pre class="programlisting">CREATE TABLESPACE dbspace LOCATION '/data/dbs';</pre>
-<p>
-  </p>
-<p>   Create a tablespace <tt class="literal">indexspace</tt> at <tt class="literal">/data/indexes</tt>
-   owned by user <tt class="literal">genevieve</tt>:
-</p>
-<pre class="programlisting">CREATE TABLESPACE indexspace OWNER genevieve LOCATION '/data/indexes';</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2683456"></a><h2>Compatibility</h2>
-<p>   <tt class="command">CREATE TABLESPACE</tt> is a <span class="productname">PostgreSQL</span>
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40880"
+></A
+><H2
+>Notes</H2
+><P
+>   Tablespaces are only supported on systems that support symbolic links.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40883"
+></A
+><H2
+>Examples</H2
+><P
+>   Create a tablespace <TT
+CLASS="LITERAL"
+>dbspace</TT
+> at <TT
+CLASS="LITERAL"
+>/data/dbs</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLESPACE dbspace LOCATION '/data/dbs';</PRE
+><P>
+  </P
+><P
+>   Create a tablespace <TT
+CLASS="LITERAL"
+>indexspace</TT
+> at <TT
+CLASS="LITERAL"
+>/data/indexes</TT
+>
+   owned by user <TT
+CLASS="LITERAL"
+>genevieve</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLESPACE indexspace OWNER genevieve LOCATION '/data/indexes';</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40894"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE TABLESPACE</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
    extension.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2683474"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createdatabase.html">CREATE DATABASE</a>, <a href="sql-createtable.html">CREATE TABLE</a>, <a href="sql-createindex.html">CREATE INDEX</a>, <a href="sql-droptablespace.html">DROP TABLESPACE</a>, <a href="sql-altertablespace.html">ALTER TABLESPACE</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40899"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+>, <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+>, <A
+HREF="sql-createindex.html"
+><I
+>CREATE INDEX</I
+></A
+>, <A
+HREF="sql-droptablespace.html"
+><I
+>DROP TABLESPACE</I
+></A
+>, <A
+HREF="sql-altertablespace.html"
+><I
+>ALTER TABLESPACE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtableas.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createtrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE TABLE AS</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE TRIGGER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

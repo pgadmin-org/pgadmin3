@@ -1,77 +1,346 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>42.5. Error and Notice Message Fields</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
-<link rel="previous" href="protocol-message-formats.html" title="42.4. Message Formats">
-<link rel="next" href="protocol-changes.html" title="42.6. Summary of Changes since Protocol 2.0">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="protocol-error-fields"></a>42.5. Error and Notice Message Fields</h2></div></div>
-<div></div>
-</div>
-<p>This section describes the fields that may appear in ErrorResponse and
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Error and Notice Message Fields</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Frontend/Backend Protocol"
+HREF="protocol.html"><LINK
+REL="PREVIOUS"
+TITLE="Message Formats"
+HREF="protocol-message-formats.html"><LINK
+REL="NEXT"
+TITLE="Summary of Changes since Protocol 2.0"
+HREF="protocol-changes.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol-message-formats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. Frontend/Backend Protocol</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-changes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PROTOCOL-ERROR-FIELDS"
+>42.5. Error and Notice Message Fields</A
+></H1
+><P
+>This section describes the fields that may appear in ErrorResponse and
 NoticeResponse messages.  Each field type has a single-byte identification
 token.  Note that any given field type should appear at most once per
-message.</p>
-<div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">S</tt></span></dt>
-<dd><p>        Severity: the field contents are
-        <tt class="literal">ERROR</tt>, <tt class="literal">FATAL</tt>, or
-        <tt class="literal">PANIC</tt> (in an error message), or
-	<tt class="literal">WARNING</tt>, <tt class="literal">NOTICE</tt>, <tt class="literal">DEBUG</tt>,
-	<tt class="literal">INFO</tt>, or <tt class="literal">LOG</tt> (in a notice message),
-	or a localized translation of one of these.  Always present.</p></dd>
-<dt><span class="term"><tt class="literal">C</tt></span></dt>
-<dd><p>        Code: the SQLSTATE code for the error (see <a href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i>PostgreSQL Error Codes</i></a>).  Not localizable.  Always present.</p></dd>
-<dt><span class="term"><tt class="literal">M</tt></span></dt>
-<dd><p>        Message: the primary human-readable error message.
+message.</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>S</TT
+></DT
+><DD
+><P
+>        Severity: the field contents are
+        <TT
+CLASS="LITERAL"
+>ERROR</TT
+>, <TT
+CLASS="LITERAL"
+>FATAL</TT
+>, or
+        <TT
+CLASS="LITERAL"
+>PANIC</TT
+> (in an error message), or
+	<TT
+CLASS="LITERAL"
+>WARNING</TT
+>, <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>, <TT
+CLASS="LITERAL"
+>DEBUG</TT
+>,
+	<TT
+CLASS="LITERAL"
+>INFO</TT
+>, or <TT
+CLASS="LITERAL"
+>LOG</TT
+> (in a notice message),
+	or a localized translation of one of these.  Always present.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>C</TT
+></DT
+><DD
+><P
+>        Code: the SQLSTATE code for the error (see <A
+HREF="errcodes-appendix.html"
+>Appendix A</A
+>).  Not localizable.  Always present.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>M</TT
+></DT
+><DD
+><P
+>        Message: the primary human-readable error message.
         This should be accurate but terse (typically one line).
-        Always present.</p></dd>
-<dt><span class="term"><tt class="literal">D</tt></span></dt>
-<dd><p>        Detail: an optional secondary error message carrying more
-        detail about the problem.  May run to multiple lines.</p></dd>
-<dt><span class="term"><tt class="literal">H</tt></span></dt>
-<dd><p>        Hint: an optional suggestion what to do about the problem.
+        Always present.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>D</TT
+></DT
+><DD
+><P
+>        Detail: an optional secondary error message carrying more
+        detail about the problem.  May run to multiple lines.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>H</TT
+></DT
+><DD
+><P
+>        Hint: an optional suggestion what to do about the problem.
 	This is intended to differ from Detail in that it offers advice
 	(potentially inappropriate) rather than hard facts.
-	May run to multiple lines.</p></dd>
-<dt><span class="term"><tt class="literal">P</tt></span></dt>
-<dd><p>        Position: the field value is a decimal ASCII integer, indicating
+	May run to multiple lines.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>P</TT
+></DT
+><DD
+><P
+>        Position: the field value is a decimal ASCII integer, indicating
 	an error cursor position as an index into the original query string.
 	The first character has index 1, and positions are measured in
-	characters not bytes.</p></dd>
-<dt><span class="term"><tt class="literal">p</tt></span></dt>
-<dd><p>        Internal position: this is defined the same as the <tt class="literal">P</tt>
+	characters not bytes.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>p</TT
+></DT
+><DD
+><P
+>        Internal position: this is defined the same as the <TT
+CLASS="LITERAL"
+>P</TT
+>
         field, but it is used when the cursor position refers to an internally
         generated command rather than the one submitted by the client.
-        The <tt class="literal">q</tt> field will always appear when this field appears.</p></dd>
-<dt><span class="term"><tt class="literal">q</tt></span></dt>
-<dd><p>        Internal query: the text of a failed internally-generated command.
-        This could be, for example, a SQL query issued by a PL/pgSQL function.</p></dd>
-<dt><span class="term"><tt class="literal">W</tt></span></dt>
-<dd><p>        Where: an indication of the context in which the error occurred.
+        The <TT
+CLASS="LITERAL"
+>q</TT
+> field will always appear when this field appears.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>q</TT
+></DT
+><DD
+><P
+>        Internal query: the text of a failed internally-generated command.
+        This could be, for example, a SQL query issued by a PL/pgSQL function.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>W</TT
+></DT
+><DD
+><P
+>        Where: an indication of the context in which the error occurred.
         Presently this includes a call stack traceback of active
         procedural language functions and internally-generated queries.
-        The trace is one entry per line, most recent first.</p></dd>
-<dt><span class="term"><tt class="literal">F</tt></span></dt>
-<dd><p>        File: the file name of the source-code location where the error
-	was reported.</p></dd>
-<dt><span class="term"><tt class="literal">L</tt></span></dt>
-<dd><p>        Line: the line number of the source-code location where the error
-	was reported.</p></dd>
-<dt><span class="term"><tt class="literal">R</tt></span></dt>
-<dd><p>        Routine: the name of the source-code routine reporting the error.</p></dd>
-</dl></div>
-<p>The client is responsible for formatting displayed information to meet its
+        The trace is one entry per line, most recent first.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>F</TT
+></DT
+><DD
+><P
+>        File: the file name of the source-code location where the error
+	was reported.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>L</TT
+></DT
+><DD
+><P
+>        Line: the line number of the source-code location where the error
+	was reported.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>R</TT
+></DT
+><DD
+><P
+>        Routine: the name of the source-code routine reporting the error.</P
+></DD
+></DL
+></DIV
+><P
+>The client is responsible for formatting displayed information to meet its
 needs; in particular it should break long lines as needed.  Newline characters
 appearing in the error message fields should be treated as paragraph breaks,
-not line breaks.</p>
-</div></body>
-</html>
+not line breaks.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol-message-formats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-changes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Message Formats</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="protocol.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Summary of Changes since Protocol 2.0</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

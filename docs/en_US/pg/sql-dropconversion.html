@@ -1,66 +1,296 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>DROP CONVERSION</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-dropcast.html" title="DROP CAST">
-<link rel="next" href="sql-dropdatabase.html" title="DROP DATABASE">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-dropconversion"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>DROP CONVERSION &#8212; remove a conversion</p>
-</div>
-<a name="id2687696"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">DROP CONVERSION <i class="replaceable"><tt>name</tt></i> [ CASCADE | RESTRICT ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-dropconversion-description"></a><h2>Description</h2>
-<p>   <tt class="command">DROP CONVERSION</tt> removes a previously defined conversion.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>DROP CONVERSION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP CAST"
+HREF="sql-dropcast.html"><LINK
+REL="NEXT"
+TITLE="DROP DATABASE"
+HREF="sql-dropdatabase.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropcast.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropcast.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropdatabase.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPCONVERSION"
+></A
+>DROP CONVERSION</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN41916"
+></A
+><H2
+>Name</H2
+>DROP CONVERSION&nbsp;--&nbsp;remove a conversion</DIV
+><A
+NAME="AEN41919"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN41921"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP CONVERSION <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [ CASCADE | RESTRICT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPCONVERSION-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP CONVERSION</TT
+> removes a previously defined conversion.
    To be able to drop a conversion, you must own the conversion.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687735"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>       The name of the conversion. The conversion name may be
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41928"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>       The name of the conversion. The conversion name may be
        schema-qualified.
-      </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CASCADE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">RESTRICT</tt></span>
-</dt>
-<dd><p>       These key words do not have any effect, since there are no
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+><BR><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>       These key words do not have any effect, since there are no
        dependencies on conversions.
-      </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-dropconversion-examples"></a><h2>Examples</h2>
-<p>   To drop the conversion named <tt class="literal">myname</tt>:
-</p>
-<pre class="programlisting">DROP CONVERSION myname;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-dropconversion-compat"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">DROP CONVERSION</tt> statement in the SQL
+      </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPCONVERSION-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To drop the conversion named <TT
+CLASS="LITERAL"
+>myname</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP CONVERSION myname;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPCONVERSION-COMPAT"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>DROP CONVERSION</TT
+> statement in the SQL
    standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id2687807"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterconversion.html">ALTER CONVERSION</a>, <a href="sql-createconversion.html">CREATE CONVERSION</a></span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41952"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alterconversion.html"
+><I
+>ALTER CONVERSION</I
+></A
+>, <A
+HREF="sql-createconversion.html"
+><I
+>CREATE CONVERSION</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropcast.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP CAST</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP DATABASE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,254 +1,885 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.15. Aggregate Functions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.2 Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-array.html" title="9.14. Array Functions and Operators">
-<link rel="next" href="functions-subquery.html" title="9.16. Subquery Expressions">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-aggregate"></a>9.15. Aggregate Functions</h2></div></div>
-<div></div>
-</div>
-<a name="id2561818"></a><p>   <i class="firstterm">Aggregate functions</i> compute a single result
-   value from a set of input values.  <a href="functions-aggregate.html#functions-aggregate-table" title="Table 9.37. Aggregate Functions">Table 9.37, &#8220;Aggregate Functions&#8221;</a> shows the built-in aggregate
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Aggregate Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Array Functions and Operators"
+HREF="functions-array.html"><LINK
+REL="NEXT"
+TITLE="Subquery Expressions"
+HREF="functions-subquery.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-05-10T02:12:05"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-array.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-subquery.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-AGGREGATE"
+>9.15. Aggregate Functions</A
+></H1
+><A
+NAME="AEN12305"
+></A
+><P
+>   <I
+CLASS="FIRSTTERM"
+>Aggregate functions</I
+> compute a single result
+   value from a set of input values.  <A
+HREF="functions-aggregate.html#FUNCTIONS-AGGREGATE-TABLE"
+>Table 9-37</A
+> shows the built-in aggregate
    functions.  The special syntax considerations for aggregate
-   functions are explained in <a href="sql-expressions.html#syntax-aggregates" title="4.2.7. Aggregate Expressions">Section 4.2.7, &#8220;Aggregate Expressions&#8221;</a>.
-   Consult <a href="tutorial-agg.html" title="2.7. Aggregate Functions">Section 2.7, &#8220;Aggregate Functions&#8221;</a> for additional introductory
+   functions are explained in <A
+HREF="sql-expressions.html#SYNTAX-AGGREGATES"
+>Section 4.2.7</A
+>.
+   Consult <A
+HREF="tutorial-agg.html"
+>Section 2.7</A
+> for additional introductory
    information.
-  </p>
-<div class="table">
-<a name="functions-aggregate-table"></a><p class="title"><b>Table 9.37. Aggregate Functions</b></p>
-<table summary="Aggregate Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Argument Type</th>
-<th>Return Type</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-<a name="id2561885"></a><tt class="function">avg(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>,
-       <tt class="type">bigint</tt>, <tt class="type">real</tt>, <tt class="type">double
-       precision</tt>, <tt class="type">numeric</tt>, or <tt class="type">interval</tt>
-</td>
-<td>
-<tt class="type">numeric</tt> for any integer type argument,
-       <tt class="type">double precision</tt> for a floating-point argument,
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-AGGREGATE-TABLE"
+></A
+><P
+><B
+>Table 9-37. Aggregate Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Argument Type</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>       <A
+NAME="AEN12325"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>avg(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>,
+       <TT
+CLASS="TYPE"
+>bigint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+       precision</TT
+>, <TT
+CLASS="TYPE"
+>numeric</TT
+>, or <TT
+CLASS="TYPE"
+>interval</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>numeric</TT
+> for any integer type argument,
+       <TT
+CLASS="TYPE"
+>double precision</TT
+> for a floating-point argument,
        otherwise the same as the argument data type
-      </td>
-<td>the average (arithmetic mean) of all input values</td>
-</tr>
-<tr>
-<td>
-<a name="id2561948"></a><tt class="function">bit_and(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>, <tt class="type">bigint</tt>, or
-       <tt class="type">bit</tt>
-</td>
-<td>        same as argument data type
-      </td>
-<td>the bitwise AND of all non-null input values, or null if none</td>
-</tr>
-<tr>
-<td>
-<a name="id2561992"></a><tt class="function">bit_or(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>, <tt class="type">bigint</tt>, or
-       <tt class="type">bit</tt>
-</td>
-<td>        same as argument data type
-      </td>
-<td>the bitwise OR of all non-null input values, or null if none</td>
-</tr>
-<tr>
-<td>
-<a name="id2562036"></a><tt class="function">bool_and(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td><tt class="type">bool</tt></td>
-<td><tt class="type">bool</tt></td>
-<td>true if all input values are true, otherwise false</td>
-</tr>
-<tr>
-<td>
-<a name="id2562072"></a><tt class="function">bool_or(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td><tt class="type">bool</tt></td>
-<td><tt class="type">bool</tt></td>
-<td>true if at least one input value is true, otherwise false</td>
-</tr>
-<tr>
-<td><tt class="function">count(*)</tt></td>
-<td> </td>
-<td><tt class="type">bigint</tt></td>
-<td>number of input values</td>
-</tr>
-<tr>
-<td><tt class="function">count(<i class="replaceable"><tt>expression</tt></i>)</tt></td>
-<td>any</td>
-<td><tt class="type">bigint</tt></td>
-<td>       number of input values for which the value of <i class="replaceable"><tt>expression</tt></i> is not null
-      </td>
-</tr>
-<tr>
-<td>
-<a name="id2562149"></a><tt class="function">every(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td><tt class="type">bool</tt></td>
-<td><tt class="type">bool</tt></td>
-<td>equivalent to <tt class="function">bool_and</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="function">max(<i class="replaceable"><tt>expression</tt></i>)</tt></td>
-<td>any numeric, string, or date/time type</td>
-<td>same as argument type</td>
-<td>       maximum value of <i class="replaceable"><tt>expression</tt></i> across all input
+      </TD
+><TD
+>the average (arithmetic mean) of all input values</TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12343"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>bit_and(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>, <TT
+CLASS="TYPE"
+>bigint</TT
+>, or
+       <TT
+CLASS="TYPE"
+>bit</TT
+>
+      </TD
+><TD
+>        same as argument data type
+      </TD
+><TD
+>the bitwise AND of all non-null input values, or null if none</TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12356"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>bit_or(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>, <TT
+CLASS="TYPE"
+>bigint</TT
+>, or
+       <TT
+CLASS="TYPE"
+>bit</TT
+>
+      </TD
+><TD
+>        same as argument data type
+      </TD
+><TD
+>the bitwise OR of all non-null input values, or null if none</TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12369"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>bool_and(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>true if all input values are true, otherwise false</TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12380"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>bool_or(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>true if at least one input value is true, otherwise false</TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>count(*)</CODE
+></TD
+><TD
+>&nbsp;</TD
+><TD
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+>number of input values</TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>count(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+></TD
+><TD
+>any</TD
+><TD
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+>       number of input values for which the value of <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> is not null
+      </TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12407"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>every(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bool</TT
+>
+      </TD
+><TD
+>equivalent to <CODE
+CLASS="FUNCTION"
+>bool_and</CODE
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>max(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+></TD
+><TD
+>any numeric, string, or date/time type</TD
+><TD
+>same as argument type</TD
+><TD
+>       maximum value of <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> across all input
        values
-      </td>
-</tr>
-<tr>
-<td><tt class="function">min(<i class="replaceable"><tt>expression</tt></i>)</tt></td>
-<td>any numeric, string, or date/time type</td>
-<td>same as argument type</td>
-<td>       minimum value of <i class="replaceable"><tt>expression</tt></i> across all input
+      </TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>min(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+></TD
+><TD
+>any numeric, string, or date/time type</TD
+><TD
+>same as argument type</TD
+><TD
+>       minimum value of <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> across all input
        values
-      </td>
-</tr>
-<tr>
-<td>
-<a name="id2562244"></a><tt class="function">stddev(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>,
-       <tt class="type">bigint</tt>, <tt class="type">real</tt>, <tt class="type">double
-       precision</tt>, or <tt class="type">numeric</tt>
-</td>
-<td>
-<tt class="type">double precision</tt> for floating-point arguments,
-       otherwise <tt class="type">numeric</tt>
-</td>
-<td>sample standard deviation of the input values</td>
-</tr>
-<tr>
-<td><tt class="function">sum(<i class="replaceable"><tt>expression</tt></i>)</tt></td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>,
-       <tt class="type">bigint</tt>, <tt class="type">real</tt>, <tt class="type">double
-       precision</tt>, <tt class="type">numeric</tt>, or
-       <tt class="type">interval</tt>
-</td>
-<td>
-<tt class="type">bigint</tt> for <tt class="type">smallint</tt> or
-       <tt class="type">integer</tt> arguments, <tt class="type">numeric</tt> for
-       <tt class="type">bigint</tt> arguments, <tt class="type">double precision</tt>
+      </TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12435"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>stddev(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>,
+       <TT
+CLASS="TYPE"
+>bigint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+       precision</TT
+>, or <TT
+CLASS="TYPE"
+>numeric</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>double precision</TT
+> for floating-point arguments,
+       otherwise <TT
+CLASS="TYPE"
+>numeric</TT
+>
+      </TD
+><TD
+>sample standard deviation of the input values</TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>sum(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</CODE
+></TD
+><TD
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>,
+       <TT
+CLASS="TYPE"
+>bigint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+       precision</TT
+>, <TT
+CLASS="TYPE"
+>numeric</TT
+>, or
+       <TT
+CLASS="TYPE"
+>interval</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>bigint</TT
+> for <TT
+CLASS="TYPE"
+>smallint</TT
+> or
+       <TT
+CLASS="TYPE"
+>integer</TT
+> arguments, <TT
+CLASS="TYPE"
+>numeric</TT
+> for
+       <TT
+CLASS="TYPE"
+>bigint</TT
+> arguments, <TT
+CLASS="TYPE"
+>double precision</TT
+>
        for floating-point arguments, otherwise the same as the
        argument data type
-      </td>
-<td>sum of <i class="replaceable"><tt>expression</tt></i> across all input values</td>
-</tr>
-<tr>
-<td>
-<a name="id2562377"></a><tt class="function">variance</tt>(<i class="replaceable"><tt>expression</tt></i>)
-      </td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>,
-       <tt class="type">bigint</tt>, <tt class="type">real</tt>, <tt class="type">double
-       precision</tt>, or <tt class="type">numeric</tt>
-</td>
-<td>
-<tt class="type">double precision</tt> for floating-point arguments,
-       otherwise <tt class="type">numeric</tt>
-</td>
-<td>sample variance of the input values (square of the sample standard deviation)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   It should be noted that except for <tt class="function">count</tt>,
+      </TD
+><TD
+>sum of <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> across all input values</TD
+></TR
+><TR
+><TD
+>       <A
+NAME="AEN12473"
+></A
+>
+       <CODE
+CLASS="FUNCTION"
+>variance</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>,
+       <TT
+CLASS="TYPE"
+>bigint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+       precision</TT
+>, or <TT
+CLASS="TYPE"
+>numeric</TT
+>
+      </TD
+><TD
+>       <TT
+CLASS="TYPE"
+>double precision</TT
+> for floating-point arguments,
+       otherwise <TT
+CLASS="TYPE"
+>numeric</TT
+>
+      </TD
+><TD
+>sample variance of the input values (square of the sample standard deviation)</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   It should be noted that except for <CODE
+CLASS="FUNCTION"
+>count</CODE
+>,
    these functions return a null value when no rows are selected.  In
-   particular, <tt class="function">sum</tt> of no rows returns null, not
-   zero as one might expect.  The <tt class="function">coalesce</tt> function may be
+   particular, <CODE
+CLASS="FUNCTION"
+>sum</CODE
+> of no rows returns null, not
+   zero as one might expect.  The <CODE
+CLASS="FUNCTION"
+>coalesce</CODE
+> function may be
    used to substitute zero for null when necessary.
-  </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<a name="id2562458"></a><a name="id2562464"></a><p>      Boolean aggregates <tt class="function">bool_and</tt> and 
-      <tt class="function">bool_or</tt> correspond to standard SQL aggregates
-      <tt class="function">every</tt> and <tt class="function">any</tt> or
-      <tt class="function">some</tt>. 
-      As for <tt class="function">any</tt> and <tt class="function">some</tt>, 
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><A
+NAME="AEN12493"
+></A
+><A
+NAME="AEN12495"
+></A
+><P
+><B
+>Note: </B
+>      Boolean aggregates <CODE
+CLASS="FUNCTION"
+>bool_and</CODE
+> and 
+      <CODE
+CLASS="FUNCTION"
+>bool_or</CODE
+> correspond to standard SQL aggregates
+      <CODE
+CLASS="FUNCTION"
+>every</CODE
+> and <CODE
+CLASS="FUNCTION"
+>any</CODE
+> or
+      <CODE
+CLASS="FUNCTION"
+>some</CODE
+>. 
+      As for <CODE
+CLASS="FUNCTION"
+>any</CODE
+> and <CODE
+CLASS="FUNCTION"
+>some</CODE
+>, 
       it seems that there is an ambiguity built into the standard syntax:
-</p>
-<pre class="programlisting">SELECT b1 = ANY((SELECT b2 FROM t2 ...)) FROM t1 ...;</pre>
-<p>
-      Here <tt class="function">ANY</tt> can be considered both as leading
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT b1 = ANY((SELECT b2 FROM t2 ...)) FROM t1 ...;</PRE
+><P>
+      Here <CODE
+CLASS="FUNCTION"
+>ANY</CODE
+> can be considered both as leading
       to a subquery or as an aggregate if the select expression returns 1 row.
       Thus the standard name cannot be given to these aggregates.
-    </p>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>    Users accustomed to working with other SQL database management
+    </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    Users accustomed to working with other SQL database management
     systems may be surprised by the performance characteristics of
     certain aggregate functions in
-    <span class="productname">PostgreSQL</span> when the aggregate is
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> when the aggregate is
     applied to the entire table (in other words, no
-    <tt class="literal">WHERE</tt> clause is specified). In particular, a
+    <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause is specified). In particular, a
     query like
-</p>
-<pre class="programlisting">SELECT min(col) FROM sometable;</pre>
-<p>
-    will be executed by <span class="productname">PostgreSQL</span> using a
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT min(col) FROM sometable;</PRE
+><P>
+    will be executed by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> using a
     sequential scan of the entire table. Other database systems may
     optimize queries of this form to use an index on the column, if
     one is available. Similarly, the aggregate functions
-    <tt class="function">max()</tt> and <tt class="function">count()</tt> always
+    <CODE
+CLASS="FUNCTION"
+>max()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>count()</CODE
+> always
     require a sequential scan if applied to the entire table in
-    <span class="productname">PostgreSQL</span>.
-   </p>
-<p>    <span class="productname">PostgreSQL</span> cannot easily implement this
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+   </P
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> cannot easily implement this
     optimization because it also allows for user-defined aggregate
-    queries. Since <tt class="function">min()</tt>,
-    <tt class="function">max()</tt>, and <tt class="function">count()</tt> are
+    queries. Since <CODE
+CLASS="FUNCTION"
+>min()</CODE
+>,
+    <CODE
+CLASS="FUNCTION"
+>max()</CODE
+>, and <CODE
+CLASS="FUNCTION"
+>count()</CODE
+> are
     defined using a generic API for aggregate functions, there is no
     provision for special-casing the execution of these functions
     under certain circumstances.
-   </p>
-<p>    Fortunately, there is a simple workaround for
-    <tt class="function">min()</tt> and <tt class="function">max()</tt>. The
+   </P
+><P
+>    Fortunately, there is a simple workaround for
+    <CODE
+CLASS="FUNCTION"
+>min()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>max()</CODE
+>. The
     query shown below is equivalent to the query above, except that it
     can take advantage of a B-tree index if there is one present on
     the column in question.
-</p>
-<pre class="programlisting">SELECT col FROM sometable ORDER BY col ASC LIMIT 1;</pre>
-<p>
-    A similar query (obtained by substituting <tt class="literal">DESC</tt>
-    for <tt class="literal">ASC</tt> in the query above) can be used in the
-    place of <tt class="function">max()</tt>.
-   </p>
-<p>    Unfortunately, there is no similarly trivial query that can be
-    used to improve the performance of <tt class="function">count()</tt>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT col FROM sometable ORDER BY col ASC LIMIT 1;</PRE
+><P>
+    A similar query (obtained by substituting <TT
+CLASS="LITERAL"
+>DESC</TT
+>
+    for <TT
+CLASS="LITERAL"
+>ASC</TT
+> in the query above) can be used in the
+    place of <CODE
+CLASS="FUNCTION"
+>max()</CODE
+>.
+   </P
+><P
+>    Unfortunately, there is no similarly trivial query that can be
+    used to improve the performance of <CODE
+CLASS="FUNCTION"
+>count()</CODE
+>
     when applied to the entire table.
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-array.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-subquery.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Array Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Subquery Expressions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
