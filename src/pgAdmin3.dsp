@@ -1968,7 +1968,7 @@ SOURCE=..\CHANGELOG.txt
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\pgadmin3.lng
+SOURCE=..\i18n\pgadmin3.lng
 # End Source File
 # Begin Source File
 
