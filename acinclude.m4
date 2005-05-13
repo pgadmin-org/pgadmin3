@@ -53,6 +53,7 @@ CFLAGS="-Wall -g -O0"
 CXXFLAGS="-Wall -g -O0"],
 [pg_debug_build=no])
 ])
+AC_SUBST(pg_debug_build)
 
 ############################
 # Static build of pgAdmin3 #
@@ -62,6 +63,22 @@ AC_DEFUN([ENABLE_STATIC],
 [ --enable-static      build a static version of pgAdmin3],
 [pg_static_build=yes],
 [pg_static_build=no])
+])
+
+############################
+# Build an pgAdmin III.app  #
+############################
+AC_DEFUN([ENABLE_APPBUNDLE],
+[AC_ARG_ENABLE(appbundle,
+[ --enable-appbundle   Build pgAdmin3.app],
+[pg_appbundle=yes
+prefix=$(pwd)/tmp
+bundledir="$(pwd)/pgAdmin3.app"
+bindir="$bundledir/Contents/MacOS"
+datadir="$bundledir/Contents/SharedSupport"
+AC_SUBST(bundledir)
+],
+[pg_appbundle=no])
 ])
 
 ########################################
@@ -115,7 +132,18 @@ then
     AC_LANG_SAVE
     AC_LANG_C
     AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
-    AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=no])
+    if test "$build_cpu-$build_vendor" = "powerpc-apple"; then
+        echo -n "Checking if libpq links against libssl: "
+        if test "$(otool -L ${LIBPQ_HOME}/lib/libpq.?.dylib | grep -c libssl)" -gt 0
+        then
+            pgsql_ssl_libpq="yes"
+        else
+            pgsql_ssl_libpq="no"
+        fi
+        echo $pgsql_ssl_libpq
+    else
+        AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=no])
+    fi
     AC_LANG_RESTORE
 
     if test "$pgsql_include" != ""
@@ -127,11 +155,18 @@ then
 
     if test "$pg_static_build" = "yes"
     then
+        if test "$build_cpu-$build_vendor" = "powerpc-apple"
+        then
+            CRYPT_LIB=""
+        else
+            CRYPT_LIB="-lcrypt"
+        fi
+
         if test "$pgsql_ssl_libpq" = "yes"
         then
-            LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lssl -lcrypto"
+            LIBS="${LIBPQ_HOME}/lib/libpq.a $CRYPT_LIB $LIBS -lssl -lcrypto"
         else
-            LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lcrypto"
+            LIBS="${LIBPQ_HOME}/lib/libpq.a $CRYPT_LIB $LIBS -lcrypto"
         fi
     else
         if test "$pgsql_ssl_libpq" = "yes"
@@ -184,10 +219,10 @@ else
 fi], [
     AC_MSG_RESULT(yes)
     WX_HOME=/usr/local/wx2
-    if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h"
+    if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h" -a ! -f "${WX_HOME}/include/wx-2.6/wx/wx.h"
     then
         WX_HOME=/usr/local
-        if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h"
+        if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h" -a ! -f "${WX_HOME}/include/wx-2.6/wx/wx.h"
         then
             WX_HOME=/usr
         fi
@@ -237,11 +272,11 @@ then
     # Which version of wxWindows is this?
     WX_VERSION=`${WX_CONFIG} --version`
     case "${WX_VERSION}" in
+        2.6*)
+            WX_VERSION="2.6"
+            ;;
         2.5*)
             WX_VERSION="2.5"
-            ;;
-        2.4*)
-            WX_VERSION="2.4"
             ;;
         *)
             ;;
@@ -293,6 +328,14 @@ then
                 ;;
             *libwx_mac_core*)
                 LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_macu-*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_macu_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macu_ogl-${WX_VERSION}.a"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *libwx_macu_core*)
+                LIBS="$LIBS ${WX_HOME}/lib/libwx_macu_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macu_ogl-${WX_VERSION}.a"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
             *libwx_gtk2ud-*)
@@ -392,6 +435,14 @@ then
                 LIBS="$LIBS -lwx_mac_stc-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
+            *wx_macu-*)
+                LIBS="$LIBS -lwx_macu_stc-${WX_VERSION} -lwx_macu_ogl-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
+            *wx_macu_core*)
+                LIBS="$LIBS -lwx_macu_stc-${WX_VERSION} -lwx_macu_ogl-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
             *wx_gtk2ud-*)
                 LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
@@ -450,7 +501,7 @@ then
     fi
 
     WX_NEW_CPPFLAGS=`${WX_CONFIG} --cxxflags`
-    CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -I${WX_HOME}/include/wx-2.5"
+    CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -I${WX_HOME}/include/wx-${WX_VERSION}"
     case "${host}" in
         *-apple-darwin*)
             CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
@@ -459,11 +510,11 @@ then
             ;;
     esac
     wx_wx_h="yes"
-    if test ! -f "${WX_HOME}/include/wx-2.5/wx/version.h"
+    if test ! -f "${WX_HOME}/include/wx-${WX_VERSION}/wx/version.h"
     then
         wx_wx_h="no"
     fi
-    if test ! -f "${WX_HOME}/include/wx-2.5/wx/stc/stc.h"
+    if test ! -f "${WX_HOME}/include/wx-${WX_VERSION}/wx/stc/stc.h"
     then
         AC_MSG_ERROR([you need to install the stc package from wxWindows/contrib/src/stc])
         wx_wx_h="no"
@@ -481,3 +532,4 @@ then
     fi
 fi
 ])
+AC_SUBST(WX_CONFIG)

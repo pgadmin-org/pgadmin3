@@ -130,7 +130,7 @@ ui/zh_TW/pgadmin3.po
 #
 ##############################################################################
 
-nobase_dist_pkgdata_DATA = ui/common/*.xrc \
+TMP_ui = ui/common/*.xrc \
 ui/wxstd.mo \
 ui/pgadmin3.lng \
 ui/af_ZA/pgadmin3.mo \
@@ -177,6 +177,30 @@ ui/tr_TR/wxstd.mo \
 ui/zh_CN/wxstd.mo \
 ui/zh_TW/wxstd.mo
 
+if !APPBUNDLE
+
+nobase_dist_pkgdata_DATA = $(TMP_ui)
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
 AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
 AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
+
+# Automake trys to execute install-exec-hook if it appears anywhere in the file, so we need a dummy
+# for non-APPBUNDLE cases.
+install-exec-hook:
+
+else
+
+nobase_dist_data_DATA = $(TMP_ui)
+AM_CXXFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
+AM_CPPFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
+AM_CFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include
+
+install-exec-hook:
+	cd $(bindir) ;\
+	mv pgadmin3 tmp ;\
+	mv tmp pgAdmin3 ;\
+	if test "$(pg_debug_build)" = "no"; then \
+		strip pgAdmin3 ;\
+	fi
+
+endif

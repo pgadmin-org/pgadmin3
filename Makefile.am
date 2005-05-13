@@ -3,7 +3,7 @@
 # This software is released under the Artistic Licence
 #
 # Makefile - Makefile for *nix systems
-SUBDIRS = src
+SUBDIRS = src pkg
 EXTRA_DIST = \
         README.txt \
         BUGS.txt \
@@ -35,7 +35,7 @@ EXTRA_DIST = \
 		pkg/win32/licence.rtf \
         pkg/win32/pgadmin3.wsi
 
-nobase_dist_pkgdata_DATA = \
+TMP_docs = \
 		docs/en_US/pg/*.html \
 		docs/en_US/pg/*.css \
 		docs/en_US/images/*.png \
@@ -44,3 +44,8 @@ nobase_dist_pkgdata_DATA = \
         docs/en_US/pgadmin3.hh* \
 		docs/en_US/tips.txt
 
+if !APPBUNDLE
+nobase_dist_pkgdata_DATA = $(TMP_docs)
+else
+nobase_dist_data_DATA = $(TMP_docs)
+endif
