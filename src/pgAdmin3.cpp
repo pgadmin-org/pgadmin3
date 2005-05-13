@@ -147,31 +147,6 @@ bool pgAdmin3::OnInit()
         }
     }
 
-
-    wxPathList path;
-
-    path.Add(loadPath);
-
-#ifdef __WXMSW__
-
-	// Look for a path 'hint' on Windows. This registry setting may
-	// be set by the Win32 PostgreSQL installer which will generally
-	// install pg_dump et al. in the PostgreSQL bindir rather than
-	// the pgAdmin directory.
-
-    wxRegKey hintKey(wxT("HKEY_LOCAL_MACHINE\\Software\\") APPNAME_L);
-
-	if (hintKey.HasValue(wxT("Helper Path")))
-	{
-		wxString hintPath;
-	    hintKey.QueryValue(wxT("Helper Path"), hintPath);
-		path.Add(hintPath);
-	}
-
-#endif 
-
-    path.AddEnvList(wxT("PATH"));
-
     // evaluate all working paths
 
 #if defined(__WXMSW__)

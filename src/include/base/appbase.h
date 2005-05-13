@@ -9,6 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+extern wxPathList path;                  // The search path
 extern wxString loadPath;              // Where the program is loaded from
 extern wxString docPath;               // Where docs are stored
 extern wxString uiPath;                // Where ui data is stored

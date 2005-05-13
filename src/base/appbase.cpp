@@ -19,11 +19,13 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/stdpaths.h>
 
+#include "copyright.h"
 #include "base/base.h"
 #include "base/appbase.h"
 #include "base/pgConnBase.h"
 #include "base/sysLogger.h"
 
+wxPathList path;                // The search path
 wxString loadPath;              // Where the program is loaded from
 wxString docPath;               // Where docs are stored
 wxString uiPath;                // Where ui data is stored
@@ -60,6 +62,18 @@ void pgAppBase::InitPaths()
         docPath = loadPath + DOC_DIR;
     else
         docPath = loadPath + wxT("/../..") DOC_DIR;
+
+    // Look for a path 'hint' on Windows. This registry setting may
+    // be set by the Win32 PostgreSQL installer which will generally
+    // install pg_dump et al. in the PostgreSQL bindir rather than
+    // the pgAdmin directory.
+    wxRegKey hintKey(wxT("HKEY_LOCAL_MACHINE\\Software\\") APPNAME_L);
+    if (hintKey.HasValue(wxT("Helper Path")))
+    {
+        wxString hintPath;
+        hintKey.QueryValue(wxT("Helper Path"), hintPath);
+        path.Add(hintPath);
+    }
     
 #else
     wxString dataDir;
@@ -123,6 +137,8 @@ void pgAppBase::InitPaths()
             docPath = loadPath + wxT("/..") DOC_DIR ;
     }
 #endif
+
+    path.AddEnvList(wxT("PATH"));
 }
 
 

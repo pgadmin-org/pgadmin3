@@ -277,6 +277,56 @@ void dlgSchedule::OnAddException(wxCommandEvent &ev)
 
 void dlgSchedule::OnChangeException(wxCommandEvent &ev)
 {
+	if (!calException->GetValue().IsValid() && timException->GetValue().IsNull())
+	{
+		wxMessageBox(_("You must enter a valid date and/or time!"), _("Add exception"), wxICON_EXCLAMATION | wxOK, this);
+		return;
+	}
+
+	wxString exDate, exTime;
+
+	if (calException->GetValue().IsValid())
+		exDate = calException->GetValue().FormatDate();
+	else
+		exDate = _("<any>");
+
+	if (!timException->GetValue().IsNull())
+		exTime = timException->GetValue().Format();
+	else
+		exTime = _("<any>");
+
+	for (int pos=0; pos < lstExceptions->GetItemCount(); pos++)
+	{
+		if (lstExceptions->GetFocusedItem() != pos)
+		{
+			if (lstExceptions->GetText(pos, 0) == exDate &&
+				lstExceptions->GetText(pos, 1) == exTime)
+			{
+				wxMessageBox(_("The specified exception already exists!"), _("Add exception"), wxICON_EXCLAMATION | wxOK, this);
+				return;
+			}
+
+			if (lstExceptions->GetText(pos, 0) == exDate &&
+				lstExceptions->GetText(pos, 1) == _("<any>"))
+			{
+				wxMessageBox(_("An exception already exists for any time on this date!"), _("Add exception"), wxICON_EXCLAMATION | wxOK, this);
+				return;
+			}
+
+			if (lstExceptions->GetText(pos, 1) == exTime &&
+				lstExceptions->GetText(pos, 0) == _("<any>"))
+			{
+				wxMessageBox(_("An exception already exists for this time on any date!"), _("Add exception"), wxICON_EXCLAMATION | wxOK, this);
+				return;
+			}
+		}
+	}
+
+	lstExceptions->SetText(lstExceptions->GetFocusedItem(), 0, exDate);
+	lstExceptions->SetText(lstExceptions->GetFocusedItem(), 1, exTime);
+	lstExceptions->SetText(lstExceptions->GetFocusedItem(), 2, BoolToStr(true));
+	lstExceptions->RefreshItem(lstExceptions->GetFocusedItem());
+	CheckChange();
 }
 
 

@@ -40,6 +40,16 @@ wxString ctlListView::GetText(long row, long col)
     return item.GetText();
 };
 
+void ctlListView::SetText(long row, long col, const wxString &text)
+{
+    wxListItem item;
+    item.SetId(row);
+    item.SetColumn(col);
+    item.SetMask(wxLIST_MASK_TEXT);
+    GetItem(item);
+    item.SetText(text);
+};
+
 
 void ctlListView::AddColumn(const wxChar *text, int size, int format)
 {
