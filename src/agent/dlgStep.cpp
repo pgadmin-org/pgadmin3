@@ -182,7 +182,7 @@ wxString dlgStep::GetInsertSql()
         sql = wxT("INSERT INTO pgagent.pga_jobstep (jstid, jstjobid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdbname)\n")
               wxT("SELECT <StpId>, ") + jstjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
                 + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtString(kind) + wxT(", ") 
-                + qtString(onerror) + wxT(", ") + qtString(sqlBox->GetText()) + wxT(", ") + db;
+                + qtString(onerror) + wxT(", ") + qtString(sqlBox->GetText()) + wxT(", ") + db + wxT(";\n");
     }
     return sql;
 }
@@ -253,7 +253,8 @@ wxString dlgStep::GetUpdateSql()
         if (!vars.IsEmpty())
             sql = wxT("UPDATE pgagent.pga_jobstep\n")
                   wxT("   SET ") + vars + wxT("\n")
-                  wxT(" WHERE jstid=") + NumToStr(step->GetRecId());
+                  wxT(" WHERE jstid=") + NumToStr(step->GetRecId()) +
+				  wxT(";\n");
     }
     else
     {

@@ -26,7 +26,6 @@ public:
     ctlListView(wxWindow *p, int id, wxPoint pos, wxSize siz, long attr=0);
     long GetSelection();
     wxString GetText(long row, long col=0);
-	void SetText(long row, long col, const wxString &text);
 
     void CreateColumns(wxImageList *images, const wxString &left, const wxString &right, int leftSize=60);
 

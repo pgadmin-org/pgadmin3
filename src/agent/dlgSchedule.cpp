@@ -166,7 +166,7 @@ int dlgSchedule::Go(bool modal)
 			}
 
 			lstExceptions->SetItem(pos, 2, BoolToStr(false));
-			lstExceptions->SetItem(pos, 3, NumToStr(pos));
+			lstExceptions->SetItem(pos, 3, id);
 
 		}
 
@@ -295,9 +295,11 @@ void dlgSchedule::OnChangeException(wxCommandEvent &ev)
 	else
 		exTime = _("<any>");
 
+	long item = lstExceptions->GetFocusedItem();
+
 	for (int pos=0; pos < lstExceptions->GetItemCount(); pos++)
 	{
-		if (lstExceptions->GetFocusedItem() != pos)
+		if (item != pos)
 		{
 			if (lstExceptions->GetText(pos, 0) == exDate &&
 				lstExceptions->GetText(pos, 1) == exTime)
@@ -322,10 +324,9 @@ void dlgSchedule::OnChangeException(wxCommandEvent &ev)
 		}
 	}
 
-	lstExceptions->SetText(lstExceptions->GetFocusedItem(), 0, exDate);
-	lstExceptions->SetText(lstExceptions->GetFocusedItem(), 1, exTime);
-	lstExceptions->SetText(lstExceptions->GetFocusedItem(), 2, BoolToStr(true));
-	lstExceptions->RefreshItem(lstExceptions->GetFocusedItem());
+	lstExceptions->SetItem(item, 0, exDate);
+	lstExceptions->SetItem(item, 1, exTime);
+	lstExceptions->SetItem(item, 2, BoolToStr(true));
 	CheckChange();
 }
 
@@ -379,7 +380,7 @@ wxString dlgSchedule::GetInsertSql()
 		else
 			sql += wxT(", NULL");
 
-		sql += wxT(")");
+		sql += wxT(");\n");
     }
 
     return sql;
@@ -489,13 +490,83 @@ wxString dlgSchedule::GetUpdateSql()
 
         if (!vars.IsEmpty())
             sql = wxT("UPDATE pgagent.pga_schedule SET ") + vars + wxT("\n")
-                  wxT(" WHERE jscid=") + NumToStr(recId);
+                  wxT(" WHERE jscid=") + NumToStr(recId) + wxT(";\n");
     }
     else
     {
         // create mode
 		// Handled by GetInsertSQL
     }
+
+	unsigned int x=0;
+	int y=0;
+	wxDateTime tmpDateTime;
+	wxString newDate, newTime;
+
+	// Remove old exceptions
+	for (x=0; x < deleteExceptions.Count(); x++)
+	{
+		sql += wxT("DELETE FROM pgagent.pga_exception\n  WHERE jexid = ") + deleteExceptions[x] + wxT(";\n");
+	}
+
+	// Update dirty exceptions
+	for (y=0; y < lstExceptions->GetItemCount(); y++)
+	{
+		if (lstExceptions->GetText(y, 2) == BoolToStr(true) &&
+			lstExceptions->GetText(y, 3) != wxEmptyString)
+		{
+			if (lstExceptions->GetText(y, 0) == _("<any>"))
+				newDate = wxT("null");
+			else
+			{
+				tmpDateTime.ParseFormat(lstExceptions->GetText(y, 0), wxT("%x"));
+				newDate = wxT("'") + tmpDateTime.FormatISODate() + wxT("'");
+			}
+
+			if (lstExceptions->GetText(y, 1) == _("<any>"))
+				newTime = wxT("null");
+			else
+			{
+				tmpDateTime.ParseTime(lstExceptions->GetText(y, 1));
+				newTime = wxT("'") + tmpDateTime.FormatISOTime() + wxT("'");
+			}
+
+			sql += wxT("UPDATE pgagent.pga_exception SET jexdate = ") + newDate + 
+				   wxT(", jextime = ") + newTime + wxT("\n  WHERE jexid = ") + 
+				   lstExceptions->GetText(y, 3) + wxT(";\n");
+		}
+	}
+
+	// Insert new exceptions
+	for (y=0; y < lstExceptions->GetItemCount(); y++)
+	{
+		if (lstExceptions->GetText(y, 2) == wxEmptyString &&
+			lstExceptions->GetText(y, 3) == wxEmptyString)
+		{
+			if (lstExceptions->GetText(y, 0) == _("<any>"))
+				newDate = wxT("null");
+			else
+			{
+				tmpDateTime.ParseFormat(lstExceptions->GetText(y, 0), wxT("%x"));
+				newDate = wxT("'") + tmpDateTime.FormatISODate() + wxT("'");
+			}
+
+			if (lstExceptions->GetText(y, 1) == _("<any>"))
+				newTime = wxT("null");
+			else
+			{
+				tmpDateTime.ParseTime(lstExceptions->GetText(y, 1));
+				newTime = wxT("'") + tmpDateTime.FormatISOTime() + wxT("'");
+			}
+
+			sql += wxT("INSERT INTO pgagent.pga_exception (jexschid, jexdate, jextime)\n  VALUES (") 
+				+ NumToStr(recId) + wxT(", ") + newDate + wxT(", ") + newTime + wxT(");\n");
+
+		}
+	}
+
+
+
     return sql;
 }
 
@@ -503,7 +574,7 @@ const wxString dlgSchedule::ChkListBox2PgArray(wxCheckListBox *lb)
 {
 	wxString res = wxT("{");
 
-	for (int x=0; x<lb->GetCount(); x++)
+	for (int x=0; x < lb->GetCount(); x++)
 	{
 		if (lb->IsChecked(x))
 			res += wxT("t,");
@@ -522,7 +593,7 @@ const wxString dlgSchedule::ChkListBox2StrArray(wxCheckListBox *lb)
 {
 	wxString res;
 
-	for (int x=0; x<lb->GetCount(); x++)
+	for (int x=0; x < lb->GetCount(); x++)
 	{
 		if (lb->IsChecked(x))
 			res += wxT("t");

@@ -373,7 +373,7 @@ wxString dlgJob::GetInsertSql()
               wxT("SELECT <JobId>, jcl.jclid, ") + qtString(GetName()) + 
               wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ") + BoolToStr(chkEnabled->GetValue()) + 
 			  wxT(", ") + qtString(txtHostAgent->GetValue()) + wxT("\n")
-              wxT("  FROM pgagent.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue());
+              wxT("  FROM pgagent.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue()) + wxT(";\n");
     }
     return sql;
 }
@@ -422,7 +422,7 @@ wxString dlgJob::GetUpdateSql()
 
         if (!vars.IsEmpty())
             sql = wxT("UPDATE pgagent.pga_job SET ") + vars + wxT("\n")
-                  wxT(" WHERE jobid=") + NumToStr(recId);
+                  wxT(" WHERE jobid=") + NumToStr(recId) + wxT(";\n");
 
     }
     else
@@ -448,7 +448,7 @@ wxString dlgJob::GetUpdateSql()
 		{
 			str=*(wxString *)lstSteps->GetItemData(pos);
 			if (!str.IsEmpty())
-	            sql += str + wxT(";\n");
+	            sql += str;
 		}
     }
 
@@ -472,7 +472,7 @@ wxString dlgJob::GetUpdateSql()
 		{
 			str=*(wxString *)lstSchedules->GetItemData(pos);
 			if (!str.IsEmpty())
-	            sql += str + wxT(";\n");
+	            sql += str;
 		}
     }
 
