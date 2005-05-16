@@ -29,3 +29,4 @@ protected:
 };
 
 #endif // JOB_H
+

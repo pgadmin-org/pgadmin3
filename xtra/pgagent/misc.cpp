@@ -10,7 +10,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAgent.h"
-#include "windows.h"
+
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 void fatal(const string &text)
 {
@@ -97,8 +102,12 @@ void WaitAWhile(const bool waitLong)
 
     while (count--)
     {
+#ifdef WIN32
         CheckForInterrupt();
         Sleep(1000);
+#else
+	sleep(1);
+#endif
     }
 }
 

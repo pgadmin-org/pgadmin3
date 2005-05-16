@@ -41,7 +41,7 @@ CHECK_WXWINDOWS
 
 AC_CONFIG_FILES([Makefile
 		 i18n/Makefile
-         src/Makefile
+	         src/Makefile
 		 pkg/Makefile
 		 pkg/debian/Makefile
 		 pkg/fc1/Makefile

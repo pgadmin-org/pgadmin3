@@ -21,3 +21,4 @@ string getArg(int &argc, char** &argv);
 string NumToStr(const long l);
 
 #endif // MISC_H
+

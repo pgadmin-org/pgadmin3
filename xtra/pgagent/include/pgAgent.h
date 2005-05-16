@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include <strstream>
+#include <sstream>
 
 using namespace std;
 
@@ -35,4 +35,5 @@ void CheckForInterrupt();
 
 void MainLoop();
 
-#endif PGAGENT_H
+#endif // PGAGENT_H
+
