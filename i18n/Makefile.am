@@ -33,13 +33,13 @@ i18ndir = $(datadir)/i18n
 endif
 
 install-data-local:
-	$(mkinstalldirs) $(PREFIX)$(i18ndir)
+	$(mkinstalldirs) $(DESTDIR)$(i18ndir)
 	@pub_tx='$(PUB_TX)'; \
 	for DIR in $$pub_tx; do \
-		$(mkinstalldirs) $(PREFIX)$(i18ndir)/$$DIR; \
+		$(mkinstalldirs) $(DESTDIR)$(i18ndir)/$$DIR; \
 		for FILE in `ls $$DIR/*.mo`; do \
-			$(install_sh) -c -m 644 $$FILE $(PREFIX)$(i18ndir)/$$DIR/; \
+			$(install_sh) -c -m 644 $$FILE $(DESTDIR)$(i18ndir)/$$DIR/; \
 		done \
 	done
-	$(install_sh) -c -m 644 pgadmin3.lng $(PREFIX)$(i18ndir)/$$DIR
-	$(install_sh) -c -m 644 wxstd.mo $(PREFIX)$(i18ndir)/$$DIR
+	$(install_sh) -c -m 644 pgadmin3.lng $(DESTDIR)$(i18ndir)/$$DIR
+	$(install_sh) -c -m 644 wxstd.mo $(DESTDIR)$(i18ndir)/$$DIR
