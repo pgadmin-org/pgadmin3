@@ -551,12 +551,30 @@ END;
 COMMENT ON FUNCTION pgagent.pga_is_leap_year(int2) IS 'Returns TRUE is $1 is a leap year';
   
   
-/*
-!!! not yet implemented?
+CREATE OR REPLACE FUNCTION pgagent.pga_job_trigger()
+  RETURNS "trigger" AS
+$BODY$
+BEGIN
+    IF NEW.jobenabled THEN
+        IF NEW.jobnextrun IS NULL THEN
+             SELECT INTO NEW.jobnextrun
+                    MIN(pgagent.pga_next_schedule(jscid, jscstart, jscend, jscminutes, jschours, jscweekdays, jscmonthdays, jscmonths))
+               FROM pgagent.pga_schedule
+              WHERE jscenabled AND jscjobid=OLD.jobid;
+        END IF;
+    ELSE
+        NEW.jobnextrun := NULL;
+    END IF;
+    RETURN NEW;
+END;
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE;
+COMMENT ON FUNCTION pgagent.pga_job_trigger() IS 'Update the job''s next run time.';
+
 CREATE TRIGGER pga_job_trigger BEFORE UPDATE
-   ON pgagent.pga_job FOR EACH ROW
-   EXECUTE PROCEDURE pgagent.pga_job_trigger();
-*/
+  ON pgagent.pga_job FOR EACH ROW
+  EXECUTE PROCEDURE pgagent.pga_job_trigger();
+COMMENT ON TRIGGER pga_job_trigger ON pgagent.pga_job IS 'Update the job''s next run time.';
 
 
 CREATE OR REPLACE FUNCTION pgagent.pga_schedule_trigger() RETURNS trigger AS '
