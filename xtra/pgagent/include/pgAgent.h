@@ -24,10 +24,6 @@ using namespace std;
 #include "connection.h"
 #include "job.h"
 
-#ifdef WIN32
-#define snprintf _snprintf
-#endif
-
 extern long longWait;
 extern long shortWait;
 extern long minLogLevel;
@@ -44,7 +40,7 @@ enum
 
 // Prototypes
 void CheckForInterrupt();
-void LogMessage(char *msg, int level);
+void LogMessage(string msg, int level);
 void MainLoop();
 
 #endif // PGAGENT_H

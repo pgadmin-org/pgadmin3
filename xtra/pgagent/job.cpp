@@ -70,7 +70,7 @@ int Job::Execute()
         "  FROM pgagent.pga_jobstep "
         " WHERE jstenabled "
         "   AND jstjobid=" + jobid +
-        " ORDER BY jstid, jstdbname");
+        " ORDER BY jstname, jstid");
 
     if (!steps)
     {
@@ -116,9 +116,7 @@ int Job::Execute()
                 conn=DBconn::Get(steps->GetString("jstdbname"));
                 if (conn)
                 {
-                    char tmp[512];
-                    snprintf(tmp, 511, "Executing job on '%s': %s\n", steps->GetString("jstdbname").c_str(), steps->GetString("jstcode").c_str());
-                    LogMessage(tmp, LOG_DEBUG);
+                    LogMessage("Executing step " + steps->GetString("jstid") + " on database " + steps->GetString("jstdbname"), LOG_DEBUG);
                     rc=conn->ExecuteVoid(steps->GetString("jstcode"));
                 }
                 else

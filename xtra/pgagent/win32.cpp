@@ -50,7 +50,7 @@ void CheckForInterrupt()
     serviceIsRunning = true;
 }
 
-void LogMessage(char *msg, int level)
+void LogMessage(string msg, int level)
 {
     if (eventHandle)
     {
@@ -59,14 +59,14 @@ void LogMessage(char *msg, int level)
         {
             case LOG_DEBUG:
                 if (minLogLevel >= LOG_DEBUG)
-                    fprintf(stderr, "DEBUG: %s\n", msg);
+                    fprintf(stderr, "DEBUG: %s\n", msg.c_str());
                 break;
             case LOG_WARNING:
                 if (minLogLevel >= LOG_WARNING)
-                    fprintf(stderr, "WARNING: %s\n", msg);
+                    fprintf(stderr, "WARNING: %s\n", msg.c_str());
                 break;
             case LOG_ERROR:
-                fprintf(stderr, "ERROR: %s\n", msg);
+                fprintf(stderr, "ERROR: %s\n", msg.c_str());
                 exit(1);
                 break;
         }
@@ -77,14 +77,14 @@ void LogMessage(char *msg, int level)
         {
             case LOG_DEBUG:
                 if (minLogLevel >= LOG_DEBUG)
-                    fprintf(stderr, "DEBUG: %s\n", msg);
+                    fprintf(stderr, "DEBUG: %s\n", msg.c_str());
                 break;
             case LOG_WARNING:
                 if (minLogLevel >= LOG_WARNING)
-                    fprintf(stderr, "WARNING: %s\n", msg);
+                    fprintf(stderr, "WARNING: %s\n", msg.c_str());
                 break;
             case LOG_ERROR:
-                fprintf(stderr, "ERROR: %s\n", msg);
+                fprintf(stderr, "ERROR: %s\n", msg.c_str());
                 exit(1);
                 break;
         }
@@ -309,11 +309,7 @@ void setupForRun(int argc, char **argv)
 
     DBconn *conn=DBconn::InitConnection(connectString);
     if (!conn->IsValid())
-    {
-        char tmp[255];
-        snprintf(tmp, 254, "Connection not valid: %s", conn->GetLastError().c_str());
-        LogMessage(tmp, LOG_ERROR);
-    }
+        LogMessage("Invalid connection: " + conn->GetLastError(), LOG_ERROR);
 
     serviceDBname = conn->GetDBname();
 }
