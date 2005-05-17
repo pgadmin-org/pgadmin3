@@ -71,6 +71,13 @@ void setOptions(int argc, char **argv)
                         connPoolCount = val;
                     break;
                 }
+                case 'l':
+                {
+                    int val = atoi(getArg(argc, argv).c_str());
+                    if (val >= 0 && val <= 2)
+                        minLogLevel = val;
+                    break;
+                }
             }
         }
         else

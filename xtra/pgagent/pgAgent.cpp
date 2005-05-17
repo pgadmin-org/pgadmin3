@@ -21,7 +21,7 @@ string connectString;
 string serviceDBname;
 long longWait=30;
 long shortWait=10;
-
+long minLogLevel=LOG_ERROR;
 
 
 

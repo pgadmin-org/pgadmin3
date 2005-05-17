@@ -58,10 +58,12 @@ void LogMessage(char *msg, int level)
         switch (level)
         {
             case LOG_DEBUG:
-                fprintf(stderr, "DEBUG: %s\n", msg);
+                if (minLogLevel >= LOG_DEBUG)
+                    fprintf(stderr, "DEBUG: %s\n", msg);
                 break;
             case LOG_WARNING:
-                fprintf(stderr, "WARNING: %s\n", msg);
+                if (minLogLevel >= LOG_WARNING)
+                    fprintf(stderr, "WARNING: %s\n", msg);
                 break;
             case LOG_ERROR:
                 fprintf(stderr, "ERROR: %s\n", msg);
@@ -74,10 +76,12 @@ void LogMessage(char *msg, int level)
         switch (level)
         {
             case LOG_DEBUG:
-                fprintf(stderr, "DEBUG: %s\n", msg);
+                if (minLogLevel >= LOG_DEBUG)
+                    fprintf(stderr, "DEBUG: %s\n", msg);
                 break;
             case LOG_WARNING:
-                fprintf(stderr, "WARNING: %s\n", msg);
+                if (minLogLevel >= LOG_WARNING)
+                    fprintf(stderr, "WARNING: %s\n", msg);
                 break;
             case LOG_ERROR:
                 fprintf(stderr, "ERROR: %s\n", msg);
@@ -287,6 +291,7 @@ void usage()
         "-t <poll time interval in seconds (default 10)>\n"
         "-r <retry period after connection abort in seconds (>=10, default 30)>\n"
         "-c <connection pool size (>=5, default 5)>\n"
+        "-l <logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)>\n"
         );
 }
 
@@ -306,7 +311,7 @@ void setupForRun(int argc, char **argv)
     if (!conn->IsValid())
     {
         char tmp[255];
-        _snprintf(tmp, 254, "Connection not valid: %s", conn->GetLastError().c_str());
+        snprintf(tmp, 254, "Connection not valid: %s", conn->GetLastError().c_str());
         LogMessage(tmp, LOG_ERROR);
     }
 

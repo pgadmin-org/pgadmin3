@@ -24,22 +24,26 @@ using namespace std;
 #include "connection.h"
 #include "job.h"
 
+#ifdef WIN32
+#define snprintf _snprintf
+#endif
+
 extern long longWait;
 extern long shortWait;
+extern long minLogLevel;
 extern string connectString;
 extern string serviceDBname;
-
-// to be implemented platform dependent
-void CheckForInterrupt();
 
 // Log levels
 enum
 {
-	LOG_DEBUG = 1,
+	LOG_ERROR = 0,
 	LOG_WARNING,
-	LOG_ERROR
+	LOG_DEBUG
 };
 
+// Prototypes
+void CheckForInterrupt();
 void LogMessage(char *msg, int level);
 void MainLoop();
 

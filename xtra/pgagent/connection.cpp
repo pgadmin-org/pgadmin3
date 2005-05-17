@@ -223,6 +223,9 @@ DBresult::DBresult(DBconn *conn, const string &query)
         else if (rc != PGRES_COMMAND_OK)
         {
             conn->lastError = PQerrorMessage(conn->conn);
+            char tmp[512];
+            snprintf(tmp, 511, "Query error: %s", conn->lastError.c_str());
+            LogMessage(tmp, LOG_WARNING);
             PQclear(result);
             result=0;
         }

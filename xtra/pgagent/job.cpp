@@ -115,7 +115,12 @@ int Job::Execute()
             {
                 conn=DBconn::Get(steps->GetString("jstdbname"));
                 if (conn)
+                {
+                    char tmp[512];
+                    snprintf(tmp, 511, "Executing job on '%s': %s\n", steps->GetString("jstdbname").c_str(), steps->GetString("jstcode").c_str());
+                    LogMessage(tmp, LOG_DEBUG);
                     rc=conn->ExecuteVoid(steps->GetString("jstcode"));
+                }
                 else
                     rc=-1;
 
