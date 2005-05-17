@@ -53,7 +53,7 @@ int MainRestartLoop(DBconn *serviceConn)
             "  FROM pga_tmp_zombies Z "
             "  JOIN pgagent.pga_job J ON jobagentid=jagpid "
             "  JOIN pgagent.pga_joblog LG ON jlgjobid=J.jobid "
-            " WHERE PR.jlgstatus='r';\n"
+            " WHERE LG.jlgstatus='r';\n"
 
             "UPDATE pgagent.pga_job SET jobagentid=NULL, jobnextrun=NULL "
             "  FROM pga_tmp_zombies Z "
