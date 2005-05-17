@@ -84,7 +84,7 @@ int Job::Execute()
         string jpsid, jpecode;
 
 		DBresult *id=serviceConn->Execute(
-			"SELECT nextval('pga_jobprotocolstep_jpeid_seq') AS id");
+			"SELECT nextval('pgagent.pga_jobprotocolstep_jpeid_seq') AS id");
 		if (id)
 		{
 			jpsid=id->GetString("id");
