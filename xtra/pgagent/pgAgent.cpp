@@ -49,11 +49,11 @@ int MainRestartLoop(DBconn *serviceConn)
         // There are orphaned agent entries
         // mark the jobs as aborted
         rc=serviceConn->ExecuteVoid(
-            "UPDATE pgagent.pga_jobprotocol SET jprstatus='d' "
+            "UPDATE pgagent.pga_joblog SET jlgstatus='d' "
             "  FROM pga_tmp_zombies Z "
             "  JOIN pgagent.pga_job J ON jobagentid=jagpid "
-            "  JOIN pgagent.pga_jobprotocol PR ON jprjobid=J.jobid "
-            " WHERE PR.jprstatus='r';\n"
+            "  JOIN pgagent.pga_joblog LG ON jlgjobid=J.jobid "
+            " WHERE PR.jlgstatus='r';\n"
 
             "UPDATE pgagent.pga_job SET jobagentid=NULL, jobnextrun=NULL "
             "  FROM pga_tmp_zombies Z "

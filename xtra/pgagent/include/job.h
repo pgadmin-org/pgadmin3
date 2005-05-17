@@ -24,7 +24,7 @@ public:
 
 protected:
     DBconn *serviceConn;
-    string jobid, prtid;
+    string jobid, logid;
     string status;
 };
 

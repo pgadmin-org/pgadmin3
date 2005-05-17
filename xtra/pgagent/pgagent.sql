@@ -111,33 +111,33 @@ COMMENT ON TABLE pgagent.pga_schedule IS 'Job schedule exceptions';
 
 
 
-CREATE TABLE pgagent.pga_jobprotocol (
-jprid                serial               NOT NULL PRIMARY KEY,
-jprjobid             int4                 NOT NULL REFERENCES pgagent.pga_job (jobid) ON DELETE CASCADE ON UPDATE RESTRICT,
-jprstatus            char                 NOT NULL CHECK (jprstatus IN ('r', 's', 'f', 'i', 'd')) DEFAULT 'r', -- running, success, failed, internal failure, died
-jprstart             timestamptz          NOT NULL DEFAULT current_timestamp,
-jprduration          interval             NULL
+CREATE TABLE pgagent.pga_joblog (
+jlgid                serial               NOT NULL PRIMARY KEY,
+jlgjobid             int4                 NOT NULL REFERENCES pgagent.pga_job (jobid) ON DELETE CASCADE ON UPDATE RESTRICT,
+jlgstatus            char                 NOT NULL CHECK (jlgstatus IN ('r', 's', 'f', 'i', 'd')) DEFAULT 'r', -- running, success, failed, internal failure, died
+jlgstart             timestamptz          NOT NULL DEFAULT current_timestamp,
+jlgduration          interval             NULL
 ) WITHOUT OIDS;
-CREATE INDEX pga_jobprotocol_jobid ON pgagent.pga_jobprotocol(jprjobid);
-COMMENT ON TABLE pgagent.pga_jobprotocol IS 'Protocol of a job that was run.';
-COMMENT ON COLUMN pgagent.pga_jobprotocol.jprstatus IS 'Status of job: r=running, s=successfully finished, f=failed';
+CREATE INDEX pga_joblog_jobid ON pgagent.pga_joblog(jlgjobid);
+COMMENT ON TABLE pgagent.pga_joblog IS 'Job run logs.';
+COMMENT ON COLUMN pgagent.pga_joblog.jlgstatus IS 'Status of job: r=running, s=successfully finished, f=failed';
 
 
 
-CREATE TABLE pgagent.pga_jobprotocolstep (
-jpeid                serial               NOT NULL PRIMARY KEY,
-jpejprid             int4                 NOT NULL REFERENCES pgagent.pga_jobprotocol (jprid) ON DELETE CASCADE ON UPDATE RESTRICT,
-jpedbname            name                 NOT NULL,
-jpecode              text                 NOT NULL,
-jpestatus            char                 NOT NULL CHECK (jpestatus IN ('r', 's', 'i', 'f')) DEFAULT 'r', -- running, success, ignored, failed
-jperesult            int2                 NULL,
-jpestarted           timestamptz          NOT NULL DEFAULT current_timestamp,
-jpeduration          interval             NULL
+CREATE TABLE pgagent.pga_jobsteplog (
+jslid                serial               NOT NULL PRIMARY KEY,
+jsljlgid             int4                 NOT NULL REFERENCES pgagent.pga_joblog (jlgid) ON DELETE CASCADE ON UPDATE RESTRICT,
+jsldbname            name                 NOT NULL,
+jslcode              text                 NOT NULL,
+jslstatus            char                 NOT NULL CHECK (jslstatus IN ('r', 's', 'i', 'f')) DEFAULT 'r', -- running, success, ignored, failed
+jslresult            int2                 NULL,
+jslstarted           timestamptz          NOT NULL DEFAULT current_timestamp,
+jslduration          interval             NULL
 ) WITHOUT OIDS;
-CREATE INDEX pga_jobprotocolstep_jprid ON pgagent.pga_jobprotocolstep(jpejprid);
-COMMENT ON TABLE pgagent.pga_jobprotocolstep IS 'Protocol of a single step in a job that was run.';
-COMMENT ON COLUMN pgagent.pga_jobprotocolstep.jpestatus IS 'Status of job step: r=running, s=successfully finished,  f=failed stopping job, i=ignored failure';
-COMMENT ON COLUMN pgagent.pga_jobprotocolstep.jperesult IS 'Return code of job step';
+CREATE INDEX pga_jobsteplog_jslid ON pgagent.pga_jobsteplog(jsljlgid);
+COMMENT ON TABLE pgagent.pga_jobsteplog IS 'Job step run logs.';
+COMMENT ON COLUMN pgagent.pga_jobsteplog.jslstatus IS 'Status of job step: r=running, s=successfully finished,  f=failed stopping job, i=ignored failure';
+COMMENT ON COLUMN pgagent.pga_jobsteplog.jslresult IS 'Return code of job step';
 
 
 

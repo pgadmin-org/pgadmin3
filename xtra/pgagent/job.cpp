@@ -26,14 +26,14 @@ Job::Job(DBconn *conn, const string &jid)
     if (rc == 1)
     {
 		DBresult *id=serviceConn->Execute(
-			"SELECT nextval('pgagent.pga_jobprotocol_jprid_seq') AS id");
+			"SELECT nextval('pgagent.pga_joblog_jlgid_seq') AS id");
 		if (id)
 		{
-			prtid=id->GetString("id");
+			logid=id->GetString("id");
 
 			DBresult *res=serviceConn->Execute(
-				"INSERT INTO pgagent.pga_jobprotocol(jprid, jprjobid, jprstatus) "
-	            "VALUES (" + prtid + ", " + jobid + ", 'r')");
+				"INSERT INTO pgagent.pga_joblog(jlgid, jlgjobid, jlgstatus) "
+	            "VALUES (" + logid + ", " + jobid + ", 'r')");
 			if (res)
 			{
 				status="r";
@@ -50,9 +50,9 @@ Job::~Job()
     if (status != "")
     {
         serviceConn->ExecuteVoid(
-            "UPDATE pgagent.pga_jobprotocol "
-            "   SET jprstatus='" + status + "', jprduration=now() - jprstart "
-            " WHERE jprid=" + prtid + ";\n"
+            "UPDATE pgagent.pga_joblog "
+            "   SET jlgstatus='" + status + "', jlgduration=now() - jlgstart "
+            " WHERE jlgid=" + logid + ";\n"
 
             "UPDATE pgagent.pga_job "
             "   SET jobagentid=NULL, jobnextrun=NULL "
@@ -84,12 +84,12 @@ int Job::Execute()
         string jpsid, jpecode;
 
 		DBresult *id=serviceConn->Execute(
-			"SELECT nextval('pgagent.pga_jobprotocolstep_jpeid_seq') AS id");
+			"SELECT nextval('pgagent.pga_jobsteplog_jslid_seq') AS id");
 		if (id)
 		{
 			jpsid=id->GetString("id");
 			DBresult *res=serviceConn->Execute(
-				"INSERT INTO pgagent.pga_jobprotocolstep(jpeid, jpejprid, jpedbname, jpecode) "
+				"INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jsldbname, jslcode) "
 				"SELECT " + jpsid + ", " + prtid + ", '" + steps->GetString("jstdbname") + "', jstcode "
 				"  FROM pgagent.pga_jobstep WHERE jstid=" + steps->GetString("jstid"));
 
@@ -143,10 +143,10 @@ int Job::Execute()
             stepstatus = steps->GetString("jstonerror");
 
         rc=serviceConn->ExecuteVoid(
-            "UPDATE pgagent.pga_jobprotocolstep "
-            "   SET jpeduration = now() - jpestarted, "
-            "       jperesult = " + NumToStr(rc) + ", jpestatus = '" + stepstatus + "' "
-            " WHERE jpeid=" + jpsid);
+            "UPDATE pgagent.pga_jobsteplog "
+            "   SET jlgduration = now() - jlgstarted, "
+            "       jlgresult = " + NumToStr(rc) + ", jlgstatus = '" + stepstatus + "' "
+            " WHERE jlgid=" + jpsid);
         if (rc != 1 || stepstatus == "f")
         {
             status = 'f';
