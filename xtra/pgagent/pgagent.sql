@@ -179,14 +179,13 @@ BEGIN
     IF jscend IS NOT NULL AND jscend < now() THEN RETURN NULL; END IF;
 
     -- Get the time to find the next run after. It will just be the later of
-    -- now() and the start date for the time being, however, we might want to 
+    -- now() + 1m and the start date for the time being, however, we might want to 
     -- do more complex things using this value in the future.
-    IF date_trunc(''MINUTE'', jscstart) > date_trunc(''MINUTE'', now()) THEN
+    IF date_trunc(''MINUTE'', jscstart) > date_trunc(''MINUTE'', (now() + ''1 Minute''::interval)) THEN
         runafter := date_trunc(''MINUTE'', jscstart);
     ELSE
-        runafter := date_trunc(''MINUTE'', now());
+        runafter := date_trunc(''MINUTE'', (now() + ''1 Minute''::interval));
     END IF;
-
 
     --
     -- Enter a loop, generating next run timestamps until we find one
