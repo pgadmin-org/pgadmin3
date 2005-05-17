@@ -38,6 +38,7 @@ DBconn::DBconn(const string &connectString, const string &name)
 
 bool DBconn::Connect(const string &connectString)
 {
+	LogMessage("Creating DB connection: " + connectString, LOG_DEBUG);
     conn=PQconnectdb(connectString.c_str());
     if (PQstatus(conn) == CONNECTION_OK)
     {

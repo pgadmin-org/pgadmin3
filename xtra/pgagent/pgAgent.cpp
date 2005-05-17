@@ -31,6 +31,7 @@ int MainRestartLoop(DBconn *serviceConn)
 
     int rc;
 
+	LogMessage("Clearing zombies", LOG_DEBUG);
     rc=serviceConn->ExecuteVoid(
         "CREATE TEMP TABLE pga_tmp_zombies(jagpid int4)");
 
@@ -78,6 +79,7 @@ int MainRestartLoop(DBconn *serviceConn)
     {
         bool foundJobToExecute=false;
 
+		LogMessage("Checking for jobs to run", LOG_DEBUG);
         DBresult *res=serviceConn->Execute(
             "SELECT J.jobid "
             "  FROM pgagent.pga_job J "
@@ -99,18 +101,19 @@ int MainRestartLoop(DBconn *serviceConn)
                 if (job.Runnable())
                 {
                     foundJobToExecute=true;
-                    LogMessage("Executing job", LOG_DEBUG);
+                    LogMessage("Running job: " + jobid, LOG_DEBUG);
                     job.Execute();
                 }
             }
             else
             {
+				LogMessage("No jobs to run - time for a pint :-)", LOG_DEBUG);
                 WaitAWhile();
             }
         }
         else
         {
-            // bad err
+            LogMessage("Failed to query jobs table!", LOG_ERROR);
         }
         if (!foundJobToExecute)
             DBconn::ClearConnections();
@@ -122,6 +125,7 @@ int MainRestartLoop(DBconn *serviceConn)
 void MainLoop()
 {
     // Basic sanity check
+	LogMessage("Database sanity check", LOG_DEBUG);
     DBconn *sanityConn=DBconn::Get(serviceDBname, true);
     DBresult *res=sanityConn->Execute("SELECT count(*) As count FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace WHERE relname='pga_job' AND nspname='pgagent'");
     if (res)

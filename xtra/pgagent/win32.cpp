@@ -15,9 +15,9 @@
 #error this file is for win32 only!
 #endif
 
+#include <stdio.h>
 #include <windows.h>
 #include <process.h>
-#include <stdio.h>
 
 // for debugging purposes, we can start the service paused
 
@@ -54,19 +54,22 @@ void LogMessage(string msg, int level)
 {
     if (eventHandle)
     {
-        // FIXME - This path should use the event log!
+		char *tmp;
+		tmp = (char *)malloc(msg.length()+1);
+		sprintf(tmp, msg.c_str());
+
         switch (level)
         {
             case LOG_DEBUG:
                 if (minLogLevel >= LOG_DEBUG)
-                    fprintf(stderr, "DEBUG: %s\n", msg.c_str());
+					ReportEvent(eventHandle, EVENTLOG_INFORMATION_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
                 break;
             case LOG_WARNING:
                 if (minLogLevel >= LOG_WARNING)
-                    fprintf(stderr, "WARNING: %s\n", msg.c_str());
+                    ReportEvent(eventHandle, EVENTLOG_WARNING_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
                 break;
             case LOG_ERROR:
-                fprintf(stderr, "ERROR: %s\n", msg.c_str());
+                ReportEvent(eventHandle, EVENTLOG_ERROR_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
                 exit(1);
                 break;
         }
@@ -77,14 +80,14 @@ void LogMessage(string msg, int level)
         {
             case LOG_DEBUG:
                 if (minLogLevel >= LOG_DEBUG)
-                    fprintf(stderr, "DEBUG: %s\n", msg.c_str());
+                    printf("DEBUG: %s\n", msg.c_str());
                 break;
             case LOG_WARNING:
                 if (minLogLevel >= LOG_WARNING)
-                    fprintf(stderr, "WARNING: %s\n", msg.c_str());
+                    printf("WARNING: %s\n", msg.c_str());
                 break;
             case LOG_ERROR:
-                fprintf(stderr, "ERROR: %s\n", msg.c_str());
+                printf("ERROR: %s\n", msg.c_str());
                 exit(1);
                 break;
         }
@@ -224,7 +227,11 @@ void CALLBACK serviceMain(DWORD argc, LPTSTR *argv)
 // installation and removal
 bool installService(const char *serviceName, const char *exePath, const char *displayname, const char *user, const char *password)
 {
+	HKEY hk; 
+    DWORD dwData; 
+    char tmp[255], buf[255]; 
     bool done=false;
+
     SC_HANDLE manager = OpenSCManager(0, 0, SC_MANAGER_ALL_ACCESS);
     if (manager)
     {
@@ -239,13 +246,36 @@ bool installService(const char *serviceName, const char *exePath, const char *di
         }
         CloseServiceHandle(manager);
     }
+
+	// Setup the event message DLL 
+	_snprintf(buf, 254, "SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\%s", serviceName);
+    if (RegCreateKey(HKEY_LOCAL_MACHINE, buf, &hk)) 
+        LogMessage("Could not open the message source registry key.", LOG_WARNING); 
+ 
+    GetModuleFileName(NULL, tmp, 254);
+	(strrchr(tmp, '\\'))[0] = 0;
+	_snprintf(buf, 254, "%s\\pgaevent.dll", tmp);
+
+ 
+    if (RegSetValueEx(hk, "EventMessageFile", 0, REG_EXPAND_SZ, (LPBYTE)buf, strlen(buf) + 1)) 
+        LogMessage("Could not set the event message file registry value.", LOG_WARNING); 
+ 
+    dwData = EVENTLOG_ERROR_TYPE | EVENTLOG_WARNING_TYPE | EVENTLOG_INFORMATION_TYPE; 
+ 
+    if (RegSetValueEx(hk, "TypesSupported", 0, REG_DWORD, (LPBYTE) &dwData, sizeof(DWORD)))
+        LogMessage("Could not set the supported types.", LOG_WARNING); 
+ 
+    RegCloseKey(hk); 
+
     return done;
 }
 
 
 bool removeService(const char *serviceName)
 {
+	HKEY hk;
     bool done=false;
+
     SC_HANDLE manager = OpenSCManager(0, 0, SC_MANAGER_ALL_ACCESS);
     if (manager)
     {
@@ -273,6 +303,14 @@ bool removeService(const char *serviceName)
         }
         CloseServiceHandle(manager);
     }
+
+	// Remove the event message DLL
+    if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\", 0, KEY_ALL_ACCESS, &hk))
+        LogMessage("Could not open the message source registry key.", LOG_WARNING); 
+
+	if (RegDeleteKey(hk, serviceName))
+		LogMessage("Could not remove the event message file registry value.", LOG_WARNING); 
+
     return done;
 }
 
