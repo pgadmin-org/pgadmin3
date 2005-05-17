@@ -17,12 +17,6 @@
 #include <unistd.h>
 #endif
 
-void fatal(const string &text)
-{
-    printf(text.c_str());
-    exit(0);
-}
-
 
 string getArg(int &argc, char** &argv)
 {
@@ -40,7 +34,7 @@ string getArg(int &argc, char** &argv)
         else
         {
             // very bad!
-            fatal("bad argument.");
+            LogMessage("bad argument.", LOG_ERROR);
         }
     }
 

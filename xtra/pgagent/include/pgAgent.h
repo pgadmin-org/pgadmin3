@@ -32,7 +32,15 @@ extern string serviceDBname;
 // to be implemented platform dependent
 void CheckForInterrupt();
 
+// Log levels
+enum
+{
+	LOG_DEBUG = 1,
+	LOG_WARNING,
+	LOG_ERROR
+};
 
+void LogMessage(char *msg, int level);
 void MainLoop();
 
 #endif // PGAGENT_H

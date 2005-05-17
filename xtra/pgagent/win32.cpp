@@ -49,16 +49,42 @@ void CheckForInterrupt()
     serviceIsRunning = true;
 }
 
-
-
-void LogMessage(char *msg)
+void LogMessage(char *msg, int level)
 {
     if (eventHandle)
     {
-        // ReportEvent
+        // FIXME - This path should use the event log!
+        switch (level)
+        {
+            case LOG_DEBUG:
+                fprintf(stderr, "DEBUG: %s\n", msg);
+                break;
+            case LOG_WARNING:
+                fprintf(stderr, "WARNING: %s\n", msg);
+                break;
+            case LOG_ERROR:
+                fprintf(stderr, "ERROR: %s\n", msg);
+                exit(1);
+                break;
+        }
+    }
+    else
+    {
+        switch (level)
+        {
+            case LOG_DEBUG:
+                fprintf(stderr, "DEBUG: %s\n", msg);
+                break;
+            case LOG_WARNING:
+                fprintf(stderr, "WARNING: %s\n", msg);
+                break;
+            case LOG_ERROR:
+                fprintf(stderr, "ERROR: %s\n", msg);
+                exit(1);
+                break;
+        }
     }
 }
-
 
 // The main working thread of the service
 
@@ -257,9 +283,9 @@ void usage()
         "-u <user>\n"
         "-p <password>\n"
         "-d <displayname>\n"
-        "-t <poll time interval>\n"
-        "-r <retry period after connection abort (>=10s)>\n"
-        "-c <connection pool size (>=5)>\n"
+        "-t <poll time interval in seconds (default 10)>\n"
+        "-r <retry period after connection abort in seconds (>=10, default 30)>\n"
+        "-c <connection pool size (>=5, default 5)>\n"
         );
 }
 
@@ -271,13 +297,17 @@ void setupForRun(int argc, char **argv)
 {
     eventHandle = RegisterEventSource(0, serviceName.c_str());
     if (!eventHandle)
-        fatal("Couldn't register event handle.");
+        LogMessage("Couldn't register event handle.", LOG_ERROR);
 
     setOptions(argc, argv);
 
     DBconn *conn=DBconn::InitConnection(connectString);
     if (!conn->IsValid())
-        fatal("connection not valid: " + conn->GetLastError());
+    {
+        char tmp[255];
+        snprintf(tmp, 254, "Connection not valid: %s", conn->GetLastError().c_str());
+        LogMessage(tmp, LOG_ERROR);
+    }
 
     serviceDBname = conn->GetDBname();
 }

@@ -49,7 +49,7 @@ Job::~Job()
 {
     if (status != "")
     {
-        int rc=serviceConn->ExecuteVoid(
+        serviceConn->ExecuteVoid(
             "UPDATE pgagent.pga_jobprotocol "
             "   SET jprstatus='" + status + "', jprduration=now() - jprstart "
             " WHERE jprid=" + prtid + ";\n"
@@ -64,7 +64,7 @@ Job::~Job()
 
 int Job::Execute()
 {
-    int rc;
+    int rc=0;
     DBresult *steps=serviceConn->Execute(
         "SELECT jstid, jstkind, jstdbname, jstcode, jstonerror "
         "  FROM pgagent.pga_jobstep "
@@ -84,7 +84,7 @@ int Job::Execute()
         string jpsid, jpecode;
 
 		DBresult *id=serviceConn->Execute(
-			"SELECT nextval('pg_jobprotocolstep_jpeid_seq') AS id");
+			"SELECT nextval('pga_jobprotocolstep_jpeid_seq') AS id");
 		if (id)
 		{
 			jpsid=id->GetString("id");

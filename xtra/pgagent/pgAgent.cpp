@@ -66,12 +66,11 @@ int MainRestartLoop(DBconn *serviceConn)
 
 
 
-	// TODO - station should be the hostname, not '' (?)
-	char hostname[255];
-	gethostname(hostname, 255);
+    char hostname[255];
+    gethostname(hostname, 255);
 
     rc=serviceConn->ExecuteVoid(
-        "INSERT INTO pgagent.pga_jobagent (jagpid, station) SELECT pg_backend_pid(), '" + string(hostname) + "'");
+        "INSERT INTO pgagent.pga_jobagent (jagpid, jagstation) SELECT pg_backend_pid(), '" + string(hostname) + "'");
     if (rc < 0)
         return rc;
 
@@ -82,8 +81,10 @@ int MainRestartLoop(DBconn *serviceConn)
         DBresult *res=serviceConn->Execute(
             "SELECT J.jobid "
             "  FROM pgagent.pga_job J "
-            " WHERE jobenabled AND jobagentid IS NULL "
+            " WHERE jobenabled "
+            "   AND jobagentid IS NULL "
             "   AND jobnextrun <= now() "
+            "   AND jobhostagent = '' OR jobhostagent = '" + string(hostname) + "'"
             " ORDER BY jobnextrun");
 
         if (res)
@@ -98,6 +99,7 @@ int MainRestartLoop(DBconn *serviceConn)
                 if (job.Runnable())
                 {
                     foundJobToExecute=true;
+                    LogMessage("Executing job", LOG_DEBUG);
                     job.Execute();
                 }
             }
@@ -119,6 +121,18 @@ int MainRestartLoop(DBconn *serviceConn)
 
 void MainLoop()
 {
+    // Basic sanity check
+    DBconn *sanityConn=DBconn::Get(serviceDBname, true);
+    DBresult *res=sanityConn->Execute("SELECT count(*) As count FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace WHERE relname='pga_job' AND nspname='pgagent'");
+    if (res)
+    {
+        string val=res->GetString("count");
+        
+        if (val == "0")
+            LogMessage("Could not find the table 'pgagent.pga_job'. Have you run pgagent.sql on this database?", LOG_ERROR);
+    }
+    
+    // OK, let's get down to business 
     do
     {
         DBconn *serviceConn=DBconn::Get(serviceDBname, true);

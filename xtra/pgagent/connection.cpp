@@ -44,7 +44,7 @@ bool DBconn::Connect(const string &connectString)
     }
     else
     {
-	    lastError=PQerrorMessage(conn);
+        lastError=PQerrorMessage(conn);
         PQfinish(conn);
         conn=0;
     }
@@ -71,12 +71,12 @@ DBconn *DBconn::InitConnection(const string &connectString)
             memset(pool, 0, sizeof(DBconn*) * connPoolCount);
     }
     if (!pool)
-        fatal("Out of memory for connection pool");
+        LogMessage("Out of memory for connection pool", LOG_ERROR);
 
     basicConnectString=connectString;
     string dbname;
 
-    size_t pos=basicConnectString.find("dbname=");
+    int pos=basicConnectString.find("dbname=");
     if (pos == -1)
         dbname = "dba";
     else
@@ -108,7 +108,7 @@ DBconn *DBconn::Get(const string &dbname, bool asPrimary)
             memset(pool, 0, sizeof(DBconn*) * connPoolCount);
     }
     if (!pool)
-        fatal("Out of memory for connection pool");
+        LogMessage("Out of memory for connection pool", LOG_ERROR);
 
     int i;
     DBconn **emptyConn=0, **oldestConn=0;
