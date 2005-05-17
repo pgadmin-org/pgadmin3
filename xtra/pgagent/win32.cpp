@@ -17,6 +17,7 @@
 
 #include <windows.h>
 #include <process.h>
+#include <stdio.h>
 
 // for debugging purposes, we can start the service paused
 
@@ -305,7 +306,7 @@ void setupForRun(int argc, char **argv)
     if (!conn->IsValid())
     {
         char tmp[255];
-        snprintf(tmp, 254, "Connection not valid: %s", conn->GetLastError().c_str());
+        _snprintf(tmp, 254, "Connection not valid: %s", conn->GetLastError().c_str());
         LogMessage(tmp, LOG_ERROR);
     }
 
