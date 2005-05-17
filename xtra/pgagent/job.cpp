@@ -90,7 +90,7 @@ int Job::Execute()
 			jpsid=id->GetString("id");
 			DBresult *res=serviceConn->Execute(
 				"INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jsldbname, jslcode) "
-				"SELECT " + jpsid + ", " + prtid + ", '" + steps->GetString("jstdbname") + "', jstcode "
+				"SELECT " + jpsid + ", " + jobid + ", '" + steps->GetString("jstdbname") + "', jstcode "
 				"  FROM pgagent.pga_jobstep WHERE jstid=" + steps->GetString("jstid"));
 
 			if (res)
