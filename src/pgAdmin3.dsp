@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/program files/postgresql/8.0/include" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/program files/postgresql/8.0/include" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/program files/postgresql/8.0/include" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgamsgevent.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /d "NDEBUG"
