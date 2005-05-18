@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAgent - PostgreSQL Tools
-// RCS-ID:      $Id: pgAdmin3.cpp 4181 2005-05-13 11:12:03Z dpage $
+// RCS-ID:      $Id$
 // Copyright (C) 2003 The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
