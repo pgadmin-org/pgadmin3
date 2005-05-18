@@ -1,14 +1,13 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAgent - PostgreSQL Tools
-// $Id$
+// RCS-ID:      $Id: pgAdmin3.cpp 4181 2005-05-13 11:12:03Z dpage $
 // Copyright (C) 2003 The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // pgaevent.c - win32 message format dll
 //
 //////////////////////////////////////////////////////////////////////////
-
 
 #include <windows.h>
 #include <olectl.h>
