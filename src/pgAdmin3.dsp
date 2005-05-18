@@ -4,7 +4,7 @@
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
-CFG=pgAdmin3 - Win32 Unicode SSL Release
+CFG=pgAdmin3 - Win32 Release
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
@@ -13,12 +13,12 @@ CFG=pgAdmin3 - Win32 Unicode SSL Release
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "pgAdmin3.mak" CFG="pgAdmin3 - Win32 Unicode SSL Release"
+!MESSAGE NMAKE /f "pgAdmin3.mak" CFG="pgAdmin3 - Win32 Release"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "pgAdmin3 - Win32 Unicode SSL Debug" (based on "Win32 (x86) Application")
-!MESSAGE "pgAdmin3 - Win32 Unicode SSL Release" (based on "Win32 (x86) Application")
+!MESSAGE "pgAdmin3 - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE "pgAdmin3 - Win32 Release" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -29,60 +29,60 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
+!IF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "pgAdmin3___Win32_Unicode_SSL_Debug"
-# PROP BASE Intermediate_Dir "pgAdmin3___Win32_Unicode_SSL_Debug"
+# PROP BASE Output_Dir "pgAdmin3___Win32_Debug"
+# PROP BASE Intermediate_Dir "pgAdmin3___Win32_Debug"
 # PROP BASE Ignore_Export_Lib 0
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "Unicode_SSL_Debug"
-# PROP Intermediate_Dir "Unicode_SSL_Debug"
+# PROP Output_Dir "Debug"
+# PROP Intermediate_Dir "Debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "include/" /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/wxWidgets-2.6/lib/mswd" /I "c:/postgresql/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /FAcs /FR /FD /c
-# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/program files/postgresql/8.0/include" /I "include/" /I "agent/include" /I "slony/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Fr /Yu"pgadmin3.h" /FD /c
 # ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/program files/postgresql/8.0/include" /I "include/" /I "agent/include" /I "slony/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Fr /Yu"pgadmin3.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
-# ADD BASE RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /i "c:/wxWidgets-2.6/contrib/include" /d "_DEBUG"
+# ADD BASE RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /d "_DEBUG"
 # ADD RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswud.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib libpq.lib wxxrcd.lib regexd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6/lib" /libpath:"c:/wxWidgets-2.6/contrib/lib" /libpath:"c:/postgresql/lib"
+# ADD BASE LINK32 libpq.lib wxbase26ud.lib wxbase26ud_xml.lib wxbase26ud_net.lib wxmsw26ud_adv.lib wxmsw26ud_core.lib wxmsw26ud_html.lib wxregexud.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib wxmsw26ud_stc.lib wxmsw26ud_ogl.lib wxmsw26ud_xrc.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
+# SUBTRACT BASE LINK32 /pdb:none
 # ADD LINK32 libpq.lib wxbase26ud.lib wxbase26ud_xml.lib wxbase26ud_net.lib wxmsw26ud_adv.lib wxmsw26ud_core.lib wxmsw26ud_html.lib wxregexud.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib wxmsw26ud_stc.lib wxmsw26ud_ogl.lib wxmsw26ud_xrc.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
 # SUBTRACT LINK32 /pdb:none
 
-!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "pgAdmin3___Win32_Unicode_SSL_Release"
-# PROP BASE Intermediate_Dir "pgAdmin3___Win32_Unicode_SSL_Release"
+# PROP BASE Output_Dir "pgAdmin3___Win32_Release"
+# PROP BASE Intermediate_Dir "pgAdmin3___Win32_Release"
 # PROP BASE Ignore_Export_Lib 0
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "Unicode_SSL_Release"
-# PROP Intermediate_Dir "Unicode_SSL_Release"
+# PROP Output_Dir "Release"
+# PROP Intermediate_Dir "Release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/wxWidgets-2.6/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /FAcs /FR /FD /c
+# ADD BASE CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/program files/postgresql/8.0/include" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
 # ADD CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /I "c:/program files/postgresql/8.0/include" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
-# ADD BASE RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /i "c:/wxWidgets-2.6/contrib/include" /d "NDEBUG"
+# ADD BASE RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /d "NDEBUG"
 # ADD RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib libpq.lib wxxrc.lib regex.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6/lib" /libpath:"c:/wxWidgets-2.6/contrib/lib" /libpath:"c:/postgresql/lib"
+# ADD BASE LINK32 libpq.lib wxbase26u.lib wxbase26u_xml.lib wxbase26u_net.lib wxmsw26u_adv.lib wxmsw26u_core.lib wxmsw26u_html.lib wxregexu.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib wxmsw26u_stc.lib wxmsw26u_ogl.lib wxmsw26u_xrc.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
 # SUBTRACT BASE LINK32 /pdb:none
 # ADD LINK32 libpq.lib wxbase26u.lib wxbase26u_xml.lib wxbase26u_net.lib wxmsw26u_adv.lib wxmsw26u_core.lib wxmsw26u_html.lib wxregexu.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib wxmsw26u_stc.lib wxmsw26u_ogl.lib wxmsw26u_xrc.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
 # SUBTRACT LINK32 /pdb:none
@@ -91,8 +91,8 @@ LINK32=link.exe
 
 # Begin Target
 
-# Name "pgAdmin3 - Win32 Unicode SSL Debug"
-# Name "pgAdmin3 - Win32 Unicode SSL Release"
+# Name "pgAdmin3 - Win32 Debug"
+# Name "pgAdmin3 - Win32 Release"
 # Begin Group "src"
 
 # PROP Default_Filter ""
@@ -102,6 +102,7 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE=.\db\keywords.c
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -247,6 +248,7 @@ SOURCE=.\utils\pgconfig.cpp
 # Begin Source File
 
 SOURCE=.\utils\precomp.cpp
+# ADD BASE CPP /Yc"pgAdmin3.h"
 # ADD CPP /Yc"pgAdmin3.h"
 # End Source File
 # Begin Source File
@@ -264,6 +266,7 @@ SOURCE=.\utils\update.cpp
 # Begin Source File
 
 SOURCE=.\utils\utffile.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group
@@ -528,6 +531,7 @@ SOURCE=.\ui\frmVacuum.xrc
 # Begin Source File
 
 SOURCE=.\ui\xrcDialogs.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group
@@ -661,16 +665,19 @@ SOURCE=.\dlg\dlgMainConfig.cpp
 # Begin Source File
 
 SOURCE=.\ctl\calbox.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\ctl\ctlComboBox.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\ctl\ctlListView.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -684,6 +691,7 @@ SOURCE=.\ctl\ctlSQLBox.cpp
 # Begin Source File
 
 SOURCE=.\ctl\ctlSQLResult.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -697,26 +705,31 @@ SOURCE=.\ctl\explainShape.cpp
 # Begin Source File
 
 SOURCE=.\ctl\timespin.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\ctl\xh_calb.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\ctl\xh_ctlcombo.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\ctl\xh_sqlbox.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\ctl\xh_timespin.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group
@@ -1931,26 +1944,31 @@ SOURCE=.\Makefile.am
 # Begin Source File
 
 SOURCE=.\base\appbase.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\base\base.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\base\pgConnBase.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\base\pgSetBase.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\base\sysLogger.cpp
+# SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # End Group

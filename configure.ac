@@ -41,7 +41,7 @@ CHECK_WXWINDOWS
 
 AC_CONFIG_FILES([Makefile
 		 i18n/Makefile
-	         src/Makefile
+         src/Makefile
 		 pkg/Makefile
 		 pkg/debian/Makefile
 		 pkg/fc1/Makefile
@@ -52,5 +52,6 @@ AC_CONFIG_FILES([Makefile
 		 pkg/src/Makefile
 		 pkg/win32/Makefile
 		 xtra/Makefile
-		 xtra/pgagent/Makefile])
+		 xtra/pgagent/Makefile
+		 xtra/pgagent/pgaevent/Makefile])
 AC_OUTPUT
