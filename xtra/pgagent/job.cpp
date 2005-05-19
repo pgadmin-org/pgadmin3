@@ -81,17 +81,19 @@ int Job::Execute()
     while (steps->HasData())
     {
         DBconn *conn;
-        string jslid, jpecode;
+        string jslid, stepid, jpecode;
 
+        stepid = steps->GetString("jstid");
+        
 		DBresult *id=serviceConn->Execute(
 			"SELECT nextval('pgagent.pga_jobsteplog_jslid_seq') AS id");
 		if (id)
 		{
 			jslid=id->GetString("id");
 			DBresult *res=serviceConn->Execute(
-				"INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jslstatus) "
-				"SELECT " + jslid + ", " + logid + ", 'r'"
-				"  FROM pgagent.pga_jobstep WHERE jstid=" + steps->GetString("jstid"));
+				"INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jsljstid, jslstatus) "
+				"SELECT " + jslid + ", " + logid + ", " + stepid + ", 'r'"
+				"  FROM pgagent.pga_jobstep WHERE jstid=" + stepid);
 
 			if (res)
 			{
@@ -116,7 +118,7 @@ int Job::Execute()
                 conn=DBconn::Get(steps->GetString("jstdbname"));
                 if (conn)
                 {
-                    LogMessage("Executing step " + steps->GetString("jstid") + " on database " + steps->GetString("jstdbname"), LOG_DEBUG);
+                    LogMessage("Executing step " + stepid + " on database " + steps->GetString("jstdbname"), LOG_DEBUG);
                     rc=conn->ExecuteVoid(steps->GetString("jstcode"));
                 }
                 else

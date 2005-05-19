@@ -127,6 +127,7 @@ COMMENT ON COLUMN pgagent.pga_joblog.jlgstatus IS 'Status of job: r=running, s=s
 CREATE TABLE pgagent.pga_jobsteplog (
 jslid                serial               NOT NULL PRIMARY KEY,
 jsljlgid             int4                 NOT NULL REFERENCES pgagent.pga_joblog (jlgid) ON DELETE CASCADE ON UPDATE RESTRICT,
+jsljstid             int4                 NOT NULL REFERENCES pgagent.pga_jobstep (jstid) ON DELETE CASCADE ON UPDATE RESTRICT,
 jslstatus            char                 NOT NULL CHECK (jslstatus IN ('r', 's', 'i', 'f')) DEFAULT 'r', -- running, success, ignored, failed
 jslresult            int2                 NULL,
 jslstart             timestamptz          NOT NULL DEFAULT current_timestamp,
