@@ -29,6 +29,7 @@ extern long shortWait;
 extern long minLogLevel;
 extern string connectString;
 extern string serviceDBname;
+extern string backendPid;
 
 // Log levels
 enum

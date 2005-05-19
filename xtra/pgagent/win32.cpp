@@ -328,7 +328,6 @@ void usage()
         "-d <displayname>\n"
         "-t <poll time interval in seconds (default 10)>\n"
         "-r <retry period after connection abort in seconds (>=10, default 30)>\n"
-        "-c <connection pool size (>=5, default 5)>\n"
         "-l <logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)>\n"
         );
 }
@@ -337,19 +336,16 @@ void usage()
 
 ////////////////////////////////////////////////////////////
 
-void setupForRun(int argc, char **argv)
+void setupForRun(int argc, char **argv, bool debug=false)
 {
-    eventHandle = RegisterEventSource(0, serviceName.c_str());
-    if (!eventHandle)
-        LogMessage("Couldn't register event handle.", LOG_ERROR);
+	if (!debug)
+	{
+		eventHandle = RegisterEventSource(0, serviceName.c_str());
+		if (!eventHandle)
+			LogMessage("Couldn't register event handle.", LOG_ERROR);
+	}
 
     setOptions(argc, argv);
-
-    DBconn *conn=DBconn::InitConnection(connectString);
-    if (!conn->IsValid())
-        LogMessage("Invalid connection: " + conn->GetLastError(), LOG_ERROR);
-
-    serviceDBname = conn->GetDBname();
 }
 
         
@@ -368,7 +364,7 @@ void main(int argc, char **argv)
 
     if (command == "INSTALL")
     {
-        string displayname = "pgAgent " + serviceName;
+        string displayname = "PostgreSQL scheduling agent - " + serviceName;
         string arg = executable + " RUN " + serviceName;
 
         while (argc-- > 0)
@@ -416,7 +412,7 @@ void main(int argc, char **argv)
     }
     else if (command == "DEBUG")
     {
-        setupForRun(argc, argv);
+        setupForRun(argc, argv, true);
 
         initService();
 #if START_SUSPENDED

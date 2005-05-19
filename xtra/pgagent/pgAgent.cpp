@@ -11,6 +11,8 @@
 
 #include "pgAgent.h"
 
+#include <wx/thread.h>
+
 #ifdef WIN32
 #include <winsock2.h>
 #else
@@ -19,10 +21,10 @@
 
 string connectString;
 string serviceDBname;
+string backendPid;
 long longWait=30;
 long shortWait=10;
 long minLogLevel=LOG_ERROR;
-
 
 
 int MainRestartLoop(DBconn *serviceConn)
@@ -65,8 +67,6 @@ int MainRestartLoop(DBconn *serviceConn)
             );
     }
 
-
-
     char hostname[255];
     gethostname(hostname, 255);
 
@@ -96,18 +96,20 @@ int MainRestartLoop(DBconn *serviceConn)
 
             if (jobid != "")
             {
-                Job job(serviceConn, jobid);
+				DBconn *threadConn=DBconn::Get(serviceDBname);
+                Job job(threadConn, jobid);
 
                 if (job.Runnable())
                 {
                     foundJobToExecute=true;
                     LogMessage("Running job: " + jobid, LOG_DEBUG);
                     job.Execute();
+					LogMessage("Completed job: " + jobid, LOG_DEBUG);
                 }
             }
             else
             {
-				LogMessage("No jobs to run - time for a pint :-)", LOG_DEBUG);
+				LogMessage("No jobs to run - sleeping...", LOG_DEBUG);
                 WaitAWhile();
             }
         }
@@ -124,28 +126,34 @@ int MainRestartLoop(DBconn *serviceConn)
 
 void MainLoop()
 {
-    // Basic sanity check
-	LogMessage("Database sanity check", LOG_DEBUG);
-    DBconn *sanityConn=DBconn::Get(serviceDBname, true);
-    DBresult *res=sanityConn->Execute("SELECT count(*) As count FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace WHERE relname='pga_job' AND nspname='pgagent'");
-    if (res)
-    {
-        string val=res->GetString("count");
-        
-        if (val == "0")
-            LogMessage("Could not find the table 'pgagent.pga_job'. Have you run pgagent.sql on this database?", LOG_ERROR);
-    }
     
     // OK, let's get down to business 
     do
     {
-        DBconn *serviceConn=DBconn::Get(serviceDBname, true);
-
-        if (serviceConn)
+	    LogMessage("Creating primary connection", LOG_DEBUG);
+        DBconn *serviceConn=DBconn::InitConnection(connectString);
+    
+		if (serviceConn && serviceConn->IsValid())
         {
+            serviceDBname = serviceConn->GetDBname();
+
+			// Basic sanity check, and a chance to get the serviceConn's PID
+	        LogMessage("Database sanity check", LOG_DEBUG);
+            DBresult *res=serviceConn->Execute("SELECT count(*) As count, pg_backend_pid() AS pid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace WHERE relname='pga_job' AND nspname='pgagent'");
+            if (res)
+			{
+                string val=res->GetString("count");
+            
+                if (val == "0")
+                    LogMessage("Could not find the table 'pgagent.pga_job'. Have you run pgagent.sql on this database?", LOG_ERROR);
+    
+	    	    backendPid=res->GetString("pid");
+			}
+        
             MainRestartLoop(serviceConn);
         }
 
+		LogMessage("Couldn't create connection: " + serviceConn->GetLastError(), LOG_WARNING);
         DBconn::ClearConnections(true);
         WaitAWhile(true);
     }

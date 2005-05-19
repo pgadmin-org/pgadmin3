@@ -23,7 +23,7 @@ public:
     bool Runnable() { return status == "r"; }
 
 protected:
-    DBconn *serviceConn;
+    DBconn *threadConn;
     string jobid, logid;
     string status;
 };

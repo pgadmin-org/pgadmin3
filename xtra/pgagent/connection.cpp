@@ -13,18 +13,15 @@
 #include <libpq-fe.h>
 #include <time.h>
 
-
-// entries in the connection pool
-int connPoolCount=5;
-
-
-DBconn **DBconn::pool=0;
+DBconn *DBconn::primaryConn;
 string DBconn::basicConnectString;
-
 
 DBconn::DBconn(const string &name)
 {
     dbname = name;
+	inUse = false;
+	next=0;
+	prev=0;
     Connect(basicConnectString  + " dbname=" + dbname);
 }
 
@@ -32,6 +29,9 @@ DBconn::DBconn(const string &name)
 DBconn::DBconn(const string &connectString, const string &name)
 {
     dbname = name;
+	inUse = false;
+	next=0;
+	prev=0;
     Connect(connectString);
 }
 
@@ -65,21 +65,12 @@ DBconn::~DBconn()
 
 DBconn *DBconn::InitConnection(const string &connectString)
 {
-    if (!pool)
-    {
-        pool = new DBconn*[connPoolCount];
-        if (pool)
-            memset(pool, 0, sizeof(DBconn*) * connPoolCount);
-    }
-    if (!pool)
-        LogMessage("Out of memory for connection pool", LOG_ERROR);
-
     basicConnectString=connectString;
     string dbname;
 
     int pos=basicConnectString.find("dbname=");
     if (pos == -1)
-        dbname = "dba";
+        dbname = "pgadmin";
     else
     {
         dbname = basicConnectString.substr(pos+7);
@@ -93,89 +84,84 @@ DBconn *DBconn::InitConnection(const string &connectString)
             dbname = dbname.substr(0, pos);
         }
     }
-    pool[0] = new DBconn(connectString, dbname);
-    pool[0]->primary = true;
+    primaryConn = new DBconn(connectString, dbname);
 
-    return pool[0];
+    if (!primaryConn)
+        LogMessage("Failed to create primary connection!", LOG_ERROR);
+
+	primaryConn->inUse = true;
+
+    return primaryConn;
 }
 
 
-DBconn *DBconn::Get(const string &dbname, bool asPrimary)
+DBconn *DBconn::Get(const string &dbname)
 {
-    if (!pool)
-    {
-        pool = new DBconn*[connPoolCount];
-        if (pool)
-            memset(pool, 0, sizeof(DBconn*) * connPoolCount);
-    }
-    if (!pool)
-        LogMessage("Out of memory for connection pool", LOG_ERROR);
-
-    int i;
-    DBconn **emptyConn=0, **oldestConn=0;
+	DBconn *thisConn = primaryConn, *testConn;
 
     // find an existing connection
-    for (i=0 ; i < connPoolCount ; i++)
+    do
     {
-        if (pool[i])
-        {
-            if (dbname == pool[i]->dbname)
-                return pool[i];
+        if (dbname == thisConn->dbname && !thisConn->inUse)
+		{
+			LogMessage("Allocating existing connection to database " + thisConn->dbname, LOG_DEBUG);
+			thisConn->inUse = true;
+            return thisConn;
+		}
 
-            // while searching, also mark the oldest non-primary connection
-            if (!pool[i]->primary)
-            {
-                if (!oldestConn || pool[i]->timestamp < (*oldestConn)->timestamp)
-                    oldestConn=pool+i;
-            }
-        }
-        else
-        {
-            // while searching, mark the first empty slot
-            if (!emptyConn)
-                emptyConn=pool+i;
-        }
-    }
-    if (!emptyConn)
-    {
-        delete *oldestConn;
-        emptyConn=oldestConn;
-        *emptyConn=0;
-    }
+		testConn = thisConn;
+		if (thisConn->next != 0)
+		    thisConn = thisConn->next;
 
-    DBconn *conn=new DBconn(dbname);
-    if (conn->conn)
+    } while (testConn->next != 0);
+
+
+	// No suitable connection was found, so create a new one.
+    DBconn *newConn=new DBconn(dbname);
+    if (newConn->conn)
     {
-        *emptyConn=conn;
+		LogMessage("Allocating new connection to database " + newConn->dbname, LOG_DEBUG);
+		newConn->inUse = true;
+		newConn->prev = thisConn;
+		thisConn->next = newConn;
     }
-    return *emptyConn;
+	else
+		LogMessage("Failed to create new connection to database: " + dbname, LOG_ERROR);
+
+    return newConn;
 }
 
+void DBconn::Return()
+{
+	LogMessage("Returning connection to database " + this->dbname, LOG_DEBUG);
+	inUse = false;
+}
 
 void DBconn::ClearConnections(bool all)
 {
-    // clears all connections, except for the primary one.
-    // if all is true, even the primary connection will be killed.
-    if (pool)
-    {
-        int i;
-        for (i=0 ; i < connPoolCount ; i++)
-        {
-            if (pool[i])
-            {
-                if (all || !pool[i]->primary)
-                {
-                    delete pool[i];
-                    pool[i]=0;
-                }
-            }
-        }
-        if (all)
-        {
-            delete[] pool;
-            pool=0;
-        }
-    }
+	if (all)
+		LogMessage("Clearing all connections", LOG_DEBUG);
+	else
+		LogMessage("Clearing all connections except the primary", LOG_DEBUG);
+
+	DBconn *thisConn=primaryConn, *deleteConn;
+
+	// Find the last connection
+	while (thisConn->next != 0)
+		thisConn = thisConn->next;
+
+	// Delete connections as required
+	while (thisConn->prev != 0)
+	{
+		deleteConn = thisConn;
+		thisConn = deleteConn->prev;
+		delete deleteConn;
+		thisConn->next = 0;
+	}
+
+	if (all)
+		delete thisConn;
+
 }
 
 
@@ -205,6 +191,18 @@ int DBconn::ExecuteVoid(const string &query)
     return rows;
 }
 
+string DBconn::GetLastError() 
+{ 
+	// Return the last error message, minus any trailing line ends
+	if (lastError.substr(lastError.length()-2, 2) == "\r\n") // DOS
+	    return lastError.substr(0, lastError.length()-2); 
+    else if (lastError.substr(lastError.length()-1, 1) == "\n") // Unix
+	    return lastError.substr(0, lastError.length()-1);
+    else if (lastError.substr(lastError.length()-1, 1) == "\r") // Mac
+	    return lastError.substr(0, lastError.length()-1);
+	else
+		return lastError;
+}
 
 ///////////////////////////////////////////////////////7
 

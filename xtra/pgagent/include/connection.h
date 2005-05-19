@@ -16,7 +16,6 @@
 #include <libpq-fe.h>
 
 class DBresult;
-extern int connPoolCount;
 
 
 class DBconn
@@ -27,29 +26,31 @@ protected:
     ~DBconn();
 
 public:
-    static DBconn *Get(const string &dbname, bool asPrimary=false);
+    static DBconn *Get(const string &dbname);
     static DBconn *InitConnection(const string &connectString);
 
     static void ClearConnections(bool allIncludingPrimary=false);
     static void SetBasicConnectString(const string &bcs) { basicConnectString = bcs; }
-    string GetLastError() { return lastError; }
+
+    string GetLastError();
     string GetDBname() {return dbname; }
     bool IsValid() { return conn != 0; }
 
     DBresult *Execute(const string &query);
     int ExecuteVoid(const string &query);
+	void Return();
 
 private:
     bool DBconn::Connect(const string &connectString);
 
 protected:
     static string basicConnectString;
-    static DBconn **pool;
+	static DBconn *primaryConn;
 
     string dbname, lastError;
     PGconn *conn;
-    long timestamp;
-    bool primary;
+	DBconn *next, *prev;
+    bool inUse;
 
     friend class DBresult;
 

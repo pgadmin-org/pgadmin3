@@ -25,7 +25,6 @@ void usage()
         "options:\n"
         "-t <poll time interval in seconds (default 10)>\n"
         "-r <retry period after connection abort in seconds (>=10, default 30)>\n"
-        "-c <connection pool size (>=5, default 5)>\n"
         "-l <logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)>\n"
         );
 }
@@ -86,12 +85,6 @@ int main(int argc, char **argv)
     argv++;
 
     setOptions(argc, argv);
-
-    DBconn *conn=DBconn::InitConnection(connectString);
-    if (!conn->IsValid())
-        LogMessage("Invalid connection: " + conn->GetLastError(), LOG_ERROR);
-
-    serviceDBname = conn->GetDBname();
 
     daemonize();
 

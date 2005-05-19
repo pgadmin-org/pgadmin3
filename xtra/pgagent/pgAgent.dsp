@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /I "include" /I "c:/program files/postgresql/8.0/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_MT" /Yu"pgAgent.h" /FD /GZ /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "include" /I "c:/program files/postgresql/8.0/include" /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_MT" /FR /Yu"pgamsgevent.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "include" /I "c:/program files/postgresql/8.0/include" /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_MT" /FR /Yu"pgAgent.h" /FD /c
 # ADD BASE RSC /l 0x407 /d "_DEBUG"
 # ADD RSC /l 0x809 /i "c:/wxWidgets-2.6/include"
 BSC32=bscmake.exe

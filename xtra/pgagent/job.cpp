@@ -15,23 +15,23 @@
 
 Job::Job(DBconn *conn, const string &jid)
 {
-    serviceConn=conn;
+    threadConn=conn;
     jobid=jid;
     status="";
 
-    int rc=serviceConn->ExecuteVoid(
-        "UPDATE pgagent.pga_job SET jobagentid=pg_backend_pid(), joblastrun=now() "
+    int rc=threadConn->ExecuteVoid(
+        "UPDATE pgagent.pga_job SET jobagentid=" + backendPid + ", joblastrun=now() "
         " WHERE jobagentid IS NULL AND jobid=" + jobid);
 
     if (rc == 1)
     {
-		DBresult *id=serviceConn->Execute(
+		DBresult *id=threadConn->Execute(
 			"SELECT nextval('pgagent.pga_joblog_jlgid_seq') AS id");
 		if (id)
 		{
 			logid=id->GetString("id");
 
-			DBresult *res=serviceConn->Execute(
+			DBresult *res=threadConn->Execute(
 				"INSERT INTO pgagent.pga_joblog(jlgid, jlgjobid, jlgstatus) "
 	            "VALUES (" + logid + ", " + jobid + ", 'r')");
 			if (res)
@@ -49,7 +49,7 @@ Job::~Job()
 {
     if (status != "")
     {
-        serviceConn->ExecuteVoid(
+        threadConn->ExecuteVoid(
             "UPDATE pgagent.pga_joblog "
             "   SET jlgstatus='" + status + "', jlgduration=now() - jlgstart "
             " WHERE jlgid=" + logid + ";\n"
@@ -59,13 +59,14 @@ Job::~Job()
             " WHERE jobid=" + jobid
             );
     }
+	threadConn->Return();
 }
 
 
 int Job::Execute()
 {
     int rc=0;
-    DBresult *steps=serviceConn->Execute(
+    DBresult *steps=threadConn->Execute(
         "SELECT jstid, jstkind, jstdbname, jstcode, jstonerror "
         "  FROM pgagent.pga_jobstep "
         " WHERE jstenabled "
@@ -80,17 +81,17 @@ int Job::Execute()
 
     while (steps->HasData())
     {
-        DBconn *conn;
+        DBconn *stepConn;
         string jslid, stepid, jpecode;
 
         stepid = steps->GetString("jstid");
         
-		DBresult *id=serviceConn->Execute(
+		DBresult *id=threadConn->Execute(
 			"SELECT nextval('pgagent.pga_jobsteplog_jslid_seq') AS id");
 		if (id)
 		{
 			jslid=id->GetString("id");
-			DBresult *res=serviceConn->Execute(
+			DBresult *res=threadConn->Execute(
 				"INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jsljstid, jslstatus) "
 				"SELECT " + jslid + ", " + logid + ", " + stepid + ", 'r'"
 				"  FROM pgagent.pga_jobstep WHERE jstid=" + stepid);
@@ -115,11 +116,12 @@ int Job::Execute()
         {
             case 's':
             {
-                conn=DBconn::Get(steps->GetString("jstdbname"));
-                if (conn)
+                stepConn=DBconn::Get(steps->GetString("jstdbname"));
+                if (stepConn)
                 {
                     LogMessage("Executing step " + stepid + " on database " + steps->GetString("jstdbname"), LOG_DEBUG);
-                    rc=conn->ExecuteVoid(steps->GetString("jstcode"));
+                    rc=stepConn->ExecuteVoid(steps->GetString("jstcode"));
+					stepConn->Return();
                 }
                 else
                     rc=-1;
@@ -144,7 +146,7 @@ int Job::Execute()
         else
             stepstatus = steps->GetString("jstonerror");
 
-        rc=serviceConn->ExecuteVoid(
+        rc=threadConn->ExecuteVoid(
             "UPDATE pgagent.pga_jobsteplog "
             "   SET jslduration = now() - jslstart, "
             "       jslresult = " + NumToStr(rc) + ", jslstatus = '" + stepstatus + "' "

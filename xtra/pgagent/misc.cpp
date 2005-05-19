@@ -64,13 +64,6 @@ void setOptions(int argc, char **argv)
                         longWait = val;
                     break;
                 }
-                case 'c':
-                {
-                    int val = atoi(getArg(argc, argv).c_str());
-                    if (val >= 5)
-                        connPoolCount = val;
-                    break;
-                }
                 case 'l':
                 {
                     int val = atoi(getArg(argc, argv).c_str());
