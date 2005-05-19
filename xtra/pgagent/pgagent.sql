@@ -131,7 +131,7 @@ jsldbname            name                 NOT NULL,
 jslcode              text                 NOT NULL,
 jslstatus            char                 NOT NULL CHECK (jslstatus IN ('r', 's', 'i', 'f')) DEFAULT 'r', -- running, success, ignored, failed
 jslresult            int2                 NULL,
-jslstarted           timestamptz          NOT NULL DEFAULT current_timestamp,
+jslstart             timestamptz          NOT NULL DEFAULT current_timestamp,
 jslduration          interval             NULL
 ) WITHOUT OIDS;
 CREATE INDEX pga_jobsteplog_jslid ON pgagent.pga_jobsteplog(jsljlgid);

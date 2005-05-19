@@ -144,7 +144,7 @@ int Job::Execute()
 
         rc=serviceConn->ExecuteVoid(
             "UPDATE pgagent.pga_jobsteplog "
-            "   SET jslduration = now() - jslstarted, "
+            "   SET jslduration = now() - jslstart, "
             "       jslresult = " + NumToStr(rc) + ", jslstatus = '" + stepstatus + "' "
             " WHERE jslid=" + jpsid);
         if (rc != 1 || stepstatus == "f")
