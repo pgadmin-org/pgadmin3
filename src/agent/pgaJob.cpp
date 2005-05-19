@@ -160,9 +160,67 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     return job;
 }
 
+void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    wxString sql =
+        wxT("SELECT jlgid")
+		     wxT(", jlgstatus")
+             wxT(", jlgstart")
+             wxT(", jlgduration")
+			 wxT(", (jlgstart + jlgduration) AS endtime")
+             wxT("  FROM pgagent.pga_joblog\n")
+             wxT(" WHERE jlgjobid = ") + NumToStr(GetRecId()) +
+			 wxT(" ORDER BY jlgstart DESC");
+
+    if (statistics)
+    {
+        wxLogInfo(wxT("Displaying statistics for job %s"), GetFullIdentifier());
+
+        // Add the statistics view columns
+		statistics->ClearAll();
+		statistics->AddColumn(_("Run"), 70);
+        statistics->AddColumn(_("Status"), 90);
+		statistics->AddColumn(_("Start time"), 125);
+		statistics->AddColumn(_("End time"), 125);
+		statistics->AddColumn(_("Duration"), 110);
+
+        pgSet *stats = database->ExecuteSet(sql);
+		wxString status;
+		wxDateTime startTime;
+		wxDateTime endTime;
+
+        if (stats)
+        {
+            while (!stats->Eof())
+            {
+				if (stats->GetVal(1) == wxT("r"))
+                    status = _("Running");
+				else if (stats->GetVal(1) == wxT("s"))
+                    status = _("Successful");
+				else if (stats->GetVal(1) == wxT("f"))
+                    status = _("Failed");
+				else if (stats->GetVal(1) == wxT("i"))
+                    status = _("No steps");
+				else
+                    status = _("Unknown");
+
+				startTime.ParseDateTime(stats->GetVal(2));
+				endTime.ParseDateTime(stats->GetVal(4));
+
+                long pos=statistics->AppendItem(stats->GetVal(0), status, startTime.Format());
+                statistics->SetItem(pos, 3, endTime.Format());
+				statistics->SetItem(pos, 4, stats->GetVal(3));
+
+				stats->MoveNext();
+            }
+            delete stats;
+        }
+    }
+}
 
 pgaJobObject::pgaJobObject(pgaJob *_job, int newType, const wxString& newName)
 : pgDatabaseObject(newType, newName)
 {
     job=_job;
 }
+

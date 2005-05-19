@@ -142,3 +142,65 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     }
     return step;
 }
+
+
+void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    wxString sql =
+        wxT("SELECT jsljlgid")
+		     wxT(", jslstatus")
+		     wxT(", jslresult")
+             wxT(", jslstart")
+             wxT(", jslduration")
+			 wxT(", (jslstart + jslduration) AS endtime")
+             wxT("  FROM pgagent.pga_jobsteplog\n")
+             wxT(" WHERE jsljstid = ") + NumToStr(GetRecId()) +
+			 wxT(" ORDER BY jslstart DESC");
+
+    if (statistics)
+    {
+        wxLogInfo(wxT("Displaying statistics for job %s"), GetFullIdentifier());
+
+        // Add the statistics view columns
+		statistics->ClearAll();
+		statistics->AddColumn(_("Run"), 60);
+        statistics->AddColumn(_("Status"), 90);
+		statistics->AddColumn(_("Result"), 90);
+		statistics->AddColumn(_("Start time"), 125);
+		statistics->AddColumn(_("End time"), 125);
+		statistics->AddColumn(_("Duration"), 110);
+
+        pgSet *stats = database->ExecuteSet(sql);
+		wxString status;
+		wxDateTime startTime;
+		wxDateTime endTime;
+
+        if (stats)
+        {
+            while (!stats->Eof())
+            {
+				if (stats->GetVal(1) == wxT("r"))
+                    status = _("Running");
+				else if (stats->GetVal(1) == wxT("s"))
+                    status = _("Successful");
+				else if (stats->GetVal(1) == wxT("f"))
+                    status = _("Failed");
+				else if (stats->GetVal(1) == wxT("i"))
+                    status = _("Ignored");
+				else
+                    status = _("Unknown");
+
+				startTime.ParseDateTime(stats->GetVal(3));
+				endTime.ParseDateTime(stats->GetVal(5));
+
+                long pos=statistics->AppendItem(stats->GetVal(0), status, stats->GetVal(2));
+				statistics->SetItem(pos, 3, startTime.Format());
+				statistics->SetItem(pos, 4, endTime.Format());
+				statistics->SetItem(pos, 5, stats->GetVal(4));
+
+				stats->MoveNext();
+            }
+            delete stats;
+        }
+    }
+}
