@@ -114,21 +114,19 @@ COMMENT ON TABLE pgagent.pga_schedule IS 'Job schedule exceptions';
 CREATE TABLE pgagent.pga_joblog (
 jlgid                serial               NOT NULL PRIMARY KEY,
 jlgjobid             int4                 NOT NULL REFERENCES pgagent.pga_job (jobid) ON DELETE CASCADE ON UPDATE RESTRICT,
-jlgstatus            char                 NOT NULL CHECK (jlgstatus IN ('r', 's', 'f', 'i', 'd')) DEFAULT 'r', -- running, success, failed, internal failure, died
+jlgstatus            char                 NOT NULL CHECK (jlgstatus IN ('r', 's', 'f', 'i')) DEFAULT 'r', -- running, success, failed, internal failure
 jlgstart             timestamptz          NOT NULL DEFAULT current_timestamp,
 jlgduration          interval             NULL
 ) WITHOUT OIDS;
 CREATE INDEX pga_joblog_jobid ON pgagent.pga_joblog(jlgjobid);
 COMMENT ON TABLE pgagent.pga_joblog IS 'Job run logs.';
-COMMENT ON COLUMN pgagent.pga_joblog.jlgstatus IS 'Status of job: r=running, s=successfully finished, f=failed';
+COMMENT ON COLUMN pgagent.pga_joblog.jlgstatus IS 'Status of job: r=running, s=successfully finished, f=failed, i=no steps to execute';
 
 
 
 CREATE TABLE pgagent.pga_jobsteplog (
 jslid                serial               NOT NULL PRIMARY KEY,
 jsljlgid             int4                 NOT NULL REFERENCES pgagent.pga_joblog (jlgid) ON DELETE CASCADE ON UPDATE RESTRICT,
-jsldbname            name                 NOT NULL,
-jslcode              text                 NOT NULL,
 jslstatus            char                 NOT NULL CHECK (jslstatus IN ('r', 's', 'i', 'f')) DEFAULT 'r', -- running, success, ignored, failed
 jslresult            int2                 NULL,
 jslstart             timestamptz          NOT NULL DEFAULT current_timestamp,
