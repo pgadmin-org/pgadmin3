@@ -10,7 +10,7 @@ pkg=pgadmin3
 pkg-data=$(pkg)-data
 
 # The name of the wxWidgets config script we invoke later in configure
-_PGA3_WXCONFIG ?= wx-config
+_PGA3_WXCONFIG ?= wx-config-pgadmin3
 
 # A hack to get it compile without errors concerning MNU_NEW
 _pgsql_inc:="/usr/include/postgresql -I./include"
@@ -42,6 +42,8 @@ endif
 #endif
 
 # Here goes the pgAdmin3 stuff
+configure:
+	sh bootstrap
 
 config.status: configure
 	dh_testdir
@@ -72,6 +74,7 @@ clean:
 	# Add here commands to clean up after the build process.
 	-$(MAKE) clean
 	-$(MAKE) distclean
+	-rm configure
 	-rm config.status
 	-rm config.cache
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
