@@ -1,7 +1,7 @@
 %define name		pgadmin3
-%define major_version 	1.2.0
+%define major_version 	1.2.2
 %define minor_version 	1mdk
-%define wxGTK2_version 	2.5.3
+%define wxGTK2_version 	2.6.0
 %define withwxconfig 	wx-config
 %define desktop_vendor 	pgadmin
 %define debug_package 	%{nil}
@@ -19,13 +19,7 @@ Packager: 	pgAdmin project <pgadmin-hackers@postgresql.org>
 BuildRoot: 	%{_tmppath}/%{name}-root
 BuildRequires:  postgresql postgresql-devel
 
-#
-# When rebuilding, wxWindows 2.5 CVS version is needed.
-# wxWindows 2.5 CVS (RPM and SRPMs) snapshots can be downloaded from
-# http://www.pgadmin.org/pgadmin3/development.php page in the Snapshots section
-#
-
-#BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
+#BuildRequires: wxGTK2ud >= 2.6-%{wxGTK2_version}, wxGTK2ud-devel >= 2.6-%{wxGTK2_version}, wxGTK2ud-stc >= 2.6-%{wxGTK2_version}
 
 %description
 PostgreSQL Tools.

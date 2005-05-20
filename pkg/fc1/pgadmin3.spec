@@ -1,11 +1,11 @@
-%define wxGTK_version 2.5.3
-%define pg_version 8.0.0beta5
+%define wxGTK_version 2.6.0
+%define pg_version 8.0.3
 %define withwxconfig wx-config
 %define desktop_vendor pgadmin
 
 Summary: Graphical client for PostgreSQL
 Name: pgadmin3
-Version: 1.2.0
+Version: 1.2.2
 Release: 3
 License: Artistic
 Group: Applications/Databases
