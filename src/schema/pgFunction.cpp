@@ -55,7 +55,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
     {
         wxString qtName = wxT("FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(")");
 
-        sql = wxT("-- Function: ") + GetFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")\n\n")
+        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypes() + wxT(")\n\n")
             + wxT("-- DROP ") + qtName + wxT(";")
             + wxT("\n\nCREATE OR REPLACE ") + qtName
             + wxT("\n  RETURNS ");
