@@ -142,7 +142,7 @@ void DBconn::ClearConnections(bool all)
 	if (all)
 		LogMessage("Clearing all connections", LOG_DEBUG);
 	else
-		LogMessage("Clearing all connections except the primary", LOG_DEBUG);
+		LogMessage("Clearing inactive connections", LOG_DEBUG);
 
 	DBconn *thisConn=primaryConn, *deleteConn;
 
@@ -151,12 +151,27 @@ void DBconn::ClearConnections(bool all)
 		thisConn = thisConn->next;
 
 	// Delete connections as required
+	// If a connection is not in use, delete it, and reset the next and previous
+	// pointers appropriately. If it is in use, don't touch it.
 	while (thisConn->prev != 0)
 	{
-		deleteConn = thisConn;
-		thisConn = deleteConn->prev;
-		delete deleteConn;
-		thisConn->next = 0;
+		if ((!thisConn->inUse) || all)
+		{
+			deleteConn = thisConn;
+
+			thisConn = deleteConn->prev;
+			
+			thisConn->next = deleteConn->next;
+			
+			if (deleteConn->next)
+				deleteConn->next->prev = deleteConn->prev;
+			
+			delete deleteConn;
+		}
+		else
+		{
+			thisConn = thisConn->prev;
+		}
 	}
 
 	if (all)
