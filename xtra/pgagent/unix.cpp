@@ -33,14 +33,14 @@ void LogMessage(wxString msg, int level)
     {
         case LOG_DEBUG:
             if (minLogLevel >= LOG_DEBUG)
-                wxPrintf(_("DEBUG: %s\n"), msg);
+                wxPrintf(_("DEBUG: %s\n"), msg.c_str());
             break;
         case LOG_WARNING:
             if (minLogLevel >= LOG_WARNING)
-                wxPrintf(_("WARNING: %s\n"), msg);
+                wxPrintf(_("WARNING: %s\n"), msg.c_str());
             break;
         case LOG_ERROR:
-            wxPrintf(_("ERROR: %s\n"), msg);
+            wxPrintf(_("ERROR: %s\n"), msg.c_str());
             exit(1);
             break;
     }
