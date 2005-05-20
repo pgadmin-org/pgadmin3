@@ -11,11 +11,15 @@
 
 #include "pgAgent.h"
 
+wxSemaphore *getDb;
+
 Job::Job(DBconn *conn, const wxString &jid)
 {
     threadConn=conn;
     jobid=jid;
     status=wxT("");
+
+	LogMessage(_("Starting job: ") + jobid, LOG_DEBUG);
 
     int rc=threadConn->ExecuteVoid(
         wxT("UPDATE pgagent.pga_job SET jobagentid=") + backendPid + wxT(", joblastrun=now() ")
@@ -58,6 +62,8 @@ Job::~Job()
             );
     }
 	threadConn->Return();
+
+	LogMessage(_("Completed job: ") + jobid, LOG_DEBUG);
 }
 
 
@@ -117,7 +123,7 @@ int Job::Execute()
                 stepConn=DBconn::Get(steps->GetString(wxT("jstdbname")));
                 if (stepConn)
                 {
-                    LogMessage(_("Executing step ") + stepid + _(" on database ") + steps->GetString(wxT("jstdbname")), LOG_DEBUG);
+                    LogMessage(_("Executing step ") + stepid + _(" (part of job ") + jobid + wxT(")"), LOG_DEBUG);
                     rc=stepConn->ExecuteVoid(steps->GetString(wxT("jstcode")));
 					stepConn->Return();
                 }
@@ -168,7 +174,16 @@ JobThread::JobThread(const wxString &jid)
 : wxThread(wxTHREAD_DETACHED)
 { 
 	LogMessage(_("Creating job thread for job ") + jid, LOG_DEBUG); 
+	
+	runnable = false;
 	jobid = jid; 
+
+	DBconn *threadConn=DBconn::Get(serviceDBname);
+    job = new Job(threadConn, jobid);
+
+    if (job->Runnable())
+        runnable = true;
+
 }
     
 
@@ -180,7 +195,11 @@ JobThread::~JobThread()
 
 void *JobThread::Entry()
 {
-	LogMessage(_("Running job thread for job ") + jobid, LOG_DEBUG);
+	if (runnable)
+	{
+		job->Execute();
+		delete job;
+	}
 
 	return(NULL);
 }

@@ -89,32 +89,25 @@ int MainRestartLoop(DBconn *serviceConn)
 
         if (res)
         {
-            wxString jobid=res->GetString(wxT("jobid"));
-            delete res;
+			while(res->HasData())
+			{
+				wxString jobid=res->GetString(wxT("jobid"));
 
-            if (jobid != wxT(""))
-            {
-				DBconn *threadConn=DBconn::Get(serviceDBname);
-                Job job(threadConn, jobid);
+				JobThread *jt = new JobThread(jobid);
+	
+				if (jt->Runnable())
+				{
+					jt->Create();
+					jt->Run();
+					foundJobToExecute = true;
+				}
+				res->MoveNext();
 
-                if (job.Runnable())
-                {
-                    foundJobToExecute=true;
-                    LogMessage(_("Running job: ") + jobid, LOG_DEBUG);
-					
-					// JobThread *jt = new JobThread(jobid);
-					// jt->Run();
-					// jt->Wait();
-                    
-					job.Execute();
-					LogMessage(_("Completed job: ") + jobid, LOG_DEBUG);
-                }
-            }
-            else
-            {
-				LogMessage(_("No jobs to run - sleeping..."), LOG_DEBUG);
-                WaitAWhile();
-            }
+			}
+
+			delete res;
+			LogMessage(_("Sleeping..."), LOG_DEBUG);
+            WaitAWhile();
         }
         else
         {

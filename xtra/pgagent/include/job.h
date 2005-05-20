@@ -37,11 +37,14 @@ class JobThread : public wxThread
 public:
     JobThread(const wxString &jid);
     ~JobThread();
+	bool Runnable() { return runnable; }
 
 	virtual void *Entry();
 
 private:
 	wxString jobid;
+	bool runnable;
+	Job *job;
 };
 
 #endif // JOB_H

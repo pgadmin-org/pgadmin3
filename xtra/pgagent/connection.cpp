@@ -13,6 +13,7 @@
 
 DBconn *DBconn::primaryConn;
 wxString DBconn::basicConnectString;
+static wxMutex s_PoolLock;
 
 DBconn::DBconn(const wxString &name)
 {
@@ -64,6 +65,8 @@ DBconn::~DBconn()
 
 DBconn *DBconn::InitConnection(const wxString &connectString)
 {
+	wxMutexLocker lock(s_PoolLock);
+
     basicConnectString=connectString;
     wxString dbname;
 
@@ -96,6 +99,8 @@ DBconn *DBconn::InitConnection(const wxString &connectString)
 
 DBconn *DBconn::Get(const wxString &dbname)
 {
+	wxMutexLocker lock(s_PoolLock);
+
 	DBconn *thisConn = primaryConn, *testConn;
 
     // find an existing connection
@@ -132,49 +137,76 @@ DBconn *DBconn::Get(const wxString &dbname)
 
 void DBconn::Return()
 {
+	wxMutexLocker lock(s_PoolLock);
+
 	LogMessage(_("Returning connection to database ") + this->dbname, LOG_DEBUG);
 	inUse = false;
 }
 
 void DBconn::ClearConnections(bool all)
 {
+	wxMutexLocker lock(s_PoolLock);
+
 	if (all)
 		LogMessage(_("Clearing all connections"), LOG_DEBUG);
 	else
 		LogMessage(_("Clearing inactive connections"), LOG_DEBUG);
 
 	DBconn *thisConn=primaryConn, *deleteConn;
+	int total=0, free=0, deleted=0;
 
-	// Find the last connection
-	while (thisConn->next != 0)
-		thisConn = thisConn->next;
-
-	// Delete connections as required
-	// If a connection is not in use, delete it, and reset the next and previous
-	// pointers appropriately. If it is in use, don't touch it.
-	while (thisConn->prev != 0)
+	if (thisConn)
 	{
-		if ((!thisConn->inUse) || all)
-		{
-			deleteConn = thisConn;
 
-			thisConn = deleteConn->prev;
-			
-			thisConn->next = deleteConn->next;
-			
-			if (deleteConn->next)
-				deleteConn->next->prev = deleteConn->prev;
-			
-			delete deleteConn;
-		}
-		else
+		total++;
+
+		// Find the last connection
+		while (thisConn->next != 0)
 		{
-			thisConn = thisConn->prev;
+			total++;
+			
+			if (!thisConn->inUse)
+				free++;
+
+			thisConn = thisConn->next;
 		}
+		if (!thisConn->inUse)
+			free++;
+
+		// Delete connections as required
+		// If a connection is not in use, delete it, and reset the next and previous
+		// pointers appropriately. If it is in use, don't touch it.
+		while (thisConn->prev != 0)
+		{
+			if ((!thisConn->inUse) || all)
+			{
+				deleteConn = thisConn;
+				thisConn = deleteConn->prev;
+				thisConn->next = deleteConn->next;
+				if (deleteConn->next)
+					deleteConn->next->prev = deleteConn->prev;
+				delete deleteConn;
+				deleted++;
+			}
+			else
+			{
+				thisConn = thisConn->prev;
+			}
+		}
+
+		if (all)
+		{
+			delete thisConn;
+			deleted++;
+		}
+
+		wxString tmp;
+		tmp.Printf(_("Connection stats: total - %d, free - %d, deleted - %d"), total, free, deleted);
+		LogMessage(tmp, LOG_DEBUG);
+
 	}
-
-	if (all)
-		delete thisConn;
+	else
+		LogMessage(_("No connections found!"), LOG_DEBUG);
 
 }
 
