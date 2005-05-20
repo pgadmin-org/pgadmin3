@@ -70,7 +70,7 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         if (GetConnection()->BackendMinimumVersion(7, 4))
         {
             pgSet *set=ExecuteSet(
-                wxT("SELECT conname, consrc FROM pg_constraint WHERE contypid=") + GetOidStr());
+                wxT("SELECT conname, pg_get_constraintdef(oid) AS consrc FROM pg_constraint WHERE contypid=") + GetOidStr());
             if (set)
             {
                 while (!set->Eof())
