@@ -59,6 +59,18 @@ CPPFLAGS="$CPPFLAGS -Wall -g -O0"],
 AC_SUBST(pg_debug_build)
 
 ############################
+# Static build of pgAdmin3 #
+############################
+AC_DEFUN([ENABLE_STATIC],
+[AC_ARG_ENABLE(static,
+[ --enable-static      build a static version of pgAdmin3],
+[pg_static_build=yes
+WX_STATIC="--static"],
+[pg_static_build=no
+WX_STATIC=""])
+])
+
+############################
 # Build an pgAdmin III.app  #
 ############################
 AC_DEFUN([ENABLE_APPBUNDLE],
@@ -255,8 +267,8 @@ then
     LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
     WX_OLD_LDFLAGS="$LDFLAGS"
     WX_OLD_CPPFLAGS="$CPPFLAGS"
-    WX_NEW_LIBS=`${WX_CONFIG} --libs`
-    WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} --libs stc,ogl`
+    WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs`
+    WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl`
     LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
     WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags`
     CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS"
