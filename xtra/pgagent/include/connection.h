@@ -21,33 +21,33 @@ class DBresult;
 class DBconn
 {
 protected:
-    DBconn(const string &dbname);
-    DBconn(const string &connectString, const string &name);
+    DBconn(const wxString &dbname);
+    DBconn(const wxString &connectString, const wxString &name);
     ~DBconn();
 
 public:
-    static DBconn *Get(const string &dbname);
-    static DBconn *InitConnection(const string &connectString);
+    static DBconn *Get(const wxString &dbname);
+    static DBconn *InitConnection(const wxString &connectString);
 
     static void ClearConnections(bool allIncludingPrimary=false);
-    static void SetBasicConnectString(const string &bcs) { basicConnectString = bcs; }
+    static void SetBasicConnectString(const wxString &bcs) { basicConnectString = bcs; }
 
-    string GetLastError();
-    string GetDBname() {return dbname; }
+    wxString GetLastError();
+    wxString GetDBname() { return dbname; }
     bool IsValid() { return conn != 0; }
 
-    DBresult *Execute(const string &query);
-    int ExecuteVoid(const string &query);
+    DBresult *Execute(const wxString &query);
+    int ExecuteVoid(const wxString &query);
 	void Return();
 
 private:
-    bool DBconn::Connect(const string &connectString);
+    bool DBconn::Connect(const wxString &connectString);
 
 protected:
-    static string basicConnectString;
+    static wxString basicConnectString;
 	static DBconn *primaryConn;
 
-    string dbname, lastError;
+    wxString dbname, lastError;
     PGconn *conn;
 	DBconn *next, *prev;
     bool inUse;
@@ -60,13 +60,13 @@ protected:
 class DBresult
 {
 protected:
-    DBresult(DBconn *conn, const string &query);
+    DBresult(DBconn *conn, const wxString &query);
 
 public:
     ~DBresult();
 
-    string GetString(int col) const;
-    string GetString(const char *colname) const;
+    wxString GetString(int col) const;
+    wxString GetString(const wxString &colname) const;
 
     bool IsValid() const { return result != NULL; }
     bool HasData() const { return currentRow < maxRows; }

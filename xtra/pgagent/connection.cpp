@@ -10,23 +10,21 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAgent.h"
-#include <libpq-fe.h>
-#include <time.h>
 
 DBconn *DBconn::primaryConn;
-string DBconn::basicConnectString;
+wxString DBconn::basicConnectString;
 
-DBconn::DBconn(const string &name)
+DBconn::DBconn(const wxString &name)
 {
     dbname = name;
 	inUse = false;
 	next=0;
 	prev=0;
-    Connect(basicConnectString  + " dbname=" + dbname);
+    Connect(basicConnectString  + wxT(" dbname=") + dbname);
 }
 
 
-DBconn::DBconn(const string &connectString, const string &name)
+DBconn::DBconn(const wxString &connectString, const wxString &name)
 {
     dbname = name;
 	inUse = false;
@@ -36,16 +34,17 @@ DBconn::DBconn(const string &connectString, const string &name)
 }
 
 
-bool DBconn::Connect(const string &connectString)
+bool DBconn::Connect(const wxString &connectString)
 {
-	LogMessage("Creating DB connection: " + connectString, LOG_DEBUG);
-    conn=PQconnectdb(connectString.c_str());
+	LogMessage(_("Creating DB connection: ") + connectString, LOG_DEBUG);
+	wxCharBuffer cstrUTF=connectString.mb_str(wxConvUTF8);
+    conn=PQconnectdb(cstrUTF);
     if (PQstatus(conn) == CONNECTION_OK)
     {
     }
     else
     {
-        lastError=PQerrorMessage(conn);
+        lastError = wxString::FromAscii(PQerrorMessage(conn));
         PQfinish(conn);
         conn=0;
     }
@@ -63,23 +62,23 @@ DBconn::~DBconn()
 }
 
 
-DBconn *DBconn::InitConnection(const string &connectString)
+DBconn *DBconn::InitConnection(const wxString &connectString)
 {
     basicConnectString=connectString;
-    string dbname;
+    wxString dbname;
 
-    int pos=basicConnectString.find("dbname=");
+    int pos=basicConnectString.find(wxT("dbname="));
     if (pos == -1)
-        dbname = "pgadmin";
+        dbname = wxT("pgadmin");
     else
     {
         dbname = basicConnectString.substr(pos+7);
         basicConnectString = basicConnectString.substr(0, pos);
-        pos = dbname.find(" ");
+        pos = dbname.find(wxT(" "));
         if (pos != -1)
         {
             if (basicConnectString.length())
-                basicConnectString += " ";
+                basicConnectString += wxT(" ");
             basicConnectString += dbname.substr(pos+1);
             dbname = dbname.substr(0, pos);
         }
@@ -87,7 +86,7 @@ DBconn *DBconn::InitConnection(const string &connectString)
     primaryConn = new DBconn(connectString, dbname);
 
     if (!primaryConn)
-        LogMessage("Failed to create primary connection!", LOG_ERROR);
+        LogMessage(_("Failed to create primary connection!"), LOG_ERROR);
 
 	primaryConn->inUse = true;
 
@@ -95,7 +94,7 @@ DBconn *DBconn::InitConnection(const string &connectString)
 }
 
 
-DBconn *DBconn::Get(const string &dbname)
+DBconn *DBconn::Get(const wxString &dbname)
 {
 	DBconn *thisConn = primaryConn, *testConn;
 
@@ -104,7 +103,7 @@ DBconn *DBconn::Get(const string &dbname)
     {
         if (dbname == thisConn->dbname && !thisConn->inUse)
 		{
-			LogMessage("Allocating existing connection to database " + thisConn->dbname, LOG_DEBUG);
+			LogMessage(_("Allocating existing connection to database ") + thisConn->dbname, LOG_DEBUG);
 			thisConn->inUse = true;
             return thisConn;
 		}
@@ -120,29 +119,29 @@ DBconn *DBconn::Get(const string &dbname)
     DBconn *newConn=new DBconn(dbname);
     if (newConn->conn)
     {
-		LogMessage("Allocating new connection to database " + newConn->dbname, LOG_DEBUG);
+		LogMessage(_("Allocating new connection to database ") + newConn->dbname, LOG_DEBUG);
 		newConn->inUse = true;
 		newConn->prev = thisConn;
 		thisConn->next = newConn;
     }
 	else
-		LogMessage("Failed to create new connection to database: " + dbname, LOG_ERROR);
+		LogMessage(_("Failed to create new connection to database: ") + dbname, LOG_ERROR);
 
     return newConn;
 }
 
 void DBconn::Return()
 {
-	LogMessage("Returning connection to database " + this->dbname, LOG_DEBUG);
+	LogMessage(_("Returning connection to database ") + this->dbname, LOG_DEBUG);
 	inUse = false;
 }
 
 void DBconn::ClearConnections(bool all)
 {
 	if (all)
-		LogMessage("Clearing all connections", LOG_DEBUG);
+		LogMessage(_("Clearing all connections"), LOG_DEBUG);
 	else
-		LogMessage("Clearing inactive connections", LOG_DEBUG);
+		LogMessage(_("Clearing inactive connections"), LOG_DEBUG);
 
 	DBconn *thisConn=primaryConn, *deleteConn;
 
@@ -180,7 +179,7 @@ void DBconn::ClearConnections(bool all)
 }
 
 
-DBresult *DBconn::Execute(const string &query)
+DBresult *DBconn::Execute(const wxString &query)
 {
     DBresult *res=new DBresult(this, query);
     if (!res->IsValid())
@@ -194,7 +193,7 @@ DBresult *DBconn::Execute(const string &query)
 }
 
 
-int DBconn::ExecuteVoid(const string &query)
+int DBconn::ExecuteVoid(const wxString &query)
 {
     int rows=-1;
     DBresult *res=Execute(query);
@@ -206,14 +205,14 @@ int DBconn::ExecuteVoid(const string &query)
     return rows;
 }
 
-string DBconn::GetLastError() 
+wxString DBconn::GetLastError() 
 { 
 	// Return the last error message, minus any trailing line ends
-	if (lastError.substr(lastError.length()-2, 2) == "\r\n") // DOS
+	if (lastError.substr(lastError.length()-2, 2) == wxT("\r\n")) // DOS
 	    return lastError.substr(0, lastError.length()-2); 
-    else if (lastError.substr(lastError.length()-1, 1) == "\n") // Unix
+    else if (lastError.substr(lastError.length()-1, 1) == wxT("\n")) // Unix
 	    return lastError.substr(0, lastError.length()-1);
-    else if (lastError.substr(lastError.length()-1, 1) == "\r") // Mac
+    else if (lastError.substr(lastError.length()-1, 1) == wxT("\r")) // Mac
 	    return lastError.substr(0, lastError.length()-1);
 	else
 		return lastError;
@@ -223,9 +222,10 @@ string DBconn::GetLastError()
 
 
 
-DBresult::DBresult(DBconn *conn, const string &query)
+DBresult::DBresult(DBconn *conn, const wxString &query)
 {
-    result=PQexec(conn->conn, query.c_str());
+    wxCharBuffer cstrUTF=query.mb_str(wxConvUTF8);
+    result=PQexec(conn->conn, cstrUTF);
     currentRow=0;
     maxRows=0;
 
@@ -236,14 +236,14 @@ DBresult::DBresult(DBconn *conn, const string &query)
             maxRows = PQntuples(result);
         else if (rc != PGRES_COMMAND_OK)
         {
-            conn->lastError = PQerrorMessage(conn->conn);
-            LogMessage("Query error: " + conn->lastError, LOG_WARNING);
+            conn->lastError = wxString::FromAscii(PQerrorMessage(conn->conn));
+            LogMessage(wxT("Query error: ") + conn->lastError, LOG_WARNING);
             PQclear(result);
             result=0;
         }
     }
 	else
-	    conn->lastError = PQerrorMessage(conn->conn);
+		conn->lastError = wxString::FromAscii(PQerrorMessage(conn->conn));
 
 }
 
@@ -255,25 +255,26 @@ DBresult::~DBresult()
 }
 
 
-string DBresult::GetString(int col) const
+wxString DBresult::GetString(int col) const
 {
-    string str;
+    wxString str;
 
     if (result && currentRow < maxRows && col >= 0)
     {
-        str = PQgetvalue(result, currentRow, col);
+        str = wxString::FromAscii(PQgetvalue(result, currentRow, col));
     }
     return str;
 }
 
 
-string DBresult::GetString(const char *colname) const
+wxString DBresult::GetString(const wxString &colname) const
 {
-    int col=PQfnumber(result, colname);
+    wxCharBuffer cstrUTF=colname.mb_str(wxConvUTF8);
+    int col=PQfnumber(result, cstrUTF);
     if (col < 0)
     {
         // fatal: not found
-        return "";
+        return wxT("");
     }
     return GetString(col);
 }

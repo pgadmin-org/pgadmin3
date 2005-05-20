@@ -19,30 +19,28 @@
 
 void usage()
 {
-    printf(
-        "Usage:\n"
-        "pgagent [options] <connect-string>\n"
-        "options:\n"
-        "-t <poll time interval in seconds (default 10)>\n"
-        "-r <retry period after connection abort in seconds (>=10, default 30)>\n"
-        "-l <logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)>\n"
-        );
+    wxPrintf(_("Usage:\n"));
+    wxPrintf(_("pgAgent INSTALL [options] <connect-string>\n"));
+    wxPrintf(_("options:\n"));
+    wxPrintf(_("-t <poll time interval in seconds (default 10)>\n"));
+    wxPrintf(_("-r <retry period after connection abort in seconds (>=10, default 30)>\n"));
+    wxPrintf(_("-l <logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)>\n"));
 }
 
-void LogMessage(string msg, int level)
+void LogMessage(wxString msg, int level)
 {
     switch (level)
     {
         case LOG_DEBUG:
             if (minLogLevel >= LOG_DEBUG)
-                fprintf(stderr, "DEBUG: %s\n", msg.c_str());
+                wxPrintf(_("DEBUG: %s\n"), msg);
             break;
         case LOG_WARNING:
             if (minLogLevel >= LOG_WARNING)
-                fprintf(stderr, "WARNING: %s\n", msg.c_str());
+                wxPrintf(_("WARNING: %s\n"), msg);
             break;
         case LOG_ERROR:
-            fprintf(stderr, "ERROR: %s\n", msg.c_str());
+            wxPrintf(_("ERROR: %s\n"), msg);
             exit(1);
             break;
     }
@@ -57,7 +55,7 @@ static void daemonize(void)
     pid = fork();
     if (pid == (pid_t) -1)
     {
-        LogMessage("Cannot disassociate from controlling TTY", LOG_ERROR);
+        LogMessage(_("Cannot disassociate from controlling TTY"), LOG_ERROR);
         exit(1);
     }
     else if (pid)
@@ -66,7 +64,7 @@ static void daemonize(void)
 #ifdef HAVE_SETSID
     if (setsid() < 0)
     {
-        LogMessage("Cannot disassociate from controlling TTY", LOG_ERROR);
+        LogMessage(_("Cannot disassociate from controlling TTY"), LOG_ERROR);
         exit(1);
     }
 #endif
@@ -75,6 +73,9 @@ static void daemonize(void)
 
 int main(int argc, char **argv)
 {
+	// Statup wx
+	wxInitialize();
+    
     if (argc < 2)
     {
         usage();

@@ -13,12 +13,7 @@
 #ifndef PGAGENT_H
 #define PGAGENT_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <sstream>
-
-using namespace std;
+#include <wx/wx.h>
 
 #include "misc.h"
 #include "connection.h"
@@ -27,9 +22,9 @@ using namespace std;
 extern long longWait;
 extern long shortWait;
 extern long minLogLevel;
-extern string connectString;
-extern string serviceDBname;
-extern string backendPid;
+extern wxString connectString;
+extern wxString serviceDBname;
+extern wxString backendPid;
 
 // Log levels
 enum
@@ -41,7 +36,7 @@ enum
 
 // Prototypes
 void CheckForInterrupt();
-void LogMessage(string msg, int level);
+void LogMessage(wxString msg, int level);
 void MainLoop();
 
 #endif // PGAGENT_H

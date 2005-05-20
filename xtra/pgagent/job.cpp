@@ -11,32 +11,30 @@
 
 #include "pgAgent.h"
 
-
-
-Job::Job(DBconn *conn, const string &jid)
+Job::Job(DBconn *conn, const wxString &jid)
 {
     threadConn=conn;
     jobid=jid;
-    status="";
+    status=wxT("");
 
     int rc=threadConn->ExecuteVoid(
-        "UPDATE pgagent.pga_job SET jobagentid=" + backendPid + ", joblastrun=now() "
-        " WHERE jobagentid IS NULL AND jobid=" + jobid);
+        wxT("UPDATE pgagent.pga_job SET jobagentid=") + backendPid + wxT(", joblastrun=now() ")
+        wxT(" WHERE jobagentid IS NULL AND jobid=") + jobid);
 
     if (rc == 1)
     {
 		DBresult *id=threadConn->Execute(
-			"SELECT nextval('pgagent.pga_joblog_jlgid_seq') AS id");
+			wxT("SELECT nextval('pgagent.pga_joblog_jlgid_seq') AS id"));
 		if (id)
 		{
-			logid=id->GetString("id");
+			logid=id->GetString(wxT("id"));
 
 			DBresult *res=threadConn->Execute(
-				"INSERT INTO pgagent.pga_joblog(jlgid, jlgjobid, jlgstatus) "
-	            "VALUES (" + logid + ", " + jobid + ", 'r')");
+				wxT("INSERT INTO pgagent.pga_joblog(jlgid, jlgjobid, jlgstatus) ")
+	            wxT("VALUES (") + logid + wxT(", ") + jobid + wxT(", 'r')"));
 			if (res)
 			{
-				status="r";
+				status=wxT("r");
 	            delete res;
 			}
 			delete id;
@@ -47,16 +45,16 @@ Job::Job(DBconn *conn, const string &jid)
 
 Job::~Job()
 {
-    if (status != "")
+    if (status != wxT(""))
     {
         threadConn->ExecuteVoid(
-            "UPDATE pgagent.pga_joblog "
-            "   SET jlgstatus='" + status + "', jlgduration=now() - jlgstart "
-            " WHERE jlgid=" + logid + ";\n"
+            wxT("UPDATE pgagent.pga_joblog ")
+            wxT("   SET jlgstatus='") + status + wxT("', jlgduration=now() - jlgstart ")
+            wxT(" WHERE jlgid=") + logid + wxT(";\n")
 
-            "UPDATE pgagent.pga_job "
-            "   SET jobagentid=NULL, jobnextrun=NULL "
-            " WHERE jobid=" + jobid
+            wxT("UPDATE pgagent.pga_job ")
+            wxT("   SET jobagentid=NULL, jobnextrun=NULL ")
+            wxT(" WHERE jobid=") + jobid
             );
     }
 	threadConn->Return();
@@ -67,34 +65,34 @@ int Job::Execute()
 {
     int rc=0;
     DBresult *steps=threadConn->Execute(
-        "SELECT jstid, jstkind, jstdbname, jstcode, jstonerror "
-        "  FROM pgagent.pga_jobstep "
-        " WHERE jstenabled "
-        "   AND jstjobid=" + jobid +
-        " ORDER BY jstname, jstid");
+        wxT("SELECT jstid, jstkind, jstdbname, jstcode, jstonerror ")
+        wxT("  FROM pgagent.pga_jobstep ")
+        wxT(" WHERE jstenabled ")
+        wxT("   AND jstjobid=") + jobid +
+        wxT(" ORDER BY jstname, jstid"));
 
     if (!steps)
     {
-        status='i';
+        status=wxT("i");
         return -1;
     }
 
     while (steps->HasData())
     {
         DBconn *stepConn;
-        string jslid, stepid, jpecode;
+        wxString jslid, stepid, jpecode;
 
-        stepid = steps->GetString("jstid");
+        stepid = steps->GetString(wxT("jstid"));
         
 		DBresult *id=threadConn->Execute(
-			"SELECT nextval('pgagent.pga_jobsteplog_jslid_seq') AS id");
+			wxT("SELECT nextval('pgagent.pga_jobsteplog_jslid_seq') AS id"));
 		if (id)
 		{
-			jslid=id->GetString("id");
+			jslid=id->GetString(wxT("id"));
 			DBresult *res=threadConn->Execute(
-				"INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jsljstid, jslstatus) "
-				"SELECT " + jslid + ", " + logid + ", " + stepid + ", 'r'"
-				"  FROM pgagent.pga_jobstep WHERE jstid=" + stepid);
+				wxT("INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jsljstid, jslstatus) ")
+				wxT("SELECT ") + jslid + wxT(", ") + logid + wxT(", ") + stepid + wxT(", 'r'")
+				wxT("  FROM pgagent.pga_jobstep WHERE jstid=") + stepid);
 
 			if (res)
 			{
@@ -108,19 +106,19 @@ int Job::Execute()
 
         if (rc != 1)
         {
-            status='i';
+            status=wxT("i");
             return -1;
         }
 
-        switch ((int) steps->GetString("jstkind")[0])
+        switch ((int) steps->GetString(wxT("jstkind"))[0])
         {
             case 's':
             {
-                stepConn=DBconn::Get(steps->GetString("jstdbname"));
+                stepConn=DBconn::Get(steps->GetString(wxT("jstdbname")));
                 if (stepConn)
                 {
-                    LogMessage("Executing step " + stepid + " on database " + steps->GetString("jstdbname"), LOG_DEBUG);
-                    rc=stepConn->ExecuteVoid(steps->GetString("jstcode"));
+                    LogMessage(_("Executing step ") + stepid + _(" on database ") + steps->GetString(wxT("jstdbname")), LOG_DEBUG);
+                    rc=stepConn->ExecuteVoid(steps->GetString(wxT("jstcode")));
 					stepConn->Return();
                 }
                 else
@@ -135,31 +133,54 @@ int Job::Execute()
             }
             default:
             {
-                status='i';
+                status=wxT("i");
                 return -1;
             }
         }
 
-        string stepstatus;
+        wxString stepstatus;
         if (rc >= 0)
-            stepstatus = "s";
+            stepstatus = wxT("s");
         else
-            stepstatus = steps->GetString("jstonerror");
+            stepstatus = steps->GetString(wxT("jstonerror"));
 
         rc=threadConn->ExecuteVoid(
-            "UPDATE pgagent.pga_jobsteplog "
-            "   SET jslduration = now() - jslstart, "
-            "       jslresult = " + NumToStr(rc) + ", jslstatus = '" + stepstatus + "' "
-            " WHERE jslid=" + jslid);
-        if (rc != 1 || stepstatus == "f")
+            wxT("UPDATE pgagent.pga_jobsteplog ")
+            wxT("   SET jslduration = now() - jslstart, ")
+            wxT("       jslresult = ") + NumToStr(rc) + wxT(", jslstatus = '") + stepstatus + wxT("' ")
+            wxT(" WHERE jslid=") + jslid);
+        if (rc != 1 || stepstatus == wxT("f"))
         {
-            status = 'f';
+            status = wxT("f");
             return -1;
         }
         steps->MoveNext();
     }
     delete steps;
 
-    status = 's';
+    status = wxT("s");
     return 0;
+}
+
+
+
+JobThread::JobThread(const wxString &jid)  
+: wxThread(wxTHREAD_DETACHED)
+{ 
+	LogMessage(_("Creating job thread for job ") + jid, LOG_DEBUG); 
+	jobid = jid; 
+}
+    
+
+JobThread::~JobThread() 
+{ 
+	LogMessage(_("Destroying job thread for job ") + jobid, LOG_DEBUG); 
+}
+
+
+void *JobThread::Entry()
+{
+	LogMessage(_("Running job thread for job ") + jobid, LOG_DEBUG);
+
+	return(NULL);
 }

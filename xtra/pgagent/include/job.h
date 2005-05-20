@@ -13,19 +13,35 @@
 #ifndef JOB_H
 #define JOB_H
 
+#include <wx/wx.h>
+
+
 class Job
 {
 public:
-    Job(DBconn *conn, const string &jid);
+    Job(DBconn *conn, const wxString &jid);
     ~Job();
 
     int Execute();
-    bool Runnable() { return status == "r"; }
+    bool Runnable() { return status == wxT("r"); }
 
 protected:
     DBconn *threadConn;
-    string jobid, logid;
-    string status;
+    wxString jobid, logid;
+    wxString status;
+};
+
+
+class JobThread : public wxThread
+{
+public:
+    JobThread(const wxString &jid);
+    ~JobThread();
+
+	virtual void *Entry();
+
+private:
+	wxString jobid;
 };
 
 #endif // JOB_H

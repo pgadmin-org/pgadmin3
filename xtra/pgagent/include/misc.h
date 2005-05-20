@@ -13,12 +13,11 @@
 #ifndef MISC_H
 #define MISC_H
 
-void fatal(const string &description);
 
 void WaitAWhile(const bool waitLong=false);
 void setOptions(int argc, char **argv);
-string getArg(int &argc, char** &argv);
-string NumToStr(const long l);
+wxString getArg(int &argc, char** &argv);
+wxString NumToStr(const long l);
 
 #endif // MISC_H
 
