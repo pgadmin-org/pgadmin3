@@ -17,10 +17,12 @@
 #error this file is for unix only!
 #endif
 
-void usage()
+void usage(const wxString &executable)
 {
+	wxFileName *fn = new wxFileName(executable);
+
     wxPrintf(_("Usage:\n"));
-    wxPrintf(_("pgAgent INSTALL [options] <connect-string>\n"));
+    wxPrintf(fn->GetName() + _(" [options] <connect-string>\n"));
     wxPrintf(_("options:\n"));
     wxPrintf(_("-t <poll time interval in seconds (default 10)>\n"));
     wxPrintf(_("-r <retry period after connection abort in seconds (>=10, default 30)>\n"));
@@ -76,9 +78,12 @@ int main(int argc, char **argv)
 	// Statup wx
 	wxInitialize();
     
+    wxString executable;
+	executable = wxString::FromAscii(argv[0]);
+
     if (argc < 2)
     {
-        usage();
+        usage(executable);
         return 1;
     }
 

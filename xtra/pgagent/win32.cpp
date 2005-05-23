@@ -15,6 +15,7 @@
 #error this file is for win32 only!
 #endif
 
+#include <wx/filename.h>
 #include <process.h>
 
 // for debugging purposes, we can start the service paused
@@ -314,11 +315,13 @@ bool removeService(const char *serviceName)
 
 
 
-void usage()
+void usage(const wxString &executable)
 {
+	wxFileName *fn = new wxFileName(executable);
+
     wxPrintf(_("Usage:\n"));
-    wxPrintf(_("pgAgent REMOVE <serviceName>\n"));
-    wxPrintf(_("pgAgent INSTALL <serviceName> [options] <connect-string>\n"));
+    wxPrintf(fn->GetName() + _(" REMOVE <serviceName>\n"));
+    wxPrintf(fn->GetName() + _(" INSTALL <serviceName> [options] <connect-string>\n"));
     wxPrintf(_("options:\n"));
     wxPrintf(_("-u <user>\n"));
     wxPrintf(_("-p <password>\n"));
@@ -350,14 +353,14 @@ void main(int argc, char **argv)
 	// Statup wx
 	wxInitialize();
     
-    if (argc < 3)
-    {
-        usage();
-        return;
-    }
-
     wxString executable;
 	executable = wxString::FromAscii(*argv++);
+
+    if (argc < 3)
+    {
+        usage(executable);
+        return;
+    }
 
     wxString command;
 	command = wxString::FromAscii(*argv++);
@@ -441,7 +444,7 @@ void main(int argc, char **argv)
     }
     else
     {
-        usage();
+        usage(executable);
     }
 
     return;
