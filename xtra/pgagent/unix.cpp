@@ -11,11 +11,12 @@
 
 #include "pgAgent.h"
 
-#include <fcntl.h>
-
 #ifdef WIN32
 #error this file is for unix only!
 #endif
+
+#include <wx/filename.h>
+#include <fcntl.h>
 
 void usage(const wxString &executable)
 {
