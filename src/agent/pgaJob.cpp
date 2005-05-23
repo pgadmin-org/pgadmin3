@@ -22,6 +22,7 @@
 #include "pgaStep.h"
 #include "pgaSchedule.h"
 
+extern sysSettings *settings;
 
 pgaJob::pgaJob(const wxString& newName)
 : pgDatabaseObject(PGA_JOB, newName)
@@ -170,7 +171,8 @@ void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
 			 wxT(", (jlgstart + jlgduration) AS endtime")
              wxT("  FROM pgagent.pga_joblog\n")
              wxT(" WHERE jlgjobid = ") + NumToStr(GetRecId()) +
-			 wxT(" ORDER BY jlgstart DESC");
+			 wxT(" ORDER BY jlgstart DESC") +
+			 wxT(" LIMIT ") + NumToStr(settings->GetMaxRows());
 
     if (statistics)
     {

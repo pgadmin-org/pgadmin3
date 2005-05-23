@@ -22,6 +22,7 @@
 #include "pgaStep.h"
 #include "pgaSchedule.h"
 
+extern sysSettings *settings;
 
 pgaStep::pgaStep(pgCollection *_collection, const wxString& newName)
 : pgaJobObject(_collection->GetJob(), PGA_STEP, newName)
@@ -155,7 +156,8 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
 			 wxT(", (jslstart + jslduration) AS endtime")
              wxT("  FROM pgagent.pga_jobsteplog\n")
              wxT(" WHERE jsljstid = ") + NumToStr(GetRecId()) +
-			 wxT(" ORDER BY jslstart DESC");
+			 wxT(" ORDER BY jslstart DESC")
+			 wxT(" LIMIT ") + NumToStr(settings->GetMaxRows());
 
     if (statistics)
     {
