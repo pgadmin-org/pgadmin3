@@ -154,6 +154,7 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
              wxT(", jslstart")
              wxT(", jslduration")
 			 wxT(", (jslstart + jslduration) AS endtime")
+			 wxT(", jsloutput")
              wxT("  FROM pgagent.pga_jobsteplog\n")
              wxT(" WHERE jsljstid = ") + NumToStr(GetRecId()) +
 			 wxT(" ORDER BY jslstart DESC")
@@ -165,12 +166,13 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
 
         // Add the statistics view columns
 		statistics->ClearAll();
-		statistics->AddColumn(_("Run"), 60);
-        statistics->AddColumn(_("Status"), 90);
-		statistics->AddColumn(_("Result"), 90);
-		statistics->AddColumn(_("Start time"), 125);
-		statistics->AddColumn(_("End time"), 125);
-		statistics->AddColumn(_("Duration"), 110);
+		statistics->AddColumn(_("Run"), 50);
+        statistics->AddColumn(_("Status"), 60);
+		statistics->AddColumn(_("Result"), 60);
+		statistics->AddColumn(_("Start time"), 95);
+		statistics->AddColumn(_("End time"), 95);
+		statistics->AddColumn(_("Duration"), 70);
+		statistics->AddColumn(_("Output"), 200);
 
         pgSet *stats = database->ExecuteSet(sql);
 		wxString status;
@@ -197,8 +199,10 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
 
                 long pos=statistics->AppendItem(stats->GetVal(0), status, stats->GetVal(2));
 				statistics->SetItem(pos, 3, startTime.Format());
-				statistics->SetItem(pos, 4, endTime.Format());
+				if (stats->GetVal(5).Length() > 0)
+					statistics->SetItem(pos, 4, endTime.Format());
 				statistics->SetItem(pos, 5, stats->GetVal(4));
+				statistics->SetItem(pos, 6, stats->GetVal(6));
 
 				stats->MoveNext();
             }

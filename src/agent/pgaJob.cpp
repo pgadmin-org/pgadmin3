@@ -180,11 +180,11 @@ void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
 
         // Add the statistics view columns
 		statistics->ClearAll();
-		statistics->AddColumn(_("Run"), 70);
-        statistics->AddColumn(_("Status"), 90);
-		statistics->AddColumn(_("Start time"), 125);
-		statistics->AddColumn(_("End time"), 125);
-		statistics->AddColumn(_("Duration"), 110);
+		statistics->AddColumn(_("Run"), 50);
+        statistics->AddColumn(_("Status"), 60);
+		statistics->AddColumn(_("Start time"), 95);
+		statistics->AddColumn(_("End time"), 95);
+		statistics->AddColumn(_("Duration"), 70);
 
         pgSet *stats = database->ExecuteSet(sql);
 		wxString status;
@@ -210,7 +210,8 @@ void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
 				endTime.ParseDateTime(stats->GetVal(4));
 
                 long pos=statistics->AppendItem(stats->GetVal(0), status, startTime.Format());
-                statistics->SetItem(pos, 3, endTime.Format());
+				if (stats->GetVal(4).Length() > 0)
+                    statistics->SetItem(pos, 3, endTime.Format());
 				statistics->SetItem(pos, 4, stats->GetVal(3));
 
 				stats->MoveNext();
