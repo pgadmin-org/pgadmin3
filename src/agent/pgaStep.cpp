@@ -191,6 +191,8 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
                     status = _("Failed");
 				else if (stats->GetVal(1) == wxT("i"))
                     status = _("Ignored");
+				else if (stats->GetVal(1) == wxT("i"))
+                    status = _("Aborted");
 				else
                     status = _("Unknown");
 

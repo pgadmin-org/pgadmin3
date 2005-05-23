@@ -121,7 +121,9 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     pgaJob *job=0;
 
     pgSet *jobs= collection->GetDatabase()->ExecuteSet(
-       wxT("SELECT *, ''::text AS joblastresult FROM pgagent.pga_job j\n")
+       wxT("SELECT *, ")
+	   wxT("(SELECT jlgstatus FROM pgagent.pga_joblog jl WHERE jl.jlgjobid = j.jobid ORDER BY jlgid DESC LIMIT 1) AS joblastresult ")
+	   wxT("FROM pgagent.pga_job j\n")
        wxT("  JOIN pgagent.pga_jobclass cl ON cl.jclid=jobjclid\n")
        wxT("  LEFT OUTER JOIN pgagent.pga_jobagent ag ON ag.jagpid=jobagentid\n")
        + restriction +
@@ -131,6 +133,19 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     {
         while (!jobs->Eof())
         {
+			wxString status;
+			if (jobs->GetVal(wxT("joblastresult")) == wxT("r"))
+                status = _("Running");
+		    else if (jobs->GetVal(wxT("joblastresult")) == wxT("s"))
+                status = _("Successful");
+			else if (jobs->GetVal(wxT("joblastresult")) == wxT("f"))
+                status = _("Failed");
+			else if (jobs->GetVal(wxT("joblastresult")) == wxT("d"))
+                status = _("Aborted");
+        	else if (jobs->GetVal(wxT("joblastresult")) == wxT("i"))
+                status = _("No steps");
+			else
+                status = _("Unknown");
 
             job = new pgaJob(jobs->GetVal(wxT("jobname")));
             job->iSetRecId(jobs->GetLong(wxT("jobid")));
@@ -144,7 +159,7 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             job->iSetChanged(jobs->GetDateTime(wxT("jobchanged")));
             job->iSetNextrun(jobs->GetDateTime(wxT("jobnextrun")));
             job->iSetLastrun(jobs->GetDateTime(wxT("joblastrun")));
-            job->iSetLastresult(jobs->GetVal(wxT("joblastresult")));
+            job->iSetLastresult(status);
 			job->iSetCurrentAgent(jobs->GetVal(wxT("jagstation")));
 
             if (browser)
