@@ -139,6 +139,8 @@ void DBconn::Return()
 {
 	wxMutexLocker lock(s_PoolLock);
 
+	// Cleanup
+	this->ExecuteVoid(wxT("RESET ALL"));
 	this->lastError.Empty();
 
 	LogMessage(_("Returning connection to database ") + this->dbname, LOG_DEBUG);
