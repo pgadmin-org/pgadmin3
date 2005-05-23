@@ -70,7 +70,7 @@ void setOptions(int argc, char **argv)
                     break;
                 }
 #ifndef _WIN32_
-                case 'd':
+                case 'f':
                 {
 					runInForeground = true;
                     break;
