@@ -86,7 +86,7 @@ int Job::Execute()
     while (steps->HasData())
     {
         DBconn *stepConn;
-        wxString jslid, stepid, jpecode;
+        wxString jslid, stepid, jpecode, output;
 
         stepid = steps->GetString(wxT("jstid"));
         
@@ -125,6 +125,7 @@ int Job::Execute()
                 {
                     LogMessage(_("Executing step ") + stepid + _(" (part of job ") + jobid + wxT(")"), LOG_DEBUG);
                     rc=stepConn->ExecuteVoid(steps->GetString(wxT("jstcode")));
+					output = stepConn->GetLastError();
 					stepConn->Return();
                 }
                 else
@@ -153,7 +154,8 @@ int Job::Execute()
         rc=threadConn->ExecuteVoid(
             wxT("UPDATE pgagent.pga_jobsteplog ")
             wxT("   SET jslduration = now() - jslstart, ")
-            wxT("       jslresult = ") + NumToStr(rc) + wxT(", jslstatus = '") + stepstatus + wxT("' ")
+            wxT("       jslresult = ") + NumToStr(rc) + wxT(", jslstatus = '") + stepstatus + wxT("', ")
+			wxT("       jsloutput = ") + qtString(output) + wxT(" ")
             wxT(" WHERE jslid=") + jslid);
         if (rc != 1 || stepstatus == wxT("f"))
         {

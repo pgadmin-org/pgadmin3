@@ -139,6 +139,8 @@ void DBconn::Return()
 {
 	wxMutexLocker lock(s_PoolLock);
 
+	this->lastError.Empty();
+
 	LogMessage(_("Returning connection to database ") + this->dbname, LOG_DEBUG);
 	inUse = false;
 }

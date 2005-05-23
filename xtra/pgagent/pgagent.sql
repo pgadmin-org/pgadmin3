@@ -131,7 +131,8 @@ jsljstid             int4                 NOT NULL REFERENCES pgagent.pga_jobste
 jslstatus            char                 NOT NULL CHECK (jslstatus IN ('r', 's', 'i', 'f')) DEFAULT 'r', -- running, success, ignored, failed
 jslresult            int2                 NULL,
 jslstart             timestamptz          NOT NULL DEFAULT current_timestamp,
-jslduration          interval             NULL
+jslduration          interval             NULL,
+jsloutput            text
 ) WITHOUT OIDS;
 CREATE INDEX pga_jobsteplog_jslid ON pgagent.pga_jobsteplog(jsljlgid);
 COMMENT ON TABLE pgagent.pga_jobsteplog IS 'Job step run logs.';

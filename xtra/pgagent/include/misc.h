@@ -18,6 +18,7 @@ void WaitAWhile(const bool waitLong=false);
 void setOptions(int argc, char **argv);
 wxString getArg(int &argc, char** &argv);
 wxString NumToStr(const long l);
+wxString qtString(const wxString& value);
 
 #endif // MISC_H
 
