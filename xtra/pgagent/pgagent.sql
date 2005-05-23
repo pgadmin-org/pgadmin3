@@ -114,13 +114,13 @@ COMMENT ON TABLE pgagent.pga_schedule IS 'Job schedule exceptions';
 CREATE TABLE pgagent.pga_joblog (
 jlgid                serial               NOT NULL PRIMARY KEY,
 jlgjobid             int4                 NOT NULL REFERENCES pgagent.pga_job (jobid) ON DELETE CASCADE ON UPDATE RESTRICT,
-jlgstatus            char                 NOT NULL CHECK (jlgstatus IN ('r', 's', 'f', 'i')) DEFAULT 'r', -- running, success, failed, internal failure
+jlgstatus            char                 NOT NULL CHECK (jlgstatus IN ('r', 's', 'f', 'i', 'd')) DEFAULT 'r', -- running, success, failed, internal failure, aborted
 jlgstart             timestamptz          NOT NULL DEFAULT current_timestamp,
 jlgduration          interval             NULL
 ) WITHOUT OIDS;
 CREATE INDEX pga_joblog_jobid ON pgagent.pga_joblog(jlgjobid);
 COMMENT ON TABLE pgagent.pga_joblog IS 'Job run logs.';
-COMMENT ON COLUMN pgagent.pga_joblog.jlgstatus IS 'Status of job: r=running, s=successfully finished, f=failed, i=no steps to execute';
+COMMENT ON COLUMN pgagent.pga_joblog.jlgstatus IS 'Status of job: r=running, s=successfully finished, f=failed, i=no steps to execute, d=aborted';
 
 
 

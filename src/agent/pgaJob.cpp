@@ -201,6 +201,8 @@ void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
                     status = _("Successful");
 				else if (stats->GetVal(1) == wxT("f"))
                     status = _("Failed");
+				else if (stats->GetVal(1) == wxT("d"))
+                    status = _("Aborted");
 				else if (stats->GetVal(1) == wxT("i"))
                     status = _("No steps");
 				else
