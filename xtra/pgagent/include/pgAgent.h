@@ -26,6 +26,10 @@ extern wxString connectString;
 extern wxString serviceDBname;
 extern wxString backendPid;
 
+#ifndef _WIN32_
+extern bool runInForeground;
+#endif
+
 // Log levels
 enum
 {

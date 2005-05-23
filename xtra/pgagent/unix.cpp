@@ -25,6 +25,7 @@ void usage(const wxString &executable)
     wxPrintf(_("Usage:\n"));
     wxPrintf(fn->GetName() + _(" [options] <connect-string>\n"));
     wxPrintf(_("options:\n"));
+	wxPrintf(_("-f run in the foreground (do not detach from the terminal)\n"));
     wxPrintf(_("-t <poll time interval in seconds (default 10)>\n"));
     wxPrintf(_("-r <retry period after connection abort in seconds (>=10, default 30)>\n"));
     wxPrintf(_("-l <logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)>\n"));
@@ -93,7 +94,8 @@ int main(int argc, char **argv)
 
     setOptions(argc, argv);
 
-    daemonize();
+	if (!runInForeground);
+		daemonize();
 
     MainLoop();
 

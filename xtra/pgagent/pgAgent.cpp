@@ -22,6 +22,9 @@ long longWait=30;
 long shortWait=10;
 long minLogLevel=LOG_ERROR;
 
+#ifndef _WIN32_
+bool runInForeground = false;
+#endif
 
 int MainRestartLoop(DBconn *serviceConn)
 {

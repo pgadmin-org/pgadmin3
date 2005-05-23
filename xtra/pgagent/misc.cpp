@@ -69,6 +69,13 @@ void setOptions(int argc, char **argv)
                         minLogLevel = val;
                     break;
                 }
+#ifndef _WIN32_
+                case 'd':
+                {
+					runInForeground = true;
+                    break;
+                }
+#endif
             }
         }
         else
