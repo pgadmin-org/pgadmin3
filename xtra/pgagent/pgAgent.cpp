@@ -51,15 +51,18 @@ int MainRestartLoop(DBconn *serviceConn)
         // There are orphaned agent entries
         // mark the jobs as aborted
         rc=serviceConn->ExecuteVoid(
-            wxT("UPDATE pgagent.pga_joblog SET jlgstatus='d' ")
-            wxT("  FROM pga_tmp_zombies Z ")
-            wxT("  JOIN pgagent.pga_job J ON jobagentid=jagpid ")
-            wxT("  JOIN pgagent.pga_joblog LG ON jlgjobid=J.jobid ")
-            wxT(" WHERE LG.jlgstatus='r';\n")
+            wxT("UPDATE pgagent.pga_joblog SET jlgstatus='d' WHERE jlgid IN (")
+            wxT("SELECT jlgid ")
+            wxT("FROM pga_tmp_zombies z, pgagent.pga_job j, pgagent.pga_joblog l ")
+            wxT("WHERE z.jagpid=j.jobagentid AND j.jobid = l.jlgjobid AND l.jlgstatus='r');\n")
+
+            wxT("UPDATE pgagent.pga_jobsteplog SET jslstatus='d' WHERE jslid IN ( ")
+            wxT("SELECT jslid ")
+            wxT("FROM pga_tmp_zombies z, pgagent.pga_job j, pgagent.pga_joblog l, pgagent.pga_jobsteplog s ")
+            wxT("WHERE z.jagpid=j.jobagentid AND j.jobid = l.jlgjobid AND l.jlgid = s.jsljlgid AND s.jslstatus='r');\n")
 
             wxT("UPDATE pgagent.pga_job SET jobagentid=NULL, jobnextrun=NULL ")
-            wxT("  FROM pga_tmp_zombies Z ")
-            wxT("  JOIN pgagent.pga_job J ON jobagentid=jagpid;\n")
+            wxT("  WHERE jobagentid IN (SELECT jagpid FROM pga_tmp_zombies);\n")
             
             wxT("DELETE FROM pgagent.pga_jobagent ")
             wxT("  WHERE jagpid IN (SELECT jagpid FROM pga_tmp_zombies);\n")

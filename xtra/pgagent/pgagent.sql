@@ -128,7 +128,7 @@ CREATE TABLE pgagent.pga_jobsteplog (
 jslid                serial               NOT NULL PRIMARY KEY,
 jsljlgid             int4                 NOT NULL REFERENCES pgagent.pga_joblog (jlgid) ON DELETE CASCADE ON UPDATE RESTRICT,
 jsljstid             int4                 NOT NULL REFERENCES pgagent.pga_jobstep (jstid) ON DELETE CASCADE ON UPDATE RESTRICT,
-jslstatus            char                 NOT NULL CHECK (jslstatus IN ('r', 's', 'i', 'f')) DEFAULT 'r', -- running, success, ignored, failed
+jslstatus            char                 NOT NULL CHECK (jslstatus IN ('r', 's', 'i', 'f', 'd')) DEFAULT 'r', -- running, success, ignored, failed, aborted
 jslresult            int2                 NULL,
 jslstart             timestamptz          NOT NULL DEFAULT current_timestamp,
 jslduration          interval             NULL,
@@ -136,7 +136,7 @@ jsloutput            text
 ) WITHOUT OIDS;
 CREATE INDEX pga_jobsteplog_jslid ON pgagent.pga_jobsteplog(jsljlgid);
 COMMENT ON TABLE pgagent.pga_jobsteplog IS 'Job step run logs.';
-COMMENT ON COLUMN pgagent.pga_jobsteplog.jslstatus IS 'Status of job step: r=running, s=successfully finished,  f=failed stopping job, i=ignored failure';
+COMMENT ON COLUMN pgagent.pga_jobsteplog.jslstatus IS 'Status of job step: r=running, s=successfully finished,  f=failed stopping job, i=ignored failure, d=aborted';
 COMMENT ON COLUMN pgagent.pga_jobsteplog.jslresult IS 'Return code of job step';
 
 
