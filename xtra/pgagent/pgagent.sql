@@ -155,31 +155,31 @@ DECLARE
     nextrun         timestamp := ''1970-01-01 00:00:00-00'';
     runafter        timestamp := ''1970-01-01 00:00:00-00'';
 
-    bingo	        bool := FALSE;
-    gotit	        bool := FALSE;
-    foundval	    bool := FALSE;
-    daytweak	    bool := FALSE;
-    minutetweak		bool := FALSE;
+    bingo            bool := FALSE;
+    gotit            bool := FALSE;
+    foundval        bool := FALSE;
+    daytweak        bool := FALSE;
+    minutetweak        bool := FALSE;
 
-    i		        int2 := 0;
-    d		        int2 := 0;
+    i                int2 := 0;
+    d                int2 := 0;
 
-    nextminute	    int2 := 0;
+    nextminute        int2 := 0;
     nexthour        int2 := 0;
-    nextday	        int2 := 0;
+    nextday            int2 := 0;
     nextmonth       int2 := 0;
-    nextyear	    int2 := 0;
-   
+    nextyear        int2 := 0;
+
 
 BEGIN
     -- No valid start date has been specified
     IF jscstart IS NULL THEN RETURN NULL; END IF;
-    
+
     -- The schedule is past its end date
     IF jscend IS NOT NULL AND jscend < now() THEN RETURN NULL; END IF;
 
     -- Get the time to find the next run after. It will just be the later of
-    -- now() + 1m and the start date for the time being, however, we might want to 
+    -- now() + 1m and the start date for the time being, however, we might want to
     -- do more complex things using this value in the future.
     IF date_trunc(''MINUTE'', jscstart) > date_trunc(''MINUTE'', (now() + ''1 Minute''::interval)) THEN
         runafter := date_trunc(''MINUTE'', jscstart);
@@ -216,7 +216,7 @@ BEGIN
             FOR i IN 1 .. (nextmonth - 1) LOOP
                 IF jscmonths[i] = TRUE THEN
                     nextmonth := i;
-    
+
                     -- Wrap into next year
                     nextyear := nextyear + 1;
                     gotit := TRUE;
@@ -228,7 +228,7 @@ BEGIN
 
         --
         -- Get the next run day
-        --    
+        --
         -- If the year, or month have incremented, get the lowest day,
         -- otherwise look for the next day matching or after today.
         IF (nextyear > date_part(''YEAR'', runafter) OR nextmonth > date_part(''MONTH'', runafter)) THEN
@@ -244,7 +244,7 @@ BEGIN
             nextday := date_part(''DAY'', runafter);
             gotit := FALSE;
             FOR i IN nextday .. 32 LOOP
-                IF jscmonthdays[i] = TRUE THEN   
+                IF jscmonthdays[i] = TRUE THEN
                     nextday := i;
                     gotit := TRUE;
                     foundval := TRUE;
@@ -255,7 +255,7 @@ BEGIN
                 FOR i IN 1 .. (nextday - 1) LOOP
                     IF jscmonthdays[i] = TRUE THEN
                         nextday := i;
-    
+
                         -- Wrap into next month
                         IF nextmonth = 12 THEN
                             nextyear := nextyear + 1;
@@ -305,7 +305,7 @@ BEGIN
         END IF;
 
         --
-        -- Get the next run hour    
+        -- Get the next run hour
         --
         -- If the year, month or day have incremented, get the lowest hour,
         -- otherwise look for the next hour matching or after the current one.
@@ -346,7 +346,7 @@ BEGIN
                                 d := 28;
                             END IF;
                         END IF;
-    
+
                         IF nextday = d THEN
                             nextday := 1;
                             IF nextmonth = 12 THEN
@@ -358,7 +358,7 @@ BEGIN
                         ELSE
                             nextday := nextday + 1;
                         END IF;
-    
+
                         gotit := TRUE;
                         foundval := TRUE;
                         EXIT;
@@ -368,16 +368,16 @@ BEGIN
         END IF;
 
         --
-        -- Get the next run minute    
+        -- Get the next run minute
         --
         -- If the year, month day or hour have incremented, get the lowest minute,
         -- otherwise look for the next minute matching or after the current one.
         IF (nextyear > date_part(''YEAR'', runafter) OR nextmonth > date_part(''MONTH'', runafter) OR nextday > date_part(''DAY'', runafter) OR nexthour > date_part(''HOUR'', runafter) OR daytweak = TRUE) THEN
             nextminute := 0;
             IF minutetweak = TRUE THEN
-		d := 1;
+        d := 1;
             ELSE
-		d := date_part(''YEAR'', runafter)::int2;
+        d := date_part(''YEAR'', runafter)::int2;
             END IF;
             FOR i IN d .. 60 LOOP
                 IF jscminutes[i] = TRUE THEN
@@ -401,7 +401,7 @@ BEGIN
                 FOR i IN 1 .. nextminute LOOP
                     IF jscminutes[i] = TRUE THEN
                         nextminute := i - 1;
-    
+
                         -- Wrap into next hour
                         IF (nextmonth = 1 OR nextmonth = 3 OR nextmonth = 5 OR nextmonth = 7 OR nextmonth = 8 OR nextmonth = 10 OR nextmonth = 12) THEN
                             d = 31;
@@ -431,7 +431,7 @@ BEGIN
                         ELSE
                             nexthour := nexthour + 1;
                         END IF;
-    
+
                         gotit := TRUE;
                         foundval := TRUE;
                         EXIT;
@@ -444,7 +444,7 @@ BEGIN
         -- happen if all array entries are set to false. In this case, add a minute.
 
         nextrun := (nextyear::varchar || ''-''::varchar || nextmonth::varchar || ''-'' || nextday::varchar || '' '' || nexthour::varchar || '':'' || nextminute::varchar)::timestamptz;
-    
+
         IF nextrun = runafter AND foundval = FALSE THEN
                 nextrun := nextrun + INTERVAL ''1 Minute'';
         END IF;
@@ -460,17 +460,17 @@ BEGIN
         IF ((jscminutes = ''{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}'' OR jscminutes[date_part(''MINUTE'', nextrun) + 1] = TRUE) AND
             (jschours = ''{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}'' OR jschours[date_part(''HOUR'', nextrun) + 1] = TRUE) AND
             (jscmonthdays = ''{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}'' OR jscmonthdays[date_part(''DAY'', nextrun)] = TRUE OR
-            (jscmonthdays = ''{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t}'' AND 
-             ((date_part(''MONTH'', nextrun) IN (1,3,5,7,8,10,12) AND date_part(''DAY'', nextrun) = 31) OR 
-              (date_part(''MONTH'', nextrun) IN (4,6,9,11) AND date_part(''DAY'', nextrun) = 30) OR 
+            (jscmonthdays = ''{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t}'' AND
+             ((date_part(''MONTH'', nextrun) IN (1,3,5,7,8,10,12) AND date_part(''DAY'', nextrun) = 31) OR
+              (date_part(''MONTH'', nextrun) IN (4,6,9,11) AND date_part(''DAY'', nextrun) = 30) OR
               (date_part(''MONTH'', nextrun) = 2 AND ((pgagent.pga_is_leap_year(date_part(''DAY'', nextrun)::int2) AND date_part(''DAY'', nextrun) = 29) OR date_part(''DAY'', nextrun) = 28))))) AND
             (jscmonths = ''{f,f,f,f,f,f,f,f,f,f,f,f}'' OR jscmonths[date_part(''MONTH'', nextrun)] = TRUE)) THEN
 
 
             -- Now, check to see if the nextrun time found is a) on an acceptable
-            -- weekday, and b) not matched by an exception. If not, set 
+            -- weekday, and b) not matched by an exception. If not, set
             -- runafter = nextrun and try again.
-        
+
             -- Check for a wildcard weekday
             gotit := FALSE;
             FOR i IN 1 .. 7 LOOP
@@ -482,7 +482,7 @@ BEGIN
 
             -- OK, is the correct weekday selected, or a wildcard?
             IF (jscweekdays[date_part(''DOW'', nextrun) + 1] = TRUE OR gotit = FALSE) THEN
-            
+
                 -- Check for exceptions
                 SELECT INTO d jexid FROM pgagent.pga_exception WHERE jexscid = jscid AND ((jexdate = nextrun::date AND jextime = nextrun::time) OR (jexdate = nextrun::date AND jextime IS NULL) OR (jexdate IS NULL AND jextime = nextrun::time));
                 IF FOUND THEN
@@ -490,7 +490,7 @@ BEGIN
                     runafter := nextrun + INTERVAL ''1 Minute'';
                     bingo := FALSE;
                     minutetweak := TRUE;
-		    daytweak := FALSE;
+            daytweak := FALSE;
                 ELSE
                     bingo := TRUE;
                 END IF;
@@ -506,11 +506,11 @@ BEGIN
             runafter := nextrun + INTERVAL ''1 Minute'';
             bingo := FALSE;
             minutetweak := TRUE;
-	    daytweak := FALSE;
-        END IF;    
+        daytweak := FALSE;
+        END IF;
 
     END LOOP;
- 
+
     RETURN nextrun;
 END;
 ' LANGUAGE 'plpgsql' VOLATILE;
@@ -548,8 +548,8 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql' IMMUTABLE;
 COMMENT ON FUNCTION pgagent.pga_is_leap_year(int2) IS 'Returns TRUE is $1 is a leap year';
-  
-  
+
+
 CREATE OR REPLACE FUNCTION pgagent.pga_job_trigger()
   RETURNS "trigger" AS
 $BODY$
@@ -581,7 +581,7 @@ BEGIN
     IF TG_OP = ''DELETE'' THEN
         -- update pga_job from remaining schedules
         -- the actual calculation of jobnextrun will be performed in the trigger
-        UPDATE pgagent.pga_job 
+        UPDATE pgagent.pga_job
            SET jobnextrun = NULL
          WHERE jobenabled AND jobid=OLD.jscjobid;
         RETURN OLD;
@@ -616,7 +616,7 @@ BEGIN
 
         -- update pga_job from remaining schedules
         -- the actual calculation of jobnextrun will be performed in the trigger
-        UPDATE pgagent.pga_job 
+        UPDATE pgagent.pga_job
            SET jobnextrun = NULL
          WHERE jobenabled AND jobid=jobid;
         RETURN OLD;

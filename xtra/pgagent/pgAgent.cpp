@@ -22,7 +22,7 @@ long longWait=30;
 long shortWait=10;
 long minLogLevel=LOG_ERROR;
 
-#ifndef _WIN32_
+#ifndef WIN32
 bool runInForeground = false;
 #endif
 
@@ -32,7 +32,7 @@ int MainRestartLoop(DBconn *serviceConn)
 
     int rc;
 
-	LogMessage(_("Clearing zombies"), LOG_DEBUG);
+    LogMessage(_("Clearing zombies"), LOG_DEBUG);
     rc=serviceConn->ExecuteVoid(
         wxT("CREATE TEMP TABLE pga_tmp_zombies(jagpid int4)"));
 
@@ -63,7 +63,7 @@ int MainRestartLoop(DBconn *serviceConn)
 
             wxT("UPDATE pgagent.pga_job SET jobagentid=NULL, jobnextrun=NULL ")
             wxT("  WHERE jobagentid IN (SELECT jagpid FROM pga_tmp_zombies);\n")
-            
+
             wxT("DELETE FROM pgagent.pga_jobagent ")
             wxT("  WHERE jagpid IN (SELECT jagpid FROM pga_tmp_zombies);\n")
             );
@@ -71,8 +71,8 @@ int MainRestartLoop(DBconn *serviceConn)
 
     char hostname[255];
     gethostname(hostname, 255);
-	wxString hostnamestr;
-	hostnamestr = wxString::FromAscii(hostname);
+    wxString hostnamestr;
+    hostnamestr = wxString::FromAscii(hostname);
 
     rc=serviceConn->ExecuteVoid(
         wxT("INSERT INTO pgagent.pga_jobagent (jagpid, jagstation) SELECT pg_backend_pid(), '") + hostnamestr + wxT("'"));
@@ -83,7 +83,7 @@ int MainRestartLoop(DBconn *serviceConn)
     {
         bool foundJobToExecute=false;
 
-		LogMessage(_("Checking for jobs to run"), LOG_DEBUG);
+        LogMessage(_("Checking for jobs to run"), LOG_DEBUG);
         DBresult *res=serviceConn->Execute(
             wxT("SELECT J.jobid ")
             wxT("  FROM pgagent.pga_job J ")
@@ -95,24 +95,24 @@ int MainRestartLoop(DBconn *serviceConn)
 
         if (res)
         {
-			while(res->HasData())
-			{
-				wxString jobid=res->GetString(wxT("jobid"));
+            while(res->HasData())
+            {
+                wxString jobid=res->GetString(wxT("jobid"));
 
-				JobThread *jt = new JobThread(jobid);
-	
-				if (jt->Runnable())
-				{
-					jt->Create();
-					jt->Run();
-					foundJobToExecute = true;
-				}
-				res->MoveNext();
+                JobThread *jt = new JobThread(jobid);
 
-			}
+                if (jt->Runnable())
+                {
+                    jt->Create();
+                    jt->Run();
+                    foundJobToExecute = true;
+                }
+                res->MoveNext();
 
-			delete res;
-			LogMessage(_("Sleeping..."), LOG_DEBUG);
+            }
+
+            delete res;
+            LogMessage(_("Sleeping..."), LOG_DEBUG);
             WaitAWhile();
         }
         else
@@ -128,33 +128,33 @@ int MainRestartLoop(DBconn *serviceConn)
 
 void MainLoop()
 {
-    // OK, let's get down to business 
+    // OK, let's get down to business
     do
     {
-	    LogMessage(_("Creating primary connection"), LOG_DEBUG);
+        LogMessage(_("Creating primary connection"), LOG_DEBUG);
         DBconn *serviceConn=DBconn::InitConnection(connectString);
-    
-		if (serviceConn && serviceConn->IsValid())
+
+        if (serviceConn && serviceConn->IsValid())
         {
             serviceDBname = serviceConn->GetDBname();
 
-			// Basic sanity check, and a chance to get the serviceConn's PID
-	        LogMessage(_("Database sanity check"), LOG_DEBUG);
+            // Basic sanity check, and a chance to get the serviceConn's PID
+            LogMessage(_("Database sanity check"), LOG_DEBUG);
             DBresult *res=serviceConn->Execute(wxT("SELECT count(*) As count, pg_backend_pid() AS pid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace WHERE relname='pga_job' AND nspname='pgagent'"));
             if (res)
-			{
+            {
                 wxString val=res->GetString(wxT("count"));
-            
+
                 if (val == wxT("0"))
                     LogMessage(_("Could not find the table 'pgagent.pga_job'. Have you run pgagent.sql on this database?"), LOG_ERROR);
-    
-	    	    backendPid=res->GetString(wxT("pid"));
-			}
-        
+
+                backendPid=res->GetString(wxT("pid"));
+            }
+
             MainRestartLoop(serviceConn);
         }
 
-		LogMessage(_("Couldn't create connection: ") + serviceConn->GetLastError(), LOG_WARNING);
+        LogMessage(_("Couldn't create connection: ") + serviceConn->GetLastError(), LOG_WARNING);
         DBconn::ClearConnections(true);
         WaitAWhile(true);
     }

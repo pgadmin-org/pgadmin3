@@ -10,6 +10,15 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAgent.h"
+#include <wx/file.h>
+#include <wx/filefn.h>
+#include <wx/filename.h>
+#include <wx/process.h>
+
+#ifdef WIN32
+#define popen _popen
+#define pclose _pclose
+#endif
 
 wxSemaphore *getDb;
 
@@ -19,7 +28,7 @@ Job::Job(DBconn *conn, const wxString &jid)
     jobid=jid;
     status=wxT("");
 
-	LogMessage(_("Starting job: ") + jobid, LOG_DEBUG);
+    LogMessage(_("Starting job: ") + jobid, LOG_DEBUG);
 
     int rc=threadConn->ExecuteVoid(
         wxT("UPDATE pgagent.pga_job SET jobagentid=") + backendPid + wxT(", joblastrun=now() ")
@@ -27,22 +36,22 @@ Job::Job(DBconn *conn, const wxString &jid)
 
     if (rc == 1)
     {
-		DBresult *id=threadConn->Execute(
-			wxT("SELECT nextval('pgagent.pga_joblog_jlgid_seq') AS id"));
-		if (id)
-		{
-			logid=id->GetString(wxT("id"));
+        DBresult *id=threadConn->Execute(
+            wxT("SELECT nextval('pgagent.pga_joblog_jlgid_seq') AS id"));
+        if (id)
+        {
+            logid=id->GetString(wxT("id"));
 
-			DBresult *res=threadConn->Execute(
-				wxT("INSERT INTO pgagent.pga_joblog(jlgid, jlgjobid, jlgstatus) ")
-	            wxT("VALUES (") + logid + wxT(", ") + jobid + wxT(", 'r')"));
-			if (res)
-			{
-				status=wxT("r");
-	            delete res;
-			}
-			delete id;
-		}
+            DBresult *res=threadConn->Execute(
+                wxT("INSERT INTO pgagent.pga_joblog(jlgid, jlgjobid, jlgstatus) ")
+                wxT("VALUES (") + logid + wxT(", ") + jobid + wxT(", 'r')"));
+            if (res)
+            {
+                status=wxT("r");
+                delete res;
+            }
+            delete id;
+        }
     }
 }
 
@@ -61,9 +70,9 @@ Job::~Job()
             wxT(" WHERE jobid=") + jobid
             );
     }
-	threadConn->Return();
+    threadConn->Return();
 
-	LogMessage(_("Completed job: ") + jobid, LOG_DEBUG);
+    LogMessage(_("Completed job: ") + jobid, LOG_DEBUG);
 }
 
 
@@ -89,26 +98,26 @@ int Job::Execute()
         wxString jslid, stepid, jpecode, output;
 
         stepid = steps->GetString(wxT("jstid"));
-        
-		DBresult *id=threadConn->Execute(
-			wxT("SELECT nextval('pgagent.pga_jobsteplog_jslid_seq') AS id"));
-		if (id)
-		{
-			jslid=id->GetString(wxT("id"));
-			DBresult *res=threadConn->Execute(
-				wxT("INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jsljstid, jslstatus) ")
-				wxT("SELECT ") + jslid + wxT(", ") + logid + wxT(", ") + stepid + wxT(", 'r'")
-				wxT("  FROM pgagent.pga_jobstep WHERE jstid=") + stepid);
 
-			if (res)
-			{
-				rc=res->RowsAffected();
-				delete res;
-			}
-			else
-	            rc = -1;
-		}
-		delete id;
+        DBresult *id=threadConn->Execute(
+            wxT("SELECT nextval('pgagent.pga_jobsteplog_jslid_seq') AS id"));
+        if (id)
+        {
+            jslid=id->GetString(wxT("id"));
+            DBresult *res=threadConn->Execute(
+                wxT("INSERT INTO pgagent.pga_jobsteplog(jslid, jsljlgid, jsljstid, jslstatus) ")
+                wxT("SELECT ") + jslid + wxT(", ") + logid + wxT(", ") + stepid + wxT(", 'r'")
+                wxT("  FROM pgagent.pga_jobstep WHERE jstid=") + stepid);
+
+            if (res)
+            {
+                rc=res->RowsAffected();
+                delete res;
+            }
+            else
+                rc = -1;
+        }
+        delete id;
 
         if (rc != 1)
         {
@@ -123,10 +132,10 @@ int Job::Execute()
                 stepConn=DBconn::Get(steps->GetString(wxT("jstdbname")));
                 if (stepConn)
                 {
-                    LogMessage(_("Executing step ") + stepid + _(" (part of job ") + jobid + wxT(")"), LOG_DEBUG);
+                    LogMessage(_("Executing SQL step ") + stepid + _(" (part of job ") + jobid + wxT(")"), LOG_DEBUG);
                     rc=stepConn->ExecuteVoid(steps->GetString(wxT("jstcode")));
-					output = stepConn->GetLastError();
-					stepConn->Return();
+                    output = stepConn->GetLastError();
+                    stepConn->Return();
                 }
                 else
                     rc=-1;
@@ -135,7 +144,123 @@ int Job::Execute()
             }
             case 'b':
             {
-                // batch not jet implemented
+                // Batch jobs are more complex thank SQL, for obvious reasons...
+                LogMessage(_("Executing batch step ") + stepid + _(" (part of job ") + jobid + wxT(")"), LOG_DEBUG);
+
+                // Get a temporary filename, then reuse it to create an empty directory.
+                wxString dirname = wxFileName::CreateTempFileName(wxT("pga_"));
+                if (dirname.Length() == 0)
+                {
+                    output = wxT("Couldn't get a temporary filename!");
+                    LogMessage(wxT("Couldn't get a temporary filename!"), LOG_WARNING);
+                    rc=-1;
+                    break;
+                }
+
+                ;
+                if (!wxRemoveFile(dirname))
+                {
+                    output = wxT("Couldn't remove temporary file: ") + dirname;
+                    LogMessage(wxT("Couldn't remove temporary file: ") + dirname, LOG_WARNING);
+                    rc=-1;
+                    break;
+                }
+
+                if (!wxMkdir(dirname, 0700))
+                {
+                    output = wxT("Couldn't create temporary directory: ") + dirname;
+                    LogMessage(wxT("Couldn't create temporary directory: ") + dirname, LOG_WARNING);
+                    rc=-1;
+                    break;
+                }
+
+#ifdef WIN32
+                wxString filename = dirname + wxT("\\") + jobid + wxT("_") + stepid + wxT(".bat");
+#else
+                wxString filename = dirname + wxT("/") + jobid + wxT("_") + stepid + wxT(".scr");
+#endif
+
+                // Write the script
+                wxFile *file = new wxFile();
+
+                if (!file->Create(filename, true, wxS_IRUSR | wxS_IWUSR | wxS_IXUSR))
+                {
+                    output = wxT("Couldn't create temporary script file: ") + filename;
+                    LogMessage(wxT("Couldn't create temporary script file: ") + filename, LOG_WARNING);
+                    rc=-1;
+                    break;
+                }
+
+                if (!file->Open(filename, wxFile::write))
+                {
+                    output = wxT("Couldn't open temporary script file: ") + filename;
+                    LogMessage(wxT("Couldn't open temporary script file: ") + filename, LOG_WARNING);
+                    wxRemoveFile(filename);
+                    wxRmdir(dirname);
+                    rc=-1;
+                    break;
+                }
+
+                wxString code = steps->GetString(wxT("jstcode"));
+
+                // Cleanup the code. If we're on Windows, we need to make all line ends \r\n, 
+                // If we're on Unix, we need \n
+                code.Replace(wxT("\r\n"), wxT("\n"));
+#ifdef WIN32
+                code.Replace(wxT("\n"), wxT("\r\n"));
+#endif
+
+                if (!file->Write(code))
+                {
+                    output = wxT("Couldn't write to temporary script file: ") + filename;
+                    LogMessage(wxT("Couldn't write to temporary script file: ") + filename, LOG_WARNING);
+                    wxRemoveFile(filename);
+                    wxRmdir(dirname);
+                    rc=-1;
+                    break;
+                }
+
+                file->Close();
+                LogMessage(_("Executing script file: ") + filename, LOG_DEBUG);
+
+                // Execute the file and capture the output
+                FILE *fp_script;
+                char buf[128];
+                fp_script = popen(filename.mb_str(wxConvUTF8), "r");
+                if (!fp_script)
+                {
+                    output = wxT("Couldn't execute script: ") + filename;
+                    LogMessage(wxT("Couldn't execute script: ") + filename, LOG_WARNING);
+                    wxRemoveFile(filename);
+                    wxRmdir(dirname);
+                    rc=-1;
+                    break;
+                }
+
+
+               while(!feof(fp_script))
+               {
+                   if (fgets(buf, 128, fp_script) != NULL)
+                       output += wxString::FromAscii(buf);
+               }
+
+               pclose(fp_script);
+
+                // Delete the file/directory. If we fail, don't overwrite the script output in the log, just throw warnings.
+                if (!wxRemoveFile(filename))
+                {
+                    LogMessage(wxT("Couldn't remove temporary script file: ") + filename, LOG_WARNING);
+                    wxRmdir(dirname);
+                    break;
+                }
+
+                if (!wxRmdir(dirname))
+                {
+                    LogMessage(wxT("Couldn't remove temporary directory: ") + dirname, LOG_WARNING);
+                    break;
+                }
+
+                rc=1;
                 break;
             }
             default:
@@ -155,7 +280,7 @@ int Job::Execute()
             wxT("UPDATE pgagent.pga_jobsteplog ")
             wxT("   SET jslduration = now() - jslstart, ")
             wxT("       jslresult = ") + NumToStr(rc) + wxT(", jslstatus = '") + stepstatus + wxT("', ")
-			wxT("       jsloutput = ") + qtString(output) + wxT(" ")
+            wxT("       jsloutput = ") + qtString(output) + wxT(" ")
             wxT(" WHERE jslid=") + jslid);
         if (rc != 1 || stepstatus == wxT("f"))
         {
@@ -172,36 +297,36 @@ int Job::Execute()
 
 
 
-JobThread::JobThread(const wxString &jid)  
+JobThread::JobThread(const wxString &jid)
 : wxThread(wxTHREAD_DETACHED)
-{ 
-	LogMessage(_("Creating job thread for job ") + jid, LOG_DEBUG); 
-	
-	runnable = false;
-	jobid = jid; 
+{
+    LogMessage(_("Creating job thread for job ") + jid, LOG_DEBUG);
 
-	DBconn *threadConn=DBconn::Get(serviceDBname);
+    runnable = false;
+    jobid = jid;
+
+    DBconn *threadConn=DBconn::Get(serviceDBname);
     job = new Job(threadConn, jobid);
 
     if (job->Runnable())
         runnable = true;
 
 }
-    
 
-JobThread::~JobThread() 
-{ 
-	LogMessage(_("Destroying job thread for job ") + jobid, LOG_DEBUG); 
+
+JobThread::~JobThread()
+{
+    LogMessage(_("Destroying job thread for job ") + jobid, LOG_DEBUG);
 }
 
 
 void *JobThread::Entry()
 {
-	if (runnable)
-	{
-		job->Execute();
-		delete job;
-	}
+    if (runnable)
+    {
+        job->Execute();
+        delete job;
+    }
 
-	return(NULL);
+    return(NULL);
 }

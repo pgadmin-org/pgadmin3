@@ -18,9 +18,9 @@ static wxMutex s_PoolLock;
 DBconn::DBconn(const wxString &name)
 {
     dbname = name;
-	inUse = false;
-	next=0;
-	prev=0;
+    inUse = false;
+    next=0;
+    prev=0;
     Connect(basicConnectString  + wxT(" dbname=") + dbname);
 }
 
@@ -28,17 +28,17 @@ DBconn::DBconn(const wxString &name)
 DBconn::DBconn(const wxString &connectString, const wxString &name)
 {
     dbname = name;
-	inUse = false;
-	next=0;
-	prev=0;
+    inUse = false;
+    next=0;
+    prev=0;
     Connect(connectString);
 }
 
 
 bool DBconn::Connect(const wxString &connectString)
 {
-	LogMessage(_("Creating DB connection: ") + connectString, LOG_DEBUG);
-	wxCharBuffer cstrUTF=connectString.mb_str(wxConvUTF8);
+    LogMessage(_("Creating DB connection: ") + connectString, LOG_DEBUG);
+    wxCharBuffer cstrUTF=connectString.mb_str(wxConvUTF8);
     conn=PQconnectdb(cstrUTF);
     if (PQstatus(conn) == CONNECTION_OK)
     {
@@ -65,7 +65,7 @@ DBconn::~DBconn()
 
 DBconn *DBconn::InitConnection(const wxString &connectString)
 {
-	wxMutexLocker lock(s_PoolLock);
+    wxMutexLocker lock(s_PoolLock);
 
     basicConnectString=connectString;
     wxString dbname;
@@ -91,7 +91,7 @@ DBconn *DBconn::InitConnection(const wxString &connectString)
     if (!primaryConn)
         LogMessage(_("Failed to create primary connection!"), LOG_ERROR);
 
-	primaryConn->inUse = true;
+    primaryConn->inUse = true;
 
     return primaryConn;
 }
@@ -99,118 +99,118 @@ DBconn *DBconn::InitConnection(const wxString &connectString)
 
 DBconn *DBconn::Get(const wxString &dbname)
 {
-	wxMutexLocker lock(s_PoolLock);
+    wxMutexLocker lock(s_PoolLock);
 
-	DBconn *thisConn = primaryConn, *testConn;
+    DBconn *thisConn = primaryConn, *testConn;
 
     // find an existing connection
     do
     {
         if (dbname == thisConn->dbname && !thisConn->inUse)
-		{
-			LogMessage(_("Allocating existing connection to database ") + thisConn->dbname, LOG_DEBUG);
-			thisConn->inUse = true;
+        {
+            LogMessage(_("Allocating existing connection to database ") + thisConn->dbname, LOG_DEBUG);
+            thisConn->inUse = true;
             return thisConn;
-		}
+        }
 
-		testConn = thisConn;
-		if (thisConn->next != 0)
-		    thisConn = thisConn->next;
+        testConn = thisConn;
+        if (thisConn->next != 0)
+            thisConn = thisConn->next;
 
     } while (testConn->next != 0);
 
 
-	// No suitable connection was found, so create a new one.
+    // No suitable connection was found, so create a new one.
     DBconn *newConn=new DBconn(dbname);
     if (newConn->conn)
     {
-		LogMessage(_("Allocating new connection to database ") + newConn->dbname, LOG_DEBUG);
-		newConn->inUse = true;
-		newConn->prev = thisConn;
-		thisConn->next = newConn;
+        LogMessage(_("Allocating new connection to database ") + newConn->dbname, LOG_DEBUG);
+        newConn->inUse = true;
+        newConn->prev = thisConn;
+        thisConn->next = newConn;
     }
-	else
-		LogMessage(_("Failed to create new connection to database: ") + dbname, LOG_ERROR);
+    else
+        LogMessage(_("Failed to create new connection to database: ") + dbname, LOG_ERROR);
 
     return newConn;
 }
 
 void DBconn::Return()
 {
-	wxMutexLocker lock(s_PoolLock);
+    wxMutexLocker lock(s_PoolLock);
 
-	// Cleanup
-	this->ExecuteVoid(wxT("RESET ALL"));
-	this->lastError.Empty();
+    // Cleanup
+    this->ExecuteVoid(wxT("RESET ALL"));
+    this->lastError.Empty();
 
-	LogMessage(_("Returning connection to database ") + this->dbname, LOG_DEBUG);
-	inUse = false;
+    LogMessage(_("Returning connection to database ") + this->dbname, LOG_DEBUG);
+    inUse = false;
 }
 
 void DBconn::ClearConnections(bool all)
 {
-	wxMutexLocker lock(s_PoolLock);
+    wxMutexLocker lock(s_PoolLock);
 
-	if (all)
-		LogMessage(_("Clearing all connections"), LOG_DEBUG);
-	else
-		LogMessage(_("Clearing inactive connections"), LOG_DEBUG);
+    if (all)
+        LogMessage(_("Clearing all connections"), LOG_DEBUG);
+    else
+        LogMessage(_("Clearing inactive connections"), LOG_DEBUG);
 
-	DBconn *thisConn=primaryConn, *deleteConn;
-	int total=0, free=0, deleted=0;
+    DBconn *thisConn=primaryConn, *deleteConn;
+    int total=0, free=0, deleted=0;
 
-	if (thisConn)
-	{
+    if (thisConn)
+    {
 
-		total++;
+        total++;
 
-		// Find the last connection
-		while (thisConn->next != 0)
-		{
-			total++;
-			
-			if (!thisConn->inUse)
-				free++;
+        // Find the last connection
+        while (thisConn->next != 0)
+        {
+            total++;
 
-			thisConn = thisConn->next;
-		}
-		if (!thisConn->inUse)
-			free++;
+            if (!thisConn->inUse)
+                free++;
 
-		// Delete connections as required
-		// If a connection is not in use, delete it, and reset the next and previous
-		// pointers appropriately. If it is in use, don't touch it.
-		while (thisConn->prev != 0)
-		{
-			if ((!thisConn->inUse) || all)
-			{
-				deleteConn = thisConn;
-				thisConn = deleteConn->prev;
-				thisConn->next = deleteConn->next;
-				if (deleteConn->next)
-					deleteConn->next->prev = deleteConn->prev;
-				delete deleteConn;
-				deleted++;
-			}
-			else
-			{
-				thisConn = thisConn->prev;
-			}
-		}
+            thisConn = thisConn->next;
+        }
+        if (!thisConn->inUse)
+            free++;
 
-		if (all)
-		{
-			delete thisConn;
-			deleted++;
-		}
+        // Delete connections as required
+        // If a connection is not in use, delete it, and reset the next and previous
+        // pointers appropriately. If it is in use, don't touch it.
+        while (thisConn->prev != 0)
+        {
+            if ((!thisConn->inUse) || all)
+            {
+                deleteConn = thisConn;
+                thisConn = deleteConn->prev;
+                thisConn->next = deleteConn->next;
+                if (deleteConn->next)
+                    deleteConn->next->prev = deleteConn->prev;
+                delete deleteConn;
+                deleted++;
+            }
+            else
+            {
+                thisConn = thisConn->prev;
+            }
+        }
 
-		wxString tmp;
-		tmp.Printf(_("Connection stats: total - %d, free - %d, deleted - %d"), total, free, deleted);
-		LogMessage(tmp, LOG_DEBUG);
+        if (all)
+        {
+            delete thisConn;
+            deleted++;
+        }
 
-	}
-	else
-		LogMessage(_("No connections found!"), LOG_DEBUG);
+        wxString tmp;
+        tmp.Printf(_("Connection stats: total - %d, free - %d, deleted - %d"), total, free, deleted);
+        LogMessage(tmp, LOG_DEBUG);
+
+    }
+    else
+        LogMessage(_("No connections found!"), LOG_DEBUG);
 
 }
 
@@ -241,17 +241,17 @@ int DBconn::ExecuteVoid(const wxString &query)
     return rows;
 }
 
-wxString DBconn::GetLastError() 
-{ 
-	// Return the last error message, minus any trailing line ends
-	if (lastError.substr(lastError.length()-2, 2) == wxT("\r\n")) // DOS
-	    return lastError.substr(0, lastError.length()-2); 
+wxString DBconn::GetLastError()
+{
+    // Return the last error message, minus any trailing line ends
+    if (lastError.substr(lastError.length()-2, 2) == wxT("\r\n")) // DOS
+        return lastError.substr(0, lastError.length()-2);
     else if (lastError.substr(lastError.length()-1, 1) == wxT("\n")) // Unix
-	    return lastError.substr(0, lastError.length()-1);
+        return lastError.substr(0, lastError.length()-1);
     else if (lastError.substr(lastError.length()-1, 1) == wxT("\r")) // Mac
-	    return lastError.substr(0, lastError.length()-1);
-	else
-		return lastError;
+        return lastError.substr(0, lastError.length()-1);
+    else
+        return lastError;
 }
 
 ///////////////////////////////////////////////////////7
@@ -278,8 +278,8 @@ DBresult::DBresult(DBconn *conn, const wxString &query)
             result=0;
         }
     }
-	else
-		conn->lastError = wxString::FromAscii(PQerrorMessage(conn->conn));
+    else
+        conn->lastError = wxString::FromAscii(PQerrorMessage(conn->conn));
 
 }
 

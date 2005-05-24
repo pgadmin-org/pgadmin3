@@ -20,7 +20,7 @@
 
 void usage(const wxString &executable)
 {
-	wxFileName *fn = new wxFileName(executable);
+    wxFileName *fn = new wxFileName(executable);
 
     wxPrintf(_("Usage:\n"));
     wxPrintf(fn->GetName() + _(" [options] <connect-string>\n"));
@@ -77,11 +77,11 @@ static void daemonize(void)
 
 int main(int argc, char **argv)
 {
-	// Statup wx
-	wxInitialize();
-    
+    // Statup wx
+    wxInitialize();
+
     wxString executable;
-	executable = wxString::FromAscii(argv[0]);
+    executable = wxString::FromAscii(argv[0]);
 
     if (argc < 2)
     {
@@ -94,8 +94,8 @@ int main(int argc, char **argv)
 
     setOptions(argc, argv);
 
-	if (!runInForeground)
-		daemonize();
+    if (!runInForeground)
+        daemonize();
 
     MainLoop();
 

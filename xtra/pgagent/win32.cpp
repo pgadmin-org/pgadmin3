@@ -53,15 +53,15 @@ void LogMessage(wxString msg, int level)
 {
     if (eventHandle)
     {
-		char *tmp;
-		tmp = (char *)malloc(msg.length()+1);
-		sprintf(tmp, msg.mb_str(wxConvUTF8));
+        char *tmp;
+        tmp = (char *)malloc(msg.length()+1);
+        sprintf(tmp, msg.mb_str(wxConvUTF8));
 
         switch (level)
         {
             case LOG_DEBUG:
                 if (minLogLevel >= LOG_DEBUG)
-					ReportEvent(eventHandle, EVENTLOG_INFORMATION_TYPE, 0, 0, NULL, 1, 0, (const unsigned short **)&tmp, NULL);
+                    ReportEvent(eventHandle, EVENTLOG_INFORMATION_TYPE, 0, 0, NULL, 1, 0, (const unsigned short **)&tmp, NULL);
                 break;
             case LOG_WARNING:
                 if (minLogLevel >= LOG_WARNING)
@@ -226,9 +226,9 @@ void CALLBACK serviceMain(DWORD argc, LPTSTR *argv)
 // installation and removal
 bool installService(const char *serviceName, const char *exePath, const char *displayname, const char *user, const char *password)
 {
-	HKEY hk; 
-    DWORD dwData; 
-    char tmp[255], buf[255]; 
+    HKEY hk;
+    DWORD dwData;
+    char tmp[255], buf[255];
     bool done=false;
 
     SC_HANDLE manager = OpenSCManager(0, 0, SC_MANAGER_ALL_ACCESS);
@@ -246,25 +246,25 @@ bool installService(const char *serviceName, const char *exePath, const char *di
         CloseServiceHandle(manager);
     }
 
-	// Setup the event message DLL 
-	_snprintf(buf, 254, "SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\%s", serviceName);
-    if (RegCreateKey(HKEY_LOCAL_MACHINE, (const unsigned short *)buf, &hk)) 
-        LogMessage(_("Could not open the message source registry key."), LOG_WARNING); 
- 
-    GetModuleFileName(NULL, (unsigned short *)tmp, 254);
-	(strrchr(tmp, '\\'))[0] = 0;
-	_snprintf(buf, 254, "%s\\pgaevent.dll", tmp);
+    // Setup the event message DLL
+    _snprintf(buf, 254, "SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\%s", serviceName);
+    if (RegCreateKey(HKEY_LOCAL_MACHINE, (const unsigned short *)buf, &hk))
+        LogMessage(_("Could not open the message source registry key."), LOG_WARNING);
 
- 
-    if (RegSetValueEx(hk, (const unsigned short *)"EventMessageFile", 0, REG_EXPAND_SZ, (LPBYTE)buf, strlen(buf) + 1)) 
-        LogMessage(_("Could not set the event message file registry value."), LOG_WARNING); 
- 
-    dwData = EVENTLOG_ERROR_TYPE | EVENTLOG_WARNING_TYPE | EVENTLOG_INFORMATION_TYPE; 
- 
+    GetModuleFileName(NULL, (unsigned short *)tmp, 254);
+    (strrchr(tmp, '\\'))[0] = 0;
+    _snprintf(buf, 254, "%s\\pgaevent.dll", tmp);
+
+
+    if (RegSetValueEx(hk, (const unsigned short *)"EventMessageFile", 0, REG_EXPAND_SZ, (LPBYTE)buf, strlen(buf) + 1))
+        LogMessage(_("Could not set the event message file registry value."), LOG_WARNING);
+
+    dwData = EVENTLOG_ERROR_TYPE | EVENTLOG_WARNING_TYPE | EVENTLOG_INFORMATION_TYPE;
+
     if (RegSetValueEx(hk, (const unsigned short *)"TypesSupported", 0, REG_DWORD, (LPBYTE) &dwData, sizeof(DWORD)))
-        LogMessage(_("Could not set the supported types."), LOG_WARNING); 
- 
-    RegCloseKey(hk); 
+        LogMessage(_("Could not set the supported types."), LOG_WARNING);
+
+    RegCloseKey(hk);
 
     return done;
 }
@@ -272,7 +272,7 @@ bool installService(const char *serviceName, const char *exePath, const char *di
 
 bool removeService(const char *serviceName)
 {
-	HKEY hk;
+    HKEY hk;
     bool done=false;
 
     SC_HANDLE manager = OpenSCManager(0, 0, SC_MANAGER_ALL_ACCESS);
@@ -303,12 +303,12 @@ bool removeService(const char *serviceName)
         CloseServiceHandle(manager);
     }
 
-	// Remove the event message DLL
+    // Remove the event message DLL
     if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, (const unsigned short *)"SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\", 0, KEY_ALL_ACCESS, &hk))
-        LogMessage(_("Could not open the message source registry key."), LOG_WARNING); 
+        LogMessage(_("Could not open the message source registry key."), LOG_WARNING);
 
-	if (RegDeleteKey(hk, (const unsigned short *)serviceName))
-		LogMessage(_("Could not remove the event message file registry value."), LOG_WARNING); 
+    if (RegDeleteKey(hk, (const unsigned short *)serviceName))
+        LogMessage(_("Could not remove the event message file registry value."), LOG_WARNING);
 
     return done;
 }
@@ -317,7 +317,7 @@ bool removeService(const char *serviceName)
 
 void usage(const wxString &executable)
 {
-	wxFileName *fn = new wxFileName(executable);
+    wxFileName *fn = new wxFileName(executable);
 
     wxPrintf(_("Usage:\n"));
     wxPrintf(fn->GetName() + _(" REMOVE <serviceName>\n"));
@@ -337,24 +337,24 @@ void usage(const wxString &executable)
 
 void setupForRun(int argc, char **argv, bool debug=false)
 {
-	if (!debug)
-	{
-		eventHandle = RegisterEventSource(0, serviceName.c_str());
-		if (!eventHandle)
-			LogMessage(_("Couldn't register event handle."), LOG_ERROR);
-	}
+    if (!debug)
+    {
+        eventHandle = RegisterEventSource(0, serviceName.c_str());
+        if (!eventHandle)
+            LogMessage(_("Couldn't register event handle."), LOG_ERROR);
+    }
 
     setOptions(argc, argv);
 }
 
-        
+
 void main(int argc, char **argv)
 {
-	// Statup wx
-	wxInitialize();
-    
+    // Statup wx
+    wxInitialize();
+
     wxString executable;
-	executable = wxString::FromAscii(*argv++);
+    executable = wxString::FromAscii(*argv++);
 
     if (argc < 3)
     {
@@ -363,7 +363,7 @@ void main(int argc, char **argv)
     }
 
     wxString command;
-	command = wxString::FromAscii(*argv++);
+    command = wxString::FromAscii(*argv++);
 
     serviceName = wxString::FromAscii(*argv++);
 
@@ -404,7 +404,7 @@ void main(int argc, char **argv)
             }
             else
             {
-				arg.Printf(wxT("%s %s"), arg.mb_str(wxConvUTF8), *argv);
+                arg.Printf(wxT("%s %s"), arg.mb_str(wxConvUTF8), *argv);
             }
 
             argv++;
@@ -429,9 +429,9 @@ void main(int argc, char **argv)
     }
     else if (command == wxT("RUN"))
     {
-        SERVICE_TABLE_ENTRY serviceTable[] = 
+        SERVICE_TABLE_ENTRY serviceTable[] =
             { (unsigned short *)_("pgAgent service"), serviceMain, 0, 0};
-        
+
         setupForRun(argc, argv);
 
         if (!StartServiceCtrlDispatcher(serviceTable))

@@ -69,10 +69,10 @@ void setOptions(int argc, char **argv)
                         minLogLevel = val;
                     break;
                 }
-#ifndef _WIN32_
+#ifndef WIN32
                 case 'f':
                 {
-					runInForeground = true;
+                    runInForeground = true;
                     break;
                 }
 #endif
@@ -105,7 +105,7 @@ void WaitAWhile(const bool waitLong)
         CheckForInterrupt();
         Sleep(1000);
 #else
-	sleep(1);
+    sleep(1);
 #endif
     }
 }
@@ -122,12 +122,12 @@ wxString NumToStr(const long l)
 
 wxString qtString(const wxString& value)
 {
-    wxString result = value;	
+    wxString result = value;
 
     result.Replace(wxT("\\"), wxT("\\\\"));
     result.Replace(wxT("'"), wxT("\\'"));
     result.Append(wxT("'"));
     result.Prepend(wxT("'"));
-	
+
     return result;
 }
