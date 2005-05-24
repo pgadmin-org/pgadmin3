@@ -15,9 +15,9 @@ DBconn *DBconn::primaryConn;
 wxString DBconn::basicConnectString;
 static wxMutex s_PoolLock;
 
-DBconn::DBconn(const wxString &name)
+DBconn::DBconn(const wxString &db)
 {
-    dbname = name;
+    dbname = db;
     inUse = false;
     next=0;
     prev=0;
@@ -25,9 +25,9 @@ DBconn::DBconn(const wxString &name)
 }
 
 
-DBconn::DBconn(const wxString &connectString, const wxString &name)
+DBconn::DBconn(const wxString &connectString, const wxString &db)
 {
-    dbname = name;
+    dbname = db;
     inUse = false;
     next=0;
     prev=0;
@@ -97,8 +97,14 @@ DBconn *DBconn::InitConnection(const wxString &connectString)
 }
 
 
-DBconn *DBconn::Get(const wxString &dbname)
+DBconn *DBconn::Get(const wxString &db)
 {
+    if (db.IsEmpty())
+    {
+        LogMessage(_("Cannot allocate connection - no database specified!"), LOG_WARNING);
+        return NULL;
+    }
+
     wxMutexLocker lock(s_PoolLock);
 
     DBconn *thisConn = primaryConn, *testConn;
@@ -106,7 +112,7 @@ DBconn *DBconn::Get(const wxString &dbname)
     // find an existing connection
     do
     {
-        if (dbname == thisConn->dbname && !thisConn->inUse)
+        if (db == thisConn->dbname && !thisConn->inUse)
         {
             LogMessage(_("Allocating existing connection to database ") + thisConn->dbname, LOG_DEBUG);
             thisConn->inUse = true;
@@ -121,7 +127,7 @@ DBconn *DBconn::Get(const wxString &dbname)
 
 
     // No suitable connection was found, so create a new one.
-    DBconn *newConn=new DBconn(dbname);
+    DBconn *newConn=new DBconn(db);
     if (newConn->conn)
     {
         LogMessage(_("Allocating new connection to database ") + newConn->dbname, LOG_DEBUG);
@@ -130,7 +136,10 @@ DBconn *DBconn::Get(const wxString &dbname)
         thisConn->next = newConn;
     }
     else
-        LogMessage(_("Failed to create new connection to database: ") + dbname, LOG_ERROR);
+    {
+        LogMessage(_("Failed to create new connection to database: ") + db, LOG_WARNING);
+        return NULL;
+    }
 
     return newConn;
 }

@@ -219,7 +219,7 @@ wxString dlgStep::GetUpdateSql()
             if (!cbDatabase->GetSelection())
                 vars.Append(wxT("jstdbname=NULL"));
             else
-                vars.Append(wxT("jstdbname=") + qtString(cbDatabase->GetValue()) + wxT(")"));
+                vars.Append(wxT("jstdbname=") + qtString(cbDatabase->GetValue()));
         }
         if (rbxKind->GetSelection() != wxString(wxT("sb")).Find(step->GetKindChar()))
         {

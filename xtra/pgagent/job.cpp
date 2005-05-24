@@ -20,7 +20,6 @@
 #define pclose _pclose
 #endif
 
-wxSemaphore *getDb;
 
 Job::Job(DBconn *conn, const wxString &jid)
 {
@@ -138,7 +137,11 @@ int Job::Execute()
                     stepConn->Return();
                 }
                 else
+                {
+                    output = _("Couldn't get a connection to the database!");
                     rc=-1;
+                }
+
 
                 break;
             }
@@ -151,8 +154,8 @@ int Job::Execute()
                 wxString dirname = wxFileName::CreateTempFileName(wxT("pga_"));
                 if (dirname.Length() == 0)
                 {
-                    output = wxT("Couldn't get a temporary filename!");
-                    LogMessage(wxT("Couldn't get a temporary filename!"), LOG_WARNING);
+                    output = _("Couldn't get a temporary filename!");
+                    LogMessage(_("Couldn't get a temporary filename!"), LOG_WARNING);
                     rc=-1;
                     break;
                 }
@@ -160,16 +163,16 @@ int Job::Execute()
                 ;
                 if (!wxRemoveFile(dirname))
                 {
-                    output = wxT("Couldn't remove temporary file: ") + dirname;
-                    LogMessage(wxT("Couldn't remove temporary file: ") + dirname, LOG_WARNING);
+                    output = _("Couldn't remove temporary file: ") + dirname;
+                    LogMessage(_("Couldn't remove temporary file: ") + dirname, LOG_WARNING);
                     rc=-1;
                     break;
                 }
 
                 if (!wxMkdir(dirname, 0700))
                 {
-                    output = wxT("Couldn't create temporary directory: ") + dirname;
-                    LogMessage(wxT("Couldn't create temporary directory: ") + dirname, LOG_WARNING);
+                    output = _("Couldn't create temporary directory: ") + dirname;
+                    LogMessage(_("Couldn't create temporary directory: ") + dirname, LOG_WARNING);
                     rc=-1;
                     break;
                 }
@@ -185,16 +188,16 @@ int Job::Execute()
 
                 if (!file->Create(filename, true, wxS_IRUSR | wxS_IWUSR | wxS_IXUSR))
                 {
-                    output = wxT("Couldn't create temporary script file: ") + filename;
-                    LogMessage(wxT("Couldn't create temporary script file: ") + filename, LOG_WARNING);
+                    output = _("Couldn't create temporary script file: ") + filename;
+                    LogMessage(_("Couldn't create temporary script file: ") + filename, LOG_WARNING);
                     rc=-1;
                     break;
                 }
 
                 if (!file->Open(filename, wxFile::write))
                 {
-                    output = wxT("Couldn't open temporary script file: ") + filename;
-                    LogMessage(wxT("Couldn't open temporary script file: ") + filename, LOG_WARNING);
+                    output = _("Couldn't open temporary script file: ") + filename;
+                    LogMessage(_("Couldn't open temporary script file: ") + filename, LOG_WARNING);
                     wxRemoveFile(filename);
                     wxRmdir(dirname);
                     rc=-1;
@@ -212,8 +215,8 @@ int Job::Execute()
 
                 if (!file->Write(code))
                 {
-                    output = wxT("Couldn't write to temporary script file: ") + filename;
-                    LogMessage(wxT("Couldn't write to temporary script file: ") + filename, LOG_WARNING);
+                    output = _("Couldn't write to temporary script file: ") + filename;
+                    LogMessage(_("Couldn't write to temporary script file: ") + filename, LOG_WARNING);
                     wxRemoveFile(filename);
                     wxRmdir(dirname);
                     rc=-1;
@@ -229,8 +232,8 @@ int Job::Execute()
                 fp_script = popen(filename.mb_str(wxConvUTF8), "r");
                 if (!fp_script)
                 {
-                    output = wxT("Couldn't execute script: ") + filename;
-                    LogMessage(wxT("Couldn't execute script: ") + filename, LOG_WARNING);
+                    output = _("Couldn't execute script: ") + filename;
+                    LogMessage(_("Couldn't execute script: ") + filename, LOG_WARNING);
                     wxRemoveFile(filename);
                     wxRmdir(dirname);
                     rc=-1;
@@ -249,14 +252,14 @@ int Job::Execute()
                 // Delete the file/directory. If we fail, don't overwrite the script output in the log, just throw warnings.
                 if (!wxRemoveFile(filename))
                 {
-                    LogMessage(wxT("Couldn't remove temporary script file: ") + filename, LOG_WARNING);
+                    LogMessage(_("Couldn't remove temporary script file: ") + filename, LOG_WARNING);
                     wxRmdir(dirname);
                     break;
                 }
 
                 if (!wxRmdir(dirname))
                 {
-                    LogMessage(wxT("Couldn't remove temporary directory: ") + dirname, LOG_WARNING);
+                    LogMessage(_("Couldn't remove temporary directory: ") + dirname, LOG_WARNING);
                     break;
                 }
 
@@ -265,6 +268,7 @@ int Job::Execute()
             }
             default:
             {
+                output = _("Invalid step type!");
                 status=wxT("i");
                 return -1;
             }

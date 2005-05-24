@@ -21,12 +21,12 @@ class DBresult;
 class DBconn
 {
 protected:
-    DBconn(const wxString &dbname);
-    DBconn(const wxString &connectString, const wxString &name);
+    DBconn(const wxString &db);
+    DBconn(const wxString &connectString, const wxString &db);
     ~DBconn();
 
 public:
-    static DBconn *Get(const wxString &dbname);
+    static DBconn *Get(const wxString &db);
     static DBconn *InitConnection(const wxString &connectString);
 
     static void ClearConnections(bool allIncludingPrimary=false);
