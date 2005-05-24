@@ -63,7 +63,7 @@ jstdesc              text                 NOT NULL DEFAULT '',
 jstenabled           bool                 NOT NULL DEFAULT true,
 jstkind              char                 NOT NULL CHECK (jstkind IN ('b', 's')), -- batch, sql
 jstcode              text                 NOT NULL,
-jstdbname            name                 NULL, -- REFERENCES pg_database(datname) ON DELETE CASCADE ON UPDATE RESTRICT,
+jstdbname            name                 NOT NULL DEFAULT '' CHECK ((jstdbname != '' AND jstkind = 's') OR (jstdbname = '' AND jstkind = 'b'))
 jstonerror           char                 NOT NULL CHECK (jstonerror IN ('f', 's', 'i')) DEFAULT 'f', -- fail, success, ignore
 jscnextrun           timestamptz          NULL
 ) WITHOUT OIDS;
