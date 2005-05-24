@@ -19,6 +19,9 @@
 
 typedef unsigned long OID;
 
+#undef wxStaticCast
+#define wxStaticCast(obj, className) ((className *)(obj))
+
 // we dont have an appropriate wxLongLong method
 #ifdef __WIN32__
 #define atolonglong _atoi64
