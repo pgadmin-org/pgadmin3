@@ -3,36 +3,59 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
-<title>Extended functions</title>
+<title>Extended features</title>
 </head>
 
 <body>
 
-<h3>Extended functions</h3>
+<h3>Extended features</h3>
 
-<p>
-pgAdmin III can display some more detailed data, if the server is
-instrumentized using the admin module for PostgreSQL 8.x. This will
-contain helper functions. The admin module is available at <a
-href="www.pgadmin.org">this</a> place. For Windows, the installer
-includes the module and will install it automatically unless it is deselected.
-</p><p>
- If the functions are loaded on a server, the
-following functions will be available:
-</p>
+<p>pgAdmin III's functionality can be further enhanced using the <I>admin</I> contrib
+module for PostgreSQL. This is a library of additional functions that may be installed 
+on your server which allows pgAdmin to offer additional features, such as:</p>
+
 <ul>
-<li>
-The sizes on disk of tablespaces, databases, tables and indexes are
-displayed on the Statistics tab in the <a href="main.html">main window</a>.
-<li>
-The <a href="status.html">Status dialogue</A> will have the logfile
-tab and can display the server logfile if it is configured.
-<li>
-The Rotation button on the <a href="status.html">Status dialogue</A>
-logfile tab will not get enabled on 8.0 servers, because the needed
-support functions were not implemented. If you need triggering the
-server logfile rotation, please contact us.
+
+<li>The sizes on disk of tablespaces, databases, tables and indexes are
+displayed on the Statistics tab in the <a href="main.html">main window</a>.<br>&nbsp;</li>
+
+<li>The <a href="status.html">Status dialogue</A> will have the logfile
+tab and can display the server logfiles if it is configured.<br>&nbsp;</li>
+
+<li>Running queries from other users may be cancelled from the 
+<a href="status.html">Status dialogue</A>.<br>&nbsp;</li>
+
+<li>The server's configuration files postgresql.conf and pg_hba.conf
+may be editted, and reloaded remotely.<br>&nbsp;</li>
+
 </ul>
+
+<p>The <I>admin</I> module is installed and activated by default if you are running the 
+'official' pgInstaller distribution of PostgreSQL for Windows, however, if you are running
+any other version of PostgreSQL you will need to manually install the module. To do so,
+simply copy the /xtra/admin directory from the pgAdmin source distribution to the /contrib
+directory of your pre-configured PostgreSQL source tree. Run the following commands:</p>
+
+<pre>
+    # cd $PGSRC/contrib/admin
+    # make all
+    # make install
+</pre>
+
+<p>The module should now be built, and installed into your existing PostgreSQL installation.
+to be used, you must now install the module into the database you use as pgAdmin's <I>Initial
+DB</I> (normally template1, though you may wish to use a different database). To do so, 
+locate the admin.sql file installed in the previous step - normally this may be found in 
+/usr/local/pgsql/share/contrib/ and run it against your database. You will normally need to do
+this as the PostgreSQL superuser:</p>
+
+<pre>
+    $ psql template1 < /usr/local/pgsql/share/contrib/admin.sql
+</pre>
+
+<p>The next time you connect to the server with pgAdmin, it will detect the presence of the <I>admin</I>
+module and offer full functionality.</p>
+
 </body>
 
 </html>
