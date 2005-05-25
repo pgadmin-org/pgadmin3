@@ -69,13 +69,10 @@ int MainRestartLoop(DBconn *serviceConn)
             );
     }
 
-    char hostname[255];
-    gethostname(hostname, 255);
-    wxString hostnamestr;
-    hostnamestr = wxString::FromAscii(hostname);
+    wxString hostname = wxGetFullHostName();
 
     rc=serviceConn->ExecuteVoid(
-        wxT("INSERT INTO pgagent.pga_jobagent (jagpid, jagstation) SELECT pg_backend_pid(), '") + hostnamestr + wxT("'"));
+        wxT("INSERT INTO pgagent.pga_jobagent (jagpid, jagstation) SELECT pg_backend_pid(), '") + hostname + wxT("'"));
     if (rc < 0)
         return rc;
 
@@ -90,7 +87,7 @@ int MainRestartLoop(DBconn *serviceConn)
             wxT(" WHERE jobenabled ")
             wxT("   AND jobagentid IS NULL ")
             wxT("   AND jobnextrun <= now() ")
-            wxT("   AND jobhostagent = '' OR jobhostagent = '") + hostnamestr + wxT("'")
+            wxT("   AND jobhostagent = '' OR jobhostagent = '") + hostname + wxT("'")
             wxT(" ORDER BY jobnextrun"));
 
         if (res)
