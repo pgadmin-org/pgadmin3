@@ -149,7 +149,7 @@ dlgHbaConfig::~dlgHbaConfig()
 
 wxString dlgHbaConfig::GetHelpPage() const
 {
-    return wxT("client-authentication");
+    return wxT("pg/client-authentication");
     // auth-methods#auth-trust #auth-password #kerberos-auth #auth-ident #auth-pam
 }
 

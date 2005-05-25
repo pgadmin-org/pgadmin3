@@ -62,9 +62,9 @@ wxMenu *pgTable::GetNewMenu()
 wxString pgTable::GetHelpPage(bool forCreate) const
 { 
     if (forCreate)
-        return wxT("sql-createtable");
+        return wxT("pg/sql-createtable");
     else
-        return wxT("sql-altertable");
+        return wxT("pg/sql-altertable");
 }
 
 

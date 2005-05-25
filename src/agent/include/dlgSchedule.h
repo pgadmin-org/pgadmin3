@@ -34,7 +34,8 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
     void SetJobId(long id) { jobId = id; }
-    wxString GetHelpPage() const;
+
+    wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-schedules"); }
 
 private:
     long jobId;

@@ -89,7 +89,7 @@ public:
     bool GetSystemObject() const { return colNumber < 0; }
     wxString GetSql(wxTreeCtrl *browser);
 	wxString GetCommentSql();
-    wxString GetHelpPage(bool forCreate) const { return wxT("sql-createtable"); }
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtable"); }
 
     virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop(); }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

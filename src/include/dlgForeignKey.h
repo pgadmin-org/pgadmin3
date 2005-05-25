@@ -30,7 +30,7 @@ public:
     wxString GetDefinition();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
-    wxString GetHelpPage() const { return wxT("sql-altertable"); }
+    wxString GetHelpPage() const { return wxT("pg/sql-altertable"); }
 
     int Go(bool modal);
 

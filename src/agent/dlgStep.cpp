@@ -262,8 +262,3 @@ wxString dlgStep::GetUpdateSql()
     }
     return sql;
 }
-
-wxString dlgStep::GetHelpPage() const
-{
-    return wxT("../pgagent-steps");
-}

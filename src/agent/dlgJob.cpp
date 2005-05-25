@@ -485,8 +485,3 @@ wxString dlgJob::GetUpdateSql()
 	return sql;
 
 }
-
-wxString dlgJob::GetHelpPage() const
-{
-    return wxT("../pgagent-jobs");
-}

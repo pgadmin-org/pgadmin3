@@ -92,7 +92,7 @@ public:
     pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    wxString GetHelpPage(bool forCreate) const { return wxT("managing-databases"); }
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/managing-databases"); }
     int GetIcon() { return PGICON_SERVER; }
     wxMenu *GetNewMenu();
 

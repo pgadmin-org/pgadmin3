@@ -69,6 +69,8 @@ public:
 	wxString GetExceptionsString();
 	void iSetExceptions(const wxString &s) { exceptions = s; }
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-schedules"); }
+
 private:
     bool enabled;
     wxDateTime start, end;

@@ -305,7 +305,7 @@ void frmMain::OnFaq(wxCommandEvent& event)
 {
     frmHelp *h=new frmHelp(this);
     h->Show(true);
-    if (!h->Load(wxT("http://www.pgadmin.org/pgadmin3/faq/")))
+    if (!h->Load(wxT("http://www.pgadmin.org/faq/")))
         h->Destroy();
 }
 
@@ -318,7 +318,7 @@ wxString frmMain::GetHelpPage() const
         page=currentObject->GetHelpPage(true);
 
     if (page.IsEmpty())
-        page = wxT("sql-commands");
+        page = wxT("pg/sql-commands");
 
     return page;
 }

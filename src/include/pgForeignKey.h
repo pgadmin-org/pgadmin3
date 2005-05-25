@@ -72,7 +72,7 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);
-    wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable"); }
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:

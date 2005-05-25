@@ -72,7 +72,7 @@ pgObject *dlgDatabase::GetObject()
 wxString dlgDatabase::GetHelpPage() const
 {
     if (nbNotebook->GetSelection() == 1)
-        return wxT("runtime-config");
+        return wxT("pg/runtime-config");
     return dlgSecurityProperty::GetHelpPage();
 }
 

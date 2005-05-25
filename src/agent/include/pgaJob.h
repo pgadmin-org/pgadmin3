@@ -63,6 +63,8 @@ public:
     bool CanDrop() { return true; }
     bool WantDummyChild() { return true; }
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-jobs"); }
+
 private:
     bool enabled;
     wxDateTime created, changed, nextrun, lastrun;

@@ -55,6 +55,8 @@ public:
 	long GetRecId() const { return recId; }
     void iSetRecId(const long l) { recId=l; }
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-steps"); }
+
 private:
     bool enabled;
     wxString kind, code, dbname, onError;

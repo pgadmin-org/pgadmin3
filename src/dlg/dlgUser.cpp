@@ -179,7 +179,7 @@ int dlgUser::Go(bool modal)
 wxString dlgUser::GetHelpPage() const
 {
     if (nbNotebook->GetSelection() == 2)
-        return wxT("runtime-config");
+        return wxT("pg/runtime-config");
     return dlgProperty::GetHelpPage();
 }
 

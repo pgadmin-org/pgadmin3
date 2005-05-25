@@ -29,7 +29,8 @@ public:
     wxString GetInsertSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
-    wxString GetHelpPage() const;
+    
+    wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-jobs"); }
 
 private:
     pgaJob *job;

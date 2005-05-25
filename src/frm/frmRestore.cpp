@@ -120,7 +120,7 @@ frmRestore::~frmRestore()
 wxString frmRestore::GetHelpPage() const
 {
     wxString page;
-    page = wxT("app-pgrestore");
+    page = wxT("pg/app-pgrestore");
     return page;
 }
 

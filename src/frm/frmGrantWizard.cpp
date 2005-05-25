@@ -71,7 +71,7 @@ frmGrantWizard::~frmGrantWizard()
 
 wxString frmGrantWizard::GetHelpPage() const
 {
-    wxString page=wxT("sql-grant");
+    wxString page=wxT("pg/sql-grant");
 
     return page;
 }

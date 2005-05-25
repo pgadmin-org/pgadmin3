@@ -101,7 +101,7 @@ frmBackup::~frmBackup()
 wxString frmBackup::GetHelpPage() const
 {
     wxString page;
-    page = wxT("app-pgdump");
+    page = wxT("pg/app-pgdump");
     return page;
 }
 

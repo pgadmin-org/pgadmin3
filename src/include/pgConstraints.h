@@ -24,7 +24,7 @@ public:
     int GetIcon() { return PGICON_CONSTRAINT; }
     bool IsCollectionForType(int objType);
     bool CanCreate() { return true; };
-    wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable"); }
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
     wxMenu *GetNewMenu();
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);

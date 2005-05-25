@@ -146,7 +146,7 @@ wxString dlgProperty::GetHelpPage() const
         page=obj->GetHelpPage(false);
     else
     {
-        page=wxT("sql-create") + wxString(typesList[objectType].typName).Lower();
+        page=wxT("pg/sql-create") + wxString(typesList[objectType].typName).Lower();
     }
     return page;
 }
@@ -1244,7 +1244,7 @@ void dlgSecurityProperty::OnDelPriv(wxCommandEvent &ev)
 wxString dlgSecurityProperty::GetHelpPage() const
 {
     if (nbNotebook->GetSelection() == (int)nbNotebook->GetPageCount()-2)
-        return wxT("sql-grant");
+        return wxT("pg/sql-grant");
     else
         return dlgProperty::GetHelpPage();
 }

@@ -161,7 +161,7 @@ wxString pgObject::GetHelpPage(bool forCreate) const
     wxString page;
 
     if (!IsCollection())
-        page=wxT("sql-create") + GetTypeName().Lower();
+        page=wxT("pg/sql-create") + GetTypeName().Lower();
 
     return page;
 }

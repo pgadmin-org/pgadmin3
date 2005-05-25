@@ -89,9 +89,9 @@ wxString frmMaintenance::GetHelpPage() const
     wxString page;
     switch ((XRCCTRL(*(frmMaintenance*)this, "rbxAction", wxRadioBox))->GetSelection())
     {
-        case 0: page = wxT("sql-vacuum"); break;
-        case 1: page = wxT("sql-analyze"); break;
-        case 2: page = wxT("sql-reindex"); break;
+        case 0: page = wxT("pg/sql-vacuum"); break;
+        case 1: page = wxT("pg/sql-analyze"); break;
+        case 2: page = wxT("pg/sql-reindex"); break;
     }
     return page;
 }
