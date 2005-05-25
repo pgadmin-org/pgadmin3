@@ -16,11 +16,12 @@
 #endif
 
 #include <wx/filename.h>
+#include <wx/config.h>
 #include <process.h>
 
 // for debugging purposes, we can start the service paused
 
-#define START_SUSPENDED 1
+#define START_SUSPENDED 0
 
 
 static SERVICE_STATUS serviceStatus;
@@ -224,61 +225,83 @@ void CALLBACK serviceMain(DWORD argc, LPTSTR *argv)
 
 ////////////////////////////////////////////////////////////
 // installation and removal
-bool installService(const char *serviceName, const char *exePath, const char *displayname, const char *user, const char *password)
+bool installService(const wxString &serviceName, const wxString &executable,  const wxString &args, const wxString &displayname, const wxString &user, const wxString &password)
 {
-    HKEY hk;
     DWORD dwData;
-    char tmp[255], buf[255];
     bool done=false;
 
     SC_HANDLE manager = OpenSCManager(0, 0, SC_MANAGER_ALL_ACCESS);
     if (manager)
     {
-        SC_HANDLE service = CreateService(manager, (const unsigned short *)serviceName, (const unsigned short *)displayname, SERVICE_ALL_ACCESS,
+        wxString cmd = executable + wxT(" ") + args;
+
+        wxString quser;
+        if (!user.Contains(wxT("\\")))
+            quser = wxT(".\\") + user;
+        else
+            quser = user;
+
+        SC_HANDLE service = CreateService(manager, serviceName.c_str(), displayname.c_str(), SERVICE_ALL_ACCESS,
             SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL,
-            (const unsigned short *)exePath, 0, 0, 0, (const unsigned short *)user, (const unsigned short *)password);
+            cmd.c_str(), 0, 0, 0, quser.c_str(), password.c_str());
 
         if (service)
         {
             done = true;
             CloseServiceHandle(service);
         }
+        else
+        {
+            LPVOID lpMsgBuf;
+            DWORD dw = GetLastError(); 
+
+            FormatMessage(
+                FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+                FORMAT_MESSAGE_FROM_SYSTEM,
+                NULL,
+                dw,
+                MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                (LPTSTR) &lpMsgBuf,
+                0, NULL
+            );
+            wxString error;
+            error.Printf(wxT("%s"), lpMsgBuf);
+            LogMessage(error, LOG_ERROR);
+        }
+
         CloseServiceHandle(manager);
     }
 
     // Setup the event message DLL
-    _snprintf(buf, 254, "SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\%s", serviceName);
-    if (RegCreateKey(HKEY_LOCAL_MACHINE, (const unsigned short *)buf, &hk))
-        LogMessage(_("Could not open the message source registry key."), LOG_WARNING);
+    wxRegKey *msgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\") + serviceName);
+    if(!msgKey->Exists())
+    {
+        if (!msgKey->Create())
+            LogMessage(_("Could not open the message source registry key."), LOG_WARNING);
+    }
 
-    GetModuleFileName(NULL, (unsigned short *)tmp, 254);
-    (strrchr(tmp, '\\'))[0] = 0;
-    _snprintf(buf, 254, "%s\\pgaevent.dll", tmp);
+    wxString path = executable.BeforeLast('\\') + wxT("\\pgaevent.dll");
 
-
-    if (RegSetValueEx(hk, (const unsigned short *)"EventMessageFile", 0, REG_EXPAND_SZ, (LPBYTE)buf, strlen(buf) + 1))
+    if (!msgKey->SetValue(wxT("EventMessageFile"), path))
         LogMessage(_("Could not set the event message file registry value."), LOG_WARNING);
 
     dwData = EVENTLOG_ERROR_TYPE | EVENTLOG_WARNING_TYPE | EVENTLOG_INFORMATION_TYPE;
 
-    if (RegSetValueEx(hk, (const unsigned short *)"TypesSupported", 0, REG_DWORD, (LPBYTE) &dwData, sizeof(DWORD)))
-        LogMessage(_("Could not set the supported types."), LOG_WARNING);
-
-    RegCloseKey(hk);
+    if (!msgKey->SetValue(wxT("TypesSupported"), dwData))
+        LogMessage(_("Could not set the supported types."), LOG_WARNING);;
 
     return done;
 }
 
 
-bool removeService(const char *serviceName)
+bool removeService(const wxString &serviceName)
 {
-    HKEY hk;
     bool done=false;
 
     SC_HANDLE manager = OpenSCManager(0, 0, SC_MANAGER_ALL_ACCESS);
     if (manager)
     {
-        SC_HANDLE service = OpenService(manager, (const unsigned short *)serviceName, SERVICE_ALL_ACCESS);
+        SC_HANDLE service = OpenService(manager, serviceName.c_str(), SERVICE_ALL_ACCESS);
         if (service)
         {
             SERVICE_STATUS serviceStatus;
@@ -304,11 +327,8 @@ bool removeService(const char *serviceName)
     }
 
     // Remove the event message DLL
-    if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, (const unsigned short *)"SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\", 0, KEY_ALL_ACCESS, &hk))
-        LogMessage(_("Could not open the message source registry key."), LOG_WARNING);
-
-    if (RegDeleteKey(hk, (const unsigned short *)serviceName))
-        LogMessage(_("Could not remove the event message file registry value."), LOG_WARNING);
+    wxRegKey *msgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\") + serviceName);
+    msgKey->DeleteSelf();
 
     return done;
 }
@@ -353,8 +373,9 @@ void main(int argc, char **argv)
     // Statup wx
     wxInitialize();
 
-    wxString executable;
-    executable = wxString::FromAscii(*argv++);
+    wxFileName file = wxString::FromAscii(*argv++);
+    file.MakeAbsolute();
+    wxString executable = file.GetFullPath();
 
     if (argc < 3)
     {
@@ -371,8 +392,8 @@ void main(int argc, char **argv)
 
     if (command == wxT("INSTALL"))
     {
-        wxString displayname = _("PostgreSQL scheduling agent - ") + serviceName;
-        wxString arg = executable + wxT(" RUN ") + serviceName;
+        wxString displayname = _("PostgreSQL Scheduling Agent - ") + serviceName;
+        wxString args = wxT("RUN ") + serviceName;
 
         while (argc-- > 0)
         {
@@ -397,24 +418,24 @@ void main(int argc, char **argv)
                     }
                     default:
                     {
-                        arg += wxString::FromAscii(*argv);
+                        args += wxT(" ") + wxString::FromAscii(*argv);
                         break;
                     }
                 }
             }
             else
             {
-                arg.Printf(wxT("%s %s"), arg.mb_str(wxConvUTF8), *argv);
+                args += wxT(" ") + wxString::FromAscii(*argv);
             }
 
             argv++;
         }
 
-        bool rc=installService(serviceName.mb_str(wxConvUTF8), arg.mb_str(wxConvUTF8), displayname.mb_str(wxConvUTF8), user.mb_str(wxConvUTF8), password.mb_str(wxConvUTF8));
+        bool rc=installService(serviceName, executable, args, displayname, user, password);
     }
     else if (command == wxT("REMOVE"))
     {
-        bool rc=removeService(serviceName.mb_str(wxConvUTF8));
+        bool rc=removeService(serviceName);
     }
     else if (command == wxT("DEBUG"))
     {
@@ -430,7 +451,7 @@ void main(int argc, char **argv)
     else if (command == wxT("RUN"))
     {
         SERVICE_TABLE_ENTRY serviceTable[] =
-            { (unsigned short *)_("pgAgent service"), serviceMain, 0, 0};
+            { (unsigned short *)_("pgAgent Service"), serviceMain, 0, 0};
 
         setupForRun(argc, argv);
 
