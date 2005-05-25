@@ -34,6 +34,7 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
     void SetJobId(long id) { jobId = id; }
+    wxString GetHelpPage() const;
 
 private:
     long jobId;

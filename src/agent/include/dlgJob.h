@@ -29,6 +29,7 @@ public:
     wxString GetInsertSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    wxString GetHelpPage() const;
 
 private:
     pgaJob *job;

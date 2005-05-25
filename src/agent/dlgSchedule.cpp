@@ -603,3 +603,8 @@ const wxString dlgSchedule::ChkListBox2StrArray(wxCheckListBox *lb)
 
 	return res;
 }
+
+wxString dlgSchedule::GetHelpPage() const
+{
+    return wxT("../pgagent-schedules");
+}
