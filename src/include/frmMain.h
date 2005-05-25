@@ -55,7 +55,7 @@ public:
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
     void ShowStatistics(pgObject *data, int sel);
 
-    wxImageList *GetImageList() { return images; }
+    wxImageList *GetImageList() { return imageList; }
     wxTreeCtrl *GetBrowser() { return browser; }
     ctlSQLBox *GetSqlPane() { return sqlPane; }
     ctlListView *GetProperties() { return properties; }
@@ -73,7 +73,6 @@ private:
     ctlSQLBox *sqlPane;
     wxMenu *newMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu;
     wxTreeItemId servers;
-	wxImageList *images;
     wxSplitterWindow *horizontal, *vertical;
 
     wxStopWatch stopwatch;
