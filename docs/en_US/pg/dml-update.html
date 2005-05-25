@@ -4,19 +4,16 @@
 <title>6.2. Updating Data</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="dml.html" title="Chapter 6. Data Manipulation">
-<link rel="previous" href="dml.html" title="Chapter 6. Data Manipulation">
+<link rel="prev" href="dml.html" title="Chapter 6. Data Manipulation">
 <link rel="next" href="dml-delete.html" title="6.3. Deleting Data">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="dml-update"></a>6.2. Updating Data</h2></div></div>
-<div></div>
-</div>
-<a name="id2527649"></a><a name="id2527659"></a><p>   The modification of data that is already in the database is
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="dml-update"></a>6.2. Updating Data</h2></div></div></div>
+<a name="id309078"></a><a name="id309087"></a><p>   The modification of data that is already in the database is
    referred to as updating.  You can update individual rows, all the
    rows in a table, or a subset of all rows.  Each column can be
    updated separately; the other columns are not affected.
@@ -49,9 +46,9 @@
     an error to attempt an update that does not match any rows.
   </p>
 <p>   Let's look at that command in detail. First is the key word
-   <tt class="literal">UPDATE</tt> followed by the table name.  As usual,
+   <code class="literal">UPDATE</code> followed by the table name.  As usual,
    the table name may be schema-qualified, otherwise it is looked up
-   in the path.  Next is the key word <tt class="literal">SET</tt> followed
+   in the path.  Next is the key word <code class="literal">SET</code> followed
    by the column name, an equals sign and the new column value.  The
    new column value can be any scalar expression, not just a constant.
    For example, if you want to raise the price of all products by 10%
@@ -60,21 +57,21 @@
 <pre class="programlisting">UPDATE products SET price = price * 1.10;</pre>
 <p>
    As you see, the expression for the new value can refer to the existing
-   value(s) in the row.  We also left out the <tt class="literal">WHERE</tt> clause.
+   value(s) in the row.  We also left out the <code class="literal">WHERE</code> clause.
    If it is omitted, it means that all rows in the table are updated.
    If it is present, only those rows that match the
-   <tt class="literal">WHERE</tt> condition are updated.  Note that the equals
-   sign in the <tt class="literal">SET</tt> clause is an assignment while
-   the one in the <tt class="literal">WHERE</tt> clause is a comparison, but
+   <code class="literal">WHERE</code> condition are updated.  Note that the equals
+   sign in the <code class="literal">SET</code> clause is an assignment while
+   the one in the <code class="literal">WHERE</code> clause is a comparison, but
    this does not create any ambiguity.  Of course, the
-   <tt class="literal">WHERE</tt> condition does
+   <code class="literal">WHERE</code> condition does
    not have to be an equality test.  Many other operators are
    available (see <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>).  But the expression
    needs to evaluate to a Boolean result.
   </p>
 <p>   You can update more than one column in an
-   <tt class="command">UPDATE</tt> command by listing more than one
-   assignment in the <tt class="literal">SET</tt> clause.  For example:
+   <code class="command">UPDATE</code> command by listing more than one
+   assignment in the <code class="literal">SET</code> clause.  For example:
 </p>
 <pre class="programlisting">UPDATE mytable SET a = 5, b = 3, c = 1 WHERE a &gt; 0;</pre>
 <p>

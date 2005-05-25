@@ -4,31 +4,25 @@
 <title>13.4. Populating a Database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
-<link rel="previous" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
+<link rel="prev" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
 <link rel="next" href="admin.html" title="Part III. Server Administration">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="populate"></a>13.4. Populating a Database</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="populate"></a>13.4. Populating a Database</h2></div></div></div>
 <p>   One may need to insert a large amount of data when first populating
    a database. This section contains some suggestions on how to make
    this process as efficient as possible.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="disable-autocommit"></a>13.4.1. Disable Autocommit</h3></div></div>
-<div></div>
-</div>
-<a name="id2573687"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
-    SQL, this means issuing <tt class="command">BEGIN</tt> at the start and
-    <tt class="command">COMMIT</tt> at the end.  Some client libraries may
+<div class="titlepage"><div><div><h3 class="title">
+<a name="disable-autocommit"></a>13.4.1. Disable Autocommit</h3></div></div></div>
+<a name="id352049"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
+    SQL, this means issuing <code class="command">BEGIN</code> at the start and
+    <code class="command">COMMIT</code> at the end.  Some client libraries may
     do this behind your back, in which case you need to make sure the
     library does it when you want it done.)  If you allow each
     insertion to be committed separately,
@@ -41,41 +35,35 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="populate-copy-from"></a>13.4.2. Use <tt class="command">COPY</tt></h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="populate-copy-from"></a>13.4.2. Use <code class="command">COPY</code></h3></div></div></div>
 <p>    Use <a href="sql-copy.html">COPY</a> to load
     all the rows in one command, instead of using a series of
-    <tt class="command">INSERT</tt> commands.  The <tt class="command">COPY</tt>
+    <code class="command">INSERT</code> commands.  The <code class="command">COPY</code>
     command is optimized for loading large numbers of rows; it is less
-    flexible than <tt class="command">INSERT</tt>, but incurs significantly
-    less overhead for large data loads. Since <tt class="command">COPY</tt>
+    flexible than <code class="command">INSERT</code>, but incurs significantly
+    less overhead for large data loads. Since <code class="command">COPY</code>
     is a single command, there is no need to disable autocommit if you
     use this method to populate a table.
    </p>
-<p>    If you cannot use <tt class="command">COPY</tt>, it may help to use <a href="sql-prepare.html">PREPARE</a> to create a
-    prepared <tt class="command">INSERT</tt> statement, and then use
-    <tt class="command">EXECUTE</tt> as many times as required.  This avoids
+<p>    If you cannot use <code class="command">COPY</code>, it may help to use <a href="sql-prepare.html">PREPARE</a> to create a
+    prepared <code class="command">INSERT</code> statement, and then use
+    <code class="command">EXECUTE</code> as many times as required.  This avoids
     some of the overhead of repeatedly parsing and planning
-    <tt class="command">INSERT</tt>.
+    <code class="command">INSERT</code>.
    </p>
 <p>    Note that loading a large number of rows using
-    <tt class="command">COPY</tt> is almost always faster than using
-    <tt class="command">INSERT</tt>, even if <tt class="command">PREPARE</tt> is used and
+    <code class="command">COPY</code> is almost always faster than using
+    <code class="command">INSERT</code>, even if <code class="command">PREPARE</code> is used and
     multiple insertions are batched into a single transaction.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="populate-rm-indexes"></a>13.4.3. Remove Indexes</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="populate-rm-indexes"></a>13.4.3. Remove Indexes</h3></div></div></div>
 <p>    If you are loading a freshly created table, the fastest way is to
     create the table, bulk load the table's data using
-    <tt class="command">COPY</tt>, then create any indexes needed for the
+    <code class="command">COPY</code>, then create any indexes needed for the
     table.  Creating an index on pre-existing data is quicker than
     updating it incrementally as each row is loaded.
    </p>
@@ -89,49 +77,40 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="populate-work-mem"></a>13.4.4. Increase <tt class="varname">maintenance_work_mem</tt></h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="populate-work-mem"></a>13.4.4. Increase <code class="varname">maintenance_work_mem</code></h3></div></div></div>
 <p>    Temporarily increasing the <a href="runtime-config.html#guc-maintenance-work-mem">maintenance_work_mem</a>
     configuration variable when loading large amounts of data can
     lead to improved performance. This is because when a B-tree index
     is created from scratch, the existing content of the table needs
     to be sorted. Allowing the merge sort to use more memory
     means that fewer merge passes will be required.  A larger setting for
-    <tt class="varname">maintenance_work_mem</tt> may also speed up validation
+    <code class="varname">maintenance_work_mem</code> may also speed up validation
     of foreign-key constraints.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="populate-checkpoint-segments"></a>13.4.5. Increase <tt class="varname">checkpoint_segments</tt></h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="populate-checkpoint-segments"></a>13.4.5. Increase <code class="varname">checkpoint_segments</code></h3></div></div></div>
 <p>    Temporarily increasing the <a href="runtime-config.html#guc-checkpoint-segments">checkpoint_segments</a> configuration variable can also
     make large data loads faster.  This is because loading a large
     amount of data into <span class="productname">PostgreSQL</span> can
     cause checkpoints to occur more often than the normal checkpoint
-    frequency (specified by the <tt class="varname">checkpoint_timeout</tt>
+    frequency (specified by the <code class="varname">checkpoint_timeout</code>
     configuration variable). Whenever a checkpoint occurs, all dirty
     pages must be flushed to disk. By increasing
-    <tt class="varname">checkpoint_segments</tt> temporarily during bulk
+    <code class="varname">checkpoint_segments</code> temporarily during bulk
     data loads, the number of checkpoints that are required can be
     reduced.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="populate-analyze"></a>13.4.6. Run <tt class="command">ANALYZE</tt> Afterwards</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="populate-analyze"></a>13.4.6. Run <code class="command">ANALYZE</code> Afterwards</h3></div></div></div>
 <p>    Whenever you have significantly altered the distribution of data
     within a table, running <a href="sql-analyze.html">ANALYZE</a> is strongly recommended. This
     includes bulk loading large amounts of data into the table.  Running
-    <tt class="command">ANALYZE</tt> (or <tt class="command">VACUUM ANALYZE</tt>)
+    <code class="command">ANALYZE</code> (or <code class="command">VACUUM ANALYZE</code>)
     ensures that the planner has up-to-date statistics about the
     table.  With no statistics or obsolete statistics, the planner may
     make poor decisions during query planning, leading to poor

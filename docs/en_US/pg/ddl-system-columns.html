@@ -4,19 +4,16 @@
 <title>5.4. System Columns</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="previous" href="ddl-constraints.html" title="5.3. Constraints">
+<link rel="prev" href="ddl-constraints.html" title="5.3. Constraints">
 <link rel="next" href="ddl-inherit.html" title="5.5. Inheritance">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ddl-system-columns"></a>5.4. System Columns</h2></div></div>
-<div></div>
-</div>
-<p>   Every table has several <i class="firstterm">system columns</i> that are
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ddl-system-columns"></a>5.4. System Columns</h2></div></div></div>
+<p>   Every table has several <em class="firstterm">system columns</em> that are
    implicitly defined by the system.  Therefore, these names cannot be
    used as names of user-defined columns.  (Note that these
    restrictions are separate from whether the name is a key word or
@@ -24,62 +21,62 @@
    restrictions.)  You do not really need to be concerned about these
    columns, just know they exist.
   </p>
-<a name="id2525067"></a><div class="variablelist"><dl>
-<dt><span class="term"><tt class="structfield">oid</tt></span></dt>
-<dd><p>      <a name="id2525084"></a>
+<a name="id306797"></a><div class="variablelist"><dl>
+<dt><span class="term"><code class="structfield">oid</code></span></dt>
+<dd><p>      <a name="id306814"></a>
       The object identifier (object ID) of a row. This column is only
-      present if the table was created using <tt class="literal">WITH
-      OIDS</tt>, or if the <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a>
+      present if the table was created using <code class="literal">WITH
+      OIDS</code>, or if the <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a>
       configuration variable was enabled. This column is of type
-      <tt class="type">oid</tt> (same name as the column); see <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a> for more information about the type.
+      <code class="type">oid</code> (same name as the column); see <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a> for more information about the type.
      </p></dd>
-<dt><span class="term"><tt class="structfield">tableoid</tt></span></dt>
+<dt><span class="term"><code class="structfield">tableoid</code></span></dt>
 <dd>
-<a name="id2525127"></a><p>      The OID of the table containing this row.  This column is
+<a name="id306853"></a><p>      The OID of the table containing this row.  This column is
       particularly handy for queries that select from inheritance
       hierarchies, since without it, it's difficult to tell which
       individual table a row came from.  The
-      <tt class="structfield">tableoid</tt> can be joined against the
-      <tt class="structfield">oid</tt> column of
-      <tt class="structname">pg_class</tt> to obtain the table name.
+      <code class="structfield">tableoid</code> can be joined against the
+      <code class="structfield">oid</code> column of
+      <code class="structname">pg_class</code> to obtain the table name.
      </p>
 </dd>
-<dt><span class="term"><tt class="structfield">xmin</tt></span></dt>
+<dt><span class="term"><code class="structfield">xmin</code></span></dt>
 <dd>
-<a name="id2525156"></a><p>      The identity (transaction ID) of the inserting transaction for
+<a name="id306880"></a><p>      The identity (transaction ID) of the inserting transaction for
       this row version.  (A row version is an individual state of a
       row; each update of a row creates a new row version for the same
       logical row.)
      </p>
 </dd>
-<dt><span class="term"><tt class="structfield">cmin</tt></span></dt>
+<dt><span class="term"><code class="structfield">cmin</code></span></dt>
 <dd>
-<a name="id2525174"></a><p>      The command identifier (starting at zero) within the inserting
+<a name="id306895"></a><p>      The command identifier (starting at zero) within the inserting
       transaction.
      </p>
 </dd>
-<dt><span class="term"><tt class="structfield">xmax</tt></span></dt>
+<dt><span class="term"><code class="structfield">xmax</code></span></dt>
 <dd>
-<a name="id2525189"></a><p>      The identity (transaction ID) of the deleting transaction, or
+<a name="id306910"></a><p>      The identity (transaction ID) of the deleting transaction, or
       zero for an undeleted row version.  It is possible for this column to
       be nonzero in a visible row version. That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
       deletion was rolled back.
      </p>
 </dd>
-<dt><span class="term"><tt class="structfield">cmax</tt></span></dt>
+<dt><span class="term"><code class="structfield">cmax</code></span></dt>
 <dd>
-<a name="id2525208"></a><p>      The command identifier within the deleting transaction, or zero.
+<a name="id306926"></a><p>      The command identifier within the deleting transaction, or zero.
      </p>
 </dd>
-<dt><span class="term"><tt class="structfield">ctid</tt></span></dt>
+<dt><span class="term"><code class="structfield">ctid</code></span></dt>
 <dd>
-<a name="id2525223"></a><p>      The physical location of the row version within its table.  Note that
-      although the <tt class="structfield">ctid</tt> can be used to
+<a name="id306940"></a><p>      The physical location of the row version within its table.  Note that
+      although the <code class="structfield">ctid</code> can be used to
       locate the row version very quickly, a row's
-      <tt class="structfield">ctid</tt> will change each time it is
-      updated or moved by <tt class="command">VACUUM FULL</tt>.  Therefore
-      <tt class="structfield">ctid</tt> is useless as a long-term row
+      <code class="structfield">ctid</code> will change each time it is
+      updated or moved by <code class="command">VACUUM FULL</code>.  Therefore
+      <code class="structfield">ctid</code> is useless as a long-term row
       identifier.  The OID, or even better a user-defined serial
       number, should be used to identify logical rows.
      </p>
@@ -100,13 +97,13 @@
        table for which the OID will be used to identify rows.
       </p></li>
 <li><p>       OIDs should never be assumed to be unique across tables; use
-       the combination of <tt class="structfield">tableoid</tt> and row OID if you
+       the combination of <code class="structfield">tableoid</code> and row OID if you
        need a database-wide identifier.
       </p></li>
-<li><p>       The tables in question should be created using <tt class="literal">WITH
-       OIDS</tt> to ensure forward compatibility with future
+<li><p>       The tables in question should be created using <code class="literal">WITH
+       OIDS</code> to ensure forward compatibility with future
        releases of <span class="productname">PostgreSQL</span>.  It is
-       planned that <tt class="literal">WITHOUT OIDS</tt> will become the default.
+       planned that <code class="literal">WITHOUT OIDS</code> will become the default.
       </p></li>
 </ul></div>
 <p>

@@ -4,23 +4,20 @@
 <title>3.5. Inheritance</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
-<link rel="previous" href="tutorial-transactions.html" title="3.4. Transactions">
+<link rel="prev" href="tutorial-transactions.html" title="3.4. Transactions">
 <link rel="next" href="tutorial-conclusion.html" title="3.6. Conclusion">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-inheritance"></a>3.5. Inheritance</h2></div></div>
-<div></div>
-</div>
-<a name="id2519998"></a><p>    Inheritance is a concept from object-oriented databases.  It opens
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-inheritance"></a>3.5. Inheritance</h2></div></div></div>
+<a name="id302306"></a><p>    Inheritance is a concept from object-oriented databases.  It opens
     up interesting new possibilities of database design.
    </p>
-<p>    Let's create two tables:  A table <tt class="classname">cities</tt>
-    and a table <tt class="classname">capitals</tt>.  Naturally, capitals
+<p>    Let's create two tables:  A table <code class="classname">cities</code>
+    and a table <code class="classname">capitals</code>.  Naturally, capitals
     are also cities, so you want some way to show the capitals
     implicitly when you list all cities.  If you're really clever you
     might invent some scheme like this:
@@ -62,12 +59,12 @@ CREATE TABLE capitals (
 ) INHERITS (cities);</pre>
 <p>
    </p>
-<p>    In this case, a row of <tt class="classname">capitals</tt>
-    <i class="firstterm">inherits</i> all columns (<tt class="structfield">name</tt>,
-    <tt class="structfield">population</tt>, and <tt class="structfield">altitude</tt>) from its
-    <i class="firstterm">parent</i>, <tt class="classname">cities</tt>.  The
-    type of the column <tt class="structfield">name</tt> is
-    <tt class="type">text</tt>, a native <span class="productname">PostgreSQL</span>
+<p>    In this case, a row of <code class="classname">capitals</code>
+    <em class="firstterm">inherits</em> all columns (<code class="structfield">name</code>,
+    <code class="structfield">population</code>, and <code class="structfield">altitude</code>) from its
+    <em class="firstterm">parent</em>, <code class="classname">cities</code>.  The
+    type of the column <code class="structfield">name</code> is
+    <code class="type">text</code>, a native <span class="productname">PostgreSQL</span>
     type for variable length character strings.  State capitals have
     an extra column, state, that shows their state.  In
     <span class="productname">PostgreSQL</span>, a table can inherit from
@@ -112,13 +109,13 @@ CREATE TABLE capitals (
 (2 rows)</pre>
 <p>
    </p>
-<p>    Here the <tt class="literal">ONLY</tt> before <tt class="literal">cities</tt>
+<p>    Here the <code class="literal">ONLY</code> before <code class="literal">cities</code>
     indicates that the query should be run over only the
-    <tt class="classname">cities</tt> table, and not tables below
-    <tt class="classname">cities</tt> in the inheritance hierarchy.  Many
+    <code class="classname">cities</code> table, and not tables below
+    <code class="classname">cities</code> in the inheritance hierarchy.  Many
     of the commands that we have already discussed [mdash ]
-    <tt class="command">SELECT</tt>, <tt class="command">UPDATE</tt>, and
-    <tt class="command">DELETE</tt> [mdash ] support this <tt class="literal">ONLY</tt>
+    <code class="command">SELECT</code>, <code class="command">UPDATE</code>, and
+    <code class="command">DELETE</code> [mdash ] support this <code class="literal">ONLY</code>
     notation.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">

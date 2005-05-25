@@ -4,63 +4,60 @@
 <title>UNLISTEN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-truncate.html" title="TRUNCATE">
+<link rel="prev" href="sql-truncate.html" title="TRUNCATE">
 <link rel="next" href="sql-update.html" title="UPDATE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-unlisten"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-unlisten"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>UNLISTEN &#8212; stop listening for a notification</p>
 </div>
-<a name="id2705155"></a><div class="refsynopsisdiv">
+<a name="id472993"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">UNLISTEN { <i class="replaceable"><tt>name</tt></i> | * }</pre>
+<pre class="synopsis">UNLISTEN { <em class="replaceable"><code>name</code></em> | * }</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705176"></a><h2>Description</h2>
-<p>   <tt class="command">UNLISTEN</tt> is used to remove an existing
-   registration for <tt class="command">NOTIFY</tt> events.
-   <tt class="command">UNLISTEN</tt> cancels any existing registration of
+<a name="id473014"></a><h2>Description</h2>
+<p>   <code class="command">UNLISTEN</code> is used to remove an existing
+   registration for <code class="command">NOTIFY</code> events.
+   <code class="command">UNLISTEN</code> cancels any existing registration of
    the current <span class="productname">PostgreSQL</span> session as a
-   listener on the notification <i class="replaceable"><tt>name</tt></i>.  The special wildcard
-   <tt class="literal">*</tt> cancels all listener registrations for the
+   listener on the notification <em class="replaceable"><code>name</code></em>.  The special wildcard
+   <code class="literal">*</code> cancels all listener registrations for the
    current session.
   </p>
 <p>   <a href="sql-notify.html">NOTIFY</a>
    contains a more extensive
-   discussion of the use of <tt class="command">LISTEN</tt> and
-   <tt class="command">NOTIFY</tt>.
+   discussion of the use of <code class="command">LISTEN</code> and
+   <code class="command">NOTIFY</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705245"></a><h2>Parameters</h2>
+<a name="id473080"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      Name of a notification (any identifier).
      </p></dd>
-<dt><span class="term"><tt class="literal">*</tt></span></dt>
+<dt><span class="term"><code class="literal">*</code></span></dt>
 <dd><p>      All current listen registrations for this session are cleared.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705271"></a><h2>Notes</h2>
+<a name="id473105"></a><h2>Notes</h2>
 <p>   You may unlisten something you were not listening for; no warning or error
    will appear.
   </p>
-<p>   At the end of each session, <tt class="command">UNLISTEN *</tt> is
+<p>   At the end of each session, <code class="command">UNLISTEN *</code> is
    automatically executed.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705288"></a><h2>Examples</h2>
+<a name="id473121"></a><h2>Examples</h2>
 <p>   To make a registration:
 
 </p>
@@ -69,7 +66,7 @@ NOTIFY virtual;
 Asynchronous notification "virtual" received from server process with PID 8448.</pre>
 <p>
   </p>
-<p>   Once <tt class="command">UNLISTEN</tt> has been executed, further <tt class="command">NOTIFY</tt>
+<p>   Once <code class="command">UNLISTEN</code> has been executed, further <code class="command">NOTIFY</code>
    commands will be ignored:
 
 </p>
@@ -80,13 +77,13 @@ NOTIFY virtual;
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705324"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">UNLISTEN</tt> command in the SQL standard.
+<a name="id473154"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">UNLISTEN</code> command in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705336"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-listen.html">LISTEN</a>, <a href="sql-notify.html">NOTIFY</a></span>
+<a name="id473166"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-listen.html">LISTEN</a>, <a href="sql-notify.html">NOTIFY</a>, </span>
 </div>
 </div></body>
 </html>

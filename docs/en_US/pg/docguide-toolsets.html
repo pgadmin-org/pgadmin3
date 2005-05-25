@@ -4,18 +4,15 @@
 <title>G.2. Tool Sets</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="docguide.html" title="Appendix G. Documentation">
-<link rel="previous" href="docguide.html" title="Appendix G. Documentation">
+<link rel="prev" href="docguide.html" title="Appendix G. Documentation">
 <link rel="next" href="docguide-build.html" title="G.3. Building The Documentation">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="docguide-toolsets"></a>G.2. Tool Sets</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="docguide-toolsets"></a>G.2. Tool Sets</h2></div></div></div>
 <p>   The following tools are used to process the documentation.  Some
    may be optional, as noted.
 
@@ -77,28 +74,22 @@
    here.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2787890"></a>G.2.1. <span class="productname">Linux</span> <span class="acronym">RPM</span> Installation</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id551044"></a>G.2.1. <span class="productname">Linux</span> <span class="acronym">RPM</span> Installation</h3></div></div></div>
 <p>    Most vendors provide a complete RPM set for DocBook processing in
     their distribution.  Look for an &#8220;<span class="quote">SGML</span>&#8221; option while
     installing, or the following packages:
-    <tt class="filename">sgml-common</tt>, <tt class="filename">docbook</tt>,
-    <tt class="filename">stylesheets</tt>, <tt class="filename">openjade</tt>
-    (or <tt class="filename">jade</tt>).  Possibly
-    <tt class="filename">sgml-tools</tt> will be needed as well.  If your
+    <code class="filename">sgml-common</code>, <code class="filename">docbook</code>,
+    <code class="filename">stylesheets</code>, <code class="filename">openjade</code>
+    (or <code class="filename">jade</code>).  Possibly
+    <code class="filename">sgml-tools</code> will be needed as well.  If your
     distributor does not provide these then you should be able to make
     use of the packages from some other, reasonably compatible vendor.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2787948"></a>G.2.2. FreeBSD Installation</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id551100"></a>G.2.2. FreeBSD Installation</h3></div></div></div>
 <p>    The FreeBSD Documentation Project is itself a heavy user of
     DocBook, so it comes as no surprise that there is a full set of
     &#8220;<span class="quote">ports</span>&#8221; of the documentation tools available on
@@ -106,40 +97,36 @@
     documentation on FreeBSD.
     </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p><tt class="filename">textproc/sp</tt></p></li>
-<li><p><tt class="filename">textproc/openjade</tt></p></li>
-<li><p><tt class="filename">textproc/iso8879</tt></p></li>
-<li><p><tt class="filename">textproc/dsssl-docbook-modular</tt></p></li>
+<li><p><code class="filename">textproc/sp</code></p></li>
+<li><p><code class="filename">textproc/openjade</code></p></li>
+<li><p><code class="filename">textproc/iso8879</code></p></li>
+<li><p><code class="filename">textproc/dsssl-docbook-modular</code></p></li>
 </ul></div>
 <p>
     Apparently, there is no port for the DocBook V4.2 SGML DTD
     available right now.  You will need to install it manually.
    </p>
-<p>    A number of things from <tt class="filename">/usr/ports/print</tt>
-    (<tt class="filename">tex</tt>, <tt class="filename">jadetex</tt>) might
+<p>    A number of things from <code class="filename">/usr/ports/print</code>
+    (<code class="filename">tex</code>, <code class="filename">jadetex</code>) might
     also be of interest.
    </p>
 <p>    It's possible that the ports do not update the main catalog file
-    in <tt class="filename">/usr/local/share/sgml/catalog</tt>.  Be sure to
+    in <code class="filename">/usr/local/share/sgml/catalog</code>.  Be sure to
     have the following line in there:
 </p>
 <pre class="programlisting">CATALOG "/usr/local/share/sgml/docbook/4.2/docbook.cat"</pre>
 <p>
     If you do not want to edit the file you can also set the
-    environment variable <tt class="envar">SGML_CATALOG_FILES</tt> to a
+    environment variable <code class="envar">SGML_CATALOG_FILES</code> to a
     colon-separated list of catalog files (such as the one above).
    </p>
 <p>    More information about the FreeBSD documentation tools can be
-    found in the <a href="http://www.freebsd.org/doc/en_US.ISO8859-1/books/fdp-primer/tools.html" target="_top">FreeBSD
-    Documentation Project's instructions</a>.
+    found in the <a href="http://www.freebsd.org/doc/en_US.ISO8859-1/books/fdp-primer/tools.html" target="_top">    FreeBSD Documentation Project's instructions</a>.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2788051"></a>G.2.3. Debian Packages</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id551192"></a>G.2.3. Debian Packages</h3></div></div></div>
 <p>    There is a full set of packages of the documentation tools
     available for <span class="productname">Debian GNU/Linux</span>.
     To install, simply use:
@@ -151,11 +138,8 @@ apt-get install docbook-stylesheets</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2788072"></a>G.2.4. Manual Installation from Source</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id551211"></a>G.2.4. Manual Installation from Source</h3></div></div></div>
 <p>    The manual installation process of the DocBook tools is somewhat
     complex, so if you have pre-built packages available, use them.
     We describe here only a standard setup, with reasonably standard
@@ -164,15 +148,12 @@ apt-get install docbook-stylesheets</pre>
     package, and read <span class="acronym">SGML</span> introductory material.
    </p>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2788092"></a>G.2.4.1. Installing OpenJade</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id551228"></a>G.2.4.1. Installing OpenJade</h4></div></div></div>
 <div class="procedure"><ol type="1">
 <li>
 <p>        The installation of OpenJade offers a GNU-style
-        <tt class="literal">./configure; make; make install</tt> build
+        <code class="literal">./configure; make; make install</code> build
         process.  Details can be found in the OpenJade source
         distribution. In a nutshell:
 </p>
@@ -183,7 +164,7 @@ make install</pre>
         Be sure to remember where you put the &#8220;<span class="quote">default
         catalog</span>&#8221;; you will need it below.  You can also leave
         it off, but then you will have to set the environment variable
-        <tt class="envar">SGML_CATALOG_FILES</tt> to point to the file
+        <code class="envar">SGML_CATALOG_FILES</code> to point to the file
         whenever you use <span class="application">jade</span> later on.
         (This method is also an option if OpenJade is already
         installed and you want to install the rest of the toolchain
@@ -192,11 +173,11 @@ make install</pre>
 </li>
 <li>
 <a name="doc-openjade-install"></a><p>        Additionally, you should install the files
-        <tt class="filename">dsssl.dtd</tt>, <tt class="filename">fot.dtd</tt>,
-        <tt class="filename">style-sheet.dtd</tt>, and
-        <tt class="filename">catalog</tt> from the
-        <tt class="filename">dsssl</tt> directory somewhere, perhaps into
-        <tt class="filename">/usr/local/share/sgml/dsssl</tt>.  It's
+        <code class="filename">dsssl.dtd</code>, <code class="filename">fot.dtd</code>,
+        <code class="filename">style-sheet.dtd</code>, and
+        <code class="filename">catalog</code> from the
+        <code class="filename">dsssl</code> directory somewhere, perhaps into
+        <code class="filename">/usr/local/share/sgml/dsssl</code>.  It's
         probably easiest to copy the entire directory:
 </p>
 <pre class="synopsis">cp -R dsssl /usr/local/share/sgml</pre>
@@ -205,7 +186,7 @@ make install</pre>
 </li>
 <li>
 <p>        Finally, create the file
-        <tt class="filename">/usr/local/share/sgml/catalog</tt> and add
+        <code class="filename">/usr/local/share/sgml/catalog</code> and add
         this line to it:
 </p>
 <pre class="programlisting">CATALOG "dsssl/catalog"</pre>
@@ -218,37 +199,33 @@ make install</pre>
 </ol></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2788224"></a>G.2.4.2. Installing the <span class="productname">DocBook</span> <span class="acronym">DTD</span> Kit</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id551346"></a>G.2.4.2. Installing the <span class="productname">DocBook</span> <span class="acronym">DTD</span> Kit</h4></div></div></div>
 <div class="procedure"><ol type="1">
-<li><p>       Obtain the <a href="http://www.docbook.org/sgml/4.2/docbook-4.2.zip" target="_top">DocBook
-       V4.2</a> distribution.
+<li><p>       Obtain the <a href="http://www.docbook.org/sgml/4.2/docbook-4.2.zip" target="_top">       DocBook V4.2 distribution</a>.
       </p></li>
 <li>
 <p>       Create the directory
-       <tt class="filename">/usr/local/share/sgml/docbook-4.2</tt> and change
+       <code class="filename">/usr/local/share/sgml/docbook-4.2</code> and change
        to it. (The exact location is irrelevant, but this one is
        reasonable within the layout we are following here.)
 </p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>mkdir /usr/local/share/sgml/docbook-4.2</tt></b>
-<tt class="prompt">$ </tt><b class="userinput"><tt>cd /usr/local/share/sgml/docbook-4.2</tt></b></pre>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>mkdir /usr/local/share/sgml/docbook-4.2</code></strong>
+<code class="prompt">$ </code><strong class="userinput"><code>cd /usr/local/share/sgml/docbook-4.2</code></strong></pre>
 <p>
       </p>
 </li>
 <li>
 <p>       Unpack the archive.
 </p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>unzip -a ...../docbook-4.2.zip</tt></b></pre>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>unzip -a ...../docbook-4.2.zip</code></strong></pre>
 <p>
        (The archive will unpack its files into the current directory.)
       </p>
 </li>
 <li>
 <p>       Edit the file
-       <tt class="filename">/usr/local/share/sgml/catalog</tt> (or whatever
+       <code class="filename">/usr/local/share/sgml/catalog</code> (or whatever
        you told jade during installation) and put a line like this
        into it:
 </p>
@@ -257,12 +234,11 @@ make install</pre>
       </p>
 </li>
 <li>
-<p>       Download the <a href="http://www.oasis-open.org/cover/ISOEnts.zip" target="_top">ISO 8879
-       character entities</a> archive, unpack it, and put the
+<p>       Download the <a href="http://www.oasis-open.org/cover/ISOEnts.zip" target="_top">       ISO 8879 character entities archive</a>, unpack it, and put the
        files in the same directory you put the DocBook files in.
 </p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>cd /usr/local/share/sgml/docbook-4.2</tt></b>
-<tt class="prompt">$ </tt><b class="userinput"><tt>unzip ...../ISOEnts.zip</tt></b></pre>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>cd /usr/local/share/sgml/docbook-4.2</code></strong>
+<code class="prompt">$ </code><strong class="userinput"><code>unzip ...../ISOEnts.zip</code></strong></pre>
 <p>
       </p>
 </li>
@@ -279,39 +255,33 @@ make install</pre>
 </ol></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2788387"></a>G.2.4.3. Installing the DocBook <span class="acronym">DSSSL</span> Style Sheets</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id551498"></a>G.2.4.3. Installing the DocBook <span class="acronym">DSSSL</span> Style Sheets</h4></div></div></div>
 <p>     To install the style sheets, unzip and untar the distribution and
      move it to a suitable place, for example
-     <tt class="filename">/usr/local/share/sgml</tt>.  (The archive will
+     <code class="filename">/usr/local/share/sgml</code>.  (The archive will
      automatically create a subdirectory.)
 </p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>gunzip docbook-dsssl-1.<i class="replaceable"><tt>xx</tt></i>.tar.gz</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>tar -C /usr/local/share/sgml -xf docbook-dsssl-1.<i class="replaceable"><tt>xx</tt></i>.tar</tt></b></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>gunzip docbook-dsssl-1.<em class="replaceable"><code>xx</code></em>.tar.gz</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>tar -C /usr/local/share/sgml -xf docbook-dsssl-1.<em class="replaceable"><code>xx</code></em>.tar</code></strong></pre>
 <p>
     </p>
 <p>     The usual catalog entry in
-     <tt class="filename">/usr/local/share/sgml/catalog</tt> can also be
+     <code class="filename">/usr/local/share/sgml/catalog</code> can also be
      made:
 </p>
-<pre class="programlisting">CATALOG "docbook-dsssl-1.<i class="replaceable"><tt>xx</tt></i>/catalog</pre>
+<pre class="programlisting">CATALOG "docbook-dsssl-1.<em class="replaceable"><code>xx</code></em>/catalog"</pre>
 <p>
      Because stylesheets change rather often, and it's sometimes
      beneficial to try out alternative versions,
      <span class="productname">PostgreSQL</span> doesn't use this catalog
-     entry.  See <a href="docguide-toolsets.html#docguide-toolsets-configure" title="G.2.5. Detection by configure">Section G.2.5, &#8220;Detection by configure&#8221;</a> for
+     entry.  See <a href="docguide-toolsets.html#docguide-toolsets-configure" title="G.2.5. Detection by configure">Section G.2.5, &#8220;Detection by <code class="command">configure</code>&#8221;</a> for
      information about how to select the stylesheets instead.
     </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2788477"></a>G.2.4.4. Installing <span class="productname">JadeTeX</span></h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id551582"></a>G.2.4.4. Installing <span class="productname">JadeTeX</span></h4></div></div></div>
 <p>     To install and use <span class="productname">JadeTeX</span>, you will
      need a working installation of <span class="productname">TeX</span> and
      <span class="productname">LaTeX2e</span>, including the supported
@@ -329,7 +299,7 @@ make install</pre>
      <span class="productname">minitoc</span>,
      <span class="productname">url</span> and
      <span class="productname">ot2enc</span>.  All of these can be found on
-     your friendly neighborhood <a href="http://www.ctan.org" target="_top"><span class="acronym">CTAN</span></a> site.
+     your friendly neighborhood <a href="http://www.ctan.org" target="_top">     <span class="acronym">CTAN site</span></a>.
      The installation of the <span class="application">TeX</span> base
      system is far beyond the scope of this introduction.  Binary
      packages should be available for any system that can run
@@ -344,45 +314,42 @@ make install</pre>
     </p>
 <p>     Once that is finished you can install <span class="application">JadeTeX</span>:
 </p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>gunzip jadetex-<i class="replaceable"><tt>xxx</tt></i>.tar.gz</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>tar xf jadetex-<i class="replaceable"><tt>xxx</tt></i>.tar</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>cd jadetex</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>make install</tt></b>
-<tt class="prompt">$</tt> <b class="userinput"><tt>mktexlsr</tt></b></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>gunzip jadetex-<em class="replaceable"><code>xxx</code></em>.tar.gz</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>tar xf jadetex-<em class="replaceable"><code>xxx</code></em>.tar</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>cd jadetex</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>make install</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>mktexlsr</code></strong></pre>
 <p>
      The last two need to be done as <span class="systemitem">root</span>.
     </p>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="docguide-toolsets-configure"></a>G.2.5. Detection by <tt class="command">configure</tt></h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="docguide-toolsets-configure"></a>G.2.5. Detection by <code class="command">configure</code></h3></div></div></div>
 <p>   Before you can build the documentation you need to run the
-   <tt class="filename">configure</tt> script as you would when building
+   <code class="filename">configure</code> script as you would when building
    the <span class="productname">PostgreSQL</span> programs themselves.
    Check the output near the end of the run, it should look something
    like this:
 </p>
-<pre class="screen"><tt class="computeroutput">checking for onsgmls... onsgmls
+<pre class="screen"><code class="computeroutput">checking for onsgmls... onsgmls
 checking for openjade... openjade
 checking for DocBook V4.2... yes
 checking for DocBook stylesheets... /usr/lib/sgml/stylesheets/nwalsh-modular
-checking for sgmlspl... sgmlspl</tt></pre>
+checking for sgmlspl... sgmlspl</code></pre>
 <p>
-   If neither <tt class="filename">onsgmls</tt> nor
-   <tt class="filename">nsgmls</tt> were found then you will not see the
-   remaining 4 lines.  <tt class="filename">nsgmls</tt> is part of the Jade
+   If neither <code class="filename">onsgmls</code> nor
+   <code class="filename">nsgmls</code> were found then you will not see the
+   remaining 4 lines.  <code class="filename">nsgmls</code> is part of the Jade
    package.  If &#8220;<span class="quote">DocBook V4.2</span>&#8221; was not found then you did
    not install the DocBook DTD kit in a place where jade can find it,
    or you have not set up the catalog files correctly.  See the
    installation hints above.  The DocBook stylesheets are looked for
    in a number of relatively standard places, but if you have them
    some other place then you should set the environment variable
-   <tt class="envar">DOCBOOKSTYLE</tt> to the location and rerun
-   <tt class="filename">configure</tt> afterwards.
+   <code class="envar">DOCBOOKSTYLE</code> to the location and rerun
+   <code class="filename">configure</code> afterwards.
   </p>
 </div>
 </div></body>

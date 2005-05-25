@@ -1,21 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.36. Release 7.0</title>
+<title>E.41. Release 7.0</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="previous" href="release-7-0-1.html" title="E.35. Release 7.0.1">
-<link rel="next" href="release-6-5-3.html" title="E.37. Release 6.5.3">
+<link rel="prev" href="release-7-0-1.html" title="E.40. Release 7.0.1">
+<link rel="next" href="release-6-5-3.html" title="E.42. Release 6.5.3">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="release-7-0"></a>E.36. Release 7.0</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-0"></a>E.41. Release 7.0</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2000-05-08</p>
@@ -52,20 +49,17 @@
 <dt><span class="term">       Join Syntax
       </span></dt>
 <dd><p>        SQL92 join syntax is now supported, though only as
-        <tt class="literal">INNER JOIN</tt> for this release. <tt class="literal">JOIN</tt>,
-        <tt class="literal">NATURAL JOIN</tt>, <tt class="literal">JOIN</tt>/<tt class="literal">USING</tt>,
-        and <tt class="literal">JOIN</tt>/<tt class="literal">ON</tt> are available, as are
+        <code class="literal">INNER JOIN</code> for this release. <code class="literal">JOIN</code>,
+        <code class="literal">NATURAL JOIN</code>, <code class="literal">JOIN</code>/<code class="literal">USING</code>,
+        and <code class="literal">JOIN</code>/<code class="literal">ON</code> are available, as are
         column correlation names.
        </p></dd>
 </dl></div>
 <p>
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2781927"></a>E.36.1. Migration to version 7.0</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id546401"></a>E.41.1. Migration to version 7.0</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span>
      is required for those wishing to migrate data from any
      previous release of <span class="productname">PostgreSQL</span>.
@@ -79,10 +73,10 @@
 
      </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>        The date/time types <tt class="type">datetime</tt> and
-        <tt class="type">timespan</tt> have been superseded by the
-        SQL92-defined types <tt class="type">timestamp</tt> and
-        <tt class="type">interval</tt>. Although there has been some effort to
+<li><p>        The date/time types <code class="type">datetime</code> and
+        <code class="type">timespan</code> have been superseded by the
+        SQL92-defined types <code class="type">timestamp</code> and
+        <code class="type">interval</code>. Although there has been some effort to
         ease the transition by allowing
         <span class="productname">PostgreSQL</span> to recognize
         the deprecated type names and translate them to the new type
@@ -101,22 +95,19 @@
 <li><p>        The <span class="acronym">JDBC</span> and <span class="acronym">ODBC</span>
         interfaces have been upgraded and extended.
        </p></li>
-<li><p>        The string function <tt class="function">CHAR_LENGTH</tt> is now a
+<li><p>        The string function <code class="function">CHAR_LENGTH</code> is now a
         native function. Previous versions translated this into a call
-        to <tt class="function">LENGTH</tt>, which could result in
+        to <code class="function">LENGTH</code>, which could result in
         ambiguity with other types implementing
-        <tt class="function">LENGTH</tt> such as the geometric types.
+        <code class="function">LENGTH</code> such as the geometric types.
        </p></li>
 </ul></div>
 <p>
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2782040"></a>E.36.2. Changes</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id546505"></a>E.41.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------
@@ -199,7 +190,7 @@ Enhancements
 ------------
 New CLI interface include file sqlcli.h, based on SQL3/SQL98
 Remove all limits on query length, row length limit still exists (Tom)
-Update jdbc protocol to 2.0 (Jens Glaser <tt class="email">&lt;<a href="mailto:jens@jens.de">jens@jens.de</a>&gt;</tt>)
+Update jdbc protocol to 2.0 (Jens Glaser <code class="email">&lt;<a href="mailto:jens@jens.de">jens@jens.de</a>&gt;</code>)
 Add TRUNCATE command to quickly truncate relation (Mike Mascari)
 Fix to give super user and createdb user proper update catalog rights (Peter E)
 Allow ecpg bool variables to have NULL values (Christof)
@@ -220,7 +211,7 @@ Allow WHERE restriction on ctid (physical heap location) (Hiroshi)
 Move pginterface from contrib to interface directory, rename to pgeasy (Bruce)
 Change pgeasy connectdb() parameter ordering (Bruce)
 Require SELECT DISTINCT target list to have all ORDER BY columns (Tom)
-Add Oracle's COMMENT ON command (Mike Mascari <tt class="email">&lt;<a href="mailto:mascarim@yahoo.com">mascarim@yahoo.com</a>&gt;</tt>)
+Add Oracle's COMMENT ON command (Mike Mascari <code class="email">&lt;<a href="mailto:mascarim@yahoo.com">mascarim@yahoo.com</a>&gt;</code>)
 libpq's PQsetNoticeProcessor function now returns previous hook(Peter E)
 Prevent PQsetNoticeProcessor from being set to NULL (Peter E)
 Make USING in COPY optional (Bruce)
@@ -414,7 +405,7 @@ Add scripts for checking includes (Bruce)
 Remove un-needed #include's from *.c files (Bruce)
 Change #include's to use &lt;&gt; and "" as appropriate (Bruce)
 Enable Windows compilation of libpq
-Alpha spinlock fix from Uncle George <tt class="email">&lt;<a href="mailto:gatgul@voicenet.com">gatgul@voicenet.com</a>&gt;</tt>
+Alpha spinlock fix from Uncle George <code class="email">&lt;<a href="mailto:gatgul@voicenet.com">gatgul@voicenet.com</a>&gt;</code>
 Overhaul of optimizer data structures (Tom)
 Fix to cygipc library (Yutaka Tanida)
 Allow pgsql to work on newer Cygwin snapshots (Dan)
@@ -432,7 +423,7 @@ Fix for plpgsql on BSD/OS
 Add SQL_ASCII test case to the regression test (Tatsuo)
 configure --with-mb now deprecated (Tatsuo)
 NT fixes
-NetBSD fixes (Johnny C. Lam <tt class="email">&lt;<a href="mailto:lamj@stat.cmu.edu">lamj@stat.cmu.edu</a>&gt;</tt>)
+NetBSD fixes (Johnny C. Lam <code class="email">&lt;<a href="mailto:lamj@stat.cmu.edu">lamj@stat.cmu.edu</a>&gt;</code>)
 Fixes for Alpha compiles
 New multibyte encodings
      </pre>

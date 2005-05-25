@@ -4,53 +4,50 @@
 <title>SELECT INTO</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-select.html" title="SELECT">
+<link rel="prev" href="sql-select.html" title="SELECT">
 <link rel="next" href="sql-set.html" title="SET">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-selectinto"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-selectinto"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>SELECT INTO &#8212; define a new table from the results of a query</p>
 </div>
-<a name="id2702749"></a><div class="refsynopsisdiv">
+<a name="id470806"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <i class="replaceable"><tt>expression</tt></i> [, ...] ) ] ]
-    * | <i class="replaceable"><tt>expression</tt></i> [ AS <i class="replaceable"><tt>output_name</tt></i> ] [, ...]
-    INTO [ TEMPORARY | TEMP ] [ TABLE ] <i class="replaceable"><tt>new_table</tt></i>
-    [ FROM <i class="replaceable"><tt>from_item</tt></i> [, ...] ]
-    [ WHERE <i class="replaceable"><tt>condition</tt></i> ]
-    [ GROUP BY <i class="replaceable"><tt>expression</tt></i> [, ...] ]
-    [ HAVING <i class="replaceable"><tt>condition</tt></i> [, ...] ]
-    [ { UNION | INTERSECT | EXCEPT } [ ALL ] <i class="replaceable"><tt>select</tt></i> ]
-    [ ORDER BY <i class="replaceable"><tt>expression</tt></i> [ ASC | DESC | USING <i class="replaceable"><tt>operator</tt></i> ] [, ...] ]
-    [ LIMIT { <i class="replaceable"><tt>count</tt></i> | ALL } ]
-    [ OFFSET <i class="replaceable"><tt>start</tt></i> ]
-    [ FOR UPDATE [ OF <i class="replaceable"><tt>tablename</tt></i> [, ...] ] ]</pre>
+<pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <em class="replaceable"><code>expression</code></em> [, ...] ) ] ]
+    * | <em class="replaceable"><code>expression</code></em> [ AS <em class="replaceable"><code>output_name</code></em> ] [, ...]
+    INTO [ TEMPORARY | TEMP ] [ TABLE ] <em class="replaceable"><code>new_table</code></em>
+    [ FROM <em class="replaceable"><code>from_item</code></em> [, ...] ]
+    [ WHERE <em class="replaceable"><code>condition</code></em> ]
+    [ GROUP BY <em class="replaceable"><code>expression</code></em> [, ...] ]
+    [ HAVING <em class="replaceable"><code>condition</code></em> [, ...] ]
+    [ { UNION | INTERSECT | EXCEPT } [ ALL ] <em class="replaceable"><code>select</code></em> ]
+    [ ORDER BY <em class="replaceable"><code>expression</code></em> [ ASC | DESC | USING <em class="replaceable"><code>operator</code></em> ] [, ...] ]
+    [ LIMIT { <em class="replaceable"><code>count</code></em> | ALL } ]
+    [ OFFSET <em class="replaceable"><code>start</code></em> ]
+    [ FOR { UPDATE | SHARE } [ OF <em class="replaceable"><code>tablename</code></em> [, ...] ] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2702837"></a><h2>Description</h2>
-<p>   <tt class="command">SELECT INTO</tt> creates a new table and fills it
+<a name="id470892"></a><h2>Description</h2>
+<p>   <code class="command">SELECT INTO</code> creates a new table and fills it
    with data computed by a query.  The data is not returned to the
-   client, as it is with a normal <tt class="command">SELECT</tt>.  The new
+   client, as it is with a normal <code class="command">SELECT</code>.  The new
    table's columns have the names and data types associated with the
-   output columns of the <tt class="command">SELECT</tt>.
+   output columns of the <code class="command">SELECT</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2702862"></a><h2>Parameters</h2>
+<a name="id470915"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">TEMPORARY</tt> or <tt class="literal">TEMP</tt></span></dt>
+<dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd><p>     If specified, the table is created as a temporary table.  Refer
      to <a href="sql-createtable.html">CREATE TABLE</a> for details.
     </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>new_table</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>new_table</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to be created.
      </p></dd>
 </dl></div>
@@ -58,28 +55,28 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2702909"></a><h2>Notes</h2>
+<a name="id470959"></a><h2>Notes</h2>
 <p>   <a href="sql-createtableas.html">CREATE TABLE AS</a> is functionally similar to
-   <tt class="command">SELECT INTO</tt>.  <tt class="command">CREATE TABLE AS</tt>
-   is the recommended syntax, since this form of <tt class="command">SELECT
-   INTO</tt> is not available in <span class="application">ECPG</span>
+   <code class="command">SELECT INTO</code>.  <code class="command">CREATE TABLE AS</code>
+   is the recommended syntax, since this form of <code class="command">SELECT
+   INTO</code> is not available in <span class="application">ECPG</span>
    or <span class="application">PL/pgSQL</span>, because they interpret the
-   <tt class="literal">INTO</tt> clause differently. Furthermore,
-   <tt class="command">CREATE TABLE AS</tt> offers a superset of the
-   functionality provided by <tt class="command">SELECT INTO</tt>.
+   <code class="literal">INTO</code> clause differently. Furthermore,
+   <code class="command">CREATE TABLE AS</code> offers a superset of the
+   functionality provided by <code class="command">SELECT INTO</code>.
   </p>
 <p>   Prior to <span class="productname">PostgreSQL</span> 8.1, the table created by
-   <tt class="command">SELECT INTO</tt> included OIDs by default. In
+   <code class="command">SELECT INTO</code> included OIDs by default. In
    <span class="productname">PostgreSQL</span> 8.1, this is not the case
    [mdash ] to include OIDs in the new table, the <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration variable must be
-   enabled. Alternatively, <tt class="command">CREATE TABLE AS</tt> can be
-   used with the <tt class="literal">WITH OIDS</tt> clause.
+   enabled. Alternatively, <code class="command">CREATE TABLE AS</code> can be
+   used with the <code class="literal">WITH OIDS</code> clause.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2703002"></a><h2>Examples</h2>
-<p>   Create a new table <tt class="literal">films_recent</tt> consisting of only
-   recent entries from the table <tt class="literal">films</tt>:
+<a name="id471046"></a><h2>Examples</h2>
+<p>   Create a new table <code class="literal">films_recent</code> consisting of only
+   recent entries from the table <code class="literal">films</code>:
 
 </p>
 <pre class="programlisting">SELECT * INTO films_recent FROM films WHERE date_prod &gt;= '2002-01-01';</pre>
@@ -87,20 +84,20 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2703026"></a><h2>Compatibility</h2>
-<p>   The SQL standard uses <tt class="command">SELECT INTO</tt> to
+<a name="id471068"></a><h2>Compatibility</h2>
+<p>   The SQL standard uses <code class="command">SELECT INTO</code> to
    represent selecting values into scalar variables of a host program,
    rather than creating a new table.  This indeed is the usage found
-   in <span class="application">ECPG</span> (see <a href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">Chapter 29, <i>ECPG - Embedded SQL in C</i></a>) and
-   <span class="application">PL/pgSQL</span> (see <a href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">Chapter 35, <i>PL/pgSQL - SQL Procedural Language</i></a>).
-   The <span class="productname">PostgreSQL</span> usage of <tt class="command">SELECT
-   INTO</tt> to represent table creation is historical.  It is
-   best to use <tt class="command">CREATE TABLE AS</tt> for this purpose in
+   in <span class="application">ECPG</span> (see <a href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">Chapter 29, <i><span class="application">ECPG</span> - Embedded <span class="acronym">SQL</span> in C</i></a>) and
+   <span class="application">PL/pgSQL</span> (see <a href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">Chapter 35, <i><span class="application">PL/pgSQL</span> - <span class="acronym">SQL</span> Procedural Language</i></a>).
+   The <span class="productname">PostgreSQL</span> usage of <code class="command">SELECT
+   INTO</code> to represent table creation is historical.  It is
+   best to use <code class="command">CREATE TABLE AS</code> for this purpose in
    new code.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2703076"></a><h2>See Also</h2>
+<a name="id471115"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createtableas.html">CREATE TABLE AS</a></span>
 </div>
 </div></body>

@@ -4,18 +4,15 @@
 <title>Chapter 40. Overview of PostgreSQL Internals</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
-<link rel="previous" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="internals.html" title="Part VII. Internals">
 <link rel="next" href="connect-estab.html" title="40.2. How Connections are Established">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="overview">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="overview"></a>Chapter 40. Overview of PostgreSQL Internals</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="overview"></a>Chapter 40. Overview of PostgreSQL Internals</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -23,12 +20,12 @@
 <dt><span class="sect1"><a href="connect-estab.html">40.2. How Connections are Established</a></span></dt>
 <dt><span class="sect1"><a href="parser-stage.html">40.3. The Parser Stage</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="parser-stage.html#id2726544">40.3.1. Parser</a></span></dt>
-<dt><span class="sect2"><a href="parser-stage.html#id2726728">40.3.2. Transformation Process</a></span></dt>
+<dt><span class="sect2"><a href="parser-stage.html#id493168">40.3.1. Parser</a></span></dt>
+<dt><span class="sect2"><a href="parser-stage.html#id493340">40.3.2. Transformation Process</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="rule-system.html">40.4. The PostgreSQL Rule System</a></span></dt>
+<dt><span class="sect1"><a href="rule-system.html">40.4. The <span class="productname">PostgreSQL</span> Rule System</a></span></dt>
 <dt><span class="sect1"><a href="planner-optimizer.html">40.5. Planner/Optimizer</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id2726981">40.5.1. Generating Possible Plans</a></span></dt></dl></dd>
+<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id493556">40.5.1. Generating Possible Plans</a></span></dt></dl></dd>
 <dt><span class="sect1"><a href="executor.html">40.6. Executor</a></span></dt>
 </dl>
 </div>
@@ -52,11 +49,8 @@
    at which the results are returned to the client.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="query-path"></a>40.1. The Path of a Query</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="query-path"></a>40.1. The Path of a Query</h2></div></div></div>
 <p>    Here we give a short overview of the stages a query has to pass in
     order to obtain a result.
    </p>
@@ -66,35 +60,35 @@
       query to the server and waits to receive the results sent back by the
       server.
      </p></li>
-<li><p>      The <i class="firstterm">parser stage</i> checks the query
+<li><p>      The <em class="firstterm">parser stage</em> checks the query
       transmitted by the application
       program for correct syntax and creates
-      a <i class="firstterm">query tree</i>.
+      a <em class="firstterm">query tree</em>.
      </p></li>
 <li>
-<p>      The <i class="firstterm">rewrite system</i> takes
+<p>      The <em class="firstterm">rewrite system</em> takes
       the query tree created by the parser stage and looks for
-      any <i class="firstterm">rules</i> (stored in the
-      <i class="firstterm">system catalogs</i>) to apply to 
+      any <em class="firstterm">rules</em> (stored in the
+      <em class="firstterm">system catalogs</em>) to apply to 
       the query tree.  It performs the
-      transformations given in the <i class="firstterm">rule bodies</i>.
+      transformations given in the <em class="firstterm">rule bodies</em>.
      </p>
 <p>      One application of the rewrite system is in the realization of
-      <i class="firstterm">views</i>.
+      <em class="firstterm">views</em>.
       Whenever a query against a view
-      (i.e. a <i class="firstterm">virtual table</i>) is made,
+      (i.e. a <em class="firstterm">virtual table</em>) is made,
       the rewrite system rewrites the user's query to
-      a query that accesses the <i class="firstterm">base tables</i> given in
-      the <i class="firstterm">view definition</i> instead.
+      a query that accesses the <em class="firstterm">base tables</em> given in
+      the <em class="firstterm">view definition</em> instead.
      </p>
 </li>
 <li>
-<p>      The <i class="firstterm">planner/optimizer</i> takes
+<p>      The <em class="firstterm">planner/optimizer</em> takes
       the (rewritten) query tree and creates a 
-      <i class="firstterm">query plan</i> that will be the input to the
-      <i class="firstterm">executor</i>.
+      <em class="firstterm">query plan</em> that will be the input to the
+      <em class="firstterm">executor</em>.
      </p>
-<p>      It does so by first creating all possible <i class="firstterm">paths</i>
+<p>      It does so by first creating all possible <em class="firstterm">paths</em>
       leading to the same result. For example if there is an index on a
       relation to be scanned, there are two paths for the
       scan. One possibility is a simple sequential scan and the other
@@ -104,12 +98,12 @@
      </p>
 </li>
 <li><p>      The executor recursively steps through
-      the <i class="firstterm">plan tree</i> and
+      the <em class="firstterm">plan tree</em> and
       retrieves rows in the way represented by the plan.
       The executor makes use of the
-      <i class="firstterm">storage system</i> while scanning
-      relations, performs <i class="firstterm">sorts</i> and <i class="firstterm">joins</i>,
-      evaluates <i class="firstterm">qualifications</i> and finally hands back the rows derived.
+      <em class="firstterm">storage system</em> while scanning
+      relations, performs <em class="firstterm">sorts</em> and <em class="firstterm">joins</em>,
+      evaluates <em class="firstterm">qualifications</em> and finally hands back the rows derived.
      </p></li>
 </ol></div>
 <p>    In the following sections we will cover each of the above listed items

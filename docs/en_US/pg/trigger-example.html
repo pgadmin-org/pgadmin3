@@ -4,26 +4,23 @@
 <title>32.4. A Complete Example</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="triggers.html" title="Chapter 32. Triggers">
-<link rel="previous" href="trigger-interface.html" title="32.3. Writing Trigger Functions in C">
+<link rel="prev" href="trigger-interface.html" title="32.3. Writing Trigger Functions in C">
 <link rel="next" href="rules.html" title="Chapter 33. The Rule System">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="trigger-example"></a>32.4. A Complete Example</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="trigger-example"></a>32.4. A Complete Example</h2></div></div></div>
 <p>    Here is a very simple example of a trigger function written in C.
     (Examples of triggers written in procedural languages may be found
     in the documentation of the procedural languages.)
    </p>
-<p>    The function <tt class="function">trigf</tt> reports the number of rows in the
-    table <tt class="structname">ttest</tt> and skips the actual operation if the
+<p>    The function <code class="function">trigf</code> reports the number of rows in the
+    table <code class="structname">ttest</code> and skips the actual operation if the
     command attempts to insert a null value into the column
-    <tt class="structfield">x</tt>. (So the trigger acts as a not-null constraint but
+    <code class="structfield">x</code>. (So the trigger acts as a not-null constraint but
     doesn't abort the transaction.)
    </p>
 <p>    First, the table definition:
@@ -111,7 +108,7 @@ trigf(PG_FUNCTION_ARGS)
     the triggers:
 </p>
 <pre class="programlisting">CREATE FUNCTION trigf() RETURNS trigger
-    AS '<i class="replaceable"><tt>filename</tt></i>'
+    AS '<em class="replaceable"><code>filename</code></em>'
     LANGUAGE C;
 
 CREATE TRIGGER tbefore BEFORE INSERT OR UPDATE OR DELETE ON ttest 
@@ -189,8 +186,8 @@ DELETE 2
 
    </p>
 <p>    There are more complex examples in
-    <tt class="filename">src/test/regress/regress.c</tt> and
-    in <tt class="filename">contrib/spi</tt>.
+    <code class="filename">src/test/regress/regress.c</code> and
+    in <code class="filename">contrib/spi</code>.
    </p>
 </div></body>
 </html>

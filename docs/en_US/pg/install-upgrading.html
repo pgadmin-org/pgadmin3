@@ -4,25 +4,22 @@
 <title>14.4. If You Are Upgrading</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
-<link rel="previous" href="install-getsource.html" title="14.3. Getting The Source">
+<link rel="prev" href="install-getsource.html" title="14.3. Getting The Source">
 <link rel="next" href="install-procedure.html" title="14.5. Installation Procedure">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="install-upgrading"></a>14.4. If You Are Upgrading</h2></div></div>
-<div></div>
-</div>
-<a name="id2574997"></a><p>   The internal data storage format changes with new releases of
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="install-upgrading"></a>14.4. If You Are Upgrading</h2></div></div></div>
+<a name="id353248"></a><p>   The internal data storage format changes with new releases of
    <span class="productname">PostgreSQL</span>. Therefore, if you are upgrading an
    existing installation that does not have a version number
    &#8220;<span class="quote">8.1.x</span>&#8221;, you must back up and restore your
    data as shown here. These instructions assume that your existing
-   installation is under the <tt class="filename">/usr/local/pgsql</tt> directory,
-   and that the data area is in <tt class="filename">/usr/local/pgsql/data</tt>.
+   installation is under the <code class="filename">/usr/local/pgsql</code> directory,
+   and that the data area is in <code class="filename">/usr/local/pgsql/data</code>.
    Substitute your paths appropriately.
   </p>
 <div class="procedure"><ol type="1">
@@ -30,18 +27,18 @@
      backup. This does not affect the integrity of the backup, but the
      changed data would of course not be included. If necessary, edit
      the permissions in the file
-     <tt class="filename">/usr/local/pgsql/data/pg_hba.conf</tt> (or equivalent) to
+     <code class="filename">/usr/local/pgsql/data/pg_hba.conf</code> (or equivalent) to
      disallow access from everyone except you.
     </p></li>
 <li>
-<p>     <a name="id2575062"></a>
+<p>     <a name="id353306"></a>
 
      To back up your database installation, type:
 </p>
-<pre class="screen"><b class="userinput"><tt>pg_dumpall &gt; <i class="replaceable"><tt>outputfile</tt></i></tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>pg_dumpall &gt; <em class="replaceable"><code>outputfile</code></em></code></strong></pre>
 <p>
      If you need to preserve OIDs (such as when using them as
-     foreign keys), then use the <tt class="option">-o</tt> option when running
+     foreign keys), then use the <code class="option">-o</code> option when running
      <span class="application">pg_dumpall</span>.
     </p>
 <p>     <span class="application">pg_dumpall</span> does not
@@ -68,14 +65,14 @@
      old one then shut down the old server, at the latest before you
      install the new files:
 </p>
-<pre class="screen"><b class="userinput"><tt>pg_ctl stop</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>pg_ctl stop</code></strong></pre>
 <p>
      On systems that have <span class="productname">PostgreSQL</span> started at boot time,
      there is probably a start-up file that will accomplish the same thing. For
      example, on a <span class="systemitem">Red Hat Linux</span> system one
      might find that
 </p>
-<pre class="screen"><b class="userinput"><tt>/etc/rc.d/init.d/postgresql stop</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>/etc/rc.d/init.d/postgresql stop</code></strong></pre>
 <p>
      works.
     </p>
@@ -83,11 +80,11 @@
      can't find it or it doesn't work, find out the process ID of the
      old server, for example by typing
 </p>
-<pre class="screen"><b class="userinput"><tt>ps ax | grep postmaster</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>ps ax | grep postmaster</code></strong></pre>
 <p>
      and signal it to stop this way:
 </p>
-<pre class="screen"><b class="userinput"><tt>kill -INT <i class="replaceable"><tt>processID</tt></i></tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>kill -INT <em class="replaceable"><code>processID</code></em></code></strong></pre>
 <p>
     </p>
 </li>
@@ -97,7 +94,7 @@
      way, in case you have trouble and need to revert to it.
      Use a command like this:
 </p>
-<pre class="screen"><b class="userinput"><tt>mv /usr/local/pgsql /usr/local/pgsql.old</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>mv /usr/local/pgsql /usr/local/pgsql.old</code></strong></pre>
 <p>
     </p>
 </li>
@@ -107,12 +104,12 @@
    these commands while logged in to the special database user account
    (which you already have if you are upgrading).
 </p>
-<pre class="programlisting"><b class="userinput"><tt>/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</tt></b>
-<b class="userinput"><tt>/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data</tt></b></pre>
+<pre class="programlisting"><strong class="userinput"><code>/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</code></strong>
+<strong class="userinput"><code>/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data</code></strong></pre>
 <p>
    Finally, restore your data with
 </p>
-<pre class="screen"><b class="userinput"><tt>/usr/local/pgsql/bin/psql -d template1 -f <i class="replaceable"><tt>outputfile</tt></i></tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>/usr/local/pgsql/bin/psql -d template1 -f <em class="replaceable"><code>outputfile</code></em></code></strong></pre>
 <p>
    using the <span class="emphasis"><em>new</em></span> <span class="application">psql</span>.
   </p>

@@ -4,23 +4,20 @@
 <title>9.12. Sequence Manipulation Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-net.html" title="9.11. Network Address Functions and Operators">
+<link rel="prev" href="functions-net.html" title="9.11. Network Address Functions and Operators">
 <link rel="next" href="functions-conditional.html" title="9.13. Conditional Expressions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-sequence"></a>9.12. Sequence Manipulation Functions</h2></div></div>
-<div></div>
-</div>
-<a name="id2560302"></a><a name="id2560307"></a><a name="id2560313"></a><a name="id2560319"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
-   for operating on <i class="firstterm">sequence objects</i>.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-sequence"></a>9.12. Sequence Manipulation Functions</h2></div></div></div>
+<a name="id339966"></a><a name="id339971"></a><a name="id339977"></a><a name="id339982"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
+   for operating on <em class="firstterm">sequence objects</em>.
    Sequence objects (also called sequence generators or
    just sequences) are special single-row tables created with
-   <tt class="command">CREATE SEQUENCE</tt>.  A sequence object is usually used to
+   <code class="command">CREATE SEQUENCE</code>.  A sequence object is usually used to
    generate unique identifiers for rows of a table.  The sequence functions,
    listed in <a href="functions-sequence.html#functions-sequence-table" title="Table 9.34. Sequence Functions">Table 9.34, &#8220;Sequence Functions&#8221;</a>,
    provide simple, multiuser-safe methods for obtaining successive
@@ -41,25 +38,25 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">nextval</tt>(<tt class="type">text</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">nextval</code>(<code class="type">text</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>Advance sequence and return new value</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">currval</tt>(<tt class="type">text</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
-<td>Return value most recently obtained with <tt class="function">nextval</tt>
+<td><code class="literal"><code class="function">currval</code>(<code class="type">text</code>)</code></td>
+<td><code class="type">bigint</code></td>
+<td>Return value most recently obtained with <code class="function">nextval</code>
 </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">setval</tt>(<tt class="type">text</tt>, <tt class="type">bigint</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">setval</code>(<code class="type">text</code>, <code class="type">bigint</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>Set sequence's current value</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">setval</tt>(<tt class="type">text</tt>, <tt class="type">bigint</tt>, <tt class="type">boolean</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
-<td>Set sequence's current value and <tt class="literal">is_called</tt> flag</td>
+<td><code class="literal"><code class="function">setval</code>(<code class="type">text</code>, <code class="type">bigint</code>, <code class="type">boolean</code>)</code></td>
+<td><code class="type">bigint</code></td>
+<td>Set sequence's current value and <code class="literal">is_called</code> flag</td>
 </tr>
 </tbody>
 </table>
@@ -70,15 +67,15 @@
    <span class="acronym">SQL</span> names, the sequence functions convert their
    argument to lowercase unless the string is double-quoted.  Thus
 </p>
-<pre class="programlisting">nextval('foo')      <i class="lineannotation"><span class="lineannotation">operates on sequence <tt class="literal">foo</tt></span></i>
-nextval('FOO')      <i class="lineannotation"><span class="lineannotation">operates on sequence <tt class="literal">foo</tt></span></i>
-nextval('"Foo"')    <i class="lineannotation"><span class="lineannotation">operates on sequence <tt class="literal">Foo</tt></span></i></pre>
+<pre class="programlisting">nextval('foo')      <em class="lineannotation"><span class="lineannotation">operates on sequence <code class="literal">foo</code></span></em>
+nextval('FOO')      <em class="lineannotation"><span class="lineannotation">operates on sequence <code class="literal">foo</code></span></em>
+nextval('"Foo"')    <em class="lineannotation"><span class="lineannotation">operates on sequence <code class="literal">Foo</code></span></em></pre>
 <p>
    The sequence name can be schema-qualified if necessary:
 </p>
-<pre class="programlisting">nextval('myschema.foo')     <i class="lineannotation"><span class="lineannotation">operates on <tt class="literal">myschema.foo</tt></span></i>
-nextval('"myschema".foo')   <i class="lineannotation"><span class="lineannotation">same as above</span></i>
-nextval('foo')              <i class="lineannotation"><span class="lineannotation">searches search path for <tt class="literal">foo</tt></span></i></pre>
+<pre class="programlisting">nextval('myschema.foo')     <em class="lineannotation"><span class="lineannotation">operates on <code class="literal">myschema.foo</code></span></em>
+nextval('"myschema".foo')   <em class="lineannotation"><span class="lineannotation">same as above</span></em>
+nextval('foo')              <em class="lineannotation"><span class="lineannotation">searches search path for <code class="literal">foo</code></span></em></pre>
 <p>
    Of course, the text argument can be the result of an expression,
    not only a simple literal, which is occasionally useful.
@@ -87,41 +84,41 @@ nextval('foo')              <i class="lineannotation"><span class="lineannotatio
 
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="function">nextval</tt></span></dt>
+<dt><span class="term"><code class="function">nextval</code></span></dt>
 <dd><p>        Advance the sequence object to its next value and return that
         value.  This is done atomically: even if multiple sessions
-        execute <tt class="function">nextval</tt> concurrently, each will safely receive
+        execute <code class="function">nextval</code> concurrently, each will safely receive
         a distinct sequence value.
        </p></dd>
-<dt><span class="term"><tt class="function">currval</tt></span></dt>
-<dd><p>        Return the value most recently obtained by <tt class="function">nextval</tt>
+<dt><span class="term"><code class="function">currval</code></span></dt>
+<dd><p>        Return the value most recently obtained by <code class="function">nextval</code>
         for this sequence in the current session.  (An error is
-        reported if <tt class="function">nextval</tt> has never been called for this
+        reported if <code class="function">nextval</code> has never been called for this
         sequence in this session.)  Notice that because this is returning
         a session-local value, it gives a predictable answer whether or not
-        other sessions have executed <tt class="function">nextval</tt> since the
+        other sessions have executed <code class="function">nextval</code> since the
         current session did.
        </p></dd>
-<dt><span class="term"><tt class="function">setval</tt></span></dt>
+<dt><span class="term"><code class="function">setval</code></span></dt>
 <dd>
 <p>        Reset the sequence object's counter value.  The two-parameter
-        form sets the sequence's <tt class="literal">last_value</tt> field to the specified
-        value and sets its <tt class="literal">is_called</tt> field to <tt class="literal">true</tt>,
-        meaning that the next <tt class="function">nextval</tt> will advance the sequence
+        form sets the sequence's <code class="literal">last_value</code> field to the specified
+        value and sets its <code class="literal">is_called</code> field to <code class="literal">true</code>,
+        meaning that the next <code class="function">nextval</code> will advance the sequence
         before returning a value.  In the three-parameter form,
-        <tt class="literal">is_called</tt> may be set either <tt class="literal">true</tt> or
-        <tt class="literal">false</tt>.  If it's set to <tt class="literal">false</tt>,
-        the next <tt class="function">nextval</tt> will return exactly the specified
+        <code class="literal">is_called</code> may be set either <code class="literal">true</code> or
+        <code class="literal">false</code>.  If it's set to <code class="literal">false</code>,
+        the next <code class="function">nextval</code> will return exactly the specified
         value, and sequence advancement commences with the following
-        <tt class="function">nextval</tt>.  For example,
+        <code class="function">nextval</code>.  For example,
 
 </p>
-<pre class="screen">SELECT setval('foo', 42);           <i class="lineannotation"><span class="lineannotation">Next <tt class="function">nextval</tt> will return 43</span></i>
-SELECT setval('foo', 42, true);     <i class="lineannotation"><span class="lineannotation">Same as above</span></i>
-SELECT setval('foo', 42, false);    <i class="lineannotation"><span class="lineannotation">Next <tt class="function">nextval</tt> will return 42</span></i></pre>
+<pre class="screen">SELECT setval('foo', 42);           <em class="lineannotation"><span class="lineannotation">Next <code class="function">nextval</code> will return 43</span></em>
+SELECT setval('foo', 42, true);     <em class="lineannotation"><span class="lineannotation">Same as above</span></em>
+SELECT setval('foo', 42, false);    <em class="lineannotation"><span class="lineannotation">Next <code class="function">nextval</code> will return 42</span></em></pre>
 <p>
 
-        The result returned by <tt class="function">setval</tt> is just the value of its
+        The result returned by <code class="function">setval</code> is just the value of its
         second argument.
        </p>
 </dd>
@@ -131,18 +128,18 @@ SELECT setval('foo', 42, false);    <i class="lineannotation"><span class="linea
 <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Important</h3>
 <p>    To avoid blocking of concurrent transactions that obtain numbers from the
-    same sequence, a <tt class="function">nextval</tt> operation is never rolled back;
+    same sequence, a <code class="function">nextval</code> operation is never rolled back;
     that is, once a value has been fetched it is considered used, even if the
-    transaction that did the <tt class="function">nextval</tt> later aborts.  This means
+    transaction that did the <code class="function">nextval</code> later aborts.  This means
     that aborted transactions may leave unused &#8220;<span class="quote">holes</span>&#8221; in the
-    sequence of assigned values.  <tt class="function">setval</tt> operations are never
+    sequence of assigned values.  <code class="function">setval</code> operations are never
     rolled back, either.
    </p>
 </div>
 <p>   If a sequence object has been created with default parameters,
-   <tt class="function">nextval</tt> calls on it will return successive values
+   <code class="function">nextval</code> calls on it will return successive values
    beginning with 1.  Other behaviors can be obtained by using
-   special parameters in the <a href="sql-createsequence.html" title="CREATE SEQUENCE"><span class="refentrytitle"><a name="sql-createsequence-title"></a>CREATE SEQUENCE</span></a> command;
+   special parameters in the <a href="sql-createsequence.html">CREATE SEQUENCE</a> command;
    see its command reference page for more information.
   </p>
 </div></body>

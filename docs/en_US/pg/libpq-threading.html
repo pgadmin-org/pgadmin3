@@ -4,54 +4,51 @@
 <title>27.14. Behavior in Threaded Programs</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
-<link rel="previous" href="libpq-ssl.html" title="27.13. SSL Support">
+<link rel="prev" href="libpq-ssl.html" title="27.13. SSL Support">
 <link rel="next" href="libpq-build.html" title="27.15. Building libpq Programs">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="libpq-threading"></a>27.14. Behavior in Threaded Programs</h2></div></div>
-<div></div>
-</div>
-<a name="id2617400"></a><p><span class="application">libpq</span> is reentrant and thread-safe if the
-<tt class="filename">configure</tt> command-line option
-<tt class="literal">--enable-thread-safety</tt> was used when the
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-threading"></a>27.14. Behavior in Threaded Programs</h2></div></div></div>
+<a name="id392341"></a><p><span class="application">libpq</span> is reentrant and thread-safe if the
+<code class="filename">configure</code> command-line option
+<code class="literal">--enable-thread-safety</code> was used when the
 <span class="productname">PostgreSQL</span> distribution was built.  In
 addition, you might need to use additional compiler command-line
 options when you compile your application code.  Refer to your
 system's documentation for information about how to build
 thread-enabled applications, or look in 
-<tt class="filename">src/Makefile.global</tt> for <tt class="literal">PTHREAD_CFLAGS</tt>
-and <tt class="literal">PTHREAD_LIBS</tt>.</p>
+<code class="filename">src/Makefile.global</code> for <code class="literal">PTHREAD_CFLAGS</code>
+and <code class="literal">PTHREAD_LIBS</code>.</p>
 <p>One restriction is that no two threads attempt to manipulate the same
-<tt class="structname">PGconn</tt> object at the same time. In particular, you cannot
+<code class="structname">PGconn</code> object at the same time. In particular, you cannot
 issue concurrent commands from different threads through the same
 connection object. (If you need to run concurrent commands, use
 multiple connections.)</p>
-<p><tt class="structname">PGresult</tt> objects are read-only after creation, and so can be 
+<p><code class="structname">PGresult</code> objects are read-only after creation, and so can be 
 passed around freely between threads.</p>
 <p>The deprecated functions
-<tt class="function">PQrequestCancel</tt>,
-<tt class="function">PQoidStatus</tt> and
-<tt class="function">fe_setauthsvc</tt>
+<code class="function">PQrequestCancel</code>,
+<code class="function">PQoidStatus</code> and
+<code class="function">fe_setauthsvc</code>
 are not thread-safe and should not be used in multithread programs.
-<tt class="function">PQrequestCancel</tt> can be replaced by
-<tt class="function">PQcancel</tt>.
-<tt class="function">PQoidStatus</tt> can be replaced by
-<tt class="function">PQoidValue</tt>.
-There is no good reason to call <tt class="function">fe_setauthsvc</tt> at all.</p>
+<code class="function">PQrequestCancel</code> can be replaced by
+<code class="function">PQcancel</code>.
+<code class="function">PQoidStatus</code> can be replaced by
+<code class="function">PQoidValue</code>.
+There is no good reason to call <code class="function">fe_setauthsvc</code> at all.</p>
 <p><span class="application">libpq</span> applications that use the
-<tt class="literal">crypt</tt> authentication method rely on the
-<tt class="literal">crypt()</tt> operating system function, which is often
-not thread-safe.<a name="id2617551"></a> It is better to use the <tt class="literal">md5</tt> method,
+<code class="literal">crypt</code> authentication method rely on the
+<code class="literal">crypt()</code> operating system function, which is often
+not thread-safe.<a name="id392483"></a> It is better to use the <code class="literal">md5</code> method,
 which is thread-safe on all platforms.</p>
 <p>If you experience problems with threaded applications, run
-the program in <tt class="filename">src/tools/thread</tt> to see if your
+the program in <code class="filename">src/tools/thread</code> to see if your
 platform has thread-unsafe functions.  This program is run 
-by <tt class="filename">configure</tt>, but for binary distributions
+by <code class="filename">configure</code>, but for binary distributions
 your library might not match the library used to build the binaries.</p>
 </div></body>
 </html>

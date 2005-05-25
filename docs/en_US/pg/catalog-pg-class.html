@@ -4,29 +4,26 @@
 <title>41.9. pg_class</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-cast.html" title="41.8. pg_cast">
+<link rel="prev" href="catalog-pg-cast.html" title="41.8. pg_cast">
 <link rel="next" href="catalog-pg-constraint.html" title="41.10. pg_constraint">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-class"></a>41.9. <tt class="structname">pg_class</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2729547"></a><p>   The catalog <tt class="structname">pg_class</tt> catalogs tables and most
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-class"></a>41.9. <code class="structname">pg_class</code></h2></div></div></div>
+<a name="id495965"></a><p>   The catalog <code class="structname">pg_class</code> catalogs tables and most
    everything else that has columns or is otherwise similar to a
    table.  This includes indexes (but see also
-   <tt class="structname">pg_index</tt>), sequences, views, composite types,
-   and some kinds of special relation; see <tt class="structfield">relkind</tt>.
+   <code class="structname">pg_index</code>), sequences, views, composite types,
+   and some kinds of special relation; see <code class="structfield">relkind</code>.
    Below, when we mean all of these
    kinds of objects we speak of &#8220;<span class="quote">relations</span>&#8221;.  Not all
    columns are meaningful for all relation types.
   </p>
 <div class="table">
-<a name="id2729579"></a><p class="title"><b>Table 41.9. <tt class="structname">pg_class</tt> Columns</b></p>
+<a name="id495994"></a><p class="title"><b>Table 41.9. <code class="structname">pg_class</code> Columns</b></p>
 <table summary="pg_class Columns" border="1">
 <colgroup>
 <col>
@@ -42,197 +39,196 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">relname</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">relname</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>Name of the table, index, view, etc.</td>
 </tr>
 <tr>
-<td><tt class="structfield">relnamespace</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.oid</tt></td>
+<td><code class="structfield">relnamespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
 <td>       The OID of the namespace that contains this relation
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">reltype</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
+<td><code class="structfield">reltype</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>       The OID of the data type that corresponds to this table's row type,
-       if any (zero for indexes, which have no <tt class="structname">pg_type</tt> entry)
+       if any (zero for indexes, which have no <code class="structname">pg_type</code> entry)
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relowner</tt></td>
-<td><tt class="type">int4</tt></td>
-<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usesysid</tt></td>
+<td><code class="structfield">relowner</code></td>
+<td><code class="type">int4</code></td>
+<td><code class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><code class="structname">pg_shadow</code></a>.usesysid</code></td>
 <td>Owner of the relation</td>
 </tr>
 <tr>
-<td><tt class="structfield">relam</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-am.html" title="41.3. pg_am"><tt class="structname">pg_am</tt></a>.oid</tt></td>
+<td><code class="structfield">relam</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-am.html" title="41.3. pg_am"><code class="structname">pg_am</code></a>.oid</code></td>
 <td>If this is an index, the access method used (B-tree, hash, etc.)</td>
 </tr>
 <tr>
-<td><tt class="structfield">relfilenode</tt></td>
-<td><tt class="type">oid</tt></td>
+<td><code class="structfield">relfilenode</code></td>
+<td><code class="type">oid</code></td>
 <td> </td>
 <td>Name of the on-disk file of this relation; 0 if none</td>
 </tr>
 <tr>
-<td><tt class="structfield">reltablespace</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-tablespace.html" title="41.28. pg_tablespace"><tt class="structname">pg_tablespace</tt></a>.oid</tt></td>
+<td><code class="structfield">reltablespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="41.28. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
 <td>       The tablespace in which this relation is stored.  If zero,
        the database's default tablespace is implied.  (Not meaningful
        if the relation has no on-disk file.)
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relpages</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="structfield">relpages</code></td>
+<td><code class="type">int4</code></td>
 <td> </td>
 <td>       Size of the on-disk representation of this table in pages (of size
-       <tt class="symbol">BLCKSZ</tt>).
+       <code class="symbol">BLCKSZ</code>).
        This is only an estimate used by the planner.
-       It is updated by <tt class="command">VACUUM</tt>,
-       <tt class="command">ANALYZE</tt>, and a few DDL commands
-       such as <tt class="command">CREATE INDEX</tt>.
+       It is updated by <code class="command">VACUUM</code>,
+       <code class="command">ANALYZE</code>, and a few DDL commands
+       such as <code class="command">CREATE INDEX</code>.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">reltuples</tt></td>
-<td><tt class="type">float4</tt></td>
+<td><code class="structfield">reltuples</code></td>
+<td><code class="type">float4</code></td>
 <td> </td>
 <td>       Number of rows in the table.
        This is only an estimate used by the planner.
-       It is updated by <tt class="command">VACUUM</tt>,
-       <tt class="command">ANALYZE</tt>, and a few DDL commands
-       such as <tt class="command">CREATE INDEX</tt>.
+       It is updated by <code class="command">VACUUM</code>,
+       <code class="command">ANALYZE</code>, and a few DDL commands
+       such as <code class="command">CREATE INDEX</code>.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">reltoastrelid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
+<td><code class="structfield">reltoastrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       OID of the TOAST table associated with this table, 0 if none.
        The TOAST table stores large attributes &#8220;<span class="quote">out of
        line</span>&#8221; in a secondary table.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">reltoastidxid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
+<td><code class="structfield">reltoastidxid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       For a TOAST table, the OID of its index.  0 if not a TOAST table.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relhasindex</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">relhasindex</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>       True if this is a table and it has (or recently had) any
-       indexes. This is set by <tt class="command">CREATE INDEX</tt>, but
-       not cleared immediately by <tt class="command">DROP INDEX</tt>.
-       <tt class="command">VACUUM</tt> clears <tt class="structfield">relhasindex</tt> if it finds the
+       indexes. This is set by <code class="command">CREATE INDEX</code>, but
+       not cleared immediately by <code class="command">DROP INDEX</code>.
+       <code class="command">VACUUM</code> clears <code class="structfield">relhasindex</code> if it finds the
        table has no indexes.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relisshared</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">relisshared</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>True if this table is shared across all databases in the
       cluster.  Only certain system catalogs (such as
-      <tt class="structname">pg_database</tt>) are shared.</td>
+      <code class="structname">pg_database</code>) are shared.</td>
 </tr>
 <tr>
-<td><tt class="structfield">relkind</tt></td>
-<td><tt class="type">char</tt></td>
+<td><code class="structfield">relkind</code></td>
+<td><code class="type">char</code></td>
 <td> </td>
-<td>
-<tt class="literal">r</tt> = ordinary table, <tt class="literal">i</tt> = index,
-       <tt class="literal">S</tt> = sequence, <tt class="literal">v</tt> = view, <tt class="literal">c</tt> =
-       composite type, <tt class="literal">s</tt> = special, <tt class="literal">t</tt> = TOAST
+<td>       <code class="literal">r</code> = ordinary table, <code class="literal">i</code> = index,
+       <code class="literal">S</code> = sequence, <code class="literal">v</code> = view, <code class="literal">c</code> =
+       composite type, <code class="literal">s</code> = special, <code class="literal">t</code> = TOAST
        table
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relnatts</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">relnatts</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>       Number of user columns in the relation (system columns not
        counted).  There must be this many corresponding entries in
-       <tt class="structname">pg_attribute</tt>.  See also
-       <tt class="literal">pg_attribute.attnum</tt>.
+       <code class="structname">pg_attribute</code>.  See also
+       <code class="literal">pg_attribute.attnum</code>.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relchecks</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">relchecks</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>       Number of check constraints on the table; see
-       <tt class="structname">pg_constraint</tt> catalog
+       <code class="structname">pg_constraint</code> catalog
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">reltriggers</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">reltriggers</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>       Number of triggers on the table; see
-       <tt class="structname">pg_trigger</tt> catalog
+       <code class="structname">pg_trigger</code> catalog
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relukeys</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">relukeys</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>unused  (<span class="emphasis"><em>not</em></span> the number of unique keys)</td>
 </tr>
 <tr>
-<td><tt class="structfield">relfkeys</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">relfkeys</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>unused  (<span class="emphasis"><em>not</em></span> the number of foreign keys on the table)</td>
 </tr>
 <tr>
-<td><tt class="structfield">relrefs</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">relrefs</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>unused</td>
 </tr>
 <tr>
-<td><tt class="structfield">relhasoids</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">relhasoids</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>       True if we generate an OID for each row of the relation.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relhaspkey</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">relhaspkey</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>       True if the table has (or once had) a primary key.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relhasrules</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">relhasrules</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>True if table has rules; see
-       <tt class="structname">pg_rewrite</tt> catalog.
+       <code class="structname">pg_rewrite</code> catalog.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">relhassubclass</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">relhassubclass</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>True if table has (or once had) any inheritance children.</td>
 </tr>
 <tr>
-<td><tt class="structfield">relacl</tt></td>
-<td><tt class="type">aclitem[]</tt></td>
+<td><code class="structfield">relacl</code></td>
+<td><code class="type">aclitem[]</code></td>
 <td> </td>
 <td>       Access privileges; see
        <a href="sql-grant.html">GRANT</a> and

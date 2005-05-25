@@ -1,0 +1,129 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.14. Release 7.3.10</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-4.html" title="E.13. Release 7.4">
+<link rel="next" href="release-7-3-9.html" title="E.15. Release 7.3.9">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-10"></a>E.14. Release 7.3.10</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-05-09</p>
+</div>
+<p>    This release contains a variety of fixes from 7.3.9, including several
+    security-related issues.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id540890"></a>E.14.1. Migration to version 7.3.10</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.3.X.  However,
+     it is one possible way of handling a significant security problem
+     that has been found in the initial contents of 7.3.X system
+     catalogs.  A dump/initdb/reload sequence using 7.3.10's initdb will
+     automatically correct this problem.
+    </p>
+<p>     The security problem is that the built-in character set encoding
+     conversion functions can be invoked from SQL commands by unprivileged
+     users, but the functions were not designed for such use and are not
+     secure against malicious choices of arguments.  The fix involves changing
+     the declared parameter list of these functions so that they can no longer
+     be invoked from SQL commands.  (This does not affect their normal use
+     by the encoding conversion machinery.)
+     It is strongly recommended that all installations repair this error,
+     either by initdb or by following the manual repair procedure given
+     below.  The error at least allows unprivileged database users to crash
+     their server process, and may allow unprivileged users to gain the
+     privileges of a database superuser.
+    </p>
+<p>     If you wish not to do an initdb, perform the following procedure instead.
+     As the database superuser, do:
+
+</p>
+<pre class="programlisting">BEGIN;
+UPDATE pg_proc SET proargtypes[3] = 'internal'::regtype
+WHERE pronamespace = 11 AND pronargs = 5
+      AND proargtypes[2] = 'cstring'::regtype;
+-- The command should report having updated 90 rows;
+-- if not, rollback and investigate instead of committing!
+COMMIT;</pre>
+<p>
+    </p>
+<p>     The above procedure must be carried out in <span class="emphasis"><em>each</em></span> database
+     of an installation, including <code class="literal">template1</code>, and ideally
+     including <code class="literal">template0</code> as well.  If you do not fix the
+     template databases then any subsequently created databases will contain
+     the same error.  <code class="literal">template1</code> can be fixed in the same way
+     as any other database, but fixing <code class="literal">template0</code> requires
+     additional steps.  First, from any database issue
+</p>
+<pre class="programlisting">UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</pre>
+<p>
+      Next connect to <code class="literal">template0</code> and perform the above repair
+      procedure.  Finally, do
+</p>
+<pre class="programlisting">-- re-freeze template0:
+VACUUM FREEZE;
+-- and protect it against future alterations:
+UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
+<p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id540972"></a>E.14.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Change encoding function signature to prevent
+misuse</p></li>
+<li>
+<p>Repair ancient race condition that allowed a transaction to be
+seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
+than for other purposes</p>
+<p>This is an extremely serious bug since it could lead to apparent
+data inconsistencies being briefly visible to applications.</p>
+</li>
+<li>
+<p>Repair race condition between relation extension and
+VACUUM</p>
+<p>This could theoretically have caused loss of a page's worth of
+freshly-inserted data, although the scenario seems of very low probability.
+There are no known cases of it having caused more than an Assert failure.</p>
+</li>
+<li>
+<p>Fix comparisons of <code class="type">TIME WITH TIME ZONE</code> values</p>
+<p>The comparison code was wrong in the case where the
+<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.
+NOTE: if you have an index on a <code class="type">TIME WITH TIME ZONE</code> column,
+it will need to be <code class="command">REINDEX</code>ed after installing this update, because
+the fix corrects the sort order of column values.</p>
+</li>
+<li><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
+<code class="type">TIME WITH TIME ZONE</code> values</p></li>
+<li>
+<p>Fix mis-display of negative fractional seconds in
+<code class="type">INTERVAL</code> values</p>
+<p>This error only occurred when the
+<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.</p>
+</li>
+<li><p>Additional buffer overrun checks in plpgsql
+(Neil)</p></li>
+<li><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
+correctly (Neil)</p></li>
+<li><p>Prevent <code class="function">to_char(interval)</code> from dumping core for
+month-related formats</p></li>
+<li><p>Fix <code class="filename">contrib/pgcrypto</code> for newer OpenSSL builds
+(Marko Kreen)</p></li>
+<li><p>Still more 64-bit fixes for
+<code class="filename">contrib/intagg</code></p></li>
+<li><p>Prevent incorrect optimization of functions returning
+<code class="type">RECORD</code></p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

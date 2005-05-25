@@ -4,167 +4,164 @@
 <title>FETCH</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-explain.html" title="EXPLAIN">
+<link rel="prev" href="sql-explain.html" title="EXPLAIN">
 <link rel="next" href="sql-grant.html" title="GRANT">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-fetch"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-fetch"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>FETCH &#8212; retrieve rows from a query using a cursor</p>
 </div>
-<a name="id2692418"></a><a name="id2692426"></a><div class="refsynopsisdiv">
+<a name="id461115"></a><a name="id461124"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">FETCH [ <i class="replaceable"><tt>direction</tt></i> { FROM | IN } ] <i class="replaceable"><tt>cursorname</tt></i>
+<pre class="synopsis">FETCH [ <em class="replaceable"><code>direction</code></em> { FROM | IN } ] <em class="replaceable"><code>cursorname</code></em>
 
-where <i class="replaceable"><tt>direction</tt></i> can be empty or one of:
+where <em class="replaceable"><code>direction</code></em> can be empty or one of:
 
     NEXT
     PRIOR
     FIRST
     LAST
-    ABSOLUTE <i class="replaceable"><tt>count</tt></i>
-    RELATIVE <i class="replaceable"><tt>count</tt></i>
-    <i class="replaceable"><tt>count</tt></i>
+    ABSOLUTE <em class="replaceable"><code>count</code></em>
+    RELATIVE <em class="replaceable"><code>count</code></em>
+    <em class="replaceable"><code>count</code></em>
     ALL
     FORWARD
-    FORWARD <i class="replaceable"><tt>count</tt></i>
+    FORWARD <em class="replaceable"><code>count</code></em>
     FORWARD ALL
     BACKWARD
-    BACKWARD <i class="replaceable"><tt>count</tt></i>
+    BACKWARD <em class="replaceable"><code>count</code></em>
     BACKWARD ALL</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2692494"></a><h2>Description</h2>
-<p>   <tt class="command">FETCH</tt> retrieves rows using a previously-created cursor.
+<a name="id461189"></a><h2>Description</h2>
+<p>   <code class="command">FETCH</code> retrieves rows using a previously-created cursor.
   </p>
 <p>   A cursor has an associated position, which is used by
-   <tt class="command">FETCH</tt>.  The cursor position can be before the first row of the
+   <code class="command">FETCH</code>.  The cursor position can be before the first row of the
    query result, on any particular row of the result, or after the last row
    of the result.  When created, a cursor is positioned before the first row.
    After fetching some rows, the cursor is positioned on the row most recently
-   retrieved.  If <tt class="command">FETCH</tt> runs off the end of the available rows
+   retrieved.  If <code class="command">FETCH</code> runs off the end of the available rows
    then the cursor is left positioned after the last row, or before the first
-   row if fetching backward.  <tt class="command">FETCH ALL</tt> or <tt class="command">FETCH BACKWARD
-   ALL</tt> will always leave the cursor positioned after the last row or before
+   row if fetching backward.  <code class="command">FETCH ALL</code> or <code class="command">FETCH BACKWARD
+   ALL</code> will always leave the cursor positioned after the last row or before
    the first row.
   </p>
-<p>   The forms <tt class="literal">NEXT</tt>, <tt class="literal">PRIOR</tt>, <tt class="literal">FIRST</tt>,
-   <tt class="literal">LAST</tt>, <tt class="literal">ABSOLUTE</tt>, <tt class="literal">RELATIVE</tt> fetch
+<p>   The forms <code class="literal">NEXT</code>, <code class="literal">PRIOR</code>, <code class="literal">FIRST</code>,
+   <code class="literal">LAST</code>, <code class="literal">ABSOLUTE</code>, <code class="literal">RELATIVE</code> fetch
    a single row after moving the cursor appropriately.  If there is no
    such row, an empty result is returned, and the cursor is left
    positioned before the first row or after the last row as
    appropriate.
   </p>
-<p>   The forms using <tt class="literal">FORWARD</tt> and <tt class="literal">BACKWARD</tt>
+<p>   The forms using <code class="literal">FORWARD</code> and <code class="literal">BACKWARD</code>
    retrieve the indicated number of rows moving in the forward or
    backward direction, leaving the cursor positioned on the
-   last-returned row (or after/before all rows, if the <i class="replaceable"><tt>count</tt></i> exceeds the number of rows
+   last-returned row (or after/before all rows, if the <em class="replaceable"><code>count</code></em> exceeds the number of rows
    available).
   </p>
-<p>   <tt class="literal">RELATIVE 0</tt>, <tt class="literal">FORWARD 0</tt>, and
-   <tt class="literal">BACKWARD 0</tt> all request fetching the current row without
+<p>   <code class="literal">RELATIVE 0</code>, <code class="literal">FORWARD 0</code>, and
+   <code class="literal">BACKWARD 0</code> all request fetching the current row without
    moving the cursor, that is, re-fetching the most recently fetched
    row.  This will succeed unless the cursor is positioned before the
    first row or after the last row; in which case, no row is returned.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2692632"></a><h2>Parameters</h2>
+<a name="id461315"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>direction</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>direction</code></em></span></dt>
 <dd>
-<p>      <i class="replaceable"><tt>direction</tt></i> defines
+<p>      <em class="replaceable"><code>direction</code></em> defines
       the fetch direction and number of rows to fetch.  It can be one
       of the following:
 
       </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">NEXT</tt></span></dt>
-<dd><p>          Fetch the next row. This is the default if <i class="replaceable"><tt>direction</tt></i> is omitted.
+<dt><span class="term"><code class="literal">NEXT</code></span></dt>
+<dd><p>          Fetch the next row. This is the default if <em class="replaceable"><code>direction</code></em> is omitted.
          </p></dd>
-<dt><span class="term"><tt class="literal">PRIOR</tt></span></dt>
+<dt><span class="term"><code class="literal">PRIOR</code></span></dt>
 <dd><p>          Fetch the prior row.
          </p></dd>
-<dt><span class="term"><tt class="literal">FIRST</tt></span></dt>
-<dd><p>          Fetch the first row of the query (same as <tt class="literal">ABSOLUTE 1</tt>).
+<dt><span class="term"><code class="literal">FIRST</code></span></dt>
+<dd><p>          Fetch the first row of the query (same as <code class="literal">ABSOLUTE 1</code>).
          </p></dd>
-<dt><span class="term"><tt class="literal">LAST</tt></span></dt>
-<dd><p>          Fetch the last row of the query (same as <tt class="literal">ABSOLUTE -1</tt>).
+<dt><span class="term"><code class="literal">LAST</code></span></dt>
+<dd><p>          Fetch the last row of the query (same as <code class="literal">ABSOLUTE -1</code>).
          </p></dd>
-<dt><span class="term"><tt class="literal">ABSOLUTE <i class="replaceable"><tt>count</tt></i></tt></span></dt>
-<dd><p>          Fetch the <i class="replaceable"><tt>count</tt></i>'th row of the query,
-          or the <tt class="literal">abs(<i class="replaceable"><tt>count</tt></i>)</tt>'th row from
-          the end if <i class="replaceable"><tt>count</tt></i> is negative.  Position
-          before first row or after last row if <i class="replaceable"><tt>count</tt></i> is out of range; in
-          particular, <tt class="literal">ABSOLUTE 0</tt> positions before
+<dt><span class="term"><code class="literal">ABSOLUTE <em class="replaceable"><code>count</code></em></code></span></dt>
+<dd><p>          Fetch the <em class="replaceable"><code>count</code></em>'th row of the query,
+          or the <code class="literal">abs(<em class="replaceable"><code>count</code></em>)</code>'th row from
+          the end if <em class="replaceable"><code>count</code></em> is negative.  Position
+          before first row or after last row if <em class="replaceable"><code>count</code></em> is out of range; in
+          particular, <code class="literal">ABSOLUTE 0</code> positions before
           the first row.
          </p></dd>
-<dt><span class="term"><tt class="literal">RELATIVE <i class="replaceable"><tt>count</tt></i></tt></span></dt>
-<dd><p>          Fetch the <i class="replaceable"><tt>count</tt></i>'th succeeding row, or
-          the <tt class="literal">abs(<i class="replaceable"><tt>count</tt></i>)</tt>'th prior
-          row if <i class="replaceable"><tt>count</tt></i> is
-          negative.  <tt class="literal">RELATIVE 0</tt> re-fetches the
+<dt><span class="term"><code class="literal">RELATIVE <em class="replaceable"><code>count</code></em></code></span></dt>
+<dd><p>          Fetch the <em class="replaceable"><code>count</code></em>'th succeeding row, or
+          the <code class="literal">abs(<em class="replaceable"><code>count</code></em>)</code>'th prior
+          row if <em class="replaceable"><code>count</code></em> is
+          negative.  <code class="literal">RELATIVE 0</code> re-fetches the
           current row, if any.
          </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>count</tt></i></span></dt>
-<dd><p>          Fetch the next <i class="replaceable"><tt>count</tt></i> rows (same as
-          <tt class="literal">FORWARD <i class="replaceable"><tt>count</tt></i></tt>).
+<dt><span class="term"><em class="replaceable"><code>count</code></em></span></dt>
+<dd><p>          Fetch the next <em class="replaceable"><code>count</code></em> rows (same as
+          <code class="literal">FORWARD <em class="replaceable"><code>count</code></em></code>).
          </p></dd>
-<dt><span class="term"><tt class="literal">ALL</tt></span></dt>
-<dd><p>          Fetch all remaining rows (same as <tt class="literal">FORWARD ALL</tt>).
+<dt><span class="term"><code class="literal">ALL</code></span></dt>
+<dd><p>          Fetch all remaining rows (same as <code class="literal">FORWARD ALL</code>).
          </p></dd>
-<dt><span class="term"><tt class="literal">FORWARD</tt></span></dt>
-<dd><p>          Fetch the next row (same as <tt class="literal">NEXT</tt>).
+<dt><span class="term"><code class="literal">FORWARD</code></span></dt>
+<dd><p>          Fetch the next row (same as <code class="literal">NEXT</code>).
          </p></dd>
-<dt><span class="term"><tt class="literal">FORWARD <i class="replaceable"><tt>count</tt></i></tt></span></dt>
-<dd><p>          Fetch the next <i class="replaceable"><tt>count</tt></i> rows.
-          <tt class="literal">FORWARD 0</tt> re-fetches the current row.
+<dt><span class="term"><code class="literal">FORWARD <em class="replaceable"><code>count</code></em></code></span></dt>
+<dd><p>          Fetch the next <em class="replaceable"><code>count</code></em> rows.
+          <code class="literal">FORWARD 0</code> re-fetches the current row.
          </p></dd>
-<dt><span class="term"><tt class="literal">FORWARD ALL</tt></span></dt>
+<dt><span class="term"><code class="literal">FORWARD ALL</code></span></dt>
 <dd><p>          Fetch all remaining rows.
          </p></dd>
-<dt><span class="term"><tt class="literal">BACKWARD</tt></span></dt>
-<dd><p>          Fetch the prior row (same as <tt class="literal">PRIOR</tt>).
+<dt><span class="term"><code class="literal">BACKWARD</code></span></dt>
+<dd><p>          Fetch the prior row (same as <code class="literal">PRIOR</code>).
          </p></dd>
-<dt><span class="term"><tt class="literal">BACKWARD <i class="replaceable"><tt>count</tt></i></tt></span></dt>
-<dd><p>          Fetch the prior <i class="replaceable"><tt>count</tt></i> rows (scanning
-          backwards).  <tt class="literal">BACKWARD 0</tt> re-fetches the
+<dt><span class="term"><code class="literal">BACKWARD <em class="replaceable"><code>count</code></em></code></span></dt>
+<dd><p>          Fetch the prior <em class="replaceable"><code>count</code></em> rows (scanning
+          backwards).  <code class="literal">BACKWARD 0</code> re-fetches the
           current row.
          </p></dd>
-<dt><span class="term"><tt class="literal">BACKWARD ALL</tt></span></dt>
+<dt><span class="term"><code class="literal">BACKWARD ALL</code></span></dt>
 <dd><p>          Fetch all prior rows (scanning backwards).
          </p></dd>
 </dl></div>
 <p>
      </p>
 </dd>
-<dt><span class="term"><i class="replaceable"><tt>count</tt></i></span></dt>
-<dd><p>      <i class="replaceable"><tt>count</tt></i> is a
+<dt><span class="term"><em class="replaceable"><code>count</code></em></span></dt>
+<dd><p>      <em class="replaceable"><code>count</code></em> is a
       possibly-signed integer constant, determining the location or
-      number of rows to fetch.  For <tt class="literal">FORWARD</tt> and
-      <tt class="literal">BACKWARD</tt> cases, specifying a negative <i class="replaceable"><tt>count</tt></i> is equivalent to changing
-      the sense of <tt class="literal">FORWARD</tt> and <tt class="literal">BACKWARD</tt>.
+      number of rows to fetch.  For <code class="literal">FORWARD</code> and
+      <code class="literal">BACKWARD</code> cases, specifying a negative <em class="replaceable"><code>count</code></em> is equivalent to changing
+      the sense of <code class="literal">FORWARD</code> and <code class="literal">BACKWARD</code>.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>cursorname</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>cursorname</code></em></span></dt>
 <dd><p>      An open cursor's name.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2693036"></a><h2>Outputs</h2>
-<p>   On successful completion, a <tt class="command">FETCH</tt> command returns a command
+<a name="id461706"></a><h2>Outputs</h2>
+<p>   On successful completion, a <code class="command">FETCH</code> command returns a command
    tag of the form
 </p>
-<pre class="screen">FETCH <i class="replaceable"><tt>count</tt></i></pre>
+<pre class="screen">FETCH <em class="replaceable"><code>count</code></em></pre>
 <p>
-   The <i class="replaceable"><tt>count</tt></i> is the number
+   The <em class="replaceable"><code>count</code></em> is the number
    of rows fetched (possibly zero).  Note that in
    <span class="application">psql</span>, the command tag will not actually be
    displayed, since <span class="application">psql</span> displays the fetched
@@ -172,23 +169,23 @@ where <i class="replaceable"><tt>direction</tt></i> can be empty or one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2693080"></a><h2>Notes</h2>
-<p>   The cursor should be declared with the <tt class="literal">SCROLL</tt>
-   option if one intends to use any variants of <tt class="command">FETCH</tt>
-   other than <tt class="command">FETCH NEXT</tt> or <tt class="command">FETCH FORWARD</tt> with
+<a name="id461748"></a><h2>Notes</h2>
+<p>   The cursor should be declared with the <code class="literal">SCROLL</code>
+   option if one intends to use any variants of <code class="command">FETCH</code>
+   other than <code class="command">FETCH NEXT</code> or <code class="command">FETCH FORWARD</code> with
    a positive count.  For simple queries
    <span class="productname">PostgreSQL</span> will allow backwards fetch
-   from cursors not declared with <tt class="literal">SCROLL</tt>, but this
+   from cursors not declared with <code class="literal">SCROLL</code>, but this
    behavior is best not relied on. If the cursor is declared with
-   <tt class="literal">NO SCROLL</tt>, no backward fetches are allowed.
+   <code class="literal">NO SCROLL</code>, no backward fetches are allowed.
   </p>
-<p>   <tt class="literal">ABSOLUTE</tt> fetches are not any faster than
+<p>   <code class="literal">ABSOLUTE</code> fetches are not any faster than
    navigating to the desired row with a relative move: the underlying
    implementation must traverse all the intermediate rows anyway.
    Negative absolute fetches are even worse: the query must be read to
    the end to find the last row, and then traversed backward from
    there.  However, rewinding to the start of the query (as with
-   <tt class="literal">FETCH ABSOLUTE 0</tt>) is fast.
+   <code class="literal">FETCH ABSOLUTE 0</code>) is fast.
   </p>
 <p>   Updating data via a cursor is currently not supported by
    <span class="productname">PostgreSQL</span>.
@@ -200,7 +197,7 @@ where <i class="replaceable"><tt>direction</tt></i> can be empty or one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2693184"></a><h2>Examples</h2>
+<a name="id461844"></a><h2>Examples</h2>
 <p>   The following example traverses a table using a cursor.
 
 </p>
@@ -234,27 +231,27 @@ COMMIT WORK;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2693228"></a><h2>Compatibility</h2>
-<p>   The SQL standard defines <tt class="command">FETCH</tt> for use in
-   embedded SQL only.  The variant of <tt class="command">FETCH</tt>
+<a name="id461864"></a><h2>Compatibility</h2>
+<p>   The SQL standard defines <code class="command">FETCH</code> for use in
+   embedded SQL only.  The variant of <code class="command">FETCH</code>
    described here returns the data as if it were a
-   <tt class="command">SELECT</tt> result rather than placing it in host
-   variables.  Other than this point, <tt class="command">FETCH</tt> is
+   <code class="command">SELECT</code> result rather than placing it in host
+   variables.  Other than this point, <code class="command">FETCH</code> is
    fully upward-compatible with the SQL standard.
   </p>
-<p>   The <tt class="command">FETCH</tt> forms involving
-   <tt class="literal">FORWARD</tt> and <tt class="literal">BACKWARD</tt>, as well
-   as the forms <tt class="literal">FETCH <i class="replaceable"><tt>count</tt></i></tt> and <tt class="literal">FETCH
-   ALL</tt>, in which <tt class="literal">FORWARD</tt> is implicit, are
+<p>   The <code class="command">FETCH</code> forms involving
+   <code class="literal">FORWARD</code> and <code class="literal">BACKWARD</code>, as well
+   as the forms <code class="literal">FETCH <em class="replaceable"><code>count</code></em></code> and <code class="literal">FETCH
+   ALL</code>, in which <code class="literal">FORWARD</code> is implicit, are
    <span class="productname">PostgreSQL</span> extensions.
   </p>
-<p>   The SQL standard allows only <tt class="literal">FROM</tt> preceding the cursor
-   name; the option to use <tt class="literal">IN</tt> is an extension.
+<p>   The SQL standard allows only <code class="literal">FROM</code> preceding the cursor
+   name; the option to use <code class="literal">IN</code> is an extension.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2693328"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-declare.html">DECLARE</a>, <a href="sql-move.html">MOVE</a></span>
+<a name="id461959"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-declare.html">DECLARE</a>, <a href="sql-move.html">MOVE</a>, </span>
 </div>
 </div></body>
 </html>

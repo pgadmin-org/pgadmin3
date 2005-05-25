@@ -4,63 +4,57 @@
 <title>40.3. The Parser Stage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
-<link rel="previous" href="connect-estab.html" title="40.2. How Connections are Established">
+<link rel="prev" href="connect-estab.html" title="40.2. How Connections are Established">
 <link rel="next" href="rule-system.html" title="40.4. The PostgreSQL Rule System">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="parser-stage"></a>40.3. The Parser Stage</h2></div></div>
-<div></div>
-</div>
-<p>    The <i class="firstterm">parser stage</i> consists of two parts:
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="parser-stage"></a>40.3. The Parser Stage</h2></div></div></div>
+<p>    The <em class="firstterm">parser stage</em> consists of two parts:
 
     </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>       The <i class="firstterm">parser</i> defined in
-       <tt class="filename">gram.y</tt> and <tt class="filename">scan.l</tt> is
+<li><p>       The <em class="firstterm">parser</em> defined in
+       <code class="filename">gram.y</code> and <code class="filename">scan.l</code> is
        built using the Unix tools <span class="application">yacc</span>
        and <span class="application">lex</span>.
       </p></li>
-<li><p>       The <i class="firstterm">transformation process</i> does
+<li><p>       The <em class="firstterm">transformation process</em> does
        modifications and augmentations to the data structures returned by the parser.
       </p></li>
 </ul></div>
 <p>
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2726544"></a>40.3.1. Parser</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id493168"></a>40.3.1. Parser</h3></div></div></div>
 <p>     The parser has to check the query string (which arrives as plain
      ASCII text) for valid syntax. If the syntax is correct a
-     <i class="firstterm">parse tree</i> is built up and handed back;
+     <em class="firstterm">parse tree</em> is built up and handed back;
      otherwise an error is returned. The parser and lexer are
      implemented using the well-known Unix tools <span class="application">yacc</span>
      and <span class="application">lex</span>.
     </p>
-<p>     The <i class="firstterm">lexer</i> is defined in the file
-     <tt class="filename">scan.l</tt> and is responsible
-     for recognizing <i class="firstterm">identifiers</i>,
-     the <i class="firstterm">SQL key words</i> etc. For
-     every key word or identifier that is found, a <i class="firstterm">token</i>
+<p>     The <em class="firstterm">lexer</em> is defined in the file
+     <code class="filename">scan.l</code> and is responsible
+     for recognizing <em class="firstterm">identifiers</em>,
+     the <em class="firstterm">SQL key words</em> etc. For
+     every key word or identifier that is found, a <em class="firstterm">token</em>
      is generated and handed to the parser.
     </p>
-<p>     The parser is defined in the file <tt class="filename">gram.y</tt> and
-     consists of a set of <i class="firstterm">grammar rules</i> and
-     <i class="firstterm">actions</i> that are executed whenever a rule
+<p>     The parser is defined in the file <code class="filename">gram.y</code> and
+     consists of a set of <em class="firstterm">grammar rules</em> and
+     <em class="firstterm">actions</em> that are executed whenever a rule
      is fired. The code of the actions (which is actually C code) is
      used to build up the parse tree.
     </p>
-<p>     The file <tt class="filename">scan.l</tt> is transformed to the C
-     source file <tt class="filename">scan.c</tt> using the program
-     <span class="application">lex</span> and <tt class="filename">gram.y</tt> is
-     transformed to <tt class="filename">gram.c</tt> using
+<p>     The file <code class="filename">scan.l</code> is transformed to the C
+     source file <code class="filename">scan.c</code> using the program
+     <span class="application">lex</span> and <code class="filename">gram.y</code> is
+     transformed to <code class="filename">gram.c</code> using
      <span class="application">yacc</span>.  After these transformations
      have taken place a normal C compiler can be used to create the
      parser. Never make any changes to the generated C files as they
@@ -71,7 +65,7 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>       The mentioned transformations and compilations are normally done
-       automatically using the <i class="firstterm">makefiles</i>
+       automatically using the <em class="firstterm">makefiles</em>
        shipped with the <span class="productname">PostgreSQL</span>
        source distribution.
       </p>
@@ -79,48 +73,45 @@
 <p>
     </p>
 <p>     A detailed description of <span class="application">yacc</span> or
-     the grammar rules given in <tt class="filename">gram.y</tt> would be
+     the grammar rules given in <code class="filename">gram.y</code> would be
      beyond the scope of this paper. There are many books and
      documents dealing with <span class="application">lex</span> and
      <span class="application">yacc</span>. You should be familiar with
      <span class="application">yacc</span> before you start to study the
-     grammar given in <tt class="filename">gram.y</tt> otherwise you won't
+     grammar given in <code class="filename">gram.y</code> otherwise you won't
      understand what happens there.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2726728"></a>40.3.2. Transformation Process</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id493340"></a>40.3.2. Transformation Process</h3></div></div></div>
 <p>     The parser stage creates a parse tree using only fixed rules about
      the syntactic structure of SQL.  It does not make any lookups in the
      system catalogs, so there is no possibility to understand the detailed
      semantics of the requested operations.  After the parser completes,
-     the <i class="firstterm">transformation process</i> takes the tree handed
+     the <em class="firstterm">transformation process</em> takes the tree handed
      back by the parser as input and does the semantic interpretation needed
      to understand which tables, functions, and operators are referenced by
      the query.  The data structure that is built to represent this
-     information is called the <i class="firstterm">query tree</i>.
+     information is called the <em class="firstterm">query tree</em>.
     </p>
 <p>     The reason for separating raw parsing from semantic analysis is that
      system catalog lookups can only be done within a transaction, and we
      do not wish to start a transaction immediately upon receiving a query
      string.  The raw parsing stage is sufficient to identify the transaction
-     control commands (<tt class="command">BEGIN</tt>, <tt class="command">ROLLBACK</tt>, etc), and
+     control commands (<code class="command">BEGIN</code>, <code class="command">ROLLBACK</code>, etc), and
      these can then be correctly executed without any further analysis.
      Once we know that we are dealing with an actual query (such as
-     <tt class="command">SELECT</tt> or <tt class="command">UPDATE</tt>), it is okay to
+     <code class="command">SELECT</code> or <code class="command">UPDATE</code>), it is okay to
      start a transaction if we're not already in one.  Only then can the
      transformation process be invoked.
     </p>
 <p>     The query tree created by the transformation process is structurally
      similar to the raw parse tree in most places, but it has many differences
-     in detail.  For example, a <tt class="structname">FuncCall</tt> node in the
+     in detail.  For example, a <code class="structname">FuncCall</code> node in the
      parse tree represents something that looks syntactically like a function
-     call.  This may be transformed to either a <tt class="structname">FuncExpr</tt>
-     or <tt class="structname">Aggref</tt> node depending on whether the referenced
+     call.  This may be transformed to either a <code class="structname">FuncExpr</code>
+     or <code class="structname">Aggref</code> node depending on whether the referenced
      name turns out to be an ordinary function or an aggregate function.
      Also, information about the actual data types of columns and expression
      results is added to the query tree.

@@ -4,24 +4,21 @@
 <title>10.4. Value Storage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
-<link rel="previous" href="typeconv-func.html" title="10.3. Functions">
+<link rel="prev" href="typeconv-func.html" title="10.3. Functions">
 <link rel="next" href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="typeconv-query"></a>10.4. Value Storage</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="typeconv-query"></a>10.4. Value Storage</h2></div></div></div>
 <p>   Values to be inserted into a table are converted to the destination
    column's data type according to the
    following steps.
   </p>
 <div class="procedure">
-<p class="title"><b>Value Storage Type Conversion</b></p>
+<a name="id347373"></a><p class="title"><b>Value Storage Type Conversion</b></p>
 <ol type="1">
 <li><p>Check for an exact match with the target.</p></li>
 <li><p>Otherwise, try to convert the expression to the target type.  This will succeed
@@ -31,19 +28,19 @@ the literal string will be fed to the input conversion routine for the target
 type.</p></li>
 <li><p>Check to see if there is a sizing cast for the target type.  A sizing
 cast is a cast from that type to itself.  If one is found in the
-<tt class="structname">pg_cast</tt> catalog, apply it to the expression before storing
+<code class="structname">pg_cast</code> catalog, apply it to the expression before storing
 into the destination column.  The implementation function for such a cast
-always takes an extra parameter of type <tt class="type">integer</tt>, which receives
+always takes an extra parameter of type <code class="type">integer</code>, which receives
 the destination column's declared length (actually, its
-<tt class="structfield">atttypmod</tt> value; the interpretation of
-<tt class="structfield">atttypmod</tt> varies for different datatypes).  The cast function
+<code class="structfield">atttypmod</code> value; the interpretation of
+<code class="structfield">atttypmod</code> varies for different datatypes).  The cast function
 is responsible for applying any length-dependent semantics such as size
 checking or truncation.</p></li>
 </ol>
 </div>
 <div class="example">
-<a name="id2568389"></a><p class="title"><b>Example 10.6. <tt class="type">character</tt> Storage Type Conversion</b></p>
-<p>For a target column declared as <tt class="type">character(20)</tt> the following statement
+<a name="id347415"></a><p class="title"><b>Example 10.6. <code class="type">character</code> Storage Type Conversion</b></p>
+<p>For a target column declared as <code class="type">character(20)</code> the following statement
 ensures that the stored value is sized correctly:
 
 </p>
@@ -56,14 +53,14 @@ SELECT v, length(v) FROM vv;
  abcdef               |     20
 (1 row)</pre>
 <p>What has really happened here is that the two unknown literals are resolved
-to <tt class="type">text</tt> by default, allowing the <tt class="literal">||</tt> operator
-to be resolved as <tt class="type">text</tt> concatenation.  Then the <tt class="type">text</tt>
-result of the operator is converted to <tt class="type">bpchar</tt> (&#8220;<span class="quote">blank-padded
-char</span>&#8221;, the internal name of the <tt class="type">character</tt> data type) to match the target
-column type.  (Since the types <tt class="type">text</tt> and
-<tt class="type">bpchar</tt> are binary-compatible, this conversion does
+to <code class="type">text</code> by default, allowing the <code class="literal">||</code> operator
+to be resolved as <code class="type">text</code> concatenation.  Then the <code class="type">text</code>
+result of the operator is converted to <code class="type">bpchar</code> (&#8220;<span class="quote">blank-padded
+char</span>&#8221;, the internal name of the <code class="type">character</code> data type) to match the target
+column type.  (Since the types <code class="type">text</code> and
+<code class="type">bpchar</code> are binary-compatible, this conversion does
 not insert any real function call.)  Finally, the sizing function
-<tt class="literal">bpchar(bpchar, integer)</tt> is found in the system catalog
+<code class="literal">bpchar(bpchar, integer)</code> is found in the system catalog
 and applied to the operator's result and the stored column length.  This
 type-specific function performs the required length check and addition of
 padding spaces.</p>

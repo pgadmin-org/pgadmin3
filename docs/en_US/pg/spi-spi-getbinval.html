@@ -4,29 +4,26 @@
 <title>SPI_getbinval</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi-interface-support.html" title="39.2. Interface Support Functions">
-<link rel="previous" href="spi-spi-getvalue.html" title="SPI_getvalue">
+<link rel="prev" href="spi-spi-getvalue.html" title="SPI_getvalue">
 <link rel="next" href="spi-spi-gettype.html" title="SPI_gettype">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-getbinval"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="spi-spi-getbinval"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>SPI_getbinval &#8212; return the binary value of the specified column</p>
 </div>
-<a name="id2662620"></a><div class="refsynopsisdiv">
+<a name="id433276"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">Datum SPI_getbinval(HeapTuple <i class="parameter"><tt>row</tt></i>, TupleDesc <i class="parameter"><tt>rowdesc</tt></i>, int <i class="parameter"><tt>colnumber</tt></i>, bool * <i class="parameter"><tt>isnull</tt></i>)</pre>
+<pre class="synopsis">Datum SPI_getbinval(HeapTuple <em class="parameter"><code>row</code></em>, TupleDesc <em class="parameter"><code>rowdesc</code></em>, int <em class="parameter"><code>colnumber</code></em>, bool * <em class="parameter"><code>isnull</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2662656"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_getbinval</tt> returns the value of the
-   specified column in the internal form (as type <tt class="type">Datum</tt>).
+<a name="id433312"></a><h2>Description</h2>
+<p>   <code class="function">SPI_getbinval</code> returns the value of the
+   specified column in the internal form (as type <code class="type">Datum</code>).
   </p>
 <p>   This function does not allocate new space for the datum.  In the
    case of a pass-by-reference data type, the return value will be a
@@ -34,30 +31,30 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2662678"></a><h2>Arguments</h2>
+<a name="id433331"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">HeapTuple <i class="parameter"><tt>row</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">HeapTuple <em class="parameter"><code>row</code></em></code></span></dt>
 <dd><p>      input row to be examined
      </p></dd>
-<dt><span class="term"><tt class="literal">TupleDesc <i class="parameter"><tt>rowdesc</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">TupleDesc <em class="parameter"><code>rowdesc</code></em></code></span></dt>
 <dd><p>      input row description
      </p></dd>
-<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>rownumber</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">int <em class="parameter"><code>rownumber</code></em></code></span></dt>
 <dd><p>      column number (count starts at 1)
      </p></dd>
-<dt><span class="term"><tt class="literal">bool * <i class="parameter"><tt>isnull</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">bool * <em class="parameter"><code>isnull</code></em></code></span></dt>
 <dd><p>      flag for a null value in the column
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2662744"></a><h2>Return Value</h2>
+<a name="id433396"></a><h2>Return Value</h2>
 <p>   The binary value of the column is returned.  The variable pointed
-   to by <i class="parameter"><tt>isnull</tt></i> is set to true if the column is
+   to by <em class="parameter"><code>isnull</code></em> is set to true if the column is
    null, else to false.
   </p>
-<p>   <tt class="varname">SPI_result</tt> is set to
-   <tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt> on error.
+<p>   <code class="varname">SPI_result</code> is set to
+   <code class="symbol">SPI_ERROR_NOATTRIBUTE</code> on error.
   </p>
 </div>
 </div></body>

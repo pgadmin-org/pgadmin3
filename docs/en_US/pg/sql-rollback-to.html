@@ -4,45 +4,42 @@
 <title>ROLLBACK TO SAVEPOINT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-rollback.html" title="ROLLBACK">
+<link rel="prev" href="sql-rollback.html" title="ROLLBACK">
 <link rel="next" href="sql-savepoint.html" title="SAVEPOINT">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-rollback-to"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-rollback-to"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>ROLLBACK TO SAVEPOINT &#8212; roll back to a savepoint</p>
 </div>
-<a name="id2698230"></a><a name="id2698240"></a><div class="refsynopsisdiv">
+<a name="id466439"></a><a name="id466448"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ] TO [ SAVEPOINT ] <i class="replaceable"><tt>savepoint_name</tt></i></pre>
+<pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ] TO [ SAVEPOINT ] <em class="replaceable"><code>savepoint_name</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2698260"></a><h2>Description</h2>
+<a name="id466468"></a><h2>Description</h2>
 <p>   Roll back all commands that were executed after the savepoint was
    established.  The savepoint remains valid and can be rolled back to
    again later, if needed.
   </p>
-<p>   <tt class="command">ROLLBACK TO SAVEPOINT</tt> implicitly destroys all savepoints that
+<p>   <code class="command">ROLLBACK TO SAVEPOINT</code> implicitly destroys all savepoints that
    were established after the named savepoint.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2698278"></a><h2>Parameters</h2>
+<a name="id466484"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>savepoint_name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>savepoint_name</code></em></span></dt>
 <dd><p>      The savepoint to roll back to.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2698294"></a><h2>Notes</h2>
+<a name="id466499"></a><h2>Notes</h2>
 <p>   Use <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a> to destroy a savepoint without
    discarding the effects of commands executed after it was established.
   </p>
@@ -52,18 +49,18 @@
    savepoints.  Any cursor that is opened inside a savepoint will be closed
    when the savepoint is rolled back.  If a previously opened cursor is
    affected by a 
-   <tt class="command">FETCH</tt> command inside a savepoint that is later rolled
-   back, the cursor position remains at the position that <tt class="command">FETCH</tt>
-   left it pointing to (that is, <tt class="command">FETCH</tt> is not rolled back).
+   <code class="command">FETCH</code> command inside a savepoint that is later rolled
+   back, the cursor position remains at the position that <code class="command">FETCH</code>
+   left it pointing to (that is, <code class="command">FETCH</code> is not rolled back).
    Closing a cursor is not undone by rolling back, either.
    A cursor whose execution causes a transaction to abort is put in a
    can't-execute state, so while the transaction can be restored using
-   <tt class="command">ROLLBACK TO SAVEPOINT</tt>, the cursor can no longer be used.
+   <code class="command">ROLLBACK TO SAVEPOINT</code>, the cursor can no longer be used.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2698353"></a><h2>Examples</h2>
-<p>   To undo the effects of the commands executed after <tt class="literal">my_savepoint</tt>
+<a name="id466550"></a><h2>Examples</h2>
+<p>   To undo the effects of the commands executed after <code class="literal">my_savepoint</code>
    was established:
 </p>
 <pre class="programlisting">ROLLBACK TO SAVEPOINT my_savepoint;</pre>
@@ -94,20 +91,20 @@ COMMIT;</pre>
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2698385"></a><h2>Compatibility</h2>
+<a name="id466578"></a><h2>Compatibility</h2>
 <p>   The SQL:2003 standard specifies that the key word
-   <tt class="literal">SAVEPOINT</tt> is mandatory, but <span class="productname">PostgreSQL</span>
+   <code class="literal">SAVEPOINT</code> is mandatory, but <span class="productname">PostgreSQL</span>
    and <span class="productname">Oracle</span> allow it to be omitted.  SQL:2003 allows
-   only <tt class="literal">WORK</tt>, not <tt class="literal">TRANSACTION</tt>, as a noise word
-   after <tt class="literal">ROLLBACK</tt>.  Also, SQL:2003 has an optional clause
-   <tt class="literal">AND [ NO ] CHAIN</tt> which is not currently supported by
+   only <code class="literal">WORK</code>, not <code class="literal">TRANSACTION</code>, as a noise word
+   after <code class="literal">ROLLBACK</code>.  Also, SQL:2003 has an optional clause
+   <code class="literal">AND [ NO ] CHAIN</code> which is not currently supported by
    <span class="productname">PostgreSQL</span>.  Otherwise, this command conforms to
    the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2698443"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-savepoint.html">SAVEPOINT</a></span>
+<a name="id466634"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-savepoint.html">SAVEPOINT</a>, </span>
 </div>
 </div></body>
 </html>

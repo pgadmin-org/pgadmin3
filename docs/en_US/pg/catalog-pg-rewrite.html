@@ -4,22 +4,19 @@
 <title>41.25. pg_rewrite</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-proc.html" title="41.24. pg_proc">
+<link rel="prev" href="catalog-pg-proc.html" title="41.24. pg_proc">
 <link rel="next" href="catalog-pg-shadow.html" title="41.26. pg_shadow">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-rewrite"></a>41.25. <tt class="structname">pg_rewrite</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2733724"></a><p>   The catalog <tt class="structname">pg_rewrite</tt> stores rewrite rules for tables and views.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-rewrite"></a>41.25. <code class="structname">pg_rewrite</code></h2></div></div></div>
+<a name="id500001"></a><p>   The catalog <code class="structname">pg_rewrite</code> stores rewrite rules for tables and views.
   </p>
 <div class="table">
-<a name="id2733740"></a><p class="title"><b>Table 41.25. <tt class="structname">pg_rewrite</tt> Columns</b></p>
+<a name="id500016"></a><p class="title"><b>Table 41.25. <code class="structname">pg_rewrite</code> Columns</b></p>
 <table summary="pg_rewrite Columns" border="1">
 <colgroup>
 <col>
@@ -35,54 +32,54 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">rulename</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">rulename</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>Rule name</td>
 </tr>
 <tr>
-<td><tt class="structfield">ev_class</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
+<td><code class="structfield">ev_class</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>The table this rule is for</td>
 </tr>
 <tr>
-<td><tt class="structfield">ev_attr</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">ev_attr</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>The column this rule is for (currently, always zero to
       indicate the whole table)</td>
 </tr>
 <tr>
-<td><tt class="structfield">ev_type</tt></td>
-<td><tt class="type">char</tt></td>
+<td><code class="structfield">ev_type</code></td>
+<td><code class="type">char</code></td>
 <td> </td>
-<td>       Event type that the rule is for: 1 = <tt class="command">SELECT</tt>, 2 =
-       <tt class="command">UPDATE</tt>, 3 = <tt class="command">INSERT</tt>, 4 =
-       <tt class="command">DELETE</tt>
-</td>
+<td>       Event type that the rule is for: 1 = <code class="command">SELECT</code>, 2 =
+       <code class="command">UPDATE</code>, 3 = <code class="command">INSERT</code>, 4 =
+       <code class="command">DELETE</code>
+      </td>
 </tr>
 <tr>
-<td><tt class="structfield">is_instead</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">is_instead</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
-<td>True if the rule is an <tt class="literal">INSTEAD</tt> rule</td>
+<td>True if the rule is an <code class="literal">INSTEAD</code> rule</td>
 </tr>
 <tr>
-<td><tt class="structfield">ev_qual</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="structfield">ev_qual</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
 <td>       Expression tree (in the form of a
-       <tt class="function">nodeToString()</tt> representation) for the
+       <code class="function">nodeToString()</code> representation) for the
        rule's qualifying condition
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">ev_action</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="structfield">ev_action</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
 <td>       Query tree (in the form of a
-       <tt class="function">nodeToString()</tt> representation) for the
+       <code class="function">nodeToString()</code> representation) for the
        rule's action
       </td>
 </tr>
@@ -91,7 +88,7 @@
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>    <tt class="literal">pg_class.relhasrules</tt>
+<p>    <code class="literal">pg_class.relhasrules</code>
     must be true if a table has any rules in this catalog.
    </p>
 </div>

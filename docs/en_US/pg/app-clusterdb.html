@@ -4,27 +4,24 @@
 <title>clusterdb</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="prev" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="next" href="app-createdb.html" title="createdb">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-clusterdb"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="app-clusterdb"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>clusterdb &#8212; cluster a <span class="productname">PostgreSQL</span> database</p>
 </div>
-<a name="id2706348"></a><div class="refsynopsisdiv">
+<a name="id474100"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">clusterdb</tt> [<i class="replaceable"><tt>connection-option</tt></i>...] [--table | -t <i class="replaceable"><tt>table</tt></i> ] [<i class="replaceable"><tt>dbname</tt></i>]<br><tt class="command">clusterdb</tt> [<i class="replaceable"><tt>connection-option</tt></i>...] [[--all] |  [-a]]</p></div>
+<div class="cmdsynopsis"><p><code class="command">clusterdb</code> [<em class="replaceable"><code>connection-option</code></em>...] [--table | -t <em class="replaceable"><code>table</code></em> ] [<em class="replaceable"><code>dbname</code></em>]<br><code class="command">clusterdb</code> [<em class="replaceable"><code>connection-option</code></em>...] [[--all] |  [-a]]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706423"></a><h2>Description</h2>
+<a name="id474175"></a><h2>Description</h2>
 <p>   <span class="application">clusterdb</span> is a utility for reclustering tables
    in a <span class="productname">PostgreSQL</span> database.  It finds tables
    that have previously been clustered, and clusters them again on the same
@@ -38,41 +35,41 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706464"></a><h2>Options</h2>
+<a name="id474213"></a><h2>Options</h2>
 <p>    <span class="application">clusterdb</span> accepts the following command-line arguments:
     
     </p>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--all</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-a</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--all</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	Cluster all databases.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">[<span class="optional">-d</span>] <i class="replaceable"><tt>dbname</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">[<span class="optional">--dbname</span>] <i class="replaceable"><tt>dbname</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">[<span class="optional">-d</span>] <em class="replaceable"><code>dbname</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">[<span class="optional">--dbname</span>] <em class="replaceable"><code>dbname</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	Specifies the name of the database to be clustered.
-	If this is not specified and <tt class="option">-a</tt> (or
-	<tt class="option">--all</tt>) is not used, the database name is read
-	from the environment variable <tt class="envar">PGDATABASE</tt>.  If
+	If this is not specified and <code class="option">-a</code> (or
+	<code class="option">--all</code>) is not used, the database name is read
+	from the environment variable <code class="envar">PGDATABASE</code>.  If
 	that is not set, the user name specified for the connection is
 	used.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-e</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--echo</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Echo the commands that <span class="application">clusterdb</span> generates
 	and sends to the server.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-q</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--quiet</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-q</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--quiet</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Do not display a response.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-t <i class="replaceable"><tt>table</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--table <i class="replaceable"><tt>table</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-t <em class="replaceable"><code>table</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--table <em class="replaceable"><code>table</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
-<dd><p>	Cluster <i class="replaceable"><tt>table</tt></i> only.
+<dd><p>	Cluster <em class="replaceable"><code>table</code></em> only.
        </p></dd>
 </dl></div>
 <p>
@@ -83,26 +80,26 @@
     </p>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-h <em class="replaceable"><code>host</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--host <em class="replaceable"><code>host</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	Specifies the host name of the machine on which the server is
 	running.  If the value begins with a slash, it is used as the
 	directory for the Unix domain socket.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-p <em class="replaceable"><code>port</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--port <em class="replaceable"><code>port</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-U <em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--username <em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        User name to connect as.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-W</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--password</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Force password prompt.
        </p></dd>
@@ -111,17 +108,17 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706677"></a><h2>Environment</h2>
+<a name="id474417"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGDATABASE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGDATABASE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGHOST</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGPORT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>      Default connection parameters
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706700"></a><h2>Diagnostics</h2>
+<a name="id474440"></a><h2>Diagnostics</h2>
 <p>   In case of difficulty, see <a href="sql-cluster.html">CLUSTER</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
    discussions of potential problems and error messages.
    The database server must be running at the
@@ -131,22 +128,22 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706731"></a><h2>Examples</h2>
-<p>    To cluster the database <tt class="literal">test</tt>:
+<a name="id474469"></a><h2>Examples</h2>
+<p>    To cluster the database <code class="literal">test</code>:
 </p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>clusterdb test</tt></b></pre>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>clusterdb test</code></strong></pre>
 <p>
    </p>
 <p>    To cluster a single table
-    <tt class="literal">foo</tt> in a database named
-    <tt class="literal">xyzzy</tt>:
+    <code class="literal">foo</code> in a database named
+    <code class="literal">xyzzy</code>:
 </p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>clusterdb --table foo xyzzy</tt></b></pre>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>clusterdb --table foo xyzzy</code></strong></pre>
 <p>
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706785"></a><h2>See Also</h2>
+<a name="id474522"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-cluster.html">CLUSTER</a></span>
 </div>
 </div></body>

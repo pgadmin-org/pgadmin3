@@ -4,18 +4,15 @@
 <title>9.19. System Information Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-srf.html" title="9.18. Set Returning Functions">
+<link rel="prev" href="functions-srf.html" title="9.18. Set Returning Functions">
 <link rel="next" href="functions-admin.html" title="9.20. System Administration Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-info"></a>9.19. System Information Functions</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-info"></a>9.19. System Information Functions</h2></div></div></div>
 <p>   <a href="functions-info.html#functions-info-session-table" title="Table 9.39. Session Information Functions">Table 9.39, &#8220;Session Information Functions&#8221;</a> shows several
    functions that extract session and system information.
   </p>
@@ -34,111 +31,111 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="function">current_database()</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="function">current_database()</code></td>
+<td><code class="type">name</code></td>
 <td>name of current database</td>
 </tr>
 <tr>
-<td><tt class="function">current_schema()</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="function">current_schema()</code></td>
+<td><code class="type">name</code></td>
 <td>name of current schema</td>
 </tr>
 <tr>
-<td><tt class="function">current_schemas(boolean)</tt></td>
-<td><tt class="type">name[]</tt></td>
+<td><code class="function">current_schemas(boolean)</code></td>
+<td><code class="type">name[]</code></td>
 <td>names of schemas in search path optionally including implicit schemas</td>
 </tr>
 <tr>
-<td><tt class="function">current_user</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="function">current_user</code></td>
+<td><code class="type">name</code></td>
 <td>user name of current execution context</td>
 </tr>
 <tr>
-<td><tt class="function">inet_client_addr()</tt></td>
-<td><tt class="type">inet</tt></td>
+<td><code class="function">inet_client_addr()</code></td>
+<td><code class="type">inet</code></td>
 <td>address of the remote connection</td>
 </tr>
 <tr>
-<td><tt class="function">inet_client_port()</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="function">inet_client_port()</code></td>
+<td><code class="type">int4</code></td>
 <td>port of the remote connection</td>
 </tr>
 <tr>
-<td><tt class="function">inet_server_addr()</tt></td>
-<td><tt class="type">inet</tt></td>
+<td><code class="function">inet_server_addr()</code></td>
+<td><code class="type">inet</code></td>
 <td>address of the local connection</td>
 </tr>
 <tr>
-<td><tt class="function">inet_server_port()</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="function">inet_server_port()</code></td>
+<td><code class="type">int4</code></td>
 <td>port of the local connection</td>
 </tr>
 <tr>
-<td><tt class="function">session_user</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="function">session_user</code></td>
+<td><code class="type">name</code></td>
 <td>session user name</td>
 </tr>
 <tr>
-<td><tt class="function">user</tt></td>
-<td><tt class="type">name</tt></td>
-<td>equivalent to <tt class="function">current_user</tt>
+<td><code class="function">user</code></td>
+<td><code class="type">name</code></td>
+<td>equivalent to <code class="function">current_user</code>
 </td>
 </tr>
 <tr>
-<td><tt class="function">version()</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="function">version()</code></td>
+<td><code class="type">text</code></td>
 <td>PostgreSQL version information</td>
 </tr>
 </tbody>
 </table>
 </div>
-<a name="id2564343"></a><a name="id2564355"></a><a name="id2564367"></a><p>    The <tt class="function">session_user</tt> is normally the user who initiated
+<a name="id343662"></a><a name="id343673"></a><a name="id343684"></a><p>    The <code class="function">session_user</code> is normally the user who initiated
     the current database connection; but superusers can change this setting
     with <a href="sql-set-session-authorization.html" title="SET SESSION AUTHORIZATION"><span class="refentrytitle"><a name="sql-set-session-authorization-title"></a>SET SESSION AUTHORIZATION</span></a>.
-    The <tt class="function">current_user</tt> is the user identifier
+    The <code class="function">current_user</code> is the user identifier
     that is applicable for permission checking. Normally, it is equal
     to the session user, but it changes during the execution of
-    functions with the attribute <tt class="literal">SECURITY DEFINER</tt>.
+    functions with the attribute <code class="literal">SECURITY DEFINER</code>.
     In Unix parlance, the session user is the &#8220;<span class="quote">real user</span>&#8221; and
     the current user is the &#8220;<span class="quote">effective user</span>&#8221;.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>     <tt class="function">current_user</tt>, <tt class="function">session_user</tt>, and
-     <tt class="function">user</tt> have special syntactic status in <span class="acronym">SQL</span>:
+<p>     <code class="function">current_user</code>, <code class="function">session_user</code>, and
+     <code class="function">user</code> have special syntactic status in <span class="acronym">SQL</span>:
      they must be called without trailing parentheses.
     </p>
 </div>
-<p>    <tt class="function">current_schema</tt> returns the name of the schema that is
+<p>    <code class="function">current_schema</code> returns the name of the schema that is
     at the front of the search path (or a null value if the search path is
     empty).  This is the schema that will be used for any tables or
     other named objects that are created without specifying a target schema.
-    <tt class="function">current_schemas(boolean)</tt> returns an array of the names of all
+    <code class="function">current_schemas(boolean)</code> returns an array of the names of all
     schemas presently in the search path.  The Boolean option determines whether or not
-    implicitly included system schemas such as <tt class="literal">pg_catalog</tt> are included in the search 
+    implicitly included system schemas such as <code class="literal">pg_catalog</code> are included in the search 
     path returned.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     The search path may be altered at run time.  The command is:
 </p>
-<pre class="programlisting">SET search_path TO <i class="replaceable"><tt>schema</tt></i> [<span class="optional">, <i class="replaceable"><tt>schema</tt></i>, ...</span>]</pre>
+<pre class="programlisting">SET search_path TO <em class="replaceable"><code>schema</code></em> [<span class="optional">, <em class="replaceable"><code>schema</code></em>, ...</span>]</pre>
 <p>
     </p>
 </div>
-<a name="id2564494"></a><a name="id2564504"></a><a name="id2564513"></a><a name="id2564522"></a><p>     <tt class="function">inet_client_addr</tt> returns the IP address of the
-     current client, and <tt class="function">inet_client_port</tt> returns the
+<a name="id343801"></a><a name="id343810"></a><a name="id343819"></a><a name="id343828"></a><p>     <code class="function">inet_client_addr</code> returns the IP address of the
+     current client, and <code class="function">inet_client_port</code> returns the
      port number.
-     <tt class="function">inet_server_addr</tt> returns the IP address on which
+     <code class="function">inet_server_addr</code> returns the IP address on which
      the server accepted the current connection, and
-     <tt class="function">inet_server_port</tt> returns the port number.
+     <code class="function">inet_server_port</code> returns the port number.
      All these functions return NULL if the current connection is via a
      Unix-domain socket.
    </p>
-<a name="id2564563"></a><p>    <tt class="function">version()</tt> returns a string describing the
+<a name="id343865"></a><p>    <code class="function">version()</code> returns a string describing the
     <span class="productname">PostgreSQL</span> server's version.
    </p>
-<a name="id2564588"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
+<a name="id343888"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
    allow the user to query object access privileges programmatically.
    See <a href="ddl-priv.html" title="5.7. Privileges">Section 5.7, &#8220;Privileges&#8221;</a> for more information about
    privileges.
@@ -158,153 +155,177 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">has_table_privilege</tt>(<i class="parameter"><tt>user</tt></i>,
-                                  <i class="parameter"><tt>table</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_table_privilege</code>(<em class="parameter"><code>user</code></em>,
+                                  <em class="parameter"><code>table</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does user have privilege for table</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_table_privilege</tt>(<i class="parameter"><tt>table</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_table_privilege</code>(<em class="parameter"><code>table</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does current user have privilege for table</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_database_privilege</tt>(<i class="parameter"><tt>user</tt></i>,
-                                  <i class="parameter"><tt>database</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_database_privilege</code>(<em class="parameter"><code>user</code></em>,
+                                  <em class="parameter"><code>database</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does user have privilege for database</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_database_privilege</tt>(<i class="parameter"><tt>database</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_database_privilege</code>(<em class="parameter"><code>database</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does current user have privilege for database</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_function_privilege</tt>(<i class="parameter"><tt>user</tt></i>,
-                                  <i class="parameter"><tt>function</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_function_privilege</code>(<em class="parameter"><code>user</code></em>,
+                                  <em class="parameter"><code>function</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does user have privilege for function</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_function_privilege</tt>(<i class="parameter"><tt>function</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_function_privilege</code>(<em class="parameter"><code>function</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does current user have privilege for function</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_language_privilege</tt>(<i class="parameter"><tt>user</tt></i>,
-                                  <i class="parameter"><tt>language</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_language_privilege</code>(<em class="parameter"><code>user</code></em>,
+                                  <em class="parameter"><code>language</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does user have privilege for language</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_language_privilege</tt>(<i class="parameter"><tt>language</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_language_privilege</code>(<em class="parameter"><code>language</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does current user have privilege for language</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_schema_privilege</tt>(<i class="parameter"><tt>user</tt></i>,
-                                  <i class="parameter"><tt>schema</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_schema_privilege</code>(<em class="parameter"><code>user</code></em>,
+                                  <em class="parameter"><code>schema</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does user have privilege for schema</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_schema_privilege</tt>(<i class="parameter"><tt>schema</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_schema_privilege</code>(<em class="parameter"><code>schema</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does current user have privilege for schema</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_tablespace_privilege</tt>(<i class="parameter"><tt>user</tt></i>,
-                                  <i class="parameter"><tt>tablespace</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_tablespace_privilege</code>(<em class="parameter"><code>user</code></em>,
+                                  <em class="parameter"><code>tablespace</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does user have privilege for tablespace</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">has_tablespace_privilege</tt>(<i class="parameter"><tt>tablespace</tt></i>,
-                                  <i class="parameter"><tt>privilege</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">has_tablespace_privilege</code>(<em class="parameter"><code>tablespace</code></em>,
+                                  <em class="parameter"><code>privilege</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>does current user have privilege for tablespace</td>
 </tr>
 </tbody>
 </table>
 </div>
-<a name="id2565049"></a><a name="id2565058"></a><a name="id2565068"></a><a name="id2565077"></a><a name="id2565087"></a><a name="id2565096"></a><p>    <tt class="function">has_table_privilege</tt> checks whether a user
+<a name="id344332"></a><a name="id344341"></a><a name="id344350"></a><a name="id344359"></a><a name="id344368"></a><a name="id344377"></a><p>    <code class="function">has_table_privilege</code> checks whether a user
     can access a table in a particular way.  The user can be
     specified by name or by ID
-    (<tt class="literal">pg_user.usesysid</tt>), or if the argument is
+    (<code class="literal">pg_user.usesysid</code>), or if the argument is
     omitted
-    <tt class="function">current_user</tt> is assumed.  The table can be specified
+    <code class="function">current_user</code> is assumed.  The table can be specified
     by name or by OID.  (Thus, there are actually six variants of
-    <tt class="function">has_table_privilege</tt>, which can be distinguished by
+    <code class="function">has_table_privilege</code>, which can be distinguished by
     the number and types of their arguments.)  When specifying by name,
     the name can be schema-qualified if necessary.
     The desired access privilege type
     is specified by a text string, which must evaluate to one of the
-    values <tt class="literal">SELECT</tt>, <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>,
-    <tt class="literal">DELETE</tt>, <tt class="literal">RULE</tt>, <tt class="literal">REFERENCES</tt>, or
-    <tt class="literal">TRIGGER</tt>.  (Case of the string is not significant, however.)
+    values <code class="literal">SELECT</code>, <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>,
+    <code class="literal">DELETE</code>, <code class="literal">RULE</code>, <code class="literal">REFERENCES</code>, or
+    <code class="literal">TRIGGER</code>.  (Case of the string is not significant, however.)
     An example is:
 </p>
 <pre class="programlisting">SELECT has_table_privilege('myschema.mytable', 'select');</pre>
 <p>
    </p>
-<p>    <tt class="function">has_database_privilege</tt> checks whether a user
+<p>    <code class="function">has_database_privilege</code> checks whether a user
     can access a database in a particular way.  The possibilities for its
-    arguments are analogous to <tt class="function">has_table_privilege</tt>.
+    arguments are analogous to <code class="function">has_table_privilege</code>.
     The desired access privilege type must evaluate to
-    <tt class="literal">CREATE</tt>,
-    <tt class="literal">TEMPORARY</tt>, or
-    <tt class="literal">TEMP</tt> (which is equivalent to
-    <tt class="literal">TEMPORARY</tt>).
+    <code class="literal">CREATE</code>,
+    <code class="literal">TEMPORARY</code>, or
+    <code class="literal">TEMP</code> (which is equivalent to
+    <code class="literal">TEMPORARY</code>).
    </p>
-<p>    <tt class="function">has_function_privilege</tt> checks whether a user
+<p>    <code class="function">has_function_privilege</code> checks whether a user
     can access a function in a particular way.  The possibilities for its
-    arguments are analogous to <tt class="function">has_table_privilege</tt>.
+    arguments are analogous to <code class="function">has_table_privilege</code>.
     When specifying a function by a text string rather than by OID,
-    the allowed input is the same as for the <tt class="type">regprocedure</tt> data type
+    the allowed input is the same as for the <code class="type">regprocedure</code> data type
     (see <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a>).
     The desired access privilege type must evaluate to
-    <tt class="literal">EXECUTE</tt>.
+    <code class="literal">EXECUTE</code>.
     An example is:
 </p>
 <pre class="programlisting">SELECT has_function_privilege('joeuser', 'myfunc(int, text)', 'execute');</pre>
 <p>
    </p>
-<p>    <tt class="function">has_language_privilege</tt> checks whether a user
+<p>    <code class="function">has_language_privilege</code> checks whether a user
     can access a procedural language in a particular way.  The possibilities
-    for its arguments are analogous to <tt class="function">has_table_privilege</tt>.
+    for its arguments are analogous to <code class="function">has_table_privilege</code>.
     The desired access privilege type must evaluate to
-    <tt class="literal">USAGE</tt>.
+    <code class="literal">USAGE</code>.
    </p>
-<p>    <tt class="function">has_schema_privilege</tt> checks whether a user
+<p>    <code class="function">has_schema_privilege</code> checks whether a user
     can access a schema in a particular way.  The possibilities for its
-    arguments are analogous to <tt class="function">has_table_privilege</tt>.
+    arguments are analogous to <code class="function">has_table_privilege</code>.
     The desired access privilege type must evaluate to
-    <tt class="literal">CREATE</tt> or
-    <tt class="literal">USAGE</tt>.
+    <code class="literal">CREATE</code> or
+    <code class="literal">USAGE</code>.
    </p>
-<p>    <tt class="function">has_tablespace_privilege</tt> checks whether a user
+<p>    <code class="function">has_tablespace_privilege</code> checks whether a user
     can access a tablespace in a particular way.  The possibilities for its
-    arguments are analogous to <tt class="function">has_table_privilege</tt>.
+    arguments are analogous to <code class="function">has_table_privilege</code>.
     The desired access privilege type must evaluate to
-    <tt class="literal">CREATE</tt>.
+    <code class="literal">CREATE</code>.
    </p>
 <p>   To test whether a user holds a grant option on the privilege,
-   append <tt class="literal"> WITH GRANT OPTION</tt> to the privilege key
-   word; for example <tt class="literal">'UPDATE WITH GRANT OPTION'</tt>.
+   append <code class="literal"> WITH GRANT OPTION</code> to the privilege key
+   word; for example <code class="literal">'UPDATE WITH GRANT OPTION'</code>.
   </p>
 <p>   <a href="functions-info.html#functions-info-schema-table" title="Table 9.41. Schema Visibility Inquiry Functions">Table 9.41, &#8220;Schema Visibility Inquiry Functions&#8221;</a> shows functions that
-   determine whether a certain object is <i class="firstterm">visible</i> in the
+   determine whether a certain object is <em class="firstterm">visible</em> in the
    current schema search path.  A table is said to be visible if its
    containing schema is in the search path and no table of the same
    name appears earlier in the search path.  This is equivalent to the
@@ -330,45 +351,57 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">pg_table_is_visible</tt>(<i class="parameter"><tt>table_oid</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">pg_table_is_visible</code>(<em class="parameter"><code>table_oid</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>is table visible in search path</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_type_is_visible</tt>(<i class="parameter"><tt>type_oid</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">pg_type_is_visible</code>(<em class="parameter"><code>type_oid</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>is type (or domain) visible in search path</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_function_is_visible</tt>(<i class="parameter"><tt>function_oid</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">pg_function_is_visible</code>(<em class="parameter"><code>function_oid</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>is function visible in search path</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_operator_is_visible</tt>(<i class="parameter"><tt>operator_oid</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">pg_operator_is_visible</code>(<em class="parameter"><code>operator_oid</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>is operator visible in search path</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_opclass_is_visible</tt>(<i class="parameter"><tt>opclass_oid</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">pg_opclass_is_visible</code>(<em class="parameter"><code>opclass_oid</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>is operator class visible in search path</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_conversion_is_visible</tt>(<i class="parameter"><tt>conversion_oid</tt></i>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td>
+<code class="literal"><code class="function">pg_conversion_is_visible</code>(<em class="parameter"><code>conversion_oid</code></em>)</code>
+       </td>
+<td><code class="type">boolean</code></td>
 <td>is conversion visible in search path</td>
 </tr>
 </tbody>
 </table>
 </div>
-<a name="id2565562"></a><a name="id2565572"></a><a name="id2565581"></a><a name="id2565591"></a><a name="id2565600"></a><a name="id2565610"></a><p>   <tt class="function">pg_table_is_visible</tt> performs the check for
-   tables (or views, or any other kind of <tt class="literal">pg_class</tt> entry).
-   <tt class="function">pg_type_is_visible</tt>,
-   <tt class="function">pg_function_is_visible</tt>,
-   <tt class="function">pg_operator_is_visible</tt>,
-   <tt class="function">pg_opclass_is_visible</tt>, and
-   <tt class="function">pg_conversion_is_visible</tt> perform the same sort of
+<a name="id344816"></a><a name="id344825"></a><a name="id344834"></a><a name="id344842"></a><a name="id344851"></a><a name="id344860"></a><p>   <code class="function">pg_table_is_visible</code> performs the check for
+   tables (or views, or any other kind of <code class="literal">pg_class</code> entry).
+   <code class="function">pg_type_is_visible</code>,
+   <code class="function">pg_function_is_visible</code>,
+   <code class="function">pg_operator_is_visible</code>,
+   <code class="function">pg_opclass_is_visible</code>, and
+   <code class="function">pg_conversion_is_visible</code> perform the same sort of
    visibility check for types (and domains), functions, operators, operator classes
    and conversions, respectively.  For functions and operators, an object in
    the search path is visible if there is no object of the same name
@@ -378,15 +411,15 @@
    </p>
 <p>    All these functions require object OIDs to identify the object to be
     checked.  If you want to test an object by name, it is convenient to use
-    the OID alias types (<tt class="type">regclass</tt>, <tt class="type">regtype</tt>,
-    <tt class="type">regprocedure</tt>, or <tt class="type">regoperator</tt>), for example
+    the OID alias types (<code class="type">regclass</code>, <code class="type">regtype</code>,
+    <code class="type">regprocedure</code>, or <code class="type">regoperator</code>), for example
 </p>
 <pre class="programlisting">SELECT pg_type_is_visible('myschema.widget'::regtype);</pre>
 <p>
     Note that it would not make much sense to test an unqualified name in
     this way [mdash ] if the name can be recognized at all, it must be visible.
    </p>
-<a name="id2565705"></a><a name="id2565714"></a><a name="id2565723"></a><a name="id2565733"></a><a name="id2565742"></a><a name="id2565751"></a><a name="id2565761"></a><a name="id2565770"></a><a name="id2565779"></a><a name="id2565789"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
+<a name="id344947"></a><a name="id344956"></a><a name="id344964"></a><a name="id344973"></a><a name="id344982"></a><a name="id344991"></a><a name="id345000"></a><a name="id345009"></a><a name="id345018"></a><a name="id345027"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
    extract information from the system catalogs.
   </p>
 <div class="table">
@@ -404,112 +437,112 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">format_type</tt>(<i class="parameter"><tt>type_oid</tt></i>, <i class="parameter"><tt>typemod</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">format_type</code>(<em class="parameter"><code>type_oid</code></em>, <em class="parameter"><code>typemod</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>get SQL name of a data type</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_viewdef</tt>(<i class="parameter"><tt>view_name</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE VIEW</tt> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
+<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_name</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE VIEW</code> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_viewdef</tt>(<i class="parameter"><tt>view_name</tt></i>, <i class="parameter"><tt>pretty_bool</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE VIEW</tt> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
+<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_name</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE VIEW</code> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_viewdef</tt>(<i class="parameter"><tt>view_oid</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE VIEW</tt> command for view</td>
+<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE VIEW</code> command for view</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_viewdef</tt>(<i class="parameter"><tt>view_oid</tt></i>, <i class="parameter"><tt>pretty_bool</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE VIEW</tt> command for view</td>
+<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE VIEW</code> command for view</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_ruledef</tt>(<i class="parameter"><tt>rule_oid</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE RULE</tt> command for rule</td>
+<td><code class="literal"><code class="function">pg_get_ruledef</code>(<em class="parameter"><code>rule_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE RULE</code> command for rule</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_ruledef</tt>(<i class="parameter"><tt>rule_oid</tt></i>, <i class="parameter"><tt>pretty_bool</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE RULE</tt> command for rule</td>
+<td><code class="literal"><code class="function">pg_get_ruledef</code>(<em class="parameter"><code>rule_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE RULE</code> command for rule</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_indexdef</tt>(<i class="parameter"><tt>index_oid</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE INDEX</tt> command for index</td>
+<td><code class="literal"><code class="function">pg_get_indexdef</code>(<em class="parameter"><code>index_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE INDEX</code> command for index</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_indexdef</tt>(<i class="parameter"><tt>index_oid</tt></i>, <i class="parameter"><tt>column_no</tt></i>, <i class="parameter"><tt>pretty_bool</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE INDEX</tt> command for index,
+<td><code class="literal"><code class="function">pg_get_indexdef</code>(<em class="parameter"><code>index_oid</code></em>, <em class="parameter"><code>column_no</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE INDEX</code> command for index,
        or definition of just one index column when
-       <i class="parameter"><tt>column_no</tt></i> is not zero</td>
+       <em class="parameter"><code>column_no</code></em> is not zero</td>
 </tr>
 <tr>
 <td>
-<tt class="function">pg_get_triggerdef</tt>(<i class="parameter"><tt>trigger_oid</tt></i>)</td>
-<td><tt class="type">text</tt></td>
-<td>get <tt class="command">CREATE [ CONSTRAINT ] TRIGGER</tt> command for trigger</td>
+<code class="function">pg_get_triggerdef</code>(<em class="parameter"><code>trigger_oid</code></em>)</td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE [ CONSTRAINT ] TRIGGER</code> command for trigger</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_constraintdef</tt>(<i class="parameter"><tt>constraint_oid</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">pg_get_constraintdef</code>(<em class="parameter"><code>constraint_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>get definition of a constraint</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_constraintdef</tt>(<i class="parameter"><tt>constraint_oid</tt></i>, <i class="parameter"><tt>pretty_bool</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">pg_get_constraintdef</code>(<em class="parameter"><code>constraint_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>get definition of a constraint</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_expr</tt>(<i class="parameter"><tt>expr_text</tt></i>, <i class="parameter"><tt>relation_oid</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">pg_get_expr</code>(<em class="parameter"><code>expr_text</code></em>, <em class="parameter"><code>relation_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>decompile internal form of an expression, assuming that any Vars
        in it refer to the relation indicated by the second parameter</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_expr</tt>(<i class="parameter"><tt>expr_text</tt></i>, <i class="parameter"><tt>relation_oid</tt></i>, <i class="parameter"><tt>pretty_bool</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">pg_get_expr</code>(<em class="parameter"><code>expr_text</code></em>, <em class="parameter"><code>relation_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>decompile internal form of an expression, assuming that any Vars
        in it refer to the relation indicated by the second parameter</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_userbyid</tt>(<i class="parameter"><tt>userid</tt></i>)</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="literal"><code class="function">pg_get_userbyid</code>(<em class="parameter"><code>userid</code></em>)</code></td>
+<td><code class="type">name</code></td>
 <td>get user name with given ID</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_get_serial_sequence</tt>(<i class="parameter"><tt>table_name</tt></i>, <i class="parameter"><tt>column_name</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>get name of the sequence that a <tt class="type">serial</tt> or <tt class="type">bigserial</tt> column
+<td><code class="literal"><code class="function">pg_get_serial_sequence</code>(<em class="parameter"><code>table_name</code></em>, <em class="parameter"><code>column_name</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get name of the sequence that a <code class="type">serial</code> or <code class="type">bigserial</code> column
        uses</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_tablespace_databases</tt>(<i class="parameter"><tt>tablespace_oid</tt></i>)</tt></td>
-<td><tt class="type">setof oid</tt></td>
+<td><code class="literal"><code class="function">pg_tablespace_databases</code>(<em class="parameter"><code>tablespace_oid</code></em>)</code></td>
+<td><code class="type">setof oid</code></td>
 <td>get set of database OIDs that have objects in the tablespace</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>   <tt class="function">format_type</tt> returns the SQL name of a data type that
+<p>   <code class="function">format_type</code> returns the SQL name of a data type that
    is identified by its type OID and possibly a type modifier.  Pass NULL
    for the type modifier if no specific modifier is known.
   </p>
-<p>   <tt class="function">pg_get_viewdef</tt>,
-   <tt class="function">pg_get_ruledef</tt>,
-   <tt class="function">pg_get_indexdef</tt>,
-   <tt class="function">pg_get_triggerdef</tt>, and
-   <tt class="function">pg_get_constraintdef</tt> respectively
+<p>   <code class="function">pg_get_viewdef</code>,
+   <code class="function">pg_get_ruledef</code>,
+   <code class="function">pg_get_indexdef</code>,
+   <code class="function">pg_get_triggerdef</code>, and
+   <code class="function">pg_get_constraintdef</code> respectively
    reconstruct the creating command for a view, rule, index, trigger, or
    constraint.  (Note that this is a decompiled reconstruction, not
    the original text of the command.)
-   <tt class="function">pg_get_expr</tt> decompiles the internal form of an
+   <code class="function">pg_get_expr</code> decompiles the internal form of an
    individual expression, such as the default value for a column.  It
    may be useful when examining the contents of system catalogs.
    Most of these functions come in two
@@ -518,28 +551,28 @@
    likely to be
    interpreted the same way by future versions of <span class="productname">PostgreSQL</span>;
    avoid using pretty-printed output for dump purposes.
-   Passing <tt class="literal">false</tt> for the pretty-print parameter yields the
+   Passing <code class="literal">false</code> for the pretty-print parameter yields the
    same result as the variant that does not have the parameter at all.
   </p>
-<p>   <tt class="function">pg_get_userbyid</tt>
+<p>   <code class="function">pg_get_userbyid</code>
    extracts a user's name given a user ID number.
-   <tt class="function">pg_get_serial_sequence</tt>
+   <code class="function">pg_get_serial_sequence</code>
    fetches the name of the sequence associated with a serial or
    bigserial column.  The name is suitably formatted
    for passing to the sequence functions (see <a href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>).
    NULL is returned if the column does not have a sequence attached.
   </p>
-<p>  <tt class="function">pg_tablespace_databases</tt> allows usage examination of a
+<p>  <code class="function">pg_tablespace_databases</code> allows usage examination of a
   tablespace. It will return a set of OIDs of databases that have objects
   stored in the tablespace. If this function returns any row, the
   tablespace is not empty and cannot be dropped. To
   display the specific objects populating the tablespace, you will need
   to connect to the databases identified by 
-  <tt class="function">pg_tablespace_databases</tt> and query their
-  <tt class="structname">pg_class</tt> catalogs.
+  <code class="function">pg_tablespace_databases</code> and query their
+  <code class="structname">pg_class</code> catalogs.
   </p>
-<a name="id2566495"></a><a name="id2566504"></a><a name="id2566514"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
-    previously stored with the <tt class="command">COMMENT</tt> command.  A
+<a name="id345704"></a><a name="id345713"></a><a name="id345722"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
+    previously stored with the <code class="command">COMMENT</code> command.  A
     null value is returned if no comment could be found matching the
     specified parameters.
    </p>
@@ -558,36 +591,36 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">obj_description</tt>(<i class="parameter"><tt>object_oid</tt></i>, <i class="parameter"><tt>catalog_name</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">obj_description</code>(<em class="parameter"><code>object_oid</code></em>, <em class="parameter"><code>catalog_name</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>get comment for a database object</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">obj_description</tt>(<i class="parameter"><tt>object_oid</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">obj_description</code>(<em class="parameter"><code>object_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>get comment for a database object (<span class="emphasis"><em>deprecated</em></span>)</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">col_description</tt>(<i class="parameter"><tt>table_oid</tt></i>, <i class="parameter"><tt>column_number</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">col_description</code>(<em class="parameter"><code>table_oid</code></em>, <em class="parameter"><code>column_number</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>get comment for a table column</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>    The two-parameter form of <tt class="function">obj_description</tt> returns the
+<p>    The two-parameter form of <code class="function">obj_description</code> returns the
     comment for a database object specified by its OID and the name of the
     containing system catalog.  For example,
-    <tt class="literal">obj_description(123456,'pg_class')</tt>
+    <code class="literal">obj_description(123456,'pg_class')</code>
     would retrieve the comment for a table with OID 123456.
-    The one-parameter form of <tt class="function">obj_description</tt> requires only
+    The one-parameter form of <code class="function">obj_description</code> requires only
     the object OID.  It is now deprecated since there is no guarantee that
     OIDs are unique across different system catalogs; therefore, the wrong
     comment could be returned.
    </p>
-<p>    <tt class="function">col_description</tt> returns the comment for a table column,
+<p>    <code class="function">col_description</code> returns the comment for a table column,
     which is specified by the OID of its table and its column number.
-    <tt class="function">obj_description</tt> cannot be used for table columns since
+    <code class="function">obj_description</code> cannot be used for table columns since
     columns do not have OIDs of their own.
    </p>
 </div></body>

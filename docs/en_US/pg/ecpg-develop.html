@@ -4,41 +4,38 @@
 <title>29.13. Internals</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-<link rel="previous" href="ecpg-library.html" title="29.12. Library Functions">
+<link rel="prev" href="ecpg-library.html" title="29.12. Library Functions">
 <link rel="next" href="information-schema.html" title="Chapter 30. The Information Schema">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-develop"></a>29.13. Internals</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-develop"></a>29.13. Internals</h2></div></div></div>
 <p>   This section explains how <span class="application">ECPG</span> works
    internally. This information can occasionally be useful to help
    users understand how to use <span class="application">ECPG</span>.
   </p>
-<p>    The first four lines written by <tt class="command">ecpg</tt> to the
+<p>    The first four lines written by <code class="command">ecpg</code> to the
     output are fixed lines.  Two are comments and two are include
     lines necessary to interface to the library.  Then the
     preprocessor reads through the file and writes output.  Normally
     it just echoes everything to the output.
    </p>
-<p>    When it sees an <tt class="command">EXEC SQL</tt> statement, it
-    intervenes and changes it. The command starts with <tt class="command">EXEC
-    SQL</tt> and ends with <tt class="command">;</tt>. Everything in
+<p>    When it sees an <code class="command">EXEC SQL</code> statement, it
+    intervenes and changes it. The command starts with <code class="command">EXEC
+    SQL</code> and ends with <code class="command">;</code>. Everything in
     between is treated as an <span class="acronym">SQL</span> statement and
     parsed for variable substitution.
    </p>
 <p>    Variable substitution occurs when a symbol starts with a colon
-    (<tt class="literal">:</tt>). The variable with that name is looked up
+    (<code class="literal">:</code>). The variable with that name is looked up
     among the variables that were previously declared within a
-    <tt class="literal">EXEC SQL DECLARE</tt> section.
+    <code class="literal">EXEC SQL DECLARE</code> section.
    </p>
 <p>    The most important function in the library is
-    <tt class="function">ECPGdo</tt>, which takes care of executing most
+    <code class="function">ECPGdo</code>, which takes care of executing most
     commands. It takes a variable number of arguments. This can easily
     add up to 50 or so arguments, and we hope this will not be a
     problem on any platform.
@@ -56,21 +53,21 @@
         It is modified by the input variables, i.e., the variables that
         where not known at compile time but are to be entered in the
         command. Where the variables should go the string contains
-        <tt class="literal">?</tt>.
+        <code class="literal">?</code>.
        </p></dd>
 <dt><span class="term">Input variables</span></dt>
 <dd><p>        Every input variable causes ten arguments to be created.  (See below.)
        </p></dd>
-<dt><span class="term"><i class="parameter"><tt>ECPGt_EOIT</tt></i></span></dt>
-<dd><p>        An <tt class="type">enum</tt> telling that there are no more input
+<dt><span class="term"><em class="parameter"><code>ECPGt_EOIT</code></em></span></dt>
+<dd><p>        An <code class="type">enum</code> telling that there are no more input
         variables.
        </p></dd>
 <dt><span class="term">Output variables</span></dt>
 <dd><p>        Every output variable causes ten arguments to be created.
         (See below.)  These variables are filled by the function.
        </p></dd>
-<dt><span class="term"><i class="parameter"><tt>ECPGt_EORT</tt></i></span></dt>
-<dd><p>        An <tt class="type">enum</tt> telling that there are no more variables.
+<dt><span class="term"><em class="parameter"><code>ECPGt_EORT</code></em></span></dt>
+<dd><p>        An <code class="type">enum</code> telling that there are no more variables.
        </p></dd>
 </dl></div>
 <p>
@@ -85,7 +82,7 @@
 <li><p> 
        A pointer to the value or a pointer to the pointer.
       </p></li>
-<li><p>       The size of the variable if it is a <tt class="type">char</tt> or <tt class="type">varchar</tt>.
+<li><p>       The size of the variable if it is a <code class="type">char</code> or <code class="type">varchar</code>.
       </p></li>
 <li><p>       The number of elements in the array (for array fetches).
       </p></li>
@@ -108,14 +105,14 @@
 <p>    Note that not all SQL commands are treated in this way.  For
     instance, an open cursor statement like
 </p>
-<pre class="programlisting">EXEC SQL OPEN <i class="replaceable"><tt>cursor</tt></i>;</pre>
+<pre class="programlisting">EXEC SQL OPEN <em class="replaceable"><code>cursor</code></em>;</pre>
 <p>
     is not copied to the output. Instead, the cursor's
-    <tt class="command">DECLARE</tt> command is used at the position of the <tt class="command">OPEN</tt> command
+    <code class="command">DECLARE</code> command is used at the position of the <code class="command">OPEN</code> command
     because it indeed opens the cursor.
    </p>
 <p>    Here is a complete example describing the output of the
-    preprocessor of a file <tt class="filename">foo.pgc</tt> (details may
+    preprocessor of a file <code class="filename">foo.pgc</code> (details may
     change with each particular version of the preprocessor):
 </p>
 <pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;

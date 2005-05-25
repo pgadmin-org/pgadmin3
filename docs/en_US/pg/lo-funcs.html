@@ -4,27 +4,24 @@
 <title>28.4. Server-Side Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="largeobjects.html" title="Chapter 28. Large Objects">
-<link rel="previous" href="lo-interfaces.html" title="28.3. Client Interfaces">
+<link rel="prev" href="lo-interfaces.html" title="28.3. Client Interfaces">
 <link rel="next" href="lo-examplesect.html" title="28.5. Example Program">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="lo-funcs"></a>28.4. Server-Side Functions</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="lo-funcs"></a>28.4. Server-Side Functions</h2></div></div></div>
 <p>   There are server-side functions callable from SQL that correspond to
    each of the client-side functions described above; indeed, for the
    most part the client-side functions are simply interfaces to the
    equivalent server-side functions.  The ones that are actually useful
    to call via SQL commands are
-   <tt class="function">lo_creat</tt><a name="id2619119"></a>,
-   <tt class="function">lo_unlink</tt><a name="id2619130"></a>,
-   <tt class="function">lo_import</tt><a name="id2619142"></a>, and
-   <tt class="function">lo_export</tt><a name="id2619154"></a>.
+   <code class="function">lo_creat</code><a name="id393762"></a>,
+   <code class="function">lo_unlink</code><a name="id393774"></a>,
+   <code class="function">lo_import</code><a name="id393786"></a>, and
+   <code class="function">lo_export</code><a name="id393797"></a>.
    Here are examples of their use:
 
 </p>
@@ -44,8 +41,8 @@ SELECT lo_export(image.raster, '/tmp/motd') FROM image
     WHERE name = 'beautiful image';</pre>
 <p>
   </p>
-<p>    The server-side <tt class="function">lo_import</tt> and
-    <tt class="function">lo_export</tt> functions behave considerably differently
+<p>    The server-side <code class="function">lo_import</code> and
+    <code class="function">lo_export</code> functions behave considerably differently
     from their client-side analogs.  These two functions read and write files
     in the server's file system, using the permissions of the database's
     owning user.  Therefore, their use is restricted to superusers.  In

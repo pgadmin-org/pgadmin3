@@ -4,39 +4,36 @@
 <title>CREATE DOMAIN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createdatabase.html" title="CREATE DATABASE">
+<link rel="prev" href="sql-createdatabase.html" title="CREATE DATABASE">
 <link rel="next" href="sql-createfunction.html" title="CREATE FUNCTION">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createdomain"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createdomain"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE DOMAIN &#8212; define a new domain</p>
 </div>
-<a name="id2676102"></a><div class="refsynopsisdiv">
+<a name="id445968"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE DOMAIN <i class="replaceable"><tt>name</tt></i> [AS] <i class="replaceable"><tt>data_type</tt></i>
-    [ DEFAULT <i class="replaceable"><tt>expression</tt></i> ]
-    [ <i class="replaceable"><tt>constraint</tt></i> [ ... ] ]
+<pre class="synopsis">CREATE DOMAIN <em class="replaceable"><code>name</code></em> [AS] <em class="replaceable"><code>data_type</code></em>
+    [ DEFAULT <em class="replaceable"><code>expression</code></em> ]
+    [ <em class="replaceable"><code>constraint</code></em> [ ... ] ]
 
-where <i class="replaceable"><tt>constraint</tt></i> is:
+where <em class="replaceable"><code>constraint</code></em> is:
 
-[ CONSTRAINT <i class="replaceable"><tt>constraint_name</tt></i> ]
-{ NOT NULL | NULL | CHECK (<i class="replaceable"><tt>expression</tt></i>) }</pre>
+[ CONSTRAINT <em class="replaceable"><code>constraint_name</code></em> ]
+{ NOT NULL | NULL | CHECK (<em class="replaceable"><code>expression</code></em>) }</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676158"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE DOMAIN</tt> creates a new data domain.  The
+<a name="id446022"></a><h2>Description</h2>
+<p>   <code class="command">CREATE DOMAIN</code> creates a new data domain.  The
    user who defines a domain becomes its owner.
   </p>
-<p>   If a schema name is given (for example, <tt class="literal">CREATE DOMAIN
-   myschema.mydomain ...</tt>) then the domain is created in the
+<p>   If a schema name is given (for example, <code class="literal">CREATE DOMAIN
+   myschema.mydomain ...</code>) then the domain is created in the
    specified schema.  Otherwise it is created in the current schema.
    The domain name must be unique among the types and domains existing
    in its schema.
@@ -48,18 +45,18 @@ where <i class="replaceable"><tt>constraint</tt></i> is:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676191"></a><h2>Parameters</h2>
+<a name="id446049"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name (optionally schema-qualified) of a domain to be created.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>data_type</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>data_type</code></em></span></dt>
 <dd><p>        The underlying data type of the domain. This may include array
         specifiers.
        </p></dd>
-<dt><span class="term"><tt class="literal">DEFAULT <i class="replaceable"><tt>expression</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">DEFAULT <em class="replaceable"><code>expression</code></em></code></span></dt>
 <dd>
-<p>        The <tt class="literal">DEFAULT</tt> clause specifies a default value for
+<p>        The <code class="literal">DEFAULT</code> clause specifies a default value for
         columns of the domain data type.  The value is any
         variable-free expression (but subqueries are not allowed).
         The data type of the default expression must match the data
@@ -74,14 +71,14 @@ where <i class="replaceable"><tt>constraint</tt></i> is:
         underlying data type.
        </p>
 </dd>
-<dt><span class="term"><tt class="literal">CONSTRAINT <i class="replaceable"><tt>constraint_name</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">CONSTRAINT <em class="replaceable"><code>constraint_name</code></em></code></span></dt>
 <dd><p>        An optional name for a constraint.  If not specified,
         the system generates a name.
        </p></dd>
-<dt><span class="term"><tt class="literal">NOT NULL</tt></span></dt>
+<dt><span class="term"><code class="literal">NOT NULL</code></span></dt>
 <dd><p>        Values of this domain are not allowed to be null.
        </p></dd>
-<dt><span class="term"><tt class="literal">NULL</tt></span></dt>
+<dt><span class="term"><code class="literal">NULL</code></span></dt>
 <dd>
 <p>        Values of this domain are allowed to be null.  This is the default.
        </p>
@@ -90,31 +87,31 @@ where <i class="replaceable"><tt>constraint</tt></i> is:
         applications.
        </p>
 </dd>
-<dt><span class="term"><tt class="literal">CHECK (<i class="replaceable"><tt>expression</tt></i>)</tt></span></dt>
+<dt><span class="term"><code class="literal">CHECK (<em class="replaceable"><code>expression</code></em>)</code></span></dt>
 <dd>
-<p>      <tt class="literal">CHECK</tt> clauses specify integrity constraints or tests
+<p>      <code class="literal">CHECK</code> clauses specify integrity constraints or tests
       which values of the domain must satisfy.
       Each constraint must be an expression
-      producing a Boolean result.  It should use the name <tt class="literal">VALUE</tt>
+      producing a Boolean result.  It should use the name <code class="literal">VALUE</code>
       to refer to the value being tested.
      </p>
-<p>      Currently, <tt class="literal">CHECK</tt> expressions cannot contain
-      subqueries nor refer to variables other than <tt class="literal">VALUE</tt>.
+<p>      Currently, <code class="literal">CHECK</code> expressions cannot contain
+      subqueries nor refer to variables other than <code class="literal">VALUE</code>.
      </p>
 </dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676343"></a><h2>Examples</h2>
-<p>   This example creates the <tt class="type">us_postal_code</tt> data type and
+<a name="id446188"></a><h2>Examples</h2>
+<p>   This example creates the <code class="type">us_postal_code</code> data type and
    then uses the type in a table definition.  A regular expression test
    is used to verify that the value looks like a valid US postal code.
 
 </p>
 <pre class="programlisting">CREATE DOMAIN us_postal_code AS TEXT
 CHECK(
-   VALUE ~ '^\d{5}$'
-OR VALUE ~ '^\d{5}-\d{4}$'
+   VALUE ~ '^\\d{5}$'
+OR VALUE ~ '^\\d{5}-\\d{4}$'
 );
 
 CREATE TABLE us_snail_addy (
@@ -130,13 +127,13 @@ CREATE TABLE us_snail_addy (
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createdomain-compatibility"></a><h2>Compatibility</h2>
-<p>   The command <tt class="command">CREATE DOMAIN</tt> conforms to the SQL
+<p>   The command <code class="command">CREATE DOMAIN</code> conforms to the SQL
    standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createdomain-see-also"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterdomain.html">ALTER DOMAIN</a>, <a href="sql-dropdomain.html">DROP DOMAIN</a></span>
+<span class="simplelist"><a href="sql-alterdomain.html">ALTER DOMAIN</a>, <a href="sql-dropdomain.html">DROP DOMAIN</a>, </span>
 </div>
 </div></body>
 </html>

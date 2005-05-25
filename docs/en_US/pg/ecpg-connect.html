@@ -4,38 +4,35 @@
 <title>29.2. Connecting to the Database Server</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-<link rel="previous" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
+<link rel="prev" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
 <link rel="next" href="ecpg-disconnect.html" title="29.3. Closing a Connection">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-connect"></a>29.2. Connecting to the Database Server</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-connect"></a>29.2. Connecting to the Database Server</h2></div></div></div>
 <p>   One connects to a database using the following statement:
 </p>
-<pre class="programlisting">EXEC SQL CONNECT TO <i class="replaceable"><tt>target</tt></i> [<span class="optional">AS <i class="replaceable"><tt>connection-name</tt></i></span>] [<span class="optional">USER <i class="replaceable"><tt>user-name</tt></i></span>];</pre>
+<pre class="programlisting">EXEC SQL CONNECT TO <em class="replaceable"><code>target</code></em> [<span class="optional">AS <em class="replaceable"><code>connection-name</code></em></span>] [<span class="optional">USER <em class="replaceable"><code>user-name</code></em></span>];</pre>
 <p>
-   The <i class="replaceable"><tt>target</tt></i> can be specified in the
+   The <em class="replaceable"><code>target</code></em> can be specified in the
    following ways:
 
    </p>
 <div class="itemizedlist"><ul type="disc">
-<li>      <tt class="literal"><i class="replaceable"><tt>dbname</tt></i>[<span class="optional">@<i class="replaceable"><tt>hostname</tt></i></span>][<span class="optional">:<i class="replaceable"><tt>port</tt></i></span>]</tt>
+<li>      <code class="literal"><em class="replaceable"><code>dbname</code></em>[<span class="optional">@<em class="replaceable"><code>hostname</code></em></span>][<span class="optional">:<em class="replaceable"><code>port</code></em></span>]</code>
      </li>
-<li>      <tt class="literal">tcp:postgresql://<i class="replaceable"><tt>hostname</tt></i>[<span class="optional">:<i class="replaceable"><tt>port</tt></i></span>][<span class="optional">/<i class="replaceable"><tt>dbname</tt></i></span>][<span class="optional">?<i class="replaceable"><tt>options</tt></i></span>]</tt>
+<li>      <code class="literal">tcp:postgresql://<em class="replaceable"><code>hostname</code></em>[<span class="optional">:<em class="replaceable"><code>port</code></em></span>][<span class="optional">/<em class="replaceable"><code>dbname</code></em></span>][<span class="optional">?<em class="replaceable"><code>options</code></em></span>]</code>
      </li>
-<li>      <tt class="literal">unix:postgresql://<i class="replaceable"><tt>hostname</tt></i>[<span class="optional">:<i class="replaceable"><tt>port</tt></i></span>][<span class="optional">/<i class="replaceable"><tt>dbname</tt></i></span>][<span class="optional">?<i class="replaceable"><tt>options</tt></i></span>]</tt>
+<li>      <code class="literal">unix:postgresql://<em class="replaceable"><code>hostname</code></em>[<span class="optional">:<em class="replaceable"><code>port</code></em></span>][<span class="optional">/<em class="replaceable"><code>dbname</code></em></span>][<span class="optional">?<em class="replaceable"><code>options</code></em></span>]</code>
      </li>
 <li>      an SQL string literal containing one of the above forms
      </li>
 <li>      a reference to a character variable containing one of the above forms (see examples)
      </li>
-<li>      <tt class="literal">DEFAULT</tt>
+<li>      <code class="literal">DEFAULT</code>
      </li>
 </ul></div>
 <p>
@@ -46,7 +43,7 @@
    case you can also double-quote the individual parameters separately
    as needed.  In practice, it is probably less error-prone to use a
    (single-quoted) string literal or a variable reference.  The
-   connection target <tt class="literal">DEFAULT</tt> initiates a connection
+   connection target <code class="literal">DEFAULT</code> initiates a connection
    to the default database under the default user name.  No separate
    user name or connection name may be specified in that case.
   </p>
@@ -54,29 +51,29 @@
 
    </p>
 <div class="itemizedlist"><ul type="disc">
-<li>      <tt class="literal"><i class="replaceable"><tt>username</tt></i></tt>
+<li>      <code class="literal"><em class="replaceable"><code>username</code></em></code>
      </li>
-<li>      <tt class="literal"><i class="replaceable"><tt>username</tt></i>/<i class="replaceable"><tt>password</tt></i></tt>
+<li>      <code class="literal"><em class="replaceable"><code>username</code></em>/<em class="replaceable"><code>password</code></em></code>
      </li>
-<li>      <tt class="literal"><i class="replaceable"><tt>username</tt></i> IDENTIFIED BY <i class="replaceable"><tt>password</tt></i></tt>
+<li>      <code class="literal"><em class="replaceable"><code>username</code></em> IDENTIFIED BY <em class="replaceable"><code>password</code></em></code>
      </li>
-<li>      <tt class="literal"><i class="replaceable"><tt>username</tt></i> USING <i class="replaceable"><tt>password</tt></i></tt>
+<li>      <code class="literal"><em class="replaceable"><code>username</code></em> USING <em class="replaceable"><code>password</code></em></code>
      </li>
 </ul></div>
 <p>
 
-   As above, the parameters <i class="replaceable"><tt>username</tt></i> and
-   <i class="replaceable"><tt>password</tt></i> may be an SQL identifier, an
+   As above, the parameters <em class="replaceable"><code>username</code></em> and
+   <em class="replaceable"><code>password</code></em> may be an SQL identifier, an
    SQL string literal, or a reference to a character variable.
   </p>
-<p>   The <i class="replaceable"><tt>connection-name</tt></i> is used to handle
+<p>   The <em class="replaceable"><code>connection-name</code></em> is used to handle
    multiple connections in one program.  It can be omitted if a
    program uses only one connection.  The most recently opened
    connection becomes the current connection, which is used by default
    when an SQL statement is to be executed (see later in this
    chapter).
   </p>
-<p>   Here are some examples of <tt class="command">CONNECT</tt> statements:
+<p>   Here are some examples of <code class="command">CONNECT</code> statements:
 </p>
 <pre class="programlisting">EXEC SQL CONNECT TO mydb@sql.mydomain.com;
 

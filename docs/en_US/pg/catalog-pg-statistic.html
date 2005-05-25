@@ -4,53 +4,50 @@
 <title>41.27. pg_statistic</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-shadow.html" title="41.26. pg_shadow">
+<link rel="prev" href="catalog-pg-shadow.html" title="41.26. pg_shadow">
 <link rel="next" href="catalog-pg-tablespace.html" title="41.28. pg_tablespace">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-statistic"></a>41.27. <tt class="structname">pg_statistic</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2734102"></a><p>   The catalog <tt class="structname">pg_statistic</tt> stores statistical data
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-statistic"></a>41.27. <code class="structname">pg_statistic</code></h2></div></div></div>
+<a name="id500363"></a><p>   The catalog <code class="structname">pg_statistic</code> stores statistical data
    about the contents of the database.  Entries are created by
-   <tt class="command">ANALYZE</tt> and subsequently used by the query planner.
+   <code class="command">ANALYZE</code> and subsequently used by the query planner.
    There is one entry for each table column that has been analyzed.
    Note that all the statistical data is inherently approximate,
    even assuming that it is up-to-date.
   </p>
-<p>   <tt class="structname">pg_statistic</tt> also stores statistical data about
+<p>   <code class="structname">pg_statistic</code> also stores statistical data about
    the values of index expressions.  These are described as if they were
-   actual data columns; in particular, <tt class="structfield">starelid</tt>
+   actual data columns; in particular, <code class="structfield">starelid</code>
    references the index.  No entry is made for an ordinary non-expression
    index column, however, since it would be redundant with the entry
    for the underlying table column.
   </p>
 <p>   Since different kinds of statistics may be appropriate for different
-   kinds of data, <tt class="structname">pg_statistic</tt> is designed not
+   kinds of data, <code class="structname">pg_statistic</code> is designed not
    to assume very much about what sort of statistics it stores.  Only
    extremely general statistics (such as nullness) are given dedicated
-   columns in <tt class="structname">pg_statistic</tt>.  Everything else
+   columns in <code class="structname">pg_statistic</code>.  Everything else
    is stored in &#8220;<span class="quote">slots</span>&#8221;, which are groups of associated columns
    whose content is identified by a code number in one of the slot's columns.
    For more information see
-   <tt class="filename">src/include/catalog/pg_statistic.h</tt>.
+   <code class="filename">src/include/catalog/pg_statistic.h</code>.
   </p>
-<p>   <tt class="structname">pg_statistic</tt> should not be readable by the
+<p>   <code class="structname">pg_statistic</code> should not be readable by the
    public, since even statistical information about a table's contents
    may be considered sensitive.  (Example: minimum and maximum values
    of a salary column might be quite interesting.)
-   <a href="view-pg-stats.html" title="41.36. pg_stats"><tt class="structname">pg_stats</tt></a>
+   <a href="view-pg-stats.html" title="41.36. pg_stats"><code class="structname">pg_stats</code></a>
    is a publicly readable view on
-   <tt class="structname">pg_statistic</tt> that only exposes information
+   <code class="structname">pg_statistic</code> that only exposes information
    about those tables that are readable by the current user.
   </p>
 <div class="table">
-<a name="id2734195"></a><p class="title"><b>Table 41.27. <tt class="structname">pg_statistic</tt> Columns</b></p>
+<a name="id500442"></a><p class="title"><b>Table 41.27. <code class="structname">pg_statistic</code> Columns</b></p>
 <table summary="pg_statistic Columns" border="1">
 <colgroup>
 <col>
@@ -66,79 +63,79 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">starelid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
+<td><code class="structfield">starelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>The table or index that the described column belongs to</td>
 </tr>
 <tr>
-<td><tt class="structfield">staattnum</tt></td>
-<td><tt class="type">int2</tt></td>
-<td><tt class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><tt class="structname">pg_attribute</tt></a>.attnum</tt></td>
+<td><code class="structfield">staattnum</code></td>
+<td><code class="type">int2</code></td>
+<td><code class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
 <td>The number of the described column</td>
 </tr>
 <tr>
-<td><tt class="structfield">stanullfrac</tt></td>
-<td><tt class="type">float4</tt></td>
+<td><code class="structfield">stanullfrac</code></td>
+<td><code class="type">float4</code></td>
 <td> </td>
 <td>The fraction of the column's entries that are null</td>
 </tr>
 <tr>
-<td><tt class="structfield">stawidth</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="structfield">stawidth</code></td>
+<td><code class="type">int4</code></td>
 <td> </td>
 <td>The average stored width, in bytes, of nonnull entries</td>
 </tr>
 <tr>
-<td><tt class="structfield">stadistinct</tt></td>
-<td><tt class="type">float4</tt></td>
+<td><code class="structfield">stadistinct</code></td>
+<td><code class="type">float4</code></td>
 <td> </td>
 <td>The number of distinct nonnull data values in the column.
       A value greater than zero is the actual number of distinct values.
       A value less than zero is the negative of a fraction of the number
       of rows in the table (for example, a column in which values appear about
-      twice on the average could be represented by <tt class="structfield">stadistinct</tt> = -0.5).
+      twice on the average could be represented by <code class="structfield">stadistinct</code> = -0.5).
       A zero value means the number of distinct values is unknown.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">stakind<i class="replaceable"><tt>N</tt></i></tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">stakind<em class="replaceable"><code>N</code></em></code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>       A code number indicating the kind of statistics stored in the
-       <i class="replaceable"><tt>N</tt></i>th &#8220;<span class="quote">slot</span>&#8221; of the
-       <tt class="structname">pg_statistic</tt> row.
+       <em class="replaceable"><code>N</code></em>th &#8220;<span class="quote">slot</span>&#8221; of the
+       <code class="structname">pg_statistic</code> row.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">staop<i class="replaceable"><tt>N</tt></i></tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><tt class="structname">pg_operator</tt></a>.oid</tt></td>
+<td><code class="structfield">staop<em class="replaceable"><code>N</code></em></code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><code class="structname">pg_operator</code></a>.oid</code></td>
 <td>       An operator used to derive the statistics stored in the
-       <i class="replaceable"><tt>N</tt></i>th &#8220;<span class="quote">slot</span>&#8221;.  For example, a
-       histogram slot would show the <tt class="literal">&lt;</tt> operator
+       <em class="replaceable"><code>N</code></em>th &#8220;<span class="quote">slot</span>&#8221;.  For example, a
+       histogram slot would show the <code class="literal">&lt;</code> operator
        that defines the sort order of the data.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">stanumbers<i class="replaceable"><tt>N</tt></i></tt></td>
-<td><tt class="type">float4[]</tt></td>
+<td><code class="structfield">stanumbers<em class="replaceable"><code>N</code></em></code></td>
+<td><code class="type">float4[]</code></td>
 <td> </td>
 <td>       Numerical statistics of the appropriate kind for the
-       <i class="replaceable"><tt>N</tt></i>th &#8220;<span class="quote">slot</span>&#8221;, or null if the slot
+       <em class="replaceable"><code>N</code></em>th &#8220;<span class="quote">slot</span>&#8221;, or null if the slot
        kind does not involve numerical values.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">stavalues<i class="replaceable"><tt>N</tt></i></tt></td>
-<td><tt class="type">anyarray</tt></td>
+<td><code class="structfield">stavalues<em class="replaceable"><code>N</code></em></code></td>
+<td><code class="type">anyarray</code></td>
 <td> </td>
 <td>       Column data values of the appropriate kind for the
-       <i class="replaceable"><tt>N</tt></i>th &#8220;<span class="quote">slot</span>&#8221;, or null if the slot
+       <em class="replaceable"><code>N</code></em>th &#8220;<span class="quote">slot</span>&#8221;, or null if the slot
        kind does not store any data values.  Each array's element
        values are actually of the specific column's data type, so there
        is no way to define these columns' type more specifically than
-       <tt class="type">anyarray</tt>.
+       <code class="type">anyarray</code>.
       </td>
 </tr>
 </tbody>

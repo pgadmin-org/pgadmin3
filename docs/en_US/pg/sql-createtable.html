@@ -4,70 +4,67 @@
 <title>CREATE TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createsequence.html" title="CREATE SEQUENCE">
+<link rel="prev" href="sql-createsequence.html" title="CREATE SEQUENCE">
 <link rel="next" href="sql-createtableas.html" title="CREATE TABLE AS">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createtable"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createtable"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE TABLE &#8212; define a new table</p>
 </div>
-<a name="id2681512"></a><div class="refsynopsisdiv">
+<a name="id451042"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <i class="replaceable"><tt>table_name</tt></i> (
-  { <i class="replaceable"><tt>column_name</tt></i> <i class="replaceable"><tt>data_type</tt></i> [ DEFAULT <i class="replaceable"><tt>default_expr</tt></i> ] [ <i class="replaceable"><tt>column_constraint</tt></i> [ ... ] ]
-    | <i class="replaceable"><tt>table_constraint</tt></i>
-    | LIKE <i class="replaceable"><tt>parent_table</tt></i> [ { INCLUDING | EXCLUDING } DEFAULTS ] }  [, ... ]
+<pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em> (
+  { <em class="replaceable"><code>column_name</code></em> <em class="replaceable"><code>data_type</code></em> [ DEFAULT <em class="replaceable"><code>default_expr</code></em> ] [ <em class="replaceable"><code>column_constraint</code></em> [ ... ] ]
+    | <em class="replaceable"><code>table_constraint</code></em>
+    | LIKE <em class="replaceable"><code>parent_table</code></em> [ { INCLUDING | EXCLUDING } DEFAULTS ] }  [, ... ]
 )
-[ INHERITS ( <i class="replaceable"><tt>parent_table</tt></i> [, ... ] ) ]
+[ INHERITS ( <em class="replaceable"><code>parent_table</code></em> [, ... ] ) ]
 [ WITH OIDS | WITHOUT OIDS ]
 [ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
-[ TABLESPACE <i class="replaceable"><tt>tablespace</tt></i> ]
+[ TABLESPACE <em class="replaceable"><code>tablespace</code></em> ]
 
-where <i class="replaceable"><tt>column_constraint</tt></i> is:
+where <em class="replaceable"><code>column_constraint</code></em> is:
 
-[ CONSTRAINT <i class="replaceable"><tt>constraint_name</tt></i> ]
+[ CONSTRAINT <em class="replaceable"><code>constraint_name</code></em> ]
 { NOT NULL | 
   NULL | 
-  UNIQUE [ USING INDEX TABLESPACE <i class="replaceable"><tt>tablespace</tt></i> ] |
-  PRIMARY KEY [ USING INDEX TABLESPACE <i class="replaceable"><tt>tablespace</tt></i> ] |
-  CHECK (<i class="replaceable"><tt>expression</tt></i>) |
-  REFERENCES <i class="replaceable"><tt>reftable</tt></i> [ ( <i class="replaceable"><tt>refcolumn</tt></i> ) ] [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ]
-    [ ON DELETE <i class="replaceable"><tt>action</tt></i> ] [ ON UPDATE <i class="replaceable"><tt>action</tt></i> ] }
+  UNIQUE [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ] |
+  PRIMARY KEY [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ] |
+  CHECK (<em class="replaceable"><code>expression</code></em>) |
+  REFERENCES <em class="replaceable"><code>reftable</code></em> [ ( <em class="replaceable"><code>refcolumn</code></em> ) ] [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ]
+    [ ON DELETE <em class="replaceable"><code>action</code></em> ] [ ON UPDATE <em class="replaceable"><code>action</code></em> ] }
 [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
 
-and <i class="replaceable"><tt>table_constraint</tt></i> is:
+and <em class="replaceable"><code>table_constraint</code></em> is:
 
-[ CONSTRAINT <i class="replaceable"><tt>constraint_name</tt></i> ]
-{ UNIQUE ( <i class="replaceable"><tt>column_name</tt></i> [, ... ] ) [ USING INDEX TABLESPACE <i class="replaceable"><tt>tablespace</tt></i> ] |
-  PRIMARY KEY ( <i class="replaceable"><tt>column_name</tt></i> [, ... ] ) [ USING INDEX TABLESPACE <i class="replaceable"><tt>tablespace</tt></i> ] |
-  CHECK ( <i class="replaceable"><tt>expression</tt></i> ) |
-  FOREIGN KEY ( <i class="replaceable"><tt>column_name</tt></i> [, ... ] ) REFERENCES <i class="replaceable"><tt>reftable</tt></i> [ ( <i class="replaceable"><tt>refcolumn</tt></i> [, ... ] ) ]
-    [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ] [ ON DELETE <i class="replaceable"><tt>action</tt></i> ] [ ON UPDATE <i class="replaceable"><tt>action</tt></i> ] }
+[ CONSTRAINT <em class="replaceable"><code>constraint_name</code></em> ]
+{ UNIQUE ( <em class="replaceable"><code>column_name</code></em> [, ... ] ) [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ] |
+  PRIMARY KEY ( <em class="replaceable"><code>column_name</code></em> [, ... ] ) [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ] |
+  CHECK ( <em class="replaceable"><code>expression</code></em> ) |
+  FOREIGN KEY ( <em class="replaceable"><code>column_name</code></em> [, ... ] ) REFERENCES <em class="replaceable"><code>reftable</code></em> [ ( <em class="replaceable"><code>refcolumn</code></em> [, ... ] ) ]
+    [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ] [ ON DELETE <em class="replaceable"><code>action</code></em> ] [ ON UPDATE <em class="replaceable"><code>action</code></em> ] }
 [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]</pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-description"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE TABLE</tt> will create a new, initially empty table
+<p>   <code class="command">CREATE TABLE</code> will create a new, initially empty table
    in the current database. The table will be owned by the user issuing the
    command.
   </p>
-<p>   If a schema name is given (for example, <tt class="literal">CREATE TABLE
-   myschema.mytable ...</tt>) then the table is created in the specified
+<p>   If a schema name is given (for example, <code class="literal">CREATE TABLE
+   myschema.mytable ...</code>) then the table is created in the specified
    schema.  Otherwise it is created in the current schema.  Temporary
    tables exist in a special schema, so a schema name may not be given
    when creating a temporary table.  The name of the table must be
    distinct from the name of any other table, sequence, index, or view
    in the same schema.
   </p>
-<p>   <tt class="command">CREATE TABLE</tt> also automatically creates a data
+<p>   <code class="command">CREATE TABLE</code> also automatically creates a data
    type that represents the composite type corresponding
    to one row of the table.  Therefore, tables cannot have the same
    name as any existing data type in the same schema.
@@ -87,40 +84,40 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681780"></a><h2>Parameters</h2>
+<a name="id451280"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">TEMPORARY</tt> or <tt class="literal">TEMP</tt></span></dt>
+<dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd>
 <p>      If specified, the table is created as a temporary table.
       Temporary tables are automatically dropped at the end of a
       session, or optionally at the end of the current transaction
-      (see <tt class="literal">ON COMMIT</tt> below).  Existing permanent
+      (see <code class="literal">ON COMMIT</code> below).  Existing permanent
       tables with the same name are not visible to the current session
       while the temporary table exists, unless they are referenced
       with schema-qualified names. Any indexes created on a temporary
       table are automatically temporary as well.
      </p>
-<p>      Optionally, <tt class="literal">GLOBAL</tt> or <tt class="literal">LOCAL</tt>
-      can be written before <tt class="literal">TEMPORARY</tt> or <tt class="literal">TEMP</tt>.
+<p>      Optionally, <code class="literal">GLOBAL</code> or <code class="literal">LOCAL</code>
+      can be written before <code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code>.
       This makes no difference in <span class="productname">PostgreSQL</span>, but see
       <a href="sql-createtable.html#sql-createtable-compatibility">Compatibility</a>.
      </p>
 </dd>
-<dt><span class="term"><i class="replaceable"><tt>table_name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>table_name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to be created.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>column_name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>column_name</code></em></span></dt>
 <dd><p>      The name of a column to be created in the new table.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>data_type</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>data_type</code></em></span></dt>
 <dd><p>      The data type of the column. This may include array
       specifiers. For more information on the data types supported by
       <span class="productname">PostgreSQL</span>, refer to <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a>.
      </p></dd>
-<dt><span class="term"><tt class="literal">DEFAULT
-    <i class="replaceable"><tt>default_expr</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">DEFAULT
+    <em class="replaceable"><code>default_expr</code></em></code></span></dt>
 <dd>
-<p>      The <tt class="literal">DEFAULT</tt> clause assigns a default data value for
+<p>      The <code class="literal">DEFAULT</code> clause assigns a default data value for
       the column whose column definition it appears within.  The value
       is any variable-free expression (subqueries and cross-references
       to other columns in the current table are not allowed).  The
@@ -132,13 +129,13 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
       for a column, then the default is null.
      </p>
 </dd>
-<dt><span class="term"><tt class="literal">INHERITS ( <i class="replaceable"><tt>parent_table</tt></i> [, ... ] )</tt></span></dt>
+<dt><span class="term"><code class="literal">INHERITS ( <em class="replaceable"><code>parent_table</code></em> [, ... ] )</code></span></dt>
 <dd>
-<p>      The optional <tt class="literal">INHERITS</tt> clause specifies a list of
+<p>      The optional <code class="literal">INHERITS</code> clause specifies a list of
       tables from which the new table automatically inherits all
       columns.
      </p>
-<p>      Use of <tt class="literal">INHERITS</tt> creates a persistent relationship
+<p>      Use of <code class="literal">INHERITS</code> creates a persistent relationship
       between the new child table and its parent table(s).  Schema
       modifications to the parent(s) normally propagate to children
       as well, and by default the data of the child table is included in
@@ -162,38 +159,38 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
       error will be reported.
      </p>
 </dd>
-<dt><span class="term"><tt class="literal">LIKE <i class="replaceable"><tt>parent_table</tt></i> [ { INCLUDING | EXCLUDING } DEFAULTS ]</tt></span></dt>
+<dt><span class="term"><code class="literal">LIKE <em class="replaceable"><code>parent_table</code></em> [ { INCLUDING | EXCLUDING } DEFAULTS ]</code></span></dt>
 <dd>
-<p>      The <tt class="literal">LIKE</tt> clause specifies a table from which
+<p>      The <code class="literal">LIKE</code> clause specifies a table from which
       the new table automatically copies all column names, their data types,
       and their not-null constraints.
      </p>
-<p>      Unlike <tt class="literal">INHERITS</tt>, the new table and original table
+<p>      Unlike <code class="literal">INHERITS</code>, the new table and original table
       are completely decoupled after creation is complete.  Changes to the
       original table will not be applied to the new table, and it is not
       possible to include data of the new table in scans of the original
       table.
      </p>
 <p>      Default expressions for the copied column definitions will only be
-      copied if <tt class="literal">INCLUDING DEFAULTS</tt> is specified.  The
+      copied if <code class="literal">INCLUDING DEFAULTS</code> is specified.  The
       default behavior is to exclude default expressions, resulting in
       all columns of the new table having null defaults.
      </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">WITH OIDS</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">WITHOUT OIDS</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WITH OIDS</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WITHOUT OIDS</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>      This optional clause specifies whether rows of the new table
       should have OIDs (object identifiers) assigned to them.  If
-      neither <tt class="literal">WITH OIDS</tt> nor <tt class="literal">WITHOUT
-      OIDS</tt> is specified, the default value depends upon the
+      neither <code class="literal">WITH OIDS</code> nor <code class="literal">WITHOUT
+      OIDS</code> is specified, the default value depends upon the
       <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration parameter. (If
       the new table inherits from any tables that have OIDs, then
-      <tt class="literal">WITH OIDS</tt> is forced even if the command says
-      <tt class="literal">WITHOUT OIDS</tt>.)
+      <code class="literal">WITH OIDS</code> is forced even if the command says
+      <code class="literal">WITHOUT OIDS</code>.)
      </p>
-<p>      If <tt class="literal">WITHOUT OIDS</tt> is specified or implied, the new
+<p>      If <code class="literal">WITHOUT OIDS</code> is specified or implied, the new
       table does not store OIDs and no OID will be assigned for a row inserted
       into it. This is generally considered worthwhile, since it
       will reduce OID consumption and thereby postpone the wraparound
@@ -206,14 +203,14 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>      To remove OIDs from a table after it has been created, use <a href="sql-altertable.html">ALTER TABLE</a>.
      </p>
 </dd>
-<dt><span class="term"><tt class="literal">CONSTRAINT <i class="replaceable"><tt>constraint_name</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">CONSTRAINT <em class="replaceable"><code>constraint_name</code></em></code></span></dt>
 <dd><p>      An optional name for a column or table constraint.  If not specified,
       the system generates a name.
      </p></dd>
-<dt><span class="term"><tt class="literal">NOT NULL</tt></span></dt>
+<dt><span class="term"><code class="literal">NOT NULL</code></span></dt>
 <dd><p>      The column is not allowed to contain null values.
      </p></dd>
-<dt><span class="term"><tt class="literal">NULL</tt></span></dt>
+<dt><span class="term"><code class="literal">NULL</code></span></dt>
 <dd>
 <p>      The column is allowed to contain null values. This is the default.
      </p>
@@ -223,10 +220,10 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
      </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">UNIQUE</tt> (column constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">UNIQUE ( <i class="replaceable"><tt>column_name</tt></i> [, ... ] )</tt> (table constraint)</span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">UNIQUE</code> (column constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">UNIQUE ( <em class="replaceable"><code>column_name</code></em> [, ... ] )</code> (table constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
-<p>      The <tt class="literal">UNIQUE</tt> constraint specifies that a
+<p>      The <code class="literal">UNIQUE</code> constraint specifies that a
       group of one or more columns of a table may contain
       only unique values. The behavior of the unique table constraint
       is the same as that for column constraints, with the additional
@@ -242,13 +239,13 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
      </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">PRIMARY KEY</tt> (column constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">PRIMARY KEY ( <i class="replaceable"><tt>column_name</tt></i> [, ... ] )</tt> (table constraint)</span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">PRIMARY KEY</code> (column constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">PRIMARY KEY ( <em class="replaceable"><code>column_name</code></em> [, ... ] )</code> (table constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>      The primary key constraint specifies that a column or columns of a table
       may contain only unique (non-duplicate), nonnull values.
-      Technically, <tt class="literal">PRIMARY KEY</tt> is merely a
-      combination of <tt class="literal">UNIQUE</tt> and <tt class="literal">NOT NULL</tt>, but
+      Technically, <code class="literal">PRIMARY KEY</code> is merely a
+      combination of <code class="literal">UNIQUE</code> and <code class="literal">NOT NULL</code>, but
       identifying a set of columns as primary key also provides
       metadata about the design of the schema, as a primary key
       implies that other tables
@@ -262,9 +259,9 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
       constraint defined for the same table.
      </p>
 </dd>
-<dt><span class="term"><tt class="literal">CHECK (<i class="replaceable"><tt>expression</tt></i>)</tt></span></dt>
+<dt><span class="term"><code class="literal">CHECK (<em class="replaceable"><code>expression</code></em>)</code></span></dt>
 <dd>
-<p>      The <tt class="literal">CHECK</tt> clause specifies an expression producing a
+<p>      The <code class="literal">CHECK</code> clause specifies an expression producing a
       Boolean result which new or updated rows must satisfy for an
       insert or update operation to succeed.  Expressions evaluating
       to TRUE or UNKNOWN succeed.  Should any row of an insert or
@@ -274,76 +271,76 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
       reference that column's value only, while an expression
       appearing in a table constraint may reference multiple columns.
      </p>
-<p>      Currently, <tt class="literal">CHECK</tt> expressions cannot contain
+<p>      Currently, <code class="literal">CHECK</code> expressions cannot contain
       subqueries nor refer to variables other than columns of the
       current row.
      </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">REFERENCES <i class="replaceable"><tt>reftable</tt></i> [ ( <i class="replaceable"><tt>refcolumn</tt></i> ) ] [ MATCH <i class="replaceable"><tt>matchtype</tt></i> ] [ ON DELETE <i class="replaceable"><tt>action</tt></i> ] [ ON UPDATE <i class="replaceable"><tt>action</tt></i> ]</tt> (column constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">FOREIGN KEY ( <i class="replaceable"><tt>column</tt></i> [, ... ] )
-    REFERENCES <i class="replaceable"><tt>reftable</tt></i> [ ( <i class="replaceable"><tt>refcolumn</tt></i> [, ... ] ) ]
-    [ MATCH <i class="replaceable"><tt>matchtype</tt></i> ]
-    [ ON DELETE <i class="replaceable"><tt>action</tt></i> ]
-    [ ON UPDATE <i class="replaceable"><tt>action</tt></i> ]</tt>
-    (table constraint)</span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">REFERENCES <em class="replaceable"><code>reftable</code></em> [ ( <em class="replaceable"><code>refcolumn</code></em> ) ] [ MATCH <em class="replaceable"><code>matchtype</code></em> ] [ ON DELETE <em class="replaceable"><code>action</code></em> ] [ ON UPDATE <em class="replaceable"><code>action</code></em> ]</code> (column constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">FOREIGN KEY ( <em class="replaceable"><code>column</code></em> [, ... ] )
+    REFERENCES <em class="replaceable"><code>reftable</code></em> [ ( <em class="replaceable"><code>refcolumn</code></em> [, ... ] ) ]
+    [ MATCH <em class="replaceable"><code>matchtype</code></em> ]
+    [ ON DELETE <em class="replaceable"><code>action</code></em> ]
+    [ ON UPDATE <em class="replaceable"><code>action</code></em> ]</code>
+    (table constraint)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>      These clauses specify a foreign key constraint, which requires
       that a group of one or more columns of the new table must only
       contain values that match values in the referenced
-      column(s) of some row of the referenced table.  If <i class="replaceable"><tt>refcolumn</tt></i> is omitted, the
-      primary key of the <i class="replaceable"><tt>reftable</tt></i> is used.  The
+      column(s) of some row of the referenced table.  If <em class="replaceable"><code>refcolumn</code></em> is omitted, the
+      primary key of the <em class="replaceable"><code>reftable</code></em> is used.  The
       referenced columns must be the columns of a unique or primary
       key constraint in the referenced table.
      </p>
 <p>      A value inserted into the referencing column(s) is matched against the
       values of the referenced table and referenced columns using the
-      given match type.  There are three match types: <tt class="literal">MATCH
-      FULL</tt>, <tt class="literal">MATCH PARTIAL</tt>, and <tt class="literal">MATCH
-      SIMPLE</tt>, which is also the default.  <tt class="literal">MATCH
-      FULL</tt> will not allow one column of a multicolumn foreign key
+      given match type.  There are three match types: <code class="literal">MATCH
+      FULL</code>, <code class="literal">MATCH PARTIAL</code>, and <code class="literal">MATCH
+      SIMPLE</code>, which is also the default.  <code class="literal">MATCH
+      FULL</code> will not allow one column of a multicolumn foreign key
       to be null unless all foreign key columns are null.
-      <tt class="literal">MATCH SIMPLE</tt> allows some foreign key columns
+      <code class="literal">MATCH SIMPLE</code> allows some foreign key columns
       to be null while other parts of the foreign key are not
-      null. <tt class="literal">MATCH PARTIAL</tt> is not yet implemented.
+      null. <code class="literal">MATCH PARTIAL</code> is not yet implemented.
      </p>
 <p>      In addition, when the data in the referenced columns is changed,
       certain actions are performed on the data in this table's
-      columns.  The <tt class="literal">ON DELETE</tt> clause specifies the
+      columns.  The <code class="literal">ON DELETE</code> clause specifies the
       action to perform when a referenced row in the referenced table is
-      being deleted.  Likewise, the <tt class="literal">ON UPDATE</tt>
+      being deleted.  Likewise, the <code class="literal">ON UPDATE</code>
       clause specifies the action to perform when a referenced column
       in the referenced table is being updated to a new value. If the
       row is updated, but the referenced column is not actually
       changed, no action is done. Referential actions other than the
-      <tt class="literal">NO ACTION</tt> check cannot be deferred, even if
+      <code class="literal">NO ACTION</code> check cannot be deferred, even if
       the constraint is declared deferrable. There are the following possible
       actions for each clause:
 
       </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">NO ACTION</tt></span></dt>
+<dt><span class="term"><code class="literal">NO ACTION</code></span></dt>
 <dd><p>          Produce an error indicating that the deletion or update
           would create a foreign key constraint violation.
           If the constraint is deferred, this
           error will be produced at constraint check time if there still
           exist any referencing rows.  This is the default action.
          </p></dd>
-<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
 <dd><p>          Produce an error indicating that the deletion or update
           would create a foreign key constraint violation.
-          This is the same as <tt class="literal">NO ACTION</tt> except that
+          This is the same as <code class="literal">NO ACTION</code> except that
           the check is not deferrable.
          </p></dd>
-<dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
 <dd><p>          Delete any rows referencing the deleted row, or update the
           value of the referencing column to the new value of the
           referenced column, respectively.
          </p></dd>
-<dt><span class="term"><tt class="literal">SET NULL</tt></span></dt>
+<dt><span class="term"><code class="literal">SET NULL</code></span></dt>
 <dd><p>          Set the referencing column(s) to null.
          </p></dd>
-<dt><span class="term"><tt class="literal">SET DEFAULT</tt></span></dt>
+<dt><span class="term"><code class="literal">SET DEFAULT</code></span></dt>
 <dd><p>          Set the referencing column(s) to their default values.
          </p></dd>
 </dl></div>
@@ -356,46 +353,46 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
      </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">DEFERRABLE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NOT DEFERRABLE</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">DEFERRABLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOT DEFERRABLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>      This controls whether the constraint can be deferred.  A
       constraint that is not deferrable will be checked immediately
       after every command.  Checking of constraints that are
       deferrable may be postponed until the end of the transaction
       (using the <a href="sql-set-constraints.html">SET CONSTRAINTS</a> command).
-      <tt class="literal">NOT DEFERRABLE</tt> is the default.  Only foreign
+      <code class="literal">NOT DEFERRABLE</code> is the default.  Only foreign
       key constraints currently accept this clause.  All other
       constraint types are not deferrable.
      </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">INITIALLY IMMEDIATE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">INITIALLY DEFERRED</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">INITIALLY IMMEDIATE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">INITIALLY DEFERRED</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>      If a constraint is deferrable, this clause specifies the default
       time to check the constraint.  If the constraint is
-      <tt class="literal">INITIALLY IMMEDIATE</tt>, it is checked after each
+      <code class="literal">INITIALLY IMMEDIATE</code>, it is checked after each
       statement. This is the default.  If the constraint is
-      <tt class="literal">INITIALLY DEFERRED</tt>, it is checked only at the
+      <code class="literal">INITIALLY DEFERRED</code>, it is checked only at the
       end of the transaction.  The constraint check time can be
       altered with the <a href="sql-set-constraints.html">SET CONSTRAINTS</a> command.
      </p></dd>
-<dt><span class="term"><tt class="literal">ON COMMIT</tt></span></dt>
+<dt><span class="term"><code class="literal">ON COMMIT</code></span></dt>
 <dd>
 <p>      The behavior of temporary tables at the end of a transaction
-      block can be controlled using <tt class="literal">ON COMMIT</tt>.
+      block can be controlled using <code class="literal">ON COMMIT</code>.
       The three options are:
 
       </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">PRESERVE ROWS</tt></span></dt>
+<dt><span class="term"><code class="literal">PRESERVE ROWS</code></span></dt>
 <dd><p>          No special action is taken at the ends of transactions.
           This is the default behavior.
          </p></dd>
-<dt><span class="term"><tt class="literal">DELETE ROWS</tt></span></dt>
+<dt><span class="term"><code class="literal">DELETE ROWS</code></span></dt>
 <dd><p>          All rows in the temporary table will be deleted at the
           end of each transaction block.  Essentially, an automatic
           <a href="sql-truncate.html" title="TRUNCATE"><span class="refentrytitle"><a name="sql-truncate-title"></a>TRUNCATE</span></a> is done at each commit.
          </p></dd>
-<dt><span class="term"><tt class="literal">DROP</tt></span></dt>
+<dt><span class="term"><code class="literal">DROP</code></span></dt>
 <dd><p>          The temporary table will be dropped at the end of the current
           transaction block.
          </p></dd>
@@ -403,21 +400,21 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>
      </p>
 </dd>
-<dt><span class="term"><tt class="literal">TABLESPACE <i class="replaceable"><tt>tablespace</tt></i></tt></span></dt>
-<dd><p>      The <i class="replaceable"><tt>tablespace</tt></i> is the name
+<dt><span class="term"><code class="literal">TABLESPACE <em class="replaceable"><code>tablespace</code></em></code></span></dt>
+<dd><p>      The <em class="replaceable"><code>tablespace</code></em> is the name
       of the tablespace in which the new table is to be created.
       If not specified,
       <a href="runtime-config.html#guc-default-tablespace">default_tablespace</a> is used, or the database's
-      default tablespace if <tt class="varname">default_tablespace</tt> is an empty
+      default tablespace if <code class="varname">default_tablespace</code> is an empty
       string.
      </p></dd>
-<dt><span class="term"><tt class="literal">USING INDEX TABLESPACE <i class="replaceable"><tt>tablespace</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em></code></span></dt>
 <dd><p>      This clause allows selection of the tablespace in which the index
-      associated with a <tt class="literal">UNIQUE</tt> or <tt class="literal">PRIMARY
-      KEY</tt> constraint will be created.
+      associated with a <code class="literal">UNIQUE</code> or <code class="literal">PRIMARY
+      KEY</code> constraint will be created.
       If not specified,
       <a href="runtime-config.html#guc-default-tablespace">default_tablespace</a> is used, or the database's
-      default tablespace if <tt class="varname">default_tablespace</tt> is an empty
+      default tablespace if <code class="varname">default_tablespace</code> is an empty
       string.
      </p></dd>
 </dl></div>
@@ -425,20 +422,20 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <div class="refsect1" lang="en">
 <a name="sql-createtable-notes"></a><h2>Notes</h2>
 <p>     Using OIDs in new applications is not recommended: where
-     possible, using a <tt class="literal">SERIAL</tt> or other sequence
+     possible, using a <code class="literal">SERIAL</code> or other sequence
      generator as the table's primary key is preferred. However, if
      your application does make use of OIDs to identify specific
      rows of a table, it is recommended to create a unique constraint
-     on the <tt class="structfield">oid</tt> column of that table, to ensure that
+     on the <code class="structfield">oid</code> column of that table, to ensure that
      OIDs in the table will indeed uniquely identify rows even after
      counter wraparound.  Avoid assuming that OIDs are unique across
      tables; if you need a database-wide unique identifier, use the
-     combination of <tt class="structfield">tableoid</tt> and row OID for the
+     combination of <code class="structfield">tableoid</code> and row OID for the
      purpose.
     </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>      The use of <tt class="literal">WITHOUT OIDS</tt> is not recommended
+<p>      The use of <code class="literal">WITHOUT OIDS</code> is not recommended
       for tables with no primary key, since without either an OID or a
       unique data key, it is difficult to identify specific rows.
      </p>
@@ -458,8 +455,8 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-examples"></a><h2>Examples</h2>
-<p>   Create table <tt class="structname">films</tt> and table
-   <tt class="structname">distributors</tt>:
+<p>   Create table <code class="structname">films</code> and table
+   <code class="structname">distributors</code>:
 
 </p>
 <pre class="programlisting">CREATE TABLE films (
@@ -488,7 +485,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>
   </p>
 <p>   Define a unique table constraint for the table
-   <tt class="literal">films</tt>.  Unique table constraints can be defined
+   <code class="literal">films</code>.  Unique table constraints can be defined
    on one or more columns of the table.
 
 </p>
@@ -523,7 +520,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>
   </p>
 <p>   Define a primary key table constraint for the table
-   <tt class="structname">films</tt>.  Primary key table constraints can be defined
+   <code class="structname">films</code>.  Primary key table constraints can be defined
    on one or more columns of the table.
 
 </p>
@@ -539,7 +536,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>
   </p>
 <p>   Define a primary key constraint for table
-   <tt class="structname">distributors</tt>.  The following two examples are
+   <code class="structname">distributors</code>.  The following two examples are
    equivalent, the first using the table constraint syntax, the second
    the column constraint syntax.
 
@@ -559,10 +556,10 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>
   </p>
 <p>   This assigns a literal constant default value for the column
-   <tt class="literal">name</tt>, arranges for the default value of column
-   <tt class="literal">did</tt> to be generated by selecting the next value
+   <code class="literal">name</code>, arranges for the default value of column
+   <code class="literal">did</code> to be generated by selecting the next value
    of a sequence object, and makes the default value of
-   <tt class="literal">modtime</tt> be the time at which the row is
+   <code class="literal">modtime</code> be the time at which the row is
    inserted.
 
 </p>
@@ -573,8 +570,8 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 );</pre>
 <p>
   </p>
-<p>   Define two <tt class="literal">NOT NULL</tt> column constraints on the table
-   <tt class="classname">distributors</tt>, one of which is explicitly
+<p>   Define two <code class="literal">NOT NULL</code> column constraints on the table
+   <code class="classname">distributors</code>, one of which is explicitly
    given a name:
 
 </p>
@@ -584,7 +581,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 );</pre>
 <p>
     </p>
-<p>     Define a unique constraint for the <tt class="literal">name</tt> column:
+<p>     Define a unique constraint for the <code class="literal">name</code> column:
 
 </p>
 <pre class="programlisting">CREATE TABLE distributors (
@@ -603,7 +600,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 );</pre>
 <p>
   </p>
-<p>   Create table <tt class="structname">cinemas</tt> in tablespace <tt class="structname">diskvol1</tt>:
+<p>   Create table <code class="structname">cinemas</code> in tablespace <code class="structname">diskvol1</code>:
 
 </p>
 <pre class="programlisting">CREATE TABLE cinemas (
@@ -616,19 +613,19 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-compatibility"></a><h2>Compatibility</h2>
-<p>   The <tt class="command">CREATE TABLE</tt> command conforms to SQL-92 and
+<p>   The <code class="command">CREATE TABLE</code> command conforms to SQL-92 and
    to a subset of SQL:1999, with exceptions listed below.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2683155"></a><h3>Temporary Tables</h3>
-<p>    Although the syntax of <tt class="literal">CREATE TEMPORARY TABLE</tt>
+<a name="id452482"></a><h3>Temporary Tables</h3>
+<p>    Although the syntax of <code class="literal">CREATE TEMPORARY TABLE</code>
     resembles that of the SQL standard, the effect is not the same.  In the
     standard,
     temporary tables are defined just once and automatically exist (starting
     with empty contents) in every session that needs them.
     <span class="productname">PostgreSQL</span> instead
-    requires each session to issue its own <tt class="literal">CREATE TEMPORARY
-    TABLE</tt> command for each temporary table to be used.  This allows
+    requires each session to issue its own <code class="literal">CREATE TEMPORARY
+    TABLE</code> command for each temporary table to be used.  This allows
     different sessions to use the same temporary table name for different
     purposes, whereas the standard's approach constrains all instances of a
     given temporary table name to have the same table structure.
@@ -642,41 +639,41 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
     depends on the concept of modules, which
     <span class="productname">PostgreSQL</span> does not have.
     For compatibility's sake, <span class="productname">PostgreSQL</span> will
-    accept the <tt class="literal">GLOBAL</tt> and <tt class="literal">LOCAL</tt> keywords
+    accept the <code class="literal">GLOBAL</code> and <code class="literal">LOCAL</code> keywords
     in a temporary table declaration, but they have no effect.
    </p>
-<p>    The <tt class="literal">ON COMMIT</tt> clause for temporary tables
+<p>    The <code class="literal">ON COMMIT</code> clause for temporary tables
     also resembles the SQL standard, but has some differences.
-    If the <tt class="literal">ON COMMIT</tt> clause is omitted, SQL specifies that the
-    default behavior is <tt class="literal">ON COMMIT DELETE ROWS</tt>.  However, the
+    If the <code class="literal">ON COMMIT</code> clause is omitted, SQL specifies that the
+    default behavior is <code class="literal">ON COMMIT DELETE ROWS</code>.  However, the
     default behavior in <span class="productname">PostgreSQL</span> is
-    <tt class="literal">ON COMMIT PRESERVE ROWS</tt>.  The <tt class="literal">ON COMMIT
-    DROP</tt> option does not exist in SQL.
+    <code class="literal">ON COMMIT PRESERVE ROWS</code>.  The <code class="literal">ON COMMIT
+    DROP</code> option does not exist in SQL.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2683279"></a><h3>Column Check Constraints</h3>
-<p>    The SQL standard says that <tt class="literal">CHECK</tt> column constraints
-    may only refer to the column they apply to; only <tt class="literal">CHECK</tt>
+<a name="id452593"></a><h3>Column Check Constraints</h3>
+<p>    The SQL standard says that <code class="literal">CHECK</code> column constraints
+    may only refer to the column they apply to; only <code class="literal">CHECK</code>
     table constraints may refer to multiple columns.
     <span class="productname">PostgreSQL</span> does not enforce this
     restriction; it treats column and table check constraints alike.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2683306"></a><h3>
-<tt class="literal">NULL</tt> &#8220;<span class="quote">Constraint</span>&#8221;</h3>
-<p>    The <tt class="literal">NULL</tt> &#8220;<span class="quote">constraint</span>&#8221; (actually a
+<a name="id452619"></a><h3>
+<code class="literal">NULL</code> &#8220;<span class="quote">Constraint</span>&#8221;</h3>
+<p>    The <code class="literal">NULL</code> &#8220;<span class="quote">constraint</span>&#8221; (actually a
     non-constraint) is a <span class="productname">PostgreSQL</span>
     extension to the SQL standard that is included for compatibility with some
-    other database systems (and for symmetry with the <tt class="literal">NOT
-    NULL</tt> constraint).  Since it is the default for any
+    other database systems (and for symmetry with the <code class="literal">NOT
+    NULL</code> constraint).  Since it is the default for any
     column, its presence is simply noise.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2683345"></a><h3>Inheritance</h3>
-<p>    Multiple inheritance via the <tt class="literal">INHERITS</tt> clause is
+<a name="id452655"></a><h3>Inheritance</h3>
+<p>    Multiple inheritance via the <code class="literal">INHERITS</code> clause is
     a <span class="productname">PostgreSQL</span> language extension.
     SQL:1999 (but not SQL-92) defines single inheritance using a
     different syntax and different semantics.  SQL:1999-style
@@ -685,32 +682,32 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2683372"></a><h3>Object IDs</h3>
+<a name="id452680"></a><h3>Object IDs</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of OIDs is not
     standard.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2683385"></a><h3>Zero-column tables</h3>
+<a name="id452692"></a><h3>Zero-column tables</h3>
 <p>    <span class="productname">PostgreSQL</span> allows a table of no columns
-    to be created (for example, <tt class="literal">CREATE TABLE foo();</tt>).  This
+    to be created (for example, <code class="literal">CREATE TABLE foo();</code>).  This
     is an extension from the SQL standard, which does not allow zero-column
     tables.  Zero-column tables are not in themselves very useful, but
-    disallowing them creates odd special cases for <tt class="command">ALTER TABLE
-    DROP COLUMN</tt>, so it seems cleaner to ignore this spec restriction.
+    disallowing them creates odd special cases for <code class="command">ALTER TABLE
+    DROP COLUMN</code>, so it seems cleaner to ignore this spec restriction.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2683414"></a><h3>Tablespaces</h3>
+<a name="id452719"></a><h3>Tablespaces</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of tablespaces is not
-    part of the standard.  Hence, the clauses <tt class="literal">TABLESPACE</tt>
-    and <tt class="literal">USING INDEX TABLESPACE</tt> are extensions.
+    part of the standard.  Hence, the clauses <code class="literal">TABLESPACE</code>
+    and <code class="literal">USING INDEX TABLESPACE</code> are extensions.
    </p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2683440"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-droptable.html">DROP TABLE</a>, <a href="sql-createtablespace.html">CREATE TABLESPACE</a></span>
+<a name="id452743"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-droptable.html">DROP TABLE</a>, <a href="sql-createtablespace.html">CREATE TABLESPACE</a>, </span>
 </div>
 </div></body>
 </html>

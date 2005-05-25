@@ -4,19 +4,16 @@
 <title>9.8. Data Type Formatting Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-matching.html" title="9.7. Pattern Matching">
+<link rel="prev" href="functions-matching.html" title="9.7. Pattern Matching">
 <link rel="next" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-formatting"></a>9.8. Data Type Formatting Functions</h2></div></div>
-<div></div>
-</div>
-<a name="id2553035"></a><a name="id2553045"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-formatting"></a>9.8. Data Type Formatting Functions</h2></div></div></div>
+<a name="id332963"></a><a name="id332972"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
     provide a powerful set of tools for converting various data types
     (date/time, integer, floating point, numeric) to formatted strings
     and for converting from formatted strings to specific data types.
@@ -42,64 +39,64 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">to_char</tt>(<tt class="type">timestamp</tt>, <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">to_char</code>(<code class="type">timestamp</code>, <code class="type">text</code>)</code></td>
+<td><code class="type">text</code></td>
 <td>convert time stamp to string</td>
-<td><tt class="literal">to_char(current_timestamp, 'HH12:MI:SS')</tt></td>
+<td><code class="literal">to_char(current_timestamp, 'HH12:MI:SS')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_char</tt>(<tt class="type">interval</tt>, <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">to_char</code>(<code class="type">interval</code>, <code class="type">text</code>)</code></td>
+<td><code class="type">text</code></td>
 <td>convert interval to string</td>
-<td><tt class="literal">to_char(interval '15h 2m 12s', 'HH24:MI:SS')</tt></td>
+<td><code class="literal">to_char(interval '15h 2m 12s', 'HH24:MI:SS')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_char</tt>(<tt class="type">int</tt>, <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">to_char</code>(<code class="type">int</code>, <code class="type">text</code>)</code></td>
+<td><code class="type">text</code></td>
 <td>convert integer to string</td>
-<td><tt class="literal">to_char(125, '999')</tt></td>
+<td><code class="literal">to_char(125, '999')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_char</tt>(<tt class="type">double precision</tt>,
-        <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">to_char</code>(<code class="type">double precision</code>,
+        <code class="type">text</code>)</code></td>
+<td><code class="type">text</code></td>
 <td>convert real/double precision to string</td>
-<td><tt class="literal">to_char(125.8::real, '999D9')</tt></td>
+<td><code class="literal">to_char(125.8::real, '999D9')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_char</tt>(<tt class="type">numeric</tt>, <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">to_char</code>(<code class="type">numeric</code>, <code class="type">text</code>)</code></td>
+<td><code class="type">text</code></td>
 <td>convert numeric to string</td>
-<td><tt class="literal">to_char(-125.8, '999D99S')</tt></td>
+<td><code class="literal">to_char(-125.8, '999D99S')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_date</tt>(<tt class="type">text</tt>, <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">date</tt></td>
+<td><code class="literal"><code class="function">to_date</code>(<code class="type">text</code>, <code class="type">text</code>)</code></td>
+<td><code class="type">date</code></td>
 <td>convert string to date</td>
-<td><tt class="literal">to_date('05 Dec 2000', 'DD Mon YYYY')</tt></td>
+<td><code class="literal">to_date('05 Dec 2000', 'DD Mon YYYY')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_timestamp</tt>(<tt class="type">text</tt>, <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">timestamp with time zone</tt></td>
+<td><code class="literal"><code class="function">to_timestamp</code>(<code class="type">text</code>, <code class="type">text</code>)</code></td>
+<td><code class="type">timestamp with time zone</code></td>
 <td>convert string to time stamp</td>
-<td><tt class="literal">to_timestamp('05 Dec 2000', 'DD Mon YYYY')</tt></td>
+<td><code class="literal">to_timestamp('05 Dec 2000', 'DD Mon YYYY')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_number</tt>(<tt class="type">text</tt>, <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">numeric</tt></td>
+<td><code class="literal"><code class="function">to_number</code>(<code class="type">text</code>, <code class="type">text</code>)</code></td>
+<td><code class="type">numeric</code></td>
 <td>convert string to numeric</td>
-<td><tt class="literal">to_number('12,454.8-', '99G999D9S')</tt></td>
+<td><code class="literal">to_number('12,454.8-', '99G999D9S')</code></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>    Warning: <tt class="literal"><tt class="function">to_char</tt>(<tt class="type">interval</tt>, <tt class="type">text</tt>)</tt> 
+<p>    Warning: <code class="literal"><code class="function">to_char</code>(<code class="type">interval</code>, <code class="type">text</code>)</code> 
     is deprecated and should not be used in newly-written code. It will be removed in the next version.
    </p>
-<p>    In an output template string (for <tt class="function">to_char</tt>), there are certain patterns that are
+<p>    In an output template string (for <code class="function">to_char</code>), there are certain patterns that are
     recognized and replaced with appropriately-formatted data from the value
     to be formatted.  Any text that is not a template pattern is simply
-    copied verbatim.  Similarly, in an input template string (for anything but <tt class="function">to_char</tt>), template patterns
+    copied verbatim.  Similarly, in an input template string (for anything but <code class="function">to_char</code>), template patterns
     identify the parts of the input data string to be looked at and the
     values to be found there.
    </p>
@@ -119,212 +116,212 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">HH</tt></td>
+<td><code class="literal">HH</code></td>
 <td>hour of day (01-12)</td>
 </tr>
 <tr>
-<td><tt class="literal">HH12</tt></td>
+<td><code class="literal">HH12</code></td>
 <td>hour of day (01-12)</td>
 </tr>
 <tr>
-<td><tt class="literal">HH24</tt></td>
+<td><code class="literal">HH24</code></td>
 <td>hour of day (00-23)</td>
 </tr>
 <tr>
-<td><tt class="literal">MI</tt></td>
+<td><code class="literal">MI</code></td>
 <td>minute (00-59)</td>
 </tr>
 <tr>
-<td><tt class="literal">SS</tt></td>
+<td><code class="literal">SS</code></td>
 <td>second (00-59)</td>
 </tr>
 <tr>
-<td><tt class="literal">MS</tt></td>
+<td><code class="literal">MS</code></td>
 <td>millisecond (000-999)</td>
 </tr>
 <tr>
-<td><tt class="literal">US</tt></td>
+<td><code class="literal">US</code></td>
 <td>microsecond (000000-999999)</td>
 </tr>
 <tr>
-<td><tt class="literal">SSSS</tt></td>
+<td><code class="literal">SSSS</code></td>
 <td>seconds past midnight (0-86399)</td>
 </tr>
 <tr>
 <td>
-<tt class="literal">AM</tt> or <tt class="literal">A.M.</tt> or
-        <tt class="literal">PM</tt> or <tt class="literal">P.M.</tt>
+<code class="literal">AM</code> or <code class="literal">A.M.</code> or
+        <code class="literal">PM</code> or <code class="literal">P.M.</code>
 </td>
 <td>meridian indicator (uppercase)</td>
 </tr>
 <tr>
 <td>
-<tt class="literal">am</tt> or <tt class="literal">a.m.</tt> or
-        <tt class="literal">pm</tt> or <tt class="literal">p.m.</tt>
+<code class="literal">am</code> or <code class="literal">a.m.</code> or
+        <code class="literal">pm</code> or <code class="literal">p.m.</code>
 </td>
 <td>meridian indicator (lowercase)</td>
 </tr>
 <tr>
-<td><tt class="literal">Y,YYY</tt></td>
+<td><code class="literal">Y,YYY</code></td>
 <td>year (4 and more digits) with comma</td>
 </tr>
 <tr>
-<td><tt class="literal">YYYY</tt></td>
+<td><code class="literal">YYYY</code></td>
 <td>year (4 and more digits)</td>
 </tr>
 <tr>
-<td><tt class="literal">YYY</tt></td>
+<td><code class="literal">YYY</code></td>
 <td>last 3 digits of year</td>
 </tr>
 <tr>
-<td><tt class="literal">YY</tt></td>
+<td><code class="literal">YY</code></td>
 <td>last 2 digits of year</td>
 </tr>
 <tr>
-<td><tt class="literal">Y</tt></td>
+<td><code class="literal">Y</code></td>
 <td>last digit of year</td>
 </tr>
 <tr>
-<td><tt class="literal">IYYY</tt></td>
+<td><code class="literal">IYYY</code></td>
 <td>ISO year (4 and more digits)</td>
 </tr>
 <tr>
-<td><tt class="literal">IYY</tt></td>
+<td><code class="literal">IYY</code></td>
 <td>last 3 digits of ISO year</td>
 </tr>
 <tr>
-<td><tt class="literal">IY</tt></td>
+<td><code class="literal">IY</code></td>
 <td>last 2 digits of ISO year</td>
 </tr>
 <tr>
-<td><tt class="literal">I</tt></td>
+<td><code class="literal">I</code></td>
 <td>last digits of ISO year</td>
 </tr>
 <tr>
 <td>
-<tt class="literal">BC</tt> or <tt class="literal">B.C.</tt> or
-        <tt class="literal">AD</tt> or <tt class="literal">A.D.</tt>
+<code class="literal">BC</code> or <code class="literal">B.C.</code> or
+        <code class="literal">AD</code> or <code class="literal">A.D.</code>
 </td>
 <td>era indicator (uppercase)</td>
 </tr>
 <tr>
 <td>
-<tt class="literal">bc</tt> or <tt class="literal">b.c.</tt> or
-        <tt class="literal">ad</tt> or <tt class="literal">a.d.</tt>
+<code class="literal">bc</code> or <code class="literal">b.c.</code> or
+        <code class="literal">ad</code> or <code class="literal">a.d.</code>
 </td>
 <td>era indicator (lowercase)</td>
 </tr>
 <tr>
-<td><tt class="literal">MONTH</tt></td>
+<td><code class="literal">MONTH</code></td>
 <td>full uppercase month name (blank-padded to 9 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">Month</tt></td>
+<td><code class="literal">Month</code></td>
 <td>full mixed-case month name (blank-padded to 9 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">month</tt></td>
+<td><code class="literal">month</code></td>
 <td>full lowercase month name (blank-padded to 9 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">MON</tt></td>
+<td><code class="literal">MON</code></td>
 <td>abbreviated uppercase month name (3 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">Mon</tt></td>
+<td><code class="literal">Mon</code></td>
 <td>abbreviated mixed-case month name (3 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">mon</tt></td>
+<td><code class="literal">mon</code></td>
 <td>abbreviated lowercase month name (3 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">MM</tt></td>
+<td><code class="literal">MM</code></td>
 <td>month number (01-12)</td>
 </tr>
 <tr>
-<td><tt class="literal">DAY</tt></td>
+<td><code class="literal">DAY</code></td>
 <td>full uppercase day name (blank-padded to 9 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">Day</tt></td>
+<td><code class="literal">Day</code></td>
 <td>full mixed-case day name (blank-padded to 9 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">day</tt></td>
+<td><code class="literal">day</code></td>
 <td>full lowercase day name (blank-padded to 9 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">DY</tt></td>
+<td><code class="literal">DY</code></td>
 <td>abbreviated uppercase day name (3 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">Dy</tt></td>
+<td><code class="literal">Dy</code></td>
 <td>abbreviated mixed-case day name (3 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">dy</tt></td>
+<td><code class="literal">dy</code></td>
 <td>abbreviated lowercase day name (3 chars)</td>
 </tr>
 <tr>
-<td><tt class="literal">DDD</tt></td>
+<td><code class="literal">DDD</code></td>
 <td>day of year (001-366)</td>
 </tr>
 <tr>
-<td><tt class="literal">DD</tt></td>
+<td><code class="literal">DD</code></td>
 <td>day of month (01-31)</td>
 </tr>
 <tr>
-<td><tt class="literal">D</tt></td>
+<td><code class="literal">D</code></td>
 <td>day of week (1-7; Sunday is 1)</td>
 </tr>
 <tr>
-<td><tt class="literal">W</tt></td>
+<td><code class="literal">W</code></td>
 <td>week of month (1-5) (The first week starts on the first day of the month.)</td>
 </tr>
 <tr>
-<td><tt class="literal">WW</tt></td>
+<td><code class="literal">WW</code></td>
 <td>week number of year (1-53) (The first week starts on the first day of the year.)</td>
 </tr>
 <tr>
-<td><tt class="literal">IW</tt></td>
+<td><code class="literal">IW</code></td>
 <td>ISO week number of year (The first Thursday of the new year is in week 1.)</td>
 </tr>
 <tr>
-<td><tt class="literal">CC</tt></td>
+<td><code class="literal">CC</code></td>
 <td>century (2 digits)</td>
 </tr>
 <tr>
-<td><tt class="literal">J</tt></td>
+<td><code class="literal">J</code></td>
 <td>Julian Day (days since January 1, 4712 BC)</td>
 </tr>
 <tr>
-<td><tt class="literal">Q</tt></td>
+<td><code class="literal">Q</code></td>
 <td>quarter</td>
 </tr>
 <tr>
-<td><tt class="literal">RM</tt></td>
+<td><code class="literal">RM</code></td>
 <td>month in Roman numerals (I-XII; I=January) (uppercase)</td>
 </tr>
 <tr>
-<td><tt class="literal">rm</tt></td>
+<td><code class="literal">rm</code></td>
 <td>month in Roman numerals (i-xii; i=January) (lowercase)</td>
 </tr>
 <tr>
-<td><tt class="literal">TZ</tt></td>
+<td><code class="literal">TZ</code></td>
 <td>time-zone name (uppercase)</td>
 </tr>
 <tr>
-<td><tt class="literal">tz</tt></td>
+<td><code class="literal">tz</code></td>
 <td>time-zone name (lowercase)</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>    Certain modifiers may be applied to any template pattern to alter its
-    behavior.  For example, <tt class="literal">FMMonth</tt>
-    is the <tt class="literal">Month</tt> pattern with the
-    <tt class="literal">FM</tt> modifier.
+    behavior.  For example, <code class="literal">FMMonth</code>
+    is the <code class="literal">Month</code> pattern with the
+    <code class="literal">FM</code> modifier.
     <a href="functions-formatting.html#functions-formatting-datetimemod-table" title="Table 9.22. Template Pattern Modifiers for Date/Time Formatting">Table 9.22, &#8220;Template Pattern Modifiers for Date/Time Formatting&#8221;</a> shows the
     modifier patterns for date/time formatting.
    </p>
@@ -344,33 +341,33 @@
 <tbody>
 <tr>
 <td>
-<tt class="literal">FM</tt> prefix</td>
+<code class="literal">FM</code> prefix</td>
 <td>fill mode (suppress padding blanks and zeroes)</td>
-<td><tt class="literal">FMMonth</tt></td>
+<td><code class="literal">FMMonth</code></td>
 </tr>
 <tr>
 <td>
-<tt class="literal">TH</tt> suffix</td>
+<code class="literal">TH</code> suffix</td>
 <td>uppercase ordinal number suffix</td>
-<td><tt class="literal">DDTH</tt></td>
+<td><code class="literal">DDTH</code></td>
 </tr>
 <tr>
 <td>
-<tt class="literal">th</tt> suffix</td>
+<code class="literal">th</code> suffix</td>
 <td>lowercase ordinal number suffix</td>
-<td><tt class="literal">DDth</tt></td>
+<td><code class="literal">DDth</code></td>
 </tr>
 <tr>
 <td>
-<tt class="literal">FX</tt> prefix</td>
+<code class="literal">FX</code> prefix</td>
 <td>fixed format global option (see usage notes)</td>
-<td><tt class="literal">FX Month DD Day</tt></td>
+<td><code class="literal">FX Month DD Day</code></td>
 </tr>
 <tr>
 <td>
-<tt class="literal">SP</tt> suffix</td>
+<code class="literal">SP</code> suffix</td>
 <td>spell mode (not yet implemented)</td>
-<td><tt class="literal">DDSP</tt></td>
+<td><code class="literal">DDSP</code></td>
 </tr>
 </tbody>
 </table>
@@ -379,72 +376,72 @@
 
     </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>       <tt class="literal">FM</tt> suppresses leading zeroes and trailing blanks
+<li><p>       <code class="literal">FM</code> suppresses leading zeroes and trailing blanks
        that would otherwise be added to make the output of a pattern be
        fixed-width.
       </p></li>
-<li><p>       <tt class="function">to_timestamp</tt> and <tt class="function">to_date</tt>
-       skip multiple blank spaces in the input string if the <tt class="literal">FX</tt> option 
-       is not used. <tt class="literal">FX</tt> must be specified as the first item
+<li><p>       <code class="function">to_timestamp</code> and <code class="function">to_date</code>
+       skip multiple blank spaces in the input string if the <code class="literal">FX</code> option 
+       is not used. <code class="literal">FX</code> must be specified as the first item
        in the template.  For example 
-       <tt class="literal">to_timestamp('2000    JUN', 'YYYY MON')</tt> is correct, but
-       <tt class="literal">to_timestamp('2000    JUN', 'FXYYYY MON')</tt> returns an error,
-       because <tt class="function">to_timestamp</tt> expects one space only.
+       <code class="literal">to_timestamp('2000    JUN', 'YYYY MON')</code> is correct, but
+       <code class="literal">to_timestamp('2000    JUN', 'FXYYYY MON')</code> returns an error,
+       because <code class="function">to_timestamp</code> expects one space only.
       </p></li>
-<li><p>       Ordinary text is allowed in <tt class="function">to_char</tt>
+<li><p>       Ordinary text is allowed in <code class="function">to_char</code>
        templates and will be output literally.  You can put a substring
        in double quotes to force it to be interpreted as literal text
        even if it contains pattern key words.  For example, in
-       <tt class="literal">'"Hello Year "YYYY'</tt>, the <tt class="literal">YYYY</tt>
-       will be replaced by the year data, but the single <tt class="literal">Y</tt> in <tt class="literal">Year</tt>
+       <code class="literal">'"Hello Year "YYYY'</code>, the <code class="literal">YYYY</code>
+       will be replaced by the year data, but the single <code class="literal">Y</code> in <code class="literal">Year</code>
        will not be.
       </p></li>
 <li><p>       If you want to have a double quote in the output you must
-       precede it with a backslash, for example <tt class="literal">'\\"YYYY
-       Month\\"'</tt>. 
+       precede it with a backslash, for example <code class="literal">'\\"YYYY
+       Month\\"'</code>. 
        (Two backslashes are necessary because the backslash already
        has a special meaning in a string constant.)
       </p></li>
-<li><p>       The <tt class="literal">YYYY</tt> conversion from string to <tt class="type">timestamp</tt> or
-       <tt class="type">date</tt> has a restriction if you use a year with more than 4 digits. You must
-       use some non-digit character or template after <tt class="literal">YYYY</tt>,
+<li><p>       The <code class="literal">YYYY</code> conversion from string to <code class="type">timestamp</code> or
+       <code class="type">date</code> has a restriction if you use a year with more than 4 digits. You must
+       use some non-digit character or template after <code class="literal">YYYY</code>,
        otherwise the year is always interpreted as 4 digits. For example
        (with the year 20000):
-       <tt class="literal">to_date('200001131', 'YYYYMMDD')</tt> will be 
+       <code class="literal">to_date('200001131', 'YYYYMMDD')</code> will be 
        interpreted as a 4-digit year; instead use a non-digit 
        separator after the year, like
-       <tt class="literal">to_date('20000-1131', 'YYYY-MMDD')</tt> or
-       <tt class="literal">to_date('20000Nov31', 'YYYYMonDD')</tt>.
+       <code class="literal">to_date('20000-1131', 'YYYY-MMDD')</code> or
+       <code class="literal">to_date('20000Nov31', 'YYYYMonDD')</code>.
       </p></li>
-<li><p>       In conversions from string to <tt class="type">timestamp</tt> or
-       <tt class="type">date</tt>, the <tt class="literal">CC</tt> field is ignored if there
-       is a <tt class="literal">YYY</tt>, <tt class="literal">YYYY</tt> or
-       <tt class="literal">Y,YYY</tt> field. If <tt class="literal">CC</tt> is used with
-       <tt class="literal">YY</tt> or <tt class="literal">Y</tt> then the year is computed
-       as <tt class="literal">(CC-1)*100+YY</tt>.
+<li><p>       In conversions from string to <code class="type">timestamp</code> or
+       <code class="type">date</code>, the <code class="literal">CC</code> field is ignored if there
+       is a <code class="literal">YYY</code>, <code class="literal">YYYY</code> or
+       <code class="literal">Y,YYY</code> field. If <code class="literal">CC</code> is used with
+       <code class="literal">YY</code> or <code class="literal">Y</code> then the year is computed
+       as <code class="literal">(CC-1)*100+YY</code>.
       </p></li>
 <li>
-<p>       Millisecond (<tt class="literal">MS</tt>) and microsecond (<tt class="literal">US</tt>)
-       values in a conversion from string to <tt class="type">timestamp</tt> are used as part of the
+<p>       Millisecond (<code class="literal">MS</code>) and microsecond (<code class="literal">US</code>)
+       values in a conversion from string to <code class="type">timestamp</code> are used as part of the
        seconds after the decimal point. For example 
-       <tt class="literal">to_timestamp('12:3', 'SS:MS')</tt> is not 3 milliseconds,
+       <code class="literal">to_timestamp('12:3', 'SS:MS')</code> is not 3 milliseconds,
        but 300, because the conversion counts it as 12 + 0.3 seconds.
-       This means for the format <tt class="literal">SS:MS</tt>, the input values
-       <tt class="literal">12:3</tt>, <tt class="literal">12:30</tt>, and <tt class="literal">12:300</tt> specify the
+       This means for the format <code class="literal">SS:MS</code>, the input values
+       <code class="literal">12:3</code>, <code class="literal">12:30</code>, and <code class="literal">12:300</code> specify the
        same number of milliseconds. To get three milliseconds, one must use
-       <tt class="literal">12:003</tt>, which the conversion counts as
+       <code class="literal">12:003</code>, which the conversion counts as
        12 + 0.003 = 12.003 seconds.
       </p>
 <p>       Here is a more 
        complex example: 
-       <tt class="literal">to_timestamp('15:12:02.020.001230', 'HH:MI:SS.MS.US')</tt>
+       <code class="literal">to_timestamp('15:12:02.020.001230', 'HH:MI:SS.MS.US')</code>
        is 15 hours, 12 minutes, and 2 seconds + 20 milliseconds +
        1230 microseconds = 2.021230 seconds. 
       </p>
 </li>
-<li><p><tt class="function">to_char</tt>'s day of the week numbering
+<li><p><code class="function">to_char</code>'s day of the week numbering
         (see the 'D' formatting pattern) is different from that of the 
-        <tt class="function">extract</tt> function.
+        <code class="function">extract</code> function.
       </p></li>
 </ul></div>
 <p>
@@ -465,71 +462,71 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">9</tt></td>
+<td><code class="literal">9</code></td>
 <td>value with the specified number of digits</td>
 </tr>
 <tr>
-<td><tt class="literal">0</tt></td>
+<td><code class="literal">0</code></td>
 <td>value with leading zeros</td>
 </tr>
 <tr>
 <td>
-<tt class="literal">.</tt> (period)</td>
+<code class="literal">.</code> (period)</td>
 <td>decimal point</td>
 </tr>
 <tr>
 <td>
-<tt class="literal">,</tt> (comma)</td>
+<code class="literal">,</code> (comma)</td>
 <td>group (thousand) separator</td>
 </tr>
 <tr>
-<td><tt class="literal">PR</tt></td>
+<td><code class="literal">PR</code></td>
 <td>negative value in angle brackets</td>
 </tr>
 <tr>
-<td><tt class="literal">S</tt></td>
+<td><code class="literal">S</code></td>
 <td>sign anchored to number (uses locale)</td>
 </tr>
 <tr>
-<td><tt class="literal">L</tt></td>
+<td><code class="literal">L</code></td>
 <td>currency symbol (uses locale)</td>
 </tr>
 <tr>
-<td><tt class="literal">D</tt></td>
+<td><code class="literal">D</code></td>
 <td>decimal point (uses locale)</td>
 </tr>
 <tr>
-<td><tt class="literal">G</tt></td>
+<td><code class="literal">G</code></td>
 <td>group separator (uses locale)</td>
 </tr>
 <tr>
-<td><tt class="literal">MI</tt></td>
+<td><code class="literal">MI</code></td>
 <td>minus sign in specified position (if number &lt; 0)</td>
 </tr>
 <tr>
-<td><tt class="literal">PL</tt></td>
+<td><code class="literal">PL</code></td>
 <td>plus sign in specified position (if number &gt; 0)</td>
 </tr>
 <tr>
-<td><tt class="literal">SG</tt></td>
+<td><code class="literal">SG</code></td>
 <td>plus/minus sign in specified position</td>
 </tr>
 <tr>
-<td><tt class="literal">RN</tt></td>
+<td><code class="literal">RN</code></td>
 <td>roman numeral (input between 1 and 3999)</td>
 </tr>
 <tr>
 <td>
-<tt class="literal">TH</tt> or <tt class="literal">th</tt>
+<code class="literal">TH</code> or <code class="literal">th</code>
 </td>
 <td>ordinal number suffix</td>
 </tr>
 <tr>
-<td><tt class="literal">V</tt></td>
+<td><code class="literal">V</code></td>
 <td>shift specified number of digits (see notes)</td>
 </tr>
 <tr>
-<td><tt class="literal">EEEE</tt></td>
+<td><code class="literal">EEEE</code></td>
 <td>scientific notation (not implemented yet)</td>
 </tr>
 </tbody>
@@ -539,44 +536,44 @@
 
     </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>       A sign formatted using <tt class="literal">SG</tt>, <tt class="literal">PL</tt>, or
-       <tt class="literal">MI</tt> is not anchored to
+<li><p>       A sign formatted using <code class="literal">SG</code>, <code class="literal">PL</code>, or
+       <code class="literal">MI</code> is not anchored to
        the number; for example,
-       <tt class="literal">to_char(-12, 'S9999')</tt> produces <tt class="literal">'  -12'</tt>,
-       but <tt class="literal">to_char(-12, 'MI9999')</tt> produces <tt class="literal">'-  12'</tt>.
+       <code class="literal">to_char(-12, 'S9999')</code> produces <code class="literal">'  -12'</code>,
+       but <code class="literal">to_char(-12, 'MI9999')</code> produces <code class="literal">'-  12'</code>.
        The Oracle implementation does not allow the use of
-       <tt class="literal">MI</tt> ahead of <tt class="literal">9</tt>, but rather
-       requires that <tt class="literal">9</tt> precede
-       <tt class="literal">MI</tt>.
+       <code class="literal">MI</code> ahead of <code class="literal">9</code>, but rather
+       requires that <code class="literal">9</code> precede
+       <code class="literal">MI</code>.
       </p></li>
-<li><p>       <tt class="literal">9</tt> results in a value with the same number of 
-       digits as there are <tt class="literal">9</tt>s. If a digit is
+<li><p>       <code class="literal">9</code> results in a value with the same number of 
+       digits as there are <code class="literal">9</code>s. If a digit is
        not available it outputs a space.
       </p></li>
-<li><p>       <tt class="literal">TH</tt> does not convert values less than zero
+<li><p>       <code class="literal">TH</code> does not convert values less than zero
        and does not convert fractional numbers.
       </p></li>
-<li><p>       <tt class="literal">PL</tt>, <tt class="literal">SG</tt>, and
-       <tt class="literal">TH</tt> are <span class="productname">PostgreSQL</span>
+<li><p>       <code class="literal">PL</code>, <code class="literal">SG</code>, and
+       <code class="literal">TH</code> are <span class="productname">PostgreSQL</span>
        extensions. 
       </p></li>
-<li><p>       <tt class="literal">V</tt> effectively
+<li><p>       <code class="literal">V</code> effectively
        multiplies the input values by
-       <tt class="literal">10^<i class="replaceable"><tt>n</tt></i></tt>, where
-       <i class="replaceable"><tt>n</tt></i> is the number of digits following
-       <tt class="literal">V</tt>. 
-       <tt class="function">to_char</tt> does not support the use of
-       <tt class="literal">V</tt> combined with a decimal point.
-       (E.g., <tt class="literal">99.9V99</tt> is not allowed.)
+       <code class="literal">10^<em class="replaceable"><code>n</code></em></code>, where
+       <em class="replaceable"><code>n</code></em> is the number of digits following
+       <code class="literal">V</code>. 
+       <code class="function">to_char</code> does not support the use of
+       <code class="literal">V</code> combined with a decimal point.
+       (E.g., <code class="literal">99.9V99</code> is not allowed.)
       </p></li>
 </ul></div>
 <p>
    </p>
-<p>   <a href="functions-formatting.html#functions-formatting-examples-table" title="Table 9.24. to_char Examples">Table 9.24, &#8220;to_char Examples&#8221;</a> shows some
-   examples of the use of the <tt class="function">to_char</tt> function.
+<p>   <a href="functions-formatting.html#functions-formatting-examples-table" title="Table 9.24. to_char Examples">Table 9.24, &#8220;<code class="function">to_char</code> Examples&#8221;</a> shows some
+   examples of the use of the <code class="function">to_char</code> function.
   </p>
 <div class="table">
-<a name="functions-formatting-examples-table"></a><p class="title"><b>Table 9.24. <tt class="function">to_char</tt> Examples</b></p>
+<a name="functions-formatting-examples-table"></a><p class="title"><b>Table 9.24. <code class="function">to_char</code> Examples</b></p>
 <table summary="to_char Examples" border="1">
 <colgroup>
 <col>
@@ -588,148 +585,148 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">to_char(current_timestamp, 'Day, DD  HH12:MI:SS')</tt></td>
-<td><tt class="literal">'Tuesday  , 06  05:39:18'</tt></td>
+<td><code class="literal">to_char(current_timestamp, 'Day, DD  HH12:MI:SS')</code></td>
+<td><code class="literal">'Tuesday  , 06  05:39:18'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(current_timestamp, 'FMDay, FMDD  HH12:MI:SS')</tt></td>
-<td><tt class="literal">'Tuesday, 6  05:39:18'</tt></td>
+<td><code class="literal">to_char(current_timestamp, 'FMDay, FMDD  HH12:MI:SS')</code></td>
+<td><code class="literal">'Tuesday, 6  05:39:18'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(-0.1, '99.99')</tt></td>
-<td><tt class="literal">'  -.10'</tt></td>
+<td><code class="literal">to_char(-0.1, '99.99')</code></td>
+<td><code class="literal">'  -.10'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(-0.1, 'FM9.99')</tt></td>
-<td><tt class="literal">'-.1'</tt></td>
+<td><code class="literal">to_char(-0.1, 'FM9.99')</code></td>
+<td><code class="literal">'-.1'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(0.1, '0.9')</tt></td>
-<td><tt class="literal">' 0.1'</tt></td>
+<td><code class="literal">to_char(0.1, '0.9')</code></td>
+<td><code class="literal">' 0.1'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(12, '9990999.9')</tt></td>
-<td><tt class="literal">'    0012.0'</tt></td>
+<td><code class="literal">to_char(12, '9990999.9')</code></td>
+<td><code class="literal">'    0012.0'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(12, 'FM9990999.9')</tt></td>
-<td><tt class="literal">'0012.'</tt></td>
+<td><code class="literal">to_char(12, 'FM9990999.9')</code></td>
+<td><code class="literal">'0012.'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, '999')</tt></td>
-<td><tt class="literal">' 485'</tt></td>
+<td><code class="literal">to_char(485, '999')</code></td>
+<td><code class="literal">' 485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(-485, '999')</tt></td>
-<td><tt class="literal">'-485'</tt></td>
+<td><code class="literal">to_char(-485, '999')</code></td>
+<td><code class="literal">'-485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, '9 9 9')</tt></td>
-<td><tt class="literal">' 4 8 5'</tt></td>
+<td><code class="literal">to_char(485, '9 9 9')</code></td>
+<td><code class="literal">' 4 8 5'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(1485, '9,999')</tt></td>
-<td><tt class="literal">' 1,485'</tt></td>
+<td><code class="literal">to_char(1485, '9,999')</code></td>
+<td><code class="literal">' 1,485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(1485, '9G999')</tt></td>
-<td><tt class="literal">' 1 485'</tt></td>
+<td><code class="literal">to_char(1485, '9G999')</code></td>
+<td><code class="literal">' 1 485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(148.5, '999.999')</tt></td>
-<td><tt class="literal">' 148.500'</tt></td>
+<td><code class="literal">to_char(148.5, '999.999')</code></td>
+<td><code class="literal">' 148.500'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(148.5, 'FM999.999')</tt></td>
-<td><tt class="literal">'148.5'</tt></td>
+<td><code class="literal">to_char(148.5, 'FM999.999')</code></td>
+<td><code class="literal">'148.5'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(148.5, 'FM999.990')</tt></td>
-<td><tt class="literal">'148.500'</tt></td>
+<td><code class="literal">to_char(148.5, 'FM999.990')</code></td>
+<td><code class="literal">'148.500'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(148.5, '999D999')</tt></td>
-<td><tt class="literal">' 148,500'</tt></td>
+<td><code class="literal">to_char(148.5, '999D999')</code></td>
+<td><code class="literal">' 148,500'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(3148.5, '9G999D999')</tt></td>
-<td><tt class="literal">' 3 148,500'</tt></td>
+<td><code class="literal">to_char(3148.5, '9G999D999')</code></td>
+<td><code class="literal">' 3 148,500'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(-485, '999S')</tt></td>
-<td><tt class="literal">'485-'</tt></td>
+<td><code class="literal">to_char(-485, '999S')</code></td>
+<td><code class="literal">'485-'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(-485, '999MI')</tt></td>
-<td><tt class="literal">'485-'</tt></td>
+<td><code class="literal">to_char(-485, '999MI')</code></td>
+<td><code class="literal">'485-'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, '999MI')</tt></td>
-<td><tt class="literal">'485 '</tt></td>
+<td><code class="literal">to_char(485, '999MI')</code></td>
+<td><code class="literal">'485 '</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, 'FM999MI')</tt></td>
-<td><tt class="literal">'485'</tt></td>
+<td><code class="literal">to_char(485, 'FM999MI')</code></td>
+<td><code class="literal">'485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, 'PL999')</tt></td>
-<td><tt class="literal">'+485'</tt></td>
+<td><code class="literal">to_char(485, 'PL999')</code></td>
+<td><code class="literal">'+485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, 'SG999')</tt></td>
-<td><tt class="literal">'+485'</tt></td>
+<td><code class="literal">to_char(485, 'SG999')</code></td>
+<td><code class="literal">'+485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(-485, 'SG999')</tt></td>
-<td><tt class="literal">'-485'</tt></td>
+<td><code class="literal">to_char(-485, 'SG999')</code></td>
+<td><code class="literal">'-485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(-485, '9SG99')</tt></td>
-<td><tt class="literal">'4-85'</tt></td>
+<td><code class="literal">to_char(-485, '9SG99')</code></td>
+<td><code class="literal">'4-85'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(-485, '999PR')</tt></td>
-<td><tt class="literal">'&lt;485&gt;'</tt></td>
+<td><code class="literal">to_char(-485, '999PR')</code></td>
+<td><code class="literal">'&lt;485&gt;'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, 'L999')</tt></td>
-<td><tt class="literal">'DM 485</tt></td>
+<td><code class="literal">to_char(485, 'L999')</code></td>
+<td><code class="literal">'DM 485</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, 'RN')</tt></td>
-<td><tt class="literal">'        CDLXXXV'</tt></td>
+<td><code class="literal">to_char(485, 'RN')</code></td>
+<td><code class="literal">'        CDLXXXV'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, 'FMRN')</tt></td>
-<td><tt class="literal">'CDLXXXV'</tt></td>
+<td><code class="literal">to_char(485, 'FMRN')</code></td>
+<td><code class="literal">'CDLXXXV'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(5.2, 'FMRN')</tt></td>
-<td><tt class="literal">'V'</tt></td>
+<td><code class="literal">to_char(5.2, 'FMRN')</code></td>
+<td><code class="literal">'V'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(482, '999th')</tt></td>
-<td><tt class="literal">' 482nd'</tt></td>
+<td><code class="literal">to_char(482, '999th')</code></td>
+<td><code class="literal">' 482nd'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485, '"Good number:"999')</tt></td>
-<td><tt class="literal">'Good number: 485'</tt></td>
+<td><code class="literal">to_char(485, '"Good number:"999')</code></td>
+<td><code class="literal">'Good number: 485'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(485.8, '"Pre:"999" Post:" .999')</tt></td>
-<td><tt class="literal">'Pre: 485 Post: .800'</tt></td>
+<td><code class="literal">to_char(485.8, '"Pre:"999" Post:" .999')</code></td>
+<td><code class="literal">'Pre: 485 Post: .800'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(12, '99V999')</tt></td>
-<td><tt class="literal">' 12000'</tt></td>
+<td><code class="literal">to_char(12, '99V999')</code></td>
+<td><code class="literal">' 12000'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(12.4, '99V999')</tt></td>
-<td><tt class="literal">' 12400'</tt></td>
+<td><code class="literal">to_char(12.4, '99V999')</code></td>
+<td><code class="literal">' 12400'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">to_char(12.45, '99V9')</tt></td>
-<td><tt class="literal">' 125'</tt></td>
+<td><code class="literal">to_char(12.45, '99V9')</code></td>
+<td><code class="literal">' 125'</code></td>
 </tr>
 </tbody>
 </table>

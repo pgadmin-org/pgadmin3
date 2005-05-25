@@ -4,18 +4,15 @@
 <title>26.3. Platform-specific comparison files</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="regress.html" title="Chapter 26. Regression Tests">
-<link rel="previous" href="regress-evaluation.html" title="26.2. Test Evaluation">
+<link rel="prev" href="regress-evaluation.html" title="26.2. Test Evaluation">
 <link rel="next" href="client-interfaces.html" title="Part IV. Client Interfaces">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="regress-platform"></a>26.3. Platform-specific comparison files</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="regress-platform"></a>26.3. Platform-specific comparison files</h2></div></div></div>
 <p>    Since some of the tests inherently produce platform-specific
     results, we have provided a way to supply platform-specific result
     comparison files.  Frequently, the same variation applies to
@@ -24,7 +21,7 @@
     which comparison file to use.  So, to eliminate bogus test
     &#8220;<span class="quote">failures</span>&#8221; for a particular platform, you must choose
     or make a variant result file, and then add a line to the mapping
-    file, which is <tt class="filename">src/test/regress/resultmap</tt>.
+    file, which is <code class="filename">src/test/regress/resultmap</code>.
    </p>
 <p>    Each line in the mapping file is of the form
 </p>
@@ -32,30 +29,30 @@
 <p>
     The test name is just the name of the particular regression test
     module.  The platform pattern is a pattern in the style of the Unix
-    tool <tt class="command">expr</tt> (that is, a regular expression with an implicit
-    <tt class="literal">^</tt> anchor
+    tool <code class="command">expr</code> (that is, a regular expression with an implicit
+    <code class="literal">^</code> anchor
     at the start).  It is matched against the platform name as printed
-    by <tt class="command">config.guess</tt> followed by
-    <tt class="literal">:gcc</tt> or <tt class="literal">:cc</tt>, depending on
+    by <code class="command">config.guess</code> followed by
+    <code class="literal">:gcc</code> or <code class="literal">:cc</code>, depending on
     whether you use the GNU compiler or the system's native compiler
     (on systems where there is a difference).  The comparison file
     name is the name of the substitute result comparison file.
    </p>
 <p>    For example: some systems interpret very small floating-point values
     as zero, rather than reporting an underflow error.  This causes a
-    few differences in the <tt class="filename">float8</tt> regression test.
+    few differences in the <code class="filename">float8</code> regression test.
     Therefore, we provide a variant comparison file,
-    <tt class="filename">float8-small-is-zero.out</tt>, which includes
+    <code class="filename">float8-small-is-zero.out</code>, which includes
     the results to be expected on these systems.  To silence the bogus
     &#8220;<span class="quote">failure</span>&#8221; message on <span class="systemitem">OpenBSD</span>
-    platforms, <tt class="filename">resultmap</tt> includes
+    platforms, <code class="filename">resultmap</code> includes
 </p>
 <pre class="programlisting">float8/i.86-.*-openbsd=float8-small-is-zero</pre>
 <p>
     which will trigger on any machine for which the output of
-    <tt class="command">config.guess</tt> matches <tt class="literal">i.86-.*-openbsd</tt>.
+    <code class="command">config.guess</code> matches <code class="literal">i.86-.*-openbsd</code>.
     Other lines
-    in <tt class="filename">resultmap</tt> select the variant comparison file for other
+    in <code class="filename">resultmap</code> select the variant comparison file for other
     platforms where it's appropriate.
    </p>
 </div></body>

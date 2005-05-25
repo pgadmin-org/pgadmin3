@@ -4,33 +4,30 @@
 <title>NOTIFY</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-move.html" title="MOVE">
+<link rel="prev" href="sql-move.html" title="MOVE">
 <link rel="next" href="sql-prepare.html" title="PREPARE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-notify"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-notify"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>NOTIFY &#8212; generate a notification</p>
 </div>
-<a name="id2695952"></a><div class="refsynopsisdiv">
+<a name="id464370"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">NOTIFY <i class="replaceable"><tt>name</tt></i>        </pre>
+<pre class="synopsis">NOTIFY <em class="replaceable"><code>name</code></em>        </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695973"></a><h2>Description</h2>
-<p>   The <tt class="command">NOTIFY</tt> command sends a notification event to each
+<a name="id464390"></a><h2>Description</h2>
+<p>   The <code class="command">NOTIFY</code> command sends a notification event to each
    client application that has previously executed
-   <tt class="command">LISTEN <i class="replaceable"><tt>name</tt></i></tt>
+   <code class="command">LISTEN <em class="replaceable"><code>name</code></em></code>
    for the specified notification name in the current database.
   </p>
-<p>   <tt class="command">NOTIFY</tt> provides a simple form of signal or
+<p>   <code class="command">NOTIFY</code> provides a simple form of signal or
    interprocess communication mechanism for a collection of processes
    accessing the same <span class="productname">PostgreSQL</span> database.
    Higher-level mechanisms can be built by using tables in the database to
@@ -45,22 +42,22 @@
 <p>   Commonly, the notification name is the same as the name of some table in
    the database, and the notify event essentially means, &#8220;<span class="quote">I changed this table,
    take a look at it to see what's new</span>&#8221;.  But no such association is enforced by
-   the <tt class="command">NOTIFY</tt> and <tt class="command">LISTEN</tt> commands.  For
+   the <code class="command">NOTIFY</code> and <code class="command">LISTEN</code> commands.  For
    example, a database designer could use several different notification names
    to signal different sorts of changes to a single table.
   </p>
-<p>   When <tt class="command">NOTIFY</tt> is used to signal the occurrence of changes
+<p>   When <code class="command">NOTIFY</code> is used to signal the occurrence of changes
    to a particular table, a useful programming technique is to put the
-   <tt class="command">NOTIFY</tt> in a rule that is triggered by table updates.
+   <code class="command">NOTIFY</code> in a rule that is triggered by table updates.
    In this way, notification happens automatically when the table is changed,
    and the application programmer can't accidentally forget to do it.
   </p>
-<p>   <tt class="command">NOTIFY</tt> interacts with SQL transactions in some important
-   ways.  Firstly, if a <tt class="command">NOTIFY</tt> is executed inside a
+<p>   <code class="command">NOTIFY</code> interacts with SQL transactions in some important
+   ways.  Firstly, if a <code class="command">NOTIFY</code> is executed inside a
    transaction, the notify events are not delivered until and unless the
    transaction is committed.  This is appropriate, since if the transaction
    is aborted, all the commands within it have had no
-   effect, including <tt class="command">NOTIFY</tt>.  But it can be disconcerting if one
+   effect, including <code class="command">NOTIFY</code>.  But it can be disconcerting if one
    is expecting the notification events to be delivered immediately.  Secondly, if
    a listening session receives a notification signal while it is within a transaction,
    the notification event will not be delivered to its connected client until just
@@ -70,19 +67,19 @@
    but
    the server cannot &#8220;<span class="quote">take back</span>&#8221; a notification once it has sent it to the client.
    So notification events are only delivered between transactions.  The upshot of this
-   is that applications using <tt class="command">NOTIFY</tt> for real-time signaling
+   is that applications using <code class="command">NOTIFY</code> for real-time signaling
    should try to keep their transactions short.
   </p>
-<p>   <tt class="command">NOTIFY</tt> behaves like Unix signals in one important
+<p>   <code class="command">NOTIFY</code> behaves like Unix signals in one important
    respect: if the same notification name is signaled multiple times in quick
    succession, recipients may get only one notification event for several executions
-   of <tt class="command">NOTIFY</tt>.  So it is a bad idea to depend on the number
-   of notifications received.  Instead, use <tt class="command">NOTIFY</tt> to wake up
+   of <code class="command">NOTIFY</code>.  So it is a bad idea to depend on the number
+   of notifications received.  Instead, use <code class="command">NOTIFY</code> to wake up
    applications that need to pay attention to something, and use a database
    object (such as a sequence) to keep track of what happened or how many times
    it happened.
   </p>
-<p>   It is common for a client that executes <tt class="command">NOTIFY</tt>
+<p>   It is common for a client that executes <code class="command">NOTIFY</code>
    to be listening on the same notification name itself.  In that case
    it will get back a notification event, just like all the other
    listening sessions.  Depending on the application logic, this could
@@ -102,15 +99,15 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2696189"></a><h2>Parameters</h2>
+<a name="id464573"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      Name of the notification to be signaled (any identifier).
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2696205"></a><h2>Examples</h2>
+<a name="id464588"></a><h2>Examples</h2>
 <p>   Configure and execute a listen/notify sequence from
    <span class="application">psql</span>:
 
@@ -122,14 +119,14 @@ Asynchronous notification "virtual" received from server process with PID 8448.<
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2696225"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">NOTIFY</tt> statement in the SQL
+<a name="id464607"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">NOTIFY</code> statement in the SQL
    standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2696238"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-listen.html">LISTEN</a>, <a href="sql-unlisten.html">UNLISTEN</a></span>
+<a name="id464619"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-listen.html">LISTEN</a>, <a href="sql-unlisten.html">UNLISTEN</a>, </span>
 </div>
 </div></body>
 </html>

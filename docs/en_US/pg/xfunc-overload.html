@@ -4,21 +4,18 @@
 <title>31.5. Function Overloading</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
-<link rel="previous" href="xfunc-sql.html" title="31.4. Query Language (SQL) Functions">
+<link rel="prev" href="xfunc-sql.html" title="31.4. Query Language (SQL) Functions">
 <link rel="next" href="xfunc-volatility.html" title="31.6. Function Volatility Categories">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="xfunc-overload"></a>31.5. Function Overloading</h2></div></div>
-<div></div>
-</div>
-<a name="id2633948"></a><p>    More than one function may be defined with the same SQL name, so long
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xfunc-overload"></a>31.5. Function Overloading</h2></div></div></div>
+<a name="id407570"></a><p>    More than one function may be defined with the same SQL name, so long
     as the arguments they take are different.  In other words,
-    function names can be <i class="firstterm">overloaded</i>.  When a
+    function names can be <em class="firstterm">overloaded</em>.  When a
     query is executed, the server will determine which function to
     call from the data types and the number of the provided arguments.
     Overloading can also be used to simulate functions with a variable
@@ -32,19 +29,19 @@
 CREATE FUNCTION test(smallint, double precision) RETURNS ...</pre>
 <p>
     it is not immediately clear which function would be called with
-    some trivial input like <tt class="literal">test(1, 1.5)</tt>.  The
+    some trivial input like <code class="literal">test(1, 1.5)</code>.  The
     currently implemented resolution rules are described in
     <a href="typeconv.html" title="Chapter 10. Type Conversion">Chapter 10, <i>Type Conversion</i></a>, but it is unwise to design a system that subtly
     relies on this behavior.
    </p>
 <p>    A function that takes a single argument of a composite type should
     generally not have the same name as any attribute (field) of that type.
-    Recall that <tt class="literal">attribute(table)</tt> is considered equivalent
-    to <tt class="literal">table.attribute</tt>.  In the case that there is an
+    Recall that <code class="literal">attribute(table)</code> is considered equivalent
+    to <code class="literal">table.attribute</code>.  In the case that there is an
     ambiguity between a function on a composite type and an attribute of
     the composite type, the attribute will always be used.  It is possible
     to override that choice by schema-qualifying the function name
-    (that is, <tt class="literal">schema.func(table)</tt>) but it's better to
+    (that is, <code class="literal">schema.func(table)</code>) but it's better to
     avoid the problem by not choosing conflicting names.
    </p>
 <p>    When overloading C-language functions, there is an additional
@@ -54,15 +51,15 @@ CREATE FUNCTION test(smallint, double precision) RETURNS ...</pre>
     rule is violated, the behavior is not portable.  You might get a
     run-time linker error, or one of the functions will get called
     (usually the internal one).  The alternative form of the
-    <tt class="literal">AS</tt> clause for the SQL <tt class="command">CREATE
-    FUNCTION</tt> command decouples the SQL function name from
+    <code class="literal">AS</code> clause for the SQL <code class="command">CREATE
+    FUNCTION</code> command decouples the SQL function name from
     the function name in the C source code.  For instance,
 </p>
 <pre class="programlisting">CREATE FUNCTION test(int) RETURNS int
-    AS '<i class="replaceable"><tt>filename</tt></i>', 'test_1arg'
+    AS '<em class="replaceable"><code>filename</code></em>', 'test_1arg'
     LANGUAGE C;
 CREATE FUNCTION test(int, int) RETURNS int
-    AS '<i class="replaceable"><tt>filename</tt></i>', 'test_2arg'
+    AS '<em class="replaceable"><code>filename</code></em>', 'test_2arg'
     LANGUAGE C;</pre>
 <p>
     The names of the C functions here reflect one of many possible conventions.

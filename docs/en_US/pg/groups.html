@@ -4,43 +4,40 @@
 <title>17.3. Groups</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="user-manag.html" title="Chapter 17. Database Users and Privileges">
-<link rel="previous" href="user-attributes.html" title="17.2. User Attributes">
+<link rel="prev" href="user-attributes.html" title="17.2. User Attributes">
 <link rel="next" href="privileges.html" title="17.4. Privileges">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="groups"></a>17.3. Groups</h2></div></div>
-<div></div>
-</div>
-<a name="id2592896"></a><p>   As in Unix, groups are a way of logically grouping users to ease
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="groups"></a>17.3. Groups</h2></div></div></div>
+<a name="id370007"></a><p>   As in Unix, groups are a way of logically grouping users to ease
    management of privileges: privileges can be granted to, or revoked
    from, a group as a whole.  To create a group, use the <a href="sql-creategroup.html">CREATE GROUP</a> SQL command:
 </p>
-<pre class="synopsis">CREATE GROUP <i class="replaceable"><tt>name</tt></i>;</pre>
+<pre class="synopsis">CREATE GROUP <em class="replaceable"><code>name</code></em>;</pre>
 <p>
 
    To add users to or remove users from an existing group, use <a href="sql-altergroup.html">ALTER GROUP</a>:
 </p>
-<pre class="synopsis">ALTER GROUP <i class="replaceable"><tt>name</tt></i> ADD USER <i class="replaceable"><tt>uname1</tt></i>, ... ;
-ALTER GROUP <i class="replaceable"><tt>name</tt></i> DROP USER <i class="replaceable"><tt>uname1</tt></i>, ... ;</pre>
+<pre class="synopsis">ALTER GROUP <em class="replaceable"><code>name</code></em> ADD USER <em class="replaceable"><code>uname1</code></em>, ... ;
+ALTER GROUP <em class="replaceable"><code>name</code></em> DROP USER <em class="replaceable"><code>uname1</code></em>, ... ;</pre>
 <p>
 
    To destroy a group, use <a href="sql-dropgroup.html">DROP GROUP</a>:
 </p>
-<pre class="synopsis">DROP GROUP <i class="replaceable"><tt>name</tt></i>;</pre>
+<pre class="synopsis">DROP GROUP <em class="replaceable"><code>name</code></em>;</pre>
 <p>
    This only drops the group, not its member users.
   </p>
-<p>   To determine the set of existing groups, examine the <tt class="structname">pg_group</tt>
+<p>   To determine the set of existing groups, examine the <code class="structname">pg_group</code>
    system catalog, for example
 </p>
 <pre class="synopsis">SELECT groname FROM pg_group;</pre>
 <p>
-   The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <tt class="literal">\dg</tt> meta-command
+   The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\dg</code> meta-command
    is also useful for listing the existing groups.
   </p>
 </div></body>

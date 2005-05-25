@@ -4,74 +4,71 @@
 <title>39.3. Memory Management</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi.html" title="Chapter 39. Server Programming Interface">
-<link rel="previous" href="spi-spi-getrelname.html" title="SPI_getrelname">
+<link rel="prev" href="spi-spi-getnspname.html" title="SPI_getnspname">
 <link rel="next" href="spi-spi-palloc.html" title="SPI_palloc">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="spi-memory"></a>39.3. Memory Management</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spi-memory"></a>39.3. Memory Management</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> allocates memory within
-   <i class="firstterm">memory contexts</i><a name="id2663095"></a>, which provide a convenient method of
+   <em class="firstterm">memory contexts</em><a name="id433813"></a>, which provide a convenient method of
    managing allocations made in many different places that need to
    live for differing amounts of time.  Destroying a context releases
    all the memory that was allocated in it.  Thus, it is not necessary
    to keep track of individual objects to avoid memory leaks; instead
    only a relatively small number of contexts have to be managed.
-   <tt class="function">palloc</tt> and related functions allocate memory
+   <code class="function">palloc</code> and related functions allocate memory
    from the &#8220;<span class="quote">current</span>&#8221; context.
   </p>
-<p>   <tt class="function">SPI_connect</tt> creates a new memory context and
-   makes it current.  <tt class="function">SPI_finish</tt> restores the
+<p>   <code class="function">SPI_connect</code> creates a new memory context and
+   makes it current.  <code class="function">SPI_finish</code> restores the
    previous current memory context and destroys the context created by
-   <tt class="function">SPI_connect</tt>.  These actions ensure that
+   <code class="function">SPI_connect</code>.  These actions ensure that
    transient memory allocations made inside your procedure are
    reclaimed at procedure exit, avoiding memory leakage.
   </p>
 <p>   However, if your procedure needs to return an object in allocated
    memory (such as a value of a pass-by-reference data type), you
-   cannot allocate that memory using <tt class="function">palloc</tt>, at
+   cannot allocate that memory using <code class="function">palloc</code>, at
    least not while you are connected to SPI.  If you try, the object
-   will be deallocated by <tt class="function">SPI_finish</tt>, and your
+   will be deallocated by <code class="function">SPI_finish</code>, and your
    procedure will not work reliably.  To solve this problem, use
-   <tt class="function">SPI_palloc</tt> to allocate memory for your return
-   object.  <tt class="function">SPI_palloc</tt> allocates memory in the
+   <code class="function">SPI_palloc</code> to allocate memory for your return
+   object.  <code class="function">SPI_palloc</code> allocates memory in the
    &#8220;<span class="quote">upper executor context</span>&#8221;, that is, the memory context
-   that was current when <tt class="function">SPI_connect</tt> was called,
+   that was current when <code class="function">SPI_connect</code> was called,
    which is precisely the right context for a value returned from your
    procedure.
   </p>
-<p>   If <tt class="function">SPI_palloc</tt> is called while the procedure is
+<p>   If <code class="function">SPI_palloc</code> is called while the procedure is
    not connected to SPI, then it acts the same as a normal
-   <tt class="function">palloc</tt>.  Before a procedure connects to the
+   <code class="function">palloc</code>.  Before a procedure connects to the
    SPI manager, the current memory context is the upper executor
    context, so all allocations made by the procedure via
-   <tt class="function">palloc</tt> or by SPI utility functions are made in
+   <code class="function">palloc</code> or by SPI utility functions are made in
    this context.
   </p>
-<p>   When <tt class="function">SPI_connect</tt> is called, the private
+<p>   When <code class="function">SPI_connect</code> is called, the private
    context of the procedure, which is created by
-   <tt class="function">SPI_connect</tt>, is made the current context.  All
-   allocations made by <tt class="function">palloc</tt>,
-   <tt class="function">repalloc</tt>, or SPI utility functions (except for
-   <tt class="function">SPI_copytuple</tt>,
-   <tt class="function">SPI_returntuple</tt>,
-   <tt class="function">SPI_modifytuple</tt>, and
-   <tt class="function">SPI_palloc</tt>) are made in this context.  When a
+   <code class="function">SPI_connect</code>, is made the current context.  All
+   allocations made by <code class="function">palloc</code>,
+   <code class="function">repalloc</code>, or SPI utility functions (except for
+   <code class="function">SPI_copytuple</code>,
+   <code class="function">SPI_returntuple</code>,
+   <code class="function">SPI_modifytuple</code>, and
+   <code class="function">SPI_palloc</code>) are made in this context.  When a
    procedure disconnects from the SPI manager (via
-   <tt class="function">SPI_finish</tt>) the current context is restored to
+   <code class="function">SPI_finish</code>) the current context is restored to
    the upper executor context, and all allocations made in the
    procedure memory context are freed and cannot be used any more.
   </p>
 <p>   All functions described in this section may be used by both
    connected and unconnected procedures.  In an unconnected procedure,
    they act the same as the underlying ordinary server functions
-   (<tt class="function">palloc</tt>, etc.).
+   (<code class="function">palloc</code>, etc.).
   </p>
 </div></body>
 </html>

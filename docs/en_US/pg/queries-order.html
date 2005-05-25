@@ -4,19 +4,16 @@
 <title>7.5. Sorting Rows</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="queries.html" title="Chapter 7. Queries">
-<link rel="previous" href="queries-union.html" title="7.4. Combining Queries">
+<link rel="prev" href="queries-union.html" title="7.4. Combining Queries">
 <link rel="next" href="queries-limit.html" title="7.6. LIMIT and OFFSET">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="queries-order"></a>7.5. Sorting Rows</h2></div></div>
-<div></div>
-</div>
-<a name="id2530757"></a><a name="id2530767"></a><p>   After a query has produced an output table (after the select list
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="queries-order"></a>7.5. Sorting Rows</h2></div></div></div>
+<a name="id311899"></a><a name="id311909"></a><p>   After a query has produced an output table (after the select list
    has been processed) it can optionally be sorted.  If sorting is not
    chosen, the rows will be returned in an unspecified order.  The actual
    order in that case will depend on the scan and join plan types and
@@ -24,13 +21,13 @@
    output ordering can only be guaranteed if the sort step is explicitly
    chosen.
   </p>
-<p>   The <tt class="literal">ORDER BY</tt> clause specifies the sort order:
+<p>   The <code class="literal">ORDER BY</code> clause specifies the sort order:
 </p>
-<pre class="synopsis">SELECT <i class="replaceable"><tt>select_list</tt></i>
-    FROM <i class="replaceable"><tt>table_expression</tt></i>
-    ORDER BY <i class="replaceable"><tt>column1</tt></i> [<span class="optional">ASC | DESC</span>] [<span class="optional">, <i class="replaceable"><tt>column2</tt></i> [<span class="optional">ASC | DESC</span>] ...</span>]</pre>
+<pre class="synopsis">SELECT <em class="replaceable"><code>select_list</code></em>
+    FROM <em class="replaceable"><code>table_expression</code></em>
+    ORDER BY <em class="replaceable"><code>column1</code></em> [<span class="optional">ASC | DESC</span>] [<span class="optional">, <em class="replaceable"><code>column2</code></em> [<span class="optional">ASC | DESC</span>] ...</span>]</pre>
 <p>
-   <i class="replaceable"><tt>column1</tt></i>, etc., refer to select list
+   <em class="replaceable"><code>column1</code></em>, etc., refer to select list
    columns.  These can be either the output name of a column (see
    <a href="queries-select-lists.html#queries-column-labels" title="7.3.2. Column Labels">Section 7.3.2, &#8220;Column Labels&#8221;</a>) or the number of a column.  Some
    examples:
@@ -45,23 +42,23 @@ SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</pre>
 </p>
 <pre class="programlisting">SELECT a, b FROM table1 ORDER BY a + b;</pre>
 <p>
-   References to column names of the <tt class="literal">FROM</tt> clause that are
+   References to column names of the <code class="literal">FROM</code> clause that are
    not present in the select list are also allowed:
 </p>
 <pre class="programlisting">SELECT a FROM table1 ORDER BY b;</pre>
 <p>
    But these extensions do not work in queries involving
-   <tt class="literal">UNION</tt>, <tt class="literal">INTERSECT</tt>, or <tt class="literal">EXCEPT</tt>,
+   <code class="literal">UNION</code>, <code class="literal">INTERSECT</code>, or <code class="literal">EXCEPT</code>,
    and are not portable to other SQL databases.
   </p>
 <p>   Each column specification may be followed by an optional
-   <tt class="literal">ASC</tt> or <tt class="literal">DESC</tt> to set the sort direction to
-   ascending or descending.  <tt class="literal">ASC</tt> order is the default.
+   <code class="literal">ASC</code> or <code class="literal">DESC</code> to set the sort direction to
+   ascending or descending.  <code class="literal">ASC</code> order is the default.
    Ascending order puts smaller values first, where
    &#8220;<span class="quote">smaller</span>&#8221; is defined in terms of the
-   <tt class="literal">&lt;</tt> operator.  Similarly, descending order is
-   determined with the <tt class="literal">&gt;</tt> operator.
-    <sup>[<a name="id2530935" href="#ftn.id2530935">4</a>]</sup>
+   <code class="literal">&lt;</code> operator.  Similarly, descending order is
+   determined with the <code class="literal">&gt;</code> operator.
+    <sup>[<a name="id312062" href="#ftn.id312062">4</a>]</sup>
   </p>
 <p>   If more than one sort column is specified, the later entries are
    used to sort rows that are equal under the order imposed by the
@@ -69,11 +66,11 @@ SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</pre>
   </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2530935" href="#id2530935">4</a>] </sup>      Actually, <span class="productname">PostgreSQL</span> uses the <i class="firstterm">default B-tree
-      operator class</i> for the column's data type to determine the sort
-      ordering for <tt class="literal">ASC</tt> and <tt class="literal">DESC</tt>.  Conventionally,
-      data types will be set up so that the <tt class="literal">&lt;</tt> and
-      <tt class="literal">&gt;</tt> operators correspond to this sort ordering,
+<div class="footnote"><p><sup>[<a name="ftn.id312062" href="#id312062">4</a>] </sup>      Actually, <span class="productname">PostgreSQL</span> uses the <em class="firstterm">default B-tree
+      operator class</em> for the column's data type to determine the sort
+      ordering for <code class="literal">ASC</code> and <code class="literal">DESC</code>.  Conventionally,
+      data types will be set up so that the <code class="literal">&lt;</code> and
+      <code class="literal">&gt;</code> operators correspond to this sort ordering,
       but a user-defined data type's designer could choose to do something
       different.
      </p></div>

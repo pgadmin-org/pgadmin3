@@ -4,19 +4,16 @@
 <title>2.4. Populating a Table With Rows</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="previous" href="tutorial-table.html" title="2.3. Creating a New Table">
+<link rel="prev" href="tutorial-table.html" title="2.3. Creating a New Table">
 <link rel="next" href="tutorial-select.html" title="2.5. Querying a Table">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-populate"></a>2.4. Populating a Table With Rows</h2></div></div>
-<div></div>
-</div>
-<a name="id2518168"></a><p>    The <tt class="command">INSERT</tt> statement is used to populate a table  with
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-populate"></a>2.4. Populating a Table With Rows</h2></div></div></div>
+<a name="id300719"></a><p>    The <code class="command">INSERT</code> statement is used to populate a table  with
     rows:
 
 </p>
@@ -25,13 +22,13 @@
 
     Note that all data types use rather obvious input formats.
     Constants that are not simple numeric values usually must be
-    surrounded by single quotes (<tt class="literal">'</tt>), as in the example.
+    surrounded by single quotes (<code class="literal">'</code>), as in the example.
     The
-    <tt class="type">date</tt> type is actually quite flexible in what it
+    <code class="type">date</code> type is actually quite flexible in what it
     accepts, but for this tutorial we will stick to the unambiguous
     format shown here.
    </p>
-<p>    The <tt class="type">point</tt> type requires a coordinate pair as input,
+<p>    The <code class="type">point</code> type requires a coordinate pair as input,
     as shown here:
 </p>
 <pre class="programlisting">INSERT INTO cities VALUES ('San Francisco', '(-194.0, 53.0)');</pre>
@@ -56,13 +53,13 @@
 <p>    Please enter all the commands shown above so you have some data to
     work with in the following sections.
    </p>
-<p>    <a name="id2518253"></a>
+<p>    <a name="id300792"></a>
 
-    You could also have used <tt class="command">COPY</tt> to load large
+    You could also have used <code class="command">COPY</code> to load large
     amounts of data from flat-text files.  This is usually faster
-    because the <tt class="command">COPY</tt> command is optimized for this
+    because the <code class="command">COPY</code> command is optimized for this
     application while allowing less flexibility than
-    <tt class="command">INSERT</tt>.  An example would be:
+    <code class="command">INSERT</code>.  An example would be:
 
 </p>
 <pre class="programlisting">COPY weather FROM '/home/user/weather.txt';</pre>
@@ -71,7 +68,7 @@
     where the file name for the source file must be available to the
     backend server machine, not the client, since the backend server
     reads the file directly.  You can read more about the
-    <tt class="command">COPY</tt> command in <a href="sql-copy.html" title="COPY"><span class="refentrytitle"><a name="sql-copy-title"></a>COPY</span></a>.
+    <code class="command">COPY</code> command in <a href="sql-copy.html" title="COPY"><span class="refentrytitle"><a name="sql-copy-title"></a>COPY</span></a>.
    </p>
 </div></body>
 </html>

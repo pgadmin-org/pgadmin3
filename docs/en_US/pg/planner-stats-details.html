@@ -4,23 +4,20 @@
 <title>Chapter 51. How the Planner Uses Statistics</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
-<link rel="previous" href="bki-example.html" title="50.3. Example">
+<link rel="prev" href="bki-example.html" title="50.4. Example">
 <link rel="next" href="appendixes.html" title="Part VIII. Appendixes">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="planner-stats-details">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="planner-stats-details"></a>Chapter 51. How the Planner Uses Statistics</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="planner-stats-details"></a>Chapter 51. How the Planner Uses Statistics</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl><dt><span class="sect1"><a href="planner-stats-details.html#row-estimation-examples">51.1. Row Estimation Examples</a></span></dt></dl>
 </div>
-<p>   This chapter builds on the material covered in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using EXPLAIN&#8221;</a>
+<p>   This chapter builds on the material covered in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>
    and <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>, and shows how the planner uses the 
    system statistics to estimate the number of rows each stage in a query might
    return. This is a significant part of the planning / optimizing process,
@@ -36,12 +33,9 @@
    The behaviour of earlier (or later) versions may vary.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="row-estimation-examples"></a>51.1. Row Estimation Examples</h2></div></div>
-<div></div>
-</div>
-<a name="id2748996"></a><p>   Using examples drawn from the regression test database, let's start with a 
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="row-estimation-examples"></a>51.1. Row Estimation Examples</h2></div></div></div>
+<a name="id514145"></a><p>   Using examples drawn from the regression test database, let's start with a 
    very simple query:
 </p>
 <pre class="programlisting">EXPLAIN SELECT * FROM tenk1;
@@ -51,10 +45,10 @@
  Seq Scan on tenk1  (cost=0.00..445.00 rows=10000 width=244)</pre>
 <p>
    
-   How the planner determines the cardinality of <tt class="classname">tenk1</tt>
-   is covered in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using EXPLAIN&#8221;</a>, but is repeated here for
+   How the planner determines the cardinality of <code class="classname">tenk1</code>
+   is covered in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>, but is repeated here for
    completeness. The number of rows is looked up from 
-   <tt class="classname">pg_class</tt>:
+   <code class="classname">pg_class</code>:
 
 </p>
 <pre class="programlisting">SELECT reltuples, relpages FROM pg_class WHERE relname = 'tenk1';
@@ -63,9 +57,9 @@
 ----------+-----------
       345 |     10000</pre>
 <p>
-    The planner will check the <tt class="structfield">relpages</tt>
+    The planner will check the <code class="structfield">relpages</code>
     estimate (this is a cheap operation) and if incorrect may scale
-    <tt class="structfield">reltuples</tt> to obtain a row estimate. In this
+    <code class="structfield">reltuples</code> to obtain a row estimate. In this
     case it does not, thus:
 
 </p>
@@ -74,7 +68,7 @@
 
   </p>
 <p>   let's move on to an example with a range condition in its 
-   <tt class="literal">WHERE</tt> clause:
+   <code class="literal">WHERE</code> clause:
 
 </p>
 <pre class="programlisting">EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 1000;
@@ -85,19 +79,19 @@
    Filter: (unique1 &lt; 1000)</pre>
 <p>
 
-   The planner examines the <tt class="literal">WHERE</tt> clause condition: 
+   The planner examines the <code class="literal">WHERE</code> clause condition: 
 
 </p>
 <pre class="programlisting">unique1 &lt; 1000</pre>
 <p>
 
    and looks up the restriction function for the operator 
-   <tt class="literal">&lt;</tt> in <tt class="classname">pg_operator</tt>. 
-   This is held in the column <tt class="structfield">oprrest</tt>, 
-   and the result in this case is <tt class="function">scalarltsel</tt>.
-   The <tt class="function">scalarltsel</tt> function retrieves the histogram for 
-   <tt class="structfield">unique1</tt> from <tt class="classname">pg_statistics</tt>
-   - we can follow this by using the simpler <tt class="classname">pg_stats</tt> 
+   <code class="literal">&lt;</code> in <code class="classname">pg_operator</code>. 
+   This is held in the column <code class="structfield">oprrest</code>, 
+   and the result in this case is <code class="function">scalarltsel</code>.
+   The <code class="function">scalarltsel</code> function retrieves the histogram for 
+   <code class="structfield">unique1</code> from <code class="classname">pg_statistics</code>
+   - we can follow this by using the simpler <code class="classname">pg_stats</code> 
    view:
 
 </p>
@@ -126,7 +120,7 @@ WHERE tablename='tenk1' AND attname='unique1';
    that is, one whole bucket plus a linear fraction of the second, divided by
    the number of buckets. The estimated number of rows can now be calculated as
    the product of the selectivity and the cardinality of 
-   <tt class="classname">tenk1</tt>:
+   <code class="classname">tenk1</code>:
 
 </p>
 <pre class="programlisting">rows = rel_cardinality * selectivity
@@ -136,7 +130,7 @@ WHERE tablename='tenk1' AND attname='unique1';
 
   </p>
 <p>   Next let's consider an example with equality condition in its 
-   <tt class="literal">WHERE</tt> clause:
+   <code class="literal">WHERE</code> clause:
 
 </p>
 <pre class="programlisting">EXPLAIN SELECT * FROM tenk1 WHERE stringu1 = 'ATAAAA';
@@ -147,14 +141,14 @@ WHERE tablename='tenk1' AND attname='unique1';
    Filter: (stringu1 = 'ATAAAA'::name)</pre>
 <p>
 
-   Again the planner examines the <tt class="literal">WHERE</tt> clause condition: 
+   Again the planner examines the <code class="literal">WHERE</code> clause condition: 
 
 </p>
 <pre class="programlisting">stringu1 = 'ATAAAA'</pre>
 <p>
 
-   and looks up the restriction function for <tt class="literal">=</tt>, which is 
-   <tt class="function">eqsel</tt>. This case is a bit different, as the most
+   and looks up the restriction function for <code class="literal">=</code>, which is 
+   <code class="function">eqsel</code>. This case is a bit different, as the most
    common values [mdash ] <span class="acronym">MCV</span>s, are used to determine the 
    selectivity. Let's have a look at these, with some extra columns that will
    be useful later:
@@ -178,14 +172,14 @@ most_common_freqs | {0.00333333,0.00333333,0.003,0.003,0.003,0.003,0.003,0.003,0
 <p>
 
    The estimated number of rows is just the product of this with the 
-   cardinality of <tt class="classname">tenk1</tt> as before:
+   cardinality of <code class="classname">tenk1</code> as before:
 
 </p>
 <pre class="programlisting">rows = 10000 * 0.003
      = 30</pre>
 <p>
 
-   The number displayed by <tt class="command">EXPLAIN</tt> is one more than this,
+   The number displayed by <code class="command">EXPLAIN</code> is one more than this,
    due to some post estimation checks.
   </p>
 <p>   Now consider the same query, but with a constant that is not in the 
@@ -226,7 +220,7 @@ most_common_freqs | {0.00333333,0.00333333,0.003,0.003,0.003,0.003,0.003,0.003,0
 
   </p>
 <p>   Let's increase the complexity to consider a case with more than one 
-   condition in the <tt class="literal">WHERE</tt> clause:
+   condition in the <code class="literal">WHERE</code> clause:
 
 </p>
 <pre class="programlisting">EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 1000 AND stringu1 = 'xxx';
@@ -253,8 +247,8 @@ most_common_freqs | {0.00333333,0.00333333,0.003,0.003,0.003,0.003,0.003,0.003,0
      = 2</pre>
 <p>
   </p>
-<p>   Finally we will examine a query that includes a <tt class="literal">JOIN</tt> 
-   together with a <tt class="literal">WHERE</tt> clause:
+<p>   Finally we will examine a query that includes a <code class="literal">JOIN</code> 
+   together with a <code class="literal">WHERE</code> clause:
 
 </p>
 <pre class="programlisting">EXPLAIN SELECT *  FROM tenk1 t1, tenk2 t2 
@@ -269,12 +263,12 @@ WHERE t1.unique1 &lt; 50 AND t1.unique2 = t2.unique2;
          Index Cond: ("outer".unique2 = t2.unique2)</pre>
 <p>
 
-   The restriction on <tt class="classname">tenk1</tt> 
+   The restriction on <code class="classname">tenk1</code> 
    &#8220;<span class="quote">unique1 &lt; 50</span>&#8221; is evaluated before the nested-loop join. 
    This is handled analogously to the previous range example. The restriction 
-   operator for <tt class="literal">&lt;</tt> is <tt class="function">scalarlteqsel</tt> 
+   operator for <code class="literal">&lt;</code> is <code class="function">scalarlteqsel</code> 
    as before, but this time the value 50 is in the first bucket of the 
-   <tt class="structfield">unique1</tt> histogram:
+   <code class="structfield">unique1</code> histogram:
 
 </p>
 <pre class="programlisting">selectivity = (0 + (50 - bckt[1].min)/(bckt[1].max - bckt[1].min))/num_bckts
@@ -292,12 +286,12 @@ rows        = 10000 * 0.005057
 <p>
 
    This is due to the join method being nested-loop, with 
-   <tt class="classname">tenk1</tt> being in the outer loop. The operator is just 
-   our familiar <tt class="literal">=</tt>, however the restriction function is 
-   obtained from the <tt class="structfield">oprjoin</tt> column of 
-   <tt class="classname">pg_operator</tt> - and is <tt class="function">eqjoinsel</tt>.
+   <code class="classname">tenk1</code> being in the outer loop. The operator is just 
+   our familiar <code class="literal">=</code>, however the restriction function is 
+   obtained from the <code class="structfield">oprjoin</code> column of 
+   <code class="classname">pg_operator</code> - and is <code class="function">eqjoinsel</code>.
    Additionally we use the statistical information for both 
-   <tt class="classname">tenk2</tt> and <tt class="classname">tenk1</tt>:
+   <code class="classname">tenk2</code> and <code class="classname">tenk1</code>:
 
 </p>
 <pre class="programlisting">SELECT tablename, null_frac,n_distinct, most_common_vals FROM pg_stats 
@@ -310,7 +304,7 @@ tablename  | null_frac | n_distinct | most_common_vals
 <p>
 
    In this case there is no <span class="acronym">MCV</span> information for 
-   <tt class="structfield">unique2</tt> because all the values appear to be 
+   <code class="structfield">unique2</code> because all the values appear to be 
    unique, so we can use an algorithm that relies only on the number of 
    distinct values for both relations together with their null fractions:
 
@@ -334,11 +328,11 @@ tablename  | null_frac | n_distinct | most_common_vals
   </p>
 <p>   For those interested in further details, estimation of the number of rows in
    a relation is covered in 
-   <tt class="filename">src/backend/optimizer/util/plancat.c</tt>. The calculation
+   <code class="filename">src/backend/optimizer/util/plancat.c</code>. The calculation
    logic for clause selectivities is in 
-   <tt class="filename">src/backend/optimizer/path/clausesel.c</tt>. The actual
+   <code class="filename">src/backend/optimizer/path/clausesel.c</code>. The actual
    implementations of the operator and join restriction functions can be found 
-   in <tt class="filename">src/backend/utils/adt/selfuncs.c</tt>.
+   in <code class="filename">src/backend/utils/adt/selfuncs.c</code>.
   </p>
 </div>
 </div></body>

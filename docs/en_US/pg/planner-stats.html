@@ -4,19 +4,16 @@
 <title>13.2. Statistics Used by the Planner</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
-<link rel="previous" href="performance-tips.html" title="Chapter 13. Performance Tips">
+<link rel="prev" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="next" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="planner-stats"></a>13.2. Statistics Used by the Planner</h2></div></div>
-<div></div>
-</div>
-<a name="id2573002"></a><p>   As we saw in the previous section, the query planner needs to estimate
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="planner-stats"></a>13.2. Statistics Used by the Planner</h2></div></div></div>
+<a name="id351467"></a><p>   As we saw in the previous section, the query planner needs to estimate
    the number of rows retrieved by a query in order to make good choices
    of query plans.  This section provides a quick look at the statistics
    that the system uses for these estimates.
@@ -24,9 +21,9 @@
 <p>   One component of the statistics is the total number of entries in
    each table and index, as well as the number of disk blocks occupied
    by each table and index.  This information is kept in the table
-   <a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>, in
-   the columns <tt class="structfield">reltuples</tt> and
-   <tt class="structfield">relpages</tt>.  We can look at it with
+   <a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>, in
+   the columns <code class="structfield">reltuples</code> and
+   <code class="structfield">relpages</code>.  We can look at it with
    queries similar to this one:
 
 </p>
@@ -41,43 +38,43 @@
 (4 rows)</pre>
 <p>
 
-   Here we can see that <tt class="structname">tenk1</tt> contains 10000
+   Here we can see that <code class="structname">tenk1</code> contains 10000
    rows, as do its indexes, but the indexes are (unsurprisingly) much
    smaller than the table.
   </p>
-<p>   For efficiency reasons, <tt class="structfield">reltuples</tt> 
-   and <tt class="structfield">relpages</tt> are not updated on-the-fly,
+<p>   For efficiency reasons, <code class="structfield">reltuples</code> 
+   and <code class="structfield">relpages</code> are not updated on-the-fly,
    and so they usually contain somewhat out-of-date values.
-   They are updated by <tt class="command">VACUUM</tt>, <tt class="command">ANALYZE</tt>, and a
-   few DDL commands such as <tt class="command">CREATE INDEX</tt>.  A stand-alone
-   <tt class="command">ANALYZE</tt>, that is one not part of <tt class="command">VACUUM</tt>,
-   generates an approximate <tt class="structfield">reltuples</tt> value
+   They are updated by <code class="command">VACUUM</code>, <code class="command">ANALYZE</code>, and a
+   few DDL commands such as <code class="command">CREATE INDEX</code>.  A stand-alone
+   <code class="command">ANALYZE</code>, that is one not part of <code class="command">VACUUM</code>,
+   generates an approximate <code class="structfield">reltuples</code> value
    since it does not read every row of the table.  The planner
-   will scale the values it finds in <tt class="structname">pg_class</tt>
+   will scale the values it finds in <code class="structname">pg_class</code>
    to match the current physical table size, thus obtaining a closer
    approximation.
   </p>
-<a name="id2573117"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
-   to having <tt class="literal">WHERE</tt> clauses that restrict the rows to be
+<a name="id351568"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
+   to having <code class="literal">WHERE</code> clauses that restrict the rows to be
    examined.  The planner thus needs to make an estimate of the
-   <i class="firstterm">selectivity</i> of <tt class="literal">WHERE</tt> clauses, that is,
+   <em class="firstterm">selectivity</em> of <code class="literal">WHERE</code> clauses, that is,
    the fraction of rows that match each condition in the
-   <tt class="literal">WHERE</tt> clause.  The information used for this task is
-   stored in the <a href="catalog-pg-statistic.html" title="41.27. pg_statistic"><tt class="structname">pg_statistic</tt></a>
-   system catalog.  Entries in <tt class="structname">pg_statistic</tt>
-   are updated by the <tt class="command">ANALYZE</tt> and <tt class="command">VACUUM
-   ANALYZE</tt> commands and are always approximate even when freshly
+   <code class="literal">WHERE</code> clause.  The information used for this task is
+   stored in the <a href="catalog-pg-statistic.html" title="41.27. pg_statistic"><code class="structname">pg_statistic</code></a>
+   system catalog.  Entries in <code class="structname">pg_statistic</code>
+   are updated by the <code class="command">ANALYZE</code> and <code class="command">VACUUM
+   ANALYZE</code> commands and are always approximate even when freshly
    updated.
   </p>
-<a name="id2573180"></a><p>   Rather than look at <tt class="structname">pg_statistic</tt> directly,
-   it's better to look at its view <tt class="structname">pg_stats</tt>
-   when examining the statistics manually.  <tt class="structname">pg_stats</tt>
+<a name="id351626"></a><p>   Rather than look at <code class="structname">pg_statistic</code> directly,
+   it's better to look at its view <code class="structname">pg_stats</code>
+   when examining the statistics manually.  <code class="structname">pg_stats</code>
    is designed to be more easily readable.  Furthermore,
-   <tt class="structname">pg_stats</tt> is readable by all, whereas
-   <tt class="structname">pg_statistic</tt> is only readable by a superuser.
+   <code class="structname">pg_stats</code> is readable by all, whereas
+   <code class="structname">pg_statistic</code> is only readable by a superuser.
    (This prevents unprivileged users from learning something about
    the contents of other people's tables from the statistics.  The
-   <tt class="structname">pg_stats</tt> view is restricted to show only
+   <code class="structname">pg_stats</code> view is restricted to show only
    rows about tables that the current user can read.)
    For example, we might do:
 
@@ -91,20 +88,20 @@
 (2 rows)</pre>
 <p>
   </p>
-<p>   <tt class="structname">pg_stats</tt> is described in detail in
-   <a href="view-pg-stats.html" title="41.36. pg_stats">Section 41.36, &#8220;pg_stats&#8221;</a>.
+<p>   <code class="structname">pg_stats</code> is described in detail in
+   <a href="view-pg-stats.html" title="41.36. pg_stats">Section 41.36, &#8220;<code class="structname">pg_stats</code>&#8221;</a>.
   </p>
-<p>   The amount of information stored in <tt class="structname">pg_statistic</tt>,
+<p>   The amount of information stored in <code class="structname">pg_statistic</code>,
    in particular the maximum number of entries in the
-   <tt class="structfield">most_common_vals</tt> and <tt class="structfield">histogram_bounds</tt>
+   <code class="structfield">most_common_vals</code> and <code class="structfield">histogram_bounds</code>
    arrays for each column, can be set on a
-   column-by-column basis using the <tt class="command">ALTER TABLE SET STATISTICS</tt>
+   column-by-column basis using the <code class="command">ALTER TABLE SET STATISTICS</code>
    command, or globally by setting the
    <a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> configuration variable.
    The default limit is presently 10 entries.  Raising the limit
    may allow more accurate planner estimates to be made, particularly for
    columns with irregular data distributions, at the price of consuming
-   more space in <tt class="structname">pg_statistic</tt> and slightly more
+   more space in <code class="structname">pg_statistic</code> and slightly more
    time to compute the estimates.  Conversely, a lower limit may be
    appropriate for columns with simple data distributions.
   </p>

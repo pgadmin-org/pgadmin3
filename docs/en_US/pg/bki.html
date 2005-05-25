@@ -4,24 +4,22 @@
 <title>Chapter 50. BKI Backend Interface</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
-<link rel="previous" href="storage-page-layout.html" title="49.3. Database Page Layout">
+<link rel="prev" href="storage-page-layout.html" title="49.3. Database Page Layout">
 <link rel="next" href="bki-commands.html" title="50.2. BKI Commands">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="bki">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="bki"></a>Chapter 50. <span class="acronym">BKI</span> Backend Interface</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="bki"></a>Chapter 50. <span class="acronym">BKI</span> Backend Interface</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="bki.html#bki-format">50.1. BKI File Format</a></span></dt>
-<dt><span class="sect1"><a href="bki-commands.html">50.2. BKI Commands</a></span></dt>
-<dt><span class="sect1"><a href="bki-example.html">50.3. Example</a></span></dt>
+<dt><span class="sect1"><a href="bki.html#bki-format">50.1. <span class="acronym">BKI</span> File Format</a></span></dt>
+<dt><span class="sect1"><a href="bki-commands.html">50.2. <span class="acronym">BKI</span> Commands</a></span></dt>
+<dt><span class="sect1"><a href="bki-structure.html">50.3. Structure of the Bootstrap <span class="acronym">BKI</span> File</a></span></dt>
+<dt><span class="sect1"><a href="bki-example.html">50.4. Example</a></span></dt>
 </dl>
 </div>
 <p>  Backend Interface (<span class="acronym">BKI</span>) files are scripts in a
@@ -38,25 +36,22 @@
   to do part of its job when creating a new database cluster.  The
   input file used by <span class="application">initdb</span> is created as
   part of building and installing <span class="productname">PostgreSQL</span>
-  by a program named <tt class="filename">genbki.sh</tt>, which reads some
-  specially formatted C header files in the <tt class="filename">src/include/catalog/</tt>
+  by a program named <code class="filename">genbki.sh</code>, which reads some
+  specially formatted C header files in the <code class="filename">src/include/catalog/</code>
   directory of the source tree.  The created
-  <span class="acronym">BKI</span> file is called <tt class="filename">postgres.bki</tt> and is
+  <span class="acronym">BKI</span> file is called <code class="filename">postgres.bki</code> and is
   normally installed in the
-  <tt class="filename">share</tt> subdirectory of the installation tree.
+  <code class="filename">share</code> subdirectory of the installation tree.
  </p>
 <p>  Related information may be found in the documentation for
   <span class="application">initdb</span>.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="bki-format"></a>50.1. <span class="acronym">BKI</span> File Format</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bki-format"></a>50.1. <span class="acronym">BKI</span> File Format</h2></div></div></div>
 <p>   This section describes how the <span class="productname">PostgreSQL</span>
    backend interprets <span class="acronym">BKI</span> files.  This description
-   will be easier to understand if the <tt class="filename">postgres.bki</tt>
+   will be easier to understand if the <code class="filename">postgres.bki</code>
    file is at hand as an example.
   </p>
 <p>   <span class="acronym">BKI</span> input consists of a sequence of commands.  Commands are made up
@@ -69,7 +64,7 @@
    characters (parentheses, commas, etc.), numbers, or double-quoted
    strings.  Everything is case sensitive.
   </p>
-<p>   Lines starting with a <tt class="literal">#</tt> are ignored.
+<p>   Lines starting with <code class="literal">#</code> are ignored.
   </p>
 </div>
 </div></body>

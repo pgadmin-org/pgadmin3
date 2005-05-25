@@ -4,32 +4,29 @@
 <title>9.4. String Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
+<link rel="prev" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
 <link rel="next" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-string"></a>9.4. String Functions and Operators</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-string"></a>9.4. String Functions and Operators</h2></div></div></div>
 <p>    This section describes functions and operators for examining and
     manipulating string values.  Strings in this context include values
-    of all the types <tt class="type">character</tt>, <tt class="type">character
-     varying</tt>, and <tt class="type">text</tt>.  Unless otherwise noted, all
+    of all the types <code class="type">character</code>, <code class="type">character
+     varying</code>, and <code class="type">text</code>.  Unless otherwise noted, all
     of the functions listed below work on all of these types, but be
     wary of potential effects of the automatic padding when using the
-    <tt class="type">character</tt> type.  Generally, the functions described
+    <code class="type">character</code> type.  Generally, the functions described
     here also work on data of non-string types by converting that data
     to a string representation first.  Some functions also exist
     natively for the bit-string types.
    </p>
 <p>    <span class="acronym">SQL</span> defines some string functions with a special syntax where
     certain key words rather than commas are used to separate the
-    arguments.  Details are in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;SQL String Functions and Operators&#8221;</a>.
+    arguments.  Details are in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<span class="acronym">SQL</span> String Functions and Operators&#8221;</a>.
     These functions are also implemented using the regular syntax for
     function invocation.  (See <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.)
    </p>
@@ -52,129 +49,131 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><i class="parameter"><tt>string</tt></i> <tt class="literal">||</tt>
-        <i class="parameter"><tt>string</tt></i></tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><em class="parameter"><code>string</code></em> <code class="literal">||</code>
+        <em class="parameter"><code>string</code></em></code></td>
+<td> <code class="type">text</code> </td>
 <td>        String concatenation
-        <a name="id2543154"></a>
-</td>
-<td><tt class="literal">'Post' || 'greSQL'</tt></td>
-<td><tt class="literal">PostgreSQL</tt></td>
+        <a name="id323446"></a>
+       </td>
+<td><code class="literal">'Post' || 'greSQL'</code></td>
+<td><code class="literal">PostgreSQL</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">bit_length</tt>(<i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">bit_length</code>(<em class="parameter"><code>string</code></em>)</code></td>
+<td><code class="type">integer</code></td>
 <td>Number of bits in string</td>
-<td><tt class="literal">bit_length('jose')</tt></td>
-<td><tt class="literal">32</tt></td>
+<td><code class="literal">bit_length('jose')</code></td>
+<td><code class="literal">32</code></td>
 </tr>
 <tr>
 <td>
-<tt class="literal"><tt class="function">char_length</tt>(<i class="parameter"><tt>string</tt></i>)</tt> or <tt class="literal"><tt class="function">character_length</tt>(<i class="parameter"><tt>string</tt></i>)</tt>
+<code class="literal"><code class="function">char_length</code>(<em class="parameter"><code>string</code></em>)</code> or <code class="literal"><code class="function">character_length</code>(<em class="parameter"><code>string</code></em>)</code>
 </td>
-<td><tt class="type">integer</tt></td>
+<td><code class="type">integer</code></td>
 <td>        Number of characters in string
-        <a name="id2543248"></a><a name="id2543258"></a>
-</td>
-<td><tt class="literal">char_length('jose')</tt></td>
-<td><tt class="literal">4</tt></td>
+        <a name="id323540"></a>
+        <a name="id323549"></a>
+       </td>
+<td><code class="literal">char_length('jose')</code></td>
+<td><code class="literal">4</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">convert</tt>(<i class="parameter"><tt>string</tt></i>
-       using <i class="parameter"><tt>conversion_name</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">convert</code>(<em class="parameter"><code>string</code></em>
+       using <em class="parameter"><code>conversion_name</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>        Change encoding using specified conversion name.  Conversions
-        can be defined by <tt class="command">CREATE CONVERSION</tt>.  Also
+        can be defined by <code class="command">CREATE CONVERSION</code>.  Also
         there are some pre-defined conversion names. See <a href="functions-string.html#conversion-names" title="Table 9.7. Built-in Conversions">Table 9.7, &#8220;Built-in Conversions&#8221;</a> for available conversion
         names.
        </td>
-<td><tt class="literal">convert('PostgreSQL' using iso_8859_1_to_utf8)</tt></td>
+<td><code class="literal">convert('PostgreSQL' using iso_8859_1_to_utf8)</code></td>
 <td>
-<tt class="literal">'PostgreSQL'</tt> in UTF8 (Unicode, 8-bit) encoding</td>
+<code class="literal">'PostgreSQL'</code> in UTF8 (Unicode, 8-bit) encoding</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">lower</tt>(<i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">lower</code>(<em class="parameter"><code>string</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>Convert string to lower case</td>
-<td><tt class="literal">lower('TOM')</tt></td>
-<td><tt class="literal">tom</tt></td>
+<td><code class="literal">lower('TOM')</code></td>
+<td><code class="literal">tom</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">octet_length</tt>(<i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">octet_length</code>(<em class="parameter"><code>string</code></em>)</code></td>
+<td><code class="type">integer</code></td>
 <td>Number of bytes in string</td>
-<td><tt class="literal">octet_length('jose')</tt></td>
-<td><tt class="literal">4</tt></td>
+<td><code class="literal">octet_length('jose')</code></td>
+<td><code class="literal">4</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">overlay</tt>(<i class="parameter"><tt>string</tt></i> placing <i class="parameter"><tt>string</tt></i> from <tt class="type">integer</tt> [<span class="optional">for <tt class="type">integer</tt></span>])</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">overlay</code>(<em class="parameter"><code>string</code></em> placing <em class="parameter"><code>string</code></em> from <code class="type">integer</code> [<span class="optional">for <code class="type">integer</code></span>])</code></td>
+<td><code class="type">text</code></td>
 <td>        Replace substring
-        <a name="id2543451"></a>
-</td>
-<td><tt class="literal">overlay('Txxxxas' placing 'hom' from 2 for 4)</tt></td>
-<td><tt class="literal">Thomas</tt></td>
+        <a name="id323737"></a>
+       </td>
+<td><code class="literal">overlay('Txxxxas' placing 'hom' from 2 for 4)</code></td>
+<td><code class="literal">Thomas</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">position</tt>(<i class="parameter"><tt>substring</tt></i> in <i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">position</code>(<em class="parameter"><code>substring</code></em> in <em class="parameter"><code>string</code></em>)</code></td>
+<td><code class="type">integer</code></td>
 <td>Location of specified substring</td>
-<td><tt class="literal">position('om' in 'Thomas')</tt></td>
-<td><tt class="literal">3</tt></td>
+<td><code class="literal">position('om' in 'Thomas')</code></td>
+<td><code class="literal">3</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> [<span class="optional">from <tt class="type">integer</tt></span>] [<span class="optional">for <tt class="type">integer</tt></span>])</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> [<span class="optional">from <code class="type">integer</code></span>] [<span class="optional">for <code class="type">integer</code></span>])</code></td>
+<td><code class="type">text</code></td>
 <td>        Extract substring
-        <a name="id2543546"></a>
-</td>
-<td><tt class="literal">substring('Thomas' from 2 for 3)</tt></td>
-<td><tt class="literal">hom</tt></td>
+        <a name="id323830"></a>
+       </td>
+<td><code class="literal">substring('Thomas' from 2 for 3)</code></td>
+<td><code class="literal">hom</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> from <i class="replaceable"><tt>pattern</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>        Extract substring matching POSIX regular expression
-        <a name="id2543592"></a>
-</td>
-<td><tt class="literal">substring('Thomas' from '...$')</tt></td>
-<td><tt class="literal">mas</tt></td>
+        <a name="id323876"></a>
+       </td>
+<td><code class="literal">substring('Thomas' from '...$')</code></td>
+<td><code class="literal">mas</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> from <i class="replaceable"><tt>pattern</tt></i> for <i class="replaceable"><tt>escape</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em> for <em class="replaceable"><code>escape</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>        Extract substring matching <span class="acronym">SQL</span> regular
         expression
-        <a name="id2543646"></a>
-</td>
-<td><tt class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</tt></td>
-<td><tt class="literal">oma</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">trim</tt>([<span class="optional">leading | trailing | both</span>]
-        [<span class="optional"><i class="parameter"><tt>characters</tt></i></span>] from
-        <i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>        Remove the longest string containing only the
-        <i class="parameter"><tt>characters</tt></i> (a space by default) from the
-        start/end/both ends of the <i class="parameter"><tt>string</tt></i>.
+        <a name="id323928"></a>
        </td>
-<td><tt class="literal">trim(both 'x' from 'xTomxx')</tt></td>
-<td><tt class="literal">Tom</tt></td>
+<td><code class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</code></td>
+<td><code class="literal">oma</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">upper</tt>(<i class="parameter"><tt>string</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td>        <code class="literal"><code class="function">trim</code>([<span class="optional">leading | trailing | both</span>]
+        [<span class="optional"><em class="parameter"><code>characters</code></em></span>] from
+        <em class="parameter"><code>string</code></em>)</code>
+       </td>
+<td><code class="type">text</code></td>
+<td>        Remove the longest string containing only the
+        <em class="parameter"><code>characters</code></em> (a space by default) from the
+        start/end/both ends of the <em class="parameter"><code>string</code></em>
+       </td>
+<td><code class="literal">trim(both 'x' from 'xTomxx')</code></td>
+<td><code class="literal">Tom</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">upper</code>(<em class="parameter"><code>string</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>Convert string to uppercase</td>
-<td><tt class="literal">upper('tom')</tt></td>
-<td><tt class="literal">TOM</tt></td>
+<td><code class="literal">upper('tom')</code></td>
+<td><code class="literal">TOM</code></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>    Additional string manipulation functions are available and are
     listed in <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.  Some of them are used internally to implement the
-    <span class="acronym">SQL</span>-standard string functions listed in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;SQL String Functions and Operators&#8221;</a>.
+    <span class="acronym">SQL</span>-standard string functions listed in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<span class="acronym">SQL</span> String Functions and Operators&#8221;</a>.
    </p>
 <div class="table">
 <a name="functions-string-other"></a><p class="title"><b>Table 9.6. Other String Functions</b></p>
@@ -195,268 +194,279 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">ascii</tt>(<tt class="type">text</tt>)</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">ascii</code>(<code class="type">text</code>)</code></td>
+<td><code class="type">integer</code></td>
 <td>
 <span class="acronym">ASCII</span> code of the first character of the argument</td>
-<td><tt class="literal">ascii('x')</tt></td>
-<td><tt class="literal">120</tt></td>
+<td><code class="literal">ascii('x')</code></td>
+<td><code class="literal">120</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">btrim</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>
-       [<span class="optional">, <i class="parameter"><tt>characters</tt></i> <tt class="type">text</tt></span>])</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">btrim</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>
+       [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code></td>
+<td><code class="type">text</code></td>
 <td>        Remove the longest string consisting only of characters
-        in <i class="parameter"><tt>characters</tt></i> (a space by default)
-        from the start and end of <i class="parameter"><tt>string</tt></i>.
+        in <em class="parameter"><code>characters</code></em> (a space by default)
+        from the start and end of <em class="parameter"><code>string</code></em>
        </td>
-<td><tt class="literal">btrim('xyxtrimyyx', 'xy')</tt></td>
-<td><tt class="literal">trim</tt></td>
+<td><code class="literal">btrim('xyxtrimyyx', 'xy')</code></td>
+<td><code class="literal">trim</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">chr</tt>(<tt class="type">integer</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">chr</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">text</code></td>
 <td>Character with the given <span class="acronym">ASCII</span> code</td>
-<td><tt class="literal">chr(65)</tt></td>
-<td><tt class="literal">A</tt></td>
+<td><code class="literal">chr(65)</code></td>
+<td><code class="literal">A</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">convert</tt>(<i class="parameter"><tt>string</tt></i>
-        <tt class="type">text</tt>,
-        [<span class="optional"><i class="parameter"><tt>src_encoding</tt></i> <tt class="type">name</tt>,</span>]
-        <i class="parameter"><tt>dest_encoding</tt></i> <tt class="type">name</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>        Convert string to <i class="parameter"><tt>dest_encoding</tt></i>.
+<td>        <code class="literal"><code class="function">convert</code>(<em class="parameter"><code>string</code></em>
+        <code class="type">text</code>,
+        [<span class="optional"><em class="parameter"><code>src_encoding</code></em> <code class="type">name</code>,</span>]
+        <em class="parameter"><code>dest_encoding</code></em> <code class="type">name</code>)</code>
+       </td>
+<td><code class="type">text</code></td>
+<td>        Convert string to <em class="parameter"><code>dest_encoding</code></em>.
         The original encoding is specified by
-        <i class="parameter"><tt>src_encoding</tt></i>.  If
-        <i class="parameter"><tt>src_encoding</tt></i> is omitted, database
+        <em class="parameter"><code>src_encoding</code></em>.  If
+        <em class="parameter"><code>src_encoding</code></em> is omitted, database
         encoding is assumed.
        </td>
-<td><tt class="literal">convert( 'text_in_utf8', 'UTF8', 'LATIN1')</tt></td>
+<td><code class="literal">convert( 'text_in_utf8', 'UTF8', 'LATIN1')</code></td>
 <td>
-<tt class="literal">text_in_utf8</tt> represented in ISO 8859-1 encoding</td>
+<code class="literal">text_in_utf8</code> represented in ISO 8859-1 encoding</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">decode</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>,
-        <i class="parameter"><tt>type</tt></i> <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">bytea</tt></td>
-<td>        Decode binary data from <i class="parameter"><tt>string</tt></i> previously 
-        encoded with <tt class="function">encode</tt>.  Parameter type is same as in <tt class="function">encode</tt>.
+<td>        <code class="literal"><code class="function">decode</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>type</code></em> <code class="type">text</code>)</code>
        </td>
-<td><tt class="literal">decode('MTIzAAE=', 'base64')</tt></td>
-<td><tt class="literal">123\000\001</tt></td>
+<td><code class="type">bytea</code></td>
+<td>        Decode binary data from <em class="parameter"><code>string</code></em> previously 
+        encoded with <code class="function">encode</code>.  Parameter type is same as in <code class="function">encode</code>.
+       </td>
+<td><code class="literal">decode('MTIzAAE=', 'base64')</code></td>
+<td><code class="literal">123\000\001</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">encode</tt>(<i class="parameter"><tt>data</tt></i> <tt class="type">bytea</tt>,
-        <i class="parameter"><tt>type</tt></i> <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td>        <code class="literal"><code class="function">encode</code>(<em class="parameter"><code>data</code></em> <code class="type">bytea</code>,
+        <em class="parameter"><code>type</code></em> <code class="type">text</code>)</code>
+       </td>
+<td><code class="type">text</code></td>
 <td>        Encode binary data to <span class="acronym">ASCII</span>-only representation.  Supported
-        types are: <tt class="literal">base64</tt>, <tt class="literal">hex</tt>, <tt class="literal">escape</tt>.
+        types are: <code class="literal">base64</code>, <code class="literal">hex</code>, <code class="literal">escape</code>.
        </td>
-<td><tt class="literal">encode( '123\\000\\001', 'base64')</tt></td>
-<td><tt class="literal">MTIzAAE=</tt></td>
+<td><code class="literal">encode( '123\\000\\001', 'base64')</code></td>
+<td><code class="literal">MTIzAAE=</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">initcap</tt>(<tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">initcap</code>(<code class="type">text</code>)</code></td>
+<td><code class="type">text</code></td>
 <td>        Convert the first letter of each word to uppercase and the
         rest to lowercase. Words are sequences of alphanumeric
         characters separated by non-alphanumeric characters.
        </td>
-<td><tt class="literal">initcap('hi THOMAS')</tt></td>
-<td><tt class="literal">Hi Thomas</tt></td>
+<td><code class="literal">initcap('hi THOMAS')</code></td>
+<td><code class="literal">Hi Thomas</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">length</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">integer</tt></td>
-<td>        Number of characters in <i class="parameter"><tt>string</tt></i>.
-        <a name="id2544234"></a><a name="id2544243"></a>
-</td>
-<td><tt class="literal">length('jose')</tt></td>
-<td><tt class="literal">4</tt></td>
+<td><code class="literal"><code class="function">length</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></td>
+<td><code class="type">integer</code></td>
+<td>        Number of characters in <em class="parameter"><code>string</code></em>
+        <a name="id324501"></a>
+        <a name="id324510"></a>
+       </td>
+<td><code class="literal">length('jose')</code></td>
+<td><code class="literal">4</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">lpad</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>,
-        <i class="parameter"><tt>length</tt></i> <tt class="type">integer</tt>
-        [<span class="optional">, <i class="parameter"><tt>fill</tt></i> <tt class="type">text</tt></span>])</tt></td>
-<td><tt class="type">text</tt></td>
-<td>        Fill up the <i class="parameter"><tt>string</tt></i> to length
-        <i class="parameter"><tt>length</tt></i> by prepending the characters
-        <i class="parameter"><tt>fill</tt></i> (a space by default).  If the
-        <i class="parameter"><tt>string</tt></i> is already longer than
-        <i class="parameter"><tt>length</tt></i> then it is truncated (on the
+<td>        <code class="literal"><code class="function">lpad</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>length</code></em> <code class="type">integer</code>
+        [<span class="optional">, <em class="parameter"><code>fill</code></em> <code class="type">text</code></span>])</code>
+       </td>
+<td><code class="type">text</code></td>
+<td>        Fill up the <em class="parameter"><code>string</code></em> to length
+        <em class="parameter"><code>length</code></em> by prepending the characters
+        <em class="parameter"><code>fill</code></em> (a space by default).  If the
+        <em class="parameter"><code>string</code></em> is already longer than
+        <em class="parameter"><code>length</code></em> then it is truncated (on the
         right).
        </td>
-<td><tt class="literal">lpad('hi', 5, 'xy')</tt></td>
-<td><tt class="literal">xyxhi</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">ltrim</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>
-        [<span class="optional">, <i class="parameter"><tt>characters</tt></i> <tt class="type">text</tt></span>])</tt></td>
-<td><tt class="type">text</tt></td>
-<td>        Remove the longest string containing only characters from
-        <i class="parameter"><tt>characters</tt></i> (a space by default) from the start of
-        <i class="parameter"><tt>string</tt></i>.
-       </td>
-<td><tt class="literal">ltrim('zzzytrim', 'xyz')</tt></td>
-<td><tt class="literal">trim</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">md5</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>        Calculates the MD5 hash of <i class="parameter"><tt>string</tt></i>,
-        returning the result in hexadecimal.
-       </td>
-<td><tt class="literal">md5('abc')</tt></td>
-<td><tt class="literal">900150983cd24fb0 d6963f7d28e17f72</tt></td>
-</tr>
-<tr>
-<td><tt class="literal"><tt class="function">pg_client_encoding</tt>()</tt></td>
-<td><tt class="type">name</tt></td>
-<td>        Current client encoding name
-       </td>
-<td><tt class="literal">pg_client_encoding()</tt></td>
-<td><tt class="literal">SQL_ASCII</tt></td>
+<td><code class="literal">lpad('hi', 5, 'xy')</code></td>
+<td><code class="literal">xyxhi</code></td>
 </tr>
 <tr>
 <td>
-<tt class="literal"><tt class="function">quote_ident</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2544519"></a>
+<code class="literal"><code class="function">ltrim</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>
+        [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code>
+       </td>
+<td><code class="type">text</code></td>
+<td>        Remove the longest string containing only characters from
+        <em class="parameter"><code>characters</code></em> (a space by default) from the start of
+        <em class="parameter"><code>string</code></em>
+       </td>
+<td><code class="literal">ltrim('zzzytrim', 'xyz')</code></td>
+<td><code class="literal">trim</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">md5</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></td>
+<td><code class="type">text</code></td>
+<td>        Calculates the MD5 hash of <em class="parameter"><code>string</code></em>,
+        returning the result in hexadecimal
+       </td>
+<td><code class="literal">md5('abc')</code></td>
+<td><code class="literal">900150983cd24fb0 d6963f7d28e17f72</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_client_encoding</code>()</code></td>
+<td><code class="type">name</code></td>
+<td>        Current client encoding name
+       </td>
+<td><code class="literal">pg_client_encoding()</code></td>
+<td><code class="literal">SQL_ASCII</code></td>
+</tr>
+<tr>
+<td>
+<code class="literal"><code class="function">quote_ident</code>(<em class="parameter"><code>string</code></em> text)</code><a name="id324780"></a>
 </td>
-<td><tt class="type">text</tt></td>
+<td><code class="type">text</code></td>
 <td>        Return the given string suitably quoted to be used as an identifier
         in an <span class="acronym">SQL</span> statement string.
         Quotes are added only if necessary (i.e., if the string contains
         non-identifier characters or would be case-folded).
         Embedded quotes are properly doubled.
        </td>
-<td><tt class="literal">quote_ident('Foo bar')</tt></td>
-<td><tt class="literal">"Foo bar"</tt></td>
+<td><code class="literal">quote_ident('Foo bar')</code></td>
+<td><code class="literal">"Foo bar"</code></td>
 </tr>
 <tr>
 <td>
-<tt class="literal"><tt class="function">quote_literal</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2544568"></a>
+<code class="literal"><code class="function">quote_literal</code>(<em class="parameter"><code>string</code></em> text)</code><a name="id324826"></a>
 </td>
-<td><tt class="type">text</tt></td>
+<td><code class="type">text</code></td>
 <td>        Return the given string suitably quoted to be used as a string literal
         in an <span class="acronym">SQL</span> statement string.
         Embedded quotes and backslashes are properly doubled.
        </td>
-<td><tt class="literal">quote_literal( 'O\'Reilly')</tt></td>
-<td><tt class="literal">'O''Reilly'</tt></td>
+<td><code class="literal">quote_literal( 'O\'Reilly')</code></td>
+<td><code class="literal">'O''Reilly'</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">repeat</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>, <i class="parameter"><tt>number</tt></i> <tt class="type">integer</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>Repeat <i class="parameter"><tt>string</tt></i> the specified
-       <i class="parameter"><tt>number</tt></i> of times</td>
-<td><tt class="literal">repeat('Pg', 4)</tt></td>
-<td><tt class="literal">PgPgPgPg</tt></td>
+<td><code class="literal"><code class="function">repeat</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>number</code></em> <code class="type">integer</code>)</code></td>
+<td><code class="type">text</code></td>
+<td>Repeat <em class="parameter"><code>string</code></em> the specified
+       <em class="parameter"><code>number</code></em> of times</td>
+<td><code class="literal">repeat('Pg', 4)</code></td>
+<td><code class="literal">PgPgPgPg</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">replace</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>,
-       <i class="parameter"><tt>from</tt></i> <tt class="type">text</tt>,
-       <i class="parameter"><tt>to</tt></i> <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>Replace all occurrences in <i class="parameter"><tt>string</tt></i> of substring
-        <i class="parameter"><tt>from</tt></i> with substring <i class="parameter"><tt>to</tt></i>.
+<td><code class="literal"><code class="function">replace</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>from</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>to</code></em> <code class="type">text</code>)</code></td>
+<td><code class="type">text</code></td>
+<td>Replace all occurrences in <em class="parameter"><code>string</code></em> of substring
+        <em class="parameter"><code>from</code></em> with substring <em class="parameter"><code>to</code></em>
        </td>
-<td><tt class="literal">replace( 'abcdefabcdef', 'cd', 'XX')</tt></td>
-<td><tt class="literal">abXXefabXXef</tt></td>
+<td><code class="literal">replace( 'abcdefabcdef', 'cd', 'XX')</code></td>
+<td><code class="literal">abXXefabXXef</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">rpad</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>,
-        <i class="parameter"><tt>length</tt></i> <tt class="type">integer</tt>
-        [<span class="optional">, <i class="parameter"><tt>fill</tt></i> <tt class="type">text</tt></span>])</tt></td>
-<td><tt class="type">text</tt></td>
-<td>        Fill up the <i class="parameter"><tt>string</tt></i> to length
-        <i class="parameter"><tt>length</tt></i> by appending the characters
-        <i class="parameter"><tt>fill</tt></i> (a space by default).  If the
-        <i class="parameter"><tt>string</tt></i> is already longer than
-        <i class="parameter"><tt>length</tt></i> then it is truncated.
+<td>        <code class="literal"><code class="function">rpad</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>length</code></em> <code class="type">integer</code>
+        [<span class="optional">, <em class="parameter"><code>fill</code></em> <code class="type">text</code></span>])</code>
        </td>
-<td><tt class="literal">rpad('hi', 5, 'xy')</tt></td>
-<td><tt class="literal">hixyx</tt></td>
+<td><code class="type">text</code></td>
+<td>        Fill up the <em class="parameter"><code>string</code></em> to length
+        <em class="parameter"><code>length</code></em> by appending the characters
+        <em class="parameter"><code>fill</code></em> (a space by default).  If the
+        <em class="parameter"><code>string</code></em> is already longer than
+        <em class="parameter"><code>length</code></em> then it is truncated.
+       </td>
+<td><code class="literal">rpad('hi', 5, 'xy')</code></td>
+<td><code class="literal">hixyx</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">rtrim</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>
-        [<span class="optional">, <i class="parameter"><tt>characters</tt></i> <tt class="type">text</tt></span>])</tt></td>
-<td><tt class="type">text</tt></td>
+<td>
+<code class="literal"><code class="function">rtrim</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>
+        [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code>
+       </td>
+<td><code class="type">text</code></td>
 <td>        Remove the longest string containing only characters from
-        <i class="parameter"><tt>characters</tt></i> (a space by default) from the end of
-        <i class="parameter"><tt>string</tt></i>.
+        <em class="parameter"><code>characters</code></em> (a space by default) from the end of
+        <em class="parameter"><code>string</code></em>
        </td>
-<td><tt class="literal">rtrim('trimxxxx', 'x')</tt></td>
-<td><tt class="literal">trim</tt></td>
+<td><code class="literal">rtrim('trimxxxx', 'x')</code></td>
+<td><code class="literal">trim</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">split_part</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>,
-       <i class="parameter"><tt>delimiter</tt></i> <tt class="type">text</tt>,
-       <i class="parameter"><tt>field</tt></i> <tt class="type">integer</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>Split <i class="parameter"><tt>string</tt></i> on <i class="parameter"><tt>delimiter</tt></i>
+<td><code class="literal"><code class="function">split_part</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>delimiter</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>field</code></em> <code class="type">integer</code>)</code></td>
+<td><code class="type">text</code></td>
+<td>Split <em class="parameter"><code>string</code></em> on <em class="parameter"><code>delimiter</code></em>
         and return the given field (counting from one)
        </td>
-<td><tt class="literal">split_part( 'abc~@~def~@~ghi', '~@~', 2)</tt></td>
-<td><tt class="literal">def</tt></td>
+<td><code class="literal">split_part( 'abc~@~def~@~ghi', '~@~', 2)</code></td>
+<td><code class="literal">def</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">strpos</tt>(<i class="parameter"><tt>string</tt></i>, <i class="parameter"><tt>substring</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">strpos</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>substring</code></em>)</code></td>
+<td><code class="type">text</code></td>
 <td>        Location of specified substring (same as
-        <tt class="literal">position(<i class="parameter"><tt>substring</tt></i> in
-         <i class="parameter"><tt>string</tt></i>)</tt>, but note the reversed
+        <code class="literal">position(<em class="parameter"><code>substring</code></em> in
+         <em class="parameter"><code>string</code></em>)</code>, but note the reversed
         argument order)
        </td>
-<td><tt class="literal">strpos('high', 'ig')</tt></td>
-<td><tt class="literal">2</tt></td>
+<td><code class="literal">strpos('high', 'ig')</code></td>
+<td><code class="literal">2</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">substr</tt>(<i class="parameter"><tt>string</tt></i>, <i class="parameter"><tt>from</tt></i> [<span class="optional">, <i class="parameter"><tt>count</tt></i></span>])</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">substr</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>from</code></em> [<span class="optional">, <em class="parameter"><code>count</code></em></span>])</code></td>
+<td><code class="type">text</code></td>
 <td>        Extract substring (same as
-        <tt class="literal">substring(<i class="parameter"><tt>string</tt></i> from <i class="parameter"><tt>from</tt></i> for <i class="parameter"><tt>count</tt></i>)</tt>)
+        <code class="literal">substring(<em class="parameter"><code>string</code></em> from <em class="parameter"><code>from</code></em> for <em class="parameter"><code>count</code></em>)</code>)
        </td>
-<td><tt class="literal">substr('alphabet', 3, 2)</tt></td>
-<td><tt class="literal">ph</tt></td>
+<td><code class="literal">substr('alphabet', 3, 2)</code></td>
+<td><code class="literal">ph</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_ascii</tt>(<tt class="type">text</tt>
-        [<span class="optional">, <i class="parameter"><tt>encoding</tt></i></span>])</tt></td>
-<td><tt class="type">text</tt></td>
-<td>       Convert <i class="parameter"><tt>text</tt></i> to <span class="acronym">ASCII</span> from another encoding
-       <sup>[<a name="id2545130" href="#ftn.id2545130">a</a>]</sup>
-</td>
-<td><tt class="literal">to_ascii('Karel')</tt></td>
-<td><tt class="literal">Karel</tt></td>
+<td><code class="literal"><code class="function">to_ascii</code>(<code class="type">text</code>
+        [<span class="optional">, <em class="parameter"><code>encoding</code></em></span>])</code></td>
+<td><code class="type">text</code></td>
+<td>       Convert <em class="parameter"><code>text</code></em> to <span class="acronym">ASCII</span> from another encoding
+       <sup>[<a name="id325378" href="#ftn.id325378">a</a>]</sup>
+       </td>
+<td><code class="literal">to_ascii('Karel')</code></td>
+<td><code class="literal">Karel</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">to_hex</tt>(<i class="parameter"><tt>number</tt></i> <tt class="type">integer</tt>
-       or <tt class="type">bigint</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>Convert <i class="parameter"><tt>number</tt></i> to its equivalent hexadecimal
+<td><code class="literal"><code class="function">to_hex</code>(<em class="parameter"><code>number</code></em> <code class="type">integer</code>
+       or <code class="type">bigint</code>)</code></td>
+<td><code class="type">text</code></td>
+<td>Convert <em class="parameter"><code>number</code></em> to its equivalent hexadecimal
         representation
        </td>
-<td><tt class="literal">to_hex(2147483647)</tt></td>
-<td><tt class="literal">7fffffff</tt></td>
+<td><code class="literal">to_hex(2147483647)</code></td>
+<td><code class="literal">7fffffff</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">translate</tt>(<i class="parameter"><tt>string</tt></i>
-        <tt class="type">text</tt>,
-        <i class="parameter"><tt>from</tt></i> <tt class="type">text</tt>,
-        <i class="parameter"><tt>to</tt></i> <tt class="type">text</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
-<td>        Any character in <i class="parameter"><tt>string</tt></i> that matches a
-        character in the <i class="parameter"><tt>from</tt></i> set is replaced by
-        the corresponding character in the <i class="parameter"><tt>to</tt></i>
-        set.
+<td>        <code class="literal"><code class="function">translate</code>(<em class="parameter"><code>string</code></em>
+        <code class="type">text</code>,
+        <em class="parameter"><code>from</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>to</code></em> <code class="type">text</code>)</code>
        </td>
-<td><tt class="literal">translate('12345', '14', 'ax')</tt></td>
-<td><tt class="literal">a23x5</tt></td>
+<td><code class="type">text</code></td>
+<td>        Any character in <em class="parameter"><code>string</code></em> that matches a
+        character in the <em class="parameter"><code>from</code></em> set is replaced by
+        the corresponding character in the <em class="parameter"><code>to</code></em>
+        set
+       </td>
+<td><code class="literal">translate('12345', '14', 'ax')</code></td>
+<td><code class="literal">a23x5</code></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id2545130" href="#id2545130">a</a>] </sup>         The <tt class="function">to_ascii</tt> function supports conversion from
-         <tt class="literal">LATIN1</tt>, <tt class="literal">LATIN2</tt>, <tt class="literal">LATIN9</tt>,
-         and <tt class="literal">WIN1250</tt> encodings only.
+<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id325378" href="#id325378">a</a>] </sup>         The <code class="function">to_ascii</code> function supports conversion from
+         <code class="literal">LATIN1</code>, <code class="literal">LATIN2</code>, <code class="literal">LATIN9</code>,
+         and <code class="literal">WIN1250</code> encodings only.
         </p></div></td></tr></tbody>
 </table>
 </div>
@@ -470,597 +480,597 @@
 </colgroup>
 <thead><tr>
 <th>Conversion Name
-        <sup>[<a name="id2545320" href="#ftn.id2545320">a</a>]</sup>
-</th>
+        <sup>[<a name="id325564" href="#ftn.id325564">a</a>]</sup>
+       </th>
 <th>Source Encoding</th>
 <th>Destination Encoding</th>
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">ascii_to_mic</tt></td>
-<td><tt class="literal">SQL_ASCII</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">ascii_to_mic</code></td>
+<td><code class="literal">SQL_ASCII</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">ascii_to_utf8</tt></td>
-<td><tt class="literal">SQL_ASCII</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">ascii_to_utf8</code></td>
+<td><code class="literal">SQL_ASCII</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">big5_to_euc_tw</tt></td>
-<td><tt class="literal">BIG5</tt></td>
-<td><tt class="literal">EUC_TW</tt></td>
+<td><code class="literal">big5_to_euc_tw</code></td>
+<td><code class="literal">BIG5</code></td>
+<td><code class="literal">EUC_TW</code></td>
 </tr>
 <tr>
-<td><tt class="literal">big5_to_mic</tt></td>
-<td><tt class="literal">BIG5</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">big5_to_mic</code></td>
+<td><code class="literal">BIG5</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">big5_to_utf8</tt></td>
-<td><tt class="literal">BIG5</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">big5_to_utf8</code></td>
+<td><code class="literal">BIG5</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_cn_to_mic</tt></td>
-<td><tt class="literal">EUC_CN</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">euc_cn_to_mic</code></td>
+<td><code class="literal">EUC_CN</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_cn_to_utf8</tt></td>
-<td><tt class="literal">EUC_CN</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">euc_cn_to_utf8</code></td>
+<td><code class="literal">EUC_CN</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_jp_to_mic</tt></td>
-<td><tt class="literal">EUC_JP</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">euc_jp_to_mic</code></td>
+<td><code class="literal">EUC_JP</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_jp_to_sjis</tt></td>
-<td><tt class="literal">EUC_JP</tt></td>
-<td><tt class="literal">SJIS</tt></td>
+<td><code class="literal">euc_jp_to_sjis</code></td>
+<td><code class="literal">EUC_JP</code></td>
+<td><code class="literal">SJIS</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_jp_to_utf8</tt></td>
-<td><tt class="literal">EUC_JP</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">euc_jp_to_utf8</code></td>
+<td><code class="literal">EUC_JP</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_kr_to_mic</tt></td>
-<td><tt class="literal">EUC_KR</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">euc_kr_to_mic</code></td>
+<td><code class="literal">EUC_KR</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_kr_to_utf8</tt></td>
-<td><tt class="literal">EUC_KR</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">euc_kr_to_utf8</code></td>
+<td><code class="literal">EUC_KR</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_tw_to_big5</tt></td>
-<td><tt class="literal">EUC_TW</tt></td>
-<td><tt class="literal">BIG5</tt></td>
+<td><code class="literal">euc_tw_to_big5</code></td>
+<td><code class="literal">EUC_TW</code></td>
+<td><code class="literal">BIG5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_tw_to_mic</tt></td>
-<td><tt class="literal">EUC_TW</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">euc_tw_to_mic</code></td>
+<td><code class="literal">EUC_TW</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">euc_tw_to_utf8</tt></td>
-<td><tt class="literal">EUC_TW</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">euc_tw_to_utf8</code></td>
+<td><code class="literal">EUC_TW</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">gb18030_to_utf8</tt></td>
-<td><tt class="literal">GB18030</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">gb18030_to_utf8</code></td>
+<td><code class="literal">GB18030</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">gbk_to_utf8</tt></td>
-<td><tt class="literal">GBK</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">gbk_to_utf8</code></td>
+<td><code class="literal">GBK</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_10_to_utf8</tt></td>
-<td><tt class="literal">LATIN6</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_10_to_utf8</code></td>
+<td><code class="literal">LATIN6</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_13_to_utf8</tt></td>
-<td><tt class="literal">LATIN7</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_13_to_utf8</code></td>
+<td><code class="literal">LATIN7</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_14_to_utf8</tt></td>
-<td><tt class="literal">LATIN8</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_14_to_utf8</code></td>
+<td><code class="literal">LATIN8</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_15_to_utf8</tt></td>
-<td><tt class="literal">LATIN9</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_15_to_utf8</code></td>
+<td><code class="literal">LATIN9</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_16_to_utf8</tt></td>
-<td><tt class="literal">LATIN10</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_16_to_utf8</code></td>
+<td><code class="literal">LATIN10</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_1_to_mic</tt></td>
-<td><tt class="literal">LATIN1</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">iso_8859_1_to_mic</code></td>
+<td><code class="literal">LATIN1</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_1_to_utf8</tt></td>
-<td><tt class="literal">LATIN1</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_1_to_utf8</code></td>
+<td><code class="literal">LATIN1</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_2_to_mic</tt></td>
-<td><tt class="literal">LATIN2</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">iso_8859_2_to_mic</code></td>
+<td><code class="literal">LATIN2</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_2_to_utf8</tt></td>
-<td><tt class="literal">LATIN2</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_2_to_utf8</code></td>
+<td><code class="literal">LATIN2</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_2_to_windows_1250</tt></td>
-<td><tt class="literal">LATIN2</tt></td>
-<td><tt class="literal">WIN1250</tt></td>
+<td><code class="literal">iso_8859_2_to_windows_1250</code></td>
+<td><code class="literal">LATIN2</code></td>
+<td><code class="literal">WIN1250</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_3_to_mic</tt></td>
-<td><tt class="literal">LATIN3</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">iso_8859_3_to_mic</code></td>
+<td><code class="literal">LATIN3</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_3_to_utf8</tt></td>
-<td><tt class="literal">LATIN3</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_3_to_utf8</code></td>
+<td><code class="literal">LATIN3</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_4_to_mic</tt></td>
-<td><tt class="literal">LATIN4</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">iso_8859_4_to_mic</code></td>
+<td><code class="literal">LATIN4</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_4_to_utf8</tt></td>
-<td><tt class="literal">LATIN4</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_4_to_utf8</code></td>
+<td><code class="literal">LATIN4</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_5_to_koi8_r</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
-<td><tt class="literal">KOI8</tt></td>
+<td><code class="literal">iso_8859_5_to_koi8_r</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
+<td><code class="literal">KOI8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_5_to_mic</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">iso_8859_5_to_mic</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_5_to_utf8</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_5_to_utf8</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_5_to_windows_1251</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
+<td><code class="literal">iso_8859_5_to_windows_1251</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
+<td><code class="literal">WIN1251</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_5_to_windows_866</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
-<td><tt class="literal">WIN866</tt></td>
+<td><code class="literal">iso_8859_5_to_windows_866</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
+<td><code class="literal">WIN866</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_6_to_utf8</tt></td>
-<td><tt class="literal">ISO_8859_6</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_6_to_utf8</code></td>
+<td><code class="literal">ISO_8859_6</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_7_to_utf8</tt></td>
-<td><tt class="literal">ISO_8859_7</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_7_to_utf8</code></td>
+<td><code class="literal">ISO_8859_7</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_8_to_utf8</tt></td>
-<td><tt class="literal">ISO_8859_8</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_8_to_utf8</code></td>
+<td><code class="literal">ISO_8859_8</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">iso_8859_9_to_utf8</tt></td>
-<td><tt class="literal">LATIN5</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">iso_8859_9_to_utf8</code></td>
+<td><code class="literal">LATIN5</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">johab_to_utf8</tt></td>
-<td><tt class="literal">JOHAB</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">johab_to_utf8</code></td>
+<td><code class="literal">JOHAB</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">koi8_r_to_iso_8859_5</tt></td>
-<td><tt class="literal">KOI8</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
+<td><code class="literal">koi8_r_to_iso_8859_5</code></td>
+<td><code class="literal">KOI8</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">koi8_r_to_mic</tt></td>
-<td><tt class="literal">KOI8</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">koi8_r_to_mic</code></td>
+<td><code class="literal">KOI8</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">koi8_r_to_utf8</tt></td>
-<td><tt class="literal">KOI8</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">koi8_r_to_utf8</code></td>
+<td><code class="literal">KOI8</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">koi8_r_to_windows_1251</tt></td>
-<td><tt class="literal">KOI8</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
+<td><code class="literal">koi8_r_to_windows_1251</code></td>
+<td><code class="literal">KOI8</code></td>
+<td><code class="literal">WIN1251</code></td>
 </tr>
 <tr>
-<td><tt class="literal">koi8_r_to_windows_866</tt></td>
-<td><tt class="literal">KOI8</tt></td>
-<td><tt class="literal">WIN866</tt></td>
+<td><code class="literal">koi8_r_to_windows_866</code></td>
+<td><code class="literal">KOI8</code></td>
+<td><code class="literal">WIN866</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_ascii</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">SQL_ASCII</tt></td>
+<td><code class="literal">mic_to_ascii</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">SQL_ASCII</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_big5</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">BIG5</tt></td>
+<td><code class="literal">mic_to_big5</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">BIG5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_euc_cn</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">EUC_CN</tt></td>
+<td><code class="literal">mic_to_euc_cn</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">EUC_CN</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_euc_jp</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">EUC_JP</tt></td>
+<td><code class="literal">mic_to_euc_jp</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">EUC_JP</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_euc_kr</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">EUC_KR</tt></td>
+<td><code class="literal">mic_to_euc_kr</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">EUC_KR</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_euc_tw</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">EUC_TW</tt></td>
+<td><code class="literal">mic_to_euc_tw</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">EUC_TW</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_iso_8859_1</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">LATIN1</tt></td>
+<td><code class="literal">mic_to_iso_8859_1</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">LATIN1</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_iso_8859_2</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">LATIN2</tt></td>
+<td><code class="literal">mic_to_iso_8859_2</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">LATIN2</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_iso_8859_3</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">LATIN3</tt></td>
+<td><code class="literal">mic_to_iso_8859_3</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">LATIN3</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_iso_8859_4</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">LATIN4</tt></td>
+<td><code class="literal">mic_to_iso_8859_4</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">LATIN4</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_iso_8859_5</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
+<td><code class="literal">mic_to_iso_8859_5</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_koi8_r</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">KOI8</tt></td>
+<td><code class="literal">mic_to_koi8_r</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">KOI8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_sjis</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">SJIS</tt></td>
+<td><code class="literal">mic_to_sjis</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">SJIS</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_windows_1250</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">WIN1250</tt></td>
+<td><code class="literal">mic_to_windows_1250</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">WIN1250</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_windows_1251</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
+<td><code class="literal">mic_to_windows_1251</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">WIN1251</code></td>
 </tr>
 <tr>
-<td><tt class="literal">mic_to_windows_866</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
-<td><tt class="literal">WIN866</tt></td>
+<td><code class="literal">mic_to_windows_866</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
+<td><code class="literal">WIN866</code></td>
 </tr>
 <tr>
-<td><tt class="literal">sjis_to_euc_jp</tt></td>
-<td><tt class="literal">SJIS</tt></td>
-<td><tt class="literal">EUC_JP</tt></td>
+<td><code class="literal">sjis_to_euc_jp</code></td>
+<td><code class="literal">SJIS</code></td>
+<td><code class="literal">EUC_JP</code></td>
 </tr>
 <tr>
-<td><tt class="literal">sjis_to_mic</tt></td>
-<td><tt class="literal">SJIS</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">sjis_to_mic</code></td>
+<td><code class="literal">SJIS</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">sjis_to_utf8</tt></td>
-<td><tt class="literal">SJIS</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">sjis_to_utf8</code></td>
+<td><code class="literal">SJIS</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">tcvn_to_utf8</tt></td>
-<td><tt class="literal">WIN1258</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">tcvn_to_utf8</code></td>
+<td><code class="literal">WIN1258</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">uhc_to_utf8</tt></td>
-<td><tt class="literal">UHC</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">uhc_to_utf8</code></td>
+<td><code class="literal">UHC</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_ascii</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">SQL_ASCII</tt></td>
+<td><code class="literal">utf8_to_ascii</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">SQL_ASCII</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_big5</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">BIG5</tt></td>
+<td><code class="literal">utf8_to_big5</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">BIG5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_euc_cn</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">EUC_CN</tt></td>
+<td><code class="literal">utf8_to_euc_cn</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">EUC_CN</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_euc_jp</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">EUC_JP</tt></td>
+<td><code class="literal">utf8_to_euc_jp</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">EUC_JP</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_euc_kr</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">EUC_KR</tt></td>
+<td><code class="literal">utf8_to_euc_kr</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">EUC_KR</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_euc_tw</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">EUC_TW</tt></td>
+<td><code class="literal">utf8_to_euc_tw</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">EUC_TW</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_gb18030</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">GB18030</tt></td>
+<td><code class="literal">utf8_to_gb18030</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">GB18030</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_gbk</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">GBK</tt></td>
+<td><code class="literal">utf8_to_gbk</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">GBK</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_1</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN1</tt></td>
+<td><code class="literal">utf8_to_iso_8859_1</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN1</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_10</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN6</tt></td>
+<td><code class="literal">utf8_to_iso_8859_10</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN6</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_13</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN7</tt></td>
+<td><code class="literal">utf8_to_iso_8859_13</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN7</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_14</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN8</tt></td>
+<td><code class="literal">utf8_to_iso_8859_14</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_15</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN9</tt></td>
+<td><code class="literal">utf8_to_iso_8859_15</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN9</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_16</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN10</tt></td>
+<td><code class="literal">utf8_to_iso_8859_16</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN10</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_2</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN2</tt></td>
+<td><code class="literal">utf8_to_iso_8859_2</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN2</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_3</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN3</tt></td>
+<td><code class="literal">utf8_to_iso_8859_3</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN3</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_4</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN4</tt></td>
+<td><code class="literal">utf8_to_iso_8859_4</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN4</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_5</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
+<td><code class="literal">utf8_to_iso_8859_5</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_6</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">ISO_8859_6</tt></td>
+<td><code class="literal">utf8_to_iso_8859_6</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">ISO_8859_6</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_7</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">ISO_8859_7</tt></td>
+<td><code class="literal">utf8_to_iso_8859_7</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">ISO_8859_7</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_8</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">ISO_8859_8</tt></td>
+<td><code class="literal">utf8_to_iso_8859_8</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">ISO_8859_8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_iso_8859_9</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">LATIN5</tt></td>
+<td><code class="literal">utf8_to_iso_8859_9</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">LATIN5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_johab</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">JOHAB</tt></td>
+<td><code class="literal">utf8_to_johab</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">JOHAB</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_koi8_r</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">KOI8</tt></td>
+<td><code class="literal">utf8_to_koi8_r</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">KOI8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_sjis</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">SJIS</tt></td>
+<td><code class="literal">utf8_to_sjis</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">SJIS</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_tcvn</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">WIN1258</tt></td>
+<td><code class="literal">utf8_to_tcvn</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1258</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_uhc</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">UHC</tt></td>
+<td><code class="literal">utf8_to_uhc</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">UHC</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_windows_1250</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">WIN1250</tt></td>
+<td><code class="literal">utf8_to_windows_1250</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1250</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_windows_1251</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
+<td><code class="literal">utf8_to_windows_1251</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1251</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_windows_1252</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">WIN1252</tt></td>
+<td><code class="literal">utf8_to_windows_1252</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1252</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_windows_1256</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">WIN1256</tt></td>
+<td><code class="literal">utf8_to_windows_1256</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1256</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_windows_866</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">WIN866</tt></td>
+<td><code class="literal">utf8_to_windows_866</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN866</code></td>
 </tr>
 <tr>
-<td><tt class="literal">utf8_to_windows_874</tt></td>
-<td><tt class="literal">UTF8</tt></td>
-<td><tt class="literal">WIN874</tt></td>
+<td><code class="literal">utf8_to_windows_874</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN874</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1250_to_iso_8859_2</tt></td>
-<td><tt class="literal">WIN1250</tt></td>
-<td><tt class="literal">LATIN2</tt></td>
+<td><code class="literal">windows_1250_to_iso_8859_2</code></td>
+<td><code class="literal">WIN1250</code></td>
+<td><code class="literal">LATIN2</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1250_to_mic</tt></td>
-<td><tt class="literal">WIN1250</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">windows_1250_to_mic</code></td>
+<td><code class="literal">WIN1250</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1250_to_utf8</tt></td>
-<td><tt class="literal">WIN1250</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">windows_1250_to_utf8</code></td>
+<td><code class="literal">WIN1250</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1251_to_iso_8859_5</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
+<td><code class="literal">windows_1251_to_iso_8859_5</code></td>
+<td><code class="literal">WIN1251</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1251_to_koi8_r</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
-<td><tt class="literal">KOI8</tt></td>
+<td><code class="literal">windows_1251_to_koi8_r</code></td>
+<td><code class="literal">WIN1251</code></td>
+<td><code class="literal">KOI8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1251_to_mic</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">windows_1251_to_mic</code></td>
+<td><code class="literal">WIN1251</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1251_to_utf8</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">windows_1251_to_utf8</code></td>
+<td><code class="literal">WIN1251</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1251_to_windows_866</tt></td>
-<td><tt class="literal">WIN1251</tt></td>
-<td><tt class="literal">WIN866</tt></td>
+<td><code class="literal">windows_1251_to_windows_866</code></td>
+<td><code class="literal">WIN1251</code></td>
+<td><code class="literal">WIN866</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1252_to_utf8</tt></td>
-<td><tt class="literal">WIN1252</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">windows_1252_to_utf8</code></td>
+<td><code class="literal">WIN1252</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_1256_to_utf8</tt></td>
-<td><tt class="literal">WIN1256</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">windows_1256_to_utf8</code></td>
+<td><code class="literal">WIN1256</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_866_to_iso_8859_5</tt></td>
-<td><tt class="literal">WIN866</tt></td>
-<td><tt class="literal">ISO_8859_5</tt></td>
+<td><code class="literal">windows_866_to_iso_8859_5</code></td>
+<td><code class="literal">WIN866</code></td>
+<td><code class="literal">ISO_8859_5</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_866_to_koi8_r</tt></td>
-<td><tt class="literal">WIN866</tt></td>
-<td><tt class="literal">KOI8</tt></td>
+<td><code class="literal">windows_866_to_koi8_r</code></td>
+<td><code class="literal">WIN866</code></td>
+<td><code class="literal">KOI8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_866_to_mic</tt></td>
-<td><tt class="literal">WIN866</tt></td>
-<td><tt class="literal">MULE_INTERNAL</tt></td>
+<td><code class="literal">windows_866_to_mic</code></td>
+<td><code class="literal">WIN866</code></td>
+<td><code class="literal">MULE_INTERNAL</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_866_to_utf8</tt></td>
-<td><tt class="literal">WIN866</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">windows_866_to_utf8</code></td>
+<td><code class="literal">WIN866</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_866_to_windows_1251</tt></td>
-<td><tt class="literal">WIN866</tt></td>
-<td><tt class="literal">WIN</tt></td>
+<td><code class="literal">windows_866_to_windows_1251</code></td>
+<td><code class="literal">WIN866</code></td>
+<td><code class="literal">WIN</code></td>
 </tr>
 <tr>
-<td><tt class="literal">windows_874_to_utf8</tt></td>
-<td><tt class="literal">WIN874</tt></td>
-<td><tt class="literal">UTF8</tt></td>
+<td><code class="literal">windows_874_to_utf8</code></td>
+<td><code class="literal">WIN874</code></td>
+<td><code class="literal">UTF8</code></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2545320" href="#id2545320">a</a>] </sup>          The conversion names follow a standard naming scheme: The
+<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id325564" href="#id325564">a</a>] </sup>          The conversion names follow a standard naming scheme: The
           official name of the source encoding with all
           non-alphanumeric characters replaced by underscores followed
-          by <tt class="literal">_to_</tt> followed by the equally processed
+          by <code class="literal">_to_</code> followed by the equally processed
           destination encoding name. Therefore the names might deviate
           from the customary encoding names.
          </p></div></td></tr></tbody>

@@ -4,18 +4,15 @@
 <title>Chapter 5. Data Definition</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
-<link rel="previous" href="sql-expressions.html" title="4.2. Value Expressions">
+<link rel="prev" href="sql-expressions.html" title="4.2. Value Expressions">
 <link rel="next" href="ddl-default.html" title="5.2. Default Values">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="ddl">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="ddl"></a>Chapter 5. Data Definition</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ddl"></a>Chapter 5. Data Definition</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -23,24 +20,24 @@
 <dt><span class="sect1"><a href="ddl-default.html">5.2. Default Values</a></span></dt>
 <dt><span class="sect1"><a href="ddl-constraints.html">5.3. Constraints</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524216">5.3.1. Check Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524411">5.3.2. Not-Null Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524541">5.3.3. Unique Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2524643">5.3.4. Primary Keys</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id306077">5.3.1. Check Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id306233">5.3.2. Not-Null Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id306347">5.3.3. Unique Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id306435">5.3.4. Primary Keys</a></span></dt>
 <dt><span class="sect2"><a href="ddl-constraints.html#ddl-constraints-fk">5.3.5. Foreign Keys</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ddl-system-columns.html">5.4. System Columns</a></span></dt>
 <dt><span class="sect1"><a href="ddl-inherit.html">5.5. Inheritance</a></span></dt>
 <dt><span class="sect1"><a href="ddl-alter.html">5.6. Modifying Tables</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525772">5.6.1. Adding a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525830">5.6.2. Removing a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525883">5.6.3. Adding a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525925">5.6.4. Removing a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2525997">5.6.5. Changing a Column's Default Value</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2526041">5.6.6. Changing a Column's Data Type</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2526087">5.6.7. Renaming a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2526108">5.6.8. Renaming a Table</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id307413">5.6.1. Adding a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id307464">5.6.2. Removing a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id307512">5.6.3. Adding a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id307546">5.6.4. Removing a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id307610">5.6.5. Changing a Column's Default Value</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id307649">5.6.6. Changing a Column's Data Type</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id307689">5.6.7. Renaming a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id307709">5.6.8. Renaming a Table</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ddl-priv.html">5.7. Privileges</a></span></dt>
 <dt><span class="sect1"><a href="ddl-schemas.html">5.8. Schemas</a></span></dt>
@@ -68,12 +65,9 @@
   such as views, functions, and triggers.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ddl-basics"></a>5.1. Table Basics</h2></div></div>
-<div></div>
-</div>
-<a name="id2523788"></a><a name="id2523798"></a><a name="id2523803"></a><p>   A table in a relational database is much like a table on paper: It
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ddl-basics"></a>5.1. Table Basics</h2></div></div></div>
+<a name="id305710"></a><a name="id305719"></a><a name="id305725"></a><p>   A table in a relational database is much like a table on paper: It
    consists of rows and columns.  The number and order of the columns
    is fixed, and each column has a name.  The number of rows is
    variable -- it reflects how much data is stored at a given moment.
@@ -100,14 +94,14 @@
    built-in data types that fit many applications.  Users can also
    define their own data types.  Most built-in data types have obvious
    names and semantics, so we defer a detailed explanation to <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a>.  Some of the frequently used data types are
-   <tt class="type">integer</tt> for whole numbers, <tt class="type">numeric</tt> for
-   possibly fractional numbers, <tt class="type">text</tt> for character
-   strings, <tt class="type">date</tt> for dates, <tt class="type">time</tt> for
-   time-of-day values, and <tt class="type">timestamp</tt> for values
+   <code class="type">integer</code> for whole numbers, <code class="type">numeric</code> for
+   possibly fractional numbers, <code class="type">text</code> for character
+   strings, <code class="type">date</code> for dates, <code class="type">time</code> for
+   time-of-day values, and <code class="type">timestamp</code> for values
    containing both date and time.
   </p>
-<a name="id2523887"></a><p>   To create a table, you use the aptly named <tt class="command">CREATE
-   TABLE</tt> command.  In this command you specify at least a
+<a name="id305792"></a><p>   To create a table, you use the aptly named <code class="command">CREATE
+   TABLE</code> command.  In this command you specify at least a
    name for the new table, the names of the columns and the data type
    of each column.  For example:
 </p>
@@ -116,11 +110,11 @@
     second_column integer
 );</pre>
 <p>
-   This creates a table named <tt class="literal">my_first_table</tt> with
+   This creates a table named <code class="literal">my_first_table</code> with
    two columns.  The first column is named
-   <tt class="literal">first_column</tt> and has a data type of
-   <tt class="type">text</tt>; the second column has the name
-   <tt class="literal">second_column</tt> and the type <tt class="type">integer</tt>.
+   <code class="literal">first_column</code> and has a data type of
+   <code class="type">text</code>; the second column has the name
+   <code class="literal">second_column</code> and the type <code class="type">integer</code>.
    The table and column names follow the identifier syntax explained
    in <a href="sql-syntax.html#sql-syntax-identifiers" title="4.1.1. Identifiers and Key Words">Section 4.1.1, &#8220;Identifiers and Key Words&#8221;</a>.  The type names are
    usually also identifiers, but there are some exceptions.  Note that the
@@ -137,7 +131,7 @@
     price numeric
 );</pre>
 <p>
-   (The <tt class="type">numeric</tt> type can store fractional components, as
+   (The <code class="type">numeric</code> type can store fractional components, as
    would be typical of monetary amounts.)
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -153,8 +147,8 @@
    However, defining a table with anywhere near this many columns is
    highly unusual and often a questionable design.
   </p>
-<a name="id2523985"></a><p>   If you no longer need a table, you can remove it using the
-   <tt class="command">DROP TABLE</tt> command.  For example:
+<a name="id305875"></a><p>   If you no longer need a table, you can remove it using the
+   <code class="command">DROP TABLE</code> command.  For example:
 </p>
 <pre class="programlisting">DROP TABLE my_first_table;
 DROP TABLE products;</pre>

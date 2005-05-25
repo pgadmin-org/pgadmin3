@@ -4,19 +4,16 @@
 <title>5.3. Constraints</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="previous" href="ddl-default.html" title="5.2. Default Values">
+<link rel="prev" href="ddl-default.html" title="5.2. Default Values">
 <link rel="next" href="ddl-system-columns.html" title="5.4. System Columns">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ddl-constraints"></a>5.3. Constraints</h2></div></div>
-<div></div>
-</div>
-<a name="id2524187"></a><p>   Data types are a way to limit the kind of data that can be stored
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ddl-constraints"></a>5.3. Constraints</h2></div></div></div>
+<a name="id306055"></a><p>   Data types are a way to limit the kind of data that can be stored
    in a table.  For many applications, however, the constraint they
    provide is too coarse.  For example, a column containing a product
    price should probably only accept positive values.  But there is no
@@ -32,12 +29,9 @@
    even if the value came from the default value definition.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2524216"></a>5.3.1. Check Constraints</h3></div></div>
-<div></div>
-</div>
-<a name="id2524220"></a><a name="id2524225"></a><p>    A check constraint is the most generic constraint type.  It allows
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id306077"></a>5.3.1. Check Constraints</h3></div></div></div>
+<a name="id306080"></a><a name="id306086"></a><p>    A check constraint is the most generic constraint type.  It allows
     you to specify that the value in a certain column must satisfy a
     Boolean (truth-value) expression.  For instance, to require positive
     product prices, you could use:
@@ -45,30 +39,30 @@
 <pre class="programlisting">CREATE TABLE products (
     product_no integer,
     name text,
-    price numeric <span><b class="emphasis">CHECK (price &gt; 0)</b></span>
+    price numeric <span><strong class="emphasis">CHECK (price &gt; 0)</strong></span>
 );</pre>
 <p>
    </p>
 <p>    As you see, the constraint definition comes after the data type,
     just like default value definitions.  Default values and
     constraints can be listed in any order.  A check constraint
-    consists of the key word <tt class="literal">CHECK</tt> followed by an
+    consists of the key word <code class="literal">CHECK</code> followed by an
     expression in parentheses.  The check constraint expression should
     involve the column thus constrained, otherwise the constraint
     would not make too much sense.
    </p>
-<a name="id2524266"></a><p>    You can also give the constraint a separate name.  This clarifies
+<a name="id306120"></a><p>    You can also give the constraint a separate name.  This clarifies
     error messages and allows you to refer to the constraint when you
     need to change it.  The syntax is:
 </p>
 <pre class="programlisting">CREATE TABLE products (
     product_no integer,
     name text,
-    price numeric <span><b class="emphasis">CONSTRAINT positive_price</b></span> CHECK (price &gt; 0)
+    price numeric <span><strong class="emphasis">CONSTRAINT positive_price</strong></span> CHECK (price &gt; 0)
 );</pre>
 <p>
     So, to specify a named constraint, use the key word
-    <tt class="literal">CONSTRAINT</tt> followed by an identifier followed
+    <code class="literal">CONSTRAINT</code> followed by an identifier followed
     by the constraint definition.  (If you don't specify a constraint
     name in this way, the system chooses a name for you.)
    </p>
@@ -81,7 +75,7 @@
     name text,
     price numeric CHECK (price &gt; 0),
     discounted_price numeric CHECK (discounted_price &gt; 0),
-    <span><b class="emphasis">CHECK (price &gt; discounted_price)</b></span>
+    <span><strong class="emphasis">CHECK (price &gt; discounted_price)</strong></span>
 );</pre>
 <p>
    </p>
@@ -133,11 +127,11 @@
     CHECK (price &gt; 0),
     discounted_price numeric,
     CHECK (discounted_price &gt; 0),
-    <span><b class="emphasis">CONSTRAINT valid_discount</b></span> CHECK (price &gt; discounted_price)
+    <span><strong class="emphasis">CONSTRAINT valid_discount</strong></span> CHECK (price &gt; discounted_price)
 );</pre>
 <p>
    </p>
-<a name="id2524391"></a><p>    It should be noted that a check constraint is satisfied if the
+<a name="id306217"></a><p>    It should be noted that a check constraint is satisfied if the
     check expression evaluates to true or the null value.  Since most
     expressions will evaluate to the null value if any operand is null,
     they will not prevent null values in the constrained columns.  To
@@ -146,25 +140,22 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2524411"></a>5.3.2. Not-Null Constraints</h3></div></div>
-<div></div>
-</div>
-<a name="id2524414"></a><a name="id2524420"></a><p>    A not-null constraint simply specifies that a column must not
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id306233"></a>5.3.2. Not-Null Constraints</h3></div></div></div>
+<a name="id306237"></a><a name="id306243"></a><p>    A not-null constraint simply specifies that a column must not
     assume the null value.  A syntax example:
 </p>
 <pre class="programlisting">CREATE TABLE products (
-    product_no integer <span><b class="emphasis">NOT NULL</b></span>,
-    name text <span><b class="emphasis">NOT NULL</b></span>,
+    product_no integer <span><strong class="emphasis">NOT NULL</strong></span>,
+    name text <span><strong class="emphasis">NOT NULL</strong></span>,
     price numeric
 );</pre>
 <p>
    </p>
 <p>    A not-null constraint is always written as a column constraint.  A
     not-null constraint is functionally equivalent to creating a check
-    constraint <tt class="literal">CHECK (<i class="replaceable"><tt>column_name</tt></i>
-    IS NOT NULL)</tt>, but in
+    constraint <code class="literal">CHECK (<em class="replaceable"><code>column_name</code></em>
+    IS NOT NULL)</code>, but in
     <span class="productname">PostgreSQL</span> creating an explicit
     not-null constraint is more efficient.  The drawback is that you
     cannot give explicit names to not-null constraints created that
@@ -182,11 +173,11 @@
     The order doesn't matter.  It does not necessarily determine in which
     order the constraints are checked.
    </p>
-<p>    The <tt class="literal">NOT NULL</tt> constraint has an inverse: the
-    <tt class="literal">NULL</tt> constraint.  This does not mean that the
+<p>    The <code class="literal">NOT NULL</code> constraint has an inverse: the
+    <code class="literal">NULL</code> constraint.  This does not mean that the
     column must be null, which would surely be useless.  Instead, this
     simply selects the default behavior that the column may be null.
-    The <tt class="literal">NULL</tt> constraint is not defined in the SQL
+    The <code class="literal">NULL</code> constraint is not defined in the SQL
     standard and should not be used in portable applications.  (It was
     only added to <span class="productname">PostgreSQL</span> to be
     compatible with some other database systems.)  Some users, however,
@@ -199,7 +190,7 @@
     price numeric NULL
 );</pre>
 <p>
-    and then insert the <tt class="literal">NOT</tt> key word where desired.
+    and then insert the <code class="literal">NOT</code> key word where desired.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
@@ -209,17 +200,14 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2524541"></a>5.3.3. Unique Constraints</h3></div></div>
-<div></div>
-</div>
-<a name="id2524544"></a><a name="id2524550"></a><p>    Unique constraints ensure that the data contained in a column or a
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id306347"></a>5.3.3. Unique Constraints</h3></div></div></div>
+<a name="id306351"></a><a name="id306356"></a><p>    Unique constraints ensure that the data contained in a column or a
     group of columns is unique with respect to all the rows in the
     table.  The syntax is
 </p>
 <pre class="programlisting">CREATE TABLE products (
-    product_no integer <span><b class="emphasis">UNIQUE</b></span>,
+    product_no integer <span><strong class="emphasis">UNIQUE</strong></span>,
     name text,
     price numeric
 );</pre>
@@ -230,7 +218,7 @@
     product_no integer,
     name text,
     price numeric,
-    <span><b class="emphasis">UNIQUE (product_no)</b></span>
+    <span><strong class="emphasis">UNIQUE (product_no)</strong></span>
 );</pre>
 <p>
     when written as a table constraint.
@@ -242,7 +230,7 @@
     a integer,
     b integer,
     c integer,
-    <span><b class="emphasis">UNIQUE (a, c)</b></span>
+    <span><strong class="emphasis">UNIQUE (a, c)</strong></span>
 );</pre>
 <p>
     This specifies that the combination of values in the indicated columns
@@ -252,13 +240,13 @@
 <p>    You can assign your own name for a unique constraint, in the usual way:
 </p>
 <pre class="programlisting">CREATE TABLE products (
-    product_no integer <span><b class="emphasis">CONSTRAINT must_be_different</b></span> UNIQUE,
+    product_no integer <span><strong class="emphasis">CONSTRAINT must_be_different</strong></span> UNIQUE,
     name text,
     price numeric
 );</pre>
 <p>
    </p>
-<a name="id2524620"></a><p>    In general, a unique constraint is violated when there are two or
+<a name="id306416"></a><p>    In general, a unique constraint is violated when there are two or
     more rows in the table where the values of all of the
     columns included in the constraint are equal.
     However, null values are not considered equal in this
@@ -272,12 +260,9 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2524643"></a>5.3.4. Primary Keys</h3></div></div>
-<div></div>
-</div>
-<a name="id2524647"></a><a name="id2524653"></a><p>    Technically, a primary key constraint is simply a combination of a
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id306435"></a>5.3.4. Primary Keys</h3></div></div></div>
+<a name="id306438"></a><a name="id306444"></a><p>    Technically, a primary key constraint is simply a combination of a
     unique constraint and a not-null constraint.  So, the following
     two table definitions accept the same data:
 </p>
@@ -290,7 +275,7 @@
 
 </p>
 <pre class="programlisting">CREATE TABLE products (
-    product_no integer <span><b class="emphasis">PRIMARY KEY</b></span>,
+    product_no integer <span><strong class="emphasis">PRIMARY KEY</strong></span>,
     name text,
     price numeric
 );</pre>
@@ -303,7 +288,7 @@
     a integer,
     b integer,
     c integer,
-    <span><b class="emphasis">PRIMARY KEY (a, c)</b></span>
+    <span><strong class="emphasis">PRIMARY KEY (a, c)</strong></span>
 );</pre>
 <p>
    </p>
@@ -325,16 +310,13 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="ddl-constraints-fk"></a>5.3.5. Foreign Keys</h3></div></div>
-<div></div>
-</div>
-<a name="id2524731"></a><a name="id2524736"></a><a name="id2524745"></a><p>    A foreign key constraint specifies that the values in a column (or
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ddl-constraints-fk"></a>5.3.5. Foreign Keys</h3></div></div></div>
+<a name="id306509"></a><a name="id306515"></a><a name="id306523"></a><p>    A foreign key constraint specifies that the values in a column (or
     a group of columns) must match the values appearing in some row
     of another table.
-    We say this maintains the <i class="firstterm">referential
-    integrity</i> between two related tables.
+    We say this maintains the <em class="firstterm">referential
+    integrity</em> between two related tables.
    </p>
 <p>    Say you have the product table that we have used several times already:
 </p>
@@ -352,24 +334,24 @@
 </p>
 <pre class="programlisting">CREATE TABLE orders (
     order_id integer PRIMARY KEY,
-    product_no integer <span><b class="emphasis">REFERENCES products (product_no)</b></span>,
+    product_no integer <span><strong class="emphasis">REFERENCES products (product_no)</strong></span>,
     quantity integer
 );</pre>
 <p>
     Now it is impossible to create orders with
-    <tt class="structfield">product_no</tt> entries that do not appear in the
+    <code class="structfield">product_no</code> entries that do not appear in the
     products table.
    </p>
 <p>    We say that in this situation the orders table is the
-    <i class="firstterm">referencing</i> table and the products table is
-    the <i class="firstterm">referenced</i> table.  Similarly, there are
+    <em class="firstterm">referencing</em> table and the products table is
+    the <em class="firstterm">referenced</em> table.  Similarly, there are
     referencing and referenced columns.
    </p>
 <p>    You can also shorten the above command to
 </p>
 <pre class="programlisting">CREATE TABLE orders (
     order_id integer PRIMARY KEY,
-    product_no integer <span><b class="emphasis">REFERENCES products</b></span>,
+    product_no integer <span><strong class="emphasis">REFERENCES products</strong></span>,
     quantity integer
 );</pre>
 <p>
@@ -384,7 +366,7 @@
   a integer PRIMARY KEY,
   b integer,
   c integer,
-  <span><b class="emphasis">FOREIGN KEY (b, c) REFERENCES other_table (c1, c2)</b></span>
+  <span><strong class="emphasis">FOREIGN KEY (b, c) REFERENCES other_table (c1, c2)</strong></span>
 );</pre>
 <p>
     Of course, the number and type of the constrained columns need to
@@ -421,7 +403,7 @@ CREATE TABLE order_items (
     Notice that the primary key overlaps with the foreign keys in
     the last table.
    </p>
-<a name="id2524866"></a><a name="id2524874"></a><p>    We know that the foreign keys disallow creation of orders that
+<a name="id306621"></a><a name="id306629"></a><p>    We know that the foreign keys disallow creation of orders that
     do not relate to any products.  But what if a product is removed
     after an order is created that references it?  SQL allows you to
     handle that as well.  Intuitively, we have a few options:
@@ -436,7 +418,7 @@ CREATE TABLE order_items (
 <p>    To illustrate this, let's implement the following policy on the
     many-to-many relationship example above: when someone wants to
     remove a product that is still referenced by an order (via
-    <tt class="literal">order_items</tt>), we disallow it.  If someone
+    <code class="literal">order_items</code>), we disallow it.  If someone
     removes an order, the order items are removed as well.
 </p>
 <pre class="programlisting">CREATE TABLE products (
@@ -452,34 +434,34 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_items (
-    product_no integer REFERENCES products <span><b class="emphasis">ON DELETE RESTRICT</b></span>,
-    order_id integer REFERENCES orders <span><b class="emphasis">ON DELETE CASCADE</b></span>,
+    product_no integer REFERENCES products <span><strong class="emphasis">ON DELETE RESTRICT</strong></span>,
+    order_id integer REFERENCES orders <span><strong class="emphasis">ON DELETE CASCADE</strong></span>,
     quantity integer,
     PRIMARY KEY (product_no, order_id)
 );</pre>
 <p>
    </p>
 <p>    Restricting and cascading deletes are the two most common options.
-    <tt class="literal">RESTRICT</tt> prevents deletion of a
-    referenced row. <tt class="literal">NO ACTION</tt> means that if any
+    <code class="literal">RESTRICT</code> prevents deletion of a
+    referenced row. <code class="literal">NO ACTION</code> means that if any
     referencing rows still exist when the constraint is checked, an error
     is raised; this is the default behavior if you do not specify anything.
     (The essential difference between these two choices is that
-    <tt class="literal">NO ACTION</tt> allows the check to be deferred until
-    later in the transaction, whereas <tt class="literal">RESTRICT</tt> does not.)
-    <tt class="literal">CASCADE</tt> specifies that when a referenced row is deleted,
+    <code class="literal">NO ACTION</code> allows the check to be deferred until
+    later in the transaction, whereas <code class="literal">RESTRICT</code> does not.)
+    <code class="literal">CASCADE</code> specifies that when a referenced row is deleted,
     row(s) referencing it should be automatically deleted as well.
     There are two other options:
-    <tt class="literal">SET NULL</tt> and <tt class="literal">SET DEFAULT</tt>.
+    <code class="literal">SET NULL</code> and <code class="literal">SET DEFAULT</code>.
     These cause the referencing columns to be set to nulls or default
     values, respectively, when the referenced row is deleted.
     Note that these do not excuse you from observing any constraints.
-    For example, if an action specifies <tt class="literal">SET DEFAULT</tt>
+    For example, if an action specifies <code class="literal">SET DEFAULT</code>
     but the default value would not satisfy the foreign key, the
     operation will fail.
    </p>
-<p>    Analogous to <tt class="literal">ON DELETE</tt> there is also
-    <tt class="literal">ON UPDATE</tt> which is invoked when a referenced
+<p>    Analogous to <code class="literal">ON DELETE</code> there is also
+    <code class="literal">ON UPDATE</code> which is invoked when a referenced
     column is changed (updated).  The possible actions are the same.
    </p>
 <p>    More information about updating and deleting data is in <a href="dml.html" title="Chapter 6. Data Manipulation">Chapter 6, <i>Data Manipulation</i></a>.

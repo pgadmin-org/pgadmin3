@@ -4,18 +4,15 @@
 <title>Chapter 49. Database Physical Storage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
-<link rel="previous" href="examples.html" title="48.5. Examples">
+<link rel="prev" href="examples.html" title="48.5. Examples">
 <link rel="next" href="storage-toast.html" title="49.2. TOAST">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="storage">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="storage"></a>Chapter 49. Database Physical Storage</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="storage"></a>Chapter 49. Database Physical Storage</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -27,28 +24,25 @@
 <p>This chapter provides an overview of the physical storage format used by
 <span class="productname">PostgreSQL</span> databases.</p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="storage-file-layout"></a>49.1. Database File Layout</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="storage-file-layout"></a>49.1. Database File Layout</h2></div></div></div>
 <p>This section describes the storage format at the level of files and
 directories.</p>
 <p>All the data needed for a database cluster is stored within the cluster's data
-directory, commonly referred to as <tt class="varname">PGDATA</tt> (after the name of the
+directory, commonly referred to as <code class="varname">PGDATA</code> (after the name of the
 environment variable that can be used to define it).  A common location for
-<tt class="varname">PGDATA</tt> is <tt class="filename">/var/lib/pgsql/data</tt>.  Multiple clusters,
+<code class="varname">PGDATA</code> is <code class="filename">/var/lib/pgsql/data</code>.  Multiple clusters,
 managed by different postmasters, can exist on the same machine.</p>
-<p>The <tt class="varname">PGDATA</tt> directory contains several subdirectories and control
-files, as shown in <a href="storage.html#pgdata-contents-table" title="Table 49.1. Contents of PGDATA">Table 49.1, &#8220;Contents of PGDATA&#8221;</a>.  In addition to
+<p>The <code class="varname">PGDATA</code> directory contains several subdirectories and control
+files, as shown in <a href="storage.html#pgdata-contents-table" title="Table 49.1. Contents of PGDATA">Table 49.1, &#8220;Contents of <code class="varname">PGDATA</code>&#8221;</a>.  In addition to
 these required items, the cluster configuration files
-<tt class="filename">postgresql.conf</tt>, <tt class="filename">pg_hba.conf</tt>, and
-<tt class="filename">pg_ident.conf</tt> are traditionally stored in
-<tt class="varname">PGDATA</tt> (although beginning in
+<code class="filename">postgresql.conf</code>, <code class="filename">pg_hba.conf</code>, and
+<code class="filename">pg_ident.conf</code> are traditionally stored in
+<code class="varname">PGDATA</code> (although beginning in
 <span class="productname">PostgreSQL</span> 8.0 it is possible to keep them
 elsewhere). </p>
 <div class="table">
-<a name="pgdata-contents-table"></a><p class="title"><b>Table 49.1. Contents of <tt class="varname">PGDATA</tt></b></p>
+<a name="pgdata-contents-table"></a><p class="title"><b>Table 49.1. Contents of <code class="varname">PGDATA</code></b></p>
 <table summary="Contents of PGDATA" border="1">
 <colgroup>
 <col>
@@ -60,43 +54,48 @@ elsewhere). </p>
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="filename">PG_VERSION</tt></td>
+<td><code class="filename">PG_VERSION</code></td>
 <td>A file containing the major version number of <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="filename">base</tt></td>
+<td><code class="filename">base</code></td>
 <td>Subdirectory containing per-database subdirectories</td>
 </tr>
 <tr>
-<td><tt class="filename">global</tt></td>
+<td><code class="filename">global</code></td>
 <td>Subdirectory containing cluster-wide tables, such as
- <tt class="structname">pg_database</tt>
+ <code class="structname">pg_database</code>
 </td>
 </tr>
 <tr>
-<td><tt class="filename">pg_clog</tt></td>
+<td><code class="filename">pg_clog</code></td>
 <td>Subdirectory containing transaction commit status data</td>
 </tr>
 <tr>
-<td><tt class="filename">pg_subtrans</tt></td>
+<td><code class="filename">pg_multixact</code></td>
+<td>Subdirectory containing multi-transaction status data
+  (used for shared row locks)</td>
+</tr>
+<tr>
+<td><code class="filename">pg_subtrans</code></td>
 <td>Subdirectory containing subtransaction status data</td>
 </tr>
 <tr>
-<td><tt class="filename">pg_tblspc</tt></td>
+<td><code class="filename">pg_tblspc</code></td>
 <td>Subdirectory containing symbolic links to tablespaces</td>
 </tr>
 <tr>
-<td><tt class="filename">pg_xlog</tt></td>
+<td><code class="filename">pg_xlog</code></td>
 <td>Subdirectory containing WAL (Write Ahead Log) files</td>
 </tr>
 <tr>
-<td><tt class="filename">postmaster.opts</tt></td>
+<td><code class="filename">postmaster.opts</code></td>
 <td>A file recording the command-line options the postmaster was
 last started with</td>
 </tr>
 <tr>
-<td><tt class="filename">postmaster.pid</tt></td>
+<td><code class="filename">postmaster.pid</code></td>
 <td>A lock file recording the current postmaster PID and shared memory
 segment ID (not present after postmaster shutdown)</td>
 </tr>
@@ -104,45 +103,45 @@ segment ID (not present after postmaster shutdown)</td>
 </table>
 </div>
 <p>For each database in the cluster there is a subdirectory within
-<tt class="varname">PGDATA</tt><tt class="filename">/base</tt>, named after the database's OID in
-<tt class="structname">pg_database</tt>.  This subdirectory is the default location
+<code class="varname">PGDATA</code><code class="filename">/base</code>, named after the database's OID in
+<code class="structname">pg_database</code>.  This subdirectory is the default location
 for the database's files; in particular, its system catalogs are stored
 there.</p>
 <p>Each table and index is stored in a separate file, named after the table
-or index's <i class="firstterm">filenode</i> number, which can be found in
-<tt class="structname">pg_class</tt>.<tt class="structfield">relfilenode</tt>.</p>
+or index's <em class="firstterm">filenode</em> number, which can be found in
+<code class="structname">pg_class</code>.<code class="structfield">relfilenode</code>.</p>
 <div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Caution</h3>
 <p>Note that while a table's filenode often matches its OID, this is
 <span class="emphasis"><em>not</em></span> necessarily the case; some operations, like
-<tt class="command">TRUNCATE</tt>, <tt class="command">REINDEX</tt>, <tt class="command">CLUSTER</tt> and some forms
-of <tt class="command">ALTER TABLE</tt>, can change the filenode while preserving the OID.
+<code class="command">TRUNCATE</code>, <code class="command">REINDEX</code>, <code class="command">CLUSTER</code> and some forms
+of <code class="command">ALTER TABLE</code>, can change the filenode while preserving the OID.
 Avoid assuming that filenode and table OID are the same.</p>
 </div>
 <p>When a table or index exceeds 1Gb, it is divided into gigabyte-sized
-<i class="firstterm">segments</i>.  The first segment's file name is the same as the
+<em class="firstterm">segments</em>.  The first segment's file name is the same as the
 filenode; subsequent segments are named filenode.1, filenode.2, etc.
 This arrangement avoids problems on platforms that have file size limitations.
 The contents of tables and indexes are discussed further in
 <a href="storage-page-layout.html" title="49.3. Database Page Layout">Section 49.3, &#8220;Database Page Layout&#8221;</a>.</p>
 <p>A table that has columns with potentially large entries will have an
-associated <i class="firstterm">TOAST</i> table, which is used for out-of-line storage of
+associated <em class="firstterm">TOAST</em> table, which is used for out-of-line storage of
 field values that are too large to keep in the table rows proper.
-<tt class="structname">pg_class</tt>.<tt class="structfield">reltoastrelid</tt> links from a table to
+<code class="structname">pg_class</code>.<code class="structfield">reltoastrelid</code> links from a table to
 its <span class="acronym">TOAST</span> table, if any.
 See <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a> for more information.</p>
 <p>Tablespaces make the scenario more complicated.  Each user-defined tablespace
-has a symbolic link inside the <tt class="varname">PGDATA</tt><tt class="filename">/pg_tblspc</tt>
+has a symbolic link inside the <code class="varname">PGDATA</code><code class="filename">/pg_tblspc</code>
 directory, which points to the physical tablespace directory (as specified in
-its <tt class="command">CREATE TABLESPACE</tt> command).  The symbolic link is named after
+its <code class="command">CREATE TABLESPACE</code> command).  The symbolic link is named after
 the tablespace's OID.  Inside the physical tablespace directory there is
 a subdirectory for each database that has elements in the tablespace, named
 after the database's OID.  Tables within that directory follow the filenode
-naming scheme.  The <tt class="literal">pg_default</tt> tablespace is not accessed through
-<tt class="filename">pg_tblspc</tt>, but corresponds to
-<tt class="varname">PGDATA</tt><tt class="filename">/base</tt>.  Similarly, the <tt class="literal">pg_global</tt>
-tablespace is not accessed through <tt class="filename">pg_tblspc</tt>, but corresponds to
-<tt class="varname">PGDATA</tt><tt class="filename">/global</tt>.</p>
+naming scheme.  The <code class="literal">pg_default</code> tablespace is not accessed through
+<code class="filename">pg_tblspc</code>, but corresponds to
+<code class="varname">PGDATA</code><code class="filename">/base</code>.  Similarly, the <code class="literal">pg_global</code>
+tablespace is not accessed through <code class="filename">pg_tblspc</code>, but corresponds to
+<code class="varname">PGDATA</code><code class="filename">/global</code>.</p>
 </div>
 </div></body>
 </html>

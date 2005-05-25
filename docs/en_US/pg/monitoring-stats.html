@@ -4,19 +4,16 @@
 <title>23.2. The Statistics Collector</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
-<link rel="previous" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
+<link rel="prev" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
 <link rel="next" href="monitoring-locks.html" title="23.3. Viewing Locks">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="monitoring-stats"></a>23.2. The Statistics Collector</h2></div></div>
-<div></div>
-</div>
-<a name="id2604544"></a><p>   <span class="productname">PostgreSQL</span>'s <i class="firstterm">statistics collector</i>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="monitoring-stats"></a>23.2. The Statistics Collector</h2></div></div></div>
+<a name="id380590"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
    is a subsystem that supports collection and reporting of information about
    server activity.  Presently, the collector can count accesses to tables
    and indexes in both disk-block and individual-row terms.  It also supports
@@ -24,19 +21,16 @@
    processes.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="monitoring-stats-setup"></a>23.2.1. Statistics Collection Configuration</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="monitoring-stats-setup"></a>23.2.1. Statistics Collection Configuration</h3></div></div></div>
 <p>   Since collection of statistics adds some overhead to query execution,
    the system can be configured to collect or not collect information.
    This is controlled by configuration parameters that are normally set in
-   <tt class="filename">postgresql.conf</tt>.  (See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for
+   <code class="filename">postgresql.conf</code>.  (See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for
    details about setting configuration parameters.)
   </p>
 <p>   The parameter <a href="runtime-config.html#guc-stats-start-collector">stats_start_collector</a> must be
-   set to <tt class="literal">true</tt> for the statistics collector to be launched
+   set to <code class="literal">true</code> for the statistics collector to be launched
    at all.  This is the default and recommended setting, but it may be
    turned off if you have no interest in statistics and want to
    squeeze out every last drop of overhead.  (The savings is likely to
@@ -49,18 +43,18 @@
    overhead occurs.  These respectively determine whether a server
    process sends its current command string, disk-block-level access
    statistics, and row-level access statistics to the collector.
-   Normally these parameters are set in <tt class="filename">postgresql.conf</tt>
+   Normally these parameters are set in <code class="filename">postgresql.conf</code>
    so that they apply to all server processes, but it is possible to
    turn them on or off in individual sessions using the <a href="sql-set.html">SET</a> command.  (To prevent
    ordinary users from hiding their activity from the administrator,
    only superusers are allowed to change these parameters with
-   <tt class="command">SET</tt>.)
+   <code class="command">SET</code>.)
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>     Since the parameters <tt class="varname">stats_command_string</tt>,
-     <tt class="varname">stats_block_level</tt>, and
-     <tt class="varname">stats_row_level</tt> default to <tt class="literal">false</tt>,
+<p>     Since the parameters <code class="varname">stats_command_string</code>,
+     <code class="varname">stats_block_level</code>, and
+     <code class="varname">stats_row_level</code> default to <code class="literal">false</code>,
      very few statistics are collected in the default
      configuration. Enabling one or more of these configuration
      variables will significantly enhance the amount of useful data
@@ -70,11 +64,8 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="monitoring-stats-views"></a>23.2.2. Viewing Collected Statistics</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="monitoring-stats-views"></a>23.2.2. Viewing Collected Statistics</h3></div></div></div>
 <p>   Several predefined views, listed in <a href="monitoring-stats.html#monitoring-stats-views-table" title="Table 23.1. Standard Statistics Views">Table 23.1, &#8220;Standard Statistics Views&#8221;</a>, are available to show the results
    of statistics collection.  Alternatively, one can
    build custom views using the underlying statistics functions.
@@ -84,11 +75,11 @@
    Each individual server process transmits new block and row access counts to
    the collector just before going idle; so a query or transaction still in
    progress does not affect the displayed totals.  Also, the collector itself
-   emits a new report at most once per <tt class="varname">pgstat_stat_interval</tt>
+   emits a new report at most once per <code class="varname">pgstat_stat_interval</code>
    milliseconds (500 by default).  So the displayed information lags behind
    actual activity.  Current-query information is reported to the collector
    immediately, but is still subject to the
-   <tt class="varname">pgstat_stat_interval</tt> delay before it becomes visible.
+   <code class="varname">pgstat_stat_interval</code> delay before it becomes visible.
   </p>
 <p>   Another important point is that when a server process is asked to display
    any of these statistics, it first fetches the most recent report emitted by
@@ -115,20 +106,21 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structname">pg_stat_activity</tt></td>
+<td><code class="structname">pg_stat_activity</code></td>
 <td>One row per server process, showing process
-      <span class="acronym">ID</span>, database, user, current query, and the time at
-      which the current query began execution. The columns that report
-      data on the current query are only available if the parameter
-      <tt class="varname">stats_command_string</tt> has been turned on.
-      Furthermore, these columns read as null unless the user examining
-      the view is a superuser or the same as the user owning the process
-      being reported on.  (Note that because of the 
-      collector's reporting delay, current query will only be up-to-date for 
-      long-running queries.)</td>
+      <span class="acronym">ID</span>, database, user, current query, the time at which
+      the current query began execution, the time at which the backend
+      was started and the client address and port number.  The columns
+      that report data on the current query are only available if the
+      parameter <code class="varname">stats_command_string</code> has been
+      turned on.  Furthermore, these columns read as null unless the
+      user examining the view is a superuser or the same as the user
+      owning the process being reported on.  (Note that because of the
+      collector's reporting delay, the current query will only be
+      up-to-date for long-running queries.)</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_stat_database</tt></td>
+<td><code class="structname">pg_stat_database</code></td>
 <td>One row per database, showing the number of active backend server processes,
       total transactions committed and total rolled back in that database,
       total disk blocks read, and total number of buffer hits (i.e., block
@@ -136,24 +128,24 @@
      </td>
 </tr>
 <tr>
-<td><tt class="structname">pg_stat_all_tables</tt></td>
+<td><code class="structname">pg_stat_all_tables</code></td>
 <td>For each table in the current database, total numbers of
       sequential and index scans, total numbers of rows returned by
       each type of scan, and totals of row insertions, updates,
       and deletions.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_stat_sys_tables</tt></td>
-<td>Same as <tt class="structname">pg_stat_all_tables</tt>, except that only system tables
+<td><code class="structname">pg_stat_sys_tables</code></td>
+<td>Same as <code class="structname">pg_stat_all_tables</code>, except that only system tables
       are shown.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_stat_user_tables</tt></td>
-<td>Same as <tt class="structname">pg_stat_all_tables</tt>, except that only user tables
+<td><code class="structname">pg_stat_user_tables</code></td>
+<td>Same as <code class="structname">pg_stat_all_tables</code>, except that only user tables
       are shown.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_stat_all_indexes</tt></td>
+<td><code class="structname">pg_stat_all_indexes</code></td>
 <td>For each index in the current database, the total number
       of index scans that have used that index, the number of index rows
       read, and the number of successfully fetched heap rows. (This may
@@ -161,17 +153,17 @@
       </td>
 </tr>
 <tr>
-<td><tt class="structname">pg_stat_sys_indexes</tt></td>
-<td>Same as <tt class="structname">pg_stat_all_indexes</tt>, except that only indexes on
+<td><code class="structname">pg_stat_sys_indexes</code></td>
+<td>Same as <code class="structname">pg_stat_all_indexes</code>, except that only indexes on
       system tables are shown.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_stat_user_indexes</tt></td>
-<td>Same as <tt class="structname">pg_stat_all_indexes</tt>, except that only indexes on
+<td><code class="structname">pg_stat_user_indexes</code></td>
+<td>Same as <code class="structname">pg_stat_all_indexes</code>, except that only indexes on
       user tables are shown.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_all_tables</tt></td>
+<td><code class="structname">pg_statio_all_tables</code></td>
 <td>For each table in the current database, the total number of disk
       blocks read from that table, the number of buffer hits, the numbers of
       disk blocks read and buffer hits in all the indexes of that table,
@@ -181,46 +173,46 @@
       </td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_sys_tables</tt></td>
-<td>Same as <tt class="structname">pg_statio_all_tables</tt>, except that only system tables
+<td><code class="structname">pg_statio_sys_tables</code></td>
+<td>Same as <code class="structname">pg_statio_all_tables</code>, except that only system tables
       are shown.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_user_tables</tt></td>
-<td>Same as <tt class="structname">pg_statio_all_tables</tt>, except that only user tables
+<td><code class="structname">pg_statio_user_tables</code></td>
+<td>Same as <code class="structname">pg_statio_all_tables</code>, except that only user tables
       are shown.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_all_indexes</tt></td>
+<td><code class="structname">pg_statio_all_indexes</code></td>
 <td>For each index in the current database, the numbers of
       disk blocks read and buffer hits in that index.
       </td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_sys_indexes</tt></td>
-<td>Same as <tt class="structname">pg_statio_all_indexes</tt>, except that only indexes on
+<td><code class="structname">pg_statio_sys_indexes</code></td>
+<td>Same as <code class="structname">pg_statio_all_indexes</code>, except that only indexes on
       system tables are shown.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_user_indexes</tt></td>
-<td>Same as <tt class="structname">pg_statio_all_indexes</tt>, except that only indexes on
+<td><code class="structname">pg_statio_user_indexes</code></td>
+<td>Same as <code class="structname">pg_statio_all_indexes</code>, except that only indexes on
       user tables are shown.</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_all_sequences</tt></td>
+<td><code class="structname">pg_statio_all_sequences</code></td>
 <td>For each sequence object in the current database, the numbers
       of disk blocks read and buffer hits in that sequence.
       </td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_sys_sequences</tt></td>
-<td>Same as <tt class="structname">pg_statio_all_sequences</tt>, except that only system
+<td><code class="structname">pg_statio_sys_sequences</code></td>
+<td>Same as <code class="structname">pg_statio_all_sequences</code>, except that only system
       sequences are shown.  (Presently, no system sequences are defined,
       so this view is always empty.)</td>
 </tr>
 <tr>
-<td><tt class="structname">pg_statio_user_sequences</tt></td>
-<td>Same as <tt class="structname">pg_statio_all_sequences</tt>, except that only user
+<td><code class="structname">pg_statio_user_sequences</code></td>
+<td>Same as <code class="structname">pg_statio_all_sequences</code>, except that only user
       sequences are shown.</td>
 </tr>
 </tbody>
@@ -229,7 +221,7 @@
 <p>   The per-index statistics are particularly useful to determine which
    indexes are being used and how effective they are.
   </p>
-<p>   The <tt class="structname">pg_statio_</tt> views are primarily useful to
+<p>   The <code class="structname">pg_statio_</code> views are primarily useful to
    determine the effectiveness of the buffer cache.  When the number
    of actual disk reads is much smaller than the number of buffer
    hits, then the cache is satisfying most read requests without
@@ -270,140 +262,166 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_db_numbackends</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_db_numbackends</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">integer</code></td>
 <td>       Number of active backend processes for database
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_db_xact_commit</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_db_xact_commit</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Transactions committed in database
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_db_xact_rollback</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_db_xact_rollback</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Transactions rolled back in database
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_db_blocks_fetched</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_db_blocks_fetched</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of disk block fetch requests for database
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_db_blocks_hit</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_db_blocks_hit</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of disk block fetch requests found in cache for database
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_numscans</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_numscans</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of sequential scans done when argument is a table,
        or number of index scans done when argument is an index
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_tuples_returned</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_tuples_returned</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of rows read by sequential scans when argument is a table,
        or number of index rows read when argument is an index
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_tuples_fetched</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_tuples_fetched</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of valid (unexpired) table rows fetched by sequential scans
        when argument is a table, or fetched by index scans using this index
        when argument is an index
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_tuples_inserted</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_tuples_inserted</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of rows inserted into table
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_tuples_updated</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_tuples_updated</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of rows updated in table
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_tuples_deleted</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_tuples_deleted</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of rows deleted from table
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_blocks_fetched</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_blocks_fetched</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of disk block fetch requests for table or index
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_blocks_hit</tt>(<tt class="type">oid</tt>)</tt></td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_blocks_hit</code>(<code class="type">oid</code>)</code></td>
+<td><code class="type">bigint</code></td>
 <td>       Number of disk block requests found in cache for table or index
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_backend_idset</tt>()</tt></td>
-<td><tt class="type">set of integer</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_backend_idset</code>()</code></td>
+<td><code class="type">set of integer</code></td>
 <td>       Set of currently active backend process IDs (from 1 to the
-       number of active backend processes).  See usage example in the text.
+       number of active backend processes).  See usage example in the text
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_backend_pid</tt>()</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">pg_backend_pid</code>()</code></td>
+<td><code class="type">integer</code></td>
 <td>       Process ID of the backend process attached to the current session
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_backend_pid</tt>(<tt class="type">integer</tt>)</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_backend_pid</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">integer</code></td>
 <td>       Process ID of the given backend process
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_backend_dbid</tt>(<tt class="type">integer</tt>)</tt></td>
-<td><tt class="type">oid</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_backend_dbid</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">oid</code></td>
 <td>       Database ID of the given backend process
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_backend_userid</tt>(<tt class="type">integer</tt>)</tt></td>
-<td><tt class="type">oid</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_backend_userid</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">oid</code></td>
 <td>       User ID of the given backend process
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_backend_activity</tt>(<tt class="type">integer</tt>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_backend_activity</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">text</code></td>
 <td>       Active command of the given backend process (null if the
        current user is not a superuser nor the same user as that of
        the session being queried, or
-       <tt class="varname">stats_command_string</tt> is not on)
+       <code class="varname">stats_command_string</code> is not on)
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_get_backend_activity_start</tt>(<tt class="type">integer</tt>)</tt></td>
-<td><tt class="type">timestamp with time zone</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_backend_activity_start</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">timestamp with time zone</code></td>
 <td>       The time at which the given backend process' currently
        executing query was started (null if the
        current user is not a superuser nor the same user as that of
        the session being queried, or
-       <tt class="varname">stats_command_string</tt> is not on)
+       <code class="varname">stats_command_string</code> is not on)
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stat_reset</tt>()</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td><code class="literal"><code class="function">pg_stat_get_backend_start</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">timestamp with time zone</code></td>
+<td>       The time at which the given backend process was started, or
+       null if the current user is not a superuser nor the same user
+       as that of the session being queried
+      </td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_stat_get_backend_client_addr</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">inet</code></td>
+<td>       The IP address of the client connected to the given
+       backend. Null if the connection is over a Unix domain
+       socket. Also null if the current user is not a superuser nor
+       the same user as that of the session being queried
+      </td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_stat_get_backend_client_port</code>(<code class="type">integer</code>)</code></td>
+<td><code class="type">integer</code></td>
+<td>       The IP port number of the client connected to the given
+       backend.  -1 if the connection is over a Unix domain
+       socket. Null if the current user is not a superuser nor the
+       same user as that of the session being queried
+      </td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_stat_reset</code>()</code></td>
+<td><code class="type">boolean</code></td>
 <td>       Reset all currently collected statistics
       </td>
 </tr>
@@ -412,14 +430,14 @@
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>     <tt class="function">pg_stat_get_db_blocks_fetched</tt> minus
-     <tt class="function">pg_stat_get_db_blocks_hit</tt> gives the number of kernel
-     <tt class="function">read()</tt> calls issued for the table, index, or
+<p>     <code class="function">pg_stat_get_db_blocks_fetched</code> minus
+     <code class="function">pg_stat_get_db_blocks_hit</code> gives the number of kernel
+     <code class="function">read()</code> calls issued for the table, index, or
      database; but the actual number of physical reads is usually
      lower due to kernel-level buffering.
     </p>
 </div>
-<p>   The function <tt class="function">pg_stat_get_backend_idset</tt> provides
+<p>   The function <code class="function">pg_stat_get_backend_idset</code> provides
    a convenient way to generate one row for each active backend process.  For
    example, to show the <span class="acronym">PID</span>s and current queries of all backend processes:
 

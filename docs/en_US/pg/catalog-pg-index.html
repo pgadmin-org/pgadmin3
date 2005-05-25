@@ -4,24 +4,21 @@
 <title>41.16. pg_index</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-group.html" title="41.15. pg_group">
+<link rel="prev" href="catalog-pg-group.html" title="41.15. pg_group">
 <link rel="next" href="catalog-pg-inherits.html" title="41.17. pg_inherits">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-index"></a>41.16. <tt class="structname">pg_index</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2731613"></a><p>   The catalog <tt class="structname">pg_index</tt> contains part of the information
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-index"></a>41.16. <code class="structname">pg_index</code></h2></div></div></div>
+<a name="id497922"></a><p>   The catalog <code class="structname">pg_index</code> contains part of the information
    about indexes.  The rest is mostly in
-   <tt class="structname">pg_class</tt>.
+   <code class="structname">pg_class</code>.
   </p>
 <div class="table">
-<a name="id2731633"></a><p class="title"><b>Table 41.16. <tt class="structname">pg_index</tt> Columns</b></p>
+<a name="id497941"></a><p class="title"><b>Table 41.16. <code class="structname">pg_index</code> Columns</b></p>
 <table summary="pg_index Columns" border="1">
 <colgroup>
 <col>
@@ -37,79 +34,78 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">indexrelid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
-<td>The OID of the <tt class="structname">pg_class</tt> entry for this index</td>
+<td><code class="structfield">indexrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>The OID of the <code class="structname">pg_class</code> entry for this index</td>
 </tr>
 <tr>
-<td><tt class="structfield">indrelid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
-<td>The OID of the <tt class="structname">pg_class</tt> entry for the table this index is for</td>
+<td><code class="structfield">indrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>The OID of the <code class="structname">pg_class</code> entry for the table this index is for</td>
 </tr>
 <tr>
-<td><tt class="structfield">indkey</tt></td>
-<td><tt class="type">int2vector</tt></td>
-<td><tt class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><tt class="structname">pg_attribute</tt></a>.attnum</tt></td>
-<td>       This is an array of <tt class="structfield">indnatts</tt> (up to
-       <tt class="symbol">INDEX_MAX_KEYS</tt>) values that indicate which
-       table columns this index indexes.  For example a value of
-       <tt class="literal">1 3</tt> would mean that the first and the third table
+<td><code class="structfield">indnatts</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>The number of columns in the index (duplicates
+      <code class="literal">pg_class.relnatts</code>)</td>
+</tr>
+<tr>
+<td><code class="structfield">indisunique</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>If true, this is a unique index.</td>
+</tr>
+<tr>
+<td><code class="structfield">indisprimary</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>If true, this index represents the primary key of the table.
+      (<code class="structfield">indisunique</code> should always be true when this is true.)</td>
+</tr>
+<tr>
+<td><code class="structfield">indisclustered</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>If true, the table was last clustered on this index.</td>
+</tr>
+<tr>
+<td><code class="structfield">indkey</code></td>
+<td><code class="type">int2vector</code></td>
+<td><code class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
+<td>       This is an array of <code class="structfield">indnatts</code> values that
+       indicate which table columns this index indexes.  For example a value
+       of <code class="literal">1 3</code> would mean that the first and the third table
        columns make up the index key.  A zero in this array indicates that the
        corresponding index attribute is an expression over the table columns,
        rather than a simple column reference.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">indclass</tt></td>
-<td><tt class="type">oidvector</tt></td>
-<td><tt class="literal"><a href="catalog-pg-opclass.html" title="41.22. pg_opclass"><tt class="structname">pg_opclass</tt></a>.oid</tt></td>
+<td><code class="structfield">indclass</code></td>
+<td><code class="type">oidvector</code></td>
+<td><code class="literal"><a href="catalog-pg-opclass.html" title="41.22. pg_opclass"><code class="structname">pg_opclass</code></a>.oid</code></td>
 <td>       For each column in the index key this contains the OID of
        the operator class to use.  See
-       <tt class="structname">pg_opclass</tt> for details.
+       <code class="structname">pg_opclass</code> for details.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">indnatts</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">indexprs</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
-<td>The number of columns in the index (duplicates
-      <tt class="literal">pg_class.relnatts</tt>)</td>
-</tr>
-<tr>
-<td><tt class="structfield">indisunique</tt></td>
-<td><tt class="type">bool</tt></td>
-<td> </td>
-<td>If true, this is a unique index.</td>
-</tr>
-<tr>
-<td><tt class="structfield">indisprimary</tt></td>
-<td><tt class="type">bool</tt></td>
-<td> </td>
-<td>If true, this index represents the primary key of the table.
-      (<tt class="structfield">indisunique</tt> should always be true when this is true.)</td>
-</tr>
-<tr>
-<td><tt class="structfield">indisclustered</tt></td>
-<td><tt class="type">bool</tt></td>
-<td> </td>
-<td>If true, the table was last clustered on this index.</td>
-</tr>
-<tr>
-<td><tt class="structfield">indexprs</tt></td>
-<td><tt class="type">text</tt></td>
-<td> </td>
-<td>Expression trees (in <tt class="function">nodeToString()</tt> representation)
+<td>Expression trees (in <code class="function">nodeToString()</code> representation)
       for index attributes that are not simple column references.  This is a
-      list with one element for each zero entry in <tt class="structfield">indkey</tt>.
+      list with one element for each zero entry in <code class="structfield">indkey</code>.
       Null if all index attributes are simple references.</td>
 </tr>
 <tr>
-<td><tt class="structfield">indpred</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="structfield">indpred</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
-<td>Expression tree (in <tt class="function">nodeToString()</tt> representation)
+<td>Expression tree (in <code class="function">nodeToString()</code> representation)
       for partial index predicate.  Null if not a partial index.</td>
 </tr>
 </tbody>

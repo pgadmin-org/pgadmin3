@@ -4,30 +4,27 @@
 <title>35.9. Errors and Messages</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
-<link rel="previous" href="plpgsql-cursors.html" title="35.8. Cursors">
+<link rel="prev" href="plpgsql-cursors.html" title="35.8. Cursors">
 <link rel="next" href="plpgsql-trigger.html" title="35.10. Trigger Procedures">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-errors-and-messages"></a>35.9. Errors and Messages</h2></div></div>
-<div></div>
-</div>
-<a name="id2652816"></a><a name="id2652822"></a><p>    Use the <tt class="command">RAISE</tt> statement to report messages and
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-errors-and-messages"></a>35.9. Errors and Messages</h2></div></div></div>
+<a name="id424416"></a><a name="id424422"></a><p>    Use the <code class="command">RAISE</code> statement to report messages and
     raise errors.
 
 </p>
-<pre class="synopsis">RAISE <i class="replaceable"><tt>level</tt></i> '<i class="replaceable"><tt>format</tt></i>' [<span class="optional">, <i class="replaceable"><tt>variable</tt></i> [<span class="optional">, ...</span>]</span>];</pre>
+<pre class="synopsis">RAISE <em class="replaceable"><code>level</code></em> '<em class="replaceable"><code>format</code></em>' [<span class="optional">, <em class="replaceable"><code>variable</code></em> [<span class="optional">, ...</span>]</span>];</pre>
 <p>
 
-    Possible levels are <tt class="literal">DEBUG</tt>,
-    <tt class="literal">LOG</tt>, <tt class="literal">INFO</tt>,
-    <tt class="literal">NOTICE</tt>, <tt class="literal">WARNING</tt>,
-    and <tt class="literal">EXCEPTION</tt>.
-    <tt class="literal">EXCEPTION</tt> raises an error (which normally aborts the
+    Possible levels are <code class="literal">DEBUG</code>,
+    <code class="literal">LOG</code>, <code class="literal">INFO</code>,
+    <code class="literal">NOTICE</code>, <code class="literal">WARNING</code>,
+    and <code class="literal">EXCEPTION</code>.
+    <code class="literal">EXCEPTION</code> raises an error (which normally aborts the
     current transaction); the other levels only generate messages of different
     priority levels.
     Whether messages of a particular priority are reported to the client,
@@ -37,14 +34,14 @@
     variables. See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more
     information.
    </p>
-<p>    Inside the format string, <tt class="literal">%</tt> is replaced by the
+<p>    Inside the format string, <code class="literal">%</code> is replaced by the
     next optional argument's string representation. Write
-    <tt class="literal">%%</tt> to emit a literal <tt class="literal">%</tt>. Note
+    <code class="literal">%%</code> to emit a literal <code class="literal">%</code>. Note
     that the optional arguments must presently be simple variables,
     not expressions, and the format must be a simple string literal.
    </p>
-<p>    In this example, the value of <tt class="literal">v_job_id</tt> will replace the
-    <tt class="literal">%</tt> in the string:
+<p>    In this example, the value of <code class="literal">v_job_id</code> will replace the
+    <code class="literal">%</code> in the string:
 </p>
 <pre class="programlisting">RAISE NOTICE 'Calling cs_create_job(%)', v_job_id;</pre>
 <p>
@@ -54,11 +51,11 @@
 <pre class="programlisting">RAISE EXCEPTION 'Nonexistent ID --&gt; %', user_id;</pre>
 <p>
    </p>
-<p>     <tt class="command">RAISE EXCEPTION</tt> presently always generates
-     the same SQLSTATE code, <tt class="literal">P0001</tt>, no matter what message
+<p>     <code class="command">RAISE EXCEPTION</code> presently always generates
+     the same SQLSTATE code, <code class="literal">P0001</code>, no matter what message
      it is invoked with.  It is possible to trap this exception with
-     <tt class="literal">EXCEPTION ... WHEN RAISE_EXCEPTION THEN ...</tt> but there
-     is no way to tell one <tt class="command">RAISE</tt> from another.
+     <code class="literal">EXCEPTION ... WHEN RAISE_EXCEPTION THEN ...</code> but there
+     is no way to tell one <code class="command">RAISE</code> from another.
     </p>
 </div></body>
 </html>

@@ -4,27 +4,24 @@
 <title>Chapter 25. Write-Ahead Logging (WAL)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="previous" href="disk-full.html" title="24.2. Disk Full Failure">
+<link rel="prev" href="disk-full.html" title="24.2. Disk Full Failure">
 <link rel="next" href="wal-configuration.html" title="25.2. WAL Configuration">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="wal">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="wal"></a>Chapter 25. Write-Ahead Logging (<span class="acronym">WAL</span>)</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="wal"></a>Chapter 25. Write-Ahead Logging (<span class="acronym">WAL</span>)</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="wal.html#wal-benefits">25.1. Benefits of WAL</a></span></dt>
-<dt><span class="sect1"><a href="wal-configuration.html">25.2. WAL Configuration</a></span></dt>
+<dt><span class="sect1"><a href="wal.html#wal-benefits">25.1. Benefits of <span class="acronym">WAL</span></a></span></dt>
+<dt><span class="sect1"><a href="wal-configuration.html">25.2. <span class="acronym">WAL</span> Configuration</a></span></dt>
 <dt><span class="sect1"><a href="wal-internals.html">25.3. Internals</a></span></dt>
 </dl>
 </div>
-<a name="id2605964"></a><a name="id2605973"></a><p>   <i class="firstterm">Write-Ahead Logging</i> (<span class="acronym">WAL</span>)
+<a name="id381925"></a><a name="id381935"></a><p>   <em class="firstterm">Write-Ahead Logging</em> (<span class="acronym">WAL</span>)
    is a standard approach to transaction logging.  Its detailed
    description may be found in most (if not all) books about
    transaction processing. Briefly, <span class="acronym">WAL</span>'s central
@@ -39,17 +36,14 @@
    roll-forward recovery, also known as REDO.)
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="wal-benefits"></a>25.1. Benefits of <span class="acronym">WAL</span></h2></div></div>
-<div></div>
-</div>
-<a name="id2606016"></a><p>    The first major benefit of using <span class="acronym">WAL</span> is a
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="wal-benefits"></a>25.1. Benefits of <span class="acronym">WAL</span></h2></div></div></div>
+<a name="id381970"></a><p>    The first major benefit of using <span class="acronym">WAL</span> is a
     significantly reduced number of disk writes, because only the log
     file needs to be flushed to disk at the time of transaction
     commit, rather than every data file changed by the transaction.
     In multiuser environments, commits of many transactions
-    may be accomplished with a single <tt class="function">fsync</tt> of
+    may be accomplished with a single <code class="function">fsync</code> of
     the log file. Furthermore, the log file is written sequentially,
     and so the cost of syncing the log is much less than the cost of
     flushing the data pages.   This is especially true for servers
@@ -72,7 +66,7 @@
 <p>
 
     Problems with indexes (problems 1 and 2) could possibly have been
-    fixed by additional <tt class="function">fsync</tt> calls, but it is
+    fixed by additional <code class="function">fsync</code> calls, but it is
     not obvious how to handle the last case without
     <span class="acronym">WAL</span>.  <span class="acronym">WAL</span> saves the entire data
     page content in the log if that is required to ensure page

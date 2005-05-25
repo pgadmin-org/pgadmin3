@@ -4,26 +4,23 @@
 <title>39.5. Examples</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi.html" title="Chapter 39. Server Programming Interface">
-<link rel="previous" href="spi-visibility.html" title="39.4. Visibility of Data Changes">
+<link rel="prev" href="spi-visibility.html" title="39.4. Visibility of Data Changes">
 <link rel="next" href="reference.html" title="Part VI. Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="spi-examples"></a>39.5. Examples</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spi-examples"></a>39.5. Examples</h2></div></div></div>
 <p>   This section contains a very simple example of SPI usage. The
-   procedure <tt class="function">execq</tt> takes an SQL command as its
+   procedure <code class="function">execq</code> takes an SQL command as its
    first argument and a row count as its second, executes the command
-   using <tt class="function">SPI_exec</tt> and returns the number of rows
+   using <code class="function">SPI_exec</code> and returns the number of rows
    that were processed by the command.  You can find more complex
    examples for SPI in the source tree in
-   <tt class="filename">src/test/regress/regress.c</tt> and in
-   <tt class="filename">contrib/spi</tt>.
+   <code class="filename">src/test/regress/regress.c</code> and in
+   <code class="filename">contrib/spi</code>.
   </p>
 <pre class="programlisting">#include "executor/spi.h"
 
@@ -82,7 +79,7 @@ execq(text *sql, int cnt)
 
 </p>
 <pre class="programlisting">CREATE FUNCTION execq(text, integer) RETURNS integer
-    AS '<i class="replaceable"><tt>filename</tt></i>'
+    AS '<em class="replaceable"><code>filename</code></em>'
     LANGUAGE C;</pre>
 <p>
   </p>

@@ -4,39 +4,36 @@
 <title>38.3. Database Access</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpython.html" title="Chapter 38. PL/Python - Python Procedural Language">
-<link rel="previous" href="plpython-trigger.html" title="38.2. Trigger Functions">
+<link rel="prev" href="plpython-trigger.html" title="38.2. Trigger Functions">
 <link rel="next" href="spi.html" title="Chapter 39. Server Programming Interface">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plpython-database"></a>38.3. Database Access</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpython-database"></a>38.3. Database Access</h2></div></div></div>
 <p>   The PL/Python language module automatically imports a Python module
-   called <tt class="literal">plpy</tt>.  The functions and constants in
+   called <code class="literal">plpy</code>.  The functions and constants in
    this module are available to you in the Python code as
-   <tt class="literal">plpy.<i class="replaceable"><tt>foo</tt></i></tt>.  At present
-   <tt class="literal">plpy</tt> implements the functions
-   <tt class="literal">plpy.debug(<i class="replaceable"><tt>msg</tt></i>)</tt>,
-   <tt class="literal">plpy.log(<i class="replaceable"><tt>msg</tt></i>)</tt>,
-   <tt class="literal">plpy.info(<i class="replaceable"><tt>msg</tt></i>)</tt>,
-   <tt class="literal">plpy.notice(<i class="replaceable"><tt>msg</tt></i>)</tt>,
-   <tt class="literal">plpy.warning(<i class="replaceable"><tt>msg</tt></i>)</tt>,
-   <tt class="literal">plpy.error(<i class="replaceable"><tt>msg</tt></i>)</tt>, and
-   <tt class="literal">plpy.fatal(<i class="replaceable"><tt>msg</tt></i>)</tt>.<a name="id2658655"></a>
-   <tt class="function">plpy.error</tt> and 
-   <tt class="function">plpy.fatal</tt> actually raise a Python exception
+   <code class="literal">plpy.<em class="replaceable"><code>foo</code></em></code>.  At present
+   <code class="literal">plpy</code> implements the functions
+   <code class="literal">plpy.debug(<em class="replaceable"><code>msg</code></em>)</code>,
+   <code class="literal">plpy.log(<em class="replaceable"><code>msg</code></em>)</code>,
+   <code class="literal">plpy.info(<em class="replaceable"><code>msg</code></em>)</code>,
+   <code class="literal">plpy.notice(<em class="replaceable"><code>msg</code></em>)</code>,
+   <code class="literal">plpy.warning(<em class="replaceable"><code>msg</code></em>)</code>,
+   <code class="literal">plpy.error(<em class="replaceable"><code>msg</code></em>)</code>, and
+   <code class="literal">plpy.fatal(<em class="replaceable"><code>msg</code></em>)</code>.<a name="id429525"></a>
+   <code class="function">plpy.error</code> and 
+   <code class="function">plpy.fatal</code> actually raise a Python exception
    which, if uncaught, propagates out to the calling query, causing
    the current transaction or subtransaction to be aborted. 
-   <tt class="literal">raise plpy.ERROR(<i class="replaceable"><tt>msg</tt></i>)</tt> and
-   <tt class="literal">raise plpy.FATAL(<i class="replaceable"><tt>msg</tt></i>)</tt> are
+   <code class="literal">raise plpy.ERROR(<em class="replaceable"><code>msg</code></em>)</code> and
+   <code class="literal">raise plpy.FATAL(<em class="replaceable"><code>msg</code></em>)</code> are
    equivalent to calling
-   <tt class="function">plpy.error</tt> and
-   <tt class="function">plpy.fatal</tt>, respectively.
+   <code class="function">plpy.error</code> and
+   <code class="function">plpy.fatal</code>, respectively.
    The other functions only generate messages of different
    priority levels.
    Whether messages of a particular priority are reported to the client,
@@ -45,41 +42,41 @@
    <a href="runtime-config.html#guc-client-min-messages">client_min_messages</a> configuration
    variables. See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more information.
   </p>
-<p>   Additionally, the <tt class="literal">plpy</tt> module provides two
-   functions called <tt class="function">execute</tt> and
-   <tt class="function">prepare</tt>.  Calling
-   <tt class="function">plpy.execute</tt> with a query string and an
+<p>   Additionally, the <code class="literal">plpy</code> module provides two
+   functions called <code class="function">execute</code> and
+   <code class="function">prepare</code>.  Calling
+   <code class="function">plpy.execute</code> with a query string and an
    optional limit argument causes that query to be run and the result
    to be returned in a result object.  The result object emulates a
    list or dictionary object.  The result object can be accessed by
    row number and column name.  It has these additional methods:
-   <tt class="function">nrows</tt> which returns the number of rows
-   returned by the query, and <tt class="function">status</tt> which is the
-   <tt class="function">SPI_execute()</tt> return value.  The result object
+   <code class="function">nrows</code> which returns the number of rows
+   returned by the query, and <code class="function">status</code> which is the
+   <code class="function">SPI_execute()</code> return value.  The result object
    can be modified.
   </p>
 <p>   For example,
 </p>
 <pre class="programlisting">rv = plpy.execute("SELECT * FROM my_table", 5)</pre>
 <p>
-   returns up to 5 rows from <tt class="literal">my_table</tt>.  If
-   <tt class="literal">my_table</tt> has a column
-   <tt class="literal">my_column</tt>, it would be accessed as
+   returns up to 5 rows from <code class="literal">my_table</code>.  If
+   <code class="literal">my_table</code> has a column
+   <code class="literal">my_column</code>, it would be accessed as
 </p>
 <pre class="programlisting">foo = rv[i]["my_column"]</pre>
 <p>
   </p>
-<p>   <a name="id2658822"></a>
-   The second function, <tt class="function">plpy.prepare</tt>, prepares
+<p>   <a name="id429679"></a>
+   The second function, <code class="function">plpy.prepare</code>, prepares
    the execution plan for a query.  It is called with a query string
    and a list of parameter types, if you have parameter references in
    the query.  For example:
 </p>
 <pre class="programlisting">plan = plpy.prepare("SELECT last_name FROM my_users WHERE first_name = $1", [ "text" ])</pre>
 <p>
-   <tt class="literal">text</tt> is the type of the variable you will be
-   passing for <tt class="literal">$1</tt>.  After preparing a statement, you
-   use the function <tt class="function">plpy.execute</tt> to run it:
+   <code class="literal">text</code> is the type of the variable you will be
+   passing for <code class="literal">$1</code>.  After preparing a statement, you
+   use the function <code class="function">plpy.execute</code> to run it:
 </p>
 <pre class="programlisting">rv = plpy.execute(plan, [ "name" ], 5)</pre>
 <p>
@@ -89,7 +86,7 @@
    automatically saved.  Read the SPI documentation (<a href="spi.html" title="Chapter 39. Server Programming Interface">Chapter 39, <i>Server Programming Interface</i></a>) for a description of what this means.
    In order to make effective use of this across function calls
    one needs to use one of the persistent storage dictionaries
-   <tt class="literal">SD</tt> or <tt class="literal">GD</tt> (see
+   <code class="literal">SD</code> or <code class="literal">GD</code> (see
    <a href="plpython.html#plpython-funcs" title="38.1. PL/Python Functions">Section 38.1, &#8220;PL/Python Functions&#8221;</a>). For example:
 </p>
 <pre class="programlisting">CREATE FUNCTION usesavedplan() RETURNS trigger AS $$

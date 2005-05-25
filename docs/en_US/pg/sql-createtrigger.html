@@ -4,105 +4,102 @@
 <title>CREATE TRIGGER</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createtablespace.html" title="CREATE TABLESPACE">
+<link rel="prev" href="sql-createtablespace.html" title="CREATE TABLESPACE">
 <link rel="next" href="sql-createtype.html" title="CREATE TYPE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createtrigger"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createtrigger"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE TRIGGER &#8212; define a new trigger</p>
 </div>
-<a name="id2684316"></a><div class="refsynopsisdiv">
+<a name="id453559"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE TRIGGER <i class="replaceable"><tt>name</tt></i> { BEFORE | AFTER } { <i class="replaceable"><tt>event</tt></i> [ OR ... ] }
-    ON <i class="replaceable"><tt>table</tt></i> [ FOR [ EACH ] { ROW | STATEMENT } ]
-    EXECUTE PROCEDURE <i class="replaceable"><tt>funcname</tt></i> ( <i class="replaceable"><tt>arguments</tt></i> )</pre>
+<pre class="synopsis">CREATE TRIGGER <em class="replaceable"><code>name</code></em> { BEFORE | AFTER } { <em class="replaceable"><code>event</code></em> [ OR ... ] }
+    ON <em class="replaceable"><code>table</code></em> [ FOR [ EACH ] { ROW | STATEMENT } ]
+    EXECUTE PROCEDURE <em class="replaceable"><code>funcname</code></em> ( <em class="replaceable"><code>arguments</code></em> )</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2684362"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE TRIGGER</tt> creates a new trigger.  The
+<a name="id453604"></a><h2>Description</h2>
+<p>   <code class="command">CREATE TRIGGER</code> creates a new trigger.  The
    trigger will be associated with the specified table and will
-   execute the specified function <i class="replaceable"><tt>funcname</tt></i> when certain events occur.
+   execute the specified function <em class="replaceable"><code>funcname</code></em> when certain events occur.
   </p>
 <p>   The trigger can be specified to fire either before the
    operation is attempted on a row (before constraints are checked and
-   the <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, or
-   <tt class="command">DELETE</tt> is attempted) or after the operation has
+   the <code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
+   <code class="command">DELETE</code> is attempted) or after the operation has
    completed (after constraints are checked and the
-   <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, or
-   <tt class="command">DELETE</tt> has completed). If the trigger fires
+   <code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
+   <code class="command">DELETE</code> has completed). If the trigger fires
    before the event, the trigger may skip the operation for the
    current row, or change the row being inserted (for
-   <tt class="command">INSERT</tt> and <tt class="command">UPDATE</tt> operations
+   <code class="command">INSERT</code> and <code class="command">UPDATE</code> operations
    only). If the trigger fires after the event, all changes, including
    the last insertion, update, or deletion, are &#8220;<span class="quote">visible</span>&#8221;
    to the trigger.
   </p>
-<p>   A trigger that is marked <tt class="literal">FOR EACH ROW</tt> is called
+<p>   A trigger that is marked <code class="literal">FOR EACH ROW</code> is called
    once for every row that the operation modifies. For example, a
-   <tt class="command">DELETE</tt> that affects 10 rows will cause any
-   <tt class="literal">ON DELETE</tt> triggers on the target relation to be
+   <code class="command">DELETE</code> that affects 10 rows will cause any
+   <code class="literal">ON DELETE</code> triggers on the target relation to be
    called 10 separate times, once for each deleted row. In contrast, a
-   trigger that is marked <tt class="literal">FOR EACH STATEMENT</tt> only
+   trigger that is marked <code class="literal">FOR EACH STATEMENT</code> only
    executes once for any given operation, regardless of how many rows
    it modifies (in particular, an operation that modifies zero rows
-   will still result in the execution of any applicable <tt class="literal">FOR
-   EACH STATEMENT</tt> triggers).
+   will still result in the execution of any applicable <code class="literal">FOR
+   EACH STATEMENT</code> triggers).
   </p>
 <p>   If multiple triggers of the same kind are defined for the same event,
    they will be fired in alphabetical order by name.
   </p>
-<p>   <tt class="command">SELECT</tt> does not modify any rows so you can not
-   create <tt class="command">SELECT</tt> triggers. Rules and views are more
+<p>   <code class="command">SELECT</code> does not modify any rows so you can not
+   create <code class="command">SELECT</code> triggers. Rules and views are more
    appropriate in such cases.
   </p>
 <p>   Refer to <a href="triggers.html" title="Chapter 32. Triggers">Chapter 32, <i>Triggers</i></a> for more information about triggers.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2684514"></a><h2>Parameters</h2>
+<a name="id453742"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name to give the new trigger.  This must be distinct from
       the name of any other trigger for the same table.
      </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">BEFORE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">AFTER</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">BEFORE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">AFTER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>      Determines whether the function is called before or after the
       event.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>event</tt></i></span></dt>
-<dd><p>      One of <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, or
-      <tt class="command">DELETE</tt>; this specifies the event that will
+<dt><span class="term"><em class="replaceable"><code>event</code></em></span></dt>
+<dd><p>      One of <code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
+      <code class="command">DELETE</code>; this specifies the event that will
       fire the trigger. Multiple events can be specified using
-      <tt class="literal">OR</tt>.
+      <code class="literal">OR</code>.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table the trigger
       is for.
      </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">FOR EACH ROW</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">FOR EACH STATEMENT</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">FOR EACH ROW</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">FOR EACH STATEMENT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>      This specifies whether the trigger procedure should be fired
       once for every row affected by the trigger event, or just once
-      per SQL statement. If neither is specified, <tt class="literal">FOR EACH
-      STATEMENT</tt> is the default.
+      per SQL statement. If neither is specified, <code class="literal">FOR EACH
+      STATEMENT</code> is the default.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>funcname</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>funcname</code></em></span></dt>
 <dd><p>      A user-supplied function that is declared as taking no arguments
-      and returning type <tt class="literal">trigger</tt>, which is executed when
+      and returning type <code class="literal">trigger</code>, which is executed when
       the trigger fires.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>arguments</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>arguments</code></em></span></dt>
 <dd><p>      An optional comma-separated list of arguments to be provided to
       the function when the trigger is executed.  The arguments are
       literal string constants.  Simple names and numeric constants
@@ -117,14 +114,14 @@
 <div class="refsect1" lang="en">
 <a name="sql-createtrigger-notes"></a><h2>Notes</h2>
 <p>   To create a trigger on a table, the user must have the
-   <tt class="literal">TRIGGER</tt> privilege on the table.
+   <code class="literal">TRIGGER</code> privilege on the table.
   </p>
 <p>   In <span class="productname">PostgreSQL</span> versions before 7.3, it was
    necessary to declare trigger functions as returning the placeholder
-   type <tt class="type">opaque</tt>, rather than <tt class="type">trigger</tt>.  To support loading
-   of old dump files, <tt class="command">CREATE TRIGGER</tt> will accept a function
-   declared as returning <tt class="type">opaque</tt>, but it will issue a notice and
-   change the function's declared return type to <tt class="type">trigger</tt>.
+   type <code class="type">opaque</code>, rather than <code class="type">trigger</code>.  To support loading
+   of old dump files, <code class="command">CREATE TRIGGER</code> will accept a function
+   declared as returning <code class="type">opaque</code>, but it will issue a notice and
+   change the function's declared return type to <code class="type">trigger</code>.
   </p>
 <p>   Use <a href="sql-droptrigger.html">DROP TRIGGER</a> to remove a trigger.
   </p>
@@ -136,7 +133,7 @@
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtrigger-compatibility"></a><h2>Compatibility</h2>
-<p>   The <tt class="command">CREATE TRIGGER</tt> statement in
+<p>   The <code class="command">CREATE TRIGGER</code> statement in
    <span class="productname">PostgreSQL</span> implements a subset of the
    SQL:1999 standard.  (There are no provisions for triggers in SQL-92.)
    The following functionality is missing:
@@ -144,13 +141,13 @@
    </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>      SQL:1999 allows triggers to fire on updates to specific columns
-      (e.g., <tt class="literal">AFTER UPDATE OF col1, col2</tt>).
+      (e.g., <code class="literal">AFTER UPDATE OF col1, col2</code>).
      </p></li>
 <li><p>      SQL:1999 allows you to define aliases for the &#8220;<span class="quote">old</span>&#8221;
       and &#8220;<span class="quote">new</span>&#8221; rows or tables for use in the definition
-      of the triggered action (e.g., <tt class="literal">CREATE TRIGGER ... ON
+      of the triggered action (e.g., <code class="literal">CREATE TRIGGER ... ON
       tablename REFERENCING OLD ROW AS somename NEW ROW AS othername
-      ...</tt>).  Since <span class="productname">PostgreSQL</span>
+      ...</code>).  Since <span class="productname">PostgreSQL</span>
       allows trigger procedures to be written in any number of
       user-defined languages, access to the data is handled in a
       language-specific way.
@@ -158,7 +155,7 @@
 <li><p>      <span class="productname">PostgreSQL</span> only allows the execution
       of a user-defined function for the triggered action.  SQL:1999
       allows the execution of a number of other SQL commands, such as
-      <tt class="command">CREATE TABLE</tt> as triggered action.  This
+      <code class="command">CREATE TABLE</code> as triggered action.  This
       limitation is not hard to work around by creating a user-defined
       function that executes the desired commands.
      </p></li>
@@ -170,13 +167,13 @@
    name order, which was judged more convenient to work with.
   </p>
 <p>   The ability to specify multiple actions for a single trigger using
-   <tt class="literal">OR</tt> is a <span class="productname">PostgreSQL</span> extension of
+   <code class="literal">OR</code> is a <span class="productname">PostgreSQL</span> extension of
    the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2684856"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-altertrigger.html">ALTER TRIGGER</a>, <a href="sql-droptrigger.html">DROP TRIGGER</a></span>
+<a name="id454054"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-altertrigger.html">ALTER TRIGGER</a>, <a href="sql-droptrigger.html">DROP TRIGGER</a>, </span>
 </div>
 </div></body>
 </html>

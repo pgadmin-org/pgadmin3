@@ -4,18 +4,15 @@
 <title>9.20. System Administration Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-info.html" title="9.19. System Information Functions">
+<link rel="prev" href="functions-info.html" title="9.19. System Information Functions">
 <link rel="next" href="typeconv.html" title="Chapter 10. Type Conversion">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-admin"></a>9.20. System Administration Functions</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-admin"></a>9.20. System Administration Functions</h2></div></div></div>
 <p>   <a href="functions-admin.html#functions-admin-set-table" title="Table 9.44. Configuration Settings Functions">Table 9.44, &#8220;Configuration Settings Functions&#8221;</a> shows the functions
    available to query and alter run-time configuration parameters.
   </p>
@@ -34,24 +31,26 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">current_setting</tt>(<i class="parameter"><tt>setting_name</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td>        <code class="literal"><code class="function">current_setting</code>(<em class="parameter"><code>setting_name</code></em>)</code>
+       </td>
+<td><code class="type">text</code></td>
 <td>current value of setting</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">set_config(<i class="parameter"><tt>setting_name</tt></i>, ,
-                             <i class="parameter"><tt>new_value</tt></i>, ,
-                             <i class="parameter"><tt>is_local</tt></i>)</tt></tt></td>
-<td><tt class="type">text</tt></td>
+<td>        <code class="literal"><code class="function">set_config(<em class="parameter"><code>setting_name</code></em>, ,
+                             <em class="parameter"><code>new_value</code></em>, ,
+                             <em class="parameter"><code>is_local</code></em>)</code></code>
+       </td>
+<td><code class="type">text</code></td>
 <td>set parameter and return new value</td>
 </tr>
 </tbody>
 </table>
 </div>
-<a name="id2566802"></a><a name="id2566812"></a><a name="id2566822"></a><p>    The function <tt class="function">current_setting</tt> yields the
-    current value of the setting <i class="parameter"><tt>setting_name</tt></i>.
+<a name="id345997"></a><a name="id346007"></a><a name="id346016"></a><p>    The function <code class="function">current_setting</code> yields the
+    current value of the setting <em class="parameter"><code>setting_name</code></em>.
     It corresponds to the <span class="acronym">SQL</span> command
-    <tt class="command">SHOW</tt>.  An example:
+    <code class="command">SHOW</code>.  An example:
 </p>
 <pre class="programlisting">SELECT current_setting('datestyle');
 
@@ -61,14 +60,14 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <tt class="function">set_config</tt> sets the parameter
-    <i class="parameter"><tt>setting_name</tt></i> to
-    <i class="parameter"><tt>new_value</tt></i>.  If
-    <i class="parameter"><tt>is_local</tt></i> is <tt class="literal">true</tt>, the
+<p>    <code class="function">set_config</code> sets the parameter
+    <em class="parameter"><code>setting_name</code></em> to
+    <em class="parameter"><code>new_value</code></em>.  If
+    <em class="parameter"><code>is_local</code></em> is <code class="literal">true</code>, the
     new value will only apply to the current transaction. If you want
     the new value to apply for the current session, use
-    <tt class="literal">false</tt> instead. The function corresponds to the
-    SQL command <tt class="command">SET</tt>. An example:
+    <code class="literal">false</code> instead. The function corresponds to the
+    SQL command <code class="command">SET</code>. An example:
 </p>
 <pre class="programlisting">SELECT set_config('log_statement_stats', 'off', false);
 
@@ -78,7 +77,7 @@
 (1 row)</pre>
 <p>
    </p>
-<a name="id2566925"></a><a name="id2566934"></a><p>    The function shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.45. Backend Signalling Functions">Table 9.45, &#8220;Backend Signalling Functions&#8221;</a> sends control signals to
+<a name="id346114"></a><a name="id346123"></a><p>    The function shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.45. Backend Signalling Functions">Table 9.45, &#8220;Backend Signalling Functions&#8221;</a> sends control signals to
     other server processes.  Use of this function is restricted
     to superusers.
    </p>
@@ -96,19 +95,20 @@
 <th>Description</th>
 </tr></thead>
 <tbody><tr>
-<td><tt class="literal"><tt class="function">pg_cancel_backend</tt>(<i class="parameter"><tt>pid</tt></i>)</tt></td>
-<td><tt class="type">int</tt></td>
+<td>        <code class="literal"><code class="function">pg_cancel_backend</code>(<em class="parameter"><code>pid</code></em>)</code>
+        </td>
+<td><code class="type">int</code></td>
 <td>Cancel a backend's current query</td>
 </tr></tbody>
 </table>
 </div>
 <p>    This function returns 1 if successful, 0 if not successful.
-    The process ID (<tt class="literal">pid</tt>) of an active backend can be found
-    from the <tt class="structfield">procpid</tt> column in the
-    <tt class="structname">pg_stat_activity</tt> view, or by listing the <tt class="command">postgres</tt>
+    The process ID (<code class="literal">pid</code>) of an active backend can be found
+    from the <code class="structfield">procpid</code> column in the
+    <code class="structname">pg_stat_activity</code> view, or by listing the <code class="command">postgres</code>
     processes on the server with <span class="application">ps</span>.
    </p>
-<a name="id2567038"></a><a name="id2567048"></a><a name="id2567057"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.46. Backup Control Functions">Table 9.46, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
+<a name="id346222"></a><a name="id346231"></a><a name="id346240"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.46. Backup Control Functions">Table 9.46, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
     Use of these functions is restricted to superusers.
    </p>
 <div class="table">
@@ -126,19 +126,21 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">pg_start_backup</tt>(<i class="parameter"><tt>label_text</tt></i>)</tt></td>
-<td><tt class="type">text</tt></td>
+<td>        <code class="literal"><code class="function">pg_start_backup</code>(<em class="parameter"><code>label_text</code></em>)</code>
+        </td>
+<td><code class="type">text</code></td>
 <td>Set up for performing on-line backup</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pg_stop_backup</tt>()</tt></td>
-<td><tt class="type">text</tt></td>
+<td>        <code class="literal"><code class="function">pg_stop_backup</code>()</code>
+        </td>
+<td><code class="type">text</code></td>
 <td>Finish performing on-line backup</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>    <tt class="function">pg_start_backup</tt> accepts a single parameter which is an
+<p>    <code class="function">pg_start_backup</code> accepts a single parameter which is an
     arbitrary user-defined label for the backup.  (Typically this would be
     the name under which the backup dump file will be stored.)  The function
     writes a backup label file into the database cluster's data directory,
@@ -146,10 +148,10 @@
     need not pay any attention to this result value, but it is provided in
     case it is of use.)
    </p>
-<p>    <tt class="function">pg_stop_backup</tt> removes the label file created by
-    <tt class="function">pg_start_backup</tt>, and instead creates a backup history file in
+<p>    <code class="function">pg_stop_backup</code> removes the label file created by
+    <code class="function">pg_start_backup</code>, and instead creates a backup history file in
     the WAL archive area.  The history file includes the label given to
-    <tt class="function">pg_start_backup</tt>, the starting and ending WAL offsets for
+    <code class="function">pg_start_backup</code>, the starting and ending WAL offsets for
     the backup, and the starting and ending times of the backup.  The return
     value is the backup's ending WAL offset (which again may be of little
     interest).

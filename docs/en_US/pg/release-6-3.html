@@ -1,21 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.46. Release 6.3</title>
+<title>E.51. Release 6.3</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="previous" href="release-6-3-1.html" title="E.45. Release 6.3.1">
-<link rel="next" href="release-6-2-1.html" title="E.47. Release 6.2.1">
+<link rel="prev" href="release-6-3-1.html" title="E.50. Release 6.3.1">
+<link rel="next" href="release-6-2-1.html" title="E.52. Release 6.2.1">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="release-6-3"></a>E.46. Release 6.3</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-6-3"></a>E.51. Release 6.3</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1998-03-01</p>
@@ -33,11 +30,11 @@
       </p></li>
 <li><p>       Socket interface for client/server connection. This is the default now
        so you may need to start <span class="application">postmaster</span> with the
-       <tt class="option">-i</tt> flag.
+       <code class="option">-i</code> flag.
       </p></li>
 <li><p>       Better password authorization mechanisms. Default table privileges have changed.
       </p></li>
-<li><p>       Old-style <i class="firstterm">time travel</i>
+<li><p>       Old-style <em class="firstterm">time travel</em>
        has been removed. Performance has been improved.
       </p></li>
 </ul></div>
@@ -49,7 +46,7 @@
     </p>
 </div>
 <p>    There are some general 6.3 issues that I want to mention.  These are
-    only the big items that can not be described in one sentence.  A review
+    only the big items that cannot be described in one sentence.  A review
     of the detailed changes list is still needed.
    </p>
 <p>    First, we now have subselects.  Now that we have them, I would like to
@@ -63,20 +60,20 @@
    </p>
 <p>    Second, 6.3 uses Unix domain sockets rather than TCP/IP by default.  To
     enable connections from other machines, you have to use the new
-    postmaster -i option, and of course edit <tt class="filename">pg_hba.conf</tt>.  Also, for this
-    reason, the format of <tt class="filename">pg_hba.conf</tt> has changed.
+    postmaster -i option, and of course edit <code class="filename">pg_hba.conf</code>.  Also, for this
+    reason, the format of <code class="filename">pg_hba.conf</code> has changed.
    </p>
-<p>    Third, <tt class="type">char()</tt> fields will now allow faster access than <tt class="type">varchar()</tt> or
-    <tt class="type">text</tt>. Specifically, the <tt class="type">text</tt> and <tt class="type">varchar()</tt> have a penalty for access to
-    any columns after the first column of this type.  <tt class="type">char()</tt> used to also
+<p>    Third, <code class="type">char()</code> fields will now allow faster access than <code class="type">varchar()</code> or
+    <code class="type">text</code>. Specifically, the <code class="type">text</code> and <code class="type">varchar()</code> have a penalty for access to
+    any columns after the first column of this type.  <code class="type">char()</code> used to also
     have this access penalty, but it no longer does.  This may suggest that
     you redesign some of your tables, especially if you have short character
-    columns that you have defined as <tt class="type">varchar()</tt> or <tt class="type">text</tt>.  This and other
+    columns that you have defined as <code class="type">varchar()</code> or <code class="type">text</code>.  This and other
     changes make 6.3 even faster than earlier releases.
    </p>
 <p>    We now have passwords definable independent of any Unix file.  There are
     new SQL USER commands.
-    See the <i class="citetitle">Administrator's Guide</i> for more
+    See the <em class="citetitle">Administrator's Guide</em> for more
     information.  There is a new table, pg_shadow, which is used to store
     user information and user passwords, and it by default only SELECT-able
     by the <span class="systemitem">postgres</span> super-user.  pg_user is now a view of pg_shadow, and is
@@ -97,10 +94,10 @@
     release.  Check out the doc/ directory.
    </p>
 <p>    For performance reasons, time travel is gone, but can be implemented
-    using triggers (see <tt class="filename">pgsql/contrib/spi/README</tt>).  Please check out the new
+    using triggers (see <code class="filename">pgsql/contrib/spi/README</code>).  Please check out the new
     \d command for types, operators, etc.  Also, views have their own
     privileges now, not based on the underlying tables, so privileges on
-    them have to be set separately.  Check <tt class="filename">/pgsql/interfaces</tt> for some new
+    them have to be set separately.  Check <code class="filename">/pgsql/interfaces</code> for some new
     ways to talk to <span class="productname">PostgreSQL</span>.
    </p>
 <p>    This is the first release that really required an explanation for
@@ -109,11 +106,8 @@
     are no longer needed.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2784261"></a>E.46.1. Migration to version 6.3</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id548104"></a>E.51.1. Migration to version 6.3</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span> 
      or <span class="application">pg_dumpall</span>
      is required for those wishing to migrate data from any
@@ -121,11 +115,8 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2784286"></a>E.46.2. Changes</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id548129"></a>E.51.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------

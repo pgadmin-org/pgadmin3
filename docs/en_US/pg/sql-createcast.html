@@ -4,85 +4,82 @@
 <title>CREATE CAST</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createaggregate.html" title="CREATE AGGREGATE">
+<link rel="prev" href="sql-createaggregate.html" title="CREATE AGGREGATE">
 <link rel="next" href="sql-createconstraint.html" title="CREATE CONSTRAINT TRIGGER">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createcast"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createcast"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE CAST &#8212; define a new cast</p>
 </div>
-<a name="id2674512"></a><div class="refsynopsisdiv">
+<a name="id444513"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replaceable"><tt>targettype</tt></i>)
-    WITH FUNCTION <i class="replaceable"><tt>funcname</tt></i> (<i class="replaceable"><tt>argtypes</tt></i>)
+<pre class="synopsis">CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="replaceable"><code>targettype</code></em>)
+    WITH FUNCTION <em class="replaceable"><code>funcname</code></em> (<em class="replaceable"><code>argtypes</code></em>)
     [ AS ASSIGNMENT | AS IMPLICIT ]
 
-CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replaceable"><tt>targettype</tt></i>)
+CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="replaceable"><code>targettype</code></em>)
     WITHOUT FUNCTION
     [ AS ASSIGNMENT | AS IMPLICIT ]</pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createcast-description"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE CAST</tt> defines a new cast.  A cast
+<p>   <code class="command">CREATE CAST</code> defines a new cast.  A cast
    specifies how to perform a conversion between
    two data types.  For example,
 </p>
 <pre class="programlisting">SELECT CAST(42 AS text);</pre>
 <p>
-   converts the integer constant 42 to type <tt class="type">text</tt> by
+   converts the integer constant 42 to type <code class="type">text</code> by
    invoking a previously specified function, in this case
-   <tt class="literal">text(int4)</tt>. (If no suitable cast has been defined, the
+   <code class="literal">text(int4)</code>. (If no suitable cast has been defined, the
    conversion fails.)
   </p>
-<p>   Two types may be <i class="firstterm">binary compatible</i>, which
+<p>   Two types may be <em class="firstterm">binary compatible</em>, which
    means that they can be converted into one another &#8220;<span class="quote">for
    free</span>&#8221; without invoking any function.  This requires that
    corresponding values use the same internal representation.  For
-   instance, the types <tt class="type">text</tt> and <tt class="type">varchar</tt> are
+   instance, the types <code class="type">text</code> and <code class="type">varchar</code> are
    binary compatible.
   </p>
 <p>   By default, a cast can be invoked only by an explicit cast request,
-   that is an explicit <tt class="literal">CAST(<i class="replaceable"><tt>x</tt></i> AS
-   <i class="replaceable"><tt>typename</tt></i>)</tt> or
-   <i class="replaceable"><tt>x</tt></i><tt class="literal">::</tt><i class="replaceable"><tt>typename</tt></i>
+   that is an explicit <code class="literal">CAST(<em class="replaceable"><code>x</code></em> AS
+   <em class="replaceable"><code>typename</code></em>)</code> or
+   <em class="replaceable"><code>x</code></em><code class="literal">::</code><em class="replaceable"><code>typename</code></em>
    construct.
   </p>
-<p>   If the cast is marked <tt class="literal">AS ASSIGNMENT</tt> then it can be invoked
+<p>   If the cast is marked <code class="literal">AS ASSIGNMENT</code> then it can be invoked
    implicitly when assigning a value to a column of the target data type.
-   For example, supposing that <tt class="literal">foo.f1</tt> is a column of
-   type <tt class="type">text</tt>, then
+   For example, supposing that <code class="literal">foo.f1</code> is a column of
+   type <code class="type">text</code>, then
 </p>
 <pre class="programlisting">INSERT INTO foo (f1) VALUES (42);</pre>
 <p>
-   will be allowed if the cast from type <tt class="type">integer</tt> to type
-   <tt class="type">text</tt> is marked <tt class="literal">AS ASSIGNMENT</tt>, otherwise
+   will be allowed if the cast from type <code class="type">integer</code> to type
+   <code class="type">text</code> is marked <code class="literal">AS ASSIGNMENT</code>, otherwise
    not.
-   (We generally use the term <i class="firstterm">assignment
-   cast</i> to describe this kind of cast.)
+   (We generally use the term <em class="firstterm">assignment
+   cast</em> to describe this kind of cast.)
   </p>
-<p>   If the cast is marked <tt class="literal">AS IMPLICIT</tt> then it can be invoked
+<p>   If the cast is marked <code class="literal">AS IMPLICIT</code> then it can be invoked
    implicitly in any context, whether assignment or internally in an
-   expression.  For example, since <tt class="literal">||</tt> takes <tt class="type">text</tt>
+   expression.  For example, since <code class="literal">||</code> takes <code class="type">text</code>
    operands,
 </p>
 <pre class="programlisting">SELECT 'The time is ' || now();</pre>
 <p>
-   will be allowed only if the cast from type <tt class="type">timestamp</tt> to
-   <tt class="type">text</tt> is marked <tt class="literal">AS IMPLICIT</tt>.  Otherwise it
+   will be allowed only if the cast from type <code class="type">timestamp</code> to
+   <code class="type">text</code> is marked <code class="literal">AS IMPLICIT</code>.  Otherwise it
    will be necessary to write the cast explicitly, for example
 </p>
 <pre class="programlisting">SELECT 'The time is ' || CAST(now() AS text);</pre>
 <p>
-   (We generally use the term <i class="firstterm">implicit
-   cast</i> to describe this kind of cast.)
+   (We generally use the term <em class="firstterm">implicit
+   cast</em> to describe this kind of cast.)
   </p>
 <p>   It is wise to be conservative about marking casts as implicit.  An
    overabundance of implicit casting paths can cause
@@ -91,11 +88,11 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
    all because there are multiple possible interpretations.  A good
    rule of thumb is to make a cast implicitly invokable only for
    information-preserving transformations between types in the same
-   general type category.  For example, the cast from <tt class="type">int2</tt> to
-   <tt class="type">int4</tt> can reasonably be implicit, but the cast from
-   <tt class="type">float8</tt> to <tt class="type">int4</tt> should probably be
-   assignment-only.  Cross-type-category casts, such as <tt class="type">text</tt>
-   to <tt class="type">int4</tt>, are best made explicit-only.
+   general type category.  For example, the cast from <code class="type">int2</code> to
+   <code class="type">int4</code> can reasonably be implicit, but the cast from
+   <code class="type">float8</code> to <code class="type">int4</code> should probably be
+   assignment-only.  Cross-type-category casts, such as <code class="type">text</code>
+   to <code class="type">int4</code>, are best made explicit-only.
   </p>
 <p>   To be able to create a cast, you must own the source or the target
    data type.  To create a binary-compatible cast, you must be superuser.
@@ -104,40 +101,40 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2674786"></a><h2>Parameters</h2>
+<a name="id444763"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>sourcetype</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>sourcetype</code></em></span></dt>
 <dd><p>       The name of the source data type of the cast.
       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>targettype</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>targettype</code></em></span></dt>
 <dd><p>       The name of the target data type of the cast.
       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>funcname</tt></i>(<i class="replaceable"><tt>argtypes</tt></i>)</span></dt>
+<dt><span class="term"><em class="replaceable"><code>funcname</code></em>(<em class="replaceable"><code>argtypes</code></em>)</span></dt>
 <dd><p>       The function used to perform the cast.  The function name may
        be schema-qualified.  If it is not, the function will be looked
        up in the schema search path.  The function's result data type must
        match the target type of the cast.   Its arguments are discussed below.
       </p></dd>
-<dt><span class="term"><tt class="literal">WITHOUT FUNCTION</tt></span></dt>
+<dt><span class="term"><code class="literal">WITHOUT FUNCTION</code></span></dt>
 <dd><p>       Indicates that the source type and the target type are binary
        compatible, so no function is required to perform the cast.
       </p></dd>
-<dt><span class="term"><tt class="literal">AS ASSIGNMENT</tt></span></dt>
+<dt><span class="term"><code class="literal">AS ASSIGNMENT</code></span></dt>
 <dd><p>       Indicates that the cast may be invoked implicitly in assignment
        contexts.
       </p></dd>
-<dt><span class="term"><tt class="literal">AS IMPLICIT</tt></span></dt>
+<dt><span class="term"><code class="literal">AS IMPLICIT</code></span></dt>
 <dd><p>       Indicates that the cast may be invoked implicitly in any context.
       </p></dd>
 </dl></div>
 <p>   Cast implementation functions may have one to three arguments.
    The first argument type must be identical to the cast's source type.
    The second argument,
-   if present, must be type <tt class="type">integer</tt>; it receives the type
-   modifier associated with the destination type, or <tt class="literal">-1</tt>
+   if present, must be type <code class="type">integer</code>; it receives the type
+   modifier associated with the destination type, or <code class="literal">-1</code>
    if there is none.  The third argument,
-   if present, must be type <tt class="type">boolean</tt>; it receives <tt class="literal">true</tt>
-   if the cast is an explicit cast, <tt class="literal">false</tt> otherwise.
+   if present, must be type <code class="type">boolean</code>; it receives <code class="literal">true</code>
+   if the cast is an explicit cast, <code class="literal">false</code> otherwise.
    (Bizarrely, the SQL spec demands different behaviors for explicit and
    implicit casts in some cases.  This argument is supplied for functions
    that must implement such casts.  It is not recommended that you design
@@ -175,13 +172,13 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
    schemas and to be able to represent binary compatible casts in the
    system catalogs.  The built-in cast functions still follow this naming
    scheme, but they have to be shown as casts in the system catalog
-   <tt class="structname">pg_cast</tt> as well.
+   <code class="structname">pg_cast</code> as well.
   </p>
 <p>   While not required, it is recommended that you continue to follow this old
    convention of naming cast implementation functions after the target data
    type.  Many users are used to being able to cast data types using a
    function-style notation, that is
-   <i class="replaceable"><tt>typename</tt></i>(<i class="replaceable"><tt>x</tt></i>).  This notation is in fact
+   <em class="replaceable"><code>typename</code></em>(<em class="replaceable"><code>x</code></em>).  This notation is in fact
    nothing more nor less than a call of the cast implementation function; it
    is not specially treated as a cast.  If your conversion functions are not
    named to support this convention then you will have surprised users.
@@ -193,12 +190,12 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>   There is one small lie in the preceding paragraph: there is still one
-   case in which <tt class="structname">pg_cast</tt> will be used to resolve the
+   case in which <code class="structname">pg_cast</code> will be used to resolve the
    meaning of an apparent function call.  If a
-   function call <i class="replaceable"><tt>name</tt></i>(<i class="replaceable"><tt>x</tt></i>) matches no
-   actual function, but <i class="replaceable"><tt>name</tt></i> is the name of a data type
-   and <tt class="structname">pg_cast</tt> shows a binary-compatible cast to this
-   type from the type of <i class="replaceable"><tt>x</tt></i>, then the call will be construed
+   function call <em class="replaceable"><code>name</code></em>(<em class="replaceable"><code>x</code></em>) matches no
+   actual function, but <em class="replaceable"><code>name</code></em> is the name of a data type
+   and <code class="structname">pg_cast</code> shows a binary-compatible cast to this
+   type from the type of <em class="replaceable"><code>x</code></em>, then the call will be construed
    as an explicit cast.  This exception is made so that binary-compatible
    casts can be invoked using functional syntax, even though they lack
    any function.
@@ -207,8 +204,8 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createcast-examples"></a><h2>Examples</h2>
-<p>   To create a cast from type <tt class="type">text</tt> to type
-   <tt class="type">int4</tt> using the function <tt class="literal">int4(text)</tt>:
+<p>   To create a cast from type <code class="type">text</code> to type
+   <code class="type">int4</code> using the function <code class="literal">int4(text)</code>:
 </p>
 <pre class="programlisting">CREATE CAST (text AS int4) WITH FUNCTION int4(text);</pre>
 <p>
@@ -217,10 +214,10 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createcast-compat"></a><h2>Compatibility</h2>
-<p>   The <tt class="command">CREATE CAST</tt> command conforms to SQL:1999,
+<p>   The <code class="command">CREATE CAST</code> command conforms to SQL:1999,
    except that SQL:1999 does not make provisions for binary-compatible
    types or extra arguments to implementation functions.
-   <tt class="literal">AS IMPLICIT</tt> is a <span class="productname">PostgreSQL</span> 
+   <code class="literal">AS IMPLICIT</code> is a <span class="productname">PostgreSQL</span> 
    extension, too.
   </p>
 </div>

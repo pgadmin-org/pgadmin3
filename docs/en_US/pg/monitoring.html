@@ -4,18 +4,15 @@
 <title>Chapter 23. Monitoring Database Activity</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="previous" href="migration.html" title="22.4. Migration Between Releases">
+<link rel="prev" href="migration.html" title="22.4. Migration Between Releases">
 <link rel="next" href="monitoring-stats.html" title="23.2. The Statistics Collector">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="monitoring">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="monitoring"></a>Chapter 23. Monitoring Database Activity</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="monitoring"></a>Chapter 23. Monitoring Database Activity</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -28,7 +25,7 @@
 <dt><span class="sect1"><a href="monitoring-locks.html">23.3. Viewing Locks</a></span></dt>
 </dl>
 </div>
-<a name="id2604253"></a><a name="id2604265"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
+<a name="id380327"></a><a name="id380338"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
   doing right now?</span>&#8221;
   This chapter discusses how to find that out.
  </p>
@@ -36,22 +33,19 @@
    analyzing performance.  Most of this chapter is devoted to describing
    <span class="productname">PostgreSQL</span>'s statistics collector,
    but one should not neglect regular Unix monitoring programs such as
-   <tt class="command">ps</tt>, <tt class="command">top</tt>, <tt class="command">iostat</tt>, and <tt class="command">vmstat</tt>.
+   <code class="command">ps</code>, <code class="command">top</code>, <code class="command">iostat</code>, and <code class="command">vmstat</code>.
    Also, once one has identified a
    poorly-performing query, further investigation may be needed using
    <span class="productname">PostgreSQL</span>'s <a href="sql-explain.html">EXPLAIN</a> command.
-   <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using EXPLAIN&#8221;</a> discusses <tt class="command">EXPLAIN</tt>
+   <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a> discusses <code class="command">EXPLAIN</code>
    and other methods for understanding the behavior of an individual
    query.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="monitoring-ps"></a>23.1. Standard Unix Tools</h2></div></div>
-<div></div>
-</div>
-<a name="id2604357"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
-   command title as reported by <tt class="command">ps</tt>, so that individual server
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="monitoring-ps"></a>23.1. Standard Unix Tools</h2></div></div></div>
+<a name="id380424"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
+   command title as reported by <code class="command">ps</code>, so that individual server
    processes can readily be identified.  A sample display is
 
 </p>
@@ -64,7 +58,7 @@ postgres  1003  0.0  2.4  6532 3128 pts/1    SN   13:19   0:00 postgres: tgl reg
 postgres  1016  0.1  2.4  6532 3080 pts/1    SN   13:19   0:00 postgres: tgl regression [local] idle in transaction</pre>
 <p>
 
-   (The appropriate invocation of <tt class="command">ps</tt> varies across different
+   (The appropriate invocation of <code class="command">ps</code> varies across different
    platforms, as do the details of what is shown.  This example is from a
    recent Linux system.)  The first process listed here is the
    <span class="application">postmaster</span>, the master server process.  The command arguments
@@ -76,15 +70,15 @@ postgres  1016  0.1  2.4  6532 3080 pts/1    SN   13:19   0:00 postgres: tgl reg
    process sets its command line display in the form
 
 </p>
-<pre class="screen">postgres: <i class="replaceable"><tt>user</tt></i> <i class="replaceable"><tt>database</tt></i> <i class="replaceable"><tt>host</tt></i> <i class="replaceable"><tt>activity</tt></i></pre>
+<pre class="screen">postgres: <em class="replaceable"><code>user</code></em> <em class="replaceable"><code>database</code></em> <em class="replaceable"><code>host</code></em> <em class="replaceable"><code>activity</code></em></pre>
 <p>
 
   The user, database, and connection source host items remain the same for
   the life of the client connection, but the activity indicator changes.
-  The activity may be <tt class="literal">idle</tt> (i.e., waiting for a client command),
-  <tt class="literal">idle in transaction</tt> (waiting for client inside a <tt class="command">BEGIN</tt> block),
-  or a command type name such as <tt class="literal">SELECT</tt>.  Also,
-  <tt class="literal">waiting</tt> is attached if the server process is presently waiting
+  The activity may be <code class="literal">idle</code> (i.e., waiting for a client command),
+  <code class="literal">idle in transaction</code> (waiting for client inside a <code class="command">BEGIN</code> block),
+  or a command type name such as <code class="literal">SELECT</code>.  Also,
+  <code class="literal">waiting</code> is attached if the server process is presently waiting
   on a lock held by another server process.  In the above example we can infer
   that process 1003 is waiting for process 1016 to complete its transaction and
   thereby release some lock or other.
@@ -92,13 +86,13 @@ postgres  1016  0.1  2.4  6532 3080 pts/1    SN   13:19   0:00 postgres: tgl reg
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>  <span class="productname">Solaris</span> requires special handling. You must
-  use <tt class="command">/usr/ucb/ps</tt>, rather than
-  <tt class="command">/bin/ps</tt>. You also must use two <tt class="option">w</tt>
+  use <code class="command">/usr/ucb/ps</code>, rather than
+  <code class="command">/bin/ps</code>. You also must use two <code class="option">w</code>
   flags, not just one. In addition, your original invocation of the
-  <tt class="command">postmaster</tt> command must have a shorter
-  <tt class="command">ps</tt> status display than that provided by each
-  server process.  If you fail to do all three things, the <tt class="command">ps</tt>
-  output for each server process will be the original <tt class="command">postmaster</tt>
+  <code class="command">postmaster</code> command must have a shorter
+  <code class="command">ps</code> status display than that provided by each
+  server process.  If you fail to do all three things, the <code class="command">ps</code>
+  output for each server process will be the original <code class="command">postmaster</code>
   command line.
   </p>
 </div>

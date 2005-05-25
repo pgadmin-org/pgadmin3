@@ -4,27 +4,24 @@
 <title>41.14. pg_description</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-depend.html" title="41.13. pg_depend">
+<link rel="prev" href="catalog-pg-depend.html" title="41.13. pg_depend">
 <link rel="next" href="catalog-pg-group.html" title="41.15. pg_group">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-description"></a>41.14. <tt class="structname">pg_description</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2731351"></a><p>   The catalog <tt class="structname">pg_description</tt> stores optional descriptions
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-description"></a>41.14. <code class="structname">pg_description</code></h2></div></div></div>
+<a name="id497672"></a><p>   The catalog <code class="structname">pg_description</code> stores optional descriptions
    (comments) for each database object.  Descriptions can be manipulated
-   with the <tt class="command">COMMENT</tt> command and viewed with
-   <span class="application">psql</span>'s <tt class="literal">\d</tt> commands.
+   with the <code class="command">COMMENT</code> command and viewed with
+   <span class="application">psql</span>'s <code class="literal">\d</code> commands.
    Descriptions of many built-in system objects are provided in the initial
-   contents of <tt class="structname">pg_description</tt>.
+   contents of <code class="structname">pg_description</code>.
   </p>
 <div class="table">
-<a name="id2731392"></a><p class="title"><b>Table 41.14. <tt class="structname">pg_description</tt> Columns</b></p>
+<a name="id497710"></a><p class="title"><b>Table 41.14. <code class="structname">pg_description</code> Columns</b></p>
 <table summary="pg_description Columns" border="1">
 <colgroup>
 <col>
@@ -40,30 +37,30 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">objoid</tt></td>
-<td><tt class="type">oid</tt></td>
+<td><code class="structfield">objoid</code></td>
+<td><code class="type">oid</code></td>
 <td>any OID column</td>
 <td>The OID of the object this description pertains to</td>
 </tr>
 <tr>
-<td><tt class="structfield">classoid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
+<td><code class="structfield">classoid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>The OID of the system catalog this object appears in</td>
 </tr>
 <tr>
-<td><tt class="structfield">objsubid</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="structfield">objsubid</code></td>
+<td><code class="type">int4</code></td>
 <td> </td>
 <td>       For a comment on a table column, this is the column number (the
-       <tt class="structfield">objoid</tt> and <tt class="structfield">classoid</tt> refer to
+       <code class="structfield">objoid</code> and <code class="structfield">classoid</code> refer to
        the table itself).  For all other object types, this column is
        zero.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">description</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="structfield">description</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
 <td>Arbitrary text that serves as the description of this object.</td>
 </tr>

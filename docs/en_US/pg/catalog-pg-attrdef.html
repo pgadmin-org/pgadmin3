@@ -4,26 +4,23 @@
 <title>41.6. pg_attrdef</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-amproc.html" title="41.5. pg_amproc">
+<link rel="prev" href="catalog-pg-amproc.html" title="41.5. pg_amproc">
 <link rel="next" href="catalog-pg-attribute.html" title="41.7. pg_attribute">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-attrdef"></a>41.6. <tt class="structname">pg_attrdef</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2728750"></a><p>   The catalog <tt class="structname">pg_attrdef</tt> stores column default values.  The main information
-   about columns is stored in <tt class="structname">pg_attribute</tt>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-attrdef"></a>41.6. <code class="structname">pg_attrdef</code></h2></div></div></div>
+<a name="id495224"></a><p>   The catalog <code class="structname">pg_attrdef</code> stores column default values.  The main information
+   about columns is stored in <code class="structname">pg_attribute</code>
    (see below).  Only columns that explicitly specify a default value
    (when the table is created or the column is added) will have an
    entry here.
   </p>
 <div class="table">
-<a name="id2728773"></a><p class="title"><b>Table 41.6. <tt class="structname">pg_attrdef</tt> Columns</b></p>
+<a name="id495244"></a><p class="title"><b>Table 41.6. <code class="structname">pg_attrdef</code> Columns</b></p>
 <table summary="pg_attrdef Columns" border="1">
 <colgroup>
 <col>
@@ -39,36 +36,36 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">adrelid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
+<td><code class="structfield">adrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>The table this column belongs to</td>
 </tr>
 <tr>
-<td><tt class="structfield">adnum</tt></td>
-<td><tt class="type">int2</tt></td>
-<td><tt class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><tt class="structname">pg_attribute</tt></a>.attnum</tt></td>
+<td><code class="structfield">adnum</code></td>
+<td><code class="type">int2</code></td>
+<td><code class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
 <td>The number of the column</td>
 </tr>
 <tr>
-<td><tt class="structfield">adbin</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="structfield">adbin</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
 <td>The internal representation of the column default value</td>
 </tr>
 <tr>
-<td><tt class="structfield">adsrc</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="structfield">adsrc</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
 <td>A human-readable representation of the default value</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>    The <tt class="structfield">adsrc</tt> field is historical, and is best
+<p>    The <code class="structfield">adsrc</code> field is historical, and is best
     not used, because it does not track outside changes that might affect
     the representation of the default value.  Reverse-compiling the
-    <tt class="structfield">adbin</tt> field (with <tt class="function">pg_get_expr</tt> for
+    <code class="structfield">adbin</code> field (with <code class="function">pg_get_expr</code> for
     example) is a better way to display the default value.
    </p>
 </div></body>

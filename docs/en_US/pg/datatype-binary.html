@@ -4,19 +4,16 @@
 <title>8.4. Binary Data Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="previous" href="datatype-character.html" title="8.3. Character Types">
+<link rel="prev" href="datatype-character.html" title="8.3. Character Types">
 <link rel="next" href="datatype-datetime.html" title="8.5. Date/Time Types">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="datatype-binary"></a>8.4. Binary Data Types</h2></div></div>
-<div></div>
-</div>
-<a name="id2533562"></a><a name="id2533572"></a><p>    The <tt class="type">bytea</tt> data type allows storage of binary strings;
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="datatype-binary"></a>8.4. Binary Data Types</h2></div></div></div>
+<a name="id314501"></a><a name="id314511"></a><p>    The <code class="type">bytea</code> data type allows storage of binary strings;
     see <a href="datatype-binary.html#datatype-binary-table" title="Table 8.6. Binary Data Types">Table 8.6, &#8220;Binary Data Types&#8221;</a>.
    </p>
 <div class="table">
@@ -33,7 +30,7 @@
 <th>Description</th>
 </tr></thead>
 <tbody><tr>
-<td><tt class="type">bytea</tt></td>
+<td><code class="type">bytea</code></td>
 <td>4 bytes plus the actual binary string</td>
 <td>variable-length binary string</td>
 </tr></tbody>
@@ -53,18 +50,18 @@
     programmer thinks of as &#8220;<span class="quote">raw bytes</span>&#8221;, whereas character
     strings are appropriate for storing text.
    </p>
-<p>    When entering <tt class="type">bytea</tt> values, octets of certain values
+<p>    When entering <code class="type">bytea</code> values, octets of certain values
     <span class="emphasis"><em>must</em></span> be escaped (but all octet values
     <span class="emphasis"><em>may</em></span> be escaped) when used as part of a string
     literal in an <span class="acronym">SQL</span> statement. In general, to
     escape an octet, it is converted into the three-digit octal number
     equivalent of its decimal octet value, and preceded by two
-    backslashes. <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;bytea Literal Escaped Octets&#8221;</a> shows the
+    backslashes. <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;<code class="type">bytea</code> Literal Escaped Octets&#8221;</a> shows the
     characters that must be escaped, and gives the alternate escape
     sequences where applicable.
    </p>
 <div class="table">
-<a name="datatype-binary-sqlesc"></a><p class="title"><b>Table 8.7. <tt class="type">bytea</tt> Literal Escaped Octets</b></p>
+<a name="datatype-binary-sqlesc"></a><p class="title"><b>Table 8.7. <code class="type">bytea</code> Literal Escaped Octets</b></p>
 <table summary="bytea Literal Escaped Octets" border="1">
 <colgroup>
 <col>
@@ -84,35 +81,35 @@
 <tr>
 <td>0</td>
 <td>zero octet</td>
-<td><tt class="literal">'\\000'</tt></td>
-<td><tt class="literal">SELECT '\\000'::bytea;</tt></td>
-<td><tt class="literal">\000</tt></td>
+<td><code class="literal">'\\000'</code></td>
+<td><code class="literal">SELECT '\\000'::bytea;</code></td>
+<td><code class="literal">\000</code></td>
 </tr>
 <tr>
 <td>39</td>
 <td>single quote</td>
 <td>
-<tt class="literal">'\''</tt> or <tt class="literal">'\\047'</tt>
+<code class="literal">'\''</code> or <code class="literal">'\\047'</code>
 </td>
-<td><tt class="literal">SELECT '\''::bytea;</tt></td>
-<td><tt class="literal">'</tt></td>
+<td><code class="literal">SELECT '\''::bytea;</code></td>
+<td><code class="literal">'</code></td>
 </tr>
 <tr>
 <td>92</td>
 <td>backslash</td>
 <td>
-<tt class="literal">'\\\\'</tt> or <tt class="literal">'\\134'</tt>
+<code class="literal">'\\\\'</code> or <code class="literal">'\\134'</code>
 </td>
-<td><tt class="literal">SELECT '\\\\'::bytea;</tt></td>
-<td><tt class="literal">\\</tt></td>
+<td><code class="literal">SELECT '\\\\'::bytea;</code></td>
+<td><code class="literal">\\</code></td>
 </tr>
 <tr>
 <td>0 to 31 and 127 to 255</td>
 <td>&#8220;<span class="quote">non-printable</span>&#8221; octets</td>
 <td>
-<tt class="literal">'\\<i class="replaceable"><tt>xxx'</tt></i></tt> (octal value)</td>
-<td><tt class="literal">SELECT '\\001'::bytea;</tt></td>
-<td><tt class="literal">\001</tt></td>
+<code class="literal">'\\<em class="replaceable"><code>xxx'</code></em></code> (octal value)</td>
+<td><code class="literal">SELECT '\\001'::bytea;</code></td>
+<td><code class="literal">\001</code></td>
 </tr>
 </tbody>
 </table>
@@ -120,38 +117,38 @@
 <p>    The requirement to escape &#8220;<span class="quote">non-printable</span>&#8221; octets actually
     varies depending on locale settings. In some instances you can get away
     with leaving them unescaped. Note that the result in each of the examples
-    in <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;bytea Literal Escaped Octets&#8221;</a> was exactly one octet in
+    in <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;<code class="type">bytea</code> Literal Escaped Octets&#8221;</a> was exactly one octet in
     length, even though the output representation of the zero octet and
     backslash are more than one character.
    </p>
 <p>    The reason that you have to write so many backslashes, as shown in
-    <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;bytea Literal Escaped Octets&#8221;</a>, is that an input string
+    <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;<code class="type">bytea</code> Literal Escaped Octets&#8221;</a>, is that an input string
     written as a string literal must pass through two parse phases in
     the <span class="productname">PostgreSQL</span> server.  The first
     backslash of each pair is interpreted as an escape character by
     the string-literal parser and is therefore consumed, leaving the
     second backslash of the pair.  The remaining backslash is then
-    recognized by the <tt class="type">bytea</tt> input function as starting
+    recognized by the <code class="type">bytea</code> input function as starting
     either a three digit octal value or escaping another backslash.
     For example, a string literal passed to the server as
-    <tt class="literal">'\\001'</tt> becomes <tt class="literal">\001</tt> after
+    <code class="literal">'\\001'</code> becomes <code class="literal">\001</code> after
     passing through the string-literal parser. The
-    <tt class="literal">\001</tt> is then sent to the <tt class="type">bytea</tt>
+    <code class="literal">\001</code> is then sent to the <code class="type">bytea</code>
     input function, where it is converted to a single octet with a
     decimal value of 1.  Note that the apostrophe character is not
-    treated specially by <tt class="type">bytea</tt>, so it follows the normal
+    treated specially by <code class="type">bytea</code>, so it follows the normal
     rules for string literals.  (See also <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>.)
    </p>
-<p>    <tt class="type">Bytea</tt> octets are also escaped in the output. In general, each
+<p>    <code class="type">Bytea</code> octets are also escaped in the output. In general, each
     &#8220;<span class="quote">non-printable</span>&#8221; octet is converted into
     its equivalent three-digit octal value and preceded by one backslash.
     Most &#8220;<span class="quote">printable</span>&#8221; octets are represented by their standard
     representation in the client character set. The octet with decimal
     value 92 (backslash) has a special alternative output representation.
-    Details are in <a href="datatype-binary.html#datatype-binary-resesc" title="Table 8.8. bytea Output Escaped Octets">Table 8.8, &#8220;bytea Output Escaped Octets&#8221;</a>.
+    Details are in <a href="datatype-binary.html#datatype-binary-resesc" title="Table 8.8. bytea Output Escaped Octets">Table 8.8, &#8220;<code class="type">bytea</code> Output Escaped Octets&#8221;</a>.
    </p>
 <div class="table">
-<a name="datatype-binary-resesc"></a><p class="title"><b>Table 8.8. <tt class="type">bytea</tt> Output Escaped Octets</b></p>
+<a name="datatype-binary-resesc"></a><p class="title"><b>Table 8.8. <code class="type">bytea</code> Output Escaped Octets</b></p>
 <table summary="bytea Output Escaped Octets" border="1">
 <colgroup>
 <col>
@@ -171,38 +168,38 @@
 <tr>
 <td>92</td>
 <td>backslash</td>
-<td><tt class="literal">\\</tt></td>
-<td><tt class="literal">SELECT '\\134'::bytea;</tt></td>
-<td><tt class="literal">\\</tt></td>
+<td><code class="literal">\\</code></td>
+<td><code class="literal">SELECT '\\134'::bytea;</code></td>
+<td><code class="literal">\\</code></td>
 </tr>
 <tr>
 <td>0 to 31 and 127 to 255</td>
 <td>&#8220;<span class="quote">non-printable</span>&#8221; octets</td>
 <td>
-<tt class="literal">\<i class="replaceable"><tt>xxx</tt></i></tt> (octal value)</td>
-<td><tt class="literal">SELECT '\\001'::bytea;</tt></td>
-<td><tt class="literal">\001</tt></td>
+<code class="literal">\<em class="replaceable"><code>xxx</code></em></code> (octal value)</td>
+<td><code class="literal">SELECT '\\001'::bytea;</code></td>
+<td><code class="literal">\001</code></td>
 </tr>
 <tr>
 <td>32 to 126</td>
 <td>&#8220;<span class="quote">printable</span>&#8221; octets</td>
 <td>client character set representation</td>
-<td><tt class="literal">SELECT '\\176'::bytea;</tt></td>
-<td><tt class="literal">~</tt></td>
+<td><code class="literal">SELECT '\\176'::bytea;</code></td>
+<td><code class="literal">~</code></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>    Depending on the front end to <span class="productname">PostgreSQL</span> you use,
     you may have additional work to do in terms of escaping and
-    unescaping <tt class="type">bytea</tt> strings. For example, you may also
+    unescaping <code class="type">bytea</code> strings. For example, you may also
     have to escape line feeds and carriage returns if your interface
     automatically translates these.
    </p>
 <p>        The <span class="acronym">SQL</span> standard defines a different binary
-        string type, called <tt class="type">BLOB</tt> or <tt class="type">BINARY LARGE
-        OBJECT</tt>.  The input format is different from
-        <tt class="type">bytea</tt>, but the provided functions and operators are
+        string type, called <code class="type">BLOB</code> or <code class="type">BINARY LARGE
+        OBJECT</code>.  The input format is different from
+        <code class="type">bytea</code>, but the provided functions and operators are
         mostly the same.
    </p>
 </div></body>

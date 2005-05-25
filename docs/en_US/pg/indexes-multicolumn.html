@@ -4,19 +4,16 @@
 <title>11.3. Multicolumn Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="previous" href="indexes-types.html" title="11.2. Index Types">
+<link rel="prev" href="indexes-types.html" title="11.2. Index Types">
 <link rel="next" href="indexes-unique.html" title="11.4. Unique Indexes">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="indexes-multicolumn"></a>11.3. Multicolumn Indexes</h2></div></div>
-<div></div>
-</div>
-<a name="id2569275"></a><p>   An index can be defined on more than one column.  For example, if
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-multicolumn"></a>11.3. Multicolumn Indexes</h2></div></div></div>
+<a name="id348215"></a><p>   An index can be defined on more than one column.  For example, if
    you have a table of this form:
 </p>
 <pre class="programlisting">CREATE TABLE test2 (
@@ -25,14 +22,14 @@
   name varchar
 );</pre>
 <p>
-   (say, you keep your <tt class="filename">/dev</tt>
+   (say, you keep your <code class="filename">/dev</code>
    directory in a database...) and you frequently make queries like
 </p>
-<pre class="programlisting">SELECT name FROM test2 WHERE major = <i class="replaceable"><tt>constant</tt></i> AND minor = <i class="replaceable"><tt>constant</tt></i>;</pre>
+<pre class="programlisting">SELECT name FROM test2 WHERE major = <em class="replaceable"><code>constant</code></em> AND minor = <em class="replaceable"><code>constant</code></em>;</pre>
 <p>
    then it may be appropriate to define an index on the columns
-   <tt class="structfield">major</tt> and
-   <tt class="structfield">minor</tt> together, e.g.,
+   <code class="structfield">major</code> and
+   <code class="structfield">minor</code> together, e.g.,
 </p>
 <pre class="programlisting">CREATE INDEX test2_mm_idx ON test2 (major, minor);</pre>
 <p>
@@ -40,31 +37,31 @@
 <p>   Currently, only the B-tree and GiST implementations support multicolumn
    indexes.  Up to 32 columns may be specified.  (This limit can be
    altered when building <span class="productname">PostgreSQL</span>; see the
-   file <tt class="filename">pg_config_manual.h</tt>.)
+   file <code class="filename">pg_config_manual.h</code>.)
   </p>
 <p>   The query planner can use a multicolumn index for queries that
    involve the leftmost column in the index definition plus any number
    of columns listed to the right of it, without a gap.  For example,
-   an index on <tt class="literal">(a, b, c)</tt> can be used in queries
-   involving all of <tt class="literal">a</tt>, <tt class="literal">b</tt>, and
-   <tt class="literal">c</tt>, or in queries involving both
-   <tt class="literal">a</tt> and <tt class="literal">b</tt>, or in queries
-   involving only <tt class="literal">a</tt>, but not in other combinations.
-   (In a query involving <tt class="literal">a</tt> and <tt class="literal">c</tt>
+   an index on <code class="literal">(a, b, c)</code> can be used in queries
+   involving all of <code class="literal">a</code>, <code class="literal">b</code>, and
+   <code class="literal">c</code>, or in queries involving both
+   <code class="literal">a</code> and <code class="literal">b</code>, or in queries
+   involving only <code class="literal">a</code>, but not in other combinations.
+   (In a query involving <code class="literal">a</code> and <code class="literal">c</code>
    the planner could choose to use the index for
-   <tt class="literal">a</tt>, while treating <tt class="literal">c</tt> like an
+   <code class="literal">a</code>, while treating <code class="literal">c</code> like an
    ordinary unindexed column.)  Of course, each column must be used with
    operators appropriate to the index type; clauses that involve other
    operators will not be considered.
   </p>
 <p>   Multicolumn indexes can only be used if the clauses involving the
-   indexed columns are joined with <tt class="literal">AND</tt>.  For instance,
+   indexed columns are joined with <code class="literal">AND</code>.  For instance,
 </p>
-<pre class="programlisting">SELECT name FROM test2 WHERE major = <i class="replaceable"><tt>constant</tt></i> OR minor = <i class="replaceable"><tt>constant</tt></i>;</pre>
+<pre class="programlisting">SELECT name FROM test2 WHERE major = <em class="replaceable"><code>constant</code></em> OR minor = <em class="replaceable"><code>constant</code></em>;</pre>
 <p>
-   cannot make use of the index <tt class="structname">test2_mm_idx</tt>
+   cannot make use of the index <code class="structname">test2_mm_idx</code>
    defined above to look up both columns.  (It can be used to look up
-   only the <tt class="structfield">major</tt> column, however.)
+   only the <code class="structfield">major</code> column, however.)
   </p>
 <p>   Multicolumn indexes should be used sparingly.  Most of the time,
    an index on a single column is sufficient and saves space and time.

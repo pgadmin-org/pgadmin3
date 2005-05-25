@@ -4,51 +4,48 @@
 <title>40.6. Executor</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
-<link rel="previous" href="planner-optimizer.html" title="40.5. Planner/Optimizer">
+<link rel="prev" href="planner-optimizer.html" title="40.5. Planner/Optimizer">
 <link rel="next" href="catalogs.html" title="Chapter 41. System Catalogs">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="executor"></a>40.6. Executor</h2></div></div>
-<div></div>
-</div>
-<p>    The <i class="firstterm">executor</i> takes the plan handed back by the
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="executor"></a>40.6. Executor</h2></div></div></div>
+<p>    The <em class="firstterm">executor</em> takes the plan handed back by the
     planner/optimizer and recursively processes it to extract the required set
     of rows.  This is essentially a demand-pull pipeline mechanism.
     Each time a plan node is called, it must deliver one more row, or
     report that it is done delivering rows.
    </p>
 <p>    To provide a concrete example, assume that the top
-    node is a <tt class="literal">MergeJoin</tt> node. 
+    node is a <code class="literal">MergeJoin</code> node. 
     Before any merge can be done two rows have to be fetched (one from
     each subplan). So the executor recursively calls itself to
     process the subplans (it starts with the subplan attached to
-    <tt class="literal">lefttree</tt>). The new top node (the top node of the left
+    <code class="literal">lefttree</code>). The new top node (the top node of the left
     subplan) is, let's say, a
-    <tt class="literal">Sort</tt> node and again recursion is needed to obtain
-    an input row.  The child node of the <tt class="literal">Sort</tt> might
-    be a <tt class="literal">SeqScan</tt> node, representing actual reading of a table.
+    <code class="literal">Sort</code> node and again recursion is needed to obtain
+    an input row.  The child node of the <code class="literal">Sort</code> might
+    be a <code class="literal">SeqScan</code> node, representing actual reading of a table.
     Execution of this node causes the executor to fetch a row from the
-    table and return it up to the calling node.  The <tt class="literal">Sort</tt>
+    table and return it up to the calling node.  The <code class="literal">Sort</code>
     node will repeatedly call its child to obtain all the rows to be sorted.
     When the input is exhausted (as indicated by the child node returning
-    a NULL instead of a row), the <tt class="literal">Sort</tt> code performs
+    a NULL instead of a row), the <code class="literal">Sort</code> code performs
     the sort, and finally is able to return its first output row, namely
     the first one in sorted order.  It keeps the remaining rows stored so
     that it can deliver them in sorted order in response to later demands.
    </p>
-<p>    The <tt class="literal">MergeJoin</tt> node similarly demands the first row
+<p>    The <code class="literal">MergeJoin</code> node similarly demands the first row
     from its right subplan.  Then it compares the two rows to see if they
     can be joined; if so, it returns a join row to its caller.  On the next
     call, or immediately if it cannot join the current pair of inputs,
     it advances to the next row of one table
     or the other (depending on how the comparison came out), and again
     checks for a match.  Eventually, one subplan or the other is exhausted,
-    and the <tt class="literal">MergeJoin</tt> node returns NULL to indicate that
+    and the <code class="literal">MergeJoin</code> node returns NULL to indicate that
     no more join rows can be formed.
    </p>
 <p>    Complex queries may involve many levels of plan nodes, but the general
@@ -58,19 +55,19 @@
     the planner.
    </p>
 <p>    The executor mechanism is used to evaluate all four basic SQL query types:
-    <tt class="command">SELECT</tt>, <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and
-    <tt class="command">DELETE</tt>.  For <tt class="command">SELECT</tt>, the top-level executor
+    <code class="command">SELECT</code>, <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and
+    <code class="command">DELETE</code>.  For <code class="command">SELECT</code>, the top-level executor
     code only needs to send each row returned by the query plan tree off
-    to the client.  For <tt class="command">INSERT</tt>, each returned row is inserted
-    into the target table specified for the <tt class="command">INSERT</tt>.  (A simple
-    <tt class="command">INSERT ... VALUES</tt> command creates a trivial plan tree
-    consisting of a single <tt class="literal">Result</tt> node, which computes just one
-    result row.  But <tt class="command">INSERT ... SELECT</tt> may demand the full power
-    of the executor mechanism.)  For <tt class="command">UPDATE</tt>, the planner arranges
+    to the client.  For <code class="command">INSERT</code>, each returned row is inserted
+    into the target table specified for the <code class="command">INSERT</code>.  (A simple
+    <code class="command">INSERT ... VALUES</code> command creates a trivial plan tree
+    consisting of a single <code class="literal">Result</code> node, which computes just one
+    result row.  But <code class="command">INSERT ... SELECT</code> may demand the full power
+    of the executor mechanism.)  For <code class="command">UPDATE</code>, the planner arranges
     that each computed row includes all the updated column values, plus
-    the <i class="firstterm">TID</i> (tuple ID, or row ID) of the original target row;
+    the <em class="firstterm">TID</em> (tuple ID, or row ID) of the original target row;
     the executor top level uses this information to create a new updated row
-    and mark the old row deleted.  For <tt class="command">DELETE</tt>, the only column
+    and mark the old row deleted.  For <code class="command">DELETE</code>, the only column
     that is actually returned by the plan is the TID, and the executor top
     level simply uses the TID to visit each target row and mark it deleted.
    </p>

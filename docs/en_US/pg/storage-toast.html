@@ -4,19 +4,16 @@
 <title>49.2. TOAST</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="storage.html" title="Chapter 49. Database Physical Storage">
-<link rel="previous" href="storage.html" title="Chapter 49. Database Physical Storage">
+<link rel="prev" href="storage.html" title="Chapter 49. Database Physical Storage">
 <link rel="next" href="storage-page-layout.html" title="49.3. Database Page Layout">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="storage-toast"></a>49.2. TOAST</h2></div></div>
-<div></div>
-</div>
-<a name="id2747350"></a><a name="id2747355"></a><p>This section provides an overview of <span class="acronym">TOAST</span> (The
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="storage-toast"></a>49.2. TOAST</h2></div></div></div>
+<a name="id512392"></a><a name="id512398"></a><p>This section provides an overview of <span class="acronym">TOAST</span> (The
 Oversized-Attribute Storage Technique).</p>
 <p>Since <span class="productname">PostgreSQL</span> uses a fixed page size (commonly
 8Kb), and does not allow tuples to span multiple pages, it's not possible to
@@ -30,13 +27,13 @@ known as <span class="acronym">TOAST</span> (or &#8220;<span class="quote">the b
 <p>Only certain data types support <span class="acronym">TOAST</span> [mdash ] there is no need to
 impose the overhead on data types that cannot produce large field values.
 To support <span class="acronym">TOAST</span>, a data type must have a variable-length
-(<i class="firstterm">varlena</i>) representation, in which the first 32-bit word of any
+(<em class="firstterm">varlena</em>) representation, in which the first 32-bit word of any
 stored value contains the total length of the value in bytes (including
 itself).  <span class="acronym">TOAST</span> does not constrain the rest of the representation.
 All the C-level functions supporting a <span class="acronym">TOAST</span>-able data type must
 be careful to handle <span class="acronym">TOAST</span>ed input values.  (This is normally done
-by invoking <tt class="function">PG_DETOAST_DATUM</tt> before doing anything with an input
-value; but in some cases more efficient approaches are possible.)</p>
+by invoking <code class="function">PG_DETOAST_DATUM</code> before doing anything with an input
+value, but in some cases more efficient approaches are possible.)</p>
 <p><span class="acronym">TOAST</span> usurps the high-order two bits of the varlena length word,
 thereby limiting the logical size of any value of a <span class="acronym">TOAST</span>-able
 data type to 1Gb (2<sup>30</sup> - 1 bytes).  When both bits are zero,
@@ -51,34 +48,34 @@ of the datum, not the size of the logical value that would be extracted by
 decompression or fetching of the out-of-line data.</p>
 <p>If any of the columns of a table are <span class="acronym">TOAST</span>-able, the table will
 have an associated <span class="acronym">TOAST</span> table, whose OID is stored in the table's
-<tt class="structname">pg_class</tt>.<tt class="structfield">reltoastrelid</tt> entry.  Out-of-line
+<code class="structname">pg_class</code>.<code class="structfield">reltoastrelid</code> entry.  Out-of-line
 <span class="acronym">TOAST</span>ed values are kept in the <span class="acronym">TOAST</span> table, as
 described in more detail below.</p>
 <p>The compression technique used is a fairly simple and very fast member
 of the LZ family of compression techniques.  See
-<tt class="filename">src/backend/utils/adt/pg_lzcompress.c</tt> for the details.</p>
+<code class="filename">src/backend/utils/adt/pg_lzcompress.c</code> for the details.</p>
 <p>Out-of-line values are divided (after compression if used) into chunks of at
-most <tt class="literal">TOAST_MAX_CHUNK_SIZE</tt> bytes (this value is a little less than
-<tt class="literal">BLCKSZ/4</tt>, or about 2000 bytes by default).  Each chunk is stored
+most <code class="literal">TOAST_MAX_CHUNK_SIZE</code> bytes (this value is a little less than
+<code class="literal">BLCKSZ/4</code>, or about 2000 bytes by default).  Each chunk is stored
 as a separate row in the <span class="acronym">TOAST</span> table for the owning table.  Every
-<span class="acronym">TOAST</span> table has the columns <tt class="structfield">chunk_id</tt> (an OID
+<span class="acronym">TOAST</span> table has the columns <code class="structfield">chunk_id</code> (an OID
 identifying the particular <span class="acronym">TOAST</span>ed value),
-<tt class="structfield">chunk_seq</tt> (a sequence number for the chunk within its value),
-and <tt class="structfield">chunk_data</tt> (the actual data of the chunk).  A unique index
-on <tt class="structfield">chunk_id</tt> and <tt class="structfield">chunk_seq</tt> provides fast
+<code class="structfield">chunk_seq</code> (a sequence number for the chunk within its value),
+and <code class="structfield">chunk_data</code> (the actual data of the chunk).  A unique index
+on <code class="structfield">chunk_id</code> and <code class="structfield">chunk_seq</code> provides fast
 retrieval of the values.  A pointer datum representing an out-of-line
 <span class="acronym">TOAST</span>ed value therefore needs to store the OID of the
 <span class="acronym">TOAST</span> table in which to look and the OID of the specific value
-(its <tt class="structfield">chunk_id</tt>).  For convenience, pointer datums also store the
+(its <code class="structfield">chunk_id</code>).  For convenience, pointer datums also store the
 logical datum size (original uncompressed data length) and actual stored size
 (different if compression was applied).  Allowing for the varlena header word,
 the total size of a <span class="acronym">TOAST</span> pointer datum is therefore 20 bytes
 regardless of the actual size of the represented value.</p>
 <p>The <span class="acronym">TOAST</span> code is triggered only
-when a row value to be stored in a table is wider than <tt class="literal">BLCKSZ/4</tt>
+when a row value to be stored in a table is wider than <code class="literal">BLCKSZ/4</code>
 bytes (normally 2Kb).  The <span class="acronym">TOAST</span> code will compress and/or move
 field values out-of-line until the row value is shorter than
-<tt class="literal">BLCKSZ/4</tt> bytes or no more gains can be had.  During an UPDATE
+<code class="literal">BLCKSZ/4</code> bytes or no more gains can be had.  During an UPDATE
 operation, values of unchanged fields are normally preserved as-is; so an
 UPDATE of a row with out-of-line values incurs no <span class="acronym">TOAST</span> costs if
 none of the out-of-line values change.</p>
@@ -87,23 +84,23 @@ none of the out-of-line values change.</p>
 
    </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>      <tt class="literal">PLAIN</tt> prevents either compression or
+<li><p>      <code class="literal">PLAIN</code> prevents either compression or
       out-of-line storage.  This is the only possible strategy for
       columns of non-<span class="acronym">TOAST</span>-able data types.
      </p></li>
-<li><p>      <tt class="literal">EXTENDED</tt> allows both compression and out-of-line
+<li><p>      <code class="literal">EXTENDED</code> allows both compression and out-of-line
       storage.  This is the default for most <span class="acronym">TOAST</span>-able data types.
       Compression will be attempted first, then out-of-line storage if
       the row is still too big.
      </p></li>
-<li><p>      <tt class="literal">EXTERNAL</tt> allows out-of-line storage but not
-      compression.  Use of <tt class="literal">EXTERNAL</tt> will
-      make substring operations on wide <tt class="type">text</tt> and
-      <tt class="type">bytea</tt> columns faster (at the penalty of increased storage
+<li><p>      <code class="literal">EXTERNAL</code> allows out-of-line storage but not
+      compression.  Use of <code class="literal">EXTERNAL</code> will
+      make substring operations on wide <code class="type">text</code> and
+      <code class="type">bytea</code> columns faster (at the penalty of increased storage
       space) because these operations are optimized to fetch only the
       required parts of the out-of-line value when it is not compressed.
      </p></li>
-<li><p>      <tt class="literal">MAIN</tt> allows compression but not out-of-line
+<li><p>      <code class="literal">MAIN</code> allows compression but not out-of-line
       storage.  (Actually, out-of-line storage will still be performed
       for such columns, but only as a last resort when there is no other
       way to make the row small enough.)
@@ -113,7 +110,7 @@ none of the out-of-line values change.</p>
 
 Each <span class="acronym">TOAST</span>-able data type specifies a default strategy for columns
 of that data type, but the strategy for a given table column can be altered
-with <tt class="command">ALTER TABLE SET STORAGE</tt>.</p>
+with <code class="command">ALTER TABLE SET STORAGE</code>.</p>
 <p>This scheme has a number of advantages compared to a more straightforward
 approach such as allowing row values to span pages.  Assuming that queries are
 usually qualified by comparisons against relatively small key values, most of

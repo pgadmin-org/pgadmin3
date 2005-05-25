@@ -4,25 +4,22 @@
 <title>41.18. pg_language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-inherits.html" title="41.17. pg_inherits">
+<link rel="prev" href="catalog-pg-inherits.html" title="41.17. pg_inherits">
 <link rel="next" href="catalog-pg-largeobject.html" title="41.19. pg_largeobject">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-language"></a>41.18. <tt class="structname">pg_language</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2732004"></a><p>   The catalog <tt class="structname">pg_language</tt> registers
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-language"></a>41.18. <code class="structname">pg_language</code></h2></div></div></div>
+<a name="id498290"></a><p>   The catalog <code class="structname">pg_language</code> registers
    languages in which you can write functions or stored procedures.
    See <a href="sql-createlanguage.html">CREATE LANGUAGE</a>
    and <a href="xplang.html" title="Chapter 34. Procedural Languages">Chapter 34, <i>Procedural Languages</i></a> for more information about language handlers.
   </p>
 <div class="table">
-<a name="id2732037"></a><p class="title"><b>Table 41.18. <tt class="structname">pg_language</tt> Columns</b></p>
+<a name="id498320"></a><p class="title"><b>Table 41.18. <code class="structname">pg_language</code> Columns</b></p>
 <table summary="pg_language Columns" border="1">
 <colgroup>
 <col>
@@ -38,14 +35,14 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">lanname</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">lanname</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>Name of the language</td>
 </tr>
 <tr>
-<td><tt class="structfield">lanispl</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">lanispl</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>       This is false for internal languages (such as
        <span class="acronym">SQL</span>) and true for user-defined languages.
@@ -55,18 +52,19 @@
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">lanpltrusted</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">lanpltrusted</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
-<td>       This is a trusted language.  If this is an internal
-       language (<tt class="structfield">lanispl</tt> is false) then
-       this column is meaningless.
+<td>       True if this is a trusted language, which means that it is believed
+       not to grant access to anything outside the normal SQL execution
+       environment.  Only superusers may create functions in untrusted
+       languages.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">lanplcallfoid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td><code class="structfield">lanplcallfoid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>       For noninternal languages this references the language
        handler, which is a special function that is responsible for
        executing all functions that are written in the particular
@@ -74,17 +72,17 @@
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">lanvalidator</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td><code class="structfield">lanvalidator</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>       This references a language validator function that is responsible
        for checking the syntax and validity of new functions when they
        are created.  Zero if no validator is provided.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">lanacl</tt></td>
-<td><tt class="type">aclitem[]</tt></td>
+<td><code class="structfield">lanacl</code></td>
+<td><code class="type">aclitem[]</code></td>
 <td> </td>
 <td>       Access privileges; see
        <a href="sql-grant.html">GRANT</a> and

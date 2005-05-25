@@ -4,32 +4,29 @@
 <title>41.36. pg_stats</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="view-pg-settings.html" title="41.35. pg_settings">
+<link rel="prev" href="view-pg-settings.html" title="41.35. pg_settings">
 <link rel="next" href="view-pg-tables.html" title="41.37. pg_tables">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="view-pg-stats"></a>41.36. <tt class="structname">pg_stats</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2736709"></a><p>   The view <tt class="structname">pg_stats</tt> provides access to
-   the information stored in the <a href="catalog-pg-statistic.html" title="41.27. pg_statistic"><tt class="structname">pg_statistic</tt></a>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-stats"></a>41.36. <code class="structname">pg_stats</code></h2></div></div></div>
+<a name="id502972"></a><p>   The view <code class="structname">pg_stats</code> provides access to
+   the information stored in the <a href="catalog-pg-statistic.html" title="41.27. pg_statistic"><code class="structname">pg_statistic</code></a>
    catalog.  This view allows access only to rows of
-   <tt class="structname">pg_statistic</tt> that correspond to tables the
+   <code class="structname">pg_statistic</code> that correspond to tables the
    user has permission to read, and therefore it is safe to allow public
    read access to this view.
   </p>
-<p>   <tt class="structname">pg_stats</tt> is also designed to present the
+<p>   <code class="structname">pg_stats</code> is also designed to present the
    information in a more readable format than the underlying catalog
    [mdash ] at the cost that its schema must be extended whenever new slot types
-   are defined for <tt class="structname">pg_statistic</tt>.
+   are defined for <code class="structname">pg_statistic</code>.
   </p>
 <div class="table">
-<a name="id2736754"></a><p class="title"><b>Table 41.36. <tt class="structname">pg_stats</tt> Columns</b></p>
+<a name="id503012"></a><p class="title"><b>Table 41.36. <code class="structname">pg_stats</code> Columns</b></p>
 <table summary="pg_stats Columns" border="1">
 <colgroup>
 <col>
@@ -45,43 +42,43 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">schemaname</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.nspname</tt></td>
+<td><code class="structfield">schemaname</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><code class="structname">pg_namespace</code></a>.nspname</code></td>
 <td>name of schema containing table</td>
 </tr>
 <tr>
-<td><tt class="structfield">tablename</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.relname</tt></td>
+<td><code class="structfield">tablename</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.relname</code></td>
 <td>name of table</td>
 </tr>
 <tr>
-<td><tt class="structfield">attname</tt></td>
-<td><tt class="type">name</tt></td>
-<td><tt class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><tt class="structname">pg_attribute</tt></a>.attname</tt></td>
+<td><code class="structfield">attname</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attname</code></td>
 <td>name of the column described by this row</td>
 </tr>
 <tr>
-<td><tt class="structfield">null_frac</tt></td>
-<td><tt class="type">real</tt></td>
+<td><code class="structfield">null_frac</code></td>
+<td><code class="type">real</code></td>
 <td> </td>
 <td>fraction of column entries that are null</td>
 </tr>
 <tr>
-<td><tt class="structfield">avg_width</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="structfield">avg_width</code></td>
+<td><code class="type">integer</code></td>
 <td> </td>
 <td>average width in bytes of column's entries</td>
 </tr>
 <tr>
-<td><tt class="structfield">n_distinct</tt></td>
-<td><tt class="type">real</tt></td>
+<td><code class="structfield">n_distinct</code></td>
+<td><code class="type">real</code></td>
 <td> </td>
 <td>If greater than zero, the estimated number of distinct values
       in the column.  If less than zero, the negative of the number of
       distinct values divided by the number of rows.  (The negated form
-      is used when <tt class="command">ANALYZE</tt> believes that the number of distinct
+      is used when <code class="command">ANALYZE</code> believes that the number of distinct
       values
       is likely to increase as the table grows; the positive form is used
       when the column seems to have a fixed number of possible values.)
@@ -90,52 +87,52 @@
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">most_common_vals</tt></td>
-<td><tt class="type">anyarray</tt></td>
+<td><code class="structfield">most_common_vals</code></td>
+<td><code class="type">anyarray</code></td>
 <td> </td>
 <td>A list of the most common values in the column. (NULL if
       no values seem to be more common than any others.)</td>
 </tr>
 <tr>
-<td><tt class="structfield">most_common_freqs</tt></td>
-<td><tt class="type">real[]</tt></td>
+<td><code class="structfield">most_common_freqs</code></td>
+<td><code class="type">real[]</code></td>
 <td> </td>
 <td>A list of the frequencies of the most common values,
       i.e., number of occurrences of each divided by total number of rows.
-      (NULL when <tt class="structfield">most_common_vals</tt> is.)
+      (NULL when <code class="structfield">most_common_vals</code> is.)
      </td>
 </tr>
 <tr>
-<td><tt class="structfield">histogram_bounds</tt></td>
-<td><tt class="type">anyarray</tt></td>
+<td><code class="structfield">histogram_bounds</code></td>
+<td><code class="type">anyarray</code></td>
 <td> </td>
 <td>A list of values that divide the column's values into
       groups of approximately equal population.  The values in
-      <tt class="structfield">most_common_vals</tt>, if present, are omitted from this
+      <code class="structfield">most_common_vals</code>, if present, are omitted from this
       histogram calculation.  (This column is NULL if the column data type
-      does not have a <tt class="literal">&lt;</tt> operator or if the
-      <tt class="structfield">most_common_vals</tt> list accounts for the entire
+      does not have a <code class="literal">&lt;</code> operator or if the
+      <code class="structfield">most_common_vals</code> list accounts for the entire
       population.)
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">correlation</tt></td>
-<td><tt class="type">real</tt></td>
+<td><code class="structfield">correlation</code></td>
+<td><code class="type">real</code></td>
 <td> </td>
 <td>Statistical correlation between physical row ordering and
       logical ordering of the column values.  This ranges from -1 to +1.
       When the value is near -1 or +1, an index scan on the column will
       be estimated to be cheaper than when it is near zero, due to reduction
       of random access to the disk.  (This column is NULL if the column data
-      type does not have a <tt class="literal">&lt;</tt> operator.)
+      type does not have a <code class="literal">&lt;</code> operator.)
       </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>   The maximum number of entries in the <tt class="structfield">most_common_vals</tt>
-   and <tt class="structfield">histogram_bounds</tt> arrays can be set on a
-   column-by-column basis using the <tt class="command">ALTER TABLE SET STATISTICS</tt>
+<p>   The maximum number of entries in the <code class="structfield">most_common_vals</code>
+   and <code class="structfield">histogram_bounds</code> arrays can be set on a
+   column-by-column basis using the <code class="command">ALTER TABLE SET STATISTICS</code>
    command, or globally by setting the
    <a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> runtime parameter.
   </p>

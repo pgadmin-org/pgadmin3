@@ -4,19 +4,16 @@
 <title>30.12. data_type_privileges</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="infoschema-constraint-table-usage.html" title="30.11. constraint_table_usage">
+<link rel="prev" href="infoschema-constraint-table-usage.html" title="30.11. constraint_table_usage">
 <link rel="next" href="infoschema-domain-constraints.html" title="30.13. domain_constraints">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-data-type-privileges"></a>30.12. <tt class="literal">data_type_privileges</tt></h2></div></div>
-<div></div>
-</div>
-<p>   The view <tt class="literal">data_type_privileges</tt> identifies all
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-data-type-privileges"></a>30.12. <code class="literal">data_type_privileges</code></h2></div></div></div>
+<p>   The view <code class="literal">data_type_privileges</code> identifies all
    data type descriptors that the current user has access to, by way
    of being the owner of the described object or having some privilege
    for it.  A data type descriptor is generated whenever a data type
@@ -31,7 +28,7 @@
    information schema.
   </p>
 <div class="table">
-<a name="id2624714"></a><p class="title"><b>Table 30.10. <tt class="literal">data_type_privileges</tt> Columns</b></p>
+<a name="id398801"></a><p class="title"><b>Table 30.10. <code class="literal">data_type_privileges</code> Columns</b></p>
 <table summary="data_type_privileges Columns" border="1">
 <colgroup>
 <col>
@@ -45,34 +42,34 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">object_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the database that contains the described object (always the current database)</td>
 </tr>
 <tr>
-<td><tt class="literal">object_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the schema that contains the described object</td>
 </tr>
 <tr>
-<td><tt class="literal">object_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the described object</td>
 </tr>
 <tr>
-<td><tt class="literal">object_type</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">object_type</code></td>
+<td><code class="type">character_data</code></td>
 <td>       The type of the described object: one of
-       <tt class="literal">TABLE</tt> (the data type descriptor pertains to
-       a column of that table), <tt class="literal">DOMAIN</tt> (the data
+       <code class="literal">TABLE</code> (the data type descriptor pertains to
+       a column of that table), <code class="literal">DOMAIN</code> (the data
        type descriptors pertains to that domain),
-       <tt class="literal">ROUTINE</tt> (the data type descriptor pertains
+       <code class="literal">ROUTINE</code> (the data type descriptor pertains
        to a parameter or the return data type of that function).
       </td>
 </tr>
 <tr>
-<td><tt class="literal">dtd_identifier</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">dtd_identifier</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       The identifier of the data type descriptor, which is unique
        among the data type descriptors for that same object.
       </td>

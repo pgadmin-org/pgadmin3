@@ -4,25 +4,22 @@
 <title>30.22. role_routine_grants</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="infoschema-role-column-grants.html" title="30.21. role_column_grants">
+<link rel="prev" href="infoschema-role-column-grants.html" title="30.21. role_column_grants">
 <link rel="next" href="infoschema-role-table-grants.html" title="30.23. role_table_grants">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-role-routine-grants"></a>30.22. <tt class="literal">role_routine_grants</tt></h2></div></div>
-<div></div>
-</div>
-<p>   The view <tt class="literal">role_routine_grants</tt> identifies all
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-role-routine-grants"></a>30.22. <code class="literal">role_routine_grants</code></h2></div></div></div>
+<p>   The view <code class="literal">role_routine_grants</code> identifies all
    privileges granted on functions to a group that the current user is
    a member of.  Further information can be found under
-   <tt class="literal">routine_privileges</tt>.
+   <code class="literal">routine_privileges</code>.
   </p>
 <div class="table">
-<a name="id2627612"></a><p class="title"><b>Table 30.20. <tt class="literal">role_routine_grants</tt> Columns</b></p>
+<a name="id401537"></a><p class="title"><b>Table 30.20. <code class="literal">role_routine_grants</code> Columns</b></p>
 <table summary="role_routine_grants Columns" border="1">
 <colgroup>
 <col>
@@ -36,56 +33,56 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">grantor</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">grantor</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the user that granted the privilege</td>
 </tr>
 <tr>
-<td><tt class="literal">grantee</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">grantee</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the group that the privilege was granted to</td>
 </tr>
 <tr>
-<td><tt class="literal">specific_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">specific_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the database containing the function (always the current database)</td>
 </tr>
 <tr>
-<td><tt class="literal">specific_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">specific_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the schema containing the function</td>
 </tr>
 <tr>
-<td><tt class="literal">specific_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
-<td>       The &#8220;<span class="quote">specific name</span>&#8221; of the function.  See <a href="infoschema-routines.html" title="30.26. routines">Section 30.26, &#8220;routines&#8221;</a> for more information.
+<td><code class="literal">specific_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       The &#8220;<span class="quote">specific name</span>&#8221; of the function.  See <a href="infoschema-routines.html" title="30.26. routines">Section 30.26, &#8220;<code class="literal">routines</code>&#8221;</a> for more information.
       </td>
 </tr>
 <tr>
-<td><tt class="literal">routine_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">routine_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the database containing the function (always the current database)</td>
 </tr>
 <tr>
-<td><tt class="literal">routine_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">routine_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the schema containing the function</td>
 </tr>
 <tr>
-<td><tt class="literal">routine_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">routine_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the function (may be duplicated in case of overloading)</td>
 </tr>
 <tr>
-<td><tt class="literal">privilege_type</tt></td>
-<td><tt class="type">character_data</tt></td>
-<td>Always <tt class="literal">EXECUTE</tt> (the only privilege type for functions)</td>
+<td><code class="literal">privilege_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Always <code class="literal">EXECUTE</code> (the only privilege type for functions)</td>
 </tr>
 <tr>
-<td><tt class="literal">is_grantable</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">is_grantable</code></td>
+<td><code class="type">character_data</code></td>
 <td>
-<tt class="literal">YES</tt> if the privilege is grantable, <tt class="literal">NO</tt> if not</td>
+<code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
 </tr>
 </tbody>
 </table>

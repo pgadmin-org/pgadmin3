@@ -4,29 +4,26 @@
 <title>35.5. Expressions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
-<link rel="previous" href="plpgsql-declarations.html" title="35.4. Declarations">
+<link rel="prev" href="plpgsql-declarations.html" title="35.4. Declarations">
 <link rel="next" href="plpgsql-statements.html" title="35.6. Basic Statements">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-expressions"></a>35.5. Expressions</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-expressions"></a>35.5. Expressions</h2></div></div></div>
 <p>     All expressions used in <span class="application">PL/pgSQL</span>
      statements are processed using the server's regular
      <span class="acronym">SQL</span> executor.  In effect, a query like
 </p>
-<pre class="synopsis">SELECT <i class="replaceable"><tt>expression</tt></i></pre>
+<pre class="synopsis">SELECT <em class="replaceable"><code>expression</code></em></pre>
 <p>
      is executed using the <span class="acronym">SPI</span> manager. Before evaluation,
      occurrences of <span class="application">PL/pgSQL</span> variable
      identifiers are replaced by parameters, and the actual values from
      the variables are passed to the executor in the parameter array.
-     This allows the query plan for the <tt class="command">SELECT</tt> to
+     This allows the query plan for the <code class="command">SELECT</code> to
      be prepared just once and then reused for subsequent
      evaluations.
     </p>
@@ -58,26 +55,26 @@ $$ LANGUAGE plpgsql;</pre>
 $$ LANGUAGE plpgsql;</pre>
 <p>
     </p>
-<p>     In the case of <tt class="function">logfunc1</tt>, the 
+<p>     In the case of <code class="function">logfunc1</code>, the 
      <span class="productname">PostgreSQL</span> main parser knows when 
-     preparing the plan for the <tt class="command">INSERT</tt>, that the string 
-     <tt class="literal">'now'</tt> should be interpreted as 
-     <tt class="type">timestamp</tt> because the target column of <tt class="classname">logtable</tt>
+     preparing the plan for the <code class="command">INSERT</code>, that the string 
+     <code class="literal">'now'</code> should be interpreted as 
+     <code class="type">timestamp</code> because the target column of <code class="classname">logtable</code>
      is of that type. Thus, it will make a constant from it at this
      time and this constant value is then used in all invocations of 
-     <tt class="function">logfunc1</tt> during the lifetime of the
+     <code class="function">logfunc1</code> during the lifetime of the
      session. Needless to say that this isn't what the
      programmer wanted.
     </p>
-<p>     In the case of <tt class="function">logfunc2</tt>, the 
+<p>     In the case of <code class="function">logfunc2</code>, the 
      <span class="productname">PostgreSQL</span> main parser does not know
-     what type <tt class="literal">'now'</tt> should become and therefore 
-     it returns a data value of type <tt class="type">text</tt> containing the string 
-     <tt class="literal">now</tt>. During the ensuing assignment
-     to the local variable <tt class="varname">curtime</tt>, the
+     what type <code class="literal">'now'</code> should become and therefore 
+     it returns a data value of type <code class="type">text</code> containing the string 
+     <code class="literal">now</code>. During the ensuing assignment
+     to the local variable <code class="varname">curtime</code>, the
      <span class="application">PL/pgSQL</span> interpreter casts this
-     string to the <tt class="type">timestamp</tt> type by calling the
-     <tt class="function">text_out</tt> and <tt class="function">timestamp_in</tt>
+     string to the <code class="type">timestamp</code> type by calling the
+     <code class="function">text_out</code> and <code class="function">timestamp_in</code>
      functions for the conversion.  So, the computed time stamp is updated
      on each execution as the programmer expects.
     </p>
@@ -88,7 +85,7 @@ $$ LANGUAGE plpgsql;</pre>
      expression will be planned using the data type that is present
      when the expression is first reached.  Keep this in mind when
      writing trigger procedures that handle events for more than one
-     table.  (<tt class="command">EXECUTE</tt> can be used to get around
+     table.  (<code class="command">EXECUTE</code> can be used to get around
      this problem when necessary.)
     </p>
 </div></body>

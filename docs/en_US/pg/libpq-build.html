@@ -4,26 +4,23 @@
 <title>27.15. Building libpq Programs</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
-<link rel="previous" href="libpq-threading.html" title="27.14. Behavior in Threaded Programs">
+<link rel="prev" href="libpq-threading.html" title="27.14. Behavior in Threaded Programs">
 <link rel="next" href="libpq-example.html" title="27.16. Example Programs">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="libpq-build"></a>27.15. Building <span class="application">libpq</span> Programs</h2></div></div>
-<div></div>
-</div>
-<a name="id2617599"></a><p>   To build (i.e., compile and link) a program using
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-build"></a>27.15. Building <span class="application">libpq</span> Programs</h2></div></div></div>
+<a name="id392528"></a><p>   To build (i.e., compile and link) a program using
    <span class="application">libpq</span> you need to 
    do all of the following things:
 
    </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>      Include the <tt class="filename">libpq-fe.h</tt> header file:
+<p>      Include the <code class="filename">libpq-fe.h</code> header file:
 </p>
 <pre class="programlisting">#include &lt;libpq-fe.h&gt;</pre>
 <p>
@@ -42,7 +39,7 @@ foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</pre>
 <li>
 <p>      Point your compiler to the directory where the <span class="productname">PostgreSQL</span> header
       files were installed, by supplying the
-      <tt class="literal">-I<i class="replaceable"><tt>directory</tt></i></tt> option
+      <code class="literal">-I<em class="replaceable"><code>directory</code></em></code> option
       to your compiler.  (In some cases the compiler will look into
       the directory in question by default, so you can omit this
       option.)  For instance, your compile command line could look
@@ -51,7 +48,7 @@ foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</pre>
 <pre class="programlisting">cc -c -I/usr/local/pgsql/include testprog.c</pre>
 <p>
       If you are using makefiles then add the option to the
-      <tt class="varname">CPPFLAGS</tt> variable:
+      <code class="varname">CPPFLAGS</code> variable:
 </p>
 <pre class="programlisting">CPPFLAGS += -I/usr/local/pgsql/include</pre>
 <p>
@@ -59,11 +56,11 @@ foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</pre>
 <p>      If there is any chance that your program might be compiled by
       other users then you should not hardcode the directory location
       like that.  Instead, you can run the utility
-      <tt class="command">pg_config</tt><a name="id2617709"></a> to find out where the header
+      <code class="command">pg_config</code><a name="id392620"></a> to find out where the header
       files are on the local system:
 </p>
-<pre class="screen"><tt class="prompt">$</tt> pg_config --includedir
-<tt class="computeroutput">/usr/local/include</tt></pre>
+<pre class="screen"><code class="prompt">$</code> pg_config --includedir
+<code class="computeroutput">/usr/local/include</code></pre>
 <p>
      </p>
 <p>      Failure to specify the correct option to the compiler will
@@ -75,22 +72,22 @@ foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</pre>
 </li>
 <li>
 <p>      When linking the final program, specify the option
-      <tt class="literal">-lpq</tt> so that the <span class="application">libpq</span> library gets pulled
+      <code class="literal">-lpq</code> so that the <span class="application">libpq</span> library gets pulled
       in, as well as the option
-      <tt class="literal">-L<i class="replaceable"><tt>directory</tt></i></tt> to
+      <code class="literal">-L<em class="replaceable"><code>directory</code></em></code> to
       point the compiler to the directory where the <span class="application">libpq</span> library resides.  (Again, the
       compiler will search some directories by default.)  For maximum
-      portability, put the <tt class="option">-L</tt> option before the
-      <tt class="option">-lpq</tt> option.  For example:
+      portability, put the <code class="option">-L</code> option before the
+      <code class="option">-lpq</code> option.  For example:
 </p>
 <pre class="programlisting">cc -o testprog testprog1.o testprog2.o -L/usr/local/pgsql/lib -lpq</pre>
 <p>
      </p>
 <p>      You can find out the library directory using
-      <tt class="command">pg_config</tt> as well:
+      <code class="command">pg_config</code> as well:
 </p>
-<pre class="screen"><tt class="prompt">$</tt> pg_config --libdir
-<tt class="computeroutput">/usr/local/pgsql/lib</tt></pre>
+<pre class="screen"><code class="prompt">$</code> pg_config --libdir
+<code class="computeroutput">/usr/local/pgsql/lib</code></pre>
 <p>
      </p>
 <p>      Error messages that point to problems in this area could look
@@ -101,23 +98,23 @@ testlibpq.o(.text+0x60): undefined reference to `PQsetdbLogin'
 testlibpq.o(.text+0x71): undefined reference to `PQstatus'
 testlibpq.o(.text+0xa4): undefined reference to `PQerrorMessage'</pre>
 <p>
-      This means you forgot <tt class="option">-lpq</tt>.
+      This means you forgot <code class="option">-lpq</code>.
 </p>
 <pre class="screen">/usr/bin/ld: cannot find -lpq</pre>
 <p>
-      This means you forgot the <tt class="option">-L</tt> option or did not specify
+      This means you forgot the <code class="option">-L</code> option or did not specify
       the right directory.
      </p>
 </li>
 </ul></div>
 <p>
   </p>
-<p>   <a name="id2617852"></a>
+<p>   <a name="id392753"></a>
    If your codes references the header file
-   <tt class="filename">libpq-int.h</tt> and you refuse to fix your code to
+   <code class="filename">libpq-int.h</code> and you refuse to fix your code to
    not use it, starting in <span class="productname">PostgreSQL</span> 7.2, this file will be found in
-   <tt class="filename"><i class="replaceable"><tt>includedir</tt></i>/postgresql/internal/libpq-int.h</tt>,
-   so you need to add the appropriate <tt class="option">-I</tt> option to
+   <code class="filename"><em class="replaceable"><code>includedir</code></em>/postgresql/internal/libpq-int.h</code>,
+   so you need to add the appropriate <code class="option">-I</code> option to
    your compiler command line.
   </p>
 </div></body>

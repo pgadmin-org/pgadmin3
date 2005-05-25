@@ -4,25 +4,22 @@
 <title>pg_dump</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="app-pgconfig.html" title="pg_config">
+<link rel="prev" href="app-pgconfig.html" title="pg_config">
 <link rel="next" href="app-pg-dumpall.html" title="pg_dumpall">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-pgdump"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="app-pgdump"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>pg_dump &#8212;    extract a <span class="productname">PostgreSQL</span> database into a script file or other archive file 
   </p>
 </div>
-<a name="id2710565"></a><div class="refsynopsisdiv">
+<a name="id478190"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">pg_dump</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>dbname</tt></i>]</p></div>
+<div class="cmdsynopsis"><p><code class="command">pg_dump</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>dbname</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
 <a name="pg-dump-description"></a><h2>   Description
@@ -57,13 +54,13 @@
    backup an entire database, then <span class="application">pg_restore</span>
    can be used to examine the archive and/or select which parts of the
    database are to be restored. The most flexible output file format is
-   the &#8220;<span class="quote">custom</span>&#8221; format (<tt class="option">-Fc</tt>). It allows
+   the &#8220;<span class="quote">custom</span>&#8221; format (<code class="option">-Fc</code>). It allows
    for selection and reordering of all archived items, and is compressed
    by default. The <span class="application">tar</span> format
-   (<tt class="option">-Ft</tt>) is not compressed and it is not possible to
+   (<code class="option">-Ft</code>) is not compressed and it is not possible to
    reorder data when loading, but it is otherwise quite flexible;
    moreover, it can be manipulated with standard Unix tools such as
-   <tt class="command">tar</tt>.
+   <code class="command">tar</code>.
   </p>
 <p>   While running <span class="application">pg_dump</span>, one should examine the
    output for any warnings (printed on standard error), especially in
@@ -77,31 +74,31 @@
 
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>dbname</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>dbname</code></em></span></dt>
 <dd><p>        Specifies the name of the database to be dumped.  If this is
         not specified, the environment variable
-        <tt class="envar">PGDATABASE</tt> is used.  If that is not set, the
+        <code class="envar">PGDATABASE</code> is used.  If that is not set, the
         user name specified for the connection is used.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--data-only</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-a</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--data-only</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>        Dump only the data, not the schema (data definitions).
        </p>
 <p>        This option is only meaningful for the plain-text format.  For
         the archive formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
+        call <code class="command">pg_restore</code>.
        </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-b</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--blobs</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-b</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--blobs</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Include large objects in the dump.  A non-text output format
         must be selected.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-c</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--clean</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-c</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--clean</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>        Output commands to clean (drop)
@@ -109,11 +106,11 @@
        </p>
 <p>        This option is only meaningful for the plain-text format.  For
         the archive formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
+        call <code class="command">pg_restore</code>.
        </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-C</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--create</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-C</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--create</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>        Begin the output with a command to create the
@@ -123,56 +120,56 @@
        </p>
 <p>        This option is only meaningful for the plain-text format.  For
         the archive formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
+        call <code class="command">pg_restore</code>.
        </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-d</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--inserts</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-d</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--inserts</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
-<dd><p>        Dump data as <tt class="command">INSERT</tt> commands (rather
-        than <tt class="command">COPY</tt>).  This will make restoration very slow;
+<dd><p>        Dump data as <code class="command">INSERT</code> commands (rather
+        than <code class="command">COPY</code>).  This will make restoration very slow;
         it is mainly useful for making dumps that can be loaded into
         non-<span class="productname">PostgreSQL</span> databases.  Note that
         the restore may fail altogether if you have rearranged column order.
-        The <tt class="option">-D</tt> option is safer, though even slower.
+        The <code class="option">-D</code> option is safer, though even slower.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-D</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--column-inserts</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--attribute-inserts</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-D</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--column-inserts</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--attribute-inserts</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
-<dd><p>        Dump data as <tt class="command">INSERT</tt> commands with explicit
-        column names (<tt class="literal">INSERT INTO
-        <i class="replaceable"><tt>table</tt></i>
-        (<i class="replaceable"><tt>column</tt></i>, ...) VALUES
-        ...</tt>).  This will make restoration very slow; it is mainly
+<dd><p>        Dump data as <code class="command">INSERT</code> commands with explicit
+        column names (<code class="literal">INSERT INTO
+        <em class="replaceable"><code>table</code></em>
+        (<em class="replaceable"><code>column</code></em>, ...) VALUES
+        ...</code>).  This will make restoration very slow; it is mainly
         useful for making dumps that can be loaded into
         non-<span class="productname">PostgreSQL</span> databases.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-f <i class="replaceable"><tt>file</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--file=<i class="replaceable"><tt>file</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-f <em class="replaceable"><code>file</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--file=<em class="replaceable"><code>file</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Send output to the specified file.  If this is omitted, the
         standard output is used.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-F <i class="replaceable"><tt>format</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--format=<i class="replaceable"><tt>format</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-F <em class="replaceable"><code>format</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--format=<em class="replaceable"><code>format</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>        Selects the format of the output.
-        <i class="replaceable"><tt>format</tt></i> can be one of the following:
+        <em class="replaceable"><code>format</code></em> can be one of the following:
 
        </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">p</tt></span></dt>
+<dt><span class="term"><code class="literal">p</code></span></dt>
 <dd><p>           Output a plain-text <span class="acronym">SQL</span> script file (default)
           </p></dd>
-<dt><span class="term"><tt class="literal">t</tt></span></dt>
-<dd><p>         Output a <tt class="command">tar</tt> archive suitable for input into 
+<dt><span class="term"><code class="literal">t</code></span></dt>
+<dd><p>         Output a <code class="command">tar</code> archive suitable for input into 
          <span class="application">pg_restore</span>. Using this archive format 
          allows reordering and/or exclusion of database objects
          at the time the database is restored. It is also possible to limit 
          which data is reloaded at restore time.
           </p></dd>
-<dt><span class="term"><tt class="literal">c</tt></span></dt>
+<dt><span class="term"><code class="literal">c</code></span></dt>
 <dd><p>         Output a custom archive suitable for input into 
          <span class="application">pg_restore</span>. This is the most flexible 
          format in that it allows reordering of loading data as well 
@@ -183,7 +180,7 @@
        </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--ignore-version</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-i</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--ignore-version</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>        Ignore version mismatch between
@@ -198,10 +195,10 @@
        </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-n <i class="replaceable"><tt>schema</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--schema=<i class="replaceable"><tt>schema</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-n <em class="replaceable"><code>schema</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--schema=<em class="replaceable"><code>schema</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
-<p>        Dump the contents of <i class="replaceable"><tt>schema</tt></i>
+<p>        Dump the contents of <em class="replaceable"><code>schema</code></em>
         only. If this option is not specified, all non-system schemas
         in the target database will be dumped.
        </p>
@@ -216,7 +213,7 @@
 </div>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-o</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--oids</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-o</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--oids</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Dump object identifiers (<span class="acronym">OID</span>s) as part of the
         data for every table.  Use this option if your application references
@@ -225,54 +222,54 @@
         Otherwise, this option should not be used.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-O</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-owner</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-O</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--no-owner</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>        Do not output commands to set
         ownership of objects to match the original database.
         By default, <span class="application">pg_dump</span> issues
-        <tt class="command">ALTER OWNER</tt> or 
-        <tt class="command">SET SESSION AUTHORIZATION</tt>
+        <code class="command">ALTER OWNER</code> or 
+        <code class="command">SET SESSION AUTHORIZATION</code>
         statements to set ownership of created database objects.
         These statements
         will fail when the script is run unless it is started by a superuser
         (or the same user that owns all of the objects in the script).
         To make a script that can be restored by any user, but will give
-        that user ownership of all the objects, specify <tt class="option">-O</tt>.
+        that user ownership of all the objects, specify <code class="option">-O</code>.
        </p>
 <p>        This option is only meaningful for the plain-text format.  For
         the archive formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
+        call <code class="command">pg_restore</code>.
        </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-R</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-reconnect</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-R</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--no-reconnect</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        This option is obsolete but still accepted for backwards
         compatibility.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-s</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--schema-only</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-s</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--schema-only</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Dump only the object definitions (schema), not data.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-S <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--superuser=<i class="replaceable"><tt>username</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-S <em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--superuser=<em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Specify the superuser user name to use when disabling triggers.
-        This is only relevant if <tt class="option">--disable-triggers</tt> is used.
+        This is only relevant if <code class="option">--disable-triggers</code> is used.
         (Usually, it's better to leave this out, and instead start the
         resulting script as superuser.)
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-t <i class="replaceable"><tt>table</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--table=<i class="replaceable"><tt>table</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-t <em class="replaceable"><code>table</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--table=<em class="replaceable"><code>table</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
-<p>        Dump data for <i class="replaceable"><tt>table</tt></i>
+<p>        Dump data for <em class="replaceable"><code>table</code></em>
         only. It is possible for there to be
         multiple tables with the same name in different schemas; if that
         is the case, all matching tables will be dumped.  Specify both
-        <tt class="option">--schema</tt> and <tt class="option">--table</tt> to select just one table.
+        <code class="option">--schema</code> and <code class="option">--table</code> to select just one table.
        </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -285,7 +282,7 @@
 </div>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-v</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--verbose</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-v</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--verbose</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Specifies verbose mode.  This will cause
         <span class="application">pg_dump</span> to output detailed object
@@ -293,18 +290,18 @@
         messages to standard error.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-x</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--no-privileges</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-acl</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-x</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--no-privileges</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--no-acl</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Prevent dumping of access privileges (grant/revoke commands).
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X disable-dollar-quoting</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--disable-dollar-quoting</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-X disable-dollar-quoting</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--disable-dollar-quoting</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        This option disables the use of dollar quoting for function bodies,
         and forces them to be quoted using SQL standard string syntax.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X disable-triggers</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--disable-triggers</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-X disable-triggers</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--disable-triggers</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>        This option is only relevant when creating a data-only dump.
@@ -314,18 +311,18 @@
         integrity checks or other triggers on the tables that you
         do not want to invoke during data reload.
        </p>
-<p>        Presently, the commands emitted for <tt class="option">--disable-triggers</tt>
+<p>        Presently, the commands emitted for <code class="option">--disable-triggers</code>
         must be done as superuser.  So, you should also specify
-        a superuser name with <tt class="option">-S</tt>, or preferably be careful to
+        a superuser name with <code class="option">-S</code>, or preferably be careful to
         start the resulting script as a superuser.
        </p>
 <p>        This option is only meaningful for the plain-text format.  For
         the archive formats, you may specify the option when you
-        call <tt class="command">pg_restore</tt>.
+        call <code class="command">pg_restore</code>.
        </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X use-set-session-authorization</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--use-set-session-authorization</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-X use-set-session-authorization</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--use-set-session-authorization</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Output SQL standard SET SESSION AUTHORIZATION commands instead
         of OWNER TO commands.  This makes the dump more standards compatible,
@@ -333,7 +330,7 @@
         restore properly.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-Z <i class="replaceable"><tt>0..9</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--compress=<i class="replaceable"><tt>0..9</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-Z <em class="replaceable"><code>0..9</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--compress=<em class="replaceable"><code>0..9</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Specify the compression level to use in archive formats that
         support compression.  (Currently only the custom archive
@@ -347,26 +344,26 @@
     </p>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host=<i class="replaceable"><tt>host</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-h <em class="replaceable"><code>host</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--host=<em class="replaceable"><code>host</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Specifies the host name of the machine on which the server is
         running.  If the value begins with a slash, it is used as the
         directory for the Unix domain socket. The default is taken
-        from the <tt class="envar">PGHOST</tt> environment variable, if set,
+        from the <code class="envar">PGHOST</code> environment variable, if set,
         else a Unix domain socket connection is attempted.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port=<i class="replaceable"><tt>port</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-p <em class="replaceable"><code>port</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--port=<em class="replaceable"><code>port</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Specifies the TCP port or local Unix domain socket file
         extension on which the server is listening for connections.
-        Defaults to the <tt class="envar">PGPORT</tt> environment variable, if
+        Defaults to the <code class="envar">PGPORT</code> environment variable, if
         set, or a compiled-in default.
        </p></dd>
-<dt><span class="term"><tt class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">-U <em class="replaceable"><code>username</code></em></code></span></dt>
 <dd><p>        Connect as the given user
        </p></dd>
-<dt><span class="term"><tt class="option">-W</tt></span></dt>
+<dt><span class="term"><code class="option">-W</code></span></dt>
 <dd><p>        Force a password prompt.  This should happen automatically if
         the server requires password authentication.
        </p></dd>
@@ -375,10 +372,10 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711532"></a><h2>Environment</h2>
+<a name="id479073"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGDATABASE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGDATABASE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGHOST</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGPORT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>      Default connection parameters.
      </p></dd>
@@ -387,18 +384,18 @@
 <div class="refsect1" lang="en">
 <a name="app-pgdump-diagnostics"></a><h2>Diagnostics</h2>
 <p>   <span class="application">pg_dump</span> internally executes
-   <tt class="command">SELECT</tt> statements. If you have problems running
+   <code class="command">SELECT</code> statements. If you have problems running
    <span class="application">pg_dump</span>, make sure you are able to
    select information from the database using, for example, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="pg-dump-notes"></a><h2>Notes</h2>
-<p>   If your database cluster has any local additions to the <tt class="literal">template1</tt> database,
+<p>   If your database cluster has any local additions to the <code class="literal">template1</code> database,
    be careful to restore the output of <span class="application">pg_dump</span> into a
    truly empty database; otherwise you are likely to get errors due to
    duplicate definitions of the added objects.  To make an empty database
-   without any local additions, copy from <tt class="literal">template0</tt> not <tt class="literal">template1</tt>,
+   without any local additions, copy from <code class="literal">template0</code> not <code class="literal">template1</code>,
    for example:
 </p>
 <pre class="programlisting">CREATE DATABASE foo WITH TEMPLATE template0;</pre>
@@ -413,7 +410,7 @@
       entire database using one of the non-text archive formats.
      </p></li>
 <li><p>      When a data-only dump is chosen and the option
-      <tt class="option">--disable-triggers</tt> is used,
+      <code class="option">--disable-triggers</code> is used,
       <span class="application">pg_dump</span> emits commands to disable
       triggers on user tables before inserting the data and commands
       to re-enable them after the data has been inserted.  If the
@@ -433,7 +430,7 @@
 <p>   The dump file produced by <span class="application">pg_dump</span> does
    not contain the statistics used by the optimizer to make query
    planning decisions.  Therefore, it is wise to run
-   <tt class="command">ANALYZE</tt> after restoring from a dump file to
+   <code class="command">ANALYZE</code> after restoring from a dump file to
    ensure good performance.
   </p>
 </div>
@@ -441,31 +438,31 @@
 <a name="pg-dump-examples"></a><h2>Examples</h2>
 <p>   To dump a database:
 </p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_dump mydb &gt; db.out</tt></b></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump mydb &gt; db.out</code></strong></pre>
 <p>
   </p>
 <p>   To reload this database:
 </p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>psql -d database -f db.out</tt></b></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>psql -d database -f db.out</code></strong></pre>
 <p>
   </p>
-<p>   To dump a database called <tt class="literal">mydb</tt> that contains
-   large objects to a <tt class="filename">tar</tt> file:
+<p>   To dump a database called <code class="literal">mydb</code> that contains
+   large objects to a <code class="filename">tar</code> file:
 
 </p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_dump -Ft -b mydb &gt; db.tar</tt></b></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -Ft -b mydb &gt; db.tar</code></strong></pre>
 <p>
   </p>
 <p>   To reload this database (with large objects) to an
-   existing database called <tt class="literal">newdb</tt>:
+   existing database called <code class="literal">newdb</code>:
 
 </p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>pg_restore -d newdb db.tar</tt></b></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_restore -d newdb db.tar</code></strong></pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711807"></a><h2>History</h2>
+<a name="id479323"></a><h2>History</h2>
 <p>   The <span class="application">pg_dump</span> utility first appeared in
    <span class="application">Postgres95</span> release 0.02.  The
    non-plain-text output formats were introduced in
@@ -473,8 +470,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2711832"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a>, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a></span>
+<a name="id479347"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a>, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>, </span>
 </div>
 </div></body>
 </html>

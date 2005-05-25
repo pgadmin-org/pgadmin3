@@ -4,93 +4,90 @@
 <title>SPI_execute_plan</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
-<link rel="previous" href="spi-spi-is-cursor-plan.html" title="SPI_is_cursor_plan">
+<link rel="prev" href="spi-spi-is-cursor-plan.html" title="SPI_is_cursor_plan">
 <link rel="next" href="spi-spi-execp.html" title="SPI_execp">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-execute-plan"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="spi-spi-execute-plan"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
-<p>SPI_execute_plan &#8212; execute a plan prepared by <tt class="function">SPI_prepare</tt></p>
+<p>SPI_execute_plan &#8212; execute a plan prepared by <code class="function">SPI_prepare</code></p>
 </div>
-<a name="id2660842"></a><div class="refsynopsisdiv">
+<a name="id431580"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">int SPI_execute_plan(void * <i class="parameter"><tt>plan</tt></i>, Datum * <i class="parameter"><tt>values</tt></i>, const char * <i class="parameter"><tt>nulls</tt></i>,
-                     bool <i class="parameter"><tt>read_only</tt></i>, int <i class="parameter"><tt>count</tt></i>)</pre>
+<pre class="synopsis">int SPI_execute_plan(void * <em class="parameter"><code>plan</code></em>, Datum * <em class="parameter"><code>values</code></em>, const char * <em class="parameter"><code>nulls</code></em>,
+                     bool <em class="parameter"><code>read_only</code></em>, long <em class="parameter"><code>count</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2660884"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_execute_plan</tt> executes a plan prepared by
-   <tt class="function">SPI_prepare</tt>.  <i class="parameter"><tt>read_only</tt></i> and
-   <i class="parameter"><tt>count</tt></i> have the same interpretation as in
-   <tt class="function">SPI_execute</tt>.
+<a name="id431622"></a><h2>Description</h2>
+<p>   <code class="function">SPI_execute_plan</code> executes a plan prepared by
+   <code class="function">SPI_prepare</code>.  <em class="parameter"><code>read_only</code></em> and
+   <em class="parameter"><code>count</code></em> have the same interpretation as in
+   <code class="function">SPI_execute</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2660921"></a><h2>Arguments</h2>
+<a name="id431657"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">void * <i class="parameter"><tt>plan</tt></i></tt></span></dt>
-<dd><p>      execution plan (returned by <tt class="function">SPI_prepare</tt>)
+<dt><span class="term"><code class="literal">void * <em class="parameter"><code>plan</code></em></code></span></dt>
+<dd><p>      execution plan (returned by <code class="function">SPI_prepare</code>)
      </p></dd>
-<dt><span class="term"><tt class="literal">Datum * <i class="parameter"><tt>values</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">Datum * <em class="parameter"><code>values</code></em></code></span></dt>
 <dd><p>      An array of actual parameter values.  Must have same length as the
       plan's number of arguments.
      </p></dd>
-<dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>nulls</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">const char * <em class="parameter"><code>nulls</code></em></code></span></dt>
 <dd>
 <p>      An array describing which parameters are null.  Must have same length as
       the plan's number of arguments.
-      <tt class="literal">n</tt> indicates a null value (entry in
-      <i class="parameter"><tt>values</tt></i> will be ignored); a space indicates a
-      nonnull value (entry in <i class="parameter"><tt>values</tt></i> is valid).
+      <code class="literal">n</code> indicates a null value (entry in
+      <em class="parameter"><code>values</code></em> will be ignored); a space indicates a
+      nonnull value (entry in <em class="parameter"><code>values</code></em> is valid).
      </p>
-<p>      If <i class="parameter"><tt>nulls</tt></i> is <tt class="symbol">NULL</tt> then
-      <tt class="function">SPI_execute_plan</tt> assumes that no parameters are
+<p>      If <em class="parameter"><code>nulls</code></em> is <code class="symbol">NULL</code> then
+      <code class="function">SPI_execute_plan</code> assumes that no parameters are
       null.
      </p>
 </dd>
-<dt><span class="term"><tt class="literal">bool <i class="parameter"><tt>read_only</tt></i></tt></span></dt>
-<dd><p>      <tt class="literal">true</tt> for read-only execution
+<dt><span class="term"><code class="literal">bool <em class="parameter"><code>read_only</code></em></code></span></dt>
+<dd><p>      <code class="literal">true</code> for read-only execution
      </p></dd>
-<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>count</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">long <em class="parameter"><code>count</code></em></code></span></dt>
 <dd><p>      maximum number of rows to process or return
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2661055"></a><h2>Return Value</h2>
-<p>   The return value is the same as for <tt class="function">SPI_execute</tt>,
+<a name="id431787"></a><h2>Return Value</h2>
+<p>   The return value is the same as for <code class="function">SPI_execute</code>,
    with the following additional possible error (negative) results:
 
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="symbol">SPI_ERROR_ARGUMENT</tt></span></dt>
-<dd><p>       if <i class="parameter"><tt>plan</tt></i> is <tt class="symbol">NULL</tt> or
-       <i class="parameter"><tt>count</tt></i> is less than 0
+<dt><span class="term"><code class="symbol">SPI_ERROR_ARGUMENT</code></span></dt>
+<dd><p>       if <em class="parameter"><code>plan</code></em> is <code class="symbol">NULL</code> or
+       <em class="parameter"><code>count</code></em> is less than 0
       </p></dd>
-<dt><span class="term"><tt class="symbol">SPI_ERROR_PARAM</tt></span></dt>
-<dd><p>       if <i class="parameter"><tt>values</tt></i> is <tt class="symbol">NULL</tt> and
-       <i class="parameter"><tt>plan</tt></i> was prepared with some parameters
+<dt><span class="term"><code class="symbol">SPI_ERROR_PARAM</code></span></dt>
+<dd><p>       if <em class="parameter"><code>values</code></em> is <code class="symbol">NULL</code> and
+       <em class="parameter"><code>plan</code></em> was prepared with some parameters
       </p></dd>
 </dl></div>
 <p>
   </p>
-<p>   <tt class="varname">SPI_processed</tt> and
-   <tt class="varname">SPI_tuptable</tt> are set as in
-   <tt class="function">SPI_execute</tt> if successful.
+<p>   <code class="varname">SPI_processed</code> and
+   <code class="varname">SPI_tuptable</code> are set as in
+   <code class="function">SPI_execute</code> if successful.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2661136"></a><h2>Notes</h2>
+<a name="id431865"></a><h2>Notes</h2>
 <p>   If one of the objects (a table, function, etc.) referenced by the
    prepared plan is dropped during the session then the result of
-   <tt class="function">SPI_execute_plan</tt> for this plan will be unpredictable.
+   <code class="function">SPI_execute_plan</code> for this plan will be unpredictable.
   </p>
 </div>
 </div></body>

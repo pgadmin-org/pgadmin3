@@ -4,89 +4,86 @@
 <title>ALTER INDEX</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-altergroup.html" title="ALTER GROUP">
+<link rel="prev" href="sql-altergroup.html" title="ALTER GROUP">
 <link rel="next" href="sql-alterlanguage.html" title="ALTER LANGUAGE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-alterindex"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-alterindex"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>ALTER INDEX &#8212; change the definition of an index</p>
 </div>
-<a name="id2666534"></a><div class="refsynopsisdiv">
+<a name="id437046"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">ALTER INDEX <i class="replaceable"><tt>name</tt></i> <i class="replaceable"><tt>action</tt></i> [, ... ]
-ALTER INDEX <i class="replaceable"><tt>name</tt></i> RENAME TO <i class="replaceable"><tt>new_name</tt></i>
+<pre class="synopsis">ALTER INDEX <em class="replaceable"><code>name</code></em> <em class="replaceable"><code>action</code></em> [, ... ]
+ALTER INDEX <em class="replaceable"><code>name</code></em> RENAME TO <em class="replaceable"><code>new_name</code></em>
 
-where <i class="replaceable"><tt>action</tt></i> is one of:
+where <em class="replaceable"><code>action</code></em> is one of:
 
-    OWNER TO <i class="replaceable"><tt>new_owner</tt></i>
-    SET TABLESPACE <i class="replaceable"><tt>indexspace_name</tt></i></pre>
+    OWNER TO <em class="replaceable"><code>new_owner</code></em>
+    SET TABLESPACE <em class="replaceable"><code>indexspace_name</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666591"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER INDEX</tt> changes the definition of an existing index.
+<a name="id437103"></a><h2>Description</h2>
+<p>   <code class="command">ALTER INDEX</code> changes the definition of an existing index.
    There are several subforms:
 
   </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">OWNER</tt></span></dt>
+<dt><span class="term"><code class="literal">OWNER</code></span></dt>
 <dd><p>      This form changes the owner of the index to the
       specified user.  This can only be done by a superuser.
      </p></dd>
-<dt><span class="term"><tt class="literal">SET TABLESPACE</tt></span></dt>
+<dt><span class="term"><code class="literal">SET TABLESPACE</code></span></dt>
 <dd><p>      This form changes the index's tablespace to the specified tablespace and
       moves the data file(s) associated with the index to the new tablespace.
       See also 
       <a href="sql-createtablespace.html">CREATE TABLESPACE</a>.
      </p></dd>
-<dt><span class="term"><tt class="literal">RENAME</tt></span></dt>
-<dd><p>      The <tt class="literal">RENAME</tt> form changes the name of the index. 
+<dt><span class="term"><code class="literal">RENAME</code></span></dt>
+<dd><p>      The <code class="literal">RENAME</code> form changes the name of the index. 
 	  There is no effect on the stored data.
      </p></dd>
 </dl></div>
 <p>
   </p>
-<p>   All the actions except <tt class="literal">RENAME</tt> can be combined into
+<p>   All the actions except <code class="literal">RENAME</code> can be combined into
    a list of multiple alterations to apply in parallel.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666670"></a><h2>Parameters</h2>
+<a name="id437176"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>	The name (possibly schema-qualified) of an existing index to
 	alter.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>new_name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>new_name</code></em></span></dt>
 <dd><p>	New name for the index.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>new_owner</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>new_owner</code></em></span></dt>
 <dd><p>	The user name of the new owner of the index.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>tablespace_name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>tablespace_name</code></em></span></dt>
 <dd><p>	The tablespace name to which the index will be moved.
        </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666720"></a><h2>Notes</h2>
+<a name="id437223"></a><h2>Notes</h2>
 <p>    These operations are also possible using
     <a href="sql-altertable.html">ALTER TABLE</a>.
-    <tt class="command">ALTER INDEX</tt> is in fact just an alias for the forms
-    of <tt class="command">ALTER TABLE</tt> that apply to indexes.
+    <code class="command">ALTER INDEX</code> is in fact just an alias for the forms
+    of <code class="command">ALTER TABLE</code> that apply to indexes.
    </p>
 <p>    Changing any part of a system catalog index is not permitted.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666752"></a><h2>Examples</h2>
+<a name="id437254"></a><h2>Examples</h2>
 <p>   To rename an existing index:
 </p>
 <pre class="programlisting">ALTER INDEX distributors RENAME TO suppliers;</pre>
@@ -100,8 +97,8 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2666775"></a><h2>Compatibility</h2>
-<p>   <tt class="command">ALTER INDEX</tt> is a <span class="productname">PostgreSQL</span>
+<a name="id437274"></a><h2>Compatibility</h2>
+<p>   <code class="command">ALTER INDEX</code> is a <span class="productname">PostgreSQL</span>
    extension.
   </p>
 </div>

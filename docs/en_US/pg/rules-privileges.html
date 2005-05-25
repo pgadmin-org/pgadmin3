@@ -4,19 +4,16 @@
 <title>33.4. Rules and Privileges</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="rules.html" title="Chapter 33. The Rule System">
-<link rel="previous" href="rules-update.html" title="33.3. Rules on INSERT, UPDATE, and DELETE">
+<link rel="prev" href="rules-update.html" title="33.3. Rules on INSERT, UPDATE, and DELETE">
 <link rel="next" href="rules-status.html" title="33.5. Rules and Command Status">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="rules-privileges"></a>33.4. Rules and Privileges</h2></div></div>
-<div></div>
-</div>
-<a name="id2646181"></a><a name="id2646196"></a><p>    Due to rewriting of queries by the <span class="productname">PostgreSQL</span>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="rules-privileges"></a>33.4. Rules and Privileges</h2></div></div></div>
+<a name="id418239"></a><a name="id418254"></a><p>    Due to rewriting of queries by the <span class="productname">PostgreSQL</span>
     rule system, other tables/views than those used in the original
     query get accessed. When update rules are used, this can include write access
     to tables.</p>
@@ -41,43 +38,43 @@ GRANT SELECT ON phone_number TO secretary;</pre>
 <p>
     
     Nobody except him (and the database superusers) can access the
-    <tt class="literal">phone_data</tt> table. But because of the <tt class="command">GRANT</tt>,
-    the secretary can run a <tt class="command">SELECT</tt> on the
-    <tt class="literal">phone_number</tt> view. The rule system will rewrite the
-    <tt class="command">SELECT</tt> from <tt class="literal">phone_number</tt> into a
-    <tt class="command">SELECT</tt> from <tt class="literal">phone_data</tt> and add the
-    qualification that only entries where <tt class="literal">private</tt> is false
+    <code class="literal">phone_data</code> table. But because of the <code class="command">GRANT</code>,
+    the secretary can run a <code class="command">SELECT</code> on the
+    <code class="literal">phone_number</code> view. The rule system will rewrite the
+    <code class="command">SELECT</code> from <code class="literal">phone_number</code> into a
+    <code class="command">SELECT</code> from <code class="literal">phone_data</code> and add the
+    qualification that only entries where <code class="literal">private</code> is false
     are wanted. Since the user is the owner of
-    <tt class="literal">phone_number</tt> and therefore the owner of the rule, the
-    read access to <tt class="literal">phone_data</tt> is now checked against his
+    <code class="literal">phone_number</code> and therefore the owner of the rule, the
+    read access to <code class="literal">phone_data</code> is now checked against his
     privileges and the query is permitted. The check for accessing
-    <tt class="literal">phone_number</tt> is also performed, but this is done
+    <code class="literal">phone_number</code> is also performed, but this is done
     against the invoking user, so nobody but the user and the
     secretary can use it.</p>
 <p>    The privileges are checked rule by rule. So the secretary is for now the
     only one who can see the public phone numbers. But the secretary can setup
     another view and grant access to that to the public. Then, anyone
-    can see the <tt class="literal">phone_number</tt> data through the secretary's view.
+    can see the <code class="literal">phone_number</code> data through the secretary's view.
     What the secretary cannot do is to create a view that directly
-    accesses <tt class="literal">phone_data</tt>.  (Actually he can, but it will not work since
+    accesses <code class="literal">phone_data</code>.  (Actually he can, but it will not work since
     every access will be denied during the permission checks.)
     And as soon as the user will notice, that the secretary opened
-    his <tt class="literal">phone_number</tt> view, he can revoke his access. Immediately, any
+    his <code class="literal">phone_number</code> view, he can revoke his access. Immediately, any
     access to the secretary's view would fail.</p>
 <p>    One might think that this rule-by-rule checking is a security
     hole, but in fact it isn't.   But if it did not work this way, the secretary
-    could set up a table with the same columns as <tt class="literal">phone_number</tt> and
+    could set up a table with the same columns as <code class="literal">phone_number</code> and
     copy the data to there once per day. Then it's his own data and
     he can grant access to everyone he wants. A
-    <tt class="command">GRANT</tt> command means, &#8220;<span class="quote">I trust you</span>&#8221;.
+    <code class="command">GRANT</code> command means, &#8220;<span class="quote">I trust you</span>&#8221;.
     If someone you trust does the thing above, it's time to
-    think it over and then use <tt class="command">REVOKE</tt>.</p>
+    think it over and then use <code class="command">REVOKE</code>.</p>
 <p>    This mechanism also works for update rules. In the examples of
     the previous section, the owner of the tables in the example
-    database could grant the privileges <tt class="literal">SELECT</tt>,
-    <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, and <tt class="literal">DELETE</tt> on
-    the <tt class="literal">shoelace</tt> view to someone else, but only
-    <tt class="literal">SELECT</tt> on <tt class="literal">shoelace_log</tt>. The rule action to
+    database could grant the privileges <code class="literal">SELECT</code>,
+    <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, and <code class="literal">DELETE</code> on
+    the <code class="literal">shoelace</code> view to someone else, but only
+    <code class="literal">SELECT</code> on <code class="literal">shoelace_log</code>. The rule action to
     write log entries will still be executed successfully, and that
     other user could see the log entries.  But he cannot create fake
     entries, nor could he manipulate or remove existing ones.</p>

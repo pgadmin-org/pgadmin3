@@ -4,23 +4,20 @@
 <title>30.15. domains</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="infoschema-domain-udt-usage.html" title="30.14. domain_udt_usage">
+<link rel="prev" href="infoschema-domain-udt-usage.html" title="30.14. domain_udt_usage">
 <link rel="next" href="infoschema-element-types.html" title="30.16. element_types">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-domains"></a>30.15. <tt class="literal">domains</tt></h2></div></div>
-<div></div>
-</div>
-<p>   The view <tt class="literal">domains</tt> contains all domains defined in
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-domains"></a>30.15. <code class="literal">domains</code></h2></div></div></div>
+<p>   The view <code class="literal">domains</code> contains all domains defined in
    the current database.
   </p>
 <div class="table">
-<a name="id2625151"></a><p class="title"><b>Table 30.13. <tt class="literal">domains</tt> Columns</b></p>
+<a name="id399218"></a><p class="title"><b>Table 30.13. <code class="literal">domains</code> Columns</b></p>
 <table summary="domains Columns" border="1">
 <colgroup>
 <col>
@@ -34,42 +31,42 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">domain_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">domain_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the database that contains the domain (always the current database)</td>
 </tr>
 <tr>
-<td><tt class="literal">domain_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">domain_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the schema that contains the domain</td>
 </tr>
 <tr>
-<td><tt class="literal">domain_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">domain_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the domain</td>
 </tr>
 <tr>
-<td><tt class="literal">data_type</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">data_type</code></td>
+<td><code class="type">character_data</code></td>
 <td>       Data type of the domain, if it is a built-in type, or
-       <tt class="literal">ARRAY</tt> if it is some array (in that case, see
-       the view <tt class="literal">element_types</tt>), else
-       <tt class="literal">USER-DEFINED</tt> (in that case, the type is
-       identified in <tt class="literal">udt_name</tt> and associated
+       <code class="literal">ARRAY</code> if it is some array (in that case, see
+       the view <code class="literal">element_types</code>), else
+       <code class="literal">USER-DEFINED</code> (in that case, the type is
+       identified in <code class="literal">udt_name</code> and associated
        columns).
       </td>
 </tr>
 <tr>
-<td><tt class="literal">character_maximum_length</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">character_maximum_length</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>       If the domain has a character or bit string type, the declared
        maximum length; null for all other data types or if no maximum
        length was declared.
       </td>
 </tr>
 <tr>
-<td><tt class="literal">character_octet_length</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">character_octet_length</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>       If the domain has a character type, the maximum possible length
        in octets (bytes) of a datum (this should not be of concern to
        <span class="productname">PostgreSQL</span> users); null for all
@@ -77,140 +74,140 @@
       </td>
 </tr>
 <tr>
-<td><tt class="literal">character_set_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">character_set_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">character_set_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">character_set_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">character_set_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">character_set_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">collation_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">collation_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">collation_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">collation_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">collation_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">collation_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">numeric_precision</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">numeric_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>       If the domain has a numeric type, this column contains the
        (declared or implicit) precision of the type for this column.
        The precision indicates the number of significant digits.  It
        may be expressed in decimal (base 10) or binary (base 2) terms,
        as specified in the column
-       <tt class="literal">numeric_precision_radix</tt>.  For all other data
+       <code class="literal">numeric_precision_radix</code>.  For all other data
        types, this column is null.
       </td>
 </tr>
 <tr>
-<td><tt class="literal">numeric_precision_radix</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">numeric_precision_radix</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>       If the domain has a numeric type, this column indicates in
        which base the values in the columns
-       <tt class="literal">numeric_precision</tt> and
-       <tt class="literal">numeric_scale</tt> are expressed.  The value is
+       <code class="literal">numeric_precision</code> and
+       <code class="literal">numeric_scale</code> are expressed.  The value is
        either 2 or 10.  For all other data types, this column is null.
       </td>
 </tr>
 <tr>
-<td><tt class="literal">numeric_scale</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">numeric_scale</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>       If the domain has an exact numeric type, this column contains
        the (declared or implicit) scale of the type for this column.
        The scale indicates the number of significant digits to the
        right of the decimal point.  It may be expressed in decimal
        (base 10) or binary (base 2) terms, as specified in the column
-       <tt class="literal">numeric_precision_radix</tt>.  For all other data
+       <code class="literal">numeric_precision_radix</code>.  For all other data
        types, this column is null.
       </td>
 </tr>
 <tr>
-<td><tt class="literal">datetime_precision</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">datetime_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>       If the domain has a date, time, or interval type, the declared
        precision; null for all other data types or if no precision was
        declared.
       </td>
 </tr>
 <tr>
-<td><tt class="literal">interval_type</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">interval_type</code></td>
+<td><code class="type">character_data</code></td>
 <td>Not yet implemented</td>
 </tr>
 <tr>
-<td><tt class="literal">interval_precision</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">interval_precision</code></td>
+<td><code class="type">character_data</code></td>
 <td>Not yet implemented</td>
 </tr>
 <tr>
-<td><tt class="literal">domain_default</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">domain_default</code></td>
+<td><code class="type">character_data</code></td>
 <td>Default expression of the domain</td>
 </tr>
 <tr>
-<td><tt class="literal">udt_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the database that the domain data type is defined in (always the current database)</td>
 </tr>
 <tr>
-<td><tt class="literal">udt_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the schema that the domain data type is defined in</td>
 </tr>
 <tr>
-<td><tt class="literal">udt_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the domain data type</td>
 </tr>
 <tr>
-<td><tt class="literal">scope_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">scope_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">scope_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">scope_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">scope_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">scope_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">maximum_cardinality</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">maximum_cardinality</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>Always null, because arrays always have unlimited maximum cardinality in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">dtd_identifier</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">dtd_identifier</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       An identifier of the data type descriptor of the domain, unique
        among the data type descriptors pertaining to the domain (which
        is trivial, because a domain only contains one data type

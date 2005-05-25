@@ -4,21 +4,18 @@
 <title>11.7. Partial Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="previous" href="indexes-opclass.html" title="11.6. Operator Classes">
+<link rel="prev" href="indexes-opclass.html" title="11.6. Operator Classes">
 <link rel="next" href="indexes-examine.html" title="11.8. Examining Index Usage">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="indexes-partial"></a>11.7. Partial Indexes</h2></div></div>
-<div></div>
-</div>
-<a name="id2569875"></a><p>   A <i class="firstterm">partial index</i> is an index built over a
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-partial"></a>11.7. Partial Indexes</h2></div></div></div>
+<a name="id348744"></a><p>   A <em class="firstterm">partial index</em> is an index built over a
    subset of a table; the subset is defined by a conditional
-   expression (called the <i class="firstterm">predicate</i> of the
+   expression (called the <em class="firstterm">predicate</em> of the
    partial index).  The index contains entries for only those table
    rows that satisfy the predicate.
   </p>
@@ -99,12 +96,12 @@
 <pre class="programlisting">SELECT * FROM orders WHERE billed is not true AND order_nr &lt; 10000;</pre>
 <p>
     However, the index can also be used in queries that do not involve
-    <tt class="structfield">order_nr</tt> at all, e.g.,
+    <code class="structfield">order_nr</code> at all, e.g.,
 </p>
 <pre class="programlisting">SELECT * FROM orders WHERE billed is not true AND amount &gt; 5000.00;</pre>
 <p>
     This is not as efficient as a partial index on the
-    <tt class="structfield">amount</tt> column would be, since the system has to
+    <code class="structfield">amount</code> column would be, since the system has to
     scan the entire index.  Yet, if there are relatively few unbilled
     orders, using this partial index just to find the unbilled orders
     could be a win.
@@ -125,7 +122,7 @@
    predicate must match the conditions used in the queries that
    are supposed to benefit from the index.  To be precise, a partial
    index can be used in a query only if the system can recognize that
-   the <tt class="literal">WHERE</tt> condition of the query mathematically implies
+   the <code class="literal">WHERE</code> condition of the query mathematically implies
    the predicate of the index.
    <span class="productname">PostgreSQL</span> does not have a sophisticated
    theorem prover that can recognize mathematically equivalent
@@ -135,7 +132,7 @@
    The system can recognize simple inequality implications, for example
    &#8220;<span class="quote">x &lt; 1</span>&#8221; implies &#8220;<span class="quote">x &lt; 2</span>&#8221;; otherwise
    the predicate condition must exactly match part of the query's
-   <tt class="literal">WHERE</tt> condition
+   <code class="literal">WHERE</code> condition
    or the index will not be recognized to be usable.
   </p>
 <p>   A third possible use for partial indexes does not require the

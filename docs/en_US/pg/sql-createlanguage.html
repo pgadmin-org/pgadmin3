@@ -4,29 +4,26 @@
 <title>CREATE LANGUAGE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createindex.html" title="CREATE INDEX">
+<link rel="prev" href="sql-createindex.html" title="CREATE INDEX">
 <link rel="next" href="sql-createoperator.html" title="CREATE OPERATOR">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createlanguage"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createlanguage"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE LANGUAGE &#8212; define a new procedural language</p>
 </div>
-<a name="id2678166"></a><div class="refsynopsisdiv">
+<a name="id447970"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE [ TRUSTED ] [ PROCEDURAL ] LANGUAGE <i class="replaceable"><tt>name</tt></i>
-    HANDLER <i class="replaceable"><tt>call_handler</tt></i> [ VALIDATOR <i class="replaceable"><tt>valfunction</tt></i> ]</pre>
+<pre class="synopsis">CREATE [ TRUSTED ] [ PROCEDURAL ] LANGUAGE <em class="replaceable"><code>name</code></em>
+    HANDLER <em class="replaceable"><code>call_handler</code></em> [ VALIDATOR <em class="replaceable"><code>valfunction</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createlanguage-description"></a><h2>Description</h2>
-<p>   Using <tt class="command">CREATE LANGUAGE</tt>, a
+<p>   Using <code class="command">CREATE LANGUAGE</code>, a
    <span class="productname">PostgreSQL</span> user can register a new
    procedural language with a <span class="productname">PostgreSQL</span>
    database.  Subsequently, functions and trigger procedures can be
@@ -34,21 +31,21 @@
    <span class="productname">PostgreSQL</span> superuser privilege to
    register a new language.
   </p>
-<p>   <tt class="command">CREATE LANGUAGE</tt> effectively associates the
+<p>   <code class="command">CREATE LANGUAGE</code> effectively associates the
    language name with a call handler that is responsible for executing
    functions written in the language.  Refer to <a href="xplang.html" title="Chapter 34. Procedural Languages">Chapter 34, <i>Procedural Languages</i></a>
    for more information about language call handlers.
   </p>
 <p>   Note that procedural languages are local to individual databases.
    To make a language available in all databases by default, it should
-   be installed into the <tt class="literal">template1</tt> database.
+   be installed into the <code class="literal">template1</code> database.
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createlanguage-parameters"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">TRUSTED</tt></span></dt>
-<dd><p>       <tt class="literal">TRUSTED</tt> specifies that the call handler for
+<dt><span class="term"><code class="literal">TRUSTED</code></span></dt>
+<dd><p>       <code class="literal">TRUSTED</code> specifies that the call handler for
        the language is safe, that is, it does not offer an
        unprivileged user any functionality to bypass access
        restrictions. If this key word is omitted when registering the
@@ -56,10 +53,10 @@
        <span class="productname">PostgreSQL</span> superuser privilege can
        use this language to create new functions.
       </p></dd>
-<dt><span class="term"><tt class="literal">PROCEDURAL</tt></span></dt>
+<dt><span class="term"><code class="literal">PROCEDURAL</code></span></dt>
 <dd><p>       This is a noise word.
       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd>
 <p>       The name of the new procedural language.  The language name is
        case insensitive. The name must be unique among the languages
@@ -69,20 +66,20 @@
        quotes.
       </p>
 </dd>
-<dt><span class="term"><tt class="literal">HANDLER</tt> <i class="replaceable"><tt>call_handler</tt></i></span></dt>
-<dd><p>       <i class="replaceable"><tt>call_handler</tt></i> is
+<dt><span class="term"><code class="literal">HANDLER</code> <em class="replaceable"><code>call_handler</code></em></span></dt>
+<dd><p>       <em class="replaceable"><code>call_handler</code></em> is
        the name of a previously registered function that will be
        called to execute the procedural language functions.  The call
        handler for a procedural language must be written in a compiled
        language such as C with version 1 call convention and
        registered with <span class="productname">PostgreSQL</span> as a
        function taking no arguments and returning the
-       <tt class="type">language_handler</tt> type, a placeholder type that is
+       <code class="type">language_handler</code> type, a placeholder type that is
        simply used to identify the function as a call handler.
       </p></dd>
-<dt><span class="term"><tt class="literal">VALIDATOR</tt> <i class="replaceable"><tt>valfunction</tt></i></span></dt>
+<dt><span class="term"><code class="literal">VALIDATOR</code> <em class="replaceable"><code>valfunction</code></em></span></dt>
 <dd>
-<p>       <i class="replaceable"><tt>valfunction</tt></i> is the
+<p>       <em class="replaceable"><code>valfunction</code></em> is the
        name of a previously registered function that will be called
        when a new function in the language is created, to validate the
        new function.
@@ -90,14 +87,14 @@
        validator function is specified, then a new function will not
        be checked when it is created.
        The validator function must take one argument of
-       type <tt class="type">oid</tt>, which will be the OID of the
-       to-be-created function, and will typically return <tt class="type">void</tt>.
+       type <code class="type">oid</code>, which will be the OID of the
+       to-be-created function, and will typically return <code class="type">void</code>.
       </p>
 <p>       A validator function would typically inspect the function body
        for syntactical correctness, but it can also look at other
        properties of the function, for example if the language cannot
        handle certain argument types.  To signal an error, the
-       validator function should use the <tt class="function">ereport()</tt>
+       validator function should use the <code class="function">ereport()</code>
        function.  The return value of the function is ignored.
       </p>
 </dd>
@@ -108,29 +105,29 @@
 <p>   This command normally should not be executed directly by users.
    For the procedural languages supplied in the
    <span class="productname">PostgreSQL</span> distribution, the <a href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a> program should be used, which will also
-   install the correct call handler.  (<tt class="command">createlang</tt>
-   will call <tt class="command">CREATE LANGUAGE</tt> internally.)
+   install the correct call handler.  (<code class="command">createlang</code>
+   will call <code class="command">CREATE LANGUAGE</code> internally.)
   </p>
 <p>   In <span class="productname">PostgreSQL</span> versions before 7.3, it was
    necessary to declare handler functions as returning the placeholder
-   type <tt class="type">opaque</tt>, rather than <tt class="type">language_handler</tt>.
+   type <code class="type">opaque</code>, rather than <code class="type">language_handler</code>.
    To support loading 
-   of old dump files, <tt class="command">CREATE LANGUAGE</tt> will accept a function
-   declared as returning <tt class="type">opaque</tt>, but it will issue a notice and
-   change the function's declared return type to <tt class="type">language_handler</tt>.
+   of old dump files, <code class="command">CREATE LANGUAGE</code> will accept a function
+   declared as returning <code class="type">opaque</code>, but it will issue a notice and
+   change the function's declared return type to <code class="type">language_handler</code>.
   </p>
 <p>   Use the <a href="sql-createfunction.html">CREATE FUNCTION</a> command to create a new
    function.
   </p>
 <p>   Use <a href="sql-droplanguage.html">DROP LANGUAGE</a>, or better yet the <a href="app-droplang.html" title="droplang"><span class="refentrytitle"><a name="app-droplang-title"></a><span class="application">droplang</span></span></a> program, to drop procedural languages.
   </p>
-<p>   The system catalog <tt class="classname">pg_language</tt> (see <a href="catalog-pg-language.html" title="41.18. pg_language">Section 41.18, &#8220;pg_language&#8221;</a>) records information about the
-   currently installed languages.  Also <tt class="command">createlang</tt>
+<p>   The system catalog <code class="classname">pg_language</code> (see <a href="catalog-pg-language.html" title="41.18. pg_language">Section 41.18, &#8220;<code class="structname">pg_language</code>&#8221;</a>) records information about the
+   currently installed languages.  Also <code class="command">createlang</code>
    has an option to list the installed languages.
   </p>
 <p>   To be able to use a procedural language, a user must be granted the
-   <tt class="literal">USAGE</tt> privilege.  The
-   <tt class="command">createlang</tt> program automatically grants
+   <code class="literal">USAGE</code> privilege.  The
+   <code class="command">createlang</code> program automatically grants
    permissions to everyone if the language is known to be trusted.
   </p>
 </div>
@@ -149,13 +146,13 @@ CREATE LANGUAGE plsample
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createlanguage-compat"></a><h2>Compatibility</h2>
-<p>   <tt class="command">CREATE LANGUAGE</tt> is a
+<p>   <code class="command">CREATE LANGUAGE</code> is a
    <span class="productname">PostgreSQL</span> extension.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678607"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterlanguage.html">ALTER LANGUAGE</a>, <a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-droplanguage.html">DROP LANGUAGE</a>, <a href="sql-grant.html">GRANT</a>, <a href="sql-revoke.html">REVOKE</a>, <a href="app-createlang.html"><span class="application">createlang</span></a>, <a href="app-droplang.html"><span class="application">droplang</span></a></span>
+<a name="id448369"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alterlanguage.html">ALTER LANGUAGE</a>, <a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-droplanguage.html">DROP LANGUAGE</a>, <a href="sql-grant.html">GRANT</a>, <a href="sql-revoke.html">REVOKE</a>, <a href="app-createlang.html"><span class="application">createlang</span></a>, <a href="app-droplang.html"><span class="application">droplang</span></a>, </span>
 </div>
 </div></body>
 </html>

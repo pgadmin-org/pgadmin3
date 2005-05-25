@@ -4,29 +4,26 @@
 <title>MOVE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-lock.html" title="LOCK">
+<link rel="prev" href="sql-lock.html" title="LOCK">
 <link rel="next" href="sql-notify.html" title="NOTIFY">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-move"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-move"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>MOVE &#8212; position a cursor</p>
 </div>
-<a name="id2695757"></a><a name="id2695766"></a><div class="refsynopsisdiv">
+<a name="id464185"></a><a name="id464194"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">MOVE [ <i class="replaceable"><tt>direction</tt></i> { FROM | IN } ] <i class="replaceable"><tt>cursorname</tt></i></pre>
+<pre class="synopsis">MOVE [ <em class="replaceable"><code>direction</code></em> { FROM | IN } ] <em class="replaceable"><code>cursorname</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695794"></a><h2>Description</h2>
-<p>   <tt class="command">MOVE</tt> repositions a cursor without retrieving any data.
-   <tt class="command">MOVE</tt> works exactly like the <tt class="command">FETCH</tt>
+<a name="id464222"></a><h2>Description</h2>
+<p>   <code class="command">MOVE</code> repositions a cursor without retrieving any data.
+   <code class="command">MOVE</code> works exactly like the <code class="command">FETCH</code>
    command, except it only positions the cursor and does not return rows.
   </p>
 <p>   Refer to 
@@ -35,19 +32,19 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695832"></a><h2>Outputs</h2>
-<p>   On successful completion, a <tt class="command">MOVE</tt> command returns a command
+<a name="id464258"></a><h2>Outputs</h2>
+<p>   On successful completion, a <code class="command">MOVE</code> command returns a command
    tag of the form
 </p>
-<pre class="screen">MOVE <i class="replaceable"><tt>count</tt></i></pre>
+<pre class="screen">MOVE <em class="replaceable"><code>count</code></em></pre>
 <p>
-   The <i class="replaceable"><tt>count</tt></i> is the number
-   of rows that a <tt class="command">FETCH</tt> command with the same parameters
+   The <em class="replaceable"><code>count</code></em> is the number
+   of rows that a <code class="command">FETCH</code> command with the same parameters
    would have returned (possibly zero).
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695870"></a><h2>Examples</h2>
+<a name="id464293"></a><h2>Examples</h2>
 <pre class="programlisting">BEGIN WORK;
 DECLARE liahona CURSOR FOR SELECT * FROM films;
 
@@ -67,13 +64,13 @@ CLOSE liahona;
 COMMIT WORK;</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695885"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">MOVE</tt> statement in the SQL standard.
+<a name="id464305"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">MOVE</code> statement in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695897"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-declare.html">DECLARE</a>, <a href="sql-fetch.html">FETCH</a></span>
+<a name="id464317"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-declare.html">DECLARE</a>, <a href="sql-fetch.html">FETCH</a>, </span>
 </div>
 </div></body>
 </html>

@@ -4,50 +4,47 @@
 <title>37.2. Database Access from PL/Perl</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plperl.html" title="Chapter 37. PL/Perl - Perl Procedural Language">
-<link rel="previous" href="plperl.html" title="Chapter 37. PL/Perl - Perl Procedural Language">
+<link rel="prev" href="plperl.html" title="Chapter 37. PL/Perl - Perl Procedural Language">
 <link rel="next" href="plperl-data.html" title="37.3. Data Values in PL/Perl">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plperl-database"></a>37.2. Database Access from PL/Perl</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plperl-database"></a>37.2. Database Access from PL/Perl</h2></div></div></div>
 <p>   Access to the database itself from your Perl function can be done
-   via the function <tt class="function">spi_exec_query</tt> described
-   below, or via an experimental module <a href="http://www.cpan.org/modules/by-module/DBD/APILOS/" target="_top"><tt class="literal">DBD::PgSPI</tt></a>
-   (also available at <a href="http://www.cpan.org/SITES.html" target="_top"><span class="acronym">CPAN</span> mirror
-   sites</a>).  This module makes available a
+   via the function <code class="function">spi_exec_query</code> described
+   below, or via an experimental module 
+   <a href="http://www.cpan.org/modules/by-module/DBD/APILOS/" target="_top">   <code class="literal">DBD::PgSPI</code></a>
+   (also available at <a href="http://www.cpan.org/SITES.html" target="_top">   <span class="acronym">CPAN mirror sites</span></a>).  This module makes available a
    <span class="acronym">DBI</span>-compliant database-handle named
-   <tt class="varname">$pg_dbh</tt> that can be used to perform queries with
+   <code class="varname">$pg_dbh</code> that can be used to perform queries with
    normal <span class="acronym">DBI</span>
-   syntax.<a name="id2657272"></a>
+   syntax.<a name="id428251"></a>
   </p>
 <p>   PL/Perl itself presently provides two additional Perl commands:
 
    </p>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal"><tt class="function">spi_exec_query</tt>(<i class="replaceable"><tt>query</tt></i> [, <i class="replaceable"><tt>max-rows</tt></i>])</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal"><tt class="function">spi_exec_query</tt>(<i class="replaceable"><tt>command</tt></i>)</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_exec_query</code>(<em class="replaceable"><code>query</code></em> [, <em class="replaceable"><code>max-rows</code></em>])</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_exec_query</code>(<em class="replaceable"><code>command</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd>
 <p>       Executes an SQL command.  Here is an example of a query
-       (<tt class="command">SELECT</tt> command) with the optional maximum
+       (<code class="command">SELECT</code> command) with the optional maximum
        number of rows:
 </p>
 <pre class="programlisting">$rv = spi_exec_query('SELECT * FROM my_table', 5);</pre>
 <p>
         This returns up to 5 rows from the table
-        <tt class="literal">my_table</tt>.  If <tt class="literal">my_table</tt>
-        has a column <tt class="literal">my_column</tt>, you can get that
-        value from row <tt class="literal">$i</tt> of the result like this:
+        <code class="literal">my_table</code>.  If <code class="literal">my_table</code>
+        has a column <code class="literal">my_column</code>, you can get that
+        value from row <code class="literal">$i</code> of the result like this:
 </p>
 <pre class="programlisting">$foo = $rv-&gt;{rows}[$i]-&gt;{my_column};</pre>
 <p>
-       The total number of rows returned from a <tt class="command">SELECT</tt>
+       The total number of rows returned from a <code class="command">SELECT</code>
        query can be accessed like this:
 </p>
 <pre class="programlisting">$nrows = $rv-&gt;{processed}</pre>
@@ -59,7 +56,7 @@
 $rv = spi_exec_query($query);</pre>
 <p>
        You can then access the command status (e.g.,
-       <tt class="literal">SPI_OK_INSERT</tt>) like this:
+       <code class="literal">SPI_OK_INSERT</code>) like this:
 </p>
 <pre class="programlisting">$res = $rv-&gt;{status};</pre>
 <p>
@@ -98,15 +95,15 @@ SELECT * FROM test_munge();</pre>
 <p>
       </p>
 </dd>
-<dt><span class="term"><tt class="literal"><tt class="function">elog</tt>(<i class="replaceable"><tt>level</tt></i>, <i class="replaceable"><tt>msg</tt></i>)</tt></span></dt>
+<dt><span class="term"><code class="literal"><code class="function">elog</code>(<em class="replaceable"><code>level</code></em>, <em class="replaceable"><code>msg</code></em>)</code></span></dt>
 <dd><p>       Emit a log or error message. Possible levels are
-       <tt class="literal">DEBUG</tt>, <tt class="literal">LOG</tt>, <tt class="literal">INFO</tt>,
-       <tt class="literal">NOTICE</tt>, <tt class="literal">WARNING</tt>, and <tt class="literal">ERROR</tt>.
-       <tt class="literal">ERROR</tt>
+       <code class="literal">DEBUG</code>, <code class="literal">LOG</code>, <code class="literal">INFO</code>,
+       <code class="literal">NOTICE</code>, <code class="literal">WARNING</code>, and <code class="literal">ERROR</code>.
+       <code class="literal">ERROR</code>
         raises an error condition; if this is not trapped by the surrounding
         Perl code, the error propagates out to the calling query, causing
         the current transaction or subtransaction to be aborted.  This
-        is effectively the same as the Perl <tt class="literal">die</tt> command.
+        is effectively the same as the Perl <code class="literal">die</code> command.
         The other levels only generate messages of different
         priority levels.
         Whether messages of a particular priority are reported to the client,

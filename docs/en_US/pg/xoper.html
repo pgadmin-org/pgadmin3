@@ -4,19 +4,16 @@
 <title>31.12. User-Defined Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
-<link rel="previous" href="xtypes.html" title="31.11. User-Defined Types">
+<link rel="prev" href="xtypes.html" title="31.11. User-Defined Types">
 <link rel="next" href="xoper-optimization.html" title="31.13. Operator Optimization Information">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="xoper"></a>31.12. User-Defined Operators</h2></div></div>
-<div></div>
-</div>
-<a name="id2639226"></a><p>   Every operator is &#8220;<span class="quote">syntactic sugar</span>&#8221; for a call to an
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xoper"></a>31.12. User-Defined Operators</h2></div></div></div>
+<a name="id412229"></a><p>   Every operator is &#8220;<span class="quote">syntactic sugar</span>&#8221; for a call to an
    underlying function that does the real work; so you must
    first create the underlying function before you can create
    the operator.  However, an operator is <span class="emphasis"><em>not merely</em></span>
@@ -27,7 +24,7 @@
   </p>
 <p>   <span class="productname">PostgreSQL</span> supports left unary, right
    unary, and binary operators.  Operators can be
-   overloaded;<a name="id2639263"></a>
+   overloaded;<a name="id412262"></a>
    that is, the same operator name can be used for different operators
    that have different numbers and types of operands.  When a query is
    executed, the system determines the operator to call from the
@@ -35,13 +32,13 @@
   </p>
 <p>   Here is an example of creating an operator for adding two complex
    numbers.  We assume we've already created the definition of type
-   <tt class="type">complex</tt> (see <a href="xtypes.html" title="31.11. User-Defined Types">Section 31.11, &#8220;User-Defined Types&#8221;</a>).  First we need a
+   <code class="type">complex</code> (see <a href="xtypes.html" title="31.11. User-Defined Types">Section 31.11, &#8220;User-Defined Types&#8221;</a>).  First we need a
    function that does the work, then we can define the operator:
 
 </p>
 <pre class="programlisting">CREATE FUNCTION complex_add(complex, complex)
     RETURNS complex
-    AS '<i class="replaceable"><tt>filename</tt></i>', 'complex_add'
+    AS '<em class="replaceable"><code>filename</code></em>', 'complex_add'
     LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR + (
@@ -64,12 +61,12 @@ CREATE OPERATOR + (
 <p>
   </p>
 <p>   We've shown how to create a binary operator here.  To create unary
-   operators, just omit one of <tt class="literal">leftarg</tt> (for left unary) or
-   <tt class="literal">rightarg</tt> (for right unary).  The <tt class="literal">procedure</tt>
+   operators, just omit one of <code class="literal">leftarg</code> (for left unary) or
+   <code class="literal">rightarg</code> (for right unary).  The <code class="literal">procedure</code>
    clause and the argument clauses are the only required items in
-   <tt class="command">CREATE OPERATOR</tt>.  The <tt class="literal">commutator</tt>
+   <code class="command">CREATE OPERATOR</code>.  The <code class="literal">commutator</code>
    clause shown in the example is an optional hint to the query
-   optimizer.  Further details about <tt class="literal">commutator</tt> and other
+   optimizer.  Further details about <code class="literal">commutator</code> and other
    optimizer hints appear in the next section.
   </p>
 </div></body>

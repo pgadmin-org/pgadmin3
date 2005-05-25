@@ -4,71 +4,68 @@
 <title>ALTER TABLESPACE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-altertable.html" title="ALTER TABLE">
+<link rel="prev" href="sql-altertable.html" title="ALTER TABLE">
 <link rel="next" href="sql-altertrigger.html" title="ALTER TRIGGER">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-altertablespace"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-altertablespace"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>ALTER TABLESPACE &#8212; change the definition of a tablespace</p>
 </div>
-<a name="id2669227"></a><div class="refsynopsisdiv">
+<a name="id439544"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">ALTER TABLESPACE <i class="replaceable"><tt>name</tt></i> RENAME TO <i class="replaceable"><tt>newname</tt></i>
-ALTER TABLESPACE <i class="replaceable"><tt>name</tt></i> OWNER TO <i class="replaceable"><tt>newowner</tt></i></pre>
+<pre class="synopsis">ALTER TABLESPACE <em class="replaceable"><code>name</code></em> RENAME TO <em class="replaceable"><code>newname</code></em>
+ALTER TABLESPACE <em class="replaceable"><code>name</code></em> OWNER TO <em class="replaceable"><code>newowner</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2669258"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER TABLESPACE</tt> changes the definition of
+<a name="id439573"></a><h2>Description</h2>
+<p>   <code class="command">ALTER TABLESPACE</code> changes the definition of
    a tablespace.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2669270"></a><h2>Parameters</h2>
+<a name="id439585"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of an existing tablespace.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>newname</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
 <dd><p>      The new name of the tablespace.  The new name cannot
-      begin with <tt class="literal">pg_</tt>, as such names
+      begin with <code class="literal">pg_</code>, as such names
       are reserved for system tablespaces.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>newowner</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>newowner</code></em></span></dt>
 <dd><p>      The new owner of the tablespace.
       You must be a superuser to change the owner of a tablespace.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2669316"></a><h2>Examples</h2>
-<p>   Rename tablespace <tt class="literal">index_space</tt> to <tt class="literal">fast_raid</tt>:
+<a name="id439628"></a><h2>Examples</h2>
+<p>   Rename tablespace <code class="literal">index_space</code> to <code class="literal">fast_raid</code>:
 </p>
 <pre class="programlisting">ALTER TABLESPACE index_space RENAME TO fast_raid;</pre>
 <p>
   </p>
-<p>   Change the owner of tablespace <tt class="literal">index_space</tt>:
+<p>   Change the owner of tablespace <code class="literal">index_space</code>:
 </p>
 <pre class="programlisting">ALTER TABLESPACE index_space OWNER TO mary;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2669355"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">ALTER TABLESPACE</tt> statement in
+<a name="id439666"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">ALTER TABLESPACE</code> statement in
    the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2669368"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createtablespace.html">CREATE TABLESPACE</a>, <a href="sql-droptablespace.html">DROP TABLESPACE</a></span>
+<a name="id439678"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createtablespace.html">CREATE TABLESPACE</a>, <a href="sql-droptablespace.html">DROP TABLESPACE</a>, </span>
 </div>
 </div></body>
 </html>

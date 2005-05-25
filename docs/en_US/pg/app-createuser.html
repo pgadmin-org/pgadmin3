@@ -4,31 +4,28 @@
 <title>createuser</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="previous" href="app-createlang.html" title="createlang">
+<link rel="prev" href="app-createlang.html" title="createlang">
 <link rel="next" href="app-dropdb.html" title="dropdb">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-createuser"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="app-createuser"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>createuser &#8212; define a new <span class="productname">PostgreSQL</span> user account</p>
 </div>
-<a name="id2707908"></a><div class="refsynopsisdiv">
+<a name="id475595"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">createuser</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>username</tt></i>]</p></div>
+<div class="cmdsynopsis"><p><code class="command">createuser</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>username</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707942"></a><h2>Description</h2>
+<a name="id475628"></a><h2>Description</h2>
 <p>   <span class="application">createuser</span> creates a 
    new <span class="productname">PostgreSQL</span> user.  
-   Only superusers (users with <tt class="literal">usesuper</tt> set in
-   the <tt class="literal">pg_shadow</tt> table) can create 
+   Only superusers (users with <code class="literal">usesuper</code> set in
+   the <code class="literal">pg_shadow</code> table) can create 
    new <span class="productname">PostgreSQL</span> users,
    so <span class="application">createuser</span> must be
    invoked by someone who can connect as a <span class="productname">PostgreSQL</span>
@@ -44,73 +41,75 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2708020"></a><h2>Options</h2>
+<a name="id475702"></a><h2>Options</h2>
 <p>   <span class="application">createuser</span> accepts the following command-line arguments:
 
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>username</tt></i></span></dt>
-<dd><p>	Specifies the name of the <span class="productname">PostgreSQL</span> user to be created. 
-	This name must be unique among all <span class="productname">PostgreSQL</span> users.
+<dt><span class="term"><em class="replaceable"><code>username</code></em></span></dt>
+<dd><p>        Specifies the name of the <span class="productname">PostgreSQL</span> user
+        to be created.
+        This name must be unique among all users of this
+        <span class="productname">PostgreSQL</span> installation.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--adduser</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-a</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--adduser</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	The new user is allowed to create other users.
 	(Note: Actually, this makes the new user a <span class="emphasis"><em>superuser</em></span>.
 	The option is poorly named.)
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-A</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-adduser</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-A</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--no-adduser</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	The new user is not allowed to create other users (i.e.,
 	the new user is a regular user, not a superuser).
 	This is the default.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-d</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--createdb</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-d</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--createdb</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	The new user is allowed to create databases.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-D</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-createdb</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-D</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--no-createdb</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	The new user is not allowed to create databases.
 	This is the default.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-e</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--echo</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Echo the commands that <span class="application">createuser</span> generates
 	and sends to the server.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-E</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--encrypted</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-E</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--encrypted</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	Encrypts the user's password stored in the database. If not
 	specified, the default password behavior is used.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i <i class="replaceable"><tt>number</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--sysid <i class="replaceable"><tt>number</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-i <em class="replaceable"><code>number</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--sysid <em class="replaceable"><code>number</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>       Allows you to pick a non-default user ID for the new user. This is not
        necessary, but some people like it.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-N</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--unencrypted</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-N</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--unencrypted</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	Does not encrypt the user's password stored in the database. If
 	not specified, the default password behavior is used.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-P</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--pwprompt</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-P</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--pwprompt</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>       If given, <span class="application">createuser</span> will issue a prompt for
        the password of the new user. This is not necessary if you do not plan
        on using password authentication.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-q</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--quiet</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-q</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--quiet</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Do not display a response.
        </p></dd>
@@ -126,7 +125,7 @@
    </p>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-h <em class="replaceable"><code>host</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--host <em class="replaceable"><code>host</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	Specifies the host name of the machine on which the 
 	server
@@ -134,19 +133,19 @@
 	as the directory for the Unix domain socket.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-p <em class="replaceable"><code>port</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--port <em class="replaceable"><code>port</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-U <em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--username <em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        User name to connect as (not the user name to create).
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-W</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--password</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Force password prompt (to connect to the server, not for the
         password of the new user).
@@ -156,17 +155,17 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2708307"></a><h2>Environment</h2>
+<a name="id475973"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGHOST</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGPORT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>      Default connection parameters
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2708327"></a><h2>Diagnostics</h2>
+<a name="id475993"></a><h2>Diagnostics</h2>
 <p>   In case of difficulty, see <a href="sql-createuser.html">CREATE USER</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
    discussions of potential problems and error messages.
    The database server must be running at the
@@ -176,29 +175,44 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2708359"></a><h2>Examples</h2>
-<p>    To create a user <tt class="literal">joe</tt> on the default database
+<a name="id476021"></a><h2>Examples</h2>
+<p>    To create a user <code class="literal">joe</code> on the default database
     server:
 </p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>createuser joe</tt></b>
-<tt class="computeroutput">Is the new user allowed to create databases? (y/n) </tt><b class="userinput"><tt>n</tt></b>
-<tt class="computeroutput">Shall the new user be allowed to create more new users? (y/n) </tt><b class="userinput"><tt>n</tt></b>
-<tt class="computeroutput">CREATE USER</tt></pre>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>createuser joe</code></strong>
+<code class="computeroutput">Shall the new user be allowed to create databases? (y/n) </code><strong class="userinput"><code>n</code></strong>
+<code class="computeroutput">Shall the new user be allowed to create more new users? (y/n) </code><strong class="userinput"><code>n</code></strong>
+<code class="computeroutput">CREATE USER</code></pre>
 <p>
    </p>
-<p>    To create the same user <tt class="literal">joe</tt> using the
-    server on host <tt class="literal">eden</tt>, port 5000, avoiding the prompts and
+<p>    To create the same user <code class="literal">joe</code> using the
+    server on host <code class="literal">eden</code>, port 5000, avoiding the prompts and
     taking a look at the underlying command:
 </p>
-<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>createuser -p 5000 -h eden -D -A -e joe</tt></b>
-<tt class="computeroutput">CREATE USER "joe" NOCREATEDB NOCREATEUSER</tt>
-<tt class="computeroutput">CREATE USER</tt></pre>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>createuser -h eden -p 5000 -D -A -e joe</code></strong>
+<code class="computeroutput">CREATE USER joe NOCREATEDB NOCREATEUSER;</code>
+<code class="computeroutput">CREATE USER</code></pre>
 <p>
+   </p>
+<p>    To create the user <code class="literal">joe</code> as a superuser,
+    and assign a password immediately:
+</p>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>createuser -P -d -a -e joe</code></strong>
+<code class="computeroutput">Enter password for new user: </code><strong class="userinput"><code>xyzzy</code></strong>
+<code class="computeroutput">Enter it again: </code><strong class="userinput"><code>xyzzy</code></strong>
+<code class="computeroutput">CREATE USER joe PASSWORD 'xyzzy' CREATEDB CREATEUSER;</code>
+<code class="computeroutput">CREATE USER</code></pre>
+<p>
+    In the above example, the new password isn't actually echoed when typed,
+    but we show what was typed for clarity.  However the password
+    <span class="emphasis"><em>will</em></span> appear in the echoed command, as illustrated [mdash ]
+    so you don't want to use <code class="literal">-e</code> when assigning a password, if
+    anyone else can see your screen.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2708454"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a>, <a href="sql-createuser.html">CREATE USER</a></span>
+<a name="id476180"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a>, <a href="sql-createuser.html">CREATE USER</a>, </span>
 </div>
 </div></body>
 </html>

@@ -4,57 +4,54 @@
 <title>TRUNCATE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-start-transaction.html" title="START TRANSACTION">
+<link rel="prev" href="sql-start-transaction.html" title="START TRANSACTION">
 <link rel="next" href="sql-unlisten.html" title="UNLISTEN">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-truncate"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-truncate"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>TRUNCATE &#8212; empty a table or set of tables</p>
 </div>
-<a name="id2704999"></a><div class="refsynopsisdiv">
+<a name="id472846"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">TRUNCATE [ TABLE ] <i class="replaceable"><tt>name</tt></i> [, ...]</pre>
+<pre class="synopsis">TRUNCATE [ TABLE ] <em class="replaceable"><code>name</code></em> [, ...]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705020"></a><h2>Description</h2>
-<p>   <tt class="command">TRUNCATE</tt> quickly removes all rows from a set of
+<a name="id472866"></a><h2>Description</h2>
+<p>   <code class="command">TRUNCATE</code> quickly removes all rows from a set of
    tables. It has the same effect as an unqualified
-   <tt class="command">DELETE</tt> on each table, but since it does not actually
+   <code class="command">DELETE</code> on each table, but since it does not actually
    scan the tables it is faster. This is most useful on large tables.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705041"></a><h2>Parameters</h2>
+<a name="id472885"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of a table to be truncated.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705057"></a><h2>Notes</h2>
-<p>   Only the owner of a table may <tt class="command">TRUNCATE</tt> it.
+<a name="id472901"></a><h2>Notes</h2>
+<p>   Only the owner of a table may <code class="command">TRUNCATE</code> it.
   </p>
-<p>   <tt class="command">TRUNCATE</tt> cannot be used on a table that has foreign-key
+<p>   <code class="command">TRUNCATE</code> cannot be used on a table that has foreign-key
    references from other tables, unless all such tables are also truncated
    in the same command.  Checking validity in such cases would require table
    scans, and the whole point is not to do one.
   </p>
-<p>   <tt class="command">TRUNCATE</tt> will not run any user-defined <tt class="literal">ON
-   DELETE</tt> triggers that might exist for the tables.
+<p>   <code class="command">TRUNCATE</code> will not run any user-defined <code class="literal">ON
+   DELETE</code> triggers that might exist for the tables.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705097"></a><h2>Examples</h2>
-<p>   Truncate the tables <tt class="literal">bigtable</tt> and <tt class="literal">fattable</tt>:
+<a name="id472937"></a><h2>Examples</h2>
+<p>   Truncate the tables <code class="literal">bigtable</code> and <code class="literal">fattable</code>:
 
 </p>
 <pre class="programlisting">TRUNCATE TABLE bigtable, fattable;</pre>
@@ -62,8 +59,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2705121"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">TRUNCATE</tt> command in the SQL standard.
+<a name="id472961"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">TRUNCATE</code> command in the SQL standard.
   </p>
 </div>
 </div></body>

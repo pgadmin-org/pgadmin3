@@ -4,21 +4,18 @@
 <title>8.6. Boolean Type</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="previous" href="datatype-datetime.html" title="8.5. Date/Time Types">
+<link rel="prev" href="datatype-datetime.html" title="8.5. Date/Time Types">
 <link rel="next" href="datatype-geometric.html" title="8.7. Geometric Types">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="datatype-boolean"></a>8.6. Boolean Type</h2></div></div>
-<div></div>
-</div>
-<a name="id2536373"></a><a name="id2536386"></a><a name="id2536395"></a><p>    <span class="productname">PostgreSQL</span> provides the
-    standard <span class="acronym">SQL</span> type <tt class="type">boolean</tt>.
-    <tt class="type">boolean</tt> can have one of only two states:
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="datatype-boolean"></a>8.6. Boolean Type</h2></div></div></div>
+<a name="id317125"></a><a name="id317137"></a><a name="id317146"></a><p>    <span class="productname">PostgreSQL</span> provides the
+    standard <span class="acronym">SQL</span> type <code class="type">boolean</code>.
+    <code class="type">boolean</code> can have one of only two states:
     &#8220;<span class="quote">true</span>&#8221; or &#8220;<span class="quote">false</span>&#8221;.  A third state,
     &#8220;<span class="quote">unknown</span>&#8221;, is represented by the
     <span class="acronym">SQL</span> null value.
@@ -26,32 +23,32 @@
 <p>    Valid literal values for the &#8220;<span class="quote">true</span>&#8221; state are:
     </p>
 <table class="simplelist" border="0" summary="Simple list">
-<tr><td><tt class="literal">TRUE</tt></td></tr>
-<tr><td><tt class="literal">'t'</tt></td></tr>
-<tr><td><tt class="literal">'true'</tt></td></tr>
-<tr><td><tt class="literal">'y'</tt></td></tr>
-<tr><td><tt class="literal">'yes'</tt></td></tr>
-<tr><td><tt class="literal">'1'</tt></td></tr>
+<tr><td><code class="literal">TRUE</code></td></tr>
+<tr><td><code class="literal">'t'</code></td></tr>
+<tr><td><code class="literal">'true'</code></td></tr>
+<tr><td><code class="literal">'y'</code></td></tr>
+<tr><td><code class="literal">'yes'</code></td></tr>
+<tr><td><code class="literal">'1'</code></td></tr>
 </table>
 <p>
     For the &#8220;<span class="quote">false</span>&#8221; state, the following values can be
     used:
     </p>
 <table class="simplelist" border="0" summary="Simple list">
-<tr><td><tt class="literal">FALSE</tt></td></tr>
-<tr><td><tt class="literal">'f'</tt></td></tr>
-<tr><td><tt class="literal">'false'</tt></td></tr>
-<tr><td><tt class="literal">'n'</tt></td></tr>
-<tr><td><tt class="literal">'no'</tt></td></tr>
-<tr><td><tt class="literal">'0'</tt></td></tr>
+<tr><td><code class="literal">FALSE</code></td></tr>
+<tr><td><code class="literal">'f'</code></td></tr>
+<tr><td><code class="literal">'false'</code></td></tr>
+<tr><td><code class="literal">'n'</code></td></tr>
+<tr><td><code class="literal">'no'</code></td></tr>
+<tr><td><code class="literal">'0'</code></td></tr>
 </table>
 <p>
-    Using the key words <tt class="literal">TRUE</tt> and
-    <tt class="literal">FALSE</tt> is preferred (and
+    Using the key words <code class="literal">TRUE</code> and
+    <code class="literal">FALSE</code> is preferred (and
     <span class="acronym">SQL</span>-compliant).
    </p>
 <div class="example">
-<a name="datatype-boolean-example"></a><p class="title"><b>Example 8.2. Using the <tt class="type">boolean</tt> type</b></p>
+<a name="datatype-boolean-example"></a><p class="title"><b>Example 8.2. Using the <code class="type">boolean</code> type</b></p>
 <pre class="programlisting">CREATE TABLE test1 (a boolean, b text);
 INSERT INTO test1 VALUES (TRUE, 'sic est');
 INSERT INTO test1 VALUES (FALSE, 'non est');
@@ -66,22 +63,22 @@ SELECT * FROM test1 WHERE a;
 ---+---------
  t | sic est</pre>
 </div>
-<p>    <a href="datatype-boolean.html#datatype-boolean-example" title="Example 8.2. Using the boolean type">Example 8.2, &#8220;Using the boolean type&#8221;</a> shows that
-    <tt class="type">boolean</tt> values are output using the letters
-    <tt class="literal">t</tt> and <tt class="literal">f</tt>.
+<p>    <a href="datatype-boolean.html#datatype-boolean-example" title="Example 8.2. Using the boolean type">Example 8.2, &#8220;Using the <code class="type">boolean</code> type&#8221;</a> shows that
+    <code class="type">boolean</code> values are output using the letters
+    <code class="literal">t</code> and <code class="literal">f</code>.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>     Values of the <tt class="type">boolean</tt> type cannot be cast directly
-     to other types (e.g., <tt class="literal">CAST
-     (<i class="replaceable"><tt>boolval</tt></i> AS integer)</tt> does
+<p>     Values of the <code class="type">boolean</code> type cannot be cast directly
+     to other types (e.g., <code class="literal">CAST
+     (<em class="replaceable"><code>boolval</code></em> AS integer)</code> does
      not work).  This can be accomplished using the
-     <tt class="literal">CASE</tt> expression: <tt class="literal">CASE WHEN
-     <i class="replaceable"><tt>boolval</tt></i> THEN 'value if true' ELSE
-     'value if false' END</tt>.  See <a href="functions-conditional.html" title="9.13. Conditional Expressions">Section 9.13, &#8220;Conditional Expressions&#8221;</a>.
+     <code class="literal">CASE</code> expression: <code class="literal">CASE WHEN
+     <em class="replaceable"><code>boolval</code></em> THEN 'value if true' ELSE
+     'value if false' END</code>.  See <a href="functions-conditional.html" title="9.13. Conditional Expressions">Section 9.13, &#8220;Conditional Expressions&#8221;</a>.
     </p>
 </div>
-<p>    <tt class="type">boolean</tt> uses 1 byte of storage.
+<p>    <code class="type">boolean</code> uses 1 byte of storage.
    </p>
 </div></body>
 </html>

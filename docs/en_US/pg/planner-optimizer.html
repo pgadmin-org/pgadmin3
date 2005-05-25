@@ -4,19 +4,16 @@
 <title>40.5. Planner/Optimizer</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
-<link rel="previous" href="rule-system.html" title="40.4. The PostgreSQL Rule System">
+<link rel="prev" href="rule-system.html" title="40.4. The PostgreSQL Rule System">
 <link rel="next" href="executor.html" title="40.6. Executor">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="planner-optimizer"></a>40.5. Planner/Optimizer</h2></div></div>
-<div></div>
-</div>
-<p>    The task of the <i class="firstterm">planner/optimizer</i> is to
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="planner-optimizer"></a>40.5. Planner/Optimizer</h2></div></div></div>
+<p>    The task of the <em class="firstterm">planner/optimizer</em> is to
     create an optimal execution plan. A given SQL query (and hence, a
     query tree) can be actually executed in a wide variety of
     different ways, each of which will produce the same set of
@@ -35,20 +32,17 @@
     </p>
 </div>
 <p>    The planner's search procedure actually works with data structures
-    called <i class="firstterm">paths</i>, which are simply cut-down representations of
+    called <em class="firstterm">paths</em>, which are simply cut-down representations of
     plans containing only as much information as the planner needs to make
     its decisions. After the cheapest path is determined, a full-fledged
-    <i class="firstterm">plan tree</i> is built to pass to the executor.  This represents
+    <em class="firstterm">plan tree</em> is built to pass to the executor.  This represents
     the desired execution plan in sufficient detail for the executor to run it.
     In the rest of this section we'll ignore the distinction between paths
     and plans.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2726981"></a>40.5.1. Generating Possible Plans</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id493556"></a>40.5.1. Generating Possible Plans</h3></div></div></div>
 <p>     The planner/optimizer starts by generating plans for scanning each
      individual relation (table) used in the query.  The possible plans
      are determined by the available indexes on each relation.
@@ -57,10 +51,10 @@
      created. Assume an index is defined on a
      relation (for example a B-tree index) and a query contains the
      restriction
-     <tt class="literal">relation.attribute OPR constant</tt>. If
-     <tt class="literal">relation.attribute</tt> happens to match the key of the B-tree
-     index and <tt class="literal">OPR</tt> is one of the operators listed in
-     the index's <i class="firstterm">operator class</i>, another plan is created using
+     <code class="literal">relation.attribute OPR constant</code>. If
+     <code class="literal">relation.attribute</code> happens to match the key of the B-tree
+     index and <code class="literal">OPR</code> is one of the operators listed in
+     the index's <em class="firstterm">operator class</em>, another plan is created using
      the B-tree index to scan the relation. If there are further indexes
      present and the restrictions in the query happen to match a key of an
      index further plans will be considered.
@@ -68,8 +62,8 @@
 <p>     After all feasible plans have been found for scanning single relations,
      plans for joining relations are created. The planner/optimizer
      preferentially considers joins between any two relations for which there
-     exist a corresponding join clause in the <tt class="literal">WHERE</tt> qualification (i.e. for
-     which a restriction like <tt class="literal">where rel1.attr1=rel2.attr2</tt>
+     exist a corresponding join clause in the <code class="literal">WHERE</code> qualification (i.e. for
+     which a restriction like <code class="literal">where rel1.attr1=rel2.attr2</code>
      exists). Join pairs with no join clause are considered only when there
      is no other choice, that is, a particular relation has no available
      join clauses to any other relation. All possible plans are generated for
@@ -78,14 +72,14 @@
 
      </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>        <i class="firstterm">nested loop join</i>: The right relation is scanned
+<li><p>        <em class="firstterm">nested loop join</em>: The right relation is scanned
         once for every row found in the left relation. This strategy
         is easy to implement but can be very time consuming.  (However,
         if the right relation can be scanned with an index scan, this can
         be a good strategy.  It is possible to use values from the current
         row of the left relation as keys for the index scan of the right.)
        </p></li>
-<li><p>        <i class="firstterm">merge sort join</i>: Each relation is sorted on the join
+<li><p>        <em class="firstterm">merge sort join</em>: Each relation is sorted on the join
         attributes before the join starts. Then the two relations are
         scanned in parallel, and matching rows are combined to form
         join rows. This kind of join is more
@@ -94,7 +88,7 @@
         step, or by scanning the relation in the proper order using an
         index on the join key.
        </p></li>
-<li><p>        <i class="firstterm">hash join</i>: the right relation is first scanned
+<li><p>        <em class="firstterm">hash join</em>: the right relation is first scanned
         and loaded into a hash table, using its join attributes as hash keys.
         Next the left relation is scanned and the
         appropriate values of every row found are used as hash keys to
@@ -112,13 +106,13 @@
      the base relations, plus nested-loop, merge, or hash join nodes as
      needed, plus any auxiliary steps needed, such as sort nodes or
      aggregate-function calculation nodes.  Most of these plan node
-     types have the additional ability to do <i class="firstterm">selection</i>
+     types have the additional ability to do <em class="firstterm">selection</em>
      (discarding rows that do not meet a specified boolean condition)
-     and <i class="firstterm">projection</i> (computation of a derived column set
+     and <em class="firstterm">projection</em> (computation of a derived column set
      based on given column values, that is, evaluation of scalar
      expressions where needed).  One of the responsibilities of the
      planner is to attach selection conditions from the
-     <tt class="literal">WHERE</tt> clause and computation of required
+     <code class="literal">WHERE</code> clause and computation of required
      output expressions to the most appropriate nodes of the plan
      tree.
     </p>

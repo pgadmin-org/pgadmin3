@@ -4,32 +4,29 @@
 <title>41.2. pg_aggregate</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="prev" href="catalogs.html" title="Chapter 41. System Catalogs">
 <link rel="next" href="catalog-pg-am.html" title="41.3. pg_am">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-aggregate"></a>41.2. <tt class="structname">pg_aggregate</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2727807"></a><p>   The catalog <tt class="structname">pg_aggregate</tt> stores information about
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-aggregate"></a>41.2. <code class="structname">pg_aggregate</code></h2></div></div></div>
+<a name="id494289"></a><p>   The catalog <code class="structname">pg_aggregate</code> stores information about
    aggregate functions.  An aggregate function is a function that
    operates on a set of values (typically one column from each row
    that matches a query condition) and returns a single value computed
    from all these values.  Typical aggregate functions are
-   <tt class="function">sum</tt>, <tt class="function">count</tt>, and
-   <tt class="function">max</tt>.  Each entry in
-   <tt class="structname">pg_aggregate</tt> is an extension of an entry
-   in <tt class="structname">pg_proc</tt>.  The <tt class="structname">pg_proc</tt>
+   <code class="function">sum</code>, <code class="function">count</code>, and
+   <code class="function">max</code>.  Each entry in
+   <code class="structname">pg_aggregate</code> is an extension of an entry
+   in <code class="structname">pg_proc</code>.  The <code class="structname">pg_proc</code>
    entry carries the aggregate's name, input and output data types, and
    other information that is similar to ordinary functions.
   </p>
 <div class="table">
-<a name="id2727859"></a><p class="title"><b>Table 41.2. <tt class="structname">pg_aggregate</tt> Columns</b></p>
+<a name="id494336"></a><p class="title"><b>Table 41.2. <code class="structname">pg_aggregate</code> Columns</b></p>
 <table summary="pg_aggregate Columns" border="1">
 <colgroup>
 <col>
@@ -45,45 +42,51 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">aggfnoid</tt></td>
-<td><tt class="type">regproc</tt></td>
-<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td><code class="structfield">aggfnoid</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>
-<tt class="structname">pg_proc</tt> OID of the aggregate function</td>
+<code class="structname">pg_proc</code> OID of the aggregate function</td>
 </tr>
 <tr>
-<td><tt class="structfield">aggtransfn</tt></td>
-<td><tt class="type">regproc</tt></td>
-<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td><code class="structfield">aggtransfn</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Transition function</td>
 </tr>
 <tr>
-<td><tt class="structfield">aggfinalfn</tt></td>
-<td><tt class="type">regproc</tt></td>
-<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td><code class="structfield">aggfinalfn</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Final function (zero if none)</td>
 </tr>
 <tr>
-<td><tt class="structfield">aggtranstype</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
-<td>The type of the aggregate function's internal transition (state) data</td>
+<td><code class="structfield">aggsortop</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><code class="structname">pg_operator</code></a>.oid</code></td>
+<td>Associated sort operator (zero if none)</td>
 </tr>
 <tr>
-<td><tt class="structfield">agginitval</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="structfield">aggtranstype</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td>Data type of the aggregate function's internal transition (state) data</td>
+</tr>
+<tr>
+<td><code class="structfield">agginitval</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
 <td>       The initial value of the transition state.  This is a text
        field containing the initial value in its external string
-       representation.  If the value is null, the transition state
+       representation.  If this field is null, the transition state
        value starts out null.
       </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>   New aggregate functions are registered with the <tt class="command">CREATE
-   AGGREGATE</tt> command.  See <a href="xaggr.html" title="31.10. User-Defined Aggregates">Section 31.10, &#8220;User-Defined Aggregates&#8221;</a> for more
+<p>   New aggregate functions are registered with the <code class="command">CREATE
+   AGGREGATE</code> command.  See <a href="xaggr.html" title="31.10. User-Defined Aggregates">Section 31.10, &#8220;User-Defined Aggregates&#8221;</a> for more
    information about writing aggregate functions and the meaning of
    the transition functions, etc.
   </p>

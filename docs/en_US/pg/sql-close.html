@@ -4,75 +4,72 @@
 <title>CLOSE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-checkpoint.html" title="CHECKPOINT">
+<link rel="prev" href="sql-checkpoint.html" title="CHECKPOINT">
 <link rel="next" href="sql-cluster.html" title="CLUSTER">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-close"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-close"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CLOSE &#8212; close a cursor</p>
 </div>
-<a name="id2671064"></a><a name="id2671074"></a><div class="refsynopsisdiv">
+<a name="id441247"></a><a name="id441258"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CLOSE <i class="replaceable"><tt>name</tt></i></pre>
+<pre class="synopsis">CLOSE <em class="replaceable"><code>name</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2671096"></a><h2>Description</h2>
-<p>   <tt class="command">CLOSE</tt> frees the resources associated with an open cursor.
+<a name="id441279"></a><h2>Description</h2>
+<p>   <code class="command">CLOSE</code> frees the resources associated with an open cursor.
    After the cursor is closed, no subsequent operations
    are allowed on it. A cursor should be closed when it is
    no longer needed.
   </p>
 <p>   Every non-holdable open cursor is implicitly closed when a
-   transaction is terminated by <tt class="command">COMMIT</tt> or
-   <tt class="command">ROLLBACK</tt>.  A holdable cursor is implicitly
+   transaction is terminated by <code class="command">COMMIT</code> or
+   <code class="command">ROLLBACK</code>.  A holdable cursor is implicitly
    closed if the transaction that created it aborts via
-   <tt class="command">ROLLBACK</tt>.  If the creating transaction successfully
+   <code class="command">ROLLBACK</code>.  If the creating transaction successfully
    commits, the holdable
-   cursor remains open until an explicit <tt class="command">CLOSE</tt> is
+   cursor remains open until an explicit <code class="command">CLOSE</code> is
    executed, or the client disconnects.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2671143"></a><h2>Parameters</h2>
+<a name="id441321"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of an open cursor to close.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2671158"></a><h2>Notes</h2>
+<a name="id441336"></a><h2>Notes</h2>
 <p>   <span class="productname">PostgreSQL</span> does not have an explicit
-   <tt class="command">OPEN</tt> cursor statement; a cursor is considered
+   <code class="command">OPEN</code> cursor statement; a cursor is considered
    open when it is declared.  Use the
    <a href="sql-declare.html">DECLARE</a>
    statement to declare a cursor.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2671189"></a><h2>Examples</h2>
-<p>   Close the cursor <tt class="literal">liahona</tt>:
+<a name="id441366"></a><h2>Examples</h2>
+<p>   Close the cursor <code class="literal">liahona</code>:
 </p>
 <pre class="programlisting">CLOSE liahona;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2671207"></a><h2>Compatibility</h2>
-<p>   <tt class="command">CLOSE</tt> is fully conforming with the SQL standard.
+<a name="id441383"></a><h2>Compatibility</h2>
+<p>   <code class="command">CLOSE</code> is fully conforming with the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2671219"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-declare.html">DECLARE</a>, <a href="sql-fetch.html">FETCH</a>, <a href="sql-move.html">MOVE</a></span>
+<a name="id441395"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-declare.html">DECLARE</a>, <a href="sql-fetch.html">FETCH</a>, <a href="sql-move.html">MOVE</a>, </span>
 </div>
 </div></body>
 </html>

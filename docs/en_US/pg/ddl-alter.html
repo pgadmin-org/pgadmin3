@@ -4,19 +4,16 @@
 <title>5.6. Modifying Tables</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="previous" href="ddl-inherit.html" title="5.5. Inheritance">
+<link rel="prev" href="ddl-inherit.html" title="5.5. Inheritance">
 <link rel="next" href="ddl-priv.html" title="5.7. Privileges">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ddl-alter"></a>5.6. Modifying Tables</h2></div></div>
-<div></div>
-</div>
-<a name="id2525692"></a><p>   When you create a table and you realize that you made a mistake, or
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ddl-alter"></a>5.6. Modifying Tables</h2></div></div></div>
+<a name="id307342"></a><p>   When you create a table and you realize that you made a mistake, or
    the requirements of the application change, then you can drop the
    table and create it again.  But this is not a convenient option if
    the table is already filled with data, or if the table is
@@ -46,17 +43,14 @@
    command.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525772"></a>5.6.1. Adding a Column</h3></div></div>
-<div></div>
-</div>
-<a name="id2525775"></a><p>    To add a column, use a command like this:
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id307413"></a>5.6.1. Adding a Column</h3></div></div></div>
+<a name="id307416"></a><p>    To add a column, use a command like this:
 </p>
 <pre class="programlisting">ALTER TABLE products ADD COLUMN description text;</pre>
 <p>
     The new column is initially filled with whatever default
-    value is given (null if you don't specify a <tt class="literal">DEFAULT</tt> clause).
+    value is given (null if you don't specify a <code class="literal">DEFAULT</code> clause).
    </p>
 <p>    You can also define constraints on the column at the same time,
     using the usual syntax:
@@ -64,20 +58,17 @@
 <pre class="programlisting">ALTER TABLE products ADD COLUMN description text CHECK (description &lt;&gt; '');</pre>
 <p>
     In fact all the options that can be applied to a column description
-    in <tt class="command">CREATE TABLE</tt> can be used here.  Keep in mind however
+    in <code class="command">CREATE TABLE</code> can be used here.  Keep in mind however
     that the default value must satisfy the given constraints, or the
-    <tt class="literal">ADD</tt> will fail.  Alternatively, you can add
+    <code class="literal">ADD</code> will fail.  Alternatively, you can add
     constraints later (see below) after you've filled in the new column
     correctly.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525830"></a>5.6.2. Removing a Column</h3></div></div>
-<div></div>
-</div>
-<a name="id2525834"></a><p>    To remove a column, use a command like this:
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id307464"></a>5.6.2. Removing a Column</h3></div></div></div>
+<a name="id307468"></a><p>    To remove a column, use a command like this:
 </p>
 <pre class="programlisting">ALTER TABLE products DROP COLUMN description;</pre>
 <p>
@@ -86,7 +77,7 @@
     foreign key constraint of another table,
     <span class="productname">PostgreSQL</span> will not silently drop that
     constraint.  You can authorize dropping everything that depends on
-    the column by adding <tt class="literal">CASCADE</tt>:
+    the column by adding <code class="literal">CASCADE</code>:
 </p>
 <pre class="programlisting">ALTER TABLE products DROP COLUMN description CASCADE;</pre>
 <p>
@@ -95,12 +86,9 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525883"></a>5.6.3. Adding a Constraint</h3></div></div>
-<div></div>
-</div>
-<a name="id2525887"></a><p>    To add a constraint, the table constraint syntax is used.  For example:
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id307512"></a>5.6.3. Adding a Constraint</h3></div></div></div>
+<a name="id307515"></a><p>    To add a constraint, the table constraint syntax is used.  For example:
 </p>
 <pre class="programlisting">ALTER TABLE products ADD CHECK (name &lt;&gt; '');
 ALTER TABLE products ADD CONSTRAINT some_name UNIQUE (product_no);
@@ -117,26 +105,23 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525925"></a>5.6.4. Removing a Constraint</h3></div></div>
-<div></div>
-</div>
-<a name="id2525928"></a><p>    To remove a constraint you need to know its name.  If you gave it
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id307546"></a>5.6.4. Removing a Constraint</h3></div></div></div>
+<a name="id307550"></a><p>    To remove a constraint you need to know its name.  If you gave it
     a name then that's easy.  Otherwise the system assigned a
     generated name, which you need to find out.  The
-    <span class="application">psql</span> command <tt class="literal">\d
-    <i class="replaceable"><tt>tablename</tt></i></tt> can be helpful
+    <span class="application">psql</span> command <code class="literal">\d
+    <em class="replaceable"><code>tablename</code></em></code> can be helpful
     here; other interfaces might also provide a way to inspect table
     details.  Then the command is:
 </p>
 <pre class="programlisting">ALTER TABLE products DROP CONSTRAINT some_name;</pre>
 <p>
-    (If you are dealing with a generated constraint name like <tt class="literal">$2</tt>,
+    (If you are dealing with a generated constraint name like <code class="literal">$2</code>,
     don't forget that you'll need to double-quote it to make it a valid
     identifier.)
    </p>
-<p>    As with dropping a column, you need to add <tt class="literal">CASCADE</tt> if you
+<p>    As with dropping a column, you need to add <code class="literal">CASCADE</code> if you
     want to drop a constraint that something else depends on.  An example
     is that a foreign key constraint depends on a unique or primary key
     constraint on the referenced column(s).
@@ -150,17 +135,14 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2525997"></a>5.6.5. Changing a Column's Default Value</h3></div></div>
-<div></div>
-</div>
-<a name="id2526001"></a><p>    To set a new default for a column, use a command like this:
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id307610"></a>5.6.5. Changing a Column's Default Value</h3></div></div></div>
+<a name="id307614"></a><p>    To set a new default for a column, use a command like this:
 </p>
 <pre class="programlisting">ALTER TABLE products ALTER COLUMN price SET DEFAULT 7.77;</pre>
 <p>
     Note that this doesn't affect any existing rows in the table, it
-    just changes the default for future <tt class="command">INSERT</tt> commands.
+    just changes the default for future <code class="command">INSERT</code> commands.
    </p>
 <p>    To remove any default value, use
 </p>
@@ -173,18 +155,15 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2526041"></a>5.6.6. Changing a Column's Data Type</h3></div></div>
-<div></div>
-</div>
-<a name="id2526044"></a><p>    To convert a column to a different data type, use a command like this:
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id307649"></a>5.6.6. Changing a Column's Data Type</h3></div></div></div>
+<a name="id307652"></a><p>    To convert a column to a different data type, use a command like this:
 </p>
 <pre class="programlisting">ALTER TABLE products ALTER COLUMN price TYPE numeric(10,2);</pre>
 <p>
     This will succeed only if each existing entry in the column can be
     converted to the new type by an implicit cast.  If a more complex
-    conversion is needed, you can add a <tt class="literal">USING</tt> clause that
+    conversion is needed, you can add a <code class="literal">USING</code> clause that
     specifies how to compute the new values from the old.
    </p>
 <p>    <span class="productname">PostgreSQL</span> will attempt to convert the column's
@@ -196,24 +175,18 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2526087"></a>5.6.7. Renaming a Column</h3></div></div>
-<div></div>
-</div>
-<a name="id2526091"></a><p>    To rename a column:
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id307689"></a>5.6.7. Renaming a Column</h3></div></div></div>
+<a name="id307692"></a><p>    To rename a column:
 </p>
 <pre class="programlisting">ALTER TABLE products RENAME COLUMN product_no TO product_number;</pre>
 <p>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2526108"></a>5.6.8. Renaming a Table</h3></div></div>
-<div></div>
-</div>
-<a name="id2526112"></a><p>    To rename a table:
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id307709"></a>5.6.8. Renaming a Table</h3></div></div></div>
+<a name="id307712"></a><p>    To rename a table:
 </p>
 <pre class="programlisting">ALTER TABLE products RENAME TO items;</pre>
 <p>

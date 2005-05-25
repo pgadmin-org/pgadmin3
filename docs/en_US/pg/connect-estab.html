@@ -4,33 +4,30 @@
 <title>40.2. How Connections are Established</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
-<link rel="previous" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
+<link rel="prev" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
 <link rel="next" href="parser-stage.html" title="40.3. The Parser Stage">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="connect-estab"></a>40.2. How Connections are Established</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="connect-estab"></a>40.2. How Connections are Established</h2></div></div></div>
 <p>    <span class="productname">PostgreSQL</span> is implemented using a
     simple &#8220;<span class="quote">process per user</span>&#8221; client/server model.  In this model
-    there is one <i class="firstterm">client process</i> connected to
-    exactly one <i class="firstterm">server process</i>.  As we do not
+    there is one <em class="firstterm">client process</em> connected to
+    exactly one <em class="firstterm">server process</em>.  As we do not
     know ahead of time how many connections will be made, we have to
-    use a <i class="firstterm">master process</i> that spawns a new
+    use a <em class="firstterm">master process</em> that spawns a new
     server process every time a connection is requested. This master
-    process is called <tt class="literal">postmaster</tt> and listens at a
+    process is called <code class="literal">postmaster</code> and listens at a
     specified TCP/IP port for incoming connections. Whenever a request
-    for a connection is detected the <tt class="literal">postmaster</tt>
+    for a connection is detected the <code class="literal">postmaster</code>
     process spawns a new server process called
-    <tt class="literal">postgres</tt>. The server tasks
-    (<tt class="literal">postgres</tt> processes) communicate with each
-    other using <i class="firstterm">semaphores</i> and
-    <i class="firstterm">shared memory</i> to ensure data integrity
+    <code class="literal">postgres</code>. The server tasks
+    (<code class="literal">postgres</code> processes) communicate with each
+    other using <em class="firstterm">semaphores</em> and
+    <em class="firstterm">shared memory</em> to ensure data integrity
     throughout concurrent data access.
    </p>
 <p>    The client process can be any program that understands the
@@ -41,9 +38,9 @@
     <span class="application">JDBC</span> driver.
    </p>
 <p>    Once a connection is established the client process can send a query
-    to the <i class="firstterm">backend</i> (server). The query is transmitted using plain text,
-    i.e. there is no parsing done in the <i class="firstterm">frontend</i> (client). The
-    server parses the query, creates an <i class="firstterm">execution plan</i>,
+    to the <em class="firstterm">backend</em> (server). The query is transmitted using plain text,
+    i.e. there is no parsing done in the <em class="firstterm">frontend</em> (client). The
+    server parses the query, creates an <em class="firstterm">execution plan</em>,
     executes the plan and returns the retrieved rows to the client
     by transmitting them over the established connection.
    </p>

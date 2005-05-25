@@ -4,79 +4,76 @@
 <title>LOCK</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-load.html" title="LOAD">
+<link rel="prev" href="sql-load.html" title="LOAD">
 <link rel="next" href="sql-move.html" title="MOVE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-lock"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-lock"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>LOCK &#8212; lock a table</p>
 </div>
-<a name="id2695164"></a><div class="refsynopsisdiv">
+<a name="id463645"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">LOCK [ TABLE ] <i class="replaceable"><tt>name</tt></i> [, ...] [ IN <i class="replaceable"><tt>lockmode</tt></i> MODE ] [ NOWAIT ]
+<pre class="synopsis">LOCK [ TABLE ] <em class="replaceable"><code>name</code></em> [, ...] [ IN <em class="replaceable"><code>lockmode</code></em> MODE ] [ NOWAIT ]
 
-where <i class="replaceable"><tt>lockmode</tt></i> is one of:
+where <em class="replaceable"><code>lockmode</code></em> is one of:
 
     ACCESS SHARE | ROW SHARE | ROW EXCLUSIVE | SHARE UPDATE EXCLUSIVE
     | SHARE | SHARE ROW EXCLUSIVE | EXCLUSIVE | ACCESS EXCLUSIVE</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695200"></a><h2>Description</h2>
-<p>   <tt class="command">LOCK TABLE</tt> obtains a table-level lock, waiting
+<a name="id463679"></a><h2>Description</h2>
+<p>   <code class="command">LOCK TABLE</code> obtains a table-level lock, waiting
    if necessary for any conflicting locks to be released.  If
-   <tt class="literal">NOWAIT</tt> is specified, <tt class="command">LOCK
-   TABLE</tt> does not wait to acquire the desired lock: if it
+   <code class="literal">NOWAIT</code> is specified, <code class="command">LOCK
+   TABLE</code> does not wait to acquire the desired lock: if it
    cannot be acquired immediately, the command is aborted and an
    error is emitted.  Once obtained, the lock is held for the
-   remainder of the current transaction.  (There is no <tt class="command">UNLOCK
-   TABLE</tt> command; locks are always released at transaction
+   remainder of the current transaction.  (There is no <code class="command">UNLOCK
+   TABLE</code> command; locks are always released at transaction
    end.)
   </p>
 <p>   When acquiring locks automatically for commands that reference
    tables, <span class="productname">PostgreSQL</span> always uses the least
-   restrictive lock mode possible. <tt class="command">LOCK TABLE</tt>
+   restrictive lock mode possible. <code class="command">LOCK TABLE</code>
    provides for cases when you might need more restrictive locking.
    For example, suppose an application runs a transaction at the
    Read Committed isolation level and needs to ensure that data in a
    table remains stable for the duration of the transaction. To
-   achieve this you could obtain <tt class="literal">SHARE</tt> lock mode over the
+   achieve this you could obtain <code class="literal">SHARE</code> lock mode over the
    table before querying. This will prevent concurrent data changes
    and ensure subsequent reads of the table see a stable view of
-   committed data, because <tt class="literal">SHARE</tt> lock mode conflicts with
-   the <tt class="literal">ROW EXCLUSIVE</tt> lock acquired by writers, and your
-   <tt class="command">LOCK TABLE <i class="replaceable"><tt>name</tt></i> IN SHARE MODE</tt>
-   statement will wait until any concurrent holders of <tt class="literal">ROW
-   EXCLUSIVE</tt> mode locks commit or roll back. Thus, once you
+   committed data, because <code class="literal">SHARE</code> lock mode conflicts with
+   the <code class="literal">ROW EXCLUSIVE</code> lock acquired by writers, and your
+   <code class="command">LOCK TABLE <em class="replaceable"><code>name</code></em> IN SHARE MODE</code>
+   statement will wait until any concurrent holders of <code class="literal">ROW
+   EXCLUSIVE</code> mode locks commit or roll back. Thus, once you
    obtain the lock, there are no uncommitted writes outstanding;
    furthermore none can begin until you release the lock.
   </p>
 <p>   To achieve a similar effect when running a transaction at the Serializable
-   isolation level, you have to execute the <tt class="command">LOCK TABLE</tt> statement
-   before executing any <tt class="command">SELECT</tt> or data modification statement.
+   isolation level, you have to execute the <code class="command">LOCK TABLE</code> statement
+   before executing any <code class="command">SELECT</code> or data modification statement.
    A serializable transaction's view of data will be frozen when its first
-   <tt class="command">SELECT</tt> or data modification statement begins.  A <tt class="command">LOCK
-   TABLE</tt> later in the transaction will still prevent concurrent writes
+   <code class="command">SELECT</code> or data modification statement begins.  A <code class="command">LOCK
+   TABLE</code> later in the transaction will still prevent concurrent writes
    [mdash ] but it won't ensure that what the transaction reads corresponds to
    the latest committed values.
   </p>
 <p>   If a transaction of this sort is going to change the data in the
-   table, then it should use <tt class="literal">SHARE ROW EXCLUSIVE</tt> lock mode
-   instead of <tt class="literal">SHARE</tt> mode.  This ensures that only one
+   table, then it should use <code class="literal">SHARE ROW EXCLUSIVE</code> lock mode
+   instead of <code class="literal">SHARE</code> mode.  This ensures that only one
    transaction of this type runs at a time.  Without this, a deadlock
-   is possible: two transactions might both acquire <tt class="literal">SHARE</tt>
-   mode, and then be unable to also acquire <tt class="literal">ROW EXCLUSIVE</tt>
+   is possible: two transactions might both acquire <code class="literal">SHARE</code>
+   mode, and then be unable to also acquire <code class="literal">ROW EXCLUSIVE</code>
    mode to actually perform their updates.  (Note that a transaction's
-   own locks never conflict, so a transaction can acquire <tt class="literal">ROW
-   EXCLUSIVE</tt> mode when it holds <tt class="literal">SHARE</tt> mode [mdash ] but not
-   if anyone else holds <tt class="literal">SHARE</tt> mode.)  To avoid deadlocks,
+   own locks never conflict, so a transaction can acquire <code class="literal">ROW
+   EXCLUSIVE</code> mode when it holds <code class="literal">SHARE</code> mode [mdash ] but not
+   if anyone else holds <code class="literal">SHARE</code> mode.)  To avoid deadlocks,
    make sure all transactions acquire locks on the same objects in the
    same order, and if multiple lock modes are involved for a single
    object, then transactions should always acquire the most
@@ -87,30 +84,30 @@ where <i class="replaceable"><tt>lockmode</tt></i> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695404"></a><h2>Parameters</h2>
+<a name="id463858"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd>
 <p>      The name (optionally schema-qualified) of an existing table to
       lock.
      </p>
-<p>      The command <tt class="literal">LOCK TABLE a, b;</tt> is equivalent to
-      <tt class="literal">LOCK TABLE a; LOCK TABLE b;</tt>. The tables are locked
-      one-by-one in the order specified in the <tt class="command">LOCK
-      TABLE</tt> command.
+<p>      The command <code class="literal">LOCK TABLE a, b;</code> is equivalent to
+      <code class="literal">LOCK TABLE a; LOCK TABLE b;</code>. The tables are locked
+      one-by-one in the order specified in the <code class="command">LOCK
+      TABLE</code> command.
      </p>
 </dd>
-<dt><span class="term"><i class="replaceable"><tt>lockmode</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>lockmode</code></em></span></dt>
 <dd>
 <p>      The lock mode specifies which locks this lock conflicts with.
       Lock modes are described in <a href="explicit-locking.html" title="12.3. Explicit Locking">Section 12.3, &#8220;Explicit Locking&#8221;</a>.
      </p>
-<p>      If no lock mode is specified, then <tt class="literal">ACCESS
-      EXCLUSIVE</tt>, the most restrictive mode, is used.
+<p>      If no lock mode is specified, then <code class="literal">ACCESS
+      EXCLUSIVE</code>, the most restrictive mode, is used.
      </p>
 </dd>
-<dt><span class="term"><tt class="literal">NOWAIT</tt></span></dt>
-<dd><p>      Specifies that <tt class="command">LOCK TABLE</tt> should not wait for
+<dt><span class="term"><code class="literal">NOWAIT</code></span></dt>
+<dd><p>      Specifies that <code class="command">LOCK TABLE</code> should not wait for
       any conflicting locks to be released: if the specified lock(s)
       cannot be acquired immediately without waiting, the transaction
       is aborted.
@@ -118,34 +115,34 @@ where <i class="replaceable"><tt>lockmode</tt></i> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695489"></a><h2>Notes</h2>
-<p>    <tt class="literal">LOCK TABLE ... IN ACCESS SHARE MODE</tt> requires <tt class="literal">SELECT</tt>
-    privileges on the target table.  All other forms of <tt class="command">LOCK</tt>
-    require <tt class="literal">UPDATE</tt> and/or <tt class="literal">DELETE</tt> privileges.
+<a name="id463937"></a><h2>Notes</h2>
+<p>    <code class="literal">LOCK TABLE ... IN ACCESS SHARE MODE</code> requires <code class="literal">SELECT</code>
+    privileges on the target table.  All other forms of <code class="command">LOCK</code>
+    require <code class="literal">UPDATE</code> and/or <code class="literal">DELETE</code> privileges.
    </p>
-<p>    <tt class="command">LOCK TABLE</tt> is useful only inside a transaction
-    block (<tt class="command">BEGIN</tt>/<tt class="command">COMMIT</tt> pair), since the lock
-    is dropped as soon as the transaction ends.  A <tt class="command">LOCK
-    TABLE</tt> command appearing outside any transaction block forms a
+<p>    <code class="command">LOCK TABLE</code> is useful only inside a transaction
+    block (<code class="command">BEGIN</code>/<code class="command">COMMIT</code> pair), since the lock
+    is dropped as soon as the transaction ends.  A <code class="command">LOCK
+    TABLE</code> command appearing outside any transaction block forms a
     self-contained transaction, so the lock will be dropped as soon as
     it is obtained.
    </p>
-<p>   <tt class="command">LOCK TABLE</tt> only deals with table-level locks, and so
-   the mode names involving <tt class="literal">ROW</tt> are all misnomers.  These
+<p>   <code class="command">LOCK TABLE</code> only deals with table-level locks, and so
+   the mode names involving <code class="literal">ROW</code> are all misnomers.  These
    mode names should generally be read as indicating the intention of
    the user to acquire row-level locks within the locked table.  Also,
-   <tt class="literal">ROW EXCLUSIVE</tt> mode is a sharable table lock.  Keep in
+   <code class="literal">ROW EXCLUSIVE</code> mode is a sharable table lock.  Keep in
    mind that all the lock modes have identical semantics so far as
-   <tt class="command">LOCK TABLE</tt> is concerned, differing only in the rules
+   <code class="command">LOCK TABLE</code> is concerned, differing only in the rules
    about which modes conflict with which. For information on how to
    acquire an actual row-level lock, see <a href="explicit-locking.html#locking-rows" title="12.3.2. Row-Level Locks">Section 12.3.2, &#8220;Row-Level Locks&#8221;</a>
-   and the <a href="sql-select.html#sql-for-update"><tt class="literal">FOR UPDATE</tt> Clause</a> in the <tt class="command">SELECT</tt>
+   and the <a href="sql-select.html#sql-for-update-share"><code class="literal">FOR UPDATE</code>/<code class="literal">FOR SHARE</code> Clause</a> in the <code class="command">SELECT</code>
    reference documentation.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695617"></a><h2>Examples</h2>
-<p>   Obtain a <tt class="literal">SHARE</tt> lock on a primary key table when going to perform
+<a name="id464056"></a><h2>Examples</h2>
+<p>   Obtain a <code class="literal">SHARE</code> lock on a primary key table when going to perform
    inserts into a foreign key table:
 
 </p>
@@ -159,7 +156,7 @@ INSERT INTO films_user_comments VALUES
 COMMIT WORK;</pre>
 <p>
   </p>
-<p>   Take a <tt class="literal">SHARE ROW EXCLUSIVE</tt> lock on a primary key table when going to perform
+<p>   Take a <code class="literal">SHARE ROW EXCLUSIVE</code> lock on a primary key table when going to perform
    a delete operation:
 
 </p>
@@ -173,16 +170,16 @@ COMMIT WORK;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2695660"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">LOCK TABLE</tt> in the SQL standard,
-   which instead uses <tt class="command">SET TRANSACTION</tt> to specify
+<a name="id464093"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">LOCK TABLE</code> in the SQL standard,
+   which instead uses <code class="command">SET TRANSACTION</code> to specify
    concurrency levels on transactions.  <span class="productname">PostgreSQL</span> supports that too;
    see <a href="sql-set-transaction.html">SET TRANSACTION</a> for details.
   </p>
-<p>   Except for <tt class="literal">ACCESS SHARE</tt>, <tt class="literal">ACCESS EXCLUSIVE</tt>,
-   and <tt class="literal">SHARE UPDATE EXCLUSIVE</tt> lock modes, the
+<p>   Except for <code class="literal">ACCESS SHARE</code>, <code class="literal">ACCESS EXCLUSIVE</code>,
+   and <code class="literal">SHARE UPDATE EXCLUSIVE</code> lock modes, the
    <span class="productname">PostgreSQL</span> lock modes and the
-   <tt class="command">LOCK TABLE</tt> syntax are compatible with those
+   <code class="command">LOCK TABLE</code> syntax are compatible with those
    present in <span class="productname">Oracle</span>.
   </p>
 </div>

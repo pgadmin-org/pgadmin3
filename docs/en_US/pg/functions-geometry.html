@@ -4,21 +4,18 @@
 <title>9.10. Geometric Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">
+<link rel="prev" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">
 <link rel="next" href="functions-net.html" title="9.11. Network Address Functions and Operators">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-geometry"></a>9.10. Geometric Functions and Operators</h2></div></div>
-<div></div>
-</div>
-<p>    The geometric types <tt class="type">point</tt>, <tt class="type">box</tt>,
-    <tt class="type">lseg</tt>, <tt class="type">line</tt>, <tt class="type">path</tt>,
-    <tt class="type">polygon</tt>, and <tt class="type">circle</tt> have a large set of
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-geometry"></a>9.10. Geometric Functions and Operators</h2></div></div></div>
+<p>    The geometric types <code class="type">point</code>, <code class="type">box</code>,
+    <code class="type">lseg</code>, <code class="type">line</code>, <code class="type">path</code>,
+    <code class="type">polygon</code>, and <code class="type">circle</code> have a large set of
     native support functions and operators, shown in <a href="functions-geometry.html#functions-geometry-op-table" title="Table 9.28. Geometric Operators">Table 9.28, &#8220;Geometric Operators&#8221;</a>, <a href="functions-geometry.html#functions-geometry-func-table" title="Table 9.29. Geometric Functions">Table 9.29, &#8220;Geometric Functions&#8221;</a>, and <a href="functions-geometry.html#functions-geometry-conv-table" title="Table 9.30. Geometric Type Conversion Functions">Table 9.30, &#8220;Geometric Type Conversion Functions&#8221;</a>.
    </p>
 <div class="table">
@@ -36,139 +33,139 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">+</tt></td>
+<td> <code class="literal">+</code> </td>
 <td>Translation</td>
-<td><tt class="literal">box '((0,0),(1,1))' + point '(2.0,0)'</tt></td>
+<td><code class="literal">box '((0,0),(1,1))' + point '(2.0,0)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
+<td> <code class="literal">-</code> </td>
 <td>Translation</td>
-<td><tt class="literal">box '((0,0),(1,1))' - point '(2.0,0)'</tt></td>
+<td><code class="literal">box '((0,0),(1,1))' - point '(2.0,0)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">*</tt></td>
+<td> <code class="literal">*</code> </td>
 <td>Scaling/rotation</td>
-<td><tt class="literal">box '((0,0),(1,1))' * point '(2.0,0)'</tt></td>
+<td><code class="literal">box '((0,0),(1,1))' * point '(2.0,0)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">/</tt></td>
+<td> <code class="literal">/</code> </td>
 <td>Scaling/rotation</td>
-<td><tt class="literal">box '((0,0),(2,2))' / point '(2.0,0)'</tt></td>
+<td><code class="literal">box '((0,0),(2,2))' / point '(2.0,0)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">#</tt></td>
+<td> <code class="literal">#</code> </td>
 <td>Point or box of intersection</td>
-<td><tt class="literal">'((1,-1),(-1,1))' # '((1,1),(-1,-1))'</tt></td>
+<td><code class="literal">'((1,-1),(-1,1))' # '((1,1),(-1,-1))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">#</tt></td>
+<td> <code class="literal">#</code> </td>
 <td>Number of points in path or polygon</td>
-<td><tt class="literal"># '((1,0),(0,1),(-1,0))'</tt></td>
+<td><code class="literal"># '((1,0),(0,1),(-1,0))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">@-@</tt></td>
+<td> <code class="literal">@-@</code> </td>
 <td>Length or circumference</td>
-<td><tt class="literal">@-@ path '((0,0),(1,0))'</tt></td>
+<td><code class="literal">@-@ path '((0,0),(1,0))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">@@</tt></td>
+<td> <code class="literal">@@</code> </td>
 <td>Center</td>
-<td><tt class="literal">@@ circle '((0,0),10)'</tt></td>
+<td><code class="literal">@@ circle '((0,0),10)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">##</tt></td>
+<td> <code class="literal">##</code> </td>
 <td>Closest point to first operand on second operand</td>
-<td><tt class="literal">point '(0,0)' ## lseg '((2,0),(0,2))'</tt></td>
+<td><code class="literal">point '(0,0)' ## lseg '((2,0),(0,2))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;-&gt;</tt></td>
+<td> <code class="literal">&lt;-&gt;</code> </td>
 <td>Distance between</td>
-<td><tt class="literal">circle '((0,0),1)' &lt;-&gt; circle '((5,0),1)'</tt></td>
+<td><code class="literal">circle '((0,0),1)' &lt;-&gt; circle '((5,0),1)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&amp;&amp;</tt></td>
+<td> <code class="literal">&amp;&amp;</code> </td>
 <td>Overlaps?</td>
-<td><tt class="literal">box '((0,0),(1,1))' &amp;&amp; box '((0,0),(2,2))'</tt></td>
+<td><code class="literal">box '((0,0),(1,1))' &amp;&amp; box '((0,0),(2,2))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&amp;&lt;</tt></td>
+<td> <code class="literal">&amp;&lt;</code> </td>
 <td>Does not extend to the right of?</td>
-<td><tt class="literal">box '((0,0),(1,1))' &amp;&lt; box '((0,0),(2,2))'</tt></td>
+<td><code class="literal">box '((0,0),(1,1))' &amp;&lt; box '((0,0),(2,2))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&amp;&gt;</tt></td>
+<td> <code class="literal">&amp;&gt;</code> </td>
 <td>Does not extend to the left of?</td>
-<td><tt class="literal">box '((0,0),(3,3))' &amp;&gt; box '((0,0),(2,2))'</tt></td>
+<td><code class="literal">box '((0,0),(3,3))' &amp;&gt; box '((0,0),(2,2))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;&lt;</tt></td>
+<td> <code class="literal">&lt;&lt;</code> </td>
 <td>Is left of?</td>
-<td><tt class="literal">circle '((0,0),1)' &lt;&lt; circle '((5,0),1)'</tt></td>
+<td><code class="literal">circle '((0,0),1)' &lt;&lt; circle '((5,0),1)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;&gt;</tt></td>
+<td> <code class="literal">&gt;&gt;</code> </td>
 <td>Is right of?</td>
-<td><tt class="literal">circle '((5,0),1)' &gt;&gt; circle '((0,0),1)'</tt></td>
+<td><code class="literal">circle '((5,0),1)' &gt;&gt; circle '((0,0),1)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;^</tt></td>
+<td> <code class="literal">&lt;^</code> </td>
 <td>Is below?</td>
-<td><tt class="literal">circle '((0,0),1)' &lt;^ circle '((0,5),1)'</tt></td>
+<td><code class="literal">circle '((0,0),1)' &lt;^ circle '((0,5),1)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;^</tt></td>
+<td> <code class="literal">&gt;^</code> </td>
 <td>Is above?</td>
-<td><tt class="literal">circle '((0,5),1)' &gt;^ circle '((0,0),1)'</tt></td>
+<td><code class="literal">circle '((0,5),1)' &gt;^ circle '((0,0),1)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">?#</tt></td>
+<td> <code class="literal">?#</code> </td>
 <td>Intersects?</td>
-<td><tt class="literal">lseg '((-1,0),(1,0))' ?# box '((-2,-2),(2,2))'</tt></td>
+<td><code class="literal">lseg '((-1,0),(1,0))' ?# box '((-2,-2),(2,2))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">?-</tt></td>
+<td> <code class="literal">?-</code> </td>
 <td>Is horizontal?</td>
-<td><tt class="literal">?- lseg '((-1,0),(1,0))'</tt></td>
+<td><code class="literal">?- lseg '((-1,0),(1,0))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">?-</tt></td>
+<td> <code class="literal">?-</code> </td>
 <td>Are horizontally aligned?</td>
-<td><tt class="literal">point '(1,0)' ?- point '(0,0)'</tt></td>
+<td><code class="literal">point '(1,0)' ?- point '(0,0)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">?|</tt></td>
+<td> <code class="literal">?|</code> </td>
 <td>Is vertical?</td>
-<td><tt class="literal">?| lseg '((-1,0),(1,0))'</tt></td>
+<td><code class="literal">?| lseg '((-1,0),(1,0))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">?|</tt></td>
+<td> <code class="literal">?|</code> </td>
 <td>Are vertically aligned?</td>
-<td><tt class="literal">point '(0,1)' ?| point '(0,0)'</tt></td>
+<td><code class="literal">point '(0,1)' ?| point '(0,0)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">?-|</tt></td>
+<td> <code class="literal">?-|</code> </td>
 <td>Is perpendicular?</td>
-<td><tt class="literal">lseg '((0,0),(0,1))' ?-| lseg '((0,0),(1,0))'</tt></td>
+<td><code class="literal">lseg '((0,0),(0,1))' ?-| lseg '((0,0),(1,0))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">?||</tt></td>
+<td> <code class="literal">?||</code> </td>
 <td>Are parallel?</td>
-<td><tt class="literal">lseg '((-1,0),(1,0))' ?|| lseg '((-1,2),(1,2))'</tt></td>
+<td><code class="literal">lseg '((-1,0),(1,0))' ?|| lseg '((-1,2),(1,2))'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">~</tt></td>
+<td> <code class="literal">~</code> </td>
 <td>Contains?</td>
-<td><tt class="literal">circle '((0,0),2)' ~ point '(1,1)'</tt></td>
+<td><code class="literal">circle '((0,0),2)' ~ point '(1,1)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">@</tt></td>
+<td> <code class="literal">@</code> </td>
 <td>Contained in or on?</td>
-<td><tt class="literal">point '(1,1)' @ circle '((0,0),2)'</tt></td>
+<td><code class="literal">point '(1,1)' @ circle '((0,0),2)'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">~=</tt></td>
+<td> <code class="literal">~=</code> </td>
 <td>Same as?</td>
-<td><tt class="literal">polygon '((0,0),(1,1))' ~= polygon '((1,1),(0,0))'</tt></td>
+<td><code class="literal">polygon '((0,0),(1,1))' ~= polygon '((1,1),(0,0))'</code></td>
 </tr>
 </tbody>
 </table>
@@ -190,88 +187,88 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">area</tt>(<i class="replaceable"><tt>object</tt></i>)</tt></td>
-<td><tt class="type">double precision</tt></td>
+<td><code class="literal"><code class="function">area</code>(<em class="replaceable"><code>object</code></em>)</code></td>
+<td><code class="type">double precision</code></td>
 <td>area</td>
-<td><tt class="literal">area(box '((0,0),(1,1))')</tt></td>
+<td><code class="literal">area(box '((0,0),(1,1))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">box_intersect</tt>(<tt class="type">box</tt>, <tt class="type">box</tt>)</tt></td>
-<td><tt class="type">box</tt></td>
+<td><code class="literal"><code class="function">box_intersect</code>(<code class="type">box</code>, <code class="type">box</code>)</code></td>
+<td><code class="type">box</code></td>
 <td>intersection box</td>
-<td><tt class="literal">box_intersect(box '((0,0),(1,1))',box '((0.5,0.5),(2,2))')</tt></td>
+<td><code class="literal">box_intersect(box '((0,0),(1,1))',box '((0.5,0.5),(2,2))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">center</tt>(<i class="replaceable"><tt>object</tt></i>)</tt></td>
-<td><tt class="type">point</tt></td>
+<td><code class="literal"><code class="function">center</code>(<em class="replaceable"><code>object</code></em>)</code></td>
+<td><code class="type">point</code></td>
 <td>center</td>
-<td><tt class="literal">center(box '((0,0),(1,2))')</tt></td>
+<td><code class="literal">center(box '((0,0),(1,2))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">diameter</tt>(<tt class="type">circle</tt>)</tt></td>
-<td><tt class="type">double precision</tt></td>
+<td><code class="literal"><code class="function">diameter</code>(<code class="type">circle</code>)</code></td>
+<td><code class="type">double precision</code></td>
 <td>diameter of circle</td>
-<td><tt class="literal">diameter(circle '((0,0),2.0)')</tt></td>
+<td><code class="literal">diameter(circle '((0,0),2.0)')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">height</tt>(<tt class="type">box</tt>)</tt></td>
-<td><tt class="type">double precision</tt></td>
+<td><code class="literal"><code class="function">height</code>(<code class="type">box</code>)</code></td>
+<td><code class="type">double precision</code></td>
 <td>vertical size of box</td>
-<td><tt class="literal">height(box '((0,0),(1,1))')</tt></td>
+<td><code class="literal">height(box '((0,0),(1,1))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">isclosed</tt>(<tt class="type">path</tt>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td><code class="literal"><code class="function">isclosed</code>(<code class="type">path</code>)</code></td>
+<td><code class="type">boolean</code></td>
 <td>a closed path?</td>
-<td><tt class="literal">isclosed(path '((0,0),(1,1),(2,0))')</tt></td>
+<td><code class="literal">isclosed(path '((0,0),(1,1),(2,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">isopen</tt>(<tt class="type">path</tt>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td><code class="literal"><code class="function">isopen</code>(<code class="type">path</code>)</code></td>
+<td><code class="type">boolean</code></td>
 <td>an open path?</td>
-<td><tt class="literal">isopen(path '[(0,0),(1,1),(2,0)]')</tt></td>
+<td><code class="literal">isopen(path '[(0,0),(1,1),(2,0)]')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">length</tt>(<i class="replaceable"><tt>object</tt></i>)</tt></td>
-<td><tt class="type">double precision</tt></td>
+<td><code class="literal"><code class="function">length</code>(<em class="replaceable"><code>object</code></em>)</code></td>
+<td><code class="type">double precision</code></td>
 <td>length</td>
-<td><tt class="literal">length(path '((-1,0),(1,0))')</tt></td>
+<td><code class="literal">length(path '((-1,0),(1,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">npoints</tt>(<tt class="type">path</tt>)</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">npoints</code>(<code class="type">path</code>)</code></td>
+<td><code class="type">integer</code></td>
 <td>number of points</td>
-<td><tt class="literal">npoints(path '[(0,0),(1,1),(2,0)]')</tt></td>
+<td><code class="literal">npoints(path '[(0,0),(1,1),(2,0)]')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">npoints</tt>(<tt class="type">polygon</tt>)</tt></td>
-<td><tt class="type">integer</tt></td>
+<td><code class="literal"><code class="function">npoints</code>(<code class="type">polygon</code>)</code></td>
+<td><code class="type">integer</code></td>
 <td>number of points</td>
-<td><tt class="literal">npoints(polygon '((1,1),(0,0))')</tt></td>
+<td><code class="literal">npoints(polygon '((1,1),(0,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">pclose</tt>(<tt class="type">path</tt>)</tt></td>
-<td><tt class="type">path</tt></td>
+<td><code class="literal"><code class="function">pclose</code>(<code class="type">path</code>)</code></td>
+<td><code class="type">path</code></td>
 <td>convert path to closed</td>
-<td><tt class="literal">pclose(path '[(0,0),(1,1),(2,0)]')</tt></td>
+<td><code class="literal">pclose(path '[(0,0),(1,1),(2,0)]')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">popen</tt>(<tt class="type">path</tt>)</tt></td>
-<td><tt class="type">path</tt></td>
+<td><code class="literal"><code class="function">popen</code>(<code class="type">path</code>)</code></td>
+<td><code class="type">path</code></td>
 <td>convert path to open</td>
-<td><tt class="literal">popen(path '((0,0),(1,1),(2,0))')</tt></td>
+<td><code class="literal">popen(path '((0,0),(1,1),(2,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">radius</tt>(<tt class="type">circle</tt>)</tt></td>
-<td><tt class="type">double precision</tt></td>
+<td><code class="literal"><code class="function">radius</code>(<code class="type">circle</code>)</code></td>
+<td><code class="type">double precision</code></td>
 <td>radius of circle</td>
-<td><tt class="literal">radius(circle '((0,0),2.0)')</tt></td>
+<td><code class="literal">radius(circle '((0,0),2.0)')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">width</tt>(<tt class="type">box</tt>)</tt></td>
-<td><tt class="type">double precision</tt></td>
+<td><code class="literal"><code class="function">width</code>(<code class="type">box</code>)</code></td>
+<td><code class="type">double precision</code></td>
 <td>horizontal size of box</td>
-<td><tt class="literal">width(box '((0,0),(1,1))')</tt></td>
+<td><code class="literal">width(box '((0,0),(1,1))')</code></td>
 </tr>
 </tbody>
 </table>
@@ -293,138 +290,138 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">box</tt>(<tt class="type">circle</tt>)</tt></td>
-<td><tt class="type">box</tt></td>
+<td><code class="literal"><code class="function">box</code>(<code class="type">circle</code>)</code></td>
+<td><code class="type">box</code></td>
 <td>circle to box</td>
-<td><tt class="literal">box(circle '((0,0),2.0)')</tt></td>
+<td><code class="literal">box(circle '((0,0),2.0)')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">box</tt>(<tt class="type">point</tt>, <tt class="type">point</tt>)</tt></td>
-<td><tt class="type">box</tt></td>
+<td><code class="literal"><code class="function">box</code>(<code class="type">point</code>, <code class="type">point</code>)</code></td>
+<td><code class="type">box</code></td>
 <td>points to box</td>
-<td><tt class="literal">box(point '(0,0)', point '(1,1)')</tt></td>
+<td><code class="literal">box(point '(0,0)', point '(1,1)')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">box</tt>(<tt class="type">polygon</tt>)</tt></td>
-<td><tt class="type">box</tt></td>
+<td><code class="literal"><code class="function">box</code>(<code class="type">polygon</code>)</code></td>
+<td><code class="type">box</code></td>
 <td>polygon to box</td>
-<td><tt class="literal">box(polygon '((0,0),(1,1),(2,0))')</tt></td>
+<td><code class="literal">box(polygon '((0,0),(1,1),(2,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">circle</tt>(<tt class="type">box</tt>)</tt></td>
-<td><tt class="type">circle</tt></td>
+<td><code class="literal"><code class="function">circle</code>(<code class="type">box</code>)</code></td>
+<td><code class="type">circle</code></td>
 <td>box to circle</td>
-<td><tt class="literal">circle(box '((0,0),(1,1))')</tt></td>
+<td><code class="literal">circle(box '((0,0),(1,1))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">circle</tt>(<tt class="type">point</tt>, <tt class="type">double precision</tt>)</tt></td>
-<td><tt class="type">circle</tt></td>
+<td><code class="literal"><code class="function">circle</code>(<code class="type">point</code>, <code class="type">double precision</code>)</code></td>
+<td><code class="type">circle</code></td>
 <td>center and radius to circle</td>
-<td><tt class="literal">circle(point '(0,0)', 2.0)</tt></td>
+<td><code class="literal">circle(point '(0,0)', 2.0)</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">lseg</tt>(<tt class="type">box</tt>)</tt></td>
-<td><tt class="type">lseg</tt></td>
+<td><code class="literal"><code class="function">lseg</code>(<code class="type">box</code>)</code></td>
+<td><code class="type">lseg</code></td>
 <td>box diagonal to line segment</td>
-<td><tt class="literal">lseg(box '((-1,0),(1,0))')</tt></td>
+<td><code class="literal">lseg(box '((-1,0),(1,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">lseg</tt>(<tt class="type">point</tt>, <tt class="type">point</tt>)</tt></td>
-<td><tt class="type">lseg</tt></td>
+<td><code class="literal"><code class="function">lseg</code>(<code class="type">point</code>, <code class="type">point</code>)</code></td>
+<td><code class="type">lseg</code></td>
 <td>points to line segment</td>
-<td><tt class="literal">lseg(point '(-1,0)', point '(1,0)')</tt></td>
+<td><code class="literal">lseg(point '(-1,0)', point '(1,0)')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">path</tt>(<tt class="type">polygon</tt>)</tt></td>
-<td><tt class="type">point</tt></td>
+<td><code class="literal"><code class="function">path</code>(<code class="type">polygon</code>)</code></td>
+<td><code class="type">point</code></td>
 <td>polygon to path</td>
-<td><tt class="literal">path(polygon '((0,0),(1,1),(2,0))')</tt></td>
+<td><code class="literal">path(polygon '((0,0),(1,1),(2,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">point</tt>(<tt class="type">double
-         precision</tt>, <tt class="type">double precision</tt>)</tt></td>
-<td><tt class="type">point</tt></td>
+<td><code class="literal"><code class="function">point</code>(<code class="type">double
+         precision</code>, <code class="type">double precision</code>)</code></td>
+<td><code class="type">point</code></td>
 <td>construct point</td>
-<td><tt class="literal">point(23.4, -44.5)</tt></td>
+<td><code class="literal">point(23.4, -44.5)</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">point</tt>(<tt class="type">box</tt>)</tt></td>
-<td><tt class="type">point</tt></td>
+<td><code class="literal"><code class="function">point</code>(<code class="type">box</code>)</code></td>
+<td><code class="type">point</code></td>
 <td>center of box</td>
-<td><tt class="literal">point(box '((-1,0),(1,0))')</tt></td>
+<td><code class="literal">point(box '((-1,0),(1,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">point</tt>(<tt class="type">circle</tt>)</tt></td>
-<td><tt class="type">point</tt></td>
+<td><code class="literal"><code class="function">point</code>(<code class="type">circle</code>)</code></td>
+<td><code class="type">point</code></td>
 <td>center of circle</td>
-<td><tt class="literal">point(circle '((0,0),2.0)')</tt></td>
+<td><code class="literal">point(circle '((0,0),2.0)')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">point</tt>(<tt class="type">lseg</tt>)</tt></td>
-<td><tt class="type">point</tt></td>
+<td><code class="literal"><code class="function">point</code>(<code class="type">lseg</code>)</code></td>
+<td><code class="type">point</code></td>
 <td>center of lseg</td>
-<td><tt class="literal">point(lseg '((-1,0),(1,0))')</tt></td>
+<td><code class="literal">point(lseg '((-1,0),(1,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">point</tt>(<tt class="type">lseg</tt>, <tt class="type">lseg</tt>)</tt></td>
-<td><tt class="type">point</tt></td>
+<td><code class="literal"><code class="function">point</code>(<code class="type">lseg</code>, <code class="type">lseg</code>)</code></td>
+<td><code class="type">point</code></td>
 <td>intersection</td>
-<td><tt class="literal">point(lseg '((-1,0),(1,0))', lseg '((-2,-2),(2,2))')</tt></td>
+<td><code class="literal">point(lseg '((-1,0),(1,0))', lseg '((-2,-2),(2,2))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">point</tt>(<tt class="type">polygon</tt>)</tt></td>
-<td><tt class="type">point</tt></td>
+<td><code class="literal"><code class="function">point</code>(<code class="type">polygon</code>)</code></td>
+<td><code class="type">point</code></td>
 <td>center of polygon</td>
-<td><tt class="literal">point(polygon '((0,0),(1,1),(2,0))')</tt></td>
+<td><code class="literal">point(polygon '((0,0),(1,1),(2,0))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">polygon</tt>(<tt class="type">box</tt>)</tt></td>
-<td><tt class="type">polygon</tt></td>
+<td><code class="literal"><code class="function">polygon</code>(<code class="type">box</code>)</code></td>
+<td><code class="type">polygon</code></td>
 <td>box to 4-point polygon</td>
-<td><tt class="literal">polygon(box '((0,0),(1,1))')</tt></td>
+<td><code class="literal">polygon(box '((0,0),(1,1))')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">polygon</tt>(<tt class="type">circle</tt>)</tt></td>
-<td><tt class="type">polygon</tt></td>
+<td><code class="literal"><code class="function">polygon</code>(<code class="type">circle</code>)</code></td>
+<td><code class="type">polygon</code></td>
 <td>circle to 12-point polygon</td>
-<td><tt class="literal">polygon(circle '((0,0),2.0)')</tt></td>
+<td><code class="literal">polygon(circle '((0,0),2.0)')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">polygon</tt>(<i class="replaceable"><tt>npts</tt></i>, <tt class="type">circle</tt>)</tt></td>
-<td><tt class="type">polygon</tt></td>
-<td>circle to <i class="replaceable"><tt>npts</tt></i>-point polygon</td>
-<td><tt class="literal">polygon(12, circle '((0,0),2.0)')</tt></td>
+<td><code class="literal"><code class="function">polygon</code>(<em class="replaceable"><code>npts</code></em>, <code class="type">circle</code>)</code></td>
+<td><code class="type">polygon</code></td>
+<td>circle to <em class="replaceable"><code>npts</code></em>-point polygon</td>
+<td><code class="literal">polygon(12, circle '((0,0),2.0)')</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">polygon</tt>(<tt class="type">path</tt>)</tt></td>
-<td><tt class="type">polygon</tt></td>
+<td><code class="literal"><code class="function">polygon</code>(<code class="type">path</code>)</code></td>
+<td><code class="type">polygon</code></td>
 <td>path to polygon</td>
-<td><tt class="literal">polygon(path '((0,0),(1,1),(2,0))')</tt></td>
+<td><code class="literal">polygon(path '((0,0),(1,1),(2,0))')</code></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>     It is possible to access the two component numbers of a <tt class="type">point</tt>
+<p>     It is possible to access the two component numbers of a <code class="type">point</code>
      as though it were an array with indices 0 and 1.  For example, if
-     <tt class="literal">t.p</tt> is a <tt class="type">point</tt> column then
-     <tt class="literal">SELECT p[0] FROM t</tt> retrieves the X coordinate and
-     <tt class="literal">UPDATE t SET p[1] = ...</tt> changes the Y coordinate.
-     In the same way, a value of type <tt class="type">box</tt> or <tt class="type">lseg</tt> may be treated
-     as an array of two <tt class="type">point</tt> values.
+     <code class="literal">t.p</code> is a <code class="type">point</code> column then
+     <code class="literal">SELECT p[0] FROM t</code> retrieves the X coordinate and
+     <code class="literal">UPDATE t SET p[1] = ...</code> changes the Y coordinate.
+     In the same way, a value of type <code class="type">box</code> or <code class="type">lseg</code> may be treated
+     as an array of two <code class="type">point</code> values.
     </p>
-<p>     The <tt class="function">area</tt> function works for the types
-     <tt class="type">box</tt>, <tt class="type">circle</tt>, and <tt class="type">path</tt>.
-     The <tt class="function">area</tt> function only works on the
-     <tt class="type">path</tt> data type if the points in the
-     <tt class="type">path</tt> are non-intersecting.  For example, the
-     <tt class="type">path</tt>
-     <tt class="literal">'((0,0),(0,1),(2,1),(2,2),(1,2),(1,0),(0,0))'::PATH</tt>
+<p>     The <code class="function">area</code> function works for the types
+     <code class="type">box</code>, <code class="type">circle</code>, and <code class="type">path</code>.
+     The <code class="function">area</code> function only works on the
+     <code class="type">path</code> data type if the points in the
+     <code class="type">path</code> are non-intersecting.  For example, the
+     <code class="type">path</code>
+     <code class="literal">'((0,0),(0,1),(2,1),(2,2),(1,2),(1,0),(0,0))'::PATH</code>
      won't work, however, the following visually identical
-     <tt class="type">path</tt>
-     <tt class="literal">'((0,0),(0,1),(1,1),(1,2),(2,2),(2,1),(1,1),(1,0),(0,0))'::PATH</tt>
+     <code class="type">path</code>
+     <code class="literal">'((0,0),(0,1),(1,1),(1,2),(2,2),(2,1),(1,1),(1,0),(0,0))'::PATH</code>
      will work.  If the concept of an intersecting versus
-     non-intersecting <tt class="type">path</tt> is confusing, draw both of the
-     above <tt class="type">path</tt>s side by side on a piece of graph paper.
+     non-intersecting <code class="type">path</code> is confusing, draw both of the
+     above <code class="type">path</code>s side by side on a piece of graph paper.
     </p>
 </div></body>
 </html>

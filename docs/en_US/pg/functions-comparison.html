@@ -4,19 +4,16 @@
 <title>9.2. Comparison Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="prev" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="next" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-comparison"></a>9.2. Comparison Operators</h2></div></div>
-<div></div>
-</div>
-<a name="id2540796"></a><p>    The usual comparison operators are available, shown in <a href="functions-comparison.html#functions-comparison-table" title="Table 9.1. Comparison Operators">Table 9.1, &#8220;Comparison Operators&#8221;</a>.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-comparison"></a>9.2. Comparison Operators</h2></div></div></div>
+<a name="id321152"></a><p>    The usual comparison operators are available, shown in <a href="functions-comparison.html#functions-comparison-table" title="Table 9.1. Comparison Operators">Table 9.1, &#8220;Comparison Operators&#8221;</a>.
    </p>
 <div class="table">
 <a name="functions-comparison-table"></a><p class="title"><b>Table 9.1. Comparison Operators</b></p>
@@ -31,29 +28,27 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">&lt;</tt></td>
+<td> <code class="literal">&lt;</code> </td>
 <td>less than</td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;</tt></td>
+<td> <code class="literal">&gt;</code> </td>
 <td>greater than</td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;=</tt></td>
+<td> <code class="literal">&lt;=</code> </td>
 <td>less than or equal to</td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;=</tt></td>
+<td> <code class="literal">&gt;=</code> </td>
 <td>greater than or equal to</td>
 </tr>
 <tr>
-<td><tt class="literal">=</tt></td>
+<td> <code class="literal">=</code> </td>
 <td>equal</td>
 </tr>
 <tr>
-<td>
-<tt class="literal">&lt;&gt;</tt> or <tt class="literal">!=</tt>
-</td>
+<td> <code class="literal">&lt;&gt;</code> or <code class="literal">!=</code> </td>
 <td>not equal</td>
 </tr>
 </tbody>
@@ -61,112 +56,112 @@
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>     The <tt class="literal">!=</tt> operator is converted to
-     <tt class="literal">&lt;&gt;</tt> in the parser stage.  It is not
-     possible to implement <tt class="literal">!=</tt> and
-     <tt class="literal">&lt;&gt;</tt> operators that do different things.
+<p>     The <code class="literal">!=</code> operator is converted to
+     <code class="literal">&lt;&gt;</code> in the parser stage.  It is not
+     possible to implement <code class="literal">!=</code> and
+     <code class="literal">&lt;&gt;</code> operators that do different things.
     </p>
 </div>
 <p>    Comparison operators are available for all data types where this
     makes sense.  All comparison operators are binary operators that
-    return values of type <tt class="type">boolean</tt>; expressions like
-    <tt class="literal">1 &lt; 2 &lt; 3</tt> are not valid (because there is
-    no <tt class="literal">&lt;</tt> operator to compare a Boolean value with
-    <tt class="literal">3</tt>).
+    return values of type <code class="type">boolean</code>; expressions like
+    <code class="literal">1 &lt; 2 &lt; 3</code> are not valid (because there is
+    no <code class="literal">&lt;</code> operator to compare a Boolean value with
+    <code class="literal">3</code>).
    </p>
-<p>    <a name="id2540973"></a>
+<p>    <a name="id321321"></a>
     In addition to the comparison operators, the special
-    <tt class="token">BETWEEN</tt> construct is available.<a name="id2540985"></a>
+    <code class="token">BETWEEN</code> construct is available.<a name="id321333"></a>
 </p>
-<pre class="synopsis"><i class="replaceable"><tt>a</tt></i> BETWEEN <i class="replaceable"><tt>x</tt></i> AND <i class="replaceable"><tt>y</tt></i></pre>
+<pre class="synopsis"><em class="replaceable"><code>a</code></em> BETWEEN <em class="replaceable"><code>x</code></em> AND <em class="replaceable"><code>y</code></em></pre>
 <p>
     is equivalent to
 </p>
-<pre class="synopsis"><i class="replaceable"><tt>a</tt></i> &gt;= <i class="replaceable"><tt>x</tt></i> AND <i class="replaceable"><tt>a</tt></i> &lt;= <i class="replaceable"><tt>y</tt></i></pre>
+<pre class="synopsis"><em class="replaceable"><code>a</code></em> &gt;= <em class="replaceable"><code>x</code></em> AND <em class="replaceable"><code>a</code></em> &lt;= <em class="replaceable"><code>y</code></em></pre>
 <p>
     Similarly,
 </p>
-<pre class="synopsis"><i class="replaceable"><tt>a</tt></i> NOT BETWEEN <i class="replaceable"><tt>x</tt></i> AND <i class="replaceable"><tt>y</tt></i></pre>
+<pre class="synopsis"><em class="replaceable"><code>a</code></em> NOT BETWEEN <em class="replaceable"><code>x</code></em> AND <em class="replaceable"><code>y</code></em></pre>
 <p>
     is equivalent to
 </p>
-<pre class="synopsis"><i class="replaceable"><tt>a</tt></i> &lt; <i class="replaceable"><tt>x</tt></i> OR <i class="replaceable"><tt>a</tt></i> &gt; <i class="replaceable"><tt>y</tt></i></pre>
+<pre class="synopsis"><em class="replaceable"><code>a</code></em> &lt; <em class="replaceable"><code>x</code></em> OR <em class="replaceable"><code>a</code></em> &gt; <em class="replaceable"><code>y</code></em></pre>
 <p>
     There is no difference between the two respective forms apart from
     the <span class="acronym">CPU</span> cycles required to rewrite the first one
     into the second one internally.
    </p>
-<p>    <a name="id2541063"></a>
-    <a name="id2541070"></a>
-    <a name="id2541077"></a>
-    <a name="id2541084"></a>
+<p>    <a name="id321408"></a>
+    <a name="id321415"></a>
+    <a name="id321422"></a>
+    <a name="id321428"></a>
     To check whether a value is or is not null, use the constructs
 </p>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> IS NULL
-<i class="replaceable"><tt>expression</tt></i> IS NOT NULL</pre>
+<pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS NULL
+<em class="replaceable"><code>expression</code></em> IS NOT NULL</pre>
 <p>
     or the equivalent, but nonstandard, constructs
 </p>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> ISNULL
-<i class="replaceable"><tt>expression</tt></i> NOTNULL</pre>
+<pre class="synopsis"><em class="replaceable"><code>expression</code></em> ISNULL
+<em class="replaceable"><code>expression</code></em> NOTNULL</pre>
 <p>
-    <a name="id2541117"></a>
+    <a name="id321460"></a>
    </p>
 <p>    Do <span class="emphasis"><em>not</em></span> write
-    <tt class="literal"><i class="replaceable"><tt>expression</tt></i> = NULL</tt>
-    because <tt class="literal">NULL</tt> is not &#8220;<span class="quote">equal to</span>&#8221;
-    <tt class="literal">NULL</tt>.  (The null value represents an unknown value,
+    <code class="literal"><em class="replaceable"><code>expression</code></em> = NULL</code>
+    because <code class="literal">NULL</code> is not &#8220;<span class="quote">equal to</span>&#8221;
+    <code class="literal">NULL</code>.  (The null value represents an unknown value,
     and it is not known whether two unknown values are equal.) This
     behavior conforms to the SQL standard.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>    Some applications may expect that
-    <tt class="literal"><i class="replaceable"><tt>expression</tt></i> = NULL</tt>
-    returns true if <i class="replaceable"><tt>expression</tt></i> evaluates to
+    <code class="literal"><em class="replaceable"><code>expression</code></em> = NULL</code>
+    returns true if <em class="replaceable"><code>expression</code></em> evaluates to
     the null value.  It is highly recommended that these applications
     be modified to comply with the SQL standard. However, if that
     cannot be done the <a href="runtime-config.html#guc-transform-null-equals">transform_null_equals</a>
     configuration variable is available. If it is enabled,
-    <span class="productname">PostgreSQL</span> will convert <tt class="literal">x =
-    NULL</tt> clauses to <tt class="literal">x IS NULL</tt>.  This was
+    <span class="productname">PostgreSQL</span> will convert <code class="literal">x =
+    NULL</code> clauses to <code class="literal">x IS NULL</code>.  This was
     the default behavior in <span class="productname">PostgreSQL</span>
     releases 6.5 through 7.1.
    </p>
 </div>
-<p>    <a name="id2541214"></a>
+<p>    <a name="id321551"></a>
     The ordinary comparison operators yield null (signifying &#8220;<span class="quote">unknown</span>&#8221;)
     when either input is null.  Another way to do comparisons is with the
-    <tt class="literal">IS DISTINCT FROM</tt> construct:
+    <code class="literal">IS DISTINCT FROM</code> construct:
 </p>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> IS DISTINCT FROM <i class="replaceable"><tt>expression</tt></i></pre>
+<pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS DISTINCT FROM <em class="replaceable"><code>expression</code></em></pre>
 <p>
-    For non-null inputs this is the same as the <tt class="literal">&lt;&gt;</tt> operator.
+    For non-null inputs this is the same as the <code class="literal">&lt;&gt;</code> operator.
     However, when both inputs are null it will return false, and when just
     one input is null it will return true.  Thus it effectively acts as though
     null were a normal data value, rather than &#8220;<span class="quote">unknown</span>&#8221;.
    </p>
-<p>    <a name="id2541261"></a>
-    <a name="id2541268"></a>
-    <a name="id2541274"></a>
-    <a name="id2541281"></a>
-    <a name="id2541288"></a>
-    <a name="id2541295"></a>
+<p>    <a name="id321594"></a>
+    <a name="id321600"></a>
+    <a name="id321607"></a>
+    <a name="id321614"></a>
+    <a name="id321621"></a>
+    <a name="id321628"></a>
     Boolean values can also be tested using the constructs
 </p>
-<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> IS TRUE
-<i class="replaceable"><tt>expression</tt></i> IS NOT TRUE
-<i class="replaceable"><tt>expression</tt></i> IS FALSE
-<i class="replaceable"><tt>expression</tt></i> IS NOT FALSE
-<i class="replaceable"><tt>expression</tt></i> IS UNKNOWN
-<i class="replaceable"><tt>expression</tt></i> IS NOT UNKNOWN</pre>
+<pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS TRUE
+<em class="replaceable"><code>expression</code></em> IS NOT TRUE
+<em class="replaceable"><code>expression</code></em> IS FALSE
+<em class="replaceable"><code>expression</code></em> IS NOT FALSE
+<em class="replaceable"><code>expression</code></em> IS UNKNOWN
+<em class="replaceable"><code>expression</code></em> IS NOT UNKNOWN</pre>
 <p>
     These will always return true or false, never a null value, even when the
     operand is null.
     A null input is treated as the logical value &#8220;<span class="quote">unknown</span>&#8221;.
-    Notice that <tt class="literal">IS UNKNOWN</tt> and <tt class="literal">IS NOT UNKNOWN</tt> are
-    effectively the same as <tt class="literal">IS NULL</tt> and
-    <tt class="literal">IS NOT NULL</tt>, respectively, except that the input
+    Notice that <code class="literal">IS UNKNOWN</code> and <code class="literal">IS NOT UNKNOWN</code> are
+    effectively the same as <code class="literal">IS NULL</code> and
+    <code class="literal">IS NOT NULL</code>, respectively, except that the input
     expression must be of Boolean type.
    </p>
 </div></body>

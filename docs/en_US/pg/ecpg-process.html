@@ -4,18 +4,15 @@
 <title>29.11. Processing Embedded SQL Programs</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-<link rel="previous" href="ecpg-include.html" title="29.10. Including Files">
+<link rel="prev" href="ecpg-include.html" title="29.10. Including Files">
 <link rel="next" href="ecpg-library.html" title="29.12. Library Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-process"></a>29.11. Processing Embedded SQL Programs</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-process"></a>29.11. Processing Embedded SQL Programs</h2></div></div></div>
 <p>   Now that you have an idea how to form embedded SQL C programs, you
    probably want to know how to compile them.  Before compiling you
    run the file through the embedded <span class="acronym">SQL</span>
@@ -27,19 +24,19 @@
    the <span class="application">libpq</span> interface, and put the result
    in the arguments specified for output.
   </p>
-<p>   The preprocessor program is called <tt class="filename">ecpg</tt> and is
+<p>   The preprocessor program is called <code class="filename">ecpg</code> and is
    included in a normal <span class="productname">PostgreSQL</span> installation.
    Embedded SQL programs are typically named with an extension
-   <tt class="filename">.pgc</tt>.  If you have a program file called
-   <tt class="filename">prog1.pgc</tt>, you can preprocess it by simply
+   <code class="filename">.pgc</code>.  If you have a program file called
+   <code class="filename">prog1.pgc</code>, you can preprocess it by simply
    calling
 </p>
 <pre class="programlisting">ecpg prog1.pgc</pre>
 <p>
-   This will create a file called <tt class="filename">prog1.c</tt>.  If
+   This will create a file called <code class="filename">prog1.c</code>.  If
    your input files do not follow the suggested naming pattern, you
    can specify the output file explicitly using the
-   <tt class="option">-o</tt> option.
+   <code class="option">-o</code> option.
   </p>
 <p>   The preprocessed file can be compiled normally, for example:
 </p>
@@ -49,16 +46,16 @@
    <span class="productname">PostgreSQL</span> installation, so if you installed
    <span class="productname">PostgreSQL</span> in a location that is not searched by
    default, you have to add an option such as
-   <tt class="literal">-I/usr/local/pgsql/include</tt> to the compilation
+   <code class="literal">-I/usr/local/pgsql/include</code> to the compilation
    command line.
   </p>
 <p>   To link an embedded SQL program, you need to include the
-   <tt class="filename">libecpg</tt> library, like so:
+   <code class="filename">libecpg</code> library, like so:
 </p>
 <pre class="programlisting">cc -o myprog prog1.o prog2.o ... -lecpg</pre>
 <p>
    Again, you might have to add an option like
-   <tt class="literal">-L/usr/local/pgsql/lib</tt> to that command line.
+   <code class="literal">-L/usr/local/pgsql/lib</code> to that command line.
   </p>
 <p>   If you manage the build process of a larger project using
    <span class="application">make</span>, it may be convenient to include
@@ -70,12 +67,12 @@
         $(ECPG) $&lt;</pre>
 <p>
   </p>
-<p>   The complete syntax of the <tt class="command">ecpg</tt> command is
+<p>   The complete syntax of the <code class="command">ecpg</code> command is
    detailed in <a href="app-ecpg.html" title="ecpg"><span class="refentrytitle"><span class="application">ecpg</span></span></a>.
   </p>
 <p>   The <span class="application">ecpg</span> library is thread-safe if it is built
-   using the <tt class="option">--enable-thread-safety</tt> command-line option to
-   <tt class="filename">configure</tt>.  (You might need to use other threading
+   using the <code class="option">--enable-thread-safety</code> command-line option to
+   <code class="filename">configure</code>.  (You might need to use other threading
    command-line options to compile your client code.)
   </p>
 </div></body>

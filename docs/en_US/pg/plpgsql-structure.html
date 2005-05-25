@@ -4,35 +4,32 @@
 <title>35.3. Structure of PL/pgSQL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
-<link rel="previous" href="plpgsql-development-tips.html" title="35.2. Tips for Developing in PL/pgSQL">
+<link rel="prev" href="plpgsql-development-tips.html" title="35.2. Tips for Developing in PL/pgSQL">
 <link rel="next" href="plpgsql-declarations.html" title="35.4. Declarations">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-structure"></a>35.3. Structure of <span class="application">PL/pgSQL</span></h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-structure"></a>35.3. Structure of <span class="application">PL/pgSQL</span></h2></div></div></div>
 <p>   <span class="application">PL/pgSQL</span> is a block-structured language.
    The complete text of a function definition must be a
-   <i class="firstterm">block</i>. A block is defined as:
+   <em class="firstterm">block</em>. A block is defined as:
 
 </p>
-<pre class="synopsis">[<span class="optional"> &lt;&lt;<i class="replaceable"><tt>label</tt></i>&gt;&gt; </span>]
+<pre class="synopsis">[<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
 [<span class="optional"> DECLARE
-    <i class="replaceable"><tt>declarations</tt></i> </span>]
+    <em class="replaceable"><code>declarations</code></em> </span>]
 BEGIN
-    <i class="replaceable"><tt>statements</tt></i>
+    <em class="replaceable"><code>statements</code></em>
 END;</pre>
 <p>
     </p>
 <p>     Each declaration and each statement within a block is terminated
      by a semicolon.  A block that appears within another block must
-     have a semicolon after <tt class="literal">END</tt>, as shown above;
-     however the final <tt class="literal">END</tt> that
+     have a semicolon after <code class="literal">END</code>, as shown above;
+     however the final <code class="literal">END</code> that
      concludes a function body does not require a semicolon.
     </p>
 <p>     All key words and identifiers can be written in mixed upper and
@@ -40,15 +37,15 @@ END;</pre>
      unless double-quoted.
     </p>
 <p>     There are two types of comments in <span class="application">PL/pgSQL</span>. A double
-     dash (<tt class="literal">--</tt>) starts a comment that extends to the end of
-     the line. A <tt class="literal">/*</tt> starts a block comment that extends to
-     the next occurrence of <tt class="literal">*/</tt>.  Block comments cannot be
+     dash (<code class="literal">--</code>) starts a comment that extends to the end of
+     the line. A <code class="literal">/*</code> starts a block comment that extends to
+     the next occurrence of <code class="literal">*/</code>.  Block comments cannot be
      nested, but double dash comments can be enclosed into a block comment and
-     a double dash can hide the block comment delimiters <tt class="literal">/*</tt>
-     and <tt class="literal">*/</tt>.
+     a double dash can hide the block comment delimiters <code class="literal">/*</code>
+     and <code class="literal">*/</code>.
     </p>
 <p>     Any statement in the statement section of a block
-     can be a <i class="firstterm">subblock</i>.  Subblocks can be used for
+     can be a <em class="firstterm">subblock</em>.  Subblocks can be used for
      logical grouping or to localize variables to a small group
      of statements.
     </p>
@@ -79,14 +76,14 @@ $$ LANGUAGE plpgsql;</pre>
 <p>
     </p>
 <p>     It is important not to confuse the use of
-     <tt class="command">BEGIN</tt>/<tt class="command">END</tt> for grouping statements in
+     <code class="command">BEGIN</code>/<code class="command">END</code> for grouping statements in
      <span class="application">PL/pgSQL</span> with the database commands for transaction
-     control.  <span class="application">PL/pgSQL</span>'s <tt class="command">BEGIN</tt>/<tt class="command">END</tt>
+     control.  <span class="application">PL/pgSQL</span>'s <code class="command">BEGIN</code>/<code class="command">END</code>
      are only for grouping; they do not start or end a transaction.
      Functions and trigger procedures are always executed within a transaction
      established by an outer query [mdash ] they cannot start or commit that
      transaction, since there would be no context for them to execute in.
-     However, a block containing an <tt class="literal">EXCEPTION</tt> clause effectively
+     However, a block containing an <code class="literal">EXCEPTION</code> clause effectively
      forms a subtransaction that can be rolled back without affecting the
      outer transaction.  For more about that see <a href="plpgsql-control-structures.html#plpgsql-error-trapping" title="35.7.5. Trapping Errors">Section 35.7.5, &#8220;Trapping Errors&#8221;</a>.
     </p>

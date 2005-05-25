@@ -4,99 +4,96 @@
 <title>ALTER SEQUENCE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-alterschema.html" title="ALTER SCHEMA">
+<link rel="prev" href="sql-alterschema.html" title="ALTER SCHEMA">
 <link rel="next" href="sql-altertable.html" title="ALTER TABLE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-altersequence"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-altersequence"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>   ALTER SEQUENCE
    &#8212;    change the definition of a sequence generator
   </p>
 </div>
-<a name="id2667469"></a><div class="refsynopsisdiv">
+<a name="id437927"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">ALTER SEQUENCE <i class="replaceable"><tt>name</tt></i> [ INCREMENT [ BY ] <i class="replaceable"><tt>increment</tt></i> ]
-    [ MINVALUE <i class="replaceable"><tt>minvalue</tt></i> | NO MINVALUE ] [ MAXVALUE <i class="replaceable"><tt>maxvalue</tt></i> | NO MAXVALUE ]
-    [ RESTART [ WITH ] <i class="replaceable"><tt>start</tt></i> ] [ CACHE <i class="replaceable"><tt>cache</tt></i> ] [ [ NO ] CYCLE ]
+<pre class="synopsis">ALTER SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
+    [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
+    [ RESTART [ WITH ] <em class="replaceable"><code>start</code></em> ] [ CACHE <em class="replaceable"><code>cache</code></em> ] [ [ NO ] CYCLE ]
   </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667524"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER SEQUENCE</tt> changes the parameters of an existing
+<a name="id437980"></a><h2>Description</h2>
+<p>   <code class="command">ALTER SEQUENCE</code> changes the parameters of an existing
    sequence generator.  Any parameter not specifically set in the
-   <tt class="command">ALTER SEQUENCE</tt> command retains its prior setting.
+   <code class="command">ALTER SEQUENCE</code> command retains its prior setting.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667544"></a><h2>Parameters</h2>
+<a name="id437998"></a><h2>Parameters</h2>
 <p>    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name (optionally schema-qualified) of a sequence to be altered.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>increment</tt></i></span></dt>
-<dd><p>        The clause <tt class="literal">INCREMENT BY <i class="replaceable"><tt>increment</tt></i></tt> is
+<dt><span class="term"><em class="replaceable"><code>increment</code></em></span></dt>
+<dd><p>        The clause <code class="literal">INCREMENT BY <em class="replaceable"><code>increment</code></em></code> is
         optional. A positive value will make an ascending sequence, a
         negative one a descending sequence.  If unspecified, the old
         increment value will be maintained.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><i xmlns="" class="replaceable"><tt>minvalue</tt></i></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NO MINVALUE</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>minvalue</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NO MINVALUE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
-<dd><p>        The optional clause <tt class="literal">MINVALUE <i class="replaceable"><tt>minvalue</tt></i></tt> determines
-        the minimum value a sequence can generate. If <tt class="literal">NO
-        MINVALUE</tt> is specified, the defaults of 1 and
+<dd><p>        The optional clause <code class="literal">MINVALUE <em class="replaceable"><code>minvalue</code></em></code> determines
+        the minimum value a sequence can generate. If <code class="literal">NO
+        MINVALUE</code> is specified, the defaults of 1 and
         -2<sup>63</sup>-1 for ascending and descending sequences,
         respectively, will be used.  If neither option is specified,
         the current minimum value will be maintained.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><i xmlns="" class="replaceable"><tt>maxvalue</tt></i></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NO MAXVALUE</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>maxvalue</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NO MAXVALUE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
-<dd><p>        The optional clause <tt class="literal">MAXVALUE <i class="replaceable"><tt>maxvalue</tt></i></tt> determines
-        the maximum value for the sequence. If <tt class="literal">NO
-        MAXVALUE</tt> is specified, the defaults are
+<dd><p>        The optional clause <code class="literal">MAXVALUE <em class="replaceable"><code>maxvalue</code></em></code> determines
+        the maximum value for the sequence. If <code class="literal">NO
+        MAXVALUE</code> is specified, the defaults are
         2<sup>63</sup>-1 and -1 for ascending and descending
         sequences, respectively, will be used.  If neither option is
         specified, the current maximum value will be maintained.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>start</tt></i></span></dt>
-<dd><p>        The optional clause <tt class="literal">RESTART WITH <i class="replaceable"><tt>start</tt></i></tt> changes the
+<dt><span class="term"><em class="replaceable"><code>start</code></em></span></dt>
+<dd><p>        The optional clause <code class="literal">RESTART WITH <em class="replaceable"><code>start</code></em></code> changes the
         current value of the sequence.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>cache</tt></i></span></dt>
-<dd><p>        The clause <tt class="literal">CACHE <i class="replaceable"><tt>cache</tt></i></tt> enables
+<dt><span class="term"><em class="replaceable"><code>cache</code></em></span></dt>
+<dd><p>        The clause <code class="literal">CACHE <em class="replaceable"><code>cache</code></em></code> enables
         sequence numbers to be preallocated and stored in memory for
         faster access. The minimum value is 1 (only one value can be
         generated at a time, i.e., no cache).  If unspecified, the old
         cache value will be maintained.
        </p></dd>
 <dt><span class="term">CYCLE</span></dt>
-<dd><p>        The optional <tt class="literal">CYCLE</tt> key word may be used to enable
+<dd><p>        The optional <code class="literal">CYCLE</code> key word may be used to enable
         the sequence to wrap around when the
-        <i class="replaceable"><tt>maxvalue</tt></i> or
-        <i class="replaceable"><tt>minvalue</tt></i> has been
+        <em class="replaceable"><code>maxvalue</code></em> or
+        <em class="replaceable"><code>minvalue</code></em> has been
         reached by
         an ascending or descending sequence respectively. If the limit is
         reached, the next number generated will be the
-        <i class="replaceable"><tt>minvalue</tt></i> or
-        <i class="replaceable"><tt>maxvalue</tt></i>,
+        <em class="replaceable"><code>minvalue</code></em> or
+        <em class="replaceable"><code>maxvalue</code></em>,
         respectively.
        </p></dd>
 <dt><span class="term">NO CYCLE</span></dt>
-<dd><p>        If the optional <tt class="literal">NO CYCLE</tt> key word is
-        specified, any calls to <tt class="function">nextval</tt> after the
+<dd><p>        If the optional <code class="literal">NO CYCLE</code> key word is
+        specified, any calls to <code class="function">nextval</code> after the
         sequence has reached its maximum value will return an error.
-        If neither <tt class="literal">CYCLE</tt> or <tt class="literal">NO
-        CYCLE</tt> are specified, the old cycle behaviour will be
+        If neither <code class="literal">CYCLE</code> or <code class="literal">NO
+        CYCLE</code> are specified, the old cycle behaviour will be
         maintained.
        </p></dd>
 </dl></div>
@@ -104,29 +101,29 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667793"></a><h2>Examples</h2>
-<p>   Restart a sequence called <tt class="literal">serial</tt>, at 105:
+<a name="id438231"></a><h2>Examples</h2>
+<p>   Restart a sequence called <code class="literal">serial</code>, at 105:
 </p>
 <pre class="programlisting">ALTER SEQUENCE serial RESTART WITH 105;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667812"></a><h2>Notes</h2>
+<a name="id438249"></a><h2>Notes</h2>
 <p>   To avoid blocking of concurrent transactions that obtain numbers from the
-   same sequence, <tt class="command">ALTER SEQUENCE</tt> is never rolled back;
+   same sequence, <code class="command">ALTER SEQUENCE</code> is never rolled back;
    the changes take effect immediately and are not reversible.
   </p>
-<p>   <tt class="command">ALTER SEQUENCE</tt> will not immediately affect
-   <tt class="literal">nextval</tt> results in backends,
+<p>   <code class="command">ALTER SEQUENCE</code> will not immediately affect
+   <code class="literal">nextval</code> results in backends,
    other than the current one, that have preallocated (cached) sequence
    values. They will use up all cached values prior to noticing the changed
    sequence parameters.  The current backend will be affected immediately.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667845"></a><h2>Compatibility</h2>
-<p>   <tt class="command">ALTER SEQUENCE</tt> conforms with <span class="acronym">SQL:2003</span>.
+<a name="id438279"></a><h2>Compatibility</h2>
+<p>   <code class="command">ALTER SEQUENCE</code> conforms with <span class="acronym">SQL:2003</span>.
   </p>
 </div>
 </div></body>

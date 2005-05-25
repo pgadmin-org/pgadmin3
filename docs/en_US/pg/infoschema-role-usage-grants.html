@@ -4,29 +4,26 @@
 <title>30.24. role_usage_grants</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="infoschema-role-table-grants.html" title="30.23. role_table_grants">
+<link rel="prev" href="infoschema-role-table-grants.html" title="30.23. role_table_grants">
 <link rel="next" href="infoschema-routine-privileges.html" title="30.25. routine_privileges">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-role-usage-grants"></a>30.24. <tt class="literal">role_usage_grants</tt></h2></div></div>
-<div></div>
-</div>
-<p>   The view <tt class="literal">role_usage_grants</tt> is meant to identify
-   <tt class="literal">USAGE</tt> privileges granted on various kinds of
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-role-usage-grants"></a>30.24. <code class="literal">role_usage_grants</code></h2></div></div></div>
+<p>   The view <code class="literal">role_usage_grants</code> is meant to identify
+   <code class="literal">USAGE</code> privileges granted on various kinds of
    objects to a group that the current user is a member of.  In
    <span class="productname">PostgreSQL</span>, this currently only applies
    to domains, and since domains do not have real privileges in
    <span class="productname">PostgreSQL</span>, this view is empty.  Further
-   information can be found under <tt class="literal">usage_privileges</tt>.
+   information can be found under <code class="literal">usage_privileges</code>.
    In the future, this view may contain more useful information.
   </p>
 <div class="table">
-<a name="id2628060"></a><p class="title"><b>Table 30.22. <tt class="literal">role_usage_grants</tt> Columns</b></p>
+<a name="id401967"></a><p class="title"><b>Table 30.22. <code class="literal">role_usage_grants</code> Columns</b></p>
 <table summary="role_usage_grants Columns" border="1">
 <colgroup>
 <col>
@@ -40,46 +37,46 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">grantor</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">grantor</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>In the future, the name of the user that granted the privilege</td>
 </tr>
 <tr>
-<td><tt class="literal">grantee</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">grantee</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>In the future, the name of the group that the privilege was granted to</td>
 </tr>
 <tr>
-<td><tt class="literal">object_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the database containing the object (always the current database)</td>
 </tr>
 <tr>
-<td><tt class="literal">object_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the schema containing the object</td>
 </tr>
 <tr>
-<td><tt class="literal">object_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the object</td>
 </tr>
 <tr>
-<td><tt class="literal">object_type</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">object_type</code></td>
+<td><code class="type">character_data</code></td>
 <td>In the future, the type of the object</td>
 </tr>
 <tr>
-<td><tt class="literal">privilege_type</tt></td>
-<td><tt class="type">character_data</tt></td>
-<td>Always <tt class="literal">USAGE</tt>
+<td><code class="literal">privilege_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Always <code class="literal">USAGE</code>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">is_grantable</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">is_grantable</code></td>
+<td><code class="type">character_data</code></td>
 <td>
-<tt class="literal">YES</tt> if the privilege is grantable, <tt class="literal">NO</tt> if not</td>
+<code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
 </tr>
 </tbody>
 </table>

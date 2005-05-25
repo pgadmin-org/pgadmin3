@@ -4,42 +4,39 @@
 <title>16.2. Creating a Database Cluster</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
-<link rel="previous" href="runtime.html" title="Chapter 16. Server Run-time Environment">
+<link rel="prev" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="next" href="postmaster-start.html" title="16.3. Starting the Database Server">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="creating-cluster"></a>16.2. Creating a Database Cluster</h2></div></div>
-<div></div>
-</div>
-<a name="id2579437"></a><a name="id2579442"></a><p>   Before you can do anything, you must initialize a database storage
-   area on disk. We call this a <i class="firstterm">database cluster</i>.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="creating-cluster"></a>16.2. Creating a Database Cluster</h2></div></div></div>
+<a name="id357495"></a><a name="id357500"></a><p>   Before you can do anything, you must initialize a database storage
+   area on disk. We call this a <em class="firstterm">database cluster</em>.
    (<span class="acronym">SQL</span> uses the term catalog cluster.) A
    database cluster is a collection of databases that is managed by a
    single instance of a running database server. After initialization, a
    database cluster will contain a database named
-   <tt class="literal">template1</tt>. As the name suggests, this will be used
+   <code class="literal">template1</code>. As the name suggests, this will be used
    as a template for subsequently created databases; it should not be
    used for actual work.  (See <a href="managing-databases.html" title="Chapter 18. Managing Databases">Chapter 18, <i>Managing Databases</i></a> for
    information about creating new databases within a cluster.)
   </p>
 <p>   In file system terms, a database cluster will be a single directory
-   under which all data will be stored. We call this the <i class="firstterm">data
-   directory</i> or <i class="firstterm">data area</i>. It is
+   under which all data will be stored. We call this the <em class="firstterm">data
+   directory</em> or <em class="firstterm">data area</em>. It is
    completely up to you where you choose to store your data.  There is no
    default, although locations such as
-   <tt class="filename">/usr/local/pgsql/data</tt> or
-   <tt class="filename">/var/lib/pgsql/data</tt> are popular. To initialize a
-   database cluster, use the command <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,<a name="id2579516"></a> which is
+   <code class="filename">/usr/local/pgsql/data</code> or
+   <code class="filename">/var/lib/pgsql/data</code> are popular. To initialize a
+   database cluster, use the command <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,<a name="id357566"></a> which is
    installed with <span class="productname">PostgreSQL</span>. The desired
    file system location of your database cluster is indicated by the
-   <tt class="option">-D</tt> option, for example
+   <code class="option">-D</code> option, for example
 </p>
-<pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>initdb -D /usr/local/pgsql/data</tt></b></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>initdb -D /usr/local/pgsql/data</code></strong></pre>
 <p>
    Note that you must execute this command while logged into the
    <span class="productname">PostgreSQL</span> user account, which is
@@ -47,12 +44,12 @@
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>    As an alternative to the <tt class="option">-D</tt> option, you can set
-    the environment variable <tt class="envar">PGDATA</tt>.
-    <a name="id2579570"></a>
+<p>    As an alternative to the <code class="option">-D</code> option, you can set
+    the environment variable <code class="envar">PGDATA</code>.
+    <a name="id357616"></a>
    </p>
 </div>
-<p>   <tt class="command">initdb</tt> will attempt to create the directory you
+<p>   <code class="command">initdb</code> will attempt to create the directory you
    specify if it does not already exist. It is likely that it will not
    have the permission to do so (if you followed our advice and created
    an unprivileged account). In that case you should create the
@@ -60,17 +57,17 @@
    <span class="productname">PostgreSQL</span> user. Here is how this might
    be done:
 </p>
-<pre class="screen">root# <b class="userinput"><tt>mkdir /usr/local/pgsql/data</tt></b>
-root# <b class="userinput"><tt>chown postgres /usr/local/pgsql/data</tt></b>
-root# <b class="userinput"><tt>su postgres</tt></b>
-postgres$ <b class="userinput"><tt>initdb -D /usr/local/pgsql/data</tt></b></pre>
+<pre class="screen">root# <strong class="userinput"><code>mkdir /usr/local/pgsql/data</code></strong>
+root# <strong class="userinput"><code>chown postgres /usr/local/pgsql/data</code></strong>
+root# <strong class="userinput"><code>su postgres</code></strong>
+postgres$ <strong class="userinput"><code>initdb -D /usr/local/pgsql/data</code></strong></pre>
 <p>
   </p>
-<p>   <tt class="command">initdb</tt> will refuse to run if the data directory
+<p>   <code class="command">initdb</code> will refuse to run if the data directory
    looks like it has already been initialized.</p>
 <p>   Because the data directory contains all the data stored in the
    database, it is essential that it be secured from unauthorized
-   access. <tt class="command">initdb</tt> therefore revokes access
+   access. <code class="command">initdb</code> therefore revokes access
    permissions from everyone but the
    <span class="productname">PostgreSQL</span> user.
   </p>
@@ -78,30 +75,30 @@ postgres$ <b class="userinput"><tt>initdb -D /usr/local/pgsql/data</tt></b></pre
    client authentication setup allows any local user to connect to the
    database and even become the database superuser. If you do not
    trust other local users, we recommend you use one of
-   <tt class="command">initdb</tt>'s <tt class="option">-W</tt>, <tt class="option">--pwprompt</tt>
-   or <tt class="option">--pwfile</tt> options to assign a password to the
-   database superuser.<a name="id2579678"></a>  Also, specify <tt class="option">-A md5</tt> or
-   <tt class="option">-A password</tt> so that the default <tt class="literal">trust</tt> authentication
-   mode is not used; or modify the generated <tt class="filename">pg_hba.conf</tt>
-   file after running <tt class="command">initdb</tt>,
+   <code class="command">initdb</code>'s <code class="option">-W</code>, <code class="option">--pwprompt</code>
+   or <code class="option">--pwfile</code> options to assign a password to the
+   database superuser.<a name="id357715"></a>  Also, specify <code class="option">-A md5</code> or
+   <code class="option">-A password</code> so that the default <code class="literal">trust</code> authentication
+   mode is not used; or modify the generated <code class="filename">pg_hba.conf</code>
+   file after running <code class="command">initdb</code>,
    <span class="emphasis"><em>before</em></span> you start the server for the first time. (Other
-   reasonable approaches include using <tt class="literal">ident</tt> authentication
+   reasonable approaches include using <code class="literal">ident</code> authentication
    or file system permissions to restrict connections. See <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a> for more information.)
   </p>
-<p>   <tt class="command">initdb</tt> also initializes the default
-   locale<a name="id2579744"></a> for the database cluster.
+<p>   <code class="command">initdb</code> also initializes the default
+   locale<a name="id357776"></a> for the database cluster.
    Normally, it will just take the locale settings in the environment
    and apply them to the initialized database.  It is possible to
    specify a different locale for the database; more information about
    that can be found in <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a>.  The sort order used
    within a particular database cluster is set by
-   <tt class="command">initdb</tt> and cannot be changed later, short of
-   dumping all data, rerunning <tt class="command">initdb</tt>, and reloading
+   <code class="command">initdb</code> and cannot be changed later, short of
+   dumping all data, rerunning <code class="command">initdb</code>, and reloading
    the data. There is also a performance impact for using locales
-   other than <tt class="literal">C</tt> or <tt class="literal">POSIX</tt>. Therefore, it is
+   other than <code class="literal">C</code> or <code class="literal">POSIX</code>. Therefore, it is
    important to make this choice correctly the first time.
   </p>
-<p>   <tt class="command">initdb</tt> also sets the default character set encoding
+<p>   <code class="command">initdb</code> also sets the default character set encoding
    for the database cluster.  Normally this should be chosen to match the
    locale setting.  For details see <a href="multibyte.html" title="20.2. Character Set Support">Section 20.2, &#8220;Character Set Support&#8221;</a>.
   </p>

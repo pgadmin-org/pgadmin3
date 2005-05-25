@@ -4,44 +4,41 @@
 <title>SPI_freetuptable</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi-memory.html" title="39.3. Memory Management">
-<link rel="previous" href="spi-spi-freetuple.html" title="SPI_freetuple">
+<link rel="prev" href="spi-spi-freetuple.html" title="SPI_freetuple">
 <link rel="next" href="spi-spi-freeplan.html" title="SPI_freeplan">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-freetupletable"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="spi-spi-freetupletable"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
-<p>SPI_freetuptable &#8212; free a row set created by <tt class="function">SPI_execute</tt> or a similar
+<p>SPI_freetuptable &#8212; free a row set created by <code class="function">SPI_execute</code> or a similar
   function</p>
 </div>
-<a name="id2664191"></a><div class="refsynopsisdiv">
+<a name="id434851"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">void SPI_freetuptable(SPITupleTable * <i class="parameter"><tt>tuptable</tt></i>)</pre>
+<pre class="synopsis">void SPI_freetuptable(SPITupleTable * <em class="parameter"><code>tuptable</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664209"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_freetuptable</tt> frees a row set created by a
+<a name="id434868"></a><h2>Description</h2>
+<p>   <code class="function">SPI_freetuptable</code> frees a row set created by a
    prior SPI command execution function, such as
-   <tt class="function">SPI_execute</tt>.  Therefore, this function is usually called
-   with the global variable <tt class="varname">SPI_tupletable</tt> as
+   <code class="function">SPI_execute</code>.  Therefore, this function is usually called
+   with the global variable <code class="varname">SPI_tupletable</code> as
    argument.
   </p>
 <p>   This function is useful if a SPI procedure needs to execute
    multiple commands and does not want to keep the results of earlier
    commands around until it ends.  Note that any unfreed row sets will
-   be freed anyway at <tt class="function">SPI_finish</tt>.
+   be freed anyway at <code class="function">SPI_finish</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664245"></a><h2>Arguments</h2>
+<a name="id434901"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">SPITupleTable * <i class="parameter"><tt>tuptable</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">SPITupleTable * <em class="parameter"><code>tuptable</code></em></code></span></dt>
 <dd><p>      pointer to row set to free
      </p></dd>
 </dl></div>

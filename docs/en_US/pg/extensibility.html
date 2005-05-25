@@ -4,18 +4,15 @@
 <title>48.2. Extensibility</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="gist.html" title="Chapter 48. GiST Indexes">
-<link rel="previous" href="gist.html" title="Chapter 48. GiST Indexes">
+<link rel="prev" href="gist.html" title="Chapter 48. GiST Indexes">
 <link rel="next" href="implementation.html" title="48.3. Implementation">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="extensibility"></a>48.2. Extensibility</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="extensibility"></a>48.2. Extensibility</h2></div></div></div>
 <p>   Traditionally, implementing a new index access method meant a lot of
    difficult work.  It was necessary to understand the inner workings of the
    database, such as the lock manager and Write-Ahead Log.  The
@@ -30,7 +27,7 @@
    and R-trees. That means that you can use
    <span class="productname">PostgreSQL</span> to build a B+-tree or R-tree over any
    data type you want. But B+-trees only support range predicates
-   (<tt class="literal">&lt;</tt>, <tt class="literal">=</tt>, <tt class="literal">&gt;</tt>),
+   (<code class="literal">&lt;</code>, <code class="literal">=</code>, <code class="literal">&gt;</code>),
    and R-trees only support n-D range queries (contains, contained, equals).
  </p>
 <p>   So if you index, say, an image collection with a

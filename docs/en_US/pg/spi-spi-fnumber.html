@@ -4,53 +4,50 @@
 <title>SPI_fnumber</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi-interface-support.html" title="39.2. Interface Support Functions">
-<link rel="previous" href="spi-spi-fname.html" title="SPI_fname">
+<link rel="prev" href="spi-spi-fname.html" title="SPI_fname">
 <link rel="next" href="spi-spi-getvalue.html" title="SPI_getvalue">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-fnumber"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="spi-spi-fnumber"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>SPI_fnumber &#8212; determine the column number for the specified column name</p>
 </div>
-<a name="id2662341"></a><div class="refsynopsisdiv">
+<a name="id433010"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">int SPI_fnumber(TupleDesc <i class="parameter"><tt>rowdesc</tt></i>, const char * <i class="parameter"><tt>colname</tt></i>)</pre>
+<pre class="synopsis">int SPI_fnumber(TupleDesc <em class="parameter"><code>rowdesc</code></em>, const char * <em class="parameter"><code>colname</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2662365"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_fnumber</tt> returns the column number for the
+<a name="id433034"></a><h2>Description</h2>
+<p>   <code class="function">SPI_fnumber</code> returns the column number for the
    column with the specified name.
   </p>
-<p>   If <i class="parameter"><tt>colname</tt></i> refers to a system column (e.g.,
-   <tt class="literal">oid</tt>) then the appropriate negative column number will
+<p>   If <em class="parameter"><code>colname</code></em> refers to a system column (e.g.,
+   <code class="literal">oid</code>) then the appropriate negative column number will
    be returned.  The caller should be careful to test the return value
-   for exact equality to <tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt> to
+   for exact equality to <code class="symbol">SPI_ERROR_NOATTRIBUTE</code> to
    detect an error; testing the result for less than or equal to 0 is
    not correct unless system columns should be rejected.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2662400"></a><h2>Arguments</h2>
+<a name="id433066"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">TupleDesc <i class="parameter"><tt>rowdesc</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">TupleDesc <em class="parameter"><code>rowdesc</code></em></code></span></dt>
 <dd><p>      input row description
      </p></dd>
-<dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>colname</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">const char * <em class="parameter"><code>colname</code></em></code></span></dt>
 <dd><p>      column name
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2662436"></a><h2>Return Value</h2>
+<a name="id433100"></a><h2>Return Value</h2>
 <p>   Column number (count starts at 1), or
-   <tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt> if the named column was not
+   <code class="symbol">SPI_ERROR_NOATTRIBUTE</code> if the named column was not
    found.
   </p>
 </div>

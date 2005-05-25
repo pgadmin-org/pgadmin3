@@ -4,24 +4,21 @@
 <title>41.29. pg_trigger</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-tablespace.html" title="41.28. pg_tablespace">
+<link rel="prev" href="catalog-pg-tablespace.html" title="41.28. pg_tablespace">
 <link rel="next" href="catalog-pg-type.html" title="41.30. pg_type">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-trigger"></a>41.29. <tt class="structname">pg_trigger</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2734577"></a><p>   The catalog <tt class="structname">pg_trigger</tt> stores triggers on tables.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-trigger"></a>41.29. <code class="structname">pg_trigger</code></h2></div></div></div>
+<a name="id500806"></a><p>   The catalog <code class="structname">pg_trigger</code> stores triggers on tables.
    See <a href="sql-createtrigger.html">CREATE TRIGGER</a>
    for more information.
   </p>
 <div class="table">
-<a name="id2734603"></a><p class="title"><b>Table 41.29. <tt class="structname">pg_trigger</tt> Columns</b></p>
+<a name="id500831"></a><p class="title"><b>Table 41.29. <code class="structname">pg_trigger</code> Columns</b></p>
 <table summary="pg_trigger Columns" border="1">
 <colgroup>
 <col>
@@ -37,82 +34,82 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">tgrelid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
+<td><code class="structfield">tgrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>The table this trigger is on</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgname</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">tgname</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>Trigger name (must be unique among triggers of same table)</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgfoid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td><code class="structfield">tgfoid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>The function to be called</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgtype</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">tgtype</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>Bit mask identifying trigger conditions</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgenabled</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">tgenabled</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>True if trigger is enabled (not presently checked everywhere
       it should be, so disabling a trigger by setting this false does not
       work reliably)</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgisconstraint</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">tgisconstraint</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>True if trigger implements a referential integrity constraint</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgconstrname</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">tgconstrname</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>Referential integrity constraint name</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgconstrrelid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><tt class="structname">pg_class</tt></a>.oid</tt></td>
+<td><code class="structfield">tgconstrrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>The table referenced by an referential integrity constraint</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgdeferrable</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">tgdeferrable</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>True if deferrable</td>
 </tr>
 <tr>
-<td><tt class="structfield">tginitdeferred</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">tginitdeferred</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>True if initially deferred</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgnargs</tt></td>
-<td><tt class="type">int2</tt></td>
+<td><code class="structfield">tgnargs</code></td>
+<td><code class="type">int2</code></td>
 <td> </td>
 <td>Number of argument strings passed to trigger function</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgattr</tt></td>
-<td><tt class="type">int2vector</tt></td>
+<td><code class="structfield">tgattr</code></td>
+<td><code class="type">int2vector</code></td>
 <td> </td>
 <td>Currently unused</td>
 </tr>
 <tr>
-<td><tt class="structfield">tgargs</tt></td>
-<td><tt class="type">bytea</tt></td>
+<td><code class="structfield">tgargs</code></td>
+<td><code class="type">bytea</code></td>
 <td> </td>
 <td>Argument strings to pass to trigger, each null-terminated</td>
 </tr>
@@ -121,7 +118,7 @@
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>    <tt class="literal">pg_class.reltriggers</tt> needs to agree with the
+<p>    <code class="literal">pg_class.reltriggers</code> needs to agree with the
     number of triggers found in this table for the given relation.
    </p>
 </div>

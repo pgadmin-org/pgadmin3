@@ -4,41 +4,38 @@
 <title>33.5. Rules and Command Status</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="rules.html" title="Chapter 33. The Rule System">
-<link rel="previous" href="rules-privileges.html" title="33.4. Rules and Privileges">
+<link rel="prev" href="rules-privileges.html" title="33.4. Rules and Privileges">
 <link rel="next" href="rules-triggers.html" title="33.6. Rules versus Triggers">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="rules-status"></a>33.5. Rules and Command Status</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="rules-status"></a>33.5. Rules and Command Status</h2></div></div></div>
 <p>    The <span class="productname">PostgreSQL</span> server returns a command
-    status string, such as <tt class="literal">INSERT 149592 1</tt>, for each
+    status string, such as <code class="literal">INSERT 149592 1</code>, for each
     command it receives.  This is simple enough when there are no rules
     involved, but what happens when the query is rewritten by rules?</p>
 <p>    Rules affect the command status as follows:
 
     </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>       If there is no unconditional <tt class="literal">INSTEAD</tt> rule for the query, then
+<li><p>       If there is no unconditional <code class="literal">INSTEAD</code> rule for the query, then
        the originally given query will be executed, and its command
        status will be returned as usual.  (But note that if there were
-       any conditional <tt class="literal">INSTEAD</tt> rules, the negation of their qualifications
+       any conditional <code class="literal">INSTEAD</code> rules, the negation of their qualifications
        will have been added to the original query.  This may reduce the
        number of rows it processes, and if so the reported status will
        be affected.)
       </p></li>
-<li><p>       If there is any unconditional <tt class="literal">INSTEAD</tt> rule for the query, then
+<li><p>       If there is any unconditional <code class="literal">INSTEAD</code> rule for the query, then
        the original query will not be executed at all.  In this case,
        the server will return the command status for the last query
-       that was inserted by an <tt class="literal">INSTEAD</tt> rule (conditional or
+       that was inserted by an <code class="literal">INSTEAD</code> rule (conditional or
        unconditional) and is of the same command type
-       (<tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, or
-       <tt class="command">DELETE</tt>) as the original query.  If no query
+       (<code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
+       <code class="command">DELETE</code>) as the original query.  If no query
        meeting those requirements is added by any rule, then the
        returned command status shows the original query type and
        zeroes for the row-count and OID fields.
@@ -49,7 +46,7 @@
     (This system was established in <span class="productname">PostgreSQL</span> 7.3.
     In versions before that, the command status might show different
     results when rules exist.)</p>
-<p>    The programmer can ensure that any desired <tt class="literal">INSTEAD</tt> rule is the one
+<p>    The programmer can ensure that any desired <code class="literal">INSTEAD</code> rule is the one
     that sets the command status in the second case, by giving it the
     alphabetically last rule name among the active rules, so that it
     gets applied last.</p>

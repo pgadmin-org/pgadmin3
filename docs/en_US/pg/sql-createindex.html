@@ -4,31 +4,28 @@
 <title>CREATE INDEX</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-creategroup.html" title="CREATE GROUP">
+<link rel="prev" href="sql-creategroup.html" title="CREATE GROUP">
 <link rel="next" href="sql-createlanguage.html" title="CREATE LANGUAGE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createindex"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createindex"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE INDEX &#8212; define a new index</p>
 </div>
-<a name="id2677580"></a><div class="refsynopsisdiv">
+<a name="id447447"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE [ UNIQUE ] INDEX <i class="replaceable"><tt>name</tt></i> ON <i class="replaceable"><tt>table</tt></i> [ USING <i class="replaceable"><tt>method</tt></i> ]
-    ( { <i class="replaceable"><tt>column</tt></i> | ( <i class="replaceable"><tt>expression</tt></i> ) } [ <i class="replaceable"><tt>opclass</tt></i> ] [, ...] )
-    [ TABLESPACE <i class="replaceable"><tt>tablespace</tt></i> ]
-    [ WHERE <i class="replaceable"><tt>predicate</tt></i> ]</pre>
+<pre class="synopsis">CREATE [ UNIQUE ] INDEX <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> [ USING <em class="replaceable"><code>method</code></em> ]
+    ( { <em class="replaceable"><code>column</code></em> | ( <em class="replaceable"><code>expression</code></em> ) } [ <em class="replaceable"><code>opclass</code></em> ] [, ...] )
+    [ TABLESPACE <em class="replaceable"><code>tablespace</code></em> ]
+    [ WHERE <em class="replaceable"><code>predicate</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2677646"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE INDEX</tt> constructs an index <i class="replaceable"><tt>index_name</tt></i> on the specified table.
+<a name="id447511"></a><h2>Description</h2>
+<p>   <code class="command">CREATE INDEX</code> constructs an index <em class="replaceable"><code>index_name</code></em> on the specified table.
    Indexes are primarily used to enhance database performance (though
    inappropriate use will result in slower performance).
   </p>
@@ -41,8 +38,8 @@
    one or more columns of the table row.  This feature can be used
    to obtain fast access to data based on some transformation of
    the basic data. For example, an index computed on
-   <tt class="literal">upper(col)</tt> would allow the clause
-   <tt class="literal">WHERE upper(col) = 'JIM'</tt> to use an index.
+   <code class="literal">upper(col)</code> would allow the clause
+   <code class="literal">WHERE upper(col) = 'JIM'</code> to use an index.
   </p>
 <p>   <span class="productname">PostgreSQL</span> provides the index methods
    B-tree, R-tree, hash, and GiST. The B-tree index method is an
@@ -52,22 +49,22 @@
    Litwin's linear hashing.  Users can also define their own index
    methods, but that is fairly complicated.
   </p>
-<p>    When the <tt class="literal">WHERE</tt> clause is present, a
-    <i class="firstterm">partial index</i> is created.
+<p>    When the <code class="literal">WHERE</code> clause is present, a
+    <em class="firstterm">partial index</em> is created.
     A partial index is an index that contains entries for only a portion of
     a table, usually a portion that is more useful for indexing than the
     rest of the table. For example, if you have a table that contains both
     billed and unbilled orders where the unbilled orders take up a small
     fraction of the total table and yet that is an often used section, you
     can improve performance by creating an index on just that portion.
-    Another possible application is to use <tt class="literal">WHERE</tt> with
-    <tt class="literal">UNIQUE</tt> to enforce uniqueness over a subset of a
+    Another possible application is to use <code class="literal">WHERE</code> with
+    <code class="literal">UNIQUE</code> to enforce uniqueness over a subset of a
     table.  See <a href="indexes-partial.html" title="11.7. Partial Indexes">Section 11.7, &#8220;Partial Indexes&#8221;</a> for more discussion.
   </p>
-<p>    The expression used in the <tt class="literal">WHERE</tt> clause may refer
+<p>    The expression used in the <code class="literal">WHERE</code> clause may refer
     only to columns of the underlying table, but it can use all columns,
     not just the ones being indexed.  Presently, subqueries and
-    aggregate expressions are also forbidden in <tt class="literal">WHERE</tt>.
+    aggregate expressions are also forbidden in <code class="literal">WHERE</code>.
     The same restrictions apply to index fields that are expressions.
   </p>
 <p>   All functions and operators used in an index definition must be
@@ -75,59 +72,59 @@
    their arguments and never on any outside influence (such as
    the contents of another table or the current time).  This restriction
    ensures that the behavior of the index is well-defined.  To use a
-   user-defined function in an index expression or <tt class="literal">WHERE</tt>
+   user-defined function in an index expression or <code class="literal">WHERE</code>
    clause, remember to mark the function immutable when you create it.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2677785"></a><h2>Parameters</h2>
+<a name="id447628"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">UNIQUE</tt></span></dt>
+<dt><span class="term"><code class="literal">UNIQUE</code></span></dt>
 <dd><p>        Causes the system to check for
         duplicate values in the table when the index is created (if data
         already exist) and each time data is added. Attempts to
         insert or update data which would result in duplicate entries
         will generate an error.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of the index to be created.  No schema name can be included
         here; the index is always created in the same schema as its parent
         table.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
 <dd><p>        The name (possibly schema-qualified) of the table to be indexed.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>method</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>method</code></em></span></dt>
 <dd><p>        The name of the method to be used for the index.  Choices are
-        <tt class="literal">btree</tt>, <tt class="literal">hash</tt>,
-        <tt class="literal">rtree</tt>, and <tt class="literal">gist</tt>.  The
-        default method is <tt class="literal">btree</tt>.
+        <code class="literal">btree</code>, <code class="literal">hash</code>,
+        <code class="literal">rtree</code>, and <code class="literal">gist</code>.  The
+        default method is <code class="literal">btree</code>.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>column</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>column</code></em></span></dt>
 <dd><p>        The name of a column of the table.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>expression</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>expression</code></em></span></dt>
 <dd><p>        An expression based on one or more columns of the table.  The
         expression usually must be written with surrounding parentheses,
         as shown in the syntax.  However, the parentheses may be omitted
         if the expression has the form of a function call.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>opclass</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>opclass</code></em></span></dt>
 <dd><p>        The name of an operator class. See below for details.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>tablespace</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>tablespace</code></em></span></dt>
 <dd><p>        The tablespace in which to create the index.  If not specified,
         <a href="runtime-config.html#guc-default-tablespace">default_tablespace</a> is used, or the database's
-        default tablespace if <tt class="varname">default_tablespace</tt> is an empty
+        default tablespace if <code class="varname">default_tablespace</code> is an empty
         string.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>predicate</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>predicate</code></em></span></dt>
 <dd><p>        The constraint expression for a partial index.
        </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2677941"></a><h2>Notes</h2>
+<a name="id447774"></a><h2>Notes</h2>
 <p>   See <a href="indexes.html" title="Chapter 11. Indexes">Chapter 11, <i>Indexes</i></a> for information about when indexes can
    be used, when they are not used, and in which particular situations
    they can be useful.
@@ -138,10 +135,10 @@
    <span class="productname">PostgreSQL</span>.)  Only B-tree currently
    supports unique indexes.
   </p>
-<p>   An <i class="firstterm">operator class</i> can be specified for each
+<p>   An <em class="firstterm">operator class</em> can be specified for each
    column of an index. The operator class identifies the operators to be
    used by the index for that column. For example, a B-tree index on
-   four-byte integers would use the <tt class="literal">int4_ops</tt> class;
+   four-byte integers would use the <code class="literal">int4_ops</code> class;
    this operator class includes comparison functions for four-byte
    integers. In practice the default operator class for the column's data
    type is usually sufficient. The main point of having operator classes
@@ -155,37 +152,37 @@
 <p>   Use <a href="sql-dropindex.html">DROP INDEX</a>
    to remove an index.
   </p>
-<p>   Indexes are not used for <tt class="literal">IS NULL</tt> clauses by default.
+<p>   Indexes are not used for <code class="literal">IS NULL</code> clauses by default.
    The best way to use indexes in such cases is to create a partial index
-   using an <tt class="literal">IS NULL</tt> predicate.
+   using an <code class="literal">IS NULL</code> predicate.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678045"></a><h2>Examples</h2>
-<p>   To create a B-tree index on the column <tt class="literal">title</tt> in
-   the table <tt class="literal">films</tt>:
+<a name="id447855"></a><h2>Examples</h2>
+<p>   To create a B-tree index on the column <code class="literal">title</code> in
+   the table <code class="literal">films</code>:
 </p>
 <pre class="programlisting">CREATE UNIQUE INDEX title_idx ON films (title);</pre>
 <p>
   </p>
-<p>   To create an index on the column <tt class="literal">code</tt> in the table
-   <tt class="literal">films</tt> and have the index reside in the tablespace
-   <tt class="literal">indexspace</tt>:
+<p>   To create an index on the column <code class="literal">code</code> in the table
+   <code class="literal">films</code> and have the index reside in the tablespace
+   <code class="literal">indexspace</code>:
 </p>
 <pre class="programlisting">CREATE INDEX code_idx ON films(code) TABLESPACE indexspace;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678098"></a><h2>Compatibility</h2>
-<p>   <tt class="command">CREATE INDEX</tt> is a
+<a name="id447906"></a><h2>Compatibility</h2>
+<p>   <code class="command">CREATE INDEX</code> is a
    <span class="productname">PostgreSQL</span> language extension.  There
    are no provisions for indexes in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678117"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterindex.html">ALTER INDEX</a>, <a href="sql-dropindex.html">DROP INDEX</a></span>
+<a name="id447924"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alterindex.html">ALTER INDEX</a>, <a href="sql-dropindex.html">DROP INDEX</a>, </span>
 </div>
 </div></body>
 </html>

@@ -4,38 +4,36 @@
 <title>Chapter 31. Extending SQL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
-<link rel="previous" href="server-programming.html" title="Part V. Server Programming">
+<link rel="prev" href="server-programming.html" title="Part V. Server Programming">
 <link rel="next" href="extend-type-system.html" title="31.2. The PostgreSQL Type System">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="extend">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="extend"></a>Chapter 31. Extending <span class="acronym">SQL</span></h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="extend"></a>Chapter 31. Extending <span class="acronym">SQL</span></h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
 <dt><span class="sect1"><a href="extend.html#extend-how">31.1. How Extensibility Works</a></span></dt>
-<dt><span class="sect1"><a href="extend-type-system.html">31.2. The PostgreSQL Type System</a></span></dt>
+<dt><span class="sect1"><a href="extend-type-system.html">31.2. The <span class="productname">PostgreSQL</span> Type System</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="extend-type-system.html#id2632565">31.2.1. Base Types</a></span></dt>
-<dt><span class="sect2"><a href="extend-type-system.html#id2632594">31.2.2. Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="extend-type-system.html#id2632613">31.2.3. Domains</a></span></dt>
-<dt><span class="sect2"><a href="extend-type-system.html#id2632644">31.2.4. Pseudo-Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id406240">31.2.1. Base Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id406263">31.2.2. Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id406279">31.2.3. Domains</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id406305">31.2.4. Pseudo-Types</a></span></dt>
 <dt><span class="sect2"><a href="extend-type-system.html#extend-types-polymorphic">31.2.5. Polymorphic Types</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="xfunc.html">31.3. User-Defined Functions</a></span></dt>
-<dt><span class="sect1"><a href="xfunc-sql.html">31.4. Query Language (SQL) Functions</a></span></dt>
+<dt><span class="sect1"><a href="xfunc-sql.html">31.4. Query Language (<span class="acronym">SQL</span>) Functions</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="xfunc-sql.html#id2633235">31.4.1. SQL Functions on Base Types</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-sql.html#id2633350">31.4.2. SQL Functions on Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-sql-table-functions">31.4.3. SQL Functions as Table Sources</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-sql.html#id2633720">31.4.4. SQL Functions Returning Sets</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-sql.html#id2633832">31.4.5. Polymorphic SQL Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-sql-base-functions">31.4.1. <span class="acronym">SQL</span> Functions on Base Types</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id406944">31.4.2. <span class="acronym">SQL</span> Functions on Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-output-parameters">31.4.3. Functions with Output Parameters</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-sql-table-functions">31.4.4. <span class="acronym">SQL</span> Functions as Table Sources</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id407369">31.4.5. <span class="acronym">SQL</span> Functions Returning Sets</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id407463">31.4.6. Polymorphic <span class="acronym">SQL</span> Functions</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="xfunc-overload.html">31.5. Function Overloading</a></span></dt>
 <dt><span class="sect1"><a href="xfunc-volatility.html">31.6. Function Volatility Categories</a></span></dt>
@@ -45,27 +43,27 @@
 <dd><dl>
 <dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-dynload">31.9.1. Dynamic Loading</a></span></dt>
 <dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-basetype">31.9.2. Base Types in C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2635674">31.9.3. Calling Conventions Version 0 for C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2635871">31.9.4. Calling Conventions Version 1 for C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2636282">31.9.5. Writing Code</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id409141">31.9.3. Calling Conventions Version 0 for C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id409296">31.9.4. Calling Conventions Version 1 for C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id409634">31.9.5. Writing Code</a></span></dt>
 <dt><span class="sect2"><a href="xfunc-c.html#dfunc">31.9.6. Compiling and Linking Dynamically-Loaded Functions</a></span></dt>
 <dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-pgxs">31.9.7. Extension Building Infrastructure</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2637600">31.9.8. Composite-Type Arguments in C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2637754">31.9.9. Returning Rows (Composite Types) from C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id410862">31.9.8. Composite-Type Arguments in C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id410990">31.9.9. Returning Rows (Composite Types) from C-Language Functions</a></span></dt>
 <dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-return-set">31.9.10. Returning Sets from C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2638349">31.9.11. Polymorphic Arguments and Return Types</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id411497">31.9.11. Polymorphic Arguments and Return Types</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="xaggr.html">31.10. User-Defined Aggregates</a></span></dt>
 <dt><span class="sect1"><a href="xtypes.html">31.11. User-Defined Types</a></span></dt>
 <dt><span class="sect1"><a href="xoper.html">31.12. User-Defined Operators</a></span></dt>
 <dt><span class="sect1"><a href="xoper-optimization.html">31.13. Operator Optimization Information</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2639398">31.13.1. COMMUTATOR</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2639603">31.13.2. NEGATOR</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2639688">31.13.3. RESTRICT</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2639971">31.13.4. JOIN</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2640116">31.13.5. HASHES</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2640235">31.13.6. MERGES (SORT1, SORT2, LTCMP, GTCMP)</a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id412378">31.13.1. <code class="literal">COMMUTATOR</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id412561">31.13.2. <code class="literal">NEGATOR</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id412636">31.13.3. <code class="literal">RESTRICT</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id412895">31.13.4. <code class="literal">JOIN</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id413031">31.13.5. <code class="literal">HASHES</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id413127">31.13.6. <code class="literal">MERGES</code> (<code class="literal">SORT1</code>, <code class="literal">SORT2</code>, <code class="literal">LTCMP</code>, <code class="literal">GTCMP</code>)</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="xindex.html">31.14. Interfacing Extensions To Indexes</a></span></dt>
 <dd><dl>
@@ -79,7 +77,7 @@
 </dl></dd>
 </dl>
 </div>
-<a name="id2632316"></a><p>   In  the  sections  that follow, we will discuss how you
+<a name="id406009"></a><p>   In  the  sections  that follow, we will discuss how you
    can extend the <span class="productname">PostgreSQL</span> 
    <span class="acronym">SQL</span> query language by adding:
 
@@ -99,11 +97,8 @@
 <p>
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="extend-how"></a>31.1. How Extensibility Works</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="extend-how"></a>31.1. How Extensibility Works</h2></div></div></div>
 <p>    <span class="productname">PostgreSQL</span> is extensible because its operation  is  
     catalog-driven.   If  you  are familiar with standard 
     relational database systems, you know that  they  store  information

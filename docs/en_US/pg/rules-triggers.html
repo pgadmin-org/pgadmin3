@@ -4,33 +4,30 @@
 <title>33.6. Rules versus Triggers</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="rules.html" title="Chapter 33. The Rule System">
-<link rel="previous" href="rules-status.html" title="33.5. Rules and Command Status">
+<link rel="prev" href="rules-status.html" title="33.5. Rules and Command Status">
 <link rel="next" href="xplang.html" title="Chapter 34. Procedural Languages">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="rules-triggers"></a>33.6. Rules versus Triggers</h2></div></div>
-<div></div>
-</div>
-<a name="id2646571"></a><a name="id2646587"></a><p>    Many things that can be done using triggers can also be
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="rules-triggers"></a>33.6. Rules versus Triggers</h2></div></div></div>
+<a name="id418585"></a><a name="id418600"></a><p>    Many things that can be done using triggers can also be
     implemented using the <span class="productname">PostgreSQL</span>
     rule system.  One of the things that cannot be implemented by
     rules are some kinds of constraints, especially foreign keys. It is possible
-    to place a qualified rule that rewrites a command to <tt class="literal">NOTHING</tt>
+    to place a qualified rule that rewrites a command to <code class="literal">NOTHING</code>
     if the value of a column does not appear in another table.
     But then the data is silently thrown away and that's
     not a good idea. If checks for valid values are required,
     and in the case of an invalid value an error message should
     be generated, it must be done by a trigger.</p>
 <p>    On the other hand, a trigger that is fired on
-    <tt class="command">INSERT</tt> on a view can do the same as a rule: put
+    <code class="command">INSERT</code> on a view can do the same as a rule: put
     the data somewhere else and suppress the insert in the view. But
-    it cannot do the same thing on <tt class="command">UPDATE</tt> or
-    <tt class="command">DELETE</tt>, because there is no real data in the
+    it cannot do the same thing on <code class="command">UPDATE</code> or
+    <code class="command">DELETE</code>, because there is no real data in the
     view relation that could be scanned, and thus the trigger would
     never get called. Only a rule will help.</p>
 <p>    For the things that can be implemented by both, which is best
@@ -58,8 +55,8 @@ CREATE TABLE software (
 <p>
 
     Both tables have many thousands of rows and the indexes on
-    <tt class="structfield">hostname</tt> are unique.  The rule or trigger should
-    implement a constraint that deletes rows from <tt class="literal">software</tt>
+    <code class="structfield">hostname</code> are unique.  The rule or trigger should
+    implement a constraint that deletes rows from <code class="literal">software</code>
     that reference a deleted computer.  The trigger would use this command:
 
 </p>
@@ -67,8 +64,8 @@ CREATE TABLE software (
 <p>
 
     Since the trigger is called for each individual row deleted from
-    <tt class="literal">computer</tt>, it can prepare and save the plan for this
-    command and pass the <tt class="structfield">hostname</tt> value in the
+    <code class="literal">computer</code>, it can prepare and save the plan for this
+    command and pass the <code class="structfield">hostname</code> value in the
     parameter.  The rule would be written as
 
 </p>
@@ -82,7 +79,7 @@ CREATE TABLE software (
 <pre class="programlisting">DELETE FROM computer WHERE hostname = 'mypc.local.net';</pre>
 <p>
 
-    the table <tt class="literal">computer</tt> is scanned by index (fast), and the
+    the table <code class="literal">computer</code> is scanned by index (fast), and the
     command issued by the trigger would also use an index scan (also fast).
     The extra command from the rule would be
 
@@ -104,8 +101,8 @@ CREATE TABLE software (
     the trigger and the rule implementation.
    </p>
 <p>    With the next delete we want to get rid of all the 2000 computers
-    where the <tt class="structfield">hostname</tt> starts with
-    <tt class="literal">old</tt>. There are two possible commands to do that. One
+    where the <code class="structfield">hostname</code> starts with
+    <code class="literal">old</code>. There are two possible commands to do that. One
     is
 
 </p>
@@ -145,17 +142,17 @@ CREATE TABLE software (
 <p>
 
     This shows, that the planner does not realize that the
-    qualification for <tt class="structfield">hostname</tt> in
-    <tt class="literal">computer</tt> could also be used for an index scan on
-    <tt class="literal">software</tt> when there are multiple qualification
-    expressions combined with <tt class="literal">AND</tt>, which is what it does
+    qualification for <code class="structfield">hostname</code> in
+    <code class="literal">computer</code> could also be used for an index scan on
+    <code class="literal">software</code> when there are multiple qualification
+    expressions combined with <code class="literal">AND</code>, which is what it does
     in the regular-expression version of the command. The trigger will
     get invoked once for each of the 2000 old computers that have to be
     deleted, and that will result in one index scan over
-    <tt class="literal">computer</tt> and 2000 index scans over
-    <tt class="literal">software</tt>. The rule implementation will do it with two
+    <code class="literal">computer</code> and 2000 index scans over
+    <code class="literal">software</code>. The rule implementation will do it with two
     commands that use indexes.  And it depends on the overall size of
-    the table <tt class="literal">software</tt> whether the rule will still be faster in the
+    the table <code class="literal">software</code> whether the rule will still be faster in the
     sequential scan situation. 2000 command executions from the trigger over the SPI
     manager take some time, even if all the index blocks will soon be in the cache.</p>
 <p>    The last command we look at is
@@ -165,7 +162,7 @@ CREATE TABLE software (
 <p>
 
     Again this could result in many rows to be deleted from
-    <tt class="literal">computer</tt>. So the trigger will again run many commands
+    <code class="literal">computer</code>. So the trigger will again run many commands
     through the executor.  The command generated by the rule will be
 
 </p>
@@ -174,7 +171,7 @@ CREATE TABLE software (
 <p>
 
     The plan for that command will again be the nested loop over two
-    index scans, only using a different index on <tt class="literal">computer</tt>:
+    index scans, only using a different index on <code class="literal">computer</code>:
 
 </p>
 <pre class="programlisting">Nestloop

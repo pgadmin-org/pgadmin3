@@ -4,19 +4,16 @@
 <title>18.6. Tablespaces</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 18. Managing Databases">
-<link rel="previous" href="manage-ag-dropdb.html" title="18.5. Destroying a Database">
+<link rel="prev" href="manage-ag-dropdb.html" title="18.5. Destroying a Database">
 <link rel="next" href="client-authentication.html" title="Chapter 19. Client Authentication">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="manage-ag-tablespaces"></a>18.6. Tablespaces</h2></div></div>
-<div></div>
-</div>
-<a name="id2594298"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="manage-ag-tablespaces"></a>18.6. Tablespaces</h2></div></div></div>
+<a name="id371281"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
     define locations in the file system where the files representing
     database objects can be stored. Once created, a tablespace can be referred
     to by name when creating database objects.
@@ -37,7 +34,7 @@
     expensive, slower disk system.
    </p>
 <p>    To define a tablespace, use the <a href="sql-createtablespace.html" title="CREATE TABLESPACE"><span class="refentrytitle"><a name="sql-createtablespace-title"></a>CREATE TABLESPACE</span></a>
-    command, for example:<a name="id2594354"></a>
+    command, for example:<a name="id371327"></a>
 </p>
 <pre class="programlisting">CREATE TABLESPACE fastspace LOCATION '/mnt/sda1/postgresql/data';</pre>
 <p>
@@ -58,13 +55,13 @@
 </div>
 <p>    Creation of the tablespace itself must be done as a database superuser,
     but after that you can allow ordinary database users to make use of it.
-    To do that, grant them the <tt class="literal">CREATE</tt> privilege on it.
+    To do that, grant them the <code class="literal">CREATE</code> privilege on it.
    </p>
 <p>    Tables, indexes, and entire databases can be assigned to
-    particular tablespaces. To do so, a user with the <tt class="literal">CREATE</tt>
+    particular tablespaces. To do so, a user with the <code class="literal">CREATE</code>
     privilege on a given tablespace must pass the tablespace name as a 
     parameter to the relevant command. For example, the following creates 
-    a table in the tablespace <tt class="literal">space1</tt>:
+    a table in the tablespace <code class="literal">space1</code>:
 </p>
 <pre class="programlisting">CREATE TABLE foo(i int) TABLESPACE space1;</pre>
 <p>
@@ -74,27 +71,27 @@
 <pre class="programlisting">SET default_tablespace = space1;
 CREATE TABLE foo(i int);</pre>
 <p>
-    When <tt class="varname">default_tablespace</tt> is set to anything but an empty
-    string, it supplies an implicit <tt class="literal">TABLESPACE</tt> clause for
-    <tt class="command">CREATE TABLE</tt> and <tt class="command">CREATE INDEX</tt> commands that
+    When <code class="varname">default_tablespace</code> is set to anything but an empty
+    string, it supplies an implicit <code class="literal">TABLESPACE</code> clause for
+    <code class="command">CREATE TABLE</code> and <code class="command">CREATE INDEX</code> commands that
     do not have an explicit one.
    </p>
 <p>    The tablespace associated with a database is used to store the system
     catalogs of that database, as well as any temporary files created by
     server processes using that database.  Furthermore, it is the default
     tablespace selected for tables and indexes created within the database,
-    if no <tt class="literal">TABLESPACE</tt> clause is given (either explicitly or via
-    <tt class="varname">default_tablespace</tt>) when the objects are created.
+    if no <code class="literal">TABLESPACE</code> clause is given (either explicitly or via
+    <code class="varname">default_tablespace</code>) when the objects are created.
     If a database is created without specifying a tablespace for it,
     it uses the same tablespace as the template database it is copied from.
    </p>
-<p>    Two tablespaces are automatically created by <tt class="literal">initdb</tt>. The
-    <tt class="literal">pg_global</tt> tablespace is used for shared system catalogs. The
-    <tt class="literal">pg_default</tt> tablespace is the default tablespace of the
-    <tt class="literal">template1</tt> and <tt class="literal">template0</tt> databases (and, therefore,
+<p>    Two tablespaces are automatically created by <code class="literal">initdb</code>. The
+    <code class="literal">pg_global</code> tablespace is used for shared system catalogs. The
+    <code class="literal">pg_default</code> tablespace is the default tablespace of the
+    <code class="literal">template1</code> and <code class="literal">template0</code> databases (and, therefore,
     will be the default tablespace for other databases as well, unless
-    overridden by a <tt class="literal">TABLESPACE</tt> clause in <tt class="command">CREATE
-    DATABASE</tt>).
+    overridden by a <code class="literal">TABLESPACE</code> clause in <code class="command">CREATE
+    DATABASE</code>).
    </p>
 <p>    Once created, a tablespace can be used from any database, provided
     the requesting user has sufficient privilege. This means that a tablespace
@@ -105,11 +102,11 @@ CREATE TABLE foo(i int);</pre>
     command.  
    </p>
 <p>    To determine the set of existing tablespaces, examine the
-    <tt class="structname">pg_tablespace</tt> system catalog, for example
+    <code class="structname">pg_tablespace</code> system catalog, for example
 </p>
 <pre class="synopsis">SELECT spcname FROM pg_tablespace;</pre>
 <p>
-    The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <tt class="literal">\db</tt> meta-command
+    The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\db</code> meta-command
     is also useful for listing the existing tablespaces.
    </p>
 <p>    <span class="productname">PostgreSQL</span> makes extensive use of symbolic links
@@ -117,13 +114,13 @@ CREATE TABLE foo(i int);</pre>
     means that tablespaces can be used <span class="emphasis"><em>only</em></span> on systems
     that support symbolic links.
    </p>
-<p>    The directory <tt class="filename">$PGDATA/pg_tblspc</tt> contains symbolic links that
+<p>    The directory <code class="filename">$PGDATA/pg_tblspc</code> contains symbolic links that
     point to each of the non-built-in tablespaces defined in the cluster.
     Although not recommended, it is possible to adjust the tablespace
     layout by hand by redefining these links.  Two warnings: do not do so
     while the postmaster is running; and after you restart the postmaster,
-    update the <tt class="structname">pg_tablespace</tt> catalog to show the new
-    locations.  (If you do not, <tt class="literal">pg_dump</tt> will continue to show
+    update the <code class="structname">pg_tablespace</code> catalog to show the new
+    locations.  (If you do not, <code class="literal">pg_dump</code> will continue to show
     the old tablespace locations.)
    </p>
 </div></body>

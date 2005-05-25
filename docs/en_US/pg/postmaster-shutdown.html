@@ -4,41 +4,38 @@
 <title>16.6. Shutting Down the Server</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
-<link rel="previous" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
-<link rel="next" href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">
+<link rel="prev" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
+<link rel="next" href="encryption-options.html" title="16.7. Encryption Options">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="postmaster-shutdown"></a>16.6. Shutting Down the Server</h2></div></div>
-<div></div>
-</div>
-<a name="id2591847"></a><p>   There are several ways to shut down the database server. You control
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="postmaster-shutdown"></a>16.6. Shutting Down the Server</h2></div></div></div>
+<a name="id368889"></a><p>   There are several ways to shut down the database server. You control
    the type of shutdown by sending different signals to the
-   <tt class="command">postmaster</tt> process.
+   <code class="command">postmaster</code> process.
 
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id2591875"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id368916"></a></span></dt>
 <dd><p>       After receiving <span class="systemitem">SIGTERM</span>, the server
        disallows new connections, but lets existing sessions end their
        work normally. It shuts down only after all of the sessions
-       terminate normally. This is the <i class="firstterm">Smart
-       Shutdown</i>.
+       terminate normally. This is the <em class="firstterm">Smart
+       Shutdown</em>.
       </p></dd>
-<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id2591905"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id368943"></a></span></dt>
 <dd><p>       The server disallows new connections and sends all existing
        server processes <span class="systemitem">SIGTERM</span>, which will cause them
        to abort their current transactions and exit promptly. It then
        waits for the server processes to exit and finally shuts down. This is the
-       <i class="firstterm">Fast Shutdown</i>.
+       <em class="firstterm">Fast Shutdown</em>.
       </p></dd>
-<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id2591935"></a></span></dt>
-<dd><p>      This is the <i class="firstterm">Immediate Shutdown</i>, which
-      will cause the <tt class="command">postmaster</tt> process to send a
+<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id368971"></a></span></dt>
+<dd><p>      This is the <em class="firstterm">Immediate Shutdown</em>, which
+      will cause the <code class="command">postmaster</code> process to send a
       <span class="systemitem">SIGQUIT</span> to all child processes and exit
       immediately, without properly shutting itself down. The child processes
       likewise exit immediately upon receiving
@@ -52,13 +49,13 @@
 <p>   The <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a> program provides a convenient
    interface for sending these signals to shut down the server.
   </p>
-<p>   Alternatively, you can send the signal directly using <tt class="command">kill</tt>.
-   The <span class="acronym">PID</span> of the <tt class="command">postmaster</tt> process can be
-   found using the <tt class="command">ps</tt> program, or from the file
-   <tt class="filename">postmaster.pid</tt> in the data directory. For
+<p>   Alternatively, you can send the signal directly using <code class="command">kill</code>.
+   The <span class="acronym">PID</span> of the <code class="command">postmaster</code> process can be
+   found using the <code class="command">ps</code> program, or from the file
+   <code class="filename">postmaster.pid</code> in the data directory. For
    example, to do a fast shutdown:
 </p>
-<pre class="screen">$ <b class="userinput"><tt>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</tt></b></pre>
+<pre class="screen">$ <strong class="userinput"><code>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</code></strong></pre>
 <p>
   </p>
 <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -67,7 +64,7 @@
      the server.  Doing so will prevent the server from releasing
      shared memory and semaphores, which may then have to be done
      manually before a new server can be started.  Furthermore,
-     <span class="systemitem">SIGKILL</span> kills the <tt class="command">postmaster</tt>
+     <span class="systemitem">SIGKILL</span> kills the <code class="command">postmaster</code>
      process without letting it relay the signal to its subprocesses,
      so it will be necessary to kill the individual subprocesses by hand as
      well.

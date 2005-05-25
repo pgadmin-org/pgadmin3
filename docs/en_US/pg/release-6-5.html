@@ -1,21 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.40. Release 6.5</title>
+<title>E.45. Release 6.5</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="previous" href="release-6-5-1.html" title="E.39. Release 6.5.1">
-<link rel="next" href="release-6-4-2.html" title="E.41. Release 6.4.2">
+<link rel="prev" href="release-6-5-1.html" title="E.44. Release 6.5.1">
+<link rel="next" href="release-6-4-2.html" title="E.46. Release 6.4.2">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="release-6-5"></a>E.40. Release 6.5</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-6-5"></a>E.45. Release 6.5</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1999-06-09</p>
@@ -88,15 +85,15 @@
 <dd><p>        New and updated material is present throughout the
         documentation. New <span class="acronym">FAQ</span>s have been
         contributed for <span class="systemitem">SGI</span> and <span class="systemitem">AIX</span> platforms.
-        The <i class="citetitle">Tutorial</i> has introductory information
+        The <em class="citetitle">Tutorial</em> has introductory information
         on <span class="acronym">SQL</span> from Stefan Simkovics.
-        For the <i class="citetitle">User's Guide</i>, there are
+        For the <em class="citetitle">User's Guide</em>, there are
         reference pages covering the postmaster and more utility
         programs, and a new appendix
         contains details on date/time behavior.
-        The <i class="citetitle">Administrator's Guide</i> has a new
+        The <em class="citetitle">Administrator's Guide</em> has a new
         chapter on troubleshooting from Tom Lane.
-        And the <i class="citetitle">Programmer's Guide</i> has a
+        And the <em class="citetitle">Programmer's Guide</em> has a
         description of query processing, also from Stefan, and details 
         on obtaining the <span class="productname">PostgreSQL</span> source
         tree via anonymous <span class="productname">CVS</span> and
@@ -106,11 +103,8 @@
 <p>
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2783036"></a>E.40.1. Migration to version 6.5</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id547140"></a>E.45.1. Migration to version 6.5</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span>
      is required for those wishing to migrate data from any
      previous release of <span class="productname">PostgreSQL</span>.
@@ -125,41 +119,38 @@
       behavior you need.</em></span>
     </p>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="id2783078"></a>E.40.1.1. Multiversion Concurrency Control</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id547177"></a>E.45.1.1. Multiversion Concurrency Control</h4></div></div></div>
 <p>      Because readers in 6.5 don't lock data, regardless of transaction
       isolation level, data read by one transaction can be overwritten by
       another. In other words, if a row is returned by
-      <tt class="command">SELECT</tt> it doesn't mean that this row really exists
+      <code class="command">SELECT</code> it doesn't mean that this row really exists
       at the time it is returned (i.e. sometime after the statement or
       transaction began) nor that the row is protected from being deleted or
       updated by concurrent transactions before the current transaction does
       a commit or rollback.
      </p>
 <p>      To ensure the actual existence of a row and protect it against
-      concurrent updates one must use <tt class="command">SELECT FOR UPDATE</tt> or
-      an appropriate <tt class="command">LOCK TABLE</tt> statement. This should be
+      concurrent updates one must use <code class="command">SELECT FOR UPDATE</code> or
+      an appropriate <code class="command">LOCK TABLE</code> statement. This should be
       taken into account when porting applications from previous releases of
       <span class="productname">PostgreSQL</span> and other environments.
      </p>
 <p>      Keep the above in mind if you are using
-      <tt class="filename">contrib/refint.*</tt> triggers for
+      <code class="filename">contrib/refint.*</code> triggers for
       referential integrity. Additional techniques are required now. One way is
-      to use <tt class="command">LOCK parent_table IN SHARE ROW EXCLUSIVE MODE</tt>
+      to use <code class="command">LOCK parent_table IN SHARE ROW EXCLUSIVE MODE</code>
       command if a transaction is going to update/delete a primary key and
-      use <tt class="command">LOCK parent_table IN SHARE MODE</tt> command if a
+      use <code class="command">LOCK parent_table IN SHARE MODE</code> command if a
       transaction is going to update/insert a foreign key.
 
       </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>        Note that if you run a transaction in SERIALIZABLE mode then you must
-        execute the <tt class="command">LOCK</tt> commands above before execution of any
+        execute the <code class="command">LOCK</code> commands above before execution of any
         <span class="acronym">DML</span> statement
-        (<tt class="command">SELECT/INSERT/DELETE/UPDATE/FETCH/COPY_TO</tt>) in the
+        (<code class="command">SELECT/INSERT/DELETE/UPDATE/FETCH/COPY_TO</code>) in the
         transaction.
        </p>
 </div>
@@ -173,11 +164,8 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2783179"></a>E.40.2. Changes</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id547263"></a>E.45.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------

@@ -4,20 +4,18 @@
 <title>5.5. Inheritance</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="previous" href="ddl-system-columns.html" title="5.4. System Columns">
+<link rel="prev" href="ddl-system-columns.html" title="5.4. System Columns">
 <link rel="next" href="ddl-alter.html" title="5.6. Modifying Tables">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ddl-inherit"></a>5.5. Inheritance</h2></div></div>
-<div></div>
-</div>
-<i><span class="remark">This section needs to be rethought.  Some of the
-  information should go into the following chapters.</span></i><p>   Let's create two tables. The capitals  table  contains
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ddl-inherit"></a>5.5. Inheritance</h2></div></div></div>
+<p class="remark"><i><span class="remark">This section needs to be rethought.  Some of the
+  information should go into the following chapters.</span></i></p>
+<p>   Let's create two tables. The capitals  table  contains
    state  capitals  which  are also cities. Naturally, the
    capitals table should inherit from cities.
 
@@ -33,7 +31,7 @@ CREATE TABLE capitals (
 ) INHERITS (cities);</pre>
 <p>
 
-   In this case, a row of capitals <i class="firstterm">inherits</i> all
+   In this case, a row of capitals <em class="firstterm">inherits</em> all
    attributes (name, population, and altitude) from its parent, cities.  State
    capitals have an extra attribute, state, that shows their state.  In
    <span class="productname">PostgreSQL</span>, a table can inherit from zero or
@@ -86,8 +84,8 @@ CREATE TABLE capitals (
 <p>   Here the &#8220;<span class="quote">ONLY</span>&#8221; before cities indicates that the query should
    be  run over only cities and not tables below cities in the
    inheritance hierarchy.  Many of the  commands  that  we
-   have  already discussed -- <tt class="command">SELECT</tt>,
-   <tt class="command">UPDATE</tt> and <tt class="command">DELETE</tt> --
+   have  already discussed -- <code class="command">SELECT</code>,
+   <code class="command">UPDATE</code> and <code class="command">DELETE</code> --
    support this &#8220;<span class="quote">ONLY</span>&#8221; notation.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -96,27 +94,27 @@ CREATE TABLE capitals (
      default behavior was not to include child tables in queries. This was
      found to be error prone and is also in violation of the SQL:1999
      standard. Under the old syntax, to get the sub-tables you append
-     <tt class="literal">*</tt> to the table name.
+     <code class="literal">*</code> to the table name.
      For example
 </p>
 <pre class="programlisting">SELECT * from cities*;</pre>
 <p>
      You can still explicitly specify scanning child tables by appending
-     <tt class="literal">*</tt>, as well as explicitly specify not scanning child tables by
+     <code class="literal">*</code>, as well as explicitly specify not scanning child tables by
      writing &#8220;<span class="quote">ONLY</span>&#8221;.  But beginning in version 7.1, the default
      behavior for an undecorated table name is to scan its child tables
      too, whereas before the default was not to do so.  To get the old
      default behavior, set the configuration option
-     <tt class="literal">SQL_Inheritance</tt> to off, e.g.,
+     <code class="literal">SQL_Inheritance</code> to off, e.g.,
 </p>
 <pre class="programlisting">SET SQL_Inheritance TO OFF;</pre>
 <p>
-     or add a line in your <tt class="filename">postgresql.conf</tt> file.
+     or add a line in your <code class="filename">postgresql.conf</code> file.
    </p>
 </div>
 <p>  In some cases you may wish to know which table a particular row
   originated from. There is a system column called
-  <tt class="structfield">tableoid</tt> in each table which can tell you the
+  <code class="structfield">tableoid</code> in each table which can tell you the
   originating table:
 
 </p>
@@ -137,7 +135,7 @@ WHERE c.altitude &gt; 500;</pre>
 
    (If you try to reproduce this example, you will probably get
    different numeric OIDs.)  By doing a join with
-   <tt class="structname">pg_class</tt> you can see the actual table names:
+   <code class="structname">pg_class</code> you can see the actual table names:
 
 </p>
 <pre class="programlisting">SELECT p.relname, c.name, c.altitude
@@ -168,25 +166,25 @@ WHERE c.altitude &gt; 500 and c.tableoid = p.oid;</pre>
 
    </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>      If we declared <tt class="structname">cities</tt>.<tt class="structfield">name</tt> to be
-      <tt class="literal">UNIQUE</tt> or a <tt class="literal">PRIMARY KEY</tt>, this would not stop the
-      <tt class="structname">capitals</tt> table from having rows with names duplicating
-      rows in <tt class="structname">cities</tt>.  And those duplicate rows would by
-      default show up in queries from <tt class="structname">cities</tt>.  In fact, by
-      default <tt class="structname">capitals</tt> would have no unique constraint at all,
+<li><p>      If we declared <code class="structname">cities</code>.<code class="structfield">name</code> to be
+      <code class="literal">UNIQUE</code> or a <code class="literal">PRIMARY KEY</code>, this would not stop the
+      <code class="structname">capitals</code> table from having rows with names duplicating
+      rows in <code class="structname">cities</code>.  And those duplicate rows would by
+      default show up in queries from <code class="structname">cities</code>.  In fact, by
+      default <code class="structname">capitals</code> would have no unique constraint at all,
       and so could contain multiple rows with the same name.
-      You could add a unique constraint to <tt class="structname">capitals</tt>, but this
-      would not prevent duplication compared to <tt class="structname">cities</tt>.
+      You could add a unique constraint to <code class="structname">capitals</code>, but this
+      would not prevent duplication compared to <code class="structname">cities</code>.
      </p></li>
 <li><p>      Similarly, if we were to specify that
-      <tt class="structname">cities</tt>.<tt class="structfield">name</tt> <tt class="literal">REFERENCES</tt> some
+      <code class="structname">cities</code>.<code class="structfield">name</code> <code class="literal">REFERENCES</code> some
       other table, this constraint would not automatically propagate to
-      <tt class="structname">capitals</tt>.  In this case you could work around it by
-      manually adding the same <tt class="literal">REFERENCES</tt> constraint to
-      <tt class="structname">capitals</tt>.
+      <code class="structname">capitals</code>.  In this case you could work around it by
+      manually adding the same <code class="literal">REFERENCES</code> constraint to
+      <code class="structname">capitals</code>.
      </p></li>
-<li><p>      Specifying that another table's column <tt class="literal">REFERENCES
-      cities(name)</tt> would allow the other table to contain city names, but
+<li><p>      Specifying that another table's column <code class="literal">REFERENCES
+      cities(name)</code> would allow the other table to contain city names, but
       not capital names.  There is no good workaround for this case.
      </p></li>
 </ul></div>

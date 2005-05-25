@@ -4,23 +4,20 @@
 <title>9.14. Array Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-conditional.html" title="9.13. Conditional Expressions">
+<link rel="prev" href="functions-conditional.html" title="9.13. Conditional Expressions">
 <link rel="next" href="functions-aggregate.html" title="9.15. Aggregate Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-array"></a>9.14. Array Functions and Operators</h2></div></div>
-<div></div>
-</div>
-<p>   <a href="functions-array.html#array-operators-table" title="Table 9.35. array Operators">Table 9.35, &#8220;array Operators&#8221;</a> shows the operators
-   available for <tt class="type">array</tt> types.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-array"></a>9.14. Array Functions and Operators</h2></div></div></div>
+<p>   <a href="functions-array.html#array-operators-table" title="Table 9.35. array Operators">Table 9.35, &#8220;<code class="type">array</code> Operators&#8221;</a> shows the operators
+   available for <code class="type">array</code> types.
   </p>
 <div class="table">
-<a name="array-operators-table"></a><p class="title"><b>Table 9.35. <tt class="type">array</tt> Operators</b></p>
+<a name="array-operators-table"></a><p class="title"><b>Table 9.35. <code class="type">array</code> Operators</b></p>
 <table summary="array Operators" border="1">
 <colgroup>
 <col>
@@ -36,64 +33,64 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">=</tt></td>
+<td> <code class="literal">=</code> </td>
 <td>equal</td>
-<td><tt class="literal">ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3]</tt></td>
-<td><tt class="literal">t</tt></td>
+<td><code class="literal">ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3]</code></td>
+<td><code class="literal">t</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;&gt;</tt></td>
+<td> <code class="literal">&lt;&gt;</code> </td>
 <td>not equal</td>
-<td><tt class="literal">ARRAY[1,2,3] &lt;&gt; ARRAY[1,2,4]</tt></td>
-<td><tt class="literal">t</tt></td>
+<td><code class="literal">ARRAY[1,2,3] &lt;&gt; ARRAY[1,2,4]</code></td>
+<td><code class="literal">t</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;</tt></td>
+<td> <code class="literal">&lt;</code> </td>
 <td>less than</td>
-<td><tt class="literal">ARRAY[1,2,3] &lt; ARRAY[1,2,4]</tt></td>
-<td><tt class="literal">t</tt></td>
+<td><code class="literal">ARRAY[1,2,3] &lt; ARRAY[1,2,4]</code></td>
+<td><code class="literal">t</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;</tt></td>
+<td> <code class="literal">&gt;</code> </td>
 <td>greater than</td>
-<td><tt class="literal">ARRAY[1,4,3] &gt; ARRAY[1,2,4]</tt></td>
-<td><tt class="literal">t</tt></td>
+<td><code class="literal">ARRAY[1,4,3] &gt; ARRAY[1,2,4]</code></td>
+<td><code class="literal">t</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;=</tt></td>
+<td> <code class="literal">&lt;=</code> </td>
 <td>less than or equal</td>
-<td><tt class="literal">ARRAY[1,2,3] &lt;= ARRAY[1,2,3]</tt></td>
-<td><tt class="literal">t</tt></td>
+<td><code class="literal">ARRAY[1,2,3] &lt;= ARRAY[1,2,3]</code></td>
+<td><code class="literal">t</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;=</tt></td>
+<td> <code class="literal">&gt;=</code> </td>
 <td>greater than or equal</td>
-<td><tt class="literal">ARRAY[1,4,3] &gt;= ARRAY[1,4,3]</tt></td>
-<td><tt class="literal">t</tt></td>
+<td><code class="literal">ARRAY[1,4,3] &gt;= ARRAY[1,4,3]</code></td>
+<td><code class="literal">t</code></td>
 </tr>
 <tr>
-<td><tt class="literal">||</tt></td>
+<td> <code class="literal">||</code> </td>
 <td>array-to-array concatenation</td>
-<td><tt class="literal">ARRAY[1,2,3] || ARRAY[4,5,6]</tt></td>
-<td><tt class="literal">{1,2,3,4,5,6}</tt></td>
+<td><code class="literal">ARRAY[1,2,3] || ARRAY[4,5,6]</code></td>
+<td><code class="literal">{1,2,3,4,5,6}</code></td>
 </tr>
 <tr>
-<td><tt class="literal">||</tt></td>
+<td> <code class="literal">||</code> </td>
 <td>array-to-array concatenation</td>
-<td><tt class="literal">ARRAY[1,2,3] || ARRAY[[4,5,6],[7,8,9]]</tt></td>
-<td><tt class="literal">{{1,2,3},{4,5,6},{7,8,9}}</tt></td>
+<td><code class="literal">ARRAY[1,2,3] || ARRAY[[4,5,6],[7,8,9]]</code></td>
+<td><code class="literal">{{1,2,3},{4,5,6},{7,8,9}}</code></td>
 </tr>
 <tr>
-<td><tt class="literal">||</tt></td>
+<td> <code class="literal">||</code> </td>
 <td>element-to-array concatenation</td>
-<td><tt class="literal">3 || ARRAY[4,5,6]</tt></td>
-<td><tt class="literal">{3,4,5,6}</tt></td>
+<td><code class="literal">3 || ARRAY[4,5,6]</code></td>
+<td><code class="literal">{3,4,5,6}</code></td>
 </tr>
 <tr>
-<td><tt class="literal">||</tt></td>
+<td> <code class="literal">||</code> </td>
 <td>array-to-element concatenation</td>
-<td><tt class="literal">ARRAY[4,5,6] || 7</tt></td>
-<td><tt class="literal">{4,5,6,7}</tt></td>
+<td><code class="literal">ARRAY[4,5,6] || 7</code></td>
+<td><code class="literal">{4,5,6,7}</code></td>
 </tr>
 </tbody>
 </table>
@@ -101,12 +98,12 @@
 <p>   See <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a> for more details about array operator
    behavior.
   </p>
-<p>   <a href="functions-array.html#array-functions-table" title="Table 9.36. array Functions">Table 9.36, &#8220;array Functions&#8221;</a> shows the functions
+<p>   <a href="functions-array.html#array-functions-table" title="Table 9.36. array Functions">Table 9.36, &#8220;<code class="type">array</code> Functions&#8221;</a> shows the functions
    available for use with array types. See <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a>
    for more discussion and examples of the use of these functions.
   </p>
 <div class="table">
-<a name="array-functions-table"></a><p class="title"><b>Table 9.36. <tt class="type">array</tt> Functions</b></p>
+<a name="array-functions-table"></a><p class="title"><b>Table 9.36. <code class="type">array</code> Functions</b></p>
 <table summary="array Functions" border="1">
 <colgroup>
 <col>
@@ -124,76 +121,84 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">      <tt class="function">array_cat</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">anyarray</tt>)
-     </tt></td>
-<td><tt class="type">anyarray</tt></td>
+<td>     <code class="literal">      <code class="function">array_cat</code>
+      (<code class="type">anyarray</code>, <code class="type">anyarray</code>)
+     </code>
+    </td>
+<td><code class="type">anyarray</code></td>
 <td>concatenate two arrays</td>
-<td><tt class="literal">array_cat(ARRAY[1,2,3], ARRAY[4,5])</tt></td>
-<td><tt class="literal">{1,2,3,4,5}</tt></td>
+<td><code class="literal">array_cat(ARRAY[1,2,3], ARRAY[4,5])</code></td>
+<td><code class="literal">{1,2,3,4,5}</code></td>
 </tr>
 <tr>
-<td><tt class="literal">      <tt class="function">array_append</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">anyelement</tt>)
-     </tt></td>
-<td><tt class="type">anyarray</tt></td>
+<td>     <code class="literal">      <code class="function">array_append</code>
+      (<code class="type">anyarray</code>, <code class="type">anyelement</code>)
+     </code>
+    </td>
+<td><code class="type">anyarray</code></td>
 <td>append an element to the end of an array</td>
-<td><tt class="literal">array_append(ARRAY[1,2], 3)</tt></td>
-<td><tt class="literal">{1,2,3}</tt></td>
+<td><code class="literal">array_append(ARRAY[1,2], 3)</code></td>
+<td><code class="literal">{1,2,3}</code></td>
 </tr>
 <tr>
-<td><tt class="literal">      <tt class="function">array_prepend</tt>
-      (<tt class="type">anyelement</tt>, <tt class="type">anyarray</tt>)
-     </tt></td>
-<td><tt class="type">anyarray</tt></td>
+<td>     <code class="literal">      <code class="function">array_prepend</code>
+      (<code class="type">anyelement</code>, <code class="type">anyarray</code>)
+     </code>
+    </td>
+<td><code class="type">anyarray</code></td>
 <td>append an element to the beginning of an array</td>
-<td><tt class="literal">array_prepend(1, ARRAY[2,3])</tt></td>
-<td><tt class="literal">{1,2,3}</tt></td>
+<td><code class="literal">array_prepend(1, ARRAY[2,3])</code></td>
+<td><code class="literal">{1,2,3}</code></td>
 </tr>
 <tr>
-<td><tt class="literal">      <tt class="function">array_dims</tt>
-      (<tt class="type">anyarray</tt>)
-     </tt></td>
-<td><tt class="type">text</tt></td>
+<td>     <code class="literal">      <code class="function">array_dims</code>
+      (<code class="type">anyarray</code>)
+     </code>
+    </td>
+<td><code class="type">text</code></td>
 <td>returns a text representation of array's dimensions</td>
-<td><tt class="literal">array_dims(array[[1,2,3], [4,5,6]])</tt></td>
-<td><tt class="literal">[1:2][1:3]</tt></td>
+<td><code class="literal">array_dims(ARRAY[[1,2,3], [4,5,6]])</code></td>
+<td><code class="literal">[1:2][1:3]</code></td>
 </tr>
 <tr>
-<td><tt class="literal">      <tt class="function">array_lower</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">integer</tt>)
-     </tt></td>
-<td><tt class="type">integer</tt></td>
+<td>     <code class="literal">      <code class="function">array_lower</code>
+      (<code class="type">anyarray</code>, <code class="type">integer</code>)
+     </code>
+    </td>
+<td><code class="type">integer</code></td>
 <td>returns lower bound of the requested array dimension</td>
-<td><tt class="literal">array_lower(array_prepend(0, ARRAY[1,2,3]), 1)</tt></td>
-<td><tt class="literal">0</tt></td>
+<td><code class="literal">array_lower(array_prepend(0, ARRAY[1,2,3]), 1)</code></td>
+<td><code class="literal">0</code></td>
 </tr>
 <tr>
-<td><tt class="literal">      <tt class="function">array_upper</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">integer</tt>)
-     </tt></td>
-<td><tt class="type">integer</tt></td>
+<td>     <code class="literal">      <code class="function">array_upper</code>
+      (<code class="type">anyarray</code>, <code class="type">integer</code>)
+     </code>
+    </td>
+<td><code class="type">integer</code></td>
 <td>returns upper bound of the requested array dimension</td>
-<td><tt class="literal">array_upper(ARRAY[1,2,3,4], 1)</tt></td>
-<td><tt class="literal">4</tt></td>
+<td><code class="literal">array_upper(ARRAY[1,2,3,4], 1)</code></td>
+<td><code class="literal">4</code></td>
 </tr>
 <tr>
-<td><tt class="literal">      <tt class="function">array_to_string</tt>
-      (<tt class="type">anyarray</tt>, <tt class="type">text</tt>)
-     </tt></td>
-<td><tt class="type">text</tt></td>
+<td>     <code class="literal">      <code class="function">array_to_string</code>
+      (<code class="type">anyarray</code>, <code class="type">text</code>)
+     </code>
+    </td>
+<td><code class="type">text</code></td>
 <td>concatenates array elements using provided delimiter</td>
-<td><tt class="literal">array_to_string(array[1, 2, 3], '~^~')</tt></td>
-<td><tt class="literal">1~^~2~^~3</tt></td>
+<td><code class="literal">array_to_string(ARRAY[1, 2, 3], '~^~')</code></td>
+<td><code class="literal">1~^~2~^~3</code></td>
 </tr>
 <tr>
-<td><tt class="literal">      <tt class="function">string_to_array</tt>
-      (<tt class="type">text</tt>, <tt class="type">text</tt>)
-     </tt></td>
-<td><tt class="type">text[]</tt></td>
+<td>     <code class="literal">      <code class="function">string_to_array</code>
+      (<code class="type">text</code>, <code class="type">text</code>)
+     </code>
+    </td>
+<td><code class="type">text[]</code></td>
 <td>splits string into array elements using provided delimiter</td>
-<td><tt class="literal">string_to_array( 'xx~^~yy~^~zz', '~^~')</tt></td>
-<td><tt class="literal">{xx,yy,zz}</tt></td>
+<td><code class="literal">string_to_array('xx~^~yy~^~zz', '~^~')</code></td>
+<td><code class="literal">{xx,yy,zz}</code></td>
 </tr>
 </tbody>
 </table>

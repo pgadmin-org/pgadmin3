@@ -4,98 +4,107 @@
 <title>50.2. BKI Commands</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="bki.html" title="Chapter 50. BKI Backend Interface">
-<link rel="previous" href="bki.html" title="Chapter 50. BKI Backend Interface">
-<link rel="next" href="bki-example.html" title="50.3. Example">
+<link rel="prev" href="bki.html" title="Chapter 50. BKI Backend Interface">
+<link rel="next" href="bki-structure.html" title="50.3. Structure of the Bootstrap BKI File">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="bki-commands"></a>50.2. <span class="acronym">BKI</span> Commands</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bki-commands"></a>50.2. <span class="acronym">BKI</span> Commands</h2></div></div></div>
 <div class="variablelist"><dl>
-<dt><span class="term">     create 
-     [<span class="optional">bootstrap</span>]
-     [<span class="optional">shared_relation</span>]
-     [<span class="optional">without_oids</span>]
-     <i class="replaceable"><tt>tablename</tt></i>
-     (<i class="replaceable"><tt>name1</tt></i> =
-     <i class="replaceable"><tt>type1</tt></i> [<span class="optional">,
-     <i class="replaceable"><tt>name2</tt></i> = <i class="replaceable"><tt>type2</tt></i>, ...</span>])
+<dt><span class="term">     <code class="literal">create</code> 
+     [<span class="optional"><code class="literal">bootstrap</code></span>]
+     [<span class="optional"><code class="literal">shared_relation</code></span>]
+     [<span class="optional"><code class="literal">without_oids</code></span>]
+     <em class="replaceable"><code>tablename</code></em>
+     <em class="replaceable"><code>tableoid</code></em>
+     (<em class="replaceable"><code>name1</code></em> =
+     <em class="replaceable"><code>type1</code></em> [<span class="optional">,
+     <em class="replaceable"><code>name2</code></em> = <em class="replaceable"><code>type2</code></em>, ...</span>])
     </span></dt>
 <dd>
-<p>      Create a table named <i class="replaceable"><tt>tablename</tt></i> with the columns given
-      in parentheses.
+<p>      Create a table named <em class="replaceable"><code>tablename</code></em>, and having the OID
+      <em class="replaceable"><code>tableoid</code></em>,
+      with the columns given in parentheses.
      </p>
 <p>      The following column types are supported directly by
-      <tt class="filename">bootstrap.c</tt>: <tt class="type">bool</tt>,
-      <tt class="type">bytea</tt>, <tt class="type">char</tt> (1 byte),
-      <tt class="type">name</tt>, <tt class="type">int2</tt>,
-      <tt class="type">int4</tt>, <tt class="type">regproc</tt>, <tt class="type">regclass</tt>,
-      <tt class="type">regtype</tt>, <tt class="type">text</tt>,
-      <tt class="type">oid</tt>, <tt class="type">tid</tt>, <tt class="type">xid</tt>,
-      <tt class="type">cid</tt>, <tt class="type">int2vector</tt>, <tt class="type">oidvector</tt>,
-      <tt class="type">_int4</tt> (array), <tt class="type">_text</tt> (array),
-      <tt class="type">_aclitem</tt> (array).  Although it is possible to create
+      <code class="filename">bootstrap.c</code>: <code class="type">bool</code>,
+      <code class="type">bytea</code>, <code class="type">char</code> (1 byte),
+      <code class="type">name</code>, <code class="type">int2</code>,
+      <code class="type">int4</code>, <code class="type">regproc</code>, <code class="type">regclass</code>,
+      <code class="type">regtype</code>, <code class="type">text</code>,
+      <code class="type">oid</code>, <code class="type">tid</code>, <code class="type">xid</code>,
+      <code class="type">cid</code>, <code class="type">int2vector</code>, <code class="type">oidvector</code>,
+      <code class="type">_int4</code> (array), <code class="type">_text</code> (array),
+      <code class="type">_oid</code> (array), <code class="type">_char</code> (array),
+      <code class="type">_aclitem</code> (array).  Although it is possible to create
       tables containing columns of other types, this cannot be done until
-      after <tt class="structname">pg_type</tt> has been created and filled with
-      appropriate entries.
+      after <code class="structname">pg_type</code> has been created and filled with
+      appropriate entries.  (That effectively means that only these
+      column types can be used in bootstrapped tables, but non-bootstrap
+      catalogs can contain any built-in type.)
      </p>
-<p>      When <tt class="literal">bootstrap</tt> is specified,
+<p>      When <code class="literal">bootstrap</code> is specified,
       the table will only be created on disk; nothing is entered into
-      <tt class="structname">pg_class</tt>,
-      <tt class="structname">pg_attribute</tt>, etc, for it.  Thus the
+      <code class="structname">pg_class</code>,
+      <code class="structname">pg_attribute</code>, etc, for it.  Thus the
       table will not be accessible by ordinary SQL operations until
-      such entries are made the hard way (with <tt class="literal">insert</tt>
+      such entries are made the hard way (with <code class="literal">insert</code>
       commands).  This option is used for creating
-      <tt class="structname">pg_class</tt> etc themselves.
+      <code class="structname">pg_class</code> etc themselves.
      </p>
-<p>      The table is created as shared if <tt class="literal">shared_relation</tt> is
+<p>      The table is created as shared if <code class="literal">shared_relation</code> is
       specified.
-      It will have OIDs unless <tt class="literal">without_oids</tt> is specified.
+      It will have OIDs unless <code class="literal">without_oids</code> is specified.
      </p>
 </dd>
-<dt><span class="term">     open <i class="replaceable"><tt>tablename</tt></i>
+<dt><span class="term">     <code class="literal">open</code> <em class="replaceable"><code>tablename</code></em>
     </span></dt>
-<dd><p>      Open the table called
-      <i class="replaceable"><tt>tablename</tt></i>
-      for further manipulation.
+<dd><p>      Open the table named
+      <em class="replaceable"><code>tablename</code></em>
+      for insertion of data.  Any currently open table is closed.
      </p></dd>
-<dt><span class="term">     close [<span class="optional"><i class="replaceable"><tt>tablename</tt></i></span>]
+<dt><span class="term">     <code class="literal">close</code> [<span class="optional"><em class="replaceable"><code>tablename</code></em></span>]
     </span></dt>
-<dd><p>      Close the open table called <i class="replaceable"><tt>tablename</tt></i>.  It is an error if
-      <i class="replaceable"><tt>tablename</tt></i> is not
-      already opened.  If no <i class="replaceable"><tt>tablename</tt></i> is given, then the
-      currently open table is closed.
+<dd><p>      Close the open table.  The name of the table can be given as a
+      cross-check, but this is not required.
      </p></dd>
-<dt><span class="term">     insert [<span class="optional">OID = <i class="replaceable"><tt>oid_value</tt></i></span>] (<i class="replaceable"><tt>value1</tt></i> <i class="replaceable"><tt>value2</tt></i> ...)
+<dt><span class="term">     <code class="literal">insert</code> [<span class="optional"><code class="literal">OID =</code> <em class="replaceable"><code>oid_value</code></em></span>] <code class="literal">(</code> <em class="replaceable"><code>value1</code></em> <em class="replaceable"><code>value2</code></em> ... <code class="literal">)</code>
     </span></dt>
 <dd>
-<p>      Insert a new row into the open table using <i class="replaceable"><tt>value1</tt></i>, <i class="replaceable"><tt>value2</tt></i>, etc., for its column
-      values and <i class="replaceable"><tt>oid_value</tt></i> for its OID.  If
-      <i class="replaceable"><tt>oid_value</tt></i> is zero
-      (0) or the clause is omitted, then the next available OID is
-      used.
+<p>      Insert a new row into the open table using <em class="replaceable"><code>value1</code></em>, <em class="replaceable"><code>value2</code></em>, etc., for its column
+      values and <em class="replaceable"><code>oid_value</code></em> for its OID.  If
+      <em class="replaceable"><code>oid_value</code></em> is zero
+      (0) or the clause is omitted, and the table has OIDs, then the
+      next available OID is assigned.
      </p>
 <p>      NULL values can be specified using the special key word
-      <tt class="literal">_null_</tt>.  Values containing spaces must be
+      <code class="literal">_null_</code>.  Values containing spaces must be
       double quoted.
      </p>
 </dd>
-<dt><span class="term">     declare [<span class="optional">unique</span>] index <i class="replaceable"><tt>indexname</tt></i> on <i class="replaceable"><tt>tablename</tt></i> using <i class="replaceable"><tt>amname</tt></i> (<i class="replaceable"><tt>opclass1</tt></i> <i class="replaceable"><tt>name1</tt></i> [<span class="optional">, ...</span>])
+<dt><span class="term">     <code class="literal">declare</code> [<span class="optional"><code class="literal">unique</code></span>]
+     <code class="literal">index</code> <em class="replaceable"><code>indexname</code></em>
+     <em class="replaceable"><code>indexoid</code></em>
+     <code class="literal">on</code> <em class="replaceable"><code>tablename</code></em>
+     <code class="literal">using</code> <em class="replaceable"><code>amname</code></em>
+     <code class="literal">(</code> <em class="replaceable"><code>opclass1</code></em>
+     <em class="replaceable"><code>name1</code></em>
+     [<span class="optional">, ...</span>] <code class="literal">)</code>
     </span></dt>
-<dd><p>      Create an index named <i class="replaceable"><tt>indexname</tt></i> on the table named
-      <i class="replaceable"><tt>tablename</tt></i> using the
-      <i class="replaceable"><tt>amname</tt></i> access
-      method.  The fields to index are called <i class="replaceable"><tt>name1</tt></i>, <i class="replaceable"><tt>name2</tt></i> etc., and the operator
-      classes to use are <i class="replaceable"><tt>opclass1</tt></i>, <i class="replaceable"><tt>opclass2</tt></i> etc., respectively.
+<dd><p>      Create an index named <em class="replaceable"><code>indexname</code></em>, having OID
+      <em class="replaceable"><code>indexoid</code></em>,
+      on the table named
+      <em class="replaceable"><code>tablename</code></em>, using the
+      <em class="replaceable"><code>amname</code></em> access
+      method.  The fields to index are called <em class="replaceable"><code>name1</code></em>, <em class="replaceable"><code>name2</code></em> etc., and the operator
+      classes to use are <em class="replaceable"><code>opclass1</code></em>, <em class="replaceable"><code>opclass2</code></em> etc., respectively.
       The index file is created and appropriate catalog entries are
       made for it, but the index contents are not initialized by this command.
      </p></dd>
-<dt><span class="term">build indices</span></dt>
+<dt><span class="term"><code class="literal">build indices</code></span></dt>
 <dd><p>      Fill in the indices that have previously been declared.
      </p></dd>
 </dl></div>

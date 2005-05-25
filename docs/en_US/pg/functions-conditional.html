@@ -4,19 +4,16 @@
 <title>9.13. Conditional Expressions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">
+<link rel="prev" href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">
 <link rel="next" href="functions-array.html" title="9.14. Array Functions and Operators">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-conditional"></a>9.13. Conditional Expressions</h2></div></div>
-<div></div>
-</div>
-<a name="id2560788"></a><a name="id2560794"></a><p>   This section describes the <span class="acronym">SQL</span>-compliant conditional expressions
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-conditional"></a>9.13. Conditional Expressions</h2></div></div></div>
+<a name="id340424"></a><a name="id340429"></a><p>   This section describes the <span class="acronym">SQL</span>-compliant conditional expressions
    available in <span class="productname">PostgreSQL</span>.
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -27,32 +24,29 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2560819"></a>9.13.1. <tt class="literal">CASE</tt></h3></div></div>
-<div></div>
-</div>
-<p>   The <span class="acronym">SQL</span> <tt class="token">CASE</tt> expression is a
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id340452"></a>9.13.1. <code class="literal">CASE</code></h3></div></div></div>
+<p>   The <span class="acronym">SQL</span> <code class="token">CASE</code> expression is a
    generic conditional expression, similar to if/else statements in
    other languages:
 
 </p>
-<pre class="synopsis">CASE WHEN <i class="replaceable"><tt>condition</tt></i> THEN <i class="replaceable"><tt>result</tt></i>
+<pre class="synopsis">CASE WHEN <em class="replaceable"><code>condition</code></em> THEN <em class="replaceable"><code>result</code></em>
      [<span class="optional">WHEN ...</span>]
-     [<span class="optional">ELSE <i class="replaceable"><tt>result</tt></i></span>]
+     [<span class="optional">ELSE <em class="replaceable"><code>result</code></em></span>]
 END</pre>
 <p>
 
-   <tt class="token">CASE</tt> clauses can be used wherever
-   an expression is valid.  <i class="replaceable"><tt>condition</tt></i> is an
-   expression that returns a <tt class="type">boolean</tt> result.  If the result is true
-   then the value of the <tt class="token">CASE</tt> expression is the
-   <i class="replaceable"><tt>result</tt></i> that follows the condition.  If the result is false any
-   subsequent <tt class="token">WHEN</tt> clauses are searched in the same
-   manner.  If no <tt class="token">WHEN</tt>
-   <i class="replaceable"><tt>condition</tt></i> is true then the value of the
-   case expression is the <i class="replaceable"><tt>result</tt></i> in the
-   <tt class="token">ELSE</tt> clause.  If the <tt class="token">ELSE</tt> clause is
+   <code class="token">CASE</code> clauses can be used wherever
+   an expression is valid.  <em class="replaceable"><code>condition</code></em> is an
+   expression that returns a <code class="type">boolean</code> result.  If the result is true
+   then the value of the <code class="token">CASE</code> expression is the
+   <em class="replaceable"><code>result</code></em> that follows the condition.  If the result is false any
+   subsequent <code class="token">WHEN</code> clauses are searched in the same
+   manner.  If no <code class="token">WHEN</code>
+   <em class="replaceable"><code>condition</code></em> is true then the value of the
+   case expression is the <em class="replaceable"><code>result</code></em> in the
+   <code class="token">ELSE</code> clause.  If the <code class="token">ELSE</code> clause is
    omitted and no condition matches, the result is null.
   </p>
 <p>    An example:
@@ -80,31 +74,31 @@ SELECT a,
  3 | other</pre>
 <p>
    </p>
-<p>   The data types of all the <i class="replaceable"><tt>result</tt></i>
+<p>   The data types of all the <em class="replaceable"><code>result</code></em>
    expressions must be convertible to a single output type.
-   See <a href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">Section 10.5, &#8220;UNION, CASE, and ARRAY Constructs&#8221;</a> for more detail.
+   See <a href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">Section 10.5, &#8220;<code class="literal">UNION</code>, <code class="literal">CASE</code>, and <code class="literal">ARRAY</code> Constructs&#8221;</a> for more detail.
   </p>
-<p>   The following &#8220;<span class="quote">simple</span>&#8221; <tt class="token">CASE</tt> expression is a
+<p>   The following &#8220;<span class="quote">simple</span>&#8221; <code class="token">CASE</code> expression is a
    specialized variant of the general form above:
 
 </p>
-<pre class="synopsis">CASE <i class="replaceable"><tt>expression</tt></i>
-    WHEN <i class="replaceable"><tt>value</tt></i> THEN <i class="replaceable"><tt>result</tt></i>
+<pre class="synopsis">CASE <em class="replaceable"><code>expression</code></em>
+    WHEN <em class="replaceable"><code>value</code></em> THEN <em class="replaceable"><code>result</code></em>
     [<span class="optional">WHEN ...</span>]
-    [<span class="optional">ELSE <i class="replaceable"><tt>result</tt></i></span>]
+    [<span class="optional">ELSE <em class="replaceable"><code>result</code></em></span>]
 END</pre>
 <p>
 
    The
-   <i class="replaceable"><tt>expression</tt></i> is computed and compared to
-   all the <i class="replaceable"><tt>value</tt></i> specifications in the
-   <tt class="token">WHEN</tt> clauses until one is found that is equal.  If
-   no match is found, the <i class="replaceable"><tt>result</tt></i> in the
-   <tt class="token">ELSE</tt> clause (or a null value) is returned.  This is similar
-   to the <tt class="function">switch</tt> statement in C.
+   <em class="replaceable"><code>expression</code></em> is computed and compared to
+   all the <em class="replaceable"><code>value</code></em> specifications in the
+   <code class="token">WHEN</code> clauses until one is found that is equal.  If
+   no match is found, the <em class="replaceable"><code>result</code></em> in the
+   <code class="token">ELSE</code> clause (or a null value) is returned.  This is similar
+   to the <code class="function">switch</code> statement in C.
   </p>
 <p>    The example above can be written using the simple
-    <tt class="token">CASE</tt> syntax:
+    <code class="token">CASE</code> syntax:
 </p>
 <pre class="screen">SELECT a,
        CASE a WHEN 1 THEN 'one'
@@ -120,7 +114,7 @@ END</pre>
  3 | other</pre>
 <p>
    </p>
-<p>    A <tt class="token">CASE</tt> expression does not evaluate any subexpressions
+<p>    A <code class="token">CASE</code> expression does not evaluate any subexpressions
     that are not needed to determine the result.  For example, this is a
     possible way of avoiding a division-by-zero failure:
 </p>
@@ -129,13 +123,10 @@ END</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2561030"></a>9.13.2. <tt class="literal">COALESCE</tt></h3></div></div>
-<div></div>
-</div>
-<a name="id2561037"></a><pre class="synopsis"><tt class="function">COALESCE</tt>(<i class="replaceable"><tt>value</tt></i> [<span class="optional">, ...</span>])</pre>
-<p>   The <tt class="function">COALESCE</tt> function returns the first of its
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id340648"></a>9.13.2. <code class="literal">COALESCE</code></h3></div></div></div>
+<a name="id340654"></a><pre class="synopsis"><code class="function">COALESCE</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
+<p>   The <code class="function">COALESCE</code> function returns the first of its
    arguments that is not null.  Null is returned only if all arguments
    are null.  This is often useful to substitute a
    default value for null values when data is retrieved for display,
@@ -144,24 +135,21 @@ END</pre>
 <pre class="programlisting">SELECT COALESCE(description, short_description, '(none)') ...</pre>
 <p>
   </p>
-<p>    Like a <tt class="token">CASE</tt> expression, <tt class="function">COALESCE</tt> will
+<p>    Like a <code class="token">CASE</code> expression, <code class="function">COALESCE</code> will
     not evaluate arguments that are not needed to determine the result;
     that is, arguments to the right of the first non-null argument are
     not evaluated.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2561092"></a>9.13.3. <tt class="literal">NULLIF</tt></h3></div></div>
-<div></div>
-</div>
-<a name="id2561099"></a><pre class="synopsis"><tt class="function">NULLIF</tt>(<i class="replaceable"><tt>value1</tt></i>, <i class="replaceable"><tt>value2</tt></i>)</pre>
-<p>   The <tt class="function">NULLIF</tt> function returns a null value if and only
-   if <i class="replaceable"><tt>value1</tt></i> and
-   <i class="replaceable"><tt>value2</tt></i> are equal.  Otherwise it returns
-   <i class="replaceable"><tt>value1</tt></i>.  This can be used to perform the
-   inverse operation of the <tt class="function">COALESCE</tt> example
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id340706"></a>9.13.3. <code class="literal">NULLIF</code></h3></div></div></div>
+<a name="id340713"></a><pre class="synopsis"><code class="function">NULLIF</code>(<em class="replaceable"><code>value1</code></em>, <em class="replaceable"><code>value2</code></em>)</pre>
+<p>   The <code class="function">NULLIF</code> function returns a null value if and only
+   if <em class="replaceable"><code>value1</code></em> and
+   <em class="replaceable"><code>value2</code></em> are equal.  Otherwise it returns
+   <em class="replaceable"><code>value1</code></em>.  This can be used to perform the
+   inverse operation of the <code class="function">COALESCE</code> example
    given above:
 </p>
 <pre class="programlisting">SELECT NULLIF(value, '(none)') ...</pre>

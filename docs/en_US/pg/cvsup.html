@@ -4,40 +4,34 @@
 <title>F.3. Getting The Source Via CVSup</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="cvs.html" title="Appendix F. The CVS Repository">
-<link rel="previous" href="cvs-tree.html" title="F.2. CVS Tree Organization">
+<link rel="prev" href="cvs-tree.html" title="F.2. CVS Tree Organization">
 <link rel="next" href="docguide.html" title="Appendix G. Documentation">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="cvsup"></a>F.3. Getting The Source Via <span class="productname">CVSup</span></h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="cvsup"></a>F.3. Getting The Source Via <span class="productname">CVSup</span></h2></div></div></div>
 <p>   An alternative to using anonymous CVS for retrieving
    the <span class="productname">PostgreSQL</span> source tree
    is <span class="productname">CVSup</span>.
    <span class="productname">CVSup</span> was developed by
-   John Polstra (<tt class="email">&lt;<a href="mailto:jdp@polstra.com">jdp@polstra.com</a>&gt;</tt>) to
-   distribute CVS repositories and other file trees for
-   <a href="http://www.freebsd.org" target="_top">the FreeBSD project</a>.
+   John Polstra (<code class="email">&lt;<a href="mailto:jdp@polstra.com">jdp@polstra.com</a>&gt;</code>) to
+   distribute CVS repositories and other file trees for the
+   <a href="http://www.freebsd.org" target="_top">FreeBSD project</a>.
   </p>
 <p>   A major advantage to using
    <span class="productname">CVSup</span> is that it can reliably
    replicate the <span class="emphasis"><em>entire</em></span> CVS repository on your local system,
-   allowing fast local access to cvs operations such as <tt class="option">log</tt>
-   and <tt class="option">diff</tt>. Other advantages include fast synchronization to
+   allowing fast local access to cvs operations such as <code class="option">log</code>
+   and <code class="option">diff</code>. Other advantages include fast synchronization to
    the <span class="productname">PostgreSQL</span> server due to an efficient
    streaming transfer protocol which only sends the changes since the last update.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2786886"></a>F.3.1. Preparing A <span class="productname">CVSup</span> Client System</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id550129"></a>F.3.1. Preparing A <span class="productname">CVSup</span> Client System</h3></div></div></div>
 <p>    Two directory areas are required for <span class="productname">CVSup</span>
     to do its job: a local <span class="productname">CVS</span> repository
     (or simply a directory area if you are fetching a snapshot rather
@@ -47,23 +41,23 @@
    </p>
 <p>    Decide where you want to keep your local copy of the
     <span class="productname">CVS</span> repository. On one of our systems we
-    recently set up a repository in <tt class="filename">/home/cvs/</tt>,
+    recently set up a repository in <code class="filename">/home/cvs/</code>,
     but had formerly kept it under a
     <span class="productname">PostgreSQL</span> development tree in
-    <tt class="filename">/opt/postgres/cvs/</tt>. If you intend to keep your
-    repository in <tt class="filename">/home/cvs/</tt>, then put
+    <code class="filename">/opt/postgres/cvs/</code>. If you intend to keep your
+    repository in <code class="filename">/home/cvs/</code>, then put
 
     </p>
 <pre class="programlisting">setenv CVSROOT /home/cvs
     </pre>
 <p>
 
-    in your <tt class="filename">.cshrc</tt> file, or a similar line in
-    your <tt class="filename">.bashrc</tt> or
-    <tt class="filename">.profile</tt> file, depending on your shell.
+    in your <code class="filename">.cshrc</code> file, or a similar line in
+    your <code class="filename">.bashrc</code> or
+    <code class="filename">.profile</code> file, depending on your shell.
    </p>
 <p>    The <span class="application">cvs</span> repository area must be initialized.
-    Once <tt class="envar">CVSROOT</tt> is set, then this can be done with a
+    Once <code class="envar">CVSROOT</code> is set, then this can be done with a
     single command:
 
     </p>
@@ -72,8 +66,8 @@
 <p>
 
     after which you should see at least a directory named
-    <tt class="filename">CVSROOT</tt> when listing the
-    <tt class="envar">CVSROOT</tt> directory:
+    <code class="filename">CVSROOT</code> when listing the
+    <code class="envar">CVSROOT</code> directory:
 
     </p>
 <pre class="programlisting">$ ls $CVSROOT
@@ -83,11 +77,8 @@ CVSROOT/
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2787019"></a>F.3.2. Running a <span class="productname">CVSup</span> Client</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id550253"></a>F.3.2. Running a <span class="productname">CVSup</span> Client</h3></div></div></div>
 <p>    Verify that
     <span class="application">cvsup</span> is in your path; on most systems
     you can do this by typing
@@ -101,13 +92,13 @@ CVSROOT/
     <span class="application">cvsup</span> using:
 
     </p>
-<pre class="programlisting">$ cvsup -L 2 <i class="replaceable"><tt>postgres.cvsup</tt></i>
+<pre class="programlisting">$ cvsup -L 2 <em class="replaceable"><code>postgres.cvsup</code></em>
     </pre>
 <p>
 
-    where <tt class="option">-L 2</tt> enables some status messages so you
+    where <code class="option">-L 2</code> enables some status messages so you
     can monitor the progress of the update,
-    and <i class="replaceable"><tt>postgres.cvsup</tt></i> is
+    and <em class="replaceable"><code>postgres.cvsup</code></em> is
     the path and name you have given to your
     <span class="productname">CVSup</span> configuration file.
    </p>
@@ -152,14 +143,14 @@ pgsql
    </pre>
 <p>
    </p>
-<p>    If you specify <tt class="option">repository</tt> instead of <tt class="option">pgsql</tt>
+<p>    If you specify <code class="option">repository</code> instead of <code class="option">pgsql</code>
     in the above setup, you will get a complete copy of the entire
     repository at cvsup.postgresql.org, including its
-    <tt class="filename">CVSROOT</tt> directory. If you do that, you will
+    <code class="filename">CVSROOT</code> directory. If you do that, you will
     probably want to exclude those files in that directory that you
     want to modify locally, using a refuse file. For example, for the
     above setup you might put this in
-    <tt class="filename">/home/cvs/sup/repository/refuse</tt>:
+    <code class="filename">/home/cvs/sup/repository/refuse</code>:
 </p>
 <pre class="programlisting">CVSROOT/config*
 CVSROOT/commitinfo*
@@ -168,7 +159,8 @@ CVSROOT/loginfo*</pre>
     See the <span class="productname">CVSup</span> manual pages for how to use refuse files.
    </p>
 <p>    The following is a suggested <span class="productname">CVSup</span> config file from
-    <a href="ftp://ftp.postgresql.org/pub/CVSup/README.cvsup" target="_top">the <span class="productname">PostgreSQL</span> ftp site</a>
+    the <span class="productname">PostgreSQL</span>
+    <a href="ftp://ftp.postgresql.org/pub/CVSup/README.cvsup" target="_top">    ftp site</a>
     which will fetch the current snapshot only:
 
     </p>
@@ -183,10 +175,10 @@ CVSROOT/loginfo*</pre>
 *default tag=.
 
 # base directory where CVSup will store its 'bookmarks' file(s)
-*default base=<i class="replaceable"><tt>/usr/local/pgsql</tt></i>
+*default base=<em class="replaceable"><code>/usr/local/pgsql</code></em>
 
 # prefix directory where CVSup will store the actual distribution(s)
-*default prefix=<i class="replaceable"><tt>/usr/local/pgsql</tt></i>
+*default prefix=<em class="replaceable"><code>/usr/local/pgsql</code></em>
 
 # complete distribution, including all below
 pgsql
@@ -201,22 +193,19 @@ pgsql
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2787223"></a>F.3.3. Installing <span class="productname">CVSup</span></h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id550440"></a>F.3.3. Installing <span class="productname">CVSup</span></h3></div></div></div>
 <p>    <span class="productname">CVSup</span> is available as source, pre-built
     binaries, or Linux RPMs. It is far easier to use a binary than to
     build from source, primarily because the very capable, but
     voluminous, Modula-3 compiler is required for the build.
    </p>
 <div class="procedure">
-<p class="title"><b><span class="productname">CVSup</span> Installation from Binaries</b></p>
+<a name="id550459"></a><p class="title"><b><span class="productname">CVSup</span> Installation from Binaries</b></p>
 <p>     You can use pre-built binaries
      if you have a platform for which binaries
-     are posted on
-     <a href="ftp://ftp.postgresql.org/pub" target="_top">the <span class="productname">PostgreSQL</span> ftp site</a>,
+     are posted on the <span class="productname">PostgreSQL</span>
+     <a href="ftp://ftp.postgresql.org/pub" target="_top">     ftp site</a>
      or if you are running FreeBSD, for which
      <span class="productname">CVSup</span> is available as a port.
 
@@ -249,7 +238,8 @@ pgsql
 <li><p>	If you are running FreeBSD, install the <span class="productname">CVSup</span> port.
        </p></li>
 <li><p>	If you have another platform, check for and download the appropriate binary from
-	<a href="ftp://ftp.postgresql.org/pub" target="_top">the <span class="productname">PostgreSQL</span> ftp site</a>.
+	the <span class="productname">PostgreSQL</span>
+        <a href="ftp://ftp.postgresql.org/pub" target="_top">        ftp site</a>.
        </p></li>
 </ol>
 </li>
@@ -283,7 +273,7 @@ $ mv cvsup.1 ../doc/man/man1/
       </p>
 <pre class="programlisting">$ rehash
 $ which cvsup
-$ set path=(<i class="replaceable"><tt>path to cvsup</tt></i> $path)
+$ set path=(<em class="replaceable"><code>path to cvsup</code></em> $path)
 $ which cvsup
 /usr/local/bin/cvsup
       </pre>
@@ -294,11 +284,8 @@ $ which cvsup
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2787412"></a>F.3.4. Installation from Sources</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id550613"></a>F.3.4. Installation from Sources</h3></div></div></div>
 <p>    Installing <span class="productname">CVSup</span> from sources is not
     entirely trivial, primarily because most systems will need to
     install a Modula-3 compiler first.
@@ -314,7 +301,7 @@ $ which cvsup
 <p>
    </p>
 <div class="procedure">
-<p class="title"><b>Linux installation</b></p>
+<a name="id550638"></a><p class="title"><b>Linux installation</b></p>
 <ol type="1">
 <li>
 <p>      Install Modula-3.
@@ -322,11 +309,10 @@ $ which cvsup
 <ol type="a">
 <li>
 <p>	Pick up the <span class="productname">Modula-3</span>
-	distribution from
-	<a href="http://m3.polymtl.ca/m3" target="_top">Polytechnique Montréal</a>,
+	distribution from <a href="http://m3.polymtl.ca/m3" target="_top">        Polytechnique Montréal</a>
 	who are actively maintaining the code base originally developed by
-	<a href="http://www.research.digital.com/SRC/modula-3/html/home.html" target="_top">the DEC Systems Research Center</a>.
-       The <span class="productname">PM3</span> <span class="productname">RPM</span> distribution is roughly
+	the <a href="http://www.research.digital.com/SRC/modula-3/html/home.html" target="_top">        DEC Systems Research Center</a>.
+        The <span class="productname">PM3</span> <span class="productname">RPM</span> distribution is roughly
 	30MB compressed. At the time of writing, the 1.1.10-1 release
 	installed cleanly on RH-5.2, whereas the 1.1.11-1 release is
 	apparently built for another release (RH-6.0?) and does not run on RH-5.2.

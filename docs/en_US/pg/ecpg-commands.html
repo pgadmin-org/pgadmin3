@@ -4,18 +4,15 @@
 <title>29.4. Running SQL Commands</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-<link rel="previous" href="ecpg-disconnect.html" title="29.3. Closing a Connection">
+<link rel="prev" href="ecpg-disconnect.html" title="29.3. Closing a Connection">
 <link rel="next" href="ecpg-set-connection.html" title="29.5. Choosing a Connection">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-commands"></a>29.4. Running SQL Commands</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-commands"></a>29.4. Running SQL Commands</h2></div></div></div>
 <p>   Any SQL command can be run from within an embedded SQL application.
    Below are some examples of how to do that.
   </p>
@@ -64,19 +61,19 @@ EXEC SQL COMMIT;</pre>
 <p>
   </p>
 <p>   The tokens of the form
-   <tt class="literal">:<i class="replaceable"><tt>something</tt></i></tt> are
-   <i class="firstterm">host variables</i>, that is, they refer to
+   <code class="literal">:<em class="replaceable"><code>something</code></em></code> are
+   <em class="firstterm">host variables</em>, that is, they refer to
    variables in the C program.  They are explained in <a href="ecpg-variables.html" title="29.6. Using Host Variables">Section 29.6, &#8220;Using Host Variables&#8221;</a>.
   </p>
 <p>   In the default mode, statements are committed only when
-   <tt class="command">EXEC SQL COMMIT</tt> is issued. The embedded SQL
+   <code class="command">EXEC SQL COMMIT</code> is issued. The embedded SQL
    interface also supports autocommit of transactions (similar to
-   <span class="application">libpq</span> behavior) via the <tt class="option">-t</tt> command-line
-   option to <tt class="command">ecpg</tt> (see below) or via the <tt class="literal">EXEC SQL
-   SET AUTOCOMMIT TO ON</tt> statement. In autocommit mode, each
+   <span class="application">libpq</span> behavior) via the <code class="option">-t</code> command-line
+   option to <code class="command">ecpg</code> (see below) or via the <code class="literal">EXEC SQL
+   SET AUTOCOMMIT TO ON</code> statement. In autocommit mode, each
    command is automatically committed unless it is inside an explicit
    transaction block. This mode can be explicitly turned off using
-   <tt class="literal">EXEC SQL SET AUTOCOMMIT TO OFF</tt>.
+   <code class="literal">EXEC SQL SET AUTOCOMMIT TO OFF</code>.
   </p>
 </div></body>
 </html>

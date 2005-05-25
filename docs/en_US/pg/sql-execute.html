@@ -4,36 +4,33 @@
 <title>EXECUTE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-end.html" title="END">
+<link rel="prev" href="sql-end.html" title="END">
 <link rel="next" href="sql-explain.html" title="EXPLAIN">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-execute"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-execute"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>EXECUTE &#8212; execute a prepared statement</p>
 </div>
-<a name="id2691674"></a><a name="id2691682"></a><div class="refsynopsisdiv">
+<a name="id460445"></a><a name="id460454"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">EXECUTE <i class="replaceable"><tt>plan_name</tt></i> [ (<i class="replaceable"><tt>parameter</tt></i> [, ...] ) ]</pre>
+<pre class="synopsis">EXECUTE <em class="replaceable"><code>plan_name</code></em> [ (<em class="replaceable"><code>parameter</code></em> [, ...] ) ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691712"></a><h2>Description</h2>
-<p>   <tt class="command">EXECUTE</tt> is used to execute a previously prepared
+<a name="id460483"></a><h2>Description</h2>
+<p>   <code class="command">EXECUTE</code> is used to execute a previously prepared
    statement. Since prepared statements only exist for the duration of a
    session, the prepared statement must have been created by a
-   <tt class="command">PREPARE</tt> statement executed earlier in the
+   <code class="command">PREPARE</code> statement executed earlier in the
    current session.
   </p>
-<p>   If the <tt class="command">PREPARE</tt> statement that created the statement
+<p>   If the <code class="command">PREPARE</code> statement that created the statement
    specified some parameters, a compatible set of parameters must be
-   passed to the <tt class="command">EXECUTE</tt> statement, or else an
+   passed to the <code class="command">EXECUTE</code> statement, or else an
    error is raised. Note that (unlike functions) prepared statements are
    not overloaded based on the type or number of their parameters; the
    name of a prepared statement must be unique within a database session.
@@ -43,42 +40,42 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691766"></a><h2>Parameters</h2>
+<a name="id460531"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>plan_name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>plan_name</code></em></span></dt>
 <dd><p>      The name of the prepared statement to execute.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>parameter</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>parameter</code></em></span></dt>
 <dd><p>      The actual value of a parameter to the prepared statement.  This
       must be an expression yielding a value of a type compatible with
       the data type specified for this parameter position in the
-      <tt class="command">PREPARE</tt> command that created the prepared
+      <code class="command">PREPARE</code> command that created the prepared
       statement.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691802"></a><h2>Outputs</h2>
-<p>   The command tag returned by <tt class="command">EXECUTE</tt>
-   is that of the prepared statement, and not <tt class="literal">EXECUTE</tt>.
+<a name="id460564"></a><h2>Outputs</h2>
+<p>   The command tag returned by <code class="command">EXECUTE</code>
+   is that of the prepared statement, and not <code class="literal">EXECUTE</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691821"></a><h2>Examples</h2>
+<a name="id460583"></a><h2>Examples</h2>
 <p>    Examples are given in the <a href="sql-prepare.html#sql-prepare-examples">Examples</a> section of the <a href="sql-prepare.html">PREPARE</a> documentation.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691850"></a><h2>Compatibility</h2>
-<p>   The SQL standard includes an <tt class="command">EXECUTE</tt> statement,
+<a name="id460609"></a><h2>Compatibility</h2>
+<p>   The SQL standard includes an <code class="command">EXECUTE</code> statement,
    but it is only for use in embedded SQL.  This version of the
-   <tt class="command">EXECUTE</tt> statement also uses a somewhat different
+   <code class="command">EXECUTE</code> statement also uses a somewhat different
    syntax.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2691871"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-deallocate.html">DEALLOCATE</a>, <a href="sql-prepare.html">PREPARE</a></span>
+<a name="id460628"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-deallocate.html">DEALLOCATE</a>, <a href="sql-prepare.html">PREPARE</a>, </span>
 </div>
 </div></body>
 </html>

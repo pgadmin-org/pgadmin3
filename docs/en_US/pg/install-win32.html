@@ -4,19 +4,16 @@
 <title>Chapter 15. Client-Only Installation on Windows</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="previous" href="supported-platforms.html" title="14.7. Supported Platforms">
+<link rel="prev" href="supported-platforms.html" title="14.7. Supported Platforms">
 <link rel="next" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="install-win32">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="install-win32"></a>Chapter 15. Client-Only Installation on <span class="productname">Windows</span></h2></div></div>
-<div></div>
-</div>
-<a name="id2579082"></a><p>  Although a complete <span class="productname">PostgreSQL</span> installation
+<div class="titlepage"><div><div><h2 class="title">
+<a name="install-win32"></a>Chapter 15. Client-Only Installation on <span class="productname">Windows</span></h2></div></div></div>
+<a name="id357100"></a><p>  Although a complete <span class="productname">PostgreSQL</span> installation
   for <span class="productname">Windows</span> can only be built using
   <span class="productname">MinGW</span> or
   <span class="productname">Cygwin</span>, the C client library
@@ -36,57 +33,70 @@
 </div>
 <p>  To build everything that you can on <span class="productname">Windows</span>
   using <span class="productname">Microsoft Visual C++</span>, change into the
-  <tt class="filename">src</tt> directory and type the command
+  <code class="filename">src</code> directory and type the command
 </p>
-<pre class="screen"><b class="userinput"><tt>nmake /f win32.mak</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>nmake /f win32.mak</code></strong></pre>
 <p>
   This assumes that you have <span class="productname">Visual C++</span> in
   your path.
  </p>
 <p>  To build everything using <span class="productname">Borland
-  C++</span>, change into the <tt class="filename">src</tt> directory
+  C++</span>, change into the <code class="filename">src</code> directory
   and type the command
 </p>
-<pre class="screen"><b class="userinput"><tt>make -DCFG=Release /f bcc32.mak</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>make -N -DCFG=Release /f bcc32.mak</code></strong></pre>
 <p>
  </p>
 <p>  The following files will be built:
 
   </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="filename">interfaces\libpq\Release\libpq.dll</tt></span></dt>
+<dt><span class="term"><code class="filename">interfaces\libpq\Release\libpq.dll</code></span></dt>
 <dd><p>      The dynamically linkable frontend library
      </p></dd>
-<dt><span class="term"><tt class="filename">interfaces\libpq\Release\libpqdll.lib</tt></span></dt>
-<dd><p>      Import library to link your programs to <tt class="filename">libpq.dll</tt>
+<dt><span class="term"><code class="filename">interfaces\libpq\Release\libpqdll.lib</code></span></dt>
+<dd><p>      Import library to link your programs to <code class="filename">libpq.dll</code>
      </p></dd>
-<dt><span class="term"><tt class="filename">interfaces\libpq\Release\libpq.lib</tt></span></dt>
+<dt><span class="term"><code class="filename">interfaces\libpq\Release\libpq.lib</code></span></dt>
 <dd><p>      Static version of the frontend library
      </p></dd>
-<dt><span class="term"><tt class="filename">bin\psql\Release\psql.exe</tt></span></dt>
+<dt><span class="term"><code class="filename">bin\psql\Release\psql.exe</code></span></dt>
 <dd><p>      The <span class="productname">PostgreSQL</span> interactive terminal
      </p></dd>
 </dl></div>
 <p>
  </p>
 <p>  The only file that really needs to be installed is the
-  <tt class="filename">libpq.dll</tt> library.  This file should in most
-  cases be placed in the <tt class="filename">WINNT\SYSTEM32</tt> directory
-  (or in <tt class="filename">WINDOWS\SYSTEM</tt> on a Windows 95/98/ME
+  <code class="filename">libpq.dll</code> library.  This file should in most
+  cases be placed in the <code class="filename">WINNT\SYSTEM32</code> directory
+  (or in <code class="filename">WINDOWS\SYSTEM</code> on a Windows 95/98/ME
   system).  If this file is installed using a setup program, it should
   be installed with version checking using the
-  <tt class="symbol">VERSIONINFO</tt> resource included in the file, to
+  <code class="symbol">VERSIONINFO</code> resource included in the file, to
   ensure that a newer version of the library is not overwritten.
  </p>
 <p>  If you plan to do development using <span class="application">libpq</span>
   on this machine, you will have to add the
-  <tt class="filename">src\include</tt> and
-  <tt class="filename">src\interfaces\libpq</tt> subdirectories of the source
+  <code class="filename">src\include</code> and
+  <code class="filename">src\interfaces\libpq</code> subdirectories of the source
   tree to the include path in your compiler's settings.
  </p>
 <p>  To use the library, you must add the
-  <tt class="filename">libpqdll.lib</tt> file to your project.  (In Visual
+  <code class="filename">libpqdll.lib</code> file to your project.  (In Visual
   C++, just right-click on the project and choose to add it.)
+ </p>
+<p>  Free development tools from <span class="productname">Microsoft</span>
+  can be downloaded from
+  <a href="http://msdn.microsoft.com/visualc/vctoolkit2003/" target="_top">http://msdn.microsoft.com/visualc/vctoolkit2003/</a>.
+  You will also need <code class="filename">MSVCRT.lib</code> from the platform SDK from
+  <a href="http://www.microsoft.com/msdownload/platformsdk/sdkupdate/" target="_top">http://www.microsoft.com/msdownload/platformsdk/sdkupdate/</a>.
+  You can also download the <span class="application">.NET</span> framework from
+  <a href="http://msdn.microsoft.com/netframework/downloads/updates/default.aspx" target="_top">http://msdn.microsoft.com/netframework/downloads/updates/default.aspx</a>.
+  Once installed, the toolkit binaries must be in your path, and you might
+  need to add a <code class="literal">/lib:&lt;libpath&gt;</code> to point to <code class="filename">MSVCRT.lib</code>.
+  Free <span class="productname">Borland C++</span> compiler tools can be downloaded from
+  <a href="http://www.borland.com/products/downloads/download_cbuilder.html#" target="_top">http://www.borland.com/products/downloads/download_cbuilder.html#</a>,
+  and require similar setup.
  </p>
 </div></body>
 </html>

@@ -4,26 +4,23 @@
 <title>41.38. pg_user</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="view-pg-tables.html" title="41.37. pg_tables">
+<link rel="prev" href="view-pg-tables.html" title="41.37. pg_tables">
 <link rel="next" href="view-pg-views.html" title="41.39. pg_views">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="view-pg-user"></a>41.38. <tt class="structname">pg_user</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2737228"></a><p>   The view <tt class="structname">pg_user</tt> provides access to
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-user"></a>41.38. <code class="structname">pg_user</code></h2></div></div></div>
+<a name="id503461"></a><p>   The view <code class="structname">pg_user</code> provides access to
    information about database users.  This is simply a publicly
    readable view of 
-   <a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>
+   <a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><code class="structname">pg_shadow</code></a>
    that blanks out the password field.
   </p>
 <div class="table">
-<a name="id2737254"></a><p class="title"><b>Table 41.38. <tt class="structname">pg_user</tt> Columns</b></p>
+<a name="id503485"></a><p class="title"><b>Table 41.38. <code class="structname">pg_user</code> Columns</b></p>
 <table summary="pg_user Columns" border="1">
 <colgroup>
 <col>
@@ -39,52 +36,52 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">usename</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">usename</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>User name</td>
 </tr>
 <tr>
-<td><tt class="structfield">usesysid</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="structfield">usesysid</code></td>
+<td><code class="type">int4</code></td>
 <td> </td>
 <td>User ID (arbitrary number used to reference this user)</td>
 </tr>
 <tr>
-<td><tt class="structfield">usecreatedb</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">usecreatedb</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>User may create databases</td>
 </tr>
 <tr>
-<td><tt class="structfield">usesuper</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">usesuper</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>User is a superuser</td>
 </tr>
 <tr>
-<td><tt class="structfield">usecatupd</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">usecatupd</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>       User may update system catalogs.  (Even a superuser may not do
        this unless this column is true.)
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">passwd</tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="structfield">passwd</code></td>
+<td><code class="type">text</code></td>
 <td> </td>
-<td>Not the password (always reads as <tt class="literal">********</tt>)</td>
+<td>Not the password (always reads as <code class="literal">********</code>)</td>
 </tr>
 <tr>
-<td><tt class="structfield">valuntil</tt></td>
-<td><tt class="type">abstime</tt></td>
+<td><code class="structfield">valuntil</code></td>
+<td><code class="type">abstime</code></td>
 <td> </td>
 <td>Password expiry time (only used for password authentication)</td>
 </tr>
 <tr>
-<td><tt class="structfield">useconfig</tt></td>
-<td><tt class="type">text[]</tt></td>
+<td><code class="structfield">useconfig</code></td>
+<td><code class="type">text[]</code></td>
 <td> </td>
 <td>Session defaults for run-time configuration variables</td>
 </tr>

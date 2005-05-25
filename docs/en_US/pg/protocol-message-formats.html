@@ -4,18 +4,15 @@
 <title>42.4. Message Formats</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
-<link rel="previous" href="protocol-message-types.html" title="42.3. Message Data Types">
+<link rel="prev" href="protocol-message-types.html" title="42.3. Message Data Types">
 <link rel="next" href="protocol-error-fields.html" title="42.5. Error and Notice Message Fields">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="protocol-message-formats"></a>42.4. Message Formats</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="protocol-message-formats"></a>42.4. Message Formats</h2></div></div></div>
 <p>This section describes the detailed format of each message.  Each is marked to
 indicate that it may be sent by a frontend (F), a backend (B), or both
 (F &amp; B).
@@ -164,13 +161,13 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 		(an empty string selects the unnamed prepared statement).</p></dd>
 <dt><span class="term">        Int16</span></dt>
 <dd><p>		The number of parameter format codes that follow
-		(denoted <i class="replaceable"><tt>C</tt></i> below).
+		(denoted <em class="replaceable"><code>C</code></em> below).
 		This can be zero to indicate that there are no parameters
 		or that the parameters all use the default format (text);
 		or one, in which case the specified format code is applied
 		to all parameters; or it can equal the actual number of
 		parameters.</p></dd>
-<dt><span class="term">        Int16[<i class="replaceable"><tt>C</tt></i>]</span></dt>
+<dt><span class="term">        Int16[<em class="replaceable"><code>C</code></em>]</span></dt>
 <dd><p>                The parameter format codes.  Each must presently be
 		zero (text) or one (binary).</p></dd>
 <dt><span class="term">        Int16</span></dt>
@@ -186,10 +183,10 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 		does not include itself).  Can be zero.
 		As a special case, -1 indicates a NULL parameter value.
 		No value bytes follow in the NULL case.</p></dd>
-<dt><span class="term">        Byte<i class="replaceable"><tt>n</tt></i></span></dt>
+<dt><span class="term">        Byte<em class="replaceable"><code>n</code></em></span></dt>
 <dd><p>                The value of the parameter, in the format indicated by the
 		associated format code.
-                <i class="replaceable"><tt>n</tt></i> is the above length.</p></dd>
+                <em class="replaceable"><code>n</code></em> is the above length.</p></dd>
 </dl></div>
 <p>
         After the last parameter, the following fields appear:
@@ -197,14 +194,14 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <div class="variablelist"><dl>
 <dt><span class="term">        Int16</span></dt>
 <dd><p>		The number of result-column format codes that follow
-		(denoted <i class="replaceable"><tt>R</tt></i> below).
+		(denoted <em class="replaceable"><code>R</code></em> below).
 		This can be zero to indicate that there are no result columns
 		or that the result columns should all use the default format
 		(text); 
 		or one, in which case the specified format code is applied
 		to all result columns (if any); or it can equal the actual
 		number of result columns of the query.</p></dd>
-<dt><span class="term">        Int16[<i class="replaceable"><tt>R</tt></i>]</span></dt>
+<dt><span class="term">        Int16[<em class="replaceable"><code>R</code></em>]</span></dt>
 <dd><p>                The result-column format codes.  Each must presently be
 		zero (text) or one (binary).</p></dd>
 </dl></div>
@@ -231,7 +228,7 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        Int32(80877102)</span></dt>
 <dd><p>                The cancel request code.  The value is chosen to contain
-                <tt class="literal">1234</tt> in the most significant 16 bits, and <tt class="literal">5678</tt> in the
+                <code class="literal">1234</code> in the most significant 16 bits, and <code class="literal">5678</code> in the
                 least 16 significant bits.  (To avoid confusion, this code
                 must not be the same as any protocol version number.)</p></dd>
 <dt><span class="term">        Int32</span></dt>
@@ -252,8 +249,8 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dt><span class="term">        Int32</span></dt>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        Byte1</span></dt>
-<dd><p>                '<tt class="literal">S</tt>' to close a prepared statement; or
-                '<tt class="literal">P</tt>' to close a portal.</p></dd>
+<dd><p>                '<code class="literal">S</code>' to close a prepared statement; or
+                '<code class="literal">P</code>' to close a portal.</p></dd>
 <dt><span class="term">        String</span></dt>
 <dd><p>                The name of the prepared statement or portal to close
 		(an empty string selects the unnamed prepared statement
@@ -287,31 +284,31 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <p>        The command tag.  This is usually a single
         word that identifies which SQL command was completed.
        </p>
-<p>        For an <tt class="command">INSERT</tt> command, the tag is
-        <tt class="literal">INSERT <i class="replaceable"><tt>oid</tt></i>
-        <i class="replaceable"><tt>rows</tt></i></tt>, where
-        <i class="replaceable"><tt>rows</tt></i> is the number of rows
-        inserted. <i class="replaceable"><tt>oid</tt></i> is the object ID
-        of the inserted row if <i class="replaceable"><tt>rows</tt></i> is 1
+<p>        For an <code class="command">INSERT</code> command, the tag is
+        <code class="literal">INSERT <em class="replaceable"><code>oid</code></em>
+        <em class="replaceable"><code>rows</code></em></code>, where
+        <em class="replaceable"><code>rows</code></em> is the number of rows
+        inserted. <em class="replaceable"><code>oid</code></em> is the object ID
+        of the inserted row if <em class="replaceable"><code>rows</code></em> is 1
 	and the target table has OIDs;
-	otherwise <i class="replaceable"><tt>oid</tt></i> is 0.
+	otherwise <em class="replaceable"><code>oid</code></em> is 0.
        </p>
-<p>        For a <tt class="command">DELETE</tt> command, the tag is
-	<tt class="literal">DELETE <i class="replaceable"><tt>rows</tt></i></tt> where
-        <i class="replaceable"><tt>rows</tt></i> is the number of rows deleted.
+<p>        For a <code class="command">DELETE</code> command, the tag is
+	<code class="literal">DELETE <em class="replaceable"><code>rows</code></em></code> where
+        <em class="replaceable"><code>rows</code></em> is the number of rows deleted.
        </p>
-<p>        For an <tt class="command">UPDATE</tt> command, the tag is
-	<tt class="literal">UPDATE <i class="replaceable"><tt>rows</tt></i></tt> where
-        <i class="replaceable"><tt>rows</tt></i> is the number of rows updated.
+<p>        For an <code class="command">UPDATE</code> command, the tag is
+	<code class="literal">UPDATE <em class="replaceable"><code>rows</code></em></code> where
+        <em class="replaceable"><code>rows</code></em> is the number of rows updated.
        </p>
-<p>        For a <tt class="command">MOVE</tt> command, the tag is
-        <tt class="literal">MOVE <i class="replaceable"><tt>rows</tt></i></tt> where
-        <i class="replaceable"><tt>rows</tt></i> is the number of rows the
+<p>        For a <code class="command">MOVE</code> command, the tag is
+        <code class="literal">MOVE <em class="replaceable"><code>rows</code></em></code> where
+        <em class="replaceable"><code>rows</code></em> is the number of rows the
         cursor's position has been changed by.
        </p>
-<p>        For a <tt class="command">FETCH</tt> command, the tag is
-        <tt class="literal">FETCH <i class="replaceable"><tt>rows</tt></i></tt> where
-        <i class="replaceable"><tt>rows</tt></i> is the number of rows that
+<p>        For a <code class="command">FETCH</code> command, the tag is
+        <code class="literal">FETCH <em class="replaceable"><code>rows</code></em></code> where
+        <em class="replaceable"><code>rows</code></em> is the number of rows that
         have been retrieved from the cursor.</p>
 </dd>
 </dl></div>
@@ -321,11 +318,11 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dt><span class="term">CopyData (F &amp; B)</span></dt>
 <dd><div class="variablelist"><dl>
 <dt><span class="term">        Byte1('d')</span></dt>
-<dd><p>                Identifies the message as <tt class="command">COPY</tt> data.</p></dd>
+<dd><p>                Identifies the message as <code class="command">COPY</code> data.</p></dd>
 <dt><span class="term">        Int32</span></dt>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
-<dt><span class="term">        Byte<i class="replaceable"><tt>n</tt></i></span></dt>
-<dd><p>                Data that forms part of a <tt class="command">COPY</tt> data stream.  Messages sent
+<dt><span class="term">        Byte<em class="replaceable"><code>n</code></em></span></dt>
+<dd><p>                Data that forms part of a <code class="command">COPY</code> data stream.  Messages sent
 		from the backend will always correspond to single data rows,
 		but messages sent by frontends may divide the data stream
 		arbitrarily.</p></dd>
@@ -336,7 +333,7 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 </p>
 <div class="variablelist"><dl>
 <dt><span class="term">        Byte1('c')</span></dt>
-<dd><p>                Identifies the message as a <tt class="command">COPY</tt>-complete indicator.</p></dd>
+<dd><p>                Identifies the message as a <code class="command">COPY</code>-complete indicator.</p></dd>
 <dt><span class="term">        Int32(4)</span></dt>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 </dl></div>
@@ -349,7 +346,7 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 </p>
 <div class="variablelist"><dl>
 <dt><span class="term">        Byte1('f')</span></dt>
-<dd><p>                Identifies the message as a <tt class="command">COPY</tt>-failure indicator.</p></dd>
+<dd><p>                Identifies the message as a <code class="command">COPY</code>-failure indicator.</p></dd>
 <dt><span class="term">        Int32</span></dt>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        String</span></dt>
@@ -370,7 +367,7 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dt><span class="term">        Int32</span></dt>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        Int8</span></dt>
-<dd><p>                0 indicates the overall <tt class="command">COPY</tt> format is textual (rows
+<dd><p>                0 indicates the overall <code class="command">COPY</code> format is textual (rows
 		separated by newlines, columns separated by separator
 		characters, etc).
 		1 indicates the overall copy format is binary (similar
@@ -379,8 +376,8 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 		for more information.</p></dd>
 <dt><span class="term">        Int16</span></dt>
 <dd><p>		The number of columns in the data to be copied
-		(denoted <i class="replaceable"><tt>N</tt></i> below).</p></dd>
-<dt><span class="term">        Int16[<i class="replaceable"><tt>N</tt></i>]</span></dt>
+		(denoted <em class="replaceable"><code>N</code></em> below).</p></dd>
+<dt><span class="term">        Int16[<em class="replaceable"><code>N</code></em>]</span></dt>
 <dd><p>                The format codes to be used for each column.
 		Each must presently be zero (text) or one (binary).
 		All must be zero if the overall copy format is textual.</p></dd>
@@ -399,15 +396,15 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dt><span class="term">        Int32</span></dt>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        Int8</span></dt>
-<dd><p>                0 indicates the overall <tt class="command">COPY</tt> format
+<dd><p>                0 indicates the overall <code class="command">COPY</code> format
                 is textual (rows separated by newlines, columns
                 separated by separator characters, etc). 1 indicates
                 the overall copy format is binary (similar to DataRow
                 format). See <a href="sql-copy.html">COPY</a> for more information. </p></dd>
 <dt><span class="term">        Int16</span></dt>
 <dd><p>		The number of columns in the data to be copied
-		(denoted <i class="replaceable"><tt>N</tt></i> below).</p></dd>
-<dt><span class="term">        Int16[<i class="replaceable"><tt>N</tt></i>]</span></dt>
+		(denoted <em class="replaceable"><code>N</code></em> below).</p></dd>
+<dt><span class="term">        Int16[<em class="replaceable"><code>N</code></em>]</span></dt>
 <dd><p>                The format codes to be used for each column.
 		Each must presently be zero (text) or one (binary).
 		All must be zero if the overall copy format is textual.</p></dd>
@@ -434,10 +431,10 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 		does not include itself).  Can be zero.
 		As a special case, -1 indicates a NULL column value.
 		No value bytes follow in the NULL case.</p></dd>
-<dt><span class="term">        Byte<i class="replaceable"><tt>n</tt></i></span></dt>
+<dt><span class="term">        Byte<em class="replaceable"><code>n</code></em></span></dt>
 <dd><p>                The value of the column, in the format indicated by the
 		associated format code.
-                <i class="replaceable"><tt>n</tt></i> is the above length.</p></dd>
+                <em class="replaceable"><code>n</code></em> is the above length.</p></dd>
 </dl></div>
 <p>
 </p>
@@ -452,8 +449,8 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dt><span class="term">        Int32</span></dt>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        Byte1</span></dt>
-<dd><p>                '<tt class="literal">S</tt>' to describe a prepared statement; or
-                '<tt class="literal">P</tt>' to describe a portal.</p></dd>
+<dd><p>                '<code class="literal">S</code>' to describe a prepared statement; or
+                '<code class="literal">P</code>' to describe a portal.</p></dd>
 <dt><span class="term">        String</span></dt>
 <dd><p>                The name of the prepared statement or portal to describe
 		(an empty string selects the unnamed prepared statement
@@ -548,13 +545,13 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dd><p>                Specifies the object ID of the function to call.</p></dd>
 <dt><span class="term">        Int16</span></dt>
 <dd><p>		The number of argument format codes that follow
-		(denoted <i class="replaceable"><tt>C</tt></i> below).
+		(denoted <em class="replaceable"><code>C</code></em> below).
 		This can be zero to indicate that there are no arguments
 		or that the arguments all use the default format (text);
 		or one, in which case the specified format code is applied
 		to all arguments; or it can equal the actual number of
 		arguments.</p></dd>
-<dt><span class="term">        Int16[<i class="replaceable"><tt>C</tt></i>]</span></dt>
+<dt><span class="term">        Int16[<em class="replaceable"><code>C</code></em>]</span></dt>
 <dd><p>                The argument format codes.  Each must presently be
 		zero (text) or one (binary).</p></dd>
 <dt><span class="term">        Int16</span></dt>
@@ -570,10 +567,10 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 		does not include itself).  Can be zero.
 		As a special case, -1 indicates a NULL argument value.
 		No value bytes follow in the NULL case.</p></dd>
-<dt><span class="term">        Byte<i class="replaceable"><tt>n</tt></i></span></dt>
+<dt><span class="term">        Byte<em class="replaceable"><code>n</code></em></span></dt>
 <dd><p>                The value of the argument, in the format indicated by the
 		associated format code.
-                <i class="replaceable"><tt>n</tt></i> is the above length.</p></dd>
+                <em class="replaceable"><code>n</code></em> is the above length.</p></dd>
 </dl></div>
 <p>
         After the last argument, the following field appears:
@@ -600,10 +597,10 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 		does not include itself).  Can be zero.
 		As a special case, -1 indicates a NULL function result.
 		No value bytes follow in the NULL case.</p></dd>
-<dt><span class="term">        Byte<i class="replaceable"><tt>n</tt></i></span></dt>
+<dt><span class="term">        Byte<em class="replaceable"><code>n</code></em></span></dt>
 <dd><p>                The value of the function result, in the format indicated by
 		the associated format code.
-                <i class="replaceable"><tt>n</tt></i> is the above length.</p></dd>
+                <em class="replaceable"><code>n</code></em> is the above length.</p></dd>
 </dl></div>
 <p>
 </p>
@@ -807,9 +804,9 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        Byte1</span></dt>
 <dd><p>                Current backend transaction status indicator.
-		Possible values are '<tt class="literal">I</tt>' if idle (not in
-		a transaction block); '<tt class="literal">T</tt>' if in a transaction
-		block; or '<tt class="literal">E</tt>' if in a failed transaction
+		Possible values are '<code class="literal">I</code>' if idle (not in
+		a transaction block); '<code class="literal">T</code>' if in a transaction
+		block; or '<code class="literal">E</code>' if in a failed transaction
 		block (queries will be rejected until block is ended).</p></dd>
 </dl></div>
 <p>
@@ -842,10 +839,10 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dt><span class="term">        Int32</span></dt>
 <dd><p>                The object ID of the field's data type.</p></dd>
 <dt><span class="term">        Int16</span></dt>
-<dd><p>                The data type size (see <tt class="varname">pg_type.typlen</tt>).
+<dd><p>                The data type size (see <code class="varname">pg_type.typlen</code>).
 		Note that negative values denote variable-width types.</p></dd>
 <dt><span class="term">        Int32</span></dt>
-<dd><p>                The type modifier (see <tt class="varname">pg_attribute.atttypmod</tt>).
+<dd><p>                The type modifier (see <code class="varname">pg_attribute.atttypmod</code>).
 		The meaning of the modifier is type-specific.</p></dd>
 <dt><span class="term">        Int16</span></dt>
 <dd><p>                The format code being used for the field.  Currently will
@@ -865,7 +862,7 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        Int32(80877103)</span></dt>
 <dd><p>                The <span class="acronym">SSL</span> request code.  The value is chosen to contain
-                <tt class="literal">1234</tt> in the most significant 16 bits, and <tt class="literal">5679</tt> in the
+                <code class="literal">1234</code> in the most significant 16 bits, and <code class="literal">5679</code> in the
                 least 16 significant bits.  (To avoid confusion, this code
                 must not be the same as any protocol version number.)</p></dd>
 </dl></div>
@@ -890,7 +887,7 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 	parameter name and value strings.  A zero byte is required as a
 	terminator after the last name/value pair.
 	Parameters can appear in any
-	order.  <tt class="literal">user</tt> is required, others are optional.
+	order.  <code class="literal">user</code> is required, others are optional.
 	Each parameter is specified as:
 </p>
 <div class="variablelist"><dl>
@@ -900,12 +897,12 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term">                <tt class="literal">user</tt></span></dt>
+<dt><span class="term">                <code class="literal">user</code></span></dt>
 <dd><p>                        The database user name to connect as.  Required;
 			there is no default.</p></dd>
-<dt><span class="term">                <tt class="literal">database</tt></span></dt>
+<dt><span class="term">                <code class="literal">database</code></span></dt>
 <dd><p>                        The database to connect to.  Defaults to the user name.</p></dd>
-<dt><span class="term">                <tt class="literal">options</tt></span></dt>
+<dt><span class="term">                <code class="literal">options</code></span></dt>
 <dd><p>                        Command-line arguments for the backend.  (This is
 			deprecated in favor of setting individual run-time
 			parameters.)</p></dd>

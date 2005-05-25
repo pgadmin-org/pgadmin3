@@ -4,30 +4,24 @@
 <title>8.11. Composite Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="previous" href="arrays.html" title="8.10. Arrays">
+<link rel="prev" href="arrays.html" title="8.10. Arrays">
 <link rel="next" href="datatype-oid.html" title="8.12. Object Identifier Types">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="rowtypes"></a>8.11. Composite Types</h2></div></div>
-<div></div>
-</div>
-<a name="id2539124"></a><a name="id2539130"></a><p>  A <i class="firstterm">composite type</i> describes the structure of a row or record;
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="rowtypes"></a>8.11. Composite Types</h2></div></div></div>
+<a name="id319627"></a><a name="id319633"></a><p>  A <em class="firstterm">composite type</em> describes the structure of a row or record;
   it is in essence just a list of field names and their data types.
   <span class="productname">PostgreSQL</span> allows values of composite types to be
   used in many of the same ways that simple types can be used.  For example, a
   column of a table can be declared to be of a composite type.
  </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2539152"></a>8.11.1. Declaration of Composite Types</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319653"></a>8.11.1. Declaration of Composite Types</h3></div></div></div>
 <p>  Here are two simple examples of defining composite types:
 </p>
 <pre class="programlisting">CREATE TYPE complex AS (
@@ -41,11 +35,11 @@ CREATE TYPE inventory_item AS (
     price           numeric
 );</pre>
 <p>
-  The syntax is comparable to <tt class="command">CREATE TABLE</tt>, except that only
-  field names and types can be specified; no constraints (such as <tt class="literal">NOT
-  NULL</tt>) can presently be included.  Note that the <tt class="literal">AS</tt> keyword
+  The syntax is comparable to <code class="command">CREATE TABLE</code>, except that only
+  field names and types can be specified; no constraints (such as <code class="literal">NOT
+  NULL</code>) can presently be included.  Note that the <code class="literal">AS</code> keyword
   is essential; without it, the system will think a quite different kind
-  of <tt class="command">CREATE TYPE</tt> command is meant, and you'll get odd syntax
+  of <code class="command">CREATE TYPE</code> command is meant, and you'll get odd syntax
   errors.
  </p>
 <p>  Having defined the types, we can use them to create tables:
@@ -79,7 +73,7 @@ SELECT price_extension(item, 10) FROM on_hand;</pre>
     price           numeric CHECK (price &gt; 0)
 );</pre>
 <p>
-  then the same <tt class="literal">inventory_item</tt> composite type shown above would
+  then the same <code class="literal">inventory_item</code> composite type shown above would
   come into being as a 
   byproduct, and could be used just as above.  Note however an important
   restriction of the current implementation: since no constraints are
@@ -90,24 +84,21 @@ SELECT price_extension(item, 10) FROM on_hand;</pre>
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2539250"></a>8.11.2. Composite Value Input</h3></div></div>
-<div></div>
-</div>
-<a name="id2539254"></a><p>   To write a composite value as a literal constant, enclose the field
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319734"></a>8.11.2. Composite Value Input</h3></div></div></div>
+<a name="id319738"></a><p>   To write a composite value as a literal constant, enclose the field
    values within parentheses and separate them by commas.  You may put double
    quotes around any field value, and must do so if it contains commas or
    parentheses.  (More details appear below.)  Thus, the general format of a
    composite constant is the following:
 </p>
-<pre class="synopsis">'( <i class="replaceable"><tt>val1</tt></i> , <i class="replaceable"><tt>val2</tt></i> , ... )'</pre>
+<pre class="synopsis">'( <em class="replaceable"><code>val1</code></em> , <em class="replaceable"><code>val2</code></em> , ... )'</pre>
 <p>
    An example is
 </p>
 <pre class="programlisting">'("fuzzy dice",42,1.99)'</pre>
 <p>
-   which would be a valid value of the <tt class="literal">inventory_item</tt> type
+   which would be a valid value of the <code class="literal">inventory_item</code> type
    defined above.  To make a field be NULL, write no characters at all
    in its position in the list.  For example, this constant specifies
    a NULL third field:
@@ -125,7 +116,7 @@ SELECT price_extension(item, 10) FROM on_hand;</pre>
    treated as a string and passed to the composite-type input conversion
    routine.  An explicit type specification might be necessary.)
   </p>
-<p>  The <tt class="literal">ROW</tt> expression syntax may also be used to
+<p>  The <code class="literal">ROW</code> expression syntax may also be used to
   construct composite values.  In most cases this is considerably
   simpler to use than the string-literal syntax, since you don't have
   to worry about multiple layers of quoting.  We already used this
@@ -140,27 +131,24 @@ ROW('', 42, NULL)</pre>
 <pre class="programlisting">('fuzzy dice', 42, 1.99)
 ('', 42, NULL)</pre>
 <p>
-  The <tt class="literal">ROW</tt> expression syntax is discussed in more detail in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
+  The <code class="literal">ROW</code> expression syntax is discussed in more detail in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2539369"></a>8.11.3. Accessing Composite Types</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319838"></a>8.11.3. Accessing Composite Types</h3></div></div></div>
 <p>  To access a field of a composite column, one writes a dot and the field
   name, much like selecting a field from a table name.  In fact, it's so
   much like selecting from a table name that you often have to use parentheses
   to keep from confusing the parser.  For example, you might try to select
-  some subfields from our <tt class="literal">on_hand</tt> example table with something
+  some subfields from our <code class="literal">on_hand</code> example table with something
   like:
 
 </p>
 <pre class="programlisting">SELECT item.name FROM on_hand WHERE item.price &gt; 9.99;</pre>
 <p>
 
-  This will not work since the name <tt class="literal">item</tt> is taken to be a table
+  This will not work since the name <code class="literal">item</code> is taken to be a table
   name, not a field name, per SQL syntax rules.  You must write it like this:
 
 </p>
@@ -175,7 +163,7 @@ ROW('', 42, NULL)</pre>
 <p>
 
   Now the parenthesized object is correctly interpreted as a reference to
-  the <tt class="literal">item</tt> column, and then the subfield can be selected from it.
+  the <code class="literal">item</code> column, and then the subfield can be selected from it.
  </p>
 <p>  Similar syntactic issues apply whenever you select a field from a composite
   value.  For instance, to select just one field from the result of a function
@@ -189,11 +177,8 @@ ROW('', 42, NULL)</pre>
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2539442"></a>8.11.4. Modifying Composite Types</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319898"></a>8.11.4. Modifying Composite Types</h3></div></div></div>
 <p>  Here are some examples of the proper syntax for inserting and updating
   composite columns.
   First, inserting or updating a whole column:
@@ -204,7 +189,7 @@ ROW('', 42, NULL)</pre>
 UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
 <p>
 
-  The first example omits <tt class="literal">ROW</tt>, the second uses it; we
+  The first example omits <code class="literal">ROW</code>, the second uses it; we
   could have done it either way.
  </p>
 <p>  We can update an individual subfield of a composite column:
@@ -215,10 +200,10 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
 
   Notice here that we don't need to (and indeed cannot)
   put parentheses around the column name appearing just after
-  <tt class="literal">SET</tt>, but we do need parentheses when referencing the same
+  <code class="literal">SET</code>, but we do need parentheses when referencing the same
   column in the expression to the right of the equal sign.
  </p>
-<p>  And we can specify subfields as targets for <tt class="command">INSERT</tt>, too:
+<p>  And we can specify subfields as targets for <code class="command">INSERT</code>, too:
 
 </p>
 <pre class="programlisting">INSERT INTO mytab (complex_col.r, complex_col.i) VALUES(1.1, 2.2);</pre>
@@ -229,16 +214,13 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2539502"></a>8.11.5. Composite Type Input and Output Syntax</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319950"></a>8.11.5. Composite Type Input and Output Syntax</h3></div></div></div>
 <p>   The external text representation of a composite value consists of items that
    are interpreted according to the I/O conversion rules for the individual
    field types, plus decoration that indicates the composite structure.
-   The decoration consists of parentheses (<tt class="literal">(</tt> and <tt class="literal">)</tt>)
-   around the whole value, plus commas (<tt class="literal">,</tt>) between adjacent
+   The decoration consists of parentheses (<code class="literal">(</code> and <code class="literal">)</code>)
+   around the whole value, plus commas (<code class="literal">,</code>) between adjacent
    items.  Whitespace outside the parentheses is ignored, but within the
    parentheses it is considered part of the field value, and may or may not be
    significant depending on the input conversion rules for the field data type.
@@ -263,7 +245,7 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
   </p>
 <p>   A completely empty field value (no characters at all between the commas
    or parentheses) represents a NULL.  To write a value that is an empty
-   string rather than NULL, write <tt class="literal">""</tt>.
+   string rather than NULL, write <code class="literal">""</code>.
   </p>
 <p>   The composite output routine will put double quotes around field values
    if they are empty strings or contain parentheses, commas,
@@ -275,7 +257,7 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
 <h3 class="title">Note</h3>
 <p>   Remember that what you write in an SQL command will first be interpreted
    as a string literal, and then as a composite.  This doubles the number of
-   backslashes you need.  For example, to insert a <tt class="type">text</tt> field
+   backslashes you need.  For example, to insert a <code class="type">text</code> field
    containing a double quote and a backslash in a composite
    value, you'd need to write
 </p>
@@ -283,11 +265,11 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
 <p>
    The string-literal processor removes one level of backslashes, so that
    what arrives at the composite-value parser looks like
-   <tt class="literal">("\"\\")</tt>.  In turn, the string
-   fed to the <tt class="type">text</tt> data type's input routine
-   becomes <tt class="literal">"\</tt>.  (If we were working
+   <code class="literal">("\"\\")</code>.  In turn, the string
+   fed to the <code class="type">text</code> data type's input routine
+   becomes <code class="literal">"\</code>.  (If we were working
    with a data type whose input routine also treated backslashes specially,
-   <tt class="type">bytea</tt> for example, we might need as many as eight backslashes
+   <code class="type">bytea</code> for example, we might need as many as eight backslashes
    in the command to get one backslash into the stored composite field.)
    Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
    used to avoid the need to double backslashes.
@@ -295,10 +277,10 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
 </div>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>   The <tt class="literal">ROW</tt> constructor syntax is usually easier to work with
+<p>   The <code class="literal">ROW</code> constructor syntax is usually easier to work with
    than the composite-literal syntax when writing composite values in SQL
    commands. 
-   In <tt class="literal">ROW</tt>, individual field values are written the same way
+   In <code class="literal">ROW</code>, individual field values are written the same way
    they would be written when not members of a composite.
   </p>
 </div>

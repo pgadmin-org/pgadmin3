@@ -4,18 +4,15 @@
 <title>30.2. Data Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="information-schema.html" title="Chapter 30. The Information Schema">
+<link rel="prev" href="information-schema.html" title="Chapter 30. The Information Schema">
 <link rel="next" href="infoschema-information-schema-catalog-name.html" title="30.3. information_schema_catalog_name">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-datatypes"></a>30.2. Data Types</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-datatypes"></a>30.2. Data Types</h2></div></div></div>
 <p>   The columns of the information schema views use special data types
    that are defined in the information schema.  These are defined as
    simple domains over ordinary built-in types.  You should not use
@@ -27,19 +24,19 @@
 
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="type">cardinal_number</tt></span></dt>
+<dt><span class="term"><code class="type">cardinal_number</code></span></dt>
 <dd><p>       A nonnegative integer.
       </p></dd>
-<dt><span class="term"><tt class="type">character_data</tt></span></dt>
+<dt><span class="term"><code class="type">character_data</code></span></dt>
 <dd><p>       A character string (without specific maximum length).
       </p></dd>
-<dt><span class="term"><tt class="type">sql_identifier</tt></span></dt>
+<dt><span class="term"><code class="type">sql_identifier</code></span></dt>
 <dd><p>       A character string.  This type is used for SQL identifiers, the
-       type <tt class="type">character_data</tt> is used for any other kind of
+       type <code class="type">character_data</code> is used for any other kind of
        text data.
       </p></dd>
-<dt><span class="term"><tt class="type">time_stamp</tt></span></dt>
-<dd><p>       A domain over the type <tt class="type">timestamp</tt>
+<dt><span class="term"><code class="type">time_stamp</code></span></dt>
+<dd><p>       A domain over the type <code class="type">timestamp</code>
       </p></dd>
 </dl></div>
 <p>
@@ -47,10 +44,10 @@
    Every column in the information schema has one of these four types.
   </p>
 <p>   Boolean (true/false) data is represented in the information schema
-   by a column of type <tt class="type">character_data</tt> that contains
-   either <tt class="literal">YES</tt> or <tt class="literal">NO</tt>.  (The
+   by a column of type <code class="type">character_data</code> that contains
+   either <code class="literal">YES</code> or <code class="literal">NO</code>.  (The
    information schema was invented before the type
-   <tt class="type">boolean</tt> was added to the SQL standard, so this
+   <code class="type">boolean</code> was added to the SQL standard, so this
    convention is necessary to keep the information schema backward
    compatible.)
   </p>

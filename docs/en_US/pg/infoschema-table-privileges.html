@@ -4,26 +4,23 @@
 <title>30.35. table_privileges</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="infoschema-table-constraints.html" title="30.34. table_constraints">
+<link rel="prev" href="infoschema-table-constraints.html" title="30.34. table_constraints">
 <link rel="next" href="infoschema-tables.html" title="30.36. tables">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-table-privileges"></a>30.35. <tt class="literal">table_privileges</tt></h2></div></div>
-<div></div>
-</div>
-<p>   The view <tt class="literal">table_privileges</tt> identifies all
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-table-privileges"></a>30.35. <code class="literal">table_privileges</code></h2></div></div></div>
+<p>   The view <code class="literal">table_privileges</code> identifies all
    privileges granted on tables or views to the current user or by the
    current user.  There is one row for each combination of table,
    grantor, and grantee.  Privileges granted to groups are identified
-   in the view <tt class="literal">role_table_grants</tt>.
+   in the view <code class="literal">role_table_grants</code>.
   </p>
 <div class="table">
-<a name="id2630838"></a><p class="title"><b>Table 30.33. <tt class="literal">table_privileges</tt> Columns</b></p>
+<a name="id404606"></a><p class="title"><b>Table 30.33. <code class="literal">table_privileges</code> Columns</b></p>
 <table summary="table_privileges Columns" border="1">
 <colgroup>
 <col>
@@ -37,55 +34,55 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">grantor</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">grantor</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the user that granted the privilege</td>
 </tr>
 <tr>
-<td><tt class="literal">grantee</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">grantee</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the user or group that the privilege was granted to</td>
 </tr>
 <tr>
-<td><tt class="literal">table_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the database that contains the table (always the current database)</td>
 </tr>
 <tr>
-<td><tt class="literal">table_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the schema that contains the table</td>
 </tr>
 <tr>
-<td><tt class="literal">table_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the table</td>
 </tr>
 <tr>
-<td><tt class="literal">privilege_type</tt></td>
-<td><tt class="type">character_data</tt></td>
-<td>       Type of the privilege: <tt class="literal">SELECT</tt>,
-       <tt class="literal">DELETE</tt>, <tt class="literal">INSERT</tt>,
-       <tt class="literal">UPDATE</tt>, <tt class="literal">REFERENCES</tt>,
-       <tt class="literal">RULE</tt>, or <tt class="literal">TRIGGER</tt>
-</td>
+<td><code class="literal">privilege_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Type of the privilege: <code class="literal">SELECT</code>,
+       <code class="literal">DELETE</code>, <code class="literal">INSERT</code>,
+       <code class="literal">UPDATE</code>, <code class="literal">REFERENCES</code>,
+       <code class="literal">RULE</code>, or <code class="literal">TRIGGER</code>
+      </td>
 </tr>
 <tr>
-<td><tt class="literal">is_grantable</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">is_grantable</code></td>
+<td><code class="type">character_data</code></td>
 <td>
-<tt class="literal">YES</tt> if the privilege is grantable, <tt class="literal">NO</tt> if not</td>
+<code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
 </tr>
 <tr>
-<td><tt class="literal">with_hierarchy</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">with_hierarchy</code></td>
+<td><code class="type">character_data</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>   Note that the column <tt class="literal">grantee</tt> makes no
+<p>   Note that the column <code class="literal">grantee</code> makes no
    distinction between users and groups.  If you have users and groups
    with the same name, there is unfortunately no way to distinguish
    them.  A future version of <span class="productname">PostgreSQL</span>

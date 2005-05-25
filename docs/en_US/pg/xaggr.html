@@ -4,21 +4,18 @@
 <title>31.10. User-Defined Aggregates</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
-<link rel="previous" href="xfunc-c.html" title="31.9. C-Language Functions">
+<link rel="prev" href="xfunc-c.html" title="31.9. C-Language Functions">
 <link rel="next" href="xtypes.html" title="31.11. User-Defined Types">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="xaggr"></a>31.10. User-Defined Aggregates</h2></div></div>
-<div></div>
-</div>
-<a name="id2638498"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
-   are expressed as <i class="firstterm">state values</i>
-   and <i class="firstterm">state transition functions</i>.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xaggr"></a>31.10. User-Defined Aggregates</h2></div></div></div>
+<a name="id411619"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
+   are expressed as <em class="firstterm">state values</em>
+   and <em class="firstterm">state transition functions</em>.
    That is,  an  aggregate  can  be
    defined  in terms of state that is modified whenever an
    input item is processed.  To define a new aggregate
@@ -26,7 +23,7 @@
    an initial value for the state, and a state transition
    function.  The state transition function is just an
    ordinary function that could also be used outside the
-   context of the aggregate.  A <i class="firstterm">final function</i>
+   context of the aggregate.  A <em class="firstterm">final function</em>
    can also be specified, in case the desired result of the aggregate
    is different from the data that needs to be kept in the running
    state value.
@@ -37,10 +34,10 @@
   </p>
 <p>   If we define an aggregate that does not use a final function,
    we have an aggregate that computes a running function of
-   the column values from each row.  <tt class="function">sum</tt>  is  an
-   example  of  this  kind  of aggregate.  <tt class="function">sum</tt> starts at
+   the column values from each row.  <code class="function">sum</code>  is  an
+   example  of  this  kind  of aggregate.  <code class="function">sum</code> starts at
    zero and always adds the current  row's  value  to
-   its  running  total.  For example, if we want to make a <tt class="function">sum</tt>
+   its  running  total.  For example, if we want to make a <code class="function">sum</code>
    aggregate to work on a data type for complex numbers,
    we only need the addition function for that data type.
    The aggregate definition would be:
@@ -60,19 +57,19 @@ SELECT complex_sum(a) FROM test_complex;
  (34,53.9)</pre>
 <p>
 
-   (In practice, we'd just name the aggregate <tt class="function">sum</tt> and rely on
+   (In practice, we'd just name the aggregate <code class="function">sum</code> and rely on
    <span class="productname">PostgreSQL</span> to figure out which kind
-   of sum to apply to a column of type <tt class="type">complex</tt>.)
+   of sum to apply to a column of type <code class="type">complex</code>.)
   </p>
-<p>   The above definition of <tt class="function">sum</tt> will return zero (the initial
+<p>   The above definition of <code class="function">sum</code> will return zero (the initial
    state condition) if there are no nonnull input values.
    Perhaps we want to return null in that case instead [mdash ] the SQL standard
-   expects <tt class="function">sum</tt> to behave that way.  We can do this simply by
-   omitting the <tt class="literal">initcond</tt> phrase, so that the initial state
-   condition is null.  Ordinarily this would mean that the <tt class="literal">sfunc</tt>
+   expects <code class="function">sum</code> to behave that way.  We can do this simply by
+   omitting the <code class="literal">initcond</code> phrase, so that the initial state
+   condition is null.  Ordinarily this would mean that the <code class="literal">sfunc</code>
    would need to check for a null state-condition input, but for
-   <tt class="function">sum</tt> and some other simple aggregates like
-   <tt class="function">max</tt> and <tt class="function">min</tt>,
+   <code class="function">sum</code> and some other simple aggregates like
+   <code class="function">max</code> and <code class="function">min</code>,
    it is sufficient to insert the first nonnull input value into
    the state variable and then start applying the transition function
    at the second nonnull input value.  <span class="productname">PostgreSQL</span>
@@ -87,12 +84,12 @@ SELECT complex_sum(a) FROM test_complex;
    function as strict, and code it to test for null inputs and do
    whatever is needed.
   </p>
-<p>   <tt class="function">avg</tt> (average) is a more complex example of an aggregate.  It requires
+<p>   <code class="function">avg</code> (average) is a more complex example of an aggregate.  It requires
    two pieces of running state: the sum of the inputs and the count
    of the number of inputs.  The final result is obtained by dividing
    these quantities.  Average is typically implemented by using a
    two-element array as the state value.  For example,
-   the built-in implementation of <tt class="function">avg(float8)</tt>
+   the built-in implementation of <code class="function">avg(float8)</code>
    looks like:
 
 </p>
@@ -153,7 +150,7 @@ SELECT attrelid::regclass, array_accum(atttypid)
   </p>
 <p>   A function written in C can detect that it is being called as an
    aggregate transition or final function by seeing if it was passed
-   an <tt class="structname">AggState</tt> node as the function call &#8220;<span class="quote">context</span>&#8221;,
+   an <code class="structname">AggState</code> node as the function call &#8220;<span class="quote">context</span>&#8221;,
    for example by
 </p>
 <pre class="programlisting">        if (fcinfo-&gt;context &amp;&amp; IsA(fcinfo-&gt;context, AggState))</pre>
@@ -162,7 +159,7 @@ SELECT attrelid::regclass, array_accum(atttypid)
    must be a temporary transition value and can therefore safely be modified
    in-place rather than allocating a new copy.  (This is the <span class="emphasis"><em>only</em></span>
    case where it is safe for a function to modify a pass-by-reference input.)
-   See <tt class="literal">int8inc()&gt;</tt> for an example.
+   See <code class="literal">int8inc()</code> for an example.
   </p>
 <p>   For further details see the
    <a href="sql-createaggregate.html">CREATE AGGREGATE</a>

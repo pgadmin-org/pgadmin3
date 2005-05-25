@@ -4,19 +4,16 @@
 <title>3.4. Transactions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
-<link rel="previous" href="tutorial-fk.html" title="3.3. Foreign Keys">
+<link rel="prev" href="tutorial-fk.html" title="3.3. Foreign Keys">
 <link rel="next" href="tutorial-inheritance.html" title="3.5. Inheritance">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-transactions"></a>3.4. Transactions</h2></div></div>
-<div></div>
-</div>
-<a name="id2519704"></a><p>    <i class="firstterm">Transactions</i> are a fundamental concept of all database
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-transactions"></a>3.4. Transactions</h2></div></div></div>
+<a name="id302074"></a><p>    <em class="firstterm">Transactions</em> are a fundamental concept of all database
     systems.  The essential point of a transaction is that it bundles
     multiple steps into a single, all-or-nothing operation.  The intermediate
     states between the steps are not visible to other concurrent transactions,
@@ -49,8 +46,8 @@ UPDATE branches SET balance = balance + 100.00
     remain a happy customer if she was debited without Bob being credited.
     We need a guarantee that if something goes wrong partway through the
     operation, none of the steps executed so far will take effect.  Grouping
-    the updates into a <i class="firstterm">transaction</i> gives us this guarantee.
-    A transaction is said to be <i class="firstterm">atomic</i>: from the point of
+    the updates into a <em class="firstterm">transaction</em> gives us this guarantee.
+    A transaction is said to be <em class="firstterm">atomic</em>: from the point of
     view of other transactions, it either happens completely or not at all.
    </p>
 <p>    We also want a
@@ -79,7 +76,7 @@ UPDATE branches SET balance = balance + 100.00
    </p>
 <p>    In <span class="productname">PostgreSQL</span>, a transaction is set up by surrounding
     the SQL commands of the transaction with
-    <tt class="command">BEGIN</tt> and <tt class="command">COMMIT</tt> commands.  So our banking
+    <code class="command">BEGIN</code> and <code class="command">COMMIT</code> commands.  So our banking
     transaction would actually look like
 
 </p>
@@ -92,31 +89,31 @@ COMMIT;</pre>
    </p>
 <p>    If, partway through the transaction, we decide we do not want to
     commit (perhaps we just noticed that Alice's balance went negative),
-    we can issue the command <tt class="command">ROLLBACK</tt> instead of
-    <tt class="command">COMMIT</tt>, and all our updates so far will be canceled.
+    we can issue the command <code class="command">ROLLBACK</code> instead of
+    <code class="command">COMMIT</code>, and all our updates so far will be canceled.
    </p>
 <p>    <span class="productname">PostgreSQL</span> actually treats every SQL statement as being
-    executed within a transaction.  If you do not issue a <tt class="command">BEGIN</tt>
+    executed within a transaction.  If you do not issue a <code class="command">BEGIN</code>
     command, 
-    then each individual statement has an implicit <tt class="command">BEGIN</tt> and
-    (if successful) <tt class="command">COMMIT</tt> wrapped around it.  A group of
-    statements surrounded by <tt class="command">BEGIN</tt> and <tt class="command">COMMIT</tt>
-    is sometimes called a <i class="firstterm">transaction block</i>.
+    then each individual statement has an implicit <code class="command">BEGIN</code> and
+    (if successful) <code class="command">COMMIT</code> wrapped around it.  A group of
+    statements surrounded by <code class="command">BEGIN</code> and <code class="command">COMMIT</code>
+    is sometimes called a <em class="firstterm">transaction block</em>.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>     Some client libraries issue <tt class="command">BEGIN</tt> and <tt class="command">COMMIT</tt>
+<p>     Some client libraries issue <code class="command">BEGIN</code> and <code class="command">COMMIT</code>
      commands automatically, so that you may get the effect of transaction
      blocks without asking.  Check the documentation for the interface
      you are using.
     </p>
 </div>
 <p>    It's possible to control the statements in a transaction in a more
-    granular fashion through the use of <i class="firstterm">savepoints</i>.  Savepoints
+    granular fashion through the use of <em class="firstterm">savepoints</em>.  Savepoints
     allow you to selectively discard parts of the transaction, while
     committing the rest.  After defining a savepoint with
-    <tt class="command">SAVEPOINT</tt>, you can if needed roll back to the savepoint
-    with <tt class="command">ROLLBACK TO</tt>.  All the transaction's database changes
+    <code class="command">SAVEPOINT</code>, you can if needed roll back to the savepoint
+    with <code class="command">ROLLBACK TO</code>.  All the transaction's database changes
     between defining the savepoint and rolling back to it are discarded, but
     changes earlier than the savepoint are kept.
    </p>
@@ -154,7 +151,7 @@ COMMIT;</pre>
    </p>
 <p>    This example is, of course, oversimplified, but there's a lot of control
     to be had over a transaction block through the use of savepoints.
-    Moreover, <tt class="command">ROLLBACK TO</tt> is the only way to regain control of a
+    Moreover, <code class="command">ROLLBACK TO</code> is the only way to regain control of a
     transaction block that was put in aborted state by the
     system due to an error, short of rolling it back completely and starting
     again.

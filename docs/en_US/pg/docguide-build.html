@@ -4,32 +4,26 @@
 <title>G.3. Building The Documentation</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="docguide.html" title="Appendix G. Documentation">
-<link rel="previous" href="docguide-toolsets.html" title="G.2. Tool Sets">
+<link rel="prev" href="docguide-toolsets.html" title="G.2. Tool Sets">
 <link rel="next" href="docguide-authoring.html" title="G.4. Documentation Authoring">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="docguide-build"></a>G.3. Building The Documentation</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="docguide-build"></a>G.3. Building The Documentation</h2></div></div></div>
 <p>   Once you have everything set up, change to the directory
-   <tt class="filename">doc/src/sgml</tt> and run one of the commands
+   <code class="filename">doc/src/sgml</code> and run one of the commands
    described in the following subsections to build the
    documentation. (Remember to use GNU make.)
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2788828"></a>G.3.1. HTML</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id551916"></a>G.3.1. HTML</h3></div></div></div>
 <p>    To build the <span class="acronym">HTML</span> version of the documentation:
 </p>
-<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake html</tt></b></pre>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake html</code></strong></pre>
 <p>
     This is also the default target.
    </p>
@@ -48,19 +42,16 @@
 gmake postgres.tar.gz</pre>
 <p>
     In the distribution, these archives live in the
-    <tt class="filename">doc</tt> directory and are installed by default
-    with <tt class="command">gmake install</tt>.
+    <code class="filename">doc</code> directory and are installed by default
+    with <code class="command">gmake install</code>.
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2788891"></a>G.3.2. Manpages</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id551971"></a>G.3.2. Manpages</h3></div></div></div>
 <p>   We use the <span class="application">docbook2man</span> utility to
    convert <span class="productname">DocBook</span>
-   <tt class="sgmltag-element">refentry</tt> pages to *roff output suitable for man
+   <code class="sgmltag-element">refentry</code> pages to *roff output suitable for man
    pages.  The man pages are also distributed as a tar archive,
    similar to the <span class="acronym">HTML</span> version.  To create the man
    page package, use the commands
@@ -69,7 +60,7 @@ gmake postgres.tar.gz</pre>
 gmake man.tar.gz</pre>
 <p>
    which will result in a tar file being generated in the
-   <tt class="filename">doc/src</tt> directory.
+   <code class="filename">doc/src</code> directory.
   </p>
 <p>   To generate quality man pages, it might be necessary to use a
    hacked version of the conversion utility or do some manual
@@ -78,11 +69,8 @@ gmake man.tar.gz</pre>
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2788938"></a>G.3.3. Print Output via <span class="application">JadeTex</span></h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id552014"></a>G.3.3. Print Output via <span class="application">JadeTex</span></h3></div></div></div>
 <p>    If you want to use <span class="application">JadeTex</span> to produce a
     printable rendition of the documentation, you can use one of the
     following commands:
@@ -92,21 +80,21 @@ gmake man.tar.gz</pre>
 <li>
 <p>       To make a <span class="acronym">DVI</span> version:
 </p>
-<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake postgres.dvi</tt></b></pre>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake postgres.dvi</code></strong></pre>
 <p>
       </p>
 </li>
 <li>
 <p>       To generate Postscript from the <span class="acronym">DVI</span>:
 </p>
-<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake postgres.ps</tt></b></pre>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake postgres.ps</code></strong></pre>
 <p>
       </p>
 </li>
 <li>
 <p>       To make a <span class="acronym">PDF</span>:
 </p>
-<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake postgres.pdf</tt></b></pre>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake postgres.pdf</code></strong></pre>
 <p>
        (Of course you can also make a <span class="acronym">PDF</span> version
        from the Postscript, but if you generate <span class="acronym">PDF</span>
@@ -118,11 +106,8 @@ gmake man.tar.gz</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2789032"></a>G.3.4. Print Output via <span class="acronym">RTF</span></h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id552104"></a>G.3.4. Print Output via <span class="acronym">RTF</span></h3></div></div></div>
 <p>    You can also create a printable version of the <span class="productname">PostgreSQL</span>
     documentation by converting it to <span class="acronym">RTF</span> and
     applying minor formatting corrections using an office suite.
@@ -142,7 +127,7 @@ gmake man.tar.gz</pre>
     </p>
 </div>
 <div class="procedure">
-<p class="title"><b><span class="productname">Applixware</span> <span class="acronym">RTF</span> Cleanup</b></p>
+<a name="id552149"></a><p class="title"><b><span class="productname">Applixware</span> <span class="acronym">RTF</span> Cleanup</b></p>
 <p>     <span class="application">OpenJade</span> omits specifying a default
      style for body text. In the past, this undiagnosed problem led to
      a long process of table of contents generation. However, with
@@ -153,31 +138,31 @@ gmake man.tar.gz</pre>
 <li>
 <p>      Generate the <span class="acronym">RTF</span> version by typing:
 </p>
-<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake postgres.rtf</tt></b></pre>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake postgres.rtf</code></strong></pre>
 <p>
      </p>
 </li>
 <li>
 <p>      Repair the RTF file to correctly specify all styles, in
       particular the default style. If the document contains
-      <tt class="sgmltag-element">refentry</tt> sections, one must also replace
+      <code class="sgmltag-element">refentry</code> sections, one must also replace
       formatting hints which tie a preceding paragraph to the current
       paragraph, and instead tie the current paragraph to the
-      following one. A utility, <tt class="command">fixrtf</tt>, is
-      available in <tt class="filename">doc/src/sgml</tt> to accomplish
+      following one. A utility, <code class="command">fixrtf</code>, is
+      available in <code class="filename">doc/src/sgml</code> to accomplish
       these repairs:
 
 </p>
-<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>./fixrtf --refentry postgres.rtf</tt></b></pre>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>./fixrtf --refentry postgres.rtf</code></strong></pre>
 <p>
      </p>
-<p>      The script adds <tt class="literal">{\s0 Normal;}</tt> as the zeroth
+<p>      The script adds <code class="literal">{\s0 Normal;}</code> as the zeroth
       style in the document. According to
       <span class="productname">Applixware</span>, the RTF standard would
       prohibit adding an implicit zeroth style, though Microsoft Word
       happens to handle this case. For repairing
-      <tt class="sgmltag-element">refentry</tt> sections, the script replaces
-      <tt class="literal">\keepn</tt> tags with <tt class="literal">\keep</tt>.
+      <code class="sgmltag-element">refentry</code> sections, the script replaces
+      <code class="literal">\keepn</code> tags with <code class="literal">\keep</code>.
      </p>
 </li>
 <li><p>      Open a new document in <span class="productname">Applixware Words</span> and
@@ -204,8 +189,8 @@ gmake man.tar.gz</pre>
 <p>        Adjust the ToC formatting by using
         <span class="guimenu">Format</span>-&gt;<span class="guimenuitem">Style</span>,
         selecting each of the three ToC styles, and adjusting the
-        indents for <tt class="literal">First</tt> and
-        <tt class="literal">Left</tt>. Use the following values:
+        indents for <code class="literal">First</code> and
+        <code class="literal">Left</code>. Use the following values:
 
         </p>
 <div class="informaltable"><table border="1">
@@ -221,19 +206,19 @@ gmake man.tar.gz</pre>
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">TOC-Heading 1</tt></td>
-<td><tt class="literal">0.4</tt></td>
-<td><tt class="literal">0.4</tt></td>
+<td><code class="literal">TOC-Heading 1</code></td>
+<td><code class="literal">0.4</code></td>
+<td><code class="literal">0.4</code></td>
 </tr>
 <tr>
-<td><tt class="literal">TOC-Heading 2</tt></td>
-<td><tt class="literal">0.8</tt></td>
-<td><tt class="literal">0.8</tt></td>
+<td><code class="literal">TOC-Heading 2</code></td>
+<td><code class="literal">0.8</code></td>
+<td><code class="literal">0.8</code></td>
 </tr>
 <tr>
-<td><tt class="literal">TOC-Heading 3</tt></td>
-<td><tt class="literal">1.2</tt></td>
-<td><tt class="literal">1.2</tt></td>
+<td><code class="literal">TOC-Heading 3</code></td>
+<td><code class="literal">1.2</code></td>
+<td><code class="literal">1.2</code></td>
 </tr>
 </tbody>
 </table></div>
@@ -291,18 +276,15 @@ gmake man.tar.gz</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2789521"></a>G.3.5. Plain Text Files</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id552561"></a>G.3.5. Plain Text Files</h3></div></div></div>
 <p>    Several files are distributed as plain text, for reading during
-    the installation process. The <tt class="filename">INSTALL</tt> file
+    the installation process. The <code class="filename">INSTALL</code> file
     corresponds to <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>, with some minor
     changes to account for the different context.  To recreate the
-    file, change to the directory <tt class="filename">doc/src/sgml</tt>
-    and enter <b class="userinput"><tt>gmake INSTALL</tt></b>.  This will create
-    a file <tt class="filename">INSTALL.html</tt> that can be saved as text
+    file, change to the directory <code class="filename">doc/src/sgml</code>
+    and enter <strong class="userinput"><code>gmake INSTALL</code></strong>.  This will create
+    a file <code class="filename">INSTALL.html</code> that can be saved as text
     with <span class="productname">Netscape Navigator</span> and put into
     the place of the existing file.
     <span class="productname">Netscape</span> seems to offer the best
@@ -310,23 +292,20 @@ gmake man.tar.gz</pre>
     <span class="application">lynx</span> and
     <span class="application">w3m</span>).
    </p>
-<p>    The file <tt class="filename">HISTORY</tt> can be created similarly,
-    using the command <b class="userinput"><tt>gmake HISTORY</tt></b>.  For the
-    file <tt class="filename">src/test/regress/README</tt> the command is
-    <b class="userinput"><tt>gmake regress_README</tt></b>.
+<p>    The file <code class="filename">HISTORY</code> can be created similarly,
+    using the command <strong class="userinput"><code>gmake HISTORY</code></strong>.  For the
+    file <code class="filename">src/test/regress/README</code> the command is
+    <strong class="userinput"><code>gmake regress_README</code></strong>.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2789620"></a>G.3.6. Syntax Check</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id552654"></a>G.3.6. Syntax Check</h3></div></div></div>
 <p>    Building the documentation can take very long.  But there is a
     method to just check the correct syntax of the documentation
     files, which only takes a few seconds:
 </p>
-<pre class="screen"><tt class="prompt">doc/src/sgml$ </tt><b class="userinput"><tt>gmake check</tt></b></pre>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake check</code></strong></pre>
 <p>
    </p>
 </div>

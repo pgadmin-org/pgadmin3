@@ -4,43 +4,40 @@
 <title>SPI_push</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
-<link rel="previous" href="spi-spi-finish.html" title="SPI_finish">
+<link rel="prev" href="spi-spi-finish.html" title="SPI_finish">
 <link rel="next" href="spi-spi-pop.html" title="SPI_pop">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-push"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="spi-spi-push"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>SPI_push &#8212; push SPI stack to allow recursive SPI usage</p>
 </div>
-<a name="id2659258"></a><div class="refsynopsisdiv">
+<a name="id430077"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">void SPI_push(void)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659270"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_push</tt> should be called before executing another
+<a name="id430088"></a><h2>Description</h2>
+<p>   <code class="function">SPI_push</code> should be called before executing another
    procedure that might itself wish to use SPI.
-   After <tt class="function">SPI_push</tt>, SPI is no longer in a
+   After <code class="function">SPI_push</code>, SPI is no longer in a
    &#8220;<span class="quote">connected</span>&#8221; state, and SPI function calls will be rejected unless
-   a fresh <tt class="function">SPI_connect</tt> is done.  This ensures a clean
+   a fresh <code class="function">SPI_connect</code> is done.  This ensures a clean
    separation between your procedure's SPI state and that of another procedure
    you call.  After the other procedure returns, call
-   <tt class="function">SPI_pop</tt> to restore access to your own SPI state.
+   <code class="function">SPI_pop</code> to restore access to your own SPI state.
   </p>
-<p>   Note that <tt class="function">SPI_execute</tt> and related functions
-   automatically do the equivalent of <tt class="function">SPI_push</tt> before
+<p>   Note that <code class="function">SPI_execute</code> and related functions
+   automatically do the equivalent of <code class="function">SPI_push</code> before
    passing control back to the SQL execution engine, so it is not necessary
    for you to worry about this when using those functions.
    Only when you are directly calling arbitrary code that might contain
-   <tt class="function">SPI_connect</tt> calls do you need to issue
-   <tt class="function">SPI_push</tt> and <tt class="function">SPI_pop</tt>.
+   <code class="function">SPI_connect</code> calls do you need to issue
+   <code class="function">SPI_push</code> and <code class="function">SPI_pop</code>.
   </p>
 </div>
 </div></body>

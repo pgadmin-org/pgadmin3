@@ -4,25 +4,22 @@
 <title>35.2. Tips for Developing in PL/pgSQL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
-<link rel="previous" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
+<link rel="prev" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
 <link rel="next" href="plpgsql-structure.html" title="35.3. Structure of PL/pgSQL">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-development-tips"></a>35.2. Tips for Developing in <span class="application">PL/pgSQL</span></h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-development-tips"></a>35.2. Tips for Developing in <span class="application">PL/pgSQL</span></h2></div></div></div>
 <p>    One good way to develop in
     <span class="application">PL/pgSQL</span> is to use the text editor of your
     choice to create your functions, and in another window, use
     <span class="application">psql</span> to load and test those functions.
     If you are doing it this way, it
-    is a good idea to write the function using <tt class="command">CREATE OR
-    REPLACE FUNCTION</tt>. That way you can just reload the file to update
+    is a good idea to write the function using <code class="command">CREATE OR
+    REPLACE FUNCTION</code>. That way you can just reload the file to update
     the function definition.  For example:
 </p>
 <pre class="programlisting">CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $$
@@ -45,13 +42,10 @@ $$ LANGUAGE plpgsql;</pre>
     making it easier to recreate and debug functions.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="plpgsql-quote-tips"></a>35.2.1. Handling of Quotation Marks</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-quote-tips"></a>35.2.1. Handling of Quotation Marks</h3></div></div></div>
 <p>    The code of a <span class="application">PL/pgSQL</span> function is specified in
-    <tt class="command">CREATE FUNCTION</tt> as a string literal.  If you
+    <code class="command">CREATE FUNCTION</code> as a string literal.  If you
     write the string literal in the ordinary way with surrounding
     single quotes, then any single quotes inside the function body
     must be doubled; likewise any backslashes must be doubled.
@@ -62,17 +56,17 @@ $$ LANGUAGE plpgsql;</pre>
     &#8220;<span class="quote">dollar-quoted</span>&#8221; string literal (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>).  In the dollar-quoting
     approach, you never double any quote marks, but instead take care to
     choose a different dollar-quoting delimiter for each level of
-    nesting you need.  For example, you might write the <tt class="command">CREATE
-    FUNCTION</tt> command as
+    nesting you need.  For example, you might write the <code class="command">CREATE
+    FUNCTION</code> command as
 </p>
 <pre class="programlisting">CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $PROC$
           ....
 $PROC$ LANGUAGE plpgsql;</pre>
 <p>
     Within this, you might use quote marks for simple literal strings in
-    SQL commands and <tt class="literal">$$</tt> to delimit fragments of SQL commands
+    SQL commands and <code class="literal">$$</code> to delimit fragments of SQL commands
     that you are assembling as strings.  If you need to quote text that
-    includes <tt class="literal">$$</tt>, you could use <tt class="literal">$Q$</tt>, and so on.
+    includes <code class="literal">$$</code>, you could use <code class="literal">$Q$</code>, and so on.
    </p>
 <p>    The following chart shows what you have to do when writing quote
     marks without dollar quoting.  It may be useful when translating
@@ -114,15 +108,15 @@ SELECT * FROM users WHERE f_name='foobar';</pre>
 </p>
 <pre class="programlisting">a_output := a_output || '' AND name LIKE ''''foobar'''' AND xyz''</pre>
 <p>
-      The value actually appended to <tt class="literal">a_output</tt> would be:
-      <tt class="literal"> AND name LIKE 'foobar' AND xyz</tt>.
+      The value actually appended to <code class="literal">a_output</code> would be:
+      <code class="literal"> AND name LIKE 'foobar' AND xyz</code>.
      </p>
 <p>      In the dollar-quoting approach, you'd write
 </p>
 <pre class="programlisting">a_output := a_output || $$ AND name LIKE 'foobar' AND xyz$$</pre>
 <p>
       being careful that any dollar-quote delimiters around this are not
-      just <tt class="literal">$$</tt>.
+      just <code class="literal">$$</code>.
      </p>
 </dd>
 <dt><span class="term">6 quotation marks</span></dt>
@@ -132,8 +126,8 @@ SELECT * FROM users WHERE f_name='foobar';</pre>
 </p>
 <pre class="programlisting">a_output := a_output || '' AND name LIKE ''''foobar''''''</pre>
 <p>
-      The value appended to <tt class="literal">a_output</tt> would then be:
-      <tt class="literal"> AND name LIKE 'foobar'</tt>.
+      The value appended to <code class="literal">a_output</code> would then be:
+      <code class="literal"> AND name LIKE 'foobar'</code>.
      </p>
 <p>      In the dollar-quoting approach, this becomes
 </p>
@@ -147,7 +141,7 @@ SELECT * FROM users WHERE f_name='foobar';</pre>
       accounts for 8 quotation marks) and this is adjacent to the end of that
       string constant (2 more).  You will probably only need that if
       you are writing a function that generates other functions, as in
-      <a href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 35.5. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 35.5, &#8220;Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL&#8221;</a>.
+      <a href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 35.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 35.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a>.
       For example:
 </p>
 <pre class="programlisting">a_output := a_output || '' if v_'' || 
@@ -156,7 +150,7 @@ SELECT * FROM users WHERE f_name='foobar';</pre>
     then return ''''''  || referrer_keys.referrer_type 
     || ''''''; end if;''; </pre>
 <p>
-      The value of <tt class="literal">a_output</tt> would then be:
+      The value of <code class="literal">a_output</code> would then be:
 </p>
 <pre class="programlisting">if v_... like ''...'' then return ''...''; end if;</pre>
 <p>
@@ -169,14 +163,14 @@ SELECT * FROM users WHERE f_name='foobar';</pre>
     || $$'; end if;$$; </pre>
 <p>
       where we assume we only need to put single quote marks into
-      <tt class="literal">a_output</tt>, because it will be re-quoted before use.
+      <code class="literal">a_output</code>, because it will be re-quoted before use.
      </p>
 </dd>
 </dl></div>
 <p>    A variant approach is to escape quotation marks in the function body
     with a backslash rather than by doubling them.  With this method
-    you'll find yourself writing things like <tt class="literal">\'\'</tt> instead
-    of <tt class="literal">''''</tt>.  Some find this easier to keep track of, some
+    you'll find yourself writing things like <code class="literal">\'\'</code> instead
+    of <code class="literal">''''</code>.  Some find this easier to keep track of, some
     do not.
    </p>
 </div>

@@ -4,23 +4,20 @@
 <title>14.2. Requirements</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
-<link rel="previous" href="installation.html" title="Chapter 14.   Installation Instructions">
+<link rel="prev" href="installation.html" title="Chapter 14.   Installation Instructions">
 <link rel="next" href="install-getsource.html" title="14.3. Getting The Source">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="install-requirements"></a>14.2. Requirements</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="install-requirements"></a>14.2. Requirements</h2></div></div></div>
 <p>   In general, a modern Unix-compatible platform should be able to run
    <span class="productname">PostgreSQL</span>.
     The platforms that had received specific testing at the
    time of release are listed in <a href="supported-platforms.html" title="14.7. Supported Platforms">Section 14.7, &#8220;Supported Platforms&#8221;</a>
-   below. In the <tt class="filename">doc</tt> subdirectory of the distribution
+   below. In the <code class="filename">doc</code> subdirectory of the distribution
    there are several platform-specific <span class="acronym">FAQ</span> documents you
    might wish to consult if you are having trouble.
   </p>
@@ -30,18 +27,18 @@
    </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>      <a name="id2574166"></a>
+<p>      <a name="id352470"></a>
 
       <span class="acronym">GNU</span> <span class="application">make</span> is required; other
       <span class="application">make</span> programs will <span class="emphasis"><em>not</em></span> work.
       <span class="acronym">GNU</span> <span class="application">make</span> is often installed under
-      the name <tt class="filename">gmake</tt>; this document will always
+      the name <code class="filename">gmake</code>; this document will always
       refer to it by that name. (On some systems
       <span class="acronym">GNU</span> <span class="application">make</span> is the default tool with the name
-      <tt class="filename">make</tt>.) To test for <span class="acronym">GNU</span>
+      <code class="filename">make</code>.) To test for <span class="acronym">GNU</span>
       <span class="application">make</span> enter
 </p>
-<pre class="screen"><b class="userinput"><tt>gmake --version</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>gmake --version</code></strong></pre>
 <p>
       It is recommended to use version 3.76.1 or later.
      </p>
@@ -54,30 +51,30 @@
 <li><p>      <span class="application">gzip</span> is needed to unpack the distribution in the
       first place.
      </p></li>
-<li><p>      <a name="id2574282"></a>
+<li><p>      <a name="id352582"></a>
 
       The <span class="acronym">GNU</span> <span class="productname">Readline</span> library (for
       comfortable line editing and command history retrieval) will be
       used by default.  If you don't want to use it then you must
-      specify the <tt class="option">--without-readline</tt> option for
-      <tt class="filename">configure</tt>.  (On <span class="productname">NetBSD</span>,
-      the <tt class="filename">libedit</tt> library is
+      specify the <code class="option">--without-readline</code> option for
+      <code class="filename">configure</code>.  (On <span class="productname">NetBSD</span>,
+      the <code class="filename">libedit</code> library is
       <span class="productname">Readline</span>-compatible and is used if
-      <tt class="filename">libreadline</tt> is not found.)  If you are using
+      <code class="filename">libreadline</code> is not found.)  If you are using
       a package-based Linux distribution, be aware that you need both
-      the <tt class="literal">readline</tt> and <tt class="literal">readline-devel</tt> packages,
+      the <code class="literal">readline</code> and <code class="literal">readline-devel</code> packages,
       if those are separate in your distribution.
      </p></li>
-<li><p>      <a name="id2574354"></a>
+<li><p>      <a name="id352649"></a>
 
       Additional software is needed to build
       <span class="productname">PostgreSQL</span> on <span class="productname">Windows</span>.
       You can build <span class="productname">PostgreSQL</span> for
       <span class="productname">NT</span>-based versions of <span class="productname">Windows</span>
       (like Windows XP and 2003) using <span class="productname">MinGW</span>;
-      see <tt class="filename">doc/FAQ_MINGW</tt> for details.  You can also build
+      see <code class="filename">doc/FAQ_MINGW</code> for details.  You can also build
       <span class="productname">PostgreSQL</span> using
-      <span class="productname">Cygwin</span>; see <tt class="filename">doc/FAQ_CYGWIN</tt>.
+      <span class="productname">Cygwin</span>; see <code class="filename">doc/FAQ_CYGWIN</code>.
       A <span class="productname">Cygwin</span>-based build will work on older
       versions of <span class="productname">Windows</span>, but if you have a choice,
       we recommend the <span class="productname">MinGW</span> approach.
@@ -86,7 +83,7 @@
       (<span class="application">libpq</span>) and the interactive terminal
       (<span class="application">psql</span>) using other <span class="productname">Windows</span>
       tool sets.  For details of that see
-       <a href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">Chapter 15, <i>Client-Only Installation on Windows</i></a>.
+       <a href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">Chapter 15, <i>Client-Only Installation on <span class="productname">Windows</span></i></a>.
      </p></li>
 </ul></div>
 <p>
@@ -101,10 +98,10 @@
 <p>      To build the server programming language
       <span class="application">PL/Perl</span> you need a full
       <span class="productname">Perl</span> installation, including the
-      <tt class="filename">libperl</tt> library and the header files.
+      <code class="filename">libperl</code> library and the header files.
       Since <span class="application">PL/Perl</span> will be a shared
-      library, the <a name="id2574512"></a>
-      <tt class="filename">libperl</tt> library must be a shared library
+      library, the <a name="id352798"></a>
+      <code class="filename">libperl</code> library must be a shared library
       also on most platforms.  This appears to be the default in
       recent <span class="productname">Perl</span> versions, but it was not
       in earlier versions, and in any case it is the choice of whomever
@@ -119,7 +116,7 @@
 <p>
       (If you don't follow the on-screen output you will merely notice
       that the <span class="application">PL/Perl</span> library object,
-      <tt class="filename">plperl.so</tt> or similar, will not be
+      <code class="filename">plperl.so</code> or similar, will not be
       installed.)  If you see this, you will have to rebuild and
       install <span class="productname">Perl</span> manually to be able to
       build <span class="application">PL/Perl</span>.  During the
@@ -137,12 +134,12 @@
       to install it.
      </p>
 <p>      Since <span class="application">PL/Python</span> will be a shared
-      library, the <a name="id2574635"></a>
-      <tt class="filename">libpython</tt> library must be a shared library
+      library, the <a name="id352911"></a>
+      <code class="filename">libpython</code> library must be a shared library
       also on most platforms.  This is not the case in a default
       <span class="productname">Python</span> installation.  If after
       building and installing you have a file called
-      <tt class="filename">plpython.so</tt> (possibly a different
+      <code class="filename">plpython.so</code> (possibly a different
       extension), then everything went well.  Otherwise you should
       have seen a notice like this flying by:
 </p>
@@ -155,11 +152,11 @@
       shared library.
      </p>
 <p>      If you have problems, run <span class="productname">Python</span> 2.3 or later's
-      configure using the <tt class="literal">--enable-shared</tt> flag.  On some
+      configure using the <code class="literal">--enable-shared</code> flag.  On some
       operating systems you don't have to build a shared library, but
       you will have to convince the <span class="productname">PostgreSQL</span> build
-      system of this.  Consult the <tt class="filename">Makefile</tt> in
-      the <tt class="filename">src/pl/plpython</tt> directory for details.
+      system of this.  Consult the <code class="filename">Makefile</code> in
+      the <code class="filename">src/pl/plpython</code> directory for details.
      </p>
 </li>
 <li><p>      If you want to build the <span class="application">PL/Tcl</span>
@@ -171,7 +168,7 @@
       <span class="application">Gettext</span> <span class="acronym">API</span>.  Some operating
       systems have this built-in (e.g., <span class="systemitem">Linux</span>, <span class="systemitem">NetBSD</span>,
       <span class="systemitem">Solaris</span>), for other systems you
-      can download an add-on package from here: <a href="http://developer.postgresql.org/~petere/bsd-gettext/" target="_top">http://developer.postgresql.org/~petere/bsd-gettext/</a>.
+      can download an add-on package from <a href="http://developer.postgresql.org/~petere/bsd-gettext/" target="_top">http://developer.postgresql.org/~petere/bsd-gettext/</a>.
       If you are using the <span class="application">Gettext</span> implementation in
       the <span class="acronym">GNU</span> C library then you will additionally
       need the <span class="productname">GNU Gettext</span> package for some
@@ -190,9 +187,9 @@
    you also need the following packages:
 
    </p>
-<div class="itemizedlist"><ul type="disc"><li><p>      <a name="id2574834"></a>
-      <a name="id2574841"></a>
-      <a name="id2574848"></a>
+<div class="itemizedlist"><ul type="disc"><li><p>      <a name="id353095"></a>
+      <a name="id353102"></a>
+      <a name="id353108"></a>
 
       GNU <span class="application">Flex</span> and <span class="application">Bison</span>
       are needed to build a CVS checkout or if you changed the actual
@@ -215,7 +212,7 @@
    25 MB, databases take about five times the amount of space that a
    flat text file with the same data would take. If you are going to
    run the regression tests you will temporarily need up to an extra
-   90 MB. Use the <tt class="command">df</tt> command to check free disk
+   90 MB. Use the <code class="command">df</code> command to check free disk
    space.
   </p>
 </div></body>

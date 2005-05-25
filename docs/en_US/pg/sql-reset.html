@@ -4,69 +4,66 @@
 <title>RESET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">
+<link rel="prev" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">
 <link rel="next" href="sql-revoke.html" title="REVOKE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-reset"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-reset"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>RESET &#8212; restore the value of a run-time parameter to the default value</p>
 </div>
-<a name="id2697366"></a><div class="refsynopsisdiv">
+<a name="id465642"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">RESET <i class="replaceable"><tt>name</tt></i>
+<pre class="synopsis">RESET <em class="replaceable"><code>name</code></em>
 RESET ALL</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697387"></a><h2>Description</h2>
-<p>   <tt class="command">RESET</tt> restores run-time parameters to their
-   default values.  <tt class="command">RESET</tt> is an alternative
+<a name="id465664"></a><h2>Description</h2>
+<p>   <code class="command">RESET</code> restores run-time parameters to their
+   default values.  <code class="command">RESET</code> is an alternative
    spelling for
 </p>
-<pre class="synopsis">SET <i class="replaceable"><tt>parameter</tt></i> TO DEFAULT</pre>
+<pre class="synopsis">SET <em class="replaceable"><code>parameter</code></em> TO DEFAULT</pre>
 <p>
    Refer to <a href="sql-set.html">SET</a> for
    details.
   </p>
 <p>   The default value is defined as the value that the parameter would
-   have had, had no <tt class="command">SET</tt> ever been issued for it in the
+   have had, had no <code class="command">SET</code> ever been issued for it in the
    current session.  The actual source of this value might be a
    compiled-in default, the configuration file, command-line options,
    or per-database or per-user default settings.  See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for details.
   </p>
-<p>   See the <tt class="command">SET</tt> reference page for details on the
-   transaction behavior of <tt class="command">RESET</tt>.
+<p>   See the <code class="command">SET</code> reference page for details on the
+   transaction behavior of <code class="command">RESET</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697462"></a><h2>Parameters</h2>
+<a name="id465734"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of a run-time parameter. See <a href="sql-set.html">SET</a> for a list.
      </p></dd>
-<dt><span class="term"><tt class="literal">ALL</tt></span></dt>
+<dt><span class="term"><code class="literal">ALL</code></span></dt>
 <dd><p>      Resets all settable run-time parameters to default values.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697498"></a><h2>Examples</h2>
-<p>   Set the <tt class="varname">geqo</tt> configuration variable to its default value:
+<a name="id465768"></a><h2>Examples</h2>
+<p>   Set the <code class="varname">geqo</code> configuration variable to its default value:
 </p>
 <pre class="screen">RESET geqo;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697514"></a><h2>Compatibility</h2>
-<p>   <tt class="command">RESET</tt> is a <span class="productname">PostgreSQL</span> extension.
+<a name="id465784"></a><h2>Compatibility</h2>
+<p>   <code class="command">RESET</code> is a <span class="productname">PostgreSQL</span> extension.
   </p>
 </div>
 </div></body>

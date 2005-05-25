@@ -4,18 +4,15 @@
 <title>Chapter 24. Monitoring Disk Usage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="previous" href="monitoring-locks.html" title="23.3. Viewing Locks">
+<link rel="prev" href="monitoring-locks.html" title="23.3. Viewing Locks">
 <link rel="next" href="disk-full.html" title="24.2. Disk Full Failure">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="diskusage">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="diskusage"></a>Chapter 24. Monitoring Disk Usage</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="diskusage"></a>Chapter 24. Monitoring Disk Usage</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -27,12 +24,9 @@
   <span class="productname">PostgreSQL</span> database system.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="disk-usage"></a>24.1. Determining Disk Usage</h2></div></div>
-<div></div>
-</div>
-<a name="id2605700"></a><p>   Each table has a primary heap disk file where most of the data is
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="disk-usage"></a>24.1. Determining Disk Usage</h2></div></div></div>
+<a name="id381694"></a><p>   Each table has a primary heap disk file where most of the data is
    stored. If the table has any columns with potentially-wide values,
    there is also a <span class="acronym">TOAST</span> file associated with the table,
    which is used to store values too wide to fit comfortably in the main
@@ -43,9 +37,9 @@
    gigabyte.  Naming conventions for these files are described in <a href="storage.html#storage-file-layout" title="49.1. Database File Layout">Section 49.1, &#8220;Database File Layout&#8221;</a>.
   </p>
 <p>   You can monitor disk space from three places: from
-   <span class="application">psql</span> using <tt class="command">VACUUM</tt> information, from
-   <span class="application">psql</span> using the tools in <tt class="filename">contrib/dbsize</tt>, and from
-   the command line using the tools in <tt class="filename">contrib/oid2name</tt>. Using
+   <span class="application">psql</span> using <code class="command">VACUUM</code> information, from
+   <span class="application">psql</span> using the tools in <code class="filename">contrib/dbsize</code>, and from
+   the command line using the tools in <code class="filename">contrib/oid2name</code>. Using
    <span class="application">psql</span> on a recently vacuumed or analyzed database,
    you can issue queries to see the disk usage of any table:
 </p>
@@ -56,10 +50,10 @@
        16806 |       60
 (1 row)</pre>
 <p>
-   Each page is typically 8 kilobytes. (Remember, <tt class="structfield">relpages</tt>
-   is only updated by <tt class="command">VACUUM</tt>, <tt class="command">ANALYZE</tt>, and
-   a few DDL commands such as <tt class="command">CREATE INDEX</tt>.)  The
-   <tt class="structfield">relfilenode</tt> value is of interest if you want to examine
+   Each page is typically 8 kilobytes. (Remember, <code class="structfield">relpages</code>
+   is only updated by <code class="command">VACUUM</code>, <code class="command">ANALYZE</code>, and
+   a few DDL commands such as <code class="command">CREATE INDEX</code>.)  The
+   <code class="structfield">relfilenode</code> value is of interest if you want to examine
    the table's disk file directly.
   </p>
 <p>   To show the space used by <span class="acronym">TOAST</span> tables, use a query
@@ -105,12 +99,12 @@
  customer             |     3144</pre>
 <p>
   </p>
-<p>   <tt class="filename">contrib/dbsize</tt> loads functions into your database that allow
+<p>   <code class="filename">contrib/dbsize</code> loads functions into your database that allow
    you to find the size of a table or database from inside
-   <span class="application">psql</span> without the need for <tt class="command">VACUUM</tt> or <tt class="command">ANALYZE</tt>.
+   <span class="application">psql</span> without the need for <code class="command">VACUUM</code> or <code class="command">ANALYZE</code>.
   </p>
-<p>   You can also use <tt class="filename">contrib/oid2name</tt> to show disk usage. See
-   <tt class="filename">README.oid2name</tt> in that directory for examples. It includes a script that
+<p>   You can also use <code class="filename">contrib/oid2name</code> to show disk usage. See
+   <code class="filename">README.oid2name</code> in that directory for examples. It includes a script that
    shows disk usage for each database.
   </p>
 </div>

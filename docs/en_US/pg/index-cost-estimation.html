@@ -4,18 +4,15 @@
 <title>47.6. Index Cost Estimation Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="indexam.html" title="Chapter 47. Index Access Method Interface Definition">
-<link rel="previous" href="index-unique-checks.html" title="47.5. Index Uniqueness Checks">
+<link rel="prev" href="index-unique-checks.html" title="47.5. Index Uniqueness Checks">
 <link rel="next" href="gist.html" title="Chapter 48. GiST Indexes">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="index-cost-estimation"></a>47.6. Index Cost Estimation Functions</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index-cost-estimation"></a>47.6. Index Cost Estimation Functions</h2></div></div></div>
 <p>   The amcostestimate function is given a list of WHERE clauses that have
    been determined to be usable with the index.  It must return estimates
    of the cost of accessing the index and the selectivity of the WHERE
@@ -31,7 +28,6 @@
 </p>
 <pre class="programlisting">void
 amcostestimate (Query *root,
-                RelOptInfo *rel,
                 IndexOptInfo *index,
                 List *indexQuals,
                 Cost *indexStartupCost,
@@ -47,11 +43,8 @@ amcostestimate (Query *root,
 <dt><span class="term">root</span></dt>
 <dd><p>       The query being processed.
       </p></dd>
-<dt><span class="term">rel</span></dt>
-<dd><p>       The relation the index is on.
-      </p></dd>
 <dt><span class="term">index</span></dt>
-<dd><p>       The index itself.
+<dd><p>       The index being considered.
       </p></dd>
 <dt><span class="term">indexQuals</span></dt>
 <dd><p>       List of index qual clauses (implicitly ANDed);
@@ -86,17 +79,17 @@ amcostestimate (Query *root,
    data structures of the planner/optimizer.
   </p>
 <p>   The index access costs should be computed in the units used by
-   <tt class="filename">src/backend/optimizer/path/costsize.c</tt>: a sequential disk block fetch
-   has cost 1.0, a nonsequential fetch has cost random_page_cost, and
-   the cost of processing one index row should usually be taken as
-   cpu_index_tuple_cost (which is a user-adjustable optimizer parameter).
-   In addition, an appropriate multiple of cpu_operator_cost should be charged
+   <code class="filename">src/backend/optimizer/path/costsize.c</code>: a sequential
+   disk block fetch has cost 1.0, a nonsequential fetch has cost
+   <code class="varname">random_page_cost</code>, and the cost of processing one index row
+   should usually be taken as <code class="varname">cpu_index_tuple_cost</code>.  In addition,
+   an appropriate multiple of <code class="varname">cpu_operator_cost</code> should be charged
    for any comparison operators invoked during index processing (especially
    evaluation of the indexQuals themselves).
   </p>
 <p>   The access costs should include all disk and CPU costs associated with
-   scanning the index itself, but NOT the costs of retrieving or processing
-   the parent-table rows that are identified by the index.
+   scanning the index itself, but <span class="emphasis"><em>not</em></span> the costs of retrieving or
+   processing the parent-table rows that are identified by the index.
   </p>
 <p>   The &#8220;<span class="quote">start-up cost</span>&#8221; is the part of the total scan cost that must be expended
    before we can begin to fetch the first row.  For most indexes this can
@@ -114,18 +107,18 @@ amcostestimate (Query *root,
    table.
   </p>
 <div class="procedure">
-<p class="title"><b>Cost Estimation</b></p>
+<a name="id511512"></a><p class="title"><b>Cost Estimation</b></p>
 <p>    A typical cost estimator will proceed as follows:
    </p>
 <ol type="1">
 <li>
 <p>     Estimate and return the fraction of parent-table rows that will be visited
      based on the given qual conditions.  In the absence of any index-type-specific
-     knowledge, use the standard optimizer function <tt class="function">clauselist_selectivity()</tt>:
+     knowledge, use the standard optimizer function <code class="function">clauselist_selectivity()</code>:
 
 </p>
 <pre class="programlisting">*indexSelectivity = clauselist_selectivity(root, indexQuals,
-                                           rel-&gt;relid, JOIN_INNER);</pre>
+                                           index-&gt;rel-&gt;relid, JOIN_INNER);</pre>
 <p>
     </p>
 </li>
@@ -161,7 +154,7 @@ amcostestimate (Query *root,
 </ol>
 </div>
 <p>   Examples of cost estimator functions can be found in
-   <tt class="filename">src/backend/utils/adt/selfuncs.c</tt>.
+   <code class="filename">src/backend/utils/adt/selfuncs.c</code>.
   </p>
 </div></body>
 </html>

@@ -4,19 +4,16 @@
 <title>41.22. pg_opclass</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-namespace.html" title="41.21. pg_namespace">
+<link rel="prev" href="catalog-pg-namespace.html" title="41.21. pg_namespace">
 <link rel="next" href="catalog-pg-operator.html" title="41.23. pg_operator">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-opclass"></a>41.22. <tt class="structname">pg_opclass</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2732578"></a><p>   The catalog <tt class="structname">pg_opclass</tt> defines
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-opclass"></a>41.22. <code class="structname">pg_opclass</code></h2></div></div></div>
+<a name="id498828"></a><p>   The catalog <code class="structname">pg_opclass</code> defines
    index access method operator classes.  Each operator class defines
    semantics for index columns of a particular data type and a particular
    index access method.  Note that there can be multiple operator classes
@@ -26,7 +23,7 @@
 <p>   Operator classes are described at length in <a href="xindex.html" title="31.14. Interfacing Extensions To Indexes">Section 31.14, &#8220;Interfacing Extensions To Indexes&#8221;</a>.
   </p>
 <div class="table">
-<a name="id2732607"></a><p class="title"><b>Table 41.22. <tt class="structname">pg_opclass</tt> Columns</b></p>
+<a name="id498854"></a><p class="title"><b>Table 41.22. <code class="structname">pg_opclass</code> Columns</b></p>
 <table summary="pg_opclass Columns" border="1">
 <colgroup>
 <col>
@@ -42,59 +39,59 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">opcamid</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-am.html" title="41.3. pg_am"><tt class="structname">pg_am</tt></a>.oid</tt></td>
+<td><code class="structfield">opcamid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-am.html" title="41.3. pg_am"><code class="structname">pg_am</code></a>.oid</code></td>
 <td>Index access method operator class is for</td>
 </tr>
 <tr>
-<td><tt class="structfield">opcname</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">opcname</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>Name of this operator class</td>
 </tr>
 <tr>
-<td><tt class="structfield">opcnamespace</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.oid</tt></td>
+<td><code class="structfield">opcnamespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
 <td>Namespace of this operator class</td>
 </tr>
 <tr>
-<td><tt class="structfield">opcowner</tt></td>
-<td><tt class="type">int4</tt></td>
-<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usesysid</tt></td>
+<td><code class="structfield">opcowner</code></td>
+<td><code class="type">int4</code></td>
+<td><code class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><code class="structname">pg_shadow</code></a>.usesysid</code></td>
 <td>Operator class owner</td>
 </tr>
 <tr>
-<td><tt class="structfield">opcintype</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
+<td><code class="structfield">opcintype</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>Data type that the operator class indexes</td>
 </tr>
 <tr>
-<td><tt class="structfield">opcdefault</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">opcdefault</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
-<td>True if this operator class is the default for <tt class="structfield">opcintype</tt>
+<td>True if this operator class is the default for <code class="structfield">opcintype</code>
 </td>
 </tr>
 <tr>
-<td><tt class="structfield">opckeytype</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
-<td>Type of data stored in index, or zero if same as <tt class="structfield">opcintype</tt>
+<td><code class="structfield">opckeytype</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td>Type of data stored in index, or zero if same as <code class="structfield">opcintype</code>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>   The majority of the information defining an operator class is actually
-   not in its <tt class="structname">pg_opclass</tt> row, but in the associated
-   rows in <tt class="structname">pg_amop</tt> and
-   <tt class="structname">pg_amproc</tt>.  Those rows are considered to be
+   not in its <code class="structname">pg_opclass</code> row, but in the associated
+   rows in <code class="structname">pg_amop</code> and
+   <code class="structname">pg_amproc</code>.  Those rows are considered to be
    part of the operator class definition [mdash ] this is not unlike the way
-   that a relation is defined by a single <tt class="structname">pg_class</tt>
-   row plus associated rows in <tt class="structname">pg_attribute</tt> and
+   that a relation is defined by a single <code class="structname">pg_class</code>
+   row plus associated rows in <code class="structname">pg_attribute</code> and
    other tables.
   </p>
 </div></body>

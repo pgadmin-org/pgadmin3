@@ -4,18 +4,15 @@
 <title>1.5. Bug Reporting Guidelines</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="preface.html" title="Preface">
-<link rel="previous" href="resources.html" title="1.4. Further Information">
+<link rel="prev" href="resources.html" title="1.4. Further Information">
 <link rel="next" href="tutorial.html" title="Part I. Tutorial">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="bug-reporting"></a>1.5. Bug Reporting Guidelines</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bug-reporting"></a>1.5. Bug Reporting Guidelines</h2></div></div></div>
 <p>  When you find a bug in <span class="productname">PostgreSQL</span> we want to
   hear about it. Your bug reports play an important part in making
   <span class="productname">PostgreSQL</span> more reliable because even the utmost
@@ -36,11 +33,8 @@
   If you need help immediately, consider obtaining a commercial support contract.
  </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2515876"></a>1.5.1. Identifying Bugs</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id298738"></a>1.5.1. Identifying Bugs</h3></div></div></div>
 <p>   Before you report a bug, please read and re-read the
    documentation to verify that you can really do whatever it is you are
    trying. If it is not clear from the documentation whether you can do
@@ -84,11 +78,8 @@
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2515950"></a>1.5.2. What to report</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id298798"></a>1.5.2. What to report</h3></div></div></div>
 <p>   The most important thing to remember about bug reporting is to state all
    the facts and only facts. Do not speculate what you think went wrong, what
    &#8220;<span class="quote">it seemed to do</span>&#8221;, or which part of the program has a fault.
@@ -110,8 +101,8 @@
 <p>      The exact sequence of steps <span class="emphasis"><em>from program
       start-up</em></span> necessary to reproduce the problem. This
       should be self-contained; it is not enough to send in a bare
-      <tt class="command">SELECT</tt> statement without the preceding
-      <tt class="command">CREATE TABLE</tt> and <tt class="command">INSERT</tt>
+      <code class="command">SELECT</code> statement without the preceding
+      <code class="command">CREATE TABLE</code> and <code class="command">INSERT</code>
       statements, if the output should depend on the data in the
       tables. We do not have the time to reverse-engineer your
       database schema, and if we are supposed to make up our own data
@@ -120,7 +111,7 @@
 <p>      The best format for a test case for SQL-related problems is a
       file that can be run through the <span class="application">psql</span>
       frontend that shows the problem. (Be sure to not have anything
-      in your <tt class="filename">~/.psqlrc</tt> start-up file.)  An easy
+      in your <code class="filename">~/.psqlrc</code> start-up file.)  An easy
       start at this file is to use <span class="application">pg_dump</span>
       to dump out the table declarations and data needed to set the
       scene, then add the problem query.  You are encouraged to
@@ -148,10 +139,10 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>       If you are reporting an error message, please obtain the most verbose
-       form of the message.  In <span class="application">psql</span>, say <tt class="literal">\set
-       VERBOSITY verbose</tt> beforehand.  If you are extracting the message
+       form of the message.  In <span class="application">psql</span>, say <code class="literal">\set
+       VERBOSITY verbose</code> beforehand.  If you are extracting the message
        from the server log, set the run-time parameter
-       <a href="runtime-config.html#guc-log-error-verbosity">log_error_verbosity</a> to <tt class="literal">verbose</tt> so that all
+       <a href="runtime-config.html#guc-log-error-verbosity">log_error_verbosity</a> to <code class="literal">verbose</code> so that all
        details are logged.
       </p>
 </div>
@@ -187,10 +178,10 @@
      </p></li>
 <li>
 <p>      The <span class="productname">PostgreSQL</span> version. You can run the command
-      <tt class="literal">SELECT version();</tt> to
+      <code class="literal">SELECT version();</code> to
       find out the version of the server you are connected to.  Most executable
-      programs also support a <tt class="option">--version</tt> option; at least
-      <tt class="literal">postmaster --version</tt> and <tt class="literal">psql --version</tt>
+      programs also support a <code class="option">--version</code> option; at least
+      <code class="literal">postmaster --version</code> and <code class="literal">psql --version</code>
       should work.
       If the function or the options do not exist then your version is
       more than old enough to warrant an upgrade.
@@ -225,8 +216,8 @@
    It is better to report everything the first time than us having to squeeze the
    facts out of you. On the other hand, if your input files are huge, it is
    fair to ask first whether somebody is interested in looking into it.  Here is
-   an article, <a href="http://www.chiark.greenend.org.uk/~sgtatham/bugs.html" target="_top">   http://www.chiark.greenend.org.uk/~sgtatham/bugs.html</a>, that outlines
-   some more tips on reporting bugs.
+   an <a href="http://www.chiark.greenend.org.uk/~sgtatham/bugs.html" target="_top">article</a>
+   that outlines some more tips on reporting bugs.
   </p>
 <p>   Do not spend all your time to figure out which changes in the input make
    the problem go away. This will probably not help solving it. If it turns
@@ -248,51 +239,48 @@
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2516444"></a>1.5.3. Where to report bugs</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id299161"></a>1.5.3. Where to report bugs</h3></div></div></div>
 <p>   In general, send bug reports to the bug report mailing list at
-   <tt class="email">&lt;<a href="mailto:pgsql-bugs@postgresql.org">pgsql-bugs@postgresql.org</a>&gt;</tt>.
+   <code class="email">&lt;<a href="mailto:pgsql-bugs@postgresql.org">pgsql-bugs@postgresql.org</a>&gt;</code>.
    You are requested to use a descriptive subject for your email
    message, perhaps parts of the error message.
   </p>
 <p> 
    Another method is to fill in the bug report web-form available
-   at the project's web site
-   <a href="http://www.postgresql.org/" target="_top">http://www.postgresql.org/</a>.
+   at the project's
+   <a href="http://www.postgresql.org/" target="_top">web site</a>.
    Entering a bug report this way causes it to be mailed to the
-   <tt class="email">&lt;<a href="mailto:pgsql-bugs@postgresql.org">pgsql-bugs@postgresql.org</a>&gt;</tt> mailing list.
+   <code class="email">&lt;<a href="mailto:pgsql-bugs@postgresql.org">pgsql-bugs@postgresql.org</a>&gt;</code> mailing list.
   </p>
 <p>   If your bug report has security implications and you'd prefer that it
    not become immediately visible in public archives, don't send it to
-   <tt class="literal">pgsql-bugs</tt>.  Security issues can be
-   reported privately to <tt class="email">&lt;<a href="mailto:security@postgresql.org">security@postgresql.org</a>&gt;</tt>.
+   <code class="literal">pgsql-bugs</code>.  Security issues can be
+   reported privately to <code class="email">&lt;<a href="mailto:security@postgresql.org">security@postgresql.org</a>&gt;</code>.
   </p>
 <p> 
    Do not send bug reports to any of the user mailing lists, such as
-   <tt class="email">&lt;<a href="mailto:pgsql-sql@postgresql.org">pgsql-sql@postgresql.org</a>&gt;</tt> or
-   <tt class="email">&lt;<a href="mailto:pgsql-general@postgresql.org">pgsql-general@postgresql.org</a>&gt;</tt>.
+   <code class="email">&lt;<a href="mailto:pgsql-sql@postgresql.org">pgsql-sql@postgresql.org</a>&gt;</code> or
+   <code class="email">&lt;<a href="mailto:pgsql-general@postgresql.org">pgsql-general@postgresql.org</a>&gt;</code>.
    These mailing lists are for answering
    user questions, and their subscribers normally do not wish to receive
    bug reports. More importantly, they are unlikely to fix them.
   </p>
 <p>   Also, please do <span class="emphasis"><em>not</em></span> send reports to
-   the developers' mailing list <tt class="email">&lt;<a href="mailto:pgsql-hackers@postgresql.org">pgsql-hackers@postgresql.org</a>&gt;</tt>.
+   the developers' mailing list <code class="email">&lt;<a href="mailto:pgsql-hackers@postgresql.org">pgsql-hackers@postgresql.org</a>&gt;</code>.
    This list is for discussing the
    development of <span class="productname">PostgreSQL</span>, and it would be nice
    if we could keep the bug reports separate. We might choose to take up a
-   discussion about your bug report on <tt class="literal">pgsql-hackers</tt>,
+   discussion about your bug report on <code class="literal">pgsql-hackers</code>,
    if the problem needs more review.
   </p>
 <p>   If you have a problem with the documentation, the best place to report it
-   is the documentation mailing list <tt class="email">&lt;<a href="mailto:pgsql-docs@postgresql.org">pgsql-docs@postgresql.org</a>&gt;</tt>.
+   is the documentation mailing list <code class="email">&lt;<a href="mailto:pgsql-docs@postgresql.org">pgsql-docs@postgresql.org</a>&gt;</code>.
    Please be specific about what part of the documentation you are unhappy
    with.
   </p>
 <p>   If your bug is a portability problem on a non-supported platform,
-   send mail to <tt class="email">&lt;<a href="mailto:pgsql-ports@postgresql.org">pgsql-ports@postgresql.org</a>&gt;</tt>,
+   send mail to <code class="email">&lt;<a href="mailto:pgsql-ports@postgresql.org">pgsql-ports@postgresql.org</a>&gt;</code>,
    so we (and you) can work on
    porting <span class="productname">PostgreSQL</span> to your platform.
   </p>
@@ -303,10 +291,10 @@
     subscribed to a list to be allowed to post on it.  (You need not be
     subscribed to use the bug-report web form, however.)
     If you would like to send mail but do not want to receive list traffic,
-    you can subscribe and set your subscription option to <tt class="literal">nomail</tt>.
+    you can subscribe and set your subscription option to <code class="literal">nomail</code>.
     For more information send mail to
-    <tt class="email">&lt;<a href="mailto:majordomo@postgresql.org">majordomo@postgresql.org</a>&gt;</tt>
-    with the single word <tt class="literal">help</tt> in the body of the message.
+    <code class="email">&lt;<a href="mailto:majordomo@postgresql.org">majordomo@postgresql.org</a>&gt;</code>
+    with the single word <code class="literal">help</code> in the body of the message.
    </p>
 </div>
 </div>

@@ -4,31 +4,28 @@
 <title>9.9. Date/Time Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
+<link rel="prev" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
 <link rel="next" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-datetime"></a>9.9. Date/Time Functions and Operators</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-datetime"></a>9.9. Date/Time Functions and Operators</h2></div></div></div>
 <p>   <a href="functions-datetime.html#functions-datetime-table" title="Table 9.26. Date/Time Functions">Table 9.26, &#8220;Date/Time Functions&#8221;</a> shows the available
    functions for date/time value processing, with details appearing in
    the following subsections.  <a href="functions-datetime.html#operators-datetime-table" title="Table 9.25. Date/Time Operators">Table 9.25, &#8220;Date/Time Operators&#8221;</a> illustrates the behaviors of
-   the basic arithmetic operators (<tt class="literal">+</tt>,
-   <tt class="literal">*</tt>, etc.).  For formatting functions, refer to
+   the basic arithmetic operators (<code class="literal">+</code>,
+   <code class="literal">*</code>, etc.).  For formatting functions, refer to
    <a href="functions-formatting.html" title="9.8. Data Type Formatting Functions">Section 9.8, &#8220;Data Type Formatting Functions&#8221;</a>.  You should be familiar with
    the background information on date/time data types from <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a>.
   </p>
-<p>   All the functions and operators described below that take <tt class="type">time</tt> or <tt class="type">timestamp</tt>
-   inputs actually come in two variants: one that takes <tt class="type">time with time zone</tt> or <tt class="type">timestamp
-   with time zone</tt>, and one that takes <tt class="type">time without time zone</tt> or <tt class="type">timestamp without time zone</tt>.
+<p>   All the functions and operators described below that take <code class="type">time</code> or <code class="type">timestamp</code>
+   inputs actually come in two variants: one that takes <code class="type">time with time zone</code> or <code class="type">timestamp
+   with time zone</code>, and one that takes <code class="type">time without time zone</code> or <code class="type">timestamp without time zone</code>.
    For brevity, these variants are not shown separately.  Also, the
-   <tt class="literal">+</tt> and <tt class="literal">*</tt> operators come in commutative pairs (for
+   <code class="literal">+</code> and <code class="literal">*</code> operators come in commutative pairs (for
    example both date + integer and integer + date); we show only one of each
    such pair.
   </p>
@@ -47,89 +44,89 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">+</tt></td>
-<td><tt class="literal">date '2001-09-28' + integer '7'</tt></td>
-<td><tt class="literal">date '2001-10-05'</tt></td>
+<td> <code class="literal">+</code> </td>
+<td><code class="literal">date '2001-09-28' + integer '7'</code></td>
+<td><code class="literal">date '2001-10-05'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">+</tt></td>
-<td><tt class="literal">date '2001-09-28' + interval '1 hour'</tt></td>
-<td><tt class="literal">timestamp '2001-09-28 01:00'</tt></td>
+<td> <code class="literal">+</code> </td>
+<td><code class="literal">date '2001-09-28' + interval '1 hour'</code></td>
+<td><code class="literal">timestamp '2001-09-28 01:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">+</tt></td>
-<td><tt class="literal">date '2001-09-28' + time '03:00'</tt></td>
-<td><tt class="literal">timestamp '2001-09-28 03:00'</tt></td>
+<td> <code class="literal">+</code> </td>
+<td><code class="literal">date '2001-09-28' + time '03:00'</code></td>
+<td><code class="literal">timestamp '2001-09-28 03:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">+</tt></td>
-<td><tt class="literal">interval '1 day' + interval '1 hour'</tt></td>
-<td><tt class="literal">interval '1 day 01:00'</tt></td>
+<td> <code class="literal">+</code> </td>
+<td><code class="literal">interval '1 day' + interval '1 hour'</code></td>
+<td><code class="literal">interval '1 day 01:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">+</tt></td>
-<td><tt class="literal">timestamp '2001-09-28 01:00' + interval '23 hours'</tt></td>
-<td><tt class="literal">timestamp '2001-09-29 00:00'</tt></td>
+<td> <code class="literal">+</code> </td>
+<td><code class="literal">timestamp '2001-09-28 01:00' + interval '23 hours'</code></td>
+<td><code class="literal">timestamp '2001-09-29 00:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">+</tt></td>
-<td><tt class="literal">time '01:00' + interval '3 hours'</tt></td>
-<td><tt class="literal">time '04:00'</tt></td>
+<td> <code class="literal">+</code> </td>
+<td><code class="literal">time '01:00' + interval '3 hours'</code></td>
+<td><code class="literal">time '04:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">- interval '23 hours'</tt></td>
-<td><tt class="literal">interval '-23:00'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">- interval '23 hours'</code></td>
+<td><code class="literal">interval '-23:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">date '2001-10-01' - date '2001-09-28'</tt></td>
-<td><tt class="literal">integer '3'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">date '2001-10-01' - date '2001-09-28'</code></td>
+<td><code class="literal">integer '3'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">date '2001-10-01' - integer '7'</tt></td>
-<td><tt class="literal">date '2001-09-24'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">date '2001-10-01' - integer '7'</code></td>
+<td><code class="literal">date '2001-09-24'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">date '2001-09-28' - interval '1 hour'</tt></td>
-<td><tt class="literal">timestamp '2001-09-27 23:00'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">date '2001-09-28' - interval '1 hour'</code></td>
+<td><code class="literal">timestamp '2001-09-27 23:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">time '05:00' - time '03:00'</tt></td>
-<td><tt class="literal">interval '02:00'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">time '05:00' - time '03:00'</code></td>
+<td><code class="literal">interval '02:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">time '05:00' - interval '2 hours'</tt></td>
-<td><tt class="literal">time '03:00'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">time '05:00' - interval '2 hours'</code></td>
+<td><code class="literal">time '03:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">timestamp '2001-09-28 23:00' - interval '23 hours'</tt></td>
-<td><tt class="literal">timestamp '2001-09-28 00:00'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">timestamp '2001-09-28 23:00' - interval '23 hours'</code></td>
+<td><code class="literal">timestamp '2001-09-28 00:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">interval '1 day' - interval '1 hour'</tt></td>
-<td><tt class="literal">interval '23:00'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">interval '1 day' - interval '1 hour'</code></td>
+<td><code class="literal">interval '23:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">-</tt></td>
-<td><tt class="literal">timestamp '2001-09-29 03:00' - timestamp '2001-09-27 12:00'</tt></td>
-<td><tt class="literal">interval '1 day 15:00'</tt></td>
+<td> <code class="literal">-</code> </td>
+<td><code class="literal">timestamp '2001-09-29 03:00' - timestamp '2001-09-27 12:00'</code></td>
+<td><code class="literal">interval '1 day 15:00'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">*</tt></td>
-<td><tt class="literal">interval '1 hour' * double precision '3.5'</tt></td>
-<td><tt class="literal">interval '03:30'</tt></td>
+<td> <code class="literal">*</code> </td>
+<td><code class="literal">interval '1 hour' * double precision '3.5'</code></td>
+<td><code class="literal">interval '03:30'</code></td>
 </tr>
 <tr>
-<td><tt class="literal">/</tt></td>
-<td><tt class="literal">interval '1 hour' / double precision '1.5'</tt></td>
-<td><tt class="literal">interval '00:40'</tt></td>
+<td> <code class="literal">/</code> </td>
+<td><code class="literal">interval '1 hour' / double precision '1.5'</code></td>
+<td><code class="literal">interval '00:40'</code></td>
 </tr>
 </tbody>
 </table>
@@ -153,144 +150,144 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">age</tt>(<tt class="type">timestamp</tt>, <tt class="type">timestamp</tt>)</tt></td>
-<td><tt class="type">interval</tt></td>
+<td><code class="literal"><code class="function">age</code>(<code class="type">timestamp</code>, <code class="type">timestamp</code>)</code></td>
+<td><code class="type">interval</code></td>
 <td>Subtract arguments, producing a &#8220;<span class="quote">symbolic</span>&#8221; result that
         uses years and months</td>
-<td><tt class="literal">age(timestamp '2001-04-10', timestamp '1957-06-13')</tt></td>
-<td><tt class="literal">43 years 9 mons 27 days</tt></td>
+<td><code class="literal">age(timestamp '2001-04-10', timestamp '1957-06-13')</code></td>
+<td><code class="literal">43 years 9 mons 27 days</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">age</tt>(<tt class="type">timestamp</tt>)</tt></td>
-<td><tt class="type">interval</tt></td>
-<td>Subtract from <tt class="function">current_date</tt>
+<td><code class="literal"><code class="function">age</code>(<code class="type">timestamp</code>)</code></td>
+<td><code class="type">interval</code></td>
+<td>Subtract from <code class="function">current_date</code>
 </td>
-<td><tt class="literal">age(timestamp '1957-06-13')</tt></td>
-<td><tt class="literal">43 years 8 mons 3 days</tt></td>
+<td><code class="literal">age(timestamp '1957-06-13')</code></td>
+<td><code class="literal">43 years 8 mons 3 days</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">current_date</tt></tt></td>
-<td><tt class="type">date</tt></td>
+<td><code class="literal"><code class="function">current_date</code></code></td>
+<td><code class="type">date</code></td>
 <td>Today's date; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
-</td>
+        </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">current_time</tt></tt></td>
-<td><tt class="type">time with time zone</tt></td>
+<td><code class="literal"><code class="function">current_time</code></code></td>
+<td><code class="type">time with time zone</code></td>
 <td>Time of day; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
-</td>
+        </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">current_timestamp</tt></tt></td>
-<td><tt class="type">timestamp with time zone</tt></td>
+<td><code class="literal"><code class="function">current_timestamp</code></code></td>
+<td><code class="type">timestamp with time zone</code></td>
 <td>Date and time; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
-</td>
+        </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">date_part</tt>(<tt class="type">text</tt>, <tt class="type">timestamp</tt>)</tt></td>
-<td><tt class="type">double precision</tt></td>
+<td><code class="literal"><code class="function">date_part</code>(<code class="type">text</code>, <code class="type">timestamp</code>)</code></td>
+<td><code class="type">double precision</code></td>
 <td>Get subfield (equivalent to
-         <tt class="function">extract</tt>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;EXTRACT, date_part&#8221;</a>
-</td>
-<td><tt class="literal">date_part('hour', timestamp '2001-02-16 20:38:40')</tt></td>
-<td><tt class="literal">20</tt></td>
+         <code class="function">extract</code>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;<code class="function">EXTRACT</code>, <code class="function">date_part</code>&#8221;</a>
+        </td>
+<td><code class="literal">date_part('hour', timestamp '2001-02-16 20:38:40')</code></td>
+<td><code class="literal">20</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">date_part</tt>(<tt class="type">text</tt>, <tt class="type">interval</tt>)</tt></td>
-<td><tt class="type">double precision</tt></td>
+<td><code class="literal"><code class="function">date_part</code>(<code class="type">text</code>, <code class="type">interval</code>)</code></td>
+<td><code class="type">double precision</code></td>
 <td>Get subfield (equivalent to
-         <tt class="function">extract</tt>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;EXTRACT, date_part&#8221;</a>
-</td>
-<td><tt class="literal">date_part('month', interval '2 years 3 months')</tt></td>
-<td><tt class="literal">3</tt></td>
+         <code class="function">extract</code>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;<code class="function">EXTRACT</code>, <code class="function">date_part</code>&#8221;</a>
+        </td>
+<td><code class="literal">date_part('month', interval '2 years 3 months')</code></td>
+<td><code class="literal">3</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">date_trunc</tt>(<tt class="type">text</tt>, <tt class="type">timestamp</tt>)</tt></td>
-<td><tt class="type">timestamp</tt></td>
-<td>Truncate to specified precision; see also <a href="functions-datetime.html#functions-datetime-trunc" title="9.9.2. date_trunc">Section 9.9.2, &#8220;date_trunc&#8221;</a>
-</td>
-<td><tt class="literal">date_trunc('hour', timestamp '2001-02-16 20:38:40')</tt></td>
-<td><tt class="literal">2001-02-16 20:00:00</tt></td>
+<td><code class="literal"><code class="function">date_trunc</code>(<code class="type">text</code>, <code class="type">timestamp</code>)</code></td>
+<td><code class="type">timestamp</code></td>
+<td>Truncate to specified precision; see also <a href="functions-datetime.html#functions-datetime-trunc" title="9.9.2. date_trunc">Section 9.9.2, &#8220;<code class="function">date_trunc</code>&#8221;</a>
+        </td>
+<td><code class="literal">date_trunc('hour', timestamp '2001-02-16 20:38:40')</code></td>
+<td><code class="literal">2001-02-16 20:00:00</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">extract</tt>(<i class="parameter"><tt>field</tt></i> from
-         <tt class="type">timestamp</tt>)</tt></td>
-<td><tt class="type">double precision</tt></td>
-<td>Get subfield; see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;EXTRACT, date_part&#8221;</a>
-</td>
-<td><tt class="literal">extract(hour from timestamp '2001-02-16 20:38:40')</tt></td>
-<td><tt class="literal">20</tt></td>
+<td><code class="literal"><code class="function">extract</code>(<em class="parameter"><code>field</code></em> from
+         <code class="type">timestamp</code>)</code></td>
+<td><code class="type">double precision</code></td>
+<td>Get subfield; see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;<code class="function">EXTRACT</code>, <code class="function">date_part</code>&#8221;</a>
+        </td>
+<td><code class="literal">extract(hour from timestamp '2001-02-16 20:38:40')</code></td>
+<td><code class="literal">20</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">extract</tt>(<i class="parameter"><tt>field</tt></i> from
-         <tt class="type">interval</tt>)</tt></td>
-<td><tt class="type">double precision</tt></td>
-<td>Get subfield; see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;EXTRACT, date_part&#8221;</a>
-</td>
-<td><tt class="literal">extract(month from interval '2 years 3 months')</tt></td>
-<td><tt class="literal">3</tt></td>
+<td><code class="literal"><code class="function">extract</code>(<em class="parameter"><code>field</code></em> from
+         <code class="type">interval</code>)</code></td>
+<td><code class="type">double precision</code></td>
+<td>Get subfield; see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;<code class="function">EXTRACT</code>, <code class="function">date_part</code>&#8221;</a>
+        </td>
+<td><code class="literal">extract(month from interval '2 years 3 months')</code></td>
+<td><code class="literal">3</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">isfinite</tt>(<tt class="type">timestamp</tt>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td><code class="literal"><code class="function">isfinite</code>(<code class="type">timestamp</code>)</code></td>
+<td><code class="type">boolean</code></td>
 <td>Test for finite time stamp (not equal to infinity)</td>
-<td><tt class="literal">isfinite(timestamp '2001-02-16 21:28:30')</tt></td>
-<td><tt class="literal">true</tt></td>
+<td><code class="literal">isfinite(timestamp '2001-02-16 21:28:30')</code></td>
+<td><code class="literal">true</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">isfinite</tt>(<tt class="type">interval</tt>)</tt></td>
-<td><tt class="type">boolean</tt></td>
+<td><code class="literal"><code class="function">isfinite</code>(<code class="type">interval</code>)</code></td>
+<td><code class="type">boolean</code></td>
 <td>Test for finite interval</td>
-<td><tt class="literal">isfinite(interval '4 hours')</tt></td>
-<td><tt class="literal">true</tt></td>
+<td><code class="literal">isfinite(interval '4 hours')</code></td>
+<td><code class="literal">true</code></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">localtime</tt></tt></td>
-<td><tt class="type">time</tt></td>
+<td><code class="literal"><code class="function">localtime</code></code></td>
+<td><code class="type">time</code></td>
 <td>Time of day; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
-</td>
+        </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">localtimestamp</tt></tt></td>
-<td><tt class="type">timestamp</tt></td>
+<td><code class="literal"><code class="function">localtimestamp</code></code></td>
+<td><code class="type">timestamp</code></td>
 <td>Date and time; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
-</td>
+        </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">now</tt>()</tt></td>
-<td><tt class="type">timestamp with time zone</tt></td>
+<td><code class="literal"><code class="function">now</code>()</code></td>
+<td><code class="type">timestamp with time zone</code></td>
 <td>Current date and time (equivalent to
-         <tt class="function">current_timestamp</tt>); see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
-</td>
+         <code class="function">current_timestamp</code>); see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+        </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">timeofday()</tt></tt></td>
-<td><tt class="type">text</tt></td>
+<td><code class="literal"><code class="function">timeofday()</code></code></td>
+<td><code class="type">text</code></td>
 <td>Current date and time; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
-</td>
+        </td>
 <td> </td>
 <td> </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>    In addition to these functions, the SQL <tt class="literal">OVERLAPS</tt> operator is
+<p>    In addition to these functions, the SQL <code class="literal">OVERLAPS</code> operator is
     supported:
 </p>
-<pre class="synopsis">( <i class="replaceable"><tt>start1</tt></i>, <i class="replaceable"><tt>end1</tt></i> ) OVERLAPS ( <i class="replaceable"><tt>start2</tt></i>, <i class="replaceable"><tt>end2</tt></i> )
-( <i class="replaceable"><tt>start1</tt></i>, <i class="replaceable"><tt>length1</tt></i> ) OVERLAPS ( <i class="replaceable"><tt>start2</tt></i>, <i class="replaceable"><tt>length2</tt></i> )</pre>
+<pre class="synopsis">( <em class="replaceable"><code>start1</code></em>, <em class="replaceable"><code>end1</code></em> ) OVERLAPS ( <em class="replaceable"><code>start2</code></em>, <em class="replaceable"><code>end2</code></em> )
+( <em class="replaceable"><code>start1</code></em>, <em class="replaceable"><code>length1</code></em> ) OVERLAPS ( <em class="replaceable"><code>start2</code></em>, <em class="replaceable"><code>length2</code></em> )</pre>
 <p>
     This expression yields true when two time periods (defined by their
     endpoints) overlap, false when they do not overlap.  The endpoints
@@ -299,40 +296,37 @@
    </p>
 <pre class="screen">SELECT (DATE '2001-02-16', DATE '2001-12-21') OVERLAPS
        (DATE '2001-10-30', DATE '2002-10-30');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">true</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">true</code>
 SELECT (DATE '2001-02-16', INTERVAL '100 days') OVERLAPS
        (DATE '2001-10-30', DATE '2002-10-30');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">false</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">false</code></pre>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="functions-datetime-extract"></a>9.9.1. <tt class="function">EXTRACT</tt>, <tt class="function">date_part</tt></h3></div></div>
-<div></div>
-</div>
-<pre class="synopsis">EXTRACT (<i class="replaceable"><tt>field</tt></i> FROM <i class="replaceable"><tt>source</tt></i>)</pre>
-<p>    The <tt class="function">extract</tt> function retrieves subfields
+<div class="titlepage"><div><div><h3 class="title">
+<a name="functions-datetime-extract"></a>9.9.1. <code class="function">EXTRACT</code>, <code class="function">date_part</code></h3></div></div></div>
+<pre class="synopsis">EXTRACT (<em class="replaceable"><code>field</code></em> FROM <em class="replaceable"><code>source</code></em>)</pre>
+<p>    The <code class="function">extract</code> function retrieves subfields
     such as year or hour from date/time values.
-    <i class="replaceable"><tt>source</tt></i> must be a value expression of
-    type <tt class="type">timestamp</tt>, <tt class="type">time</tt>, or <tt class="type">interval</tt>.
-    (Expressions of type <tt class="type">date</tt> will
-    be cast to <tt class="type">timestamp</tt> and can therefore be used as
-    well.)  <i class="replaceable"><tt>field</tt></i> is an identifier or
+    <em class="replaceable"><code>source</code></em> must be a value expression of
+    type <code class="type">timestamp</code>, <code class="type">time</code>, or <code class="type">interval</code>.
+    (Expressions of type <code class="type">date</code> will
+    be cast to <code class="type">timestamp</code> and can therefore be used as
+    well.)  <em class="replaceable"><code>field</code></em> is an identifier or
     string that selects what field to extract from the source value.
-    The <tt class="function">extract</tt> function returns values of type
-    <tt class="type">double precision</tt>.
+    The <code class="function">extract</code> function returns values of type
+    <code class="type">double precision</code>.
     The following are valid field names:
 
     
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">century</tt></span></dt>
+<dt><span class="term"><code class="literal">century</code></span></dt>
 <dd>
 <p>        The century
        </p>
 <pre class="screen">SELECT EXTRACT(CENTURY FROM TIMESTAMP '2000-12-16 12:21:13');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">20</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">20</code>
 SELECT EXTRACT(CENTURY FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">21</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">21</code></pre>
 <p>        The first century starts at 0001-01-01 00:00:00 AD, although
         they did not know it at the time. This definition applies to all
         Gregorian calendar countries. There is no century number 0,
@@ -346,76 +340,76 @@ SELECT EXTRACT(CENTURY FROM TIMESTAMP '2001-02-16 20:38:40');
         the year field divided by 100.
        </p>
 </dd>
-<dt><span class="term"><tt class="literal">day</tt></span></dt>
+<dt><span class="term"><code class="literal">day</code></span></dt>
 <dd>
 <p>        The day (of the month) field (1 - 31)
        </p>
 <pre class="screen">SELECT EXTRACT(DAY FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">16</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">16</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">decade</tt></span></dt>
+<dt><span class="term"><code class="literal">decade</code></span></dt>
 <dd>
 <p>        The year field divided by 10
        </p>
 <pre class="screen">SELECT EXTRACT(DECADE FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">200</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">200</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">dow</tt></span></dt>
+<dt><span class="term"><code class="literal">dow</code></span></dt>
 <dd>
 <p>        The day of the week (0 - 6; Sunday is 0) (for
-        <tt class="type">timestamp</tt> values only)
+        <code class="type">timestamp</code> values only)
        </p>
 <pre class="screen">SELECT EXTRACT(DOW FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">5</tt></pre>
-<p>        Note that <tt class="function">extract</tt>'s day of the week numbering is 
-        different from that of the <tt class="function">to_char</tt> function.
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">5</code></pre>
+<p>        Note that <code class="function">extract</code>'s day of the week numbering is 
+        different from that of the <code class="function">to_char</code> function.
        </p>
 </dd>
-<dt><span class="term"><tt class="literal">doy</tt></span></dt>
+<dt><span class="term"><code class="literal">doy</code></span></dt>
 <dd>
-<p>        The day of the year (1 - 365/366) (for <tt class="type">timestamp</tt> values only)
+<p>        The day of the year (1 - 365/366) (for <code class="type">timestamp</code> values only)
        </p>
 <pre class="screen">SELECT EXTRACT(DOY FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">47</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">47</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">epoch</tt></span></dt>
+<dt><span class="term"><code class="literal">epoch</code></span></dt>
 <dd>
-<p>        For <tt class="type">date</tt> and <tt class="type">timestamp</tt> values, the
+<p>        For <code class="type">date</code> and <code class="type">timestamp</code> values, the
         number of seconds since 1970-01-01 00:00:00-00 (can be negative);
-        for <tt class="type">interval</tt> values, the total number
+        for <code class="type">interval</code> values, the total number
         of seconds in the interval
        </p>
 <pre class="screen">SELECT EXTRACT(EPOCH FROM TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-08');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">982384720</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">982384720</code>
 
 SELECT EXTRACT(EPOCH FROM INTERVAL '5 days 3 hours');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">442800</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">442800</code></pre>
 <p>        Here is how you can convert an epoch value back to a time
         stamp:
        </p>
 <pre class="screen">SELECT TIMESTAMP WITH TIME ZONE 'epoch' + 982384720 * INTERVAL '1 second';</pre>
 </dd>
-<dt><span class="term"><tt class="literal">hour</tt></span></dt>
+<dt><span class="term"><code class="literal">hour</code></span></dt>
 <dd>
 <p>        The hour field (0 - 23)
        </p>
 <pre class="screen">SELECT EXTRACT(HOUR FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">20</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">20</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">microseconds</tt></span></dt>
+<dt><span class="term"><code class="literal">microseconds</code></span></dt>
 <dd>
 <p>        The seconds field, including fractional parts, multiplied by 1
         000 000.  Note that this includes full seconds.
        </p>
 <pre class="screen">SELECT EXTRACT(MICROSECONDS FROM TIME '17:12:28.5');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">28500000</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">28500000</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">millennium</tt></span></dt>
+<dt><span class="term"><code class="literal">millennium</code></span></dt>
 <dd>
 <p>        The millennium
        </p>
 <pre class="screen">SELECT EXTRACT(MILLENNIUM FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">3</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">3</code></pre>
 <p>        Years in the 1900s are in the second millennium.
         The third millennium starts January 1, 2001.
        </p>
@@ -424,172 +418,171 @@ SELECT EXTRACT(EPOCH FROM INTERVAL '5 days 3 hours');
         the year field divided by 1000.
        </p>
 </dd>
-<dt><span class="term"><tt class="literal">milliseconds</tt></span></dt>
+<dt><span class="term"><code class="literal">milliseconds</code></span></dt>
 <dd>
 <p>        The seconds field, including fractional parts, multiplied by
         1000.  Note that this includes full seconds.
        </p>
 <pre class="screen">SELECT EXTRACT(MILLISECONDS FROM TIME '17:12:28.5');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">28500</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">28500</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">minute</tt></span></dt>
+<dt><span class="term"><code class="literal">minute</code></span></dt>
 <dd>
 <p>        The minutes field (0 - 59)
        </p>
 <pre class="screen">SELECT EXTRACT(MINUTE FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">38</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">38</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">month</tt></span></dt>
+<dt><span class="term"><code class="literal">month</code></span></dt>
 <dd>
-<p>        For <tt class="type">timestamp</tt> values, the number of the month
-        within the year (1 - 12) ; for <tt class="type">interval</tt> values
+<p>        For <code class="type">timestamp</code> values, the number of the month
+        within the year (1 - 12) ; for <code class="type">interval</code> values
         the number of months, modulo 12 (0 - 11)
        </p>
 <pre class="screen">SELECT EXTRACT(MONTH FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2</code>
 
 SELECT EXTRACT(MONTH FROM INTERVAL '2 years 3 months');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">3</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">3</code>
 
 SELECT EXTRACT(MONTH FROM INTERVAL '2 years 13 months');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">1</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">1</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">quarter</tt></span></dt>
+<dt><span class="term"><code class="literal">quarter</code></span></dt>
 <dd>
 <p>        The quarter of the year (1 - 4) that the day is in (for
-        <tt class="type">timestamp</tt> values only)
+        <code class="type">timestamp</code> values only)
        </p>
 <pre class="screen">SELECT EXTRACT(QUARTER FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">1</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">1</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">second</tt></span></dt>
+<dt><span class="term"><code class="literal">second</code></span></dt>
 <dd>
 <p>        The seconds field, including fractional parts (0 -
-        59<sup>[<a name="id2556917" href="#ftn.id2556917">5</a>]</sup>)
+        59<sup>[<a name="id336686" href="#ftn.id336686">5</a>]</sup>)
        </p>
 <pre class="screen">SELECT EXTRACT(SECOND FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">40</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">40</code>
 
 SELECT EXTRACT(SECOND FROM TIME '17:12:28.5');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">28.5</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">28.5</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">timezone</tt></span></dt>
+<dt><span class="term"><code class="literal">timezone</code></span></dt>
 <dd><p>        The time zone offset from UTC, measured in seconds.  Positive values
         correspond to time zones east of UTC, negative values to
         zones west of UTC.
        </p></dd>
-<dt><span class="term"><tt class="literal">timezone_hour</tt></span></dt>
+<dt><span class="term"><code class="literal">timezone_hour</code></span></dt>
 <dd><p>        The hour component of the time zone offset
        </p></dd>
-<dt><span class="term"><tt class="literal">timezone_minute</tt></span></dt>
+<dt><span class="term"><code class="literal">timezone_minute</code></span></dt>
 <dd><p>        The minute component of the time zone offset
        </p></dd>
-<dt><span class="term"><tt class="literal">week</tt></span></dt>
+<dt><span class="term"><code class="literal">week</code></span></dt>
 <dd>
 <p>        The number of the week of the year that the day is in.  By definition
         (<span class="acronym">ISO</span> 8601), the first week of a year
         contains January 4 of that year.  (The <span class="acronym">ISO</span>-8601
         week starts on Monday.)  In other words, the first Thursday of
-        a year is in week 1 of that year. (for <tt class="type">timestamp</tt> values only)
+        a year is in week 1 of that year. (for <code class="type">timestamp</code> values only)
+       </p>
+<p>        Because of this, it is possible for early January dates to be part of the 
+        52nd or 53rd week of the previous year.  For example, <code class="literal">2005-01-01</code>
+        is part of the 53rd week of year 2004, and <code class="literal">2006-01-01</code> is part of 
+        the 52nd week of year 2005.
        </p>
 <pre class="screen">SELECT EXTRACT(WEEK FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">7</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">7</code></pre>
 </dd>
-<dt><span class="term"><tt class="literal">year</tt></span></dt>
+<dt><span class="term"><code class="literal">year</code></span></dt>
 <dd>
-<p>        The year field.  Keep in mind there is no <tt class="literal">0 AD</tt>, so subtracting 
-        <tt class="literal">BC</tt> years from <tt class="literal">AD</tt> years should be done with care.
+<p>        The year field.  Keep in mind there is no <code class="literal">0 AD</code>, so subtracting 
+        <code class="literal">BC</code> years from <code class="literal">AD</code> years should be done with care.
        </p>
 <pre class="screen">SELECT EXTRACT(YEAR FROM TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001</code></pre>
 </dd>
 </dl></div>
 <p>
 
    </p>
-<p>    The <tt class="function">extract</tt> function is primarily intended
+<p>    The <code class="function">extract</code> function is primarily intended
     for computational processing.  For formatting date/time values for
     display, see <a href="functions-formatting.html" title="9.8. Data Type Formatting Functions">Section 9.8, &#8220;Data Type Formatting Functions&#8221;</a>.
    </p>
-<p>    The <tt class="function">date_part</tt> function is modeled on the traditional
+<p>    The <code class="function">date_part</code> function is modeled on the traditional
     <span class="productname">Ingres</span> equivalent to the
-    <span class="acronym">SQL</span>-standard function <tt class="function">extract</tt>:
+    <span class="acronym">SQL</span>-standard function <code class="function">extract</code>:
 </p>
-<pre class="synopsis">date_part('<i class="replaceable"><tt>field</tt></i>', <i class="replaceable"><tt>source</tt></i>)</pre>
+<pre class="synopsis">date_part('<em class="replaceable"><code>field</code></em>', <em class="replaceable"><code>source</code></em>)</pre>
 <p>
-    Note that here the <i class="replaceable"><tt>field</tt></i> parameter needs to
+    Note that here the <em class="replaceable"><code>field</code></em> parameter needs to
     be a string value, not a name.  The valid field names for
-    <tt class="function">date_part</tt> are the same as for
-    <tt class="function">extract</tt>.
+    <code class="function">date_part</code> are the same as for
+    <code class="function">extract</code>.
    </p>
 <pre class="screen">SELECT date_part('day', TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">16</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">16</code>
 
 SELECT date_part('hour', INTERVAL '4 hours 3 minutes');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">4</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">4</code></pre>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="functions-datetime-trunc"></a>9.9.2. <tt class="function">date_trunc</tt></h3></div></div>
-<div></div>
-</div>
-<p>    The function <tt class="function">date_trunc</tt> is conceptually
-    similar to the <tt class="function">trunc</tt> function for numbers.
+<div class="titlepage"><div><div><h3 class="title">
+<a name="functions-datetime-trunc"></a>9.9.2. <code class="function">date_trunc</code></h3></div></div></div>
+<p>    The function <code class="function">date_trunc</code> is conceptually
+    similar to the <code class="function">trunc</code> function for numbers.
    </p>
-<pre class="synopsis">date_trunc('<i class="replaceable"><tt>field</tt></i>', <i class="replaceable"><tt>source</tt></i>)</pre>
+<pre class="synopsis">date_trunc('<em class="replaceable"><code>field</code></em>', <em class="replaceable"><code>source</code></em>)</pre>
 <p>
-    <i class="replaceable"><tt>source</tt></i> is a value expression of type
-    <tt class="type">timestamp</tt> or <tt class="type">interval</tt>.
-    (Values of type <tt class="type">date</tt> and
-    <tt class="type">time</tt> are cast automatically, to <tt class="type">timestamp</tt> or
-    <tt class="type">interval</tt> respectively.)
-    <i class="replaceable"><tt>field</tt></i> selects to which precision to
+    <em class="replaceable"><code>source</code></em> is a value expression of type
+    <code class="type">timestamp</code> or <code class="type">interval</code>.
+    (Values of type <code class="type">date</code> and
+    <code class="type">time</code> are cast automatically, to <code class="type">timestamp</code> or
+    <code class="type">interval</code> respectively.)
+    <em class="replaceable"><code>field</code></em> selects to which precision to
     truncate the input value.  The return value is of type
-    <tt class="type">timestamp</tt> or <tt class="type">interval</tt>
+    <code class="type">timestamp</code> or <code class="type">interval</code>
     with all fields that are less significant than the
     selected one set to zero (or one, for day and month).
    </p>
-<p>    Valid values for <i class="replaceable"><tt>field</tt></i> are:
+<p>    Valid values for <em class="replaceable"><code>field</code></em> are:
     </p>
 <table class="simplelist" border="0" summary="Simple list">
-<tr><td><tt class="literal">microseconds</tt></td></tr>
-<tr><td><tt class="literal">milliseconds</tt></td></tr>
-<tr><td><tt class="literal">second</tt></td></tr>
-<tr><td><tt class="literal">minute</tt></td></tr>
-<tr><td><tt class="literal">hour</tt></td></tr>
-<tr><td><tt class="literal">day</tt></td></tr>
-<tr><td><tt class="literal">week</tt></td></tr>
-<tr><td><tt class="literal">month</tt></td></tr>
-<tr><td><tt class="literal">year</tt></td></tr>
-<tr><td><tt class="literal">decade</tt></td></tr>
-<tr><td><tt class="literal">century</tt></td></tr>
-<tr><td><tt class="literal">millennium</tt></td></tr>
+<tr><td><code class="literal">microseconds</code></td></tr>
+<tr><td><code class="literal">milliseconds</code></td></tr>
+<tr><td><code class="literal">second</code></td></tr>
+<tr><td><code class="literal">minute</code></td></tr>
+<tr><td><code class="literal">hour</code></td></tr>
+<tr><td><code class="literal">day</code></td></tr>
+<tr><td><code class="literal">week</code></td></tr>
+<tr><td><code class="literal">month</code></td></tr>
+<tr><td><code class="literal">year</code></td></tr>
+<tr><td><code class="literal">decade</code></td></tr>
+<tr><td><code class="literal">century</code></td></tr>
+<tr><td><code class="literal">millennium</code></td></tr>
 </table>
 <p>
    </p>
 <p>    Examples:
 </p>
 <pre class="screen">SELECT date_trunc('hour', TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001-02-16 20:00:00</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-02-16 20:00:00</code>
 
 SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001-01-01 00:00:00</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-01-01 00:00:00</code></pre>
 <p>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="functions-datetime-zoneconvert"></a>9.9.3. <tt class="literal">AT TIME ZONE</tt></h3></div></div>
-<div></div>
-</div>
-<a name="id2557354"></a><p>    The <tt class="literal">AT TIME ZONE</tt> construct allows conversions
-    of time stamps to different time zones.  <a href="functions-datetime.html#functions-datetime-zoneconvert-table" title="Table 9.27. AT TIME ZONE Variants">Table 9.27, &#8220;AT TIME ZONE Variants&#8221;</a> shows its
+<div class="titlepage"><div><div><h3 class="title">
+<a name="functions-datetime-zoneconvert"></a>9.9.3. <code class="literal">AT TIME ZONE</code></h3></div></div></div>
+<a name="id337119"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
+    of time stamps to different time zones.  <a href="functions-datetime.html#functions-datetime-zoneconvert-table" title="Table 9.27. AT TIME ZONE Variants">Table 9.27, &#8220;<code class="literal">AT TIME ZONE</code> Variants&#8221;</a> shows its
     variants.
    </p>
 <div class="table">
-<a name="functions-datetime-zoneconvert-table"></a><p class="title"><b>Table 9.27. <tt class="literal">AT TIME ZONE</tt> Variants</b></p>
+<a name="functions-datetime-zoneconvert-table"></a><p class="title"><b>Table 9.27. <code class="literal">AT TIME ZONE</code> Variants</b></p>
 <table summary="AT TIME ZONE Variants" border="1">
 <colgroup>
 <col>
@@ -603,80 +596,80 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="type">timestamp without time zone</tt> AT TIME ZONE <i class="replaceable"><tt>zone</tt></i></tt></td>
-<td><tt class="type">timestamp with time zone</tt></td>
+<td>         <code class="literal"><code class="type">timestamp without time zone</code> AT TIME ZONE <em class="replaceable"><code>zone</code></em></code>
+        </td>
+<td><code class="type">timestamp with time zone</code></td>
 <td>Convert local time in given time zone to UTC</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="type">timestamp with time zone</tt> AT TIME ZONE <i class="replaceable"><tt>zone</tt></i></tt></td>
-<td><tt class="type">timestamp without time zone</tt></td>
+<td>         <code class="literal"><code class="type">timestamp with time zone</code> AT TIME ZONE <em class="replaceable"><code>zone</code></em></code>
+        </td>
+<td><code class="type">timestamp without time zone</code></td>
 <td>Convert UTC to local time in given time zone</td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="type">time with time zone</tt> AT TIME ZONE <i class="replaceable"><tt>zone</tt></i></tt></td>
-<td><tt class="type">time with time zone</tt></td>
+<td>         <code class="literal"><code class="type">time with time zone</code> AT TIME ZONE <em class="replaceable"><code>zone</code></em></code>
+        </td>
+<td><code class="type">time with time zone</code></td>
 <td>Convert local time across time zones</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>    In these expressions, the desired time zone <i class="replaceable"><tt>zone</tt></i> can be
-    specified either as a text string (e.g., <tt class="literal">'PST'</tt>)
-    or as an interval (e.g., <tt class="literal">INTERVAL '-08:00'</tt>).
+<p>    In these expressions, the desired time zone <em class="replaceable"><code>zone</code></em> can be
+    specified either as a text string (e.g., <code class="literal">'PST'</code>)
+    or as an interval (e.g., <code class="literal">INTERVAL '-08:00'</code>).
     In the text case, the available zone names are those shown in
     <a href="datetime-keywords.html#datetime-timezone-input-table" title="Table B.4. Time Zone Abbreviations for Input">Table B.4, &#8220;Time Zone Abbreviations for Input&#8221;</a>.  (It would be useful
     to support the more general names shown in
-    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting timezone&#8221;</a>, but this is not yet
+    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting <code class="varname">timezone</code>&#8221;</a>, but this is not yet
     implemented.)
    </p>
-<p>    Examples (supposing that the local time zone is <tt class="literal">PST8PDT</tt>):
+<p>    Examples (supposing that the local time zone is <code class="literal">PST8PDT</code>):
 </p>
 <pre class="screen">SELECT TIMESTAMP '2001-02-16 20:38:40' AT TIME ZONE 'MST';
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001-02-16 19:38:40-08</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-02-16 19:38:40-08</code>
 
 SELECT TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-05' AT TIME ZONE 'MST';
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001-02-16 18:38:40</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-02-16 18:38:40</code></pre>
 <p>
     The first example takes a zone-less time stamp and interprets it as MST time
     (UTC-7) to produce a UTC time stamp, which is then rotated to PST (UTC-8)
     for display.  The second example takes a time stamp specified in EST
     (UTC-5) and converts it to local time in MST (UTC-7).
    </p>
-<p>    The function <tt class="literal"><tt class="function">timezone</tt>(<i class="replaceable"><tt>zone</tt></i>,
-    <i class="replaceable"><tt>timestamp</tt></i>)</tt> is equivalent to the SQL-conforming construct
-    <tt class="literal"><i class="replaceable"><tt>timestamp</tt></i> AT TIME ZONE
-    <i class="replaceable"><tt>zone</tt></i></tt>. 
+<p>    The function <code class="literal"><code class="function">timezone</code>(<em class="replaceable"><code>zone</code></em>,
+    <em class="replaceable"><code>timestamp</code></em>)</code> is equivalent to the SQL-conforming construct
+    <code class="literal"><em class="replaceable"><code>timestamp</code></em> AT TIME ZONE
+    <em class="replaceable"><code>zone</code></em></code>. 
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="functions-datetime-current"></a>9.9.4. Current Date/Time</h3></div></div>
-<div></div>
-</div>
-<a name="id2557588"></a><a name="id2557596"></a><p>    The following functions are available to obtain the current date and/or
+<div class="titlepage"><div><div><h3 class="title">
+<a name="functions-datetime-current"></a>9.9.4. Current Date/Time</h3></div></div></div>
+<a name="id337336"></a><a name="id337344"></a><p>    The following functions are available to obtain the current date and/or
     time:
 </p>
 <pre class="synopsis">CURRENT_DATE
 CURRENT_TIME
 CURRENT_TIMESTAMP
-CURRENT_TIME ( <i class="replaceable"><tt>precision</tt></i> )
-CURRENT_TIMESTAMP ( <i class="replaceable"><tt>precision</tt></i> )
+CURRENT_TIME ( <em class="replaceable"><code>precision</code></em> )
+CURRENT_TIMESTAMP ( <em class="replaceable"><code>precision</code></em> )
 LOCALTIME
 LOCALTIMESTAMP
-LOCALTIME ( <i class="replaceable"><tt>precision</tt></i> )
-LOCALTIMESTAMP ( <i class="replaceable"><tt>precision</tt></i> )</pre>
+LOCALTIME ( <em class="replaceable"><code>precision</code></em> )
+LOCALTIMESTAMP ( <em class="replaceable"><code>precision</code></em> )</pre>
 <p>
     </p>
-<p>     <tt class="function">CURRENT_TIME</tt> and
-     <tt class="function">CURRENT_TIMESTAMP</tt> deliver values with time zone;
-     <tt class="function">LOCALTIME</tt> and
-     <tt class="function">LOCALTIMESTAMP</tt> deliver values without time zone.
+<p>     <code class="function">CURRENT_TIME</code> and
+     <code class="function">CURRENT_TIMESTAMP</code> deliver values with time zone;
+     <code class="function">LOCALTIME</code> and
+     <code class="function">LOCALTIMESTAMP</code> deliver values without time zone.
     </p>
-<p>     <tt class="function">CURRENT_TIME</tt>,
-     <tt class="function">CURRENT_TIMESTAMP</tt>,
-     <tt class="function">LOCALTIME</tt>, and
-     <tt class="function">LOCALTIMESTAMP</tt>
+<p>     <code class="function">CURRENT_TIME</code>,
+     <code class="function">CURRENT_TIMESTAMP</code>,
+     <code class="function">LOCALTIME</code>, and
+     <code class="function">LOCALTIMESTAMP</code>
      can optionally be given
      a precision parameter, which causes the result to be rounded
      to that many fractional digits in the seconds field.  Without a precision parameter,
@@ -692,40 +685,40 @@ LOCALTIMESTAMP ( <i class="replaceable"><tt>precision</tt></i> )</pre>
 <p>    Some examples:
 </p>
 <pre class="screen">SELECT CURRENT_TIME;
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">14:39:53.662522-05</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">14:39:53.662522-05</code>
 
 SELECT CURRENT_DATE;
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001-12-23</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-12-23</code>
 
 SELECT CURRENT_TIMESTAMP;
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001-12-23 14:39:53.662522-05</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-12-23 14:39:53.662522-05</code>
 
 SELECT CURRENT_TIMESTAMP(2);
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001-12-23 14:39:53.66-05</tt>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-12-23 14:39:53.66-05</code>
 
 SELECT LOCALTIMESTAMP;
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">2001-12-23 14:39:53.662522</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-12-23 14:39:53.662522</code></pre>
 <p>
    </p>
-<p>    The function <tt class="function">now()</tt> is the traditional
+<p>    The function <code class="function">now()</code> is the traditional
     <span class="productname">PostgreSQL</span> equivalent to
-    <tt class="function">CURRENT_TIMESTAMP</tt>.
+    <code class="function">CURRENT_TIMESTAMP</code>.
    </p>
-<p>    There is also the function <tt class="function">timeofday()</tt>, which for historical
-    reasons returns a <tt class="type">text</tt> string rather than a <tt class="type">timestamp</tt> value:
+<p>    There is also the function <code class="function">timeofday()</code>, which for historical
+    reasons returns a <code class="type">text</code> string rather than a <code class="type">timestamp</code> value:
 </p>
 <pre class="screen">SELECT timeofday();
-<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">Sat Feb 17 19:07:32.000126 2001 EST</tt></pre>
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">Sat Feb 17 19:07:32.000126 2001 EST</code></pre>
 <p>
    </p>
 <p>    It is important to know that
-    <tt class="function">CURRENT_TIMESTAMP</tt> and related functions return
+    <code class="function">CURRENT_TIMESTAMP</code> and related functions return
     the start time of the current transaction; their values do not
     change during the transaction. This is considered a feature:
     the intent is to allow a single transaction to have a consistent
     notion of the &#8220;<span class="quote">current</span>&#8221; time, so that multiple
     modifications within the same transaction bear the same
-    time stamp. <tt class="function">timeofday()</tt>
+    time stamp. <code class="function">timeofday()</code>
     returns the wall-clock time and does advance during transactions.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -735,7 +728,7 @@ SELECT LOCALTIMESTAMP;
     </p>
 </div>
 <p>    All the date/time data types also accept the special literal value
-    <tt class="literal">now</tt> to specify the current date and time.  Thus,
+    <code class="literal">now</code> to specify the current date and time.  Thus,
     the following three all return the same result:
 </p>
 <pre class="programlisting">SELECT CURRENT_TIMESTAMP;
@@ -745,9 +738,9 @@ SELECT TIMESTAMP 'now';  -- incorrect for use with DEFAULT</pre>
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>      You do not want to use the third form when specifying a <tt class="literal">DEFAULT</tt>
-      clause while creating a table.  The system will convert <tt class="literal">now</tt>
-      to a <tt class="type">timestamp</tt> as soon as the constant is parsed, so that when
+<p>      You do not want to use the third form when specifying a <code class="literal">DEFAULT</code>
+      clause while creating a table.  The system will convert <code class="literal">now</code>
+      to a <code class="type">timestamp</code> as soon as the constant is parsed, so that when
       the default value is needed,
       the time of the table creation would be used!  The first two
       forms will not be evaluated until the default value is used,
@@ -758,7 +751,7 @@ SELECT TIMESTAMP 'now';  -- incorrect for use with DEFAULT</pre>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2556917" href="#id2556917">5</a>] </sup>60 if leap seconds are
+<div class="footnote"><p><sup>[<a name="ftn.id336686" href="#id336686">5</a>] </sup>60 if leap seconds are
         implemented by the operating system</p></div>
 </div>
 </div></body>

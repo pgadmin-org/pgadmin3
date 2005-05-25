@@ -4,28 +4,25 @@
 <title>ipcclean</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
-<link rel="previous" href="app-initdb.html" title="initdb">
+<link rel="prev" href="app-initdb.html" title="initdb">
 <link rel="next" href="app-pgcontroldata.html" title="pg_controldata">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-ipcclean"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="app-ipcclean"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>ipcclean &#8212; remove shared memory and semaphores from a failed <span class="productname">PostgreSQL</span> server</p>
 </div>
-<a name="id2721419"></a><div class="refsynopsisdiv">
+<a name="id488297"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">ipcclean</tt></p></div>
+<div class="cmdsynopsis"><p><code class="command">ipcclean</code></p></div>
 </div>
 <div class="refsect1" lang="en">
 <a name="r1-app-ipcclean-1"></a><h2>Description</h2>
-<p>   <tt class="command">ipcclean</tt> removes all shared memory segments and
+<p>   <code class="command">ipcclean</code> removes all shared memory segments and
    semaphore sets owned by the current user.  It is intended to be
    used for cleaning up after a crashed
    <span class="productname">PostgreSQL</span> server (<a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>).  Note that immediately restarting the
@@ -41,15 +38,15 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2721479"></a><h2>Notes</h2>
+<a name="id488351"></a><h2>Notes</h2>
 <p>   This script is a hack, but in the many years since it was written,
    no one has come up with an equally effective and portable solution.
-   Since the <tt class="command">postmaster</tt> can now clean up by
-   itself, it is unlikely that <tt class="command">ipcclean</tt> will be
+   Since the <code class="command">postmaster</code> can now clean up by
+   itself, it is unlikely that <code class="command">ipcclean</code> will be
    improved upon in the future.
   </p>
 <p>   The script makes assumptions about the output format of the
-   <tt class="command">ipcs</tt>
+   <code class="command">ipcs</code>
    utility which may not be true across different operating systems.
    Therefore, it may not work on your particular OS.  It's wise to
    look at the script before trying it.

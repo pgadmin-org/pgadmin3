@@ -4,19 +4,16 @@
 <title>9.15. Aggregate Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-array.html" title="9.14. Array Functions and Operators">
+<link rel="prev" href="functions-array.html" title="9.14. Array Functions and Operators">
 <link rel="next" href="functions-subquery.html" title="9.16. Subquery Expressions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-aggregate"></a>9.15. Aggregate Functions</h2></div></div>
-<div></div>
-</div>
-<a name="id2561815"></a><p>   <i class="firstterm">Aggregate functions</i> compute a single result
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-aggregate"></a>9.15. Aggregate Functions</h2></div></div></div>
+<a name="id341411"></a><p>   <em class="firstterm">Aggregate functions</em> compute a single result
    value from a set of input values.  <a href="functions-aggregate.html#functions-aggregate-table" title="Table 9.37. Aggregate Functions">Table 9.37, &#8220;Aggregate Functions&#8221;</a> shows the built-in aggregate
    functions.  The special syntax considerations for aggregate
    functions are explained in <a href="sql-expressions.html#syntax-aggregates" title="4.2.7. Aggregate Expressions">Section 4.2.7, &#8220;Aggregate Expressions&#8221;</a>.
@@ -40,167 +37,163 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>
-<a name="id2561884"></a><tt class="function">avg(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>,
-       <tt class="type">bigint</tt>, <tt class="type">real</tt>, <tt class="type">double
-       precision</tt>, <tt class="type">numeric</tt>, or <tt class="type">interval</tt>
-</td>
-<td>
-<tt class="type">numeric</tt> for any integer type argument,
-       <tt class="type">double precision</tt> for a floating-point argument,
+<td>       <a name="id341475"></a>
+       <code class="function">avg(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">integer</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, <code class="type">numeric</code>, or <code class="type">interval</code>
+      </td>
+<td>       <code class="type">numeric</code> for any integer type argument,
+       <code class="type">double precision</code> for a floating-point argument,
        otherwise the same as the argument data type
       </td>
 <td>the average (arithmetic mean) of all input values</td>
 </tr>
 <tr>
-<td>
-<a name="id2561946"></a><tt class="function">bit_and(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>, <tt class="type">bigint</tt>, or
-       <tt class="type">bit</tt>
-</td>
+<td>       <a name="id341536"></a>
+       <code class="function">bit_and(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">integer</code>, <code class="type">bigint</code>, or
+       <code class="type">bit</code>
+      </td>
 <td>        same as argument data type
       </td>
 <td>the bitwise AND of all non-null input values, or null if none</td>
 </tr>
 <tr>
-<td>
-<a name="id2561990"></a><tt class="function">bit_or(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>, <tt class="type">bigint</tt>, or
-       <tt class="type">bit</tt>
-</td>
+<td>       <a name="id341579"></a>
+       <code class="function">bit_or(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">integer</code>, <code class="type">bigint</code>, or
+       <code class="type">bit</code>
+      </td>
 <td>        same as argument data type
       </td>
 <td>the bitwise OR of all non-null input values, or null if none</td>
 </tr>
 <tr>
-<td>
-<a name="id2562034"></a><tt class="function">bool_and(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td><tt class="type">bool</tt></td>
-<td><tt class="type">bool</tt></td>
+<td>       <a name="id341622"></a>
+       <code class="function">bool_and(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
 <td>true if all input values are true, otherwise false</td>
 </tr>
 <tr>
-<td>
-<a name="id2562070"></a><tt class="function">bool_or(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td><tt class="type">bool</tt></td>
-<td><tt class="type">bool</tt></td>
+<td>       <a name="id341657"></a>
+       <code class="function">bool_or(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
 <td>true if at least one input value is true, otherwise false</td>
 </tr>
 <tr>
-<td><tt class="function">count(*)</tt></td>
+<td><code class="function">count(*)</code></td>
 <td> </td>
-<td><tt class="type">bigint</tt></td>
+<td><code class="type">bigint</code></td>
 <td>number of input values</td>
 </tr>
 <tr>
-<td><tt class="function">count(<i class="replaceable"><tt>expression</tt></i>)</tt></td>
+<td><code class="function">count(<em class="replaceable"><code>expression</code></em>)</code></td>
 <td>any</td>
-<td><tt class="type">bigint</tt></td>
-<td>       number of input values for which the value of <i class="replaceable"><tt>expression</tt></i> is not null
+<td><code class="type">bigint</code></td>
+<td>       number of input values for which the value of <em class="replaceable"><code>expression</code></em> is not null
       </td>
 </tr>
 <tr>
-<td>
-<a name="id2562147"></a><tt class="function">every(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td><tt class="type">bool</tt></td>
-<td><tt class="type">bool</tt></td>
-<td>equivalent to <tt class="function">bool_and</tt>
+<td>       <a name="id341733"></a>
+       <code class="function">every(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>equivalent to <code class="function">bool_and</code>
 </td>
 </tr>
 <tr>
-<td><tt class="function">max(<i class="replaceable"><tt>expression</tt></i>)</tt></td>
+<td><code class="function">max(<em class="replaceable"><code>expression</code></em>)</code></td>
 <td>any array, numeric, string, or date/time type</td>
 <td>same as argument type</td>
-<td>       maximum value of <i class="replaceable"><tt>expression</tt></i> across all input
+<td>       maximum value of <em class="replaceable"><code>expression</code></em> across all input
        values
       </td>
 </tr>
 <tr>
-<td><tt class="function">min(<i class="replaceable"><tt>expression</tt></i>)</tt></td>
+<td><code class="function">min(<em class="replaceable"><code>expression</code></em>)</code></td>
 <td>any array, numeric, string, or date/time type</td>
 <td>same as argument type</td>
-<td>       minimum value of <i class="replaceable"><tt>expression</tt></i> across all input
+<td>       minimum value of <em class="replaceable"><code>expression</code></em> across all input
        values
       </td>
 </tr>
 <tr>
-<td>
-<a name="id2562242"></a><tt class="function">stddev(<i class="replaceable"><tt>expression</tt></i>)</tt>
-</td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>,
-       <tt class="type">bigint</tt>, <tt class="type">real</tt>, <tt class="type">double
-       precision</tt>, or <tt class="type">numeric</tt>
-</td>
-<td>
-<tt class="type">double precision</tt> for floating-point arguments,
-       otherwise <tt class="type">numeric</tt>
-</td>
+<td>       <a name="id341826"></a>
+       <code class="function">stddev(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">integer</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
 <td>sample standard deviation of the input values</td>
 </tr>
 <tr>
-<td><tt class="function">sum(<i class="replaceable"><tt>expression</tt></i>)</tt></td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>,
-       <tt class="type">bigint</tt>, <tt class="type">real</tt>, <tt class="type">double
-       precision</tt>, <tt class="type">numeric</tt>, or
-       <tt class="type">interval</tt>
-</td>
-<td>
-<tt class="type">bigint</tt> for <tt class="type">smallint</tt> or
-       <tt class="type">integer</tt> arguments, <tt class="type">numeric</tt> for
-       <tt class="type">bigint</tt> arguments, <tt class="type">double precision</tt>
+<td><code class="function">sum(<em class="replaceable"><code>expression</code></em>)</code></td>
+<td>       <code class="type">smallint</code>, <code class="type">integer</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, <code class="type">numeric</code>, or
+       <code class="type">interval</code>
+      </td>
+<td>       <code class="type">bigint</code> for <code class="type">smallint</code> or
+       <code class="type">integer</code> arguments, <code class="type">numeric</code> for
+       <code class="type">bigint</code> arguments, <code class="type">double precision</code>
        for floating-point arguments, otherwise the same as the
        argument data type
       </td>
-<td>sum of <i class="replaceable"><tt>expression</tt></i> across all input values</td>
+<td>sum of <em class="replaceable"><code>expression</code></em> across all input values</td>
 </tr>
 <tr>
-<td>
-<a name="id2562376"></a><tt class="function">variance</tt>(<i class="replaceable"><tt>expression</tt></i>)
+<td>       <a name="id341956"></a>
+       <code class="function">variance</code>(<em class="replaceable"><code>expression</code></em>)
       </td>
-<td>
-<tt class="type">smallint</tt>, <tt class="type">integer</tt>,
-       <tt class="type">bigint</tt>, <tt class="type">real</tt>, <tt class="type">double
-       precision</tt>, or <tt class="type">numeric</tt>
-</td>
-<td>
-<tt class="type">double precision</tt> for floating-point arguments,
-       otherwise <tt class="type">numeric</tt>
-</td>
+<td>       <code class="type">smallint</code>, <code class="type">integer</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
 <td>sample variance of the input values (square of the sample standard deviation)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>   It should be noted that except for <tt class="function">count</tt>,
+<p>   It should be noted that except for <code class="function">count</code>,
    these functions return a null value when no rows are selected.  In
-   particular, <tt class="function">sum</tt> of no rows returns null, not
-   zero as one might expect.  The <tt class="function">coalesce</tt> function may be
+   particular, <code class="function">sum</code> of no rows returns null, not
+   zero as one might expect.  The <code class="function">coalesce</code> function may be
    used to substitute zero for null when necessary.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<a name="id2562457"></a><a name="id2562462"></a><p>      Boolean aggregates <tt class="function">bool_and</tt> and 
-      <tt class="function">bool_or</tt> correspond to standard SQL aggregates
-      <tt class="function">every</tt> and <tt class="function">any</tt> or
-      <tt class="function">some</tt>. 
-      As for <tt class="function">any</tt> and <tt class="function">some</tt>, 
+<a name="id342033"></a><a name="id342039"></a><p>      Boolean aggregates <code class="function">bool_and</code> and 
+      <code class="function">bool_or</code> correspond to standard SQL aggregates
+      <code class="function">every</code> and <code class="function">any</code> or
+      <code class="function">some</code>. 
+      As for <code class="function">any</code> and <code class="function">some</code>, 
       it seems that there is an ambiguity built into the standard syntax:
 </p>
 <pre class="programlisting">SELECT b1 = ANY((SELECT b2 FROM t2 ...)) FROM t1 ...;</pre>
 <p>
-      Here <tt class="function">ANY</tt> can be considered both as leading
+      Here <code class="function">ANY</code> can be considered both as leading
       to a subquery or as an aggregate if the select expression returns 1 row.
       Thus the standard name cannot be given to these aggregates.
     </p>
@@ -208,46 +201,14 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>    Users accustomed to working with other SQL database management
-    systems may be surprised by the performance characteristics of
-    certain aggregate functions in
-    <span class="productname">PostgreSQL</span> when the aggregate is
-    applied to the entire table (in other words, no
-    <tt class="literal">WHERE</tt> clause is specified). In particular, a
-    query like
+    systems may be surprised by the performance of the
+    <code class="function">count</code> aggregate when it is applied to the
+    entire table. A query like:
 </p>
-<pre class="programlisting">SELECT min(col) FROM sometable;</pre>
+<pre class="programlisting">SELECT count(*) FROM sometable;</pre>
 <p>
     will be executed by <span class="productname">PostgreSQL</span> using a
-    sequential scan of the entire table. Other database systems may
-    optimize queries of this form to use an index on the column, if
-    one is available. Similarly, the aggregate functions
-    <tt class="function">max()</tt> and <tt class="function">count()</tt> always
-    require a sequential scan if applied to the entire table in
-    <span class="productname">PostgreSQL</span>.
-   </p>
-<p>    <span class="productname">PostgreSQL</span> cannot easily implement this
-    optimization because it also allows for user-defined aggregate
-    queries. Since <tt class="function">min()</tt>,
-    <tt class="function">max()</tt>, and <tt class="function">count()</tt> are
-    defined using a generic API for aggregate functions, there is no
-    provision for special-casing the execution of these functions
-    under certain circumstances.
-   </p>
-<p>    Fortunately, there is a simple workaround for
-    <tt class="function">min()</tt> and <tt class="function">max()</tt>. The
-    query shown below is equivalent to the query above, except that it
-    can take advantage of a B-tree index if there is one present on
-    the column in question.
-</p>
-<pre class="programlisting">SELECT col FROM sometable ORDER BY col ASC LIMIT 1;</pre>
-<p>
-    A similar query (obtained by substituting <tt class="literal">DESC</tt>
-    for <tt class="literal">ASC</tt> in the query above) can be used in the
-    place of <tt class="function">max()</tt>.
-   </p>
-<p>    Unfortunately, there is no similarly trivial query that can be
-    used to improve the performance of <tt class="function">count()</tt>
-    when applied to the entire table.
+    sequential scan of the entire table.
    </p>
 </div>
 </div></body>

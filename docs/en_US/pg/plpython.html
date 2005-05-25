@@ -4,18 +4,15 @@
 <title>Chapter 38. PL/Python - Python Procedural Language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
-<link rel="previous" href="plperl-missing.html" title="37.7. Limitations and Missing Features">
+<link rel="prev" href="plperl-missing.html" title="37.7. Limitations and Missing Features">
 <link rel="next" href="plpython-trigger.html" title="38.2. Trigger Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plpython">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="plpython"></a>Chapter 38. PL/Python - Python Procedural Language</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title">
+<a name="plpython"></a>Chapter 38. PL/Python - Python Procedural Language</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -24,24 +21,24 @@
 <dt><span class="sect1"><a href="plpython-database.html">38.3. Database Access</a></span></dt>
 </dl>
 </div>
-<a name="id2658109"></a><a name="id2658117"></a><p>  The <span class="application">PL/Python</span> procedural language allows
+<a name="id428996"></a><a name="id429005"></a><p>  The <span class="application">PL/Python</span> procedural language allows
   <span class="productname">PostgreSQL</span> functions to be written in the
-  <a href="http://www.python.org" target="_top">Python</a> language.
+  <a href="http://www.python.org" target="_top">Python language</a>.
  </p>
 <p>  To install PL/Python in a particular database, use
-  <tt class="literal">createlang plpythonu <i class="replaceable"><tt>dbname</tt></i></tt>.
+  <code class="literal">createlang plpythonu <em class="replaceable"><code>dbname</code></em></code>.
  </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>    If a language is installed into <tt class="literal">template1</tt>, all subsequently
+<p>    If a language is installed into <code class="literal">template1</code>, all subsequently
     created databases will have the language installed automatically.
    </p>
 </div>
 <p>  As of <span class="productname">PostgreSQL</span> 7.4, PL/Python is only
   available as an &#8220;<span class="quote">untrusted</span>&#8221; language (meaning it does not
   offer any way of restricting what users can do in it).  It has
-  therefore been renamed to <tt class="literal">plpythonu</tt>.  The trusted
-  variant <tt class="literal">plpython</tt> may become available again in future,
+  therefore been renamed to <code class="literal">plpythonu</code>.  The trusted
+  variant <code class="literal">plpython</code> may become available again in future,
   if a new secure execution mechanism is developed in Python.
  </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -53,12 +50,10 @@
   </p>
 </div>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="plpython-funcs"></a>38.1. PL/Python Functions</h2></div></div>
-<div></div>
-</div>
-<p>   Functions in PL/Python are declared in the usual way, for example
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpython-funcs"></a>38.1. PL/Python Functions</h2></div></div></div>
+<p>   Functions in PL/Python are declared via the usual <a href="sql-createfunction.html">CREATE FUNCTION</a>
+   syntax. For example:
 </p>
 <pre class="programlisting">CREATE FUNCTION myfunc(text) RETURNS text
     AS 'return args[0]'
@@ -78,29 +73,29 @@
    <span class="productname">PostgreSQL</span>.
   </p>
 <p>   If you do not provide a return value, Python returns the default
-   <tt class="symbol">None</tt>. <span class="application">PL/Python</span> translates
-   Python's <tt class="symbol">None</tt> into the SQL null
-   value.<a name="id2658259"></a>
+   <code class="symbol">None</code>. <span class="application">PL/Python</span> translates
+   Python's <code class="symbol">None</code> into the SQL null
+   value.<a name="id429143"></a>
   </p>
 <p>   The <span class="productname">PostgreSQL</span> function parameters are available in
-   the global <tt class="varname">args</tt> list.  In the
-   <tt class="function">myfunc</tt> example, <tt class="varname">args[0]</tt> contains
+   the global <code class="varname">args</code> list.  In the
+   <code class="function">myfunc</code> example, <code class="varname">args[0]</code> contains
    whatever was passed in as the text argument.  For
-   <tt class="literal">myfunc2(text, integer)</tt>, <tt class="varname">args[0]</tt>
-   would contain the <tt class="type">text</tt> argument and
-   <tt class="varname">args[1]</tt> the <tt class="type">integer</tt> argument.
+   <code class="literal">myfunc2(text, integer)</code>, <code class="varname">args[0]</code>
+   would contain the <code class="type">text</code> argument and
+   <code class="varname">args[1]</code> the <code class="type">integer</code> argument.
   </p>
-<p>   The global dictionary <tt class="varname">SD</tt> is available to store
+<p>   The global dictionary <code class="varname">SD</code> is available to store
    data between function calls.  This variable is private static data.
-   The global dictionary <tt class="varname">GD</tt> is public data,
+   The global dictionary <code class="varname">GD</code> is public data,
    available to all Python functions within a session.  Use with
-   care.<a name="id2658328"></a>
+   care.<a name="id429209"></a>
   </p>
 <p>   Each function gets its own execution environment in the
    Python interpreter, so that global data and function arguments from
-   <tt class="function">myfunc</tt> are not available to
-   <tt class="function">myfunc2</tt>.  The exception is the data in the
-   <tt class="varname">GD</tt> dictionary, as mentioned above.
+   <code class="function">myfunc</code> are not available to
+   <code class="function">myfunc2</code>.  The exception is the data in the
+   <code class="varname">GD</code> dictionary, as mentioned above.
   </p>
 </div>
 </div></body>

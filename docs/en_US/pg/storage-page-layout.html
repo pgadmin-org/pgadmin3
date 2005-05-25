@@ -4,32 +4,29 @@
 <title>49.3. Database Page Layout</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="storage.html" title="Chapter 49. Database Physical Storage">
-<link rel="previous" href="storage-toast.html" title="49.2. TOAST">
+<link rel="prev" href="storage-toast.html" title="49.2. TOAST">
 <link rel="next" href="bki.html" title="Chapter 50. BKI Backend Interface">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="storage-page-layout"></a>49.3. Database Page Layout</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="storage-page-layout"></a>49.3. Database Page Layout</h2></div></div></div>
 <p>This section provides an overview of the page format used within
-<span class="productname">PostgreSQL</span> tables and indexes.<sup>[<a name="id2747759" href="#ftn.id2747759">8</a>]</sup>
+<span class="productname">PostgreSQL</span> tables and indexes.<sup>[<a name="id512750" href="#ftn.id512750">8</a>]</sup>
 Sequences and <span class="acronym">TOAST</span> tables are formatted just like a regular table.</p>
 <p>In the following explanation, a
-<i class="firstterm">byte</i>
+<em class="firstterm">byte</em>
 is assumed to contain 8 bits.  In addition, the term
-<i class="firstterm">item</i>
+<em class="firstterm">item</em>
 refers to an individual data value that is stored on a page.  In a table,
 an item is a row; in an index, an item is an index entry.</p>
-<p>Every table and index is stored as an array of <i class="firstterm">pages</i> of a
+<p>Every table and index is stored as an array of <em class="firstterm">pages</em> of a
 fixed size (usually 8Kb, although a different page size can be selected
 when compiling the server).  In a table, all the pages are logically
 equivalent, so a particular item (row) can be stored in any page.  In
-indexes, the first page is generally reserved as a <i class="firstterm">metapage</i>
+indexes, the first page is generally reserved as a <em class="firstterm">metapage</em>
 holding control information, and there may be different types of pages
 within the index, depending on the index access method.</p>
 <p><a href="storage-page-layout.html#page-table" title="Table 49.2. Overall Page Layout">Table 49.2, &#8220;Page Layout&#8221;</a> shows the overall layout of a page.
@@ -78,13 +75,13 @@ data. Empty in ordinary tables.</td>
   (PageHeaderData). Its format is detailed in <a href="storage-page-layout.html#pageheaderdata-table" title="Table 49.3. PageHeaderData Layout">Table 49.3, &#8220;PageHeaderData Layout&#8221;</a>. The first two fields track the most
   recent WAL entry related to this page. They are followed by three 2-byte
   integer fields
-  (<tt class="structfield">pd_lower</tt>, <tt class="structfield">pd_upper</tt>,
-  and <tt class="structfield">pd_special</tt>). These contain byte offsets
+  (<code class="structfield">pd_lower</code>, <code class="structfield">pd_upper</code>,
+  and <code class="structfield">pd_special</code>). These contain byte offsets
   from the page start to the start
   of unallocated space, to the end of unallocated space, and to the start of
   the special space. 
   The last 2 bytes of the page header,
-  <tt class="structfield">pd_pagesize_version</tt>, store both the page size
+  <code class="structfield">pd_pagesize_version</code>, store both the page size
   and a version indicator.  Beginning with
   <span class="productname">PostgreSQL</span> 8.0 the version number is 2; 
   <span class="productname">PostgreSQL</span> 7.3 and 7.4 used version number 1;
@@ -152,24 +149,24 @@ data. Empty in ordinary tables.</td>
 </table>
 </div>
 <p>  All the details may be found in
-  <tt class="filename">src/include/storage/bufpage.h</tt>.
+  <code class="filename">src/include/storage/bufpage.h</code>.
  </p>
 <p>
   Following the page header are item identifiers
-  (<tt class="type">ItemIdData</tt>), each requiring four bytes.
+  (<code class="type">ItemIdData</code>), each requiring four bytes.
   An item identifier contains a byte-offset to
   the start of an item, its length in bytes, and a few attribute bits
   which affect its interpretation.
   New item identifiers are allocated
   as needed from the beginning of the unallocated space.
   The number of item identifiers present can be determined by looking at
-  <tt class="structfield">pd_lower</tt>, which is increased to allocate a new identifier.
+  <code class="structfield">pd_lower</code>, which is increased to allocate a new identifier.
   Because an item
   identifier is never moved until it is freed, its index may be used on a
   long-term basis to reference an item, even when the item itself is moved
   around on the page to compact free space.  In fact, every pointer to an
-  item (<tt class="type">ItemPointer</tt>, also known as
-  <tt class="type">CTID</tt>) created by
+  item (<code class="type">ItemPointer</code>, also known as
+  <code class="type">CTID</code>) created by
   <span class="productname">PostgreSQL</span> consists of a page number and the
   index of an item identifier.
 
@@ -178,7 +175,7 @@ data. Empty in ordinary tables.</td>
   The items themselves are stored in space allocated backwards from the end
   of unallocated space.  The exact structure varies depending on what the
   table is to contain. Tables and sequences both use a structure named
-  <tt class="type">HeapTupleHeaderData</tt>, described below.
+  <code class="type">HeapTupleHeaderData</code>, described below.
 
  </p>
 <p> 
@@ -187,7 +184,7 @@ data. Empty in ordinary tables.</td>
   b-tree indexes store links to the page's left and right siblings,
   as well as some other data relevant to the index structure.
   Ordinary tables do not use a special section at all (indicated by setting
-  <tt class="structfield">pd_special</tt> to equal the page size).
+  <code class="structfield">pd_special</code> to equal the page size).
   
  </p>
 <p>
@@ -197,19 +194,19 @@ data. Empty in ordinary tables.</td>
   detailed
   in <a href="storage-page-layout.html#heaptupleheaderdata-table" title="Table 49.4. HeapTupleHeaderData Layout">Table 49.4, &#8220;HeapTupleHeaderData Layout&#8221;</a>.  The actual user data
   (columns of the row) begins at the offset indicated by
-  <tt class="structfield">t_hoff</tt>, which must always be a multiple of the MAXALIGN
+  <code class="structfield">t_hoff</code>, which must always be a multiple of the MAXALIGN
   distance for the platform.
   The null bitmap is
-  only present if the <i class="firstterm">HEAP_HASNULL</i> bit is set in
-  <tt class="structfield">t_infomask</tt>. If it is present it begins just after
+  only present if the <em class="firstterm">HEAP_HASNULL</em> bit is set in
+  <code class="structfield">t_infomask</code>. If it is present it begins just after
   the fixed header and occupies enough bytes to have one bit per data column
-  (that is, <tt class="structfield">t_natts</tt> bits altogether). In this list of bits, a
+  (that is, <code class="structfield">t_natts</code> bits altogether). In this list of bits, a
   1 bit indicates not-null, a 0 bit is a null.  When the bitmap is not
   present, all columns are assumed not-null.
-  The object ID is only present if the <i class="firstterm">HEAP_HASOID</i> bit
-  is set in <tt class="structfield">t_infomask</tt>.  If present, it appears just
-  before the <tt class="structfield">t_hoff</tt> boundary.  Any padding needed to make
-  <tt class="structfield">t_hoff</tt> a MAXALIGN multiple will appear between the null
+  The object ID is only present if the <em class="firstterm">HEAP_HASOID</em> bit
+  is set in <code class="structfield">t_infomask</code>.  If present, it appears just
+  before the <code class="structfield">t_hoff</code> boundary.  Any padding needed to make
+  <code class="structfield">t_hoff</code> a MAXALIGN multiple will appear between the null
   bitmap and the object ID.  (This in turn ensures that the object ID is
   suitably aligned.)
   
@@ -288,18 +285,18 @@ data. Empty in ordinary tables.</td>
 </table>
 </div>
 <p>   All the details may be found in
-   <tt class="filename">src/include/access/htup.h</tt>.
+   <code class="filename">src/include/access/htup.h</code>.
  </p>
 <p> 
   Interpreting the actual data can only be done with information obtained
-  from other tables, mostly <tt class="structname">pg_attribute</tt>. The
+  from other tables, mostly <code class="structname">pg_attribute</code>. The
   key values needed to identify field locations are
-  <tt class="structfield">attlen</tt> and <tt class="structfield">attalign</tt>.
+  <code class="structfield">attlen</code> and <code class="structfield">attalign</code>.
   There is no way to directly get a
   particular attribute, except when there are only fixed width fields and no
   NULLs. All this trickery is wrapped up in the functions
-  <i class="firstterm">heap_getattr</i>, <i class="firstterm">fastgetattr</i>
-  and <i class="firstterm">heap_getsysattr</i>.
+  <em class="firstterm">heap_getattr</em>, <em class="firstterm">fastgetattr</em>
+  and <em class="firstterm">heap_getsysattr</em>.
   
  </p>
 <p>
@@ -309,7 +306,7 @@ data. Empty in ordinary tables.</td>
   fixed width field, then all the bytes are simply placed. If it's a
   variable length field (attlen = -1) then it's a bit more complicated.
   All variable-length datatypes share the common header structure
-  <tt class="type">varattrib</tt>, which includes the total length of the stored
+  <code class="type">varattrib</code>, which includes the total length of the stored
   value and some flag bits.  Depending on the flags, the data may be either
   inline or in a <span class="acronym">TOAST</span> table;
   it might be compressed, too (see <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a>).
@@ -317,7 +314,7 @@ data. Empty in ordinary tables.</td>
  </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2747759" href="#id2747759">8</a>] </sup>    Actually, index access methods need not use this page format.
+<div class="footnote"><p><sup>[<a name="ftn.id512750" href="#id512750">8</a>] </sup>    Actually, index access methods need not use this page format.
     All the existing index methods do use this basic format,
     but the data kept on index metapages usually doesn't follow
     the item layout rules.

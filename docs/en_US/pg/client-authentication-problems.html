@@ -4,18 +4,15 @@
 <title>19.3. Authentication problems</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="client-authentication.html" title="Chapter 19. Client Authentication">
-<link rel="previous" href="auth-methods.html" title="19.2. Authentication methods">
+<link rel="prev" href="auth-methods.html" title="19.2. Authentication methods">
 <link rel="next" href="charset.html" title="Chapter 20. Localization">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="client-authentication-problems"></a>19.3. Authentication problems</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="client-authentication-problems"></a>19.3. Authentication problems</h2></div></div></div>
 <p>    Genuine authentication failures and related problems generally
     manifest themselves through error messages like the following.
    </p>
@@ -24,14 +21,14 @@
     This is what you are most likely to get if you succeed in contacting
     the server, but it does not want to talk to you. As the message
     suggests, the server refused the connection request because it found
-    no authorizing entry in its <tt class="filename">pg_hba.conf</tt>
+    no authorizing entry in its <code class="filename">pg_hba.conf</code>
     configuration file.
    </p>
 <pre class="programlisting">FATAL:  Password authentication failed for user "andym"</pre>
 <p>
     Messages like this indicate that you contacted the server, and it is
     willing to talk to you, but not until you pass the authorization
-    method specified in the <tt class="filename">pg_hba.conf</tt> file. Check
+    method specified in the <code class="filename">pg_hba.conf</code> file. Check
     the password you are providing, or check your Kerberos or ident
     software if the complaint mentions one of those authentication
     types.

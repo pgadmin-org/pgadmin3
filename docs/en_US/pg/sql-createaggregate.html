@@ -4,41 +4,39 @@
 <title>CREATE AGGREGATE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-copy.html" title="COPY">
+<link rel="prev" href="sql-copy.html" title="COPY">
 <link rel="next" href="sql-createcast.html" title="CREATE CAST">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createaggregate"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createaggregate"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE AGGREGATE &#8212; define a new aggregate function</p>
 </div>
-<a name="id2674043"></a><div class="refsynopsisdiv">
+<a name="id444004"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE AGGREGATE <i class="replaceable"><tt>name</tt></i> (
-    BASETYPE = <i class="replaceable"><tt>input_data_type</tt></i>,
-    SFUNC = <i class="replaceable"><tt>sfunc</tt></i>,
-    STYPE = <i class="replaceable"><tt>state_data_type</tt></i>
-    [ , FINALFUNC = <i class="replaceable"><tt>ffunc</tt></i> ]
-    [ , INITCOND = <i class="replaceable"><tt>initial_condition</tt></i> ]
+<pre class="synopsis">CREATE AGGREGATE <em class="replaceable"><code>name</code></em> (
+    BASETYPE = <em class="replaceable"><code>input_data_type</code></em>,
+    SFUNC = <em class="replaceable"><code>sfunc</code></em>,
+    STYPE = <em class="replaceable"><code>state_data_type</code></em>
+    [ , FINALFUNC = <em class="replaceable"><code>ffunc</code></em> ]
+    [ , INITCOND = <em class="replaceable"><code>initial_condition</code></em> ]
+    [ , SORTOP = <em class="replaceable"><code>sort_operator</code></em> ]
 )</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2674096"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE AGGREGATE</tt> defines a new aggregate
+<a name="id444061"></a><h2>Description</h2>
+<p>   <code class="command">CREATE AGGREGATE</code> defines a new aggregate
    function. Some basic and commonly-used aggregate functions are
    included with the distribution; they are documented in <a href="functions-aggregate.html" title="9.15. Aggregate Functions">Section 9.15, &#8220;Aggregate Functions&#8221;</a>. If one defines new types or needs
-   an aggregate function not already provided, then <tt class="command">CREATE
-   AGGREGATE</tt> can be used to provide the desired features.
+   an aggregate function not already provided, then <code class="command">CREATE
+   AGGREGATE</code> can be used to provide the desired features.
   </p>
-<p>   If a schema name is given (for example, <tt class="literal">CREATE AGGREGATE
-   myschema.myagg ...</tt>) then the aggregate function is created in the
+<p>   If a schema name is given (for example, <code class="literal">CREATE AGGREGATE
+   myschema.myagg ...</code>) then the aggregate function is created in the
    specified schema.  Otherwise it is created in the current schema.
   </p>
 <p>   An  aggregate  function is identified by its name and input data type.
@@ -51,17 +49,17 @@
 <p>   An  aggregate function is made from one or two ordinary
    functions:
    a state transition function
-   <i class="replaceable"><tt>sfunc</tt></i>,
+   <em class="replaceable"><code>sfunc</code></em>,
    and an optional final calculation function
-   <i class="replaceable"><tt>ffunc</tt></i>.
+   <em class="replaceable"><code>ffunc</code></em>.
    These are used as follows:
 </p>
-<pre class="programlisting"><i class="replaceable"><tt>sfunc</tt></i>( internal-state, next-data-item ) ---&gt; next-internal-state
-<i class="replaceable"><tt>ffunc</tt></i>( internal-state ) ---&gt; aggregate-value</pre>
+<pre class="programlisting"><em class="replaceable"><code>sfunc</code></em>( internal-state, next-data-item ) ---&gt; next-internal-state
+<em class="replaceable"><code>ffunc</code></em>( internal-state ) ---&gt; aggregate-value</pre>
 <p>
   </p>
 <p>   <span class="productname">PostgreSQL</span> creates a temporary variable
-   of data type <i class="replaceable"><tt>stype</tt></i>
+   of data type <em class="replaceable"><code>stype</code></em>
    to hold the current internal state of the aggregate.  At each input
    data item,
    the state transition function is invoked to calculate a new
@@ -73,7 +71,7 @@
 <p>   An aggregate function may provide an initial condition,
    that is, an initial value for the internal state value.
    This is specified and stored in the database as a column of type
-   <tt class="type">text</tt>, but it must be a valid external representation
+   <code class="type">text</code>, but it must be a valid external representation
    of a constant of the state value data type.  If it is not supplied
    then the state value starts out null.
   </p>
@@ -84,11 +82,11 @@
    is retained).  If the initial state value is null, then the first
    nonnull input value replaces the state value, and the transition
    function is invoked beginning with the second nonnull input value.
-   This is handy for implementing aggregates like <tt class="function">max</tt>.
+   This is handy for implementing aggregates like <code class="function">max</code>.
    Note that this behavior is only available when
-   <i class="replaceable"><tt>state_data_type</tt></i>
+   <em class="replaceable"><code>state_data_type</code></em>
    is the same as
-   <i class="replaceable"><tt>input_data_type</tt></i>.
+   <em class="replaceable"><code>input_data_type</code></em>.
    When these types are different, you must supply a nonnull initial
    condition or use a nonstrict transition function.
   </p>
@@ -102,71 +100,99 @@
    will be returned automatically.  (Of course this is just the normal
    behavior of strict functions.)  In any case the final function has
    the option of returning a null value.  For example, the final function for
-   <tt class="function">avg</tt> returns null when it sees there were zero
+   <code class="function">avg</code> returns null when it sees there were zero
    input rows.
+  </p>
+<p>   Aggregates that behave like <code class="function">MIN</code> or <code class="function">MAX</code> can
+   sometimes be optimized by looking into an index instead of scanning every
+   input row.  If this aggregate can be so optimized, indicate it by
+   specifying a <em class="firstterm">sort operator</em>.  The basic requirement is that
+   the aggregate must yield the first element in the sort ordering induced by
+   the operator; in other words
+</p>
+<pre class="programlisting">SELECT agg(col) FROM tab;</pre>
+<p>
+   must be equivalent to
+</p>
+<pre class="programlisting">SELECT col FROM tab ORDER BY col USING sortop LIMIT 1;</pre>
+<p>
+   Further assumptions are that the aggregate ignores null inputs, and that
+   it delivers a null result if and only if there were no non-null inputs.
+   Ordinarily, a datatype's <code class="literal">&lt;</code> operator is the proper sort
+   operator for <code class="function">MIN</code>, and <code class="literal">&gt;</code> is the proper sort
+   operator for <code class="function">MAX</code>.  Note that the optimization will never
+   actually take effect unless the specified operator is the LessThan or
+   GreaterThan strategy member of a btree index opclass.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2674272"></a><h2>Parameters</h2>
+<a name="id444268"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the aggregate function
       to create.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>input_data_type</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>input_data_type</code></em></span></dt>
 <dd><p>      The input data type on which this aggregate function operates.
-      This can be specified as <tt class="literal">"ANY"</tt> for an aggregate that
+      This can be specified as <code class="literal">"ANY"</code> for an aggregate that
       does not examine its input values (an example is
-      <tt class="function">count(*)</tt>).
+      <code class="function">count(*)</code>).
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>sfunc</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>sfunc</code></em></span></dt>
 <dd><p>      The name of the state transition function to be called for each
       input data value.  This is normally a function of two arguments,
-      the first being of type <i class="replaceable"><tt>state_data_type</tt></i> and the second
-      of type <i class="replaceable"><tt>input_data_type</tt></i>.  Alternatively,
+      the first being of type <em class="replaceable"><code>state_data_type</code></em> and the second
+      of type <em class="replaceable"><code>input_data_type</code></em>.  Alternatively,
       for an aggregate that does not examine its input values, the
-      function takes just one argument of type <i class="replaceable"><tt>state_data_type</tt></i>.  In either case
-      the function must return a value of type <i class="replaceable"><tt>state_data_type</tt></i>.  This function
+      function takes just one argument of type <em class="replaceable"><code>state_data_type</code></em>.  In either case
+      the function must return a value of type <em class="replaceable"><code>state_data_type</code></em>.  This function
       takes the current state value and the current input data item,
       and returns the next state value.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>state_data_type</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>state_data_type</code></em></span></dt>
 <dd><p>      The data type for the aggregate's state value.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>ffunc</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>ffunc</code></em></span></dt>
 <dd><p>      The name of the final function called to compute the aggregate's
       result after all input data has been traversed.  The function
-      must take a single argument of type <i class="replaceable"><tt>state_data_type</tt></i>.  The return
+      must take a single argument of type <em class="replaceable"><code>state_data_type</code></em>.  The return
       data type of the aggregate is defined as the return type of this
-      function.  If <i class="replaceable"><tt>ffunc</tt></i>
+      function.  If <em class="replaceable"><code>ffunc</code></em>
       is not specified, then the ending state value is used as the
-      aggregate's result, and the return type is <i class="replaceable"><tt>state_data_type</tt></i>.
+      aggregate's result, and the return type is <em class="replaceable"><code>state_data_type</code></em>.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>initial_condition</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>initial_condition</code></em></span></dt>
 <dd><p>      The initial setting for the state value.  This must be a string
-      constant in the form accepted for the data type <i class="replaceable"><tt>state_data_type</tt></i>.  If not
+      constant in the form accepted for the data type <em class="replaceable"><code>state_data_type</code></em>.  If not
       specified, the state value starts out null.
      </p></dd>
+<dt><span class="term"><em class="replaceable"><code>sort_operator</code></em></span></dt>
+<dd><p>      The associated sort operator for a <code class="function">MIN</code>- or
+      <code class="function">MAX</code>-like aggregate.
+      This is just an operator name (possibly schema-qualified).
+      The operator is assumed to have the same input datatypes as
+      the aggregate.
+     </p></dd>
 </dl></div>
-<p>   The parameters of <tt class="command">CREATE AGGREGATE</tt> can be
+<p>   The parameters of <code class="command">CREATE AGGREGATE</code> can be
    written in any order, not just the order illustrated above.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2674432"></a><h2>Examples</h2>
+<a name="id444437"></a><h2>Examples</h2>
 <p>   See <a href="xaggr.html" title="31.10. User-Defined Aggregates">Section 31.10, &#8220;User-Defined Aggregates&#8221;</a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2674444"></a><h2>Compatibility</h2>
-<p>   <tt class="command">CREATE AGGREGATE</tt> is a
+<a name="id444448"></a><h2>Compatibility</h2>
+<p>   <code class="command">CREATE AGGREGATE</code> is a
    <span class="productname">PostgreSQL</span> language extension.  The SQL
    standard does not provide for user-defined aggregate functions.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2674463"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alteraggregate.html">ALTER AGGREGATE</a>, <a href="sql-dropaggregate.html">DROP AGGREGATE</a></span>
+<a name="id444466"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alteraggregate.html">ALTER AGGREGATE</a>, <a href="sql-dropaggregate.html">DROP AGGREGATE</a>, </span>
 </div>
 </div></body>
 </html>

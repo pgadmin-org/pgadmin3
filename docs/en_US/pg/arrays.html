@@ -4,29 +4,23 @@
 <title>8.10. Arrays</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="previous" href="datatype-bit.html" title="8.9. Bit String Types">
+<link rel="prev" href="datatype-bit.html" title="8.9. Bit String Types">
 <link rel="next" href="rowtypes.html" title="8.11. Composite Types">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="arrays"></a>8.10. Arrays</h2></div></div>
-<div></div>
-</div>
-<a name="id2538103"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="arrays"></a>8.10. Arrays</h2></div></div></div>
+<a name="id318759"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
   defined as variable-length multidimensional arrays. Arrays of any
   built-in or user-defined base type can be created.  (Arrays of
   composite types or domains are not yet supported, however.)
  </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2538120"></a>8.10.1. Declaration of Array Types</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id318774"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
 <p>  To illustrate the use of array types, we create this table:
 </p>
 <pre class="programlisting">CREATE TABLE sal_emp (
@@ -36,17 +30,17 @@
 );</pre>
 <p>
   As shown, an array data type is named by appending square brackets
-  (<tt class="literal">[]</tt>) to the data type name of the array elements.  The
+  (<code class="literal">[]</code>) to the data type name of the array elements.  The
   above command will create a table named
-  <tt class="structname">sal_emp</tt> with a column of type
-  <tt class="type">text</tt> (<tt class="structfield">name</tt>), a
-  one-dimensional array of type <tt class="type">integer</tt>
-  (<tt class="structfield">pay_by_quarter</tt>), which represents the
+  <code class="structname">sal_emp</code> with a column of type
+  <code class="type">text</code> (<code class="structfield">name</code>), a
+  one-dimensional array of type <code class="type">integer</code>
+  (<code class="structfield">pay_by_quarter</code>), which represents the
   employee's salary by quarter, and a two-dimensional array of
-  <tt class="type">text</tt> (<tt class="structfield">schedule</tt>), which
+  <code class="type">text</code> (<code class="structfield">schedule</code>), which
   represents the employee's weekly schedule.
  </p>
-<p>  The syntax for <tt class="command">CREATE TABLE</tt> allows the exact size of
+<p>  The syntax for <code class="command">CREATE TABLE</code> allows the exact size of
   arrays to be specified, for example:
 
 </p>
@@ -63,12 +57,12 @@
   number of dimensions either.  Arrays of a particular element type are
   all considered to be of the same type, regardless of size or number
   of dimensions.  So, declaring number of dimensions or sizes in
-  <tt class="command">CREATE TABLE</tt> is simply documentation, it does not
+  <code class="command">CREATE TABLE</code> is simply documentation, it does not
   affect runtime behavior.
  </p>
 <p>  An alternative syntax, which conforms to the SQL:1999 standard, may
   be used for one-dimensional arrays.
-  <tt class="structfield">pay_by_quarter</tt> could have been defined
+  <code class="structfield">pay_by_quarter</code> could have been defined
   as:
 </p>
 <pre class="programlisting">    pay_by_quarter  integer ARRAY[4],</pre>
@@ -79,12 +73,9 @@
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2538228"></a>8.10.2. Array Value Input</h3></div></div>
-<div></div>
-</div>
-<a name="id2538232"></a><p>   To write an array value as a literal constant, enclose the element
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id318869"></a>8.10.2. Array Value Input</h3></div></div></div>
+<a name="id318872"></a><p>   To write an array value as a literal constant, enclose the element
    values within curly braces and separate them by commas.  (If you
    know C, this is not unlike the C syntax for initializing
    structures.)  You may put double quotes around any element value,
@@ -92,14 +83,14 @@
    details appear below.)  Thus, the general format of an array
    constant is the following:
 </p>
-<pre class="synopsis">'{ <i class="replaceable"><tt>val1</tt></i> <i class="replaceable"><tt>delim</tt></i> <i class="replaceable"><tt>val2</tt></i> <i class="replaceable"><tt>delim</tt></i> ... }'</pre>
+<pre class="synopsis">'{ <em class="replaceable"><code>val1</code></em> <em class="replaceable"><code>delim</code></em> <em class="replaceable"><code>val2</code></em> <em class="replaceable"><code>delim</code></em> ... }'</pre>
 <p>
-   where <i class="replaceable"><tt>delim</tt></i> is the delimiter character
-   for the type, as recorded in its <tt class="literal">pg_type</tt> entry.
+   where <em class="replaceable"><code>delim</code></em> is the delimiter character
+   for the type, as recorded in its <code class="literal">pg_type</code> entry.
    Among the standard data types provided in the
    <span class="productname">PostgreSQL</span> distribution, type
-   <tt class="literal">box</tt> uses a semicolon (<tt class="literal">;</tt>) but all the others
-   use comma (<tt class="literal">,</tt>). Each <i class="replaceable"><tt>val</tt></i> is
+   <code class="literal">box</code> uses a semicolon (<code class="literal">;</code>) but all the others
+   use comma (<code class="literal">,</code>). Each <em class="replaceable"><code>val</code></em> is
    either a constant of the array element type, or a subarray. An example
    of an array constant is
 </p>
@@ -113,7 +104,7 @@
    treated as a string and passed to the array input conversion
    routine.  An explicit type specification might be necessary.)
   </p>
-<p>   Now we can show some <tt class="command">INSERT</tt> statements.
+<p>   Now we can show some <code class="command">INSERT</code> statements.
 
 </p>
 <pre class="programlisting">INSERT INTO sal_emp
@@ -153,7 +144,7 @@ INSERT INTO sal_emp
 (2 rows)</pre>
 <p>
  </p>
-<p>  The <tt class="literal">ARRAY</tt> constructor syntax may also be used:
+<p>  The <code class="literal">ARRAY</code> constructor syntax may also be used:
 </p>
 <pre class="programlisting">INSERT INTO sal_emp
     VALUES ('Bill',
@@ -167,17 +158,14 @@ INSERT INTO sal_emp
 <p>
   Notice that the array elements are ordinary SQL constants or
   expressions; for instance, string literals are single quoted, instead of
-  double quoted as they would be in an array literal.  The <tt class="literal">ARRAY</tt>
+  double quoted as they would be in an array literal.  The <code class="literal">ARRAY</code>
   constructor syntax is discussed in more detail in
   <a href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>.
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2538421"></a>8.10.3. Accessing Arrays</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319034"></a>8.10.3. Accessing Arrays</h3></div></div></div>
 <p>  Now, we can run some queries on the table.
   First, we show how to access a single element of an array at a time.
   This query retrieves the names of the employees whose pay changed in
@@ -195,8 +183,8 @@ INSERT INTO sal_emp
   The array subscript numbers are written within square brackets.
   By default <span class="productname">PostgreSQL</span> uses the
   one-based numbering convention for arrays, that is,
-  an array of <i class="replaceable"><tt>n</tt></i> elements starts with <tt class="literal">array[1]</tt> and
-  ends with <tt class="literal">array[<i class="replaceable"><tt>n</tt></i>]</tt>.
+  an array of <em class="replaceable"><code>n</code></em> elements starts with <code class="literal">array[1]</code> and
+  ends with <code class="literal">array[<em class="replaceable"><code>n</code></em>]</code>.
  </p>
 <p>  This query retrieves the third quarter pay of all employees:
      
@@ -212,7 +200,7 @@ INSERT INTO sal_emp
  </p>
 <p>  We can also access arbitrary rectangular slices of an array, or
   subarrays.  An array slice is denoted by writing
-  <tt class="literal"><i class="replaceable"><tt>lower-bound</tt></i>:<i class="replaceable"><tt>upper-bound</tt></i></tt>
+  <code class="literal"><em class="replaceable"><code>lower-bound</code></em>:<em class="replaceable"><code>upper-bound</code></em></code>
   for one or more array dimensions.  For example, this query retrieves the first
   item on Bill's schedule for the first two days of the week:
      
@@ -233,7 +221,7 @@ INSERT INTO sal_emp
 
   with the same result.  An array subscripting operation is always taken to
   represent an array slice if any of the subscripts are written in the form
-  <tt class="literal"><i class="replaceable"><tt>lower</tt></i>:<i class="replaceable"><tt>upper</tt></i></tt>.
+  <code class="literal"><em class="replaceable"><code>lower</code></em>:<em class="replaceable"><code>upper</code></em></code>.
   A lower bound of 1 is assumed for any subscript where only one value
   is specified, as in this example:
 </p>
@@ -246,9 +234,9 @@ INSERT INTO sal_emp
 <p>
  </p>
 <p>  Fetching from outside the current bounds of an array yields a
-  SQL null value, not an error.  For example, if <tt class="literal">schedule</tt>
-  currently has the dimensions <tt class="literal">[1:3][1:2]</tt> then referencing
-  <tt class="literal">schedule[3][3]</tt> yields NULL.  Similarly, an array reference
+  SQL null value, not an error.  For example, if <code class="literal">schedule</code>
+  currently has the dimensions <code class="literal">[1:3][1:2]</code> then referencing
+  <code class="literal">schedule[3][3]</code> yields NULL.  Similarly, an array reference
   with the wrong number of subscripts yields a null rather than an error.
   Fetching an array slice that
   is completely outside the current bounds likewise yields a null array;
@@ -256,7 +244,7 @@ INSERT INTO sal_emp
   is silently reduced to just the overlapping region.
  </p>
 <p>  The current dimensions of any array value can be retrieved with the
-  <tt class="function">array_dims</tt> function:
+  <code class="function">array_dims</code> function:
 
 </p>
 <pre class="programlisting">SELECT array_dims(schedule) FROM sal_emp WHERE name = 'Carol';
@@ -267,10 +255,10 @@ INSERT INTO sal_emp
 (1 row)</pre>
 <p>
 
-  <tt class="function">array_dims</tt> produces a <tt class="type">text</tt> result,
+  <code class="function">array_dims</code> produces a <code class="type">text</code> result,
   which is convenient for people to read but perhaps not so convenient
   for programs.  Dimensions can also be retrieved with
-  <tt class="function">array_upper</tt> and <tt class="function">array_lower</tt>,
+  <code class="function">array_upper</code> and <code class="function">array_lower</code>,
   which return the upper and lower bound of a
   specified array dimension, respectively.
 
@@ -285,11 +273,8 @@ INSERT INTO sal_emp
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2538611"></a>8.10.4. Modifying Arrays</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319200"></a>8.10.4. Modifying Arrays</h3></div></div></div>
 <p>  An array value can be replaced completely:
 
 </p>
@@ -297,7 +282,7 @@ INSERT INTO sal_emp
     WHERE name = 'Carol';</pre>
 <p>
 
-  or using the <tt class="literal">ARRAY</tt> expression syntax:
+  or using the <code class="literal">ARRAY</code> expression syntax:
 
 </p>
 <pre class="programlisting">UPDATE sal_emp SET pay_by_quarter = ARRAY[25000,25000,27000,27000]
@@ -322,17 +307,17 @@ INSERT INTO sal_emp
 <p>  A stored array value can be enlarged by assigning to an element adjacent to
   those already present, or by assigning to a slice that is adjacent
   to or overlaps the data already present.  For example, if array
-  <tt class="literal">myarray</tt> currently has 4 elements, it will have five
-  elements after an update that assigns to <tt class="literal">myarray[5]</tt>.
+  <code class="literal">myarray</code> currently has 4 elements, it will have five
+  elements after an update that assigns to <code class="literal">myarray[5]</code>.
   Currently, enlargement in this fashion is only allowed for one-dimensional
   arrays, not multidimensional arrays.
  </p>
 <p>  Array slice assignment allows creation of arrays that do not use one-based
-  subscripts.  For example one might assign to <tt class="literal">myarray[-2:7]</tt> to
+  subscripts.  For example one might assign to <code class="literal">myarray[-2:7]</code> to
   create an array with subscript values running from -2 to 7.
  </p>
 <p>  New array values can also be constructed by using the concatenation operator,
-  <tt class="literal">||</tt>.
+  <code class="literal">||</code>.
 </p>
 <pre class="programlisting">SELECT ARRAY[1,2] || ARRAY[3,4];
  ?column?
@@ -349,8 +334,8 @@ SELECT ARRAY[5,6] || ARRAY[[1,2],[3,4]];
  </p>
 <p>  The concatenation operator allows a single element to be pushed on to the
   beginning or end of a one-dimensional array. It also accepts two
-  <i class="replaceable"><tt>N</tt></i>-dimensional arrays, or an <i class="replaceable"><tt>N</tt></i>-dimensional
-  and an <i class="replaceable"><tt>N+1</tt></i>-dimensional array.
+  <em class="replaceable"><code>N</code></em>-dimensional arrays, or an <em class="replaceable"><code>N</code></em>-dimensional
+  and an <em class="replaceable"><code>N+1</code></em>-dimensional array.
  </p>
 <p>  When a single element is pushed on to the beginning of a one-dimensional
   array, the result is an array with a lower bound subscript equal to
@@ -389,10 +374,10 @@ SELECT array_dims(ARRAY[[1,2],[3,4]] || ARRAY[[5,6],[7,8],[9,0]]);
 (1 row)</pre>
 <p>
  </p>
-<p>  When an <i class="replaceable"><tt>N</tt></i>-dimensional array is pushed on to the beginning
-  or end of an <i class="replaceable"><tt>N+1</tt></i>-dimensional array, the result is
-  analogous to the element-array case above. Each <i class="replaceable"><tt>N</tt></i>-dimensional
-  sub-array is essentially an element of the <i class="replaceable"><tt>N+1</tt></i>-dimensional
+<p>  When an <em class="replaceable"><code>N</code></em>-dimensional array is pushed on to the beginning
+  or end of an <em class="replaceable"><code>N+1</code></em>-dimensional array, the result is
+  analogous to the element-array case above. Each <em class="replaceable"><code>N</code></em>-dimensional
+  sub-array is essentially an element of the <em class="replaceable"><code>N+1</code></em>-dimensional
   array's outer dimension. For example:
 </p>
 <pre class="programlisting">SELECT array_dims(ARRAY[1,2] || ARRAY[[3,4],[5,6]]);
@@ -403,9 +388,9 @@ SELECT array_dims(ARRAY[[1,2],[3,4]] || ARRAY[[5,6],[7,8],[9,0]]);
 <p>
  </p>
 <p>  An array can also be constructed by using the functions
-  <tt class="function">array_prepend</tt>, <tt class="function">array_append</tt>,
-  or <tt class="function">array_cat</tt>. The first two only support one-dimensional
-  arrays, but <tt class="function">array_cat</tt> supports multidimensional arrays.
+  <code class="function">array_prepend</code>, <code class="function">array_append</code>,
+  or <code class="function">array_cat</code>. The first two only support one-dimensional
+  arrays, but <code class="function">array_cat</code> supports multidimensional arrays.
 
   Note that the concatenation operator discussed above is preferred over
   direct use of these functions. In fact, the functions are primarily for use
@@ -445,11 +430,8 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2538830"></a>8.10.5. Searching in Arrays</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319383"></a>8.10.5. Searching in Arrays</h3></div></div></div>
 <p>  To search for a value in an array, you must check each value of the
   array. This can be done by hand, if you know the size of the array.
   For example:
@@ -489,21 +471,18 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2538881"></a>8.10.6. Array Input and Output Syntax</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id319424"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
 <p>   The external text representation of an array value consists of items that
    are interpreted according to the I/O conversion rules for the array's
    element type, plus decoration that indicates the array structure.
-   The decoration consists of curly braces (<tt class="literal">{</tt> and <tt class="literal">}</tt>)
+   The decoration consists of curly braces (<code class="literal">{</code> and <code class="literal">}</code>)
    around the array value plus delimiter characters between adjacent items.
-   The delimiter character is usually a comma (<tt class="literal">,</tt>) but can be
-   something else: it is determined by the <tt class="literal">typdelim</tt> setting
+   The delimiter character is usually a comma (<code class="literal">,</code>) but can be
+   something else: it is determined by the <code class="literal">typdelim</code> setting
    for the array's element type.  (Among the standard data types provided
    in the <span class="productname">PostgreSQL</span> distribution, type
-   <tt class="literal">box</tt> uses a semicolon (<tt class="literal">;</tt>) but all the others
+   <code class="literal">box</code> uses a semicolon (<code class="literal">;</code>) but all the others
    use comma.)  In a multidimensional array, each dimension (row, plane,
    cube, etc.) gets its own level of curly braces, and delimiters
    must be written between adjacent curly-braced entities of the same level.
@@ -521,10 +500,10 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
    set to one. If any of an array's dimensions has a lower bound index not
    equal to one, an additional decoration that indicates the actual
    array dimensions will precede the array structure decoration.
-   This decoration consists of square brackets (<tt class="literal">[]</tt>)
+   This decoration consists of square brackets (<code class="literal">[]</code>)
    around each array dimension's lower and upper bounds, with
-   a colon (<tt class="literal">:</tt>) delimiter character in between. The
-   array dimension decoration is followed by an equal sign (<tt class="literal">=</tt>).
+   a colon (<code class="literal">:</code>) delimiter character in between. The
+   array dimension decoration is followed by an equal sign (<code class="literal">=</code>).
    For example:
 </p>
 <pre class="programlisting">SELECT 1 || ARRAY[2,3] AS array;
@@ -574,17 +553,17 @@ SELECT ARRAY[1,2] || ARRAY[[3,4]] AS array;
 <h3 class="title">Note</h3>
 <p>   Remember that what you write in an SQL command will first be interpreted
    as a string literal, and then as an array.  This doubles the number of
-   backslashes you need.  For example, to insert a <tt class="type">text</tt> array
+   backslashes you need.  For example, to insert a <code class="type">text</code> array
    value containing a backslash and a double quote, you'd need to write
 </p>
 <pre class="programlisting">INSERT ... VALUES ('{"\\\\","\\""}');</pre>
 <p>
    The string-literal processor removes one level of backslashes, so that
-   what arrives at the array-value parser looks like <tt class="literal">{"\\","\""}</tt>.
-   In turn, the strings fed to the <tt class="type">text</tt> data type's input routine
-   become <tt class="literal">\</tt> and <tt class="literal">"</tt> respectively.  (If we were working
+   what arrives at the array-value parser looks like <code class="literal">{"\\","\""}</code>.
+   In turn, the strings fed to the <code class="type">text</code> data type's input routine
+   become <code class="literal">\</code> and <code class="literal">"</code> respectively.  (If we were working
    with a data type whose input routine also treated backslashes specially,
-   <tt class="type">bytea</tt> for example, we might need as many as eight backslashes
+   <code class="type">bytea</code> for example, we might need as many as eight backslashes
    in the command to get one backslash into the stored array element.)
    Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
    used to avoid the need to double backslashes.
@@ -592,10 +571,10 @@ SELECT ARRAY[1,2] || ARRAY[[3,4]] AS array;
 </div>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>   The <tt class="literal">ARRAY</tt> constructor syntax (see
+<p>   The <code class="literal">ARRAY</code> constructor syntax (see
    <a href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>) is often easier to work
    with than the array-literal syntax when writing array values in SQL
-   commands. In <tt class="literal">ARRAY</tt>, individual element values are written the
+   commands. In <code class="literal">ARRAY</code>, individual element values are written the
    same way they would be written when not members of an array.
   </p>
 </div>

@@ -4,34 +4,31 @@
 <title>16.4. Run-time Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
-<link rel="previous" href="postmaster-start.html" title="16.3. Starting the Database Server">
+<link rel="prev" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="runtime-config"></a>16.4. Run-time Configuration</h2></div></div>
-<div></div>
-</div>
-<a name="id2580552"></a><p>    There are a lot of configuration parameters that affect the
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config"></a>16.4. Run-time Configuration</h2></div></div></div>
+<a name="id358506"></a><p>    There are a lot of configuration parameters that affect the
     behavior of the database system. In this subsection, we describe
     how to set configuration parameters; the following subsections
     discuss each parameter in detail.
    </p>
 <p>    All parameter names are case-insensitive. Every parameter takes a
     value of one of four types: boolean, integer, floating point,
-    or string. Boolean values may be written as <tt class="literal">ON</tt>,
-    <tt class="literal">OFF</tt>, <tt class="literal">TRUE</tt>,
-    <tt class="literal">FALSE</tt>, <tt class="literal">YES</tt>,
-    <tt class="literal">NO</tt>, <tt class="literal">1</tt>, <tt class="literal">0</tt>
+    or string. Boolean values may be written as <code class="literal">ON</code>,
+    <code class="literal">OFF</code>, <code class="literal">TRUE</code>,
+    <code class="literal">FALSE</code>, <code class="literal">YES</code>,
+    <code class="literal">NO</code>, <code class="literal">1</code>, <code class="literal">0</code>
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <tt class="filename">postgresql.conf</tt><a name="id2580626"></a>,
-    which is normally kept in the data directory. (<tt class="command">initdb</tt>
+    <code class="filename">postgresql.conf</code><a name="id358576"></a>,
+    which is normally kept in the data directory. (<code class="command">initdb</code>
     installs a default copy there.) An example of what this file might look
     like is:
 </p>
@@ -42,15 +39,15 @@ search_path = '$user, public'</pre>
 <p>
     One parameter is specified per line. The equal sign between name and
     value is optional. Whitespace is insignificant and blank lines are
-    ignored. Hash marks (<tt class="literal">#</tt>) introduce comments
+    ignored. Hash marks (<code class="literal">#</code>) introduce comments
     anywhere.  Parameter values that are not simple identifiers or
     numbers must be single-quoted.
    </p>
-<p>    <a name="id2580662"></a>
+<p>    <a name="id358606"></a>
     The configuration file is reread whenever the
-    <tt class="command">postmaster</tt> process receives a
+    <code class="command">postmaster</code> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
-    of <tt class="literal">pg_ctl reload</tt>). The <tt class="command">postmaster</tt>
+    of <code class="literal">pg_ctl reload</code>). The <code class="command">postmaster</code>
     also propagates this signal to all currently running server
     processes so that existing sessions also get the new
     value. Alternatively, you can send the signal to a single server
@@ -59,19 +56,19 @@ search_path = '$user, public'</pre>
     until the server is restarted.
    </p>
 <p>    A second way to set these configuration parameters is to give them
-    as a command line option to the <tt class="command">postmaster</tt>, such as:
+    as a command line option to the <code class="command">postmaster</code>, such as:
 </p>
 <pre class="programlisting">postmaster -c log_connections=yes -c log_destination='syslog'</pre>
 <p>
     Command-line options override any conflicting settings in
-    <tt class="filename">postgresql.conf</tt>.  Note that this means you won't
+    <code class="filename">postgresql.conf</code>.  Note that this means you won't
     be able to change the value on-the-fly by editing
-    <tt class="filename">postgresql.conf</tt>, so while the command-line
+    <code class="filename">postgresql.conf</code>, so while the command-line
     method may be convenient, it can cost you flexibility later.
    </p>
 <p>    Occasionally it is useful to give a command line option to
     one particular session only. The environment variable
-    <tt class="envar">PGOPTIONS</tt> can be used for this purpose on the
+    <code class="envar">PGOPTIONS</code> can be used for this purpose on the
     client side:
 </p>
 <pre class="programlisting">env PGOPTIONS='-c geqo=off' psql</pre>
@@ -79,7 +76,7 @@ search_path = '$user, public'</pre>
     (This works for any <span class="application">libpq</span>-based client application, not
     just <span class="application">psql</span>.) Note that this won't work for
     parameters that are fixed when the server is started or that must be
-    specified in <tt class="filename">postgresql.conf</tt>.
+    specified in <code class="filename">postgresql.conf</code>.
    </p>
 <p>    Furthermore, it is possible to assign a set of option settings to
     a user or a database.  Whenever a session is started, the default
@@ -88,7 +85,7 @@ search_path = '$user, public'</pre>
     and <a href="sql-alterdatabase.html">ALTER DATABASE</a>,
     respectively, are used to configure these settings.  Per-database
     settings override anything received from the
-    <tt class="command">postmaster</tt> command-line or the configuration
+    <code class="command">postmaster</code> command-line or the configuration
     file, and in turn are overridden by per-user settings; both are
     overridden by per-session options.
    </p>
@@ -98,31 +95,28 @@ search_path = '$user, public'</pre>
 </p>
 <pre class="screen">SET ENABLE_SEQSCAN TO OFF;</pre>
 <p>
-    If <tt class="command">SET</tt> is allowed, it overrides all other sources of
+    If <code class="command">SET</code> is allowed, it overrides all other sources of
     values for the parameter. Some parameters cannot be changed via
-    <tt class="command">SET</tt>: for example, if they control behavior that
+    <code class="command">SET</code>: for example, if they control behavior that
     cannot reasonably be changed without restarting
     <span class="productname">PostgreSQL</span>.  Also, some parameters can
-    be modified via <tt class="command">SET</tt> or <tt class="command">ALTER</tt> by superusers,
+    be modified via <code class="command">SET</code> or <code class="command">ALTER</code> by superusers,
     but not by ordinary users.
    </p>
 <p>    The <a href="sql-show.html">SHOW</a>
     command allows inspection of the current values of all parameters.
    </p>
-<p>    The virtual table <tt class="structname">pg_settings</tt>
-    (described in <a href="view-pg-settings.html" title="41.35. pg_settings">Section 41.35, &#8220;pg_settings&#8221;</a>) also allows
+<p>    The virtual table <code class="structname">pg_settings</code>
+    (described in <a href="view-pg-settings.html" title="41.35. pg_settings">Section 41.35, &#8220;<code class="structname">pg_settings</code>&#8221;</a>) also allows
     displaying and updating session run-time parameters.  It is equivalent
-    to <tt class="command">SHOW</tt> and <tt class="command">SET</tt>, but can be more convenient
+    to <code class="command">SHOW</code> and <code class="command">SET</code>, but can be more convenient
     to use because it can be joined with other tables, or selected from using
     any desired selection condition.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-file-locations"></a>16.4.1. File Locations</h3></div></div>
-<div></div>
-</div>
-<p>      In addition to the <tt class="filename">postgresql.conf</tt> file
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-file-locations"></a>16.4.1. File Locations</h3></div></div></div>
+<p>      In addition to the <code class="filename">postgresql.conf</code> file
       already mentioned, <span class="productname">PostgreSQL</span> uses
       two other manually-edited configuration files, which control
       client authentication (their use is discussed in <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>).
@@ -135,35 +129,35 @@ search_path = '$user, public'</pre>
      </p>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-data-directory"></a><span class="term"><tt class="varname">data_directory</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-data-directory"></a><span class="term"><code class="varname">data_directory</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>         Specifies the directory to use for data storage.
          This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-config-file"></a><span class="term"><tt class="varname">config_file</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-config-file"></a><span class="term"><code class="varname">config_file</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>         Specifies the main server configuration file
-         (customarily called <tt class="filename">postgresql.conf</tt>).
+         (customarily called <code class="filename">postgresql.conf</code>).
          This option can only be set on the postmaster command line.
        </p></dd>
 <dt>
-<a name="guc-hba-file"></a><span class="term"><tt class="varname">hba_file</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-hba-file"></a><span class="term"><code class="varname">hba_file</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>         Specifies the configuration file for host-based authentication
-         (customarily called <tt class="filename">pg_hba.conf</tt>).
+         (customarily called <code class="filename">pg_hba.conf</code>).
          This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-ident-file"></a><span class="term"><tt class="varname">ident_file</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-ident-file"></a><span class="term"><code class="varname">ident_file</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>         Specifies the configuration file for
          <span class="application">ident</span> authentication
-         (customarily called <tt class="filename">pg_ident.conf</tt>).
+         (customarily called <code class="filename">pg_ident.conf</code>).
          This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-external-pid-file"></a><span class="term"><tt class="varname">external_pid_file</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-external-pid-file"></a><span class="term"><code class="varname">external_pid_file</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Specifies the name of an additional process-id (PID) file that the
         <span class="application">postmaster</span> should create for use by server
@@ -173,56 +167,50 @@ search_path = '$user, public'</pre>
 </dl></div>
 <p>      In a default installation, none of the above options are set explicitly.
       Instead, the
-      data directory is specified by the <tt class="option">-D</tt> command-line
-      option or the <tt class="envar">PGDATA</tt> environment variable, and the
+      data directory is specified by the <code class="option">-D</code> command-line
+      option or the <code class="envar">PGDATA</code> environment variable, and the
       configuration files are all found within the data directory.
      </p>
 <p>      If you wish to keep the configuration files elsewhere than the
-      data directory, the postmaster's <tt class="option">-D</tt>
-      command-line option or <tt class="envar">PGDATA</tt> environment variable
+      data directory, the postmaster's <code class="option">-D</code>
+      command-line option or <code class="envar">PGDATA</code> environment variable
       must point to the directory containing the configuration files,
-      and the <tt class="varname">data_directory</tt> option must be set in
-      <tt class="filename">postgresql.conf</tt> (or on the command line) to show
+      and the <code class="varname">data_directory</code> option must be set in
+      <code class="filename">postgresql.conf</code> (or on the command line) to show
       where the data directory is actually located.  Notice that
-      <tt class="varname">data_directory</tt> overrides <tt class="option">-D</tt> and
-      <tt class="envar">PGDATA</tt> for the location
+      <code class="varname">data_directory</code> overrides <code class="option">-D</code> and
+      <code class="envar">PGDATA</code> for the location
       of the data directory, but not for the location of the configuration
       files.
      </p>
 <p>      If you wish, you can specify the configuration file names and locations
-      individually using the options <tt class="varname">config_file</tt>,
-      <tt class="varname">hba_file</tt> and/or <tt class="varname">ident_file</tt>.
-      <tt class="varname">config_file</tt> can only be specified on the 
-      <tt class="command">postmaster</tt> command line, but the others can be
+      individually using the options <code class="varname">config_file</code>,
+      <code class="varname">hba_file</code> and/or <code class="varname">ident_file</code>.
+      <code class="varname">config_file</code> can only be specified on the 
+      <code class="command">postmaster</code> command line, but the others can be
       set within the main configuration file.  If all three options plus
-      <tt class="varname">data_directory</tt> are explicitly set, then it is not necessary
-      to specify <tt class="option">-D</tt> or <tt class="envar">PGDATA</tt>.
+      <code class="varname">data_directory</code> are explicitly set, then it is not necessary
+      to specify <code class="option">-D</code> or <code class="envar">PGDATA</code>.
      </p>
 <p>      When setting any of these options, a relative path will be interpreted
-      with respect to the directory in which the <tt class="command">postmaster</tt>
+      with respect to the directory in which the <code class="command">postmaster</code>
       is started.
      </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-connection"></a>16.4.2. Connections and Authentication</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-connection"></a>16.4.2. Connections and Authentication</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-connection-settings"></a>16.4.2.1. Connection Settings</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-connection-settings"></a>16.4.2.1. Connection Settings</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-listen-addresses"></a><span class="term"><tt class="varname">listen_addresses</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-listen-addresses"></a><span class="term"><code class="varname">listen_addresses</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>         Specifies the TCP/IP address(es) on which the server is
          to listen for connections from client applications.  
          The value takes the form of a comma-separated list of host names
-         and/or numeric IP addresses.  The special entry <tt class="literal">*</tt>
+         and/or numeric IP addresses.  The special entry <code class="literal">*</code>
          corresponds to all available IP interfaces.
          If the list is empty, the server does not listen on any IP interface
          at all, in which case only Unix-domain sockets can be used to connect
@@ -232,14 +220,14 @@ search_path = '$user, public'</pre>
          This parameter can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-port"></a><span class="term"><tt class="varname">port</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-port"></a><span class="term"><code class="varname">port</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        The TCP port the server listens on; 5432 by default.  Note that the
         same port number is used for all IP addresses the server listens on.
         This parameter can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-max-connections"></a><span class="term"><tt class="varname">max_connections</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-connections"></a><span class="term"><code class="varname">max_connections</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd>
 <p>        Determines the maximum number of concurrent connections to the
@@ -256,8 +244,8 @@ search_path = '$user, public'</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-superuser-reserved-connections"></a><span class="term"><tt class="varname">superuser_reserved_connections</tt>
-      (<tt class="type">integer</tt>)</span>
+<a name="guc-superuser-reserved-connections"></a><span class="term"><code class="varname">superuser_reserved_connections</code>
+      (<code class="type">integer</code>)</span>
 </dt>
 <dd>
 <p>        Determines the number of connection &#8220;<span class="quote">slots</span>&#8221; that
@@ -265,52 +253,52 @@ search_path = '$user, public'</pre>
         superusers.  At most <a href="runtime-config.html#guc-max-connections">max_connections</a>
         connections can ever be active simultaneously.  Whenever the
         number of active concurrent connections is at least
-        <tt class="varname">max_connections</tt> minus
-        <tt class="varname">superuser_reserved_connections</tt>, new
+        <code class="varname">max_connections</code> minus
+        <code class="varname">superuser_reserved_connections</code>, new
         connections will be accepted only for superusers.
        </p>
 <p>        The default value is 2. The value must be less than the value of
-        <tt class="varname">max_connections</tt>. This parameter can only be
+        <code class="varname">max_connections</code>. This parameter can only be
         set at server start.
        </p>
 </dd>
 <dt>
-<a name="guc-unix-socket-directory"></a><span class="term"><tt class="varname">unix_socket_directory</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-unix-socket-directory"></a><span class="term"><code class="varname">unix_socket_directory</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Specifies the directory of the Unix-domain socket on which the
         server is to listen for
         connections from client applications.  The default is normally
-        <tt class="filename">/tmp</tt>, but can be changed at build time.
+        <code class="filename">/tmp</code>, but can be changed at build time.
         This parameter can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-unix-socket-group"></a><span class="term"><tt class="varname">unix_socket_group</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-unix-socket-group"></a><span class="term"><code class="varname">unix_socket_group</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the owning group of the Unix-domain socket.  (The owning
         user of the socket is always the user that starts the
         server.)  In combination with the option
-        <tt class="varname">unix_socket_permissions</tt> this can be used as
+        <code class="varname">unix_socket_permissions</code> this can be used as
         an additional access control mechanism for Unix-domain connections.
         By default this is the empty string, which uses the default
         group for the current user.  This option can only be set at
         server start.
        </p></dd>
 <dt>
-<a name="guc-unix-socket-permissions"></a><span class="term"><tt class="varname">unix_socket_permissions</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-unix-socket-permissions"></a><span class="term"><code class="varname">unix_socket_permissions</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd>
 <p>        Sets the access permissions of the Unix-domain socket.  Unix-domain
         sockets use the usual Unix file system permission set.
         The option value is expected to be a numeric mode
         specification in the form accepted by the
-        <tt class="function">chmod</tt> and <tt class="function">umask</tt>
+        <code class="function">chmod</code> and <code class="function">umask</code>
         system calls.  (To use the customary octal format the number
-        must start with a <tt class="literal">0</tt> (zero).)
+        must start with a <code class="literal">0</code> (zero).)
        </p>
-<p>        The default permissions are <tt class="literal">0777</tt>, meaning
+<p>        The default permissions are <code class="literal">0777</code>, meaning
         anyone can connect. Reasonable alternatives are
-        <tt class="literal">0770</tt> (only user and group, see also
-        <tt class="varname">unix_socket_group</tt>) and <tt class="literal">0700</tt>
+        <code class="literal">0770</code> (only user and group, see also
+        <code class="varname">unix_socket_group</code>) and <code class="literal">0700</code>
         (only user). (Note that for a Unix-domain socket, only write
         permission matters and so there is no point in setting or revoking
         read or execute permissions.)
@@ -322,73 +310,70 @@ search_path = '$user, public'</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-rendezvous-name"></a><span class="term"><tt class="varname">rendezvous_name</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-bonjour-name"></a><span class="term"><code class="varname">bonjour_name</code> (<code class="type">string</code>)</span>
 </dt>
-<dd><p>        Specifies the <span class="productname">Rendezvous</span> broadcast
+<dd><p>        Specifies the <span class="productname">Bonjour</span> broadcast
         name.  By default, the computer name is used, specified as an
         empty string ''.  This option is ignored if the server was not
-        compiled with <span class="productname">Rendezvous</span> support.  This
+        compiled with <span class="productname">Bonjour</span> support.  This
         option can only be set at server start.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-connection-security"></a>16.4.2.2. Security and Authentication</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-connection-security"></a>16.4.2.2. Security and Authentication</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-authentication-timeout"></a><span class="term"><tt class="varname">authentication_timeout</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-authentication-timeout"></a><span class="term"><code class="varname">authentication_timeout</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Maximum time to complete client authentication, in seconds. If a
         would-be client has not completed the authentication protocol in
         this much time, the server breaks the connection. This prevents
         hung clients from occupying a connection indefinitely. This
         option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> file. The default is 60.
+        <code class="filename">postgresql.conf</code> file. The default is 60.
        </p></dd>
 <dt>
-<a name="guc-ssl"></a><span class="term"><tt class="varname">ssl</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-ssl"></a><span class="term"><code class="varname">ssl</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables <span class="acronym">SSL</span> connections. Please read
-        <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> before using this. The default
+        <a href="ssl-tcp.html" title="16.8. Secure TCP/IP Connections with SSL">Section 16.8, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> before using this. The default
         is off.  This parameter can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-password-encryption"></a><span class="term"><tt class="varname">password_encryption</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-password-encryption"></a><span class="term"><code class="varname">password_encryption</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        When a password is specified in <a href="sql-createuser.html">CREATE USER</a> or
         <a href="sql-alteruser.html">ALTER USER</a>
-        without writing either <tt class="literal">ENCRYPTED</tt> or
-        <tt class="literal">UNENCRYPTED</tt>, this option determines whether the
+        without writing either <code class="literal">ENCRYPTED</code> or
+        <code class="literal">UNENCRYPTED</code>, this option determines whether the
         password is to be encrypted. The default is on (encrypt the
         password).
        </p></dd>
 <dt>
-<a name="guc-krb-server-keyfile"></a><span class="term"><tt class="varname">krb_server_keyfile</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-krb-server-keyfile"></a><span class="term"><code class="varname">krb_server_keyfile</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the location of the Kerberos server key file. See
         <a href="auth-methods.html#kerberos-auth" title="19.2.3. Kerberos authentication">Section 19.2.3, &#8220;Kerberos authentication&#8221;</a> for details.
        </p></dd>
 <dt>
-<a name="guc-db-user-namespace"></a><span class="term"><tt class="varname">db_user_namespace</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-db-user-namespace"></a><span class="term"><code class="varname">db_user_namespace</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd>
 <p>        This allows per-database user names.  It is off by default.
        </p>
-<p>        If this is on, you should create users as <tt class="literal">username@dbname</tt>.
-        When <tt class="literal">username</tt> is passed by a connecting client,
-        <tt class="literal">@</tt> and the database name is appended to the user
+<p>        If this is on, you should create users as <code class="literal">username@dbname</code>.
+        When <code class="literal">username</code> is passed by a connecting client,
+        <code class="literal">@</code> and the database name is appended to the user
         name and that database-specific user name is looked up by the
         server. Note that when you create users with names containing
-        <tt class="literal">@</tt> within the SQL environment, you will need to
+        <code class="literal">@</code> within the SQL environment, you will need to
         quote the user name.
        </p>
 <p>        With this option enabled, you can still create ordinary global
-        users.  Simply append <tt class="literal">@</tt> when specifying the user
-        name in the client.  The <tt class="literal">@</tt> will be stripped off
+        users.  Simply append <code class="literal">@</code> when specifying the user
+        name in the client.  The <code class="literal">@</code> will be stripped off
         before the user name is looked up by the server.
        </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -403,27 +388,21 @@ search_path = '$user, public'</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-resource"></a>16.4.3. Resource Consumption</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-resource"></a>16.4.3. Resource Consumption</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-resource-memory"></a>16.4.3.1. Memory</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-resource-memory"></a>16.4.3.1. Memory</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-shared-buffers"></a><span class="term"><tt class="varname">shared_buffers</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-shared-buffers"></a><span class="term"><code class="varname">shared_buffers</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd>
 <p>        Sets the number of shared memory buffers used by the database
         server. The default is typically 1000, but may be less if your
         kernel settings will not support it (as determined during
         <span class="application">initdb</span>).  Each buffer is 8192 bytes, unless a
-        different value of <tt class="symbol">BLCKSZ</tt> was chosen when building
+        different value of <code class="symbol">BLCKSZ</code> was chosen when building
         the server.  This setting must be at least 16, as well as at
         least twice the value of <a href="runtime-config.html#guc-max-connections">max_connections</a>;
         however, settings significantly higher than the minimum are
@@ -439,7 +418,7 @@ search_path = '$user, public'</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-temp-buffers"></a><span class="term"><tt class="varname">temp_buffers</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-temp-buffers"></a><span class="term"><code class="varname">temp_buffers</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd>
 <p>        Sets the maximum number of temporary buffers used by each database
@@ -450,16 +429,16 @@ search_path = '$user, public'</pre>
         attempts to change the value will have no effect on that session.
        </p>
 <p>        A session will allocate temporary buffers as needed up to the limit
-        given by <tt class="varname">temp_buffers</tt>.  The cost of setting a large
+        given by <code class="varname">temp_buffers</code>.  The cost of setting a large
         value in sessions that do not actually need a lot of temporary
         buffers is only a buffer descriptor, or about 64 bytes, per
-        increment in <tt class="varname">temp_buffers</tt>.  However if a buffer is
+        increment in <code class="varname">temp_buffers</code>.  However if a buffer is
         actually used an additional 8192 bytes will be consumed for it
-        (or in general <tt class="symbol">BLCKSZ</tt> bytes).
+        (or in general <code class="symbol">BLCKSZ</code> bytes).
        </p>
 </dd>
 <dt>
-<a name="guc-work-mem"></a><span class="term"><tt class="varname">work_mem</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-work-mem"></a><span class="term"><code class="varname">work_mem</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Specifies the amount of memory to be used by internal sort operations
         and hash tables before switching to temporary disk files. The value is
@@ -469,33 +448,33 @@ search_path = '$user, public'</pre>
         as this value specifies before it starts to put data into temporary
         files. Also, several running sessions could be doing such operations
         concurrently.  So the total memory used could be many
-        times the value of <tt class="varname">work_mem</tt>; it is necessary to
+        times the value of <code class="varname">work_mem</code>; it is necessary to
         keep this fact in mind when choosing the value. Sort operations are
-        used for <tt class="literal">ORDER BY</tt>, <tt class="literal">DISTINCT</tt>, and
+        used for <code class="literal">ORDER BY</code>, <code class="literal">DISTINCT</code>, and
         merge joins.
         Hash tables are used in hash joins, hash-based aggregation, and
-        hash-based processing of <tt class="literal">IN</tt> subqueries.
+        hash-based processing of <code class="literal">IN</code> subqueries.
        </p></dd>
 <dt>
-<a name="guc-maintenance-work-mem"></a><span class="term"><tt class="varname">maintenance_work_mem</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-maintenance-work-mem"></a><span class="term"><code class="varname">maintenance_work_mem</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Specifies the maximum amount of memory to be used in maintenance
-        operations, such as <tt class="command">VACUUM</tt>, <tt class="command">CREATE
-        INDEX</tt>, and <tt class="command">ALTER TABLE ADD FOREIGN KEY</tt>.
+        operations, such as <code class="command">VACUUM</code>, <code class="command">CREATE
+        INDEX</code>, and <code class="command">ALTER TABLE ADD FOREIGN KEY</code>.
         The value is specified in kilobytes, and defaults to 16384 kilobytes
         (16 MB).  Since only one of these operations can be executed at 
         a time by a database session, and an installation normally doesn't
         have very many of them happening concurrently, it's safe to set this
-        value significantly larger than <tt class="varname">work_mem</tt>.  Larger
+        value significantly larger than <code class="varname">work_mem</code>.  Larger
         settings may improve performance for vacuuming and for restoring
         database dumps.
        </p></dd>
 <dt>
-<a name="guc-max-stack-depth"></a><span class="term"><tt class="varname">max_stack_depth</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-stack-depth"></a><span class="term"><code class="varname">max_stack_depth</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Specifies the maximum safe depth of the server's execution stack.
         The ideal setting for this parameter is the actual stack size limit
-        enforced by the kernel (as set by <tt class="literal">ulimit -s</tt> or local
+        enforced by the kernel (as set by <code class="literal">ulimit -s</code> or local
         equivalent), less a safety margin of a megabyte or so.  The safety
         margin is needed because the stack depth is not checked in every
         routine in the server, but only in key potentially-recursive routines
@@ -509,41 +488,43 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-resource-fsm"></a>16.4.3.2. Free Space Map</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-resource-fsm"></a>16.4.3.2. Free Space Map</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-max-fsm-pages"></a><span class="term"><tt class="varname">max_fsm_pages</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-fsm-pages"></a><span class="term"><code class="varname">max_fsm_pages</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Sets the maximum number of disk pages for which free space will
         be tracked in the shared free-space map.  Six bytes of shared memory
         are consumed for each page slot.  This setting must be more than
-        16 * <tt class="varname">max_fsm_relations</tt>.  The default is 20000.
+        16 * <code class="varname">max_fsm_relations</code>.  The default is 20000.
+        The last few lines of a database-wide <code class="command">VACUUM VERBOSE</code> 
+        can help in determining if the the default setting is suitable.  
+        A <code class="literal">NOTICE</code> message is also printed during such an operation
+        if the current setting is too low.
         This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-max-fsm-relations"></a><span class="term"><tt class="varname">max_fsm_relations</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-fsm-relations"></a><span class="term"><code class="varname">max_fsm_relations</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Sets the maximum number of relations (tables and indexes) for which
         free space will be tracked in the shared free-space map.  Roughly
         fifty bytes of shared memory are consumed for each slot.
         The default is 1000.
+        The last few lines of a database-wide <code class="command">VACUUM VERBOSE</code>
+        can help in determining if the the default setting is suitable.  
+        A <code class="literal">NOTICE</code> message is also printed during such an operation
+        if the current setting is too low.
         This option can only be set at server start.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-resource-kernel"></a>16.4.3.3. Kernel Resource Usage</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-resource-kernel"></a>16.4.3.3. Kernel Resource Usage</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-max-files-per-process"></a><span class="term"><tt class="varname">max_files_per_process</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-files-per-process"></a><span class="term"><code class="varname">max_files_per_process</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Sets the maximum number of simultaneously open files allowed to each
         server subprocess. The default is 1000. If the kernel is enforcing
@@ -556,7 +537,7 @@ search_path = '$user, public'</pre>
         This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-preload-libraries"></a><span class="term"><tt class="varname">preload_libraries</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-preload-libraries"></a><span class="term"><code class="varname">preload_libraries</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        This variable specifies one or more shared libraries that are
@@ -564,8 +545,8 @@ search_path = '$user, public'</pre>
         initialization function can optionally be called for each
         library.  To specify that, add a colon and the name of the
         initialization function after the library name. For example
-        <tt class="literal">'$libdir/mylib:mylib_init'</tt> would cause
-        <tt class="literal">mylib</tt> to be preloaded and <tt class="literal">mylib_init</tt>
+        <code class="literal">'$libdir/mylib:mylib_init'</code> would cause
+        <code class="literal">mylib</code> to be preloaded and <code class="literal">mylib_init</code>
         to be executed. If more than one library is to be loaded,
         separate their names with commas.
        </p>
@@ -574,9 +555,9 @@ search_path = '$user, public'</pre>
        </p>
 <p>        <span class="productname">PostgreSQL</span> procedural language
         libraries may be preloaded in this way, typically by using the
-        syntax <tt class="literal">'$libdir/plXXX:plXXX_init'</tt> where
-        <tt class="literal">XXX</tt> is <tt class="literal">pgsql</tt>, <tt class="literal">perl</tt>,
-        <tt class="literal">tcl</tt>, or <tt class="literal">python</tt>.
+        syntax <code class="literal">'$libdir/plXXX:plXXX_init'</code> where
+        <code class="literal">XXX</code> is <code class="literal">pgsql</code>, <code class="literal">perl</code>,
+        <code class="literal">tcl</code>, or <code class="literal">python</code>.
        </p>
 <p>        By preloading a shared library (and initializing it if
         applicable), the library startup time is avoided when the
@@ -589,37 +570,34 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-resource-vacuum-cost"></a>16.4.3.4. Cost-Based Vacuum Delay</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-resource-vacuum-cost"></a>16.4.3.4. Cost-Based Vacuum Delay</h4></div></div></div>
 <p>      During the execution of <a href="sql-vacuum.html">VACUUM</a> and <a href="sql-analyze.html">ANALYZE</a> commands, the system maintains an
       internal counter that keeps track of the estimated cost of the
       various I/O operations that are performed.  When the accumulated
       cost reaches a limit (specified by
-      <tt class="varname">vacuum_cost_limit</tt>), the process performing
+      <code class="varname">vacuum_cost_limit</code>), the process performing
       the operation will sleep for a while (specified by
-      <tt class="varname">vacuum_cost_delay</tt>). Then it will reset the
+      <code class="varname">vacuum_cost_delay</code>). Then it will reset the
       counter and continue execution.
      </p>
 <p>      The intent of this feature is to allow administrators to reduce
       the I/O impact of these commands on concurrent database
       activity. There are many situations in which it is not very
       important that maintenance commands like
-      <tt class="command">VACUUM</tt> and <tt class="command">ANALYZE</tt> finish
+      <code class="command">VACUUM</code> and <code class="command">ANALYZE</code> finish
       quickly; however, it is usually very important that these
       commands do not significantly interfere with the ability of the
       system to perform other database operations. Cost-based vacuum
       delay provides a way for administrators to achieve this.
      </p>
 <p>      This feature is disabled by default. To enable it, set the
-      <tt class="varname">vacuum_cost_delay</tt> variable to a nonzero
+      <code class="varname">vacuum_cost_delay</code> variable to a nonzero
       value.
      </p>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-vacuum-cost-delay"></a><span class="term"><tt class="varname">vacuum_cost_delay</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-vacuum-cost-delay"></a><span class="term"><code class="varname">vacuum_cost_delay</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         The length of time, in milliseconds, that the process will sleep
          when the cost limit has been exceeded.
@@ -627,12 +605,12 @@ search_path = '$user, public'</pre>
          delay feature.  Positive values enable cost-based vacuuming.
          Note that on many systems, the effective resolution
          of sleep delays is 10 milliseconds; setting
-         <tt class="varname">vacuum_cost_delay</tt> to a value that is
+         <code class="varname">vacuum_cost_delay</code> to a value that is
          not a multiple of 10 may have the same results as setting it
          to the next higher multiple of 10.
         </p></dd>
 <dt>
-<a name="guc-vacuum-cost-page-hit"></a><span class="term"><tt class="varname">vacuum_cost_page_hit</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-vacuum-cost-page-hit"></a><span class="term"><code class="varname">vacuum_cost_page_hit</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         The estimated cost for vacuuming a buffer found in the shared buffer
          cache. It represents the cost to lock the buffer pool, lookup
@@ -640,7 +618,7 @@ search_path = '$user, public'</pre>
          default value is 1.
         </p></dd>
 <dt>
-<a name="guc-vacuum-cost-page-miss"></a><span class="term"><tt class="varname">vacuum_cost_page_miss</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-vacuum-cost-page-miss"></a><span class="term"><code class="varname">vacuum_cost_page_miss</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         The estimated cost for vacuuming a buffer that has to be read from
          disk.  This represents the effort to lock the buffer pool,
@@ -648,7 +626,7 @@ search_path = '$user, public'</pre>
          the disk and scan its content. The default value is 10.
         </p></dd>
 <dt>
-<a name="guc-vacuum-cost-page-dirty"></a><span class="term"><tt class="varname">vacuum_cost_page_dirty</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-vacuum-cost-page-dirty"></a><span class="term"><code class="varname">vacuum_cost_page_dirty</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         The estimated cost charged when vacuum modifies a block that was
          previously clean. It represents the extra I/O required to
@@ -656,7 +634,7 @@ search_path = '$user, public'</pre>
          20.
         </p></dd>
 <dt>
-<a name="guc-vacuum-cost-limit"></a><span class="term"><tt class="varname">vacuum_cost_limit</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-vacuum-cost-limit"></a><span class="term"><code class="varname">vacuum_cost_limit</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         The accumulated cost that will cause the vacuuming process to sleep.
          The default value is 200.
@@ -669,21 +647,18 @@ search_path = '$user, public'</pre>
        delays do not occur during such operations.  Therefore it is
        possible that the cost accumulates far higher than the specified
        limit.  To avoid uselessly long delays in such cases, the actual
-       delay is calculated as <tt class="varname">vacuum_cost_delay</tt> *
-       <tt class="varname">accumulated_balance</tt> /
-       <tt class="varname">vacuum_cost_limit</tt> with a maximum of
-       <tt class="varname">vacuum_cost_delay</tt> * 4.
+       delay is calculated as <code class="varname">vacuum_cost_delay</code> *
+       <code class="varname">accumulated_balance</code> /
+       <code class="varname">vacuum_cost_limit</code> with a maximum of
+       <code class="varname">vacuum_cost_delay</code> * 4.
       </p>
 </div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-resource-background-writer"></a>16.4.3.5. Background Writer</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-resource-background-writer"></a>16.4.3.5. Background Writer</h4></div></div></div>
 <p>      Beginning in <span class="productname">PostgreSQL</span> 8.0, there is a separate server
-      process called the <i class="firstterm">background writer</i>, whose sole function
+      process called the <em class="firstterm">background writer</em>, whose sole function
       is to issue writes of &#8220;<span class="quote">dirty</span>&#8221; shared buffers.  The intent is
       that server processes handling user queries should seldom or never have
       to wait for a write to occur, because the background writer will do it.
@@ -701,59 +676,59 @@ search_path = '$user, public'</pre>
      </p>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-bgwriter-delay"></a><span class="term"><tt class="varname">bgwriter_delay</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-bgwriter-delay"></a><span class="term"><code class="varname">bgwriter_delay</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         Specifies the delay between activity rounds for the
          background writer.  In each round the writer issues writes
          for some number of dirty buffers (controllable by the
-         following parameters).  It then sleeps for <tt class="varname">bgwriter_delay</tt>
+         following parameters).  It then sleeps for <code class="varname">bgwriter_delay</code>
          milliseconds, and repeats.  The default value is 200. Note
          that on many systems, the effective resolution of sleep
-         delays is 10 milliseconds; setting <tt class="varname">bgwriter_delay</tt>
+         delays is 10 milliseconds; setting <code class="varname">bgwriter_delay</code>
          to a value that is not a multiple of 10 may have the same
          results as setting it to the next higher multiple of 10.
          This option can only be set at server start or in the
-         <tt class="filename">postgresql.conf</tt> file.
+         <code class="filename">postgresql.conf</code> file.
         </p></dd>
 <dt>
-<a name="guc-bgwriter-lru-percent"></a><span class="term"><tt class="varname">bgwriter_lru_percent</tt> (<tt class="type">floating point</tt>)</span>
+<a name="guc-bgwriter-lru-percent"></a><span class="term"><code class="varname">bgwriter_lru_percent</code> (<code class="type">floating point</code>)</span>
 </dt>
 <dd><p>         To reduce the probability that server processes will need to issue
          their own writes, the background writer tries to write buffers that
          are likely to be recycled soon.  In each round, it examines up to
-         <tt class="varname">bgwriter_lru_percent</tt> of the buffers that are nearest to
+         <code class="varname">bgwriter_lru_percent</code> of the buffers that are nearest to
          being recycled, and writes any that are dirty.
          The default value is 1.0 (this is a percentage of the total number
          of shared buffers).
          This option can only be set at server start or in the
-         <tt class="filename">postgresql.conf</tt> file.
+         <code class="filename">postgresql.conf</code> file.
         </p></dd>
 <dt>
-<a name="guc-bgwriter-lru-maxpages"></a><span class="term"><tt class="varname">bgwriter_lru_maxpages</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-bgwriter-lru-maxpages"></a><span class="term"><code class="varname">bgwriter_lru_maxpages</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         In each round, no more than this many buffers will be written
          as a result of scanning soon-to-be-recycled buffers.
          The default value is 5.
          This option can only be set at server start or in the
-         <tt class="filename">postgresql.conf</tt> file.
+         <code class="filename">postgresql.conf</code> file.
         </p></dd>
 <dt>
-<a name="guc-bgwriter-all-percent"></a><span class="term"><tt class="varname">bgwriter_all_percent</tt> (<tt class="type">floating point</tt>)</span>
+<a name="guc-bgwriter-all-percent"></a><span class="term"><code class="varname">bgwriter_all_percent</code> (<code class="type">floating point</code>)</span>
 </dt>
 <dd><p>         To reduce the amount of work that will be needed at checkpoint time,
          the background writer also does a circular scan through the entire
          buffer pool, writing buffers that are found to be dirty.
          In each round, it examines up to
-         <tt class="varname">bgwriter_all_percent</tt> of the buffers for this purpose.
+         <code class="varname">bgwriter_all_percent</code> of the buffers for this purpose.
          The default value is 0.333 (this is a percentage of the total number
-         of shared buffers).  With the default <tt class="varname">bgwriter_delay</tt>
+         of shared buffers).  With the default <code class="varname">bgwriter_delay</code>
          setting, this will allow the entire shared buffer pool to be scanned
          about once per minute.
          This option can only be set at server start or in the
-         <tt class="filename">postgresql.conf</tt> file.
+         <code class="filename">postgresql.conf</code> file.
         </p></dd>
 <dt>
-<a name="guc-bgwriter-all-maxpages"></a><span class="term"><tt class="varname">bgwriter_all_maxpages</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-bgwriter-all-maxpages"></a><span class="term"><code class="varname">bgwriter_all_maxpages</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         In each round, no more than this many buffers will be written
          as a result of the scan of the entire buffer pool.  (If this
@@ -761,56 +736,50 @@ search_path = '$user, public'</pre>
          during the next round.)
          The default value is 5.
          This option can only be set at server start or in the
-         <tt class="filename">postgresql.conf</tt> file.
+         <code class="filename">postgresql.conf</code> file.
         </p></dd>
 </dl></div>
-<p>      Smaller values of <tt class="varname">bgwriter_all_percent</tt> and
-      <tt class="varname">bgwriter_all_maxpages</tt> reduce the extra I/O load
+<p>      Smaller values of <code class="varname">bgwriter_all_percent</code> and
+      <code class="varname">bgwriter_all_maxpages</code> reduce the extra I/O load
       caused by the background writer, but leave more work to be done
       at checkpoint time.  To reduce load spikes at checkpoints,
       increase these two values.
-      Similarly, smaller values of <tt class="varname">bgwriter_lru_percent</tt> and
-      <tt class="varname">bgwriter_lru_maxpages</tt> reduce the extra I/O load
+      Similarly, smaller values of <code class="varname">bgwriter_lru_percent</code> and
+      <code class="varname">bgwriter_lru_maxpages</code> reduce the extra I/O load
       caused by the background writer, but make it more likely that server
       processes will have to issue writes for themselves, delaying interactive
       queries.
       To disable background writing entirely,
-      set both <tt class="varname">maxpages</tt> values and/or both
-      <tt class="varname">percent</tt> values to zero.
+      set both <code class="varname">maxpages</code> values and/or both
+      <code class="varname">percent</code> values to zero.
      </p>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-wal"></a>16.4.4. Write Ahead Log</h3></div></div>
-<div></div>
-</div>
-<p>    See also <a href="wal-configuration.html" title="25.2. WAL Configuration">Section 25.2, &#8220;WAL Configuration&#8221;</a> for details on WAL
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-wal"></a>16.4.4. Write Ahead Log</h3></div></div></div>
+<p>    See also <a href="wal-configuration.html" title="25.2. WAL Configuration">Section 25.2, &#8220;<span class="acronym">WAL</span> Configuration&#8221;</a> for details on WAL
     tuning.
    </p>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-wal-settings"></a>16.4.4.1. Settings</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-wal-settings"></a>16.4.4.1. Settings</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-fsync"></a><span class="term"><tt class="varname">fsync</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-fsync"></a><span class="term"><code class="varname">fsync</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd>
 <p>        If this option is on, the <span class="productname">PostgreSQL</span> server
-        will use the <tt class="function">fsync()</tt> system call in several places
+        will use the <code class="function">fsync()</code> system call in several places
         to make sure that updates are physically written to disk. This
         insures that a database cluster will recover to a
         consistent state after an operating system or hardware crash.
        </p>
-<p>        However, using <tt class="function">fsync()</tt> results in a
+<p>        However, using <code class="function">fsync()</code> results in a
         performance penalty: when a transaction is committed,
         <span class="productname">PostgreSQL</span> must wait for the
         operating system to flush the write-ahead log to disk.  When
-        <tt class="varname">fsync</tt> is disabled, the operating system is
+        <code class="varname">fsync</code> is disabled, the operating system is
         allowed to do its best in buffering, ordering, and delaying
         writes. This can result in significantly improved performance.
         However, if the system crashes, the results of the last few
@@ -821,37 +790,37 @@ search_path = '$user, public'</pre>
         creates a risk of corruption.)
        </p>
 <p>        Due to the risks involved, there is no universally correct
-        setting for <tt class="varname">fsync</tt>. Some administrators
-        always disable <tt class="varname">fsync</tt>, while others only
+        setting for <code class="varname">fsync</code>. Some administrators
+        always disable <code class="varname">fsync</code>, while others only
         turn it off for bulk loads, where there is a clear restart
         point if something goes wrong, whereas some administrators
-        always leave <tt class="varname">fsync</tt> enabled. The default is
-        to enable <tt class="varname">fsync</tt>, for maximum reliability.
+        always leave <code class="varname">fsync</code> enabled. The default is
+        to enable <code class="varname">fsync</code>, for maximum reliability.
         If you trust your operating system, your hardware, and your
         utility company (or your battery backup), you can consider
-        disabling <tt class="varname">fsync</tt>.
+        disabling <code class="varname">fsync</code>.
        </p>
 <p>        This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> file.
+        <code class="filename">postgresql.conf</code> file.
        </p>
 </dd>
 <dt>
-<a name="guc-wal-sync-method"></a><span class="term"><tt class="varname">wal_sync_method</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-wal-sync-method"></a><span class="term"><code class="varname">wal_sync_method</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Method used for forcing WAL updates out to disk.  Possible
         values are
-        <tt class="literal">fsync</tt> (call <tt class="function">fsync()</tt> at each commit),
-        <tt class="literal">fdatasync</tt> (call <tt class="function">fdatasync()</tt> at each commit),
-        <tt class="literal">fsync_writethrough</tt> (call <tt class="function">_commit()</tt> at each commit on Windows),
-        <tt class="literal">open_sync</tt> (write WAL files with <tt class="function">open()</tt> option <tt class="symbol">O_SYNC</tt>), and
-        <tt class="literal">open_datasync</tt> (write WAL files with <tt class="function">open()</tt> option <tt class="symbol">O_DSYNC</tt>).
+        <code class="literal">fsync</code> (call <code class="function">fsync()</code> at each commit),
+        <code class="literal">fdatasync</code> (call <code class="function">fdatasync()</code> at each commit),
+        <code class="literal">fsync_writethrough</code> (force write-through of any disk write cache),
+        <code class="literal">open_sync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_SYNC</code>), and
+        <code class="literal">open_datasync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_DSYNC</code>).
         Not all of these choices are available on all platforms.
-        If <tt class="varname">fsync</tt> is off then this setting is irrelevant.
+        If <code class="varname">fsync</code> is off then this setting is irrelevant.
         This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> file.
+        <code class="filename">postgresql.conf</code> file.
        </p></dd>
 <dt>
-<a name="guc-wal-buffers"></a><span class="term"><tt class="varname">wal_buffers</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-wal-buffers"></a><span class="term"><code class="varname">wal_buffers</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Number of disk-page buffers allocated in shared memory for WAL data.
         The default is 8.  The setting need only be large enough to hold
@@ -859,25 +828,25 @@ search_path = '$user, public'</pre>
         This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-commit-delay"></a><span class="term"><tt class="varname">commit_delay</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-commit-delay"></a><span class="term"><code class="varname">commit_delay</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Time delay between writing a commit record to the WAL buffer
         and flushing the buffer out to disk, in microseconds. A
         nonzero delay can allow multiple transactions to be committed
-        with only one <tt class="function">fsync()</tt> system call, if
+        with only one <code class="function">fsync()</code> system call, if
         system load is high enough that additional transactions become
         ready to commit within the given interval. But the delay is
         just wasted if no other transactions become ready to
         commit. Therefore, the delay is only performed if at least
-        <tt class="varname">commit_siblings</tt> other transactions are
+        <code class="varname">commit_siblings</code> other transactions are
         active at the instant that a server process has written its
         commit record. The default is zero (no delay).
        </p></dd>
 <dt>
-<a name="guc-commit-siblings"></a><span class="term"><tt class="varname">commit_siblings</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-commit-siblings"></a><span class="term"><code class="varname">commit_siblings</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Minimum number of concurrent open transactions to require
-        before performing the <tt class="varname">commit_delay</tt> delay. A larger
+        before performing the <code class="varname">commit_delay</code> delay. A larger
         value makes it more probable that at least one other
         transaction will become ready to commit during the delay
         interval. The default is five.
@@ -885,30 +854,27 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-wal-checkpoints"></a>16.4.4.2. Checkpoints</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-wal-checkpoints"></a>16.4.4.2. Checkpoints</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-checkpoint-segments"></a><span class="term"><tt class="varname">checkpoint_segments</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-checkpoint-segments"></a><span class="term"><code class="varname">checkpoint_segments</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Maximum distance between automatic WAL checkpoints, in log
         file segments (each segment is normally 16 megabytes). The
         default is three.  This option can only be set at server start
-        or in the <tt class="filename">postgresql.conf</tt> file.
+        or in the <code class="filename">postgresql.conf</code> file.
        </p></dd>
 <dt>
-<a name="guc-checkpoint-timeout"></a><span class="term"><tt class="varname">checkpoint_timeout</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-checkpoint-timeout"></a><span class="term"><code class="varname">checkpoint_timeout</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Maximum time between automatic WAL checkpoints, in
         seconds. The default is 300 seconds.  This option can only be
-        set at server start or in the <tt class="filename">postgresql.conf</tt>
+        set at server start or in the <code class="filename">postgresql.conf</code>
         file.
        </p></dd>
 <dt>
-<a name="guc-checkpoint-warning"></a><span class="term"><tt class="varname">checkpoint_warning</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-checkpoint-warning"></a><span class="term"><code class="varname">checkpoint_warning</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Write a message to the server log if checkpoints caused by
         the filling of checkpoint segment files happen closer together
@@ -918,24 +884,21 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-wal-archiving"></a>16.4.4.3. Archiving</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-wal-archiving"></a>16.4.4.3. Archiving</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-archive-command"></a><span class="term"><tt class="varname">archive_command</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-archive-command"></a><span class="term"><code class="varname">archive_command</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        The shell command to execute to archive a completed segment of
         the WAL file series. If this is an empty string (the default),
-        WAL archiving is disabled. Any <tt class="literal">%p</tt> in the string is
+        WAL archiving is disabled. Any <code class="literal">%p</code> in the string is
         replaced by the absolute path of the file to archive, and any
-        <tt class="literal">%f</tt> is replaced by the file name only. Use
-        <tt class="literal">%%</tt> to embed an actual <tt class="literal">%</tt> character in the
+        <code class="literal">%f</code> is replaced by the file name only. Use
+        <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character in the
         command. For more information see <a href="backup-online.html#backup-archiving-wal" title="22.3.1. Setting up WAL archiving">Section 22.3.1, &#8220;Setting up WAL archiving&#8221;</a>. This option can only be set at
-        server start or in the <tt class="filename">postgresql.conf</tt>
+        server start or in the <code class="filename">postgresql.conf</code>
         file.
        </p>
 <p>        It is important for the command to return a zero exit status if
@@ -950,17 +913,11 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-query"></a>16.4.5. Query Planning</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-query"></a>16.4.5. Query Planning</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-query-enable"></a>16.4.5.1. Planner Method Configuration</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-query-enable"></a>16.4.5.1. Planner Method Configuration</h4></div></div></div>
 <p>       These configuration parameters provide a crude method of
        influencing the query plans chosen by the query optimizer. If
        the default plan chosen by the optimizer for a particular query
@@ -973,36 +930,42 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
      </a>, running <a href="sql-analyze.html">ANALYZE</a> more
        frequently, increasing the value of the <a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> configuration parameter,
        and increasing the amount of statistics collected for
-       specific columns using <tt class="command">ALTER TABLE SET
-       STATISTICS</tt>.
+       specific columns using <code class="command">ALTER TABLE SET
+       STATISTICS</code>.
       </p>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-enable-hashagg"></a><span class="term"><tt class="varname">enable_hashagg</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-enable-bitmapscan"></a><span class="term"><code class="varname">enable_bitmapscan</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of bitmap-scan plan
+        types. The default is on.
+       </p></dd>
+<dt>
+<a name="guc-enable-hashagg"></a><span class="term"><code class="varname">enable_hashagg</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of hashed
         aggregation plan types. The default is on.
        </p></dd>
 <dt>
-<a name="guc-enable-hashjoin"></a><span class="term"><tt class="varname">enable_hashjoin</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-enable-hashjoin"></a><span class="term"><code class="varname">enable_hashjoin</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of hash-join plan
         types. The default is on.
        </p></dd>
 <dt>
-<a name="guc-enable-indexscan"></a><span class="term"><tt class="varname">enable_indexscan</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-enable-indexscan"></a><span class="term"><code class="varname">enable_indexscan</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of index-scan plan
         types. The default is on.
        </p></dd>
 <dt>
-<a name="guc-enable-mergejoin"></a><span class="term"><tt class="varname">enable_mergejoin</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-enable-mergejoin"></a><span class="term"><code class="varname">enable_mergejoin</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of merge-join plan
         types. The default is on.
        </p></dd>
 <dt>
-<a name="guc-enable-nestloop"></a><span class="term"><tt class="varname">enable_nestloop</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-enable-nestloop"></a><span class="term"><code class="varname">enable_nestloop</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of nested-loop join
         plans. It's not possible to suppress nested-loop joins entirely,
@@ -1011,7 +974,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         on.
        </p></dd>
 <dt>
-<a name="guc-enable-seqscan"></a><span class="term"><tt class="varname">enable_seqscan</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-enable-seqscan"></a><span class="term"><code class="varname">enable_seqscan</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of sequential scan
         plan types. It's not possible to suppress sequential scans
@@ -1020,7 +983,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         default is on.
        </p></dd>
 <dt>
-<a name="guc-enable-sort"></a><span class="term"><tt class="varname">enable_sort</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-enable-sort"></a><span class="term"><code class="varname">enable_sort</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of explicit sort
         steps. It's not possible to suppress explicit sorts entirely,
@@ -1029,7 +992,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         is on.
        </p></dd>
 <dt>
-<a name="guc-enable-tidscan"></a><span class="term"><tt class="varname">enable_tidscan</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-enable-tidscan"></a><span class="term"><code class="varname">enable_tidscan</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of <span class="acronym">TID</span>
         scan plan types. The default is on.
@@ -1037,12 +1000,9 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
+<div class="titlepage"><div><div><h4 class="title">
 <a name="runtime-config-query-constants"></a>16.4.5.2.       Planner Cost Constants
-     </h4></div></div>
-<div></div>
-</div>
+     </h4></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     Unfortunately, there is no well-defined method for determining
@@ -1053,7 +1013,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-effective-cache-size"></a><span class="term"><tt class="varname">effective_cache_size</tt> (<tt class="type">floating point</tt>)</span>
+<a name="guc-effective-cache-size"></a><span class="term"><code class="varname">effective_cache_size</code> (<code class="type">floating point</code>)</span>
 </dt>
 <dd><p>        Sets the planner's assumption about the effective size of the
         disk cache that is available to a single index scan.  This is
@@ -1073,7 +1033,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         normally 8192 bytes each. The default is 1000.
        </p></dd>
 <dt>
-<a name="guc-random-page-cost"></a><span class="term"><tt class="varname">random_page_cost</tt> (<tt class="type">floating point</tt>)</span>
+<a name="guc-random-page-cost"></a><span class="term"><code class="varname">random_page_cost</code> (<code class="type">floating point</code>)</span>
 </dt>
 <dd><p>        Sets the planner's estimate of the cost of a
         nonsequentially fetched disk page. This is measured as a
@@ -1083,14 +1043,14 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         used. The default is four.
        </p></dd>
 <dt>
-<a name="guc-cpu-tuple-cost"></a><span class="term"><tt class="varname">cpu_tuple_cost</tt> (<tt class="type">floating point</tt>)</span>
+<a name="guc-cpu-tuple-cost"></a><span class="term"><code class="varname">cpu_tuple_cost</code> (<code class="type">floating point</code>)</span>
 </dt>
 <dd><p>        Sets the planner's estimate of the cost of processing
         each row during a query. This is measured as a fraction of
         the cost of a sequential page fetch. The default is 0.01.
        </p></dd>
 <dt>
-<a name="guc-cpu-index-tuple-cost"></a><span class="term"><tt class="varname">cpu_index_tuple_cost</tt> (<tt class="type">floating point</tt>)</span>
+<a name="guc-cpu-index-tuple-cost"></a><span class="term"><code class="varname">cpu_index_tuple_cost</code> (<code class="type">floating point</code>)</span>
 </dt>
 <dd><p>        Sets the planner's estimate of the cost of processing
         each index row during an index scan. This is measured as a
@@ -1098,43 +1058,40 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         is 0.001.
        </p></dd>
 <dt>
-<a name="guc-cpu-operator-cost"></a><span class="term"><tt class="varname">cpu_operator_cost</tt> (<tt class="type">floating point</tt>)</span>
+<a name="guc-cpu-operator-cost"></a><span class="term"><code class="varname">cpu_operator_cost</code> (<code class="type">floating point</code>)</span>
 </dt>
 <dd><p>        Sets the planner's estimate of the cost of processing each
-        operator in a <tt class="literal">WHERE</tt> clause. This is measured as a fraction of
+        operator in a <code class="literal">WHERE</code> clause. This is measured as a fraction of
         the cost of a sequential page fetch. The default is 0.0025.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-query-geqo"></a>16.4.5.3. Genetic Query Optimizer</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-query-geqo"></a>16.4.5.3. Genetic Query Optimizer</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-geqo"></a><span class="term"><tt class="varname">geqo</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-geqo"></a><span class="term"><code class="varname">geqo</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables or disables genetic query optimization, which is an
         algorithm that attempts to do query planning without
         exhaustive searching. This is on by default. The
-        <tt class="varname">geqo_threshold</tt> variable provides a more
+        <code class="varname">geqo_threshold</code> variable provides a more
         granular way to disable GEQO for certain classes of queries.
        </p></dd>
 <dt>
-<a name="guc-geqo-threshold"></a><span class="term"><tt class="varname">geqo_threshold</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-geqo-threshold"></a><span class="term"><code class="varname">geqo_threshold</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Use genetic query optimization to plan queries with at least
-        this many <tt class="literal">FROM</tt> items involved. (Note that an outer
-        <tt class="literal">JOIN</tt> construct counts as only one <tt class="literal">FROM</tt>
+        this many <code class="literal">FROM</code> items involved. (Note that an outer
+        <code class="literal">JOIN</code> construct counts as only one <code class="literal">FROM</code>
         item.) The default is 12. For simpler queries it is usually best
         to use the deterministic, exhaustive planner, but for queries with
         many tables the deterministic planner takes too long.
        </p></dd>
 <dt>
-<a name="guc-geqo-effort"></a><span class="term"><tt class="varname">geqo_effort</tt>
-      (<tt class="type">integer</tt>)</span>
+<a name="guc-geqo-effort"></a><span class="term"><code class="varname">geqo_effort</code>
+      (<code class="type">integer</code>)</span>
 </dt>
 <dd>
 <p>        Controls the trade off between planning time and query plan
@@ -1144,7 +1101,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         increase the likelihood that an efficient query plan will be
         chosen.
        </p>
-<p>        <tt class="varname">geqo_effort</tt> doesn't actually do anything
+<p>        <code class="varname">geqo_effort</code> doesn't actually do anything
         directly; it is only used to compute the default values for
         the other variables that influence GEQO behavior (described
         below). If you prefer, you can set the other parameters by
@@ -1152,27 +1109,27 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-geqo-pool-size"></a><span class="term"><tt class="varname">geqo_pool_size</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-geqo-pool-size"></a><span class="term"><code class="varname">geqo_pool_size</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Controls the pool size used by GEQO. The pool size is the
         number of individuals in the genetic population.  It must be
         at least two, and useful values are typically 100 to 1000.  If
         it is set to zero (the default setting) then a suitable
-        default is chosen based on <tt class="varname">geqo_effort</tt> and
+        default is chosen based on <code class="varname">geqo_effort</code> and
         the number of tables in the query.
        </p></dd>
 <dt>
-<a name="guc-geqo-generations"></a><span class="term"><tt class="varname">geqo_generations</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-geqo-generations"></a><span class="term"><code class="varname">geqo_generations</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Controls the number of generations used by GEQO.  Generations
         specifies the number of iterations of the algorithm.  It must
         be at least one, and useful values are in the same range as
         the pool size.  If it is set to zero (the default setting)
         then a suitable default is chosen based on
-        <tt class="varname">geqo_pool_size</tt>.
+        <code class="varname">geqo_pool_size</code>.
        </p></dd>
 <dt>
-<a name="guc-geqo-selection-bias"></a><span class="term"><tt class="varname">geqo_selection_bias</tt> (<tt class="type">floating point</tt>)</span>
+<a name="guc-geqo-selection-bias"></a><span class="term"><code class="varname">geqo_selection_bias</code> (<code class="type">floating point</code>)</span>
 </dt>
 <dd><p>        Controls the selection bias used by GEQO. The selection bias
         is the selective pressure within the population. Values can be
@@ -1181,41 +1138,38 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-query-other"></a>16.4.5.4. Other Planner Options</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-query-other"></a>16.4.5.4. Other Planner Options</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-default-statistics-target"></a><span class="term"><tt class="varname">default_statistics_target</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-default-statistics-target"></a><span class="term"><code class="varname">default_statistics_target</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Sets the default statistics target for table columns that have
-        not had a column-specific target set via <tt class="command">ALTER TABLE
-        SET STATISTICS</tt>.  Larger values increase the time needed to
-        do <tt class="command">ANALYZE</tt>, but may improve the quality of the
+        not had a column-specific target set via <code class="command">ALTER TABLE
+        SET STATISTICS</code>.  Larger values increase the time needed to
+        do <code class="command">ANALYZE</code>, but may improve the quality of the
         planner's estimates. The default is 10. For more information
         on the use of statistics by the <span class="productname">PostgreSQL</span>
         query planner, refer to <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
        </p></dd>
 <dt>
-<a name="guc-from-collapse-limit"></a><span class="term"><tt class="varname">from_collapse_limit</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-from-collapse-limit"></a><span class="term"><code class="varname">from_collapse_limit</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        The planner will merge sub-queries into upper queries if the
-        resulting <tt class="literal">FROM</tt> list would have no more than
+        resulting <code class="literal">FROM</code> list would have no more than
         this many items.  Smaller values reduce planning time but may
         yield inferior query plans.  The default is 8.  It is usually
         wise to keep this less than <a href="runtime-config.html#guc-geqo-threshold">geqo_threshold</a>.
        </p></dd>
 <dt>
-<a name="guc-join-collapse-limit"></a><span class="term"><tt class="varname">join_collapse_limit</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-join-collapse-limit"></a><span class="term"><code class="varname">join_collapse_limit</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd>
-<p>        The planner will rewrite explicit inner <tt class="literal">JOIN</tt>
-        constructs into lists of <tt class="literal">FROM</tt> items whenever a
+<p>        The planner will rewrite explicit inner <code class="literal">JOIN</code>
+        constructs into lists of <code class="literal">FROM</code> items whenever a
         list of no more than this many items in total would
         result. Prior to <span class="productname">PostgreSQL</span> 7.4, joins
-        specified via the <tt class="literal">JOIN</tt> construct would
+        specified via the <code class="literal">JOIN</code> construct would
         never be reordered by the query planner. The query planner has
         subsequently been improved so that inner joins written in this
         form can be reordered; this configuration parameter controls
@@ -1224,8 +1178,8 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>          At present, the order of outer joins specified via the
-          <tt class="literal">JOIN</tt> construct is never adjusted by the query
-          planner; therefore, <tt class="varname">join_collapse_limit</tt> has no
+          <code class="literal">JOIN</code> construct is never adjusted by the query
+          planner; therefore, <code class="varname">join_collapse_limit</code> has no
           effect on this behavior. The planner may be improved to
           reorder some classes of outer joins in a future release of
           <span class="productname">PostgreSQL</span>.
@@ -1234,9 +1188,9 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <p>
        </p>
 <p>        By default, this variable is set the same as
-        <tt class="varname">from_collapse_limit</tt>, which is appropriate
+        <code class="varname">from_collapse_limit</code>, which is appropriate
         for most uses. Setting it to 1 prevents any reordering of
-        inner <tt class="literal">JOIN</tt>s. Thus, the explicit join order
+        inner <code class="literal">JOIN</code>s. Thus, the explicit join order
         specified in the query will be the actual order in which the
         relations are joined. The query planner does not always choose
         the optimal join order; advanced users may elect to
@@ -1248,7 +1202,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         compatibility reasons.
        </p>
 <p>        Setting this variable to a value between 1 and
-        <tt class="varname">from_collapse_limit</tt> might be useful to
+        <code class="varname">from_collapse_limit</code> might be useful to
         trade off planning time against the quality of the chosen plan
         (higher values produce better plans).
        </p>
@@ -1257,20 +1211,14 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-logging"></a>16.4.6. Error Reporting and Logging</h3></div></div>
-<div></div>
-</div>
-<a name="id2584764"></a><div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-logging-where"></a>16.4.6.1. Where to log</h4></div></div>
-<div></div>
-</div>
-<a name="id2584784"></a><div class="variablelist"><dl>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-logging"></a>16.4.6. Error Reporting and Logging</h3></div></div></div>
+<a name="id362331"></a><div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-logging-where"></a>16.4.6.1. Where to log</h4></div></div></div>
+<a name="id362349"></a><div class="variablelist"><dl>
 <dt>
-<a name="guc-log-destination"></a><span class="term"><tt class="varname">log_destination</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        <span class="productname">PostgreSQL</span> supports several methods
          for logging server messages, including
@@ -1281,10 +1229,10 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
          commas. The default is to log to <span class="systemitem">stderr</span> 
          only.
          This option can only be set at server start or in the
-         <tt class="filename">postgresql.conf</tt> configuration file.
+         <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
-<a name="guc-redirect-stderr"></a><span class="term"><tt class="varname">redirect_stderr</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-redirect-stderr"></a><span class="term"><code class="varname">redirect_stderr</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>         This option allows messages sent to <span class="application">stderr</span> to be
          captured and redirected into log files.
@@ -1296,181 +1244,178 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
          This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-log-directory"></a><span class="term"><tt class="varname">log_directory</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-log-directory"></a><span class="term"><code class="varname">log_directory</code> (<code class="type">string</code>)</span>
 </dt>
-<dd><p>        When <tt class="varname">redirect_stderr</tt> is enabled, this option
+<dd><p>        When <code class="varname">redirect_stderr</code> is enabled, this option
         determines the directory in which log files will be created.
         It may be specified as an absolute path, or relative to the
         cluster data directory.
         This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> configuration file.
+        <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
-<a name="guc-log-filename"></a><span class="term"><tt class="varname">log_filename</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-log-filename"></a><span class="term"><code class="varname">log_filename</code> (<code class="type">string</code>)</span>
 </dt>
-<dd><p>        When <tt class="varname">redirect_stderr</tt> is enabled, this option
+<dd><p>        When <code class="varname">redirect_stderr</code> is enabled, this option
         sets the file names of the created log files.  The value
         is treated as a <span class="systemitem">strftime</span> pattern,
-        so <tt class="literal">%</tt>-escapes
+        so <code class="literal">%</code>-escapes
         can be used to specify time-varying file names.
-        If no <tt class="literal">%</tt>-escapes are present,
+        If no <code class="literal">%</code>-escapes are present,
         <span class="productname">PostgreSQL</span> will
         append the epoch of the new log file's open time.  For example,
-        if <tt class="varname">log_filename</tt> were <tt class="literal">server_log</tt>, then the
-        chosen file name would be <tt class="literal">server_log.1093827753</tt>
+        if <code class="varname">log_filename</code> were <code class="literal">server_log</code>, then the
+        chosen file name would be <code class="literal">server_log.1093827753</code>
         for a log starting at Sun Aug 29 19:02:33 2004 MST.
         This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> configuration file.
+        <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
-<a name="guc-log-rotation-age"></a><span class="term"><tt class="varname">log_rotation_age</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-log-rotation-age"></a><span class="term"><code class="varname">log_rotation_age</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        When <tt class="varname">redirect_stderr</tt> is enabled, this option
+<dd><p>        When <code class="varname">redirect_stderr</code> is enabled, this option
         determines the maximum lifetime of an individual log file.
         After this many minutes have elapsed, a new log file will
         be created.  Set to zero to disable time-based creation of
         new log files.
         This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> configuration file.
+        <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
-<a name="guc-log-rotation-size"></a><span class="term"><tt class="varname">log_rotation_size</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-log-rotation-size"></a><span class="term"><code class="varname">log_rotation_size</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        When <tt class="varname">redirect_stderr</tt> is enabled, this option
+<dd><p>        When <code class="varname">redirect_stderr</code> is enabled, this option
         determines the maximum size of an individual log file.
         After this many kilobytes have been emitted into a log file,
         a new log file will be created.  Set to zero to disable size-based
         creation of new log files.
         This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> configuration file.
+        <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
-<a name="guc-log-truncate-on-rotation"></a><span class="term"><tt class="varname">log_truncate_on_rotation</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-log-truncate-on-rotation"></a><span class="term"><code class="varname">log_truncate_on_rotation</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd>
-<p>        When <tt class="varname">redirect_stderr</tt> is enabled, this option will cause
+<p>        When <code class="varname">redirect_stderr</code> is enabled, this option will cause
         <span class="productname">PostgreSQL</span> to truncate (overwrite),
         rather than append to, any existing log file of the same name.
         However, truncation will occur only when a new file is being opened
         due to time-based rotation, not during server startup or size-based
         rotation.  When false, pre-existing files will be appended to in
         all cases.  For example, using this option in combination with
-        a <tt class="varname">log_filename</tt> like <tt class="literal">postgresql-%H.log</tt>
+        a <code class="varname">log_filename</code> like <code class="literal">postgresql-%H.log</code>
         would result in generating twenty-four hourly log files and then
         cyclically overwriting them.
         This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> configuration file.
+        <code class="filename">postgresql.conf</code> configuration file.
        </p>
 <p>        Example:  To keep 7 days of logs, one log file per day named
-        <tt class="literal">server_log.Mon</tt>, <tt class="literal">server_log.Tue</tt>, 
+        <code class="literal">server_log.Mon</code>, <code class="literal">server_log.Tue</code>, 
         etc, and automatically overwrite last week's log with this week's log,
-        set <tt class="varname">log_filename</tt> to <tt class="literal">server_log.%a</tt>, 
-        <tt class="varname">log_truncate_on_rotation</tt> to <tt class="literal">true</tt>, and 
-        <tt class="varname">log_rotation_age</tt> to <tt class="literal">1440</tt>.
+        set <code class="varname">log_filename</code> to <code class="literal">server_log.%a</code>, 
+        <code class="varname">log_truncate_on_rotation</code> to <code class="literal">true</code>, and 
+        <code class="varname">log_rotation_age</code> to <code class="literal">1440</code>.
        </p>
 <p>        Example: To keep 24 hours of logs, one log file per hour, but 
         also rotate sooner if the log file size exceeds 1GB, set 
-        <tt class="varname">log_filename</tt> to <tt class="literal">server_log.%H%M</tt>, 
-        <tt class="varname">log_truncate_on_rotation</tt> to <tt class="literal">true</tt>, 
-        <tt class="varname">log_rotation_age</tt> to <tt class="literal">60</tt>, and 
-        <tt class="varname">log_rotation_size</tt> to <tt class="literal">1000000</tt>.
-        Including <tt class="literal">%M</tt> in <tt class="varname">log_filename</tt> allows
+        <code class="varname">log_filename</code> to <code class="literal">server_log.%H%M</code>, 
+        <code class="varname">log_truncate_on_rotation</code> to <code class="literal">true</code>, 
+        <code class="varname">log_rotation_age</code> to <code class="literal">60</code>, and 
+        <code class="varname">log_rotation_size</code> to <code class="literal">1000000</code>.
+        Including <code class="literal">%M</code> in <code class="varname">log_filename</code> allows
         any size-driven rotations that may occur to select a filename
         different from the hour's initial filename.
        </p>
 </dd>
 <dt>
-<a name="guc-syslog-facility"></a><span class="term"><tt class="varname">syslog_facility</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-syslog-facility"></a><span class="term"><code class="varname">syslog_facility</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        When logging to <span class="application">syslog</span> is enabled, this option
         determines the <span class="application">syslog</span>
         &#8220;<span class="quote">facility</span>&#8221; to be used.  You may choose
-        from <tt class="literal">LOCAL0</tt>, <tt class="literal">LOCAL1</tt>,
-        <tt class="literal">LOCAL2</tt>, <tt class="literal">LOCAL3</tt>, <tt class="literal">LOCAL4</tt>,
-        <tt class="literal">LOCAL5</tt>, <tt class="literal">LOCAL6</tt>, <tt class="literal">LOCAL7</tt>;
-        the default is <tt class="literal">LOCAL0</tt>. See also the
+        from <code class="literal">LOCAL0</code>, <code class="literal">LOCAL1</code>,
+        <code class="literal">LOCAL2</code>, <code class="literal">LOCAL3</code>, <code class="literal">LOCAL4</code>,
+        <code class="literal">LOCAL5</code>, <code class="literal">LOCAL6</code>, <code class="literal">LOCAL7</code>;
+        the default is <code class="literal">LOCAL0</code>. See also the
         documentation of your system's
         <span class="application">syslog</span> daemon.
         This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-syslog-ident"></a><span class="term"><tt class="varname">syslog_ident</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-syslog-ident"></a><span class="term"><code class="varname">syslog_ident</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>         When logging to <span class="application">syslog</span> is enabled, this option
          determines the program name used to identify
          <span class="productname">PostgreSQL</span> messages in
          <span class="application">syslog</span> logs. The default is
-         <tt class="literal">postgres</tt>.
+         <code class="literal">postgres</code>.
           This option can only be set at server start.
         </p></dd>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-logging-when"></a>16.4.6.2. When To Log</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-logging-when"></a>16.4.6.2. When To Log</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-client-min-messages"></a><span class="term"><tt class="varname">client_min_messages</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-client-min-messages"></a><span class="term"><code class="varname">client_min_messages</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Controls which message levels are sent to the client.
-        Valid values are <tt class="literal">DEBUG5</tt>,
-        <tt class="literal">DEBUG4</tt>, <tt class="literal">DEBUG3</tt>, <tt class="literal">DEBUG2</tt>,
-        <tt class="literal">DEBUG1</tt>, <tt class="literal">LOG</tt>, <tt class="literal">NOTICE</tt>,
-        <tt class="literal">WARNING</tt>, and <tt class="literal">ERROR</tt>.  Each level
+        Valid values are <code class="literal">DEBUG5</code>,
+        <code class="literal">DEBUG4</code>, <code class="literal">DEBUG3</code>, <code class="literal">DEBUG2</code>,
+        <code class="literal">DEBUG1</code>, <code class="literal">LOG</code>, <code class="literal">NOTICE</code>,
+        <code class="literal">WARNING</code>, and <code class="literal">ERROR</code>.  Each level
         includes all the levels that follow it.  The later the level,
         the fewer messages are sent.  The default is
-        <tt class="literal">NOTICE</tt>.  Note that <tt class="literal">LOG</tt> has a different
-        rank here than in <tt class="varname">log_min_messages</tt>.
+        <code class="literal">NOTICE</code>.  Note that <code class="literal">LOG</code> has a different
+        rank here than in <code class="varname">log_min_messages</code>.
        </p></dd>
 <dt>
-<a name="guc-log-min-messages"></a><span class="term"><tt class="varname">log_min_messages</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-log-min-messages"></a><span class="term"><code class="varname">log_min_messages</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Controls which message levels are written to the server log.
-        Valid values are <tt class="literal">DEBUG5</tt>, <tt class="literal">DEBUG4</tt>,
-        <tt class="literal">DEBUG3</tt>, <tt class="literal">DEBUG2</tt>, <tt class="literal">DEBUG1</tt>,
-        <tt class="literal">INFO</tt>, <tt class="literal">NOTICE</tt>, <tt class="literal">WARNING</tt>,
-        <tt class="literal">ERROR</tt>, <tt class="literal">LOG</tt>, <tt class="literal">FATAL</tt>, and
-        <tt class="literal">PANIC</tt>.  Each level includes all the levels that
+        Valid values are <code class="literal">DEBUG5</code>, <code class="literal">DEBUG4</code>,
+        <code class="literal">DEBUG3</code>, <code class="literal">DEBUG2</code>, <code class="literal">DEBUG1</code>,
+        <code class="literal">INFO</code>, <code class="literal">NOTICE</code>, <code class="literal">WARNING</code>,
+        <code class="literal">ERROR</code>, <code class="literal">LOG</code>, <code class="literal">FATAL</code>, and
+        <code class="literal">PANIC</code>.  Each level includes all the levels that
         follow it.  The later the level, the fewer messages are sent
-        to the log.  The default is <tt class="literal">NOTICE</tt>.  Note that
-        <tt class="literal">LOG</tt> has a different rank here than in
-        <tt class="varname">client_min_messages</tt>.
+        to the log.  The default is <code class="literal">NOTICE</code>.  Note that
+        <code class="literal">LOG</code> has a different rank here than in
+        <code class="varname">client_min_messages</code>.
         Only superusers can change this setting.
        </p></dd>
 <dt>
-<a name="guc-log-error-verbosity"></a><span class="term"><tt class="varname">log_error_verbosity</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-log-error-verbosity"></a><span class="term"><code class="varname">log_error_verbosity</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Controls the amount of detail written in the server log for each
-        message that is logged.  Valid values are <tt class="literal">TERSE</tt>,
-        <tt class="literal">DEFAULT</tt>, and <tt class="literal">VERBOSE</tt>, each adding more
+        message that is logged.  Valid values are <code class="literal">TERSE</code>,
+        <code class="literal">DEFAULT</code>, and <code class="literal">VERBOSE</code>, each adding more
         fields to displayed messages.
         Only superusers can change this setting.
        </p></dd>
 <dt>
-<a name="guc-log-min-error-statement"></a><span class="term"><tt class="varname">log_min_error_statement</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-log-min-error-statement"></a><span class="term"><code class="varname">log_min_error_statement</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Controls whether or not the SQL statement that causes an error
         condition will also be recorded in the server log. All SQL
         statements that cause an error of the specified level or
         higher are logged.  The default is
-        <tt class="literal">PANIC</tt> (effectively turning this feature
-        off for normal use). Valid values are <tt class="literal">DEBUG5</tt>,
-        <tt class="literal">DEBUG4</tt>, <tt class="literal">DEBUG3</tt>,
-        <tt class="literal">DEBUG2</tt>, <tt class="literal">DEBUG1</tt>,
-        <tt class="literal">INFO</tt>, <tt class="literal">NOTICE</tt>,
-        <tt class="literal">WARNING</tt>, <tt class="literal">ERROR</tt>,
-        <tt class="literal">FATAL</tt>, and <tt class="literal">PANIC</tt>.  For
-        example, if you set this to <tt class="literal">ERROR</tt> then all
+        <code class="literal">PANIC</code> (effectively turning this feature
+        off for normal use). Valid values are <code class="literal">DEBUG5</code>,
+        <code class="literal">DEBUG4</code>, <code class="literal">DEBUG3</code>,
+        <code class="literal">DEBUG2</code>, <code class="literal">DEBUG1</code>,
+        <code class="literal">INFO</code>, <code class="literal">NOTICE</code>,
+        <code class="literal">WARNING</code>, <code class="literal">ERROR</code>,
+        <code class="literal">FATAL</code>, and <code class="literal">PANIC</code>.  For
+        example, if you set this to <code class="literal">ERROR</code> then all
         SQL statements causing errors, fatal errors, or panics will be
         logged. Enabling this option can be helpful in tracking down
         the source of any errors that appear in the server log.
         Only superusers can change this setting.
        </p></dd>
 <dt>
-<a name="guc-log-min-duration-statement"></a><span class="term"><tt class="varname">log_min_duration_statement</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-log-min-duration-statement"></a><span class="term"><code class="varname">log_min_duration_statement</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>         Sets a minimum statement execution time (in milliseconds)
          that causes a statement to be logged.  All SQL statements
@@ -1478,22 +1423,22 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
          their duration.  Setting this to zero will print
          all queries and their durations.  Minus-one (the default)
          disables the feature.  For example, if you set it to 
-         <tt class="literal">250</tt> then all SQL statements that run 250ms 
+         <code class="literal">250</code> then all SQL statements that run 250ms 
          or longer will be logged.  Enabling this option can be
          useful in tracking down unoptimized queries in your applications.
          Only superusers can change this setting.
         </p></dd>
 <dt>
-<a name="guc-silent-mode"></a><span class="term"><tt class="varname">silent_mode</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-silent-mode"></a><span class="term"><code class="varname">silent_mode</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Runs the server silently. If this option is set, the server
         will automatically run in background and any controlling
         terminals are disassociated (same effect as
-        <tt class="command">postmaster</tt>'s <tt class="option">-S</tt> option).
+        <code class="command">postmaster</code>'s <code class="option">-S</code> option).
         The server's standard output and standard error are redirected
-        to <tt class="literal">/dev/null</tt>, so any messages sent to them will be lost.
+        to <code class="literal">/dev/null</code>, so any messages sent to them will be lost.
         Unless <span class="application">syslog</span> logging is selected or
-        <tt class="varname">redirect_stderr</tt> is enabled, using this option
+        <code class="varname">redirect_stderr</code> is enabled, using this option
         is discouraged because it makes it impossible to see error messages.
        </p></dd>
 </dl></div>
@@ -1501,33 +1446,33 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         these settings:
         </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">DEBUG[1-5]</tt></span></dt>
+<dt><span class="term"><code class="literal">DEBUG[1-5]</code></span></dt>
 <dd><p>            Provides information for use by developers.
            </p></dd>
-<dt><span class="term"><tt class="literal">INFO</tt></span></dt>
+<dt><span class="term"><code class="literal">INFO</code></span></dt>
 <dd><p>            Provides information implicitly requested by the user,
-            e.g., during <tt class="command">VACUUM VERBOSE</tt>.
+            e.g., during <code class="command">VACUUM VERBOSE</code>.
            </p></dd>
-<dt><span class="term"><tt class="literal">NOTICE</tt></span></dt>
+<dt><span class="term"><code class="literal">NOTICE</code></span></dt>
 <dd><p>            Provides information that may be helpful to users, e.g.,
             truncation of long identifiers and the creation of indexes as part
             of primary keys.
            </p></dd>
-<dt><span class="term"><tt class="literal">WARNING</tt></span></dt>
-<dd><p>            Provides warnings to the user, e.g., <tt class="command">COMMIT</tt>
+<dt><span class="term"><code class="literal">WARNING</code></span></dt>
+<dd><p>            Provides warnings to the user, e.g., <code class="command">COMMIT</code>
             outside a transaction block.
            </p></dd>
-<dt><span class="term"><tt class="literal">ERROR</tt></span></dt>
+<dt><span class="term"><code class="literal">ERROR</code></span></dt>
 <dd><p>            Reports an error that caused the current command to abort.
            </p></dd>
-<dt><span class="term"><tt class="literal">LOG</tt></span></dt>
+<dt><span class="term"><code class="literal">LOG</code></span></dt>
 <dd><p>            Reports information of interest to administrators, e.g.,
             checkpoint activity.
            </p></dd>
-<dt><span class="term"><tt class="literal">FATAL</tt></span></dt>
+<dt><span class="term"><code class="literal">FATAL</code></span></dt>
 <dd><p>            Reports an error that caused the current session to abort.
            </p></dd>
-<dt><span class="term"><tt class="literal">PANIC</tt></span></dt>
+<dt><span class="term"><code class="literal">PANIC</code></span></dt>
 <dd><p>            Reports an error that caused all sessions to abort.
            </p></dd>
 </dl></div>
@@ -1535,59 +1480,56 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-logging-what"></a>16.4.6.3. What To Log</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-logging-what"></a>16.4.6.3. What To Log</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">debug_print_parse</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">debug_print_rewritten</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">debug_print_plan</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="varname">debug_pretty_print</tt> (<tt class="type">boolean</tt>)</span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_parse</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_rewritten</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_plan</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_pretty_print</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        These options enable various debugging output to be emitted.
         For each executed query, they print
         the resulting parse tree, the query rewriter output, or the
-        execution plan.  <tt class="varname">debug_pretty_print</tt> indents
+        execution plan.  <code class="varname">debug_pretty_print</code> indents
         these displays to produce a more readable but much longer
-        output format.  <tt class="varname">client_min_messages</tt> or
-        <tt class="varname">log_min_messages</tt> must be
-        <tt class="literal">DEBUG1</tt> or lower to actually send this output
+        output format.  <code class="varname">client_min_messages</code> or
+        <code class="varname">log_min_messages</code> must be
+        <code class="literal">DEBUG1</code> or lower to actually send this output
         to the client or the server log, respectively.
         These options are off by default.
        </p></dd>
 <dt>
-<a name="guc-log-connections"></a><span class="term"><tt class="varname">log_connections</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-log-connections"></a><span class="term"><code class="varname">log_connections</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        This outputs a line to the server log detailing each successful
         connection. This is off by default, although it is probably very
         useful. This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> configuration file.
+        <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
-<a name="guc-log-disconnections"></a><span class="term"><tt class="varname">log_disconnections</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-log-disconnections"></a><span class="term"><code class="varname">log_disconnections</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        This outputs a line in the server log similar to
-        <tt class="varname">log_connections</tt> but at session termination,
+        <code class="varname">log_connections</code> but at session termination,
         and includes the duration of the session.  This is off by
         default. This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> configuration file.
+        <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
-<a name="guc-log-duration"></a><span class="term"><tt class="varname">log_duration</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-log-duration"></a><span class="term"><code class="varname">log_duration</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Causes the duration of every completed statement which satisfies
-        <tt class="varname">log_statement</tt> to be logged.  When using this option, 
+        <code class="varname">log_statement</code> to be logged.  When using this option, 
         if you are not using <span class="application">syslog</span>, it is recommended 
-        that you log the PID or session ID using <tt class="varname">log_line_prefix</tt> 
+        that you log the PID or session ID using <code class="varname">log_line_prefix</code> 
         so that you can link the statement to the 
         duration using the process ID or session ID. The default is off.  
         Only superusers can change this setting.
        </p></dd>
 <dt>
-<a name="guc-log-line-prefix"></a><span class="term"><tt class="varname">log_line_prefix</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-log-line-prefix"></a><span class="term"><code class="varname">log_line_prefix</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
-<p>         This is a <tt class="function">printf</tt>-style string that is output at the
+<p>         This is a <code class="function">printf</code>-style string that is output at the
          beginning of each log line. The default is an empty string.
          Each recognized escape is replaced as outlined 
          below - anything else that looks like an escape is ignored. Other
@@ -1598,7 +1540,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
          time stamp and process ID information, so you probably do not want to
          use those escapes if you are using <span class="application">syslog</span>.
          This option can only be set at server start or in the
-         <tt class="filename">postgresql.conf</tt> configuration file.
+         <code class="filename">postgresql.conf</code> configuration file.
 
          </p>
 <div class="informaltable"><table border="1">
@@ -1614,37 +1556,37 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">%u</tt></td>
+<td><code class="literal">%u</code></td>
 <td>User name</td>
 <td>yes</td>
 </tr>
 <tr>
-<td><tt class="literal">%d</tt></td>
+<td><code class="literal">%d</code></td>
 <td>Database name</td>
 <td>yes</td>
 </tr>
 <tr>
-<td><tt class="literal">%r</tt></td>
+<td><code class="literal">%r</code></td>
 <td>Remote host name or IP address, and remote port</td>
 <td>yes</td>
 </tr>
 <tr>
-<td><tt class="literal">%p</tt></td>
+<td><code class="literal">%p</code></td>
 <td>Process ID</td>
 <td>no</td>
 </tr>
 <tr>
-<td><tt class="literal">%t</tt></td>
+<td><code class="literal">%t</code></td>
 <td>Time stamp</td>
 <td>no</td>
 </tr>
 <tr>
-<td><tt class="literal">%i</tt></td>
+<td><code class="literal">%i</code></td>
 <td>Command tag: This is the command that generated the log line.</td>
 <td>yes</td>
 </tr>
 <tr>
-<td><tt class="literal">%c</tt></td>
+<td><code class="literal">%c</code></td>
 <td>Session ID: A unique identifier for each session.
              It is 2 4-byte hexadecimal numbers (without leading zeros) 
              separated by a dot. The numbers
@@ -1653,30 +1595,30 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <td>yes</td>
 </tr>
 <tr>
-<td><tt class="literal">%l</tt></td>
+<td><code class="literal">%l</code></td>
 <td>Number of the log line for each process, starting at 1</td>
 <td>no</td>
 </tr>
 <tr>
-<td><tt class="literal">%s</tt></td>
+<td><code class="literal">%s</code></td>
 <td>Session start time stamp</td>
 <td>yes</td>
 </tr>
 <tr>
-<td><tt class="literal">%x</tt></td>
+<td><code class="literal">%x</code></td>
 <td>Transaction ID</td>
 <td>yes</td>
 </tr>
 <tr>
-<td><tt class="literal">%q</tt></td>
+<td><code class="literal">%q</code></td>
 <td>Does not produce any output, but tells non-session
              processes to stop at this point in the string. Ignored by
              session processes.</td>
 <td>no</td>
 </tr>
 <tr>
-<td><tt class="literal">%%</tt></td>
-<td>Literal <tt class="literal">%</tt>
+<td><code class="literal">%%</code></td>
+<td>Literal <code class="literal">%</code>
 </td>
 <td>no</td>
 </tr>
@@ -1686,27 +1628,27 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-log-statement"></a><span class="term"><tt class="varname">log_statement</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-log-statement"></a><span class="term"><code class="varname">log_statement</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        Controls which SQL statements are logged. Valid values are
-        <tt class="literal">none</tt>, <tt class="literal">ddl</tt>, <tt class="literal">mod</tt>, and
-        <tt class="literal">all</tt>. <tt class="literal">ddl</tt> logs all data definition
-        commands like <tt class="literal">CREATE</tt>, <tt class="literal">ALTER</tt>, and
-        <tt class="literal">DROP</tt> commands. <tt class="literal">mod</tt> logs all
-        <tt class="literal">ddl</tt> statements, plus <tt class="literal">INSERT</tt>,
-        <tt class="literal">UPDATE</tt>, <tt class="literal">DELETE</tt>, <tt class="literal">TRUNCATE</tt>,
-        and <tt class="literal">COPY FROM</tt>. <tt class="literal">PREPARE</tt> and
-        <tt class="literal">EXPLAIN ANALYZE</tt> statements are also logged if their
+        <code class="literal">none</code>, <code class="literal">ddl</code>, <code class="literal">mod</code>, and
+        <code class="literal">all</code>. <code class="literal">ddl</code> logs all data definition
+        commands like <code class="literal">CREATE</code>, <code class="literal">ALTER</code>, and
+        <code class="literal">DROP</code> commands. <code class="literal">mod</code> logs all
+        <code class="literal">ddl</code> statements, plus <code class="literal">INSERT</code>,
+        <code class="literal">UPDATE</code>, <code class="literal">DELETE</code>, <code class="literal">TRUNCATE</code>,
+        and <code class="literal">COPY FROM</code>. <code class="literal">PREPARE</code> and
+        <code class="literal">EXPLAIN ANALYZE</code> statements are also logged if their
         contained command is of an appropriate type.
        </p>
-<p>        The default is <tt class="literal">none</tt>. Only superusers can change this
+<p>        The default is <code class="literal">none</code>. Only superusers can change this
         setting.
        </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>         The <tt class="command">EXECUTE</tt> statement is not considered a
-         <tt class="literal">ddl</tt> or <tt class="literal">mod</tt> statement.  When it is logged, 
+<p>         The <code class="command">EXECUTE</code> statement is not considered a
+         <code class="literal">ddl</code> or <code class="literal">mod</code> statement.  When it is logged, 
          only the name of the prepared statement is reported, not the
          actual prepared statement.
         </p>
@@ -1720,53 +1662,44 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </dd>
 <dt>
-<a name="guc-log-hostname"></a><span class="term"><tt class="varname">log_hostname</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-log-hostname"></a><span class="term"><code class="varname">log_hostname</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        By default, connection log messages only show the IP address of the
         connecting host. Turning on this option causes logging of the
         host name as well.  Note that depending on your host name resolution
         setup this might impose a non-negligible performance penalty. This
         option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> file.
+        <code class="filename">postgresql.conf</code> file.
        </p></dd>
 </dl></div>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-statistics"></a>16.4.7. Runtime Statistics</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-statistics"></a>16.4.7. Runtime Statistics</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-statistics-monitor"></a>16.4.7.1. Statistics Monitoring</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-statistics-monitor"></a>16.4.7.1. Statistics Monitoring</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">log_statement_stats</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">log_parser_stats</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">log_planner_stats</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="varname">log_executor_stats</tt> (<tt class="type">boolean</tt>)</span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_statement_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_parser_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_planner_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_executor_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        For each query, write performance statistics of the respective
         module to the server log. This is a crude profiling
-        instrument.  <tt class="varname">log_statement_stats</tt> reports total
+        instrument.  <code class="varname">log_statement_stats</code> reports total
         statement statistics, while the others report per-module statistics.
-        <tt class="varname">log_statement_stats</tt> cannot be enabled together with
+        <code class="varname">log_statement_stats</code> cannot be enabled together with
         any of the per-module options.  All of these options are disabled by
         default.   Only superusers can change these settings.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-statistics-collector"></a>16.4.7.2. Query and Index Statistics Collector</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-statistics-collector"></a>16.4.7.2. Query and Index Statistics Collector</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-stats-start-collector"></a><span class="term"><tt class="varname">stats_start_collector</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-stats-start-collector"></a><span class="term"><code class="varname">stats_start_collector</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Controls whether the server should start the
         statistics-collection subprocess.  This is on by default, but
@@ -1775,7 +1708,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         start.
        </p></dd>
 <dt>
-<a name="guc-stats-command-string"></a><span class="term"><tt class="varname">stats_command_string</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-stats-command-string"></a><span class="term"><code class="varname">stats_command_string</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables the collection of statistics on the currently
         executing command of each session, along with the time at
@@ -1784,31 +1717,31 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         visible to all users, only to superusers and the user owning
         the session being reported on; so it should not represent a
         security risk. This data can be accessed via the
-        <tt class="structname">pg_stat_activity</tt> system view; refer
+        <code class="structname">pg_stat_activity</code> system view; refer
         to <a href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
        </p></dd>
 <dt>
-<a name="guc-stats-block-level"></a><span class="term"><tt class="varname">stats_block_level</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-stats-block-level"></a><span class="term"><code class="varname">stats_block_level</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables the collection of block-level statistics on database
         activity. This option is disabled by default. If this option
         is enabled, the data that is produced can be accessed via the
-        <tt class="structname">pg_stat</tt> and
-        <tt class="structname">pg_statio</tt> family of system views;
+        <code class="structname">pg_stat</code> and
+        <code class="structname">pg_statio</code> family of system views;
         refer to <a href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
        </p></dd>
 <dt>
-<a name="guc-stats-row-level"></a><span class="term"><tt class="varname">stats_row_level</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-stats-row-level"></a><span class="term"><code class="varname">stats_row_level</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables the collection of row-level statistics on database
         activity. This option is disabled by default. If this option
         is enabled, the data that is produced can be accessed via the
-        <tt class="structname">pg_stat</tt> and
-        <tt class="structname">pg_statio</tt> family of system views;
+        <code class="structname">pg_stat</code> and
+        <code class="structname">pg_statio</code> family of system views;
         refer to <a href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
        </p></dd>
 <dt>
-<a name="guc-stats-reset-on-server-start"></a><span class="term"><tt class="varname">stats_reset_on_server_start</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-stats-reset-on-server-start"></a><span class="term"><code class="varname">stats_reset_on_server_start</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        If on, collected statistics are zeroed out whenever the server
         is restarted. If off, statistics are accumulated across server
@@ -1819,20 +1752,14 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-client"></a>16.4.8. Client Connection Defaults</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-client"></a>16.4.8. Client Connection Defaults</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-client-statement"></a>16.4.8.1. Statement Behavior</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-client-statement"></a>16.4.8.1. Statement Behavior</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-search-path"></a><span class="term"><tt class="varname">search_path</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-search-path"></a><span class="term"><code class="varname">search_path</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        This variable specifies the order in which schemas are searched
@@ -1843,19 +1770,19 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         schemas in the search path can only be referenced by specifying
         its containing schema with a qualified (dotted) name.
        </p>
-<p>        The value for <tt class="varname">search_path</tt> has to be a comma-separated
+<p>        The value for <code class="varname">search_path</code> has to be a comma-separated
         list of schema names.  If one of the list items is
-        the special value <tt class="literal">$user</tt>, then the schema
-        having the name returned by <tt class="function">SESSION_USER</tt> is substituted, if there
-        is such a schema.  (If not, <tt class="literal">$user</tt> is ignored.)
+        the special value <code class="literal">$user</code>, then the schema
+        having the name returned by <code class="function">SESSION_USER</code> is substituted, if there
+        is such a schema.  (If not, <code class="literal">$user</code> is ignored.)
        </p>
-<p>        The system catalog schema, <tt class="literal">pg_catalog</tt>, is always
+<p>        The system catalog schema, <code class="literal">pg_catalog</code>, is always
         searched, whether it is mentioned in the path or not.  If it is
         mentioned in the path then it will be searched in the specified
-        order.  If <tt class="literal">pg_catalog</tt> is not in the path then it will
+        order.  If <code class="literal">pg_catalog</code> is not in the path then it will
         be searched <span class="emphasis"><em>before</em></span> searching any of the path items.
         It should also be noted that the temporary-table schema,
-        <tt class="literal">pg_temp_<i class="replaceable"><tt>nnn</tt></i></tt>, is implicitly searched before any of
+        <code class="literal">pg_temp_<em class="replaceable"><code>nnn</code></em></code>, is implicitly searched before any of
         these.
        </p>
 <p>        When objects are created without specifying a particular target
@@ -1864,30 +1791,30 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         empty.
        </p>
 <p>        The default value for this parameter is
-        <tt class="literal">'$user, public'</tt> (where the second part will be
-        ignored if there is no schema named <tt class="literal">public</tt>).
+        <code class="literal">'$user, public'</code> (where the second part will be
+        ignored if there is no schema named <code class="literal">public</code>).
         This supports shared use of a database (where no users
-        have private schemas, and all share use of <tt class="literal">public</tt>),
+        have private schemas, and all share use of <code class="literal">public</code>),
         private per-user schemas, and combinations of these.  Other
         effects can be obtained by altering the default search path
         setting, either globally or per-user.
        </p>
 <p>        The current effective value of the search path can be examined
         via the <span class="acronym">SQL</span> function
-        <tt class="function">current_schemas()</tt>.  This is not quite the same as
-        examining the value of <tt class="varname">search_path</tt>, since
-        <tt class="function">current_schemas()</tt> shows how the requests
-        appearing in <tt class="varname">search_path</tt> were resolved.
+        <code class="function">current_schemas()</code>.  This is not quite the same as
+        examining the value of <code class="varname">search_path</code>, since
+        <code class="function">current_schemas()</code> shows how the requests
+        appearing in <code class="varname">search_path</code> were resolved.
        </p>
 <p>        For more information on schema handling, see <a href="ddl-schemas.html" title="5.8. Schemas">Section 5.8, &#8220;Schemas&#8221;</a>.
        </p>
 </dd>
 <dt>
-<a name="guc-default-tablespace"></a><span class="term"><tt class="varname">default_tablespace</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-default-tablespace"></a><span class="term"><code class="varname">default_tablespace</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        This variable specifies the default tablespace in which to create
-        objects (tables and indexes) when a <tt class="command">CREATE</tt> command does
+        objects (tables and indexes) when a <code class="command">CREATE</code> command does
         not explicitly specify a tablespace.
        </p>
 <p>        The value is either the name of a tablespace, or an empty string
@@ -1901,7 +1828,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-check-function-bodies"></a><span class="term"><tt class="varname">check_function_bodies</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-check-function-bodies"></a><span class="term"><code class="varname">check_function_bodies</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        This parameter is normally true.  When set to false, it disables
         validation of the function body string during <a href="sql-createfunction.html">CREATE FUNCTION</a>.  Disabling validation is
@@ -1909,7 +1836,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         references when restoring function definitions from a dump.
        </p></dd>
 <dt>
-<a name="guc-default-transaction-isolation"></a><span class="term"><tt class="varname">default_transaction_isolation</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-default-transaction-isolation"></a><span class="term"><code class="varname">default_transaction_isolation</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        Each SQL transaction has an isolation level, which can be
@@ -1924,7 +1851,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-default-transaction-read-only"></a><span class="term"><tt class="varname">default_transaction_read_only</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-default-transaction-read-only"></a><span class="term"><code class="varname">default_transaction_read_only</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd>
 <p>        A read-only SQL transaction cannot alter non-temporary tables.
@@ -1935,7 +1862,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-statement-timeout"></a><span class="term"><tt class="varname">statement_timeout</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-statement-timeout"></a><span class="term"><code class="varname">statement_timeout</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Abort any statement that takes over the specified number of
         milliseconds.  A value of zero (the default) turns off the limitation.
@@ -1943,65 +1870,62 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-client-format"></a>16.4.8.2. Locale and Formatting</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-client-format"></a>16.4.8.2. Locale and Formatting</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-datestyle"></a><span class="term"><tt class="varname">DateStyle</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-datestyle"></a><span class="term"><code class="varname">DateStyle</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the display format for date and time values, as well as the
         rules for interpreting ambiguous date input values. For
         historical reasons, this variable contains two independent
-        components: the output format specification (<tt class="literal">ISO</tt>,
-        <tt class="literal">Postgres</tt>, <tt class="literal">SQL</tt>, or <tt class="literal">German</tt>)
+        components: the output format specification (<code class="literal">ISO</code>,
+        <code class="literal">Postgres</code>, <code class="literal">SQL</code>, or <code class="literal">German</code>)
         and the input/output specification for year/month/day ordering
-        (<tt class="literal">DMY</tt>, <tt class="literal">MDY</tt>, or <tt class="literal">YMD</tt>). These
-        can be set separately or together. The keywords <tt class="literal">Euro</tt>
-        and <tt class="literal">European</tt> are synonyms for <tt class="literal">DMY</tt>; the
-        keywords <tt class="literal">US</tt>, <tt class="literal">NonEuro</tt>, and
-        <tt class="literal">NonEuropean</tt> are synonyms for <tt class="literal">MDY</tt>. See
+        (<code class="literal">DMY</code>, <code class="literal">MDY</code>, or <code class="literal">YMD</code>). These
+        can be set separately or together. The keywords <code class="literal">Euro</code>
+        and <code class="literal">European</code> are synonyms for <code class="literal">DMY</code>; the
+        keywords <code class="literal">US</code>, <code class="literal">NonEuro</code>, and
+        <code class="literal">NonEuropean</code> are synonyms for <code class="literal">MDY</code>. See
         <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information. The
-        default is <tt class="literal">ISO, MDY</tt>.
+        default is <code class="literal">ISO, MDY</code>.
        </p></dd>
 <dt>
-<a name="guc-timezone"></a><span class="term"><tt class="varname">timezone</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-timezone"></a><span class="term"><code class="varname">timezone</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the time zone for displaying and interpreting time
         stamps.  The default is 'unknown', which means to use whatever 
         the system environment specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
        </p></dd>
 <dt>
-<a name="guc-australian-timezones"></a><span class="term"><tt class="varname">australian_timezones</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-australian-timezones"></a><span class="term"><code class="varname">australian_timezones</code> (<code class="type">boolean</code>)</span>
 </dt>
-<dd><p>        If set to true, <tt class="literal">ACST</tt>,
-        <tt class="literal">CST</tt>, <tt class="literal">EST</tt>, and
-        <tt class="literal">SAT</tt> are interpreted as Australian time
+<dd><p>        If set to true, <code class="literal">ACST</code>,
+        <code class="literal">CST</code>, <code class="literal">EST</code>, and
+        <code class="literal">SAT</code> are interpreted as Australian time
         zones rather than as North/South American time zones and
         Saturday. The default is false.
        </p></dd>
 <dt>
-<a name="guc-extra-float-digits"></a><span class="term"><tt class="varname">extra_float_digits</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-extra-float-digits"></a><span class="term"><code class="varname">extra_float_digits</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        This parameter adjusts the number of digits displayed for
-        floating-point values, including <tt class="type">float4</tt>, <tt class="type">float8</tt>,
+        floating-point values, including <code class="type">float4</code>, <code class="type">float8</code>,
         and geometric data types.  The parameter value is added to the
-        standard number of digits (<tt class="literal">FLT_DIG</tt> or <tt class="literal">DBL_DIG</tt>
+        standard number of digits (<code class="literal">FLT_DIG</code> or <code class="literal">DBL_DIG</code>
         as appropriate).  The value can be set as high as 2, to include
         partially-significant digits; this is especially useful for dumping
         float data that needs to be restored exactly.  Or it can be set
         negative to suppress unwanted digits.
        </p></dd>
 <dt>
-<a name="guc-client-encoding"></a><span class="term"><tt class="varname">client_encoding</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-client-encoding"></a><span class="term"><code class="varname">client_encoding</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the client-side encoding (character set).
         The default is to use the database encoding.
        </p></dd>
 <dt>
-<a name="guc-lc-messages"></a><span class="term"><tt class="varname">lc_messages</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-lc-messages"></a><span class="term"><code class="varname">lc_messages</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        Sets the language in which messages are displayed.  Acceptable
@@ -2018,27 +1942,27 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        </p>
 </dd>
 <dt>
-<a name="guc-lc-monetary"></a><span class="term"><tt class="varname">lc_monetary</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-lc-monetary"></a><span class="term"><code class="varname">lc_monetary</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the locale to use for formatting monetary amounts, for
-        example with the <tt class="function">to_char</tt> family of
+        example with the <code class="function">to_char</code> family of
         functions.  Acceptable values are system-dependent; see <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
         set to the empty string (which is the default) then the value
         is inherited from the execution environment of the server in a
         system-dependent way.
        </p></dd>
 <dt>
-<a name="guc-lc-numeric"></a><span class="term"><tt class="varname">lc_numeric</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-lc-numeric"></a><span class="term"><code class="varname">lc_numeric</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the locale to use for formatting numbers, for example
-        with the <tt class="function">to_char</tt> family of
+        with the <code class="function">to_char</code> family of
         functions. Acceptable values are system-dependent; see <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
         set to the empty string (which is the default) then the value
         is inherited from the execution environment of the server in a
         system-dependent way.
        </p></dd>
 <dt>
-<a name="guc-lc-time"></a><span class="term"><tt class="varname">lc_time</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-lc-time"></a><span class="term"><code class="varname">lc_time</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the locale to use for formatting date and time values.
         (Currently, this setting does nothing, but it may in the
@@ -2050,39 +1974,36 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-client-other"></a>16.4.8.3. Other Defaults</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-client-other"></a>16.4.8.3. Other Defaults</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-explain-pretty-print"></a><span class="term"><tt class="varname">explain_pretty_print</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-explain-pretty-print"></a><span class="term"><code class="varname">explain_pretty_print</code> (<code class="type">boolean</code>)</span>
 </dt>
-<dd><p>        Determines whether <tt class="command">EXPLAIN VERBOSE</tt> uses the
+<dd><p>        Determines whether <code class="command">EXPLAIN VERBOSE</code> uses the
         indented or non-indented format for displaying detailed
         query-tree dumps. The default is on.
        </p></dd>
 <dt>
-<a name="guc-dynamic-library-path"></a><span class="term"><tt class="varname">dynamic_library_path</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-dynamic-library-path"></a><span class="term"><code class="varname">dynamic_library_path</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        If a dynamically loadable module needs to be opened and the
-        file name specified in the <tt class="command">CREATE FUNCTION</tt> or
-        <tt class="command">LOAD</tt> command
+        file name specified in the <code class="command">CREATE FUNCTION</code> or
+        <code class="command">LOAD</code> command
         does not have a directory component (i.e. the
         name does not contain a slash), the system will search this
         path for the required file.
        </p>
-<p>        The value for <tt class="varname">dynamic_library_path</tt> has to be a
+<p>        The value for <code class="varname">dynamic_library_path</code> has to be a
         list of absolute directory paths separated by colons (or semi-colons
         on Windows).  If a list element starts
-        with the special string <tt class="literal">$libdir</tt>, the
+        with the special string <code class="literal">$libdir</code>, the
         compiled-in <span class="productname">PostgreSQL</span> package
-        library directory is substituted for <tt class="literal">$libdir</tt>. This
+        library directory is substituted for <code class="literal">$libdir</code>. This
         is where the modules provided by the standard
         <span class="productname">PostgreSQL</span> distribution are installed.
-        (Use <tt class="literal">pg_config --pkglibdir</tt> to find out the name of
+        (Use <code class="literal">pg_config --pkglibdir</code> to find out the name of
         this directory.) For example:
 </p>
 <pre class="programlisting">dynamic_library_path = '/usr/local/lib/postgresql:/home/my_project/lib:$libdir'</pre>
@@ -2093,14 +2014,14 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <p>
        </p>
 <p>        The default value for this parameter is
-        <tt class="literal">'$libdir'</tt>. If the value is set to an empty
+        <code class="literal">'$libdir'</code>. If the value is set to an empty
         string, the automatic path search is turned off.
        </p>
 <p>        This parameter can be changed at run time by superusers, but a
         setting done that way will only persist until the end of the
         client connection, so this method should be reserved for
         development purposes. The recommended way to set this parameter
-        is in the <tt class="filename">postgresql.conf</tt> configuration
+        is in the <code class="filename">postgresql.conf</code> configuration
         file.
        </p>
 </dd>
@@ -2108,14 +2029,11 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-locks"></a>16.4.9. Lock Management</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-locks"></a>16.4.9. Lock Management</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-deadlock-timeout"></a><span class="term"><tt class="varname">deadlock_timeout</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-deadlock-timeout"></a><span class="term"><code class="varname">deadlock_timeout</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        This is the amount of time, in milliseconds, to wait on a lock
         before checking to see if there is a deadlock condition. The
@@ -2133,11 +2051,11 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         the waiter decides to check for deadlock.
        </p></dd>
 <dt>
-<a name="guc-max-locks-per-transaction"></a><span class="term"><tt class="varname">max_locks_per_transaction</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-locks-per-transaction"></a><span class="term"><code class="varname">max_locks_per_transaction</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        The shared lock table is sized on the assumption that at most
-        <tt class="varname">max_locks_per_transaction</tt> *
-        <tt class="varname">max_connections</tt> distinct objects will need to
+        <code class="varname">max_locks_per_transaction</code> *
+        <code class="varname">max_connections</code> distinct objects will need to
         be locked at any one time. (Thus, this parameter's name may be
         confusing: it is not a hard limit on the number of locks taken
         by any one transaction, but rather a maximum average value.)
@@ -2149,69 +2067,73 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-compatible"></a>16.4.10. Version and Platform Compatibility</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-compatible"></a>16.4.10. Version and Platform Compatibility</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-compatible-version"></a>16.4.10.1. Previous PostgreSQL Versions</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-compatible-version"></a>16.4.10.1. Previous PostgreSQL Versions</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-add-missing-from"></a><span class="term"><tt class="varname">add_missing_from</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-add-missing-from"></a><span class="term"><code class="varname">add_missing_from</code> (<code class="type">boolean</code>)</span>
 </dt>
-<dd><p>        When <tt class="literal">true</tt>, tables that are referenced by a query will be
-        automatically added to the <tt class="literal">FROM</tt> clause if not already
-        present.  The default is <tt class="literal">true</tt> for compatibility with
-        previous releases of <span class="productname">PostgreSQL</span>.  However, this
-        behavior is not SQL-standard, and many people dislike it because it
-        can mask mistakes (such as referencing a table where you should have
-        referenced its alias).  Set to <tt class="literal">false</tt> for the SQL-standard
-        behavior of rejecting references to tables that are not listed in
-        <tt class="literal">FROM</tt>.
-       </p></dd>
+<dd>
+<p>        When <code class="literal">true</code>, tables that are referenced by a query
+        will be automatically added to the <code class="literal">FROM</code> clause if
+        not already present. This behavior does not comply with the
+        SQL standard and many people dislike it because it can mask
+        mistakes (such as referencing a table where you should have
+        referenced its alias). The default is <code class="literal">false</code>. This
+        variable can be enabled for compatibility with releases of
+        <span class="productname">PostgreSQL</span> prior to 8.1, where this behavior
+        was allowed by default.
+       </p>
+<p>        Note that even when this variable is enabled, a warning
+        message will be emitted for each implicit <code class="literal">FROM</code>
+        entry referenced by a query. Users are encouraged to update
+        their applications to not rely on this behavior, by adding all
+        tables referenced by a query to the query's <code class="literal">FROM</code>
+        clause (or its <code class="literal">USING</code> clause in the case of
+        <code class="command">DELETE</code>).
+       </p>
+</dd>
 <dt>
-<a name="guc-regex-flavor"></a><span class="term"><tt class="varname">regex_flavor</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-regex-flavor"></a><span class="term"><code class="varname">regex_flavor</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        The regular expression &#8220;<span class="quote">flavor</span>&#8221; can be set to
-        <tt class="literal">advanced</tt>, <tt class="literal">extended</tt>, or <tt class="literal">basic</tt>.
-        The default is <tt class="literal">advanced</tt>.  The <tt class="literal">extended</tt>
+        <code class="literal">advanced</code>, <code class="literal">extended</code>, or <code class="literal">basic</code>.
+        The default is <code class="literal">advanced</code>.  The <code class="literal">extended</code>
         setting may be useful for exact backwards compatibility with
         pre-7.4 releases of <span class="productname">PostgreSQL</span>.  See
         <a href="functions-matching.html#posix-syntax-details" title="9.7.3.1. Regular Expression Details">Section 9.7.3.1, &#8220;Regular Expression Details&#8221;</a> for details.
        </p></dd>
 <dt>
-<a name="guc-sql-inheritance"></a><span class="term"><tt class="varname">sql_inheritance</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-sql-inheritance"></a><span class="term"><code class="varname">sql_inheritance</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        This controls the inheritance semantics, in particular whether
         subtables are included by various commands by default. They were
         not included in versions prior to 7.1. If you need the old
         behavior you can set this variable to off, but in the long run
         you are encouraged to change your applications to use the
-        <tt class="literal">ONLY</tt> key word to exclude subtables. See
+        <code class="literal">ONLY</code> key word to exclude subtables. See
         <a href="ddl-inherit.html" title="5.5. Inheritance">Section 5.5, &#8220;Inheritance&#8221;</a> for more information about inheritance.
        </p></dd>
 <dt>
-<a name="guc-default-with-oids"></a><span class="term"><tt class="varname">default_with_oids</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-default-with-oids"></a><span class="term"><code class="varname">default_with_oids</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd>
-<p>        This controls whether <tt class="command">CREATE TABLE</tt> and
-        <tt class="command">CREATE TABLE AS</tt> include an OID column in
-        newly-created tables, if neither <tt class="literal">WITH OIDS</tt>
-        nor <tt class="literal">WITHOUT OIDS</tt> is specified. It also
+<p>        This controls whether <code class="command">CREATE TABLE</code> and
+        <code class="command">CREATE TABLE AS</code> include an OID column in
+        newly-created tables, if neither <code class="literal">WITH OIDS</code>
+        nor <code class="literal">WITHOUT OIDS</code> is specified. It also
         determines whether OIDs will be included in tables created by
-        <tt class="command">SELECT INTO</tt>. In <span class="productname">PostgreSQL</span>
-        8.1 <tt class="varname">default_with_oids</tt> is disabled by default; in
+        <code class="command">SELECT INTO</code>. In <span class="productname">PostgreSQL</span>
+        8.1 <code class="varname">default_with_oids</code> is disabled by default; in
         prior versions of PostgreSQL, it was true by default.
        </p>
 <p>        The use of OIDs in user tables is considered deprecated, so
         most installations should leave this variable disabled.
         Applications that require OIDs for a particular table should
-        specify <tt class="literal">WITH OIDS</tt> when creating the
+        specify <code class="literal">WITH OIDS</code> when creating the
         table. This variable can be enabled for compatibility with old
         applications that do not follow this behavior.
        </p>
@@ -2219,41 +2141,38 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage">
-<div><div><h4 class="title">
-<a name="runtime-config-compatible-clients"></a>16.4.10.2. Platform and Client Compatibility</h4></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h4 class="title">
+<a name="runtime-config-compatible-clients"></a>16.4.10.2. Platform and Client Compatibility</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-transform-null-equals"></a><span class="term"><tt class="varname">transform_null_equals</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-transform-null-equals"></a><span class="term"><code class="varname">transform_null_equals</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd>
 <p>        When turned on, expressions of the form
-        <tt class="literal"><i class="replaceable"><tt>expr</tt></i> = NULL</tt> (or <tt class="literal">NULL
-        = <i class="replaceable"><tt>expr</tt></i></tt>) are treated as
-        <tt class="literal"><i class="replaceable"><tt>expr</tt></i> IS NULL</tt>, that is, they
-        return true if <i class="replaceable"><tt>expr</tt></i> evaluates to the null value,
+        <code class="literal"><em class="replaceable"><code>expr</code></em> = NULL</code> (or <code class="literal">NULL
+        = <em class="replaceable"><code>expr</code></em></code>) are treated as
+        <code class="literal"><em class="replaceable"><code>expr</code></em> IS NULL</code>, that is, they
+        return true if <em class="replaceable"><code>expr</code></em> evaluates to the null value,
         and false otherwise. The correct SQL-spec-compliant behavior of
-        <tt class="literal"><i class="replaceable"><tt>expr</tt></i> = NULL</tt> is to always
+        <code class="literal"><em class="replaceable"><code>expr</code></em> = NULL</code> is to always
         return null (unknown). Therefore this option defaults to off.
        </p>
 <p>        However, filtered forms in <span class="productname">Microsoft
         Access</span> generate queries that appear to use
-        <tt class="literal"><i class="replaceable"><tt>expr</tt></i> = NULL</tt> to test for
+        <code class="literal"><em class="replaceable"><code>expr</code></em> = NULL</code> to test for
         null values, so if you use that interface to access the database you
         might want to turn this option on.  Since expressions of the
-        form <tt class="literal"><i class="replaceable"><tt>expr</tt></i> = NULL</tt> always
+        form <code class="literal"><em class="replaceable"><code>expr</code></em> = NULL</code> always
         return the null value (using the correct interpretation) they are not
         very useful and do not appear often in normal applications, so
         this option does little harm in practice.  But new users are
         frequently confused about the semantics of expressions
         involving null values, so this option is not on by default.
        </p>
-<p>        Note that this option only affects the exact form <tt class="literal">= NULL</tt>,
+<p>        Note that this option only affects the exact form <code class="literal">= NULL</code>,
         not other comparison operators or other expressions
         that are computationally equivalent to some expression
-        involving the equals operator (such as <tt class="literal">IN</tt>).
+        involving the equals operator (such as <code class="literal">IN</code>).
         Thus, this option is not a general fix for bad programming.
        </p>
 <p>        Refer to <a href="functions-comparison.html" title="9.2. Comparison Operators">Section 9.2, &#8220;Comparison Operators&#8221;</a> for related information.
@@ -2263,98 +2182,92 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-preset"></a>16.4.11. Preset Options</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-preset"></a>16.4.11. Preset Options</h3></div></div></div>
 <p>     The following &#8220;<span class="quote">parameters</span>&#8221; are read-only, and are determined
      when <span class="productname">PostgreSQL</span> is compiled or when it is
      installed. As such, they have been excluded from the sample
-     <tt class="filename">postgresql.conf</tt> file.  These options report
+     <code class="filename">postgresql.conf</code> file.  These options report
      various aspects of <span class="productname">PostgreSQL</span> behavior
      that may be of interest to certain applications, particularly
      administrative front-ends.
     </p>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-block-size"></a><span class="term"><tt class="varname">block_size</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-block-size"></a><span class="term"><code class="varname">block_size</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Shows the size of a disk block.  It is determined by the value
-        of <tt class="literal">BLCKSZ</tt> when building the server. The default
+        of <code class="literal">BLCKSZ</code> when building the server. The default
         value is 8192 bytes.  The meaning of some configuration
         variables (such as <a href="runtime-config.html#guc-shared-buffers">shared_buffers</a>) is
-        influenced by <tt class="varname">block_size</tt>. See <a href="runtime-config.html#runtime-config-resource" title="16.4.3. Resource Consumption">Section 16.4.3, &#8220;Resource Consumption&#8221;</a> for information.
+        influenced by <code class="varname">block_size</code>. See <a href="runtime-config.html#runtime-config-resource" title="16.4.3. Resource Consumption">Section 16.4.3, &#8220;Resource Consumption&#8221;</a> for information.
        </p></dd>
 <dt>
-<a name="guc-integer-datetimes"></a><span class="term"><tt class="varname">integer_datetimes</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-integer-datetimes"></a><span class="term"><code class="varname">integer_datetimes</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Shows whether <span class="productname">PostgreSQL</span> was built
         with support for 64-bit-integer dates and times.  It is set by
-        configuring with <tt class="literal">--enable-integer-datetimes</tt>
+        configuring with <code class="literal">--enable-integer-datetimes</code>
         when building <span class="productname">PostgreSQL</span>.  The
-        default value is <tt class="literal">off</tt>.
+        default value is <code class="literal">off</code>.
        </p></dd>
 <dt>
-<a name="guc-lc-collate"></a><span class="term"><tt class="varname">lc_collate</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-lc-collate"></a><span class="term"><code class="varname">lc_collate</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Shows the locale in which sorting of textual data is done.
         See <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.
         The value is determined when the database cluster is initialized.
        </p></dd>
 <dt>
-<a name="guc-lc-ctype"></a><span class="term"><tt class="varname">lc_ctype</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-lc-ctype"></a><span class="term"><code class="varname">lc_ctype</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Shows the locale that determines character classifications.
         See <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.
         The value is determined when the database cluster is initialized.
-        Ordinarily this will be the same as <tt class="varname">lc_collate</tt>,
+        Ordinarily this will be the same as <code class="varname">lc_collate</code>,
         but for special applications it might be set differently.
        </p></dd>
 <dt>
-<a name="guc-max-function-args"></a><span class="term"><tt class="varname">max_function_args</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-function-args"></a><span class="term"><code class="varname">max_function_args</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Shows the maximum number of function arguments. It is determined by
-        the value of <tt class="literal">FUNC_MAX_ARGS</tt> when building the server. The
-        default value is 32.
+        the value of <code class="literal">FUNC_MAX_ARGS</code> when building the server. The
+        default value is 100.
        </p></dd>
 <dt>
-<a name="guc-max-identifier-length"></a><span class="term"><tt class="varname">max_identifier_length</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-identifier-length"></a><span class="term"><code class="varname">max_identifier_length</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Shows the maximum identifier length. It is determined as one
-        less than the value of <tt class="literal">NAMEDATALEN</tt> when building
-        the server. The default value of <tt class="literal">NAMEDATALEN</tt> is
+        less than the value of <code class="literal">NAMEDATALEN</code> when building
+        the server. The default value of <code class="literal">NAMEDATALEN</code> is
         64; therefore the default
-        <tt class="varname">max_identifier_length</tt> is 63.
+        <code class="varname">max_identifier_length</code> is 63.
        </p></dd>
 <dt>
-<a name="guc-max-index-keys"></a><span class="term"><tt class="varname">max_index_keys</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-max-index-keys"></a><span class="term"><code class="varname">max_index_keys</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Shows the maximum number of index keys. It is determined by
-        the value of <tt class="literal">INDEX_MAX_KEYS</tt> when building the server. The
+        the value of <code class="literal">INDEX_MAX_KEYS</code> when building the server. The
         default value is 32.
        </p></dd>
 <dt>
-<a name="guc-server-encoding"></a><span class="term"><tt class="varname">server_encoding</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-server-encoding"></a><span class="term"><code class="varname">server_encoding</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Shows the database encoding (character set).
         It is determined when the database is created.  Ordinarily,
         clients need only be concerned with the value of <a href="runtime-config.html#guc-client-encoding">client_encoding</a>.
        </p></dd>
 <dt>
-<a name="guc-server-version"></a><span class="term"><tt class="varname">server_version</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-server-version"></a><span class="term"><code class="varname">server_version</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Shows the version number of the server. It is determined by the
-        value of <tt class="literal">PG_VERSION</tt> when building the server.
+        value of <code class="literal">PG_VERSION</code> when building the server.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-custom"></a>16.4.12. Customized Options</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-custom"></a>16.4.12. Customized Options</h3></div></div></div>
 <p>     This feature was designed to allow options not normally known to
      <span class="productname">PostgreSQL</span> to be added by add-on modules
      (such as procedural languages).  This allows add-on modules to be
@@ -2362,23 +2275,23 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
     </p>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-custom-variable-classes"></a><span class="term"><tt class="varname">custom_variable_classes</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-custom-variable-classes"></a><span class="term"><code class="varname">custom_variable_classes</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        This variable specifies one or several class names to be used for
         custom variables, in the form of a comma-separated list. A custom
         variable is a variable not normally known
         to <span class="productname">PostgreSQL</span> proper but used by some
         add-on module.  Such variables must have names consisting of a class
-        name, a dot, and a variable name.  <tt class="varname">custom_variable_classes</tt>
+        name, a dot, and a variable name.  <code class="varname">custom_variable_classes</code>
         specifies all the class names in use in a particular installation.
         This option can only be set at server start or in the
-        <tt class="filename">postgresql.conf</tt> configuration file.
+        <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 </dl></div>
 <p>     The difficulty with setting custom variables in
-     <tt class="filename">postgresql.conf</tt> is that the file must be read before add-on
+     <code class="filename">postgresql.conf</code> is that the file must be read before add-on
      modules have been loaded, and so custom variables would ordinarily be
-     rejected as unknown.  When <tt class="varname">custom_variable_classes</tt> is set,
+     rejected as unknown.  When <code class="varname">custom_variable_classes</code> is set,
      the server will accept definitions of arbitrary variables within each
      specified class.  These variables will be treated as placeholders and
      will have no function until the module that defines them is loaded. When a
@@ -2388,7 +2301,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
      placeholders of its class that remain (which presumably would be
      misspelled configuration variables).
     </p>
-<p>     Here is an example of what <tt class="filename">postgresql.conf</tt> might contain
+<p>     Here is an example of what <code class="filename">postgresql.conf</code> might contain
      when using custom variables:
 
 </p>
@@ -2400,36 +2313,33 @@ plruby.bar = true        # generates error, unknown class name</pre>
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-developer"></a>16.4.13. Developer Options</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-developer"></a>16.4.13. Developer Options</h3></div></div></div>
 <p>     The following options are intended for work on the
      <span class="productname">PostgreSQL</span> source, and in some cases
      to assist with recovery of severely damaged databases.  There
      should be no reason to use them in a production database setup.
      As such, they have been excluded from the sample
-     <tt class="filename">postgresql.conf</tt> file.  Note that many of these
+     <code class="filename">postgresql.conf</code> file.  Note that many of these
      options require special source compilation flags to work at all.
     </p>
 <div class="variablelist"><dl>
 <dt>
-<a name="guc-debug-assertions"></a><span class="term"><tt class="varname">debug_assertions</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-debug-assertions"></a><span class="term"><code class="varname">debug_assertions</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Turns on various assertion checks. This is a debugging aid. If
         you are experiencing strange problems or crashes you might want
         to turn this on, as it might expose programming mistakes. To use
-        this option, the macro <tt class="symbol">USE_ASSERT_CHECKING</tt>
+        this option, the macro <code class="symbol">USE_ASSERT_CHECKING</code>
         must be defined when <span class="productname">PostgreSQL</span> is
-        built (accomplished by the <tt class="command">configure</tt> option
-        <tt class="option">--enable-cassert</tt>). Note that
-        <tt class="varname">debug_assertions</tt> defaults to on if
+        built (accomplished by the <code class="command">configure</code> option
+        <code class="option">--enable-cassert</code>). Note that
+        <code class="varname">debug_assertions</code> defaults to on if
         <span class="productname">PostgreSQL</span> has been built with
         assertions enabled.
        </p></dd>
 <dt>
-<a name="guc-pre-auth-delay"></a><span class="term"><tt class="varname">pre_auth_delay</tt> (<tt class="type">integer</tt>)</span>
+<a name="guc-pre-auth-delay"></a><span class="term"><code class="varname">pre_auth_delay</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        If nonzero, a delay of this many seconds occurs just after a new
         server process is forked, before it conducts the authentication
@@ -2438,34 +2348,34 @@ plruby.bar = true        # generates error, unknown class name</pre>
         authentication.
        </p></dd>
 <dt>
-<a name="guc-trace-notify"></a><span class="term"><tt class="varname">trace_notify</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-trace-notify"></a><span class="term"><code class="varname">trace_notify</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Generates a great amount of debugging output for the
-        <tt class="command">LISTEN</tt> and <tt class="command">NOTIFY</tt>
+        <code class="command">LISTEN</code> and <code class="command">NOTIFY</code>
         commands.  <a href="runtime-config.html#guc-client-min-messages">client_min_messages</a> or
         <a href="runtime-config.html#guc-log-min-messages">log_min_messages</a> must be
-        <tt class="literal">DEBUG1</tt> or lower to send this output to the
+        <code class="literal">DEBUG1</code> or lower to send this output to the
         client or server log, respectively.
        </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">trace_locks</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">trace_lwlocks</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">trace_userlocks</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">trace_lock_oidmin</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">trace_lock_table</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">debug_deadlocks</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="varname">log_btree_build_stats</tt> (<tt class="type">boolean</tt>)</span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">trace_locks</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">trace_lwlocks</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">trace_userlocks</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">trace_lock_oidmin</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">trace_lock_table</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_deadlocks</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_btree_build_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>        Various other code tracing and debugging options.
        </p></dd>
 <dt>
-<a name="guc-wal-debug"></a><span class="term"><tt class="varname">wal_debug</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-wal-debug"></a><span class="term"><code class="varname">wal_debug</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        If true, emit WAL-related debugging output. This option is
-        only available if the <tt class="symbol">WAL_DEBUG</tt> macro was
+        only available if the <code class="symbol">WAL_DEBUG</code> macro was
         defined when <span class="productname">PostgreSQL</span> was
         compiled.
        </p></dd>
 <dt>
-<a name="guc-zero-damaged-pages"></a><span class="term"><tt class="varname">zero_damaged_pages</tt> (<tt class="type">boolean</tt>)</span>
+<a name="guc-zero-damaged-pages"></a><span class="term"><code class="varname">zero_damaged_pages</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Detection of a damaged page header normally causes
         <span class="productname">PostgreSQL</span> to report an error, aborting the current
-        command.  Setting <tt class="varname">zero_damaged_pages</tt> to true causes
+        command.  Setting <code class="varname">zero_damaged_pages</code> to true causes
         the system to instead report a warning, zero out the damaged page,
         and continue processing.  This behavior <span class="emphasis"><em>will destroy data</em></span>,
         namely all the rows on the damaged page.  But it allows you to get
@@ -2479,11 +2389,8 @@ plruby.bar = true        # generates error, unknown class name</pre>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="runtime-config-short"></a>16.4.14. Short Options</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-short"></a>16.4.14. Short Options</h3></div></div></div>
 <p>    For convenience there are also single letter command-line option switches
     available for some parameters. They are described in <a href="runtime-config.html#runtime-config-short-table" title="Table 16.1. Short option key">Table 16.1, &#8220;Short option key&#8221;</a>.
    </p>
@@ -2500,84 +2407,83 @@ plruby.bar = true        # generates error, unknown class name</pre>
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="option">-B <i class="replaceable"><tt>x</tt></i></tt></td>
-<td><tt class="literal">shared_buffers = <i class="replaceable"><tt>x</tt></i></tt></td>
+<td><code class="option">-B <em class="replaceable"><code>x</code></em></code></td>
+<td><code class="literal">shared_buffers = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
-<td><tt class="option">-d <i class="replaceable"><tt>x</tt></i></tt></td>
-<td><tt class="literal">log_min_messages = DEBUG<i class="replaceable"><tt>x</tt></i></tt></td>
+<td><code class="option">-d <em class="replaceable"><code>x</code></em></code></td>
+<td><code class="literal">log_min_messages = DEBUG<em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
-<td><tt class="option">-F</tt></td>
-<td><tt class="literal">fsync = off</tt></td>
+<td><code class="option">-F</code></td>
+<td><code class="literal">fsync = off</code></td>
 </tr>
 <tr>
-<td><tt class="option">-h <i class="replaceable"><tt>x</tt></i></tt></td>
-<td><tt class="literal">listen_addresses = <i class="replaceable"><tt>x</tt></i></tt></td>
+<td><code class="option">-h <em class="replaceable"><code>x</code></em></code></td>
+<td><code class="literal">listen_addresses = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
-<td><tt class="option">-i</tt></td>
-<td><tt class="literal">listen_addresses = '*'</tt></td>
+<td><code class="option">-i</code></td>
+<td><code class="literal">listen_addresses = '*'</code></td>
 </tr>
 <tr>
-<td><tt class="option">-k <i class="replaceable"><tt>x</tt></i></tt></td>
-<td><tt class="literal">unix_socket_directory = <i class="replaceable"><tt>x</tt></i></tt></td>
+<td><code class="option">-k <em class="replaceable"><code>x</code></em></code></td>
+<td><code class="literal">unix_socket_directory = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
-<td><tt class="option">-l</tt></td>
-<td><tt class="literal">ssl = on</tt></td>
+<td><code class="option">-l</code></td>
+<td><code class="literal">ssl = on</code></td>
 </tr>
 <tr>
-<td><tt class="option">-N <i class="replaceable"><tt>x</tt></i></tt></td>
-<td><tt class="literal">max_connections = <i class="replaceable"><tt>x</tt></i></tt></td>
+<td><code class="option">-N <em class="replaceable"><code>x</code></em></code></td>
+<td><code class="literal">max_connections = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
-<td><tt class="option">-p <i class="replaceable"><tt>x</tt></i></tt></td>
-<td><tt class="literal">port = <i class="replaceable"><tt>x</tt></i></tt></td>
+<td><code class="option">-p <em class="replaceable"><code>x</code></em></code></td>
+<td><code class="literal">port = <em class="replaceable"><code>x</code></em></code></td>
+</tr>
+<tr>
+<td>          <code class="option">-fb</code>, <code class="option">-fh</code>, <code class="option">-fi</code>,
+          <code class="option">-fm</code>, <code class="option">-fn</code>,
+          <code class="option">-fs</code>, <code class="option">-ft</code><sup>[<a name="fn.runtime-config-short" href="#ftn.fn.runtime-config-short">a</a>]</sup>
+         </td>
+<td>          <code class="literal">enable_bitmapscan = off</code>,
+          <code class="literal">enable_hashjoin = off</code>,
+          <code class="literal">enable_indexscan = off</code>,
+          <code class="literal">enable_mergejoin = off</code>,
+          <code class="literal">enable_nestloop = off</code>,
+          <code class="literal">enable_seqscan = off</code>,
+          <code class="literal">enable_tidscan = off</code>
+         </td>
 </tr>
 <tr>
 <td>
-<tt class="option">-fi</tt>, <tt class="option">-fh</tt>,
-          <tt class="option">-fm</tt>, <tt class="option">-fn</tt>,
-          <tt class="option">-fs</tt>, <tt class="option">-ft</tt><sup>[<a name="fn.runtime-config-short" href="#ftn.fn.runtime-config-short">a</a>]</sup>
+<code class="option">-s</code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
+</td>
+<td><code class="literal">log_statement_stats = on</code></td>
+</tr>
+<tr>
+<td>
+<code class="option">-S <em class="replaceable"><code>x</code></em></code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
+        </td>
+<td><code class="literal">work_mem = <em class="replaceable"><code>x</code></em></code></td>
+</tr>
+<tr>
+<td>
+<code class="option">-tpa</code>, <code class="option">-tpl</code>, <code class="option">-te</code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
 </td>
 <td>
-<tt class="literal">enable_indexscan = off</tt>,
-          <tt class="literal">enable_hashjoin = off</tt>,
-          <tt class="literal">enable_mergejoin = off</tt>,
-          <tt class="literal">enable_nestloop = off</tt>,
-          <tt class="literal">enable_seqscan = off</tt>,
-          <tt class="literal">enable_tidscan = off</tt>
-</td>
-</tr>
-<tr>
-<td>
-<tt class="option">-s</tt><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
-</td>
-<td><tt class="literal">log_statement_stats = on</tt></td>
-</tr>
-<tr>
-<td>
-<tt class="option">-S <i class="replaceable"><tt>x</tt></i></tt><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
-</td>
-<td><tt class="literal">work_mem = <i class="replaceable"><tt>x</tt></i></tt></td>
-</tr>
-<tr>
-<td>
-<tt class="option">-tpa</tt>, <tt class="option">-tpl</tt>, <tt class="option">-te</tt><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
-</td>
-<td>
-<tt class="literal">log_parser_stats = on</tt>,
-        <tt class="literal">log_planner_stats = on</tt>, 
-        <tt class="literal">log_executor_stats = on</tt>
+<code class="literal">log_parser_stats = on</code>,
+        <code class="literal">log_planner_stats = on</code>, 
+        <code class="literal">log_executor_stats = on</code>
 </td>
 </tr>
 </tbody>
 <tbody class="footnotes"><tr><td colspan="2"><div class="footnote"><p><sup>[<a name="ftn.fn.runtime-config-short" href="#fn.runtime-config-short">a</a>] </sup>            For historical reasons, these options must be passed to
-            the individual server process via the <tt class="option">-o</tt>
-            <tt class="command">postmaster</tt> option, for example,
-<pre class="screen">$ <b class="userinput"><tt>postmaster -o '-S 1024 -s'</tt></b></pre>
-            or via <tt class="envar">PGOPTIONS</tt> from the client side, as
+            the individual server process via the <code class="option">-o</code>
+            <code class="command">postmaster</code> option, for example,
+<pre class="screen">$ <strong class="userinput"><code>postmaster -o '-S 1024 -s'</code></strong></pre>
+            or via <code class="envar">PGOPTIONS</code> from the client side, as
             explained above.
            </p></div></td></tr></tbody>
 </table>

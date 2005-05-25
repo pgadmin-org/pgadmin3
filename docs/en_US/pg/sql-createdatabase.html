@@ -4,83 +4,80 @@
 <title>CREATE DATABASE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createconversion.html" title="CREATE CONVERSION">
+<link rel="prev" href="sql-createconversion.html" title="CREATE CONVERSION">
 <link rel="next" href="sql-createdomain.html" title="CREATE DOMAIN">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createdatabase"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createdatabase"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE DATABASE &#8212; create a new database</p>
 </div>
-<a name="id2675658"></a><div class="refsynopsisdiv">
+<a name="id445555"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE DATABASE <i class="replaceable"><tt>name</tt></i>
-    [ [ WITH ] [ OWNER [=] <i class="replaceable"><tt>dbowner</tt></i> ]
-           [ TEMPLATE [=] <i class="replaceable"><tt>template</tt></i> ]
-           [ ENCODING [=] <i class="replaceable"><tt>encoding</tt></i> ]
-           [ TABLESPACE [=] <i class="replaceable"><tt>tablespace</tt></i> ] ]</pre>
+<pre class="synopsis">CREATE DATABASE <em class="replaceable"><code>name</code></em>
+    [ [ WITH ] [ OWNER [=] <em class="replaceable"><code>dbowner</code></em> ]
+           [ TEMPLATE [=] <em class="replaceable"><code>template</code></em> ]
+           [ ENCODING [=] <em class="replaceable"><code>encoding</code></em> ]
+           [ TABLESPACE [=] <em class="replaceable"><code>tablespace</code></em> ] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2675704"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE DATABASE</tt> creates a new
+<a name="id445600"></a><h2>Description</h2>
+<p>   <code class="command">CREATE DATABASE</code> creates a new
    <span class="productname">PostgreSQL</span> database.
   </p>
 <p>   To create a database, you must be a superuser or have the special
-   <tt class="literal">CREATEDB</tt> privilege.
+   <code class="literal">CREATEDB</code> privilege.
    See <a href="sql-createuser.html">CREATE USER</a>.
   </p>
 <p>   Normally, the creator becomes the owner of the new database.
    Superusers can create databases owned by other users using the
-   <tt class="literal">OWNER</tt> clause. They can even create databases owned by
-   users with no special privileges. Non-superusers with <tt class="literal">CREATEDB</tt>
+   <code class="literal">OWNER</code> clause. They can even create databases owned by
+   users with no special privileges. Non-superusers with <code class="literal">CREATEDB</code>
    privilege can only create databases owned by themselves.
   </p>
 <p>   By default, the new database will be created by cloning the standard
-   system database <tt class="literal">template1</tt>.  A different template can be
-   specified by writing <tt class="literal">TEMPLATE
-   <i class="replaceable"><tt>name</tt></i></tt>.  In particular,
-   by writing <tt class="literal">TEMPLATE template0</tt>, you can create a virgin
+   system database <code class="literal">template1</code>.  A different template can be
+   specified by writing <code class="literal">TEMPLATE
+   <em class="replaceable"><code>name</code></em></code>.  In particular,
+   by writing <code class="literal">TEMPLATE template0</code>, you can create a virgin
    database containing only the standard objects predefined by your
    version of <span class="productname">PostgreSQL</span>.  This is useful
    if you wish to avoid copying
    any installation-local objects that may have been added to
-   <tt class="literal">template1</tt>.
+   <code class="literal">template1</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2675804"></a><h2>Parameters</h2>
+<a name="id445692"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of a database to create.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>dbowner</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>dbowner</code></em></span></dt>
 <dd><p>        The name of the database user who will own the new database,
-        or <tt class="literal">DEFAULT</tt> to use the default (namely, the
+        or <code class="literal">DEFAULT</code> to use the default (namely, the
         user executing the command).
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>template</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>template</code></em></span></dt>
 <dd><p>        The name of the template from which to create the new database,
-        or <tt class="literal">DEFAULT</tt> to use the default template
-        (<tt class="literal">template1</tt>).
+        or <code class="literal">DEFAULT</code> to use the default template
+        (<code class="literal">template1</code>).
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>encoding</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>encoding</code></em></span></dt>
 <dd><p>        Character set encoding to use in the new database.  Specify
-        a string constant (e.g., <tt class="literal">'SQL_ASCII'</tt>),
-        or an integer encoding number, or <tt class="literal">DEFAULT</tt>
+        a string constant (e.g., <code class="literal">'SQL_ASCII'</code>),
+        or an integer encoding number, or <code class="literal">DEFAULT</code>
         to use the default encoding. The character sets supported by the
         <span class="productname">PostgreSQL</span> server are described in
         <a href="multibyte.html#multibyte-charset-supported" title="20.2.1. Supported Character Sets">Section 20.2.1, &#8220;Supported Character Sets&#8221;</a>.
        </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>tablespace</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>tablespace</code></em></span></dt>
 <dd><p>        The name of the tablespace that will be associated with the
-        new database, or <tt class="literal">DEFAULT</tt> to use the
+        new database, or <code class="literal">DEFAULT</code> to use the
         template database's tablespace. This
         tablespace will be the default tablespace used for objects
         created in this database. See
@@ -93,8 +90,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2675936"></a><h2>Notes</h2>
-<p>    <tt class="command">CREATE DATABASE</tt> cannot be executed inside a transaction
+<a name="id445815"></a><h2>Notes</h2>
+<p>    <code class="command">CREATE DATABASE</code> cannot be executed inside a transaction
     block.
    </p>
 <p>    Errors along the line of &#8220;<span class="quote">could not initialize database directory</span>&#8221;
@@ -106,29 +103,29 @@
 <p>    The program <a href="app-createdb.html"><span class="application">createdb</span></a> is a
     wrapper program around this command, provided for convenience.
    </p>
-<p>   Although it is possible to copy a database other than <tt class="literal">template1</tt>
+<p>   Although it is possible to copy a database other than <code class="literal">template1</code>
    by specifying its name as the template, this is not (yet) intended as
-   a general-purpose &#8220;<span class="quote"><tt class="command">COPY DATABASE</tt></span>&#8221; facility.
+   a general-purpose &#8220;<span class="quote"><code class="command">COPY DATABASE</code></span>&#8221; facility.
    We recommend that databases used as templates be treated as read-only.
    See <a href="manage-ag-templatedbs.html" title="18.3. Template Databases">Section 18.3, &#8220;Template Databases&#8221;</a> for more information.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676010"></a><h2>Examples</h2>
+<a name="id445881"></a><h2>Examples</h2>
 <p>   To create a new database:
 
 </p>
 <pre class="programlisting">CREATE DATABASE lusiadas;</pre>
 <p>
   </p>
-<p>   To create a database <tt class="literal">sales</tt> owned by user <tt class="literal">salesapp</tt>
-   with a default tablespace of <tt class="literal">salesspace</tt>:
+<p>   To create a database <code class="literal">sales</code> owned by user <code class="literal">salesapp</code>
+   with a default tablespace of <code class="literal">salesspace</code>:
 
 </p>
 <pre class="programlisting">CREATE DATABASE sales OWNER salesapp TABLESPACE salesspace;</pre>
 <p>
   </p>
-<p>   To create a database <tt class="literal">music</tt> which supports the ISO-8859-1 
+<p>   To create a database <code class="literal">music</code> which supports the ISO-8859-1 
    character set:
 
 </p>
@@ -137,8 +134,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676066"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">CREATE DATABASE</tt> statement in the SQL
+<a name="id445934"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">CREATE DATABASE</code> statement in the SQL
    standard.  Databases are equivalent to catalogs, whose creation is
    implementation-defined.
   </p>

@@ -4,25 +4,22 @@
 <title>30.21. role_column_grants</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="infoschema-referential-constraints.html" title="30.20. referential_constraints">
+<link rel="prev" href="infoschema-referential-constraints.html" title="30.20. referential_constraints">
 <link rel="next" href="infoschema-role-routine-grants.html" title="30.22. role_routine_grants">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-role-column-grants"></a>30.21. <tt class="literal">role_column_grants</tt></h2></div></div>
-<div></div>
-</div>
-<p>   The view <tt class="literal">role_column_grants</tt> identifies all
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-role-column-grants"></a>30.21. <code class="literal">role_column_grants</code></h2></div></div></div>
+<p>   The view <code class="literal">role_column_grants</code> identifies all
    privileges granted on columns to a group that the current user is a
    member of.  Further information can be found under
-   <tt class="literal">column_privileges</tt>.
+   <code class="literal">column_privileges</code>.
   </p>
 <div class="table">
-<a name="id2627420"></a><p class="title"><b>Table 30.19. <tt class="literal">role_column_grants</tt> Columns</b></p>
+<a name="id401352"></a><p class="title"><b>Table 30.19. <code class="literal">role_column_grants</code> Columns</b></p>
 <table summary="role_column_grants Columns" border="1">
 <colgroup>
 <col>
@@ -36,48 +33,48 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">grantor</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">grantor</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the user that granted the privilege</td>
 </tr>
 <tr>
-<td><tt class="literal">grantee</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">grantee</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the group that the privilege was granted to</td>
 </tr>
 <tr>
-<td><tt class="literal">table_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the database that contains the table that contains the column (always the current database)</td>
 </tr>
 <tr>
-<td><tt class="literal">table_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the schema that contains the table that contains the column</td>
 </tr>
 <tr>
-<td><tt class="literal">table_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the table that contains the column</td>
 </tr>
 <tr>
-<td><tt class="literal">column_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">column_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Name of the column</td>
 </tr>
 <tr>
-<td><tt class="literal">privilege_type</tt></td>
-<td><tt class="type">character_data</tt></td>
-<td>       Type of the privilege: <tt class="literal">SELECT</tt>,
-       <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, or
-       <tt class="literal">REFERENCES</tt>
-</td>
+<td><code class="literal">privilege_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Type of the privilege: <code class="literal">SELECT</code>,
+       <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, or
+       <code class="literal">REFERENCES</code>
+      </td>
 </tr>
 <tr>
-<td><tt class="literal">is_grantable</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">is_grantable</code></td>
+<td><code class="type">character_data</code></td>
 <td>
-<tt class="literal">YES</tt> if the privilege is grantable, <tt class="literal">NO</tt> if not</td>
+<code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
 </tr>
 </tbody>
 </table>

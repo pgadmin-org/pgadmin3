@@ -4,75 +4,72 @@
 <title>ALTER AGGREGATE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-abort.html" title="ABORT">
+<link rel="prev" href="sql-abort.html" title="ABORT">
 <link rel="next" href="sql-alterconversion.html" title="ALTER CONVERSION">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-alteraggregate"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-alteraggregate"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>ALTER AGGREGATE &#8212; change the definition of an aggregate function</p>
 </div>
-<a name="id2664850"></a><div class="refsynopsisdiv">
+<a name="id435433"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">ALTER AGGREGATE <i class="replaceable"><tt>name</tt></i> ( <i class="replaceable"><tt>type</tt></i> ) RENAME TO <i class="replaceable"><tt>newname</tt></i>
-ALTER AGGREGATE <i class="replaceable"><tt>name</tt></i> ( <i class="replaceable"><tt>type</tt></i> ) OWNER TO <i class="replaceable"><tt>newowner</tt></i></pre>
+<pre class="synopsis">ALTER AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) RENAME TO <em class="replaceable"><code>newname</code></em>
+ALTER AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) OWNER TO <em class="replaceable"><code>newowner</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664888"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER AGGREGATE</tt> changes the definition of an
+<a name="id435469"></a><h2>Description</h2>
+<p>   <code class="command">ALTER AGGREGATE</code> changes the definition of an
    aggregate function.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664900"></a><h2>Parameters</h2>
+<a name="id435481"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing aggregate function.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>type</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>type</code></em></span></dt>
 <dd><p>      The argument data type of the aggregate function, or
-      <tt class="literal">*</tt> if the function accepts any data type.
+      <code class="literal">*</code> if the function accepts any data type.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>newname</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
 <dd><p>      The new name of the aggregate function.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>newowner</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>newowner</code></em></span></dt>
 <dd><p>      The new owner of the aggregate function.
       You must be a superuser to change an aggregate's owner.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664957"></a><h2>Examples</h2>
-<p>   To rename the aggregate function <tt class="literal">myavg</tt> for type
-   <tt class="type">integer</tt> to <tt class="literal">my_average</tt>:
+<a name="id435534"></a><h2>Examples</h2>
+<p>   To rename the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code> to <code class="literal">my_average</code>:
 </p>
 <pre class="programlisting">ALTER AGGREGATE myavg(integer) RENAME TO my_average;</pre>
 <p>
   </p>
-<p>   To change the owner of the aggregate function <tt class="literal">myavg</tt> for type
-   <tt class="type">integer</tt> to <tt class="literal">joe</tt>:
+<p>   To change the owner of the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code> to <code class="literal">joe</code>:
 </p>
 <pre class="programlisting">ALTER AGGREGATE myavg(integer) OWNER TO joe;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665011"></a><h2>Compatibility</h2>
-<p>   There is no <tt class="command">ALTER AGGREGATE</tt> statement in the SQL
+<a name="id435586"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">ALTER AGGREGATE</code> statement in the SQL
    standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665024"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createaggregate.html">CREATE AGGREGATE</a>, <a href="sql-dropaggregate.html">DROP AGGREGATE</a></span>
+<a name="id435598"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createaggregate.html">CREATE AGGREGATE</a>, <a href="sql-dropaggregate.html">DROP AGGREGATE</a>, </span>
 </div>
 </div></body>
 </html>

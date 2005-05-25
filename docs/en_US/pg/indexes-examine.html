@@ -4,25 +4,22 @@
 <title>11.8. Examining Index Usage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="previous" href="indexes-partial.html" title="11.7. Partial Indexes">
+<link rel="prev" href="indexes-partial.html" title="11.7. Partial Indexes">
 <link rel="next" href="mvcc.html" title="Chapter 12. Concurrency Control">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="indexes-examine"></a>11.8. Examining Index Usage</h2></div></div>
-<div></div>
-</div>
-<a name="id2570246"></a><p>   Although indexes in <span class="productname">PostgreSQL</span> do not need
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-examine"></a>11.8. Examining Index Usage</h2></div></div></div>
+<a name="id349044"></a><p>   Although indexes in <span class="productname">PostgreSQL</span> do not need
    maintenance and tuning, it is still important to check
    which indexes are actually used by the real-life query workload.
    Examining index usage for an individual query is done with the
    <a href="sql-explain.html">EXPLAIN</a>
    command; its application for this purpose is
-   illustrated in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using EXPLAIN&#8221;</a>.
+   illustrated in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>.
    It is also possible to gather overall statistics about index usage
    in a running server, as described in <a href="monitoring-stats.html" title="23.2. The Statistics Collector">Section 23.2, &#8220;The Statistics Collector&#8221;</a>.
   </p>
@@ -41,7 +38,7 @@
      realistic costs to each possible query plan.  In absence of any
      real statistics, some default values are assumed, which are
      almost certain to be inaccurate.  Examining an application's
-     index usage without having run <tt class="command">ANALYZE</tt> is
+     index usage without having run <code class="command">ANALYZE</code> is
      therefore a lost cause.
     </p></li>
 <li>
@@ -66,8 +63,8 @@
      their use.  There are run-time parameters that can turn off
      various plan types (described in <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>).
      For instance, turning off sequential scans
-     (<tt class="varname">enable_seqscan</tt>) and nested-loop joins
-     (<tt class="varname">enable_nestloop</tt>), which are the most basic plans,
+     (<code class="varname">enable_seqscan</code>) and nested-loop joins
+     (<code class="varname">enable_nestloop</code>), which are the most basic plans,
      will force the system to use a different plan.  If the system
      still chooses a sequential scan or nested-loop join then there is
      probably a more fundamental problem for why the index is not
@@ -79,7 +76,7 @@
      possibilities: Either the system is right and using the index is
      indeed not appropriate, or the cost estimates of the query plans
      are not reflecting reality.  So you should time your query with
-     and without indexes.  The <tt class="command">EXPLAIN ANALYZE</tt>
+     and without indexes.  The <code class="command">EXPLAIN ANALYZE</code>
      command can be useful here.
     </p></li>
 <li>

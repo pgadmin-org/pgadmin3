@@ -4,116 +4,113 @@
 <title>14.5. Installation Procedure</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
-<link rel="previous" href="install-upgrading.html" title="14.4. If You Are Upgrading">
+<link rel="prev" href="install-upgrading.html" title="14.4. If You Are Upgrading">
 <link rel="next" href="install-post.html" title="14.6. Post-Installation Setup">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="install-procedure"></a>14.5. Installation Procedure</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="install-procedure"></a>14.5. Installation Procedure</h2></div></div></div>
 <div class="procedure"><ol type="1">
 <li>
 <a name="configure"></a><p class="title"><b>Configuration</b></p>
-<a name="id2575320"></a><p>    The first step of the installation procedure is to configure the
+<a name="id353542"></a><p>    The first step of the installation procedure is to configure the
     source tree for your system and choose the options you would like.
-    This is done by running the <tt class="filename">configure</tt> script. For a
+    This is done by running the <code class="filename">configure</code> script. For a
     default installation simply enter
 </p>
-<pre class="screen"><b class="userinput"><tt>./configure</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>./configure</code></strong></pre>
 <p>
     This script will run a number of tests to guess values for various
     system dependent variables and detect some quirks of your
     operating system, and finally will create several files in the
     build tree to record what it found.  (You can also run
-    <tt class="filename">configure</tt> in a directory outside the source
+    <code class="filename">configure</code> in a directory outside the source
     tree if you want to keep the build directory separate.)
    </p>
 <p>    The default configuration will build the server and utilities, as
     well as all client applications and interfaces that require only a
     C compiler. All files will be installed under
-    <tt class="filename">/usr/local/pgsql</tt> by default.
+    <code class="filename">/usr/local/pgsql</code> by default.
    </p>
 <p>    You can customize the build and installation process by supplying one
     or more of the following command line options to
-    <tt class="filename">configure</tt>:
+    <code class="filename">configure</code>:
 
      </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="option">--prefix=<i class="replaceable"><tt>PREFIX</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--prefix=<em class="replaceable"><code>PREFIX</code></em></code></span></dt>
 <dd>
-<p>         Install all files under the directory <i class="replaceable"><tt>PREFIX</tt></i>
-         instead of <tt class="filename">/usr/local/pgsql</tt>. The actual
+<p>         Install all files under the directory <em class="replaceable"><code>PREFIX</code></em>
+         instead of <code class="filename">/usr/local/pgsql</code>. The actual
          files will be installed into various subdirectories; no files
          will ever be installed directly into the
-         <i class="replaceable"><tt>PREFIX</tt></i> directory.
+         <em class="replaceable"><code>PREFIX</code></em> directory.
         </p>
 <p>         If you have special needs, you can also customize the
          individual subdirectories with the following options. However,
          if you leave these with their defaults, the installation will be
          relocatable, meaning you can move the directory after
-         installation. (The <tt class="literal">man</tt> and <tt class="literal">doc</tt>
+         installation. (The <code class="literal">man</code> and <code class="literal">doc</code>
          locations are not affected by this.)
         </p>
 <p>         For relocatable installs, you might want to use 
-         <tt class="filename">configure</tt>'s <tt class="literal">--disable-rpath</tt>
+         <code class="filename">configure</code>'s <code class="literal">--disable-rpath</code>
          option.  Also, you will need to tell the operating system how
          to find the shared libraries.
         </p>
 </dd>
-<dt><span class="term"><tt class="option">--exec-prefix=<i class="replaceable"><tt>EXEC-PREFIX</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--exec-prefix=<em class="replaceable"><code>EXEC-PREFIX</code></em></code></span></dt>
 <dd><p>         You can install architecture-dependent files under a
-         different prefix, <i class="replaceable"><tt>EXEC-PREFIX</tt></i>, than what
-         <i class="replaceable"><tt>PREFIX</tt></i> was set to. This can be useful to
+         different prefix, <em class="replaceable"><code>EXEC-PREFIX</code></em>, than what
+         <em class="replaceable"><code>PREFIX</code></em> was set to. This can be useful to
          share architecture-independent files between hosts. If you
-         omit this, then <i class="replaceable"><tt>EXEC-PREFIX</tt></i> is set equal to
-         <i class="replaceable"><tt>PREFIX</tt></i> and both architecture-dependent and
+         omit this, then <em class="replaceable"><code>EXEC-PREFIX</code></em> is set equal to
+         <em class="replaceable"><code>PREFIX</code></em> and both architecture-dependent and
          independent files will be installed under the same tree,
          which is probably what you want.
         </p></dd>
-<dt><span class="term"><tt class="option">--bindir=<i class="replaceable"><tt>DIRECTORY</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--bindir=<em class="replaceable"><code>DIRECTORY</code></em></code></span></dt>
 <dd><p>         Specifies the directory for executable programs. The default
-         is <tt class="filename"><i class="replaceable"><tt>EXEC-PREFIX</tt></i>/bin</tt>, which
-         normally means <tt class="filename">/usr/local/pgsql/bin</tt>.
+         is <code class="filename"><em class="replaceable"><code>EXEC-PREFIX</code></em>/bin</code>, which
+         normally means <code class="filename">/usr/local/pgsql/bin</code>.
         </p></dd>
-<dt><span class="term"><tt class="option">--datadir=<i class="replaceable"><tt>DIRECTORY</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--datadir=<em class="replaceable"><code>DIRECTORY</code></em></code></span></dt>
 <dd><p>         Sets the directory for read-only data files used by the
          installed programs. The default is
-         <tt class="filename"><i class="replaceable"><tt>PREFIX</tt></i>/share</tt>. Note that this has
+         <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/share</code>. Note that this has
          nothing to do with where your database files will be placed.
         </p></dd>
-<dt><span class="term"><tt class="option">--sysconfdir=<i class="replaceable"><tt>DIRECTORY</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--sysconfdir=<em class="replaceable"><code>DIRECTORY</code></em></code></span></dt>
 <dd><p>         The directory for various configuration files,
-         <tt class="filename"><i class="replaceable"><tt>PREFIX</tt></i>/etc</tt> by default.
+         <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/etc</code> by default.
         </p></dd>
-<dt><span class="term"><tt class="option">--libdir=<i class="replaceable"><tt>DIRECTORY</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--libdir=<em class="replaceable"><code>DIRECTORY</code></em></code></span></dt>
 <dd><p>         The location to install libraries and dynamically loadable
          modules. The default is
-         <tt class="filename"><i class="replaceable"><tt>EXEC-PREFIX</tt></i>/lib</tt>.
+         <code class="filename"><em class="replaceable"><code>EXEC-PREFIX</code></em>/lib</code>.
         </p></dd>
-<dt><span class="term"><tt class="option">--includedir=<i class="replaceable"><tt>DIRECTORY</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--includedir=<em class="replaceable"><code>DIRECTORY</code></em></code></span></dt>
 <dd><p>         The directory for installing C and C++ header files. The
-         default is <tt class="filename"><i class="replaceable"><tt>PREFIX</tt></i>/include</tt>.
+         default is <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/include</code>.
         </p></dd>
-<dt><span class="term"><tt class="option">--mandir=<i class="replaceable"><tt>DIRECTORY</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--mandir=<em class="replaceable"><code>DIRECTORY</code></em></code></span></dt>
 <dd><p>         The man pages that come with <span class="productname">PostgreSQL</span> will be installed under
          this directory, in their respective
-         <tt class="filename">man<i class="replaceable"><tt>x</tt></i></tt> subdirectories.
-         The default is <tt class="filename"><i class="replaceable"><tt>PREFIX</tt></i>/man</tt>.
+         <code class="filename">man<em class="replaceable"><code>x</code></em></code> subdirectories.
+         The default is <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/man</code>.
         </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--with-docdir=<i class="replaceable"><tt>DIRECTORY</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--without-docdir</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--with-docdir=<em class="replaceable"><code>DIRECTORY</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--without-docdir</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>         Documentation files, except &#8220;<span class="quote">man</span>&#8221; pages, will be
          installed into this directory. The default is
-         <tt class="filename"><i class="replaceable"><tt>PREFIX</tt></i>/doc</tt>.  If the option
-         <tt class="option">--without-docdir</tt> is specified, the
-         documentation will not be installed by <tt class="command">make
-         install</tt>.  This is intended for packaging scripts
+         <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/doc</code>.  If the option
+         <code class="option">--without-docdir</code> is specified, the
+         documentation will not be installed by <code class="command">make
+         install</code>.  This is intended for packaging scripts
          that have special methods for installing documentation.
         </p></dd>
 </dl></div>
@@ -124,25 +121,25 @@
 <h3 class="title">Note</h3>
 <p>       Care has been taken to make it possible to install
        <span class="productname">PostgreSQL</span> into shared installation locations
-       (such as <tt class="filename">/usr/local/include</tt>) without
+       (such as <code class="filename">/usr/local/include</code>) without
        interfering with the namespace of the rest of the system. First,
-       the string &#8220;<span class="quote"><tt class="literal">/postgresql</tt></span>&#8221; is
-       automatically appended to <tt class="varname">datadir</tt>,
-       <tt class="varname">sysconfdir</tt>, and <tt class="varname">docdir</tt>,
+       the string &#8220;<span class="quote"><code class="literal">/postgresql</code></span>&#8221; is
+       automatically appended to <code class="varname">datadir</code>,
+       <code class="varname">sysconfdir</code>, and <code class="varname">docdir</code>,
        unless the fully expanded directory name already contains the
-       string &#8220;<span class="quote"><tt class="literal">postgres</tt></span>&#8221; or
-       &#8220;<span class="quote"><tt class="literal">pgsql</tt></span>&#8221;. For example, if you choose
-       <tt class="filename">/usr/local</tt> as prefix, the documentation will
-       be installed in <tt class="filename">/usr/local/doc/postgresql</tt>,
-       but if the prefix is <tt class="filename">/opt/postgres</tt>, then it
-       will be in <tt class="filename">/opt/postgres/doc</tt>. The public C
+       string &#8220;<span class="quote"><code class="literal">postgres</code></span>&#8221; or
+       &#8220;<span class="quote"><code class="literal">pgsql</code></span>&#8221;. For example, if you choose
+       <code class="filename">/usr/local</code> as prefix, the documentation will
+       be installed in <code class="filename">/usr/local/doc/postgresql</code>,
+       but if the prefix is <code class="filename">/opt/postgres</code>, then it
+       will be in <code class="filename">/opt/postgres/doc</code>. The public C
        header files of the client interfaces are installed into
-       <tt class="varname">includedir</tt> and are namespace-clean. The
+       <code class="varname">includedir</code> and are namespace-clean. The
        internal header files and the server header files are installed
-       into private directories under <tt class="varname">includedir</tt>. See
+       into private directories under <code class="varname">includedir</code>. See
        the documentation of each interface for information about how to
        get at the its header files. Finally, a private subdirectory will
-       also be created, if appropriate, under <tt class="varname">libdir</tt>
+       also be created, if appropriate, under <code class="varname">libdir</code>
        for dynamically loadable modules.
       </p>
 </div>
@@ -150,38 +147,38 @@
     </p>
 <p>     </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="option">--with-includes=<i class="replaceable"><tt>DIRECTORIES</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--with-includes=<em class="replaceable"><code>DIRECTORIES</code></em></code></span></dt>
 <dd>
-<p>         <i class="replaceable"><tt>DIRECTORIES</tt></i> is a colon-separated list of
+<p>         <em class="replaceable"><code>DIRECTORIES</code></em> is a colon-separated list of
          directories that will be added to the list the compiler
          searches for header files. If you have optional packages
          (such as GNU <span class="application">Readline</span>) installed in a non-standard
          location,
          you have to use this option and probably also the corresponding
-         <tt class="option">--with-libraries</tt> option.
+         <code class="option">--with-libraries</code> option.
         </p>
-<p>         Example: <tt class="literal">--with-includes=/opt/gnu/include:/usr/sup/include</tt>.
+<p>         Example: <code class="literal">--with-includes=/opt/gnu/include:/usr/sup/include</code>.
         </p>
 </dd>
-<dt><span class="term"><tt class="option">--with-libraries=<i class="replaceable"><tt>DIRECTORIES</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--with-libraries=<em class="replaceable"><code>DIRECTORIES</code></em></code></span></dt>
 <dd>
-<p>         <i class="replaceable"><tt>DIRECTORIES</tt></i> is a colon-separated list of
+<p>         <em class="replaceable"><code>DIRECTORIES</code></em> is a colon-separated list of
          directories to search for libraries. You will probably have
          to use this option (and the corresponding
-         <tt class="option">--with-includes</tt> option) if you have packages
+         <code class="option">--with-includes</code> option) if you have packages
          installed in non-standard locations.
         </p>
-<p>         Example: <tt class="literal">--with-libraries=/opt/gnu/lib:/usr/sup/lib</tt>.
+<p>         Example: <code class="literal">--with-libraries=/opt/gnu/lib:/usr/sup/lib</code>.
         </p>
 </dd>
-<dt><span class="term"><tt class="option">--enable-nls[<span class="optional">=<i class="replaceable"><tt>LANGUAGES</tt></i></span>]</tt></span></dt>
+<dt><span class="term"><code class="option">--enable-nls[<span class="optional">=<em class="replaceable"><code>LANGUAGES</code></em></span>]</code></span></dt>
 <dd>
 <p>         Enables Native Language Support (<span class="acronym">NLS</span>),
          that is, the ability to display a program's messages in a
          language other than English.
-         <i class="replaceable"><tt>LANGUAGES</tt></i> is a space-separated
+         <em class="replaceable"><code>LANGUAGES</code></em> is a space-separated
          list of codes of the languages that you want supported, for
-         example <tt class="literal">--enable-nls='de fr'</tt>.  (The intersection
+         example <code class="literal">--enable-nls='de fr'</code>.  (The intersection
          between your list and the set of actually provided
          translations will be computed automatically.)  If you do not
          specify a list, then all available translations are
@@ -191,8 +188,8 @@
          <span class="application">Gettext</span> API; see above.
         </p>
 </dd>
-<dt><span class="term"><tt class="option">--with-pgport=<i class="replaceable"><tt>NUMBER</tt></i></tt></span></dt>
-<dd><p>         Set <i class="replaceable"><tt>NUMBER</tt></i> as the default port number for
+<dt><span class="term"><code class="option">--with-pgport=<em class="replaceable"><code>NUMBER</code></em></code></span></dt>
+<dd><p>         Set <em class="replaceable"><code>NUMBER</code></em> as the default port number for
          server and clients. The default is 5432. The port can always
          be changed later on, but if you specify it here then both
          server and clients will have the same default compiled in,
@@ -200,17 +197,17 @@
          to select a non-default value is if you intend to run multiple
          <span class="productname">PostgreSQL</span> servers on the same machine.
         </p></dd>
-<dt><span class="term"><tt class="option">--with-perl</tt></span></dt>
+<dt><span class="term"><code class="option">--with-perl</code></span></dt>
 <dd><p>         Build the <span class="application">PL/Perl</span> server-side language.
         </p></dd>
-<dt><span class="term"><tt class="option">--with-python</tt></span></dt>
+<dt><span class="term"><code class="option">--with-python</code></span></dt>
 <dd><p>         Build the <span class="application">PL/Python</span> server-side language.
         </p></dd>
-<dt><span class="term"><tt class="option">--with-tcl</tt></span></dt>
+<dt><span class="term"><code class="option">--with-tcl</code></span></dt>
 <dd><p>         Build the <span class="application">PL/Tcl</span> server-side language.
         </p></dd>
-<dt><span class="term"><tt class="option">--with-tclconfig=<i class="replaceable"><tt>DIRECTORY</tt></i></tt></span></dt>
-<dd><p>         Tcl installs the file <tt class="filename">tclConfig.sh</tt>, which
+<dt><span class="term"><code class="option">--with-tclconfig=<em class="replaceable"><code>DIRECTORY</code></em></code></span></dt>
+<dd><p>         Tcl installs the file <code class="filename">tclConfig.sh</code>, which
          contains configuration information needed to build modules
          interfacing to Tcl. This file is normally found automatically
          at a well-known location, but if you want to use a different
@@ -218,45 +215,45 @@
          for it.
         </p></dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--with-krb4</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--with-krb5</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--with-krb4</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--with-krb5</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>         Build with support for Kerberos authentication. You can use
          either Kerberos version 4 or 5, but not both.  On many
          systems, the Kerberos system is not installed in a location
-         that is searched by default (e.g., <tt class="filename">/usr/include</tt>,
-         <tt class="filename">/usr/lib</tt>), so you must use the options
-         <tt class="option">--with-includes</tt> and <tt class="option">--with-libraries</tt> in
-         addition to this option.  <tt class="filename">configure</tt> will check
+         that is searched by default (e.g., <code class="filename">/usr/include</code>,
+         <code class="filename">/usr/lib</code>), so you must use the options
+         <code class="option">--with-includes</code> and <code class="option">--with-libraries</code> in
+         addition to this option.  <code class="filename">configure</code> will check
          for the required header files and libraries to make sure that
          your Kerberos installation is sufficient before proceeding.
         </p></dd>
-<dt><span class="term"><tt class="option">--with-krb-srvnam=<i class="replaceable"><tt>NAME</tt></i></tt></span></dt>
+<dt><span class="term"><code class="option">--with-krb-srvnam=<em class="replaceable"><code>NAME</code></em></code></span></dt>
 <dd><p>         The name of the Kerberos service principal.
-         <tt class="literal">postgres</tt> is the default. There's probably no
+         <code class="literal">postgres</code> is the default. There's probably no
          reason to change this.
         </p></dd>
-<dt><span class="term"><tt class="option">--with-openssl</tt></span></dt>
+<dt><span class="term"><code class="option">--with-openssl</code></span></dt>
 <dd><p>         Build with support for <span class="acronym">SSL</span> (encrypted)
          connections. This requires the <span class="productname">OpenSSL</span>
-         package to be installed.  <tt class="filename">configure</tt> will check
+         package to be installed.  <code class="filename">configure</code> will check
          for the required header files and libraries to make sure that
          your <span class="productname">OpenSSL</span> installation is sufficient
          before proceeding.
         </p></dd>
-<dt><span class="term"><tt class="option">--with-pam</tt></span></dt>
-<dd><p>         Build with <span class="acronym">PAM</span><a name="id2576093"></a>
+<dt><span class="term"><code class="option">--with-pam</code></span></dt>
+<dd><p>         Build with <span class="acronym">PAM</span><a name="id354249"></a>
          (Pluggable Authentication Modules) support.
         </p></dd>
-<dt><span class="term"><tt class="option">--without-readline</tt></span></dt>
+<dt><span class="term"><code class="option">--without-readline</code></span></dt>
 <dd><p>         Prevents use of the <span class="application">Readline</span> library.  This disables
          command-line editing and history in
          <span class="application">psql</span>, so it is not recommended.
         </p></dd>
-<dt><span class="term"><tt class="option">--with-rendezvous</tt></span></dt>
-<dd><p>         Build with Rendezvous support.  This requires Rendezvous support
+<dt><span class="term"><code class="option">--with-bonjour</code></span></dt>
+<dd><p>         Build with Bonjour support.  This requires Bonjour support
          in your operating system.  Recommended on Mac OS X.
         </p></dd>
-<dt><span class="term"><tt class="option">--disable-spinlocks</tt></span></dt>
+<dt><span class="term"><code class="option">--disable-spinlocks</code></span></dt>
 <dd><p>         Allow the build to succeed even if <span class="productname">PostgreSQL</span>
          has no CPU spinlock support for the platform.  The lack of
          spinlock support will result in poor performance; therefore,
@@ -266,22 +263,22 @@
          your platform, please report the problem to the
          <span class="productname">PostgreSQL</span> developers.
         </p></dd>
-<dt><span class="term"><tt class="option">--enable-thread-safety</tt></span></dt>
+<dt><span class="term"><code class="option">--enable-thread-safety</code></span></dt>
 <dd><p>         Make the client libraries thread-safe.  This allows
          concurrent threads in <span class="application">libpq</span> and
          <span class="application">ECPG</span> programs to safely control
          their private connection handles.  This option requires adequate
          threading support in your operating system.
         </p></dd>
-<dt><span class="term"><tt class="option">--without-zlib</tt></span></dt>
-<dd><p>         <a name="id2576199"></a>
+<dt><span class="term"><code class="option">--without-zlib</code></span></dt>
+<dd><p>         <a name="id354345"></a>
          Prevents use of the <span class="application">Zlib</span> library.  This disables
          support for compressed archives in <span class="application">pg_dump</span>
          and <span class="application">pg_restore</span>.
          This option is only intended for those rare systems where this
          library is not available.
         </p></dd>
-<dt><span class="term"><tt class="option">--enable-debug</tt></span></dt>
+<dt><span class="term"><code class="option">--enable-debug</code></span></dt>
 <dd><p>         Compiles all programs and libraries with debugging symbols.
          This means that you can run the programs through a debugger
          to analyze problems. This enlarges the size of the installed
@@ -293,8 +290,8 @@
          But you should always have it on if you are doing development work
          or running a beta version.
         </p></dd>
-<dt><span class="term"><tt class="option">--enable-cassert</tt></span></dt>
-<dd><p>         Enables <i class="firstterm">assertion</i> checks in the server, which test for
+<dt><span class="term"><code class="option">--enable-cassert</code></span></dt>
+<dd><p>         Enables <em class="firstterm">assertion</em> checks in the server, which test for
          many &#8220;<span class="quote">can't happen</span>&#8221; conditions.  This is invaluable for
          code development purposes, but the tests slow things down a little.
          Also, having the tests turned on won't necessarily enhance the
@@ -305,7 +302,7 @@
          production use, but you should have it on for development work
          or when running a beta version.
         </p></dd>
-<dt><span class="term"><tt class="option">--enable-depend</tt></span></dt>
+<dt><span class="term"><code class="option">--enable-depend</code></span></dt>
 <dd><p>         Enables automatic dependency tracking.  With this option, the
          makefiles are set up so that all affected object files will
          be rebuilt when any header file is changed.  This is useful
@@ -317,17 +314,17 @@
 <p>
     </p>
 <p>     If you prefer a C compiler different from the one
-     <tt class="filename">configure</tt> picks, you can set the
-     environment variable <tt class="envar">CC</tt> to the program of your choice.
-     By default, <tt class="filename">configure</tt> will pick
-     <tt class="filename">gcc</tt> if available, else the platform's
-     default (usually <tt class="filename">cc</tt>).  Similarly, you can override the
-     default compiler flags if needed with the <tt class="envar">CFLAGS</tt> variable.
+     <code class="filename">configure</code> picks, you can set the
+     environment variable <code class="envar">CC</code> to the program of your choice.
+     By default, <code class="filename">configure</code> will pick
+     <code class="filename">gcc</code> if available, else the platform's
+     default (usually <code class="filename">cc</code>).  Similarly, you can override the
+     default compiler flags if needed with the <code class="envar">CFLAGS</code> variable.
     </p>
 <p>     You can specify environment variables on the
-     <tt class="filename">configure</tt> command line, for example:
+     <code class="filename">configure</code> command line, for example:
 </p>
-<pre class="screen"><b class="userinput"><tt>./configure CC=/opt/bin/gcc CFLAGS='-O2 -pipe'</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>./configure CC=/opt/bin/gcc CFLAGS='-O2 -pipe'</code></strong></pre>
 <p>
     </p>
 </li>
@@ -335,7 +332,7 @@
 <p class="title"><b>Build</b></p>
 <p>    To start the build, type
 </p>
-<pre class="screen"><b class="userinput"><tt>gmake</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>gmake</code></strong></pre>
 <p>
     (Remember to use <span class="acronym">GNU</span> <span class="application">make</span>.) The build
     may take anywhere from 5 minutes to half an hour depending on your
@@ -347,13 +344,13 @@
 </li>
 <li>
 <p class="title"><b>Regression Tests</b></p>
-<a name="id2576389"></a><p>    If you want to test the newly built server before you install it,
+<a name="id354510"></a><p>    If you want to test the newly built server before you install it,
     you can run the regression tests at this point. The regression
     tests are a test suite to verify that <span class="productname">PostgreSQL</span>
     runs on your machine in the way the developers expected it
     to. Type
 </p>
-<pre class="screen"><b class="userinput"><tt>gmake check</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>gmake check</code></strong></pre>
 <p>
     (This won't work as root; do it as an unprivileged user.)
     
@@ -374,7 +371,7 @@
 </div>
 <p>    To install <span class="productname">PostgreSQL</span> enter
 </p>
-<pre class="screen"><b class="userinput"><tt>gmake install</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>gmake install</code></strong></pre>
 <p>
     This will install files into the directories that were specified
     in <a href="install-procedure.html#configure" title="Step 1">Step 1</a>. Make sure that you have appropriate
@@ -383,12 +380,12 @@
     directories in advance and arrange for appropriate permissions to
     be granted.
    </p>
-<p>    You can use <tt class="literal">gmake install-strip</tt> instead of
-    <tt class="literal">gmake install</tt> to strip the executable files and
+<p>    You can use <code class="literal">gmake install-strip</code> instead of
+    <code class="literal">gmake install</code> to strip the executable files and
     libraries as they are installed.  This will save some space.  If
     you built with debugging support, stripping will effectively
     remove the debugging support, so it should only be done if
-    debugging is no longer needed.  <tt class="literal">install-strip</tt>
+    debugging is no longer needed.  <code class="literal">install-strip</code>
     tries to do a reasonable job saving space, but it does not have
     perfect knowledge of how to strip every unneeded byte from an
     executable file, so if you want to save all the disk space you
@@ -397,17 +394,17 @@
 <p>    The standard installation provides all the header files needed for client
     application development as well as for server-side program
     development, such as custom functions or data types written in C.
-    (Prior to <span class="productname">PostgreSQL</span> 8.0, a separate <tt class="literal">gmake
-    install-all-headers</tt> command was needed for the latter, but this
+    (Prior to <span class="productname">PostgreSQL</span> 8.0, a separate <code class="literal">gmake
+    install-all-headers</code> command was needed for the latter, but this
     step has been folded into the standard install.)
    </p>
 <p><b>Client-only installation: </b>     If you want to install only the client applications and
      interface libraries, then you can use these commands:
 </p>
-<pre class="screen"><b class="userinput"><tt>gmake -C src/bin install</tt></b>
-<b class="userinput"><tt>gmake -C src/include install</tt></b>
-<b class="userinput"><tt>gmake -C src/interfaces install</tt></b>
-<b class="userinput"><tt>gmake -C doc install</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>gmake -C src/bin install</code></strong>
+<strong class="userinput"><code>gmake -C src/include install</code></strong>
+<strong class="userinput"><code>gmake -C src/interfaces install</code></strong>
+<strong class="userinput"><code>gmake -C doc install</code></strong></pre>
 <p>
     </p>
 </li>
@@ -415,28 +412,28 @@
 <p><b>Registering <span class="application">eventlog</span> on <span class="systemitem">Windows</span>: </b>    To register a <span class="systemitem">Windows</span> <span class="application">eventlog</span>
     library with the operating system, issue this command after installation:
 </p>
-<pre class="screen"><b class="userinput"><tt>regsvr32 <i class="replaceable"><tt>pgsql_library_directory</tt></i>/pgevent.dll</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>regsvr32 <em class="replaceable"><code>pgsql_library_directory</code></em>/pgevent.dll</code></strong></pre>
 <p>
     This creates registry entries used by the event viewer.
    </p>
-<p><b>Uninstallation: </b>    To undo the installation use the command <tt class="command">gmake
-    uninstall</tt>. However, this will not remove any created directories.
+<p><b>Uninstallation: </b>    To undo the installation use the command <code class="command">gmake
+    uninstall</code>. However, this will not remove any created directories.
    </p>
 <p><b>Cleaning: </b>    After the installation you can make room by removing the built
-    files from the source tree with the command <tt class="command">gmake
-    clean</tt>. This will preserve the files made by the <tt class="command">configure</tt>
-    program, so that you can rebuild everything with <tt class="command">gmake</tt>
+    files from the source tree with the command <code class="command">gmake
+    clean</code>. This will preserve the files made by the <code class="command">configure</code>
+    program, so that you can rebuild everything with <code class="command">gmake</code>
     later on. To reset the source tree to the state in which it was
-    distributed, use <tt class="command">gmake distclean</tt>. If you are going to
+    distributed, use <code class="command">gmake distclean</code>. If you are going to
     build for several platforms within the same source tree you must do
     this and re-configure for each build.  (Alternatively, use
     a separate build tree for each platform, so that the source tree
     remains unmodified.)
    </p>
-<p>   If you perform a build and then discover that your <tt class="command">configure</tt>
-   options were wrong, or if you change anything that <tt class="command">configure</tt>
+<p>   If you perform a build and then discover that your <code class="command">configure</code>
+   options were wrong, or if you change anything that <code class="command">configure</code>
    investigates (for example, software upgrades), then it's a good
-   idea to do <tt class="command">gmake distclean</tt> before reconfiguring and
+   idea to do <code class="command">gmake distclean</code> before reconfiguring and
    rebuilding.  Without this, your changes in configuration choices
    may not propagate everywhere they need to.
   </p>

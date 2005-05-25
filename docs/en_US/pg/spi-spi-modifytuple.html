@@ -4,79 +4,76 @@
 <title>SPI_modifytuple</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi-memory.html" title="39.3. Memory Management">
-<link rel="previous" href="spi-spi-returntuple.html" title="SPI_returntuple">
+<link rel="prev" href="spi-spi-returntuple.html" title="SPI_returntuple">
 <link rel="next" href="spi-spi-freetuple.html" title="SPI_freetuple">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-modifytuple"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="spi-spi-modifytuple"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>SPI_modifytuple &#8212; create a row by replacing selected fields of a given row</p>
 </div>
-<a name="id2663816"></a><div class="refsynopsisdiv">
+<a name="id434490"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">HeapTuple SPI_modifytuple(Relation <i class="parameter"><tt>rel</tt></i>, HeapTuple <i class="parameter"><tt>row</tt></i>, <i class="parameter"><tt>ncols</tt></i>, <i class="parameter"><tt>colnum</tt></i>, Datum * <i class="parameter"><tt>values</tt></i>, const char * <i class="parameter"><tt>nulls</tt></i>)</pre>
+<pre class="synopsis">HeapTuple SPI_modifytuple(Relation <em class="parameter"><code>rel</code></em>, HeapTuple <em class="parameter"><code>row</code></em>, <em class="parameter"><code>ncols</code></em>, <em class="parameter"><code>colnum</code></em>, Datum * <em class="parameter"><code>values</code></em>, const char * <em class="parameter"><code>nulls</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2663863"></a><h2>Description</h2>
-<p>   <tt class="function">SPI_modifytuple</tt> creates a new row by
+<a name="id434537"></a><h2>Description</h2>
+<p>   <code class="function">SPI_modifytuple</code> creates a new row by
    substituting new values for selected columns, copying the original
    row's columns at other positions.  The input row is not modified.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2663877"></a><h2>Arguments</h2>
+<a name="id434550"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal">Relation <i class="parameter"><tt>rel</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">Relation <em class="parameter"><code>rel</code></em></code></span></dt>
 <dd><p>      Used only as the source of the row descriptor for the row.
       (Passing a relation rather than a row descriptor is a
       misfeature.)
      </p></dd>
-<dt><span class="term"><tt class="literal">HeapTuple <i class="parameter"><tt>row</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">HeapTuple <em class="parameter"><code>row</code></em></code></span></dt>
 <dd><p>      row to be modified
      </p></dd>
-<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>ncols</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">int <em class="parameter"><code>ncols</code></em></code></span></dt>
 <dd><p>      number of column numbers in the array
-      <i class="parameter"><tt>colnum</tt></i>
+      <em class="parameter"><code>colnum</code></em>
      </p></dd>
-<dt><span class="term"><tt class="literal">int * <i class="parameter"><tt>colnum</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">int * <em class="parameter"><code>colnum</code></em></code></span></dt>
 <dd><p>      array of the numbers of the columns that are to be changed
       (column numbers start at 1)
      </p></dd>
-<dt><span class="term"><tt class="literal">Datum * <i class="parameter"><tt>values</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">Datum * <em class="parameter"><code>values</code></em></code></span></dt>
 <dd><p>      new values for the specified columns
      </p></dd>
-<dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>Nulls</tt></i></tt></span></dt>
+<dt><span class="term"><code class="literal">const char * <em class="parameter"><code>Nulls</code></em></code></span></dt>
 <dd><p>      which new values are null, if any (see
-      <tt class="function">SPI_execute_plan</tt> for the format)
+      <code class="function">SPI_execute_plan</code> for the format)
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2663990"></a><h2>Return Value</h2>
+<a name="id434658"></a><h2>Return Value</h2>
 <p>   new row with modifications, allocated in the upper executor
-   context; <tt class="symbol">NULL</tt> only if <i class="parameter"><tt>row</tt></i>
-   is <tt class="symbol">NULL</tt>
+   context; <code class="symbol">NULL</code> only if <em class="parameter"><code>row</code></em>
+   is <code class="symbol">NULL</code>
   </p>
-<p>   On error, <tt class="varname">SPI_result</tt> is set as follows:
+<p>   On error, <code class="varname">SPI_result</code> is set as follows:
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="symbol">SPI_ERROR_ARGUMENT</tt></span></dt>
-<dd><p>       if <i class="parameter"><tt>rel</tt></i> is <tt class="symbol">NULL</tt>, or if
-       <i class="parameter"><tt>row</tt></i> is <tt class="symbol">NULL</tt>, or if <i class="parameter"><tt>ncols</tt></i>
-       is less than or equal to 0, or if <i class="parameter"><tt>colnum</tt></i> is
-       <tt class="symbol">NULL</tt>, or if <i class="parameter"><tt>values</tt></i> is <tt class="symbol">NULL</tt>.
+<dt><span class="term"><code class="symbol">SPI_ERROR_ARGUMENT</code></span></dt>
+<dd><p>       if <em class="parameter"><code>rel</code></em> is <code class="symbol">NULL</code>, or if
+       <em class="parameter"><code>row</code></em> is <code class="symbol">NULL</code>, or if <em class="parameter"><code>ncols</code></em>
+       is less than or equal to 0, or if <em class="parameter"><code>colnum</code></em> is
+       <code class="symbol">NULL</code>, or if <em class="parameter"><code>values</code></em> is <code class="symbol">NULL</code>.
       </p></dd>
-<dt><span class="term"><tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt></span></dt>
-<dd><p>       if <i class="parameter"><tt>colnum</tt></i> contains an invalid column number (less
+<dt><span class="term"><code class="symbol">SPI_ERROR_NOATTRIBUTE</code></span></dt>
+<dd><p>       if <em class="parameter"><code>colnum</code></em> contains an invalid column number (less
        than or equal to 0 or greater than the number of column in
-       <i class="parameter"><tt>row</tt></i>)
+       <em class="parameter"><code>row</code></em>)
       </p></dd>
 </dl></div>
 <p>

@@ -4,35 +4,32 @@
 <title>postgres</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
-<link rel="previous" href="app-pgresetxlog.html" title="pg_resetxlog">
+<link rel="prev" href="app-pgresetxlog.html" title="pg_resetxlog">
 <link rel="next" href="app-postmaster.html" title="postmaster">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="app-postgres"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="app-postgres"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>postgres &#8212; run a <span class="productname">PostgreSQL</span> server in single-user mode</p>
 </div>
-<a name="id2723405"></a><div class="refsynopsisdiv">
+<a name="id490224"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">postgres</tt> [-A   [0] |  [1] ] [-B <i class="replaceable"><tt>nbuffers</tt></i>] [-c <i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>] [-d <i class="replaceable"><tt>debug-level</tt></i>] [--describe-config] [-D <i class="replaceable"><tt>datadir</tt></i>] [-e] [-E] [-f  [s] |  [i] |  [t] |  [n] |  [m] |  [h] ] [-F] [-N] [-o <i class="replaceable"><tt>filename</tt></i>] [-O] [-P] [[-s] |  [-t  [pa] |  [pl] |  [ex] ]] [-S <i class="replaceable"><tt>work-mem</tt></i>] [-W <i class="replaceable"><tt>seconds</tt></i>] [--<i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>]  <i class="replaceable"><tt>database</tt></i> <br><tt class="command">postgres</tt> [-A   [0] |  [1] ] [-B <i class="replaceable"><tt>nbuffers</tt></i>] [-c <i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>] [-d <i class="replaceable"><tt>debug-level</tt></i>] [-D <i class="replaceable"><tt>datadir</tt></i>] [-e] [-f  [s] |  [i] |  [t] |  [n] |  [m] |  [h] ] [-F] [-o <i class="replaceable"><tt>filename</tt></i>] [-O] [-p <i class="replaceable"><tt>database</tt></i>] [-P] [[-s] |  [-t  [pa] |  [pl] |  [ex] ]] [-S <i class="replaceable"><tt>work-mem</tt></i>] [-v <i class="replaceable"><tt>protocol</tt></i>] [-W <i class="replaceable"><tt>seconds</tt></i>] [--<i class="replaceable"><tt>name</tt></i>=<i class="replaceable"><tt>value</tt></i>]</p></div>
+<div class="cmdsynopsis"><p><code class="command">postgres</code> [-A   [0] |  [1] ] [-B <em class="replaceable"><code>nbuffers</code></em>] [-c <em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em>] [-d <em class="replaceable"><code>debug-level</code></em>] [--describe-config] [-D <em class="replaceable"><code>datadir</code></em>] [-e] [-E] [-f  [s] |  [i] |  [t] |  [n] |  [m] |  [h] ] [-F] [-N] [-o <em class="replaceable"><code>filename</code></em>] [-O] [-P] [[-s] |  [-t  [pa] |  [pl] |  [ex] ]] [-S <em class="replaceable"><code>work-mem</code></em>] [-W <em class="replaceable"><code>seconds</code></em>] [--<em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em>]  <em class="replaceable"><code>database</code></em> <br><code class="command">postgres</code> [-A   [0] |  [1] ] [-B <em class="replaceable"><code>nbuffers</code></em>] [-c <em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em>] [-d <em class="replaceable"><code>debug-level</code></em>] [-D <em class="replaceable"><code>datadir</code></em>] [-e] [-f  [s] |  [i] |  [t] |  [n] |  [m] |  [h] ] [-F] [-o <em class="replaceable"><code>filename</code></em>] [-O] [-p <em class="replaceable"><code>database</code></em>] [-P] [[-s] |  [-t  [pa] |  [pl] |  [ex] ]] [-S <em class="replaceable"><code>work-mem</code></em>] [-v <em class="replaceable"><code>protocol</code></em>] [-W <em class="replaceable"><code>seconds</code></em>] [--<em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723918"></a><h2>Description</h2>
-<p>   The <tt class="command">postgres</tt> executable is the actual
+<a name="id490736"></a><h2>Description</h2>
+<p>   The <code class="command">postgres</code> executable is the actual
    <span class="productname">PostgreSQL</span> server process that processes
    queries.  It is normally not called directly; instead a <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> multiuser server is started.
   </p>
 <p>   The second form above is how
-   <tt class="command">postgres</tt> is invoked by the <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> (only
-   conceptually, since both <tt class="filename">postmaster</tt> and
-   <tt class="filename">postgres</tt> are in fact the same program); it
+   <code class="command">postgres</code> is invoked by the <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> (only
+   conceptually, since both <code class="filename">postmaster</code> and
+   <code class="filename">postgres</code> are in fact the same program); it
    should not be invoked directly this way.  The first form invokes
    the server directly in interactive single-user mode.  The primary use
    for this mode is during bootstrapping by <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>.
@@ -54,80 +51,80 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723998"></a><h2>Options</h2>
-<p>    When <tt class="command">postgres</tt> is started by a <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> then it
+<a name="id490805"></a><h2>Options</h2>
+<p>    When <code class="command">postgres</code> is started by a <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> then it
     inherits all options set by the latter.  Additionally,
-    <tt class="command">postgres</tt>-specific options can be passed
-    from the <tt class="command">postmaster</tt> with the
-    <tt class="option">-o</tt> switch.
+    <code class="command">postgres</code>-specific options can be passed
+    from the <code class="command">postmaster</code> with the
+    <code class="option">-o</code> switch.
    </p>
 <p>    You can avoid having to type these options by setting up a
     configuration file.  See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for details.  Some
     (safe) options can also be set from the connecting client in an
     application-dependent way.  For example, if the environment
-    variable <tt class="envar">PGOPTIONS</tt> is set, then
+    variable <code class="envar">PGOPTIONS</code> is set, then
     <span class="application">libpq</span>-based clients will pass that string to the
     server, which will interpret it as
-    <tt class="command">postgres</tt> command-line options.
+    <code class="command">postgres</code> command-line options.
    </p>
 <div class="refsect2" lang="en">
-<a name="id2724063"></a><h3>General Purpose</h3>
-<p>     The options <tt class="option">-A</tt>, <tt class="option">-B</tt>,
-     <tt class="option">-c</tt>, <tt class="option">-d</tt>, <tt class="option">-D</tt>,
-     <tt class="option">-F</tt>, and <tt class="option">--<i class="replaceable"><tt>name</tt></i></tt> have the same meanings
+<a name="id490865"></a><h3>General Purpose</h3>
+<p>     The options <code class="option">-A</code>, <code class="option">-B</code>,
+     <code class="option">-c</code>, <code class="option">-d</code>, <code class="option">-D</code>,
+     <code class="option">-F</code>, and <code class="option">--<em class="replaceable"><code>name</code></em></code> have the same meanings
      as the <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> except that
-     <tt class="literal">-d 0</tt> prevents the server log level of
-     the <tt class="command">postmaster</tt> from being propagated to <tt class="command">postgres</tt>.
+     <code class="literal">-d 0</code> prevents the server log level of
+     the <code class="command">postmaster</code> from being propagated to <code class="command">postgres</code>.
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="option">-e</tt></span></dt>
+<dt><span class="term"><code class="option">-e</code></span></dt>
 <dd><p>        Sets the default date style to &#8220;<span class="quote">European</span>&#8221;, that is
-	<tt class="literal">DMY</tt> ordering of input date fields.  This also causes
+	<code class="literal">DMY</code> ordering of input date fields.  This also causes
 	the day to be printed before the month in certain date output formats.
 	See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
        </p></dd>
-<dt><span class="term"><tt class="option">-o</tt> <i class="replaceable"><tt>filename</tt></i></span></dt>
+<dt><span class="term"><code class="option">-o</code> <em class="replaceable"><code>filename</code></em></span></dt>
 <dd><p>	Send all server log output to 
-	<i class="replaceable"><tt>filename</tt></i>.
-	If <tt class="command">postgres</tt> is running under the
-	<tt class="command">postmaster</tt>, this option is ignored,
+	<em class="replaceable"><code>filename</code></em>.
+	If <code class="command">postgres</code> is running under the
+	<code class="command">postmaster</code>, this option is ignored,
 	and the <span class="systemitem">stderr</span> inherited from the
-	<tt class="command">postmaster</tt> is used.
+	<code class="command">postmaster</code> is used.
        </p></dd>
-<dt><span class="term"><tt class="option">-P</tt></span></dt>
+<dt><span class="term"><code class="option">-P</code></span></dt>
 <dd><p>	Ignore system indexes when reading system tables (but still update
 	the indexes when modifying the tables).  This is useful when
 	recovering from damaged system indexes.
        </p></dd>
-<dt><span class="term"><tt class="option">-s</tt></span></dt>
+<dt><span class="term"><code class="option">-s</code></span></dt>
 <dd><p>	Print time information and other statistics at the end of each command.
 	This is useful for benchmarking or for use in tuning the number of
 	buffers.
        </p></dd>
-<dt><span class="term"><tt class="option">-S</tt> <i class="replaceable"><tt>work-mem</tt></i></span></dt>
+<dt><span class="term"><code class="option">-S</code> <em class="replaceable"><code>work-mem</code></em></span></dt>
 <dd><p>	Specifies the amount of memory to be used by internal sorts and hashes
 	before resorting to temporary disk files.  See the description of the
-	<tt class="varname">work_mem</tt> configuration parameter in <a href="runtime-config.html#runtime-config-resource-memory" title="16.4.3.1. Memory">Section 16.4.3.1, &#8220;Memory&#8221;</a>.
+	<code class="varname">work_mem</code> configuration parameter in <a href="runtime-config.html#runtime-config-resource-memory" title="16.4.3.1. Memory">Section 16.4.3.1, &#8220;Memory&#8221;</a>.
        </p></dd>
 </dl></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2724242"></a><h3>Options for stand-alone mode</h3>
+<a name="id491034"></a><h3>Options for stand-alone mode</h3>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>database</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>database</code></em></span></dt>
 <dd><p>	Specifies the name of the database to be accessed.  If it is
 	omitted it defaults to the user name.	
        </p></dd>
-<dt><span class="term"><tt class="option">-E</tt></span></dt>
+<dt><span class="term"><code class="option">-E</code></span></dt>
 <dd><p>	Echo all commands.
        </p></dd>
-<dt><span class="term"><tt class="option">-N</tt></span></dt>
+<dt><span class="term"><code class="option">-N</code></span></dt>
 <dd><p>	Disables use of newline as a statement delimiter.
        </p></dd>
 </dl></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2724274"></a><h3>Semi-internal Options</h3>
+<a name="id491065"></a><h3>Semi-internal Options</h3>
 <p>     There are several other options that may be specified, used
      mainly for debugging purposes.  These are listed here only for
      the use by <span class="productname">PostgreSQL</span> system
@@ -136,58 +133,58 @@
      disappear or change in a future release without notice.
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="option">-f</tt> <tt class="literal">{ s | i | m | n | h }</tt></span></dt>
+<dt><span class="term"><code class="option">-f</code> <code class="literal">{ s | i | m | n | h }</code></span></dt>
 <dd>
 <p>	Forbids the use of particular scan and join methods:
-	<tt class="literal">s</tt> and <tt class="literal">i</tt>
+	<code class="literal">s</code> and <code class="literal">i</code>
 	disable sequential and index scans respectively, while
-	<tt class="literal">n</tt>, <tt class="literal">m</tt>, and <tt class="literal">h</tt>
+	<code class="literal">n</code>, <code class="literal">m</code>, and <code class="literal">h</code>
 	disable nested-loop, merge and hash joins respectively.
        </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>	  Neither sequential scans nor nested-loop joins can be disabled completely;
-	  the <tt class="literal">-fs</tt> and <tt class="literal">-fn</tt>
+	  the <code class="literal">-fs</code> and <code class="literal">-fn</code>
 	  options simply discourage the optimizer from using those
 	  plan types if it has any other alternative.
 	 </p>
 </div>
 </dd>
-<dt><span class="term"><tt class="option">-O</tt></span></dt>
+<dt><span class="term"><code class="option">-O</code></span></dt>
 <dd><p>	Allows the structure of system tables to be modified.  This is
-	used by <tt class="command">initdb</tt>.
+	used by <code class="command">initdb</code>.
        </p></dd>
-<dt><span class="term"><tt class="option">-p</tt> <i class="replaceable"><tt>database</tt></i></span></dt>
+<dt><span class="term"><code class="option">-p</code> <em class="replaceable"><code>database</code></em></span></dt>
 <dd><p>	Indicates that this process has been started by a
-	<tt class="command">postmaster</tt> and specifies the database to use.
+	<code class="command">postmaster</code> and specifies the database to use.
 	etc.
        </p></dd>
-<dt><span class="term"><tt class="option">-t</tt> <tt class="literal">pa[rser] | pl[anner] | e[xecutor]</tt></span></dt>
+<dt><span class="term"><code class="option">-t</code> <code class="literal">pa[rser] | pl[anner] | e[xecutor]</code></span></dt>
 <dd><p>	Print timing statistics for each query relating to each of the
 	major system modules.  This option cannot be used together
-	with the <tt class="option">-s</tt> option.
+	with the <code class="option">-s</code> option.
        </p></dd>
-<dt><span class="term"><tt class="option">-v</tt> <i class="replaceable"><tt>protocol</tt></i></span></dt>
+<dt><span class="term"><code class="option">-v</code> <em class="replaceable"><code>protocol</code></em></span></dt>
 <dd><p>	Specifies the version number of the frontend/backend protocol
 	to be used for this particular session.
        </p></dd>
-<dt><span class="term"><tt class="option">-W</tt> <i class="replaceable"><tt>seconds</tt></i></span></dt>
+<dt><span class="term"><code class="option">-W</code> <em class="replaceable"><code>seconds</code></em></span></dt>
 <dd><p>	As soon as this option is encountered, the process sleeps for
 	the specified amount of seconds.  This gives developers time
 	to attach a debugger to the server process.
        </p></dd>
-<dt><span class="term"><tt class="option">--describe-config</tt></span></dt>
+<dt><span class="term"><code class="option">--describe-config</code></span></dt>
 <dd><p>        This option dumps out the server's internal configuration variables, 
-        descriptions, and defaults in tab-delimited <tt class="command">COPY</tt> format.
+        descriptions, and defaults in tab-delimited <code class="command">COPY</code> format.
         It is designed primarily for use by administration tools.
        </p></dd>
 </dl></div>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2724463"></a><h2>Environment</h2>
+<a name="id491240"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="envar">PGDATA</tt></span></dt>
+<dt><span class="term"><code class="envar">PGDATA</code></span></dt>
 <dd><p>      Default data directory location
      </p></dd>
 </dl></div>
@@ -196,36 +193,36 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2724486"></a><h2>Notes</h2>
-<p>   To cancel a running query, send the <tt class="literal">SIGINT</tt> signal
-   to the <tt class="command">postgres</tt> process running that command.
+<a name="id491261"></a><h2>Notes</h2>
+<p>   To cancel a running query, send the <code class="literal">SIGINT</code> signal
+   to the <code class="command">postgres</code> process running that command.
   </p>
-<p>   To tell <tt class="command">postgres</tt> to reload the configuration files,
-   send a <tt class="literal">SIGHUP</tt> signal.  Normally it's best to
-   <tt class="literal">SIGHUP</tt> the <tt class="command">postmaster</tt> instead;
-   the <tt class="command">postmaster</tt> will in turn <tt class="literal">SIGHUP</tt>
+<p>   To tell <code class="command">postgres</code> to reload the configuration files,
+   send a <code class="literal">SIGHUP</code> signal.  Normally it's best to
+   <code class="literal">SIGHUP</code> the <code class="command">postmaster</code> instead;
+   the <code class="command">postmaster</code> will in turn <code class="literal">SIGHUP</code>
    each of its children.  But in some cases it might be desirable to have only
-   one <tt class="command">postgres</tt> process reload the configuration files.
+   one <code class="command">postgres</code> process reload the configuration files.
   </p>
-<p>   The <tt class="command">postmaster</tt> uses <tt class="literal">SIGTERM</tt>
-   to tell a <tt class="command">postgres</tt> process to quit normally and
-   <tt class="literal">SIGQUIT</tt> to terminate without the normal cleanup.
+<p>   The <code class="command">postmaster</code> uses <code class="literal">SIGTERM</code>
+   to tell a <code class="command">postgres</code> process to quit normally and
+   <code class="literal">SIGQUIT</code> to terminate without the normal cleanup.
    These signals <span class="emphasis"><em>should not</em></span> be used by users.  It is also
-   unwise to send <tt class="literal">SIGKILL</tt> to a <tt class="command">postgres</tt>
-   process [mdash ] the <tt class="command">postmaster</tt> will interpret this as
-   a crash in <tt class="command">postgres</tt>, and will force all the sibling
-   <tt class="command">postgres</tt> processes to quit as part of its standard
+   unwise to send <code class="literal">SIGKILL</code> to a <code class="command">postgres</code>
+   process [mdash ] the <code class="command">postmaster</code> will interpret this as
+   a crash in <code class="command">postgres</code>, and will force all the sibling
+   <code class="command">postgres</code> processes to quit as part of its standard
    crash-recovery procedure.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2724617"></a><h2>Usage</h2>
+<a name="id491387"></a><h2>Usage</h2>
 <p>    Start a stand-alone server with a command like
 </p>
-<pre class="screen"><b class="userinput"><tt>postgres -D /usr/local/pgsql/data <i class="replaceable"><tt>other-options</tt></i> my_database</tt></b></pre>
+<pre class="screen"><strong class="userinput"><code>postgres -D /usr/local/pgsql/data <em class="replaceable"><code>other-options</code></em> my_database</code></strong></pre>
 <p>
-    Provide the correct path to the database directory with <tt class="option">-D</tt>, or
-    make sure that the environment variable <tt class="envar">PGDATA</tt> is set.
+    Provide the correct path to the database directory with <code class="option">-D</code>, or
+    make sure that the environment variable <code class="envar">PGDATA</code> is set.
     Also specify the name of the particular database you want to work in.
    </p>
 <p>    Normally, the stand-alone server treats newline as the command
@@ -234,23 +231,23 @@
     across multiple lines, you must type backslash just before each
     newline except the last one.
    </p>
-<p>    But if you use the <tt class="option">-N</tt> command line switch, then newline does
+<p>    But if you use the <code class="option">-N</code> command line switch, then newline does
     not terminate command entry.  In this case, the server will read the standard input
     until the end-of-file (<span class="acronym">EOF</span>) marker, then
     process the input as a single command string.  Backslash-newline is not
     treated specially in this case.
    </p>
 <p>    To quit the session, type <span class="acronym">EOF</span>
-    (<span><b class="keycap">Control</b></span>+<span><b class="keycap">D</b></span>, usually).
+    (<span><strong class="keycap">Control</strong></span>+<span><strong class="keycap">D</strong></span>, usually).
     If you've
-    used <tt class="option">-N</tt>, two consecutive <span class="acronym">EOF</span>s are needed to exit.
+    used <code class="option">-N</code>, two consecutive <span class="acronym">EOF</span>s are needed to exit.
    </p>
 <p>    Note that the stand-alone server does not provide sophisticated
     line-editing features (no command history, for example).
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2724708"></a><h2>See Also</h2>
+<a name="id491469"></a><h2>See Also</h2>
 <p>   <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,
    <a href="app-ipcclean.html" title="ipcclean"><span class="refentrytitle"><a name="app-ipcclean-title"></a><span class="application">ipcclean</span></span></a>,
    <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>

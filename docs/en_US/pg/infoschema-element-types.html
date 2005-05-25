@@ -4,24 +4,21 @@
 <title>30.16. element_types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="infoschema-domains.html" title="30.15. domains">
+<link rel="prev" href="infoschema-domains.html" title="30.15. domains">
 <link rel="next" href="infoschema-enabled-roles.html" title="30.17. enabled_roles">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-element-types"></a>30.16. <tt class="literal">element_types</tt></h2></div></div>
-<div></div>
-</div>
-<p>   The view <tt class="literal">element_types</tt> contains the data type
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-element-types"></a>30.16. <code class="literal">element_types</code></h2></div></div></div>
+<p>   The view <code class="literal">element_types</code> contains the data type
    descriptors of the elements of arrays.  When a table column,
    domain, function parameter, or function return value is defined to
    be of an array type, the respective information schema view only
-   contains <tt class="literal">ARRAY</tt> in the column
-   <tt class="literal">data_type</tt>.  To obtain information on the element
+   contains <code class="literal">ARRAY</code> in the column
+   <code class="literal">data_type</code>.  To obtain information on the element
    type of the array, you can join the respective view with this view.
    For example, to show the columns of a table with data types and
    array element types, if applicable, you could do
@@ -37,7 +34,7 @@ ORDER BY c.ordinal_position;</pre>
    to, by way of being the owner or having some privilege.
   </p>
 <div class="table">
-<a name="id2625725"></a><p class="title"><b>Table 30.14. <tt class="literal">element_types</tt> Columns</b></p>
+<a name="id399749"></a><p class="title"><b>Table 30.14. <code class="literal">element_types</code> Columns</b></p>
 <table summary="element_types Columns" border="1">
 <colgroup>
 <col>
@@ -51,189 +48,189 @@ ORDER BY c.ordinal_position;</pre>
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">object_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       Name of the database that contains the object that uses the
        array being described (always the current database)
       </td>
 </tr>
 <tr>
-<td><tt class="literal">object_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       Name of the schema that contains the object that uses the array
        being described
       </td>
 </tr>
 <tr>
-<td><tt class="literal">object_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">object_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       Name of the object that uses the array being described
       </td>
 </tr>
 <tr>
-<td><tt class="literal">object_type</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">object_type</code></td>
+<td><code class="type">character_data</code></td>
 <td>       The type of the object that uses the array being described: one
-       of <tt class="literal">TABLE</tt> (the array is used by a column of
-       that table), <tt class="literal">DOMAIN</tt> (the array is used by
-       that domain), <tt class="literal">ROUTINE</tt> (the array is used by
+       of <code class="literal">TABLE</code> (the array is used by a column of
+       that table), <code class="literal">DOMAIN</code> (the array is used by
+       that domain), <code class="literal">ROUTINE</code> (the array is used by
        a parameter or the return data type of that function).
       </td>
 </tr>
 <tr>
-<td><tt class="literal">array_type_identifier</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">array_type_identifier</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       The identifier of the data type descriptor of the array being
        described.  Use this to join with the
-       <tt class="literal">dtd_identifier</tt> columns of other information
+       <code class="literal">dtd_identifier</code> columns of other information
        schema views.
       </td>
 </tr>
 <tr>
-<td><tt class="literal">data_type</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">data_type</code></td>
+<td><code class="type">character_data</code></td>
 <td>       Data type of the array elements, if it is a built-in type, else
-       <tt class="literal">USER-DEFINED</tt> (in that case, the type is
-       identified in <tt class="literal">udt_name</tt> and associated
+       <code class="literal">USER-DEFINED</code> (in that case, the type is
+       identified in <code class="literal">udt_name</code> and associated
        columns).
       </td>
 </tr>
 <tr>
-<td><tt class="literal">character_maximum_length</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">character_maximum_length</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>Always null, since this information is not applied to array element data types in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">character_octet_length</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">character_octet_length</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>Always null, since this information is not applied to array element data types in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">character_set_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">character_set_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">character_set_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">character_set_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">character_set_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">character_set_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">collation_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">collation_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">collation_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">collation_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">collation_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">collation_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">numeric_precision</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">numeric_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>Always null, since this information is not applied to array element data types in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">numeric_precision_radix</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">numeric_precision_radix</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>Always null, since this information is not applied to array element data types in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">numeric_scale</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">numeric_scale</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>Always null, since this information is not applied to array element data types in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">datetime_precision</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">datetime_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>Always null, since this information is not applied to array element data types in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">interval_type</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">interval_type</code></td>
+<td><code class="type">character_data</code></td>
 <td>Always null, since this information is not applied to array element data types in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">interval_precision</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">interval_precision</code></td>
+<td><code class="type">character_data</code></td>
 <td>Always null, since this information is not applied to array element data types in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">domain_default</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">domain_default</code></td>
+<td><code class="type">character_data</code></td>
 <td>Not yet implemented</td>
 </tr>
 <tr>
-<td><tt class="literal">udt_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       Name of the database that the data type of the elements is
        defined in (always the current database)
       </td>
 </tr>
 <tr>
-<td><tt class="literal">udt_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       Name of the schema that the data type of the elements is
        defined in
       </td>
 </tr>
 <tr>
-<td><tt class="literal">udt_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       Name of the data type of the elements
       </td>
 </tr>
 <tr>
-<td><tt class="literal">scope_catalog</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">scope_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">scope_schema</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">scope_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">scope_name</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">scope_name</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">maximum_cardinality</tt></td>
-<td><tt class="type">cardinal_number</tt></td>
+<td><code class="literal">maximum_cardinality</code></td>
+<td><code class="type">cardinal_number</code></td>
 <td>Always null, because arrays always have unlimited maximum cardinality in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
 <tr>
-<td><tt class="literal">dtd_identifier</tt></td>
-<td><tt class="type">sql_identifier</tt></td>
+<td><code class="literal">dtd_identifier</code></td>
+<td><code class="type">sql_identifier</code></td>
 <td>       An identifier of the data type descriptor of the element.  This
        is currently not useful.
       </td>

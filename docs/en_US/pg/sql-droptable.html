@@ -4,60 +4,57 @@
 <title>DROP TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-dropsequence.html" title="DROP SEQUENCE">
+<link rel="prev" href="sql-dropsequence.html" title="DROP SEQUENCE">
 <link rel="next" href="sql-droptablespace.html" title="DROP TABLESPACE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-droptable"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-droptable"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>DROP TABLE &#8212; remove a table</p>
 </div>
-<a name="id2690487"></a><div class="refsynopsisdiv">
+<a name="id459326"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">DROP TABLE <i class="replaceable"><tt>name</tt></i> [, ...] [ CASCADE | RESTRICT ]</pre>
+<pre class="synopsis">DROP TABLE <em class="replaceable"><code>name</code></em> [, ...] [ CASCADE | RESTRICT ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690508"></a><h2>Description</h2>
-<p>   <tt class="command">DROP TABLE</tt> removes tables from the database.
+<a name="id459347"></a><h2>Description</h2>
+<p>   <code class="command">DROP TABLE</code> removes tables from the database.
    Only its owner may destroy a table.  To empty a table of rows,
-   without destroying the table, use <tt class="command">DELETE</tt>.
+   without destroying the table, use <code class="command">DELETE</code>.
   </p>
-<p>   <tt class="command">DROP TABLE</tt> always removes any indexes, rules,
+<p>   <code class="command">DROP TABLE</code> always removes any indexes, rules,
    triggers, and constraints that exist for the target table.
    However, to drop a table that is referenced by a view or a foreign-key
-   constraint of another table, <tt class="literal">CASCADE</tt> must be
-   specified. (<tt class="literal">CASCADE</tt> will remove a dependent view entirely,
+   constraint of another table, <code class="literal">CASCADE</code> must be
+   specified. (<code class="literal">CASCADE</code> will remove a dependent view entirely,
    but in the foreign-key case it will only remove the foreign-key
    constraint, not the other table entirely.)
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690554"></a><h2>Parameters</h2>
+<a name="id459388"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to drop.
      </p></dd>
-<dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
 <dd><p>      Automatically drop objects that depend on the table (such as
       views).
      </p></dd>
-<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
 <dd><p>      Refuse to drop the table if any objects depend on it.  This is
       the default.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690593"></a><h2>Examples</h2>
-<p>   To destroy two tables, <tt class="literal">films</tt> and 
-   <tt class="literal">distributors</tt>:
+<a name="id459426"></a><h2>Examples</h2>
+<p>   To destroy two tables, <code class="literal">films</code> and 
+   <code class="literal">distributors</code>:
 
 </p>
 <pre class="programlisting">DROP TABLE films, distributors;</pre>
@@ -65,14 +62,14 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690618"></a><h2>Compatibility</h2>
+<a name="id459449"></a><h2>Compatibility</h2>
 <p>   This command conforms to the SQL standard, except that the standard only
    allows one table to be dropped per command. 
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690626"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-createtable.html">CREATE TABLE</a></span>
+<a name="id459456"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-createtable.html">CREATE TABLE</a>, </span>
 </div>
 </div></body>
 </html>

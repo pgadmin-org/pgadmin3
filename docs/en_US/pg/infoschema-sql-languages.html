@@ -4,26 +4,23 @@
 <title>30.30. sql_languages</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="previous" href="infoschema-sql-implementation-info.html" title="30.29. sql_implementation_info">
+<link rel="prev" href="infoschema-sql-implementation-info.html" title="30.29. sql_implementation_info">
 <link rel="next" href="infoschema-sql-packages.html" title="30.31. sql_packages">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="infoschema-sql-languages"></a>30.30. <tt class="literal">sql_languages</tt></h2></div></div>
-<div></div>
-</div>
-<p>   The table <tt class="literal">sql_languages</tt> contains one row for
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-sql-languages"></a>30.30. <code class="literal">sql_languages</code></h2></div></div></div>
+<p>   The table <code class="literal">sql_languages</code> contains one row for
    each SQL language binding that is supported by
    <span class="productname">PostgreSQL</span>.
    <span class="productname">PostgreSQL</span> supports direct SQL and
    embedded SQL in C; that is all you will learn from this table.
   </p>
 <div class="table">
-<a name="id2630046"></a><p class="title"><b>Table 30.28. <tt class="literal">sql_languages</tt> Columns</b></p>
+<a name="id403852"></a><p class="title"><b>Table 30.28. <code class="literal">sql_languages</code> Columns</b></p>
 <table summary="sql_languages Columns" border="1">
 <colgroup>
 <col>
@@ -37,49 +34,49 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">sql_language_source</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">sql_language_source</code></td>
+<td><code class="type">character_data</code></td>
 <td>       The name of the source of the language definition; always
-       <tt class="literal">ISO 9075</tt>, that is, the SQL standard
+       <code class="literal">ISO 9075</code>, that is, the SQL standard
       </td>
 </tr>
 <tr>
-<td><tt class="literal">sql_language_year</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">sql_language_year</code></td>
+<td><code class="type">character_data</code></td>
 <td>       The year the standard referenced in
-       <tt class="literal">sql_language_source</tt> was approved; currently
-       <tt class="literal">2003</tt>
-</td>
-</tr>
-<tr>
-<td><tt class="literal">sql_language_comformance</tt></td>
-<td><tt class="type">character_data</tt></td>
-<td>       The standard conformance level for the language binding.  For
-       ISO 9075:2003 this is always <tt class="literal">CORE</tt>.
+       <code class="literal">sql_language_source</code> was approved; currently
+       <code class="literal">2003</code>
       </td>
 </tr>
 <tr>
-<td><tt class="literal">sql_language_integrity</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">sql_language_comformance</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The standard conformance level for the language binding.  For
+       ISO 9075:2003 this is always <code class="literal">CORE</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">sql_language_integrity</code></td>
+<td><code class="type">character_data</code></td>
 <td>Always null (This value is relevant to an earlier version of the SQL standard.)</td>
 </tr>
 <tr>
-<td><tt class="literal">sql_language_implementation</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">sql_language_implementation</code></td>
+<td><code class="type">character_data</code></td>
 <td>Always null</td>
 </tr>
 <tr>
-<td><tt class="literal">sql_language_binding_style</tt></td>
-<td><tt class="type">character_data</tt></td>
-<td>       The language binding style, either <tt class="literal">DIRECT</tt> or
-       <tt class="literal">EMBEDDED</tt>
-</td>
+<td><code class="literal">sql_language_binding_style</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The language binding style, either <code class="literal">DIRECT</code> or
+       <code class="literal">EMBEDDED</code>
+      </td>
 </tr>
 <tr>
-<td><tt class="literal">sql_language_programming_language</tt></td>
-<td><tt class="type">character_data</tt></td>
+<td><code class="literal">sql_language_programming_language</code></td>
+<td><code class="type">character_data</code></td>
 <td>       The programming language, if the binding style is
-       <tt class="literal">EMBEDDED</tt>, else null.  <span class="productname">PostgreSQL</span> only
+       <code class="literal">EMBEDDED</code>, else null.  <span class="productname">PostgreSQL</span> only
        supports the language C.
       </td>
 </tr>

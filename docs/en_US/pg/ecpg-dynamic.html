@@ -4,18 +4,15 @@
 <title>29.7. Dynamic SQL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
-<link rel="previous" href="ecpg-variables.html" title="29.6. Using Host Variables">
+<link rel="prev" href="ecpg-variables.html" title="29.6. Using Host Variables">
 <link rel="next" href="ecpg-descriptors.html" title="29.8. Using SQL Descriptor Areas">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ecpg-dynamic"></a>29.7. Dynamic SQL</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-dynamic"></a>29.7. Dynamic SQL</h2></div></div></div>
 <p>   In many cases, the particular SQL statements that an application
    has to execute are known at the time the application is written.
    In some cases, however, the SQL statements are composed at run time
@@ -25,7 +22,7 @@
    provide in a string variable.
   </p>
 <p>   The simplest way to execute an arbitrary SQL statement is to use
-   the command <tt class="command">EXECUTE IMMEDIATE</tt>.  For example:
+   the command <code class="command">EXECUTE IMMEDIATE</code>.  For example:
 </p>
 <pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;
 const char *stmt = "CREATE TABLE test1 (...);";
@@ -34,7 +31,7 @@ EXEC SQL END DECLARE SECTION;
 EXEC SQL EXECUTE IMMEDIATE :stmt;</pre>
 <p>
    You may not execute statements that retrieve data (e.g.,
-   <tt class="command">SELECT</tt>) this way.
+   <code class="command">SELECT</code>) this way.
   </p>
 <p>   A more powerful way to execute arbitrary SQL statements is to
    prepare them once and execute the prepared statement as often as
@@ -53,7 +50,7 @@ EXEC SQL PREPARE mystmt FROM :stmt;
 EXEC SQL EXECUTE mystmt USING 42, 'foobar';</pre>
 <p>
    If the statement you are executing returns values, then add an
-   <tt class="literal">INTO</tt> clause:
+   <code class="literal">INTO</code> clause:
 </p>
 <pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;
 const char *stmt = "SELECT a, b, c FROM test1 WHERE a &gt; ?";
@@ -65,14 +62,14 @@ EXEC SQL PREPARE mystmt FROM :stmt;
  ...
 EXEC SQL EXECUTE mystmt INTO v1, v2, v3 USING 37;</pre>
 <p>
-   An <tt class="command">EXECUTE</tt> command may have an
-   <tt class="literal">INTO</tt> clause, a <tt class="literal">USING</tt> clause,
+   An <code class="command">EXECUTE</code> command may have an
+   <code class="literal">INTO</code> clause, a <code class="literal">USING</code> clause,
    both, or neither.
   </p>
 <p>   When you don't need the prepared statement anymore, you should
    deallocate it:
 </p>
-<pre class="programlisting">EXEC SQL DEALLOCATE PREPARE <i class="replaceable"><tt>name</tt></i>;</pre>
+<pre class="programlisting">EXEC SQL DEALLOCATE PREPARE <em class="replaceable"><code>name</code></em>;</pre>
 <p>
   </p>
 </div></body>

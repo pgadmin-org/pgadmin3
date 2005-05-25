@@ -4,22 +4,19 @@
 <title>11.4. Unique Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="previous" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
+<link rel="prev" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
 <link rel="next" href="indexes-expressional.html" title="11.5. Indexes on Expressions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="indexes-unique"></a>11.4. Unique Indexes</h2></div></div>
-<div></div>
-</div>
-<a name="id2569478"></a><p>   Indexes may also be used to enforce uniqueness of a column's value,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-unique"></a>11.4. Unique Indexes</h2></div></div></div>
+<a name="id348400"></a><p>   Indexes may also be used to enforce uniqueness of a column's value,
    or the uniqueness of the combined values of more than one column.
 </p>
-<pre class="synopsis">CREATE UNIQUE INDEX <i class="replaceable"><tt>name</tt></i> ON <i class="replaceable"><tt>table</tt></i> (<i class="replaceable"><tt>column</tt></i> [<span class="optional">, ...</span>]);</pre>
+<pre class="synopsis">CREATE UNIQUE INDEX <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> (<em class="replaceable"><code>column</code></em> [<span class="optional">, ...</span>]);</pre>
 <p>
    Currently, only B-tree indexes can be declared unique.
   </p>
@@ -37,7 +34,7 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>    The preferred way to add a unique constraint to a table is
-    <tt class="literal">ALTER TABLE ... ADD CONSTRAINT</tt>.  The use of
+    <code class="literal">ALTER TABLE ... ADD CONSTRAINT</code>.  The use of
     indexes to enforce unique constraints could be considered an
     implementation detail that should not be accessed directly.
     One should, however, be aware that there's no need to manually

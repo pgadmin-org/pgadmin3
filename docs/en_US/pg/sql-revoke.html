@@ -4,65 +4,62 @@
 <title>REVOKE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-reset.html" title="RESET">
+<link rel="prev" href="sql-reset.html" title="RESET">
 <link rel="next" href="sql-rollback.html" title="ROLLBACK">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-revoke"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-revoke"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>REVOKE &#8212; remove access privileges</p>
 </div>
-<a name="id2697553"></a><div class="refsynopsisdiv">
+<a name="id465822"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">REVOKE [ GRANT OPTION FOR ]
     { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
-    ON [ TABLE ] <i class="replaceable"><tt>tablename</tt></i> [, ...]
-    FROM { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...]
+    ON [ TABLE ] <em class="replaceable"><code>tablename</code></em> [, ...]
+    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
     [ CASCADE | RESTRICT ]
 
 REVOKE [ GRANT OPTION FOR ]
     { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
-    ON DATABASE <i class="replaceable"><tt>dbname</tt></i> [, ...]
-    FROM { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...]
+    ON DATABASE <em class="replaceable"><code>dbname</code></em> [, ...]
+    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
     [ CASCADE | RESTRICT ]
 
 REVOKE [ GRANT OPTION FOR ]
     { EXECUTE | ALL [ PRIVILEGES ] }
-    ON FUNCTION <i class="replaceable"><tt>funcname</tt></i> ([<i class="replaceable"><tt>type</tt></i>, ...]) [, ...]
-    FROM { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...]
+    ON FUNCTION <em class="replaceable"><code>funcname</code></em> ([<em class="replaceable"><code>type</code></em>, ...]) [, ...]
+    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
     [ CASCADE | RESTRICT ]
 
 REVOKE [ GRANT OPTION FOR ]
     { USAGE | ALL [ PRIVILEGES ] }
-    ON LANGUAGE <i class="replaceable"><tt>langname</tt></i> [, ...]
-    FROM { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...]
+    ON LANGUAGE <em class="replaceable"><code>langname</code></em> [, ...]
+    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
     [ CASCADE | RESTRICT ]
 
 REVOKE [ GRANT OPTION FOR ]
     { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
-    ON SCHEMA <i class="replaceable"><tt>schemaname</tt></i> [, ...]
-    FROM { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...]
+    ON SCHEMA <em class="replaceable"><code>schemaname</code></em> [, ...]
+    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
     [ CASCADE | RESTRICT ]
 
 REVOKE [ GRANT OPTION FOR ]
     { CREATE | ALL [ PRIVILEGES ] }
-    ON TABLESPACE <i class="replaceable"><tt>tablespacename</tt></i> [, ...]
-    FROM { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...]
+    ON TABLESPACE <em class="replaceable"><code>tablespacename</code></em> [, ...]
+    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
     [ CASCADE | RESTRICT ]</pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-revoke-description"></a><h2>Description</h2>
-<p>   The <tt class="command">REVOKE</tt> command revokes previously granted
+<p>   The <code class="command">REVOKE</code> command revokes previously granted
    privileges from one or more users or groups of users.  The key word
-   <tt class="literal">PUBLIC</tt> refers to the implicitly defined group of
+   <code class="literal">PUBLIC</code> refers to the implicitly defined group of
    all users.
   </p>
 <p>   See the description of the <a href="sql-grant.html">GRANT</a> command for
@@ -71,12 +68,12 @@ REVOKE [ GRANT OPTION FOR ]
 <p>   Note that any particular user will have the sum
    of privileges granted directly to him, privileges granted to any group he
    is presently a member of, and privileges granted to
-   <tt class="literal">PUBLIC</tt>.  Thus, for example, revoking <tt class="literal">SELECT</tt> privilege
-   from <tt class="literal">PUBLIC</tt> does not necessarily mean that all users
-   have lost <tt class="literal">SELECT</tt> privilege on the object: those who have it granted
+   <code class="literal">PUBLIC</code>.  Thus, for example, revoking <code class="literal">SELECT</code> privilege
+   from <code class="literal">PUBLIC</code> does not necessarily mean that all users
+   have lost <code class="literal">SELECT</code> privilege on the object: those who have it granted
    directly or via a group will still have it.
   </p>
-<p>   If <tt class="literal">GRANT OPTION FOR</tt> is specified, only the grant
+<p>   If <code class="literal">GRANT OPTION FOR</code> is specified, only the grant
    option for the privilege is revoked, not the privilege itself.
    Otherwise, both the privilege and the grant option are revoked.
   </p>
@@ -85,17 +82,17 @@ REVOKE [ GRANT OPTION FOR ]
    called dependent privileges. If the privilege or the grant option
    held by the first user is being revoked and dependent privileges
    exist, those dependent privileges are also revoked if
-   <tt class="literal">CASCADE</tt> is specified, else the revoke action
+   <code class="literal">CASCADE</code> is specified, else the revoke action
    will fail.  This recursive revocation only affects privileges that
    were granted through a chain of users that is traceable to the user
-   that is the subject of this <tt class="literal">REVOKE</tt> command.
+   that is the subject of this <code class="literal">REVOKE</code> command.
    Thus, the affected users may effectively keep the privilege if it
    was also granted through other users.
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-revoke-notes"></a><h2>Notes</h2>
-<p>   Use <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s <tt class="command">\z</tt> command to
+<p>   Use <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s <code class="command">\z</code> command to
    display the privileges granted on existing objects.  See <a href="sql-grant.html">GRANT</a> for information about the format.
   </p>
 <p>   A user can only revoke privileges that were granted directly by
@@ -103,42 +100,42 @@ REVOKE [ GRANT OPTION FOR ]
    grant option to user B, and user B has in turned granted it to user
    C, then user A cannot revoke the privilege directly from C.
    Instead, user A could revoke the grant option from user B and use
-   the <tt class="literal">CASCADE</tt> option so that the privilege is
+   the <code class="literal">CASCADE</code> option so that the privilege is
    in turn revoked from user C.  For another example, if both A and B
    have granted the same privilege to C, A can revoke his own grant
    but not B's grant, so C will still effectively have the privilege.
   </p>
-<p>    When a non-owner of an object attempts to <tt class="command">REVOKE</tt> privileges
+<p>    When a non-owner of an object attempts to <code class="command">REVOKE</code> privileges
     on the object, the command will fail outright if the user has no
     privileges whatsoever on the object.  As long as some privilege is
     available, the command will proceed, but it will revoke only those
-    privileges for which the user has grant options.  The <tt class="command">REVOKE ALL
-    PRIVILEGES</tt> forms will issue a warning message if no grant options are
+    privileges for which the user has grant options.  The <code class="command">REVOKE ALL
+    PRIVILEGES</code> forms will issue a warning message if no grant options are
     held, while the other forms will issue a warning if grant options for
     any of the privileges specifically named in the command are not held.
     (In principle these statements apply to the object owner as well, but
     since the owner is always treated as holding all grant options, the
     cases can never occur.)
    </p>
-<p>    If a superuser chooses to issue a <tt class="command">GRANT</tt> or <tt class="command">REVOKE</tt>
+<p>    If a superuser chooses to issue a <code class="command">GRANT</code> or <code class="command">REVOKE</code>
     command, the command is performed as though it were issued by the
     owner of the affected object.  Since all privileges ultimately come
     from the object owner (possibly indirectly via chains of grant options),
     it is possible for a superuser to revoke all privileges, but this may
-    require use of <tt class="literal">CASCADE</tt> as stated above.
+    require use of <code class="literal">CASCADE</code> as stated above.
    </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-revoke-examples"></a><h2>Examples</h2>
 <p>   Revoke insert privilege for the public on table
-   <tt class="literal">films</tt>:
+   <code class="literal">films</code>:
 
 </p>
 <pre class="programlisting">REVOKE INSERT ON films FROM PUBLIC;</pre>
 <p>
   </p>
-<p>   Revoke all privileges from user <tt class="literal">manuel</tt> on view
-   <tt class="literal">kinds</tt>:
+<p>   Revoke all privileges from user <code class="literal">manuel</code> on view
+   <code class="literal">kinds</code>:
 
 </p>
 <pre class="programlisting">REVOKE ALL PRIVILEGES ON kinds FROM manuel;</pre>
@@ -151,21 +148,21 @@ REVOKE [ GRANT OPTION FOR ]
 <div class="refsect1" lang="en">
 <a name="sql-revoke-compatibility"></a><h2>Compatibility</h2>
 <p>    The compatibility notes of the <a href="sql-grant.html">GRANT</a> command
-    apply analogously to <tt class="command">REVOKE</tt>.  The syntax summary is:
+    apply analogously to <code class="command">REVOKE</code>.  The syntax summary is:
 
 </p>
-<pre class="synopsis">REVOKE [ GRANT OPTION FOR ] <i class="replaceable"><tt>privileges</tt></i>
-    ON <i class="replaceable"><tt>object</tt></i> [ ( <i class="replaceable"><tt>column</tt></i> [, ...] ) ]
-    FROM { PUBLIC | <i class="replaceable"><tt>username</tt></i> [, ...] }
+<pre class="synopsis">REVOKE [ GRANT OPTION FOR ] <em class="replaceable"><code>privileges</code></em>
+    ON <em class="replaceable"><code>object</code></em> [ ( <em class="replaceable"><code>column</code></em> [, ...] ) ]
+    FROM { PUBLIC | <em class="replaceable"><code>username</code></em> [, ...] }
     { RESTRICT | CASCADE }</pre>
 <p>
-    One of <tt class="literal">RESTRICT</tt> or <tt class="literal">CASCADE</tt>
+    One of <code class="literal">RESTRICT</code> or <code class="literal">CASCADE</code>
     is required according to the standard, but <span class="productname">PostgreSQL</span>
-    assumes <tt class="literal">RESTRICT</tt> by default.
+    assumes <code class="literal">RESTRICT</code> by default.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2698030"></a><h2>See Also</h2>
+<a name="id466249"></a><h2>See Also</h2>
 <p>   <a href="sql-grant.html">GRANT</a>
   </p>
 </div>

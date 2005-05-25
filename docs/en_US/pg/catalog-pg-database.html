@@ -4,31 +4,28 @@
 <title>41.12. pg_database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-conversion.html" title="41.11. pg_conversion">
+<link rel="prev" href="catalog-pg-conversion.html" title="41.11. pg_conversion">
 <link rel="next" href="catalog-pg-depend.html" title="41.13. pg_depend">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-database"></a>41.12. <tt class="structname">pg_database</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2730708"></a><p>   The catalog <tt class="structname">pg_database</tt> stores information
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-database"></a>41.12. <code class="structname">pg_database</code></h2></div></div></div>
+<a name="id497072"></a><p>   The catalog <code class="structname">pg_database</code> stores information
    about the available databases.  Databases are created with the
-   <tt class="command">CREATE DATABASE</tt> command.  Consult
+   <code class="command">CREATE DATABASE</code> command.  Consult
    <a href="managing-databases.html" title="Chapter 18. Managing Databases">Chapter 18, <i>Managing Databases</i></a> for details about the meaning of some of the
    parameters.
   </p>
-<p>   Unlike most system catalogs, <tt class="structname">pg_database</tt>
+<p>   Unlike most system catalogs, <code class="structname">pg_database</code>
    is shared across all databases of a cluster: there is only one
-   copy of <tt class="structname">pg_database</tt> per cluster, not
+   copy of <code class="structname">pg_database</code> per cluster, not
    one per database.
   </p>
 <div class="table">
-<a name="id2730750"></a><p class="title"><b>Table 41.12. <tt class="structname">pg_database</tt> Columns</b></p>
+<a name="id497111"></a><p class="title"><b>Table 41.12. <code class="structname">pg_database</code> Columns</b></p>
 <table summary="pg_database Columns" border="1">
 <colgroup>
 <col>
@@ -44,52 +41,52 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">datname</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">datname</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>Database name</td>
 </tr>
 <tr>
-<td><tt class="structfield">datdba</tt></td>
-<td><tt class="type">int4</tt></td>
-<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usesysid</tt></td>
+<td><code class="structfield">datdba</code></td>
+<td><code class="type">int4</code></td>
+<td><code class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><code class="structname">pg_shadow</code></a>.usesysid</code></td>
 <td>Owner of the database, usually the user who created it</td>
 </tr>
 <tr>
-<td><tt class="structfield">encoding</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="structfield">encoding</code></td>
+<td><code class="type">int4</code></td>
 <td> </td>
 <td>Character encoding for this database</td>
 </tr>
 <tr>
-<td><tt class="structfield">datistemplate</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">datistemplate</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>       If true then this database can be used in the
-       <tt class="literal">TEMPLATE</tt> clause of <tt class="command">CREATE
-       DATABASE</tt> to create a new database as a clone of
+       <code class="literal">TEMPLATE</code> clause of <code class="command">CREATE
+       DATABASE</code> to create a new database as a clone of
        this one.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">datallowconn</tt></td>
-<td><tt class="type">bool</tt></td>
+<td><code class="structfield">datallowconn</code></td>
+<td><code class="type">bool</code></td>
 <td> </td>
 <td>       If false then no one can connect to this database.  This is
-       used to protect the <tt class="literal">template0</tt> database from being altered.
+       used to protect the <code class="literal">template0</code> database from being altered.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">datlastsysoid</tt></td>
-<td><tt class="type">oid</tt></td>
+<td><code class="structfield">datlastsysoid</code></td>
+<td><code class="type">oid</code></td>
 <td> </td>
 <td>       Last system OID in the database; useful
        particularly to <span class="application">pg_dump</span>
-</td>
+      </td>
 </tr>
 <tr>
-<td><tt class="structfield">datvacuumxid</tt></td>
-<td><tt class="type">xid</tt></td>
+<td><code class="structfield">datvacuumxid</code></td>
+<td><code class="type">xid</code></td>
 <td> </td>
 <td>       All rows inserted or deleted by transaction IDs before this one
        have been marked as known committed or known aborted in this database.
@@ -97,8 +94,8 @@
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">datfrozenxid</tt></td>
-<td><tt class="type">xid</tt></td>
+<td><code class="structfield">datfrozenxid</code></td>
+<td><code class="type">xid</code></td>
 <td> </td>
 <td>       All rows inserted by transaction IDs before this one have been
        relabeled with a permanent (&#8220;<span class="quote">frozen</span>&#8221;) transaction ID in this
@@ -107,25 +104,25 @@
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">dattablespace</tt></td>
-<td><tt class="type">oid</tt></td>
-<td><tt class="literal"><a href="catalog-pg-tablespace.html" title="41.28. pg_tablespace"><tt class="structname">pg_tablespace</tt></a>.oid</tt></td>
+<td><code class="structfield">dattablespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="41.28. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
 <td>       The default tablespace for the database.
        Within this database, all tables for which
-       <tt class="structname">pg_class</tt>.<tt class="structfield">reltablespace</tt> is zero
+       <code class="structname">pg_class</code>.<code class="structfield">reltablespace</code> is zero
        will be stored in this tablespace; in particular, all the non-shared
        system catalogs will be there.
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">datconfig</tt></td>
-<td><tt class="type">text[]</tt></td>
+<td><code class="structfield">datconfig</code></td>
+<td><code class="type">text[]</code></td>
 <td> </td>
 <td>Session defaults for run-time configuration variables</td>
 </tr>
 <tr>
-<td><tt class="structfield">datacl</tt></td>
-<td><tt class="type">aclitem[]</tt></td>
+<td><code class="structfield">datacl</code></td>
+<td><code class="type">aclitem[]</code></td>
 <td> </td>
 <td>       Access privileges; see
        <a href="sql-grant.html">GRANT</a> and

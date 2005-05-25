@@ -4,23 +4,20 @@
 <title>12.4. Data Consistency Checks at the Application Level</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
-<link rel="previous" href="explicit-locking.html" title="12.3. Explicit Locking">
+<link rel="prev" href="explicit-locking.html" title="12.3. Explicit Locking">
 <link rel="next" href="locking-indexes.html" title="12.5. Locking and Indexes">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="applevel-consistency"></a>12.4. Data Consistency Checks at the Application Level</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="applevel-consistency"></a>12.4. Data Consistency Checks at the Application Level</h2></div></div></div>
 <p>    Because readers in <span class="productname">PostgreSQL</span>
     do not lock data, regardless of
     transaction isolation level, data read by one transaction can be
     overwritten by another concurrent transaction. In other words,
-    if a row is returned by <tt class="command">SELECT</tt> it doesn't mean that
+    if a row is returned by <code class="command">SELECT</code> it doesn't mean that
     the row is still current at the instant it is returned (i.e., sometime
     after the current query began).  The row might have been modified or
     deleted by an already-committed transaction that committed after this one
@@ -39,11 +36,12 @@
     then serious confusion may ensue.
    </p>
 <p>    To ensure the current validity of a row and protect it against
-    concurrent updates one must use <tt class="command">SELECT FOR
-    UPDATE</tt> or an appropriate <tt class="command">LOCK TABLE</tt>
-    statement.  (<tt class="command">SELECT FOR UPDATE</tt> locks just the
-    returned rows against concurrent updates, while <tt class="command">LOCK
-    TABLE</tt> locks the whole table.)  This should be taken into
+    concurrent updates one must use <code class="command">SELECT FOR UPDATE</code>,
+    <code class="command">SELECT FOR SHARE</code>, or an appropriate <code class="command">LOCK
+    TABLE</code> statement.  (<code class="command">SELECT FOR UPDATE</code>
+    or <code class="command">SELECT FOR SHARE</code> locks just the
+    returned rows against concurrent updates, while <code class="command">LOCK
+    TABLE</code> locks the whole table.)  This should be taken into
     account when porting applications to
     <span class="productname">PostgreSQL</span> from other environments.
     (Before version 6.5 <span class="productname">PostgreSQL</span> used
@@ -55,7 +53,7 @@
     For example, a banking application might wish to check that the sum of
     all credits in one table equals the sum of debits in another table,
     when both tables are being actively updated.  Comparing the results of two
-    successive <tt class="literal">SELECT sum(...)</tt> commands will not work reliably under
+    successive <code class="literal">SELECT sum(...)</code> commands will not work reliably under
     Read Committed mode, since the second query will likely include the results
     of transactions not counted by the first.  Doing the two sums in a
     single serializable transaction will give an accurate picture of the
@@ -67,7 +65,7 @@
     includes some but not all post-transaction-start changes.  In such cases
     a careful person might wish to lock all tables needed for the check,
     in order to get an indisputable picture of current reality.  A
-    <tt class="literal">SHARE</tt> mode (or higher) lock guarantees that there are no
+    <code class="literal">SHARE</code> mode (or higher) lock guarantees that there are no
     uncommitted changes in the locked table, other than those of the current
     transaction.
    </p>
@@ -80,8 +78,8 @@
     transaction predates obtaining the lock, it may predate some now-committed
     changes in the table.  A serializable transaction's snapshot is actually
     frozen at the start of its first query or data-modification command
-    (<tt class="literal">SELECT</tt>, <tt class="literal">INSERT</tt>,
-    <tt class="literal">UPDATE</tt>, or <tt class="literal">DELETE</tt>), so
+    (<code class="literal">SELECT</code>, <code class="literal">INSERT</code>,
+    <code class="literal">UPDATE</code>, or <code class="literal">DELETE</code>), so
     it's possible to obtain locks explicitly before the snapshot is
     frozen.
    </p>

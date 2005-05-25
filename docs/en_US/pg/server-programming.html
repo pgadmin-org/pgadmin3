@@ -4,23 +4,17 @@
 <title>Part V. Server Programming</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="previous" href="infoschema-views.html" title="30.41. views">
+<link rel="prev" href="infoschema-views.html" title="30.41. views">
 <link rel="next" href="extend.html" title="Chapter 31. Extending SQL">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="server-programming">
-<div class="titlepage">
-<div><div><h1 class="title">
-<a name="server-programming"></a>Server Programming</h1></div></div>
+<div class="titlepage"><div><div><h1 class="title">
+<a name="server-programming"></a>Server Programming</h1></div></div></div>
+<div class="partintro" lang="en" id="id405973">
 <div></div>
-</div>
-<div class="partintro" lang="en" id="id2632274">
-<div>
-<div></div>
-<div></div>
-</div>
 <p>    This part is about extending the server functionality with
     user-defined functions, data types, triggers, etc.  These are
     advanced topics which should probably be approached only after all
@@ -29,31 +23,32 @@
     programming languages available in the
     <span class="productname">PostgreSQL</span> distribution as well as
     general issues concerning server-side programming languages.  It
-    is essential to read at least the earlier sections of <a href="extend.html" title="Chapter 31. Extending SQL">Chapter 31, <i>Extending SQL</i></a> (covering functions) before diving into the
+    is essential to read at least the earlier sections of <a href="extend.html" title="Chapter 31. Extending SQL">Chapter 31, <i>Extending <span class="acronym">SQL</span></i></a> (covering functions) before diving into the
     material about server-side programming languages.
    </p>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="chapter"><a href="extend.html">31. Extending SQL</a></span></dt>
+<dt><span class="chapter"><a href="extend.html">31. Extending <span class="acronym">SQL</span></a></span></dt>
 <dd><dl>
 <dt><span class="sect1"><a href="extend.html#extend-how">31.1. How Extensibility Works</a></span></dt>
-<dt><span class="sect1"><a href="extend-type-system.html">31.2. The PostgreSQL Type System</a></span></dt>
+<dt><span class="sect1"><a href="extend-type-system.html">31.2. The <span class="productname">PostgreSQL</span> Type System</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="extend-type-system.html#id2632565">31.2.1. Base Types</a></span></dt>
-<dt><span class="sect2"><a href="extend-type-system.html#id2632594">31.2.2. Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="extend-type-system.html#id2632613">31.2.3. Domains</a></span></dt>
-<dt><span class="sect2"><a href="extend-type-system.html#id2632644">31.2.4. Pseudo-Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id406240">31.2.1. Base Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id406263">31.2.2. Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id406279">31.2.3. Domains</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id406305">31.2.4. Pseudo-Types</a></span></dt>
 <dt><span class="sect2"><a href="extend-type-system.html#extend-types-polymorphic">31.2.5. Polymorphic Types</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="xfunc.html">31.3. User-Defined Functions</a></span></dt>
-<dt><span class="sect1"><a href="xfunc-sql.html">31.4. Query Language (SQL) Functions</a></span></dt>
+<dt><span class="sect1"><a href="xfunc-sql.html">31.4. Query Language (<span class="acronym">SQL</span>) Functions</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="xfunc-sql.html#id2633235">31.4.1. SQL Functions on Base Types</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-sql.html#id2633350">31.4.2. SQL Functions on Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-sql-table-functions">31.4.3. SQL Functions as Table Sources</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-sql.html#id2633720">31.4.4. SQL Functions Returning Sets</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-sql.html#id2633832">31.4.5. Polymorphic SQL Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-sql-base-functions">31.4.1. <span class="acronym">SQL</span> Functions on Base Types</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id406944">31.4.2. <span class="acronym">SQL</span> Functions on Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-output-parameters">31.4.3. Functions with Output Parameters</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-sql-table-functions">31.4.4. <span class="acronym">SQL</span> Functions as Table Sources</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id407369">31.4.5. <span class="acronym">SQL</span> Functions Returning Sets</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id407463">31.4.6. Polymorphic <span class="acronym">SQL</span> Functions</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="xfunc-overload.html">31.5. Function Overloading</a></span></dt>
 <dt><span class="sect1"><a href="xfunc-volatility.html">31.6. Function Volatility Categories</a></span></dt>
@@ -63,27 +58,27 @@
 <dd><dl>
 <dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-dynload">31.9.1. Dynamic Loading</a></span></dt>
 <dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-basetype">31.9.2. Base Types in C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2635674">31.9.3. Calling Conventions Version 0 for C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2635871">31.9.4. Calling Conventions Version 1 for C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2636282">31.9.5. Writing Code</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id409141">31.9.3. Calling Conventions Version 0 for C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id409296">31.9.4. Calling Conventions Version 1 for C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id409634">31.9.5. Writing Code</a></span></dt>
 <dt><span class="sect2"><a href="xfunc-c.html#dfunc">31.9.6. Compiling and Linking Dynamically-Loaded Functions</a></span></dt>
 <dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-pgxs">31.9.7. Extension Building Infrastructure</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2637600">31.9.8. Composite-Type Arguments in C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2637754">31.9.9. Returning Rows (Composite Types) from C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id410862">31.9.8. Composite-Type Arguments in C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id410990">31.9.9. Returning Rows (Composite Types) from C-Language Functions</a></span></dt>
 <dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-return-set">31.9.10. Returning Sets from C-Language Functions</a></span></dt>
-<dt><span class="sect2"><a href="xfunc-c.html#id2638349">31.9.11. Polymorphic Arguments and Return Types</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id411497">31.9.11. Polymorphic Arguments and Return Types</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="xaggr.html">31.10. User-Defined Aggregates</a></span></dt>
 <dt><span class="sect1"><a href="xtypes.html">31.11. User-Defined Types</a></span></dt>
 <dt><span class="sect1"><a href="xoper.html">31.12. User-Defined Operators</a></span></dt>
 <dt><span class="sect1"><a href="xoper-optimization.html">31.13. Operator Optimization Information</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2639398">31.13.1. COMMUTATOR</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2639603">31.13.2. NEGATOR</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2639688">31.13.3. RESTRICT</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2639971">31.13.4. JOIN</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2640116">31.13.5. HASHES</a></span></dt>
-<dt><span class="sect2"><a href="xoper-optimization.html#id2640235">31.13.6. MERGES (SORT1, SORT2, LTCMP, GTCMP)</a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id412378">31.13.1. <code class="literal">COMMUTATOR</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id412561">31.13.2. <code class="literal">NEGATOR</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id412636">31.13.3. <code class="literal">RESTRICT</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id412895">31.13.4. <code class="literal">JOIN</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id413031">31.13.5. <code class="literal">HASHES</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id413127">31.13.6. <code class="literal">MERGES</code> (<code class="literal">SORT1</code>, <code class="literal">SORT2</code>, <code class="literal">LTCMP</code>, <code class="literal">GTCMP</code>)</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="xindex.html">31.14. Interfacing Extensions To Indexes</a></span></dt>
 <dd><dl>
@@ -108,14 +103,14 @@
 <dt><span class="sect1"><a href="rules.html#querytree">33.1. The Query Tree</a></span></dt>
 <dt><span class="sect1"><a href="rules-views.html">33.2. Views and the Rule System</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="rules-views.html#rules-select">33.2.1. How SELECT Rules Work</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#id2644352">33.2.2. View Rules in Non-SELECT Statements</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#id2644651">33.2.3. The Power of Views in PostgreSQL</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#rules-select">33.2.1. How <code class="command">SELECT</code> Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id416634">33.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id416906">33.2.3. The Power of Views in <span class="productname">PostgreSQL</span></a></span></dt>
 <dt><span class="sect2"><a href="rules-views.html#rules-views-update">33.2.4. Updating a View</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="rules-update.html">33.3. Rules on INSERT, UPDATE, and DELETE</a></span></dt>
+<dt><span class="sect1"><a href="rules-update.html">33.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="rules-update.html#id2644880">33.3.1. How Update Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-update.html#id417116">33.3.1. How Update Rules Work</a></span></dt>
 <dt><span class="sect2"><a href="rules-update.html#rules-update-views">33.3.2. Cooperation with Views</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="rules-privileges.html">33.4. Rules and Privileges</a></span></dt>
@@ -124,29 +119,29 @@
 </dl></dd>
 <dt><span class="chapter"><a href="xplang.html">34. Procedural Languages</a></span></dt>
 <dd><dl><dt><span class="sect1"><a href="xplang.html#xplang-install">34.1. Installing Procedural Languages</a></span></dt></dl></dd>
-<dt><span class="chapter"><a href="plpgsql.html">35. PL/pgSQL - SQL Procedural Language</a></span></dt>
+<dt><span class="chapter"><a href="plpgsql.html">35. <span class="application">PL/pgSQL</span> - <span class="acronym">SQL</span> Procedural Language</a></span></dt>
 <dd><dl>
 <dt><span class="sect1"><a href="plpgsql.html#plpgsql-overview">35.1. Overview</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="plpgsql.html#plpgsql-advantages">35.1.1. Advantages of Using PL/pgSQL</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql.html#plpgsql-advantages">35.1.1. Advantages of Using <span class="application">PL/pgSQL</span></a></span></dt>
 <dt><span class="sect2"><a href="plpgsql.html#plpgsql-args-results">35.1.2. Supported Argument and Result Data Types</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="plpgsql-development-tips.html">35.2. Tips for Developing in PL/pgSQL</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-development-tips.html">35.2. Tips for Developing in <span class="application">PL/pgSQL</span></a></span></dt>
 <dd><dl><dt><span class="sect2"><a href="plpgsql-development-tips.html#plpgsql-quote-tips">35.2.1. Handling of Quotation Marks</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="plpgsql-structure.html">35.3. Structure of PL/pgSQL</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-structure.html">35.3. Structure of <span class="application">PL/pgSQL</span></a></span></dt>
 <dt><span class="sect1"><a href="plpgsql-declarations.html">35.4. Declarations</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-aliases">35.4.1. Aliases for Function Parameters</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-type">35.4.2. Copying Types</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-rowtypes">35.4.3. Row Types</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-records">35.4.4. Record Types</a></span></dt>
-<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-renaming-vars">35.4.5. RENAME</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-renaming-vars">35.4.5. <code class="literal">RENAME</code></a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="plpgsql-expressions.html">35.5. Expressions</a></span></dt>
 <dt><span class="sect1"><a href="plpgsql-statements.html">35.6. Basic Statements</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-assignment">35.6.1. Assignment</a></span></dt>
-<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-select-into">35.6.2. SELECT INTO</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-select-into">35.6.2. <code class="command">SELECT INTO</code></a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-perform">35.6.3. Executing an Expression or Query With No Result</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-null">35.6.4. Doing Nothing At All</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-executing-dyn">35.6.5. Executing Dynamic Commands</a></span></dt>
@@ -168,9 +163,9 @@
 </dl></dd>
 <dt><span class="sect1"><a href="plpgsql-errors-and-messages.html">35.9. Errors and Messages</a></span></dt>
 <dt><span class="sect1"><a href="plpgsql-trigger.html">35.10. Trigger Procedures</a></span></dt>
-<dt><span class="sect1"><a href="plpgsql-porting.html">35.11. Porting from Oracle PL/SQL</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-porting.html">35.11. Porting from <span class="productname">Oracle</span> PL/SQL</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="plpgsql-porting.html#id2653977">35.11.1. Porting Examples</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-porting.html#id425363">35.11.1. Porting Examples</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-other">35.11.2. Other Things to Watch For</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-appendix">35.11.3. Appendix</a></span></dt>
 </dl></dd>
@@ -183,7 +178,7 @@
 <dt><span class="sect1"><a href="pltcl-global.html">36.4. Global Data in PL/Tcl</a></span></dt>
 <dt><span class="sect1"><a href="pltcl-dbaccess.html">36.5. Database Access from PL/Tcl</a></span></dt>
 <dt><span class="sect1"><a href="pltcl-trigger.html">36.6. Trigger Procedures in PL/Tcl</a></span></dt>
-<dt><span class="sect1"><a href="pltcl-unknown.html">36.7. Modules and the unknown command</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-unknown.html">36.7. Modules and the <code class="function">unknown</code> command</a></span></dt>
 <dt><span class="sect1"><a href="pltcl-procnames.html">36.8. Tcl Procedure Names</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="plperl.html">37. PL/Perl - Perl Procedural Language</a></span></dt>

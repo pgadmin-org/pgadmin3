@@ -4,30 +4,27 @@
 <title>5.7. Privileges</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="previous" href="ddl-alter.html" title="5.6. Modifying Tables">
+<link rel="prev" href="ddl-alter.html" title="5.6. Modifying Tables">
 <link rel="next" href="ddl-schemas.html" title="5.8. Schemas">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="ddl-priv"></a>5.7. Privileges</h2></div></div>
-<div></div>
-</div>
-<a name="id2526136"></a><a name="id2526147"></a><p>   When you create a database object, you become its owner.  By
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ddl-priv"></a>5.7. Privileges</h2></div></div></div>
+<a name="id307736"></a><a name="id307745"></a><p>   When you create a database object, you become its owner.  By
    default, only the owner of an object can do anything with the
    object. In order to allow other users to use it,
-   <i class="firstterm">privileges</i> must be granted.  (However,
+   <em class="firstterm">privileges</em> must be granted.  (However,
    users that have the superuser attribute can always
    access any object.)
   </p>
-<p>   There are several different privileges: <tt class="literal">SELECT</tt>,
-   <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, <tt class="literal">DELETE</tt>,
-   <tt class="literal">RULE</tt>, <tt class="literal">REFERENCES</tt>, <tt class="literal">TRIGGER</tt>,
-   <tt class="literal">CREATE</tt>, <tt class="literal">TEMPORARY</tt>, <tt class="literal">EXECUTE</tt>,
-   and <tt class="literal">USAGE</tt>.  The privileges applicable to a particular
+<p>   There are several different privileges: <code class="literal">SELECT</code>,
+   <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, <code class="literal">DELETE</code>,
+   <code class="literal">RULE</code>, <code class="literal">REFERENCES</code>, <code class="literal">TRIGGER</code>,
+   <code class="literal">CREATE</code>, <code class="literal">TEMPORARY</code>, <code class="literal">EXECUTE</code>,
+   and <code class="literal">USAGE</code>.  The privileges applicable to a particular
    object vary depending on the object's type (table, function, etc).
    For complete
    information on the different types of privileges supported by
@@ -42,12 +39,12 @@
 <h3 class="title">Note</h3>
 <p>    To change the owner of a table, index, sequence, or view, use the
     <a href="sql-altertable.html" title="ALTER TABLE"><span class="refentrytitle"><a name="sql-altertable-title"></a>ALTER TABLE</span></a> command.  There are corresponding
-    <tt class="literal">ALTER</tt> commands for other object types.
+    <code class="literal">ALTER</code> commands for other object types.
    </p>
 </div>
-<p>   To assign privileges, the <tt class="command">GRANT</tt> command is
-   used. For example, if <tt class="literal">joe</tt> is an existing user, and
-   <tt class="literal">accounts</tt> is an existing table, the privilege to
+<p>   To assign privileges, the <code class="command">GRANT</code> command is
+   used. For example, if <code class="literal">joe</code> is an existing user, and
+   <code class="literal">accounts</code> is an existing table, the privilege to
    update the table can be granted with
 </p>
 <pre class="programlisting">GRANT UPDATE ON accounts TO joe;</pre>
@@ -56,18 +53,18 @@
 </p>
 <pre class="programlisting">GRANT SELECT ON accounts TO GROUP staff;</pre>
 <p>
-   The special &#8220;<span class="quote">user</span>&#8221; name <tt class="literal">PUBLIC</tt> can
+   The special &#8220;<span class="quote">user</span>&#8221; name <code class="literal">PUBLIC</code> can
    be used to grant a privilege to every user on the system. Writing
-   <tt class="literal">ALL</tt> in place of a specific privilege grants all
+   <code class="literal">ALL</code> in place of a specific privilege grants all
    privileges that are relevant for the object type.
   </p>
 <p>   To revoke a privilege, use the fittingly named
-   <tt class="command">REVOKE</tt> command:
+   <code class="command">REVOKE</code> command:
 </p>
 <pre class="programlisting">REVOKE ALL ON accounts FROM PUBLIC;</pre>
 <p>
    The special privileges of the object owner (i.e., the right to do
-   <tt class="command">DROP</tt>, <tt class="command">GRANT</tt>, <tt class="command">REVOKE</tt>, etc.)
+   <code class="command">DROP</code>, <code class="command">GRANT</code>, <code class="command">REVOKE</code>, etc.)
    are always implicit in being the owner,
    and cannot be granted or revoked.  But the object owner can choose
    to revoke his own ordinary privileges, for example to make a

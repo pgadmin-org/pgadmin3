@@ -4,15 +4,14 @@
 <title>Appendix F. The CVS Repository</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
-<link rel="previous" href="release-0-01.html" title="E.58. Postgres95 Release 0.01">
+<link rel="prev" href="release-0-01.html" title="E.63. Postgres95 Release 0.01">
 <link rel="next" href="cvs-tree.html" title="F.2. CVS Tree Organization">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="cvs">
-<div class="titlepage">
-<div>
+<div class="titlepage"><div>
 <div><h2 class="title">
 <a name="cvs"></a>Appendix F. The <span class="productname">CVS</span> Repository</h2></div>
 <div><div class="authorgroup">
@@ -26,20 +25,18 @@
 <span class="firstname">Thomas</span> <span class="surname">Lockhart</span>
 </h3></div>
 </div></div>
-</div>
-<div></div>
-</div>
+</div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="cvs.html#anoncvs">F.1. Getting The Source Via Anonymous CVS</a></span></dt>
-<dt><span class="sect1"><a href="cvs-tree.html">F.2. CVS Tree Organization</a></span></dt>
-<dt><span class="sect1"><a href="cvsup.html">F.3. Getting The Source Via CVSup</a></span></dt>
+<dt><span class="sect1"><a href="cvs.html#anoncvs">F.1. Getting The Source Via Anonymous <span class="productname">CVS</span></a></span></dt>
+<dt><span class="sect1"><a href="cvs-tree.html">F.2. <span class="productname">CVS</span> Tree Organization</a></span></dt>
+<dt><span class="sect1"><a href="cvsup.html">F.3. Getting The Source Via <span class="productname">CVSup</span></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="cvsup.html#id2786886">F.3.1. Preparing A CVSup Client System</a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id2787019">F.3.2. Running a CVSup Client</a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id2787223">F.3.3. Installing CVSup</a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id2787412">F.3.4. Installation from Sources</a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id550129">F.3.1. Preparing A <span class="productname">CVSup</span> Client System</a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id550253">F.3.2. Running a <span class="productname">CVSup</span> Client</a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id550440">F.3.3. Installing <span class="productname">CVSup</span></a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id550613">F.3.4. Installation from Sources</a></span></dt>
 </dl></dd>
 </dl>
 </div>
@@ -52,18 +49,15 @@
   <span class="productname">PostgreSQL</span> server to your local machine.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="anoncvs"></a>F.1. Getting The Source Via Anonymous <span class="productname">CVS</span></h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="anoncvs"></a>F.1. Getting The Source Via Anonymous <span class="productname">CVS</span></h2></div></div></div>
 <p>   If you would like to keep up with the current sources on a regular
    basis, you can fetch them from our <span class="productname">CVS</span> server
    and then use <span class="productname">CVS</span> to
    retrieve updates from time to time.
   </p>
 <div class="procedure">
-<p class="title"><b>Anonymous CVS</b></p>
+<a name="id549657"></a><p class="title"><b>Anonymous CVS</b></p>
 <ol type="1">
 <li><p>     You will need a local copy of <span class="productname">CVS</span>
      (Concurrent Version Control System), which you can get from
@@ -85,7 +79,7 @@
      an empty string.
     </p>
 <p>     You should only need to do this once, since the password will be
-     saved in <tt class="literal">.cvspass</tt> in your home directory.
+     saved in <code class="literal">.cvspass</code> in your home directory.
     </p>
 </li>
 <li>
@@ -96,14 +90,14 @@
 <p>
 
      This installs the <span class="productname">PostgreSQL</span> sources into a
-     subdirectory <tt class="filename">pgsql</tt>
+     subdirectory <code class="filename">pgsql</code>
      of the directory you are currently in.
 
      </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>       If you have a fast link to the Internet, you may not need
-       <tt class="option">-z3</tt>, which instructs
+       <code class="option">-z3</code>, which instructs
        <span class="productname">CVS</span> to use gzip compression for transferred data.  But
        on a modem-speed link, it's a very substantial win.
       </p>
@@ -111,7 +105,7 @@
 <p>
     </p>
 <p>     This initial checkout is a little slower than simply downloading
-     a <tt class="filename">tar.gz</tt> file; expect it to take 40 minutes or so if you
+     a <code class="filename">tar.gz</code> file; expect it to take 40 minutes or so if you
      have a 28.8K modem.  The advantage of
      <span class="productname">CVS</span>
      doesn't show up until you want to update the file set later on.
@@ -119,8 +113,8 @@
 </li>
 <li>
 <p>     Whenever you want to update to the latest <span class="productname">CVS</span> sources,
-     <tt class="command">cd</tt> into
-     the <tt class="filename">pgsql</tt> subdirectory, and issue
+     <code class="command">cd</code> into
+     the <code class="filename">pgsql</code> subdirectory, and issue
      </p>
 <pre class="programlisting">$ cvs -z3 update -d -P
      </pre>
@@ -132,7 +126,7 @@
     </p>
 </li>
 <li>
-<p>     You can save yourself some typing by making a file <tt class="filename">.cvsrc</tt>
+<p>     You can save yourself some typing by making a file <code class="filename">.cvsrc</code>
      in your home directory that contains
 
      </p>
@@ -141,8 +135,8 @@ update -d -P
      </pre>
 <p>
 
-     This supplies the <tt class="option">-z3</tt> option to all cvs commands, and the
-     <tt class="option">-d</tt> and <tt class="option">-P</tt> options to cvs update.  Then you just have
+     This supplies the <code class="option">-z3</code> option to all cvs commands, and the
+     <code class="option">-d</code> and <code class="option">-P</code> options to cvs update.  Then you just have
      to say
      </p>
 <pre class="programlisting">$ cvs update

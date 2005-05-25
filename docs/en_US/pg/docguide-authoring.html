@@ -4,18 +4,15 @@
 <title>G.4. Documentation Authoring</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="docguide.html" title="Appendix G. Documentation">
-<link rel="previous" href="docguide-build.html" title="G.3. Building The Documentation">
+<link rel="prev" href="docguide-build.html" title="G.3. Building The Documentation">
 <link rel="next" href="docguide-style.html" title="G.5. Style Guide">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="docguide-authoring"></a>G.4. Documentation Authoring</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="docguide-authoring"></a>G.4. Documentation Authoring</h2></div></div></div>
 <p>    <span class="acronym">SGML</span> and <span class="productname">DocBook</span> do
     not suffer from an oversupply of open-source authoring tools. The
     most common tool set is the
@@ -24,32 +21,28 @@
     these tools are provided in a typical full installation.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2789679"></a>G.4.1. Emacs/PSGML</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id552707"></a>G.4.1. Emacs/PSGML</h3></div></div></div>
 <p>     <span class="productname">PSGML</span> is the most common and most
      powerful mode for editing <span class="acronym">SGML</span> documents.
      When properly configured, it will allow you to use
      <span class="application">Emacs</span> to insert tags and check markup
      consistency.  You could use it for <span class="acronym">HTML</span> as
-     well.  Check the <a href="http://www.lysator.liu.se/projects/about_psgml.html" target="_top">PSGML
-     web site</a> for downloads, installation instructions, and
+     well.  Check the <a href="http://www.lysator.liu.se/projects/about_psgml.html" target="_top">     PSGML web site</a> for downloads, installation instructions, and
      detailed documentation.
     </p>
 <p>     There is one important thing to note with
      <span class="productname">PSGML</span>: its author assumed that your
      main <span class="acronym">SGML</span> <span class="acronym">DTD</span> directory
-     would be <tt class="filename">/usr/local/lib/sgml</tt>.  If, as in the
+     would be <code class="filename">/usr/local/lib/sgml</code>.  If, as in the
      examples in this chapter, you use
-     <tt class="filename">/usr/local/share/sgml</tt>, you have to
+     <code class="filename">/usr/local/share/sgml</code>, you have to
      compensate for this, either by setting
-     <tt class="envar">SGML_CATALOG_FILES</tt> environment variable, or you
+     <code class="envar">SGML_CATALOG_FILES</code> environment variable, or you
      can customize your <span class="productname">PSGML</span> installation
      (its manual tells you how).
     </p>
-<p>     Put the following in your <tt class="filename">~/.emacs</tt>
+<p>     Put the following in your <code class="filename">~/.emacs</code>
      environment file (adjusting the path names to be appropriate for
      your system):
 
@@ -73,7 +66,7 @@
 
      and in the same file add an entry for <span class="acronym">SGML</span>
      into the (existing) definition for
-     <tt class="varname">auto-mode-alist</tt>:
+     <code class="varname">auto-mode-alist</code>:
 </p>
 <pre class="programlisting">(setq
   auto-mode-alist
@@ -103,7 +96,7 @@ End:
 --&gt;</pre>
 <p>
      This will set up a number of editing mode parameters even if you
-     do not set up your <tt class="filename">~/.emacs</tt> file, but it is
+     do not set up your <code class="filename">~/.emacs</code> file, but it is
      a bit unfortunate, since if you followed the installation
      instructions above, then the catalog path will not match your
      location.  Hence you might need to turn off local variables:
@@ -112,10 +105,10 @@ End:
 <p>
     </p>
 <p>     The <span class="productname">PostgreSQL</span> distribution includes a
-     parsed DTD definitions file <tt class="filename">reference.ced</tt>.
+     parsed DTD definitions file <code class="filename">reference.ced</code>.
      You may find that when using <span class="productname">PSGML</span>, a
      comfortable way of working with these separate files of book
-     parts is to insert a proper <tt class="literal">DOCTYPE</tt>
+     parts is to insert a proper <code class="literal">DOCTYPE</code>
      declaration while you're editing them.  If you are working on
      this source, for instance, it is an appendix chapter, so you
      would specify the document as an &#8220;<span class="quote">appendix</span>&#8221; instance
@@ -127,26 +120,24 @@ End:
 
      This means that anything and everything that reads
      <span class="acronym">SGML</span> will get it right, and I can verify the
-     document with <tt class="command">nsgmls -s docguide.sgml</tt>.  (But
+     document with <code class="command">nsgmls -s docguide.sgml</code>.  (But
      you need to take out that line before building the entire
      documentation set.)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2789898"></a>G.4.2. Other Emacs modes</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id552896"></a>G.4.2. Other Emacs modes</h3></div></div></div>
 <p>     <span class="productname">GNU Emacs</span> ships with a different
      <span class="acronym">SGML</span> mode, which is not quite as powerful as
      <span class="productname">PSGML</span>, but it's less confusing and
      lighter weight.  Also, it offers syntax highlighting (font lock),
      which can be very helpful.
     </p>
-<p>     Norm Walsh offers a major <a href="http://nwalsh.com/emacs/docbookide/index.html" target="_top">mode
-     specifically for DocBook</a> which also has font-lock and a
-     number of features to reduce typing.
+<p>     Norm Walsh offers a
+     <a href="http://nwalsh.com/emacs/docbookide/index.html" target="_top">major mode</a>
+     specifically for DocBook which also has font-lock and a number of features to 
+     reduce typing.
     </p>
 </div>
 </div></body>

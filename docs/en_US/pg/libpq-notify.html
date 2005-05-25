@@ -4,38 +4,35 @@
 <title>27.7. Asynchronous Notification</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
-<link rel="previous" href="libpq-fastpath.html" title="27.6. The Fast-Path Interface">
+<link rel="prev" href="libpq-fastpath.html" title="27.6. The Fast-Path Interface">
 <link rel="next" href="libpq-copy.html" title="27.8. Functions Associated with the COPY Command">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="libpq-notify"></a>27.7. Asynchronous Notification</h2></div></div>
-<div></div>
-</div>
-<a name="id2614547"></a><p><span class="productname">PostgreSQL</span> offers asynchronous notification via the
-<tt class="command">LISTEN</tt> and <tt class="command">NOTIFY</tt> commands.  A client session registers its interest in a particular
-notification condition with the <tt class="command">LISTEN</tt> command (and can stop listening
-with the <tt class="command">UNLISTEN</tt> command).  All sessions listening on a
-particular condition will be notified asynchronously when a <tt class="command">NOTIFY</tt> command with that
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-notify"></a>27.7. Asynchronous Notification</h2></div></div></div>
+<a name="id389708"></a><p><span class="productname">PostgreSQL</span> offers asynchronous notification via the
+<code class="command">LISTEN</code> and <code class="command">NOTIFY</code> commands.  A client session registers its interest in a particular
+notification condition with the <code class="command">LISTEN</code> command (and can stop listening
+with the <code class="command">UNLISTEN</code> command).  All sessions listening on a
+particular condition will be notified asynchronously when a <code class="command">NOTIFY</code> command with that
 condition name is executed by any session.  No additional information is
 passed from the notifier to the listener.  Thus, typically, any actual data
 that needs to be communicated is transferred through a database table.
 Commonly, the condition name is the same as the associated table, but it is
 not necessary for there to be any associated table.</p>
 <p><span class="application">libpq</span> applications submit
-<tt class="command">LISTEN</tt> and <tt class="command">UNLISTEN</tt> commands as
-ordinary SQL commands.  The arrival of <tt class="command">NOTIFY</tt>
+<code class="command">LISTEN</code> and <code class="command">UNLISTEN</code> commands as
+ordinary SQL commands.  The arrival of <code class="command">NOTIFY</code>
 messages can subsequently be detected by calling
-<tt class="function">PQnotifies</tt>.<a name="id2614638"></a></p>
-<p>The function <tt class="function">PQnotifies</tt>
+<code class="function">PQnotifies</code>.<a name="id389792"></a></p>
+<p>The function <code class="function">PQnotifies</code>
           returns  the next notification from a list of unhandled
           notification messages received from the server.  It returns a null pointer if
           there are no pending notifications.  Once a notification is
-          returned from <tt class="function">PQnotifies</tt>, it is considered handled and will be
+          returned from <code class="function">PQnotifies</code>, it is considered handled and will be
           removed from the list of notifications.
 </p>
 <pre class="synopsis">PGnotify *PQnotifies(PGconn *conn);
@@ -46,42 +43,42 @@ typedef struct pgNotify {
     char *extra;                /* notification parameter */
 } PGnotify;</pre>
 <p>
-After processing a <tt class="structname">PGnotify</tt> object returned by
-<tt class="function">PQnotifies</tt>, be sure to free it with
-<tt class="function">PQfreemem</tt>.  It is sufficient to free the
-<tt class="structname">PGnotify</tt> pointer; the
-<tt class="structfield">relname</tt> and <tt class="structfield">extra</tt> fields
+After processing a <code class="structname">PGnotify</code> object returned by
+<code class="function">PQnotifies</code>, be sure to free it with
+<code class="function">PQfreemem</code>.  It is sufficient to free the
+<code class="structname">PGnotify</code> pointer; the
+<code class="structfield">relname</code> and <code class="structfield">extra</code> fields
 do not represent separate allocations.
-(At present, the <tt class="structfield">extra</tt> field is unused and will
+(At present, the <code class="structfield">extra</code> field is unused and will
 always point to an empty string.)</p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p> In <span class="productname">PostgreSQL</span> 6.4 and later,
- the <tt class="structfield">be_pid</tt> is that of the notifying server process,
+ the <code class="structfield">be_pid</code> is that of the notifying server process,
  whereas in earlier versions it was always the <span class="acronym">PID</span> of your own server process.</p>
 </div>
-<p><a href="libpq-example.html#libpq-example-2" title="Example 27.2. libpq Example Program 2">Example 27.2, &#8220;libpq Example Program 2&#8221;</a> gives a sample program that illustrates the use
+<p><a href="libpq-example.html#libpq-example-2" title="Example 27.2. libpq Example Program 2">Example 27.2, &#8220;<span class="application">libpq</span> Example Program 2&#8221;</a> gives a sample program that illustrates the use
 of asynchronous notification.</p>
-<p><tt class="function">PQnotifies</tt> does not actually read data from the server; it just
+<p><code class="function">PQnotifies</code> does not actually read data from the server; it just
 returns messages previously absorbed by another <span class="application">libpq</span>
 function.  In prior releases of <span class="application">libpq</span>, the only way
-to ensure timely receipt of <tt class="command">NOTIFY</tt> messages was to constantly submit commands,
-even empty ones, and then check <tt class="function">PQnotifies</tt> after each
-<tt class="function">PQexec</tt>.  While this still works, it is
+to ensure timely receipt of <code class="command">NOTIFY</code> messages was to constantly submit commands,
+even empty ones, and then check <code class="function">PQnotifies</code> after each
+<code class="function">PQexec</code>.  While this still works, it is
 deprecated as a waste of processing power.</p>
-<p>A better way to check for <tt class="command">NOTIFY</tt>
+<p>A better way to check for <code class="command">NOTIFY</code>
 messages when you have no useful commands to execute is to call
-<tt class="function">PQconsumeInput</tt>, then check
-<tt class="function">PQnotifies</tt>.
-You can use <tt class="function">select()</tt> to wait for data to
+<code class="function">PQconsumeInput</code>, then check
+<code class="function">PQnotifies</code>.
+You can use <code class="function">select()</code> to wait for data to
 arrive from the server, thereby using no <span class="acronym">CPU</span> power unless there is something
-to do.  (See <tt class="function">PQsocket</tt> to obtain the file descriptor
-number to use with <tt class="function">select()</tt>.)
+to do.  (See <code class="function">PQsocket</code> to obtain the file descriptor
+number to use with <code class="function">select()</code>.)
 Note that this will work OK whether you submit commands with
-<tt class="function">PQsendQuery</tt>/<tt class="function">PQgetResult</tt> or simply
-use <tt class="function">PQexec</tt>.  You should, however, remember to
-check <tt class="function">PQnotifies</tt> after each
-<tt class="function">PQgetResult</tt> or <tt class="function">PQexec</tt>, to see
+<code class="function">PQsendQuery</code>/<code class="function">PQgetResult</code> or simply
+use <code class="function">PQexec</code>.  You should, however, remember to
+check <code class="function">PQnotifies</code> after each
+<code class="function">PQgetResult</code> or <code class="function">PQexec</code>, to see
 if any notifications came in during the processing of the command.</p>
 </div></body>
 </html>

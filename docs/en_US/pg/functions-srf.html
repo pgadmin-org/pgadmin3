@@ -4,19 +4,16 @@
 <title>9.18. Set Returning Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-comparisons.html" title="9.17. Row and Array Comparisons">
+<link rel="prev" href="functions-comparisons.html" title="9.17. Row and Array Comparisons">
 <link rel="next" href="functions-info.html" title="9.19. System Information Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-srf"></a>9.18. Set Returning Functions</h2></div></div>
-<div></div>
-</div>
-<a name="id2563917"></a><p>   This section describes functions that possibly return more than one row.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-srf"></a>9.18. Set Returning Functions</h2></div></div></div>
+<a name="id343252"></a><p>   This section describes functions that possibly return more than one row.
    Currently the only functions in this class are series generating functions,
    as detailed in <a href="functions-srf.html#functions-srf-series" title="Table 9.38. Series Generating Functions">Table 9.38, &#8220;Series Generating Functions&#8221;</a>.
   </p>
@@ -37,36 +34,36 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">generate_series</tt>(<i class="parameter"><tt>start</tt></i>, <i class="parameter"><tt>stop</tt></i>)</tt></td>
+<td><code class="literal"><code class="function">generate_series</code>(<em class="parameter"><code>start</code></em>, <em class="parameter"><code>stop</code></em>)</code></td>
 <td>
-<tt class="type">int</tt> or <tt class="type">bigint</tt>
+<code class="type">int</code> or <code class="type">bigint</code>
 </td>
 <td>
-<tt class="type">setof int</tt> or <tt class="type">setof bigint</tt> (same as argument type)</td>
-<td>       Generate a series of values, from <i class="parameter"><tt>start</tt></i> to <i class="parameter"><tt>stop</tt></i>
-       with a step size of one.
+<code class="type">setof int</code> or <code class="type">setof bigint</code> (same as argument type)</td>
+<td>       Generate a series of values, from <em class="parameter"><code>start</code></em> to <em class="parameter"><code>stop</code></em>
+       with a step size of one
       </td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">generate_series</tt>(<i class="parameter"><tt>start</tt></i>, <i class="parameter"><tt>stop</tt></i>, <i class="parameter"><tt>step</tt></i>)</tt></td>
+<td><code class="literal"><code class="function">generate_series</code>(<em class="parameter"><code>start</code></em>, <em class="parameter"><code>stop</code></em>, <em class="parameter"><code>step</code></em>)</code></td>
 <td>
-<tt class="type">int</tt> or <tt class="type">bigint</tt>
+<code class="type">int</code> or <code class="type">bigint</code>
 </td>
 <td>
-<tt class="type">setof int</tt> or <tt class="type">setof bigint</tt> (same as argument type)</td>
-<td>       Generate a series of values, from <i class="parameter"><tt>start</tt></i> to <i class="parameter"><tt>stop</tt></i>
-       with a step size of <i class="parameter"><tt>step</tt></i>.
+<code class="type">setof int</code> or <code class="type">setof bigint</code> (same as argument type)</td>
+<td>       Generate a series of values, from <em class="parameter"><code>start</code></em> to <em class="parameter"><code>stop</code></em>
+       with a step size of <em class="parameter"><code>step</code></em>
       </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>   When <i class="parameter"><tt>step</tt></i> is positive, zero rows are returned if
-   <i class="parameter"><tt>start</tt></i> is greater than <i class="parameter"><tt>stop</tt></i>.
-   Conversely, when <i class="parameter"><tt>step</tt></i> is negative, zero rows are
-   returned if <i class="parameter"><tt>start</tt></i> is less than <i class="parameter"><tt>stop</tt></i>.
-   Zero rows are also returned for <tt class="literal">NULL</tt> inputs. It is an error
-   for <i class="parameter"><tt>step</tt></i> to be zero. Some examples follow:
+<p>   When <em class="parameter"><code>step</code></em> is positive, zero rows are returned if
+   <em class="parameter"><code>start</code></em> is greater than <em class="parameter"><code>stop</code></em>.
+   Conversely, when <em class="parameter"><code>step</code></em> is negative, zero rows are
+   returned if <em class="parameter"><code>start</code></em> is less than <em class="parameter"><code>stop</code></em>.
+   Zero rows are also returned for <code class="literal">NULL</code> inputs. It is an error
+   for <em class="parameter"><code>step</code></em> to be zero. Some examples follow:
 </p>
 <pre class="programlisting">select * from generate_series(2,4);
  generate_series

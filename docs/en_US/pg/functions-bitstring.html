@@ -4,25 +4,22 @@
 <title>9.6. Bit String Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
+<link rel="prev" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
 <link rel="next" href="functions-matching.html" title="9.7. Pattern Matching">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="functions-bitstring"></a>9.6. Bit String Functions and Operators</h2></div></div>
-<div></div>
-</div>
-<a name="id2548312"></a><p>    This section describes functions and operators for examining and
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-bitstring"></a>9.6. Bit String Functions and Operators</h2></div></div></div>
+<a name="id328550"></a><p>    This section describes functions and operators for examining and
     manipulating bit strings, that is values of the types
-    <tt class="type">bit</tt> and <tt class="type">bit varying</tt>.  Aside from the
+    <code class="type">bit</code> and <code class="type">bit varying</code>.  Aside from the
     usual comparison operators, the operators
     shown in <a href="functions-bitstring.html#functions-bit-string-op-table" title="Table 9.10. Bit String Operators">Table 9.10, &#8220;Bit String Operators&#8221;</a> can be used.
-    Bit string operands of <tt class="literal">&amp;</tt>, <tt class="literal">|</tt>,
-    and <tt class="literal">#</tt> must be of equal length.  When bit
+    Bit string operands of <code class="literal">&amp;</code>, <code class="literal">|</code>,
+    and <code class="literal">#</code> must be of equal length.  When bit
     shifting, the original length of the string is preserved, as shown
     in the examples.
    </p>
@@ -43,76 +40,76 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">||</tt></td>
+<td> <code class="literal">||</code> </td>
 <td>concatenation</td>
-<td><tt class="literal">B'10001' || B'011'</tt></td>
-<td><tt class="literal">10001011</tt></td>
+<td><code class="literal">B'10001' || B'011'</code></td>
+<td><code class="literal">10001011</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&amp;</tt></td>
+<td> <code class="literal">&amp;</code> </td>
 <td>bitwise AND</td>
-<td><tt class="literal">B'10001' &amp; B'01101'</tt></td>
-<td><tt class="literal">00001</tt></td>
+<td><code class="literal">B'10001' &amp; B'01101'</code></td>
+<td><code class="literal">00001</code></td>
 </tr>
 <tr>
-<td><tt class="literal">|</tt></td>
+<td> <code class="literal">|</code> </td>
 <td>bitwise OR</td>
-<td><tt class="literal">B'10001' | B'01101'</tt></td>
-<td><tt class="literal">11101</tt></td>
+<td><code class="literal">B'10001' | B'01101'</code></td>
+<td><code class="literal">11101</code></td>
 </tr>
 <tr>
-<td><tt class="literal">#</tt></td>
+<td> <code class="literal">#</code> </td>
 <td>bitwise XOR</td>
-<td><tt class="literal">B'10001' # B'01101'</tt></td>
-<td><tt class="literal">11100</tt></td>
+<td><code class="literal">B'10001' # B'01101'</code></td>
+<td><code class="literal">11100</code></td>
 </tr>
 <tr>
-<td><tt class="literal">~</tt></td>
+<td> <code class="literal">~</code> </td>
 <td>bitwise NOT</td>
-<td><tt class="literal">~ B'10001'</tt></td>
-<td><tt class="literal">01110</tt></td>
+<td><code class="literal">~ B'10001'</code></td>
+<td><code class="literal">01110</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&lt;&lt;</tt></td>
+<td> <code class="literal">&lt;&lt;</code> </td>
 <td>bitwise shift left</td>
-<td><tt class="literal">B'10001' &lt;&lt; 3</tt></td>
-<td><tt class="literal">01000</tt></td>
+<td><code class="literal">B'10001' &lt;&lt; 3</code></td>
+<td><code class="literal">01000</code></td>
 </tr>
 <tr>
-<td><tt class="literal">&gt;&gt;</tt></td>
+<td> <code class="literal">&gt;&gt;</code> </td>
 <td>bitwise shift right</td>
-<td><tt class="literal">B'10001' &gt;&gt; 2</tt></td>
-<td><tt class="literal">00100</tt></td>
+<td><code class="literal">B'10001' &gt;&gt; 2</code></td>
+<td><code class="literal">00100</code></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>    The following <span class="acronym">SQL</span>-standard functions work on bit
     strings as well as character strings:
-    <tt class="literal"><tt class="function">length</tt></tt>,
-    <tt class="literal"><tt class="function">bit_length</tt></tt>,
-    <tt class="literal"><tt class="function">octet_length</tt></tt>,
-    <tt class="literal"><tt class="function">position</tt></tt>,
-    <tt class="literal"><tt class="function">substring</tt></tt>.
+    <code class="literal"><code class="function">length</code></code>,
+    <code class="literal"><code class="function">bit_length</code></code>,
+    <code class="literal"><code class="function">octet_length</code></code>,
+    <code class="literal"><code class="function">position</code></code>,
+    <code class="literal"><code class="function">substring</code></code>.
    </p>
 <p>    In addition, it is possible to cast integral values to and from type
-    <tt class="type">bit</tt>.
+    <code class="type">bit</code>.
     Some examples:
 </p>
-<pre class="programlisting">44::bit(10)                    <i class="lineannotation"><span class="lineannotation">0000101100</span></i>
-44::bit(3)                     <i class="lineannotation"><span class="lineannotation">100</span></i>
-cast(-44 as bit(12))           <i class="lineannotation"><span class="lineannotation">111111010100</span></i>
-'1110'::bit(4)::integer        <i class="lineannotation"><span class="lineannotation">14</span></i></pre>
+<pre class="programlisting">44::bit(10)                    <em class="lineannotation"><span class="lineannotation">0000101100</span></em>
+44::bit(3)                     <em class="lineannotation"><span class="lineannotation">100</span></em>
+cast(-44 as bit(12))           <em class="lineannotation"><span class="lineannotation">111111010100</span></em>
+'1110'::bit(4)::integer        <em class="lineannotation"><span class="lineannotation">14</span></em></pre>
 <p>
     Note that casting to just &#8220;<span class="quote">bit</span>&#8221; means casting to
-    <tt class="literal">bit(1)</tt>, and so it will deliver only the least significant
+    <code class="literal">bit(1)</code>, and so it will deliver only the least significant
     bit of the integer.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>      Prior to <span class="productname">PostgreSQL</span> 8.0, casting an
-      integer to <tt class="type">bit(n)</tt> would copy the leftmost <tt class="literal">n</tt>
-      bits of the integer, whereas now it copies the rightmost <tt class="literal">n</tt>
+      integer to <code class="type">bit(n)</code> would copy the leftmost <code class="literal">n</code>
+      bits of the integer, whereas now it copies the rightmost <code class="literal">n</code>
       bits.  Also, casting an integer to a bit string width wider than
       the integer itself will sign-extend on the left.
      </p>

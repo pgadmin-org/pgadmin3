@@ -4,34 +4,28 @@
 <title>42.2. Message Flow</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
-<link rel="previous" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
+<link rel="prev" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
 <link rel="next" href="protocol-message-types.html" title="42.3. Message Data Types">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="protocol-flow"></a>42.2. Message Flow</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="protocol-flow"></a>42.2. Message Flow</h2></div></div></div>
 <p>   This section describes the message flow and the semantics of each
    message type.  (Details of the exact representation of each message
    appear in <a href="protocol-message-formats.html" title="42.4. Message Formats">Section 42.4, &#8220;Message Formats&#8221;</a>.)  There are
    several different sub-protocols depending on the state of the
    connection: start-up, query, function call,
-   <tt class="command">COPY</tt>, and termination.  There are also special
+   <code class="command">COPY</code>, and termination.  There are also special
    provisions for asynchronous operations (including notification
    responses and command cancellation), which can occur at any time
    after the start-up phase.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2737884"></a>42.2.1. Start-Up</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id504031"></a>42.2.1. Start-Up</h3></div></div></div>
 <p>    To begin a session, a frontend opens a connection to the server and sends
     a startup message.  This message includes the names of the user and of the
     database the user wants to connect to; it also identifies the particular
@@ -39,7 +33,7 @@
     additional settings for run-time parameters.)
     The server then uses this information and
     the contents of its configuration files (such as
-    <tt class="filename">pg_hba.conf</tt>) to determine
+    <code class="filename">pg_hba.conf</code>) to determine
     whether the connection is provisionally acceptable, and what additional
     authentication is required (if any).
    </p>
@@ -171,11 +165,8 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2738123"></a>42.2.2. Simple Query</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id504227"></a>42.2.2. Simple Query</h3></div></div></div>
 <p>    A simple query cycle is initiated by the frontend sending a Query message
     to the backend.  The message includes an SQL command (or commands)
     expressed as a text string.
@@ -205,14 +196,14 @@
        </p></dd>
 <dt><span class="term">RowDescription</span></dt>
 <dd><p>        Indicates that rows are about to be returned in response to
-	a <tt class="command">SELECT</tt>, <tt class="command">FETCH</tt>, etc query.
+	a <code class="command">SELECT</code>, <code class="command">FETCH</code>, etc query.
 	The contents of this message describe the column layout of the rows.
 	This will be followed by a DataRow message for each row being returned
         to the frontend.
        </p></dd>
 <dt><span class="term">DataRow</span></dt>
 <dd><p>        One of the set of rows returned by
-	a <tt class="command">SELECT</tt>, <tt class="command">FETCH</tt>, etc query.
+	a <code class="command">SELECT</code>, <code class="command">FETCH</code>, etc query.
        </p></dd>
 <dt><span class="term">EmptyQueryResponse</span></dt>
 <dd><p>        An empty query string was recognized.
@@ -236,11 +227,11 @@
 </dl></div>
 <p>
    </p>
-<p>    The response to a <tt class="command">SELECT</tt> query (or other queries that
-    return row sets, such as <tt class="command">EXPLAIN</tt> or <tt class="command">SHOW</tt>)
+<p>    The response to a <code class="command">SELECT</code> query (or other queries that
+    return row sets, such as <code class="command">EXPLAIN</code> or <code class="command">SHOW</code>)
     normally consists of RowDescription, zero or more
     DataRow messages, and then CommandComplete.
-    <tt class="command">COPY</tt> to or from the frontend invokes special protocol
+    <code class="command">COPY</code> to or from the frontend invokes special protocol
     as described in <a href="protocol-flow.html#protocol-copy" title="42.2.5. COPY Operations">Section 42.2.5, &#8220;COPY Operations&#8221;</a>.
     All other query types normally produce only
     a CommandComplete message.
@@ -261,8 +252,8 @@
     individual query.
    </p>
 <p>    In simple Query mode, the format of retrieved values is always text,
-    except when the given command is a <tt class="command">FETCH</tt> from a cursor
-    declared with the <tt class="literal">BINARY</tt> option.  In that case, the
+    except when the given command is a <code class="command">FETCH</code> from a cursor
+    declared with the <code class="literal">BINARY</code> option.  In that case, the
     retrieved values are in binary format.  The format codes given in
     the RowDescription message tell which format is being used.
    </p>
@@ -277,11 +268,8 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2738360"></a>42.2.3. Extended Query</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id504428"></a>42.2.3. Extended Query</h3></div></div></div>
 <p>    The extended query protocol breaks down the above-described simple
     query protocol into multiple steps.  The results of preparatory
     steps can be re-used multiple times for improved efficiency.
@@ -317,7 +305,7 @@
     statements must be explicitly closed before they can be redefined by
     a Parse message, but this is not required for the unnamed statement.
     Named prepared statements can also be created and accessed at the SQL
-    command level, using <tt class="command">PREPARE</tt> and <tt class="command">EXECUTE</tt>.
+    command level, using <code class="command">PREPARE</code> and <code class="command">EXECUTE</code>.
    </p>
 <p>    Once a prepared statement exists, it can be readied for execution using a
     Bind message.  The Bind message gives the name of the source prepared
@@ -334,7 +322,7 @@
 <h3 class="title">Note</h3>
 <p>     The choice between text and binary output is determined by the format
      codes given in Bind, regardless of the SQL command involved.  The
-     <tt class="literal">BINARY</tt> attribute in cursor declarations is irrelevant when
+     <code class="literal">BINARY</code> attribute in cursor declarations is irrelevant when
      using extended query protocol.
     </p>
 </div>
@@ -379,7 +367,7 @@
     portals must be explicitly closed before they can be redefined by a Bind
     message, but this is not required for the unnamed portal.
     Named portals can also be created and accessed at the SQL
-    command level, using <tt class="command">DECLARE CURSOR</tt> and <tt class="command">FETCH</tt>.
+    command level, using <code class="command">DECLARE CURSOR</code> and <code class="command">FETCH</code>.
    </p>
 <p>    Once a portal exists, it can be executed using an Execute message.
     The Execute message specifies the portal name (empty string denotes the
@@ -407,7 +395,7 @@
 <p>    At completion of each series of extended-query messages, the frontend
     should issue a Sync message.  This parameterless message causes the
     backend to close the current transaction if it's not inside a
-    <tt class="command">BEGIN</tt>/<tt class="command">COMMIT</tt> transaction block (&#8220;<span class="quote">close</span>&#8221;
+    <code class="command">BEGIN</code>/<code class="command">COMMIT</code> transaction block (&#8220;<span class="quote">close</span>&#8221;
     meaning to commit if no error, or roll back if error).  Then a
     ReadyForQuery response is issued.  The purpose of Sync is to provide
     a resynchronization point for error recovery.  When an error is detected
@@ -420,7 +408,7 @@
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>     Sync does not cause a transaction block opened with <tt class="command">BEGIN</tt>
+<p>     Sync does not cause a transaction block opened with <code class="command">BEGIN</code>
      to be closed.  It is possible to detect this situation since the
      ReadyForQuery message includes transaction status information.
     </p>
@@ -481,21 +469,18 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2738654"></a>42.2.4. Function Call</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id504638"></a>42.2.4. Function Call</h3></div></div></div>
 <p>    The Function Call sub-protocol allows the client to request a direct
     call of any function that exists in the database's
-    <tt class="structname">pg_proc</tt> system catalog.  The client must have
+    <code class="structname">pg_proc</code> system catalog.  The client must have
     execute permission for the function.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     The Function Call sub-protocol is a legacy feature that is probably best
      avoided in new code.  Similar results can be accomplished by setting up
-     a prepared statement that does <tt class="literal">SELECT function($1, ...)</tt>.
+     a prepared statement that does <code class="literal">SELECT function($1, ...)</code>.
      The Function Call cycle can then be replaced with Bind/Execute.
     </p>
 </div>
@@ -534,36 +519,33 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="protocol-copy"></a>42.2.5. COPY Operations</h3></div></div>
-<div></div>
-</div>
-<p>    The <tt class="command">COPY</tt> command allows high-speed bulk data transfer
+<div class="titlepage"><div><div><h3 class="title">
+<a name="protocol-copy"></a>42.2.5. COPY Operations</h3></div></div></div>
+<p>    The <code class="command">COPY</code> command allows high-speed bulk data transfer
     to or from the server.  Copy-in and copy-out operations each switch
     the connection into a distinct sub-protocol, which lasts until the
     operation is completed.
    </p>
 <p>    Copy-in mode (data transfer to the server) is initiated when the
-    backend executes a <tt class="command">COPY FROM STDIN</tt> SQL statement.  The backend
+    backend executes a <code class="command">COPY FROM STDIN</code> SQL statement.  The backend
     sends a CopyInResponse message to the frontend.  The frontend should
     then send zero or more CopyData messages, forming a stream of input
     data.  (The message boundaries are not required to have anything to do
     with row boundaries, although that is often a reasonable choice.)
     The frontend can terminate the copy-in mode by sending either a CopyDone
     message (allowing successful termination) or a CopyFail message (which
-    will cause the <tt class="command">COPY</tt> SQL statement to fail with an
+    will cause the <code class="command">COPY</code> SQL statement to fail with an
     error).  The backend then reverts to the command-processing mode it was
-    in before the <tt class="command">COPY</tt> started, which will be either simple or
+    in before the <code class="command">COPY</code> started, which will be either simple or
     extended query protocol.  It will next send either CommandComplete
     (if successful) or ErrorResponse (if not).
    </p>
 <p>    In the event of a backend-detected error during copy-in mode (including
     receipt of a CopyFail message), the backend will issue an ErrorResponse 
-    message.  If the <tt class="command">COPY</tt> command was issued via an extended-query
+    message.  If the <code class="command">COPY</code> command was issued via an extended-query
     message, the backend will now discard frontend messages until a Sync
     message is received, then it will issue ReadyForQuery and return to normal
-    processing.  If the <tt class="command">COPY</tt> command was issued in a simple
+    processing.  If the <code class="command">COPY</code> command was issued in a simple
     Query message, the rest of that message is discarded and ReadyForQuery
     is issued.  In either case, any subsequent CopyData, CopyDone, or CopyFail
     messages issued by the frontend will simply be dropped.
@@ -573,14 +555,14 @@
     that will abort the copy-in state as described above.  (The exception for
     Flush and Sync is for the convenience of client libraries that always
     send Flush or Sync after an Execute message, without checking whether
-    the command to be executed is a <tt class="command">COPY FROM STDIN</tt>.)
+    the command to be executed is a <code class="command">COPY FROM STDIN</code>.)
    </p>
 <p>    Copy-out mode (data transfer from the server) is initiated when the
-    backend executes a <tt class="command">COPY TO STDOUT</tt> SQL statement.  The backend
+    backend executes a <code class="command">COPY TO STDOUT</code> SQL statement.  The backend
     sends a CopyOutResponse message to the frontend, followed by
     zero or more CopyData messages (always one per row), followed by CopyDone.
     The backend then reverts to the command-processing mode it was
-    in before the <tt class="command">COPY</tt> started, and sends CommandComplete.
+    in before the <code class="command">COPY</code> started, and sends CommandComplete.
     The frontend cannot abort the transfer (except by closing the connection
     or issuing a Cancel request),
     but it can discard unwanted CopyData and CopyDone messages.
@@ -594,16 +576,13 @@
 <p>    The CopyInResponse and CopyOutResponse messages include fields that
     inform the frontend of the number of columns per row and the format
     codes being used for each column.  (As of the present implementation,
-    all columns in a given <tt class="command">COPY</tt> operation will use the same
+    all columns in a given <code class="command">COPY</code> operation will use the same
     format, but the message design does not assume this.)
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="protocol-async"></a>42.2.6. Asynchronous Operations</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="protocol-async"></a>42.2.6. Asynchronous Operations</h3></div></div></div>
 <p>    There are several cases in which the backend will send messages that
     are not specifically prompted by the frontend's command stream.
     Frontends must be prepared to deal with these messages at any time,
@@ -621,40 +600,40 @@
 <p>    ParameterStatus messages will be generated whenever the active
     value changes for any of the parameters the backend believes the
     frontend should know about.  Most commonly this occurs in response
-    to a <tt class="command">SET</tt> SQL command executed by the frontend, and
+    to a <code class="command">SET</code> SQL command executed by the frontend, and
     this case is effectively synchronous [mdash ] but it is also possible
     for parameter status changes to occur because the administrator
     changed a configuration file and then sent the
     <span class="systemitem">SIGHUP</span> signal to the postmaster.  Also,
-    if a <tt class="command">SET</tt> command is rolled back, an appropriate
+    if a <code class="command">SET</code> command is rolled back, an appropriate
     ParameterStatus message will be generated to report the current
     effective value.
    </p>
 <p>    At present there is a hard-wired set of parameters for which
     ParameterStatus will be generated: they are
-    <tt class="literal">server_version</tt>,
-    <tt class="literal">server_encoding</tt>,
-    <tt class="literal">client_encoding</tt>,
-    <tt class="literal">is_superuser</tt>,
-    <tt class="literal">session_authorization</tt>,
-    <tt class="literal">DateStyle</tt>,
-    <tt class="literal">TimeZone</tt>, and
-    <tt class="literal">integer_datetimes</tt>.
-    (<tt class="literal">server_encoding</tt>, <tt class="literal">TimeZone</tt>, and
-    <tt class="literal">integer_datetimes</tt> were not reported by releases before 8.0.)
+    <code class="literal">server_version</code>,
+    <code class="literal">server_encoding</code>,
+    <code class="literal">client_encoding</code>,
+    <code class="literal">is_superuser</code>,
+    <code class="literal">session_authorization</code>,
+    <code class="literal">DateStyle</code>,
+    <code class="literal">TimeZone</code>, and
+    <code class="literal">integer_datetimes</code>.
+    (<code class="literal">server_encoding</code>, <code class="literal">TimeZone</code>, and
+    <code class="literal">integer_datetimes</code> were not reported by releases before 8.0.)
     Note that
-    <tt class="literal">server_version</tt>,
-    <tt class="literal">server_encoding</tt> and
-    <tt class="literal">integer_datetimes</tt>
+    <code class="literal">server_version</code>,
+    <code class="literal">server_encoding</code> and
+    <code class="literal">integer_datetimes</code>
     are pseudo-parameters that cannot change after startup.
     This set might change in the future, or even become configurable.
     Accordingly, a frontend should simply ignore ParameterStatus for
     parameters that it does not understand or care about.
    </p>
-<p>    If a frontend issues a <tt class="command">LISTEN</tt> command, then the
+<p>    If a frontend issues a <code class="command">LISTEN</code> command, then the
     backend will send a NotificationResponse message (not to be
     confused with NoticeResponse!)  whenever a
-    <tt class="command">NOTIFY</tt> command is executed for the same
+    <code class="command">NOTIFY</code> command is executed for the same
     notification name.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -669,11 +648,8 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2739052"></a>42.2.7. Cancelling Requests in Progress</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id504972"></a>42.2.7. Cancelling Requests in Progress</h3></div></div></div>
 <p>    During the processing of a query, the frontend may request
     cancellation of the query.  The cancel request is not sent
     directly on the open connection to the backend for reasons of
@@ -724,11 +700,8 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2739120"></a>42.2.8. Termination</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id505011"></a>42.2.8. Termination</h3></div></div></div>
 <p>    The normal, graceful termination procedure is that the frontend
     sends a Terminate message and immediately closes the connection.
     On receipt of this message, the backend closes the connection and
@@ -750,42 +723,39 @@
    </p>
 <p>    For either normal or abnormal termination, any open transaction is
     rolled back, not committed.  One should note however that if a
-    frontend disconnects while a non-<tt class="command">SELECT</tt> query
+    frontend disconnects while a non-<code class="command">SELECT</code> query
     is being processed, the backend will probably finish the query
     before noticing the disconnection.  If the query is outside any
-    transaction block (<tt class="command">BEGIN</tt> ... <tt class="command">COMMIT</tt>
+    transaction block (<code class="command">BEGIN</code> ... <code class="command">COMMIT</code>
     sequence) then its results may be committed before the
     disconnection is recognized.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id2739177"></a>42.2.9. <span class="acronym">SSL</span> Session Encryption</h3></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id505054"></a>42.2.9. <span class="acronym">SSL</span> Session Encryption</h3></div></div></div>
 <p>    If <span class="productname">PostgreSQL</span> was built with
     <span class="acronym">SSL</span> support, frontend/backend communications
     can be encrypted using <span class="acronym">SSL</span>.  This provides
     communication security in environments where attackers might be
     able to capture the session traffic. For more information on
     encrypting <span class="productname">PostgreSQL</span> sessions with
-    <span class="acronym">SSL</span>, see <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a>.
+    <span class="acronym">SSL</span>, see <a href="ssl-tcp.html" title="16.8. Secure TCP/IP Connections with SSL">Section 16.8, &#8220;Secure TCP/IP Connections with SSL&#8221;</a>.
    </p>
 <p>    To initiate an <span class="acronym">SSL</span>-encrypted connection, the
     frontend initially sends an SSLRequest message rather than a
     StartupMessage.  The server then responds with a single byte
-    containing <tt class="literal">S</tt> or <tt class="literal">N</tt>, indicating that it is
+    containing <code class="literal">S</code> or <code class="literal">N</code>, indicating that it is
     willing or unwilling to perform <span class="acronym">SSL</span>,
     respectively.  The frontend may close the connection at this point
     if it is dissatisfied with the response.  To continue after
-    <tt class="literal">S</tt>, perform an <span class="acronym">SSL</span> startup handshake
+    <code class="literal">S</code>, perform an <span class="acronym">SSL</span> startup handshake
     (not described here, part of the <span class="acronym">SSL</span>
     specification) with the server.  If this is successful, continue
     with sending the usual StartupMessage.  In this case the
     StartupMessage and all subsequent data will be
     <span class="acronym">SSL</span>-encrypted.  To continue after
-    <tt class="literal">N</tt>, send the usual StartupMessage and proceed without
+    <code class="literal">N</code>, send the usual StartupMessage and proceed without
     encryption.
    </p>
 <p>    The frontend should also be prepared to handle an ErrorMessage

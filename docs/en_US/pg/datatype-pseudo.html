@@ -4,21 +4,18 @@
 <title>8.13. Pseudo-Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="previous" href="datatype-oid.html" title="8.12. Object Identifier Types">
+<link rel="prev" href="datatype-oid.html" title="8.12. Object Identifier Types">
 <link rel="next" href="functions.html" title="Chapter 9. Functions and Operators">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="datatype-pseudo"></a>8.13. Pseudo-Types</h2></div></div>
-<div></div>
-</div>
-<a name="id2540149"></a><a name="id2540160"></a><a name="id2540169"></a><a name="id2540178"></a><a name="id2540187"></a><a name="id2540196"></a><a name="id2540206"></a><a name="id2540215"></a><a name="id2540224"></a><a name="id2540233"></a><p>    The <span class="productname">PostgreSQL</span> type system contains a
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="datatype-pseudo"></a>8.13. Pseudo-Types</h2></div></div></div>
+<a name="id320542"></a><a name="id320552"></a><a name="id320561"></a><a name="id320569"></a><a name="id320578"></a><a name="id320587"></a><a name="id320596"></a><a name="id320605"></a><a name="id320614"></a><a name="id320623"></a><p>    The <span class="productname">PostgreSQL</span> type system contains a
     number of special-purpose entries that are collectively called
-    <i class="firstterm">pseudo-types</i>.  A pseudo-type cannot be used as a
+    <em class="firstterm">pseudo-types</em>.  A pseudo-type cannot be used as a
     column data type, but it can be used to declare a function's
     argument or result type.  Each of the available pseudo-types is
     useful in situations where a function's behavior does not
@@ -39,47 +36,47 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="type">any</tt></td>
+<td><code class="type">any</code></td>
 <td>Indicates that a function accepts any input data type whatever.</td>
 </tr>
 <tr>
-<td><tt class="type">anyarray</tt></td>
+<td><code class="type">anyarray</code></td>
 <td>Indicates that a function accepts any array data type
         (see <a href="extend-type-system.html#extend-types-polymorphic" title="31.2.5. Polymorphic Types">Section 31.2.5, &#8220;Polymorphic Types&#8221;</a>).</td>
 </tr>
 <tr>
-<td><tt class="type">anyelement</tt></td>
+<td><code class="type">anyelement</code></td>
 <td>Indicates that a function accepts any data type
         (see <a href="extend-type-system.html#extend-types-polymorphic" title="31.2.5. Polymorphic Types">Section 31.2.5, &#8220;Polymorphic Types&#8221;</a>).</td>
 </tr>
 <tr>
-<td><tt class="type">cstring</tt></td>
+<td><code class="type">cstring</code></td>
 <td>Indicates that a function accepts or returns a null-terminated C string.</td>
 </tr>
 <tr>
-<td><tt class="type">internal</tt></td>
+<td><code class="type">internal</code></td>
 <td>Indicates that a function accepts or returns a server-internal
         data type.</td>
 </tr>
 <tr>
-<td><tt class="type">language_handler</tt></td>
-<td>A procedural language call handler is declared to return <tt class="type">language_handler</tt>.</td>
+<td><code class="type">language_handler</code></td>
+<td>A procedural language call handler is declared to return <code class="type">language_handler</code>.</td>
 </tr>
 <tr>
-<td><tt class="type">record</tt></td>
+<td><code class="type">record</code></td>
 <td>Identifies a function returning an unspecified row type.</td>
 </tr>
 <tr>
-<td><tt class="type">trigger</tt></td>
-<td>A trigger function is declared to return <tt class="type">trigger.</tt>
+<td><code class="type">trigger</code></td>
+<td>A trigger function is declared to return <code class="type">trigger.</code>
 </td>
 </tr>
 <tr>
-<td><tt class="type">void</tt></td>
+<td><code class="type">void</code></td>
 <td>Indicates that a function returns no value.</td>
 </tr>
 <tr>
-<td><tt class="type">opaque</tt></td>
+<td><code class="type">opaque</code></td>
 <td>An obsolete type name that formerly served all the above purposes.</td>
 </tr>
 </tbody>
@@ -93,20 +90,20 @@
 <p>    Functions coded in procedural languages may use pseudo-types only as
     allowed by their implementation languages.  At present the procedural
     languages all forbid use of a pseudo-type as argument type, and allow
-    only <tt class="type">void</tt> and <tt class="type">record</tt> as a result type (plus
-    <tt class="type">trigger</tt> when the function is used as a trigger).  Some also
-    support polymorphic functions using the types <tt class="type">anyarray</tt> and
-    <tt class="type">anyelement</tt>.
+    only <code class="type">void</code> and <code class="type">record</code> as a result type (plus
+    <code class="type">trigger</code> when the function is used as a trigger).  Some also
+    support polymorphic functions using the types <code class="type">anyarray</code> and
+    <code class="type">anyelement</code>.
    </p>
-<p>    The <tt class="type">internal</tt> pseudo-type is used to declare functions
+<p>    The <code class="type">internal</code> pseudo-type is used to declare functions
     that are meant only to be called internally by the database
     system, and not by direct invocation in a <span class="acronym">SQL</span>
-    query.  If a function has at least one <tt class="type">internal</tt>-type
+    query.  If a function has at least one <code class="type">internal</code>-type
     argument then it cannot be called from <span class="acronym">SQL</span>.  To
     preserve the type safety of this restriction it is important to
     follow this coding rule: do not create any function that is
-    declared to return <tt class="type">internal</tt> unless it has at least one
-    <tt class="type">internal</tt> argument.
+    declared to return <code class="type">internal</code> unless it has at least one
+    <code class="type">internal</code> argument.
    </p>
 </div></body>
 </html>

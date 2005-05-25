@@ -4,36 +4,33 @@
 <title>BEGIN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-analyze.html" title="ANALYZE">
+<link rel="prev" href="sql-analyze.html" title="ANALYZE">
 <link rel="next" href="sql-checkpoint.html" title="CHECKPOINT">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-begin"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-begin"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>BEGIN &#8212; start a transaction block</p>
 </div>
-<a name="id2670614"></a><div class="refsynopsisdiv">
+<a name="id440831"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">BEGIN [ WORK | TRANSACTION ] [ <i class="replaceable"><tt>transaction_mode</tt></i> [, ...] ]
+<pre class="synopsis">BEGIN [ WORK | TRANSACTION ] [ <em class="replaceable"><code>transaction_mode</code></em> [, ...] ]
 
-where <i class="replaceable"><tt>transaction_mode</tt></i> is one of:
+where <em class="replaceable"><code>transaction_mode</code></em> is one of:
 
     ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
     READ WRITE | READ ONLY</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2670643"></a><h2>Description</h2>
-<p>   <tt class="command">BEGIN</tt> initiates a transaction block, that is,
-   all statements after a <tt class="command">BEGIN</tt> command will be
+<a name="id440859"></a><h2>Description</h2>
+<p>   <code class="command">BEGIN</code> initiates a transaction block, that is,
+   all statements after a <code class="command">BEGIN</code> command will be
    executed in a single transaction until an explicit <a href="sql-commit.html">COMMIT</a> or <a href="sql-rollback.html">ROLLBACK</a> is given.
-   By default (without <tt class="command">BEGIN</tt>),
+   By default (without <code class="command">BEGIN</code>),
    <span class="productname">PostgreSQL</span> executes
    transactions in &#8220;<span class="quote">autocommit</span>&#8221; mode, that is, each
    statement is executed in its own transaction and a commit is
@@ -54,10 +51,10 @@ where <i class="replaceable"><tt>transaction_mode</tt></i> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2670726"></a><h2>Parameters</h2>
+<a name="id440931"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">WORK</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">TRANSACTION</tt></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WORK</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">TRANSACTION</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>      Optional key words. They have no effect.
      </p></dd>
@@ -67,26 +64,26 @@ where <i class="replaceable"><tt>transaction_mode</tt></i> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2670761"></a><h2>Notes</h2>
+<a name="id440964"></a><h2>Notes</h2>
 <p>   <a href="sql-start-transaction.html">START TRANSACTION</a> has the same functionality
-   as <tt class="command">BEGIN</tt>.
+   as <code class="command">BEGIN</code>.
   </p>
 <p>   Use <a href="sql-commit.html">COMMIT</a> or
    <a href="sql-rollback.html">ROLLBACK</a>
    to terminate a transaction block.
   </p>
-<p>   Issuing <tt class="command">BEGIN</tt> when already inside a transaction block will
+<p>   Issuing <code class="command">BEGIN</code> when already inside a transaction block will
    provoke a warning message.  The state of the transaction is not affected.
    To nest transactions within a transaction block, use savepoints 
    (see <a href="sql-savepoint.html">SAVEPOINT</a>).
   </p>
 <p>   For reasons of backwards compatibility, the commas between successive
-   <i class="replaceable"><tt>transaction_modes</tt></i> may be
+   <em class="replaceable"><code>transaction_modes</code></em> may be
    omitted.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2670840"></a><h2>Examples</h2>
+<a name="id441038"></a><h2>Examples</h2>
 <p>   To begin a transaction block:
 
 </p>
@@ -95,20 +92,20 @@ where <i class="replaceable"><tt>transaction_mode</tt></i> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2670853"></a><h2>Compatibility</h2>
-<p>   <tt class="command">BEGIN</tt> is a <span class="productname">PostgreSQL</span>
+<a name="id441050"></a><h2>Compatibility</h2>
+<p>   <code class="command">BEGIN</code> is a <span class="productname">PostgreSQL</span>
    language extension.  It is equivalent to the SQL-standard command
    <a href="sql-start-transaction.html">START TRANSACTION</a>, which see for additional
    compatibility information.
   </p>
-<p>   Incidentally, the <tt class="literal">BEGIN</tt> key word is used for a
+<p>   Incidentally, the <code class="literal">BEGIN</code> key word is used for a
    different purpose in embedded SQL. You are advised to be careful
    about the transaction semantics when porting database applications.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2670893"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-start-transaction.html">START TRANSACTION</a>, <a href="sql-savepoint.html">SAVEPOINT</a></span>
+<a name="id441087"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-start-transaction.html">START TRANSACTION</a>, <a href="sql-savepoint.html">SAVEPOINT</a>, </span>
 </div>
 </div></body>
 </html>

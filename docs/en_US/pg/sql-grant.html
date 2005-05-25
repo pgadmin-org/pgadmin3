@@ -4,70 +4,67 @@
 <title>GRANT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-fetch.html" title="FETCH">
+<link rel="prev" href="sql-fetch.html" title="FETCH">
 <link rel="next" href="sql-insert.html" title="INSERT">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-grant"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-grant"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>GRANT &#8212; define access privileges</p>
 </div>
-<a name="id2693383"></a><div class="refsynopsisdiv">
+<a name="id462012"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">GRANT { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
-    ON [ TABLE ] <i class="replaceable"><tt>tablename</tt></i> [, ...]
-    TO { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
+    ON [ TABLE ] <em class="replaceable"><code>tablename</code></em> [, ...]
+    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
-    ON DATABASE <i class="replaceable"><tt>dbname</tt></i> [, ...]
-    TO { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
+    ON DATABASE <em class="replaceable"><code>dbname</code></em> [, ...]
+    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { EXECUTE | ALL [ PRIVILEGES ] }
-    ON FUNCTION <i class="replaceable"><tt>funcname</tt></i> ([<i class="replaceable"><tt>type</tt></i>, ...]) [, ...]
-    TO { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
+    ON FUNCTION <em class="replaceable"><code>funcname</code></em> ([<em class="replaceable"><code>type</code></em>, ...]) [, ...]
+    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { USAGE | ALL [ PRIVILEGES ] }
-    ON LANGUAGE <i class="replaceable"><tt>langname</tt></i> [, ...]
-    TO { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
+    ON LANGUAGE <em class="replaceable"><code>langname</code></em> [, ...]
+    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
-    ON SCHEMA <i class="replaceable"><tt>schemaname</tt></i> [, ...]
-    TO { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
+    ON SCHEMA <em class="replaceable"><code>schemaname</code></em> [, ...]
+    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { CREATE | ALL [ PRIVILEGES ] }
-    ON TABLESPACE <i class="replaceable"><tt>tablespacename</tt></i> [, ...]
-    TO { <i class="replaceable"><tt>username</tt></i> | GROUP <i class="replaceable"><tt>groupname</tt></i> | PUBLIC } [, ...] [ WITH GRANT OPTION ]</pre>
+    ON TABLESPACE <em class="replaceable"><code>tablespacename</code></em> [, ...]
+    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]</pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-grant-description"></a><h2>Description</h2>
-<p>   The <tt class="command">GRANT</tt> command gives specific privileges on
+<p>   The <code class="command">GRANT</code> command gives specific privileges on
    an object (table, view, sequence, database, function,
    procedural language, schema, or tablespace) to
    one or more users or groups of users.  These privileges are added
    to those already granted, if any.
   </p>
-<p>   The key word <tt class="literal">PUBLIC</tt> indicates that the
+<p>   The key word <code class="literal">PUBLIC</code> indicates that the
    privileges are to be granted to all users, including those that may
-   be created later.  <tt class="literal">PUBLIC</tt> may be thought of as an
+   be created later.  <code class="literal">PUBLIC</code> may be thought of as an
    implicitly defined group that always includes all users.
    Any particular user will have the sum
    of privileges granted directly to him, privileges granted to any group he
    is presently a member of, and privileges granted to
-   <tt class="literal">PUBLIC</tt>.
+   <code class="literal">PUBLIC</code>.
   </p>
-<p>   If <tt class="literal">WITH GRANT OPTION</tt> is specified, the recipient
+<p>   If <code class="literal">WITH GRANT OPTION</code> is specified, the recipient
    of the privilege may in turn grant it to others.  Without a grant
    option, the recipient cannot do that.  At present, grant options can
    only be granted to individual users, not to groups or
-   <tt class="literal">PUBLIC</tt>.
+   <code class="literal">PUBLIC</code>.
   </p>
 <p>   There is no need to grant privileges to the owner of an object
    (usually the user that created it),
@@ -79,13 +76,13 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
    options for the object, too.
   </p>
 <p>   Depending on the type of object, the initial default privileges may
-   include granting some privileges to <tt class="literal">PUBLIC</tt>.
+   include granting some privileges to <code class="literal">PUBLIC</code>.
    The default is no public access for tables, schemas, and tablespaces;
-   <tt class="literal">TEMP</tt> table creation privilege for databases;
-   <tt class="literal">EXECUTE</tt> privilege for functions; and
-   <tt class="literal">USAGE</tt> privilege for languages.
+   <code class="literal">TEMP</code> table creation privilege for databases;
+   <code class="literal">EXECUTE</code> privilege for functions; and
+   <code class="literal">USAGE</code> privilege for languages.
    The object owner may of course revoke these privileges.  (For maximum
-   security, issue the <tt class="command">REVOKE</tt> in the same transaction that
+   security, issue the <code class="command">REVOKE</code> in the same transaction that
    creates the object; then there is no window in which another user
    may use the object.)
   </p>
@@ -97,19 +94,20 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
 <dd><p>       Allows <a href="sql-select.html">SELECT</a> from any column of the
        specified table, view, or sequence.  Also allows the use of
        <a href="sql-copy.html">COPY</a> TO.  For sequences, this
-       privilege also allows the use of the <tt class="function">currval</tt> function.
+       privilege also allows the use of the <code class="function">currval</code> function.
       </p></dd>
 <dt><span class="term">INSERT</span></dt>
 <dd><p>       Allows <a href="sql-insert.html">INSERT</a> of a new row into the
        specified table.  Also allows <a href="sql-copy.html">COPY</a> FROM.
       </p></dd>
 <dt><span class="term">UPDATE</span></dt>
-<dd><p>       Allows <a href="sql-update.html">UPDATE</a> of any column of the
-       specified table.  <tt class="literal">SELECT ... FOR UPDATE</tt>
-       also requires this privilege (besides the
-       <tt class="literal">SELECT</tt> privilege).  For sequences, this
-       privilege allows the use of the <tt class="function">nextval</tt> and
-       <tt class="function">setval</tt> functions.
+<dd><p>       Allows <a href="sql-update.html">UPDATE</a> of any
+       column of the specified table.  <code class="literal">SELECT ... FOR UPDATE</code>
+       and <code class="literal">SELECT ... FOR SHARE</code>
+       also require this privilege (besides the
+       <code class="literal">SELECT</code> privilege).  For sequences, this
+       privilege allows the use of the <code class="function">nextval</code> and
+       <code class="function">setval</code> functions.
       </p></dd>
 <dt><span class="term">DELETE</span></dt>
 <dd><p>       Allows <a href="sql-delete.html">DELETE</a> of a row from the
@@ -142,7 +140,7 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
       </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term">TEMPORARY</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term">TEMP</span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term">TEMPORARY</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term">TEMP</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
 </dt>
 <dd><p>       Allows temporary tables to be created while using the database.
       </p></dd>
@@ -166,7 +164,7 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
 </dd>
 <dt><span class="term">ALL PRIVILEGES</span></dt>
 <dd><p>       Grant all of the available privileges at once.
-       The <tt class="literal">PRIVILEGES</tt> key word is optional in
+       The <code class="literal">PRIVILEGES</code> key word is optional in
        <span class="productname">PostgreSQL</span>, though it is required by
        strict SQL.
       </p></dd>
@@ -182,12 +180,12 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
 <p>    The <a href="sql-revoke.html">REVOKE</a> command is used
     to revoke access privileges.
    </p>
-<p>    When a non-owner of an object attempts to <tt class="command">GRANT</tt> privileges
+<p>    When a non-owner of an object attempts to <code class="command">GRANT</code> privileges
     on the object, the command will fail outright if the user has no
     privileges whatsoever on the object.  As long as some privilege is
     available, the command will proceed, but it will grant only those
-    privileges for which the user has grant options.  The <tt class="command">GRANT ALL
-    PRIVILEGES</tt> forms will issue a warning message if no grant options are
+    privileges for which the user has grant options.  The <code class="command">GRANT ALL
+    PRIVILEGES</code> forms will issue a warning message if no grant options are
     held, while the other forms will issue a warning if grant options for
     any of the privileges specifically named in the command are not held.
     (In principle these statements apply to the object owner as well, but
@@ -196,11 +194,11 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
    </p>
 <p>    It should be noted that database superusers can access
     all objects regardless of object privilege settings.  This
-    is comparable to the rights of <tt class="literal">root</tt> in a Unix system.
-    As with <tt class="literal">root</tt>, it's unwise to operate as a superuser
+    is comparable to the rights of <code class="literal">root</code> in a Unix system.
+    As with <code class="literal">root</code>, it's unwise to operate as a superuser
     except when absolutely necessary.
    </p>
-<p>    If a superuser chooses to issue a <tt class="command">GRANT</tt> or <tt class="command">REVOKE</tt>
+<p>    If a superuser chooses to issue a <code class="command">GRANT</code> or <code class="command">REVOKE</code>
     command, the command is performed as though it were issued by the
     owner of the affected object.  In particular, privileges granted via
     such a command will appear to have been granted by the object owner.
@@ -210,7 +208,7 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
     One possible workaround is to create a view having just the desired
     columns and then grant privileges to that view.
    </p>
-<p>    Use <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s <tt class="command">\z</tt> command
+<p>    Use <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s <code class="command">\z</code> command
     to obtain information about existing privileges, for example:
 </p>
 <pre class="programlisting">=&gt; \z mytable
@@ -221,7 +219,7 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
  public | mytable | table | {miriam=arwdRxt/miriam,=r/miriam,"group todos=arw/miriam"}
 (1 row)</pre>
 <p>
-    The entries shown by <tt class="command">\z</tt> are interpreted thus:
+    The entries shown by <code class="command">\z</code> are interpreted thus:
 </p>
 <pre class="programlisting">              =xxxx -- privileges granted to PUBLIC
          uname=xxxx -- privileges granted to a user
@@ -244,8 +242,8 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
               /yyyy -- user who granted this privilege</pre>
 <p>
 
-    The above example display would be seen by user <tt class="literal">miriam</tt> after
-    creating table <tt class="literal">mytable</tt> and doing
+    The above example display would be seen by user <code class="literal">miriam</code> after
+    creating table <code class="literal">mytable</code> and doing
 
 </p>
 <pre class="programlisting">GRANT SELECT ON mytable TO PUBLIC;
@@ -255,43 +253,43 @@ GRANT SELECT, UPDATE, INSERT ON mytable TO GROUP todos;</pre>
 <p>   If the &#8220;<span class="quote">Access privileges</span>&#8221; column is empty for a given object,
 it means the object has default privileges (that is, its privileges column
 is null).  Default privileges always include all privileges for the owner,
-and may include some privileges for <tt class="literal">PUBLIC</tt> depending on the
-object type, as explained above.  The first <tt class="command">GRANT</tt> or
-<tt class="command">REVOKE</tt> on an object
+and may include some privileges for <code class="literal">PUBLIC</code> depending on the
+object type, as explained above.  The first <code class="command">GRANT</code> or
+<code class="command">REVOKE</code> on an object
 will instantiate the default privileges (producing, for example,
-<tt class="literal">{miriam=arwdRxt/miriam}</tt>) and then modify them per the
+<code class="literal">{miriam=arwdRxt/miriam}</code>) and then modify them per the
 specified request.
    </p>
 <p>    Notice that the owner's implicit grant options are not marked in the
-    access privileges display.  A <tt class="literal">*</tt> will appear only when
+    access privileges display.  A <code class="literal">*</code> will appear only when
     grant options have been explicitly granted to someone.
    </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-grant-examples"></a><h2>Examples</h2>
-<p>   Grant insert privilege to all users on table <tt class="literal">films</tt>:
+<p>   Grant insert privilege to all users on table <code class="literal">films</code>:
 
 </p>
 <pre class="programlisting">GRANT INSERT ON films TO PUBLIC;</pre>
 <p>
   </p>
-<p>   Grant all available privileges to user <tt class="literal">manuel</tt> on view
-   <tt class="literal">kinds</tt>:
+<p>   Grant all available privileges to user <code class="literal">manuel</code> on view
+   <code class="literal">kinds</code>:
 
 </p>
 <pre class="programlisting">GRANT ALL PRIVILEGES ON kinds TO manuel;</pre>
 <p>
 
    Note that while the above will indeed grant all privileges if executed by a
-   superuser or the owner of <tt class="literal">kinds</tt>, when executed by someone
+   superuser or the owner of <code class="literal">kinds</code>, when executed by someone
    else it will only grant those permissions for which the someone else has
    grant options.
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-grant-compatibility"></a><h2>Compatibility</h2>
-<p>    According to the SQL standard, the <tt class="literal">PRIVILEGES</tt>
-    key word in <tt class="literal">ALL PRIVILEGES</tt> is required.  The
+<p>    According to the SQL standard, the <code class="literal">PRIVILEGES</code>
+    key word in <code class="literal">ALL PRIVILEGES</code> is required.  The
     SQL standard does not support setting the privileges on more than
     one object per command.
    </p>
@@ -309,22 +307,22 @@ specified request.
     within a table:
 
 </p>
-<pre class="synopsis">GRANT <i class="replaceable"><tt>privileges</tt></i>
-    ON <i class="replaceable"><tt>table</tt></i> [ ( <i class="replaceable"><tt>column</tt></i> [, ...] ) ] [, ...]
-    TO { PUBLIC | <i class="replaceable"><tt>username</tt></i> [, ...] } [ WITH GRANT OPTION ]</pre>
+<pre class="synopsis">GRANT <em class="replaceable"><code>privileges</code></em>
+    ON <em class="replaceable"><code>table</code></em> [ ( <em class="replaceable"><code>column</code></em> [, ...] ) ] [, ...]
+    TO { PUBLIC | <em class="replaceable"><code>username</code></em> [, ...] } [ WITH GRANT OPTION ]</pre>
 <p>
    </p>
-<p>    The SQL standard provides for a <tt class="literal">USAGE</tt> privilege
+<p>    The SQL standard provides for a <code class="literal">USAGE</code> privilege
     on other kinds of objects: character sets, collations,
     translations, domains.
    </p>
-<p>    The <tt class="literal">RULE</tt> privilege, and privileges on
+<p>    The <code class="literal">RULE</code> privilege, and privileges on
     databases, tablespaces, schemas, languages, and sequences are
     <span class="productname">PostgreSQL</span> extensions.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694286"></a><h2>See Also</h2>
+<a name="id462823"></a><h2>See Also</h2>
 <p>   <a href="sql-revoke.html">REVOKE</a>
   </p>
 </div>

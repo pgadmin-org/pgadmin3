@@ -4,38 +4,35 @@
 <title>11.5. Indexes on Expressions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="previous" href="indexes-unique.html" title="11.4. Unique Indexes">
+<link rel="prev" href="indexes-unique.html" title="11.4. Unique Indexes">
 <link rel="next" href="indexes-opclass.html" title="11.6. Operator Classes">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="indexes-expressional"></a>11.5. Indexes on Expressions</h2></div></div>
-<div></div>
-</div>
-<a name="id2569561"></a><p>   An index column need not be just a column of the underlying table,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-expressional"></a>11.5. Indexes on Expressions</h2></div></div></div>
+<a name="id348471"></a><p>   An index column need not be just a column of the underlying table,
    but can be a function or scalar expression computed from one or
    more columns of the table.  This feature is useful to obtain fast
    access to tables based on the results of computations.
   </p>
 <p>   For example, a common way to do case-insensitive comparisons is to
-   use the <tt class="function">lower</tt> function:
+   use the <code class="function">lower</code> function:
 </p>
 <pre class="programlisting">SELECT * FROM test1 WHERE lower(col1) = 'value';</pre>
 <p>
    This query can use an index, if one has been
-   defined on the result of the <tt class="literal">lower(col1)</tt>
+   defined on the result of the <code class="literal">lower(col1)</code>
    operation:
 </p>
 <pre class="programlisting">CREATE INDEX test1_lower_col1_idx ON test1 (lower(col1));</pre>
 <p>
   </p>
-<p>   If we were to declare this index <tt class="literal">UNIQUE</tt>, it would prevent
-   creation of rows whose <tt class="literal">col1</tt> values differ only in case,
-   as well as rows whose <tt class="literal">col1</tt> values are actually identical.
+<p>   If we were to declare this index <code class="literal">UNIQUE</code>, it would prevent
+   creation of rows whose <code class="literal">col1</code> values differ only in case,
+   as well as rows whose <code class="literal">col1</code> values are actually identical.
    Thus, indexes on expressions can be used to enforce constraints that
    are not definable as simple unique constraints.
   </p>
@@ -48,7 +45,7 @@
 <pre class="programlisting">CREATE INDEX people_names ON people ((first_name || ' ' || last_name));</pre>
 <p>
   </p>
-<p>   The syntax of the <tt class="command">CREATE INDEX</tt> command normally requires
+<p>   The syntax of the <code class="command">CREATE INDEX</code> command normally requires
    writing parentheses around index expressions, as shown in the second
    example.  The parentheses may be omitted when the expression is just
    a function call, as in the first example.

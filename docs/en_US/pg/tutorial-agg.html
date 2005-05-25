@@ -4,32 +4,29 @@
 <title>2.7. Aggregate Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="previous" href="tutorial-join.html" title="2.6. Joins Between Tables">
+<link rel="prev" href="tutorial-join.html" title="2.6. Joins Between Tables">
 <link rel="next" href="tutorial-update.html" title="2.8. Updates">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-agg"></a>2.7. Aggregate Functions</h2></div></div>
-<div></div>
-</div>
-<a name="id2518941"></a><p>    <a name="id2518954"></a>
-    <a name="id2518960"></a>
-    <a name="id2518967"></a>
-    <a name="id2518974"></a>
-    <a name="id2518981"></a>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-agg"></a>2.7. Aggregate Functions</h2></div></div></div>
+<a name="id301390"></a><p>    <a name="id301402"></a>
+    <a name="id301409"></a>
+    <a name="id301416"></a>
+    <a name="id301422"></a>
+    <a name="id301429"></a>
 
     Like  most  other relational database products, 
     <span class="productname">PostgreSQL</span> supports
     aggregate functions.
     An aggregate function computes a single result from multiple input rows.
     For example, there are aggregates to compute the
-    <tt class="function">count</tt>, <tt class="function">sum</tt>,
-    <tt class="function">avg</tt> (average), <tt class="function">max</tt> (maximum) and
-    <tt class="function">min</tt> (minimum) over a set of rows.
+    <code class="function">count</code>, <code class="function">sum</code>,
+    <code class="function">avg</code> (average), <code class="function">max</code> (maximum) and
+    <code class="function">min</code> (minimum) over a set of rows.
    </p>
 <p>    As an example, we can find the highest low-temperature reading anywhere
     with
@@ -45,24 +42,24 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <a name="id2519045"></a>
+<p>    <a name="id301490"></a>
 
     If we wanted to know what city (or cities) that reading occurred in,
     we might try
 
 </p>
-<pre class="programlisting">SELECT city FROM weather WHERE temp_lo = max(temp_lo);     <i class="lineannotation"><span class="lineannotation">WRONG</span></i></pre>
+<pre class="programlisting">SELECT city FROM weather WHERE temp_lo = max(temp_lo);     <em class="lineannotation"><span class="lineannotation">WRONG</span></em></pre>
 <p>
 
     but this will not work since the aggregate
-    <tt class="function">max</tt> cannot be used in the
-    <tt class="literal">WHERE</tt> clause.  (This restriction exists because
-    the <tt class="literal">WHERE</tt> clause determines the rows that will
+    <code class="function">max</code> cannot be used in the
+    <code class="literal">WHERE</code> clause.  (This restriction exists because
+    the <code class="literal">WHERE</code> clause determines the rows that will
     go into the aggregation stage; so it has to be evaluated before
     aggregate functions are computed.)
     However, as is often the case
     the query can be restated to accomplish the intended result, here
-    by using a <i class="firstterm">subquery</i>:
+    by using a <em class="firstterm">subquery</em>:
 
 </p>
 <pre class="programlisting">SELECT city FROM weather
@@ -80,11 +77,11 @@
     that computes its own aggregate separately from what is happening
     in the outer query.
    </p>
-<p>    <a name="id2519109"></a>
-    <a name="id2519116"></a>
+<p>    <a name="id301546"></a>
+    <a name="id301553"></a>
 
-    Aggregates are also very useful in combination with <tt class="literal">GROUP
-    BY</tt> clauses.  For example, we can get the maximum low
+    Aggregates are also very useful in combination with <code class="literal">GROUP
+    BY</code> clauses.  For example, we can get the maximum low
     temperature observed in each city with
 
 </p>
@@ -104,7 +101,7 @@
     which gives us one output row per city.  Each aggregate result is
     computed over the table rows matching that city.
     We can filter these grouped
-    rows using <tt class="literal">HAVING</tt>:
+    rows using <code class="literal">HAVING</code>:
 
 </p>
 <pre class="programlisting">SELECT city, max(temp_lo)
@@ -121,9 +118,9 @@
 <p>
 
     which gives us the same results for only the cities that have all
-    <tt class="literal">temp_lo</tt> values below 40.  Finally, if we only care about
+    <code class="literal">temp_lo</code> values below 40.  Finally, if we only care about
     cities whose
-    names begin with &#8220;<span class="quote"><tt class="literal">S</tt></span>&#8221;, we might do
+    names begin with &#8220;<span class="quote"><code class="literal">S</code></span>&#8221;, we might do
 
 </p>
 <pre class="programlisting">SELECT city, max(temp_lo)
@@ -136,34 +133,34 @@
 <div class="calloutlist"><table border="0" summary="Callout list"><tr>
 <td width="5%" valign="top" align="left">
 <a href="#co.tutorial-agg-like">(1)</a> </td>
-<td valign="top" align="left"><p>      The <tt class="literal">LIKE</tt> operator does pattern matching and
+<td valign="top" align="left"><p>      The <code class="literal">LIKE</code> operator does pattern matching and
       is explained in <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a>.
      </p></td>
 </tr></table></div>
 <p>
    </p>
 <p>    It is important to understand the interaction between aggregates and
-    <span class="acronym">SQL</span>'s <tt class="literal">WHERE</tt> and <tt class="literal">HAVING</tt> clauses.
-    The fundamental difference between <tt class="literal">WHERE</tt> and
-    <tt class="literal">HAVING</tt> is this: <tt class="literal">WHERE</tt> selects
+    <span class="acronym">SQL</span>'s <code class="literal">WHERE</code> and <code class="literal">HAVING</code> clauses.
+    The fundamental difference between <code class="literal">WHERE</code> and
+    <code class="literal">HAVING</code> is this: <code class="literal">WHERE</code> selects
     input rows before groups and aggregates are computed (thus, it controls
     which rows go into the aggregate computation), whereas
-    <tt class="literal">HAVING</tt> selects group rows after groups and
+    <code class="literal">HAVING</code> selects group rows after groups and
     aggregates are computed.  Thus, the
-    <tt class="literal">WHERE</tt> clause must not contain aggregate functions;
+    <code class="literal">WHERE</code> clause must not contain aggregate functions;
     it makes no sense to try to use an aggregate to determine which rows
     will be inputs to the aggregates.  On the other hand, the
-    <tt class="literal">HAVING</tt> clause always contains aggregate functions.
-    (Strictly speaking, you are allowed to write a <tt class="literal">HAVING</tt>
+    <code class="literal">HAVING</code> clause always contains aggregate functions.
+    (Strictly speaking, you are allowed to write a <code class="literal">HAVING</code>
     clause that doesn't use aggregates, but it's seldom useful. The same
-    condition could be used more efficiently at the <tt class="literal">WHERE</tt>
+    condition could be used more efficiently at the <code class="literal">WHERE</code>
     stage.)
    </p>
 <p>    In the previous example, we can apply the city name restriction in
-    <tt class="literal">WHERE</tt>, since it needs no aggregate.  This is
-    more efficient than adding the restriction to <tt class="literal">HAVING</tt>,
+    <code class="literal">WHERE</code>, since it needs no aggregate.  This is
+    more efficient than adding the restriction to <code class="literal">HAVING</code>,
     because we avoid doing the grouping and aggregate calculations
-    for all rows that fail the <tt class="literal">WHERE</tt> check.
+    for all rows that fail the <code class="literal">WHERE</code> check.
    </p>
 </div></body>
 </html>

@@ -4,30 +4,27 @@
 <title>41.20. pg_listener</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="previous" href="catalog-pg-largeobject.html" title="41.19. pg_largeobject">
+<link rel="prev" href="catalog-pg-largeobject.html" title="41.19. pg_largeobject">
 <link rel="next" href="catalog-pg-namespace.html" title="41.21. pg_namespace">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-listener"></a>41.20. <tt class="structname">pg_listener</tt></h2></div></div>
-<div></div>
-</div>
-<a name="id2732343"></a><p>   The catalog <tt class="structname">pg_listener</tt> supports the
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-listener"></a>41.20. <code class="structname">pg_listener</code></h2></div></div></div>
+<a name="id498605"></a><p>   The catalog <code class="structname">pg_listener</code> supports the
    <a href="sql-listen.html">LISTEN</a> and
    <a href="sql-notify.html">NOTIFY</a>
    commands.  A listener creates an entry in
-   <tt class="structname">pg_listener</tt> for each notification name
-   it is listening for.  A notifier scans <tt class="structname">pg_listener</tt>
+   <code class="structname">pg_listener</code> for each notification name
+   it is listening for.  A notifier scans <code class="structname">pg_listener</code>
    and updates each matching entry to show that a notification has occurred.
    The notifier also sends a signal (using the PID recorded in the table)
    to awaken the listener from sleep.
   </p>
 <div class="table">
-<a name="id2732389"></a><p class="title"><b>Table 41.20. <tt class="structname">pg_listener</tt> Columns</b></p>
+<a name="id498647"></a><p class="title"><b>Table 41.20. <code class="structname">pg_listener</code> Columns</b></p>
 <table summary="pg_listener Columns" border="1">
 <colgroup>
 <col>
@@ -43,22 +40,22 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="structfield">relname</tt></td>
-<td><tt class="type">name</tt></td>
+<td><code class="structfield">relname</code></td>
+<td><code class="type">name</code></td>
 <td> </td>
 <td>Notify condition name.  (The name need not match any actual
-      relation in the database; the name <tt class="structfield">relname</tt> is historical.)
+      relation in the database; the name <code class="structfield">relname</code> is historical.)
       </td>
 </tr>
 <tr>
-<td><tt class="structfield">listenerpid</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="structfield">listenerpid</code></td>
+<td><code class="type">int4</code></td>
 <td> </td>
 <td>PID of the server process that created this entry.</td>
 </tr>
 <tr>
-<td><tt class="structfield">notification</tt></td>
-<td><tt class="type">int4</tt></td>
+<td><code class="structfield">notification</code></td>
+<td><code class="type">int4</code></td>
 <td> </td>
 <td>       Zero if no event is pending for this listener.  If an event is
        pending, the PID of the server process that sent the notification.

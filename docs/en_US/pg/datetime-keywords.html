@@ -4,18 +4,15 @@
 <title>B.2. Date/Time Key Words</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datetime-appendix.html" title="Appendix B. Date/Time Support">
-<link rel="previous" href="datetime-appendix.html" title="Appendix B. Date/Time Support">
+<link rel="prev" href="datetime-appendix.html" title="Appendix B. Date/Time Support">
 <link rel="next" href="datetime-units-history.html" title="B.3. History of Units">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="datetime-keywords"></a>B.2. Date/Time Key Words</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="datetime-keywords"></a>B.2. Date/Time Key Words</h2></div></div></div>
 <p>    <a href="datetime-keywords.html#datetime-month-table" title="Table B.1. Month Names">Table B.1, &#8220;Month Names&#8221;</a> shows the tokens that are
     recognized as names of months.
    </p>
@@ -144,52 +141,52 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal">ABSTIME</tt></td>
+<td><code class="literal">ABSTIME</code></td>
 <td>Ignored</td>
 </tr>
 <tr>
-<td><tt class="literal">AM</tt></td>
+<td><code class="literal">AM</code></td>
 <td>Time is before 12:00</td>
 </tr>
 <tr>
-<td><tt class="literal">AT</tt></td>
+<td><code class="literal">AT</code></td>
 <td>Ignored</td>
 </tr>
 <tr>
 <td>
-<tt class="literal">JULIAN</tt>, <tt class="literal">JD</tt>, <tt class="literal">J</tt>
+<code class="literal">JULIAN</code>, <code class="literal">JD</code>, <code class="literal">J</code>
 </td>
 <td>Next field is Julian Day</td>
 </tr>
 <tr>
-<td><tt class="literal">ON</tt></td>
+<td><code class="literal">ON</code></td>
 <td>Ignored</td>
 </tr>
 <tr>
-<td><tt class="literal">PM</tt></td>
+<td><code class="literal">PM</code></td>
 <td>Time is on or after 12:00</td>
 </tr>
 <tr>
-<td><tt class="literal">T</tt></td>
+<td><code class="literal">T</code></td>
 <td>Next field is time</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>    The key word <tt class="literal">ABSTIME</tt> is ignored for historical
+<p>    The key word <code class="literal">ABSTIME</code> is ignored for historical
     reasons: In very old releases of
-    <span class="productname">PostgreSQL</span>, invalid values of type <tt class="type">abstime</tt>
-    were emitted as <tt class="literal">Invalid Abstime</tt>. This is no
+    <span class="productname">PostgreSQL</span>, invalid values of type <code class="type">abstime</code>
+    were emitted as <code class="literal">Invalid Abstime</code>. This is no
     longer the case however and this key word will likely be dropped in
     a future release.
    </p>
-<a name="id2752352"></a><p>    <a href="datetime-keywords.html#datetime-timezone-input-table" title="Table B.4. Time Zone Abbreviations for Input">Table B.4, &#8220;Time Zone Abbreviations for Input&#8221;</a> shows the time zone
+<a name="id517314"></a><p>    <a href="datetime-keywords.html#datetime-timezone-input-table" title="Table B.4. Time Zone Abbreviations for Input">Table B.4, &#8220;Time Zone Abbreviations for Input&#8221;</a> shows the time zone
     abbreviations recognized by <span class="productname">PostgreSQL</span>
     in date/time input values.  Note that these names are <span class="emphasis"><em>not</em></span>
     necessarily used for date/time output [mdash ] output is driven by the
     official timezone abbreviation(s) associated with the currently selected
     <a href="runtime-config.html#guc-timezone">timezone</a> parameter setting.  (It is
-    likely that future releases will make some use of <tt class="varname">timezone</tt>
+    likely that future releases will make some use of <code class="varname">timezone</code>
     for input as well.)
    </p>
 <p>    The table is organized by time zone offset from <span class="acronym">UTC</span>,
@@ -489,7 +486,7 @@
 <tr>
 <td>DNT</td>
 <td>+01:00</td>
-<td><span class="foreignphrase"><i class="foreignphrase">Dansk Normal Tid</i></span></td>
+<td><span class="foreignphrase"><em class="foreignphrase">Dansk Normal Tid</em></span></td>
 </tr>
 <tr>
 <td>FST</td>
@@ -509,7 +506,7 @@
 <tr>
 <td>MEZ</td>
 <td>+01:00</td>
-<td><span class="foreignphrase"><i class="foreignphrase">Mitteleuropäische Zeit</i></span></td>
+<td><span class="foreignphrase"><em class="foreignphrase">Mitteleuropäische Zeit</em></span></td>
 </tr>
 <tr>
 <td>NOR</td>
@@ -726,15 +723,15 @@
 </div>
 <p><b>Australian Time Zones. </b>    There are three naming conflicts between Australian time zone
     names and time zone names commonly used in North and South America:
-    <tt class="literal">ACST</tt>, <tt class="literal">CST</tt>, and
-    <tt class="literal">EST</tt>.  If the run-time option
-    <tt class="varname">australian_timezones</tt> is set to true then
-    <tt class="literal">ACST</tt>, <tt class="literal">CST</tt>,
-    <tt class="literal">EST</tt>, and <tt class="literal">SAT</tt> are interpreted
+    <code class="literal">ACST</code>, <code class="literal">CST</code>, and
+    <code class="literal">EST</code>.  If the run-time option
+    <code class="varname">australian_timezones</code> is set to true then
+    <code class="literal">ACST</code>, <code class="literal">CST</code>,
+    <code class="literal">EST</code>, and <code class="literal">SAT</code> are interpreted
     as Australian time zone names, as shown in <a href="datetime-keywords.html#datetime-oztz-table" title="Table B.5. Australian Time Zone Abbreviations for Input">Table B.5, &#8220;Australian Time Zone Abbreviations for Input&#8221;</a>. If it is false (which is the
-    default), then <tt class="literal">ACST</tt>, <tt class="literal">CST</tt>,
-    and <tt class="literal">EST</tt> are taken as American time zone names,
-    and <tt class="literal">SAT</tt> is interpreted as a noise word
+    default), then <code class="literal">ACST</code>, <code class="literal">CST</code>,
+    and <code class="literal">EST</code> are taken as American time zone names,
+    and <code class="literal">SAT</code> is interpreted as a noise word
     indicating Saturday.
    </p>
 <div class="table">
@@ -774,7 +771,7 @@
 </tbody>
 </table>
 </div>
-<a name="id2753435"></a><p>    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting timezone&#8221;</a> shows the time zone
+<a name="id518358"></a><p>    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting <code class="varname">timezone</code>&#8221;</a> shows the time zone
     names recognized by <span class="productname">PostgreSQL</span> as valid
     settings for the <a href="runtime-config.html#guc-timezone">timezone</a> parameter.  Note that
     these names are conceptually as well as practically different from
@@ -787,7 +784,7 @@
     by the name of the principal city of the zone.
    </p>
 <div class="table">
-<a name="datetime-timezone-set-table"></a><p class="title"><b>Table B.6. Time Zone Names for Setting <tt class="varname">timezone</tt></b></p>
+<a name="datetime-timezone-set-table"></a><p class="title"><b>Table B.6. Time Zone Names for Setting <code class="varname">timezone</code></b></p>
 <table summary="Time Zone Names for Setting timezone" border="1">
 <colgroup><col></colgroup>
 <thead><tr><th>Time Zone</th></tr></thead>
@@ -1201,12 +1198,12 @@
 </div>
 <p>    In addition to the names listed in the table,
     <span class="productname">PostgreSQL</span> will accept time zone names of the
-    form <i class="replaceable"><tt>STD</tt></i><i class="replaceable"><tt>offset</tt></i> or
-    <i class="replaceable"><tt>STD</tt></i><i class="replaceable"><tt>offset</tt></i><i class="replaceable"><tt>DST</tt></i>, where
-    <i class="replaceable"><tt>STD</tt></i> is a zone abbreviation, <i class="replaceable"><tt>offset</tt></i> is a
-    numeric offset in hours west from UTC, and <i class="replaceable"><tt>DST</tt></i> is an
+    form <em class="replaceable"><code>STD</code></em><em class="replaceable"><code>offset</code></em> or
+    <em class="replaceable"><code>STD</code></em><em class="replaceable"><code>offset</code></em><em class="replaceable"><code>DST</code></em>, where
+    <em class="replaceable"><code>STD</code></em> is a zone abbreviation, <em class="replaceable"><code>offset</code></em> is a
+    numeric offset in hours west from UTC, and <em class="replaceable"><code>DST</code></em> is an
     optional daylight-savings zone abbreviation, assumed to stand for one hour
-    ahead of the given offset.  For example, if <tt class="literal">EST5EDT</tt> were not
+    ahead of the given offset.  For example, if <code class="literal">EST5EDT</code> were not
     already a recognized zone name, it would be accepted and would be
     functionally equivalent to USA East Coast time.  When a daylight-savings
     zone name is present, it is assumed to be used according to USA time zone
@@ -1214,7 +1211,7 @@
     One should also be wary that this provision can lead to
     silently accepting bogus input, since there is no check on the
     reasonableness of the zone abbreviations.  For example,
-    <tt class="literal">SET TIMEZONE TO FOOBAR0</tt> will work, leaving the system
+    <code class="literal">SET TIMEZONE TO FOOBAR0</code> will work, leaving the system
     effectively using a rather peculiar abbreviation for GMT.
    </p>
 </div></body>

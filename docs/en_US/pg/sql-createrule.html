@@ -4,32 +4,29 @@
 <title>CREATE RULE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="previous" href="sql-createopclass.html" title="CREATE OPERATOR CLASS">
+<link rel="prev" href="sql-createopclass.html" title="CREATE OPERATOR CLASS">
 <link rel="next" href="sql-createschema.html" title="CREATE SCHEMA">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createrule"></a><div class="titlepage">
-<div></div>
-<div></div>
-</div>
+<a name="sql-createrule"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE RULE &#8212; define a new rewrite rule</p>
 </div>
-<a name="id2679783"></a><div class="refsynopsisdiv">
+<a name="id449442"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE [ OR REPLACE ] RULE <i class="replaceable"><tt>name</tt></i> AS ON <i class="replaceable"><tt>event</tt></i>
-    TO <i class="replaceable"><tt>table</tt></i> [ WHERE <i class="replaceable"><tt>condition</tt></i> ]
-    DO [ ALSO | INSTEAD ] { NOTHING | <i class="replaceable"><tt>command</tt></i> | ( <i class="replaceable"><tt>command</tt></i> ; <i class="replaceable"><tt>command</tt></i> ... ) }</pre>
+<pre class="synopsis">CREATE [ OR REPLACE ] RULE <em class="replaceable"><code>name</code></em> AS ON <em class="replaceable"><code>event</code></em>
+    TO <em class="replaceable"><code>table</code></em> [ WHERE <em class="replaceable"><code>condition</code></em> ]
+    DO [ ALSO | INSTEAD ] { NOTHING | <em class="replaceable"><code>command</code></em> | ( <em class="replaceable"><code>command</code></em> ; <em class="replaceable"><code>command</code></em> ... ) }</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2679841"></a><h2>Description</h2>
-<p>   <tt class="command">CREATE RULE</tt> defines a new rule applying to a specified
+<a name="id449500"></a><h2>Description</h2>
+<p>   <code class="command">CREATE RULE</code> defines a new rule applying to a specified
    table or view.
-   <tt class="command">CREATE OR REPLACE RULE</tt> will either create a
+   <code class="command">CREATE OR REPLACE RULE</code> will either create a
    new rule, or replace an existing rule of the same name for the same
    table.
   </p>
@@ -37,7 +34,7 @@
    define an alternate action to be performed on insertions, updates,
    or deletions in database tables.  Roughly speaking, a rule causes
    additional commands to be executed when a given command on a given
-   table is executed.  Alternatively, an <tt class="literal">INSTEAD</tt>
+   table is executed.  Alternatively, an <code class="literal">INSTEAD</code>
    rule can replace a given command by another, or cause a command
    not to be executed at all.  Rules are used to implement table
    views as well.  It is important to realize that a rule is really
@@ -47,104 +44,104 @@
    physical row, you probably want to use a trigger, not a rule.
    More information about the rules system is in <a href="rules.html" title="Chapter 33. The Rule System">Chapter 33, <i>The Rule System</i></a>.
   </p>
-<p>   Presently, <tt class="literal">ON SELECT</tt> rules must be unconditional
-   <tt class="literal">INSTEAD</tt> rules and must have actions that consist
-   of a single <tt class="command">SELECT</tt> command.  Thus, an
-   <tt class="literal">ON SELECT</tt> rule effectively turns the table into
+<p>   Presently, <code class="literal">ON SELECT</code> rules must be unconditional
+   <code class="literal">INSTEAD</code> rules and must have actions that consist
+   of a single <code class="command">SELECT</code> command.  Thus, an
+   <code class="literal">ON SELECT</code> rule effectively turns the table into
    a view, whose visible contents are the rows returned by the rule's
-   <tt class="command">SELECT</tt> command rather than whatever had been
+   <code class="command">SELECT</code> command rather than whatever had been
    stored in the table (if anything).  It is considered better style
-   to write a <tt class="command">CREATE VIEW</tt> command than to create a
-   real table and define an <tt class="literal">ON SELECT</tt> rule for it.
+   to write a <code class="command">CREATE VIEW</code> command than to create a
+   real table and define an <code class="literal">ON SELECT</code> rule for it.
   </p>
 <p>   You can create the illusion of an updatable view by defining
-   <tt class="literal">ON INSERT</tt>, <tt class="literal">ON UPDATE</tt>, and
-   <tt class="literal">ON DELETE</tt> rules (or any subset of those that's
+   <code class="literal">ON INSERT</code>, <code class="literal">ON UPDATE</code>, and
+   <code class="literal">ON DELETE</code> rules (or any subset of those that's
    sufficient for your purposes) to replace update actions on the view
    with appropriate updates on other tables.
   </p>
 <p>   There is a catch if you try to use conditional rules for view
    updates: there <span class="emphasis"><em>must</em></span> be an unconditional
-   <tt class="literal">INSTEAD</tt> rule for each action you wish to allow
+   <code class="literal">INSTEAD</code> rule for each action you wish to allow
    on the view.  If the rule is conditional, or is not
-   <tt class="literal">INSTEAD</tt>, then the system will still reject
+   <code class="literal">INSTEAD</code>, then the system will still reject
    attempts to perform the update action, because it thinks it might
    end up trying to perform the action on the dummy table of the view
    in some cases.  If you want to handle all the useful cases in
-   conditional rules, add an unconditional <tt class="literal">DO
-   INSTEAD NOTHING</tt> rule to ensure that the system
+   conditional rules, add an unconditional <code class="literal">DO
+   INSTEAD NOTHING</code> rule to ensure that the system
    understands it will never be called on to update the dummy table.
-   Then make the conditional rules non-<tt class="literal">INSTEAD</tt>; in
+   Then make the conditional rules non-<code class="literal">INSTEAD</code>; in
    the cases where they are applied, they add to the default
-   <tt class="literal">INSTEAD NOTHING</tt> action.
+   <code class="literal">INSTEAD NOTHING</code> action.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2680016"></a><h2>Parameters</h2>
+<a name="id449655"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of a rule to create.  This must be distinct from the
       name of any other rule for the same table.  Multiple rules on
       the same table and same event type are applied in alphabetical
       name order.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>event</tt></i></span></dt>
-<dd><p>      The event is one of <tt class="literal">SELECT</tt>,
-      <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, or
-      <tt class="literal">DELETE</tt>.
+<dt><span class="term"><em class="replaceable"><code>event</code></em></span></dt>
+<dd><p>      The event is one of <code class="literal">SELECT</code>,
+      <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, or
+      <code class="literal">DELETE</code>.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table or view the
       rule applies to.
      </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>condition</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>condition</code></em></span></dt>
 <dd><p>      Any <span class="acronym">SQL</span> conditional expression (returning
-      <tt class="type">boolean</tt>).  The condition expression may not refer
-      to any tables except <tt class="literal">NEW</tt> and <tt class="literal">OLD</tt>, and
+      <code class="type">boolean</code>).  The condition expression may not refer
+      to any tables except <code class="literal">NEW</code> and <code class="literal">OLD</code>, and
       may not contain aggregate functions.
      </p></dd>
-<dt><span class="term"><tt class="option">INSTEAD</tt></span></dt>
-<dd><p>      <tt class="literal">INSTEAD</tt> indicates that the commands should be
+<dt><span class="term"><code class="option">INSTEAD</code></span></dt>
+<dd><p>      <code class="literal">INSTEAD</code> indicates that the commands should be
       executed <span class="emphasis"><em>instead of</em></span> the original command.
      </p></dd>
-<dt><span class="term"><tt class="option">ALSO</tt></span></dt>
+<dt><span class="term"><code class="option">ALSO</code></span></dt>
 <dd>
-<p>      <tt class="literal">ALSO</tt> indicates that the commands should be
+<p>      <code class="literal">ALSO</code> indicates that the commands should be
       executed <span class="emphasis"><em>in addition to</em></span> the original
       command.
      </p>
-<p>      If neither <tt class="literal">ALSO</tt> nor
-      <tt class="literal">INSTEAD</tt> is specified, <tt class="literal">ALSO</tt>
+<p>      If neither <code class="literal">ALSO</code> nor
+      <code class="literal">INSTEAD</code> is specified, <code class="literal">ALSO</code>
       is the default.
      </p>
 </dd>
-<dt><span class="term"><i class="replaceable"><tt>command</tt></i></span></dt>
+<dt><span class="term"><em class="replaceable"><code>command</code></em></span></dt>
 <dd><p>      The command or commands that make up the rule action.  Valid
-      commands are <tt class="command">SELECT</tt>,
-      <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
-      <tt class="command">DELETE</tt>, or <tt class="command">NOTIFY</tt>.
+      commands are <code class="command">SELECT</code>,
+      <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+      <code class="command">DELETE</code>, or <code class="command">NOTIFY</code>.
      </p></dd>
 </dl></div>
-<p>   Within <i class="replaceable"><tt>condition</tt></i> and
-   <i class="replaceable"><tt>command</tt></i>, the special
-   table names <tt class="literal">NEW</tt> and <tt class="literal">OLD</tt> may
+<p>   Within <em class="replaceable"><code>condition</code></em> and
+   <em class="replaceable"><code>command</code></em>, the special
+   table names <code class="literal">NEW</code> and <code class="literal">OLD</code> may
    be used to refer to values in the referenced table.
-   <tt class="literal">NEW</tt> is valid in <tt class="literal">ON INSERT</tt> and
-   <tt class="literal">ON UPDATE</tt> rules to refer to the new row being
-   inserted or updated.  <tt class="literal">OLD</tt> is valid in
-   <tt class="literal">ON UPDATE</tt> and <tt class="literal">ON DELETE</tt> rules
+   <code class="literal">NEW</code> is valid in <code class="literal">ON INSERT</code> and
+   <code class="literal">ON UPDATE</code> rules to refer to the new row being
+   inserted or updated.  <code class="literal">OLD</code> is valid in
+   <code class="literal">ON UPDATE</code> and <code class="literal">ON DELETE</code> rules
    to refer to the existing row being updated or deleted.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2680277"></a><h2>Notes</h2>
-<p>   You must have the privilege <tt class="literal">RULE</tt> on a table to
+<a name="id449906"></a><h2>Notes</h2>
+<p>   You must have the privilege <code class="literal">RULE</code> on a table to
    be allowed to define a rule on it.
   </p>
 <p>   It is very important to take care to avoid circular rules.  For
    example, though each of the following two rule definitions are
    accepted by <span class="productname">PostgreSQL</span>, the
-   <tt class="command">SELECT</tt> command would cause
+   <code class="command">SELECT</code> command would cause
    <span class="productname">PostgreSQL</span> to report an error because
    the query cycled too many times:
 
@@ -162,9 +159,9 @@ CREATE RULE "_RETURN" AS
 SELECT * FROM t1;</pre>
 <p>
   </p>
-<p>   Presently, if a rule action contains a <tt class="command">NOTIFY</tt>
-   command, the <tt class="command">NOTIFY</tt> command will be executed
-   unconditionally, that is, the <tt class="command">NOTIFY</tt> will be
+<p>   Presently, if a rule action contains a <code class="command">NOTIFY</code>
+   command, the <code class="command">NOTIFY</code> command will be executed
+   unconditionally, that is, the <code class="command">NOTIFY</code> will be
    issued even if there are not any rows that the rule should apply
    to.  For example, in
 </p>
@@ -172,15 +169,15 @@ SELECT * FROM t1;</pre>
 
 UPDATE mytable SET name = 'foo' WHERE id = 42;</pre>
 <p>
-   one <tt class="command">NOTIFY</tt> event will be sent during the
-   <tt class="command">UPDATE</tt>, whether or not there are any rows that
-   match the condition <tt class="literal">id = 42</tt>.  This is an
+   one <code class="command">NOTIFY</code> event will be sent during the
+   <code class="command">UPDATE</code>, whether or not there are any rows that
+   match the condition <code class="literal">id = 42</code>.  This is an
    implementation restriction that may be fixed in future releases.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2680375"></a><h2>Compatibility</h2>
-<p>   <tt class="command">CREATE RULE</tt> is a
+<a name="id449995"></a><h2>Compatibility</h2>
+<p>   <code class="command">CREATE RULE</code> is a
    <span class="productname">PostgreSQL</span> language extension, as is the
    entire query rewrite system.
   </p>

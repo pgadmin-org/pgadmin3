@@ -4,24 +4,21 @@
 <title>2.6. Joins Between Tables</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="previous" href="tutorial-select.html" title="2.5. Querying a Table">
+<link rel="prev" href="tutorial-select.html" title="2.5. Querying a Table">
 <link rel="next" href="tutorial-agg.html" title="2.7. Aggregate Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="tutorial-join"></a>2.6. Joins Between Tables</h2></div></div>
-<div></div>
-</div>
-<a name="id2518626"></a><p>    Thus far, our queries have only accessed one table at a time.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-join"></a>2.6. Joins Between Tables</h2></div></div></div>
+<a name="id301127"></a><p>    Thus far, our queries have only accessed one table at a time.
     Queries can access multiple tables at once, or access the same
     table in such a way that multiple rows of the table are being
     processed at the same time.  A query that accesses multiple rows
     of the same or different tables at one time is called a
-    <i class="firstterm">join</i> query.  As an example, say you wish to
+    <em class="firstterm">join</em> query.  As an example, say you wish to
     list all the weather records together with the location of the
     associated city.  To do that, we need to compare the city column of
     each row of the weather table with the name column of all rows in
@@ -57,18 +54,18 @@
 <div class="itemizedlist"><ul type="disc">
 <li><p>       There is no result row for the city of Hayward.  This is
        because there is no matching entry in the
-       <tt class="classname">cities</tt> table for Hayward, so the join
+       <code class="classname">cities</code> table for Hayward, so the join
        ignores the unmatched rows in the weather table.  We will see
        shortly how this can be fixed.
       </p></li>
 <li>
 <p>       There are two columns containing the city name.  This is
        correct because the lists of columns of the
-       <tt class="classname">weather</tt> and the
-       <tt class="classname">cities</tt> table are concatenated.  In
+       <code class="classname">weather</code> and the
+       <code class="classname">cities</code> table are concatenated.  In
        practice this is undesirable, though, so you will probably want
        to list the output columns explicitly rather than using
-       <tt class="literal">*</tt>:
+       <code class="literal">*</code>:
 </p>
 <pre class="programlisting">SELECT city, temp_lo, temp_hi, prcp, date, location
     FROM weather, cities
@@ -80,7 +77,7 @@
 <p>
    </p>
 <p><b>Exercise: </b>     Attempt to find out the semantics of this query when the
-     <tt class="literal">WHERE</tt> clause is omitted.
+     <code class="literal">WHERE</code> clause is omitted.
     </p>
 <p>    Since the columns all had different names, the parser
     automatically found out which table they belong to, but it is good
@@ -104,15 +101,15 @@
     This syntax is not as commonly used as the one above, but we show
     it here to help you understand the following topics.
    </p>
-<p>    <a name="id2518767"></a>
+<p>    <a name="id301245"></a>
 
     Now we will figure out how we can get the Hayward records back in.
     What we want the query to do is to scan the
-    <tt class="classname">weather</tt> table and for each row to find the
-    matching <tt class="classname">cities</tt> row.  If no matching row is
+    <code class="classname">weather</code> table and for each row to find the
+    matching <code class="classname">cities</code> row.  If no matching row is
     found we want some &#8220;<span class="quote">empty values</span>&#8221; to be substituted
-    for the <tt class="classname">cities</tt> table's columns.  This kind
-    of query is called an <i class="firstterm">outer join</i>.  (The
+    for the <code class="classname">cities</code> table's columns.  This kind
+    of query is called an <em class="firstterm">outer join</em>.  (The
     joins we have seen so far are inner joins.)  The command looks
     like this:
 
@@ -128,8 +125,8 @@
 (3 rows)</pre>
 <p>
 
-    This query is called a <i class="firstterm">left outer
-    join</i> because the table mentioned on the left of the
+    This query is called a <em class="firstterm">left outer
+    join</em> because the table mentioned on the left of the
     join operator will have each of its rows in the output at least
     once, whereas the table on the right will only have those rows
     output that match some row of the left table.  When outputting a
@@ -139,18 +136,18 @@
 <p><b>Exercise: </b>     There are also right outer joins and full outer joins.  Try to
      find out what those do.
     </p>
-<p>    <a name="id2518835"></a>
-    <a name="id2518844"></a>
+<p>    <a name="id301301"></a>
+    <a name="id301310"></a>
 
     We can also join a table against itself.  This is called a
-    <i class="firstterm">self join</i>.  As an example, suppose we wish
+    <em class="firstterm">self join</em>.  As an example, suppose we wish
     to find all the weather records that are in the temperature range
     of other weather records.  So we need to compare the
-    <tt class="structfield">temp_lo</tt> and <tt class="structfield">temp_hi</tt> columns of
-    each <tt class="classname">weather</tt> row to the
-    <tt class="structfield">temp_lo</tt> and
-    <tt class="structfield">temp_hi</tt> columns of all other
-    <tt class="classname">weather</tt> rows.  We can do this with the
+    <code class="structfield">temp_lo</code> and <code class="structfield">temp_hi</code> columns of
+    each <code class="classname">weather</code> row to the
+    <code class="structfield">temp_lo</code> and
+    <code class="structfield">temp_hi</code> columns of all other
+    <code class="classname">weather</code> rows.  We can do this with the
     following query:
 
 </p>
@@ -167,8 +164,8 @@
 (2 rows)</pre>
 <p>     
 
-    Here we have relabeled the weather table as <tt class="literal">W1</tt> and
-    <tt class="literal">W2</tt> to be able to distinguish the left and right side
+    Here we have relabeled the weather table as <code class="literal">W1</code> and
+    <code class="literal">W2</code> to be able to distinguish the left and right side
     of the join.  You can also use these kinds of aliases in other
     queries to save some typing, e.g.:
 </p>

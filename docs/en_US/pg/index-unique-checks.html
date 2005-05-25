@@ -4,22 +4,19 @@
 <title>47.5. Index Uniqueness Checks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="indexam.html" title="Chapter 47. Index Access Method Interface Definition">
-<link rel="previous" href="index-locking.html" title="47.4. Index Locking Considerations">
+<link rel="prev" href="index-locking.html" title="47.4. Index Locking Considerations">
 <link rel="next" href="index-cost-estimation.html" title="47.6. Index Cost Estimation Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="index-unique-checks"></a>47.5. Index Uniqueness Checks</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index-unique-checks"></a>47.5. Index Uniqueness Checks</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> enforces SQL uniqueness constraints
-   using <i class="firstterm">unique indexes</i>, which are indexes that disallow
+   using <em class="firstterm">unique indexes</em>, which are indexes that disallow
    multiple entries with identical keys.  An access method that supports this
-   feature sets <tt class="structname">pg_am</tt>.<tt class="structfield">amcanunique</tt> true.
+   feature sets <code class="structname">pg_am</code>.<code class="structfield">amcanunique</code> true.
    (At present, only b-tree supports it.)
   </p>
 <p>   Because of MVCC, it is always necessary to allow duplicate entries to

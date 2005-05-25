@@ -4,39 +4,36 @@
 <title>42.3. Message Data Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
-<link rel="previous" href="protocol-flow.html" title="42.2. Message Flow">
+<link rel="prev" href="protocol-flow.html" title="42.2. Message Flow">
 <link rel="next" href="protocol-message-formats.html" title="42.4. Message Formats">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="protocol-message-types"></a>42.3. Message Data Types</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="protocol-message-types"></a>42.3. Message Data Types</h2></div></div></div>
 <p>This section describes the base data types used in messages.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term">        Int<i class="replaceable"><tt>n</tt></i>(<i class="replaceable"><tt>i</tt></i>)</span></dt>
-<dd><p>                An <i class="replaceable"><tt>n</tt></i>-bit integer in network byte
+<dt><span class="term">        Int<em class="replaceable"><code>n</code></em>(<em class="replaceable"><code>i</code></em>)</span></dt>
+<dd><p>                An <em class="replaceable"><code>n</code></em>-bit integer in network byte
 		order (most significant byte first).
-                If <i class="replaceable"><tt>i</tt></i> is specified it
+                If <em class="replaceable"><code>i</code></em> is specified it
                 is the exact value that will appear, otherwise the value
 		is variable.  Eg. Int16, Int32(42).</p></dd>
-<dt><span class="term">        Int<i class="replaceable"><tt>n</tt></i>[<i class="replaceable"><tt>k</tt></i>]</span></dt>
-<dd><p>		An array of <i class="replaceable"><tt>k</tt></i>
-                <i class="replaceable"><tt>n</tt></i>-bit integers, each in network
-		byte order.  The array length <i class="replaceable"><tt>k</tt></i>
+<dt><span class="term">        Int<em class="replaceable"><code>n</code></em>[<em class="replaceable"><code>k</code></em>]</span></dt>
+<dd><p>		An array of <em class="replaceable"><code>k</code></em>
+                <em class="replaceable"><code>n</code></em>-bit integers, each in network
+		byte order.  The array length <em class="replaceable"><code>k</code></em>
 		is always determined by an earlier field in the message.
 		Eg. Int16[M].</p></dd>
-<dt><span class="term">        String(<i class="replaceable"><tt>s</tt></i>)</span></dt>
+<dt><span class="term">        String(<em class="replaceable"><code>s</code></em>)</span></dt>
 <dd>
 <p>                A null-terminated string (C-style string).  There is no
 		specific length limitation on strings.
-                If <i class="replaceable"><tt>s</tt></i> is specified it is the exact
+                If <em class="replaceable"><code>s</code></em> is specified it is the exact
 		value that will appear, otherwise the value is variable.
                 Eg. String, String("user").</p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -48,11 +45,11 @@ accepted.  If that's not feasible, read the full string and discard trailing
 characters that don't fit into your fixed-size buffer.</p>
 </div>
 </dd>
-<dt><span class="term">        Byte<i class="replaceable"><tt>n</tt></i>(<i class="replaceable"><tt>c</tt></i>)</span></dt>
-<dd><p>                Exactly <i class="replaceable"><tt>n</tt></i> bytes.  If the field
-		width <i class="replaceable"><tt>n</tt></i> is not a constant, it is
+<dt><span class="term">        Byte<em class="replaceable"><code>n</code></em>(<em class="replaceable"><code>c</code></em>)</span></dt>
+<dd><p>                Exactly <em class="replaceable"><code>n</code></em> bytes.  If the field
+		width <em class="replaceable"><code>n</code></em> is not a constant, it is
 		always determinable from an earlier field in the message.
-                If <i class="replaceable"><tt>c</tt></i> is specified it is the exact
+                If <em class="replaceable"><code>c</code></em> is specified it is the exact
                 value.  Eg. Byte2, Byte1('\n').</p></dd>
 </dl></div>
 </div></body>

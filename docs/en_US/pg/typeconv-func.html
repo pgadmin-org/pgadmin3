@@ -4,27 +4,24 @@
 <title>10.3. Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
-<link rel="previous" href="typeconv-oper.html" title="10.2. Operators">
+<link rel="prev" href="typeconv-oper.html" title="10.2. Operators">
 <link rel="next" href="typeconv-query.html" title="10.4. Value Storage">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="typeconv-func"></a>10.3. Functions</h2></div></div>
-<div></div>
-</div>
-<a name="id2567989"></a><p>   The specific function to be used in a function invocation is determined
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="typeconv-func"></a>10.3. Functions</h2></div></div></div>
+<a name="id347069"></a><p>   The specific function to be used in a function invocation is determined
    according to the following steps.
   </p>
 <div class="procedure">
-<p class="title"><b>Function Type Resolution</b></p>
+<a name="id347085"></a><p class="title"><b>Function Type Resolution</b></p>
 <ol type="1">
 <li>
 <p>Select the functions to be considered from the
-<tt class="classname">pg_proc</tt> system catalog.  If an unqualified
+<code class="classname">pg_proc</code> system catalog.  If an unqualified
 function name was used, the functions
 considered are those of the right name and argument count that are
 visible in the current search path (see <a href="ddl-schemas.html#ddl-schemas-path" title="5.8.3. The Schema Search Path">Section 5.8.3, &#8220;The Schema Search Path&#8221;</a>).
@@ -38,7 +35,7 @@ search path position.</p></li></ol>
 <li><p>Check for a function accepting exactly the input argument types.
 If one exists (there can be only one exact match in the set of
 functions considered), use it.
-(Cases involving <tt class="type">unknown</tt> will never find a match at
+(Cases involving <code class="type">unknown</code> will never find a match at
 this step.)</p></li>
 <li><p>If no exact match is found, see whether the function call appears
 to be a trivial type conversion request.  This happens if the function call
@@ -52,7 +49,7 @@ to the named data type without any actual function call.</p></li>
 <ol type="a">
 <li><p>Discard candidate functions for which the input types do not match
 and cannot be converted (using an implicit conversion) to match.
-<tt class="type">unknown</tt> literals are
+<code class="type">unknown</code> literals are
 assumed to be convertible to anything for this purpose.  If only one
 candidate remains, use it; else continue to the next step.</p></li>
 <li><p>Run through all candidates and keep those with the most exact matches
@@ -64,10 +61,10 @@ input data type's type category) at the most positions where type conversion
 will be required.
 Keep all candidates if none accept preferred types.
 If only one candidate remains, use it; else continue to the next step.</p></li>
-<li><p>If any input arguments are <tt class="type">unknown</tt>, check the type categories
+<li><p>If any input arguments are <code class="type">unknown</code>, check the type categories
 accepted 
 at those argument positions by the remaining candidates.  At each position,
-select the <tt class="type">string</tt> category if any candidate accepts that category.
+select the <code class="type">string</code> category if any candidate accepts that category.
 (This bias towards string
 is appropriate since an unknown-type literal does look like a string.)
 Otherwise, if all the remaining candidates accept the same type category,
@@ -88,12 +85,12 @@ then fail.</p></li>
 function type resolution.
 Some examples follow.</p>
 <div class="example">
-<a name="id2568154"></a><p class="title"><b>Example 10.4. Rounding Function Argument Type Resolution</b></p>
-<p>There is only one <tt class="function">round</tt> function with two
-arguments.  (The first is <tt class="type">numeric</tt>, the second is
-<tt class="type">integer</tt>.)  So the following query automatically converts
-the first argument of type <tt class="type">integer</tt> to
-<tt class="type">numeric</tt>:
+<a name="id347206"></a><p class="title"><b>Example 10.4. Rounding Function Argument Type Resolution</b></p>
+<p>There is only one <code class="function">round</code> function with two
+arguments.  (The first is <code class="type">numeric</code>, the second is
+<code class="type">integer</code>.)  So the following query automatically converts
+the first argument of type <code class="type">integer</code> to
+<code class="type">numeric</code>:
 
 </p>
 <pre class="screen">SELECT round(4, 4);
@@ -108,18 +105,18 @@ That query is actually transformed by the parser to
 </p>
 <pre class="screen">SELECT round(CAST (4 AS numeric), 4);</pre>
 <p>Since numeric constants with decimal points are initially assigned the
-type <tt class="type">numeric</tt>, the following query will require no type
+type <code class="type">numeric</code>, the following query will require no type
 conversion and may therefore be slightly more efficient:
 </p>
 <pre class="screen">SELECT round(4.0, 4);</pre>
 </div>
 <div class="example">
-<a name="id2568210"></a><p class="title"><b>Example 10.5. Substring Function Type Resolution</b></p>
-<p>There are several <tt class="function">substr</tt> functions, one of which
-takes types <tt class="type">text</tt> and <tt class="type">integer</tt>.  If called
+<a name="id347256"></a><p class="title"><b>Example 10.5. Substring Function Type Resolution</b></p>
+<p>There are several <code class="function">substr</code> functions, one of which
+takes types <code class="type">text</code> and <code class="type">integer</code>.  If called
 with a string constant of unspecified type, the system chooses the
 candidate function that accepts an argument of the preferred category
-<tt class="literal">string</tt> (namely of type <tt class="type">text</tt>).
+<code class="literal">string</code> (namely of type <code class="type">text</code>).
 
 </p>
 <pre class="screen">SELECT substr('1234', 3);
@@ -128,8 +125,8 @@ candidate function that accepts an argument of the preferred category
 --------
      34
 (1 row)</pre>
-<p>If the string is declared to be of type <tt class="type">varchar</tt>, as might be the case
-if it comes from a table, then the parser will try to convert it to become <tt class="type">text</tt>:
+<p>If the string is declared to be of type <code class="type">varchar</code>, as might be the case
+if it comes from a table, then the parser will try to convert it to become <code class="type">text</code>:
 </p>
 <pre class="screen">SELECT substr(varchar '1234', 3);
 
@@ -144,14 +141,14 @@ This is transformed by the parser to effectively become
 <pre class="screen">SELECT substr(CAST (varchar '1234' AS text), 3);</pre>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>The parser learns from the <tt class="structname">pg_cast</tt> catalog that
-<tt class="type">text</tt> and <tt class="type">varchar</tt>
+<p>The parser learns from the <code class="structname">pg_cast</code> catalog that
+<code class="type">text</code> and <code class="type">varchar</code>
 are binary-compatible, meaning that one can be passed to a function that
 accepts the other without doing any physical conversion.  Therefore, no
 explicit type conversion call is really inserted in this case.</p>
 </div>
-<p>And, if the function is called with an argument of type <tt class="type">integer</tt>, the parser will
-try to convert that to <tt class="type">text</tt>:
+<p>And, if the function is called with an argument of type <code class="type">integer</code>, the parser will
+try to convert that to <code class="type">text</code>:
 </p>
 <pre class="screen">SELECT substr(1234, 3);
 
@@ -166,8 +163,8 @@ This actually executes as
 <pre class="screen">SELECT substr(CAST (1234 AS text), 3);</pre>
 <p>
 This automatic transformation can succeed because there is an
-implicitly invocable cast from <tt class="type">integer</tt> to
-<tt class="type">text</tt>.</p>
+implicitly invocable cast from <code class="type">integer</code> to
+<code class="type">text</code>.</p>
 </div>
 </div></body>
 </html>

@@ -4,26 +4,23 @@
 <title>48.3. Implementation</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="gist.html" title="Chapter 48. GiST Indexes">
-<link rel="previous" href="extensibility.html" title="48.2. Extensibility">
+<link rel="prev" href="extensibility.html" title="48.2. Extensibility">
 <link rel="next" href="limitations.html" title="48.4. Limitations">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="implementation"></a>48.3. Implementation</h2></div></div>
-<div></div>
-</div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="implementation"></a>48.3. Implementation</h2></div></div></div>
 <p>   There are seven methods that an index operator class for
    <span class="acronym">GiST</span> must provide:
  </p>
 <div class="variablelist"><dl>
 <dt><span class="term">consistent</span></dt>
-<dd><p>       Given a predicate <tt class="literal">p</tt> on a tree page, and a user
-       query, <tt class="literal">q</tt>, this method will return false if it is
-       certain that both <tt class="literal">p</tt> and <tt class="literal">q</tt> cannot
+<dd><p>       Given a predicate <code class="literal">p</code> on a tree page, and a user
+       query, <code class="literal">q</code>, this method will return false if it is
+       certain that both <code class="literal">p</code> and <code class="literal">q</code> cannot
        be true for a given data item.
       </p></dd>
 <dt><span class="term">union</span></dt>
@@ -36,14 +33,14 @@
        an index page.
       </p></dd>
 <dt><span class="term">decompress</span></dt>
-<dd><p>       The reverse of the <tt class="function">compress</tt> method.  Converts the
+<dd><p>       The reverse of the <code class="function">compress</code> method.  Converts the
        index representation of the data item into a format that can be
        manipulated by the database.
       </p></dd>
 <dt><span class="term">penalty</span></dt>
 <dd><p>       Returns a value indicating the &#8220;<span class="quote">cost</span>&#8221; of inserting the new
        entry into a particular branch of the tree.  items will be inserted
-       down the path of least <tt class="function">penalty</tt> in the tree.
+       down the path of least <code class="function">penalty</code> in the tree.
       </p></dd>
 <dt><span class="term">picksplit</span></dt>
 <dd><p>       When a page split is necessary, this function decides which entries on
