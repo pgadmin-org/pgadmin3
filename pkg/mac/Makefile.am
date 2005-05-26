@@ -6,7 +6,7 @@
 
 EXTRA_DIST = \
 	$(top_srcdir)/pkg/mac/Info.plist \
-	"$(top_srcdir)/pkg/mac/pgadmin3.icns" \
+	$(top_srcdir)/pkg/mac/pgadmin3.icns \
 	$(top_srcdir)/pkg/mac/PkgInfo
 
 if APPBUNDLE
