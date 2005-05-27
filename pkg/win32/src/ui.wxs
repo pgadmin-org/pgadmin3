@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Include>
+    <UI>
+    
+        <?include uidata.wxs ?>
+      
+<!-- Cancel dialog -->
+
+        <Dialog Id="Cancel" Width="233" Height="127" Title="$(var.APPNAME)" NoMinimize="yes">
+            <Control Id="No" Type="PushButton" X="101" Y="101" Width="56" Height="17" Default="yes">
+                <Text>&amp;Resume</Text>
+                <Publish Event="EndDialog" Value="Return">1</Publish>
+            </Control>
+            <Control Id="Yes" Type="PushButton" X="164" Y="101" Width="56" Height="17" Cancel="yes">
+                <Text>&amp;Exit Setup</Text>
+                <Publish Event="EndDialog" Value="Exit">1</Publish>
+            </Control>
+            <Control Id="Text" Type="Text" X="10" Y="9" Width="210" Height="59">
+                <Text>Installation is not complete.  If you quit the setup program now, the application will not be installed. You can run the setup program at a later time to complete the installation.</Text>
+            </Control>
+            <Control Id="Text2515" Type="Text" X="10" Y="68" Width="210" Height="30">
+                <Text>To continue installing, click Resume.  To quit the setup program, click Exit Setup.</Text>
+            </Control>
+        </Dialog>
+
+<!-- Fatal Error dialog -->
+
+        <Dialog Id="Fatal_Error" X="40" Y="40" Width="240" Height="81" Title="Fatal Error">
+            <Control Id="OK" Type="PushButton" X="172" Y="56" Width="56" Height="17" Default="yes">
+                <Text>OK</Text>
+                <Publish Event="EndDialog" Value="Exit">1</Publish>
+            </Control>
+            <Control Id="Text" Type="Text" X="10" Y="9" Width="220" Height="37">
+                <Text>Installation ended prematurely because of an error.</Text>
+            </Control>
+        </Dialog>
+
+<!-- User Exit dialog -->
+
+        <Dialog Id="User_Exit" Width="240" Height="81" Title="$(var.APPNAME) Setup Cancelled">
+            <Control Id="OK" Type="PushButton" X="172" Y="56" Width="56" Height="17" Default="yes">
+                <Text>OK</Text>
+                <Publish Event="EndDialog" Value="Exit">1</Publish>
+            </Control>
+            <Control Id="Text" Type="Text" X="10" Y="9" Width="220" Height="44">
+                <Text>$(var.APPNAME) Setup was interrupted before it was fully installed.</Text>
+            </Control>
+        </Dialog>
+
+<!-- Exit dialog -->
+
+        <Dialog Id="Exit_Dialog" Width="375" Height="270" Title="$(var.APPNAME)">
+        
+            <!-- common dialog items -->
+            <Control Id="wc_bmp" Type="Bitmap" X="-62" Y="-8"  Width="500" Height="63" Text="BannerBmp" FixedSize="yes" />
+            <Control Id="wc_l1" Type="Line" X="0" Y="46" Width="378" Height="1" />
+            <Control Id="wc_l2" Type="Line" X="0" Y="234" Width="378" Height="1" />
+            
+            <!-- dialog buttons -->
+            <Control Id="OK" Type="PushButton" X="244" Y="244" Width="56" Height="17" Default="yes" Cancel="yes">
+                <Text>&amp;Finish</Text>
+                <Publish Event="EndDialog" Value="Return">1</Publish>
+            </Control>
+            <Control Id="PushButton" Type="PushButton" X="189" Y="244" Width="56" Height="17">
+                <Text>&lt; &amp;Back</Text>
+                <Publish Event="EndDialog" Value="Return">1</Publish>
+                <Condition Action="disable">1</Condition>
+            </Control>
+            <Control Id="PushButton1" Type="PushButton" X="309" Y="244" Width="56" Height="17">
+                <Text>Cancel</Text>
+                <Publish Event="EndDialog" Value="Return">1</Publish>
+                <Condition Action="disable">1</Condition>
+            </Control>
+            
+            <!-- dialog specific controls -->
+            <Control Id="uit1" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Installation complete!</Text>
+                <Condition Action="hide">MaintenanceType = "Remove"</Condition>
+            </Control>
+            <Control Id="uit2" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Uninstallation complete!</Text>
+                <Condition Action="hide">NOT MaintenanceType = "Remove"</Condition>
+            </Control>
+            <Control Id="ui3" Type="Text" X="10" Y="75" Width="365" Height="30" Transparent="yes">
+                <Text>Congratulations, $(var.APPNAME) has been successfully installed on your system.</Text>
+                <Condition Action="hide">MaintenanceType = "Remove"</Condition>
+            </Control>
+            <Control Id="ui4" Type="Text" X="10" Y="75" Width="365" Height="30" Transparent="yes">
+                <Text>$(var.APPNAME) has been successfully uninstalled from your system.</Text>
+                <Condition Action="hide">NOT MaintenanceType = "Remove"</Condition>
+            </Control> 
+            <Control Id="wc_txt3" Type="Text" X="10" Y="200" Width="365" Height="30" Transparent="yes">
+                <Text>Click the finish button to exit from the installer.</Text>
+            </Control>
+        </Dialog>
+      
+<!-- Browse dialog --> 
+
+        <Dialog Id="Browse" Width="348" Height="193" Title="$(var.APPNAME)">
+            <Control Id="TailText" Type="Text" X="9" Y="151" Width="55" Height="14" TabSkip="no">
+                <Text>&amp;Folder name:</Text>
+            </Control>
+            <Control Id="Tail" Type="PathEdit" X="65" Y="147" Width="212" Height="18" Property="_BrowseProperty" Indirect="yes">
+                <Text></Text>
+            </Control>
+            <Control Id="OK" Type="PushButton" X="282" Y="148" Width="56" Height="17" Default="yes">
+                <Text>OK</Text>
+                <Publish Event="SetTargetPath" Value="[_BrowseProperty]">1</Publish>
+                <Publish Event="EndDialog" Value="Return">1</Publish>
+            </Control>
+            <Control Id="Cancel" Type="PushButton" X="282" Y="172" Width="56" Height="17" Cancel="yes">
+                <Text>Cancel</Text>
+                <Publish Event="Reset" Value="0">1</Publish>
+                <Publish Event="EndDialog" Value="Return">NOT BaseBrowse</Publish>
+                <Publish Event="SpawnDialog" Value="Cancel">BaseBrowse</Publish>
+            </Control>
+            <Control Id="ComboText" Type="Text" X="10" Y="13" Width="54" Height="15" TabSkip="no">
+                <Text>&amp;Look in:</Text>
+            </Control>
+            <Control Id="Combo" Type="DirectoryCombo" X="65" Y="10" Width="230" Height="80" Property="_BrowseProperty" Indirect="yes" Removable="yes" Fixed="yes" Remote="yes" CDROM="yes">
+                <Text></Text>
+                <Subscribe Event="IgnoreChange" Attribute="IgnoreChange" />
+            </Control>
+            <Control Id="Up" Type="PushButton" X="300" Y="9" Width="17" Height="17" Icon="yes" FixedSize="yes" IconSize="16" Text="UpBmp">
+                <Publish Event="DirectoryListUp" Value="0">1</Publish>
+            </Control>
+            <Control Id="NewFolder" Type="PushButton" X="320" Y="9" Width="17" Height="17" Icon="yes" FixedSize="yes" IconSize="16" Text="NewBmp">
+                <Publish Event="DirectoryListNew" Value="0">1</Publish>
+            </Control>
+            <Control Id="List" Type="DirectoryList" X="8" Y="29" Width="330" Height="115" Property="_BrowseProperty" Sunken="yes" Indirect="yes" TabSkip="no" />
+        </Dialog>
+
+<!-- Maintenance dialog -->
+
+        <Dialog Id="Maintenance_Dialog" Width="375" Height="270" Title="$(var.APPNAME)" CustomPalette="yes">
+        
+            <!-- common dialog items -->
+            <Control Id="wc_bmp" Type="Bitmap" X="-62" Y="-8"  Width="500" Height="63" Text="BannerBmp" FixedSize="yes" />
+            <Control Id="wc_l1" Type="Line" X="0" Y="46" Width="378" Height="1" />
+            <Control Id="wc_l2" Type="Line" X="0" Y="234" Width="378" Height="1" />
+            
+            <!-- dialog buttons -->
+            <Control Id="Next" Type="PushButton" X="244" Y="244" Width="56" Height="17" Default="yes">
+                <Text>&amp;Next &gt;</Text>
+                <Publish Event="NewDialog" Value="Selection_Dialog">MaintenanceType = "Modify"</Publish>
+                <Publish Event="NewDialog" Value="Ready_Dialog">MaintenanceType = "Remove"</Publish>
+            </Control>
+            <Control Id="Previous" Type="PushButton" X="189" Y="244" Width="56" Height="17" Disabled="yes">
+                <Text>&lt; &amp;Back</Text>
+            </Control>
+            <Control Id="Cancel" Type="PushButton" X="309" Y="244" Width="56" Height="17" Cancel="yes">
+                <Text>Cancel</Text>
+                <Publish Event="SpawnDialog" Value="Cancel">1</Publish>
+            </Control>
+            
+            <!-- dialog specific controls -->
+            <Control Id="wc_txt1" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Installation Maintenance</Text>
+            </Control>
+            <Control Id="RadioGroup" Type="RadioButtonGroup" X="21" Y="55" Width="353" Height="170" Property="MaintenanceType" />
+            <Control Id="ModifyIcon" Type="Icon" X="35" Y="75" Width="24" Height="24" FixedSize="yes" IconSize="32" Text="ModifyIcon" />
+            <Control Id="RemoveIcon" Type="Icon" X="35" Y="135" Width="24" Height="24" FixedSize="yes" IconSize="32" Text="RemoveIcon" />
+            <Control Id="ModifyText" Type="Text" X="80" Y="72" Width="260" Height="35">
+                <Text>Install or uninstall $(var.APPNAME) components.</Text>
+            </Control>
+            <Control Id="RemoveText" Type="Text" X="80" Y="132" Width="260" Height="35">
+                <Text>Remove $(var.APPNAME) from your computer.</Text>
+            </Control>
+        </Dialog>
+      
+<!-- Welcome dialog -->
+
+        <Dialog Id="Welcome_Dialog" Width="375" Height="270" Title="$(var.APPNAME)" CustomPalette="yes">
+        
+            <!-- common dialog items -->
+            <Control Id="wc_bmp" Type="Bitmap" X="-62" Y="-8"  Width="500" Height="63" Text="BannerBmp" FixedSize="yes" />
+            <Control Id="wc_l1" Type="Line" X="0" Y="46" Width="378" Height="1" />
+            <Control Id="wc_l2" Type="Line" X="0" Y="234" Width="378" Height="1" />
+            
+            <!-- dialog buttons -->
+            <Control Id="Next" Type="PushButton" X="244" Y="244" Width="56" Height="17" Default="yes">
+                <Text>&amp;Next &gt;</Text>
+                <Publish Event="NewDialog" Value="Licence_Dialog">1</Publish>
+            </Control>
+            <Control Id="Previous" Type="PushButton" X="189" Y="244" Width="56" Height="17" Disabled="yes">
+                <Text>&lt; &amp;Back</Text>
+            </Control>
+            <Control Id="Cancel" Type="PushButton" X="309" Y="244" Width="56" Height="17" Cancel="yes">
+                <Text>Cancel</Text>
+                <Publish Event="SpawnDialog" Value="Cancel">1</Publish>
+            </Control>
+            
+            <!-- dialog specific controls -->
+            <Control Id="wc_txt1" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Welcome</Text>
+            </Control>
+            <Control Id="wc_txt2" Type="Text" X="10" Y="75" Width="365" Height="30" Transparent="yes">
+                <Text>It is strongly recommended that you exit all Windows programs before continuing with this installation.</Text>
+            </Control>
+            <Control Id="wc_txt3" Type="Text" X="10" Y="100" Width="365" Height="30" Transparent="yes">
+                <Text>Click the 'Next' button to install $(var.APPNAME), or 'Cancel' if you wish to abort the installation and try again later.</Text>
+            </Control>
+        </Dialog>
+      
+<!-- Licence dialog -->
+
+        <Dialog Id="Licence_Dialog" Width="375" Height="270" Title="$(var.APPNAME)" CustomPalette="yes">
+        
+            <!-- common dialog items -->
+            <Control Id="wc_bmp" Type="Bitmap" X="-62" Y="-8"  Width="500" Height="63" Text="BannerBmp" FixedSize="yes" />
+            <Control Id="wc_l1" Type="Line" X="0" Y="46" Width="378" Height="1" />
+            <Control Id="wc_l2" Type="Line" X="0" Y="234" Width="378" Height="1" />
+            
+            <!-- dialog buttons -->
+            <Control Id="Next" Type="PushButton" X="244" Y="244" Width="56" Height="17" Default="yes">
+                <Text>&amp;Next &gt;</Text>
+                <Publish Event="NewDialog" Value="Selection_Dialog">1</Publish>
+                <Condition Action="enable">LicenceAgreement = "Accept"</Condition>
+                <Condition Action="disable">NOT LicenceAgreement = "Accept"</Condition>
+            </Control>
+            <Control Id="Previous" Type="PushButton" X="189" Y="244" Width="56" Height="17">
+                <Text>&lt; &amp;Back</Text>
+                <Publish Event="NewDialog" Value="Welcome_Dialog">1</Publish>
+            </Control>
+            <Control Id="Cancel" Type="PushButton" X="309" Y="244" Width="56" Height="17" Cancel="yes">
+                <Text>Cancel</Text>
+                <Publish Event="SpawnDialog" Value="Cancel">1</Publish>
+            </Control>
+            
+            <!-- dialog specific controls -->
+            <Control Id="wt1" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Licence agreement</Text>
+            </Control>
+            <Control Id="wt2" Type="Text" X="5" Y="55" Width="365" Height="15">
+                <Text>Please review the licence agreement before you continue.</Text>
+            </Control>
+            <Control Id="_rtf" Type="ScrollableText" X="5" Y="73" Width="365" Height="130" Sunken="yes">
+                <Text src="resources/licence.rtf" />
+            </Control>
+            
+            <Control Id="LicenceAgreement" Type="RadioButtonGroup" X="45" Y="212" Width="353" Height="25" Property="LicenceAgreement" />
+        </Dialog>
+  
+<!-- Feature selection dialog -->
+
+        <Dialog Id="Selection_Dialog" Width="375" Height="270" Title="$(var.APPNAME)" CustomPalette="yes">
+        
+            <!-- common dialog items -->
+            <Control Id="wc_bmp" Type="Bitmap" X="-62" Y="-8"  Width="500" Height="63" Text="BannerBmp" FixedSize="yes" />
+            <Control Id="wc_l1" Type="Line" X="0" Y="46" Width="378" Height="1" />
+            <Control Id="wc_l2" Type="Line" X="0" Y="234" Width="378" Height="1" />
+            
+            <!-- dialog buttons -->
+            <Control Id="Next" Type="PushButton" X="244" Y="244" Width="56" Height="17" Default="yes">
+                <Text>&amp;Next &gt;</Text>
+                <Publish Event="NewDialog" Value="Ready_Dialog">1</Publish>
+            </Control>
+            <Control Id="Previous" Type="PushButton" X="189" Y="244" Width="56" Height="17">
+                <Text>&lt; &amp;Back</Text>
+                <Publish Event="NewDialog" Value="Licence_Dialog">NOT Installed</Publish>
+                <Publish Event="NewDialog" Value="Maintenance_Dialog">Installed</Publish>
+            </Control>
+            <Control Id="Cancel" Type="PushButton" X="309" Y="244" Width="56" Height="17" Cancel="yes">
+                <Text>Cancel</Text>
+                <Publish Event="SpawnDialog" Value="Cancel">1</Publish>
+            </Control>
+            
+            <!-- dialog specific controls -->
+            <Control Id="ot1" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Feature selection</Text>
+            </Control>
+            <Control Id="FeatureTree" Type="SelectionTree" X="5" Y="56" Width="205" Height="133" Property="_BrowseProperty" />
+            <Control Id="SelectionFrame" Type="GroupBox" X="216" Y="51" Width="150" Height="135" />
+            <Control Id="ItemDescription" Type="Text" X="221" Y="61" Width="136" Height="80">
+                <Subscribe Event="SelectionDescription" Attribute="Text" />
+            </Control>
+            <Control Id="Size" Type="Text" X="221" Y="135" Width="137" Height="45">
+                <Subscribe Event="SelectionSize" Attribute="Text" />
+            </Control>
+            <Control Id="LocationFrame" Type="GroupBox" X="5" Y="190" Width="360" Height="40" />
+            <Control Id="LocationPath" Type="Text" X="11" Y="213" Width="283" Height="11">
+                <Text>Path</Text>
+                <Subscribe Event="SelectionPath" Attribute="Text" /> 
+            </Control>
+            <Control Id="LocationText" Type="Text" X="11" Y="200" Width="261" Height="11">
+                <Text>Current location:</Text>
+                <Subscribe Event="SelectionPathOn" Attribute="Visible" />
+                <Condition Action="hide">Installed</Condition>
+            </Control>
+            
+            <Control Id="PushButton44" Type="PushButton" X="300" Y="209" Width="56" Height="17" TabSkip="yes">
+                <Text>B&amp;rowse</Text>
+                <Publish Event="SelectionBrowse" Value="Browse">1</Publish>
+            </Control>
+        </Dialog>
+      
+<!-- Ready to install dialog -->
+  
+        <Dialog Id="Ready_Dialog" Width="375" Height="270" Title="$(var.APPNAME)" CustomPalette="yes">
+        
+            <!-- common dialog items -->
+            <Control Id="wc_bmp" Type="Bitmap" X="-62" Y="-8"  Width="500" Height="63" Text="BannerBmp" FixedSize="yes" />
+            <Control Id="wc_l1" Type="Line" X="0" Y="46" Width="378" Height="1" />
+            <Control Id="wc_l2" Type="Line" X="0" Y="234" Width="378" Height="1" />
+            
+            <!-- dialog buttons -->
+            <Control Id="Next" Type="PushButton" X="244" Y="244" Width="56" Height="17" Default="yes">
+                <Text>&amp;Next &gt;</Text>
+                <Publish Event="Remove" Value="ALL">MaintenanceType = "Remove"</Publish>
+                <Publish Event="EndDialog" Value="Return">1</Publish>
+            </Control>
+            <Control Id="Previous" Type="PushButton" X="189" Y="244" Width="56" Height="17">
+                <Text>&lt; &amp;Back</Text>
+                <Publish Event="NewDialog" Value="Selection_Dialog">NOT MaintenanceType = "Remove"</Publish>
+                <Publish Event="NewDialog" Value="Maintenance_Dialog">MaintenanceType = "Remove"</Publish>
+            </Control>
+            <Control Id="Cancel" Type="PushButton" X="309" Y="244" Width="56" Height="17" Cancel="yes">
+                <Text>Cancel</Text>
+                <Publish Event="SpawnDialog" Value="Cancel">1</Publish>
+            </Control>
+            
+            <!-- dialog specific controls -->
+            <Control Id="re_txt1" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Ready to install</Text>
+                <Condition Action="hide">MaintenanceType = "Remove"</Condition>
+            </Control>
+            <Control Id="re_txt1b" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Ready to uninstall</Text>
+                <Condition Action="hide">NOT MaintenanceType = "Remove"</Condition>
+            </Control>
+            <Control Id="re_txt2" Type="Text" X="5" Y="80" Width="365" Height="30">
+                <Text>$(var.APPNAME) is now ready to be installed. Click Next to complete the installation.</Text>
+                <Condition Action="hide">MaintenanceType = "Remove"</Condition>
+            </Control>
+            <Control Id="re_txt2b" Type="Text" X="5" Y="80" Width="365" Height="30">
+                <Text>Click Next to remove $(var.APPNAME) from your computer.</Text>
+                <Condition Action="hide">NOT MaintenanceType = "Remove"</Condition>
+            </Control>
+        </Dialog>
+  
+<!-- Progress Dialog -->
+
+        <Dialog Id="Progress_Dialog" Width="375" Height="270" Title="$(var.APPNAME)" CustomPalette="yes" Modeless="yes">
+        
+            <!-- common dialog items -->
+            <Control Id="wc_bmp" Type="Bitmap" X="-62" Y="-8"  Width="500" Height="63" Text="BannerBmp" FixedSize="yes" />
+            <Control Id="wc_l1" Type="Line" X="0" Y="46" Width="378" Height="1" />
+            <Control Id="wc_l2" Type="Line" X="0" Y="234" Width="378" Height="1" />
+            
+            <!-- dialog specific controls -->
+            <Control Id="ct1" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Installing...</Text>
+                <Condition Action="hide">MaintenanceType = "Remove"</Condition>
+            </Control>
+            <Control Id="ct2" Type="Text" X="8" Y="16" Width="365" Height="15" Transparent="yes">
+                <Text>{\Arial10Bold}Uninstalling...</Text>
+                <Condition Action="hide">NOT MaintenanceType = "Remove"</Condition>
+            </Control>
+            <Control Id="Cancel" Type="PushButton" X="309" Y="244" Width="56" Height="17" Cancel="yes">
+                <Text>Cancel</Text>
+                <Publish Event="SpawnDialog" Value="Cancel">1</Publish>
+            </Control>
+            <Control Id="progtxt" Type="Text" X="15" Y="100" Width="340" Height="15">
+                <Subscribe Event="ActionText" Attribute="Text" />
+            </Control>
+            <Control Id="progdata" Type="Text" X="15" Y="75" Width="340" Height="15">
+                <Text>Initializing...</Text>
+                <Subscribe Event="ActionData" Attribute="Text" />
+            </Control>
+            <Control Id="progress" Type="ProgressBar" X="15" Y="130" Width="340" Height="20" ProgressBlocks="yes" Text="Install progress">
+                <Subscribe Event="SetProgress" Attribute="Progress" />
+            </Control>
+        </Dialog>
+  
+<!-- UI Sequence -->
+
+        <InstallUISequence>
+        
+            <Show Dialog="Fatal_Error" OnExit="error" />
+            <Show Dialog="User_Exit" OnExit="cancel" />
+            <Show Dialog="Exit_Dialog" OnExit="success" />
+        
+            <LaunchConditions After="AppSearch" />
+        
+            <Show Dialog="Welcome_Dialog" After="MigrateFeatureStates">NOT Installed</Show>
+            <Show Dialog="Maintenance_Dialog" After="MigrateFeatureStates">Installed</Show>
+            <Show Dialog="Progress_Dialog" After="Welcome_Dialog" />
+        
+        </InstallUISequence>
+    
+    </UI>
+
+</Include>
