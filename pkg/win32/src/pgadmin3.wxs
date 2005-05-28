@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
   
 <!-- Product details -->
@@ -30,38 +30,38 @@
                     <Directory Id="VERSIONDIR" Name="$(var.VERSION)">
                     
                         <Component Id="core_libs" Guid="AFEC279C-29A4-402D-8BDD-DC544312579F">
-                            <File Id="libeay32.dll.48AF6CC8-6B48-48E3-B9FE-819D987803AF" Name="libeay32.dll" DiskId="1" src="$(var.SYSTEM32DIR)/libeay32.dll" />
-                            <File Id="libiconv-2.dll.03AACBE3-6E3D-4A5C-A2FB-03641025C23C" Name="libico~1.dll" LongName="libiconv-2.dll" DiskId="1" src="$(var.SYSTEM32DIR)/libiconv-2.dll" />
-                            <File Id="libintl-2.dll.1B794047-1C48-4F04-9752-80806C930AE7" Name="libint~1.dll" LongName="libintl-2.dll" DiskId="1" src="$(var.SYSTEM32DIR)/libintl-2.dll" />
-                            <File Id="libpq.dll.DCA3BA4B-0052-4160-9D4F-6B3656192E39" Name="libpq.dll" DiskId="1" src="$(var.SYSTEM32DIR)/libpq.dll" />
-                            <File Id="ssleay32.dll.8B8E50E5-2A6B-4CEC-8DA8-5A728EEE1E3E" Name="ssleay32.dll" DiskId="1" src="$(var.SYSTEM32DIR)/ssleay32.dll" />
+                            <File Id="core_libs.libeay32.dll" Name="libeay32.dll" DiskId="1" src="$(var.SYSTEM32DIR)/libeay32.dll" />
+                            <File Id="core_libs.libiconv-2.dll" Name="libico~1.dll" LongName="libiconv-2.dll" DiskId="1" src="$(var.SYSTEM32DIR)/libiconv-2.dll" />
+                            <File Id="core_libs.libintl-2.dll" Name="libint~1.dll" LongName="libintl-2.dll" DiskId="1" src="$(var.SYSTEM32DIR)/libintl-2.dll" />
+                            <File Id="core_libs.libpq.dll" Name="libpq.dll" DiskId="1" src="$(var.SYSTEM32DIR)/libpq.dll" />
+                            <File Id="core_libs.ssleay32.dll" Name="ssleay32.dll" DiskId="1" src="$(var.SYSTEM32DIR)/ssleay32.dll" />
                         </Component>
                         
                         <Component Id="pgadmin_exes" Guid="3F617C40-4FAF-4C46-BEDE-AE7A16E24F61">
-                            <File Id="pgadmin3.exe.EF63A6E9-AA1C-4EA8-854D-95846DF177C9" Name="pgadmin3.exe" DiskId="1" src="../../src/Release/pgAdmin3.exe" />
-                            <Shortcut Id="pgadmin3.exe.CC2D2AB6-849E-4cca-A2B1-ED6C9FB8D222" Directory="SMDIR" Name="pgAdmin3" LongName="$(var.APPNAME)" Target="[#pgadmin3.exe.B40FECF2-DA20-4AEF-916D-442A0535A20C]" Description="pgAdmin III - PostgreSQL Tools" Show="normal" />
+                            <File Id="pgadmin_exes.pgadmin3.exe" Name="pgadmin3.exe" DiskId="1" src="../../src/Release/pgAdmin3.exe" />
+                            <Shortcut Id="pgadmin_exes.pgadmin3.exe" Directory="SMDIR" Name="pgAdmin3" LongName="$(var.APPNAME)" Target="[#pgadmin_exes.pgadmin3.exe]" Description="pgAdmin III - PostgreSQL Tools" Show="normal" />
                         </Component>
                         
                         <Directory Id="DOCSDIR" Name="Docs">
                             <Directory Id="EN_USDOCSDIR" Name="en_US">
                             
                                 <Component Id="pgadmin_docs" Guid="1F6CED52-1445-4524-83DC-77F7C34177A9">
-                                    <File Id="bugreport.html.27EC6C64-27FA-4DFB-A2B4-319EED6AC426" Name="bugrep~1.htm" LongName="bugreport.html" DiskId="1" src="../../docs/en_US/bugreport.html" />
-                                    <File Id="pgadmin3.chm.23042257-2AF2-4CB4-90A3-3C666954ED3D" Name="pgadmin3.chm" DiskId="1" src="../../docs/en_US/pgadmin3.chm" />
-                                    <File Id="tips.txt.3ACBE917-C571-41CB-8AE0-E490A867A8C5" Name="tips.txt" DiskId="1" src="../../docs/en_US/tips.txt" />
-                                    <Shortcut Id="pgadmin3.chm.EB2BB858-A743-4618-B1A4-A4470EFC6722" Directory="SMDIR" Name="pga3help" LongName="$(var.APPNAME) Help" Target="[#pgadmin3.chm.FD7C02B2-D4C6-498E-8F2B-01D1CADA1C56]" Description="pgAdmin and PostgreSQL documentation" Show="normal" />
+                                    <File Id="pgadmin_docs.bugreport.html" Name="bugrep~1.htm" LongName="bugreport.html" DiskId="1" src="../../docs/en_US/bugreport.html" />
+                                    <File Id="pgadmin_docs.pgadmin3.chm" Name="pgadmin3.chm" DiskId="1" src="../../docs/en_US/pgadmin3.chm" />
+                                    <File Id="pgadmin_docs.tips.txt" Name="tips.txt" DiskId="1" src="../../docs/en_US/tips.txt" />
+                                    <Shortcut Id="pgadmin_docs.pgadmin3.chm" Directory="SMDIR" Name="pga3help" LongName="$(var.APPNAME) Help" Target="[#pgadmin_docs.pgadmin3.chm]" Description="pgAdmin and PostgreSQL documentation" Show="normal" />
                                 </Component>
                                     
                                 <Directory Id="HINTSDIR" Name="Hints">
                                 
                                     <Component Id="pgadmin_hints" Guid="72DD1747-4AF2-48F6-BF92-0A93A3D19593">
-                                        <File Id="conn-hba.html.5AF46FC7-30FC-4784-B0C5-C9A0724FC8B4" Name="conn-h~1.htm" LongName="conn-hba.html" DiskId="1" src="../../docs/en_US/hints/conn-hba.html" />
-                                        <File Id="conn-ident.html.65D01503-6F64-4F7B-A6B2-D1071370DA58" Name="conn-i~1.htm" LongName="conn-ident.html" DiskId="1" src="../../docs/en_US/hints/conn-ident.html" />
-                                        <File Id="conn-listen.html.E3A10C15-0E96-421A-94CD-75A3A9319197" Name="conn-l~1.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/en_US/hints/conn-listen.html" />
-                                        <File Id="fki.html.C780A21A-D174-4E95-8162-0B33CDCDFC5D" Name="fki.htm" LongName="fki.html" DiskId="1" src="../../docs/en_US/hints/fki.html" />
-                                        <File Id="multiple.html.9BEE8838-9AAA-4B32-A640-435EE175F9E8" Name="multiple.htm" LongName="multiple.html" DiskId="1" src="../../docs/en_US/hints/multiple.html" />
-                                        <File Id="pk.html.23225A43-813C-4430-B5E9-019B7D2165B9" Name="pk.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/en_US/hints/pk.html" />
-                                        <File Id="vacuum.html.56364524-B864-4946-8743-5AA010854345" Name="vacuum.htm" LongName="vacuum.html" DiskId="1" src="../../docs/en_US/hints/vacuum.html" />
+                                        <File Id="pgadmin_hints.conn-hba.html" Name="conn-h~1.htm" LongName="conn-hba.html" DiskId="1" src="../../docs/en_US/hints/conn-hba.html" />
+                                        <File Id="pgadmin_hints.conn-ident.html" Name="conn-i~1.htm" LongName="conn-ident.html" DiskId="1" src="../../docs/en_US/hints/conn-ident.html" />
+                                        <File Id="pgadmin_hints.conn-listen.html" Name="conn-l~1.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/en_US/hints/conn-listen.html" />
+                                        <File Id="pgadmin_hints.fki.html" Name="fki.htm" LongName="fki.html" DiskId="1" src="../../docs/en_US/hints/fki.html" />
+                                        <File Id="pgadmin_hints.multiple.html" Name="multiple.htm" LongName="multiple.html" DiskId="1" src="../../docs/en_US/hints/multiple.html" />
+                                        <File Id="pgadmin_hints.pk.html" Name="pk.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/en_US/hints/pk.html" />
+                                        <File Id="pgadmin_hints.vacuum.html" Name="vacuum.htm" LongName="vacuum.html" DiskId="1" src="../../docs/en_US/hints/vacuum.html" />
                                     </Component>
                                 
                                 </Directory>
@@ -69,22 +69,22 @@
                         </Directory>
                         
                         <Component Id="pgagent_exes" Guid="FD786FF5-F499-42B3-8070-248E987F7E91">
-                            <File Id="pgagent.exe.8E69310E-59ED-4CC8-BE51-20ABA932589F" Name="pgagent.exe" DiskId="1" src="../../xtra/pgagent/Release/pgAgent.exe" />
+                            <File Id="pgagent_exes.pgagent.exe" Name="pgagent.exe" DiskId="1" src="../../xtra/pgagent/Release/pgAgent.exe" />
                         </Component>
                         
                         <Component Id="postgresql_exes" Guid="43DFC362-A28E-4D52-A308-23AFD1347C58">
-                            <File Id="pg_dump.exe.D71BCE9A-29FC-4DF4-9F72-A284AD6DE450" Name="pg_dum~1.exe" LongName="pg_dump.exe" DiskId="1" src="$(var.PFILESDIR)/PostgreSQL/8.0/bin/pg_dump.exe" />
-                            <File Id="pg_restore.exe.798C3609-CCFC-460B-8F89-6405F2923107" Name="pg_res~1.exe" LongName="pg_restore.exe" DiskId="1" src="$(var.PFILESDIR)/PostgreSQL/8.0/bin/pg_restore.exe" />
+                            <File Id="postgresql_exes.pg_dump.exe" Name="pg_dum~1.exe" LongName="pg_dump.exe" DiskId="1" src="$(var.PFILESDIR)/PostgreSQL/8.0/bin/pg_dump.exe" />
+                            <File Id="postgresql_exes.pg_restore.exe" Name="pg_res~1.exe" LongName="pg_restore.exe" DiskId="1" src="$(var.PFILESDIR)/PostgreSQL/8.0/bin/pg_restore.exe" />
                         </Component>
                         
                         <Component Id="pgagent_libs" Guid="97B9FF01-5EFC-4C4F-8989-0ECD3C0508D3">
-                            <File Id="pgaevent.dll.80F32304-643A-4A2A-ADDB-98EEA833A2C4" Name="pgaevent.dll" DiskId="1" src="../../xtra/pgagent/pgaevent/Release/pgaevent.dll" />
+                            <File Id="pgagent_libs.pgaevent.dll" Name="pgaevent.dll" DiskId="1" src="../../xtra/pgagent/pgaevent/Release/pgaevent.dll" />
                         </Component>
                         
                         <Directory Id="SCRIPTSDIR" Name="Scripts">
                         
                             <Component Id="pgagent_scripts" Guid="073F4881-03BB-400F-8B3A-AAE055A7FCD8">
-                                <File Id="pgagent.sql.DAF759B9-EF63-473E-8AA7-392672C846B9" Name="pgagent.sql" DiskId="1" src="../../xtra/pgagent/pgagent.sql" />
+                                <File Id="pgagent_scripts.pgagent.sql" Name="pgagent.sql" DiskId="1" src="../../xtra/pgagent/pgagent.sql" />
                             </Component>
                             
                         </Directory>
@@ -92,8 +92,8 @@
                         <Directory Id="I18NDIR" Name="i18n">
 
                             <Component Id="pgadmin_il8n" Guid="7335FF66-AC77-433B-A6C5-E90178E02649">
-                                <File Id="pgadmin3.lng.33CD1653-DCA0-4E40-937F-235ACC6B5F9A" Name="pgadmin3.lng" DiskId="1" src="../../i18n/pgadmin3.lng" />
-                                <File Id="pg_settings.csv.556F6584-559F-400D-87B6-BCC90A75A816" Name="pg_set~1.csv" LongName="pg_settings.csv" DiskId="1" src="../../i18n/pg_settings.csv" />
+                                <File Id="pgadmin_il8n.pgadmin3.lng" Name="pgadmin3.lng" DiskId="1" src="../../i18n/pgadmin3.lng" />
+                                <File Id="pgadmin_il8n.pg_settings.csv" Name="pg_set~1.csv" LongName="pg_settings.csv" DiskId="1" src="../../i18n/pg_settings.csv" />
                             </Component>
                             
                             <?include i18ndata.wxs ?>
