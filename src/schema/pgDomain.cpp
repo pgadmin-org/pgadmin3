@@ -81,8 +81,8 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
                     }
                     wxString conname=set->GetVal(wxT("conname"));
                     if (!conname.StartsWith(wxT("$")))
-                        check += wxT("CONSTRAINT ") + conname + wxT(" ");
-                    check += wxT("CHECK ") + set->GetVal(wxT("consrc"));
+                        check += wxT("CONSTRAINT ") + qtIdent(conname) + wxT(" ");
+                    check += set->GetVal(wxT("consrc"));
 
                     set->MoveNext();
                 }
