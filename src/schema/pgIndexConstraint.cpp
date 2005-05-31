@@ -67,7 +67,7 @@ wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
     {
         sql = wxT("-- Constraint: ") + GetQuotedFullIdentifier() 
             + wxT("\n\n-- ALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
-            + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() 
+            + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() + wxT(";")
             + wxT("\n\nALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
             + wxT("\n  ADD CONSTRAINT ")
             + GetCreate()
