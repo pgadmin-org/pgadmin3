@@ -67,7 +67,7 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         if (GetConnection()->BackendMinimumVersion(7, 4))
         {
             pgSet *set=ExecuteSet(
-                wxT("SELECT conname, consrc FROM pg_constraint WHERE contypid=") + GetOidStr());
+                wxT("SELECT conname, pg_get_constraintdef(oid) AS consrc FROM pg_constraint WHERE contypid=") + GetOidStr());
             if (set)
             {
                 while (!set->Eof())
@@ -78,8 +78,8 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
                     }
                     wxString conname=set->GetVal(wxT("conname"));
                     if (!conname.StartsWith(wxT("$")))
-                        check += wxT("CONSTRAINT ") + conname + wxT(" ");
-                    check += wxT("CHECK ") + set->GetVal(wxT("consrc"));
+                        check += wxT("CONSTRAINT ") + qtIdent(conname) + wxT(" ");
+                    check += set->GetVal(wxT("consrc"));
 
                     set->MoveNext();
                 }
