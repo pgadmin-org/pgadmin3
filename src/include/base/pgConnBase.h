@@ -74,9 +74,6 @@ public:
     OID GetDbOid() const { return dbOid; }
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
 
-    int GetMajorVersion() const { return majorVersion; }
-    int GetMinorVersion() const { return minorVersion; }
-
     void LogError();
 
     bool IsSSLconnected();
@@ -88,7 +85,6 @@ protected:
     int lastResultStatus;
 
     int connStatus;
-    int minorVersion, majorVersion;
     wxMBConv *conv;
     bool needColQuoting;
     wxString dbHost;

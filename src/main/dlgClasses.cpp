@@ -593,9 +593,12 @@ void ExternProcessDialog::OnEndProcess(wxProcessEvent &ev)
 {
     if (process)
     {
-        if (final)
-            btnOK->SetLabel(_("Done"));
-        done=true;
+        if (!ev.GetExitCode())
+        {
+            if (final)
+                btnOK->SetLabel(_("Done"));
+            done=true;
+        }
     }
     timer->Stop();
 

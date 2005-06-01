@@ -36,6 +36,8 @@ public:
     static pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
     bool CanDropCascaded() { return true; }
 
+    virtual bool GetIsProcedure() const {return false; }
+
     wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
     wxString GetArgTypeNames() const { return argTypeNames; }
     void iSetArgTypeNames(const wxString& s) { argTypeNames=s; }
@@ -48,6 +50,8 @@ public:
     wxString GetArgTypeOids() const { return argTypeOids; }
     wxArrayString &GetArgNames() { return argNames; }
     void iAddArgName(const wxString &s) { argNames.Add(s); }
+    wxArrayString &GetArgModes() { return argModes; }
+    void iAddArgMode(const wxString &s) { argModes.Add(s); }
     void iSetArgTypeOids(const wxString& s) { argTypeOids = s; }
     wxString GetReturnType() const { return returnType; }
 	wxString GetQuotedReturnType() const { return quotedReturnType; }
@@ -83,8 +87,8 @@ private:
     wxString argTypeOids, argTypes, quotedArgTypes,
         argTypeNames, quotedArgTypeNames,
         returnType, quotedReturnType, language, volatility, source, bin;
-    wxArrayString argNames;
-    bool returnAsSet, secureDefiner, isStrict;
+    wxArrayString argNames, argModes;
+    bool returnAsSet, secureDefiner, isStrict, isProcedure;
     long argCount;
 };
 
@@ -94,6 +98,20 @@ public:
     pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
     int GetIcon() { return PGICON_TRIGGERFUNCTION; }
+};
+
+
+class pgProcedure : public pgFunction
+{
+public:
+    pgProcedure(pgSchema *newSchema, const wxString& newName = wxT(""));
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+    int GetIcon() { return PGICON_PROCEDURE; }
+
+    bool GetIsProcedure() const {return true; }
+
+    wxString GetSql(wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
 };
 
 #endif

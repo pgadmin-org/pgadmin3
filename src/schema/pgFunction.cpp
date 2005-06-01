@@ -48,21 +48,31 @@ pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newNam
 {
 }
 
+pgProcedure::pgProcedure(pgSchema *newSchema, const wxString& newName)
+: pgFunction(newSchema, PG_PROCEDURE, newName)
+{
+}
+
 
 wxString pgFunction::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        wxString qtName = wxT("FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(")");
+        wxString qtName = GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypeNames() + wxT(")");
 
-        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypes() + wxT(")\n\n")
-            + wxT("-- DROP ") + qtName + wxT(";")
-            + wxT("\n\nCREATE OR REPLACE ") + qtName
-            + wxT("\n  RETURNS ");
-        if (GetReturnAsSet())
-            sql += wxT("SETOF ");
-        sql +=GetQuotedReturnType() 
-            + wxT(" AS\n");
+        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypeNames() + wxT(")\n\n")
+            + wxT("-- DROP FUNCTION ") + qtName + wxT(";")
+            + wxT("\n\nCREATE OR REPLACE FUNCTION ") + qtName;
+
+        if (!GetIsProcedure())
+        {
+            sql += wxT("\n  RETURNS ");
+            if (GetReturnAsSet())
+                sql += wxT("SETOF ");
+            sql +=GetQuotedReturnType();
+        }
+
+        sql += wxT(" AS\n");
         
         if (GetLanguage().IsSameAs(wxT("C"), false))
         {
@@ -82,12 +92,12 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
         if (GetSecureDefiner())
             sql += wxT(" SECURITY DEFINER");
         sql += wxT(";\n")
-            +  GetOwnerSql(8, 0, qtName)
-            +  GetGrant(wxT("X"), qtName);
+            +  GetOwnerSql(8, 0, wxT("FUNCTION ") + qtName)
+            +  GetGrant(wxT("X"), wxT("FUNCTION ") + qtName);
 
         if (!GetComment().IsNull())
         {
-            sql += wxT("COMMENT ON ") + qtName
+            sql += wxT("COMMENT ON FUNCTION ") + qtName
                 + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
         }
     }
@@ -107,7 +117,8 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Argument count"), GetArgCount());
         properties->AppendItem(_("Arguments"), GetArgTypeNames());
-        properties->AppendItem(_("Return type"), GetReturnType());
+        if (!GetIsProcedure())
+            properties->AppendItem(_("Return type"), GetReturnType());
         properties->AppendItem(_("Language"), GetLanguage());
         properties->AppendItem(_("Returns a set?"), GetReturnAsSet());
         if (GetLanguage().IsSameAs(wxT("C"), false))
@@ -155,37 +166,65 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
     {
         while (!functions->Eof())
         {
-            if (functions->GetVal(wxT("typname")).IsSameAs(wxT("trigger")))
+            bool isProcedure=false;
+            wxString lanname=functions->GetVal(wxT("lanname"));
+            if (obj->GetConnection()->EdbMinimumVersion(8, 0) && lanname == wxT("edbspl"))
+                isProcedure=true;
+
+            wxString oids=functions->GetVal(wxT("proargtypes"));
+            wxStringTokenizer args(oids);
+            wxStringTokenizer modes(wxEmptyString);
+
+            wxString argNames;
+
+            if (obj->GetConnection()->BackendMinimumVersion(7, 5))
+                argNames = functions->GetVal(wxT("proargnames"));
+
+            if (obj->GetConnection()->EdbMinimumVersion(8, 0) && isProcedure)
+            {
+                wxString argDirs=functions->GetVal(wxT("proargdirs"));
+                modes.SetString(argDirs);
+            }
+            if (obj->GetConnection()->BackendMinimumVersion(8, 1))
+            {
+                wxString allArgTypes=functions->GetVal(wxT("proallargtypes"));
+                if (!allArgTypes.IsEmpty())
+                    args.SetString(allArgTypes.Mid(1, allArgTypes.Length()-2), wxT(","));
+
+                wxString argModes= functions->GetVal(wxT("proargmodes"));
+                if (!argModes.IsEmpty())
+                {
+                    modes.SetString(argModes.Mid(1, argModes.Length()-2), wxT(","));
+                    isProcedure=true;
+                }
+            }
+
+            if (isProcedure)
+                function = new pgProcedure(schema, functions->GetVal(wxT("proname")));
+            else if (functions->GetVal(wxT("typname")).IsSameAs(wxT("trigger")))
                 function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
             else
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
 
-            function->iSetOid(functions->GetOid(wxT("oid")));
-            function->iSetOwner(functions->GetVal(wxT("funcowner")));
-            function->iSetAcl(functions->GetVal(wxT("proacl")));
-            function->iSetArgCount(functions->GetLong(wxT("pronargs")));
-            function->iSetReturnType(obj->GetDatabase()->GetSchemaPrefix(functions->GetVal(wxT("typnsp"))) + functions->GetVal(wxT("typname")));
-			function->iSetQuotedReturnType(obj->GetDatabase()->GetQuotedSchemaPrefix(functions->GetVal(wxT("typnsp"))) + qtIdent(functions->GetVal(wxT("typname"))));
-            function->iSetComment(functions->GetVal(wxT("description")));
-            wxString oids=functions->GetVal(wxT("proargtypes"));
-            wxString argNames;
-            if (obj->GetConnection()->BackendMinimumVersion(7, 5))
-                argNames = functions->GetVal(wxT("proargnames"));
-            function->iSetArgTypeOids(oids);
-
-            wxString str, argTypes, quotedArgTypes, argTypeNames, quotedArgTypeNames;
-            wxStringTokenizer args(oids);
+            wxString type, name, argTypes, quotedArgTypes, argTypeNames, quotedArgTypeNames, mode;
             wxStringTokenizer names(argNames.Mid(1, argNames.Length()-2), wxT(","));
+            
             while (args.HasMoreTokens())
             {
-                str = args.GetNextToken();
+                type = args.GetNextToken();
 
                 if (types)
                 {
                     types->MoveFirst();
-                    while (types->GetVal(wxT("oid")) != str)
+                    while (types->GetVal(wxT("oid")) != type)
+                    {
+                        if (types->Eof())
+                        {
+                            wxLogError(wxT("Internal Error while checking function args"));
+                            return 0;
+                        }
                         types->MoveNext();
-
+                    }
                     if (!argTypes.IsNull())
                     {
                         argTypes += wxT(", ");
@@ -193,12 +232,32 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
                         argTypeNames += wxT(", ");
                         quotedArgTypeNames += wxT(", ");
                     }
-                    str = names.GetNextToken();
-                    if (!str.IsNull())
+                    name = names.GetNextToken();
+                    if (name[0] == '"')
+                        name = name.Mid(1, name.Length()-2);
+
+                    mode = modes.GetNextToken();
+                    
+                    if (!mode.IsNull())
                     {
-                        function->iAddArgName(str);
-                        argTypeNames += str + wxT(" ");
-                        quotedArgTypeNames += qtIdent(str) + wxT(" ");
+                        if (mode == wxT('o') || mode == wxT("2"))
+                            mode = wxT("OUT");
+                        else if (mode == wxT("b"))
+                            mode = wxT("INOUT");
+                        else if (mode == wxT("3"))
+                            mode = wxT("IN OUT");
+                        else
+                            mode = wxT("IN");
+
+                        function->iAddArgMode(mode);
+                        argTypeNames += mode + wxT(" ");
+                        quotedArgTypeNames += mode + wxT(" ");
+                    }
+                    if (!name.IsNull())
+                    {
+                        function->iAddArgName(name);
+                        argTypeNames += name + wxT(" ");
+                        quotedArgTypeNames += qtIdent(name) + wxT(" ");
                     }
 
     				argTypeNames += obj->GetDatabase()->GetSchemaPrefix(types->GetVal(wxT("nspname"))) + types->GetVal(wxT("typname"));
@@ -208,17 +267,27 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
                 }
             }
 
+            function->iSetOid(functions->GetOid(wxT("oid")));
+            function->iSetOwner(functions->GetVal(wxT("funcowner")));
+            function->iSetAcl(functions->GetVal(wxT("proacl")));
+            function->iSetArgCount(functions->GetLong(wxT("pronargs")));
+            function->iSetReturnType(obj->GetDatabase()->GetSchemaPrefix(functions->GetVal(wxT("typnsp"))) + functions->GetVal(wxT("typname")));
+			function->iSetQuotedReturnType(obj->GetDatabase()->GetQuotedSchemaPrefix(functions->GetVal(wxT("typnsp"))) + qtIdent(functions->GetVal(wxT("typname"))));
+            function->iSetComment(functions->GetVal(wxT("description")));
+            function->iSetArgTypeOids(oids);
+
             function->iSetArgTypes(argTypes);
             function->iSetQuotedArgTypes(quotedArgTypes);
             function->iSetArgTypeNames(argTypeNames);
             function->iSetQuotedArgTypeNames(quotedArgTypeNames);
 
-            function->iSetLanguage(functions->GetVal(wxT("lanname")));
+            function->iSetLanguage(lanname);
             function->iSetSecureDefiner(functions->GetBool(wxT("prosecdef")));
             function->iSetReturnAsSet(functions->GetBool(wxT("proretset")));
             function->iSetIsStrict(functions->GetBool(wxT("proisstrict")));
             function->iSetSource(functions->GetVal(wxT("prosrc")));
             function->iSetBin(functions->GetVal(wxT("probin")));
+
             wxString vol=functions->GetVal(wxT("provolatile"));
             function->iSetVolatility(
                 vol.IsSameAs(wxT("i")) ? wxT("IMMUTABLE") : 
@@ -250,8 +319,14 @@ pgObject *pgFunction::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_FUNCTIONS || obj->GetType() == PG_TRIGGERFUNCTIONS)
-            function = AppendFunctions((pgCollection*)obj, GetSchema(), 0, wxT(" WHERE pr.oid=") + GetOidStr() + wxT("\n"));
+        switch (obj->GetType())
+        {
+            case PG_FUNCTIONS:
+            case PG_TRIGGERFUNCTIONS:
+            case PG_PROCEDURES:
+                function = AppendFunctions((pgCollection*)obj, GetSchema(), 0, wxT(" WHERE pr.oid=") + GetOidStr() + wxT("\n"));
+                break;
+        }
     }
     return function;
 }
@@ -263,6 +338,11 @@ pgObject *pgFunction::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
         + wxT("::oid\n   AND typname <> 'trigger'\n");
+
+    if (collection->GetConnection()->BackendMinimumVersion(8, 1))
+        funcRestriction += wxT("   AND proargmodes IS NULL");
+    else if (collection->GetConnection()->EdbMinimumVersion(8, 0))
+        funcRestriction += wxT("   AND lanname <>'edbspl' AND typname <> 'void'\n");
 
     // Get the Functions
     return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
@@ -278,3 +358,57 @@ pgObject *pgTriggerFunction::ReadObjects(pgCollection *collection, wxTreeCtrl *b
     // Get the Functions
     return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
 }
+
+pgObject *pgProcedure::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
+{
+    wxString funcRestriction=wxT(
+        " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
+        + wxT("::oid\n");
+
+    if (collection->GetConnection()->BackendMinimumVersion(8, 1))
+        funcRestriction += wxT("   AND proargmodes IS NOT NULL");
+    else if (collection->GetConnection()->EdbMinimumVersion(8, 0))
+        funcRestriction += wxT("   AND lanname = 'edbspl' AND typname = 'void'\n");
+
+    // Get the Functions
+    return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
+}
+
+
+wxString pgProcedure::GetSql(wxTreeCtrl *browser)
+{
+    if (!GetConnection()->EdbMinimumVersion(8, 0))
+        return pgFunction::GetSql(browser);
+
+    if (sql.IsNull())
+    {
+        wxString qtName = GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypeNames() + wxT(")");
+
+        sql = wxT("-- Procedure: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP PROCEDURE") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE OR REPLACE ") + qtName 
+            + wxT(" AS\n")
+            + qtStringDollar(GetSource())
+            + wxT(";\n");
+
+        if (!GetComment().IsNull())
+        {
+            sql += wxT("COMMENT ON FUNCTION ") + qtName
+                + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+        }
+    }
+
+    return sql;
+}
+
+
+bool pgProcedure::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+{
+    if (!GetConnection()->EdbMinimumVersion(8, 0))
+        return pgFunction::DropObject(frame, browser, cascaded);
+
+    wxString sql=wxT("DROP PROCEDURE ") + GetQuotedFullIdentifier();
+    return GetDatabase()->ExecuteVoid(sql);
+}
+
+

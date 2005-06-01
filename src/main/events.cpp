@@ -106,6 +106,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_NEW+PG_DOMAIN,             frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_FUNCTION,           frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_TRIGGERFUNCTION,    frmMain::OnNew)
+    EVT_MENU(MNU_NEW+PG_PROCEDURE,          frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_OPERATOR,           frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_OPERATORCLASS,      frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_SEQUENCE,           frmMain::OnNew)
@@ -869,6 +870,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             canGrantWizard=true;
             break;
         case PG_FUNCTIONS:
+        case PG_PROCEDURES:
         case PG_TRIGGERFUNCTIONS:
         case PG_SEQUENCES:
         case PG_VIEWS:
@@ -901,6 +903,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_OPERATOR:
         case PG_FUNCTION:
         case PG_TRIGGERFUNCTION:
+        case PG_PROCEDURE:
         case PG_OPERATORCLASSES:
         case PG_OPERATORCLASS:
         case PG_SEQUENCE:

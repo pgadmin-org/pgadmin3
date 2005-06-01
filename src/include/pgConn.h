@@ -34,10 +34,16 @@ public:
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
     bool HasFeature(int feature=0);
     bool BackendMinimumVersion(int major, int minor);
+    bool EdbMinimumVersion(int major, int minor);
     wxString SystemNamespaceRestriction(const wxString &nsp);
+    int GetMajorVersion() const { return majorVersion; }
+    int GetMinorVersion() const { return minorVersion; }
+    bool GetIsEdb() const { return isEdb; }
 
 private:
     bool features[32];
+    int minorVersion, majorVersion;
+    bool isEdb;
 
     wxString reservedNamespaces;
 };

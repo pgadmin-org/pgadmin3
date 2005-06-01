@@ -46,6 +46,8 @@ wxMenu *pgSchema::GetNewMenu()
         AppendMenu(menu, PG_DOMAIN);
         AppendMenu(menu, PG_FUNCTION);
         AppendMenu(menu, PG_TRIGGERFUNCTION);
+        if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
+            AppendMenu(menu, PG_PROCEDURE);
         AppendMenu(menu, PG_OPERATOR);
 //        AppendMenu(menu, PG_OPERATORCLASS);
         AppendMenu(menu, PG_SEQUENCE);
@@ -119,6 +121,12 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
         collection = new pgCollection(PG_TRIGGERFUNCTIONS, this);
         AppendBrowserItem(browser, collection);
+
+        if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
+        {
+            collection = new pgCollection(PG_PROCEDURES, this);
+            AppendBrowserItem(browser, collection);
+        }
 
         // Operators
         collection = new pgCollection(PG_OPERATORS, this);

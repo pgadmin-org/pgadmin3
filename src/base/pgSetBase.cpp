@@ -215,8 +215,8 @@ wxDateTime pgSetBase::GetDateTime(const int col) const
     wxDateTime dt;
     wxString str=GetVal(col);
     /* This hasn't just been used. ( Is not infinity ) */
-    if ( !str.IsEmpty() )
-    dt.ParseDateTime(str);
+    if (!str.IsEmpty())
+        dt.ParseDateTime(str);
     return dt;
 }
 
@@ -224,6 +224,23 @@ wxDateTime pgSetBase::GetDateTime(const int col) const
 wxDateTime pgSetBase::GetDateTime(const wxString &col) const
 {
     return GetDateTime(ColNumber(col));
+}
+
+
+wxDateTime pgSetBase::GetDate(const int col) const
+{
+    wxDateTime dt;
+    wxString str=GetVal(col);
+    /* This hasn't just been used. ( Is not infinity ) */
+    if (!str.IsEmpty())
+        dt.ParseDate(str);
+    return dt;
+}
+
+
+wxDateTime pgSetBase::GetDate(const wxString &col) const
+{
+    return GetDate(ColNumber(col));
 }
 
 

@@ -45,6 +45,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 : pgConnBase(server, database, username, password, port, sslmode, oid)
 {
     memset(features, 0, sizeof(features));
+    majorVersion=0;
 }
 
 wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
@@ -52,6 +53,10 @@ wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
     if (reservedNamespaces.IsEmpty())
     {
         reservedNamespaces = wxT("'information_schema'");
+
+        if (GetIsEdb())
+            reservedNamespaces += wxT(", sys");
+
         pgSet *set=ExecuteSet(
                 wxT("SELECT nspname FROM pg_namespace nsp\n")
                 wxT("  JOIN pg_proc pr ON pronamespace=nsp.oid\n")
@@ -95,9 +100,17 @@ bool pgConn::BackendMinimumVersion(int major, int minor)
 {
     if (!majorVersion)
     {
-	    sscanf(GetVersionString().ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
+        wxString version=GetVersionString();
+	    sscanf(version.ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
+        isEdb = version.Upper().Matches(wxT("ENTERPRISEDB*"));
     }
 	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+}
+
+
+bool pgConn::EdbMinimumVersion(int major, int minor)
+{
+    return BackendMinimumVersion(major, minor) && GetIsEdb();
 }
 
 

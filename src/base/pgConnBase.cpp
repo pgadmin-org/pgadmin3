@@ -79,7 +79,6 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
     struct hostent *host;
     unsigned long addr;
     conn=0;
-    majorVersion=0;
     noticeArg=0;
     connStatus = PGCONN_BAD;
     

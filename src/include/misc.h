@@ -93,6 +93,7 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_CONVERSION,
     PGICON_OPERATORCLASS,
     PGICON_TRIGGERFUNCTION,
+    PGICON_PROCEDURE,
     PGICON_CONSTRAINT,
     PGICON_PRIMARYKEY,
     PGICON_UNIQUE,

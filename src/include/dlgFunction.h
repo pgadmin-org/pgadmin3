@@ -43,6 +43,7 @@ private:
     void OnChangeArg(wxCommandEvent &ev);
     void OnRemoveArg(wxCommandEvent &ev);
 
+    int GetDirection(const wxString &colName);
     wxString GetArgs(bool withNames=true, bool quoted=false);
     void ReplaceSizer(wxWindow *w, bool isC, int border);
 
@@ -53,7 +54,17 @@ private:
     wxSizer *libcSizer;
     int typeColNo;
 
+protected:
+    bool isProcedure;
+
     DECLARE_EVENT_TABLE();
+};
+
+
+class dlgProcedure : public dlgFunction
+{
+public:
+    dlgProcedure(frmMain *frame, pgFunction *node, pgSchema *sch);
 };
 
 

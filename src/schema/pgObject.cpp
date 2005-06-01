@@ -53,6 +53,8 @@ pgTypes typesList[] =
     {__("Function"), PGICON_FUNCTION, __("New Function"), __("Create a new Function.") },
     {__("Trigger Functions"), PGICON_TRIGGERFUNCTION, 0, 0},
     {__("Trigger Function"), PGICON_TRIGGERFUNCTION, __("New Trigger Function"), __("Create a new Trigger Function.") },
+    {__("Procedures"), PGICON_PROCEDURE, 0, 0},
+    {__("Procedure"), PGICON_PROCEDURE, __("New Procedure"), __("Create a new Procedure.") },
     {__("Operators"), PGICON_OPERATOR, 0, 0},
     {__("Operator"), PGICON_OPERATOR, __("New Operator"), __("Create a new Operator.") },
     {__("Operator Classes"), PGICON_OPERATORCLASS, 0, 0},

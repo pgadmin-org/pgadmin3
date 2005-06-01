@@ -156,6 +156,7 @@ void frmGrantWizard::Go()
             break;
         case PG_FUNCTIONS:
         case PG_TRIGGERFUNCTIONS:
+        case PG_PROCEDURES:
             privList = wxT("EXECUTE");
             privChar = "X";
             break;
@@ -229,6 +230,7 @@ wxString frmGrantWizard::GetSql()
             {
                 case PG_FUNCTION:
                 case PG_TRIGGERFUNCTION:
+                case PG_PROCEDURE:
                 {
                     tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
                         + obj->GetQuotedFullIdentifier() + wxT("(")

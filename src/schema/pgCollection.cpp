@@ -152,6 +152,7 @@ bool pgCollection::CanCreate()
         case PG_DOMAINS:
         case PG_FUNCTIONS:
         case PG_TRIGGERFUNCTIONS:
+        case PG_PROCEDURES:
         case PG_OPERATORS:
         case PG_SEQUENCES:
         case PG_TABLES:
@@ -186,6 +187,7 @@ int pgCollection::GetIcon()
         case PG_DOMAINS:            return PGICON_DOMAIN;
         case PG_FUNCTIONS:          return PGICON_FUNCTION;
         case PG_TRIGGERFUNCTIONS:   return PGICON_TRIGGERFUNCTION;
+        case PG_PROCEDURES:         return PGICON_PROCEDURE;
         case PG_OPERATORS:          return PGICON_OPERATOR;
         case PG_OPERATORCLASSES:    return PGICON_OPERATORCLASS;
         case PG_SEQUENCES:          return PGICON_SEQUENCE;
@@ -270,6 +272,9 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
                 break;
             case PG_TRIGGERFUNCTIONS:
                 pgTriggerFunction::ReadObjects(this, browser);
+                break;
+            case PG_PROCEDURES:
+                pgProcedure::ReadObjects(this, browser);
                 break;
             case PG_OPERATORS:
                 pgOperator::ReadObjects(this, browser);

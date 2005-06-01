@@ -371,6 +371,7 @@ frmMain::frmMain(const wxString& title)
     imageList->Add(wxIcon(conversion_xpm));
     imageList->Add(wxIcon(operatorclass_xpm));
     imageList->Add(wxIcon(triggerfunction_xpm));
+    imageList->Add(wxIcon(function_xpm));       // procedure
     imageList->Add(wxIcon(constraints_xpm));
     imageList->Add(wxIcon(primarykey_xpm));
     imageList->Add(wxIcon(unique_xpm));

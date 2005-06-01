@@ -30,14 +30,18 @@
 
 // pointer to controls
 #define txtArguments        CTRL_TEXT("txtArguments")
+#define stReturntype        CTRL_STATIC("stReturntype")
 #define cbReturntype        CTRL_COMBOBOX2("cbReturntype")
+#define stLanguage          CTRL_STATIC("stLanguage")
 #define cbLanguage          CTRL_COMBOBOX("cbLanguage")
 #define chkSetof            CTRL_CHECKBOX("chkSetof")
+#define stVolatility        CTRL_STATIC("stVolatility")
 #define cbVolatility        CTRL_COMBOBOX("cbVolatility")
 #define chkStrict           CTRL_CHECKBOX("chkStrict")
 #define chkSecureDefiner    CTRL_CHECKBOX("chkSecureDefiner")
 
 #define lstArguments        CTRL_LISTVIEW("lstArguments")
+#define rdbDirection        CTRL_RADIOBOX("rdbDirection")
 #define txtArgName          CTRL_TEXT("txtArgName")
 #define btnAdd              CTRL_BUTTON("wxID_ADD")
 #define btnChange           CTRL_BUTTON("wxID_CHANGE")
@@ -82,6 +86,7 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
     SetIcon(wxIcon(function_xpm));
     schema=sch;
     function=node;
+    isProcedure = false;
 
     txtArguments->Disable();
     btnAdd->Disable();
@@ -98,6 +103,12 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
 }
 
 
+dlgProcedure::dlgProcedure(frmMain *frame, pgFunction *node, pgSchema *sch)
+: dlgFunction(frame, node, sch)
+{
+    isProcedure = true;
+}
+
 pgObject *dlgFunction::GetObject()
 {
     return function;
@@ -106,8 +117,14 @@ pgObject *dlgFunction::GetObject()
 
 int dlgFunction::Go(bool modal)
 {
-    if (!function)
+    if (function)
+    {
+        rdbDirection->Disable();
+        isProcedure = function->GetIsProcedure();
+    }
+    else
         cbOwner->Append(wxEmptyString);
+
     AddGroups();
     AddUsers(cbOwner);
 
@@ -127,6 +144,26 @@ int dlgFunction::Go(bool modal)
     if (!typeColNo)
         txtArgName->Disable();
 
+    if (isProcedure)
+    {
+        if (connection->EdbMinimumVersion(8, 0))
+        {
+            rdbDirection->SetString(2, wxT("IN OUT"));
+            stLanguage->Hide();
+            cbLanguage->Hide();
+            chkStrict->Hide();
+            chkSecureDefiner->Hide();
+            stVolatility->Hide();
+            cbVolatility->Hide();
+        }
+        stReturntype->Hide();
+        cbReturntype->Hide();
+        chkSetof->Hide();
+    }
+    else
+    {
+        rdbDirection->Hide();
+    }
     pgSet *lang=connection->ExecuteSet(wxT("SELECT lanname FROM pg_language"));
     if (lang)
     {
@@ -139,6 +176,7 @@ int dlgFunction::Go(bool modal)
         }
         delete lang;
     }
+
     if (function)
     {
         // edit mode
@@ -155,13 +193,18 @@ int dlgFunction::Go(bool modal)
                     continue;
                 if (typeColNo)
                 {
+                    wxString colname;
+                    if (isProcedure && cnt < function->GetArgModes().GetCount())
+                        colname = function->GetArgModes().Item(cnt) + wxT(" ");
+
                     if (cnt < function->GetArgNames().GetCount())
-                        lstArguments->AppendItem(-1, function->GetArgNames().Item(cnt++), str);
-                    else
-                        lstArguments->AppendItem(-1, wxEmptyString, str);
+                        colname += function->GetArgNames().Item(cnt);
+
+                    lstArguments->AppendItem(-1, colname, str);
                 }
                 else
                     lstArguments->AppendItem(-1, str);
+                cnt++;
             }
         }
 
@@ -278,8 +321,12 @@ void dlgFunction::CheckChange()
         bool enable=true;
 
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbReturntype->GetGuessedSelection() >= 0, _("Please select return type."));
-        CheckValid(enable, cbLanguage->GetSelection() >= 0, _("Please select language."));
+        if (!isProcedure)
+            CheckValid(enable, cbReturntype->GetGuessedSelection() >= 0, _("Please select return type."));
+
+        if (!isProcedure || !connection->EdbMinimumVersion(8, 0))
+            CheckValid(enable, cbLanguage->GetSelection() >= 0, _("Please select language."));
+
         if (isC)
         {
             wxString objfile=txtObjectFile->GetValue();
@@ -333,7 +380,14 @@ void dlgFunction::OnSelChangeArg(wxListEvent &ev)
     {
         if (typeColNo)
         {
-            txtArgName->SetValue(lstArguments->GetText(row, 0));
+            wxString colName=lstArguments->GetText(row, 0);
+            if (isProcedure)
+            {
+                int i=GetDirection(colName);
+                rdbDirection->SetSelection(i);
+                colName = colName.Mid(rdbDirection->GetString(i).Length() +1);
+            }
+            txtArgName->SetValue(colName);
             cbDatatype->SetValue(lstArguments->GetText(row, typeColNo));
         }
         else
@@ -369,9 +423,12 @@ void dlgFunction::OnChangeArgName(wxCommandEvent &ev)
 
     bool typeValid = (function != 0 || cbDatatype->GetGuessedSelection() >= 0);
 
-    btnAdd->Enable(argNameRow < 0 && typeValid);
     btnChange->Enable(pos >= 0 && typeValid);
-    btnRemove->Enable(pos >= 0);
+    if (!function)
+    {
+        btnAdd->Enable(argNameRow < 0 && typeValid);
+        btnRemove->Enable(pos >= 0);
+    }
 }
 
 
@@ -383,7 +440,12 @@ void dlgFunction::OnChangeArg(wxCommandEvent &ev)
     {
         if (typeColNo)
         {
-            lstArguments->SetItem(row, 0, txtArgName->GetValue());
+            wxString colName;
+            if (isProcedure)
+                colName = rdbDirection->GetStringSelection() + wxT(" ");
+            colName += txtArgName->GetValue();
+
+            lstArguments->SetItem(row, 0, colName);
             lstArguments->SetItem(row, typeColNo, cbDatatype->GetValue());
         }
         else
@@ -401,7 +463,13 @@ void dlgFunction::OnChangeArg(wxCommandEvent &ev)
 void dlgFunction::OnAddArg(wxCommandEvent &ev)
 {
     if (typeColNo)
-        lstArguments->AppendItem(-1, txtArgName->GetValue(), cbDatatype->GetValue());
+    {
+        wxString colName;
+        if (isProcedure)
+            colName = rdbDirection->GetStringSelection() + wxT(" ");
+        colName += txtArgName->GetValue();
+        lstArguments->AppendItem(-1, colName, cbDatatype->GetValue());
+    }
     else
         lstArguments->AppendItem(-1, cbDatatype->GetValue());
 
@@ -424,6 +492,22 @@ void dlgFunction::OnRemoveArg(wxCommandEvent &ev)
 }
 
 
+int dlgFunction::GetDirection(const wxString &colName)
+{
+    int i;
+    wxString sel;
+    for (i=0 ; i < rdbDirection->GetCount() ; i++)
+    {
+        sel = rdbDirection->GetString(i);
+        if (sel == colName)
+            return i;
+        if (colName.Left(sel.Length()+1) == sel + wxT(" "))
+            return i;
+    }
+    return -1;
+}
+
+
 wxString dlgFunction::GetArgs(bool withNames, bool quoted)
 {
     wxString args;
@@ -438,7 +522,14 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
             if (withNames)
             {
                 if (quoted)
-                    args += qtIdent(lstArguments->GetText(i)) + wxT(" ");
+                {
+                    wxString colName = lstArguments->GetText(i);
+                    int i=GetDirection(colName);
+                    wxString dir=rdbDirection->GetString(i);
+                    colName = colName.Mid(dir.Length()+1);
+
+                    args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
+                }
                 else
                     args += lstArguments->GetText(i) + wxT(" ");
             }
@@ -465,7 +556,11 @@ wxString dlgFunction::GetSql()
 {
     wxString sql;
     wxString name=GetName();
-
+    wxString objType;
+    if (isProcedure && connection->EdbMinimumVersion(8, 0))
+        objType = wxT("PROCEDURE ");
+    else
+        objType = wxT("FUNCTION ");
 
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
     bool didChange = !function 
@@ -488,13 +583,14 @@ wxString dlgFunction::GetSql()
         }
  
         if (didChange)
-            sql += wxT("CREATE OR REPLACE FUNCTION ");
+            sql += wxT("CREATE OR REPLACE ") + objType;
     }
     else
     {
         // create mode
-        sql = wxT("CREATE FUNCTION ");
+        sql = wxT("CREATE " ) + objType;
     }
+
 
     name = schema->GetQuotedPrefix() + qtIdent(name) 
          + wxT("(") + GetArgs(false, true) + wxT(")");
@@ -503,12 +599,37 @@ wxString dlgFunction::GetSql()
     if (didChange)
     {
         sql  += schema->GetQuotedPrefix() + qtIdent(GetName()) 
-             + wxT("(") + GetArgs(true, true) + wxT(")")
-               wxT(" RETURNS ");
-        if (chkSetof->GetValue())
-            sql += wxT("SETOF ");
+             + wxT("(") + GetArgs(true, true) + wxT(")");
 
-        AppendQuoted(sql, cbReturntype->GetValue());
+        if (isProcedure)
+        {
+            if (!connection->EdbMinimumVersion(8, 0))
+            {
+                bool hasOut=false;
+
+                int i;
+                for (i=0 ; i < lstArguments->GetItemCount() ; i++)
+                {
+                    if (GetDirection(lstArguments->GetText(i)) > 0)
+                    {
+                        hasOut=true;
+                        break;
+                    }
+                }
+
+                if (!hasOut)
+                    sql += wxT(" RETURNS void");
+            }
+        }
+        else
+        {
+            sql += wxT(" RETURNS ");
+            if (chkSetof->GetValue())
+                sql += wxT("SETOF ");
+
+            AppendQuoted(sql, cbReturntype->GetValue());
+        }
+
         sql += wxT(" AS\n");
 
         if (cbLanguage->GetValue().IsSameAs(wxT("C"), false))
@@ -524,12 +645,18 @@ wxString dlgFunction::GetSql()
             else
                 sql += qtString(txtSqlBox->GetText());
         }
-        sql += wxT("\nLANGUAGE ") + qtString(cbLanguage->GetValue())
-            +  wxT(" ") + cbVolatility->GetValue();
-        if (chkStrict->GetValue())
-            sql += wxT(" STRICT");
-        if (chkSecureDefiner->GetValue())
-            sql += wxT(" SECURITY DEFINER");
+
+        if (isProcedure && connection->EdbMinimumVersion(8, 0))
+            sql += wxT("\n");
+        else
+        {
+            sql += wxT("\nLANGUAGE ") + qtString(cbLanguage->GetValue())
+                +  wxT(" ") + cbVolatility->GetValue();
+            if (chkStrict->GetValue())
+                sql += wxT(" STRICT");
+            if (chkSecureDefiner->GetValue())
+                sql += wxT(" SECURITY DEFINER");
+        }
 
         sql += wxT(";\n");
     }

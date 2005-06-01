@@ -228,6 +228,7 @@ void frmRestore::OnChange(wxCommandEvent &ev)
             }
             case PG_TABLE:
             case PG_FUNCTION:
+            case PG_PROCEDURE:
             {
                 singleValid=true;
                 stSingleObject->SetLabel(object->GetTranslatedTypeName() + wxT(" ") + object->GetName());
@@ -324,6 +325,7 @@ wxString frmRestore::getCmdPart2(int step)
                     cmd.Append(wxT(" -t ") + object->GetQuotedIdentifier());
                     break;
                 case PG_FUNCTION:
+                case PG_PROCEDURE:
                     cmd.Append(wxT(" -P ") + object->GetQuotedIdentifier());
                     break;
             }

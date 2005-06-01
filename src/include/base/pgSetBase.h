@@ -73,6 +73,8 @@ public:
     double GetDouble(const wxString &col) const;
     wxDateTime GetDateTime(const int col) const;
     wxDateTime GetDateTime(const wxString &col) const;
+    wxDateTime GetDate(const int col) const;
+    wxDateTime GetDate(const wxString &col) const;
     wxULongLong GetLongLong(const int col) const;
     wxULongLong GetLongLong(const wxString &col) const;
     OID GetOid(const int col) const;
@@ -116,6 +118,8 @@ public:
     double GetDouble(const wxString &col) const { return set->GetDouble(col); }
     wxDateTime GetDateTime(const int col) const { return set->GetDateTime(col); }
     wxDateTime GetDateTime(const wxString &col) const  { return set->GetDateTime(col); }
+    wxDateTime GetDate(const int col) const { return set->GetDate(col); }
+    wxDateTime GetDate(const wxString &col) const  { return set->GetDate(col); }
     wxULongLong GetLongLong(const int col) const { return set->GetLongLong(col); }
     wxULongLong GetLongLong(const wxString &col) const { return set->GetLongLong(col); }
     OID GetOid(const int col) const { return set->GetOid(col); }

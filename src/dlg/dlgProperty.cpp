@@ -714,6 +714,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_TRIGGERFUNCTIONS:
             dlg=new dlgFunction(frame, (pgFunction*)currentNode, (pgSchema*)parentNode);
             break;
+        case PG_PROCEDURE:
+        case PG_PROCEDURES:
+            dlg=new dlgProcedure(frame, (pgFunction*)currentNode, (pgSchema*)parentNode);
+            break;
         case PG_TABLE:
         case PG_TABLES:
             dlg=new dlgTable(frame, (pgTable*)currentNode, (pgSchema*)parentNode);
