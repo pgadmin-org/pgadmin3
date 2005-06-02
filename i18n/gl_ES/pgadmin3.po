@@ -6,7 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: pgadmin3\n"
-"POT-Creation-Date: 2004-09-05 23:02+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-06-02 13:37+0100\n"
 "PO-Revision-Date: 2004-09-15 11:36+0100\n"
 "Last-Translator:  <>\n"
 "Language-Team: Galego <>\n"
@@ -14,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ui/dlgClasses.cpp:264
+#: src/main/dlgClasses.cpp:464
 msgid ""
 "\n"
 "Cancelled.\n"
@@ -22,7 +23,7 @@ msgstr ""
 "\n"
 " Cancelado.\n"
 
-#: src/ui/frmQuery.cpp:1112
+#: src/frm/frmQuery.cpp:1057
 msgid ""
 "\n"
 "Retrieve all rows anyway?"
@@ -30,13 +31,68 @@ msgstr ""
 "\n"
 "Recupero todas as filas?"
 
-#: src/schema/pgObject.cpp:384
+#: src/schema/pgServer.cpp:207
+#, fuzzy
+msgid ""
+"\n"
+"Start dependent services too?"
+msgstr "Estatística"
+
+#: src/schema/pgServer.cpp:270
+msgid ""
+"\n"
+"Stop dependent services?"
+msgstr ""
+
+#: xtra/pgagent/job.cpp:134 xtra/pgagent/job.cpp:151
+msgid " (part of job "
+msgstr ""
+
+#: src/frm/frmHbaConfig.cpp:63 src/frm/frmMainConfig.cpp:65
+#, c-format
+msgid " - %s on %s (%s:%d)"
+msgstr ""
+
+#: src/frm/frmHbaConfig.cpp:80
+msgid " - Backend Access Configuration Editor"
+msgstr ""
+
+#: src/frm/frmMainConfig.cpp:82
+msgid " - Backend Configuration Editor"
+msgstr ""
+
+#: src/frm/frmConfig.cpp:302 src/frm/frmHbaConfig.cpp:74
+#: src/frm/frmMainConfig.cpp:76
+#, c-format
+msgid " Configuration read from %s"
+msgstr ""
+
+#: src/frm/frmConfig.cpp:372 src/frm/frmConfig.cpp:374
+#, c-format
+msgid " Configuration written to %s"
+msgstr ""
+
+#: src/schema/pgObject.cpp:404
 msgid " Connection broken."
 msgstr ""
 
-#: src/ui/frmMain.cpp:1057
+#: src/frm/frmMain.cpp:1173
 msgid " Done."
 msgstr " Feito."
+
+# standard
+#: src/frm/frmMain.cpp:1175
+#, fuzzy
+msgid " Failed."
+msgstr "Arquivo"
+
+#: xtra/pgagent/win32.cpp:344
+msgid " INSTALL <serviceName> [options] <connect-string>\n"
+msgstr ""
+
+#: xtra/pgagent/win32.cpp:343
+msgid " REMOVE <serviceName>\n"
+msgstr ""
 
 #: src/schema/pgTablespace.cpp:40
 #, fuzzy
@@ -48,66 +104,68 @@ msgstr "Recuperando %s detalles"
 msgid " Retrieving user owned objects"
 msgstr "Recuperando propiedades do servidor"
 
-#: src/ui/frmStatus.cpp:682
+#: xtra/pgagent/unix.cpp:26
+msgid " [options] <connect-string>\n"
+msgstr ""
+
+#: src/frm/frmStatus.cpp:690
 #, fuzzy
 msgid " current"
 msgstr "Gardar o arquivo actual"
 
 # standard
-#: input:511
+#: standard input:751
 msgid "\""
 msgstr "\""
 
-#: src/ui/frmMain.cpp:1053
+#: src/frm/frmMain.cpp:1168
 #, c-format
 msgid "%.2f secs"
 msgstr "%.2f seg"
 
-#: src/ui/frmQuery.cpp:1027
+#: src/frm/frmQuery.cpp:972
 #, fuzzy, c-format
 msgid "%d rows affected."
 msgstr "%d filas recuperadas."
 
-#: src/ui/frmEditGrid.cpp:314
+#: src/frm/frmEditGrid.cpp:315
 #, fuzzy, c-format
 msgid "%d rows copied to clipboard."
 msgstr "Cortar o texto seleccionado"
 
-#: src/ui/frmQuery.cpp:1096
+#: src/frm/frmQuery.cpp:1041
 #, c-format
 msgid "%d rows retrieved."
 msgstr "%d filas recuperadas."
 
-#: src/ui/dlgClasses.cpp:244
-#: src/ui/frmEditGrid.cpp:503
-#: src/ui/frmEditGrid.cpp:625
-#: src/ui/frmQuery.cpp:1072
-#: src/ui/frmQuery.cpp:1187
+#: src/frm/frmEditGrid.cpp:528 src/frm/frmEditGrid.cpp:657
+#: src/frm/frmQuery.cpp:1017 src/frm/frmQuery.cpp:1132
+#: src/main/dlgClasses.cpp:444
 #, c-format
 msgid "%d rows."
 msgstr "%d filas."
 
-#: src/ui/frmQuery.cpp:1180
+#: src/frm/frmQuery.cpp:1125
 #, c-format
 msgid "%ld  rows not retrieved."
 msgstr "%ld  filas non recuperadas."
 
-#: src/ui/frmQuery.cpp:1189
+#: src/frm/frmQuery.cpp:1134
 #, c-format
 msgid "%ld of %ld rows"
 msgstr "%ld de %ld filas"
 
-#: src/ui/frmQuery.cpp:1176
+#: src/frm/frmQuery.cpp:1121
 #, c-format
 msgid "%ld rows retrieved."
 msgstr "%ld filas recuperadas."
 
-#: src/ui/frmMain.cpp:213
+#: src/frm/frmConfig.cpp:126 src/frm/frmMain.cpp:251
 msgid "&About..."
 msgstr "&Acerca de..."
 
 # standard
-#: input:619
+#: standard input:870
 msgid "&Add"
 msgstr "Engadir"
 
@@ -115,49 +173,45 @@ msgstr "Engadir"
 msgid "&Add %s to query"
 msgstr "Engadir %s á consulta"
 
-#: src/ui/frmMain.cpp:157
+#: src/frm/frmMain.cpp:169
 msgid "&Add Server..."
 msgstr "Engadir Servidor..."
 
 msgid "&Add Table/View..."
 msgstr "Engadir Táboa/Vista..."
 
-#: src/ui/frmMain.cpp:189
+#: src/frm/frmMain.cpp:208
 #, fuzzy
 msgid "&Backup"
 msgstr "Atrás"
 
-#: src/ui/frmMain.cpp:212
+#: src/frm/frmConfig.cpp:125 src/frm/frmMain.cpp:250
 msgid "&Bugreport"
 msgstr "Informe de Erro"
 
 # standard
-#: input:52
-#: input:501
-#: input:525
-#: input:532
-#: input:539
-#: input:557
-#: input:597
-#: input:605
-#: input:611
-#: input:639
+#: standard input:52 input:741 input:765 input:772 input:780 input:787
+#: input:805 input:848 input:856 input:862 input:890 input:910
 msgid "&Cancel"
 msgstr "&Cancelar"
 
-#: src/ui/frmQuery.cpp:140
+#: src/frm/frmQuery.cpp:136
 msgid "&Cancel\tAlt-Break"
 msgstr "&Cancelar\tAlt-Break"
 
 # standard
-#: input:472
+#: standard input:712
 msgid "&Close"
 msgstr "&Cerrar"
 
 msgid "&Close Table/View"
 msgstr "&Cerrar Táboa/Vista"
 
-#: src/ui/frmMain.cpp:182
+#: src/frm/frmConfig.cpp:123
+msgid "&Configuration Help\tF1"
+msgstr ""
+
+#: src/frm/frmMain.cpp:201
 #, fuzzy
 msgid "&Connect"
 msgstr "&Conectar..."
@@ -165,153 +219,143 @@ msgstr "&Conectar..."
 msgid "&Connect..."
 msgstr "&Conectar..."
 
-#: src/ui/frmQuery.cpp:120
+#: src/frm/frmQuery.cpp:116
 msgid "&Copy\tCtrl-C"
 msgstr "&Copiar\tCtrl-C"
 
-#: src/ui/frmMain.cpp:201
+#: src/frm/frmMain.cpp:237
 #, fuzzy
 msgid "&Count"
 msgstr "Cortar"
 
-#: src/ui/frmMain.cpp:173
+#: src/frm/frmMain.cpp:191
 msgid "&Create"
 msgstr "&Crear"
 
 # standard
-#: input:591
+#: standard input:842
 msgid "&Debug (not recommended for normal use)"
 msgstr "&Debug (non recomendado para uso normal)"
 
 # standard
-#: input:621
+#: standard input:872
 msgid "&Delete"
 msgstr "Borrar"
 
 msgid "&Delete/Drop"
 msgstr "Borrar/Eliminar"
 
-#: src/ui/frmMain.cpp:174
+#: src/frm/frmMain.cpp:192
 msgid "&Delete/Drop\tDel"
 msgstr "Borrar/Eliminar\tSupr"
 
 # standard
-#: input:477
+#: standard input:717
 msgid "&Deselect All"
 msgstr "&Deseleccionar todo"
 
 msgid "&Disconnect"
 msgstr "&Desconectar"
 
-#: src/ui/frmMain.cpp:202
+#: src/frm/frmMain.cpp:238
 msgid "&Display"
 msgstr "Visualizar"
 
-#: src/ui/frmMain.cpp:176
-#: src/ui/frmQuery.cpp:125
+#: src/frm/frmConfig.cpp:118 src/frm/frmMain.cpp:195 src/frm/frmQuery.cpp:121
 msgid "&Edit"
 msgstr "&Editar"
 
 # standard
-#: input:588
+#: standard input:839
 msgid "&Errors only"
 msgstr "&Erros só"
 
 msgid "&Execute"
 msgstr "&Executar"
 
-#: src/ui/frmQuery.cpp:128
+#: src/frm/frmQuery.cpp:124
 msgid "&Execute\tF5"
 msgstr "&Executar\tF5"
 
-#: src/ui/frmQuery.cpp:108
+#: src/frm/frmQuery.cpp:104
 msgid "&Export"
 msgstr "&Exportar"
 
-#: src/ui/frmMain.cpp:166
-#: src/ui/frmQuery.cpp:113
+#: src/frm/frmConfig.cpp:114 src/frm/frmMain.cpp:184 src/frm/frmQuery.cpp:109
 msgid "&File"
 msgstr "Arquivo"
 
-#: src/ui/frmQuery.cpp:124
+#: src/frm/frmQuery.cpp:120
 msgid "&Find\tCtrl-F"
 msgstr "Buscar\tCtrl-F"
 
-#: src/ui/frmMain.cpp:192
+#: standard input:776
+#, fuzzy
+msgid "&Fix it!"
+msgstr "Sair"
+
+#: src/frm/frmMain.cpp:211
 msgid "&Grant Wizard"
 msgstr ""
 
 # standard
-#: input:50
-#: input:499
-#: input:523
-#: input:530
-#: input:537
-#: input:555
-#: input:593
-#: input:603
-#: input:636
-#: src/ui/frmMain.cpp:217
-#: src/ui/frmQuery.cpp:146
+#: src/frm/frmConfig.cpp:130 src/frm/frmMain.cpp:255 src/frm/frmQuery.cpp:142
+#: standard input:50 input:739 input:763 input:770 input:775 input:785
+#: input:803 input:844 input:854 input:887 input:908
 msgid "&Help"
 msgstr "Axuda"
 
-#: src/ui/frmMain.cpp:206
-#: src/ui/frmQuery.cpp:144
+#: src/frm/frmConfig.cpp:121 src/frm/frmMain.cpp:242 src/frm/frmQuery.cpp:140
 msgid "&Help..."
 msgstr "Axuda...."
 
 msgid "&Join To..."
 msgstr "Unir a..."
 
-#: src/ui/frmMain.cpp:188
+#: src/frm/frmMain.cpp:207
 msgid "&Maintenance"
 msgstr "&Mantemento"
 
+#: standard input:778
+#, fuzzy
+msgid "&No"
+msgstr "Non"
+
 # standard
-#: input:587
+#: standard input:838
 msgid "&No logging"
 msgstr "&Non logeado"
 
 # standard
-#: input:51
-#: input:473
-#: input:500
-#: input:524
-#: input:531
-#: input:538
-#: input:556
-#: input:595
-#: input:604
-#: input:612
-#: input:638
+#: standard input:51 input:713 input:740 input:764 input:771 input:779
+#: input:786 input:804 input:846 input:855 input:863 input:889 input:909
 msgid "&OK"
 msgstr "&OK"
 
 msgid "&Open..."
 msgstr "Abrir"
 
-#: src/ui/frmQuery.cpp:104
+#: src/frm/frmConfig.cpp:102 src/frm/frmQuery.cpp:100
 msgid "&Open...\tCtrl-O"
 msgstr "Abrir...\tCtrl-O"
 
-#: src/ui/frmMain.cpp:160
+#: src/frm/frmMain.cpp:172
 msgid "&Options..."
 msgstr "&Opcións"
 
-#: src/ui/frmQuery.cpp:121
+#: src/frm/frmQuery.cpp:117
 msgid "&Paste\tCtrl-V"
 msgstr "&Pegar\tCtrl-V"
 
-#: src/ui/frmMain.cpp:209
+#: src/frm/frmMain.cpp:245
 msgid "&PostgreSQL Help"
 msgstr "Axuda de &PostgreSQL"
 
-#: src/ui/frmMain.cpp:175
+#: src/frm/frmMain.cpp:194
 msgid "&Properties"
 msgstr "&Propiedades"
 
-#: src/ui/frmQuery.cpp:141
+#: src/frm/frmQuery.cpp:137
 msgid "&Query"
 msgstr "Consulta"
 
@@ -321,47 +365,46 @@ msgstr "Analizador de Consultas"
 msgid "&Query Builder"
 msgstr "Xerador de Consultas"
 
-#: src/ui/frmMain.cpp:185
+#: src/frm/frmMain.cpp:204
 msgid "&Query tool"
 msgstr "Ferramenta para Consultas"
 
-#: src/ui/frmQuery.cpp:110
+#: src/frm/frmConfig.cpp:112 src/frm/frmQuery.cpp:106
 msgid "&Recent files"
 msgstr "Arquivos Recentes"
 
-#: src/ui/frmQuery.cpp:117
+#: src/frm/frmQuery.cpp:113
 msgid "&Redo\tCtrl-Y"
 msgstr "&Refacer\tCtrl-Y"
 
-#: src/ui/frmMain.cpp:190
+#: src/frm/frmMain.cpp:209
 msgid "&Restore"
 msgstr ""
 
-#: src/ui/frmMain.cpp:208
-#: src/ui/frmQuery.cpp:145
+#: src/frm/frmMain.cpp:244 src/frm/frmQuery.cpp:141
 msgid "&SQL Help\tF1"
 msgstr "&SQL Axuda\tF1"
 
 msgid "&Save"
 msgstr "Gardar"
 
-#: src/ui/frmQuery.cpp:105
+#: src/frm/frmConfig.cpp:103 src/frm/frmQuery.cpp:101
 msgid "&Save\tCtrl-S"
 msgstr "Gardar\tCtrl-S"
 
-#: src/ui/frmMain.cpp:155
+#: src/frm/frmMain.cpp:167
 msgid "&Save definition..."
 msgstr "Gardar definición..."
 
-#: src/ui/frmMain.cpp:193
+#: src/frm/frmMain.cpp:228
 msgid "&Server Status"
 msgstr "Estado do &Servidor"
 
-#: src/ui/frmMain.cpp:198
+#: src/frm/frmMain.cpp:234
 msgid "&System objects"
 msgstr "Obxetos do &Sistema"
 
-#: src/ui/frmMain.cpp:210
+#: src/frm/frmMain.cpp:247
 #, fuzzy
 msgid "&Tip of the day"
 msgstr "Suxerencia do día"
@@ -369,62 +412,467 @@ msgstr "Suxerencia do día"
 msgid "&Tip of the day..."
 msgstr "Suxerencia do día"
 
-#: src/ui/frmMain.cpp:194
+#: src/frm/frmMain.cpp:230
 msgid "&Tools"
 msgstr "Ferramentas"
 
-#: src/ui/frmQuery.cpp:116
+#: src/frm/frmConfig.cpp:117 src/frm/frmQuery.cpp:112
 msgid "&Undo\tCtrl-Z"
 msgstr "Desfacer\tCtrl-Z"
 
 # standard
-#: input:637
+#: standard input:888
 msgid "&View"
 msgstr "&Vista"
 
+#: standard input:777
+#, fuzzy
+msgid "&Yes"
+msgstr "Si"
+
 # standard
-#: input:512
+#: standard input:752
 msgid "'"
 msgstr "'"
 
 #, c-format
-msgid "'%s' is not a valid identifier. It must start with A-Z or a-z or _ and can contain A-Z and a-z and 0-9 and _."
-msgstr "'%s' non é un identificador válido. Ten que empezar con A-Z ou a-z e pode conter A-Z e a-z e 0-9 e _."
+msgid ""
+"'%s' is not a valid identifier. It must start with A-Z or a-z or _ and can "
+"contain A-Z and a-z and 0-9 and _."
+msgstr ""
+"'%s' non é un identificador válido. Ten que empezar con A-Z ou a-z e pode "
+"conter A-Z e a-z e 0-9 e _."
 
-#: src/schema/pgCast.cpp:67
+#: src/schema/pgCast.cpp:71
 msgid "(binary compatible)"
 msgstr "(compatibilidade binaria)"
 
 # standard
-#: input:508
+#: standard input:748
 msgid ","
 msgstr ","
 
-#: src/ui/frmQuery.cpp:974
+#: src/frm/frmQuery.cpp:913
 msgid "-- Executing query:\n"
 msgstr "-- Executando a consulta:\n"
 
-#: src/ui/dlgProperty.cpp:600
+#: src/slony/slCluster.cpp:77
+msgid ""
+"-- Use the installation wizard\n"
+"-- to generate the Slony-I replication cluster.\n"
+msgstr ""
+
+#: src/dlg/dlgProperty.cpp:593
 msgid "-- definition incomplete"
 msgstr "-- definición incompleta"
 
-#: src/ui/dlgProperty.cpp:598
+#: src/dlg/dlgProperty.cpp:591
 msgid "-- nothing to change"
 msgstr "-- nada que cambiar"
 
+#: xtra/pgagent/win32.cpp:348
+msgid "-d <displayname>\n"
+msgstr ""
+
+#: xtra/pgagent/unix.cpp:28
+msgid "-f run in the foreground (do not detach from the terminal)\n"
+msgstr ""
+
+#: xtra/pgagent/unix.cpp:31 xtra/pgagent/win32.cpp:351
+msgid "-l <logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)>\n"
+msgstr ""
+
 # standard
-#: input:481
-#: input:522
-#: input:566
-#: input:574
-#: input:584
-#: input:627
+#: xtra/pgagent/win32.cpp:347
+#, fuzzy
+msgid "-p <password>\n"
+msgstr "Nova contrasinal"
+
+#: xtra/pgagent/unix.cpp:30 xtra/pgagent/win32.cpp:350
+msgid ""
+"-r <retry period after connection abort in seconds (>=10, default 30)>\n"
+msgstr ""
+
+#: xtra/pgagent/unix.cpp:29 xtra/pgagent/win32.cpp:349
+msgid "-t <poll time interval in seconds (default 10)>\n"
+msgstr ""
+
+#: xtra/pgagent/win32.cpp:346
+msgid "-u <user>\n"
+msgstr ""
+
+# standard
+#: standard input:721 input:762 input:815 input:825 input:835 input:878
 msgid "..."
 msgstr "..."
 
-#: src/ui/frmMain.cpp:235
+#: src/frm/frmMain.cpp:274
 msgid "0 Secs"
 msgstr "0 Segundos"
+
+#: standard input:449 input:474
+msgid "00"
+msgstr ""
+
+#: standard input:450 input:475
+msgid "01"
+msgstr ""
+
+#: standard input:451 input:476
+msgid "02"
+msgstr ""
+
+#: standard input:452 input:477
+msgid "03"
+msgstr ""
+
+#: standard input:453 input:478
+msgid "04"
+msgstr ""
+
+#: standard input:454 input:479
+msgid "05"
+msgstr ""
+
+#: standard input:455 input:480
+msgid "06"
+msgstr ""
+
+#: standard input:456 input:481
+msgid "07"
+msgstr ""
+
+#: standard input:457 input:482
+msgid "08"
+msgstr ""
+
+#: standard input:458 input:483
+msgid "09"
+msgstr ""
+
+#: standard input:459 input:484
+msgid "10"
+msgstr ""
+
+#: standard input:411
+msgid "10th"
+msgstr ""
+
+#: standard input:460 input:485
+msgid "11"
+msgstr ""
+
+#: standard input:412
+msgid "11th"
+msgstr ""
+
+#: standard input:461 input:486
+msgid "12"
+msgstr ""
+
+#: standard input:413
+msgid "12th"
+msgstr ""
+
+#: standard input:462 input:487
+msgid "13"
+msgstr ""
+
+#: standard input:414
+msgid "13th"
+msgstr ""
+
+#: standard input:463 input:488
+msgid "14"
+msgstr ""
+
+#: standard input:415
+msgid "14th"
+msgstr ""
+
+#: standard input:464 input:489
+msgid "15"
+msgstr ""
+
+#: standard input:416
+msgid "15th"
+msgstr ""
+
+#: standard input:465 input:490
+msgid "16"
+msgstr ""
+
+#: standard input:417
+msgid "16th"
+msgstr ""
+
+#: standard input:466 input:491
+msgid "17"
+msgstr ""
+
+#: standard input:418
+msgid "17th"
+msgstr ""
+
+#: standard input:467 input:492
+msgid "18"
+msgstr ""
+
+#: standard input:419
+msgid "18th"
+msgstr ""
+
+#: standard input:468 input:493
+msgid "19"
+msgstr ""
+
+#: standard input:420
+msgid "19th"
+msgstr ""
+
+#: standard input:402
+msgid "1st"
+msgstr ""
+
+#: standard input:469 input:494
+msgid "20"
+msgstr ""
+
+#: standard input:421
+msgid "20th"
+msgstr ""
+
+#: standard input:470 input:495
+msgid "21"
+msgstr ""
+
+#: standard input:422
+msgid "21st"
+msgstr ""
+
+#: standard input:471 input:496
+msgid "22"
+msgstr ""
+
+#: standard input:423
+msgid "22nd"
+msgstr ""
+
+#: standard input:472 input:497
+msgid "23"
+msgstr ""
+
+#: standard input:424
+msgid "23rd"
+msgstr ""
+
+#: standard input:498
+msgid "24"
+msgstr ""
+
+#: standard input:425
+msgid "24th"
+msgstr ""
+
+#: standard input:499
+msgid "25"
+msgstr ""
+
+#: standard input:426
+msgid "25th"
+msgstr ""
+
+#: standard input:500
+msgid "26"
+msgstr ""
+
+#: standard input:427
+msgid "26th"
+msgstr ""
+
+#: standard input:501
+msgid "27"
+msgstr ""
+
+#: standard input:428
+msgid "27th"
+msgstr ""
+
+#: standard input:502
+msgid "28"
+msgstr ""
+
+#: standard input:429
+msgid "28th"
+msgstr ""
+
+#: standard input:503
+msgid "29"
+msgstr ""
+
+#: standard input:430
+msgid "29th"
+msgstr ""
+
+#: standard input:403
+msgid "2nd"
+msgstr ""
+
+#: standard input:504
+msgid "30"
+msgstr ""
+
+#: standard input:431
+msgid "30th"
+msgstr ""
+
+#: standard input:505
+msgid "31"
+msgstr ""
+
+#: standard input:432
+msgid "31st"
+msgstr ""
+
+#: standard input:506
+msgid "32"
+msgstr ""
+
+#: standard input:507
+msgid "33"
+msgstr ""
+
+#: standard input:508
+msgid "34"
+msgstr ""
+
+#: standard input:509
+msgid "35"
+msgstr ""
+
+#: standard input:510
+msgid "36"
+msgstr ""
+
+#: standard input:511
+msgid "37"
+msgstr ""
+
+#: standard input:512
+msgid "38"
+msgstr ""
+
+#: standard input:513
+msgid "39"
+msgstr ""
+
+#: standard input:404
+msgid "3rd"
+msgstr ""
+
+#: standard input:514
+msgid "40"
+msgstr ""
+
+#: standard input:515
+msgid "41"
+msgstr ""
+
+#: standard input:516
+msgid "42"
+msgstr ""
+
+#: standard input:517
+msgid "43"
+msgstr ""
+
+#: standard input:518
+msgid "44"
+msgstr ""
+
+#: standard input:519
+msgid "45"
+msgstr ""
+
+#: standard input:520
+msgid "46"
+msgstr ""
+
+#: standard input:521
+msgid "47"
+msgstr ""
+
+#: standard input:522
+msgid "48"
+msgstr ""
+
+#: standard input:523
+msgid "49"
+msgstr ""
+
+#: standard input:405
+msgid "4th"
+msgstr ""
+
+#: standard input:524
+msgid "50"
+msgstr ""
+
+#: standard input:525
+msgid "51"
+msgstr ""
+
+#: standard input:526
+msgid "52"
+msgstr ""
+
+#: standard input:527
+msgid "53"
+msgstr ""
+
+#: standard input:528
+msgid "54"
+msgstr ""
+
+#: standard input:529
+msgid "55"
+msgstr ""
+
+#: standard input:530
+msgid "56"
+msgstr ""
+
+#: standard input:531
+msgid "57"
+msgstr ""
+
+#: standard input:532
+msgid "58"
+msgstr ""
+
+#: standard input:533
+msgid "59"
+msgstr ""
+
+#: standard input:406
+msgid "5th"
+msgstr ""
+
+#: standard input:407
+msgid "6th"
+msgstr ""
+
+#: standard input:408
+msgid "7th"
+msgstr ""
+
+#: standard input:409
+msgid "8th"
+msgstr ""
+
+#: standard input:410
+msgid "9th"
+msgstr ""
 
 msgid ""
 ": Notebook not found.\n"
@@ -434,56 +882,69 @@ msgstr ""
 "Preparate para Fallo! (crash)"
 
 # standard
-#: input:507
+#: standard input:747
 msgid ";"
 msgstr ";"
 
 # standard
-#: input:256
+#: standard input:277
 msgid "< operator"
 msgstr "operador <"
 
 # standard
-#: input:175
-#: input:449
+#: standard input:179 input:689
 msgid "<<"
 msgstr "u<<"
 
-#: src/ui/frmHelp.cpp:127
+#: src/agent/dlgSchedule.cpp:160 src/agent/dlgSchedule.cpp:165
+#: src/agent/dlgSchedule.cpp:241 src/agent/dlgSchedule.cpp:246
+#: src/agent/dlgSchedule.cpp:259 src/agent/dlgSchedule.cpp:266
+#: src/agent/dlgSchedule.cpp:291 src/agent/dlgSchedule.cpp:296
+#: src/agent/dlgSchedule.cpp:312 src/agent/dlgSchedule.cpp:319
+#: src/agent/dlgSchedule.cpp:518 src/agent/dlgSchedule.cpp:526
+#: src/agent/dlgSchedule.cpp:546 src/agent/dlgSchedule.cpp:554
+msgid "<any>"
+msgstr ""
+
+#: src/frm/frmHelp.cpp:127
 #, c-format
 msgid "<html><body>Loading %s</body></html>"
 msgstr "<html><body>Cargando %s</body></html>"
 
-#: src/ui/dlgColumn.cpp:136
+#: src/dlg/dlgColumn.cpp:137
 #, fuzzy
 msgid "<new sequence>"
 msgstr "Nova Secuencia"
 
-#: src/schema/pgTable.cpp:384
+#: src/schema/pgTable.cpp:392
 #, fuzzy
 msgid "<no primary key>"
 msgstr "Chave Primaria"
 
+#: src/slony/dlgRepCluster.cpp:266 src/slony/dlgRepCluster.cpp:309
 msgid "<none>"
 msgstr "<nada>"
 
 # standard
-#: input:257
+#: standard input:278
 msgid "> operator"
 msgstr "operador >"
 
 # standard
-#: input:174
-#: input:448
+#: standard input:178 input:688
 msgid ">>"
 msgstr ">>"
 
-#: src/ui/frmStatus.cpp:774
+#: src/frm/frmUpdate.cpp:72
+msgid "@@@pgAdmin internal: Translated string count"
+msgstr ""
+
+#: src/frm/frmStatus.cpp:782
 #, fuzzy
 msgid "A cancel signal was sent to the selected server process(es)."
 msgstr "Conectar ó servidor seleccionado"
 
-#: src/utils/sysLogger.cpp:77
+#: src/base/sysLogger.cpp:77
 msgid ""
 "A fatal error has occured:\n"
 "\n"
@@ -491,154 +952,191 @@ msgstr ""
 "Ocurreu un erro fatal:\n"
 "\n"
 
-#: src/ui/frmStatus.cpp:811
+#: standard input:904
+msgid "A new program version is available and a very long string it is"
+msgstr ""
+
+#: src/frm/frmStatus.cpp:819
 msgid "A terminate signal was sent to the selected server process(es)."
 msgstr ""
 
-#: src/schema/pgDatabase.cpp:337
-#: src/schema/pgFunction.cpp:117
-#: src/schema/pgLanguage.cpp:64
-#: src/schema/pgSchema.cpp:157
-#: src/schema/pgSequence.cpp:93
-#: src/schema/pgTable.cpp:382
-#: src/schema/pgTablespace.cpp:134
-#: src/schema/pgView.cpp:85
+#: src/schema/pgDatabase.cpp:364 src/schema/pgFunction.cpp:135
+#: src/schema/pgLanguage.cpp:67 src/schema/pgSchema.cpp:166
+#: src/schema/pgSequence.cpp:94 src/schema/pgTable.cpp:390
+#: src/schema/pgTablespace.cpp:128 src/schema/pgView.cpp:89
 msgid "ACL"
 msgstr "ACL"
 
 # standard
-#: input:392
+#: standard input:631
 msgid "AFTER"
 msgstr "AFTER"
 
 # standard
-#: input:544
-#: input:549
+#: standard input:792 input:797
 msgid "ANALYZE"
 msgstr "ANALYZE"
 
 # standard
-#: input:622
+#: standard input:873
 msgid "AND"
 msgstr "AND"
 
+#: src/agent/pgaJob.cpp:144 src/agent/pgaJob.cpp:220 src/agent/pgaStep.cpp:195
+msgid "Aborted"
+msgstr ""
+
 # standard
-#: input:99
+#: standard input:115
 #, fuzzy
 msgid "Accept the current options and close the dialogue."
 msgstr "Aceptar a configuración actual e cerrar este diálogo."
 
 # standard
-#: input:594
-#: input:596
+#: standard input:845 input:847
 msgid "Accept the current settings and close the dialogue."
 msgstr "Aceptar a configuración actual e cerrar este diálogo."
 
 # standard
-#: input:184
-#: src/schema/pgIndex.cpp:210
-#: src/schema/pgIndexConstraint.cpp:106
-#: src/schema/pgOperatorClass.cpp:162
+#: src/schema/pgIndex.cpp:213 src/schema/pgIndexConstraint.cpp:106
+#: src/schema/pgOperatorClass.cpp:165 standard input:199
 msgid "Access method"
 msgstr "Método de acceso"
 
 # standard
-#: input:443
-#: src/schema/pgUser.cpp:208
+#: src/schema/pgUser.cpp:208 standard input:683
 msgid "Account expires"
 msgstr "A conta caduca"
 
+#: src/slony/slNode.cpp:95 src/slony/slNode.cpp:261
+msgid "Acks outstanding"
+msgstr ""
+
 # standard
-#: input:129
-#: src/schema/pgRule.cpp:66
+#: src/schema/pgRule.cpp:69 standard input:130
 msgid "Action"
 msgstr "Acción"
 
 # standard
-#: input:127
-#: input:161
-#: input:190
-#: input:202
-#: input:221
-#: input:225
-#: input:297
-#: input:364
-#: input:368
-#: input:371
+#: src/slony/slNode.cpp:172 src/slony/slSequence.cpp:79
+#: src/slony/slSubscription.cpp:121
+#, fuzzy
+msgid "Active"
+msgstr "Acción"
+
+# standard
+#: standard input:128 input:162 input:205 input:217 input:237 input:241
+#: input:538 input:603 input:607 input:610
 msgid "Add"
 msgstr "Engadir"
 
-#: src/ui/frmMain.cpp:249
+# standard
+#: src/schema/pgObject.cpp:102
+#, fuzzy
+msgid "Add Sequence"
+msgstr "Secuencia"
+
+#: src/schema/pgObject.cpp:102
+msgid "Add Sequence to Set."
+msgstr ""
+
+#: src/frm/frmMain.cpp:288
 msgid "Add Server"
 msgstr "Engadir Servidor"
 
 # standard
-#: input:470
+#: src/schema/pgObject.cpp:104
+#, fuzzy
+msgid "Add Table"
+msgstr "Engadir Táboas/Vistas"
+
+#: src/schema/pgObject.cpp:104
+#, fuzzy
+msgid "Add Table to Set."
+msgstr "Non Táboa o vista"
+
+# standard
+#: standard input:710
 msgid "Add Tables/Views"
 msgstr "Engadir Táboas/Vistas"
 
-#: src/ui/frmMain.cpp:157
-#: src/ui/frmMain.cpp:249
+#: src/frm/frmMain.cpp:169 src/frm/frmMain.cpp:288
 msgid "Add a connection to a server."
 msgstr "Engadir unha conexión o servidor."
 
-#: src/schema/pgObject.cpp:79
+#: src/schema/pgObject.cpp:81
 msgid "Add a new Check Constraint."
 msgstr "Engadir unha nova Restricción Check."
 
-#: src/schema/pgObject.cpp:69
+#: src/schema/pgObject.cpp:71
 msgid "Add a new Column."
 msgstr "Engadir unha Columna nova."
 
-#: src/schema/pgObject.cpp:80
+#: src/schema/pgObject.cpp:82
 msgid "Add a new Foreign Key."
 msgstr "Engadir unha nova Chave Allea."
 
-#: src/schema/pgObject.cpp:71
+#: src/schema/pgObject.cpp:73
 msgid "Add a new Index."
 msgstr "Engadir un novo Índice."
 
-#: src/schema/pgObject.cpp:75
+#: src/schema/pgObject.cpp:77
 msgid "Add a new Trigger."
 msgstr "Engadir un novo Disparador."
 
-#: src/schema/pgObject.cpp:78
+#: src/schema/pgObject.cpp:80
 msgid "Add a new Unique Constraint."
 msgstr "Engadir unha nova Restricción Unique ."
 
 msgid "Add a table or view to the datagram."
 msgstr "Engadir unha táboa ou vista ó datagrama"
 
-#: src/ui/dlgServer.cpp:181
+# standard
+#: src/agent/dlgSchedule.cpp:232 src/agent/dlgSchedule.cpp:254
+#: src/agent/dlgSchedule.cpp:261 src/agent/dlgSchedule.cpp:268
+#: src/agent/dlgSchedule.cpp:282 src/agent/dlgSchedule.cpp:307
+#: src/agent/dlgSchedule.cpp:314 src/agent/dlgSchedule.cpp:321
+#, fuzzy
+msgid "Add exception"
+msgstr "Acción"
+
+#: src/dlg/dlgServer.cpp:186
 #, fuzzy
 msgid "Add server"
 msgstr "Engadir Servidor"
 
 # standard
-#: input:102
+#: standard input:102
 msgid "Add the select column for ascending sort."
 msgstr ""
 
 # standard
-#: input:104
 msgid "Add the select column for descending sort."
 msgstr ""
 
 # standard
-#: input:74
-#: input:434
-#: input:453
-#: src/ui/ctlSecurityPanel.cpp:79
+#: src/ctl/ctlSecurityPanel.cpp:81 standard input:74 input:673 input:693
 msgid "Add/Change"
 msgstr "Engadir/Cambiar"
 
 # standard
-#: input:327
+#: standard input:566
 #, fuzzy
 msgid "Address"
 msgstr "Engadir"
 
-#: src/schema/pgObject.cpp:81
+#: standard input:290
+msgid "Admin Node"
+msgstr ""
+
+#: src/slony/slCluster.cpp:266
+msgid "Admin node"
+msgstr ""
+
+#: src/slony/slCluster.cpp:265
+msgid "Admin node ID"
+msgstr ""
+
 #, fuzzy
 msgid "Agent"
 msgstr "Alineación"
@@ -655,16 +1153,31 @@ msgid "Alias"
 msgstr "Alias"
 
 # standard
-#: input:419
-#: src/schema/pgType.cpp:134
+#: src/schema/pgType.cpp:138 standard input:658
 msgid "Alignment"
 msgstr "Alineación"
 
-#: src/schema/pgDatabase.cpp:353
+#: xtra/pgagent/connection.cpp:117
+#, fuzzy
+msgid "Allocating existing connection to database "
+msgstr "Engadir unha conexión o servidor."
+
+#: xtra/pgagent/connection.cpp:133
+#, fuzzy
+msgid "Allocating new connection to database "
+msgstr "Engadir unha conexión o servidor."
+
+#: src/schema/pgDatabase.cpp:380
 msgid "Allow connections?"
 msgstr "Permitir conexións?"
 
-#: src/utils/sysLogger.cpp:83
+# standard
+#: src/slony/slTable.cpp:100
+#, fuzzy
+msgid "Altered"
+msgstr "Confianza"
+
+#: src/base/sysLogger.cpp:83
 msgid ""
 "An error has occured:\n"
 "\n"
@@ -672,242 +1185,271 @@ msgstr ""
 "Ocurreu un erro:\n"
 "\n"
 
-#: src/ui/frmQuery.cpp:134
+#: src/agent/dlgSchedule.cpp:261 src/agent/dlgSchedule.cpp:314
+msgid "An exception already exists for any time on this date!"
+msgstr ""
+
+#: src/agent/dlgSchedule.cpp:268 src/agent/dlgSchedule.cpp:321
+msgid "An exception already exists for this time on any date!"
+msgstr ""
+
+#: standard input:906
+msgid "An updated translation is available"
+msgstr ""
+
+#: src/frm/frmQuery.cpp:130
 msgid "Analyze"
 msgstr "Analizar"
 
+#: src/agent/pgaSchedule.cpp:296
+msgid "Any day of the week"
+msgstr ""
+
 # standard
-#: input:167
-#: input:467
+#: standard input:171 input:707
 msgid "Apply"
 msgstr ""
 
-#: src/ui/frmMain.cpp:187
-#: src/ui/frmMain.cpp:258
+#: src/frm/frmMain.cpp:206 src/frm/frmMain.cpp:297
 #, fuzzy
 msgid "Apply a filter and view the data in the selected object."
 msgstr "Ver os datos do obxeto seleccionado."
 
-#: src/ui/frmStatus.cpp:738
+#: src/agent/pgaSchedule.cpp:375 standard input:438
+msgid "April"
+msgstr ""
+
+#: src/frm/frmStatus.cpp:746
 msgid "Are you sure the logfile should be rotated?"
 msgstr ""
 
-#: src/ui/events.cpp:249
+#: src/frm/frmConfig.cpp:222
+#, fuzzy
+msgid "Are you sure you want trigger the server to reload its configuration?"
+msgstr "Está seguro de que desexa eliminar %s %s?"
+
 #, fuzzy
 msgid "Are you sure you wish shutdown this server?"
 msgstr "Está seguro de que desexa eliminar %s %s?"
 
-#: src/ui/frmStatus.cpp:757
+#: src/frm/frmStatus.cpp:765
 #, fuzzy
 msgid "Are you sure you wish to cancel the selected query(s)?"
 msgstr "Está seguro de que desexa eliminar %s %s?"
 
-#: src/ui/events.cpp:1213
+#: src/frm/frmEditGrid.cpp:506
+#, fuzzy
+msgid "Are you sure you wish to delete the selected row(s)?"
+msgstr "Está seguro de que desexa eliminar %s %s?"
+
+#: src/main/events.cpp:1349
+#, fuzzy, c-format
+msgid ""
+"Are you sure you wish to drop %s %s including all objects that depend on it?"
+msgstr "Está seguro de que desexa eliminar %s %s?"
+
+#: src/main/events.cpp:1355
 #, c-format
 msgid "Are you sure you wish to drop %s %s?"
 msgstr "Está seguro de que desexa eliminar %s %s?"
 
-#: src/ui/events.cpp:1162
+#: src/main/events.cpp:1279
+#, fuzzy
+msgid ""
+"Are you sure you wish to drop multiple objects including all objects that "
+"depend on them?"
+msgstr "Está seguro de que desexa eliminar %s %s?"
+
+#: src/main/events.cpp:1284
 #, fuzzy
 msgid "Are you sure you wish to drop multiple objects?"
 msgstr "Está seguro de que desexa eliminar %s %s?"
 
-#: src/ui/frmStatus.cpp:793
+#: src/main/events.cpp:273
+#, fuzzy
+msgid "Are you sure you wish to shutdown this server?"
+msgstr "Está seguro de que desexa eliminar %s %s?"
+
+#: src/frm/frmStatus.cpp:801
 #, fuzzy
 msgid "Are you sure you wish to terminate the selected server process(es)?"
 msgstr "Está seguro de que desexa eliminar %s %s?"
 
-#: src/schema/pgFunction.cpp:101
+#: src/schema/pgFunction.cpp:118
 msgid "Argument count"
 msgstr "Argumento count"
 
 # standard
-#: input:146
-#: input:159
-#: input:389
-#: src/schema/pgFunction.cpp:102
+#: src/schema/pgFunction.cpp:119 standard input:147 input:160 input:628
 msgid "Arguments"
 msgstr "Argumentos"
 
 # standard
-#: input:101
-#: src/ui/dlgEditGridOptions.cpp:125
-#: src/ui/dlgEditGridOptions.cpp:147
-#: src/ui/dlgEditGridOptions.cpp:180
+#: src/dlg/dlgEditGridOptions.cpp:125 src/dlg/dlgEditGridOptions.cpp:147
+#: src/dlg/dlgEditGridOptions.cpp:180 standard input:101
 msgid "Ascending"
 msgstr ""
 
+#: src/agent/pgaSchedule.cpp:391 standard input:442
+msgid "August"
+msgstr ""
+
 # standard
-#: input:121
+#: standard input:122
 msgid "Auto FK index"
 msgstr ""
 
 # standard
-#: input:108
+#: standard input:99
 #, fuzzy
 msgid "Available Columns"
 msgstr "Columnas da Táboa dereita"
 
-#: src/schema/pgColumn.cpp:243
+#: src/schema/pgColumn.cpp:233
 msgid "Average Width"
 msgstr ""
 
 # standard
-#: input:391
+#: standard input:630
 msgid "BEFORE"
 msgstr "BEFORE"
 
-#: src/ui/frmHelp.cpp:55
+#: src/frm/frmHelp.cpp:55
 msgid "Back"
 msgstr "Atrás"
 
-#: src/ui/frmHelp.cpp:55
+#: src/frm/frmHelp.cpp:55
 msgid "Back to previous page."
 msgstr "Volver á páxina anterior."
 
-#: src/schema/pgDatabase.cpp:478
+#: src/dlg/dlgMainConfig.cpp:50
+msgid "Backend - overridable in individual backend"
+msgstr ""
+
+#: src/schema/pgDatabase.cpp:505
 #, fuzzy
 msgid "Backends"
 msgstr "Atrás"
 
 # standard
-#: input:478
+#: standard input:718
 #, fuzzy
 msgid "Backup"
 msgstr "Atrás"
 
-#: src/ui/frmBackup.cpp:67
+#: src/frm/frmBackup.cpp:67
 #, c-format
 msgid "Backup %s %s"
 msgstr ""
 
-#: src/ui/frmBackup.cpp:106
-#: src/ui/frmRestore.cpp:131
+#: src/frm/frmBackup.cpp:121 src/frm/frmRestore.cpp:131
 #, fuzzy
 msgid "Backup files (*.backup)|*.backup|All files (*.*)|*.*"
 msgstr "Arquivos de consultas (*.sql)|*.sql|Todos os arquivos (*.*)|*.*"
 
 # standard
-#: input:85
-#: src/schema/pgDomain.cpp:96
+#: src/schema/pgDomain.cpp:100 standard input:85
 msgid "Base type"
 msgstr "Tipo Base"
 
 # standard
-#: input:345
+#: src/agent/pgaStep.cpp:111 standard input:584
 #, fuzzy
 msgid "Batch"
 msgstr "Ruta"
 
 # standard
-#: input:486
+#: standard input:726
 #, fuzzy
 msgid "Blobs"
 msgstr "Cerrar"
 
-#: src/schema/pgDatabase.cpp:482
+#: src/schema/pgDatabase.cpp:509
 msgid "Blocks Hit"
 msgstr ""
 
-#: src/schema/pgDatabase.cpp:481
+#: src/schema/pgDatabase.cpp:508
 msgid "Blocks Read"
 msgstr ""
 
 # standard
-#: input:585
+#: standard input:836
 msgid "Browse for a logfile."
 msgstr "Visualizar dun arquivo log"
 
-#: src/ui/frmMain.cpp:158
+#: src/frm/frmMain.cpp:170
 msgid "C&hange password..."
 msgstr "Cambiar a contrasinal..."
 
-#: src/ui/frmQuery.cpp:122
+#: src/frm/frmQuery.cpp:118
 msgid "C&lear window"
 msgstr "Borrar a Ventá"
 
 # standard
-#: input:132
-#: input:137
+#: standard input:133 input:138
 msgid "CASCADE"
 msgstr "CASCADE"
 
 # standard
-#: input:483
+#: standard input:723
 msgid "COMPRESS"
 msgstr ""
 
 # standard
-#: input:505
+#: standard input:745
 msgid "CR/LF"
 msgstr "CR/LF"
 
 # standard
-#: input:617
+#: standard input:868
 msgid "CROSS JOIN"
 msgstr "CROSS JOIN"
 
-#: src/ui/frmExport.cpp:267
+#: src/frm/frmExport.cpp:271
 msgid "CSV files (*.csv)|*.csv|Data files (*.dat)|*.dat|All files (*.*)|*.*"
-msgstr "Arquivos CSV (*.csv)|*.csv|Arquivos data (*.dat)|*.dat|Todos os arquivos (*.*)|*.*"
+msgstr ""
+"Arquivos CSV (*.csv)|*.csv|Arquivos data (*.dat)|*.dat|Todos os arquivos (*."
+"*)|*.*"
 
 # standard
-#: input:320
-#: src/schema/pgSequence.cpp:98
+#: src/schema/pgSequence.cpp:99 standard input:559
 msgid "Cache"
 msgstr "Cache"
+
+#: standard input:357
+#, fuzzy
+msgid "Can forward"
+msgstr "Adiante"
 
 msgid "Can't add another column to the query."
 msgstr "Non podo engadir outra columna á consulta."
 
+#: src/slony/slFunctions.cpp:71
+msgid "Can't restart node"
+msgstr ""
+
 # standard
-#: input:13
-#: input:24
-#: input:33
-#: input:46
-#: input:64
-#: input:80
-#: input:94
-#: input:96
-#: input:142
-#: input:169
-#: input:180
-#: input:194
-#: input:206
-#: input:229
-#: input:240
-#: input:262
-#: input:277
-#: input:301
-#: input:310
-#: input:325
-#: input:338
-#: input:355
-#: input:375
-#: input:383
-#: input:400
-#: input:438
-#: input:459
-#: input:469
-#: input:642
-#: input:645
-#: src/ui/frmQuery.cpp:197
+#: src/frm/frmQuery.cpp:194 src/frm/frmStatus.cpp:96 src/frm/frmStatus.cpp:97
+#: standard input:13 input:24 input:33 input:46 input:64 input:80 input:94
+#: input:112 input:143 input:173 input:184 input:195 input:209 input:221
+#: input:245 input:255 input:261 input:283 input:294 input:304 input:311
+#: input:317 input:324 input:331 input:338 input:345 input:352 input:360
+#: input:369 input:384 input:542 input:550 input:564 input:577 input:594
+#: input:614 input:622 input:639 input:677 input:699 input:709 input:893
+#: input:896
 msgid "Cancel"
 msgstr "Cancelar"
 
 # standard
-#: input:97
-#: input:598
+#: standard input:113 input:849
 msgid "Cancel any changes and close the dialogue."
 msgstr "Cancelar os cambios e cerrar o diálogo."
 
-#: src/ui/frmQuery.cpp:140
-#: src/ui/frmQuery.cpp:197
-#: src/ui/frmStatus.cpp:774
+#: src/frm/frmQuery.cpp:136 src/frm/frmQuery.cpp:194 src/frm/frmStatus.cpp:782
 msgid "Cancel query"
 msgstr "Cancelar a consulta"
 
-#: src/ui/frmStatus.cpp:757
+#: src/frm/frmStatus.cpp:765
 #, fuzzy
 msgid "Cancel query?"
 msgstr "Cancelar a consulta"
@@ -915,25 +1457,33 @@ msgstr "Cancelar a consulta"
 msgid "Cancelled"
 msgstr "Cancelado"
 
-#: src/ui/frmQuery.cpp:855
+#: src/frm/frmQuery.cpp:773
 msgid "Cancelling."
 msgstr "Cancelando."
 
-#: src/ui/events.cpp:1153
+#: xtra/pgagent/connection.cpp:104
+msgid "Cannot allocate connection - no database specified!"
+msgstr ""
+
+#: xtra/pgagent/unix.cpp:62 xtra/pgagent/unix.cpp:71
+msgid "Cannot disassociate from controlling TTY"
+msgstr ""
+
+#: src/main/events.cpp:1300
 #, fuzzy, c-format
 msgid "Cannot drop system %s"
 msgstr "Non podo eliminar o sistema %s %s."
 
-#: src/ui/events.cpp:1204
+#: src/main/events.cpp:1337
 #, c-format
 msgid "Cannot drop system %s %s."
 msgstr "Non podo eliminar o sistema %s %s."
 
-#: src/pgAdmin3.cpp:327
+#: src/base/appbase.cpp:191
 msgid "Cannot initialise the networking subsystem!"
 msgstr "Non podo inicializar o subsistema de rede!"
 
-#: src/utils/sysLogger.cpp:196
+#: src/base/sysLogger.cpp:195
 msgid "Cannot open the logfile!"
 msgstr "Non podo abrir o arquivo log!"
 
@@ -945,243 +1495,283 @@ msgstr ""
 msgid "Casts"
 msgstr ""
 
+#: src/dlg/dlgMainConfig.cpp:114
+msgid "Category: "
+msgstr ""
+
 # standard
-#: input:160
-#: input:220
-#: input:224
-#: input:296
-#: input:367
+#: standard input:161 input:236 input:240 input:537 input:606
 msgid "Change"
 msgstr "Cambiar"
 
 # standard
-#: input:599
+#: standard input:850
 msgid "Change Password"
 msgstr "Cambiar Contrasinal"
 
-#: src/ui/frmMain.cpp:158
+#: src/frm/frmMain.cpp:170
 msgid "Change your password."
 msgstr "Cambie a sua Contrasinal"
 
 # standard
-#: input:214
+#: src/agent/pgaJob.cpp:89 standard input:230
 #, fuzzy
 msgid "Changed"
 msgstr "Cambiar"
 
-#: src/ui/dlgProperty.cpp:560
-#: src/ui/dlgProperty.cpp:562
+#: src/dlg/dlgProperty.cpp:553
 msgid "Changes applied."
 msgstr ""
 
 msgid ""
-"Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n"
+"Changing the 'Show System Objects' option will cause all connections to be "
+"closed, and the treeview to be rebuilt.\n"
 "\n"
 "Are you sure you wish to continue?"
 msgstr ""
-"O cambio da opción 'Mostrar Obxetos do Sistema' causará que todas as conexións sean cerradas, e o arbol de visualización sexa reconstruido.\n"
+"O cambio da opción 'Mostrar Obxetos do Sistema' causará que todas as "
+"conexións sean cerradas, e o arbol de visualización sexa reconstruido.\n"
 "\n"
 ". ¿Está seguro de que desexa continuar?"
 
 # standard
-#: input:29
-#: input:87
-#: src/schema/pgDomain.cpp:100
-#: src/schema/pgObject.cpp:79
-#: src/ui/dlgTable.cpp:475
+#: src/dlg/dlgTable.cpp:509 src/schema/pgDomain.cpp:104
+#: src/schema/pgObject.cpp:81 standard input:29 input:87
 msgid "Check"
 msgstr "Comprobación"
 
-#: src/ui/frmIndexcheck.cpp:49
+#: src/frm/frmIndexcheck.cpp:49
 #, c-format
 msgid "Check Foreign Key indexes on %s %s"
 msgstr ""
 
 # standard
-#: input:528
-#: input:535
+#: standard input:768 input:783
 #, fuzzy
 msgid "Check all"
 msgstr "Comprobación"
 
 #, c-format
 msgid "Check for unbalanced single quote marks in the condition for row #%d."
-msgstr "Comprobar comiñas simples non balanceadas na condición para la fila #%d."
+msgstr ""
+"Comprobar comiñas simples non balanceadas na condición para la fila #%d."
 
-#: src/schema/pgForeignKey.cpp:153
+#: src/frm/frmMain.cpp:249 standard input:903
+msgid "Check online for updates"
+msgstr ""
+
+#: xtra/pgagent/pgAgent.cpp:83
+msgid "Checking for jobs to run"
+msgstr ""
+
+#: src/dlg/dlgServer.cpp:100
+#, fuzzy
+msgid "Checking server status"
+msgstr "Estado do &Servidor"
+
+#: src/schema/pgForeignKey.cpp:157
 msgid "Child columns"
 msgstr "Columnas fillo"
 
 # standard
-#: input:620
+#: standard input:871
 msgid "Choose the operator for comparison."
 msgstr "Escolla o operador de comparación."
 
-#: src/ui/frmQuery.cpp:122
-#: src/ui/frmQuery.cpp:187
+#: src/frm/frmQuery.cpp:118 src/frm/frmQuery.cpp:184
 msgid "Clear edit window"
 msgstr "Borrar a ventá de edición"
 
-#: src/ui/frmQuery.cpp:138
+#: src/frm/frmQuery.cpp:134
 msgid "Clear history"
 msgstr "Borrar historial"
 
-#: src/ui/frmQuery.cpp:138
+#: src/frm/frmQuery.cpp:134
 msgid "Clear history window."
 msgstr "Borrar ventá de historial."
 
-#: src/ui/frmQuery.cpp:187
+#: src/frm/frmQuery.cpp:184
 msgid "Clear window"
 msgstr "Borrar Ventá"
 
+#: xtra/pgagent/connection.cpp:164
+#, fuzzy
+msgid "Clearing all connections"
+msgstr "Permitir conexións?"
+
+#: xtra/pgagent/connection.cpp:166
+#, fuzzy
+msgid "Clearing inactive connections"
+msgstr "Crear unha nova conexión a Servidor."
+
+#: xtra/pgagent/pgAgent.cpp:35
+msgid "Clearing zombies"
+msgstr ""
+
+#: standard input:185
+msgid "Client Access Configuration"
+msgstr ""
+
 # standard
-#: input:651
+#: standard input:902
 msgid "Close"
 msgstr "Cerrar"
 
-#: src/ui/frmMain.cpp:561
-msgid "Close database browser? If you abort, the object browser will not show accurate data."
+#: src/frm/frmMain.cpp:601
+msgid ""
+"Close database browser? If you abort, the object browser will not show "
+"accurate data."
 msgstr ""
 
-#: src/ui/frmMain.cpp:591
-msgid "Close server browser? If you abort, the object browser will not show accurate data."
+#: src/frm/frmMain.cpp:631
+msgid ""
+"Close server browser? If you abort, the object browser will not show "
+"accurate data."
 msgstr ""
 
 msgid "Close this Window."
 msgstr "Cerrar esta Ventá."
 
 # standard
-#: input:186
+#: standard input:300
+#, fuzzy
+msgid "Cluster"
+msgstr "Confianza"
+
+# standard
+#: standard input:288
+#, fuzzy
+msgid "Cluster name"
+msgstr "Confianza"
+
+# standard
+#: standard input:201
 #, fuzzy
 msgid "Clustered"
 msgstr "Confianza"
 
-#: src/schema/pgIndex.cpp:209
-#: src/schema/pgIndexConstraint.cpp:105
+#: src/schema/pgIndex.cpp:212 src/schema/pgIndexConstraint.cpp:105
 msgid "Clustered?"
 msgstr ""
 
-#: src/schema/pgObject.cpp:69
+#: src/agent/pgaStep.cpp:61
+#, fuzzy
+msgid "Code"
+msgstr "Modo SSL"
+
+#: src/schema/pgObject.cpp:71
 msgid "Column"
 msgstr "Columna"
 
-#: src/ui/dlgEditGridOptions.cpp:91
-#: src/ui/dlgTable.cpp:83
+#: src/dlg/dlgEditGridOptions.cpp:91 src/dlg/dlgTable.cpp:87
 msgid "Column name"
 msgstr "Nome de columna"
 
 # standard
-#: input:513
+#: standard input:753
 msgid "Column names"
 msgstr "Nomes de columnas"
 
-#: src/db/pgSet.cpp:144
 msgid "Column not found in pgSet: "
 msgstr "Non se encontra a columna en pgSet: "
 
+#: src/base/pgSetBase.cpp:145
+#, fuzzy
+msgid "Column not found in pgSetBase: "
+msgstr "Non se encontra a columna en pgSet: "
+
 # standard
-#: input:506
+#: standard input:746
 msgid "Column separator"
 msgstr "Separador de columna"
 
 # standard
-#: input:124
-#: input:189
-#: input:201
-#: input:366
-#: src/schema/pgIndex.cpp:204
-#: src/schema/pgIndexConstraint.cpp:97
-#: src/schema/pgObject.cpp:68
-#: src/ui/dlgIndex.cpp:53
-#: src/ui/dlgIndex.cpp:63
+#: src/dlg/dlgIndex.cpp:54 src/dlg/dlgIndex.cpp:64 src/schema/pgIndex.cpp:207
+#: src/schema/pgIndexConstraint.cpp:97 src/schema/pgObject.cpp:70 standard
+#: input:125 input:204 input:216 input:605
 msgid "Columns"
 msgstr "Columnas"
 
 # standard
-#: input:10
-#: input:21
-#: input:30
-#: input:43
-#: input:61
-#: input:72
-#: input:91
-#: input:123
-#: input:157
-#: input:188
-#: input:200
-#: input:218
-#: input:237
-#: input:248
-#: input:273
-#: input:293
-#: input:307
-#: input:322
-#: input:351
-#: input:365
-#: input:380
-#: input:397
-#: input:408
-#: input:464
-#: src/schema/pgAggregate.cpp:87
-#: src/schema/pgCast.cpp:73
-#: src/schema/pgCheck.cpp:82
-#: src/schema/pgCollection.cpp:87
-#: src/schema/pgColumn.cpp:234
-#: src/schema/pgConversion.cpp:71
-#: src/schema/pgDatabase.cpp:358
-#: src/schema/pgDomain.cpp:103
-#: src/schema/pgForeignKey.cpp:164
-#: src/schema/pgFunction.cpp:119
-#: src/schema/pgIndex.cpp:213
-#: src/schema/pgIndexConstraint.cpp:109
-#: src/schema/pgLanguage.cpp:70
-#: src/schema/pgOperator.cpp:135
-#: src/schema/pgOperatorClass.cpp:172
-#: src/schema/pgRule.cpp:75
-#: src/schema/pgSchema.cpp:159
-#: src/schema/pgSequence.cpp:101
-#: src/schema/pgTable.cpp:401
-#: src/schema/pgTrigger.cpp:147
-#: src/schema/pgType.cpp:153
-#: src/schema/pgView.cpp:88
+#: src/agent/dlgJob.cpp:81 src/agent/dlgJob.cpp:85 src/agent/pgaJob.cpp:98
+#: src/agent/pgaSchedule.cpp:70 src/agent/pgaStep.cpp:64
+#: src/frm/frmMainConfig.cpp:147 src/schema/pgAggregate.cpp:93
+#: src/schema/pgCast.cpp:77 src/schema/pgCheck.cpp:82
+#: src/schema/pgCollection.cpp:103 src/schema/pgColumn.cpp:224
+#: src/schema/pgConversion.cpp:75 src/schema/pgDatabase.cpp:385
+#: src/schema/pgDomain.cpp:107 src/schema/pgForeignKey.cpp:170
+#: src/schema/pgFunction.cpp:137 src/schema/pgIndex.cpp:216
+#: src/schema/pgIndexConstraint.cpp:109 src/schema/pgLanguage.cpp:73
+#: src/schema/pgOperator.cpp:138 src/schema/pgOperatorClass.cpp:175
+#: src/schema/pgRule.cpp:78 src/schema/pgSchema.cpp:168
+#: src/schema/pgSequence.cpp:102 src/schema/pgTable.cpp:409
+#: src/schema/pgTrigger.cpp:150 src/schema/pgType.cpp:157
+#: src/schema/pgView.cpp:92 src/slony/slCluster.cpp:269
+#: src/slony/slNode.cpp:174 src/slony/slSet.cpp:80 src/slony/slSet.cpp:174
+#: src/slony/slTable.cpp:101 standard input:10 input:21 input:30 input:43
+#: input:61 input:72 input:91 input:124 input:158 input:203 input:215
+#: input:234 input:252 input:258 input:269 input:291 input:314 input:328
+#: input:335 input:365 input:380 input:391 input:547 input:561 input:590
+#: input:604 input:619 input:636 input:647 input:704
 msgid "Comment"
 msgstr "Comentario"
 
 # standard
-#: input:252
-#: src/schema/pgOperator.cpp:125
+#: src/schema/pgOperator.cpp:128 standard input:273
 msgid "Commutator"
 msgstr "Conmutador"
 
+#: xtra/pgagent/job.cpp:74
+msgid "Completed job: "
+msgstr ""
+
 # standard
-#: input:406
+#: standard input:645
 msgid "Composite"
 msgstr "Composto"
 
 # standard
-#: input:272
-#: src/schema/pgRule.cpp:64
+#: src/schema/pgRule.cpp:67 standard input:379
 msgid "Condition"
 msgstr "Condición"
 
+#: src/frm/frmConfig.cpp:239 src/frm/frmConfig.cpp:271
+#, fuzzy
+msgid "Configuration files (*.conf)|*.conf|All files (*.*)|*.*"
+msgstr "Arquivos log (*.log)|*.log|Todos os Arquivos (*.*)|*.*"
+
+#: src/dlg/dlgMainConfig.cpp:89
+#, c-format
+msgid "Configuration setting \"%s\""
+msgstr ""
+
 # standard
-#: input:602
+#: standard input:853
 msgid "Confirm Password"
 msgstr "Confirmar contrasinal"
 
 # standard
-#: input:569
+#: standard input:818
 msgid "Confirm object deletion?"
 msgstr "¿Confirma eliminación do obxeto?"
 
-#: src/schema/pgUser.cpp:43
-#: src/ui/dlgUser.cpp:200
+#: src/dlg/dlgUser.cpp:215 src/schema/pgUser.cpp:43
 #, fuzzy
 msgid "Confirm superuser deletion"
 msgstr "¿Confirma eliminación do obxeto?"
 
+#: standard input:321
+#, fuzzy
+msgid "Conn retry"
+msgstr "&Conectar..."
+
+#: src/slony/slPath.cpp:82 standard input:320
+#, fuzzy
+msgid "Connect info"
+msgstr "&Conectar..."
+
 # standard
-#: input:47
+#: standard input:47
 #, fuzzy
 msgid "Connect to Server"
 msgstr "Conectar a un servidor"
@@ -1189,69 +1779,85 @@ msgstr "Conectar a un servidor"
 msgid "Connect to a Server"
 msgstr "Conectar a un servidor"
 
-#: src/ui/frmMain.cpp:182
+#: src/frm/frmMain.cpp:201
 msgid "Connect to the selected server."
 msgstr "Conectar ó servidor seleccionado"
 
-#: src/schema/pgDatabase.cpp:354
-#: src/schema/pgServer.cpp:507
+#: src/slony/slNode.cpp:173
+#, fuzzy
+msgid "Connected"
+msgstr "¿Conectado?"
+
+#: src/schema/pgDatabase.cpp:381 src/schema/pgServer.cpp:669
 msgid "Connected?"
 msgstr "¿Conectado?"
 
-#: src/schema/pgServer.cpp:290
+#: src/schema/pgServer.cpp:414
 #, fuzzy
 msgid "Connecting to database"
 msgstr "Conectar a un servidor"
 
-#: src/schema/pgServer.cpp:288
+#: src/schema/pgServer.cpp:412
 msgid "Connecting to database without password"
 msgstr ""
 
-#: src/ui/frmStatus.cpp:515
+#: src/frm/frmMain.cpp:733 src/main/events.cpp:693
+#, fuzzy, c-format
+msgid "Connecting to server %s (%s:%d)"
+msgstr "Engadir unha conexión o servidor."
+
+#: src/frm/frmStatus.cpp:523
 msgid "Connection broken."
 msgstr ""
 
-#: src/ui/frmMain.cpp:562
+#: xtra/pgagent/connection.cpp:217
+#, c-format
+msgid "Connection stats: total - %d, free - %d, deleted - %d"
+msgstr ""
+
+#: src/frm/frmMain.cpp:602
 #, c-format
 msgid "Connection to database %s lost."
 msgstr ""
 
-#: src/db/pgConn.cpp:356
+#: src/base/pgConnBase.cpp:405
 #, fuzzy
 msgid "Connection to database broken."
 msgstr "Engadir unha conexión o servidor."
 
-#: src/ui/frmMain.cpp:592
+#: src/frm/frmMain.cpp:632
 #, fuzzy, c-format
 msgid "Connection to server %s lost."
 msgstr "Engadir unha conexión o servidor."
 
 # standard
-#: input:187
-#: src/schema/pgIndex.cpp:211
-#: src/schema/pgIndexConstraint.cpp:107
-#: src/ui/frmRestore.cpp:421
+#: src/frm/frmRestore.cpp:424 src/schema/pgIndex.cpp:214
+#: src/schema/pgIndexConstraint.cpp:107 standard input:202
 msgid "Constraint"
 msgstr "Restricción"
 
-#: src/ui/dlgTable.cpp:88
+#: src/dlg/dlgTable.cpp:94
 msgid "Constraint name"
 msgstr "Nome da Restricción"
 
 # standard
-#: input:370
-#: src/schema/pgObject.cpp:76
+#: src/schema/pgObject.cpp:78 standard input:609
 msgid "Constraints"
 msgstr "Restriccións"
 
 # standard
-#: input:634
+#: standard input:885
 #, fuzzy
 msgid "Contents"
 msgstr "Contexto"
 
-#: src/schema/pgCast.cpp:70
+#: src/schema/pgCast.cpp:74
 msgid "Context"
+msgstr "Contexto"
+
+#: src/dlg/dlgMainConfig.cpp:115
+#, fuzzy
+msgid "Context: "
 msgstr "Contexto"
 
 msgid "Continue?"
@@ -1268,85 +1874,166 @@ msgstr "Conversións"
 msgid "Copied"
 msgstr "Copiado"
 
-#: src/ui/frmEditGrid.cpp:102
-#: src/ui/frmQuery.cpp:185
+#: src/frm/frmEditGrid.cpp:103 src/frm/frmQuery.cpp:182
 msgid "Copy"
 msgstr "Copiar"
 
 # standard
-#: input:579
+#: standard input:830
 msgid "Copy SQL from main form to SQL dialogue"
 msgstr "Copiar SQL dende o formulario principal ó diálogo SQL"
 
-#: src/ui/frmEditGrid.cpp:102
+#: src/frm/frmEditGrid.cpp:103
 #, fuzzy
 msgid "Copy selected lines to clipboard"
 msgstr "Copiar o texto seleccionado o portapapeis"
 
-#: src/ui/frmQuery.cpp:120
-#: src/ui/frmQuery.cpp:185
+#: src/frm/frmQuery.cpp:116 src/frm/frmQuery.cpp:182
 msgid "Copy selected text to clipboard"
 msgstr "Copiar o texto seleccionado o portapapeis"
 
-#: src/schema/pgColumn.cpp:248
+#: src/schema/pgColumn.cpp:238
 #, fuzzy
 msgid "Correlation"
 msgstr "Condición"
 
-#: src/db/pgConn.cpp:82
+#: src/main/events.cpp:250
+msgid ""
+"Could not contact pgAdmin web site to check for updates.\n"
+"Maybe your proxy option setting need adjustment."
+msgstr ""
+
+#: xtra/pgagent/pgAgent.cpp:146
+msgid ""
+"Could not find the table 'pgagent.pga_job'. Have you run pgagent.sql on this "
+"database?"
+msgstr ""
+
+#: xtra/pgagent/win32.cpp:280
+msgid "Could not open the message source registry key."
+msgstr ""
+
+#: src/base/pgConnBase.cpp:102
 #, c-format
 msgid "Could not resolve hostname %s"
 msgstr "Non podo resolver o nome de máquina %s"
 
-#: src/schema/pgServer.cpp:274
+#: xtra/pgagent/win32.cpp:286
+msgid "Could not set the event message file registry value."
+msgstr ""
+
+#: xtra/pgagent/win32.cpp:291
+#, fuzzy
+msgid "Could not set the supported types."
+msgstr "Non podo resolver o nome de máquina %s"
+
+#: src/schema/pgServer.cpp:398
 msgid "Couldn't create a connection dialogue!"
 msgstr "Non podo crear un diálogo de conexión!"
 
-#: src/schema/pgServer.cpp:297
+#: src/schema/pgServer.cpp:421
 msgid "Couldn't create a connection object!"
 msgstr "Non podo crear un obxeto conexión!"
 
-#: src/db/pgConn.cpp:330
+#: src/base/pgConnBase.cpp:378
 msgid "Couldn't create a pgSet object!"
 msgstr "Non podo crear un obxeto pgSet !"
 
-#: src/pgAdmin3.cpp:467
+#: xtra/pgagent/pgAgent.cpp:154
+#, fuzzy
+msgid "Couldn't create connection: "
+msgstr "Non podo crear un obxeto conexión!"
+
+#: xtra/pgagent/job.cpp:174 xtra/pgagent/job.cpp:175
+#, fuzzy
+msgid "Couldn't create temporary directory: "
+msgstr "Non podo crear a ventá principal!"
+
+#: xtra/pgagent/job.cpp:191 xtra/pgagent/job.cpp:192
+#, fuzzy
+msgid "Couldn't create temporary script file: "
+msgstr "Non podo crear a splash screen!"
+
+#: src/pgAdmin3.cpp:343
 msgid "Couldn't create the main window!"
 msgstr "Non podo crear a ventá principal!"
 
-#: src/pgAdmin3.cpp:313
+#: src/pgAdmin3.cpp:264
 msgid "Couldn't create the splash screen!"
 msgstr "Non podo crear a splash screen!"
 
-#: src/ui/events.cpp:218
+#: xtra/pgagent/job.cpp:235 xtra/pgagent/job.cpp:236
+msgid "Couldn't execute script: "
+msgstr ""
+
+#: xtra/pgagent/job.cpp:141
+#, fuzzy
+msgid "Couldn't get a connection to the database!"
+msgstr "Non podo crear un obxeto conexión!"
+
+#: xtra/pgagent/job.cpp:157 xtra/pgagent/job.cpp:158
+#, fuzzy
+msgid "Couldn't get a temporary filename!"
+msgstr "Non podo abrir un arquivo tips.txt!"
+
+#: src/main/events.cpp:228
 msgid "Couldn't open a tips.txt file!"
 msgstr "Non podo abrir un arquivo tips.txt!"
 
+#: xtra/pgagent/job.cpp:199 xtra/pgagent/job.cpp:200
+#, fuzzy
+msgid "Couldn't open temporary script file: "
+msgstr "Non podo abrir un arquivo tips.txt!"
+
+#: xtra/pgagent/win32.cpp:364
+#, fuzzy
+msgid "Couldn't register event handle."
+msgstr "Non podo crear a ventá principal!"
+
+#: xtra/pgagent/job.cpp:262
+msgid "Couldn't remove temporary directory: "
+msgstr ""
+
+#: xtra/pgagent/job.cpp:166 xtra/pgagent/job.cpp:167
+#, fuzzy
+msgid "Couldn't remove temporary file: "
+msgstr "Non podo abrir un arquivo tips.txt!"
+
+#: xtra/pgagent/job.cpp:255
+#, fuzzy
+msgid "Couldn't remove temporary script file: "
+msgstr "Non podo abrir un arquivo tips.txt!"
+
+#: xtra/pgagent/job.cpp:218 xtra/pgagent/job.cpp:219
+#, fuzzy
+msgid "Couldn't write to temporary script file: "
+msgstr "Fallo ó escribir no arquivo de saida: %s"
+
 # standard
-#: input:578
+#: standard input:829
 msgid "Count rows if estimated less than"
 msgstr "Contar filas si se estiman menor que"
 
-#: src/ui/frmMain.cpp:201
+#: src/frm/frmMain.cpp:237
 #, fuzzy
 msgid "Count rows in the selected object."
 msgstr "Refrescar o obxeto seleccionado."
 
-#: src/schema/pgForeignKey.cpp:157
+#: src/schema/pgForeignKey.cpp:161
 msgid "Covering index"
 msgstr ""
 
-#: src/ui/frmMain.cpp:252
+#: src/frm/frmMain.cpp:291
 msgid "Create"
 msgstr "Crear"
 
 # standard
-#: input:495
+#: standard input:735
 #, fuzzy
 msgid "Create DB"
 msgstr "Crear"
 
-#: src/schema/pgObject.cpp:77
+#: src/schema/pgObject.cpp:79
 msgid "Create a Primary Key."
 msgstr "Crear unha Chave Primaria."
 
@@ -1378,7 +2065,7 @@ msgstr "Crear unha nova Función."
 msgid "Create a new Group."
 msgstr "Crear un novo Grupo."
 
-#: src/schema/pgObject.cpp:82
+#: src/schema/pgObject.cpp:85
 #, fuzzy
 msgid "Create a new Job"
 msgstr "Crear un novo obxeto."
@@ -1387,15 +2074,20 @@ msgstr "Crear un novo obxeto."
 msgid "Create a new Language."
 msgstr "Crear unha nova Linguaxe."
 
-#: src/schema/pgObject.cpp:59
+#: src/schema/pgObject.cpp:61
 msgid "Create a new Operator Class."
 msgstr "Crear un novo Operador Class."
 
-#: src/schema/pgObject.cpp:57
+#: src/schema/pgObject.cpp:59
 msgid "Create a new Operator."
 msgstr "Crear un novoOperador."
 
-#: src/schema/pgObject.cpp:73
+#: src/schema/pgObject.cpp:57
+#, fuzzy
+msgid "Create a new Procedure."
+msgstr "Crear un novo Grupo."
+
+#: src/schema/pgObject.cpp:75
 msgid "Create a new Rule."
 msgstr "Crear unha nova Regra."
 
@@ -1403,7 +2095,7 @@ msgstr "Crear unha nova Regra."
 msgid "Create a new Schema."
 msgstr "Crear un novo Esquema."
 
-#: src/schema/pgObject.cpp:61
+#: src/schema/pgObject.cpp:63
 msgid "Create a new Sequence."
 msgstr "Crear unha nova Secuencia."
 
@@ -1411,7 +2103,7 @@ msgstr "Crear unha nova Secuencia."
 msgid "Create a new Server connection."
 msgstr "Crear unha nova conexión a Servidor."
 
-#: src/schema/pgObject.cpp:63
+#: src/schema/pgObject.cpp:65
 msgid "Create a new Table."
 msgstr "Crear unha Nova Táboa."
 
@@ -1424,7 +2116,7 @@ msgstr "Crear unha Nova Táboa."
 msgid "Create a new Trigger Function."
 msgstr "Crear unha nova Función Disparador."
 
-#: src/schema/pgObject.cpp:65
+#: src/schema/pgObject.cpp:67
 msgid "Create a new Type."
 msgstr "Crear un novo Tipo."
 
@@ -1432,16 +2124,15 @@ msgstr "Crear un novo Tipo."
 msgid "Create a new User."
 msgstr "Crear un novo Usuario."
 
-#: src/schema/pgObject.cpp:67
+#: src/schema/pgObject.cpp:69
 msgid "Create a new View."
 msgstr "Crear unha nova Vista."
 
-#: src/ui/frmMain.cpp:173
-#: src/ui/frmMain.cpp:252
+#: src/frm/frmMain.cpp:191 src/frm/frmMain.cpp:291
 msgid "Create a new object of the same type as the selected object."
 msgstr "Crear un novo obxeto do mismo tipo que o seleccionado."
 
-#: src/ui/frmMain.cpp:171
+#: src/frm/frmMain.cpp:189
 msgid "Create a new object."
 msgstr "Crear un novo obxeto."
 
@@ -1449,299 +2140,375 @@ msgstr "Crear un novo obxeto."
 msgid "Create databases?"
 msgstr "¿Crear Bases de Datos?"
 
-#: src/schema/pgObject.cpp:84
+#: src/schema/pgObject.cpp:98
+msgid "Create new Listen between nodes"
+msgstr ""
+
+#: src/schema/pgObject.cpp:100
+#, fuzzy
+msgid "Create new Replication Set"
+msgstr "Crear unha nova Función."
+
+#: src/schema/pgObject.cpp:87
 #, fuzzy
 msgid "Create new Schedule"
 msgstr "Crear un novo Esquema."
 
-#: src/schema/pgObject.cpp:83
+#: src/schema/pgObject.cpp:91 src/schema/pgObject.cpp:92
+msgid "Create new Slony-I Replication Cluster"
+msgstr ""
+
+#: src/schema/pgObject.cpp:89
 #, fuzzy
 msgid "Create new Step"
 msgstr "Crear un novo Esquema."
 
+#: src/schema/pgObject.cpp:106
+#, fuzzy
+msgid "Create new Subscription"
+msgstr "Crear unha nova Función."
+
+#: src/schema/pgObject.cpp:94
+#, fuzzy
+msgid "Create new node"
+msgstr "Crear un novo Esquema."
+
+#: src/schema/pgObject.cpp:96
+#, fuzzy
+msgid "Create new path to node"
+msgstr "Crear un novo Esquema."
+
 # standard
-#: input:213
+#: src/agent/pgaJob.cpp:88 standard input:229
 #, fuzzy
 msgid "Created"
 msgstr "Crear"
 
-#: src/ui/frmMain.cpp:189
+#: src/frm/frmMain.cpp:208
 #, fuzzy
 msgid "Creates a backup of the current database to a local file"
 msgstr "Manter a base de datos o táboa actual"
 
-#: src/ui/frmQuery.cpp:119
+#: xtra/pgagent/connection.cpp:40
+#, fuzzy
+msgid "Creating DB connection: "
+msgstr "Crear unha nova conexión a Servidor."
+
+#: xtra/pgagent/job.cpp:307
+msgid "Creating job thread for job "
+msgstr ""
+
+#: xtra/pgagent/pgAgent.cpp:131
+#, fuzzy
+msgid "Creating primary connection"
+msgstr "Crear unha nova conexión a Servidor."
+
+#: src/frm/frmHint.cpp:74
+msgid "Creation of index in referencing table suggested"
+msgstr ""
+
+#: src/frm/frmHint.cpp:68
+msgid "Creation of primary key suggested"
+msgstr ""
+
+#: src/frm/frmQuery.cpp:115
 msgid "Cu&t\tCtrl-X"
 msgstr "Cor&tar\tCtrl-X"
 
 # standard
-#: input:600
+#: standard input:851
 msgid "Current Password"
 msgstr "Contrasinal Actual"
 
-#: src/schema/pgServer.cpp:530
+#: src/schema/pgServer.cpp:692
 #, fuzzy
 msgid "Current Query"
 msgstr "Valor Actual"
 
-#: src/schema/pgSequence.cpp:94
-#: src/ui/dlgSequence.cpp:82
+#: src/dlg/dlgMainConfig.cpp:121 src/dlg/dlgSequence.cpp:80
+#: src/frm/frmMainConfig.cpp:146 src/schema/pgSequence.cpp:95
 msgid "Current value"
 msgstr "Valor Actual"
 
+#: standard input:297
+#, fuzzy
+msgid "Current version"
+msgstr "Conversion"
+
 # standard
-#: input:294
 msgid "Custom schedule"
 msgstr ""
 
-#: src/ui/frmQuery.cpp:184
+#: src/frm/frmQuery.cpp:181
 msgid "Cut"
 msgstr "Cortar"
 
-#: src/ui/frmQuery.cpp:119
-#: src/ui/frmQuery.cpp:184
+#: src/frm/frmQuery.cpp:115 src/frm/frmQuery.cpp:181
 msgid "Cut selected text to clipboard"
 msgstr "Cortar o texto seleccionado"
 
 # standard
-#: input:321
-#: src/schema/pgSequence.cpp:99
+#: src/schema/pgSequence.cpp:100 standard input:560
 msgid "Cycled"
 msgstr "Cíclica"
 
+#: xtra/pgagent/unix.cpp:40 xtra/pgagent/win32.cpp:83
+#, c-format
+msgid "DEBUG: %s\n"
+msgstr ""
+
 # standard
-#: input:270
-#: input:396
+#: standard input:377 input:635
 msgid "DELETE"
 msgstr "DELETE"
 
 msgid "Data"
 msgstr "Dato"
 
-#: src/ui/frmQuery.cpp:213
+#: src/frm/frmQuery.cpp:211
 msgid "Data Output"
 msgstr "Saida de datos"
 
 # standard
-#: input:100
+#: standard input:96
 #, fuzzy
 msgid "Data Sorting"
 msgstr "abortando."
 
-#: src/ui/frmQuery.cpp:1085
+#: src/frm/frmQuery.cpp:1030
 msgid "Data export aborted."
 msgstr ""
 
-#: src/ui/frmQuery.cpp:1171
+#: src/frm/frmQuery.cpp:1116
 msgid "Data retrieval runtime: "
 msgstr "Recuperación de datos en tempo de execución: "
 
 # standard
-#: input:36
-#: input:431
-#: src/schema/pgColumn.cpp:222
-#: src/ui/dlgType.cpp:76
+#: src/dlg/dlgType.cpp:79 src/schema/pgColumn.cpp:212 standard input:36
+#: input:670
 msgid "Data type"
 msgstr "Tipo de Dato"
 
-#: src/ui/frmQuery.cpp:1083
+#: src/frm/frmQuery.cpp:1028
 msgid "Data written to file."
 msgstr ""
 
 # standard
-#: input:343
-#: src/schema/pgDatabase.cpp:477
-#: src/schema/pgObject.cpp:33
-#: src/schema/pgServer.cpp:529
-#: src/schema/pgTablespace.cpp:44
-#: src/schema/pgTablespace.cpp:63
-#: src/schema/pgUser.cpp:93
-#: src/schema/pgUser.cpp:125
-#: src/ui/frmStatus.cpp:97
-#: src/ui/frmStatus.cpp:107
+#: src/agent/pgaStep.cpp:60 src/frm/frmHbaConfig.cpp:112
+#: src/frm/frmStatus.cpp:105 src/frm/frmStatus.cpp:115
+#: src/schema/pgDatabase.cpp:504 src/schema/pgObject.cpp:33
+#: src/schema/pgServer.cpp:691 src/schema/pgTablespace.cpp:44
+#: src/schema/pgTablespace.cpp:63 src/schema/pgUser.cpp:93
+#: src/schema/pgUser.cpp:125 standard input:188 input:287 input:299 input:582
 msgid "Database"
 msgstr "Base de Datos"
 
 # standard
-#: input:640
+#: standard input:891
 msgid "Database Status"
+msgstr "Estado da Base de Datos"
+
+# standard
+#: xtra/pgagent/pgAgent.cpp:139
+#, fuzzy
+msgid "Database sanity check"
 msgstr "Estado da Base de Datos"
 
 #: src/schema/pgObject.cpp:32
 msgid "Databases"
 msgstr "Bases de Datos"
 
+#: src/agent/dlgSchedule.cpp:76 standard input:536
+#, fuzzy
+msgid "Date"
+msgstr "Dato"
+
+#: standard input:392
+msgid "Days"
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:407 standard input:446
+#, fuzzy
+msgid "December"
+msgstr "Membro"
+
 # standard
-#: input:57
-#: input:86
-#: input:416
-#: src/pgAdmin3.cpp:270
-#: src/schema/pgColumn.cpp:223
-#: src/schema/pgDomain.cpp:99
-#: src/schema/pgType.cpp:136
-#: src/ui/frmOptions.cpp:103
+#: src/frm/frmOptions.cpp:111 src/schema/pgColumn.cpp:213
+#: src/schema/pgDomain.cpp:103 src/schema/pgType.cpp:140 standard input:57
+#: input:86 input:655
 msgid "Default"
 msgstr "Defecto"
 
-#: src/schema/pgDatabase.cpp:345
+#: src/schema/pgDatabase.cpp:372
 #, fuzzy
 msgid "Default schema"
 msgstr "Valor por defecto"
 
 # standard
-#: input:39
+#: standard input:39
 msgid "Default value"
 msgstr "Valor por defecto"
 
-#: src/schema/pgConversion.cpp:68
-#: src/schema/pgOperatorClass.cpp:160
+#: src/schema/pgConversion.cpp:72 src/schema/pgOperatorClass.cpp:163
 msgid "Default?"
 msgstr "¿Por Defecto?"
 
 # standard
-#: input:27
-#: input:119
-#: input:198
+#: standard input:27 input:119 input:213
 msgid "Deferrable"
 msgstr "Pospoñible"
 
-#: src/schema/pgCheck.cpp:79
-#: src/schema/pgForeignKey.cpp:160
+#: src/schema/pgCheck.cpp:79 src/schema/pgForeignKey.cpp:165
 msgid "Deferrable?"
 msgstr "¿Pódese pospoñer?"
 
 # standard
-#: input:28
-#: input:120
-#: input:199
+#: standard input:28 input:120 input:214
 msgid "Deferred"
 msgstr "Posposto"
 
 # standard
-#: input:163
-#: input:274
-#: input:352
-#: input:409
-#: input:465
-#: src/schema/pgCheck.cpp:78
-#: src/schema/pgRule.cpp:68
-#: src/schema/pgRule.cpp:72
-#: src/schema/pgView.cpp:86
-#: src/ui/dlgTable.cpp:83
-#: src/ui/dlgTable.cpp:88
+#: src/dlg/dlgTable.cpp:87 src/dlg/dlgTable.cpp:94 src/schema/pgCheck.cpp:78
+#: src/schema/pgRule.cpp:71 src/schema/pgRule.cpp:75 src/schema/pgView.cpp:90
+#: standard input:167 input:381 input:591 input:648 input:705
 msgid "Definition"
 msgstr "Definicion"
 
-#: src/ui/frmEditGrid.cpp:104
+#: src/frm/frmEditGrid.cpp:105
 msgid "Delete"
 msgstr "Borrar"
 
-#: src/ui/frmEditGrid.cpp:104
+#: src/frm/frmEditGrid.cpp:506
+#, fuzzy
+msgid "Delete rows?"
+msgstr "Borrar"
+
+#: src/frm/frmEditGrid.cpp:105
 msgid "Delete selected lines."
 msgstr "Borrar as liñas seleccionadas."
 
-#: src/ui/frmMain.cpp:174
+#: src/frm/frmMain.cpp:192
 msgid "Delete/Drop the selected object."
 msgstr "Borrar/Eliminar o obxeto seleccionado."
 
-#: src/schema/pgUser.cpp:42
-#: src/ui/dlgUser.cpp:199
+#: src/dlg/dlgUser.cpp:214 src/schema/pgUser.cpp:42
 msgid ""
-"Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\n"
+"Deleting a superuser might result in unwanted behaviour (e.g. when restoring "
+"the database).\n"
 "Are you sure?"
 msgstr ""
 
 # standard
-#: input:418
-#: src/schema/pgType.cpp:141
+#: src/schema/pgType.cpp:145 standard input:657
 msgid "Delimiter"
 msgstr "Delimitador"
 
-#: src/ui/frmMain.cpp:288
+#: src/schema/pgServer.cpp:207 src/schema/pgServer.cpp:270
+msgid "Dependent services"
+msgstr ""
+
+#: src/frm/frmMain.cpp:328
 #, fuzzy
 msgid "Depends on"
 msgstr "Dimensións"
 
 # standard
-#: input:103
-#: src/ui/dlgEditGridOptions.cpp:122
-#: src/ui/dlgEditGridOptions.cpp:142
-#: src/ui/dlgEditGridOptions.cpp:194
+#: src/dlg/dlgEditGridOptions.cpp:122 src/dlg/dlgEditGridOptions.cpp:142
+#: src/dlg/dlgEditGridOptions.cpp:194 standard input:103
 #, fuzzy
 msgid "Descending"
 msgstr "Diseño"
 
 # standard
-#: input:328
-#: src/schema/pgServer.cpp:473
+#: src/schema/pgServer.cpp:624 standard input:567
 msgid "Description"
 msgstr "Descripción"
 
 msgid "Design"
 msgstr "Diseño"
 
-#: src/schema/pgDomain.cpp:98
+#: xtra/pgagent/job.cpp:323
+msgid "Destroying job thread for job "
+msgstr ""
+
+#: src/schema/pgDomain.cpp:102
 msgid "Dimensions"
 msgstr "Dimensións"
 
 # standard
-#: input:489
+#: src/frm/frmBackup.cpp:79 standard input:729
 msgid "Disable $$ quoting"
 msgstr ""
 
 # standard
-#: input:497
-#: input:632
+#: standard input:737 input:883
 #, fuzzy
 msgid "Disable Trigger"
 msgstr "Novo Disparador"
 
-#: src/ui/frmMain.cpp:183
+#: src/frm/frmMain.cpp:202
 msgid "Disconnec&t"
 msgstr "Desconec&tar"
 
-#: src/ui/frmMain.cpp:183
+#: src/frm/frmMain.cpp:202
 msgid "Disconnect from the selected server."
 msgstr "Desconectar do servidor seleccionado."
 
-#: src/ui/frmMain.cpp:209
+#: src/frm/frmMain.cpp:245
 msgid "Display help on PostgreSQL database system."
 msgstr "Visualiza axuda sobre Sistema de Base de Datos PostgreSQL."
 
-#: src/ui/frmEditGrid.cpp:108
-#: src/ui/frmMain.cpp:208
-#: src/ui/frmMain.cpp:261
-#: src/ui/frmQuery.cpp:145
-#: src/ui/frmQuery.cpp:199
+#: src/frm/frmEditGrid.cpp:109 src/frm/frmMain.cpp:244 src/frm/frmMain.cpp:301
+#: src/frm/frmQuery.cpp:141 src/frm/frmQuery.cpp:196
 msgid "Display help on SQL commands."
 msgstr "Visualiza axuda sobre comandos SQL"
 
-#: src/ui/frmMain.cpp:175
-#: src/ui/frmMain.cpp:254
+#: src/frm/frmConfig.cpp:123 src/frm/frmConfig.cpp:154
+#, fuzzy
+msgid "Display help on configuration options."
+msgstr "Visualiza axuda sobre comandos SQL"
+
+#: src/frm/frmConfig.cpp:122 src/frm/frmConfig.cpp:153
+msgid "Display helpful hints on current configuration."
+msgstr ""
+
+#: src/frm/frmMain.cpp:246 src/frm/frmMain.cpp:300
+msgid "Display helpful hints on current object."
+msgstr ""
+
+#: src/frm/frmMain.cpp:194 src/frm/frmMain.cpp:293
 msgid "Display/edit the properties of the selected object."
 msgstr "Visualizar/Editar as propiedades do obxeto seleccionado."
 
-#: src/ui/frmMain.cpp:193
+#: src/frm/frmMain.cpp:228
 msgid "Displays the current database status."
 msgstr "Visualizar o estado da Base de Datos (Actual)."
 
-#: src/schema/pgColumn.cpp:244
+#: src/schema/pgColumn.cpp:234
 msgid "Distinct Values"
 msgstr ""
 
 # standard
-#: input:271
+#: standard input:378
 msgid "Do instead"
 msgstr "Do instead"
 
-#: src/schema/pgRule.cpp:65
+#: src/schema/pgRule.cpp:68
 msgid "Do instead?"
 msgstr "Do instead?"
 
 # standard
-#: input:568
+#: standard input:817
 msgid "Do not prompt for unsaved files on exit"
 msgstr "Non avisar de arquivos sen gardar ó sair"
+
+#: standard input:821
+msgid "Do not show guru hints; I'm one myself"
+msgstr ""
+
+#: standard input:774
+msgid "Do not show this hint again"
+msgstr ""
 
 msgid "Do you want to save changes?"
 msgstr "¿Desexa gardar os cambios?"
@@ -1754,15 +2521,13 @@ msgstr "Dominio"
 msgid "Domains"
 msgstr "Dominios"
 
-#: src/ui/dlgClasses.cpp:252
-#: src/ui/dlgClasses.cpp:425
-#: src/ui/frmRestore.cpp:364
+#: src/frm/frmRestore.cpp:367 src/main/dlgClasses.cpp:452
+#: src/main/dlgClasses.cpp:599
 msgid "Done"
 msgstr "Feito"
 
-#: src/ui/frmStatus.cpp:301
-#: src/ui/frmStatus.cpp:403
-#: src/ui/frmStatus.cpp:464
+#: src/frm/frmStatus.cpp:309 src/frm/frmStatus.cpp:411
+#: src/frm/frmStatus.cpp:472
 #, fuzzy
 msgid "Done."
 msgstr " Feito."
@@ -1770,124 +2535,175 @@ msgstr " Feito."
 msgid "Double right-handed joins are not allowed.\n"
 msgstr ""
 
-#: src/ui/frmMain.cpp:253
+#: standard input:907
+#, fuzzy
+msgid "Download language"
+msgstr "Nova Linguaxe"
+
+#: src/frm/frmMain.cpp:292
 msgid "Drop"
 msgstr "Eliminar"
 
-#: src/ui/events.cpp:1215
+#: src/main/events.cpp:1351
+#, fuzzy, c-format
+msgid "Drop %s cascaded?"
+msgstr "Eliminar %s?"
+
+#: src/main/events.cpp:1357
 #, c-format
 msgid "Drop %s?"
 msgstr "Eliminar %s?"
 
 # standard
-#: input:496
+#: standard input:736
 #, fuzzy
 msgid "Drop DB"
 msgstr "Eliminar"
 
-#: src/ui/events.cpp:1163
+#: src/frm/frmMain.cpp:193
+msgid "Drop cascaded"
+msgstr ""
+
+#: src/main/events.cpp:1280
+msgid "Drop multiple objects cascaded?"
+msgstr ""
+
+#: src/main/events.cpp:1285
 msgid "Drop multiple objects?"
 msgstr ""
 
-#: src/ui/frmMain.cpp:253
+#: src/frm/frmMain.cpp:292
 msgid "Drop the currently selected object."
 msgstr "Eliminar o obxeto seleccionado."
 
-#: src/schema/pgDatabase.cpp:247
+#: src/frm/frmMain.cpp:193
+msgid "Drop the selected object and all objects dependent on it."
+msgstr ""
+
+#: src/schema/pgDatabase.cpp:255
 msgid "Dropping database not allowed"
 msgstr ""
+
+#: src/agent/pgaJob.cpp:202 src/agent/pgaStep.cpp:174
+#, fuzzy
+msgid "Duration"
+msgstr "Nova Función"
 
 msgid "E&xit"
 msgstr "Sair"
 
-#: src/ui/frmMain.cpp:165
-#: src/ui/frmQuery.cpp:111
+#: src/frm/frmConfig.cpp:113 src/frm/frmMain.cpp:180 src/frm/frmQuery.cpp:107
 msgid "E&xit\tAlt-F4"
 msgstr "Sair\tAlt-F4"
 
 msgid "E&xplain"
 msgstr "Comentar"
 
-#: src/ui/frmQuery.cpp:130
+#: src/frm/frmQuery.cpp:126
 msgid "E&xplain\tF7"
 msgstr "Comentar\tF7"
 
-#: src/ui/dlgEditGridOptions.cpp:308
+#: xtra/pgagent/unix.cpp:47 xtra/pgagent/win32.cpp:90
+#, c-format
+msgid "ERROR: %s\n"
+msgstr ""
+
+#: src/dlg/dlgEditGridOptions.cpp:308
 #, c-format
 msgid "ERROR: Syntax error at character %d!"
 msgstr ""
 
 # standard
-#: input:427
+#: standard input:666
 msgid "EXTENDED"
 msgstr "EXTENDED"
 
 # standard
-#: input:426
+#: standard input:665
 msgid "EXTERNAL"
 msgstr "EXTERNAL"
 
+#: src/frm/frmMain.cpp:214
+msgid "Edit general server configuration file."
+msgstr ""
+
+#: src/frm/frmMain.cpp:215
+msgid "Edit server access configuration file."
+msgstr ""
+
 # standard
-#: input:417
-#: src/schema/pgType.cpp:140
+#: src/schema/pgType.cpp:144 standard input:656
 msgid "Element"
 msgstr "Elemento"
 
 # standard
-#: input:210
-#: input:211
-#: input:281
-#: input:342
+#: src/agent/pgaJob.cpp:85 src/agent/pgaSchedule.cpp:59
+#: src/agent/pgaStep.cpp:58 standard input:186 input:225 input:226 input:256
+#: input:388 input:581
 #, fuzzy
 msgid "Enabled"
 msgstr "¿Habilitado?"
 
-#: src/schema/pgTrigger.cpp:145
+#: src/schema/pgTrigger.cpp:148
 msgid "Enabled?"
 msgstr "¿Habilitado?"
 
 # standard
-#: input:69
-#: input:514
-#: src/schema/pgDatabase.cpp:342
+#: src/schema/pgDatabase.cpp:369 standard input:69 input:754
 msgid "Encoding"
 msgstr "Codificado"
 
-#: src/schema/pgServer.cpp:479
+#: src/schema/pgServer.cpp:637
 msgid "Encryption"
 msgstr "Encriptado"
 
 # standard
-#: input:292
+#: standard input:390
 msgid "End"
+msgstr ""
+
+# standard
+#: src/agent/pgaSchedule.cpp:62
+#, fuzzy
+msgid "End date"
+msgstr "En Actualización"
+
+#: src/agent/pgaJob.cpp:201 src/agent/pgaStep.cpp:173
+msgid "End time"
 msgstr ""
 
 msgid "Enter a description of this database connection."
 msgstr "Escriba unha descripción de esta conexión á Base de Datos."
 
 # standard
-#: input:583
+#: standard input:834
 msgid "Enter a filename to write application logs to."
 msgstr "Escriba un nome de arquivo no que gardar os logs da aplicación."
 
 # standard
-#: input:115
-msgid "Enter the filter string to apply to the data. SQL syntax should be used as the string will be used as a 'WHERE' clause."
+#: standard input:109
+msgid ""
+"Enter the filter string to apply to the data. SQL syntax should be used as "
+"the string will be used as a 'WHERE' clause."
 msgstr ""
 
 msgid "Enter the hostname or IP address of the server to connect to."
 msgstr "Escriba o nome de máquina o dirección IP do servidor ó que conectarse."
 
-msgid "Enter the name of the database on the server to use to make the initial connection. Normally this will be template1."
-msgstr "Escriba o nome da base de datos que se usará para iniciar a conexión o servidor. Normalmente esta será template1."
+msgid ""
+"Enter the name of the database on the server to use to make the initial "
+"connection. Normally this will be template1."
+msgstr ""
+"Escriba o nome da base de datos que se usará para iniciar a conexión o "
+"servidor. Normalmente esta será template1."
 
 # standard
-#: input:49
+#: standard input:49
 msgid "Enter the password to use when connecting to the server."
 msgstr "Escriba a contrasinal usada para establecer a conexión co servidor."
 
 # standard
-#: input:562
+#: standard input:810
 msgid "Enter the path or URL to the PostgreSQL documentation"
 msgstr "Escriba a ruta ou URL(dirección) á documentación de PostgreSQL"
 
@@ -1895,12 +2711,17 @@ msgid "Enter the port number that the server is listening on."
 msgstr "Escriba o porto no que o servidor está atendendo as peticións."
 
 msgid "Enter the username to use when connecting to the server."
-msgstr "Escriba o nome de usuario co que se establecerá a conexión co servidor."
+msgstr ""
+"Escriba o nome de usuario co que se establecerá a conexión co servidor."
 
-#: src/ui/events.cpp:654
+#: src/frm/frmMain.cpp:818
 #, c-format
 msgid "Error connecting to the server: %s"
 msgstr "Erro ó establecer a conexión co servidor. %s"
+
+#: src/slony/dlgRepCluster.cpp:452
+msgid "Error while joining replication cluster"
+msgstr ""
 
 msgid "Error!"
 msgstr "Erro!"
@@ -1909,80 +2730,115 @@ msgid "Error: No table or no column"
 msgstr "Erro. Non táboa ou columna"
 
 # standard
-#: input:589
+#: standard input:840
 msgid "Errors and N&otices"
 msgstr "Erros e N&otificaciós"
 
 # standard
-#: input:590
+#: standard input:841
 msgid "Errors, Notices, &SQL"
 msgstr "Erros, Notificaciós, &SQL"
 
 # standard
-#: input:266
-#: src/schema/pgRule.cpp:63
-#: src/schema/pgTrigger.cpp:142
+#: src/schema/pgRule.cpp:66 src/schema/pgTrigger.cpp:145 standard input:373
 msgid "Event"
 msgstr "Evento"
 
 # standard
-#: input:393
+#: standard input:632
 msgid "Events"
 msgstr "Eventos"
 
-#: src/ui/frmQuery.cpp:194
+#: src/agent/pgaSchedule.cpp:336
+msgid "Every day"
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:231
+msgid "Every hour"
+msgstr ""
+
+# standard
+#: src/agent/pgaSchedule.cpp:199
+#, fuzzy
+msgid "Every minute"
+msgstr "Plantilla"
+
+# standard
+#: src/agent/pgaSchedule.cpp:421
+#, fuzzy
+msgid "Every month"
+msgstr "Evento"
+
+# standard
+#: src/agent/pgaSchedule.cpp:68 standard input:534
+#, fuzzy
+msgid "Exceptions"
+msgstr "Opcións"
+
+#: src/frm/frmQuery.cpp:191
 msgid "Execute"
 msgstr "Executar"
 
-#: src/ui/frmMain.cpp:185
-#: src/ui/frmMain.cpp:256
+#: src/frm/frmMain.cpp:204 src/frm/frmMain.cpp:295
 msgid "Execute arbitrary SQL queries."
 msgstr "Executar consultas SQL arbitrarias."
 
-#: src/ui/frmQuery.cpp:128
-#: src/ui/frmQuery.cpp:194
+#: src/frm/frmQuery.cpp:124 src/frm/frmQuery.cpp:191
 msgid "Execute query"
 msgstr "Executar Consulta"
 
-#: src/ui/frmQuery.cpp:129
-#: src/ui/frmQuery.cpp:195
+#: src/frm/frmQuery.cpp:125 src/frm/frmQuery.cpp:192
 msgid "Execute query, write result to file"
 msgstr ""
 
-#: src/ui/frmQuery.cpp:129
-#: src/ui/frmQuery.cpp:195
+#: src/frm/frmQuery.cpp:125 src/frm/frmQuery.cpp:192
 #, fuzzy
 msgid "Execute to file"
 msgstr "Seleccionar arquivo Log"
 
-#: src/ui/frmQuery.cpp:111
+#: xtra/pgagent/job.cpp:134
+msgid "Executing SQL step "
+msgstr ""
+
+#: xtra/pgagent/job.cpp:151
+msgid "Executing batch step "
+msgstr ""
+
+#: xtra/pgagent/job.cpp:227
+#, fuzzy
+msgid "Executing script file: "
+msgstr "Seleccionar arquivo Log"
+
+#: src/frm/frmConfig.cpp:113
+msgid "Exit configuration tool"
+msgstr ""
+
+#: src/frm/frmQuery.cpp:107
 msgid "Exit query window"
 msgstr "Sair da Ventá de consultas"
 
-#: src/ui/frmQuery.cpp:196
+#: src/frm/frmQuery.cpp:193 src/frm/frmQuery.cpp:212
 msgid "Explain"
 msgstr "Comentar"
 
-#: src/ui/frmQuery.cpp:135
+#: src/frm/frmQuery.cpp:131
 msgid "Explain &options"
 msgstr "Opcións de c&omentario"
 
-#: src/ui/frmQuery.cpp:134
+#: src/frm/frmQuery.cpp:130
 msgid "Explain analyse query"
 msgstr "Comentario do análisis da consulta"
 
-#: src/ui/frmQuery.cpp:130
-#: src/ui/frmQuery.cpp:196
+#: src/frm/frmQuery.cpp:126 src/frm/frmQuery.cpp:193
 msgid "Explain query"
 msgstr "Comentar a consulta"
 
-#: src/ui/frmQuery.cpp:133
+#: src/frm/frmQuery.cpp:129
 msgid "Explain verbose query"
 msgstr "Comentario Extenso(prolixo) da consulta"
 
 # standard
-#: input:502
-#: src/ui/frmQuery.cpp:108
+#: src/frm/frmQuery.cpp:104 standard input:742
 msgid "Export data to file"
 msgstr "Exportar datos a un arquivo"
 
@@ -1993,69 +2849,103 @@ msgid "Expression Error"
 msgstr "Erro na Expresión"
 
 # standard
-#: input:407
+#: standard input:646
 msgid "External"
 msgstr "Externo"
 
-#: src/utils/sysLogger.cpp:196
+#: src/base/sysLogger.cpp:195
 msgid "FATAL"
 msgstr "FATAL"
 
 # standard
-#: input:122
+#: standard input:123
 #, fuzzy
 msgid "FK index name"
 msgstr "Nome do arquivo"
 
 # standard
-#: input:551
+#: standard input:799
 msgid "FORCE"
 msgstr "FORCE"
 
 # standard
-#: input:548
+#: standard input:796
 msgid "FREEZE"
 msgstr "FREEZE"
 
 # standard
-#: input:547
+#: standard input:795
 msgid "FULL"
 msgstr "FULL"
 
 # standard
-#: input:616
+#: standard input:867
 msgid "FULL JOIN"
 msgstr "FULL JOIN"
 
 # standard
-#: input:348
+#: src/agent/pgaStep.cpp:122 standard input:587
 #, fuzzy
 msgid "Fail"
 msgstr "Arquivo"
 
-#: src/ui/frmExport.cpp:146
+# standard
+#: src/agent/pgaJob.cpp:142 src/agent/pgaJob.cpp:218 src/agent/pgaStep.cpp:191
+#, fuzzy
+msgid "Failed"
+msgstr "Arquivo"
+
+#: xtra/pgagent/connection.cpp:140
+#, fuzzy
+msgid "Failed to create new connection to database: "
+msgstr "Engadir unha conexión o servidor."
+
+#: xtra/pgagent/connection.cpp:92
+#, fuzzy
+msgid "Failed to create primary connection!"
+msgstr "Non podo crear un obxeto conexión!"
+
+#: src/frm/frmExport.cpp:146
 #, c-format
 msgid "Failed to open file %s."
 msgstr "Fallo ó abrir o arquivo %s"
 
-#: src/schema/pgServer.cpp:146
+#: xtra/pgagent/pgAgent.cpp:117
+msgid "Failed to query jobs table!"
+msgstr ""
+
+#: src/schema/pgServer.cpp:190
 #, c-format
 msgid ""
 "Failed to start server %s: Errcode=%d\n"
 "Check event log for details."
 msgstr ""
 
-#: src/schema/pgServer.cpp:172
+#: src/schema/pgServer.cpp:293
 #, c-format
 msgid ""
 "Failed to stop server %s: Errcode=%d\n"
 "Check event log for details."
 msgstr ""
 
-#: src/ui/events.cpp:556
+#: src/main/events.cpp:615
 #, c-format
 msgid "Failed to write to the output file: %s"
 msgstr "Fallo ó escribir no arquivo de saida: %s"
+
+# standard
+#: src/frm/frmMain.cpp:221
+#, fuzzy
+msgid "Failover"
+msgstr "Arquivo"
+
+#: src/frm/frmMain.cpp:221
+msgid "Failover to backup node."
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:367 standard input:436
+msgid "February"
+msgstr ""
 
 msgid ""
 "File cannot be opened with this format.\n"
@@ -2065,116 +2955,107 @@ msgstr ""
 "Por favor escolla outro formato."
 
 # standard
-#: input:480
-#: input:521
-#: input:626
+#: standard input:720 input:761 input:877
 msgid "Filename"
 msgstr "Nome do arquivo"
 
 # standard
-#: input:111
+#: standard input:107
 #, fuzzy
 msgid "Filter"
 msgstr "Arquivo"
 
 # standard
-#: input:114
+#: standard input:108
 msgid "Filter String (eg. oid > 10 AND oid < 50)"
 msgstr ""
 
-#: src/ui/dlgEditGridOptions.cpp:207
+#: src/dlg/dlgEditGridOptions.cpp:207
 msgid "Filter string syntax validates OK!"
 msgstr ""
 
 # standard
-#: input:8
-#: src/schema/pgAggregate.cpp:84
+#: src/schema/pgAggregate.cpp:90 standard input:8
 msgid "Final function"
 msgstr "Función Final"
 
-#: src/schema/pgAggregate.cpp:83
+#: src/schema/pgAggregate.cpp:89
 msgid "Final type"
 msgstr "Tipo Final"
 
-#: src/ui/frmQuery.cpp:192
+#: src/frm/frmQuery.cpp:189
 msgid "Find"
 msgstr "Buscar"
 
-#: src/ui/ctlSQLBox.cpp:385
-#: src/ui/ctlSQLBox.cpp:430
-#: src/ui/ctlSQLBox.cpp:436
-#: src/ui/frmQuery.cpp:124
-#: src/ui/frmQuery.cpp:192
+#: src/ctl/ctlSQLBox.cpp:374 src/ctl/ctlSQLBox.cpp:419
+#: src/ctl/ctlSQLBox.cpp:425 src/frm/frmQuery.cpp:120 src/frm/frmQuery.cpp:189
 msgid "Find text"
 msgstr "Buscar texto"
 
 # standard
-#: input:390
-#: src/schema/pgTrigger.cpp:141
+#: src/schema/pgTrigger.cpp:144 standard input:629
 msgid "Fires"
 msgstr "Fires"
 
 # standard
-#: input:565
-#: input:573
+#: standard input:814 input:824
 msgid "Font"
 msgstr "Fonte"
 
-#: src/schema/pgTrigger.cpp:143
+#: src/schema/pgTrigger.cpp:146
 msgid "For each"
 msgstr ""
 
-#: src/schema/pgOperatorClass.cpp:161
+#: src/schema/pgOperatorClass.cpp:164
 msgid "For type"
 msgstr ""
 
-#: src/schema/pgObject.cpp:80
-#: src/ui/dlgTable.cpp:473
+#: src/dlg/dlgTable.cpp:507 src/schema/pgObject.cpp:82
 msgid "Foreign Key"
 msgstr "Chave Allea"
 
 # standard
-#: input:533
+#: standard input:781
 #, fuzzy
 msgid "Foreign Key Check"
 msgstr "Chave Allea"
 
-#: src/schema/pgColumn.cpp:227
+#: src/schema/pgColumn.cpp:217
 msgid "Foreign key?"
 msgstr "¿É Chave Allea?"
 
 # standard
-#: input:482
+#: standard input:722
 #, fuzzy
 msgid "Format"
 msgstr "Adiante"
 
-#: src/ui/frmHelp.cpp:56
+#: src/frm/frmHelp.cpp:56
 msgid "Forward"
 msgstr "Adiante"
 
-#: src/ui/frmHelp.cpp:56
+#: src/frm/frmHelp.cpp:56
 msgid "Forward to next page."
 msgstr "Adelantar á siguiente páxina."
 
-#: src/ui/frmMain.cpp:207
+#: src/frm/frmMain.cpp:243
 msgid "Frequently asked questions about pgAdmin III."
 msgstr "Preguntas frecuentes sobre pgAdmin III."
 
-#: src/schema/pgConversion.cpp:65
+#: src/agent/pgaSchedule.cpp:278 standard input:399
+#, fuzzy
+msgid "Friday"
+msgstr "Buscar"
+
+#: src/schema/pgConversion.cpp:69
 msgid "From"
 msgstr "Dende"
 
 # standard
-#: input:19
-#: input:60
-#: src/schema/pgCast.cpp:67
-#: src/schema/pgCast.cpp:69
-#: src/schema/pgConversion.cpp:67
-#: src/schema/pgObject.cpp:53
-#: src/schema/pgTrigger.cpp:144
-#: src/ui/frmRestore.cpp:220
-#: src/ui/frmRestore.cpp:314
+#: src/frm/frmRestore.cpp:220 src/frm/frmRestore.cpp:315
+#: src/schema/pgCast.cpp:71 src/schema/pgCast.cpp:73
+#: src/schema/pgConversion.cpp:71 src/schema/pgObject.cpp:53
+#: src/schema/pgTrigger.cpp:147 standard input:19 input:60
 msgid "Function"
 msgstr "Función"
 
@@ -2183,138 +3064,128 @@ msgid "Functions"
 msgstr "Funcións"
 
 # standard
-#: input:559
+#: standard input:807
 msgid "General"
 msgstr "Xeral"
 
 # standard
-#: input:526
+#: standard input:766
 msgid "Grant Wizard"
 msgstr ""
 
-#: src/ui/frmStatus.cpp:112
+#: src/frm/frmStatus.cpp:120
 #, fuzzy
 msgid "Granted"
 msgstr "Crear"
 
-#: src/ui/frmMain.cpp:192
+#: src/frm/frmMain.cpp:211
 msgid "Grants rights to multiple objects"
 msgstr ""
 
-#: src/schema/pgOperator.cpp:132
+#: src/schema/pgOperator.cpp:135
 msgid "Greater than operator"
 msgstr "Operador Mayor que"
 
-#: src/schema/pgObject.cpp:35
-#: src/ui/ctlSecurityPanel.cpp:107
+#: src/ctl/ctlSecurityPanel.cpp:109 src/schema/pgObject.cpp:35
 msgid "Group"
 msgstr "Grupo"
 
 # standard
-#: input:172
-#: src/schema/pgGroup.cpp:95
+#: src/schema/pgGroup.cpp:95 standard input:176
 msgid "Group ID"
 msgstr "ID de grupo"
 
-#: src/ui/dlgProperty.cpp:1194
-#: src/ui/frmGrantWizard.cpp:199
+#: src/dlg/dlgProperty.cpp:1226 src/frm/frmGrantWizard.cpp:200
 msgid "Group/User"
 msgstr "Grupo/Usuario"
 
 # standard
-#: input:171
+#: standard input:175
 #, fuzzy
 msgid "Groupname"
 msgstr "Grupo"
 
 # standard
-#: input:447
-#: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:34 standard input:687
 msgid "Groups"
 msgstr "Grupos"
 
 # standard
-#: input:563
+#: standard input:811
 msgid "HTTP proxy"
 msgstr "HTTP proxy"
 
 # standard
-#: input:235
-#: src/schema/pgLanguage.cpp:66
+#: src/schema/pgLanguage.cpp:69 standard input:250
 msgid "Handler"
 msgstr "Manexador"
 
 # standard
-#: input:361
+#: standard input:600
 msgid "Has OIDs"
 msgstr "¿Ten OID's?"
 
-#: src/schema/pgTable.cpp:399
+#: src/schema/pgTable.cpp:407
 msgid "Has OIDs?"
 msgstr "¿Ten OID's?"
 
-#: src/schema/pgTable.cpp:417
+#: src/schema/pgTable.cpp:484
 msgid "Heap Blocks Hit"
 msgstr ""
 
-#: src/schema/pgTable.cpp:416
+#: src/schema/pgTable.cpp:483
 msgid "Heap Blocks Read"
 msgstr ""
 
 # standard
-#: input:11
-#: input:22
-#: input:31
-#: input:44
-#: input:62
-#: input:78
-#: input:92
-#: input:140
-#: input:166
-#: input:178
-#: input:192
-#: input:204
-#: input:227
-#: input:238
-#: input:260
-#: input:275
-#: input:299
-#: input:308
-#: input:323
-#: input:336
-#: input:353
-#: input:373
-#: input:381
-#: input:398
-#: input:436
-#: input:457
-#: input:466
-#: src/ui/frmEditGrid.cpp:108
-#: src/ui/frmQuery.cpp:199
+#: src/frm/frmConfig.cpp:154 src/frm/frmEditGrid.cpp:109
+#: src/frm/frmQuery.cpp:196 standard input:11 input:22 input:31 input:44
+#: input:62 input:78 input:92 input:141 input:170 input:182 input:193
+#: input:207 input:219 input:243 input:253 input:259 input:281 input:292
+#: input:302 input:309 input:315 input:322 input:329 input:336 input:343
+#: input:350 input:358 input:367 input:382 input:540 input:548 input:562
+#: input:575 input:592 input:612 input:620 input:637 input:675 input:697
+#: input:706
 msgid "Help"
 msgstr "Axuda"
 
-#: src/ui/events.cpp:574
+#: src/main/events.cpp:633
 #, fuzzy
 msgid "Hide system objects"
 msgstr "Mostrar ou agachar obxetos do sistema."
 
-#: src/schema/pgColumn.cpp:247
+# standard
+#: src/frm/frmConfig.cpp:122 src/frm/frmConfig.cpp:153 src/frm/frmMain.cpp:246
+#: src/frm/frmMain.cpp:300
+#, fuzzy
+msgid "Hints"
+msgstr "int4"
+
+#: src/schema/pgColumn.cpp:237
 msgid "Histogram Bounds"
 msgstr ""
 
-#: src/ui/frmQuery.cpp:215
+#: src/frm/frmQuery.cpp:214
 msgid "History"
 msgstr "Historial"
 
-#: src/schema/pgServer.cpp:472
+#: src/agent/pgaJob.cpp:86 standard input:228
+#, fuzzy
+msgid "Host agent"
+msgstr "Nome de máquina."
+
+#: src/schema/pgServer.cpp:627 src/schema/pgServer.cpp:632
 msgid "Hostname"
 msgstr "Nome de máquina."
 
 msgid "Hostname/IP Address"
 msgstr "Nome de máquina/Dirección IP"
 
-#: src/ui/frmMain.cpp:212
+#: src/agent/pgaSchedule.cpp:64 standard input:448
+msgid "Hours"
+msgstr ""
+
+#: src/frm/frmConfig.cpp:125 src/frm/frmMain.cpp:250
 msgid "How to send a bugreport to the pgAdmin Development Team."
 msgstr "Como enviar un informe de erro o equipo de desenvolvemento de pgAdmin."
 
@@ -2322,105 +3193,160 @@ msgid "Huh?"
 msgstr "Huh?"
 
 # standard
-#: input:153
+#: src/agent/pgaJob.cpp:84 src/agent/pgaSchedule.cpp:58
+#: src/agent/pgaStep.cpp:57 src/slony/slNode.cpp:169
+#: src/slony/slSequence.cpp:78 src/slony/slSet.cpp:170
+#: src/slony/slTable.cpp:98 standard input:224 input:313 input:327 input:334
+#: input:348 input:363 input:387 input:580
+#, fuzzy
+msgid "ID"
+msgstr "OID"
+
+# standard
+#: standard input:154
 msgid "IMMUTABLE"
 msgstr "IMMUTABLE"
 
 # standard
-#: input:613
+#: standard input:164
+#, fuzzy
+msgid "IN"
+msgstr "MAIN"
+
+# standard
+#: standard input:864
 msgid "INNER JOIN"
 msgstr "INNER JOIN"
 
+#: standard input:166
+msgid "INOUT"
+msgstr ""
+
 # standard
-#: input:268
-#: input:394
+#: standard input:375 input:633
 msgid "INSERT"
 msgstr "INSERT"
 
 # standard
-#: input:350
-msgid "Ignore"
+#: standard input:190
+#, fuzzy
+msgid "IP Address"
+msgstr "Engadir"
+
+# standard
+#: src/frm/frmHbaConfig.cpp:114
+#, fuzzy
+msgid "IP-Address"
+msgstr "Engadir"
+
+#: src/frm/frmHint.cpp:62
+msgid "Ident authentication failed"
+msgstr ""
+
+#: src/frm/frmConfig.cpp:258
+msgid ""
+"If a malformed configuration is written to the server, it might show "
+"problems when restarting or reloading.\n"
+"Are you sure the configuration is correct?"
 msgstr ""
 
 # standard
-#: input:249
+#: src/agent/pgaStep.cpp:123 standard input:589
+msgid "Ignore"
+msgstr ""
+
+#: src/agent/pgaStep.cpp:193
+#, fuzzy
+msgid "Ignored"
+msgstr "Herdado"
+
+# standard
+#: standard input:270
 msgid "Implementation"
 msgstr "Implementación"
 
 # standard
-#: input:20
+#: standard input:20
 msgid "Implicit"
 msgstr "Implícito"
 
-#: src/ui/frmPassword.cpp:66
+#: src/frm/frmPassword.cpp:66
 msgid "Incorrect password!"
 msgstr "!Contrasinal Incorrecta!"
 
 # standard
-#: input:316
-#: src/schema/pgSequence.cpp:97
+#: src/schema/pgSequence.cpp:98 standard input:555
 msgid "Increment"
 msgstr "Incremento"
 
-#: src/schema/pgObject.cpp:71
+#: src/schema/pgObject.cpp:73 standard input:364
 msgid "Index"
 msgstr "Índice"
 
-#: src/schema/pgTable.cpp:419
+#: src/schema/pgTable.cpp:486
 msgid "Index Blocks Hit"
 msgstr ""
 
-#: src/schema/pgTable.cpp:418
+#: src/schema/pgTable.cpp:485
 msgid "Index Blocks Read"
 msgstr ""
 
-#: src/schema/pgTable.cpp:411
+#: src/slony/slTable.cpp:99
+#, fuzzy
+msgid "Index Name"
+msgstr "Índices"
+
+#: src/schema/pgTable.cpp:478
 #, fuzzy
 msgid "Index Scans"
 msgstr "Índices"
 
-#: src/schema/pgIndex.cpp:222
+#: src/schema/pgIndex.cpp:225
 #, fuzzy
 msgid "Index Size"
 msgstr "Índices"
 
-#: src/schema/pgTable.cpp:412
+#: src/schema/pgTable.cpp:479
 msgid "Index Tuples Fetched"
 msgstr ""
 
-#: src/schema/pgObject.cpp:70
+#: src/schema/pgObject.cpp:72
 msgid "Indexes"
 msgstr "Índices"
 
-#: src/schema/pgColumn.cpp:229
-#: src/ui/dlgTable.cpp:171
+#: src/schema/pgTable.cpp:496
+#, fuzzy
+msgid "Indexes Size"
+msgstr "Índices"
+
+#: src/dlg/dlgTable.cpp:177 src/schema/pgColumn.cpp:219
 msgid "Inherited"
 msgstr "Herdado"
 
-#: src/ui/dlgTable.cpp:542
+#: src/dlg/dlgTable.cpp:586
 #, c-format
 msgid "Inherited from table %s"
 msgstr "Herdado da táboa %s"
 
-#: src/schema/pgTable.cpp:398
+#: src/schema/pgTable.cpp:406
 msgid "Inherited tables"
 msgstr "Táboas herdeiras"
 
-#: src/schema/pgTable.cpp:396
+#: src/schema/pgTable.cpp:404
 msgid "Inherited tables count"
 msgstr "Número de Táboas herdeiras"
 
 # standard
-#: input:362
+#: standard input:601
 msgid "Inherits from tables"
 msgstr "Hereda de táboas"
 
-#: src/schema/pgTable.cpp:395
+#: src/schema/pgTable.cpp:403
 msgid "Inherits tables"
 msgstr "Táboas herdeiras"
 
 # standard
-#: input:332
+#: standard input:571
 #, fuzzy
 msgid "Initial DB"
 msgstr "¿Inicialmente?"
@@ -2429,100 +3355,128 @@ msgid "Initial Database"
 msgstr "Base de Datos inicial"
 
 # standard
-#: input:9
-#: src/schema/pgAggregate.cpp:85
+#: src/schema/pgAggregate.cpp:91 standard input:9
 msgid "Initial condition"
 msgstr "Condición inicial"
 
-#: src/schema/pgServer.cpp:498
+#: src/schema/pgServer.cpp:660
 msgid "Initial database"
 msgstr "Base de Datos inicial"
 
-#: src/schema/pgDatabase.cpp:246
+#: src/schema/pgDatabase.cpp:254
 #, fuzzy
 msgid "Initial database can't be dropped."
 msgstr "Base de Datos inicial"
 
-#: src/schema/pgCheck.cpp:80
-#: src/schema/pgForeignKey.cpp:161
+#: src/schema/pgCheck.cpp:80 src/schema/pgForeignKey.cpp:167
 msgid "Initially?"
 msgstr "¿Inicialmente?"
 
 # standard
-#: input:410
-#: src/schema/pgType.cpp:143
+#: src/schema/pgType.cpp:147 standard input:649
 msgid "Input function"
 msgstr "Función Entrada"
 
 # standard
-#: input:5
-#: src/schema/pgAggregate.cpp:78
+#: src/schema/pgAggregate.cpp:84 standard input:5
 msgid "Input type"
 msgstr "Tipo de Entrada"
 
 # standard
-#: input:488
+#: standard input:728
 msgid "Insert commands"
 msgstr ""
 
+#: src/dlg/dlgMainConfig.cpp:47
+msgid "Internal - not externally settable"
+msgstr ""
+
 # standard
-#: input:414
-#: src/schema/pgType.cpp:135
+#: src/schema/pgType.cpp:139 standard input:653
 msgid "Internal length"
 msgstr "Lonxitude interna"
 
 # standard
-#: input:290
 #, fuzzy
 msgid "Interval"
 msgstr "Xeral"
 
-#: src/schema/pgObject.cpp:82
+#: xtra/pgagent/misc.cpp:35
+msgid "Invalid command line argument"
+msgstr ""
+
+#: xtra/pgagent/job.cpp:271
+msgid "Invalid step type!"
+msgstr ""
+
+#: src/slony/slSubscription.cpp:124
+#, fuzzy
+msgid "Is forwarded"
+msgstr "Adiante"
+
+#: src/agent/pgaSchedule.cpp:363 standard input:435
+msgid "January"
+msgstr ""
+
+#: src/schema/pgObject.cpp:85
 msgid "Job"
 msgstr ""
 
 # standard
-#: input:212
+#: src/agent/pgaJob.cpp:87 standard input:227
 msgid "Job class"
 msgstr ""
 
 # standard
-#: input:606
+#: src/schema/pgObject.cpp:84
+#, fuzzy
+msgid "Jobs"
+msgstr "Cerrar"
+
+# standard
+#: standard input:857
 msgid "Join"
 msgstr "Composición"
 
 # standard
-#: input:608
+#: standard input:859
 msgid "Join Type"
 msgstr "Tipo de composición"
 
+#: standard input:285
+msgid "Join existing cluster"
+msgstr ""
+
 # standard
-#: input:251
-#: src/schema/pgOperator.cpp:127
+#: src/schema/pgOperator.cpp:130 standard input:272
 msgid "Join function"
 msgstr "Función Join"
 
+#: src/agent/pgaSchedule.cpp:387 standard input:441
+msgid "July"
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:383 standard input:440
+msgid "June"
+msgstr ""
+
 # standard
-#: input:282
-#: input:346
-#: src/schema/pgOperator.cpp:118
+#: src/agent/pgaStep.cpp:59 src/schema/pgOperator.cpp:121 standard input:585
 msgid "Kind"
 msgstr "Categoría"
 
 # standard
-#: input:614
+#: standard input:865
 msgid "LEFT JOIN"
 msgstr "LEFT JOIN"
 
 # standard
-#: input:504
+#: standard input:744
 msgid "LF"
 msgstr "LF"
 
 # standard
-#: input:149
-#: src/schema/pgFunction.cpp:104
-#: src/schema/pgObject.cpp:39
+#: src/schema/pgFunction.cpp:122 src/schema/pgObject.cpp:39 standard input:150
 msgid "Language"
 msgstr "Linguaxe"
 
@@ -2530,179 +3484,245 @@ msgstr "Linguaxe"
 msgid "Languages"
 msgstr "Linguaxes"
 
+#: src/slony/slNode.cpp:125
+msgid "Last ack timestamp"
+msgstr ""
+
+#: src/slony/slNode.cpp:124
+msgid "Last acknowledged"
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:327 standard input:433
+msgid "Last day"
+msgstr ""
+
+#: src/slony/slNode.cpp:92 src/slony/slNode.cpp:122
+msgid "Last event"
+msgstr ""
+
+#: src/slony/slNode.cpp:123
+msgid "Last event timestamp"
+msgstr ""
+
+#: src/slony/slNode.cpp:126
+msgid "Last response time"
+msgstr ""
+
 # standard
-#: input:217
+#: src/agent/pgaJob.cpp:92 standard input:233
 msgid "Last result"
 msgstr ""
 
 # standard
-#: input:216
+#: src/agent/pgaJob.cpp:91 standard input:232
 msgid "Last run"
 msgstr ""
 
-#: src/schema/pgServer.cpp:505
+#: src/schema/pgServer.cpp:667
 msgid "Last system OID"
 msgstr "Último OID do sistema"
 
-#: src/schema/pgOperator.cpp:129
+#: src/schema/pgOperator.cpp:132
 msgid "Left Sort operator"
 msgstr "Operador Clasificación Esquerda"
 
 # standard
-#: input:607
+#: standard input:858
 msgid "Left Table Columns"
 msgstr "Columnas da táboa Esquerda"
 
 # standard
-#: input:254
+#: standard input:275
 msgid "Left sort op"
 msgstr "op Clasif.esquerda"
 
 # standard
-#: input:245
-#: src/schema/pgOperator.cpp:120
+#: src/schema/pgOperator.cpp:123 standard input:266
 msgid "Left type"
 msgstr "Tipo á esquerda"
 
 # standard
-#: input:37
-#: input:88
-#: input:432
+#: standard input:37 input:88 input:671
 msgid "Length"
 msgstr "Lonxitude"
 
-#: src/schema/pgOperator.cpp:131
+#: src/schema/pgOperator.cpp:134
 msgid "Less Than operator"
 msgstr "Operador menor que"
 
-#: src/ui/frmStatus.cpp:138
+#: src/frm/frmStatus.cpp:146
 #, fuzzy
 msgid "Level"
 msgstr "Nivel de log"
 
-#: src/ui/frmQuery.cpp:1112
+#: src/frm/frmQuery.cpp:1057
 msgid "Limit exceeded"
 msgstr "Límite excedido"
 
 # standard
-#: input:165
-#: src/schema/pgFunction.cpp:109
+#: src/schema/pgFunction.cpp:127 standard input:169
 msgid "Link symbol"
 msgstr "Símbolo de enlace"
 
+#: src/schema/pgObject.cpp:98
+msgid "Listen"
+msgstr ""
+
+#: src/schema/pgObject.cpp:97
+msgid "Listens"
+msgstr ""
+
 # standard
-#: input:109
+#: standard input:98
 msgid "Lists the columns that the data will be sorted by."
 msgstr ""
 
-#: src/ui/dlgForeignKey.cpp:279
+#: src/dlg/dlgForeignKey.cpp:298
 msgid "Local"
 msgstr "Local"
 
+#: standard input:289
+#, fuzzy
+msgid "Local Node"
+msgstr "Local"
+
 # standard
-#: input:515
+#: standard input:755
 msgid "Local charset"
 msgstr "Conxunto de caracteres locales"
 
 # standard
-#: input:125
+#: standard input:126
 msgid "Local column"
 msgstr "Columna local"
 
+#: src/slony/slCluster.cpp:264 src/slony/slNode.cpp:171
+#, fuzzy
+msgid "Local node"
+msgstr "Local"
+
+#: src/slony/slCluster.cpp:263
+msgid "Local node ID"
+msgstr ""
+
 # standard
-#: input:378
-#: src/schema/pgTablespace.cpp:133
+#: src/schema/pgTablespace.cpp:127 standard input:617
 #, fuzzy
 msgid "Location"
 msgstr "Acción"
 
 # standard
-#: input:644
+#: standard input:895
 #, fuzzy
 msgid "Locks"
 msgstr "Local"
 
 # standard
-#: input:586
+#: standard input:837
 msgid "Log Level"
 msgstr "Nivel de log"
 
-#: src/ui/frmStatus.cpp:140
+#: src/frm/frmStatus.cpp:148
 msgid "Log entry"
 msgstr ""
 
-#: src/ui/frmOptions.cpp:273
-#: src/ui/frmQuery.cpp:498
+#: src/frm/frmOptions.cpp:301 src/frm/frmQuery.cpp:427
 msgid "Log files (*.log)|*.log|All files (*.*)|*.*"
 msgstr "Arquivos log (*.log)|*.log|Todos os Arquivos (*.*)|*.*"
 
 # standard
-#: input:647
+#: standard input:898
 msgid "Logfile"
 msgstr ""
 
 # standard
-#: input:581
+#: standard input:832
 msgid "Logfile (%ID will be replaced with the Process ID)"
 msgstr "Arquivo log (%ID será remplazado co ID de Proceso)"
 
-#: src/ui/frmStatus.cpp:738
+#: src/frm/frmStatus.cpp:746
 msgid "Logfile rotation"
 msgstr ""
 
 # standard
-#: input:580
+#: standard input:831
 msgid "Logging"
 msgstr "Logeando"
 
 # standard
-#: input:428
+#: standard input:667
 msgid "MAIN"
 msgstr "MAIN"
 
-#: src/ui/frmMaintenance.cpp:55
+#: src/frm/frmMaintenance.cpp:55
 #, c-format
 msgid "Maintain %s %s"
 msgstr "Manter %s %s"
 
-#: src/ui/frmMain.cpp:188
-#: src/ui/frmMain.cpp:259
+#: src/frm/frmMain.cpp:207 src/frm/frmMain.cpp:298
 msgid "Maintain the current database or table."
 msgstr "Manter a base de datos o táboa actual"
 
 # standard
-#: input:540
-#: src/ui/frmMain.cpp:259
+#: src/frm/frmMain.cpp:298 standard input:788
 msgid "Maintenance"
 msgstr "Mantemento"
 
 # standard
-#: input:542
+#: standard input:790
 msgid "Maintenance operation"
 msgstr "Operación de mantemento"
 
 # standard
-#: input:577
+#: src/agent/pgaSchedule.cpp:371 standard input:437
+#, fuzzy
+msgid "March"
+msgstr "Cache"
+
+#: standard input:121
+msgid "Match full"
+msgstr ""
+
+# standard
+#: src/schema/pgForeignKey.cpp:162
+#, fuzzy
+msgid "Match type"
+msgstr "Tipo de Dato"
+
+#: src/slony/slNode.cpp:93
+msgid "Max response time"
+msgstr ""
+
+# standard
+#: standard input:828
 msgid "Max. characters per column"
 msgstr "Max. Caracteres por columna"
 
 # standard
-#: input:319
-#: src/schema/pgSequence.cpp:96
+#: src/schema/pgSequence.cpp:97 standard input:558
 msgid "Maximum"
 msgstr "Máximo"
 
 # standard
-#: input:575
+#: standard input:826
 msgid "Maximum rows to retrieve"
 msgstr "Máximo de filas a recuperar"
 
 # standard
-#: input:576
+#: standard input:827
 msgid "Maximums rows to retrieve into output window; 0 = unlimited"
 msgstr "Máximo de filas a recuperar na Ventá de saida; 0 = ilimitado"
 
-#: src/ui/dlgType.cpp:76
+#: src/agent/pgaSchedule.cpp:379 standard input:439
+msgid "May"
+msgstr ""
+
+#: src/slony/slSubscription.cpp:122
+#, fuzzy
+msgid "May forward"
+msgstr "Adiante"
+
+#: src/dlg/dlgType.cpp:79
 msgid "Member"
 msgstr "Membro"
 
@@ -2711,7 +3731,7 @@ msgid "Member count"
 msgstr "Número de membros"
 
 # standard
-#: input:430
+#: standard input:669
 msgid "Member name"
 msgstr "Nome do membro"
 
@@ -2721,128 +3741,146 @@ msgid "Member of"
 msgstr "Membro"
 
 # standard
-#: input:173
-#: src/schema/pgGroup.cpp:97
-#: src/schema/pgType.cpp:130
+#: src/schema/pgGroup.cpp:97 src/schema/pgType.cpp:134 standard input:177
 msgid "Members"
 msgstr "Membros"
 
 # standard
-#: input:498
-#: input:554
-#: input:635
-#: src/ui/frmGrantWizard.cpp:174
-#: src/ui/frmIndexcheck.cpp:61
-#: src/ui/frmQuery.cpp:214
+#: src/frm/frmMain.cpp:222
+#, fuzzy
+msgid "Merge set"
+msgstr "Conxunto devolto"
+
+#: standard input:339
+msgid "Merge set into another set"
+msgstr ""
+
+# standard
+#: src/frm/frmMain.cpp:222
+#, fuzzy
+msgid "Merge two replication sets."
+msgstr "Escriba un nome de arquivo no que gardar os logs da aplicación."
+
+# standard
+#: src/frm/frmGrantWizard.cpp:175 src/frm/frmIndexcheck.cpp:61
+#: src/frm/frmQuery.cpp:213 standard input:738 input:802 input:886
 msgid "Messages"
 msgstr "Mensaxes"
 
+#: src/frm/frmHbaConfig.cpp:115 standard input:191
+#, fuzzy
+msgid "Method"
+msgstr "Modo SSL"
+
 # standard
-#: input:318
-#: src/schema/pgSequence.cpp:95
+#: src/schema/pgSequence.cpp:96 standard input:557
 msgid "Minimum"
 msgstr "Mínimo"
 
-#: src/ui/frmStatus.cpp:111
+#: src/agent/pgaSchedule.cpp:63 standard input:473
+msgid "Minutes"
+msgstr ""
+
+#: src/frm/frmStatus.cpp:119
 #, fuzzy
 msgid "Mode"
 msgstr "Modo SSL"
 
-#: src/schema/pgColumn.cpp:246
+#: src/agent/pgaSchedule.cpp:262 standard input:395
+#, fuzzy
+msgid "Monday"
+msgstr "Modo SSL"
+
+#: standard input:401
+msgid "Month Days"
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:66
+msgid "Monthdays"
+msgstr ""
+
+# standard
+#: src/agent/pgaSchedule.cpp:67 standard input:434
+#, fuzzy
+msgid "Months"
+msgstr "Fonte"
+
+#: src/schema/pgColumn.cpp:236
 msgid "Most Common Frequencies"
 msgstr ""
 
-#: src/schema/pgColumn.cpp:245
+#: src/schema/pgColumn.cpp:235
 msgid "Most Common Values"
+msgstr ""
+
+#: src/frm/frmMain.cpp:223
+msgid "Move replication set to different node"
+msgstr ""
+
+#: src/frm/frmMain.cpp:223
+#, fuzzy
+msgid "Move set"
+msgstr "Movido"
+
+#: standard input:346
+msgid "Move set to other node"
 msgstr ""
 
 msgid "Moved"
 msgstr "Movido"
 
 # standard
-#: input:618
+#: standard input:869
 msgid "Multiple Column Joins"
 msgstr "Composiciós de Multiples Columnas"
 
 # standard
-#: input:2
-#: input:15
-#: input:26
-#: input:35
-#: input:54
-#: input:66
-#: input:82
-#: input:117
-#: input:144
-#: input:182
-#: input:196
-#: input:208
-#: input:231
-#: input:242
-#: input:264
-#: input:279
-#: input:303
-#: input:312
-#: input:340
-#: input:357
-#: input:377
-#: input:385
-#: input:402
-#: input:461
-#: src/schema/pgAggregate.cpp:77
-#: src/schema/pgCast.cpp:62
-#: src/schema/pgCheck.cpp:76
-#: src/schema/pgColumn.cpp:220
-#: src/schema/pgConversion.cpp:62
-#: src/schema/pgDatabase.cpp:334
-#: src/schema/pgDomain.cpp:93
-#: src/schema/pgForeignKey.cpp:151
-#: src/schema/pgFunction.cpp:98
-#: src/schema/pgGroup.cpp:94
-#: src/schema/pgIndex.cpp:197
-#: src/schema/pgIndexConstraint.cpp:94
-#: src/schema/pgLanguage.cpp:62
-#: src/schema/pgObject.cpp:169
-#: src/schema/pgOperator.cpp:115
-#: src/schema/pgOperatorClass.cpp:157
-#: src/schema/pgRule.cpp:61
-#: src/schema/pgSchema.cpp:152
-#: src/schema/pgSequence.cpp:88
-#: src/schema/pgTable.cpp:377
-#: src/schema/pgTablespace.cpp:45
-#: src/schema/pgTablespace.cpp:130
-#: src/schema/pgTrigger.cpp:139
-#: src/schema/pgType.cpp:125
-#: src/schema/pgUser.cpp:94
-#: src/schema/pgUser.cpp:206
-#: src/schema/pgView.cpp:82
-#: src/ui/dlgFunction.cpp:117
-#: src/ui/frmRestore.cpp:382
+#: src/agent/pgaJob.cpp:83 src/agent/pgaSchedule.cpp:57
+#: src/agent/pgaStep.cpp:56 src/dlg/dlgFunction.cpp:140
+#: src/frm/frmRestore.cpp:385 src/schema/pgAggregate.cpp:83
+#: src/schema/pgCast.cpp:66 src/schema/pgCheck.cpp:76
+#: src/schema/pgColumn.cpp:210 src/schema/pgConversion.cpp:66
+#: src/schema/pgDatabase.cpp:361 src/schema/pgDomain.cpp:97
+#: src/schema/pgForeignKey.cpp:155 src/schema/pgFunction.cpp:115
+#: src/schema/pgGroup.cpp:94 src/schema/pgIndex.cpp:200
+#: src/schema/pgIndexConstraint.cpp:94 src/schema/pgLanguage.cpp:65
+#: src/schema/pgObject.cpp:190 src/schema/pgOperator.cpp:118
+#: src/schema/pgOperatorClass.cpp:160 src/schema/pgRule.cpp:64
+#: src/schema/pgSchema.cpp:163 src/schema/pgSequence.cpp:91
+#: src/schema/pgTable.cpp:385 src/schema/pgTablespace.cpp:45
+#: src/schema/pgTablespace.cpp:124 src/schema/pgTrigger.cpp:142
+#: src/schema/pgType.cpp:129 src/schema/pgUser.cpp:94
+#: src/schema/pgUser.cpp:206 src/schema/pgView.cpp:86
+#: src/slony/slCluster.cpp:262 src/slony/slNode.cpp:168
+#: src/slony/slSequence.cpp:77 src/slony/slSet.cpp:79 src/slony/slSet.cpp:169
+#: src/slony/slTable.cpp:97 standard input:2 input:15 input:26 input:35
+#: input:54 input:66 input:82 input:117 input:145 input:197 input:211
+#: input:223 input:247 input:263 input:371 input:386 input:544 input:552
+#: input:579 input:596 input:616 input:624 input:641 input:701
 msgid "Name"
 msgstr "Nome"
 
-#: src/ui/dlgType.cpp:236
+#: src/dlg/dlgType.cpp:240
 msgid "Name may not start with '_'."
 msgstr "Nome."
 
 # standard
-#: input:48
+#: standard input:48
 #, fuzzy
 msgid "Need password"
 msgstr "Nova contrasinal"
 
-#: src/schema/pgServer.cpp:500
+#: src/schema/pgServer.cpp:662
 #, fuzzy
 msgid "Need password?"
 msgstr "Nova contrasinal"
 
 # standard
-#: input:253
-#: src/schema/pgOperator.cpp:126
+#: src/schema/pgOperator.cpp:129 standard input:274
 msgid "Negator"
 msgstr "Negación"
 
-#: src/ui/frmMain.cpp:171
+#: src/frm/frmMain.cpp:189
 msgid "New &Object"
 msgstr "Novo &Obxeto"
 
@@ -2854,11 +3892,11 @@ msgstr "Novo Agregado"
 msgid "New Cast"
 msgstr "Novo Cast"
 
-#: src/schema/pgObject.cpp:79
+#: src/schema/pgObject.cpp:81
 msgid "New Check Constraint"
 msgstr "Nova Restricción Check"
 
-#: src/schema/pgObject.cpp:69
+#: src/schema/pgObject.cpp:71
 msgid "New Column"
 msgstr "Nova Columna"
 
@@ -2874,7 +3912,7 @@ msgstr "Nova Base de Datos"
 msgid "New Domain"
 msgstr "Novo Dominio"
 
-#: src/schema/pgObject.cpp:80
+#: src/schema/pgObject.cpp:82
 msgid "New Foreign Key"
 msgstr "Nova Chave Allea"
 
@@ -2886,11 +3924,11 @@ msgstr "Nova Función"
 msgid "New Group"
 msgstr "Novo Grupo"
 
-#: src/schema/pgObject.cpp:71
+#: src/schema/pgObject.cpp:73
 msgid "New Index"
 msgstr "Novo Índice"
 
-#: src/schema/pgObject.cpp:82
+#: src/schema/pgObject.cpp:85
 #, fuzzy
 msgid "New Job"
 msgstr "Novo Grupo"
@@ -2899,28 +3937,52 @@ msgstr "Novo Grupo"
 msgid "New Language"
 msgstr "Nova Linguaxe"
 
-#: src/schema/pgObject.cpp:57
+#: src/schema/pgObject.cpp:98
+#, fuzzy
+msgid "New Listen"
+msgstr "Nova Vista"
+
+#: src/schema/pgObject.cpp:94
+#, fuzzy
+msgid "New Node"
+msgstr "Novo Índice"
+
+#: src/schema/pgObject.cpp:59
 msgid "New Operator"
 msgstr "Novo Operador"
 
-#: src/schema/pgObject.cpp:59
+#: src/schema/pgObject.cpp:61
 msgid "New Operator Class"
 msgstr "Novo Operador Class"
 
 # standard
-#: input:601
+#: standard input:852
 msgid "New Password"
 msgstr "Nova contrasinal"
 
-#: src/schema/pgObject.cpp:77
+#: src/schema/pgObject.cpp:96
+#, fuzzy
+msgid "New Path"
+msgstr "Novo Cast"
+
+#: src/schema/pgObject.cpp:79
 msgid "New Primary Key"
 msgstr "Nova Chave Primaria"
 
-#: src/schema/pgObject.cpp:73
+#: src/schema/pgObject.cpp:57
+#, fuzzy
+msgid "New Procedure"
+msgstr "Procedemento"
+
+#: src/schema/pgObject.cpp:100
+msgid "New Replication Set"
+msgstr ""
+
+#: src/schema/pgObject.cpp:75
 msgid "New Rule"
 msgstr "Nova Regra"
 
-#: src/schema/pgObject.cpp:84
+#: src/schema/pgObject.cpp:87
 #, fuzzy
 msgid "New Schedule"
 msgstr "Novo Esquema"
@@ -2929,7 +3991,7 @@ msgstr "Novo Esquema"
 msgid "New Schema"
 msgstr "Novo Esquema"
 
-#: src/schema/pgObject.cpp:61
+#: src/schema/pgObject.cpp:63
 msgid "New Sequence"
 msgstr "Nova Secuencia"
 
@@ -2937,12 +3999,22 @@ msgstr "Nova Secuencia"
 msgid "New Server"
 msgstr "Novo Servidor"
 
-#: src/schema/pgObject.cpp:83
+#: src/schema/pgObject.cpp:91 src/schema/pgObject.cpp:92
+msgid "New Slony-I Cluster"
+msgstr ""
+
+#: src/schema/pgObject.cpp:89
 #, fuzzy
 msgid "New Step"
 msgstr "Novo Servidor"
 
-#: src/schema/pgObject.cpp:63
+# standard
+#: src/schema/pgObject.cpp:106
+#, fuzzy
+msgid "New Subscription"
+msgstr "Descripción"
+
+#: src/schema/pgObject.cpp:65
 msgid "New Table"
 msgstr "Nova Táboa"
 
@@ -2951,7 +4023,7 @@ msgstr "Nova Táboa"
 msgid "New Tablespace"
 msgstr "Nova Táboa"
 
-#: src/schema/pgObject.cpp:75
+#: src/schema/pgObject.cpp:77
 msgid "New Trigger"
 msgstr "Novo Disparador"
 
@@ -2959,11 +4031,11 @@ msgstr "Novo Disparador"
 msgid "New Trigger Function"
 msgstr "Nova Función Disparador"
 
-#: src/schema/pgObject.cpp:65
+#: src/schema/pgObject.cpp:67
 msgid "New Type"
 msgstr "Novo Tipo"
 
-#: src/schema/pgObject.cpp:78
+#: src/schema/pgObject.cpp:80
 msgid "New Unique Constraint"
 msgstr "Nova Restricción Único"
 
@@ -2971,646 +4043,770 @@ msgstr "Nova Restricción Único"
 msgid "New User"
 msgstr "Novo Usuario"
 
-#: src/schema/pgObject.cpp:67
+#: src/schema/pgObject.cpp:69
 msgid "New View"
 msgstr "Nova Vista"
 
-#: src/ui/dlgColumn.cpp:397
+#: src/dlg/dlgColumn.cpp:402
 msgid "New length must not be less than old length."
 msgstr "A lonxitude nova no debe ser menor que á antiga."
 
-#: src/ui/dlgColumn.cpp:400
+#: src/dlg/dlgColumn.cpp:405
 msgid "New precision must not be less than old precision."
 msgstr "A precisión nova non debe ser menor que á antiga."
 
-#: src/ui/dlgColumn.cpp:402
+#: src/dlg/dlgColumn.cpp:407
 msgid "New total digits must not be less than old total digits."
 msgstr "O total de díxitos novo no debe ser menor que o antigo."
 
 # standard
-#: input:215
+#: src/agent/pgaJob.cpp:90 standard input:231
 msgid "Next run"
 msgstr ""
 
-#: src/ui/frmStatus.cpp:375
-#: src/utils/misc.cpp:71
+#: src/base/base.cpp:47 src/frm/frmStatus.cpp:383
 msgid "No"
 msgstr "Non"
 
-#: src/ui/frmEditGrid.cpp:580
+#: src/frm/frmEditGrid.cpp:612
 msgid "No Table or view."
 msgstr "Non Táboa o vista"
 
-#: src/db/pgConn.cpp:358
+#: src/slony/slNode.cpp:131
+msgid "No ack for"
+msgstr ""
+
+#: src/frm/frmConfig.cpp:387
+msgid "No configuration setting detected that appears doubtful."
+msgstr ""
+
+#: src/base/pgConnBase.cpp:407
 #, fuzzy
 msgid "No connection to database."
 msgstr "Engadir unha conexión o servidor."
 
-#: src/ui/frmQuery.cpp:1089
+#: xtra/pgagent/connection.cpp:222
+#, fuzzy
+msgid "No connections found!"
+msgstr "Engadir unha conexión o servidor."
+
+#: src/frm/frmQuery.cpp:1034
 msgid "No data to export."
 msgstr ""
 
+#: src/slony/dlgRepSet.cpp:292
+msgid "No node available to move this set to."
+msgstr ""
+
 # standard
-#: input:494
-#: input:631
+#: standard input:734 input:882
 #, fuzzy
 msgid "No owner"
 msgstr "Ningún"
 
-#: src/ui/events.cpp:701
-#: src/ui/frmMain.cpp:355
+#: src/slony/dlgRepListen.cpp:130
+msgid "No path to any provider node; add proper path."
+msgstr ""
+
+#: src/frm/frmMain.cpp:403 src/main/events.cpp:789
 msgid "No properties are available for the current selection"
 msgstr "Non hai propiedades dispoñibles para a selección actual"
 
-#: src/schema/pgObject.cpp:161
-#: src/ui/frmMain.cpp:361
+#: src/slony/dlgRepPath.cpp:122
+msgid "No provider node without path definition left."
+msgstr ""
+
+#: src/slony/dlgRepSet.cpp:177
+msgid "No set available to merge to."
+msgstr ""
+
+#: src/frm/frmMain.cpp:493
 msgid "No statistics are available for the current selection"
 msgstr "Non hai estatísticas dispoñibles para a selección actual"
+
+#: src/agent/pgaJob.cpp:146 src/agent/pgaJob.cpp:222
+#, fuzzy
+msgid "No steps"
+msgstr "Novo Servidor"
+
+#: src/schema/pgObject.cpp:94 src/slony/slNode.cpp:259
+#, fuzzy
+msgid "Node"
+msgstr "Modo SSL"
+
+#: src/slony/slFunctions.cpp:70
+#, c-format
+msgid "Node \"%s\" not running"
+msgstr ""
+
+#: src/slony/dlgRepCluster.cpp:616
+msgid "Node ID is already in use."
+msgstr ""
+
+#: src/schema/pgObject.cpp:93
+#, fuzzy
+msgid "Nodes"
+msgstr "Ningún"
 
 #: src/schema/pgObject.cpp:29
 msgid "None"
 msgstr "Ningún"
 
 # standard
-#: input:41
-#: input:90
+#: standard input:41 input:90
 msgid "Not NULL"
 msgstr "Non Nulo"
 
-#: src/schema/pgColumn.cpp:225
-#: src/schema/pgDomain.cpp:101
+#: src/schema/pgColumn.cpp:215 src/schema/pgDomain.cpp:105
 msgid "Not NULL?"
 msgstr "¿Non Nulo?"
 
-#: src/ui/ctlSQLBox.cpp:436
+#: src/agent/pgaJob.cpp:96
+msgid "Not currently running"
+msgstr ""
+
+#: src/ctl/ctlSQLBox.cpp:425
 msgid "Not implemented"
 msgstr "Non implementado"
 
-#: src/ui/dlgProperty.cpp:807
-#: src/ui/dlgProperty.cpp:831
+#: src/dlg/dlgProperty.cpp:838 src/dlg/dlgProperty.cpp:863
 msgid "Not implemented."
 msgstr "Non implementado"
 
 msgid "Nothing"
 msgstr "Nada"
 
-#: src/schema/pgColumn.cpp:242
+#: src/agent/pgaSchedule.cpp:403 standard input:445
+#, fuzzy
+msgid "November"
+msgstr "Membro"
+
+#: src/schema/pgColumn.cpp:232
 #, fuzzy
 msgid "Null Fraction"
 msgstr "Nova Función"
 
 # standard
-#: input:3
-#: input:16
-#: input:55
-#: input:67
-#: input:83
-#: input:147
-#: input:209
-#: input:232
-#: input:243
-#: input:265
-#: input:280
-#: input:304
-#: input:313
-#: input:341
-#: input:358
-#: input:386
-#: input:403
-#: input:462
-#: src/schema/pgAggregate.cpp:79
-#: src/schema/pgCast.cpp:63
-#: src/schema/pgCheck.cpp:77
-#: src/schema/pgConversion.cpp:63
-#: src/schema/pgDatabase.cpp:335
-#: src/schema/pgDomain.cpp:94
-#: src/schema/pgForeignKey.cpp:152
-#: src/schema/pgFunction.cpp:99
-#: src/schema/pgIndex.cpp:198
-#: src/schema/pgIndexConstraint.cpp:95
-#: src/schema/pgLanguage.cpp:63
-#: src/schema/pgOperator.cpp:116
-#: src/schema/pgOperatorClass.cpp:158
-#: src/schema/pgRule.cpp:62
-#: src/schema/pgSchema.cpp:153
-#: src/schema/pgSequence.cpp:89
-#: src/schema/pgTable.cpp:378
-#: src/schema/pgTablespace.cpp:131
-#: src/schema/pgTrigger.cpp:140
-#: src/schema/pgType.cpp:126
-#: src/schema/pgView.cpp:83
+#: src/schema/pgAggregate.cpp:85 src/schema/pgCast.cpp:67
+#: src/schema/pgCheck.cpp:77 src/schema/pgConversion.cpp:67
+#: src/schema/pgDatabase.cpp:362 src/schema/pgDomain.cpp:98
+#: src/schema/pgForeignKey.cpp:156 src/schema/pgFunction.cpp:116
+#: src/schema/pgIndex.cpp:201 src/schema/pgIndexConstraint.cpp:95
+#: src/schema/pgLanguage.cpp:66 src/schema/pgOperator.cpp:119
+#: src/schema/pgOperatorClass.cpp:161 src/schema/pgRule.cpp:65
+#: src/schema/pgSchema.cpp:164 src/schema/pgSequence.cpp:92
+#: src/schema/pgTable.cpp:386 src/schema/pgTablespace.cpp:125
+#: src/schema/pgTrigger.cpp:143 src/schema/pgType.cpp:130
+#: src/schema/pgView.cpp:87 standard input:3 input:16 input:55 input:67
+#: input:83 input:148 input:248 input:264 input:372 input:545 input:553
+#: input:597 input:625 input:642 input:702
 msgid "OID"
 msgstr "OID"
 
 # standard
-#: input:12
-#: input:23
-#: input:32
-#: input:45
-#: input:63
-#: input:79
-#: input:93
-#: input:98
-#: input:141
-#: input:168
-#: input:179
-#: input:193
-#: input:205
-#: input:228
-#: input:239
-#: input:261
-#: input:276
-#: input:300
-#: input:309
-#: input:324
-#: input:337
-#: input:354
-#: input:374
-#: input:382
-#: input:399
-#: input:437
-#: input:458
-#: input:468
-#: src/ui/frmRestore.cpp:348
+#: src/frm/frmRestore.cpp:351 standard input:12 input:23 input:32 input:45
+#: input:63 input:79 input:93 input:114 input:142 input:172 input:183
+#: input:194 input:208 input:220 input:244 input:254 input:260 input:282
+#: input:293 input:303 input:310 input:316 input:323 input:330 input:337
+#: input:344 input:351 input:359 input:368 input:383 input:541 input:549
+#: input:563 input:576 input:593 input:613 input:621 input:638 input:676
+#: input:698 input:708
 msgid "OK"
 msgstr "OK"
 
-#: src/ui/frmQuery.cpp:1015
-#: src/ui/frmQuery.cpp:1096
-#: src/ui/frmQuery.cpp:1176
+#: src/frm/frmQuery.cpp:960 src/frm/frmQuery.cpp:1041
+#: src/frm/frmQuery.cpp:1121
 msgid "OK."
 msgstr "OK."
 
 # standard
-#: input:623
+#: standard input:874
 msgid "OR"
 msgstr "OR"
 
-# standard
-#: input:164
-#: src/schema/pgFunction.cpp:108
-msgid "Object file"
-msgstr "Arquivo Obxeto"
-
-#: src/schema/pgDatabase.cpp:357
-msgid "Old style FKs"
+#: standard input:165
+msgid "OUT"
 msgstr ""
 
 # standard
-#: input:135
+#: src/schema/pgFunction.cpp:126 standard input:168
+msgid "Object file"
+msgstr "Arquivo Obxeto"
+
+#: src/agent/pgaSchedule.cpp:399 standard input:444
+msgid "October"
+msgstr ""
+
+#: src/schema/pgDatabase.cpp:384
+msgid "Old style FKs"
+msgstr ""
+
+#: src/slony/slNode.cpp:100
+msgid "Oldest outstanding"
+msgstr ""
+
+# standard
+#: standard input:136
 msgid "On Delete"
 msgstr "En Eliminación"
 
 # standard
-#: input:130
+#: standard input:131
 msgid "On Update"
 msgstr "En Actualización"
 
-#: src/schema/pgForeignKey.cpp:159
+#: src/schema/pgForeignKey.cpp:164
 msgid "On delete"
 msgstr "En eliminación"
 
 # standard
-#: input:347
+#: src/agent/pgaStep.cpp:62 standard input:586
 #, fuzzy
 msgid "On error"
 msgstr "Operador"
 
-#: src/schema/pgForeignKey.cpp:158
+#: src/schema/pgForeignKey.cpp:163
 msgid "On update"
 msgstr "En actualización"
 
-#: src/ui/frmQuery.cpp:1021
+#: src/frm/frmQuery.cpp:966
 #, c-format
 msgid "One Row with OID %d inserted."
 msgstr ""
 
+#: src/schema/pgServer.cpp:226
+msgid ""
+"One or more dependent services didn't start; see the eventlog for details."
+msgstr ""
+
 # standard
-#: input:492
-#: input:628
+#: src/frm/frmMain.cpp:249
+#, fuzzy
+msgid "Online Update"
+msgstr "En Actualización"
+
+# standard
+#: standard input:732 input:879
 #, fuzzy
 msgid "Only data"
 msgstr "En actualización"
 
 # standard
-#: input:493
-#: input:629
+#: standard input:733 input:880
 #, fuzzy
 msgid "Only schema"
 msgstr "¿Esquema do sistema?"
 
-#: src/ui/frmQuery.cpp:181
+#: src/frm/frmConfig.cpp:146 src/frm/frmQuery.cpp:178
 msgid "Open"
 msgstr "Abrir"
 
-#: src/ui/frmQuery.cpp:104
+#: src/frm/frmConfig.cpp:102 src/frm/frmQuery.cpp:100
 msgid "Open a query file"
 msgstr "Abrir un arquivo de consultas"
 
-#: src/ui/frmQuery.cpp:181
+#: src/frm/frmMain.cpp:178
+msgid "Open configuration editor with pg_hba.conf."
+msgstr ""
+
+#: src/frm/frmMain.cpp:177
+msgid "Open configuration editor with postgresql.conf."
+msgstr ""
+
+#: src/frm/frmConfig.cpp:238
+#, fuzzy
+msgid "Open configuration file"
+msgstr "Abrir Arquivo de consultas"
+
+#: src/frm/frmConfig.cpp:146 src/frm/frmQuery.cpp:178
 msgid "Open file"
 msgstr "Abrir Arquivo"
 
-#: src/ui/frmQuery.cpp:790
+#: src/frm/frmMain.cpp:178
+msgid "Open pg_hba.conf"
+msgstr ""
+
+#: src/frm/frmMain.cpp:177
+msgid "Open postgresql.conf"
+msgstr ""
+
+#: src/frm/frmQuery.cpp:707
 msgid "Open query file"
 msgstr "Abrir Arquivo de consultas"
 
-#: src/ui/frmMain.cpp:206
-#: src/ui/frmQuery.cpp:144
+#: src/frm/frmConfig.cpp:121 src/frm/frmMain.cpp:242 src/frm/frmQuery.cpp:140
 msgid "Open the pgAdmin III helpfile."
 msgstr "Abrir Arquivo de Axuda de pgAdmin III"
 
 # standard
-#: input:609
-#: src/schema/pgObject.cpp:57
+#: src/schema/pgObject.cpp:59 standard input:860
 msgid "Operator"
 msgstr "Operador"
 
-#: src/schema/pgObject.cpp:59
+#: src/schema/pgObject.cpp:61
 msgid "Operator Class"
 msgstr "Operador Class"
 
-#: src/schema/pgObject.cpp:58
+#: src/schema/pgObject.cpp:60
 msgid "Operator Classes"
 msgstr "Operador Classes"
 
-#: src/schema/pgIndex.cpp:206
-#: src/schema/pgIndexConstraint.cpp:101
+#: src/schema/pgIndex.cpp:209 src/schema/pgIndexConstraint.cpp:101
 msgid "Operator classes"
 msgstr "Operador classes"
 
 # standard
-#: input:247
-#: src/schema/pgOperator.cpp:124
+#: src/schema/pgOperator.cpp:127 standard input:268
 msgid "Operator function"
 msgstr "Función operardor"
 
-#: src/schema/pgObject.cpp:56
+#: src/schema/pgObject.cpp:58
 msgid "Operators"
 msgstr "Operadores"
 
 # standard
-#: input:479
-#: input:541
-#: input:558
-#: input:625
-#: src/ui/frmEditGrid.cpp:106
+#: src/frm/frmHbaConfig.cpp:116 standard input:192
+#, fuzzy
+msgid "Option"
+msgstr "Opcións"
+
+# standard
+#: src/frm/frmEditGrid.cpp:107 standard input:719 input:789 input:806
+#: input:876
 msgid "Options"
 msgstr "Opcións"
 
-#: src/ui/frmQuery.cpp:135
+#: src/frm/frmQuery.cpp:131
 msgid "Options modifying Explain output"
 msgstr "Opcións modificando Comentario de Saida"
 
 msgid "Or"
 msgstr "O"
 
-#: src/ui/frmEditGrid.cpp:1817
-#: src/ui/frmEditGrid.cpp:1875
+#: src/slony/slListen.cpp:84 standard input:306 input:333 input:354
+msgid "Origin"
+msgstr ""
+
+#: src/slony/slSet.cpp:171
+msgid "Origin ID"
+msgstr ""
+
+#: src/slony/slSet.cpp:172
+msgid "Origin Node"
+msgstr ""
+
+#: src/slony/slListen.cpp:85
+msgid "OriginID"
+msgstr ""
+
+#: src/frm/frmEditGrid.cpp:1895 src/frm/frmEditGrid.cpp:1953
 msgid "Out of Memory for cacheLinePool"
 msgstr "Fora da memoria cacheLinePool"
 
+#: src/agent/pgaStep.cpp:175
 msgid "Output"
 msgstr "Saida"
 
 # standard
-#: input:411
-#: src/schema/pgType.cpp:144
+#: src/schema/pgType.cpp:148 standard input:650
 msgid "Output function"
 msgstr "Función Saida"
 
+#: src/slony/slNode.cpp:130
+msgid "Outstanding acks"
+msgstr ""
+
+#: src/slony/slNode.cpp:101
+msgid "Outstanding for"
+msgstr ""
+
+#: src/slony/slNode.cpp:262
+msgid "Outstanding time"
+msgstr ""
+
 # standard
-#: input:4
-#: input:56
-#: input:68
-#: input:84
-#: input:145
-#: input:244
-#: input:305
-#: input:314
-#: input:359
-#: input:379
-#: input:404
-#: input:463
-#: src/schema/pgAggregate.cpp:80
-#: src/schema/pgConversion.cpp:64
-#: src/schema/pgDatabase.cpp:336
-#: src/schema/pgDomain.cpp:95
-#: src/schema/pgFunction.cpp:100
-#: src/schema/pgOperator.cpp:117
-#: src/schema/pgOperatorClass.cpp:159
-#: src/schema/pgSchema.cpp:154
-#: src/schema/pgSequence.cpp:90
-#: src/schema/pgTable.cpp:379
-#: src/schema/pgTablespace.cpp:132
-#: src/schema/pgType.cpp:127
-#: src/schema/pgView.cpp:84
+#: src/schema/pgAggregate.cpp:86 src/schema/pgConversion.cpp:68
+#: src/schema/pgDatabase.cpp:363 src/schema/pgDomain.cpp:99
+#: src/schema/pgFunction.cpp:117 src/schema/pgOperator.cpp:120
+#: src/schema/pgOperatorClass.cpp:162 src/schema/pgSchema.cpp:165
+#: src/schema/pgSequence.cpp:93 src/schema/pgTable.cpp:387
+#: src/schema/pgTablespace.cpp:126 src/schema/pgType.cpp:131
+#: src/schema/pgView.cpp:88 src/slony/slCluster.cpp:268 standard input:4
+#: input:56 input:68 input:84 input:146 input:265 input:546 input:554
+#: input:598 input:618 input:643 input:703
 msgid "Owner"
 msgstr "Propietario"
 
-#: src/ui/frmStatus.cpp:96
-#: src/ui/frmStatus.cpp:106
+#: src/frm/frmStatus.cpp:104 src/frm/frmStatus.cpp:114
 msgid "PID"
 msgstr "PID"
 
 # standard
-#: input:425
-#: input:485
+#: standard input:664 input:725
 msgid "PLAIN"
 msgstr "PLAIN"
 
 # standard
-#: input:491
+#: standard input:731
 #, fuzzy
 msgid "PLAIN options"
 msgstr "opcións REINDEX"
 
 # standard
-#: input:158
+#: standard input:159
 msgid "Parameter"
 msgstr "Parámetro"
 
-#: src/schema/pgType.cpp:137
+#: src/schema/pgType.cpp:141
 msgid "Passed by Value?"
 msgstr ""
 
 # standard
-#: input:429
+#: standard input:668
 msgid "Passed by value"
 msgstr ""
 
 # standard
-#: input:335
-#: input:442
+#: standard input:574 input:681
 msgid "Password"
 msgstr "Contrasinal"
 
-#: src/ui/frmPassword.cpp:84
+# standard
+#: standard input:682
+#, fuzzy
+msgid "Password (again)"
+msgstr "Contrasinal"
+
+#: src/frm/frmPassword.cpp:84
 msgid "Password successfully changed!"
 msgstr "Exito no cambio de contrasinal!"
 
-#: src/ui/frmPassword.cpp:72
+#: src/frm/frmPassword.cpp:72
 msgid "Passwords do not match!"
 msgstr "Contrasinais non coincidentes"
 
-#: src/ui/frmQuery.cpp:186
+#: src/frm/frmQuery.cpp:183
 msgid "Paste"
 msgstr "Pegar"
 
-#: src/ui/frmQuery.cpp:121
-#: src/ui/frmQuery.cpp:186
+#: src/frm/frmQuery.cpp:117 src/frm/frmQuery.cpp:183
 msgid "Paste selected text from clipboard"
 msgstr "Pegar o texto seleccionado dende o portapapeis"
 
 # standard
-#: input:71
-#: src/schema/pgDatabase.cpp:339
+#: src/schema/pgDatabase.cpp:366 src/schema/pgObject.cpp:96 standard input:71
 msgid "Path"
 msgstr "Ruta"
 
-#: src/pgAdmin3.cpp:280
+# standard
+#: src/schema/pgObject.cpp:95
+#, fuzzy
+msgid "Paths"
+msgstr "Ruta"
+
 msgid "Please choose user language:"
 msgstr "Por favor escolla unha linguaxe de usuario:"
 
-#: src/ui/dlgRule.cpp:149
-#: src/ui/dlgView.cpp:101
+#: src/dlg/dlgRule.cpp:149 src/dlg/dlgView.cpp:101
 msgid "Please enter function definition."
 msgstr "Por favor escriba a definición da función"
 
-#: src/ui/dlgFunction.cpp:284
+#: src/dlg/dlgFunction.cpp:337
 msgid "Please enter function source code."
 msgstr "Por favor escriba o código fonte da función."
 
-#: src/schema/pgServer.cpp:263
+#: src/schema/pgServer.cpp:384
 #, c-format
 msgid ""
 "Please enter password for user %s\n"
 "on server %s (%s)"
 msgstr ""
 
-#: src/ui/dlgColumn.cpp:424
-#: src/ui/dlgDomain.cpp:134
+#: src/slony/dlgRepPath.cpp:127
+#, fuzzy
+msgid "Please provide dbname info."
+msgstr "Por favor especifique nome."
+
+#: src/slony/dlgRepPath.cpp:126
+#, fuzzy
+msgid "Please provide host info."
+msgstr "Por favor especifique condición."
+
+#: src/slony/dlgRepPath.cpp:128
+#, fuzzy
+msgid "Please provide user info."
+msgstr "Por favor especifique nome."
+
+#: src/dlg/dlgColumn.cpp:398 src/dlg/dlgColumn.cpp:429
+#: src/dlg/dlgDomain.cpp:135
 msgid "Please select a datatype."
 msgstr "Por favor  seleccione un tipo de dato."
 
-#: src/ui/dlgRule.cpp:148
+#: src/dlg/dlgRule.cpp:148
 msgid "Please select at an event."
 msgstr "Por favor selecione un evento."
 
-#: src/ui/dlgAggregate.cpp:124
+#: src/dlg/dlgAggregate.cpp:127
 msgid "Please select base datatype."
 msgstr "Por favor seleccione tipo de dato base."
 
-#: src/ui/dlgFunction.cpp:276
+#: src/slony/dlgRepTable.cpp:225
+#, fuzzy
+msgid "Please select index."
+msgstr "Por favor escolla linguaxe."
+
+#: src/dlg/dlgFunction.cpp:328
 msgid "Please select language."
 msgstr "Por favor escolla linguaxe."
 
-#: src/ui/dlgOperator.cpp:195
+#: src/dlg/dlgOperator.cpp:204
 msgid "Please select left or right datatype."
 msgstr "Por favor seleccione tipo de dato á esquerda ou á dereita."
 
-#: src/ui/dlgFunction.cpp:275
+#: src/slony/dlgRepSet.cpp:293
+msgid "Please select node to move this replication set to."
+msgstr ""
+
+#: src/slony/dlgRepListen.cpp:131
+#, fuzzy
+msgid "Please select origin node of replication events."
+msgstr "Por favor selecione un evento."
+
+#: src/slony/dlgRepListen.cpp:132
+#, fuzzy
+msgid "Please select provider node for replication events."
+msgstr "Por favor selecione un evento."
+
+#: src/slony/dlgRepPath.cpp:123
+#, fuzzy
+msgid "Please select provider node."
+msgstr "Por favor selecione tipo a devolver."
+
+#: src/slony/dlgRepSet.cpp:178
+#, fuzzy
+msgid "Please select replication set to merged to."
+msgstr "Por favor selecione tipo a devolver."
+
+#: src/dlg/dlgFunction.cpp:325
 msgid "Please select return type."
 msgstr "Por favor selecione tipo a devolver."
 
-#: src/ui/dlgAggregate.cpp:125
+#: src/slony/dlgRepSequence.cpp:131
+#, fuzzy
+msgid "Please select sequence to replicate."
+msgstr "Por favor selecione tipo a devolver."
+
+#: src/dlg/dlgAggregate.cpp:128
 msgid "Please select state datatype."
 msgstr "Por favor seleccione tipo de dato estado."
 
-#: src/ui/dlgCast.cpp:116
+#: src/slony/dlgRepTable.cpp:224
+#, fuzzy
+msgid "Please select table to replicate."
+msgstr "Por favor seleccione tipo de dato estado."
+
+#: src/dlg/dlgCast.cpp:119
 msgid "Please select target datatype."
 msgstr "Por favor seleccione tipo de dato destino."
 
-#: src/ui/dlgForeignKey.cpp:158
-#: src/ui/dlgForeignKey.cpp:170
+#: src/dlg/dlgForeignKey.cpp:174 src/dlg/dlgForeignKey.cpp:186
 #, fuzzy
 msgid "Please specify FK index name."
 msgstr "Por favor especifique nome."
 
-#: src/ui/dlgOperator.cpp:196
+#: src/dlg/dlgOperator.cpp:205
 msgid "Please specify a procedure."
 msgstr "Por favor especifique un procedemento."
 
-#: src/ui/dlgServer.cpp:246
+#: src/dlg/dlgServer.cpp:244
 #, fuzzy
 msgid "Please specify address."
 msgstr "Por favor especifique nome."
 
-#: src/ui/dlgTrigger.cpp:201
+#: src/dlg/dlgTrigger.cpp:202
 msgid "Please specify at least one action."
 msgstr "Por favor especifique como mínimo unha acción."
 
-#: src/ui/dlgType.cpp:240
+#: src/dlg/dlgType.cpp:244
 msgid "Please specify at least two members."
 msgstr "Por favor especifique como mínimo dous membros."
 
-#: src/ui/dlgForeignKey.cpp:168
-#: src/ui/dlgIndex.cpp:141
-#: src/ui/dlgIndex.cpp:188
-#: src/ui/dlgTable.cpp:515
+#: src/agent/dlgStep.cpp:148
+#, fuzzy
+msgid "Please specify code to execute."
+msgstr "Por favor especifique condición."
+
+#: src/dlg/dlgForeignKey.cpp:184 src/dlg/dlgIndex.cpp:142
+#: src/dlg/dlgIndex.cpp:189 src/dlg/dlgTable.cpp:559
 msgid "Please specify columns."
 msgstr "Por favor especifique columnas."
 
-#: src/ui/dlgCheck.cpp:66
+#: src/dlg/dlgCheck.cpp:66
 msgid "Please specify condition."
 msgstr "Por favor especifique condición."
 
-#: src/ui/dlgConversion.cpp:156
+#: src/dlg/dlgConversion.cpp:159
 msgid "Please specify conversion function."
 msgstr "Por favor especifique función de conversión."
 
-#: src/ui/dlgServer.cpp:247
+#: src/dlg/dlgServer.cpp:241
 #, fuzzy
 msgid "Please specify description."
 msgstr "Por favor especifique condición."
 
-#: src/ui/dlgType.cpp:245
+#: src/dlg/dlgType.cpp:249
 msgid "Please specify input conversion function."
 msgstr "Por favor especifique función de conversión de entrada."
 
-#: src/ui/dlgType.cpp:247
+#: src/dlg/dlgType.cpp:251
 msgid "Please specify internal storage length."
 msgstr "Por favor especifique lonxitude de almacenamento interno."
 
-#: src/ui/dlgLanguage.cpp:129
+#: src/dlg/dlgLanguage.cpp:130
 msgid "Please specify language handler."
 msgstr "Por favor especifique o manexador da linguaxe."
 
-#: src/ui/dlgTablespace.cpp:91
+#: src/slony/dlgRepCluster.cpp:614
+#, fuzzy
+msgid "Please specify local node ID."
+msgstr "Por favor especifique condición."
+
+#: src/slony/dlgRepCluster.cpp:618
+#, fuzzy
+msgid "Please specify local node name."
+msgstr "Por favor especifique nome."
+
+#: src/dlg/dlgTablespace.cpp:91
 #, fuzzy
 msgid "Please specify location."
 msgstr "Por favor especifique condición."
 
-#: src/ui/dlgAggregate.cpp:123
-#: src/ui/dlgColumn.cpp:423
-#: src/ui/dlgConversion.cpp:153
-#: src/ui/dlgDatabase.cpp:209
-#: src/ui/dlgDomain.cpp:133
-#: src/ui/dlgFunction.cpp:274
-#: src/ui/dlgGroup.cpp:113
-#: src/ui/dlgIndex.cpp:187
-#: src/ui/dlgLanguage.cpp:128
-#: src/ui/dlgOperator.cpp:194
-#: src/ui/dlgRule.cpp:146
-#: src/ui/dlgSchema.cpp:95
-#: src/ui/dlgSequence.cpp:139
-#: src/ui/dlgTable.cpp:513
-#: src/ui/dlgTablespace.cpp:90
-#: src/ui/dlgTrigger.cpp:198
-#: src/ui/dlgType.cpp:235
-#: src/ui/dlgUser.cpp:224
-#: src/ui/dlgView.cpp:100
+#: src/agent/dlgJob.cpp:232 src/agent/dlgSchedule.cpp:211
+#: src/agent/dlgStep.cpp:147 src/dlg/dlgAggregate.cpp:126
+#: src/dlg/dlgColumn.cpp:428 src/dlg/dlgConversion.cpp:156
+#: src/dlg/dlgDatabase.cpp:215 src/dlg/dlgDomain.cpp:134
+#: src/dlg/dlgFunction.cpp:323 src/dlg/dlgGroup.cpp:113
+#: src/dlg/dlgIndex.cpp:188 src/dlg/dlgLanguage.cpp:129
+#: src/dlg/dlgOperator.cpp:203 src/dlg/dlgRule.cpp:146
+#: src/dlg/dlgSchema.cpp:89 src/dlg/dlgSequence.cpp:134
+#: src/dlg/dlgTable.cpp:557 src/dlg/dlgTablespace.cpp:90
+#: src/dlg/dlgTrigger.cpp:199 src/dlg/dlgType.cpp:239 src/dlg/dlgUser.cpp:250
+#: src/dlg/dlgView.cpp:100 src/slony/dlgRepCluster.cpp:611
 msgid "Please specify name."
 msgstr "Por favor especifique nome."
 
-#: src/ui/dlgFunction.cpp:280
+#: src/dlg/dlgFunction.cpp:333
 msgid "Please specify object library."
 msgstr "Por favor especifique librería obxeto."
 
-#: src/ui/dlgType.cpp:246
+#: src/dlg/dlgType.cpp:250
 msgid "Please specify output conversion function."
 msgstr "Por favor especifique función de conversión de saida."
 
-#: src/ui/dlgServer.cpp:248
+#: src/dlg/dlgServer.cpp:249
 #, fuzzy
 msgid "Please specify port."
 msgstr "Por favor especifique un procedemento."
 
-#: src/ui/dlgCast.cpp:115
+#: src/dlg/dlgCast.cpp:118
 msgid "Please specify source datatype."
 msgstr "Por favor especifique tipo de dato fonte."
 
-#: src/ui/dlgConversion.cpp:154
+#: src/dlg/dlgConversion.cpp:157
 msgid "Please specify source encoding."
 msgstr "Por favor especifique codificación fonte."
 
-#: src/ui/dlgAggregate.cpp:126
+#: src/agent/dlgSchedule.cpp:212
+#, fuzzy
+msgid "Please specify start date."
+msgstr "Por favor especifique tipo de dato fonte."
+
+#: src/dlg/dlgAggregate.cpp:129
 msgid "Please specify state function."
 msgstr "Por favor especifique función estado."
 
-#: src/ui/dlgConversion.cpp:155
+#: src/dlg/dlgConversion.cpp:158
 msgid "Please specify target encoding."
 msgstr "Por favor especifique codificación destino."
 
-#: src/ui/dlgTrigger.cpp:199
+#: src/dlg/dlgTrigger.cpp:200
 msgid "Please specify trigger function."
 msgstr "Por favor especifique función disparador."
 
-#: src/ui/dlgServer.cpp:249
+#: src/dlg/dlgServer.cpp:250
 #, fuzzy
 msgid "Please specify user name"
 msgstr "Por favor especifique nome."
 
-#: src/ui/dlgColumn.cpp:427
-#: src/ui/dlgDomain.cpp:137
+#: src/dlg/dlgColumn.cpp:432 src/dlg/dlgDomain.cpp:138
 msgid "Please specify valid length."
 msgstr "Por favor especifique lonxitude válida."
 
-#: src/ui/dlgColumn.cpp:430
-#: src/ui/dlgDomain.cpp:140
+#: src/dlg/dlgColumn.cpp:435 src/dlg/dlgDomain.cpp:141
 msgid "Please specify valid numeric precision (0.."
 msgstr "Por favor especifique precisión númerica válida (0.."
 
 # standard
-#: input:330
-#: src/schema/pgServer.cpp:474
+#: src/schema/pgServer.cpp:628 src/schema/pgServer.cpp:633 standard input:569
 msgid "Port"
 msgstr "Porto"
 
-#: src/schema/pgColumn.cpp:221
+#: src/schema/pgColumn.cpp:211
 msgid "Position"
 msgstr "Posición"
 
 msgid "PostgreSQL Description"
 msgstr "Descripción PostgreSQL"
 
+#: xtra/pgagent/win32.cpp:395
+msgid "PostgreSQL Scheduling Agent - "
+msgstr ""
+
 msgid "PostgreSQL Version"
 msgstr "Versión PostgreSQL"
 
+#: src/dlg/dlgMainConfig.cpp:48
+msgid "Postmaster - set on server start"
+msgstr ""
+
 # standard
-#: input:38
-#: input:89
-#: input:433
+#: standard input:38 input:89 input:672
 msgid "Precision"
 msgstr "Precisión"
 
 # standard
-#: input:564
+#: standard input:813
 #, fuzzy
 msgid "Preferences"
 msgstr "Referencia a"
 
-#: src/schema/pgObject.cpp:77
-#: src/ui/dlgTable.cpp:470
+#: src/dlg/dlgTable.cpp:504 src/schema/pgObject.cpp:79
 msgid "Primary Key"
 msgstr "Chave Primaria"
 
-#: src/schema/pgTable.cpp:384
-#: src/schema/pgTable.cpp:386
+#: src/schema/pgTable.cpp:392 src/schema/pgTable.cpp:394
 msgid "Primary key"
 msgstr "Chave Primaria"
 
-#: src/schema/pgColumn.cpp:226
+#: src/schema/pgColumn.cpp:216
 msgid "Primary key?"
 msgstr "¿Chave Primaria?"
 
-#: src/schema/pgIndex.cpp:208
-#: src/schema/pgIndexConstraint.cpp:104
+#: src/schema/pgIndex.cpp:211 src/schema/pgIndexConstraint.cpp:104
 msgid "Primary?"
 msgstr "¿Primaria?"
 
-#: src/ui/ctlSecurityPanel.cpp:50
-#: src/ui/ctlSecurityPanel.cpp:95
-#: src/ui/ctlSecurityPanel.cpp:102
+#: src/ctl/ctlSecurityPanel.cpp:52 src/ctl/ctlSecurityPanel.cpp:97
+#: src/ctl/ctlSecurityPanel.cpp:104
 msgid "Privileges"
 msgstr "Privilexios"
 
-#: src/ui/frmGrantWizard.cpp:51
+#: src/frm/frmGrantWizard.cpp:51
 #, fuzzy, c-format
 msgid "Privileges for %s"
 msgstr "Privilexios"
 
-#: src/ui/frmGrantWizard.cpp:53
+#: src/frm/frmGrantWizard.cpp:53
 #, fuzzy, c-format
 msgid "Privileges for %s %s"
 msgstr "Privilexios"
@@ -3618,7 +4814,7 @@ msgstr "Privilexios"
 msgid "Problem with resource "
 msgstr "Problema co recurso "
 
-#: src/ui/dlgProperty.cpp:95
+#: src/dlg/dlgProperty.cpp:109
 #, fuzzy, c-format
 msgid ""
 "Problem with resource %s: Notebook not found.\n"
@@ -3627,233 +4823,248 @@ msgstr ""
 ": Libro de notas non encontrado.\n"
 "Preparate para Fallo! (crash)"
 
-#: src/schema/pgIndex.cpp:202
-#: src/schema/pgIndexConstraint.cpp:100
+#: src/schema/pgObject.cpp:57
+#, fuzzy
+msgid "Procedure"
+msgstr "Procedemento"
+
+#: src/schema/pgIndex.cpp:205 src/schema/pgIndexConstraint.cpp:100
 msgid "Procedure "
 msgstr "Procedemento"
 
-#: src/ui/dlgClasses.cpp:434
+#: src/schema/pgObject.cpp:56
+#, fuzzy
+msgid "Procedures"
+msgstr "Procedemento"
+
+#: src/main/dlgClasses.cpp:609
 #, c-format
 msgid "Process returned exit code %d."
 msgstr ""
 
 # standard
-#: input:1
-#: input:14
-#: input:25
-#: input:34
-#: input:53
-#: input:65
-#: input:81
-#: input:116
-#: input:143
-#: input:170
-#: input:181
-#: input:195
-#: input:207
-#: input:230
-#: input:241
-#: input:263
-#: input:278
-#: input:302
-#: input:311
-#: input:326
-#: input:339
-#: input:356
-#: input:376
-#: input:384
-#: input:401
-#: input:439
-#: input:460
-#: src/ui/events.cpp:700
-#: src/ui/frmMain.cpp:254
-#: src/ui/frmMain.cpp:286
-#: src/ui/frmMain.cpp:354
+#: src/frm/frmMain.cpp:293 src/frm/frmMain.cpp:326 src/frm/frmMain.cpp:402
+#: src/main/events.cpp:788 standard input:1 input:14 input:25 input:34
+#: input:53 input:65 input:81 input:116 input:144 input:174 input:196
+#: input:210 input:222 input:246 input:262 input:284 input:296 input:305
+#: input:312 input:318 input:325 input:332 input:340 input:347 input:353
+#: input:361 input:370 input:385 input:543 input:551 input:565 input:578
+#: input:595 input:615 input:623 input:640 input:678 input:700
 msgid "Properties"
 msgstr "Propiedades"
 
-#: src/include/pgObject.h:155
+#: src/include/pgObject.h:169
 msgid "Property"
 msgstr "Propiedade"
 
+#: src/slony/slListen.cpp:82 standard input:308 input:356
+#, fuzzy
+msgid "Provider"
+msgstr "Propiedade"
+
+#: src/slony/slListen.cpp:83 src/slony/slSubscription.cpp:116
+msgid "Provider ID"
+msgstr ""
+
 # standard
-#: input:572
-#: src/ui/frmStatus.cpp:101
-#: src/ui/frmStatus.cpp:103
-#: src/ui/frmStatus.cpp:115
-#: src/ui/frmStatus.cpp:117
+#: src/slony/slSubscription.cpp:117
+#, fuzzy
+msgid "Provider Name"
+msgstr "Nome de variable"
+
+# standard
+#: src/frm/frmStatus.cpp:109 src/frm/frmStatus.cpp:111
+#: src/frm/frmStatus.cpp:123 src/frm/frmStatus.cpp:125 standard input:823
 msgid "Query"
 msgstr "Consulta"
 
 msgid "Query &builder"
 msgstr "Xerador de Consultas"
 
-#: src/ui/frmQuery.cpp:791
+#: src/frm/frmBackup.cpp:116 src/frm/frmQuery.cpp:708
 msgid "Query files (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "Arquivos de consultas (*.sql)|*.sql|Todos os arquivos (*.*)|*.*"
 
-#: src/ui/frmQuery.cpp:821
+#: src/frm/frmQuery.cpp:738
 #, fuzzy
-msgid "Query files (*.sql)|*.sql|UTF-8 query files (*.sql)|*.sql|All files (*.*)|*.*"
-msgstr "Arquivos de consultas (*.sql)|*.sql|Arquivos de consultas UTF-8 (*.usql)|*.usql|Todos os arquivos (*.*)|*.*"
+msgid ""
+"Query files (*.sql)|*.sql|UTF-8 query files (*.sql)|*.sql|All files (*.*)|*.*"
+msgstr ""
+"Arquivos de consultas (*.sql)|*.sql|Arquivos de consultas UTF-8 (*.usql)|*."
+"usql|Todos os arquivos (*.*)|*.*"
 
-msgid "Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"
-msgstr "Arquivos de consultas (*.sql)|*.sql|Arquivos de consultas UTF-8 (*.usql)|*.usql|Todos os arquivos (*.*)|*.*"
+msgid ""
+"Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|"
+"*.*"
+msgstr ""
+"Arquivos de consultas (*.sql)|*.sql|Arquivos de consultas UTF-8 (*.usql)|*."
+"usql|Todos os arquivos (*.*)|*.*"
 
-#: src/db/pgSet.cpp:384
+#: src/base/pgSetBase.cpp:446
+#, c-format
+msgid "Query inserted one row with OID %d.\n"
+msgstr ""
+
 #, c-format
 msgid "Query inserted one rows with OID %d.\n"
 msgstr ""
 
-#: src/ui/frmQuery.cpp:970
+#: src/frm/frmQuery.cpp:909
 msgid "Query is running."
 msgstr "Estase a executar a consulta."
 
-#: src/db/pgSet.cpp:390
+#: src/base/pgSetBase.cpp:452
 #, c-format
 msgid "Query result with %d rows discarded.\n"
 msgstr "O resultado da consulta con %d filas descartadas.\n"
 
-#: src/db/pgSet.cpp:382
+#: src/base/pgSetBase.cpp:444
 #, c-format
 msgid "Query result with %d rows will be returned.\n"
 msgstr "O resultado da consulta devolverá %d filas.\n"
 
-#: src/ui/frmQuery.cpp:1014
+#: src/frm/frmQuery.cpp:959
 #, c-format
 msgid "Query returned successfully with no result in %s ms."
 msgstr "A consulta executouse con éxito sen resutado en %s ms."
 
-#: src/ui/frmQuery.cpp:1025
+#: src/frm/frmQuery.cpp:970
 #, fuzzy, c-format
 msgid "Query returned successfully: %d rows affected, %s ms execution time."
 msgstr "A consulta executouse con éxito sen resutado en %s ms."
 
-#: src/ui/frmQuery.cpp:1019
+#: src/frm/frmQuery.cpp:964
 #, fuzzy, c-format
-msgid "Query returned successfully: one row with OID %d inserted, %s ms execution time."
+msgid ""
+"Query returned successfully: one row with OID %d inserted, %s ms execution "
+"time."
 msgstr "A consulta executouse con éxito sen resutado en %s ms."
 
-#: src/ui/frmMain.cpp:256
+#: src/frm/frmMain.cpp:295
 msgid "Query tool"
 msgstr "Ferramenta Consultas"
 
-#: src/ui/frmMain.cpp:165
+#: src/frm/frmMain.cpp:180
 msgid "Quit this program."
 msgstr "Sair de este programa."
 
 # standard
-#: input:510
+#: standard input:750
 msgid "Quote char"
 msgstr "Caracter comiñas"
 
 # standard
-#: input:517
+#: standard input:757
 msgid "Quoting"
 msgstr "Por entre comiñas"
 
 # standard
-#: input:552
+#: standard input:800
 msgid "RECREATE"
 msgstr "RECREATE"
 
 # standard
-#: input:545
+#: standard input:793
 msgid "REINDEX"
 msgstr "REINDEX"
 
 # standard
-#: input:550
+#: standard input:798
 msgid "REINDEX options"
 msgstr "opcións REINDEX"
 
 # standard
-#: input:131
-#: input:136
+#: standard input:132 input:137
 msgid "RESTRICT"
 msgstr "RESTRICT"
 
 # standard
-#: input:615
+#: standard input:866
 msgid "RIGHT JOIN"
 msgstr "RIGHT JOIN"
 
-#: src/ui/frmMain.cpp:200
+#: src/frm/frmMain.cpp:236
 msgid "Re&fresh\tF5"
 msgstr "Re&frescar\t¶F5"
 
 msgid "Re&load module"
 msgstr "Recargar módu&lo"
 
-#: src/ui/ctlSQLBox.cpp:430
+#: src/ctl/ctlSQLBox.cpp:419
 msgid "Reached end of the document"
 msgstr "Alcanzado o final do documento"
 
 # standard
-#: input:567
+#: standard input:816
 msgid "Read and write Unicode UTF-8 files"
 msgstr "Leer e escribir arquivos Unicode UTF-8"
 
-#: src/ui/frmMain.cpp:234
+#: src/frm/frmMain.cpp:273
 msgid "Ready."
 msgstr "Listo."
 
 # standard
-#: input:412
-#: src/schema/pgType.cpp:147
+#: src/schema/pgType.cpp:151 standard input:651
 msgid "Receive function"
 msgstr "Función Recibir"
 
-#: src/ui/frmQuery.cpp:190
+#: standard input:307 input:355
+msgid "Receiver"
+msgstr ""
+
+#: src/slony/slSubscription.cpp:118
+msgid "Receiver ID"
+msgstr ""
+
+#: src/slony/slSubscription.cpp:119
+msgid "Receiver Name"
+msgstr ""
+
+#: src/frm/frmQuery.cpp:187
 msgid "Redo"
 msgstr "Repetir"
 
-#: src/ui/frmQuery.cpp:117
-#: src/ui/frmQuery.cpp:190
+#: src/frm/frmQuery.cpp:113 src/frm/frmQuery.cpp:187
 msgid "Redo last action"
 msgstr "Repetir última acción"
 
-#: src/ui/dlgForeignKey.cpp:279
+#: src/dlg/dlgForeignKey.cpp:298
 msgid "Referenced"
 msgstr "Referenciada"
 
-#: src/ui/frmMain.cpp:289
+#: src/frm/frmMain.cpp:329
 #, fuzzy
 msgid "Referenced by"
 msgstr "Referenciada"
 
 # standard
-#: input:118
-#: src/schema/pgForeignKey.cpp:154
+#: src/schema/pgForeignKey.cpp:158 standard input:118
 msgid "References"
 msgstr "Referencia a"
 
 # standard
-#: input:126
+#: standard input:127
 msgid "Referencing"
 msgstr "Referenciando"
 
 # standard
-#: input:650
-#: src/ui/frmEditGrid.cpp:99
-#: src/ui/frmMain.cpp:250
+#: src/frm/frmEditGrid.cpp:100 src/frm/frmMain.cpp:289 standard input:901
 msgid "Refresh"
 msgstr "Refrescar"
 
 # standard
-#: input:649
+#: standard input:900
 msgid "Refresh rate (seconds)"
 msgstr "Refrescar ratio (segundos)"
 
-#: src/ui/frmMain.cpp:200
-#: src/ui/frmMain.cpp:250
+#: src/frm/frmMain.cpp:236 src/frm/frmMain.cpp:289
 msgid "Refresh the selected object."
 msgstr "Refrescar o obxeto seleccionado."
 
 msgid "Refresh to count rows"
 msgstr "Refrescar o reconto de filas"
 
-#: src/ui/frmMain.cpp:395
+#: src/frm/frmMain.cpp:438
 #, fuzzy, c-format
 msgid "Refreshing %s"
 msgstr "Refrescando %s..."
@@ -3862,284 +5073,365 @@ msgstr "Refrescando %s..."
 msgid "Refreshing %s..."
 msgstr "Refrescando %s..."
 
-#: src/ui/frmEditGrid.cpp:588
+#: src/frm/frmEditGrid.cpp:620
 msgid "Refreshing data, please wait."
 msgstr "Refrescando datos, por favor espere."
 
-#: src/ui/frmStatus.cpp:252
-#: src/ui/frmStatus.cpp:343
-#: src/ui/frmStatus.cpp:462
+#: src/frm/frmStatus.cpp:260 src/frm/frmStatus.cpp:351
+#: src/frm/frmStatus.cpp:470
 #, fuzzy
 msgid "Refreshing."
 msgstr "Refrescando %s..."
 
-#: src/ui/frmStatus.cpp:108
+#: src/frm/frmStatus.cpp:116
 #, fuzzy
 msgid "Relation"
 msgstr "Repetir última acción"
 
-#: src/ui/frmHelp.cpp:57
+#: src/frm/frmHelp.cpp:57
 msgid "Reload"
 msgstr "Volver a cargar"
 
-#: src/ui/frmHelp.cpp:57
+#: src/frm/frmConfig.cpp:107 src/frm/frmConfig.cpp:149
+msgid "Reload Server to apply configuration changes."
+msgstr ""
+
+#: src/frm/frmHelp.cpp:57
 msgid "Reload current page."
 msgstr "Volver a cargar a páxina actual."
 
 msgid "Reload library module which implements this function."
 msgstr "Volver a cargar o módulo de librería que implementa esta función."
 
+#: src/frm/frmConfig.cpp:107 src/frm/frmConfig.cpp:149
+#, fuzzy
+msgid "Reload server"
+msgstr "Engadir Servidor"
+
+#: src/frm/frmConfig.cpp:223
+msgid "Reload server configuration"
+msgstr ""
+
 # standard
-#: input:75
-#: input:105
-#: input:128
-#: input:162
-#: input:191
-#: input:203
-#: input:222
-#: input:226
-#: input:298
-#: input:363
-#: input:369
-#: input:372
-#: input:435
-#: input:454
-#: src/ui/ctlSecurityPanel.cpp:98
+#: src/ctl/ctlSecurityPanel.cpp:100 standard input:75 input:105 input:129
+#: input:163 input:206 input:218 input:238 input:242 input:539 input:602
+#: input:608 input:611 input:674 input:694
 msgid "Remove"
 msgstr "Eliminar"
 
 # standard
-#: input:106
+#: standard input:104 input:106
 #, fuzzy
 msgid "Remove the selected sort column."
 msgstr "Refrescar o obxeto seleccionado."
 
+#: src/frm/frmMain.cpp:224 src/schema/pgObject.cpp:91
+#, fuzzy
+msgid "Replication"
+msgstr "Repetir última acción"
+
+#: src/schema/pgObject.cpp:100
+#, fuzzy
+msgid "Replication Set"
+msgstr "Repetir última acción"
+
+#: src/schema/pgObject.cpp:99
+#, fuzzy
+msgid "Replication Sets"
+msgstr "Repetir última acción"
+
+#: standard input:822
+msgid "Reset guru hints"
+msgstr ""
+
 # standard
-#: input:624
+#: src/frm/frmMain.cpp:219 src/slony/slFunctions.cpp:77
+#, fuzzy
+msgid "Restart node"
+msgstr "Eliminar"
+
+#: src/slony/slFunctions.cpp:76
+#, c-format
+msgid "Restart node \"%s\"?"
+msgstr ""
+
+# standard
+#: src/frm/frmMain.cpp:219
+#, fuzzy
+msgid "Restart node."
+msgstr "Función Restrict"
+
+# standard
+#: standard input:875
 #, fuzzy
 msgid "Restore"
 msgstr "Eliminar"
 
-#: src/ui/frmRestore.cpp:77
+#: src/frm/frmRestore.cpp:77
 #, c-format
 msgid "Restore %s %s"
 msgstr ""
 
-#: src/ui/frmMain.cpp:190
+#: src/frm/frmMain.cpp:209
 msgid "Restores a backup from a local file"
 msgstr ""
 
-#: src/ui/frmMain.cpp:702
+#: src/frm/frmMain.cpp:744
 msgid "Restoring previous environment"
 msgstr "Restaurando ó entorno anterior"
 
 # standard
-#: input:250
-#: src/schema/pgOperator.cpp:128
+#: src/schema/pgOperator.cpp:131 standard input:271
 msgid "Restrict function"
 msgstr "Función Restrict"
 
-#: src/schema/pgObject.cpp:170
+#: src/schema/pgObject.cpp:191
 #, fuzzy
 msgid "Restriction"
 msgstr "Función Restrict"
 
-#: src/schema/pgOperator.cpp:123
+#: src/agent/pgaStep.cpp:171
+#, fuzzy
+msgid "Result"
+msgstr "Tipo Resultado"
+
+#: src/schema/pgOperator.cpp:126
 msgid "Result type"
 msgstr "Tipo Resultado"
 
-#: src/schema/pgObject.cpp:392
+#: src/schema/pgObject.cpp:412
 #, c-format
 msgid "Retrieving %s details"
 msgstr "Recuperando %s detalles"
 
-#: src/ui/frmQuery.cpp:1100
+#: src/frm/frmQuery.cpp:1045
 #, c-format
 msgid "Retrieving data: %d rows."
 msgstr "Recuperando datos: %d filas."
 
-#: src/ui/events.cpp:752
+#: src/main/events.cpp:840
 msgid "Retrieving server properties"
 msgstr "Recuperando propiedades do servidor"
 
 # standard
-#: input:148
-#: src/schema/pgFunction.cpp:103
+#: src/slony/slPath.cpp:83
+#, fuzzy
+msgid "Retry"
+msgstr "Eliminar"
+
+# standard
+#: src/schema/pgFunction.cpp:121 standard input:149
 msgid "Return type"
 msgstr "Tipo Devolto"
 
-#: src/schema/pgFunction.cpp:105
+#: xtra/pgagent/connection.cpp:155
+#, fuzzy
+msgid "Returning connection to database "
+msgstr "Engadir unha conexión o servidor."
+
+#: src/schema/pgFunction.cpp:123
 msgid "Returns a set?"
 msgstr "¿Devolver un conxunto?"
 
 # standard
-#: input:154
+#: standard input:155
 msgid "Returns set"
 msgstr "Conxunto devolto"
 
-#: src/schema/pgOperator.cpp:130
+#: src/schema/pgOperator.cpp:133
 msgid "Right Sort operator"
 msgstr "Operador Clasific. Dereita"
 
 # standard
-#: input:610
+#: standard input:861
 msgid "Right Table Columns"
 msgstr "Columnas da Táboa dereita"
 
 # standard
-#: input:255
+#: standard input:276
 msgid "Right sort op"
 msgstr "op Clasif.dereita"
 
 # standard
-#: input:246
-#: src/schema/pgOperator.cpp:122
+#: src/schema/pgOperator.cpp:125 standard input:267
 msgid "Right type"
 msgstr "Tipo á dereita"
 
 # standard
-#: input:648
+#: standard input:899
 msgid "Rotate"
 msgstr ""
 
-#: src/ui/ctlSQLResult.cpp:189
+#: src/slony/slNode.cpp:260
+msgid "Roundtrip"
+msgstr ""
+
+#: src/ctl/ctlSQLResult.cpp:190
 msgid "Row"
 msgstr "Fila"
 
 # standard
-#: input:503
+#: standard input:743
 msgid "Row separator"
 msgstr "Separador de fila"
 
 # standard
-#: input:387
+#: standard input:626
 msgid "Row trigger"
 msgstr "Disparador Fila"
 
-#: src/schema/pgTable.cpp:391
-#: src/schema/pgTable.cpp:393
+#: src/schema/pgTable.cpp:399 src/schema/pgTable.cpp:401
 msgid "Rows (counted)"
 msgstr "Filas (contadas)"
 
-#: src/schema/pgTable.cpp:388
+#: src/schema/pgTable.cpp:396
 msgid "Rows (estimated)"
 msgstr "Filas (estimadas)"
 
-#: src/schema/pgObject.cpp:73
+#: src/schema/pgObject.cpp:75
 msgid "Rule"
 msgstr "Regra"
 
-#: src/schema/pgObject.cpp:72
+#: src/schema/pgObject.cpp:74
 msgid "Rules"
 msgstr "Regras"
 
-#: src/schema/pgServer.cpp:511
+#: src/agent/pgaJob.cpp:198 src/agent/pgaStep.cpp:169
+msgid "Run"
+msgstr ""
+
+#: src/agent/pgaJob.cpp:138 src/agent/pgaJob.cpp:214 src/agent/pgaStep.cpp:187
+msgid "Running"
+msgstr ""
+
+#: src/slony/slNode.cpp:183 src/slony/slNode.cpp:185 src/slony/slNode.cpp:190
+msgid "Running PID"
+msgstr ""
+
+#: src/frm/frmHint.cpp:80
+msgid "Running VACUUM recommended"
+msgstr ""
+
+#: src/agent/pgaJob.cpp:94 src/agent/pgaJob.cpp:96
+msgid "Running at"
+msgstr ""
+
+#: src/schema/pgServer.cpp:673
 msgid "Running?"
 msgstr ""
 
 # standard
-#: input:267
+#: standard input:374
 msgid "SELECT"
 msgstr "SELECT"
 
 # standard
-#: input:134
-#: input:139
+#: standard input:135 input:140
 msgid "SET DEFAULT"
 msgstr "SET DEFAULT"
 
 # standard
-#: input:133
-#: input:138
+#: standard input:134 input:139
 msgid "SET NULL"
 msgstr "SET NULL"
 
+#: src/dlg/dlgMainConfig.cpp:49
+msgid "SIGHUP - reloaded on SIGHUP signal"
+msgstr ""
+
 # standard
-#: input:344
+#: standard input:583
 msgid "SQL"
 msgstr "SQL"
 
-#: src/ui/frmMain.cpp:261
+#: src/frm/frmMain.cpp:301
 msgid "SQL Help"
 msgstr "Axuda SQL"
 
-#: src/ui/events.cpp:548
+#: src/main/events.cpp:607
 msgid "SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "Scripts SQL (*.sql)|*.sql|Todos os arquivos (*.*)|*.*"
 
 # standard
-#: input:561
+#: standard input:809
 msgid "SQL help site"
 msgstr "Sitio de Axuda SQL"
 
 # standard
-#: input:331
+#: standard input:570
 msgid "SSL"
 msgstr "SSL"
 
-#: src/schema/pgServer.cpp:494
+#: src/schema/pgServer.cpp:652
 msgid "SSL Mode"
 msgstr "Modo SSL"
 
-#: src/schema/pgServer.cpp:480
+#: src/schema/pgServer.cpp:638
 msgid "SSL encrypted"
 msgstr "SSL encriptado"
 
 # standard
-#: input:152
+#: standard input:153
 msgid "STABLE"
 msgstr "STABLE"
 
-#: src/ui/frmEditGrid.cpp:97
-#: src/ui/frmQuery.cpp:182
+#: src/agent/pgaSchedule.cpp:282 standard input:400
+msgid "Saturday"
+msgstr ""
+
+#: src/frm/frmConfig.cpp:147 src/frm/frmEditGrid.cpp:98
+#: src/frm/frmQuery.cpp:179
 msgid "Save"
 msgstr "Gardar"
 
-#: src/ui/frmQuery.cpp:106
+#: src/frm/frmConfig.cpp:104 src/frm/frmQuery.cpp:102
 msgid "Save &as..."
 msgstr "Gard&ar como..."
 
-#: src/ui/frmQuery.cpp:105
+#: src/frm/frmConfig.cpp:270
+#, fuzzy
+msgid "Save configuration file as"
+msgstr "Gardar o arquivo de consulta como"
+
+#: src/frm/frmConfig.cpp:103 src/frm/frmQuery.cpp:101
 msgid "Save current file"
 msgstr "Gardar o arquivo actual"
 
-#: src/ui/frmQuery.cpp:182
+#: src/frm/frmConfig.cpp:147 src/frm/frmQuery.cpp:179
 msgid "Save file"
 msgstr "Gardar arquivo"
 
-#: src/ui/frmQuery.cpp:106
+#: src/frm/frmConfig.cpp:104 src/frm/frmQuery.cpp:102
 msgid "Save file under new name"
 msgstr "Gardar o arquivo cun nome novo"
 
-#: src/ui/frmQuery.cpp:137
-#: src/ui/frmQuery.cpp:497
+#: src/frm/frmQuery.cpp:133 src/frm/frmQuery.cpp:426
 msgid "Save history"
 msgstr "Gardar historial"
 
-#: src/ui/frmQuery.cpp:137
+#: src/frm/frmQuery.cpp:133
 msgid "Save history of executed commands."
 msgstr "Gardar historial de comandos executados."
 
-#: src/ui/frmQuery.cpp:820
+#: src/frm/frmQuery.cpp:737
 msgid "Save query file as"
 msgstr "Gardar o arquivo de consulta como"
 
-#: src/ui/frmMain.cpp:155
+#: src/frm/frmMain.cpp:167
 msgid "Save the SQL definition of the selected object."
 msgstr "Gardar a definición SQL do obxeto seleccionado."
 
-#: src/ui/frmEditGrid.cpp:97
+#: src/frm/frmEditGrid.cpp:98
 msgid "Saved the changed row."
 msgstr "Gardadas as filas modificadas."
 
 # standard
-#: input:289
-#: src/schema/pgObject.cpp:84
+#: src/agent/dlgJob.cpp:85 src/schema/pgObject.cpp:87
 msgid "Schedule"
 msgstr ""
 
 # standard
-#: input:223
+#: src/schema/pgObject.cpp:86 standard input:239
 #, fuzzy
 msgid "Schedules"
 msgstr "Esquemas"
@@ -4156,190 +5448,300 @@ msgid "Security"
 msgstr "Seguridade"
 
 # standard
-#: input:156
+#: standard input:157
 msgid "Security of definer"
 msgstr "Seguridade de creador"
 
-#: src/schema/pgFunction.cpp:115
+#: src/schema/pgFunction.cpp:133
 msgid "Security of definer?"
 msgstr "¿Seguridade de creador?"
 
 # standard
-#: input:476
+#: standard input:716
 msgid "Select &All"
 msgstr "Seleccionar Todo"
 
+#: src/slony/dlgRepCluster.cpp:820
+#, fuzzy
+msgid "Select Slony-I cluster."
+msgstr "Seleccionar arquivo Log"
+
 # standard
-#: input:110
+#: standard input:100
 msgid "Select a column to add to the sort list."
 msgstr ""
 
-#: src/ui/frmBackup.cpp:105
-#: src/ui/frmRestore.cpp:130
+#: src/frm/frmBackup.cpp:120 src/frm/frmRestore.cpp:130
 #, fuzzy
 msgid "Select backup filename"
 msgstr "Seleccionar nome de arquivo a exportar"
 
-#: src/ui/frmExport.cpp:266
+#: src/slony/dlgRepCluster.cpp:819
+msgid "Select database with Slony-I cluster installed."
+msgstr ""
+
+#: src/frm/frmExport.cpp:270
 msgid "Select export filename"
 msgstr "Seleccionar nome de arquivo a exportar"
 
-#: src/ui/frmOptions.cpp:273
+#: src/frm/frmOptions.cpp:301
 msgid "Select log file"
 msgstr "Seleccionar arquivo Log"
 
-#: src/ui/events.cpp:548
+#: src/frm/frmBackup.cpp:115 src/main/events.cpp:607
 msgid "Select output file"
 msgstr "Seleccionar arquivo de saida"
 
+#: src/slony/dlgRepCluster.cpp:818
+msgid "Select server with Slony-I cluster installed."
+msgstr ""
+
 # standard
-#: input:592
+#: standard input:843
 msgid "Select the level of detail to record in the logfile."
 msgstr "Seleccionar o nivel de detalle para gravar no arquivo Log."
 
 # standard
-#: input:107
+#: standard input:97
 #, fuzzy
 msgid "Selected Columns"
 msgstr "Columnas da táboa Esquerda"
 
+#: src/slony/dlgRepCluster.cpp:821
+msgid "Selected cluster doesn't contain newer software."
+msgstr ""
+
 # standard
-#: input:527
-#: input:534
+#: standard input:767 input:782
 #, fuzzy
 msgid "Selection"
 msgstr "Acción"
 
 # standard
-#: input:413
+#: standard input:652
 msgid "Send Function"
 msgstr "Función Enviar"
 
-#: src/schema/pgType.cpp:148
+#: src/schema/pgType.cpp:152
 msgid "Send function"
 msgstr "Función enviar"
 
 # standard
-#: input:40
-#: src/schema/pgColumn.cpp:224
-#: src/schema/pgObject.cpp:61
+#: src/agent/pgaSchedule.cpp:395 standard input:443
+#, fuzzy
+msgid "September"
+msgstr "membro"
+
+# standard
+#: src/schema/pgColumn.cpp:214 src/schema/pgObject.cpp:63
+#: src/schema/pgObject.cpp:102 src/slony/slSet.cpp:113 standard input:40
 msgid "Sequence"
 msgstr "Secuencia"
 
-#: src/schema/pgObject.cpp:60
+#: src/schema/pgObject.cpp:62 src/schema/pgObject.cpp:101
 msgid "Sequences"
 msgstr "Secuencias"
 
-#: src/schema/pgTable.cpp:409
+#: src/schema/pgTable.cpp:476
 #, fuzzy
 msgid "Sequential Scans"
 msgstr "Secuencias"
 
-#: src/schema/pgTable.cpp:410
+#: src/schema/pgTable.cpp:477
 msgid "Sequential Tuples Read"
 msgstr ""
 
-#: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:31 standard input:286 input:298 input:319
 msgid "Server"
 msgstr "Servidor"
 
-#: src/schema/pgObject.cpp:30
-#: src/ui/frmMain.cpp:350
+#: src/slony/slPath.cpp:81
+#, fuzzy
+msgid "Server ID"
+msgstr "Servidor"
+
+#: src/frm/frmMain.cpp:216
+msgid "Server configuration"
+msgstr ""
+
+#: src/frm/frmHint.cpp:56
+msgid "Server denies access"
+msgstr ""
+
+# standard
+#: src/slony/slPath.cpp:80
+#, fuzzy
+msgid "Server name"
+msgstr "Nome do membro"
+
+#: src/frm/frmHint.cpp:50
+msgid "Server not listening"
+msgstr ""
+
+#: src/frm/frmMain.cpp:398 src/schema/pgObject.cpp:30
 msgid "Servers"
 msgstr "Servidores"
 
-#: src/ui/events.cpp:641
-#: src/ui/frmMain.cpp:947
+#: src/frm/frmMain.cpp:1030 src/main/events.cpp:705
 #, c-format
 msgid "Servers (%d)"
 msgstr "Servidores (%d)"
 
 # standard
-#: input:329
+#: src/schema/pgServer.cpp:658 standard input:568
 #, fuzzy
 msgid "Service"
 msgstr "Servidor"
 
-#: src/ui/frmMain.cpp:210
+#: src/schema/pgServer.cpp:226
+msgid "Service start problem"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:71
+msgid "Set by session parameters"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:70
+msgid "Set by test"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:64
+msgid "Set by unprivileged command"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:67
+msgid "Set in client parameters"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:62
+msgid "Set in configuration file"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:65
+msgid "Set in database variables"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:66
+msgid "Set in user variables"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:69
+msgid "Set interactively"
+msgstr ""
+
+#: src/dlg/dlgMainConfig.cpp:63
+msgid "Set on command line"
+msgstr ""
+
+# standard
+#: standard input:341
+#, fuzzy
+msgid "Set to merge"
+msgstr "Almacenamento"
+
+#: src/dlg/dlgMainConfig.cpp:61
+msgid "Set via environment variable"
+msgstr ""
+
+#: src/frm/frmMainConfig.cpp:143
+msgid "Setting name"
+msgstr ""
+
+#: src/frm/frmMain.cpp:247
 msgid "Show a tip of the day."
 msgstr "Mostrar suxerencia do día."
 
-#: src/ui/frmMain.cpp:213
+#: src/frm/frmConfig.cpp:126 src/frm/frmMain.cpp:251
 msgid "Show about dialog."
 msgstr "Mostrar o diálogo Acerca de.."
 
 # standard
-#: input:571
+#: standard input:820
 msgid "Show object properties on double click in treeview?"
-msgstr "¿Mostrar as propiedades do obxeto ó facer doble-click sobre a vista-arbol?"
+msgstr ""
+"¿Mostrar as propiedades do obxeto ó facer doble-click sobre a vista-arbol?"
 
-#: src/ui/frmMain.cpp:160
+#: src/frm/frmMain.cpp:172
 msgid "Show options dialog."
 msgstr "Mostrar no diálogo opcións."
 
-#: src/ui/frmMain.cpp:198
+#: src/frm/frmMain.cpp:234
 msgid "Show or hide system objects."
 msgstr "Mostrar ou agachar obxetos do sistema."
 
-#: src/ui/events.cpp:581
+#: src/main/events.cpp:640
 #, fuzzy
 msgid "Show system objects"
 msgstr "Obxetos do &Sistema"
 
 # standard
-#: input:570
+#: standard input:819
 msgid "Show users for privileges?"
 msgstr "¿Mostrar privilexios dos usuarios?"
 
 # standard
-#: input:630
+#: standard input:881
 #, fuzzy
 msgid "Single object"
 msgstr "Obxetos do &Sistema"
 
-#: src/schema/pgDatabase.cpp:484
-#: src/schema/pgTable.cpp:531
-#: src/schema/pgTablespace.cpp:231
+#: src/schema/pgDatabase.cpp:511 src/schema/pgTable.cpp:602
+#: src/schema/pgTablespace.cpp:225
 msgid "Size"
 msgstr ""
 
-#: src/ui/dlgEditGridOptions.cpp:92
+#: xtra/pgagent/pgAgent.cpp:112
+msgid "Sleeping..."
+msgstr ""
+
+#: src/schema/pgObject.cpp:92
+msgid "Slony-I Cluster"
+msgstr ""
+
+#: src/slony/dlgRepCluster.cpp:609
+msgid "Slony-I creation scripts not available; only joining possible."
+msgstr ""
+
+#: src/dlg/dlgEditGridOptions.cpp:92
 msgid "Sort order"
 msgstr ""
 
-#: src/ui/frmEditGrid.cpp:106
+#: src/frm/frmEditGrid.cpp:107
 msgid "Sort/filter options."
 msgstr ""
 
-#: src/schema/pgFunction.cpp:112
+#: src/schema/pgFunction.cpp:130
 msgid "Source"
 msgstr "Fonte"
 
 # standard
-#: input:58
+#: standard input:58
 msgid "Source encoding"
 msgstr "Codificación fonte"
 
 # standard
-#: input:17
-#: src/schema/pgCast.cpp:64
+#: src/schema/pgCast.cpp:68 standard input:17
 msgid "Source type"
 msgstr "Tipo fonte"
 
 # standard
-#: input:291
-#: input:317
-#: src/ui/frmStatus.cpp:100
-#: src/ui/frmStatus.cpp:114
+#: src/frm/frmStatus.cpp:108 src/frm/frmStatus.cpp:122 standard input:389
+#: input:556
 msgid "Start"
 msgstr "Iniciar"
 
-#: src/ui/frmMain.cpp:180
+#: src/frm/frmMain.cpp:199
 #, fuzzy
 msgid "Start PostgreSQL Service"
 msgstr "Versión PostgreSQL"
 
-#: src/ui/frmMain.cpp:180
+# standard
+#: src/agent/pgaSchedule.cpp:61
+#, fuzzy
+msgid "Start date"
+msgstr "Tipo estado"
+
+#: src/frm/frmMain.cpp:199
 #, fuzzy
 msgid "Start service"
 msgstr "Estatística"
@@ -4347,92 +5749,114 @@ msgstr "Estatística"
 msgid "Start the query builder."
 msgstr "Iniciar o xerador de consultas."
 
-#: src/ui/events.cpp:235
+# standard
+#: src/agent/pgaJob.cpp:200 src/agent/pgaStep.cpp:172
+#, fuzzy
+msgid "Start time"
+msgstr "Tipo estado"
+
+#: xtra/pgagent/job.cpp:30
+#, fuzzy
+msgid "Starting job: "
+msgstr "Estatística"
+
+#: src/main/events.cpp:259
 #, fuzzy
 msgid "Starting service"
 msgstr "Estatística"
 
 # standard
-#: input:7
-#: src/schema/pgAggregate.cpp:82
+#: src/schema/pgAggregate.cpp:88 standard input:7
 msgid "State function"
 msgstr "Función estado"
 
 # standard
-#: input:6
-#: src/schema/pgAggregate.cpp:81
+#: src/schema/pgAggregate.cpp:87 standard input:6
 msgid "State type"
 msgstr "Tipo estado"
 
-#: src/schema/pgObject.cpp:817
-#: src/schema/pgSequence.cpp:112
-#: src/schema/pgTablespace.cpp:148
+#: src/schema/pgObject.cpp:810 src/schema/pgSequence.cpp:113
+#: src/schema/pgTablespace.cpp:142 src/slony/slNode.cpp:77
 msgid "Statistic"
 msgstr "Estatística"
 
 # standard
-#: input:42
-#: src/schema/pgColumn.cpp:230
-#: src/schema/pgObject.cpp:160
-#: src/ui/frmMain.cpp:287
-#: src/ui/frmMain.cpp:360
+#: src/frm/frmMain.cpp:327 src/frm/frmMain.cpp:492 src/schema/pgColumn.cpp:220
+#: standard input:42
 msgid "Statistics"
 msgstr "Estatísticas"
 
 # standard
-#: input:641
+#: src/agent/pgaJob.cpp:199 src/agent/pgaStep.cpp:170 standard input:892
 #, fuzzy
 msgid "Status"
 msgstr "Iniciar"
 
-#: src/schema/pgObject.cpp:83
+#: src/agent/dlgJob.cpp:81 src/schema/pgObject.cpp:89
 msgid "Step"
 msgstr ""
 
 # standard
-#: input:219
+#: src/schema/pgObject.cpp:88 standard input:235
 msgid "Steps"
 msgstr ""
 
-#: src/ui/frmMain.cpp:181
+#: src/frm/frmMain.cpp:200
 #, fuzzy
 msgid "Stop PostgreSQL Service"
 msgstr "Versión PostgreSQL"
 
-#: src/ui/events.cpp:250
-#: src/ui/frmMain.cpp:181
+#: src/frm/frmMain.cpp:200 src/main/events.cpp:274
 msgid "Stop service"
 msgstr ""
 
-#: src/ui/events.cpp:256
+#: src/main/events.cpp:280
 msgid "Stopping service"
 msgstr ""
 
 # standard
-#: input:424
-#: src/schema/pgColumn.cpp:228
-#: src/schema/pgOperatorClass.cpp:164
-#: src/schema/pgType.cpp:150
+#: src/schema/pgColumn.cpp:218 src/schema/pgOperatorClass.cpp:167
+#: src/schema/pgType.cpp:154 standard input:663
 msgid "Storage"
 msgstr "Almacenamento"
 
 # standard
-#: input:155
+#: standard input:156
 msgid "Strict"
 msgstr "Estricto"
 
-#: src/schema/pgFunction.cpp:116
+#: src/schema/pgFunction.cpp:134
 msgid "Strict?"
 msgstr "¿Estricto?"
 
 # standard
-#: input:349
+#: src/schema/pgObject.cpp:106
+#, fuzzy
+msgid "Subscription"
+msgstr "Descripción"
+
+# standard
+#: src/schema/pgObject.cpp:105 src/slony/slSet.cpp:173
+#, fuzzy
+msgid "Subscriptions"
+msgstr "Descripción"
+
+# standard
+#: src/agent/pgaStep.cpp:121 standard input:588
 #, fuzzy
 msgid "Succeed"
 msgstr "Fonte"
 
+#: src/agent/pgaJob.cpp:140 src/agent/pgaJob.cpp:216 src/agent/pgaStep.cpp:189
+msgid "Successful"
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:258 standard input:394
+msgid "Sunday"
+msgstr ""
+
 # standard
-#: input:446
+#: standard input:686
 #, fuzzy
 msgid "Superuser (can create users)"
 msgstr "O usuario pode crear usuarios"
@@ -4442,165 +5866,164 @@ msgid "Superuser?"
 msgstr "¿Superusuario?"
 
 # standard
-#: input:258
+#: standard input:279
 msgid "Supports hash"
 msgstr "Soporta hash"
 
-#: src/schema/pgOperator.cpp:133
+#: src/schema/pgOperator.cpp:136
 msgid "Supports hash?"
 msgstr "¿Soporta hash?"
 
 # standard
-#: input:259
+#: standard input:280
 msgid "Supports merge"
 msgstr "Soporta mestura"
 
-#: src/ui/dlgEditGridOptions.cpp:207
+#: src/dlg/dlgMainConfig.cpp:51
+msgid "Suset - may be overridden by superuser"
+msgstr ""
+
+#: src/dlg/dlgEditGridOptions.cpp:207
 #, fuzzy
 msgid "Syntax Validation"
 msgstr "Validador"
 
-#: src/schema/pgAggregate.cpp:86
+#: src/schema/pgAggregate.cpp:92
 msgid "System aggregate?"
 msgstr "¿Agregado do Sistema?"
 
-#: src/schema/pgCast.cpp:71
+#: src/schema/pgCast.cpp:75
 msgid "System cast?"
 msgstr "¿Cast do Sistema?"
 
-#: src/schema/pgColumn.cpp:233
+#: src/schema/pgColumn.cpp:223
 msgid "System column?"
 msgstr "¿Columna do sistema?"
 
-#: src/schema/pgConversion.cpp:69
+#: src/schema/pgConversion.cpp:73
 msgid "System conversion?"
 msgstr "¿Conversión do Sistema?"
 
-#: src/schema/pgDatabase.cpp:355
+#: src/schema/pgDatabase.cpp:382
 msgid "System database?"
 msgstr "¿Base de datos do sistema?"
 
-#: src/schema/pgDomain.cpp:102
+#: src/schema/pgDomain.cpp:106
 msgid "System domain?"
 msgstr "¿Dominio do sistema?"
 
-#: src/schema/pgForeignKey.cpp:163
+#: src/schema/pgForeignKey.cpp:169
 msgid "System foreign key?"
 msgstr "¿Chave Allea do Sistema?"
 
-#: src/schema/pgFunction.cpp:118
+#: src/schema/pgFunction.cpp:136
 msgid "System function?"
 msgstr "¿Función do Sistema?"
 
-#: src/schema/pgIndex.cpp:212
-#: src/schema/pgIndexConstraint.cpp:108
+#: src/schema/pgIndex.cpp:215 src/schema/pgIndexConstraint.cpp:108
 msgid "System index?"
 msgstr "¿Índice do sistema?"
 
-#: src/schema/pgLanguage.cpp:68
+#: src/schema/pgLanguage.cpp:71
 msgid "System language?"
 msgstr "¿Linguaxe do sistema?"
 
-#: src/ui/events.cpp:573
+#: src/main/events.cpp:632
 msgid ""
-"System objects will not be removed from the object tree until a refresh is performed.\n"
+"System objects will not be removed from the object tree until a refresh is "
+"performed.\n"
 "Close all connections now?"
 msgstr ""
 
-#: src/ui/events.cpp:580
+#: src/main/events.cpp:639
 msgid ""
-"System objects will not show in the the object tree until a refresh is performed.\n"
+"System objects will not show in the the object tree until a refresh is "
+"performed.\n"
 "Close all connections now?"
 msgstr ""
 
-#: src/schema/pgOperatorClass.cpp:170
+#: src/schema/pgOperatorClass.cpp:173
 msgid "System operator class?"
 msgstr "¿Operador Class do Sistema?"
 
-#: src/schema/pgOperator.cpp:134
+#: src/schema/pgOperator.cpp:137
 msgid "System operator?"
 msgstr "¿Operador do sistema?"
 
-#: src/schema/pgRule.cpp:74
+#: src/schema/pgRule.cpp:77
 msgid "System rule?"
 msgstr "¿Regra do sistema?"
 
-#: src/schema/pgSchema.cpp:158
+#: src/schema/pgSchema.cpp:167
 msgid "System schema?"
 msgstr "¿Esquema do sistema?"
 
-#: src/schema/pgSequence.cpp:100
+#: standard input:812
+#, fuzzy
+msgid "System schemas"
+msgstr "¿Esquema do sistema?"
+
+#: src/schema/pgSequence.cpp:101
 msgid "System sequence?"
 msgstr "¿Secuencia do sistema?"
 
-#: src/schema/pgTable.cpp:400
+#: src/schema/pgTable.cpp:408
 msgid "System table?"
 msgstr "¿Táboa do sistema?"
 
-#: src/schema/pgTrigger.cpp:146
+#: src/schema/pgTrigger.cpp:149
 msgid "System trigger?"
 msgstr "¿Disparador do sistema?"
 
-#: src/schema/pgType.cpp:152
+#: src/schema/pgType.cpp:156
 msgid "System type?"
 msgstr "¿Tipo do sistema?"
 
-#: src/schema/pgView.cpp:87
+#: src/schema/pgView.cpp:91
 msgid "System view?"
 msgstr "¿Vista do sistema?"
 
 # standard
-#: input:484
+#: standard input:724
 msgid "TAR"
 msgstr ""
 
-#: src/ui/frmStatus.cpp:110
+#: src/frm/frmStatus.cpp:118
 msgid "TX"
 msgstr ""
 
-#: src/schema/pgObject.cpp:63
-#: src/schema/pgTable.cpp:526
-#: src/ui/frmRestore.cpp:221
-#: src/ui/frmRestore.cpp:316
+#: src/frm/frmRestore.cpp:221 src/frm/frmRestore.cpp:317
+#: src/schema/pgObject.cpp:65 src/schema/pgObject.cpp:104
+#: src/schema/pgTable.cpp:597 src/slony/slSet.cpp:114 standard input:326
+#: input:362
 msgid "Table"
 msgstr "Táboa"
 
-#: src/schema/pgTable.cpp:426
+#: src/schema/pgTable.cpp:494
 #, fuzzy
 msgid "Table Size"
 msgstr "Táboa"
 
 # standard
-#: input:474
-#: src/schema/pgObject.cpp:62
+#: src/schema/pgObject.cpp:64 src/schema/pgObject.cpp:103 standard input:714
 msgid "Tables"
 msgstr "Táboas"
 
 # standard
-#: input:471
+#: standard input:711
 msgid "Tables/Views"
 msgstr "Táboas/Vistas"
 
 # standard
-#: input:183
-#: input:197
-#: input:306
-#: input:315
-#: input:360
-#: src/schema/pgDatabase.cpp:341
-#: src/schema/pgIndex.cpp:200
-#: src/schema/pgObject.cpp:43
-#: src/schema/pgSchema.cpp:156
-#: src/schema/pgSequence.cpp:92
-#: src/schema/pgTable.cpp:381
-#: src/schema/pgTablespace.cpp:230
-#: src/schema/pgUser.cpp:128
-#: src/ui/dlgDatabase.cpp:89
+#: src/dlg/dlgDatabase.cpp:90 src/schema/pgDatabase.cpp:368
+#: src/schema/pgIndex.cpp:203 src/schema/pgObject.cpp:43
+#: src/schema/pgTable.cpp:389 src/schema/pgTablespace.cpp:224
+#: src/schema/pgUser.cpp:128 standard input:198 input:212 input:599
 #, fuzzy
 msgid "Tablespace"
 msgstr "Táboas"
 
-#: src/schema/pgTablespace.cpp:151
+#: src/schema/pgTablespace.cpp:145
 msgid "Tablespace Size"
 msgstr ""
 
@@ -4610,37 +6033,56 @@ msgid "Tablespaces"
 msgstr "Táboas"
 
 # standard
-#: input:59
+#: standard input:349
+#, fuzzy
+msgid "Target Node"
+msgstr "Tipo de destino"
+
+# standard
+#: standard input:59
 msgid "Target encoding"
 msgstr "Codificación de destino"
 
 # standard
-#: input:18
-#: src/schema/pgCast.cpp:65
+#: standard input:342
+#, fuzzy
+msgid "Target of merge"
+msgstr "Tipo de destino"
+
+# standard
+#: src/schema/pgCast.cpp:69 standard input:18
 msgid "Target type"
 msgstr "Tipo de destino"
 
 # standard
-#: input:70
+#: standard input:70
 msgid "Template"
 msgstr "Plantilla"
 
 # standard
-#: input:643
-#: input:646
+#: src/frm/frmStatus.cpp:98 src/frm/frmStatus.cpp:99 standard input:894
+#: input:897
 #, fuzzy
 msgid "Terminate"
 msgstr "Plantilla"
 
-#: src/ui/frmStatus.cpp:811
+#: src/frm/frmStatus.cpp:819
 msgid "Terminate process"
 msgstr ""
 
-#: src/ui/frmStatus.cpp:793
+#: src/frm/frmStatus.cpp:801
 msgid "Terminate process?"
 msgstr ""
 
-#: src/schema/pgServer.cpp:325
+#: src/frm/frmMainConfig.cpp:555
+msgid ""
+"The PostgreSQL server engine is currently configured to listen for local "
+"connections only.\n"
+"You might want to check \"listen_addresses\" to enable accessing the server "
+"over the network too."
+msgstr ""
+
+#: src/schema/pgServer.cpp:467
 #, c-format
 msgid "The PostgreSQL server must be at least version %2.1f!"
 msgstr "!A version de PostgreSQL ten que ser polo menos a %2.1f!"
@@ -4651,6 +6093,15 @@ msgstr "Cadea de version dos servidores PostgreSQL."
 msgid "The PostgreSQL version number."
 msgstr "Número de version de PostgreSQL."
 
+#: src/frm/frmConfig.cpp:316
+#, fuzzy
+msgid ""
+"The configuration is modified.\n"
+"Do you want to save changes?"
+msgstr ""
+"O texto %s foi modificado.\n"
+"¿Quere gardar os cambios?"
+
 msgid "The hostname or TCP/IP address of the server."
 msgstr "Nome de máquina ou dirección TCP/IP do servidor."
 
@@ -4660,24 +6111,47 @@ msgstr "A base de datos inicial usada ó conectarse ó servidor."
 msgid "The last OID used by the server."
 msgstr "O ultimo OID usado polo servidor."
 
-#: src/ui/frmQuery.cpp:1111
+#: src/frm/frmQuery.cpp:1056
 #, c-format
 msgid "The maximum of %ld rows is exceeded (total %ld)."
 msgstr "O máximo de %ld filas foi excedido (total %ld)."
 
-#: src/ui/frmPassword.cpp:79
+#: src/agent/pgaSchedule.cpp:411
+msgid "The mythical 13th month!"
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:286
+msgid "The mythical 8th day!"
+msgstr ""
+
+#: src/slony/dlgRepCluster.cpp:450
+#, c-format
+msgid ""
+"The newly created cluster version (%s)\n"
+" doesn't match the existing cluster's version (%s)"
+msgstr ""
+
+#: src/frm/frmPassword.cpp:79
 msgid "The password could not be changed!"
 msgstr "¡Non se pode modificar a contrasinal!"
 
+#: src/dlg/dlgUser.cpp:233
+#, fuzzy
+msgid "The passwords entered do not match!"
+msgstr "Contrasinais non coincidentes"
+
 msgid "The port number the server is listening on."
 msgstr "O número de porto no que está escoitando o servidor."
+
+#: src/agent/dlgSchedule.cpp:254 src/agent/dlgSchedule.cpp:307
+msgid "The specified exception already exists!"
+msgstr ""
 
 #, c-format
 msgid "The text %s has changed.\n"
 msgstr "O texto %s foi modificado.\n"
 
-#: src/ui/frmQuery.cpp:699
-#: src/ui/frmQuery.cpp:769
+#: src/frm/frmQuery.cpp:629
 #, c-format
 msgid ""
 "The text %s has changed.\n"
@@ -4689,17 +6163,35 @@ msgstr ""
 msgid "The username used when connecting to the server."
 msgstr "O nome de usuario usado para conectarse o servidor."
 
-#: src/ui/events.cpp:544
+#: src/schema/pgServer.cpp:206
+msgid ""
+"There are dependent services configured:\n"
+"\n"
+msgstr ""
+
+#: src/schema/pgServer.cpp:269
+msgid ""
+"There are dependent services running:\n"
+"\n"
+msgstr ""
+
+#: src/main/events.cpp:603
 msgid "There is nothing in the SQL pane to save!"
 msgstr "! Non hai nada que salvar no panel SQL!"
 
-#: src/ui/frmEditGrid.cpp:436
+#: src/frm/frmEditGrid.cpp:437
 msgid ""
 "There is unsaved data in a row.\n"
 "Do you want to store to the database?"
 msgstr ""
 "Hai datos sen gardar na fila..\n"
 "¿Quere gardar os cambios na base de datos?"
+
+#: src/frm/frmMainConfig.cpp:398
+msgid ""
+"This option is present in the configuration file, but not known to the "
+"configuration tool."
+msgstr ""
 
 #, c-format
 msgid ""
@@ -4713,46 +6205,62 @@ msgstr ""
 msgid "This software is released under the Artistic License."
 msgstr "Este software foi realizado baixo the Artistic License."
 
+#: src/agent/pgaSchedule.cpp:274 standard input:398
+msgid "Thursday"
+msgstr ""
+
+#: src/agent/dlgSchedule.cpp:76 standard input:535
+msgid "Time"
+msgstr ""
+
 # standard
-#: input:295
 msgid "Time offset"
 msgstr ""
 
-#: src/ui/frmStatus.cpp:134
+#: standard input:447
+#, fuzzy
+msgid "Times"
+msgstr "Disparadores"
+
+#: src/frm/frmStatus.cpp:142
 msgid "Timestamp"
 msgstr ""
 
-#: src/schema/pgConversion.cpp:66
+#: src/schema/pgConversion.cpp:70
 msgid "To"
 msgstr "A"
 
-#: src/schema/pgTable.cpp:421
+#: src/schema/pgTable.cpp:488
 msgid "Toast Blocks Hit"
 msgstr ""
 
-#: src/schema/pgTable.cpp:420
+#: src/schema/pgTable.cpp:487
 msgid "Toast Blocks Read"
 msgstr ""
 
-#: src/schema/pgTable.cpp:423
+#: src/schema/pgTable.cpp:490
 msgid "Toast Index Blocks Hit"
 msgstr ""
 
-#: src/schema/pgTable.cpp:422
+#: src/schema/pgTable.cpp:489
 msgid "Toast Index Blocks Read"
 msgstr ""
 
-#: src/ui/frmQuery.cpp:1181
+#: src/schema/pgTable.cpp:495
+#, fuzzy
+msgid "Toast Table Size"
+msgstr "Táboa"
+
+#: src/frm/frmQuery.cpp:1126
 #, c-format
 msgid "Total %ld rows.\n"
 msgstr "Total %ld filas.\n"
 
-#: src/ui/dlgClasses.cpp:249
-#: src/ui/frmQuery.cpp:1170
+#: src/frm/frmQuery.cpp:1115 src/main/dlgClasses.cpp:449
 msgid "Total query runtime: "
 msgstr "Total consultas en tempo de execución: "
 
-#: src/schema/pgObject.cpp:75
+#: src/schema/pgObject.cpp:77 standard input:366
 msgid "Trigger"
 msgstr "Disparador"
 
@@ -4765,21 +6273,20 @@ msgid "Trigger Functions"
 msgstr "Funcións disparador"
 
 # standard
-#: input:388
+#: standard input:627
 msgid "Trigger function"
 msgstr "Función Disparador"
 
-#: src/schema/pgObject.cpp:74
+#: src/schema/pgObject.cpp:76 src/slony/slTable.cpp:104
 msgid "Triggers"
 msgstr "Disparadores"
 
 # standard
-#: input:233
-#: input:234
+#: standard input:249
 msgid "Trusted"
 msgstr "Confianza"
 
-#: src/schema/pgLanguage.cpp:65
+#: src/schema/pgLanguage.cpp:68
 msgid "Trusted?"
 msgstr "¿Confianza?"
 
@@ -4790,115 +6297,117 @@ msgstr ""
 "Intente cambialo no lado esquerdo nunha\n"
 "ou mais relaciós."
 
-#: src/ui/events.cpp:1155
-#: src/ui/events.cpp:1206
+#: src/main/events.cpp:1302 src/main/events.cpp:1339
 msgid "Trying to drop system object"
 msgstr "Intentando eliminar o obxeto do sistema."
 
-#: src/schema/pgTable.cpp:415
+#: src/agent/pgaSchedule.cpp:266 standard input:396
+msgid "Tuesday"
+msgstr ""
+
+#: src/schema/pgTable.cpp:482
 #, fuzzy
 msgid "Tuples Deleted"
 msgstr "En Eliminación"
 
-#: src/schema/pgTable.cpp:413
+#: src/schema/pgTable.cpp:480
 msgid "Tuples Inserted"
 msgstr ""
 
-#: src/schema/pgTable.cpp:414
+#: src/schema/pgTable.cpp:481
 #, fuzzy
 msgid "Tuples Updated"
 msgstr "En Actualización"
 
-#: src/schema/pgTable.cpp:529
+#: src/schema/pgTable.cpp:600
 #, fuzzy
 msgid "Tuples deleted"
 msgstr "En eliminación"
 
-#: src/schema/pgTable.cpp:527
+#: src/schema/pgTable.cpp:598
 msgid "Tuples inserted"
 msgstr ""
 
-#: src/schema/pgTable.cpp:528
+#: src/schema/pgTable.cpp:599
 #, fuzzy
 msgid "Tuples updated"
 msgstr "En actualización"
 
 # standard
-#: input:405
-#: src/schema/pgObject.cpp:65
-#: src/schema/pgObject.cpp:168
-#: src/schema/pgTablespace.cpp:43
-#: src/schema/pgUser.cpp:92
-#: src/ui/dlgFunction.cpp:117
-#: src/ui/dlgFunction.cpp:119
-#: src/ui/frmRestore.cpp:382
+#: src/dlg/dlgFunction.cpp:140 src/dlg/dlgFunction.cpp:142
+#: src/frm/frmHbaConfig.cpp:111 src/frm/frmRestore.cpp:385
+#: src/schema/pgObject.cpp:67 src/schema/pgObject.cpp:189
+#: src/schema/pgTablespace.cpp:43 src/schema/pgUser.cpp:92
+#: src/slony/slSet.cpp:78 standard input:187 input:644
 msgid "Type"
 msgstr "Tipo"
 
-#: src/schema/pgObject.cpp:64
+#: src/schema/pgObject.cpp:66
 msgid "Types"
 msgstr "Tipos"
 
 # standard
-#: input:269
-#: input:395
+#: standard input:376 input:634
 msgid "UPDATE"
 msgstr "UPDATE"
 
 # standard
-#: input:529
-#: input:536
+#: standard input:769 input:784
 msgid "Uncheck all"
 msgstr ""
 
-#: src/ui/frmEditGrid.cpp:100
-#: src/ui/frmQuery.cpp:189
+#: src/frm/frmConfig.cpp:151 src/frm/frmEditGrid.cpp:101
+#: src/frm/frmQuery.cpp:186
 msgid "Undo"
 msgstr "Desfacer"
 
-#: src/ui/frmEditGrid.cpp:100
+#: src/frm/frmEditGrid.cpp:101
 msgid "Undo change of data."
 msgstr "Desfacer cambios en datos."
 
-#: src/ui/frmQuery.cpp:116
-#: src/ui/frmQuery.cpp:189
+#: src/frm/frmConfig.cpp:117 src/frm/frmConfig.cpp:151
+#: src/frm/frmQuery.cpp:112 src/frm/frmQuery.cpp:186
 msgid "Undo last action"
 msgstr "Desfacer a última acción"
 
-#: src/ui/frmEditGrid.cpp:1606
+#: src/frm/frmEditGrid.cpp:1684
 msgid "Unexpected empty cache line: dataSet already closed."
 msgstr "Inesperada línea cache baldeira: dataSet xa foi cerrado."
 
 # standard
-#: input:516
+#: standard input:756
 msgid "Unicode UTF-8"
 msgstr "Unicode UTF-8"
 
 # standard
-#: input:185
-#: src/schema/pgObject.cpp:78
-#: src/ui/dlgTable.cpp:474
+#: src/dlg/dlgTable.cpp:508 src/schema/pgObject.cpp:80 standard input:200
 msgid "Unique"
 msgstr "Único"
 
-#: src/schema/pgIndex.cpp:207
-#: src/schema/pgIndexConstraint.cpp:103
+#: src/schema/pgIndex.cpp:210 src/schema/pgIndexConstraint.cpp:103
 msgid "Unique?"
 msgstr "¿Único?"
 
-#: src/schema/pgObject.cpp:85
+#: src/agent/pgaJob.cpp:148 src/agent/pgaJob.cpp:224 src/agent/pgaStep.cpp:197
+#: src/dlg/dlgMainConfig.cpp:54 src/frm/frmMainConfig.cpp:396
+#: src/schema/pgObject.cpp:108
 msgid "Unknown"
 msgstr "Descoñecido"
 
-#: src/ui/ctlSQLBox.cpp:447
+#: src/ctl/ctlSQLBox.cpp:436
 msgid "Unknown find dialog event!"
 msgstr "¡Acontecemento descoñecido no diálogo do evento!"
 
-#: src/ui/frmEditGrid.cpp:436
+#: src/frm/frmMainConfig.cpp:397
+#, fuzzy
+msgid "Unknown option"
+msgstr "Descoñecido"
+
+#: src/frm/frmEditGrid.cpp:437
 msgid "Unsaved data"
 msgstr "Datos sen gardar"
 
-#: src/schema/pgServer.cpp:509
+#: src/schema/pgServer.cpp:671
 msgid "Up since"
 msgstr ""
 
@@ -4906,26 +6415,40 @@ msgstr ""
 msgid "Update catalogs?"
 msgstr "¿Actualizar catálogos?"
 
-#: src/schema/pgObject.cpp:37
-#: src/schema/pgServer.cpp:528
-#: src/ui/frmStatus.cpp:98
-#: src/ui/frmStatus.cpp:109
+#: standard input:295
+msgid "Upgrade cluster software"
+msgstr ""
+
+#: src/frm/frmMain.cpp:220
+msgid "Upgrade node"
+msgstr ""
+
+#: src/frm/frmMain.cpp:220
+msgid "Upgrade node to newest function version."
+msgstr ""
+
+#: xtra/pgagent/unix.cpp:25 xtra/pgagent/win32.cpp:342
+msgid "Usage:\n"
+msgstr ""
+
+#: src/frm/frmHbaConfig.cpp:113 src/frm/frmStatus.cpp:106
+#: src/frm/frmStatus.cpp:117 src/schema/pgObject.cpp:37
+#: src/schema/pgServer.cpp:690 standard input:189
 msgid "User"
 msgstr "Usuario"
 
 # standard
-#: input:441
-#: src/schema/pgUser.cpp:207
+#: src/schema/pgUser.cpp:207 standard input:680
 msgid "User ID"
 msgstr "ID Usuario"
 
 # standard
-#: input:444
+#: standard input:684
 msgid "User Privileges"
 msgstr "Privilexios de usuario"
 
 # standard
-#: input:445
+#: standard input:685
 msgid "User can create databases"
 msgstr "O usuario pode crear base de datos"
 
@@ -4933,19 +6456,20 @@ msgid "User can create users"
 msgstr "O usuario pode crear usuarios"
 
 # standard
-#: input:560
-#: src/pgAdmin3.cpp:280
+#: standard input:808
 msgid "User language"
 msgstr "Língua do usuario"
 
-#: src/ui/ctlSecurityPanel.cpp:95
+#: src/ctl/ctlSecurityPanel.cpp:97
 msgid "User/Group"
 msgstr "Usuario/Grupo"
 
+#: src/dlg/dlgMainConfig.cpp:52
+msgid "Userlimit - may be set by user"
+msgstr ""
+
 # standard
-#: input:333
-#: input:440
-#: src/schema/pgServer.cpp:499
+#: src/schema/pgServer.cpp:661 standard input:572 input:679
 msgid "Username"
 msgstr "Nome de Usuario"
 
@@ -4953,141 +6477,152 @@ msgstr "Nome de Usuario"
 msgid "Users"
 msgstr "Usuarios"
 
+#: src/dlg/dlgMainConfig.cpp:53
+msgid "Userset - may be set by user"
+msgstr ""
+
 # standard
-#: input:543
+#: src/frm/frmHint.cpp:81 standard input:791
 msgid "VACUUM"
 msgstr "VACUUM"
 
 # standard
-#: input:546
+#: standard input:794
 msgid "VACUUM options"
 msgstr "opcións VACUUM"
 
 # standard
-#: input:151
+#: standard input:152
 msgid "VOLATILE"
 msgstr "VOLATILE"
 
 # standard
-#: input:112
+#: standard input:110
 #, fuzzy
 msgid "Validate"
 msgstr "Validador"
 
 # standard
-#: input:113
+#: standard input:111
 msgid "Validate the syntax of the filter string."
 msgstr ""
 
-#: src/ui/dlgEditGridOptions.cpp:269
+#: src/dlg/dlgEditGridOptions.cpp:269
 msgid "Validating filter string"
 msgstr ""
 
 # standard
-#: input:236
-#: src/schema/pgLanguage.cpp:67
+#: src/schema/pgLanguage.cpp:70 standard input:251
 msgid "Validator"
 msgstr "Validador"
 
-#: src/include/pgObject.h:155
-#: src/schema/pgObject.cpp:817
-#: src/schema/pgSequence.cpp:112
-#: src/schema/pgTablespace.cpp:148
-#: src/ui/dlgDatabase.cpp:57
-#: src/ui/dlgUser.cpp:73
+#: src/dlg/dlgDatabase.cpp:60 src/dlg/dlgUser.cpp:77
+#: src/frm/frmMainConfig.cpp:144 src/schema/pgObject.cpp:810
+#: src/schema/pgSequence.cpp:113 src/schema/pgTablespace.cpp:142
+#: src/slony/slNode.cpp:77 src/include/pgObject.h:169 standard input:257
 msgid "Value"
 msgstr "Valor"
 
 # standard
-#: input:415
-#: src/ui/dlgDatabase.cpp:57
-#: src/ui/dlgUser.cpp:73
+#: src/dlg/dlgDatabase.cpp:60 src/dlg/dlgUser.cpp:77 standard input:654
 msgid "Variable"
 msgstr "Variables"
 
 # standard
-#: input:76
-#: input:455
+#: standard input:76 input:695
 msgid "Variable Name"
 msgstr "Nome de variable"
 
 # standard
-#: input:77
-#: input:456
+#: standard input:77 input:696
 msgid "Variable Value"
 msgstr "Valor da variable"
 
+#: src/dlg/dlgMainConfig.cpp:60
+msgid "Variable has still its initial default value"
+msgstr ""
+
 # standard
-#: input:73
-#: input:452
+#: standard input:73 input:692
 msgid "Variables"
 msgstr "Variables"
 
-#: src/ui/frmQuery.cpp:133
+#: src/frm/frmQuery.cpp:129
 msgid "Verbose"
 msgstr "Prolixo"
 
 # standard
-#: input:490
-#: input:553
-#: input:633
+#: standard input:730 input:801 input:884
 msgid "Verbose messages"
 msgstr "Mensaxes prolixos"
 
-#: src/schema/pgServer.cpp:504
+#: src/slony/slCluster.cpp:267 standard input:301
+#, fuzzy
+msgid "Version"
+msgstr "Conversion"
+
+#: src/schema/pgServer.cpp:666
 msgid "Version number"
 msgstr "Número de versión"
 
-#: src/schema/pgServer.cpp:503
+#: src/schema/pgServer.cpp:665
 msgid "Version string"
 msgstr "Cadea de versión"
 
-#: src/schema/pgObject.cpp:67
+#: src/schema/pgObject.cpp:69
 msgid "View"
 msgstr "Ver"
 
-#: src/ui/frmMain.cpp:186
+#: src/frm/frmMain.cpp:205
 msgid "View &Data"
 msgstr "Ver &Datos"
 
-#: src/ui/frmMain.cpp:257
+#: src/frm/frmMain.cpp:296
 msgid "View Data"
 msgstr "Ver Datos"
 
 # standard
-#: input:95
+#: standard input:95
 #, fuzzy
 msgid "View Data Options"
 msgstr "Ver Datos"
 
-#: src/ui/frmMain.cpp:187
+#: src/frm/frmMain.cpp:206
 #, fuzzy
 msgid "View F&iltered Data"
 msgstr "Ver &Datos"
 
-#: src/ui/frmMain.cpp:258
+#: src/frm/frmMain.cpp:297
 #, fuzzy
 msgid "View Filtered Data"
 msgstr "Ver Datos"
 
-#: src/ui/frmMain.cpp:186
-#: src/ui/frmMain.cpp:257
+#: src/frm/frmMain.cpp:205 src/frm/frmMain.cpp:296
 msgid "View the data in the selected object."
 msgstr "Ver os datos do obxeto seleccionado."
 
 # standard
-#: input:475
-#: src/schema/pgObject.cpp:66
+#: src/schema/pgObject.cpp:68 standard input:715
 msgid "Views"
 msgstr "Vistas"
 
+#: standard input:905
+msgid ""
+"Visit\n"
+"download site"
+msgstr ""
+
 # standard
-#: input:150
-#: src/schema/pgFunction.cpp:114
+#: src/schema/pgFunction.cpp:132 standard input:151
 msgid "Volatility"
 msgstr "Volatilidad"
 
-#: src/utils/sysLogger.cpp:89
+#: xtra/pgagent/unix.cpp:44 xtra/pgagent/win32.cpp:87
+#, c-format
+msgid "WARNING: %s\n"
+msgstr ""
+
+#: src/base/sysLogger.cpp:89
 msgid ""
 "Warning:\n"
 "\n"
@@ -5095,25 +6630,40 @@ msgstr ""
 "Atención:\n"
 "\n"
 
+#: src/agent/pgaSchedule.cpp:270 standard input:397
+msgid "Wednesday"
+msgstr ""
+
+#: standard input:393
+msgid "Week Days"
+msgstr ""
+
+#: src/agent/pgaSchedule.cpp:65
+msgid "Weekdays"
+msgstr ""
+
 # standard
-#: input:487
+#: standard input:727
 msgid "With OIDs"
 msgstr ""
 
-#: src/ui/frmQuery.cpp:1076
+#: src/frm/frmConfig.cpp:259
+msgid "Writing configuration file to server"
+msgstr ""
+
+#: src/frm/frmQuery.cpp:1021
 msgid "Writing data."
 msgstr ""
 
-#: src/schema/pgDatabase.cpp:479
+#: src/schema/pgDatabase.cpp:506
 msgid "Xact Committed"
 msgstr ""
 
-#: src/schema/pgDatabase.cpp:480
+#: src/schema/pgDatabase.cpp:507
 msgid "Xact Rolled Back"
 msgstr ""
 
-#: src/ui/frmStatus.cpp:373
-#: src/utils/misc.cpp:71
+#: src/base/base.cpp:47 src/frm/frmStatus.cpp:381
 msgid "Yes"
 msgstr "Si"
 
@@ -5131,6 +6681,10 @@ msgstr ""
 msgid "You must add at least on column."
 msgstr "Ten que engadir polo menos unha columna."
 
+#: src/agent/dlgSchedule.cpp:232 src/agent/dlgSchedule.cpp:282
+msgid "You must enter a valid date and/or time!"
+msgstr ""
+
 #, c-format
 msgid ""
 "You must redraw your joins so that \"%s\"\n"
@@ -5143,147 +6697,197 @@ msgstr ""
 "mais dunha vez.\n"
 "\n"
 
-#: src/ui/events.cpp:409
+#: src/main/events.cpp:478
 msgid "You must select a server before changing your password!"
 msgstr "¡Ten que seleccionar un servidor antes de cambiar a sua contrasinal!"
 
-msgid "You must select one column from the left table and one column from the right table."
+msgid ""
+"You must select one column from the left table and one column from the right "
+"table."
 msgstr "Debe escoller unha columna na táboa esquerda e outra na dereita."
 
-#: src/ui/frmEditGrid.cpp:663
+#: src/frm/frmEditGrid.cpp:695
 msgid "aborting."
 msgstr "abortando."
 
+#: src/slony/slNode.cpp:190
+msgid "administrative node"
+msgstr ""
+
 # standard
-#: input:520
+#: standard input:760
 msgid "all columns"
 msgstr "todas as columnas"
 
-#: src/schema/pgServer.cpp:491
-#: src/ui/dlgServer.cpp:145
+#: src/dlg/dlgServer.cpp:157 src/schema/pgServer.cpp:649
 msgid "allow"
 msgstr "permitir"
 
 # standard
-#: input:420
+#: standard input:659
 msgid "char"
 msgstr "char"
 
 # standard
-#: input:285
 msgid "daily"
 msgstr ""
 
-#: src/schema/pgServer.cpp:492
-#: src/ui/dlgServer.cpp:146
+#: src/dlg/dlgServer.cpp:158 src/schema/pgServer.cpp:650
 msgid "disable"
 msgstr "desactivar"
 
 # standard
-#: input:423
+#: standard input:662
 msgid "double"
 msgstr "double"
 
 # standard
-#: input:421
+#: standard input:660
 msgid "int2"
 msgstr "int2"
 
 # standard
-#: input:422
+#: standard input:661
 msgid "int4"
 msgstr "int4"
 
 # standard
-#: input:177
-#: input:451
+#: standard input:181 input:691
 msgid "member"
 msgstr "membro"
 
 # standard
-#: input:287
 msgid "monthly"
 msgstr ""
 
 # standard
-#: input:334
+#: standard input:573
 #, fuzzy
 msgid "need password"
 msgstr "Nova contrasinal"
 
 # standard
-#: input:518
+#: standard input:758
 msgid "no quoting"
 msgstr "non entrecomiñas"
 
-#: src/schema/pgTable.cpp:393
+#: src/schema/pgTable.cpp:495
+#, fuzzy
+msgid "none"
+msgstr "<nada>"
+
+#: src/schema/pgTable.cpp:401
 #, fuzzy
 msgid "not counted"
 msgstr "Filas (contadas)"
 
-#: src/schema/pgServer.cpp:480
+#: src/schema/pgServer.cpp:638
 msgid "not encrypted"
 msgstr "non encriptado"
 
 # standard
-#: input:176
-#: input:450
+#: standard input:180 input:690
 msgid "not member"
 msgstr "non membro"
 
 # standard
-#: input:519
+#: src/slony/slNode.cpp:185
+#, fuzzy
+msgid "not running"
+msgstr "non entrecomiñas"
+
+# standard
+#: standard input:759
 msgid "only strings"
 msgstr "soio cadeas"
 
-#: src/ui/frmMain.cpp:207
+# standard
+#: xtra/pgagent/unix.cpp:27 xtra/pgagent/win32.cpp:345
+#, fuzzy
+msgid "options:\n"
+msgstr "Opcións"
+
+#: standard input:773
+msgid "pgAdmin Guru Hint"
+msgstr ""
+
+#: src/frm/frmMain.cpp:243
 msgid "pgAdmin III &FAQ"
 msgstr "&FAQ pgAdmin III"
 
-#: src/ui/frmQuery.cpp:699
-#: src/ui/frmQuery.cpp:769
+#: src/frm/frmHbaConfig.cpp:46
+msgid "pgAdmin III - Backend Access Configuration Editor"
+msgstr ""
+
+#: src/frm/frmMainConfig.cpp:46
+msgid "pgAdmin III - Backend Configuration Editor"
+msgstr ""
+
+#: src/frm/frmConfig.cpp:390
+msgid "pgAdmin III - Backend Configuration Hints"
+msgstr ""
+
+#: src/frm/frmHint.cpp:161
+#, fuzzy
+msgid "pgAdmin III Guru Hint"
+msgstr "Consulta pgAdmin III"
+
+#: src/frm/frmHint.cpp:170
+#, fuzzy
+msgid "pgAdmin III Guru Hints"
+msgstr "Consulta pgAdmin III"
+
+#: src/frm/frmQuery.cpp:629
 msgid "pgAdmin III Query"
 msgstr "Consulta pgAdmin III"
 
-#: src/ui/events.cpp:661
+# standard
+#: xtra/pgagent/win32.cpp:454
+#, fuzzy
+msgid "pgAgent Service"
+msgstr "Servidor"
+
+#: src/main/events.cpp:725
 msgid "pgServer object didn't initialise because the user aborted."
-msgstr "O obxeto pgServer non se pode inicializar pois o usuario ten abortado a operación."
+msgstr ""
+"O obxeto pgServer non se pode inicializar pois o usuario ten abortado a "
+"operación."
 
 # standard
-#: input:582
+#: standard input:833
 msgid "pgadmin3&%ID.log"
 msgstr "pgadmin3&%ID.log"
 
-#: src/ui/frmStatus.cpp:493
+#: src/frm/frmStatus.cpp:501
 msgid "pgadmin:Logfile rotated."
 msgstr ""
 
-#: src/schema/pgServer.cpp:490
-#: src/ui/dlgServer.cpp:141
+#: src/dlg/dlgServer.cpp:153 src/schema/pgServer.cpp:648
 msgid "prefer"
 msgstr "preferido"
 
-#: src/ui/frmQuery.cpp:175
+#: src/frm/frmQuery.cpp:172
 msgid "ready"
 msgstr "preparado"
 
-#: src/ui/frmStatus.cpp:436
+#: src/frm/frmStatus.cpp:444
 msgid "redirect_stderr not enabled or log_filename misconfigured"
 msgstr ""
 
 # standard
-#: input:283
 #, fuzzy
 msgid "repeat"
 msgstr "Crear"
 
-#: src/schema/pgServer.cpp:489
-#: src/ui/dlgServer.cpp:140
+#: src/dlg/dlgServer.cpp:152 src/schema/pgServer.cpp:647
 msgid "require"
 msgstr "require"
 
+#: src/dlg/dlgMainConfig.cpp:68
+msgid "set by Override"
+msgstr ""
+
 # standard
-#: input:284
 msgid "single"
 msgstr ""
 
@@ -5291,17 +6895,20 @@ msgid "template1"
 msgstr "template1"
 
 # standard
-#: input:286
+#: src/dlg/dlgMainConfig.cpp:125
+#, fuzzy
+msgid "unset"
+msgstr "Conxunto devolto"
+
+# standard
 msgid "weekly"
 msgstr ""
 
 # standard
-#: input:288
 msgid "yearly"
 msgstr ""
 
 # standard
-#: input:509
+#: standard input:749
 msgid "|"
 msgstr "|"
-
