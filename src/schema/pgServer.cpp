@@ -689,18 +689,33 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
         statistics->AddColumn(wxT("PID"), 35);
         statistics->AddColumn(_("User"), 70);
         statistics->AddColumn(_("Database"), 70);
+        if (GetConnection()->BackendMinimumVersion(8, 1))
+        {
+            statistics->AddColumn(_("Backend start"), 70);
+            statistics->AddColumn(_("Client"), 70);
+        }
         statistics->AddColumn(_("Current Query"), 300);
 
-        pgSet *stats = ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
+        pgSet *stats = ExecuteSet(wxT("SELECT * FROM pg_stat_activity"));
         if (stats)
         {
             int pos=0;
             while (!stats->Eof())
             {
                 statistics->InsertItem(pos, stats->GetVal(wxT("procpid")), 0);
-                statistics->SetItem(pos, 1, stats->GetVal(wxT("usename")));
-                statistics->SetItem(pos, 2, stats->GetVal(wxT("datname")));
-                statistics->SetItem(pos, 3, stats->GetVal(wxT("current_query")));
+                int colpos=1;
+                statistics->SetItem(pos, colpos++, stats->GetVal(wxT("usename")));
+                statistics->SetItem(pos, colpos++, stats->GetVal(wxT("datname")));
+                if (GetConnection()->BackendMinimumVersion(8, 1))
+                {
+                    statistics->SetItem(pos, colpos++, stats->GetVal(wxT("backend_start")));
+                    wxString client=stats->GetVal(wxT("client_addr")) + wxT(":") + stats->GetVal(wxT("client_port"));
+                    if (client == wxT(":-1"))
+                        client = _("local pipe");
+                    statistics->SetItem(pos, colpos++, client);
+                }
+                statistics->SetItem(pos, colpos++, stats->GetVal(wxT("current_query")));
+
                 stats->MoveNext();
                 pos++;
             }

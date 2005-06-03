@@ -104,12 +104,13 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     statusList->AddColumn(_("PID"), 35);
     statusList->AddColumn(_("Database"), 70);
     statusList->AddColumn(_("User"), 70);
-    if (connection->BackendMinimumVersion(7, 4)) {
+    if (connection->BackendMinimumVersion(8, 1))
+        statusList->AddColumn(_("Client"), 70);
+
+    if (connection->BackendMinimumVersion(7, 4))
         statusList->AddColumn(_("Start"), 50);
-        statusList->AddColumn(_("Query"), 500);
-    } else {
-        statusList->AddColumn(_("Query"), 500);
-    }
+
+    statusList->AddColumn(_("Query"), 500);
 
     lockList->AddColumn(_("PID"), 50);
     lockList->AddColumn(_("Database"), 50);
@@ -118,12 +119,10 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     lockList->AddColumn(_("TX"), 50);
     lockList->AddColumn(_("Mode"), 50);
     lockList->AddColumn(_("Granted"), 50);
-    if (connection->BackendMinimumVersion(7, 4)) {
+    if (connection->BackendMinimumVersion(7, 4))
         lockList->AddColumn(_("Start"), 50);
-        lockList->AddColumn(_("Query"), 500);
-    } else {
-        lockList->AddColumn(_("Query"), 500);
-    }
+
+    lockList->AddColumn(_("Query"), 500);
 
     if (connection->BackendMinimumVersion(8, 0) && 
 		 connection->HasFeature(FEATURE_FILEREAD))
@@ -279,23 +278,28 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 					{
 						statusList->InsertItem(row, NumToStr(pid), 0);
 					}
-					statusList->SetItem(row, 1, dataSet1->GetVal(wxT("datname")));
-					statusList->SetItem(row, 2, dataSet1->GetVal(wxT("usename")));
 					wxString qry=dataSet1->GetVal(wxT("current_query"));
 
-					if (connection->BackendMinimumVersion(7, 4))
+                    int colpos=1;
+					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("datname")));
+					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("usename")));
+
+                    if (connection->BackendMinimumVersion(8, 1))
+                    {
+                        wxString client=dataSet1->GetVal(wxT("client_addr")) + wxT(":") + dataSet1->GetVal(wxT("client_port"));
+                        if (client == wxT(":-1"))
+                            client = _("local pipe");
+                        statusList->SetItem(row, colpos++, client);
+                    }
+                    if (connection->BackendMinimumVersion(7, 4))
 					{
-						if (qry.IsEmpty()) {
-							statusList->SetItem(row, 3, wxEmptyString);
-							statusList->SetItem(row, 4, wxEmptyString);
-						} else {
-							statusList->SetItem(row, 3, dataSet1->GetVal(wxT("query_start")));
-							statusList->SetItem(row, 4, qry.Left(250));
-						} 
-					} else {
-						statusList->SetItem(row, 3, qry.Left(250));
+						if (qry.IsEmpty() || qry == wxT("<IDLE>"))
+							statusList->SetItem(row, colpos++, wxEmptyString);
+                        else
+							statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("query_start")));
 					}
 
+    				statusList->SetItem(row, colpos, qry.Left(250));
 					row++;
 				}
 				dataSet1->MoveNext();
@@ -372,30 +376,30 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 					{
 						lockList->InsertItem(row, NumToStr(pid), 0);
 					}
-					lockList->SetItem(row, 1, dataSet2->GetVal(wxT("dbname")));
-					lockList->SetItem(row, 2, dataSet2->GetVal(wxT("class")));
-					lockList->SetItem(row, 3, dataSet2->GetVal(wxT("user")));
-					lockList->SetItem(row, 4, dataSet2->GetVal(wxT("transaction")));
-					lockList->SetItem(row, 5, dataSet2->GetVal(wxT("mode")));
-					if (dataSet2->GetVal(wxT("granted")) == wxT("t")) {
-						lockList->SetItem(row, 6, __("Yes"));
-					} else {
-						lockList->SetItem(row, 6, __("No"));
-					}
+
+                    int colpos=1;
+					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("dbname")));
+					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("class")));
+					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("user")));
+					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("transaction")));
+					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("mode")));
+					
+                    if (dataSet2->GetVal(wxT("granted")) == wxT("t"))
+						lockList->SetItem(row, colpos++, _("Yes"));
+					else
+						lockList->SetItem(row, colpos++, _("No"));
+
 					wxString qry=dataSet2->GetVal(wxT("current_query"));
 
 					if (connection->BackendMinimumVersion(7, 4))
 					{
-						if (qry.IsEmpty()) {
-							lockList->SetItem(row, 7, wxEmptyString);
-							lockList->SetItem(row, 8, wxEmptyString);
-						} else {
-							lockList->SetItem(row, 7, dataSet2->GetVal(wxT("query_start")));
-							lockList->SetItem(row, 8, qry.Left(250));
-						}
-					} else {
-						lockList->SetItem(row, 7, qry.Left(250));
+						if (qry.IsEmpty() || qry == wxT("<IDLE>"))
+							lockList->SetItem(row, colpos++, wxEmptyString);
+						else
+							lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("query_start")));
 					}
+                    lockList->SetItem(row, colpos++, qry.Left(250));
+
 
 					row++;
 				}
