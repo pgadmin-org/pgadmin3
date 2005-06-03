@@ -123,7 +123,7 @@ bool pgConn::HasFeature(int featureNo)
         pgSet *set=ExecuteSet(
             wxT("SELECT proname, pronargs, proargtypes[0] AS arg0, proargtypes[1] AS arg1, proargtypes[2] AS arg2\n")
             wxT("  FROM pg_proc\n")
-            wxT(" WHERE proname IN ('pg_tablespace_size', 'pg_file_read', 'pg_rotate_log',")
+            wxT(" WHERE proname IN ('pg_tablespace_size', 'pg_file_read', 'pg_logfile_rotate',")
             wxT(                  " 'pg_postmaster_starttime', 'pg_terminate_backend', 'pg_reload_conf')"));
 
         if (set)
@@ -138,7 +138,7 @@ bool pgConn::HasFeature(int featureNo)
                 else if (proname == wxT("pg_file_read") && pronargs == 3 && set->GetLong(wxT("arg0")) == 25
                     && set->GetLong(wxT("arg1")) == 20 && set->GetLong(wxT("arg2")) == 20)
                     features[FEATURE_FILEREAD] = true;
-                else if (proname == wxT("pg_rotate_log") && pronargs == 0)
+                else if (proname == wxT("pg_logfile_rotate") && pronargs == 0)
                     features[FEATURE_ROTATELOG] = true;
                 else if (proname == wxT("pg_postmaster_starttime") && pronargs == 0)
                     features[FEATURE_POSTMASTER_STARTTIME] = true;

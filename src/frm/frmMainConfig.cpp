@@ -475,7 +475,7 @@ void frmMainConfig::DisplayFile(const wxString &str)
     FillList(wxT("client_min_messages"));       // Reporting and Logging / When to Log
     FillList(wxT("log_destination"));           // Reporting and Logging / Where to Log
     FillList(wxT("stats_command_string"));      // Statistics / Query and Index Statistics Collector
-    FillList(wxT("debug_shared_buffers"));      // Statistics / Monitoring
+    FillList(wxT("log_executor_stats"));        // Statistics / Monitoring
     FillList(wxT("fsync"));                     // Write-Ahead Log / Settings
     FillList(wxT("checkpoint_segments"));       // Write-Ahead Log / Checkpoints
     FillList(wxT("add_missing_from"));          // Version and Platform Compatibility / Previous PostgreSQL Version
