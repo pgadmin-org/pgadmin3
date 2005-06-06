@@ -39,7 +39,7 @@ bool slPath::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
-            + wxT("setdroppath(") + NumToStr(GetSlId()) 
+            + wxT("droppath(") + NumToStr(GetSlId()) 
             + wxT(", ") + NumToStr(GetNode()->GetSlId())
             + wxT(");\n"));
 }
