@@ -25,6 +25,26 @@ public:
 };
 
 
+
+
+int wxComboBoxFix::Append(const wxString& item, const wxString &str)
+{
+    return wxComboBox::Append(item, new StringClientData(str));
+}
+
+
+int wxComboBoxFix::Append(const wxString& item, long l)
+{
+    return wxComboBox::Append(item, (void*)l);
+}
+
+
+int wxComboBoxFix::Append(const wxString& item, OID oid)
+{
+    return wxComboBox::Append(item, (void*)oid);
+}
+
+
 int wxComboBoxFix::FillLongKey(pgConnBase *conn, const wxChar *qry)
 {
     int cnt=0;
@@ -33,7 +53,7 @@ int wxComboBoxFix::FillLongKey(pgConnBase *conn, const wxChar *qry)
     {
         long l=set.GetLong(0);
         wxString txt=set.GetVal(1);
-        Append(txt, (void*)l);
+        Append(txt, l);
         cnt++;
     }
     return cnt;
@@ -48,7 +68,7 @@ int wxComboBoxFix::FillOidKey(pgConnBase *conn, const wxChar *qry)
     {
         OID oid=set.GetOid(0);
         wxString txt=set.GetVal(1);
-        Append(txt, (void*)oid);
+        Append(txt, oid);
         cnt++;
     }
     return cnt;
@@ -63,23 +83,30 @@ int wxComboBoxFix::FillStringKey(pgConnBase *conn, const wxChar *qry)
     {
         wxString str=set.GetVal(0);
         wxString txt=set.GetVal(1);
-        Append(txt, new StringClientData(txt));
+        Append(txt, str);
         cnt++;
     }
     return cnt;
 }
+
 long wxComboBoxFix::GetLongKey(int sel)
 {
+    if (sel < 0)
+        sel = GetSelection();
     return (long)GetClientData(sel);
 }
 
 OID wxComboBoxFix::GetOIDKey(int sel)
 {
+    if (sel < 0)
+        sel = GetSelection();
     return (OID)GetClientData(sel);
 }
 
 wxString wxComboBoxFix::GetStringKey(int sel)
 {
+    if (sel < 0)
+        sel = GetSelection();
     StringClientData *scd=(StringClientData*)GetClientObject(sel);
     if (scd)
         return scd->str;

@@ -17,6 +17,8 @@
 #include <wx/wx.h>
 #include "base/base.h"
 
+
+
 class pgConnBase;
 class wxComboBoxFix : public wxComboBox
 {
@@ -25,12 +27,20 @@ public:
     int FillLongKey(pgConnBase *conn, const wxChar *qry);
     int FillOidKey(pgConnBase *conn, const wxChar *qry);
     int FillStringKey(pgConnBase *conn, const wxChar *qry);
-    long GetLongKey(int sel);
-    OID GetOIDKey(int sel);
-    wxString GetStringKey(int sel);
+    long GetLongKey(int sel=-1);
+    OID GetOIDKey(int sel=-1);
+    wxString GetStringKey(int sel=-1);
     bool SetKey(long val);
     bool SetKey(OID val);
     bool SetKey(const wxString &val);
+
+    int Append(const wxString& item) { return wxComboBox::Append(item); }
+    int Append(const wxString& item, void *data) { return wxComboBox::Append(item, data); }
+    int Append(const wxString& item, const wxString &str);
+    int Append(const wxString& item, long l);
+    int Append(const wxString& item, OID oid);
+
+
 
 #ifdef __WXMSW__
     wxString GetValue() const { return wxGetWindowText(GetHwnd()); }

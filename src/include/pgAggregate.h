@@ -48,6 +48,11 @@ public:
     void iSetFinalFunction(const wxString& s) { finalFunction=s; }
     wxString GetInitialCondition() { return initialCondition; }
     void iSetInitialCondition(const wxString& s) { initialCondition=s; }
+    wxString GetSortOp() { return sortOp; }
+    void iSetSortOp(const wxString &s) { sortOp=s; }
+    wxString GetQuotedSortOp() { return quotedSortOp; }
+    void iSetQuotedSortOp(const wxString &s) { quotedSortOp=s; }
+
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetSql(wxTreeCtrl *browser);
@@ -55,7 +60,7 @@ public:
 
 private:
     pgSchema *schema;
-    wxString inputType, stateType, finalType,
+    wxString inputType, stateType, finalType, sortOp, quotedSortOp,
              stateFunction, finalFunction, initialCondition;
 };
 

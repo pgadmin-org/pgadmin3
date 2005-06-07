@@ -712,7 +712,7 @@ int frmStatus::fillLogfileCombo()
             wxString fn= set->GetVal(wxT("filename"));
             wxDateTime ts=set->GetDateTime(wxT("filetime"));
 
-            cbLogfiles->Append(DateToAnsiStr(ts), new wxDateTime(ts));
+            cbLogfiles->Append(DateToAnsiStr(ts), (void*)new wxDateTime(ts));
 
             set->MoveNext();
         }

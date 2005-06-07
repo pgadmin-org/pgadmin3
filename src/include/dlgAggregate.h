@@ -36,8 +36,6 @@ private:
     void OnChangeType(wxCommandEvent &ev);
     void OnChangeTypeBase(wxCommandEvent &ev);
     void OnChangeTypeState(wxCommandEvent &ev);
-    
-    wxArrayString procedures;
 
     DECLARE_EVENT_TABLE();
 };
