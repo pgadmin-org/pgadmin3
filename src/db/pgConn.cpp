@@ -48,6 +48,15 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     majorVersion=0;
 }
 
+
+bool pgConn::GetIsEdb()
+{
+    // to retrieve edb flag
+    BackendMinimumVersion(0,0);
+    return isEdb; 
+}
+
+
 wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
 {
     if (reservedNamespaces.IsEmpty())

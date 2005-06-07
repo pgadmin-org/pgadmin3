@@ -38,7 +38,7 @@ public:
     wxString SystemNamespaceRestriction(const wxString &nsp);
     int GetMajorVersion() const { return majorVersion; }
     int GetMinorVersion() const { return minorVersion; }
-    bool GetIsEdb() const { return isEdb; }
+    bool GetIsEdb();
 
 private:
     bool features[32];
