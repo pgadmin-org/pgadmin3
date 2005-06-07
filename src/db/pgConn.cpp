@@ -55,7 +55,7 @@ wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
         reservedNamespaces = wxT("'information_schema'");
 
         if (GetIsEdb())
-            reservedNamespaces += wxT(", sys");
+            reservedNamespaces += wxT(", 'sys'");
 
         pgSet *set=ExecuteSet(
                 wxT("SELECT nspname FROM pg_namespace nsp\n")
