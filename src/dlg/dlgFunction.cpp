@@ -524,11 +524,20 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
                 if (quoted)
                 {
                     wxString colName = lstArguments->GetText(i);
-                    int i=GetDirection(colName);
-                    wxString dir=rdbDirection->GetString(i);
-                    colName = colName.Mid(dir.Length()+1);
+                    if (isProcedure)
+                    {
+                        int i=GetDirection(colName);
+                        wxString dir=rdbDirection->GetString(i);
+                        colName = colName.Mid(dir.Length());
 
-                    args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
+                        args += dir + qtIdent(colName) + wxT(" ");
+                    }
+                    else
+                    {
+                        args += qtIdent(colName) + wxT(" ");
+                    }
+
+                    
                 }
                 else
                     args += lstArguments->GetText(i) + wxT(" ");
