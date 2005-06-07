@@ -37,9 +37,9 @@
 
 BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
     EVT_TEXT(XRCID("cbBaseType"),                   dlgAggregate::OnChangeTypeBase)
-    EVT_COMBOBOX(XRCID("cbBaseType"),               dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbBaseType"),               dlgAggregate::OnChangeType)
     EVT_TEXT(XRCID("cbStateType"),                  dlgAggregate::OnChangeTypeState)
-    EVT_COMBOBOX(XRCID("cbStateType"),              dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbStateType"),              dlgAggregate::OnChangeType)
     EVT_COMBOBOX(XRCID("cbStateFunc"),              dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbStateFunc"),                  dlgProperty::OnChange)
 END_EVENT_TABLE();
@@ -158,13 +158,13 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
             wxT("  FROM pg_proc p\n")
             wxT("  JOIN pg_type t ON t.oid=p.prorettype\n")
             wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-            wxT(" WHERE proargtypes[2] = 0");
+            wxT(" WHERE COALESCE(proargtypes[2],0) = 0");
 
 
         pgSet *set=connection->ExecuteSet(qry +
             wxT("\n   AND prorettype = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
             wxT("\n   AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
-            wxT("\n   AND (proargtypes[1]= 0 OR proargtypes[1]= ") 
+            wxT("\n   AND (COALESCE(proargtypes[1],0) = 0 OR proargtypes[1]= ") 
             + GetTypeOid(cbBaseType->GetGuessedSelection()) + wxT(")"));
 
         if (set)
@@ -185,7 +185,7 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
 
         set=connection->ExecuteSet(qry +
             wxT("\n   AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
-            wxT("\n   AND proargtypes[1]= 0"));
+            wxT("\n   AND COALESCE(proargtypes[1],0) = 0"));
 
         if (set)
         {
