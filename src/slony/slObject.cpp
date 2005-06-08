@@ -54,9 +54,9 @@ bool slCollection::CanCreate()
         case SL_PATHS:
         case SL_LISTENS:
         case SL_SETS:
-            return true;
-
         case SL_NODES:
+            return true;
+        
         default:
             return false;
     }
