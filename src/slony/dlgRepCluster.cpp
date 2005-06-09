@@ -617,7 +617,7 @@ void dlgRepCluster::CheckChange()
             (!slony1BaseScript.IsEmpty() && !slony1FunctionScript.IsEmpty() && !slony1XxidScript.IsEmpty()),
             _("Slony-I creation scripts not available; only joining possible."));
 
-        CheckValid(enable, !cbClusterName->GetValue().IsEmpty(), _("Please specify name."));
+        CheckValid(enable, !txtClusterName->GetValue().IsEmpty(), _("Please specify name."));
 
         long nodeId = StrToLong(txtNodeID->GetValue());
         CheckValid(enable, nodeId > 0, _("Please specify local node ID."));
