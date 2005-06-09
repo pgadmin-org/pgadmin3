@@ -84,6 +84,15 @@ int dlgRepClusterBase::Go(bool modal)
 {
     if (cluster)
     {
+        cbServer->Append(cluster->GetServer()->GetName());
+        cbServer->SetSelection(0);
+        cbDatabase->Append(cluster->GetDatabase()->GetName());
+        cbDatabase->SetSelection(0);
+        cbClusterName->Append(cluster->GetName());
+        cbClusterName->SetSelection(0);
+    }
+    else
+    {
         wxCookieType cookie;
         wxTreeItemId serverItem=mainForm->GetBrowser()->GetFirstChild(servers, cookie);        
         while (serverItem)
