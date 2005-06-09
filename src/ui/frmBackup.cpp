@@ -200,7 +200,11 @@ wxString frmBackup::getCmdPart2()
         {
             cmd.Append(wxT(" -F p"));
             if (chkOnlyData->GetValue())
+            {
                 cmd.Append(wxT(" -a"));
+                if (chkDisableTrigger->GetValue())
+                    cmd.Append(wxT(" --disable-triggers"));
+            }
             else
             {
                 if (chkOnlySchema->GetValue())
@@ -213,8 +217,6 @@ wxString frmBackup::getCmdPart2()
                     cmd.Append(wxT(" -C"));
                 if (chkDropDb->GetValue())
                     cmd.Append(wxT(" -c"));
-                if (chkDisableTrigger->GetValue())
-                    cmd.Append(wxT(" --disable-triggers"));
             }
             break;
         }
