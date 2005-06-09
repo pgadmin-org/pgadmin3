@@ -29,7 +29,7 @@ public:
     slSet(slCluster *_cluster, const wxString& newName = wxT(""));
     ~slSet();
 
-    int GetIcon() { return SLICON_SET; }
+    int GetIcon();
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(slCollection *coll, wxTreeCtrl *browser);

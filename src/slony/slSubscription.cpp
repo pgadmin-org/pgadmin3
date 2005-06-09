@@ -35,6 +35,16 @@ slSubscription::~slSubscription()
 }
 
 
+
+int slSubscription::GetIcon()
+{
+    if (GetReceiverId() == GetCluster()->GetLocalNodeID())
+        return SLICON_SUBSCRIPTION2;
+    else
+        return SLICON_SUBSCRIPTION;
+}
+
+
 bool slSubscription::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(

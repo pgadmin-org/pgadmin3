@@ -34,6 +34,15 @@ slSet::~slSet()
 }
 
 
+int slSet::GetIcon()
+{
+    if (GetOriginId() == GetCluster()->GetLocalNodeID())
+        return SLICON_SET;
+    else
+        return SLICON_SET2;
+}
+
+
 wxMenu *slSet::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();

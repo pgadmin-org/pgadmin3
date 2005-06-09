@@ -109,7 +109,9 @@ enum        // depends on frmMain browserImages->Add order!
     SLICON_PATH,
     SLICON_LISTEN,
     SLICON_SET,
-    SLICON_SUBSCRIPTION
+    SLICON_SET2,
+    SLICON_SUBSCRIPTION,
+    SLICON_SUBSCRIPTION2
 };
 
 

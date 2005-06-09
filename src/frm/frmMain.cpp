@@ -110,7 +110,9 @@ WX_DEFINE_LIST(windowList);
 #include "images/slpath.xpm"
 #include "images/sllisten.xpm"
 #include "images/slset.xpm"
+#include "images/slset2.xpm"
 #include "images/slsubscription.xpm"
+#include "images/slsubscription2.xpm"
 
 
 #if wxDIALOG_UNIT_COMPATIBILITY
@@ -389,7 +391,9 @@ frmMain::frmMain(const wxString& title)
     imageList->Add(wxIcon(slpath_xpm));
     imageList->Add(wxIcon(sllisten_xpm));
     imageList->Add(wxIcon(slset_xpm));
+    imageList->Add(wxIcon(slset2_xpm));
     imageList->Add(wxIcon(slsubscription_xpm));
+    imageList->Add(wxIcon(slsubscription2_xpm));
 
     browser->SetImageList(imageList);
 
