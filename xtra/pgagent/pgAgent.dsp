@@ -43,17 +43,17 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "include" /I "c:/program files/postgresql/8.0/include" /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Fr /Yu"pgAgent.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "include" /I "c:/program files/postgresql/8.0/include" /I "c:/wxWidgets-2.6.1/include" /I "c:/wxWidgets-2.6.1/contrib/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Fr /Yu"pgAgent.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407 /d "_DEBUG"
-# ADD RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /d "_DEBUG"
+# ADD RSC /l 0x809 /i "c:/wxWidgets-2.6.1/include" /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 libpq.lib wxbase26ud.lib wxbase26ud_xml.lib wxbase26ud_net.lib wxmsw26ud_adv.lib wxmsw26ud_core.lib wxmsw26ud_html.lib wxregexud.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib wxmsw26ud_stc.lib wxmsw26ud_ogl.lib wxmsw26ud_xrc.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:console /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
+# ADD LINK32 libpq.lib wxbase26ud.lib wxbase26ud_xml.lib wxbase26ud_net.lib wxmsw26ud_adv.lib wxmsw26ud_core.lib wxmsw26ud_html.lib wxregexud.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib wxmsw26ud_stc.lib wxmsw26ud_ogl.lib wxmsw26ud_xrc.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:console /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6.1/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
 # SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "pgAgent - Win32 Release"
@@ -71,17 +71,17 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /I "include" /I "c:/program files/postgresql/8.0/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_MT" /Yu"pgAgent.h" /FD /GZ /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /I "include" /I "c:/program files/postgresql/8.0/include" /I "c:/wxWidgets-2.6/include" /I "c:/wxWidgets-2.6/contrib/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgAgent.h" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /I "include" /I "c:/program files/postgresql/8.0/include" /I "c:/wxWidgets-2.6.1/include" /I "c:/wxWidgets-2.6.1/contrib/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgAgent.h" /FD /c
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407 /d "_DEBUG"
-# ADD RSC /l 0x809 /i "c:/wxWidgets-2.6/include" /d "NDEBUG"
+# ADD RSC /l 0x809 /i "c:/wxWidgets-2.6.1/include" /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib libpq.lib msvcrtd.lib oldnames.lib libcpmtd.lib /nologo /subsystem:console /debug /machine:I386 /nodefaultlib /pdbtype:sept /libpath:"c:/program files/postgresql/8.0/lib/ms"
 # SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 libpq.lib wxbase26u.lib wxbase26u_xml.lib wxbase26u_net.lib wxmsw26u_adv.lib wxmsw26u_core.lib wxmsw26u_html.lib wxregexu.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib wxmsw26u_stc.lib wxmsw26u_ogl.lib wxmsw26u_xrc.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:console /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
+# ADD LINK32 libpq.lib wxbase26u.lib wxbase26u_xml.lib wxbase26u_net.lib wxmsw26u_adv.lib wxmsw26u_core.lib wxmsw26u_html.lib wxregexu.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib wxmsw26u_stc.lib wxmsw26u_ogl.lib wxmsw26u_xrc.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib ole32.lib oleaut32.lib /nologo /subsystem:console /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWidgets-2.6.1/lib/vc_lib" /libpath:"c:/program files/postgresql/8.0/lib/ms"
 # SUBTRACT LINK32 /pdb:none /debug /nodefaultlib
 
 !ENDIF 
