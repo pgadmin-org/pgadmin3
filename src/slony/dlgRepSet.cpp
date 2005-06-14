@@ -268,7 +268,7 @@ int dlgRepSetMove::Go(bool modal)
     pgSet *nodes=connection->ExecuteSet(
         wxT("SELECT no_id, no_comment\n")
         wxT("  FROM ") + cluster->GetSchemaPrefix() + wxT("sl_node\n")
-        wxT("  JOIN ") + cluster->GetSchemaPrefix() + wxT("sl_subscriber ON sub_receiver=no_id\n")
+        wxT("  JOIN ") + cluster->GetSchemaPrefix() + wxT("sl_subscribe ON sub_receiver=no_id\n")
         wxT(" WHERE sub_set = ") + NumToStr(set->GetSlId()));
 
     if (nodes)
