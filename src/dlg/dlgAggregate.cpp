@@ -271,7 +271,7 @@ wxString dlgAggregate::GetSql()
         AppendOwnerNew(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)+ 
 			                wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection()) + wxT(")"));
     }
-    AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
+    AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(GetName())
                   + wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection())
                   + wxT(")"), aggregate);
 
