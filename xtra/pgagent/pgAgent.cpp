@@ -151,7 +151,7 @@ void MainLoop()
             MainRestartLoop(serviceConn);
         }
 
-        LogMessage(_("Couldn't create connection: ") + serviceConn->GetLastError(), LOG_WARNING);
+        LogMessage(wxString::Format(_("Couldn't create connection: %s"), serviceConn->GetLastError().c_str()), LOG_WARNING);
         DBconn::ClearConnections(true);
         WaitAWhile(true);
     }

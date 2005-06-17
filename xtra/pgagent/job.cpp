@@ -27,7 +27,7 @@ Job::Job(DBconn *conn, const wxString &jid)
     jobid=jid;
     status=wxT("");
 
-    LogMessage(_("Starting job: ") + jobid, LOG_DEBUG);
+    LogMessage(wxString::Format(_("Starting job: %s"), jobid.c_str()), LOG_DEBUG);
 
     int rc=threadConn->ExecuteVoid(
         wxT("UPDATE pgagent.pga_job SET jobagentid=") + backendPid + wxT(", joblastrun=now() ")
@@ -71,7 +71,7 @@ Job::~Job()
     }
     threadConn->Return();
 
-    LogMessage(_("Completed job: ") + jobid, LOG_DEBUG);
+    LogMessage(wxString::Format(_("Completed job: %s"), jobid.c_str()), LOG_DEBUG);
 }
 
 
@@ -131,7 +131,7 @@ int Job::Execute()
                 stepConn=DBconn::Get(steps->GetString(wxT("jstdbname")));
                 if (stepConn)
                 {
-                    LogMessage(_("Executing SQL step ") + stepid + _(" (part of job ") + jobid + wxT(")"), LOG_DEBUG);
+                    LogMessage(wxString::Format(_("Executing SQL step %s (part of job %s)"), stepid.c_str(), jobid.c_str()), LOG_DEBUG);
                     rc=stepConn->ExecuteVoid(steps->GetString(wxT("jstcode")));
                     output = stepConn->GetLastError();
                     stepConn->Return();
@@ -148,7 +148,7 @@ int Job::Execute()
             case 'b':
             {
                 // Batch jobs are more complex thank SQL, for obvious reasons...
-                LogMessage(_("Executing batch step ") + stepid + _(" (part of job ") + jobid + wxT(")"), LOG_DEBUG);
+                LogMessage(wxString::Format(_("Executing batch step %s (part of job %s)"), stepid.c_str(), jobid.c_str()), LOG_DEBUG);
 
                 // Get a temporary filename, then reuse it to create an empty directory.
                 wxString dirname = wxFileName::CreateTempFileName(wxT("pga_"));
@@ -163,16 +163,16 @@ int Job::Execute()
                 ;
                 if (!wxRemoveFile(dirname))
                 {
-                    output = _("Couldn't remove temporary file: ") + dirname;
-                    LogMessage(_("Couldn't remove temporary file: ") + dirname, LOG_WARNING);
+                    output.Printf(_("Couldn't remove temporary file: %s"), dirname.c_str());
+                    LogMessage(output, LOG_WARNING);
                     rc=-1;
                     break;
                 }
 
                 if (!wxMkdir(dirname, 0700))
                 {
-                    output = _("Couldn't create temporary directory: ") + dirname;
-                    LogMessage(_("Couldn't create temporary directory: ") + dirname, LOG_WARNING);
+                    output.Printf(_("Couldn't create temporary directory: %s"), dirname.c_str());
+                    LogMessage(output, LOG_WARNING);
                     rc=-1;
                     break;
                 }
@@ -188,16 +188,16 @@ int Job::Execute()
 
                 if (!file->Create(filename, true, wxS_IRUSR | wxS_IWUSR | wxS_IXUSR))
                 {
-                    output = _("Couldn't create temporary script file: ") + filename;
-                    LogMessage(_("Couldn't create temporary script file: ") + filename, LOG_WARNING);
+                    output.Printf(_("Couldn't create temporary script file: %s"), filename.c_str());
+                    LogMessage(output, LOG_WARNING);
                     rc=-1;
                     break;
                 }
 
                 if (!file->Open(filename, wxFile::write))
                 {
-                    output = _("Couldn't open temporary script file: ") + filename;
-                    LogMessage(_("Couldn't open temporary script file: ") + filename, LOG_WARNING);
+                    output.Printf(_("Couldn't open temporary script file: %s"), filename.c_str());
+                    LogMessage(output, LOG_WARNING);
                     wxRemoveFile(filename);
                     wxRmdir(dirname);
                     rc=-1;
@@ -215,8 +215,8 @@ int Job::Execute()
 
                 if (!file->Write(code))
                 {
-                    output = _("Couldn't write to temporary script file: ") + filename;
-                    LogMessage(_("Couldn't write to temporary script file: ") + filename, LOG_WARNING);
+                    output.Printf(_("Couldn't write to temporary script file: %s"), filename.c_str());
+                    LogMessage(output, LOG_WARNING);
                     wxRemoveFile(filename);
                     wxRmdir(dirname);
                     rc=-1;
@@ -224,7 +224,7 @@ int Job::Execute()
                 }
 
                 file->Close();
-                LogMessage(_("Executing script file: ") + filename, LOG_DEBUG);
+                LogMessage(wxString::Format(_("Executing script file: %s"), filename.c_str()), LOG_DEBUG);
 
                 // Execute the file and capture the output
                 FILE *fp_script;
@@ -232,8 +232,8 @@ int Job::Execute()
                 fp_script = popen(filename.mb_str(wxConvUTF8), "r");
                 if (!fp_script)
                 {
-                    output = _("Couldn't execute script: ") + filename;
-                    LogMessage(_("Couldn't execute script: ") + filename, LOG_WARNING);
+                    output.Printf(_("Couldn't execute script: %s"), filename.c_str());
+                    LogMessage(output, LOG_WARNING);
                     wxRemoveFile(filename);
                     wxRmdir(dirname);
                     rc=-1;
@@ -252,14 +252,14 @@ int Job::Execute()
                 // Delete the file/directory. If we fail, don't overwrite the script output in the log, just throw warnings.
                 if (!wxRemoveFile(filename))
                 {
-                    LogMessage(_("Couldn't remove temporary script file: ") + filename, LOG_WARNING);
+                    LogMessage(wxString::Format(_("Couldn't remove temporary script file: %s"), filename.c_str()), LOG_WARNING);
                     wxRmdir(dirname);
                     break;
                 }
 
                 if (!wxRmdir(dirname))
                 {
-                    LogMessage(_("Couldn't remove temporary directory: ") + dirname, LOG_WARNING);
+                    LogMessage(wxString::Format(_("Couldn't remove temporary directory: "), dirname.c_str()), LOG_WARNING);
                     break;
                 }
 
@@ -304,7 +304,7 @@ int Job::Execute()
 JobThread::JobThread(const wxString &jid)
 : wxThread(wxTHREAD_DETACHED)
 {
-    LogMessage(_("Creating job thread for job ") + jid, LOG_DEBUG);
+    LogMessage(wxString::Format(_("Creating job thread for job %s"), jid.c_str()), LOG_DEBUG);
 
     runnable = false;
     jobid = jid;
@@ -320,7 +320,7 @@ JobThread::JobThread(const wxString &jid)
 
 JobThread::~JobThread()
 {
-    LogMessage(_("Destroying job thread for job ") + jobid, LOG_DEBUG);
+    LogMessage(wxString::Format(_("Destroying job thread for job %s"), jobid.c_str()), LOG_DEBUG);
 }
 
 

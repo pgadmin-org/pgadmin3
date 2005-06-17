@@ -37,7 +37,7 @@ DBconn::DBconn(const wxString &connectString, const wxString &db)
 
 bool DBconn::Connect(const wxString &connectString)
 {
-    LogMessage(_("Creating DB connection: ") + connectString, LOG_DEBUG);
+    LogMessage(wxString::Format(_("Creating DB connection: %s"), connectString.c_str()), LOG_DEBUG);
     wxCharBuffer cstrUTF=connectString.mb_str(wxConvUTF8);
     conn=PQconnectdb(cstrUTF);
     if (PQstatus(conn) == CONNECTION_OK)
@@ -114,7 +114,7 @@ DBconn *DBconn::Get(const wxString &db)
     {
         if (db == thisConn->dbname && !thisConn->inUse)
         {
-            LogMessage(_("Allocating existing connection to database ") + thisConn->dbname, LOG_DEBUG);
+            LogMessage(wxString::Format(_("Allocating existing connection to database %s"), thisConn->dbname.c_str()), LOG_DEBUG);
             thisConn->inUse = true;
             return thisConn;
         }
@@ -130,14 +130,14 @@ DBconn *DBconn::Get(const wxString &db)
     DBconn *newConn=new DBconn(db);
     if (newConn->conn)
     {
-        LogMessage(_("Allocating new connection to database ") + newConn->dbname, LOG_DEBUG);
+        LogMessage(wxString::Format(_("Allocating new connection to database %s"), newConn->dbname.c_str()), LOG_DEBUG);
         newConn->inUse = true;
         newConn->prev = thisConn;
         thisConn->next = newConn;
     }
     else
     {
-        LogMessage(_("Failed to create new connection to database: ") + db, LOG_WARNING);
+        LogMessage(wxString::Format(_("Failed to create new connection to database %s"), db.c_str()), LOG_WARNING);
         return NULL;
     }
 
@@ -152,7 +152,7 @@ void DBconn::Return()
     this->ExecuteVoid(wxT("RESET ALL"));
     this->lastError.Empty();
 
-    LogMessage(_("Returning connection to database ") + this->dbname, LOG_DEBUG);
+    LogMessage(wxString::Format(_("Returning connection to database %s"), dbname.c_str()), LOG_DEBUG);
     inUse = false;
 }
 
