@@ -103,7 +103,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         }
         server->iSetPort(StrToLong(txtPort->GetValue()));
         server->iSetSSL(cbSSL->GetSelection());
-        server->iSetLastDatabase(cbDatabase->GetValue());
+        server->iSetDatabase(cbDatabase->GetValue());
         server->iSetUsername(txtUsername->GetValue());
         server->iSetNeedPwd(chkNeedPwd->GetValue());
         mainForm->execSelChange(server->GetId(), true);
