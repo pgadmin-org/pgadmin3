@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru-Hinweise</title>
+</head>
+
+<body>
+
+<h3>Ident-Authentifizierung fehlgeschlagen</h3>
+<p>
+Der Server akzeptiert den aktuellen Benutzer nicht. Der Server anwortet
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+Wenn diese Meldung erscheint, ist ein Eintrag in der  pg_hba.conf-Datei gefunden worden die der
+Kombination von Client-Adresse/Benutzer/Datenbank entpricht, gesetzt auf die &quot;ident&quot; Authentikation.
+Einige Distributionen, z.B.Debian, haben dies per Default.
+Um eine Ident-basierte Authentifikation erfolgreich durchzuführen, sind zusätzliche Vorkehrungen notwendig,
+siehe die PostgreSQL Online-Hilfe. Für den Anfang dürfte es einfacher sein, eine andere Authentifizierungsmethode
+zu verwenden. Z.B.MD5-verschlüsselte Paßworte sind eine gute Wahl, ein entsprechender Eintrag in der 
+pg_hba.conf sieht so aus:
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+Dieses Beispiel erlaubt MD5-verschlüsselten Paßwortzugriff auf alle Datenbanken für alle Benutzer im
+privaten Netzwerksegment 192.1680.0/24.
+</p>
+<p>
+Zum Editieren der pg_hba.conf-Datei kann der in pgAdmin III eingebaute Editor verwendet werden.
+Nach Änderungen an der Datei muß der Server über pg_ctl oder Stoppen und Starten des Serverprozesses
+zum Neuauswerten der Datei veranlaßt werden.
+</p>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru-Hinweise</title>
+</head>
+
+<body>
+
+<h3>Zugriff auf die Datenbank verweigert</h3>
+<p>
+Der Server erlaubt keinen Zugriff auf die Datenbank. Der Server meldet
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+Um eine Datenbank auf einem PostgreSQL-Server ansprechen zu können, mußt zuerst die grundätzliche
+Zugangsfreigabe für den Client erteilt werden (Host Based Authentication). PostgreSQL prüft die pg_hba.conf-Datei
+ob ein Muster welches der Client-Adresse/Benutzername/Datenbank entspricht vorhanden und aktiviert 
+ist noch bevor eventuelle SQL GRANT Zugriffsbeschränkungen zum Tragen kommen. 
+</p>
+<p>
+Die anfänglichen Einstellungen in der pg_hba.conf sind recht restriktiv, um unerwünschten Sicherheitslöcher
+vorzubeugen, wenn diese Datei nicht editiert wird. Typischerweise werden Zugriffsregeln der folgenden Form
+erforderlich werden:
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+Dieses Beispiel erlaubt MD5-verschlüsselten Paßwortzugriff auf alle Datenbanken für alle Benutzer im
+privaten Netzwerksegment 192.1680.0/24.
+</p>
+<p>
+Zum Editieren der pg_hba.conf-Datei kann der in pgAdmin III eingebaute Editor verwendet werden.
+Nach Änderungen an der Datei muß der Server über pg_ctl oder Stoppen und Starten des Serverprozesses
+zum Neuauswerten der Datei veranlaßt werden.
+</p>
+</body>
+</html>

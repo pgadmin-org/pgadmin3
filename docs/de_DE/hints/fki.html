@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru-Hinweise</title>
+</head>
+
+<body>
+<h3>Fremdschlüssel abdeckende Indizes</h3>
+<p>
+Ein Fremdschlüssel koppelt zwei Tabellen auf logische Weise, und beschränkt Änderungen die auf sie angewendet werden können.
+</p>
+<p>
+Es fängt mit einer Mastertabelle an, welche die Referenzierte Tabelle wird. Sie muß einen Primärschlüssel haben
+(strenggenommen müssen die referenzierten Spalten nur nicht-NULL sein und mit einem eindeutigen Index versehen sein, 
+aber es ist gute Praxis das über einen Primärschlüssel zu implementieren). Die Slave-Tabelle hängt von der Mastertabelle ab,
+in dem Sinne daß Spalten auf die der Fremdschlüssel definiert ist für jeden Wert passende Einträge in der Mastertabelle erfordert.
+Die Slave-Tabelle ist die referenzierende Tabelle des Fremdschlüssels.
+</p>
+<p>
+Der Fremdschlüssel beschränkt allerdings nicht nur die referenzierende Tabelle, sondern auch die referenzierte. Die 
+Geschmacksrichtung kann dabei zwischen RESTRICT, CASCADE und SET NULL variieren. Dies bedeuted, daß sobale
+eine Zeile in der referenzierten Tabelle geändert wird (Update oder Delete), alle referenzierenden Tabelen geprüft werden müssen
+ob die Operation gültig ist, und ob weitere Aktionen ausgelöst werden müssen; siehe hierzu auch die PostgreSQL-Dokumentation 
+über Fremdschlüssel (Foreign Keys).
+</p>
+<p>
+Dies bedeutet, daß Änderungen an einer bestimmten Zeile in der referenzierten Tabelle zusätzliche Lesezugriffe 
+in allen referenzierenden Tabellen auslöst, mit den Fremdschlüssel als Zugriffsbegriff. In der Konsequenz sollten alle Designregeln
+für performanten Lesezugriff auch auf die Fremdschlüsselspalten angewendet werden. Für gute Zugriffsgeschwindigkeiten
+ist in der Regel ein Index empfehlenswert. PostgreSQL verlangt dies nicht unbedingt, es liegt daher in der Verantwortung
+des Datenbankdesigners für das Anlegen eines passenden Index zu sorgen.
+</p>
+<p>
+Zur Steigerung des Komforts und des allgemeinen Wohlbefindens bietet pgAdmin III eine Checkbox an, mit deren Hilfe
+auf einen passenden Index geprüft wird und dieser bei Bedarf angelegt wird soweit noch nicht vorhanden. Wie bei allen Indizes gibt
+es Fälle in denen Indizes die Gesamtperformance verringern können; in aller Regel ist ein Index zu wenig jedoch wesentlich 
+schlimmer als einer zuviel.
+</p>
+</body>
+
+</html>

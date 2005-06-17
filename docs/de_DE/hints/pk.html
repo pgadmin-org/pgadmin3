@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru-Hinweise</title>
+</head>
+
+<body>
+
+<h3>Primärschlüssel</h3>
+<p>
+Beim Designen einer Tabelle sollte man stehts im Blick behalten, auf welche Weise sie später auf sie
+zugegriffen wird. In den meisten Fällen wird ein eindeutiger Schlüsselbegriff erforderlich sein um eine 
+spezifische Zeile jeweils eindeutig identifizieren zu können. Dieser Schlüsselbegriff sollte als Primärschlüssel
+erzeugt werden.
+Ein Primärschlüssel muß nicht unbedingt aus einer einzelnen Spalte bestehen; er kann soviel Spalten beinhalten wie nötig 
+um eine Zeile eindeutig zu identifizieren. Wenn hierzu allerdings viele Spalten erforderlich sein sollten (Faustregel: mehr als 3) 
+könnte es eine gute Idee sein eine zusätzliche Spalte mit einem handlichen Datentyp, z.b. serial oder bigserial, einzuführen,
+welche den eindeutigen Schlüssel enthält.
+</p>
+<p>
+Nur in seltenen Ausnahmefällen macht das Erzeugen eines Primärschlüssels keinen Sinn. Das bedeutet, daß das Fehlen eines 
+Primärschlüssels in einer Tabelle auf eine unvollständige Definition hinweist; darum kommt der Guruhinweis hoch 
+wenn man eine Tabelle ohne PK anzulegen versucht.
+</p>
+<p>
+Wenn man einen Blick auf die PostgreSQL-Systemtabellen wirft, stellt man fest daß keine von ihnen einen Primärschlüssel aufweist,
+also was soll das Ganze? Tatsächlich haben alle diese Tabellen eine oder zwei Spalten (typischerweise nur die OID), welche 
+jede Zeile eindeutig identifiziert, welche die zweite Regel für einen Primärschlüssel, nicht NULL enthalten zu dürfen, befolgt, und einen 
+Index für schnelleren Zugriff beinhaltet. Die Verwendung von OIDs hat historische Gründe, und ist gerade Wahl wenn es um den Design
+von User-Tabellen geht. PostgreSQL benutzt diese um Rückwärtskompatibilität zu gewährleisten. Aus heutiger Sicht würde man vermutlich
+Primärschlüssel verwenden, eine dahingehende Änderung der Systemtabellen ist allerdings nicht zu erwarten.
+</p>
+<p>
+Wie das Beispiel der Systemtabellen zeigt, kann das Ziel der Eindeutigkeit und des schnellen Zugriffs auch auf andere Weise
+als mit einem Primärschlüssel erreicht werden. Es ist allerdings sehr empfehlenswert, aus Gründen der Klarheit des Datenmodells
+stets Primärschlüssel zu verwenden.
+</p>
+</body>
+</html>
