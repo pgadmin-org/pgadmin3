@@ -226,8 +226,31 @@ void dlgSchedule::CheckChange()
 
 void dlgSchedule::OnSelChangeException(wxListEvent &ev)
 {
-    btnChangeException->Enable();
-    btnRemoveException->Enable();
+    int sel=lstExceptions->GetSelection();
+    if (sel >= 0)
+    {
+	    wxString exDate=lstExceptions->GetText(sel, 0);
+        wxString exTime=lstExceptions->GetText(sel, 1);
+        wxDateTime val, null;
+
+        if (exDate == _("<any>"))
+            calException->SetValue(null);
+        else
+        {
+            val.ParseDate(exDate);
+            calException->SetValue(val);
+        }
+        if (exTime == _("<any>"))
+            timException->SetTime(null);
+        else
+        {
+            val.ParseTime(exTime);
+            timException->SetTime(val);
+        }
+
+        btnChangeException->Enable();
+        btnRemoveException->Enable();
+    }
 }
 
 
