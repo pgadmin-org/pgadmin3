@@ -333,7 +333,11 @@ bool pgSetIterator::RowsLeft()
         return false;
 
     if (first)
+    {
+        if (!set->NumRows())
+            return false;
         first=false;
+    }
     else
         set->MoveNext();
 

@@ -413,13 +413,28 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
         else
             form->StartMsg(_("Connecting to database"));
 
-        conn = new pgConn(GetName(), database, username, password, port, ssl);
-
-        if (!conn)
+        if (database.IsEmpty())
         {
-            form->EndMsg(false);
-            wxLogError(__("Couldn't create a connection object!"));
-            return PGCONN_BAD;
+            conn = new pgConn(GetName(), wxT("pg_system"), username, password, port, ssl);
+            if (conn->GetStatus() == PGCONN_OK)
+                database=wxT("pg_system");
+            else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(wxT("database \"pg_system\" does not exist")) >= 0)
+            {
+                delete conn;
+                conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl);
+                if (conn && conn->GetStatus() == PGCONN_OK)
+                    database=wxT("template1");
+            }
+        }
+        else
+        {
+            conn = new pgConn(GetName(), database, username, password, port, ssl);
+            if (!conn)
+            {
+                form->EndMsg(false);
+                wxLogError(__("Couldn't create a connection object!"));
+                return PGCONN_BAD;
+            }
         }
     }
     int status = conn->GetStatus();
@@ -433,7 +448,9 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
             connected = true;
 
             wxString sql = wxT("SELECT usecreatedb, usesuper");
-            if (conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
+            if (conn->HasFeature(FEATURE_POSTMASTER_START_TIME))
+                sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_start_time() ELSE NULL END as upsince");
+            else if (conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
                 sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_starttime() ELSE NULL END as upsince");
 
             pgSet *set=ExecuteSet(sql + wxT("\n  FROM pg_user WHERE usename=current_user"));
@@ -441,7 +458,8 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
             {
                 iSetCreatePrivilege(set->GetBool(wxT("usecreatedb")));
                 iSetSuperUser(set->GetBool(wxT("usesuper")));
-                if (conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
+                if (conn->HasFeature(FEATURE_POSTMASTER_START_TIME) || 
+                    conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
                     iSetUpSince(set->GetDateTime(wxT("upsince")));
                 delete set;
             }

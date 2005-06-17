@@ -19,13 +19,6 @@ IMPLEMENT_DYNAMIC_CLASS(wxCalendarBoxXmlHandler, wxXmlResourceHandler)
 wxCalendarBoxXmlHandler::wxCalendarBoxXmlHandler() 
 : wxXmlResourceHandler() 
 {
-#if pgUSE_WX_CAL
-#else
-    XRC_ADD_STYLE(wxCAL_SUNDAY_FIRST);
-    XRC_ADD_STYLE(wxCAL_MONDAY_FIRST);
-    XRC_ADD_STYLE(wxCAL_SHOW_HOLIDAYS);
-#endif
-
     AddWindowStyles();
 }
 

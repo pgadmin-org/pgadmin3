@@ -123,6 +123,15 @@ wxString NumToStr(double value)
     return result;
 }
 
+
+wxString NumToStr(wxLongLong value)
+{
+    wxString str;
+    str.Printf(wxT("%") wxLongLongFmtSpec wxT("d"), value);
+    return str;
+}
+
+
 double StrToDouble(const wxString& value)
 {
     wxCharBuffer buf = value.ToAscii();
@@ -134,7 +143,7 @@ double StrToDouble(const wxString& value)
 }
 
 
-wxULongLong StrToLongLong(const wxString &value)
+wxLongLong StrToLongLong(const wxString &value)
 {
     return atolonglong(value.ToAscii());
 }
@@ -201,7 +210,7 @@ wxString qtString(const wxString& value)
     wxString result = value;	
 
     result.Replace(wxT("\\"), wxT("\\\\"));
-    result.Replace(wxT("'"), wxT("\\'"));
+    result.Replace(wxT("'"), wxT("''"));
     result.Append(wxT("'"));
     result.Prepend(wxT("'"));
 	

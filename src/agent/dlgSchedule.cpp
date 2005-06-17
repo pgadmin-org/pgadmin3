@@ -82,7 +82,13 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
     btnChangeException->Disable();
     btnRemoveException->Disable();
 
+    int i;
 
+    for (i=0 ; i < 24 ; i++)
+        chkHours->Append(wxString::Format(wxT("%02d"), i));
+
+    for (i=0 ; i < 60 ; i++)
+        chkMinutes->Append(wxString::Format(wxT("%02d"), i));
 }
 
 

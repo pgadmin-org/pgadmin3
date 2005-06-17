@@ -64,6 +64,7 @@ extern sysSettings *settings;
 #define CTRL_STATIC(id)         (XRCCTRL(*this, id, wxStaticText))
 #define CTRL_STATICBOX(id)      (XRCCTRL(*this, id, wxStaticBox))
 #define CTRL_TEXT(id)           (XRCCTRL(*this, id, wxTextCtrl))
+#define CTRL_TEXTNUMERIC(id)    ((wxTextNumericCtrl*)(XRCCTRL(*this, id, wxTextCtrl)))
 #define CTRL_LISTBOX(id)        (XRCCTRL(*this, id, wxListBox))
 #define CTRL_LISTCTRL(id)       (XRCCTRL(*this, id, wxListCtrl))
 #define CTRL_COMBOBOX(id)       (XRCCTRL(*this, id, wxComboBoxFix))
@@ -89,7 +90,7 @@ wxString DateToAnsiStr(const wxDateTime &datetime);
 bool StrToBool(const wxString& value);  // english
 long StrToLong(const wxString& value);
 double StrToDouble(const wxString& value);
-wxULongLong StrToLongLong(const wxString& value);
+wxLongLong StrToLongLong(const wxString& value);
 wxDateTime StrToDateTime(const wxString &value);
 OID StrToOid(const wxString& value);
 

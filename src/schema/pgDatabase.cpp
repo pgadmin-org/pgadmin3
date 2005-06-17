@@ -345,7 +345,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
                 wxT("   (SELECT tgargs from pg_trigger tr\n")
                 wxT("      LEFT JOIN pg_depend dep ON dep.objid=tr.oid AND deptype = 'i'\n")
                 wxT("      LEFT JOIN pg_constraint co ON refobjid = co.oid AND contype = 'f'\n")
-                wxT("     WHERE co.oid IS NULL\n")
+                wxT("     WHERE tgisconstraint AND co.oid IS NULL\n")
                 wxT("     GROUP BY tgargs\n")
                 wxT("    HAVING count(1) = 3) AS foo")));
         }

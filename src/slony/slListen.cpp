@@ -82,7 +82,7 @@ void slListen::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         properties->AppendItem(_("Provider"), GetName());
         properties->AppendItem(_("Provider ID"), GetSlId());
         properties->AppendItem(_("Origin"), GetOriginName());
-        properties->AppendItem(_("OriginID"), GetOriginId());
+        properties->AppendItem(_("Origin ID"), GetOriginId());
     }
 }
 
