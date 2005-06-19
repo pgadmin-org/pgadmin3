@@ -1320,32 +1320,24 @@ bool dlgAgentProperty::executeSql()
 		long jobId=0, schId=0, stpId=0;
 		if (sql.Contains(wxT("<JobId>")))
 		{
-			jobId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
+			recId = jobId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
             while ((pos=sql.Find(wxT("<JobId>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(jobId) + sql.Mid(pos+7);
 		}
 		
 		if (sql.Contains(wxT("<SchId>")))
 		{
-			schId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
+			recId = schId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
 			while ((pos=sql.Find(wxT("<SchId>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(schId) + sql.Mid(pos+7);
 		}
 
 		if (sql.Contains(wxT("<StpId>")))
 		{
-			stpId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
+			recId = stpId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
 			while ((pos=sql.Find(wxT("<StpId>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(stpId) + sql.Mid(pos+7);
 		}
-
-		// OK, so what are we inserting? We need to set recId appropriately.
-		if (sql.StartsWith(wxT("INSERT INTO pgagent.pga_job")))
-			recId = jobId;
-		else if (sql.StartsWith(wxT("INSERT INTO pgagent.pga_schedule")))
-			recId = schId;
-		else if (sql.StartsWith(wxT("INSERT INTO pgagent.pga_jobstep")))
-			recId = stpId;
 
         pgSet *set=connection->ExecuteSet(sql);
         if (set)

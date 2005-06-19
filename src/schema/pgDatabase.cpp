@@ -324,18 +324,6 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
             collection = new pgCollection(PG_SCHEMAS, this);
             AppendBrowserItem(browser, collection);
 
-            // Jobs
-			// We only add the Jobs node if the appropriate objects are in this DB.
-		    wxString exists = ExecuteScalar(
-				wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
-				wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
-
-			if (!exists.IsNull())
-			{
-				collection = new pgCollection(PGA_JOBS, this);
-	            AppendBrowserItem(browser, collection);
-			}
-
             // Slony-I Clusters
             collection = new pgCollection(SL_CLUSTERS, this);
             AppendBrowserItem(browser, collection);

@@ -39,7 +39,7 @@ pgaSchedule::~pgaSchedule()
 
 bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetRecId()));
+    return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetRecId()));
 }
 
 
@@ -93,7 +93,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
     pgaSchedule *schedule=0;
 	wxString tmp;
 
-    pgSet *schedules= collection->GetDatabase()->ExecuteSet(
+    pgSet *schedules= collection->GetConnection()->ExecuteSet(
        wxT("SELECT * FROM pgagent.pga_schedule\n")
        wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetRecId()) + wxT("\n")
        + restriction +
@@ -106,7 +106,6 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
             schedule = new pgaSchedule(collection, schedules->GetVal(wxT("jscname")));
             schedule->iSetRecId(schedules->GetLong(wxT("jscid")));
-            schedule->iSetDatabase(collection->GetDatabase());
             schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
             schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));
 
@@ -142,7 +141,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
             schedule->iSetComment(schedules->GetVal(wxT("jscdesc")));
 
-			pgSet *exceptions =  collection->GetDatabase()->ExecuteSet(
+			pgSet *exceptions =  collection->GetConnection()->ExecuteSet(
 				wxT("SELECT * FROM pgagent.pga_exception\n")
 				wxT(" WHERE jexscid=") + NumToStr(schedule->GetRecId()) + wxT("\n"));
 	

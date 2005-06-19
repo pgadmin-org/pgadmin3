@@ -22,7 +22,7 @@
 // Class declarations
 
 
-class pgaJob : public pgDatabaseObject
+class pgaJob : public pgServerObject
 {
 public:
     pgaJob(const wxString& newName = wxT(""));
@@ -73,7 +73,7 @@ private:
 };
 
 
-class pgaJobObject : public pgDatabaseObject
+class pgaJobObject : public pgServerObject
 {
 public:
     pgaJobObject(pgaJob *job, int newType, const wxString& newName);

@@ -616,29 +616,41 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFo
 
 pgConn *pgObject::GetConnection() const
 {
-    pgConn *conn=0;
-    pgDatabase *db;
+    // in some cases, virtualization doesn't work so we need to mimic it here
+    pgDatabase *db=GetDatabase();
+    pgServer *server=0;
     switch (type)
     {
         case PG_SERVER:
-            conn=((pgServer*)this)->connection();
+            server = (pgServer*)this;
             break;
         case PG_DATABASES:
-        case PG_USER:
-        case PG_USERS:
-        case PG_GROUP:
-        case PG_GROUPS:
         case PG_TABLESPACES:
+        case PG_GROUPS:
+        case PG_USERS:
+        case PGA_JOBS:
+        case PGA_STEPS:
+        case PGA_SCHEDULES:
+            server = ((pgCollection*)this)->GetServer();
+            break;
+        case PG_DATABASE:
         case PG_TABLESPACE:
-            conn=((pgServerObject*)this)->GetServer()->connection();
+        case PG_GROUP:
+        case PG_USER:
+        case PGA_JOB:
+        case PGA_STEP:
+        case PGA_SCHEDULE:
+            server = ((pgServerObject*)this)->GetServer();
             break;
         default:
-            db=GetDatabase();
-            if (db)
-                conn=db->connection();
             break;
     }
-    return conn;    
+
+    if (db)
+        return db->connection();
+    if (server)
+        return server->connection();
+    return 0;
 }
 
 

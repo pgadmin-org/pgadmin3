@@ -174,10 +174,7 @@ wxString dlgStep::GetInsertSql()
         else
             jstjobid = wxT("<JobId>");
 
-        if (!cbDatabase->GetSelection())
-            db = wxT("NULL");
-        else
-            db = qtString(cbDatabase->GetValue());
+        db = qtString(cbDatabase->GetValue());
 
         sql = wxT("INSERT INTO pgagent.pga_jobstep (jstid, jstjobid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdbname)\n")
               wxT("SELECT <StpId>, ") + jstjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")

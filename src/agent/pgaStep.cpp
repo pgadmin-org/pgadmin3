@@ -38,7 +38,7 @@ pgaStep::~pgaStep()
 
 bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobstep WHERE jstid=") + NumToStr(GetRecId()));
+    return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobstep WHERE jstid=") + NumToStr(GetRecId()));
 }
 
 
@@ -86,7 +86,7 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 {
     pgaStep *step=0;
 
-    pgSet *steps= collection->GetDatabase()->ExecuteSet(
+    pgSet *steps= collection->GetConnection()->ExecuteSet(
        wxT("SELECT * FROM pgagent.pga_jobstep\n")
        wxT(" WHERE jstjobid=") + NumToStr(collection->GetJob()->GetRecId()) + wxT("\n")
        + restriction +
@@ -99,7 +99,6 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
             step = new pgaStep(collection, steps->GetVal(wxT("jstname")));
             step->iSetRecId(steps->GetLong(wxT("jstid")));
-            step->iSetDatabase(collection->GetDatabase());
             step->iSetDbname(steps->GetVal(wxT("jstdbname")));
             step->iSetCode(steps->GetVal(wxT("jstcode")));
             step->iSetEnabled(steps->GetBool(wxT("jstenabled")));
@@ -174,7 +173,7 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
 		statistics->AddColumn(_("Duration"), 70);
 		statistics->AddColumn(_("Output"), 200);
 
-        pgSet *stats = database->ExecuteSet(sql);
+        pgSet *stats = GetConnection()->ExecuteSet(sql);
 		wxString status;
 		wxDateTime startTime;
 		wxDateTime endTime;

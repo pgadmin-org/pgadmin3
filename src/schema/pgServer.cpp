@@ -619,6 +619,17 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
                 collection = new pgCollection(PG_TABLESPACES, this);
                 AppendBrowserItem(browser, collection);
             }
+            // Jobs
+			// We only add the Jobs node if the appropriate objects are the initial DB.
+		    wxString exists = conn->ExecuteScalar(
+				wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
+				wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
+
+			if (!exists.IsNull())
+			{
+				collection = new pgCollection(PGA_JOBS, this);
+	            AppendBrowserItem(browser, collection);
+			}
             // Groups
             collection = new pgCollection(PG_GROUPS, this);
             AppendBrowserItem(browser, collection);

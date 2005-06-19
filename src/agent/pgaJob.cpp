@@ -25,7 +25,7 @@
 extern sysSettings *settings;
 
 pgaJob::pgaJob(const wxString& newName)
-: pgDatabaseObject(PGA_JOB, newName)
+: pgServerObject(PGA_JOB, newName)
 {
     wxLogInfo(wxT("Creating a pgaJob object"));
 }
@@ -50,7 +50,7 @@ wxMenu *pgaJob::GetNewMenu()
 
 bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_job WHERE jobid=") + NumToStr(GetRecId()));
+    return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_job WHERE jobid=") + NumToStr(GetRecId()));
 }
 
 
@@ -120,7 +120,7 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 {
     pgaJob *job=0;
 
-    pgSet *jobs= collection->GetDatabase()->ExecuteSet(
+    pgSet *jobs= collection->GetConnection()->ExecuteSet(
        wxT("SELECT *, ")
 	   wxT("(SELECT jlgstatus FROM pgagent.pga_joblog jl WHERE jl.jlgjobid = j.jobid ORDER BY jlgid DESC LIMIT 1) AS joblastresult ")
 	   wxT("FROM pgagent.pga_job j\n")
@@ -148,8 +148,8 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
                 status = _("Unknown");
 
             job = new pgaJob(jobs->GetVal(wxT("jobname")));
+            job->iSetServer(collection->GetServer());
             job->iSetRecId(jobs->GetLong(wxT("jobid")));
-            job->iSetDatabase(collection->GetDatabase());
             job->iSetComment(jobs->GetVal(wxT("jobdesc")));
 
             job->iSetEnabled(jobs->GetBool(wxT("jobenabled")));
@@ -201,7 +201,7 @@ void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
 		statistics->AddColumn(_("End time"), 95);
 		statistics->AddColumn(_("Duration"), 70);
 
-        pgSet *stats = database->ExecuteSet(sql);
+        pgSet *stats = GetConnection()->ExecuteSet(sql);
 		wxString status;
 		wxDateTime startTime;
 		wxDateTime endTime;
@@ -239,8 +239,9 @@ void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 pgaJobObject::pgaJobObject(pgaJob *_job, int newType, const wxString& newName)
-: pgDatabaseObject(newType, newName)
+: pgServerObject(newType, newName)
 {
     job=_job;
+    server=job->GetServer();
 }
 

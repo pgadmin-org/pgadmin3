@@ -81,8 +81,8 @@ pgCollection::pgCollection(int newType, pgaJob *jb)
     wxLogInfo(wxT("Creating a pgCollection object")); 
 	job = jb;
     schema=0;
-    database = job->GetDatabase();
-    server= database->GetServer();
+    server= job->GetServer();
+    database = server->GetDatabase();
 }
 
 pgCollection::~pgCollection()

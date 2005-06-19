@@ -183,6 +183,8 @@ int dlgDatabase::Go(bool modal)
 
 #if wxUSE_UNICODE
         encNo=cbEncoding->FindString(wxT("UNICODE"));
+        if (encNo < 0)
+            encNo=cbEncoding->FindString(wxT("UTF8"));
 #else
         encNo=cbEncoding->FindString(wxT("SQL_ASCII"));
 #endif

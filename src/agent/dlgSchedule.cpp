@@ -588,7 +588,7 @@ wxString dlgSchedule::GetUpdateSql()
 				newTime = wxT("'") + tmpDateTime.FormatISOTime() + wxT("'");
 			}
 
-			sql += wxT("INSERT INTO pgagent.pga_exception (jexschid, jexdate, jextime)\n  VALUES (") 
+			sql += wxT("INSERT INTO pgagent.pga_exception (jexscid, jexdate, jextime)\n  VALUES (") 
 				+ NumToStr(recId) + wxT(", ") + newDate + wxT(", ") + newTime + wxT(");\n");
 
 		}
