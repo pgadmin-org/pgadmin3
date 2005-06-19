@@ -398,7 +398,11 @@ wxString pgConnBase::GetLastError() const
     wxString errmsg;
 	char *pqErr;
     if (conn && (pqErr = PQerrorMessage(conn)) != 0)
+    {
         errmsg=wxString(pqErr, wxConvUTF8);
+        if (errmsg.IsNull())
+            errmsg=wxString(pqErr, wxConvLibc);
+    }
     else
     {
         if (connStatus == PGCONN_BROKEN)

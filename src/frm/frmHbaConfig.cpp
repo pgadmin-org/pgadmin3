@@ -43,7 +43,7 @@ BEGIN_EVENT_TABLE(frmHbaConfig, frmConfig)
     EVT_LIST_ITEM_ACTIVATED(CTL_CFGVIEW,    frmHbaConfig::OnEditSetting)
 END_EVENT_TABLE()
 
-#define BACE_TITLE _("pgAdmin III - Backend Access Configuration Editor")
+#define BACE_TITLE wxString(wxT("pgAdmin III - ")) + _("Backend Access Configuration Editor")
 
 
 frmHbaConfig::frmHbaConfig(frmMain *parent, pgServer *server)
@@ -77,7 +77,7 @@ frmHbaConfig::frmHbaConfig(frmMain *parent, pgServer *server)
 
 
 frmHbaConfig::frmHbaConfig(const wxString& title, const wxString &configFile)
-: frmConfig(title + _(" - Backend Access Configuration Editor"), configFile)
+: frmConfig(title + wxT(" - ") + _("Backend Access Configuration Editor"), configFile)
 {
     
     Init();

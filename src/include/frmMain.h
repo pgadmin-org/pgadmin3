@@ -154,6 +154,7 @@ private:
     void StoreServers();
     void RetrieveServers();
     int ReconnectServer(pgServer *server);
+    bool reportError(const wxString &error, const wxString &msgToIdentify, const wxString &hint);
     void reportConnError(pgServer *server);
     wxTreeItemId RestoreEnvironment(pgServer *server);
 

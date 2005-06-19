@@ -43,7 +43,7 @@ BEGIN_EVENT_TABLE(frmMainConfig, frmConfig)
 END_EVENT_TABLE()
 
 
-#define BCE_TITLE _("pgAdmin III - Backend Configuration Editor")
+#define BCE_TITLE wxString(wxT("pgAdmin III - ")) + _("Backend Configuration Editor")
 
 
 frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
@@ -79,7 +79,7 @@ frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
 
 
 frmMainConfig::frmMainConfig(const wxString& title, const wxString &configFile)
-: frmConfig(title + _(" - Backend Configuration Editor"), configFile)
+: frmConfig(title + wxT(" - ") + _("Backend Configuration Editor"), configFile)
 {
     Init();
     OpenLastFile();

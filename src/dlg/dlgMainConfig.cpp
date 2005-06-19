@@ -44,31 +44,31 @@ END_EVENT_TABLE()
 
 static const wxChar* contextStrings[]=
 {
-    _("Internal - not externally settable"),
-    _("Postmaster - set on server start"),
-    _("SIGHUP - reloaded on SIGHUP signal"),
-    _("Backend - overridable in individual backend"),
-    _("Suset - may be overridden by superuser"),
-    _("Userlimit - may be set by user"),
-    _("Userset - may be set by user"),
-    _("Unknown")
+    __("Internal - not externally settable"),
+    __("Postmaster - set on server start"),
+    __("SIGHUP - reloaded on SIGHUP signal"),
+    __("Backend - overridable in individual backend"),
+    __("Suset - may be overridden by superuser"),
+    __("Userlimit - may be set by user"),
+    __("Userset - may be set by user"),
+    __("Unknown")
 };
 
 
 static const wxChar* sourceStrings[]=
 {
-    _("Variable has still its initial default value"),
-    _("Set via environment variable"),
-    _("Set in configuration file"),
-    _("Set on command line"),
-    _("Set by unprivileged command"),
-    _("Set in database variables"),
-    _("Set in user variables"),
-    _("Set in client parameters"),
-    _("set by Override"),
-    _("Set interactively"),
-    _("Set by test"),
-    _("Set by session parameters")
+    __("Variable has still its initial default value"),
+    __("Set via environment variable"),
+    __("Set in configuration file"),
+    __("Set on command line"),
+    __("Set by unprivileged command"),
+    __("Set in database variables"),
+    __("Set in user variables"),
+    __("Set in client parameters"),
+    __("set by Override"),
+    __("Set interactively"),
+    __("Set by test"),
+    __("Set by session parameters")
 };
 
 
@@ -111,20 +111,19 @@ DialogWithHelp((frmMain*)parent)
     stName->SetLabel(item->name);
 
     wxString str;
-    str += _("Category: ") + item->category + END_OF_LINE;
-    str += _("Context: ");
-    str += contextStrings[item->context];
+    str += _("Category") + wxString(wxT(": ")) + item->category + END_OF_LINE;
+    str += _("Context") + wxString(wxT(": "));
+    str += wxGetTranslation(contextStrings[item->context]);
     str += END_OF_LINE;
 
     if (item->source != pgSettingItem::PGC_UNKNOWNSOURCE)
     {
-        str += _("Current value");
-        str += wxT(": ");
+        str += _("Current value") + wxString(wxT(": "));
 
         if (item->value == wxT("unset") && item->source == pgSettingItem::PGC_DEFAULT)
             str += _("unset");
         else
-            str += item->value + END_OF_LINE + sourceStrings[item->source];
+            str += item->value + END_OF_LINE wxT("     ") + wxGetTranslation(sourceStrings[item->source]);
 
         str += END_OF_LINE;
     }

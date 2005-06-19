@@ -788,35 +788,43 @@ int frmMain::ReconnectServer(pgServer *server)
 }
 
 
+bool frmMain::reportError(const wxString &error, const wxString &msgToIdentify, const wxString &hint)
+{
+    bool identified=false;
+
+    wxString translated=wxGetTranslation(msgToIdentify);
+    if (translated != msgToIdentify)
+    {
+        identified = (error.Find(translated) >= 0);
+    }
+
+    if (!identified)
+    {
+        if (msgToIdentify.Left(20) == wxT("Translator attention"))
+            identified = (error.Find(msgToIdentify.Mid(msgToIdentify.Find('!')+1)) >= 0);
+        else
+            identified = (error.Find(msgToIdentify) >= 0);
+    }
+
+    if (identified)
+    {
+        if (frmHint::WantHint(hint))
+            frmHint::ShowHint(this, hint, error);
+    }
+    return identified;
+}
+
+
 void frmMain::reportConnError(pgServer *server)
 {
     wxString error=server->GetLastError();
     bool wantHint=false;
-    if (error.Find(wxT("Is the server running on host")) >= 0)
-    {
-        if (frmHint::WantHint(HINT_CONNECTSERVER))
-        {
-            frmHint::ShowHint(this, HINT_CONNECTSERVER, error);
-            wantHint = true;
-        }
-    }
-    else if (error.Find(wxT("no pg_hba.conf entry for")) >= 0)
-    {
-        if (frmHint::WantHint(HINT_MISSINGHBA))
-        {
-            frmHint::ShowHint(this, HINT_MISSINGHBA, error);
-            wantHint = true;
-        }
-    }
-    else if (error.Find(wxT("Ident authentication failed")) >= 0)
-    {
-        if (frmHint::WantHint(HINT_MISSINGIDENT))
-        {
-            frmHint::ShowHint(this, HINT_MISSINGIDENT, error);
-            wantHint = true;
-        }
-    }
 
+    wantHint = reportError(error, __("Translator attention: must match libpq translation!Is the server running on host"), HINT_CONNECTSERVER);
+    if (!wantHint)
+        wantHint = reportError(error, __("Translator attention: must match backend translation!no pg_hba.conf entry for"), HINT_MISSINGHBA);
+    if (!wantHint)
+        wantHint = reportError(error, __("Translator attention: must match backend translation!Ident authentication failed"), HINT_MISSINGIDENT);
 
     if (!wantHint)
         wxLogError(__("Error connecting to the server: %s"), error.c_str());
