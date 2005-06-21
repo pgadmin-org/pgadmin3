@@ -23,6 +23,8 @@
 #include "pgfeatures.h"
 
 
+#define DEFAULT_PG_DATABASE wxT("postgres")
+
 pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _trusted, int _ssl)
 : pgObject(PG_SERVER, newName)
 {  
@@ -415,10 +417,11 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 
         if (database.IsEmpty())
         {
-            conn = new pgConn(GetName(), wxT("pg_system"), username, password, port, ssl);
+            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, ssl);
             if (conn->GetStatus() == PGCONN_OK)
-                database=wxT("pg_system");
-            else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(wxT("database \"pg_system\" does not exist")) >= 0)
+                database=DEFAULT_PG_DATABASE;
+            else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(
+                                wxT("database \"") DEFAULT_PG_DATABASE wxT("\" does not exist")) >= 0)
             {
                 delete conn;
                 conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl);
@@ -686,7 +689,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         if (!serviceId.IsEmpty())
             properties->AppendItem(_("Service"), serviceId);
 
-        properties->AppendItem(_("Initial database"), GetDatabaseName());
+        properties->AppendItem(_("Maintenance database"), GetDatabaseName());
         properties->AppendItem(_("Username"), GetUsername());
         properties->AppendItem(_("Need password?"), GetNeedPwd());
         if (GetConnected())

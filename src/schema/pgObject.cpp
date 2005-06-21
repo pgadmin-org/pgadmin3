@@ -81,7 +81,7 @@ pgTypes typesList[] =
     {__("Check"), PGICON_CHECK, __("New Check Constraint"), __("Add a new Check Constraint.") },
     {__("Foreign Key"), PGICON_FOREIGNKEY, __("New Foreign Key"), __("Add a new Foreign Key.") },
 
-    {__("Jobs"), PGAICON_JOB, 0, 0},
+    {__("pgAgent Jobs"), PGAICON_JOB, 0, 0},
     {__("Job"), PGAICON_JOB, __("New Job"), __("Create a new Job") },
 	{__("Schedules"), PGAICON_SCHEDULE, 0, 0},
     {__("Schedule"), PGAICON_SCHEDULE, __("New Schedule"), __("Create new Schedule") },

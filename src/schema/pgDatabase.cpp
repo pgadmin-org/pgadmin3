@@ -251,8 +251,8 @@ bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
     if (useServerConnection)
     {
-        wxMessageDialog(frame, _("Initial database can't be dropped."),
-                        _("Dropping database not allowed"), wxICON_EXCLAMATION | wxOK);
+        wxMessageDialog(frame, _("Maintenance database can't be dropped."),
+                        _("Dropping database not allowed"), wxICON_EXCLAMATION | wxOK).ShowModal();
 
         return false;
     }
