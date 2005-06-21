@@ -470,6 +470,10 @@ SOURCE=.\ui\dlgSequence.xrc
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\dlgServer.xrc
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgStep.xrc
 # End Source File
 # Begin Source File

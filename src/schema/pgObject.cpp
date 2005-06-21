@@ -28,7 +28,7 @@ pgTypes typesList[] =
 {
     {__("None"), -1, 0, 0},
     {__("Servers"), PGICON_SERVER, 0, 0},
-    {__("Server"), PGICON_SERVER, __("New Server"), __("Create a new Server connection.") },
+    {__("Server"), PGICON_SERVER, __("New Server Registration"), __("Create a new Server registration.") },
     {__("Databases"), PGICON_DATABASE, 0, 0},
     {__("Database"), PGICON_DATABASE, __("New Database"), __("Create a new Database.") },
     {__("Groups"), PGICON_GROUP, 0, 0},

@@ -44,7 +44,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 
     // Last Connection
     Read(wxT("LastServer"), &lastServer, wxT("localhost")); 
-    Read(wxT("LastDatabase"), &lastDatabase, wxT("template1")); 
+    Read(wxT("LastDatabase"), &lastDatabase, wxEmptyString); 
 	Read(wxT("LastDescription"), &lastDescription, wxT("PostgreSQL Server")); 
     Read(wxT("LastUsername"), &lastUsername, wxT("postgres")); 
     Read(wxT("LastPort"), &lastPort, 5432);

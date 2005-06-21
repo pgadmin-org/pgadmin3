@@ -1020,7 +1020,7 @@ void frmMain::RetrieveServers()
 			    wxRegKey *svcKey = new wxRegKey(key);
 
                 servername = wxT("localhost");
-                database = wxT("template1");
+                database = wxEmptyString;
 			    svcKey->QueryValue(wxT("Display Name"), description);
 			    svcKey->QueryValue(wxT("Database Superuser"), username);
                 svcKey->QueryValue(wxT("Port"), &port);
