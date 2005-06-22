@@ -30,6 +30,7 @@ EXTRA_DIST = \
 		pkg/slackware/build-release \
 		pkg/slackware/build-snapshot \
 		pkg/src/build-tarball \
+        pkg/suse/pgadmin3.spec \
 		pkg/win32/screen.bmp \
         pkg/win32/banner.bmp \
 		pkg/win32/licence.rtf \
