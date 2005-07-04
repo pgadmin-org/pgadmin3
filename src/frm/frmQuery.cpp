@@ -1125,8 +1125,6 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                         nr.Printf(_("%ld  rows not retrieved."), rowsTotal - rowsReadTotal);
                         showMessage(wxString::Format(_("Total %ld rows.\n"), rowsTotal) + nr, nr);
                     }
-                    msgHistory->AppendText(wxT("\n"));
-
                 }
                 if (rowsTotal == rowsReadTotal)
                     SetStatusText(wxString::Format(_("%d rows."), rowsTotal), STATUSPOS_ROWS);
@@ -1135,6 +1133,40 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             }
         }
     }
+
+    // Display async notifications
+    pgNotification *notify;
+    int notifies = 0;
+    notify = conn->GetNotification();
+    while (notify)
+    {
+        wxString notifyStr;
+        notifies++;
+
+        if (notify->data.IsEmpty())
+            notifyStr.Printf(_("\nAsynchronous notification of '%s' received from backend pid %d"), notify->name, notify->pid);
+        else
+            notifyStr.Printf(_("\nAsynchronous notification of '%s' received from backend pid %d\n   Data: %s"), notify->name, notify->pid, notify->data);
+
+        msgResult->AppendText(notifyStr);
+        msgHistory->AppendText(notifyStr);
+
+        notify = conn->GetNotification();
+    }
+
+    if (notifies)
+    {
+        wxString statusMsg = statusBar->GetStatusText(STATUSPOS_MSGS);
+        if (statusMsg.Last() == '.')
+            statusMsg = statusMsg.Left(statusMsg.Length() - 1);
+
+        SetStatusText(wxString::Format(_("%s (%d asynchronous notifications received)."), statusMsg, notifies), STATUSPOS_MSGS);
+    }
+
+    msgResult->AppendText(wxT("\n"));
+    msgHistory->AppendText(wxT("\n"));
+
+
     setTools(false);
     if (rowsReadTotal)
     {

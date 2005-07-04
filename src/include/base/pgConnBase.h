@@ -44,6 +44,14 @@ enum
     PGCONN_FATAL_ERROR = PGRES_FATAL_ERROR
 };
 
+
+// Our version of a pgNotify
+typedef struct pgNotification {
+    wxString name;
+    int pid;
+    wxString data;
+} pgNotification;
+
 // Class declarations
 class pgConnBase
 {
@@ -79,6 +87,7 @@ public:
     bool IsSSLconnected();
     PGconn *connection() { return conn; }
     void Notice(const char *msg);
+    pgNotification *GetNotification();
 
 protected:
     PGconn *conn;

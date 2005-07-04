@@ -288,6 +288,22 @@ void pgConnBase::Notice(const char *msg)
 }
 
 
+pgNotification *pgConnBase::GetNotification()
+{
+    pgNotify *notify;
+
+    notify = PQnotifies(conn);
+    if (!notify)
+        return NULL;
+
+    pgNotification *ret = new pgNotification;
+    ret->name = wxString(notify->relname, *conv);
+    ret->pid = notify->be_pid;
+    ret->data = wxString(notify->extra, *conv);
+
+    return ret;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Execute SQL
 //////////////////////////////////////////////////////////////////////////
