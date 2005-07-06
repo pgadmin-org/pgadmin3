@@ -651,16 +651,20 @@ bool frmQuery::CheckChanged(bool canVeto)
 
 void frmQuery::OnClose(wxCloseEvent& event)
 {
-    if (CheckChanged(event.CanVeto()) && event.CanVeto())
-    {
-        event.Veto();
-        return;
-    }
-
-    Hide();
-
     if (queryMenu->IsEnabled(MNU_CANCEL))
     {
+        if (event.CanVeto())
+        {
+            wxMessageDialog msg(this, _("A query is running. Do you wish to cancel it?"), _("pgAdmin III Query"), 
+                        wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION);
+
+            if (msg.ShowModal() == wxID_NO)
+            {
+                event.Veto();
+                return;
+            }
+        }
+
         wxCommandEvent ev;
         OnCancel(ev);
     }
@@ -670,6 +674,15 @@ void frmQuery::OnClose(wxCloseEvent& event)
         wxLogInfo(wxT("SQL Query box: Waiting for query to abort"));
         wxSleep(1);
     }
+
+    if (CheckChanged(event.CanVeto()) && event.CanVeto())
+    {
+        event.Veto();
+        return;
+    }
+
+    Hide();
+
     Destroy();
 }
 
