@@ -596,6 +596,9 @@ void dlgTable::OnAddTable(wxCommandEvent &ev)
 
 void dlgTable::OnRemoveTable(wxCommandEvent &ev)
 {
+	if (wxMessageBox(_("Are you sure you wish to remove the selected table?"), _("Remove table?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+		return;
+
     int sel=lbTables->GetSelection();
     if (sel >= 0)
     {
@@ -665,6 +668,9 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
 
 void dlgTable::OnRemoveCol(wxCommandEvent &ev)
 {
+	if (wxMessageBox(_("Are you sure you wish to remove the selected column?"), _("Remove column?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+		return;
+
     lstColumns->DeleteCurrentItem();
 
     btnRemoveCol->Disable();
@@ -742,6 +748,9 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
 
 void dlgTable::OnRemoveConstr(wxCommandEvent &ev)
 {
+	if (wxMessageBox(_("Are you sure you wish to remove the selected constraint?"), _("Remove constraint?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+		return;
+
     int pos=lstConstraints->GetSelection();
     if (pos < 0)
         return;
