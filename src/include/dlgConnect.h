@@ -31,13 +31,12 @@ public:
 
 
     wxString GetPassword();
-    bool GetNeedPwd();
+    bool GetStorePwd();
     int Go();
     
 private:
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
-    void OnTrustChange(wxCommandEvent& ev);
     DECLARE_EVENT_TABLE()
 };
 

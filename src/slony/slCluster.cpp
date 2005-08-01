@@ -167,7 +167,7 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
                     {
                         if (!server->GetConnected())
                         {
-                            server->Connect(form, server->GetNeedPwd());
+                            server->Connect(form, server->GetStorePwd());
                             if (!server->GetConnected())
                             {
                                 wxLogError(server->GetLastError());

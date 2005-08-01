@@ -32,12 +32,13 @@ public:
     wxString GetHelpPage() const;
 
     wxString GetPassword();
+    bool GetTryConnect();
 
 private:
     pgServer *server;
 
     void OnOK(wxCommandEvent &ev);
-    void OnChangeNeedPwd(wxCommandEvent &ev);
+    void OnChangeTryConnect(wxCommandEvent &ev);
     void OnPageSelect(wxNotebookEvent &event);
 
     DECLARE_EVENT_TABLE();

@@ -27,19 +27,18 @@
 
 
 BEGIN_EVENT_TABLE(dlgConnect, DialogWithHelp)
-    EVT_BUTTON (wxID_OK,              dlgConnect::OnOK)
-    EVT_BUTTON (wxID_CANCEL,          dlgConnect::OnCancel)
-    EVT_CHECKBOX(XRCID("chkNeedPwd"), dlgConnect::OnTrustChange)
+    EVT_BUTTON (wxID_OK,               dlgConnect::OnOK)
+    EVT_BUTTON (wxID_CANCEL,           dlgConnect::OnCancel)
 END_EVENT_TABLE()
 
 
 #define stDescription   CTRL_STATIC("stDescription")
-#define chkNeedPwd      CTRL_CHECKBOX("chkNeedPwd")
+#define chkStorePwd     CTRL_CHECKBOX("chkStorePwd")
 #define txtPassword     CTRL_TEXT("txtPassword")
 
 
 
-dlgConnect::dlgConnect(frmMain *form, const wxString& description, bool needPwd) : 
+dlgConnect::dlgConnect(frmMain *form, const wxString& description, bool storePwd) : 
 DialogWithHelp(form)
 {
     wxLogInfo(wxT("Creating a connect dialogue"));
@@ -53,8 +52,8 @@ DialogWithHelp(form)
 
     // Setup the default values
     stDescription->SetLabel(description);
-    chkNeedPwd->SetValue(needPwd);
-    txtPassword->Enable(needPwd);
+    chkStorePwd->SetValue(storePwd);
+    txtPassword->Enable(true);
 
 }
 
@@ -67,12 +66,6 @@ dlgConnect::~dlgConnect()
 wxString dlgConnect::GetHelpPage() const
 {
     return wxT("pg/server-connect");
-}
-
-
-void dlgConnect::OnTrustChange(wxCommandEvent& ev)
-{
-    txtPassword->Enable(chkNeedPwd->GetValue());
 }
 
 
@@ -99,7 +92,7 @@ wxString dlgConnect::GetPassword()
     return txtPassword->GetValue();
 }
 
-bool dlgConnect::GetNeedPwd()
+bool dlgConnect::GetStorePwd()
 {
-    return chkNeedPwd->GetValue();
+    return chkStorePwd->GetValue();
 }

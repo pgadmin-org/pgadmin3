@@ -102,7 +102,8 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
     txtMessages->SetMaxLength(0L);
     btnOK->Disable();
     filenameValid=false;
-    environment.Add(wxT("PGPASSWORD=") + server->GetPassword());
+    if (!server->GetPasswordIsStored())
+        environment.Add(wxT("PGPASSWORD=") + server->GetPassword());
 
     wxCommandEvent ev;
     OnChange(ev);

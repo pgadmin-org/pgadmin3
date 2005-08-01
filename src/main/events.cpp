@@ -690,16 +690,25 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
 
         pgServer *server=(pgServer*)dlg.CreateObject(0);
 
-        wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
-            server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
-        rc = server->Connect(this, false, dlg.GetPassword());
-
+        if (dlg.GetTryConnect())
+        {
+            wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
+                server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
+            rc = server->Connect(this, false, dlg.GetPassword());
+        }
+        else
+        {
+            rc = PGCONN_OK;
+            server->InvalidatePassword();
+        }
         switch (rc)
         {
             case PGCONN_OK:
             {
                 wxLogInfo(wxT("pgServer object initialised as required."));
-                browser->AppendItem(servers, server->GetFullName(), PGICON_SERVER, -1, server);
+                browser->AppendItem(servers, server->GetFullName(), 
+                    server->GetConnected() ? PGICON_SERVER : PGICON_SERVERBAD, -1, server);
+
                 browser->Expand(servers);
                 wxString label;
                 label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, false));

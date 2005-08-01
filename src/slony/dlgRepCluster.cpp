@@ -125,7 +125,7 @@ void dlgRepClusterBase::OnChangeServer(wxCommandEvent &ev)
 
         if (!remoteServer->GetConnected())
         {
-            remoteServer->Connect(mainForm, remoteServer->GetNeedPwd());
+            remoteServer->Connect(mainForm, remoteServer->GetStorePwd());
             if (!remoteServer->GetConnected())
             {
                 wxLogError(remoteServer->GetLastError());
@@ -679,7 +679,8 @@ wxString dlgRepCluster::GetSql()
         if (clusterBackup.IsEmpty() && !backupExecutable.IsEmpty())
         {
             wxArrayString environment;
-            environment.Add(wxT("PGPASSWORD=") + remoteServer->GetPassword());
+            if (!remoteServer->GetPasswordIsStored())
+                environment.Add(wxT("PGPASSWORD=") + remoteServer->GetPassword());
 
             process=sysProcess::Create(backupExecutable + 
                                     wxT(" -i -F p -h ") + remoteServer->GetName() +

@@ -27,12 +27,15 @@ class frmMain;
 class pgServer : public pgObject
 {
 public:
-    pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool trusted=false, int sslMode=0);
+    pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, int sslMode=0);
     ~pgServer();
     int GetType() const { return PG_SERVER; }
     wxString GetTypeName() const { return wxT("Server"); }
     int Connect(frmMain *form, bool askPassword=true, const wxString &pwd=wxEmptyString);
     bool Disconnect(frmMain *form);
+    void StorePassword();
+    bool GetPasswordIsStored();
+    void InvalidatePassword() { passwordValid = false; }
 
     bool StartService();
     bool StopService();
@@ -48,8 +51,7 @@ public:
     wxString GetDatabaseName() const { return database; }
     wxString GetUsername() const { return username; }
     wxString GetPassword() const { return password; }
-    bool GetTrusted() const { return trusted; }
-    bool GetNeedPwd() const { return !trusted; }
+    bool GetStorePwd() const { return storePwd; }
     wxString GetLastError() const;
 
     bool GetDiscovered() const { return discovered; }
@@ -80,8 +82,7 @@ public:
     void iSetSSL(int newval) { ssl=newval; }
     void iSetUsername(const wxString& newVal) { username = newVal; }
     void iSetPassword(const wxString& newVal) { password = newVal; }
-    void iSetTrusted(const bool b) { trusted=b; }
-    void iSetNeedPwd(const bool b) { trusted=!b; }
+    void iSetStorePwd(const bool b) { storePwd = b; }
     bool SetPassword(const wxString& newVal);
     wxDateTime GetUpSince() { return upSince; }
     void iSetUpSince(const wxDateTime &d) { upSince = d; }
@@ -103,13 +104,15 @@ public:
     pgConn *connection() { return conn; }
     
 private:
+    wxString passwordFilename();
+
     pgConn *conn;
-    bool connected;
+    bool connected, passwordValid;
     wxString database, username, password, ver, error;
     wxString lastDatabase, lastSchema, description, serviceId;
     wxDateTime upSince;
     int port, ssl;
-    bool trusted, discovered, createPrivilege, superUser;
+    bool storePwd, discovered, createPrivilege, superUser;
     OID lastSystemOID;
     OID dbOid;
     wxString versionNum;

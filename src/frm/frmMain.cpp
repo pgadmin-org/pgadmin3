@@ -877,9 +877,9 @@ void frmMain::StoreServers()
 			key.Printf(wxT("Servers/Port%d"), numServers);
 		    settings->Write(key, server->GetPort());
 
-			// Trusted
-			key.Printf(wxT("Servers/Trusted%d"), numServers);
-	        settings->Write(key, server->GetTrusted());
+			// Store Password
+			key.Printf(wxT("Servers/StorePwd%d"), numServers);
+	        settings->Write(key, server->GetStorePwd());
 
 			// Database
 			key.Printf(wxT("Servers/Database%d"), numServers);
@@ -920,7 +920,7 @@ void frmMain::RetrieveServers()
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     long loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, trusted, serviceID;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, serviceID;
     pgServer *server;
 
     wxArrayString servicedServers;
@@ -944,9 +944,9 @@ void frmMain::RetrieveServers()
         key.Printf(wxT("Servers/Description%d"), loop);
         settings->Read(key, &description, wxT(""));
 
-        // Trusted
-        key.Printf(wxT("Servers/Trusted%d"), loop);
-        settings->Read(key, &trusted, wxT(""));
+        // Store Password
+        key.Printf(wxT("Servers/StorePwd%d"), loop);
+        settings->Read(key, &storePwd, wxT(""));
 
         // Port
         key.Printf(wxT("Servers/Port%d"), loop);
@@ -975,7 +975,7 @@ void frmMain::RetrieveServers()
 #endif
 
         // Add the Server node
-        server = new pgServer(servername, description, database, username, port, StrToBool(trusted), ssl);
+        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), ssl);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
         server->iSetServiceID(serviceID);

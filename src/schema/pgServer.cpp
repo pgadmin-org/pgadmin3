@@ -14,18 +14,21 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include <wx/stdpaths.h>
+
 #include "misc.h"
 #include "frmMain.h"
 #include "dlgConnect.h"
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
+#include "utffile.h"
 #include "pgfeatures.h"
 
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 
-pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _trusted, int _ssl)
+pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, int _ssl)
 : pgObject(PG_SERVER, newName)
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
@@ -40,7 +43,8 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     lastSystemOID = 0;
 
     conn = NULL;
-    trusted=_trusted;
+    passwordValid=true;
+    storePwd=_storePwd;
     superUser=false;
     createPrivilege=false;
 #ifdef WIN32
@@ -51,8 +55,6 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
 
 pgServer::~pgServer()
 {
-	// Keith 2003.03.05
-	// This was not being deleted and was causing memory leaksd
 	if (conn)
 		delete conn;
 
@@ -366,6 +368,108 @@ bool pgServer::GetServerControllable()
 #endif
 }
 
+
+wxString pgServer::passwordFilename()
+{
+    wxStandardPaths stdp;
+    wxString fname=stdp.GetUserConfigDir()
+#ifdef WIN32
+        + wxT("\\postgresql"); 
+    mkdir(fname.ToAscii());
+    fname += wxT("\\pgpass.conf");
+
+#else
+        + wxT("\\.pgpass");
+#endif
+    return fname;
+}
+
+
+
+bool pgServer::GetPasswordIsStored()
+{
+    wxString fname=passwordFilename();
+
+
+    if (!wxFile::Exists(fname))
+        return false;
+
+    wxUtfFile file(fname, wxFile::read, wxFONTENCODING_SYSTEM);
+
+    if (file.IsOpened())
+    {
+        wxString before;
+        file.Read(before);
+
+        wxStringTokenizer lines(before, wxT("\n\r"));
+
+        wxString seekStr= GetName() + wxT(":") 
+                        + NumToStr((long)GetPort()) + wxT(":*:") 
+                        + username + wxT(":") ;
+        while (lines.HasMoreTokens())
+        {
+            wxString str=lines.GetNextToken();
+            if (str.Left(seekStr.Length()) == seekStr)
+                return true;
+        }
+    }
+    
+    return false;
+}
+
+
+void pgServer::StorePassword()
+{
+#ifndef WIN32
+    int prevmask=umask(0600);
+#endif
+
+    wxString fname=passwordFilename();
+
+
+    wxUtfFile file;
+    if (wxFile::Exists(fname))
+        file.Open(fname, wxFile::read_write, wxFONTENCODING_SYSTEM);
+    else
+        file.Open(fname, wxFile::write, wxFONTENCODING_SYSTEM);
+
+    if (file.IsOpened())
+    {
+        wxString before;
+        file.Read(before);
+
+        wxStringTokenizer lines(before, wxT("\n\r"));
+
+        wxString seekStr= GetName() + wxT(":") 
+                        + NumToStr((long)GetPort()) + wxT(":*:") 
+                        + username + wxT(":") ;
+        wxString after;
+
+        file.Seek(0);
+        bool found=false;
+        while (lines.HasMoreTokens())
+        {
+            wxString str=lines.GetNextToken();
+            if (str.Left(seekStr.Length()) == seekStr)
+            {
+                // entry found
+                found=true;
+                if (storePwd)
+                    file.Write(seekStr + password + END_OF_LINE);
+            }
+            else
+                file.Write(str + END_OF_LINE);
+        }
+        if (!found && storePwd)
+            file.Write(seekStr + password + END_OF_LINE);
+
+        file.Close();
+    }
+#ifndef WIN32
+    umask(prevmask);
+#endif
+}
+
     
 int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 {
@@ -380,11 +484,11 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
         }
         if (askPassword)
         {
-            if (GetNeedPwd())
+            if (!passwordValid || !GetPasswordIsStored() || !GetStorePwd())
             {
                 wxString txt;
                 txt.Printf(_("Please enter password for user %s\non server %s (%s)"), username.c_str(), description.c_str(), GetName().c_str());
-                dlgConnect dlg(form, txt, GetNeedPwd());
+                dlgConnect dlg(form, txt, GetStorePwd());
 
 	            switch (dlg.Go())
                 {
@@ -401,19 +505,15 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 		                return PGCONN_BAD;
 	            }
 
-                iSetNeedPwd(dlg.GetNeedPwd());
-
-                if (GetNeedPwd())
-                    iSetPassword(dlg.GetPassword());
+                iSetStorePwd(dlg.GetStorePwd());
+                password = dlg.GetPassword();
+                StorePassword();
             }
         }
         else
             iSetPassword(pwd);
 
-        if (password.IsNull())
-            form->StartMsg(_("Connecting to database without password"));
-        else
-            form->StartMsg(_("Connecting to database"));
+        form->StartMsg(_("Connecting to database"));
 
         if (database.IsEmpty())
         {
@@ -497,6 +597,8 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
     }
 
     form->EndMsg(connected && status == PGCONN_OK);
+
+    passwordValid = connected;
     return status;
 }
 
@@ -691,7 +793,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
         properties->AppendItem(_("Maintenance database"), GetDatabaseName());
         properties->AppendItem(_("Username"), GetUsername());
-        properties->AppendItem(_("Need password?"), GetNeedPwd());
+        properties->AppendItem(_("Store password?"), GetStorePwd());
         if (GetConnected())
         {
             properties->AppendItem(_("Version string"), GetVersionString());
