@@ -379,7 +379,7 @@ wxString pgServer::passwordFilename()
     fname += wxT("\\pgpass.conf");
 
 #else
-        + wxT("\\.pgpass");
+        + wxT("/.pgpass");
 #endif
     return fname;
 }
@@ -420,18 +420,17 @@ bool pgServer::GetPasswordIsStored()
 
 void pgServer::StorePassword()
 {
-#ifndef WIN32
-    int prevmask=umask(0600);
-#endif
-
     wxString fname=passwordFilename();
 
 
     wxUtfFile file;
-    if (wxFile::Exists(fname))
-        file.Open(fname, wxFile::read_write, wxFONTENCODING_SYSTEM);
-    else
-        file.Open(fname, wxFile::write, wxFONTENCODING_SYSTEM);
+    if (!wxFile::Exists(fname))
+    {
+        int fd=creat(fname.ToAscii(), S_IREAD | S_IWRITE);
+        if (fd > 0)
+            close(fd);
+    }
+    file.Open(fname, wxFile::read_write, wxFONTENCODING_SYSTEM);
 
     if (file.IsOpened())
     {
@@ -465,9 +464,6 @@ void pgServer::StorePassword()
 
         file.Close();
     }
-#ifndef WIN32
-    umask(prevmask);
-#endif
 }
 
     
@@ -490,20 +486,20 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
                 txt.Printf(_("Please enter password for user %s\non server %s (%s)"), username.c_str(), description.c_str(), GetName().c_str());
                 dlgConnect dlg(form, txt, GetStorePwd());
 
-	            switch (dlg.Go())
+                switch (dlg.Go())
                 {
-		            case wxID_OK:
-						wxTheApp->Yield();
-			            break;
-		            case wxID_CANCEL:
+                    case wxID_OK:
+                        wxTheApp->Yield();
+                        break;
+                    case wxID_CANCEL:
                     case -1:
-						wxTheApp->Yield();
-	                    return PGCONN_ABORTED;
-		            default:
-						wxTheApp->Yield();
-	                    wxLogError(__("Couldn't create a connection dialogue!"));
-		                return PGCONN_BAD;
-	            }
+                        wxTheApp->Yield();
+                        return PGCONN_ABORTED;
+                    default:
+                        wxTheApp->Yield();
+                        wxLogError(__("Couldn't create a connection dialogue!"));
+                        return PGCONN_BAD;
+                }
 
                 iSetStorePwd(dlg.GetStorePwd());
                 password = dlg.GetPassword();
@@ -608,10 +604,10 @@ wxString pgServer::GetIdentifier() const
     wxString idstr;
     if (GetName().IsEmpty())
         idstr.Printf(wxT("local:.s.PGSQL.%d"), port);
-	else if (GetName().StartsWith(wxT("/")))
+    else if (GetName().StartsWith(wxT("/")))
         idstr.Printf(wxT("local:%s/.s.PGSQL.%d"), GetName().c_str(), port);
-	else
-	    idstr.Printf(wxT("%s:%d"), GetName().c_str(), port);
+    else
+        idstr.Printf(wxT("%s:%d"), GetName().c_str(), port);
     return idstr;
 }
 
@@ -725,16 +721,16 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
                 AppendBrowserItem(browser, collection);
             }
             // Jobs
-			// We only add the Jobs node if the appropriate objects are the initial DB.
-		    wxString exists = conn->ExecuteScalar(
-				wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
-				wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
+            // We only add the Jobs node if the appropriate objects are the initial DB.
+            wxString exists = conn->ExecuteScalar(
+                wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
+                wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
 
-			if (!exists.IsNull())
-			{
-				collection = new pgCollection(PGA_JOBS, this);
-	            AppendBrowserItem(browser, collection);
-			}
+            if (!exists.IsNull())
+            {
+                collection = new pgCollection(PGA_JOBS, this);
+                AppendBrowserItem(browser, collection);
+            }
             // Groups
             collection = new pgCollection(PG_GROUPS, this);
             AppendBrowserItem(browser, collection);
@@ -757,10 +753,10 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
         properties->AppendItem(_("Description"), GetDescription());
         if (GetName().IsEmpty() || GetName().StartsWith(wxT("/")))
-		{
+        {
             properties->AppendItem(_("Hostname"), wxT("local:") + GetName());
             properties->AppendItem(_("Port"), (long)GetPort());
-		}
+        }
         else
         {
             properties->AppendItem(_("Hostname"), GetName());
@@ -854,7 +850,7 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
                 pos++;
             }
 
-	        delete stats;
+            delete stats;
         }
     }
 }
