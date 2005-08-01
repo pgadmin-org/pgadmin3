@@ -61,7 +61,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/property.xpm"
 #include "images/public.xpm"
 #include "images/refresh.xpm"
-#include "images/relationship.xpm"
 #include "images/hint2.xpm"
 #include "images/help2.xpm"
 
@@ -364,7 +363,6 @@ frmMain::frmMain(const wxString& title)
     imageList->Add(wxIcon(domain_xpm));
     imageList->Add(wxIcon(check_xpm));
     imageList->Add(wxIcon(column_xpm));
-    imageList->Add(wxIcon(relationship_xpm));
     imageList->Add(wxIcon(index_xpm));
     imageList->Add(wxIcon(rule_xpm));
     imageList->Add(wxIcon(trigger_xpm));

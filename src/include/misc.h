@@ -84,7 +84,6 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_DOMAIN,
     PGICON_CHECK,
     PGICON_COLUMN,
-    PGICON_RELATIONSHIP,
     PGICON_INDEX,
     PGICON_RULE,
     PGICON_TRIGGER,
