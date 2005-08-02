@@ -48,6 +48,8 @@ private:
 	void OnSelLockItem(wxListEvent &event);
 	void OnLoadLogfile(wxCommandEvent &event);
     void OnRotateLogfile(wxCommandEvent &event);
+    void OnCommit(wxCommandEvent &event);
+    void OnRollback(wxCommandEvent &event);
 
     int fillLogfileCombo();
     void emptyLogfileCombo();
@@ -74,6 +76,7 @@ private:
     wxTimer *timer;
 	bool loaded;
     long logfileLength;
+    int xactPage, logPage;
 
     DECLARE_EVENT_TABLE();
 };

@@ -30,6 +30,8 @@ BEGIN_EVENT_TABLE(frmStatus, pgDialog)
     EVT_BUTTON(wxID_CLOSE,	  				        frmStatus::OnCloseBtn)
     EVT_BUTTON(wxID_CANCEL,          				frmStatus::OnCancelBtn)
     EVT_BUTTON(wxID_STOP,            				frmStatus::OnTerminateBtn)
+    EVT_BUTTON(XRCID("btnCommit"),                  frmStatus::OnCommit)
+    EVT_BUTTON(XRCID("btnRollback"),                frmStatus::OnRollback)
     EVT_CLOSE(										frmStatus::OnClose)
     EVT_SPINCTRL(XRCID("spnRefreshRate"),			frmStatus::OnRateChangeSpin)
     EVT_TEXT(XRCID("spnRefreshRate"),				frmStatus::OnRateChange)
@@ -46,6 +48,7 @@ END_EVENT_TABLE();
 
 #define statusList      CTRL_LISTVIEW("lstStatus")
 #define lockList        CTRL_LISTVIEW("lstLocks")
+#define xactList        CTRL_LISTVIEW("lstXacts")
 #define logList         CTRL_LISTVIEW("lstLog")
 #define spnRefreshRate  CTRL_SPIN("spnRefreshRate")
 #define nbStatus		CTRL_NOTEBOOK("nbStatus")
@@ -75,7 +78,8 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 {
     wxLogInfo(wxT("Creating server status box"));
 	loaded = false;
-
+    xactPage=2;
+    logPage=3;
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(0, wxT("frmStatus")); 
@@ -101,7 +105,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     logfileLength = 0;
     backend_pid=conn->GetBackendPID();
 
-    statusList->AddColumn(_("PID"), 35);
+    statusList->AddColumn(wxT("PID"), 35);
     statusList->AddColumn(_("Database"), 70);
     statusList->AddColumn(_("User"), 70);
     if (connection->BackendMinimumVersion(8, 1))
@@ -112,7 +116,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 
     statusList->AddColumn(_("Query"), 500);
 
-    lockList->AddColumn(_("PID"), 50);
+    lockList->AddColumn(wxT("PID"), 50);
     lockList->AddColumn(_("Database"), 50);
     lockList->AddColumn(_("Relation"), 50);
     lockList->AddColumn(_("User"), 50);
@@ -123,6 +127,21 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
         lockList->AddColumn(_("Start"), 50);
 
     lockList->AddColumn(_("Query"), 500);
+
+    if (connection->BackendMinimumVersion(8, 1))
+    {
+        xactList->AddColumn(wxT("XID"), 50);
+        xactList->AddColumn(_("Global ID"), 200);
+        xactList->AddColumn(_("Time"), 100);
+        xactList->AddColumn(_("Owner"), 50);
+        xactList->AddColumn(_("Database"), 50);
+    }
+    else
+    {
+        nbStatus->DeletePage(xactPage);
+        logPage--;
+        xactPage=-5;
+    }
 
     if (connection->BackendMinimumVersion(8, 0) && 
 		 connection->HasFeature(FEATURE_FILEREAD))
@@ -150,8 +169,10 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
             btnRotateLog->Disable();
     }
     else
-        nbStatus->DeletePage(2);
-
+    {
+        nbStatus->DeletePage(logPage);
+        logPage=-5;
+    }
     long rate;
     settings->Read(wxT("frmStatus/Refreshrate"), &rate, 1);
     spnRefreshRate->SetValue(rate);
@@ -178,7 +199,7 @@ frmStatus::~frmStatus()
     if (connection)
         delete connection;
 
-    if (nbStatus->GetPageCount() > 2)
+    if (logPage > 0)
         emptyLogfileCombo();
 }
 
@@ -338,7 +359,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				  wxT("transaction, pid, mode, granted, ")
 				  wxT("pg_stat_get_backend_activity(pid) AS current_query, ")
 				  wxT("pg_stat_get_backend_activity_start(pid) AS query_start ")
-				  wxT("FROM pg_locks");
+				  wxT("FROM pg_locks ORDER BY pid,transaction");
 		} else {
 			sql = wxT("SELECT ")
 				  wxT("(SELECT datname FROM pg_database WHERE oid = database) AS dbname, ")
@@ -346,7 +367,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				  wxT("pg_get_userbyid(pg_stat_get_backend_userid(pid)::int4) as user, ")
 				  wxT("transaction, pid, mode, granted, ")
 				  wxT("pg_stat_get_backend_activity(pid) AS current_query ")
-				  wxT("FROM pg_locks ");
+				  wxT("FROM pg_locks ORDER BY pid,transaction");
 		}
 
 		pgSet *dataSet2=connection->ExecuteSet(sql);
@@ -427,7 +448,69 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                 row++;
 		}
 	}
-    else
+    else if (nbStatus->GetSelection() == xactPage)
+    {
+		// Transactions
+		long row=0;
+		wxString sql = wxT("SELECT * FROM pg_prepared_xacts");
+
+		pgSet *dataSet3=connection->ExecuteSet(sql);
+		if (dataSet3)
+		{
+			statusBar->SetStatusText(_("Refreshing."));
+            xactList->Freeze();
+
+			while (!dataSet3->Eof())
+			{
+				long xid=dataSet3->GetLong(wxT("transaction"));
+
+				long itemxid=0;
+
+				while (row < xactList->GetItemCount())
+				{
+					itemxid=StrToLong(xactList->GetItemText(row));
+					if (itemxid && itemxid < xid)
+						xactList->DeleteItem(row);
+					else
+						break;
+				}
+
+				if (!itemxid || itemxid > xid)
+				{
+					xactList->InsertItem(row, NumToStr(xid), 0);
+				}
+
+                int colpos=1;
+				xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("gid")));
+				xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("prepared")));
+				xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("owner")));
+				xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("database")));
+
+			    row++;
+    			dataSet3->MoveNext();
+			}
+            delete dataSet3;
+			
+            while (row < xactList->GetItemCount())
+				xactList->DeleteItem(row);
+
+            xactList->Thaw();
+			statusBar->SetStatusText(_("Done."));
+		}
+        else
+            checkConnection();
+
+        row=0;
+		while (row < lockList->GetItemCount())
+		{
+			long itempid=StrToLong(lockList->GetItemText(row));
+			if (itempid && itempid > pid)
+				lockList->DeleteItem(row);
+            else
+                row++;
+		}
+    }
+    else if (nbStatus->GetSelection() == logPage)
     {
         long newlen=0;
 
@@ -766,25 +849,24 @@ void frmStatus::OnCancelBtn(wxCommandEvent &event)
 		return;
 	}
 
-	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+    long item = lv->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    if (item < 0)
+        return;
+
+    if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
 		return;
 
-    long item = -1;
-	wxString pid;
-
-    for ( ;; )
+    while  (item >= 0)
     {
-        item = lv->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-        if ( item == -1 )
-            break;
-
-		pid = lv->GetItemText(item);
+		wxString pid = lv->GetItemText(item);
 		wxString sql = wxT("SELECT pg_cancel_backend(") + pid + wxT(");");
 		connection->ExecuteScalar(sql);
+
+        item = lv->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
 
 	wxMessageBox(_("A cancel signal was sent to the selected server process(es)."), _("Cancel query"), wxOK | wxICON_INFORMATION);
-	OnRefresh(*(wxCommandEvent*)&event);
+	OnRefresh(event);
 }
 
 
@@ -802,27 +884,70 @@ void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 		return;
 	}
 
+    long item = lv->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    if (item < 0)
+        return;
+
 	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
 		return;
 
-    long item = -1;
-	wxString pid;
-
-    for ( ;; )
+    while  (item >= 0)
     {
-        item = lv->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-        if ( item == -1 )
-            break;
-
-		pid = lv->GetItemText(item);
+		wxString pid = lv->GetItemText(item);
 		wxString sql = wxT("SELECT pg_terminate_backend(") + pid + wxT(");");
 		connection->ExecuteScalar(sql);
 
-	}
+	    item = lv->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    }
 
 	wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
-	OnRefresh(*(wxCommandEvent*)&event);
+	OnRefresh(event);
 }
+
+
+void frmStatus::OnCommit(wxCommandEvent &event)
+{
+    long item = xactList->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    if (item < 0)
+        return;
+
+	if (wxMessageBox(_("Are you sure you wish to commit the selected prepared transactions?"), _("Commit transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+		return;
+
+    while  (item >= 0)
+    {
+		wxString xid = xactList->GetText(item, 1);
+		wxString sql = wxT("COMMIT PREPARED ") + qtString(xid);
+		connection->ExecuteScalar(sql);
+
+        item = xactList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	}
+
+	OnRefresh(event);
+}
+
+
+void frmStatus::OnRollback(wxCommandEvent &event)
+{
+    long item = xactList->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    if (item < 0)
+        return;
+
+    if (wxMessageBox(_("Are you sure you wish to rollback the selected prepared transactions?"), _("Rollback transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+		return;
+
+    while  (item >= 0)
+    {
+		wxString xid = xactList->GetText(item, 1);
+		wxString sql = wxT("ROLLBACK PREPARED ") + qtString(xid);
+		connection->ExecuteScalar(sql);
+
+        item = xactList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	}
+
+	OnRefresh(event);
+}
+
 
 
 void frmStatus::OnSelStatusItem(wxListEvent &event)

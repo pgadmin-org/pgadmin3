@@ -348,7 +348,7 @@ wxString pgConnBase::ExecuteScalar(const wxString& sql)
         lastResultStatus = PQresultStatus(qryRes);
         
         // Check for errors
-        if (lastResultStatus != PGRES_TUPLES_OK)
+        if (lastResultStatus != PGRES_TUPLES_OK && lastResultStatus != PGRES_COMMAND_OK)
         {
             LogError();
             PQclear(qryRes);
