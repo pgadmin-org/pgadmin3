@@ -22,6 +22,14 @@
 #include "pgDatabase.h"
 
 class pgCollection;
+class pgaAggregateFactory : public pgaFactory
+{
+public:
+    pgaAggregateFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaAggregateFactory aggregateFactory;
 
 class pgAggregate : public pgSchemaObject
 {
@@ -30,11 +38,9 @@ public:
     ~pgAggregate();
     void SetSchema(pgSchema *newSchema) { schema = newSchema; }
     pgSchema *GetSchema() const {return schema; }
-    int GetIcon() { return PGICON_AGGREGATE; }
     bool CanDropCascaded() { return true; }
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString GetFullName() const;
     wxString GetInputType() const { return inputType; }
     void iSetInputType(const wxString& s) { inputType=s; }

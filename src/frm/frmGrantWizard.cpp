@@ -19,8 +19,11 @@
 #include "pgAdmin3.h"
 #include "frmGrantWizard.h"
 #include "sysLogger.h"
-#include "pgFunction.h"
 #include "ctlSecurityPanel.h"
+#include "pgFunction.h"
+#include "pgSequence.h"
+#include "pgTable.h"
+#include "pgView.h"
 
 // Icons
 #include "images/index.xpm"
@@ -112,11 +115,13 @@ void frmGrantWizard::AddObjects(pgCollection *collection)
 
     if (!traverseKids)
     {
-        if (!collection->IsCollectionForType(PG_TABLE) &&
-            !collection->IsCollectionForType(PG_FUNCTION) &&
-            !collection->IsCollectionForType(PG_TRIGGERFUNCTION) &&
-            !collection->IsCollectionForType(PG_VIEW) &&
-            !collection->IsCollectionForType(PG_SEQUENCE))
+        pgaFactory *factory=collection->GetFactory();
+        if (!factory->IsCollectionFor(tableFactory) &&
+            !factory->IsCollectionFor(functionFactory) &&
+            !factory->IsCollectionFor(triggerFunctionFactory) &&
+            !factory->IsCollectionFor(procedureFactory) &&
+            !factory->IsCollectionFor(viewFactory) &&
+            !factory->IsCollectionFor(sequenceFactory))
             return;
     }
     wxCookieType cookie;
@@ -154,16 +159,20 @@ void frmGrantWizard::Go()
             privList.Append(wxT(",EXECUTE"));
             privChar = "arwdRxtX";
             break;
-        case PG_FUNCTIONS:
-        case PG_TRIGGERFUNCTIONS:
-        case PG_PROCEDURES:
+        default:
+            break;
+    }
+
+    
+    switch (object->GetMetaType())
+    {
+        case PGM_FUNCTION:
             privList = wxT("EXECUTE");
             privChar = "X";
             break;
         default:
             break;
     }
-
 
     securityPage = new ctlSecurityPanel(nbNotebook, privList, privChar, mainForm->GetImageList());
     securityPage->SetConnection(object->GetConnection());
@@ -226,19 +235,17 @@ wxString frmGrantWizard::GetSql()
 
             pgObject *obj=(pgObject*)objectArray.Item(i);
 
-            switch (obj->GetType())
+            switch (obj->GetMetaType())
             {
-                case PG_FUNCTION:
-                case PG_TRIGGERFUNCTION:
-                case PG_PROCEDURE:
+                case PGM_FUNCTION:
                 {
                     tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
                         + obj->GetQuotedFullIdentifier() + wxT("(")
                         + ((pgFunction*)obj)->GetArgTypes() + wxT(")"));
                     break;
                 }
-                case PG_VIEW:
-                case PG_SEQUENCE:
+                case PGM_VIEW:
+                case PGM_SEQUENCE:
                     tmp = securityPage->GetGrant(wxT("arwdRxt"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
                     break;
                 default:
@@ -251,4 +258,43 @@ wxString frmGrantWizard::GetSql()
         }
     }
     return sql;
+}
+
+
+grantWizardFactory ::grantWizardFactory (wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Grant Wizard"), _("Grants rights to multiple objects"));
+}
+
+
+wxWindow *grantWizardFactory ::StartDialog(frmMain *form, pgObject *obj)
+{
+    frmGrantWizard *frm=new frmGrantWizard(form, obj);
+    frm->Go();
+    return frm;
+}
+
+
+bool grantWizardFactory ::CheckEnable(pgObject *obj)
+{
+    switch (obj->GetType())
+    {
+        case PG_SCHEMA:
+        case PG_SCHEMAS:
+            return true;
+        default:
+            break;
+    }
+
+    switch (obj->GetMetaType())
+    {
+        case PGM_TABLE:
+        case PGM_FUNCTION:
+        case PGM_SEQUENCE:
+        case PGM_VIEW:
+            return true;
+        default:
+            break;
+    }
+    return false;
 }

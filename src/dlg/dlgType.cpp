@@ -14,8 +14,6 @@
 // wxWindows headers
 #include <wx/wx.h>
 
-// Images
-#include "images/type.xpm"
 
 // App headers
 #include "misc.h"
@@ -69,13 +67,17 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaTypeFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgType(frame, (pgType*)node, (pgSchema*)parent);
+}
+
 
 dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
 : dlgTypeProperty(frame, wxT("dlgType"))
 {
     type=node;
     schema=sch;
-    SetIcon(wxIcon(type_xpm));
     lstMembers->CreateColumns(0, _("Member"), _("Data type"), -1);
 
     wxNotifyEvent event;

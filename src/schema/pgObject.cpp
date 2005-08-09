@@ -19,7 +19,15 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "frmMain.h"
+#include "pgDomain.h"
 
+#include "pgSequence.h"
+#include "pgFunction.h"
+#include "pgType.h"
+#include "pgTable.h"
+#include "pgView.h"
+#include "pgType.h"
+#include "pgOperator.h"
 
 // Ordering must match the PG_OBJTYPE enumeration in pgObject.h
 
@@ -41,32 +49,10 @@ pgTypes typesList[] =
     {__("Schema"), PGICON_SCHEMA, __("New Schema"), __("Create a new Schema.") },
     {__("Tablespaces"), PGICON_TABLESPACE, 0, 0},
     {__("Tablespace"), PGICON_TABLESPACE, __("New Tablespace"), __("Create a new Tablespace.") },
-    {__("Aggregates"), PGICON_AGGREGATE, 0, 0},
-    {__("Aggregate"), PGICON_AGGREGATE, __("New Aggregate"), __("Create a new Aggregate.") },
     {__("Casts"), PGICON_CAST, 0, 0},
     {__("Cast"), PGICON_CAST, __("New Cast"), __("Create a new Cast.") },
     {__("Conversions"), PGICON_CONVERSION, 0, 0},
     {__("Conversion"), PGICON_CONVERSION, __("New Conversion"), __("Create a new Conversion.") },
-    {__("Domains"), PGICON_DOMAIN, 0, 0},
-    {__("Domain"), PGICON_DOMAIN, __("New Domain"), __("Create a new Domain.") },
-    {__("Functions"), PGICON_FUNCTION, 0, 0},
-    {__("Function"), PGICON_FUNCTION, __("New Function"), __("Create a new Function.") },
-    {__("Trigger Functions"), PGICON_TRIGGERFUNCTION, 0, 0},
-    {__("Trigger Function"), PGICON_TRIGGERFUNCTION, __("New Trigger Function"), __("Create a new Trigger Function.") },
-    {__("Procedures"), PGICON_PROCEDURE, 0, 0},
-    {__("Procedure"), PGICON_PROCEDURE, __("New Procedure"), __("Create a new Procedure.") },
-    {__("Operators"), PGICON_OPERATOR, 0, 0},
-    {__("Operator"), PGICON_OPERATOR, __("New Operator"), __("Create a new Operator.") },
-    {__("Operator Classes"), PGICON_OPERATORCLASS, 0, 0},
-    {__("Operator Class"), PGICON_OPERATORCLASS, __("New Operator Class"), __("Create a new Operator Class.") },
-    {__("Sequences"), PGICON_SEQUENCE, 0, 0},
-    {__("Sequence"), PGICON_SEQUENCE, __("New Sequence"), __("Create a new Sequence.") },
-    {__("Tables"), PGICON_TABLE, 0, 0},
-    {__("Table"), PGICON_TABLE, __("New Table"), __("Create a new Table.") },
-    {__("Types"), PGICON_TYPE, 0, 0},
-    {__("Type"), PGICON_TYPE, __("New Type"), __("Create a new Type.") },
-    {__("Views"), PGICON_VIEW, 0, 0},
-    {__("View"), PGICON_VIEW, __("New View"), __("Create a new View.") },
     {__("Columns"), PGICON_COLUMN, 0, 0},
     {__("Column"), PGICON_COLUMN, __("New Column"), __("Add a new Column.") },
     {__("Indexes"), PGICON_INDEX, 0, 0},
@@ -98,10 +84,6 @@ pgTypes typesList[] =
     {__("Listen"), SLICON_LISTEN, __("New Listen"), __("Create new Listen between nodes")},
     {__("Replication Sets"), SLICON_SET, 0, 0 },
     {__("Replication Set"), SLICON_SET, __("New Replication Set"), __("Create new Replication Set") },
-    {__("Sequences"), PGICON_SEQUENCE, 0, 0},
-    {__("Sequence"), PGICON_SEQUENCE, __("Add Sequence"), __("Add Sequence to Set.") },
-    {__("Tables"), PGICON_TABLE, 0, 0},
-    {__("Table"), PGICON_TABLE, __("Add Table"), __("Add Table to Set.") },
     {__("Subscriptions"), SLICON_SUBSCRIPTION, 0, 0 },
     {__("Subscription"), SLICON_SUBSCRIPTION, __("New Subscription"), __("Create new Subscription") },
 
@@ -111,10 +93,54 @@ pgTypes typesList[] =
 
 
 
+int pgObject::GetType() const
+{
+    if (factory)
+        return factory->GetId();
+    return type;
+}
+
+
+int pgObject::GetMetaType() const
+{
+    if (factory)
+        return factory->GetMetaType();
+    return PGM_UNKNOWN;
+}
+
+
+wxString pgObject::GetTypeName() const
+{
+    if (factory)
+        return factory->GetTypeName();
+    return typesList[type].typName; 
+}
+
+
+wxString pgObject::GetTranslatedTypeName() const
+{
+    return wxString(wxGetTranslation(GetTypeName()));
+}
+
+
+int pgObject::GetIcon()
+{
+    int id=-1;
+    if (factory)
+        id= factory->GetIconId();
+
+    wxASSERT(id != -1);
+    return id;
+}
+
+
 int pgObject::GetTypeId(const wxString &typname)
 {
-    int id;
+    pgaFactory *factory=pgaFactory::GetFactory(typname);
+    if (factory)
+        return factory->GetId();
 
+    int id;
     for (id=1 ; typesList[id].typName ; id++)
     {
         if (typname.IsSameAs(typesList[id].typName, false))
@@ -125,35 +151,65 @@ int pgObject::GetTypeId(const wxString &typname)
 }
 
 
-pgObject::pgObject(int newType, const wxString& newName)
+pgObject::pgObject(pgaFactory &_factory, const wxString& newName)
 : wxTreeItemData()
 {
+    factory=&_factory;
+    if (newName.IsEmpty())
+        name = factory->GetTypeName();
+    else
+        name = newName;
 
-    // Set the typename and type
-    if (newType >= PG_UNKNOWN)
-        newType = PG_UNKNOWN;
-    type = newType;
-
-    name = newName;
+    type = factory->GetId();
     expandedKids=false;
     needReread=false;
     hintShown=false;
 }
 
 
+pgObject::pgObject(int newType, const wxString& newName)
+: wxTreeItemData()
+{
+    factory=pgaFactory::GetFactory(newType);
+
+    // Set the typename and type
+    if (newType >= PG_UNKNOWN)
+        newType = PG_UNKNOWN;
+    type = newType;
+
+    if (newName.IsEmpty())
+    {
+        if (factory)
+            name = factory->GetTypeName();
+        else
+            name = typesList[type].typName;
+    }
+    else
+        name = newName;
+    expandedKids=false;
+    needReread=false;
+    hintShown=false;
+}
+
+        
 void pgObject::AppendMenu(wxMenu *menu, int type)
 {
     if (menu)
     {
-        if (type < 0)
+        if (factory)
+            factory->AppendMenu(menu);
+        else
         {
-            type=GetType();
-            if (IsCollection())
-                type++;
+            if (type < 0)
+            {
+                type=GetType();
+                if (IsCollection())
+                    type++;
+            }
+            menu->Append(MNU_NEW+type, 
+                wxGetTranslation(typesList[type].newString),
+                wxGetTranslation(typesList[type].newLongString));
         }
-        menu->Append(MNU_NEW+type, 
-            wxGetTranslation(typesList[type].newString),
-            wxGetTranslation(typesList[type].newLongString));
     }
 }
 
@@ -226,21 +282,21 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                 }
 
                 wxString typestr=set->GetVal(wxT("type"));
-                int id;
-
+                int id=-1;
+                pgaFactory *depFactory=0;
                 switch (typestr.c_str()[0])
                 {
                     case 'c':
                     case 's':   // we don't know these; internally handled
                     case 't':   set->MoveNext(); continue;
 
-                    case 'r':   id=PG_TABLE;    break;
+                    case 'r':   depFactory=&tableFactory;    break;
                     case 'i':   id=PG_INDEX;    break;
-                    case 'S':   id=PG_SEQUENCE; break;
-                    case 'v':   id=PG_VIEW;     break;
-                    case 'p':   id=PG_FUNCTION; break;
+                    case 'S':   depFactory=&sequenceFactory; break;
+                    case 'v':   depFactory=&viewFactory;     break;
+                    case 'p':   depFactory=&functionFactory; break;
                     case 'n':   id=PG_SCHEMA;   break;
-                    case 'y':   id=PG_TYPE;     break;
+                    case 'y':   depFactory=&typeFactory;     break;
                     case 'T':   id=PG_TRIGGER;  break;
                     case 'l':   id=PG_LANGUAGE; break;
                     case 'R':
@@ -269,8 +325,18 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 
                 refname += _refname;
 
-                wxString typname = typesList[id].typName;
-                int icon = typesList[id].typeIcon;
+                wxString typname;
+                int icon;
+                if (depFactory)
+                {
+                    typname = depFactory->GetTypeName();
+                    icon = depFactory->GetIconId();
+                }
+                else
+                {
+                    typname = typesList[id].typName;
+                    icon = typesList[id].typeIcon;
+                }
 
                 wxString deptype;
 
@@ -738,34 +804,44 @@ void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, c
                     if (!relname.IsEmpty())
                         relname += wxT(".");
                     relname += qtIdent(set->GetVal(wxT("relname")));
+                    pgaFactory *ownerFactory=0;
 
                     switch (set->GetVal(wxT("relkind")).c_str()[0])
                     {
-                        case 'r':   id=PG_TABLE;            break;
+                        case 'r':   ownerFactory=&tableFactory;            break;
                         case 'i':   id=PG_INDEX;        
                                     relname = qtIdent(set->GetVal(wxT("indname"))) + wxT(" ON ") + relname;
                                     break;
-                        case 'S':   id=PG_SEQUENCE;         break;
-                        case 'v':   id=PG_VIEW;             break;
+                        case 'S':   ownerFactory=&sequenceFactory;         break;
+                        case 'v':   ownerFactory=&viewFactory;             break;
                         case 'c':   // composite type handled in PG_TYPE
                         case 's':   // special
                         case 't':   // toast
                                     break;
                         case 'n':   id=PG_SCHEMA;           break;
-                        case 'y':   id=PG_TYPE;             break;
-                        case 'd':   id=PG_DOMAIN;           break;
+                        case 'y':   ownerFactory = &typeFactory;             break;
+                        case 'd':   ownerFactory = &domainFactory; break;
                         case 'C':   id=PG_CONVERSION;       break;
-                        case 'p':   id=PG_FUNCTION;         break;
-                        case 'T':   id=PG_TRIGGERFUNCTION;  break;
-                        case 'o':   id=PG_OPERATOR;
+                        case 'p':   ownerFactory=&functionFactory;         break;
+                        case 'T':   ownerFactory=&triggerFunctionFactory;  break;
+                        case 'o':   ownerFactory=&operatorFactory;
                                     relname = set->GetVal(wxT("relname"));  // unquoted
                                     break;
                     }
 
-                    if (id)
+                    if (id || ownerFactory)
                     {
-                        wxString typname = typesList[id].typName;
-                        int icon = typesList[id].typeIcon;
+                        wxString typname;
+                        int icon;
+                        if (ownerFactory)
+                        {
+                            typname = ownerFactory->GetTypeName();
+                            icon = ownerFactory->GetIconId();
+                        }
+                        {
+                            typname = typesList[id].typName;
+                            icon = typesList[id].typeIcon;
+                        }
                         referencedBy->AppendItem(icon, typname, dbname, relname);
                     }
 

@@ -22,6 +22,19 @@
 #include "pgDatabase.h"
 
 class pgCollection;
+class pgFunction;
+
+class pgaFunctionFactory : public pgaFactory
+{
+public:
+    pgaFunctionFactory(wxChar *tn=0, wxChar *ns=0, wxChar *nls=0, char **img=0);
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    pgFunction *AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
+};
+
+
+extern pgaFunctionFactory functionFactory;
 
 class pgFunction : public pgSchemaObject
 {
@@ -30,10 +43,7 @@ public:
     ~pgFunction();
 
 
-    int GetIcon() { return PGICON_FUNCTION; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
-    static pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
     bool CanDropCascaded() { return true; }
 
     virtual bool GetIsProcedure() const {return false; }
@@ -92,13 +102,32 @@ private:
     long argCount;
 };
 
+
+class pgaTriggerFunctionFactory : public pgaFunctionFactory
+{
+public:
+    pgaTriggerFunctionFactory();
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaTriggerFunctionFactory triggerFunctionFactory;
+
+
 class pgTriggerFunction : public pgFunction
 {
 public:
     pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
-    int GetIcon() { return PGICON_TRIGGERFUNCTION; }
 };
+
+
+class pgaProcedureFactory : public pgaFunctionFactory
+{
+public:
+    pgaProcedureFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaProcedureFactory procedureFactory;
 
 
 class pgProcedure : public pgFunction
@@ -106,7 +135,6 @@ class pgProcedure : public pgFunction
 public:
     pgProcedure(pgSchema *newSchema, const wxString& newName = wxT(""));
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
-    int GetIcon() { return PGICON_PROCEDURE; }
 
     bool GetIsProcedure() const {return true; }
 

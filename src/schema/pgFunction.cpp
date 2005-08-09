@@ -17,11 +17,11 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgFunction.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 
 
 pgFunction::pgFunction(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_FUNCTION, newName)
+: pgSchemaObject(newSchema, functionFactory, newName)
 {
 }
 
@@ -44,12 +44,12 @@ pgFunction::pgFunction(pgSchema *newSchema, int newType, const wxString& newName
 }
 
 pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newName)
-: pgFunction(newSchema, PG_TRIGGERFUNCTION, newName)
+: pgFunction(newSchema, newName)
 {
 }
 
 pgProcedure::pgProcedure(pgSchema *newSchema, const wxString& newName)
-: pgFunction(newSchema, PG_PROCEDURE, newName)
+: pgFunction(newSchema, newName)
 {
 }
 
@@ -139,9 +139,46 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 }
 
 
+wxString pgProcedure::GetSql(wxTreeCtrl *browser)
+{
+    if (!GetConnection()->EdbMinimumVersion(8, 0))
+        return pgFunction::GetSql(browser);
+
+    if (sql.IsNull())
+    {
+        wxString qtName = GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypeNames() + wxT(")");
+
+        sql = wxT("-- Procedure: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+            + wxT("-- DROP PROCEDURE") + GetQuotedFullIdentifier() + wxT(";")
+            + wxT("\n\nCREATE OR REPLACE ") + qtName 
+            + wxT(" AS\n")
+            + qtStringDollar(GetSource())
+            + wxT(";\n");
+
+        if (!GetComment().IsNull())
+        {
+            sql += wxT("COMMENT ON FUNCTION ") + qtName
+                + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+        }
+    }
+
+    return sql;
+}
 
 
-pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction)
+bool pgProcedure::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+{
+    if (!GetConnection()->EdbMinimumVersion(8, 0))
+        return pgFunction::DropObject(frame, browser, cascaded);
+
+    wxString sql=wxT("DROP PROCEDURE ") + GetQuotedFullIdentifier();
+    return GetDatabase()->ExecuteVoid(sql);
+}
+
+
+
+
+pgFunction *pgaFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgFunction *function=0;
     wxString argNamesCol;
@@ -319,21 +356,15 @@ pgObject *pgFunction::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        switch (obj->GetType())
-        {
-            case PG_FUNCTIONS:
-            case PG_TRIGGERFUNCTIONS:
-            case PG_PROCEDURES:
-                function = AppendFunctions((pgCollection*)obj, GetSchema(), 0, wxT(" WHERE pr.oid=") + GetOidStr() + wxT("\n"));
-                break;
-        }
+        if (obj->IsCollection())
+            function = functionFactory.AppendFunctions((pgCollection*)obj, GetSchema(), 0, wxT(" WHERE pr.oid=") + GetOidStr() + wxT("\n"));
     }
     return function;
 }
 
 
 
-pgObject *pgFunction::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
+pgObject *pgaFunctionFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restr)
 {
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
@@ -349,7 +380,7 @@ pgObject *pgFunction::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
 }
 
 
-pgObject *pgTriggerFunction::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
+pgObject *pgaTriggerFunctionFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restr)
 {
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
@@ -359,7 +390,10 @@ pgObject *pgTriggerFunction::ReadObjects(pgCollection *collection, wxTreeCtrl *b
     return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
 }
 
-pgObject *pgProcedure::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
+//            if (parentNode->GetType() == PG_TRIGGER)
+//                parentNode = ((pgTrigger*)parentNode)->GetSchema();
+
+pgObject *pgaProcedureFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restr)
 {
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
@@ -375,40 +409,33 @@ pgObject *pgProcedure::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 }
 
 
-wxString pgProcedure::GetSql(wxTreeCtrl *browser)
+#include "images/function.xpm"
+
+pgaFunctionFactory::pgaFunctionFactory(wxChar *tn, wxChar *ns, wxChar *nls, char **img) 
+: pgaFactory(tn, ns, nls, img)
 {
-    if (!GetConnection()->EdbMinimumVersion(8, 0))
-        return pgFunction::GetSql(browser);
+    metaType = PGM_FUNCTION;
+}
 
-    if (sql.IsNull())
-    {
-        wxString qtName = GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypeNames() + wxT(")");
+pgaFunctionFactory functionFactory(__("Function"), __("New Function"), __("Create a new Function."), function_xpm);
+static pgaCollectionFactory cf(&functionFactory, __("Functions"));
 
-        sql = wxT("-- Procedure: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-            + wxT("-- DROP PROCEDURE") + GetQuotedFullIdentifier() + wxT(";")
-            + wxT("\n\nCREATE OR REPLACE ") + qtName 
-            + wxT(" AS\n")
-            + qtStringDollar(GetSource())
-            + wxT(";\n");
 
-        if (!GetComment().IsNull())
-        {
-            sql += wxT("COMMENT ON FUNCTION ") + qtName
-                + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
-        }
-    }
+#include "images/triggerfunction.xpm"
 
-    return sql;
+pgaTriggerFunctionFactory::pgaTriggerFunctionFactory() 
+: pgaFunctionFactory(__("Trigger Function"), __("New Trigger Function"), __("Create a new Trigger Function."), triggerfunction_xpm)
+{
+}
+
+pgaTriggerFunctionFactory triggerFunctionFactory;
+static pgaCollectionFactory cft(&triggerFunctionFactory, __("Trigger Functions"));
+
+pgaProcedureFactory::pgaProcedureFactory() 
+: pgaFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), function_xpm)
+{
 }
 
 
-bool pgProcedure::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
-{
-    if (!GetConnection()->EdbMinimumVersion(8, 0))
-        return pgFunction::DropObject(frame, browser, cascaded);
-
-    wxString sql=wxT("DROP PROCEDURE ") + GetQuotedFullIdentifier();
-    return GetDatabase()->ExecuteVoid(sql);
-}
-
-
+pgaProcedureFactory procedureFactory;
+static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"));

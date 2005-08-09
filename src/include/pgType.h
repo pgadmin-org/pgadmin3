@@ -22,6 +22,14 @@
 #include "pgDatabase.h"
 
 class pgCollection;
+class pgaTypeFactory : public pgaFactory
+{
+public:
+    pgaTypeFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaTypeFactory typeFactory;
 
 class pgType : public pgSchemaObject
 {
@@ -29,9 +37,7 @@ public:
     pgType(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgType();
 
-    int GetIcon() { return PGICON_TYPE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     wxString GetInputFunction() const { return inputFunction; }

@@ -41,10 +41,21 @@
 #include "pgaJob.h"
 #include "slCluster.h"
 
+#include "pgSchema.h"
+
+pgCollection::pgCollection(pgaFactory &factory)
+: pgObject(factory)
+{ 
+    wxLogInfo(wxT("Creating a pgCollection object")); 
+	job=0;
+    schema=0;
+    database=0;
+    server= 0;
+}
 
 
 pgCollection::pgCollection(int newType, pgServer *sv)
-: pgObject(newType, typesList[newType].typName)
+: pgObject(newType)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
 	job=0;
@@ -55,7 +66,7 @@ pgCollection::pgCollection(int newType, pgServer *sv)
 
 
 pgCollection::pgCollection(int newType, pgDatabase *db)
-: pgObject(newType, typesList[newType].typName)
+: pgObject(newType)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
 	job=0;
@@ -66,7 +77,7 @@ pgCollection::pgCollection(int newType, pgDatabase *db)
 
 
 pgCollection::pgCollection(int newType, pgSchema *sch)
-: pgObject(newType, typesList[newType].typName)
+: pgObject(newType)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
 	job=0;
@@ -75,8 +86,9 @@ pgCollection::pgCollection(int newType, pgSchema *sch)
     server= database->GetServer();
 }
 
+
 pgCollection::pgCollection(int newType, pgaJob *jb)
-: pgObject(newType, typesList[newType].typName)
+: pgObject(newType)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
 	job = jb;
@@ -88,6 +100,26 @@ pgCollection::pgCollection(int newType, pgaJob *jb)
 pgCollection::~pgCollection()
 {
     wxLogInfo(wxT("Destroying a pgCollection object"));
+}
+
+
+bool pgCollection::IsCollectionForType(int objType)
+{
+    if (GetFactory())
+    {
+        pgaFactory *f=pgaFactory::GetFactory(objType);
+        return (f && f->GetCollectionFactory() == GetFactory());
+    }
+    return (GetType() == objType-1);
+}
+
+
+void pgCollection::ShowList(wxTreeCtrl *browser, ctlListView *properties)
+{
+    if (GetFactory())
+        ShowList(((pgaCollectionFactory*)GetFactory())->GetItemTypeName(), browser, properties);
+    else
+        ShowList(typesList[GetType()+1].typName, browser, properties);
 }
 
 
@@ -147,23 +179,12 @@ bool pgCollection::CanCreate()
         case PG_SCHEMAS:
         case SL_CLUSTERS:
             return GetDatabase()->GetCreatePrivilege();
-        case PG_AGGREGATES:
         case PG_CONVERSIONS:
-        case PG_DOMAINS:
-        case PG_FUNCTIONS:
-        case PG_TRIGGERFUNCTIONS:
-        case PG_PROCEDURES:
-        case PG_OPERATORS:
-        case PG_SEQUENCES:
-        case PG_TABLES:
-        case PG_TYPES:
-        case PG_VIEWS:
         case PG_COLUMNS:
         case PG_INDEXES:
         case PG_RULES:
         case PG_TRIGGERS:
             return GetSchema()->GetCreatePrivilege();
-        case PG_OPERATORCLASSES:
         default:
             return false;
     }
@@ -182,18 +203,7 @@ int pgCollection::GetIcon()
         case PG_LANGUAGES:          return PGICON_LANGUAGE;
         case PG_SCHEMAS:            return PGICON_SCHEMA;
         case PG_TABLESPACES:        return PGICON_TABLESPACE;
-        case PG_AGGREGATES:         return PGICON_AGGREGATE;
         case PG_CONVERSIONS:        return PGICON_CONVERSION;
-        case PG_DOMAINS:            return PGICON_DOMAIN;
-        case PG_FUNCTIONS:          return PGICON_FUNCTION;
-        case PG_TRIGGERFUNCTIONS:   return PGICON_TRIGGERFUNCTION;
-        case PG_PROCEDURES:         return PGICON_PROCEDURE;
-        case PG_OPERATORS:          return PGICON_OPERATOR;
-        case PG_OPERATORCLASSES:    return PGICON_OPERATORCLASS;
-        case PG_SEQUENCES:          return PGICON_SEQUENCE;
-        case PG_TABLES:             return PGICON_TABLE;
-        case PG_TYPES:              return PGICON_TYPE;
-        case PG_VIEWS:              return PGICON_VIEW;
         case PG_COLUMNS:            return PGICON_COLUMN;
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;
@@ -202,7 +212,13 @@ int pgCollection::GetIcon()
 		case PGA_STEPS:				return PGAICON_STEP;
 		case PGA_SCHEDULES:			return PGAICON_SCHEDULE;
         case SL_CLUSTERS:           return SLICON_CLUSTER;
-        default:    return 0;
+        default:
+        {
+            pgaFactory *objFactory=pgaFactory::GetFactory(GetType());
+            if (objFactory)
+                return objFactory->GetIconId();
+            return 0;
+        }
     }
 }
 
@@ -255,44 +271,11 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
             case PG_TABLESPACES:
                 pgTablespace::ReadObjects(this, browser);
                 break;
-            case PG_AGGREGATES:
-                pgAggregate::ReadObjects(this, browser);
-                break;
             case PG_CASTS:
                 pgCast::ReadObjects(this, browser);
                 break;
             case PG_CONVERSIONS:
                 pgConversion::ReadObjects(this, browser);
-                break;
-            case PG_DOMAINS:
-                pgDomain::ReadObjects(this, browser);
-                break;
-            case PG_FUNCTIONS:
-                pgFunction::ReadObjects(this, browser);
-                break;
-            case PG_TRIGGERFUNCTIONS:
-                pgTriggerFunction::ReadObjects(this, browser);
-                break;
-            case PG_PROCEDURES:
-                pgProcedure::ReadObjects(this, browser);
-                break;
-            case PG_OPERATORS:
-                pgOperator::ReadObjects(this, browser);
-                break;
-            case PG_OPERATORCLASSES:
-                pgOperatorClass::ReadObjects(this, browser);
-                break;
-            case PG_SEQUENCES:
-                pgSequence::ReadObjects(this, browser);
-                break;
-            case PG_TABLES:
-                pgTable::ReadObjects(this, browser);
-                break;
-            case PG_TYPES:
-                pgType::ReadObjects(this, browser);
-                break;
-            case PG_VIEWS:
-                pgView::ReadObjects(this, browser);
                 break;
             case PG_COLUMNS:
                 pgColumn::ReadObjects(this, browser);
@@ -319,13 +302,20 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
                 slCluster::ReadObjects(this, browser);
                 break;
             default:
-                return;
+            {
+                if (GetFactory())
+                    GetFactory()->CreateObjects(this, browser);
+                else
+                    return;
+            }
         }
     }
 
     UpdateChildCount(browser);
     if (properties)
-        ShowList(typesList[GetType()+1].typName, browser, properties);
+    {
+        ShowList(browser, properties);
+    }
 }
 
 
@@ -335,9 +325,6 @@ void pgCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
     {
         case PG_DATABASES:
             pgDatabase::ShowStatistics(this, statistics);
-            break;
-        case PG_TABLES:
-            pgTable::ShowStatistics(this, statistics);
             break;
         case PG_TABLESPACES:
             pgTablespace::ShowStatistics(this, statistics);

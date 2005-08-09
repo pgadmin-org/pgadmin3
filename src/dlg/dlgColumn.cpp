@@ -52,7 +52,7 @@ dlgColumn::dlgColumn(frmMain *frame, pgColumn *node, pgTable *parentNode)
     SetIcon(wxIcon(column_xpm));
     column=node;
     table=parentNode;
-    wxASSERT(!table || table->GetType() == PG_TABLE);
+    wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
 
     objectType=PG_COLUMN;
     txtAttstattarget->SetValidator(numericValidator);

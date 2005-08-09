@@ -23,15 +23,23 @@
 
 class pgCollection;
 
+class pgaViewFactory : public pgaFactory
+{
+public:
+    pgaViewFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaViewFactory viewFactory;
+
+
 class pgView : public pgRuleObject
 {
 public:
     pgView(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgView();
 
-    int GetIcon() { return PGICON_VIEW; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);

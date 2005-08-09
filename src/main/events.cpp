@@ -49,7 +49,6 @@
 #include "frmBackup.h"
 #include "frmRestore.h"
 #include "frmIndexcheck.h"
-#include "frmGrantWizard.h"
 #include "frmMainConfig.h"
 #include "frmHbaConfig.h"
 #include "frmUpdate.h"
@@ -63,7 +62,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_SQL,                       frmMain::OnSql)
     EVT_MENU(MNU_MAINTENANCE,               frmMain::OnMaintenance)
     EVT_MENU(MNU_INDEXCHECK,                frmMain::OnIndexcheck)
-    EVT_MENU(MNU_GRANTWIZARD,               frmMain::OnGrantWizard)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
     EVT_MENU(MNU_HINT,                      frmMain::OnHint)
@@ -101,18 +99,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_NEW+PG_CAST,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_SCHEMA,             frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_TABLESPACE,         frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_AGGREGATE,          frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_CONVERSION,         frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_DOMAIN,             frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_FUNCTION,           frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_TRIGGERFUNCTION,    frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_PROCEDURE,          frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_OPERATOR,           frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_OPERATORCLASS,      frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_SEQUENCE,           frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_TABLE,              frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_TYPE,               frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_VIEW,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_COLUMN,             frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_PRIMARYKEY,         frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_FOREIGNKEY,         frmMain::OnNew)
@@ -432,7 +419,7 @@ void frmMain::OnHbaConfig(wxCommandEvent& event)
 
 void frmMain::OnCount(wxCommandEvent &event)
 {
-    if (currentObject && currentObject->GetType() == PG_TABLE)
+    if (currentObject && currentObject->GetMetaType() == PGM_TABLE)
     {
         ((pgTable*)currentObject)->UpdateRows();
         
@@ -521,14 +508,13 @@ void frmMain::OnIndexcheck(wxCommandEvent &ev)
 }
 
 
-void frmMain::OnGrantWizard(wxCommandEvent &ev)
+void frmMain::OnAction(wxCommandEvent &ev)
 {
-    if (currentObject)
-    {
-        frmGrantWizard *frm=new frmGrantWizard(this, currentObject);
-        frm->Go();
-    }
+    actionFactory *af=actionFactory::GetFactory(ev.GetId());
+    if (af && currentObject)
+        af->StartDialog(this, currentObject);
 }
+
 
 
 void frmMain::OnSql(wxCommandEvent &ev)
@@ -570,7 +556,7 @@ void frmMain::ViewData(bool filter)
 {
     if (!currentObject)
         return;
-    if (currentObject->GetType() != PG_TABLE && currentObject->GetType() != PG_VIEW)
+    if (currentObject->GetMetaType() != PGM_TABLE && currentObject->GetMetaType() != PGM_VIEW)
         return;
 
     pgDatabase *db=((pgSchemaObject*)currentObject)->GetDatabase();
@@ -838,7 +824,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
          canDisconnect=false,
          canReindex=false,
          canIndexCheck=false,
-         canGrantWizard=false,
          canCount=false;
 
     bool showTree=true;
@@ -872,21 +857,8 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             break;
 
         case PG_DATABASE:
-        case PG_SCHEMAS:
         case PG_SCHEMA:
-        case PG_TABLES:
-            canIndexCheck=true;
-            canGrantWizard=true;
-            break;
-        case PG_FUNCTIONS:
-        case PG_PROCEDURES:
-        case PG_TRIGGERFUNCTIONS:
-        case PG_SEQUENCES:
-        case PG_VIEWS:
-            canGrantWizard=true;
-            break;
-        case PG_TABLE:
-            canCount=true;
+        case PG_SCHEMAS:
         case PG_CONSTRAINTS:
         case PG_FOREIGNKEY:
             canIndexCheck=true;
@@ -900,25 +872,10 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_LANGUAGE:
         case PG_TABLESPACES:
         case PG_TABLESPACE:
-        case PG_AGGREGATES:
-        case PG_AGGREGATE:
         case PG_CASTS:
         case PG_CAST:
         case PG_CONVERSIONS:
         case PG_CONVERSION:
-        case PG_DOMAINS:
-        case PG_DOMAIN:
-        case PG_OPERATORS:
-        case PG_OPERATOR:
-        case PG_FUNCTION:
-        case PG_TRIGGERFUNCTION:
-        case PG_PROCEDURE:
-        case PG_OPERATORCLASSES:
-        case PG_OPERATORCLASS:
-        case PG_SEQUENCE:
-        case PG_TYPES:
-        case PG_TYPE:
-        case PG_VIEW:
         case PG_CHECK:
         case PG_COLUMNS:
         case PG_COLUMN:
@@ -954,9 +911,28 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case SL_SUBSCRIPTION:
         case SL_SUBSCRIPTIONS:
             break;
-        default:        
-            showTree=false;
+        default:
+        {
+            pgaFactory *factory=data->GetFactory();
+            if (factory)
+            {
+                showTree=true;
+                switch (factory->GetMetaType())
+                {
+                    case PGM_TABLE:
+                        if (!data->IsCollection())
+                            canCount=true;
+                        canIndexCheck=true;
+                    case PGM_FUNCTION:
+                    case PGM_SEQUENCE:
+                    case PGM_VIEW:
+                        break;
+                }
+            }
+            else
+                showTree=false;
 			break;
+        }
     }
 
     if (showTree)
@@ -1017,13 +993,13 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     bool canHint=data->GetCanHint();
     toolsMenu->Enable(MNU_CONNECT, canConnect);
     toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
-    toolsMenu->Enable(MNU_GRANTWIZARD, canGrantWizard);
     toolsMenu->Enable(MNU_STARTSERVICE, canStart);
     toolsMenu->Enable(MNU_STOPSERVICE, canStop);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
     viewMenu->Enable(MNU_COUNT, canCount);
     helpMenu->Enable(MNU_HINT, canHint);
     toolBar->EnableTool(MNU_HINT, canHint);
+    actionFactory::CheckMenu(data, menuBar, toolBar);
 //    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
 }
 
@@ -1156,7 +1132,9 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
 //    appendIfEnabled(MNU_INDEXCHECK);
     appendIfEnabled(MNU_BACKUP);
     appendIfEnabled(MNU_RESTORE);
-    appendIfEnabled(MNU_GRANTWIZARD);
+
+    actionFactory::AppendEnabledMenus(menuBar, treeContextMenu);
+
     appendIfEnabled(MNU_STARTSERVICE);
     appendIfEnabled(MNU_STOPSERVICE);
     appendIfEnabled(MNU_CONNECT);

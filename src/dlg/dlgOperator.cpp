@@ -22,9 +22,6 @@
 #include "pgOperator.h"
 #include "pgDatatype.h"
 
-// Images
-#include "images/operator.xpm"
-
 
 // pointer to controls
 #define cbLeftType          CTRL_COMBOBOX2("cbLeftType")
@@ -60,10 +57,15 @@ BEGIN_EVENT_TABLE(dlgOperator, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
+
+dlgProperty *pgaOperatorFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgOperator(frame, (pgOperator*)node, (pgSchema*)parent);
+}
+
 dlgOperator::dlgOperator(frmMain *frame, pgOperator *node, pgSchema *sch)
 : dlgTypeProperty(frame, wxT("dlgOperator"))
 {
-    SetIcon(wxIcon(operator_xpm));
     schema=sch;
     oper=node;
 
@@ -179,7 +181,7 @@ int dlgOperator::Go(bool modal)
 
 pgObject *dlgOperator::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgOperator::ReadObjects(collection, 0,
+    pgObject *obj=operatorFactory.CreateObjects(collection, 0,
          wxT("\n   AND op.oprname=") + qtString(GetName()) +
          wxT("\n   AND op.oprnamespace=") + schema->GetOidStr() +
          wxT("\n   AND op.oprleft = ") + GetTypeOid(cbLeftType->GetGuessedSelection()) +
@@ -446,3 +448,15 @@ wxString dlgOperator::GetSql()
 
     return sql;
 }
+
+
+#include "images/operator.xpm"
+
+pgaOperatorFactory::pgaOperatorFactory() 
+: pgaFactory(__("Operator"), __("New Operator"), __("Create a new Operator."), operator_xpm)
+{
+}
+
+
+pgaOperatorFactory operatorFactory;
+static pgaCollectionFactory cf(&operatorFactory, __("Operators"));

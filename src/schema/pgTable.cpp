@@ -29,7 +29,7 @@
 #include "pgfeatures.h"
 
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_TABLE, newName)
+: pgSchemaObject(newSchema, tableFactory, newName)
 {
     inheritedTableCount=0;
     rowsCounted = false;
@@ -470,6 +470,82 @@ void pgTable::ShowHint(frmMain *form, bool force)
 }
 
 
+
+
+pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgTable *table=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->IsCollection())
+            table = (pgTable*)tableFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+    }
+    return table;
+}
+
+
+///////////////////////////////////////////////////////////
+
+
+pgTableCollection::pgTableCollection(pgaFactory &factory, pgSchema *sch)
+: pgSchemaCollection(factory, sch)
+{
+}
+
+    
+void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    wxLogInfo(wxT("Displaying statistics for tables on ")+ GetSchema()->GetIdentifier());
+
+    bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
+
+    // Add the statistics view columns
+    statistics->ClearAll();
+    statistics->AddColumn(_("Table"), 100);
+    statistics->AddColumn(_("Tuples inserted"), 50);
+    statistics->AddColumn(_("Tuples updated"), 50);
+    statistics->AddColumn(_("Tuples deleted"), 50);
+    if (hasSize)
+        statistics->AddColumn(_("Size"), 60);
+
+    wxString sql=wxT("SELECT st.relname, n_tup_ins, n_tup_upd, n_tup_del");
+    if (hasSize)
+        sql += wxT(", pg_size_pretty(pg_relation_size(st.relid)")
+               wxT(" + CASE WHEN cl.reltoastrelid = 0 THEN 0 ELSE pg_relation_size(cl.reltoastrelid) + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0) END")
+               wxT(" + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=st.relid)::int8, 0)) AS size");
+    
+    sql += wxT("\n  FROM pg_stat_all_tables st")
+           wxT("  JOIN pg_class cl on cl.oid=st.relid\n")
+	       wxT(" WHERE schemaname = ") + qtString(GetSchema()->GetName())
+	    +  wxT("\n ORDER BY relname");
+
+    pgSet *stats = GetDatabase()->ExecuteSet(sql);
+
+    if (stats)
+    {
+        long pos=0;
+        while (!stats->Eof())
+        {
+            statistics->InsertItem(pos, stats->GetVal(wxT("relname")), PGICON_STATISTICS);
+            statistics->SetItem(pos, 1, stats->GetVal(wxT("n_tup_ins")));
+            statistics->SetItem(pos, 2, stats->GetVal(wxT("n_tup_upd")));
+            statistics->SetItem(pos, 3, stats->GetVal(wxT("n_tup_del")));
+            if (hasSize)
+                statistics->SetItem(pos, 4, stats->GetVal(wxT("size")));
+            stats->MoveNext();
+            pos++;
+        }
+
+	    delete stats;
+    }
+}
+
+
+///////////////////////////////////////////////////////////
+
+
 void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     wxString sql =
@@ -505,23 +581,7 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-
-pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
-{
-    pgTable *table=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_TABLES)
-            table = (pgTable*)ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
-    }
-    return table;
-}
-
-
-
-pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaTableFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgTable *table=0;
 
@@ -586,50 +646,14 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 }
 
 
-void pgTable::ShowStatistics(pgCollection *collection, ctlListView *statistics)
+#include "images/table.xpm"
+
+pgaTableFactory::pgaTableFactory() 
+: pgaFactory(__("Table"), __("New Table"), __("Create a new Table."), table_xpm)
 {
-    wxLogInfo(wxT("Displaying statistics for tables on ")+ collection->GetSchema()->GetIdentifier());
-
-    bool hasSize=collection->GetConnection()->HasFeature(FEATURE_SIZE);
-
-    // Add the statistics view columns
-    statistics->ClearAll();
-    statistics->AddColumn(_("Table"), 100);
-    statistics->AddColumn(_("Tuples inserted"), 50);
-    statistics->AddColumn(_("Tuples updated"), 50);
-    statistics->AddColumn(_("Tuples deleted"), 50);
-    if (hasSize)
-        statistics->AddColumn(_("Size"), 60);
-
-    wxString sql=wxT("SELECT st.relname, n_tup_ins, n_tup_upd, n_tup_del");
-    if (hasSize)
-        sql += wxT(", pg_size_pretty(pg_relation_size(st.relid)")
-               wxT(" + CASE WHEN cl.reltoastrelid = 0 THEN 0 ELSE pg_relation_size(cl.reltoastrelid) + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0) END")
-               wxT(" + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=st.relid)::int8, 0)) AS size");
-    
-    sql += wxT("\n  FROM pg_stat_all_tables st")
-           wxT("  JOIN pg_class cl on cl.oid=st.relid\n")
-	       wxT(" WHERE schemaname = ") + qtString(collection->GetSchema()->GetName())
-	    +  wxT("\n ORDER BY relname");
-
-    pgSet *stats = collection->GetDatabase()->ExecuteSet(sql);
-
-    if (stats)
-    {
-        long pos=0;
-        while (!stats->Eof())
-        {
-            statistics->InsertItem(pos, stats->GetVal(wxT("relname")), PGICON_STATISTICS);
-            statistics->SetItem(pos, 1, stats->GetVal(wxT("n_tup_ins")));
-            statistics->SetItem(pos, 2, stats->GetVal(wxT("n_tup_upd")));
-            statistics->SetItem(pos, 3, stats->GetVal(wxT("n_tup_del")));
-            if (hasSize)
-                statistics->SetItem(pos, 4, stats->GetVal(wxT("size")));
-            stats->MoveNext();
-            pos++;
-        }
-
-	    delete stats;
-    }
+    metaType = PGM_TABLE;
 }
 
+
+pgaTableFactory tableFactory;
+static pgaCollectionFactory cf(&tableFactory, __("Tables"));

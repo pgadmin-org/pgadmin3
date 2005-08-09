@@ -19,6 +19,8 @@
 #include "pgIndexConstraint.h"
 #include "pgCheck.h"
 #include "pgForeignKey.h"
+#include "pgSchema.h"
+#include "pgTable.h"
 
 
 
@@ -70,7 +72,7 @@ void pgConstraints::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVi
         wxTreeItemId id=browser->GetItemParent(GetId());
         wxASSERT(id);
         table = (pgTable*)browser->GetItemData(id);
-        wxASSERT(table && table->GetType() == PG_TABLE);
+        wxASSERT(table && table->GetMetaType() == PGM_TABLE);
 
         pgPrimaryKey::ReadObjects(this, browser);
         pgForeignKey::ReadObjects(this, browser);

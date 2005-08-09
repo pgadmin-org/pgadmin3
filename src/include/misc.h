@@ -59,7 +59,17 @@ wxString ExecProcess(const wxString &cmd);
 #endif
 
 
-enum        // depends on frmMain browserImages->Add order!
+
+enum 
+{
+    PGM_UNKNOWN,
+    PGM_FUNCTION,
+    PGM_TABLE,
+    PGM_VIEW,
+    PGM_SEQUENCE
+};
+
+enum        // depends on pgaFactory browserImages->Add order!
 {
     PGICON_PROPERTY,
     PGICON_STATISTICS,
@@ -70,18 +80,10 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_LANGUAGE,
     PGICON_SCHEMA,
     PGICON_TABLESPACE,
-    PGICON_AGGREGATE,
-    PGICON_FUNCTION,
-    PGICON_OPERATOR,
-    PGICON_SEQUENCE,
-    PGICON_TABLE,
-    PGICON_TYPE,
-    PGICON_VIEW,
     PGICON_USER,
     PGICON_GROUP,
     PGICON_BADDATABASE,
     PGICON_CLOSEDDATABASE,
-    PGICON_DOMAIN,
     PGICON_CHECK,
     PGICON_COLUMN,
     PGICON_INDEX,
@@ -90,9 +92,6 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_FOREIGNKEY,
     PGICON_CAST,
     PGICON_CONVERSION,
-    PGICON_OPERATORCLASS,
-    PGICON_TRIGGERFUNCTION,
-    PGICON_PROCEDURE,
     PGICON_CONSTRAINT,
     PGICON_PRIMARYKEY,
     PGICON_UNIQUE,

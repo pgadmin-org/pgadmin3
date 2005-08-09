@@ -127,7 +127,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     SetAcceleratorTable(accel);
 
 
-    if (obj->GetType() == PG_TABLE)
+    if (obj->GetMetaType() == PGM_TABLE)
     {
         pgTable *table = (pgTable*)obj;
 
@@ -141,7 +141,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
         if (!orderBy.IsEmpty())
             orderBy += wxT(" ASC");
     }
-    else if (obj->GetType() == PG_VIEW)
+    else if (obj->GetFactory() == &viewFactory)
     {
         pgView *view=(pgView*)obj;
 

@@ -96,6 +96,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     mainForm=frame;
     database=0;
     connection=0;
+    factory=0;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
 
@@ -129,7 +130,11 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
 
 dlgProperty::~dlgProperty()
 {
-    wxString prop = wxT("Properties/") + wxString(typesList[objectType].typName);
+    wxString prop=wxT("Properties/");
+    if (factory)
+        prop += factory->GetTypeName();
+    else
+        prop += wxString(typesList[objectType].typName);
 	settings->Write(prop, GetPosition());
 
     if (GetWindowStyle() & wxTHICK_FRAME)
@@ -146,7 +151,11 @@ wxString dlgProperty::GetHelpPage() const
         page=obj->GetHelpPage(false);
     else
     {
-        page=wxT("pg/sql-create") + wxString(typesList[objectType].typName).Lower();
+        page=wxT("pg/sql-create");
+        if (factory)
+            page += wxString(factory->GetTypeName()).Lower();
+        else
+            page += wxString(typesList[objectType].typName).Lower();
     }
     return page;
 }
@@ -192,7 +201,11 @@ void dlgProperty::EnableOK(bool enable)
 int dlgProperty::Go(bool modal)
 {
     // restore previous position and size, if applicable
-    wxString prop = wxT("Properties/") + wxString(typesList[objectType].typName);
+    wxString prop = wxT("Properties/");
+    if (factory)
+        prop += factory->GetTypeName();
+    else
+        prop += wxString(typesList[objectType].typName);
 
     if (GetWindowStyle() & wxTHICK_FRAME)
         SetSize(settings->Read(prop, GetSize()));
@@ -230,7 +243,12 @@ int dlgProperty::Go(bool modal)
             readOnly=false;
         }
 
-        SetTitle(wxString(wxGetTranslation(typesList[objectType].typName)) + wxT(" ") + GetObject()->GetFullIdentifier());
+        wxString typeName;
+        if (factory)
+            typeName = factory->GetTypeName();
+        else
+            typeName = typesList[objectType].typName;
+        SetTitle(wxString(wxGetTranslation(typeName)) + wxT(" ") + GetObject()->GetFullIdentifier());
     }
     else
     {
@@ -238,8 +256,16 @@ int dlgProperty::Go(bool modal)
         if (btn)
             btn->Hide();
         if (objectType >= 0)
-            SetTitle(wxGetTranslation(typesList[objectType].newString));
+        {
+            if (factory)
+                SetTitle(wxGetTranslation(factory->GetNewString()));
+            else
+                SetTitle(wxGetTranslation(typesList[objectType].newString));
+        }
     }
+    if (statusBar)
+        statusBar->SetStatusText(wxEmptyString);
+
     if (modal)
         return ShowModal();
     else
@@ -694,33 +720,9 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_LANGUAGES:
             dlg=new dlgLanguage(frame, (pgLanguage*)currentNode);
             break;
-        case PG_AGGREGATE:
-        case PG_AGGREGATES:
-            dlg=new dlgAggregate(frame, (pgAggregate*)currentNode, (pgSchema*)parentNode);
-            break;
         case PG_CONVERSION:
         case PG_CONVERSIONS:
             dlg=new dlgConversion(frame, (pgConversion*)currentNode, (pgSchema*)parentNode);
-            break;
-        case PG_DOMAIN:
-        case PG_DOMAINS:
-            dlg=new dlgDomain(frame, (pgDomain*)currentNode, (pgSchema*)parentNode);
-            break;
-        case PG_TRIGGERFUNCTION:
-            if (parentNode->GetType() == PG_TRIGGER)
-                parentNode = ((pgTrigger*)parentNode)->GetSchema();
-        case PG_FUNCTION:
-        case PG_FUNCTIONS:
-        case PG_TRIGGERFUNCTIONS:
-            dlg=new dlgFunction(frame, (pgFunction*)currentNode, (pgSchema*)parentNode);
-            break;
-        case PG_PROCEDURE:
-        case PG_PROCEDURES:
-            dlg=new dlgProcedure(frame, (pgFunction*)currentNode, (pgSchema*)parentNode);
-            break;
-        case PG_TABLE:
-        case PG_TABLES:
-            dlg=new dlgTable(frame, (pgTable*)currentNode, (pgSchema*)parentNode);
             break;
         case PG_COLUMN:
         case PG_COLUMNS:
@@ -742,25 +744,9 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_CHECK:
             dlg=new dlgCheck(frame, (pgCheck*)currentNode, (pgTable*)parentNode);
             break;
-        case PG_SEQUENCE:
-        case PG_SEQUENCES:
-            dlg=new dlgSequence(frame, (pgSequence*)currentNode, (pgSchema*)parentNode);
-            break;
         case PG_TRIGGER:
         case PG_TRIGGERS:
             dlg=new dlgTrigger(frame, (pgTrigger*)currentNode, (pgTable*)parentNode);
-            break;
-        case PG_TYPE:
-        case PG_TYPES:
-            dlg=new dlgType(frame, (pgType*)currentNode, (pgSchema*)parentNode);
-            break;
-        case PG_OPERATOR:
-        case PG_OPERATORS:
-            dlg=new dlgOperator(frame, (pgOperator*)currentNode, (pgSchema*)parentNode);
-            break;
-        case PG_VIEW:
-        case PG_VIEWS:
-            dlg=new dlgView(frame, (pgView*)currentNode, (pgSchema*)parentNode);
             break;
         case PG_RULE:
         case PG_RULES:
@@ -803,7 +789,25 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
             break;
 
         default:
+        {
+            pgaFactory *factory=pgaFactory::GetFactory(type);
+
+            if (factory)
+            {
+                dlg = factory->CreateDialog(frame, currentNode, parentNode);
+                if (dlg)
+                {
+                    if (factory->IsCollection())
+                        factory = ((pgaCollectionFactory*)factory)->GetItemFactory();
+                    wxASSERT(factory);
+
+                    dlg->factory = factory;
+                    dlg->objectType = factory->GetId();
+                    dlg->SetIcon(wxIcon(factory->GetImage()));
+                }
+            }
             break;
+        }
     }
 
     if (dlg)
@@ -828,7 +832,10 @@ bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 
     if (dlg)
     {
-        dlg->SetTitle(wxGetTranslation(typesList[dlg->objectType].newString));
+        if (dlg->factory)
+            dlg->SetTitle(wxGetTranslation(dlg->factory->GetNewString()));
+        else
+            dlg->SetTitle(wxGetTranslation(typesList[dlg->objectType].newString));
 
         dlg->CreateAdditionalPages();
         dlg->Go();
@@ -853,10 +860,16 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
 
     if (dlg)
     {
-        dlg->SetTitle(wxString(wxGetTranslation(typesList[dlg->objectType].typName)) + wxT(" ") + node->GetFullIdentifier());
+        wxString typeName;
+        if (dlg->factory)
+            typeName = dlg->factory->GetTypeName();
+        else
+            typeName = typesList[dlg->objectType].typName;
+        dlg->SetTitle(wxString(wxGetTranslation(typeName)) + wxT(" ") + node->GetFullIdentifier());
 
         dlg->CreateAdditionalPages();
         dlg->Go();
+
         dlg->CheckChange();
     }
     else

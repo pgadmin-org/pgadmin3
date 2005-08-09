@@ -187,9 +187,6 @@ int dlgJob::Go(bool modal)
 				item=mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
 			}
 		}
-
-
-        CheckChange();
     }
     else
     {

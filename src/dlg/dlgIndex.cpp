@@ -49,7 +49,7 @@ dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *nod
 {
     SetIcon(wxIcon(index_xpm));
     index=node;
-    wxASSERT(!table || table->GetType() == PG_TABLE);
+    wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
 
     lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
 }

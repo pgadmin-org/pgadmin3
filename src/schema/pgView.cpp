@@ -17,11 +17,11 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgView.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 
 
 pgView::pgView(pgSchema *newSchema, const wxString& newName)
-: pgRuleObject(newSchema, PG_VIEW, newName)
+: pgRuleObject(newSchema, viewFactory, newName)
 {
 }
 
@@ -102,15 +102,17 @@ pgObject *pgView::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_VIEWS)
-            view = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND c.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            view = viewFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND c.oid=") + GetOidStr());
     }
     return view;
 }
 
 
+///////////////////////////////////////////////////////
 
-pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+
+pgObject *pgaViewFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgView *view=0;
 
@@ -153,3 +155,16 @@ pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     }
     return view;
 }
+
+
+#include "images/view.xpm"
+
+pgaViewFactory::pgaViewFactory() 
+: pgaFactory(__("View"), __("New View"), __("Create a new View."), view_xpm)
+{
+    metaType = PGM_VIEW;
+}
+
+
+pgaViewFactory viewFactory;
+static pgaCollectionFactory cf(&viewFactory, __("Views"));

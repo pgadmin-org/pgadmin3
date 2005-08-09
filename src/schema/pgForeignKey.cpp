@@ -19,7 +19,7 @@
 #include "pgTable.h"
 #include "pgForeignKey.h"
 #include "pgCollection.h"
-
+#include "pgTable.h"
 
 pgForeignKey::pgForeignKey(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, PG_FOREIGNKEY, newName)
@@ -139,7 +139,7 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         while (item)
         {
             pgTable *table=(pgTable*)browser->GetItemData(item);
-            if (table->GetType() == PG_TABLE)
+            if (table->GetFactory() == &tableFactory)
             {
                 coveringIndex = table->GetCoveringIndex(browser, fkColumns);
                 break;

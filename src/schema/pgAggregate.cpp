@@ -17,11 +17,11 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgAggregate.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 
 
 pgAggregate::pgAggregate(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_AGGREGATE, newName)
+: pgSchemaObject(newSchema, aggregateFactory, newName)
 {
 }
 
@@ -106,15 +106,17 @@ pgObject *pgAggregate::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_AGGREGATES)
-            aggregate = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND aggfnoid::oid=") + GetOidStr());
+        if (obj->IsCollection())
+            aggregate = aggregateFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND aggfnoid::oid=") + GetOidStr());
     }
     return aggregate;
 }
 
 
+////////////////////////////////////////////////////////////////////////
 
-pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+
+pgObject *pgaAggregateFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgAggregate *aggregate=0;
     wxString sql=
@@ -194,3 +196,15 @@ pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
     }
     return aggregate;
 }
+
+
+#include "images/aggregate.xpm"
+
+pgaAggregateFactory::pgaAggregateFactory() 
+: pgaFactory(__("Aggregate"), __("New Aggregate"), __("Create a new Aggregate."), aggregate_xpm)
+{
+}
+
+
+pgaAggregateFactory aggregateFactory;
+static pgaCollectionFactory cf(&aggregateFactory, __("Aggregates"));

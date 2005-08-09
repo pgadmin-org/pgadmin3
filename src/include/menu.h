@@ -49,7 +49,6 @@ enum
     MNU_VIEWFILTEREDDATA,
     MNU_MAINTENANCE,
     MNU_INDEXCHECK,
-    MNU_GRANTWIZARD,
     MNU_BACKUP,
     MNU_RESTORE,
     MNU_CREATE,
@@ -97,7 +96,8 @@ enum
     MNU_SLONY_MOVESET,
     MNU_SLONY_SUBMENU,
     MNU_RECENT, // leave space for recent file entries
-    MNU_NEW=MNU_RECENT+15
+    MNU_NEW=MNU_RECENT+15,
+    MNU_ACTION=MNU_NEW+1000
 };
 
 

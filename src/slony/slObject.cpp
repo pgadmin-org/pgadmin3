@@ -93,7 +93,7 @@ void slCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
 
     UpdateChildCount(browser);
     if (properties)
-        ShowList(typesList[GetType()+1].typName, browser, properties);
+        ShowList(browser, properties);
 }
 
 
@@ -112,8 +112,8 @@ int slSetCollection::GetIcon()
     switch (GetType())
     {
         case SL_SUBSCRIPTIONS:      return SLICON_SUBSCRIPTION;
-        case SL_SEQUENCES:          return PGICON_SEQUENCE;
-        case SL_TABLES:             return PGICON_TABLE;
+        case SL_SEQUENCES:          return -1;
+        case SL_TABLES:             return -1;
         default:    return 0;
     }
 }
@@ -161,7 +161,7 @@ void slSetCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlList
 
     UpdateChildCount(browser);
     if (properties)
-        ShowList(typesList[GetType()+1].typName, browser, properties);
+        ShowList(browser, properties);
 }
 
 
@@ -192,7 +192,7 @@ void slNodeCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlLis
 
     UpdateChildCount(browser);
     if (properties)
-        ShowList(typesList[GetType()+1].typName, browser, properties);
+        ShowList(browser, properties);
 }
 
 

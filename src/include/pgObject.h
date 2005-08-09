@@ -42,19 +42,8 @@ enum PG_OBJTYPE
     PG_LANGUAGES,       PG_LANGUAGE,
     PG_SCHEMAS,         PG_SCHEMA,
     PG_TABLESPACES,     PG_TABLESPACE,
-    PG_AGGREGATES,      PG_AGGREGATE,
     PG_CASTS,           PG_CAST,
     PG_CONVERSIONS,     PG_CONVERSION,
-    PG_DOMAINS,         PG_DOMAIN,
-    PG_FUNCTIONS,       PG_FUNCTION,
-    PG_TRIGGERFUNCTIONS,PG_TRIGGERFUNCTION,
-    PG_PROCEDURES,      PG_PROCEDURE,
-    PG_OPERATORS,       PG_OPERATOR,
-    PG_OPERATORCLASSES, PG_OPERATORCLASS,
-    PG_SEQUENCES,       PG_SEQUENCE,
-    PG_TABLES,          PG_TABLE,
-    PG_TYPES,           PG_TYPE,
-    PG_VIEWS,           PG_VIEW,
     PG_COLUMNS,         PG_COLUMN,
     PG_INDEXES,         PG_INDEX,
     PG_RULES,           PG_RULE,
@@ -89,23 +78,30 @@ public:
 
 extern pgTypes typesList[];
 
+class pgaFactory;
+
 // Class declarations
 class pgObject : public wxTreeItemData
 {
 protected:
-    pgObject(int newType, const wxString& newName);
+    pgObject(int newType, const wxString& newName=wxEmptyString);
+    pgObject(pgaFactory &factory, const wxString& newName=wxEmptyString);
 
 public:
 
     static wxString GetPrivileges(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
     static int GetTypeId(const wxString &typname);
 
+    pgaFactory *GetFactory() { return factory; }
+    int GetType() const;
+    int GetMetaType() const;
+    wxString GetTypeName() const;
+    wxString GetTranslatedTypeName() const;
+    virtual int GetIcon();
+
     virtual void ShowProperties() const {};
     virtual pgDatabase *GetDatabase() const { return 0; }
     virtual pgServer *GetServer() const { return 0; }
-    int GetType() const { return type; }
-    wxString GetTypeName() const { return typesList[type].typName; }
-    wxString GetTranslatedTypeName() const { return wxString(wxGetTranslation(typesList[type].typName)); }
     void iSetName(const wxString& newVal) { name = newVal; }
     wxString GetName() const { return name; }
     OID GetOid() const { return oid; }
@@ -150,7 +146,6 @@ public:
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
     virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded=false) {return false; }
     virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
-    virtual int GetIcon()=0;
 
     virtual bool NeedCascadedDrop() { return false; }
     virtual bool CanCreate() { return false; }
@@ -174,6 +169,7 @@ protected:
     bool expandedKids, needReread;
     wxString sql;
     bool hintShown;
+    pgaFactory *factory;
     
 private:
     static void AppendRight(wxString &rights, const wxString& acl, wxChar c, wxChar *rightName);
@@ -182,6 +178,8 @@ private:
     wxString name, owner, comment, acl;
     int type;
     OID oid;
+
+    friend class pgaFactory;
 };
 
 
@@ -189,6 +187,7 @@ private:
 class pgServerObject : public pgObject
 {
 public:
+    pgServerObject(pgaFactory &factory, const wxString& newName=wxEmptyString) : pgObject(factory, newName) {}
     pgServerObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
 
     void iSetServer(pgServer *s) { server=s; }
@@ -210,6 +209,7 @@ protected:
 class pgDatabaseObject : public pgObject
 {
 public:
+    pgDatabaseObject(pgaFactory &factory, const wxString& newName=wxEmptyString) : pgObject(factory, newName) {}
     pgDatabaseObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
 
     void iSetDatabase(pgDatabase *newDatabase) { database = newDatabase; }
@@ -236,6 +236,8 @@ protected:
 class pgSchemaObject : public pgDatabaseObject
 {
 public:
+    pgSchemaObject(pgSchema *newSchema, pgaFactory &factory, const wxString& newName=wxEmptyString) : pgDatabaseObject(factory, newName) 
+        { tableOid=0; SetSchema(newSchema); wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
     pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) : pgDatabaseObject(newType, newName)
         { tableOid=0; SetSchema(newSchema); wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
 
@@ -271,6 +273,7 @@ protected:
 class pgRuleObject : public pgSchemaObject
 {
 public:
+    pgRuleObject(pgSchema *newSchema, pgaFactory &factory, const wxString& newName=wxEmptyString) : pgSchemaObject(newSchema, factory, newName) {}
     pgRuleObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) 
         : pgSchemaObject(newSchema, newType, newName) {}
 

@@ -17,11 +17,8 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
+#include "pgCollection.h"
 #include "pgDatabase.h"
-
-class pgCollection;
 
 
 enum
@@ -66,5 +63,16 @@ private:
     long schemaTyp;
     bool createPrivilege;
 };
+
+
+/////////////////////////////////////////////////////
+
+class pgSchemaCollection : public pgCollection
+{
+public:
+    pgSchemaCollection(pgaFactory &factory, pgSchema *sch);
+    bool CanCreate();
+};
+
 
 #endif

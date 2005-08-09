@@ -17,11 +17,18 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
+#include "pgSchema.h"
 
 class pgCollection;
+class pgaOperatorClassFactory : public pgaFactory
+{
+public:
+    pgaOperatorClassFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaOperatorClassFactory operatorClassFactory;
+
 
 class pgOperatorClass : public pgSchemaObject
 {
@@ -29,9 +36,7 @@ public:
     pgOperatorClass(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgOperatorClass();
 
-    int GetIcon() { return PGICON_OPERATORCLASS; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
     wxString GetFullName() const { return GetName() + wxT("(") + GetAccessMethod() + wxT(")"); }
         wxString GetAccessMethod() const { return accessMethod; }
@@ -60,6 +65,14 @@ private:
     wxArrayString functions, quotedFunctions;
     wxArrayString functionOids;
     bool opcDefault;
+};
+
+
+class pgOperatorClassCollection : public pgSchemaCollection
+{
+public:
+    pgOperatorClassCollection(pgaFactory &factory, pgSchema *sch) : pgSchemaCollection(factory, sch) {}
+    bool CanCreate() { return false; }
 };
 
 #endif

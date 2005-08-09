@@ -119,8 +119,8 @@ void slSet::ShowDependsOn(frmMain *form, ctlListView *list, const wxString &wh)
             int icon=-1;
             switch (typestr.c_str()[0])
             {
-                case 'S':   typname = _("Sequence");   icon = PGICON_SEQUENCE; break;
-                case 'r':   typname = _("Table");      icon = PGICON_TABLE;    break;
+                case 'S':   typname = _("Sequence");   icon = -1; break;
+                case 'r':   typname = _("Table");      icon = -1;    break;
             }
 
             list->AppendItem(icon, typname, name, comment);

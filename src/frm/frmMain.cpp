@@ -45,6 +45,7 @@
 #include "pgCollection.h"
 #include "frmHelp.h"
 #include "frmHint.h"
+#include "frmGrantWizard.h"
 
 
 #include <wx/listimpl.cpp>
@@ -53,65 +54,18 @@ WX_DEFINE_LIST(windowList);
 // Icons
 #include "images/pgAdmin3.xpm"
 #include "images/elephant32.xpm"
+
 #include "images/drop.xpm"
 #include "images/vacuum.xpm"
 #include "images/viewdata.xpm"
 #include "images/viewfiltereddata.xpm"
 #include "images/properties.xpm"
-#include "images/property.xpm"
-#include "images/public.xpm"
 #include "images/refresh.xpm"
 #include "images/hint2.xpm"
 #include "images/help2.xpm"
-
-#include "images/aggregate.xpm"
-#include "images/baddatabase.xpm"
-#include "images/check.xpm"
-#include "images/closeddatabase.xpm"
-#include "images/tablespace.xpm"
-#include "images/cast.xpm"
-#include "images/conversion.xpm"
-#include "images/column.xpm"
 #include "images/connect.xpm"
 #include "images/create.xpm"
-#include "images/database.xpm"
-#include "images/domain.xpm"
-#include "images/function.xpm"
-#include "images/group.xpm"
-#include "images/index.xpm"
-#include "images/language.xpm"
-#include "images/foreignkey.xpm"
-#include "images/namespace.xpm"
-#include "images/operator.xpm"
-#include "images/operatorclass.xpm"
-#include "images/rule.xpm"
-#include "images/sequence.xpm"
-#include "images/server.xpm"
-#include "images/servers.xpm"
-#include "images/serverbad.xpm"
 #include "images/sql.xpm"
-#include "images/statistics.xpm"
-#include "images/table.xpm"
-#include "images/trigger.xpm"
-#include "images/type.xpm"
-#include "images/user.xpm"
-#include "images/view.xpm"
-#include "images/triggerfunction.xpm"
-#include "images/constraints.xpm"
-#include "images/primarykey.xpm"
-#include "images/unique.xpm"
-#include "images/job.xpm"
-#include "images/jobdisabled.xpm"
-#include "images/step.xpm"
-#include "images/schedule.xpm"
-#include "images/slcluster.xpm"
-#include "images/slnode.xpm"
-#include "images/slpath.xpm"
-#include "images/sllisten.xpm"
-#include "images/slset.xpm"
-#include "images/slset2.xpm"
-#include "images/slsubscription.xpm"
-#include "images/slsubscription2.xpm"
 
 
 #if wxDIALOG_UNIT_COMPATIBILITY
@@ -162,9 +116,32 @@ frmMain::frmMain(const wxString& title)
 
     // Build menus
     menuBar = new wxMenuBar();
-
-        // File Menu
     fileMenu = new wxMenu();
+    editMenu = new wxMenu();
+    toolsMenu = new wxMenu();
+    viewMenu = new wxMenu();
+    helpMenu = new wxMenu();
+    toolBar=CreateToolBar();
+    toolBar->SetToolBitmapSize(wxSize(32, 32));
+
+
+    toolBar->AddTool(MNU_ADDSERVER, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(refresh_xpm), _("Refresh the selected object."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_CREATE, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_DROP, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_SQL, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_VIEWFILTEREDDATA, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_MAINTENANCE, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm), _("Display helpful hints on current object."));
+    toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
+
+    wxMenu *cfgMenu=new wxMenu();
+
     fileMenu->Append(MNU_SAVEDEFINITION, _("&Save definition..."),_("Save the SQL definition of the selected object."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_ADDSERVER, _("&Add Server..."),          _("Add a connection to a server."));
@@ -182,10 +159,8 @@ frmMain::frmMain(const wxString& title)
 #ifdef __WXMAC__
     wxApp::s_macExitMenuItemId = MNU_EXIT;
 #endif
-    menuBar->Append(fileMenu, _("&File"));
 
-    // Edit Menu
-    editMenu = new wxMenu();
+
     newMenu=new wxMenu();
     editMenu->Append(MNU_NEWOBJECT, _("New &Object"), newMenu,    _("Create a new object."));
     editMenu->AppendSeparator();
@@ -193,10 +168,7 @@ frmMain::frmMain(const wxString& title)
     editMenu->Append(MNU_DROP, _("&Delete/Drop\tDel"),            _("Delete/Drop the selected object."));
     editMenu->Append(MNU_DROPCASCADED, _("Drop cascaded"),        _("Drop the selected object and all objects dependent on it."));
     editMenu->Append(MNU_PROPERTIES, _("&Properties"),    		  _("Display/edit the properties of the selected object."));
-    menuBar->Append(editMenu, _("&Edit"));
 
-    // Tools Menu
-    toolsMenu = new wxMenu();
     toolsMenu->Append(MNU_STARTSERVICE, _("Start service"),       _("Start PostgreSQL Service"));
     toolsMenu->Append(MNU_STOPSERVICE, _("Stop service"),         _("Stop PostgreSQL Service"));
     toolsMenu->Append(MNU_CONNECT, _("&Connect"),                 _("Connect to the selected server."));
@@ -209,9 +181,10 @@ frmMain::frmMain(const wxString& title)
     toolsMenu->Append(MNU_BACKUP, _("&Backup"),                   _("Creates a backup of the current database to a local file"));
     toolsMenu->Append(MNU_RESTORE, _("&Restore"),                 _("Restores a backup from a local file"));
 //    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
-    toolsMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),        _("Grants rights to multiple objects"));
 
-    wxMenu *cfgMenu=new wxMenu();
+
+    new grantWizardFactory(toolsMenu, toolBar);
+
     cfgMenu->Append(MNU_MAINCONFIG, wxT("postgresql.conf"),       _("Edit general server configuration file."));
     cfgMenu->Append(MNU_HBACONFIG, wxT("pg_hba.conf"),            _("Edit server access configuration file."));
     toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server configuration"), cfgMenu);
@@ -228,18 +201,12 @@ frmMain::frmMain(const wxString& title)
 
     toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
 
-    menuBar->Append(toolsMenu, _("&Tools"));
-
-    // View Menu
-    viewMenu = new wxMenu();
     viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),              _("Refresh the selected object."));
     viewMenu->Append(MNU_COUNT, _("&Count"),                      _("Count rows in the selected object."));
-    menuBar->Append(viewMenu, _("&Display"));
 
-    // Help Menu
-    helpMenu = new wxMenu();
+
     helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
     helpMenu->Append(MNU_FAQ, _("pgAdmin III &FAQ"),              _("Frequently asked questions about pgAdmin III."));
     helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
@@ -253,12 +220,16 @@ frmMain::frmMain(const wxString& title)
 #ifdef __WXMAC__
     wxApp::s_macAboutMenuItemId = MNU_ABOUT;
 #endif 
-    menuBar->Append(helpMenu, _("&Help"));
+
 
     newContextMenu = new wxMenu();
     treeContextMenu = 0;
 
-    // Add the Menubar and set some options
+    menuBar->Append(fileMenu, _("&File"));
+    menuBar->Append(editMenu, _("&Edit"));
+    menuBar->Append(toolsMenu, _("&Tools"));
+    menuBar->Append(viewMenu, _("&Display"));
+    menuBar->Append(helpMenu, _("&Help"));
     SetMenuBar(menuBar);
 
     editMenu->Enable(MNU_NEWOBJECT, false);
@@ -283,24 +254,7 @@ frmMain::frmMain(const wxString& title)
 
     SetAcceleratorTable(accel);
 
-    toolBar=CreateToolBar();
-    toolBar->SetToolBitmapSize(wxSize(32, 32));
-
-    toolBar->AddTool(MNU_ADDSERVER, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(refresh_xpm), _("Refresh the selected object."), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_CREATE, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_DROP, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_SQL, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_VIEWFILTEREDDATA, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_MAINTENANCE, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm), _("Display helpful hints on current object."));
-    toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
-
+    
     // Display the bar and configure buttons. 
     toolBar->Realize();
     SetButtons();
@@ -338,61 +292,6 @@ frmMain::frmMain(const wxString& title)
     horizontal->SplitHorizontally(listViews, sqlPane, splitpos);
     horizontal->SetMinimumPaneSize(50);
 
-    //Setup the global imagelist
-	imageList = new wxImageList(16, 16, true, 50);
-    imageList->Add(wxIcon(property_xpm));
-    imageList->Add(wxIcon(statistics_xpm));
-    imageList->Add(wxIcon(servers_xpm));
-    imageList->Add(wxIcon(server_xpm));
-    imageList->Add(wxIcon(serverbad_xpm));
-    imageList->Add(wxIcon(database_xpm));
-    imageList->Add(wxIcon(language_xpm));
-    imageList->Add(wxIcon(namespace_xpm));
-    imageList->Add(wxIcon(tablespace_xpm));
-    imageList->Add(wxIcon(aggregate_xpm));
-    imageList->Add(wxIcon(function_xpm));
-    imageList->Add(wxIcon(operator_xpm));
-    imageList->Add(wxIcon(sequence_xpm));
-    imageList->Add(wxIcon(table_xpm));
-    imageList->Add(wxIcon(type_xpm));
-    imageList->Add(wxIcon(view_xpm));
-    imageList->Add(wxIcon(user_xpm));
-    imageList->Add(wxIcon(group_xpm));
-    imageList->Add(wxIcon(baddatabase_xpm));
-    imageList->Add(wxIcon(closeddatabase_xpm));
-    imageList->Add(wxIcon(domain_xpm));
-    imageList->Add(wxIcon(check_xpm));
-    imageList->Add(wxIcon(column_xpm));
-    imageList->Add(wxIcon(index_xpm));
-    imageList->Add(wxIcon(rule_xpm));
-    imageList->Add(wxIcon(trigger_xpm));
-    imageList->Add(wxIcon(foreignkey_xpm));
-    imageList->Add(wxIcon(cast_xpm));
-    imageList->Add(wxIcon(conversion_xpm));
-    imageList->Add(wxIcon(operatorclass_xpm));
-    imageList->Add(wxIcon(triggerfunction_xpm));
-    imageList->Add(wxIcon(function_xpm));       // procedure
-    imageList->Add(wxIcon(constraints_xpm));
-    imageList->Add(wxIcon(primarykey_xpm));
-    imageList->Add(wxIcon(unique_xpm));
-    imageList->Add(wxIcon(public_xpm));
-
-    // job, jobdisabled, step, schedule
-    imageList->Add(wxIcon(job_xpm));
-    imageList->Add(wxIcon(jobdisabled_xpm));
-    imageList->Add(wxIcon(step_xpm));
-    imageList->Add(wxIcon(schedule_xpm));
-
-    // slony cluster, node, path, listen, set, subscription
-    imageList->Add(wxIcon(slcluster_xpm));
-    imageList->Add(wxIcon(slnode_xpm));
-    imageList->Add(wxIcon(slpath_xpm));
-    imageList->Add(wxIcon(sllisten_xpm));
-    imageList->Add(wxIcon(slset_xpm));
-    imageList->Add(wxIcon(slset2_xpm));
-    imageList->Add(wxIcon(slsubscription_xpm));
-    imageList->Add(wxIcon(slsubscription2_xpm));
-
     browser->SetImageList(imageList);
 
     // Add the root node
@@ -413,6 +312,9 @@ frmMain::frmMain(const wxString& title)
     dependsOn->SetBackgroundColour(background);
     referencedBy->SetBackgroundColour(background);
     sqlPane->SetBackgroundColour(background);
+
+    pgaFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnNew));
+    actionFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnAction));
 
     // Load servers
     RetrieveServers();
@@ -1128,8 +1030,8 @@ void frmMain::SetButtons(pgObject *obj)
 	toolsMenu->Enable(MNU_BACKUP, backup && !backupExecutable.IsNull());
 	toolsMenu->Enable(MNU_RESTORE, restore && !restoreExecutable.IsNull());
 //    toolsMenu->Enable(MNU_INDEXCHECK, false);
-    toolsMenu->Enable(MNU_GRANTWIZARD, false);
-	toolsMenu->Enable(MNU_STATUS, status);
+
+    toolsMenu->Enable(MNU_STATUS, status);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
     toolsMenu->Enable(MNU_STARTSERVICE, false);

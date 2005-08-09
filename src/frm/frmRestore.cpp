@@ -79,7 +79,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
     if (object->GetType() != PG_DATABASE)
     {
-        if (object->GetType() == PG_TABLE)
+        if (object->GetMetaType() == PGM_TABLE)
         {
             chkOnlySchema->SetValue(false);
             chkOnlyData->SetValue(true);
@@ -227,15 +227,21 @@ void frmRestore::OnChange(wxCommandEvent &ev)
                 }
                 break;
             }
-            case PG_TABLE:
-            case PG_FUNCTION:
-            case PG_PROCEDURE:
+            default:
+                break;
+        }
+        switch(object->GetMetaType())
+        {
+            case PGM_TABLE:
+            case PGM_FUNCTION:
             {
                 singleValid=true;
                 stSingleObject->SetLabel(object->GetTranslatedTypeName() + wxT(" ") + object->GetName());
 
                 break;
             }
+            default:
+                break;
         }
     }
     btnOK->Enable(filenameValid && singleValid);
@@ -322,12 +328,17 @@ wxString frmRestore::getCmdPart2(int step)
 
                     break;
                 }
-                case PG_TABLE:
+                default:
+                    break;
+            }
+            switch (object->GetMetaType())
+            {
+                case PGM_TABLE:
                     cmd.Append(wxT(" -t ") + object->GetQuotedIdentifier());
                     break;
-                case PG_FUNCTION:
-                case PG_PROCEDURE:
-                    cmd.Append(wxT(" -P ") + object->GetQuotedIdentifier());
+                case PGM_FUNCTION:
+                    break;
+                default:
                     break;
             }
         }
@@ -431,8 +442,17 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
             wxString name = str.Mid(str.Find(type)+type.Length()+1).BeforeLast(' ');
             if (id >= 0)
             {
-                typname = wxGetTranslation(typesList[id].typName);
-                icon = typesList[id].typeIcon;
+                pgaFactory *factory=pgaFactory::GetFactory(id);
+                if (id >= 0)
+                {
+                    typname=factory->GetTypeName();
+                    icon = factory->GetIconId();
+                }
+                else
+                {
+                    typname = wxGetTranslation(typesList[id].typName);
+                    icon = typesList[id].typeIcon;
+                }
             }
             else if (typname.IsEmpty())
                 typname = type;

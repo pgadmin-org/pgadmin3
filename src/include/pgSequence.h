@@ -22,6 +22,14 @@
 #include "pgDatabase.h"
 
 class pgCollection;
+class pgaSequenceFactory : public pgaFactory
+{
+public:
+    pgaSequenceFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaSequenceFactory sequenceFactory;
 
 class pgSequence : public pgSchemaObject
 {
@@ -29,10 +37,8 @@ public:
     pgSequence(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgSequence();
 
-    int GetIcon() { return PGICON_SEQUENCE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     void UpdateValues();

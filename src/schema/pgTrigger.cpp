@@ -127,7 +127,7 @@ void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *
             delete triggerFunction;
 
         // append function here
-        triggerFunction=pgFunction::AppendFunctions(this, GetSchema(), browser, wxT(
+        triggerFunction=functionFactory.AppendFunctions(this, GetSchema(), browser, wxT(
             "WHERE pr.oid=") + NumToStr(functionOid) + wxT("::oid\n"));
         if (triggerFunction)
         {

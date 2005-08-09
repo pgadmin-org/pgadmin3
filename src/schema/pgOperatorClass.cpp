@@ -17,12 +17,12 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgOperatorClass.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 #include "pgFunction.h"
 
 
 pgOperatorClass::pgOperatorClass(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_OPERATORCLASS, newName)
+: pgSchemaObject(newSchema, operatorClassFactory, newName)
 {
 }
 
@@ -139,7 +139,7 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlList
 
                 // We won't build a PG_FUNCTIONS collection under OperatorClass, so we create
                 // temporary function items
-                pgFunction *function=pgFunction::AppendFunctions(this, GetSchema(), 0, wxT(" WHERE pr.oid=") + amproc);
+                pgFunction *function=functionFactory.AppendFunctions(this, GetSchema(), 0, wxT(" WHERE pr.oid=") + amproc);
                 if (function)
                 {
                     functions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") + function->GetFullName());
@@ -185,15 +185,17 @@ pgObject *pgOperatorClass::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_OPERATORCLASSES)
-            operatorClass = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND op.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            operatorClass = operatorClassFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND op.oid=") + GetOidStr());
     }
     return operatorClass;
 }
 
 
+///////////////////////////////////////////////////
 
-pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+
+pgObject *pgaOperatorClassFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgOperatorClass *operatorClass=0;
 
@@ -234,3 +236,21 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
     }
     return operatorClass;
 }
+
+
+#include "images/operatorclass.xpm"
+
+pgaOperatorClassFactory::pgaOperatorClassFactory() 
+: pgaFactory(__("OperatorClass"), __("New OperatorClass"), __("Create a new OperatorClass."), operatorclass_xpm)
+{
+}
+
+
+dlgProperty *pgaOperatorClassFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return 0;
+}
+
+
+pgaOperatorClassFactory operatorClassFactory;
+static pgaCollectionFactory cf(&operatorClassFactory, __("OperatorClasss"));

@@ -22,15 +22,22 @@
 #include "pgDatabase.h"
 
 
+class pgaOperatorFactory : public pgaFactory
+{
+public:
+    pgaOperatorFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaOperatorFactory operatorFactory;
+
 class pgOperator : public pgSchemaObject
 {
 public:
     pgOperator(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgOperator();
 
-    int GetIcon() { return PGICON_OPERATOR; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     virtual wxString GetQuotedIdentifier() const { return GetName(); }
     bool CanDropCascaded() { return true; }
 

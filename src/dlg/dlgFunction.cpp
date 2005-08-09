@@ -20,12 +20,9 @@
 #include "ctl/ctlSQLBox.h"
 #include "dlgFunction.h"
 #include "pgFunction.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 #include "pgDatatype.h"
 
-
-// Images
-#include "images/function.xpm"
 
 
 // pointer to controls
@@ -80,10 +77,15 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaFunctionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgFunction(frame, (pgFunction*)node, (pgSchema*)parent);
+}
+
+
 dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
 : dlgSecurityProperty(frame, node, wxT("dlgFunction"), wxT("EXECUTE"), "X")
 {
-    SetIcon(wxIcon(function_xpm));
     schema=sch;
     function=node;
     isProcedure = false;
@@ -102,6 +104,12 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
     btnChange->Disable();
 }
 
+
+
+dlgProperty *pgaProcedureFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgProcedure(frame, (pgFunction*)node, (pgSchema*)parent);
+}
 
 dlgProcedure::dlgProcedure(frmMain *frame, pgFunction *node, pgSchema *sch)
 : dlgFunction(frame, node, sch)
@@ -134,7 +142,7 @@ int dlgFunction::Go(bool modal)
     // the listview's column that contains the type name
     typeColNo = (connection->BackendMinimumVersion(7, 5) ? 1 : 0);
 
-    if (objectType != PG_TRIGGERFUNCTION)
+    if (factory == &triggerFunctionFactory)
     {
         if (typeColNo)
             lstArguments->CreateColumns(0, _("Name"), _("Type"));
@@ -170,7 +178,7 @@ int dlgFunction::Go(bool modal)
         while (!lang->Eof())
         {
             wxString language=lang->GetVal(0);
-            if (objectType != PG_TRIGGERFUNCTION || !language.IsSameAs(wxT("SQL"), false))
+            if (factory != &triggerFunctionFactory || !language.IsSameAs(wxT("SQL"), false))
                 cbLanguage->Append(language);
             lang->MoveNext();
         }
@@ -181,7 +189,7 @@ int dlgFunction::Go(bool modal)
     {
         // edit mode
 
-        if (objectType != PG_TRIGGERFUNCTION)
+        if (factory != &triggerFunctionFactory)
         {
             wxStringTokenizer argtypes(function->GetArgTypes(), wxT(", "));
             size_t cnt=0;
@@ -250,13 +258,13 @@ int dlgFunction::Go(bool modal)
             types.Add(tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
 
             cbDatatype->Append(tr.GetSchemaPrefix() + dt.FullName());
-            if (objectType != PG_TRIGGERFUNCTION)
+            if (factory == &triggerFunctionFactory)
                 cbReturntype->Append(tr.GetSchemaPrefix() + dt.FullName());
             tr.MoveNext();
         }
 
         long sel;
-        if (objectType == PG_TRIGGERFUNCTION)
+        if (factory == &triggerFunctionFactory)
         {
             cbReturntype->Append(wxT("trigger"));
             cbReturntype->SetSelection(0);
@@ -292,7 +300,7 @@ pgObject *dlgFunction::CreateObject(pgCollection *collection)
 
     sql += wxT("\n   AND proargtypes[") + NumToStr(argCount) + wxT("] = 0\n");
 
-    pgObject *obj=pgFunction::AppendFunctions(collection, collection->GetSchema(), 0, sql);
+    pgObject *obj=functionFactory.AppendFunctions(collection, collection->GetSchema(), 0, sql);
     return obj;
 }
 

@@ -17,7 +17,7 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgConversion.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 
 
 pgConversion::pgConversion(pgSchema *newSchema, const wxString& newName)

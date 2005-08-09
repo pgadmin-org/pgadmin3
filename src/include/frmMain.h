@@ -99,7 +99,6 @@ private:
     void OnSql(wxCommandEvent& event);
     void OnMaintenance(wxCommandEvent& event);
     void OnIndexcheck(wxCommandEvent& event);
-    void OnGrantWizard(wxCommandEvent& event);
     void OnStatus(wxCommandEvent& event);
     void OnBackup(wxCommandEvent& event);
     void OnRestore(wxCommandEvent& event);
@@ -131,6 +130,7 @@ private:
     void OnClose(wxCloseEvent& event);
 
     void OnNew(wxCommandEvent& event);
+    void OnAction(wxCommandEvent& event);
     void OnCreate(wxCommandEvent &ev);
     void OnDrop(wxCommandEvent &ev);
     void OnDropCascaded(wxCommandEvent &ev);

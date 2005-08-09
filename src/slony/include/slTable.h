@@ -22,14 +22,13 @@
 #include "pgDatabase.h"
 #include "slObject.h"
 
-
 class slTable : public slSetObject
 {
 public:
     slTable(slSet *set, const wxString& newName = wxT(""));
     ~slTable();
 
-    int GetIcon() { return PGICON_TABLE; }
+    int GetIcon() { return -1; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(slSetCollection *coll, wxTreeCtrl *browser);

@@ -20,7 +20,7 @@
 
 #include "pgObject.h"
 #include "pgColumn.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 
 
 pgColumn::pgColumn(pgSchema *newSchema, const wxString& newName)

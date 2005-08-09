@@ -23,7 +23,6 @@
 #include "pgDatatype.h"
 
 // Images
-#include "images/aggregate.xpm"
 
 
 // pointer to controls
@@ -47,10 +46,16 @@ BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaAggregateFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgAggregate(frame, (pgAggregate*)node, (pgSchema*)parent);
+}
+
+
 dlgAggregate::dlgAggregate(frmMain *frame, pgAggregate *node, pgSchema *sch)
 : dlgTypeProperty(frame, wxT("dlgAggregate"))
 {
-    SetIcon(wxIcon(aggregate_xpm));
+    SetIcon(wxIcon(aggregateFactory.GetImage()));
     schema=sch;
     aggregate=node;
 }
@@ -111,7 +116,7 @@ int dlgAggregate::Go(bool modal)
 
 pgObject *dlgAggregate::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgAggregate::ReadObjects(collection, 0,
+    pgObject *obj=aggregateFactory.CreateObjects(collection, 0,
          wxT("\n   AND proname=") + qtString(GetName()) +
          wxT("\n   AND pronamespace=") + schema->GetOidStr());
 

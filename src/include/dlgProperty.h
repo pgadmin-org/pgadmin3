@@ -22,6 +22,7 @@ class pgSchema;
 class pgTable;
 class frmMain;
 class ctlSecurityPanel;
+class pgaFactory;
 
 #define stComment       CTRL_STATIC("stComment")
 #define lstColumns      CTRL_LISTVIEW("lstColumns")
@@ -102,6 +103,7 @@ protected:
     int objectType;
     bool readOnly;
     bool processing;
+    pgaFactory *factory;
 
 private:
     bool tryUpdate(wxTreeItemId collectionItem);

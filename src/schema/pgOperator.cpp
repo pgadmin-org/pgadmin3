@@ -17,11 +17,11 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgOperator.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 
 
 pgOperator::pgOperator(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_OPERATOR, newName)
+: pgSchemaObject(newSchema, operatorFactory, newName)
 {
 }
 
@@ -148,15 +148,18 @@ pgObject *pgOperator::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_OPERATORS)
-            oper = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND op.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            oper = operatorFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND op.oid=") + GetOidStr());
     }
     return oper;
 }
 
 
 
-pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+//////////////////////////////////////////////////////
+
+
+pgObject *pgaOperatorFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgOperator *oper=0;
 

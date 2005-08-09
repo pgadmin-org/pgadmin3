@@ -20,8 +20,17 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgDatabase.h"
+#include "pgSchema.h"
 
 class pgCollection;
+class pgaTableFactory : public pgaFactory
+{
+public:
+    pgaTableFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaTableFactory tableFactory;
 
 class pgTable : public pgSchemaObject
 {
@@ -29,14 +38,11 @@ public:
     pgTable(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTable();
 
-    int GetIcon() { return PGICON_TABLE; }
     wxString GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collectionId, int type);
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowHint(frmMain *form, bool force);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
 
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
-    static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
     bool CanDropCascaded() { return true; }
 
     bool GetHasOids() const { return hasOids; }
@@ -86,6 +92,14 @@ private:
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
         primaryKeyName, primaryKeyColNumbers, tablespace;
     wxArrayString quotedInheritedTablesList;
+};
+
+
+class pgTableCollection : public pgSchemaCollection
+{
+public:
+    pgTableCollection(pgaFactory &factory, pgSchema *sch);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 
 #endif

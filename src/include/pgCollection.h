@@ -18,23 +18,24 @@
 // App headers
 #include "pgAdmin3.h"
 #include "pgObject.h"
-#include "pgSchema.h"
-#include "pgaJob.h"
 
 class pgServer;
 class pgDatabase;
+class pgaJob;
+class pgSchema;
 
 // Class declarations
 class pgCollection : public pgObject
 {
 public:
+    pgCollection(pgaFactory &factory);
     pgCollection(int newType, pgServer *sv);
     pgCollection(int newType, pgDatabase *db);
     pgCollection(int newType, pgSchema *sch);
 	pgCollection(int newType, pgaJob *jb);
     ~pgCollection();
     virtual bool IsCollection() const { return true; }
-    virtual bool IsCollectionForType(int objType) { return GetType() == objType-1; }
+    virtual bool IsCollectionForType(int objType);
 
     pgServer *GetServer() const { return server; }
     pgDatabase *GetDatabase() const { return database; }
@@ -42,14 +43,16 @@ public:
 	pgaJob *GetJob() const { return job; }
 
     int GetIcon();
+    pgaFactory *GetItemFactory() { if (factory) return ((pgaCollectionFactory*)factory)->GetItemFactory(); }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowList(const wxString& name, wxTreeCtrl *browser, ctlListView *properties);
+    void ShowList(wxTreeCtrl *browser, ctlListView *properties);
     void UpdateChildCount(wxTreeCtrl *browser, int substract=0);
     pgObject *FindChild(wxTreeCtrl *browser, const int index);
     bool CanCreate();
 
-private:
+protected:
     pgServer *server;
     pgDatabase *database;
     pgSchema *schema;

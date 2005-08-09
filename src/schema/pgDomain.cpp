@@ -17,12 +17,12 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgDomain.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 #include "pgDatatype.h"
 
 
 pgDomain::pgDomain(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_DOMAIN, newName)
+: pgSchemaObject(newSchema, domainFactory, newName)
 {
 }
 
@@ -117,15 +117,18 @@ pgObject *pgDomain::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_DOMAINS)
-            domain = ReadObjects((pgCollection*)obj, 0, wxT("   AND d.oid=") + GetOidStr() + wxT("\n"));
+        if (obj->IsCollection())
+            domain = domainFactory.CreateObjects((pgCollection*)obj, 0, wxT("   AND d.oid=") + GetOidStr() + wxT("\n"));
     }
     return domain;
 }
 
 
+////////////////////////////////////////////////////
 
-pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+
+
+pgObject *pgaDomainFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgDomain *domain=0;
 
@@ -185,3 +188,14 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     }
     return domain;
 }
+
+#include "images/domain.xpm"
+
+pgaDomainFactory::pgaDomainFactory() 
+: pgaFactory(__("Domain"), __("New Domain"), __("Create a new Domain."), domain_xpm)
+{
+}
+
+
+pgaDomainFactory domainFactory;
+static pgaCollectionFactory cf(&domainFactory, __("Domains"));

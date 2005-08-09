@@ -33,9 +33,6 @@
 
 
 
-// Images
-#include "images/table.xpm"
-
 #define stHasOids       CTRL_STATIC("stHasOids")
 #define chkHasOids      CTRL_CHECKBOX("chkHasOids")
 #define lbTables        CTRL_LISTBOX("lbTables")
@@ -75,10 +72,15 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_BUTTON(wxID_OK,                             dlgTable::OnOK)
 END_EVENT_TABLE();
 
+
+dlgProperty *pgaTableFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgTable(frame, (pgTable*)node, (pgSchema*)parent);
+}
+
 dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
 : dlgSecurityProperty(frame, node, wxT("dlgTable"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
 {
-    SetIcon(wxIcon(table_xpm));
     schema=sch;
     table=node;
 
@@ -168,7 +170,7 @@ int dlgTable::Go(bool modal)
                     if (column->GetColNumber() > 0)
                     {
                         bool inherited = (column->GetInheritedCount() != 0);
-                        int pos=lstColumns->AppendItem((inherited ? PGICON_TABLE : column->GetIcon()), 
+                        int pos=lstColumns->AppendItem((inherited ? tableFactory.GetIconId() : column->GetIcon()), 
                             column->GetName(), column->GetDefinition());
                         previousColumns.Add(column->GetQuotedIdentifier() 
                             + wxT(" ") + column->GetDefinition());
@@ -515,7 +517,7 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgTable::ReadObjects(collection, 0, wxT(
+    pgObject *obj=tableFactory.CreateObjects(collection, 0, wxT(
         "\n   AND rel.relname=") + qtString(name) + wxT(
         "\n   AND rel.relnamespace=") + schema->GetOidStr());
 
@@ -582,7 +584,7 @@ void dlgTable::OnAddTable(wxCommandEvent &ev)
             int row;
             while (!set->Eof())
             {
-                row=lstColumns->AppendItem(PGICON_TABLE, set->GetVal(wxT("attname")), 
+                row=lstColumns->AppendItem(tableFactory.GetIconId(), set->GetVal(wxT("attname")), 
                     wxString::Format(_("Inherited from table %s"), tabname.c_str()));
                 lstColumns->SetItem(row, 2, tabname);
                 set->MoveNext();

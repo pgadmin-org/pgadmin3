@@ -52,7 +52,7 @@ dlgTrigger::dlgTrigger(frmMain *frame, pgTrigger *node, pgTable *parentNode)
     SetIcon(wxIcon(trigger_xpm));
     trigger=node;
     table=parentNode;
-    wxASSERT(!table || table->GetType() == PG_TABLE);
+    wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
 }
 
 

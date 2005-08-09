@@ -1782,6 +1782,10 @@ SOURCE=.\include\base\base.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\base\factory.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\base\pgConnBase.h
 # End Source File
 # Begin Source File
@@ -1959,6 +1963,10 @@ SOURCE=.\base\base.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\base\factory.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\base\pgConnBase.cpp
 # SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
@@ -1991,10 +1999,6 @@ SOURCE=..\CHANGELOG.txt
 # Begin Source File
 
 SOURCE=..\i18n\pgadmin3.lng
-# End Source File
-# Begin Source File
-
-SOURCE=.\tips.txt
 # End Source File
 # Begin Source File
 

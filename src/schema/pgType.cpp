@@ -17,12 +17,12 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgType.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 #include "pgDatatype.h"
 
 
 pgType::pgType(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_TYPE, newName)
+: pgSchemaObject(newSchema, typeFactory, newName)
 {
 }
 
@@ -167,15 +167,17 @@ pgObject *pgType::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_TYPES)
-            type = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND t.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            type = typeFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND t.oid=") + GetOidStr());
     }
     return type;
 }
 
 
+/////////////////////////////////////////////////////////
 
-pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+
+pgObject *pgaTypeFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgType *type=0;
     wxString systemRestriction;
@@ -241,3 +243,15 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     }
     return type;
 }
+
+
+#include "images/type.xpm"
+
+pgaTypeFactory::pgaTypeFactory() 
+: pgaFactory(__("Type"), __("New Type"), __("Create a new Type."), type_xpm)
+{
+}
+
+
+pgaTypeFactory typeFactory;
+static pgaCollectionFactory cf(&typeFactory, __("Types"));

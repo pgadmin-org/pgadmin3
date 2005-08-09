@@ -23,15 +23,23 @@
 
 class pgCollection;
 
+class pgaDomainFactory : public pgaFactory
+{
+public:
+    pgaDomainFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaDomainFactory domainFactory;
+
+
 class pgDomain : public pgSchemaObject
 {
 public:
     pgDomain(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgDomain();
 
-    int GetIcon() { return PGICON_DOMAIN; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     wxString GetBasetype() const { return basetype; }

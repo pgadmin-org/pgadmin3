@@ -20,11 +20,8 @@
 #include "ctl/ctlSQLBox.h"
 #include "dlgView.h"
 #include "pgView.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 
-
-// Images
-#include "images/view.xpm"
 
 
 // pointer to controls
@@ -38,10 +35,14 @@ BEGIN_EVENT_TABLE(dlgView, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaViewFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgView(frame, (pgView*)node, (pgSchema*)parent);
+}
+
 dlgView::dlgView(frmMain *frame, pgView *node, pgSchema *sch)
 : dlgSecurityProperty(frame, node, wxT("dlgView"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCE,TRIGGER"), "arwdRxt")
 {
-    SetIcon(wxIcon(view_xpm));
     schema=sch;
     view=node;
 }
@@ -76,7 +77,7 @@ int dlgView::Go(bool modal)
 
 pgObject *dlgView::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgView::ReadObjects(collection, 0, 
+    pgObject *obj=viewFactory.CreateObjects(collection, 0, 
         wxT("\n   AND c.relname=") + qtString(txtName->GetValue()) +
         wxT("\n   AND c.relnamespace=") + schema->GetOidStr());
     return obj;

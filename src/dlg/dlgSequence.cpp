@@ -20,9 +20,6 @@
 #include "pgSchema.h"
 #include "pgSequence.h"
 
-// Images
-#include "images/sequence.xpm"
-
 
 #define txtIncrement        CTRL_TEXT("txtIncrement")
 #define cbOwner             CTRL_COMBOBOX2("cbOwner")
@@ -45,10 +42,15 @@ BEGIN_EVENT_TABLE(dlgSequence, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaSequenceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgSequence(frame, (pgSequence*)node, (pgSchema*)parent);
+}
+
+
 dlgSequence::dlgSequence(frmMain *frame, pgSequence *node, pgSchema *sch)
 : dlgSecurityProperty(frame, node, wxT("dlgSequence"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
 {
-    SetIcon(wxIcon(sequence_xpm));
     schema=sch;
     sequence=node;
 }
@@ -105,7 +107,7 @@ int dlgSequence::Go(bool modal)
 
 pgObject *dlgSequence::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgSequence::ReadObjects(collection, 0, 
+    pgObject *obj=sequenceFactory.CreateObjects(collection, 0, 
         wxT("   AND relname=") + qtString(GetName()) +
         wxT("\n   AND relnamespace=") + schema->GetOidStr());
          

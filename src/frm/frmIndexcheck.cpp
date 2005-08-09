@@ -149,16 +149,27 @@ void frmIndexcheck::Go()
         case PG_FOREIGNKEY:
             AddObjects(wxT("ct.oid = ") + object->GetOidStr());
             break;
-        case PG_TABLE:
         case PG_CONSTRAINTS:
             AddObjects(wxT("cl.oid = ") + object->GetOidStr());
-            break;
-        case PG_TABLES:
-            AddObjects(wxT("nl.oid = ") + ((pgTable*)object)->GetSchema()->GetOidStr());
             break;
         case PG_SCHEMA:
             AddObjects(wxT("nl.oid = ") + object->GetOidStr());
             break;
+        default:
+        {
+            break;
+        }
+    }
+    switch (object->GetMetaType())
+    {
+        case PGM_TABLE:
+        {
+            if (object->IsCollection())
+                AddObjects(wxT("nl.oid = ") + ((pgTable*)object)->GetSchema()->GetOidStr());
+            else
+            AddObjects(wxT("cl.oid = ") + object->GetOidStr());
+            break;
+        }
         default:
             break;
     }

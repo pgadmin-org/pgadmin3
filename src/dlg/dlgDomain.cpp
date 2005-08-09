@@ -22,9 +22,6 @@
 #include "pgDomain.h"
 #include "pgDatatype.h"
 
-// Images
-#include "images/domain.xpm"
-
 
 // pointer to controls
 #define chkNotNull          CTRL_CHECKBOX("chkNotNull")
@@ -42,10 +39,15 @@ BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaDomainFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgDomain(frame, (pgDomain*)node, (pgSchema*)parent);
+}
+
+
 dlgDomain::dlgDomain(frmMain *frame, pgDomain *node, pgSchema *sch)
 : dlgTypeProperty(frame, wxT("dlgDomain"))
 {
-    SetIcon(wxIcon(domain_xpm));
     schema=sch;
     domain=node;
 
@@ -105,7 +107,7 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgDomain::ReadObjects(collection, 0, 
+    pgObject *obj=domainFactory.CreateObjects(collection, 0, 
         wxT("   AND d.typname=") + qtString(name) + 
         wxT("\n   AND d.typnamespace=") + schema->GetOidStr() +
         wxT("\n"));

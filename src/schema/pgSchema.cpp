@@ -19,6 +19,15 @@
 #include "pgSchema.h"
 #include "pgCollection.h"
 #include "frmMain.h"
+#include "pgDomain.h"
+#include "pgAggregate.h"
+#include "pgFunction.h"
+#include "pgType.h"
+#include "pgSequence.h"
+#include "pgTable.h"
+#include "pgOperator.h"
+#include "pgOperatorClass.h"
+#include "pgView.h"
 
 #include "wx/regex.h"
 
@@ -41,19 +50,19 @@ wxMenu *pgSchema::GetNewMenu()
 
     if (GetCreatePrivilege())
     {
-        AppendMenu(menu, PG_AGGREGATE);
+        aggregateFactory.AppendMenu(menu);
         AppendMenu(menu, PG_CONVERSION);
-        AppendMenu(menu, PG_DOMAIN);
-        AppendMenu(menu, PG_FUNCTION);
-        AppendMenu(menu, PG_TRIGGERFUNCTION);
+        domainFactory.AppendMenu(menu);
+        functionFactory.AppendMenu(menu);
+        triggerFunctionFactory.AppendMenu(menu);
         if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
-            AppendMenu(menu, PG_PROCEDURE);
-        AppendMenu(menu, PG_OPERATOR);
+            procedureFactory.AppendMenu(menu);
+        operatorFactory.AppendMenu(menu);
 //        AppendMenu(menu, PG_OPERATORCLASS);
-        AppendMenu(menu, PG_SEQUENCE);
-        AppendMenu(menu, PG_TABLE);
-        AppendMenu(menu, PG_TYPE);
-        AppendMenu(menu, PG_VIEW);
+        sequenceFactory.AppendMenu(menu);
+        tableFactory.AppendMenu(menu);
+        typeFactory.AppendMenu(menu);
+        viewFactory.AppendMenu(menu);
     }
     return menu;
 }
@@ -104,7 +113,7 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         pgCollection *collection;
 
         // Aggregates
-        collection = new pgCollection(PG_AGGREGATES, this);
+        collection = new pgSchemaCollection(*aggregateFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Conversions
@@ -112,44 +121,44 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         AppendBrowserItem(browser, collection);
 
         // Domains
-        collection = new pgCollection(PG_DOMAINS, this);
+        collection = new pgSchemaCollection(*domainFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Functions
-        collection = new pgCollection(PG_FUNCTIONS, this);
+        collection = new pgSchemaCollection(*functionFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
-        collection = new pgCollection(PG_TRIGGERFUNCTIONS, this);
+        collection = new pgSchemaCollection(*triggerFunctionFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
         {
-            collection = new pgCollection(PG_PROCEDURES, this);
+            collection = new pgSchemaCollection(*procedureFactory.GetCollectionFactory(), this);
             AppendBrowserItem(browser, collection);
         }
 
         // Operators
-        collection = new pgCollection(PG_OPERATORS, this);
+        collection = new pgSchemaCollection(*operatorFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Operator Classes
-        collection = new pgCollection(PG_OPERATORCLASSES, this);
+        collection = new pgOperatorClassCollection(*operatorClassFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Sequences
-        collection = new pgCollection(PG_SEQUENCES, this);
+        collection = new pgSchemaCollection(*sequenceFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Tables
-        collection = new pgCollection(PG_TABLES, this);
+        collection = new pgTableCollection(*tableFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Types
-        collection = new pgCollection(PG_TYPES, this);
+        collection = new pgSchemaCollection(*typeFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Views
-        collection = new pgCollection(PG_VIEWS, this);
+        collection = new pgSchemaCollection(*viewFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
     }
 
@@ -250,7 +259,6 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 }
 
 
-    
 pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
 {
     wxString systemRestriction;
@@ -261,3 +269,19 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
     return ReadObjects(collection, browser, systemRestriction);
 }
 
+
+/////////////////////////////////////////////////////
+
+pgSchemaCollection::pgSchemaCollection(pgaFactory &factory, pgSchema *sch)
+: pgCollection(factory)
+{ 
+    schema = sch;
+    database = schema->GetDatabase();
+    server= database->GetServer();
+}
+
+
+bool pgSchemaCollection::CanCreate()
+{
+    return GetSchema()->GetCreatePrivilege();
+}

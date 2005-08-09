@@ -17,11 +17,11 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgSequence.h"
-#include "pgCollection.h"
+#include "pgSchema.h"
 
 
 pgSequence::pgSequence(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_SEQUENCE, newName)
+: pgSchemaObject(newSchema, sequenceFactory, newName)
 {
 }
 
@@ -134,15 +134,17 @@ pgObject *pgSequence::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_SEQUENCES)
-            sequence = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND cl.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            sequence = sequenceFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND cl.oid=") + GetOidStr());
     }
     return sequence;
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
 
-pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+
+pgObject *pgaSequenceFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgSequence *sequence=0;
 
@@ -179,3 +181,16 @@ pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
     }
     return sequence;
 }
+
+
+#include "images/sequence.xpm"
+
+pgaSequenceFactory::pgaSequenceFactory() 
+: pgaFactory(__("Sequence"), __("New Sequence"), __("Create a new Sequence."), sequence_xpm)
+{
+    metaType = PGM_SEQUENCE;
+}
+
+
+pgaSequenceFactory sequenceFactory;
+static pgaCollectionFactory cf(&sequenceFactory, __("Sequences"));

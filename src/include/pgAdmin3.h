@@ -21,6 +21,7 @@
 #include "ctl/ctlListView.h"
 #include "ctl/ctlComboBox.h"
 #include "dlgClasses.h"
+#include "base/factory.h"
 
 // App headers
 #include "sysSettings.h"

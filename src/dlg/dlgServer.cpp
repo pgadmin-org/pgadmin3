@@ -30,7 +30,6 @@
 #define txtPort         CTRL_TEXT("txtPort")
 #define cbSSL           CTRL_COMBOBOX("cbSSL")
 #define txtUsername     CTRL_TEXT("txtUsername")
-//#define chkNeedPwd      CTRL_CHECKBOX("chkNeedPwd")
 #define stTryConnect    CTRL_STATIC("stTryConnect")
 #define chkTryConnect   CTRL_CHECKBOX("chkTryConnect")
 #define stStorePwd      CTRL_STATIC("stStorePwd")
@@ -49,6 +48,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_TEXT(XRCID("txtPort")  ,                    dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtUsername"),                  dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbSSL"),                    dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkStorePwd"),              dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
     EVT_BUTTON(wxID_OK,                             dlgServer::OnOK)
 END_EVENT_TABLE();
@@ -204,8 +204,6 @@ int dlgServer::Go(bool modal)
     }
 
     int rc=dlgProperty::Go(modal);
-
-    CheckChange();
 
     return rc;
 }
