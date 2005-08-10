@@ -356,12 +356,6 @@ wxWindow *addServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
 }
 
 
-bool controlServiceFactory::CheckEnable(pgObject *obj)
-{
-    return obj && obj->GetType() == PG_SERVER;
-}
-
-
 startServiceFactory::startServiceFactory (wxMenu *mnu, wxToolBar *toolbar)
 {
     mnu->Append(id, _("Start service"), _("Start PostgreSQL Service"));
@@ -378,6 +372,17 @@ wxWindow *startServiceFactory::StartDialog(pgFrame *fr, pgObject *obj)
         form->execSelChange(server->GetId(), true);
     form->EndMsg(rc);
     return 0;
+}
+
+
+bool startServiceFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->GetType() == PG_SERVER)
+    {
+        pgServer *server=(pgServer*)obj;
+        return server->GetServerControllable() && !server->GetServerRunning();
+    }
+    return false;
 }
 
 
@@ -410,6 +415,17 @@ wxWindow *stopServiceFactory::StartDialog(pgFrame *fr, pgObject *obj)
         form->EndMsg(done);
     }
     return 0;
+}
+
+
+bool stopServiceFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->GetType() == PG_SERVER)
+    {
+        pgServer *server=(pgServer*)obj;
+        return server->GetServerControllable() && server->GetServerRunning();
+    }
+    return false;
 }
 
 
@@ -446,6 +462,9 @@ disconnectServerFactory::disconnectServerFactory(wxMenu *mnu, wxToolBar *toolbar
 wxWindow *disconnectServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
 {
     frmMain *form=(frmMain*)fr;
+    pgServer *server=(pgServer*)obj;
+    server->Disconnect(form);
+    server->UpdateIcon(form->GetBrowser());
     form->GetBrowser()->DeleteChildren(obj->GetId());
     form->execSelChange(obj->GetId(), true);
     return 0;
@@ -455,7 +474,7 @@ wxWindow *disconnectServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
 bool disconnectServerFactory::CheckEnable(pgObject *obj)
 {
     if (obj && obj->GetType() == PG_SERVER)
-        return !((pgServer*)obj)->GetConnected();
+        return ((pgServer*)obj)->GetConnected();
 
     return false;
 }

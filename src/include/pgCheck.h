@@ -30,7 +30,7 @@ public:
     ~pgCheck();
     void SetSchema(pgSchema *newSchema) { schema = newSchema; }
     pgSchema *GetSchema() const {return schema; }
-    int GetIcon() { return PGICON_CHECK; }
+    int GetIconId() { return PGICON_CHECK; }
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));

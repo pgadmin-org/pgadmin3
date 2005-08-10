@@ -54,6 +54,7 @@
 #include "frmRestore.h"
 #include "frmMaintenance.h"
 #include "frmStatus.h"
+#include "frmPassword.h"
 #include "frmQuery.h"
 #include "frmEditGrid.h"
 #include "dlgServer.h"
@@ -147,7 +148,7 @@ frmMain::frmMain(const wxString& title)
     toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
 
-    fileMenu->Append(MNU_PASSWORD, _("C&hange password..."),      _("Change your password."));
+    menuFactories.Add(new passwordFactory(fileMenu, 0));
     fileMenu->AppendSeparator();
     optionsFactory *optFact=new optionsFactory(fileMenu, 0);
     menuFactories.Add(optFact);
@@ -178,8 +179,6 @@ frmMain::frmMain(const wxString& title)
 
     menuFactories.Add(new backupFactory(toolsMenu, 0));
     menuFactories.Add(new restoreFactory(toolsMenu, 0));
-//    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
-
 
     menuFactories.Add(new grantWizardFactory(toolsMenu, 0));
     menuFactories.Add(new mainConfigFactory(cfgMenu, 0));
@@ -242,7 +241,6 @@ frmMain::frmMain(const wxString& title)
     treeContextMenu = 0;
 
     editMenu->Enable(MNU_NEWOBJECT, false);
-    fileMenu->Enable(MNU_PASSWORD, false);
     viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
 
     // Status bar
@@ -324,6 +322,7 @@ frmMain::frmMain(const wxString& title)
 
     pgaFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnNew));
     actionFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnAction));
+    actionFactory::CheckMenu(0, menuBar, toolBar);
 
     // Load servers
     RetrieveServers();
@@ -394,7 +393,7 @@ void frmMain::Refresh(pgObject *data)
 }
 
 
-void frmMain::ShowStatistics(pgObject *data, int sel)
+void frmMain::ShowObjStatistics(pgObject *data, int sel)
 {
     switch (sel)
     {
@@ -440,7 +439,7 @@ void frmMain::OnPageChange(wxNotebookEvent& event)
     if (!data)
         return;
 
-    ShowStatistics(data, event.GetSelection());
+    ShowObjStatistics(data, event.GetSelection());
 }
 
 
@@ -514,10 +513,10 @@ bool frmMain::checkAlive()
                                         }
                                         if (closeIt)
                                         {
-                                            browser->DeleteChildren(db->GetId());
-                                            browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
-                                            browser->SetItemImage(db->GetId(), PGICON_CLOSEDDATABASE, wxTreeItemIcon_Selected);
                                             db->Disconnect();
+
+                                            browser->DeleteChildren(db->GetId());
+                                            db->UpdateIcon(browser);
                                         }
                                     }
                                 }
@@ -955,15 +954,9 @@ void frmMain::SetButtons(pgObject *obj)
          drop=false,
          dropCascaded=false,
          properties=false,
-         sql=false,
-         viewData=false,
-         backup=false,
-         restore=false,
-         status=false,
          set=false,
          setissubscribed=false,
-         cluster=false,
-         hint=false;
+         cluster=false;
 
     if (obj)
     {
@@ -974,9 +967,6 @@ void frmMain::SetButtons(pgObject *obj)
         drop = obj->CanDrop();
         dropCascaded = obj->CanDropCascaded();
         properties = obj->CanEdit();
-        viewData = obj->CanView();
-        hint = obj->GetCanHint();
-        status = server != 0 && server->GetSuperUser();
 
         switch (obj->GetType())
         {
@@ -989,19 +979,6 @@ void frmMain::SetButtons(pgObject *obj)
                 set=true;
                 if (((slSet*)obj)->GetSubscriptionCount() > 0)
                     setissubscribed = true;
-                break;
-            case PG_SERVERS:
-            case PG_SERVER:
-            case PG_TABLESPACES:
-            case PG_TABLESPACE:
-            case PG_GROUPS:
-            case PG_GROUP:
-            case PG_USERS:
-            case PG_USER:
-                sql=false;
-                break;
-            default:
-                sql=true;
                 break;
         }
     }

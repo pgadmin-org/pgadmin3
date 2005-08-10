@@ -16,8 +16,6 @@
 // wxWindows headers
 #include <wx/wx.h>
 
-// Images
-#include "images/tablespace.xpm"
 
 // App headers
 #include "misc.h"
@@ -27,6 +25,11 @@
 
 // pointer to controls
 #define txtLocation     CTRL_TEXT("txtLocation")
+
+dlgProperty *pgaTablespaceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgTablespace(frame, (pgTablespace*)node);
+}
 
 
 BEGIN_EVENT_TABLE(dlgTablespace, dlgSecurityProperty)
@@ -39,7 +42,6 @@ dlgTablespace::dlgTablespace(frmMain *frame, pgTablespace *node)
 : dlgSecurityProperty(frame, node, wxT("dlgTablespace"), wxT("CREATE"), "C")
 {
     tablespace=node;
-    SetIcon(wxIcon(tablespace_xpm));
     btnOK->Disable();
 }
 
@@ -98,7 +100,7 @@ pgObject *dlgTablespace::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgTablespace::ReadObjects(collection, 0, wxT("\n WHERE spcname=") + qtString(name));
+    pgObject *obj=tablespaceFactory.CreateObjects(collection, 0, wxT("\n WHERE spcname=") + qtString(name));
     return obj;
 }
 

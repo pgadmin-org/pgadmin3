@@ -20,9 +20,11 @@
 #include "pgCollection.h"
 #include "frmMain.h"
 #include "pgDefs.h"
+#include "pgDatabase.h"
+#include "pgTablespace.h"
 
 pgUser::pgUser(const wxString& newName)
-: pgServerObject(PG_USER, newName)
+: pgServerObject(userFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgUser object"));
 }
@@ -122,10 +124,10 @@ void pgUser::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wx
                 if (set->GetBool(wxT("datallowconn")))
                     dblist.Add(name);
                 if (GetUserId() == set->GetLong(wxT("datdba")))
-                    referencedBy->AppendItem(PGICON_DATABASE, _("Database"), name);
+                    referencedBy->AppendItem(databaseFactory.GetIconId(), _("Database"), name);
             }
             else
-                referencedBy->AppendItem(PGICON_TABLESPACE, _("Tablespace"), wxEmptyString, name);
+                referencedBy->AppendItem(tablespaceFactory.GetIconId(), _("Tablespace"), wxEmptyString, name);
 
             set->MoveNext();
         }
@@ -238,15 +240,15 @@ pgObject *pgUser::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_USERS)
-            user = ReadObjects((pgCollection*)obj, 0, wxT("\n WHERE usesysid=") + NumToStr(GetUserId()));
+        if (obj->IsCollection())
+            user = userFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n WHERE usesysid=") + NumToStr(GetUserId()));
     }
     return user;
 }
 
 
 
-pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaUserFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgUser *user=0;
 
@@ -291,3 +293,15 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     }
     return user;
 }
+
+
+#include "images/user.xpm"
+
+pgaUserFactory::pgaUserFactory() 
+: pgaFactory(__("User"), __("New User"), __("Create a new User."), user_xpm)
+{
+}
+
+
+pgaUserFactory userFactory;
+static pgaCollectionFactory cf(&userFactory, __("Users"));

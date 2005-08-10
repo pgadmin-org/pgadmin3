@@ -27,28 +27,17 @@
 #include "misc.h"
 #include "menu.h"
 #include "frmMain.h"
-#include "dlgServer.h"
+//#include "dlgServer.h"
 #include "frmOptions.h"
-#include "frmPassword.h"
-#include "frmQuery.h"
-#include "frmStatus.h"
 #include "ctl/ctlSQLBox.h"
 #include "pgConn.h"
-#include "pgLanguage.h"
 #include "pgDatabase.h"
 #include "pgSet.h"
 #include "pgServer.h"
 #include "pgObject.h"
-#include "pgTable.h"
 #include "pgCollection.h"
-#include "pgFunction.h"
-#include "frmEditGrid.h"
 #include "frmHelp.h"
 #include "dlgProperty.h"
-#include "frmMaintenance.h"
-#include "frmBackup.h"
-#include "frmRestore.h"
-#include "frmIndexcheck.h"
 #include "frmUpdate.h"
 #include "slFunctions.h"
 
@@ -69,13 +58,9 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_DROPCASCADED,              frmMain::OnDropCascaded)
     EVT_MENU(MNU_CREATE,                    frmMain::OnCreate)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
-    EVT_MENU(MNU_PASSWORD,                  frmMain::OnPassword)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
-    EVT_MENU(MNU_NEW+PG_USER,               frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_GROUP,              frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_TABLESPACE,         frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_COLUMN,             frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_PRIMARYKEY,         frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_FOREIGNKEY,         frmMain::OnNew)
@@ -295,42 +280,6 @@ void frmMain::OnCheckAlive(wxCommandEvent &event)
 }
 
 
-void frmMain::OnPassword(wxCommandEvent& event)
-{
-    frmPassword *winPassword = new frmPassword(this);
-
-    // We need to pass the server to the password form
-    // Get the item data, and feed it to the relevant handler,
-    // cast as required.
-    if (currentObject)
-    {
-        int type = currentObject->GetType();
-
-        switch (type) {
-            case PG_SERVER:
-                winPassword->SetServer((pgServer *)currentObject);
-                winPassword->Show();
-                break;
-
-            default:
-                // Should never see this
-                wxLogError(__("You must select a server before changing your password!"));
-                break;
-        }
-    }
-}
-
-
-void frmMain::OnIndexcheck(wxCommandEvent &ev)
-{
-    if (currentObject)
-    {
-        frmIndexcheck *frm=new frmIndexcheck(this, currentObject);
-        frm->Go();
-    }
-}
-
-
 void frmMain::OnSaveDefinition(wxCommandEvent& event)
 {
 
@@ -490,7 +439,7 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
         properties->Freeze();
         setDisplay(currentObject, properties, sqlPane);
         properties->Thaw();
-        ShowStatistics(currentObject, listViews->GetSelection());
+        ShowObjStatistics(currentObject, listViews->GetSelection());
     }
     else
         setDisplay(currentObject, 0, 0);
@@ -506,8 +455,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 
 
     bool showTree=true;
-    bool canStop=false,canStart=false, canConnect=false,canDisconnect=false,canReindex=false,
-         canIndexCheck=false, canCount=false;
 
     switch (type)
     {
@@ -516,22 +463,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 
             server = (pgServer *)data;
 
-            if (server->GetServerControllable())
-            {
-                if (server->GetServerRunning())
-                    canStop = true;
-                else
-                    canStart = true;
-            }
-            if (!server->GetConnected())
-            {
-                canConnect=true;
-            }
-			else
-            {
-                canDisconnect=true;
-                canReindex=true;
-            }
             data->ShowTree(this, browser, props, sqlbox);
             showTree=false;
             EndMsg();
@@ -541,14 +472,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 //        case PG_SCHEMAS:
         case PG_CONSTRAINTS:
         case PG_FOREIGNKEY:
-            canIndexCheck=true;
-            break;
-        case PG_GROUPS:
-        case PG_USERS:
-        case PG_GROUP:
-        case PG_USER:
-        case PG_TABLESPACES:
-        case PG_TABLESPACE:
         case PG_CHECK:
         case PG_COLUMNS:
         case PG_COLUMN:
@@ -586,20 +509,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         {
             pgaFactory *factory=data->GetFactory();
             if (factory)
-            {
                 showTree=true;
-                switch (factory->GetMetaType())
-                {
-                    case PGM_TABLE:
-                        if (!data->IsCollection())
-                            canCount=true;
-                        canIndexCheck=true;
-                    case PGM_FUNCTION:
-                    case PGM_SEQUENCE:
-                    case PGM_VIEW:
-                        break;
-                }
-            }
             else
                 showTree=false;
 			break;
@@ -661,13 +571,11 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     else
     {
     }
-    fileMenu->Enable(MNU_PASSWORD, canDisconnect);
     actionFactory::CheckMenu(data, menuBar, toolBar);
 
     // !!!!! interate submenus to check if any is enabled
 //    toolsMenu->Enable(MNU_CONFIGSUBMENU, checkKids);
 
-//    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
 }
 
 
@@ -737,11 +645,6 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
         delete treeContextMenu;
 
     treeContextMenu = new wxMenu();
-
-    if (object && (object->GetType() == PG_SERVER ||object->GetType() == PG_SERVERS))
-    {
-        appendIfEnabled(MNU_PASSWORD);
-    }
 
     appendIfEnabled(MNU_REFRESH);
 

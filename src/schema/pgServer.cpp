@@ -22,6 +22,9 @@
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
+#include "pgTablespace.h"
+#include "pgGroup.h"
+#include "pgUser.h"
 #include "utffile.h"
 #include "pgfeatures.h"
 
@@ -68,15 +71,24 @@ pgServer::~pgServer()
 }
 
 
+int pgServer::GetIconId()
+{
+    if (GetConnected())
+        return PGICON_SERVER;
+    else
+        return PGICON_SERVERBAD;
+}
+
+
 wxMenu *pgServer::GetNewMenu()
 {
     wxMenu *menu=0;
     if (connected && GetSuperUser())
     {
         menu=new wxMenu();
-        AppendMenu(menu, PG_TABLESPACE);
-        AppendMenu(menu, PG_GROUP);
-        AppendMenu(menu, PG_USER);
+//        AppendMenu(menu, PG_TABLESPACE);
+//        AppendMenu(menu, PG_GROUP);
+//        AppendMenu(menu, PG_USER);
     }
     return menu;
 }
@@ -130,9 +142,7 @@ bool pgServer::Disconnect(frmMain *form)
         connected=false;
         expandedKids=false;
     }
-    form->GetBrowser()->SetItemImage(GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Normal);
-
-    form->GetBrowser()->SetItemImage(GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Selected);
+    UpdateIcon(form->GetBrowser());
     return true;
 }
 
@@ -575,8 +585,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
             if (conn->IsSSLconnected())
                 settings->Write(wxT("Updates/UseSSL"), true);
 
-            form->GetBrowser()->SetItemImage(GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
-            form->GetBrowser()->SetItemImage(GetId(), PGICON_SERVER, wxTreeItemIcon_Selected);
+            UpdateIcon(form->GetBrowser());
         }
         else
         {
@@ -661,6 +670,7 @@ bool pgServer::SetPassword(const wxString& newVal)
     if (executed)
     {
         password = newVal;
+        StorePassword();
         return false;
     }
     else
@@ -710,12 +720,12 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
     
             // Databases
-            AppendBrowserItem(browser, new pgServerObjCollection(*databaseFactory.GetCollectionFactory(), this));
+            AppendBrowserItem(browser, new pgDatabaseCollection(*databaseFactory.GetCollectionFactory(), this));
 
             if (conn->BackendMinimumVersion(7, 5))
             {
                 // Tablespaces
-                AppendBrowserItem(browser, new pgCollection(PG_TABLESPACES, this));
+                AppendBrowserItem(browser, new pgTablespaceCollection(*tablespaceFactory.GetCollectionFactory(), this));
             }
             // Jobs
             // We only add the Jobs node if the appropriate objects are the initial DB.
@@ -728,10 +738,10 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
                 AppendBrowserItem(browser, new pgCollection(PGA_JOBS, this));
             }
             // Groups
-            AppendBrowserItem(browser, new pgCollection(PG_GROUPS, this));
+            AppendBrowserItem(browser, new pgServerObjCollection(*groupFactory.GetCollectionFactory(), this));
     
             // Users
-            AppendBrowserItem(browser, new pgCollection(PG_USERS, this));
+            AppendBrowserItem(browser, new pgServerObjCollection(*userFactory.GetCollectionFactory(), this));
         }
     }
 

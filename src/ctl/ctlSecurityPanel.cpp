@@ -20,6 +20,8 @@
 #include "ctlSecurityPanel.h"
 #include "pgConn.h"
 #include "pgObject.h"
+#include "pgGroup.h"
+#include "pgUser.h"
 
 
 
@@ -295,10 +297,10 @@ void ctlSecurityPanel::OnAddPriv(wxCommandEvent &ev)
     if (pos < 0)
     {
         pos = lbPrivileges->GetItemCount();
-        int icon=PGICON_USER;
+        int icon=userFactory.GetIconId();
 
         if (name.Left(6).IsSameAs(wxT("group "), false))
-            icon = PGICON_GROUP;
+            icon = groupFactory.GetIconId();
         else if (name.IsSameAs(wxT("public"), false))
             icon = PGICON_PUBLIC;
 

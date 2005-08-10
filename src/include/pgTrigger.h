@@ -31,7 +31,7 @@ public:
     pgTrigger(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTrigger();
 
-    int GetIcon() { return PGICON_TRIGGER; }
+    int GetIconId() { return PGICON_TRIGGER; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }

@@ -32,20 +32,7 @@
 // Property dialogs
 #include "dlgProperty.h"
 #include "dlgServer.h"
-#include "dlgUser.h"
-#include "dlgGroup.h"
-#include "dlgDatabase.h"
-#include "dlgCast.h"
-#include "dlgLanguage.h"
-#include "dlgSchema.h"
-#include "dlgTablespace.h"
 #include "dlgAggregate.h"
-#include "dlgConversion.h"
-#include "dlgDomain.h"
-#include "dlgFunction.h"
-#include "dlgOperator.h"
-#include "dlgSequence.h"
-#include "dlgTable.h"
 #include "dlgColumn.h"
 #include "dlgIndex.h"
 #include "dlgIndexConstraint.h"
@@ -53,8 +40,6 @@
 #include "dlgCheck.h"
 #include "dlgRule.h"
 #include "dlgTrigger.h"
-#include "dlgType.h"
-#include "dlgView.h"
 #include "dlgJob.h"
 #include "dlgStep.h"
 #include "dlgSchedule.h"
@@ -70,6 +55,8 @@
 #include "pgTable.h"
 #include "pgColumn.h"
 #include "pgTrigger.h"
+#include "pgGroup.h"
+#include "pgUser.h"
 
 
 
@@ -464,9 +451,9 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             }
 
             if (newItem)
-                browser->InsertItem(collectionItem, pos, nodeName, data->GetIcon(), -1, data);
+                browser->InsertItem(collectionItem, pos, nodeName, data->GetIconId(), -1, data);
             else    
-                browser->AppendItem(collectionItem, nodeName, data->GetIcon(), -1, data);
+                browser->AppendItem(collectionItem, nodeName, data->GetIconId(), -1, data);
 
             if (data->WantDummyChild())
                 browser->AppendItem(data->GetId(), wxT("Dummy"));
@@ -498,11 +485,12 @@ void dlgProperty::ShowObject()
         {
             mainForm->SetCurrentObject(newData);
             mainForm->GetBrowser()->SetItemData(item, newData);
-            mainForm->GetBrowser()->SetItemImage(item, newData->GetIcon(), wxTreeItemIcon_Normal);
-            mainForm->GetBrowser()->SetItemImage(item, newData->GetIcon(), wxTreeItemIcon_Selected);
+
             newData->SetId(item);
             delete data;
             SetObject(newData);
+
+            newData->UpdateIcon(mainForm->GetBrowser());
         }
         if (newData)
         {
@@ -684,18 +672,6 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_SERVER:
         case PG_SERVERS:
             dlg = new dlgServer(frame, (pgServer*)currentNode);
-            break;
-        case PG_USER:
-        case PG_USERS:
-            dlg=new dlgUser(frame, (pgUser*)currentNode);
-            break;
-        case PG_GROUP:
-        case PG_GROUPS:
-            dlg=new dlgGroup(frame, (pgGroup*)currentNode);
-            break;
-        case PG_TABLESPACE:
-        case PG_TABLESPACES:
-            dlg=new dlgTablespace(frame, (pgTablespace*)currentNode);
             break;
         case PG_COLUMN:
         case PG_COLUMNS:
@@ -1139,11 +1115,11 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                     else
                         value=str.Mid(name.Length()+1);
 
-                    int icon=PGICON_USER;
+                    int icon=userFactory.GetIconId();
 
                     if (name.Left(6).IsSameAs(wxT("group "), false))
                     {
-                        icon = PGICON_GROUP;
+                        icon = groupFactory.GetIconId();
                         name = wxT("group ") + qtStrip(name.Mid(6));
                     }
                     else if (name.IsEmpty())

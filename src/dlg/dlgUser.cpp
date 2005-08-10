@@ -14,9 +14,6 @@
 // wxWindows headers
 #include <wx/wx.h>
 
-// Images
-#include "images/user.xpm"
-
 // App headers
 #include "misc.h"
 #include "dlgUser.h"
@@ -43,6 +40,13 @@
 #define cbVarname       CTRL_COMBOBOX2("cbVarname")
 #define txtValue        CTRL_TEXT("txtValue")
 #define chkValue        CTRL_CHECKBOX("chkValue")
+
+
+
+dlgProperty *pgaUserFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgUser(frame, (pgUser*)node);
+}
 
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
@@ -73,7 +77,6 @@ dlgUser::dlgUser(frmMain *frame, pgUser *node)
 : dlgProperty(frame, wxT("dlgUser"))
 {
     user=node;
-    SetIcon(wxIcon(user_xpm));
     lstVariables->CreateColumns(0, _("Variable"), _("Value"), -1);
     btnOK->Disable();
     chkValue->Hide();
@@ -367,7 +370,7 @@ pgObject *dlgUser::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgUser::ReadObjects(collection, 0, wxT("\n WHERE usename=") + qtString(name));
+    pgObject *obj=userFactory.CreateObjects(collection, 0, wxT("\n WHERE usename=") + qtString(name));
     return obj;
 }
 

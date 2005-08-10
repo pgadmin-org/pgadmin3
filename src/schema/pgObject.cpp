@@ -31,6 +31,9 @@
 #include "pgOperator.h"
 #include "pgLanguage.h"
 #include "pgConversion.h"
+#include "pgTablespace.h"
+#include "pgGroup.h"
+#include "pgUser.h"
 
 // Ordering must match the PG_OBJTYPE enumeration in pgObject.h
 
@@ -40,12 +43,6 @@ pgTypes typesList[] =
     {__("None"), -1, 0, 0},
     {__("Servers"), PGICON_SERVER, 0, 0},
     {__("Server"), PGICON_SERVER, __("New Server Registration"), __("Create a new Server registration.") },
-    {__("Groups"), PGICON_GROUP, 0, 0},
-    {__("Group"), PGICON_GROUP, __("New Group"), __("Create a new Group.") },
-    {__("Users"), PGICON_USER, 0, 0},
-    {__("User"), PGICON_USER, __("New User"),__("Create a new User.") },
-    {__("Tablespaces"), PGICON_TABLESPACE, 0, 0},
-    {__("Tablespace"), PGICON_TABLESPACE, __("New Tablespace"), __("Create a new Tablespace.") },
     {__("Columns"), PGICON_COLUMN, 0, 0},
     {__("Column"), PGICON_COLUMN, __("New Column"), __("Add a new Column.") },
     {__("Indexes"), PGICON_INDEX, 0, 0},
@@ -114,7 +111,7 @@ wxString pgObject::GetTranslatedTypeName() const
 }
 
 
-int pgObject::GetIcon()
+int pgObject::GetIconId()
 {
     int id=-1;
     if (factory)
@@ -146,7 +143,8 @@ pgObject::pgObject(pgaFactory &_factory, const wxString& newName)
 : wxTreeItemData()
 {
     factory=&_factory;
-    if (newName.IsEmpty())
+
+    if (factory->IsCollection() && newName.IsEmpty())
         name = factory->GetTypeName();
     else
         name = newName;
@@ -227,6 +225,19 @@ wxMenu *pgObject::GetNewMenu()
 
 void pgObject::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
+}
+
+
+bool pgObject::UpdateIcon(wxTreeCtrl *browser)
+{
+    int icon=GetIconId();
+    if (browser->GetItemImage(GetId(), wxTreeItemIcon_Normal) != icon)
+    {
+        browser->SetItemImage(GetId(), GetIconId(), wxTreeItemIcon_Normal);
+        browser->SetItemImage(GetId(), GetIconId(), wxTreeItemIcon_Selected);
+        return true;
+    }
+    return false;
 }
 
 
@@ -517,7 +528,7 @@ wxTreeItemId pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
         label = object->GetTypeName();
     else
         label = object->GetFullName();
-    item = browser->AppendItem(GetId(), label, object->GetIcon(), -1, object);
+    item = browser->AppendItem(GetId(), label, object->GetIconId(), -1, object);
     if (object->IsCollection())
         object->ShowTreeDetail(browser);
     else if (object->WantDummyChild())

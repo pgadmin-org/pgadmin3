@@ -20,11 +20,12 @@
 #include "pgObject.h"
 #include "pgTablespace.h"
 #include "pgCollection.h"
+#include "pgDatabase.h"
 #include "frmMain.h"
 
 
 pgTablespace::pgTablespace(const wxString& newName)
-: pgServerObject(PG_TABLESPACE, newName)
+: pgServerObject(tablespaceFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgTablespace object"));
 }
@@ -60,7 +61,7 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
                 dblist.Add(datname);
             OID oid=set->GetOid(wxT("dattablespace"));
             if (oid == GetOid())
-                referencedBy->AppendItem(PGICON_DATABASE, _("Database"), datname);
+                referencedBy->AppendItem(databaseFactory.GetIconId(), _("Database"), datname);
 
             set->MoveNext();
         }
@@ -166,15 +167,15 @@ pgObject *pgTablespace::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_TABLESPACES)
-            tablespace = ReadObjects((pgCollection*)obj, 0, wxT("\n WHERE ts.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            tablespace = tablespaceFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n WHERE ts.oid=") + GetOidStr());
     }
     return tablespace;
 }
 
 
 
-pgObject *pgTablespace::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaTablespaceFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgTablespace *tablespace=0;
 
@@ -213,9 +214,15 @@ pgObject *pgTablespace::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 }
 
 
-void pgTablespace::ShowStatistics(pgCollection *collection, ctlListView *statistics)
+pgTablespaceCollection::pgTablespaceCollection(pgaFactory &factory, pgServer *sv)
+: pgServerObjCollection(factory, sv)
+{ 
+}
+
+
+void pgTablespaceCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    if (collection->GetConnection()->HasFeature(FEATURE_SIZE))
+    if (GetConnection()->HasFeature(FEATURE_SIZE))
     {
         wxLogInfo(wxT("Displaying statistics for tablespaces"));
 
@@ -224,7 +231,7 @@ void pgTablespace::ShowStatistics(pgCollection *collection, ctlListView *statist
         statistics->AddColumn(_("Tablespace"), 100);
         statistics->AddColumn(_("Size"), 60);
 
-        pgSet *stats = collection->GetConnection()->ExecuteSet(
+        pgSet *stats = GetConnection()->ExecuteSet(
             wxT("SELECT spcname, pg_size_pretty(pg_tablespace_size(oid)) AS size FROM pg_tablespace ORDER BY spcname"));
 
         if (stats)
@@ -243,3 +250,16 @@ void pgTablespace::ShowStatistics(pgCollection *collection, ctlListView *statist
     }
 }
 
+
+
+#include "images/tablespace.xpm"
+
+
+pgaTablespaceFactory::pgaTablespaceFactory() 
+: pgaFactory(__("Tablespace"), __("New Tablespace"), __("Create a new Tablespace."), tablespace_xpm)
+{
+}
+
+
+pgaTablespaceFactory tablespaceFactory;
+static pgaCollectionFactory cf(&tablespaceFactory, __("Tablespaces"));

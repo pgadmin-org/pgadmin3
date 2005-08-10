@@ -1981,8 +1981,12 @@ bool cacheLinePool::IsFilled(int lineNo)
 
 bool editGridFactoryBase::CheckEnable(pgObject *obj)
 {
-    pgaFactory *factory=obj->GetFactory();
-    return factory == &tableFactory || factory == &viewFactory;
+    if (obj)
+    {
+        pgaFactory *factory=obj->GetFactory();
+        return factory == &tableFactory || factory == &viewFactory;
+    }
+    return false;
 }
 
 

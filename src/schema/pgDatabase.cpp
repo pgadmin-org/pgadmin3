@@ -46,6 +46,15 @@ pgDatabase::~pgDatabase()
 }
 
 
+int pgDatabase::GetIconId()
+{
+    if (GetConnected())
+        return databaseFactory.GetIconId();
+    else
+        return databaseFactory.GetClosedIconId();
+}
+
+
 wxMenu *pgDatabase::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
@@ -301,10 +310,8 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
     if (Connect() == PGCONN_OK)
     {
         // Set the icon if required
-        if (browser->GetItemImage(GetId(), wxTreeItemIcon_Normal) != PGICON_DATABASE)
+        if (UpdateIcon(browser))
         {
-            browser->SetItemImage(GetId(), PGICON_DATABASE, wxTreeItemIcon_Normal);
-		    browser->SetItemImage(GetId(), PGICON_DATABASE, wxTreeItemIcon_Selected);
             if (form)
                 form->SetButtons(this);
         }
@@ -458,10 +465,13 @@ pgObject *pgaDatabaseFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
             {
                 if (browser)
                 {
+                    int icon;
                     if (database->GetName() == database->GetServer()->GetDatabaseName())
-                        browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_DATABASE, -1, database);   
+                        icon = databaseFactory.GetIconId();
                     else
-                        browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_CLOSEDDATABASE, -1, database);   
+                        icon = databaseFactory.GetClosedIconId();
+
+                    browser->AppendItem(collection->GetId(), database->GetIdentifier(), icon, -1, database);   
                 }
                 else
                     break;
@@ -547,11 +557,13 @@ bool pgDatabaseObjCollection::CanCreate()
 
 
 #include "images/database.xpm"
+#include "images/closeddatabase.xpm"
 
 pgaDatabaseFactory::pgaDatabaseFactory() 
 : pgaFactory(__("Database"), __("New Database"), __("Create a new Database."), database_xpm)
 {
     metaType = PGM_DATABASE;
+    closedId = addImage(closeddatabase_xpm);
 }
 
 

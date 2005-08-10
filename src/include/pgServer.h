@@ -94,7 +94,7 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/managing-databases"); }
-    int GetIcon() { return PGICON_SERVER; }
+    int GetIconId();
     wxMenu *GetNewMenu();
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded) { return true; }

@@ -35,7 +35,7 @@ public:
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    int GetIcon();
+    int GetIconId();
     bool CanCreate();
 
     slCluster *GetCluster() { return cluster; }
@@ -55,7 +55,7 @@ class slSetCollection : public slCollection
 public:
     slSetCollection(int newType, slSet *_set, slSubscription *sub=0);
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
-    int GetIcon();
+    int GetIconId();
     bool CanCreate();
 
     slSet *GetSet() {return set; }

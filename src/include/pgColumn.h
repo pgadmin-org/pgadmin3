@@ -29,7 +29,7 @@ public:
     pgColumn(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgColumn();
 
-    int GetIcon() { return PGICON_COLUMN; }
+    int GetIconId() { return PGICON_COLUMN; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);

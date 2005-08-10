@@ -51,7 +51,7 @@ public:
     void execSelChange(wxTreeItemId item, bool currentNode);
     void Refresh(pgObject *data);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
-    void ShowStatistics(pgObject *data, int sel);
+    void ShowObjStatistics(pgObject *data, int sel);
 
     wxImageList *GetImageList() { return imageList; }
     wxTreeCtrl *GetBrowser() { return browser; }

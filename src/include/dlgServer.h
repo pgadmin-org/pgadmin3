@@ -53,27 +53,20 @@ public:
 };
 
 
-class controlServiceFactory : public contextActionFactory
-{
-public:
-    bool CheckEnable(pgObject *obj);
-protected:
-    controlServiceFactory() {};
-};
-
-
-class startServiceFactory : public controlServiceFactory
+class startServiceFactory : public contextActionFactory
 {
 public:
     startServiceFactory (wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
 };
 
-class stopServiceFactory : public controlServiceFactory
+class stopServiceFactory : public contextActionFactory
 {
 public:
     stopServiceFactory (wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
 };
 
 

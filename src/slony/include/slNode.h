@@ -29,7 +29,7 @@ public:
     slNode(slCluster *_cluster, const wxString& newName = wxT(""));
     ~slNode();
 
-    int GetIcon() { return SLICON_NODE; }
+    int GetIconId() { return SLICON_NODE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static void ShowStatistics(slCollection *collection, ctlListView *statistics);
     void ShowStatistics(frmMain *form, ctlListView *statistics);

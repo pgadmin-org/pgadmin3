@@ -36,9 +36,6 @@ enum PG_OBJTYPE
 {
     PG_NONE,
     PG_SERVERS,         PG_SERVER,
-    PG_GROUPS,          PG_GROUP,
-    PG_USERS,           PG_USER,
-    PG_TABLESPACES,     PG_TABLESPACE,
     PG_COLUMNS,         PG_COLUMN,
     PG_INDEXES,         PG_INDEX,
     PG_RULES,           PG_RULE,
@@ -93,7 +90,8 @@ public:
     int GetMetaType() const;
     wxString GetTypeName() const;
     wxString GetTranslatedTypeName() const;
-    virtual int GetIcon();
+    virtual int GetIconId();
+    bool UpdateIcon(wxTreeCtrl *browser);
 
     virtual void ShowProperties() const {};
     virtual pgDatabase *GetDatabase() const { return 0; }

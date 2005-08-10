@@ -34,13 +34,14 @@ BEGIN_EVENT_TABLE(frmPassword, pgDialog)
 END_EVENT_TABLE()
 
 
-frmPassword::frmPassword(wxFrame *parent)
+frmPassword::frmPassword(wxFrame *parent, pgObject *obj)
 {
     wxLogInfo(wxT("Creating a change password dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("frmPassword")); 
 
+    server = obj->GetServer();
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
     CenterOnParent();
@@ -85,12 +86,33 @@ void frmPassword::OnOK(wxCommandEvent& event)
     this->Destroy();
 }
 
+
 void frmPassword::OnCancel(wxCommandEvent& event)
 {
-    this->Destroy();
+    Destroy();
 }
 
-void frmPassword::SetServer(pgServer *newServer)
+
+passwordFactory::passwordFactory(wxMenu *mnu, wxToolBar *toolbar)
 {
-    server = newServer;
+    mnu->Append(id, _("C&hange password..."), _("Change your password."));
+}
+
+
+wxWindow *passwordFactory::StartDialog(pgFrame *form, pgObject *obj)
+{
+    frmPassword *frm=new frmPassword(form, obj);
+    frm->Show();
+    return frm;
+}
+
+
+bool passwordFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        pgServer *server = obj->GetServer();
+        return server && server->GetConnected();
+    }
+    return false;
 }

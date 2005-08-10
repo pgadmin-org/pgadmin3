@@ -23,9 +23,8 @@
 class frmPassword : public pgDialog
 {
 public:
-    frmPassword(wxFrame *parent);
+    frmPassword(wxFrame *parent, pgObject *obj);
     ~frmPassword();
-    void SetServer(pgServer *newServer);
     
 private:
     pgServer *server;
@@ -33,6 +32,15 @@ private:
     void OnOK(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
     DECLARE_EVENT_TABLE()
+};
+
+
+class passwordFactory : public actionFactory
+{
+public:
+    passwordFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
 };
 
 #endif

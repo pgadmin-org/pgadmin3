@@ -63,13 +63,8 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 }
 
 
-#include "images/baddatabase.xpm"
 #include "images/check.xpm"
-#include "images/closeddatabase.xpm"
-#include "images/tablespace.xpm"
 #include "images/column.xpm"
-#include "images/database.xpm"
-#include "images/group.xpm"
 #include "images/index.xpm"
 #include "images/foreignkey.xpm"
 #include "images/property.xpm"
@@ -80,7 +75,6 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 #include "images/serverbad.xpm"
 #include "images/statistics.xpm"
 #include "images/trigger.xpm"
-#include "images/user.xpm"
 #include "images/constraints.xpm"
 #include "images/primarykey.xpm"
 #include "images/unique.xpm"
@@ -112,12 +106,6 @@ int pgaFactory::addImage(char **img)
             deferredImagesArray->Add(servers_xpm);
             deferredImagesArray->Add(server_xpm);
             deferredImagesArray->Add(serverbad_xpm);
-            deferredImagesArray->Add(database_xpm);
-            deferredImagesArray->Add(tablespace_xpm);
-            deferredImagesArray->Add(user_xpm);
-            deferredImagesArray->Add(group_xpm);
-            deferredImagesArray->Add(baddatabase_xpm);
-            deferredImagesArray->Add(closeddatabase_xpm);
             deferredImagesArray->Add(check_xpm);
             deferredImagesArray->Add(column_xpm);
             deferredImagesArray->Add(index_xpm);
@@ -283,6 +271,7 @@ void actionFactory::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *tool
 void actionFactory::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu)
 {
     size_t id;
+    wxMenuItem *lastItem=0;
     for (id=MNU_ACTION ; id < actionFactoryArray->GetCount()+MNU_ACTION ; id++)
     {
         actionFactory *f=GetFactory(id, false);
@@ -294,15 +283,22 @@ void actionFactory::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMe
                 {
                     wxMenuItem *menuItem=menuBar->FindItem(id);
                     if (menuItem)
-                        treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
+                        lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
                 }
             }
         }
         else
         {
             // check here if last menu is already separator
-            treeContextMenu->AppendSeparator();
+            if (!lastItem || lastItem->GetId() >= 0)
+                lastItem = treeContextMenu->AppendSeparator();
         }
     }
+    lastItem = treeContextMenu->AppendSeparator();
     // check here if last menu is separator and remove it
+    if (lastItem && lastItem->GetId() < 0)
+    {
+        treeContextMenu->Remove(lastItem);
+        delete lastItem;
+    }
 }

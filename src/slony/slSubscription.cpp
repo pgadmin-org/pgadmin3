@@ -36,7 +36,7 @@ slSubscription::~slSubscription()
 
 
 
-int slSubscription::GetIcon()
+int slSubscription::GetIconId()
 {
     if (GetReceiverId() == GetCluster()->GetLocalNodeID())
         return SLICON_SUBSCRIPTION2;

@@ -44,4 +44,13 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
+
+class indexCheckFactory : public contextActionFactory
+{
+public:
+    indexCheckFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 #endif

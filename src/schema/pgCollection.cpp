@@ -141,7 +141,7 @@ void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, ctlListVi
             data = (pgObject *)browser->GetItemData(item);
             if (IsCollectionForType(data->GetType()))
             {
-                properties->InsertItem(pos, data->GetFullName(), data->GetIcon());
+                properties->InsertItem(pos, data->GetFullName(), data->GetIconId());
                 properties->SetItem(pos, 1, data->GetComment());
             }
             // Get the next item
@@ -165,9 +165,6 @@ bool pgCollection::CanCreate()
 {
     switch (GetType())
     {
-        case PG_USERS:
-        case PG_GROUPS:
-        case PG_TABLESPACES:
 		case PGA_JOBS:
 		case PGA_STEPS:
 		case PGA_SCHEDULES:
@@ -183,14 +180,11 @@ bool pgCollection::CanCreate()
 }
 
 
-int pgCollection::GetIcon()
+int pgCollection::GetIconId()
 {
     switch (GetType())
     {
         case PG_SERVERS:            return PGICON_SERVER;
-        case PG_USERS:              return PGICON_USER;
-        case PG_GROUPS:             return PGICON_GROUP;
-        case PG_TABLESPACES:        return PGICON_TABLESPACE;
         case PG_COLUMNS:            return PGICON_COLUMN;
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;
@@ -203,6 +197,7 @@ int pgCollection::GetIcon()
             pgaFactory *objFactory=pgaFactory::GetFactory(GetType());
             if (objFactory)
                 return objFactory->GetIconId();
+
             return 0;
         }
     }
@@ -239,15 +234,6 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
     {
         switch (GetType())
         {
-            case PG_GROUPS:
-                pgGroup::ReadObjects(this, browser);
-                break;
-            case PG_USERS:
-                pgUser::ReadObjects(this, browser);
-                break;
-            case PG_TABLESPACES:
-                pgTablespace::ReadObjects(this, browser);
-                break;
             case PG_COLUMNS:
                 pgColumn::ReadObjects(this, browser);
                 break;
@@ -283,18 +269,5 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
     if (properties)
     {
         ShowList(browser, properties);
-    }
-}
-
-
-void pgCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
-{
-    switch (GetType())
-    {
-        case PG_TABLESPACES:
-            pgTablespace::ShowStatistics(this, statistics);
-            break;
-        default:
-            break;
     }
 }

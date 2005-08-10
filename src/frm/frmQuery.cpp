@@ -1195,8 +1195,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 queryToolFactory::queryToolFactory(wxMenu *mnu, wxToolBar *toolbar)
 {
     mnu->Append(id, _("&Query tool"), _("Execute arbitrary SQL queries."));
-    toolbar->AddTool(id, _("Query tool"), wxBitmap(sql_xpm), 
-        _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    toolbar->AddTool(id, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
 }
 
 

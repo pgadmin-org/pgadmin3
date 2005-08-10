@@ -13,19 +13,27 @@
 #define PGTABLESPACE_H
 
 
+#include "pgServer.h"
+
+class pgaTablespaceFactory : public pgaFactory
+{
+public:
+    pgaTablespaceFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaTablespaceFactory tablespaceFactory;
+
+
 class pgTablespace : public pgServerObject
 {
 public:
     pgTablespace(const wxString& newName = wxT(""));
     ~pgTablespace();
 
-    int GetIcon() { return PGICON_TABLESPACE; }
-
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
-    static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
     
     wxString GetLocation() const { return location; };
     void iSetLocation(const wxString& newVal) { location = newVal; }
@@ -39,6 +47,14 @@ public:
 
 private:
     wxString location;
+};
+
+
+class pgTablespaceCollection : public pgServerObjCollection
+{
+public:
+    pgTablespaceCollection(pgaFactory &factory, pgServer *sv);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 
 

@@ -175,3 +175,39 @@ void frmIndexcheck::Go()
     }
     Show(true);
 }
+
+
+
+indexCheckFactory::indexCheckFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&FK Index check"), _("Checks existence of foreign key indexes"));
+}
+
+
+wxWindow *indexCheckFactory::StartDialog(pgFrame *form, pgObject *obj)
+{
+    frmIndexcheck *frm=new frmIndexcheck((frmMain*)form, obj);
+    frm->Go();
+    return frm;
+}
+
+
+bool indexCheckFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        switch (obj->GetType())
+        {
+            case PG_FOREIGNKEY:
+            case PG_CONSTRAINTS:
+                return true;
+        }
+        switch (obj->GetMetaType())
+        {
+            case PGM_SCHEMA:
+            case PGM_TABLE:
+                return true;
+        }
+    }
+    return false;
+}

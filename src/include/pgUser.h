@@ -21,6 +21,16 @@
 #include "pgObject.h"
 #include "pgServer.h"
 
+class pgaUserFactory : public pgaFactory
+{
+public:
+    pgaUserFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaUserFactory userFactory;
+
+
 // Class declarations
 class pgUser : public pgServerObject
 {
@@ -48,9 +58,7 @@ public:
 
 
     // Tree object creation
-    int GetIcon() { return PGICON_USER; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where);
     
     // virtual methods

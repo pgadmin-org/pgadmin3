@@ -38,7 +38,7 @@ public:
         : pgIndexConstraint(newSchema, newName, PG_PRIMARYKEY) {}
 
     bool CanCreate() { return false; }
-    int GetIcon() { return PGICON_PRIMARYKEY; }
+    int GetIconId() { return PGICON_PRIMARYKEY; }
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where=wxT(""));
 };
 
@@ -48,7 +48,7 @@ public:
     pgUnique(pgSchema *newSchema, const wxString& newName = wxT(""))
         : pgIndexConstraint(newSchema, newName, PG_UNIQUE) {}
 
-    int GetIcon() { return PGICON_UNIQUE; }
+    int GetIconId() { return PGICON_UNIQUE; }
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where=wxT(""));
 };
 

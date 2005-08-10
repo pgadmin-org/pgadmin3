@@ -32,7 +32,7 @@ public:
     wxString GetDefinition();
     wxString GetFullName() const;
 
-    int GetIcon() { return PGICON_FOREIGNKEY; }
+    int GetIconId() { return PGICON_FOREIGNKEY; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 

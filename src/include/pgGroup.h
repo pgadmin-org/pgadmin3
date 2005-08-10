@@ -21,6 +21,17 @@
 #include "pgObject.h"
 #include "pgServer.h"
 
+
+class pgaGroupFactory : public pgaFactory
+{
+public:
+    pgaGroupFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaGroupFactory groupFactory;
+
+
 // Class declarations
 class pgGroup : public pgServerObject
 {
@@ -40,9 +51,7 @@ public:
     void iSetMembers(const wxString& s) { members=s; }
     wxArrayString& GetUsersIn() { return usersIn; }
 
-    int GetIcon() { return PGICON_GROUP; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
     wxString GetSql(wxTreeCtrl *browser);

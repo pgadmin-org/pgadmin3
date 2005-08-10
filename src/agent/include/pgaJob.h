@@ -28,7 +28,7 @@ public:
     pgaJob(const wxString& newName = wxT(""));
     ~pgaJob();
 
-    int GetIcon() { return enabled ? PGAICON_JOB : PGAICON_JOBDISABLED; }
+    int GetIconId() { return enabled ? PGAICON_JOB : PGAICON_JOBDISABLED; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 	void ShowStatistics(frmMain *form, ctlListView *statistics);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);

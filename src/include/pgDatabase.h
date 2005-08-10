@@ -28,7 +28,11 @@ public:
     pgaDatabaseFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    int GetClosedIconId() { return closedId; }
+protected:
+    int closedId;
 };
+
 extern pgaDatabaseFactory databaseFactory;
 
 
@@ -38,13 +42,12 @@ class pgDatabase : public pgServerObject
 public:
     pgDatabase(const wxString& newName = wxT(""));
     ~pgDatabase();
+    int GetIconId();
 
-    int GetIcon() { return PGICON_DATABASE; }
     pgDatabase *GetDatabase() const { return (pgDatabase*)this; }
     bool BackendMinimumVersion(int major, int minor) { return connection()->BackendMinimumVersion(major, minor); }
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
     
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);

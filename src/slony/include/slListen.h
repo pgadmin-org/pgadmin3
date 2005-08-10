@@ -29,7 +29,7 @@ public:
     slListen(slNode *n, const wxString& newName = wxT(""));
     ~slListen();
 
-    int GetIcon() { return SLICON_LISTEN; }
+    int GetIconId() { return SLICON_LISTEN; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser);

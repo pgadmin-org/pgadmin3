@@ -21,7 +21,7 @@
 
 
 pgGroup::pgGroup(const wxString& newName)
-: pgServerObject(PG_GROUP, newName)
+: pgServerObject(groupFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgGroup object"));
     memberCount=0;
@@ -107,15 +107,15 @@ pgObject *pgGroup::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_GROUPS)
-            group = ReadObjects((pgCollection*)obj, 0, wxT("\n WHERE grosysid=") + NumToStr(GetGroupId()));
+        if (obj->IsCollection())
+            group = groupFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n WHERE grosysid=") + NumToStr(GetGroupId()));
     }
     return group;
 }
 
 
 
-pgObject *pgGroup::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaGroupFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgGroup *group=0;
 
@@ -146,3 +146,15 @@ pgObject *pgGroup::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     }
     return group;
 }
+
+
+#include "images/group.xpm"
+
+pgaGroupFactory::pgaGroupFactory() 
+: pgaFactory(__("Group"), __("New Group"), __("Create a new Group."), group_xpm)
+{
+}
+
+
+pgaGroupFactory groupFactory;
+static pgaCollectionFactory cf(&groupFactory, __("Groups"));

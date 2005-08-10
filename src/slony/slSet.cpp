@@ -34,7 +34,7 @@ slSet::~slSet()
 }
 
 
-int slSet::GetIcon()
+int slSet::GetIconId()
 {
     if (GetOriginId() == GetCluster()->GetLocalNodeID())
         return SLICON_SET;

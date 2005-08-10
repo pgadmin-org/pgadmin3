@@ -29,7 +29,7 @@ public:
     pgRule(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgRule();
 
-    int GetIcon() { return PGICON_RULE; }
+    int GetIconId() { return PGICON_RULE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }

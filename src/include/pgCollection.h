@@ -42,10 +42,9 @@ public:
     pgSchema *GetSchema() const { return schema; }
 	pgaJob *GetJob() const { return job; }
 
-    int GetIcon();
+    int GetIconId();
     pgaFactory *GetItemFactory() { if (factory) return ((pgaCollectionFactory*)factory)->GetItemFactory(); }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowList(const wxString& name, wxTreeCtrl *browser, ctlListView *properties);
     void ShowList(wxTreeCtrl *browser, ctlListView *properties);
     void UpdateChildCount(wxTreeCtrl *browser, int substract=0);

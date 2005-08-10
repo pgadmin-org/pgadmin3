@@ -170,7 +170,7 @@ int dlgTable::Go(bool modal)
                     if (column->GetColNumber() > 0)
                     {
                         bool inherited = (column->GetInheritedCount() != 0);
-                        int pos=lstColumns->AppendItem((inherited ? tableFactory.GetIconId() : column->GetIcon()), 
+                        int pos=lstColumns->AppendItem((inherited ? tableFactory.GetIconId() : column->GetIconId()), 
                             column->GetName(), column->GetDefinition());
                         previousColumns.Add(column->GetQuotedIdentifier() 
                             + wxT(" ") + column->GetDefinition());
@@ -204,7 +204,7 @@ int dlgTable::Go(bool modal)
                     {
                         pgIndexConstraint *obj=(pgIndexConstraint*)data;
 
-                        lstConstraints->AppendItem(data->GetIcon(), obj->GetName(), obj->GetDefinition());
+                        lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
                         break;
@@ -213,7 +213,7 @@ int dlgTable::Go(bool modal)
                     {
                         pgForeignKey *obj=(pgForeignKey*)data;
 
-                        lstConstraints->AppendItem(data->GetIcon(), obj->GetName(), obj->GetDefinition());
+                        lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
                         break;
@@ -222,7 +222,7 @@ int dlgTable::Go(bool modal)
                     {
                         pgCheck *obj=(pgCheck*)data;
 
-                       lstConstraints->AppendItem(data->GetIcon(), obj->GetName(), obj->GetDefinition());
+                       lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
                         break;

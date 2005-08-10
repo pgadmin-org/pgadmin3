@@ -21,7 +21,7 @@ class pgConstraints : public pgCollection
 public:
     pgConstraints(pgSchema *sch);
     ~pgConstraints();
-    int GetIcon() { return PGICON_CONSTRAINT; }
+    int GetIconId() { return PGICON_CONSTRAINT; }
     bool IsCollectionForType(int objType);
     bool CanCreate() { return true; };
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }

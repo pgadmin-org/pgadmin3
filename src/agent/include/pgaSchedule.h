@@ -30,7 +30,7 @@ public:
     pgaSchedule(pgCollection *collection, const wxString& newName = wxT(""));
     ~pgaSchedule();
 
-    int GetIcon() { return PGAICON_SCHEDULE; }
+    int GetIconId() { return PGAICON_SCHEDULE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

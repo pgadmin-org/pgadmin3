@@ -33,7 +33,7 @@ slCollection::slCollection(int newType, slCluster *_cluster)
 
 
 
-int slCollection::GetIcon()
+int slCollection::GetIconId()
 {
     switch (GetType())
     {
@@ -107,7 +107,7 @@ slSetCollection::slSetCollection(int newType, slSet *_set, slSubscription *sub)
 }
 
 
-int slSetCollection::GetIcon()
+int slSetCollection::GetIconId()
 {
     switch (GetType())
     {
