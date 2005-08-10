@@ -43,7 +43,9 @@
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
+#include "frmOptions.h"
 #include "frmHelp.h"
+#include "frmAbout.h"
 #include "frmHint.h"
 #include "frmGrantWizard.h"
 #include "frmMainConfig.h"
@@ -59,9 +61,6 @@
 #include "dlgTable.h"
 #include "dlgServer.h"
 
-#include <wx/listimpl.cpp>
-WX_DEFINE_LIST(windowList);
-
 // Icons
 #include "images/pgAdmin3.xpm"
 #include "images/elephant32.xpm"
@@ -70,7 +69,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/vacuum.xpm"
 #include "images/properties.xpm"
 #include "images/refresh.xpm"
-#include "images/hint2.xpm"
 #include "images/help2.xpm"
 #include "images/create.xpm"
 
@@ -140,7 +138,7 @@ frmMain::frmMain(const wxString& title)
 
     fileMenu->Append(MNU_SAVEDEFINITION, _("&Save definition..."),_("Save the SQL definition of the selected object."));
     fileMenu->AppendSeparator();
-    new addServerFactory(fileMenu, toolBar);
+    menuFactories.Add(new addServerFactory(fileMenu, toolBar));
 
     toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(refresh_xpm), _("Refresh the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
@@ -151,10 +149,11 @@ frmMain::frmMain(const wxString& title)
 
     fileMenu->Append(MNU_PASSWORD, _("C&hange password..."),      _("Change your password."));
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_OPTIONS, _("&Options..."),               _("Show options dialog."));
+    optionsFactory *optFact=new optionsFactory(fileMenu, 0);
+    menuFactories.Add(optFact);
     fileMenu->AppendSeparator();
-    new mainConfigFileFactory(fileMenu, 0);
-    new hbaConfigFileFactory(fileMenu, 0);
+    menuFactories.Add(new mainConfigFileFactory(fileMenu, 0));
+    menuFactories.Add(new hbaConfigFileFactory(fileMenu, 0));
 
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
@@ -166,25 +165,25 @@ frmMain::frmMain(const wxString& title)
     editMenu->Append(MNU_DROPCASCADED, _("Drop cascaded"),        _("Drop the selected object and all objects dependent on it."));
     editMenu->Append(MNU_PROPERTIES, _("&Properties"),    		  _("Display/edit the properties of the selected object."));
 
-    new startServiceFactory(toolsMenu, 0);
-    new stopServiceFactory(toolsMenu, 0);
+    menuFactories.Add(new startServiceFactory(toolsMenu, 0));
+    menuFactories.Add(new stopServiceFactory(toolsMenu, 0));
 
-    toolsMenu->Append(MNU_CONNECT, _("&Connect"),                 _("Connect to the selected server."));
-    toolsMenu->Append(MNU_DISCONNECT, _("Disconnec&t"),           _("Disconnect from the selected server."));
+    menuFactories.Add(new connectServerFactory(toolsMenu, 0));
+    menuFactories.Add(new disconnectServerFactory(toolsMenu, 0));
     toolsMenu->AppendSeparator();
-    new queryToolFactory(toolsMenu, toolBar);
-    new editGridFactory(toolsMenu, toolBar);
-    new editGridFilteredFactory(toolsMenu, toolBar);
-    new maintenanceFactory(toolsMenu, toolBar);
+    menuFactories.Add(new queryToolFactory(toolsMenu, toolBar));
+    menuFactories.Add(new editGridFactory(toolsMenu, toolBar));
+    menuFactories.Add(new editGridFilteredFactory(toolsMenu, toolBar));
+    menuFactories.Add(new maintenanceFactory(toolsMenu, toolBar));
 
-    new backupFactory(toolsMenu, 0);
-    new restoreFactory(toolsMenu, 0);
+    menuFactories.Add(new backupFactory(toolsMenu, 0));
+    menuFactories.Add(new restoreFactory(toolsMenu, 0));
 //    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
 
 
-    new grantWizardFactory(toolsMenu, 0);
-    new mainConfigFactory(cfgMenu, 0);
-    new hbaConfigFactory(cfgMenu, 0);
+    menuFactories.Add(new grantWizardFactory(toolsMenu, 0));
+    menuFactories.Add(new mainConfigFactory(cfgMenu, 0));
+    menuFactories.Add(new hbaConfigFactory(cfgMenu, 0));
 
     toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server configuration"), cfgMenu);
 
@@ -198,33 +197,36 @@ frmMain::frmMain(const wxString& title)
 
     toolsMenu->AppendSeparator();
 
-    new serverStatusFactory(toolsMenu, 0);
+    menuFactories.Add(new serverStatusFactory(toolsMenu, 0));
 
     viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),              _("Refresh the selected object."));
 
-    new countRowsFactory(viewMenu, 0);
+    menuFactories.Add(new countRowsFactory(viewMenu, 0));
 
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm), _("Display helpful hints on current object."));
+    helpMenu->Append(MNU_PGSQLHELP, _("&PostgreSQL Help"),        _("Display help on PostgreSQL database system."));
+
+    menuFactories.Add(new hintFactory(helpMenu, toolBar));
+
     toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
 
     helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
     helpMenu->Append(MNU_FAQ, _("pgAdmin III &FAQ"),              _("Frequently asked questions about pgAdmin III."));
-    helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
-    helpMenu->Append(MNU_PGSQLHELP, _("&PostgreSQL Help"),        _("Display help on PostgreSQL database system."));
-    helpMenu->Append(MNU_HINT, _("Hints"),                        _("Display helpful hints on current object."));
+
+
     helpMenu->Append(MNU_TIPOFTHEDAY, _("&Tip of the day"),       _("Show a tip of the day."));
     helpMenu->AppendSeparator();
     helpMenu->Append(MNU_ONLINEUPDATE, _("Online Update"),        _("Check online for updates"));
     helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
-    helpMenu->Append(MNU_ABOUT, _("&About..."),                   _("Show about dialog."));
+    actionFactory *abFact=new aboutFactory(helpMenu, 0);
+    menuFactories.Add(abFact);
 
 #ifdef __WXMAC__
-    wxApp::s_macPreferencesMenuItemId = MNU_OPTIONS;
+    wxApp::s_macPreferencesMenuItemId = optFact->GetId();
     wxApp::s_macExitMenuItemId = MNU_EXIT;
-    wxApp::s_macAboutMenuItemId = MNU_ABOUT;
+    wxApp::s_macAboutMenuItemId = abFact->GetId();
 #endif 
 
 
@@ -463,12 +465,6 @@ ctlListView *frmMain::GetReferencedBy()
     if (listViews->GetSelection() == NBP_REFERENCEDBY)
         return referencedBy;
     return 0;
-}
-
-
-void frmMain::RemoveFrame(wxWindow *frame)
-{
-    frames.DeleteObject(frame);
 }
 
 
@@ -1014,15 +1010,12 @@ void frmMain::SetButtons(pgObject *obj)
     toolBar->EnableTool(MNU_CREATE, create);
     toolBar->EnableTool(MNU_DROP, drop);
     toolBar->EnableTool(MNU_PROPERTIES, properties);
-    toolBar->EnableTool(MNU_HINT, hint);
 
 	// Handle the menus associated with the buttons
 	editMenu->Enable(MNU_CREATE, create);
 	editMenu->Enable(MNU_DROP, drop);
 	editMenu->Enable(MNU_DROPCASCADED, dropCascaded);
 	editMenu->Enable(MNU_PROPERTIES, properties);
-	toolsMenu->Enable(MNU_CONNECT, false);
-	toolsMenu->Enable(MNU_DISCONNECT, false);
 	//toolsMenu->Enable(MNU_INDEXCHECK, false);
 
 
@@ -1034,8 +1027,6 @@ void frmMain::SetButtons(pgObject *obj)
     slonyMenu->Enable(MNU_SLONY_MERGESET, set);
 
     viewMenu->Enable(MNU_REFRESH, refresh);
-
-    helpMenu->Enable(MNU_HINT, hint);
 }
 
 

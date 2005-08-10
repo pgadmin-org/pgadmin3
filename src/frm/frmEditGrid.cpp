@@ -2016,9 +2016,9 @@ editGridFactory::editGridFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *editGridFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *editGridFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
-    return ViewData(form, obj, false);
+    return ViewData((frmMain*)form, obj, false);
 }
 
 
@@ -2030,8 +2030,8 @@ editGridFilteredFactory::editGridFilteredFactory(wxMenu *mnu, wxToolBar *toolbar
 }
 
 
-wxWindow *editGridFilteredFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *editGridFilteredFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
-    return ViewData(form, obj, true);
+    return ViewData((frmMain*)form, obj, true);
 }
 

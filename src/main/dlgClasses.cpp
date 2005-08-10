@@ -19,9 +19,11 @@
 #include "pgAdmin3.h"
 #include "frmMain.h"
 #include "pgConn.h"
-#include "frmAbout.h"
 #include "sysProcess.h"
 #include "menu.h"
+
+#include <wx/listimpl.cpp>
+WX_DEFINE_LIST(windowList);
 
 #define STATUSBAR_XRCNAME   wxT("unkStatusBar")
 #define STATUSBAR_CONTAINER STATUSBAR_XRCNAME wxT("_container")
@@ -170,7 +172,6 @@ BEGIN_EVENT_TABLE(pgFrame, wxFrame)
     EVT_MENU(MNU_RECENT+9,              pgFrame::OnRecent)
     EVT_MENU(MNU_BUGREPORT,             pgFrame::OnBugreport)
     EVT_MENU(MNU_HELP,                  pgFrame::OnHelp)
-    EVT_MENU(MNU_ABOUT,                 pgFrame::OnAbout)
 #ifdef __WXGTK__
     EVT_KEY_DOWN(                       pgFrame::OnKeyDown)
 #endif
@@ -181,7 +182,19 @@ pgFrame::~pgFrame()
 {
     if (!dlgName.IsEmpty())
         SavePosition();
+    while (menuFactories.GetCount())
+    {
+        delete (actionFactory*)menuFactories.Item(0);
+        menuFactories.RemoveAt(0);
+    }
 }
+
+
+void pgFrame::RemoveFrame(wxWindow *frame)
+{
+    frames.DeleteObject(frame);
+}
+
 
 // Event handlers
 void pgFrame::OnKeyDown(wxKeyEvent& event)
@@ -204,10 +217,15 @@ void pgFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
 }
 
 
-void pgFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
+void pgFrame::OnAction(wxCommandEvent &ev)
 {
-    frmAbout *winAbout = new frmAbout(this);
-    winAbout->Show();
+    actionFactory *af=actionFactory::GetFactory(ev.GetId());
+    if (af)
+    {
+        wxWindow *wnd=af->StartDialog(this, 0);
+        if (wnd)
+            AddFrame(wnd);
+    }
 }
 
 

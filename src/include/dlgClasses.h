@@ -14,6 +14,7 @@
 
 #include <wx/wx.h>
 
+WX_DECLARE_LIST(wxWindow, windowList);
 
 #define btnOK                   CTRL_BUTTON("wxID_OK")
 #define btnApply                CTRL_BUTTON("wxID_APPLY")
@@ -51,6 +52,7 @@ public:
     pgFrame(wxFrame *parent, const wxString &title, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long flags=wxDEFAULT_FRAME_STYLE) 
         : wxFrame(parent, -1, title, pos, size, flags) { changed=false; recentFileMenu=0; }
     ~pgFrame();
+    void RemoveFrame(wxWindow *frame);
     void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
     void SavePosition();
 
@@ -59,7 +61,7 @@ protected:
     void OnKeyDown(wxKeyEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnRecent(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
+    void OnAction(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
     void OnBugreport(wxCommandEvent& event);
 
@@ -67,7 +69,10 @@ protected:
     virtual wxString GetHelpPage() const { return wxEmptyString; }
 
     void UpdateRecentFiles();
+    void AddFrame(wxWindow *wnd) { frames.Append(wnd); }
 
+    windowList frames;
+    wxArrayPtrVoid menuFactories;
     wxString dlgName;
     wxString lastFilename, lastDir, lastPath;
     wxString recentKey;

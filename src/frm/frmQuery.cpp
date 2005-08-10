@@ -1200,8 +1200,9 @@ queryToolFactory::queryToolFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *queryToolFactory::StartDialog(pgFrame *fr, pgObject *obj)
 {
+    frmMain *form=(frmMain*)fr;
     pgDatabase *db=obj->GetDatabase();
     pgServer *server=db->GetServer();
     pgConn *conn = db->CreateConn();
@@ -1224,5 +1225,5 @@ wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool queryToolFactory::CheckEnable(pgObject *obj)
 {
-    return obj->GetDatabase() != 0;
+    return obj && obj->GetDatabase() != 0;
 }

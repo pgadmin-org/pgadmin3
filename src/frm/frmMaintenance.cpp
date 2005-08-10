@@ -188,9 +188,9 @@ maintenanceFactory::maintenanceFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *maintenanceFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *maintenanceFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
-    frmMaintenance *frm=new frmMaintenance(form, obj);
+    frmMaintenance *frm=new frmMaintenance((frmMain*)form, obj);
     frm->Go();
     return frm;
 }
@@ -198,5 +198,5 @@ wxWindow *maintenanceFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool maintenanceFactory::CheckEnable(pgObject *obj)
 {
-    return obj->CanMaintenance();
+    return obj && obj->CanMaintenance();
 }

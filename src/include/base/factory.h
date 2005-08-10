@@ -83,24 +83,48 @@ protected:
 };
 
 
-class actionFactory
+class menuFactory
 {
 public:
-    virtual wxWindow *StartDialog(frmMain *form, pgObject *obj)=0;
-    virtual bool CheckEnable(pgObject *obj) { return true; }
+    virtual bool IsAction() { return false; }
 
+protected:
+    menuFactory() {}
+};
+
+
+class actionFactory : public menuFactory
+{
+public:
+    virtual bool IsAction() { return true; }
+    virtual wxWindow *StartDialog(pgFrame *form, pgObject *obj)=0;
+    virtual bool CheckEnable(pgObject *obj) { return true; }
     int GetId() { return id; }
+    bool GetContext() { return context; }
+
 
     static void CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *toolbar);
     static void AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu);
-    static actionFactory *GetFactory(int id);
+    static actionFactory *GetFactory(int id, bool actionOnly=true);
     static void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
 
 protected:
     actionFactory();
 
     int id;
+    bool context;
 };
 
 
+class contextActionFactory : public actionFactory
+{
+protected:
+    contextActionFactory() { context=true; }
+};
+
+class separatorFactory : public menuFactory
+{
+public:
+    separatorFactory() {}
+};
 #endif

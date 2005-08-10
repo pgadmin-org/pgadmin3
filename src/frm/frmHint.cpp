@@ -27,6 +27,8 @@
 
 // Icons
 #include "images/pgAdmin3.xpm"
+#include "images/hint.xpm"
+#include "images/hint2.xpm"
 
 
 
@@ -368,4 +370,29 @@ int frmHint::ShowHint(wxWindow *fr, const wxString &hint, const wxString &info, 
 void frmHint::OnFix(wxCommandEvent &ev)
 {
     EndModal(HINT_RC_FIX);
+}
+
+
+
+hintFactory::hintFactory(wxMenu *mnu, wxToolBar *toolbar, bool bigTool)
+{
+    mnu->Append(id, _("Hints"), _("Display helpful hints on current object."));
+    if (toolbar)
+    {
+        char **img=(bigTool ? hint2_xpm : hint_xpm);
+        toolbar->AddTool(id, _("Hints"), wxBitmap(img), _("Display helpful hints on current object."));
+    }
+}
+
+
+wxWindow *hintFactory::StartDialog(pgFrame *form, pgObject *obj)
+{
+    obj->ShowHint((frmMain*)form, true);
+    return 0;
+}
+
+
+bool hintFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->GetCanHint();
 }

@@ -796,8 +796,9 @@ countRowsFactory::countRowsFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *countRowsFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *countRowsFactory::StartDialog(pgFrame *fr, pgObject *obj)
 {
+    frmMain *form=(frmMain*)fr;
     ((pgTable*)obj)->UpdateRows();
     
     wxTreeItemId item=form->GetBrowser()->GetSelection();
@@ -810,5 +811,5 @@ wxWindow *countRowsFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool countRowsFactory::CheckEnable(pgObject *obj)
 {
-    return obj->GetFactory() == &tableFactory;
+    return obj && obj->IsCreatedBy(tableFactory);
 }

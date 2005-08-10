@@ -73,3 +73,17 @@ void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
     y += SPLASH_OFFS;
     dc.DrawText(LICENSE, SPLASH_X0, y);
 }
+
+
+aboutFactory::aboutFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&About..."), _("Show about dialog."));
+}
+
+
+wxWindow *aboutFactory::StartDialog(pgFrame *form, pgObject *obj)
+{
+    frmAbout *frm=new frmAbout((wxFrame*)form);
+    frm->Show();
+    return frm;
+}

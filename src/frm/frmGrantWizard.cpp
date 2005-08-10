@@ -260,9 +260,9 @@ grantWizardFactory::grantWizardFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *grantWizardFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *grantWizardFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
-    frmGrantWizard *frm=new frmGrantWizard(form, obj);
+    frmGrantWizard *frm=new frmGrantWizard((frmMain*)form, obj);
     frm->Go();
     return frm;
 }
@@ -270,16 +270,19 @@ wxWindow *grantWizardFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool grantWizardFactory::CheckEnable(pgObject *obj)
 {
-    switch (obj->GetMetaType())
+    if (obj)
     {
-        case PGM_SCHEMA:
-        case PGM_TABLE:
-        case PGM_FUNCTION:
-        case PGM_SEQUENCE:
-        case PGM_VIEW:
-            return true;
-        default:
-            break;
+        switch (obj->GetMetaType())
+        {
+            case PGM_SCHEMA:
+            case PGM_TABLE:
+            case PGM_FUNCTION:
+            case PGM_SEQUENCE:
+            case PGM_VIEW:
+                return true;
+            default:
+                break;
+        }
     }
     return false;
 }

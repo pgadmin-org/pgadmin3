@@ -199,7 +199,7 @@ private:
 };
 
 
-class editGridFactoryBase : public actionFactory
+class editGridFactoryBase : public contextActionFactory
 {
 public:
     bool CheckEnable(pgObject *obj);
@@ -214,7 +214,7 @@ class editGridFactory : public editGridFactoryBase
 {
 public:
     editGridFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
 };
 
 
@@ -222,7 +222,7 @@ class editGridFilteredFactory : public editGridFactoryBase
 {
 public:
     editGridFilteredFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
 };
 
 #endif

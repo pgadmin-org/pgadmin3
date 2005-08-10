@@ -57,22 +57,18 @@ extern wxString loadPath;
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
-    EVT_MENU(MNU_INDEXCHECK,                frmMain::OnIndexcheck)
+    EVT_MENU(MNU_ACTION,                    frmMain::OnAction)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
-    EVT_MENU(MNU_HINT,                      frmMain::OnHint)
     EVT_MENU(MNU_ONLINEUPDATE,              frmMain::OnOnlineUpdate)
     EVT_MENU(MNU_ONLINEUPDATE_NEWDATA,      frmMain::OnOnlineUpdateNewData)
     EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
     EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
-    EVT_MENU(MNU_CONNECT,                   frmMain::OnConnect)
-    EVT_MENU(MNU_DISCONNECT,                frmMain::OnDisconnect)
     EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
     EVT_MENU(MNU_DROP,                      frmMain::OnDrop)
     EVT_MENU(MNU_DROPCASCADED,              frmMain::OnDropCascaded)
     EVT_MENU(MNU_CREATE,                    frmMain::OnCreate)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
-    EVT_MENU(MNU_OPTIONS,                   frmMain::OnOptions)
     EVT_MENU(MNU_PASSWORD,                  frmMain::OnPassword)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
@@ -176,10 +172,22 @@ void frmMain::OnClose(wxCloseEvent& event)
 }
 
 
+void frmMain::OnAction(wxCommandEvent &ev)
+{
+    actionFactory *af=actionFactory::GetFactory(ev.GetId());
+    if (af)
+    {
+        wxWindow *wnd=af->StartDialog(this, currentObject);
+        if (wnd)
+            AddFrame(wnd);
+    }
+}
+
+
 void frmMain::OnTipOfTheDay(wxCommandEvent& WXUNUSED(event))
 {
-extern wxString docPath;
-extern wxLocale *locale;
+    extern wxString docPath;
+    extern wxLocale *locale;
 
     wxString file;
     
@@ -251,13 +259,6 @@ wxString frmMain::GetHelpPage() const
 }
 
 
-void frmMain::OnOptions(wxCommandEvent& event)
-{
-    frmOptions *winOptions = new frmOptions(this);
-    winOptions->Show();
-}
-
-
 void frmMain::OnCollapse(wxTreeEvent &event)
 {
 #ifdef WIN32
@@ -285,13 +286,6 @@ void frmMain::OnExpand(wxTreeEvent &event)
         if (!browser->GetChildrenCount(event.GetItem()))
             event.Veto();
     }
-}
-
-
-void frmMain::OnHint(wxCommandEvent &event)
-{
-    if (currentObject)
-        currentObject->ShowHint(this, true);
 }
 
 
@@ -333,18 +327,6 @@ void frmMain::OnIndexcheck(wxCommandEvent &ev)
     {
         frmIndexcheck *frm=new frmIndexcheck(this, currentObject);
         frm->Go();
-    }
-}
-
-
-void frmMain::OnAction(wxCommandEvent &ev)
-{
-    actionFactory *af=actionFactory::GetFactory(ev.GetId());
-    if (af && currentObject)
-    {
-        wxWindow *wnd=af->StartDialog(this, currentObject);
-        if (wnd)
-            AddFrame(wnd);
     }
 }
 
@@ -679,37 +661,13 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     else
     {
     }
-    bool canHint=data->GetCanHint();
-    toolsMenu->Enable(MNU_CONNECT, canConnect);
-    toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
-    helpMenu->Enable(MNU_HINT, canHint);
-    toolBar->EnableTool(MNU_HINT, canHint);
     actionFactory::CheckMenu(data, menuBar, toolBar);
 
     // !!!!! interate submenus to check if any is enabled
 //    toolsMenu->Enable(MNU_CONFIGSUBMENU, checkKids);
 
 //    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
-}
-
-
-void frmMain::OnConnect(wxCommandEvent &ev)
-{
-    pgServer *server = (pgServer *)currentObject;
-    if (server && server->GetType() == PG_SERVER && !server->GetConnected())
-        ReconnectServer(server);
-}
-
-
-void frmMain::OnDisconnect(wxCommandEvent &ev)
-{
-    pgServer *server = (pgServer *)currentObject;
-    if (server && server->GetType() == PG_SERVER && server->Disconnect(this))
-    {
-        browser->DeleteChildren(server->GetId());
-        execSelChange(server->GetId(), true);
-    }
 }
 
 
@@ -782,15 +740,10 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
 
     if (object && (object->GetType() == PG_SERVER ||object->GetType() == PG_SERVERS))
     {
-        appendIfEnabled(MNU_ADDSERVER);
         appendIfEnabled(MNU_PASSWORD);
     }
 
     appendIfEnabled(MNU_REFRESH);
-    appendIfEnabled(MNU_HINT);
-
-    if (browser->GetSelection() == object->GetId())
-        appendIfEnabled(MNU_COUNT);
 
     if (object)
     {
@@ -816,19 +769,8 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
 
     int currentSize = treeContextMenu->GetMenuItemCount();
 
-    appendIfEnabled(MNU_VIEWDATA);
-    appendIfEnabled(MNU_VIEWFILTEREDDATA);
-    appendIfEnabled(MNU_MAINTENANCE);
-//    appendIfEnabled(MNU_INDEXCHECK);
-    appendIfEnabled(MNU_BACKUP);
-    appendIfEnabled(MNU_RESTORE);
 
     actionFactory::AppendEnabledMenus(menuBar, treeContextMenu);
-
-    appendIfEnabled(MNU_STARTSERVICE);
-    appendIfEnabled(MNU_STOPSERVICE);
-    appendIfEnabled(MNU_CONNECT);
-    appendIfEnabled(MNU_DISCONNECT);
 
     appendIfEnabled(MNU_SLONY_RESTART);
     appendIfEnabled(MNU_SLONY_UPGRADE);
@@ -1117,7 +1059,12 @@ void frmMain::OnNew(wxCommandEvent &ev)
     int type=ev.GetId() - MNU_NEW;
     if (type == PG_SERVER)
     {
-        OnConnect(ev);
+        if (currentObject && currentObject->GetType() == PG_SERVER)
+        {
+            pgServer *server=(pgServer*)currentObject;
+            if (!server->GetConnected())
+                ReconnectServer(server);
+        }
         return;
     }
 

@@ -288,9 +288,10 @@ addServerFactory::addServerFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *addServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
 {
     int rc = PGCONN_BAD;
+    frmMain *form=(frmMain*)fr;
     
     dlgServer dlg(form, 0);
     dlg.CenterOnParent();
@@ -357,7 +358,7 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool controlServiceFactory::CheckEnable(pgObject *obj)
 {
-    return obj->GetType() == PG_SERVER;
+    return obj && obj->GetType() == PG_SERVER;
 }
 
 
@@ -367,8 +368,9 @@ startServiceFactory::startServiceFactory (wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *startServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *startServiceFactory::StartDialog(pgFrame *fr, pgObject *obj)
 {
+    frmMain *form=(frmMain*)fr;
     pgServer *server= (pgServer*)obj;
     form->StartMsg(_("Starting service"));
     bool rc = server->StartService();
@@ -385,8 +387,9 @@ stopServiceFactory::stopServiceFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *stopServiceFactory::StartDialog(pgFrame *fr, pgObject *obj)
 {
+    frmMain *form=(frmMain*)fr;
     pgServer *server= (pgServer*)obj;
 	wxMessageDialog msg(form, _("Are you sure you wish to shutdown this server?"),
             _("Stop service"), wxYES_NO | wxICON_QUESTION);
@@ -407,4 +410,52 @@ wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
         form->EndMsg(done);
     }
     return 0;
+}
+
+
+connectServerFactory::connectServerFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Connect"), _("Connect to the selected server."));
+}
+
+
+wxWindow *connectServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
+{
+    pgServer *server = (pgServer *)obj;
+    frmMain *form=(frmMain*)fr;
+    form->ReconnectServer(server);
+    return 0;
+}
+
+
+bool connectServerFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->GetType() == PG_SERVER)
+        return !((pgServer*)obj)->GetConnected();
+
+    return false;
+}
+
+
+disconnectServerFactory::disconnectServerFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("Disconnec&t"), _("Disconnect from the selected server."));
+}
+
+
+wxWindow *disconnectServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
+{
+    frmMain *form=(frmMain*)fr;
+    form->GetBrowser()->DeleteChildren(obj->GetId());
+    form->execSelChange(obj->GetId(), true);
+    return 0;
+}
+
+
+bool disconnectServerFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->GetType() == PG_SERVER)
+        return !((pgServer*)obj)->GetConnected();
+
+    return false;
 }

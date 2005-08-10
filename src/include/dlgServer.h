@@ -49,11 +49,11 @@ class addServerFactory : public actionFactory
 {
 public:
     addServerFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
 };
 
 
-class controlServiceFactory : public actionFactory
+class controlServiceFactory : public contextActionFactory
 {
 public:
     bool CheckEnable(pgObject *obj);
@@ -66,14 +66,32 @@ class startServiceFactory : public controlServiceFactory
 {
 public:
     startServiceFactory (wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
 };
 
 class stopServiceFactory : public controlServiceFactory
 {
 public:
     stopServiceFactory (wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+};
+
+
+class connectServerFactory : public contextActionFactory
+{
+public:
+    connectServerFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class disconnectServerFactory : public contextActionFactory
+{
+public:
+    disconnectServerFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
 };
 
 #endif

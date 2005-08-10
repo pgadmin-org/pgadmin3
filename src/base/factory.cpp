@@ -43,7 +43,8 @@ pgaFactory *pgaFactory::GetFactory(int id)
 {
     id -= FACTORY_OFFSET;
     if (id >= 0 && id < (int)factoryArray->GetCount())
-        return (pgaFactory*)factoryArray->Item(id);
+        return (pgaFactory*)factoryArray->Item(id);;
+
     return 0;
 }
 
@@ -233,6 +234,7 @@ wxArrayPtrVoid *actionFactoryArray=0;
 
 actionFactory::actionFactory()
 {
+    context=false;
     if (!actionFactoryArray)
         actionFactoryArray = new wxArrayPtrVoid;
 
@@ -241,11 +243,15 @@ actionFactory::actionFactory()
 }
 
 
-actionFactory *actionFactory::GetFactory(int id)
+actionFactory *actionFactory::GetFactory(int id, bool actionOnly)
 {
     id -= MNU_ACTION;
     if (id >= 0 && id < (int)actionFactoryArray->GetCount())
-        return (actionFactory*)actionFactoryArray->Item(id);
+    {
+        actionFactory *f=(actionFactory*)actionFactoryArray->Item(id);
+        if (f->IsAction() || !actionOnly) 
+            return f;
+    }
     return 0;
 }
 
@@ -262,10 +268,14 @@ void actionFactory::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *tool
     size_t id;
     for (id=MNU_ACTION ; id < actionFactoryArray->GetCount()+MNU_ACTION ; id++)
     {
-        bool how=GetFactory(id)->CheckEnable(obj);
-        menubar->Enable(id, how);
-        if (toolbar)
-            toolbar->EnableTool(id, how);
+        actionFactory *f=GetFactory(id);
+        if (f)
+        {
+            bool how=f->CheckEnable(obj);
+            menubar->Enable(id, how);
+            if (toolbar)
+                toolbar->EnableTool(id, how);
+        }
     }
 }
 
@@ -275,11 +285,24 @@ void actionFactory::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMe
     size_t id;
     for (id=MNU_ACTION ; id < actionFactoryArray->GetCount()+MNU_ACTION ; id++)
     {
-        if (menuBar->IsEnabled(id))
+        actionFactory *f=GetFactory(id, false);
+        if (f->IsAction())
         {
-            wxMenuItem *menuItem=menuBar->FindItem(id);
-            if (menuItem)
-                treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
+            if (f->GetContext())
+            {
+                if (menuBar->IsEnabled(id))
+                {
+                    wxMenuItem *menuItem=menuBar->FindItem(id);
+                    if (menuItem)
+                        treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
+                }
+            }
+        }
+        else
+        {
+            // check here if last menu is already separator
+            treeContextMenu->AppendSeparator();
         }
     }
+    // check here if last menu is separator and remove it
 }

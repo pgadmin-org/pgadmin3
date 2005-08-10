@@ -594,12 +594,12 @@ mainConfigFactory::mainConfigFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *mainConfigFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *mainConfigFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
     pgServer *server=obj->GetServer();
     if (server)
     {
-        frmConfig *frm= new frmMainConfig(form, server);
+        frmConfig *frm= new frmMainConfig((frmMain*)form, server);
         frm->Go();
         return frm;
     }
@@ -626,16 +626,10 @@ mainConfigFileFactory::mainConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *mainConfigFileFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *mainConfigFileFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
-    frmConfig *dlg = new frmMainConfig(form);
+    frmConfig *dlg = new frmMainConfig((frmMain*)form);
     dlg->Go();
     dlg->DoOpen();
     return dlg;
-}
-
-
-bool mainConfigFileFactory::CheckEnable(pgObject *obj)
-{
-    return true;
 }

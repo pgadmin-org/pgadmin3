@@ -50,11 +50,11 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-class grantWizardFactory : public actionFactory
+class grantWizardFactory : public contextActionFactory
 {
 public:
     grantWizardFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

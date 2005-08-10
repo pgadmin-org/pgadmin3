@@ -37,11 +37,11 @@ private:
 };
 
 
-class maintenanceFactory : public actionFactory
+class maintenanceFactory : public contextActionFactory
 {
 public:
     maintenanceFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

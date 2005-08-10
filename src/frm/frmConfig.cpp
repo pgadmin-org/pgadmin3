@@ -19,15 +19,16 @@
 #include <wx/imaglist.h>
 
 #include "frmConfig.h"
+#include "frmHint.h"
 #include "frmMainConfig.h"
 #include "frmHbaConfig.h"
 #include "frmMain.h"
+#include "frmAbout.h"
 #include "utffile.h"
 #include "pgConn.h"
 #include "pgSet.h"
 #include "menu.h"
 #include "pgfeatures.h"
-
 
 #include "images/pgAdmin3.xpm"
 #include "images/elephant32.xpm"
@@ -35,7 +36,6 @@
 #include "images/file_save.xpm"
 #include "images/edit_undo.xpm"
 #include "images/help.xpm"
-#include "images/hint.xpm"
 #include "images/checked.xpm"
 #include "images/unchecked.xpm"
 #include "images/query_execute.xpm"
@@ -47,7 +47,6 @@ BEGIN_EVENT_TABLE(frmConfig, pgFrame)
     EVT_MENU(MNU_SAVE,                      frmConfig::OnSave)
     EVT_MENU(MNU_SAVEAS,                    frmConfig::OnSaveAs)
     EVT_MENU(MNU_EXECUTE,                   frmConfig::OnExecute)
-    EVT_MENU(MNU_HINT,                      frmConfig::OnHint)
 END_EVENT_TABLE()
 
 
@@ -95,41 +94,63 @@ void frmConfig::InitFrame(const wxChar *frameName)
 
     wxWindowBase::SetFont(settings->GetSystemFont());
 
-    menuBar = new wxMenuBar();
+    toolBar=CreateToolBar();
+    toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-        // File Menu
     fileMenu = new wxMenu();
+    editMenu = new wxMenu();
+    helpMenu=new wxMenu();
+    recentFileMenu = new wxMenu();
+
     fileMenu->Append(MNU_OPEN, _("&Open...\tCtrl-O"),   _("Open a query file"));
+    toolBar->AddTool(MNU_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
+
     fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
+    toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
+
     fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
 
     fileMenu->AppendSeparator();
+    toolBar->AddSeparator();
+
+        // File Menu
+
     fileMenu->Append(MNU_EXECUTE, _("Reload server"),   _("Reload Server to apply configuration changes."));
+    toolBar->AddTool(MNU_EXECUTE, _("Reload server"), wxBitmap(query_execute_xpm), _("Reload Server to apply configuration changes."), wxITEM_NORMAL);
 
     fileMenu->AppendSeparator();
+    toolBar->AddSeparator();
 
-    recentFileMenu = new wxMenu();
     fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"), _("Exit configuration tool"));
-    menuBar->Append(fileMenu, _("&File"));
 
-    editMenu = new wxMenu();
     editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"), _("Undo last action"), wxITEM_NORMAL);
-    menuBar->Append(editMenu, _("&Edit"));
+    toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);
 
-    helpMenu=new wxMenu();
+    toolBar->AddSeparator();
+
+
     helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
-    helpMenu->Append(MNU_HINT, _("Hints"),                        _("Display helpful hints on current configuration."));
+
+    menuFactories.Add(new hintFactory(helpMenu, toolBar, false));
     helpMenu->Append(MNU_HELP, _("&Configuration Help\tF1"),      _("Display help on configuration options."));
     helpMenu->AppendSeparator();
-    helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
-    helpMenu->Append(MNU_ABOUT, _("&About..."),                   _("Show about dialog."));
-#ifdef __WXMAC__
-    wxApp::s_macAboutMenuItemId = MNU_ABOUT;
-#endif 
-    menuBar->Append(helpMenu, _("&Help"));
 
+    helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
+
+    aboutFactory *af=new aboutFactory(helpMenu, 0);
+    menuFactories.Add(af);
+
+
+    menuBar = new wxMenuBar();
+    menuBar->Append(fileMenu, _("&File"));
+    menuBar->Append(editMenu, _("&Edit"));
+    menuBar->Append(helpMenu, _("&Help"));
     SetMenuBar(menuBar);
+
+#ifdef __WXMAC__
+    wxApp::s_macAboutMenuItemId = af->GetId();
+#endif 
 
     wxAcceleratorEntry entries[3];
 
@@ -140,17 +161,6 @@ void frmConfig::InitFrame(const wxChar *frameName)
     wxAcceleratorTable accel(3, entries);
     SetAcceleratorTable(accel);
 
-    toolBar=CreateToolBar();
-    toolBar->SetToolBitmapSize(wxSize(16, 16));
-
-    toolBar->AddTool(MNU_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_EXECUTE, _("Reload server"), wxBitmap(query_execute_xpm), _("Reload Server to apply configuration changes."), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint_xpm),     _("Display helpful hints on current configuration."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm),      _("Display help on configuration options."), wxITEM_NORMAL);
     toolBar->Realize();
 

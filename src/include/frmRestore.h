@@ -57,11 +57,11 @@ private:
 };
 
 
-class restoreFactory : public actionFactory
+class restoreFactory : public contextActionFactory
 {
 public:
     restoreFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

@@ -304,3 +304,17 @@ void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
     if (logFile.ShowModal() == wxID_OK)
         txtLogfile->SetValue(logFile.GetPath());
 }
+
+
+optionsFactory::optionsFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Options..."), _("Show options dialog."));
+}
+
+
+wxWindow *optionsFactory::StartDialog(pgFrame *form, pgObject *obj)
+{
+    frmOptions *frm=new frmOptions((frmMain*)form);
+    frm->Show();
+    return frm;
+}

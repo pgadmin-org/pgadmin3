@@ -107,7 +107,7 @@ class queryToolFactory : public actionFactory
 {
 public:
     queryToolFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

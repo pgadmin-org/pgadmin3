@@ -993,7 +993,7 @@ serverStatusFactory::serverStatusFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *serverStatusFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *serverStatusFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
 
     pgServer *server=obj->GetServer();
@@ -1004,7 +1004,7 @@ wxWindow *serverStatusFactory::StartDialog(frmMain *form, pgObject *obj)
         wxString txt = wxT("pgAdmin III Server Status - ") + server->GetDescription() 
             + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(")");
 
-        frmStatus *status = new frmStatus(form, txt, conn);
+        frmStatus *status = new frmStatus((frmMain*)form, txt, conn);
         status->Go();
         return status;
     }
@@ -1014,5 +1014,5 @@ wxWindow *serverStatusFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool serverStatusFactory::CheckEnable(pgObject *obj)
 {
-    return obj->GetServer() != 0;
+    return obj && obj->GetServer() != 0;
 }

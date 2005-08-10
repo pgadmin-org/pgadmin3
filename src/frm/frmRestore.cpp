@@ -469,9 +469,9 @@ restoreFactory::restoreFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *restoreFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *restoreFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
-    frmRestore *frm=new frmRestore(form, obj);
+    frmRestore *frm=new frmRestore((frmMain*)form, obj);
     frm->Go();
     return frm;
 }
@@ -479,5 +479,5 @@ wxWindow *restoreFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool restoreFactory::CheckEnable(pgObject *obj)
 {
-    return obj->CanRestore();
+    return obj && obj->CanRestore();
 }

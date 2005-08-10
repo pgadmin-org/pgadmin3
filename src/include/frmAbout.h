@@ -32,4 +32,12 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
+class aboutFactory : public actionFactory
+{
+public:
+    aboutFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+};
+
+
 #endif

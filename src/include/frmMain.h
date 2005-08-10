@@ -30,8 +30,6 @@
 class wxSplitterWindow;
 class dlgProperty;
 
-WX_DECLARE_LIST(wxWindow, windowList);
-
 
 // Class declarations
 class frmMain : public pgFrame
@@ -39,6 +37,7 @@ class frmMain : public pgFrame
 public:
     frmMain(const wxString& title);
     ~frmMain();
+    void OnAction(wxCommandEvent &ev);
     void OnTipOfTheDay(wxCommandEvent& event);
     wxString GetHelpPage() const;
 
@@ -51,7 +50,6 @@ public:
 
     void execSelChange(wxTreeItemId item, bool currentNode);
     void Refresh(pgObject *data);
-    void RemoveFrame(wxWindow *frame);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
     void ShowStatistics(pgObject *data, int sel);
 
@@ -62,13 +60,12 @@ public:
     ctlListView *GetStatistics();
     ctlListView *GetDependsOn();
     ctlListView *GetReferencedBy();
-    void AddFrame(wxWindow *wnd) { frames.Append(wnd); }
     void StoreServers();
+    int ReconnectServer(pgServer *server);
     void ReportConnError(pgServer *server);
     wxTreeItemId GetServersNode() { return servers; }
 
 private:
-    windowList frames;
     wxTreeCtrl *browser;
     ctlListView *properties;
     ctlListView *statistics;
@@ -132,7 +129,6 @@ private:
     void OnClose(wxCloseEvent& event);
 
     void OnNew(wxCommandEvent& event);
-    void OnAction(wxCommandEvent& event);
     void OnCreate(wxCommandEvent &ev);
     void OnDrop(wxCommandEvent &ev);
     void OnDropCascaded(wxCommandEvent &ev);
@@ -154,7 +150,6 @@ private:
     bool checkAlive();
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);
     void RetrieveServers();
-    int ReconnectServer(pgServer *server);
     bool reportError(const wxString &error, const wxString &msgToIdentify, const wxString &hint);
     wxTreeItemId RestoreEnvironment(pgServer *server);
 

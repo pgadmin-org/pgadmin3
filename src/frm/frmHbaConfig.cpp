@@ -102,9 +102,6 @@ void frmHbaConfig::Init()
     RestorePosition(150, 150, 650, 300, 300, 200);
 
 
-    helpMenu->Enable(MNU_HINT, false);
-    toolBar->EnableTool(MNU_HINT, false);
-
     listEdit = new ctlListView(this, CTL_CFGVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     listEdit->SetImageList(configImageList, wxIMAGE_LIST_SMALL);
 
@@ -296,12 +293,12 @@ hbaConfigFactory::hbaConfigFactory (wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *hbaConfigFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *hbaConfigFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
     pgServer *server=obj->GetServer();
     if (server)
     {
-        frmHbaConfig *frm=new frmHbaConfig(form, server);
+        frmHbaConfig *frm=new frmHbaConfig((frmMain*)form, server);
         frm->Go();
         return frm;
     }
@@ -328,17 +325,10 @@ hbaConfigFileFactory::hbaConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *hbaConfigFileFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *hbaConfigFileFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
-    frmConfig *dlg = new frmHbaConfig(form);
+    frmConfig *dlg = new frmHbaConfig((frmMain*)form);
     dlg->Go();
     dlg->DoOpen();
     return dlg;
 }
-
-
-bool hbaConfigFileFactory::CheckEnable(pgObject *obj)
-{
-    return true;
-}
-

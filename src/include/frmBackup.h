@@ -48,11 +48,11 @@ private:
 };
 
 
-class backupFactory : public actionFactory
+class backupFactory : public contextActionFactory
 {
 public:
     backupFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

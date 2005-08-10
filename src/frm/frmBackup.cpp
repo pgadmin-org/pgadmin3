@@ -275,9 +275,9 @@ backupFactory::backupFactory(wxMenu *mnu, wxToolBar *toolbar)
 }
 
 
-wxWindow *backupFactory::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *backupFactory::StartDialog(pgFrame *form, pgObject *obj)
 {
-    frmBackup *frm=new frmBackup(form, obj);
+    frmBackup *frm=new frmBackup((frmMain*)form, obj);
     frm->Go();
     return frm;
 }
@@ -285,5 +285,5 @@ wxWindow *backupFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool backupFactory::CheckEnable(pgObject *obj)
 {
-    return obj->CanBackup();
+    return obj && obj->CanBackup();
 }

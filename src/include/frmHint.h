@@ -52,5 +52,13 @@ private:
 };
 
 
+class hintFactory : public contextActionFactory
+{
+public:
+    hintFactory(wxMenu *mnu, wxToolBar *toolbar, bool bigTool=true);
+    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 
 #endif
