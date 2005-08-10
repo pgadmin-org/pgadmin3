@@ -45,7 +45,7 @@ BEGIN_EVENT_TABLE(dlgRule, dlgProperty)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkDoInstead"),             dlgProperty::OnChange)
     EVT_RADIOBOX(XRCID("rbxEvent"),                 dlgProperty::OnChange)
-    EVT_STC_MODIFIED(XRCID("txtSQlBox"),            dlgProperty::OnChangeStc)
+    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
 END_EVENT_TABLE();
 
 
