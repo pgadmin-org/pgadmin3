@@ -48,6 +48,7 @@ public:
 
     virtual int GetIconId() { return iconId; }
     static void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
+    static void RealizeImages();
     char **GetImage() const { return image; }
 
 protected:
@@ -86,7 +87,7 @@ class actionFactory
 {
 public:
     virtual wxWindow *StartDialog(frmMain *form, pgObject *obj)=0;
-    virtual bool CheckEnable(pgObject *obj)=0;
+    virtual bool CheckEnable(pgObject *obj) { return true; }
 
     int GetId() { return id; }
 

@@ -21,6 +21,7 @@
 #include "frmMain.h"
 #include "pgDomain.h"
 #include "pgAggregate.h"
+#include "pgConversion.h"
 #include "pgFunction.h"
 #include "pgType.h"
 #include "pgSequence.h"
@@ -31,9 +32,8 @@
 
 #include "wx/regex.h"
 
-
 pgSchema::pgSchema(const wxString& newName)
-: pgDatabaseObject(PG_SCHEMA, newName)
+: pgDatabaseObject(schemaFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgSchema object"));
 }
@@ -51,14 +51,14 @@ wxMenu *pgSchema::GetNewMenu()
     if (GetCreatePrivilege())
     {
         aggregateFactory.AppendMenu(menu);
-        AppendMenu(menu, PG_CONVERSION);
+        conversionFactory.AppendMenu(menu);
         domainFactory.AppendMenu(menu);
         functionFactory.AppendMenu(menu);
         triggerFunctionFactory.AppendMenu(menu);
         if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
             procedureFactory.AppendMenu(menu);
         operatorFactory.AppendMenu(menu);
-//        AppendMenu(menu, PG_OPERATORCLASS);
+//      opclass
         sequenceFactory.AppendMenu(menu);
         tableFactory.AppendMenu(menu);
         typeFactory.AppendMenu(menu);
@@ -113,32 +113,32 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         pgCollection *collection;
 
         // Aggregates
-        collection = new pgSchemaCollection(*aggregateFactory.GetCollectionFactory(), this);
+        collection = new pgSchemaObjCollection(*aggregateFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Conversions
-        collection = new pgCollection(PG_CONVERSIONS, this);
+        collection = new pgSchemaObjCollection(*conversionFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Domains
-        collection = new pgSchemaCollection(*domainFactory.GetCollectionFactory(), this);
+        collection = new pgSchemaObjCollection(*domainFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Functions
-        collection = new pgSchemaCollection(*functionFactory.GetCollectionFactory(), this);
+        collection = new pgSchemaObjCollection(*functionFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
-        collection = new pgSchemaCollection(*triggerFunctionFactory.GetCollectionFactory(), this);
+        collection = new pgSchemaObjCollection(*triggerFunctionFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
         {
-            collection = new pgSchemaCollection(*procedureFactory.GetCollectionFactory(), this);
+            collection = new pgSchemaObjCollection(*procedureFactory.GetCollectionFactory(), this);
             AppendBrowserItem(browser, collection);
         }
 
         // Operators
-        collection = new pgSchemaCollection(*operatorFactory.GetCollectionFactory(), this);
+        collection = new pgSchemaObjCollection(*operatorFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Operator Classes
@@ -146,7 +146,7 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         AppendBrowserItem(browser, collection);
 
         // Sequences
-        collection = new pgSchemaCollection(*sequenceFactory.GetCollectionFactory(), this);
+        collection = new pgSchemaObjCollection(*sequenceFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Tables
@@ -154,11 +154,11 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         AppendBrowserItem(browser, collection);
 
         // Types
-        collection = new pgSchemaCollection(*typeFactory.GetCollectionFactory(), this);
+        collection = new pgSchemaObjCollection(*typeFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
 
         // Views
-        collection = new pgSchemaCollection(*viewFactory.GetCollectionFactory(), this);
+        collection = new pgSchemaObjCollection(*viewFactory.GetCollectionFactory(), this);
         AppendBrowserItem(browser, collection);
     }
 
@@ -187,15 +187,15 @@ pgObject *pgSchema::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_SCHEMAS)
-            schema = ReadObjects((pgCollection*)obj, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
+        if (obj->IsCollection())
+            schema = schemaFactory.CreateObjects((pgCollection*)obj, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
     }
     return schema;
 }
 
 
 
-pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaSchemaFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgSchema *schema=0;
 
@@ -266,13 +266,13 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
         systemRestriction = wxT("WHERE ") + collection->GetConnection()->SystemNamespaceRestriction(wxT("nsp.nspname"));
 
     // Get the schemas
-    return ReadObjects(collection, browser, systemRestriction);
+    return schemaFactory.CreateObjects(collection, browser, systemRestriction);
 }
 
 
 /////////////////////////////////////////////////////
 
-pgSchemaCollection::pgSchemaCollection(pgaFactory &factory, pgSchema *sch)
+pgSchemaObjCollection::pgSchemaObjCollection(pgaFactory &factory, pgSchema *sch)
 : pgCollection(factory)
 { 
     schema = sch;
@@ -281,7 +281,20 @@ pgSchemaCollection::pgSchemaCollection(pgaFactory &factory, pgSchema *sch)
 }
 
 
-bool pgSchemaCollection::CanCreate()
+bool pgSchemaObjCollection::CanCreate()
 {
     return GetSchema()->GetCreatePrivilege();
 }
+
+
+#include "images/namespace.xpm"
+
+pgaSchemaFactory::pgaSchemaFactory() 
+: pgaFactory(__("Schema"), __("New Schema"), __("Create a new Schema."), namespace_xpm)
+{
+    metaType = PGM_SCHEMA;
+}
+
+
+pgaSchemaFactory schemaFactory;
+static pgaCollectionFactory cf(&schemaFactory, __("Schemas"));

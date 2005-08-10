@@ -20,7 +20,7 @@
 #include "pgCollection.h"
 
 pgCast::pgCast(const wxString& newName)
-: pgDatabaseObject(PG_CAST, newName)
+: pgDatabaseObject(castFactory, newName)
 {
 }
 
@@ -87,15 +87,15 @@ pgObject *pgCast::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_CASTS)
-            cast = ReadObjects((pgCollection*)obj, 0, wxT(" WHERE ca.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            cast = castFactory.CreateObjects((pgCollection*)obj, 0, wxT(" WHERE ca.oid=") + GetOidStr());
     }
     return cast;
 }
 
 
 
-pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaCastFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgCast *cast=0;
     wxString systemRestriction;
@@ -158,3 +158,17 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     }
     return cast;
 }
+
+
+/////////////////////////////
+
+#include "images/cast.xpm"
+
+pgaCastFactory::pgaCastFactory() 
+: pgaFactory(__("Cast"), __("New Cast"), __("Create a new Cast."), cast_xpm)
+{
+}
+
+
+pgaCastFactory castFactory;
+static pgaCollectionFactory cf(&castFactory, __("Casts"));

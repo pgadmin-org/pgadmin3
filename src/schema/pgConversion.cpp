@@ -21,7 +21,7 @@
 
 
 pgConversion::pgConversion(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_CONVERSION, newName)
+: pgSchemaObject(newSchema, conversionFactory, newName)
 {
 }
 
@@ -86,15 +86,15 @@ pgObject *pgConversion::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_CONVERSIONS)
-            conversion = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND co.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            conversion = conversionFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND co.oid=") + GetOidStr());
     }
     return conversion;
 }
 
 
 
-pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaConversionFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgConversion *conversion=0;
 
@@ -138,3 +138,15 @@ pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
     }
     return conversion;
 }
+
+
+#include "images/conversion.xpm"
+
+pgaConversionFactory::pgaConversionFactory() 
+: pgaFactory(__("Conversion"), __("New Conversion"), __("Create a new Conversion."), conversion_xpm)
+{
+}
+
+
+pgaConversionFactory conversionFactory;
+static pgaCollectionFactory cf(&conversionFactory, __("Conversions"));

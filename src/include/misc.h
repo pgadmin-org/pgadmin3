@@ -62,11 +62,13 @@ wxString ExecProcess(const wxString &cmd);
 
 enum 
 {
+    PGM_DATABASE,
+    PGM_SCHEMA,
     PGM_UNKNOWN,
     PGM_FUNCTION,
     PGM_TABLE,
     PGM_VIEW,
-    PGM_SEQUENCE
+    PGM_SEQUENCE,
 };
 
 enum        // depends on pgaFactory browserImages->Add order!
@@ -77,8 +79,6 @@ enum        // depends on pgaFactory browserImages->Add order!
     PGICON_SERVER,
     PGICON_SERVERBAD,
     PGICON_DATABASE,
-    PGICON_LANGUAGE,
-    PGICON_SCHEMA,
     PGICON_TABLESPACE,
     PGICON_USER,
     PGICON_GROUP,
@@ -90,8 +90,6 @@ enum        // depends on pgaFactory browserImages->Add order!
     PGICON_RULE,
     PGICON_TRIGGER,
     PGICON_FOREIGNKEY,
-    PGICON_CAST,
-    PGICON_CONVERSION,
     PGICON_CONSTRAINT,
     PGICON_PRIMARYKEY,
     PGICON_UNIQUE,
@@ -102,7 +100,6 @@ enum        // depends on pgaFactory browserImages->Add order!
     PGAICON_STEP,
     PGAICON_SCHEDULE,
 
-    SLICON_CLUSTER,
     SLICON_NODE,
     SLICON_PATH,
     SLICON_LISTEN,

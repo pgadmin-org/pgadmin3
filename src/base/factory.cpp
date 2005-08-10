@@ -62,20 +62,15 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 }
 
 
-#include "images/aggregate.xpm"
 #include "images/baddatabase.xpm"
 #include "images/check.xpm"
 #include "images/closeddatabase.xpm"
 #include "images/tablespace.xpm"
-#include "images/cast.xpm"
-#include "images/conversion.xpm"
 #include "images/column.xpm"
 #include "images/database.xpm"
 #include "images/group.xpm"
 #include "images/index.xpm"
-#include "images/language.xpm"
 #include "images/foreignkey.xpm"
-#include "images/namespace.xpm"
 #include "images/property.xpm"
 #include "images/public.xpm"
 #include "images/rule.xpm"
@@ -92,7 +87,6 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 #include "images/jobdisabled.xpm"
 #include "images/step.xpm"
 #include "images/schedule.xpm"
-#include "images/slcluster.xpm"
 #include "images/slnode.xpm"
 #include "images/slpath.xpm"
 #include "images/sllisten.xpm"
@@ -101,55 +95,76 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 #include "images/slsubscription.xpm"
 #include "images/slsubscription2.xpm"
 
+
+wxArrayPtrVoid *deferredImagesArray=0;
+
 int pgaFactory::addImage(char **img)
 {
     if (!imageList)
     {
-        //Setup the global imagelist
-	    imageList = new wxImageList(16, 16, true, 50);
-        imageList->Add(wxIcon(property_xpm));
-        imageList->Add(wxIcon(statistics_xpm));
-        imageList->Add(wxIcon(servers_xpm));
-        imageList->Add(wxIcon(server_xpm));
-        imageList->Add(wxIcon(serverbad_xpm));
-        imageList->Add(wxIcon(database_xpm));
-        imageList->Add(wxIcon(language_xpm));
-        imageList->Add(wxIcon(namespace_xpm));
-        imageList->Add(wxIcon(tablespace_xpm));
-        imageList->Add(wxIcon(user_xpm));
-        imageList->Add(wxIcon(group_xpm));
-        imageList->Add(wxIcon(baddatabase_xpm));
-        imageList->Add(wxIcon(closeddatabase_xpm));
-        imageList->Add(wxIcon(check_xpm));
-        imageList->Add(wxIcon(column_xpm));
-        imageList->Add(wxIcon(index_xpm));
-        imageList->Add(wxIcon(rule_xpm));
-        imageList->Add(wxIcon(trigger_xpm));
-        imageList->Add(wxIcon(foreignkey_xpm));
-        imageList->Add(wxIcon(cast_xpm));
-        imageList->Add(wxIcon(conversion_xpm));
-        imageList->Add(wxIcon(constraints_xpm));
-        imageList->Add(wxIcon(primarykey_xpm));
-        imageList->Add(wxIcon(unique_xpm));
-        imageList->Add(wxIcon(public_xpm));
+        if (!deferredImagesArray)
+        {
+            deferredImagesArray = new wxArrayPtrVoid;
+            //Setup the global imagelist
+            deferredImagesArray->Add(property_xpm);
+            deferredImagesArray->Add(statistics_xpm);
+            deferredImagesArray->Add(servers_xpm);
+            deferredImagesArray->Add(server_xpm);
+            deferredImagesArray->Add(serverbad_xpm);
+            deferredImagesArray->Add(database_xpm);
+            deferredImagesArray->Add(tablespace_xpm);
+            deferredImagesArray->Add(user_xpm);
+            deferredImagesArray->Add(group_xpm);
+            deferredImagesArray->Add(baddatabase_xpm);
+            deferredImagesArray->Add(closeddatabase_xpm);
+            deferredImagesArray->Add(check_xpm);
+            deferredImagesArray->Add(column_xpm);
+            deferredImagesArray->Add(index_xpm);
+            deferredImagesArray->Add(rule_xpm);
+            deferredImagesArray->Add(trigger_xpm);
+            deferredImagesArray->Add(foreignkey_xpm);
+            deferredImagesArray->Add(constraints_xpm);
+            deferredImagesArray->Add(primarykey_xpm);
+            deferredImagesArray->Add(unique_xpm);
+            deferredImagesArray->Add(public_xpm);
 
-        // job, jobdisabled, step, schedule
-        imageList->Add(wxIcon(job_xpm));
-        imageList->Add(wxIcon(jobdisabled_xpm));
-        imageList->Add(wxIcon(step_xpm));
-        imageList->Add(wxIcon(schedule_xpm));
+            // job, jobdisabled, step, schedule
+            deferredImagesArray->Add(job_xpm);
+            deferredImagesArray->Add(jobdisabled_xpm);
+            deferredImagesArray->Add(step_xpm);
+            deferredImagesArray->Add(schedule_xpm);
 
-        // slony cluster, node, path, listen, set, subscription
-        imageList->Add(wxIcon(slcluster_xpm));
-        imageList->Add(wxIcon(slnode_xpm));
-        imageList->Add(wxIcon(slpath_xpm));
-        imageList->Add(wxIcon(sllisten_xpm));
-        imageList->Add(wxIcon(slset_xpm));
-        imageList->Add(wxIcon(slset2_xpm));
-        imageList->Add(wxIcon(slsubscription_xpm));
-        imageList->Add(wxIcon(slsubscription2_xpm));
+            // slony cluster, node, path, listen, set, subscription
+            deferredImagesArray->Add(slnode_xpm);
+            deferredImagesArray->Add(slpath_xpm);
+            deferredImagesArray->Add(sllisten_xpm);
+            deferredImagesArray->Add(slset_xpm);
+            deferredImagesArray->Add(slset2_xpm);
+            deferredImagesArray->Add(slsubscription_xpm);
+            deferredImagesArray->Add(slsubscription2_xpm);
+        }
+
+        deferredImagesArray->Add(img);
+
+        return deferredImagesArray->GetCount() -1;
     }
-    return imageList->Add(wxIcon(img));
+    else
+        return imageList->Add(wxIcon(img));
+}
+
+
+void pgaFactory::RealizeImages()
+{
+    if (!imageList && deferredImagesArray)
+    {
+	    imageList = new wxImageList(16, 16, true, deferredImagesArray->GetCount());
+        size_t i;
+        for (i=0 ; i < deferredImagesArray->GetCount() ; i++)
+            imageList->Add(wxIcon((char**)deferredImagesArray->Item(i)));
+
+        delete deferredImagesArray;
+        deferredImagesArray=0;
+    }
 }
 
 

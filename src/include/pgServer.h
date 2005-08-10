@@ -18,7 +18,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "pgConn.h"
-#include "pgObject.h"
+#include "pgCollection.h"
 // Class declarations
 
 
@@ -122,6 +122,14 @@ private:
     SC_HANDLE serviceHandle;
     wxArrayString GetDependentServices(SC_HANDLE handle);
 #endif
+};
+
+
+class pgServerObjCollection : public pgCollection
+{
+public:
+    pgServerObjCollection(pgaFactory &factory, pgServer *server);
+    bool CanCreate();
 };
 
 #endif

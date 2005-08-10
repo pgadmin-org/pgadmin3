@@ -985,3 +985,34 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 		}
 	}
 }
+
+
+serverStatusFactory::serverStatusFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Server Status"), _("Displays the current database status."));
+}
+
+
+wxWindow *serverStatusFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+
+    pgServer *server=obj->GetServer();
+
+    pgConn *conn = server->CreateConn();
+    if (conn)
+    {
+        wxString txt = wxT("pgAdmin III Server Status - ") + server->GetDescription() 
+            + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(")");
+
+        frmStatus *status = new frmStatus(form, txt, conn);
+        status->Go();
+        return status;
+    }
+    return 0;
+}
+
+
+bool serverStatusFactory::CheckEnable(pgObject *obj)
+{
+    return obj->GetServer() != 0;
+}

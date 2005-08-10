@@ -27,9 +27,6 @@
 #include "sysProcess.h"
 
 
-// Images
-#include "images/slcluster.xpm"
-
 extern wxString slony1BaseScript;
 extern wxString slony1FunctionScript;
 extern wxString slony1XxidScript;
@@ -46,10 +43,10 @@ BEGIN_EVENT_TABLE(dlgRepClusterBase, dlgProperty)
 END_EVENT_TABLE();
 
 
+
 dlgRepClusterBase::dlgRepClusterBase(frmMain *frame, const wxString &dlgName, slCluster *node, pgDatabase *db)
 : dlgProperty(frame, dlgName)
 {
-    SetIcon(wxIcon(slcluster_xpm));
     cluster=node;
     remoteServer=0;
     remoteConn=0;
@@ -215,6 +212,12 @@ BEGIN_EVENT_TABLE(dlgRepCluster, dlgRepClusterBase)
     EVT_COMBOBOX(XRCID("cbAdminNode"),      dlgRepCluster::OnChange)
     EVT_END_PROCESS(-1,                     dlgRepCluster::OnEndProcess)
 END_EVENT_TABLE();
+
+
+dlgProperty *pgaSlClusterFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRepCluster(frame, (slCluster*)node, (pgDatabase*)parent);
+}
 
 
 dlgRepCluster::dlgRepCluster(frmMain *frame, slCluster *node, pgDatabase *db)
@@ -592,7 +595,7 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
 
 pgObject *dlgRepCluster::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=slCluster::ReadObjects(collection, 0,
+    pgObject *obj=slClusterFactory.CreateObjects(collection, 0,
          wxT(" WHERE nspname = ") + qtString(wxT("_") + GetName()));
 
     return obj;
@@ -808,7 +811,7 @@ wxString dlgRepCluster::GetSql()
 BEGIN_EVENT_TABLE(dlgRepClusterUpgrade, dlgRepClusterBase)
 END_EVENT_TABLE();
 
-
+// no factory needed; called by slFunction
 
 dlgRepClusterUpgrade::dlgRepClusterUpgrade(frmMain *frame, slCluster *cl)
 : dlgRepClusterBase(frame, wxT("dlgRepClusterUpgrade"), cl, cl->GetDatabase())

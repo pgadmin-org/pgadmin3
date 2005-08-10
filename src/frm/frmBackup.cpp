@@ -66,7 +66,7 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 
     SetTitle(wxString::Format(_("Backup %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
-    canBlob = (obj->GetType() == PG_DATABASE);
+    canBlob = (obj->GetMetaType() == PGM_DATABASE);
     chkBlobs->SetValue(canBlob);
     chkDisableDollar->Enable(obj->GetConnection()->BackendMinimumVersion(7, 5));
 
@@ -248,7 +248,7 @@ wxString frmBackup::getCmdPart2()
     cmd.Append(wxT(" -f \"") + txtFilename->GetValue() + wxT("\""));
 
     pgSchema *schema=0;
-    if (object->GetType() == PG_SCHEMA)
+    if (object->GetMetaType() == PGM_SCHEMA)
         schema =(pgSchema*)object;
     else if (object->GetMetaType() == PGM_TABLE)
         cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
@@ -266,4 +266,24 @@ void frmBackup::Go()
 {
     txtFilename->SetFocus();
     Show(true);
+}
+
+
+backupFactory::backupFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Backup"), _("Creates a backup of the current database to a local file"));
+}
+
+
+wxWindow *backupFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    frmBackup *frm=new frmBackup(form, obj);
+    frm->Go();
+    return frm;
+}
+
+
+bool backupFactory::CheckEnable(pgObject *obj)
+{
+    return obj->CanBackup();
 }

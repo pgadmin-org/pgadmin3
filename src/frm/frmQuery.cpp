@@ -1190,3 +1190,39 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         this->RequestUserAttention();
     return done;
 }
+
+
+queryToolFactory::queryToolFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Query tool"), _("Execute arbitrary SQL queries."));
+    toolbar->AddTool(id, _("Query tool"), wxBitmap(sql_xpm), 
+        _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+}
+
+
+wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgDatabase *db=obj->GetDatabase();
+    pgServer *server=db->GetServer();
+    pgConn *conn = db->CreateConn();
+    if (conn)
+    {
+        wxString txt = wxT("pgAdmin III Query - ") + server->GetDescription() + 
+            wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + 
+            wxT(") - ") + db->GetName();
+
+        wxString qry;
+        if (settings->GetStickySql()) 
+            qry = form->GetSqlPane()->GetText();
+        frmQuery *fq= new frmQuery(form, txt, conn, qry);
+        fq->Go();
+        return fq;
+    }
+    return 0;
+}
+
+
+bool queryToolFactory::CheckEnable(pgObject *obj)
+{
+    return obj->GetDatabase() != 0;
+}

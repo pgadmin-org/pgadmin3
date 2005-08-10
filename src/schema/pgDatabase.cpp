@@ -22,10 +22,13 @@
 #include "pgCollection.h"
 #include "menu.h"
 #include "frmMain.h"
-
+#include "pgCast.h"
+#include "pgLanguage.h"
+#include "pgSchema.h"
+#include "slCluster.h"
 
 pgDatabase::pgDatabase(const wxString& newName)
-: pgServerObject(PG_DATABASE, newName)
+: pgServerObject(databaseFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgDatabase object"));
 
@@ -49,9 +52,9 @@ wxMenu *pgDatabase::GetNewMenu()
 
     if (GetCreatePrivilege())
     {
-        AppendMenu(menu, PG_CAST);
-        AppendMenu(menu, PG_LANGUAGE);
-        AppendMenu(menu, PG_SCHEMA);
+        castFactory.AppendMenu(menu);
+        languageFactory.AppendMenu(menu);
+        schemaFactory.AppendMenu(menu);
 
         extern wxString slony1BaseScript;
         extern wxString slony1FunctionScript;
@@ -60,7 +63,7 @@ wxMenu *pgDatabase::GetNewMenu()
 
         if ((!slony1BaseScript.IsEmpty() && !slony1FunctionScript.IsEmpty() && !slony1XxidScript.IsEmpty())
             || !backupExecutable.IsEmpty())
-            AppendMenu(menu, SL_CLUSTER);
+            slClusterFactory.AppendMenu(menu);
     }
     return menu;
 }
@@ -313,19 +316,19 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
             pgCollection *collection;
 
             // Casts
-            collection = new pgCollection(PG_CASTS, this);
+            collection = new pgDatabaseObjCollection(*castFactory.GetCollectionFactory(), this);
             AppendBrowserItem(browser, collection);
 
             // Languages
-            collection = new pgCollection(PG_LANGUAGES, this);
+            collection = new pgDatabaseObjCollection(*languageFactory.GetCollectionFactory(), this);
             AppendBrowserItem(browser, collection);
 
             // Schemas
-            collection = new pgCollection(PG_SCHEMAS, this);
+            collection = new pgDatabaseObjCollection(*schemaFactory.GetCollectionFactory(), this);
             AppendBrowserItem(browser, collection);
 
             // Slony-I Clusters
-            collection = new pgCollection(SL_CLUSTERS, this);
+            collection = new pgDatabaseObjCollection(*slClusterFactory.GetCollectionFactory(), this);
             AppendBrowserItem(browser, collection);
             
             missingFKs = StrToLong(connection()->ExecuteScalar(
@@ -383,9 +386,9 @@ pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_DATABASES)
+        if (obj->IsCollection())
         {
-            database = (pgDatabase*)ReadObjects((pgCollection*)obj, 0, wxT(" WHERE db.oid=") + GetOidStr() + wxT("\n"));
+            database = (pgDatabase*)databaseFactory.CreateObjects((pgCollection*)obj, 0, wxT(" WHERE db.oid=") + GetOidStr() + wxT("\n"));
             if (database)
             {
                 sql=wxT("");
@@ -406,7 +409,7 @@ pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 }
 
 
-pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaDatabaseFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgDatabase *database=0;
 
@@ -474,11 +477,17 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 }
 
 
-void pgDatabase::ShowStatistics(pgCollection *collection, ctlListView *statistics)
+pgDatabaseCollection::pgDatabaseCollection(pgaFactory &factory, pgServer *sv)
+: pgServerObjCollection(factory, sv)
 {
-    wxLogInfo(wxT("Displaying statistics for databases on ") + collection->GetServer()->GetIdentifier());
+}
 
-    bool hasSize=collection->GetConnection()->HasFeature(FEATURE_SIZE);
+
+void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    wxLogInfo(wxT("Displaying statistics for databases on ") + GetServer()->GetIdentifier());
+
+    bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
 
     wxString sql=wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit");
 
@@ -498,7 +507,7 @@ void pgDatabase::ShowStatistics(pgCollection *collection, ctlListView *statistic
     if (hasSize)
         statistics->AddColumn(_("Size"), 60);
 
-    pgSet *stats = collection->GetServer()->ExecuteSet(sql);
+    pgSet *stats = GetServer()->ExecuteSet(sql);
     if (stats)
     {
         while (!stats->Eof())
@@ -519,3 +528,32 @@ void pgDatabase::ShowStatistics(pgCollection *collection, ctlListView *statistic
     }
 }
 
+
+
+/////////////////////////////////////////////////////
+
+pgDatabaseObjCollection::pgDatabaseObjCollection(pgaFactory &factory, pgDatabase *db)
+: pgCollection(factory)
+{ 
+    database = db;
+    server= database->GetServer();
+}
+
+
+bool pgDatabaseObjCollection::CanCreate()
+{
+    return GetDatabase()->GetCreatePrivilege();
+}
+
+
+#include "images/database.xpm"
+
+pgaDatabaseFactory::pgaDatabaseFactory() 
+: pgaFactory(__("Database"), __("New Database"), __("Create a new Database."), database_xpm)
+{
+    metaType = PGM_DATABASE;
+}
+
+
+pgaDatabaseFactory databaseFactory;
+static pgaCollectionFactory cf(&databaseFactory, __("Databases"));

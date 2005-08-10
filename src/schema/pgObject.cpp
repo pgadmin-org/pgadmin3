@@ -24,10 +24,13 @@
 #include "pgSequence.h"
 #include "pgFunction.h"
 #include "pgType.h"
+#include "pgDatabase.h"
 #include "pgTable.h"
 #include "pgView.h"
 #include "pgType.h"
 #include "pgOperator.h"
+#include "pgLanguage.h"
+#include "pgConversion.h"
 
 // Ordering must match the PG_OBJTYPE enumeration in pgObject.h
 
@@ -37,22 +40,12 @@ pgTypes typesList[] =
     {__("None"), -1, 0, 0},
     {__("Servers"), PGICON_SERVER, 0, 0},
     {__("Server"), PGICON_SERVER, __("New Server Registration"), __("Create a new Server registration.") },
-    {__("Databases"), PGICON_DATABASE, 0, 0},
-    {__("Database"), PGICON_DATABASE, __("New Database"), __("Create a new Database.") },
     {__("Groups"), PGICON_GROUP, 0, 0},
     {__("Group"), PGICON_GROUP, __("New Group"), __("Create a new Group.") },
     {__("Users"), PGICON_USER, 0, 0},
     {__("User"), PGICON_USER, __("New User"),__("Create a new User.") },
-    {__("Languages"), PGICON_LANGUAGE, 0, 0},
-    {__("Language"), PGICON_LANGUAGE, __("New Language"), __("Create a new Language.") },
-    {__("Schemas"), PGICON_SCHEMA, 0, 0},
-    {__("Schema"), PGICON_SCHEMA, __("New Schema"), __("Create a new Schema.") },
     {__("Tablespaces"), PGICON_TABLESPACE, 0, 0},
     {__("Tablespace"), PGICON_TABLESPACE, __("New Tablespace"), __("Create a new Tablespace.") },
-    {__("Casts"), PGICON_CAST, 0, 0},
-    {__("Cast"), PGICON_CAST, __("New Cast"), __("Create a new Cast.") },
-    {__("Conversions"), PGICON_CONVERSION, 0, 0},
-    {__("Conversion"), PGICON_CONVERSION, __("New Conversion"), __("Create a new Conversion.") },
     {__("Columns"), PGICON_COLUMN, 0, 0},
     {__("Column"), PGICON_COLUMN, __("New Column"), __("Add a new Column.") },
     {__("Indexes"), PGICON_INDEX, 0, 0},
@@ -74,8 +67,6 @@ pgTypes typesList[] =
 	{__("Steps"), PGAICON_STEP, 0, 0},
     {__("Step"), PGAICON_STEP, __("New Step"), __("Create new Step") }, 
     
-    {__("Replication"), SLICON_CLUSTER, __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster") },
-    {__("Slony-I Cluster"), SLICON_CLUSTER, __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster") },
     {__("Nodes"), SLICON_NODE,  0, 0},
     {__("Node"), SLICON_NODE, __("New Node"), __("Create new node") },
     {__("Paths"), SLICON_PATH,  0, 0},
@@ -295,10 +286,10 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                     case 'S':   depFactory=&sequenceFactory; break;
                     case 'v':   depFactory=&viewFactory;     break;
                     case 'p':   depFactory=&functionFactory; break;
-                    case 'n':   id=PG_SCHEMA;   break;
+                    case 'n':   depFactory=&schemaFactory;   break;
                     case 'y':   depFactory=&typeFactory;     break;
                     case 'T':   id=PG_TRIGGER;  break;
-                    case 'l':   id=PG_LANGUAGE; break;
+                    case 'l':   depFactory=&languageFactory; break;
                     case 'R':
                     {
                         refname = _refname + wxT(" ON ") + refname + set->GetVal(wxT("ownertable"));
@@ -682,38 +673,17 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFo
 
 pgConn *pgObject::GetConnection() const
 {
-    // in some cases, virtualization doesn't work so we need to mimic it here
     pgDatabase *db=GetDatabase();
-    pgServer *server=0;
-    switch (type)
-    {
-        case PG_SERVER:
-            server = (pgServer*)this;
-            break;
-        case PG_DATABASES:
-        case PG_TABLESPACES:
-        case PG_GROUPS:
-        case PG_USERS:
-        case PGA_JOBS:
-        case PGA_STEPS:
-        case PGA_SCHEDULES:
-            server = ((pgCollection*)this)->GetServer();
-            break;
-        case PG_DATABASE:
-        case PG_TABLESPACE:
-        case PG_GROUP:
-        case PG_USER:
-        case PGA_JOB:
-        case PGA_STEP:
-        case PGA_SCHEDULE:
-            server = ((pgServerObject*)this)->GetServer();
-            break;
-        default:
-            break;
-    }
-
     if (db)
         return db->connection();
+    
+    pgServer *server;
+
+    if (type == PG_SERVER)
+        server = (pgServer*)this;
+    else
+        server = GetServer();
+
     if (server)
         return server->connection();
     return 0;
@@ -724,7 +694,7 @@ pgConn *pgObject::GetConnection() const
 
 bool pgServerObject::CanDrop()
 {
-    if (GetType() == PG_DATABASE)
+    if (GetMetaType() == PGM_DATABASE)
         return server->GetCreatePrivilege();
     else
         return server->GetSuperUser();
@@ -733,7 +703,7 @@ bool pgServerObject::CanDrop()
 
 bool pgServerObject::CanCreate()
 {
-    if (GetType() == PG_DATABASE)
+    if (GetMetaType() == PGM_DATABASE)
         return server->GetCreatePrivilege();
     else
         return server->GetSuperUser();
@@ -749,7 +719,7 @@ void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, c
     while (item)
     {
         databases = (pgCollection*)browser->GetItemData(item);
-        if (databases && databases->GetType() == PG_DATABASES)
+        if (databases && databases->GetMetaType() == PGM_DATABASE)
             break;
         else
             databases=0;
@@ -772,7 +742,7 @@ void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, c
             while (item)
             {
                 pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
-                if (db->GetType() == PG_DATABASE && db->GetName() == dbname)
+                if (db->GetMetaType() == PGM_DATABASE && db->GetName() == dbname)
                 {
                     if (db->GetConnected())
                         conn = db->GetConnection();
@@ -818,10 +788,10 @@ void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, c
                         case 's':   // special
                         case 't':   // toast
                                     break;
-                        case 'n':   id=PG_SCHEMA;           break;
+                        case 'n':   ownerFactory = &schemaFactory;           break;
                         case 'y':   ownerFactory = &typeFactory;             break;
                         case 'd':   ownerFactory = &domainFactory; break;
-                        case 'C':   id=PG_CONVERSION;       break;
+                        case 'C':   ownerFactory = &conversionFactory;       break;
                         case 'p':   ownerFactory=&functionFactory;         break;
                         case 'T':   ownerFactory=&triggerFunctionFactory;  break;
                         case 'o':   ownerFactory=&operatorFactory;

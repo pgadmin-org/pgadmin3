@@ -27,15 +27,24 @@ class RemoteConn;
 
 WX_DECLARE_OBJARRAY(RemoteConn, RemoteConnArray);
 
+
+class pgaSlClusterFactory : public pgaFactory
+{
+public:
+    pgaSlClusterFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaSlClusterFactory slClusterFactory;
+
+
 class slCluster : public pgDatabaseObject
 {
 public:
     slCluster(const wxString& newName = wxT(""));
     ~slCluster();
 
-    int GetIcon() { return SLICON_CLUSTER; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(pgCollection *coll, wxTreeCtrl *browser);
 
 

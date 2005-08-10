@@ -95,7 +95,7 @@ private:
 };
 
 
-class pgTableCollection : public pgSchemaCollection
+class pgTableCollection : public pgSchemaObjCollection
 {
 public:
     pgTableCollection(pgaFactory &factory, pgSchema *sch);

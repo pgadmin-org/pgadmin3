@@ -37,6 +37,17 @@
 #define btnRemove       CTRL_BUTTON("wxID_REMOVE")
 
 
+dlgProperty *pgaDatabaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    dlgDatabase *dlg=new dlgDatabase(frame, (pgDatabase*)node);
+    if (dlg && !node)
+    {
+        // use the server's connection to avoid "template1 in use"
+        dlg->connection=parent->GetConnection();
+    }
+    return new dlgDatabase(frame, (pgDatabase*)node);
+}
+
 
 BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtPath"),                      dlgProperty::OnChange)
@@ -55,7 +66,6 @@ END_EVENT_TABLE();
 dlgDatabase::dlgDatabase(frmMain *frame, pgDatabase *node)
 : dlgSecurityProperty(frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP"), "CT")
 {
-    SetIcon(wxIcon(database_xpm));
     database=node;
     lstVariables->CreateColumns(0, _("Variable"), _("Value"));
 
@@ -200,7 +210,7 @@ pgObject *dlgDatabase::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgDatabase::ReadObjects(collection, 0, wxT(" WHERE datname=") + qtString(name) + wxT("\n"));
+    pgObject *obj=databaseFactory.CreateObjects(collection, 0, wxT(" WHERE datname=") + qtString(name) + wxT("\n"));
     return obj;
 }
 

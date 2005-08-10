@@ -693,36 +693,9 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_GROUPS:
             dlg=new dlgGroup(frame, (pgGroup*)currentNode);
             break;
-        case PG_DATABASE:
-        case PG_DATABASES:
-        {
-            dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
-            if (dlg && asNew)
-            {
-                // use the server's connection to avoid "template1 in use"
-                dlg->connection=parentNode->GetConnection();
-            }
-            break;
-        }
         case PG_TABLESPACE:
         case PG_TABLESPACES:
             dlg=new dlgTablespace(frame, (pgTablespace*)currentNode);
-            break;
-        case PG_CAST:
-        case PG_CASTS:
-            dlg=new dlgCast(frame, (pgCast*)currentNode);
-            break;
-        case PG_SCHEMA:
-        case PG_SCHEMAS:
-            dlg=new dlgSchema(frame, (pgSchema*)currentNode);
-            break;
-        case PG_LANGUAGE:
-        case PG_LANGUAGES:
-            dlg=new dlgLanguage(frame, (pgLanguage*)currentNode);
-            break;
-        case PG_CONVERSION:
-        case PG_CONVERSIONS:
-            dlg=new dlgConversion(frame, (pgConversion*)currentNode, (pgSchema*)parentNode);
             break;
         case PG_COLUMN:
         case PG_COLUMNS:
@@ -761,10 +734,6 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
             break;
         case PGA_SCHEDULE:
             dlg=new dlgSchedule(frame, (pgaSchedule*)currentNode, (pgaJob*)parentNode);
-            break;
-
-        case SL_CLUSTER:
-            dlg=new dlgRepCluster(frame, (slCluster*)currentNode, (pgDatabase*)parentNode);
             break;
         case SL_NODE:
             dlg=new dlgRepNode(frame, (slNode*)currentNode, (slCluster*)parentNode);

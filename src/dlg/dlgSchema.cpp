@@ -18,20 +18,20 @@
 #include "dlgSchema.h"
 #include "pgSchema.h"
 
-// Images
-#include "images/namespace.xpm"
-
 
 // pointer to controls
 
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)
 END_EVENT_TABLE();
 
+dlgProperty *pgaSchemaFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgSchema(frame, (pgSchema*)node);
+}
 
 dlgSchema::dlgSchema(frmMain *frame, pgSchema *node)
 : dlgSecurityProperty(frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC")
 {
-    SetIcon(wxIcon(namespace_xpm));
     schema=node;
 }
 
@@ -69,7 +69,7 @@ pgObject *dlgSchema::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgSchema::ReadObjects(collection, 0, wxT(" WHERE nspname=") + qtString(name) + wxT("\n"));
+    pgObject *obj=schemaFactory.CreateObjects(collection, 0, wxT(" WHERE nspname=") + qtString(name) + wxT("\n"));
     return obj;
 }
 

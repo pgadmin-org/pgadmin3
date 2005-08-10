@@ -45,4 +45,35 @@ private:
 };
 
 
+class addServerFactory : public actionFactory
+{
+public:
+    addServerFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class controlServiceFactory : public actionFactory
+{
+public:
+    bool CheckEnable(pgObject *obj);
+protected:
+    controlServiceFactory() {};
+};
+
+
+class startServiceFactory : public controlServiceFactory
+{
+public:
+    startServiceFactory (wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+class stopServiceFactory : public controlServiceFactory
+{
+public:
+    stopServiceFactory (wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
 #endif

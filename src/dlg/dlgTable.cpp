@@ -788,3 +788,27 @@ void dlgTable::OnSelChangeConstr(wxListEvent &ev)
 {
     btnRemoveConstr->Enable();
 }
+
+
+countRowsFactory::countRowsFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Count"), _("Count rows in the selected object."));
+}
+
+
+wxWindow *countRowsFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    ((pgTable*)obj)->UpdateRows();
+    
+    wxTreeItemId item=form->GetBrowser()->GetSelection();
+    if (obj == (pgObject*)form->GetBrowser()->GetItemData(item))
+        obj->ShowTreeDetail(0, 0, form->GetProperties());
+
+    return 0;
+}
+
+
+bool countRowsFactory::CheckEnable(pgObject *obj)
+{
+    return obj->GetFactory() == &tableFactory;
+}

@@ -20,14 +20,17 @@
 #include "dlgLanguage.h"
 #include "pgLanguage.h"
 
-// Images
-#include "images/language.xpm"
-
 
 // pointer to controls
 #define chkTrusted      CTRL_CHECKBOX("chkTrusted")
 #define cbHandler       CTRL_COMBOBOX("cbHandler")
 #define cbValidator     CTRL_COMBOBOX("cbValidator")
+
+
+dlgProperty *pgaLanguageFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgLanguage(frame, (pgLanguage*)node);
+}
 
 
 BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
@@ -39,7 +42,6 @@ END_EVENT_TABLE();
 dlgLanguage::dlgLanguage(frmMain *frame, pgLanguage *node)
 : dlgSecurityProperty(frame, node, wxT("dlgLanguage"), wxT("USAGE"), "U")
 {
-    SetIcon(wxIcon(language_xpm));
     language=node;
 }
 
@@ -110,7 +112,7 @@ pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgLanguage::ReadObjects(collection, 0, wxT("\n   AND lanname ILIKE ") + qtString(name));
+    pgObject *obj=languageFactory.CreateObjects(collection, 0, wxT("\n   AND lanname ILIKE ") + qtString(name));
     return obj;
 }
 

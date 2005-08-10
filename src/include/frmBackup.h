@@ -47,4 +47,13 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
+
+class backupFactory : public actionFactory
+{
+public:
+    backupFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 #endif

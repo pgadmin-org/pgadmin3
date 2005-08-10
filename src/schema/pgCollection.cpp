@@ -172,14 +172,6 @@ bool pgCollection::CanCreate()
 		case PGA_STEPS:
 		case PGA_SCHEDULES:
             return GetServer()->GetSuperUser();
-        case PG_DATABASES:
-            return GetServer()->GetCreatePrivilege();
-        case PG_CASTS:
-        case PG_LANGUAGES:
-        case PG_SCHEMAS:
-        case SL_CLUSTERS:
-            return GetDatabase()->GetCreatePrivilege();
-        case PG_CONVERSIONS:
         case PG_COLUMNS:
         case PG_INDEXES:
         case PG_RULES:
@@ -198,12 +190,7 @@ int pgCollection::GetIcon()
         case PG_SERVERS:            return PGICON_SERVER;
         case PG_USERS:              return PGICON_USER;
         case PG_GROUPS:             return PGICON_GROUP;
-        case PG_DATABASES:          return PGICON_DATABASE;
-        case PG_CASTS:              return PGICON_CAST;
-        case PG_LANGUAGES:          return PGICON_LANGUAGE;
-        case PG_SCHEMAS:            return PGICON_SCHEMA;
         case PG_TABLESPACES:        return PGICON_TABLESPACE;
-        case PG_CONVERSIONS:        return PGICON_CONVERSION;
         case PG_COLUMNS:            return PGICON_COLUMN;
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;
@@ -211,7 +198,6 @@ int pgCollection::GetIcon()
 		case PGA_JOBS:				return PGAICON_JOB;
 		case PGA_STEPS:				return PGAICON_STEP;
 		case PGA_SCHEDULES:			return PGAICON_SCHEDULE;
-        case SL_CLUSTERS:           return SLICON_CLUSTER;
         default:
         {
             pgaFactory *objFactory=pgaFactory::GetFactory(GetType());
@@ -253,29 +239,14 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
     {
         switch (GetType())
         {
-            case PG_DATABASES:
-                pgDatabase::ReadObjects(this, browser);
-                break;
             case PG_GROUPS:
                 pgGroup::ReadObjects(this, browser);
                 break;
             case PG_USERS:
                 pgUser::ReadObjects(this, browser);
                 break;
-            case PG_LANGUAGES:
-                pgLanguage::ReadObjects(this, browser);
-                break;
-            case PG_SCHEMAS:
-                pgSchema::ReadObjects(this, browser);
-                break;
             case PG_TABLESPACES:
                 pgTablespace::ReadObjects(this, browser);
-                break;
-            case PG_CASTS:
-                pgCast::ReadObjects(this, browser);
-                break;
-            case PG_CONVERSIONS:
-                pgConversion::ReadObjects(this, browser);
                 break;
             case PG_COLUMNS:
                 pgColumn::ReadObjects(this, browser);
@@ -298,9 +269,6 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
 			case PGA_SCHEDULES:
 				pgaSchedule::ReadObjects(this, browser);
 				break;
-            case SL_CLUSTERS:
-                slCluster::ReadObjects(this, browser);
-                break;
             default:
             {
                 if (GetFactory())
@@ -323,9 +291,6 @@ void pgCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     switch (GetType())
     {
-        case PG_DATABASES:
-            pgDatabase::ShowStatistics(this, statistics);
-            break;
         case PG_TABLESPACES:
             pgTablespace::ShowStatistics(this, statistics);
             break;

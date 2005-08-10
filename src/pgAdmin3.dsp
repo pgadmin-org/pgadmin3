@@ -2002,6 +2002,10 @@ SOURCE=..\i18n\pgadmin3.lng
 # End Source File
 # Begin Source File
 
+SOURCE="..\programmers-readme.txt"
+# End Source File
+# Begin Source File
+
 SOURCE=..\TODO.txt
 # End Source File
 # End Group

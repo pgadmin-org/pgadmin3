@@ -62,6 +62,10 @@ public:
     ctlListView *GetStatistics();
     ctlListView *GetDependsOn();
     ctlListView *GetReferencedBy();
+    void AddFrame(wxWindow *wnd) { frames.Append(wnd); }
+    void StoreServers();
+    void ReportConnError(pgServer *server);
+    wxTreeItemId GetServersNode() { return servers; }
 
 private:
     windowList frames;
@@ -105,8 +109,6 @@ private:
     void OnCount(wxCommandEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
-    void OnMainConfig(wxCommandEvent& event);
-    void OnHbaConfig(wxCommandEvent& event);
     void OnMainFileConfig(wxCommandEvent& event);
     void OnHbaFileConfig(wxCommandEvent& event);
 
@@ -151,11 +153,9 @@ private:
     void appendIfEnabled(int id);
     bool checkAlive();
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);
-    void StoreServers();
     void RetrieveServers();
     int ReconnectServer(pgServer *server);
     bool reportError(const wxString &error, const wxString &msgToIdentify, const wxString &hint);
-    void reportConnError(pgServer *server);
     wxTreeItemId RestoreEnvironment(pgServer *server);
 
     DECLARE_EVENT_TABLE()

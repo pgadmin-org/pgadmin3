@@ -23,15 +23,23 @@
 
 class pgCollection;
 
+class pgaConversionFactory : public pgaFactory
+{
+public:
+    pgaConversionFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaConversionFactory conversionFactory;
+
+
 class pgConversion : public pgSchemaObject
 {
 public:
     pgConversion(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgConversion();
 
-    int GetIcon() { return PGICON_CONVERSION; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     wxString GetProc() const { return proc; }

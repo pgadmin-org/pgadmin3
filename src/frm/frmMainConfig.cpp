@@ -587,3 +587,55 @@ wxString frmMainConfig::GetHintString()
     return str;
 }
 
+
+mainConfigFactory::mainConfigFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, wxT("postgresql.conf"), _("Edit general server configuration file."));
+}
+
+
+wxWindow *mainConfigFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server=obj->GetServer();
+    if (server)
+    {
+        frmConfig *frm= new frmMainConfig(form, server);
+        frm->Go();
+        return frm;
+    }
+    return 0;
+}
+
+
+bool mainConfigFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        pgConn *conn=obj->GetConnection();
+        pgServer *server=obj->GetServer();
+
+        return server && conn && server->GetSuperUser() &&  conn->HasFeature(FEATURE_FILEREAD);
+    }
+    return false;
+}
+
+
+mainConfigFileFactory::mainConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("Open postgresql.conf"), _("Open configuration editor with postgresql.conf."));
+}
+
+
+wxWindow *mainConfigFileFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    frmConfig *dlg = new frmMainConfig(form);
+    dlg->Go();
+    dlg->DoOpen();
+    return dlg;
+}
+
+
+bool mainConfigFileFactory::CheckEnable(pgObject *obj)
+{
+    return true;
+}

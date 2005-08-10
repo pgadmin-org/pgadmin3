@@ -288,3 +288,57 @@ void frmHbaConfig::OnEditSetting(wxListEvent& event)
         }
     }
 }
+
+
+hbaConfigFactory::hbaConfigFactory (wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, wxT("pg_hba.conf"), _("Edit server access configuration file."));
+}
+
+
+wxWindow *hbaConfigFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server=obj->GetServer();
+    if (server)
+    {
+        frmHbaConfig *frm=new frmHbaConfig(form, server);
+        frm->Go();
+        return frm;
+    }
+    return 0;
+}
+
+
+bool hbaConfigFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        pgConn *conn=obj->GetConnection();
+        pgServer *server=obj->GetServer();
+
+        return server && conn && server->GetSuperUser() &&  conn->HasFeature(FEATURE_FILEREAD);
+    }
+    return false;
+}
+
+
+hbaConfigFileFactory::hbaConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("Open pg_hba.conf"), _("Open configuration editor with pg_hba.conf."));
+}
+
+
+wxWindow *hbaConfigFileFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    frmConfig *dlg = new frmHbaConfig(form);
+    dlg->Go();
+    dlg->DoOpen();
+    return dlg;
+}
+
+
+bool hbaConfigFileFactory::CheckEnable(pgObject *obj)
+{
+    return true;
+}
+

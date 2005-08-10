@@ -23,6 +23,7 @@
 #include <wx/process.h>
 #include <wx/textbuf.h>
 #include <wx/file.h>
+#include "pgLanguage.h"
 
 // Icons
 #include "images/restore.xpm"
@@ -77,7 +78,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
     SetTitle(wxString::Format(_("Restore %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
 
-    if (object->GetType() != PG_DATABASE)
+    if (object->GetMetaType() != PGM_DATABASE)
     {
         if (object->GetMetaType() == PGM_TABLE)
         {
@@ -210,9 +211,9 @@ void frmRestore::OnChange(wxCommandEvent &ev)
     bool singleValid = !chkSingleObject->GetValue();
     if (!singleValid)
     {
-        switch(object->GetType())
+        switch(object->GetMetaType())
         {
-            case PG_DATABASE:
+            case PGM_DATABASE:
             {
                 int sel=lstContents->GetSelection();
                 if (sel >= 0)
@@ -227,11 +228,6 @@ void frmRestore::OnChange(wxCommandEvent &ev)
                 }
                 break;
             }
-            default:
-                break;
-        }
-        switch(object->GetMetaType())
-        {
             case PGM_TABLE:
             case PGM_FUNCTION:
             {
@@ -314,9 +310,9 @@ wxString frmRestore::getCmdPart2(int step)
 
         if (chkSingleObject->GetValue())
         {
-            switch (object->GetType())
+            switch (object->GetMetaType())
             {
-                case PG_DATABASE:
+                case PGM_DATABASE:
                 {
                     int sel=lstContents->GetSelection();
                     if (lstContents->GetText(sel, 0) == _("Function"))
@@ -328,11 +324,6 @@ wxString frmRestore::getCmdPart2(int step)
 
                     break;
                 }
-                default:
-                    break;
-            }
-            switch (object->GetMetaType())
-            {
                 case PGM_TABLE:
                     cmd.Append(wxT(" -t ") + object->GetQuotedIdentifier());
                     break;
@@ -420,10 +411,11 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
             int id=-1;
             int icon = -1;
             wxString typname;
+            pgaFactory *factory=0;
 
             if (type == wxT("PROCEDURAL"))
             {
-                id=PG_LANGUAGE;
+                factory=&languageFactory;
                 type = col.GetNextToken();
             }
             else if (type == wxT("FK"))
@@ -440,19 +432,15 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
                 id = pgObject::GetTypeId(type);
 
             wxString name = str.Mid(str.Find(type)+type.Length()+1).BeforeLast(' ');
-            if (id >= 0)
+            if (factory)
             {
-                pgaFactory *factory=pgaFactory::GetFactory(id);
-                if (id >= 0)
-                {
-                    typname=factory->GetTypeName();
-                    icon = factory->GetIconId();
-                }
-                else
-                {
-                    typname = wxGetTranslation(typesList[id].typName);
-                    icon = typesList[id].typeIcon;
-                }
+                typname=factory->GetTypeName();
+                icon = factory->GetIconId();
+            }
+            else if (id >= 0)
+            {
+                typname = wxGetTranslation(typesList[id].typName);
+                icon = typesList[id].typeIcon;
             }
             else if (typname.IsEmpty())
                 typname = type;
@@ -471,4 +459,25 @@ void frmRestore::Go()
 {
     txtFilename->SetFocus();
     Show(true);
+}
+
+
+
+restoreFactory::restoreFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, __("&Restore"), _("Restores a backup from a local file"));
+}
+
+
+wxWindow *restoreFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    frmRestore *frm=new frmRestore(form, obj);
+    frm->Go();
+    return frm;
+}
+
+
+bool restoreFactory::CheckEnable(pgObject *obj)
+{
+    return obj->CanRestore();
 }

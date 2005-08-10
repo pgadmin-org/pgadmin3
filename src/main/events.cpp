@@ -49,8 +49,6 @@
 #include "frmBackup.h"
 #include "frmRestore.h"
 #include "frmIndexcheck.h"
-#include "frmMainConfig.h"
-#include "frmHbaConfig.h"
 #include "frmUpdate.h"
 #include "slFunctions.h"
 
@@ -59,8 +57,6 @@ extern wxString loadPath;
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
-    EVT_MENU(MNU_SQL,                       frmMain::OnSql)
-    EVT_MENU(MNU_MAINTENANCE,               frmMain::OnMaintenance)
     EVT_MENU(MNU_INDEXCHECK,                frmMain::OnIndexcheck)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
@@ -68,9 +64,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_ONLINEUPDATE,              frmMain::OnOnlineUpdate)
     EVT_MENU(MNU_ONLINEUPDATE_NEWDATA,      frmMain::OnOnlineUpdateNewData)
     EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
-    EVT_MENU(MNU_ADDSERVER,                 frmMain::OnAddServer)
-    EVT_MENU(MNU_MAINFILECONFIG,            frmMain::OnMainFileConfig)
-    EVT_MENU(MNU_HBAFILECONFIG,             frmMain::OnHbaFileConfig)
     EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
     EVT_MENU(MNU_CONNECT,                   frmMain::OnConnect)
     EVT_MENU(MNU_DISCONNECT,                frmMain::OnDisconnect)
@@ -79,27 +72,14 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_DROPCASCADED,              frmMain::OnDropCascaded)
     EVT_MENU(MNU_CREATE,                    frmMain::OnCreate)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
-    EVT_MENU(MNU_STATUS,                    frmMain::OnStatus)
-    EVT_MENU(MNU_BACKUP,                    frmMain::OnBackup)
-    EVT_MENU(MNU_RESTORE,                   frmMain::OnRestore)
-    EVT_MENU(MNU_COUNT,                     frmMain::OnCount)
-    EVT_MENU(MNU_VIEWDATA,                  frmMain::OnViewData)
-    EVT_MENU(MNU_VIEWFILTEREDDATA,          frmMain::OnViewFilteredData)
     EVT_MENU(MNU_OPTIONS,                   frmMain::OnOptions)
     EVT_MENU(MNU_PASSWORD,                  frmMain::OnPassword)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
-    EVT_MENU(MNU_STARTSERVICE,              frmMain::OnStartService)
-    EVT_MENU(MNU_STOPSERVICE,               frmMain::OnStopService)
-    EVT_MENU(MNU_NEW+PG_DATABASE,           frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_USER,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_GROUP,              frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_LANGUAGE,           frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_CAST,               frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_SCHEMA,             frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_TABLESPACE,         frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_CONVERSION,         frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_COLUMN,             frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_PRIMARYKEY,         frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_FOREIGNKEY,         frmMain::OnNew)
@@ -111,7 +91,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_NEW+PGA_JOB,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PGA_STEP,              frmMain::OnNew)
     EVT_MENU(MNU_NEW+PGA_SCHEDULE,          frmMain::OnNew)
-    EVT_MENU(MNU_NEW+SL_CLUSTER,            frmMain::OnNew)
     EVT_MENU(MNU_NEW+SL_NODE,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+SL_PATH,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+SL_LISTEN,             frmMain::OnNew)
@@ -121,8 +100,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_NEW+SL_SUBSCRIPTION,       frmMain::OnNew)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
-    EVT_MENU(MNU_MAINCONFIG,                frmMain::OnMainConfig)
-    EVT_MENU(MNU_HBACONFIG,                 frmMain::OnHbaConfig)
     EVT_MENU(MNU_SLONY_RESTART,             frmMain::OnRestartNode)
     EVT_MENU(MNU_SLONY_UPGRADE,             frmMain::OnUpgradeNode)
     EVT_MENU(MNU_SLONY_FAILOVER,            frmMain::OnFailover)
@@ -238,44 +215,6 @@ void frmMain::OnOnlineUpdateNewData(wxCommandEvent &event)
 }
 
 
-void frmMain::OnStartService(wxCommandEvent& WXUNUSED(event))
-{
-    if (currentObject && currentObject->GetType() == PG_SERVER)
-    {
-        pgServer *server= (pgServer*)currentObject;
-        StartMsg(_("Starting service"));
-        bool rc = server->StartService();
-        if (rc)
-            execSelChange(server->GetId(), true);
-        EndMsg(rc);
-    }
-}
-
-
-void frmMain::OnStopService(wxCommandEvent& WXUNUSED(event))
-{
-    if (currentObject && currentObject->GetType() == PG_SERVER)
-    {
-        pgServer *server= (pgServer*)currentObject;
-		wxMessageDialog msg(this, _("Are you sure you wish to shutdown this server?"),
-                _("Stop service"), wxYES_NO | wxICON_QUESTION);
-        if (msg.ShowModal() != wxID_YES)
-        {
-            return;
-        }
-
-        StartMsg(_("Stopping service"));
-        bool rc = server->StopService();
-        if (rc)
-		{
-			wxCommandEvent nullEvent;
-			OnDisconnect(nullEvent);
-            execSelChange(server->GetId(), true);
-		}
-        EndMsg(rc);
-    }
-}
-
 
 void frmMain::OnContents(wxCommandEvent& event)
 {
@@ -349,87 +288,6 @@ void frmMain::OnExpand(wxTreeEvent &event)
 }
 
 
-void frmMain::OnStatus(wxCommandEvent &event)
-{
-    if (!currentObject)
-        return;
-
-    pgServer *server=currentObject->GetServer();
-    if (!server)
-        return;
-
-    pgConn *conn = server->CreateConn();
-    if (conn)
-    {
-        wxString txt = wxT("pgAdmin III Server Status - ") + server->GetDescription() 
-            + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(")");
-
-        frmStatus *status = new frmStatus(this, txt, conn);
-        frames.Append(status);
-        status->Go();
-    }
-}
-
-
-void frmMain::OnMainFileConfig(wxCommandEvent& event)
-{
-    frmConfig *dlg = new frmMainConfig(this);
-    dlg->Go();
-    dlg->DoOpen();
-}
-
-
-void frmMain::OnHbaFileConfig(wxCommandEvent& event)
-{
-    frmConfig *dlg = new frmHbaConfig(this);
-    dlg->Go();
-    dlg->DoOpen();
-}
-
-
-void frmMain::OnMainConfig(wxCommandEvent& event)
-{
-    if (!currentObject)
-        return;
-
-    pgServer *server=currentObject->GetServer();
-    if (server)
-    {
-        frmConfig *config = new frmMainConfig(this, server);
-        frames.Append(config);
-        config->Go();
-    }
-}
-
-
-void frmMain::OnHbaConfig(wxCommandEvent& event)
-{
-    if (!currentObject)
-        return;
-
-    pgServer *server=currentObject->GetServer();
-    if (server)
-    {
-        frmConfig *config = new frmHbaConfig(this, server);
-        frames.Append(config);
-        config->Go();
-    }
-}
-
-
-void frmMain::OnCount(wxCommandEvent &event)
-{
-    if (currentObject && currentObject->GetMetaType() == PGM_TABLE)
-    {
-        ((pgTable*)currentObject)->UpdateRows();
-        
-        wxTreeItemId item=browser->GetSelection();
-        if (currentObject == (pgObject*)browser->GetItemData(item))
-            currentObject->ShowTreeDetail(0, 0, properties);
-    }
-}
-
-
 void frmMain::OnHint(wxCommandEvent &event)
 {
     if (currentObject)
@@ -469,35 +327,6 @@ void frmMain::OnPassword(wxCommandEvent& event)
 }
 
 
-void frmMain::OnMaintenance(wxCommandEvent &ev)
-{
-    if (currentObject)
-    {
-        frmMaintenance *frm=new frmMaintenance(this, currentObject);
-        frm->Go();
-    }
-}
-
-
-void frmMain::OnBackup(wxCommandEvent &event)
-{
-    if (currentObject)
-    {
-        frmBackup *frm=new frmBackup(this, currentObject);
-        frm->Go();
-    }
-}
-
-
-void frmMain::OnRestore(wxCommandEvent &event)
-{
-    if (currentObject)
-    {
-        frmRestore *frm=new frmRestore(this, currentObject);
-        frm->Go();
-    }
-}
-
 void frmMain::OnIndexcheck(wxCommandEvent &ev)
 {
     if (currentObject)
@@ -512,73 +341,13 @@ void frmMain::OnAction(wxCommandEvent &ev)
 {
     actionFactory *af=actionFactory::GetFactory(ev.GetId());
     if (af && currentObject)
-        af->StartDialog(this, currentObject);
-}
-
-
-
-void frmMain::OnSql(wxCommandEvent &ev)
-{
-    if (!currentObject)
-        return;
-
-    pgDatabase *db=currentObject->GetDatabase();
-    if (!db)
-        return;
-
-    pgServer *server=db->GetServer();
-    pgConn *conn = db->CreateConn();
-    if (conn)
     {
-        wxString txt = wxT("pgAdmin III Query - ") + server->GetDescription() + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(") - ") + db->GetName();
-
-        wxString qry;
-        if (settings->GetStickySql()) 
-            qry = sqlPane->GetText();
-        frmQuery *fq= new frmQuery(this, txt, conn, qry);
-        frames.Append(fq);
-        fq->Go();
+        wxWindow *wnd=af->StartDialog(this, currentObject);
+        if (wnd)
+            AddFrame(wnd);
     }
 }
 
-
-void frmMain::OnViewData(wxCommandEvent& event)
-{
-	ViewData(false);
-}
-
-void frmMain::OnViewFilteredData(wxCommandEvent& event)
-{
-	ViewData(true);
-}
-
-void frmMain::ViewData(bool filter)
-{
-    if (!currentObject)
-        return;
-    if (currentObject->GetMetaType() != PGM_TABLE && currentObject->GetMetaType() != PGM_VIEW)
-        return;
-
-    pgDatabase *db=((pgSchemaObject*)currentObject)->GetDatabase();
-    if (!db)
-        return;
-
-    pgServer *server=db->GetServer();
-    pgConn *conn= db->CreateConn();
-    if (conn)
-    {
-        wxString txt = wxT("pgAdmin III Edit Data - ")
-            + server->GetDescription() 
-            + wxT(" (") + server->GetName() 
-            + wxT(":") + NumToStr((long)server->GetPort()) 
-            + wxT(") - ") + db->GetName()
-            + wxT(" - ") + currentObject->GetFullIdentifier();
-
-        frmEditGrid *eg= new frmEditGrid(this, txt, conn, (pgSchemaObject*)currentObject);
-        frames.Append(eg);
-        eg->ShowForm(filter);
-    }
-}
 
 void frmMain::OnSaveDefinition(wxCommandEvent& event)
 {
@@ -658,70 +427,6 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 #ifdef __WIN32__
         denyCollapseItem = servers;
 #endif
-    }
-}
-
-
-void frmMain::OnAddServer(wxCommandEvent &ev)
-{
-    int rc = PGCONN_BAD;
-    
-    dlgServer dlg(this, 0);
-    dlg.CenterOnParent();
-
-    while (rc != PGCONN_OK)
-    {
-        if (dlg.GoNew() != wxID_OK)
-            return;
-
-        pgServer *server=(pgServer*)dlg.CreateObject(0);
-
-        if (dlg.GetTryConnect())
-        {
-            wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
-                server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
-            rc = server->Connect(this, false, dlg.GetPassword());
-        }
-        else
-        {
-            rc = PGCONN_OK;
-            server->InvalidatePassword();
-        }
-        switch (rc)
-        {
-            case PGCONN_OK:
-            {
-                wxLogInfo(wxT("pgServer object initialised as required."));
-                browser->AppendItem(servers, server->GetFullName(), 
-                    server->GetConnected() ? PGICON_SERVER : PGICON_SERVERBAD, -1, server);
-
-                browser->Expand(servers);
-                wxString label;
-                label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, false));
-                browser->SetItemText(servers, label);
-                StoreServers();
-                return;
-            }
-            case PGCONN_DNSERR:
-            {
-                delete server;
-                break;
-            }
-            case PGCONN_BAD:
-            case PGCONN_BROKEN:
-            {
-                reportConnError(server);
-                delete server;
-
-                break;
-            }
-            default:
-            {
-                wxLogInfo(__("pgServer object didn't initialise because the user aborted."));
-                delete server;
-                return;
-            }
-        }
     }
 }
 
@@ -818,15 +523,9 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     pgServer *server=0;
 
 
-    bool canStart=false,
-         canStop=false,
-         canConnect=false,
-         canDisconnect=false,
-         canReindex=false,
-         canIndexCheck=false,
-         canCount=false;
-
     bool showTree=true;
+    bool canStop=false,canStart=false, canConnect=false,canDisconnect=false,canReindex=false,
+         canIndexCheck=false, canCount=false;
 
     switch (type)
     {
@@ -856,26 +555,18 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             EndMsg();
             break;
 
-        case PG_DATABASE:
-        case PG_SCHEMA:
-        case PG_SCHEMAS:
+//        case PG_SCHEMA:
+//        case PG_SCHEMAS:
         case PG_CONSTRAINTS:
         case PG_FOREIGNKEY:
             canIndexCheck=true;
             break;
-        case PG_DATABASES:
         case PG_GROUPS:
         case PG_USERS:
         case PG_GROUP:
         case PG_USER:
-        case PG_LANGUAGES:
-        case PG_LANGUAGE:
         case PG_TABLESPACES:
         case PG_TABLESPACE:
-        case PG_CASTS:
-        case PG_CAST:
-        case PG_CONVERSIONS:
-        case PG_CONVERSION:
         case PG_CHECK:
         case PG_COLUMNS:
         case PG_COLUMN:
@@ -894,8 +585,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PGA_STEP:
 		case PGA_SCHEDULES:
         case PGA_SCHEDULE:
-        case SL_CLUSTER:
-        case SL_CLUSTERS:
         case SL_NODE:
         case SL_NODES:
         case SL_PATH:
@@ -993,13 +682,14 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     bool canHint=data->GetCanHint();
     toolsMenu->Enable(MNU_CONNECT, canConnect);
     toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
-    toolsMenu->Enable(MNU_STARTSERVICE, canStart);
-    toolsMenu->Enable(MNU_STOPSERVICE, canStop);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
-    viewMenu->Enable(MNU_COUNT, canCount);
     helpMenu->Enable(MNU_HINT, canHint);
     toolBar->EnableTool(MNU_HINT, canHint);
     actionFactory::CheckMenu(data, menuBar, toolBar);
+
+    // !!!!! interate submenus to check if any is enabled
+//    toolsMenu->Enable(MNU_CONFIGSUBMENU, checkKids);
+
 //    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
 }
 

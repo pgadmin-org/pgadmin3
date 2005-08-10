@@ -46,7 +46,18 @@
 #include "frmHelp.h"
 #include "frmHint.h"
 #include "frmGrantWizard.h"
-
+#include "frmMainConfig.h"
+#include "frmHbaConfig.h"
+#include "frmBackup.h"
+#include "frmRestore.h"
+#include "frmMaintenance.h"
+#include "frmStatus.h"
+#include "frmQuery.h"
+#include "frmEditGrid.h"
+#include "dlgServer.h"
+#include "dlgDatabase.h"
+#include "dlgTable.h"
+#include "dlgServer.h"
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(windowList);
@@ -57,23 +68,17 @@ WX_DEFINE_LIST(windowList);
 
 #include "images/drop.xpm"
 #include "images/vacuum.xpm"
-#include "images/viewdata.xpm"
-#include "images/viewfiltereddata.xpm"
 #include "images/properties.xpm"
 #include "images/refresh.xpm"
 #include "images/hint2.xpm"
 #include "images/help2.xpm"
-#include "images/connect.xpm"
 #include "images/create.xpm"
-#include "images/sql.xpm"
 
 
 #if wxDIALOG_UNIT_COMPATIBILITY
 #error wxWindows must be compiled with wxDIALOG_UNIT_COMPATIBILITY=0!
 #endif
 
-
-extern wxString backupExecutable, restoreExecutable;
 
 frmMain::frmMain(const wxString& title)
 : pgFrame((wxFrame *)NULL, title)
@@ -114,54 +119,46 @@ frmMain::frmMain(const wxString& title)
     icons.AddIcon(wxIcon(elephant32_xpm));
     SetIcons(icons);
 
+    // wxGTK needs this deferred
+    pgaFactory::RealizeImages();
+
     // Build menus
-    menuBar = new wxMenuBar();
     fileMenu = new wxMenu();
     editMenu = new wxMenu();
     toolsMenu = new wxMenu();
     viewMenu = new wxMenu();
     helpMenu = new wxMenu();
+    newMenu=new wxMenu();
+
+    wxMenu *cfgMenu=new wxMenu();
+    
     toolBar=CreateToolBar();
     toolBar->SetToolBitmapSize(wxSize(32, 32));
 
 
-    toolBar->AddTool(MNU_ADDSERVER, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
+
+
+    fileMenu->Append(MNU_SAVEDEFINITION, _("&Save definition..."),_("Save the SQL definition of the selected object."));
+    fileMenu->AppendSeparator();
+    new addServerFactory(fileMenu, toolBar);
+
     toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(refresh_xpm), _("Refresh the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_CREATE, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_DROP, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_SQL, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_VIEWFILTEREDDATA, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_MAINTENANCE, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm), _("Display helpful hints on current object."));
-    toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
 
-    wxMenu *cfgMenu=new wxMenu();
-
-    fileMenu->Append(MNU_SAVEDEFINITION, _("&Save definition..."),_("Save the SQL definition of the selected object."));
-    fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_ADDSERVER, _("&Add Server..."),          _("Add a connection to a server."));
     fileMenu->Append(MNU_PASSWORD, _("C&hange password..."),      _("Change your password."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_OPTIONS, _("&Options..."),               _("Show options dialog."));
-#ifdef __WXMAC__
-    wxApp::s_macPreferencesMenuItemId = MNU_OPTIONS;
-#endif
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_MAINFILECONFIG, _("Open postgresql.conf"),_("Open configuration editor with postgresql.conf."));
-    fileMenu->Append(MNU_HBAFILECONFIG, _("Open pg_hba.conf"),    _("Open configuration editor with pg_hba.conf."));
+    new mainConfigFileFactory(fileMenu, 0);
+    new hbaConfigFileFactory(fileMenu, 0);
+
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
-#ifdef __WXMAC__
-    wxApp::s_macExitMenuItemId = MNU_EXIT;
-#endif
 
-
-    newMenu=new wxMenu();
     editMenu->Append(MNU_NEWOBJECT, _("New &Object"), newMenu,    _("Create a new object."));
     editMenu->AppendSeparator();
     editMenu->Append(MNU_CREATE, _("&Create"),                    _("Create a new object of the same type as the selected object."));
@@ -169,24 +166,26 @@ frmMain::frmMain(const wxString& title)
     editMenu->Append(MNU_DROPCASCADED, _("Drop cascaded"),        _("Drop the selected object and all objects dependent on it."));
     editMenu->Append(MNU_PROPERTIES, _("&Properties"),    		  _("Display/edit the properties of the selected object."));
 
-    toolsMenu->Append(MNU_STARTSERVICE, _("Start service"),       _("Start PostgreSQL Service"));
-    toolsMenu->Append(MNU_STOPSERVICE, _("Stop service"),         _("Stop PostgreSQL Service"));
+    new startServiceFactory(toolsMenu, 0);
+    new stopServiceFactory(toolsMenu, 0);
+
     toolsMenu->Append(MNU_CONNECT, _("&Connect"),                 _("Connect to the selected server."));
     toolsMenu->Append(MNU_DISCONNECT, _("Disconnec&t"),           _("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
-    toolsMenu->Append(MNU_SQL, _("&Query tool"),                  _("Execute arbitrary SQL queries."));
-	toolsMenu->Append(MNU_VIEWDATA, _("View &Data"),              _("View the data in the selected object."));
-	toolsMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"), _("Apply a filter and view the data in the selected object."));
-    toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
-    toolsMenu->Append(MNU_BACKUP, _("&Backup"),                   _("Creates a backup of the current database to a local file"));
-    toolsMenu->Append(MNU_RESTORE, _("&Restore"),                 _("Restores a backup from a local file"));
+    new queryToolFactory(toolsMenu, toolBar);
+    new editGridFactory(toolsMenu, toolBar);
+    new editGridFilteredFactory(toolsMenu, toolBar);
+    new maintenanceFactory(toolsMenu, toolBar);
+
+    new backupFactory(toolsMenu, 0);
+    new restoreFactory(toolsMenu, 0);
 //    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
 
 
-    new grantWizardFactory(toolsMenu, toolBar);
+    new grantWizardFactory(toolsMenu, 0);
+    new mainConfigFactory(cfgMenu, 0);
+    new hbaConfigFactory(cfgMenu, 0);
 
-    cfgMenu->Append(MNU_MAINCONFIG, wxT("postgresql.conf"),       _("Edit general server configuration file."));
-    cfgMenu->Append(MNU_HBACONFIG, wxT("pg_hba.conf"),            _("Edit server access configuration file."));
     toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server configuration"), cfgMenu);
 
     slonyMenu=new wxMenu();
@@ -199,13 +198,17 @@ frmMain::frmMain(const wxString& title)
 
     toolsMenu->AppendSeparator();
 
-    toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
+    new serverStatusFactory(toolsMenu, 0);
 
     viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),              _("Refresh the selected object."));
-    viewMenu->Append(MNU_COUNT, _("&Count"),                      _("Count rows in the selected object."));
 
+    new countRowsFactory(viewMenu, 0);
+
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm), _("Display helpful hints on current object."));
+    toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
 
     helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
     helpMenu->Append(MNU_FAQ, _("pgAdmin III &FAQ"),              _("Frequently asked questions about pgAdmin III."));
@@ -217,20 +220,24 @@ frmMain::frmMain(const wxString& title)
     helpMenu->Append(MNU_ONLINEUPDATE, _("Online Update"),        _("Check online for updates"));
     helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
     helpMenu->Append(MNU_ABOUT, _("&About..."),                   _("Show about dialog."));
+
 #ifdef __WXMAC__
+    wxApp::s_macPreferencesMenuItemId = MNU_OPTIONS;
+    wxApp::s_macExitMenuItemId = MNU_EXIT;
     wxApp::s_macAboutMenuItemId = MNU_ABOUT;
 #endif 
 
 
-    newContextMenu = new wxMenu();
-    treeContextMenu = 0;
-
+    menuBar = new wxMenuBar();
     menuBar->Append(fileMenu, _("&File"));
     menuBar->Append(editMenu, _("&Edit"));
     menuBar->Append(toolsMenu, _("&Tools"));
     menuBar->Append(viewMenu, _("&Display"));
     menuBar->Append(helpMenu, _("&Help"));
     SetMenuBar(menuBar);
+
+    newContextMenu = new wxMenu();
+    treeContextMenu = 0;
 
     editMenu->Enable(MNU_NEWOBJECT, false);
     fileMenu->Enable(MNU_PASSWORD, false);
@@ -485,14 +492,14 @@ bool frmMain::checkAlive()
                 while (item)
                 {
                     pgObject *obj=(pgObject*)browser->GetItemData(item);
-                    if (obj && obj->GetType() == PG_DATABASES)
+                    if (obj && obj->IsCreatedBy(databaseFactory.GetCollectionFactory()))
                     {
                         wxCookieType cookie3;
                         item = browser->GetFirstChild(obj->GetId(), cookie3);
                         while (item)
                         {
                             pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
-                            if (db && db->GetType() == PG_DATABASE)
+                            if (db && db->IsCreatedBy(databaseFactory))
                             {
                                 pgConn *conn=db->GetConnection();
                                 if (conn)
@@ -570,7 +577,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
-        if (data->GetType() == PG_DATABASES)
+        if (data->IsCreatedBy(databaseFactory.GetCollectionFactory()))
             break;
         // Get the next item
         item = browser->GetNextChild(server->GetId(), cookie);
@@ -586,7 +593,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
-        if (data->GetType() == PG_DATABASE && data->GetName() == lastDatabase)
+        if (data->IsCreatedBy(databaseFactory) && data->GetName() == lastDatabase)
             break;
         // Get the next item
         item = browser->GetNextChild(lastItem, cookie);
@@ -606,7 +613,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
-        if (data->GetType() == PG_SCHEMAS)
+        if (data->GetMetaType() == PGM_SCHEMA)
             break;
         // Get the next item
         item = browser->GetNextChild(lastItem, cookie);
@@ -622,7 +629,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
-        if (data->GetType() == PG_SCHEMA && data->GetName() == lastSchema)
+        if (data->GetMetaType() == PGM_SCHEMA && data->GetName() == lastSchema)
             break;
         // Get the next item
         item = browser->GetNextChild(lastItem, cookie);
@@ -675,7 +682,7 @@ int frmMain::ReconnectServer(pgServer *server)
             break;
             */
         case PGCONN_BAD:
-            reportConnError(server);
+            ReportConnError(server);
             break;
 
         default:
@@ -715,7 +722,7 @@ bool frmMain::reportError(const wxString &error, const wxString &msgToIdentify, 
 }
 
 
-void frmMain::reportConnError(pgServer *server)
+void frmMain::ReportConnError(pgServer *server)
 {
     wxString error=server->GetLastError();
     bool wantHint=false;
@@ -954,11 +961,9 @@ void frmMain::SetButtons(pgObject *obj)
          properties=false,
          sql=false,
          viewData=false,
-         maintenance=false,
          backup=false,
          restore=false,
          status=false,
-         config=false,
          set=false,
          setissubscribed=false,
          cluster=false,
@@ -974,18 +979,16 @@ void frmMain::SetButtons(pgObject *obj)
         dropCascaded = obj->CanDropCascaded();
         properties = obj->CanEdit();
         viewData = obj->CanView();
-        maintenance = obj->CanMaintenance();
-        backup = obj->CanBackup();
-        restore = obj->CanRestore();
         hint = obj->GetCanHint();
         status = server != 0 && server->GetSuperUser();
-        config = status && conn && conn->HasFeature(FEATURE_FILEREAD);
 
         switch (obj->GetType())
         {
+            /*
             case SL_CLUSTER:
                 cluster=true;
                 break;
+                */
             case SL_SET:
                 set=true;
                 if (((slSet*)obj)->GetSubscriptionCount() > 0)
@@ -993,7 +996,6 @@ void frmMain::SetButtons(pgObject *obj)
                 break;
             case PG_SERVERS:
             case PG_SERVER:
-            case PG_DATABASES:
             case PG_TABLESPACES:
             case PG_TABLESPACE:
             case PG_GROUPS:
@@ -1012,10 +1014,6 @@ void frmMain::SetButtons(pgObject *obj)
     toolBar->EnableTool(MNU_CREATE, create);
     toolBar->EnableTool(MNU_DROP, drop);
     toolBar->EnableTool(MNU_PROPERTIES, properties);
-    toolBar->EnableTool(MNU_SQL, sql);
-    toolBar->EnableTool(MNU_VIEWDATA, viewData);
-    toolBar->EnableTool(MNU_VIEWFILTEREDDATA, viewData);
-    toolBar->EnableTool(MNU_MAINTENANCE, maintenance);
     toolBar->EnableTool(MNU_HINT, hint);
 
 	// Handle the menus associated with the buttons
@@ -1025,18 +1023,8 @@ void frmMain::SetButtons(pgObject *obj)
 	editMenu->Enable(MNU_PROPERTIES, properties);
 	toolsMenu->Enable(MNU_CONNECT, false);
 	toolsMenu->Enable(MNU_DISCONNECT, false);
-	toolsMenu->Enable(MNU_SQL, sql);
-	toolsMenu->Enable(MNU_MAINTENANCE, maintenance);
-	toolsMenu->Enable(MNU_BACKUP, backup && !backupExecutable.IsNull());
-	toolsMenu->Enable(MNU_RESTORE, restore && !restoreExecutable.IsNull());
-//    toolsMenu->Enable(MNU_INDEXCHECK, false);
+	//toolsMenu->Enable(MNU_INDEXCHECK, false);
 
-    toolsMenu->Enable(MNU_STATUS, status);
-	toolsMenu->Enable(MNU_VIEWDATA, viewData);
-	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
-    toolsMenu->Enable(MNU_STARTSERVICE, false);
-    toolsMenu->Enable(MNU_STOPSERVICE, false);
-    toolsMenu->Enable(MNU_CONFIGSUBMENU, config);
 
     toolsMenu->Enable(MNU_SLONY_SUBMENU, cluster || set);
     slonyMenu->Enable(MNU_SLONY_RESTART, cluster);
@@ -1046,7 +1034,6 @@ void frmMain::SetButtons(pgObject *obj)
     slonyMenu->Enable(MNU_SLONY_MERGESET, set);
 
     viewMenu->Enable(MNU_REFRESH, refresh);
-	viewMenu->Enable(MNU_COUNT, false);
 
     helpMenu->Enable(MNU_HINT, hint);
 }

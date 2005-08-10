@@ -107,8 +107,8 @@ void frmMaintenance::OnAction(wxCommandEvent& ev)
     chkAnalyze->Enable(isVacuum);
 
     bool isReindex = (rbxAction->GetSelection() == 2);
-    sbxReindexOptions->Enable(isReindex && object->GetType() == PG_DATABASE || object->GetType() == PG_INDEX);
-    chkForce->Enable(isReindex && object->GetType() == PG_DATABASE);
+    sbxReindexOptions->Enable(isReindex && object->GetMetaType() == PGM_DATABASE || object->GetType() == PG_INDEX);
+    chkForce->Enable(isReindex && object->GetMetaType() == PGM_DATABASE);
     chkRecreate->Enable(isReindex && object->GetType() == PG_INDEX);
 }
 
@@ -133,7 +133,7 @@ wxString frmMaintenance::GetSql()
             if (chkAnalyze->GetValue())
                 sql += wxT("ANALYZE ");
 
-            if (object->GetType() != PG_DATABASE)
+            if (object->GetMetaType() != PGM_DATABASE)
                 sql += object->GetQuotedFullIdentifier();
             
             break;
@@ -144,7 +144,7 @@ wxString frmMaintenance::GetSql()
             if (chkVerbose->GetValue())
                 sql += wxT("VERBOSE ");
             
-            if (object->GetType() != PG_DATABASE)
+            if (object->GetMetaType() != PGM_DATABASE)
                 sql += object->GetQuotedFullIdentifier();
 
             break;
@@ -177,4 +177,26 @@ void frmMaintenance::Go()
 {
     chkFull->SetFocus();
     Show(true);
+}
+
+
+
+maintenanceFactory::maintenanceFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Maintenance"), _("Maintain the current database or table."));
+    toolbar->AddTool(id, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
+}
+
+
+wxWindow *maintenanceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    frmMaintenance *frm=new frmMaintenance(form, obj);
+    frm->Go();
+    return frm;
+}
+
+
+bool maintenanceFactory::CheckEnable(pgObject *obj)
+{
+    return obj->CanMaintenance();
 }

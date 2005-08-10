@@ -197,5 +197,33 @@ private:
 
     DECLARE_EVENT_TABLE();
 };
+
+
+class editGridFactoryBase : public actionFactory
+{
+public:
+    bool CheckEnable(pgObject *obj);
+
+protected:
+    editGridFactoryBase() {}
+    wxWindow *ViewData(frmMain *form, pgObject *obj, bool filter);
+};
+
+
+class editGridFactory : public editGridFactoryBase
+{
+public:
+    editGridFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class editGridFilteredFactory : public editGridFactoryBase
+{
+public:
+    editGridFilteredFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
 #endif
 

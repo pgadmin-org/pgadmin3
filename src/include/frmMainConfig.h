@@ -58,5 +58,21 @@ private:
 };
 
 
+class mainConfigFactory : public actionFactory
+{
+public:
+    mainConfigFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class mainConfigFileFactory : public actionFactory
+{
+public:
+    mainConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
 
 #endif

@@ -29,6 +29,15 @@ enum
     SCHEMATYP_NORMAL
 };
 
+class pgaSchemaFactory : public pgaFactory
+{
+public:
+    pgaSchemaFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaSchemaFactory schemaFactory;
+
 
 class pgSchema : public pgDatabaseObject
 {
@@ -36,11 +45,9 @@ public:
     pgSchema(const wxString& newName = wxT(""));
     ~pgSchema();
 
-    int GetIcon() { return PGICON_SCHEMA; }
     wxString GetPrefix() const { return database->GetSchemaPrefix(GetName()); }
     wxString GetQuotedPrefix() const { return database->GetQuotedSchemaPrefix(GetName()); }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
     bool CanDropCascaded() { return true; }
 
@@ -67,10 +74,10 @@ private:
 
 /////////////////////////////////////////////////////
 
-class pgSchemaCollection : public pgCollection
+class pgSchemaObjCollection : public pgCollection
 {
 public:
-    pgSchemaCollection(pgaFactory &factory, pgSchema *sch);
+    pgSchemaObjCollection(pgaFactory &factory, pgSchema *sch);
     bool CanCreate();
 };
 

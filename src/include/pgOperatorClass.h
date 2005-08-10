@@ -68,10 +68,10 @@ private:
 };
 
 
-class pgOperatorClassCollection : public pgSchemaCollection
+class pgOperatorClassCollection : public pgSchemaObjCollection
 {
 public:
-    pgOperatorClassCollection(pgaFactory &factory, pgSchema *sch) : pgSchemaCollection(factory, sch) {}
+    pgOperatorClassCollection(pgaFactory &factory, pgSchema *sch) : pgSchemaObjCollection(factory, sch) {}
     bool CanCreate() { return false; }
 };
 

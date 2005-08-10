@@ -111,7 +111,7 @@ void frmGrantWizard::OnPageSelect(wxNotebookEvent& event)
 
 void frmGrantWizard::AddObjects(pgCollection *collection)
 {
-    bool traverseKids = (!collection->IsCollection() || collection->GetType() == PG_SCHEMAS);
+    bool traverseKids = (!collection->IsCollection() || collection->GetMetaType() == PGM_SCHEMA);
 
     if (!traverseKids)
     {
@@ -151,21 +151,14 @@ void frmGrantWizard::Go()
 
     wxString privList = wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER");
     char *privChar="arwdRxt";
-    switch (object->GetType())
-    {
-        case PG_DATABASE:
-        case PG_SCHEMAS:
-        case PG_SCHEMA:
-            privList.Append(wxT(",EXECUTE"));
-            privChar = "arwdRxtX";
-            break;
-        default:
-            break;
-    }
-
     
     switch (object->GetMetaType())
     {
+        case PGM_DATABASE:
+        case PGM_SCHEMA:
+            privList.Append(wxT(",EXECUTE"));
+            privChar = "arwdRxtX";
+            break;
         case PGM_FUNCTION:
             privList = wxT("EXECUTE");
             privChar = "X";
@@ -261,13 +254,13 @@ wxString frmGrantWizard::GetSql()
 }
 
 
-grantWizardFactory ::grantWizardFactory (wxMenu *mnu, wxToolBar *toolbar)
+grantWizardFactory::grantWizardFactory(wxMenu *mnu, wxToolBar *toolbar)
 {
     mnu->Append(id, _("&Grant Wizard"), _("Grants rights to multiple objects"));
 }
 
 
-wxWindow *grantWizardFactory ::StartDialog(frmMain *form, pgObject *obj)
+wxWindow *grantWizardFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmGrantWizard *frm=new frmGrantWizard(form, obj);
     frm->Go();
@@ -275,19 +268,11 @@ wxWindow *grantWizardFactory ::StartDialog(frmMain *form, pgObject *obj)
 }
 
 
-bool grantWizardFactory ::CheckEnable(pgObject *obj)
+bool grantWizardFactory::CheckEnable(pgObject *obj)
 {
-    switch (obj->GetType())
-    {
-        case PG_SCHEMA:
-        case PG_SCHEMAS:
-            return true;
-        default:
-            break;
-    }
-
     switch (obj->GetMetaType())
     {
+        case PGM_SCHEMA:
         case PGM_TABLE:
         case PGM_FUNCTION:
         case PGM_SEQUENCE:

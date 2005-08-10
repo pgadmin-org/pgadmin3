@@ -22,6 +22,15 @@
 #include "pgDatabase.h"
 
 class pgCollection;
+class pgaCastFactory : public pgaFactory
+{
+public:
+    pgaCastFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaCastFactory castFactory;
+
 
 class pgCast : public pgDatabaseObject
 {
@@ -30,8 +39,6 @@ public:
     ~pgCast();
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
-    int GetIcon() { return PGICON_CAST; }
 
     bool CanDropCascaded() { return true; }
 

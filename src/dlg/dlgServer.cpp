@@ -18,6 +18,7 @@
 #include "frmMain.h"
 #include "dlgServer.h"
 #include "pgDatabase.h"
+#include <wx/busyinfo.h>
 
 // Images
 #include "images/server.xpm"
@@ -275,4 +276,135 @@ void dlgServer::CheckChange()
 wxString dlgServer::GetSql()
 {
     return wxEmptyString;
+}
+
+
+
+#include "images/connect.xpm"
+addServerFactory::addServerFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("&Add Server..."), _("Add a connection to a server."));
+    toolbar->AddTool(id, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
+}
+
+
+wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    int rc = PGCONN_BAD;
+    
+    dlgServer dlg(form, 0);
+    dlg.CenterOnParent();
+
+    wxTreeCtrl *browser=form->GetBrowser();
+
+    while (rc != PGCONN_OK)
+    {
+        if (dlg.GoNew() != wxID_OK)
+            return 0;
+
+        pgServer *server=(pgServer*)dlg.CreateObject(0);
+
+        if (dlg.GetTryConnect())
+        {
+            wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
+                server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), form);
+            rc = server->Connect(form, false, dlg.GetPassword());
+        }
+        else
+        {
+            rc = PGCONN_OK;
+            server->InvalidatePassword();
+        }
+        switch (rc)
+        {
+            case PGCONN_OK:
+            {
+                wxLogInfo(wxT("pgServer object initialised as required."));
+                browser->AppendItem(form->GetServersNode(), server->GetFullName(), 
+                    server->GetConnected() ? PGICON_SERVER : PGICON_SERVERBAD, -1, server);
+
+                browser->Expand(form->GetServersNode());
+                wxString label;
+                label.Printf(_("Servers (%d)"), form->GetBrowser()->GetChildrenCount(form->GetServersNode(), false));
+                browser->SetItemText(form->GetServersNode(), label);
+                form->StoreServers();
+                return 0;
+            }
+            case PGCONN_DNSERR:
+            {
+                delete server;
+                break;
+            }
+            case PGCONN_BAD:
+            case PGCONN_BROKEN:
+            {
+                form->ReportConnError(server);
+                delete server;
+
+                break;
+            }
+            default:
+            {
+                wxLogInfo(__("pgServer object didn't initialise because the user aborted."));
+                delete server;
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
+
+
+bool controlServiceFactory::CheckEnable(pgObject *obj)
+{
+    return obj->GetType() == PG_SERVER;
+}
+
+
+startServiceFactory::startServiceFactory (wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("Start service"), _("Start PostgreSQL Service"));
+}
+
+
+wxWindow *startServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server= (pgServer*)obj;
+    form->StartMsg(_("Starting service"));
+    bool rc = server->StartService();
+    if (rc)
+        form->execSelChange(server->GetId(), true);
+    form->EndMsg(rc);
+    return 0;
+}
+
+
+stopServiceFactory::stopServiceFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("Stop service"), _("Stop PostgreSQL Service"));
+}
+
+
+wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server= (pgServer*)obj;
+	wxMessageDialog msg(form, _("Are you sure you wish to shutdown this server?"),
+            _("Stop service"), wxYES_NO | wxICON_QUESTION);
+    if (msg.ShowModal() == wxID_YES)
+    {
+        form->StartMsg(_("Stopping service"));
+
+        bool done=server->StopService();
+
+        if (done)
+	    {
+            if (server->Disconnect(form))
+            {
+                form->GetBrowser()->DeleteChildren(server->GetId());
+                form->execSelChange(server->GetId(), true);
+            }
+	    }
+        form->EndMsg(done);
+    }
+    return 0;
 }

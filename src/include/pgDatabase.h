@@ -19,7 +19,18 @@
 #include "pgAdmin3.h"
 #include "pgObject.h"
 #include "pgServer.h"
+#include "pgCollection.h"
 #include "pgConn.h"
+
+class pgaDatabaseFactory : public pgaFactory
+{
+public:
+    pgaDatabaseFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaDatabaseFactory databaseFactory;
+
 
 // Class declarations
 class pgDatabase : public pgServerObject
@@ -33,7 +44,6 @@ public:
     bool BackendMinimumVersion(int major, int minor) { return connection()->BackendMinimumVersion(major, minor); }
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
     
     pgSet *ExecuteSet(const wxString& sql);
@@ -92,5 +102,21 @@ private:
 
     wxString schemaChanges;
 };
+
+class pgDatabaseCollection : public pgServerObjCollection
+{
+public:
+    pgDatabaseCollection(pgaFactory &factory, pgServer *sv);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
+};
+
+
+class pgDatabaseObjCollection : public pgCollection
+{
+public:
+    pgDatabaseObjCollection(pgaFactory &factory, pgDatabase *db);
+    bool CanCreate();
+};
+
 
 #endif

@@ -21,9 +21,6 @@
 #include "pgConversion.h"
 #include "pgSchema.h"
 
-// Images
-#include "images/conversion.xpm"
-
 
 // pointer to controls
 #define cbSourceEncoding    CTRL_COMBOBOX("cbSourceEncoding")
@@ -43,10 +40,16 @@ BEGIN_EVENT_TABLE(dlgConversion, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaConversionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgConversion(frame, (pgConversion*)node, (pgSchema*)parent);
+}
+
+
+
 dlgConversion::dlgConversion(frmMain *frame, pgConversion *node, pgSchema *sch)
 : dlgProperty(frame, wxT("dlgConversion"))
 {
-    SetIcon(wxIcon(conversion_xpm));
     conversion=node;
     schema=sch;
 }
@@ -135,7 +138,7 @@ int dlgConversion::Go(bool modal)
 
 pgObject *dlgConversion::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgConversion::ReadObjects(collection, 0,
+    pgObject *obj=conversionFactory.CreateObjects(collection, 0,
          wxT("\n AND conname = ") + qtString(GetName()));
 
     return obj;

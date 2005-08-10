@@ -152,9 +152,6 @@ void frmIndexcheck::Go()
         case PG_CONSTRAINTS:
             AddObjects(wxT("cl.oid = ") + object->GetOidStr());
             break;
-        case PG_SCHEMA:
-            AddObjects(wxT("nl.oid = ") + object->GetOidStr());
-            break;
         default:
         {
             break;
@@ -162,6 +159,9 @@ void frmIndexcheck::Go()
     }
     switch (object->GetMetaType())
     {
+        case PGM_SCHEMA:
+            AddObjects(wxT("nl.oid = ") + object->GetOidStr());
+            break;
         case PGM_TABLE:
         {
             if (object->IsCollection())

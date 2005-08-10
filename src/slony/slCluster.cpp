@@ -38,7 +38,7 @@ public:
 WX_DEFINE_OBJARRAY(RemoteConnArray);
 
 slCluster::slCluster(const wxString& newName)
-: pgDatabaseObject(SL_CLUSTER, newName)
+: pgDatabaseObject(slClusterFactory, newName)
 {
     wxLogInfo(wxT("Creating a slCluster object"));
 }
@@ -279,15 +279,15 @@ pgObject *slCluster::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgCollection *coll=(pgCollection*)browser->GetItemData(parentItem);
-        if (coll->GetType() == PG_DATABASES)
-            cluster = ReadObjects(coll, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
+        if (coll->IsCollection())
+            cluster = slClusterFactory.CreateObjects(coll, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
     }
     return cluster;
 }
 
 
 
-pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaSlClusterFactory::CreateObjects(pgCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
 {
     slCluster *cluster=0;
 
@@ -328,5 +328,17 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser, const 
 pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser)
 {
     // Get the clusters
-    return ReadObjects(coll, browser, wxEmptyString);
+    return slClusterFactory.CreateObjects(coll, browser, wxEmptyString);
 }
+
+
+
+#include "images/slcluster.xpm"
+
+pgaSlClusterFactory::pgaSlClusterFactory() 
+: pgaFactory(__("Slony-I Cluster"), __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster"), slcluster_xpm)
+{
+}
+
+pgaSlClusterFactory slClusterFactory;
+static pgaCollectionFactory cf(&slClusterFactory, __("Replication"));

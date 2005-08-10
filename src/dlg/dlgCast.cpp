@@ -21,9 +21,6 @@
 #include "pgCast.h"
 #include "pgDatatype.h"
 
-// Images
-#include "images/cast.xpm"
-
 
 // pointer to controls
 #define txtCastname         CTRL_TEXT("txtCastname")
@@ -33,6 +30,10 @@
 #define chkImplicit         CTRL_CHECKBOX("chkImplicit")
 #define stComment           CTRL_STATIC("stComment")
 
+dlgProperty *pgaCastFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgCast(frame, (pgCast*)node);
+}
 
 
 BEGIN_EVENT_TABLE(dlgCast, dlgTypeProperty)
@@ -46,7 +47,6 @@ END_EVENT_TABLE();
 dlgCast::dlgCast(frmMain *frame, pgCast *node)
 : dlgTypeProperty(frame, wxT("dlgCast"))
 {
-    SetIcon(wxIcon(cast_xpm));
     cast=node;
 
     txtCastname->Disable();
@@ -98,7 +98,7 @@ int dlgCast::Go(bool modal)
 
 pgObject *dlgCast::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgCast::ReadObjects(collection, 0,
+    pgObject *obj=castFactory.CreateObjects(collection, 0,
          wxT(" WHERE castsource = ") + GetTypeOid(cbSourceType->GetGuessedSelection()) +
          wxT("\n   AND casttarget = ") + GetTypeOid(cbTargetType->GetGuessedSelection()));
 

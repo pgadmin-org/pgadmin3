@@ -22,6 +22,14 @@
 #include "pgDatabase.h"
 
 class pgCollection;
+class pgaLanguageFactory : public pgaFactory
+{
+public:
+    pgaLanguageFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaLanguageFactory languageFactory;
 
 class pgLanguage : public pgDatabaseObject
 {
@@ -29,9 +37,7 @@ public:
     pgLanguage(const wxString& newName = wxT(""));
     ~pgLanguage();
 
-    int GetIcon() { return PGICON_LANGUAGE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     wxString GetHandlerProc() const { return handlerProc; }

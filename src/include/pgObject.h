@@ -36,14 +36,9 @@ enum PG_OBJTYPE
 {
     PG_NONE,
     PG_SERVERS,         PG_SERVER,
-    PG_DATABASES,       PG_DATABASE,
     PG_GROUPS,          PG_GROUP,
     PG_USERS,           PG_USER,
-    PG_LANGUAGES,       PG_LANGUAGE,
-    PG_SCHEMAS,         PG_SCHEMA,
     PG_TABLESPACES,     PG_TABLESPACE,
-    PG_CASTS,           PG_CAST,
-    PG_CONVERSIONS,     PG_CONVERSION,
     PG_COLUMNS,         PG_COLUMN,
     PG_INDEXES,         PG_INDEX,
     PG_RULES,           PG_RULE,
@@ -54,7 +49,6 @@ enum PG_OBJTYPE
 	PGA_SCHEDULES,		PGA_SCHEDULE,
     PGA_STEPS,			PGA_STEP,
 
-    SL_CLUSTERS,        SL_CLUSTER,
     SL_NODES,           SL_NODE,
     SL_PATHS,           SL_PATH,
     SL_LISTENS,         SL_LISTEN,
@@ -93,6 +87,8 @@ public:
     static int GetTypeId(const wxString &typname);
 
     pgaFactory *GetFactory() { return factory; }
+    bool IsCreatedBy(pgaFactory &f) const { return &f == factory; }
+    bool IsCreatedBy(pgaFactory *f) const { return f == factory; }
     int GetType() const;
     int GetMetaType() const;
     wxString GetTypeName() const;

@@ -21,7 +21,7 @@
 
 
 pgLanguage::pgLanguage(const wxString& newName)
-: pgDatabaseObject(PG_LANGUAGE, newName)
+: pgDatabaseObject(languageFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgLanguage object"));
 }
@@ -83,15 +83,15 @@ pgObject *pgLanguage::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_LANGUAGES)
-            language = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND lan.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            language = languageFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND lan.oid=") + GetOidStr());
     }
     return language;
 }
 
 
 
-pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaLanguageFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgLanguage *language=0;
 
@@ -133,3 +133,17 @@ pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
     }
     return language;
 }
+
+
+///////////////////////////////////////////////////
+
+#include "images/language.xpm"
+
+pgaLanguageFactory::pgaLanguageFactory() 
+: pgaFactory(__("Language"), __("New Language"), __("Create a new Language."), language_xpm)
+{
+}
+
+
+pgaLanguageFactory languageFactory;
+static pgaCollectionFactory cf(&languageFactory, __("Languages"));

@@ -490,7 +490,7 @@ pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 pgTableCollection::pgTableCollection(pgaFactory &factory, pgSchema *sch)
-: pgSchemaCollection(factory, sch)
+: pgSchemaObjCollection(factory, sch)
 {
 }
 

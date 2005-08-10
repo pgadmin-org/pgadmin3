@@ -103,4 +103,12 @@ enum
 };
 
 
+class queryToolFactory : public actionFactory
+{
+public:
+    queryToolFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 #endif // __FRM_QUERY_H

@@ -1977,3 +1977,61 @@ bool cacheLinePool::IsFilled(int lineNo)
 {
     return (lineNo < anzLines && ptr[lineNo]);
 }
+
+
+bool editGridFactoryBase::CheckEnable(pgObject *obj)
+{
+    pgaFactory *factory=obj->GetFactory();
+    return factory == &tableFactory || factory == &viewFactory;
+}
+
+
+wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filter)
+{
+    pgDatabase *db=((pgSchemaObject*)obj)->GetDatabase();
+
+    pgServer *server=db->GetServer();
+    pgConn *conn= db->CreateConn();
+    if (conn)
+    {
+        wxString txt = wxT("pgAdmin III Edit Data - ")
+            + server->GetDescription() 
+            + wxT(" (") + server->GetName() 
+            + wxT(":") + NumToStr((long)server->GetPort()) 
+            + wxT(") - ") + db->GetName()
+            + wxT(" - ") + obj->GetFullIdentifier();
+
+        frmEditGrid *eg= new frmEditGrid(form, txt, conn, (pgSchemaObject*)obj);
+        eg->ShowForm(filter);
+        return eg;
+    }
+    return 0;
+}
+
+
+editGridFactory::editGridFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("View &Data"), _("View the data in the selected object."));
+    toolbar->AddTool(id, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
+}
+
+
+wxWindow *editGridFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    return ViewData(form, obj, false);
+}
+
+
+#include "images/viewfiltereddata.xpm"
+editGridFilteredFactory::editGridFilteredFactory(wxMenu *mnu, wxToolBar *toolbar)
+{
+    mnu->Append(id, _("View F&iltered Data"), _("Apply a filter and view the data in the selected object."));
+    toolbar->AddTool(id, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
+}
+
+
+wxWindow *editGridFilteredFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    return ViewData(form, obj, true);
+}
+

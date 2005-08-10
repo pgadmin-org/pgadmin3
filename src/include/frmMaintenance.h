@@ -36,4 +36,14 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
+
+class maintenanceFactory : public actionFactory
+{
+public:
+    maintenanceFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
 #endif

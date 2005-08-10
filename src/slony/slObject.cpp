@@ -50,7 +50,7 @@ bool slCollection::CanCreate()
 {
     switch (GetType())
     {
-        case SL_CLUSTERS:
+//        case SL_CLUSTERS:
         case SL_PATHS:
         case SL_LISTENS:
         case SL_SETS:

@@ -74,7 +74,6 @@ wxMenu *pgServer::GetNewMenu()
     if (connected && GetSuperUser())
     {
         menu=new wxMenu();
-        AppendMenu(menu, PG_DATABASE);
         AppendMenu(menu, PG_TABLESPACE);
         AppendMenu(menu, PG_GROUP);
         AppendMenu(menu, PG_USER);
@@ -711,14 +710,12 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
     
             // Databases
-            pgCollection *collection = new pgCollection(PG_DATABASES, this);
-            AppendBrowserItem(browser, collection);
+            AppendBrowserItem(browser, new pgServerObjCollection(*databaseFactory.GetCollectionFactory(), this));
 
             if (conn->BackendMinimumVersion(7, 5))
             {
                 // Tablespaces
-                collection = new pgCollection(PG_TABLESPACES, this);
-                AppendBrowserItem(browser, collection);
+                AppendBrowserItem(browser, new pgCollection(PG_TABLESPACES, this));
             }
             // Jobs
             // We only add the Jobs node if the appropriate objects are the initial DB.
@@ -728,16 +725,13 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
             if (!exists.IsNull())
             {
-                collection = new pgCollection(PGA_JOBS, this);
-                AppendBrowserItem(browser, collection);
+                AppendBrowserItem(browser, new pgCollection(PGA_JOBS, this));
             }
             // Groups
-            collection = new pgCollection(PG_GROUPS, this);
-            AppendBrowserItem(browser, collection);
+            AppendBrowserItem(browser, new pgCollection(PG_GROUPS, this));
     
             // Users
-            collection = new pgCollection(PG_USERS, this);
-            AppendBrowserItem(browser, collection);
+            AppendBrowserItem(browser, new pgCollection(PG_USERS, this));
         }
     }
 
@@ -853,4 +847,20 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
             delete stats;
         }
     }
+}
+
+
+pgServerObjCollection::pgServerObjCollection(pgaFactory &factory, pgServer *sv)
+: pgCollection(factory)
+{
+    server = sv;
+}
+
+
+bool pgServerObjCollection::CanCreate()
+{
+    if (server->GetMetaType() == PGM_DATABASE)
+        return GetServer()->GetCreatePrivilege();
+    else
+        return GetServer()->GetSuperUser();
 }

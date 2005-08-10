@@ -51,6 +51,21 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
+class hbaConfigFactory : public actionFactory
+{
+public:
+    hbaConfigFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
 
+
+class hbaConfigFileFactory : public actionFactory
+{
+public:
+    hbaConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
 
 #endif

@@ -62,4 +62,12 @@ private:
 };
 
 
+class countRowsFactory : public actionFactory
+{
+public:
+    countRowsFactory(wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 #endif
