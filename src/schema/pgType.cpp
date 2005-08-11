@@ -246,6 +246,7 @@ pgObject *pgaTypeFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 
 
 #include "images/type.xpm"
+#include "images/types.xpm"
 
 pgaTypeFactory::pgaTypeFactory() 
 : pgaFactory(__("Type"), __("New Type"), __("Create a new Type."), type_xpm)
@@ -254,4 +255,4 @@ pgaTypeFactory::pgaTypeFactory()
 
 
 pgaTypeFactory typeFactory;
-static pgaCollectionFactory cf(&typeFactory, __("Types"));
+static pgaCollectionFactory cf(&typeFactory, __("Types"), types_xpm);

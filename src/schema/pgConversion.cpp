@@ -141,6 +141,7 @@ pgObject *pgaConversionFactory::CreateObjects(pgCollection *collection, wxTreeCt
 
 
 #include "images/conversion.xpm"
+#include "images/conversions.xpm"
 
 pgaConversionFactory::pgaConversionFactory() 
 : pgaFactory(__("Conversion"), __("New Conversion"), __("Create a new Conversion."), conversion_xpm)
@@ -149,4 +150,4 @@ pgaConversionFactory::pgaConversionFactory()
 
 
 pgaConversionFactory conversionFactory;
-static pgaCollectionFactory cf(&conversionFactory, __("Conversions"));
+static pgaCollectionFactory cf(&conversionFactory, __("Conversions"), conversions_xpm);

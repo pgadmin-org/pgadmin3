@@ -288,6 +288,7 @@ bool pgSchemaObjCollection::CanCreate()
 
 
 #include "images/namespace.xpm"
+#include "images/namespaces.xpm"
 
 pgaSchemaFactory::pgaSchemaFactory() 
 : pgaFactory(__("Schema"), __("New Schema"), __("Create a new Schema."), namespace_xpm)
@@ -297,4 +298,4 @@ pgaSchemaFactory::pgaSchemaFactory()
 
 
 pgaSchemaFactory schemaFactory;
-static pgaCollectionFactory cf(&schemaFactory, __("Schemas"));
+static pgaCollectionFactory cf(&schemaFactory, __("Schemas"), namespaces_xpm);

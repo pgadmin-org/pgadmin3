@@ -184,6 +184,7 @@ pgObject *pgaSequenceFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 
 
 #include "images/sequence.xpm"
+#include "images/sequences.xpm"
 
 pgaSequenceFactory::pgaSequenceFactory() 
 : pgaFactory(__("Sequence"), __("New Sequence"), __("Create a new Sequence."), sequence_xpm)
@@ -193,4 +194,4 @@ pgaSequenceFactory::pgaSequenceFactory()
 
 
 pgaSequenceFactory sequenceFactory;
-static pgaCollectionFactory cf(&sequenceFactory, __("Sequences"));
+static pgaCollectionFactory cf(&sequenceFactory, __("Sequences"), sequences_xpm);

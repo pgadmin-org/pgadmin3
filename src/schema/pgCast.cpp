@@ -163,12 +163,12 @@ pgObject *pgaCastFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 /////////////////////////////
 
 #include "images/cast.xpm"
+#include "images/casts.xpm"
 
 pgaCastFactory::pgaCastFactory() 
 : pgaFactory(__("Cast"), __("New Cast"), __("Create a new Cast."), cast_xpm)
 {
 }
 
-
 pgaCastFactory castFactory;
-static pgaCollectionFactory cf(&castFactory, __("Casts"));
+static pgaCollectionFactory cf(&castFactory, __("Casts"), casts_xpm);

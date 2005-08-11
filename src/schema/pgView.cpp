@@ -158,6 +158,7 @@ pgObject *pgaViewFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 
 
 #include "images/view.xpm"
+#include "images/views.xpm"
 
 pgaViewFactory::pgaViewFactory() 
 : pgaFactory(__("View"), __("New View"), __("Create a new View."), view_xpm)
@@ -167,4 +168,4 @@ pgaViewFactory::pgaViewFactory()
 
 
 pgaViewFactory viewFactory;
-static pgaCollectionFactory cf(&viewFactory, __("Views"));
+static pgaCollectionFactory cf(&viewFactory, __("Views"), views_xpm);

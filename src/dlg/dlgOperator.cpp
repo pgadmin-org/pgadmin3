@@ -451,6 +451,7 @@ wxString dlgOperator::GetSql()
 
 
 #include "images/operator.xpm"
+#include "images/operators.xpm"
 
 pgaOperatorFactory::pgaOperatorFactory() 
 : pgaFactory(__("Operator"), __("New Operator"), __("Create a new Operator."), operator_xpm)
@@ -459,4 +460,4 @@ pgaOperatorFactory::pgaOperatorFactory()
 
 
 pgaOperatorFactory operatorFactory;
-static pgaCollectionFactory cf(&operatorFactory, __("Operators"));
+static pgaCollectionFactory cf(&operatorFactory, __("Operators"), operators_xpm);

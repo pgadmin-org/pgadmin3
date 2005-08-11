@@ -296,6 +296,7 @@ pgObject *pgaUserFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 
 
 #include "images/user.xpm"
+#include "images/users.xpm"
 
 pgaUserFactory::pgaUserFactory() 
 : pgaFactory(__("User"), __("New User"), __("Create a new User."), user_xpm)
@@ -304,4 +305,4 @@ pgaUserFactory::pgaUserFactory()
 
 
 pgaUserFactory userFactory;
-static pgaCollectionFactory cf(&userFactory, __("Users"));
+static pgaCollectionFactory cf(&userFactory, __("Users"), users_xpm);

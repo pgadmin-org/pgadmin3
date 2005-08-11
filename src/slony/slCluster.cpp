@@ -334,6 +334,7 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser)
 
 
 #include "images/slcluster.xpm"
+#include "images/slclusters.xpm"
 
 pgaSlClusterFactory::pgaSlClusterFactory() 
 : pgaFactory(__("Slony-I Cluster"), __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster"), slcluster_xpm)
@@ -341,4 +342,4 @@ pgaSlClusterFactory::pgaSlClusterFactory()
 }
 
 pgaSlClusterFactory slClusterFactory;
-static pgaCollectionFactory cf(&slClusterFactory, __("Replication"));
+static pgaCollectionFactory cf(&slClusterFactory, __("Replication"), slclusters_xpm);

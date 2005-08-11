@@ -410,6 +410,7 @@ pgObject *pgaProcedureFactory::CreateObjects(pgCollection *collection, wxTreeCtr
 
 
 #include "images/function.xpm"
+#include "images/functions.xpm"
 
 pgaFunctionFactory::pgaFunctionFactory(wxChar *tn, wxChar *ns, wxChar *nls, char **img) 
 : pgaFactory(tn, ns, nls, img)
@@ -418,10 +419,11 @@ pgaFunctionFactory::pgaFunctionFactory(wxChar *tn, wxChar *ns, wxChar *nls, char
 }
 
 pgaFunctionFactory functionFactory(__("Function"), __("New Function"), __("Create a new Function."), function_xpm);
-static pgaCollectionFactory cf(&functionFactory, __("Functions"));
+static pgaCollectionFactory cf(&functionFactory, __("Functions"), functions_xpm);
 
 
 #include "images/triggerfunction.xpm"
+#include "images/triggerfunctions.xpm"
 
 pgaTriggerFunctionFactory::pgaTriggerFunctionFactory() 
 : pgaFunctionFactory(__("Trigger Function"), __("New Trigger Function"), __("Create a new Trigger Function."), triggerfunction_xpm)
@@ -429,7 +431,7 @@ pgaTriggerFunctionFactory::pgaTriggerFunctionFactory()
 }
 
 pgaTriggerFunctionFactory triggerFunctionFactory;
-static pgaCollectionFactory cft(&triggerFunctionFactory, __("Trigger Functions"));
+static pgaCollectionFactory cft(&triggerFunctionFactory, __("Trigger Functions"), triggerfunctions_xpm);
 
 pgaProcedureFactory::pgaProcedureFactory() 
 : pgaFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), function_xpm)
@@ -438,4 +440,4 @@ pgaProcedureFactory::pgaProcedureFactory()
 
 
 pgaProcedureFactory procedureFactory;
-static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"));
+static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"), functions_xpm);

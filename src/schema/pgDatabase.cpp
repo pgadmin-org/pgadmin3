@@ -557,6 +557,7 @@ bool pgDatabaseObjCollection::CanCreate()
 
 
 #include "images/database.xpm"
+#include "images/databases.xpm"
 #include "images/closeddatabase.xpm"
 
 pgaDatabaseFactory::pgaDatabaseFactory() 
@@ -568,4 +569,4 @@ pgaDatabaseFactory::pgaDatabaseFactory()
 
 
 pgaDatabaseFactory databaseFactory;
-static pgaCollectionFactory cf(&databaseFactory, __("Databases"));
+static pgaCollectionFactory cf(&databaseFactory, __("Databases"), databases_xpm);

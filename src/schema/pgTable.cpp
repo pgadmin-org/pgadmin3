@@ -647,6 +647,7 @@ pgObject *pgaTableFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *b
 
 
 #include "images/table.xpm"
+#include "images/tables.xpm"
 
 pgaTableFactory::pgaTableFactory() 
 : pgaFactory(__("Table"), __("New Table"), __("Create a new Table."), table_xpm)
@@ -656,4 +657,4 @@ pgaTableFactory::pgaTableFactory()
 
 
 pgaTableFactory tableFactory;
-static pgaCollectionFactory cf(&tableFactory, __("Tables"));
+static pgaCollectionFactory cf(&tableFactory, __("Tables"), tables_xpm);

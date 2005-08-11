@@ -190,6 +190,7 @@ pgObject *pgaDomainFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *
 }
 
 #include "images/domain.xpm"
+#include "images/domains.xpm"
 
 pgaDomainFactory::pgaDomainFactory() 
 : pgaFactory(__("Domain"), __("New Domain"), __("Create a new Domain."), domain_xpm)
@@ -198,4 +199,4 @@ pgaDomainFactory::pgaDomainFactory()
 
 
 pgaDomainFactory domainFactory;
-static pgaCollectionFactory cf(&domainFactory, __("Domains"));
+static pgaCollectionFactory cf(&domainFactory, __("Domains"), domains_xpm);

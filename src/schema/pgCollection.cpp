@@ -184,13 +184,13 @@ int pgCollection::GetIconId()
 {
     switch (GetType())
     {
-        case PG_COLUMNS:            return PGICON_COLUMN;
-        case PG_INDEXES:            return PGICON_INDEX;
-        case PG_RULES:              return PGICON_RULE;
-        case PG_TRIGGERS:           return PGICON_TRIGGER;
-		case PGA_JOBS:				return PGAICON_JOB;
-		case PGA_STEPS:				return PGAICON_STEP;
-		case PGA_SCHEDULES:			return PGAICON_SCHEDULE;
+        case PG_COLUMNS:            return PGICON_COLUMNS;
+        case PG_INDEXES:            return PGICON_INDEXES;
+        case PG_RULES:              return PGICON_RULES;
+        case PG_TRIGGERS:           return PGICON_TRIGGERS;
+		case PGA_JOBS:				return PGAICON_JOBS;
+		case PGA_STEPS:				return PGAICON_STEPS;
+		case PGA_SCHEDULES:			return PGAICON_SCHEDULES;
         default:
         {
             pgaFactory *objFactory=pgaFactory::GetFactory(GetType());

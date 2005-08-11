@@ -65,26 +65,38 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 
 #include "images/check.xpm"
 #include "images/column.xpm"
+#include "images/columns.xpm"
 #include "images/index.xpm"
+#include "images/indexes.xpm"
 #include "images/foreignkey.xpm"
 #include "images/property.xpm"
 #include "images/public.xpm"
 #include "images/rule.xpm"
+#include "images/rules.xpm"
 #include "images/statistics.xpm"
 #include "images/trigger.xpm"
+#include "images/triggers.xpm"
 #include "images/constraints.xpm"
 #include "images/primarykey.xpm"
 #include "images/unique.xpm"
 #include "images/job.xpm"
+#include "images/jobs.xpm"
 #include "images/jobdisabled.xpm"
 #include "images/step.xpm"
+#include "images/steps.xpm"
 #include "images/schedule.xpm"
+#include "images/schedules.xpm"
 #include "images/slnode.xpm"
+#include "images/slnodes.xpm"
 #include "images/slpath.xpm"
+#include "images/slpaths.xpm"
 #include "images/sllisten.xpm"
+#include "images/sllistens.xpm"
 #include "images/slset.xpm"
+#include "images/slsets.xpm"
 #include "images/slset2.xpm"
 #include "images/slsubscription.xpm"
+#include "images/slsubscriptions.xpm"
 #include "images/slsubscription2.xpm"
 
 
@@ -101,9 +113,13 @@ int pgaFactory::addImage(char **img)
             deferredImagesArray->Add(property_xpm);
             deferredImagesArray->Add(statistics_xpm);
             deferredImagesArray->Add(check_xpm);
+            deferredImagesArray->Add(columns_xpm);
             deferredImagesArray->Add(column_xpm);
+            deferredImagesArray->Add(indexes_xpm);
             deferredImagesArray->Add(index_xpm);
+            deferredImagesArray->Add(rules_xpm);
             deferredImagesArray->Add(rule_xpm);
+            deferredImagesArray->Add(triggers_xpm);
             deferredImagesArray->Add(trigger_xpm);
             deferredImagesArray->Add(foreignkey_xpm);
             deferredImagesArray->Add(constraints_xpm);
@@ -112,17 +128,25 @@ int pgaFactory::addImage(char **img)
             deferredImagesArray->Add(public_xpm);
 
             // job, jobdisabled, step, schedule
+            deferredImagesArray->Add(jobs_xpm);
             deferredImagesArray->Add(job_xpm);
             deferredImagesArray->Add(jobdisabled_xpm);
+            deferredImagesArray->Add(steps_xpm);
             deferredImagesArray->Add(step_xpm);
+            deferredImagesArray->Add(schedules_xpm);
             deferredImagesArray->Add(schedule_xpm);
 
             // slony cluster, node, path, listen, set, subscription
+            deferredImagesArray->Add(slnodes_xpm);
             deferredImagesArray->Add(slnode_xpm);
+            deferredImagesArray->Add(slpaths_xpm);
             deferredImagesArray->Add(slpath_xpm);
+            deferredImagesArray->Add(sllistens_xpm);
             deferredImagesArray->Add(sllisten_xpm);
+            deferredImagesArray->Add(slsets_xpm);
             deferredImagesArray->Add(slset_xpm);
             deferredImagesArray->Add(slset2_xpm);
+            deferredImagesArray->Add(slsubscriptions_xpm);
             deferredImagesArray->Add(slsubscription_xpm);
             deferredImagesArray->Add(slsubscription2_xpm);
         }

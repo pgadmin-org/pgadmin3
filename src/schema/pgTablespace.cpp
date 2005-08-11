@@ -253,6 +253,7 @@ void pgTablespaceCollection::ShowStatistics(frmMain *form, ctlListView *statisti
 
 
 #include "images/tablespace.xpm"
+#include "images/tablespaces.xpm"
 
 
 pgaTablespaceFactory::pgaTablespaceFactory() 
@@ -262,4 +263,4 @@ pgaTablespaceFactory::pgaTablespaceFactory()
 
 
 pgaTablespaceFactory tablespaceFactory;
-static pgaCollectionFactory cf(&tablespaceFactory, __("Tablespaces"));
+static pgaCollectionFactory cf(&tablespaceFactory, __("Tablespaces"), tablespaces_xpm);

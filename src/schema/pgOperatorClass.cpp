@@ -239,6 +239,7 @@ pgObject *pgaOperatorClassFactory::CreateObjects(pgCollection *collection, wxTre
 
 
 #include "images/operatorclass.xpm"
+#include "images/operatorclasses.xpm"
 
 pgaOperatorClassFactory::pgaOperatorClassFactory() 
 : pgaFactory(__("OperatorClass"), __("New OperatorClass"), __("Create a new OperatorClass."), operatorclass_xpm)
@@ -253,4 +254,4 @@ dlgProperty *pgaOperatorClassFactory::CreateDialog(frmMain *frame, pgObject *nod
 
 
 pgaOperatorClassFactory operatorClassFactory;
-static pgaCollectionFactory cf(&operatorClassFactory, __("OperatorClasss"));
+static pgaCollectionFactory cf(&operatorClassFactory, __("OperatorClasss"), operatorclasses_xpm);

@@ -138,6 +138,7 @@ pgObject *pgaLanguageFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 ///////////////////////////////////////////////////
 
 #include "images/language.xpm"
+#include "images/languages.xpm"
 
 pgaLanguageFactory::pgaLanguageFactory() 
 : pgaFactory(__("Language"), __("New Language"), __("Create a new Language."), language_xpm)
@@ -146,4 +147,4 @@ pgaLanguageFactory::pgaLanguageFactory()
 
 
 pgaLanguageFactory languageFactory;
-static pgaCollectionFactory cf(&languageFactory, __("Languages"));
+static pgaCollectionFactory cf(&languageFactory, __("Languages"), languages_xpm);

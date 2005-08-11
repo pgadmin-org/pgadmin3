@@ -149,6 +149,7 @@ pgObject *pgaGroupFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *b
 
 
 #include "images/group.xpm"
+#include "images/groups.xpm"
 
 pgaGroupFactory::pgaGroupFactory() 
 : pgaFactory(__("Group"), __("New Group"), __("Create a new Group."), group_xpm)
@@ -157,4 +158,4 @@ pgaGroupFactory::pgaGroupFactory()
 
 
 pgaGroupFactory groupFactory;
-static pgaCollectionFactory cf(&groupFactory, __("Groups"));
+static pgaCollectionFactory cf(&groupFactory, __("Groups"), groups_xpm);

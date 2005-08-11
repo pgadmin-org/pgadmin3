@@ -199,12 +199,12 @@ pgObject *pgaAggregateFactory::CreateObjects(pgCollection *collection, wxTreeCtr
 
 
 #include "images/aggregate.xpm"
+#include "images/aggregates.xpm"
 
 pgaAggregateFactory::pgaAggregateFactory() 
 : pgaFactory(__("Aggregate"), __("New Aggregate"), __("Create a new Aggregate."), aggregate_xpm)
 {
 }
 
-
 pgaAggregateFactory aggregateFactory;
-static pgaCollectionFactory cf(&aggregateFactory, __("Aggregates"));
+static pgaCollectionFactory cf(&aggregateFactory, __("Aggregates"), aggregates_xpm);
